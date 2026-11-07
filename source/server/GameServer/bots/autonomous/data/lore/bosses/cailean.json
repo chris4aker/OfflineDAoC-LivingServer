@@ -1,0 +1,105 @@
+{
+  "id": "cailean",
+  "name": "Cailean",
+  "catalogKey": "hibernia-named-mobs-classic-zones/cailean",
+  "locationId": "cursed-forest",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 10,000 health, in the Cursed Forest. It calls four or five walking trees and eight to ten rotted trees, wraps foes in an acidic cloud, and heals itself at 30%.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Cailean.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Drawn from its spot it is 'too far away from it's habbitat and is immune to your damage'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Cailean.cs"
+    }
+  ],
+  "story": "Cailean was the forest's gardener, the Sylvan say, a spirit of the court wood that tended its trees. When the wood went bad, Cailean went with it. It still tends its trees, but now they walk at its call, the green ones and the rotten ones together, and the mist that rises from its leaves eats skin. It cannot leave its grove: away from its own soil it is nothing at all, a shadow no blade can find. In its grove it is a gardener defending its garden, and it knows exactly which plants to call.\n\nEvery court wood had a gardener, and Cailean was the Cursed Forest's: a spirit of tending, who pruned the trees the courts walked under and kept the paths clear for the bargaining. When the bargain broke and the wood went bad from the root, Cailean went bad with it, but it did not stop gardening. It cannot. It still knows every tree in its grove by name, and when it is threatened it calls them, and they come: four or five walking trees still green, and eight to ten rotted ones.\n\nThe mist that rises from its leaves is acid now, and wraps those near it in a burning cloud. At its last third it draws the sap of the grove into itself and heals. And it cannot leave its grove: away from its own soil, the realm's warriors find, it is nothing at all, a shadow no blade can touch, as though the gardener only exists where there is a garden to keep.",
+  "legend": "Its trees come in two kinds and in numbers: hold or AoE them while the rest burn Cailean. Cure the acid cloud. It heals itself at thirty, so save a burst for that moment. Fight it in its grove; drawn away it is immune. Hold or AoE the trees, cure the acid, and save a burst for its heal at thirty. Superstition: never pick a leaf in its grove. The trees remember who did. Nicknames: 'the gardener', 'old leaves'. It is weak to fire, the druids say, as gardens are. Druids say its grove was the only tidy place in the court wood, and still is, in its terrible way.",
+  "yells": {
+    "aggro": [
+      "My garden does not want you.",
+      "My garden does not want you.",
+      "Up, my trees. Up."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "The sap rises. The garden mends its gardener."
+      }
+    ],
+    "death": [
+      "Who will tend them now?",
+      "Who will tend them now?"
+    ],
+    "slay": [
+      "Compost.",
+      "Compost.",
+      "Planted."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Trees lean toward you, green and rotten both.",
+      "Trees lean toward you, green and rotten both."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Cailean's trees uproot themselves and walk!"
+      }
+    ],
+    "realmFirstKill": "Cailean's grove is still. Its trees sleep."
+  },
+  "botLines": {
+    "briefing": [
+      "cailean calls a lot of trees. [aoe them|hold the trees], cure the acid, burst it at thirty when it heals",
+      "cailean is immune away from its grove. [fight it there|no dragging]",
+      "acid cloud, cure it. [clerics|cure poison]",
+      "kill the rotted trees before the green ones, [they hit harder|rotten first]"
+    ],
+    "aftermathWin": [
+      "cailean down and every tree [just stopped|froze mid-step]",
+      "trees stopped mid step when it died. [creepy|cool]",
+      "burst through the heal. [timed it|nice]",
+      "garden weeded. [grats|done]"
+    ],
+    "aftermathLoss": [
+      "it healed at thirty and we had [nothing left|no burst]",
+      "it healed at thirty and we had nothing. [save a burst|plan]",
+      "too many trees. [aoe|hold them]",
+      "dragged it out, immune. [stay in the grove|stop]"
+    ],
+    "rumour": [
+      "[heard|someone said] cailean was the gardener of the cursed forest before it went bad",
+      "[heard|someone said] cailean was the court wood's gardener",
+      "never pick a leaf in cailean's grove. [trees remember|old saying]",
+      "[word is|heard] cailean knows every tree by name"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Cailean",
+    "text": "The gardener of the court wood, gone bad with it. Its trees walk at its call, and it cannot be harmed away from its grove."
+  },
+  "bookPage": "From Derbáil of Ardee's list: grandmother said even a cursed wood has a gardener, and that the gardener of the court wood was called Cailean. It kept the paths clear for the bright folk and the dark folk to meet on, and pruned the trees, and knew each by name. When the wood went bad, Cailean did too, but grandmother said it still gardens. Its trees walk when it calls them. Its leaves give off a mist that burns. She said you should never pick a leaf in its grove, because the trees remember, and because it is rude to take from a gardener.",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Cailean in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Cailean's head after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "cursed-wood"
+  ],
+  "related": [
+    {
+      "id": "blight",
+      "relation": "the sickness in its soil"
+    },
+    {
+      "id": "juggernaut",
+      "relation": "the thing that walks through its garden"
+    }
+  ]
+}

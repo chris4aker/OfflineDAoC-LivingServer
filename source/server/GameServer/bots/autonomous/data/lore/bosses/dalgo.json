@@ -1,0 +1,111 @@
+{
+  "id": "dalgo",
+  "name": "Dalgo",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/dalgo",
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "skogsra"
+  ],
+  "related": [
+    {
+      "id": "boligar",
+      "relation": "the seeker who leads strangers down Dalgo's paths"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Dalgo is a level-70 named with 30,000 health in Faraheim; seven skogsra (three greenhands and four woodsmen) come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists Dalgo as a level-70 humanoid in Faraheim.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/5765"
+    },
+    {
+      "text": "In Scandinavian folklore the skogsra is a forest spirit, fair from the front and hollow behind, who leads travellers astray.",
+      "provenance": "myth",
+      "source": "Scandinavian folklore (public domain), to verify details"
+    },
+    {
+      "text": "When he is fought, his seven (DalgoBaf: three skogsra greenhands, four skogsra woodsmen, within 2,500) join him. No spells. 30,000 health, CC-immune, reach 350, 20% melee / 30% magic resist; resets at full health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Dalgo.cs"
+    }
+  ],
+  "story": "Where Boligar leads strangers astray, Dalgo makes sure they stay that way. He is the warden of the skogsra's deep wood in the east of Faraheim, and his people tend its paths as farmers tend a hedge: the greenhands move them at night, root and stone and stream, so that a path walked in the evening is somewhere else by morning, and the woodsmen walk the new ones and see that nobody follows the old.\n\nThe skogsra say the warden's office is older than the skogsra, and that Dalgo holds it as his mother held it, and her father before her, back to the first skogsra who agreed with the wood that it should keep what wandered into it. The wood, they say, chose the warden. The iarn dwarves say the wood chose badly, and fly high over his part of it.\n\nHe has never needed guile. He is the strongest of the forest folk on Aegir and the oldest of the wardens, and he keeps his seven close: three greenhands who know every path he has ever moved, and four woodsmen who have walked every one. They go everywhere with him and they come when he is touched, all of them, at once, from wherever in the wood they stood. A stranger who meets the warden meets the wood's whole household. Nothing holds him; the skogsra say he is the wood's own arm, and an arm is not a thing that can be tied.\n\nGunnvor of Jordheim, who tried to map his wood, wrote that she met him once on a path she had drawn the day before, and that he looked at her map and then at her and said, quite kindly, that it had been a very good map yesterday.",
+  "legend": "Dalgo is a pack pull in the east of Faraheim: level 70, 30,000 health, and seven skogsra come with him the moment you touch him, three greenhands and four woodsmen. Kill the greenhands first, hold the woodsmen, then Dalgo. He has no spells, he just hits like a level 70, reach 350. CC-immune, 20% melee and 30% magic resist, resets full if you leave. For most people this is a two-group job. Don't fight it near Boligar's camp or you'll get his mez too. The paths around his wood really do look different every time you come; that's the story, anyway.",
+  "yells": {
+    "aggro": [
+      "Greenhands, close the paths. Woodsmen, with me.",
+      "You are in the wood's house now.",
+      "The way you came is gone."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The wood does not let go of what it takes."
+      }
+    ],
+    "death": [
+      "The paths... open...",
+      "Mother... the wood..."
+    ],
+    "slay": [
+      "Lost for good.",
+      "The wood keeps this one.",
+      "Move the path. Nobody will look for him."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The paths close behind you here. Something tends them.",
+      "Seven figures stand among the trees, very still."
+    ],
+    "realmFirstKill": "Dalgo, warden of the deep wood, is slain.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Dalgo's seven close round their warden."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "dalgo + 7 skogsra, greenhands first",
+      "all seven come at once when we touch him",
+      "he has no spells, just big hits",
+      "cc immune, dont try"
+    ],
+    "aftermathWin": [
+      "dalgo down, deep woods open",
+      "greenhands first worked",
+      "seven and the warden. good pull",
+      "two groups made it easy"
+    ],
+    "aftermathLoss": [
+      "the woodsmen and dalgo together were too much",
+      "we pulled near boligar and got mezzed too",
+      "one group isnt enough",
+      "lost the greenhands in the trees"
+    ],
+    "rumour": [
+      "dalgo's greenhands make the paths close behind you in faraheim. [thats why i always get lost|explains a lot]",
+      "the wood chose dalgo as warden, the skogsra say",
+      "the dwarves fly high over dalgos wood",
+      "dalgo told a mapmaker her map was very good yesterday"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Dalgo",
+    "text": "Warden of the skogsra's deep wood in Faraheim. His greenhands close the paths behind you; his woodsmen walk them."
+  },
+  "bookPage": "From A Map That Lies, by Gunnvor of Jordheim: I met the warden on a path I had drawn the day before. He was larger than I had been told, and gentler, and seven of his people stood among the trees behind him without seeming to have arrived. He asked to see my map. I showed it to him. He looked at it a long time, tracing the paths with one long finger, and nodded, and gave it back, and said it had been a very good map yesterday. Then he stepped aside to let me pass. The path behind him was not on it.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut through Dalgo's wood in {minutes} minutes.",
+    "loss": "Dalgo's wood closed over {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

@@ -1,0 +1,143 @@
+{
+ "id": "marquis-sabonach",
+ "name": "Marquis Sabonach",
+ "npcNames": [
+  "Marquis Sabonach"
+ ],
+ "aliases": [
+  "sabonach"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-three-doors",
+ "factions": [
+  "dark-ones",
+  "eastern-halls"
+ ],
+ "related": [
+  {
+   "id": "high-lord-oro",
+   "relation": "his lord; he built Oro's hall"
+  },
+  {
+   "id": "field-marshal-nebir",
+   "relation": "asked him for a keep"
+  },
+  {
+   "id": "duke-sallis",
+   "relation": "stands with him at Oro's door"
+  },
+  {
+   "id": "earl-mercur",
+   "relation": "stands with him at Oro's door"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "refused his keep a line"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Marquis Sabonach is a level 73 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands outside High Lord Oro's hall in the north-east, with Duke Sallis and Earl Mercur.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Marquis Sabonach among the marquises of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Marquis Sabonach is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "In the Ars Goetia, Sabnock (43) is a marquis; Sabonach reads as that name.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Marquis Sabonach spawns at size 35, far smaller than the other marquises (117-200).",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Marquis Sabonach is the smallest peer on the Roll, no bigger than an imp, and he built half the court. He is a mason. In the Uncounted Age the halls of the hollow were caves, holes in the rock with whatever throne their lord had made of its last kill, and Sabonach, a demon of High Lord Oro's household, began cutting them into halls: pillars, arches, stairs, the long gallery of the approach that Adremal later cut his Rolls into. He shaped Oro's hall first, and then, for payment, the halls of the other high lords, and then the chapter house of the Chthonic Knights and the cloisters of the Inquisition. Every arch in the hollow that has not fallen is his.\n\nHe was not always small. The court says each hall he finished took something out of him, that a mason who shapes stone with his own body puts himself into it, and that by the First Roll he had put so much of himself into the halls of the court that what was left would fit on a duke's palm. He did not stop. He has kept building every Roll since, smaller each time.\n\nIn the Tenth Roll Field Marshal Nebir came to him with the one commission he had never been asked for. The Marshal wanted a keep: a keep of the court's own, cut from the rock under the frontier, so that the doors would answer to the court as they answer to the realms. Sabonach drew it. The drawing is in his rooms beside Oro's hall, a keep with towers and a gate and a lord's room, the size of a fingernail. He took it to the Chancellor, who told him the Roll has no line for a keep. Sabonach has started building it anyway, a stone at a time, somewhere he will not say.",
+ "legend": "Sabonach is tiny (a fraction of the size of the other marquises) and stands outside High Lord Oro's hall in the north-east with Duke Sallis and Earl Mercur. Do not let the size fool you: level 73, full marquis health, no script. Kill him after Sallis and Mercur and before you go near Oro and his clones. Players say he is hard to click on in a big fight and easy to lose under a tank, so assist the main assist. Some swear he is building a demon keep somewhere in the dungeon and that one day the doors will open for the demons. That is a story, but it is a good one.",
+ "yells": {
+  "aggro": [
+   "Mind the arches. I built them.",
+   "Small, yes. So is a keystone.",
+   "You are standing on my work."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Another piece of me into the stone. Fine."
+   }
+  ],
+  "death": [
+   "The keep... finish the keep...",
+   "Every arch that stands... is mine."
+  ],
+  "slay": [
+   "Mortar.",
+   "You will hold up a wall now.",
+   "One more stone."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Every arch here is cut true. Someone small cut them.",
+   "A tiny figure sits among chips of stone."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The little mason does not give way."
+   }
+  ],
+  "realmFirstKill": "Marquis Sabonach has fallen. The arches stand."
+ },
+ "botLines": {
+  "briefing": [
+   "sabonach is tiny, outside oros hall. [assist the ma|use assist], hes hard to click",
+   "73 full health despite the size. [no tricks|no script]",
+   "order: sallis, mercur, sabonach, then oro and clones",
+   "dont lose sabonach under the tank. [assist|target through the ma]"
+  ],
+  "aftermathWin": [
+   "sabonach down. [found him|the little one is dead]",
+   "marquis sabonach dead. [oro next|now the three oros]",
+   "sabonach done. [assist works|told you, assist]",
+   "the mason's dead. [arches still up|nothing fell lol]"
+  ],
+  "aftermathLoss": [
+   "couldnt find sabonach in the fight. [assist next time|use the ma]",
+   "pulled oro with sabonach. [three oros, gg|wipe]",
+   "sabonach got us. [regroup|rez]",
+   "lost the pull outside oros hall. [slower|one at a time]"
+  ],
+  "rumour": [
+   "[heard|word is] marquis sabonach built every hall in df. [got smaller each time|tiny now]",
+   "sabonach is building the demons a keep. [so the doors open for them|imagine]",
+   "[someone said|my guildie says] the field marshal asked sabonach for a demon keep",
+   "the tiny marquis by oros hall is full health. [dont laugh|no joke]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "sabonach",
+  "text": "The mason of the court, of High Lord [Oro]'s household, who cut the caves of the hollow into halls and grew smaller with every one. For Field Marshal [Nebir] he has drawn a keep of the court's own, and is building it, though the Roll has no line for one."
+ },
+ "bookPage": "From a Midgard runemaster's account: The little demon sat on a block of stone outside the three high lords' hall, cutting a smaller block with a chisel no longer than my thumbnail. I watched him for some time before he noticed me. On the block beside him was a drawing scratched into the stone: a keep, with four towers and a gatehouse and a lord's room, all of it smaller than my palm. I am a runemaster and I know a plan when I see one. It was not a sketch. It was a mason's plan, measured and true, for something meant to be built full size.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} found and slew the little mason, Marquis Sabonach, in {minutes} minutes.",
+  "loss": "Marquis Sabonach held Oro's door against {realm}'s raid under {raidLeader}; nothing he built fell."
+ }
+}

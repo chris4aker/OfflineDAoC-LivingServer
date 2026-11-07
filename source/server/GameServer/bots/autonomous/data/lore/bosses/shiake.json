@@ -1,0 +1,72 @@
+{
+  "id": "shiake",
+  "name": "Shiake",
+  "npcNames": [
+    "Shiake"
+  ],
+  "locationId": "modernagrav",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "sjoalf",
+    "iarn-dwarves"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Shiake is a level-44 sea-folk woman (a sjoalf-like model) alone in Modernagrav (457,344/342,912). Her world row is aggressive (200) with no faction, though she gives some twenty data quests, among them 'Final Rest' ('The dead of this land find no rest') and 'Mother's Children' ('investigate the strange sjoalfs to the north').",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data); runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "'Final Rest' ends: 'Kill the morvalt Basilus in the camp in the northeast corner (he brings friends).'",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Shiake as the sjoalf who left the cult is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Shiake left the sea. She was of the sjoalf once, the island folk think, a sea-elf of the cult that prays to the deep, and something she saw on Modernagrav's shore turned her round: she walked up from the tide-line and has lived alone on the high ground since, between the cult on the coast and the dead of the vigil, and she gives the young who come to Modernagrav their work. The dead of this land find no rest, she says, and she asks them to give it: the spectral snakes and felines, the corrupted howlers, and the morvalt Basilius of the north-east corner, who brings friends.\n\nHer own people she asks the young to watch. The strange sjoalf to the north are doing something on the shore she will not name, and the skadedjur, the vermin that eat the dead, she wants killed and their remains brought back to her, and nobody knows why. Orri of Hagall wrote that Shiake is the only one on Modernagrav who knows what the sjoalf pray to, and that she left because it answered. She is not gentle with strangers who come to her unasked.",
+  "legend": "Shiake is a level 44 sea-folk woman alone on the high ground of Modernagrav who gives a lot of data quests (Final Rest, Mother's Children and about twenty more). No faction. Players report her as a quest giver; in this world's data she is flagged aggressive with no faction, so approach with care. She's alone on the high ground, so there's nothing else to worry about near her. Talk to her for the quests; several send you along Modernagrav's coast against the sjoalf.",
+  "yells": {
+    "aggro": [
+      "You come to me? Then you come for work, or for a fight.",
+      "The dead find no rest. Neither will you."
+    ],
+    "death": [
+      "Give them... rest..."
+    ],
+    "slay": [
+      "Rest."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A sea-elf alone on the high ground, far from the sea."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "shiake gives final rest and mothers children on modernagrav",
+      "her row is flagged aggressive with no faction, careful"
+    ],
+    "aftermathWin": [
+      "shiakes quests done",
+      "she sent us after basilius, he brings friends"
+    ],
+    "rumour": [
+      "shiake left the sjoalf cult because what they pray to answered",
+      "shiake wants the skadedjur remains and nobody knows why"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Shiake",
+    "text": "A sea-elf who walked up from the sjoalf's shore to live alone on Modernagrav's high ground, and sets the young to give the land's dead rest. Orri says she left because it answered. See [Mother]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} answered Shiake's call on Modernagrav in {minutes} minutes."
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "id": "apologet-nesnuir",
+  "name": "Apologet Nesnuir",
+  "npcNames": [
+    "Apologet Nesnuir"
+  ],
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "dagar",
+      "relation": "the counter of days, whose belief in the Mother he teaches"
+    },
+    {
+      "id": "jarala-den-kvinnlig",
+      "relation": "the woman who says the morvalt have no mother but the city"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Apologet Nesnuir is a level-67 morvalt in the west of Trollheim (27140, 41543) among a dozen morvalt apprentices (larling) and fourteen disciples (larjunge), level 52-58.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its NPC template sets aggro level 0: it does not attack first, but anything standing near it may. The apprentices and disciples around him are aggressive and in the Morvalt Samhalle faction.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60157956)"
+    },
+    {
+      "text": "Its template gives it no faction, so it never brings friends (bring-a-friend needs a faction).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish apologet means 'apologist, defender of a doctrine'; lärjunge 'disciple'; lärling 'apprentice'. Nesnuir is unknown; to verify.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    }
+  ],
+  "story": "The morvalt believe in the Mother. Dagar counts the days to her waking, the crazed ones on Modernagrav broke Faraheim's rockwall to dig for her, and in the west of Trollheim, in a hall full of young morvalt, an old one called Nesnuir explains why. The morvalt call him the apologet, the one who defends the teaching, and the Valkyn say he is the only morvalt in the city who argues instead of fighting.\n\nHis school is the largest gathering of the young anywhere in Trollheim. The apprentices come to him from the workshops and the disciples from the war-bands, and he sits among them and tells them about the Mother: that she sleeps under the bones of Aegir, that she made the morvalt before the Fathers made anything, that the Fathers tamed the Valkyn to steal her children from her, and that when she wakes the city and the island and the Fathers' house will be hers again. Jarala says aloud in the hall of counsel that the morvalt have no mother but the city they stole. Nesnuir answers her every season, in front of the disciples, and the disciples say he has never lost the argument and she has never come to hear it.\n\nHe does not attack strangers. He has nothing to prove by it, the Valkyn say, and a stranger who walks through the school is a thing for the young ones to answer, and they are not so patient. The disciples are the ones who come. Nesnuir watches them do it, and when it is over, whichever way it ends, he explains to the ones who are left what the Mother would have wanted.\n\nThe Valkyn hate him more than any other morvalt in the city, more than Dagar, more than the gate-keeper. The Valkyn are tamed morvalt, and Nesnuir's teaching says they are the Mother's stolen children. A Valkyn elder at Dyrfjall told a Midgard skald that Nesnuir is the only morvalt who could ever talk a Valkyn into going home, and that this is why no Valkyn guide will take a company past his school. They say the guides who went past it once came out quieter, and one did not come out.",
+  "legend": "Apologet Nesnuir is a level 67 morvalt in the west of Trollheim surrounded by about 26 young morvalt: apprentices (larling) and disciples (larjunge), 52-58. Nesnuir himself is PASSIVE and has no faction, so he never starts it and never brings anyone, but his students are aggressive and Morvalt Samhalle, and there are a lot of them. Clearing the school is the real job; Nesnuir is a high-level morvalt with no special abilities at the end of it, not CC-immune. Bring AoE and mez, or leave him alone. Disciples (larjunge) go up to 58 and the apprentices are 50-57, so a full group at 50 is the minimum.",
+  "yells": {
+    "aggro": [
+      "So. A lesson in person.",
+      "Disciples, watch. This is what the Mother was spared.",
+      "You strike the teacher. The teaching stands."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Mother sees this. Remember that, children."
+      }
+    ],
+    "death": [
+      "She... will wake... regardless...",
+      "Teach them... what I taught..."
+    ],
+    "slay": [
+      "Explained.",
+      "Write that down, children.",
+      "The Mother is patient. I was not."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A hall full of young morvalt, listening.",
+      "An old morvalt speaks of the Mother. They hang on it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The disciples crowd around the apologet."
+      }
+    ],
+    "realmFirstKill": "Apologet Nesnuir falls silent. The school scatters."
+  },
+  "botLines": {
+    "briefing": [
+      "nesnuir is passive but 26 students round him are aggro",
+      "clear the larling and larjunge first, lots of them",
+      "aoe and mez groups do this best",
+      "67, no tricks himself"
+    ],
+    "aftermathWin": [
+      "school cleared, nesnuir down",
+      "that was a lot of students",
+      "aoe ftw",
+      "the apologet has no more arguments"
+    ],
+    "aftermathLoss": [
+      "too many students",
+      "pulled half the school at once",
+      "ran out of mez",
+      "should have left him alone"
+    ],
+    "rumour": [
+      "nesnuir teaches the young morvalt about the mother",
+      "nesnuir says the valkyn are the mothers stolen children",
+      "no valkyn guide will take you past nesnuirs school",
+      "jarala never goes to hear nesnuir argue with her"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Apologet Nesnuir",
+    "text": "The old morvalt who teaches the young of the city about the Mother, and says the [Valkyn] are her stolen children. [Dagar] counts her days; Nesnuir explains them."
+  },
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: the Valkyn guide would not go near the hall where the old morvalt teaches, and when I asked why, she said I would not understand, being a kobold. Then she said: imagine someone telling you that the trolls stole you from your grandmother, and that she is still waiting, and that he can tell you the way. I said I would not believe him. She said: you would want to. That is the whole of it. You would want to. She did not look back at the hall.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke up Apologet Nesnuir's school in Trollheim in {minutes} minutes.",
+    "loss": "Apologet Nesnuir's disciples overwhelmed {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

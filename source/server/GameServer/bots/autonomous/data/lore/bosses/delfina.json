@@ -1,0 +1,96 @@
+{
+  "id": "delfina",
+  "name": "Delfina",
+  "npcNames": [
+    "Delfina"
+  ],
+  "locationId": "pennine-mountains",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Delfina: level 43, no template, faction forest poachers, aggro level 51 (range 500), no spells, respawn 300 s, alone on the southern edge of the Pennine woods at 572511, 410723.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lord of Deceit (Magus Agyfen, Captain Rhodri): after Overseer Tepok's sack and Twr ap Alsig, infiltrate the Tylwyth Teg camp in Pennine and slay the courier Delfina, then have Twr ap Alsig translate the reports.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Morvel and Tuder Glyne in Tepok's Mine are of the same forest poachers.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Delfina's road between the fair folk and the mine and the letters she carries are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The forest poachers of Albion run a road of their own from the high woods of the Pennines south to the eastern landing of Tepok's Mine, and Delfina walks its northern end. She carries letters, and they are not hers: they are written in the fair folk's hand, and they go south to Overseer Tepok, and his answers come north again by the Glyne cousins and by her.\n\nShe has a poacher's skill at not being seen and a courier's habit of not reading what she carries, and both have kept her alive. The fair folk let her come and go at the edge of their woods, which they let almost no one of Albion do, and she waits there between rounds, alone, under the last trees, where the road goes down out of the tops. She does not quarrel with travellers. A courier who quarrels is a courier who is remembered.\n\nTwr ap Alsig of Barfog, who reads the letters for Captain Rhodri, says Delfina's name is in three of them, which means that whoever writes them trusts her, and that is the most dangerous thing in the whole bundle. Rhodri wants her stopped. He has said, more than once, that he would rather have her talk; the poachers say she never has.",
+  "legend": "Delfina, level 43, forest poachers, alone at the southern edge of the Pennine woods where the poachers' road goes down. Aggro level 51, so you can usually pick your moment. Plain melee in the data. She is the courier in Lord of Deceit (Magus Agyfen's version): kill her and loot the reports for Twr ap Alsig to translate. Respawn five minutes; the Glyne cousins in Tepok's Mine are her faction too.",
+  "yells": {
+    "aggro": [
+      "You were not on the road.",
+      "I carry nothing for you."
+    ],
+    "phases": [],
+    "death": [
+      "The letters... go on... without me..."
+    ],
+    "slay": [
+      "Not on the road.",
+      "Delivered."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A poacher waits under the last trees, with letters."
+    ],
+    "phases": [],
+    "realmFirstKill": "Delfina has fallen. The letters stop."
+  },
+  "botLines": {
+    "briefing": [
+      "delfina is alone at the south edge of the pennine woods, 43, low aggro",
+      "kill her and get the reports for twr ap alsig"
+    ],
+    "aftermathWin": [
+      "got delfina's reports. off to barfog",
+      "the courier is down. rhodri gets his letters"
+    ],
+    "aftermathLoss": [
+      "she was not alone after all"
+    ],
+    "rumour": [
+      "[heard|someone said] delfina carries letters from the fair folk to tepok's mine",
+      "heard delfina has never read a single letter she carried"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "delfina",
+    "text": "A courier of the forest poachers who carries the fair folk's letters south to Overseer Tepok along the poachers' road, and waits between rounds under the last trees of the Pennine woods."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} stopped the courier Delfina in the Pennines in {minutes} minutes.",
+    "loss": "Delfina delivered her letters; {raidLeader} of {realm} did not catch her."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "old-powers",
+    "goblins"
+  ],
+  "related": [
+    {
+      "id": "morvel-glyne",
+      "relation": "the southern end of her road"
+    },
+    {
+      "id": "overseer-tepok",
+      "relation": "the goblin her letters go to"
+    }
+  ],
+  "tier": "minor"
+}

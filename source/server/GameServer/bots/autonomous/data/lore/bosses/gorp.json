@@ -1,0 +1,112 @@
+{
+  "id": "gorp",
+  "name": "Gorp",
+  "npcNames": [
+    "Gorp"
+  ],
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "tradklan"
+  ],
+  "related": [
+    {
+      "id": "bokko",
+      "relation": "the chief of the southern trunks, who sends him out"
+    },
+    {
+      "id": "valmak",
+      "relation": "the terror bird whose ground borders his hunting"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Gorp is a level-54 tradklan alone in the deer country of middle Faraheim (375757, 350828), with a fawn, a friller and stags nearby and no other tradklan within reach.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its template puts it in the Tradklan Tribe faction, so when a player, a player's pet or a companion bot attacks it, it can bring nearby Tradklan Tribe into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60161527)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "A tree-clan that has given up fire has to eat, and the southern trunks of the tradklan eat what Gorp brings home. He is Bokko's hunter, the only one of the southern trunks who goes out into the deer country of the middle of Faraheim, alone, and the dwarves of Hagall, who see him there more often than they see any other tradklan, call him the clan's mouth.\n\nHe is not a great hunter. He is a patient one. The deer of the middle country do not run from the terror birds that stand among them, which the dwarves find more unsettling than anything else about the birds, and Gorp, the skogsra say, has made himself as much like a terror bird as a small loud tree-clan can: he stands still among the deer for hours, until they forget him, and then the deer are fewer. The tradklan of the northern trunks, who have fire and can hunt as they please, think it is beneath a tree-clan to hunt like a bird. Gorp thinks it is beneath a tree-clan to hunt like Cronk, loudly, with fire, in a wood.\n\nThe terror birds tolerate him, as far as anyone can tell. The skogsra say he once stood a whole day within sight of Valmak, the one the others wait for, and that the two of them looked at each other across the grazing until dark, and that the next morning Gorp moved his hunting ground a long way north, which the skogsra thought was very sensible of him.\n\nHe carries the meat back to the southern trunks raw, and eats none of it on the road, and the medicine men give him the first piece. He has no one with him and calls no one, because there is no one of the clan within call out there. Anything of the tree-clan that hears him will come, the dwarves say. Nothing of the tree-clan is ever near enough to hear.",
+  "legend": "Gorp is a level 54 tradklan hunter standing alone in the deer country in the middle of Faraheim, with a few deer and a friller wandering nearby. He's Tradklan Tribe, which would let him bring friends, but there's no other tradklan close to him, so in practice he fights alone. No abilities, not CC-immune: an easy named for a group of 50s, or a duo with a good puller. Watch the stags and the friller wandering into the fight, and stay clear of the terror birds' ground to the east, where Valmak and his flock stand. No quest needs him.",
+  "yells": {
+    "aggro": [
+      "Still. I was still. You moved.",
+      "Meat for the trunks.",
+      "No fire. No noise. Only Gorp."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Patient. Be patient. The deer were."
+      }
+    ],
+    "death": [
+      "Take the meat... to the trunks...",
+      "Too loud... you were too loud..."
+    ],
+    "slay": [
+      "Fewer.",
+      "The trunks eat tonight.",
+      "Raw."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Deer graze. One small shape among them does not move.",
+      "The tree-clan's hunter, standing like a bird."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Gorp stands his ground like a bird among deer."
+      }
+    ],
+    "realmFirstKill": "Gorp the hunter falls. The southern trunks go hungry."
+  },
+  "botLines": {
+    "briefing": [
+      "gorp is 54, alone in the deer country",
+      "tradklan but nobody close enough to come",
+      "no tricks, duo-able",
+      "stay off the terror bird ground to the east"
+    ],
+    "aftermathWin": [
+      "gorp down, easy",
+      "duo'd him",
+      "a stag wandered in but fine",
+      "quiet named"
+    ],
+    "aftermathLoss": [
+      "a terror bird wandered over",
+      "friller joined",
+      "pulled a stag with him",
+      "too far east, valmaks ground"
+    ],
+    "rumour": [
+      "gorp hunts for the southern trunks, the ones with no fire",
+      "gorp hunts like a terror bird, standing still for hours",
+      "gorp and valmak stared at each other a whole day and gorp moved north",
+      "the dwarves call gorp the clans mouth"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Gorp",
+    "text": "The hunter of [Bokko]'s cold southern trunks, who stands among the deer like a terror bird until they forget him. He once stood a day within sight of [Valmak] and moved north after. See [terror birds]."
+  },
+  "bookPage": "From the trap-lines of Solvi of Hagall: I took Gorp for a stump the first time. He was standing in the grazing with the deer round him, perfectly still, and a doe walked past within an arm's length, and he did not move, and she did not see him. I watched until my legs cramped. When I looked back he was gone and so was the doe. I have hunted all my life and I do not know how he did it, and I would not like to be a deer in the middle country, or a trapper who stands still too long.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} caught Gorp the tradklan hunter in Faraheim in {minutes} minutes.",
+    "loss": "Gorp outwaited {raidLeader}'s party from {realm} in the deer country after {minutes} minutes."
+  }
+}

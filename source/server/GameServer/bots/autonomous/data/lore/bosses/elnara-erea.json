@@ -1,0 +1,117 @@
+{
+  "id": "elnara-erea",
+  "name": "Elnara Erea",
+  "npcNames": [
+    "Elnara Erea"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Altan Garran (about 336,000/315,500 in Cothrom Gorge) is a walled outlander town of faction Outland Residents: Outland garda (49-53), conaitheoir (48-51), bardach (48-53) and asarlai (49-57), merchants (Egomas the smith, Halwyn, Paili, Noirin the enchanter, Forsa, Gearoidin the healer, Alastair and Luiseach Erea) and garran treants; its named are Fedail, Elnara Erea, Ulicia, Aodhnait, Ansol, Fachtna, Zinsya and Declan, all set aggressive (200) in the world data.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Irish garda 'guard', cónaitheoir 'resident', asarlaí 'sorcerer'; 'Altan Garran' read as altán 'ravine' + garrán 'grove' (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Elnara Erea: level 55, model 741, faction Outland Residents, aggressive (200), at about 334,900/313,900 on the western edge of Altan Garran, with Elnara's Pet (a level 51 treant, model 946, size 155) beside her; Alastair Erea (dye merchant) and Luiseach Erea (instrument merchant, 65) are of the same family name.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: the Erea family as the town's tree-keepers; Elnara and the great treant she raised.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Altan Garran is the only town in Cothrom Gorge, and it is not a Sylvan town. Its people are outlanders: Sylvan and half-Sylvan families who left Domnann over the generations, for quarrels, for debts, for love, for the wardens' law, and went down into the gorge where the wardens do not walk, and built a walled grove of their own on the gorge's eastern ledges. They keep their own garda on the walls, their own bards and sorcerers, their own markets, and their own opinion of strangers, which is low. The Domnann wardens call them the outlanders and trade with them when they must. Hibernians who walk up to the gate unannounced are generally met at it.\n\nThe Ereas are the oldest family of Altan Garran, and the town's tree-keepers. When the first outlanders came down from Domnann they brought no seed-house and no springs, and it was an Erea, the songs say, who walked up to an old treant on the gorge ledge and asked it if they might build around it. It said yes. That is Treal, and the Ereas have kept him ever since: Alastair Erea makes dyes from his fallen bark, Luiseach Erea makes instruments from his windfalls, and Elnara Erea keeps the treants.\n\nShe keeps one above all. The great treant that stands at her side on the western edge of the town was a sapling of Treal's, the outlanders say, that Elnara raised from a cutting in the first bad year of the worts, when the town thought it would need something larger than garda on the walls. It grew larger than anyone expected. It is half again the height of any treant in the gorge now, and follows her as a hound follows its keeper, and the town calls it nothing but Elnara's, because she has never given it a name. She says a tree that size does not need one.\n\nElnara has the family's coldness toward strangers and none of Fedail's practicality. She does not want Hibernians in the town at all. The garda say she has argued in the square that the realm's swords bring the worts closer, not further, by cutting runners that grow back angrier, and the town listens to an Erea. A Hibernian who comes to the western edge comes to her treant first.",
+  "legend": "Elnara Erea (55) stands on the western edge of Altan Garran with Elnara's Pet, a level 51 treant that is huge (size 155), right beside her: expect both at once. Both plain, no scripts; the town is set aggressive (Outland Residents), so garda nearby can join. Two tanks: one on the treant, one on Elnara, and burn Elnara first or the treant first depending on your healers; the treant has less level but a lot of body. A full 50s group. Luiseach Erea, the instrument merchant, is 65 and of the same family, but a merchant. Alastair Erea sells dyes.",
+  "yells": {
+    "aggro": [
+      "No more strangers in the garran.",
+      "Up, my tall one.",
+      "You bring the worts closer, every one of you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Treal will not thank you for this."
+      }
+    ],
+    "death": [
+      "Keep... the tall one...",
+      "The garran... was ours..."
+    ],
+    "slay": [
+      "One fewer cutter of runners.",
+      "The garran keeps its own.",
+      "Tall one, the next."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A treant half again the height of any in the gorge.",
+      "The western edge of the garran. An Erea keeps it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Elnara's great treant shakes the ledge!"
+      }
+    ],
+    "realmFirstKill": "Elnara Erea, keeper of the garran's trees, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "elnara erea comes with her huge treant pet. [two at once|two tanks]",
+      "55 and 51, plain melee. [no scripts|tank and spank]",
+      "town is aggro, garda can join. [pull from the west edge|careful]",
+      "full 50s group"
+    ],
+    "aftermathWin": [
+      "elnara and the big treant down. [nice|clean]",
+      "two tanks worked. [good call|grats]",
+      "the ereas will hate us now. [they already did|lol]",
+      "luiseach erea is a merchant, leave her"
+    ],
+    "aftermathLoss": [
+      "didnt expect the treant. [it was right there|huge]",
+      "one tank, two big mobs. [no|wipe]",
+      "garda joined from the square. [aggro town|ugh]",
+      "burned the wrong one first. [treant ate the healer|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] elnara erea raised her treant from a cutting of treal",
+      "the erea family are altan garran's tree keepers. [dyes, instruments, treants|old family]",
+      "[word is|heard] elnara argues that hibernians make the worts grow back angrier",
+      "elnara never gave her treant a name. [it doesnt need one she says|huge thing]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Elnara",
+    "text": "Elnara Erea, tree-keeper of Altan Garran in [Cothrom Gorge], of the town's oldest family. Her great treant, raised from a cutting of Treal, follows her like a hound. She wants no strangers in the town."
+  },
+  "bookPage": "Noirin the enchanter of Altan Garran: the Ereas asked Treal if we might build around him, and he said yes, and they have kept him ever since. Alastair dyes with his fallen bark and Luiseach makes harps of his windfalls. Elnara keeps the treants, and one above all: a cutting of Treal's she raised in the first bad year of the worts, which is half again the height of any treant in the gorge and follows her like a hound. She never named it. She argues in the square that the Hibernians make the worts grow back angrier. The town listens to an Erea.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Elnara Erea in Altan Garran in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Elnara Erea turned back {realm}'s band under {raidLeader} in Altan Garran in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "outland-residents"
+  ],
+  "related": [
+    {
+      "id": "elnaras-pet",
+      "relation": "the great treant she keeps"
+    },
+    {
+      "id": "treal",
+      "relation": "the town's old tree, her family's charge"
+    }
+  ]
+}

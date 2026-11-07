@@ -546251,8 +546251,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "aidon the archwizard waits in the summoner's hall like he owns it, and nobody can say whose side he is on",
-   "id": "96fc06b22632"
+   "text": "aidon the archwizard sits in the hall of the corrupt on the way down to the summoners, and nobody can say whose side he is on",
+   "id": "8cf97c872a50"
   },
   {
    "kind": "ambient",
@@ -546272,8 +546272,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "three summoners, an archwizard and sidhe guards, all in one hall. someone planned that",
-   "id": "f43543f0b905"
+   "text": "three summoners and their sidhe guards, all in one hall. someone planned that",
+   "id": "0268f7ad7738"
   },
   {
    "kind": "ambient",
@@ -732331,10 +732331,10 @@
     },
     {
      "role": "B",
-     "text": "the hall is the only place where all three realms meet. sidhe guards, the summoners, aidon the archwizard, and govannon at the end",
+     "text": "the hall is the only place where all three realms meet. sidhe guards, the summoners, and govannon at the end",
      "variants": [
-      "the hall is the only place where all three realms meet. sidhe guards, the summoners, aidon the archwizard, and govannon at the end",
-      "its where the three realms come together. sidhe guards on the doors, summoners in the rooms, an archwizard, then him"
+      "the hall is the only place where all three realms meet. sidhe guards, the summoners, and govannon at the end",
+      "its where the three realms come together. sidhe guards on the doors, summoners in the rooms, then him"
      ],
      "optional": false
     },

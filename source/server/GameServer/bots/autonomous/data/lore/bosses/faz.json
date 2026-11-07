@@ -1,0 +1,66 @@
+{
+  "id": "faz",
+  "name": "Faz",
+  "npcNames": [
+    "Faz"
+  ],
+  "locationId": "varulvhamn",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "werewolves"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Faz is a level-35 werewolf (faction Varulv) in Varulvhamn's upper tunnels (32,912/29,533) among werewolf elite guards (41-44), churls, advisors and crazed lycantics; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Faz as the gate-ward of the upper tunnels is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Faz keeps the door between the young and the old. The court keeps its young wolves in the upper tunnels, the churls and scruffs and the crazed lycantics who have not mastered their own shapes, between itself and the world, and where the upper tunnels meet the court's halls the elite guard stand with a werewolf named Faz, who is younger than any of them and outranks them all. The court says he was a churl himself until a winter ago, and the king chose him for the door because he still remembers being on the wrong side of it.\n\nFaz lets the young through when they are ready and sends them back when they are not, and the lycantics, who are never ready, he sends back every time. He fights strangers with the elite guard at his shoulder. The young wolves of the tunnels, Ungar of the table says, think Faz is the greatest werewolf in the haven. Faz thinks so too.",
+  "legend": "Faz is a level 35 Varulv werewolf at the meeting of Varulvhamn's upper tunnels and the court halls, with werewolf elite guards (41-44) right beside him, plus churls and crazed lycantics. The elite guard are much tougher than Faz himself. The crazed lycantics wander in from the tunnels, so keep an eye behind you. He's the lowest of the court's named, so he's where groups start.",
+  "yells": {
+    "aggro": [
+      "Back to the tunnels!",
+      "You are not ready. Nobody is."
+    ],
+    "death": [
+      "The door... is open..."
+    ],
+    "slay": [
+      "Back where you belong."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The tunnels meet the court. A young wolf guards it."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "faz is the 35 werewolf at the upper tunnels door with the elite guard",
+      "the elite guards are the hard part, 41 to 44"
+    ],
+    "aftermathWin": [
+      "faz down",
+      "the elite guard hit way harder than he did"
+    ],
+    "rumour": [
+      "faz was a churl a winter ago, the king chose him for the door",
+      "the young wolves think faz is the greatest werewolf in the haven, so does faz"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Faz",
+    "text": "The young werewolf who keeps the door between Varulvhamn's upper tunnels and the court, chosen because he remembers the wrong side of it. See [upper tunnels]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} got past Faz's door in Varulvhamn in {minutes} minutes."
+  }
+}

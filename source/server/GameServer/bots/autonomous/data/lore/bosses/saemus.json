@@ -1,0 +1,113 @@
+{
+  "id": "saemus",
+  "name": "Saemus",
+  "npcNames": [
+    "Saemus"
+  ],
+  "locationId": "bog-of-cullen",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Saemus: level 52, model 306, at about 373,600/735,100 in the Bog of Cullen, alone, west of the outlaws' island; respawn 80 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Unnatural Powers, two forms in the world data: (Torrance) 'Ask the locals of Alainn Binn about Ysberin', 'Slay the siabra magi Madawg who killed Ysberin', bring the staff to Lovernios; (Mavelle) talk to Lovernios the Druid Prince, 'Ask Ide about the dark magic that corrupted her friend', 'Find Saemus and retrieve the crystal', bring the crystal to Lovernios so the Druid Court may study it.",
+      "provenance": "game",
+      "source": "DataQuest 'Unnatural Powers' (world data)"
+    },
+    {
+      "text": "Living Server lore: Saemus as the outlaw who took a siabra crystal for power and was hollowed by it.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "On the eastern edge of the Bog of Cullen, where the marsh gives onto a low island of firm ground, there is a camp that the people of Alainn Binn call the Cullen outlaws. It has been there for a generation: mainland men and women who could not stay in Ardee or Howth or Connacht for one reason or another, and went into the bog where the realm does not follow, and kept going until they reached ground that would hold a fire. They do not rob the villages. They do not trade with them either. They fight anyone who comes onto their island, and the villages have learned to leave them alone.\n\nSaemus was one of them, once. He came into the bog with Ide from the same trouble in Lough Gur, and while she went to Ysberin the path-keeper to learn the marsh slowly, he went to the siabra to learn something quickly. The siabra are generous with the young and the angry. They gave him a crystal, black-green, cut from something under the bog, and told him that what he held in his hand would hold the bog in his.\n\nIt did, for a while. The outlaws remember a summer when nothing in the Cullen marsh came near their island, because Saemus stood at its western edge with the crystal raised and the mist turned round him. Then the summer ended and he did not come back to the fire. Ide found him at the western edge in the morning, still standing, still holding it, and he did not know her. The druids who have heard the story from Lovernios say the crystal was not a tool but a mouth, and that it has been eating Saemus slowly ever since, and that what stands west of the outlaws' island now is mostly crystal with a man's shape round it.\n\nHe lives alone, if it is living. The outlaws will not cross to his side of the marsh, and he does not cross to theirs. Lovernios wants the crystal for the Druid Court, to learn how the siabra cut it and from what. Ide wants it out of his hand. Nobody, the outlaws say, has asked Saemus what he wants, and he would not be able to answer.",
+  "legend": "Saemus is a level 52 standing alone west of the Cullen outlaws' island in the Bog of Cullen (about 374k/735k). Plain mob, no script, 80-second respawn; a 50 group handles him. He holds the crystal for the Mavelle version of Unnatural Powers: kill him and bring the crystal to Lovernios. Unlike Ide he is on his own, so he is an easy single pull; the siabra camps of the bog are nearby, so check your approach. The outlaws' island is east of him; do not run that way if the pull goes wrong, or you will have the outlaws too.",
+  "yells": {
+    "aggro": [
+      "(the crystal in his hand flares green)",
+      "The bog is in my hand. In my hand.",
+      "Ide? No. Not Ide."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "It is hungry. It is always hungry."
+      }
+    ],
+    "death": [
+      "Take it... out of my hand...",
+      "Ide... the fire..."
+    ],
+    "slay": [
+      "Held.",
+      "The mist turns.",
+      "In my hand."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A man stands alone in the western bog, very still.",
+      "The mist turns around something he holds."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Saemus's crystal flares, and the mist turns."
+      }
+    ],
+    "realmFirstKill": "Saemus is dead. The crystal is out of his hand."
+  },
+  "botLines": {
+    "briefing": [
+      "saemus is 52, alone, west of the cullen outlaws. [easy single|plain mob]",
+      "he has the crystal for unnatural powers (mavelle). [bring it to lovernios|kill him]",
+      "50 group fine",
+      "siabra camps nearby. [check approach|careful]"
+    ],
+    "aftermathWin": [
+      "saemus down, crystal taken. [to lovernios|done]",
+      "easy single pull",
+      "ide will be... something",
+      "poor guy"
+    ],
+    "aftermathLoss": [
+      "pulled a siabra camp on the way. [oops|faction]",
+      "group too small for 52",
+      "got lost in the bog. [again|lol]",
+      "he hit harder than expected"
+    ],
+    "rumour": [
+      "[heard|someone said] saemus took a siabra crystal to hold the bog and it ate him",
+      "the cullen outlaws wont cross to saemus's side of the marsh",
+      "[word is|heard] the druids think saemus's crystal is a mouth, not a tool",
+      "lovernios wants saemus's crystal for the druid court"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Saemus",
+    "text": "An outlaw of the Cullen bog who went to the siabra for power and got a black-green crystal that holds the bog, for a while. It has been eating him since. He stands alone west of the outlaws' island."
+  },
+  "bookPage": "From Derbáil of Ardee's list: the western Cullen bog, if a man stands alone very still and the mist turns round his hand. That is Saemus. He came into the bog with Ide and went to the siabra for something faster than her plants, and they gave him a crystal cut from under the bog. For one summer nothing came near the outlaws' island. Then he did not come back to the fire, and Ide found him standing at the edge, holding it, and he did not know her. The druids say it is a mouth. Lovernios wants it.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Saemus in the Bog of Cullen in {minutes} minutes.",
+    "loss": "Saemus turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "outlaws",
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "ide",
+      "relation": "the friend he left"
+    },
+    {
+      "id": "madawg",
+      "relation": "whose craft he took up"
+    }
+  ]
+}

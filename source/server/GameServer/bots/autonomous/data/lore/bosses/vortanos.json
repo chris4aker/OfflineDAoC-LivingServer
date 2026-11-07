@@ -1,0 +1,137 @@
+{
+  "id": "vortanos",
+  "name": "Vortanos",
+  "catalogKey": "albion-named-mobs-shrouded-isles/vortanos",
+  "locationId": "caldey",
+  "realm": "Albion",
+  "aliases": [
+    "the gaoler of caldey"
+  ],
+  "facts": [
+    {
+      "text": "Level 61, 30,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 20% of melee and 30% of everything else; aggro range 800.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Vortanos.cs"
+    },
+    {
+      "text": "At night (region night time) he is made untargetable, nameless and peaceful and his model is hidden; by day he returns.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Vortanos.cs"
+    },
+    {
+      "text": "When he first takes a target he raises ten servants at his spawn point (two fell geists level 50-56, four ancient zombies 54-61, four ghoul desecrators 49-53; 2,000 health each), who join him; they are removed when he dies or resets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Vortanos.cs"
+    },
+    {
+      "text": "He casts Fire Blast (450 heat, radius 350 around the target, 3.5 s, recast 10 s) and Disintegrating Force (89 matter every 2 s for 12 s, only on an unpoisoned target); half his melee hits try a strength/constitution debuff (65, 60 s) and half a dexterity/quickness debuff (65, radius 350, 60 s). His lines: 'Your flesh will be mine, one piece at a time!', 'The living can never conquer the eternal darkness of death incarnate!', 'Sleep my unwilling prisoners, you are no longer needed here'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Vortanos.cs"
+    },
+    {
+      "text": "He walks home at full health when nobody is left on his aggro list; respawn is the epic-encounter interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/serverproperty/ServerProperties.cs (set_epic_game_encounter_respawninterval, default 60)"
+    },
+    {
+      "text": "Vortanos as a gaoler who stole Arawn's prisoners from the strand, the prison in the ground, the hours he keeps and the clan's daylight custom are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Vortanos keeps a prison on Caldey, in the north-east of the isle, and nobody knows where he takes his prisoners from. The fishermen of Little Haven have a guess. They have watched the turning gaol of Caer Sidi from their doors for longer than anyone can count, and they say that in the first season of the war, when the dead of Caldey stood up, some of the dead who were walking the strand toward Arawn's door never reached it, and that Vortanos was standing on the strand that night. The Inconnu, who serve Arawn, will not speak of him, which the fishermen take as a yes.\n\nHis prisoners sleep in the ground round his post, unwilling and unmoving, the ancient dead and the ghouls and the fell geists, and when strangers come he wakes them, a whole gaol's worth at once, to stand with him. When the strangers are gone or dead he tells them to sleep again, that they are no longer needed, and they go back into the ground. He tells the living that they can never conquer the darkness of death, and that he will have their flesh one piece at a time, and he means it as a gaoler means it: he takes the strength out of a man a little and then a little more, the strength of his arm and the stoutness of his body, the quickness of his hands and his feet, until the man can be led. His fire falls on a little knot of people at once. His acid is quick and does not linger.\n\nAt night he is not there. The garrison on the Isle of Glass says darkness is his own and that when the sun goes down he goes into it; the clan at Little Haven, who have looked, say that at night there is nothing at his post to see or to strike, not even a shadow, and that his prisoners sleep unwatched. The clan goes to the prison by day, and only by day, and comes home before the light goes whether the work is done or not.\n\nArawn's own gaol stands on the water a morning's walk to the west. The fishermen say the gaoler of Caldey keeps his prison in sight of it on purpose, so that the lord of the dead can see what was taken from him, and cannot come out to take it back.",
+  "legend": "Vortanos, level 61, 30k health, in the north-east of Caldey. Go by day: at night he is untargetable and invisible. When he first takes a target, ten servants stand up at his spawn, two fell geists (50-56), four ancient zombies (54-61) and four ghoul desecrators (49-53), 2k health each, and they all join. They are not hard individually, so area damage on them early, or hold them while the main group kills him; they vanish when he dies. His melee hits debuff strength/constitution and dexterity/quickness by 65 for a minute (the D/Q one splashes 350 around), so keep the tank buffed and cure or rebuff. Fire Blast is 450 heat in 350 around his target every 10 seconds or so; spread a little. His acid DoT is short. He cannot be mezzed or stunned. Wipe and he resets; respawn about an hour.",
+  "yells": {
+    "aggro": [
+      "Your flesh will be mine, one piece at a time!",
+      "Wake, my unwilling prisoners. Stand.",
+      "The living can never conquer the eternal darkness of death incarnate!"
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Wake, prisoners. You are needed."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "One piece at a time. One piece at a time."
+      }
+    ],
+    "death": [
+      "The prison... is open...",
+      "Sleep... all of you... sleep..."
+    ],
+    "slay": [
+      "Another for the gaol.",
+      "Lie down. You are mine to keep.",
+      "Sleep, my new prisoner."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Prisoners sleep in the ground. Their keeper wakes by day.",
+      "Arawn's gaol is in sight from here."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "The ground opens. Vortanos wakes his prisoners!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Vortanos takes his strength from you, piece by piece."
+      }
+    ],
+    "realmFirstKill": "Vortanos is dead. His prisoners sleep in peace."
+  },
+  "botLines": {
+    "briefing": [
+      "vortanos, 61, 30k. daytime only, at night you cant even see him",
+      "ten adds pop at his spawn when he aggros, 2k each. aoe them or hold them, they die with him",
+      "his hits debuff str/con and dex/qui by 65. keep the tank buffed",
+      "fire blast is 450 heat in 350 around his target. dont clump"
+    ],
+    "aftermathWin": [
+      "vortanos down before dark. nice",
+      "the prisoners went back to sleep for good",
+      "aoe on the adds worked like a charm",
+      "clan says thanks, apparently"
+    ],
+    "aftermathLoss": [
+      "got dark mid pull and he just vanished",
+      "the tank got debuffed to nothing and folded",
+      "we clumped and the fire blast hit six of us",
+      "ten adds on the healers, never recovered"
+    ],
+    "rumour": [
+      "[heard|someone said] vortanos stole prisoners off the strand on their way to caer sidi",
+      "heard the clan at little haven only goes to his prison by day",
+      "[heard|someone said] at night theres nothing at his post, not even a shadow",
+      "heard the inconnu wont talk about vortanos"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "vortanos",
+    "text": "The gaoler of [caldey], who keeps a prison of the dead in the north-east of the isle within sight of Caer Sidi. The fishermen say his prisoners were Arawn's, taken off the strand on the night the isle stood up. He wakes them when strangers come and takes a man's strength a piece at a time. At night he is not there at all."
+  },
+  "bookPage": "From the Ledger of Little Haven, kept by Mordwywr. Hedd the ferryman came in and drank, which he does not do, and told me what he saw on the strand the night the isle stood up. The dead were walking west to the water, as the dead of Caldey always have, toward the fortress, and a tall man stood on the strand among them and spoke, and some of them turned round. He says they turned round as a man turns when someone calls his name in a crowd. The next morning there was a prison in the north-east. Hedd notched his stick twice for that night, which he has done for no other. I have entered his ale as paid.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} broke Vortanos's gaol on Caldey in {minutes} minutes, before dark.",
+    "loss": "Vortanos kept his prisoners, and some of {raidLeader}'s company of {realm} with them."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "durval",
+      "relation": "the priest who buries; Vortanos is the gaoler who keeps"
+    },
+    {
+      "id": "soul-reckoner",
+      "relation": "Arawn's counter of the dead in Caer Sidi, whose prisoners Vortanos is said to have stolen"
+    }
+  ]
+}

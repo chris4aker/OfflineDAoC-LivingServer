@@ -1,0 +1,172 @@
+{
+  "id": "icelord-agmundr",
+  "name": "Icelord Agmundr",
+  "catalogKey": "tuscaran-glacier/agmundr",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "icelord-kvasir",
+      "relation": "brother icelord of the western tunnels"
+    },
+    {
+      "id": "queen-kula",
+      "relation": "the queen whose road he watches"
+    },
+    {
+      "id": "fornfrusenen",
+      "relation": "the frozen one strangers pass before reaching him"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Agmundr is a level-81 icelord with 100,000 health who fights with a pack of six hrimthursa (a depredator, two icespines, two icetouch and a seer).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He tells his target that his seers foretold their coming, and that he sent for no reinforcements because they posed no threat.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs"
+    },
+    {
+      "text": "He casts a 650-damage blast in a 500 radius.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Raid records of 2026-11-04 show the Midgard epic raid wiped twice at Agmundr after Fornfrusenen.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "When Agmundr is engaged, every living AgmundrBaf NPC in the region (six in the world database: a depredator, two icespines, two icetouch and one more) joins; those after his target lose their tether and run at speed 300 until they reach it. On 15% of his attacks he casts a 650 cold blast in a 500 radius round his target (3 s, uninterruptible, recast 10-15 s). 100,000 health, CC-immune. His boast that he asked for no reinforcements is his pull line.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs"
+    },
+    {
+      "text": "The seer Vaka, her two castings and Bergljot's company at the western watch are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs"
+    }
+  ],
+  "story": "Agmundr believes in seers. Most icelords keep a seer for the look of it and listen to her when the news is good; Agmundr has listened to his always. Her name is Vaka, and for fifty years she has read the runes on the ice of the western watch and told him who would come up the western road. She told him when the drakulv would come and when the Faraheim spy would come, and both came, and Agmundr was waiting.\n\nHe keeps a household rather than a guard: a depredator, two icespines, two of the icetouch and Vaka herself, giants who have served the western watch with him so long that they do not need calling. They are spread through the halls of the watch about their own work, and at his first roar they leave it and come at a run, from wherever they are, faster than giants have any right to run. The Valkyn scout watched them do it once and wrote that Agmundr's household was the only thing in Tuscaran that moved like a wolf pack.\n\nThe season Bergljot Steinsdottir's hundred came up the crater road, Vaka cast the runes and read them: strangers on the western road; few; tired; no threat. Agmundr believed her and sent for no one. When the strangers came he told them so, without embarrassment, and then his household came at a run. Bergljot's company got past him. Vaka cut a second line under the first afterwards, deeper: the runes do not lie, but they do not say when.\n\nHe fights the way a watch-captain fights, steadily, at the one in front of him, and now and then the cold of the watch comes down in a wide ring round the one he strikes. He still believes his seer. He still tells strangers he asked for no help. His household still comes anyway.",
+  "chapters": [
+    {
+      "title": "Vaka's Runes",
+      "text": "The hrimthursa seers read the ice. A seer of the giants does not cut runes, as a runemaster of Jordheim does; she casts them, scattering marked shards of the clearest glacier ice across a floor of older ice and reading how they lie, and the giants say a good seer can read the island in them for a season ahead.\n\nVaka was the seer of the western watch, the tunnels that guard the road from the western crater to the thrones, and she was a good one. Most icelords kept a seer the way a jarl keeps a skald, for the look of it, and listened when the news was good. Agmundr, the icelord of the western watch, listened to Vaka always. The cast-out sculptors say he did it because she was right, and that he went on doing it because he had built his whole command on her being right, and could not stop without bringing it down.\n\nShe told him, in the forty-first winter of the Council, that drakulv would come over the western rim for the ice-fish of the meltwater pools, and when, and they came, and Agmundr was waiting with his household on the ice. She told him in the sixtieth that a spy would come from the dwarves of Faraheim, and the spy came, and Agmundr sent him home with his beard frozen to his chest and a message for the slate-keepers. She told him the morvalt would come over the rim, a season before they came, and he went to the ribs and told the Council, and the Council voted for peace that year as it always did.\n\nFifty years of it, the sculptors say. The giants of the western watch stopped asking the seer whether she would be right. They only asked her what she saw."
+    },
+    {
+      "title": "The Household That Runs",
+      "text": "Agmundr kept no guard. He kept a household: a depredator, a hunter of the outer ice who had killed varulv with his hands; two icespines, the spiked giants of the oldest walls; two of the icetouch, cold-handed giants of the old families; and Vaka. They had served the western watch with him for most of the century, and they had a custom that every giant of the glacier knew about.\n\nThey did not stand beside him. The household lived through the halls of the watch, each at his own work, the depredator on the outer ice, the icespines in the deep walls, the icetouch at the doors, the seer at her runes, and when anything laid a hand on Agmundr he roared once, and they dropped what they were doing and came. Not walking, as giants walk. Running, the sculptors say, as a wolf pack runs when the lead wolf calls, the whole length of the watch, faster than anyone believed a giant could move, and nothing they passed on the way could slow them, because they did not stop for it.\n\nThe Valkyn scout who watched the glacier from Delling's rim saw them do it on the outer ice, against the drakulv. He wrote that the drakulv had their icelord alone at the rim, and were pleased about it, for the time it takes to draw a breath. Then the household came over the ice from every direction at once, and the scout wrote that Agmundr's household was the only thing in Tuscaran that moved like a pack of wolves.\n\nAgmundr himself fought steadily, at the one in front of him, as a watch-captain fights, and now and then the cold of the outer watch came down in a wide ring round the one he struck, and anything standing close to his enemy froze with him."
+    },
+    {
+      "title": "No Threat",
+      "text": "In the season after the Council's second crossed vote, when Midgard had already climbed the crater road and was in the tunnels, Vaka cast the runes for the western road and read them to Agmundr, and they said: strangers on the western road; few; tired; no threat.\n\nAgmundr believed her. He did not send to the thrones for help. He did not warn the Council, which had just voted and lost and was in no state to listen. He kept his household at their work through the halls of the watch, and he waited at the head of the western road for a few tired strangers who posed no threat.\n\nThe strangers were Bergljot Steinsdottir's hundred of Bjarken, on their way to Kula's thrones, and they were tired, because they had come past the frozen one in the lower halls to get there. When they reached the head of the road, Agmundr told them what he tells every stranger since: that his seer had told him they were coming, and that since they posed no threat he had not troubled to ask for reinforcements. Bergljot's skald, who lived to make the song, said the icelord said it politely, as a host apologizes for a small table. Then he roared, and his household came running from every hall of the watch at once.\n\nBergljot's company got past him. It cost them a great deal, and the song is careful about how much, but they got past him and on to the thrones and to the crown that hangs unmelted in Bjarken now. The skalds say that if Agmundr had sent for help that day, Bergljot would never have reached the queen."
+    },
+    {
+      "title": "Cut Deeper",
+      "text": "Vaka's casting is still on the ice of the western watch. The runemasters of Jordheim who have read it say it is an ordinary seer's casting in the giants' own marks: strangers on the western road; few; tired; no threat. Below it, cut deeper and in a different hand, the same seer has added a line after the fact. The runes do not lie, it says, but they do not say when.\n\nThe runemasters argue about what she meant. One account is that she meant the threat had not come yet: that Bergljot's hundred were indeed no threat to the western watch, and that the threat was something else, still coming. The cast-out sculptors prefer a simpler reading. They say Vaka meant that strangers are few and tired when they arrive and many and rested when they leave, because they come back, and back, and the runes cannot see that far.\n\nAgmundr has never read the second line, the sculptors say. He still believes his seer. He still greets every stranger at the head of the western road with the same courtesy, and tells them that he has asked for no help because they are no threat. His household still comes running anyway. The Valkyn guides say that is the whole of Agmundr: an honest giant who has never once been told the truth by the one he trusts.\n\nHe dies saying the strangers came a long way only to meet a terrible death. The companies who have heard it say he sounds puzzled, as if he were reading it off the ice."
+    }
+  ],
+  "legend": "Agmundr is a pack pull, and it's worse than it looks: the moment he's engaged, his six hrimthursa (a depredator, two icespines, two icetouch and one more) come from wherever they are in the area and run at your raid at speed 300 with no tether, so they arrive fast and won't reset if you back off. Clear the halls of the western watch first if you can, or plan the pack before you touch him: crowd control isn't wasted on the household, and keep the icetouch off the healers. Agmundr himself has 100,000 health and is CC-immune, and on some of his attacks he drops a 650 cold blast in a 500 radius round his target, so nobody but the tank stands near the tank. His boast that he asked for no reinforcements is a lie: they always come. Rest and rebuff before the pull; raids arrive tired from Fornfrusenen, and more of them die here than at the throne.",
+  "yells": {
+    "aggro": [
+      "My seer told me you would come. She said you were no threat.",
+      "To come this far... only to face a terrible death!",
+      "No reinforcements. You are not worth them.",
+      "My seer told me you were coming. You are no threat."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Seer! You said nothing of this!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "She was never wrong before. Never!"
+      }
+    ],
+    "death": [
+      "She... did not foresee... this...",
+      "The runes... lied...",
+      "To come this far... only to face a terrible death..."
+    ],
+    "slay": [
+      "Just as she foretold.",
+      "Harmless. Exactly as she said.",
+      "The seer sees you lying there.",
+      "Few. Tired. As she said."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A seer's bones and runes are laid out on the ice.",
+      "Six giants wait here with their icelord.",
+      "Marked shards of ice lie scattered on the floor."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Agmundr roars for the seer who failed him!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Agmundr's seer falls silent. Her runes were wrong!"
+      }
+    ],
+    "realmFirstKill": "Agmundr falls. Vaka's runes were wrong at last."
+  },
+  "botLines": {
+    "briefing": [
+      "agmundr comes with six giants. [cc|mez] the seer, kill the icetouch first",
+      "spread for agmundr's blast, its a big circle",
+      "rest up before agmundr, we come off fornfrusenen tired",
+      "tank the depredator and icespines away from the healers",
+      "agmundrs whole household runs in from the area the second you touch him, fast and no tether",
+      "clear the western watch before agmundr if you can",
+      "his cold blast is 500 round the tank, everyone else off the tank",
+      "he says he asked for no reinforcements. he lies, they always come"
+    ],
+    "aftermathWin": [
+      "agmundr down, and the seer with him",
+      "agmundr's band all down. that seer was wrong for once",
+      "past agmundr! [the throne is next|almost there]",
+      "agmundr's foe hammer dropped",
+      "no threat lol",
+      "household down, then him. clean",
+      "past agmundr, kula next"
+    ],
+    "aftermathLoss": [
+      "wiped at agmundr again. the adds were too much",
+      "agmundr again. [every time|this guy]",
+      "the icetouch got to the healers",
+      "the blast hit everyone because we stacked",
+      "the household ran in faster than we could cc",
+      "backed off to reset and the adds just followed us"
+    ],
+    "rumour": [
+      "heard agmundr didnt even call for backup because his seer said we're harmless. [rude|fair enough]",
+      "agmundr's seer has been right for fifty years. [except about us|we'll see]",
+      "more raids die at agmundr than at kula, the old raid leaders say",
+      "agmundr didnt call for backup because his seer said we were harmless. [rude|fair]",
+      "agmundrs seer was right for fifty years. then she wasnt",
+      "the runes do not lie but they do not say when",
+      "a valkyn said agmundrs giants run like a wolf pack"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Agmundr",
+    "text": "The icelord of the western watch, who has trusted his seer Vaka for fifty years. She read 'few, tired, no threat' the season Bergljot's hundred came, and he asked for no help; his household came running from every hall anyway, as it always does. Under her runes she cut: the runes do not lie, but they do not say when. His brother icelord is [Kvasir]."
+  },
+  "bookPage": "Runes found on the ice at the western watch, read by a runemaster of Jordheim who asked not to be named. They are a seer's casting, in the giants' own marks, and they say: strangers on the western road; few; tired; no threat. Below them, cut deeper and in a different hand, the same seer has added a line after the fact: the runes do not lie, but they do not say when. The runemaster said that is the most honest thing he has ever read from a seer. He said he would not want to have been the one who had to tell Agmundr.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} proved Agmundr's seer wrong in {minutes} minutes.",
+    "loss": "Agmundr's seer was right about {realm} today: {raidLeader}'s raid fell after {minutes} minutes."
+  }
+}

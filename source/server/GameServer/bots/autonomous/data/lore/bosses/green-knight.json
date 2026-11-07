@@ -1,0 +1,136 @@
+{
+  "id": "green-knight",
+  "name": "Green Knight",
+  "catalogKey": "open-world/ofgreenknight",
+  "locationId": "forest-sauvage",
+  "realm": "Albion",
+  "aliases": [
+    "gk"
+  ],
+  "facts": [
+    {
+      "text": "Level 79, 100,000 health, crowd-control immune, reach 350, armour factor 350 with 20% absorb; resists 40% of melee and 70% of everything else. He stands peaceful until a player whispers 'defend it' (the link in his greeting) or 'defend'; then he attacks that player.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs"
+    },
+    {
+      "text": "Every 25-35 s one rotting downy felwood (level 47-49, 800 health) rises at the feet of every player within 4,000. 30% of his hits set off Might of the Forest, 250 heat in a 500 radius. Every 40-60 s he picks a random real player of a healing class within 2,500 and turns on them.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs"
+    },
+    {
+      "text": "At 90, 80, 70, 60, 50, 40, 30, 20 and 10% health he stops attacking and walks (he does not teleport) to one of four places near his road, never the one he last used, and casts a 400-point self-heal there.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs"
+    },
+    {
+      "text": "After 60 s out of combat he is peaceful again at full health, walks home, and every felwood is removed. Respawn is the Shrouded Isles epic-encounter interval (default 60 minutes).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs; source/server/GameServer/serverproperty/ServerProperties.cs (set_si_epic_encounter_respawninterval)"
+    },
+    {
+      "text": "The weekly frontier quests of Albion, Midgard and Hibernia all list him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/AtlasQuests/DailyQuests/{Albion,Midgard,Hibernia}/Frontier/Weekly/EpicRvRMobsWeeklyQuest*.cs"
+    },
+    {
+      "text": "Middle English romance, not game canon: the Green Knight's beheading game with Gawain.",
+      "provenance": "myth",
+      "source": "Sir Gawain and the Green Knight (14th century)"
+    }
+  ],
+  "story": "The woodsmen of Castle Sauvage say the Green Knight was there before the castle, and the bards say he was there before Arthur, and the knight himself, asked, says only that he is ever watchful of his home. He stands at the northern edge of the forest where the road climbs towards the Pennines, green from helm to heel, a great sword at his back, and the knotted fellwoods stand round him like old men round a fire.\n\nHe is the forest's courtesy. Every traveller who stops is greeted, and warned: the forest is a delicate beast that turns on those who mistreat it, and if it is woken he must rise. Then he waits. He has never once drawn on a man who did not ask him to. The woodsmen have a saying for it, that a beast is woken by being asked, and Old Hopcyn, who cut wood in Sauvage for forty years, saw three men ask in all that time.\n\nWhen he is asked, the forest answers with him. The rotting deadwood tears itself up out of the ground, a tree at every man's feet, so that a company of forty fights forty trees as well as the knight; the woodsmen say every man who comes into his wood brings his own tree with him. His sword sets the air alight round whoever it strikes, and those at that man's shoulder burn with him. The wizards of the companies that have gone against him say their craft runs off him like rain off holly. The axes bite.\n\nHe knows what keeps a company standing. Every so often he goes past the knights in front of him as if they were not there, to cut at whoever kneels over the wounded. And he will not stay where he is hurt. As the cuts go into him he breaks off, again and again, and walks away through the trees, not fast and not fighting, to another of his clearings, never the one he has just left, and there takes a breath and the green comes back into him, a little. Only a little; the companies that followed him close found he had gained almost nothing. The companies that let him go, and rested, found the forest had given him back everything: left alone a while, he is whole, and bows to the empty road, and the deadwood lies down.\n\nThe bards of Camelot know a Green Knight from the old romance, who came into Arthur's hall at the turn of the year and offered a game, one blow for one blow, a year apart, and was struck, and picked up his head, and rode away. They say this is the same knight, still waiting for the return blow he is owed. Midgard's skalds and Hibernia's bards have other names for him, and their war-bands come through the passes for him as Albion's go out for their great beasts. He greets them as courteously as anyone.",
+  "legend": "The Green Knight, level 79, 100k, north edge of Forest Sauvage by the road. He is peaceful until someone whispers 'defend it' to him, so pick who does it. Bring a raid. He resists 40% of melee and 70% of magic, so melee does the work and casters buff and heal. About every 30 seconds a rotting felwood (47-49, 800 hp) pops at the feet of each real player within 4,000 (bots too, if the 1.2 targeting change covers it): area damage cleans them up. 30% of his hits do 250 heat to everyone within 500 of his target, so do not cluster on the tank. Every 40 to 60 seconds he drops the tank and goes for a healer (a real player's today): guard them. At every 10% he stops swinging and walks to one of four spots nearby; follow him and keep hitting, his heal there is only 400. If you leave him for a minute he resets to full and goes peaceful. Respawn about an hour; other realms hunt him for their weekly.",
+  "yells": {
+    "aggro": [
+      "You were warned. The forest wakes, and so do I.",
+      "You asked. The beast answers.",
+      "Tread lightly, I said. Now tread as you can."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "Not here. Follow, if you can."
+      },
+      {
+        "trigger": "addSpawn",
+        "text": "Rise, wood of Sauvage! Defend your home!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Tread lightly, I said. You did not listen."
+      }
+    ],
+    "death": [
+      "The forest... will remember you...",
+      "The blow is struck. Mine is owed."
+    ],
+    "slay": [
+      "The forest takes you back.",
+      "Lie down with the deadwood.",
+      "One blow for one blow."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A knight in green waits among the trees.",
+      "Knotted fellwood stands round him like old men."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "The Green Knight breaks off and walks into the trees!"
+      },
+      {
+        "trigger": "addSpawn",
+        "text": "Rotting felwood tears itself out of the ground!"
+      }
+    ],
+    "realmFirstKill": "The Green Knight has fallen. Sauvage is unguarded."
+  },
+  "botLines": {
+    "briefing": [
+      "green knight, 79, 100k. hes peaceful till someone whispers defend it. only the puller does that",
+      "40% melee resist, 70% magic. melee kills him, casters heal and buff",
+      "felwood pops at each players feet every 30 sec, aoe it. dont cluster on the tank, 250 heat procs",
+      "every 10% he walks to one of 4 spots, follow and keep hitting. he goes for a healer every minute, guard them"
+    ],
+    "aftermathWin": [
+      "the green knight is down. nobody tell the woodsmen",
+      "ten walks later. gg",
+      "healers lived, that was the whole trick",
+      "one blow for one blow. ours was bigger"
+    ],
+    "aftermathLoss": [
+      "he kept going for the clerics and we let him",
+      "we stopped to rest and he was full again",
+      "everyone clustered and the heat procs ate us",
+      "the trees piled up, nobody aoed them"
+    ],
+    "rumour": [
+      "heard the green knight's blade never drops. i've never met anyone with one",
+      "[heard|someone said] the green knight warns you first. listen to him",
+      "heard he only fights if you whisper to him. so dont",
+      "[heard|someone said] the green knight is the one from the gawain story, still waiting for his blow"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "green knight",
+    "text": "He stands by the road at the northern edge of [forest sauvage] and warns those who stop. He fights only those who ask him to defend his wood. Then the deadwood stands up at every man's feet, his sword sets the air alight round the struck man, he breaks off to walk between his clearings as he is wounded, and he goes past the front rank for whoever kneels over the hurt."
+  },
+  "bookPage": "And he said the green man would not stay where he was hurt. When the company had cut him a while he broke off and walked away from them, not fast, not fighting, through the trees to another clearing, and stood there and took a breath, and the green came back into him a little. Only a little. The company followed him every time and he never went to the same clearing twice running. There were four clearings, the knight thought, all within a long bowshot of the knotted trees. He drew me a map of them on the back of his muster roll. I burned it, and I told him why: a man who knows where the green man is going will follow him, and I have cut wood in Sauvage forty years by not following him.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} answered the Green Knight's warning and felled him in Forest Sauvage in {minutes} minutes.",
+    "loss": "The Green Knight kept his wood; {raidLeader}'s company of {realm} lies down with the deadwood."
+  },
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "rob-ria",
+      "relation": "the Mist Hunters hunt only what his wood allows"
+    }
+  ]
+}

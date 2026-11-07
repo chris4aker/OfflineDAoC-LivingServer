@@ -1,0 +1,112 @@
+{
+  "id": "adar-llwch-gwin",
+  "name": "Adar Llwch Gwin",
+  "npcNames": [
+    "Adar Llwch Gwin"
+  ],
+  "locationId": "allta-fearann",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Adar Llwch Gwin: level 53, model 924 (the waterstrider bird body: waterstrider hatchlings, fledgelings, hens and banties, 40-54), at about 395,700/184,000 in Allta Fearann; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "In Welsh legend the Adar Llwch Gwin are giant birds given to the hero Drudwas ap Tryffin by his fairy wife; told to kill the first man onto the field, they killed Drudwas himself when he arrived first.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Adar_Llwch_Gwin"
+    },
+    {
+      "text": "Living Server lore: the bird the Necht Sylvan say came over the mist with a mainland name, and the Necht custom of arriving second.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Allta Fearann, the wild land, is the high country north of Vigilant Rock where the forest gives out into scrub and stone and the wind never stops. The mantids hold the ground, and the sky belongs to the things that nest on the crags: skimmers and mantas that ride the updraughts, the fearann wyverns of the northern cliffs, the long-legged waterstrider birds of the high pools. The Sylvan of Necht keep a custom for travellers going north: name the four great ones of the wild land before you go, so that they know you know them. Windskimmer, Goldenleaf, Razorbeak, and the bird the Sylvan call by a name they say came over the sea with the mist.\n\nThe fourth great one has a name that is not Sylvan. The Necht singers say it came over the mist with the mainland sailors, Albion's or Hibernia's, nobody remembers which, who saw the great waterstrider of the high pools and called it by the name of a pair of birds in one of their own songs: Adar Llwch Gwin, the birds a fairy wife gave her husband, which were told to kill the first man onto the field, and killed their master because he came first. The Sylvan liked the story so much they kept the name.\n\nThe bird itself is the eldest of the waterstriders, the long-legged wading birds that nest around the high pools of the wild land, with the hens and banties and fledgelings of its flock around it. It is taller than a horse at the shoulder. It walks the shallows of the largest pool on legs like spear-shafts and spears fish with a beak as long as a man's arm, and when anything comes to the pool it lifts its head and watches to see who reached the water first.\n\nThat is the custom the Sylvan of Necht keep because of the name, half in earnest: never be the first to the great pool. A company going up to the high pools sends someone it does not much like ahead, the Necht traders joke, and the Domnann wardens have a saying for a man who rushes in, 'first to the field', that every Hibernian who has heard the mainland song understands at once. The mantids, who have no songs, say the bird simply goes for whoever is nearest, and that the Sylvan make everything into a story. Both may be right. The bird has never been asked.",
+  "legend": "Adar Llwch Gwin is a level 53 giant waterstrider at the great high pool of Allta Fearann (about 396k/184k), among its flock of waterstrider hens, banties and fledgelings (40-54). Plain mob, no script, 80-second respawn. Clear the flock around the pool first: the banties go up to 54. A 50 group is fine. The Necht joke is never be first onto the field; in practice let the tank get there first, like always. The name is from a Welsh legend about birds that killed their own master. Pull it out of the water onto the bank so your melee are not fighting in the shallows.",
+  "yells": {
+    "aggro": [
+      "(the great bird lifts its head: who came first?)",
+      "(a beak as long as a man's arm turns)",
+      "(spear-shaft legs stride out of the shallows)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Adar Llwch Gwin screams, and the flock lifts)"
+      }
+    ],
+    "death": [
+      "(the great waterstrider folds into the shallows)",
+      "(the high pool goes still)"
+    ],
+    "slay": [
+      "(first to the field)",
+      "(the beak spears, and the bird wades on)",
+      "(the flock settles again)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A great pool. Long legs in the shallows.",
+      "Who reached the water first?"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The waterstrider flock lifts off the high pool!"
+      }
+    ],
+    "realmFirstKill": "Adar Llwch Gwin has fallen into the high pool."
+  },
+  "botLines": {
+    "briefing": [
+      "adar llwch gwin is a 53 waterstrider at the big high pool. [plain mob|no script]",
+      "clear the flock first. [banties up to 54|they join]",
+      "50 group fine",
+      "never be first to the field lol. [tank goes first|as usual]"
+    ],
+    "aftermathWin": [
+      "the great bird is down. [all four great ones?|check]",
+      "flock cleared first. [clean|nice]",
+      "tank was first to the field and lived",
+      "weird welsh name, easy kill"
+    ],
+    "aftermathLoss": [
+      "the healer got to the pool first. [first to the field|rip]",
+      "pulled the whole flock. [banties|oops]",
+      "54 banties hurt. [didnt expect that|ouch]",
+      "group too spread out at the pool"
+    ],
+    "rumour": [
+      "[heard|someone said] mainland sailors named adar llwch gwin after birds in a song",
+      "the necht sylvan say never be the first to the great pool",
+      "[word is|heard] 'first to the field' is a domnann warden's insult",
+      "the adar llwch gwin in the song killed their own master. [because he came first|grim]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Adar Llwch Gwin",
+    "text": "The giant waterstrider of the great high pool of [Allta Fearann], fourth of the four great ones, named by mainland sailors for birds in a song that killed whoever came first onto the field."
+  },
+  "bookPage": "From Coll of the Domnann guides: the fourth great one has a mainland name. Sailors who came over the mist saw the great waterstrider of the high pool and called it after birds in one of their songs, which were told to kill the first man onto the field and killed their own master because he came first. We liked the story and kept the name. It is taller than a horse and spears fish with a beak as long as your arm. Our custom, half in earnest: never be the first to the great pool.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Adar Llwch Gwin in Allta Fearann in {minutes} minutes.",
+    "loss": "Adar Llwch Gwin turned back {realm}'s band under {raidLeader} in Allta Fearann after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "razorbeak",
+      "relation": "another of the four great ones"
+    },
+    {
+      "id": "gnat",
+      "relation": "another wanderer through the mist"
+    }
+  ]
+}

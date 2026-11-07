@@ -1,0 +1,281 @@
+{
+  "id": "jordheim",
+  "name": "Jordheim",
+  "realm": "Midgard",
+  "regions": [
+    101
+  ],
+  "zones": [
+    120
+  ],
+  "era": "mid-era-present",
+  "factions": [
+    "houses-of-midgard"
+  ],
+  "summary": "Midgard's capital, built over the burial caves of the heroes who founded it: the high hall of the jarls on the northern height, the two temple halls of the gods' houses, and the trainers' rows by the southern gates.",
+  "facts": [
+    {
+      "text": "Jordheim is region 101 (zone 120). One bind area covers the whole city (radius 15,000 round 33,344/32,137). Two gates in the south wall lead to the Vale of Mularn and two in the east wall to East Svealand.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, ZonePoint and Area tables (0.37b world data)"
+    },
+    {
+      "text": "Mythic's Catacombs lore: Jordheim grew from a Norse village founded by bold heroes; Relder Autansonn found caves beneath the village that became its burial chambers; the founder was laid to rest in a dismantled longboat, and the city was built over the catacombs, so that its foundation 'does literally hold the spirits of the heroes'.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/node/462"
+    },
+    {
+      "text": "Mythic names Jordheim the capital city where Midgard's races meet, and says each of Midgard's callings is attuned to a Norse god.",
+      "provenance": "mythic",
+      "source": "https://camelotherald.com/node/5"
+    },
+    {
+      "text": "The houses of the gods have their priests in two halls: Gothi of Thor, Tyr and Modi and Gythja of Odin, Bragi and Eir in the hall south of the city's middle (about 32,000/34,200); Gothi of Hel and Ymir and Gythja of Loki and Skadi in the eastern hall (about 34,350/32,800).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+    },
+    {
+      "text": "Twenty-five class trainers teach in the city: Osten and Thordia (warrior), Hodr and Haaken (berserker), Sven and Leif (skald), Frode and Katla (thane), Jaakko and Pirkko (savage), Hreidar and Elin (shadowblade), Hauk and Singrid (hunter), Rana and Per (healer), Grimma and Dane (shaman), Signa and Bera (runemaster), Galn and Dyre (spiritmaster), Igdis and Skal (bonedancer), and the Master Trainer on the height.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+    },
+    {
+      "text": "The savage trainer Jaakko's hunt begins 'Kelgor grants skill in battle to those who train as hard as you'; the trainers' Traveler's Way sends new members out to 'tell them of our house's good will'.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "The northern height (z about 8,800): Jarl Uffenlong the Name Registrar, Jarl Yuliwyf the Vault Keeper, the account vault, the masters of spellcraft and alchemy (Hradi Thorleif, Armod Dag), the Master Trainer, the effect master named Fenrir, Odin's image (a statue model) and a Stor Gothi Annark teleporter.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+    },
+    {
+      "text": "Living Server's Realm Exchange broker (class RealmExchangeBroker; each install picks the name, for example Brynhild) stands on the small ledge by the Name Registrar between two Valkyrie Exchange Guards. It trades real items and coin between characters.",
+      "provenance": "game",
+      "source": "source/server/GameServer/gameobjects/CustomNPC/RealmExchangeBroker.cs; CHANGELOG.md (Realm Exchange NPCs moved)"
+    },
+    {
+      "text": "Epic and quest voices in the city: Miri (the seer epic 'The Desire of a God': 'ask about the visions of Loki'), Audun in the tavern ('An End to the Daggers'), Morlin Caan the smith (the rogue epic 'War Concluded'), Hreidar and Hauk ('A War of Old').",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "The city's watch: Valkyrie Sentries on the height and at the stair, Chieftain Guards at the south gates and the high hall, Sentries along the streets; four Skalds of Midgard (hasteners) at the gates and the height. The tavern keeper is Barkeep Prugar.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+    },
+    {
+      "text": "Mythic's Catacombs lore names Sigrun and Brynhild as the founders of the Valkyries.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/node/462"
+    },
+    {
+      "text": "Gamebots idle in the city, buy and sell at the Realm Exchange and visit their trainers.",
+      "provenance": "game",
+      "source": "CHANGELOG-LIVING-SERVER.md; source/server/GameServer/bots/autonomous"
+    },
+    {
+      "text": "In Norse myth Jord (Earth) is a giantess and Thor's mother; 'Jordheim' would read 'earth-home' (to verify as the designers' intent).",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning (public domain)"
+    },
+    {
+      "text": "The two temple halls' custom, the longboat under the high hall, the jarls' name-book and Ingvild's walk are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Jordheim was a village first, and its first people were the kind the skalds still sing about: a handful of hard men and harder women who came over the hills from the coast and stayed because the ground was good and the hills kept the wind off. One of them, Relder Autansonn, went after a strayed goat on a wet morning and found the hillside open under his feet: caves, dry and deep, running back under the village further than his torch would go. The village made them its burial place. When the founder died they took his longboat apart plank by plank, carried it down into the caves and built it again round him in the dark, so that he would have a ship wherever he was going. The city grew on top of them, and it has never stopped growing. The skalds say Jordheim is the only city in the world whose foundations are its heroes, and they mean it plainly: the dead are under the floor.\n\nThat is why the name. Jord is the earth in the old tongue, and a home built on the earth's own dead is an earth-home; so the skalds say, and the gothi let them. The city kept growing up the long slope toward the northern height, and on the height the jarls of the realm built their high hall, over the deepest of the caves, where the founder's longboat lies. The hall keeps the two things a realm cannot do without. The first is its names. Jarl Uffenlong sits by the stair with the realm's name-book, and every name a man or woman of Midgard takes is written in it, because the Havamal says the one thing that does not die is a good name, and Jordheim takes the old poem at its word. The second is its wealth. Jarl Yuliwyf keeps the vault below the hall, where the realm's people leave what they cannot carry. Odin's image stands over both, looking south across the city toward the gates, with one eye open.\n\nBelow the height the city belongs to the gods. Every calling in Midgard is a house, and every house belongs to a god, and Jordheim gave the houses two halls. In the hall south of the city's middle stand the gothi and gythjur of the Aesir's houses: Odin's runemasters, Thor's thanes, Tyr's warriors, Modi's berserkers, Bragi's skalds, and Eir's house of healing. In the eastern hall stand the houses whose gods have giant's blood or darker work in them: Hel's spiritmasters, Ymir's shamans, Loki's shadowblades, Skadi's hunters. The city keeps the halls a street apart. The gothi say it is only a matter of room. The skalds say it is an old peace, made when the city was young, between priests who could not agree whether Loki should have a house in Odin's city at all; the peace was that he should have one, and that it should not be next door. The two halls still do not light their midwinter fires on the same night.\n\nTwo houses have no hall. Kelgor's savages and Bodgar's bonedancers came into the city with the Shrouded Isles, when a Troll Father walked into Jordheim to say that the morvalt had overrun Aegir, and the Valkyn who came after him brought gods of their own. Their trainers teach among the others, and the city treats them with the courtesy it gives a guest it has not decided about. Nobody in Jordheim lights a candle for Bodgar. Everybody in Jordheim knows somebody who has gone to the bonedancers anyway.\n\nThe trainers keep the rows by the southern gates, where the city is busiest and the road to the Vale of Mularn comes in. The houses' masters teach the young of every calling there, two to a house, and send them out on the Traveler's Way, to carry the house's good will into the realm and come back with something to show for it. The masters of the crafts keep the middle of the city and the height. The tavern keeps the corner where the two southern streets meet, and Audun keeps a table in it, where he talks to anyone with a sword about the Red Daggers. Miri keeps a quieter corner further west, and talks to the seers about the visions of Loki she wishes she did not have.\n\nOn the ledge by the name-book stands the Realm Exchange, between two valkyries of the city watch, where the goods of the whole realm change hands. A broker keeps it, a woman of the watch's own blood, the valkyries say, and the oldest valkyrie on the stair says the brokers have always taken the names of the first valkyries, Sigrun's and Brynhild's and their sisters', because a valkyrie chooses and a broker does too. Coin goes up the stair, armour and blades come down it, and the jarls let the trade stand by their hall because, they say, a realm that cannot buy from itself will soon be buying from Albion.\n\nJordheim matters because everything in Midgard starts here and comes back here. The warbands muster outside its southern gates before the long road south to Malmohus. The scribes who wrote the realm's dark places down, Arnor and Vigfus Hallason and Gunnvor the mapmaker, all came home to it to write. The runemaster Vemund came back to it from Iarnvidiur's bridge without what he went for, and went again. And under every one of them, under the trainers' rows and the two temple halls and the high hall and the stair, the founders lie in the dark with their ship. When the earth shakes, as it does when the bowl over Loki's face spills, the old women of the city say it is only the longboat, moving on its keel.",
+  "legend": "Jordheim is Midgard's capital and where most of your character's life happens: you bind here (the whole city is one bind area), train here and come back here to sell. The trainers are in the south near the two Vale of Mularn gates, two per class; savages and bonedancers too. The east gates go to East Svealand. Up on the northern height you'll find the vault keeper (Jarl Yuliwyf), the name registrar (Jarl Uffenlong), the guild registrar and emblemeer, the spellcrafting and alchemy masters, the master trainer and the Realm Exchange: a broker between two Valkyrie Exchange Guards on the ledge by the name registrar, where real items change hands for coin. Stor Gothi Annark teleports from the south gate and from the height. Miri is in the west middle (seer epic, ask about the visions of Loki), Audun drinks in the tavern (viking epic, the Red Daggers), Morlin Caan is a smith near the middle (rogue epic). Old players swear the floor of the high hall is warmer over the spot where the founder's longboat lies, and that the city shakes a little every time someone does the seer epic. The two temple halls never light their midwinter fires on the same night, and nobody can tell you why.",
+  "atmosphere": {
+    "firstEntry": [
+      "Jordheim. The earth-home, built on its own dead.",
+      "Smoke, iron and the smell of the long hall.",
+      "Odin's image watches the city with one eye open.",
+      "Every road in Midgard starts here and comes back.",
+      "The founders lie under the floor with their ship."
+    ],
+    "areas": [
+      {
+        "name": "the high hall",
+        "x": 31948,
+        "y": 28294,
+        "z": 8800,
+        "radius": 1800,
+        "lines": [
+          "The high hall of the jarls, over the deepest cave.",
+          "Names are written here. A good name does not die.",
+          "The vault lies below. The realm keeps its wealth here."
+        ]
+      },
+      {
+        "name": "the Realm Exchange",
+        "x": 31741,
+        "y": 28040,
+        "z": 8798,
+        "radius": 600,
+        "lines": [
+          "The Realm Exchange. The goods of Midgard change hands.",
+          "Two valkyries guard the broker. A valkyrie chooses.",
+          "Coin goes up the stair; blades come down it."
+        ]
+      },
+      {
+        "name": "Odin's image",
+        "x": 31743,
+        "y": 27636,
+        "z": 8798,
+        "radius": 700,
+        "lines": [
+          "Odin looks south over his city, one eye open.",
+          "The other eye is in Mimir's well, the skalds say."
+        ]
+      },
+      {
+        "name": "the hall of the Aesir's houses",
+        "x": 32000,
+        "y": 34200,
+        "z": 8030,
+        "radius": 700,
+        "lines": [
+          "Odin, Thor, Tyr, Modi, Bragi, Eir: the Aesir's houses.",
+          "The gothi of the Aesir keep this hall.",
+          "The midwinter fire is lit here on its own night."
+        ]
+      },
+      {
+        "name": "the eastern hall",
+        "x": 34350,
+        "y": 32800,
+        "z": 8030,
+        "radius": 700,
+        "lines": [
+          "Hel, Ymir, Loki, Skadi: the houses with giant's blood.",
+          "A street apart from the Aesir. An old peace.",
+          "Loki has a house in Odin's city. Not next door."
+        ]
+      },
+      {
+        "name": "the trainers' rows",
+        "x": 29600,
+        "y": 35300,
+        "z": 8010,
+        "radius": 1800,
+        "lines": [
+          "The trainers' rows. The houses teach their young.",
+          "Two masters to a house, and the road out after.",
+          "Kelgor's savages train beside the Aesir's warriors."
+        ]
+      },
+      {
+        "name": "the south-east halls",
+        "x": 34600,
+        "y": 35500,
+        "z": 8100,
+        "radius": 1500,
+        "lines": [
+          "Runes, spirits and bones: the quiet callings.",
+          "Bodgar's bonedancers teach here. No candles for him."
+        ]
+      },
+      {
+        "name": "the tavern",
+        "x": 33280,
+        "y": 35000,
+        "z": 8030,
+        "radius": 500,
+        "lines": [
+          "The tavern. Audun is talking about the Daggers again.",
+          "Prugar's ale, and a dwarf asleep on the bench."
+        ]
+      },
+      {
+        "name": "the southern gates",
+        "x": 32000,
+        "y": 36150,
+        "z": 8002,
+        "radius": 1200,
+        "lines": [
+          "The southern gates. The Vale of Mularn lies beyond.",
+          "Warbands muster outside these gates before the south."
+        ]
+      },
+      {
+        "name": "the eastern gates",
+        "x": 36100,
+        "y": 32800,
+        "z": 8003,
+        "radius": 1200,
+        "lines": [
+          "The eastern gates, and the road to East Svealand.",
+          "Svealand's farms begin where the city wall ends."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "jordheim was a village of heroes first. relder autansonn found the caves under it chasing a goat",
+      "they buried the founder of jordheim in his own longboat, rebuilt plank by plank down in the caves",
+      "the whole city is built over its dead. the skalds mean that plainly",
+      "jord is the earth, so jordheim is earth home. home built on its own dead",
+      "the high hall sits over the deepest cave, right over the founders longboat",
+      "jarl uffenlong keeps the realms name book. a good name never dies, havamal says",
+      "the aesirs houses have one temple hall, hel ymir loki and skadi have the east one",
+      "the two temple halls are a street apart on purpose. old peace about lokis house",
+      "the temple halls never light the midwinter fire on the same night",
+      "kelgor and bodgar have no gothi in the halls, their houses came in with the shrouded isles",
+      "a troll father walked into jordheim to tell us the morvalt had aegir. thats how the valkyn came",
+      "odins statue on the height looks south over the city with one eye open"
+    ],
+    "rumour": [
+      "the floor of the high hall is warmer over the spot where the longboat lies",
+      "when the earth shakes the old women say its only the longboat moving on its keel",
+      "the realm exchange brokers always take an old shieldmaiden's name, the stair guards say",
+      "nobody in jordheim lights a candle for bodgar. everyone knows someone who joined anyway",
+      "miri has had visions of loki since the bowl last spilled. she hates them",
+      "audun will talk your ear off about the red daggers if you sit at his table",
+      "ragnvor's half blind copy of the runes wall from dodens gruva is somewhere in jordheim",
+      "there is a door in jordheim nobody uses. ive knocked. nothing"
+    ],
+    "tell": [
+      "trainers are in the south of jordheim by the mularn gates, two per class",
+      "the banker, name registrar and the realm exchange are up on the north height",
+      "realm exchange is the broker between the two shieldmaiden guards by the name registrar",
+      "south gates go to vale of mularn, east gates go to east svealand",
+      "miri for the seer epic is west middle, audun for the viking epic is in the tavern",
+      "stor gothi annark teleports from the south gate and the height"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Jordheim. The earth-home. It was a village of heroes once, and [Relder Autansonn] found the caves under it, and the city has stood on its dead ever since. The jarls keep the [palace] on the height, the gods keep the [houses], the [trainers] keep the south, and the [Realm Exchange] keeps everyone honest. Mostly.\"",
+    "topics": {
+      "Relder Autansonn": "One of Jordheim's first villagers, who found the dry caves under the hill while chasing a strayed goat. They became the village's burial place, and the [longboat] of the founder lies in the deepest of them.",
+      "longboat": "When the founder died the village took his longboat apart, carried it into the caves and built it again round him. The [palace] stands over it. When the earth shakes, the old women say the ship is moving on its keel.",
+      "palace": "The high hall of the jarls on the northern height, over the deepest cave. Jarl Uffenlong keeps the realm's [name-book] by the stair, Jarl Yuliwyf the vault beneath, and [Odin's image] stands over both. The [Realm Exchange] is on the ledge beside it.",
+      "name-book": "Every name a man or woman of Midgard takes is written in it, because the Havamal says a good name is the one thing that does not die. Aros of Dodens Gruva kept names too. He forgot the word good.",
+      "Odin's image": "The All-father's statue on the height, looking south over the city with one eye open. The skalds say the other eye is still in Mimir's well, paid for a drink of wisdom.",
+      "Realm Exchange": "A broker on the ledge by the [name-book], between two valkyries of the watch, where the goods of the realm change hands for coin. The valkyries say the brokers take the names of the first valkyries, because a valkyrie chooses and a broker does too. The jarls say a realm that cannot buy from itself will soon be buying from Albion.",
+      "houses": "Every calling in Midgard is a house, and every house belongs to a god. The city gave them two halls: the [Aesir's hall] and the [eastern hall], a street apart. [Kelgor and Bodgar] have no hall.",
+      "Aesir's hall": "The temple hall south of the city's middle, where the gothi of Thor, Tyr and Modi and the gythjur of Odin, Bragi and Eir stand: runemasters, thanes, warriors, berserkers, skalds, healers.",
+      "eastern hall": "The hall of the houses whose gods have giant's blood or darker work in them: Hel's spiritmasters, Ymir's shamans, Loki's shadowblades, Skadi's hunters. The old peace was that Loki should have a house in Odin's city, and that it should not be next door. The two halls do not light their midwinter fires on the same night.",
+      "Kelgor and Bodgar": "The gods of the savages and the bonedancers, who came into Jordheim with the Shrouded Isles and the Valkyn. Their trainers teach among the others. Nobody lights a candle for Bodgar, a death god older than Odin, the Valkyn say.",
+      "trainers": "Two masters to a house in the rows by the southern gates: Osten and Thordia, Hodr and Haaken, Sven and Leif, Frode and Katla, Jaakko and Pirkko, Hreidar and Elin, Hauk and Singrid, Rana and Per, Grimma and Dane, Signa and Bera, Galn and Dyre, Igdis and Skal. They send the young out on the Traveler's Way with the house's good will. See [houses].",
+      "Miri": "A seeress in the west of the city who has had visions of Loki since the bowl over his face last spilled. She sends the seers on to Yggdra and Uppland, and does not ask what they bring back.",
+      "Audun": "A man of the tavern who keeps a table for anyone with a sword who will hear about the Red Daggers of Raumarik and the Albion men waiting for them in Jamtland.",
+      "Ingvild": "A scribe of Bragi's house who wrote The Earth-Home for a cousin coming up from the Vale of Mularn: a walk through the city from the [longboat] to the gates."
+    }
+  },
+  "book": {
+    "title": "The Earth-Home: A Walk through Jordheim",
+    "pages": [
+      "Ingvild, scribe of the house of Bragi, wrote this for her cousin Arnbjorg, who was coming up from Mularn to be taught, and who had never seen a city. Cousin, the first thing to know is that you will be walking on the dead. Do not be frightened of it. Jordheim was a village once, and when Relder Autansonn found the dry caves under the hill the village put its dead in them, and when the founder died they put his ship down there too, taken apart and built again round him. The city grew on top. Everyone who lives here lives on a roof. The old women say that is why Jordheim does not get above itself. I have not found that to be true.",
+      "You will come in by one of the southern gates, because the Mularn road comes in there, and the first thing you will see is the trainers' rows. Every house of the gods keeps two masters there, to teach the young. The warriors and the berserkers are loudest; the skalds are loudest when the warriors stop. The savages are new. They came with the Valkyn, after the Troll Father walked in at the gate you will walk in at, and told the jarls that Aegir was lost. Kelgor's people train as if they mean to wear the yard out. Be polite to them. They are polite to nobody, but they remember who was polite to them.",
+      "Further in are the two halls of the gods. The Aesir's hall is the one south of the middle, where Odin's and Thor's and Tyr's and Modi's priests stand, and ours of Bragi, and Eir's people, who heal and do not like to be called priests. The eastern hall is a street away, and holds Hel's and Ymir's and Loki's and Skadi's. The skalds say the street is an old peace. When the city was young the priests could not agree whether Loki should have a house in Odin's city at all, and the peace was that he should, but not next door. The halls still light their midwinter fires on different nights. My teacher says it is so that each can see the other's. I think it is so that neither has to.",
+      "Bodgar has no hall. His bonedancers teach in the south-east, among the runemasters and spiritmasters, and the Valkyn say he is a god of the dead older than Odin. Nobody in Jordheim lights a candle for him. I tell you this because you will meet a bonedancer on your first day and you will want to stare. Do not. They have come a long way, from under someone else's whip in Trollheim, and they have chosen their god as we chose ours. That is what a house is. Bragi's priests say a house is a god who agreed to be chosen. The others say we talk too much.",
+      "The tavern is where the two southern streets meet. Audun drinks there and will tell you about the Red Daggers until you either join him or leave. Miri lives in the west of the middle, and if she looks at you too long it is not you she is seeing; she has had visions of Loki since the bowl last spilled and the earth shook, and she does not want them. Morlin Caan works iron near the middle and talks to the shadows of Loki's house when he thinks nobody is listening. Everybody is listening. It is a city.",
+      "Walk up the long slope to the height at the end of your first day. The jarls' high hall stands there over the deepest cave, where the longboat lies, and the floor is warmer over that place than anywhere else; nobody can say why. Jarl Uffenlong will write your name in the realm's book, because a good name is the one thing that does not die. The vault is below. The Exchange is on the ledge, where the broker stands between two valkyries and the goods of the whole realm go up and down the stair. And over all of it stands Odin, looking south, one eye open. Come home often, cousin. Everyone does. It is where the roads start."
+    ]
+  },
+  "bosses": []
+}

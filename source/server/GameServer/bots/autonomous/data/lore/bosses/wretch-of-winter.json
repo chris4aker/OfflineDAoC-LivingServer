@@ -1,0 +1,110 @@
+{
+  "id": "wretch-of-winter",
+  "name": "Wretch of Winter",
+  "catalogKey": "midgard-named-mobs-classic-zones/wrethofwinterscorp",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "dishonoured-dead"
+  ],
+  "facts": [
+    {
+      "text": "The Wretch of Winter appears in nine forms around Raumarik (scorpion, spider, crab, jotun, ogre, ice, Raumarik, lich and arachite), levels 70-77, each with 30,000 health; the scripts share one name (catalog keys wrethofwinter*).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The beast forms poison; the others cast Frost Shock (400).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists the Wretch of Winter at 70-75 in Raumarik; a 2003 guild ranked the forms spider and jotun easy, wraith harder and arachite toughest.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/2812"
+    },
+    {
+      "text": "Bot chat says new groups are told about the wretch of winter to scare them.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "All nine forms are built alike in this world: 30,000 health, CC-immune, reach 350, 20% melee / 30% magic resist, resetting at full health. The beast forms (scorpion, spider, crab) poison their target on 25% of hits (100 a tick); the others cast Frost Shock (400 cold) on 25% of hits. Their levels in the world data run from 70 to 77.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/WretchOfWinter.cs"
+    }
+  ],
+  "story": "Winter in Raumarik has a wretch, and the wretch has no shape of its own. It borrows. Where a scorpion died in the snow, the wretch gets up in its shell; where an ogre froze, the wretch walks in the ogre. There are nine of it that anyone has counted, scorpion and spider and crab, jotun and ogre, a shape of living ice, a shape of Raumarik's own dead, a lich and an arachite, and every one is the same hunger wearing a different coat.\n\nThe Galplen tellers say it is the cold itself, grown tired of waiting for things to die. The fenrir mystics say it is what the wolf's breath will be on the last winter, sent ahead to know the land. The skalds of Jordheim say it is a man, once, a jarl's son who ran from a battle in the snow and was refused by the valkyries and refused by the Cursed Tomb too, because he had not even died properly; he froze while hiding, and the cold took him in, and he has been trying on other people's deaths ever since to find one that fits.\n\nWhatever it is, it is careful with its borrowings. In a creature's shell it fights as the creature fought, with the sting or the bite that leaves a poison working in the blood; in a giant's or a dead man's shape it fights with the cold, a shock of frost now and again from the hand. It is never quick, and it is never held; rope and charm pass through it as through an empty coat. It does not chase far from where it got up. When the shape is broken, the wretch is not; it moves on, and somewhere else in Raumarik, the snow stands up.\n\nThe old hands of Midgard tell new companies about it on the road north, to frighten them, and it works. The tellers of Galplen say the nine are only the ones anyone has counted, and that on the coldest nights there may be a tenth, wearing something that has not been found yet. They do not say what.",
+  "legend": "Nine Wretches of Winter stand around Raumarik, levels 70 to 77, each its own fight. The old 2003 ranking said spider and jotun easy, wraith harder and arachite toughest; in this world they're all built alike (30,000 health, CC-immune, 20% melee and 30% magic resist), so the level is what makes the difference. The beast shapes (scorpion, spider, crab) poison on a quarter of their hits, so bring cure poison; the others hit with Frost Shock, 400 cold, so cold resist on the tank. They reset full if you leave. They make a good guild night: hunt all nine and see who drops. One stands in the Revenant's fortress area, so don't pull both.",
+  "yells": {
+    "aggro": [
+      "(The snow itself seems to stand up.)",
+      "(A borrowed shape turns toward you, too slowly.)",
+      "(Frost spreads from the Wretch's feet.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(The Wretch's borrowed shape cracks with frost.)"
+      }
+    ],
+    "death": [
+      "(The shape falls empty. Something cold moves on.)",
+      "(Somewhere else in Raumarik, the snow stirs.)"
+    ],
+    "slay": [
+      "(The Wretch looks at the fallen as if measuring a coat.)",
+      "(The cold settles over the body.)",
+      "(The Wretch waits beside the fallen.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Something wears the shape of a beast. It is not one.",
+      "The snow here is shaped like a body, standing."
+    ],
+    "realmFirstKill": "A Wretch of Winter is slain. The cold moves on.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The borrowed shape cracks. The Wretch looks for another."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "nine wretches of winter, all built alike here, levels 70 to 77",
+      "beast shapes poison, the rest frost shock 400 cold",
+      "cure poison and cold resist depending on the shape",
+      "cc immune all nine"
+    ],
+    "aftermathWin": [
+      "got the arachite wretch finally",
+      "nine for nine tonight",
+      "the shape just fell empty. creepy",
+      "the level 77 one is the real fight"
+    ],
+    "aftermathLoss": [
+      "the arachite wretch wiped us twice",
+      "pulled the revenant too",
+      "no cure poison for the spider",
+      "frost shock on the jotun wretch melted the tank"
+    ],
+    "rumour": [
+      "they tell new groups about the wretch of winter to scare them. [it worked on me|works every time]",
+      "galplen says there might be a tenth wretch on the coldest nights",
+      "the wretch is a jarls son who froze hiding, the skalds say",
+      "when you break one, somewhere else the snow stands up"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Wretch of Winter",
+    "text": "Raumarik's cold with no shape of its own. It borrows the bodies of what died in the snow: scorpion, spider, jotun, lich, nine that anyone has counted."
+  },
+  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: my grandmother said the Wretch is the cold, tired of waiting for things to die. My grandfather, who was a skald and liked a better story, said it was a jarl's son who ran from a battle and froze hiding in a snowdrift, too ashamed for the valkyries and too dishonoured even for the tomb, and that he has been trying on other creatures' deaths ever since, looking for one that fits. My grandmother said that was not better. It was worse. She was right. It usually was.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put down a Wretch of Winter in {minutes} minutes.",
+    "loss": "A Wretch of Winter wore down {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

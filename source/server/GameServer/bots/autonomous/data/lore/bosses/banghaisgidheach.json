@@ -1,0 +1,81 @@
+{
+  "id": "banghaisgidheach",
+  "name": "Banghaisgidheach",
+  "npcNames": [
+    "Banghaisgidheach"
+  ],
+  "locationId": "lough-gur",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Banghaisgidheach: level 37, class NightSpawn (scripts/mobs/TimeDependentSpawnNpc.cs: present only while the region is at night), model 1, size 66, flags 28 (no name shown, peaceful, untargetable), aggro 0, at about 303,100/707,000 in the western hills.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06); source/server/GameServer/scripts/mobs/TimeDependentSpawnNpc.cs"
+    },
+    {
+      "text": "Banghaisgíoch is Irish for a heroine or woman-warrior (bean, woman; gaisgíoch, hero); to verify.",
+      "provenance": "myth",
+      "source": "https://en.wiktionary.org/wiki/gaisc%C3%ADoch"
+    }
+  ],
+  "story": "On the western hills of Lough Gur, near the mouse-lord's hall, there is a place where the lake folk say a woman-warrior stands at night. Nobody has seen her. The name they give her is only the old word for a heroine, banghaisgidheach, because they do not know her own. She is there only after dark, and she cannot be touched, and she does not speak, and the people of Culraid who walk that way at night say they feel her as you feel someone standing behind you in a doorway.\n\nThe harpers of Innis Carthaig have a song about a woman of the old families who held the western hill against a hosting of the siabra for a night and a day so that Culraid's children could cross the lake, and was never found afterwards. They say that is who stands there. The Culraid folk say the song is newer than the feeling. Either way they leave a little salt on the hilltop at the dark of the moon, and walk on.",
+  "legend": "Banghaisgidheach (37) is not a fight: she is a nameless, untargetable, peaceful NightSpawn in the western hills of Lough Gur (about 303k/707k), present only at night. You cannot attack her or talk to her; bots ignore her. She is listed here because the world data names her. Culraid custom: leave a little salt on the hilltop at the dark of the moon.",
+  "yells": {
+    "aggro": [
+      "(you feel someone standing behind you)",
+      "(the hilltop is suddenly very still)"
+    ],
+    "phases": [],
+    "death": [
+      "(nothing; she cannot fall)"
+    ],
+    "slay": [
+      "(the stillness on the hill deepens)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Someone stands on this hill at night. Unseen."
+    ],
+    "phases": [],
+    "realmFirstKill": "The woman on the western hill is at rest. For a night."
+  },
+  "botLines": {
+    "briefing": [
+      "banghaisgidheach is not a fight. invisible, untargetable night spawn",
+      "culraid says leave salt on the hill at the dark of the moon"
+    ],
+    "aftermathWin": [
+      "felt her on the hill and walked on. [creepy|respect]",
+      "left the salt. [tradition|done]"
+    ],
+    "aftermathLoss": [
+      "tried to target her. [you cant|lol]",
+      "stood there all night waiting. [nothing happens|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] a woman warrior stands on the west hill of lough gur at night. nobody has seen her",
+      "the innis carthaig harpers say she held the hill against the siabra so culraid's children could cross"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Banghaisgidheach",
+    "text": "The unseen woman-warrior of Lough Gur's western hill, felt only at night. The harpers sing that she held the hill a night and a day for Culraid's children. Culraid leaves her salt."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Banghaisgidheach in Lough Gur in {minutes} minutes.",
+    "loss": "Banghaisgidheach turned back {realm}'s band under {raidLeader} in Lough Gur after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "restless-dead"
+  ],
+  "related": [
+    {
+      "id": "lhia",
+      "relation": "another woman of the lake who will not rest"
+    }
+  ]
+}

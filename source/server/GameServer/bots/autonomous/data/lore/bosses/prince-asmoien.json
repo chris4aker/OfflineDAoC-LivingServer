@@ -1,0 +1,145 @@
+{
+  "id": "prince-asmoien",
+  "name": "Prince Asmoien",
+  "catalogKey": "darkness-falls/princeasmoien",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Level 78, 100,000 health. Every 5 seconds the nearest controlled pet within 2,000 dies and he heals by its maximum health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs"
+    },
+    {
+      "text": "Prince Asmoien: NPC template 60165030 (level 78, tether 4,500), 100,000 health, GetResist 40 melee / 70 other, CC immune; every 5 s while roused he kills the nearest living IControlledBrain NPC within 2,000 and heals by its maximum health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs"
+    },
+    {
+      "text": "BotBrain implements IControlledBrain, so companion bots and autonomous gamebots are candidates for the devour, not only pets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/BotBrain.cs"
+    },
+    {
+      "text": "'Leave to eat what follows', the free man as the Master's portion, the theurgist's spirits, the season of the households, Earl Ipostian's knotted cord, the huntsman's hound and Sir Gerallt's Free Company are Living Server writing; the feud of the Blade and the Hook is the neutral history's.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Real-world myth, not game canon: Asmodeus is a prince of demons in the Book of Tobit and later grimoires; Asmoien reads as that name, to verify.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Asmodeus"
+    }
+  ],
+  "story": "Prince Asmoien learned his appetite at the Feast of Thrones by watching the hungry one eat from a corner. When the bargain was struck that the Master would eat only those who fell from their place, Asmoien asked what of those who have no place: servants, beasts, things that come into the hollow at another's bidding. The Master laughed with nineteen voices and gave them to him. The First Roll grants him leave to eat what follows. He took the west and the long pit of the Mutilators, his Hook; Earl Ipostian keeps his tally on a cord of knotted gut.\n\nHe does not hunt. When a company enters his hall its servants whimper, and he breathes in as a man breathes in the smell of bread, and the nearest of them comes apart and goes into him and mends him; a few breaths later, the next. An Albion theurgist wrote that her furthest spirit lasted longest. Nor is it only beasts: a squire who came because his knight ordered him, a hired sword, a sworn companion are followers too, as an Albion company that came down with every captain's household learned. The free man, who came of his own will, is the Master's portion, and Asmoien keeps the bargain. Leave the hound at the top of the stair, the druids say.\n\nHis feud with Prince Abdin, the Blade and the Hook, filled the Gate in the Fourth Roll until Gatekeeper Dommel closed every road out of it; since then all three orders watch the crossing. Lecherous Gress says the soul they fought over was a Midgard huntsman's hound that Asmoien had already eaten.\n\nSir Gerallt of the Downs raised the Free Company in Camelot Hills: no man came because another told him to, no squires, no hired swords, no beasts or spirits, and every name was sworn at the cross in the Albion hall. In the prince's hall nothing whimpered, and for the first time the prince looked surprised. They killed him in the pit. Midgard and Hibernia each claim him first.",
+  "legend": "Prince Asmoien is level 78 with 100,000 health, CC immune, 40% melee / 70% other reduction. Every 5 seconds while he is fighting he kills the nearest pet OR BOT within 2,000 of him and heals by its full health. That is not a typo: the code treats every bot, your companions and the realm's gamebots alike, as a 'controlled' creature, so in a bot raid he eats the closest bot every 5 seconds and heals thousands each time. Only the human is never eaten. There is no clean answer with bots today; untested ideas are to fight him with as few bots inside 2,000 as possible (pets dismissed, healers and casters at maximum range), or with a small hard-hitting group so the heals he gets cannot keep up. Pets on their own are suicide. Out of the fight for 8 seconds past his reach and he walks home at full health. He is one of the four Blood that must die before Beliathan can rise.",
+  "yells": {
+    "aggro": [
+      "What lovely little servants you have brought me.",
+      "You brought me followers. How kind.",
+      "The Hook is hungry."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "The nearest first. Then the next."
+      }
+    ],
+    "death": [
+      "Still... hungry...",
+      "No knot... on the cord..."
+    ],
+    "slay": [
+      "Your master will follow you.",
+      "Unmade.",
+      "Spent, not kept."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Your pet whimpers. Something here is hungry for it.",
+      "The bound things you brought begin to whimper."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Asmoien breathes in. The nearest follower is gone."
+      }
+    ],
+    "realmFirstKill": "Prince Asmoien has fallen. The familiars rest easy."
+  },
+  "botLines": {
+    "briefing": [
+      "asmoien eats the nearest pet or bot within 2000 every 5 sec and heals off it",
+      "yes bots count. keep as few of us inside 2000 as we can, casters at max range",
+      "no pets at all. dismiss them at the top of the stair",
+      "he is one of the four royals for beliathan"
+    ],
+    "aftermathWin": [
+      "nobody brought a pet in. proud of you",
+      "asmoien down, the pet classes cheer",
+      "kept the bots back and burned him. the free company way",
+      "asmoien down. the hook is blunt",
+      "no pets, nobody eaten, dead prince"
+    ],
+    "aftermathLoss": [
+      "someone's pet wandered in and he healed to full",
+      "he ate a bot every 5 seconds and healed the whole time",
+      "someone brought a pet in, back to full",
+      "everyone stacked inside 2000 of him"
+    ],
+    "rumour": [
+      "[heard|someone said] prince asmoien eats pets and heals off them",
+      "pet classes hate asmoien more than legion, [heard|they say]",
+      "heard asmoien eats anything that came down because someone else told it to",
+      "[heard|someone said] the free company of camelot hills killed asmoien with no squires and no pets"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "asmoien",
+    "text": "The prince of the west of [Darkness Falls], whose Hook is the Mutilators. The First Roll gives him leave to eat what follows: beasts, bound spirits, and any who came down at another's bidding, the nearest first, and each mends him. A free man is the Master's portion. Sir Gerallt's Free Company came with no followers at all."
+  },
+  "bookPage": "From Brother Odran's Door-Book, the account of the chaplain of Sir Gerallt's Free Company. We swore at the cross in the Albion hall that every one of us had come down of his own will: no squire, no hired sword, no beast and no spirit. The imps laughed at us all the way to the west. In the prince's hall nothing whimpered. He breathed in, as a man breathes in the smell of a kitchen, and nothing came to him, and I saw a prince of the court look surprised. After that it was only a hard fight with a strong lord. Sir Gerallt disbanded the company the night we came home.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} left every pet at the door and starved Prince Asmoien in {minutes} minutes.",
+    "loss": "Prince Asmoien fed on {realm}'s servants and mended faster than {raidLeader}'s raid could wound him."
+  },
+  "era": "neu-the-three-doors",
+  "factions": [
+    "dark-ones",
+    "mutilators-pit"
+  ],
+  "related": [
+    {
+      "id": "prince-baalorien",
+      "relation": "his rival in appetite; they keep tallies against each other"
+    },
+    {
+      "id": "prince-abdin",
+      "relation": "the feud of the Blade and the Hook"
+    },
+    {
+      "id": "beliathan",
+      "relation": "one of the four Blood whose lives keep the worm down"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Leave to Eat What Follows",
+      "text": "Prince Asmoien learned his appetite at the Feast of Thrones, by watching.\n\nHe was one of the eleven who were still standing when Adremal knelt, and the court's chroniclers say he spent the whole of the Feast in a corner of the deepest chamber with his back to the wall, watching the hungry one eat. He did not fight and did not flee. When the bargain was struck, that the Master would eat only those who fell from their place, Asmoien was the one who asked the question nobody else had thought of: what of those who have no place? The servants, the beasts, the things that come into the hollow at another's bidding and hold no line on any Roll. The Master, the court says, laughed with nineteen voices and gave them to him.\n\nSo the First Roll grants Prince Asmoien, in a line the Chancellor wrote very carefully, leave to eat what follows. Not what falls; that is the Master's. What follows: the hound at a huntsman's heel, the spirit on a sorcerer's leash, the beast a charmer has bent to his will, and any creature that has come down the stair because someone else told it to. The Inquisitors of the north, who decide which souls are whose, have argued for ten Rolls over exactly how far that line runs. Asmoien has never argued. He takes the nearest.\n\nHe took the west of the hollow, and the long pit there, and the order that works in it: the Mutilators, who unmake whatever the Inquisition condemns, and whom he calls his Hook. The Mutilators admire their prince, the imps say, because he is the only lord of the court who has never once had to be told what he may eat. Earl Ipostian, who stands at his shoulder, keeps the tally of it on a cord of knotted gut. Ba'alorien keeps another."
+    },
+    {
+      "title": "The Nearest First",
+      "text": "The prince does not hunt. He waits, and the hollow brings his meals to him.\n\nWhen a company comes into his hall, the servants it has brought begin to whimper. Brother Odran's Door-Book records it from the first season, in the words of an Albion theurgist who went down with her elementals and came up without them: the bound things knew before she did. Asmoien does not reach for them. He breathes in, the theurgist said, as a man breathes in the smell of bread, and the nearest of them simply comes apart and goes into him, and he is mended by it as a man is mended by meat; and a few breaths later, the next. The nearest always first. She wrote that her air spirit, which was furthest back, lasted longest, and that she had never in her life wished so hard to have left something at home.\n\nIt is not only beasts and spirits. The Inquisitors' long argument has been settled, in the prince's hall, by the prince. A squire who came down the stair because his knight ordered him to is a follower; so is a man-at-arms in a lord's pay, a hired sword, a sworn companion who goes where his captain goes. The Church of Camelot was slow to believe it. The Door-Book shows the season it was believed: an Albion company that came down with every captain's household at his back, and lost a man to the prince every few breaths, the nearest first, while the prince grew whole again in front of them.\n\nThe free man is another matter. A soul that came down of its own will, the Inquisitors hold, is the Master's portion and not the Blood's, and Asmoien keeps the bargain. He will kill a free man with his hands, as any lord of the court will. He will not eat him. The druids of Hibernia made a saying of it before anyone else, for their own servants: leave the hound at the top of the stair."
+    },
+    {
+      "title": "The Blade and the Hook",
+      "text": "The longest feud in the court below is Prince Asmoien's, and it is with his eldest brother.\n\nPrince Abdin's Chthonic Knights hold that a soul should be taken whole and kept. Asmoien's Mutilators hold that nothing is improved by being left whole. In the Fourth Roll the two orders met in the crossing that Gatekeeper Dommel keeps, over a soul both claimed, and fought there for so long that the Gatekeeper, who has never cared who wins anything, closed every road out of the crossing until both sides were too few to matter. The Gate has been watched by all three orders together ever since, so that neither the Blade nor the Hook can ever hold it alone.\n\nAsmoien tells the feud as a joke. The knights keep souls whole, he says, the way a miser keeps coin, and the Hook only spends them. He has never forgiven Abdin for the Gate, the imps say, because his brother's knights were the ones who held the crossing longest, and the Mutilators came out of it fewer. Lecherous Gress, who lives above the rocot rooms over the pit, tells a different version to anyone in Midgard who will listen: that the soul they fought over was a Midgard huntsman's hound, and that Asmoien had already eaten it before the fighting began.\n\nThe Midgard skalds took the hound story home and made a verse of it, and they sing it to their own huntsmen before the bands go down: the Hook had eaten the dog before the Blade was drawn. The Church of Camelot says the feud proves the court is a house divided, and preaches it. The druids of Tir na Nog, who lost more servants to the west of the hollow than to any other part of it, say only that a house divided still has a kitchen."
+    },
+    {
+      "title": "The Free Company",
+      "text": "The first Albion company to kill Prince Asmoien came down with no one at its back, on purpose.\n\nIt was raised in Camelot Hills by Sir Gerallt of the Downs after the season of the households, when Albion had lost a captain's whole following to the west of the hollow, and Gerallt's rule for it was the oldest the Door-Book records: no man in the company would come because another man told him to. No squires. No pages. No hired swords and no sworn men. No beasts, no bound spirits, no charmed things. Every one of the company swore, at the cross on Odran's map in the Albion hall, that he had come down the stair of his own will, and Brother Odran wrote their names in the Door-Book as they swore it.\n\nThey called themselves the Free Company, and the imps laughed at them all the way to the west. In the prince's hall nothing whimpered. Asmoien breathed in, the company's chaplain wrote, as a man breathes in the smell of a kitchen, and nothing came to him, and for the first time in the Door-Book's record the prince looked surprised. After that it was only a hard fight with a strong lord, which is what the Free Company had come for. They killed him in the pit with the Mutilators watching from its edge, and Earl Ipostian's cord of knots lay on the floor of the hall without a new knot on it.\n\nMidgard claims a band of Mularn hunters killed him first, having left their dogs tied in the snow at the top of the stair; Hibernia's bards say it was a druid company that had sung its servants to sleep in the hall above. Each capital keeps its own count. Gerallt kept none. He wrote in the Door-Book that the Free Company was disbanded the night it came home, because it had never been his to keep."
+    }
+  ]
+}

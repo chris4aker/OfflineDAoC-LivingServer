@@ -1,0 +1,122 @@
+{
+  "id": "storrow",
+  "name": "Storrow",
+  "npcNames": [
+    "Storrow"
+  ],
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "trollkarl-bonchar",
+      "relation": "the trollkarl whose wizards' trainers he guards"
+    },
+    {
+      "id": "apologet-nesnuir",
+      "relation": "the apologet, who teaches the young in the upper halls as Storrow trains them below"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Storrow is a level-64 morvalt low in Trollheim (26890, 35921, below the upper city) among wizard trainers (trollkarl tranare, level 64), spear masters (61) and a veteran group-leader (64).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Class GameEpicNPC: immune to confusion and nearsight while alive, 10,000 + 125 x level health, 1.5x damage factor.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (spawn and template 60166576)"
+    },
+    {
+      "text": "Its NPC template sets aggro level 0: it does not attack first, but anything standing near it may. The trainers and spear masters around him are aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its template gives it no faction, so it never brings friends (bring-a-friend needs a faction).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Storrow is not a Swedish word ('stor' is 'great'); to verify.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    }
+  ],
+  "story": "Below the upper city, down the long ways toward the lower halls, the morvalt keep a training ground, and the Valkyn say it is the reason the morvalt of Trollheim are not the morvalt of the surface. On the surface the morvalt fight as they always have, in a rush. In the training ground they are taught: spear-work by the spear masters, the trollkarl's craft by the wizards who teach it, and the order of a war-band by the old group-leaders who have led one. Over all of it stands Storrow.\n\nThe name is not a morvalt word and not a Fathers' word, and the trolls of Dyrfjall, who do not like it, say it means great and something, and leave it there. Storrow was a war-chief once, of the war-bands that swept across Aegir, and he is the one who decided, the Valkyn say, that a people who had taken the Fathers' city would need to fight like the Fathers' children if they meant to keep it. He made the training ground out of a Fathers' hall where the Uppat had trained their own wardens, and he has stood in it ever since, watching.\n\nHe does not fight in it himself. The trainers and the masters do that, and the young morvalt sent down to them, and a stranger who comes into the training ground is a test for them all. Storrow watches it as a smith watches a quench. If the test goes badly for his people, he steps in, and the Valkyn say he is something to see then: a morvalt who has outlived every war-chief of his age, broad and slow-seeming and very hard to wear down, whose eyes no shaman's fog will close because he has been watching the same floor too long to be blinded on it.\n\nThe Valkyn guides do not go down to the training ground, but they know it well. Every morvalt in Trollheim who has been there fights better for it, and every Valkyn who has died in the city in all the years of Midgard's companies has died, they say, to something Storrow taught. Trollkarl Bonchar's shamans were trained there before the Rift; the Valkyn say Storrow warned Bonchar against it, and was not heard, and has not spoken to the trollkarl since.",
+  "legend": "Storrow is a level 64 epic-class morvalt (GameEpicNPC: about 18,000 health, 1.5x damage, immune to confusion and nearsight) low in Trollheim, in a training ground with wizard trainers (64), spear masters (61) and a veteran group-leader (64). Storrow himself is PASSIVE and has no faction, but everything around him is aggressive and high level. Clear the trainers carefully, then decide if you want an 18k-health 64 that hits half again as hard as a normal one. No quest, no special abilities beyond the epic stats. If you just want the trainers, leave Storrow standing; he won't come to them. No quest needs him.",
+  "yells": {
+    "aggro": [
+      "So. You have been taught something. Show me.",
+      "Masters, stand back. I will finish this lesson.",
+      "The floor remembers every fall."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Good. Again. Harder."
+      }
+    ],
+    "death": [
+      "Taught... them well enough...",
+      "The floor... remembers..."
+    ],
+    "slay": [
+      "Lesson over.",
+      "Next student.",
+      "Badly taught. Not by me."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A training ground in a Fathers' hall. Masters drill.",
+      "A broad old morvalt watches every move."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Storrow sets his feet. He has done this before."
+      }
+    ],
+    "realmFirstKill": "Storrow falls on his own training floor."
+  },
+  "botLines": {
+    "briefing": [
+      "storrow is epic class, 18k hp, hits like a truck, passive though",
+      "trainers 64, spear masters 61, all aggro, clear carefully",
+      "no confuse or ns on storrow",
+      "do we even want him? hes no quest"
+    ],
+    "aftermathWin": [
+      "storrow down, that hp pool was huge",
+      "trainers first, then him, worked",
+      "epic npc but no tricks",
+      "the training ground is empty"
+    ],
+    "aftermathLoss": [
+      "trainers chewed us before we even touched him",
+      "ran out of power on his hp",
+      "pulled two trainers",
+      "64 epic, too much for us"
+    ],
+    "rumour": [
+      "storrow made the training ground that taught the morvalt to fight like the fathers children",
+      "storrow warned bonchar against the rift",
+      "every valkyn who died in trollheim died to something storrow taught",
+      "storrow doesnt fight unless his students lose"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Storrow",
+    "text": "The old war-chief who keeps the morvalt's training ground in a Fathers' hall below the upper city. He warned [Trollkarl Bonchar] against the Rift. See [morvalt]."
+  },
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: I never went down to the training ground. But at the fire at Bjarken a Valkyn who had once been captured and got away told what she had seen there: morvalt children with sticks, set in a line, and an old morvalt walking down it, correcting their feet. She said it was the most frightening thing she had ever seen, worse than the Rift. I asked why. She said the Fathers had done exactly that for her grandmother. She said she had been one of them, once, in the Fathers' halls.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} beat Storrow on his own training floor in Trollheim in {minutes} minutes.",
+    "loss": "Storrow taught {raidLeader}'s party from {realm} a lesson after {minutes} minutes."
+  }
+}

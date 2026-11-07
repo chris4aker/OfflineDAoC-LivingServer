@@ -1,0 +1,555 @@
+{
+ "realm": "Neutral",
+ "id": "neutral",
+ "summary": "The places that belong to no realm: the demon court of Darkness Falls, told as its own chronicle of Rolls, and the four proving fields where the three realms blood their young.",
+ "eras": [
+  {
+   "id": "neu-the-pit",
+   "order": 1,
+   "name": "The Pit before the Court (before the realms)",
+   "summary": "Before Albion, Midgard or Hibernia had names, there was a hollow under the place where their three lands would one day meet, and something was already living in it. The court's own chroniclers, who are not to be trusted on any point touching their own dignity, say the hollow was always theirs and that the three realms grew on its roof like moss on a stone. Every realm above tells it otherwise. The priests of Camelot teach that the host was cast down from a height and landed here. The skalds of Jordheim say it crawled up out of the dark beneath the roots of the world and stopped where the digging was easiest. The druids of Tir na Nog say the otherworld was torn the wrong way here, and what came through the tear was never meant to come through anything. All four accounts agree on one point: the Behemoth was in the hollow first. It is older than every demon of the court, it answers to none of them, and it does not appear on any Roll. In this age the host had no order at all. The court calls it the Uncounted Age, because nobody kept a count of anything, least of all of the dead. There were lords beyond number, each with a throne made of whatever it had last killed, and they fought in the dark for the warmest places near the deep fires. A demon of that age held exactly as much as it could keep that night. Most did not keep it long.",
+   "events": [
+    {
+     "text": "Darkness Falls is a vast underground kingdom under all three realms, dominated by the arch-demon Legion.",
+     "provenance": "mythic",
+     "source": "https://camelot.allakhazam.com/zones.html?czone=62"
+    },
+    {
+     "text": "The court says the hollow was always its own; the Church says the host was cast down; the skalds say it climbed up from under the roots of the world; the druids say the otherworld tore the wrong way. Living Server gives all four and settles none.",
+     "provenance": "original",
+     "source": "Living Server"
+    },
+    {
+     "text": "The Behemoth was in the hollow before the court and appears on no Roll of Precedence.",
+     "provenance": "original",
+     "source": "Living Server"
+    },
+    {
+     "text": "The court names this time the Uncounted Age: many lords, no ranks, and no record of the dead.",
+     "provenance": "original",
+     "source": "Living Server"
+    }
+   ],
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "behemoth"
+   ]
+  },
+  {
+   "id": "neu-the-feast",
+   "order": 2,
+   "name": "The Feast of Thrones (the making of Legion)",
+   "summary": "The Uncounted Age ended at a feast. The court's chroniclers call it the Feast of Thrones and say it lasted for as long as it takes stone to cool. Thirty of the greatest lords of the hollow agreed to meet in the deepest chamber, the one that is now the Master's, to settle which of them would rule. Twenty-nine came armed. The thirtieth came hungry. He did not fight anyone. He waited while the others fought, and when a lord fell he ate it, and the lord he had eaten spoke afterwards with his mouth. By the time nineteen lords were dead the hall was hearing nineteen voices out of one throat, and the eleven left standing understood that they were no longer at a feast but on the menu. The first to kneel was a lord named Adremal, who had read more than he had fought. He knelt and offered terms instead of a throat: let the hungry one take the name of what he had become, let him be Master of the hollow forever, and let him eat only those who fell from their place, never those who kept it. Rank, in other words, would be a promise of safety. The Master accepted, and the court has kept that bargain as the one law it has. The survivors called him Legion, because he was many. Among the eleven who knelt were the four who became the Blood, the princes, though the court quarrels to this day over which of the four knelt second. The Behemoth was in the hall too. It neither knelt nor was eaten. Legion let it be, and the court has called it the Master's beast ever since, with the care of people who have not checked whether it agrees.",
+   "events": [
+    {
+     "text": "In the Gospel of Mark (5:9) an unclean spirit answers that its name is Legion, 'for we are many'.",
+     "provenance": "myth",
+     "source": "Mark 5:9 (public domain)"
+    },
+    {
+     "text": "Thirty lords met to decide who would rule; Legion ate nineteen of them, and each one spoke afterwards with his mouth.",
+     "provenance": "original",
+     "source": "Living Server"
+    },
+    {
+     "text": "Adremal knelt first and offered the bargain the court still keeps: Legion eats only those who fall from their place.",
+     "provenance": "original",
+     "source": "Living Server"
+    },
+    {
+     "text": "Eleven lords knelt; four of them became the Blood (the princes). Which knelt second is still disputed.",
+     "provenance": "original",
+     "source": "Living Server"
+    },
+    {
+     "text": "The Behemoth was at the Feast. It neither knelt nor was eaten.",
+     "provenance": "original",
+     "source": "Living Server"
+    }
+   ],
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "legion",
+    "behemoth",
+    "grand-chancellor-adremal"
+   ]
+  },
+  {
+   "id": "neu-the-first-roll",
+   "order": 3,
+   "name": "The First Roll (the ordering of the court)",
+   "summary": "Adremal's bargain needed writing down, because a promise that only demons remember is no promise at all, so he wrote the First Roll of Precedence and the Master made him Grand Chancellor for it. Every demon of rank has a line on the Roll, with its title, its seat and its master. To fall from your line is to fall to the Master, so the court has kept count of time by the Rolls ever since: a new Roll is written whenever a demon of rank is struck off, and the court speaks of 'the Ninth Roll' as the realms speak of a king's reign. The First Roll set the court in the shape it keeps today. Above all, the Master. Beside his throne, the Grand Chancellor, who speaks for him, and the Queen, whose name was Lilith. Below them the Blood, each given a quarter of the hollow: Prince Abdin the north-west, Prince Ba'alorien the north, Prince Asmoien the west and the Princess Nahemah the far west. Below the Blood the four High Lords, Baelerdoth, Baln, Oro and Saeor, given the halls of the east and south. Then the great offices: the Field Marshal Nebir over the host, mustered in Baln's hall; the Gatekeeper Dommel over the crossing where every road meets; the Archivist Borath over the records. Then the peers, dukes over marquises over earls, each sworn to a prince or a high lord. Then the three orders. The Chthonic Knights, sworn to Prince Abdin, swore their oaths to the deep earth itself and became the court's soldiery. The Inquisitors, housed in Ba'alorien's north, were given the work of examining the dead and deciding which souls were the Master's portion. The Mutilators, Asmoien's, were given the work of unmaking whatever the Inquisitors condemned. Last of all came the imps, who were written onto the Roll at the very bottom so that every other demon would have something to stand on.",
+   "events": [
+    {
+     "text": "Mythic described the demons as keeping a strict hierarchy based on power; the strongest hold titles and underlings, and the Picullus imps, the weakest, survive by hiding and stealing.",
+     "provenance": "mythic",
+     "source": "https://www.gamebanshee.com/3d68"
+    },
+    {
+     "text": "The bestiary lists princes, high lords, a Grand Chancellor, a Field Marshal, a Chamberlain, a Gatekeeper, an Ambassador, a Director, an Archivist, dukes, marquises, earls, lieutenants, Inquisitors, Mutilators, Chthonic Knights and Lilith the Demon Queen.",
+     "provenance": "mythic",
+     "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+    },
+    {
+     "text": "Collin de Plancy's Dictionnaire Infernal names Adrammelech grand chancellor of hell; the court's Adremal reads as that name.",
+     "provenance": "myth",
+     "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/Classification_of_demons"
+    },
+    {
+     "text": "The Grand Grimoire names Nebiros marshal and inspector general of the infernal hosts; Field Marshal Nebir reads as that name.",
+     "provenance": "myth",
+     "source": "https://en.wikipedia.org/wiki/Grand_Grimoire"
+    },
+    {
+     "text": "'Chthonic' is from the Greek khthon, earth: of the underworld.",
+     "provenance": "myth",
+     "source": "Liddell-Scott, s.v. chthon (to verify edition)"
+    },
+    {
+     "text": "The court counts time by Rolls of Precedence: a new Roll is written whenever a demon of rank is struck off.",
+     "provenance": "original",
+     "source": "Living Server"
+    },
+    {
+     "text": "The First Roll gave the princes their quarters (Abdin north-west, Ba'alorien north, Asmoien west, Nahemah far west), the high lords the east and south, and founded the three orders.",
+     "provenance": "original",
+     "source": "Living Server"
+    }
+   ],
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "grand-chancellor-adremal",
+    "field-marshal-nebir",
+    "gatekeeper-dommel",
+    "archivist-borath",
+    "prince-abdin",
+    "prince-asmoien",
+    "prince-baalorien",
+    "princess-nahemah",
+    "high-lord-baelerdoth",
+    "high-lord-baln",
+    "high-lord-oro",
+    "high-lord-saeor",
+    "chthonic-knights",
+    "inquisitors",
+    "mutilators"
+   ]
+  },
+  {
+   "id": "neu-the-long-feuds",
+   "order": 4,
+   "name": "The Long Feuds (the Second to the Ninth Roll)",
+   "summary": "A court that may not eat its own must find other ways to hate, and the court below found many. The longest feud is between the Blade and the Hook: Prince Abdin's Chthonic Knights and Prince Asmoien's Mutilators. The knights hold that a soul should be taken whole and kept; the Mutilators hold that nothing is improved by being left whole. In the Fourth Roll the two orders met in the crossing that Dommel keeps, and the Gatekeeper, who has never cared who wins anything, closed every road out of it until both sides were too few to matter; the Gate watch has been made of all three orders ever since, so that none can hold it alone. In the Fifth Roll Marquis Chaosmar was found in two halls at once, in Baln's and at the Master's door. Neither would admit to being the copy, and the Chancellor, unable to strike off a demon who had not fallen, wrote both onto the Roll. In the Sixth Roll Marquis Dortaleon died in the east, of what nobody will say, and kept his seat, since nothing in the bargain requires a marquis to be alive. In the Seventh the Queen's chair emptied. The court says only that Lilith is away. The Chamberlain, who kept her door, has kept her chair since, and will not let even the Chancellor sit in it. In the Eighth Roll Duke Harboris came back from somewhere as a ghost, and was allowed to keep his duchy on the same ground as Dortaleon. In the Ninth a great demon of the Master's army acted on a plan of its own before the Master had finished deciding on the same plan, and was not eaten but made smaller, into an imp, so that it would spend forever being stood on. Its name is Mystemas. The Roll it sits on now is the Tenth.",
+   "events": [
+    {
+     "text": "Two spawns of Marquis Chaosmar stand in Darkness Falls, one in High Lord Baln's hall and one near Legion's lair.",
+     "provenance": "game",
+     "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+    },
+    {
+     "text": "Allakhazam's bestiary types Marquis Dortaleon as undead, unlike the other marquises.",
+     "provenance": "mythic",
+     "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+    },
+    {
+     "text": "Duke Harboris spawns with the ghost flag; the other dukes do not.",
+     "provenance": "game",
+     "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+    },
+    {
+     "text": "Lilith the Demon Queen is in Mythic's bestiary; Offline DAoC's world spawns no Lilith.",
+     "provenance": "mythic",
+     "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+    },
+    {
+     "text": "The imp Mystemas says he was once one of the strongest demons in the Master's army, turned into an imp for something he had nothing to do with, because the Master already had a plan.",
+     "provenance": "game",
+     "source": "world data: DataQuest table (Strange Bedfellows)"
+    },
+    {
+     "text": "The Gate watch at the central crossing holds three Chthonic Knights (Exte, Ibeko, Obarus), three Inquisitors (Irawn, Lokis, Medebo) and three Mutilators (Axtanax, Okabi, Zurabo) with Gatekeeper Dommel.",
+     "provenance": "game",
+     "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+    },
+    {
+     "text": "The feud of the Blade and the Hook (knights against Mutilators) broke out in the Fourth Roll; Dommel ended it by closing every road out of the crossing.",
+     "provenance": "original",
+     "source": "Living Server"
+    }
+   ],
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "marquis-chaosmar",
+    "marquis-dortaleon",
+    "duke-harboris",
+    "chamberlain",
+    "gatekeeper-dommel",
+    "chthonic-knights",
+    "mutilators",
+    "prince-abdin",
+    "prince-asmoien"
+   ]
+  },
+  {
+   "id": "neu-the-three-doors",
+   "order": 5,
+   "name": "The Three Doors (the realm wars come below)",
+   "summary": "When Arthur died and the three realms went to war over the frontier, three doors opened into the hollow: one in the castle ruins of Camelot Hills, one in the snow above the Vale of Mularn, one in Connacht. Nobody above knows who opened them. The Chancellor's version, written on the Tenth Roll, is that the court opened them on purpose, so that it could feed on the war instead of waiting for the war to feed it. The doors answer to the frontier. Whichever realm holds more keeps than both the others finds its door unbarred, and the princes keep wagers on which it will be. Each realm built a hall high up behind its own door, and the imps, who will trade with anyone that does not step on them, set up stalls there and sell the court's seals for what the court's seals will buy. Each realm set an aleax at its door to keep the others out of its hall. The court did not wait for visitors. It sent Ambassador Mannam up to the throne of Albion to argue, in a good coat and a borrowed face, that Midgard and Hibernia were the true danger and the hollow under Camelot Hills a curiosity; the imp Mystemas says the ambassador was helping Albion to an early end. It sent a sickness up as well. In each capital the sick woke with their backs burning as if they had slept on coals, and the smell of rotting flesh in the room. Albion's clerics traced it down to the court's kitchen and Malroch the Cook; Midgard's to Lecherous Gress, above the rocot rooms; Hibernia's to Archivist Borath, among the records. Three realms, three culprits, one plague: the court does like a thing done thoroughly. After Malroch died, every demon of the court was promised a reward by the Master for the head of the mortal who had done it.",
+   "events": [
+    {
+     "text": "Only the realm holding more frontier keeps than the other two can open its Darkness Falls portal. Entrances are in Camelot Hills, the Vale of Mularn and Connacht.",
+     "provenance": "mythic",
+     "source": "https://camelot.allakhazam.com/zones.html?czone=62"
+    },
+    {
+     "text": "Each realm's entrance hall inside Darkness Falls has a ring of imp merchants selling for seals, and an aleax guard of that realm.",
+     "provenance": "game",
+     "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+    },
+    {
+     "text": "In 'Strange Bedfellows' Mystemas says the Master sent an ambassador to convince Albion's king that the other realms were a greater threat than Darkness Falls; the quest ends with Ambassador Mannam's death.",
+     "provenance": "game",
+     "source": "world data: DataQuest table"
+    },
+    {
+     "text": "In 'Black Plague' a sickness in each capital (a burning back, the smell of rotten flesh) leads Albion to Malroch the Cook, Midgard to Lecherous Gress above the rocot rooms, and Hibernia to Archivist Borath.",
+     "provenance": "game",
+     "source": "world data: DataQuest table"
+    },
+    {
+     "text": "Mystemas says every demon is promised the Master's reward for the head of the mortal who killed Malroch.",
+     "provenance": "game",
+     "source": "world data: DataQuest table (Strange Bedfellows)"
+    },
+    {
+     "text": "De Plancy's hell sends an ambassador to each kingdom, Mammon to England; the court's Mannam is sent to Albion.",
+     "provenance": "myth",
+     "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/Classification_of_demons"
+    },
+    {
+     "text": "Darkness Falls opened in patch 1.49 (April 2002); access by keep control caused fights between realms.",
+     "provenance": "legend",
+     "source": "docs/bot-voices/PERIOD-CHAT-RESEARCH.md"
+    },
+    {
+     "text": "The Chancellor's Tenth Roll says the court opened the three doors on purpose, to feed on the war.",
+     "provenance": "original",
+     "source": "Living Server"
+    }
+   ],
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "ambassador-mannam",
+    "malroch-the-cook",
+    "lecherous-gress",
+    "archivist-borath",
+    "legion"
+   ]
+  },
+  {
+   "id": "neu-the-proving-fields",
+   "order": 6,
+   "name": "The Proving Fields (the four battlegrounds)",
+   "summary": "The frontier war was too dangerous for recruits. A squire sent to Emain at nineteen came home in a sack, and the three realms lost more young soldiers to the frontier than they could raise. So in the first summer of the fields each realm, without ever agreeing with the others, began to send its young to contested fields that lay away from the great frontier: Thidranki first, a lost farmstead, then the dark wood of Murdaigean and the old wild of Caledon. Each field has the same bones, a portal keep for each realm at three corners and a central keep between them, and each takes soldiers of one age only; the portal stones turn the rest away. When the realms came, the central keeps were already held by renegades, deserters and exiles of all three realms who fly no banner and pay no tithe, under a chieftain or chieftess who keeps the keep's name. The fields have their own history since. In the second winter, the Faste Winter, all three realms marched on Thidranki Faste in the same week, and its renegades walked out of the back gate in the snow; their chieftain went to Dun Murdaigean and took that keep's name, and the Faste has had no lord of its own since. In the third summer the realms counted their youngest dead and opened a fourth field for the youngest of all, the drowned shore of Abermenai. In the fourth summer the spiders of Murdaigean closed its west road for a season, until the three realms' foresters burned it open in the same week. In the fifth autumn the Arawnite headhunters of Caledon set recruits' heads on stakes along the road to Caer Caledon, and the renegades of the caer fought them back into the north, the only time renegades have fought for the realms' dead. The fields keep older tenants too: the tomte and the bwca of Thidranki's farm, and the eldest bwca, Haluka, who remembers it; the goblins of the Black Mountains and the corpse crawlers of Murdaigean's holy wood; the forlorn spectres of the drowned shore; and the Arawnites, who worship the lord of the dead in the hills behind Caer Caledon.",
+   "events": [
+    {
+     "text": "The four period battlegrounds are Abermenai (15-19, Dun Abermenai), Thidranki (20-24, Thidranki Faste), Murdaigean (25-29, Dun Murdaigean) and Caledonia (30-35, Caer Caledon); level is the only limit.",
+     "provenance": "game",
+     "source": "source/server/GameServer/world/BattlegroundBrackets.cs"
+    },
+    {
+     "text": "Each battleground has an Albion, a Midgard and a Hibernia portal keep at the same three places, and its central keep at the same place.",
+     "provenance": "game",
+     "source": "world data: Keep table, regions 250-253"
+    },
+    {
+     "text": "The central keeps start neutral in the release world.",
+     "provenance": "game",
+     "source": "source/tools/release-world-defaults.json"
+    },
+    {
+     "text": "Abermenai came with patch 1.62 (June 2003); Thidranki, Murdaigean and Caledonia were the classic battlegrounds.",
+     "provenance": "legend",
+     "source": "docs/bot-voices/PERIOD-CHAT-RESEARCH.md"
+    },
+    {
+     "text": "The renegades who hold the central keeps are deserters and exiles of all three realms.",
+     "provenance": "original",
+     "source": "Living Server"
+    }
+   ],
+   "places": [
+    "abermenai",
+    "thidranki",
+    "murdaigean",
+    "caledon"
+   ],
+   "bosses": []
+  },
+  {
+   "id": "neu-the-present",
+   "order": 7,
+   "name": "The Living Present (the Tenth Roll)",
+   "summary": "Now the realms go down in force when their doors open, and each capital keeps its own count of which realm brought down which lord of the court first. The court has noticed. Prince Abdin has his Director, Kobil, raising an Army of Shadows in the chambers above the Gate, and the realms' orders have begun to send their best down to break it before it is finished. Mystemas, standing on the bottom line of the Tenth Roll, has started sending mortals after the demons who shamed him, Princess Nahemah and Ambassador Mannam first, and claims to be doing the realms a kindness. The Chancellor has written that whoever kills the Master will find the Master is not one demon and cannot all be killed at once. The Chamberlain keeps the Queen's chair. In the four fields the recruits of all three realms fight the renegades and each other, and the ones who live grow up and go to the frontier, and from the frontier, when their door opens, they come down to the court. The court is aware that it is in this way the last field of all.",
+   "events": [
+    {
+     "text": "In 'Breaking the Blade', Mystemas sends players to kill Director Kobil and then Prince Abdin to break the prince's plans; Hibernia's giver calls it the fight against the Army of Shadows; Midgard's version ends with Legion.",
+     "provenance": "game",
+     "source": "world data: DataQuest table"
+    },
+    {
+     "text": "Raids, the realms' first kills and the Herald's record are Living Server features.",
+     "provenance": "game",
+     "source": "source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs"
+    },
+    {
+     "text": "Darkness Falls has no raid AI in Offline DAoC; the court's named demons have no scripted mechanics.",
+     "provenance": "game",
+     "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+     "text": "The court's present Roll is the Tenth.",
+     "provenance": "original",
+     "source": "Living Server"
+    }
+   ],
+   "places": [
+    "darkness-falls",
+    "abermenai",
+    "thidranki",
+    "murdaigean",
+    "caledon"
+   ],
+   "bosses": [
+    "director-kobil",
+    "prince-abdin",
+    "legion"
+   ]
+  }
+ ],
+ "factions": [
+  {
+   "id": "dark-ones",
+   "name": "The Dark Ones, the court below Darkness Falls",
+   "summary": "The demon court under all three realms, ruled by Legion since the Feast of Thrones and ordered by the Rolls of Precedence (shared id with Albion). The Roll of Precedence, highest first: the Master (Legion); the Throne (Grand Chancellor Adremal, and the Queen's chair, empty, kept by the Chamberlain); the Blood (Princes Abdin, Ba'alorien, Asmoien and Princess Nahemah); the High Lords (Baelerdoth, Baln, Oro, Saeor); the great offices (Field Marshal Nebir, Ambassador Mannam, Gatekeeper Dommel, Director Kobil, Archivist Borath); the peers (eight dukes, eight marquises, nine earls); the three orders (Chthonic Knights, Inquisitors, Mutilators) and the Marshal's lieutenants; the household (Malroch the Cook, Lecherous Gress, the common host); the imps. The Behemoth is on no Roll.",
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "legion",
+    "behemoth",
+    "beliathan",
+    "prince-abdin",
+    "prince-asmoien",
+    "prince-baalorien",
+    "princess-nahemah",
+    "high-lord-baelerdoth",
+    "high-lord-baln",
+    "high-lord-oro",
+    "high-lord-saeor",
+    "chamberlain",
+    "grand-chancellor-adremal",
+    "field-marshal-nebir",
+    "gatekeeper-dommel",
+    "ambassador-mannam",
+    "director-kobil",
+    "archivist-borath",
+    "duke-alloc",
+    "duke-aypol",
+    "duke-bimure",
+    "duke-eligar",
+    "duke-harboris",
+    "duke-sallis",
+    "duke-satori",
+    "duke-zepor",
+    "marquis-almen",
+    "marquis-chaosmar",
+    "marquis-dortaleon",
+    "marquis-focalleste",
+    "marquis-haurian",
+    "marquis-sabonach",
+    "marquis-scottiax",
+    "marquis-valupa",
+    "earl-amagin",
+    "earl-fenex",
+    "earl-glassalab",
+    "earl-ipostian",
+    "earl-mercur",
+    "earl-mermer",
+    "earl-oraxus",
+    "earl-vone",
+    "earl-zhalzhak",
+    "chthonic-knights",
+    "inquisitors",
+    "mutilators",
+    "lieutenants",
+    "malroch-the-cook",
+    "lecherous-gress",
+    "caisha"
+   ]
+  },
+  {
+   "id": "throne-of-legion",
+   "name": "The Throne (Legion's door and its approach)",
+   "summary": "The south-east, from the Chancellor's table to the Master's door. The Chamberlain keeps the door and the Queen's chair; Grand Chancellor Adremal holds the approach with Earl Vone as his clerk; Duke Satori listens for the Master. Legion's Own stand here, the best of every order: Chthonic Knights Fonath, Carabia, Olov and Tamuel, Mutilators Konapher, Oprionach, Samiol, Felrath, Ezerak and Odius, Inquisitor Famuel, Earl Amagin, Marquises Haurian and Valupa and the second Marquis Chaosmar.",
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "legion",
+    "chamberlain",
+    "grand-chancellor-adremal",
+    "duke-satori",
+    "earl-vone",
+    "earl-amagin",
+    "marquis-haurian",
+    "marquis-valupa",
+    "marquis-chaosmar"
+   ]
+  },
+  {
+   "id": "host-of-the-marshal",
+   "name": "The Host of the Marshal (the Hall of War)",
+   "summary": "High Lord Baln's southern hall, where the court's army musters. Field Marshal Nebir commands it from his war table with Lieutenants Gargantan and Loran (Lieutenant Persun is his officer with the knights in the north-west). Dukes Alloc, Aypol and Eligar, Earl Zh'alzhak and the first Marquis Chaosmar hold the hall's seats; Marquis Dortaleon, dead and still seated, keeps the east road out of it; Chthonic Knights Marbos, Zaeber and Exal guard its eastern arch.",
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "field-marshal-nebir",
+    "lieutenants",
+    "high-lord-baln",
+    "duke-alloc",
+    "duke-aypol",
+    "duke-eligar",
+    "earl-zhalzhak",
+    "marquis-chaosmar",
+    "marquis-dortaleon"
+   ]
+  },
+  {
+   "id": "the-gate-watch",
+   "name": "The Gate Watch (the central crossing)",
+   "summary": "Gatekeeper Dommel's crossing below the Albion hall, where every road of the court meets. Since the Fourth Roll it has been held by all three orders together in equal number, so that no order can hold it alone: Knights Exte, Ibeko and Obarus, Inquisitors Irawn, Lokis and Medebo, Mutilators Axtanax, Okabi and Zurabo. The orders send their newest sworn here.",
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "gatekeeper-dommel",
+    "chthonic-knights",
+    "inquisitors",
+    "mutilators"
+   ]
+  },
+  {
+   "id": "eastern-halls",
+   "name": "The Eastern Halls (the High Lords' quarter)",
+   "summary": "The halls of High Lords Oro, Baelerdoth and Saeor, near Hibernia's door. Duke Sallis, Earl Mercur and Marquis Sabonach serve Oro; Duke Harboris (a ghost), Duke Bimure, Earl Fenex and Marquises Focalleste and Scottiax serve Baelerdoth; Duke Zepor, Earl Oraxus and Marquis Almen serve Saeor. The East Ward between the halls is garrisoned by all three orders: Knights Aciel, Ain, Babyzu, Carnivon, Prosel and Zafan, Mutilators Laicanroth, Lazorous, Nianax, Novinrac, Uxybab and Xakanos, Inquisitors Haimir, Hellos, Morg, Morrian, Nej and Yor.",
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "high-lord-oro",
+    "high-lord-baelerdoth",
+    "high-lord-saeor",
+    "duke-sallis",
+    "duke-harboris",
+    "duke-bimure",
+    "duke-zepor",
+    "earl-mercur",
+    "earl-fenex",
+    "earl-oraxus",
+    "marquis-sabonach",
+    "marquis-focalleste",
+    "marquis-scottiax",
+    "marquis-almen"
+   ]
+  },
+  {
+   "id": "inquisition-below",
+   "name": "The Inquisition (the north cloisters)",
+   "summary": "Prince Ba'alorien's north, where the Inquisitors examine the dead and decide which souls are the Master's portion and which may be given to the Blood. Zaviben, Zazinol, Haap and Tlaw keep the prince's own cloister with Earl Mermer; Asil, Eciraum, Hadis, Mucifen, Nifil and Niloc keep the far cloister; Bor and Factol keep the north road where the Inquisitors' way out runs. Malroch the Cook keeps the prince's kitchen above.",
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "prince-baalorien",
+    "inquisitors",
+    "earl-mermer",
+    "malroch-the-cook"
+   ]
+  },
+  {
+   "id": "chthonic-chapter",
+   "name": "The Chthonic Chapter (the Blade of Prince Abdin)",
+   "summary": "Prince Abdin's north-west and the chapter house of the Chthonic Knights, sworn to the deep earth. Gaapoler, Haag and Vosoes guard the prince with Earl Glassalab; Absax, Azea, Zagal, Ronoro, Ukobat and Ezpeth keep the chapter house beyond, with Lieutenant Persun as the Marshal's officer among them. Director Kobil, in the chambers above the Gate, is raising the prince an Army of Shadows; the realms call breaking it 'Breaking the Blade'.",
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "prince-abdin",
+    "chthonic-knights",
+    "earl-glassalab",
+    "director-kobil",
+    "lieutenants"
+   ]
+  },
+  {
+   "id": "mutilators-pit",
+   "name": "The Pit of the Mutilators (the Hook of Prince Asmoien)",
+   "summary": "Prince Asmoien's west and the long pit of the Mutilators, who unmake what the Inquisition condemns. Vorazax, Vozoaz, Yooginroth and Xazbalor guard the prince with Earl Ipostian; Xagalith, master of the order, keeps the pit's head with Namox, Marbozer, Xaabaro and Phaxazis; Oronor and Taboku hold its far south end, near the Mutilators' way out. Lecherous Gress lives above, over the rocot rooms.",
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "prince-asmoien",
+    "mutilators",
+    "earl-ipostian",
+    "lecherous-gress"
+   ]
+  },
+  {
+   "id": "nahemahs-bower",
+   "name": "Nahemah's Bower (the far west)",
+   "summary": "Princess Nahemah's rooms in the far west, with the well in which Caisha drowned and from which she rises, and the apartments of Ambassador Mannam, the court's envoy to the realms above.",
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": [
+    "princess-nahemah",
+    "ambassador-mannam",
+    "caisha"
+   ]
+  },
+  {
+   "id": "picullus-imps",
+   "name": "The imps (the bottom of the Roll)",
+   "summary": "The Picullus imps, too weak to fight, who live by hiding and stealing from their betters (Mythic). The imps with names ending in -o keep the seal stalls in each realm's entrance hall (Debo, Empo, Kodo, Kulo, Meppo, Pico, Suno, Ulo, Uvo for Albion; Hulo, Iago, Iono, Lucifo, Lulo, Marbo, Orto, Thago, Tulo for Midgard; Beelo, Dano, Darbo, Ebo, Godo, Horto, Neno, Wovo, Yojo for Hibernia), with Bolo and Etho. Mystemas, once great in the Master's army, stands among them, demoted.",
+   "places": [
+    "darkness-falls"
+   ],
+   "bosses": []
+  },
+  {
+   "id": "renegades",
+   "name": "The renegades of the proving fields",
+   "summary": "Deserters and exiles of all three realms who hold the central keeps of the four battlegrounds under a chieftain or chieftess named for the keep: Renegade Chieftain Abermenai, Renegade Chieftain Murdaigean, Renegade Chieftess Caledon, with guardians, rangers, commanders, armsmen, huscarls, wizards and runemasters of every realm's training.",
+   "places": [
+    "abermenai",
+    "thidranki",
+    "murdaigean",
+    "caledon"
+   ],
+   "bosses": []
+  }
+ ]
+}

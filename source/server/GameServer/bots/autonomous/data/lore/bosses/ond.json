@@ -1,0 +1,117 @@
+{
+  "id": "ond",
+  "name": "Ond",
+  "npcNames": [
+    "Ond"
+  ],
+  "locationId": "spindelhalla",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "deep-ones"
+  ],
+  "related": [
+    {
+      "id": "fas",
+      "relation": "the other old thing at the bottom, named for dread"
+    },
+    {
+      "id": "igo",
+      "relation": "the chief of the cave trows who hold the deep above them"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Ond is a level-53 creature of the scrag and stone-sheerie model (412), very large (size 149), in the deep of Spindelhalla near the bottom (34055, 28904, 14281), among deeplurk feeders and dissemblers, cave trows and their trollkarl, arachite huskers, lost hagbui and silksters.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Template: aggressive at short range (200), no faction (no bring-a-friend), body type elemental (4).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60164661)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish ond means 'evil'. The Spindelhalla file already names two old things at the bottom 'evil' and 'dread' in the svartalf tongue.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    }
+  ],
+  "story": "At the very bottom of Spindelhalla two old things are said to sit, whom the svartalfar call by words that mean evil and dread, and the svartalfar do not explain the names. Ond is the one called evil. The thralls on the farm above say it is not a spider, and not a svartalf, and not dead, and that it was there before the hall of lamps was cut.\n\nThe svartalfar who cut the hall cut downward from the upper gallery to their works and from the works to the deep roads, and on the deepest road they came on a stone that was warm. The cutters' accounts, as the free svartalfar of Malmohus tell them, say the stone was the size of a house and had a face in it that was not carved. The foreman of the cutters struck it with his pick to see what it was made of, and it got up. It killed the foreman and three cutters, and then it sat down again in the same place, and the svartalfar went round it from then on and cut the road a little wider so as not to touch it. They named it for what it had done, and they cut no deeper on that road.\n\nIt is still there, the thralls say, and the deep has grown up around it the way a town grows round a well. The deeplurks feed near it. The cave trows and their sorcerers keep the passages by it. The lost dead of the hagbui, buried in the roads before the svartalfar came, wander past it and are not troubled. The arachites who rule the farm above do not go down to it; their prelates pray toward the floor, and the thralls say the prayers go to Ond and to the other one, and that when the prayers end the webs shake for a long time.\n\nOnd does not leave its place. It is quick to rise against anything that comes close, as it rose against the foreman, and slow to notice anything that does not; a stranger who keeps his distance on the deep road, the thralls' prayers say, passes it as the cutters did. Those who come close find the stone of the deep, very heavy and very old. The thralls scratch Ond's name on the silk-frames sometimes with a hook beside it, the svartalf mark for a thing that is waiting.",
+  "legend": "Ond is a level 53 elemental (the big rock-sheerie model) near the bottom of Spindelhalla's deep, surrounded by deeplurk feeders and dissemblers, cave trows, cave trow trollkarl, arachite huskers, lost hagbui and silksters. Its aggro range is short (200) and it has no faction, so it never calls anyone and won't notice you unless you get close, but the deep around it is crowded and most of that is aggressive. Clear a path, pull Ond with range to a cleared spot, and fight it there. No special abilities, not CC-immune. It's one of the two old things at the bottom the svartalfar call evil and dread; Fas is the other.",
+  "yells": {
+    "aggro": [
+      "(The great stone rises from the road.)",
+      "(A face that was never carved turns toward you.)",
+      "(The deep shudders as Ond stands.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Ond's stone groans. The webs far above shake.)"
+      }
+    ],
+    "death": [
+      "(Ond settles, and does not rise.)",
+      "(The warm stone goes cold.)"
+    ],
+    "slay": [
+      "(Ond sits down again in the same place.)",
+      "(The road is a little narrower now.)",
+      "(The deep is quiet.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A warm stone the size of a house, with a face.",
+      "The svartalfar cut this road wider so as not to touch it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Far above, the webs of Spindelhalla shake."
+      }
+    ],
+    "realmFirstKill": "Ond, the evil at the bottom, is broken."
+  },
+  "botLines": {
+    "briefing": [
+      "ond is 53, short aggro range, no faction",
+      "the deep round it is crowded, clear a path first",
+      "pull ond to a cleared spot",
+      "no tricks, just a big rock"
+    ],
+    "aftermathWin": [
+      "ond down",
+      "cleared the deeplurks first, fine",
+      "one of the two old ones",
+      "fas next"
+    ],
+    "aftermathLoss": [
+      "pulled a cave trow pack with it",
+      "deeplurks swarmed us",
+      "hagbui wandered in",
+      "too crowded down there"
+    ],
+    "rumour": [
+      "ond is svartalf for evil, it killed the foreman who struck it",
+      "the svartalfar cut the road wider so they wouldnt touch ond",
+      "the arachite prelates pray toward ond",
+      "ond was in spindelhalla before the hall of lamps was cut"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ond",
+    "text": "The old thing at the bottom named for evil: a warm stone with a face that rose and killed the cutters' foreman who struck it. The [deep roads] were cut wider round it. See [deep ones] and [Fas]."
+  },
+  "bookPage": "From the Silk-Frame Prayers, a frame copied for Odell's list: 'To the warm stone at the bottom. We do not ask you to rise. We ask you to stay where you are. The prelates ask you for things; we ask you for nothing; let that count for us. My mother said that her grandmother saw the cutters go round you on the deep road and that you did not move, and that they sang a little song to keep their feet from straying toward you. I do not know the song. I wish I did.' The frame has a hook scratched beside the name, and below it the thrall's own name, twice.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Ond, the evil at the bottom of Spindelhalla, in {minutes} minutes.",
+    "loss": "Ond rose against {raidLeader}'s party from {realm} on the deep road and sat down again after {minutes} minutes."
+  }
+}

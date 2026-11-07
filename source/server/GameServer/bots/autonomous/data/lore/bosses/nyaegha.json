@@ -1,0 +1,131 @@
+{
+  "id": "nyaegha",
+  "name": "Nyaegha",
+  "npcNames": [
+    "Nyaegha"
+  ],
+  "locationId": "gwyddneau",
+  "realm": "Albion",
+  "aliases": [
+    "the demon of marw gwlad"
+  ],
+  "facts": [
+    {
+      "text": "Nyaegha (world spawn): a SINeckBoss demon, level 60, at 349084, 480377 in Marw Gwlad in the east of Gwyddneau; aggro level 0 (it does not attack first), respawn 10 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "SINeckBoss: health 6,000 + 125 per level, 20 resist to every damage type, armour factor 350, 20% absorb; on one landed hit in five it casts a 300 spirit blast on everything within 350 of its target (8 s recast).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/SINeckBossNPC.cs"
+    },
+    {
+      "text": "Lost Stone of Arawn: a player on step 4 who enters the 1,500 circle at 348381, 479838 is told 'This is Marw Gwlad. The ground beneath your feet is cracked and burned, and the air holds a faint scent of brimstone.' and 'Nyaegha ambushes you!': a level 65 Nyaegha (aggressive, fast) attacks, and its death gives the Lost Stone of Arawn to the killer's group. The ambush only comes if no NPC named Nyaegha already exists.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
+    },
+    {
+      "text": "O'honat of Caer Diogel speaks of 'a demon who likes to torture animals and other creatures growing stronger in Gwyddneau'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
+    },
+    {
+      "text": "Marw Gwlad is Welsh for 'dead country'. The name Nyaegha is unglossed (to verify).",
+      "provenance": "myth",
+      "source": "https://en.wiktionary.org/wiki/marw"
+    },
+    {
+      "text": "Nyaegha as the burned patch's tenant, its feeding on pain, the stone as Arawn's fire-stone, the Inconnu's three searchers and the beasts' circle of bones are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "In the east of Gwyddneau there is a patch of ground where nothing grows. The heather stops at its edge as if cut, and inside it the earth is cracked and burned and smells faintly of brimstone, and the lammia of Clifton call it by the old Welsh name of the drowned country's people, Marw Gwlad, the dead country. It was not always dead. The lammia say a stone fell there, in the years before Morgana's war, out of somewhere that was not the sky, and that the ground has been dying outward from it ever since.\n\nThe stone is Arawn's. The Inconnu of the isles, who serve the lord of the dead, have been looking for it for years: Honayt'rt in Wearyall, N'chever on the village's edge, and O'honat in Caer Diogel, who drinks cider politely and does not finish it. They say it is one of the stones of their master's house, a fire-stone that warmed some hall of Annwn, carried off in a war between powers the Inconnu will not name, and dropped. Where it fell, something came to sit on it.\n\nThat something is Nyaegha. O'honat says it is a demon that likes to torture animals and other creatures, and grows stronger by it; the lammia, who have lost cliff-horses to it, say it does not eat what it takes, only keeps it alive as long as it can. There is a circle of small bones round the edge of the burned ground that the yales of the high plain will not cross. Nyaegha squats in the middle, as large as a cart and the colour of a coal, and mostly it does nothing. It does not come out after travellers. It waits, the lammia say, for someone who is looking for the stone, and those it does not wait for; those it goes to meet.\n\nThe Inconnu say it can be hurt by anything, and does not mind much; that its hide turns a share of every kind of blow, and no more than a share. They say also that it does not fight one man at a time. Whoever stands at the shoulder of the one it is striking feels the ground burn under him, now and then, when a blow of the demon's lands true. And they say it is never long gone. The burned ground is its chair, and the stone keeps the chair warm, and when Nyaegha is put down the fire-stone has another tenant before a man could finish his prayer; whether it is the same tenant, the Inconnu say, is a question for their master.",
+  "legend": "There are two Nyaeghas. The one standing in Marw Gwlad in the east of Gwyddneau is a level 60 demon that does not attack first (aggro 0) and respawns in about ten seconds. The Lost Stone of Arawn one is a level 65 that ambushes a player on step 4 who walks into the burned circle, and only that one gives the stone. Both run the same script: about 13,500 to 14,100 health, 20 resist to everything, armour 350, and on one hit in five a 300 spirit blast on everyone within 350 of its target, so spread out and keep only the tank in close. By the script the ambush only spawns if no Nyaegha already exists, and the standing one is inside the circle, so the quest may be blocked while it is up (untested in game): kill the standing one, step out, and walk back in quickly.",
+  "yells": {
+    "aggro": [
+      "You came for the stone.",
+      "Closer. Your pain will warm the chair.",
+      "The dead country welcomes you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Burn, and feed me, burn!"
+      }
+    ],
+    "death": [
+      "The stone... is still warm...",
+      "Another... will sit..."
+    ],
+    "slay": [
+      "Kept.",
+      "Burned into the dead country.",
+      "Your pain was sweet."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Cracked, burned ground. A scent of brimstone.",
+      "A circle of small bones the yales will not cross."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The burned ground of Marw Gwlad flares."
+      }
+    ],
+    "realmFirstKill": "Nyaegha is cast down. The stone of Arawn lies cooling."
+  },
+  "botLines": {
+    "briefing": [
+      "nyaegha, demon in marw gwlad e of gwyddneau. the standing one is 60 and wont aggro, quest one is 65 and ambushes",
+      "13-14k hp, 20 resists, af 350. 1 in 5 hits = 300 spirit aoe around its target. spread, only the tank close",
+      "lost stone of arawn folks: by the script the ambush wont come while the 60 is up. kill it, step out, walk back in",
+      "only the 65 ambusher gives the stone"
+    ],
+    "aftermathWin": [
+      "stone of arawn, got it. honayt'rt can stop looking",
+      "spread out like i said, nobody ate the aoe",
+      "the standing one died in seconds and came back in ten",
+      "o'honat owes us cider"
+    ],
+    "aftermathLoss": [
+      "everyone stood on the tank and ate the spirit aoe",
+      "killed the 60 and got no stone. need the ambush one",
+      "walked in and nothing ambushed us, the standing one was up",
+      "65 demon at 50, ouch"
+    ],
+    "rumour": [
+      "[heard|someone said] the burned ground in marw gwlad is where a stone of arawn fell",
+      "heard nyaegha tortures animals to get stronger and keeps them alive as long as it can",
+      "[heard|someone said] the yales wont cross the circle of bones round the burned ground",
+      "heard there are two nyaeghas and only the one that jumps you has the stone"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "nyaegha",
+    "text": "The demon that sits on the burned ground of [marw gwlad] in the east of [gwyddneau], where a fire-stone of Arawn's house fell and the land has been dying outward from it. The Inconnu have searched for the stone for years. Nyaegha feeds on pain and keeps what it takes alive; it waits for those who come looking for the stone, and goes to meet them. Whoever stands beside the one it strikes feels the ground burn."
+  },
+  "bookPage": "From the Road-Book of Brother Cynog of Caer Diogel. O'honat asked me to come with her as far as the edge of the dead country, because she said she wanted a man of the Church to see what she meant. I saw the burned ground and the circle of bones, a yard wide, all small: hare, fox, yale calf, a cliff-horse's foal. Inside it something the size of a cart sat looking at nothing. It did not come for us. O'honat said that is because we were not looking for the stone; she was, and she stayed at the edge. I asked her what it would do if she stepped over. She said it would come to meet her, and that she would be glad, because then she would know she was close.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} cast Nyaegha down in Marw Gwlad in {minutes} minutes.",
+    "loss": "Nyaegha kept {raidLeader}'s company of {realm} on the burned ground, as long as it could."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn",
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "gwyddneau",
+      "relation": "the burned ground of Marw Gwlad in the east of the isle"
+    },
+    {
+      "id": "coliath",
+      "relation": "the other terror of Gwyddneau, on the height west of Clifton"
+    }
+  ]
+}

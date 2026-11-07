@@ -1,0 +1,228 @@
+{
+  "id": "treibh-caillte",
+  "name": "Treibh Caillte",
+  "realm": "Hibernia",
+  "regions": [
+    224
+  ],
+  "summary": "The caves of the lost tribe, where the ursine keep thralls and patrols in the dark among spiders and stone.",
+  "facts": [
+    {
+      "text": "Region 224 holds ursine patrols, thralls, dwellers, warriors, sorcerers and a shaman, arachnites and arachnids, rock golems, troglodytes, lair worms, merucha and scraggers.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Treibh Caillte is a camp dungeon of the bot system; no Mythic description was found in this pass.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousDungeonPolicy.cs; source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Irish treibh 'tribe' + caillte 'lost': the lost tribe (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Bot chat: 'treibh caillte is a long walk for a short pull'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/dungeons.lines"
+    },
+    {
+      "text": "That the ursine are the lost tribe, and keep their own kind as thralls, is Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "The rocky golems (level 40-42) stand on three teleport stacks of three levels each (around 34,170/30,380, 30,880/32,130 and 30,120/32,640) and say 'Ahh, I feel the power of the stone... through the living rock I send you!'; three seconds later every player within 70 of the golem's point is moved to another level of its stack.",
+      "provenance": "game",
+      "source": "scripts/mobs/HiberniaMobs/RockyGolem.cs (integration/1.2); world data Mob table (packages TreibhPort1a-3c)"
+    },
+    {
+      "text": "Immortal Gift (Kinney and Ascatinius, Connla): kill the befuddled rock golem on the golem teleporters to reach Hervelina; kill Driff Tinel, Ceracor and Pericolias the Dreaded; find the alchemy book in Hursk the Alchemist's room; kill the Dreaded Ursine to reach the forge; use the forge to obtain the Faqist.",
+      "provenance": "game",
+      "source": "DataQuest 'Immortal Gift' (world data)"
+    },
+    {
+      "text": "Region 224 named spawns: Dreaded Ursine (51), King Vian, Hursk the Alchemist, Pericolias the Dreaded, Webweaver (all 43), Ceracor and Thorg (42), Driff Tinel (40), Lair Overseer (39), Helminth (36), Scurry (34) and Hervelina the hermit (34, peaceful); troglodytes run to level 50.",
+      "provenance": "game",
+      "source": "world data Mob table, region 224"
+    },
+    {
+      "text": "Living Server lore: King Vian's line won the old quarrel; the golems as the lost tribe's stairs; Hervelina's list; the forge lit by the first smiths before the split; the firbolg milk-bowl custom.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawn of Treibh Caillte: Scurry (34), a scrag body at full size like the scraggers, at about 32,900/29,500 among earth golems (39-42), lair worms and scraggers near the golem stairs.",
+      "provenance": "game",
+      "source": "world data Mob table, region 224 (read 2026-11-06)"
+    }
+  ],
+  "story": "Treibh Caillte means the lost tribe, or near enough, and Hibernians have argued for generations about which tribe was lost. The firbolg say it was a clan of theirs who went into the hills in a hard winter and did not come out. The elves say it was nobody's tribe at all. The ursine, if anyone asked them, might say it was theirs.\n\nThe ursine are bear-folk, big and shaggy and clever with their hands, and the caves are theirs now. They keep them like a hold. Patrols walk the tunnels in pairs, warriors guard the halls, and sorcerers and a shaman see to the things bear-folk see to in the dark. They also keep thralls, and the druids say the thralls are ursine too: their own kind, collared and worked, though the firbolg who have stood close to them say otherwise. The druids who have looked in say that is the clue. A tribe that enslaves itself is a tribe that has lost something, and the ursine of Treibh Caillte have lost whatever it was that once made them one people. What is left is a hierarchy and a long memory of a quarrel nobody can now name.\n\nAround them the caves go on with their own business. Arachnites spin in the side passages, rock golems stand in the deep galleries where the stone woke up, and lair worms bore through everything. The walk in is long. Most young Hibernians decide, about halfway, that it was not worth it, and then find out that it was.\n\nThe ursine have a king. Vian holds the southern hall with his Lair Overseer at his door and Thorg, his champion, in the passage beside, and he is the clearest answer anyone has found to whose tribe was lost: a king who rules a people half of whom are in collars is a king of a tribe that has already broken. Whatever the old quarrel was, Vian's line won it.\n\nThe caves are not one level but many, stacked like the floors of a house with no stairs, and the stair is the stone. Three times in the tunnels a rocky golem stands on its own patch of floor, and whoever stands there with it is told, in a voice like a cart going over gravel, that it feels the power of the stone, and then the living rock carries them up or down to another level. The ursine use the golems as a house uses its stairs. The druids think the golems were the first thing the lost tribe made, before the quarrel, and that the stone has forgotten everything else but still remembers how to carry its people home.\n\nAbove the golem stairs lives Hervelina, a hermit who came into the caves to be alone and found she was not. She keeps a list. Driff Tinel and Ceracor in the eastern tunnels, Pericolias the Dreaded with his fangs in the far northeast, Hursk the Alchemist in his room on the lowest level with his book, Webweaver in the western dark, Helminth, whom the ursine call the worm, digging under the king's hall, and Scurry, who is everywhere. At the bottom of her list is the forge. Beneath Hervelina's own floor, the Dreaded Ursine stands guard at a forge that the ursine say their first smiths lit, before the tribe split, and that the alchemist Hursk has been trying to understand ever since. What comes out of it, worked in the right order with the right blood and fang, is a thing the alchemists of Connla call the Faqist, and the man who first asked for one called it an immortal gift.\n\nThe rest of the caves have gone on without the ursine. Troglodytes, the oldest people of the rock, keep the deep galleries in numbers the ursine do not like to count. Earth golems and rock golems stand where the stone woke up and stayed awake. Arachnites spin in the side passages, lair worms bore through everything, and the merucha drift in the dark where the troglodytes will not go.\n\nHibernia has never settled whose tribe it was. The firbolg of Lough Derg still leave a bowl of milk at the long tunnel's mouth on the first night of winter, for the clan that went into the hills; the elves of Tir na Nog think that sentimental; the ursine thralls, if anyone asks them, do not answer.",
+  "legend": "A long walk for a short pull, everyone says, and then everyone keeps going. The ursine walk in pairs and their halls are crowded, so pull at the edges. Spiders in the side tunnels. Do not free the thralls: they will not thank you, and their masters will notice. High 30s to low 50s in this world, not the old listing. The rocky golems (40-42) are the stairs: three golem spots, each on three levels, and anyone standing on the spot when one says 'through the living rock I send you!' is moved to another level. Learn the stacks or you will be separated from the group. Immortal Gift (Kinney and Ascatinius in Connla): kill the befuddled rock golem on the teleporters to reach Hervelina the hermit, then Driff Tinel (40) for blood, Ceracor (42), Pericolias the Dreaded (43) for a fang, Hursk the Alchemist's book in his room, then the Dreaded Ursine (51) to reach the forge and make the Faqist. King Vian (43) and the Lair Overseer (39) are together in the south, Thorg (42) beside them. Troglodytes are 50: do not wander into the deep galleries under-levelled.",
+  "atmosphere": {
+    "firstEntry": [
+      "The lost tribe. Whose tribe, nobody remembers.",
+      "Bear-folk patrol the dark in pairs.",
+      "Stairs of living stone. Mind where you stand.",
+      "A king's hall, and half his people in collars."
+    ],
+    "areas": [
+      {
+        "name": "the long tunnel",
+        "x": 35393,
+        "y": 30865,
+        "z": 14990,
+        "radius": 1100,
+        "lines": [
+          "A long walk in. The dark is patient.",
+          "A bowl of milk on the stone. For whom?"
+        ]
+      },
+      {
+        "name": "the golem stairs",
+        "x": 34171,
+        "y": 30378,
+        "z": 15310,
+        "radius": 700,
+        "lines": [
+          "The stone speaks. Then the floor is elsewhere.",
+          "Living rock, carrying its people home."
+        ]
+      },
+      {
+        "name": "Hervelina's ledge",
+        "x": 32304,
+        "y": 32128,
+        "z": 16378,
+        "radius": 700,
+        "lines": [
+          "A hermit's lamp, and a list.",
+          "Hervelina came here to be alone. She was not."
+        ]
+      },
+      {
+        "name": "the forge",
+        "x": 30145,
+        "y": 31358,
+        "z": 16393,
+        "radius": 800,
+        "lines": [
+          "The first smiths' forge. Still warm.",
+          "The Dreaded Ursine guards the fire."
+        ]
+      },
+      {
+        "name": "King Vian's hall",
+        "x": 31639,
+        "y": 35000,
+        "z": 14307,
+        "radius": 1200,
+        "lines": [
+          "King Vian. A king of half a people.",
+          "Thorg stands where the king can see him.",
+          "The Lair Overseer counts the thralls."
+        ]
+      },
+      {
+        "name": "the alchemist's room",
+        "x": 30561,
+        "y": 34189,
+        "z": 12747,
+        "radius": 700,
+        "lines": [
+          "Hursk's room. A book left open.",
+          "Something boring under the floor. Helminth."
+        ]
+      },
+      {
+        "name": "Scurry's tunnels",
+        "x": 32901,
+        "y": 29518,
+        "z": 14736,
+        "radius": 900,
+        "lines": [
+          "Scurry was here. Scurry is everywhere.",
+          "A scrag who thinks every tunnel is a short cut."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "treibh caillte means the lost tribe [i think|says my guild]. nobody agrees whose tribe",
+      "the ursine in treibh caillte keep their own kind as thralls. [thats the lost part|grim]",
+      "firbolgs say treibh caillte was a clan of theirs that [went into the hills|never came back]",
+      "king vian rules the ursine in treibh caillte. [half his people in collars|lost tribe indeed]",
+      "the rocky golems are the stairs in treibh. [stand on the spot and it moves you|through the living rock]",
+      "learn the golem stacks in treibh caillte or [youll get split up|you end up alone on the wrong floor]",
+      "immortal gift sends you down to the forge under the dreaded ursine. [the faqist|long quest]",
+      "hervelina the hermit lives above the golem stairs. [quest npc|nice lady]",
+      "pericolias the dreaded has the fang for immortal gift. [43|northeast]",
+      "hursk the alchemist left his book in his room. [read it|lowest level]",
+      "troglodytes in treibh caillte are 50. [not a 30s spot down there|careful]",
+      "firbolgs leave milk at the treibh tunnel on the first night of winter. [for the lost clan|old custom]",
+      "webweaver is a big spider in the west tunnels of treibh. [43|webs everywhere]"
+    ],
+    "rumour": [
+      "[heard|someone said] the ursine shaman in treibh caillte [knows what the quarrel was|remembers]",
+      "[heard|someone said] the golems in treibh [remember the old tribe|carry the ursine home]",
+      "[word is|heard] the forge in treibh caillte was lit before the ursine split",
+      "[heard|someone said] scurry is [everywhere|faster than you] in treibh",
+      "someone stood on a golem spot by accident and [ended up three floors down|lost his group]",
+      "[heard|someone said] the thralls in treibh never answer when you talk to them",
+      "[word is|heard] helminth is boring under king vians hall",
+      "[heard|someone said] king vian [was a thrall once|has a thrall brother]",
+      "[heard|someone said] scurry is the only thing that ever got out of treibh caillte and came back"
+    ],
+    "tell": [
+      "treibh caillte, the lost tribe caves. ursine, spiders, golems. long walk in, decent once you get there",
+      "where is treibh caillte? shannon estuary side, a long walk in. the tunnel mouth is way out",
+      "is treibh caillte hard? 40s, troglodytes 50 deep down. the golem stairs split groups",
+      "whats in treibh caillte? ursine and their thralls, troglodytes, golems, spiders, worms, merucha",
+      "what quest is in treibh caillte? immortal gift from kinney and ascatinius in connla. ends at the forge",
+      "who is king vian? the ursine king, south hall, 43, with the lair overseer and thorg",
+      "scurry is a 34 scrag by the golem stairs with earth golems and lair worms round him"
+    ]
+  },
+  "loremaster": {
+    "intro": "Treibh Caillte, the lost tribe. The [firbolg] say it was theirs. The caves belong to the [ursine] now, under [King Vian], and they keep [thralls] of their own kind. Its stairs are [golems], and at the bottom there is a [forge].",
+    "topics": {
+      "firbolg": "A clan that went into the hills in a hard winter and did not come out, so the firbolg tell it.",
+      "ursine": "Bear-folk, clever with their hands. Patrols in pairs, warriors, sorcerers, a shaman. They keep the caves like a hold.",
+      "thralls": "Ursine, collared by ursine. The druids say that is what was lost: whatever once made them one people.",
+      "King Vian": "The ursine king, in the southern hall with his Lair Overseer and his champion Thorg. Half his people wear collars. Whatever the old quarrel was, his line won it.",
+      "golems": "The rocky golems are the stairs of the caves. Stand with one on its stone and the living rock carries you to another floor. The druids think they were the first thing the tribe made.",
+      "forge": "Below [Hervelina]'s floor, guarded by the Dreaded Ursine: a forge the first smiths lit before the tribe split. Worked in the right order it makes the Faqist, which Connla's alchemists call an immortal gift.",
+      "Hervelina": "A hermit above the golem stairs who came into the caves to be alone. She keeps a list of who is where, and she will share it with anyone going to the [forge].",
+      "Hursk": "Hursk the Alchemist, on the lowest level. He has spent his life trying to understand the [forge], and keeps his book in his room.",
+      "Scurry": "Hervelina's list of the caves ends, before the forge, with Scurry, who is everywhere. He is a scrag of the rock, one of the scraggers who came down the golem stairs and never learned which floor they were on, and he runs the tunnels by the golems as if every one of them were a short cut. The ursine patrols curse him. The thralls of the east say Scurry is the only creature in Treibh Caillte who has ever found his way out and come back in again, because he forgot something."
+    }
+  },
+  "book": {
+    "title": "Who Was the Lost Tribe?",
+    "pages": [
+      "Three answers, collected at three firesides. A firbolg herder near Lough Derg: they were ours, a clan who went up into the hills to wait out the hard winter, and the hills kept them; we leave milk at the tunnel for them on the first night of winter still. An elven scholar in Tir na Nog: there was no tribe; it is a name for a place where people get lost. A druid who had been inside: go and look at the thralls, and then tell me there was no tribe.",
+      "I went and looked. The ursine keep their own kind in collars, working the deep tunnels while the warriors and sorcerers watch. They do not seem to hate the thralls. They do not seem to see them. The druid says something split the bear-folk long ago, a quarrel so old that neither side remembers what it was about, and the winners kept the losers. That is a lost tribe, he said. Not lost in the hills. Lost to itself. I asked a thrall its name. It looked at the warrior beside it before it looked at me, and then it did not answer.",
+      "The ursine have a king, Vian, and I saw him once from a distance, in the southern hall, with his overseer at his door counting thralls as they passed. He is not a cruel-looking king. That is what stayed with me. He looked like a careful man keeping a house in order, and the order of his house is half his people in collars. His champion Thorg never takes his eyes off the passage. Behind the hall something bores through the rock day and night, a worm the size of a boat, and the king does not seem to hear it.",
+      "Of the stairs. There are none. Three times in the caves a golem of rough stone stands on its own patch of floor and, when you stand beside it, says that it feels the power of the stone and sends you through the living rock, and then you are on another level of the caves entirely. The first time I was alone on the wrong floor for half a day. The ursine use them without thinking, as we use a stair. Ursine children learn which golem goes where before they can walk. I have heard of companies that went down together and came up one at a time.",
+      "Last, Hervelina, who gave me her list and her tea. She came into the caves to be alone and stayed because, she says, someone ought to keep count. She told me of the forge below her floor, which the Dreaded Ursine guards, and which the first smiths of the tribe lit before it split. It is still warm. Hursk the alchemist has worked beside it all his life and is no nearer its secret. She thinks the lost tribe is waiting to be lit again. The men of Connla who send the young down for the Faqist say otherwise. They say the forge is waiting for someone else."
+    ]
+  },
+  "bosses": [
+    "dreaded-ursine",
+    "hursk-the-alchemist",
+    "king-vian",
+    "pericolias-the-dreaded",
+    "webweaver",
+    "ceracor",
+    "thorg",
+    "driff-tinel",
+    "lair-overseer",
+    "helminth"
+  ],
+  "era": "hib-the-old-families",
+  "factions": [
+    "wild-tribes"
+  ]
+}

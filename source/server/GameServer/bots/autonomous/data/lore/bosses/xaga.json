@@ -1,0 +1,148 @@
+{
+  "id": "xaga",
+  "name": "Xaga",
+  "catalogKey": "galladoria/xaga",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. When she spawns, Tine and Beatha (two 50,000-health flying spirits) rise with her; she calls them when attacked and each calls the others.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "She cannot be hurt outside her tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Irish tine means 'fire' and beatha means 'life'.",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "The Hibernian epic raid wiped at Tine on 2026-11-05 (build 8d7baa3).",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    }
+  ],
+  "story": "Xaga was a wise-woman of the Sylvan, a keeper of seeds, and the Root did not have to take her: she came to him. She went down into the hollow to learn what grew there, and she learned. Now she keeps two spirits as other women keep hounds, Tine and Beatha, fire and life, bound to her staff with the old words. They circle her room on the air, and when anyone lifts a hand against her they come at once, each calling the other. The Sylvan say the cruelty of it is in the names. Fire she made to burn. Life she made to empty. The spores of the great cluster nearby were shaken from her staff, and her garden still speaks her magic.\n\nShe was one of the Sylvan's own, and they say her name quietly. Xaga was a seed-keeper, one of the women who kept the seeds of every plant of the isle in her house against bad years, and she was the best of them. She was also curious, and she heard that the hollow grew things no forest had ever grown. A keeper of seeds should know every seed, she said, and went down. She was not taken. She went.\n\nWhat she learned there she keeps. Her staff carries a cold the Sylvan had never seen before, and the spores she shook from it took root in the next gallery and became the great sporite colony. She bound two spirits to herself with the old words, and named them as a mother names children: Tine, fire, and Beatha, life. They circle her room on the air. The moment anyone lifts a hand against her both come down, and each calls the other, and she cannot be harmed outside her own room. In the first years whatever Beatha drained went straight to her mistress, so that Xaga grew whole as her enemies weakened; the Sylvan believe that part of the binding has since broken. A Bri Leith company died at Tine in a later season, before it ever reached her. The Sylvan were not surprised.\n\nXaga, best seed-keeper Domnann ever had, went down willingly to learn the hollow's seeds and was not taken; the warden Ruadhán, her friend, alone survived meeting her and her two spirits, and swore she looked sorry.",
+  "legend": "Xaga never fights alone: Tine and Beatha come as soon as you touch her, and they call each other. Kill the spirits first, fire then life or life then fire, but one at a time, then Xaga. Spread against their bursts. Fight her in her room; drag her out and she cannot be hurt. Kill order matters more than speed. Pick one spirit, kill it, pick the other, kill it, then Xaga. Tanks hold the other two meanwhile, and everyone keeps spread for the bursts. She cannot be hurt outside her room, so whoever pulls her stays in it. Superstition: never step on the sprouts in her floor. They are watching.",
+  "yells": {
+    "aggro": [
+      "Tine! Beatha! To me!",
+      "A keeper of seeds should know every seed.",
+      "You have come into my garden with muddy boots."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "My spirits... you will pay for each of them."
+      },
+      {
+        "trigger": "health<=30",
+        "text": "Everything I planted down here will remember you."
+      }
+    ],
+    "death": [
+      "The seeds... will still grow...",
+      "Tell them in Domnann... I learned everything..."
+    ],
+    "slay": [
+      "Feed the garden.",
+      "Plant this one.",
+      "Fire, life, and a little cold.",
+      "A seed for the garden."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two lights circle the room, fire and something pale.",
+      "Seeds sprout in the cracks, and they are wrong."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "Xaga's spirits are gone. She stands alone."
+      }
+    ],
+    "realmFirstKill": "Xaga's spirits are free. Her garden withers."
+  },
+  "botLines": {
+    "briefing": [
+      "touch xaga and tine and beatha come too. [kill the spirits first|spirits first], one at a time",
+      "fight xaga in her room, outside it shes immune. [no dragging|stay put]",
+      "xaga, tine, beatha all come together. [one spirit at a time|pick one]",
+      "tanks hold the two we are not killing. [keep them off healers|hold them]"
+    ],
+    "aftermathWin": [
+      "xaga and both her spirits down. [good discipline|thats how its done]",
+      "xaga and both her spirits down in order. [discipline|perfect]",
+      "the garden withered when she died. [poor sylvan|it was theirs once]",
+      "tine first, beatha second, xaga last. [thats how its done|grats]"
+    ],
+    "aftermathLoss": [
+      "we split on tine and beatha and [neither died|both killed us]",
+      "wiped on tine again. [split damage|stacked]",
+      "nobody held beatha and she [cooled the healers|froze us]",
+      "dragged xaga out of her room and [she was immune|did nothing]"
+    ],
+    "rumour": [
+      "[heard|someone said] xaga was a sylvan seed keeper who went down to galladoria [on purpose|willingly]",
+      "[heard|someone said] xaga went down to galladoria willingly, to learn",
+      "[word is|heard] xaga named her spirits like a mother names children. fire and life",
+      "the sylvan say xaga's name quietly. [she was one of theirs|a seed keeper]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Xaga",
+    "text": "A Sylvan seed-keeper who went down to the Root willingly. She binds two spirits, Tine and Beatha, fire and life, and they come the moment she is touched."
+  },
+  "bookPage": "The Sylvan do not say Xaga's name loudly. She was one of theirs, a keeper of seeds, and she was not taken. She went. She said the hollow grew things no forest had ever grown and that a keeper of seeds should know them all. When the others went down to find her she was waiting with two spirits at her shoulders, one burning and one pale, and she called them by the words for fire and for life. The pale one was the worse. Aodhan notes: in Domnann they keep her seed-house as she left it, the jars still labelled in her hand, and nobody has opened one since.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to Xaga and her two spirits; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on Xaga and her spirits after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root",
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "tine",
+      "relation": "her bound spirit of fire"
+    },
+    {
+      "id": "beatha",
+      "relation": "her bound spirit of life"
+    },
+    {
+      "id": "giant-sporite-cluster",
+      "relation": "the garden her staff sowed"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "the Root she went down to learn from"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Seed-Keeper of Domnann",
+      "text": "Every Sylvan village keeps seeds against bad years, and in every village one woman keeps them. The seed-keeper's house in Domnann had a jar for every plant on Hy Brasil, labelled in the old script and sealed with wax, and the seed-keeper of Xaga's generation was the best the village ever had. She could tell a seed's age by its smell and its parent by its weight, and she had travelled to every shore of the isle, World's End included, to fill jars nobody else had filled. Lisín the fire-keeper was a girl when Xaga kept the seeds, and remembered being let into the house to see the jars, and that Xaga had a jar for every year as well as every plant, so that the village could plant the seed of a good year in a bad one.\n\nShe was curious, and the Sylvan say curiosity is a keeper's virtue until it is not. When the hollow had grown and the first reports came up of things growing there that no forest had ever grown, Xaga said what everyone in Domnann remembers her saying: that a keeper of seeds should know every seed. The elders forbade her. She went down anyway, with her staff hung with pouches of seed and spore, to see what the hollow would make of them.\n\nShe was not taken. The Sylvan are careful about that word with her and with nobody else. The others were taken, bent, turned. Xaga went. The Sylvan say it softly."
+    },
+    {
+      "title": "What Grew for Her",
+      "text": "She sent one message back up, cut on a strip of driftwood and left at the mouth of the hollow, and the fire-keepers of Domnann keep it still. It says that she has found a gallery where everything grows, that the pale spore-cap of the World's End shore has become a garden, and that it is the first thing in the hollow that has grown for her rather than for the Root. That garden is the Giant Sporite Cluster, and its cold is the cold of her staff.\n\nShe did not come back up. The Sylvan sent three wardens down after her in the second season, led by a warden named Ruadhán who had been her friend, and Ruadhán alone came back. He said she was waiting for them in a room off the western galleries with two lights circling her on the air, one burning and one pale, and that she had greeted him kindly and asked after the jars. When the other two wardens drew their blades, the lights came down. Ruadhán said she called them by name as they came, as a mother calls children: Tine, which is fire, and Beatha, which is life. He said the pale one was the worse.\n\nHe said one other thing that the Sylvan have never been able to settle. He said that when she sent the spirits at his friends, she looked sorry. Ruadhán was one of the two travellers she once sat beside through a storm above World's End, and the only one who lived; he always thought she had recognised him. He went to his grave believing it."
+    },
+    {
+      "title": "Fire and Life",
+      "text": "Every company of the realm that has reached her has met her as Ruadhán did. She cannot be harmed outside her own room, as if the room were part of her; she does not leave it. The moment anyone lifts a hand against her, both spirits fall from the air, and each calls the other, and she calls them both. Tine bursts in a ring of heat; Beatha empties the warmth out of everything near her in a ring of cold. In the first years whatever Beatha drained went straight to her mistress, so that Xaga grew whole as her enemies weakened, and nobody could finish her; that is no longer so, and the Sylvan believe the pale spirit has been cut down so often that that part of the binding has broken.\n\nA company of Bri Leith that went down in a later season died at Tine, the fire, before it ever reached Xaga; its two survivors said they had struck at both spirits at once and finished neither. Their captain's shield hangs in the seed-house at Domnann, the one thing in it that is not a jar. The Sylvan were not surprised. They said Xaga always did know how to keep two things growing at once, and that a seed-keeper who waters two rows never lets either go dry.\n\nThe garden stirs when she is threatened, the wardens say, the blooms turning toward her room as plants turn toward light. The Sylvan say it is the only thing in the hollow that would mourn her."
+    },
+    {
+      "title": "The Jars",
+      "text": "Xaga's seed-house in Domnann is kept exactly as she left it. The jars are still on their shelves, labelled in her hand, the wax unbroken. Nobody has opened one since she went down, and the Sylvan have not chosen a new seed-keeper; the village keeps its seeds in the fire-keeper's house now, in a few plain baskets. Lisín told Aodhan that the village will not choose a new keeper while the old one lives, and that Xaga lives, whatever she has become.\n\nThere are two readings of her among the Sylvan, and they divide families. One holds that she is the Root's creature entirely, that her curiosity was the crack the sap came in by, and that her message on the driftwood is a lure, meant to bring more seed-keepers down. The other holds that she went down to learn the hollow's seeds in order to save the isle from them, that she is still trying, and that the garden that grew for her rather than for the Root is proof that she has kept something of herself. Ruadhán held the second reading until he died, because of the look on her face.\n\nEach time she falls, the Sylvan go to the seed-house and stand outside it, and the oldest of them goes in and touches one jar, the jar for the year Xaga went down, and comes out again. They say it is to tell the seeds she is not dead yet. She is always found again, and the jar is never opened."
+    }
+  ]
+}

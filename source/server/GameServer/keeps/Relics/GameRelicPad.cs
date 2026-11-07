@@ -158,6 +158,8 @@ namespace DOL.GS
             {
                 string message = LanguageMgr.GetTranslation(ServerProperties.Properties.SERV_LANGUAGE, "GameRelicPad.MountRelic.Stored", relic.CurrentCarrier.Name, GlobalConstants.RealmToName(relic.CurrentCarrier.Realm), relic.Name, Name);
 
+                if (GameWideAnnouncements.Enabled(AnnouncementKind.RvrBattleground))
+                    LoreAtmosphere.NoteNews();   // realm news: atmosphere lines wait (Living Server 1.2)
                 foreach (GamePlayer otherPlayer in GameWideAnnouncements.Enabled(AnnouncementKind.RvrBattleground) ? ClientService.Instance.GetPlayers() : [])
                 {
                     otherPlayer.Out.SendMessage(LanguageMgr.GetTranslation(otherPlayer.Client.Account.Language, "GameRelicPad.MountRelic.Captured", GlobalConstants.RealmToName(relic.CurrentCarrier.Realm), relic.Name), eChatType.CT_ScreenCenterSmaller, eChatLoc.CL_SystemWindow);

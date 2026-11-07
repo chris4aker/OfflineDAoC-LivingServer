@@ -1,0 +1,134 @@
+{
+  "id": "beatha",
+  "name": "Beatha",
+  "catalogKey": "galladoria/beatha",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 67, 50,000 health, spawned by Xaga; a flying spirit whose Beatha's Void deals 450 cold over a 450 radius.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Originally Beatha's damage healed Xaga for twice its amount; that is removed for Living Server raids and kept behind a switch.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Irish beatha means 'life'.",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Beatha is the life Xaga bound, and the Sylvan think her the cruellest thing in the seed-keeper's room. She was the green force that pushes a shoot out of a seed, and Xaga turned her inside out. Now what she touches does not grow; it empties, a void of cold that leaves the living a little less alive. In the old telling the life she took went straight to her mistress, and Xaga drank it and was whole. Whether or not that is still so, Beatha circles the room on the air beside her sister Tine, and comes down the moment Xaga is touched.\n\nBeatha was the green force that pushes a shoot up out of a seed, the Sylvan say, the life in a thing that wants to live. Xaga, keeper of seeds, knew that force better than anyone, and when she went down into the hollow she learned to turn it inside out. She bound it as she bound Tine, with the old words, and named it Beatha, life.\n\nInside out, life empties. What Beatha touches does not grow; it goes cold and thin, a void of cold that spreads from her in a ring and leaves everyone in it a little less alive. In the old tellings what she took went straight to her mistress, so that Xaga drank her enemies' strength through her spirit and grew whole; the Sylvan believe that binding has since broken, and that Beatha now keeps what she takes. She circles the room with her sister and comes down the moment Xaga is touched. The Sylvan think Beatha the cruellest thing in the hollow. Not for what she does, but for what she was.\n\nBeatha is the green force of life that Xaga turned inside out; Xaga also carried down a seed of the great oak of Cluain Dara, and the Sylvan believe the shoot that grows in her room when Beatha dies is that seed.",
+  "legend": "The pale one. Her cold burst hits everyone near her: spread out and keep cold resists up. The old guides said every hurt she did healed Xaga twice over, so veterans still kill her before Xaga out of habit. She comes with Tine and calls her. Cold resists on the healers above all, because her void hits whoever stands near, and a cold healer is a dead healer. She holds low enough for melee while she fights. Superstition: look at the floor when she dies. Something green will grow there. Sylvan raiders always stop to look, and the raid always waits for them.",
+  "yells": {
+    "aggro": [
+      "The pale spirit drops without a sound.",
+      "The pale spirit drops without a sound.",
+      "Life? Here. Take what is left of it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Cold pours out of Beatha like breath."
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Tine is out. Then I will be cold enough for two."
+      }
+    ],
+    "death": [
+      "The pale light fades. Something green stirs.",
+      "Something green stirs in a crack in the stone."
+    ],
+    "slay": [
+      "Emptied, and given to my mistress.",
+      "Emptied.",
+      "Given to my mistress.",
+      "A little less alive. Then not at all."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A pale light circles. The air goes thin.",
+      "A pale light circles. The air goes thin."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Beatha's void drinks the warmth from the room!"
+      }
+    ],
+    "realmFirstKill": "Beatha is unbound. Life returns to life."
+  },
+  "botLines": {
+    "briefing": [
+      "beatha is the pale one, cold burst. [spread|dont clump]. kill her before xaga",
+      "beatha is cold, cold resists up esp healers. [her void hits everyone near|spread]",
+      "old habit, kill beatha before xaga. [habit|always]",
+      "shes pale and quiet, dont lose track of her. [watch the pale one|eyes on beatha]"
+    ],
+    "aftermathWin": [
+      "beatha down. [the room felt warmer after|swear the air came back]",
+      "beatha down and something green grew in the floor, saw it. [nice|sylvan were right]",
+      "cold resists did their job. [spread works|grats]",
+      "both spirits gone, xaga is alone. [finish her|go]"
+    ],
+    "aftermathLoss": [
+      "beatha's cold went through the whole raid. [resists next time|spread out]",
+      "her void froze the healers. [cold resists|spread]",
+      "split damage between beatha and tine, [neither died|wipe]",
+      "nobody held her and [she drifted over the casters|bad]"
+    ],
+    "rumour": [
+      "[old guides said|someone told me] beatha's hits used to heal xaga [double|twice over]",
+      "[heard|someone said] beatha was the life in a seed before xaga turned her inside out",
+      "[old guides said|my guild leader swears] beatha's damage used to heal xaga double",
+      "the sylvan think beatha the cruellest thing in galladoria"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Beatha",
+    "text": "Xaga's other spirit, life turned inside out. What she touches empties into cold. The old tales say what she took went to her mistress."
+  },
+  "bookPage": "Aodhan writes: the Sylvan word for life is Beatha, and it is the first word their children learn after mother. Xaga, who kept the seeds of the isle, knew life better than anyone, and in the hollow she learned to turn it inside out. Her pale spirit carries the name still. Where she touches, the warmth goes out of things and they grow thin. The fire-keeper would not speak of her for a long time. Then she said: when the realm kills that one, look at the floor. Something green will be growing in the cracks. That is what she was. Let it grow.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to Beatha, Xaga's pale spirit; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on Beatha, Xaga's pale spirit after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "xaga",
+      "relation": "her mistress"
+    },
+    {
+      "id": "tine",
+      "relation": "her sister spirit"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Green Force",
+      "text": "The Sylvan word beatha means life, and it is the first word Sylvan children learn after mother. To the Sylvan it means something more particular than breath: the green force that pushes a shoot up out of a seed, that closes a cut in bark, that makes the springs run. Seed-keepers work with it every day. A seed is beatha asleep, the Sylvan say, and a seed-keeper's whole craft is to keep it asleep until the right spring.\n\nXaga knew the green force better than anyone in Domnann. The Sylvan say she could feel it in a jar of seed through the clay, and tell which jars were dying. When she went down into the hollow she took with her, besides the embers of the wanderer's fire, a single seed of the great oak of Cluain Dara, the oak meadow, the oldest tree in Domnann before the slip took it down. She told the elders she meant to plant it in the dark, to see whether the green force could grow where the Root was. The elders said the green force could not. She said she would find out. The elders did not stop her. They have been arguing ever since about whether they should have, and the arguing is part of why the village has never chosen a new seed-keeper: nobody wants the charge of deciding what a seed-keeper may and may not go to learn. She carried the seed in a pouch at her throat. Lisín saw her tie it on."
+    },
+    {
+      "title": "Turned Inside Out",
+      "text": "What she found was a way to turn the green force inside out. The Sylvan do not know how. They know what came of it: a pale spirit, circling Xaga's room on the air beside the fire, that she bound with the old words and named Beatha, life. Inside out, life empties. What Beatha touches does not grow; it goes cold and thin, a void of cold that spreads from her in a ring and leaves everyone in it a little less alive. Ruadhán said it was the pale one that killed his friend Ailbhe, and that Ailbhe did not burn or bleed, but simply grew cold and grey and sat down, as the third shepherd sat down in the grass of Sheeroe in a story the Sylvan had heard from Hibernian traders.\n\nIn the old telling, and in the oldest fights, what Beatha took went straight to her mistress. Xaga drank her enemies' strength through her spirit and grew whole as they weakened, so that nobody in the first years could finish her. The Sylvan believe the binding that fed Xaga has since been broken by the number of times the pale spirit has been cut down, and that Beatha now keeps what she takes, which they say is worse. While she is fought she holds low over the floor, close enough for a warrior's blade; when nothing engages her she circles. Ailbhe's name is on the list. He never went back to Sheeroe to see if the story was true."
+    },
+    {
+      "title": "The Cruellest Thing",
+      "text": "The Sylvan think Beatha the cruellest thing in the hollow, and Lisín explained why to Aodhan in a single sentence: not for what she does, but for what she was. The Root's other servants were taken from things that were never kind: stone, the cave-folk's digging, a miser's keeping. Beatha was taken from the kindest thing the Sylvan know, and turned against them. Sylvan mothers do not use her name; the word they teach their children for life is the same word, and they are afraid of the children confusing the two.\n\nThe void falls on everyone near her. She is quiet, and her light is faint beside the fire's, and in the confusion of Xaga's room she is the one the eye slides past until the cold arrives. Ruadhán always said that Ailbhe died without making a sound, and that Beatha made none either. Her quiet is what the realm remembers most about her, more than the cold: in a room full of fire and shouting, the one thing that never makes a noise is the one that empties a body of its warmth. The wardens say frost creeps over the stone around her before the void falls, as it whitens a field before a hard night, and the Sylvan call that frost her breath. Ailbhe, Ruadhán said, was looking up at the fire when it came, and never saw the floor. Sylvan mothers who must speak of Beatha at all call her the pale one, the name the wardens gave her after Ailbhe died."
+    },
+    {
+      "title": "Something Green",
+      "text": "When Beatha falls, the Sylvan ask everyone in the room to look at the floor. Something green is growing there, in the cracks of the stone of Xaga's room: a single shoot, pale but green, where nothing has grown in an age. The Sylvan believe it is the seed of the great oak of Cluain Dara, the seed Xaga carried down to plant in the dark, and that it grows a little every time the spirit is freed, and is cut back every time she returns. The Sylvan who go down with the companies always stop to look, and the companies have learned to wait for them.\n\nThe Sylvan have a hope about it, which Aodhan wrote down carefully. They say that one day the shoot will not be cut back: that the realm will free Beatha one time too many for the binding to hold, and the oak will root, and grow, and break up through the roof of the hollow into the empty valley of Cluain Dara above, where the slip has never closed. The valley is kept empty for it. The earth-tenders' names are called at the bridge for the same reason.\n\nThe druids of Tir na Nog say a seed cannot grow in the dark, and that the shoot is the hollow mocking them. The Sylvan say Xaga always believed it could, and that whatever else she was wrong about, she was right about seeds. Aodhan wrote that he looked, too. He said the shoot was no longer than his thumb, and pale, and that it leaned toward the door."
+    }
+  ]
+}

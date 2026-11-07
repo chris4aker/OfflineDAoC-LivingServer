@@ -1,0 +1,135 @@
+{
+  "id": "lieutenant-meade",
+  "name": "Lieutenant Meade",
+  "catalogKey": "hall-of-the-corrupt/lieutenantmeade",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Lieutenant Meade, level 50, 5,000 health; Aching Curse pulses around him (radius 350) and lowers the melee damage of everyone inside by 21%.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantMeade.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Meade's Aching Curse is a pulsing spirit melee-damage debuff of 21 in a 350 radius around himself (range 0); he slams a target that is not stunned or stun-immune and, once it is stunned, steps to its side for his side style. Level 50, 5,000 health, template tether 1,300.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantMeade.cs"
+    },
+    {
+      "text": "Meade's Old Sarum wrestling ('the knock and the turn'), his name-day verses, the herb box, his last verse and its four readings, and Long Dale's thyme are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Lieutenant Meade was the best wrestler at the Old Sarum midsummer fair for four summers, a shield-bearers' game of the knock and the turn: ring a man's head with the board, step to his side while it rings, put him down from where he cannot see. The fair's rolls say he was never in front of a man when the man fell. He also wrote verses, badly, from boyhood, and the abbot gave up whipping him and taught him to spell. He came north with the Salisbury Plains levies in Lord Gildas's sixth year, and was the only officer ever to put Captain Atwell on the flags.\n\nFor fourteen years he sat at the head of the sergeants' card table in the middle corridor and wrote a verse for every name-day; the clerk Tobias copied them into his reports because they were what the watch was like (Darryn's voice, Bardalph's questions, Darra's sickroom rhymed with quick doom). He grew thyme and rue in a box on the sill for the sickroom. He was the watch's cheerful man, so when the despair of the last winter settled on him first the hall noticed at once: the verses stopped, the thyme went grey, and the men at his end of the table could not lift their cups.\n\nHis last verse asks his friends to keep from his elbow when he is low. The Camelot loremasters read it as a warning to keep their distance, the Church as a confession, the bards sing it backwards, and Old Sarum's fair judges say it is a turner's verse: do not let the turner reach your side while your head is ringing.\n\nHe keeps the card table still, between Reede's stair and Saxe's corridor, dazing a man with his shield and striking from his side, the cloak of the last winter heavy on all who crowd him. Long Dale companies leave a pot of thyme on his sill when he falls; it is always grey when the next company comes.",
+  "legend": "Meade is a sword-and-shield lieutenant, level 50, 5,000 health. His Aching Curse is not on his target: it pulses all fight in a small ring around HIM (350), and everyone inside it does about a fifth less melee damage. Keep the group outside the ring and let casters and archers do the work; only the tank needs to be in reach. He opens with a shield slam to stun, and once his target is stunned he steps round to its side and hits it with a side style, so a stun-immune tank (or a purge) takes most of the sting out of him; against a stun-immune target he only taunts. He takes a third less from melee anyway. Sergeant Reede's stair and Lieutenant Saxe's corridor are each only about 530 away, so fight him by his table and keep the fight from sliding toward either. Drawn off his post he cannot be hurt. Long Dale folk leave thyme on his sill.",
+  "yells": {
+    "aggro": [
+      "Why fight? Why does anyone fight?",
+      "You feel it too. Do not pretend.",
+      "Put down your sword. It is heavy."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Why do you keep fighting? Why?"
+      }
+    ],
+    "death": [
+      "There was... a reason... once...",
+      "I wrote it down... I forget where..."
+    ],
+    "slay": [
+      "Back to your post. Forever.",
+      "There. Rest.",
+      "It was never worth it.",
+      "You feel lighter now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A box of grey soil on the sill. Nothing grows.",
+      "Your arms feel heavy here. You do not know why."
+    ],
+    "phases": [],
+    "realmFirstKill": "Lieutenant Meade is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "meade's aching curse is around him, 350 radius, melee does 21% less inside. stay out of it",
+      "he slams to stun then steps to your side. stun immune tank makes him easy",
+      "casters and archers on meade, melee stays back",
+      "reede and saxe are both close, keep the fight at his table"
+    ],
+    "aftermathWin": [
+      "lieutenant meade down, one less on the watch",
+      "meade down. i feel better already",
+      "quick kill, no despair",
+      "he finally stopped asking",
+      "on to the captains"
+    ],
+    "aftermathLoss": [
+      "someone dragged him off his post again. immune out there",
+      "everyone stood in the curse and did nothing",
+      "slid toward the stair and got reede too",
+      "tank got stunned and flanked over and over"
+    ],
+    "rumour": [
+      "heard meade in the hall of the corrupt saps your will to fight",
+      "[someone said|heard] meade wrote a verse for every man in the watch",
+      "heard the long dale folk leave thyme on meade's windowsill",
+      "keep from my elbow, meade's last verse. [the old sarum folk say its about wrestling|nobody agrees what it means]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "meade",
+    "text": "Lieutenant Meade was the Old Sarum wrestler and bad poet who kept the card table of the Pennine watch. The despair of the last winter settled on him first, and his [last verse] asks his friends to keep from his elbow. See also [Saxe], who kept away, and [Lady Darra], who used his herbs."
+  },
+  "bookPage": "Lieutenant Meade asks me to set down his words exactly, so I do. 'The men have lost the will to fight, and cannot say why. I have asked each of them. They say their arms are heavy. They say the road looks very long. They say they do not see the point of a watch when nothing comes. I feel it myself. I find I sit at my desk with the pen in my hand and do not write. I do not know what it is. If it is a sickness, it is not of the body. If it is an enemy, it is already inside.'",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Lieutenant Meade from the Pennine watch in {minutes} minutes.",
+    "loss": "Lieutenant Meade held the post against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "lieutenant-saxe",
+      "relation": "kept away from his table and kept the strength of his arm"
+    },
+    {
+      "id": "sergeant-reede",
+      "relation": "her stair is a few strides from his table"
+    },
+    {
+      "id": "lady-darra",
+      "relation": "grew her herbs; rhymed her sickroom with quick doom"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Wrestler of Old Sarum",
+      "text": "Before he was a lieutenant of the Pennine watch, Meade was the best wrestler at the Old Sarum midsummer fair for four summers running, and the fair still has the post he was tied to as a boy so that he would stop throwing his brothers.\n\nOld Sarum's wrestling was not the Cornish kind, all grips and patience. It was a shield-bearers' game, played by the levies of the plain with a small round board strapped to the forearm, and the trick of it was the knock and the turn: you struck your man with the board so that his head rang, and while it rang you stepped round to his side and put him down from there, where he could not see you coming. The plainsmen called a man who could do it in one movement a turner. Meade was the best turner Old Sarum had seen in a generation. The fair's judges wrote, in the rolls the abbey keeps, that he was never in front of a man when the man fell.\n\nHe was also, the rolls say, a boy who wrote verses on the abbey's wax tablets when he should have been learning his letters, and the abbot had him whipped for it twice and then gave up and taught him to write properly, because a boy who would write verses anyway might as well spell them. Meade wrote verses for the rest of his life. Most of them were bad. He knew it, and said so, and wrote them anyway.\n\nHe came to the Pennines in Lord Gildas's sixth year, with a draft of Salisbury Plains levies, and was a sergeant in two years and a lieutenant in five, keeping the middle corridor where the lieutenants' card table stood. Captain Atwell, who ran the practice yard, said that Meade was the only officer who had ever put him on the flags, and that he had done it by hitting him with a shield, which was not fair, and then being beside him, which was not possible."
+    },
+    {
+      "title": "Verses at the Card Table",
+      "text": "For fourteen years Lieutenant Meade sat at the head of the sergeants' card table in the lieutenants' corridor, as the senior officer who played, and wrote a verse for every man of the watch on his name-day.\n\nThe clerk Tobias copied many of them into his reports to the Constable, for no reason the Constable's office could see; Tobias wrote once, in a margin, that the Constable ought to know what the watch was like, and the verses were what it was like. They survive. They rhyme badly and scan worse, and they are full of the watch: Sergeant Darryn's voice, which Meade rhymed with the bell at the inner gate; Captain Bardalph's three questions; the Lady Darra's sickroom, which he rhymed with quick doom and was made to rewrite. A verse for the clerk himself rhymes Tobias with nobody, and Tobias copied that one too.\n\nMeade kept a box of herbs on the sill of the corridor window, where the only daylight in the middle of the hall came down a shaft from the hillside. Thyme, rue, a little mint; the dalesmen brought him cuttings from Long Dale, and he grew them for the sickroom, and Lady Darra used them. In summer the corridor smelled of thyme, and the sergeants said they played better for it.\n\nHe was the watch's cheerful man, and the watch relied on him for it more than anyone said until he stopped. That is why, in the last winter, when the despair came up the road and settled on him first, the hall noticed so quickly. His verses stopped. The thyme in the box went grey. The men who sat at his end of the table found that they could not lift their cups without both hands, and the men who kept away from him did not. His last report to the Constable, which Tobias took word for word, says that he did not know what it was, and that if it was in him he would rather it stayed in him than went into his men."
+    },
+    {
+      "title": "The Last Verse",
+      "text": "Lieutenant Meade wrote one more verse in the last winter, and nobody agrees what it means.\n\nTobias copied it into his report on the night before the last, beneath Meade's prose report and without comment. It has no name-day and no name. It is four lines. The first says that a heavy heart is a cloak. The second says that a cloak is warm only to the man who stands inside it. The third and fourth are the ones the realm argues over: keep from my elbow, friend, when I am low; I would not have you carry what I carry.\n\nThe Camelot loremasters read it as a warning, plainly meant: that Meade knew the despair lay on whoever stood near him, and was telling his men to keep their distance. They point to Lieutenant Saxe, who never sat at the table and kept the strength of his arm to the last night. The Church reads it as a confession, and the priests at Old Sarum preach it at Lent: a man who knows his sorrow is catching, asking his friends to leave him alone with it, which is the sin of despair and also, the priests admit, a kind of courage. The bards of Camelot have set it to music, and they sing the last line differently, so that it says the opposite: I would have you carry what I carry. The bards say that is what the Summoners did to the verse when they kept him.\n\nOld Sarum's fair judges keep a fourth reading, which nobody outside the plain has heard of. They say the verse is a turner's verse. A turner, the plainsmen say, does his work from the elbow: the knock comes from in front, and the fall from the side. Keep from my elbow, at Old Sarum, means only what it has always meant at the fair. Do not let the turner reach your side while your head is ringing."
+    },
+    {
+      "title": "The Grey Box",
+      "text": "Lieutenant Meade is at the head of the card table in the middle corridor still, with Sergeant Reede's stair a few strides away and Lieutenant Saxe's corridor a few strides the other way, and the box of herbs on the sill beside him holds grey soil and nothing else.\n\nThe companies who have gone down say he fights as he wrestled. His shield comes first, and a man it strikes stands dazed, and by the time his head has cleared Meade is at his side and striking from there, where his shield is not. A man who cannot be dazed gets the plain edge and Meade's voice in his face, calling him back. And all the while the cloak of the last winter lies round him, so that everyone who stands close finds their arms heavy and their blows soft, and everyone who stands back does not. The companies who keep their distance and use the bow and the staff say he is the easiest officer in the hall. The ones who crowd him say he is the worst.\n\nHe talks while he fights, the companies say, quietly, and always the same question: why anyone fights at all, since nothing comes up the road. The Inconnu, who rarely say anything about the Pennine watch, told a reader of Caer Gothwaite that it is not a question. It is the first line of a verse he has never finished, and he is still looking for the rhyme.\n\nThe dalesmen of Long Dale send him cuttings still. A Long Dale company going down the road carries a pot of thyme from the dale, and leaves it on the sill by the grey box when the lieutenant has fallen, and every company that comes after finds the pot there, empty and dry, with the thyme gone grey in it. The dalesmen go on sending it. They say a man who wrote a verse for every name-day in the watch is owed one thing that grows."
+    }
+  ]
+}

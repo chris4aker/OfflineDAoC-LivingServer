@@ -1,0 +1,129 @@
+{
+  "id": "high-lord-baelerdoth",
+  "name": "High Lord Baelerdoth",
+  "catalogKey": "darkness-falls/highlordbaelerdoth",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "High Lord Baelerdoth: NPC template 60162129 (level 80), 100,000 health, GetResist 40 melee / 70 other, CC immune; below 25% health every hit he takes makes him cast Aura of Baelerdoth (armour absorption -15 for 20 s, radius 350 around his target).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaelerdoth.cs"
+    },
+    {
+      "text": "The twelfth chair, the drawing-in, Duke Harboris drawn out to a ghost, the East Ward as Baelerdoth's idea, Dame Tegan Fras and Sir Cadell's hauberk are Living Server writing; the softened hauberks and the thirsty wounded lord are from the Darkness Falls file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Eleven knelt at the Feast of Thrones, and High Lord Baelerdoth says there should have been a twelfth chair for the Blood, and that it was his. He knelt early, after Adremal, and was not made Blood; the Inquisitors say the Master likes his house square, the knights say he asked, the imps say he was too strong to be given more rank. The First Roll set him first among the High Lords, nearest to the Blood that is not Blood, and he keeps the coldest hall in the hollow as a prince would, with a chair the Chancellor has measured twice. The Church calls him the court's Lucifer.\n\nHis strength is a drawing-in, kept close about him while he is whole, as a miser keeps his purse inside his coat. Then he is hurt deep, and the coat comes open: near his end every wound he is given draws something out of the men around whoever he is fighting, into their armour first, rings softening and plates dulling from the first blow and staying so while the blows keep landing, so that a company that presses him slowly at the end pays for every moment. It passes off in time, but not while he is still being struck. Duke Harboris, a ghost, stood too close once in the long feuds and was drawn out to nothing but his place on the Roll; the rest of the cold hall keep a stride from whomever their master fights.\n\nThe East Ward between the three eastern halls was his idea, held by all three orders under his Duke Bimure, which made him keeper of the peace between them; Oro has never forgiven him. Hibernia, whose door is nearest, has the most songs.\n\nDame Tegan Fras of Camelot Hills fought him as any lord for most of a night, then had a horn blown when he weakened badly, and every man spent everything at once while her knights drew back a stride. The last of him went in less time than the office for the dead. Sir Cadell's softened hauberk is the armourers' pattern at Camelot.",
+  "legend": "High Lord Baelerdoth is level 80 with 100,000 health, CC immune, 40% melee / 70% other reduction, and a plain melee fight until he drops below 25%. From then on, every single hit he takes makes him cast Aura of Baelerdoth: -15 armour absorption for 20 seconds on whoever he is fighting and everyone within 350 of them. Every hit refreshes it, so the tank's armour stays melted for as long as you keep hitting him. Save everything for the last quarter and spend it in one burst, as Dame Tegan's horn did, so it is over quickly; melee step off the tank's side so the aura catches as few as possible (casters and archers at range are safe from it); healers top the tank hard through the burst. Do not slow down at 25%: slowing down only gives the aura more hits. Do not drop out of the fight or he resets full.",
+  "yells": {
+    "aggro": [
+      "A prince's title is a small thing. A prince's head, larger.",
+      "Come into the cold.",
+      "Stand close, if you dare."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Strike me, then! Every blow strips you bare!"
+      }
+    ],
+    "death": [
+      "No title... no head...",
+      "Measure... my chair..."
+    ],
+    "slay": [
+      "Unwarded. Unmade.",
+      "Drawn out.",
+      "Cold now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The high lord's aura drinks the light from your wards.",
+      "The rock here has never been warm."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Baelerdoth's wounds draw the strength from your armour!"
+      }
+    ],
+    "realmFirstKill": "High Lord Baelerdoth has fallen, untitled."
+  },
+  "botLines": {
+    "briefing": [
+      "baelerdoth is a plain fight till 25%. after that every hit on him strips 15 absorb off the tank and anyone within 350",
+      "save cooldowns and burn the last quarter in one go",
+      "melee step off the tank's side, ranged are safe from the aura",
+      "do not slow down at 25%, more hits means more aura"
+    ],
+    "aftermathWin": [
+      "last quarter in thirty seconds. thats how",
+      "baelerdoth down",
+      "baelerdoth down, the tank still has armour, mostly",
+      "great burst on the horn"
+    ],
+    "aftermathLoss": [
+      "we slowed down at 25% and he ate the tanks",
+      "we slowed down at 25% and the tank turned to paper",
+      "melee stacked on the tank and all got stripped",
+      "nobody saved anything for the burst"
+    ],
+    "rumour": [
+      "heard baelerdoth gets nastier the harder you hit him at the end",
+      "[someone said|heard] baelerdoth wants to be a prince",
+      "heard baelerdoth thinks there should be a twelfth chair for the blood",
+      "[heard|someone said] the camelot armourers keep a softened hauberk from baelerdoth as a pattern"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "baelerdoth",
+    "text": "The first of the High Lords of [Darkness Falls], who says there should have been a twelfth chair for the Blood. His cold hall's strength is a drawing-in; near his end every wound draws the strength out of the armour of those round whoever he fights. Spend everything at once on the last of him. See [oro]."
+  },
+  "bookPage": "From Brother Odran's Door-Book, the account of Dame Tegan Fras. We fought the high lord of the cold hall as any lord is fought for most of the night, and spent nothing we did not have to. I had read the armourers' notes: near his end every wound draws the strength out of the mail of those round the man he fights. So when he weakened badly I had the horn blown, and every man spent everything at once, and the knights about Sir Cadell drew back a stride. The last of him went in less time than the office for the dead. Cadell's hauberk came up soft as cloth.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} burned through High Lord Baelerdoth's last quarter in {minutes} minutes.",
+    "loss": "High Lord Baelerdoth stripped {realm}'s raid bare at the end; {raidLeader} could not finish him."
+  },
+  "era": "neu-the-three-doors",
+  "factions": [
+    "dark-ones",
+    "eastern-halls"
+  ],
+  "related": [
+    {
+      "id": "high-lord-oro",
+      "relation": "Oro has never forgiven him for the East Ward"
+    },
+    {
+      "id": "high-lord-saeor",
+      "relation": "a fellow lord of the Eastern Halls"
+    },
+    {
+      "id": "legion",
+      "relation": "knelt early at the Feast and was not made Blood"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Twelfth Chair",
+      "text": "There were eleven who knelt at the Feast of Thrones. High Lord Baelerdoth says there should have been twelve chairs for the Blood, and that one of them was his.\n\nThe court's chroniclers agree that he knelt among the eleven and that he knelt early, before Ba'alorien and after Adremal, and that when the Master gave four of the eleven the rank of the Blood, Baelerdoth was not among them. Nobody below will say why. The Inquisitors say it was the number: four quarters, four Blood, and the Master likes his house square. The Chthonic Knights say it was because Baelerdoth asked. The imps say it was because he was the strongest of the seven who were left, and the Master does not give rank to anyone strong enough to want more of it.\n\nWhatever the reason, the First Roll set him first among the High Lords, the nearest line to the Blood that is not Blood, and he has stood there ever since, looking at the four lines above his with the patience of something that has a very long time and only one wish. He keeps his hall in the east, the coldest in the hollow, where the court says the rock has never once been warm, and he keeps it as a prince would keep it: a household of dukes and earls and marquises, a ward of all three orders between his hall and his neighbours', and a chair at the head of it that is a little larger than a High Lord's chair should be. The Chancellor has measured it twice.\n\nThe realms read him differently. The Church of Camelot calls him the court's Lucifer, the first of the second rank who wanted the first. The Midgard skalds say he is the only lord of the hollow worth fighting, because he wants something they understand. The druids say a demon who has waited ten Rolls for a chair is a demon who has forgotten how to want anything else."
+    },
+    {
+      "title": "The Cold Hall",
+      "text": "The court says a wounded Baelerdoth is a thirsty one. The companies of the realms have their own way of saying it.\n\nBaelerdoth's hall is cold because he is. The demons of his household say that the high lord's strength is not heat, as a forge's is, but its opposite, a drawing-in, and that while he is whole he keeps it close about him, as a miser keeps his purse inside his coat. He fights as a high lord fights, hard and without art, and for most of a battle there is nothing to say about him that cannot be said of any great demon of the court. Then he is hurt deep, deeper than a lord of his rank is used to, and the coat comes open.\n\nNear his end, the companies say, every wound they give him draws something out of the men around whoever he is fighting. It goes into their armour first. The rings of a hauberk go soft, the plates dull, the leather goes thin and grey, with the first blow that lands on the high lord at the last, and they stay so for as long as the blows keep landing, so that a company which presses him slowly at the end pays for every moment of it. It passes off in time, the knights who have stood there say. It does not pass off while he is still being struck.\n\nDuke Harboris, who stands in his hall and is a ghost, is the court's proof of it. The imps say Harboris stood at the high lord's shoulder in some old battle of the long feuds, too close, when Baelerdoth was hurt, and that the drawing-in took everything he had until there was nothing left of him but his place on the Roll; the Chancellor, unable to strike off a demon who had not fallen from his line, left him on it. Harboris still stands at the high lord's shoulder. The other servants of the cold hall keep a good stride away from whomever their master is fighting, and the Albion armourers who mend what comes up the stair know a Baelerdoth hauberk on sight."
+    },
+    {
+      "title": "The East Ward",
+      "text": "The three halls of the east are kept apart by a ward, and the ward was Baelerdoth's idea.\n\nIn the long feuds, the court says, the followers of the three eastern High Lords killed each other in the passages between their halls so often that the Chancellor wrote a new Roll for the east alone. Baelerdoth proposed the cure. Let the passages between the halls be held by all three orders together, as the Gate is held, he said, so that no High Lord's followers can reach another's hall without passing knights and Inquisitors and Mutilators who answer to none of them. The Chancellor agreed. Duke Bimure, who is Baelerdoth's own, was given the garrison. The imps say it was the cleverest thing a High Lord has ever done, because it made the high lord of the coldest hall the keeper of the peace between all three, and a keeper of the peace is half a prince.\n\nHigh Lord Oro, whose hall lies nearest the ward, has never forgiven him for it. High Lord Saeor, whose hall is the warmest and furthest from the ward, says he does not care, which the imps say means he cares a great deal. The Rolls on the long slope show no High Lord of the east struck off since the ward was set. Baelerdoth points to it whenever the Blood are discussed.\n\nThe companies of the realms who come into the east from Hibernia's side meet the ward before they meet any High Lord, and the Door-Book records that the ward's garrison is the reason so few Albion companies have reached the cold hall at all. Hibernia's bards, whose door is nearest, have the most songs about Baelerdoth of any realm. The druids, who cannot abide the cold, say his is the worst hall in the hollow, and that no song about it has ever been sung in a warm room."
+    },
+    {
+      "title": "The Last Quarter",
+      "text": "The first Albion company to kill Baelerdoth did the last part of it as fast as any company in the Door-Book has ever done anything.\n\nIt was led by Dame Tegan Fras of Camelot Hills, the sister of the captain who emptied the Hall of War seat by seat, and she had her brother's patience for the long part of a battle and none of it for the end. Her company came through the east ward from the Hibernian side on a night when Albion held that door too, and fought the high lord for most of the night as any lord is fought. She had read the armourers' notes. She had a horn blown when the high lord began to weaken badly, and at the horn every man who had been saving anything spent it: every blade, every spell, every prayer the priests had kept back, all at once, while her knights round the one he fought drew back a long stride and let the priests keep him standing.\n\nThe Door-Book says the last of him went in less time than it takes to say the office for the dead. The knight who held him, Sir Cadell of the Downs, came up the stair with his hauberk soft as cloth and his shield arm grey to the shoulder, and lived, and gave the hauberk to the armourers of Camelot to keep as a pattern. They still show it to apprentices.\n\nHibernia's bards claim the high lord long before Albion, and with reason; their door is his door. Midgard's bands say their first kill of him came on a night when all three doors were open at once, and the skalds count it as three realms' victory and Midgard's glory. Each capital keeps its own count. The imps say Baelerdoth was back in his chair by the next Roll, and that the first thing he did was have it measured."
+    }
+  ]
+}

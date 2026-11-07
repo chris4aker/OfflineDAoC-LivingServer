@@ -1,0 +1,136 @@
+{
+  "id": "captain-heathyr",
+  "name": "Captain Heathyr",
+  "catalogKey": "hall-of-the-corrupt/captainheathyr",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Heathyr's blows bleed for 65 every 3 seconds for 30 seconds.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainHeathyr.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Heathyr is female (template 7717 Gender 2), level 62-65, 30,000 health, with after-block and taunt styles behind a shield, the captains' 35% Bleed (65 body every 3 s for 30 s) and the out-of-tether immunity.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainHeathyr.cs"
+    },
+    {
+      "text": "Heathyr's Cotswold origin, her father Cenred the joiner, 'Heathyr's rebate', her grey hands, the sword bound into her fist and the joiners' mark in the lintel are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Captain Heathyr was the joiner's daughter of Cotswold Village under Prydwen Keep. Her father Cenred made the doors of half of Camelot Hills and taught her that a door is only as good as the moment it closes. She joined the Prydwen garrison for the pay, made sergeant by rehanging the broken postern alone in a night, and came north in Lord Gildas's fourth year with the Marshal's note that she was a fair sword and a better carpenter. Gildas gave her the door of the captains' hall, the last gate between the upper hall and the road; she rehung it in her first winter and, in the last autumn, the sagging upper gate too.\n\nShe fought as she built: behind her shield like a door in its frame, answering every blow she caught at once, so that every stroke cost the striker one (the dalesmen called it Heathyr's rebate), and holding the eye of whoever stood before her so that no one went past to the room behind. Captain Bardalph, at the outer gate below, called the two of them the hall's beginning and its end.\n\nFor a month before the end her hands had gone grey with a cold that Lady Darra could not explain. On the last night she could not close her fingers on a sword, so she strapped on her shield, bound the sword into her fist with Long Dale linen knotted with her teeth, and held the door. Sir Hamon Brede's riders found her standing there in the spring with slate-coloured hands, and turned back because a door that is still kept is not walked through; that is why the order to seal the road was never carried out.\n\nShe keeps the door still, slow to fall and hard to pass, her cuts running on after the blow like every captain's. Cotswold's joiners cut her mark, a square with a line through it, into the lintel of every new door.",
+  "legend": "Heathyr is a sword-and-shield captain, level 62-65, 30,000 health, at the door of the captains' hall. She blocks a lot and answers a block with a hard return style, so melee on her takes a beating; let the casters do the heavy work and keep the melee to the tank and one or two more. Her taunt style keeps her on whoever is in front of her, so the tank holds her easily. About one hit in three bleeds the target for 65 body every three seconds for thirty seconds, like every captain; cure poison clears it. Crowd control does nothing. Fight her in the doorway: drawn past her tether she takes no damage and heals to full, and if the fight goes quiet for half a minute she is full again. Captain Bardalph's stone is only about 870 below her door, so do not let the fight drift down the hall. Old hands salute the door on the way out.",
+  "yells": {
+    "aggro": [
+      "Hold the door! Hold!",
+      "No one passes this door.",
+      "I cannot feel my hands. I do not need them."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hold! The door must hold!"
+      }
+    ],
+    "death": [
+      "The door... is open...",
+      "Shut it... behind you..."
+    ],
+    "slay": [
+      "Back to your post. Forever.",
+      "The door holds.",
+      "Not through my door.",
+      "Bleed on the threshold."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A door that shuts like a word said once.",
+      "Captains at their table. A shield in the doorway."
+    ],
+    "phases": [],
+    "realmFirstKill": "Captain Heathyr is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "heathyr blocks and hits back off the block. casters do the work, light melee",
+      "she bleeds like the other captains, cure poison clears it",
+      "fight her in the doorway, off her tether shes immune and heals full",
+      "bardalph is just down the hall, dont drift",
+      "cc immune"
+    ],
+    "aftermathWin": [
+      "captain heathyr down, one less on the watch",
+      "heathyr down. the door is open",
+      "three captains, no deaths",
+      "she held it as long as she could",
+      "door's open, on to the stair"
+    ],
+    "aftermathLoss": [
+      "someone dragged her off her post again. immune out there",
+      "drifted down the hall and got bardalph too",
+      "too much melee on her, the block returns ate them",
+      "the tank ran dry on the bleeds"
+    ],
+    "rumour": [
+      "heard captain heathyr held the door with her sword tied to her hand",
+      "[someone said|heard] all three captains in the hall bleed you",
+      "heard the cotswold joiners cut heathyr's mark in every new door",
+      "the bards say heathyr knows the war is over and holds the door anyway"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "heathyr",
+    "text": "Captain Heathyr was the joiner's daughter of [Cotswold] who kept the door of the captains' hall of the Pennine watch. On the last night her hands had gone grey and she held the door with her sword tied into her fist; [Sir Hamon]'s riders turned back from her. See also [Bardalph] and [Lady Darra]."
+  },
+  "bookPage": "To the Constable. Captain Heathyr has had the upper gate rehung, because Col says it no longer closes against the wind, and it closes now. She did the work herself, as she does all the doors, and would not let the dalesmen hold the weight. I write it down because she asked me to, so that the Constable will know the doors of the watch are sound. I write also, though she did not ask me, that her hands are grey to the second joint and the Lady Darra cannot say why, and that she went back to her door without complaint. Captain Bardalph says the doors are sound and that it is not the doors she is worried about. Tobias, clerk.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Captain Heathyr from the Pennine watch in {minutes} minutes.",
+    "loss": "Captain Heathyr held the post against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "captain-bardalph",
+      "relation": "keeps the outer gate below her door"
+    },
+    {
+      "id": "captain-atwell",
+      "relation": "fellow captain"
+    },
+    {
+      "id": "lady-darra",
+      "relation": "could not explain the cold in her hands"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Joiner's Daughter of Cotswold",
+      "text": "Heathyr was the joiner's daughter of Cotswold Village under Prydwen Keep, and before she was a soldier she hung doors.\n\nHer father Cenred made the doors of half the houses in Camelot Hills, and the great door of the Cotswold church, and every door in Prydwen Keep that was not older than the keep. Heathyr learned the trade from him: how to choose oak in Campacorentin Forest a winter before it was wanted, how to set a hinge so that a door shut of its own weight, how to cut a rebate so that the door met its frame all round and let no draught by. Cenred's saying was that a door is only as good as the moment it closes, and Cotswold's joiners still cut it over their workshop doors.\n\nShe went to the Prydwen garrison at eighteen because the garrison paid better than doors, and she was made a sergeant at twenty-two because she was the only one of them who could rehang the postern after a Midgard war party broke it, in a night, by herself. She came north to the Pennines in Lord Gildas's fourth year with a letter from the Marshal of Prydwen Keep, who wrote that she was a fair sword and a better carpenter and that the Pennine watch would have more use for the second.\n\nIt had. The hall Master Wystan built was a long throat of three doors, and Wystan had taken particular care over them, but Wystan was long dead and the doors were old. The door of the captains' hall stuck in wet weather. The upper gate sagged on its hinges. Lord Gildas gave Heathyr the door of the captains' hall to keep, the last gate between the upper hall and the road, and she spent her first winter taking it down and hanging it again, and when it was done it shut, the clerk Tobias wrote, with a sound like a word being said once."
+    },
+    {
+      "title": "Doors That Shut",
+      "text": "For sixteen years Captain Heathyr kept the door of the captains' hall and every other door in the Pennine watch that would let her near it.\n\nShe rehung the upper gate in the last autumn, as the clerk's report to the Constable records, because Col of the upper gate complained it no longer closed against the wind. She refitted the sickroom door so that Lady Darra could shut it with an elbow when her hands were full. She made new doors for the stores in Campacorentin oak, and she would have made one for the armoury if Lieutenant Elva had let anyone touch the armoury. Her mark on her own post-stone, beside the door, is a small square with a line through it: a door, shut.\n\nShe fought as she built. The sergeants who faced her in Atwell's practice yard said that she did not dodge and did not hurry. She stood behind her shield as a door stands in its frame and let the blow come to it, and the moment it had landed she answered it, every time, with the edge, so that every blow a man struck at her cost him one. The dalesmen had a name for it, which they borrowed from her father's trade: Heathyr's rebate, the blow that is met all round. And she would not let a man go past her to the room behind. She drew the eye of whoever stood in front of her, with her shield and her voice, and kept it, the way a good door draws the wind to itself and keeps it out.\n\nCaptain Bardalph, who kept the outer gate below Heathyr's door and could see it from her stone, said that the two of them were the hall's beginning and its end: Bardalph asked a stranger his business, and Heathyr made sure he did not need to ask again. They were friends, in the way of officers who never sat together at table because one of them was always on watch."
+    },
+    {
+      "title": "Slate Hands",
+      "text": "On the last night, the clerk Tobias wrote, Captain Heathyr at the door said that she could not feel her hands. The Church's sisters, who have Lady Darra's last letters, know why she might have said it, and what she did next is known from the riders who came in the spring.\n\nThe cold had been in her hands for a month. Darra's last letter to the prioress at Caer Ulfwych mentions it among the things she could not explain: that the captain of the door had come to the sickroom with her fingers grey to the second joint, and no frost in the hall to account for it, and that she had gone back to her door without a word of complaint, because the door had to be kept. Darra wrote that she had seen frostbite in Snowdonia and this was not it. It was as if the hands had forgotten they belonged to her.\n\nA joiner's hands are everything. On the last night, when the wizard came down from his tower with four of himself and the captains sat down at the table and did not rise, Heathyr could no longer close her fingers on a sword. She held the door anyway. Sir Hamon Brede's riders found her in the doorway in the spring, standing, with her shield strapped to her forearm where a hand did not need to grip it, and her sword bound into her fist with a strip of Long Dale linen, knotted with her teeth. Her hands had gone the colour of slate.\n\nShe turned her head when the riders came in. Sir Hamon's account says that they could have passed her; she was one dead captain in a doorway, and there were twenty of them. They did not. Hamon wrote that something in the way she stood told them the door was still kept, and that a door which is still kept is not walked through, and they went back down the hall the way they had come. That is why Camelot's order to seal the road was never carried out."
+    },
+    {
+      "title": "The Mark in the Lintel",
+      "text": "Captain Heathyr is at the door of the captains' hall still, behind her shield, with linen knotted round her sword hand, and behind her sit the captains at their table and the clerk with his pen.\n\nThe companies of Albion who have gone down describe her as the slowest of the captains to fall and the hardest to get past. She meets each blow on her shield and answers it at once, so that the exchange runs long and costs the striker as much as it costs her, and she holds the eye of the man in front of her and will not let it go to anyone else. Her cuts run on after the blow, as all the captains' cuts do now. The companies say she does not chase; she keeps the doorway, and the door does not move.\n\nThe realms remember her three ways. The Camelot loremasters say the Summoners bound her to the door because she loved it, and that the corruption needed only her own care to hold her there. The Church says she knew the war she kept the door for was long over, and kept it for the clerk and the captains behind her, who did not. The Midgard war-bands who come up the Scribes' Stair tell it plainest: there is a woman at the top of the Albion road who will not open a door, and a band that wants to go through it had better bring an axe and the whole night.\n\nThe joiners of Cotswold keep her a custom. When a Cotswold joiner hangs a new door, before the hinges take its weight, he cuts a small square with a line through it into the top of the lintel where no one will see it, and says her name. A door so marked, they say, is only as good as the moment it closes, and closes well. Cenred's great door of the Cotswold church has the mark too, cut by Cenred himself the spring the riders came home, the only time he was ever known to cut into his own work."
+    }
+  ]
+}

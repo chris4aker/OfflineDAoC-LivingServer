@@ -1,0 +1,119 @@
+{
+  "id": "chief-tarek",
+  "name": "Chief Tarek",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/chieftarek",
+  "locationId": "iarnwood",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "iarn-dwarves"
+  ],
+  "related": [
+    {
+      "id": "iarnvidiur",
+      "relation": "the old one her people live beside and watch"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Chief Tarek is a level-68 named with 30,000 health at the iarn dwarf encampment in the Iarnwood; four of the Iarn Dwarf Council come with her.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "At half health she heals herself (Chief Tarek's Heal, 400).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam places her at the Iarn Dwarf Encampment and says she calls for help and once added half the town (2004); killing the Iarn Dwarf Council lowers faction with the Remnants.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/5919"
+    },
+    {
+      "text": "Below half health she casts Chief Tarek's Heal on herself (400, 3 s, uninterruptible, every 10 s while she stays below half). The four iarn dwarf council (ChiefTarekBaf, levels 54 and 62) within 2,500 join her when she is fought. CC-immune, reach 350, 20% melee / 30% magic resist; she walks home at full health if no one is left fighting her.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/ChiefTarek.cs"
+    },
+    {
+      "text": "She and her encampment are on The Remnants faction in the world data; she is female (template gender).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 151; 0.37b world data)"
+    }
+  ],
+  "story": "Tarek was born in the encampment, which is more than most of its chiefs can say. Her mother had led the clan that refused to go to Faraheim when the Remnants went, and her mother's mother had lost a son to the Servants and stayed anyway. Tarek grew up inside the stockade with the old one's wood all round it and the warning stone at the hollow a morning's walk away, and she has never, the dwarves of Faraheim say, spent a single night outside the Iarnwood. They mean it as praise, mostly.\n\nShe became chief the winter of the good cloak, when a stranger stayed a second night and opened the gate and the etvarg came in. The old chief died at the gate. Tarek, who was young then, held it with four others until morning, and those four became her council, and the seats round her fire have been filled by their children and grandchildren since. The council sits with her, eats with her and fights with her. Lay a hand on the chief and every one of them stands up; that was the oath they swore over the old chief's body, and the encampment says it is the only reason she has outlived the dozen attempts on her since.\n\nThe custom of the one night is hers. So is the custom of the second axe beside the stranger's bed. Thorgerd Netmaker, who drew the first scale of the lake-thing, was one of her people, and Hrefna, the child who walked back out of the old one's hollow, was brought home to Tarek's fire before she ever went to Faraheim. Tarek asked her one question and has never told anyone the answer.\n\nShe is a hard woman to bring down, and harder to keep down. The council say that when she is badly hurt she goes quiet and still, as dwarves do over a forge that is failing, and simply keeps going; the hurt closes a little, and a little more, as long as she has breath to set her teeth with. Her people say no rope has ever held her and no charm has ever made her sleep, not even the old one's.\n\nThe Remnants are her kin. Faraheim's griffon-masters fly over the encampment once a season and let fall a sack of salt and news, and the encampment sends back bark and slates. If strangers ever kill Tarek, Faraheim will hear of it before the strangers have left the wood, and Faraheim does not forget.",
+  "legend": "Chief Tarek is at the iarn dwarf encampment in the north-east of the Iarnwood, level 68, 30,000 health. Her four iarn dwarf council join the moment you touch her (two level 54, two level 62), and the normal dwarves nearby can come too if you're careless, so clear the edges and kill the council first. Below 50% she heals herself for 400 every ten seconds or so; it's uninterruptible but small, so just keep the damage up and burn through it. She's CC-immune, reach 350, 20% melee and 30% magic resist. If you wipe, she resets full. The real cost is faction: killing her and the council drops you with the Remnants, and the Remnants own Faraheim's griffons and a lot of quests, so think about whether you need them before you go in. Most Midgard players leave her alone and just say hello.",
+  "yells": {
+    "aggro": [
+      "Council! Strangers in the camp! Every one of them could be hers!",
+      "One night, I said. You have had your night.",
+      "To the gate! As we held it before!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Iron holds. I hold."
+      }
+    ],
+    "death": [
+      "Tell the Remnants... who did this...",
+      "The stockade... still stands..."
+    ],
+    "slay": [
+      "One fewer of her Servants. Or one fewer fool.",
+      "Put it outside the gate.",
+      "The wood keeps what it takes."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An iarn dwarf camp under the iron trees. Eyes on you.",
+      "The chief's fire. Four seats round it, all filled."
+    ],
+    "realmFirstKill": "Chief Tarek of the iarn dwarves has fallen.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Chief Tarek sets her teeth. Her wounds begin to close."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "tarek + 4 council, she heals at half, and you lose remnants faction for killing them",
+      "four council join when we touch her. kill them first",
+      "she heals 400 every 10 sec under half, uninterruptible. just out dps it",
+      "shes cc immune, dont bother",
+      "clear the dwarves on the edges or they come too",
+      "remember this costs remnants faction"
+    ],
+    "aftermathWin": [
+      "tarek down. remnants wont like us",
+      "four council and the chief. faraheim will hear about this",
+      "her heal was nothing once we had dps on her",
+      "salt sack from faraheim wont be coming for a while"
+    ],
+    "aftermathLoss": [
+      "she called half the camp",
+      "half the camp came",
+      "council got the casters",
+      "she reset full, everyone ran",
+      "we forgot the council and they ate us"
+    ],
+    "rumour": [
+      "chief tarek lives right next to iarnvidiur's lair. [brave|crazy] dwarf",
+      "tarek has never slept a night outside the iarnwood",
+      "her council are the grandkids of the four who held the gate with her",
+      "hrefna told tarek something when she came back. tarek never said what"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Tarek",
+    "text": "Chief of the iarn dwarves who still live under the iron trees. She trusts no outsider; any stranger might be a Servant of Iarnvidiur. The Remnants are her kin and remember who harms her."
+  },
+  "bookPage": "From Eldrid of Bjarken, gatherer of bark: I met the chief once, the morning after my one night. She is small, even for a dwarf, and she looked at me the way a smith looks at a blade for a flaw. She asked where I had cut my bark and I told her, tree by tree, and she nodded at every one, because she knew them. Then she asked whether any had grown. I said no. She said: good. I asked why good. She said a wood that does not grow is a wood that is still holding its breath, and she would rather it went on holding it. Her four sat behind her the whole time, axes across their knees.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Chief Tarek in the Iarnwood in {minutes} minutes; the Remnants will remember.",
+    "loss": "Chief Tarek's council drove {raidLeader}'s party from {realm} out of the Iarnwood after {minutes} minutes."
+  }
+}

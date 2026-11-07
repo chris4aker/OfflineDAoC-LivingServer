@@ -1,0 +1,125 @@
+{
+  "id": "beath",
+  "name": "Beath",
+  "npcNames": [
+    "Beath"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "the necromancer of the bank"
+  ],
+  "facts": [
+    {
+      "text": "Beath: template 60158329, level 55, the drakoran necromancer model, on the bank across the wooden bridge at 401368, 402349; aggro level 200 within 500, faction Drakoran Legion, no spells or styles in the data, respawn 900 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Bayn (45) of the same faction stands about 105 from him; drakoran guardsmen (whose template also gives Drakoran Legion) about 760 off.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "A faction NPC that is attacked calls friends of its faction within 450, plus 150 for each attacker beyond the first.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: radius 450 + 150 per extra attacker, up to eight; friends must share the faction)"
+    },
+    {
+      "text": "Beath learned at Morgana's side, the half-learned craft, the households he practises on, the Priest of Arawn's 'Arawn does not care for amateurs' (from the Dales file) and Bayn as his shadow are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Across the wooden bridge in the west of the dales, on a bank of turned earth above the stream, the drakoran necromancers keep a place where they practise the craft they learned at the witch's side. Beath is the master of the bank. Bayn keeps at his elbow, close enough to hand him things, and a younger one, an apprentice, carries a rod of necromancy that the Priest of Arawn at Fort Gwyntell wants very badly to take away from him.\n\nThe drakoran did not know the craft of the dead before the war. They came across the western sea with fire and frost and steel. Morgana taught a few of them the rest, in the first summers, because she needed dead to make an army of and had more of them than she could raise alone. Beath was one of the few. The Priest of Arawn says he learned half of it: the half that holds the dead in place, and not the half that lets them go, or the half that knows what they are. He says Arawn does not care for amateurs. He says it every time Beath's name comes up, and it comes up often, because the priest holds that the households of the dales are kept in their houses by Beath's craft, the Hoges and the Lindons and the Swetts and all the rest, giving their names to whoever asks, because a half-taught drakoran on a bank by a stream has been practising on them.\n\nBeath has never been seen to work his craft on the living. The young of the realm who have gone across the bridge say he fights with his hands and his staff like any drakoran of the legion, and that his craft is all for the dead. The registrar at the fort finds that the most frightening thing about him: that he holds the dales' dead with one hand and does not need the other.\n\nHe is never alone on the bank. Bayn stands with him and comes when he does, and the legion's guardsmen are not far off along the stream. When he is put down the bank is quiet for a long while, longer than any other place in the dales, and the Priest of Arawn says the households give their names a little more slowly while it lasts.",
+  "legend": "Beath is a level 55 drakoran necromancer on the necromancers' bank across the wooden bridge in the west of the Dales of Devwy. He is aggressive from about 500 away and Bayn (45) stands right next to him with the same Drakoran Legion faction, so you always get both; the legion's guardsmen are about 760 off and can be dragged in by a big group. The data gives him no spells, so despite the robes he is a melee fight. Kill Bayn first or tank both, with a group of fifties. The Necromantic Apprentice nearby has the rod for Zombies, Ghosts, and Necromancers. Beath's respawn is long, about fifteen minutes.",
+  "yells": {
+    "aggro": [
+      "Another for the bank.",
+      "Bayn! Here.",
+      "The lady taught me enough for you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hold them! Hold the households!"
+      }
+    ],
+    "death": [
+      "The dead... let go...",
+      "Half... only half..."
+    ],
+    "slay": [
+      "Held.",
+      "Kept in place.",
+      "One more name for the dales."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A bank of turned earth across the bridge.",
+      "The ground here has been practised on."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Somewhere in the dales, a household falls silent."
+      }
+    ],
+    "realmFirstKill": "Beath has fallen. The dales' dead are held less."
+  },
+  "botLines": {
+    "briefing": [
+      "beath, 55 drakoran necro across the wooden bridge. bayn's right next to him, same faction, you get both",
+      "guardsmen about 760 off, keep the group small or they come",
+      "no spells in the data, its a melee fight. bayn first or tank both",
+      "15 min respawn on beath"
+    ],
+    "aftermathWin": [
+      "beath and bayn down",
+      "priest of arawn will be happy",
+      "kept it small, no guardsmen",
+      "fifteen minutes of peace for the ghosts lol"
+    ],
+    "aftermathLoss": [
+      "brought a zerg and the guardsmen came",
+      "ignored bayn and he chewed the casters",
+      "thought he'd cast. he just hits",
+      "wiped and now we wait 15 min"
+    ],
+    "rumour": [
+      "[heard|someone said] beath learned half of necromancy at morgana's side, the holding half",
+      "heard the priest of arawn says beath keeps the ghost households in their houses",
+      "[heard|someone said] the priest says arawn does not care for amateurs",
+      "heard the households give their names slower when beath is dead"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "beath",
+    "text": "The master of the drakoran [necromancers]' bank across the wooden bridge, who learned the craft of the dead at Morgana's side, the half that holds the dead in place and not the half that lets them go. The [priest of arawn] holds that his practising keeps the dales' [households] in their houses, and that Arawn does not care for amateurs. Bayn stands at his elbow."
+  },
+  "bookPage": "From the second book of Gracien Adamson, name registrar of Fort Gwyntell. The Priest of Arawn sat at my table and told me he would give a great deal for the drakoran Beath to learn the rest of his craft. I asked why, since the rest would make him worse. The priest said no: the rest is the letting go. A necromancer who knows only how to hold is a man who has learned to lock a door and not to open it. Every household in my second book is behind such a door. He said Arawn does not care for amateurs, and then, more quietly, that Arawn does not care for locks either. I have not entered that. I am not sure whose words they were.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} cleared Beath from the necromancers' bank in {minutes} minutes.",
+    "loss": "Beath held {raidLeader}'s company of {realm} on the bank, with the households."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "the-hoges-household",
+      "relation": "the Priest of Arawn says his craft keeps them in their houses"
+    },
+    {
+      "id": "the-lindon-household",
+      "relation": "kept in their houses by his half-learned craft, the priest says"
+    },
+    {
+      "id": "valnir-mordeth",
+      "relation": "the other keeper of the western dead, in his larder"
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "id": "shade-of-uther-pendragon",
+  "name": "Shade of Uther Pendragon",
+  "npcNames": [
+    "Shade of Uther Pendragon"
+  ],
+  "locationId": "stonehenge-barrows",
+  "realm": "Albion",
+  "aliases": [
+    "uther",
+    "uther's shade",
+    "the old king"
+  ],
+  "facts": [
+    {
+      "text": "Shade of Uther Pendragon: template 12800, level 55, a ghost, in the chamber at 27192, 31692 directly below Coventina's well in the Stonehenge Barrows; aggro level 200 within only 200, no faction, no spells or styles, respawn 300 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The two Priestesses of Purity (Coventina) stand directly above him, about 500 higher; he shares no faction with them or with anything else in the barrows.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "Symbol of the Broken (the Academy's trainers): give Dathmul's dust to Loremaster Alain, then slay the Shade of Uther Pendragon in Stonehenge Barrows. Passage to Eternity tells of templars seeking to defile the tomb of Uther.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "British legend, not game canon: in Geoffrey of Monmouth, Merlin's craft gives Uther the likeness of Gorlois so that he lies with Igerna at Tintagel and Arthur is begotten; Uther is buried within the Giants' Dance.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Historia_Regum_Britanniae"
+    },
+    {
+      "text": "Uther's restlessness over Tintagel, the borrowed face he still wears, the priestesses' washing as an answer to it, the templars' three nights and Loremaster Alain's note are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The chroniclers of Camelot bury Uther Pendragon inside the Giants' Dance, below his brother Ambrosius, in a chamber cut for him under the west halls, and they say he was laid there in his harness with the banner of the dragon of fire he took his name from. They do not say that he did not lie quiet. The barrow-keepers of the Plains say he never once has.\n\nWhat troubles him, the Church at Old Sarum has always said, is Tintagel. On the night his son was begotten, Uther came to Igerna, Gorlois's wife, wearing Gorlois's face, which Merlin had lent him, while Gorlois was dying on the field; and out of that night came Arthur, and out of Arthur came the realm. The Church says Uther cannot rest because the realm was made out of a lie and he knows it. The minstrels say he cannot rest because he never once regretted it. Loremaster Alain of the Academy, who sends the realm's young down to lay him, says the shade still wears the borrowed face, and that anyone who comes close enough to see it will not be able to say afterwards whose it was.\n\nAbove his chamber, in the west halls, two priestesses of Coventina keep a well and pour its water down onto the floor, and the floor takes it, and it drips into the king's chamber below. They say they keep the chamber washed. The Church says they are washing the face off him, a little every day, and that when it is gone he will rest. The priestesses do not come down to him and he does not go up to them. He has nobody in the barrows. His brother is restless in his own hall to the west, and the dead of the Pendragon's household keep their own places, and when the old king is troubled, nothing comes.\n\nHe walks his chamber and does not leave it, and he does not look at the living until they are close enough to touch; then he looks, and draws. Templars came three nights running to defile his tomb, the barrow-keepers say, and were turned back each night by a king in borrowed harness who did not speak. The Academy's young lay him with the dust of a hollow man from Snowdonia, and he goes down, and before long he is walking his chamber again with the water dripping on him, because the face is not yet washed away.",
+  "legend": "The Shade of Uther Pendragon is a level 55 ghost in his chamber directly under Coventina's well in the west halls of Stonehenge Barrows, the kill step of Symbol of the Broken (Dathmul's dust to Loremaster Alain first). He only notices you inside about 200 and has no faction, so nothing in the barrows comes to help him, and the two Priestesses of Purity above do not come down for him (they come as a pair if you fight THEM). No spells or styles in the data: a melee fight with a 55 with a little parry and evade, a group of fifties. Clear the spectral essences in his chamber first. He respawns in about five minutes.",
+  "yells": {
+    "aggro": [
+      "You come into my chamber? Whose face do you see?",
+      "Turn back, as the templars turned.",
+      "The Pendragon does not yield his tomb."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The water... the water burns..."
+      }
+    ],
+    "death": [
+      "Not yet... washed... away...",
+      "Igerna... forgive..."
+    ],
+    "slay": [
+      "Turned back.",
+      "The tomb is kept.",
+      "Look upon the Pendragon."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Water drips from the ceiling of a king's chamber.",
+      "A king in old harness walks here. Whose face?"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Above, the priestesses pour the well water faster."
+      }
+    ],
+    "realmFirstKill": "The Shade of Uther Pendragon is laid. The water still drips."
+  },
+  "botLines": {
+    "briefing": [
+      "uther's shade, 55, his chamber right under the priestesses' well in the west halls. symbol of the broken kill",
+      "short aggro, about 200. no faction, nothing joins. priestesses above stay put unless you hit them",
+      "no spells, melee with a bit of parry. group of 50s, clear the spectral essences first",
+      "5 min respawn. dont forget dathmul's dust goes to alain first"
+    ],
+    "aftermathWin": [
+      "uther laid. symbol people back to your trainer",
+      "priestesses never moved, perfect",
+      "no one could say what face it had, weird",
+      "5 min respawn, next group"
+    ],
+    "aftermathLoss": [
+      "pulled the priestesses on the way down, wiped to them",
+      "forgot the essences in his room",
+      "did it before giving alain the dust, no credit",
+      "he's 55, con before you pull"
+    ],
+    "rumour": [
+      "[heard|someone said] uther's shade still wears gorlois's face from tintagel",
+      "heard the priestesses pour their well water down on uther to wash the face off him",
+      "[heard|someone said] templars tried to defile uther's tomb three nights running and got turned back",
+      "heard nobody who sees uther's shade can say after whose face it was"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "uther",
+    "text": "Arthur's father, buried within the Giants' Dance in a chamber under the west halls of the [stonehenge barrows], who has never lain quiet. The Church says it is Tintagel: he came to Igerna wearing Gorlois's face, which Merlin lent him, and the shade wears it still. The priestesses of [coventina] pour their well water down on him; the Church says they are washing the face away. Nothing in the barrows comes to his aid."
+  },
+  "bookPage": "A note in the hand of Loremaster Alain of the Academy, left with the dust of the hollow man for the young the Academy sends to the barrows. When you reach the old king's chamber, look at his face before you strike, and then try to tell me whose it was. Nobody has yet. The priestesses above say they are washing it away; I asked them whose face, and they said the one he borrowed. I asked them whose he would have when it was gone. They said that is why they keep the well. Lay him with the dust. He will get up again. Every time he does, there is a little less of the borrowed face.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} laid the Shade of Uther Pendragon in his chamber in {minutes} minutes.",
+    "loss": "The Shade of Uther Pendragon turned back {raidLeader}'s company of {realm}, as he turned the templars."
+  },
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "realm-of-camelot",
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "priestess-of-purity",
+      "relation": "keep Coventina's well over his chamber and pour its water down on him"
+    },
+    {
+      "id": "shade-of-ambrosius-aurelianus",
+      "relation": "his elder brother, restless in his own hall to the west"
+    }
+  ]
+}

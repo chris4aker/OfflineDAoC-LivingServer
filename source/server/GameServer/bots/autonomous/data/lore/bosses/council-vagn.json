@@ -1,0 +1,168 @@
+{
+  "id": "council-vagn",
+  "name": "Council Vagn",
+  "catalogKey": "tuscaran-glacier/vagn",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "council-nokkvi",
+      "relation": "his inseparable partner"
+    },
+    {
+      "id": "elder-council-birghir",
+      "relation": "whose votes he carried to the outer seats"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Vagn is a level-78 Council member with 100,000 health, linked to Council Nokkvi: pull one and both come.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He casts Frost Shock for 600.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "A 2005 Allakhazam comment says the pair resisted every spell and the tanks hit Nokkvi for almost nothing; someone had to kite Vagn.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4690"
+    },
+    {
+      "text": "Old Norse vagn means wagon, and nokkvi a kind of boat (both to verify).",
+      "provenance": "original",
+      "source": "Old Norse glossary, to verify"
+    },
+    {
+      "text": "Vagn resists 90% of magic but only 20% of melee. He casts Frost Shock (600 cold, 3 s cast, recast 10-15 s) on his target; it is not flagged uninterruptible. He and Nokkvi bring each other in within 1,800. 100,000 health, CC-immune; resets past his tether or 30 s out of combat. There is no grief or enrage code when one of the pair dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs"
+    },
+    {
+      "text": "Vagn is Old Norse vagn, 'wagon, cart'; Nokkvi is nokkvi, 'boat, ship' (to verify). The saying about the stick and the word is Living Server lore.",
+      "provenance": "original",
+      "source": "Old Norse, to verify"
+    }
+  ],
+  "story": "Vagn and Nokkvi are named for a wagon and a boat, because in the Council's early days they carried everything between them: the votes, the gossip, the grudges, the queen's wishes down to the outer seats and the outer seats' complaints back up to the ribs. A wagon on the ice and a boat on the water, the joke went; between them nothing in Tuscaran went undelivered. They sit side by side in the outer council hall still, their seats worn alike, and where one is roused the other is already rising.\n\nVagn is the talker. He has opinions about everything and shares them, and in a century of councils nobody ever talked him down. Words slid off him; spells too, the seers found, when a young seer once tried to charm him quiet and the charm ran off him like water off a greased hull. What stopped him was simpler. Hjalmar, losing an argument to him on the ribs, struck him across the mouth in the middle of a sentence, and Vagn stopped, astonished, and never finished it. The councillors knew from that day that Vagn could be silenced, but only by a blow, and only while he was still drawing breath to speak.\n\nHis temper comes down as frost on the one in front of him, slowly, at the end of a long breath, the way his speeches did. The giants have a joke about the pair that the outer seats still tell, and Midgard's companies have carried it home without always seeing the point: you stop a wagon with a stick in its wheel, and you sink a boat with a word in its hull. Vagn is the wagon. He dies, the companies say, in the middle of a sentence, and nobody has ever heard the end of one.",
+  "chapters": [
+    {
+      "title": "The Wagon and the Boat",
+      "text": "In the first winters of the Council, before the chamber of the ribs had settled into its century of peace, there were more councillors than there were ribs to sit on, and the outer seats were far from the eldest rib, and nobody could hear Birghir from the back. Two young councillors of the outer seats made themselves useful. They carried things.\n\nThey carried the votes, running from seat to seat to tell the outer councillors what the ribs had decided. They carried the gossip and the grudges. They carried the queen's wishes down from the throne room to the outer seats and the outer seats' complaints back up, and they did it so well that the Council forgot their real names and called them after what they did: Vagn, the wagon, who went on the ice, and Nokkvi, the boat, who went on the water, because between them nothing in Tuscaran went undelivered.\n\nThe names stuck, as Tuscaran's names do, and the two of them have been the wagon and the boat for a century. They sit side by side in the outer council hall, on seats worn smooth in the same places, and they are never apart. When anything rouses one of them, the sculptors say, the other is already rising, because a wagon with no boat is only half a road.\n\nVagn talks. Nokkvi does not. The outer seats say that between them they make one councillor, which is more than can be said for some of the ribs."
+    },
+    {
+      "title": "Nobody Talked Him Down",
+      "text": "Vagn had opinions about everything, and in a century of councils nobody ever talked him down. He would stand on his seat and speak for the length of an afternoon, about the queen's wishes and the price of salt and the faults of the Ice Lords' houses, and the councillors who argued with him found that their words simply did not reach him. He did not answer them. He went on.\n\nIn the fortieth winter a young seer of the outer seats, tired of an afternoon of it, tried something else. She cast a charm of quiet at him, the kind the seers use to calm a frightened rook, and the cast-out sculptors say the charm ran off Vagn like water off a greased hull and he did not even notice it had been cast. The seers tried others over the years. None of them took. The giants came to say that Vagn had talked so long that nothing spoken or sung or cast could get into him any more.\n\nWhat stopped him was simpler. In the century's sixtieth winter Hjalmar of the elders' hall came to the outer seats on some errand for the Ice Lords and found himself in an argument with Vagn, and losing it, and in the middle of one of Vagn's sentences, while the councillor was drawing a long breath to finish it, the elder struck him across the mouth with the back of his hand.\n\nVagn stopped. He was so astonished, the sculptors say, that he never finished the sentence, and nobody now knows what he was going to say. The outer seats took something from that day that they kept to themselves for a long time: that Vagn could be silenced, but only by a blow, and only while he was still drawing the breath to speak."
+    },
+    {
+      "title": "Frost at the End of a Breath",
+      "text": "His temper, when it came, came the way his speeches did, at the end of a long breath. The sculptors say Vagn was never quick to anger and never quick to strike, and that when he finally lost patience with someone in front of him, he drew himself up and breathed in for a long moment, and the frost came down on that one at the end of the breath.\n\nThe outer seats saw it first on a salt-trader of Dellingstad, who had come up the road to complain about the price of Birghir's ice and complained at Vagn for too long. The councillor breathed in, and the frost came down on the trader where he stood, and he was carried down the crater road in a cart, alive and blue. The salt-traders did not complain at Vagn again.\n\nThe giants of the outer seats noticed something about it, which the companies of Midgard have since noticed too. Anyone who struck Vagn while he was drawing that breath, as Hjalmar had done, stopped the frost as surely as Hjalmar had stopped the sentence. The councillor would let the breath out in astonishment and have to begin again. The companies say it is the only thing about Vagn that is easy.\n\nSteel, the sculptors add, always got into him, where words never did. He has a hide like any councillor and it turns nothing much. It is only the spoken and the cast and the sung that slide off him, because he has spent a century not listening to any of them."
+    },
+    {
+      "title": "A Stick in the Wheel",
+      "text": "When Midgard came up the crater road and the Council voted for the second time to march, the wagon and the boat did what they had always done. They carried the vote to the outer seats, and then they sat down side by side in the outer council hall and waited, because nobody had told them to do anything else.\n\nThe companies of Midgard who reach the outer hall find them there. They cannot be fought one at a time. When anything rouses Vagn, Nokkvi is already rising, and when anything rouses Nokkvi, Vagn is already talking. The old songs of the companies say that the survivor of the pair grieves for the other and fights the harder for it; the cast-out sculptors at Dellingstad say that is a story the companies tell to make the second one seem worth the trouble, and that the two of them fight exactly as hard apart as together.\n\nThe outer seats have a joke about the pair, very old, from the years when they carried the votes. You stop a wagon with a stick in its wheel, the giants say, and you sink a boat with a word in its hull. The companies who have heard it repeated by the cast-out sculptors have carried it home to Midgard, and not all of them have seen the point of it.\n\nVagn dies talking, the companies say. He is always in the middle of a sentence, and nobody has ever heard the end of one."
+    }
+  ],
+  "legend": "Vagn and Nokkvi always come together, and the trick is that they are opposites. Vagn resists 90% of magic but only 20% of melee: put your melee on Vagn and don't waste nukes on him. Nokkvi is the reverse (90% melee, 20% magic): your casters should be on Nokkvi. Vagn's Frost Shock is a 3-second, 600 cold cast on his target every 10 to 15 seconds and it CAN be interrupted, so keep hitting him while he casts. Both have 100,000 health, are CC-immune and reset if dragged past their tether or left 30 seconds out of combat. The old story that the survivor grieves and hits harder isn't in the script: kill them in whichever order suits your raid. Boots, staffs and a mantle drop.",
+  "yells": {
+    "aggro": [
+      "Nokkvi, they have come to the Council uninvited.",
+      "Order! Order in the outer hall!",
+      "You argue from a distance? Then so do I.",
+      "As I was saying, before you interrupted-"
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "Nokkvi! Who will carry the vote now?"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Motion to end this. All in favour? I am."
+      }
+    ],
+    "death": [
+      "The wagon... stops here...",
+      "Nokkvi... carry it... on your own...",
+      "And furthermore... and..."
+    ],
+    "slay": [
+      "Motion carried.",
+      "Silence from the back.",
+      "No further questions.",
+      "Delivered."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two council seats stand side by side, worn alike.",
+      "A giant is talking. Another is listening.",
+      "Two seats, worn smooth in the same places."
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "Vagn wails for Nokkvi!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Vagn calls the frost down on the one before him!"
+      }
+    ],
+    "realmFirstKill": "The wagon of the outer seats is stopped."
+  },
+  "botLines": {
+    "briefing": [
+      "vagn and nokkvi, pair pull. one group holds vagn away, [rest|everyone else] on nokkvi",
+      "vagn: melee him, he shrugs off magic. interrupt the frost shock",
+      "vagn and nokkvi reset if dragged or left alone 30 sec",
+      "one group on vagn, rest on nokkvi",
+      "vagn: 90% magic resist, 20% melee. melee on vagn",
+      "vagns frost shock is interruptible, keep hitting him while he casts",
+      "vagn and nokkvi are opposites. melee vagn, nuke nokkvi",
+      "they reset if dragged or left alone 30 sec"
+    ],
+    "aftermathWin": [
+      "wagon and boat both sunk lol",
+      "vagn finally shut up lol",
+      "council pair down, boots and staffs dropped",
+      "vagn's mantle dropped",
+      "stick in the wheel. got it now",
+      "melee on vagn casters on nokkvi, easy",
+      "vagn never finished a sentence again"
+    ],
+    "aftermathLoss": [
+      "vagn's frost shock kept landing on the tank and nobody interrupted it",
+      "vagn's frost shocks chewed through the casters",
+      "the kiting group lost vagn and he came back to the raid",
+      "nokkvi died, vagn went mad and hit for double",
+      "casters nuked vagn for nothing, 90% magic resist",
+      "nobody interrupted the frost shock"
+    ],
+    "rumour": [
+      "[heard|someone said] vagn means wagon and nokkvi means boat. [weird names for giants|giants are weird]",
+      "vagn only talks about kula's choice of husband when tuscar is far away",
+      "vagn and nokkvi carried every vote between them for a century",
+      "vagn and nokkvi: a wagon and a boat. [the giants think its funny|its a joke apparently]",
+      "giant joke: you stop a wagon with a stick, you sink a boat with a word",
+      "hjalmar slapped vagn mid sentence once. he never finished it",
+      "nobody ever talked vagn down. spells slid off him too"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Vagn",
+    "text": "The wagon of the outer seats, who with [Nokkvi] carried the [Council]'s votes for a century. Nobody ever talked him down, and the seers' charms slid off him; only a blow stopped him, while he was drawing breath to speak, as Hjalmar found. The giants say you stop a wagon with a stick in its wheel."
+  },
+  "bookPage": "From the sculptor's account of the Council. Vagn spoke on every question. On the morvalt: a nuisance. On the dwarves: a smaller nuisance. On the Icelords: a large nuisance with good manners when it suits them. On the queen's husband: nothing, while the king was in earshot, and a great deal otherwise. Nokkvi spoke on no question at all. When the vote was called, Vagn raised his hand, and Nokkvi raised his, and that was two votes for whatever Vagn had said. The sculptor said he carved them together, as one block, and that it was the only carving of his the Council ever liked.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} unseated Councils Vagn and Nokkvi in {minutes} minutes.",
+    "loss": "Councils Vagn and Nokkvi turned back {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

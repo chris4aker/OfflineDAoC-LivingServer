@@ -1,0 +1,143 @@
+{
+  "id": "morgus-urgalorg",
+  "name": "Morgus Urgalorg",
+  "catalogKey": "krondon/morgusurgalorg",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 72-75, 30,000 health, GetResist 20 melee / 30 other, CC immune, tether 3,800, no melee. Ebullient Blast: 400 heat, 3 s cast, uninterruptible, radius 250 around his target; Lava's Fury: two 200-heat bolts (20 s recast each) at a random real player within 2,000 who is not his target.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/MorgusUrgalorg .cs"
+    },
+    {
+      "text": "On aggro every 'MorgusBaf' NPC in the region joins: 14 Morgus's leornere, level 58, no template, no spells.",
+      "provenance": "game",
+      "source": "gap/db/world.db (Mob, PackageID MorgusBaf)"
+    },
+    {
+      "text": "Leornere 'learner' and lareow 'teacher' are standard glosses, to verify.",
+      "provenance": "original",
+      "source": "https://bosworthtoller.com/"
+    },
+    {
+      "text": "The kindling word and Wynflaed's slate, the roll call, the chalk, Magus Cerys of the Academy and her report are Living Server writing; Master Ferowl is a game NPC of the Academy.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Before letters or law the hall-folk's school taught its children a word: the kindling word, said over a wick until it caught. Wynflaed's slate still hangs behind the teacher's chair with the word cut large and a small lamp drawn under it. Morgus Urgalorg, a slow, patient ogre of the Undercroft who had never been allowed to hold the clan's fire, stood in front of it for a day and a night saying it by shape until the lamp caught; then he shouted it louder, and burned the chair. He thinks it is a shout, and he shouts it at whatever he looks at, and whatever he looks at boils, and so does whatever stands beside it.\n\nHe took the scorched chair and made himself a teacher, gathering the young nobody wanted and calling them by the word over the door, leornere. None of them has ever learned the kindling word. What they learned is to come: when Morgus calls the roll the whole class runs to him from wherever in the hall it is and stands round him with fists up, because they know nothing else. Morgus has never hit anything; he keeps his distance and shouts.\n\nHe has copied the old teachers' habit of throwing clay at the pupil at the back who is not attending: while he shouts at whatever is before him, he flicks a lash of fire at someone further off who thought he was safe. Sir Cador's knights called it the chalk. And unlike Ulor's careful curses, his word cannot be broken: Wenna saw a knight strike him in the mouth mid-word and the word came out anyway. A kindling word was never made to be stopped.\n\nMagus Cerys of the Academy, who argued all winter with Master Ferowl over whether an ogre could be a mage, led the first company to kill him. The knights met the class at the benches; her company stood apart while he boiled whoever he looked at; she recommended thinking oneself in danger everywhere. Her report concluded he was no mage, because a mage knows a word is a word. Ferowl wrote on the cover: as I said.",
+  "legend": "Morgus is level 72 to 75 with 30,000 health, CC immune, 20% melee / 30% other reduction and a 3,800 tether, and he never melees. The moment he gets aggro, all 14 Morgus's leornere anywhere in Krondon come for you: level 58 ogres that only melee. They do not cast and they do not copy his blast, whatever the old guides said. Morgus follows his target to range and chain-casts Ebullient Blast: 400 heat, 3 second cast, on his target and everyone within 250 of them, and it cannot be interrupted, so do not waste stuns or interrupts. Keep a body length or two apart, heat resists up, and heal his target hard. Every so often he throws a 200 heat bolt (Lava's Fury) at a random real player within 2,000 who is not his target; only the human gets those, never bots. Tanks and area damage take the class at the benches, then everyone on Morgus.",
+  "yells": {
+    "aggro": [
+      "Watch, my learners. This is how it is done!",
+      "Class! Attention!",
+      "Today's lesson is fire."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Learners! To me! Roll call!"
+      }
+    ],
+    "death": [
+      "Class... is dismissed...",
+      "Learn... from this..."
+    ],
+    "slay": [
+      "Learn from that.",
+      "Again, class. Watch closely.",
+      "Like so."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Young ogres sit in rows, watching their master.",
+      "The ghosts of the old teachers sit at the back.",
+      "A slate hangs behind the chair. A small lamp is drawn on it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The teacher shouts the kindling word. It burns."
+      }
+    ],
+    "realmFirstKill": "Morgus Urgalorg has taught his last lesson."
+  },
+  "botLines": {
+    "briefing": [
+      "morgus pulls all 14 leornere at once. they are melee, no spells. aoe them",
+      "his blast is 400 heat on the tank and everyone within 250. spread, heat resist",
+      "you cant interrupt his blast, dont waste stuns",
+      "lava's fury bolts only hit the human, never bots. heal up before going in"
+    ],
+    "aftermathWin": [
+      "class dismissed. gg",
+      "the students went down faster than the teacher",
+      "aoe group cleared the class in seconds",
+      "school's out"
+    ],
+    "aftermathLoss": [
+      "we stood in a heap round the tank and his blast hit five at a time",
+      "wasted every interrupt on him. it does nothing",
+      "the whole class came in and nobody was on aoe",
+      "i got the chalk three times and died at the back"
+    ],
+    "rumour": [
+      "heard morgus in krondon runs a school. fourteen little ogres who cant learn a thing",
+      "[heard|someone said] morgus learned fire off a word for lighting lamps",
+      "heard the academy argued over whether morgus counts as a mage",
+      "morgus teaches one lesson, [heard|they say]. fire"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "morgus",
+    "text": "Morgus Urgalorg keeps the old school of [Krondon]. He learned the hall-folk's kindling word, a word for lamps, and shouts it, and whatever he looks at boils, and its neighbours too; his shout cannot be broken. His learners only come when he calls the roll. Magus Cerys of the Academy said he was no mage. See [school]."
+  },
+  "bookPage": "From the report of Magus Cerys of the Academy at Camelot, under the heading of the teacher. He will not come to blows. He keeps his distance and follows whomever he is shouting at round the room, and shouts the hall-folk's kindling word, which is a word for wicks, at full voice, and whatever he looks at boils, and whatever stands beside it. Stand apart. His learners come from everywhere when he calls the roll, and only hit. His word cannot be broken; a knight struck him in the mouth mid-word and it came out regardless. He is not a mage. A mage knows a word is a word.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} dismissed Morgus Urgalorg's class for good in {minutes} minutes.",
+    "loss": "Morgus Urgalorg's learners boiled {realm}'s raid where it stood; {raidLeader} learned the lesson."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "drihten-elreden",
+      "relation": "his rival, the other keeper of learning"
+    },
+    {
+      "id": "drihten-elreden",
+      "relation": "the other ogre who keeps a room of learners"
+    },
+    {
+      "id": "ulor-se-bysen",
+      "relation": "his words can be broken; Morgus's cannot"
+    },
+    {
+      "id": "krevo-ricik",
+      "relation": "took Krevo's thrown runts as learners and was thrown himself"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Kindling Word",
+      "text": "The hall-folk taught their children letters and law in the long schoolroom, and before either of those they taught them to light a lamp.\n\nKrondon is under a hill, and in the hall's time the dark was the first enemy of every child born there. So the school's first lesson, older than the alphabet, was a word: the kindling word, which the hall-folk's children said over a wick until the wick caught, and which the ghosts say every child of the hall could say before it could say its own title. Wynflaed taught it to her three last pupils on their first day. The slate she taught it from is still on the wall behind the teacher's chair, with the word cut large at the top and a small lamp drawn under it.\n\nMorgus Urgalorg found the slate in the first week of the taking. He was a big, slow, patient ogre of the Undercroft who had never in his life been allowed to hold the clan's fire, because Beran carried it, and he stood in front of the slate for a day and a night and said the word over and over, by shape, as the ogres of Krondon learn everything. The ghosts say it was on the second morning that the lamp on the teacher's desk caught. Morgus shouted. The ghosts say he shouted the word again, louder, to see what would happen, and that what happened burned the teacher's chair.\n\nHe has been saying it louder ever since. He does not know that the kindling word is a small word, for wicks. He thinks it is a shout, and he shouts it at whatever he looks at, and whatever he looks at boils; and so does whatever is standing beside it, because a shout is not careful. Wenna of Caer Gothwaite, who heard it through the school door, wrote that it was the hall-folk's gentlest word, said by the one creature in the isles least fitted to say it."
+    },
+    {
+      "title": "The Class",
+      "text": "Morgus decided on the second morning that he was a teacher, because he had learned something and there was a chair.\n\nHe took the teacher's chair, scorched as it was, and the ogres say he went through the hall that week collecting young ones: the smallest of every litter, the ones nobody else wanted underfoot, the ones Krevo Ricik had thrown. He sat them on the hall-folk's benches in rows and called them by the word cut over the door of the room, leornere, learners, and he taught them the kindling word. Not one of them has ever learned it. The ghosts say they cannot get the shape of it right, and that Morgus does not notice, because when he says it everything catches anyway.\n\nWhat the learners have learned is to come. Morgus calls the roll in the old way every morning, the hall-folk's word for learner shouted once for the whole class, and every young ogre who hears it comes running to him from wherever in the hall it is, the stores or the drains or the road. When he is roused against an enemy he calls the roll, and the whole class comes at once, all of them, every one, and stands around him with their fists up, because they have never been taught to do anything else. They hit. They hit as young ogres hit, hard and without art. The ghosts say they have never once in all their schooling made a lamp catch.\n\nThere are three benches in the room that the class does not sit on, and at the back, where the ogres cannot see them, the ghosts of the hall's old teachers sit with their hands folded. Wynflaed is not among them. The ghosts say she cannot bear to watch her slate being read aloud. Morgus has never hit one of his learners. He has never hit anything. The ghosts say that is the one thing he understood about teaching, and that it is not enough."
+    },
+    {
+      "title": "The Boy at the Back",
+      "text": "Every teacher of the hall-folk's school had a habit, the ghosts say, and Morgus has copied that too.\n\nA teacher who caught a pupil at the back not attending threw something at him: a pellet of clay, a fragment of slate, never hard, always with a good aim, so that the whole room would see who had been dreaming. Wynflaed had the best aim of any of them. The ghosts say her pupils kept a tally on the underside of a bench of how many times each of them had been hit, and that the three last pupils were the least hit in the history of the school.\n\nMorgus throws fire. While he shouts the kindling word at whatever stands in front of him, he looks past it, now and then, at someone further back who is not his business, and flicks a lash of fire at him, as the old teachers flicked their clay: not the man he is fighting, but the one behind, at the edge of the room, who thought he was safe there. The ghosts say it is the only one of the old teachers' habits that he does well. Sir Cador's knights on Wenna's second descent called it the chalk, and the name went home with them to Caer Gothwaite, where the squires use it of any blow that comes from nowhere.\n\nThe readers of Caer Gothwaite were struck by something else in Wenna's account of the school. Morgus does not stop a word once he has begun it. Ulor, the brothers' curser, can be broken in the middle of a curse, because a curse is a careful thing and the hall-folk wrote that it must be said whole. Morgus is not careful. Wenna wrote that she had seen a knight strike him full in the mouth in the middle of the word, and that the word came out anyway, through the blow, as a shout comes out of a man however hard you hit him. A kindling word is meant to be said by a child. It was never made to be stopped."
+    },
+    {
+      "title": "Magus Cerys and the Question",
+      "text": "The first company of Albion to kill Morgus Urgalorg was raised by the Academy, because the Academy wanted to know whether an ogre could be a mage.\n\nMagus Cerys of the Academy at Camelot had read Wenna's account of the school and argued about it for a winter with Master Ferowl, who held that the ogre was doing nothing a lamp-boy could not do and that the Academy had better uses for its masters. Cerys went anyway, with a company of the Isle of Glass and three of her own students, to see. She wrote her account as a report to the Academy, with headings.\n\nUnder the heading of the learners she wrote that they came from everywhere at once when the teacher was roused, a whole schoolroom of young ogres running into the room from the corridors, and that the knights of the Isle of Glass met them at the benches and the company's own fire took them in their rows. Under the heading of the teacher she wrote that he would not come to blows; he kept his distance from whomever he was shouting at and followed him round the room to keep him in sight, and boiled him and whoever stood near him. She told her company to stand apart. Under the heading of the chalk she wrote that it fell on whoever thought himself safe, and that the only answer was to think oneself in danger everywhere, which she recommended to her students as a general rule of life.\n\nUnder the last heading, the question, she wrote that the ogre was not a mage. A mage knows that a word is a word. Morgus thought it was a shout, and so it could not be broken, and so it was in some ways more dangerous than anything the Academy taught. He died shouting it, she wrote, at the ceiling. Master Ferowl had the report bound and kept, and wrote on the cover: as I said. Cerys's students wrote under it: not quite. The ghosts say Morgus was back in the scorched chair by the next new moon, calling the roll."
+    }
+  ]
+}

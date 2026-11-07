@@ -1,0 +1,178 @@
+{
+  "id": "icelord-hakr",
+  "name": "Icelord Hakr",
+  "catalogKey": "tuscaran-glacier/hakr",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "queen-kula",
+      "relation": "keeps her iceweavers"
+    },
+    {
+      "id": "tuscaran-glacier",
+      "relation": "the walls his weavers mend"
+    },
+    {
+      "id": "icelord-steinvor",
+      "relation": "icelord of the halls beyond his"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Hakr is a level-82 icelord with 100,000 health, guarded by two Royal Iceweavers that spawn with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He hurls a player straight up into the air, and a magic barrier sometimes fades from around him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs"
+    },
+    {
+      "text": "Allakhazam lists a 'Hakr's Barrier' object and the Royal Iceweaver in the glacier.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=76"
+    },
+    {
+      "text": "Bot chat says the queen's iceweavers mend the walls each night so they never crack.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Hakr has no spells: 100,000 health, 40% melee / 70% magic resists, CC-immune, reach 350. Four Royal Iceweavers (20,000 health, thrust melee, tether 3,800) are created with him: two beside him, which join when he is first attacked (HakrBaf), and two at another spot in the region. In melee they have a 25% chance per tick to cast Iceweaver's Poison (100 body, 30 s) on their target if it has no damage-over-time on it, so it does not stack.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs"
+    },
+    {
+      "text": "While any iceweaver lives, every 10-20 s he picks a random real player and announces 'Touchdown!', but the throw itself is OFF in Living Server (EpicEncounterMechanics.AllowDisplacement), so nobody moves. 'Magic barrier fades away' is announced when the last iceweaver dies; there is no actual barrier.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs"
+    },
+    {
+      "text": "Hakr is an Old Norse name (hakr, 'hook' or 'chin', to verify). The crushed hatchling and Kula's word are Living Server lore.",
+      "provenance": "original",
+      "source": "Old Norse name, to verify"
+    }
+  ],
+  "story": "Hakr keeps the queen's iceweavers, the long cold serpents of the deep ice that move through the citadel every night and weave the walls new, laying a thread too fine to see over every crack, so that no crack in Tuscaran lasts until morning. The royal ones are the largest and oldest of their kind, and Hakr has kept them since he was a boy and found the first royal egg in a meltwater pool. Kula trusts him as she trusts few others, because without his weavers her citadel would split like a dropped jar.\n\nTwo of the royal iceweavers never leave his side, and when anything lays a hand on Hakr they are on it before he has turned round. Two more are always at the weaving in the far hall. Their bite carries a cold poison that sits in the blood a while; a weaver bites once and waits for it to work, and does not bite the same blood twice while the first bite is still in it. The giants used to say the weavers spun a shell of ice round their keeper that turned blows aside. The companies who have fought him say there is no shell, only the weavers, and that when the last of them dies Hakr's temper is all that changes.\n\nHe had a giant's sense of humour once, which is to say he liked to throw things, and people best of all. He would pick a visitor up and throw him into the vault, and shout 'touchdown!' as he came down. He threw Brannulf of the Remnants down a tunnel for asking to buy a spindle of thread. Then, the season after Midgard came, he threw a stranger who came down on a royal hatchling and crushed it, and the weavers mourned so long that the cracks in the western halls went unmended for a month. Kula said one word to him about it. He has not thrown anyone since. He still shouts the joke, out of habit, while his hands stay at his sides.",
+  "chapters": [
+    {
+      "title": "The Egg in the Meltwater",
+      "text": "The iceweavers were in Delling's Crater before the giants. The cast-out sculptors say the first hrimthursa to cut down into the glacier found them already there, long pale serpents moving through the cracks of the old ice, and that nobody knew what they were doing until a young giant called Hakr sat up three nights watching one and saw the crack behind it close.\n\nHe was a rook's son, a carrier of blocks, and he had no business watching serpents. He watched anyway. On the fourth night he followed the serpent to a meltwater pool in the deep ice and found its eggs, and one of them was larger than the rest and the colour of a winter sky, and he carried it home cupped in both hands and kept it in his bed of furs. The sculptors say it hatched there one night and coiled round his wrist and would not let go for a month, and that the royal iceweavers of Tuscaran are all its children.\n\nHe raised it as a boy raises a hound, and when it was grown he took it to the walls of the half-built citadel and let it weave, and the walls held. Queen Kula came to see. The cracks that had opened in the night in her new halls were closed by morning wherever Hakr's serpent had passed, and she made the rook's son an icelord on the spot and gave him every iceweaver in the glacier to keep. No giant had ever risen so fast from so low, and the Ice Lords' houses never quite forgave it.\n\nThe weavers go along the walls in the dark, three or four together, and where they pass the wall is whole that was cracked. Brannulf of the Remnants, a dwarf weaver of Faraheim who watched them through a crack in the outer ice, wrote that he could not see the thread. He could only see the cracks close. The giants say it is the reason the glacier never falls. The cast-out sculptors say it is the reason the lid never shifts."
+    },
+    {
+      "title": "Two at His Side",
+      "text": "The royal iceweavers are the largest and oldest of their kind, the children of the sky-coloured egg, and there are four of them. Two are always at the weaving, in the far halls of Hakr's charge, laying their thread over the night's cracks. The other two never leave his side. They lie coiled round the feet of his seat, and when he walks they walk with him, and when anything lays a hand on him they are on it before he has turned round.\n\nTheir bite carries a cold poison, a slow burning in the blood that runs its course in a while and stops. The tormentors who keep the weavers' hatchlings say a weaver is a patient biter. It bites once, and waits for the poison to work, and does not bite the same blood again while the first bite is still in it; it moves on to the next, or waits. The tormentors say it is because the weavers are careful with their venom, which is the same stuff as their thread.\n\nThe giants of the Ice Lords' houses had their own belief about the royal pair, and it went down the crater road to Dellingstad with the salt-traders. They said the weavers spun a shell round their keeper when he fought, a weave of ice that turned blows aside, and that a stranger who struck at Hakr before the weavers were dead was striking at the glacier itself.\n\nThe companies of Midgard who have reached Hakr's hall say there is no shell. Their blows bite the icelord from the first to the last. What changes when the last of his weavers dies, they say, is Hakr: he roars, and the giants of his hall cry out that the weave has left him, and he fights on exactly as before, with his temper worse and his reach as long as ever. The cast-out sculptors at Dellingstad say the shell was always a story the Ice Lords told to explain why a rook's son could not be beaten. The weavers were the reason, and the weavers are only serpents."
+    },
+    {
+      "title": "Touchdown",
+      "text": "Hakr had a giant's sense of humour, which is to say he liked to throw things, and the thing he liked to throw best was a person. Giants who came to his hall with bad news went up into the vault and came down on the ice. So did salt-traders, and morvalt prisoners, and the young icelords of the old houses who came to sneer at the rook's son. He had a joke he made every time, the same word as the visitor came down. Touchdown, he said. It was not a good joke. The weavers never laughed at it.\n\nBrannulf of the Remnants came up the crater road in the seventieth winter of the Council to buy a spindle of iceweaver thread, which the dwarves of Faraheim would give almost anything for, and Hakr laughed and threw him down the tunnel. Brannulf broke two ribs, and wrote afterwards that he would ask again tomorrow. He never got the chance.\n\nThe season after Midgard climbed the crater road, Hakr threw a stranger in his hall, a young warrior of Jordheim, as he had thrown everyone, and the warrior came down not on the ice but on a royal hatchling coiled by the wall, and crushed it. The weavers stopped weaving. The tormentors say they lay round the dead hatchling for a month and would not go to the walls, and the cracks in the western halls opened and stayed open, and the whole citadel heard the ice groaning at night as it had not since Guthlac's first spike.\n\nKula came down to Hakr's hall. The sculptors say she said one word to him, and that nobody else heard what it was. He has not thrown anyone since. He still shouts the joke at strangers, out of habit, at the moment he would once have thrown them: touchdown, he says, and looks at one of them, and laughs, and his hands stay at his sides."
+    },
+    {
+      "title": "The Thread",
+      "text": "The iarn dwarves of Faraheim would give a great deal for a single thread of the weavers' silk, because it is the only thing on Aegir that mends stone and ice alike, and their slate-house walls are cracking. Thorgrim of Faraheim says the Remnants have asked the giants for it nine times in the slates' memory and been thrown down the crater road, in one way or another, nine times.\n\nMidgard's companies who come home from Hakr's hall bring the royal weavers' hides, and nothing on them is the thread. The weavers' silk, Brannulf wrote, does not outlast the weaver; it melts off the dead serpent like frost off a warm hand. The runemasters of Jordheim have tried to unpick it from the walls of the citadel, and it does not come away. It is part of the ice once it is laid.\n\nThe cast-out sculptors are uneasy about the companies who go to Hakr's hall. They say the four royal weavers are the oldest of their kind and that no other iceweaver in Tuscaran is large enough to mend the deep walls, and that every season the royal ones are dead, before they come again, the deep walls go unmended. They do not say what is behind the deep walls. They say it is the reason the glacier never falls, and leave it there.\n\nHakr knows what the companies come for and does not much care. He keeps his weavers and fights at the one in front of him with his long reach and his short temper, and he dies laughing at his own joke, the companies say, with the weavers' hall gone quiet round him."
+    }
+  ],
+  "legend": "Icelord Hakr is a melee giant with no spells: 100,000 health, 40% melee and 70% magic resists, CC-immune, long reach (about 350). The fight is his Royal Iceweavers: two lie beside him and join the moment he's hit, and two more wait elsewhere in the area. Each has 20,000 health and a body poison (100 every tick for 30 seconds) on whoever it's biting; the poison doesn't stack, so cure it and it may bite again, but it never piles up. Kill the weavers or keep them off the healers, and bring cure poison. Two old beliefs are wrong here. His 'magic barrier' is only a message when the last weaver dies; you can burn him any time. And he no longer throws anyone: you will still see his 'touchdown!' line every 10 to 20 seconds while the weavers live, but nobody goes anywhere. Clear the hatchlings and trainers nearby first. His hauberk is a good drop.",
+  "yells": {
+    "aggro": [
+      "Iceweavers! We have guests who need lifting.",
+      "Iceweavers, up! We have guests!",
+      "Who wants to fly first?",
+      "Touchdown! Ha! No... no, not any more."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "My weavers! Then I will mend the walls with you!"
+      },
+      {
+        "trigger": "addsDead",
+        "text": "My weave is gone. Then I will do it with my hands."
+      }
+    ],
+    "death": [
+      "The walls... will crack... by morning...",
+      "Weave... the walls... without me...",
+      "Who will... mend the walls..."
+    ],
+    "slay": [
+      "Landed badly. They always do.",
+      "Landed badly.",
+      "Next time, land on your feet.",
+      "Weavers, tidy that up.",
+      "The weavers will mend the wall over you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Woven ice glistens on every wall. Something mends it.",
+      "Long cold serpents coil in the woven walls.",
+      "Pale serpents coil round the feet of a great seat."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "The royal iceweavers are dead. Hakr stands alone."
+      },
+      {
+        "trigger": "addsDead",
+        "text": "The iceweavers' weave fades from around Hakr."
+      }
+    ],
+    "realmFirstKill": "Hakr falls. His weavers' hall goes quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "hakr has 2 royal iceweavers with him and 2 more nearby, kill them or keep them off healers",
+      "hakr doesnt throw anyone any more, ignore the touchdown spam",
+      "hakrs barrier is only a message, burn him whenever",
+      "iceweaver tether is long, theyll chase you",
+      "hakr has no spells, its all about his 4 royal iceweavers, 20k each",
+      "weaver poison doesnt stack, cure it and keep going",
+      "his barrier is just a message when the weavers die, burn him any time",
+      "touchdown spam is harmless, he doesnt throw any more"
+    ],
+    "aftermathWin": [
+      "hakr dead. the weavers were the real fight [lol|as always]",
+      "iceweavers dead first this time, way easier",
+      "hakr's hauberk dropped [grats|gz]",
+      "nobody died to the poison this time",
+      "touchdown lol. nobody moved",
+      "killed the weavers first, easy",
+      "hakr's hauberk!"
+    ],
+    "aftermathLoss": [
+      "iceweavers ate the cleric group while we were all on hakr",
+      "we ignored the weavers and the poison did the rest",
+      "stood in the weavers and got chewed. [classic|lol]",
+      "the royal iceweavers chased the healers all over the hall",
+      "weavers got the healers",
+      "waited for the barrier that isnt real and ran out of time"
+    ],
+    "rumour": [
+      "the iceweavers [fix|mend] the glacier walls every night, they say. thats why it never cracks",
+      "one thread of iceweaver silk is worth a fortune to the iarn dwarves",
+      "hakr threw a dwarf who came to buy silk. [true story|so they say]",
+      "the queen's iceweavers mend every crack in the glacier by morning",
+      "hakr used to throw people. stopped after someone landed on a baby iceweaver",
+      "the iceweavers mend the glacier every night. a dwarf would give his beard for the thread",
+      "hakr was a rooks son. raised the first royal iceweaver in his shirt"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hakr",
+    "text": "Keeper of the queen's iceweavers, the serpents that weave the glacier's walls new each night; he raised the first royal one from an egg. Two never leave his side. The giants said the weavers spun him a shell; the companies say there is only the weavers. He used to throw his visitors and stopped after one crushed a royal hatchling. He still says the joke."
+  },
+  "bookPage": "From the notebook of Brannulf, dwarf of the Remnants, a weaver by trade. I have seen the iceweavers at their work through a crack in the outer ice. They go along the wall in the dark, three or four together, and where they pass the wall is whole that was cracked. I could not see the thread. I could only see the cracks close. I would give my beard for a spindle of it. I asked the giant Hakr for one and he laughed and threw me down the tunnel, and I broke two ribs, and I would ask again tomorrow.",
+  "chronicle": {
+    "win": "Icelord Hakr fell to {raidLeader}'s raid from {realm} in {minutes} minutes, and his iceweavers with him.",
+    "loss": "Icelord Hakr and his iceweavers held off {raidLeader}'s raid from {realm} for {minutes} minutes and won."
+  }
+}

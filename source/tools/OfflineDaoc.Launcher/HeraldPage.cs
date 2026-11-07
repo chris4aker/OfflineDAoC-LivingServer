@@ -146,7 +146,15 @@ public static class HeraldPage
         }
         catch (Exception) { /* the ledger is optional news */ }
 
-        return Render(nowLocal, characters, guildNames, botGuild, keeps, relics, firsts, wanted, events);
+        // Living Server 1.2: the bosses each realm has slain, with their stories (LoreBestiary).
+        var bestiary = new Dictionary<int, List<DOL.GS.LoreChannels.LoreBestiaryEntry>>();
+        try
+        {
+            for (int realm = 1; realm <= 3; realm++) bestiary[realm] = LauncherLore.Bestiary(LauncherLore.Source, recordsPath, realm);
+        }
+        catch (Exception) { bestiary.Clear(); /* the ledger is optional news */ }
+
+        return Render(nowLocal, characters, guildNames, botGuild, keeps, relics, firsts, wanted, events, bestiary);
     }
 
     private static string Render(DateTime now, List<Character> characters,
@@ -154,7 +162,8 @@ public static class HeraldPage
         List<(string Name, int Realm, int Original, int Level, string Claim)> keeps,
         List<(int Realm, int Original, int Type, string Captured)> relics,
         List<(string Title, int Realm, string Name, string ClassName, string When)> firsts,
-        List<(string Name, int Realm, int Kills, int Hunters)> wanted, List<DOL.GS.RealmEventRecord> events)
+        List<(string Name, int Realm, int Kills, int Hunters)> wanted, List<DOL.GS.RealmEventRecord> events,
+        Dictionary<int, List<DOL.GS.LoreChannels.LoreBestiaryEntry>>? bestiary = null)
     {
         var h = new StringBuilder();
         string E(string s) => WebUtility.HtmlEncode(s);
@@ -273,10 +282,31 @@ public static class HeraldPage
         {
             h.Append("<table><tr><th>Event</th><th>Realm</th><th>Outcome</th><th>Began</th></tr>");
             foreach (var e in events)
+            {
                 h.Append($"<tr><td>{E(e.Name)}</td><td>{E(e.Realm)}</td><td>{E(e.Outcome)}</td><td>{E(When(e.StartedUtc))}</td></tr>");
+                // Living Server 1.2: the chronicle sentence from the final boss's lore.
+                if (DOL.GS.LoreChannels.LoreChronicle.For(LauncherLore.Source, e) is { } chronicle)
+                    h.Append($"<tr class=\"chronicle\"><td colspan=\"4\">{E(chronicle)}</td></tr>");
+            }
             h.Append("</table>");
         }
         h.Append("</section>");
+
+        // Living Server 1.2: the Bestiary of the Realms, each realm's slain bosses and their stories.
+        var slain = (bestiary ?? []).ToDictionary(p => p.Key, p => p.Value.Where(b => b.Unlocked).OrderBy(b => b.FirstKillUtc, StringComparer.Ordinal).ToList());
+        if (slain.Values.Any(list => list.Count > 0))
+        {
+            h.Append("<section><h2>Bestiary of the Realms</h2><p class=\"muted\">The great foes each realm has brought down, and what is told of them.</p>");
+            for (int realm = 1; realm <= 3; realm++)
+            {
+                if (!slain.TryGetValue(realm, out var list) || list.Count == 0) continue;
+                h.Append($"<h3 class=\"sub\">{Realm(realm)}</h3>");
+                foreach (var b in list)
+                    h.Append($"<div class=\"beast\"><p><b>{E(b.Boss.Name)}</b> <span class=\"muted\">{E(b.Location.Name)} · first slain {E(When(b.FirstKillUtc))}" +
+                             (b.Wins + b.Losses > 0 ? $" · raids {b.Wins} won, {b.Losses} lost" : "") + $"</span></p><p>{E(b.Boss.Story ?? "")}</p></div>");
+            }
+            h.Append("</section>");
+        }
 
         h.Append("<footer>Written by the Offline DAoC launcher from this game's own records. Nothing here leaves your computer.</footer>");
         h.Append("</main></body></html>");
@@ -326,6 +356,6 @@ public static class HeraldPage
         table{width:100%;border-collapse:collapse;font-size:15px}th,td{text-align:left;padding:6px 8px;border-bottom:1px solid color-mix(in srgb,var(--rule) 35%,transparent)}
         th{font-variant:small-caps;letter-spacing:.04em;color:var(--muted);font-weight:normal}.num{text-align:right;font-variant-numeric:tabular-nums}
         .realm{font-weight:bold}.realm.alb{color:var(--alb)}.realm.mid{color:var(--mid)}.realm.hib{color:var(--hib)}
-        section{overflow-x:auto}footer{margin-top:40px;text-align:center;color:var(--muted);font-style:italic;font-size:14px}
+        section{overflow-x:auto}.chronicle td{font-style:italic;color:var(--muted);border-bottom:1px solid color-mix(in srgb,var(--rule) 35%,transparent)}.beast{margin:0 0 14px}.beast p{margin:2px 0}footer{margin-top:40px;text-align:center;color:var(--muted);font-style:italic;font-size:14px}
         """;
 }

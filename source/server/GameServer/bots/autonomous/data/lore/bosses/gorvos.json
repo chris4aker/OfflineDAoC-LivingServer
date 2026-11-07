@@ -1,0 +1,82 @@
+{
+  "id": "gorvos",
+  "name": "Gorvos",
+  "npcNames": [
+    "Gorvos"
+  ],
+  "locationId": "caldey",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Gorvos: NPC template 60161529, level 44, the ghoul model (as Caldech and the grasping ghouls), aggro 200 (range 500), no spells; two spawns on the eastern slopes of Caldey: 369678, 412869 (no faction, respawn 80 s) and 371513, 410963 (Undead Servants of Morgana, respawn 600 s), haunted rowans near.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Gorvos the rowan-keeper and the fishermen's refusal to count him are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Caldey was Avalon's burying isle, and its priests of the dead kept a custom for a man who died far from home: they buried him twice, once where his body lay and once, empty, in the ground he came from, so that he should not wander between them looking for his grave. When Morgana raised the isles the custom turned on itself. Gorvos was one of the isle's own: a keeper of the rowans that the priests planted round the graves to keep the dead down, who died among his trees on the eastern slope and was buried there, and buried again, empty, by the priests' chapel, because his work had been the chapel's. He rose from both. The rowans he kept are haunted now, and walk, and he walks among them twice.\n\nThe fishermen of Little Haven will not count him. A man who is counted, they say, is a man who can be added up, and a man who can be added up can be finished; Gorvos cannot be finished, so to count him is to start a sum that never ends. They say he is like Devmer on the western slope, and then they stop talking about him.",
+  "legend": "Gorvos, level 44 ghoul, walks the eastern slopes of Caldey twice: one spawn with no faction (back in about 80 seconds) and one with the Undead Servants of Morgana (about ten minutes). Haunted rowans stand near and are aggressive. Plain melee, no spells, ghoul: slash works. Pull him clear of the rowans. A group in the mid forties is comfortable.",
+  "yells": {
+    "aggro": [
+      "The rowans are mine.",
+      "Count me. Go on."
+    ],
+    "phases": [],
+    "death": [
+      "Not... finished..."
+    ],
+    "slay": [
+      "Under the rowans.",
+      "One more for the trees."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Gorvos on the eastern slope, and again."
+    ],
+    "phases": [],
+    "realmFirstKill": "Gorvos has fallen. The fishermen will not count it."
+  },
+  "botLines": {
+    "briefing": [
+      "gorvos on the east slopes of caldey, two of him, pull him off the rowans",
+      "slash on gorvos, hes a ghoul"
+    ],
+    "aftermathWin": [
+      "one gorvos down",
+      "got gorvos. dont tell the fishermen, they wont count it"
+    ],
+    "aftermathLoss": [
+      "the haunted rowans joined in"
+    ],
+    "rumour": [
+      "[heard|someone said] gorvos kept the rowans round the graves before he died",
+      "heard the little haven fishermen refuse to count gorvos"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "gorvos",
+    "text": "A rowan-keeper of [caldey] who died among his trees and was buried twice; he walks the eastern slope twice among the haunted rowans. The fishermen of Little Haven do not count him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} brought down a Gorvos among the rowans of Caldey in {minutes} minutes.",
+    "loss": "Gorvos walked on among the rowans; {raidLeader} of {realm} did not finish the sum."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "devmer",
+      "relation": "the same double burial, on the western slope"
+    }
+  ],
+  "tier": "minor"
+}

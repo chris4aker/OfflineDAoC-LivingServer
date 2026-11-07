@@ -1,0 +1,154 @@
+{
+  "id": "summoner-lossren",
+  "name": "Summoner Lossren",
+  "catalogKey": "summoner-s-hall/summonerlossren",
+  "locationId": "summoners-hall",
+  "realm": "Neutral",
+  "era": "mid-era-jarls",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "his master"
+    },
+    {
+      "id": "summoner-cunovinda",
+      "relation": "fellow student"
+    },
+    {
+      "id": "summoner-roesia",
+      "relation": "fellow student"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Summoner Lossren is a level-75 summoner with 100,000 health, one of the three objectives before the Grand Summoner.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He raises tortured souls, eighteen to twenty-five at a time, and an infected ghoul that crawls toward a player and bursts in a plague (1,000 damage in a 500 radius).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs"
+    },
+    {
+      "text": "Summoned pets do only 5 damage per hit to him, and he cannot be hurt past his tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "A 2003 Allakhazam comment says one summoner kept summoning 'yellow conned lil zombie things' non-stop.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/3985"
+    },
+    {
+      "text": "While he fights he raises 18-25 tortured souls whenever none of his are alive; once twenty have been killed, an infected ghoul crawls toward a random real player and, on reaching them, bursts (Plague: 1,000 matter damage, radius 500).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs"
+    },
+    {
+      "text": "He takes 40% less melee and 70% less magic damage, only 5 damage per hit from summoned pets, cannot be crowd-controlled, and heals to full after 30 seconds out of combat.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs"
+    }
+  ],
+  "story": "Lossren is the gatherer, the second of the Grand Summoner's students. The calling brings the dead of every realm down the three stairs, and he receives them at the bottom, sorts them, and sends them to their places in the hall; the ones who arrive in pieces he keeps. Nobody can say which realm he came from, and he does not seem to remember. The stewards say he was a gravedigger once, somewhere above, and that he came down the road still carrying his spade.\n\nHis chamber is a crowd. The tortured souls stream out of him in a host whenever the last host is gone, each still wearing something of the face it had above, and the companies of every realm have seen their own dead in it. When enough of the crowd has been cut down, the worst of what he keeps drags itself out of the heap: a ghoul swollen with the plague of the pits it came from, which crawls toward one of the living and bursts. The summoned beasts the living bring against him barely mark him. A thing called up by a summoner is his own kind, the stewards say, and it will not hurt its own kind.\n\nHe wants nothing from his master, the magicker says, which makes him the most loyal of the three. He likes the work. When he dies the crowd thins and fades, and the companies who have killed him say that for a moment the faces in it look relieved. Then he is back in a season, and the gathering begins again. The magicker says he is the one student Govannon trusts with the count of every soul that has answered the calling, and that the summoner asks him for it at night and goes away very quiet. The skalds say a gravedigger who keeps count is the only kind worth fearing.",
+  "chapters": [
+    {
+      "title": "The Gravedigger",
+      "text": "The calling brings the dead of every realm down the three stairs, and they arrive at the bottom in every state: whole and walking, or bent, or crawling, or in pieces carried by the ones who came down with them. Someone has to receive them. The Grand Summoner gave the work to his second student, and the hall calls him the gatherer. Lossren meets the dead at the foot of the stairs, sorts them, and sends each to its place in the hall: the disemboweled to the upper passages, the bog-dead to the low rooms, the binders to the masters. The ones who arrive in pieces he keeps.\n\nNobody can say which realm he came from. His name is not Albion's, Hibernia's or Midgard's, in any tongue the scholars of the three realms know, and he does not seem to remember. The stewards say he was a gravedigger once, somewhere above, a man who put the dead into the ground for a living, and that when the calling began he was the first of the living to understand that it was asking for his customers. He walked down the road after them still carrying his spade. The magicker says he still has it, somewhere in his chamber, and that it is the only thing he owns.\n\nEach realm claims him as somebody else's. Camelot says he came from the bog-graves of the west; the druids that he came from the plague-pits of the Pennine towns; the skalds that a gravedigger has no realm, only a parish of the dead, and that his is all three."
+    },
+    {
+      "title": "The Crowd",
+      "text": "His chamber is a crowd. The tortured souls he keeps stream out of him in a host when the living come in, more than anyone has been able to count, and the companies who have cut a host down have watched another stream out after it as soon as the last of the first had fallen, as if he would not stand alone in his own room for a moment longer than he had to. The gatherer does not like an empty room, the stewards say. He never has.\n\nThe souls are not nameless. Each still wears something of the face it had above, and something of the name, and the companies of every realm have seen their own dead in the crowd. Albion's companies have seen men of the Pennine watch. The druids say they once saw a keener of Breifine there, singing nothing. Vigfus Hallason saw a man of Midgard in mail he knew from the songs and would not write down whose. The gothar of Jordheim say the crowd is the cruellest thing in the hall, crueller than the summoner's bargains, because the souls in it were not bound by any promise. They were simply kept.\n\nThe souls fight for him as a crowd fights, all at once and without much craft, and they come at any company that comes at their gatherer. The companies who have killed him say the crowd matters more than the man. Lossren himself does very little in his chamber but stand among his dead, as a gravedigger stands in a churchyard on a holy day, among the people he has put to rest."
+    },
+    {
+      "title": "The Swollen One",
+      "text": "Not everything Lossren keeps is a soul. The worst of the dead who come down the stairs are the plague-dead, from the pits outside the old towns where the sick were thrown in heaps, and they arrive swollen and leaking, and the stewards will not touch them. Lossren keeps them under the crowd, at the bottom of the heap, where they lie quiet until the heap is thinned.\n\nWhen enough of his crowd has been cut down, one of the swollen ones drags itself out of what is left. The companies call it the infected ghoul. It does not fight. It chooses one of the living and crawls toward him, slowly, across the floor of the chamber, with everyone in the room watching it come, and when it reaches him it bursts, and the plague in it goes out over everyone standing near in a wide ring. The druids who saw it first said it was the most honest thing in the hall: a plague-death that wants to share itself.\n\nThe companies made a custom of it. When the swollen one comes out of the heap, the one it is crawling toward is called by name, loudly, by the whole company, so that he knows; the custom began in Hibernia, the druids say, with a ranger who did not hear his name in time. The companies of Albion and Midgard took it up without being asked, and the skalds say it is the only custom of the hall that all three realms share."
+    },
+    {
+      "title": "His Own Kind",
+      "text": "The living bring beasts into the hall. Albion's theurgists call up spirits of the air, Hibernia's animists their growing things, Midgard's hunters and spiritmasters their wolves and their bound dead, and a company of any realm comes down its stair with a pack of summoned things at its heels. Lossren does not fear any of them. The stewards say a thing called up by a summoner is his own kind, and will not hurt its own kind, and the companies say it is true: a summoned beast set on the gatherer bites as gently as a hound mouthing a pup, and he does not even look down. The beasts are more use among his crowd.\n\nHe wants nothing from his master, the magicker says. Cunovinda wants to be told she has surpassed him, Roesia wants to be told she is needed, and Lossren wants nothing, because he likes the work. That makes him the most loyal of the three and the least interesting, she said, and Govannon trusts him with the thing he trusts no one else with, which is the count. Lossren knows how many have answered the calling. He has never told anyone.\n\nWhen he dies, the crowd thins and fades, and the companies who have killed him say that for a moment, before the faces go, they look relieved. Then he is back in a season, standing among a new crowd, and the gathering begins again. The skalds of Jordheim say that is the only thing in the hall they envy: a man who has found the work he was made for and is never once asked to stop."
+    }
+  ],
+  "legend": "Lossren is an add fight. The moment he's engaged a crowd of tortured souls pours out, eighteen to twenty-five of them, and as soon as they're all dead another lot comes, so area damage on the souls and don't let them reach the healers. After about twenty souls die an infected ghoul crawls out toward one person and pops for a thousand in a big ring when it reaches them, so call the name, and that person runs while everyone else gets out of the way. Pets do almost nothing to him, five a hit, so put them on the souls. Like the other masters he shrugs off most magic, can't be mezzed or stunned, can't be hurt past his tether and heals up if you leave him for half a minute.",
+  "yells": {
+    "aggro": [
+      "More for the gathering. Come in whole, leave in pieces.",
+      "Visitors! Come in, come in. There is always room.",
+      "I keep everyone who comes down in pieces. You will do."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Rise, all of you. Your summoner has need of you."
+      }
+    ],
+    "death": [
+      "They are... leaving me...",
+      "Who will... count them... now..."
+    ],
+    "slay": [
+      "Gathered.",
+      "One more for the crowd.",
+      "Lie still. I will find you a place."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Tortured souls drift here by the score.",
+      "The gatherer stands among his dead like a sexton."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "A swollen ghoul crawls out of Lossren's crowd!"
+      },
+      {
+        "trigger": "death",
+        "text": "Lossren falls. His crowd thins and fades."
+      }
+    ],
+    "realmFirstKill": "Summoner Lossren is slain. His gathered souls fly free."
+  },
+  "botLines": {
+    "briefing": [
+      "lossren: aoe on the souls, if the ghoul crawls at you run, 1000 dmg pop",
+      "pets do nothing to him, put them on adds",
+      "the souls keep coming as long as lossren lives. aoe them, protect the healers",
+      "when the ghoul crawls out, yell the name of who its going for",
+      "dont stop on lossren for half a minute, he heals to full"
+    ],
+    "aftermathWin": [
+      "lossren down, the souls just faded",
+      "pets on the souls worked great. [nice|gg]",
+      "did anyone see the souls' faces at the end? [they looked happy|creepy]",
+      "the gatherer is gathered. [gg|lol]"
+    ],
+    "aftermathLoss": [
+      "the ghoul popped in the healer group",
+      "the souls swarmed the healers",
+      "nobody called the ghoul and it popped on the casters",
+      "my pet did nothing to him the whole time"
+    ],
+    "rumour": [
+      "the souls lossren raises were people who answered the call from the frontier dungeons. [grim|sad]",
+      "lossren was a gravedigger once, they say. still has his spade",
+      "the hibs started calling the ghoul's target by name, now everyone does it",
+      "they say lossren knows how many dead have answered the calling. he wont say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Lossren",
+    "text": "The Grand Summoner's gatherer, who collects the dead his master calls and keeps the ones that come in pieces. His swollen ghouls burst."
+  },
+  "bookPage": "From Vigfus Hallason's notes. I asked the magicker why Lossren keeps the ones who come down in pieces. She said the others are sent to their places in the hall, but a soul in pieces has no place, and a gravedigger cannot bear to leave anyone unburied. I asked whether the crowd were his prisoners. She said no, they were his parish. Then she told me he keeps the count of every soul that has answered the calling, and that the Grand Summoner asks him for it sometimes, at night, and Lossren tells him, and Govannon goes away very quiet. She did not know the number. She said she did not want to.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Summoner Lossren and freed his gathered souls in {minutes} minutes.",
+    "loss": "Summoner Lossren gathered {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "id": "bayn",
+  "name": "Bayn",
+  "npcNames": [
+    "Bayn"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Bayn: NPC template 60158321, level 45, faction Drakoran Legion, aggro 200 (range 500), no spells, respawn 80 s, at Beath's bank across the wooden bridge at 401376, 402454 with drakoran guardsmen (51) and Beath (55) close by.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Bayn as Beath's second, who keeps the bank's tally of the raised, is Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Across the wooden bridge the necromancers keep a bank above the stream, and Beath is its master, and Bayn is his second. Beath raises; Bayn counts. Every dead thing the bank calls up out of the dales' ground, Bayn writes down: what it was, where it lay, how long it stood before it fell again. The tally is long, and most of its lines end the same way, because the dales' dead do not stay up for drakoran the way Caldey's stay up for Morgana.\n\nBayn is not ambitious. The other drakoran of the bank say so with some contempt. Bayn has watched Beath's apprentices come and go, and has watched each one given the rod and each one made to carry the rod's weight, and has never once asked to carry it. A second, Bayn says, is the one who is still there afterwards.\n\nThe Priest of Arawn at Fort Gwyntell would like Bayn's tally more than anything on the bank. He says a list of everything that would not stay raised is a list of everything that still belongs to his lord.",
+  "legend": "Bayn, level 45 Drakoran Legion, at Beath's bank across the wooden bridge, with guardsmen (51) and Beath (55) close by. Pull Bayn away from Beath or you get both, and the guardsmen come with either. Plain melee, no spells. Respawn 80 seconds. A group in the high forties is comfortable. The apprentice with the rod is just across the bank.",
+  "yells": {
+    "aggro": [
+      "Write this down. Another one.",
+      "Master, we have visitors."
+    ],
+    "phases": [],
+    "death": [
+      "Strike... the line..."
+    ],
+    "slay": [
+      "One more for the tally.",
+      "Counted."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Beath's second, with a long tally of the raised."
+    ],
+    "phases": [],
+    "realmFirstKill": "Bayn has fallen. The bank's tally is unkept."
+  },
+  "botLines": {
+    "briefing": [
+      "bayn is at beath's bank, pull him away from beath",
+      "guardsmen come with him, high forties"
+    ],
+    "aftermathWin": [
+      "bayn down, beath still standing, good pull",
+      "got bayn"
+    ],
+    "aftermathLoss": [
+      "got bayn and beath together, bad pull"
+    ],
+    "rumour": [
+      "[heard|someone said] bayn keeps a tally of every dead thing the necromancers raised",
+      "heard bayn never wanted to carry the rod"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "bayn",
+    "text": "Beath's second at the necromancers' bank in the [dales of devwy], who keeps the tally of everything the bank raised and how long it stood. The Priest of Arawn wants the tally."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} struck Bayn off the necromancers' tally in {minutes} minutes.",
+    "loss": "Bayn counted {raidLeader}'s company of {realm} among the bank's raised."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "beath",
+      "relation": "his master"
+    },
+    {
+      "id": "necromantic-apprentice",
+      "relation": "the one with the rod"
+    }
+  ],
+  "tier": "minor"
+}

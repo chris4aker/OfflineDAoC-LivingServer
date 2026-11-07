@@ -1,0 +1,96 @@
+{
+  "id": "green-maw",
+  "name": "Green Maw",
+  "catalogKey": "hibernia-named-mobs-classic-zones/greenmaw",
+  "locationId": "cursed-forest",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 10,000 health, in the Cursed Forest. When it dies it splits into nine Parts of Green Maw in three sizes (levels about 58-60, 53-55 and 50).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/GreenMaw.cs; docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Green Maw is a hunger the Cursed Forest grew in one of its pools, a mouth of green slime as big as a cart. It eats what falls in and what wanders by. The trouble with it is not killing it. The trouble is what happens after. A thing that is only a mouth does not die as other creatures do. It comes apart, into big pieces and small pieces and smaller ones, and every piece is still a mouth. The Ardee children call it the Maw that won't stay dead.\n\nThe pools of the Cursed Forest went bad with the rest of the wood, and in one of them a hunger grew. Green Maw is only a mouth: a mass of green slime as big as a cart with teeth around the edge, that eats what falls in and what wanders by. It has no mind to speak of and no court to serve. The Sylvan think it is what a pool becomes when it drinks a broken bargain.\n\nThe trouble with it is not killing it. A thing that is only a mouth does not die as other creatures die. It comes apart: three big pieces, four middling, two small, nine mouths where there was one, each a little weaker and every one still hungry. The Ardee children call it the Maw that won't stay dead, and dare each other to throw stones into its pool. The wise ones throw them from very far away.\n\nThe children are not wrong about the running.",
+  "legend": "Killing it is the first half. When it dies it splits into nine pieces of three sizes: AoE them down, biggest first, and keep the healers clear of the splash. Have mana left for the second half, because that is where most bands lose it. Kill it, then kill nine more: AoE the pieces biggest first and keep mana for the second half. Superstition: never throw a stone into its pool unless you can outrun nine mouths. Old hands count the pieces aloud as they die, all nine, because one always hides in the reeds. Bards of Ardee sing a counting song about it.",
+  "yells": {
+    "aggro": [
+      "The pool heaves and opens into a mouth.",
+      "The pool heaves and opens into a mouth.",
+      "Hungry. Always hungry."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "The Maw bulges and splits at the edges."
+      }
+    ],
+    "death": [
+      "The Maw bursts into a dozen hungry pieces!",
+      "The Maw bursts into hungry pieces!"
+    ],
+    "slay": [
+      "Swallowed.",
+      "Swallowed.",
+      "Gone down."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A green pool, very still, with teeth in it.",
+      "A green pool, very still, with teeth in it."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "Green Maw splits into hungry pieces!"
+      }
+    ],
+    "realmFirstKill": "Green Maw is dead, every last piece of it."
+  },
+  "botLines": {
+    "briefing": [
+      "green maw splits into nine bits when it dies. [aoe ready|save mana for the pieces]",
+      "when it dies it splits into nine, [save aoe|mana for the pieces]",
+      "biggest pieces first. [then middling|then small]",
+      "count the pieces out loud, [all nine|one always hides]"
+    ],
+    "aftermathWin": [
+      "maw and all its bits down. [messy|good aoe]",
+      "maw and all nine bits. [messy|good aoe]",
+      "nobody got swallowed. [miracle|grats]",
+      "had mana left for the pieces. [planning|nice]"
+    ],
+    "aftermathLoss": [
+      "killed the maw and the pieces [ate the healers|swarmed us]. mana for the second half",
+      "pieces swarmed the healers. [aoe|kill bits]",
+      "out of mana for the second half. [plan|again]",
+      "threw a stone in the pool. [why|kids dare]"
+    ],
+    "rumour": [
+      "[heard|someone said] the ardee kids call it the maw that wont stay dead",
+      "[heard|someone said] green maw is what a pool becomes when it drinks a broken bargain",
+      "the ardee kids dare each other to throw stones in its pool",
+      "[word is|heard] it splits into nine when it dies"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Green Maw",
+    "text": "A mouth grown in a pool of the Cursed Forest. It does not die so much as come apart into smaller mouths."
+  },
+  "bookPage": "From Derbáil of Ardee's list: the children of Ardee have a game, grandmother said, called Maw. You throw a stone into the green pool at the edge of the Cursed Forest from as far away as you can, and then you run. The one who throws from nearest wins, if they win. Grandmother forbade it, and so did her mother. It is still played. The realm's warriors say the thing in the pool comes apart when it dies, into nine smaller mouths, each still hungry. The children say they know. That is the point of running, and of throwing from far away.",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Green Maw in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Green Maw's head after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "cursed-wood"
+  ],
+  "related": [
+    {
+      "id": "cailean",
+      "relation": "a neighbour in the broken wood"
+    }
+  ]
+}

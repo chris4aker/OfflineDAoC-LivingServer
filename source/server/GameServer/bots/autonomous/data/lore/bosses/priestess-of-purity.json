@@ -1,0 +1,83 @@
+{
+  "id": "priestess-of-purity",
+  "name": "Priestess of Purity",
+  "npcNames": [
+    "Priestess of Purity"
+  ],
+  "locationId": "stonehenge-barrows",
+  "realm": "Albion",
+  "aliases": [
+    "priestesses of purity"
+  ],
+  "facts": [
+    {
+      "text": "Two Priestesses of Purity: NPC template 12792, level 44, model 35, faction Coventina, aggro 200 (range 500), no spells, respawn 180 s, side by side at 27163, 31825 and 27161, 31663 (z 16223), directly above the Shade of Uther Pendragon (27192, 31692, z 15712).",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 20 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Romano-British religion, not game canon: Coventina was the goddess of a sacred spring, with a shrine at Carrawburgh on Hadrian's Wall.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Coventina"
+    },
+    {
+      "text": "The priestesses washing the king's chamber and their order's coming to the barrows are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Coventina was a goddess of springs in Rome's day, and her shrines stood along the Wall, where soldiers threw coins into her water and asked her to keep them whole. Her priestesses kept the water pure. When the legions went home most of her shrines were filled in, and her order went where clean water was still needed. Two of them came to the barrows under the great circle.\n\nThey keep a well in the west halls, two women in white side by side, never apart, and they draw its water and pour it on the floor, and the floor takes it; and directly underneath, where the water goes, is the chamber where Uther Pendragon was laid, and his shade walks it. They say they keep the king's chamber washed. They will not say whether they wash it for the king's sake, or to keep what is in it from rising further.\n\nThey are not dead. Nobody knows what they are, after so long. The Church of Camelot calls them heathen; the druids of the Plains say they are the only ones in the barrows still doing what they were put there to do. They answer each other without speaking, and when one turns, both turn.",
+  "legend": "Two Priestesses of Purity, level 44, stand side by side by the well in the upper west halls of the Barrows, right above Uther's chamber. Same faction (Coventina) and a step apart, so you always get both. No spells in the data, just melee. Mez one, kill the other. Their spot is a quick way to get noticed by everything around the Pendragon hall, so fight them where they stand.",
+  "yells": {
+    "aggro": [
+      "The well is not for you.",
+      "Sister. Turn."
+    ],
+    "phases": [],
+    "death": [
+      "The water... keep it... pure..."
+    ],
+    "slay": [
+      "Washed away.",
+      "The floor takes it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two women in white keep a well over a king."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Priestesses of Purity have fallen. The well runs dry."
+  },
+  "botLines": {
+    "briefing": [
+      "two priestesses at the well, they come together, mez one",
+      "the priestesses are right over uther's room, dont pull past them"
+    ],
+    "aftermathWin": [
+      "both priestesses down",
+      "the well is quiet. uther's not"
+    ],
+    "aftermathLoss": [
+      "one turned, both turned, as advertised"
+    ],
+    "rumour": [
+      "[heard|someone said] the priestesses pour water down to uther's chamber",
+      "heard the priestesses of purity are not undead. nobody knows what they are"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "priestesses of purity",
+    "text": "Two priestesses of [coventina] who keep a well in the [stonehenge barrows] directly over Uther's chamber, side by side, and pour its water down to him. They are not dead."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} silenced the Priestesses of Purity at their well in the Barrows in {minutes} minutes.",
+    "loss": "The Priestesses of Purity turned together, and {raidLeader} of {realm} was washed back up the stair."
+  },
+  "era": "alb-the-province",
+  "factions": [
+    "old-powers"
+  ],
+  "tier": "minor"
+}

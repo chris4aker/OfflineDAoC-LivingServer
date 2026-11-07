@@ -1,0 +1,110 @@
+{
+  "id": "cronk",
+  "name": "Cronk",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/cronk",
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "tradklan"
+  ],
+  "facts": [
+    {
+      "text": "Cronk is a level-63 named with 30,000 health in western Faraheim; eight come with him (tradklan darters, medicine men and a tribesman, Trude and Unne).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He casts Fire Blast (400) and Vitality Dispersal, a dexterity-quickness debuff.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "A 2003 Allakhazam comment: an instant 78 dex/quick debuff for a minute and an instant direct damage about every 20 seconds; loc 9730, 8360.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/5764"
+    },
+    {
+      "text": "Swedish trad (trad) means tree and klan clan: 'tree clan' (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "When he is fought, his eight (CronkBaf: two tradklan darters, two medicine men, a tribesman, Trude, Unne and Uppsala) join him. On 70% of his hits he casts Fire Blast (400 heat, recast 20 s); on 35% of his hits, if the target lacks one, a dexterity/quickness debuff (78, 60 s, radius 350 round the target, recast 25-45 s). 30,000 health, CC-immune, reach 350; resets at full health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Cronk.cs"
+    }
+  ],
+  "story": "A tree-clan lives in trees, and so a tree-clan fears fire more than any other people on Aegir. The tradklan of Faraheim's north-west keep their oldest law around it: one of the clan, and one only, may carry fire, and that one is chief. It is called the right of fire. The chief lights the clan's hearths, burns its dead, and burns its enemies, and if the chief burns carelessly, the clan's houses go up with everything else, and the clan finds a new chief among the ashes.\n\nCronk has held the right of fire longer than any chief the clan remembers, and he has never burned a house. He would like everyone to know this. He speaks of himself by name, as tradklan chiefs do when they are being formal, and Cronk is always being formal. He has Trude and Unne at his side, his two wives or his two sisters depending on who tells it, and Uppsala, who is neither and will not say what she is, and darters and medicine men and a tribesman of the old blood around him. They come when he calls, and he calls whenever anyone so much as touches him.\n\nWhen he fights, he burns. Almost every blow he lands is followed by fire, as soon as the fire has come back to him, because a chief who holds back the right of fire is no chief. And when he is pressed, he draws the quickness out of the one in front of him and out of everyone standing near, so that they move like old men while the darters find them. The tradklan think he is magnificent. So does Cronk. The iarn dwarves think that a tree-clan chief who throws fire so freely in the middle of a wood is going to burn something important one day, and that it will probably be Cronk.",
+  "legend": "Cronk is the tradklan chief in the north-west of Faraheim, level 63, 30,000 health, and eight come with him: two darters, two medicine men, a tribesman, Trude, Unne and Uppsala. Kill the medicine men first or they keep everyone up. Cronk's Fire Blast is 400 heat and goes off on most of his hits, as often as every 20 seconds, so his tank needs heat resist and steady heals. He also drops a big dex/quick debuff (78 for a minute) with a 350 radius around his target: don't bunch on the tank, and cure it. Trude fights like a chief herself. CC-immune, reach 350, resets full if you leave. Costs Tradklan Tribe faction. He talks about himself in the third person.",
+  "yells": {
+    "aggro": [
+      "Cronk sees you! Trude! Unne! Darts!",
+      "Cronk has the right of fire! Cronk will use it!",
+      "Uppsala! Medicine! Cronk is busy!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Cronk burns you! Cronk burns everything!"
+      }
+    ],
+    "death": [
+      "Cronk... was magnificent...",
+      "Cronk never... burned... a house..."
+    ],
+    "slay": [
+      "Cronk wins again!",
+      "Cronk burns the dead. Cronk is very good at it.",
+      "Another for the ashes!"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Hollow trunks, darts and bone charms. A chief shouts.",
+      "Scorch-marks, but no burnt house. A chief shouts."
+    ],
+    "realmFirstKill": "Cronk of the tree-clan is slain. It is very quiet.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Cronk burns everything near him!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "cronk + 8 tradklan. medicine men first, cure the dex/qui debuff",
+      "fire blast is 400 heat on most hits, heat resist on the tank",
+      "debuff has a 350 radius, dont stack on the tank",
+      "trude hits like a chief too"
+    ],
+    "aftermathWin": [
+      "cronk down. so quiet now",
+      "medicine men first made it easy",
+      "nobody got the debuff twice, nice",
+      "the tree clan has no chief now. they will pick one in the ashes"
+    ],
+    "aftermathLoss": [
+      "the medicine men kept healing everybody",
+      "tank burned down, no heat resist",
+      "everyone stacked and got the debuff",
+      "trude ate the casters"
+    ],
+    "rumour": [
+      "cronk talks about himself in third person. [so do i now|its catching]",
+      "only the tradklan chief is allowed to carry fire",
+      "nobody knows what uppsala is to cronk",
+      "the chief before cronk burned the whole clan down, they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Cronk",
+    "text": "Chief of the tradklan, the tree-clan of Faraheim, with Trude and Unne at his side. He throws fire, which in a tree-clan is a serious thing."
+  },
+  "bookPage": "From A Map That Lies, by Gunnvor of Jordheim: I was taken before the chief of the tree-clan, who told me that Cronk had the right of fire and that Cronk had never burned a house. He told me this four times. On the fourth I asked why it mattered so much. The one called Trude answered for him: because the chief before Cronk did, and the chief before that, and the clan lived in the ashes for a summer each time. Cronk said Cronk was magnificent. Trude said yes, he was, and did not smile.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} silenced Cronk of the tree-clan in {minutes} minutes.",
+    "loss": "Cronk was magnificent against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "id": "elder-icelord-hjalmar",
+  "name": "Elder Icelord Hjalmar",
+  "catalogKey": "tuscaran-glacier/hjalmar",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "elder-icelord-suttung",
+      "relation": "his rival and alternate; the glacier wakes only one"
+    },
+    {
+      "id": "elder-council-birghir",
+      "relation": "the councillor he argued into the ice"
+    },
+    {
+      "id": "tuscaran-glacier",
+      "relation": "the elders' hall"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Hjalmar is a level-81 elder icelord with 100,000 health. A controller spawns either Hjalmar or Suttung, never both: one of the two holds the hall each time.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "When strangers reach his hall he bellows that he is amazed they came this far, says he warned the Council to destroy its enemies before they destroyed it, and says he will not mourn 'her' death beyond the grave. (Earlier files gave these lines to Suttung; the script gives them to Hjalmar.)",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "An otherworldly howling is heard when someone first comes within reach of his hall.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "He calls Morkimma to his side by chance as he fights, and Morkimma heals him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Hjalmar is an Old Norse name, Hjálmarr, from hjálmr, helmet (to verify).",
+      "provenance": "original",
+      "source": "Old Norse name, to verify (Cleasby-Vigfusson)"
+    },
+    {
+      "text": "Hjalmar and Suttung are never alive together: a controller raises one of the two at random, after the respawn interval, only when both are dead. A howl is announced when a real player comes within 400 of the hall's mouth.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "Hjalmar uses a back style with Strength 740 when his target is facing away from him (angle 150-210), otherwise a taunt style with Strength 600. One in five of his landed blows raises a Morkimma beside his target: 1,000 health, 25% resists, weak hits, and a 200-point heal on ITSELF (never on Hjalmar). 100,000 health, 40% melee / 70% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "Hjalmarr is an Old Norse name (the hero of the Hervarar saga; hjalmr 'helmet', to verify). Grimolf the old icelord and the saying 'Hjalmar never forgets a back' are Living Server lore.",
+      "provenance": "original",
+      "source": "Old Norse name, to verify"
+    }
+  ],
+  "story": "Hjalmar and Suttung are the two elder icelords of Tuscaran, and they have never agreed on anything except that the Council was wrong. They were boys in the same tunnel and pupils of the same old icelord, Grimolf, who had one teaching above all the others: a giant who turns his back on you has asked you for it. Hjalmar took that teaching further than Grimolf meant. In the march against the morvalt he was the one who ran down those who broke and fled, and the Valkyn scouts who watched those wars from the crater rim kept a saying of their own: Hjalmar never forgets a back.\n\nWhen Grimolf died the two were given his hall, and from the first night they could not share it. The hrimthursa tell it as a curse or a joke: the glacier will not keep both elders awake. One sleeps in the ice of the hall while the other walks, and when the living come near the hall's mouth a howl runs through the tunnels, a sound with no word in it, and the glacier's choice stands up. Nobody can say beforehand which. When it is Hjalmar, he tells the strangers he is amazed they came so far, that he warned the Council to destroy its enemies first, and that he will not mourn her beyond the grave.\n\nHe does not fight alone for long. Where his blade bites, the oldest ice breathes out: the morkimma, the dark breath, mist-shapes that seep up beside the one he struck and cling there. The seers say they are the cold of what lies under the glacier leaking out through Hjalmar's blows. They gather round a long struggle like crows round a field, and they mend nothing but themselves; the old belief that they close the elder's wounds is the Council's, who never stood close enough to see. Hjalmar keeps count of every councillor who has died in his lifetime and mourned none of them. He keeps count of strangers too.",
+  "chapters": [
+    {
+      "title": "Grimolf's Teaching",
+      "text": "The two elder icelords were born in the same winter, the sculptors say, in the same tunnel of the old citadel, to two families of the Ice Lords' house that had hated each other since before the crater. The families gave both boys to the same teacher to spite each other, each certain its own son would shame the other. The teacher was Grimolf, the oldest icelord of his age, who had fought the varulv on the crater rim in the first years and lost an eye to them.\n\nGrimolf had many teachings, and the sculptors who tell of him say he repeated most of them only once. The one he repeated every day was this: a giant who turns his back on you has asked you for it. Strike a face and it may strike back; strike a back and it will not. He meant it for war, as a warning never to turn away from an enemy. Suttung took it that way. Hjalmar took the other half of it.\n\nHe grew huge and patient and cold. He carried a two-handed blade of ice-steel, one of the old icesmiths' work, and he taught himself to stand very still in front of an enemy and wait, and the moment the enemy turned, for any reason, to run or to call to a friend or only to look behind him, Hjalmar's blade came down with everything he had. Grimolf, the sculptors say, watched his pupil do this to a sparring partner in the training hall and was quiet for a long time, and then said it was not quite what he had meant. Hjalmar said it was what he had said.\n\nWhen Grimolf died, in his bed, very old, the Ice Lords gave his hall to both his pupils, because neither family would give it up. The hrimthursa say that was the night the glacier made its choice for the first time."
+    },
+    {
+      "title": "Hjalmar Never Forgets a Back",
+      "text": "In the century of the Council's peace the giants still fought, in small ways. Varulv came up from the south to hunt the rooks on the outer cuttings; drakulv came over the rim for the ice-fish of the meltwater pools; once a band of Faraheim dwarves came looking for the dragon's bones. The Council did not call these wars. The Icelords dealt with them, and Hjalmar dealt with more of them than anyone.\n\nThe Valkyn scout who watched the glacier from a crack in Delling's rim, whose tally of the Icelords the scribes of Jordheim later copied, saw him on the outer ice the year the morvalt came over the crater rim, when the Council voted to march for the first time. He wrote that the elder did not chase anyone. He stood in the middle of them and let them come at him, and took their blows on his arms and his blade, and struck back steadily, hard but not terribly. Then the war-band broke, as morvalt war-bands do when a battle goes long, and turned to run, and the scout wrote that he had never seen anything like what he did to the first ones who turned. The ice of the outer cuttings was red for a season.\n\nThe Valkyn made a saying of it, and the saying went home with the scout to Dyrfjall and from Dyrfjall to Midgard's companies: Hjalmar never forgets a back. The Valkyn guides say it to strangers before they go up the crater road, and add that the elder is patient with those who face him, and that his patience is the dangerous part.\n\nHe kept count of the morvalt he killed in those wars, and of the varulv, and of the dwarves. He kept count of the councillors too, the ones who died of age and accident in his lifetime, and he told the Council to its face that he had grieved for none of them. Birghir, the sculptors say, was the only one who answered him, and argued with him so long one afternoon that Hjalmar came away grey."
+    },
+    {
+      "title": "The Dark Breath",
+      "text": "The morkimma were first seen in the morvalt wars, and the Valkyn scout was the first to write them down. As Hjalmar's blade bit, he wrote, something came out of the ice under the elder's feet: a darkness, a mist with a shape, rising beside the morvalt he had struck and clinging to the air there. By the end of a long battle there were many of them round him, drifting, pawing at the living with hands like smoke. They hurt little. They did not die easily either, because each of them, when it was struck, seemed to draw itself back together.\n\nMorkimma, the giants call them, which is something like dark breath in their tongue. The seers who read the ice for the Icelords say they are the cold of the deepest glacier, the cold of what lies under the lid, breathing out through the cracks that Hjalmar's blows make in the world. The cast-out sculptors say the seers are being polite, and that the morkimma come because Hjalmar is the elder who is closest to what is under the ice, and it likes him.\n\nThe Council always believed the morkimma mended Hjalmar, and the belief went down the crater road with the traders and is still repeated at Dellingstad's fires. The Valkyn scout, who watched closer than any councillor ever did, wrote otherwise. The dark breath, he wrote, closes its own wounds and nobody else's. It does not care for the elder at all. It only gathers where he fights, as crows gather over a field where the ploughing has turned up something to eat, and the longer the ploughing goes on the more crows there are.\n\nThe scribes of Jordheim who copied his tally kept the line, and underlined it, and added a note in the margin that the companies who have come home from the elders' hall say he was right."
+    },
+    {
+      "title": "One Hall, One Elder",
+      "text": "Grimolf's hall lies on the road to the throne room, and it has had one elder in it at a time since the night he died. The hrimthursa tell the reason two ways. The Ice Lords say the glacier will not keep both elders awake, because two such giants awake in one hall would bring the roof down. The cast-out sculptors say the glacier simply got tired of listening to them argue.\n\nWhichever is true, one sleeps in the ice of the hall's walls while the other walks, and when the one that walks is killed, the other does not wake at once. The hall stands empty for a while. Then, when the glacier is ready, one of them stands up out of the ice, and no giant and no stranger can say beforehand which it will be. The Valkyn scout's tally of which elder came out of the hall, season after season, is the only record anyone has, and it shows no pattern at all.\n\nWhen the living come near the mouth of the hall, a howl goes through the tunnels, a long sound with no word in it, and then the familiar creak of the glacier comes back. When it is Hjalmar who stands up, he tells the strangers that he is amazed they have come so far and that their journey ends with him; that he warned the Council to destroy those who threatened it before they could destroy it; that they deserve their fate more than he deserves his; and that he will not mourn her beyond the grave. Nobody is sure who she is: the queen, the Council, or the glacier itself.\n\nThe Valkyn guides say it is the glacier. They say Hjalmar is the only giant in Tuscaran who has ever said aloud that the ice will die, and that he said it to warn it, and it did not listen either."
+    }
+  ],
+  "legend": "You get Hjalmar or Suttung, never both: when the one in the hall dies, the other comes back later at random, and the howl tells you someone's home. If it's Hjalmar: 100,000 health, 40% melee and 70% magic resists, CC-immune, a two-hander that hits much harder from behind, so whoever he's on must face him and never turn to run. One in five of his hits raises a Morkimma next to his target. They have only 1,000 health and hit weakly, and despite the old guides they do NOT heal Hjalmar: each one heals only itself. They pile up over a long fight, so a little area damage or one add-killer keeps them under control, and the real work is just burning Hjalmar. Fight him in his hall and don't let him go 30 seconds without a fight or he resets. Old raiders swear the glacier gives you Hjalmar when you brought too few healers.",
+  "yells": {
+    "aggro": [
+      "You walk the halls of the Ice Lords. I am amazed you came so far.",
+      "I am amazed that you have made it this far. It ends here.",
+      "I warned the Council. Destroy them before they destroy us.",
+      "Turn around. I dare you."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Morkimma, come out of the deep ice."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "I warned the Council. You deserve this fate more than I do."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Suttung would have fallen by now. I am not Suttung."
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "The old ice breathes. Let it."
+      }
+    ],
+    "death": [
+      "Suttung... wake... finish this...",
+      "The count... ends with me...",
+      "Suttung... it is your hall now..."
+    ],
+    "slay": [
+      "One fewer. I keep count.",
+      "Add that one to the tally.",
+      "Morkimma, take what is left.",
+      "Another back. Another mark."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A howl runs through the ice. An icelord has woken.",
+      "Dark mist seeps from the cracks of the oldest walls.",
+      "A howl runs through the ice, with no word in it."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Dark mist seeps from the walls around Hjalmar."
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "Dark breath seeps up where Hjalmar's blade bit."
+      }
+    ],
+    "realmFirstKill": "Hjalmar falls. The elders' hall stands empty."
+  },
+  "botLines": {
+    "briefing": [
+      "if the howl gives us hjalmar, someone aoe the morkimma, they pile up",
+      "hjalmar or suttung, we only get one. listen for the howl",
+      "add team: kill every morkimma the second it spawns",
+      "hjalmar resets if you drag him, fight him in the hall",
+      "hjalmar hits way harder from behind. whoever hes on, face him, never turn and run",
+      "morkimma dont heal hjalmar, they only heal themselves. aoe them down, dont panic",
+      "1 in 5 of his hits spawns a morkimma, they pile up in a long fight",
+      "hjalmar or suttung, never both. listen for the howl"
+    ],
+    "aftermathWin": [
+      "got hjalmar this time. nice add work everyone",
+      "got hjalmar, add team was on point",
+      "hjalmar down. suttung next time probably",
+      "hjalmar's quiver dropped for our hunter",
+      "hjalmar never forgets a back. nobody showed him one",
+      "got hjalmar this time",
+      "morkimma were just noise"
+    ],
+    "aftermathLoss": [
+      "everyone chased morkimma and nobody hit hjalmar",
+      "add team got distracted. [gg|thats the fight]",
+      "he outlasted the healers. we need more dps or a better add team",
+      "tank turned to run and hjalmar back-styled him",
+      "we chased morkimma instead of burning him",
+      "too many morkimma by the end, nobody aoed"
+    ],
+    "rumour": [
+      "there are two elder icelords and only one ever shows up. nobody knows why [hjalmar|it] gets picked",
+      "[heard|i swear] the glacier gives you hjalmar when you're short on healers",
+      "hjalmar and suttung grew up together and hated each other from day one",
+      "the morkimma are dark mist from the oldest ice. they only heal themselves",
+      "valkyn saying: hjalmar never forgets a back",
+      "the old council thought the morkimma heal him. a valkyn scout saw they dont",
+      "the glacier only keeps one of the two elders awake at a time"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hjalmar",
+    "text": "One of the two elder icelords who share Grimolf's hall; the glacier keeps only one awake at a time. The Valkyn say Hjalmar never forgets a back. Where his blade bites, the morkimma rise, the dark breath of the oldest ice; they mend only themselves. He warned the [Council] and mourns none of it. His rival is [Suttung]."
+  },
+  "bookPage": "From 'A Tally of the Icelords', kept by a Valkyn scout who spent a winter watching the glacier's tunnels from a crack in Delling's rim. The giants come and go by the eastern tunnel. Twice I heard the howl from inside, a sound with no voice in it, and both times a single elder walked out to the head of the tunnel and looked at the crater as if counting it. The first time it was the one they call Hjalmar, and there was black mist about his feet. The second time it was Suttung, and he stood a long while and then laughed. I never saw them together. The giants say no one has, since the old icelord died.",
+  "chronicle": {
+    "win": "The howl rose and Hjalmar answered; {raidLeader} of {realm} put him back in the ice in {minutes} minutes.",
+    "loss": "Elder Icelord Hjalmar added {realm}'s raid under {raidLeader} to his count after {minutes} minutes."
+  }
+}

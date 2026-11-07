@@ -1,0 +1,106 @@
+{
+  "id": "beomarbhan",
+  "name": "Beomarbhan",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/beomarbhan",
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Irish beo 'living' + marbhán 'corpse': Beomarbhan, the living corpse (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Beomarbhan: level 68, 30,000 health, CC immune, resists 40% melee and 70% other damage, reach 350; created by Dremcis Fuiloltair the first time Dremcis is engaged (once per Dremcis life) and killed when Dremcis dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/DremcisFuiloltair.cs (integration/1.2)"
+    },
+    {
+      "text": "Irish beo 'alive' and marbh 'dead' (to verify the compound).",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Beomarbhan was the finest stag in the herd of the gorge clans of Cothrom, a red stag the Sylvan children fed by hand, and when Dremcis came home from the bottom of the gorge with blood on his mouth and a new name, it was Beomarbhan he took. He rode it down the gorge and back for three days without stopping, and on the third day it died under him on the gorge road, and he did not get off. It got up.\n\nIts name is a gorge word, and the clans do not agree on it. The older Sylvan say it means something like a living corpse, the dead-alive, and that is how it looks: the hide hangs loose on its bones, its eyes are white as the stag's that Dremcis drank from, and its antlers have kept growing since it died, crooked and black. The younger say it is closer to the stag of the slain, which is what the gorge clans call the deer that come down in autumn to graze the gorge floor where the dead lie. Both meanings fit.\n\nNothing a Sylvan hand can do troubles it much. Spears turn on the loose hide as if it were bark, and bite only now and then; the gorge singers who tried a binding-song on it in the first years say the song went into it like water into sand, and their charms of sleep and holding never caught at all; fire, wind and the green strength of the druids hardly mark it at all. The clans say a dead thing cannot be hurt in the ways a living one can, and that Beomarbhan has been dead longer than most Sylvan have been alive.\n\nIt is held up by its rider, the gorge clans say, and by nothing else. It comes the first time Dremcis is troubled, at a gallop out of the deep gorge, and if it is somehow brought down it does not come again until Dremcis himself has died and returned. When Dremcis falls, Beomarbhan falls in the same breath, as if a hand had let go of a string. The Sylvan pity it more than they fear it. The children who fed it by hand are grandmothers now, and they say the kindest thing anyone can do for it is to bring down the man on its back.",
+  "legend": "Do not kill him. Beomarbhan is a 30,000-health stag with 40% melee and 70% magic resists and full CC immunity, and he dies by himself the instant Dremcis Fuiloltair dies. Put one tank on him, keep him off the healers, and spend everything on Dremcis. He comes only once per Dremcis spawn, so even if a group does kill him, he will not be back on a retry until Dremcis respawns. If you are here for a Beomarbhan kill credit, it counts when he drops with his rider. Casters especially: do not waste mana on him, 70% of it goes nowhere.",
+  "yells": {
+    "aggro": [
+      "(the dead stag lowers its black antlers)",
+      "(Beomarbhan screams, a sound no deer should make)",
+      "(white eyes fix on you)"
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "(Beomarbhan sinks to its knees, and is still.)"
+      }
+    ],
+    "death": [
+      "(the stag folds, like a string let go)",
+      "(Beomarbhan breathes out, once, for the last time)"
+    ],
+    "slay": [
+      "(antlers rake the fallen)",
+      "(the stag tramples, and stands)",
+      "(white eyes turn to the next)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Hoofprints with no blood in them.",
+      "Black antlers in the gorge mist."
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "Beomarbhan falls with its rider."
+      }
+    ],
+    "realmFirstKill": "Beomarbhan the dead stag is at rest."
+  },
+  "botLines": {
+    "briefing": [
+      "offtank beomarbhan, kill dremcis. [the stag dies with him|dont dps the stag]",
+      "beomarbhan resists 70% magic, 40% melee. [casters especially leave it|waste of mana]",
+      "no cc on the stag. [cc immune|dont try]",
+      "he only comes once per dremcis spawn. [no second stag|one stag]"
+    ],
+    "aftermathWin": [
+      "stag dropped with dremcis. [never touched it|like a string let go]",
+      "offtank held the stag the whole fight. [grats|solid]",
+      "beomarbhan at rest. [the sylvan grandmothers would be glad|finally]",
+      "two kills for one. [nice|easy credit]"
+    ],
+    "aftermathLoss": [
+      "casters nuked the stag. [70% resists|wasted all our mana]",
+      "stag ran over the healers. [offtank died|ouch]",
+      "someone tried to mezz the stag. [cc immune|lol]",
+      "we were still on the stag when the blobs [got the casters|ate us]"
+    ],
+    "rumour": [
+      "[heard|someone said] the sylvan children used to feed beomarbhan by hand",
+      "beomarbhan died under dremcis on the gorge road and [got up|kept going]",
+      "[word is|heard] beomarbhan's antlers keep growing, black and crooked",
+      "beomarbhan means the dead-alive [or the stag of the slain|depends who you ask]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Beomarbhan",
+    "text": "The dead stag of [Cothrom Gorge], ridden to death by Dremcis and never let down. Spears and spells barely mark it. It falls when its rider falls, and not before."
+  },
+  "bookPage": "From Coll of the Domnann guides: the grandmothers of the gorge fed Beomarbhan by hand when he was a calf. Dremcis rode him three days without stopping and he died under him on the gorge road, and he got up. Spears turn on his loose hide; the gorge singers' binding-songs went into him like water into sand; fire and wind barely mark him. A dead thing cannot be hurt the way a living one can. He is held up by his rider and nothing else. When Dremcis falls, Beomarbhan falls in the same breath. The grandmothers say the kindest thing you can do for the stag is to bring down the man.",
+  "chronicle": {
+    "win": "{realm} rode out to Cothrom Gorge under {raidLeader} and killed Beomarbhan in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at Cothrom Gorge by Beomarbhan after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "dremcis-fuiloltair",
+      "relation": "his rider"
+    }
+  ]
+}

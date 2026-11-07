@@ -1,0 +1,117 @@
+{
+  "id": "adwyth",
+  "name": "Adwyth",
+  "npcNames": [
+    "Adwyth"
+  ],
+  "locationId": "vale-of-balor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Drygau (51), Adwyth (50) and Anhylaw (49) share model 825, a Fomorian body (as do the vale's fomorian condlers and gristlers), and stand within about 800 units of each other at about 319,500/356,700 in the eastern Vale of Balor, by the gap in the zone wall east of Aalid Feie; plain spawns with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "The Tree Maidens (Lynara, Domnann): kill a stilter by Necht, a corruptor on the Krrzck road and a tittering tree dervish in Cothrom Gorge, ask Tieru in Aalid Feie, 'kill the guard in the gap in the zone wall east of Aalid Feie (he calls two friends)', then at the tree answer the maiden ('the maidens of the trees', 'to free their voice') and sing 'morwynol gan yr llais'; the quest's targets include Drygau and Adwyth.",
+      "provenance": "game",
+      "source": "DataQuest 'The Tree Maidens' (world data)"
+    },
+    {
+      "text": "The three names read as Welsh: drygau 'evils, harms', adwyth 'misfortune, woe', anhylaw 'unruly, unmanageable'; 'morwynol gan yr llais' as roughly 'maidenly song of the voice' (all to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Living Server lore: Adwyth as the woe of the three, who sings the binding over the silenced tree each dusk.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The tree maidens of Hy Brasil are the Sylvan's own spirits of the old trees, the singers inside the bark, and the Sylvan of Necht say that once every great tree on the isle had a voice in it that sang at dusk. The eye's one look at Gleann Glas burned the trees of the vale and their voices with them, all but one. The last tree with a maiden in it stands east of Aalid Feie, past the gap in the old wall that the Sylvan built across the vale to keep the Fomorians to the west, and the Fomorians took the gap.\n\nAdwyth is the second of the three who hold it, and her name, in the borrowed tongue the vale's Fomorians use, means misfortune, the woe that comes after the harm. The Sylvan of Necht say she is the one who keeps the binding. Every dusk, when the maiden in the tree should be singing, Adwyth walks back from the gap to the tree and sings something low and tuneless at its roots, and the tree stays silent another night. The Necht singers have listened from a distance and cannot make out the words; Lynara of Domnann thinks the words do not matter, and that what holds the maiden is the singing itself, a voice laid over hers so that hers cannot be heard.\n\nShe stands at Drygau's side when he calls, and the Sylvan who have watched say she fights as if she were defending the tree rather than the gap, which is the opposite of Drygau. That is the one disagreement the Sylvan think the three have. Drygau holds a hole in a wall. Adwyth holds a voice. Anhylaw holds whatever he is told.\n\nTieru of Aalid Feie, who sends the young Hibernians east with the freeing-song, tells them that if Adwyth falls first the dusk will be quiet that night in a different way, and that they should go to the tree at once, before the vale's Fomorians send someone to sing in her place. Some of the young who have done it say they heard, when they reached the tree, something like a breath being let out. Tieru says that is the maiden, getting ready.",
+  "legend": "Adwyth (50) is one of the three Fomorian guards of the gap east of Aalid Feie, with Drygau (51) and Anhylaw (49), all within about 800 units. Pull one and expect all three ('he calls two friends', the quest says). Plain melee, no script. A full 50s group with two tanks, or CC on one, is comfortable; a short group should not try. She is a target of The Tree Maidens; once the three are down, go to the tree, say hello and sing the freeing-song. Lynara starts the quest in Domnann. Approach from the Aalid Feie side so the vale's other Fomorians stay out of it.",
+  "yells": {
+    "aggro": [
+      "The tree is quiet. Keep it quiet.",
+      "Woe to you, singer.",
+      "Drygau! They come for the voice!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Someone else will sing at the roots tonight."
+      }
+    ],
+    "death": [
+      "The roots... will hear her now...",
+      "Woe... to us..."
+    ],
+    "slay": [
+      "Quiet now.",
+      "Woe.",
+      "No song for you either."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Someone hums, low and tuneless, at a tree's roots.",
+      "A silent tree. The dusk is wrong here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Adwyth's tuneless song falters."
+      }
+    ],
+    "realmFirstKill": "Adwyth has fallen. The silent tree breathes out."
+  },
+  "botLines": {
+    "briefing": [
+      "adwyth is one of the three at the gap east of aalid feie. [all three come|plan for three]",
+      "50, plain melee. [two tanks|cc one]",
+      "tree maidens target. [then go to the tree|sing the song after]",
+      "dont bring a short group. [three fifties|full group]"
+    ],
+    "aftermathWin": [
+      "adwyth down. [the tree is quiet in a new way|go to the tree now]",
+      "all three guards dead. [gap is open|nice]",
+      "heard something like a breath at the tree. [creepy|cool]",
+      "tieru will be pleased"
+    ],
+    "aftermathLoss": [
+      "three of them and we brought four people. [no|wipe]",
+      "cc broke and [all three were on the healer|ouch]",
+      "pulled the condlers on the way. [bad path|oops]",
+      "ran out of mana on the third one"
+    ],
+    "rumour": [
+      "[heard|someone said] adwyth sings at the tree's roots every dusk to keep the maiden quiet",
+      "adwyth means woe [in some old tongue|my guild says]",
+      "[word is|heard] if adwyth falls first the dusk goes quiet in a different way",
+      "the necht singers cant make out the words adwyth sings"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Adwyth",
+    "text": "The second Fomorian guard of the gap east of Aalid Feie, with [Drygau] and [Anhylaw]. Each dusk she sings low at the roots of the last tree maiden's tree, laying her voice over the maiden's."
+  },
+  "bookPage": "Tieru of Aalid Feie: Adwyth is the one who keeps the binding. Every dusk, when the tree should sing, she walks back from the gap and sings something low at its roots, and the tree stays quiet another night. Lynara of Domnann says the words do not matter; it is the singing itself, a voice laid over the maiden's so hers cannot be heard. I tell the young who go east with the freeing-song: if Adwyth falls, go to the tree at once, before the Fomorians send someone else to sing at the roots. Some came back saying they heard a breath let out. That is the maiden, getting ready.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Adwyth in the gap east of Aalid Feie in {minutes} minutes.",
+    "loss": "Adwyth turned back {realm}'s band under {raidLeader} in the gap east of Aalid Feie after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "drygau",
+      "relation": "the eldest guard, who calls her"
+    },
+    {
+      "id": "anhylaw",
+      "relation": "the third guard of the gap"
+    }
+  ]
+}

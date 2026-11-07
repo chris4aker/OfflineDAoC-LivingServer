@@ -2579,6 +2579,10 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_living_leeroy", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in.", true)]
 		public static bool BOT_LIVING_LEEROY;
 
+		/// <summary>The lore's screen-centre atmosphere lines (Living Server 1.2, LoreAtmosphere, docs/LORE.md).</summary>
+		[ServerProperty("bots", "living_atmosphere_lines", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first.", true)]
+		public static bool LIVING_ATMOSPHERE_LINES;
+
 
 
 		#endregion

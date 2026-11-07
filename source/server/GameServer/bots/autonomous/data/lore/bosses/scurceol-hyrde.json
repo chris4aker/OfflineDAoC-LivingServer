@@ -1,0 +1,153 @@
+{
+  "id": "scurceol-hyrde",
+  "name": "Scurceol Hyrde",
+  "catalogKey": "krondon/scurceolhyrde",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "aliases": [
+    "the storm keeper",
+    "storm-keeper",
+    "scurceol"
+  ],
+  "facts": [
+    {
+      "text": "Level 81, 30,000 health, GetResist 20 melee / 30 other, parry 70, CC immune, tether 3,800 (full heal on reset). Four Lyft Miht orbs (level 90, 15,000 health, 40 melee / 50 other, no attack) float in the corners; while any lives he takes no damage and has Strength 320 instead of 260.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs"
+    },
+    {
+      "text": "A real player who hits an orb has a 25% chance to be moved 8-15 s later to one of four floor spots in the room for 20% of maximum health as falling damage; bots (GameNPC) are never picked. Orbs do not respawn on a reset.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs"
+    },
+    {
+      "text": "Scur means 'shower, storm' (Bosworth-Toller). Ceol 'ship', hyrde 'keeper, shepherd', lyft 'air' and miht 'might' are standard glosses, to verify.",
+      "provenance": "original",
+      "source": "https://bosworthtoller.com/search?q=scur"
+    },
+    {
+      "text": "The choosing in the storm-ship, Master Cynfelyn's weather-book, Hedd's squall-stick, the Gwennol, Elffin the sea-captain and Heledd of the college of stars are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The hall-folk of Krondon did not make their storm-keepers; they found them at sea. When a gale came up the strait that the old keeper could not turn, the fishermen of the Avalon shore took the hall's boys out in an open boat, the storm-ship, and the boy who stood up in it and was not thrown out became its shepherd. Master Cynfelyn of the college of stars marked the last choosing in his weather-book with a small drawn boat: one stood.\n\nThe keeper took an air from each quarter of the sky and set them high in the corners of his chamber, where no hand could reach them from the floor. While they stand bound nothing struck at him there bites, and his arm comes down with a gale behind it. The airs hate him and answer whoever strikes them, a breath late, by taking him up and letting him fall elsewhere in the room. An air once loosed goes back to the sky; he cannot catch a wind twice in one life. With every corner dark he is an old man in a cold room. A lifetime of leaning into gales taught him to turn blades as a weathervane turns, and the shore says: come at him from his back.\n\nFor his chamber he gave Orylle his weather. The squalls off Caldey under a clear sky are his; one put the Gwennol, Gothwaite Harbor's grain-boat, on her side in a flat calm. Yet Morfudd Fisher says his storms are short and sullen now, and the sea-wolves bolder.\n\nThe first company to reach him came for the squalls: Elffin the sea-captain of Gothwaite Harbor and Heledd, a reader of the college of stars who had carried the weather-book out of burning Avalon. They put the lights out from the floor with bows, walking back into the wind each time it threw them, and when the last went dark the keeper sat down and said: let the weather go where it will. By the next autumn his corners were lit again.",
+  "legend": "Scurceol Hyrde is level 81 with 30,000 health, CC immune, parry 70 and 20% melee / 30% other reduction. Four Lyft Miht lights (level 90, 15,000 health, 40% melee / 50% other) float high in the corners of his room. While any light lives he takes no damage at all and hits harder (Strength 320, not 260). The lights never attack. Put all four out first, with ranged and casters from the floor under each corner. A real player who hits a light has a 25% chance to be thrown 8 to 15 seconds later: you land somewhere on the floor of his room for a fifth of your health. Only the human gets thrown; bots never are, so a bot raid on the lights is safe and the human should heal up before striking one. Dead lights stay dead through a wipe; only his own respawn brings them back. Then fight him from behind if you melee, because he parries most of what comes from the front, or burn him with spells. Leave his room and he walks home at full health.",
+  "yells": {
+    "aggro": [
+      "The air is mine. Every breath you take, I lend you.",
+      "Four winds I took from the sky. Come and take them back.",
+      "The hall is the queen's. The weather is mine."
+    ],
+    "phases": [
+      {
+        "trigger": "orbDeath",
+        "text": "You put out a light. There are others."
+      },
+      {
+        "trigger": "addsDead",
+        "text": "No... the airs are loose... the storm is loose..."
+      }
+    ],
+    "death": [
+      "Let the weather go where it will.",
+      "The squall passes. It always passes."
+    ],
+    "slay": [
+      "Blown out, like a candle.",
+      "Another sail torn from its mast.",
+      "Becalmed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four lights burn in the corners. The air is held still.",
+      "The air in this room is held, like a breath."
+    ],
+    "phases": [
+      {
+        "trigger": "orbDeath",
+        "text": "A light goes out. The air in the room stirs."
+      },
+      {
+        "trigger": "addsDead",
+        "text": "The lights go out. The storm-keeper can bleed."
+      }
+    ],
+    "realmFirstKill": "Krondon's storm is broken. The Hyrde has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "four lights in the corners, he takes zero dmg till all four are out",
+      "lights are high up, ranged and casters from the floor under each one",
+      "hitting a light can throw the human for 20% hp, bots never get thrown",
+      "dead lights stay dead if we wipe. then melee from behind, he parries 70%"
+    ],
+    "aftermathWin": [
+      "all four lights first, then him. textbook",
+      "the storm keeper is just an old man once the lights go",
+      "four lights, one kill, gg",
+      "no squalls off caldey tonight"
+    ],
+    "aftermathLoss": [
+      "somebody went in on him with lights still up. zero dmg, every swing",
+      "melee stood in front of him the whole time and he parried everything",
+      "we left his room and he walked home full health",
+      "i struck a light at half hp and the fall finished me"
+    ],
+    "rumour": [
+      "the storm keeper in krondon has four lights in the corners of his room. [kill the lights|put the lights out] first or [dont bother|you are hitting a wall]",
+      "[heard|someone in my guild swore] the lights in krondon throw you across the room if you hit them wrong",
+      "heard the storm keeper made a deal with the queen to keep his room",
+      "[heard|someone said] the squalls off caldey come from krondon",
+      "heard the storm keeper was a boy who stood up in a boat in a gale",
+      "[heard|someone said] the gothwaite harbor sailors hate the storm keeper most of all"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "storm-keeper",
+    "text": "The Scurceol Hyrde, shepherd of the storm-ship, the boy who stood up in the boat. He keeps airs bound high in the corners of his chamber in [Krondon], and while any stands bound nothing bites him; they throw whoever strikes them. He sold [Orylle] his weather for his room. Gothwaite Harbor's sailors put his lights out first."
+  },
+  "bookPage": "From the weather-book of Master Cynfelyn of the college of stars, carried out of Avalon by Heledd, with her note. In his margins a drawn boat marks a storm that was the hall's, and a drawn hand marks one that was turned away. The hands stop the year the ogres came. After that the boats are drawn smaller, and some of them are drawn on their sides. On the last written page he notes a squall off Caldey that broke off in the middle, and writes: he is tired. Below it, in another ink, Heledd wrote: I went to his chamber with the harbor men and saw the lights go out one by one. When the last one went he sat down. I have drawn a boat here, small, standing up.",
+  "chronicle": {
+    "win": "{realm} put out the four lights of Krondon one by one and {raidLeader}'s raid broke the storm-keeper in {minutes} minutes.",
+    "loss": "The Scurceol Hyrde's lights still burn; {realm}'s raid under {raidLeader} struck a man the storm would not let them wound."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "krondon-hall-folk"
+  ],
+  "related": [
+    {
+      "id": "orylle",
+      "relation": "bound to her by a bargain"
+    },
+    {
+      "id": "orylle",
+      "relation": "bound to her by a bargain: his weather for his chamber"
+    },
+    {
+      "id": "krondon",
+      "relation": "the last hall-born master who kept his room"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Shepherd of the Storm-Ship",
+      "text": "The hall-folk did not make a storm-keeper. They found one, at sea, in the worst weather of a generation, and brought him home if he lived.\n\nThat was the custom, and the ghosts of Krondon still tell it to anyone who asks after the man in the far chamber. When a gale came up the strait that the old keeper could not turn, the hall sent its boys down to the shore, and the fishermen of the Avalon shore took them out in an open boat, into the teeth of it, and the boy who stood up in the boat and was not thrown out of it was the next keeper. The hall-folk called the boat the storm-ship, scur-ceol, and the keeper its shepherd. The colleges of Avalon, which wrote everything down, thought it a cruel way to choose a master and copied out the names of the boys who were thrown.\n\nThe last keeper was chosen in the reign of an ealdor before Eadric, when the hall was already growing few. Master Cynfelyn of the college of stars kept a weather-book in those years, a column for every day, and marked in the margin the storms that were not the sky's own. He marks the night of the choosing with a small drawn boat, and beside it a word in the college's hand: one stood. The ghosts say there were seven boys in the boat. The one who stood had been the smallest, and he held on to the mast with one hand and to the wind with the other, and when the boat came in he would not let go of either.\n\nHe has never let go since. The hall-folk carved him at the foot of the high table in their last feast, hooded and apart, with small lights round his head; Wenna of Caer Gothwaite found the carving and knew him by them. The fishermen of the shore have a saying for a man who will not be moved by reason or by weather, and it is older than the ogres: he stood in the boat. They do not say it kindly."
+    },
+    {
+      "title": "The Airs in the Corners",
+      "text": "A storm cannot be held in the hands. The keeper's craft was to hold it somewhere else.\n\nThe hall-folk wrote that he climbed to the high places of the isles in his first years, the tops of Caldey and the bare hill above Gwyddneau, and took an air from each quarter of the sky as a shepherd takes a lamb from the flock, and carried them home to his chamber at the far end of the hall. There he set them in the corners, high under the vault, where he could see them from his chair and no hand could reach them from the floor, and there they burn as cold lights. While they stand bound the weather of the strait is his, and so is the room. Nothing struck at him in that chamber has ever been seen to bite. His arm, when he raises it, comes down with the weight of a gale behind it.\n\nThe bound airs are not his servants, and the ghosts say they have never forgiven him. They will not touch him. They will answer whoever strikes at them, though not at once: the hall-folk's records say an air draws a breath first, as a wave draws back before it comes in, and then it takes up the man who struck it and lets him fall somewhere else in the room. Masons of the hall, mending the vault in the keeper's lifetime, worked roped to the ribs of the roof, and the ropes were not for the height.\n\nAn air once loosed, the ghosts say, goes back to the sky and does not come again when called. The keeper cannot catch a wind twice in one life. That is why his corners are guarded by nothing but themselves; he has never feared a man who comes and fails, only a man who comes back. And when every corner is dark, the hall-folk wrote, he is only an old man in a cold room, who never learned any other way to keep himself than by the weather."
+    },
+    {
+      "title": "The Squalls off Caldey",
+      "text": "What the keeper gave Orylle for his chamber was his weather, and the strait has paid for it ever since.\n\nThe squalls that come off Caldey under a clear sky are his. Hedd the ferryman of Caldey, who keeps a notched stick for every crossing his boat has made, keeps a second stick for the squalls, and he says they began the autumn the ogres took the hall. They fall on the boats of the Isle of Glass and the barges of Gothwaite Harbor. They fell on the Gwennol, the harbor's grain-boat, three hundred yards off the Caldey landing in a flat calm, and put her on her side so quickly that the boy at the tiller was found still holding it. The harbor-master wrote to Caer Gothwaite that no sky had made that wind. The readers wrote back that they knew.\n\nAnd yet the fishermen of the Avalon shore, who paid his tithe for generations, say the storms are not what they were. Morfudd Fisher, whose grandmother carried the baskets up the hill, says his squalls are short now, and sullen, and break off in the middle like a man who has remembered he does not want to be shouting. The sea-wolves come further up the coast every year. The keeper raises what the queen asks of him and not a breath more.\n\nHe is a keeper, not a cempa, and he has never carried a blade. But a lifetime of leaning into gales taught him to turn whatever comes at him as a weathervane turns, and the ghosts say no sword drawn in his chamber ever went in the way it was aimed while he faced it. The shore has an answer for that too. A storm-keeper faces the wind, the fishermen say. Come at him from his back and he is only a man's back. Words, the hall-folk would have added, reach him where steel is turned."
+    },
+    {
+      "title": "The Harbor Company",
+      "text": "The first company of Albion to reach the far chamber did not come for Orylle at all. It came for the squalls.\n\nElffin the sea-captain of Gothwaite Harbor raised it in the winter after the Gwennol went over, from men who had lost boats and men who had lost brothers, and he took with him a reader of the college of stars, Master Cynfelyn's last pupil, a woman named Heledd who had been a girl in Avalon when it burned and had brought the weather-book out under her cloak. She knew the keeper's storms by their margins. She had never seen his face.\n\nThey came along the far end of the hall with bows strung, because Heledd had read that the airs were set where no hand could reach. They put the lights out one by one, from the floor below each corner, and the airs took up whoever had struck them and set them down hard on the flagstones, and the harbor men got up and went back to the same corner, because they were harbor men and had been knocked down by weather before. Heledd wrote that it was the only time in her life she had seen sailors walk towards a wind.\n\nWhen the last corner went dark, the keeper sat down in his chair. Elffin's men killed him there. Heledd said he did not raise his hands, and that his last words were the ones the fishermen use when a gale blows itself out: let the weather go where it will. The strait was quiet for the rest of that winter.\n\nBy the next autumn the corners of the far chamber were lit again, and Hedd notched his squall-stick once more. The shore and the city have three readings of it. The fishermen say a storm-keeper cannot die while there is weather. The priests of Caer Gothwaite say Orylle bought him new airs from Morgana. Heledd, who went back to look, said only that the boy in the boat had found his way to the masthead again, and that she was sorry for him."
+    }
+  ]
+}

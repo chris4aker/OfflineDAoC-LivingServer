@@ -1,0 +1,166 @@
+{
+  "id": "morbus",
+  "name": "Morbus",
+  "catalogKey": "caer-sidi/morbus",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 83, 100,000 health; the third Horseman. Warns that the smallest things are the most deadly and grants one minute.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "25-40 s after his last swarm has died he looses six to ten 'swarm of morbus'; while any swarm lives he takes their form and does not attack (the old no-damage shield is behind AllowAddShield, off). His Touch of Death diseases.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The Horsemen come in order: Fames, then Bellum, Morbus and Funus, each a minute after the last falls; Funus calls Apocalypse. Each brings a fate's bearer.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Every 25-40 seconds he looses a swarm of six to ten 'swarm of morbus'; his Touch of Death diseases. The original immunity while any swarm lives is behind EpicEncounterMechanics.AllowAddShield, which is off in Living Server.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "Morbus: magic resists 26 except COLD -15, melee 60; a swarm of 6-10 (level 75, 15,000 health, cold -15) 25-40 s after engage and after the last bug dies; bug form and no attacks while any bug lives, but damage still lands (AllowAddShield off); Touch of Death disease r350, 120 s; 40 s without combat heals him to full.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "Morbus's folded bill of the dead, the bearer from the first town, the three customs of the hospice of Caer Ulfwych, Sister Tangwen and the open book closed at the first frost are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Real-world myth, not game canon: Welsh tradition says King Maelgwn Gwynedd died of the Yellow Plague after looking through the keyhole of the church at Rhos, where he had hidden from it.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Maelgwn_Gwynedd"
+    }
+  ],
+  "story": "Morbus is Plague, the third rider before the first cell of Caer Sidi, made from the oldest secret of war: more soldiers die of the camp than of the field. Arawn made him out of the small things that carry a fever, named him in the Roman tongue, and of the four he is the palest and the quietest. He carries a folded bill of the dead, which the Inconnu say is every plague tally ever posted on a church door pressed into one, and he reads it whenever his little ones are abroad. His bearer is a girl of the first town ever built. He warns that the smallest things are the most deadly, and then he opens his robes.\n\nThe western bards say his swarm was the Yellow Plague of Rhos, the beast King Maelgwn saw through the keyhole of the church. The sisters of the hospice of Caer Ulfwych, who nursed the plague when the towns would not, keep their prioress's three customs: the sick a bed's length apart and never in a crowd; the bitter herb against the fever before anything else; and no ward given up before the first hard frost, because the plague went out with the cold. The Inconnu say cold is the one thing Morbus fears.\n\nOnce nothing touched him while his swarm flew, and Dame Ysolde's company found it so; Sister Tangwen of Caer Ulfwych, who climbed with it, kept the three customs on the riders' floor, and every time a swarm was spent another came after a while, like every plague she had nursed. That wall went out of him when Ysolde's company ended the end of the world. Now, while his swarm is abroad, he goes small among it, reads his bill and lifts no hand, and a small thing can be struck: Sir Geraint of Caerwent's knights cut at him the summer after, and he bled.\n\nWhen he fell, Tangwen unfolded his bill and found her prioress's name on it. The hospice now keeps its dead in an open book and closes it at the first frost, so that Morbus cannot fold it into his.",
+  "legend": "Morbus comes a minute after Bellum: level 83, 100,000 health, crowd-control immune. Bring cold. He takes 15% extra from cold, only 26% less from other spells and 60% less from melee, so cold casters do the work. Twenty-five to forty seconds after he engages, six to ten bugs come (level 75, 15,000 health, also weak to cold), and the next swarm comes 25-40 seconds after the last bug of the previous one dies. While any bug lives Morbus shrinks into bug form, drops his target and does not attack at all, but he still takes damage, so keep hitting him. The bugs cast Touch of Death, a disease that hits everyone within 350 of its target for two minutes: spread out and cure disease at once, because diseased people heal badly. Area cold on the swarm, everything else on Morbus. Half a minute and more with nobody fighting him and he heals to full. Funus is a minute behind; Caer Ulfwych sisters say wait for frost.",
+  "yells": {
+    "aggro": [
+      "Sometimes it is the smallest things that are the most deadly. Be prepared.",
+      "Sometimes it is the smallest things that are the most deadly.",
+      "Be prepared. You will not be.",
+      "Breathe deep."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Go, little ones. Go and find them."
+      }
+    ],
+    "death": [
+      "...and misery...",
+      "The camp outlasts the field. Remember."
+    ],
+    "slay": [
+      "Fate cannot be changed.",
+      "So small a thing, and so final.",
+      "Cough, and be still."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air hums. Something small is waiting.",
+      "Something small is waiting, a great many of them."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Morbus looses his swarm!"
+      }
+    ],
+    "realmFirstKill": "Morbus has fallen. Plague rides no more in Caer Sidi."
+  },
+  "botLines": {
+    "briefing": [
+      "morbus: cold casters, he takes extra from cold. melee does little",
+      "the swarm comes 25-40 sec in and again after the last bug dies. aoe cold on it",
+      "keep hitting morbus while the bugs are up, he shrinks and doesnt fight back but still takes damage",
+      "spread out, the bug disease splashes 350. cure disease right away",
+      "dont burn cooldowns, funus is a minute after"
+    ],
+    "aftermathWin": [
+      "three riders down, one to go",
+      "aoe on the swarm, perfect",
+      "morbus dead, nobody got sick",
+      "bugs died fast, gg"
+    ],
+    "aftermathLoss": [
+      "nobody had cure disease ready",
+      "the swarm got the clerics",
+      "we burned everything on morbus and had nothing for funus",
+      "the aoe groups chased bugs into the next room"
+    ],
+    "rumour": [
+      "heard morbus used to be unhittable while his bugs flew. not any more",
+      "[someone said|heard] morbus says the smallest things are the most deadly. he means the bugs",
+      "heard morbus is the quiet one of the four",
+      "[heard|word is] arawn was glad to lock morbus up",
+      "heard morbus reads a list while his bugs are out. creepy",
+      "[heard|someone said] the sisters at caer ulfwych say cold is the only thing morbus fears"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "morbus",
+    "text": "Plague, the third of the [four riders]. More soldiers die of the camp than of the field, and he knows it. He reads a folded bill of the dead while his swarm flies; the western bards say that swarm was the Yellow Plague of Rhos. The sisters of [Caer Ulfwych] say he fears only the frost. See [Bellum] and [Funus]."
+  },
+  "bookPage": "Plague said less than his brothers. He told us, softly, that it is often the smallest things that are the most deadly, and gave us a little while. Then the swarm came out of him, and for the length of that swarm no blade and no spell reached him; it was like striking at a man through a wall of moving sand. Our wizards learned to bring a winter down on the air around him the moment it darkened, and Sister Tangwen went among us with her bitter herb. When the last of the small things fell, he was only a pale man in a robe, and we killed him, and he did not seem to mind.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} burned the swarm out of the air and unhorsed Morbus in {minutes} minutes.",
+    "loss": "Morbus' swarm and sickness wore {realm}'s raid down; {raidLeader} could not cure fast enough."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "caer-sidi-prisoners",
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "fames",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "bellum",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "funus",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "apocalypse",
+      "relation": "the master they ride before"
+    },
+    {
+      "id": "funus",
+      "relation": "comes after him, a minute later"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Camp, Not the Field",
+      "text": "Plague is the third road to the dead, and the oldest secret of war: more soldiers die of the camp than of the field.\n\nThe Inconnu say the keepers of Caer Sidi learned it from the Romans, who learned it from every siege they ever laid. A legion that sat a summer before a town buried more men from its own latrines than from the walls. The fever came up out of standing water, out of the grain sacks, out of the close tents, and it came on things too small to see: the flea, the fly, the louse, the breath of the man in the next cot. When Arawn made the third rider, he made him out of those small things, and named him in the Roman tongue Morbus, and of the four he is the palest and the most quiet.\n\nHe carries a written list. Brother Cadoc saw it in Dame Ysolde's company and could not read it; it was folded small and very old. The Inconnu say it is the bill of the dead, the tally that the towns of the old province kept in their plague years, name after name nailed up on the church door each week, and that Morbus has every bill that was ever written, folded into one. They say he takes it out and reads it whenever his little ones are abroad, and that it is the only thing in Caer Sidi that makes a rider turn pale.\n\nHis bearer is the first who died of the camp: a girl of the first town ever built, the Inconnu say, a town of mud brick on a river far to the east, where people first lived close enough together to share a sickness. She is small and walks very close beside the rider, and Cadoc wrote that she was the only bearer who seemed to want company.\n\nMorbus grants a grace as his brothers do, and warns in a low voice that it is the smallest things that are the most deadly. Then he opens his robes. The Inconnu say Arawn was glad to lock him away, because the lord of the dead had seen, better than anyone, what plague does to the roads: it fills them all at once, and leaves no one to carry the dead along them."
+    },
+    {
+      "title": "The Yellow Beast at Rhos",
+      "text": "The worst plague of Albion's memory came after Arthur, and the western bards say it was Morbus's swarm loosed on the living.\n\nThe bards of the west call it the Yellow Plague. It came out of the sea marsh at Rhos, they sing, in the form of a yellow beast with eyes and hair of gold, and King Maelgwn of Gwynedd shut himself in the church there so that it would not find him, and looked through the keyhole to see whether it had gone, and saw it, and died. The Inconnu, told the song, said that a plague does not need a door to come through, and that the king died of looking.\n\nWhat Albion's Church remembers of those years is the hospice of Caer Ulfwych in Campacorentin Forest, whose sisters nursed the plague when the towns would not. The prioress who kept the hospice then wrote three customs into its rule, and the sisters keep them still. The sick are laid a bed's length apart and never in a crowd, because the fever goes from breath to breath and takes a crowded ward far faster than a scattered one. Every sister carries the bitter herb that drives the fever out of the blood, and gives it the moment the shivering starts, before she gives anything else, because nothing else she gives will take while the fever stays. And no sister gives up on a ward before the first hard frost, because in the prioress's years the plague went out with the frost, every autumn, as if the cold could kill what nothing else could.\n\nThe plague at Rhos ended in a hard winter, the bards agree. The Inconnu say that is not a coincidence: cold is the only thing Morbus has ever been afraid of, because nothing small survives a frost, and his swarm is all small things. The sisters of Caer Ulfwych, who have nursed fevers for longer than any of the realm's orders, say that the Inconnu are heathens and that the frost is God's mercy. They also say, when a fever comes in summer, that they wish it were winter."
+    },
+    {
+      "title": "The Wall That Went Out",
+      "text": "In the first seasons after the rising, the accounts say, nothing could touch Morbus while his swarm flew.\n\nThat is how the dead of the lich's company found him on the night they climbed: a pale figure behind a wall of moving things, which they struck at as men strike at sand, until the swarm was dead and the rider stood bare. The Inconnu who watched from the stair say it was the longest of the four for the dead, because the swarm came again, and again, each time the last of the previous one had fallen and the rider had been given a little while to call it back.\n\nDame Ysolde's company found the wall still standing, and could do nothing to the rider until the last of each swarm was dead.\n\nSister Tangwen of Caer Ulfwych climbed with Ysolde's company, the only sister of the hospice who ever has, and she kept the prioress's three customs on the riders' floor. She kept every man of the company a bed's length from the next while the swarm flew, and she gave the bitter herb to every man who shivered before she gave him anything else. Cadoc wrote that she lost no one of the company to the fever, though she nursed it on that floor through every swarm the rider loosed, and that she went among the men like a woman walking a ward at night.\n\nWhen the last of a swarm fell, Morbus stood up to his full height again and fought, and in a little while the swarm came back. Tangwen said it was like every plague she had nursed: it is never over when the last grave is filled, only resting.\n\nThe wall is gone now. The Inconnu say it went out of him when Ysolde's company ended the end of the world and the fortress stopped turning for a breath, and that the riders were never quite whole again. Sir Geraint of Caerwent led the next company up the summer after, and found the rider stranger than before. When his swarm is abroad, Morbus no longer stands behind it. He goes small among it, the size of the things he has loosed, and takes out his folded bill and reads, and lifts no hand against anyone while his little ones fly. But a small thing can be struck. Geraint's knights cut at a rider no bigger than a cat who did not strike back, and he bled."
+    },
+    {
+      "title": "What Is on the Bill",
+      "text": "Morbus fell to Dame Ysolde's company in the end, and Sister Tangwen was the one who picked up his bill.\n\nIt lay on the floor of the riders' hall where he had fallen, folded small, and the company had its grace before Funus came, and she unfolded it. Brother Cadoc, who stood beside her, wrote that it was not one bill but thousands, pressed so thin that they had become one, and that the names on the outermost leaf were in the hand of the hospice of Caer Ulfwych: the plague dead of the prioress's years. The name at the top was the prioress's own. Tangwen folded it again and put it back on the stone where she had found it, and when later companies climbed, it was in his robes again.\n\nThe readings of him differ. The Church says Morbus is the pestilence that follows the pale horse of the last book, and that a lord of the dead who keeps plague in a cage is keeping it for a purpose. The bards of the west say he is the yellow beast of Rhos, and that Maelgwn saw him through the keyhole reading. The Inconnu say he is the rider their lord fears most, not because plague is strong but because it is patient and small, and the only rider who can empty the roads of the dead by filling them.\n\nWhat he wants is in his warning: to be underestimated. Every plague in the bill began with one cough in one house, the Inconnu say, and no one in the house thought it mattered. When he falls he says nothing, or almost nothing; Cadoc heard only the rustle of the bill.\n\nThe hospice of Caer Ulfwych has kept a custom since Tangwen came home. It no longer posts its own bill of the dead on the chapel door in a fever year. The sisters write the names in a book that is never folded, and keep it open on the altar, and at the first hard frost of every autumn they read the year's names aloud and close the book. Tangwen said that a list which is read and closed is a list Morbus cannot fold into his."
+    }
+  ]
+}

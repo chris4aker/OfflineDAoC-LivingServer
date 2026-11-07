@@ -1,0 +1,112 @@
+{
+  "id": "tinka",
+  "name": "Tinka",
+  "npcNames": [
+    "Tinka"
+  ],
+  "locationId": "marfach-caverns",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Tinka: level 65, class GameEpicNPC (damage factor 1.5, health 10,000 + 125 per level = 18,125, immune to confusion and nearsight), model 632 (the pixie and sprite body of the wilds: rainbow sprites, primroses, ambient pixies), size 70, faction Awakened, at about 32,100/37,000 in the Marfach Cavern; respawn 1,500 seconds; no script beyond the class.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate 50005, region 276; source/server/GameServer/gameobjects/GameEpicNPC.cs (integration/1.2)"
+    },
+    {
+      "text": "Faction Awakened (187) also holds the Black Lady, Chieftain Caimheul, Avartack and the Marfach dead, and Aidon the Archwizard's company elsewhere.",
+      "provenance": "game",
+      "source": "world data Mob table (FactionID 187)"
+    },
+    {
+      "text": "Living Server lore: Tinka as a pixie of the Breifine hills who followed the keen down into the caves on the night the three Ladies looked back, and woke with the dead.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "On the night the three keeners looked back, and Caimheul's household woke under Breifine, something else was in the caves that should not have been. The pixies of the Breifine hills love music, the hill country says, any music, the reel at a wedding, the lament at a wake, the wind in the thatch, and they follow it the way moths follow a candle. The keen of the three Ladies was the greatest music the hills had heard in a generation. One of the pixies followed it down into the burial caves. Nóra's family, who keep the keen of Caimheul, call her Tinka, which is only the hill children's name for any pixie, because nobody ever learned her own.\n\nShe was in the chieftain's hall when the Ladies sang the household back, and the song that woke the dead woke her too, though she was not dead. That is the part the keeners' daughters tell with a shiver. A living thing, small and bright and made of the hill's own summer, stood in the middle of a waking that was meant for the dead, and the waking took her as one of its own. She is of the Awakened now, as the household is. She does not age and she does not leave, and she has grown, the keeners' daughters say, the way a candle-flame grows in a draught: larger than any pixie of the hills, and hotter, and much less kind.\n\nShe hits far harder than anything her size should, and no glamour of the hills will turn her or blind her, because she is a glamour herself, the druids of Lough Gur say, and glamours do not fool their own kind. The household tolerates her as a family tolerates a stray that came in on a cold night and will not go. The wolfhounds will not go near her. Caimheul, when he notices her at all, seems to think she is one of the nine hostages' children, come back.\n\nNóra's grandmother's grandmother, who heard the keen that night from the hillside, said she saw a small light go down into the caves after the music and never come up. The hill country has kept a custom since: on the night of a keen, the children leave a little music outside, a whistle or a reed-pipe played at the door, so that any pixie listening will follow that instead.",
+  "legend": "Tinka is a level 65 'epic NPC' pixie in the Marfach Cavern (about 32k/37k), faction Awakened with the Black Lady's household. No script, but the GameEpicNPC class makes her much tougher than a normal 65: 1.5x damage, about 18,000 health, and immune to confuse and nearsight. Treat her as a small boss: full group or better, tank her properly, and do not expect a quick kill. Her respawn is 25 minutes. Marfach's raid bosses (Caimheul, the Black Lady, Avartack and the Ladies) are nearby; do not drag her into them. She is small and easy to lose behind the dead in the caverns, so keep her targeted and fight her where she stands.",
+  "yells": {
+    "aggro": [
+      "(a small light flares, much too hot)",
+      "Music? Is there music? No. Only you.",
+      "(Tinka laughs like a bell in a grave)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Play for me. Play, and I will follow. No? Then burn."
+      }
+    ],
+    "death": [
+      "(the small light gutters out, at last)",
+      "The keen... was so beautiful..."
+    ],
+    "slay": [
+      "(the light dances over the fallen)",
+      "No music in you.",
+      "Another for the household."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A small, hot light among the dead.",
+      "The wolfhounds will not go near it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Tinka flares like a candle in a draught!"
+      }
+    ],
+    "realmFirstKill": "Tinka, the pixie who woke with the dead, is out."
+  },
+  "botLines": {
+    "briefing": [
+      "tinka is a 65 epic npc pixie in marfach. [1.5x damage|18k health]",
+      "immune to confuse and nearsight. [no tricks|tank her]",
+      "full group or better",
+      "25 min respawn. [one try|get it right]"
+    ],
+    "aftermathWin": [
+      "tinka down. [the light went out|got her]",
+      "18k health pixie, who knew",
+      "the keeners' daughters can sleep",
+      "tanked her properly. [nice|grats]"
+    ],
+    "aftermathLoss": [
+      "it's a pixie, how hard can it be. [very|lol]",
+      "1.5x damage. [tank folded|ouch]",
+      "dragged her into caimheul's lot. [no|wipe]",
+      "tried to mez her. [immune-ish|nope]"
+    ],
+    "rumour": [
+      "[heard|someone said] tinka followed the keen into the caves the night the ladies looked back",
+      "breifine kids play a whistle outside on the night of a keen so pixies follow that instead",
+      "[word is|heard] the wolfhounds in marfach wont go near tinka",
+      "caimheul thinks tinka is one of the nine hostages' children come back"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Tinka",
+    "text": "A pixie of the Breifine hills who followed the three Ladies' keen into the [Marfach] caves and woke with the dead though she was not dead. She is of the Awakened now, larger and hotter and much less kind."
+  },
+  "bookPage": "From Nóra's book of the keen of Caimheul: my grandmother's grandmother saw a small light go down into the caves after the music that night and never come up. Pixies follow music, any music, and the Ladies' keen was the greatest the hills had heard. The song that woke the household woke her too, though she was not dead, and she has been one of them since, grown hot as a candle in a draught. We call her Tinka, the hill word for any pixie. On a keening night the children play a reed-pipe at the door, so that anything listening will follow that.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Tinka in the Marfach Cavern in {minutes} minutes.",
+    "loss": "Tinka turned back {realm}'s band under {raidLeader} in the Marfach Cavern after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "chieftain-caimheul",
+      "relation": "the chieftain whose household woke around her"
+    },
+    {
+      "id": "red-lady",
+      "relation": "whose keen woke her"
+    }
+  ]
+}

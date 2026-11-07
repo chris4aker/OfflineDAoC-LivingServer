@@ -1,0 +1,122 @@
+{
+  "id": "storslange",
+  "name": "Storslange",
+  "npcNames": [
+    "Storslange"
+  ],
+  "locationId": "skona-ravine",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "lokis-mischief"
+  ],
+  "related": [
+    {
+      "id": "loken",
+      "relation": "the bound god's other servant in Raumarik"
+    },
+    {
+      "id": "ulfketill",
+      "relation": "the jotun of Vanern the same epic sends the seers to kill next"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Storslange is a level-56 serpent of great size (the orm and worm model) in the water at the foot of south-western Skona Ravine (697728, 955520, 1639).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60166577)"
+    },
+    {
+      "text": "In the seer epic 'The Desire of a God', Inaksha sends players to Lyngheid in Fort Atla ('Loki seeks to cause trouble'), then to slay Storslange in the waters of Skona at night, then the jotun Ulfketill in Vanern.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Template: aggressive (200 at range 500). Its template gives it no faction, so it never brings friends (bring-a-friend needs a faction). In this world data it is an ordinary spawn, up by day as well as by night.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Storslange reads as Norwegian/Danish 'stor slange', 'great serpent'; to verify.",
+      "provenance": "original",
+      "source": "Norwegian dictionary (Bokmalsordboka), to verify"
+    }
+  ],
+  "story": "Lyngheid of Fort Atla says that Loki seeks to cause trouble, and that he has always sought it, and that being bound under the serpent's dripping venom has not changed what he wants, only how he gets it. When the bowl his wife holds over his face fills and she turns to empty it, the venom falls on him and he writhes, and the earth shakes, and something always gets out. In Raumarik it was Loken. In Vanern it was the jotun Ulfketill's errand. In Skona it was Storslange.\n\nIt is a serpent, and its name says only that it is a great one, but the Seithkona Circle says it is a serpent of a particular kind: one of the lesser brood of the World Serpent, Loki's own son, who lies in the sea round Midgard with his tail in his mouth. The lesser brood swim the rivers. When the venom falls and the earth shakes, one of them comes up out of the sea and goes where it is sent, and this one was sent up the waters of Skona to the pool at the foot of the ravine, under the ash-wife's tree, and it has lain there since.\n\nIt does not hunt. The werewolves, who will not drink from that pool, say the serpent is not hungry. It is listening. The road south to Malmohus runs past the ravine's foot, and all who go down it pass within sound of the pool, and the werewolves say that what the serpent hears goes back down the rivers to the sea and along the World Serpent's length to the bound god under the venom, and that Loki has known every word said on the road south for as long as scales have come home by it. The seers of Midgard believe it. That is why the seer epic sends them, on Inaksha's word, to kill it: a god who wants trouble is half as dangerous when he is deaf.\n\nIt rises from the water against any stranger too near, and fights as a serpent of that size fights, with weight and coils, alone; nothing in Skona will help it, and it has never asked. The Circle's seeresses say it comes up more readily in the dark. Gudny wrote that it is not the dark that brings it up, but the quiet: at night the road south is silent, and the serpent comes up to listen harder, and that is when the seers go down to the pool.",
+  "legend": "Storslange is the seer epic serpent: The Desire of a God sends you from Inaksha to Lyngheid in Fort Atla, then to kill Storslange in the waters of Skona 'at night', then Ulfketill in Vanern. It's a level 56 huge serpent in the pool at the south-west foot of the ravine. In this world it's up all the time, day or night, so don't wait for dark. Nothing stands near it (a sidhe gaoite is the nearest thing, 1,700 off) and it has no faction, so it's a clean fight: no adds, no abilities, not CC-immune. You're fighting in or near water, so keep casters on the bank. A group at the epic's level is plenty.",
+  "yells": {
+    "aggro": [
+      "(The dark water heaves. Something long rises.)",
+      "(Storslange's coils break the surface of the pool.)",
+      "(A serpent's head, wet and huge, turns toward you.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Storslange thrashes. The pool's water runs red and back to the sea.)"
+      }
+    ],
+    "death": [
+      "(The great serpent sinks, uncoiling.)",
+      "(Far off, down the rivers, the sea is very quiet.)"
+    ],
+    "slay": [
+      "(Storslange coils back into the pool.)",
+      "(The water closes.)",
+      "(The serpent listens again.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Dark water. Something long lies listening.",
+      "The werewolves never drink from this pool."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The pool runs red toward the sea."
+      }
+    ],
+    "realmFirstKill": "Storslange is dead. The bound god is a little deafer."
+  },
+  "botLines": {
+    "briefing": [
+      "storslange is the seer epic serpent, sw skona pool",
+      "its up all the time here, dont wait for night",
+      "no adds, no faction, no tricks",
+      "casters stay on the bank"
+    ],
+    "aftermathWin": [
+      "storslange down, next ulfketill in vanern",
+      "easy for the epic group",
+      "never needed to wait for night",
+      "loki is a bit deafer now"
+    ],
+    "aftermathLoss": [
+      "fought in the water, bad idea",
+      "it hits like a falling tree",
+      "too few of us",
+      "pet pulled it early"
+    ],
+    "rumour": [
+      "storslange is one of the world serpents lesser brood, came up the rivers",
+      "storslange listens to the road south for loki",
+      "the werewolves never drink from storslanges pool",
+      "the seers kill storslange so loki is deaf on the road south"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Storslange",
+    "text": "A serpent of the World Serpent's lesser brood that came up the rivers when the bound god's venom fell, and lies in the pool under the [ash-wife]'s tree listening to [the road south]. The seers kill it so that Loki is deaf."
+  },
+  "bookPage": "From What the Circle Sees, by Gudny of the Seithkona Circle: I went down to the serpent's pool once at night with two seers of Fort Atla who had been sent there by Inaksha. We stood on the bank in silence a long time. Then one of them said aloud, quite clearly, the name of the hollow where the dragon sleeps, and the water moved. Not a ripple. The whole pool, all at once, the way a sleeper turns toward a voice. The seers looked at each other and drew their weapons. I went back up to the Circle, and did not say that name again for a year.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Storslange in Skona's pool in {minutes} minutes. Loki hears a little less.",
+    "loss": "Storslange dragged {raidLeader}'s party from {realm} back from the pool after {minutes} minutes."
+  }
+}

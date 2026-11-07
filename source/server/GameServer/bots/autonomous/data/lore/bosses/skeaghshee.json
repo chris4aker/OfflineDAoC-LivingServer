@@ -1,0 +1,106 @@
+{
+  "id": "skeaghshee",
+  "name": "Skeaghshee",
+  "catalogKey": "hibernia-named-mobs-classic-zones/skeaghshee",
+  "locationId": "cursed-forest",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 71, 30,000 health, in the Cursed Forest. He takes no damage from magic of any kind (body, cold, energy, heat, matter, spirit): 'Skeaghshee is immune to magic damage!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Skeaghshee.cs"
+    },
+    {
+      "text": "He still takes 20% less from melee.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Skeaghshee.cs"
+    },
+    {
+      "text": "Hiberno-English skeagh (Irish sceach, 'whitethorn') + shee (sí, 'fairy'): the fairy thorn. Bot chat glosses it the same way.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Every Hibernian farmer knows the rule: you do not cut a lone thorn tree in a field, because it belongs to the Good Folk. Skeaghshee is the reason for the rule, the fairy thorn of the court wood, grown into the shape of a man. He is made of the stuff the fairy courts are made of, and their magic runs off him like rain off a slate: no spell of any colour can touch him. Only plain iron and plain wood and a strong arm will do, and even those he turns a little. The farmers of Ardee still tie rags to the thorns in their fields. Now you know why.\n\nEvery Hibernian farmer knows the rule. A lone whitethorn in a field belongs to the Good Folk, and you do not cut it, plough round it, or hang washing on it; you tie a rag to it for luck and leave it be. Skeaghshee is the reason for the rule. He is the fairy thorn of the court wood, the thorn under which the courts sat to bargain, grown into the shape of a man when the bargain broke beneath him.\n\nHe is made of the stuff the fairy courts are made of, and magic of every kind runs off him like rain off a slate: body, cold, energy, heat, matter, spirit, none of it can touch him. Only plain iron and wood and a strong arm will do, and even those he turns a little. The farmers of Ardee still tie rags to the thorns in their fields, and when the realm's warriors cut down the fairy thorn of the Cursed Forest, the farmers go out the next morning and tie two.",
+  "legend": "Spells do nothing to him at all, so this is a melee fight: bring every sword in the realm and leave the casters to heal and buff. Archers and other physical damage still work. And leave the thorn trees alone, the old hibs say. Melee and archers only; casters heal and buff. Superstition: cut the thorn and tie two rags the next morning, or your luck goes for a year. Nicknames: 'the thorn', 'old rag-tree'. Archers love this fight; casters hate it. Shields still help against him; the twenty-in-a-hundred of every blow he turns is the thorn remembering it was wood.",
+  "yells": {
+    "aggro": [
+      "Who cuts the thorn?",
+      "Who cuts the thorn?",
+      "Iron. You brought iron. Clever."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Your spells are rain on a slate. Bring iron."
+      }
+    ],
+    "death": [
+      "The thorn... is cut...",
+      "The thorn... is cut... mind your luck..."
+    ],
+    "slay": [
+      "Another rag on the branches.",
+      "Another rag on the branches.",
+      "Thorned."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A thorn tree in the shape of a man, very still.",
+      "A thorn tree in the shape of a man, very still."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Skeaghshee shrugs off every spell!"
+      }
+    ],
+    "realmFirstKill": "The fairy thorn is cut. Mind your luck."
+  },
+  "botLines": {
+    "briefing": [
+      "skeaghshee is immune to all magic. [melee and archers only|casters heal and buff]",
+      "immune to all magic, [melee and archers|casters heal], no exceptions",
+      "tie two rags tomorrow. [old luck rule|do it]",
+      "archers count as physical, [shoot away|arrows work]"
+    ],
+    "aftermathWin": [
+      "cut the fairy thorn. [hope we dont regret it|bad luck for a year now]",
+      "cut the fairy thorn. [hope our luck holds|tie the rags]",
+      "melee only, melee did it. [proud|grats]",
+      "casters kept us alive the whole time. [thanks|nice]"
+    ],
+    "aftermathLoss": [
+      "half the group were casters and [did nothing|it was immune]. melee next time",
+      "casters tried nuking anyway. [immune|stop]",
+      "not enough melee. [bring swords|more melee]",
+      "bad luck all week now. [tied the rags?|no]"
+    ],
+    "rumour": [
+      "skeaghshee means fairy thorn, [i think|my gran said]. leave the thorn trees alone",
+      "[heard|someone said] skeaghshee was the thorn the courts sat under to bargain",
+      "ardee farmers tie two rags after the fairy thorn is cut",
+      "skeaghshee means fairy thorn, the old hibs say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Skeaghshee",
+    "text": "The fairy thorn, grown into a man. Fairy magic runs off him like rain. Only iron, wood and a strong arm will do."
+  },
+  "bookPage": "From Derbáil of Ardee's list: grandmother said every farmer in Hibernia keeps the thorn rule, and the reason is in the Cursed Forest. The courts sat under a whitethorn to bargain, and when the bargain broke under it the thorn stood up and walked. No magic touches him; he is made of fairy stuff. Only iron. When the realm's warriors cut him down, she said, you go out the next morning and tie two rags to the nearest thorn instead of one. One for luck, and one by way of apology, because a thorn is a thorn whatever it has become.",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Skeaghshee in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Skeaghshee's head after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "cursed-wood"
+  ],
+  "related": [
+    {
+      "id": "juggernaut",
+      "relation": "the debt that broke beneath his branches"
+    }
+  ]
+}

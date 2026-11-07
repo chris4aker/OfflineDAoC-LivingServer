@@ -1,0 +1,117 @@
+{
+  "id": "bjornvarg",
+  "name": "Bjornvarg",
+  "npcNames": [
+    "Bjornvarg"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "hrolleif",
+      "relation": "the drakulv who stands beside him on the southern approach and calls the camps"
+    },
+    {
+      "id": "gjalpinulva",
+      "relation": "the mother whose hollow he guards from the south"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Two drakulv named Bjornvarg stand in the far south of Malmohus at the same time: one among drakulv protectors (723114, 1027407), one among drakulv executioners (724340, 1016102). Both are level 56, on the drakulv model and of great size.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its NPC template gives it no faction, so it never brings friends; anything standing beside it joins only by seeing the fight itself.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60158440, FactionID 0)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Bjornvarg reads as Swedish/Old Norse 'bear-wolf' (bjorn + varg).",
+      "provenance": "original",
+      "source": "Old Norse name lists (Landnamabok, the sagas), to verify"
+    }
+  ],
+  "story": "The svartalfar of Svarhamr say that a drakulv is born without a name, as a wolf cub is, and is given one by the hollow when it is given work. The name comes with the work and belongs to it. When a drakulv who keeps one of the camps dies, the beam-cutters of Svarhamr carve the name, and the holding has the name again by the next moon, because another has taken the work.\n\nBjornvarg is the exception everyone at Svarhamr knows. The name means bear-wolf, and it was given to the largest of the drakulv who stand on the southern approach to her hollow, where the ground falls away and the ruins give out. The svartalfar say that the drakulv who first held it had a brother of the same litter, of the same size, who would not stand behind him; and that the dragon, asked to choose, did not choose. She gave the name twice. One Bjornvarg stands among the protectors at the southern edge, where the wind comes up off the white country beyond; the other stands further in, among the executioners. They do not speak. The beam has the name cut on it many times and the beam-cutters no longer try to say which brother each mark belongs to.\n\nOf all the named drakulv, the bear-wolves are the only ones who have never been heard to call. Other captains of the court howl when they are struck and their camps come running; the Bjornvargs fight in silence with whatever stands at their shoulder, as if calling for help were something only a lesser name would do. Brisa the beam-cutter says it is pride. The drovers of Gotar, who have heard the story from the svartalfar, say it is simpler than that: there is nothing in Malmohus that a bear-wolf would want to share a kill with.\n\nHrolleif, who stands near the southern Bjornvarg, is the other half of that saying. Where the bear-wolf is silent, Hrolleif is never quiet, and the svartalfar say the two were set together for exactly that reason.",
+  "legend": "There are two Bjornvargs up at once in the far south of Malmohus, both level 56 and huge: one with a couple of drakulv protectors near the southern edge, the other a bit further north among drakulv executioners. Neither has any special ability, neither is CC-immune, and unlike most named drakulv they have no faction, so they never bring friends from the camps. The catch is the drakulv standing right next to them: protectors and executioners are 54-67 and will see the fight, so clear or mez them first. Hrolleif stands about a thousand units from the southern Bjornvarg and he DOES bring friends, so don't drag the fight toward him. A good group at 50 handles one Bjornvarg at a time.",
+  "yells": {
+    "aggro": [
+      "Bear-wolf does not call. Bear-wolf does not need to.",
+      "You came up the southern way. Nobody comes up the southern way.",
+      "Stand still. I am bigger than you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Still no help. Still none wanted."
+      }
+    ],
+    "death": [
+      "Cut it... on the beam... the right brother...",
+      "The other one... keeps the name..."
+    ],
+    "slay": [
+      "Small.",
+      "The south is closed.",
+      "Nothing shared."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ruins give out. A great drakulv stands silent.",
+      "Wind off the white country. The bear-wolf waits."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Bjornvarg does not howl. He never has."
+      }
+    ],
+    "realmFirstKill": "A Bjornvarg is cut on the beam. One remains."
+  },
+  "botLines": {
+    "briefing": [
+      "two bjornvargs up at once, both 56, south end of malmohus",
+      "no faction on him, he wont bring the camp",
+      "but the protectors next to him will see it, clear them first",
+      "keep it away from hrolleif, he does bring friends"
+    ],
+    "aftermathWin": [
+      "one bear wolf down, the other is still standing up north",
+      "clean, he never called anyone",
+      "big but simple",
+      "svartalfar will cut that on the beam"
+    ],
+    "aftermathLoss": [
+      "dragged him into hrolleif and the whole south came",
+      "the executioners saw it and joined",
+      "he hits like his name",
+      "should have mezzed the protectors"
+    ],
+    "rumour": [
+      "the dragon gave the bjornvarg name twice because she wouldnt choose between brothers",
+      "bjornvarg means bear wolf",
+      "the bear wolves never howl for help, the svartalfar say its pride",
+      "beam cutters cant tell which bjornvarg is which anymore"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Bjornvarg",
+    "text": "The bear-wolf: a name of the [drakulv] given twice, to two brothers the dragon would not choose between. They never call for help, which is why they stand beside [Hrolleif]. See [the names]."
+  },
+  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: the hardest marks on the beam are the bear-wolves. A name on our beam is a cut and a dot for each time it is taken again, and for every other drakulv I can read the dots like a family. Bjornvarg I cannot. There are two dots for most winters. My teacher said that once, early, both bear-wolves died in a single season and both names were taken again by the next moon, by two more brothers of one litter, and she cut it, and said she would not cut it with a steady hand again. She was right. Mine shakes too.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut down a Bjornvarg on Malmohus's southern approach in {minutes} minutes.",
+    "loss": "A Bjornvarg held the southern approach of Malmohus against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

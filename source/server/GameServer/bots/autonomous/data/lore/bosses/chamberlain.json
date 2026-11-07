@@ -1,0 +1,177 @@
+{
+ "id": "chamberlain",
+ "name": "Chamberlain",
+ "tier": "epic",
+ "npcNames": [
+  "Chamberlain"
+ ],
+ "aliases": [
+  "the chamberlain",
+  "the doorman"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "throne-of-legion"
+ ],
+ "related": [
+  {
+   "id": "legion",
+   "relation": "keeps his door; Legion holds his name"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "wrote his nameless line"
+  },
+  {
+   "id": "duke-satori",
+   "relation": "set him on the floor when he sat in the Queen's chair"
+  },
+  {
+   "id": "behemoth",
+   "relation": "stands below its ledge"
+  }
+ ],
+ "facts": [
+  {
+   "text": "The Chamberlain is level 79 and stands about 800 units from Legion, on the approach to Legion's lair.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's Darkness Falls bestiary types the Chamberlain as humanoid, not demon.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "He uses model 637, the same demon model as Dukes Aypol, Bimure, Harboris, Sallis and the Grand Chancellor.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "He is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "In de Plancy's Dictionnaire Infernal the grand chamberlain of hell's princely household is Chamos; the game gives its Chamberlain no name.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/Classification_of_demons"
+  },
+  {
+   "text": "Lilith the Demon Queen is in Mythic's bestiary; no Lilith spawns in this world, so the Living Server writes her as absent.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "His mortal origin, the nameless line, the Queen's chair and his tally of raids are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "chapters": [
+  {
+   "title": "The keeper of keys",
+   "text": "No two accounts agree on where the Chamberlain came from, and he has never settled the matter, because he no longer has the name that would settle it. The priests of Camelot keep a story in the chapter house in Camelot of a seneschal of the old kings, before Uther, who kept the keys of a hill-fort above what is now Camelot Hills and heard a woman's voice under the floor of his storeroom calling him by name. He went down with a lamp and a ring of keys, and the ring was found on the stair at dawn. The skalds of Jordheim tell of a jarl's steward, named in one verse only as the keeper of keys, who was sent under the mountains after a stolen hoard and came back years later to say he had found a better master, and then went back down. The druids of Tir na Nog say he belonged to no realm at all, that he was one of the first people to live on the island before the realms were drawn, and that he simply walked into the hollow when it was the only door he knew.\n\nThe court's own version is shorter. In the Third Roll a mortal came down a crack in the roof of the hollow, unarmed, and asked at the Queen's door for service. The imps who saw it say he was the first living thing ever to come down into the court without being dragged. He did not ask for gold or power. He asked to be useful. Lilith, the Queen, who sat beside the Chancellor above the Blood, found this so strange that she kept him. The bestiaries of the realms still list him among the court with the note that he is not a demon at all but a man, whatever his shape has become since."
+  },
+  {
+   "title": "The bargain of the empty line",
+   "text": "A mortal in the court had a problem no demon had. The bargain of the Feast of Thrones protects only those who hold a place on the Roll of Precedence: the Master eats what falls from its line and leaves the rest alone. A mortal had no line. Any demon of the court could have taken him on the stair, and many meant to. So the Queen went to Grand Chancellor Adremal and asked for a line for her servant, and Adremal, who is never more dangerous than when he is being helpful, wrote one. It reads Chamberlain, of the Queen's household, at the Queen's door. It has no name in it. Adremal's reasoning, which the court still quotes, was that a line with no name can never be struck off, since there is nothing on it to chisel out. The Chamberlain cannot fall from his place, because his place is the only thing he is.\n\nThe price was the name. It had to go somewhere, and the only place in the hollow that takes things and keeps them is the Master. The Chamberlain spoke his name aloud at the Master's door and Legion swallowed it, and it has been one of the many voices since. Those who have stood close to Legion say that one voice in the chorus speaks more politely than the others. Over the Rolls that followed, the Chamberlain's body changed to fit his post. His shoulders grew, his skin darkened and hardened, and by the Sixth Roll he stood as tall as a duke and wore the same horned shape the dukes wear. The court treats him as one of its own. He has never treated himself as anything but a servant."
+  },
+  {
+   "title": "The Queen's chair",
+   "text": "In the Seventh Roll the Queen left her chair and did not come back. The court has four accounts of it and believes all of them on different days. The Chancellor's line on the Roll says Lilith is absent by leave of the Master, which means nothing and was written to mean nothing. The imps say that Legion ate her, that a queen falls from her place like anyone else, and that hers is now the loudest voice in the Master's throat. Albion's Church teaches that she went up through the roof of the world and walks among the living, which is why it preaches against her by name. Hibernia's druids say she went the other way, through the torn place into the otherworld, looking for a court with better manners.\n\nThe Chamberlain says only that she is away, and has kept her chair since. It stands beside the Master's door, a high seat of black stone with a cushion on it that he replaces every Roll. Nobody sits in it. In the Eighth Roll Duke Satori, who had been the Queen's favourite, came to the door and sat down, on the theory that a favourite inherits. The Chamberlain lifted him out of it by the collar and set him on the floor and said that the duke had mistaken the chair. Satori has gone about the court unseen ever since, out of shame or out of policy, and the court is divided on which. The Chancellor himself has never tried to sit. Adremal says the chair is not on the Roll, and so it is not his business. The court notices that he walks around it."
+  },
+  {
+   "title": "The door of the Master",
+   "text": "When the three doors opened in the age of the realm wars, the Chamberlain took on the work he is known for now. Somebody had to keep the Master's door, and since the Queen was away he kept hers by keeping her husband's. He stands a few strides from the threshold of Legion's lair, on the last stretch of the approach, below the cliff where the Behemoth lies on its ledge. Anyone who wishes to see the Master passes him. He announces demons in the court's form, by rank and seat, and he announces mortals the same way, by realm and number, as if a column of Albion's knights were a delegation that had made an appointment. He keeps a tally of them. The imps say he can tell you how many of each realm have passed his post since the doors opened, and how many came back, and that the second number is very small.\n\nHe fights when the door must be held, and he holds it the way a steward holds a hall, without anger. When he falls he does not stay fallen; there is no name on his line to strike, and so the court writes him back the same day. What he wants is the one thing nobody can give him. If the Queen comes back he will hand her the chair. If his name comes back out of the Master's throat, he does not know who he would be. The Chancellor has written that the day a mortal kills the Master, the Chamberlain will be the only one in the court with nothing to fear, and the only one with nowhere to go."
+  }
+ ],
+ "story": "The Chamberlain is the only member of the demon court who was not born a demon. Each realm tells where he came from differently: Camelot's priests say he was a seneschal of the old kings who followed a woman's voice under his storeroom floor; the skalds say he was a jarl's steward sent under the mountains after a stolen hoard; the druids say he was older than the realms. The court says only that in the Third Roll a mortal came down a crack in its roof unarmed and asked the Queen, Lilith, for service, and she kept him.\n\nA mortal has no line on the Roll of Precedence, and the bargain of the Feast of Thrones protects only those who do. So Grand Chancellor Adremal wrote him a line with no name in it, which can never be struck off, and the Chamberlain paid for it by speaking his name at the Master's door. Legion swallowed it; one voice in the Master's chorus is said to be politer than the rest. Over the Rolls his body grew into a duke's horned shape, though the realms' bestiaries still list him as a man.\n\nIn the Seventh Roll the Queen left. The Chancellor calls her absent by leave of the Master; the imps say Legion ate her; Albion's Church says she walks among the living; Hibernia's druids say she went into the otherworld. The Chamberlain keeps her chair beside the Master's door and lets nobody sit in it. When Duke Satori tried, the Chamberlain set him on the floor, and Satori has gone about unseen ever since.\n\nNow he keeps Legion's door, below the Behemoth's ledge, and announces every visitor in the court's form, mortals by realm and number. He keeps a tally of the mortals who pass him, and of the few who come back. When he falls he is written back the same day, because there is no name on his line to strike.",
+ "legend": "The chamberlain stands on the last stretch before Legion's lair, a few strides from the door. He is a plain level 79 with no script, but he hits like a prince and has the health to match, and he is the last thing between a raid and Legion. Clear the approach first: Legion's Own (the knights, Mutilators and the Inquisitor Famuel on the way down) will join if you fight in the middle of them. Pull him back up the approach rather than fighting on Legion's doorstep. People swear he says your realm's name when you aggro him. Albion's guilds call him the doorman; Midgard's call him the steward; Hibernia's call him the man in the demon.",
+ "yells": {
+  "aggro": [
+   "You are expected. Rank and seat, if you please. No? Realm and number, then.",
+   "The Master is not receiving. I am.",
+   "Wipe your feet. You are about to be eaten on a clean floor."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "I have held this door since before your king's grandfather. Sit down."
+   },
+   {
+    "trigger": "health<=20",
+    "text": "The chair is not yours. Nothing here is yours."
+   }
+  ],
+  "death": [
+   "Write me back. There is no name to strike.",
+   "Tell the Queen... the cushion is fresh."
+  ],
+  "slay": [
+   "One of yours, announced and dismissed.",
+   "Noted. Realm, number, and now one fewer.",
+   "The Master will take that one. I only keep the door."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "A black chair stands by the door. No one sits in it.",
+   "The Master's door. Its keeper is already waiting.",
+   "Somewhere ahead, many voices. One of them is polite."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The Chamberlain does not hurry. He never has."
+   },
+   {
+    "trigger": "health<=20",
+    "text": "The doorkeeper falters. The Master's door stands open."
+   }
+  ],
+  "realmFirstKill": "The Chamberlain has fallen. The Master's door is unkept."
+ },
+ "botLines": {
+  "briefing": [
+   "chamberlain is the doorman before legion. 79, hits like a prince. clear legions own on the approach first",
+   "pull the chamberlain back up the approach, [dont fight him on legions doorstep|not at the door]. then rest before the door",
+   "no tricks on the chamberlain, he just hits hard. [tanks rotate|rotate tanks], healers watch the mt",
+   "after the chamberlain its legion. [stack up|buff up] and nobody releases"
+  ],
+  "aftermathWin": [
+   "chamberlain down. [the door is ours|nobody keeps legions door now]",
+   "doorman dead. he said our realm name when he went, [creepy|i swear]",
+   "chamberlain down and nobody touched the chair. [good|keep it that way]",
+   "thats the chamberlain. [legion next|on to legion] if we have the people"
+  ],
+  "aftermathLoss": [
+   "chamberlain wiped us at the door. [he just doesnt stop|too much health]",
+   "we fought him too close to legion's lair and everything joined. [pull him back next time|my bad]",
+   "doorman 1, us 0. [regroup up the approach|rez and rebuff]",
+   "lost the mt to the chamberlain and it went downhill. [next time rotate|need more tanks]"
+  ],
+  "rumour": [
+   "[heard|word is] the chamberlain was a man once. a steward who went down [on his own feet|of his own free will]",
+   "the chamberlain keeps an empty chair by legions door. [nobody sits in it|dont sit in it]",
+   "[my guildie says|someone said] the chamberlain counts every raid that passes him. [and how many come back|and the dead]",
+   "the chamberlain hasnt got a name. legion ate it, [the imps say|they say]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "chamberlain",
+  "text": "The only one of the court who was born a man. He came down of his own will and asked the Queen for service, and [Adremal] wrote him a line with no name, so it can never be struck. He paid with his name; [Legion] keeps it. Now he keeps the Master's door and the Queen's empty chair, and announces every raid by realm and number."
+ },
+ "bookPage": "From the Tally of the Door, as an imp of the Albion hall recited it for a candle-end: The Chamberlain keeps two books, and neither is written. The first is the Roll of those he has announced. Demons by rank and seat. Mortals by realm and number. He says each line once, aloud, when the visitor passes, and he never forgets one. The second is shorter. It is the Roll of those who came back up the approach past him. The imp would not say how long it is. It said that the Chamberlain reads it to the Queen's chair at the end of every Roll, so that she will know, when she returns, how the house was kept.",
+ "bookPages": [
+  "From the Tally of the Door, as an imp of the Albion hall recited it for a candle-end: The Chamberlain keeps two books, and neither is written. The first is the Roll of those he has announced. Demons by rank and seat. Mortals by realm and number. He says each line once, aloud, when the visitor passes, and he never forgets one. The second is shorter. It is the Roll of those who came back up the approach past him. The imp would not say how long it is. It said that the Chamberlain reads it to the Queen's chair at the end of every Roll, so that she will know, when she returns, how the house was kept.",
+  "The imp went on: On the matter of the chair, be warned. It is black stone with a red cushion, and it stands beside the Master's door, and it is the most comfortable seat in the hollow, being the only one. Duke Satori sat in it once. The Chamberlain lifted him out by the collar and set him on the floor, and said that the duke had mistaken the chair, and since then nobody has seen Satori, though everyone has felt him. I asked the imp whether the Queen will come back. It said the Chamberlain thinks so, and the Chamberlain has never once been wrong about who is coming through his door."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} passed the Chamberlain at the Master's door in {minutes} minutes; he announced them, and fell.",
+  "loss": "The Chamberlain held the Master's door against {realm}'s raid under {raidLeader}, and counted them as they fell."
+ }
+}

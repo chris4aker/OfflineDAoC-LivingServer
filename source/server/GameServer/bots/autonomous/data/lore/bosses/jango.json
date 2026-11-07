@@ -1,0 +1,112 @@
+{
+  "id": "jango",
+  "name": "Jango",
+  "npcNames": [
+    "Jango"
+  ],
+  "locationId": "vanern-swamp",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "dishonoured-dead"
+  ],
+  "related": [
+    {
+      "id": "kelic",
+      "relation": "the cursed clansman he and his deserters carried to Raumarik and killed"
+    },
+    {
+      "id": "runil",
+      "relation": "one of his deserters, left behind on the road home"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Jango is a level-62 humanoid in the far south-west of Vanern Swamp (623861, 927180), aggressive, alone in the world data.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "In the mystic epic 'Saving the Clan', Danica sends players to slay Jango and his followers in Vanern Swamp at night and bring her Jango's map; the map shows where Jango and his deserters took Kelic to dispose of him.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, and it is not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Jango was a war-leader of the clan that Kelic cursed, and not a patient one. When the elders could not break the curse and children began to sicken, it was Jango who said aloud what the others would not: that a curse wound round a totem holds while the hand that wound it holds the totem, and that hands can be stopped. The elders would not do it. Jango found men who would, the clan's deserters, who had run from its wars and owed it something, and promised them their names back if they helped.\n\nThey carried Kelic north into Raumarik, to a stand of trees at the snowline, and Jango did the killing himself while Runil and the others held the cursed man's arms. Then he drew a map, because he was a careful man in his way, so that the clan would know where the body lay and could be sure it stayed there. It did not stay there. Kelic stood up, totem and all, and the curse went on, and the deserters began to die on the road home, one by one, as the curse went with the hands that had carried it.\n\nJango did not go home. He went south and west instead, into the far corner of Vanern, as far from the clan as the realm's wild ground goes, and kept the map. The ferrymen say he had followers once, the deserters who got that far, and that they came out at night to steal from the swamp's edges; they say too that he is alone now, and that the followers are in the bog. He still has the map. Danica wants it, because it shows the way to Kelic, and because she wants to know exactly what the clan's war-leader knew of the man he killed.\n\nArnkel the ferryman, who has seen him from the water, says Jango stands at the edge of the reeds most evenings, facing north, as Runil faces east, and that the swamp folk call the far south-west corner the deserters' end.",
+  "legend": "Jango is a mystic epic target in the far south-west corner of Vanern Swamp, level 62. The quest text says to kill him and his followers at night; in this world he stands there alone, day or night, so it's a straight fight with a level 62 humanoid. He's a plain spawn, nothing special: no adds, no tricks, and he isn't CC-immune, so a mez or root works if you need a breather. Bring a group at the level of the epic and he goes down. You want the map he carries for Danica: it's the map to Kelic. He's a long walk from the clay yards and the island, so you rarely get adds from the rest of the swamp.",
+  "yells": {
+    "aggro": [
+      "The clan sent you? Tell them I did what they would not.",
+      "You want the map. Everyone wants the map.",
+      "I held the knife. Remember that, if you remember anything."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "He stood up! I killed him and he stood up!"
+      }
+    ],
+    "death": [
+      "The map... is true... he is still there...",
+      "Tell Runil... I'm sorry..."
+    ],
+    "slay": [
+      "Another for the bog.",
+      "The curse goes with the hands. Now yours.",
+      "Lie down. The swamp keeps deserters."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The deserters' end. A man faces north, alone.",
+      "Reeds trampled in a ring, as if by many feet, long ago."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Jango clutches his map like a shield."
+      }
+    ],
+    "realmFirstKill": "Jango is dead. The clan has its map."
+  },
+  "botLines": {
+    "briefing": [
+      "jango is alone in this world, no followers. straight fight",
+      "level 62, plain mob, mez and root work",
+      "loot the map for danica",
+      "far southwest corner of vanern"
+    ],
+    "aftermathWin": [
+      "got jangos map. kelic is next",
+      "easy enough with a full group",
+      "he looked north the whole time",
+      "map says the snowline in raumarik"
+    ],
+    "aftermathLoss": [
+      "he hits harder than he looks",
+      "came at night thinking theres followers, theres not, still died",
+      "too few of us",
+      "pulled from too far and got the frogs"
+    ],
+    "rumour": [
+      "jango led the deserters who killed kelic. didnt work",
+      "his followers are in the bog, the ferrymen say",
+      "the far southwest of vanern is the deserters end",
+      "jango faces north every evening, toward kelic"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Jango",
+    "text": "The clan's war-leader who led the deserters to kill Kelic at Raumarik's snowline. Kelic stood up. Jango fled to the far corner of Vanern with the map, and the [ferrymen] say his followers are in the bog."
+  },
+  "bookPage": "From the count of Arnkel the ferryman: there is a man in the south-west corner who faces north every evening. He came into the swamp with eleven others, years ago, ragged and in a hurry, and paid me in clan silver to take them across. I took them. Over the seasons I fished four of them out of the black water, and notched them, and the rest I suppose the bog took without telling me. He is alone now. He keeps a folded map inside his shirt. I asked him once what it showed. He said: a man who would not lie down.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took Jango's map in Vanern Swamp in {minutes} minutes.",
+    "loss": "Jango kept his map from {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

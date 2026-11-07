@@ -1,0 +1,120 @@
+{
+  "id": "eralyne",
+  "name": "Eralyne",
+  "npcNames": [
+    "Eralyne"
+  ],
+  "locationId": "caldey",
+  "realm": "Albion",
+  "aliases": [
+    "the young sorceress"
+  ],
+  "facts": [
+    {
+      "text": "Eralyne: template 60160545, level 55, a zombie (the ghouls' model), at the graveyard by the Caer Sidi strand at 330807, 382027; aggro level 200 within 500, faction Undead Servants of Morgana, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lost Treasure (Ariette, the woods behind Fort Gwyntell): after the apple tree spirit, free the soul of the young sorceress Eralyne, a zombie at the graveyard near Caer Sidi, and bring the statue to Ariette.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The Crypt Guardian of the same faction stands 607 from her.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Eralyne as a student of the old schools who carried the statue over on the last boat, the statue's three readings and her grave as the sexton's last are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Eralyne was a student of the old schools in Avalon, young enough that she had not yet been given her own bench. On the night the colleges burned, when the readers were being put into the boats at the causeway, she went back into the burning school for something and came out with it under her cloak, and her robe on fire, and got onto the last boat to Caldey. She did not say what she had. She held it all the way across the water, and the boatmen say she was singing, the way the sorceresses sang their working-songs, though they could not make out the words. She died on the strand before morning, of the burns and of the cold, and the sexton of the graves nearest Arawn's door buried her with whatever it was still in her arms.\n\nIt was a statue, small enough to hold. What statue, and whose, the realm has three answers. Ariette, in the woods behind Fort Gwyntell, who wants it back and wants the girl freed, says it was a working of the old schools, a figure that held a magic of its own and would not let it go to anyone but the hand it was made for. The readers of Caer Gothwaite say it was only the school's household image, the little figure on the shelf by the door that the students touched for luck, and that the girl went back for it because nobody else would. The fishermen of Little Haven say she was singing to it.\n\nWhen the witch called and Caldey stood up, Eralyne stood up with the rest, in the graveyard by the strand, with her arms still folded over the statue and her robe still scorched. She is a zombie now, and does what Morgana's dead do, and comes at anyone who walks among the graves; but the fishermen swear she still holds her arms that way. Ariette's errand is long, and goes through an apple tree's sap and a spirit that answers to it, and ends at this grave. The Gwyntell priests call it freeing. The fishermen call it taking the statue off her. Ariette says both are true.\n\nThe sexton stands a little way up the row from her, as he has since he buried her. When the living come in numbers, he comes down the row to her side.",
+  "legend": "Eralyne is a level 55 zombie in the graveyard by the Caer Sidi strand on Caldey's west coast, the last step before the statue in Lost Treasure (Ariette, behind Fort Gwyntell: archiator hide, blue slime, Larionne's apple sap, the apple tree spirit, then Eralyne). She is aggressive from about 500 and an Undead Servant of Morgana; the Crypt Guardian (59) is about 600 off with the same faction, so a pair can take her alone but a bigger group can pull him in. No spells or styles in the data: a melee fight a duo or small group of fifties wins. Take the statue to Ariette and pick two different bracers. Respawn about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "Do not touch it.",
+      "It is mine to carry.",
+      "The boat... is leaving..."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I went back for it. I went back..."
+      }
+    ],
+    "death": [
+      "Take it... to the school...",
+      "Let me... put it down..."
+    ],
+    "slay": [
+      "Burned.",
+      "Left on the strand.",
+      "Mine. Not yours."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dead girl in a scorched robe, arms folded.",
+      "She holds something small against her chest."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Eralyne clutches the statue tighter."
+      }
+    ],
+    "realmFirstKill": "Eralyne is freed. The statue is out of her arms."
+  },
+  "botLines": {
+    "briefing": [
+      "eralyne, 55 zombie at the caer sidi graveyard. lost treasure statue",
+      "crypt guardian 59 is ~600 away, same faction. small group and he stays put",
+      "no spells, melee. duo or small group",
+      "grab the statue, ariette behind gwyntell. 80 sec respawn"
+    ],
+    "aftermathWin": [
+      "statue! off to ariette",
+      "freed, the priests would say",
+      "guardian never moved",
+      "two bracers, choose different ones"
+    ],
+    "aftermathLoss": [
+      "brought six and the guardian came",
+      "she's 55, not 45",
+      "forgot to loot the statue",
+      "zerged it and wiped to both"
+    ],
+    "rumour": [
+      "[heard|someone said] eralyne went back into the burning school for that statue",
+      "heard she sang to the statue all the way across to caldey",
+      "[heard|someone said] eralyne still holds her arms folded over it",
+      "heard ariette says freeing her and taking the statue are the same thing"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "eralyne",
+    "text": "A young student of the old schools of Avalon who went back into the burning school for a small statue and carried it, singing, on the last boat to [caldey], and died on the strand. The [crypt guardian] buried her with it in her arms. She stood up with the isle and holds it still. Ariette behind Fort Gwyntell wants it back and the girl freed; she says the two are the same."
+  },
+  "bookPage": "From the Ledger of Little Haven, kept by Mordwywr, enchanter. Paid: two silver to old Cadan, the last boatman still living who crossed on the night of the burning, for his account. He says the girl in the stern had her robe smoking and her arms round something and sang the whole way, a working-song of the schools, and did not stop when the boat grounded. He says he carried her up the strand himself and the sexton took her from him at the graves. I asked what she held. He said he did not look; you do not look at what a sorceress is holding. I have paid him for the account and not for that.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} freed Eralyne at the strand graves of Caldey in {minutes} minutes.",
+    "loss": "Eralyne kept her statue, and {raidLeader}'s company of {realm} lay down in the strand graves."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "crypt-guardian",
+      "relation": "the sexton who buried her and stands up the row from her"
+    },
+    {
+      "id": "larionne",
+      "relation": "the apple sap from Larionne starts the errand that ends at her grave"
+    }
+  ]
+}

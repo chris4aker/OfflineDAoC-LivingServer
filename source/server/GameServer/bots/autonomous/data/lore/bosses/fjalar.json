@@ -1,0 +1,77 @@
+{
+  "id": "fjalar",
+  "name": "Fjalar",
+  "npcNames": [
+    "Fjalar"
+  ],
+  "locationId": "skona-ravine",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "lokis-mischief"
+  ],
+  "related": [
+    {
+      "id": "galar",
+      "relation": "his brother, always a step behind him"
+    }
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Fjalar is a level-37 dwarf (a red dwarf's model) in the west of Skona Ravine (694,158/919,199), always beside Galar; no faction, aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "In Norse myth Fjalar and Galar are the dwarves who murdered Kvasir and brewed the mead of poetry from his blood.",
+      "provenance": "myth",
+      "source": "Snorri, Skaldskaparmal (public domain)"
+    },
+    {
+      "text": "The two in Skona taking those names is Living Server lore (zone_skona topic 'Fjalar and Galar').",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Fjalar and his brother Galar wander the west of Skona together under the names of the two dwarves of the old tale, who murdered Kvasir, the wisest of men, and brewed the mead of poetry from his blood, and drowned a giant and his wife for good measure. They do not deny it. The Seithkona Circle will not have them near. Fjalar is the elder and does the talking, and what he talks about, Gudny says, is the mead: where it went when Odin stole it, whether there is any left, and whether a man who drank a little of it would be able to say things that cannot be unsaid.\n\nThe Circle thinks they are only two dwarves with ugly names and a taste for trouble who came north from the dverge forges. The skalds of Galplen think they are the dwarves of the tale, still looking for the mead. Either way the brothers fight together and fall together, and Fjalar has never once been seen without Galar a step behind him. The green orm by the river avoids them.",
+  "legend": "Fjalar (37) and Galar (36) are two dwarves who stand together in the west of Skona near the river. Pull one and you get both, every time; no faction, no spells, just two hitters. Kill Galar first if you want the shorter fight, the old players say, since Fjalar talks. They stand in the open by the river, so you can see them coming; there's a green orm nearby that you don't want to drag in by accident.",
+  "yells": {
+    "aggro": [
+      "The mead! Have you tasted it? No? Then you're of no use to me.",
+      "Brother! Company!"
+    ],
+    "death": [
+      "Galar... the mead..."
+    ],
+    "slay": [
+      "Another poet who never wrote."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two dwarves by the river, arguing about mead."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "fjalar and galar always come together, 37 and 36",
+      "west skona by the river, kill one and the other is on you"
+    ],
+    "aftermathWin": [
+      "both brothers down",
+      "no mead on them, sadly"
+    ],
+    "rumour": [
+      "fjalar and galar named themselves for the dwarves who brewed the mead of poetry from kvasirs blood",
+      "the seithkona circle wont have the dwarf brothers near"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Fjalar",
+    "text": "The elder of the two dwarves of western Skona who go by the names of Kvasir's murderers in the old tale, and talk of the mead of poetry. See [Fjalar and Galar]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put an end to Fjalar's talk of mead in Skona in {minutes} minutes."
+  }
+}

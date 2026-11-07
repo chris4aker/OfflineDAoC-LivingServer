@@ -1,0 +1,121 @@
+{
+  "id": "ide",
+  "name": "Ide",
+  "npcNames": [
+    "Ide"
+  ],
+  "locationId": "bog-of-cullen",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Ide: level 52, model 367, at about 404,800/759,300 in the eastern Bog of Cullen.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Ide (52), Donal (50), Deniela, Jannet and Manius (48) stand together at about 404,000/759,200 in the eastern Bog of Cullen (z 4,944), all plain spawns with an 80-second respawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Unnatural Powers, two forms in the world data: (Torrance) 'Ask the locals of Alainn Binn about Ysberin', 'Slay the siabra magi Madawg who killed Ysberin', bring the staff to Lovernios; (Mavelle) talk to Lovernios the Druid Prince, 'Ask Ide about the dark magic that corrupted her friend', 'Find Saemus and retrieve the crystal', bring the crystal to Lovernios so the Druid Court may study it.",
+      "provenance": "game",
+      "source": "DataQuest 'Unnatural Powers' (world data)"
+    },
+    {
+      "text": "Living Server lore: Ide as the wise-woman of the Cullen outlaws, whose friend Saemus took a siabra crystal and went bad.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "On the eastern edge of the Bog of Cullen, where the marsh gives onto a low island of firm ground, there is a camp that the people of Alainn Binn call the Cullen outlaws. It has been there for a generation: mainland men and women who could not stay in Ardee or Howth or Connacht for one reason or another, and went into the bog where the realm does not follow, and kept going until they reached ground that would hold a fire. They do not rob the villages. They do not trade with them either. They fight anyone who comes onto their island, and the villages have learned to leave them alone.\n\nIde is the camp's wise-woman, and the only one of the outlaws the villages speak of with something like respect. She came into the bog young, the Alainn Binn folk say, after some trouble in Lough Gur that nobody now remembers the shape of, and she learned the bog from Ysberin the path-keeper before Madawg killed her, and she knows the plants of the marsh and the sicknesses of the mist better than any mender in Connacht. The outlaws are alive because of her.\n\nShe had a friend. Saemus came into the bog with her, the story goes, from the same trouble in Lough Gur, and where Ide went to Ysberin to learn the bog, Saemus went to the siabra to learn something faster. The siabra gave him a crystal. Ide has said what happened next to only one person, Lovernios the Druid Prince, who came down into the bog himself to ask, and Lovernios has told the Druid Court only that it was dark magic and that the crystal is still in Saemus's hand. Saemus lives alone now, west of the outlaws' island, and Ide will not say his name in the camp.\n\nLovernios sends young Hibernians to ask her about it, and she tells them, and then the camp fights them anyway, because a stranger on the island is a stranger on the island. She does not stop it. The villagers of Alainn Binn think that is the saddest thing about her: that she will tell the realm everything it asks and still not let it in.",
+  "legend": "Ide (52) stands with the Cullen outlaws on the eastern edge of the Bog of Cullen (about 405k/759k): Donal (50) and Deniela, Jannet and Manius (48) are right beside her, so expect several at once. Plain mobs, no scripts, 80-second respawns; a full 50s group with crowd control, or pull singly from the edges. In the Mavelle version of Unnatural Powers you ask Ide about the dark magic that corrupted her friend, then find Saemus (west of the camp) for the crystal and bring it to Lovernios. You do not have to fight the camp for that step, only find her; the camp fights you anyway if you walk onto the island.",
+  "yells": {
+    "aggro": [
+      "Off the island.",
+      "Lovernios sent you? He can come himself again.",
+      "Donal! Strangers on the firm ground."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I told you everything. It does not mean you can stay."
+      }
+    ],
+    "death": [
+      "Tell Saemus... no. Do not tell him...",
+      "The bog... keep them alive..."
+    ],
+    "slay": [
+      "Off the island.",
+      "The bog will take you back.",
+      "Another stranger."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A low island of firm ground in the bog.",
+      "A fire where no fire should hold."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ide calls the Cullen outlaws to her."
+      }
+    ],
+    "realmFirstKill": "Ide, wise-woman of the Cullen outlaws, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "ide is 52 with the cullen outlaws on the east edge of the bog. [several at once|donal and three more]",
+      "pull singly from the edges or bring cc. [5 named close together|careful]",
+      "unnatural powers (mavelle): ask ide, then saemus for the crystal",
+      "plain mobs, 80 sec respawn"
+    ],
+    "aftermathWin": [
+      "ide down. [the outlaws next|got her]",
+      "pulled singly. [worked|nice]",
+      "now saemus for the crystal",
+      "alainn binn wont mourn"
+    ],
+    "aftermathLoss": [
+      "pulled the whole camp. [five named|wipe]",
+      "cc broke on donal. [ouch|sorry]",
+      "group too low. [48-52 times five|no]",
+      "got lost in the bog on the way lol"
+    ],
+    "rumour": [
+      "[heard|someone said] ide learned the bog from ysberin before madawg killed her",
+      "ide's friend saemus took a siabra crystal and went bad",
+      "[word is|heard] lovernios came down into the bog himself to ask ide about saemus",
+      "the cullen outlaws dont raid the villages. they just fight anyone on their island"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ide",
+    "text": "Wise-woman of the Cullen outlaws on the eastern edge of the Bog of Cullen, taught by Ysberin. Her friend [Saemus] took a siabra crystal and went bad. She tells the realm everything and still will not let it in."
+  },
+  "bookPage": "From Derbáil of Ardee's list: the outlaws' island on the east of the Cullen bog, at any hour. They do not trouble us. They fight anyone on their ground. Ide is their wise-woman, who learned the bog from Ysberin the path-keeper and keeps them alive with marsh-plants. She came into the bog with a friend, Saemus, who went to the siabra for something faster than plants and came back with a crystal. Lovernios the Druid Prince came down to ask her about it himself. She told him. She will not say Saemus's name in the camp.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Ide in the Bog of Cullen in {minutes} minutes.",
+    "loss": "Ide turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "outlaws"
+  ],
+  "related": [
+    {
+      "id": "donal",
+      "relation": "the outlaws' captain"
+    },
+    {
+      "id": "saemus",
+      "relation": "the friend she lost to the crystal"
+    },
+    {
+      "id": "madawg",
+      "relation": "whose craft corrupted Saemus"
+    }
+  ]
+}

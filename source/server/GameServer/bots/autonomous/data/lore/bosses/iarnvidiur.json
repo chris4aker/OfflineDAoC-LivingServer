@@ -1,0 +1,205 @@
+{
+  "id": "iarnvidiur",
+  "name": "Iarnvidiur",
+  "catalogKey": "iarnvidiur-s-lair/iarnvidiur",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "aliases": [
+    "the old one",
+    "the woman of the iarnwood"
+  ],
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur",
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "hati",
+      "relation": "her brood, at her door"
+    },
+    {
+      "id": "skoll",
+      "relation": "her brood, at her door"
+    },
+    {
+      "id": "stanga",
+      "relation": "her first door-guard, kept at his post in death"
+    },
+    {
+      "id": "hurjavelen",
+      "relation": "the son who stole her dagger"
+    },
+    {
+      "id": "delegalt",
+      "relation": "herdsman of her animus"
+    },
+    {
+      "id": "gjalpinulva",
+      "relation": "her daughter, by one grandmother's tale (hearsay)"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Iarnvidiur is the level-75 final of her lair with 40,000 health. She casts Iarnvidiur's Plague, Black Plague (a disease in an 850 radius lasting ten minutes), Plague Bolt and a 400-damage strike.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "From half health she keeps seizing players and sending them to one of four fixed spots away from the fight.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists her as a giant; a 2004 thread calls her 'she', says she regenerated faster than a 30-strong group could hurt her, and that she teleported players into the water under the bridge.",
+      "provenance": "legend",
+      "source": "https://forums.tomshardware.com/threads/iarnvidiur.168029"
+    },
+    {
+      "text": "The Remnants iarn dwarves of Faraheim count the Servants of Iarnvidiur among their foes.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Reputation/FactionEmissaryRuntime.cs"
+    },
+    {
+      "text": "In the Voluspa an old giantess sits in the Iron Wood (Jarnvidr) and breeds the wolf-kin of Fenrir; Jarnvidja, 'she of the Iron Wood', is a giantess name in Snorri's lists (to verify).",
+      "provenance": "myth",
+      "source": "Voluspa, stanza 40 (Poetic Edda, public domain): the old one in the Iron Wood breeds Fenrir's kin"
+    },
+    {
+      "text": "Bot chat says she breeds two-headed wolves in the Iarnwood and is kin to the Fenris line; one grandmother's tale makes her Gjalpinulva's mother (hearsay).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Snorri names Hati as Hrodvitnir's son; Hrodvitnir is a name of Fenrir.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning (public domain)"
+    },
+    {
+      "text": "Iarnvidiur's four teleport spots are fixed points around the bridge over the water of her chamber.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs"
+    }
+  ],
+  "story": "Iarnvidiur is the woman of the Iarnwood, the old one of the iron trees on Aegir, a giantess the old songs place east in the Iron Wood breeding Fenrir's kin. Who she is depends on who tells it: Jordheim's skalds say she is the giantess of the Voluspa herself, the iarn dwarves say only that she was on Aegir before their first clan, and the narfi of her lair say she was young when the iron trees were silver and sang, before a rot that they will not name. The dwarves say her plague made the rot; the narfi say the rot made her.\n\nHer first litter gave the lair its guards: Stanga, set at the passage of the Ancient Syver and kept there in death; Hurjavelen, who stole her dagger and was not punished; and Hati and Skoll, who carry the names of the moon-chaser and the sun-chaser and lie at her door. Giants came courting and stayed too long in her rot, and she gave the mindless animus to Delegalt to herd. Above ground her Servants walk the Iarnwood looking like anyone, and the iarn dwarf clans lose children to them; when the Remnants' war-party under Torvald's father came for the children, she set Torvald in the black water under the bridge as a woman sets a pup back in its basket, and the dwarves say she does it still, to anything that has hurt her enough to be a nuisance.\n\nHer plague is her blood: it eats everything near her and it closes her own wounds, and Vemund's thirty, Midgard's first company in her lair, could never wound her deeply enough to trouble her. The first warband to kill her, under Ragnheid Grimsdottir with dwarf guides from Faraheim, went down carrying more cures than weapons, brewed from the bark of the iron trees. She returns, because the Iron Wood has always had an old one. She is waiting for the wolves to run at the end of the world, and some grandmothers say Gjalpinulva is her daughter.",
+  "chapters": [
+    {
+      "title": "She of the Iron Wood",
+      "text": "The seeress of the Voluspa sings that east in the Iron Wood the old one sat, and bred there Fenrir's kin, and that one of them, in troll's shape, will snatch the moon. Snorri's lists of giantesses give a name to such a creature, Jarnvidja, she of the Iron Wood. On Aegir the iron trees are real, black and hard as forged iron, and the old one is real too. The iarn dwarves call her nothing but the old one; Midgard calls her Iarnvidiur, the woman of the Iarnwood. Three peoples tell three stories of what she is.\n\nThe skalds of Jordheim say she is the giantess of the song itself, and that the Iarnwood on Aegir is the Iron Wood at the east of the world, which the gods placed at the edge of things and which Aegir, being the edge of Midgard's maps, happens to contain. The iarn dwarves will not say anything so large. They say only that she was on Aegir when the first of their clans came over the sea, long before the morvalt or the trolls' fathers' fathers, and that their oldest slate begins: the old one was already in the wood.\n\nThe narfi of her lair, small grey things of the deep who tend the dreaming fungus Droom, tell the strangest version, and only rarely. They say she was young once, and the iron trees were silver and sang, and birds lived in them, and she walked among them and was beautiful. Then something happened that the narfi will not name, and the rot came into the roots of the trees, and the trees went black and hard, and the old one went down under them and did not come up again as she had been. The narfi say the dying see the silver wood under Droom's cap. The dwarves who have come back from that sleep say it is only the poison."
+    },
+    {
+      "title": "The Rot in the Roots",
+      "text": "The black rot of the iron trees is the one thing on Aegir that every people agrees is hers. The iarn dwarves have a word for it, and the word is the same as her name. They do not cut the iron trees and they do not burn them, because the smoke carries the sickness, and their children learn to walk around them before they learn to walk straight.\n\nWhich came first is the argument. The dwarves say the old one is the rot's mother: that her plague went out of her into the roots and blackened the wood, the way water goes out of a spring. The narfi say the reverse: that the rot came first, from whatever happened that they will not name, and that it went into her as it went into the trees, and that she is as sick as her wood and has only learned to live with it better. Lydsyg, the singing thing of the skuggande, drones in a cave of her lair with the same note the iron trees make at night when the rot works in them, and the dwarves of Faraheim lie awake listening to it and argue about whether it is the sound of something getting sicker or getting better.\n\nEither way, the plague is her blood now. Everything in her lair carries it: every wolf, every syver, every animus of Delegalt's herd, every bug and fungus and fish. It hangs in the air of the lair like smoke. In her it is strongest of all. It eats at everything that comes near her and at whatever her bolts strike, it stays in the blood long after, it makes any mending slow; and it closes her own wounds as fast as most blades can open them. The dwarves of Faraheim have a saying for a trouble that grows back faster than it can be cut: it heals like the old one."
+    },
+    {
+      "title": "The First Litter",
+      "text": "Her first litter, the dwarves say, was born in the winter their first clan came to Aegir, and they heard it from across the sea: a howling from the east of the island that went on for nine nights. The pups of that litter became the lair's guards, and each of them has a story.\n\nStanga was the biggest, a great grey dog-wolf with a way of butting with his head that gave him his name. She set him in the passage to the Ancient Syver, the oldest of the scaled beasts she keeps for her wolves to hunt, so that her other pups would not try their teeth on it and lose. He died at his post of the rot, generations later, and she would not let him leave it. He stands there still.\n\nHurjavelen was the quickest. When he was young, he took a dwarf-made dagger from her own hand while she dozed by the water, and ran with it in his jaws out into the iron trees, and came back days later with it still in his teeth. She licked his ears and let him keep it. The brood has walked carefully around him ever since, and he runs further than any of them, and brings home stranger things.\n\nHati and Skoll she kept closest, and gave them the names from the old songs: Hati the moon-chaser and Skoll the sun-chaser, who run after the moon and the sun across the sky until the end. Snorri calls Hati the son of Hrodvitnir, which is a name of Fenrir, and the dwarves say that is the answer to who their father was. She set them at her door, and they lie there like hounds at a hall. Skoll came home one summer with a sunstone on his collar that no one can account for, and the dwarves joke that he bit it off the sun, and that this is why Aegir's winters are long. They do not laugh when they tell it."
+    },
+    {
+      "title": "The Suitors",
+      "text": "In the age when the iarn dwarf clans were young on Aegir, giants came to the Iarnwood to court the old one. They came from the mountains of the island and from further, across the sea ice, proud ones, with gifts: iron from the Gripklosa, gold, furs enough to carpet a mountain. The dwarves watched them go by, one after another, and counted them, and the count on the oldest slates is more than a hundred.\n\nShe took the gifts and let the suitors stay. The first winter, the dwarves say, the giants sang in the lair, and the song came up through the roots of the iron trees. The second winter they sang less. By the tenth winter they only stood in the long hall on the path to her door, slow great shapes with nothing in their eyes. The rot had got into them a little at a time. She named them as jokes, while they could still be insulted: rondjur, the round ones, syndig, the sinful ones. Midgard's bestiaries call them the animus, the soul-things, because there is no soul left in them.\n\nOne of them noticed what was happening in time, the cleverest of the suitors, and bargained. Nobody knows what he gave. What he kept was his mind, or half of it. His name is Delegalt, and she made him the herdsman of the others: he walks among the animus with a stick and a word for each, with her cruel wolves lying between them like sheepdogs, and if strangers touch him, the whole herd stampedes. He laughs when it does, the dwarves say, like a man who has not laughed in a hundred years. He cannot leave. That was the half of the bargain he lost."
+    },
+    {
+      "title": "The Servants and the Children",
+      "text": "The old one has Servants above ground, and they are the reason the iarn dwarves of Aegir live as they do. The Servants of Iarnvidiur walk the Iarnwood looking like anyone: a hunter, a trader, a lost traveller with a good cloak and a good story. Some are wolves of her brood in borrowed shapes. Some, the dwarves believe, are dwarves who went down to the lair and came back changed. They take children. When a child of the dwarf camps is missing in the morning, the camp does not say wolves took it. The camp says the old one wanted another pup, and then the camp is very quiet.\n\nThat is why Chief Tarek's people, who stayed in their encampment under the iron trees, let no stranger sleep two nights inside the stockade. A stranger in a good cloak came to them once and in the night opened the gate, and the old one's wolves came in. It is why the Remnants, the last free iarn dwarf clans, moved their camp out of the Iarnwood to Faraheim and keep griffons that fly only friends, and count the Servants of Iarnvidiur among their enemies with the morvalt war-bands and the skogsra shade seekers. Friends are made, the Remnants say, by killing the clans' foes.\n\nThe worst winter on the slates is the one in which the Servants took nine children in nine nights. The Remnants sent a war-party into the lair to bring them back, under a dwarf whose name is not on the slate because he did not come home. His son Torvald went with him. They found the pups first, the two-headed wolves running to the old one like dogs to a hearth. They found her sitting by the black water under the bridge."
+    },
+    {
+      "title": "The Basket",
+      "text": "The slate of that war-party is the only account of the old one at home written by someone who came back, and it is short. She looked at them, it says, the way a woman looks at weather. They attacked her. She did not seem to notice for a long time, because the plague closed every wound they made. Then, when they had hurt her enough to be a nuisance, she reached out, and Torvald was gone, and they heard him in the water far below the bridge. She went back to her pups.\n\nWhen they had hurt her enough to trouble her, the slate says, she stopped ignoring them, and one at a time she put them elsewhere, picking each up and setting him down somewhere around the bridge over the water, the way a woman sets a pup back in its basket. The dwarves say the places she chooses are always the same, and that they are exactly that: the baskets of her first litter, the old sleeping places on the rocks and in the water where Stanga and Hurjavelen and Hati and Skoll lay as pups. Those of the war-party who landed in the water climbed the pillars to get out, past things that live under the bridge.\n\nTorvald climbed out. The war-party did not bring the children back. They brought Torvald back, which was something, the slate says, and they left his father. The Remnants moved to Faraheim the next spring. Torvald became the dwarf who taught the Remnants to fly griffons, because, he said, a dwarf in the sky cannot be set back in a basket."
+    },
+    {
+      "title": "The Warbands of Midgard",
+      "text": "When Midgard came to Aegir with the Valkyn, the Remnants told the realm's warbands about the old one, and the first of them went down into the lair to see whether a realm could do what a dwarf clan could not. Thirty of Midgard's best, under a skald-trained runemaster of Jordheim named Vemund, fought their way past Delegalt's herd and the lake of Mahattava and the door wolves and stood around her, and could never wound her deeply enough to trouble her. The plague closed her wounds faster than thirty could open them. Vemund brought them out before the plague killed them, and told Jordheim the old one could not be fought by blades alone.\n\nThe warband that killed her was led by Ragnheid Grimsdottir, a wise-woman of Bjarken who had spent a winter in Faraheim learning the plague from the dwarves, and it went down with dwarf guides, Torvald's grandsons among them. The dwarves say it carried more cures than weapons, and that Ragnheid brewed the cures herself from the bark of the iron trees, the first medicine anyone had drawn out of the rot. Of the battle the guides wrote only this: when the old one began to set the warband in her baskets, its people climbed out of the water and came back up the pillars, and came back again, until she was too weak to lift them.\n\nWhen she died, she said that her brood would run when the sun was eaten. The dwarf guides heard it, and went home, and wrote it on a slate. Then they asked Ragnheid's warband to carry them out over the bridge, because no dwarf, they said, comes back past the bridge on his own feet."
+    },
+    {
+      "title": "When the Sun Is Eaten",
+      "text": "She came back. The dwarves were not surprised. The Iron Wood has always had an old one, they say; when one dies, the wood makes another, or the same one again, the way the rot comes back to a tree that is cut. Midgard has gone down to her door in every age since, and she looks at each company the way a woman looks at weather, and the brood howls in the iron trees when she dies.\n\nWhat she wants is in the song. The old one of the Iron Wood breeds Fenrir's kin for the end of the world, and at the end they will run: Skoll will catch the sun and Hati the moon, and the sky will go dark, and the wolves will come out of the east with their father. She is not in a hurry. The old one's brood never is. They have been waiting for the end of the world for as long as the dwarves have kept slates, and the end has always been coming.\n\nSome in Midgard say she has already bred the worst of it. The grandmothers of Aegir tell their grandchildren that the old one bore a daughter to the Fenris wolf before the chain closed on him, and that the daughter flew south to Malmohus, and that this is why the drakulv of the dragon's brood and the two-headed wolves of the Iarnwood have the same look. The skalds of Jordheim say the dragon's mother was the giantess Gjalp, and the svartalfar of Svarhamr say the dragon had no mother at all. The old one has never said. The dwarves, who have watched her longest, say she sits by the water under the bridge some nights and looks south, toward Malmohus, for a long time. They say a woman looks at weather that way, and a mother at a road."
+    }
+  ],
+  "legend": "Bring cure disease, lots of it, and a raid big enough to outdamage her healing: thirty was not enough in 2004. Shamans and healers on cure duty, nothing else. Kill Hati and Skoll at the door first. From half health she sends people away, often into the water under the bridge; climb the pillars and come back, and watch for the red cons down there. Keep a rezzer near the bridge. Don't let the fight stall or she heals back. The ring drop with parry, strength and constitution is the one everyone wants. My gran said she is the dragon's mother. My gran said a lot.",
+  "yells": {
+    "aggro": [
+      "Who let the pups out? Ah. Not pups. Supper.",
+      "Hungry, my pups? Here is supper.",
+      "You came into my wood with summer on your boots."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "You are tiresome. Back in your basket, little one."
+      },
+      {
+        "trigger": "teleport",
+        "text": "There. Stay."
+      },
+      {
+        "trigger": "health<=75",
+        "text": "Tsk. Sick already. They always are."
+      }
+    ],
+    "death": [
+      "My brood... will run... when the sun is eaten...",
+      "Lick... them clean... for me..."
+    ],
+    "slay": [
+      "The rot takes you. Good. The wood is hungry.",
+      "Feed it to the pups.",
+      "The wood will have you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The kennel of the Iron Wood. Something old is nursing here.",
+      "Black rot hangs in the air like smoke.",
+      "An old woman sits by black water with her pups."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Iarnvidiur seizes her attackers and casts them away!"
+      },
+      {
+        "trigger": "health<=75",
+        "text": "The plague around Iarnvidiur thickens!"
+      }
+    ],
+    "realmFirstKill": "The woman of the Iarnwood is dead. Her brood howls."
+  },
+  "botLines": {
+    "briefing": [
+      "iarnvidiur heals fast, we need dps and cure disease, [shamans|healers] on cure duty",
+      "from 50% she ports people to the corners. if you land in the water climb the pillars and come back",
+      "kill hati and skoll at the door first",
+      "rezzer by the bridge for the ported people",
+      "if the fight stalls she heals back. keep dps on"
+    ],
+    "aftermathWin": [
+      "iarnvidiur down! [gg|grats raid] the old wolf mother is dead",
+      "i got ported 4 times and still made it back for the kill",
+      "the old one is dead. the dwarves will sing about this",
+      "that ring dropped!! [parry str con|tank ring]"
+    ],
+    "aftermathLoss": [
+      "she healed faster than we hit, same as last time",
+      "half the raid ended up in the water",
+      "the plague made every heal half and the tanks died",
+      "everybody in the water and nobody hitting her"
+    ],
+    "rumour": [
+      "[my gran says|they say] iarnvidiur is gjalpinulva's mother. [dunno|hearsay but still]",
+      "the old song has a giantess in the iron wood breeding wolves to eat the sun. iarnvidiur fits",
+      "the dwarves say iarnvidiur was here before any of their clans",
+      "thirty people couldnt get her past half back in the day"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Iarnvidiur",
+    "text": "The woman of the Iarnwood. The old songs put a giantess in the Iron Wood breeding Fenrir's kin; the iarn dwarves live beside her and do not need the song. Her plague closes her wounds, and when you become a nuisance she sets you elsewhere, like a pup back in its basket."
+  },
+  "bookPage": "From the slate of an iarn dwarf of the Remnants, read to me in Faraheim. 'The Servants of the old one took two more of our children this moon. We went to the lair to bring them back. We found the pups first, wolves with two heads that ran to her like dogs to a hearth. She was sitting by the water under the bridge. She looked at us the way a woman looks at weather. Then she reached out, and Torvald was gone, and we heard him in the water far below, and she went back to her pups. We did not bring the children back. We brought Torvald back, which was something.'",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Iarnvidiur, the woman of the Iarnwood, in {minutes} minutes.",
+    "loss": "Iarnvidiur set {raidLeader}'s raid from {realm} back in its basket after {minutes} minutes."
+  }
+}

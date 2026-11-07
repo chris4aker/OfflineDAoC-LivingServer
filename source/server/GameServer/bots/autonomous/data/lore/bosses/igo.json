@@ -1,0 +1,112 @@
+{
+  "id": "igo",
+  "name": "Igo",
+  "npcNames": [
+    "Igo"
+  ],
+  "locationId": "spindelhalla",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "deep-ones"
+  ],
+  "related": [
+    {
+      "id": "ond",
+      "relation": "the warm stone of the deep road, whose passages his trows keep"
+    },
+    {
+      "id": "fas",
+      "relation": "the dread at the bottom"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Igo is a level-50 cave trow in Spindelhalla (32344, 28018, 15051, above the deep roads), with cave trow trollkarl within a few paces, cave trows and spindel silksters round him, husks nearby and Kalph about 800 units away.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Template: aggressive at short range (200), no faction (no bring-a-friend).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60162395)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Below the arachites' farm the spider-folk do not go easily. Cave trows hold the deep, with sorcerers of their own, and their chief is Igo. The thralls call him the doorman, because he holds the place where the farm ends and the deep begins.\n\nThe cave trows came down into the hall of lamps after the arachites, the free svartalfar say, from some cave of their own in the roots of Myrkwood, looking for warmth and silk and anything soft to eat. They found the arachites above and the deep below and the thing named evil sitting on the deep road, and they did what trows do: they found the one place where nobody else wanted to live and moved in. That place is the edge, the stretch of passages between the bottom of the farm and the top of the deep, and the trows have held it ever since, with the silksters' webs above them and the deeplurks below.\n\nIgo is not the strongest trow. He is the one who made the bargain. The arachites leave the edge to the trows, and the trows let nothing up out of the deep into the farm; and in return the trows take a share of what the huskers carry, the husks that hang about the edge in heaps, emptied, which the trows burn for the little warmth they give. The thralls hate the trows less than they hate the arachites, which is not saying a great deal. A thrall who runs from the farm runs down, the thralls say, because up is the arachites, and down is Igo, and Igo sometimes looks the other way.\n\nHis sorcerers stand close round him, the trollkarl of the cave trows, and the silksters' webs hang thick over his passages, and he is quick to rise against any stranger close by and in no hurry to chase one who keeps away. The free svartalfar of Malmohus say that Igo is the only creature in Spindelhalla who has ever traded with the thralls: a husk's worth of warmth for news of what moves on the deep road. They say he is afraid of Ond. They say he has every reason.",
+  "legend": "Igo is the cave trow chief, level 50, at the edge between Spindelhalla's silk farm and the deep, with cave trow trollkarl (48) a few paces away, cave trows and spindel silksters around, and Kalph (tier B) about 800 off. Short aggro range (200) and no faction, so he doesn't call anyone, but the trollkarl and trows beside him are aggressive and will see it. Kill or mez the trollkarl first, they're the casters. No special abilities on Igo, not CC-immune, an easy named for a group of 50s. The husks lying around are level 10 and passive (aggro 0), so ignore them.",
+  "yells": {
+    "aggro": [
+      "Doorman says no.",
+      "Trows! Someone at the edge!",
+      "Up is spiders. Down is worse. Here is Igo."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Bargain? Igo makes bargains. Not with you."
+      }
+    ],
+    "death": [
+      "Who keeps... the edge now...",
+      "Something will come up... now..."
+    ],
+    "slay": [
+      "Husk.",
+      "For the fire.",
+      "The edge holds."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The edge of the deep. Husks burn for warmth.",
+      "Cave trows hold the passages below the farm."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Igo's sorcerers close around him."
+      }
+    ],
+    "realmFirstKill": "Igo the doorman falls. The edge stands open."
+  },
+  "botLines": {
+    "briefing": [
+      "igo is 50, cave trow chief, trollkarl right next to him",
+      "kill or mez the trollkarl first",
+      "no faction, short aggro range",
+      "kalph is 800 off, dont drag it there"
+    ],
+    "aftermathWin": [
+      "igo down, easy",
+      "trollkarl first worked",
+      "the doorman is dead",
+      "husks everywhere lol"
+    ],
+    "aftermathLoss": [
+      "trollkarl nuked us",
+      "dragged it into kalph",
+      "too many trows",
+      "silksters joined"
+    ],
+    "rumour": [
+      "igo made a bargain with the arachites, the trows hold the edge and let nothing up",
+      "igo burns the emptied husks for warmth",
+      "a thrall who runs goes down, igo sometimes looks the other way",
+      "igo is afraid of ond"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Igo",
+    "text": "Chief of the cave trows who hold the edge between the [arachites]' farm and the [deep roads]. He keeps a bargain with the spiders and sometimes looks the other way for a [thralls]' runaway. See [Ond]."
+  },
+  "bookPage": "From the Silk-Frame Prayers, a frame copied for Odell's list: 'To nobody, because nobody below listens except the doorman, and he does not listen for nothing. I gave him my bread for three days for him to tell me if my brother passed the edge going down. He said yes. He said my brother gave him nothing and he let him pass anyway because he was too thin to be worth the trouble. I do not know if that is true. I am glad of it. I will run too, when I am thin enough.' Odell has marked the brother's name as missing, and the thrall's as 'watch'.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Igo the doorman at the edge of Spindelhalla's deep in {minutes} minutes.",
+    "loss": "Igo and his trows kept the edge against {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

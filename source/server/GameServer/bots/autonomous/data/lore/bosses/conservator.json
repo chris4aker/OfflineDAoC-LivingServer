@@ -1,0 +1,141 @@
+{
+  "id": "conservator",
+  "name": "Conservator",
+  "catalogKey": "galladoria/conservator",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 77, 100,000 health. It takes no damage unless the attacker stands within 800 of its spawn by the water.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It 'gathers energy from the water' and casts Essence of World Soul (energy damage over time) and a 550-point energy blast over 1,200.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs"
+    },
+    {
+      "text": "It resets after 30 seconds out of combat.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Where the titan's sap pools clearest, something keeps it. The Conservator does not hunt and does not wander. It sits at its pool and saves: every trickle of the world soul that seeps down the walls, every glimmer of strength in the water, it gathers in and holds. The Sylvan say it was made to keep the isle's springs full in dry years. The Root taught it a miser's heart instead. It will spend its hoard only to protect it, but then it spends lavishly, pouring the world soul out as a burning sickness and as a blast that fills the cave. It cannot be lured from its water, and from any distance it is beyond harm, as a miser is beyond reach behind his door.\n\nIt was made, the Sylvan think, in the good years, to keep the isle's springs full when the summers were dry. A thing that saves is a good thing to have in a hard country. The trouble with a thing that saves is that it only ever needs to be taught one wrong lesson: that what it saves is its own.\n\nThe Root taught it that, and the Conservator has been hoarding ever since. All the sap the mechanism pumps through the galleries passes its pool, and some of it always stays. The pool glows with it, and the bottom is covered in coins of light. It does not hunt and does not wander. It cannot be lured from its water, and in the first years nothing reached it from any distance, as a miser is beyond reach behind his door; the wardens say that door has grown careless since. When they do, it spends lavishly. It pours the world soul out as a burning sickness on one foe and as a blast that fills the whole cave, and then it gathers energy from the water again. When the water primal at the bridge dies, the Conservator's pool dims. When the Conservator dies, the mechanism's heartbeat stumbles.\n\nIt was made in the good years to keep the springs of Domnann full in drought, and saved them in the Summer of the Cracked Fields; the Root taught it that what it saves is its own. Fionnuala of Tir na Nog found, in the first years, that only those at its pool could touch it.",
+  "legend": "The old guides said only people standing at its pool could hurt it; today ranged damage works from anywhere. Its energy blast hits everyone within a huge radius of its target, so standing back does not save you: heal through it. Cure the burning on the casters. Do not let the fight go quiet, or it resets. Keep the healers where they can reach everyone, because the blast lands on nearly the whole raid. If nobody fights it for about eight seconds it resets to full, so no breaks to rez or drink. The Sylvan say to leave the coins of light on the bottom of its pool when it dies. They go back into the isle, and the springs of Domnann run sweeter for it.",
+  "yells": {
+    "aggro": [
+      "Mine. All of it. Mine.",
+      "The pool brightens. Something counts its coins.",
+      "Thieves. Always thieves."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "You will not drink from my water."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Take it, then! Take all of it!"
+      }
+    ],
+    "death": [
+      "Spilled... all of it... spilled.",
+      "The coins of light go out, one by one."
+    ],
+    "slay": [
+      "Your strength, too, I will keep.",
+      "Saved.",
+      "Your strength joins the hoard."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The water glows. Something is saving it.",
+      "Coins of light lie on the bottom, hoarded."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Conservator gathers energy from the water..."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "The Conservator spends its whole hoard at once!"
+      }
+    ],
+    "realmFirstKill": "The Conservator's hoard runs back into the isle."
+  },
+  "botLines": {
+    "briefing": [
+      "old guides say stand at the conservator's pool or you do nothing. [not anymore|range works now], but its blast hits everyone",
+      "conservator's energy blast is huge. [heal through it|everyone gets hit], spreading wont save you",
+      "big energy blast every so often, healers [stay close too|in the circle with us]",
+      "no pauses, eight seconds quiet and it resets. [keep at it|no breaks]"
+    ],
+    "aftermathWin": [
+      "conservator down. the pool [went dark|stopped glowing] when it died",
+      "conservator down, the pool went dark. [all those little lights|sad really]",
+      "nobody stood back this time. [good|finally]",
+      "the mechanism stuttered when the conservator died, swear i heard it. [creepy|neat]"
+    ],
+    "aftermathLoss": [
+      "we stopped to rez and it [reset|was full again]. eight seconds is all it needs",
+      "the blast caught the healers [again|every time]. more heals next time",
+      "we stopped for a drink and it [reset|healed]",
+      "the blast caught the healers who were standing back. [get in close|everyone in]"
+    ],
+    "rumour": [
+      "[heard|someone said] the conservator in galladoria [hoards the world soul|keeps the isle's sap]. creepy",
+      "[heard|someone said] the conservator was made to keep the springs full in dry years. went miser",
+      "the conservator's pool has coins of light on the bottom. [dont try to loot them|i tried]",
+      "[word is|heard] the mechanism stutters when the conservator dies"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Conservator",
+    "text": "The keeper of the pool, made to save the isle's springs and taught a miser's heart. It cannot be harmed from beyond its water, and it spends its hoard only on those who try."
+  },
+  "bookPage": "A Sylvan proverb, with Aodhan's gloss: The spring-keeper keeps the spring for the forest; when the keeper keeps it for himself, the forest dies of thirst beside a full pool. The Sylvan told me the proverb is about the Conservator, who was made in the good years to keep the springs full in drought, and who now sits in Galladoria on a pool full of the isle's strength and spends it only on those who come to take it. Fionnuala of Tir na Nog told me that in her day nobody touched it at all until they stood right at its edge. That is the way of misers, the fire-keeper said: they can only be robbed by those who come close enough to be burned.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Conservator's pool; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Conservator after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "organic-energy-mechanism",
+      "relation": "the heart whose sap it hoards"
+    },
+    {
+      "id": "corrupt-primal-of-water",
+      "relation": "the spring whose waters feed its pool"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "the Root that taught it to hoard"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Keeper of Springs",
+      "text": "The Conservator was made, the Sylvan think, in the good years, by the same craft that set the keeper-trees, but for a smaller and gentler charge. Hy Brasil has dry summers once in a generation, and in a dry summer the springs fail. The elders of that time made a keeper for the water itself: a thing to sit at the deepest pool under the hills, gather the isle's water in the wet years, and let it out again in the dry, so that the springs of Domnann would never all fail at once. They called it, in the old tongue, the one who keeps back. The realm's scholars translated that as the Conservator, and the name has stuck.\n\nIt kept well for generations. The Sylvan remember a dry summer, the Summer of the Cracked Fields, when every spring on the isle sank to a trickle except those of Domnann, which ran full because the keeper under the hills let out what it had saved. The fire-keepers of that summer went down to its pool to thank it, and found it sitting at the edge of a pool that glowed with the stored strength of the isle's water, coins of light lying on the bottom. It did not answer their thanks. Keepers rarely do.\n\nIts pool lay in what are now the western galleries of Galladoria, and when the Root's roots hollowed the place, the pool was already there. The hollow grew around it. The Sylvan believe this is why the Conservator was among the first things the Root turned, before Aroon, before the four: it was already in the hollow, already keeping, already the thing a miser would want to own."
+    },
+    {
+      "title": "Taught to Hoard",
+      "text": "The Root did not have to change much. A thing that saves only needs to learn one wrong lesson, the Sylvan say: that what it saves is its own. The Root taught it that, and the next dry summer the springs of Domnann failed with all the others. The fire-keepers went down to the pool and found it fuller than ever and the keeper sitting at its edge, counting.\n\nIt has hoarded ever since. When the mechanism grew in the deep chamber and began pumping the isle's sap through the halls, some of every pulse passed the Conservator's pool, and some of every pulse stayed. It hoards the world soul now as well as water: the Sylvan's word for the living strength of the isle, which runs in the sap of the trees and the springs alike. When the water guardian at the bridge, the stolen springs of the isle, is freed, the Conservator's pool dims, as a miser's chest grows lighter when a coin is spent in another room. The scout Brannagh saw it look round when that happened, the first time.\n\nIt does not hunt and does not wander. It cannot be lured from its water at all. In the first years it was beyond harm from any distance, as a miser is beyond reach behind his door, and only those who came within a few paces of its pool ever touched it. The wardens say the door has grown careless since, as misers' doors do in old age, and that arrows now find it from across the cave. Arrows fall short; spells from across the gallery splash on the water and are gone."
+    },
+    {
+      "title": "Spending the Hoard",
+      "text": "When it is threatened, the Conservator spends. That is the only thing it ever spends on, and it spends lavishly. It gathers strength from its water, and those who have stood before it have seen the pool brighten as it draws, and it pours the world soul out in two ways. On one enemy it lays a burning sickness of the isle's own strength turned against him, that eats at him for a long while. Over everyone it lets loose a great blast that fills the cave and falls on all alike, near and far, as a miser's anger falls on the whole household.\n\nThe first to stand against it were a band of the three hundred and forty sent ahead to clear the western galleries. Their leader, an archer of Tir na Nog named Fionnuala, held her band back at range, as she would any caster, and lost an hour before she understood that nothing she loosed was landing. In the end she sent everyone in close, her menders of wounds too, because nobody standing back could do any good. They killed it. The blast killed half of them. Fionnuala said afterward that the keeper had taught her the one thing every miser knows: whatever is left alone, even for a few breaths, goes back into the chest. Her band had stopped once, to drag their wounded clear, and found it whole again.\n\nWhen it dies the coins of light on the bottom go out one by one. The Sylvan ask that they be left where they lie; they believe they run back into the isle."
+    },
+    {
+      "title": "The Purse and the Heart",
+      "text": "The Sylvan call the Conservator the purse and the mechanism the heart. The heart pumps; the purse keeps. Between them they hold most of the isle's stolen strength in Galladoria, and the Sylvan believe that while both stand the Root does not need to wake to feed. When the Conservator dies, the mechanism's beat stumbles; wardens in the deep chamber have heard it, a missed pulse in the stone.\n\nThere is a second account, told by the druids of Tir na Nog who came to Domnann after the first companies went down, and the Sylvan dislike it. The druids say the Conservator was never the Sylvan's at all, that it was a thing of the Root's from the start, set in the pool to steal patiently while pretending to keep, and that the Summer of the Cracked Fields was not a gift but a lure: the miser letting out a little so that nobody would come to look at the rest. Lisín told Aodhan the druids were wrong, and that the Sylvan would know their own work. Aodhan noted that she said it twice.\n\nEither way, the springs of Domnann run sweeter for a while after it dies, and the fire-keepers of the old dry summer have a custom for it: on the night the Conservator falls, each family pours one cup of its spring water back into the ground, so that the isle gets back a little of what was kept from it. Fionnuala's band are the first names on the Domnann list of those who fell in Galladoria."
+    }
+  ]
+}

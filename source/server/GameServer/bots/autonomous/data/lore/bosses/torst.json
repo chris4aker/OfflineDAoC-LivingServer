@@ -1,0 +1,168 @@
+{
+  "id": "torst",
+  "name": "Torst",
+  "catalogKey": "tuscaran-glacier/torst",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "hurika",
+      "relation": "his mate"
+    },
+    {
+      "id": "tuscaran-glacier",
+      "relation": "the eastern ledge, the griffon roost"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Torst is a level-80 creature with 100,000 health, paired with Hurika on a high ledge of the glacier; the original patrol flight is switched off.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "His powerful wings stir swirling eddies of freezing air (five 'eddie' adds), and he roots and casts Cold Snap around him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs"
+    },
+    {
+      "text": "Allakhazam lists Torst at level 85 and his drops as griffon mantles; the glacier also holds griffon icewings and chicks.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6076"
+    },
+    {
+      "text": "Swedish torst and Old Norse thorsti mean thirst (to verify).",
+      "provenance": "original",
+      "source": "Swedish and Old Norse glossaries, to verify"
+    },
+    {
+      "text": "When engaged Torst raises five eddies (10,000 health, speed 300) that wander the ledge casting Cold Snap (110 cold, radius 300, every 5-12 s). On 20% of his hits he casts a 550 cold blast in a 400 radius round his target (recast 25-45 s); with a 10% chance per tick he roots his target (99%, 60 s, recast 30 s). Whenever his target is rooted he clears his aggro list and attacks a random REAL player within 1,500 (bots are never chosen). His aerial patrol is OFF in Living Server (AllowGlacierGriffonPatrol); he keeps his perch. 100,000 health, 40% melee / 70% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs"
+    },
+    {
+      "text": "Swedish torst means 'thirst' (to verify). Asmund's seven attempts are in the existing roost lore; 'a griffon never stoops twice on a pinned hare' and Hrafn's spear are Living Server lore.",
+      "provenance": "original",
+      "source": "Swedish, to verify"
+    }
+  ],
+  "story": "High on the eastern ledge, where the glacier meets the sky, the griffon icewings of Tuscaran keep their roost. They were there before the giants came, the iarn dwarves say, before the dragon died even, and they are the largest and coldest griffons on Aegir. Torst is the cock of the roost, a beast of cold feathers and a beak like a spear-point, and his name in the northern tongue means thirst. Nobody knows what he thirsts for. The giants say blood. The Vind Ryttaren, the wind-riders of the island who fly the lesser griffons of the cliffs, say freedom, and they have spent a generation trying to take a chick of his.\n\nHis wings stir the air into eddies that freeze what they touch, whirls of frost that break loose and wander the ledge on their own when he rises, and the wind-rider Asmund, who made seven attempts on the roost, lost three griffons to them. Torst hunts like any griffon. He pins his prey to the ice, and when the prey is held fast he loses interest in it and lifts his eyes for the next of the living that moves; the wind-riders say a griffon never stoops twice on a pinned hare. More than one rider has lived because Torst pinned him and went after his friend.\n\nIn the old days he and Hurika flew long circuits over the glacier together, and the giants watched the sky for them. They do not fly now. The season the wind-rider Hrafn put a spear through the hen's wing, the lift went out of it, and Torst has not flown the circuit since, because he will not fly it without her. He keeps the ledge beside her and the nest between them, and the eddies of his wings go round and round the roost like hounds round a fold.",
+  "chapters": [
+    {
+      "title": "The Roost on the Eastern Ledge",
+      "text": "There have always been griffons on the high places of Aegir, the iarn dwarves say, and the griffon icewings of the eastern ledge are the oldest of them. The Faraheim slates record them on the rim of Delling's Crater before there was a glacier in it worth the name, before the giants came, before, the dwarves say, the dragon under the ice was dead. They nest on the highest ledge of the glacier's eastern face, where the ice meets the sky and nothing walks.\n\nThey are not the griffons of the cliffs that the wind-riders fly. They are larger, white and grey as the ice they nest on, with feathers so cold that frost grows on them in summer, and they do not take a rider. The hrimthursa never tried. The giants of the citadel leave the eastern ledge alone, and the griffons leave the giants alone, and in a century of the Council's peace the two never quarrelled, which the cast-out sculptors say is the only peace on Aegir that held.\n\nTorst is the cock of the roost. He is a beast of cold feathers and a beak like a spear-point, and his name, in the northern tongue the iarn dwarves speak, means thirst. Nobody knows what he thirsts for. The giants say blood. The Vind Ryttaren, the wind-riders of the island who fly the lesser griffons of the cliffs, say freedom, the thirst of a beast that has the whole sky and still wants more. The iarn dwarves say the name is older than either guess and that it meant something else once.\n\nThe wind-riders have wanted a chick of the eastern ledge for a generation. A griffon of that roost, broken to the saddle, would fly higher and colder than anything on Aegir. They have never got one."
+    },
+    {
+      "title": "The Eddies",
+      "text": "Asmund of the Vind Ryttaren made seven attempts on the roost, more than any other rider, and lived through all of them, and most of what the wind-riders know of Torst they know from him. He said the first thing a rider finds out on the eastern ledge is what the cock's wings do to the air.\n\nWhen Torst rises, he said, his wings stir the air round the roost into eddies: whirls of frost, as tall as a man, that break loose from the wind of his wings and go off across the ledge on their own, wandering, turning, freezing whatever they pass. They do not come back to him. They go round and round the roost in their own paths, like hounds loosed round a fold, and anything caught in one is rimed white in a breath. Asmund lost three griffons to them in seven attempts. He said the eddies were worse than the bird.\n\nThe rest of what the cock does is plainer. When he strikes, the cold comes off his talons in a wide ring round whatever he struck, and the ice of the ledge snaps with it, and the riders who stood near the one he struck were rimed as well. Asmund said you could hear it across the crater, the snap of the ledge under Torst's talons, like a lake freezing in a single night.\n\nThe wind-riders of the island still use Asmund's word for a bad day in the air: an eddy day. They say it of any flight when nothing goes right and the cold gets into everything."
+    },
+    {
+      "title": "A Pinned Hare",
+      "text": "Torst hunts like any griffon, the wind-riders say, only colder. He pins. When he has his prey under him, the ice of the ledge takes the prey's feet and holds them, frozen to the spot for a long while, as a hawk's foot holds a hare to the ground.\n\nThen he does a strange thing, which Asmund was the first to write down, and which the wind-riders have since made into a saying. Once his prey is held fast, he loses interest in it. He lifts his head and looks for the next of the living that moves, and goes after that one instead, and leaves the pinned one standing in the ice. A griffon never stoops twice on a pinned hare, the riders say. It is the thing that runs that it wants.\n\nAsmund said he lived through his fourth attempt because of it. Torst pinned him on the ledge beside the nest, and the rider stood there with his feet frozen to the ice waiting to die, and the griffon looked at him once and then lifted his eyes past him to Asmund's shield-brother Ketil, who was running for the edge, and went after Ketil. Asmund said he had never been so ashamed of being alive. Ketil lived too, barely. They did not fly together again.\n\nThe old riders tell the young ones, when they first fly east, that the cock is on a man only until the man cannot move, and then on someone else. They say it is not cruelty. A griffon does not want what it already has."
+    },
+    {
+      "title": "He Will Not Fly Without Her",
+      "text": "In the old days Torst and Hurika flew long circuits over the glacier together, at dawn and dusk, wide slow rings over the crater and back to the ledge, and the giants of the citadel watched the sky for them as men of Midgard watch the sky for weather. The wind-riders timed their attempts on the roost by those circuits, because the nest was alone while the pair were in the air.\n\nThey do not fly now. The season the wind-rider Hrafn made his fourth and last attempt on the roost, he put a spear through Hurika's wing on the ledge, and the lift went out of it. The hen can beat her wings still, and raise a gale, but she cannot leave the ledge. Torst has not flown the circuit since. The wind-riders who have watched say he goes to the edge at dawn, and spreads his wings, and looks back at her, and folds them again.\n\nHe keeps the ledge beside her now, with the nest between them, and his eddies go round and round the roost in their own paths, and the wind-riders have not made an attempt in years. Asmund said, near the end of his life, that he was glad of it. He said the eastern ledge had two griffons on it that would not leave each other, and that a rider who wanted to break that to the saddle had misunderstood what a griffon was.\n\nHrafn no longer flies either. The wind-riders say he goes up onto the cliffs at dawn, like the cock, and looks east, and comes down."
+    }
+  ],
+  "legend": "Torst and Hurika sit side by side, so expect both. Torst: 100,000 health, 40% melee and 70% magic resists, CC-immune. When he wakes he spits out five eddies (10,000 health each) that wander the ledge on their own paths casting a 110 cold Cold Snap in a 300 radius every few seconds: kill them or keep the healers out of their way. Some of his hits drop a 550 cold blast within 400 of his target. The nasty one: he roots his target now and then, and the moment his target is rooted he drops it and goes for a random REAL player within 1,500. If you're the only human, that's you. Keep root-break on the tank, and be ready for him to turn on you. The old 'bolt-pull the bird down off the ledge' trick doesn't apply: neither griffon patrols any more, they stay on their perches. Cold resist for everyone. The griffon mantles are the drops everybody wants.",
+  "yells": {
+    "aggro": [
+      "SKRAAAAAH!",
+      "(Torst spreads his wings across half the ledge.)",
+      "(A shriek like ice cracking.)",
+      "(Torst rises, and the air round the roost begins to turn.)"
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "(Torst beats his wings, and the air itself freezes!)"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "(Torst rakes the ice with his talons, and it snaps with cold.)"
+      }
+    ],
+    "death": [
+      "(a long, falling cry)",
+      "(Torst's wings fold, and he is still.)",
+      "(Torst falls beside his mate, his wings half spread.)"
+    ],
+    "slay": [
+      "(Torst screams in triumph)",
+      "(He tears at the fallen, then looks to the nest.)",
+      "(Torst shrieks at the sky.)",
+      "(Torst lifts his eyes for the next one that runs.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Wind and feathers. Something huge roosts up here.",
+      "Eddies of freezing air chase each other here.",
+      "Whirls of frost wander the ledge on their own paths."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Torst's wings stir freezing eddies!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The ice snaps with cold under Torst's talons!"
+      }
+    ],
+    "realmFirstKill": "The cock of the eastern ledge has fallen. His eddies fade."
+  },
+  "botLines": {
+    "briefing": [
+      "torst and hurika, griffons on the ledge. eddies are adds, kill them",
+      "pull the birds down to the flat if you can",
+      "root break on torst, the root sets you up for the eddies",
+      "kill both birds together",
+      "torst roots his target then switches to a real player. thats you if youre the only one",
+      "root break on the tank vs torst",
+      "5 eddies wander the ledge, kill them or keep heals clear",
+      "birds dont patrol any more, fight them on the perch"
+    ],
+    "aftermathWin": [
+      "griffons down! [anyone get the mantle?|mantle?]",
+      "frozen griffon mantle dropped!",
+      "two griffons down and nobody got stuck with torst. impressive",
+      "torst down. wind blown griffon mantle!",
+      "griffon mantle!",
+      "torst switched to you twice and you lived",
+      "eddies down first, easy"
+    ],
+    "aftermathLoss": [
+      "torst rooted the tank, turned on you, and the eddies ate the rest",
+      "the eddies froze the healers",
+      "we killed hurika and torst wiped us after",
+      "torst rooted the tank in his eddies",
+      "tank got rooted and torst came straight for you",
+      "healers wandered into an eddy"
+    ],
+    "rumour": [
+      "there are giant griffons nesting at the top of the glacier. [no joke|seriously]",
+      "the wind riders have tried for years to steal a chick from torst's roost",
+      "[heard|they say] torst means thirst in the old northern tongue",
+      "the griffons were on that glacier before the giants, the dwarves say",
+      "wind rider saying: a griffon never stoops twice on a pinned hare",
+      "the griffons dont fly their circuit any more since hurika got speared",
+      "asmund the wind rider made seven tries on the roost and lived"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Torst",
+    "text": "The cock of the griffon roost on Tuscaran's eastern ledge; his name means thirst. His wings stir freezing eddies that wander the ledge on their own. He pins his prey and then, the wind-riders say, looks for the next of the living that runs: a griffon never stoops twice on a pinned hare. Since [Hurika]'s wing was speared he will not fly without her."
+  },
+  "bookPage": "From the logbook of Asmund, wind-rider of the Vind Ryttaren. Seventh attempt on the glacier roost. We came at dusk from the east, three riders, low over the crater rim. The cock was on the ledge, the hen on the nest. We were within a spear's throw of the chicks when the cock rose and beat his wings once, and the air froze around Hrafn's griffon, and it fell. We dragged Hrafn out of the snow at the bottom of the glacier, alive. His griffon we did not find. Eighth attempt in the spring. I have said that before.",
+  "chronicle": {
+    "win": "The griffon Torst fell from his roost before {raidLeader} of {realm} after {minutes} minutes.",
+    "loss": "Torst and Hurika swept {raidLeader}'s raid from {realm} off the ledge after {minutes} minutes."
+  }
+}

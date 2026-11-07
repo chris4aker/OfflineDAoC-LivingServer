@@ -1,0 +1,71 @@
+{
+  "id": "beskydda-grundar",
+  "name": "Beskydda Grundar",
+  "npcNames": [
+    "Beskydda Grundar"
+  ],
+  "locationId": "gripklosa-mountains",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Beskydda Grundar is a level-41 morvalt (faction Morvalt Samhalle) in the far west of the Gripklosa Mountains (283,597/251,961) among thirteen morvalt beskydda (36-41); aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish beskydda is 'to protect' and grund 'foundation'; the name would read 'protector of the foundations'.",
+      "provenance": "myth",
+      "source": "Swedish (to verify)"
+    },
+    {
+      "text": "Grundar as the keeper of the western morvalt's founding stone is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The western morvalt of Gripklosa set their fires on a stone, the bergklan say, a flat grey stone half-buried in the slope, and they guard it with the beskydda, the protectors, under a chief whose name is the work: Beskydda Grundar, protector of the foundations. The morvalt say the stone is where their first chief on Aegir stood when they came over the island, and that while it is guarded the morvalt cannot be driven off the island.\n\nThe bergklan do not believe it, and say so from a distance. The Valkyn, who were morvalt before the Troll Fathers tamed them, believe it and say nothing. Grundar stands on the stone among his protectors and does not leave it, and he fights strangers with all thirteen round him, because a protector who leaves the foundation has protected nothing. The bergklan say Grundar's protectors change, season by season, and Grundar never does.",
+  "legend": "Beskydda Grundar is a level 41 morvalt chief (Morvalt Samhalle faction) in the far west of the Gripklosa Mountains, standing with thirteen morvalt beskydda (36-41). Morvalt faction, so the camp is in it with him. Thirteen beskydda is a lot; work the edges of the camp first and pull him out on his own if you can. The camp sits on the far west edge of the zone; there's not much else near it, so you can rest between pulls.",
+  "yells": {
+    "aggro": [
+      "The foundation holds!",
+      "Beskydda! To the stone!"
+    ],
+    "death": [
+      "The stone... still holds..."
+    ],
+    "slay": [
+      "Off the stone."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Morvalt protectors round a grey stone in the slope."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "beskydda grundar is a 41 morvalt chief in far west gripklosa",
+      "thirteen beskydda round him, morvalt faction"
+    ],
+    "aftermathWin": [
+      "grundar down",
+      "the stone is still there though"
+    ],
+    "rumour": [
+      "the western morvalt guard the stone their first chief on aegir stood on",
+      "the valkyn believe the morvalt stone story and say nothing"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Beskydda Grundar",
+    "text": "The protector of the foundations, chief of the morvalt beskydda who guard the stone in the far west of Gripklosa where, they say, their first chief on Aegir stood. See [western morvalt]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took Beskydda Grundar off his stone in Gripklosa in {minutes} minutes."
+  }
+}

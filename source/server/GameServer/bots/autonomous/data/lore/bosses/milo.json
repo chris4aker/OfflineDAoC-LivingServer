@@ -1,0 +1,116 @@
+{
+  "id": "milo",
+  "name": "Milo",
+  "npcNames": [
+    "Milo"
+  ],
+  "locationId": "vale-of-balor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Milo: level 56, model 768 (a Fomorian body), faction Fomorian, at about 287,300/372,400 in the western Vale of Balor; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "In Irish legend Míl Espáine is the ancestor of the Gaels, whose sons took Ireland from the Tuatha Dé Danann.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/M%C3%ADl_Esp%C3%A1ine"
+    },
+    {
+      "text": "Living Server lore: Milo and Oscar as Fomorians of the western vale who took the names of the mainland's fathers and heroes, after Sargan's custom.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Sargan the Conqueror taught the Fomorians of Tur Suil to wear the names of dead heroes, and the custom spread down off the crag into the Vale of Balor with the households that went down to hold it. Most of them took the names of Sylvan wardens they had killed. The household of the western vale, on the slopes below the tower where the Gleann Glas road used to run, did something stranger. Its chief went down to the coast and listened to the mainland fishers who came to trade at Aalid Feie, and took the greatest name he heard there.\n\nMilo is what a Fomorian mouth makes of Míl, the father of the Gaels, the ancestor every family of the mainland counts back to. The Hibernians of Aalid Feie laughed when they first heard it, and then stopped laughing, because the chief who calls himself Milo understood exactly what he had taken. In the vale's telling he says it plainly to every Hibernian who comes up the western slopes: your fathers took an island from a people who were there before them, and so did mine, and the island is the same island, and you came west to take this one too.\n\nHe is a huge thing, heavy-shouldered, the strongest of the household, and he keeps the western slope as a chieftain keeps a border, with the rest of the vale's Fomorians around him. The Sylvan of Aalid Feie say he has never once come east of the old road, and never once let a Sylvan cross it. The Domnann wardens think he is keeping a line Balor drew. The traders of Aalid Feie think he is keeping one he drew himself, and that if the eye in the tower ever closed for good, Milo would still be standing on the western slope with a borrowed name, waiting for someone to try to take it back.",
+  "legend": "Milo is a level 56 Fomorian on the western slopes of the Vale of Balor, at about 287k/372k, with no script: a straight, heavy melee fight. He is of the Fomorian faction, and the fomorian condlers and gristlers (54-66) of the western vale stand around his slope: clear them first. Oscar (55) stands about 4,000 units west of him and is not of the faction. A level 50 group with a healer handles him. The Aalid Feie traders say never say his name back to him, and the older Hibernians say he chose it well. Oscar, his old champion, is the easier warm-up to the west.",
+  "yells": {
+    "aggro": [
+      "You come west to take an island? So did I.",
+      "I am Milo. Your fathers knew the name.",
+      "Off my slope."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "A borrowed name bleeds like any other."
+      }
+    ],
+    "death": [
+      "Take it back, then... the name...",
+      "The island... is the same island..."
+    ],
+    "slay": [
+      "Another son of Míl.",
+      "The slope is held.",
+      "Your fathers would know me."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Fomorian tracks on the old Gleann Glas road.",
+      "The western slope. A chieftain keeps a border here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Milo roars a name older than the realm."
+      }
+    ],
+    "realmFirstKill": "Milo of the western vale is dead. The name is free."
+  },
+  "botLines": {
+    "briefing": [
+      "milo is a 56 fomorian on the west slope of the vale. [clear the condlers first|fomorian faction]",
+      "no script on milo. [straight melee|tank and spank]",
+      "oscar is 4k west of him. [separate pull|not linked]",
+      "dont pull the gristlers with him. [54-62|they help]"
+    ],
+    "aftermathWin": [
+      "milo down. [the borrowed name is free|got him]",
+      "cleared the condlers first and it was easy",
+      "the aalid feie traders will drink to that",
+      "oscar next? [hes west|sure]"
+    ],
+    "aftermathLoss": [
+      "pulled half the western vale with him. [fomorian faction|oops]",
+      "tank couldnt hold him. [hits like a cart|heavy]",
+      "said his name back to him. [the traders warned us|superstition right]",
+      "condlers and milo together. [no|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] milo took his name from mil, father of the gaels. [cheeky|creepy]",
+      "the aalid feie traders say milo never crosses the old road",
+      "[word is|heard] milo would hold the west slope even if balor fell",
+      "[heard|someone said] milo learned the name from mainland fishers at aalid feie"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Milo",
+    "text": "A Fomorian chieftain of the western [Vale of Balor] who took the name of Míl, father of the Gaels, from mainland fishers, after Sargan's custom of borrowed names. He keeps the slope west of the old road."
+  },
+  "bookPage": "Tieru of Aalid Feie told me this, and he has traded at the camp longer than anyone: the Fomorians of the western vale took their chief's name from us. He came down to the coast in the first summer of the isles and stood behind the fish-sellers, listening, and went back up the slope as Milo. Míl, he means, the father of the Gaels. Tieru says the chief understood it better than the fishers did. Your fathers took an island from the people who were there first, Milo tells every Hibernian who climbs to him; so did mine. Tieru has never said the name back to him. Nobody at the camp does.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Milo in the western Vale of Balor in {minutes} minutes.",
+    "loss": "Milo turned back {realm}'s band under {raidLeader} in the western Vale of Balor after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "oscar",
+      "relation": "the other borrowed name of the western vale"
+    },
+    {
+      "id": "sargan-the-conqueror",
+      "relation": "whose custom of dead heroes' names he follows"
+    },
+    {
+      "id": "balor",
+      "relation": "his king in the tower"
+    }
+  ]
+}

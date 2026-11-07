@@ -1,0 +1,118 @@
+{
+  "id": "vasrem",
+  "name": "Vasrem",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/vasrem",
+  "locationId": "iarnwood",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "servants-of-iarnvidiur"
+  ],
+  "related": [
+    {
+      "id": "iarnvidiur",
+      "relation": "the rot that raised him is hers, by the dwarves' account"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Vasrem is a level-70 named with 30,000 health in the south-east of the Iarnwood.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He drains life essence (450) from range and debuffs strength-constitution and, in an area, dexterity-quickness.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a named lich that uses lifetaps and debuffs; he drops Vasrem's Eye in three versions.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/5946"
+    },
+    {
+      "text": "Drain Life Essence: 450 body damage, range 1,800, 4 s, uninterruptible, cast while moving; every point of body damage he does heals him. He opens on a fresh target with a strength/constitution debuff (65, 60 s) and a dexterity/quickness debuff (65, 60 s, radius 350 round the target), then drains. He follows his target only to within about 1,150-1,750; he does not close to melee on his own. CC-immune, 20% melee / 30% magic resist, resets at full health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Vasrem.cs"
+    },
+    {
+      "text": "Two spectral renders share his model and stand on his hill.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 151; 0.37b world data)"
+    }
+  ],
+  "story": "Before the dwarves came, before even the narfi's silver wood went black, there was a man who lived on the bald hill in the south-east of what is now the Iarnwood. Nobody knows his people. The narfi say he was a wanderer who came across the ice in the age before the dwarves and liked the hill because from it he could see the whole wood singing. They say his name was Vasrem and that he was the first to die when the rot came, because he was sitting under the trees listening when the singing stopped.\n\nHe did not stay dead. The rot gets into everything in the Iarnwood, and the dead are no exception; it got into him first because he was first, and he sat up out of the leaf-mould on his hill while the trees were still turning black around him. The narfi say he sat up thirsty. He has been thirsty ever since.\n\nWhat he drinks is life. He does not need to touch it. He sits on his hill and looks at whatever has come up it, and what is in it runs out toward him the way water runs downhill, from further off than an arrow carries, and goes into him and keeps him. He does not come down to his prey; he has never needed to. He lets it come to him, and he drinks it as it climbs, and the more he drinks the longer he lasts. The bark-gatherers say you feel the cord before you see him. Those who go up the hill feel it worst of all: the arm goes weak first, then the legs, then everyone standing near the one he is looking at goes slow and stupid with him.\n\nNothing interrupts him. The Remnants once sent a runemaster up the hill to break his drawing with a word of binding, and she said the word, and the drawing went on, and she came down a week later than she went up, white-haired. Nothing holds him either; he is not, the dwarves say, entirely in the place where he seems to sit.\n\nThe trees on his hill lean away from him. It is the only place in the Iarnwood where the iron trees have moved at all, in all the dwarves' slates. The two renders that walk the hilltop with him are as dead as he is, and the gatherers think they were the last beasts of the silver wood, that came up the hill to him when he still had a voice, and stayed. The dwarves count him among the old one's Servants, since the rot is hers. The narfi will not. They say Vasrem was the wood's first mourner, and that he is still mourning, and that a mourner drinks.",
+  "legend": "Vasrem is the lich on the bald hill in the south-east of the Iarnwood, level 70, 30,000 health, with two spectral renders up there with him. He drains life: 450 body damage per cast from 1,800 range, uninterruptible, cast on the move, and every point heals him, so the fight is a race. First thing he does to a new target is a strength/con debuff and then a dex/quick debuff that hits everyone within 350 of that target; don't bunch up on whoever he's on, and cure or buff it back. He doesn't come to you, he stays at casting range, so melee has to run up to him and casters can just open up. Body resist helps a lot. CC-immune, 20% melee and 30% magic resist. He resets full if you leave. Kill or pull the renders away first. A strong group can do it; a weak one feeds him.",
+  "yells": {
+    "aggro": [
+      "Warm. You are so warm.",
+      "Come up the hill. Everyone does.",
+      "I heard the wood singing once. Now I hear you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Give it to me. All of it."
+      }
+    ],
+    "death": [
+      "Cold... again...",
+      "Is it... singing...?"
+    ],
+    "slay": [
+      "Drunk dry.",
+      "Another for the hill.",
+      "Lie down under the leaning trees."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The iron trees lean away from this place.",
+      "Your strength runs out of you, toward the hilltop."
+    ],
+    "realmFirstKill": "Vasrem the lich of the Iarnwood lies down at last.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Vasrem drinks deeper. The trees lean further away."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "vasrem lifetaps and debuffs, cure and burn him",
+      "he drains 450 a cast from 1800 range and heals off it. this is a dps race",
+      "dont stack on his target, the dex quick debuff has a 350 radius",
+      "he wont come to melee, melee runs up the hill to him",
+      "uninterruptible and cc immune, dont waste it",
+      "body resist if you have it"
+    ],
+    "aftermathWin": [
+      "vasrem's eye dropped!",
+      "the trees still lean. but hes down",
+      "we outdpsed the drain, nice",
+      "renders first then him, worked fine"
+    ],
+    "aftermathLoss": [
+      "he drained the tanks",
+      "everyone stood on the tank and got the debuff",
+      "he healed faster than we hit",
+      "we went up the hill too slow"
+    ],
+    "rumour": [
+      "the rot in the iron trees makes the dead sit up. vasrem sat up first",
+      "the narfi say vasrem was the first thing to die when the silver wood went black",
+      "the renders on his hill were the last beasts of the silver wood",
+      "a runemaster tried to bind him once. came down white haired"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Vasrem",
+    "text": "The first of the Iarnwood's dead to sit up from the rot. He drinks the life of anything near him."
+  },
+  "bookPage": "From Eldrid of Bjarken, gatherer of bark: the narfi told me, through the dwarf who had their tongue, that the lich was a man once who liked to sit on the hill and listen to the wood sing. When it stopped he was the first to die, and the first to rise, and he has been listening ever since for the singing to start again. I said that was sad. The narfi said: he is not sad. He is thirsty. Sad is what you are when you are full. Then it would not say any more, and the dwarf said that was a great deal for a narfi.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put Vasrem the lich down in the Iarnwood in {minutes} minutes.",
+    "loss": "Vasrem drank {raidLeader}'s party from {realm} dry after {minutes} minutes."
+  }
+}

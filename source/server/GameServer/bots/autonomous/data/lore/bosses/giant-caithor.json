@@ -1,0 +1,107 @@
+{
+  "id": "giant-caithor",
+  "name": "Giant Caithor",
+  "catalogKey": "hibernia-named-mobs-classic-zones/ghostofcaithor",
+  "locationId": "cursed-forest",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Four far dorocha stand in his clearing; when five have been slain, the Ghost of Caithor (level 62, 7,000 health) appears, and when the ghost dies the real Giant Caithor rises.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Caithor.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The giant goes back into the ground after five minutes without a fight.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Caithor.cs"
+    },
+    {
+      "text": "The fear dorcha, 'dark man', is a sinister fairy figure.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Fear_dorcha"
+    }
+  ],
+  "story": "Caithor was a giant of the old days who served the dark men, the far dorocha, and they did not let him go when he died. They keep his ghost bound in their clearing in the Cursed Forest, and they keep it the way a jailer keeps a key: on their own bodies. Kill enough of the dark men and the binding slips, and the ghost of Caithor comes loose, angry and confused. Lay the ghost and the giant himself stands up out of the earth, as solid as he ever was, to finish the quarrel. If nobody does, he goes back down after a while to wait.\n\nIn the days before the Veil there were giants in Hibernia, the druids say, and some served the courts and some served worse. Caithor served the far dorocha, the dark men, who are not a court but something the courts are wary of. When he died they did not let him go. They bound his ghost to their clearing in the Cursed Forest, and they keep it as a jailer keeps a key: on their own bodies.\n\nKill enough of the dark men, five of them, and the binding slips. The ghost of Caithor comes loose, angry and confused, a giant's shade with a fraction of the giant's strength. Lay the ghost and the giant himself stands up out of the earth, as solid as he ever was, to finish the quarrel. If he is left alone long enough he sinks back into the ground and waits for the dark men to gather again. The druids say he is not evil. He is only a servant who was never dismissed.",
+  "legend": "Kill the far dorocha first until his ghost appears; kill the ghost; then the real giant rises and that is the fight. Do not waste time between: he sinks back into the ground if nobody fights him for a few minutes. It is a chain: far dorocha until the ghost appears, the ghost, then the giant. Keep moving between stages. Superstition: never say the dark men's name in their clearing; call them 'the gentlemen'. Nicknames: 'the giant', 'the gentlemen's key'. Superstition: say 'you are dismissed' to the giant as he sinks. The druids think it might help. Nobody can prove it does not.",
+  "yells": {
+    "aggro": [
+      "Who has loosed me?",
+      "Who has loosed me?",
+      "The dark men are dead. Then I am free to kill you."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "The dark men are dead. Caithor walks again!"
+      }
+    ],
+    "death": [
+      "Free... at last...",
+      "Free... at last..."
+    ],
+    "slay": [
+      "Another for the dark men.",
+      "Another for the dark men.",
+      "Into the earth with me."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Dark men stand in a circle, waiting for someone.",
+      "A giant's ghost is bound to their bodies."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "The ghost of Caithor tears loose!"
+      }
+    ],
+    "realmFirstKill": "Giant Caithor is laid to rest at last."
+  },
+  "botLines": {
+    "briefing": [
+      "caithor is three steps: kill far dorochas till the ghost shows, kill the ghost, then the real giant. [no breaks|keep moving]",
+      "kill five far dorocha, then the ghost, then the giant. [no breaks|keep moving]",
+      "five minutes idle and the giant sinks. [dont rest|go go]",
+      "the giant hits hard, [main tank ready|big heals]"
+    ],
+    "aftermathWin": [
+      "caithor down. [all three of him|ghost and giant both]",
+      "all three of him down. [ghost and giant|chain done]",
+      "the dark men's circle is empty. [for now|nice]",
+      "never stopped between stages. [perfect|grats]"
+    ],
+    "aftermathLoss": [
+      "we stopped for a drink after the ghost and the giant [sank back down|despawned]",
+      "rested after the ghost and the giant [sank|despawned]",
+      "the far dorocha [respawned|came back] before we finished",
+      "giant hit harder than we thought. [tank up|heals]"
+    ],
+    "rumour": [
+      "[heard|someone said] the far dorocha keep caithor's ghost bound on their own bodies",
+      "[heard|someone said] the far dorocha keep caithor's ghost bound on their own bodies",
+      "call the far dorocha the gentlemen in their clearing. [old habit|polite]",
+      "[word is|heard] caithor is a servant who was never dismissed"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Caithor",
+    "text": "A giant of old bound by the dark men in death. Kill the dark men to loose his ghost, lay the ghost, and the giant himself stands up."
+  },
+  "bookPage": "From Derbáil of Ardee's list: grandmother called the dark men of the Cursed Forest 'the gentlemen', and would not say their other name even at home. She said they keep a giant's ghost bound in their clearing, a giant called Caithor who served them in the old days and was never let go. Kill the gentlemen, she said, and the ghost gets loose; lay the ghost, and the giant himself gets up out of the ground to see who did it. She did not think it wise. She did think it was the giant's right.",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Giant Caithor in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Giant Caithor's head after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "restless-dead",
+    "cursed-wood"
+  ],
+  "related": [
+    {
+      "id": "develin",
+      "relation": "a neighbour in the same wood"
+    }
+  ]
+}

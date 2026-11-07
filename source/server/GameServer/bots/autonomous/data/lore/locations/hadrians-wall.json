@@ -1,0 +1,244 @@
+{
+  "id": "hadrians-wall",
+  "name": "Hadrian's Wall",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    15
+  ],
+  "aliases": [
+    "the wall",
+    "hw"
+  ],
+  "summary": "The old Roman wall at the north of Albion's frontier, still kept by its dead legion: the Picts and the fair folk of the north, the exiles of every realm, Caer Benowyc, and the keeps where Midgard and Hibernia come in.",
+  "facts": [
+    {
+      "text": "Hadrian's Wall is zone 15 of region 1, a frontier zone with three keeps: Hibernia Portal Keep (keep 22) and Midgard Portal Keep (keep 23) on the northern edge, and Albion's Caer Benowyc (keep 50, level 5) in the south-east.",
+      "provenance": "game",
+      "source": "world data: Zones/Keep/Mob tables, region 1 zone 15 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Its 139 monsters are cave fairies, cait sidhe, piper fairies, legionnaires (Spirits of Rome), Pictish warriors, templars and exiles (deceivers, hunters, aggressors, captains and a commander).",
+      "provenance": "game",
+      "source": "world data: Zones/Keep/Mob tables, region 1 zone 15 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Hibernia's portal keep is guarded by Master Eldritch NPCs and Midgard's by the Gothi of Odin, both level 100 or more; Lord Benowyc commands Caer Benowyc.",
+      "provenance": "game",
+      "source": "world data: Zones/Keep/Mob tables, region 1 zone 15 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Departed Fellowship sends players to slay the spirit at the ruined tower near Hadrian's Wall.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The realm holding the most frontier keeps finds its Darkness Falls door open.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=62"
+    },
+    {
+      "text": "Real-world: Hadrian's Wall was built across northern Britain from AD 122 under the emperor Hadrian, with milecastles at every Roman mile; the Picts lived north of it; the cat sidhe is a fairy cat of Scottish and Irish folklore, black with a white spot on the breast; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Hadrian%27s_Wall"
+    },
+    {
+      "text": "Ancrid the milecastle-keeper and his book, the legion that counts every traveller as from the north, the Picts' unending war of the wall, the rider walked off by the pipers, the exiles as 'the only honest people on the wall' and the garrison's saying about the gates are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The end of Rome. In the far north of the frontier, beyond the Pennines, a wall of dressed stone runs across the land from one sea toward the other, with a ditch before it and a road behind it and a little fort at every mile. An emperor of Rome built it to mark where Rome stopped, and the legions manned it for longer than Camelot has stood, watching the north for the painted people who would not be ruled. When Rome went home it did not take its wall. It did not take all of its soldiers either. The legionnaires who died on the wall are on it still, keeping the western stretch in good order, walking from milecastle to milecastle with their shields up, and they do not care which realm a traveller comes from; to them every traveller comes from the north.\n\nThe painted people. The Picts were here before the wall and are here after it. Their warriors come down out of the northern hills in paint and iron and fight at the wall's foot as their grandfathers did, against the same dead soldiers, as if the war of the wall had never been told that it was over. The fair folk of the north came with them or were here before them: cave fairies in the hollows under the eastern slopes, pipers whose music walks men off the road, and the cait sidhe, the fairy cats, big as hounds and black with a white mark on the breast, who hunt the high ground toward the north-east and are the oldest thing in the zone. The Picts leave them alone. Everyone leaves them alone.\n\nWhat went wrong. When Arthur fell and the three realms went to war, the old wall became the place where the war came in. The frontiers of Midgard and Hibernia touch Albion's here, and each of the other realms built a keep on Albion's side of the wall, at the northern edge, where its war-bands come through into the frontier: Hibernia's in the north-west, kept by its own Eldritch masters, and Midgard's in the north-east, kept by priests of Odin. Camelot has complained of it to no effect for an age. Albion answered with Caer Benowyc in the south-east, under Lord Benowyc, whose garrison of armsmen and armswomen watches the enemy keeps across the grass and is watched in return. Between the keeps live the exiles, men and women of every realm who were put out of their own and came to the one place where no realm's law runs: they keep camps in the middle ground under captains and a commander, and they kill anyone who comes too close, for any banner. In the west, by a ruined tower near the wall, a templar order keeps a camp and a spirit walks that the Church of Camelot wants laid.\n\nWhy it matters to Albion. Hadrian's Wall is the realm's back door, and both its neighbours have a key. Every war-band that crosses into Albion's frontier from the north comes through here, past Caer Benowyc, past the dead legion and the Picts at the foot of the wall. The keep's garrison keeps a saying about it that the riders of Castle Sauvage have taken up too: Rome built the wall to keep the north out, and the north has been coming in through the gates ever since.",
+  "legend": "Hadrian's Wall is the northernmost Albion frontier zone, where Midgard's and Hibernia's portal keeps sit on our side of the border: Hibernia's in the north-west, Midgard's in the north-east. Do not go near either portal keep, the guards there are level 100 and will flatten you. Caer Benowyc in the south-east is Albion's keep here, level 5, with Lord Benowyc inside, and it changes hands with the realm war like the Pennine caers; it counts toward the keeps that open our Darkness Falls door. Monsters are thin on the ground but strong: legionnaires (30 to 40) along the western wall, exiles (mid thirties) in the middle, Pictish warriors in the low forties, cave fairies in the forties, cait sidhe and piper fairies in the fifties toward the north-east, templars at fifty in the west. Enemy war-bands come through here first, so watch the north. The Departed Fellowship spirit is at the ruined tower near the wall.",
+  "atmosphere": {
+    "firstEntry": [
+      "Hadrian's Wall. Where Rome stopped.",
+      "Dead soldiers walk the wall. Shields up.",
+      "Enemy banners on keeps inside our border.",
+      "Pipes on the wind, from nowhere.",
+      "The north wind never drops on the wall."
+    ],
+    "areas": [
+      {
+        "name": "Caer Benowyc",
+        "x": 653430,
+        "y": 345890,
+        "z": 6280,
+        "radius": 1500,
+        "lines": [
+          "Caer Benowyc. Lord Benowyc watches the north.",
+          "Armsmen on the walls, eyes on the enemy keeps.",
+          "Rome built a wall. The north comes in by the gates."
+        ]
+      },
+      {
+        "name": "Hibernia's portal keep",
+        "x": 605589,
+        "y": 293789,
+        "z": 4839,
+        "radius": 1800,
+        "lines": [
+          "Hibernia's keep, on Albion's side of the wall.",
+          "Eldritch masters on the walls. Do not go nearer."
+        ]
+      },
+      {
+        "name": "Midgard's portal keep",
+        "x": 655269,
+        "y": 293142,
+        "z": 4879,
+        "radius": 1800,
+        "lines": [
+          "Midgard's keep, on Albion's side of the wall.",
+          "Priests of Odin keep the gate. They are not friendly."
+        ]
+      },
+      {
+        "name": "the legion's wall",
+        "x": 621494,
+        "y": 338155,
+        "z": 5000,
+        "radius": 3000,
+        "lines": [
+          "Dead legionnaires walk the wall, shields up.",
+          "To them, every traveller comes from the north.",
+          "A milecastle. The watch is still kept."
+        ]
+      },
+      {
+        "name": "the Pictish ground",
+        "x": 633184,
+        "y": 330976,
+        "z": 5000,
+        "radius": 1800,
+        "lines": [
+          "Painted warriors at the foot of the wall.",
+          "The war of the wall was never told it was over."
+        ]
+      },
+      {
+        "name": "the fairy hollows",
+        "x": 635869,
+        "y": 340434,
+        "z": 5000,
+        "radius": 2500,
+        "lines": [
+          "Cave fairies in the hollows. Laughter underground.",
+          "Small lights where no lamp should be."
+        ]
+      },
+      {
+        "name": "the pipers' slope",
+        "x": 628401,
+        "y": 327387,
+        "z": 5000,
+        "radius": 1500,
+        "lines": [
+          "Pipes on the wind. Do not follow the tune.",
+          "Piper fairies, and a road that bends toward them."
+        ]
+      },
+      {
+        "name": "the cait sidhe's heights",
+        "x": 648422,
+        "y": 312889,
+        "z": 5000,
+        "radius": 3000,
+        "lines": [
+          "A black cat as big as a hound. A white mark.",
+          "The cait sidhe hunt here. Everyone leaves them be."
+        ]
+      },
+      {
+        "name": "the exiles' camps",
+        "x": 637000,
+        "y": 332000,
+        "z": 5000,
+        "radius": 2500,
+        "lines": [
+          "Exiles of every realm, under no banner.",
+          "The exiled commander trusts no one. Wisely."
+        ]
+      },
+      {
+        "name": "the templars' camp",
+        "x": 606933,
+        "y": 329146,
+        "z": 5000,
+        "radius": 1500,
+        "lines": [
+          "Templars by a ruined tower near the wall.",
+          "A spirit walks here that the Church wants laid."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "hadrian's wall is the far north of our frontier. mid and hib portal keeps are on our side",
+      "the dead legion still walks the wall. they think everyone comes from the north",
+      "picts fight the legion's dead at the wall every night. nobody told them it was over",
+      "caer benowyc is our keep on the wall. lord benowyc inside",
+      "the cait sidhe are fairy cats as big as hounds. even the picts leave them alone",
+      "the exiles on the wall were kicked out of every realm",
+      "dont follow the piper fairies' music. a benowyc rider lost a day and a night",
+      "rome built the wall to keep the north out. the north comes in through the gates now",
+      "the portal keep guards are level 100. dont even look at them",
+      "the templars camp by a ruined keep near the wall in the west",
+      "cave fairies laugh underground in the eastern hollows",
+      "every mid or hib warband in our frontier came through the wall first"
+    ],
+    "rumour": [
+      "[heard|someone said] the legion fought a hib warband and then the alb riders after them. fair is fair",
+      "heard a pict said he was fighting for the wall and didnt get what we meant by winning",
+      "[heard|someone said] lord benowyc thinks the exiles are the only honest folk on the wall",
+      "heard the milecastle keeper by benowyc is the only living soul on that stretch",
+      "[heard|someone said] the cait sidhe are older than the wall",
+      "heard theres a spirit at the ruined keep near the wall the church wants laid",
+      "[heard|someone said] the exiled commander trusts nobody, not even his own captains",
+      "heard the legion walks past the milecastle keeper and counts him as garrison"
+    ],
+    "tell": [
+      "hadrian's wall? the far north of the frontier, past the pennines",
+      "is it hard? the mobs are 30s to 50s and enemy warbands come through, so yes",
+      "whats there? caer benowyc, the mid and hib portal keeps, the dead legion, picts, fairies",
+      "where's caer benowyc? south east of the zone. the portal keeps are along the north edge",
+      "good xp? legionnaires and exiles in the 30s, fairies and cait sidhe in the 40s and 50s",
+      "the departed fellowship spirit is at the ruined keep near the wall in the west"
+    ]
+  },
+  "loremaster": {
+    "intro": "Hadrian's Wall, where Rome stopped. Ask of the [wall] and its [legion], of the [picts] and the [fair folk] and the [cait sidhe], of the enemy [portal keeps], of [caer benowyc] and [lord benowyc], of the [exiles] or of the [templars].",
+    "topics": {
+      "wall": "The Roman wall across the far north of the frontier, with a ditch before it and a fort at every mile, built to mark where Rome stopped. Its dead [legion] keep it still. See [caer benowyc].",
+      "legion": "The legionnaires who died on the wall walk it from milecastle to milecastle with their shields up. They do not care which realm a traveller comes from: to them every traveller comes from the north.",
+      "picts": "The painted people of the north, who were here before the wall and are here after it. Their warriors fight the legion's dead at the wall's foot every night, as if the war of the wall had never ended.",
+      "fair folk": "Cave fairies in the eastern hollows, pipers whose music walks men off the road, and the [cait sidhe].",
+      "cait sidhe": "The fairy cats of the north-eastern heights, black and as big as hounds, with a white mark on the breast. They are the oldest thing on the wall, and everyone leaves them alone, even the Picts.",
+      "portal keeps": "Hibernia's keep in the north-west, kept by Eldritch masters, and Midgard's in the north-east, kept by priests of Odin, both on Albion's side of the wall, where their war-bands come through into the frontier.",
+      "caer benowyc": "Albion's keep in the south-east of the wall, under Lord Benowyc, whose armsmen and armswomen watch both enemy keeps. It changes hands with the war. See [lord benowyc].",
+      "lord benowyc": "The lord of Caer Benowyc, who says the exiles are the only honest people on the wall, and that Rome built the wall to keep the north out and the north has been coming in through the gates ever since.",
+      "exiles": "Men and women put out of every realm, who keep camps in the middle ground under captains and a commander and kill for every banner and none.",
+      "templars": "A templar order keeps a camp in the west by a ruined tower near the wall, where a spirit walks that the Church of Camelot wants laid with a dagger from the druids' hall."
+    }
+  },
+  "book": {
+    "title": "The Milecastle Book",
+    "pages": [
+      "The Milecastle Book, kept by Ancrid, who keeps the milecastle nearest Caer Benowyc for Lord Benowyc and is the only living soul on that stretch of the wall. The wall is older than any of the three realms and it has outlived Rome, which built it, and it will outlive us. I keep the milecastle because someone must count what comes through. The legion keeps it too. Its dead walk past my door at dusk, shields up, and look at me, and walk on. They do not count me as a traveller. I think they count me as one of the garrison.",
+      "Of the dead legion. They keep the western stretch in good order, from milecastle to milecastle, as if they were still waiting for relief from the south. They do not care which realm you come from. To them every traveller comes from the north, because in their day nothing came from anywhere else. A Hibernian war-band came through my stretch one spring and the legion fought them all the way to the ditch. Then it fought the Albion riders who came after them. Fair is fair, Lord Benowyc said, and had the ditch cleared for them in the morning, because the legion likes a clean ditch and it costs him nothing.",
+      "Of the Picts. They come down out of the northern hills in paint and iron and fight at the foot of the wall, against the legion's dead, as their grandfathers fought the living legion. Nobody told them the war of the wall was over. Nobody told the legion either. I have watched them fight all night and walk away at dawn, both sides, and come back the next dusk. I asked a Pict once what they were fighting for. He said: the wall. I asked what they would do if they won it. He did not understand the question.",
+      "Of the fair folk. There are cave fairies in the hollows under the eastern slopes, and their laughter comes up through the ground at night like water. There are pipers on the western slope whose music walks men off the road; a rider of Benowyc followed it once and we found his horse grazing by the wall and the rider sitting beside it, smiling, with no memory of a day and a night. And on the high ground there are the cait sidhe, black cats as big as hounds with a white mark on the breast. Everyone leaves the cait sidhe alone. Even the Picts.",
+      "Of the keeps. Hibernia built a keep on our side of the wall in the north-west, and Midgard built one in the north-east, and their war-bands come through them into Albion's frontier, and Camelot has written letters about it for an age. Lord Benowyc holds Caer Benowyc in the south-east and watches both. Between us live the exiles, put out of every realm, under captains of their own and a commander who trusts no one. They have no banner. They kill for every banner. Lord Benowyc says they are the only honest people on the wall."
+    ]
+  },
+  "bosses": [],
+  "era": "alb-the-province",
+  "factions": [
+    "dead-legions",
+    "old-powers",
+    "realm-of-camelot"
+  ]
+}

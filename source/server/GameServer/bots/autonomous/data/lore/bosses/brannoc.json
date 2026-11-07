@@ -1,0 +1,86 @@
+{
+  "id": "brannoc",
+  "name": "Brannoc",
+  "npcNames": [
+    "Brannoc"
+  ],
+  "locationId": "dartmoor",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Brannoc: NPC template 770005, spawn level 49 (template 42-46), the granite giant model at size 135, faction Granite Giants of Dartmoor, aggro 200 (range 500), no spells, respawn 80 s, in the west of Dartmoor at 365108, 731162 facing the Stonecrush terraces; he attacks on sight, as every named giant of the moor does. The template's name (granite giant gatherer) also replaces his own when the spawn loads (GameNPC.LoadTemplate), a data quirk.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Brannoc's grudge against the Stonecrush and the shed stone at his feet are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The granite giants of Dartmoor stand on the moor so still that the drovers of the Cornish road have driven past them for generations thinking them tors, and five of them have names the drovers know. Brannoc is the one they will not drive past. He stands in the west of the moor with his face toward the terraces of the Stonecrush ogres. All five come at a man on sight, and he is the one the drovers fear most.\n\nThe Hext drovers say it is not men he hates. The Stonecrush clan eat granite: they grind the moor's stone into their bread and their forge, and they have eaten giants, the old Hexts swear, the slow ones that stood too near the terraces for too many years and were broken up a piece at a time and carried off in baskets. Brannoc's kin were among them. He has stood facing the terraces since, and he does not look away from them, and anything that comes up behind him on that side of the moor he takes for an ogre with a basket.\n\nThere is a heap of shed stone at his feet, grey flakes the size of plates, and the drovers say he sheds it as an old man sheds tears. Kez of the Stonecrush has been digging toward the Bed for years; the drovers say that if Kez ever comes up the hill on Brannoc's side, the moor will hear it from end to end.",
+  "legend": "Brannoc, granite giant, level 49 in the world data (42-46 in his template), west Dartmoor facing the Stonecrush terraces. He aggros on sight like every named giant on the moor (his spawn takes the gatherer template, so in game he may show as a granite giant gatherer at 365108, 731162), and other Granite Giants of Dartmoor near him are his faction, so come at him with the area clear. Plain melee, no spells, hits like a falling tor. Respawn about 80 seconds. Group of high forties.",
+  "yells": {
+    "aggro": [
+      "No baskets. Not again.",
+      "Ogre-friend. Breaker."
+    ],
+    "phases": [],
+    "death": [
+      "Settle... into... the moor..."
+    ],
+    "slay": [
+      "Broken. Like my kin.",
+      "Into the heap."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A giant faces the terraces. He will not look away."
+    ],
+    "phases": [],
+    "realmFirstKill": "Brannoc has fallen. He settles into the moor."
+  },
+  "botLines": {
+    "briefing": [
+      "brannoc in west dartmoor aggros on sight, all the named giants there do",
+      "clear the granite giants round him first, same faction"
+    ],
+    "aftermathWin": [
+      "brannoc down. he'll settle back up in a minute",
+      "got brannoc. the stonecrush will be happy"
+    ],
+    "aftermathLoss": [
+      "came up behind him from the terrace side, bad idea"
+    ],
+    "rumour": [
+      "[heard|someone said] brannoc hates the stonecrush because they ate his kin",
+      "heard brannoc sheds stone like an old man cries"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "brannoc",
+    "text": "The granite giant of west [dartmoor] who faces the Stonecrush terraces and comes at anything on sight. The Hext drovers say the Stonecrush ate his kin."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} broke Brannoc on the western moor in {minutes} minutes.",
+    "loss": "Brannoc took {raidLeader}'s company of {realm} for ogres with baskets."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "old-powers",
+    "stonecrush"
+  ],
+  "related": [
+    {
+      "id": "kez",
+      "relation": "the Stonecrush he faces"
+    },
+    {
+      "id": "tegbuk",
+      "relation": "kin of the moor"
+    }
+  ],
+  "tier": "minor"
+}

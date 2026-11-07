@@ -1,0 +1,128 @@
+{
+  "id": "captain-atwell",
+  "name": "Captain Atwell",
+  "catalogKey": "hall-of-the-corrupt/captainatwell",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Atwell's blows bleed for 65 every 3 seconds for 30 seconds.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainAtwell.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Atwell's 30,000 health, level 62-65 (template 7718), two-handed polearm styles, 20% melee damage reduction, 35% chance per hit of a Bleed (65 body every 3 s for 30 s), crowd-control immunity and the out-of-tether immunity and full heal are in his script.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainAtwell.cs"
+    },
+    {
+      "text": "Atwell's Humberton levy and bill, the dusk walk, the practice yard and 'Atwell's kisses', the three accounts of what cut him, his sister Annis and the pay sent to Humberton are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Captain Atwell was a billman of the Humberton levy in the Black Mountains, given his grandfather's bill at fifteen (the grandfather died at Camlann) and asking only that its haft be cut a hand longer. He came north in Lord Gildas's third year and by the tenth held the inner gate of the Pennine watch. Unordered, he walked the road below the outer gate every dusk as far as the last lamp, because a man who kept a gate ought to know what it was shut against.\n\nFor twenty years he ran the officers' practice in the yard behind the inner gate with an unblunted bill, and the small cuts it left were called Atwell's kisses; only Captain Bardalph, who was never where the hook arrived, and Lieutenant Saxe, who never left his post to come, went a winter without one. In the last winter he came in from his dusk walk with a cut that would not close, kept up his practice rather than admit to a scratch, and the officers' kisses stopped closing too. Then he hung up the bill until the last night.\n\nWhat cut him is argued three ways: the first of the wizard's expected visitors (the Camelot loremasters); the tablet of Sextus Vibius giving the road to the gods below, which he touched for luck every dusk (the dalesmen of Long Dale); or his own wish to meet what was coming before it reached the gate, as his only letter to his sister Annis at Humberton suggests (the priests of Humberton).\n\nHe keeps the inner gate still, with fresh linen on his forearm, and the cuts his bill leaves go on running long after the blow unless they are bound at once and kept bound; Long Dale's children say linen in the left hand before the bill is in the right. The Constable's pay roll was never closed, so his pay still goes to Humberton each quarter, and Annis's grandchildren send every penny of it to the linen-weavers of Long Dale for whoever is going down.",
+  "legend": "Atwell is a two-handed polearm captain with 30,000 health, level 62-65, alone at the inner gate: nobody else stands near his post, so he is the easiest captain to take by himself. About one hit in three he lands also puts a bleed on the target, 65 body damage every three seconds for thirty seconds. Cure poison also clears a bleed, and the tank is bleeding most of the fight, so keep a healer with a cure on whoever he is hitting from the first swing. He takes a fifth less from slash, crush and thrust; casters help. He cannot be mezzed or stunned. Fight him on his stone at the inner gate: drawn past his tether he takes no damage at all and heals to full, and if the fight goes quiet for half a minute he is back to full too, so do not stop and start. Old hands say Long Dale linen is lucky down there; it does nothing, and everyone carries it.",
+  "yells": {
+    "aggro": [
+      "The road is held. Turn back.",
+      "Something cut me on the road. Let me show you.",
+      "Bleed, as I bleed."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The cut opens. It always opens."
+      }
+    ],
+    "death": [
+      "The wound... closes...",
+      "At last... it stops..."
+    ],
+    "slay": [
+      "Back to your post. Forever.",
+      "Bleed out.",
+      "The cut never closes.",
+      "You too, then."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Captains at their table. Their wounds never closed.",
+      "A clerk sits at the table, pen in hand."
+    ],
+    "phases": [],
+    "realmFirstKill": "Captain Atwell is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "atwell bleeds you, 65 every 3 sec for 30 sec. healers keep the tank topped from the first swing",
+      "fight him on his post at the inner gate, off his tether hes immune and heals full",
+      "nobody stands near atwell, take him on his own",
+      "dont mezz or stun him, cc immune. cure poison clears his bleed too"
+    ],
+    "aftermathWin": [
+      "captain atwell down, one less on the watch",
+      "atwell down, one less on the watch",
+      "his wound finally closed",
+      "first captain down",
+      "bleeds cured, clean kill"
+    ],
+    "aftermathLoss": [
+      "someone dragged him off his post again. immune out there",
+      "the bleeds ran on the tank the whole fight and the heals fell behind",
+      "the tank ran dry on the bleeds",
+      "we stopped to rest mid fight and he went back to full"
+    ],
+    "rumour": [
+      "heard captain atwell's cuts never stop bleeding",
+      "[someone said|heard] atwell was the first one cut on the summoners road",
+      "heard atwell's pay still goes to humberton every quarter",
+      "long dale folks carry linen into the hall for atwell, [heard|they say]",
+      "heard atwell walked the road every dusk till something walked back"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "atwell",
+    "text": "Captain Atwell was a billman of Humberton who kept the inner gate of the Pennine watch and walked the road every dusk as far as the last lamp. Something cut him there in the last winter, and his [bill] has left wounds that will not stop running ever since. His pay is still sent to [Humberton]; see also [Lady Darra] and [the Corrupt cut]."
+  },
+  "bookPage": "To the Constable. Captain Atwell was cut on the road by something none of us saw, walking the road at dusk as he did every night. The cut is across the forearm, not deep, and it will not close. The Lady Darra has bound it four times and it has opened four times. He makes light of it. He says it is only a scratch and that he has had worse from the sergeants at cards. But the bandages are red every morning, and I have seen him looking at the road with an expression I do not like. He says something on the road is looking back at him.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Captain Atwell from the Pennine watch in {minutes} minutes.",
+    "loss": "Captain Atwell held the post against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "lady-darra",
+      "relation": "bound his wound four times"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Billman of Humberton",
+      "text": "Atwell was a billman of the Humberton levy before he was anything else, and he carried a Humberton bill to the Pennines and kept it to the end: a long ash haft with a hooked blade, made for dragging riders out of the saddle and good for very little else, except, as he used to say, everything.\n\nHumberton in the Black Mountains raised its levy from the villages under the castle, and every household that held land owed one man with a bill. Atwell's family owed theirs for four generations. His grandfather took a bill to Arthur's last muster and did not come home from Camlann, and the bill came home without him, as the levy's bills always did; Humberton kept them on pegs in the castle hall, and a boy of the levy was given his grandfather's. Atwell was given his at fifteen. The steward of Humberton noted that the boy asked for the haft to be cut a hand longer, because his grandfather had been shorter than he was, and that it was the only thing he had ever been heard to ask for.\n\nHe came north in Lord Gildas's third year with a draft of the Black Mountain levies, when the Constable was filling the new hall with men who did not need to be told twice. He stayed. By the tenth year he held the inner gate, and the watch had given him the duty that the dalesmen still name after him: the dusk walk. Every evening at the hour the lamps were lit, Atwell walked down the road below the outer gate as far as the last lamp, where the road's gentle fall goes on into the dark, and stood there until full dark, and came back. Nobody had ordered it. He said a man who kept a gate ought to know what the gate was shut against.\n\nThe clerk Tobias once asked him what he saw down there. Atwell said: the road. Tobias wrote that down, and wrote under it that he did not know whether the captain was joking, and that in eleven years he never found out."
+    },
+    {
+      "title": "The Practice Yard",
+      "text": "The practice yard of the Pennine watch was a strip of flagged floor behind the inner gate, and for most of twenty years it belonged to Captain Atwell.\n\nHe ran the officers' practice there twice a week, captains and lieutenants and any sergeant who wished to try him, with blunted blades and his own bill, which he would not blunt; he said a hook that would not catch was not a bill. The officers came away from the yard with nicks on their forearms and their wrists, small cuts from the hook, and the dalesmen of the watch called them Atwell's kisses. A kiss was a mark of standing. A sergeant who had none had not tried, and a sergeant who had too many had not learned. Lady Darra's Lady Day letters mention the kisses with a sister's weariness, and say that she dressed more of them than of anything else the road ever sent her.\n\nOnly two officers ever went a winter of the yard without one. Captain Bardalph was simply never where the hook arrived. Lieutenant Saxe never came to the yard at all, because it was not his post.\n\nThe yard is why the Summoners' cut spread as it did. When Atwell came in from his dusk walk in the last winter with a cut across the forearm that would not close, he did not stop his practice, because he would not admit to a scratch. The officers came away from the yard that week with their usual kisses, and the kisses did not close either. That was when Lady Darra wrote south for linen. It was also when Atwell put the bill on its pegs and stopped the practice for good, and Tobias wrote that the captain looked at his own hands for a long time before he did it.\n\nThe bill stayed on the pegs for the rest of the winter. He took it down only on the last night. It has not been back on the pegs since, and the dalesmen say that no one who has come within reach of it since has walked away with a kiss that knew how to stop bleeding."
+    },
+    {
+      "title": "What Cut Him",
+      "text": "Nobody saw what cut Captain Atwell on the road at dusk, and Albion has argued about it since the spring the riders came back.\n\nThe Camelot loremasters hold the oldest opinion and the plainest: that it was the first of the visitors the wizard had been expecting, come up the road a little ahead of the others, and that Atwell was simply the first man of the watch it met, because he was always the first man on the road. They point to the wizard's list of names at the bottom of Sergeant Eddison's roster, and say that one of the names on it has never been matched to anything that was later seen in the hall.\n\nThe dalesmen of Long Dale tell it differently. Every dusk on his way out, they say, Atwell put his hand on the tablet of Sextus Vibius in the wall of the captains' hall, the tablet that gives the road to the gods below, as another man touches a doorpost for luck. Their grandmothers said the tablet cut him in the end, because the road had been given away and a man of Albion had walked it every night as if it were his. Hob's wife, who rolled the linen for the watch, told that version to her children; her children's children still slap a boy's hand away from any old carved stone.\n\nThe Church at Humberton keeps a third account, from Atwell's own family, and it is the saddest. His sister Annis had a letter from him that winter, the only one he ever wrote; Tobias wrote it for him at the captain's dictation. It says nothing about a cut. It says that the road had been looking at him for some weeks, at the hour he walked it, and that he thought he ought to look back, since that was what the gate was for. The priests of Humberton read it as a man foretelling his death, and say that he went past the last lamp that night to meet whatever was coming, because he could not bear for it to reach the gate first.\n\nThe Inconnu, asked once by a reader of Caer Gothwaite, said that it did not matter what cut him. What mattered was that he would not stop walking the road."
+    },
+    {
+      "title": "The Pay Sent to Humberton",
+      "text": "Captain Atwell is at the inner gate, in the place he held for ten years, with the bill in his hands and fresh linen bound round his forearm, and no company of Albion that has gone down has ever found the linen stained.\n\nWho binds it is a question the realms answer three ways. The Church's sisters say the Lady Darra comes down from the sickroom when the hall is empty and binds it, as she bound it four times in life. The dalesmen say it is Long Dale linen, rolled by Hob's wife, and that the dead watch still draws its stores. The Midgard war-bands who have come up the Scribes' Stair from below say there is no linen at all, only a white mark the Albion knights see because they expect to.\n\nHis wound is with him still, and so is the thing it learned to do. The companies who have faced him at the inner gate say the bill comes at them as it came at the officers in the yard, and that the small cuts it leaves go on running a long while after the blow, as Atwell's cut ran, and close only when they are bound at once and kept bound. Long Dale's children, who have never seen the hall, can tell you the remedy: linen in the left hand before the bill is in the right.\n\nThe Constable's pay roll of the Pennine watch has never been closed, because no one has ever sealed a man of it relieved or dead, and every quarter the captain's pay is still sent where he asked for it to be sent: to Annis, at Humberton. Annis has been in the churchyard for longer than the watch has been dead. Her grandchildren draw it. They have never spent a penny of it on themselves. Every quarter it goes to the linen-weavers of Long Dale, and the linen goes north on the carriers' road to whoever is going down.\n\nWhen the captain falls, his bill falls across his stone at the inner gate, and Humberton asks only one thing of the companies who bring news of it: whether the hook was still sharp. It always is."
+    }
+  ]
+}

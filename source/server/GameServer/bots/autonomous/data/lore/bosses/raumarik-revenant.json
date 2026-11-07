@@ -1,0 +1,111 @@
+{
+  "id": "raumarik-revenant",
+  "name": "Raumarik Revenant",
+  "catalogKey": "midgard-named-mobs-classic-zones/raumarikrevenant",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "dishonoured-dead"
+  ],
+  "facts": [
+    {
+      "text": "The Raumarik Revenant is a level-77 named with 40,000 health in the northwest of Raumarik; he casts Frost Shock (400).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "In the quest 'The Legend of Fenrir's Folly' (the winner of the Herald's 2002 quest contest) players must kill the Revenant in the undead fortress of Raumarik, with its frore liches, to win back a sun fragment in a cold iron casket; players called him very spell resistant.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/1770"
+    },
+    {
+      "text": "Its rewards include the Heart of the Sun and Fenris Fang weapons.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/1770"
+    },
+    {
+      "text": "Bot chat warns that the Revenant walks Raumarik.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "On 45% of his hits he casts Frost Shock (400 cold, range 500, recast 2 s). 40,000 health, CC-immune, reach 350, 30% melee / 40% magic resist; resets at full health. His script calls a RevenantBaf pack, but no spawn in this world data carries that package, so nothing joins him; the frore liches stand in the passes to the south-east, not on his walls.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/RaumarikRevenant.cs"
+    }
+  ],
+  "story": "Nobody remembers who he was. The Galplen tellers say he was the first of Raumarik's dead to find the sun-splinter Fenrir spat into the snow, and that he found it by its warmth, crawling on his hands across a valley in a blizzard toward a light under the snow that he thought was a hearth. When he reached it he lay down beside it and was warm for the first time since he died, and he decided that nobody else would be.\n\nHe built the fortress round it on the north-western heights, stone by stone, with dead hands that did not tire, and he has sat inside it ever since. The other dead of Raumarik crowd the slopes below: wraiths, wights, the liches of the passes. They want what he has. He does not let them in. He does not let anyone in. The Galplen folk say that is the whole of him now, a cold thing keeping a hot one, as jealous of it as a dog of a bone, and no more able to explain why.\n\nHe answers every intruder in his hall with the cold of the land, a shock of it with nearly every blow, as if the splinter's warmth had to be paid for by everyone but him. Spells slide off him more readily than steel does; the tellers say that is because he has sat so long beside the sun that the craft of the realm's casters seems to him only a little warmth, and he has all the warmth he wants. Steel is cold, and he understands cold, and it reaches him. He cannot be held or turned; rope freezes on him, and charms of sleep find nothing to sleep. He keeps no guard. He trusts no one to stand on his walls.\n\nThose who take the splinter from him carry it away in a casket of cold iron that the smith Gris of Jordheim makes for them, because no other thing will hold it. Still it glows through the lid. And in a season or two, the tellers say, the Revenant has found another, or the same one has crept back to him across the snow, because the sun's splinters were never meant to leave Raumarik and will not stay away from it.",
+  "legend": "The Raumarik Revenant is the undead lord in the fortress in the far north-west of Raumarik, level 77, 40,000 health: one of the toughest single nameds in classic Midgard. He resists magic (40%) more than melee (30%), so bring a melee-heavy group. On almost half his hits he casts Frost Shock, 400 cold, so cold resist and heals on the tank matter more than anything. He's CC-immune. There's no pack with him in this world: no liches on the walls, the frore liches are down in the passes, so you can fight him alone in his hall. He resets full if everyone leaves. He's the end of Fenrir's Folly, so people come with a casket of cold iron from Gris in their bags, and you get the Heart of the Sun or a Fenris Fang.",
+  "yells": {
+    "aggro": [
+      "The warmth is mine. The dead keep what the wolf dropped.",
+      "Out. Out of my hall. It is not for you.",
+      "Cold. You are all so cold. Stay cold."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Cold. So cold. Give it back. Give it back!"
+      }
+    ],
+    "death": [
+      "The sun... is going out... again...",
+      "Someone... else... will be warm..."
+    ],
+    "slay": [
+      "Lie down by the fire with us.",
+      "Another cold one for the slopes.",
+      "You will not be warm here."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An undead fortress. Something warm glows within.",
+      "No guard on the walls. Only frost, and a light."
+    ],
+    "realmFirstKill": "The Raumarik Revenant falls. The sun-splinter is free.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Revenant clutches at the warmth. The cold doubles."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "revenant resists spells more than melee, bring melee",
+      "revenant resists magic 40 and melee 30, bring melee",
+      "frost shock 400 cold on almost every other hit, cold resist on the tank",
+      "no adds in this one, just him",
+      "cc immune, dont waste it"
+    ],
+    "aftermathWin": [
+      "revenant down, casket's glowing. [fenris fang time|heart of the sun!]",
+      "melee group made it easy",
+      "no liches at all, good",
+      "cold resist on the tank made it"
+    ],
+    "aftermathLoss": [
+      "frost shock every other swing, the tank melted",
+      "too many casters, he shrugged it off",
+      "ran out of heals",
+      "tried a caster group. never again"
+    ],
+    "rumour": [
+      "raumarik revenant guards a piece of the sun fenrir spat out. [true story|its in the quest]",
+      "he crawled to the splinter in a blizzard, galplen says",
+      "the splinter always finds its way back to him",
+      "he trusts nobody to stand on his walls"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Revenant",
+    "text": "Fenrir once snapped at the sun, the tale goes, and spat out a burning splinter in Raumarik's snow. The dead gathered round it, and the greatest of them, the Revenant, walled it in. Win it back and carry it in cold iron."
+  },
+  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: they say the first of Raumarik's dead found the splinter by crawling toward its light across a valley in a blizzard, thinking it was a hearth someone had left burning. When he got there he lay down by it and was warm. In the morning the others came crawling after him, and he stood up and drove them off, and began to build. The Galplen folk say that is the saddest thing in all Raumarik: not that he keeps the warmth, but that he was once the one crawling.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took the sun-splinter from the Raumarik Revenant in {minutes} minutes.",
+    "loss": "The Raumarik Revenant kept the sun-splinter from {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

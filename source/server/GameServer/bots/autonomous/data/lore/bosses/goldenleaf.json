@@ -1,0 +1,107 @@
+{
+  "id": "goldenleaf",
+  "name": "Goldenleaf",
+  "npcNames": [
+    "Goldenleaf"
+  ],
+  "locationId": "allta-fearann",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Goldenleaf: level 55, model 946 (the treant body), size 145, at about 368,400/209,300 high in Allta Fearann (z 5,416, one of the highest spawns in the zone); respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Goldenleaf as the one tree of the wild land, whose leaves turned gold in the Long Pushing and never turned back.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Allta Fearann, the wild land, is the high country north of Vigilant Rock where the forest gives out into scrub and stone and the wind never stops. The mantids hold the ground, and the sky belongs to the things that nest on the crags: skimmers and mantas that ride the updraughts, the fearann wyverns of the northern cliffs, the long-legged waterstrider birds of the high pools. The Sylvan of Necht keep a custom for travellers going north: name the four great ones of the wild land before you go, so that they know you know them. Windskimmer, Goldenleaf, Razorbeak, and the bird the Sylvan call by a name they say came over the sea with the mist.\n\nGoldenleaf is the second, and the only tree in the wild land that the wind has not beaten down. He stands on the highest crag of Allta Fearann, a treant as tall as a mainland watch-post, and his leaves are gold all the year round. The Sylvan of Necht say they turned in the autumn of the Long Pushing, when the forests leaned on the Root and he was the northernmost tree that leaned, and that they have never turned back, because the autumn never ended for him. He has been standing in the same autumn since before the names.\n\nHe does not walk, as the treants of the southern woods walk, or speak, as Treal of Altan Garran speaks. He watches the wild land, and the mantids, who are not reverent about anything, leave the crag he stands on empty. The waterstrider birds will not nest within a stone's throw of him. Windskimmer's loops never pass over his crown. The Necht singers think he is keeping something too, as Elro keeps the edge of the world, and guess that it is the north: that whatever lies beyond the wild land's last cliffs, Goldenleaf is between it and the isle.\n\nHis leaves fall, one at a time, all year, and never seem fewer. The Sylvan of Necht prize them above anything else from the north. A gold leaf of Goldenleaf's laid on a Sylvan child's cradle is said to give the child a long life and a stubborn one. The Sylvan who climb the crag to gather them gather only what has fallen. Those who have tried to take one from the branch are the reason the crag has a cairn.",
+  "legend": "Goldenleaf is a level 55 treant (size 145) on the highest crag of Allta Fearann (about 368k/209k, high up). Plain melee, no script, 80-second respawn: a 50s group with a decent tank is enough. The climb is the hard part; bring a way back down. Nothing nests close to him, so the pull is usually clean. Necht Sylvan prize his fallen leaves for cradles; picking from the branch is the bad luck in the story. A treant of his size has a lot of health for a 55, so bring steady damage; he is a slow, heavy hitter rather than a tricky one. He is one of the four great ones.",
+  "yells": {
+    "aggro": [
+      "(the golden crown turns toward you)",
+      "(leaves fall, gold, slow)",
+      "(Goldenleaf's roots grip the crag)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(gold leaves storm off the crag)"
+      }
+    ],
+    "death": [
+      "(the last autumn of the Long Pushing ends)",
+      "(the gold crown falls across the crag)"
+    ],
+    "slay": [
+      "(a gold leaf falls on the fallen)",
+      "(the crag is kept)",
+      "(Goldenleaf watches the north again)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Gold leaves on the crag in every season.",
+      "A cairn for those who picked from the branch."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Gold leaves storm off Goldenleaf's crown!"
+      }
+    ],
+    "realmFirstKill": "Goldenleaf has fallen. The long autumn is over."
+  },
+  "botLines": {
+    "briefing": [
+      "goldenleaf is a 55 treant on the highest crag of allta fearann. [plain melee|no script]",
+      "the climb is the hard part. [bring a way down|careful]",
+      "nothing nests near him. [clean pull|easy]",
+      "50s group with a tank is fine"
+    ],
+    "aftermathWin": [
+      "goldenleaf down. [timber|gold everywhere]",
+      "clean pull on the crag",
+      "two of the four great ones done",
+      "grab a fallen leaf for the necht sylvan lol"
+    ],
+    "aftermathLoss": [
+      "fell off the crag. [the climb|ouch]",
+      "tank couldnt hold a 55 treant. [heavy|oops]",
+      "picked a leaf from the branch. [bad luck|joking... mostly]",
+      "group too spread on the climb"
+    ],
+    "rumour": [
+      "[heard|someone said] goldenleaf's leaves turned gold in the long pushing and never turned back",
+      "the necht sylvan lay a goldenleaf leaf on a baby's cradle for a long life",
+      "[word is|heard] nothing nests within a stone's throw of goldenleaf",
+      "theres a cairn on goldenleaf's crag for people who picked from the branch"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Goldenleaf",
+    "text": "The one tree of [Allta Fearann] the wind never beat down, on its highest crag, gold-leaved since the autumn of the Long Pushing. The Necht Sylvan gather his fallen leaves for cradles."
+  },
+  "bookPage": "From Coll of the Domnann guides: the second of the four great ones is the only tree in the wild land the wind has not beaten down. Goldenleaf stands on the highest crag, as tall as a mainland watch-post, gold in every season, because the autumn of the Long Pushing never ended for him. Nothing nests near him. Windskimmer never flies over his crown. His leaves fall one at a time all year and never seem fewer, and we lay them on our children's cradles. Gather what has fallen. There is a cairn on the crag for those who picked from the branch.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Goldenleaf in Allta Fearann in {minutes} minutes.",
+    "loss": "Goldenleaf turned back {realm}'s band under {raidLeader} in Allta Fearann after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "elro-the-ancient",
+      "relation": "another old tree of the isle's edges"
+    },
+    {
+      "id": "windskimmer",
+      "relation": "another of the four great ones"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "id": "galar",
+  "name": "Galar",
+  "npcNames": [
+    "Galar"
+  ],
+  "locationId": "skona-ravine",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "lokis-mischief"
+  ],
+  "related": [
+    {
+      "id": "fjalar",
+      "relation": "his elder brother, who does the talking"
+    }
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Galar is a level-36 dwarf (a dwarven guard's model) in the west of Skona Ravine (694,364/919,287), always beside Fjalar; no faction, aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "In Norse myth Galar is Fjalar's brother in the murder of Kvasir and the drowning of the giant Gilling and his wife.",
+      "provenance": "myth",
+      "source": "Snorri, Skaldskaparmal (public domain)"
+    }
+  ],
+  "story": "Galar is the younger brother, and the quiet one. Where Fjalar talks of the mead of poetry, Galar listens to it, Gudny of the Seithkona Circle says: he stands a step behind his brother and looks at the river, and when he speaks it is to say that the giant they drowned in the old tale went into a river like this one. In the story it was Galar who dropped the millstone on the giant's wife when she would not stop weeping. In Skona he lets no millstones fall. He waits for his brother to finish talking and then he fights.\n\nThe skalds of Galplen tell a version where the two dwarves were never caught at all, and walked the world afterwards looking for the mead Odin stole, and that Galar is the one who still believes they will find it. The Circle tells a version where they are two dwarves who liked the story. Galar, asked, says nothing, and looks at the river.",
+  "legend": "Galar (36) is the quieter of the two dwarf brothers in west Skona; he and Fjalar (37) always fight together. No faction, no spells. Players usually drop Galar first since he has a bit less health, then Fjalar. Easy for a 40s group. The brothers share a respawn spot by the river, so if you wipe, give it a minute before you go back and check they're both up.",
+  "yells": {
+    "aggro": [
+      "(Galar says nothing, and draws.)",
+      "Brother. They are here."
+    ],
+    "death": [
+      "...the river..."
+    ],
+    "slay": [
+      "(He looks at the river again.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The quiet brother watches the river, not you."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "galar is the quiet one of the dwarf brothers, 36",
+      "always pulls with fjalar"
+    ],
+    "aftermathWin": [
+      "galar down",
+      "fjalar didnt like that"
+    ],
+    "rumour": [
+      "in the old tale galar dropped the millstone on the giants wife",
+      "galar still thinks they will find the mead"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Galar",
+    "text": "The younger of the dwarf brothers of western Skona, who stands a step behind Fjalar and watches the river. See [Fjalar and Galar]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} silenced Galar by Skona's river in {minutes} minutes."
+  }
+}

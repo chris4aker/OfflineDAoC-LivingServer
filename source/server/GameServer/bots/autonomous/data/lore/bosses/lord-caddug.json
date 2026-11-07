@@ -1,0 +1,127 @@
+{
+  "id": "lord-caddug",
+  "name": "Lord Caddug",
+  "npcNames": [
+    "Lord Caddug"
+  ],
+  "locationId": "avalon-isle",
+  "realm": "Albion",
+  "aliases": [
+    "the dead lord of caer caddug",
+    "caddug"
+  ],
+  "facts": [
+    {
+      "text": "Lord Caddug: template 60163394, level 68, a man flagged as a ghost, in Caer Caddug in the north-east of Avalon Isle at 477564, 458828; aggro level 200 within 500, faction Caer Caddug, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "His court shares his faction and his aggression: bodyguards (43-44) 199 and 548 from him, priests (41-44) from 356, and baille, knights, equerries, seers and footsoldiers through the castle; about a hundred in all.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "A faction NPC that is attacked calls aggressive friends of its faction within 450, plus 150 for each attacker beyond the first.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: radius 450 + 150 per extra attacker, up to eight; friends must share the faction)"
+    },
+    {
+      "text": "A template with ReplaceMobValues sets the spawn's faction, aggro and level.",
+      "provenance": "game",
+      "source": "source/server/GameServer/gameobjects/GameNPC.cs (LoadTemplate: ReplaceMobValues templates set faction, aggro, level, model)"
+    },
+    {
+      "text": "Caddug as the colleges' warden of the isle, the gate-roll of keepers' names, the night of the burning at the gate, the court that answers to no one but him, the quarrel with Prios's ghosts and the three readings are Living Server writing; that he paid for the cider at his gate is from the Cider-Book in the zone file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The colleges of Avalon kept no soldiers. They had readers and masters and chancellors, and the isle around them had orchards and keepers, and between the colleges and the sea there had to be somebody with a sword. For eleven generations that was the house of Caddug, wardens of the isle, who held the castle in the north-east and the shore below it for the colleges and asked for nothing but apples. The last of them was the lord whom Wearyall still calls Lord Caddug, as if there had only ever been one.\n\nHe was a careful man. Gwilym the cider-man's father carried cider to the castle once, before the war, and the lord paid for it at the gate himself and asked after every keeper in the orchards by name. He kept a roll of them on the gate, the cider-man says, every orchard-keeper and every cottager on the isle, so that a man at the gate could look up and know whom he was there to keep. He kept his court the same way: every baille on the walls, every knight in the yard, every equerry at the stable, priest in the chapel and man at his door knew his post and the post beside his, and no man of Caddug's ever stood alone. Trouble one of them and the castle came to him; trouble the lord and the castle came to the lord.\n\nOn the night the colleges burned, the drakoran came up from the shore, and Caddug's court went to its posts and held them. The readers who got out across the causeway say they could hear the castle bell over the burning until morning. None of the court came out. They are there still, all of them, at the posts they took that night, dead and loyal, and the lord walks among them and does not lie quiet. He comes at anyone who walks into his yard with the look of a man who has been interrupted at his roll.\n\nThere are three readings of what he is waiting for. Wearyall says he is waiting for the colleges to send word that he is relieved, and the colleges are gone. The readers of Caer Gothwaite say he is still holding the isle, and that he is the reason the dry'ak, who hold the rest of the isle, have never taken Caer Caddug for a fort. The Inconnu of Wearyall say that Morgana sent her servant Prios to take the court for her army of the dead and that Caddug refused him at the gate, as he refused everyone who was not on the roll; and that this is why Prios's ghosts in the eastern ruins and Caddug's court will not cross each other's ground. He is a lord of the dead now who owes nothing to Morgana, and that, the Inconnu say, is rarer on the isles than it sounds.",
+  "legend": "Lord Caddug is a level 68 ghost lord in Caer Caddug, the dead castle in the north-east of Avalon Isle. He is aggressive from about 500 away, and the whole court (bodyguards, priests, baille, knights, equerries, seers, footsoldiers, about a hundred of them in their 30s and 40s) shares his faction: hit him and the nearby court bring-a-friends in, and hit them and he can come too. A bodyguard stands about 200 from him and a priest about 350, so clear his corner of the yard first, then pull him with one group. The data gives him no spells or styles: it is a melee fight with a 68, which hits very hard for a zone of 20 to 45, so bring a full group of fifties with a real tank. He respawns in about 80 seconds, so do not sit in his yard after. Leave the castle alone below the high forties.",
+  "yells": {
+    "aggro": [
+      "You are not on the roll.",
+      "Who sent you to my gate?",
+      "To your posts! A stranger in the yard!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Bell! Ring the bell! Every man to his post!"
+      }
+    ],
+    "death": [
+      "Relieved... at last... by whom...",
+      "Read the roll... read it to me..."
+    ],
+    "slay": [
+      "Struck from the roll.",
+      "Hold the gate.",
+      "Another stranger, gone."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dead castle. Every post is kept.",
+      "Names cut on the gate-post, keeper after keeper."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Somewhere in Caer Caddug a bell begins to ring."
+      }
+    ],
+    "realmFirstKill": "Lord Caddug is relieved of his post. The bell is silent."
+  },
+  "botLines": {
+    "briefing": [
+      "lord caddug, 68 ghost in caer caddug ne of the isle. aggros from 500, the whole court is his faction",
+      "bodyguard about 200 from him, priest about 350. clear his corner of the yard first",
+      "no spells, just a 68 hitting hard. full group of 50s, real tank, steady heals",
+      "he's back in about 80 sec, kill him and get out of the yard"
+    ],
+    "aftermathWin": [
+      "dead lord down. his court never got to him",
+      "cleared the bodyguard first, easy after",
+      "68 hits hard but no tricks",
+      "out of the yard before he's back, go"
+    ],
+    "aftermathLoss": [
+      "pulled him with the bodyguard and two priests, wipe",
+      "zerged the yard and the whole castle came",
+      "40s group thought caddug was a 40s mob. he's 68",
+      "sat in the yard to rest and he was back"
+    ],
+    "rumour": [
+      "[heard|someone said] lord caddug kept a roll of every keeper on the isle on his gate",
+      "heard his court died at their posts the night the colleges burned and never left",
+      "[heard|someone said] caddug sent morgana's man prios away from his gate",
+      "heard you can still hear a bell in caer caddug sometimes"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "lord caddug",
+    "text": "The last warden of Avalon Isle for the colleges, of the house that held [caer caddug] for eleven generations. He paid for his cider at his own gate and kept a roll of every keeper on the isle. His court died at its posts on the night the colleges burned and keeps them still; no man of his ever stands alone. The Inconnu say he refused Morgana's servant [prios] at the gate, which is why the two dead households will not cross."
+  },
+  "bookPage": "From the Cider-Book of Wearyall, kept by Gwilym, cider-man. My father carried six barrels to Caer Caddug the autumn before the war, and Lord Caddug came down to the gate himself to pay. While he counted the coin he asked after the keepers of our orchard, the old one with the bad hand and the girl who sang, by name, and my father said he did not need to look at the roll on the gate to do it. I asked my father once what was written at the top of the roll. He said the lord's own name, and his post: the gate. I think of that when I hear the bell over there at night. He is at his post. Nobody has told him he may go.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} relieved Lord Caddug of his post in Caer Caddug in {minutes} minutes.",
+    "loss": "Lord Caddug held his gate against {raidLeader}'s company of {realm}, as he held it against the drakoran."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn",
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "avalon-isle",
+      "relation": "the dead castle of Caer Caddug in the north-east of the isle"
+    },
+    {
+      "id": "avalon-city",
+      "relation": "the colleges his house held the isle for, burned on the night his court died at its posts"
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "id": "evern",
+  "name": "Evern",
+  "catalogKey": "open-world/evern",
+  "locationId": "breifine",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 76, 100,000 health, in Breifine (429883, 380409). Two to five Wraith Fairies come on a timer and cast a 1,000-point heal on their side.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Evern.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He cannot be hurt outside his tether, resets after 30 seconds out of combat, and leaps to his target.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat: the fairies that land on his stones heal him; kill the fairies first; he is older than the frontier keeps.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Evern was standing in Breifine when the frontier was only hills, and the keeps were built around his ring of stones because nobody could move them, or him. He is a lord of the fairy kind, the Sylvan think, a great one gone strange with age, and the small wraith-fairies of the frontier are his. They drift in on the wind while he fights and settle on his stones, and from the stones they pour their healing into him. He does not chase so much as arrive: one moment across the ring, the next at his enemy's throat. Some of the old frontier hands believe he sits on a lid, and that what lies under Breifine is worse than he is.\n\nWhen the elves raised the Veil and withdrew, some of their great ones stayed behind on this side, by choice or by accident, and Evern is one of them, the Sylvan of Hy Brasil and the druids of Tir na Nog agree. He is a lord of the fairy kind gone strange with age: his ring of stones in Breifine was a gate once, they think, and he stayed to keep it after it closed. The wraith-fairies of the frontier are his last subjects. They drift in on the wind while he fights and settle on the stones, and from the stones they pour their healing into him, a thousand at a time, two to five of them at once.\n\nHe does not chase so much as arrive: across the ring one moment, at his enemy's throat the next. Beyond his ring he cannot be hurt, and if he is let alone a little while he is whole. The frontier keeps went up around his stones because nobody could move them, and the realm's warbands have marched past him for generations without asking. Below him, under Breifine, run the Marfach caves and the road to the Summoners, and the old frontier hands say he sits on the lid. If that is true, the realm must decide each time it kills him whether it is lifting it.",
+  "legend": "Fairies first, every one, before they land and heal him. The whole raid looks for wraith fairies while the tanks hold Evern. He leaps to whoever he picks, so healers spread out. Fight him at his stones; drag him off and nothing hurts him. Keep the fight going or he resets in half a minute. Nicknames: 'the stones', 'old ring'. Superstitions: never count his stones twice, because the fairies move one; never touch a stone and run, though half the frontier dares each other to. The wraith fairies never stop coming; the fight is won by fairy duty. Frontier warbands salute his ring as they pass.",
+  "yells": {
+    "aggro": [
+      "Who walks in my ring?",
+      "The gate is closed. I keep it anyway.",
+      "Little ones, to the stones."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Little ones, to the stones. Mend me."
+      }
+    ],
+    "death": [
+      "The stones... are only stones...",
+      "The gate... is unguarded..."
+    ],
+    "slay": [
+      "The fairies will dance on you.",
+      "The stones keep you now.",
+      "Fairy-mended stone outlasts you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A ring of stones. Small lights land and rise.",
+      "Fairies settle on the stones, and rise mended."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Wraith fairies drift down onto the stones!"
+      }
+    ],
+    "realmFirstKill": "Evern is fallen. The stones of Breifine are quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "evern: kill the fairies first, every single one. [they heal him|fairies on the stones heal him]",
+      "he jumps to his target, healers spread. [fight at the stones|dont drag him]",
+      "evern leaps to his target, [healers spread|dont clump]",
+      "half a minute out of combat and he resets, [keep at it|no breaks]"
+    ],
+    "aftermathWin": [
+      "evern down. [nobody let a fairy land|great fairy duty everyone]",
+      "no fairy touched a stone. [thats the fight|perfect]",
+      "evern down. [hope the lid holds|nothing came up]",
+      "fairy duty was perfect. [grats|lovely]"
+    ],
+    "aftermathLoss": [
+      "three fairies landed and he [healed to full|went back up]. fairies first",
+      "fairies landed and he went full. [fairies first|again]",
+      "he leapt on the healers. [spread|ugh]",
+      "dragged him out of the ring. [immune outside|stop]"
+    ],
+    "rumour": [
+      "[heard|someone said] evern sits on a lid and something under breifine is waiting",
+      "[heard|someone said] evern's ring was a gate into the otherworld once",
+      "the frontier keeps were built around evern's stones. [nobody could move them|true]",
+      "[word is|heard] evern sits on the lid of marfach. [scary|maybe]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Evern",
+    "text": "A lord of the fairy kind, standing in Breifine before the keeps. His wraith-fairies land on the stones and heal him. Kill them first."
+  },
+  "bookPage": "From Derbáil of Ardee's list, with a note in her granddaughter's hand: the stones in Breifine, always. Grandmother said the ring was a gate once, into the Otherworld, and that when the elves drew the Veil the gate closed and its keeper stayed outside to keep it anyway. The little fairies of the frontier are his. They land on the stones and he is mended. The realm's warriors kill them first, every one, before they land. Grandmother thought that cruel, and said so, and then said that she supposed a gate with nothing behind it does not need much keeping.",
+  "chronicle": {
+    "win": "{realm} went into Breifine under {raidLeader} and put down Evern in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from Breifine without Evern's head after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "marfach-caverns",
+      "relation": "the caves beneath his hill"
+    },
+    {
+      "id": "melancholic-fairy-queen",
+      "relation": "another of the Good Folk who stayed when the Veil came down"
+    }
+  ]
+}

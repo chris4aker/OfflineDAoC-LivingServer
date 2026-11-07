@@ -1,0 +1,188 @@
+{
+  "id": "trollkarl-bonchar",
+  "name": "Trollkarl Bonchar",
+  "catalogKey": "trollheim/rift",
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "aliases": [
+    "the rift",
+    "bonchar"
+  ],
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "valkyn"
+  ],
+  "related": [
+    {
+      "id": "nosdoden",
+      "relation": "the beast below the road he sought"
+    },
+    {
+      "id": "trollheim",
+      "relation": "his chamber in the middle city"
+    },
+    {
+      "id": "dagar",
+      "relation": "the morvalt whose paint he wore"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Trollkarl Bonchar is a level-65 named with 30,000 health. Calm, he looks like a Valkyn sorcerer; when attacked he becomes 'The Rift' and stays so while he has aggro.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs"
+    },
+    {
+      "text": "As the Rift he calls a morkenhet out every 10-20 seconds and casts Rift Strike (300).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists Trollkarl Bonchar, The Rift, Rift and Bonchar's Shade in Trollheim. A May 2003 raid said the morkenhet were the real fight and that killing the Rift gave nothing; a 2003 visitor asked if killing it brings back the morvalt at the desk.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6008"
+    },
+    {
+      "text": "Swedish and Old Norse trollkarl means sorcerer, wizard.",
+      "provenance": "original",
+      "source": "Swedish and Old Norse glossaries (to verify the period sense)"
+    },
+    {
+      "text": "Swedish morker / morkhet means darkness (the script's 'morkenhet'; to verify).",
+      "provenance": "original",
+      "source": "Swedish, to verify"
+    },
+    {
+      "text": "The Rift casts Rift Strike (300 energy, uninterruptible, castable on the move, recast 6-10 s) on its target, calls one morkenhet (5,000 health, not CC-immune) every 10-20 s for as long as it is fought, and removes every morkenhet when it dies or resets. Tether 3,500; it is CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs"
+    },
+    {
+      "text": "Ragnfrid (Hallveig's grandmother), Eyolf's war-party and the custom 'do not touch the listener' are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs"
+    }
+  ],
+  "story": "Bonchar was one of the first Valkyn born after the Troll Fathers tamed his people at the fires, and the cleverest of them, and the Fathers taught him more than the others: the deep words, the old roads, the shape of the dark under the city. Ragnfrid, Hallveig's grandmother, knew him when she was a girl and said he was the saddest of them too, because he loved the Fathers more than anyone, and when they went down by roads only they knew and left the Valkyn to stand on their own, he could not bear it.\n\nWhen the morvalt broke the gates he did not go north to Midgard with his people. He painted his face as his uncles paint theirs and stayed in the middle city among them, listening, for years. He believed the Fathers' road was not a tunnel but a place where the dark is thin. He found it in a chamber of the middle city, with a handful of morvalt who had come to think of him as their own sorcerer standing guard at its door, and he opened it to follow them through.\n\nInstead the dark came through him. His face split, and behind it was the Rift, and the morvalt at the door were gone. Out of the Rift the morkenhet came, darkness-things, one after another, and they did not stop. When Ragnfrid's brother Eyolf led a Valkyn war-party down to bring Bonchar home, they cut at the shadows until their arms failed and more kept coming; it was only when Eyolf struck down the thing that wore Bonchar's face that the door shut, and every shadow in the chamber went back through it at once. They tried to carry him out, and the further they drew him from his chamber, the harder the thin place drew him back, until he walked back to it whole.\n\nHe stands there still with a sorcerer's face, very still, as if listening, and the Valkyn guides who lead Midgard past his chamber keep their hands at their sides: do not touch the listener. No Valkyn charm has ever held him, in either shape. The elders of Dyrfjall say that if he ever remembers, he will finish opening the door, and then everyone will know where the Fathers went.",
+  "chapters": [
+    {
+      "title": "The Child Who Was Taught",
+      "text": "The Valkyn count their generations from the fires. Before the fires their people were what the morvalt are now, savages of Aegir who spoke in roars; at the fires the Troll Fathers sat among them for a winter and gave them bread and words, and the first children born after that winter were the first Valkyn. Bonchar was one of them. His name is not a Valkyn name, and the elders of Dyrfjall say the Fathers gave it to him themselves, which they did for no other child.\n\nHe was the cleverest of the first children, and the Fathers knew it. They taught him what they taught none of the others: the deep words that the Nedat used on the spiral stair, the old roads under the city, the shape of the dark below the mound. The Valkyn say a Father would sit with the boy at the edge of the bridge, on the Uppat side, because neither of them was allowed to cross it, and point down into the chasm, and name what was there.\n\nRagnfrid knew him when she was a girl and he was already grown. She was Hallveig's grandmother, and most of what Midgard knows of Bonchar it knows from what she told her granddaughter. She said he was the cleverest of all of them and the saddest, because he was the only one the Fathers loved enough to teach the deep words, and he loved them back more than was good for him.\n\nWhen the Fathers went down, by roads only they knew, and did not come back, the Valkyn were told it was so that they would have to stand on their own. Ragnfrid believed it. Bonchar did not. He said the Fathers had not left the Valkyn; they had gone ahead, the way a father goes ahead on a mountain path to find the footing, and that someone had to follow and tell them their children were still waiting. He said that was what the deep words were for. Ragnfrid said it was a story for children. He said hers was."
+    },
+    {
+      "title": "In His Uncles' Paint",
+      "text": "When the morvalt broke the gates of Trollheim, the Valkyn went north to Midgard, where the trolls and kobolds had gone long before them, and became the people of Dyrfjall and Aegirhamn. Bonchar stayed. He took a pot of the red and black the morvalt paint their faces with, and painted his own, and walked into the middle city among them as if he had always been there.\n\nIt worked better than it should have. The morvalt are the Valkyn's uncles, from the same fires before the bread, and a Valkyn in paint who keeps his mouth shut looks like any of them. Bonchar did more than keep his mouth shut. He knew the Fathers' workshops and the Fathers' roads, and the morvalt did not, and he let them see a little of what he knew, enough for a few of them to start bringing him meat and calling him trollkarl, the sorcerer, in the borrowed tongue they use for titles. Dagar, who counts the days, is said to have given him a mark of his own on the wall, which is more than he gives anyone.\n\nHe spent years listening. He chose a chamber in the middle city that the Fathers had left empty, under the halls of counsel, where he said the dark was thinner than anywhere else in the city, and he sat in it with his eyes shut and listened for the road. The morvalt who had taken to him stood guard at its door. They did not know what he was listening for. They thought it was something the Mother would like.\n\nRagnfrid went back in once, in her own paint, to bring him out. She found him in his chamber with his eyes shut and asked him to come home. He told her he was close, and asked her not to touch him, because he could feel the road under his hands and did not want to lose it. She did not touch him. She went home, and told Hallveig long afterwards that she did not know, even then, which of them had been right."
+    },
+    {
+      "title": "The Door, and Eyolf's Strike",
+      "text": "He found it. The Valkyn do not know what he said or did, only what came after. The morvalt at the door of the chamber were gone, all of them, without a mark on the floor where they had stood, and in the chamber stood a thing with Bonchar's shape and a split down the middle of its face, and behind the split, where a face should go on into a head, there was the dark, and the dark went back further than the chamber did.\n\nIt came out of the dark after that, a piece at a time: the morkenhet, the darkness-things, man-high and heavy, with strength in them that a morvalt war-chief would envy. One came, and then another, and then another, and they did not stop. The morvalt of the middle city went to look and did not come back, and after that they did not go near the chamber, and the morvalt bestiaries still say nothing of the watchers who stood at its door except that they were there before the Rift, and are not now.\n\nRagnfrid's brother Eyolf took a Valkyn war-party down from Dyrfjall to bring Bonchar home, eleven of them, in paint. They found the chamber full of the morkenhet and the Rift standing at the back of it, lashing out with the dark at anything that came before it, and they cut at the shadows until their arms gave out, and more came through the split, and more. Eyolf saw what his war-party did not. He went through them to the thing at the back and struck it down, and as it fell the split closed, and every shadow in the chamber went back through the door it had come by, all at once, like smoke drawn up a chimney. Then there was only Bonchar on the floor, with his own face, breathing.\n\nThey tried to carry him home. They got him as far as the edge of the middle city, and he grew heavier with every step they took away from his chamber, until four of them could not lift him; and when they set him down he stood up whole and walked back to it, and sat down in his place, and shut his eyes. Eyolf left him there. The Valkyn say the thin place keeps him, and that he cannot be drawn far from it before it calls him home."
+    },
+    {
+      "title": "Do Not Touch the Listener",
+      "text": "He has stood in his chamber ever since with a sorcerer's face and a sorcerer's patience, as if listening. The Valkyn guides who take Midgard's companies through the middle city walk them past his door with their hands at their sides, and tell them the one thing every Valkyn child is told about Bonchar: do not touch the listener. If he is touched, the split opens, and the Rift is there again, and the door is open, and the dark comes through it for as long as anyone stands against it.\n\nNothing the Valkyn know will hold him in either shape. Their wise-women have sung their sleep-songs at him and the songs have gone over him; their trollkarls have bound him with the Fathers' own words, and the words have slid off. Ragnfrid said that was the Fathers' teaching too. They gave him more of themselves than they gave anyone, she said, and the Fathers were never held by anything.\n\nMidgard does not agree about him. The skalds of Jordheim say he is a warning against grief: the boy who would not let his fathers go, and opened a hole in the world to follow them. The runemasters say the morkenhet are not from anywhere; they are the dark of the Fathers' road itself, given a shape, and that the road is real. The Valkyn elders of Dyrfjall say both things are true, and that if Bonchar ever remembers what he was listening for, he will finish opening the door, and then everyone will know where the Fathers went.\n\nHallveig has one more thing to say about him, and she says it only at the bridge, on the way back up. Her grandmother asked her, near the end, to go into his chamber once, while he was himself, and not touch him, and tell him that the Valkyn were still standing on their own. Hallveig did. She says he opened his eyes and looked at her for a long time, and then he said: so am I. Then he shut them again and went on listening."
+    }
+  ],
+  "legend": "Trollkarl Bonchar is a Valkyn sorcerer standing still until you touch him; then he turns into the Rift and the real fight starts. Two facts matter. The Rift calls out a morkenhet every 10 to 20 seconds for as long as it is in combat, 5,000 health each and they hit hard, so the adds never stop on their own. And when the Rift dies, every morkenhet in the zone vanishes with it. So the classic answer is one or two groups on add control (the morkenhet are NOT CC-immune: stuns, mez and roots all work) while everyone else burns the Rift as fast as they can. The Rift itself is CC-immune, hits with energy and throws Rift Strike, 300 energy every 6 to 10 seconds that can't be interrupted. It has 30,000 health. Keep it in its chamber: drag it past its tether (about 3,500) and it walks home and resets, adds cleared. Use target-nearest on the Rift; it's easy to lose in the crowd. Back in 2003 it dropped nothing and people killed it anyway; these days the Rift's helm and leggings drop.",
+  "yells": {
+    "aggro": [
+      "Wait. Do not touch me. It is coming through. It is coming thr-",
+      "Do not touch me. It is so close. It is coming through.",
+      "The Fathers went this way. Did you know that? This way.",
+      "Wait. Wait. Listen.",
+      "Do not touch the listener. Did no one tell you?"
+    ],
+    "phases": [
+      {
+        "trigger": "formChange",
+        "text": "(Bonchar's face splits, and the dark behind it opens.)"
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "(Something crawls out of the Rift.)"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "(The dark keeps coming. The door is still open.)"
+      }
+    ],
+    "death": [
+      "Closed... it is closed... where did they go...",
+      "(The tear in the dark seals, and a sorcerer kneels.)",
+      "So am I... so am I..."
+    ],
+    "slay": [
+      "(The Rift swallows the fallen.)",
+      "(Something on the other side takes hold.)",
+      "(The dark closes over them.)",
+      "(The dark takes another through the door.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A sorcerer stands very still. The air behind him is thin.",
+      "The dark behind the sorcerer is too thin.",
+      "Valkyn guides keep their hands at their sides here."
+    ],
+    "phases": [
+      {
+        "trigger": "formChange",
+        "text": "Trollkarl Bonchar tears open. The Rift is here!"
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "Morkenhet crawl out of the Rift!"
+      }
+    ],
+    "realmFirstKill": "The door in Trollheim shuts. The dark goes home."
+  },
+  "botLines": {
+    "briefing": [
+      "bonchar turns into the rift when pulled. [add team|2 groups] on the morkenhet, rest on the rift",
+      "use target nearest for the rift",
+      "healers at the base of the stone, aggro magnets with them",
+      "dont pull the rift past its tether",
+      "the rift spawns a morkenhet every 10-20 sec forever. kill the rift and they all vanish",
+      "add team cc the morkenhet, they arent immune. rift is",
+      "rift strike 300 energy every 6-10s, cant interrupt",
+      "keep the rift in its room, tether is about 3500"
+    ],
+    "aftermathWin": [
+      "rift closed. no loot. [classic|typical]",
+      "helm of the rift dropped!",
+      "rift closed, morkenhet gone. smooth",
+      "bonchar's back to standing still. creepy",
+      "rift died and every morkenhet just poofed",
+      "shut the door, dark went home",
+      "rift helm!"
+    ],
+    "aftermathLoss": [
+      "morkenhet just kept coming",
+      "the adds got the healers at the stone",
+      "lost the rift target and nuked adds for 5 minutes",
+      "morkenhet piled up faster than we killed them",
+      "we killed morkenhet for 10 minutes and never touched the rift",
+      "pulled the rift too far and it walked home full",
+      "add team lost control and they ate the casters"
+    ],
+    "rumour": [
+      "heard the sorcerer in trollheim opened a hole to wherever the troll fathers went. [it opened him instead|didnt end well]",
+      "bonchar stayed in trollheim pretending to be morvalt for years",
+      "the morvalt that used to stand by the rift vanished when it opened",
+      "bonchar learned the deep words from the troll fathers themselves",
+      "valkyn kids get told dont touch the listener. thats bonchar",
+      "bonchar hid in morvalt paint for years in trollheim",
+      "a valkyn called eyolf shut the rift once and the dark went back through it all at once",
+      "they tried to carry bonchar out of trollheim. the further they got the heavier he got"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Bonchar",
+    "text": "One of the first [Valkyn] born after the fires, taught the deep words by the [Troll Fathers] themselves. He stayed in Trollheim in [morvalt] paint and opened the dark to follow the Fathers, and the dark came through him instead. When Eyolf struck the Rift down, every shadow went back through the door. Valkyn children are told: do not touch the listener."
+  },
+  "bookPage": "From the notes of Hallveig, the Valkyn guide. My grandmother knew Bonchar when he was young. She said he was the cleverest of all of us, and the saddest, because he was the only one the Fathers loved enough to teach the deep words. When they left he could not bear it. He said he would follow them, wherever they had gone. She told him the Fathers had left us so that we would have to stand on our own. He said that was a story for children. She said she did not know which of them had been right. She said she still did not know.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} closed the Rift in Trollheim in {minutes} minutes.",
+    "loss": "The Rift in Trollheim stayed open; {raidLeader}'s raid from {realm} fell to the morkenhet after {minutes} minutes."
+  }
+}
