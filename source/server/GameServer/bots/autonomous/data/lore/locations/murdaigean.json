@@ -174,7 +174,7 @@
   }
  },
  "book": {
-  "title": "The Green Dark, by Fiachra of the Path, ranger of Tir na Nog",
+  "title": "The Green Dark, by Cobthach of the Path, ranger of Tir na Nog",
   "pages": [
    "I was a ranger of the Path for twenty years before I was sent to teach the young in Murdaigean, and I tell you plainly that I have never been in a wood I liked less. The light comes down through the leaves green and thin and goes out an hour before it should. My grandmother told me the people of the west once kept their dead in these branches, wrapped in bark, until the birds had made clean bones of them, and that the wood was holy then. I believe her. A holy place that has been forgotten is the worst kind of place.",
    "The crawlers that root among the trees are pale and blind and many-legged, and I am told by the druids that they came for the old bones and stayed when the bones ran out. The spiders came after the crawlers, and they are patient in a way I do not like in anything. When a death spider spins across a path, the foresters say, the wood has closed the path, and they do not walk it until the web is down. In the fourth summer they closed the whole west road. I spent that summer cutting webs and burying recruits.",
@@ -203,7 +203,7 @@
    }
   },
   "hibernia": {
-   "story": "Hibernia's bards say Murdaigean is theirs by its name and by its dead: the people of the west kept their dead in its branches when it was holy, and the bards sing that the old dead are still somewhere in the high boughs, watching the realms fight in their wood. Fiachra of the Path's account is read to every Hibernian recruit before Murdaigean. Hibernia's foresters burned the west road open after the Spider Summer, and say the others only helped.",
+   "story": "Hibernia's bards say Murdaigean is theirs by its name and by its dead: the people of the west kept their dead in its branches when it was holy, and the bards sing that the old dead are still somewhere in the high boughs, watching the realms fight in their wood. Cobthach of the Path's account is read to every Hibernian recruit before Murdaigean. Hibernia's foresters burned the west road open after the Spider Summer, and say the others only helped.",
    "legend": "Hibernians say the west road is theirs because their foresters burned it open, and that you should never cut a branch in Murd, because the old dead are up there. Nobody cuts branches in Murd anyway.",
    "botLines": {
     "lore": [

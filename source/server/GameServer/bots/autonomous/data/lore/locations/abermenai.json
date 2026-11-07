@@ -171,7 +171,7 @@
   }
  },
  "book": {
-  "title": "The Drowned Shore, by Brother Cadoc, chaplain to Albion's first recruits",
+  "title": "The Drowned Shore, by Brother Deiniol, chaplain to Albion's first recruits",
   "pages": [
    "I went down to the shore with the first of our young, in the third summer of the fields, and I blessed the portal keep, and I write this so that whoever follows me will know what they are blessing. It is a shore. The river runs out over a flat of sand into a grey strait, and the reeds stand higher than a boy. Above the ford there is an old fort, rebuilt in stone, and it is held by men of no realm. I was told that the shore-folk who built the first fort called it by a word that means only the mouth of the river. They left it when the sea came in.",
    "The sea went out again. I have seen the line it left, a crust of salt on the stones of the keep at the height of a man's head, and I have seen what it left on the flats. They walk at dusk, grey and slow, and they weep. Our recruits call them the forlorn, and I have not corrected them. They do not seem to know us. They walk toward any light. A squire of ours carried a lantern out onto the sand the first night to see them better, and I will not write what happened, only that I have forbidden lanterns on the flats.",
@@ -182,7 +182,7 @@
  "bosses": [],
  "realmTakes": {
   "albion": {
-   "story": "Albion tells Abermenai as its own field. Its chaplains blessed the Albion portal keep a few days before the others were blessed, and Brother Cadoc's account of the first muster is read to Albion's recruits before they go; the Church teaches that the forlorn spectres are souls who drowned without a priest, and that a recruit who dies on the sand should be prayed over before anything else is done. Albion's squires call the field the Chapel Shore.",
+   "story": "Albion tells Abermenai as its own field. Its chaplains blessed the Albion portal keep a few days before the others were blessed, and Brother Deiniol's account of the first muster is read to Albion's recruits before they go; the Church teaches that the forlorn spectres are souls who drowned without a priest, and that a recruit who dies on the sand should be prayed over before anything else is done. Albion's squires call the field the Chapel Shore.",
    "legend": "Albion players say the beach is theirs because they blessed it first, and joke that the spectres hate Albion for it. Old Albion hands still say a quick prayer over a dead groupmate on the sand before the rez, out of habit more than faith.",
    "botLines": {
     "lore": [
@@ -200,7 +200,7 @@
    }
   },
   "hibernia": {
-   "story": "Hibernia's druids say the drowned shore is a thin place, where the water and the land and the otherworld meet, and that the forlorn spectres are not lost at all but waiting for a ferry that still runs on the other side. The druid who swore the Ferryman's Peace is remembered in Tir na Nog by name, Una of the reeds, and her people sing that she kept it alone after the others forgot. Hibernia's recruits call the field the Ford of the Dead.",
+   "story": "Hibernia's druids say the drowned shore is a thin place, where the water and the land and the otherworld meet, and that the forlorn spectres are not lost at all but waiting for a ferry that still runs on the other side. The druid who swore the Ferryman's Peace is remembered in Tir na Nog by name, Sarnat of the reeds, and her people sing that she kept it alone after the others forgot. Hibernia's recruits call the field the Ford of the Dead.",
    "legend": "Hibernians say the boogeys are the shore's own Good Folk gone sour, and some of them still leave a crust of bread on the portal keep's wall before they ride out. The boogeys attack them anyway, which the Hibernians say proves the point.",
    "botLines": {
     "lore": [
