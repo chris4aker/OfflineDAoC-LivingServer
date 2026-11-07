@@ -1,0 +1,129 @@
+{
+  "id": "chieftain-caimheul",
+  "name": "Chieftain Caimheul",
+  "catalogKey": "marfach-caverns/chieftaincaimheul",
+  "locationId": "marfach-caverns",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health, a realm-raid final. He fights with sword and shield and a two-handed weapon and changes according to where his foe stands.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/ChieftainCaimheul.cs"
+    },
+    {
+      "text": "From the front he slams with the shield to stun; against someone at his side he takes his two-hander (thrust, strength 400, parry); against a stun-immune foe he taunts and slashes.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/ChieftainCaimheul.cs"
+    },
+    {
+      "text": "At 50% health he enters a second phase and keeps the strength of 400.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/ChieftainCaimheul.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "'Caimheul' may echo Gaelic Caimbeul, 'crooked mouth'; to verify.",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Caimheul ruled the Breifine hills before anyone built a keep on them, and he was famous for one thing: he was never in the wrong stance. Face him and he met you shield-first, and the shield came at your head. Slip to his side and the long spear was already turning. He was buried with all of it. The keeners sang him back up, and he came back exactly as he was, the crooked mouth set in the same half-smile, reading his enemies' feet as he always had. Once he is badly hurt he stops bothering with the shield. The old songs say he only ever did that twice in life, and both times the other side ran.\n\nHe was not a good man and the songs do not pretend he was. Caimheul held the Breifine hills by being harder than his neighbours, and his crooked mouth, the keeners' daughters say, was not a smile but a scar from a fight he won while losing half his face. His people loved him anyway, the way hill people love a lord who keeps the raiders off, and when he died they gave him the best burial the hills had ever seen.\n\nHe was sung back exactly as he was. He still reads his enemies' feet. Face him and he comes shield-first, and the shield is a hammer: a stunning slam for whoever is not already reeling, a taunting slash for whoever cannot be stunned. Slip to his side and he has already dropped the shield and turned the long weapon, thrusting, with the strength of two men and a parry where his block was. Wound him to the half and he stops bothering with the shield at all, as he did twice in life, both times when the other side was about to break. He does not know he is dead, or does not care. He knows his hall, his champion Avartack before the door, and the three women singing in the dark whose song he can almost remember.",
+  "legend": "Where you stand decides how he hits. In front he shield-slams and stuns; at his side he swaps to the two-hander and hits much harder. Main tank holds the front, everyone else stays behind him, not beside. After half health he keeps the big weapon out: heal the tank hard. Positioning is the whole fight. Main tank faces him alone, everyone else behind; nobody on the flanks. After half, his two-hander never leaves his hands, so the healers bring their biggest heals for the tank. Raid leaders in Breifine still draw his fight in the dust with a stick: a circle for him, a line for the tank, and everyone else behind the line.",
+  "yells": {
+    "aggro": [
+      "Who stands in my hall? Show me your feet.",
+      "My hall. My hills. Who sent you?",
+      "Stand still. I want to see where you put your feet."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Put the shield down. This needs both hands."
+      }
+    ],
+    "death": [
+      "Sing me... the right way... this time...",
+      "Avartack... the ford... hold the ford..."
+    ],
+    "slay": [
+      "You stood in the wrong place.",
+      "Wrong place.",
+      "Bury that one with the hounds."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Three weapons hang ready. Their owner stands.",
+      "Stand where he wants you, and you die."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Caimheul casts his shield aside!"
+      }
+    ],
+    "realmFirstKill": "Chieftain Caimheul is sung on at last."
+  },
+  "botLines": {
+    "briefing": [
+      "caimheul reads where you stand. front gets shield slams, sides get the big two-hander. [stay behind him|no side positions]",
+      "after half he keeps the two-hander out. [healers on the main tank|big heals ready]",
+      "main tank faces him, everyone else behind, [nobody on the flanks|no side positions]",
+      "front slam stuns, [purge the tank|break the stun] fast",
+      "after half he keeps the two-hander, [biggest heals on the tank|heal hard]"
+    ],
+    "aftermathWin": [
+      "caimheul down. [nobody stood at his side|great positioning everyone]",
+      "crooked mouth is down. [nobody stood beside him|perfect positioning]",
+      "the keening stopped for a moment when he fell. [heard it|me too]",
+      "caimheul down, breifine can sleep. [grats|nice]"
+    ],
+    "aftermathLoss": [
+      "melee stood at his flank and the two-hander [ate them|cleaved them]. behind, not beside",
+      "someone ran round his side and he [spun and cleaved|took the two-hander out]",
+      "the tank got stunned and [nobody purged|we lost it]",
+      "after half he two-handed the tank to pieces. [save heals|heal harder]"
+    ],
+    "rumour": [
+      "[heard|someone said] caimheul was a breifine chieftain before the keeps. the ladies sang him up",
+      "[heard|someone said] caimheul's crooked mouth was a scar from a fight he won",
+      "[word is|heard] caimheul only dropped his shield twice in life",
+      "the hill families still say caimheul kept the raiders off. [not a good man|loved anyway]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Caimheul",
+    "text": "The old chieftain of the Breifine hills, sung back from his grave. He meets the front with his shield and the flank with his two-hander. Stand where he does not want you."
+  },
+  "bookPage": "They say Caimheul taught his sons with a stick in the yard: stand there, and I do this; stand there, and I do that. Every man in his war-band knew that where you put your feet decided how you died. The keeners sang him back with that lesson in him, and he teaches it still to every raid that reaches his hall. The raid leaders of Hibernia teach it now the same way, with a stick in the dust outside Breifine: a circle for the chieftain, a line for the tank, and everyone else behind the line. Behind him, they say. Never beside. Nóra adds that her mother learned it the same way, from her own mother, before the realm had raids at all.",
+  "chronicle": {
+    "win": "{realm} went down into Marfach under {raidLeader} and silenced Chieftain Caimheul in {minutes} minutes.",
+    "loss": "{realm} lost {raidLeader}'s raid to Chieftain Caimheul in the Marfach Caverns after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "avartack-the-champion",
+      "relation": "his champion"
+    },
+    {
+      "id": "black-lady",
+      "relation": "the keener who planted his oak"
+    },
+    {
+      "id": "red-lady",
+      "relation": "a keener of his funeral"
+    },
+    {
+      "id": "blue-lady",
+      "relation": "a keener of his funeral"
+    },
+    {
+      "id": "ancient-black-oak",
+      "relation": "the tree that grows from his grave"
+    }
+  ]
+}

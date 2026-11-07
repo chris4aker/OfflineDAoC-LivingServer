@@ -1,0 +1,117 @@
+{
+  "id": "ancient-black-oak",
+  "name": "Ancient Black Oak",
+  "catalogKey": "marfach-caverns/ancientblackoak",
+  "locationId": "marfach-caverns",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 68, 40,000 health, raised by the Black Lady when she spawns and killed when she dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "It never pulls itself (aggro level 0); it fights only whoever attacks it. Half its blows release Ancient Root: 700 body damage over 800 with a long snare.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "It cannot be hurt outside its tether; its linked pack (AncientOakBaf) has no NPCs in the release world.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Patch 1.66zd made Marfach's withered oaks a plant type.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/k69yq"
+    }
+  ],
+  "story": "The oak on Caimheul's grave was planted green. It is black now, black as the bog oak turf-cutters dig from the peat, and its roots have gone through the chieftain's bones and on down toward the road below. It does not hate anyone. It does not do anything at all unless it is struck; then the old root-strength comes up out of the floor and tears at everyone near, and holds them where they stand. The withered oaks in the upper caves are its seedlings. The tree is the Black Lady's grief given wood, and it lives exactly as long as she does.\n\nBog oak is the hardest wood in Hibernia. Trees that fell into the peat a thousand years ago come up black and hard as iron, and the turf-cutters make chairs of it for the chieftains' halls. The Black Lady's oak is bog oak standing, the keeners' daughters say: a tree that should have died and been buried and come up black, except that it never fell. Her grief keeps it upright.\n\nIt does not want anything. That is what makes it the most honest thing in Marfach. It does not pull, does not hunt, does not answer the Ladies' keen. It waits. Strike it and the old root-strength comes up out of the floor around it, a blast of root and stone that tears at everyone near and holds them where they stand for a long half-minute. In the release world the tree's kin, whatever else was meant to come when it is struck, are not there; it brings nobody. The raids that fought it were always the ones that had lost the Lady and turned on the nearest large thing. When the Black Lady dies the oak dies with her, all at once, like a held breath stopping.",
+  "legend": "Do not fight it. It will not start anything, it hits the whole area with roots if you do, and it dies on its own the moment the Black Lady dies. The only raids that fought the oak were the ones that lost the Lady and turned on the nearest big thing. The tree you don't hit. If the raid must fight it, everyone outside its root-blast but the tanks, and cure the snare. Better: put the raid on the Lady and let the tree die by itself. The keeners' daughters ask one more thing: when it dies, do not cut a piece for a trophy. Bog oak from Marfach comes up warm, they say, and it does not cool.",
+  "yells": {
+    "aggro": [
+      "The black wood groans. The roots rise.",
+      "Roots shift under the floor like sleepers turning.",
+      "Something black and very old notices you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Roots burst from the floor and hold fast."
+      }
+    ],
+    "death": [
+      "The black oak stops, like a held breath.",
+      "The roots let go of the bones."
+    ],
+    "slay": [
+      "The roots close over the fallen.",
+      "Held fast. Held forever.",
+      "Into the roots.",
+      "The tree takes what is given."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Bark like wet coal. It does not move. Yet.",
+      "Its roots are wrapped around a chieftain's bones."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ancient roots tear up through the floor!"
+      }
+    ],
+    "realmFirstKill": "The Ancient Black Oak is felled at last."
+  },
+  "botLines": {
+    "briefing": [
+      "the oak is not the target. it dies with the black lady. [if you hit it, you pay for the roots|dont]",
+      "do not hit the oak. it never starts a fight. [hands off|leave it]",
+      "if someone hits it, everyone but tanks [out of the roots|step back] and cure snare",
+      "the oak dies when the black lady does. [kill her|thats the plan]"
+    ],
+    "aftermathWin": [
+      "oak dropped when the lady did. [never touched it|zero damage on the tree, perfect]",
+      "oak dropped with the lady, nobody touched it. [perfect|thats the way]",
+      "the roots let go of the bones, i swear i saw it. [creepy|cool]",
+      "not one point of damage on the tree. [discipline|proud]"
+    ],
+    "aftermathLoss": [
+      "someone hit the oak and the roots [snared the whole raid|held us all]",
+      "someone hit the oak and the roots [snared everyone|held us all]",
+      "we fought the tree for twenty minutes. [it was never the target|why]",
+      "rooted in place while the ogresses ate the healers. [dont hit the tree|ugh]"
+    ],
+    "rumour": [
+      "[heard|someone said] the withered oaks upstairs are the black oak's seedlings",
+      "[heard|someone said] the black oak is bog oak that never fell. her grief keeps it standing",
+      "[word is|heard] the oak was meant to bring friends when struck but nobody comes",
+      "turf cutters make chieftains' chairs from bog oak. [the black oak is one too big|imagine]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "black oak",
+    "text": "Planted green on the chieftain's grave, black now as bog oak. It does nothing unless struck, and it dies when the Black Lady dies."
+  },
+  "bookPage": "From Nóra's book: the turf-cutters of Breifine will not dig within sight of the Marfach hills, because the bog oak there comes up warm. I have seen a piece. It was black and hard and it was warm in my hand, as if it had been held a long time. My mother said all the bog oak in those hills is the black tree's kin, its roots run so far. The great oak itself stands over the chieftain's grave in the dark and does nothing unless struck. It is the Lady's grief, she said. Grief does nothing unless you strike it. Then it holds you fast.",
+  "chronicle": {
+    "win": "{realm} went down into Marfach under {raidLeader} and silenced the Ancient Black Oak in {minutes} minutes.",
+    "loss": "{realm} lost {raidLeader}'s raid to the roots of the Ancient Black Oak in the Marfach Caverns after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "black-lady",
+      "relation": "the keener whose grief it is"
+    },
+    {
+      "id": "chieftain-caimheul",
+      "relation": "the chieftain whose grave it grows from"
+    }
+  ]
+}

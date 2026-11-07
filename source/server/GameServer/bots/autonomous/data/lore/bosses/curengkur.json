@@ -1,0 +1,78 @@
+{
+  "id": "curengkur",
+  "name": "Curengkur",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/curengkur",
+  "locationId": "hy-brasil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 75, 30,000 health, in Allta Fearann. It brings its nest with it: Curengkur's Nest Radiation, an acidic cloud dealing 100 every 3 seconds for 30 seconds.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Curengkur.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It heals itself (200) while it fights.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat: Curengkur stalks Allta Fearann and the mantids only say the name in a whisper.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "The mantids of Allta Fearann are not afraid of much. They are afraid of Curengkur. It hunts them, the Sylvan say, and it hunts them where they nest, and its own nest is a thing of burning air that eats through shell and skin alike. Wherever Curengkur settles, the nest settles with it, and the air around it sears. It mends itself as it fights. The mantids will not say its name above a whisper. The Sylvan have started doing the same.",
+  "legend": "Its nest burns the air around it with an acid cloud: cure and heal through it, and do not stand in the cloud longer than you must. It heals itself, so steady damage. If the mantids go quiet, turn round, the old hibs say.",
+  "yells": {
+    "aggro": [
+      "The mantids fall silent. Something has come."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The air around Curengkur's nest sears."
+      }
+    ],
+    "death": [
+      "The nest goes cold."
+    ],
+    "slay": [
+      "Into the nest."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The mantids have gone quiet. Something hunts here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Curengkur's nest burns the air!"
+      }
+    ],
+    "realmFirstKill": "Curengkur is dead. The mantids dare to speak again."
+  },
+  "botLines": {
+    "briefing": [
+      "curengkur's nest makes an acid cloud. [cure and heal through it|get out of the cloud], it heals itself"
+    ],
+    "aftermathWin": [
+      "curengkur down. [the mantids can say its name now|grats]"
+    ],
+    "aftermathLoss": [
+      "everyone stood in the nest cloud and [melted|died to the acid]"
+    ],
+    "rumour": [
+      "the mantids in allta fearann only whisper curengkur. [now i know why|smart bugs]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Curengkur",
+    "text": "The hunter of the mantids of Allta Fearann, whose nest burns the air. The mantids only whisper its name."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} rode out to Allta Fearann under {raidLeader} and killed Curengkur in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at Allta Fearann by Curengkur after {minutes} minutes."
+  }
+}

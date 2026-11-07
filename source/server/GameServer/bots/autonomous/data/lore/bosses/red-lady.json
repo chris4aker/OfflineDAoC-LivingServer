@@ -1,0 +1,122 @@
+{
+  "id": "red-lady",
+  "name": "Red Lady",
+  "catalogKey": "marfach-caverns/redlady",
+  "locationId": "marfach-caverns",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health. Every 20-30 seconds she calls summoned innocents (up to nine alive); they cast disease.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/RedLady.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Her Soul Drain hits everyone within 350 for 100 matter damage every 3 seconds for 30 seconds.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/RedLady.cs"
+    },
+    {
+      "text": "She cannot be hurt outside her tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "The Red Lady keened for the innocent: the herders and children and hostages who died in Caimheul's wars and were owed a song of their own. When the voice from below changed her keen, they came back first. They come still, whenever she is threatened, small and sick and bewildered, and they carry their sickness to whoever they touch. She does not use them cruelly. She simply cannot bear to let them go. Her own song settles on those who stand near her as a slow drawing-out of the soul, a grief that takes as it grieves.\n\nShe was the middle sister, the one who sang for those who had no one else to sing for them. In a chieftain's wars it is not only warriors who die: herders die, and children, and hostages, and the old who could not run. The Red Lady's keen was for them, and she was proud of it, the keeners' daughters say, because it was the one keen nobody paid for.\n\nWhen the voice changed the song, they came back first. They come still, whenever she is threatened, eight at a time and never more than nine about her: small, sick, bewildered figures in the clothes of a hundred years ago, and they carry their sickness to whoever they touch. She does not send them as weapons. She calls them home, and they come, and they are sick. Her own keen settles on those who stand near her as a slow drawing-out of the soul, a grief that takes as it grieves, and every few breaths it settles again. The Red Lady and the Blue are the only ones the Black Lady still listens to, and when either is threatened, the keen from the grove grows louder.",
+  "legend": "Her innocents keep coming every half minute and they spread disease: kill them fast, cure the sick. Do not stand bunched near her or her soul drain eats the whole group. Fight her in her room. Some say it is cruel to kill the innocents. They are already dead. Clerics should carry cure disease above everything. The innocents are weak, a few blows each, so AoE them as they arrive and keep the drain off the healers by keeping them back from her. Superstition: never whistle a lullaby in her room. She takes it for an answer, and more of the little ones come.",
+  "yells": {
+    "aggro": [
+      "Little ones, come home. Someone is here.",
+      "Little ones, come home. Someone is here.",
+      "Who will sing for you, when you are gone? I will."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Come back, come back, all of you."
+      }
+    ],
+    "death": [
+      "Go on, little ones... go on now...",
+      "Go on, little ones... go on now...",
+      "Sister... I let them go..."
+    ],
+    "slay": [
+      "Another for my keen.",
+      "Another for my keen.",
+      "Hush now. Come home.",
+      "No one paid for you either."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Small figures stand in a ring, swaying.",
+      "Small figures stand in a ring, swaying.",
+      "A woman in red is singing a lullaby."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "The Red Lady keens. The innocent return."
+      }
+    ],
+    "realmFirstKill": "The Red Lady's keen is ended. The innocent rest."
+  },
+  "botLines": {
+    "briefing": [
+      "red lady calls diseased innocents every half minute. [kill them fast|aoe the innocents], cure disease, dont stack near her",
+      "cure disease on the innocents' targets, [clerics|cure it fast]",
+      "healers stay back, her drain hits everyone close",
+      "aoe the innocents as they come, [they go down fast|a few hits each]"
+    ],
+    "aftermathWin": [
+      "red lady down. [the little ones just faded|they all lay down at once]",
+      "red lady down and the little ones just lay down. [sad|at peace]",
+      "nobody diseased at the end. [good clerics|grats]",
+      "the black lady's keen got louder when she died. [creepy|heard it too]"
+    ],
+    "aftermathLoss": [
+      "too many innocents up and everyone diseased. [kill the adds|cure faster]",
+      "too many innocents, everyone diseased. [kill the adds|cure faster]",
+      "healers stood in her drain. [stay back|move]",
+      "ignored the little ones because it felt bad. [they are already dead|kill them]"
+    ],
+    "rumour": [
+      "[heard|someone said] the innocents in marfach are the dead from the chieftain's old wars",
+      "[heard|someone said] the red lady was the keener nobody paid. she sang for the poor dead",
+      "[word is|heard] the innocents in marfach wear clothes a hundred years out of date",
+      "the black lady sings louder when the red lady is hurt, they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Red Lady",
+    "text": "She keened for the innocent dead of the chieftain's wars, and they come back to her, sick and lost. Her keen drains the souls of those near her."
+  },
+  "bookPage": "From Nóra's book: the Red Lady was my mother's favourite of the three, which my mother said was a terrible thing to admit. She sang for the ones nobody paid to mourn, the herders and the children and the old who die in a chieftain's wars without a name. When the song changed, they came back to her first, sick and frightened, and she cannot bear to send them away. The realm's raiders must kill the little ones as they come. My mother asked me to write this here: they are already dead. It is not cruelty to let them lie down.",
+  "chronicle": {
+    "win": "{realm} went down into Marfach under {raidLeader} and silenced the Red Lady in {minutes} minutes. The innocent lay down at last.",
+    "loss": "{realm} lost {raidLeader}'s raid to the Red Lady and her innocents in the Marfach Caverns after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "black-lady",
+      "relation": "her eldest sister keener"
+    },
+    {
+      "id": "blue-lady",
+      "relation": "her sister keener"
+    },
+    {
+      "id": "chieftain-caimheul",
+      "relation": "the chieftain they sang back"
+    },
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "the power below that changed their song"
+    }
+  ]
+}

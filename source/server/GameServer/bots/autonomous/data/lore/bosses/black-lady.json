@@ -1,0 +1,145 @@
+{
+  "id": "black-lady",
+  "name": "Black Lady",
+  "catalogKey": "marfach-caverns/blacklady",
+  "locationId": "marfach-caverns",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 40,000 health, a realm-raid final. When she spawns she raises the Ancient Black Oak; when she dies the Oak dies with her.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Each brain turn in combat she has a 20% chance to call an Ogress (up to five alive); Ogresses go for healer and caster classes. She casts Void Strike (400 cold, radius 350) whenever she has a target.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "She cannot be hurt outside her tether. On 2026-11-05 the raid drew her 1,618 from her spawn, she leashed home at full health, and the raid turned to the Oak.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Dying with her, the Oak lets the raid win by killing her alone: on 2026-11-05 she died in 1.2 minutes and Hibernia won Marfach with no wipe.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    }
+  ],
+  "story": "The Black Lady was the eldest of the three keeners and the one who first looked back. She planted the oak on Caimheul's grave with her own hands, as the old families did for their great dead, and when the voice from below offered her an endless grief she gave the tree her life to keep. It went black as bog oak and grew through the roof of the world. It lives because she does, and not one moment longer.\n\nShe is the coldest of the three. Her keen falls on those near her as a strike of empty cold, and she hates healers above all things, for a healer is a person who refuses to let anyone go. Her ogresses, great grieving women of the hills she has gathered to her, come at her call and go straight for whoever mends or sings. Fight her in her own grove; drawn away from her grave she is untouchable, as if the dark itself stood between.\n\nWhat does she want? The keeners' daughters say she wants what she was promised: a grief that never has to end. Every raid that comes down threatens it, because a raid is a group of the living who mean to make the dead lie down. So she fights them as a mourner fights a stranger who tries to close the coffin lid. She keeps her sisters close, the Red Lady keening for the innocent and the Blue Lady keening for the blades, and between them the three hold the road for the voice that changed their song.\n\nHer ogresses are the great grieving women of the hill country, ogre-kin who came down the road in their own mourning and stayed with her. They come at her call, up to five at a time, and go straight for those who mend and those who sing, because healing is the thing a mourner cannot forgive. The oak's life and hers are one: on the night the realm's raid first cut her down in a little over a minute, the black tree simply stopped, without a sound. On an earlier night the raid had drawn her away from her grave, and she walked home whole while they hacked at the tree, and the raid ran out of time.",
+  "legend": "Kill her, not the tree: the Oak dies the moment she does, and it never starts a fight on its own. Tanks peel her ogresses off the healers and casters, because that is who they hunt. Do not stand clumped near her or the cold hits everyone. Fight her at home: pull her too far and she walks back at full health. Superstition says the Black Lady remembers the healers who outlived her ogresses, and goes for them first the next time. The realm's clerics shrug and stand behind the tanks anyway. Nicknames: the eldest, the black keener, the mother of the oak. The raid leaders call her simply 'the target', so nobody forgets.",
+  "yells": {
+    "aggro": [
+      "You did not come to grieve. Then you will be grieved for.",
+      "The oak and I have waited. You are late.",
+      "Sing, sisters. The living have come again."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Sisters of the hills, the healers first."
+      },
+      {
+        "trigger": "health<=30",
+        "text": "The oak will drink you, as it drank him."
+      },
+      {
+        "trigger": "health<=60",
+        "text": "Sisters, sing! The living have come to close the lid!"
+      }
+    ],
+    "death": [
+      "The keen... ends...",
+      "The tree... the tree first... let it go first..."
+    ],
+    "slay": [
+      "I will sing you back. You will not thank me.",
+      "Another for the keen.",
+      "I will sing you back. You will not thank me."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A black oak grows through the roof of the world.",
+      "A woman in black stands under it, singing.",
+      "Ogresses kneel at the roots, weeping."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Ogresses answer the Black Lady's keen!"
+      },
+      {
+        "trigger": "death",
+        "text": "The black oak shudders and dies with her."
+      }
+    ],
+    "realmFirstKill": "The Black Lady's keen is ended. The oak is dead."
+  },
+  "botLines": {
+    "briefing": [
+      "black lady, not the oak. the oak dies when she does and wont pull itself. [leave the tree alone|nobody hit the tree]",
+      "her ogresses go for healers and casters. tanks [peel them|taunt them off] the second they spawn",
+      "fight her at her spot. drag her out and she [leashes home full|resets]",
+      "tanks [face her away from the group|turn her], her void strike hits everyone close",
+      "we have about an hour, [dont waste it on the tree|black lady only]"
+    ],
+    "aftermathWin": [
+      "black lady down and the oak [fell over with her|died on the spot]. told you leave the tree",
+      "ogresses peeled, healers alive, lady dead. [textbook|perfect]",
+      "lady down in a minute and the oak just stopped. [told you|leave the tree]",
+      "every ogress peeled, every healer alive. [beautiful|well tanked]",
+      "breifine will light candles tonight. [nice|good]"
+    ],
+    "aftermathLoss": [
+      "we dragged her out, she went home full, and half the raid [hit the oak|started on the tree]. again tomorrow",
+      "ogresses got the healers. [tanks|need more peels]",
+      "timed out again on the tree. [she is the target|not the oak]",
+      "her void strike hit the clump. [spread|face her away]",
+      "she walked home full and we [didnt notice|kept hitting the oak]"
+    ],
+    "rumour": [
+      "[heard|someone said] the black lady planted that oak on the chieftain's grave. bog oak, black right through",
+      "[word is|my guild says] if you kill the black lady the tree just [dies|falls over]. dont waste time on it",
+      "[heard|someone said] the ogresses are ogre women who came down the road in mourning and stayed",
+      "[word is|heard] the black lady goes for the healers who outlived her ogresses last time",
+      "the old families light a candle when the black lady falls. [saw one in breifine|true]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Black Lady",
+    "text": "The eldest of Marfach's three keeners. She planted the black oak on the chieftain's grave and gave it her life. Kill her and the oak dies too. Her ogresses hunt healers."
+  },
+  "bookPage": "From Nóra's book: my mother said the Black Lady was the best keener of her day, the one the great families sent for when a chieftain died. She planted the oak on Caimheul with her own hands, which is a keener's privilege, and when the voice came she gave the tree her breath. Now they are one grief in two bodies. When the realm's raid went down at last and cut her down quickly, the tree did not wait to be felled; it simply stopped. My mother wept when she heard. Not from grief, she said. From relief. The best of us, let go at last.",
+  "chronicle": {
+    "win": "{realm} went down into Marfach under {raidLeader} and silenced the Black Lady in {minutes} minutes. Her black oak died with her.",
+    "loss": "{realm} lost {raidLeader}'s raid to the Black Lady and her ogresses in the Marfach Caverns after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "red-lady",
+      "relation": "her sister keener"
+    },
+    {
+      "id": "blue-lady",
+      "relation": "her sister keener"
+    },
+    {
+      "id": "chieftain-caimheul",
+      "relation": "the chieftain they sang back"
+    },
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "the power below that changed their song"
+    },
+    {
+      "id": "ancient-black-oak",
+      "relation": "the tree that is her grief"
+    }
+  ]
+}

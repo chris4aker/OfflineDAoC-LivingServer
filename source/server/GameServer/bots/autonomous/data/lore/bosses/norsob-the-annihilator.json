@@ -1,0 +1,114 @@
+{
+  "id": "norsob-the-annihilator",
+  "name": "Norsob the Annihilator",
+  "catalogKey": "tur-suil/norsobannihilator",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 72, 30,000 health; Allakhazam lists him as a giant. He takes 20% less from melee and cannot be hurt beyond his tether of 1,800.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/NorsobAndSargan.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He shares a script with Sargan the Conqueror; their halls lie on the tower's west side.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/NorsobAndSargan.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat: 'norsob the annihilator lives in tur suil. with a name like that, i am not asking questions'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Balor keeps two warlords, and Norsob is the one he sends when there is nothing to be kept. Annihilator is not a boast; it is a job. When a Sylvan village sheltered the scouts who spied on Tur Suil, it was Norsob who went, and there is a clearing in the Vale where the village was. He is a giant among Fomorians, slow to anger and slower to stop, and he holds the west hall as he would hold a battlefield: he does not chase, he does not give ground, and beyond the edge of his hall nothing reaches him. He and Sargan do not love each other. Each thinks the other's work is untidy.\n\nThe Sylvan remember the village. It stood at the edge of the Vale, and it sheltered three Sylvan scouts who had spied on the tower, and when Balor heard of it he sent Norsob. There is a clearing there now, with nothing in it, not even ash. That is what annihilator means in Tur Suil.\n\nHe is a giant among Fomorians, slow to anger and slower to stop, and he holds the west hall as he would hold a battlefield: no chasing, no ground given, and beyond the hall's edge nothing reaches him. His blades turn a fifth of every blow. He despises Sargan, who conquers instead of destroying, who keeps banners and prisoners and taxes, and who named the soldiers on the stair; Sargan despises him back. Balor keeps them in separate halls because the one time they shared a room a wall came down. When one of them dies, the other is said to laugh.",
+  "legend": "A big straight fight: he shrugs off some melee and he hits hard. Fight him in his hall, because outside his tether he cannot be hurt and walks home. One good tank and steady heals, and do not wake Sargan's hall at the same time. One tank, steady heals, everyone else on him. Never pull the far west hall at the same time, and when Sargan has already fallen, expect Norsob to fight like a man with nothing left to prove. Superstition: lay a leaf in his hall when he falls, for the village at the edge of the Vale. The Sylvan raiders always do, and they do not explain.",
+  "yells": {
+    "aggro": [
+      "Nothing will be left. Not even the name.",
+      "Another village. Another clearing.",
+      "I do not leave names. I do not leave anything."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I have unmade villages. You are fewer."
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Sargan is dead? Ha! Now let me show you tidiness."
+      }
+    ],
+    "death": [
+      "Sargan... will say... he told me so...",
+      "Leave nothing... of me either..."
+    ],
+    "slay": [
+      "Annihilated.",
+      "Nothing left.",
+      "Not even the name."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The west hall smells of old fires.",
+      "Norsob holds here. Sargan is not welcome."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Norsob the Annihilator will not give ground."
+      }
+    ],
+    "realmFirstKill": "Norsob the Annihilator is himself undone."
+  },
+  "botLines": {
+    "briefing": [
+      "norsob is a tank and spank but he hits like a cart. [fight him in his hall|dont drag him], hes immune outside it",
+      "norsob is immune outside his hall, [fight him there|no pulling]",
+      "one tank, steady heals, [everyone on him|simple fight]",
+      "never pull sargan's hall at the same time. [one warlord at a time|seriously]"
+    ],
+    "aftermathWin": [
+      "norsob down. [with a name like that|annihilated the annihilator]",
+      "norsob down, the sylvan will be glad. [the village|for the scouts]",
+      "annihilated the annihilator. [someone had to say it|ok fine]",
+      "no adds from the far hall this time. [clean|good pull]"
+    ],
+    "aftermathLoss": [
+      "pulled norsob and sargan's hall at once. [never again|one warlord at a time]",
+      "pulled both warlords and [they did not fight each other|both fought us]",
+      "the tank fell over and nobody [picked him up|caught it]",
+      "tried to drag him out and he [was immune|reset]"
+    ],
+    "rumour": [
+      "[heard|someone said] norsob burned a sylvan village in the vale for hiding scouts",
+      "[heard|someone said] norsob wiped a sylvan village off the vale for sheltering scouts",
+      "[word is|heard] the one time norsob and sargan shared a room a wall came down",
+      "norsob laughs when sargan dies, they say. [nice coworkers|charming]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Norsob",
+    "text": "One of Balor's two warlords, the one sent when nothing is to be left. He holds the west hall and nothing reaches him beyond it."
+  },
+  "bookPage": "Muirgen writes: I went to the clearing. It is at the edge of the Vale of Balor, a round open place in the wood with nothing in it, no ash, no stones, not even the marks of walls. The Sylvan say a village stood there and sheltered three scouts who had spied on the tower, and that Balor sent Norsob. I asked how a village could leave no ash. The Sylvan warden with me said that is the difference between Norsob and fire. Fire leaves something. We stood there a long time. When we left, the warden picked a leaf and laid it in the middle of the clearing, as the Sylvan do for their dead, and I did the same.",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Norsob the Annihilator in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Norsob the Annihilator after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "balor",
+      "relation": "the king they serve"
+    },
+    {
+      "id": "sargan-the-conqueror",
+      "relation": "his rival warlord"
+    }
+  ]
+}

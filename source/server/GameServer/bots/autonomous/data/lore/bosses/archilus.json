@@ -1,0 +1,73 @@
+{
+  "id": "archilus",
+  "name": "Archilus",
+  "catalogKey": "open-world/archilus",
+  "locationId": "hy-brasil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 58, in World's End (394935, 269327). He 'will start to shake violently' and spawn young death shrouds.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Archilus.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He shares a model with Galladoria's Conservator (817).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Archilus.cs; source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs"
+    }
+  ],
+  "story": "Things that die at World's End do not always lie down, and the shrouds they were wrapped in sometimes walk on their own. Archilus is the oldest of the death shrouds, a winding-sheet with nobody left in it, and he has learned a trick no other shroud knows. When he is attacked he shakes himself, violently, like a sheet on a line in a gale, and new shrouds tear off him and fly at his attackers. The Sylvan burn their dead to stop it happening. Archilus is what happens when they cannot.",
+  "legend": "He shakes off young death shrouds when he is attacked: kill them or hold them, then him. A small group can do it if it does not panic. Spread so his shrouds do not catch everyone at once, and keep a healer free for whoever gets wrapped.",
+  "yells": {
+    "aggro": [
+      "The empty shroud rises and spreads its folds."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Archilus shakes violently, and shrouds tear loose!"
+      }
+    ],
+    "death": [
+      "The shroud falls flat. It is only cloth."
+    ],
+    "slay": [
+      "Wrapped."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Empty winding-sheets flap on the wind. No wind blows."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Archilus shakes off a flock of shrouds!"
+      }
+    ],
+    "realmFirstKill": "Archilus, eldest of the death shrouds, is torn apart."
+  },
+  "botLines": {
+    "briefing": [
+      "archilus shakes off baby shrouds. [kill them as they come|aoe the shrouds], then him"
+    ],
+    "aftermathWin": [
+      "archilus down. [just a sheet in the end|only cloth]"
+    ],
+    "aftermathLoss": [
+      "the shrouds wrapped the healer and [that was it|we lost it]"
+    ],
+    "rumour": [
+      "[heard|someone said] the sylvan burn their dead so they dont end up like archilus"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Archilus",
+    "text": "The oldest of the death shrouds of World's End, a winding-sheet with nobody in it. When struck he shakes off new shrouds."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} rode out to World's End under {raidLeader} and killed Archilus in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at World's End by Archilus after {minutes} minutes."
+  }
+}

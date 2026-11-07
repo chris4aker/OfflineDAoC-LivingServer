@@ -1,0 +1,73 @@
+{
+  "id": "marfoirwort",
+  "name": "Marfoirwort",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/marfoirwort",
+  "locationId": "hy-brasil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 80, 40,000 health, the strongest open-field named of Hy Brasil, in Cothrom Gorge. It casts Marfoirwort Life-leech.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Marfoirwort.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Irish marfóir means 'killer'; the 'wort' is a plant (to verify). Compare marfach, 'deadly' (Marfach Caverns).",
+      "provenance": "original",
+      "source": "https://www.wiktionary.com/wiki/marfach"
+    }
+  ],
+  "story": "Marfoirwort means the killer-plant, or near enough, and the Sylvan who named it were not being poetic. It is the oldest thing growing in Cothrom Gorge and it grows on what it kills. It does not need roots in soil. It reaches out and drinks the life out of whatever walks near it, and what it drinks makes it whole. There are bare patches round it where nothing has grown for an age. It is stronger than the octonoid mothers, stronger than Kontar, stronger than anything else on the open isle, and it has never moved an inch.",
+  "legend": "The strongest open-field named on Hy Brasil: bring a raid, not a group. It leeches life to heal itself, so burst it hard and keep the healers topping whoever it drinks from. It will not chase; fight it where it grows.",
+  "yells": {
+    "aggro": [
+      "The killer-plant stirs. The air tastes thin."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Marfoirwort drinks, and grows whole."
+      }
+    ],
+    "death": [
+      "The killer-plant withers to its roots."
+    ],
+    "slay": [
+      "Drunk to the dregs."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Bare ground in a wide ring. Nothing grows here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Marfoirwort leeches the life from all near it!"
+      }
+    ],
+    "realmFirstKill": "Marfoirwort, the killer-plant, is dead at last."
+  },
+  "botLines": {
+    "briefing": [
+      "marfoirwort is level eighty and leeches life to heal. [burst it|big damage fast], healers keep its target up"
+    ],
+    "aftermathWin": [
+      "marfoirwort down. [first green shoot in an age next week|the gorge will grow again]"
+    ],
+    "aftermathLoss": [
+      "it drank faster than we hit. [more dps|bring a raid not a group]"
+    ],
+    "rumour": [
+      "[heard|someone said] nothing has grown around marfoirwort in an age"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Marfoirwort",
+    "text": "The killer-plant of Cothrom Gorge, strongest of the open isle's named. It drinks the life of anything near it, and never moves."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} rode out to Cothrom Gorge under {raidLeader} and killed Marfoirwort in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at Cothrom Gorge by Marfoirwort after {minutes} minutes."
+  }
+}

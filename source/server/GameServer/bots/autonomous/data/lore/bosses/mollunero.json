@@ -1,0 +1,73 @@
+{
+  "id": "mollunero",
+  "name": "Mollunero",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/mollunero",
+  "locationId": "hy-brasil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "World's End holds three octonoid mothers on its shore, each spawning young octonoids: Balere, Mollunero and Zytka.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Mollunero: level 75, 30,000 health, the strongest of the three, with seven or eight young (levels 50-55); her young keep a tether of 2,600.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Mollunero.cs; docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Mollunero is the strongest of the three mothers, the one the Sylvan fishers do not name when they are on the water. Her young are bigger than her sisters' and meaner, and there are many of them. She lies in the deep pool below the World's End cliffs and lets the brood do her fighting, as a queen lets her guard. When a raid has killed every child she has, she comes out of the water herself. That is the part the fishers tell their grandchildren about.",
+  "legend": "The strongest of the octonoid mothers and her young are tough. Clear the brood first, every one, with a proper group, then take her by the water. Do not pull her with her sisters' broods nearby, or the shore turns into one long fight.",
+  "yells": {
+    "aggro": [
+      "The deep pool boils. The strongest mother wakes."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "Her children are dead. Mollunero rises."
+      }
+    ],
+    "death": [
+      "The pool is still."
+    ],
+    "slay": [
+      "Pulled under."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A deep pool under the cliff. Arms move in it."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "Mollunero surges out of the deep pool!"
+      }
+    ],
+    "realmFirstKill": "Mollunero, strongest of the mothers, is slain."
+  },
+  "botLines": {
+    "briefing": [
+      "mollunero's young are tougher than her sisters'. [clear the brood|young first], then her"
+    ],
+    "aftermathWin": [
+      "mollunero down. [the fishers will sing about this|grats]"
+    ],
+    "aftermathLoss": [
+      "we ignored the young and [they swarmed the healers|wiped us]"
+    ],
+    "rumour": [
+      "[heard|someone said] the sylvan fishers wont say mollunero's name on the water"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Mollunero",
+    "text": "The strongest of the octonoid mothers, who lets her large brood fight first. When they are gone, she comes out of the pool."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} rode out to World's End under {raidLeader} and killed Mollunero in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at World's End by Mollunero after {minutes} minutes."
+  }
+}

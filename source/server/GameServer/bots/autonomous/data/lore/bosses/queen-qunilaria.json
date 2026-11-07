@@ -1,0 +1,111 @@
+{
+  "id": "queen-qunilaria",
+  "name": "Queen Qunilaria",
+  "catalogKey": "tur-suil/queenqunilaria",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 72 in the script (75 on Allakhazam), an animal type. When struck she has a 25% chance to call three minions (up to four alive), and when she dies 15-22 minions pour out.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Tur Suil also holds burrowing monstrosities and tunneling horrors.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    },
+    {
+      "text": "She cannot be hurt outside her tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Balor's tower stands on a crag, and the Fomorians never stopped digging under it. The diggers are not Fomorian. They are the brood of Qunilaria, a queen of burrowing things the Fomorians found in the deep rock of Hy Brasil and bound with a promise: dig toward the roots of the isle, and the king will feed you. She has dug faithfully. Her nest lies far below the tower now, a hollow full of clicking, and her young come at every blow struck against her. When she dies the nest empties all at once, every egg and grub still in her body bursting out to avenge her.\n\nWhat is Balor looking for, under his tower? Qunilaria does not know and does not care. The Fomorians found her deep in the black rock of Hy Brasil, a queen of burrowing things with a nest that went down further than any Fomorian had ever dug, and they made her a bargain: dig toward the roots of the isle, and the king will feed you. She has dug, and she has been fed.\n\nHer brood is everything that tunnels in Tur Suil: the burrowing monstrosities, the tunneling horrors, the small clicking things in the walls. When she is struck a few of them come up through the floor to defend her, a handful at a time, never more than four about her; when she dies, every grub and egg still in her bursts out at once. The Sylvan say her tunnels have reached something soft and old far below, and that the queen's brood came back up from it smelling of sap. If that is so, Balor's diggers are very close to the Root of Galladoria, and nobody on Hy Brasil knows what happens when the two meet.",
+  "legend": "She calls minions when she is hit, a few at a time, and dumps a crowd of them when she dies. Kill the small waves as they come, then stack AoE on her corpse for the last one. Do not chase her out of the nest. Kill the small waves steadily so they never stack past four. Before her last tenth, AoE casters stand behind the tank, healers ready; the death flood is the real fight. Nicknames: 'the bug queen', 'the digger'. Superstition: stamp three times on the floor of her nest before you leave, so the brood knows the ground above is taken.",
+  "yells": {
+    "aggro": [
+      "The nest clicks and stirs all at once.",
+      "Click. Click. The whole nest answers.",
+      "The floor opens. Many legs."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Her brood claws up out of the floor."
+      }
+    ],
+    "death": [
+      "The queen splits. Her brood boils out!",
+      "The nest empties all at once!"
+    ],
+    "slay": [
+      "The brood will eat.",
+      "Down the tunnel with this one.",
+      "Food for the brood.",
+      "The brood is fed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is hollow. Something is digging.",
+      "Tunnels lead down toward the roots of the isle."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "Qunilaria's nest empties in a flood!"
+      }
+    ],
+    "realmFirstKill": "Queen Qunilaria is dead. The digging stops."
+  },
+  "botLines": {
+    "briefing": [
+      "qunilaria calls bugs when hit and [dumps twenty|a flood pops] when she dies. aoe on her corpse",
+      "kill her small waves as they come, [never let them stack|four max]",
+      "aoe behind the tank before her last tenth, [death flood|the brood pops]",
+      "dont chase her out of the nest. [immune outside|fight at home]"
+    ],
+    "aftermathWin": [
+      "queen down, brood down. [nice aoe|cleaned up]",
+      "death flood handled, [nobody died|clean]",
+      "the clicking stopped. [finally|silence]",
+      "queen down, the digging stops for a while. [good|for now]"
+    ],
+    "aftermathLoss": [
+      "killed the queen then [the brood killed us|wiped to the bugs]. every time",
+      "the flood got us [again|after she died]",
+      "small waves stacked while we hit her. [kill the adds|focus]",
+      "chased her out of the nest. [immune|bad idea]"
+    ],
+    "rumour": [
+      "[heard|someone said] qunilaria's brood is digging toward the roots of hy brasil for balor",
+      "[heard|someone said] qunilaria's tunnels reached something soft that smells of sap",
+      "[word is|heard] balor's diggers are getting close to galladoria's roots",
+      "the brood in tur suil came back up [smelling of sap|covered in roots], they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Qunilaria",
+    "text": "A queen of burrowing things, bound by the Fomorians to dig beneath Tur Suil. Her brood answers every blow, and floods out when she dies."
+  },
+  "bookPage": "From Muirgen's notes on Hy Brasil: the Sylvan do not fear the Fomorian soldiers as they fear Qunilaria's diggers. Soldiers march; diggers go where nobody can follow. The queen was found in the black rock beneath the crag, and the Fomorians bargained with her, food for tunnels. Her brood digs downward without rest. A Sylvan warden told me her tunnels have broken into something soft and very old, and that the burrowers came back up smelling of sap. I asked what that meant. He said: it means the eye and the Root are going to meet. Nobody, he said, has ever thought about what happens then, and nobody wants to start.",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Queen Qunilaria and her brood in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Queen Qunilaria's brood after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "balor",
+      "relation": "the king they serve"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "the Root her tunnels may be digging toward"
+    }
+  ]
+}

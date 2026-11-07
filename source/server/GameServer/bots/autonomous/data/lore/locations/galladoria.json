@@ -1,0 +1,341 @@
+{
+  "id": "galladoria",
+  "name": "Galladoria",
+  "realm": "Hibernia",
+  "regions": [
+    191
+  ],
+  "summary": "The hollow under Hy Brasil where the roots of the titan Olcasgean end, guarded by everything his rot has grown.",
+  "facts": [
+    {
+      "text": "Shrouded Isles (2002) gave Hibernia Hy Brasil, the lost home of the Sylvan, who asked the realm for help against the Fomorians.",
+      "provenance": "mythic",
+      "source": "https://archive.rpgamer.com/news/Q3-2002/080502g.html"
+    },
+    {
+      "text": "The Sylvan are bark-skinned folk of Hy Brasil's forests, allied with Hibernia's races against the ever-encroaching Fomorians.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/news/69207-new-shrouded-isles-information.html"
+    },
+    {
+      "text": "Galladoria is region 191, Hibernia's epic dungeon; the realm raid's final is Olcasgean (level 87).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Its halls hold the Olcasar (stonemelders, tainters, deepstalkers, a spikelord, a belladonna), Uaimh diggers and delvers, spindlers, sporites, lurkers, bottom feeders, hypogean beasts and deep shrouders.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Every 25-45 seconds an untargetable 'Eyes Watching You' effect hangs over one random player for five seconds; it does nothing else.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "At the waterfall bridge a voice announces intruders, a deep voice answers, and the four Corrupt Primals rise; Olcasgean wakes only when all four are dead.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs"
+    },
+    {
+      "text": "In May 2003 Olcasgean was killed by 140 players after an attempt by 340 failed.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/olcasgean-has-been-defeated.125921/ (via docs/RAID-SIZES.md)"
+    },
+    {
+      "text": "Bot chat calls Olcasgean a titan banished to World's End whose roots taint the isle. World's End is a real Hy Brasil zone (region 181); the banishment itself is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines; source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Irish olc means 'evil, bad'; the rest of the name Olcasgean is unglossed (to verify). Uaimh is Irish for 'cave'; eas for 'waterfall'.",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "The Olcasgean Initializator starts the last room when a raid bot comes within 1,500 of the waterfall bridge (39652, 60831); 20 seconds of voices later it spawns the four primals, four Earthmenders and eleven Watery Vortices.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Region 191 is the only region of the zone Galladoria; its raid is epic-hibernia, suggested size 100.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Living Server raid runs: run 12 (2026-10-15) held at the bridge for 40 minutes without starting the room, which led to the bridge trigger; runs 14-18 reworked the Earthmenders; the raid wiped at the Spindler Broodmother and at Tine on 2026-11-05.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "The Watery Vortex is an invulnerable hazard only when AllowInvulnerableHazards is on; today it takes normal damage.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "The galleries also hold sylvanshades by bot-chat report ('sylvanshades in galladoria'); the catalog's navigation list does not name them.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "The Sylvan say Hy Brasil was not always an island. Before the Fomorians, before the Tuatha, before anything with a name, the land was one great body, and the oldest thing in it was Olcasgean. They do not call him a god. They call him the Root. When the first Sylvan woke in the forests he was already old and already angry, and the forests drove him out to the end of the world, the place still called World's End. He went, but roots do not leave. They go down.\n\nGalladoria is where they end. It is a hollow under the isle, wet and warm and breathing, where the titan's sap pools and goes bad. Everything that drinks it changes. The Olcasar are stone that learned to hate. The Uaimh were cave-folk until the cave began to tell them what to do. Spores bloom on the walls and spindlers breed in the dark, and some of the Sylvan who came down to cut the root never went home; their shades walk the halls still. Things in the deep have been given work: a mechanism that pumps the world's soul like a heart, a conservator that hoards it, a falls that guards the last door.\n\nBeyond the falls is the sanctum, and in it the Root sleeps, kept by the four elements of the isle, turned to his service. When intruders reach the bridge the walls speak. Visitors swear the stone watches them on the way in, and they are not wrong: now and then an eye opens in the dark over one of them, looks, and closes again. The Sylvan only nod. He is tired, they say. He is not asleep.\n\nThe halls of Galladoria run downward in rings, the way water runs round a drain. Near the mouth the walls are still stone, and the things that live there are only hungry: lurkers, cave drifters, bottom feeders out of the pools. Further in, the stone softens. Roots as thick as towers come through the ceiling and go down through the floor, and the Uaimh have dug their dens between them, and the Olcasar stand along the galleries like statues that have not decided to be statues. A great sporite colony blooms in one gallery, spores shaken long ago from Xaga's staff. In another the Spindler Broodmother sits in a chamber whose floor is soft and moves. In a third a knot of root and wet stone beats like a heart, the mechanism that keeps the sap of the isle moving, and not far off the Conservator sits at its glowing pool and hoards what the mechanism pumps. Aroon keeps his hall with nine shadows, and Hurionthex keeps his with nine faces. Every one of them is something the Root has bent.\n\nAt the bottom of the rings is the waterfall. Easmarach is its will, and while it lives the current throws back anyone who comes close. Past the falls lies the bridge, and past the bridge the sanctum, where the four elements of the isle stand guard over a sleeper. Raiders who have been there all say the same thing about the bridge: the walls speak before you see anything. A voice that comes from everywhere announces that intruders have entered the sanctum. A deeper voice answers it, slowly, spelling out a word it seems to have forgotten. Then the four guardians speak together and promise to protect, and they rise.\n\nWhy does it matter to Hibernia? Because the Sylvan asked. When Hy Brasil came out of the mist and the Sylvan came down to the shore for swords, the Fomorians were the enemy they named. The Root was the enemy they did not name, because they did not believe anyone could help with it. Every season the rot climbs a little higher out of the hollow: trees sicken in World's End, springs go sour in Domnann, and Sylvan who drink from them begin to change. A realm that can go down into Galladoria and cut the Root, even for a while, is a realm the Sylvan will follow. Hibernia did it first in the spring of the year the isles came, with a hundred and forty, after three hundred and forty had failed. The Sylvan of Domnann still sing the names of the hundred and forty.",
+  "legend": "A hundred is enough if they listen; three hundred is not enough if they don't. Clear the halls in order and do not wake the deep things two at a time. At the bridge, kill the four primals and nothing else matters until they are dead: air first with spells, fire with healers ready, water when it comes back from its pool, earth after its four menders. Then he wakes, and he is two of him. Raiders call him the Root, the bridge the Gate, and the last fight 'two-trunk', because he wakes as two. Old hands say: do not drink the water anywhere past the mouth, do not touch a vortex, and never stand under the roots when the eyes open. The eyes are harmless, everybody says, and everybody moves when one opens over them. Superstitions: the first to cross the bridge sings, so the voice knows you are not afraid; the last out leaves a leaf on the bridge for the Sylvan who never came home.",
+  "atmosphere": {
+    "firstEntry": [
+      "The walls are warm, and they are breathing.",
+      "Roots as thick as towers. Something drinks here.",
+      "You feel eyes in the stone.",
+      "The water past the mouth does not run out clean.",
+      "Somewhere below, something vast is breathing.",
+      "The Sylvan sang their dead before you came in."
+    ],
+    "areas": [
+      {
+        "name": "the mouth of Galladoria",
+        "x": 32072,
+        "y": 29524,
+        "z": 17051,
+        "radius": 1200,
+        "lines": [
+          "Every root in Hy Brasil ends somewhere. Here.",
+          "Lurkers in the pools, and the stone still hard.",
+          "The roots begin here, and go down."
+        ]
+      },
+      {
+        "name": "the waterfall bridge",
+        "x": 39652,
+        "y": 60831,
+        "z": 11893,
+        "radius": 2500,
+        "lines": [
+          "A voice from everywhere: intruders in the sanctum.",
+          "Beyond the falls, something vast is tired.",
+          "Four voices answer it: we shall protect."
+        ]
+      },
+      {
+        "name": "the pool of the Conservator",
+        "x": 31246,
+        "y": 40938,
+        "z": 13433,
+        "radius": 900,
+        "lines": [
+          "The water glows. Something is saving it.",
+          "Coins of light lie on the bottom, hoarded.",
+          "Stand close, or it does not feel you at all."
+        ]
+      },
+      {
+        "name": "the falls of Easmarach",
+        "x": 37918,
+        "y": 50523,
+        "z": 9865,
+        "radius": 1200,
+        "lines": [
+          "The current pulls at your legs like hands.",
+          "The falls roar like a held breath let go.",
+          "Behind the curtain, a ledge, and a long way back."
+        ]
+      },
+      {
+        "name": "the brood chamber",
+        "x": 21283,
+        "y": 51707,
+        "z": 10876,
+        "radius": 1200,
+        "lines": [
+          "The floor is soft. It moves.",
+          "Egg-sacs hang from the roof like fruit.",
+          "Something large shifts in the middle of the floor."
+        ]
+      },
+      {
+        "name": "the mechanism's chamber",
+        "x": 49406,
+        "y": 31276,
+        "z": 14392,
+        "radius": 1200,
+        "lines": [
+          "A pulse in the stone, slow as a heart.",
+          "Root, stone and wet flesh, all one engine.",
+          "The bottom feeders gather where it beats."
+        ]
+      },
+      {
+        "name": "Aroon's hall",
+        "x": 51478,
+        "y": 43359,
+        "z": 10369,
+        "radius": 1500,
+        "lines": [
+          "Nine shadows stand where none were cast.",
+          "A keeper-tree, rotten at the heart, waits.",
+          "Each shadow holds a different way to die."
+        ]
+      },
+      {
+        "name": "the Uaimh den",
+        "x": 38123,
+        "y": 44719,
+        "z": 14468,
+        "radius": 1200,
+        "lines": [
+          "Gnawed bones, stacked with care.",
+          "The den-keeper's smell is everywhere."
+        ]
+      },
+      {
+        "name": "the Olcasar galleries",
+        "x": 39115,
+        "y": 36863,
+        "z": 14977,
+        "radius": 1500,
+        "lines": [
+          "Statues that have not decided to be statues.",
+          "Rubble on the floor, and it twitches."
+        ]
+      },
+      {
+        "name": "Xaga's garden",
+        "x": 27482,
+        "y": 54821,
+        "z": 12935,
+        "radius": 1300,
+        "lines": [
+          "Two lights circle the room, fire and something pale.",
+          "Seeds sprout in the cracks, and they are wrong."
+        ]
+      },
+      {
+        "name": "the sporite gallery",
+        "x": 37527,
+        "y": 48247,
+        "z": 13781,
+        "radius": 1200,
+        "lines": [
+          "The blooms turn toward you. All of them.",
+          "Cold spores hang in the air like breath."
+        ]
+      },
+      {
+        "name": "the hall of many faces",
+        "x": 55672,
+        "y": 43536,
+        "z": 12417,
+        "radius": 1300,
+        "lines": [
+          "Footprints of four creatures, ending in one.",
+          "Something here is wearing a borrowed shape."
+        ]
+      },
+      {
+        "name": "the sanctum",
+        "x": 39237,
+        "y": 62644,
+        "z": 11685,
+        "radius": 1500,
+        "lines": [
+          "The Root sleeps here, and he is tired.",
+          "Two trunks of stone and root, one will."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "galladoria is where olcasgean's roots end. [everything down there drank the sap|the whole place is rotten with him]",
+      "the sylvan call olcasgean the root. [not a god|they wont say god]. just the root",
+      "theres a voice at the bridge in galladoria. [it says intruders|it knows youre there] before you see anything",
+      "some sylvan went down to cut the root and [never came out|stayed]. the sylvanshades are them, my guild says",
+      "the voice at the galladoria bridge [spells out protect|says p r o t e c t] like it forgot the word. gives me chills",
+      "a hundred and forty hibs killed olcasgean the first time after three hundred and forty failed. [the sylvan sing their names|domnann remembers]",
+      "galladoria goes down in rings, like water round a drain. [every ring is worse|the bottom is the root]",
+      "the four primals at the bridge were the isle's own wind, water, fire and stone. [the root bent them|sylvan grieve for them]",
+      "the eyes in the galladoria walls are harmless [they say|apparently]. everyone still moves when one opens over them",
+      "xaga's staff seeded the sporites in galladoria. [her garden|her mess], we clean it up",
+      "the conservator hoards the isle's sap and the mechanism pumps it. [kill both and the walls go quiet|thats the heart and the purse]",
+      "when olcasgean wakes he is two of him. [two trunks, one root|we call it two-trunk]"
+    ],
+    "rumour": [
+      "[heard|someone said] the eyes in the galladoria walls [opened on him|looked right at him] three times in one run",
+      "word is the waterfall in galladoria [got stronger|is pushing people back] again. easmarach must be up",
+      "[heard|someone said] the trees in world's end are [sicker|greyer] since the last galladoria raid failed",
+      "[word is|heard] a sylvan from domnann went down to galladoria alone to find her brother. [nobody stopped her|brave or mad]",
+      "somebody touched a watery vortex at the bridge [and it took half his health|and got thrown]. dont",
+      "[heard|someone swears] the voice at the bridge said a name last night. [a sylvan name|one of the hundred and forty]",
+      "the springs in domnann tasted [sour|wrong] this week. [the root is stirring|galladoria again]",
+      "[heard|someone said] the realm raid wiped on the broodmother and the special forces had to [come in|bail us out]"
+    ],
+    "tell": [
+      "galladoria is the hib epic dungeon. olcasgean at the bottom, four primals before him, a hundred people minimum",
+      "the root's hollow under hy brasil. clear the halls, kill the four primals at the bridge, then the titan wakes",
+      "is galladoria hard? its the hib epic. a hundred people who listen, more if they dont. the bridge is the real test",
+      "where is galladoria? under hy brasil, where olcasgean's roots end. the sylvan in domnann can point you",
+      "whats at the bottom of galladoria? the four primals at the bridge, then olcasgean, who wakes up as two",
+      "galladoria in order: halls first, then easmarach at the falls, then the bridge. dont skip the falls"
+    ]
+  },
+  "loremaster": {
+    "intro": "Galladoria. The hollow at the end of the roots, under Hy Brasil. The Sylvan will tell you about the [Root] if you sit with them long enough. Everything down there has drunk his sap: the [Olcasar], the [Uaimh], the things that keep the [world soul]. And at the bottom, past the falls, the [four guardians].",
+    "topics": {
+      "Root": "Olcasgean, whom the forests drove out to World's End before the first songs. His roots went down instead of away. The Sylvan say he is tired. They do not say he is asleep.",
+      "Olcasar": "Stone that learned to hate. Their geomancer can tear a piece off himself and send it to fight, and call his fallen back up from the floor.",
+      "Uaimh": "The cave-folk. Uaimh is only the old word for a cave. Their lairmaster runs home when he is hurt, and he is worse at home.",
+      "world soul": "The sap of the isle, as the Sylvan see it. Down there a mechanism pumps it and a conservator hoards it, and both will spend it on you.",
+      "four guardians": "Air, water, fire and earth, the isle's own elements, turned to keep the Root's sleep. While one stands, he does not wake. When the last falls, he does.",
+      "Sylvan": "Bark-skinned folk of Hy Brasil's forests. They asked Hibernia for swords against the Fomorians, and did not dare ask for help against the [Root].",
+      "World's End": "The far edge of Hy Brasil, where the forests drove the [Root] before the first songs. Its trees sicken whenever he stirs.",
+      "eyes": "Now and then an eye opens in the stone over one of the raid, looks, and closes. It does nothing. The Sylvan say he is tired, not asleep.",
+      "bridge": "The last way to the sanctum. When you reach it the walls speak, the [four guardians] answer, and the fight begins whether you are ready or not."
+    }
+  },
+  "book": {
+    "title": "What the Sylvan Told Us of the Root",
+    "pages": [
+      "Set down by Aodhan, bard of Tir na Nog, who sat a winter with the Sylvan of Domnann. I asked the old Sylvan woman who kept the fire why her people do not go down into Galladoria. She said they did. A hundred of her kin went down with axes to cut the Root where it ends, and the Root let them walk a long way in before it began to drink them. Some of them are still there, she said, and they are not unhappy. That is the worst of it. She would not say more that night, and I did not ask, for her hands were shaking on the fire-iron.",
+      "Of the Root himself she told me this. He was old when the forest was young, and the forest did not love him. It pushed him to the edge of the world and he went, and he has been there since, at World's End, thinking. His roots kept going. They run under the whole isle, and where they end they have made a hollow like a mouth, and the water that runs down into it does not come out clean. She called the hollow by its name, Galladoria, and then spat into the fire, which I had never seen a Sylvan do.",
+      "Of the things in the hollow: everything that drinks the sap changes. The Olcasar were stone and became stone that hates. The Uaimh were cave-folk and became the cave's servants. Xaga was one of their own, a keeper of seeds, and she went down willingly to learn what grew there, and she learned. Aroon was a keeper-tree and is now a keeper of nothing but himself. Hurionthex wears any face. There is a heart down there that pumps the sap and a miser that hoards it. She named each one, slowly, as if counting the dead.",
+      "The four that keep his sleep are the isle's own. Wind and water, fire and stone: they were the land's before they were his, and the Sylvan grieve for them as for kin gone wrong. When a stranger crosses the bridge they speak with one voice and say they will protect. Then the Root answers from beneath the falls, and he sounds very tired. Those who heard it say tired is not the same as weak. When the four fall he rises, and he rises as two, for a root that is cut grows another trunk.",
+      "In the spring after the isle came out of the mist, Hibernia went down. Three hundred and forty went first and came back fewer. A hundred and forty went next, with the Sylvan's own songs in their ears, and they cut him down. The old woman told me that night the springs of Domnann ran sweet for a month. Then they soured again, slowly, the way they always do. She was not bitter about it. A root is cut, she said, and the tree lives. That is why the realm must keep going down."
+    ]
+  },
+  "bosses": [
+    "olcasgean",
+    "corrupt-primal-of-air",
+    "corrupt-primal-of-water",
+    "corrupt-primal-of-fire",
+    "corrupt-primal-of-earth",
+    "aroon-the-urlamhai",
+    "conservator",
+    "easmarach",
+    "giant-sporite-cluster",
+    "hurionthex",
+    "olcasar-geomancer",
+    "organic-energy-mechanism",
+    "spindler-broodmother",
+    "uaimh-lairmaster",
+    "xaga",
+    "tine",
+    "beatha"
+  ],
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root",
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the Root sleeps at its bottom"
+    },
+    {
+      "id": "hy-brasil",
+      "relation": "the isle above it"
+    },
+    {
+      "id": "tur-suil",
+      "relation": "the Fomorians' tower on the same isle"
+    }
+  ]
+}

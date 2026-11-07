@@ -1,0 +1,73 @@
+{
+  "id": "dremcis-fuiloltair",
+  "name": "Dremcis Fuiloltair",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/dremcisfuiloltair",
+  "locationId": "hy-brasil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 70, 30,000 health, in Cothrom Gorge. He calls his stag Beomarbhan and four to six fuilslathach (blood blobs).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/DremcisFuiloltair.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Irish fuil 'blood' + óltóir 'drinker': Fuiloltair, blood-drinker; fuilslathach may be 'blood-slime' (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Dremcis is a blood-drinker, as his name says plainly in the old tongue, and he rides out of Cothrom Gorge on a stag that ought to be dead. Wherever he has fed, the blood he spilled does not soak away. It gathers itself into clots that crawl after him, the fuilslathach, and he calls them as a huntsman calls hounds. His stag Beomarbhan comes at his whistle. The Sylvan of the gorge say he was a hunter of their own people once, who hunted too long in the split earth and learned to like the taste.",
+  "legend": "He brings his stag Beomarbhan and a handful of blood-blobs: hold the stag, AoE the blobs, kill Dremcis. Or kill the stag first if your tanks are thin. Do not let the fight drift far from the gorge floor, where more blood waits to get up.",
+  "yells": {
+    "aggro": [
+      "Fresh blood. The gorge is generous tonight."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Beomarbhan! To me! And you, my little clots."
+      }
+    ],
+    "death": [
+      "My blood... on my own gorge..."
+    ],
+    "slay": [
+      "Drunk dry."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Blood on the stones that will not soak away."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Blood crawls up from the stones to Dremcis!"
+      }
+    ],
+    "realmFirstKill": "Dremcis Fuiloltair is dead. The gorge drinks him."
+  },
+  "botLines": {
+    "briefing": [
+      "dremcis brings his stag and blood blobs. [hold the stag|tank beomarbhan], aoe the blobs, burn dremcis"
+    ],
+    "aftermathWin": [
+      "dremcis down. [the blood blobs just melted|nice]"
+    ],
+    "aftermathLoss": [
+      "the stag got loose on the casters. [tank the stag|hold beomarbhan]"
+    ],
+    "rumour": [
+      "[heard|someone said] dremcis was a sylvan hunter who learned to like the taste"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Dremcis",
+    "text": "The blood-drinker of Cothrom Gorge, who rides a stag that ought to be dead and calls the clots of spilled blood after him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} rode out to Cothrom Gorge under {raidLeader} and killed Dremcis Fuiloltair in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at Cothrom Gorge by Dremcis Fuiloltair after {minutes} minutes."
+  }
+}

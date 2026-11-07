@@ -1,0 +1,73 @@
+{
+  "id": "beomarbhan",
+  "name": "Beomarbhan",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/beomarbhan",
+  "locationId": "hy-brasil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health; Dremcis Fuiloltair calls him and he fights beside his rider.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/DremcisFuiloltair.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Irish beo 'living' + marbhán 'corpse': Beomarbhan, the living corpse (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Beomarbhan was the finest stag in Cothrom Gorge, and Dremcis rode it to death. It did not stop. Its name in the old tongue means something like a living corpse, and it looks it: its hide hangs loose on its bones, its eyes are white, and it still comes at its rider's whistle as faithfully as it ever did. The Sylvan pity it more than they fear it. They say killing it is a kindness. It does not seem to agree.",
+  "legend": "He comes when Dremcis calls: a tank holds him away from the healers while the raid kills Dremcis, or the raid kills him first if there are tanks to spare. He hits like a charging stag, because he is one.",
+  "yells": {
+    "aggro": [
+      "A dead stag lowers its antlers."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Beomarbhan bellows, a sound like a crypt door."
+      }
+    ],
+    "death": [
+      "The stag lies down at last."
+    ],
+    "slay": [
+      "Gored."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Hoofprints with no blood in them."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Beomarbhan charges!"
+      }
+    ],
+    "realmFirstKill": "Beomarbhan the dead stag is at rest."
+  },
+  "botLines": {
+    "briefing": [
+      "beomarbhan is dremcis' stag. [one tank on him|keep him off the healers]"
+    ],
+    "aftermathWin": [
+      "the stag is down. [poor thing|kindness really]"
+    ],
+    "aftermathLoss": [
+      "nobody held the stag and it [charged the healers|ran through the group]"
+    ],
+    "rumour": [
+      "[heard|someone said] dremcis rode beomarbhan to death and it never noticed"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Beomarbhan",
+    "text": "Dremcis's stag, ridden to death and still coming at its rider's whistle. Its name means something like living corpse."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} rode out to Cothrom Gorge under {raidLeader} and killed Beomarbhan in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at Cothrom Gorge by Beomarbhan after {minutes} minutes."
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "id": "cronwort",
+  "name": "Cronwort",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/cronwort",
+  "locationId": "hy-brasil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health, in Cothrom Gorge. Six Breanworts spawn with it and fight together; tether 2,600.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Cronwort.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Irish bréan means 'putrid, stinking'; 'cron' is unglossed (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "In the split earth of Cothrom Gorge the rot grows in flower-shapes, and Cronwort is the biggest of them, a great weed with a stem like a tree and a smell like a battlefield in summer. It never grows alone. Six breanworts, the stinking weeds, crowd around it as nettles crowd round a dock, and when it is touched they all turn at once. The Sylvan pull its seedlings wherever they find them. They have not found the root. Some of them think there is only one plant in the whole gorge, and that every weed in it is Cronwort under another name.",
+  "legend": "It comes with six breanworts: AoE them down or hold them, then the big one. Keep it near its patch; it walks home if dragged. Breathe through your mouth, the old hibs say, and do not let the casters stand downwind of the weeds.",
+  "yells": {
+    "aggro": [
+      "The stinking weeds turn toward you all at once."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "A wave of rot-stench rolls off Cronwort."
+      }
+    ],
+    "death": [
+      "The great weed wilts and blackens."
+    ],
+    "slay": [
+      "Mulch."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The gorge smells of rot and flowers."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Cronwort's breanworts crowd in!"
+      }
+    ],
+    "realmFirstKill": "Cronwort is uprooted. The gorge smells sweeter."
+  },
+  "botLines": {
+    "briefing": [
+      "cronwort brings six breanworts. [aoe the weeds|hold the little ones], then cronwort"
+    ],
+    "aftermathWin": [
+      "weeded the gorge. [cronwort down|smells better already]"
+    ],
+    "aftermathLoss": [
+      "the breanworts swarmed the casters. [aoe|hold them]"
+    ],
+    "rumour": [
+      "[heard|someone said] the sylvan pull cronwort seedlings everywhere but cant find the root"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Cronwort",
+    "text": "The great rot-weed of Cothrom Gorge, crowded by six stinking breanworts that all turn when it is touched."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} rode out to Cothrom Gorge under {raidLeader} and killed Cronwort in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at Cothrom Gorge by Cronwort after {minutes} minutes."
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "id": "gneiss",
+  "name": "Gneiss",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/gneiss",
+  "locationId": "hy-brasil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 70, 30,000 health, in Cothrom Gorge. Pieces of Gneiss break off on a timer; pulling it brings six hardened granidons.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Gneiss.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Gneiss is the name of a banded metamorphic rock.",
+      "provenance": "original",
+      "source": "https://en.wikipedia.org/wiki/Gneiss"
+    }
+  ],
+  "story": "When the earth split to make Cothrom Gorge, some of the stone that fell into the split did not settle. Gneiss is the largest of it, a hill of banded rock that decided to walk, and the granidons of the gorge, the stone-folk, follow it as if it were their king. Perhaps it is. As it fights, pieces of it crack away and get up on their own, little stones with the same idea. The Sylvan say if you listen at the gorge rim on a still night you can hear it grinding.",
+  "legend": "Clear the six hardened granidons around it first, or they come with it. Pieces break off it on a timer and fight: kill them as they come. Crush weapons help, the old hands say, and nobody should stand where the falling pieces land.",
+  "yells": {
+    "aggro": [
+      "The hill moves. The granidons rise with it."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "A piece of Gneiss cracks away and stands up."
+      }
+    ],
+    "death": [
+      "The hill settles. It is only stone."
+    ],
+    "slay": [
+      "Ground to gravel."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A hill where no hill was yesterday."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Pieces of Gneiss break off and attack!"
+      }
+    ],
+    "realmFirstKill": "Gneiss, the walking hill, lies still."
+  },
+  "botLines": {
+    "briefing": [
+      "gneiss brings six granidons, clear them first. pieces break off it, [kill them as they come|aoe the pieces]"
+    ],
+    "aftermathWin": [
+      "gneiss down. [just a hill now|rocks everywhere]"
+    ],
+    "aftermathLoss": [
+      "pulled gneiss with the granidons up. [clear first|six extra rocks]"
+    ],
+    "rumour": [
+      "[heard|someone said] you can hear gneiss grinding from the gorge rim at night"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Gneiss",
+    "text": "A hill of banded stone that fell into Cothrom Gorge and decided to walk. The granidons follow it, and pieces of it fight on their own."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} rode out to Cothrom Gorge under {raidLeader} and killed Gneiss in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at Cothrom Gorge by Gneiss after {minutes} minutes."
+  }
+}

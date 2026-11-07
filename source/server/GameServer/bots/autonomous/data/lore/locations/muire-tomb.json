@@ -1,0 +1,82 @@
+{
+  "id": "muire-tomb",
+  "name": "Muire Tomb",
+  "realm": "Hibernia",
+  "regions": [
+    221
+  ],
+  "summary": "The tomb of the Muire house near Ardee, restless since its lord went mad and killed his own household.",
+  "facts": [
+    {
+      "text": "Concaire Muire was a wealthy, greedy landowner whose serfs hated his family's cruelty; he went slowly mad, murdered his household and then himself, and the tomb has not been quiet since. It lies northwest of Ardee past standing stones; level 10-28.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=19"
+    },
+    {
+      "text": "Players name Kacey Muire (a lady-in-waiting who spawns with two others), Conaire Muire the founder, Muire champions and heroes, suitor spirits, and the Hellhag that roams and kills most things it meets (2001-2002 comments).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=19"
+    },
+    {
+      "text": "Region 221 holds mummy hags and a mummy hag wizard, murkmen, corpse devourers, tomb creepers and dwellers and a death worm; a named Quillan Muire has its own script.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json; source/server/GameServer/scripts/mobs/HiberniaMobs/QuillanMuire.cs"
+    },
+    {
+      "text": "Bot chat: the whole house was laid down there together; the Muire hero still guards his kin; never whistle in Muire Tomb; the banshee keened for the Muires and never stopped.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "The Muires were rich, and they were cruel, and the serfs who worked their land around Ardee hated them with the long patient hatred of people who cannot do anything about it. Concaire Muire, the last lord of the house, was the worst of them. Then, slowly, he went mad. The servants saw it first: the lord talking to the portraits, the lord counting the silver at night, the lord listening at doors. One winter night he went through the house with a blade, room by room, and when he had finished with his household he finished with himself.\n\nThey were all laid in the family tomb together, the lord and his lady, the heir and the hero, the ladies-in-waiting and the herbalist and the suitors who had come courting the daughters, because there was nobody left to sort them. The banshee keened for the house of Muire that night, the old folk say, and she has not stopped. The tomb is full now of the hungry things that gather wherever the dead are restless: hags that were once the family's nurses, murkmen out of the wet, creepers and devourers in the dark. The Muire hero still stands guard over his kin, loyal to a house that never earned it.\n\nEvery young Hibernian goes down into Muire Tomb sooner or later. Most of them come back up feeling sorry for someone, and are not sure who.",
+  "legend": "Every Hibernian's first real dungeon. Group up, mind the Hellhag if she is wandering, and pull the ladies-in-waiting carefully because they come in threes. Never whistle down there: the family wakes. And be polite to the Muire hero. You will kill him a dozen times, but be polite.",
+  "atmosphere": {
+    "firstEntry": [
+      "The house of Muire, laid down all together.",
+      "Somewhere far below, a woman is keening.",
+      "Do not whistle. The family is sleeping."
+    ],
+    "areas": [
+      {
+        "name": "the tomb door",
+        "x": 31120,
+        "y": 29939,
+        "z": 16239,
+        "radius": 1100,
+        "lines": [
+          "Old portraits, faces scratched out."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "concaire muire went mad and killed his whole house, then himself. [they buried them all together|nobody left to sort them]",
+      "the muire hero still guards his family down there. [loyal to a house that didnt deserve it|kinda sad really]",
+      "the serfs around ardee hated the muires. [cant say i blame them|greedy lot]"
+    ],
+    "rumour": [
+      "[heard|someone said] the hellhag is wandering muire tomb again. [watch the corners|careful down there]",
+      "someone whistled in muire tomb [last night|today] and [the whole family woke up|three ladies came at once]"
+    ],
+    "tell": [
+      "muire tomb near ardee, every hib's first dungeon. undead family, hags, murkmen. teens to twenties, no whistling"
+    ]
+  },
+  "loremaster": {
+    "intro": "Muire Tomb, northwest of Ardee. The house of [Muire] was rich and cruel, and its last [lord] went mad. They are all down there together, and the [banshee] has not stopped.",
+    "topics": {
+      "Muire": "A rich house of the Ardee country, hated by its serfs. Lady, heir, hero, ladies-in-waiting, suitors: all laid in one tomb.",
+      "lord": "Concaire Muire. He went through his house one winter night with a blade, and then turned it on himself.",
+      "banshee": "She keens only for the old families. She keened for the Muires and never stopped. Listen, in the lower halls."
+    }
+  },
+  "book": {
+    "title": "The Last Winter of the House of Muire",
+    "pages": [
+      "I was a kitchen girl at the Muire house the winter it ended. The lord had been strange since the harvest. He counted the silver every night and made us count it again in the morning. He stood outside the nursery door and listened. He had the portraits turned to face the wall and then turned back. My mother said a lord like that is a storm coming, and to keep my shawl by the door.",
+      "I was in the scullery when it began and I went out through the drain, which is how I am alive to write this. I heard it go room by room. I heard the hero shout in the hall, the young one who was always so loyal, and then not shout. In the morning the priests came and there was nobody to bury but everyone. They put them all in the tomb. That night I heard the keening from the hill, and every night since."
+    ]
+  },
+  "bosses": []
+}

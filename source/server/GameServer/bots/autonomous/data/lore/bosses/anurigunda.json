@@ -1,0 +1,130 @@
+{
+  "id": "anurigunda",
+  "name": "Anurigunda",
+  "catalogKey": "fomor-city/anurigunda",
+  "locationId": "fomor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 75, 30,000 health. Her Touch of Flames covers foes in lava (45 damage every 2 s for 60 s): 'The lava falls from Anurigunda's skin.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs"
+    },
+    {
+      "text": "At 40% and 20% health she calls Fomorians (four each time), and pulling her brings fourteen of her household (anteen, batravian, bolach, harrien, shawilet).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "She sends a player to a fixed spot in her hall.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Anurigunda is the oldest of Fomor's great ones, and the Fomorians say the fire in her came from the deep places under the sea, where the rock runs liquid. Her skin is never still. It cracks and runs and hardens and runs again, and whatever she touches is coated in it and burns for a long while after. She keeps a large household, and she keeps it close; touch her and every one of them comes. When she is pressed she calls more, from the halls around, in two great waves. She is proud, and she is very patient, and she has outlived every enemy she ever had.\n\nShe is old even for a Fomorian, and the Fomorians do not die easily. The city says Anurigunda came up out of the deep places under the sea, where the rock runs liquid, before the city was built, and that the fire in her skin is the fire of the sea-floor. Her skin is never still: it cracks and runs and hardens and runs again, and whatever she touches she coats in it, and it burns for a full minute after.\n\nShe sits in her hall as a grandmother sits by the fire, with her household around her, fourteen of them, and touch her and every one of them comes. When she is pressed she calls more from the halls around, four at a time, once at two-fifths of her strength and once at a fifth; and she has a grandmother's habit of reaching out and dragging a troublesome child across the room to her side. She has outlived every enemy she ever had. She is proud of it. She remembers Mag Tuired, the city says, not from songs but from the field. And she has never forgiven Nogoribando for being young.",
+  "legend": "Clear her household before you pull, or fourteen of them come with her. At forty and twenty she calls four more each time: tanks ready. Her lava sticks for a minute, so cure and heal through it, and do not panic when she drags someone across the hall. Clear all fourteen of her household before the pull; then tanks ready for the two waves; cure the lava fast because it lasts a minute. If she drags you, walk back calmly, the tanks will have her. Nicknames: 'grandmother', 'the lava lady'. Superstition: wipe your boots before you enter her hall. Nobody knows why it started. Nobody stops.",
+  "yells": {
+    "aggro": [
+      "The lava falls from Anurigunda's skin.",
+      "The lava falls from Anurigunda's skin.",
+      "I stood at Mag Tuired. You are not Lugh.",
+      "Children, the strangers are here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=40",
+        "text": "Children of Fomor! Your mother calls!"
+      },
+      {
+        "trigger": "health<=20",
+        "text": "All of you. Come. Now."
+      },
+      {
+        "trigger": "teleport",
+        "text": "Come here, child. Sit by your grandmother."
+      }
+    ],
+    "death": [
+      "The lava hardens and falls away.",
+      "The lava hardens and falls away.",
+      "So long... I was so long alive..."
+    ],
+    "slay": [
+      "Another stone for my hall.",
+      "Another stone for my hall.",
+      "Burned, and set.",
+      "Children, carry this one out."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is warm. The walls are melting.",
+      "Stone flows like honey near her throne."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=40",
+        "text": "Anurigunda's household pours into the hall!"
+      }
+    ],
+    "realmFirstKill": "Anurigunda's fire is cold at last."
+  },
+  "botLines": {
+    "briefing": [
+      "clear anurigunda's room first, she brings fourteen. at forty and twenty [four more come|adds], tanks ready",
+      "clear all fourteen of her household first. [every one|no shortcuts]",
+      "she calls four more at forty and twenty, [tanks ready|be ready]",
+      "her lava lasts a minute, [cure it|heal it]",
+      "if she drags you, [walk back|dont panic]"
+    ],
+    "aftermathWin": [
+      "anurigunda down and her skin [went to stone|hardened right there]",
+      "anurigunda down and her skin turned to stone. [weird|cool]",
+      "household cleared, two waves handled. [clean|textbook]",
+      "she outlived everyone but us. [ha|grats]"
+    ],
+    "aftermathLoss": [
+      "pulled her with the room up. [fourteen adds|everyone came]. clear first",
+      "pulled her with the household up. [fourteen adds|everyone came]",
+      "second wave caught us with no tanks free. [plan it|ugh]",
+      "lava on everyone for a minute. [cure|heal]"
+    ],
+    "rumour": [
+      "[heard|someone said] anurigunda is the oldest of the fomorian great ones",
+      "[heard|someone said] anurigunda stood at mag tuired herself. not from songs",
+      "[word is|heard] anurigunda and nogoribando cannot stand each other",
+      "her lava comes from the sea floor, the fomorians say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Anurigunda",
+    "text": "The oldest of Fomor's great ones, her skin running with lava from the deep places. Her household comes when she is touched."
+  },
+  "bookPage": "From Fiachra of Howth's account: the woman with the lava skin sat in her hall exactly as my own grandmother sat by the fire in Howth, with the young ones around her, and she looked at me through the doorway as my grandmother looked at boys who came into the kitchen with mud on their boots. I have never been so frightened by a look. The Sylvan told me later she is the oldest of the Fomorians, and that she stood at Mag Tuired and remembers it. I asked whether she remembers who won. The Sylvan said that is not how she remembers it. She remembers who lived.",
+  "chronicle": {
+    "win": "{realm} went down the shore stair into Fomor under {raidLeader} and slew Anurigunda of the lava skin in {minutes} minutes.",
+    "loss": "{realm}'s fighters under {raidLeader} were driven back up the Fomor stair by Anurigunda and her household after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "nogoribando",
+      "relation": "the city's war-leader"
+    },
+    {
+      "id": "krackenschtein",
+      "relation": "the workshop's champion"
+    },
+    {
+      "id": "myrddraxis",
+      "relation": "the hydra of the cistern"
+    },
+    {
+      "id": "balor",
+      "relation": "the king in the tower on the crag"
+    }
+  ]
+}

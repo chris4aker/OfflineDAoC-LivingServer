@@ -1,0 +1,113 @@
+{
+  "id": "kierac-the-destroyer",
+  "name": "Kierac the Destroyer",
+  "catalogKey": "tur-suil/kieracdestroyer",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 69, 30,000 health. He shields himself with Shield of Pain (a bladeturn) and takes 20% less from melee; when he dies the Master of Pain appears.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He cannot be hurt beyond his tether of 1,800.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Kierac was a prisoner of Tur Suil once, a Fomorian deserter or a captured champion of some other race; nobody remembers which, least of all Kierac. The Master of Pain made him into a weapon. He gave him a skin of pain that turns the first blow of every fight, and he gave him a rage that has outlasted his memory. And then, the Sylvan say, the Master of Pain climbed inside him to rest, as a worm rests in an apple. Kierac guards the torturer's hall, and he does not know what he is carrying. The raids that kill him find out.\n\nNobody remembers who Kierac was, least of all Kierac. A Fomorian deserter, some say; a champion of some other people, captured in a raid on the coast, say others. What is certain is what the Master of Pain did with him. The torturer took him apart and put him back together as a weapon: a rage that has outlasted his memory, and a skin of pain that turns the first blow of every fight aside, as if his body had learned to expect being struck.\n\nAnd then, the Sylvan say, the torturer climbed inside him to rest, as a worm rests in an apple. Kierac guards the torturer's hall without knowing what he carries. He fights in the hall's centre, hard-skinned and furious, and he cannot be hurt beyond its edge. When he finally falls, the Master of Pain steps out of the body, fresh, unhurried, already humming. The Sylvan who pity Kierac, and some do, say his death is the only kindness anyone has done him since he came to the tower, and that it is spoiled at once by what comes after.",
+  "legend": "His shield turns blows, so open with something cheap. He is only the first half: when he dies the Master of Pain comes out of him, fresh and stronger. Save mana and cooldowns for the second fight and do not rest between. Open with something cheap for the shield. Save every cooldown, potion and big heal for the second half: Kierac is only the door, and the Master of Pain walks through it at full strength. Nicknames: 'the apple', for what lives in him, and 'phase one'. Superstition: say his name, Kierac, before the killing blow, so that something of the man is remembered before the worm comes out.",
+  "yells": {
+    "aggro": [
+      "Destroy. Destroy. I remember that word.",
+      "Destroy. I remember destroy.",
+      "Who are you? Who am I?"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "Something inside me is laughing."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Something inside me is laughing."
+      }
+    ],
+    "death": [
+      "Out... it is coming out...",
+      "Out... it is getting out..."
+    ],
+    "slay": [
+      "Destroyed. Like me.",
+      "Destroyed.",
+      "Like me."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Racks, spikes, and someone humming.",
+      "Someone humming, and the humming is inside him."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "Something crawls out of Kierac's body!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Kierac's body shakes. Something stirs within."
+      }
+    ],
+    "realmFirstKill": "Kierac is at peace. Something else is not."
+  },
+  "botLines": {
+    "briefing": [
+      "kierac is phase one. when he dies the master of pain [spawns|comes out]. [save cooldowns|dont blow everything on kierac]",
+      "kierac shields the first hit, [open with something cheap|throw a small one]",
+      "kierac is half the fight. [save cooldowns|dont blow it all]",
+      "when he dies the master of pain comes out at full health. [tank ready|be ready]"
+    ],
+    "aftermathWin": [
+      "kierac and his passenger both down. [gross|nice]",
+      "kierac at peace, master of pain dead. [both|two for one]",
+      "saved cooldowns for the second half like we said. [worked|grats]",
+      "poor kierac. [he never knew|sad one]"
+    ],
+    "aftermathLoss": [
+      "blew everything on kierac and then the master of pain [ate us|walked over us]",
+      "blew everything on kierac. [master of pain ate us|empty]",
+      "nobody was on the master when he popped. [tank|ready next time]",
+      "dragged kierac out and he [went immune|reset]"
+    ],
+    "rumour": [
+      "[heard|someone said] the master of pain lives inside kierac. like a worm in an apple",
+      "[heard|someone said] kierac was a captured champion from the coast before the torturer got him",
+      "[word is|heard] the master of pain lives in kierac like a worm in an apple",
+      "some sylvan pity kierac. [cant blame them|i do too]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kierac",
+    "text": "A prisoner made into a weapon by the Master of Pain, who now rides inside him. Kill Kierac, and the torturer climbs out."
+  },
+  "bookPage": "Muirgen writes: the Sylvan of Domnann have a word for a thing that has been used up by another, a husk, and they use it for Kierac. He was somebody once. The torturer of Tur Suil took him apart and made him into a guard and a weapon and a house, all at once, and climbed inside to live. Kierac does not know. He fights in the torturer's hall with all the rage of a man who has forgotten his own name, and when the realm's raids cut him down at last, the thing inside him steps out. I asked whether anyone mourns Kierac. A young Sylvan said she did. I believe she meant it.",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Kierac the Destroyer in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Kierac the Destroyer after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "balor",
+      "relation": "the king they serve"
+    },
+    {
+      "id": "master-of-pain",
+      "relation": "the torturer who made him and rides inside him"
+    }
+  ]
+}
