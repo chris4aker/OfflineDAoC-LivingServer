@@ -149,6 +149,7 @@
         "cursed-forest",
         "hibernia-wilds",
         "lough-derg",
+        "lough-gur",
         "silvermine-mountains"
       ],
       "bosses": [
@@ -466,7 +467,8 @@
         "bog-of-cullen",
         "cursed-forest",
         "hibernia-wilds",
-        "lough-derg"
+        "lough-derg",
+        "lough-gur"
       ],
       "bosses": [
         "badb",
@@ -649,6 +651,7 @@
       "places": [
         "bog-of-cullen",
         "lough-derg",
+        "lough-gur",
         "silvermine-mountains"
       ],
       "bosses": []

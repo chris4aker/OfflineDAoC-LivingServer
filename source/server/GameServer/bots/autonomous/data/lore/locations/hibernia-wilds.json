@@ -198,9 +198,7 @@
   },
   "bosses": [
     "evern",
-    "melancholic-fairy-queen",
     "tawi-shon",
-    "lhia",
     "mikka"
   ],
   "era": "hib-age-of-the-veil",
@@ -235,6 +233,10 @@
     },
     {
       "id": "silvermine-mountains",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "lough-gur",
       "relation": "a zone of the region, with its own file"
     },
     {
