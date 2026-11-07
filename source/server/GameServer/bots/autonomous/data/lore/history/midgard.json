@@ -34,6 +34,7 @@
       "bosses": [
         "fornfrusenen",
         "glacier-giant",
+        "hugi",
         "mahattava",
         "mortufoghus"
       ]
@@ -107,10 +108,13 @@
         }
       ],
       "places": [
-        "malmohus"
+        "malmohus",
+        "raumarik"
       ],
       "bosses": [
         "gjalpinulva",
+        "raumarik-revenant",
+        "wretch-of-winter",
         "yar"
       ]
     },
@@ -191,6 +195,10 @@
         "odins-gate"
       ],
       "bosses": [
+        "kelic",
+        "loken",
+        "oona",
+        "runil",
         "ulfketill"
       ]
     },
@@ -351,7 +359,8 @@
       "places": [
         "iarnvidiurs-lair",
         "iarnwood",
-        "malmohus"
+        "malmohus",
+        "raumarik"
       ],
       "bosses": [
         "gjalpinulva",
@@ -461,9 +470,11 @@
       "name": "Loki's Mischief",
       "summary": "What gets out when the venom bowl spills: Loken in Raumarik, and the jotuns who do the bound god's work, like Ulfketill.",
       "places": [
+        "raumarik",
         "vanern-swamp"
       ],
       "bosses": [
+        "loken",
         "ulfketill"
       ]
     },
@@ -484,10 +495,15 @@
       "name": "The Dishonoured Dead",
       "summary": "The dead the valkyries passed by: the Cursed Tomb's draugr, Raumarik's deserters and curses, the Wretch of Winter, the Revenant's fortress.",
       "places": [
-        "cursed-tomb"
+        "cursed-tomb",
+        "raumarik"
       ],
       "bosses": [
-        "issorden"
+        "issorden",
+        "kelic",
+        "raumarik-revenant",
+        "runil",
+        "wretch-of-winter"
       ]
     },
     {
@@ -587,8 +603,12 @@
       "id": "hibernian-invaders",
       "name": "Hibernia's Champions",
       "summary": "Hibernians who carry the war into Midgard's own wilds, like Oona at Raumarik's river fork.",
-      "places": [],
-      "bosses": []
+      "places": [
+        "raumarik"
+      ],
+      "bosses": [
+        "oona"
+      ]
     },
     {
       "id": "frontier-giants",
@@ -609,6 +629,17 @@
         "vanern-swamp"
       ],
       "bosses": []
+    },
+    {
+      "id": "raumarik-giants",
+      "name": "The Giants of Raumarik",
+      "summary": "Hugi and the frost cyclopes of Raumarik's south-west, with the frost stallions that run for them.",
+      "places": [
+        "raumarik"
+      ],
+      "bosses": [
+        "hugi"
+      ]
     },
     {
       "id": "dark-seithkona",
