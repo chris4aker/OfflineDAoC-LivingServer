@@ -14,6 +14,26 @@ Older entries below keep the names they were written with.
      last. Its entries go here, at the top of this section, as "**Dungeons and bosses have their lore**"; keep the
      entries below and the Beta 1.1.2 section as they are. -->
 
+**Boss mechanics pick bots too** (owner, 2026-11-06: "the throws and other unique triggers or scripts or anything
+target bots too").
+- **Before:** the epic and named bosses chose their special targets from real players only. Every glare, stare,
+  debuff, "random target" spell, aggro wipe and add trigger went to you, and the bots beside you were never chosen.
+- **Now:** they choose from the whole raid: you, your companions and the gamebots. With bots around you are one target
+  among many, never chosen more often than before. Some of what changes:
+  - the dragons' glare and roaming glare, Xanxicar's glare, Myrddraxis's flame breath and poison, Krackenschtein's
+    bolt, Roesia's pain, Lossren's ghoul, the Mistress of Runes's nearsight, Aros's debuff, Birghir's frost, Guthlac's
+    root and frozen bomb, Steinvor's pillar, Kula's Thor's Might, Balor's eye, Aroon's Scaiths and the Eyes Watching
+    You in Galladoria;
+  - triggers on a death or a hit: Nosdoden's "Spirit of ..." ghosts, Oona's undead, Beliathan's minions, High Lord
+    Saeor's and Legion's heals, the Risnir Cruss apparition and the Spectral Provisioner;
+  - crowd counts: Ozur grows stronger and Legion calls more adds with a big bot raid, as they did with a big raid of
+    players.
+  - Messages still go to you only; a bot gets the spell, not the text.
+- **Throws, teleports and jails still pick real players only** (Xanxicar, Scurceol's orbs, Cunovinda's ledge,
+  Govannon's gallery, the Jailer, the Glacier Giant and others). They will pick bots too once thrown bots know how to
+  find their way back to the raid.
+- **Raids are harder:** mechanics that used to skip the bots now hit them. Not yet played in game.
+
 **Battleground keeps change hands** (playtest 2026-11-04: in Thidranki 210 level-22 bots fought for 45 minutes, the
 gates fell, and the Renegade Lord never dropped below 100%).
 - **Before:** once the gates were down, every gamebot walked up to the lord on its own, from wherever its last fight or
