@@ -430,7 +430,8 @@
         }
       ],
       "places": [
-        "jordheim"
+        "jordheim",
+        "midgard-housing"
       ],
       "bosses": [
         "gunflor",
@@ -988,6 +989,7 @@
         "east-svealand",
         "gotar",
         "jordheim",
+        "midgard-housing",
         "munin-sound",
         "muspelheim",
         "myrkwood-forest",
