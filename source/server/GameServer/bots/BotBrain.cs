@@ -4334,7 +4334,10 @@ namespace DOL.AI.Brain
                 !ShamanBotCombatPolicy.AllowsOrdinaryOffense((eCharacterClass)BotBody.CharacterClass.ID, spell) ||
                 BotSpellPower.BlocksAttackerRotation(BotBody, spell) ||
                 !NeedsOffensiveSpellApplication(target, spell) ||
-                Body.GetSkillDisabledDuration(spell) > 0 || Body.Mana < BotBody.PowerCost(spell))
+                Body.GetSkillDisabledDuration(spell) > 0 || Body.Mana < BotBody.PowerCost(spell) ||
+                // 1.2 epic tactics: no damage type the target is immune to (Orshom's Fire: cold only), and nothing at all on a
+                // boss this bot must not hit (Funus heals to full from the wrong class).
+                EpicEncounterTactics.SpellWasted(target, spell) || EpicEncounterTactics.MustNotHit(BotBody, target))
                 return false;
 
             if (spell.CastTime > 0 && spell.Target is eSpellTarget.ENEMY or eSpellTarget.AREA or eSpellTarget.CONE)

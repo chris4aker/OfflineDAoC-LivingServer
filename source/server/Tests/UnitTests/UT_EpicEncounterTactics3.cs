@@ -450,7 +450,14 @@ namespace DOL.UnitTests
         {
             var on = EpicEncounterMechanics.RestoreSwitches.Where(name =>
                 (bool)typeof(EpicEncounterMechanics).GetProperty(name, BindingFlags.Public | BindingFlags.Static).GetValue(null)).ToArray();
-            Assert.That(on, Is.EqualTo(new[] { nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle) }));
+            // Wave 2 (Albion) turned Caer Sidi's five on with their tactics (UT_EpicWave2Albion).
+            Assert.That(on, Is.SupersetOf(new[] { nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle) }));
+            Assert.That(on.Except(new[]
+            {
+                nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle), nameof(EpicEncounterMechanics.AllowHorsemenTetherHeal),
+                nameof(EpicEncounterMechanics.AllowFunusWeaponPuzzle), nameof(EpicEncounterMechanics.AllowSacristanPatrol),
+                nameof(EpicEncounterMechanics.AllowSoulReckonerFullShield), nameof(EpicEncounterMechanics.AllowSoulReckonerSmallRoom),
+            }), Is.Empty);
         }
     }
 }

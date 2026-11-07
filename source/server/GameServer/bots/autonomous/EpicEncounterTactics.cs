@@ -307,6 +307,12 @@ namespace DOL.GS
         {
             reason = null;
             if (!Present(chosen)) return chosen;
+            // An encounter's own route rule ([EncounterRouteRule]: the Crypt Lord's court is pulled as his fight).
+            if (EncounterRoute(chosen, live, out string own) is { } owner0 && owner0 != chosen)
+            {
+                reason = own;
+                chosen = owner0;
+            }
             // A hazard is never the raid's target: the boss it sits beside is.
             if (IsHazard(chosen))
             {
@@ -379,6 +385,9 @@ namespace DOL.GS
         {
             if (raider == null || !Present(target)) return default;
             if (classId < 0) classId = EpicEncounterRestores.ClassId(raider);
+            // An encounter's own rule (EpicEncounterTactics.<Dungeon>.cs, [EncounterRule]) speaks first; null: no opinion.
+            if (EncounterAdvice(new RuleContext(raider, target, live, partyIndex, canShootFlyers, now, classId)) is Advice own)
+                return own;
             Vector3 at = new(raider.X, raider.Y, raider.Z);
             // A hazard (Orshom's Fire) is never fought: the boss it sits beside is, from outside its radius.
             if (IsHazard(target))
@@ -635,9 +644,11 @@ namespace DOL.GS
         /// </summary>
         public static bool TryHandle(GameBot bot, GameNPC target)
         {
-            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || For(target) == null && !IsTacticPart(target)) return false;
+            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup ||
+                For(target) == null && !IsTacticPart(target) && !HasEncounterRule(target)) return false;
             IReadOnlyList<GameNPC> live = Nearby(target);
             Advice advice = Decide(bot, target, live, PartyIndex(bot), CanShootFlyers(bot));
+            EncounterMechanicCalls.Consider(bot, target, advice);
             switch (advice.Action)
             {
                 case BotAction.Retarget:

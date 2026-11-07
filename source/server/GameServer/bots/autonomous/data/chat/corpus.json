@@ -334295,6 +334295,1450 @@
    "id": "0560d1664eb5"
   },
   {
+   "kind": "combat",
+   "topic": "mech_funus",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "only clerics and scouts on {boss}, everyone else off him",
+   "id": "9d91aa07a117"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_funus",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "dont touch {boss} unless ur a cleric or a scout, he heals",
+   "id": "a869ed59e2a8"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_funus",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} heals off the wrong hits, clerics and scouts only",
+   "id": "ebdf6f0f6587"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_funus",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "off {boss}! wrong class heals him full",
+   "id": "ddf5173ca93a"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_funus",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "scouts and clerics on {boss}, rest of us stay back",
+   "id": "ee44ceba2673"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_funus",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "no pets and no aoe near {boss}, he heals off em",
+   "id": "d2a753328893"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sacristan",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "hold your spot, {boss} comes round again",
+   "id": "e695f5ba3cdd"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sacristan",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "dont chase {boss}, wait for him to walk past",
+   "id": "34a0e2129666"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sacristan",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} is on his loop, hit him as he goes by",
+   "id": "46c2c442b970"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sacristan",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stay at the post, he comes back round",
+   "id": "8549e6dc4838"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sacristan",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "let him go, catch him next lap",
+   "id": "b9b55682a5a4"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_reckoner_room",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} is out of his room, stop hitting",
+   "id": "f3d366bd48aa"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_reckoner_room",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "pull {boss} back in the room, he cant be hurt out here",
+   "id": "1d54cbfa7ff2"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_reckoner_room",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "hold dps, {boss} is outside the room",
+   "id": "b9330c05eda8"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_reckoner_room",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "drag him back to the middle, no damage outside",
+   "id": "c9198fd39a2d"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sanguis",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} is untargetable, casters finish him",
+   "id": "19b572ee0fa5"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sanguis",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "casters keep nuking {boss}, melee on the mages",
+   "id": "c90f3ed0ffb8"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sanguis",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "5% and he cant be targeted, dots and nukes finish him",
+   "id": "61a012aa567f"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sanguis",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "nukers finish {boss}, the rest of us grab adds",
+   "id": "b1522a9376e9"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_cold_fire",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "cold spells on the fire, nothing else hurts it",
+   "id": "f0d2c8523375"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_cold_fire",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ice on the fire pls, get it out",
+   "id": "866139d5762a"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_cold_fire",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "put out {monster}, only cold works on it",
+   "id": "baf170074f20"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_cold_fire",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "cold casters on the fire, rest stay out of it",
+   "id": "940d03d2b340"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_cold_fire",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "kill the fire with ice or he keeps throwing ppl in",
+   "id": "31b8338fb44c"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sphere",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "kill the sphere first, {boss} cant be hurt till its down",
+   "id": "14d83619d805"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sphere",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "casters on the sphere, melee wait out of its range",
+   "id": "2ccef23b2250"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sphere",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stay out of the sphere, it pulls you in and burns",
+   "id": "be64ccb1ad0a"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sphere",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "sphere first! melee hold back",
+   "id": "d7ffb72c9d61"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_sphere",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "nukes and arrows on the sphere",
+   "id": "7535449cdd7b"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_prince_pets",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "pets away from {boss}, he eats em",
+   "id": "52360d7201bc"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_prince_pets",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "back off with the pets, {boss} heals off them",
+   "id": "1f76a1cc0886"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_prince_pets",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "no pets near {boss} pls",
+   "id": "b6b22d26c5c2"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_prince_pets",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "park ur pet, the prince eats it",
+   "id": "a370d6337a94"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_adds_first",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "adds first, {boss} cant be hurt while they live",
+   "id": "f91dbbd0d1cc"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_adds_first",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "kill {monster} first",
+   "id": "7109dd6573c7"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_adds_first",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} is shielded, kill the adds",
+   "id": "990095a64bd5"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_adds_first",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "off the boss, adds first",
+   "id": "af4e22e3924b"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_adds_first",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "take {monster} down then back on {boss}",
+   "id": "28030b9e6643"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_ranged_adds",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "casters on {monster}, melee stay on {boss}",
+   "id": "2c6936672463"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_ranged_adds",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ranged kill {monster} before it blows",
+   "id": "ab94dfd0bdac"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_ranged_adds",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "arrows and nukes on {monster}",
+   "id": "23cc770f9bef"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_ranged_adds",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{monster} up, ranged get it",
+   "id": "1fb5e7d4ec1e"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_hazard",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "get out of that",
+   "id": "e31c683aad77"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_hazard",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "move out of {monster}",
+   "id": "bb9b47a85899"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_hazard",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "dont stand in it",
+   "id": "33ca8c056766"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_hazard",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "step out, its burning us",
+   "id": "39bbec97a02e"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_hazard",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "out of the fire!",
+   "id": "be5bb5905a8a"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_fight_home",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "too far out, drag {boss} back",
+   "id": "86e42375cbd0"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_fight_home",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stop hitting, {boss} is leashing, pull him home",
+   "id": "effa25e94bb1"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_fight_home",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "bring {boss} back before he resets",
+   "id": "0d2c307cee7b"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_fight_home",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "hold dps, lead {boss} back",
+   "id": "f7f4e6e8c4f2"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal_fire",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} got thrown in the fire, heal em",
+   "id": "54b50b19d47b"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal_fire",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} tossed {target} in the fire, heals",
+   "id": "6e47c073e82e"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal_fire",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "fire toss on {target}, get out of there",
+   "id": "09d68d7cfcd8"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal_fire",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} is burning, heals pls",
+   "id": "db56ce825aab"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self_fire",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "thrown in the fire, getting out",
+   "id": "3676dcaa1d8d"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self_fire",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "on fire, moving",
+   "id": "d620dc341107"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self_fire",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ow, out of the fire omw",
+   "id": "2df2f5858231"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal_pit",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} got tossed in the pit, heal em",
+   "id": "cc87d5b96866"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal_pit",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} is in the pit, dont bother the pit things, run out",
+   "id": "96f5d7cd2c3c"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal_pit",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} threw {target} in the pit, heals",
+   "id": "fca964b65fca"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self_pit",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "in the pit, running out",
+   "id": "3e07a62df2d6"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self_pit",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "pit again, climbing out",
+   "id": "cf0d90d55526"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self_pit",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "snared in the pit, omw back",
+   "id": "68b13394ca81"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal_wind",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} got blown into a camp, heal em if u can",
+   "id": "65507d021ad6"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal_wind",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} tossed {target} into the mobs",
+   "id": "1d48d41a2d37"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal_wind",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} went flying, theyre in a camp",
+   "id": "40af6f8dff6a"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self_wind",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "blown into a camp, fighting my way back",
+   "id": "96b27dbeacc4"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self_wind",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "landed in a camp, omw",
+   "id": "699a8aed6a49"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self_wind",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "in the mobs, coming back",
+   "id": "a7c12aec0e35"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal_bane",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} got ported, theyre dotted, heal em",
+   "id": "6b2c6deb00b6"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal_bane",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} ported {target} away, heals on em",
+   "id": "893cc69ec7b4"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal_bane",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} got sent off with the dot",
+   "id": "f54fd283699d"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self_bane",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ported away, dotted, running back",
+   "id": "8b42d96d16a7"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self_bane",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "got ported, need a heal",
+   "id": "a475c133c3be"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self_bane",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "sent off again, omw",
+   "id": "16d46530e1fa"
+  },
+  {
    "kind": "deed",
    "topic": "named_solo",
    "who": [],

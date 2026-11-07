@@ -63,9 +63,11 @@ namespace DOL.GS
 
         public readonly record struct Order(OrderKind Kind, Vector3 Point = default, int FallPercent = 0, string Reason = null);
 
-        /// <summary>What the bot sees this turn. <paramref name="Corridor"/> is asked only when a path back is needed.</summary>
+        /// <summary>What the bot sees this turn. <paramref name="Corridor"/> is asked only when a path back is needed.
+        /// <paramref name="HazardEscape"/>: the bot stands in a hazard (Orshom's Fire, where Orylle throws) and this is the way
+        /// out; it never counts as back with the raid while it stands in one (wave 2, 1.2).</summary>
         public readonly record struct Observation(long Now, bool Alive, Vector3 Position, Vector3 ReturnPoint, bool UnderAttack,
-            bool Released, bool AtFight, Func<Vector3, Vector3, bool> Corridor);
+            bool Released, bool AtFight, Func<Vector3, Vector3, bool> Corridor, Vector3? HazardEscape = null);
 
         /// <summary>One bot's recovery (pure state; <see cref="Step"/> moves it on).</summary>
         public sealed class Plan
@@ -133,7 +135,9 @@ namespace DOL.GS
                 case Stage.Walking:
                 {
                     float distance = Vector3.Distance(o.Position, o.ReturnPoint);
-                    if (distance <= ArriveRadius || o.AtFight) return Finish(p, "back with the raid");
+                    if (distance <= ArriveRadius || o.AtFight)
+                        return o.HazardEscape is Vector3 outOfIt ? new(OrderKind.Walk, outOfIt, Reason: "out of the hazard first")
+                            : Finish(p, "back with the raid");
                     if (o.Now >= p.Deadline) return StartRecall(p, o, "walk back took too long");
                     if (o.UnderAttack)
                     {
@@ -165,6 +169,15 @@ namespace DOL.GS
         private static Order StartBack(Plan p, Observation o)
         {
             float distance = Vector3.Distance(o.Position, o.ReturnPoint);
+            if ((distance <= ArriveRadius || o.AtFight) && o.HazardEscape is Vector3 outOfIt)
+            {
+                // Landed by the raid but in a hazard (Orylle throws into Orshom's Fire): out of it first, then it is back.
+                p.Stage = Stage.Walking;
+                p.Deadline = o.Now + MinimumWalkMilliseconds;
+                p.NextProgressCheck = o.Now + ProgressWindowMilliseconds;
+                p.DistanceAtCheck = distance;
+                return new(OrderKind.Walk, outOfIt, Reason: "out of the hazard first");
+            }
             if (distance <= ArriveRadius || o.AtFight) return Finish(p, "landed by the raid");
             if (!p.OnMesh) return StartRecall(p, o, "landed off the navmesh");
             if (o.Corridor != null && !o.Corridor(o.Position, o.ReturnPoint)) return StartRecall(p, o, "no path back");
@@ -310,7 +323,7 @@ namespace DOL.GS
                 bot.IsWithinRadius(boss, FightRadius);
             bool released = r.Plan.Stage == Stage.Jailed && JailReleased(bot, r.Event.Source, r.Event.Encounter);
             return new Observation(GameLoop.GameLoopTime, bot.IsAlive, position, ReturnPoint(bot, r.Event), UnderAttack(bot),
-                released, atFight, (from, to) => HasPath(bot, from, to));
+                released, atFight, (from, to) => HasPath(bot, from, to), HazardEscapeFor(bot));
         }
 
         private static bool Execute(GameBot bot, Record r, Order order)
@@ -416,9 +429,23 @@ namespace DOL.GS
             var attackers = bot.attackComponent?.AttackerTracker?.Attackers;
             if (attackers == null) return false;
             foreach (GameLiving a in attackers)
-                if (a != null && a.IsAlive && a.CurrentRegionID == bot.CurrentRegionID && bot.IsWithinRadius(a, 800))
+                // A hazard that hurts it (Sys'sro's pit monsters, immune to everything) is walked away from, not fought.
+                if (a != null && a.IsAlive && a.CurrentRegionID == bot.CurrentRegionID && bot.IsWithinRadius(a, 800) &&
+                    !(a is GameNPC n && EpicEncounterTactics.IsHazard(n)))
                     return true;
             return false;
+        }
+
+        /// <summary>The way out of the nearest live hazard (EpicEncounterTactics: Orshom's Fire, Sys'sro's pit monsters) the bot
+        /// stands in, or null.</summary>
+        private static Vector3? HazardEscapeFor(GameBot bot)
+        {
+            var at = new Vector3(bot.X, bot.Y, bot.Z);
+            foreach (GameNPC npc in bot.GetNPCsInRadius(1_000))
+                if (npc.IsAlive && EpicEncounterTactics.IsHazard(npc) &&
+                    EpicEncounterTactics.HazardEscape(at, new Vector3(npc.X, npc.Y, npc.Z), EpicEncounterTactics.HazardRadiusOf(npc)) is Vector3 escape)
+                    return escape;
+            return null;
         }
 
         private static bool HasPath(GameBot bot, Vector3 from, Vector3 to)
@@ -503,8 +530,11 @@ namespace DOL.GS
                     ["target"] = victim.Name,
                     ["boss"] = e.Source?.Name ?? "the boss",
                 };
-                if (!AutonomousBotVoices.TryLine(speaker, "combat", out AutonomousBotVoiceCorpus.Picked picked, topic: topic, slots: slots,
-                        relax: true))
+                // The encounter's own line first (Orylle's fire, Sys'sro's pit, Moran's wind), else the general one.
+                AutonomousBotVoiceCorpus.Picked picked = default;
+                bool found = EncounterTopic(topic, e.Encounter) is { } own &&
+                             AutonomousBotVoices.TryLine(speaker, "combat", out picked, topic: own, slots: slots, relax: true);
+                if (!found && !AutonomousBotVoices.TryLine(speaker, "combat", out picked, topic: topic, slots: slots, relax: true))
                     return;
                 LastCall[group] = now;
                 AutonomousBotGroupChatter.Send(speaker, picked.Text, "none");
@@ -514,6 +544,16 @@ namespace DOL.GS
                 Log.Warn($"EPIC_DISPLACEMENT call-out failed: {ex.Message}");
             }
         }
+
+        /// <summary>Encounters whose throw has its own lines (topic + "_" + suffix), else null.</summary>
+        public static readonly IReadOnlyDictionary<string, string> EncounterTopics = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["Orylle"] = "fire", ["SyssroRuthless"] = "pit", ["MoranTheMighty"] = "wind", ["BaneOfHope"] = "bane",
+        };
+
+        public static string EncounterTopic(string topic, string encounter) =>
+            topic is "displaced_heal" or "displaced_self" && encounter != null && EncounterTopics.TryGetValue(encounter, out string suffix)
+                ? topic + "_" + suffix : null;
 
         /// <summary>Who calls it for the party: its leader when that is a bot that was not moved, else another bot of it.</summary>
         private static GameBot Speaker(Group group, GameLiving victim, long now)

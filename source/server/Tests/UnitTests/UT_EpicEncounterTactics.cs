@@ -437,6 +437,13 @@ namespace DOL.UnitTests
 
         // ---- restored mechanics ------------------------------------------------------------------------------------
 
+        private static readonly string[] OnSince12 =
+        [
+            nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle), nameof(EpicEncounterMechanics.AllowHorsemenTetherHeal),
+            nameof(EpicEncounterMechanics.AllowFunusWeaponPuzzle), nameof(EpicEncounterMechanics.AllowSacristanPatrol),
+            nameof(EpicEncounterMechanics.AllowSoulReckonerFullShield), nameof(EpicEncounterMechanics.AllowSoulReckonerSmallRoom),
+        ];
+
         [Test]
         public void EveryRestoredMechanicIsOffByDefaultUntilTheRaidPlaysIt()
         {
@@ -445,8 +452,9 @@ namespace DOL.UnitTests
             {
                 PropertyInfo p = typeof(EpicEncounterMechanics).GetProperty(name, BindingFlags.Public | BindingFlags.Static);
                 Assert.That(p, Is.Not.Null, name);
-                // 1.2: the Earthmenders' class rule is on; the raid assigns classes to it (UT_EpicEncounterTactics3).
-                Assert.That((bool)p.GetValue(null), Is.EqualTo(name == nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle)), name);
+                // 1.2: the Earthmenders' class rule is on; the raid assigns classes to it (UT_EpicEncounterTactics3). Wave 2
+                // (Albion): Caer Sidi's five, each with its tactic (UT_EpicWave2Albion).
+                Assert.That((bool)p.GetValue(null), Is.EqualTo(OnSince12.Contains(name)), name);
             }
         }
 

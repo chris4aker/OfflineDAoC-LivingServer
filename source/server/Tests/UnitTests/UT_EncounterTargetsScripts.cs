@@ -339,7 +339,8 @@ namespace DOL.UnitTests
         [Test]
         public void EveryMovePickAsksTheSameSwitchAsTheMove()
         {
-            // Shipped: the three dragons and Xanxicar move bots; everything else (Legion included) keeps them out of its picks.
+            // Shipped: the three dragons and Xanxicar move bots (wave 2 adds its own, each tested in its file); the rest (Legion
+            // included) keeps them out of its picks.
             foreach (Type boss in new[] { typeof(AlbGolestandt), typeof(MidGjalpinulva), typeof(HibCuuldurach), typeof(Xanxicar) })
             {
                 var npc = (GameNPC)RuntimeHelpers.GetUninitializedObject(boss);
@@ -347,7 +348,7 @@ namespace DOL.UnitTests
                 Assert.That(EncounterTargets.DisplacesBots(npc), Is.EqualTo(EpicEncounterMechanics.AllowBotDisplacementFor(npc)), boss.Name);
             }
             foreach (Type boss in new[] { typeof(DOL.GS.Scripts.Legion), typeof(Jailer), typeof(Olcasgean), typeof(SummonerCunovinda),
-                         typeof(GrandSummonerGovannon), typeof(Orylle) })
+                         typeof(GrandSummonerGovannon), typeof(Orshom) })
             {
                 var npc = (GameNPC)RuntimeHelpers.GetUninitializedObject(boss);
                 Assert.That(EncounterTargets.DisplacesBots(npc), Is.False, boss.Name + ": player-only as before");
@@ -361,7 +362,7 @@ namespace DOL.UnitTests
             // The global switch (the old name too) reaches every boss without its own value.
             EncounterTargets.BotsCanBeDisplaced = true;
             Assert.That(EpicEncounterMechanics.AllowBotDisplacement, Is.True);
-            Assert.That(EncounterTargets.DisplacesBots((GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(Orylle))), Is.True);
+            Assert.That(EncounterTargets.DisplacesBots((GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(Orshom))), Is.True);
         }
 
         [Test]

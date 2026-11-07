@@ -62,17 +62,22 @@ namespace DOL.GS
         // behind switches"). Each is off, so the game plays as before, until the raid AI can play it; the ones it plays are on. The values were read
         // from OpenDAoC-Core 3513bad (2026-11-04). Settable so the tests and the next raid AI step can turn one on.
 
-        /// <summary>Fames, Morbus and Funus heal to full when drawn past their tether (not only when the fight is over).</summary>
-        public static bool AllowHorsemenTetherHeal { get; set; }
+        /// <summary>Fames, Morbus and Funus heal to full when drawn past their tether (not only when the fight is over). On
+        /// since 1.2: the raid fights each horseman within 2,700 of his spawn (catalog fight-at-home) and leads him back.</summary>
+        public static bool AllowHorsemenTetherHeal { get; set; } = true;
         /// <summary>Funus takes damage only from clerics and from mercenaries, armsmen, infiltrators and scouts with their
-        /// listed weapon; any other attacker (pets included) heals him to full.</summary>
-        public static bool AllowFunusWeaponPuzzle { get; set; }
-        /// <summary>Skeletal Sacristan walks his loop at 220 without stopping, with 70% magic resists.</summary>
-        public static bool AllowSacristanPatrol { get; set; }
-        /// <summary>Soul Reckoner takes no damage at all while a reckoned soul lives (not a quarter).</summary>
-        public static bool AllowSoulReckonerFullShield { get; set; }
-        /// <summary>Soul Reckoner's room is 900 units from its middle (not 1,500).</summary>
-        public static bool AllowSoulReckonerSmallRoom { get; set; }
+        /// listed weapon; any other attacker (pets included) heals him to full. On since 1.2: only those raiders fight him,
+        /// everyone else stands clear and never puts an area spell on him (EpicEncounterTactics.CaerSidi).</summary>
+        public static bool AllowFunusWeaponPuzzle { get; set; } = true;
+        /// <summary>Skeletal Sacristan walks his loop at 220 without stopping, with 70% magic resists. On since 1.2: the raid's
+        /// parties wait at stations along his loop and hit him as he passes (EpicEncounterTactics.CaerSidi).</summary>
+        public static bool AllowSacristanPatrol { get; set; } = true;
+        /// <summary>Soul Reckoner takes no damage at all while a reckoned soul lives (not a quarter). On since 1.2: the souls
+        /// are his required adds in the catalog.</summary>
+        public static bool AllowSoulReckonerFullShield { get; set; } = true;
+        /// <summary>Soul Reckoner's room is 900 units from its middle (not 1,500). On since 1.2: the raid keeps him within 700
+        /// of it and leads him back (EpicEncounterTactics.CaerSidi).</summary>
+        public static bool AllowSoulReckonerSmallRoom { get; set; } = true;
         /// <summary>Aroon takes only the damage types whose Scaith has died, and the Scaiths must die in order (slash, thrust,
         /// crush, body, cold, energy, heat, matter, spirit); each Scaith is immune until the one before it is dead.</summary>
         public static bool AllowAroonDamageOrder { get; set; }
@@ -126,6 +131,22 @@ namespace DOL.GS
             Ship(nameof(AllowBotDisplacement), "MidGjalpinulva", true),
             Ship(nameof(AllowBotDisplacement), "HibCuuldurach", true),
             Ship(nameof(AllowBotDisplacement), "Xanxicar", true),
+            // Wave 2 (Albion, 1.2): each with its tactic or recovery and tests (UT_EpicWave2Albion).
+            // Caer Sidi: Bane of Hope's teleport (players and bots: they walk back); Morbus's swarm shield.
+            Ship(nameof(AllowDisplacement), "BaneOfHope", true),
+            Ship(nameof(AllowBotDisplacement), "BaneOfHope", true),
+            Ship(nameof(AllowAddShield), "Morbus", true),
+            // Krondon: Scurceol's four orbs throw, Krevo Ricik tosses up, Orylle throws into Orshom's Fire.
+            Ship(nameof(AllowBotDisplacement), "LyftMihtOne", true),
+            Ship(nameof(AllowBotDisplacement), "LyftMihtTwo", true),
+            Ship(nameof(AllowBotDisplacement), "LyftMihtThree", true),
+            Ship(nameof(AllowBotDisplacement), "LyftMihtFour", true),
+            Ship(nameof(AllowBotDisplacement), "KrevoRicik", true),
+            Ship(nameof(AllowBotDisplacement), "Orylle", true),
+            // Avalon City: Sys'sro's pit throw, the Drau'gyn Sphere's pull. Albion: Moran the Mighty's gust.
+            Ship(nameof(AllowBotDisplacement), "SyssroRuthless", true),
+            Ship(nameof(AllowBotDisplacement), "DraugynSphere", true),
+            Ship(nameof(AllowBotDisplacement), "MoranTheMighty", true),
         ];
 
         private static (string, string, bool) Ship(string name, string encounter, bool value) => (name, encounter, value);
