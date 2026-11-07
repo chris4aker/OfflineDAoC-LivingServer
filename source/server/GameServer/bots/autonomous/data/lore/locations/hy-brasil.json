@@ -224,13 +224,6 @@
     "kontar-the-corrupt",
     "archilus",
     "elro-the-ancient",
-    "milo",
-    "oscar",
-    "ixthiar-broodmother",
-    "monger",
-    "drygau",
-    "adwyth",
-    "anhylaw",
     "eimear"
   ],
   "era": "hib-the-shrouded-isles",
@@ -241,6 +234,10 @@
   "related": [
     {
       "id": "domnann",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "vale-of-balor",
       "relation": "a zone of the region, with its own file"
     },
     {
