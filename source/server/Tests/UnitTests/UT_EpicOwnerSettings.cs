@@ -130,15 +130,15 @@ namespace DOL.UnitTests
 
             string bots = nameof(EpicEncounterMechanics.AllowBotDisplacement), puzzle = nameof(EpicEncounterMechanics.AllowPositionPuzzle);
             Assert.That(EpicEncounterMechanics.On(bots, "Orylle"), Is.True, "ships on");
-            Properties.EPIC_ENCOUNTER_SWITCHES = "AllowBotDisplacement@Orylle=False; AllowPositionPuzzle@Olcasgean=0; AllowDisplacement@Easmarach=True";
+            Properties.EPIC_ENCOUNTER_SWITCHES = "AllowBotDisplacement@Orylle=False; AllowPositionPuzzle@Olcasgean=0; AllowDisplacement@Conservator=True";
             Assert.That(EpicEncounterMechanics.On(bots, "Orylle"), Is.False, "the owner's value beats what ships");
             Assert.That(EpicEncounterMechanics.On(puzzle, "Olcasgean"), Is.False);
-            Assert.That(EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowDisplacement), "Easmarach"), Is.True,
+            Assert.That(EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowDisplacement), "Conservator"), Is.True,
                 "and turns on what stays off");
             Assert.That(EpicEncounterMechanics.On(bots, "Jailer"), Is.True, "others as shipped");
             Properties.EPIC_ENCOUNTER_SWITCHES = "";
             Assert.That(EpicEncounterMechanics.On(bots, "Orylle"), Is.True, "cleared: what ships again");
-            Assert.That(EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowDisplacement), "Easmarach"), Is.False);
+            Assert.That(EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowDisplacement), "Conservator"), Is.False);
         }
     }
 }

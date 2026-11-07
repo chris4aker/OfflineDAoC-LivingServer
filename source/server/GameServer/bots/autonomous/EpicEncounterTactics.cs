@@ -665,6 +665,8 @@ namespace DOL.GS
             IReadOnlyList<GameNPC> live = Nearby(target);
             DungeonActs(bot, target, live);
             Advice advice = Decide(bot, target, live, PartyIndex(bot), CanShootFlyers(bot));
+            // In a room whose door is barred while its fight is on (Caer Sidi's horsemen), every spot stays inside it.
+            if (advice.StandAt is Vector3 sent) advice = advice with { StandAt = KeepInsideFor(advice.Target ?? target, sent) };
             // The party's call for what it plays: the rule's own (Advice.Call) or the one for its reason's tag (mech_*).
             EncounterMechanicCalls.Consider(bot, RequiredAddOwner(target, live) ?? target, advice);
             switch (advice.Action)

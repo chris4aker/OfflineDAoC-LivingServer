@@ -635,8 +635,8 @@ namespace DOL.AI.Brain
             }
         }
         #region Legion Port
-        List<GamePlayer> Port_Enemys = new List<GamePlayer>();
-        List<GamePlayer> randomlyPickedPlayers = new List<GamePlayer>();
+        List<GameLiving> Port_Enemys = new List<GameLiving>();
+        List<GameLiving> randomlyPickedPlayers = new List<GameLiving>();
         public void BroadcastMessage(String message)
         {
             foreach (GamePlayer player in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
@@ -658,7 +658,11 @@ namespace DOL.AI.Brain
                 IOrderedEnumerable<KeyValuePair<GameLiving, AggroAmount>> tempAggroTable = aggroList.OrderByDescending(x => x.Value.Effective).Skip(topPlayersToIngore).OrderBy(x => random.Next());
                 foreach(KeyValuePair<GameLiving, AggroAmount> items in tempAggroTable)
                 {
-                    if (items.Key != null && items.Key.IsAlive && items.Key is GamePlayer player)
+                    // 1.2 (epic wave 3): bots on his aggro list are thrown too when his bot displacement is on (shipped on):
+                    // a thrown bot has no walked way down from the platform, so its recovery recalls it to its party after
+                    // 5 s (EncounterDisplacementRecovery: no path back), about the time a player needs for the zone point.
+                    if (items.Key != null && items.Key.IsAlive &&
+                        (items.Key is GamePlayer || items.Key is GameBot && EncounterTargets.DisplacesBots(Body)) && items.Key is GameLiving player)
                     {
                         if (!Port_Enemys.Contains(player))
                         {
@@ -674,9 +678,9 @@ namespace DOL.AI.Brain
 
                     if (randomlyPickedPlayers.Count > 0)
                     {
-                        foreach (GamePlayer player in randomlyPickedPlayers)
+                        foreach (GameLiving player in randomlyPickedPlayers)
                         {
-                            if (player != null && player.IsAlive && player.Client.Account.PrivLevel == 1 && HasAggro && player.IsWithinRadius(Body, 2500))
+                            if (player != null && player.IsAlive && EncounterTargets.NotGm(player) && HasAggro && player.IsWithinRadius(Body, 2500))
                             {
                                 // An encounter throw, not a party portal: companions stay down fighting Legion instead of
                                 // being dragged up to the platform, whose only way down is a zone point bots can't use

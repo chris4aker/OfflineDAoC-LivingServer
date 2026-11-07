@@ -27,7 +27,9 @@ namespace DOL.GS
         // Torst/Hurika keep their original database perches, attacks and loot.
         // Their unsupported aerial patrol/pull puzzle is separate from dragons'
         // existing fly/land cycle, which is deliberately not affected here.
-        /// <summary>Torst and Hurika's aerial patrol and pull.</summary>
+        /// <summary>Torst and Hurika's aerial patrol and pull. Off (globally and for both): the raid's pull rule exists since
+        /// epic wave 3 (EpicEncounterTactics.Griffons.cs) but was never played; the owner turns it on per griffon with
+        /// epic_encounter_switches.</summary>
         public static bool AllowGlacierGriffonPatrol { get; set; }
 
         /// <summary>A script's throw, teleport or jail may move a bot (companion bots and autonomous gamebots); off: a bot it
@@ -122,6 +124,18 @@ namespace DOL.GS
         /// On since 1.2: the raid kills Kula first and only the King's own target fights him (EpicEncounterTactics).</summary>
         public static bool AllowTuscarTwinHeal { get => ServerProperties.Properties.EPIC_TUSCAR_TWIN_HEAL; set => ServerProperties.Properties.EPIC_TUSCAR_TWIN_HEAL = value; }
 
+        /// <summary>The sting of a damage shield on a bot Funus hits neither heals nor hurts him while his puzzle is on (1.2,
+        /// epic wave 3; server property epic_funus_bot_shield_guard, on): a bot can't take a shield off, and from a bot of a
+        /// class he takes no damage from the sting would heal him to full. Real players keep the original.</summary>
+        public static bool FunusBotShieldGuard { get => ServerProperties.Properties.EPIC_FUNUS_BOT_SHIELD_GUARD; set => ServerProperties.Properties.EPIC_FUNUS_BOT_SHIELD_GUARD = value; }
+
+        /// <summary>Funus ignores this hit (pure): the puzzle and the guard are on, it is a damage shield's sting
+        /// (<paramref name="handler"/> a DamageShieldSpellHandler) from a bot, and the bot is not one he takes damage from
+        /// (<paramref name="accepted"/> false; a cleric's sting hurts him as before).</summary>
+        public static bool FunusShieldStingIgnored(GameObject attacker, object handler, bool accepted) =>
+            AllowFunusWeaponPuzzle && FunusBotShieldGuard && attacker is GameBot && !accepted &&
+            handler is DOL.GS.Spells.DamageShieldSpellHandler;
+
         /// <summary>Every restore switch, by name (for logs, tests and the catalog).</summary>
         public static readonly string[] RestoreSwitches =
         [
@@ -209,6 +223,19 @@ namespace DOL.GS
             Ship(nameof(AllowBotDisplacement), "SyssroRuthless", true),
             Ship(nameof(AllowBotDisplacement), "DraugynSphere", true),
             Ship(nameof(AllowBotDisplacement), "MoranTheMighty", true),
+            // Epic wave 3 (1.2): each with its tactic or recovery and tests (UT_EpicWave3).
+            // Legendary Afanc's throw to the lake shore (the bot walks back; off the mesh or no path: the recall).
+            Ship(nameof(AllowBotDisplacement), "LegendaryAfanc", true),
+            // Caer Sidi: the horsemen's room bars its door while one of them fights; the raid's muster and stand-offs stay
+            // inside it and the route doesn't leave mid-fight (EpicEncounterTactics.HorsemenRoom).
+            Ship(nameof(AllowDisplacement), "ApocInitializator", true),
+            Ship(nameof(AllowBotDisplacement), "ApocInitializator", true),
+            // Easmarach's push behind the falls: the raid kills him before the last room, and shoots him from the floor below
+            // the waterfall top (EpicEncounterTactics.Galladoria).
+            Ship(nameof(AllowDisplacement), "Easmarach", true),
+            Ship(nameof(AllowBotDisplacement), "Easmarach", true),
+            // Legion's throw to his platform takes bots too: no walked way down, so the recovery recalls them after 5 s.
+            Ship(nameof(AllowBotDisplacement), "Legion", true),
         ];
 
         private static (string, string, bool) Ship(string name, string encounter, bool value) => (name, encounter, value);

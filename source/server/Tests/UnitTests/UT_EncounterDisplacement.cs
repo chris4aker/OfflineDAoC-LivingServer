@@ -72,15 +72,15 @@ namespace DOL.UnitTests
             EpicEncounterMechanics.SetFor("AllowDisplacement", "GameNPC", true);
             Assert.That(EpicEncounterMechanics.AllowDisplacementFor(olcasgean), Is.True, "per-encounter on");
             Assert.That(EpicEncounterMechanics.AllowDisplacement, Is.False, "the global value does not move");
-            Assert.That(EpicEncounterMechanics.On("AllowDisplacement", "Easmarach"), Is.False, "another encounter keeps the global");
+            Assert.That(EpicEncounterMechanics.On("AllowDisplacement", "Conservator"), Is.False, "another encounter keeps the global");
             EpicEncounterMechanics.AllowDisplacement = true;
-            Assert.That(EpicEncounterMechanics.On("AllowDisplacement", "Easmarach"), Is.True, "global on");
-            EpicEncounterMechanics.SetFor("AllowDisplacement", "Easmarach", false);
-            Assert.That(EpicEncounterMechanics.On("AllowDisplacement", "Easmarach"), Is.False, "an encounter can be turned off alone");
-            EpicEncounterMechanics.SetFor("AllowDisplacement", "Easmarach", null);
-            Assert.That(EpicEncounterMechanics.ValueFor("AllowDisplacement", "Easmarach"), Is.Null);
-            Assert.That(EpicEncounterMechanics.On("NoSuchSwitch", "Easmarach"), Is.False);
-            Assert.That(EpicEncounterMechanics.On(null, "Easmarach"), Is.False);
+            Assert.That(EpicEncounterMechanics.On("AllowDisplacement", "Conservator"), Is.True, "global on");
+            EpicEncounterMechanics.SetFor("AllowDisplacement", "Conservator", false);
+            Assert.That(EpicEncounterMechanics.On("AllowDisplacement", "Conservator"), Is.False, "an encounter can be turned off alone");
+            EpicEncounterMechanics.SetFor("AllowDisplacement", "Conservator", null);
+            Assert.That(EpicEncounterMechanics.ValueFor("AllowDisplacement", "Conservator"), Is.Null);
+            Assert.That(EpicEncounterMechanics.On("NoSuchSwitch", "Conservator"), Is.False);
+            Assert.That(EpicEncounterMechanics.On(null, "Conservator"), Is.False);
         }
 
         [Test]
@@ -112,7 +112,8 @@ namespace DOL.UnitTests
             }
             var xanxicar = (GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(Xanxicar));
             Assert.That(EpicEncounterMechanics.AllowBotDisplacementFor(xanxicar), Is.True);
-            Assert.That(EpicEncounterMechanics.On("AllowBotDisplacement", "Legion"), Is.False, "no raid AI for Legion: bots stay");
+            // Epic wave 3: Legion's throw takes bots (they come back down by the recall); still no Darkness Falls raid AI.
+            Assert.That(EpicEncounterMechanics.On("AllowBotDisplacement", "Legion"), Is.True, "wave 3: bots thrown, recalled down");
             EpicEncounterMechanics.SetFor("AllowDragonThrow", "AlbGolestandt", false);
             EpicEncounterMechanics.ResetPerEncounter();
             Assert.That(EpicEncounterMechanics.On("AllowDragonThrow", "AlbGolestandt"), Is.True);
@@ -493,6 +494,7 @@ namespace DOL.UnitTests
             var bot = Make<Bot>();
             bot.Region = 249;
             var legion = (GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(DOL.GS.Scripts.Legion));
+            EpicEncounterMechanics.SetFor("AllowBotDisplacement", "Legion", false); // on since wave 3; the owner can turn it off
             Assert.That(EncounterDisplacement.Move(bot, 249, 48200, 49566, 20833, 1028, DisplacementKind.Teleport, legion), Is.False);
             Assert.That(bot.InRegionMoves, Is.Zero);
             Assert.That(R.IsRecovering(bot), Is.False);

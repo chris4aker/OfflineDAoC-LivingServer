@@ -14,6 +14,31 @@ Older entries below keep the names they were written with.
      last. Its entries go here, at the top of this section, as "**Dungeons and bosses have their lore**"; keep the
      entries below and the Beta 1.1.2 section as they are. -->
 
+**More of the epic fights play in full, and the bots play them** (the epic encounters, wave 3). Tested by automated
+tests only; not played in game yet. Some of these fights get harder: try them first.
+- **Funus: the archers join in.** With his weapon puzzle on, mercenaries, armsmen and infiltrators who own their short
+  bow or crossbow now draw it and fight him with it, like the scouts with their longbows; none of them ever swings a melee
+  weapon at him, not even when he is on top of them. Bots of those classes start with a plain training bow or crossbow of
+  their own kind when they learn it, and earn better ones as before. No bot's pet attacks him or defends its owner
+  against him, and the sting of a damage shield on a bot no longer heals him to full (`epic_funus_bot_shield_guard`).
+- **Caer Sidi's final room bars its door.** While a horseman or Apocalypse fights, anyone at the door is moved back to the
+  middle of the room, bots too. The raid gathers and waits inside the room and doesn't leave it mid-fight.
+- **Easmarach retreats to the waterfall and you can finish him there.** Below 30% he walks up to the top of the falls and
+  heals; the raid's casters, archers and healers shoot him from the floor below and the melee wait for him at the bottom.
+  His current behind the falls is back: while he lives, anyone walking into the falls is pushed back, so the raid kills
+  him before it goes on to the last room.
+- **Legion:** his throw to the platform takes bots too (they come back down after a few seconds), wounded raiders step
+  out of his reach so their deaths don't heal him, and no bot puts a bladeturn up near him (he eats it, and five of them
+  set off his soul blast). This is not a Darkness Falls raid AI: the platform, the way down and his add waves are not
+  played by the bots.
+- **Legendary Afanc** throws bots to the lake shore too, and it only throws raiders who are still by him.
+- **The Green Knight** wakes when a bot raid has gathered by him, as well as when you whisper "defend it".
+- **Qan'ris Duros and Durval** (Shrouded Isles) bring their guards into the fight as they were meant to.
+- **Torst and Hurika's flying patrol** stays off: the raid now knows how to pull a flying griffon down, but it hasn't been
+  played. Turn it on with `epic_encounter_switches` `AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True`.
+- Each of these can be turned off alone with `epic_encounter_switches`, for example `AllowDisplacement@Easmarach=False`,
+  `AllowDisplacement@ApocInitializator=False` or `AllowBotDisplacement@Legion=False`.
+
 **Every restored boss mechanic is a setting you can change** (the epic encounters, wave 2). Each one is its own server
 property (`/serverproperty`, section `npc`), and the game reads it as it plays, so no rebuild is needed:
 `epic_horsemen_tether_heal`, `epic_funus_weapon_puzzle`, `epic_sacristan_patrol`, `epic_soul_reckoner_full_shield`,

@@ -2249,7 +2249,7 @@ namespace DOL.AI.Brain
             if (bot.IsCasting && IsSelfBladeturn(bot.castingComponent?.SpellHandler?.Spell) && !HasAggro)
                 return true;
             if (now < _nextSelfBladeturnTick || bot.IsOnStableMasterRoute ||
-                CompanionFollowPolicy.WaitingForLeaderToStop(bot) ||
+                CompanionFollowPolicy.WaitingForLeaderToStop(bot) || EpicEncounterTactics.NoBladeturnHere(bot) ||
                 !SelfBladeturnSafe(true, HasAggro, bot.IsAttacking,
                     bot.IsCasting || bot.castingComponent?.HasPendingSkillRequests == true,
                     bot.IsStunned || bot.IsMezzed || bot.IsSilenced,
@@ -2511,6 +2511,8 @@ namespace DOL.AI.Brain
                 .Where(spell => spell?.Level <= bot.Level && BotSongTwistPolicy.IsManagedSong(bot, spell))
                 .GroupBy(spell => spell.SpellType)
                 .Select(group => group.OrderByDescending(spell => spell.Level).First()).ToList();
+            // No pulsing bladeturn by a fighting Legion (he eats it and blasts after five): the chant goes to another anchor.
+            if (EpicEncounterTactics.NoBladeturnHere(bot)) chants.RemoveAll(spell => spell.SpellType == eSpellType.Bladeturn);
             if (chants.Count == 0) return;
             Spell active = bot.effectListComponent.GetPulseEffects()
                 .FirstOrDefault(effect => !effect.IsEnding && !effect.IsEnded &&
@@ -3410,6 +3412,18 @@ namespace DOL.AI.Brain
                             stance,
                             targetForcesMelee,
                             hasRangedCombatWeapon);
+                        // An epic rule says this target is fought with the distance weapon only (Funus: a melee swing from
+                        // a mercenary, armsman, infiltrator or scout heals him to full). Short of endurance for a shot the
+                        // bot waits; it never falls back to its melee weapon on him.
+                        if (EpicEncounterTactics.FightsAtRange(BotBody, livingTarget))
+                        {
+                            if (!hasRangedCombatWeapon)
+                            {
+                                if (Body.ActiveWeaponSlot != eActiveWeaponSlot.Distance) Body.StopAttack();
+                                return;
+                            }
+                            useRanged = true;
+                        }
                         if (useRanged)
                         {
                             if (Body.ActiveWeaponSlot != eActiveWeaponSlot.Distance)
@@ -4358,6 +4372,8 @@ namespace DOL.AI.Brain
         protected bool CanCastDefensiveSpell(Spell spell)
         {
             if (CompanionFollowPolicy.DeferBuff(BotBody, spell)) return false;
+            // Legion eats the bladeturn of his target, and five of them set off his soul blast (epic wave 3).
+            if (spell?.SpellType == eSpellType.Bladeturn && EpicEncounterTactics.NoBladeturnHere(BotBody)) return false;
             if (spell == null || spell.IsHarmful || spell.Level > Body.Level ||
                 !BotBody.CanAffordConcentration(spell) ||
                 BotSongTwistPolicy.IsReservedPulse(BotBody, spell) ||
@@ -4811,6 +4827,7 @@ namespace DOL.AI.Brain
             {
                 target = null;
                 if (CompanionFollowPolicy.DeferBuff(BotBody, spell)) return false;
+                if (spell?.SpellType == eSpellType.Bladeturn && EpicEncounterTactics.NoBladeturnHere(BotBody)) return false;
 
                 if (spell.Level > Body.Level || Body.Mana < BotBody.PowerCost(spell) ||
                     !BotBody.CanAffordConcentration(spell) ||

@@ -340,17 +340,18 @@ namespace DOL.UnitTests
         public void EveryMovePickAsksTheSameSwitchAsTheMove()
         {
             // Shipped: the three dragons and Xanxicar move bots, and since epic wave 2 Galladoria's movers (UT_EpicWaveTwo),
-            // Vifil, Cunovinda and others (UT_EpicWave2MidHib) and Albion's (UT_EpicWave2Albion); the rest (Legion included)
-            // keep them out of its picks.
+            // Vifil, Cunovinda and others (UT_EpicWave2MidHib), Albion's (UT_EpicWave2Albion) and wave 3's (Legion, Easmarach,
+            // Afanc, the horsemen's room: UT_EpicWave3); the rest keep them out of its picks.
             foreach (Type boss in new[] { typeof(AlbGolestandt), typeof(MidGjalpinulva), typeof(HibCuuldurach), typeof(Xanxicar),
                          typeof(Olcasgean), typeof(WaterPrimal), typeof(SpindlerBroodmother), typeof(WaterfallAntipass),
-                         typeof(Jailer), typeof(SummonerCunovinda), typeof(Orylle), typeof(KrevoRicik), typeof(MoranTheMighty) })
+                         typeof(Jailer), typeof(SummonerCunovinda), typeof(Orylle), typeof(KrevoRicik), typeof(MoranTheMighty),
+                         typeof(DOL.GS.Scripts.Legion), typeof(Easmarach), typeof(LegendaryAfanc), typeof(ApocInitializator) })
             {
                 var npc = (GameNPC)RuntimeHelpers.GetUninitializedObject(boss);
                 Assert.That(EncounterTargets.DisplacesBots(npc), Is.True, boss.Name);
                 Assert.That(EncounterTargets.DisplacesBots(npc), Is.EqualTo(EpicEncounterMechanics.AllowBotDisplacementFor(npc)), boss.Name);
             }
-            foreach (Type boss in new[] { typeof(DOL.GS.Scripts.Legion), typeof(Easmarach), typeof(GrandSummonerGovannon), typeof(Orshom) })
+            foreach (Type boss in new[] { typeof(Conservator), typeof(GrandSummonerGovannon), typeof(Orshom) })
             {
                 var npc = (GameNPC)RuntimeHelpers.GetUninitializedObject(boss);
                 Assert.That(EncounterTargets.DisplacesBots(npc), Is.False, boss.Name + ": player-only as before");
@@ -416,18 +417,26 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void LegionsThrowStaysOnRealPlayersEvenWithBotDisplacementOn()
+        public void LegionsThrowTakesBotsOnlyWithHisBotDisplacementOn()
         {
-            // By design (2026-10-30): his platform has no way down for a bot. His throw takes only real players off his aggro list.
+            // Epic wave 3: his platform has no walked way down, so a thrown bot is recalled to its party after 5 s (the
+            // recovery's no-path fallback). Off for him, his throw takes only real players, as before.
+            // Darkness Falls (region 249): the platform 48200,49566 is in the same region as the fight.
+            _region = new Region(new RegionData { Id = 249, Name = "Darkness Falls test", Description = "Darkness Falls test", Mobs = [] });
+            _zone = new Zone(_region, 249, "Darkness Falls test", 0, 0, 65536, 65536, 249, false, 0, false, 0, 0, 0, 0, 0);
+            _region.Zones.Add(_zone);
             var legion = Npc<TestLegion>(10_000, 10_000, 1_000);
             var brain = Brain<LegionBrain>(legion);
             var bots = Enumerable.Range(0, 10).Select(i => Npc<Bot>(10_100 + i * 50, 10_000, 1_000)).ToList();
             foreach (Bot bot in bots) brain.AddToAggroList(bot, 100);
-            EncounterTargets.BotsCanBeDisplaced = true;                       // every boss without its own value
-            EpicEncounterMechanics.SetFor("AllowBotDisplacement", "TestLegion", true);
+            EpicEncounterMechanics.SetFor("AllowBotDisplacement", "TestLegion", false);
             for (int i = 0; i < 20; i++)
                 Call(brain, "ThrowPlayer", new object[] { null });
-            Assert.That(bots.Sum(b => b.Moves), Is.Zero, "no bot is ever moved to Legion's platform");
+            Assert.That(bots.Sum(b => b.Moves), Is.Zero, "off: no bot is moved to Legion's platform");
+            EpicEncounterMechanics.SetFor("AllowBotDisplacement", "TestLegion", EpicEncounterMechanics.ValueFor("AllowBotDisplacement", "Legion"));
+            Call(brain, "ThrowPlayer", new object[] { null });
+            // He skips the top five of his aggro list, then takes 8-16 of the rest: here all five others.
+            Assert.That(bots.Sum(b => b.Moves), Is.EqualTo(5), "as shipped: the five bots below his top five go up");
             Assert.That(EncounterDisplacement.CompanionsAlwaysStay, Does.Contain("Legion"), "companions never follow a player up there");
         }
 

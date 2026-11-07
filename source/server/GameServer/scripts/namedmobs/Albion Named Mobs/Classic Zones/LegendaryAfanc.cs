@@ -143,6 +143,9 @@ namespace DOL.AI.Brain
         {
 			if (HasAggro)
             {
+				// 1.2: the pick is made from who stands within 2,500 now. The list was never cleared, so a raider who had
+				// left (or released) stayed in it and could be thrown from wherever it was.
+				Port_Enemys.Clear();
 				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.DisplacesBots(Body)))
                 {
 					if(player != null)
