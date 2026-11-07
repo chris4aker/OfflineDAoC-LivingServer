@@ -30,13 +30,13 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
     },
     {
-      "text": "The Undercroft, Eadric, Wynflaed, the guest-stone and its law, Sir Cador of the Isle of Glass and the orcs' refusal of titles are Living Server writing.",
-      "provenance": "original",
-      "source": "LORE"
+      "text": "Orylle's throw lands on the spot where Orshom's Fire burns (31406, 69599) and needs the fire alive (OrshomFire.FireCount > 0); it picks only real players (GamePlayer, PrivLevel 1).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs"
     }
   ],
-  "story": "Orylle is the warrior queen of Krondon. She was born in the Undercroft, the deepest seam of the thrawn ogres who dug under the isles before the hall-folk built on them, and she was the first of her people to climb up and look at what they had been digging under. She found Krondon dying of age: its last elder Eadric counting empty chairs at the high table, three young bysen left, no champions, and an old storm-keeper whose lights were struggling.\n\nShe took the hall in one night without breaking a door. Eadric died asking whether she came as guest or enemy. Then she walked every room while the ghost of Wynflaed, the last teacher, translated the titles over the doors, and she gave every title to an ogre: the scriptorium to Drihten, the stores to Beran, the horn to Deben, the school to Morgus, the road to Lurfos, the name bysen to the brothers Ulor and Jehrog. She bargained with the storm-keeper for his weather and has kept the bargain to the letter. Orshom Brong drank the great hearth on the night of the taking; she made him her champion and consort, and when one of them falls the other roars the name.\n\nHer throw comes from the hall-folk's guest-law: a stranger who entered unannounced was set back on the guest-stone to begin again properly. Orylle hurls challengers the length of her hall onto that stone and fights only those who walk back. Sir Cador of the Isle of Glass reached her first with twenty and was swept out; he came back with fifty chosen for stubbornness and ice-mages of the Isle of Glass for Orshom, and they walked back every time. Whether Orylle serves Morgana is disputed. Wenna of Caer Gothwaite, who spoke with her, says the queen wants neither to serve nor to rule, only to keep.",
-  "legend": "Fifty or more, and kill her with Orshom in mind: they come together, so the cold-damage casters are on him and everyone else is on her. When she throws you, do not release and do not panic. Walk back up the hall and get in. The raids that lost to her lost because the thrown men wandered off.\n\nKeep the walking paths open between the throw spot and her chair, and keep a healer near the throw spot for the falls. She hits hard but fair; the danger of Orylle is always the scattering, never the blows. Walking back is the whole trick. She only throws while Orshom's fire is burning on the floor, so when the fire is out, nobody flies.",
+  "story": "Orylle is the warrior queen of Krondon. She was born in the Undercroft, the deepest seam of the thrawn ogres who dug under the isles before the hall-folk built on them, and she was the first of her people to climb up and look at what they had been digging under. She found Krondon dying of age: its last elder Eadric counting empty chairs at the high table, three young bysen left, no champions, and an old storm-keeper whose lights were struggling.\n\nShe took the hall in one night without breaking a door. Eadric died asking whether she came as guest or enemy. Then she walked every room while the ghost of Wynflaed, the last teacher, translated the titles over the doors, and she gave every title to an ogre: the scriptorium to Drihten, the stores to Beran, the horn to Deben, the school to Morgus, the road to Lurfos, the name bysen to the brothers Ulor and Jehrog. She bargained with the storm-keeper for his weather and has kept the bargain to the letter. Orshom Brong drank the great hearth on the night of the taking; she made him her champion and consort, and when one of them falls the other roars the name.\n\nHer throw comes from the hall-folk's guest-law: a stranger who entered unannounced was set back on the guest-stone to begin again properly. Orylle hurls challengers down her hall onto that stone, into the fire burning on it, and fights only those who walk back; with the stone cold she throws no one. Sir Cador of the Isle of Glass reached her first with twenty and was swept out; he came back with fifty chosen for stubbornness and ice-mages of the Isle of Glass for the fire on the stone, and they walked back every time. Whether Orylle serves Morgana is disputed. Wenna of Caer Gothwaite, who spoke with her, says the queen wants neither to serve nor to rule, only to keep.",
+  "legend": "Fifty or more, the old February 2003 guide said, and they meant fifty who listen. Orylle is level 83 with 40,000 health, 30% melee / 40% other reduction, CC immune and a 3,800 tether, and Orshom Brong (level 80, 30,000) is linked: pull either and both come. When Orshom engages he lights Orshom's Fire on the floor about 1,200 in front of her chair, on the old hearthstone: 10,000 health, only cold damage hurts it, 500 heat in a 300 radius every 3 seconds. While it burns, every 15 to 20 seconds she throws a random real player within 2,500 straight onto it. Only the human is ever thrown; bots never are. So the cold casters kill the fire first. Once it is out she throws nobody and the floor stops burning. Orshom himself takes normal damage of every kind; the old 'only cold hurts Orshom' was the catalog confusing him with his fire. If you are thrown, get off the fire at once, do not release, and walk back up. Tanks on each of the pair. When one falls the other roars the name, and that is all: no enrage. Walking back is still the trick the old hands teach, but putting the hearth out is the better one.",
   "yells": {
     "aggro": [
       "Who walks into my hall without leave?",
@@ -45,16 +45,12 @@
     ],
     "phases": [
       {
-        "trigger": "health<=75",
-        "text": "Back to the door with you. Come again, properly."
+        "trigger": "teleport",
+        "text": "Back to the stone with you. Come again, properly."
       },
       {
         "trigger": "health<=50",
-        "text": "Orshom! Burn them!"
-      },
-      {
-        "trigger": "teleport",
-        "text": "Back to the door with you. Come again, properly."
+        "text": "Orshom! Keep the hearth!"
       },
       {
         "trigger": "partnerDead",
@@ -74,26 +70,23 @@
   },
   "atmosphere": {
     "lairEntry": [
-      "A queen's chair, and a cold fire beside it.",
+      "A queen's chair, and a fire on the stone before it.",
       "The ealdor's chair. A queen sits in it now."
     ],
     "phases": [
       {
         "trigger": "health<=75",
-        "text": "Orylle hurls challengers back down her hall!"
+        "text": "Orylle hurls challengers onto the burning stone!"
       }
     ],
     "realmFirstKill": "The queen of Krondon has fallen. The hall is empty."
   },
   "botLines": {
     "briefing": [
-      "orylle and orshom come together. cold dmg on orshom, everyone else on the queen",
-      "she throws people back up the hall. if its you, walk back in, dont release",
-      "fifty of us minimum. nobody pulls until the cold casters are set",
-      "healer near the throw spot for the falls",
-      "walk back up the hall, dont release",
-      "cold casters on orshom only, everyone else on her",
-      "keep the path from the throw spot clear of adds"
+      "orylle and orshom come together. cold casters kill orshom's fire on the floor first, 10k hp",
+      "while the fire burns she throws the human onto it every 15-20 sec. bots never get thrown",
+      "if you land in the fire get off it at once and walk back, dont release",
+      "once the fire is out nobody flies. then everyone on the pair, one tank each"
     ],
     "aftermathWin": [
       "[gg|gg all], the queen is down. krondon has no queen tonight",
@@ -104,12 +97,10 @@
       "fifty and we listened. thats the trick"
     ],
     "aftermathLoss": [
-      "too many people lost after she threw them. walk back next time",
-      "orshom wiped the casters. need more cold on him",
+      "we left orshom's fire up and she kept throwing me into it",
+      "all the cold went on orshom instead of the fire",
       "people wandered off after the throw",
-      "orshom ate the cold casters and she ate the rest",
-      "too few healers for the falls",
-      "we pulled lurfos and the queen together"
+      "too few healers on the fire spot"
     ],
     "rumour": [
       "heard orylle never kills you first, she throws you out the door",
@@ -124,7 +115,7 @@
     "keyword": "orylle",
     "text": "The warrior queen of Krondon. She took the hall without burning it and put an ogre in every chair. She hurls the bold back down her hall. Walk back to her; the raids that wandered off are the ones we sing about as lost."
   },
-  "bookPage": "Orylle does not slay a challenger who reaches her chair. She hurls him back down her hall toward the door, as a queen might sweep an unbidden guest from her hearth, and waits to see if he returns. The ogres say she has done this to a hundred men and that only the ones who walked back were worth killing. I was thrown twice. The second time I walked back past Lurfos's post and the ghosts on the walls, and they watched me come, and I think they were glad of it. Orshom Brong burned at her shoulder through all of it. They fell together.",
+  "bookPage": "From the notes of Wenna of Caer Gothwaite. Orylle does not slay a challenger who reaches her chair. She takes him by the elbow and hurls him down her hall onto the old hearthstone, which the hall-folk called the guest-stone, into whatever fire is burning there, and waits to see if he gets up and comes back. I was thrown twice on the first descent and rolled off the stone both times with my sleeves alight. On the second, Magus Tegau's frost put the fire on the stone out, and after that the queen reached for us and her hand fell, as if she had remembered a law. She keeps the hall's laws. Orshom roared for her; they fell together.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} walked back up Orylle's hall as often as she threw them and ended Krondon's queen in {minutes} minutes.",
     "loss": "Orylle swept {realm}'s raid out of her hall; {raidLeader} lost too many to the long walk back."
@@ -167,15 +158,15 @@
     },
     {
       "title": "The Night of the Hearth",
-      "text": "Orshom Brong was the largest ogre of the Undercroft and the first to follow Orylle up the shaft.\n\nOn the night of the taking, after Eadric fell, Orshom walked into the deepest hall where the great hearth burned. The hall-folk had kept that fire alight since their founding; its hyrde was the most honoured keeper of all, and the ghosts say she was the last of the hall-folk to die that night, standing between the ogre and her fire. Orshom put his face into the hearth and drank it.\n\nThe ogres tell it as a boast, and the ghosts as a grief, and both agree on what came after. The fire did not go out. It went into him, and it has burned inside him ever since. Flame passes through him without harm; steel finds nothing to bite. Only cold reaches what is left of the ogre around the fire, as if the hearth were the only real thing in him and frost the only thing that could quench it. Sometimes the fire spills out of him and burns on the floor of its own accord. When he has been hurt deep enough it flares, and he roars, and every enemy in the room turns to him whether they mean to or not, as people turn to a hearth on a cold night.\n\nOrylle made him her champion and her consort that same night, and set him at her shoulder by the ealdor's chair. They have met every challenger since side by side. The ghosts say that when one of them falls, the other roars the fallen one's name, and that it is the only time anyone in Krondon has heard Orylle raise her voice."
+      "text": "Orshom Brong was the largest ogre of the Undercroft and the first to follow Orylle up the shaft.\n\nOn the night of the taking, after Eadric fell, Orshom walked into the deepest hall where the great hearth burned. The hall-folk had kept that fire alight since their founding; its hyrde was the most honoured keeper of all, and the ghosts say she was the last of the hall-folk to die that night, standing between the ogre and her fire. Orshom put his face into the hearth and drank it.\n\nThe ogres tell it as a boast, and the ghosts as a grief, and they do not agree on what came after. The ogres say the fire went into him and burns there still, and that nothing can hurt him. The ghosts say the fire would not stay in him. Whenever he is roused it comes back up out of him and settles on its own stone below the high table, where it was kept, and burns there of its own accord; steel passes through it and flame only feeds it, and only frost has ever put it out. Orshom himself, the ghosts say, bleeds like any ogre. When he has been hurt deep enough he roars for his queen, and she comes to his shoulder whether she was minded to or not.\n\nOrylle made him her champion and her consort that same night, and set him at her shoulder by the ealdor's chair. They have met every challenger since side by side. The ghosts say that when one of them falls, the other roars the fallen one's name, and that it is the only time anyone in Krondon has heard Orylle raise her voice."
     },
     {
       "title": "The Guest-Stone",
-      "text": "The hall-folk had a law for guests, and Orylle found it carved on the floor.\n\nA long way down the road from the high table, where the corridor narrows before Lurfos's post, a flat stone is set into the paving with words cut round its edge. The ghosts call it the guest-stone. The law it records was the oldest courtesy of the hall: a stranger who walked into the ealdor's presence without being announced was taken by the elbow and set back on the guest-stone, unharmed, to begin again properly. A stranger who came back and was announced was a guest. A stranger who did not come back was nobody's business. And a guest could be turned out only while the hearth burned; with the fire cold, the law said, a host must keep whoever he had. The ghosts say Orylle keeps that part of the law too, and throws no one while Orshom's fire is not burning on her floor.\n\nWynflaed explained the stone to Orylle in the first week of her reign, and the queen took it more literally than the hall-folk ever had. When challengers reach her chair she seizes the boldest and hurls him back down her hall, the whole length of it, to land on the guest-stone; the fall is not gentle, but it is not meant to kill. She fights only those who walk back. The ogres say she has done this to a hundred men, and that only the ones who returned were worth killing.\n\nThe first man she threw was a tinker of the Black Mountains who had come up the road to sell pots to a hall he did not know had fallen. He landed on the guest-stone past Lurfos's post, sat a while among the ghosts of the road, and walked back up the hall past Lurfos and his sword because he had not been paid. Orylle bought a pot. The ghosts tell it as the only time they have laughed since the taking, and say the pot is still on the high table. They say the queen watches each thrown man's face as he gets up, and that she can tell before he takes his first step whether he will reach her again."
+      "text": "The hall-folk had a law for guests, and Orylle found it carved on the floor.\n\nA little way down the queen's hall from the high table, the great hearth of Krondon was built on a flat stone with words cut round its edge. The ghosts call it the guest-stone. The law it records was the oldest courtesy of the hall: a stranger who walked into the ealdor's presence without being announced was taken by the elbow and set back on the guest-stone, unharmed, to begin again properly. A stranger who came back and was announced was a guest. A stranger who did not come back was nobody's business. And a guest could be turned out only while the hearth burned; with the fire cold, the law said, a host must keep whoever he had. The ghosts say Orylle keeps that part of the law too, and throws no one while the fire is not burning on the stone.\n\nWynflaed explained the stone to Orylle in the first week of her reign, and the queen took it more literally than the hall-folk ever had. When challengers reach her chair she seizes the boldest and hurls him down her hall to land on the guest-stone, in whatever is burning there; the landing is not gentle, and a man who lies in the fire to collect himself may not get up, but it is not meant to kill. She fights only those who walk back. The ogres say she has done this to a hundred men, and that only the ones who returned were worth killing.\n\nThe first man she threw was a tinker of the Black Mountains who had come up the road to sell pots to a hall he did not know had fallen. He landed on the guest-stone, rolled off it beating the sparks out of his coat, and walked back up to the high table because he had not been paid. Orylle bought a pot. The ghosts tell it as the only time they have laughed since the taking, and say the pot is still on the high table. They say the queen watches each thrown man's face as he gets up, and that she can tell before he takes his first step whether he will reach her again."
     },
     {
       "title": "Sir Cador and the Fifty",
-      "text": "The first company of Albion to reach Orylle's chair was twenty strong, and she swept every one of them out.\n\nIt was led by Sir Cador of the Isle of Glass, a knight of the ring-forts, and Wenna of Caer Gothwaite went with it to read the carvings. They fought through Deben's muster and Beran's stores and reached the high table with fourteen. Orylle threw Cador first. He landed on the guest-stone, broke his arm, and walked back, and she threw him again. By the time he walked back the third time, the rest of his company had been thrown one by one, and some had walked back and some had wandered into the side rooms among Krevo's ghosts and not returned. Orshom took the ones who reached the chair. Cador was the last. The ghosts say Orylle let him walk out alive, because he had come back three times.\n\nCador's second company was fifty, chosen, Wenna wrote, not for strength but for stubbornness: men and women who would walk back up a hall no matter how many times they were thrown. He brought ice-mages of the Isle of Glass for Orshom, because he had watched fire pass through the champion like light through water. He killed Lurfos first and cleared the road behind him so that the thrown would land among friends.\n\nThey walked back every time. When Orshom fell, Orylle roared his name; Wenna wrote that the sound shook dust from the carvings. When the queen fell a little after, she said that the hall had been kept, it had been kept, and Wenna, on the way out, read every title over every door aloud, so that the ghosts would hear them spoken by someone who knew what they meant."
+      "text": "The first company of Albion to reach Orylle's chair was twenty strong, and she swept every one of them out.\n\nIt was led by Sir Cador of the Isle of Glass, a knight of the ring-forts, and Wenna of Caer Gothwaite went with it to read the carvings. They fought through Deben's muster and Beran's stores and reached the high table with fourteen. Orylle threw Cador first. He landed on the guest-stone, broke his arm, and walked back, and she threw him again. By the time he walked back the third time, the rest of his company had been thrown one by one, and some had walked back and some had wandered into the side rooms among Krevo's ghosts and not returned. Orshom took the ones who reached the chair. Cador was the last. The ghosts say Orylle let him walk out alive, because he had come back three times.\n\nCador's second company was fifty, chosen, Wenna wrote, not for strength but for stubbornness: men and women who would walk back up a hall no matter how many times they were thrown. He brought Magus Tegau's ice-mages of the Isle of Glass for the fire on the guest-stone, because he had landed in it three times and watched his knights' swords pass through it like light through water. He killed Lurfos first, so that nothing would stand behind him on the road.\n\nThey walked back every time. When Orshom fell, Orylle roared his name; Wenna wrote that the sound shook dust from the carvings. When the queen fell a little after, she said that the hall had been kept, it had been kept, and Wenna, on the way out, read every title over every door aloud, so that the ghosts would hear them spoken by someone who knew what they meant."
     },
     {
       "title": "What the Queen Wants",
