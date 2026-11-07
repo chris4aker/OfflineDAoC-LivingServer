@@ -2044,8 +2044,10 @@ def render_md(data: dict) -> str:
     po = [(e, r) for e in data["encounters"] for r in e["rules"] if r.get("affects") and r["kind"] != "offline_change"]
     if po:
         lines += ["", "## Player-only mechanics (candidates to target bots later)", "",
-                  "These pick real players only (`GetPlayersInRadius`, `is GamePlayer`), so bots are never chosen. They stay "
-                  "player-only for now.", ""]
+                  "These still pick real players only, so bots are never chosen. Since 1.2 the scripts pick through "
+                  "`EncounterTargets` (real players and bots); what is left here are the moves (throws, teleports, jails), "
+                  "whose picks include bots only once `EncounterTargets.BotsCanBeDisplaced` is on, and anything still on "
+                  "`GetPlayersInRadius` / `is GamePlayer`.", ""]
         for e, r in po:
             lines.append(f"- {e['boss']} ({e['dungeon']}): {r['kind']} `{Path(r['file']).name}:{r['line']}`: {md_escape(r['summary'][:160])}")
     lines += ["", "## Priority: encounters that block raids today", ""]
