@@ -450,7 +450,7 @@ namespace DOL.UnitTests
         {
             var on = EpicEncounterMechanics.RestoreSwitches.Where(name =>
                 (bool)typeof(EpicEncounterMechanics).GetProperty(name, BindingFlags.Public | BindingFlags.Static).GetValue(null)).ToArray();
-            Assert.That(on, Is.EqualTo(new[] { nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle) }));
+            Assert.That(on, Is.EquivalentTo(UT_EpicWaveTwo.GalladoriaRestoresOn), "the class rule and Galladoria's wave-2 switches");
         }
     }
 }

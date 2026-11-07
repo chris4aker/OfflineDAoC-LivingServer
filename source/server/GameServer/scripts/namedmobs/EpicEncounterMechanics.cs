@@ -37,7 +37,8 @@ namespace DOL.GS
         /// the dragon's target) are hurled to one of five spots of the lair. On per dragon since 1.2.</summary>
         public static bool AllowDragonThrow { get; set; }
         /// <summary>The dragons' messengers (OpenDAoC-Core 3513bad): from 50% health every 80-90 s, four to six messengers run
-        /// out of the lair and each calls three to six adds where its path ends. Off: the raid AI has no tactic for them yet.</summary>
+        /// out of the lair and each calls four to six adds where its path ends. Global off; on per dragon since 1.2 (the raid's
+        /// casters and archers run them down).</summary>
         public static bool AllowDragonMessengers { get; set; }
 
         /// <summary>The encounter switches, by name (for logs, tests and the catalog); each can be set per encounter.</summary>
@@ -59,7 +60,8 @@ namespace DOL.GS
         public static bool AllowDragonMessengersFor(string encounter) => On(nameof(AllowDragonMessengers), encounter);
 
         // Original OpenDAoC mechanics the fork had edited out for bot raids (docs/encounters/EPIC-ENCOUNTERS.md, "Restored
-        // behind switches"). Each is off, so the game plays as before, until the raid AI can play it; the ones it plays are on. The values were read
+        // behind switches"). Each is off, so the game plays as before, until the raid AI can play it; the ones it plays are on
+        // (Galladoria's since 1.2, epic wave 2). The values were read
         // from OpenDAoC-Core 3513bad (2026-11-04). Settable so the tests and the next raid AI step can turn one on.
 
         /// <summary>Fames, Morbus and Funus heal to full when drawn past their tether (not only when the fight is over).</summary>
@@ -75,25 +77,25 @@ namespace DOL.GS
         public static bool AllowSoulReckonerSmallRoom { get; set; }
         /// <summary>Aroon takes only the damage types whose Scaith has died, and the Scaiths must die in order (slash, thrust,
         /// crush, body, cold, energy, heat, matter, spirit); each Scaith is immune until the one before it is dead.</summary>
-        public static bool AllowAroonDamageOrder { get; set; }
+        public static bool AllowAroonDamageOrder { get; set; } = true;
         /// <summary>Galladoria's primals come only when a raider stands within 350 of the waterfall bridge spot (bots too;
         /// the original counted real players only, which a bot raid could never meet).</summary>
-        public static bool AllowGalladoriaBridgeSpot { get; set; }
+        public static bool AllowGalladoriaBridgeSpot { get; set; } = true;
         /// <summary>The Fire primal's trail of fire hits 220 in a 450 radius (not 120 in 300).</summary>
-        public static bool AllowFullFirePatches { get; set; }
+        public static bool AllowFullFirePatches { get; set; } = true;
         /// <summary>Each Earthmender takes damage only from its own class group (pets always); others do nothing. On since 1.2:
         /// the raid AI sends each raider to an Earthmender its class hurts (EpicEncounterTactics class rules).</summary>
         public static bool AllowEarthmenderClassPuzzle { get; set; } = true;
         /// <summary>Earthmenders never attack (they only heal).</summary>
-        public static bool AllowEarthmendersPassive { get; set; }
+        public static bool AllowEarthmendersPassive { get; set; } = true;
         /// <summary>An Earthmender heals to full 30 s after its last fight even with raiders in the room.</summary>
-        public static bool AllowEarthmenderQuickReset { get; set; }
+        public static bool AllowEarthmenderQuickReset { get; set; } = true;
         /// <summary>Earthmenders heal each other as well as the Earth primal.</summary>
-        public static bool AllowEarthmenderMutualHeal { get; set; }
+        public static bool AllowEarthmenderMutualHeal { get; set; } = true;
         /// <summary>Beatha's damage heals Xaga by twice the amount.</summary>
-        public static bool AllowBeathaHealsXaga { get; set; }
+        public static bool AllowBeathaHealsXaga { get; set; } = true;
         /// <summary>Beatha and Tine circle the room even while they are fought.</summary>
-        public static bool AllowFairyFlight { get; set; }
+        public static bool AllowFairyFlight { get; set; } = true;
         /// <summary>Grand Summoner Govannon has 300,000 health (not 200,000).</summary>
         public static bool AllowGovannonFullHealth { get; set; }
         /// <summary>Cold damage heals Icelord Kvasir by a fifth of his health and does no damage.</summary>
@@ -126,6 +128,29 @@ namespace DOL.GS
             Ship(nameof(AllowBotDisplacement), "MidGjalpinulva", true),
             Ship(nameof(AllowBotDisplacement), "HibCuuldurach", true),
             Ship(nameof(AllowBotDisplacement), "Xanxicar", true),
+            // Epic wave 2 (1.2): each with its raid tactic (EpicEncounterTactics.Signals.cs, the catalog's aiTactics) and tests
+            // (UT_EpicWaveTwo).
+            // The dragons' messengers: casters and archers run them down (ranged adds); the party calls "runners".
+            Ship(nameof(AllowDragonMessengers), "AlbGolestandt", true),
+            Ship(nameof(AllowDragonMessengers), "MidGjalpinulva", true),
+            Ship(nameof(AllowDragonMessengers), "HibCuuldurach", true),
+            // Olcasgean: two parties hold the two safe spots; below half he throws a raider who was not thrown before
+            // (it walks back); the Waterfall Antipass keeps the raid in the room until he dies.
+            Ship(nameof(AllowPositionPuzzle), "Olcasgean", true),
+            Ship(nameof(AllowDisplacement), "Olcasgean", true),
+            Ship(nameof(AllowBotDisplacement), "Olcasgean", true),
+            Ship(nameof(AllowDisplacement), "WaterfallAntipass", true),
+            Ship(nameof(AllowBotDisplacement), "WaterfallAntipass", true),
+            // The Water primal's and Spindler Broodmother's teleports: the raider walks back (EncounterDisplacementRecovery).
+            Ship(nameof(AllowDisplacement), "WaterPrimal", true),
+            Ship(nameof(AllowBotDisplacement), "WaterPrimal", true),
+            Ship(nameof(AllowDisplacement), "SpindlerBroodmother", true),
+            Ship(nameof(AllowBotDisplacement), "SpindlerBroodmother", true),
+            // Close range: Conservator takes damage only from attackers within 800 of his spawn, Easmarach within his tether
+            // of his; the raid steps in (and leads Conservator home). Easmarach's push behind the falls stays off (his
+            // AllowDisplacement): see docs/encounters/EPIC-ENCOUNTERS.md.
+            Ship(nameof(AllowPositionPuzzle), "Conservator", true),
+            Ship(nameof(AllowPositionPuzzle), "Easmarach", true),
         ];
 
         private static (string, string, bool) Ship(string name, string encounter, bool value) => (name, encounter, value);

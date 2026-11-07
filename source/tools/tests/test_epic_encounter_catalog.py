@@ -86,7 +86,11 @@ class CatalogFileTests(unittest.TestCase):
 
     def test_move_picks_include_bots_exactly_where_bot_displacement_ships_on(self):
         # 1.2: EncounterTargets.DisplacesBots asks the move's own switch (AllowBotDisplacement per encounter).
-        self.assertEqual(cat.shipped_bot_displacement(), {"AlbGolestandt", "MidGjalpinulva", "HibCuuldurach", "Xanxicar"})
+        self.assertEqual(cat.shipped_bot_displacement(), {"AlbGolestandt", "MidGjalpinulva", "HibCuuldurach", "Xanxicar",
+                                                          # epic wave 2 (Galladoria)
+                                                          "Olcasgean", "WaterfallAntipass", "WaterPrimal", "SpindlerBroodmother"})
+        water = [r for r in {e["id"]: e for e in self.data["encounters"]}["galladoria/waterprimal"]["rules"] if r["kind"] == "teleport"]
+        self.assertNotIn("real players only", water[0].get("affects") or "", "the Water primal's teleport picks bots (wave 2)")
         by_id = {e["id"]: e for e in self.data["encounters"]}
         throw = [r for r in by_id["crystal-cave/xanxicar"]["rules"] if r["kind"] == "teleport"]
         self.assertTrue(throw)

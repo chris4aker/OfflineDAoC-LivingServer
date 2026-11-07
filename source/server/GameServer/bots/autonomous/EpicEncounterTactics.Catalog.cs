@@ -12,8 +12,18 @@ namespace DOL.GS
         public static readonly Tactic[] Catalog =
         [
             new("Xanxicar", "crystal-cave/xanxicar", [], 0, null, 0, [80, 60, 40, 20], 2500),
+            new("HibCuuldurach", "cuuldurach-s-lair-sheeroe-hills/hibcuuldurach", [], 0, null) { RangedAdds = ["CuuldurachMessenger"] },
+            new("Legion", "darkness-falls/legion", [], 0, null) { RangedAdds = ["LegionAdd"] },
+            new("Aroon", "galladoria/aroon", ["CorpScaith", "SpioradScaith", "RopadhScaith", "DamhnaScaith", "FuinneamgScaith", "BruScaith", "FuarScaith", "TaesScaith", "ScorScaith"], 0, null) { AddsInOrder = true },
+            new("Conservator", "galladoria/conservator", [], 600, null),
+            new("Easmarach", "galladoria/easmarach", [], 0, null),
+            new("Olcasgean", "galladoria/olcasgean", [], 0, null),
+            new("FirePrimal", "galladoria/fireprimal", [], 0, null) { Hazards = ["TrailOfFire"], HazardRadius = 450 },
             new("EarthPrimal", "galladoria/earthprimal", ["GuardianEarthmender", "MagicalEarthmender", "NaturalEarthmender", "ShadowyEarthmender"], 0, null) { ClassRules = [new("GuardianEarthmender", [eCharacterClass.Blademaster, eCharacterClass.Hero, eCharacterClass.Champion, eCharacterClass.Animist, eCharacterClass.Valewalker]), new("MagicalEarthmender", [eCharacterClass.Eldritch, eCharacterClass.Enchanter, eCharacterClass.Mentalist, eCharacterClass.Animist, eCharacterClass.Valewalker]), new("NaturalEarthmender", [eCharacterClass.Bard, eCharacterClass.Druid, eCharacterClass.Warden, eCharacterClass.Animist, eCharacterClass.Valewalker]), new("ShadowyEarthmender", [eCharacterClass.Nightshade, eCharacterClass.Ranger, eCharacterClass.Animist, eCharacterClass.Valewalker])], ClassRuleSwitch = "AllowEarthmenderClassPuzzle" },
             new("SpindlerBroodmother", "galladoria/spindlerbroodmother", [], 0, null) { RangedAdds = ["SBAdds"], DeathAdds = ["SBDeadAdds"] },
+            new("Xaga", "galladoria/xaga", ["Beatha", "Tine"], 0, null) { AddsInOrder = true },
+            new("MidGjalpinulva", "gjalpinulva-s-lair-myrkwood/midgjalpinulva", [], 0, null) { RangedAdds = ["GjalpinulvaMessenger"] },
+            new("AlbGolestandt", "golestandt-s-lair-dartmoor/albgolestandt", [], 0, null) { RangedAdds = ["GolestandtMessenger"] },
             new("AidonTheArchwizard", "hall-of-the-corrupt/aidonthearchwizard", ["AidonCopyFire", "AidonCopyIce", "AidonCopyAir", "AidonCopyEarth"], 1100, null, 1, null, 0),
             new("Orylle", "krondon/orylle", [], 0, null) { Hazards = ["OrshomFire"], HazardRadius = 300, After = "Orshom" },
             new("Orshom", "krondon/orshom", [], 0, null) { Hazards = ["OrshomFire"], HazardRadius = 300 },

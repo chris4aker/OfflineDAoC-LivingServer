@@ -334295,6 +334295,576 @@
    "id": "0560d1664eb5"
   },
   {
+   "kind": "combat",
+   "topic": "epic_glare",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} is staring at {target}, get off em",
+   "id": "3cd0acd88a50"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_glare",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stare on {target}, spread out",
+   "id": "0a2b5f03b17a"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_glare",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} has the stare, everyone away from em",
+   "id": "58d7daa1a718"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_glare",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "get away from {target}, big hit inc",
+   "id": "f9f6c03bdf0a"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_glare",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} move away from us, heals on {target}",
+   "id": "202a0eb8acc7"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_glare",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stare on {target}, healers watch em",
+   "id": "980043d9bf90"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_stun",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stun inc, casters and healers back out",
+   "id": "73ef01abefe8"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_stun",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} is looking around, ranged back off now",
+   "id": "cf7ed36666cc"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_stun",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "big stun coming, healers get out of range",
+   "id": "f5edac892142"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_stun",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stun inc, back up if you can",
+   "id": "6da8175c45da"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_stun",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stun soon, casters out, melee hang on",
+   "id": "10b4a60ed1c0"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_breath",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "breath inc, ranged back up",
+   "id": "bd16fb72e1a1"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_breath",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} is breathing in, casters out",
+   "id": "defff2870839"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_breath",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "breath coming, healers back off then heal",
+   "id": "3033dc1d348e"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_breath",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "breath inc, melee eat it, heals after",
+   "id": "b44e08d4f4a2"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_breath",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "here comes the breath, back up",
+   "id": "e26ae6c19dea"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_stomp",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stomp inc, top everyone up",
+   "id": "5eeb48dd9360"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_stomp",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} is gonna stomp, heal up now",
+   "id": "76484d838801"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_stomp",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stomp coming, full health everyone",
+   "id": "301adc0bf4d6"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_stomp",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "big stomp inc, heals on the tanks",
+   "id": "316461e72cb0"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_messengers",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "runners! kill the messengers",
+   "id": "45b4f3e4f448"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_messengers",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "messengers out, nuke them before they get away",
+   "id": "ba02e79dfec0"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_messengers",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "kill the runners or we get adds",
+   "id": "bdcd5848034c"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_messengers",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "casters on the messengers, now",
+   "id": "d42be4f3c449"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_messengers",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "messengers running, dont let them get far",
+   "id": "8b98d3ee76c9"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_messengers",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "runners out, archers and casters on them",
+   "id": "2fc556bdaef8"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_safeSpots",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "someone get on the spots, hes spamming",
+   "id": "378ab02f4b23"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_safeSpots",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "spots are empty, get on them",
+   "id": "fb12e641cd81"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_safeSpots",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "need people on both spots now",
+   "id": "6212c43911bf"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_safeSpots",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stand on the spots or we eat dd all fight",
+   "id": "cc45ae68f0d1"
+  },
+  {
    "kind": "deed",
    "topic": "named_solo",
    "who": [],

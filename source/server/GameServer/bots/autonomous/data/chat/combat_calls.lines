@@ -302,3 +302,65 @@ cant get back from here, porting
 stuck where it threw me, porting back
 no way down from here, coming back the long way
 stuck, gimme a sec to port back
+
+# ---- epic_*: a boss announced a big hit (1.2 epic wave 2, EncounterSignals / EncounterCalls) ----------------------
+# {target} is the raider the boss picked (or "someone"), {boss} the boss. A groupmate tells the party what to do.
+@kind combat
+@topic epic_glare
+@who *
+@needs in_player_group
+{boss} is staring at {target}, get off em
+stare on {target}, spread out
+{target} has the stare, everyone away from em
+get away from {target}, big hit inc
+{target} move away from us, heals on {target}
+stare on {target}, healers watch em
+
+@kind combat
+@topic epic_stun
+@who *
+@needs in_player_group
+stun inc, casters and healers back out
+{boss} is looking around, ranged back off now
+big stun coming, healers get out of range
+stun inc, back up if you can
+stun soon, casters out, melee hang on
+
+@kind combat
+@topic epic_breath
+@who *
+@needs in_player_group
+breath inc, ranged back up
+{boss} is breathing in, casters out
+breath coming, healers back off then heal
+breath inc, melee eat it, heals after
+here comes the breath, back up
+
+@kind combat
+@topic epic_stomp
+@who *
+@needs in_player_group
+stomp inc, top everyone up
+{boss} is gonna stomp, heal up now
+stomp coming, full health everyone
+big stomp inc, heals on the tanks
+
+@kind combat
+@topic epic_messengers
+@who *
+@needs in_player_group
+runners! kill the messengers
+messengers out, nuke them before they get away
+kill the runners or we get adds
+casters on the messengers, now
+messengers running, dont let them get far
+runners out, archers and casters on them
+
+@kind combat
+@topic epic_safeSpots
+@who *
+@needs in_player_group
+someone get on the spots, hes spamming
+spots are empty, get on them
+need people on both spots now
+stand on the spots or we eat dd all fight
