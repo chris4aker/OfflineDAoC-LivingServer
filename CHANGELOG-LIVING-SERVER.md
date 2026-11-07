@@ -22,8 +22,11 @@ automated tests only; not played in game yet.
   scripts. Every 60-80 seconds of a fight on the ground the dragon picks two to five raiders within reach (never the one
   it is fighting) and hurls them high over its lair. You and the bots are picked alike, so with a raid of bots you are
   thrown less often than before, never more.
-- **Xanxicar's throw can hit bots too.** It already threw you; once the bots are in its pick list (the next step of
-  this work), the bots it throws come back the same way.
+- **Xanxicar's throw hits bots too.** It already threw you; now it picks from you and the bots alike, and the bots it
+  throws come back the same way.
+- **One switch per boss.** A boss that may throw bots picks them for its throw, and one that may not (every other boss
+  for now, Legion included) picks only real players for it, as before. The boss's other targets (glares, debuffs, adds)
+  pick the whole raid everywhere.
 - **A thrown bot comes back.** It falls and takes the same fall damage you would. Then it walks back to its party:
   your companions to you, a raid bot to its party leader. If something attacks it on the way, it fights back first.
   - **Never stuck:** if there is no way back on foot, it hasn't got closer in 10 seconds, or the walk takes too long, it
@@ -33,7 +36,11 @@ automated tests only; not played in game yet.
   - **Healers** heal a raider who was just thrown, you included, before others, unless someone else is about to die.
   - **Your party says it:** "Mira got tossed, heals on Mira", "got tossed, omw back", "someone's in the jail".
 - **Your companions stay at the fight when a boss throws you.** Before, they were teleported along with you. Your
-  own throw is exactly as before.
+  own throw is exactly as before. The server setting `epic_companions_stay_when_thrown` (on) turns this off; Legion's
+  throw always leaves them down, since his platform has no way back for a bot.
+- **The dragons throw as high as they did.** Up to about 1,400 units: the fall costs about 60% of your health without
+  Safe Fall. Each dragon has a setting to throw lower: `epic_dragon_throw_height_golestandt`, `_gjalpinulva` and
+  `_cuuldurach` (0, the original; 712 costs about 34%).
 - **The dragons' messengers are back but switched off.** From half health they send runners out to fetch more
   monsters. Off until the bots have a way to stop the runners.
 - **Lich Lord Sanguis can be finished.** At 5% health he can't be targeted. Bots never fight what can't be targeted,
@@ -58,9 +65,20 @@ target bots too").
   - crowd counts: Ozur grows stronger and Legion calls more adds with a big bot raid, as they did with a big raid of
     players.
   - Messages still go to you only; a bot gets the spell, not the text.
-- **Throws, teleports and jails still pick real players only** (Xanxicar, Scurceol's orbs, Cunovinda's ledge,
-  Govannon's gallery, the Jailer, the Glacier Giant and others). They will pick bots too once thrown bots know how to
-  find their way back to the raid.
+- **Throws, teleports and jails pick bots only where the boss may throw them** (the three dragons and Xanxicar, see
+  above). Everywhere else (Scurceol's orbs, Cunovinda's ledge, Govannon's gallery, the Jailer, the Glacier Giant, Legion
+  and others) they still pick real players only, until each boss's tactic is in place.
+- **No floods of adds.** With bots counted, a few bosses would make far more adds or heals than any 2003 raid saw: a
+  bot raid can be twice its period size. They now count at most the period raid (docs/RAID-SIZES.md), so up to that
+  size nothing changes, and a bigger bot raid faces what a full raid of players did:
+  - Legion: adds for at most 64 raiders (16 a 5% step), and heals from at most 64 deaths in 5 minutes;
+  - High Lord Saeor: heals from at most 64 deaths in 5 minutes; Beliathan: at most 64 minions up;
+  - Nosdoden: at most 64 spirits of the fallen up; the Green Knight: at most 70 trees a wave; Oona: at most 70 undead
+    up; Risnir Cruss: at most 40 apparitions up.
+  - Each is a setting of its own (EncounterFloodGuard). Ozur, Aroon's Scaiths and Apocalypse's harbingers needed none.
+- **The Darkness Falls princes no longer eat bots.** Asmoien and Ba'alorien eat the nearest pet every five seconds and
+  heal by it. Their pet check also matched your companions and the gamebots, so in a bot raid they ate a bot every five
+  seconds. Now they eat summoned pets only: yours and the bots' pets.
 - **Raids are harder:** mechanics that used to skip the bots now hit them. Not yet played in game.
 
 **Battleground keeps change hands** (playtest 2026-11-04: in Thidranki 210 level-22 bots fought for 45 minutes, the

@@ -17,7 +17,7 @@
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Colialt.cs": "926b00c2391f2c7ea80abe0e14d74724115575534c8e009b7787a6ff70583b6b",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs": "a20ffa4999aebfce381e1bdd501352f02ea1b8791013c54161e2c75e6c084bb9",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs": "de4ccc8702ba2f5b59cdfa7cf9bf4d3be8fbd0db27e47f92a7a65725ec7dff95",
-  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs": "167c32071df52e39027a4d768a88a3fabf8d2f61b898feafa953b849e9b99a76",
+  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs": "0ffb3debb1332f208f47f8f381f1614559bcbb692b08b3e6f19ad1b580760387",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Sarcondina.cs": "9562d9201b4260ae059916b6eeaa60c0595a4b1fd682b2fbd2dbe2037d6831c2",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/SpiritOfLordEmthoro.cs": "9f359d995ad6b6fc5bea2b824cfa459c667761c5379f53ec7e44b09bc4964a71",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/ValnirMordeth.cs": "8d54e7f51ce0d282a797d6b1c1d919fb1563794980759d2942a8757891a0aacd",
@@ -42,15 +42,15 @@
   "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs": "b0b4cc8c6d55ffd5cf29023f221008eeea0e69a0fc007c6f39f49397dae4ce9c",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs": "4b063ed9e280b2e8b90d00a2ced49cecc5efede138f783dcbd49cc891f94c759",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/WarlordDorinakka.cs": "a81529c15a2e59963c705bf0c11b374ff8ed7708a4f81846e02a7a9c9dae58e1",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "4ae88d990d66762660703c8dd1c8ed0b44f567b74444b800db1cac36c889c4c5",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "b41053d04f15f0debb8a6a6c94ff930b205b7efabc171512b30c072fde09b9e4",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaelerdoth.cs": "5c40dbe73a2338b51b225428ac91efb12f9918e3bef32f25a61908367a4a90cc",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs": "ea20ed907819ebba2dba2dde9703fee62d88d8ea945cf8b5a4edb084cdc2d7b9",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "67f1a42567b5bfe6c1c7b940928a22e9b30698eb6c0e4ab621038c3a23f4008b",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "d71ac59fa177d0ed9c31c5288383aa52892e003d061ecaf28d1b063eddf61eed",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "122cd7f909d84aa87e7ab7140fd1d6ceeb474f84087a425cd018cd79b9a601bd",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "cd2cfb4f2cdd265bf3061f3a33af97ef034bae88712e1f0ed3a40396e2878691",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "3fa4df42ab0b47bae8bf1f942a36ea5b222ca9f9c0bb6b2b5dff883b46a18539",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs": "fa9b3318a8cfa33957552bfde7a2659f6438cb4a3c53f4dbbf7b829f6d42db09",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "ed786219f6c2df5a16b38e5369ff20707444d17685919e1a3e6250245112e096",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "2f464529d3943e2dac47145c3310ec786d1b172f1303582acd0c567bdd5f59b0",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "53d2bd1b0496e80129543cca4e017ac6e5504d5410e629011ce357e6e573cadc",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "ec7005401968848e5295ecddf0d94ed26c02da0068e3de07559036cb3d65c0f4",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrincessNahemah.cs": "e4979c4b62aaa342d40f11378aad1e1072120cec7bdef3c1e7d771e5b0dc4d63",
   "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosBrain.cs": "321880a5267affac2a020ab02f741a95d7eb017665f616d701c3315fc3794f2f",
   "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosState.cs": "4a42f12e31066f93f00df4bc2e8cb8fef4ed363aec55e86f0749427a918c3333",
@@ -67,16 +67,17 @@
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonCombatGeometry.cs": "3908bdb98f00d2bf319c7e650eac46fed1472b7533a3ab977f31c527f7a59271",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonDiagnostics.cs": "b1a90e5c650db04f8973ce5015ff5a9175fdd6266a862c965fa39a1fabcb85b9",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterAdds.cs": "c1494caffb7ba37b042544eb45e3703bb35429fd543599ad05528ecb75f2f6cd",
-  "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "9af7c8aab91f5e9aa05a66e8c96c47ada32dc43c0d43e840ad75c727e76f0466",
+  "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonFlightLanding.cs": "c6dbfb4c0f5ec02c29d9e5a144d7e86d5a945dfbac7f78d8e297f03a3f6ebb8e",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonLairPlacement.cs": "574af55d780a64ce63e2f2de89b20044ce1c67cfeaa150e5125d230efcc23391",
   "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "e0d369b595949196534d5ec9f89d8fc4cb1073f00f39cc2ce099ee78a7b40073",
   "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "5d2dcfe983d0efbcd28869623ffb03a44a602080baea1181fe6dd60b4cb04064",
   "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666",
-  "source/server/GameServer/scripts/namedmobs/EncounterDisplacement.cs": "991f799a0e11df1a49fe865b3994c76ce94991ccf62ad25ef1d8b9ab000c1796",
-  "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "8edf9dce05f5f6482e493d041f2507eb411553c0c47ffaf9ea5d9da7c9b2a492",
+  "source/server/GameServer/scripts/namedmobs/EncounterDisplacement.cs": "ebab87b045c8d05df4de0a23b7b05ae3d4678d8f2eda04153b47d799c2c0b111",
+  "source/server/GameServer/scripts/namedmobs/EncounterFloodGuard.cs": "64a95af9f337614ccdfd78221efba27096c87725a2c3c8f3d204f9566412213d",
+  "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "25da681fa8a3bd7e96d89b02f6d0622363d00ce77445f6c4c3e3444e9a47df39",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
-  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "4eb899ad3474d233835d43557917cbe32436f346508a9287f904f3780f05b81d",
+  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "05e427cc2e5990feda6ee8aadf73233b4da489422c4ef453f51a368797f804c9",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "47dede9429ce25a534a73793e7b5940c337b6c4314b3b0fe57a6c0e301e96eeb",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
   "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe",
@@ -166,7 +167,7 @@
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Kelic.cs": "7f30815802a1c71234ebf3999437e95dd2090ce95c11ee8c9906ab2cfab75118",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Loken.cs": "5dc2bfdea94037d23d29eafa8d239758fb7325222985191b4c144e3580817b03",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Mokkurvalve.cs": "6382636e117ffb121a7115729ebf6e09fbaabeaee18dbba07c24a138c6b7d7ab",
-  "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs": "fc7c65ab141bffcf4985dab618602f8234c8b923f5d555363735f93ab965dd2b",
+  "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs": "1dc707fccf9f06656947638293af6c3cf6b0ac6028f9c9326b97a2fdde53a192",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/RaumarikRevenant.cs": "3aae917ad79c29fe668e7d0e100eb06053e0be91524505498351bbb7bc7223c6",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Runil.cs": "7bf552d955fd5eb28c59e5917aa88b303d39f725f7af60074ee3b73d78df4fee",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ulfketill.cs": "645dfb0ec4ab74d670c66de0c0da84bd69f43361910540e4888b8dae9cdc8d50",
@@ -183,14 +184,14 @@
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Valmak.cs": "459dd23c05add851e92b2f6fd78efd957c3af1a068a3377807552a6d9ab9a725",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Vasrem.cs": "5a6d0d84e1cea4cb4ccaf5c14e582941a6780b5083e5ba5ca17294d5f7430556",
   "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "1e4281f1e82a152f99318a38e62c74907512296934a5796f2ccfc23df1d11aa7",
-  "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "6efff19e43e785a5a9fc399bc57ea29f8f4b91a15ae1ab48d21432d6b36217c1",
+  "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "edf5f149c1bb47b4bae51448936e8363d0af9f2a33f7a513e2e14d3c78e21f9b",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "b1670c27f8287fd476963dcd604ed0c3d6ee926691321f3dca547a4262198f83",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "71371583d6bed9cab527981da675b0a7d501642eb66f584d00692147801cd770",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "889fa7d0b06549afa47c2d560e9754906e8d6b345901088efc12d4f24f3eab15",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs": "a11dc500e720562928b31c3f1079bbac635db52cb9899978742fff9105c99d58",
   "source/server/GameServer/scripts/namedmobs/Trollheim/Dagar.cs": "9c54b8e58b90b96c8d0cc2e20a20b5a50eb5a2f1f156172b47e89e7c3cada7b8",
   "source/server/GameServer/scripts/namedmobs/Trollheim/FostraOrm.cs": "cb7e0a66cc479ba78f436d6db514b7f4d15f48dc6cb16b7244728e76b9ce134f",
-  "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "d03bf9b76633fcac11ccf725e3fdf40a3f70a199e5a8ffb1d07b0087ce5cd438",
+  "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "a86a7ccee708d250944290b7982db60b6774f0eace754622d9274d9e59be6a19",
   "source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs": "8d11894906325de83614eed8ce5bdf22f368f0ce2d4dd8bf50d6006b8eed813a",
   "source/server/GameServer/scripts/namedmobs/Trollheim/Rotoddjur.cs": "9c7eb27994026aa4ed0168158089af2f5acc1abc71efd255079ccc00f7e0e24c",
   "source/server/GameServer/scripts/namedmobs/TurSuil/AbomosSoultrapper.cs": "c41910c457057f8bb67f3ce8925a29a01d1367d02476e0a71ef5d63f242b576d",
@@ -984,7 +985,7 @@
   "Answered by the owner (2026-11-06): throws and other unique triggers target bots too. Since 1.2 the boss scripts pick through EncounterTargets (real players and bots); picks that move their victim include bots once EncounterTargets.BotsCanBeDisplaced is on, and the mechanics still listed under 'Player-only mechanics' are those moves plus the ones left player-only on purpose."
  ],
  "counts": {
-  "scripts": 211,
+  "scripts": 212,
   "encounters": 238,
   "encountersWithRules": 228,
   "rules": 862,
@@ -2573,7 +2574,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs",
    "lines": [
     9,
-    105
+    114
    ],
    "dungeon": "Albion Named Mobs / Shrouded Isles",
    "region": 51,
@@ -2590,8 +2591,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs",
-     "line": 122,
-     "lineEnd": 143,
+     "line": 131,
+     "lineEnd": 152,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "RisnirCrussBrain",
@@ -2600,24 +2601,24 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@122"
+     "key": "reset@131"
     },
     {
      "kind": "empowered",
-     "summary": "Strength becomes 150, Quickness 80 while if (enemy != null && EncounterTargets.IsRaider(enemy))",
+     "summary": "Strength becomes 150, Quickness 80 while if (enemy != null && EncounterTargets.IsRaider(enemy) && EncounterFloodGuard.MayAdd(\" \", LiveApparitions()))",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs",
-     "line": 76,
-     "lineEnd": 77,
+     "line": 85,
+     "lineEnd": 86,
      "anchor": "add.Strength = 150;",
      "confidence": "inferred",
      "sourceClass": "RisnirCruss",
      "method": "EnemyKilled",
-     "condition": "if (enemy != null && EncounterTargets.IsRaider(enemy))",
+     "condition": "if (enemy != null && EncounterTargets.IsRaider(enemy) && EncounterFloodGuard.MayAdd(\" \", LiveApparitions()))",
      "verified": true,
      "tactic": "Remove what empowers it first, or burn it fast; healers ready for bigger hits.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "empowered@76"
+     "key": "empowered@85"
     }
    ],
    "spells": [
@@ -2632,7 +2633,7 @@
      "value": null,
      "target": "AREA",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs",
-     "line": 183,
+     "line": 192,
      "sourceClass": "RisnirCrussBrain"
     },
     {
@@ -2646,7 +2647,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs",
-     "line": 211,
+     "line": 220,
      "sourceClass": "RisnirCrussBrain"
     }
    ],
@@ -2663,6 +2664,7 @@
    "templateTetherRange": 4500,
    "raids": [],
    "raidAi": "no raid",
+   "notes": "1.2: an apparition rises from each raider he kills, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'RisnirCruss.Apparitions'): no new apparition while 40 are up (no raid goes there: the smallest period raid size).",
    "verified": true
   },
   {
@@ -6817,7 +6819,7 @@
     },
     {
      "kind": "teleport",
-     "summary": "ThrowPlayer: every 20-40 s a random real player within 2,500 (not his target) is moved to 32338,32387,16539 ('hurled into the air').",
+     "summary": "ThrowPlayer: every 20-40 s a random raider within 2,500 (not his target; real players, and bots since 1.2) is moved to 32338,32387,16539 ('hurled into the air').",
      "file": "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs",
      "line": 224,
      "lineEnd": 224,
@@ -6827,9 +6829,8 @@
      "method": "ThrowPlayer",
      "subtype": "air_toss",
      "displacement": "Throw",
-     "affects": "real players only (bots are never picked)",
-     "tactic": "Off for bots today: it picks only real players (GameBot is a GameNPC, not a GamePlayer). To play it: a thrown bot walks back and rejoins its party.",
-     "difficulty": "off today",
+     "tactic": "A thrown bot lands with the player's fall damage and walks back to its party, or recalls after 5 s with no way back (EncounterDisplacementRecovery); healers heal it first and its party calls it in /group.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
      "key": "teleport@224"
     }
@@ -6882,7 +6883,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random real player within 2,500 every 20-40 s (bots too once EncounterTargets.BotsCanBeDisplaced is on) and glares at another raider, bots included since 1.2 (never a necromancer).",
+   "notes": "Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random raider within 2,500 every 20-40 s: real players, and bots since 1.2 (his AllowBotDisplacement is on; the pick asks the same switch as the move) and glares at another raider, bots included since 1.2 (never a necromancer).",
    "currentRaidAi": "2026-11-05: lost with support 199 (required 150, Special Forces joined), one named kill.",
    "aiTactics": {
     "blastThresholds": [
@@ -7080,7 +7081,7 @@
     {
      "kind": "teleport",
      "subtype": "air_toss",
-     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Cuuldurach picks 2-5 raiders within 2,500 that are not its target (real players and the bots on its aggro list) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts).",
+     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Cuuldurach picks 2-5 raiders within 2,500 that are not its target (real players, and the bots on its aggro list where its AllowBotDisplacement is on, as shipped; the pick and the move ask the same switch) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts: up to about 1,400 units, about 60% of a raider's health; the server property epic_dragon_throw_height_<dragon> softens it, 0 = the original).",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs",
      "line": 81,
      "lineEnd": 101,
@@ -7201,7 +7202,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs",
    "lines": [
     140,
-    250
+    258
    ],
    "dungeon": "Darkness Falls",
    "region": 249,
@@ -7226,7 +7227,7 @@
      "maxHealth": 550,
      "level": "50",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs",
-     "line": 287
+     "line": 295
     }
    ],
    "rules": [
@@ -7234,8 +7235,8 @@
      "kind": "adds",
      "summary": "Spawns BeliathanMinion: from PlayerKilledByBeliathan; count 1 spawn call in PlayerKilledByBeliathan",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs",
-     "line": 241,
-     "lineEnd": 241,
+     "line": 249,
+     "lineEnd": 249,
      "anchor": "BeliathanMinion sMinion = new BeliathanMinion();",
      "confidence": "inferred",
      "sourceClass": "Beliathan",
@@ -7249,7 +7250,7 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@241"
+     "key": "adds@249"
     },
     {
      "kind": "tether",
@@ -7275,8 +7276,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs",
-     "line": 262,
-     "lineEnd": 277,
+     "line": 270,
+     "lineEnd": 285,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "BeliathanBrain",
@@ -7286,7 +7287,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@262"
+     "key": "reset@270"
     }
    ],
    "spells": [],
@@ -7307,6 +7308,7 @@
     }
    ],
    "raidAi": "no raid AI",
+   "notes": "1.2: a minion rises from each raider he kills, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'Beliathan.Minions'): no new minion while 64 are up, Darkness Falls' period raid.",
    "verified": true
   },
   {
@@ -7717,7 +7719,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs",
    "lines": [
     10,
-    98
+    100
    ],
    "dungeon": "Darkness Falls",
    "region": 249,
@@ -7734,8 +7736,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs",
-     "line": 115,
-     "lineEnd": 120,
+     "line": 117,
+     "lineEnd": 122,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "SaeorBrain",
@@ -7745,14 +7747,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@115"
+     "key": "reset@117"
     },
     {
      "kind": "heal",
      "summary": "Heals: mob.Health += player.MaxHealth;",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs",
-     "line": 94,
-     "lineEnd": 94,
+     "line": 96,
+     "lineEnd": 96,
      "anchor": "mob.Health += player.MaxHealth;",
      "confidence": "inferred",
      "sourceClass": "HighLordSaeor",
@@ -7761,7 +7763,7 @@
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "heal@94"
+     "key": "heal@96"
     }
    ],
    "spells": [],
@@ -7791,6 +7793,7 @@
     }
    ],
    "raidAi": "no raid AI",
+   "notes": "1.2: a dead bot heals him by its health too (EncounterTargets). Flood guard (EncounterFloodGuard 'HighLordSaeor.KillHeal'): at most 64 such heals in 5 minutes, Darkness Falls' period raid.",
    "verified": true
   },
   {
@@ -7802,7 +7805,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
    "lines": [
     14,
-    293
+    294
    ],
    "dungeon": "Darkness Falls",
    "region": 249,
@@ -7827,7 +7830,7 @@
      "maxHealth": 1200,
      "level": null,
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 723
+     "line": 731
     }
    ],
    "rules": [
@@ -7835,8 +7838,8 @@
      "kind": "immune_while",
      "summary": "Takes no damage from attackers more than 1,400 from him.",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 242,
-     "lineEnd": 254,
+     "line": 243,
+     "lineEnd": 255,
      "anchor": "{",
      "confidence": "inferred",
      "sourceClass": "Legion",
@@ -7846,14 +7849,14 @@
      "tactic": "Everyone fights within 1,400 of him (casters too).",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "immune_while@242"
+     "key": "immune_while@243"
     },
     {
      "kind": "adds",
      "summary": "Spawns graspering soul (LegionAdd): from Think when if (Body.HealthPercent <= 95 && Body.HealthPercent > 90 && !adds1); count 1 spawn call in SpawnAdds",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 619,
-     "lineEnd": 619,
+     "line": 627,
+     "lineEnd": 627,
      "anchor": "LegionAdd add = new LegionAdd();",
      "confidence": "inferred",
      "sourceClass": "LegionBrain",
@@ -7868,14 +7871,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@619"
+     "key": "adds@627"
     },
     {
      "kind": "phase",
      "summary": "At 95/90/85/80/75/70/65/60/55/50/45/40/35/30/25/20/15/10/5% health (Think): calls SpawnAdds",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 405,
-     "lineEnd": 537,
+     "line": 406,
+     "lineEnd": 538,
      "anchor": "if (Body.HealthPercent <= 95 && Body.HealthPercent > 90 && !adds1)",
      "confidence": "inferred",
      "sourceClass": "LegionBrain",
@@ -7906,14 +7909,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@405"
+     "key": "phase@406"
     },
     {
      "kind": "reset",
      "summary": "Resets after 60 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 382,
-     "lineEnd": 382,
+     "line": 383,
+     "lineEnd": 383,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "LegionBrain",
@@ -7923,14 +7926,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@382"
+     "key": "reset@383"
     },
     {
      "kind": "teleport",
      "summary": "Teleports player to a fixed spot (MoveTo 249, 48200, 49566, 20833, 1028)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 676,
-     "lineEnd": 676,
+     "line": 684,
+     "lineEnd": 684,
      "anchor": "EncounterDisplacement.Move(player, 249, 48200, 49566, 20833, 1028, DisplacementKind.Teleport, Body);",
      "confidence": "inferred",
      "sourceClass": "LegionBrain",
@@ -7942,7 +7945,7 @@
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "teleport@676"
+     "key": "teleport@684"
     }
    ],
    "spells": [
@@ -7957,7 +7960,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 697,
+     "line": 705,
      "sourceClass": "LegionBrain"
     }
    ],
@@ -7987,7 +7990,7 @@
     }
    ],
    "raidAi": "no raid AI",
-   "notes": "Level 83, 300,000 health. No raid AI: listed for completeness.",
+   "notes": "Level 83, 300,000 health. No raid AI: listed for completeness. 1.2: his throw stays on real players only (a bot can't get down from the platform) and companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes.",
    "verified": true
   },
   {
@@ -7998,8 +8001,8 @@
    "brain": "BehemothBrain",
    "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
    "lines": [
-    807,
-    868
+    815,
+    876
    ],
    "dungeon": "Darkness Falls",
    "region": 249,
@@ -8018,8 +8021,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 885,
-     "lineEnd": 889,
+     "line": 893,
+     "lineEnd": 897,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "BehemothBrain",
@@ -8029,7 +8032,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@885"
+     "key": "reset@893"
     }
    ],
    "spells": [],
@@ -8171,11 +8174,11 @@
     },
     {
      "kind": "pet_devour",
-     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health.",
+     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest summoned pet within 2,000 (of a player or of a bot) dies and he heals by its maximum health. Never a bot: before 1.2 the check (a controlled brain) matched companion bots and gamebots too and ate one every 5 s (EpicEncounterMechanics.IsDevourablePet).",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs",
-     "line": 111,
-     "lineEnd": 124,
-     "anchor": "if (candidate.Brain is IControlledBrain && candidate.IsAlive && (pet == null || Body.GetDistanceTo(candidate) < Body.GetDistanceTo(pet)))",
+     "line": 110,
+     "lineEnd": 122,
+     "anchor": "GameNPC pet = DOL.GS.EpicEncounterMechanics.NearestDevourablePet(Body, Body.GetNPCsInRadius(2000));",
      "confidence": "inferred",
      "sourceClass": "AsmoienBrain",
      "method": "Think",
@@ -8185,7 +8188,7 @@
      "tactic": "Pet classes leave or park their pets more than 2,000 away before the pull.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "pet_devour@111"
+     "key": "pet_devour@110"
     }
    ],
    "spells": [],
@@ -8258,11 +8261,11 @@
     },
     {
      "kind": "pet_devour",
-     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health.",
+     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest summoned pet within 2,000 (of a player or of a bot) dies and he heals by its maximum health. Never a bot: before 1.2 the check (a controlled brain) matched companion bots and gamebots too and ate one every 5 s (EpicEncounterMechanics.IsDevourablePet).",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs",
-     "line": 110,
-     "lineEnd": 123,
-     "anchor": "if (candidate.Brain is IControlledBrain && candidate.IsAlive && (pet == null || Body.GetDistanceTo(candidate) < Body.GetDistanceTo(pet)))",
+     "line": 109,
+     "lineEnd": 121,
+     "anchor": "GameNPC pet = DOL.GS.EpicEncounterMechanics.NearestDevourablePet(Body, Body.GetNPCsInRadius(2000));",
      "confidence": "inferred",
      "sourceClass": "BaalorienBrain",
      "method": "Think",
@@ -8272,7 +8275,7 @@
      "tactic": "Pet classes leave or park their pets more than 2,000 away before the pull and fight without them.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "pet_devour@110"
+     "key": "pet_devour@109"
     }
    ],
    "spells": [],
@@ -8302,7 +8305,7 @@
     }
    ],
    "raidAi": "no raid AI",
-   "notes": "Prince of Darkness Falls. Every five seconds he eats the nearest pet within 2,000 and heals by the pet's maximum health (changed from every pet on every brain turn, owner 2026-10-14).",
+   "notes": "Prince of Darkness Falls. Every five seconds he eats the nearest summoned pet within 2,000 (never a bot, 1.2 fix) and heals by the pet's maximum health (changed from every pet on every brain turn, owner 2026-10-14).",
    "currentRaidAi": "2026-11-04: Albion and Hibernia's Darkness Falls raids were each defeated at him (two wipes each, Special Forces joined). No raid AI for Darkness Falls.",
    "verified": true
   },
@@ -14130,7 +14133,7 @@
     {
      "kind": "teleport",
      "subtype": "air_toss",
-     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Gjalpinulva picks 2-5 raiders within 2,500 that are not its target (real players and the bots on its aggro list) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts).",
+     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Gjalpinulva picks 2-5 raiders within 2,500 that are not its target (real players, and the bots on its aggro list where its AllowBotDisplacement is on, as shipped; the pick and the move ask the same switch) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts: up to about 1,400 units, about 60% of a raider's health; the server property epic_dragon_throw_height_<dragon> softens it, 0 = the original).",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs",
      "line": 81,
      "lineEnd": 101,
@@ -14426,7 +14429,7 @@
     {
      "kind": "teleport",
      "subtype": "air_toss",
-     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Golestandt picks 2-5 raiders within 2,500 that are not its target (real players and the bots on its aggro list) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts).",
+     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Golestandt picks 2-5 raiders within 2,500 that are not its target (real players, and the bots on its aggro list where its AllowBotDisplacement is on, as shipped; the pick and the move ask the same switch) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts: up to about 1,400 units, about 60% of a raider's health; the server property epic_dragon_throw_height_<dragon> softens it, 0 = the original).",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs",
      "line": 81,
      "lineEnd": 101,
@@ -23744,7 +23747,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs",
    "lines": [
     9,
-    149
+    158
    ],
    "dungeon": "Midgard Named Mobs / Classic Zones",
    "region": 100,
@@ -23767,7 +23770,7 @@
      "maxHealth": null,
      "level": "(byte)Util.Random(36,38)",
      "file": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs",
-     "line": 321
+     "line": 330
     }
    ],
    "rules": [
@@ -23793,8 +23796,8 @@
      "kind": "adds",
      "summary": "Spawns OonaUndeadAdd: from EnemyKilled; count 1 spawn call in EnemyKilled",
      "file": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs",
-     "line": 114,
-     "lineEnd": 114,
+     "line": 123,
+     "lineEnd": 123,
      "anchor": "OonaUndeadAdd npc = new OonaUndeadAdd();",
      "confidence": "inferred",
      "sourceClass": "Oona",
@@ -23808,14 +23811,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@114"
+     "key": "adds@123"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health",
      "file": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs",
-     "line": 171,
-     "lineEnd": 175,
+     "line": 180,
+     "lineEnd": 184,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "OonaBrain",
@@ -23824,14 +23827,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@171"
+     "key": "reset@180"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: OonaUndeadSoldierBrain",
      "file": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs",
-     "line": 184,
-     "lineEnd": 184,
+     "line": 193,
+     "lineEnd": 193,
      "anchor": "brain.AddToAggroList(target, 100);",
      "confidence": "inferred",
      "sourceClass": "OonaBrain",
@@ -23840,7 +23843,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@184"
+     "key": "linked_pack@193"
     }
    ],
    "spells": [
@@ -23855,7 +23858,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs",
-     "line": 229,
+     "line": 238,
      "sourceClass": "OonaBrain"
     },
     {
@@ -23869,7 +23872,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs",
-     "line": 258,
+     "line": 267,
      "sourceClass": "OonaBrain"
     }
    ],
@@ -23891,6 +23894,7 @@
     }
    ],
    "raidAi": "dragon fight",
+   "notes": "1.2: an undead rises from each raider she kills, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'Oona.Undead'): no new undead while 70 are up, the Midgard dragon raid's period size.",
    "verified": true
   },
   {
@@ -23901,8 +23905,8 @@
    "brain": "OonaUndeadSoldierBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs",
    "lines": [
-    284,
-    297
+    293,
+    306
    ],
    "dungeon": "Midgard Named Mobs / Classic Zones",
    "region": 100,
@@ -26829,7 +26833,7 @@
      "maxHealth": 800,
      "level": "(byte) Util.Random(47, 49)",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 673
+     "line": 677
     }
    ],
    "rules": [
@@ -26837,8 +26841,8 @@
      "kind": "adds",
      "summary": "Spawns rotting downy felwood (GKTrees): on a timer (Util.Random(25000, 35000) ms); count 1 spawn call in SpawnTrees",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 607,
-     "lineEnd": 607,
+     "line": 611,
+     "lineEnd": 611,
      "anchor": "GKTrees add = new GKTrees();",
      "confidence": "inferred",
      "sourceClass": "OFGreenKnightBrain",
@@ -26853,7 +26857,7 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@607"
+     "key": "adds@611"
     },
     {
      "kind": "phase",
@@ -26904,8 +26908,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 664,
-     "lineEnd": 665,
+     "line": 668,
+     "lineEnd": 669,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "GKTreesBrain",
@@ -26915,7 +26919,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@664"
+     "key": "reset@668"
     },
     {
      "kind": "aggro_wipe",
@@ -26953,8 +26957,8 @@
      "kind": "heal",
      "summary": "Has a heal spell: Heal (Heal, value 400, target SELF)",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 629,
-     "lineEnd": 629,
+     "line": 633,
+     "lineEnd": 633,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "OFGreenKnightBrain",
@@ -26963,7 +26967,7 @@
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "heal@629"
+     "key": "heal@633"
     }
    ],
    "spells": [
@@ -26992,7 +26996,7 @@
      "value": "400",
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 629,
+     "line": 633,
      "sourceClass": "OFGreenKnightBrain"
     }
    ],
@@ -27014,6 +27018,7 @@
     }
    ],
    "raidAi": "dragon fight",
+   "notes": "1.2: a tree grows at every raider within 4,000 every 25-35 s, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'OFGreenKnight.Trees'): at most 70 trees a wave, the period size of the Albion dragon raid whose way he is on.",
    "verified": true
   },
   {
@@ -28270,7 +28275,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
    "lines": [
     14,
-    356
+    365
    ],
    "dungeon": "Trollheim",
    "region": 150,
@@ -28293,7 +28298,7 @@
      "maxHealth": 8000,
      "level": "(byte)Util.Random(62, 66)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2454
+     "line": 2463
     },
     {
      "class": "NosdodenSummonedAdds",
@@ -28306,7 +28311,7 @@
      "maxHealth": 2500,
      "level": "(byte)Util.Random(60,62)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 3102
+     "line": 3111
     },
     {
      "class": "GhostSkeletalCommander",
@@ -28319,7 +28324,7 @@
      "maxHealth": 2500,
      "level": "50",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2810
+     "line": 2819
     },
     {
      "class": "GhostSpiritChampion",
@@ -28332,7 +28337,7 @@
      "maxHealth": 2500,
      "level": "50",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2656
+     "line": 2665
     },
     {
      "class": "SkeletalCommanderHealer",
@@ -28345,16 +28350,16 @@
      "maxHealth": 1500,
      "level": "44",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2942
+     "line": 2951
     }
    ],
    "rules": [
     {
      "kind": "adds",
-     "summary": "EnemyKilled: when he kills a raider (a real player, or a bot since 1.2) he makes a 'Spirit of <name>' ghost with that raider's race, size, armour and class behaviour.",
+     "summary": "EnemyKilled: when he kills a raider (a real player, or a bot since 1.2) he makes a 'Spirit of <name>' ghost with that raider's race, size, armour and class behaviour. Flood guard (1.2): no new spirit while 64 are up (Trollheim's period raid; EncounterFloodGuard 'Nosdoden.Spirits').",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 158,
-     "lineEnd": 158,
+     "line": 167,
+     "lineEnd": 167,
      "anchor": "NosdodenGhostAdd add = new NosdodenGhostAdd();",
      "confidence": "inferred",
      "sourceClass": "Nosdoden",
@@ -28367,14 +28372,14 @@
      "tactic": "A dead raider's ghost fights the raid: kill it, or res the raider (the ghost dies when its owner lives again).",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "adds@158"
+     "key": "adds@167"
     },
     {
      "kind": "adds",
      "summary": "SpawnEssences: about 12-18 essence of fallen (NosdodenSummonedAdds, StandardMobBrain-based, aggro range 1,500) around him at each of nine thresholds (90, 80, ... 10%).",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 674,
-     "lineEnd": 674,
+     "line": 683,
+     "lineEnd": 683,
      "anchor": "NosdodenSummonedAdds add = new NosdodenSummonedAdds();",
      "confidence": "inferred",
      "sourceClass": "NosdodenBrain",
@@ -28388,14 +28393,14 @@
      "tactic": "Push him one 10% step at a time: stop damage on him at each threshold, AoE classes and two parties burn the wave down at his feet, healers keep the tank up, then the next step. Don't let three waves stack.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "adds@674"
+     "key": "adds@683"
     },
     {
      "kind": "adds",
      "summary": "Spawns spirit champion (GhostSpiritChampion): from SummonSpiritChampion; count 1 spawn call in SummonSpiritChampion",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2136,
-     "lineEnd": 2136,
+     "line": 2145,
+     "lineEnd": 2145,
      "anchor": "GhostSpiritChampion pet = new GhostSpiritChampion();",
      "confidence": "inferred",
      "sourceClass": "NosdodenGhostAddBrain",
@@ -28410,14 +28415,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@2136"
+     "key": "adds@2145"
     },
     {
      "kind": "adds",
      "summary": "Spawns bone commander (GhostSkeletalCommander): from SummonSkeletalCommander; count 1 spawn call in SummonSkeletalCommander",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2222,
-     "lineEnd": 2222,
+     "line": 2231,
+     "lineEnd": 2231,
      "anchor": "GhostSkeletalCommander pet = new GhostSkeletalCommander();",
      "confidence": "inferred",
      "sourceClass": "NosdodenGhostAddBrain",
@@ -28432,14 +28437,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@2222"
+     "key": "adds@2231"
     },
     {
      "kind": "adds",
      "summary": "Spawns bonemender (SkeletalCommanderHealer): from SummonBonemender; count 1 spawn call in SummonBonemender",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2925,
-     "lineEnd": 2925,
+     "line": 2934,
+     "lineEnd": 2934,
      "anchor": "SkeletalCommanderHealer pet = new SkeletalCommanderHealer();",
      "confidence": "inferred",
      "sourceClass": "GhostSkeletalCommanderBrain",
@@ -28454,14 +28459,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@2925"
+     "key": "adds@2934"
     },
     {
      "kind": "phase",
      "summary": "At 90/80/70/60/50/40/30/20/10% health: one essence wave each (SpawnEssences).",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 577,
-     "lineEnd": 621,
+     "line": 586,
+     "lineEnd": 630,
      "anchor": "if (Body.HealthPercent <= 90 && SpawnAdds1==false)",
      "confidence": "inferred",
      "sourceClass": "NosdodenBrain",
@@ -28481,14 +28486,14 @@
      "tactic": "Damage pacing: a raid that blows through two thresholds at once doubles the wave.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "phase@577"
+     "key": "phase@586"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health, adds cleared",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 532,
-     "lineEnd": 572,
+     "line": 541,
+     "lineEnd": 581,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "NosdodenBrain",
@@ -28497,14 +28502,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@532"
+     "key": "reset@541"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"NosdodenGhostSpiritmaster\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1438,
-     "lineEnd": 1438,
+     "line": 1447,
+     "lineEnd": 1447,
      "anchor": "if (Body.PackageID == \"NosdodenGhostSpiritmaster\")",
      "confidence": "read",
      "sourceClass": "NosdodenGhostAddBrain",
@@ -28515,14 +28520,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@1438"
+     "key": "linked_pack@1447"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"NosdodenGhostBonedancer\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1502,
-     "lineEnd": 1502,
+     "line": 1511,
+     "lineEnd": 1511,
      "anchor": "if (Body.PackageID == \"NosdodenGhostBonedancer\")",
      "confidence": "read",
      "sourceClass": "NosdodenGhostAddBrain",
@@ -28533,14 +28538,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@1502"
+     "key": "linked_pack@1511"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"NosdodenGhostHunter\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1981,
-     "lineEnd": 1981,
+     "line": 1990,
+     "lineEnd": 1990,
      "anchor": "if(CanCreateHunterPet==false && Body.PackageID == \"NosdodenGhostHunter\")",
      "confidence": "read",
      "sourceClass": "NosdodenGhostAddBrain",
@@ -28551,14 +28556,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@1981"
+     "key": "linked_pack@1990"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"NosdodenGhostSpiritmaster\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2778,
-     "lineEnd": 2778,
+     "line": 2787,
+     "lineEnd": 2787,
      "anchor": "if (bone.IsAlive && bone.Brain is NosdodenGhostAddBrain && bone.PackageID == \"NosdodenGhostSpiritmaster\" && Body.PackageID == Convert.ToString(bone.ObjectID))",
      "confidence": "read",
      "sourceClass": "GhostSpiritChampionBrain",
@@ -28569,14 +28574,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@2778"
+     "key": "linked_pack@2787"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"NosdodenGhostBonedancer\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2890,
-     "lineEnd": 2890,
+     "line": 2899,
+     "lineEnd": 2899,
      "anchor": "if (bone.IsAlive && bone.Brain is NosdodenGhostAddBrain && bone.PackageID == \"NosdodenGhostBonedancer\" && Body.PackageID == Convert.ToString(bone.ObjectID))",
      "confidence": "read",
      "sourceClass": "GhostSkeletalCommanderBrain",
@@ -28587,14 +28592,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@2890"
+     "key": "linked_pack@2899"
     },
     {
      "kind": "heal",
      "summary": "Has a heal spell: Heal (Heal, value 400, target REALM)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2248,
-     "lineEnd": 2248,
+     "line": 2257,
+     "lineEnd": 2257,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "NosdodenGhostAddBrain",
@@ -28604,14 +28609,14 @@
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "heal@2248"
+     "key": "heal@2257"
     },
     {
      "kind": "heal",
      "summary": "Has a heal spell: Heal (Heal, value 250, target REALM)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 3077,
-     "lineEnd": 3077,
+     "line": 3086,
+     "lineEnd": 3086,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "SkeletalCommanderHealerBrain",
@@ -28621,7 +28626,7 @@
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "heal@3077"
+     "key": "heal@3086"
     }
    ],
    "spells": [
@@ -28636,7 +28641,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 691,
+     "line": 700,
      "sourceClass": "NosdodenBrain"
     },
     {
@@ -28650,7 +28655,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 727,
+     "line": 736,
      "sourceClass": "NosdodenBrain"
     },
     {
@@ -28664,7 +28669,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2622,
+     "line": 2631,
      "sourceClass": "NosdodenGhostAdd"
     },
     {
@@ -28678,7 +28683,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1795,
+     "line": 1804,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28692,7 +28697,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1820,
+     "line": 1829,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28706,7 +28711,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1846,
+     "line": 1855,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28720,7 +28725,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1873,
+     "line": 1882,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28734,7 +28739,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1898,
+     "line": 1907,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28748,7 +28753,7 @@
      "value": null,
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1923,
+     "line": 1932,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28762,7 +28767,7 @@
      "value": "25",
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1953,
+     "line": 1962,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28776,7 +28781,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2022,
+     "line": 2031,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28790,7 +28795,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2049,
+     "line": 2058,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28804,7 +28809,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2078,
+     "line": 2087,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28818,7 +28823,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2105,
+     "line": 2114,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28832,7 +28837,7 @@
      "value": "35",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2162,
+     "line": 2171,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28846,7 +28851,7 @@
      "value": "-90",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2192,
+     "line": 2201,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28860,7 +28865,7 @@
      "value": "400",
      "target": "REALM",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2248,
+     "line": 2257,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28874,7 +28879,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2274,
+     "line": 2283,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28888,7 +28893,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2303,
+     "line": 2312,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28902,7 +28907,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2333,
+     "line": 2342,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28916,7 +28921,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2360,
+     "line": 2369,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28930,7 +28935,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2387,
+     "line": 2396,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28944,7 +28949,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2420,
+     "line": 2429,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -28958,7 +28963,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2738,
+     "line": 2747,
      "sourceClass": "GhostSpiritChampion"
     },
     {
@@ -28972,7 +28977,7 @@
      "value": "250",
      "target": "REALM",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 3077,
+     "line": 3086,
      "sourceClass": "SkeletalCommanderHealerBrain"
     }
    ],
@@ -28994,7 +28999,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Level 80, 100,000 health. Every 10% from 90% down to 10% he spawns a wave of about 12-18 'essence of fallen' (level 60-62, 2,500 health, aggro 1,500) at his feet: nine waves, roughly 110-160 adds in one fight. His Acidic cloud (Body DoT 150 for 60 s, radius 500) and Call of Void (Cold 1,100, radius 550) go on a random raider within 2,000 (real players and bots since 1.2, EncounterTargets). Spirits of the fallen are made from dead raiders, bots included (since 1.2).",
+   "notes": "Level 80, 100,000 health. Every 10% from 90% down to 10% he spawns a wave of about 12-18 'essence of fallen' (level 60-62, 2,500 health, aggro 1,500) at his feet: nine waves, roughly 110-160 adds in one fight. His Acidic cloud (Body DoT 150 for 60 s, radius 500) and Call of Void (Cold 1,100, radius 550) go on a random raider within 2,000 (real players and bots since 1.2, EncounterTargets). Spirits of the fallen are made from dead raiders, bots included (since 1.2). A bot raid larger than Trollheim's period raid (64) gets at most 64 live spirits.",
    "currentRaidAi": "2026-11-05: lost twice at full size (support 80 and 132, Special Forces joined both times). The essence waves are script-spawned, not epic, so the route does put them first; the raid still died.",
    "aiTactics": {
     "requiredAdds": [

@@ -528,6 +528,18 @@ def picks_from_player_list(member: Member) -> bool:
         not re.search(r"GameBot|EpicEncounterActors|EncounterTargets", member.mbody)
 
 
+_SHIPPED_BOT_DISPLACEMENT: set[str] | None = None
+
+
+def shipped_bot_displacement() -> set[str]:
+    """The encounters whose AllowBotDisplacement ships on (EpicEncounterMechanics.ShippedPerEncounter)."""
+    global _SHIPPED_BOT_DISPLACEMENT
+    if _SHIPPED_BOT_DISPLACEMENT is None:
+        text = Source(SWITCH_FILE).text
+        _SHIPPED_BOT_DISPLACEMENT = set(re.findall(r'Ship\(nameof\(AllowBotDisplacement\),\s*"(\w+)",\s*true\)', text))
+    return _SHIPPED_BOT_DISPLACEMENT
+
+
 def player_only(member: Member, receiver: str | None, pos: int | None = None) -> bool:
     """True when the code picks only real players (GamePlayer): bots (GameBot is a GameNPC) are never chosen."""
     body = member.mbody
@@ -543,9 +555,13 @@ def player_only(member: Member, receiver: str | None, pos: int | None = None) ->
             return True
     cls_masked = member.cls.src.masked[member.cls.open_pos:member.cls.end]
     # A move whose victim is picked with EncounterTargets.DisplacesBots (in this method or elsewhere in the class)
-    # includes bots only where bots may be displaced (EncounterTargets.BotsCanBeDisplaced, off): players only today.
+    # includes bots exactly where the encounter's AllowBotDisplacement is on (1.2: DisplacesBots asks the move's own
+    # switch); the global value is off, so players only everywhere else. The encounter is the boss class (its brain's
+    # name without "Brain").
     if receiver and re.search(r"EncounterTargets\.(ForDisplacement|DisplacesBots)\b", cls_masked):
-        return True
+        name = member.cls.name
+        encounter = name[:-len("Brain")] if name.endswith("Brain") else name
+        return not ({name, encounter} & shipped_bot_displacement())
     if receiver:
         r = re.escape(receiver.split(".")[-1])
         if re.search(r"\bGamePlayer\s+" + r + r"\b", body) or re.search(r"\bGamePlayer\s+" + r + r"\b", cls_masked) or \
@@ -1027,9 +1043,9 @@ def detect_misc(world: World, cls: CsClass, ctx) -> list[Rule]:
                                    f"Changes form in {mb.name} ({summarize_actions(world, mb.body) or 'new model'})", "inferred",
                                    cls, mb, subtype="form"))
         # Pet devour.
-        if re.search(r"GameSummonedPet|IControlledBrain|ControlledNpc|is\s+\w*Pet\b", mbody) and \
+        if re.search(r"GameSummonedPet|IControlledBrain|ControlledNpc|NearestDevourablePet|is\s+\w*Pet\b", mbody) and \
                 re.search(r"\.Die\s*\(|RemoveFromWorld|Health\s*\+=|\.Health\s*=", mbody) and mb.name != "TakeDamage":
-            mm = re.search(r"GameSummonedPet|IControlledBrain|ControlledNpc|is\s+\w*Pet\b", mbody)
+            mm = re.search(r"GameSummonedPet|IControlledBrain|ControlledNpc|NearestDevourablePet|is\s+\w*Pet\b", mbody)
             pos = mb.open_pos + mm.start()
             rules.append(make_rule("pet_devour", src, src.line_of(pos), src.line_of(mb.end),
                                    f"Handles pets in {mb.name} (kills or removes them" +

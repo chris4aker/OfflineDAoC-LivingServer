@@ -88,4 +88,14 @@ The period sizes are for 2003 players. Two things pull the other way, and win-ra
   keep losing. Overnight the defeated raids already had 86-104 bots with the Special Forces against period sizes of
   48-64 (Tuscaran Glacier 94, sized 58 by the restart), so the owner raised the ceiling from 150% to 200%.
 
+## Boss mechanics that count raiders (1.2)
+
+Since 1.2 the bosses count and pick bots too. A few mechanics make an add or a heal per raider, so a bot raid at up to
+200% of its period size would face far more than a full 2003 raid did. `EncounterFloodGuard` caps each such count at
+the period size in the table above (`SuggestedBots`): Legion's adds and kill heals, High Lord Saeor's kill heals and
+Beliathan's minions (Darkness Falls, 64), Nosdoden's spirits (Trollheim, 64), the Green Knight's trees and Oona's undead
+(on the dragon raids' way, 70), and Risnir Cruss's apparitions (no raid: 40, the smallest period size). Up to that size
+the mechanic is the original; each cap is its own setting (`EncounterFloodGuard.SetLimit`, 0 = none). The server log's
+`EPIC_FLOOD_GUARD` line shows a cap at work.
+
 None of this has been played in game yet. `REALM_RAID_SIZED` in the server log shows each raid's size and why.

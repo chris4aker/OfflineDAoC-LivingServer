@@ -84,6 +84,16 @@ class CatalogFileTests(unittest.TestCase):
             with self.subTest(script=rel):
                 self.assertEqual(cat.script_hash(REPO / rel), digest, "regenerate the catalog")
 
+    def test_move_picks_include_bots_exactly_where_bot_displacement_ships_on(self):
+        # 1.2: EncounterTargets.DisplacesBots asks the move's own switch (AllowBotDisplacement per encounter).
+        self.assertEqual(cat.shipped_bot_displacement(), {"AlbGolestandt", "MidGjalpinulva", "HibCuuldurach", "Xanxicar"})
+        by_id = {e["id"]: e for e in self.data["encounters"]}
+        throw = [r for r in by_id["crystal-cave/xanxicar"]["rules"] if r["kind"] == "teleport"]
+        self.assertTrue(throw)
+        self.assertNotIn("real players only", throw[0].get("affects") or "", "Xanxicar's throw picks bots as shipped")
+        jail = [r for r in by_id["tuscaran-glacier/jailer"]["rules"] if r["kind"] == "teleport"]
+        self.assertIn("real players only", jail[0].get("affects") or "", "elsewhere move picks stay player-only")
+
     def test_known_blockers_are_read(self):
         by_id = {e["id"]: e for e in self.data["encounters"]}
         scurceol = by_id["krondon/scurceolhyrde"]
