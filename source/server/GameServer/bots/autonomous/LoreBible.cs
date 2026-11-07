@@ -685,7 +685,8 @@ public sealed class LoreBible
     #region Validation
 
     public const int MaxAtmosphereLength = 60;
-    public const int MaxBotLineLength = AutonomousBotVoiceCorpus.MaxLength;
+    /// <summary>As the corpus build (build_corpus.py MAX_RAW): one chat line as written, in every way of saying it.</summary>
+    public const int MaxBotLineLength = 140;
     public const int MaxYellLength = 200;
     /// <summary>A location's book: 16 pages at most (epic tier: 8-16). A page too long for one text window turns into more.</summary>
     public const int MaxBookPages = 16;
@@ -1040,12 +1041,23 @@ public sealed class LoreBible
                         $"{f}: faction \"{faction.Id}\" related \"{r.Id}\" is no location, boss or faction");
             }
         }
-        void CheckLinks(string file, string era, string[] factions, Related[] related, string self)
+        // An era or faction must resolve once its realm's history file exists; before that (a writer still drafting it) it
+        // is a warning, so the files can land in any order.
+        void CheckHistoryLink(bool found, string realm, string message)
+        {
+            if (found)
+                return;
+            if (Histories.Any(h => string.Equals(h.Realm, realm, StringComparison.OrdinalIgnoreCase)))
+                problems.Add(message);
+            else
+                warnings.Add(message + $" (no {realm} history file yet)");
+        }
+        void CheckLinks(string file, string realm, string era, string[] factions, Related[] related, string self)
         {
             if (!string.IsNullOrWhiteSpace(era))
-                Need(EraById(era) != null, $"{file}: era \"{era}\" is in no history file");
+                CheckHistoryLink(EraById(era) != null, realm, $"{file}: era \"{era}\" is in no history file");
             foreach (string faction in factions)
-                Need(FactionById(faction) != null, $"{file}: faction \"{faction}\" is in no history file");
+                CheckHistoryLink(FactionById(faction) != null, realm, $"{file}: faction \"{faction}\" is in no history file");
             foreach (Related r in related)
             {
                 Need(!string.IsNullOrWhiteSpace(r.Relation), $"{file}: related \"{r.Id}\" needs a relation (rival, servant, kin...)");
@@ -1054,9 +1066,9 @@ public sealed class LoreBible
             }
         }
         foreach (Location l in Locations)
-            CheckLinks(l.File, l.Era, l.Factions, l.RelatedTo, l.Id);
+            CheckLinks(l.File, l.Realm, l.Era, l.Factions, l.RelatedTo, l.Id);
         foreach (Boss b in Bosses)
-            CheckLinks(b.File, b.Era, b.Factions, b.RelatedTo, b.Id);
+            CheckLinks(b.File, LocationOf(b)?.Realm ?? b.Realm, b.Era, b.Factions, b.RelatedTo, b.Id);
         return problems;
     }
 
