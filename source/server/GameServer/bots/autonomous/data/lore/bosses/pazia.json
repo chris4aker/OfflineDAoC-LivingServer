@@ -1,0 +1,120 @@
+{
+  "id": "pazia",
+  "name": "Pazia",
+  "npcNames": [
+    "Pazia"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "the house-servant"
+  ],
+  "facts": [
+    {
+      "text": "Pazia: template 60164863, level 52, a construct at a man's size, at the old master's house below the hall at 415566, 421098; aggro level 200 within 500, no spells or styles, respawn 80 seconds; its template gives it no faction, and nothing stands within 1,000.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Restoring the Magic (Lady Lurlei of Caer Gothwaite): speak with Adelon on the hill right of the Fort Gwyntell gate; Meical's key from his house below the tower; a metal sphere from the second floor; give the orb to the lifeless creation; kill the Cabalist Meical when he comes to defend it; open Meical's box and read his note; cleanse the broken orb with a pendant. The key step is Pazia's.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "An NPC with no faction never calls friends when attacked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "Pazia as the house-servant, the key on the hook, the master's box, the two readings of the note and the swept house are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Master Meical of the school of making did not live in his hall. He kept a house below it, a stone house with a garden going wild and a kitchen nobody has cooked in since the burning, and in the house he kept Pazia. Pazia was the first servant he ever made that was not for the work. It swept. It kept the fire in. It laid out the master's clothes and his supper, and in the evening, when he came down from the hall, it took his key from him and hung it on the hook by the door, and in the morning it gave it back.\n\nOn the last morning he did not come down for it. The key is on the hook still, or in Pazia's keeping, which the households say is the same thing; and the key opens the master's box, which stands in the house, locked, with something written inside it. The drakoran who answers to the master's name has never had it. Pazia does not let him into the house. It is the only door in the dales he has not been able to open, and the fort's registrar thinks it galls him more than anything the Guardian or the Keeper refuses him, because it is only a house, and only a key.\n\nWhat the note in the box says, the realm is still arguing. Lady Lurlei, who sends the young of Albion for the key, says it is the old master's own hand, and that it tells what he was making at the top of the hall and why the orb below it broke. The Priest of Arawn at Fort Gwyntell says it is the drakoran's, left where he cannot reach it by a servant who does not obey him, and is a confession. Gracien Adamson has asked to see it when it is read, so that he can match the hand against the college lease he keeps in the fort.\n\nPazia keeps the house alone. No servant of the hall comes down to it and it calls none. It sweeps the floor of a house nobody lives in and keeps the fire laid that nobody lights, and it comes at anyone who walks into the garden as a house-servant comes at a stranger at the door. When it is broken the house is swept again by the time anyone looks back.",
+  "legend": "Pazia is a level 52 construct alone at the old master's house below Meical's Hall in the Dales of Devwy. It is aggressive from about 500 away, has no faction in its template and nothing else within 1,000, so it is a clean single pull. No spells or styles in the data: a melee kill a strong duo or a small group of fifties wins. It has Meical's key for Restoring the Magic (Lady Lurlei; start with Adelon on the hill by Fort Gwyntell); the key also opens Meical's box later in the quest, so keep it. Respawn about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "The master is not at home.",
+      "Wipe your feet. No. Leave.",
+      "Stranger at the door."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The key stays on the hook!"
+      }
+    ],
+    "death": [
+      "The fire... is laid...",
+      "The key... for the master..."
+    ],
+    "slay": [
+      "Swept out.",
+      "The house is kept.",
+      "Shown the door."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A stone house below the hall. The garden runs wild.",
+      "The floor is swept. Nobody lives here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Pazia stands between you and the hook by the door."
+      }
+    ],
+    "realmFirstKill": "Pazia is broken. The master's key is off its hook."
+  },
+  "botLines": {
+    "briefing": [
+      "pazia, 52 construct at the master's house below meical's hall. aggros at 500",
+      "alone, no faction, nothing within 1000. clean pull",
+      "plain melee, duo of 50s is fine. restoring the magic people get the key",
+      "80 sec respawn"
+    ],
+    "aftermathWin": [
+      "key's ours. next the sphere upstairs",
+      "easy, nothing came",
+      "pazia down, house is ours",
+      "back in 80 sec, someone else can have it"
+    ],
+    "aftermathLoss": [
+      "solo at 47. no",
+      "chased it into the garden and pulled stranglers",
+      "forgot to take the key, again",
+      "it was back before we found the box"
+    ],
+    "rumour": [
+      "[heard|someone said] pazia keeps the old master's key on a hook by the door and wont let the drakoran in",
+      "heard the note in meical's box might be the old master's hand, or a confession",
+      "[heard|someone said] pazia still sweeps the house every day",
+      "heard the drakoran meical can open every door in the dales but that one"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "pazia",
+    "text": "The old master's house-servant in the stone house below the hall of [meical]: it swept, kept the fire in and hung the master's key on its hook each evening. On the last morning he did not come for it. Pazia keeps the key, which opens the master's box, and will not let the drakoran who wears his name into the house. The note in the box is the master's own hand, or a confession: the realm is still arguing."
+  },
+  "bookPage": "From the second book of Gracien Adamson, name registrar of Fort Gwyntell. A young cleric brought me the master's key from the house below the hall and asked whether I wanted to see the note in the box before she took it to Caer Gothwaite. I did. I laid it beside the college lease the old master signed for the hall, which I keep in this fort. I will not write here which hand it is in, because Lady Lurlei asked me not to and because I was not asked to keep this book. I will write that the note is short, and that the cleric read it twice, and that she said Pazia had kept the house very clean.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} took the master's key from Pazia in {minutes} minutes.",
+    "loss": "Pazia swept {raidLeader}'s company of {realm} out of the master's house."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "tyian",
+      "relation": "the bench-servant upstairs who keeps the sphere"
+    },
+    {
+      "id": "cabalist-meical",
+      "relation": "the only door in the dales he cannot open"
+    }
+  ]
+}
