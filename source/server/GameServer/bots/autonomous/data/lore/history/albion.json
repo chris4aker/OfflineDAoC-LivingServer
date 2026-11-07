@@ -200,7 +200,9 @@
           "source": "source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs"
         }
       ],
-      "places": [],
+      "places": [
+        "camelot"
+      ],
       "bosses": []
     }
   ],
@@ -368,6 +370,15 @@
         "high-lord-oro",
         "high-lord-saeor"
       ]
+    },
+    {
+      "id": "realm-of-camelot",
+      "name": "The realm of Camelot",
+      "summary": "The king's city and its offices: the Constable and his drawers of reports, the Prydwen Keep rolls, the Church and its hospices, the Academy, the masters of arms and the quieter trades under the streets. Since Camlann it sends the realm out and counts who comes back.",
+      "places": [
+        "camelot"
+      ],
+      "bosses": []
     },
     {
       "id": "old-powers",
