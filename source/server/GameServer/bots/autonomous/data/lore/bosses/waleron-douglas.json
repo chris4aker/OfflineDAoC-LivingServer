@@ -31,18 +31,18 @@
       "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: radius 450 + 150 per extra attacker, up to eight; friends must share the faction)"
     },
     {
-      "text": "Waleron as a man of the highland clan (Douglas), his brother Cailean who walked into the sea, the drowned dead's water-orbs as what the sea keeps of a man, and the clan song are Living Server writing; that he buys the drowned's water-orbs and his brother went into the water is from the Caldey file.",
+      "text": "Waleron as a man of the highland clan (Douglas), his brother Ewan who walked into the sea, the drowned dead's water-orbs as what the sea keeps of a man, and the clan song are Living Server writing; that he buys the drowned's water-orbs and his brother went into the water is from the Caldey file.",
       "provenance": "original",
       "source": "LORE"
     }
   ],
-  "story": "Waleron Douglas came down from the north with the highland clan in the second summer of the war, in the long boats, with his younger brother Cailean. The clan has a name for the two of them still: the Douglas pair, because they did everything together, rowed on the same bench, stood on the same stretch of the outpost wall, and drank from the same cup. Cailean was the better fighter and the worse sleeper. In the third winter he started walking at night.\n\nThe clan says the dead of Caldey called him. Waleron says Cailean had been calling back. Either way, on a night of hard frost the watch on the wall saw Cailean Douglas walk out of the outpost gate and down past Little Haven to the eastern strand, where the drowned come up, and into the sea, and keep walking until the water closed over him, and Waleron ran after him and stood in the surf to his chest calling his name until the clan dragged him out.\n\nThe drowned of Caldey come up out of the water with something in them that the fishermen call a water-orb: a cold, clouded sphere the size of a fist, which is what the sea keeps of a man, they say, when it has taken the rest. Waleron buys them. He pays for every one the realm's young bring him, and holds each one up to the light at the outpost gate and looks into it a long time, and then puts it with the others in a sea-chest. The Matron lets him. The clan bard made a song about the Douglas pair, and the last verse is about the sea-chest, and nobody sings the last verse when Waleron is in the hall.\n\nHe lodges by the outpost but he counts himself of Little Haven now, he says, because the village is nearer the water. He has never raised a hand to anyone but the dead, and the clan's defenders would come down off the wall for him without being asked; he is the Douglas pair, or half of it.",
+  "story": "Waleron Douglas came down from the north with the highland clan in the second summer of the war, in the long boats, with his younger brother Ewan. The clan has a name for the two of them still: the Douglas pair, because they did everything together, rowed on the same bench, stood on the same stretch of the outpost wall, and drank from the same cup. Ewan was the better fighter and the worse sleeper. In the third winter he started walking at night.\n\nThe clan says the dead of Caldey called him. Waleron says Ewan had been calling back. Either way, on a night of hard frost the watch on the wall saw Ewan Douglas walk out of the outpost gate and down past Little Haven to the eastern strand, where the drowned come up, and into the sea, and keep walking until the water closed over him, and Waleron ran after him and stood in the surf to his chest calling his name until the clan dragged him out.\n\nThe drowned of Caldey come up out of the water with something in them that the fishermen call a water-orb: a cold, clouded sphere the size of a fist, which is what the sea keeps of a man, they say, when it has taken the rest. Waleron buys them. He pays for every one the realm's young bring him, and holds each one up to the light at the outpost gate and looks into it a long time, and then puts it with the others in a sea-chest. The Matron lets him. The clan bard made a song about the Douglas pair, and the last verse is about the sea-chest, and nobody sings the last verse when Waleron is in the hall.\n\nHe lodges by the outpost but he counts himself of Little Haven now, he says, because the village is nearer the water. He has never raised a hand to anyone but the dead, and the clan's defenders would come down off the wall for him without being asked; he is the Douglas pair, or half of it.",
   "legend": "Waleron Douglas is a level 52 man of the highland clan, standing by the outpost beside Little Haven on Caldey, who buys Decayed Water Orbs from the drowned (his turn-in, levels 42 to 44). He is not hostile: the Caldey Outpost faction starts neutral, and he leaves players of his quest's level band alone. Hitting him brings the Clan Matron's people and the barbarian defenders (same faction) and sours your standing with the outpost. No spells or styles in the data; there is no quest to kill him. Bring him the orbs from Caldey's drowned dead at 42 to 44 instead; he pays in experience.",
   "yells": {
     "aggro": [
       "You strike a Douglas?",
       "Clan! Wall!",
-      "Cailean! Cailean, stand with me!"
+      "Ewan! Ewan, stand with me!"
     ],
     "phases": [
       {
@@ -51,7 +51,7 @@
       }
     ],
     "death": [
-      "Cailean... I am coming...",
+      "Ewan... I am coming...",
       "Look... in the orb..."
     ],
     "slay": [
@@ -101,7 +101,7 @@
   },
   "loremasterTopic": {
     "keyword": "waleron douglas",
-    "text": "A man of the highland clan at the [clan outpost] beside [little haven], one half of the Douglas pair. His brother Cailean walked into the sea off the eastern strand one frozen night. The drowned of [caldey] come up with water-orbs, which the fishermen say are what the sea keeps of a man; Waleron buys every one, looks into it a long time and puts it in a sea-chest."
+    "text": "A man of the highland clan at the [clan outpost] beside [little haven], one half of the Douglas pair. His brother Ewan walked into the sea off the eastern strand one frozen night. The drowned of [caldey] come up with water-orbs, which the fishermen say are what the sea keeps of a man; Waleron buys every one, looks into it a long time and puts it in a sea-chest."
   },
   "bookPage": "From the Ledger of Little Haven, kept by Mordwywr, enchanter. Paid by Waleron Douglas, to a scout of the realm, for one decayed water-orb: the usual. He held it up at the outpost gate against the evening and looked into it so long that the scout asked what he was looking for. He said a face. The scout asked whose. He said his brother's, and that he would know it, and that it had not been in any of them yet. The scout gave him back the coin. Waleron would not take it. I have entered the payment as made, and the coin as on the scout's side of the ledger, where it will stay.",
   "chronicle": {
