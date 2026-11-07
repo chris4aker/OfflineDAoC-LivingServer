@@ -24,11 +24,13 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
     }
   ],
-  "story": "The granite giants of Dartmoor lie down in the heather and sleep. Moran never lies down. He is taller than any of them and older than most, and he stands on the high ground east of the stone dragon's lair as though he were keeping watch over her, which the Albion minstrels say he is. The wind on that hill belongs to him. When he is hurt he calls it, and it picks men up like chaff and throws them off his hill onto the moor below, where the rest of Dartmoor is waiting. He does not hate anyone. He simply does not let anyone stand on his hill for long.",
-  "legend": "Above half he is a big giant who hits hard. Below half he throws people off the hill on gusts of wind; if it is you, walk back up the slope and watch for granite giants on the way. Do not drag him off his hill, he walks home.",
+  "story": "The granite giants of Dartmoor lie down in the heather and sleep. Moran never lies down. He is taller than any of them and older than most, and he stands on the high ground east of the stone dragon's lair as though he were keeping watch over her, which the Albion minstrels say he is. The wind on that hill belongs to him. When he is hurt he calls it, and it picks men up like chaff and throws them off his hill onto the moor below, where the rest of Dartmoor is waiting. He does not hate anyone. He simply does not let anyone stand on his hill for long.\n\nGuard or rival. The drovers of the Cornish road say Moran is Golestandt's guard: that she cannot see the roads from the Bed and he can, that he has stood on his hill since before Rome watching for whoever comes south, and that the gusts which sometimes blow the heather flat across the whole moor are Moran warning her. The frontier riders of Castle Sauvage tell it the other way. Moran, they say, is a giant of the air, not of the granite, older than her get and no kin of hers, and he has been waiting a thousand years for the stone in the Bed to crack so that the moor will be his. Sir Arward's scribe Hywel mentions a giant on the eastern hill who did not stand up with the others when the voice came out of the south. He does not say which way it was looking.\n\nThe hill. Raiders who fight Moran fight on a slope, and the slope is the fight. Above half his strength he is a giant who hits very hard. Below it he calls the wind, and the wind takes whoever he chooses and throws them off the hill to one of three places on the moor below, where the heather is thick and the granite giants are lying in it. The raid that loses to Moran usually loses on the walk back up.",
+  "legend": "Above half he is a big giant who hits hard and has a long leash; he walks home only if you drag him a very long way. Below half he picks people up on gusts of wind and throws them off the hill to one of three spots on the moor. If it is you, walk back up the slope slowly and watch for granite giants lying in the heather on the way, because pulling one into the fight is how most Moran raids end. Healers stay near the top of the hill. Some Albion raids kill Moran before going south to the Bed, because the drovers swear his wind warns her; nobody has proved it, and everybody does it anyway, just in case.",
   "yells": {
     "aggro": [
-      "Off my hill, small ones."
+      "Off my hill, small ones.",
+      "The wind sees you.",
+      "South is that way. You will not reach it."
     ],
     "phases": [
       {
@@ -37,15 +39,19 @@
       }
     ],
     "death": [
-      "Who... watches the mother now..."
+      "Who... watches the mother now...",
+      "The wind... is still..."
     ],
     "slay": [
-      "Blown off the hill."
+      "Blown off the hill.",
+      "Chaff.",
+      "The heather will have you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "The wind here blows one way: away from the giant."
+      "The wind here blows one way: away from the giant.",
+      "A giant taller than the tors. The heather lies flat."
     ],
     "phases": [
       {
@@ -58,27 +64,45 @@
   "botLines": {
     "briefing": [
       "moran throws people off the hill below 50%. walk back up, watch for giants",
-      "dont pull him off his hill, big tether but he resets"
+      "dont pull him off his hill, big tether but he resets",
+      "kill moran before golestandt, the drovers say his wind warns her",
+      "healers at the top of the hill"
     ],
     "aftermathWin": [
       "moran down. the hill is ours",
-      "nobody got lost on the way back up. nice"
+      "nobody got lost on the way back up. nice",
+      "the wind on the hill is still",
+      "nobody pulled a giant on the walk back, amazing"
     ],
     "aftermathLoss": [
-      "the thrown people pulled granite giants on the way back"
+      "the thrown people pulled granite giants on the way back",
+      "the walk back pulled three giants",
+      "he threw both healers off at once"
     ],
     "rumour": [
       "they say moran the mighty keeps watch in dartmoor too. never got close enough to check",
-      "[heard|someone said] moran throws you off his hill with the wind"
+      "[heard|someone said] moran throws you off his hill with the wind",
+      "heard moran is golestandt's guard",
+      "[heard|someone said] moran is waiting for golestandt's stone to crack so the moor is his"
     ]
   },
   "loremasterTopic": {
     "keyword": "moran",
     "text": "Moran the Mighty, a giant taller than the tors, who keeps the high ground east of the lair. When he is hurt he calls the wind and throws men off his hill like chaff."
   },
-  "bookPage": "",
+  "bookPage": "On the third day, Hywel wrote, we saw a giant on the eastern hill who stood when the others lay down and lay down when the others stood. He was taller than the tors. The wind came off his hill so hard that the horses would not face it, and Sir Arward took us the long way round by the bog. On the fifth day, when the voice came out of the south and every giant on the moor stood up and turned toward it, the giant on the hill did not stand. He stayed as he was. I could not see, at that distance, which way he was looking.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} held Moran's hill against the wind and felled the giant in {minutes} minutes.",
     "loss": "Moran the Mighty blew {realm}'s raid off his hill; {raidLeader} never got them back up the slope."
-  }
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "golestandt",
+      "relation": "keeps watch over her Bed, or waits for it to crack"
+    }
+  ]
 }
