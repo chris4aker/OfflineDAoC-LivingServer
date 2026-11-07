@@ -189,7 +189,9 @@
       "Beside Dun Dagda the stair goes down into the dark. The garrison watches it with more care than they watch the road, because what comes up the stair is not Albion or Midgard and does not care whose banner is on the wall. In the north-east something fades in and out of the night; the mentalists call it an evanescer. In the hollow below my house, a witch whispers a name when she dies. I have written all the names down. They are all the same name, and I will not write it here, because the empyrean guardian asked me not to."
     ]
   },
-  "bosses": [],
+  "bosses": [
+    "eugor"
+  ],
   "era": "hib-the-realm-war",
   "factions": [
     "frontier-guard"

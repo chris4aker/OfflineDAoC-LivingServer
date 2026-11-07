@@ -200,7 +200,9 @@
       "The country's own people are no help to anyone. Old women in bands on the eastern ridges, whom nobody calls by any name but granny. Loghery men, larger than the meadow thieves and not funny. Grogans in the gullies, goat-headed things in the deep gullies, banshees on the slopes who keen at night; we count the keens too, and each one, the soldiers say, is for someone in the keep. I write those down as well. My captain says I count too much. I say somebody on this frontier ought to know the number."
     ]
   },
-  "bosses": [],
+  "bosses": [
+    "eresidae"
+  ],
   "era": "hib-the-realm-war",
   "factions": [
     "frontier-guard",

@@ -230,7 +230,9 @@
     ]
   },
   "bosses": [
-    "mikka"
+    "mikka",
+    "guardian-hru",
+    "niy-the-overseer"
   ],
   "era": "hib-age-of-the-veil",
   "factions": [

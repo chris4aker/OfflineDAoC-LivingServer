@@ -271,7 +271,11 @@
       "North of Basar the country changes. The Amadan's hills are no place for anyone not ready to laugh at nothing for the rest of their life, and the touched walk them in bands. North of that is Druim Ligen, and the wickermen under its walls, and the frontier beyond. I have never been past the fort and do not intend to. Somebody has to keep the book at the ford. When the hostings come back from the hills, they cross the river, and I count them in, and the ones I do not count I write on the barracks list in my own hand, so that the ford knows who it kept."
     ]
   },
-  "bosses": [],
+  "bosses": [
+    "amadan-dubh",
+    "amadan",
+    "touched"
+  ],
   "era": "hib-the-old-families",
   "factions": [
     "order-of-the-azure",

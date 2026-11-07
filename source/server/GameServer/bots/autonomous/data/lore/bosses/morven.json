@@ -1,0 +1,89 @@
+{
+  "id": "morven",
+  "name": "Morven",
+  "npcNames": [
+    "Morven"
+  ],
+  "locationId": "breifine",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Morven: level 46, a Fomorian body (model 827, size 149), faction Fomorian, at about 442,000/386,300 on the eastern edge of Breifine; respawn 300 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Morven's Return (Cathbad of Howth): 'Ask Lucan about Morven's heirs', 'Slay Ronat, the first heir, east of Dun Lamfhota', 'Slay Uileog, the second heir', 'Slay Raemon, the third heir, at the cyclops tower'.",
+      "provenance": "game",
+      "source": "DataQuest 'Morven's Return' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Morven was a Fomorian lord of the hills before there were keeps on them, the Breifine keeners say, one of the few of his people who did not go west after Mag Tuired. He stayed in the eastern hills with his household and kept them by the old law of the land, the law of the stronger, and the hill-chieftains of Caimheul's day paid him a tribute of cattle to leave their valleys alone.\n\nWhen the realm built its keeps on the frontier, Morven did not leave. His house still stands on the eastern edge of Breifine, and he is in it, enormous and old, and he has named three heirs to his claim on the hills: Ronat east of Dun Lamfhota, Uileog in Cruachan's floor, and Raemon at the cyclops ruin. Cathbad of Howth says the claim will only die when the line does, and sends the realm's young after all three. Morven himself, the keeners say, sits in his house and waits to see which of them comes back.",
+  "legend": "Morven (46) is a huge Fomorian on the eastern edge of Breifine (about 442k/386k). His three heirs are the targets of Morven's Return (Cathbad of Howth): Ronat (47, Cruachan Gorge, east of Dun Lamfhota), Uileog (40, Cruachan) and Raemon (45, Breifine). Morven himself is not a quest step but is a big Fomorian with a 5-minute respawn. Breifine is frontier, so watch for enemy realms. A group of mid 40s.",
+  "yells": {
+    "aggro": [
+      "These hills paid me tribute.",
+      "Which heir sent you? None. Good."
+    ],
+    "phases": [],
+    "death": [
+      "The claim... goes to the heirs..."
+    ],
+    "slay": [
+      "Tribute."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A Fomorian lord's house on the frontier's edge."
+    ],
+    "phases": [],
+    "realmFirstKill": "Morven, Fomorian lord of the hills, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "morven is a 46 fomorian lord on the east edge of breifine",
+      "his heirs are morven's return. he isnt a step"
+    ],
+    "aftermathWin": [
+      "morven down. [the old lord|grats]",
+      "big fomorian, clean kill. [nice|good]"
+    ],
+    "aftermathLoss": [
+      "enemy realm came by. [frontier|rip]",
+      "he hits like a 50. [ouch|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] the hill chieftains paid morven cattle to leave their valleys alone",
+      "morven sits in his house and waits to see which heir comes back"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Morven",
+    "text": "A Fomorian lord of the frontier hills who stayed after Mag Tuired and took cattle-tribute from the hill-chieftains. His house stands on Breifine's eastern edge; three heirs keep his claim."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Morven in Breifine in {minutes} minutes.",
+    "loss": "Morven turned back {realm}'s band under {raidLeader} in Breifine after {minutes} minutes."
+  },
+  "era": "hib-the-realm-war",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "ronat",
+      "relation": "his first heir"
+    },
+    {
+      "id": "uileog",
+      "relation": "his second heir"
+    },
+    {
+      "id": "raemon",
+      "relation": "his third heir"
+    }
+  ]
+}

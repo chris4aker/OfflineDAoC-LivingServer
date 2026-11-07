@@ -1,0 +1,85 @@
+{
+  "id": "touched",
+  "name": "Touched",
+  "npcNames": [
+    "Touched"
+  ],
+  "locationId": "connacht",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Touched: level 39, at about 345,300/424,100, the northernmost of the Amadan's hills; respawn 80 seconds; a plain spawn. The world data's bot chat lines for Connacht name him ten times.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06); GAPS-hibernia.md"
+    },
+    {
+      "text": "Living Server lore: Touched as the first the dark fool touched, who gave the touched their name.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The hills of the dark fool are full of the touched, and the touched are named for the first of them. He has no other name any more. The Basar folk say he was a man of the realm who went up into the north-eastern hills before anyone knew what lived there, and came down, and stood in Basar's square laughing until the townsfolk led him back up the hill because they could not bear it. He has been there since, on the northernmost hill, and the touched who came after him walk the slopes below as if he were their chief.\n\nHe is the one the realm's young hear about first in Connacht, because every grandmother in Ardee uses him as a warning: do not go north of Basar after dark, or you will be like Touched. The children think it is a joke. The grandmothers do not laugh when they say it.",
+  "legend": "Touched (39) is on the northernmost Amadan hill in north-east Connacht (about 345k/424k), near the Voices of the Azure country to the west and Druim Ligen to the north. Amadan touched (29-35) around him are social. A group of high 30s handles him. Plain spawn, 80-second respawn. Amadan Dubh (42) is south of him; do not chain. Pull from the bottom of the hill, one at a time.",
+  "yells": {
+    "aggro": [
+      "(he laughs, and does not stop)",
+      "Come and laugh. Come and laugh with us."
+    ],
+    "phases": [],
+    "death": [
+      "(the laughing stops, and the hill is very quiet)"
+    ],
+    "slay": [
+      "(laughter, high and thin)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A man laughing alone on the northernmost hill."
+    ],
+    "phases": [],
+    "realmFirstKill": "Touched, the first of them, has stopped laughing."
+  },
+  "botLines": {
+    "briefing": [
+      "touched is 39 on the north amadan hill",
+      "the touched around him are social, clear first"
+    ],
+    "aftermathWin": [
+      "touched down. [the first one|grats]",
+      "the laughing stopped. [creepy|finally]"
+    ],
+    "aftermathLoss": [
+      "pulled all the touched. [rip|lol]",
+      "chained the dubh. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] touched was the first the dark fool got. the rest are named after him",
+      "ardee grans say dont go north of basar after dark or youll be like touched"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Touched",
+    "text": "The first man the dark fool touched, who gave all the touched their name. Basar led him back up the hill because it could not bear his laughing. Ardee's grandmothers use him as a warning."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Touched in Connacht in {minutes} minutes.",
+    "loss": "Touched turned back {realm}'s band under {raidLeader} in Connacht after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "amadan-dubh",
+      "relation": "who touched him first"
+    },
+    {
+      "id": "amadan",
+      "relation": "his neighbour"
+    }
+  ]
+}

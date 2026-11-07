@@ -194,7 +194,10 @@
       "Morven's heirs are still about. He was a lord of the hills before there were keeps, a Fomorian, and his house in Breifine still stands, and his three heirs keep his claim: one east of Lamfhota, one in the gorge floor, one at the cyclops tower. Cathbad of Howth sends the young after them, so the claim dies with the line. It has died many times. Fomorian claims are like the Spear. They strike on their own if not kept wrapped, and we keep wrapping them, season after season, the way the garrison wraps the relic-house before a storm."
     ]
   },
-  "bosses": [],
+  "bosses": [
+    "ronat",
+    "uileog"
+  ],
   "era": "hib-the-realm-war",
   "factions": [
     "frontier-guard",

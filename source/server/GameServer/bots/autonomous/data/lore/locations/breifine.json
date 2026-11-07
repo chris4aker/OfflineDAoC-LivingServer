@@ -212,7 +212,9 @@
     ]
   },
   "bosses": [
-    "evern"
+    "evern",
+    "morven",
+    "raemon"
   ],
   "era": "hib-the-realm-war",
   "factions": [
