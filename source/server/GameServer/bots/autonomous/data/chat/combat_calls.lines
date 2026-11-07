@@ -250,3 +250,445 @@ rez going up
 @levels 1-50
 @needs in_player_group
 need power, sitting
+
+# ---- displaced_heal: an encounter threw or ported a raider of the party (1.2, EncounterDisplacementRecovery) ----------
+# {target} is who got moved, {boss} the boss that did it. A groupmate calls it so the healers look.
+@kind combat
+@topic displaced_heal
+@who *
+@needs in_player_group
+{target} got tossed, heals on {target}
+{target} got thrown, someone heal
+heals on {target}, got launched
+{target} is flying, heal when they land
+{target} got punted across the room
+watch {target}, got tossed
+{target} took a ride, get a heal on em
+{boss} threw {target}, heal up
+{target} got ported, keep an eye on em
+toss on {target}, heals pls
+
+# ---- displaced_jail: a raider of the party is in the boss's jail --------------------------------------------------
+@kind combat
+@topic displaced_jail
+@who *
+@needs in_player_group
+{target} is in the jail
+someone's in the jail, its {target}
+{target} got jailed, kill the guards to get out
+jail on {target}, hang tight
+{target} got jailed, we'll get ya
+{boss} jailed {target}, keep going
+
+# ---- displaced_self: the bot itself got thrown and landed ---------------------------------------------------------
+@kind combat
+@topic displaced_self
+@who *
+@needs in_player_group
+got tossed, omw back
+ow. running back
+landed, coming back
+got thrown, be right there
+lol got punted, omw
+that hurt, heading back
+need a heal, got tossed
+
+# ---- displaced_stuck: no way back on foot, the bot uses the short recall -------------------------------------------
+@kind combat
+@topic displaced_stuck
+@who *
+@needs in_player_group
+cant get back from here, porting
+stuck where it threw me, porting back
+no way down from here, coming back the long way
+stuck, gimme a sec to port back
+
+# ---- epic_*: a boss announced a big hit (1.2 epic wave 2, EncounterSignals / EncounterCalls) ----------------------
+# {target} is the raider the boss picked (or "someone"), {boss} the boss. A groupmate tells the party what to do.
+@kind combat
+@topic epic_glare
+@who *
+@needs in_player_group
+{boss} is staring at {target}, get off em
+stare on {target}, spread out
+{target} has the stare, everyone away from em
+get away from {target}, big hit inc
+{target} move away from us, heals on {target}
+stare on {target}, healers watch em
+
+@kind combat
+@topic epic_stun
+@who *
+@needs in_player_group
+stun inc, casters and healers back out
+{boss} is looking around, ranged back off now
+big stun coming, healers get out of range
+stun inc, back up if you can
+stun soon, casters out, melee hang on
+
+@kind combat
+@topic epic_breath
+@who *
+@needs in_player_group
+breath inc, ranged back up
+{boss} is breathing in, casters out
+breath coming, healers back off then heal
+breath inc, melee eat it, heals after
+here comes the breath, back up
+
+@kind combat
+@topic epic_stomp
+@who *
+@needs in_player_group
+stomp inc, top everyone up
+{boss} is gonna stomp, heal up now
+stomp coming, full health everyone
+big stomp inc, heals on the tanks
+
+@kind combat
+@topic epic_messengers
+@who *
+@needs in_player_group
+runners! kill the messengers
+messengers out, nuke them before they get away
+kill the runners or we get adds
+casters on the messengers, now
+messengers running, dont let them get far
+runners out, archers and casters on them
+
+@kind combat
+@topic epic_safeSpots
+@who *
+@needs in_player_group
+someone get on the spots, hes spamming
+spots are empty, get on them
+need people on both spots now
+stand on the spots or we eat dd all fight
+
+# ---- epic mechanics (1.2, epic wave 2: EpicEncounterTactics dungeon rules) ----------------------------------------
+# A gamebot of the real player's party calls the boss's mechanic as the raid plays it: once per topic per party every
+# 45 s. {boss} is the boss, {target} the other one the call is about (the partner, the add, the raider). Keep each topic
+# about its moment.
+
+# ---- epic_twin_heal: King Tuscar heals off Queen Kula's damage, so only his tank hits him ---------------------------
+@kind combat
+@topic epic_twin_heal
+@who *
+@needs in_player_group
+dont touch the king, all on kula
+off tuscar! hitting him heals her
+[only the mt|just the tank] on the king, rest on kula
+kula first, leave the king to the tank
+stop dps on tuscar, it heals kula
+everyone on {target}, king is tank only
+
+# ---- epic_frost_circle: out of Queen Kula's frost circle by her throne ---------------------------------------------
+@kind combat
+@topic epic_frost_circle
+@who *
+@needs in_player_group
+stay out of the ice circle
+dont stand by the throne, it freezes ya
+[out of the circle|off the circle], it roots
+circle by the throne = mezzed, stay off it
+if she ports ya to the throne just wait it out
+
+# ---- epic_kvasir_cold: no cold spells on Icelord Kvasir --------------------------------------------------------------
+@kind combat
+@topic epic_kvasir_cold
+@who *
+@needs in_player_group
+no cold on kvasir, it heals him
+casters, no frost nukes on him
+dont use cold, he eats it
+[cold heals him|frost heals him], use something else
+no ice dd on kvasir pls
+
+# ---- epic_falls: Easmarach heals on the waterfall top, only spells and arrows reach him -----------------------------
+@kind combat
+@topic epic_falls
+@who *
+@needs in_player_group
+hes up the falls, casters and archers shoot from below
+cant reach him up there, ranged on him from the floor
+[nukes|arrows] on him, hes on top of the waterfall
+melee wait at the bottom, ranged burn him down
+dont let him sit up there healing, shoot him
+
+# ---- epic_griffon_pull: a griffon flies its patrol, the ranged pull it down -----------------------------------------
+@kind combat
+@topic epic_griffon_pull
+@who *
+@needs in_player_group
+griffon inc overhead, shoot it down
+pull it when it flies over, melee get it when it lands
+[ranged|archers] hit it as it passes
+its coming round again, ready to pull
+shoot the bird, it'll come down on ya
+
+# ---- epic_legion_wounded: each raider Legion kills heals him ---------------------------------------------------------
+@kind combat
+@topic epic_legion_wounded
+@who *
+@needs in_player_group
+low? back off legion, dont feed him
+get out of his reach if ur low, every death heals him
+[backing off|pulling back], too low to stay in
+no bubbles on the tank, he eats em
+heals on the low ones, dont let him get a kill
+
+# ---- epic_kvasir_scream: Kvasir's scream mezzes around his target ----------------------------------------------------
+@kind combat
+@topic epic_kvasir_scream
+@who *
+@needs in_player_group
+scream inc, spread off the tank
+get away from his target, aoe mezz
+[back off|step back], he's gonna scream
+mezz inc, everyone off the mt
+scream! get clear of the tank
+
+# ---- epic_jail_team: this party goes down the tunnel to kill Jailer Vifil's guards ----------------------------------
+@kind combat
+@topic epic_jail_team
+@who *
+@needs in_player_group
+we're on jail duty, follow me down the tunnel
+our grp takes the jail guards, lets go
+jail run, kill the 2 guards and come back
+[we got|our group has] the jail, down the tunnel
+
+# ---- epic_jail_team_away: another party went to open the jail ------------------------------------------------------
+@kind combat
+@topic epic_jail_team_away
+@who *
+@needs in_player_group
+{target}'s grp is on the jail guards
+jail team is going, we stay on {boss}
+someone's clearing the jail, keep on him
+if ya get jailed, the guards will be dead soon
+
+# ---- epic_forn_shards: kill Fornfrusenen's shards first --------------------------------------------------------------
+@kind combat
+@topic epic_forn_shards
+@who *
+@needs in_player_group
+shards first, each one takes a chunk off him
+kill the shards, they hurt him when they die
+[on the shards|shards], leave {boss} for now
+each shard = a quarter of his hp, kill em
+
+# ---- epic_close_in: the boss takes damage only from up close --------------------------------------------------------
+@kind combat
+@topic epic_close_in
+@who *
+@needs in_player_group
+get in close, he's immune from range
+casters move in, ranged does nothing
+[stack on him|everyone close], he only takes dmg up close
+too far and ya do 0, get close
+
+# ---- epic_council_split: casters on Nokkvi, melee on Vagn -------------------------------------------------------------
+@kind combat
+@topic epic_council_split
+@who *
+@needs in_player_group
+casters on nokkvi, melee on vagn
+vagn eats magic, nokkvi eats melee, split up
+[melee vagn, casters nokkvi|casters nokkvi, melee vagn]
+wrong one, swap to {target}
+
+# ---- epic_ghoul_kite: the infected ghoul crawls toward this raider ---------------------------------------------------
+@kind combat
+@topic epic_ghoul_kite
+@who *
+@needs in_player_group
+ghoul on me, kiting it
+it's coming for me, kill the ghoul
+[ghoul|zombie] on me, nuke it before it pops
+backing off the ghoul, it explodes
+
+# ---- epic_face_him: the raider Avartack fights faces him -------------------------------------------------------------
+@kind combat
+@topic epic_face_him
+@who *
+@needs in_player_group
+facing him, his back hit hurts
+dont turn your back on him
+[turn around|face him], he hits harder from behind
+
+# ---- epic mechanics (1.2, wave 2; EncounterMechanicCalls): the first time a bot of the party plays a tactic in a fight --
+# {boss} is the encounter, {monster} what the tactic points at (an add, the fire, the sphere). One call a topic per party
+# every two minutes. Albion first; the generic topics (adds first, ranged adds, hazards, fight at home) serve every dungeon.
+@kind combat
+@topic mech_funus
+@who *
+@needs in_player_group
+only clerics and bows on {boss}, everyone else off him
+dont touch {boss} unless ur a cleric or got ur bow out, he heals
+{boss} heals off the wrong hits, clerics and archers only
+off {boss}! wrong class heals him full
+mercs and arms get ur bows out, rest of us stay back
+no pets and no aoe near {boss}, he heals off em
+bows only on {boss}, no swinging at him
+
+@kind combat
+@topic mech_sacristan
+@who *
+@needs in_player_group
+hold your spot, {boss} comes round again
+dont chase {boss}, wait for him to walk past
+{boss} is on his loop, hit him as he goes by
+stay at the post, he comes back round
+let him go, catch him next lap
+
+@kind combat
+@topic mech_reckoner_room
+@who *
+@needs in_player_group
+{boss} is out of his room, stop hitting
+pull {boss} back in the room, he cant be hurt out here
+hold dps, {boss} is outside the room
+drag him back to the middle, no damage outside
+
+@kind combat
+@topic mech_sanguis
+@who *
+@needs in_player_group
+{boss} is untargetable, casters finish him
+casters keep nuking {boss}, melee on the mages
+5% and he cant be targeted, dots and nukes finish him
+nukers finish {boss}, the rest of us grab adds
+
+@kind combat
+@topic mech_cold_fire
+@who *
+@needs in_player_group
+cold spells on the fire, nothing else hurts it
+ice on the fire pls, get it out
+put out {monster}, only cold works on it
+cold casters on the fire, rest stay out of it
+kill the fire with ice or he keeps throwing ppl in
+
+@kind combat
+@topic mech_sphere
+@who *
+@needs in_player_group
+kill the sphere first, {boss} cant be hurt till its down
+casters on the sphere, melee wait out of its range
+stay out of the sphere, it pulls you in and burns
+sphere first! melee hold back
+nukes and arrows on the sphere
+
+@kind combat
+@topic mech_prince_pets
+@who *
+@needs in_player_group
+pets away from {boss}, he eats em
+back off with the pets, {boss} heals off them
+no pets near {boss} pls
+park ur pet, the prince eats it
+
+@kind combat
+@topic mech_adds_first
+@who *
+@needs in_player_group
+adds first, {boss} cant be hurt while they live
+kill {monster} first
+{boss} is shielded, kill the adds
+off the boss, adds first
+take {monster} down then back on {boss}
+
+@kind combat
+@topic mech_ranged_adds
+@who *
+@needs in_player_group
+casters on {monster}, melee stay on {boss}
+ranged kill {monster} before it blows
+arrows and nukes on {monster}
+{monster} up, ranged get it
+
+@kind combat
+@topic mech_hazard
+@who *
+@needs in_player_group
+get out of that
+move out of {monster}
+dont stand in it
+step out, its burning us
+out of the fire!
+
+@kind combat
+@topic mech_fight_home
+@who *
+@needs in_player_group
+too far out, drag {boss} back
+stop hitting, {boss} is leashing, pull him home
+bring {boss} back before he resets
+hold dps, lead {boss} back
+
+# ---- displaced, by encounter: the throw's own lines (EncounterDisplacementRecovery.EncounterTopics) --------------------
+@kind combat
+@topic displaced_heal_fire
+@who *
+@needs in_player_group
+{target} got thrown in the fire, heal em
+{boss} tossed {target} in the fire, heals
+fire toss on {target}, get out of there
+{target} is burning, heals pls
+
+@kind combat
+@topic displaced_self_fire
+@who *
+@needs in_player_group
+thrown in the fire, getting out
+on fire, moving
+ow, out of the fire omw
+
+@kind combat
+@topic displaced_heal_pit
+@who *
+@needs in_player_group
+{target} got tossed in the pit, heal em
+{target} is in the pit, dont bother the pit things, run out
+{boss} threw {target} in the pit, heals
+
+@kind combat
+@topic displaced_self_pit
+@who *
+@needs in_player_group
+in the pit, running out
+pit again, climbing out
+snared in the pit, omw back
+
+@kind combat
+@topic displaced_heal_wind
+@who *
+@needs in_player_group
+{target} got blown into a camp, heal em if u can
+{boss} tossed {target} into the mobs
+{target} went flying, theyre in a camp
+
+@kind combat
+@topic displaced_self_wind
+@who *
+@needs in_player_group
+blown into a camp, fighting my way back
+landed in a camp, omw
+in the mobs, coming back
+
+@kind combat
+@topic displaced_heal_bane
+@who *
+@needs in_player_group
+{target} got ported, theyre dotted, heal em
+{boss} ported {target} away, heals on em
+{target} got sent off with the dot
+
+@kind combat
+@topic displaced_self_bane
+@who *
+@needs in_player_group
+ported away, dotted, running back
+got ported, need a heal
+sent off again, omw

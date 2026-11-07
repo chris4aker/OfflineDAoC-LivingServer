@@ -139,10 +139,10 @@ namespace DOL.AI.Brain
 			base.Think();
 		}
 		#region Throw Player
-		List<GamePlayer> Port_Enemys = new List<GamePlayer>();
+		List<GameLiving> Port_Enemys = new List<GameLiving>();
 		public static bool IsTargetPicked = false;
-		public static GamePlayer randomtarget = null;
-		public static GamePlayer RandomTarget
+		public static GameLiving randomtarget = null;
+		public static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
@@ -151,11 +151,11 @@ namespace DOL.AI.Brain
 		{
 			if (Body.IsAlive && HasAggro)
 			{
-				foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.DisplacesBots(Body)))
 				{
 					if (player != null)
 					{
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+						if (player.IsAlive && EncounterTargets.NotGm(player))
 						{
 							if (!Port_Enemys.Contains(player) && player != Body.TargetObject)
 								Port_Enemys.Add(player);
@@ -164,13 +164,13 @@ namespace DOL.AI.Brain
 				}
 				if (Port_Enemys.Count > 0)
 				{
-					GamePlayer Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+					GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
 					RandomTarget = Target;
 					if (RandomTarget.IsAlive && RandomTarget != null)
 					{
-						RandomTarget.MoveTo(Body.CurrentRegionID, Body.X+Util.Random(-1500,1500), Body.Y + Util.Random(-1500, 1500), Body.Z, Body.Heading);
+						EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, Body.X+Util.Random(-1500,1500), Body.Y + Util.Random(-1500, 1500), Body.Z, Body.Heading, DisplacementKind.Teleport, Body);
 						RandomTarget.TakeDamage(RandomTarget, eDamageType.Falling, RandomTarget.MaxHealth / 5, 0);
-						RandomTarget.Out.SendMessage("You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
+						EncounterTargets.Tell(RandomTarget, "You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 						Port_Enemys.Remove(RandomTarget);
 					}
 				}

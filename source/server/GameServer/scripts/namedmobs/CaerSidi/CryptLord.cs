@@ -236,11 +236,11 @@ namespace DOL.AI.Brain
         {
             if(Body.IsMoving)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort)AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort)AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             AddToAggroList(player, 10);//aggro players if roaming
                         }

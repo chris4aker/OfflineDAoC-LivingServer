@@ -659,21 +659,21 @@ namespace DOL.AI.Brain
 			AggroLevel = 100;
 			AggroRange = 800;
 		}
-		public static GamePlayer randomtarget = null;
-		public static GamePlayer RandomTarget
+		public static GameLiving randomtarget = null;
+		public static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
 		}
-		List<GamePlayer> Enemys_To_Port = new List<GamePlayer>();
+		List<GameLiving> Enemys_To_Port = new List<GameLiving>();
 		public static bool CanPort = false;
 		public void PickRandomTarget()
 		{
-			foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+			foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000, bots: EncounterTargets.DisplacesBots(Body)))
 			{
 				if (player != null)
 				{
-					if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+					if (player.IsAlive && EncounterTargets.NotGm(player))
 					{
 						if (!Enemys_To_Port.Contains(player))
 							Enemys_To_Port.Add(player);//add player to list
@@ -684,9 +684,9 @@ namespace DOL.AI.Brain
 			{
 				if (CanPort == false)
 				{
-					GamePlayer Target = (GamePlayer)Enemys_To_Port[Util.Random(0, Enemys_To_Port.Count - 1)];//pick random target from list
+					GameLiving Target = Enemys_To_Port[Util.Random(0, Enemys_To_Port.Count - 1)];//pick random target from list
 					RandomTarget = Target;//set random target to static RandomTarget
-					RandomTarget.MoveTo(Body.CurrentRegionID, 32091, 39684, 16302, 4094);
+					EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 32091, 39684, 16302, 4094, DisplacementKind.Teleport, Body);
 					new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetPort), Util.Random(10000,20000));//port every 10-20s
 					CanPort = true;
 				}

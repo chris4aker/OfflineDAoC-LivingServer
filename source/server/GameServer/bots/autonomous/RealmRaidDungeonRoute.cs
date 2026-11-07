@@ -623,7 +623,7 @@ namespace DOL.GS
             {
                 Vector3 old = _musterPoint;
                 if (TryPointApproach(home, participants, out Vector3 approach)) Front = approach;
-                _musterPoint = MusterPoint(participants);
+                _musterPoint = EpicEncounterTactics.KeepInsideFor(_target, MusterPoint(participants));
                 log.Info($"REALM_EXPEDITION_MUSTER_MOVED region={_region} target=\"{_target.Name}\" " +
                          $"from={(int)old.X},{(int)old.Y},{(int)old.Z} to={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
                          $"reason=\"the encounter is back at {(int)home.X},{(int)home.Y},{(int)home.Z}\"");
@@ -653,7 +653,7 @@ namespace DOL.GS
                 if (Vector3.Distance(reference, new Vector3(_target.X, _target.Y, _target.Z)) > 1 &&
                     TryPointApproach(reference, participants, out Vector3 homeApproach))
                     Front = homeApproach;
-                _musterPoint = MusterPoint(participants);
+                _musterPoint = EpicEncounterTactics.KeepInsideFor(_target, MusterPoint(participants));
             }
             // While the raid regroups, the survivors may still be fighting: arrivals wait at the muster point rather than
             // going in by twos and threes, and the whole regroup goes in together.
@@ -854,7 +854,7 @@ namespace DOL.GS
             {
                 Front = approach;
                 if (_musterEngaged) Destination = Front;
-                else _musterPoint = MusterPoint(participants);
+                else _musterPoint = EpicEncounterTactics.KeepInsideFor(_target, MusterPoint(participants));
             }
             else _nextFrontCheck = now + 5 * FrontRefreshMilliseconds;
             int unreached = _pulls.PullsWithoutContact;
@@ -1406,7 +1406,8 @@ namespace DOL.GS
             GameNPC[] candidates = live.Where(n => n.IsAlive && n.ObjectState == GameObject.eObjectState.Active && n.Realm == eRealm.None &&
                 n.Level > 0 && n is not GameBot && n is not GameSummonedPet && n.Brain is not IControlledBrain &&
                 n is not GameMerchant && n is not GameTrainer && n is not GameTeleporter && n is not GameTaxi &&
-                (n.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) == 0 && !_cleared.Contains(n) &&
+                ((n.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) == 0 || EpicEncounterTactics.FinishableUntargetable(n)) &&
+                !_cleared.Contains(n) &&
                 // A pet class's charm body (a copy of an overland monster it is charming) is no dungeon monster: a
                 // Hibernian raid stood four minutes by a "grogan" in Galladoria that none of it could attack (run 22).
                 n.TempProperties.GetProperty<bool>(AutonomousPetSupport.SyntheticCharmPetProperty) != true &&

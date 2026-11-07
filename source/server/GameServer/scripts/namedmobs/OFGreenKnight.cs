@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DOL.AI.Brain;
 using DOL.Events;
 using DOL.Database;
@@ -182,11 +183,7 @@ namespace DOL.GS
                     SendReply(t,
                         "Caution will be your guide through the dark places of Sauvage. " +
                         "Tread lightly " + t.CharacterClass.Name + "! I am ever watchful of my home!");
-                    if (t.IsAlive && t.IsAttackable)
-                    {
-                        Flags = 0;
-                        StartAttack(t);
-                    }
+                    TryStartFight(t, "whisper");
                 }
                     break;
                 case "defend":
@@ -194,11 +191,7 @@ namespace DOL.GS
                     SendReply(t,
                         "Caution will be your guide through the dark places of Sauvage. " +
                         "Tread lightly " + t.CharacterClass.Name + "! I am ever watchful of my home!");
-                    if (t.IsAlive && t.IsAttackable)
-                    {
-                        Flags = 0;
-                        StartAttack(t);
-                    }
+                    TryStartFight(t, "whisper");
                 }
                     break;
                 default:
@@ -206,6 +199,39 @@ namespace DOL.GS
             }
             return true;
         }
+        /// <summary>A bot raid of at least this many raiders standing within <see cref="RaidChallengeRadius"/> of him for
+        /// <see cref="RaidChallengeMilliseconds"/> wakes him (1.2, epic wave 3): it came for him, as a player would whisper.</summary>
+        public const int RaidChallengeRaiders = 8, RaidChallengeRadius = 1_000;
+        public const long RaidChallengeMilliseconds = 20_000;
+
+        /// <summary>
+        /// The one way his fight starts (1.2, epic wave 3): the original whisper "defend it" from a real player, or a raid's
+        /// challenge for a bot raider (<see cref="CanChallenge"/>; OFGreenKnightBrain asks when a bot raid has gathered by
+        /// him). He drops his peace and attacks the challenger. False when he is not at peace, dead, or the challenger can't.
+        /// </summary>
+        public bool TryStartFight(GameLiving challenger, string how)
+        {
+            if (!IsAlive || ObjectState != eObjectState.Active || (Flags & eFlags.PEACE) == 0) return false;
+            if (challenger == null || challenger is not GamePlayer && !CanChallenge(challenger)) return false;
+            if (!challenger.IsAlive || !challenger.IsAttackable || challenger.CurrentRegionID != CurrentRegionID ||
+                !IsWithinRadius(challenger, 1_500))
+                return false;
+            Flags = 0;
+            StartAttack(challenger);
+            log.Info($"EPIC_ENCOUNTER_STARTED encounter={nameof(OFGreenKnight)} by=\"{challenger.Name}\" bot={(challenger is GameBot ? "yes" : "no")} how={how}");
+            return true;
+        }
+
+        /// <summary>A bot that may start his fight for its raid: a level 50 raider of an autonomous raid expedition (its
+        /// shared support), never a passing bot group nor a player's companion (the player whispers for those).</summary>
+        public static bool CanChallenge(GameLiving actor) =>
+            actor is GameBot bot && EpicEncounterActors.CanTrigger(bot) && bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper &&
+            AutonomousRealmRaid.HasSharedSupport(bot);
+
+        /// <summary>The raid has gathered for him (pure): enough challengers stood by him long enough.</summary>
+        public static bool RaidChallengeDue(int challengers, long since, long now) =>
+            challengers >= RaidChallengeRaiders && since > 0 && now - since >= RaidChallengeMilliseconds;
+
         public override void OnAttackEnemy(AttackData ad)
         {
             // 30% chance to proc heat dd
@@ -285,13 +311,13 @@ namespace DOL.AI.Brain
                 base.OnAttackedByEnemy(ad);
         }
         #region GK pick random healer
-        public static GamePlayer randomtarget = null;
-        public static GamePlayer RandomTarget
+        public static GameLiving randomtarget = null;
+        public static GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
-        List<GamePlayer> healer = new List<GamePlayer>();
+        List<GameLiving> healer = new List<GameLiving>();
         public int PickHeal(ECSGameTimer timer)
         {
             if (Body.IsAlive)
@@ -300,14 +326,14 @@ namespace DOL.AI.Brain
                 {
                     if (Body.TargetObject != null)
                     {
-                        foreach (GamePlayer ppl in Body.GetPlayersInRadius(2500))
+                        foreach (GameLiving ppl in EncounterTargets.InRadius(Body, 2500))
                         {
                             if (ppl != null)
                             {
-                                if (ppl.IsAlive && ppl.Client.Account.PrivLevel == 1)
+                                if (ppl.IsAlive && EncounterTargets.NotGm(ppl))
                                 {
                                     //cleric, bard, healer, warden, friar, druid, mentalist, shaman
-                                    if (ppl.CharacterClass.ID is 6 or 48 or 26 or 46 or 10 or 47 or 42 or 28)
+                                    if (EncounterTargets.ClassId(ppl) is 6 or 48 or 26 or 46 or 10 or 47 or 42 or 28)
                                     {
                                         if (!healer.Contains(ppl))
                                             healer.Add(ppl);
@@ -317,7 +343,7 @@ namespace DOL.AI.Brain
                         }
                         if (healer.Count > 0)
                         {
-                            GamePlayer Target =(GamePlayer) healer[Util.Random(0, healer.Count - 1)]; //pick random target from list
+                            GameLiving Target = healer[Util.Random(0, healer.Count - 1)]; //pick random target from list
                             RandomTarget = Target; //set random target to static RandomTarget
                             if (RandomTarget != null) //check if it's not null
                             {
@@ -432,8 +458,29 @@ namespace DOL.AI.Brain
             IsWalking = false;
             return 0;
         }
+        private long _raidGatheredSince;
+
+        /// <summary>At peace with a bot raid gathered by him: its raider nearest him challenges him (OFGreenKnight.TryStartFight).</summary>
+        private void ConsiderRaidChallenge()
+        {
+            if (Body is not OFGreenKnight gk || (Body.Flags & GameNPC.eFlags.PEACE) == 0)
+            {
+                _raidGatheredSince = 0;
+                return;
+            }
+            List<GameBot> raid = Body.GetNPCsInRadius(OFGreenKnight.RaidChallengeRadius).OfType<GameBot>()
+                .Where(OFGreenKnight.CanChallenge).ToList();
+            long now = GameLoop.GameLoopTime;
+            if (raid.Count < OFGreenKnight.RaidChallengeRaiders) { _raidGatheredSince = 0; return; }
+            if (_raidGatheredSince == 0) _raidGatheredSince = now;
+            if (!OFGreenKnight.RaidChallengeDue(raid.Count, _raidGatheredSince, now)) return;
+            GameBot challenger = raid.OrderBy(b => Body.GetDistanceTo(b)).First();
+            if (gk.TryStartFight(challenger, "raid")) _raidGatheredSince = 0;
+        }
+
         public override void Think()
         {
+            ConsiderRaidChallenge();
             Point3D point1 = new Point3D(593193, 416481, 4833);
             Point3D point2 = new Point3D(593256, 420780, 5050);
             Point3D point3 = new Point3D(596053, 420171, 4918);
@@ -595,9 +642,13 @@ namespace DOL.AI.Brain
             if (Body.IsAlive && Body.InCombat && HasAggro)
             {
                 //spawning each tree in radius of 4000 on every player
-                List<GamePlayer> player = new List<GamePlayer>();
-                foreach (GamePlayer ppl in Body.GetPlayersInRadius(4000))
+                List<GameLiving> player = new List<GameLiving>();
+                // Flood guard (1.2): one wave grows trees at most at the period raid's count of raiders (EncounterFloodGuard).
+                int grown = 0;
+                foreach (GameLiving ppl in EncounterTargets.InRadius(Body, 4000))
                 {
+                    if (ppl.IsAlive && !EncounterFloodGuard.MayAdd("OFGreenKnight.Trees", grown++))
+                        break;
                     player.Add(ppl);
 
                     if (ppl.IsAlive)

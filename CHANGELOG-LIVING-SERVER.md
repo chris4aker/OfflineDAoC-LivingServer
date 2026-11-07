@@ -14,6 +14,196 @@ Older entries below keep the names they were written with.
      last. Its entries go here, at the top of this section, as "**Dungeons and bosses have their lore**"; keep the
      entries below and the Beta 1.1.2 section as they are. -->
 
+**More of the epic fights play in full, and the bots play them** (the epic encounters, wave 3). Tested by automated
+tests only; not played in game yet. Some of these fights get harder: try them first.
+- **Funus: the archers join in.** With his weapon puzzle on, mercenaries, armsmen and infiltrators who own their short
+  bow or crossbow now draw it and fight him with it, like the scouts with their longbows; none of them ever swings a melee
+  weapon at him, not even when he is on top of them. Bots of those classes start with a plain training bow or crossbow of
+  their own kind when they learn it, and earn better ones as before. No bot's pet attacks him or defends its owner
+  against him, and the sting of a damage shield on a bot no longer heals him to full (`epic_funus_bot_shield_guard`).
+- **Caer Sidi's final room bars its door.** While a horseman or Apocalypse fights, anyone at the door is moved back to the
+  middle of the room, bots too. The raid gathers and waits inside the room and doesn't leave it mid-fight.
+- **Easmarach retreats to the waterfall and you can finish him there.** Below 30% he walks up to the top of the falls and
+  heals; the raid's casters, archers and healers shoot him from the floor below and the melee wait for him at the bottom.
+  His current behind the falls is back: while he lives, anyone walking into the falls is pushed back, so the raid kills
+  him before it goes on to the last room.
+- **Legion:** his throw to the platform takes bots too (they come back down after a few seconds), wounded raiders step
+  out of his reach so their deaths don't heal him, and no bot puts a bladeturn up near him (he eats it, and five of them
+  set off his soul blast). This is not a Darkness Falls raid AI: the platform, the way down and his add waves are not
+  played by the bots.
+- **Legendary Afanc** throws bots to the lake shore too, and it only throws raiders who are still by him.
+- **The Green Knight** wakes when a bot raid has gathered by him, as well as when you whisper "defend it".
+- **Qan'ris Duros and Durval** (Shrouded Isles) bring their guards into the fight as they were meant to.
+- **Torst and Hurika's flying patrol** stays off: the raid now knows how to pull a flying griffon down, but it hasn't been
+  played. Turn it on with `epic_encounter_switches` `AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True`.
+- Each of these can be turned off alone with `epic_encounter_switches`, for example `AllowDisplacement@Easmarach=False`,
+  `AllowDisplacement@ApocInitializator=False` or `AllowBotDisplacement@Legion=False`.
+
+**Every restored boss mechanic is a setting you can change** (the epic encounters, wave 2). Each one is its own server
+property (`/serverproperty`, section `npc`), and the game reads it as it plays, so no rebuild is needed:
+`epic_horsemen_tether_heal`, `epic_funus_weapon_puzzle`, `epic_sacristan_patrol`, `epic_soul_reckoner_full_shield`,
+`epic_soul_reckoner_small_room`, `epic_aroon_damage_order`, `epic_galladoria_bridge_spot`, `epic_full_fire_patches`,
+`epic_earthmender_class_puzzle`, `epic_earthmenders_passive`, `epic_earthmender_quick_reset`,
+`epic_earthmender_mutual_heal`, `epic_beatha_heals_xaga`, `epic_fairy_flight`, `epic_govannon_full_health`,
+`epic_kvasir_cold_heal`, `epic_tuscar_twin_heal` and `epic_dragon_messengers`. All are on except the full fire patches
+and Govannon's full health, which stay off until they have been played. `epic_encounter_switches` changes any one boss's
+switch, for example `AllowBotDisplacement@Orylle=False; AllowPositionPuzzle@Olcasgean=False`.
+
+**The dragons, Xanxicar and Galladoria play their full mechanics, and the bots play them back** (the epic encounters,
+wave 2). Tested by automated tests only; not played in game yet. These fights are harder than before: try them first.
+- **The dragons send their messengers again.** From half health, every 80-90 seconds, four to six messengers run out of
+  the lair; each one that gets away calls four to six adds. The raid's casters and archers now run them down while the
+  melee stay on the dragon, and a bot in your party shouts "runners!".
+- **The raid reacts to the big hits.** When a dragon stares at someone, everyone near that raider (except the tank)
+  steps away from them and the healers heal them first. When a dragon looks around (its long stun) or breathes, the
+  casters, archers and healers step out of reach until it lands, so someone is left standing to heal the melee.
+  Xanxicar's glare works the same way, and when he bellows his party's healers top it up. Your party calls each one.
+- **Olcasgean's two safe spots are back.** Two parties hold the two spots the whole fight, or he casts his Root without
+  pause; below half health he throws raiders again (the bots walk back). His throw had a bug that kept it from ever
+  starting; it now works as in the original. The current at the waterfall keeps the raid in his room until he dies.
+- **Galladoria's other mechanics are back:** the Water primal's and Spindler Broodmother's teleports (bots too), the
+  Fire primal's trail of fire (melee fight the other primals while casters shoot it; the patches stay at the 2026-10-19
+  strength by default, and `epic_full_fire_patches` brings back the original's), Aroon's Scaiths that must die in order (the raid kills them one by one), the original
+  Earthmenders (they never attack, heal each other and reset when left alone), Beatha healing Xaga (the raid kills
+  Beatha, then Tine, then Xaga) and the fairies circling the room. Conservator and Easmarach take damage only from up
+  close again; the bots step in. The primals come when a raider stands on the bridge spot again (a bot raid that has
+  waited on the bridge for three minutes starts it anyway).
+- **Still off:** Easmarach pushing raiders back behind the falls (it would block the way to the last room, and the bots
+  can't finish him on the waterfall yet), and Legion throwing bots (his platform has no way down). Legion's adds, his
+  range and his heal on a kill have raid rules now, but the Darkness Falls raid is still not a full raid AI.
+
+**Tuscaran Glacier, Summoner's Hall, Iarnvidiur's Lair and the Fomor and Marfach bosses play their full mechanics, and
+the raid plays them** (the epic encounters, wave 2, Midgard and Hibernia). Tested by automated tests only; not played in
+game yet.
+- **King Tuscar and Queen Kula heal each other again:** damage to one heals the other while it is hurt. The raid kills
+  Kula first, only the King's own tank keeps him busy, and the casters on Kula stay out of his hammer blows. Kula drags
+  raiders (bots too) to her throne, where her frost circle freezes them: a bot waits it out like you would and walks back,
+  and nobody fights inside the circle.
+- **Icelord Kvasir drinks cold again:** cold heals him a fifth of his health. Bots never cast cold at him (your companions
+  neither). When his primal scream is due, everyone but his tank's group steps away from his tank before the mass
+  mesmerize lands, then goes back in.
+- **Jailer Vifil's jail is back, for bots too.** Once the fight starts, one or two groups of bots run down the tunnel,
+  kill the two guards at the jail and come back, so whoever he jails after that walks straight out. Your own group is
+  never sent; you hear when a team goes.
+- **Fornfrusenen:** the raid kills his shards first (each one takes a quarter of his health while he is above 35%), and
+  everyone, casters too, fights him from close by, since he only takes damage from within 200.
+- **Council Vagn and Nokkvi:** casters fight Nokkvi, everyone else Vagn (each shrugs off 90% of the other kind).
+- **Icelord Hakr's toss and Hurika's gust** now hit bots too; they fall, take the fall damage and run back, and the
+  healers see to them first. Torst and Hurika still sit on their perches (their flying patrol stays off: the raid can't
+  pull a flying patrol yet).
+- **Grand Summoner Govannon:** the raid kills his sacrifice and demon at range and spreads in his demon form. He keeps
+  200,000 health by default; `epic_govannon_full_health` gives him the original 300,000. If both his walkers reach the
+  altar, the raid kills the Shade of Aelfgar first; the Shade sends raiders (bots too) to the gallery. Summoner Cunovinda's ledge throw hits bots
+  too. At Summoner Lossren, the raider the infected ghoul crawls toward walks away from it while the casters kill it.
+- **Iarnvidiur, Boligar, Mortufoghus, Ydenia and the Glacier Giant** throw and teleport bots too; the bots run back.
+- **Fomor:** Krackenschtein is fought from close by (he only takes damage within 300) and his throw hits bots too; his
+  throw no longer breaks when nobody is near him. Myrddraxis's raid steps back before his stunning breath and his breath
+  of annihilation. Anurigunda pushes bots back from her doorway too.
+- **Marfach Caverns:** casters and healers stay clear of the Black Lady's Void Strike around her tank, and whoever
+  Avartack fights turns to face him (his back strike hurts).
+- **Your group calls it:** a bot in your group calls each mechanic in /group as the raid plays it ("dont touch the king,
+  all on kula", "no cold on kvasir, it heals him", "shards first").
+- **Test first:** Kula and Tuscar with the twin heal (and Govannon, if you give him his full health) may be much harder
+  than before for a raid of bots.
+
+**Caer Sidi, Krondon, Avalon City and the Darkness Falls princes play their original mechanics, and bots play them
+too** (the epic encounters, wave 2, Albion). Tested by automated tests only; not played in game yet. These fights are
+harder than before; tell us where a raid can no longer win.
+- **Funus heals from the wrong hits again.** Only clerics and scouts (with their longbow) hurt him; a hit from anyone
+  else, or a pet, heals him to full, as in the original. The raid's clerics and scouts fight him, everyone else stands
+  well back, calls their pets off and keeps area spells off him. If you play another class, stay off him too.
+- **The horsemen heal when dragged too far again.** The raid keeps each horseman near his room and leads him back
+  before he gets there.
+- **Morbus hides behind his swarm.** While a swarm of his lives he takes no damage; the raid kills the swarm first.
+- **The Skeletal Sacristan walks his round at full speed and never stops.** The raid splits into parties waiting along
+  his loop and hits him as he walks past, instead of chasing him.
+- **Soul Reckoner takes no damage while a soul lives, and only in his small room.** The raid kills his souls first and
+  leads him back into the room when he wanders out.
+- **Bane of Hope ports you (and bots) away again** after his poison; they walk back.
+- **Apocalypse's harbingers come when they should.** The first pair now always comes after the raid's fourth death (it
+  could be skipped when two died at once), and the second pair at half health once the first pair is dead.
+- **The Crypt Lord's court comes as one pull.** The raid no longer pulls his court a few at a time; it gathers and
+  fights him and his whole court together.
+- **Krondon:** Scurceol Hyrde's orbs, Krevo Ricik's toss and Orylle's throw into Orshom's Fire now pick bots as well as
+  you. A bot thrown into the fire walks out of it first. Raiders with cold spells put the fire out (only cold hurts it);
+  with the fire out, Orylle has nothing to throw anyone into. Casters and archers kill Krevo's ghost before it explodes.
+- **Avalon City:** Sys'sro throws bots into his pit too; they walk out, ignoring the pit monsters (which can't be hurt).
+  Dra'argus: casters and archers kill the Drau'gyn Sphere from range while melee wait out of its reach, then everyone
+  fights him. The sphere's pull takes bots too.
+- **Darkness Falls:** raiders with pets keep them away from Princes Asmoien and Ba'alorien, who eat pets to heal.
+  Once the princes and Princess Nahemah are dead and Beliathan wakes, the raid goes for him before Legion.
+- **Moran the Mighty's gust throws one raider into a nearby camp**, as it was meant to. It used to throw everyone near
+  him at once.
+- **Your party calls the mechanics** in /group: "kill the adds first", "out of the fire", "only clerics and scouts on
+  Funus", "casters on the sphere", and so on.
+
+**Boss throws, teleports and jails now hit bots too, and bots get back** (the epic encounters, wave 1). Tested by
+automated tests only; not played in game yet.
+- **Before:** a boss's throw or teleport only ever picked you. Bots were never thrown, so the mechanic either landed on
+  you alone or was switched off. When a boss did throw you, your companions were dragged along with you.
+- **The dragons throw again.** Golestandt, Gjalpinulva and Cuuldurach have their wing gust back, as in the original
+  scripts. Every 60-80 seconds of a fight on the ground the dragon picks two to five raiders within reach (never the one
+  it is fighting) and hurls them high over its lair. You and the bots are picked alike, so with a raid of bots you are
+  thrown less often than before, never more.
+- **Xanxicar's throw hits bots too.** It already threw you; now it picks from you and the bots alike, and the bots it
+  throws come back the same way.
+- **One switch per boss.** A boss that may throw bots picks them for its throw, and one that may not (every other boss
+  for now, Legion included) picks only real players for it, as before. The boss's other targets (glares, debuffs, adds)
+  pick the whole raid everywhere.
+- **A thrown bot comes back.** It falls and takes the same fall damage you would. Then it walks back to its party:
+  your companions to you, a raid bot to its party leader. If something attacks it on the way, it fights back first.
+  - **Never stuck:** if there is no way back on foot, it hasn't got closer in 10 seconds, or the walk takes too long, it
+    says so and is back with its raid after a 5-second recall.
+  - **Jails:** a jailed bot waits and fights whatever attacks it until the jail ends. Jailer Vifil's jail ends when his
+    two tunnel guardians are dead (or the fight ends). Vifil's jail is still switched off.
+  - **Healers** heal a raider who was just thrown, you included, before others, unless someone else is about to die.
+  - **Your party says it:** "Mira got tossed, heals on Mira", "got tossed, omw back", "someone's in the jail".
+- **Your companions stay at the fight when a boss throws you.** Before, they were teleported along with you. Your
+  own throw is exactly as before. The server setting `epic_companions_stay_when_thrown` (on) turns this off; Legion's
+  throw always leaves them down, since his platform has no way back for a bot.
+- **The dragons throw as high as they did.** Up to about 1,400 units: the fall costs about 60% of your health without
+  Safe Fall. Each dragon has a setting to throw lower: `epic_dragon_throw_height_golestandt`, `_gjalpinulva` and
+  `_cuuldurach` (0, the original; 712 costs about 34%).
+- **The dragons' messengers are back but switched off.** From half health they send runners out to fetch more
+  monsters. Off until the bots have a way to stop the runners.
+- **Lich Lord Sanguis can be finished.** At 5% health he can't be targeted. Bots never fight what can't be targeted,
+  so a raid could be stuck on his last 5% until he reset. Now spellcasting bots keep casting at him. Melee and archers
+  still can't hit him, the same as for you.
+- **Switches:** every throw, teleport and jail now goes through one place. Each mechanic can be turned on or off per
+  boss. Off unless listed above, so everything else plays as before. The server log's `EPIC_DISPLACEMENT` lines show
+  each throw. `EPIC_DISPLACEMENT_FALLBACK` and `EPIC_DISPLACEMENT_RECALLED` show a bot that had to recall.
+
+**Boss mechanics pick bots too** (owner, 2026-11-06: "the throws and other unique triggers or scripts or anything
+target bots too").
+- **Before:** the epic and named bosses chose their special targets from real players only. Every glare, stare,
+  debuff, "random target" spell, aggro wipe and add trigger went to you, and the bots beside you were never chosen.
+- **Now:** they choose from the whole raid: you, your companions and the gamebots. With bots around you are one target
+  among many, never chosen more often than before. Some of what changes:
+  - the dragons' glare and roaming glare, Xanxicar's glare, Myrddraxis's flame breath and poison, Krackenschtein's
+    bolt, Roesia's pain, Lossren's ghoul, the Mistress of Runes's nearsight, Aros's debuff, Birghir's frost, Guthlac's
+    root and frozen bomb, Steinvor's pillar, Kula's Thor's Might, Balor's eye, Aroon's Scaiths and the Eyes Watching
+    You in Galladoria;
+  - triggers on a death or a hit: Nosdoden's "Spirit of ..." ghosts, Oona's undead, Beliathan's minions, High Lord
+    Saeor's and Legion's heals, the Risnir Cruss apparition and the Spectral Provisioner;
+  - crowd counts: Ozur grows stronger and Legion calls more adds with a big bot raid, as they did with a big raid of
+    players.
+  - Messages still go to you only; a bot gets the spell, not the text.
+- **Throws, teleports and jails pick bots only where the boss may throw them** (the three dragons and Xanxicar, see
+  above). Everywhere else (Scurceol's orbs, Cunovinda's ledge, Govannon's gallery, the Jailer, the Glacier Giant, Legion
+  and others) they still pick real players only, until each boss's tactic is in place.
+- **No floods of adds.** With bots counted, a few bosses would make far more adds or heals than any 2003 raid saw: a
+  bot raid can be twice its period size. They now count at most the period raid (docs/RAID-SIZES.md), so up to that
+  size nothing changes, and a bigger bot raid faces what a full raid of players did:
+  - Legion: adds for at most 64 raiders (16 a 5% step), and heals from at most 64 deaths in 5 minutes;
+  - High Lord Saeor: heals from at most 64 deaths in 5 minutes; Beliathan: at most 64 minions up;
+  - Nosdoden: at most 64 spirits of the fallen up; the Green Knight: at most 70 trees a wave; Oona: at most 70 undead
+    up; Risnir Cruss: at most 40 apparitions up.
+  - Each is a setting of its own (EncounterFloodGuard). Ozur, Aroon's Scaiths and Apocalypse's harbingers needed none.
+- **The Darkness Falls princes no longer eat bots.** Asmoien and Ba'alorien eat the nearest pet every five seconds and
+  heal by it. Their pet check also matched your companions and the gamebots, so in a bot raid they ate a bot every five
+  seconds. Now they eat summoned pets only: yours and the bots' pets.
+- **Raids are harder:** mechanics that used to skip the bots now hit them. Not yet played in game.
+
 **Battleground keeps change hands** (playtest 2026-11-04: in Thidranki 210 level-22 bots fought for 45 minutes, the
 gates fell, and the Renegade Lord never dropped below 100%).
 - **Before:** once the gates were down, every gamebot walked up to the lord on its own, from wherever its last fight or

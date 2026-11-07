@@ -536,13 +536,13 @@ namespace DOL.GS
 			base.Die(killer);
 		}
         public override bool CanDropLoot => false;
-        public static GamePlayer randomtarget = null;
-		public static GamePlayer RandomTarget
+        public static GameLiving randomtarget = null;
+		public static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
 		}
-		List<GamePlayer> Zombie_Targets = new List<GamePlayer>();
+		List<GameLiving> Zombie_Targets = new List<GameLiving>();
 		public override bool AddToWorld()
 		{
 			Model = 923;
@@ -562,11 +562,11 @@ namespace DOL.GS
 			bool success = base.AddToWorld();
 			if (success)
 			{
-				foreach(GamePlayer player in GetPlayersInRadius(2000))
+				foreach (GameLiving player in EncounterTargets.InRadius(this, 2000))
                 {
 					if(player != null)
                     {
-						if(player.IsAlive && player.CharacterClass.ID != 12 && player.Client.Account.PrivLevel==1)
+						if(player.IsAlive && EncounterTargets.ClassId(player) != 12 && EncounterTargets.NotGm(player))
                         {
 							if(!Zombie_Targets.Contains(player))
                             {
@@ -577,7 +577,7 @@ namespace DOL.GS
                 }
 				if(Zombie_Targets.Count>0)
                 {
-					GamePlayer Target = (GamePlayer)Zombie_Targets[Util.Random(0, Zombie_Targets.Count - 1)];
+					GameLiving Target = Zombie_Targets[Util.Random(0, Zombie_Targets.Count - 1)];
 					RandomTarget = Target;						
 					BroadcastMessage(String.Format(this.Name+" crawls toward "+RandomTarget.Name+"!"));
 				}

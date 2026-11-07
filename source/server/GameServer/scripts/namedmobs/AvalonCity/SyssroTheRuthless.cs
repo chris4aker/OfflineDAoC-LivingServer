@@ -223,24 +223,24 @@ namespace DOL.AI.Brain
 			AggroRange = 400;
 			ThinkInterval = 1500;
 		}
-		public static GamePlayer randomtarget = null;
-		public static GamePlayer RandomTarget
+		public static GameLiving randomtarget = null;
+		public static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
 		}
 		public static bool IsTargetPicked = false;
 		public static bool IsPulled = false;
-		List<GamePlayer> Port_Enemys = new List<GamePlayer>();
+		List<GameLiving> Port_Enemys = new List<GameLiving>();
 		public int ThrowPlayer(ECSGameTimer timer)
 		{
 			if (Body.IsAlive)
 			{
-				foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.DisplacesBots(Body)))
 				{
 					if (player != null)
 					{
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+						if (player.IsAlive && EncounterTargets.NotGm(player))
 						{
 							if (!Port_Enemys.Contains(player))
 							{
@@ -254,11 +254,11 @@ namespace DOL.AI.Brain
 				}
 				if (Port_Enemys.Count > 0)
 				{
-					GamePlayer Target = (GamePlayer)Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+					GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
 					RandomTarget = Target;
 					if (RandomTarget.IsAlive && RandomTarget != null)
 					{
-						RandomTarget.MoveTo(50, 41489, 40699, 8145, 2096);
+						EncounterDisplacement.Move(RandomTarget, 50, 41489, 40699, 8145, 2096, DisplacementKind.Throw, Body);
 						Port_Enemys.Remove(RandomTarget);
 						RandomTarget = null;//reset random target to null
 						IsTargetPicked = false;
@@ -429,11 +429,11 @@ namespace DOL.AI.Brain
 		}
 		public override void Think()
 		{
-			foreach(GamePlayer player in Body.GetPlayersInRadius((ushort)Body.attackComponent.AttackRange))
+			foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort)Body.attackComponent.AttackRange))
             {
 				if(player != null)
                 {
-					if(player.IsAlive && player.Client.Account.PrivLevel == 1 && !AggroList.ContainsKey(player))
+					if(player.IsAlive && EncounterTargets.NotGm(player) && !AggroList.ContainsKey(player))
 						AddToAggroList(player, 200);
                 }
 				if(player == null || !player.IsAlive)

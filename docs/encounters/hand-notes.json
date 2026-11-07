@@ -237,7 +237,7 @@
   "Upstream helper packs: add the 38 spawns our world lacks (AncientOakBaf 14, CaimheulBaf 5, CailleachUragaigBaf 3, RevenantBaf 11, RunilBaf 4) as a world update, or leave those packs empty?",
   "Scurceol's orbs are level 90 upstream too. Keep them, or lower them only when bots must kill them?",
   "Which restored mechanic should the raid AI learn first? Each is off until its tactic exists; the catalog lists them under 'Restored behind switches'.",
-  "Player-only mechanics stay player-only for now; the catalog lists every one as a candidate to target bots later. Which matter most for the 'wow' factor (throws, glares, Nosdoden's spirits)?"
+  "Answered by the owner (2026-11-06): throws and other unique triggers target bots too. Since 1.2 the boss scripts pick through EncounterTargets (real players and bots); picks that move their victim include bots once EncounterTargets.BotsCanBeDisplaced is on, and the mechanics still listed under 'Player-only mechanics' are those moves plus the ones left player-only on purpose."
  ],
  "handEntries": [
   {
@@ -262,17 +262,16 @@
     }
    ],
    "raidAi": "generic dungeon route",
-   "notes": "Written by hand: the generator finds no boss here (an initializator and an effect NPC, both GameNPC). Every 25-45 s it shows an eye effect over one random real player in Galladoria for 5 s. Visual only: the effect NPC is untargetable, peaceful, and its brain (OlcasgeanEffectBrain) casts nothing.",
+   "notes": "Written by hand: the generator finds no boss here (an initializator and an effect NPC, both GameNPC). Every 25-45 s it shows an eye effect over one random raider in Galladoria for 5 s (a real player or a bot since 1.2, EncounterTargets.InRegion). Visual only: the effect NPC is untargetable, peaceful, and its brain (OlcasgeanEffectBrain) casts nothing.",
    "rules": [
     {
      "kind": "hazard",
-     "summary": "Every 25-45 s an untargetable 'Eyes Watching You' effect appears on one random real player for 5 s (visual only, no damage).",
+     "summary": "Every 25-45 s an untargetable 'Eyes Watching You' effect appears on one random raider (real player or bot) for 5 s (visual only, no damage).",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs",
      "line": 105,
      "lineEnd": 130,
      "anchor": "public void PickPlayer()",
      "confidence": "read",
-     "affects": "real players only (bots are never picked)",
      "sourceClass": "EyesWatchingYouInitBrain",
      "method": "PickPlayer",
      "tactic": "Nothing to do: it is ambience.",
@@ -280,7 +279,7 @@
     }
    ],
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs": "931f35a51e869304d1980160f2559e24661fc6ac6d59a6405084eceaade0ca25"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs": "96531836730ea2454b604c3f728ab63d265576412dc5263dc1b49d3f6a9099d6"
    }
   },
   {
@@ -312,7 +311,8 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/CailleachUragaig.cs": "742a59d2fe8155b2718f766c1fefd50d04932db3ab613dfd8b3c5f7ebcea4d28"
-   }
+   },
+   "notes": "A data fact (1.2 wave 3 audit, not changed): at 30% she calls every NPC with PackageID \"CailleachUragaigBaf\" within 2,500, and the world database has none, so nobody comes."
   },
   "albion-named-mobs-classic-zones/fester": {
    "verified": true,
@@ -329,14 +329,22 @@
   "albion-named-mobs-classic-zones/legendaryafanc": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "5ca2c58062ed0e529f4da17a73fb7f86daa4b61b4c60487bea9cb1c9be84d926"
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "fb2cadfac67cd0a6ffad0f9786e4c4ed368f21522af4fa9082e5489b68f0c775"
+   },
+   "notes": "1.2 (wave 3): his throw takes bots too (AllowBotDisplacement for LegendaryAfanc): a thrown bot takes the fall damage (a fifth of its health, as players), walks back from the lake shore 451,486,393,503 or is recalled after 5 s with no path; the pick is made from who stands within 2,500 now (the list was never cleared, so a raider who had left could be thrown). The landing was never checked against the owner's navmesh.",
+   "rules": {
+    "teleport@162": {
+     "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for LegendaryAfanc): the bot walks back to its party (EncounterDisplacementRecovery; no path or off the mesh: recalled after 5 s); healers take displaced raiders first.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "albion-named-mobs-classic-zones/morgana": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs": "7e15d7495a65f5404665e4f3051de7435309bea94a895a922a652dd1ff0d03bf"
-   }
+   },
+   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked."
   },
   "albion-named-mobs-classic-zones/mouth": {
    "verified": true,
@@ -377,20 +385,23 @@
   "albion-named-mobs-shrouded-isles/durval": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs": "a20ffa4999aebfce381e1bdd501352f02ea1b8791013c54161e2c75e6c084bb9"
-   }
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs": "7f0a87ca9c477d6b422c88eda3e5bca9a76c9aab505c08dbe5606e2f35ec5955"
+   },
+   "notes": "1.2 (wave 3): his pack link fires: the script passed 3,500 to WorldMgr.GetNPCsFromRegion as a region id (so it saw no NPC); it now links every DurvalBaf delver and light within 3,500 of him (EncounterPacks.LinkInRadius). OpenDAoC-Core 3513bad has the same slip."
   },
   "albion-named-mobs-shrouded-isles/qanrisduros": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs": "de4ccc8702ba2f5b59cdfa7cf9bf4d3be8fbd0db27e47f92a7a65725ec7dff95"
-   }
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs": "9dec08db3daabd82448a6a51fbdc542a87b687801ce6a476193fbdf8b42ed58b"
+   },
+   "notes": "1.2 (wave 3): his pack link fires: the script passed 3,500 to WorldMgr.GetNPCsFromRegion as a region id (so it saw no NPC and the guards joined only by standing close and sharing a faction); it now links every DurosBaf guard within 3,500 of him (EncounterPacks.LinkInRadius). OpenDAoC-Core 3513bad has the same slip."
   },
   "albion-named-mobs-shrouded-isles/risnircruss": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs": "7711220bebb32a8691b3f1d7ae8549d920cec3fb9ed64906b3bdfe96558d5db0"
-   }
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs": "0ffb3debb1332f208f47f8f381f1614559bcbb692b08b3e6f19ad1b580760387"
+   },
+   "notes": "1.2: an apparition rises from each raider he kills, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'RisnirCruss.Apparitions'): no new apparition while 40 are up (no raid goes there: the smallest period raid size)."
   },
   "albion-named-mobs-shrouded-isles/sarcondina": {
    "verified": true,
@@ -419,7 +430,14 @@
   "avalon-city/draargusmighty": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "59035e368b36262cd6b3f2c7503459bd18741ec3e38105cd72bd78ad78e1a855"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "9ff04bbae65b44517567d941c5a5c40efc9a9574a5d5ff3ddb332b87afbdb1fd"
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "DraugynSphere"
+    ],
+    "summary": "Required add, from range (1.2): while the Drau'gyn Sphere burns he takes no damage and doesn't attack, and the sphere (10,000 health, floating above the floor) burns everyone within 500 for 300 every 4 s and pulls raiders at its edge into its middle. Casters and archers kill it from at least 650; melee, tanks and healers wait 850 from it, then everyone fights him (EpicEncounterTactics.AvalonCity).",
+    "since": "1.2"
    }
   },
   "avalon-city/duraekempowered": {
@@ -431,7 +449,15 @@
   "avalon-city/syssroruthless": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "5acb2842eb2e7a8a107cfd18c647e85925e939e995a0d0e11daa108e861d9843"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "28b464259e35602026380f6dbcdd54ced7ef89ca60d2e7fd7268ce7ff23fcb3b"
+   },
+   "aiTactics": {
+    "hazards": [
+     "PitMonster"
+    ],
+    "hazardRadius": 250,
+    "summary": "Hazards (1.2): his 15 pit monsters can't be hurt (and die with him), so nobody attacks them; a raider within 400 of one steps out. His throw (every 10-15 s, a raider other than his target into the pit 1,200 away) takes bots too: a thrown bot walks out of the pit back to its party, ignoring the pit monsters that snare it, or is recalled if it can't.",
+    "since": "1.2"
    }
   },
   "avalon-city/veraeriusbrave": {
@@ -449,31 +475,46 @@
   "caer-sidi/apocalypse": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
-   }
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
+   },
+   "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two. 1.2 (wave 3): the room barrier (ApocInitializator.DontAllowLeaveRoom: anyone within 150 of the door 29,459,26,401 while a horseman or Apocalypse fights is moved to the middle 29,469,25,244) is on for players and bots (AllowDisplacement and AllowBotDisplacement for ApocInitializator). The raid's muster and every tactic stand-off for the room's encounters are kept within 800 of the middle, the route doesn't leave the room mid-fight, and a bot moved back stays inside (EpicEncounterTactics.HorsemenRoom); a repeated move is logged (EPIC_DISPLACEMENT_BOUNCED). The room's shape was never checked against the navmesh."
   },
   "caer-sidi/baneofhope": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs": "3f2bc2dff0c75b5d1537474009a522eca849656ac14411fa760a3483f5639133"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs": "d542dd1cbdb80e979f477a5c38320fc610694471341a665a08deae313b24f26d"
    }
   },
   "caer-sidi/bellum": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
+   },
+   "aiTactics": {
+    "fightAtHomeRadius": 2700,
+    "summary": "Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
+    "since": "1.2"
    }
   },
   "caer-sidi/cryptlord": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "1b8735746b1c9051f55cc920c7ebbe0941abbd766c33b0a4baae767ce3f3d3d5"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "e2e7619fd86fbe4e47cc123e655884760c8d140a3fd46bd8eeeae5479ac8dc76"
+   },
+   "aiTactics": {
+    "summary": "His court comes with him (1.2): he never walks home, once he fights his whole court within 10,000 (43 with PackageID CryptLordBaf) joins on his target, and a court monster fighting within 800 of him pulls him in. So the route never takes a court monster as a small pull of its own while he lives: it fights him instead, a mustered encounter (half the raid gathers first), and the court comes with him (EpicEncounterTactics.CaerSidi route rule).",
+    "since": "1.2"
    }
   },
   "caer-sidi/fames": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
+   },
+   "aiTactics": {
+    "fightAtHomeRadius": 2700,
+    "summary": "Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
+    "since": "1.2"
    }
   },
   "caer-sidi/fatechosen": {
@@ -485,13 +526,19 @@
   "caer-sidi/funus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
-   }
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
+   },
+   "aiTactics": {
+    "fightAtHomeRadius": 2700,
+    "summary": "Class and weapon puzzle (1.2, with the original on): any hit from the wrong class or weapon (pets too) heals him to full. Wave 3: clerics fight him as they like; scouts, mercenaries, armsmen and infiltrators who own their listed weapon (longbow, short bow, crossbow: gamebots start with a training one of their class's own kind when they learn the line and earn better ones) draw it and fight with it only: BotBrain never falls back to melee on him (out of endurance they wait), the native close-range melee switch is skipped, and unless they hold him they step back to 700 when he is within 450. Everyone else drops him, calls its pet off and waits 1,400 away (kept inside the room while its door is barred), and never puts an area spell where he stands. No bot's pet attacks him, takes him from an order or defends its owner against him (EpicEncounterTactics.PetMustNotHit). A damage shield's sting from a bot he can't be hurt by neither heals nor hurts him (server property epic_funus_bot_shield_guard, on; real players keep the original). Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back. Not played: how many of a raid's mercenaries, armsmen and infiltrators own the weapon depends on their earned gear.",
+    "since": "1.2"
+   },
+   "notes": "1.2 (wave 2): the class and weapon puzzle is on (AllowFunusWeaponPuzzle); see aiTactics. 1.2 (wave 3): the archer classes switch to their listed weapon."
   },
   "caer-sidi/host": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "1e80b77de1f2e1bc50d34a432af5eec6c96775d15404d5e1809e39434322667c"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "286be32e65db40412d08665c6aee1ce7f5c1f83d05cf70dba015a9b28d5fba7c"
    }
   },
   "caer-sidi/lichlordilron": {
@@ -504,6 +551,14 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs": "01e443b7d98085cd982e19cf197db42c0a7eabc8718686956aac95637f16d9d3"
+   },
+   "notes": "At 5% health he turns untargetable (CANTTARGET) until the fight resets; area spells and running damage over time still hit him. 1.2: bots never fight an untargetable NPC, so the raid would stall on his last 5%; now offensive casters keep him as their target and finish him with spells (EpicEncounterTactics.FinishedBySpells), and the dungeon route keeps him as a target. Untested in a run.",
+   "rules": {
+    "phase@335": {
+     "summary": "At 5% health: announces 'becomes almost untouchable in his last act of agony' and turns untargetable (CANTTARGET) until the fight resets.",
+     "tactic": "Finish him with spells: the offensive casters keep casting at him (nukes, DoTs, area spells; EpicEncounterTactics.FinishedBySpells), melee and archers keep the adds off them.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "caer-sidi/lordsanguis": {
@@ -515,8 +570,17 @@
   "caer-sidi/morbus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
-   }
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "MorbusSwarm"
+    ],
+    "fightAtHomeRadius": 2700,
+    "summary": "Required adds (1.2, with his original swarm shield on): while a swarm of morbus lives (6-10 a wave, 15,000 health, weak to cold, every 25-40 s once the last wave is dead) he takes no damage and stops fighting, so the raid kills the swarm (each party takes one) and turns back on him once it is gone. Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
+    "since": "1.2"
+   },
+   "notes": "1.2 (wave 2): his swarm shield is on (AllowAddShield per encounter) and counts the swarm alive within 4,000 (SwarmAlive), not the static count; the raid kills the swarm first (catalog required adds)."
   },
   "caer-sidi/silencer": {
    "verified": true,
@@ -528,6 +592,10 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/CaerSidi/SkeletalSacristan.cs": "1952d864db5b1b094cb8ad3ab8552d16d49034b7a37c8805f74684699889a2de"
+   },
+   "aiTactics": {
+    "summary": "Ambush stations (1.2, with his original patrol on: 220 without stopping, 70% magic resists; he never attacks): each party waits at one of 11 stations along his loop (its seven corners and the middle of every leg over 2,400) and hits him while he passes (melee within 450 of the station, casters, archers and healers within 1,400), then waits for his next round (EpicEncounterTactics.CaerSidi).",
+    "since": "1.2"
    }
   },
   "caer-sidi/soulreckoner": {
@@ -535,18 +603,25 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs": "b0b4cc8c6d55ffd5cf29023f221008eeea0e69a0fc007c6f39f49397dae4ce9c"
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "ReckonedSoul"
+    ],
+    "summary": "Required adds (1.2, with his original full shield on): while a reckoned soul lives (4-6 at the start, 1-2 more every 60-70 s) he takes no damage, so the raid kills the souls first, each party one. His room (1.2, the original 900 from its middle): past 700 from the room's middle the raid stops hitting him, keeping him as its target, and the raider he chases leads him back in (EpicEncounterTactics.CaerSidi).",
+    "since": "1.2"
    }
   },
   "caer-sidi/spectralprovisioner": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs": "53056a47bd9af9bbac17a990066e5aeafb0b1be234acf84c094ce6d3b72c2634"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs": "4b063ed9e280b2e8b90d00a2ced49cecc5efede138f783dcbd49cc891f94c759"
    }
   },
   "caer-sidi/spectralprovisionerspawner": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs": "53056a47bd9af9bbac17a990066e5aeafb0b1be234acf84c094ce6d3b72c2634"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs": "4b063ed9e280b2e8b90d00a2ced49cecc5efede138f783dcbd49cc891f94c759"
    }
   },
   "caer-sidi/warlorddorinakka": {
@@ -556,28 +631,28 @@
    }
   },
   "crystal-cave/xanxicar": {
-   "notes": "Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random real player within 2,500 every 20-40 s and glares at another (players only).",
+   "notes": "Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random raider within 2,500 every 20-40 s: real players, and bots since 1.2 (his AllowBotDisplacement is on; the pick asks the same switch as the move) and glares at another raider, bots included since 1.2 (never a necromancer).",
    "currentRaidAi": "2026-11-05: lost with support 199 (required 150, Special Forces joined), one named kill.",
    "rules": {
-    "phase@337": {
+    "teleport@224": {
+     "summary": "ThrowPlayer: every 20-40 s a random raider within 2,500 (not his target; real players, and bots since 1.2) is moved to 32338,32387,16539 ('hurled into the air').",
+     "tactic": "A thrown bot lands with the player's fall damage and walks back to its party, or recalls after 5 s with no way back (EncounterDisplacementRecovery); healers heal it first and its party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    },
+    "phase@341": {
      "summary": "At 80/60/40/20% health: announces and casts Xanxicar's Stomp, a point-blank AoE on everything around him (1 s after the announcement).",
      "tactic": "On the announcement casters, healers and archers step out of the stomp radius; melee eat it with full health. Healers top up before each threshold.",
      "difficulty": "needs new raid AI"
     },
-    "adds@382": {
+    "adds@386": {
      "summary": "At 50%: one Xanxicarian Champion (GameEpicNPC, level 65); after it dies another follows every 15-25 s while he fights.",
      "tactic": "One party holds and kills each Champion away from the main tank. The route treats an epic NPC as its own encounter, not his add.",
      "difficulty": "needs new raid AI"
-    },
-    "teleport@224": {
-     "summary": "ThrowPlayer: every 20-40 s a random real player within 2,500 (not his target) is moved to 32338,32387,16539 ('hurled into the air').",
-     "tactic": "Off for bots today: it picks only real players (GameBot is a GameNPC, not a GamePlayer). To play it: a thrown bot walks back and rejoins its party.",
-     "difficulty": "off today"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "6533b8df4ed97433e4fe887c95cae1fb66ec6741b7f3ecf0494e8033a52b3415"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "9bd5026d711d4939e70e7af4da92fe95dc5f09fcffe8e874c17fa1ef44b34ae6"
    },
    "aiTactics": {
     "blastThresholds": [
@@ -587,11 +662,12 @@
      20
     ],
     "blastRadius": 2500,
-    "summary": "Blasts: within 3% above 80/60/40/20% and for 9 s after crossing one, everyone except the party he is fighting withdraws 2,700 from him; that party pushes him over and takes the 2,500-radius stomp (it is meant to kill whoever is in it), the rest of the raid survives it and comes back."
+    "summary": "Blasts: within 3% above 80/60/40/20% and for 9 s after crossing one, everyone except the party he is fighting withdraws 2,700 from him; that party pushes him over and takes the 2,500-radius stomp (it is meant to kill whoever is in it), the rest of the raid survives it and comes back. 1.2 wave 2: when he bellows, that party's healers top it up first; when he prepares his glare (450 around a raider, 5 s), everyone near that raider steps away and healers heal him (EncounterSignals).",
+    "since": "1.2"
    }
   },
   "cuuldurach-s-lair-sheeroe-hills/hibcuuldurach": {
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "rules": {
     "heal@341": {
      "drop": true
@@ -605,20 +681,49 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "4c9df8312f40c9db8d908ce57c6f96a47d88a294a2867e713e11531f5020f678"
+    "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1",
+    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "bac7bb6f9e76bfbd43b9425d3b172b70b3f570ddcc6ca9eedb0a83c89172e384"
+   },
+   "extraRules": [
+    {
+     "kind": "teleport",
+     "subtype": "air_toss",
+     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Cuuldurach picks 2-5 raiders within 2,500 that are not its target (real players, and the bots on its aggro list where its AllowBotDisplacement is on, as shipped; the pick and the move ask the same switch) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts: up to about 1,400 units, about 60% of a raider's health; the server property epic_dragon_throw_height_<dragon> softens it, 0 = the original).",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs",
+     "line": 81,
+     "lineEnd": 101,
+     "anchor": "public static int Throw(GameNPC dragon, IEnumerable<GameLiving> aggro, Random random = null)",
+     "sourceClass": "DragonEncounterThrow",
+     "method": "Throw",
+     "switch": [
+      "AllowDragonThrow",
+      "AllowBotDisplacement"
+     ],
+     "difficulty": "easy for the current raid AI",
+     "tactic": "A thrown bot lands on the navmesh floor under its spot with the player's fall damage and walks back to its party (EncounterDisplacementRecovery); with no path or no progress it recalls to the raid after 5 s. Healers heal displaced raiders first; the party calls it in /group.",
+     "confidence": "read"
+    }
+   ],
+   "aiTactics": {
+    "rangedAdds": [
+     "CuuldurachMessenger"
+    ],
+    "since": "1.2",
+    "summary": "Messengers (on since 1.2, AllowDragonMessengers): from 50% every 80-90 s four to six messengers (CuuldurachMessenger, 1,500 health, they never fight) run out of the lair and each calls four to six adds where its path ends; the raid's casters and archers run each one down (ranged adds) while melee and healers stay on the dragon. Stare (glare, 1,000 around the raider it picks, 6 s warning): everyone within it but the picked raider and the tank steps out, away from him, and healers heal him first. Look-around stun and breath (2,000 around the dragon, 6 s warning): casters, archers and healers step out past 2,250 until it lands; melee can't make it and take it. Each one is called in /group (EncounterSignals, EncounterCalls)."
    }
   },
   "darkness-falls/behemoth": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "e216d9a7c3a607b9e800d01aa00d029348bf159bca18db0ea787be0449e59b07"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "63fb56e730c0bbc2d4bfdde5c26fbb9e3838de977f6d3ee78f2415a9dd1b3026"
    }
   },
   "darkness-falls/beliathan": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "97fa422b8631fb1f40c5cce96f0b351ff85a9200df24b37d83d090d87ae95528"
-   }
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "5265ec39624ceb7e570ecda41a168e7edf51cf58114b03a565fafa7f4ec3cd4c"
+   },
+   "notes": "1.2: a minion rises from each raider he kills, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'Beliathan.Minions'): no new minion while 64 are up, Darkness Falls' period raid."
   },
   "darkness-falls/highlordbaelerdoth": {
    "rules": {
@@ -643,33 +748,45 @@
   "darkness-falls/highlordoro": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "cf017bfe11ca5e811ebdafe29e449fd07cacbef70a440a1ae5b8716ec105e494"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "67f1a42567b5bfe6c1c7b940928a22e9b30698eb6c0e4ab621038c3a23f4008b"
    }
   },
   "darkness-falls/highlordoroclone": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "cf017bfe11ca5e811ebdafe29e449fd07cacbef70a440a1ae5b8716ec105e494"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "67f1a42567b5bfe6c1c7b940928a22e9b30698eb6c0e4ab621038c3a23f4008b"
    }
   },
   "darkness-falls/highlordsaeor": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "0f44370d05d55a397fbcd0c5b2bbdb0ac7c65c96fb347a1cfbe1b5bf5957a19e"
-   }
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "cd2cfb4f2cdd265bf3061f3a33af97ef034bae88712e1f0ed3a40396e2878691"
+   },
+   "notes": "1.2: a dead bot heals him by its health too (EncounterTargets). Flood guard (EncounterFloodGuard 'HighLordSaeor.KillHeal'): at most 64 such heals in 5 minutes, Darkness Falls' period raid."
   },
   "darkness-falls/legion": {
-   "notes": "Level 83, 300,000 health. No raid AI: listed for completeness.",
+   "notes": "Level 83, 300,000 health. No Darkness Falls raid AI: listed for completeness. 1.2: companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics). 1.2 wave 3: his throw takes bots too (AllowBotDisplacement for Legion); the wounded step out of his reach; no bot bubbles near him. Not played.",
    "rules": {
-    "immune_while@242": {
+    "immune_while@243": {
      "summary": "Takes no damage from attackers more than 1,400 from him.",
      "tactic": "Everyone fights within 1,400 of him (casters too).",
+     "difficulty": "needs new raid AI"
+    },
+    "teleport@688": {
+     "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for Legion): a thrown bot lands on the platform, finds no path back and is recalled to its party after 5 s (EncounterDisplacementRecovery); companions of a thrown player stay down. Real players use the zone point as before.",
      "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "e216d9a7c3a607b9e800d01aa00d029348bf159bca18db0ea787be0449e59b07"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "63fb56e730c0bbc2d4bfdde5c26fbb9e3838de977f6d3ee78f2415a9dd1b3026"
+   },
+   "aiTactics": {
+    "rangedAdds": [
+     "LegionAdd"
+    ],
+    "since": "1.2",
+    "summary": "Tactic rules only (Darkness Falls raid AI as a whole is not implemented: no platform positions, no walked way down from the platform, no add-wave assignments). Graspering souls (one per four raiders within 2,000 at each 5% step, at most 16 a step): casters and archers kill them while melee stay on Legion. Close range: he takes no damage from attackers more than 1,400 from him, so a raider farther out steps in to 1,100. Kill heals (2.5% per raider he kills): healers near him heal anyone under half first, and since wave 3 a raider under 35% who is not his target steps out to 1,700 until healed. Bubbles (wave 3): he ends the bladeturn on his target every turn and after five casts his soul blast (1,000 body damage within 1,000 of his target, a quarter healing him), so no bot casts a bladeturn (buff, group bubble, pulsing chant, self bubble) within 2,500 of him while he fights. His throw (wave 3): 8-16 raiders below his top five on his aggro list go to his platform every 40-65 s, bots too; a bot has no walked way down, so its recovery recalls it to its party after 5 s."
    }
   },
   "darkness-falls/princeabdin": {
@@ -680,30 +797,38 @@
   },
   "darkness-falls/princeasmoien": {
    "rules": {
-    "pet_devour@111": {
-     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health.",
+    "pet_devour@110": {
+     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest summoned pet within 2,000 (of a player or of a bot) dies and he heals by its maximum health. Never a bot: before 1.2 the check (a controlled brain) matched companion bots and gamebots too and ate one every 5 s (EpicEncounterMechanics.IsDevourablePet).",
      "tactic": "Pet classes leave or park their pets more than 2,000 away before the pull.",
      "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "ed786219f6c2df5a16b38e5369ff20707444d17685919e1a3e6250245112e096"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "53d2bd1b0496e80129543cca4e017ac6e5504d5410e629011ce357e6e573cadc"
+   },
+   "aiTactics": {
+    "summary": "Pets out (1.2): he eats the nearest summoned pet within 2,000 every 5 s and heals by its health (real pets only, never a bot), so a raider with a pet drops him, calls its pet off and waits 2,400 away with it; everyone else fights him (EpicEncounterTactics.DarknessFalls).",
+    "since": "1.2"
    }
   },
   "darkness-falls/princebaalorien": {
-   "notes": "Prince of Darkness Falls. Every five seconds he eats the nearest pet within 2,000 and heals by the pet's maximum health (changed from every pet on every brain turn, owner 2026-10-14).",
+   "notes": "Prince of Darkness Falls. Every five seconds he eats the nearest summoned pet within 2,000 (never a bot, 1.2 fix) and heals by the pet's maximum health (changed from every pet on every brain turn, owner 2026-10-14).",
    "currentRaidAi": "2026-11-04: Albion and Hibernia's Darkness Falls raids were each defeated at him (two wipes each, Special Forces joined). No raid AI for Darkness Falls.",
    "rules": {
-    "pet_devour@110": {
-     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health.",
+    "pet_devour@109": {
+     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest summoned pet within 2,000 (of a player or of a bot) dies and he heals by its maximum health. Never a bot: before 1.2 the check (a controlled brain) matched companion bots and gamebots too and ate one every 5 s (EpicEncounterMechanics.IsDevourablePet).",
      "tactic": "Pet classes leave or park their pets more than 2,000 away before the pull and fight without them.",
      "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "2f464529d3943e2dac47145c3310ec786d1b172f1303582acd0c567bdd5f59b0"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "ec7005401968848e5295ecddf0d94ed26c02da0068e3de07559036cb3d65c0f4"
+   },
+   "aiTactics": {
+    "summary": "Pets out (1.2): he eats the nearest summoned pet within 2,000 every 5 s and heals by its health (real pets only, never a bot), so a raider with a pet drops him, calls its pet off and waits 2,400 away with it; everyone else fights him (EpicEncounterTactics.DarknessFalls).",
+    "since": "1.2"
    }
   },
   "darkness-falls/princessnahemah": {
@@ -728,7 +853,7 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosBrain.cs": "321880a5267affac2a020ab02f741a95d7eb017665f616d701c3315fc3794f2f",
-    "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs": "2a1e19c21f32d541d586915e2b9505b41cda72493183b3ce1dc8650f7753d910"
+    "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs": "5cba5d5c60cf1a5d2a51edeb8269232cbb8d120a24ee58d57bbc4c69859512d3"
    }
   },
   "dodens-gruva/gudlaugr": {
@@ -754,13 +879,13 @@
   "dodens-gruva/mistressrunes": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dodens/MinstressofRunes.cs": "adfb030967b09490f534237d17a13fc0789a7119c5ef6fd48fd9bf25a73da223"
+    "source/server/GameServer/scripts/namedmobs/Dodens/MinstressofRunes.cs": "9e804680de657d7ee80bb749d15b61885210132b58e793635702132debaf858f"
    }
   },
   "dodens-gruva/spiritmasteraros": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "00b3b24581786e8c591d0228899d57370b8e247cf21d1426344653eadcbea487"
+    "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "9dc614ceda5750a5e1919ca934d50bd7dd599d5925a1d536a161d082827d3765"
    }
   },
   "dodens-gruva/thanedyggve": {
@@ -772,19 +897,53 @@
   "fomor-city/anurigunda": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "e3ceb2cb16e859fd21ee26f589dc7b786abe86a6956f1923e15406954f5cfb62"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "ddbafcd28c0d85ab9a71d42b179edd8a4d705e1c1b8daf8c0c37f235702d65a2"
+   },
+   "rules": {
+    "teleport@107": {
+     "tactic": "Doorway push (a barrier: nothing to recover from): on since 1.2 for bots too (AllowBotDisplacement for Anurigunda). Sic: its radius is the region number (180), as in the original, so only raiders right on top of her by the doorway are pushed back into her room.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "fomor-city/krackenschtein": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "ce2a3b5bebe789530311b2824e9fb09ec4686bdb05e9d8904b9b76b79e66c7d5"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "147e40217973555da2bb68a1e23c4f843b08c5dbd72950246678153b23ffd458"
+   },
+   "aiTactics": {
+    "summary": "Close in: he takes damage only from within 300, so every raider, casters too, fights from within 220-280 of him. His throw (four spots 465 above his floor) takes bots too since 1.2; they fall and walk back.",
+    "since": "1.2"
+   },
+   "rules": {
+    "teleport@189": {
+     "tactic": "Throw: on since 1.2 for bots too (AllowBotDisplacement for Krackenschtein). A moved bot falls 465 at one of four spots by him and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    },
+    "immune_while@47": {
+     "tactic": "In the raid AI (EpicEncounterTactics.Hibernia): every raider, casters too, fights from within 220-280 of him.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "fomor-city/myrddraxis": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "1f827170b7428801f21a6391a56abd1d18c72dc8507ebfbd98a3d4388b2dc2de"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "5d8d41065ab6bcaaf3c7f24ebfa22abd8d32c62b18b7d967075c2c691b9ab17c"
+   },
+   "aiTactics": {
+    "blastThresholds": [
+     80,
+     75,
+     60,
+     50,
+     40,
+     25,
+     20
+    ],
+    "blastRadius": 2150,
+    "summary": "Breaths at health thresholds: within 3% above 80/60/40/20% (stunning breath, 30 s stun in 1,800) and 75/50/25% (Breath of Annihilation, 2,000 heat in 1,800), and for 9 s after crossing one, everyone but the party he fights stands 2,350 from him; the 5-6 s warning in the script lands inside that window. Fomor City has no raid of its own (no path in on its navmesh), so this steers the gamebots that fight there.",
+    "since": "1.2"
    }
   },
   "fomor-city/nogoribando": {
@@ -797,7 +956,7 @@
    "notes": "900 health (by design: one strong nuke kills it), flies (FLYING), never melees (StartAttack empty), never walks home (ReturnToSpawnPoint does nothing while alive). Pets and turrets deal a fixed 5 per hit.",
    "currentRaidAi": "2026-10-16: it circled 690 above the floor and was skipped; route now shoots flyers within 1,200 from below (RealmRaidDungeonRoute.IsOutOfRangedReach).",
    "rules": {
-    "damage_reduced@1112": {
+    "damage_reduced@1137": {
      "summary": "Pets and turrets (GameSummonedPet, TurretPet) deal a fixed 5 per hit; everyone else deals normal damage.",
      "tactic": "Casters and archers kill it from below with direct damage; pets attack the other primals.",
      "difficulty": "easy for the current raid AI"
@@ -805,25 +964,41 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
    }
   },
   "galladoria/aroon": {
-   "notes": "300,000 health. Summons nine Scaith guardians (one per damage type) the first time he fights. The original fight let each damage type hurt him only after the matching Scaith died (Aroon_slash ... Aroon_spirit flags remain); that check was removed for bots and the original code is not in this repository's history.",
+   "notes": "300,000 health. Summons nine Scaith guardians (one per damage type) the first time he fights. The original fight let each damage type hurt him only after the matching Scaith died (Aroon_slash ... Aroon_spirit flags remain); that check was removed for bots and the original code is not in this repository's history. 1.2 wave 2: the damage order is back (AllowAroonDamageOrder, EpicEncounterRestores.AroonAccepts).",
    "rules": {
     "aggro_wipe@1372": {
-     "summary": "Each Scaith now and then drops its aggro and picks one random real player from its PlayersToAttack list (List<GamePlayer>).",
-     "tactic": "Off for bots today: it picks only real players (GameBot is a GameNPC, not a GamePlayer). To play it: tanks pick the Scaith back up.",
-     "difficulty": "off today"
+     "summary": "Each Scaith now and then drops its aggro and picks one random raider (real player or bot since 1.2) from its PlayersToAttack list.",
+     "tactic": "Tanks pick the Scaith back up; the raider it picked holds it or brings it back to the tank.",
+     "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "ccb632a3d55ab9e622df2cb1874ef95aaf46c73e9dd428f4078aab09e191dcff"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "9f7b96e78af9a1c70b23bd8e099c65f5b704906fec526087baea2d68f7878910"
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "CorpScaith",
+     "SpioradScaith",
+     "RopadhScaith",
+     "DamhnaScaith",
+     "FuinneamgScaith",
+     "BruScaith",
+     "FuarScaith",
+     "TaesScaith",
+     "ScorScaith"
+    ],
+    "addsInOrder": true,
+    "since": "1.2",
+    "summary": "Damage order (AllowAroonDamageOrder, on since 1.2): each Scaith is immune until the one before it is dead (slash, thrust, crush, body, cold, energy, heat, matter, spirit), and Aroon takes only the damage types whose Scaith has died. The whole raid kills the Scaiths one at a time in that order (a Scaith that is not next is held by the party it fights), then Aroon."
    }
   },
   "galladoria/beatha": {
-   "notes": "See Xaga. Holds low over the floor while engaged so melee can reach her (offline change).",
+   "notes": "See Xaga. 1.2 wave 2: she circles the room while fought again (AllowFairyFlight) and the raid kills her before Xaga (Beatha first).",
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93"
@@ -832,14 +1007,19 @@
   "galladoria/conservator": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs": "0cbda933dcdfc6bad6b81061392d36c30404dea863ac6c8ad68ae723aa24822d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs": "3d39abfd2a900d792a7f542914506fc4ff7a11790287e2a2547f082c5721ae0a"
+   },
+   "aiTactics": {
+    "fightAtHomeRadius": 600,
+    "since": "1.2",
+    "summary": "Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within 800 of his spawn. A raider farther out steps in to 500; fight him at home: drawn past 600 from his spawn the raid stops hitting him and whoever he chases leads him back."
    }
   },
   "galladoria/earthprimal": {
-   "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; since run 18 they fight back. Tether 890: it barely leaves its spot.",
+   "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; since run 18 they fight back. Tether 890: it barely leaves its spot. 1.2 wave 2: the original Earthmenders are back (AllowEarthmendersPassive: they never attack; AllowEarthmenderQuickReset: one left alone 30 s heals to full; AllowEarthmenderMutualHeal: they heal each other): the raid keeps each class on its own Earthmender until it dies.",
    "currentRaidAi": "Run 14 (2026-10-16): skipped at full health while the Earthmenders healed it; the route now treats script-spawned adds near the front as part of the fight (EncounterAddRadius 3,000). 2026-11-06 (build 86eddd8): the raid never reached the primals (deadPrimals=0 all day: the bridge room was not started), so this tactic has not been seen in a run.",
    "rules": {
-    "heal@2545": {
+    "heal@2570": {
      "summary": "Each Earthmender casts a 2,000-point heal (target realm: the primal or another Earthmender).",
      "tactic": "Kill the four Earthmenders first (split one party per Earthmender), then the primal; interrupt their casts if a class can.",
      "difficulty": "needs new raid AI"
@@ -847,7 +1027,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -893,13 +1073,31 @@
   "galladoria/easmarach": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "54f836419f50975ca5c7d4df1b25fe764081c4b9b9be87b5f49e84f8b02fae65"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "4548c254242adf0c1e35bb7d0f5c9abf965790a017bd55c7c576de62d2d3e1fa"
+   },
+   "aiTactics": {
+    "since": "1.2",
+    "summary": "Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within his 2,500 tether of his spawn; a raider farther out steps in. The waterfall top (wave 3, 1.2): below 30% he clears his aggro, walks up to 37,811,50,342 (about 1,100 above his spawn, no walked path) and heals an eighth of his health each time he is back there under 30%; casters, archers and healers go to their party's spot on the floor below (six spots the raid reached on 2026-11-06, each within 1,250 of the top and 2,500 of his spawn) and shoot him from there, melee wait at his spawn (EpicEncounterTactics.Galladoria). His push behind the falls (raiders within 1,000 of 37,653,52,843 are moved to 40,067,50,494) is on since wave 3, for bots too: while he lives the route never sends the raid to the last room (the bridge, the primals, Olcasgean), it fights him first; a bot pushed back stays where the push put it and a repeated push is logged (EPIC_DISPLACEMENT_BOUNCED). Not played; the spots were never checked against the navmesh for sight to the top."
+   },
+   "rules": {
+    "teleport@206": {
+     "tactic": "On since 1.2 wave 3 (AllowDisplacement and AllowBotDisplacement for Easmarach): the route kills him before Galladoria's last room, so the raid doesn't walk into the falls; a pushed bot stays where it lands (a barrier: no walk back into it). Off with epic_encounter_switches \"AllowDisplacement@Easmarach=False\".",
+     "difficulty": "needs new raid AI"
+    }
    }
   },
   "galladoria/fireprimal": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
+   },
+   "aiTactics": {
+    "hazards": [
+     "TrailOfFire"
+    ],
+    "hazardRadius": 450,
+    "since": "1.2",
+    "summary": "Trail of fire (AllowFullFirePatches, off by default, server property epic_full_fire_patches: 120 every 2 s in 300; on, the original 220 in 450): the primal walks its loop and leaves a patch where it stands. Casters and archers shoot it and step out of the patches; melee fight the Water or Earth primal while one lives, and fight the Fire primal in the fire only when it is the last."
    }
   },
   "galladoria/giantsporitecluster": {
@@ -925,18 +1123,18 @@
   "galladoria/olcasargeomancer": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "db1e12260333888721c01612fb1f9b2e2874c392103ac68308de886effefc402"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "6e8c9d0a8fd5b5a27046747f0e7ec0665d34926546865bea95978cc8d816ea89"
    }
   },
   "galladoria/olcasgean": {
-   "notes": "Level 87, 250,000 health, the final boss. Asleep until all four primals are dead. Spawns a copy of himself (Olcasgean2, a second 250,000-health body) when he wakes. The split-position puzzle (raiders must stand at two points or he spams his DD) and his throws are switched off for bots.",
+   "notes": "Level 87, 250,000 health, the final boss. Asleep until all four primals are dead. Spawns a copy of himself (Olcasgean2, a second 250,000-health body) when he wakes. The split-position puzzle (raiders must stand at two points or he spams his DD) and his throws are on since 1.2 wave 2. 1.2 wave 2: the safe spots, the throw (fixed as OpenDAoC-Core 3513bad: the fork's copy never started and could pick index -1) and the antipass are on for bots.",
    "rules": {
-    "position_puzzle@658": {
-     "summary": "AllowPositionPuzzle (false today) gates his whole fight script: Root Effects, the throw, the DD spam at whoever is not at the two safe points (40170,62600 and 39237,62644), and the Waterfall Antipass.",
-     "tactic": "Off today. To play it: two parties stand on the two safe points the whole fight, the rest fight him.",
-     "difficulty": "off today"
+    "position_puzzle@673": {
+     "summary": "AllowPositionPuzzle (on for him since 1.2) gates his whole fight script: Root Effects, the throw, the DD spam at whoever is not at the two safe points (40170,62600 and 39237,62644), and the Waterfall Antipass.",
+     "tactic": "In the raid AI (EpicEncounterTactics.Signals.cs, safe spots): the raid's two lowest-numbered parties hold one spot each the whole fight and fight the body standing there; everyone else fights where it likes. A thrown raider walks back.",
+     "difficulty": "needs new raid AI"
     },
-    "adds@750": {
+    "adds@775": {
      "summary": "Spawns Olcasgean2, a second body with its own 250,000 health, when he is placed.",
      "tactic": "Both bodies are final encounters for the route; split the raid or kill them one at a time.",
      "difficulty": "needs new raid AI"
@@ -944,43 +1142,47 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
+   },
+   "aiTactics": {
+    "since": "1.2",
+    "summary": "Safe spots (AllowPositionPuzzle, on since 1.2): unless a raider stands within 200 of 40,170,62,600 (his copy) and one within 200 of 39,237,62,644 (him) he casts his Root DD without pause; the raid's two lowest-numbered parties hold one spot each the whole fight and fight the body that stands there (they share health), everyone else fights where it likes. Below half he throws one raider every 12-20 s who was not thrown before (bots too since 1.2): it walks back (EncounterDisplacementRecovery). The Waterfall Antipass pushes anyone who tries to leave back into the room until he dies. The party calls an empty spot in /group."
    }
   },
   "galladoria/olcasgean2": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
    }
   },
   "galladoria/olcasgeaninitializator": {
-   "notes": "Not a monster but the event controller for Galladoria's last room. A raid bot within 1,500 of the waterfall bridge (39652,60831,11893) starts it (a real player must stand within 350); 20 s of messages later it spawns the four Corrupt Primals, the four Earthmenders and eleven Watery Vortices. Olcasgean wakes 25 s after all four primals are dead (OIBrain.DeadPrimalsCount >= 4).",
+   "notes": "Not a monster but the event controller for Galladoria's last room. A raid bot within 1,500 of the waterfall bridge (39652,60831,11893) starts it (a real player must stand within 350); 20 s of messages later it spawns the four Corrupt Primals, the four Earthmenders and eleven Watery Vortices. Olcasgean wakes 25 s after all four primals are dead (OIBrain.DeadPrimalsCount >= 4). 1.2 wave 2: AllowGalladoriaBridgeSpot is on: a raider must stand within 350 of the spot (the route stages its first party there); a raid bot that has stood within 1,500 for 3 minutes still starts it.",
    "rules": {
-    "immune_while@3201": {
-     "kind": "hazard",
-     "summary": "Watery Vortex: an invulnerable hazard when AllowInvulnerableHazards is on (no damage from anyone). Today the switch is false and a vortex takes normal damage.",
-     "tactic": "Off today. With the switch on: stay out of the vortices and never target them.",
-     "difficulty": "off today"
-    },
     "adds@223": {
      "summary": "Spawns eleven Watery Vortices at fixed spots around the waterfall room with the primals.",
      "tactic": "Today they are ordinary targets; with the hazard switch on, route parties around them.",
      "difficulty": "needs new raid AI"
+    },
+    "immune_while@3226": {
+     "kind": "hazard",
+     "summary": "Watery Vortex: an invulnerable hazard when AllowInvulnerableHazards is on (no damage from anyone). Today the switch is false and a vortex takes normal damage.",
+     "tactic": "Off today. With the switch on: stay out of the vortices and never target them.",
+     "difficulty": "off today"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
    }
   },
   "galladoria/organicenergymechanism": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "4eeda42809772bf316ee1a95144177c43a02c704e4a1d02bb6fbc3f5b0313425"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "9d610a662e6d40d389558bc46f7d111775f6de4060424ed6bf224267cde8e52c"
    }
   },
   "galladoria/spindlerbroodmother": {
-   "notes": "100,000 health, 40/70% resists. 1-2 Newly-born spindlers every 15-35 s in the fight; 20-25 underdeveloped spindlers burst out when she dies. A mezz on a random target every 20-30 s. Her teleport is off for bots.",
+   "notes": "100,000 health, 40/70% resists. 1-2 Newly-born spindlers every 15-35 s in the fight; 20-25 underdeveloped spindlers burst out when she dies. A mezz on a random target every 20-30 s. 1.2 wave 2: her teleport (a raider within 2,500 to 21,115,53,483) is on for bots: they walk back.",
    "currentRaidAi": "2026-11-05 07:19 (owner's notes): the Hibernian epic raid wiped at her (46 fell, 146 living), Special Forces arrived; that log is on the owner's PC. 2026-11-06 (build 86eddd8): killed in 11.0 minutes with 96 mustered, no raider death credited to her; a newborn and an underdeveloped spindler were route targets after her death.",
    "rules": {
     "adds@90": {
@@ -995,7 +1197,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "149668060824c2e550b27e9244d813e2c7f5b1de4c575e692093e9dd9c9feb30"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "d3364e86a4983e519019db10e311a4b299c6d4a38d325dc0c3e1b18815254bf7"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -1009,7 +1211,7 @@
    }
   },
   "galladoria/tine": {
-   "notes": "See Xaga. Holds low over the floor while engaged so melee can reach her (offline change).",
+   "notes": "See Xaga. 1.2 wave 2: she circles the room while fought again (AllowFairyFlight) and the raid kills her before Xaga (Beatha first).",
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93"
@@ -1023,12 +1225,12 @@
   },
   "galladoria/waterprimal": {
    "rules": {
-    "phase@1649": {
+    "phase@1674": {
      "summary": "Below 30% (once) it walks to its pool, stops fighting (dontattack: immune), heals a sixth of its health and comes back.",
      "tactic": "Stop attacking while it is in the pool; be ready when it comes back.",
      "difficulty": "needs new raid AI"
     },
-    "immune_while@1542": {
+    "immune_while@1567": {
      "summary": "Takes no damage while it is retreating to its pool (WaterPrimalBrain.dontattack).",
      "tactic": "Stop attacking while it is immune; the raid's no-damage clock should not set it aside.",
      "difficulty": "needs new raid AI"
@@ -1036,19 +1238,29 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
-   }
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
+   },
+   "notes": "1.2 wave 2: its teleport (a raider within 2,500, to either side of the bridge) is on for bots: they walk back."
   },
   "galladoria/xaga": {
-   "notes": "Xaga spawns Tine and Beatha (two 50,000-health fairies) and calls them in when she is attacked; each calls the others. Beatha's damage used to heal Xaga twice over; that is removed for bots (offline change).",
+   "notes": "Xaga spawns Tine and Beatha (two 50,000-health fairies) and calls them in when she is attacked; each calls the others. Beatha's damage heals Xaga twice over again since 1.2 wave 2 (AllowBeathaHealsXaga).",
    "currentRaidAi": "2026-11-05 (build 8d7baa3): the Hibernian epic raid wiped at Tine.",
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93"
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "Beatha",
+     "Tine"
+    ],
+    "addsInOrder": true,
+    "since": "1.2",
+    "summary": "Fairies first (AllowBeathaHealsXaga and AllowFairyFlight, on since 1.2): Beatha's damage heals Xaga by twice the amount and both fairies circle the room while fought. The raid kills Beatha, then Tine, then Xaga."
    }
   },
   "gjalpinulva-s-lair-myrkwood/midgjalpinulva": {
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "rules": {
     "heal@338": {
      "drop": true
@@ -1062,11 +1274,39 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "b3b4affcb6076765c54bcb3b4446b1c3144baf461e8f494564f9cf363c7cfb31"
+    "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1",
+    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "2c9d426a3ec163bd9937369b62c5affeb7e6888b197fb2e1f4ccc8526b28d1f0"
+   },
+   "extraRules": [
+    {
+     "kind": "teleport",
+     "subtype": "air_toss",
+     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Gjalpinulva picks 2-5 raiders within 2,500 that are not its target (real players, and the bots on its aggro list where its AllowBotDisplacement is on, as shipped; the pick and the move ask the same switch) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts: up to about 1,400 units, about 60% of a raider's health; the server property epic_dragon_throw_height_<dragon> softens it, 0 = the original).",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs",
+     "line": 81,
+     "lineEnd": 101,
+     "anchor": "public static int Throw(GameNPC dragon, IEnumerable<GameLiving> aggro, Random random = null)",
+     "sourceClass": "DragonEncounterThrow",
+     "method": "Throw",
+     "switch": [
+      "AllowDragonThrow",
+      "AllowBotDisplacement"
+     ],
+     "difficulty": "easy for the current raid AI",
+     "tactic": "A thrown bot lands on the navmesh floor under its spot with the player's fall damage and walks back to its party (EncounterDisplacementRecovery); with no path or no progress it recalls to the raid after 5 s. Healers heal displaced raiders first; the party calls it in /group.",
+     "confidence": "read"
+    }
+   ],
+   "aiTactics": {
+    "rangedAdds": [
+     "GjalpinulvaMessenger"
+    ],
+    "since": "1.2",
+    "summary": "Messengers (on since 1.2, AllowDragonMessengers): from 50% every 80-90 s four to six messengers (GjalpinulvaMessenger, 1,500 health, they never fight) run out of the lair and each calls four to six adds where its path ends; the raid's casters and archers run each one down (ranged adds) while melee and healers stay on the dragon. Stare (glare, 1,000 around the raider it picks, 6 s warning): everyone within it but the picked raider and the tank steps out, away from him, and healers heal him first. Look-around stun and breath (2,000 around the dragon, 6 s warning): casters, archers and healers step out past 2,250 until it lands; melee can't make it and take it. Each one is called in /group (EncounterSignals, EncounterCalls)."
    }
   },
   "golestandt-s-lair-dartmoor/albgolestandt": {
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "rules": {
     "heal@339": {
      "drop": true
@@ -1080,7 +1320,35 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "fb898e2c12cb105fd7017e45c5b6e884e7dddf45a4456176c6eeb39e39c9f23f"
+    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "fb282648d45eaf85c441debe256d9729dab4ab6f1e8d0f3577a6fc7b2540951c",
+    "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1"
+   },
+   "extraRules": [
+    {
+     "kind": "teleport",
+     "subtype": "air_toss",
+     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Golestandt picks 2-5 raiders within 2,500 that are not its target (real players, and the bots on its aggro list where its AllowBotDisplacement is on, as shipped; the pick and the move ask the same switch) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts: up to about 1,400 units, about 60% of a raider's health; the server property epic_dragon_throw_height_<dragon> softens it, 0 = the original).",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs",
+     "line": 81,
+     "lineEnd": 101,
+     "anchor": "public static int Throw(GameNPC dragon, IEnumerable<GameLiving> aggro, Random random = null)",
+     "sourceClass": "DragonEncounterThrow",
+     "method": "Throw",
+     "switch": [
+      "AllowDragonThrow",
+      "AllowBotDisplacement"
+     ],
+     "difficulty": "easy for the current raid AI",
+     "tactic": "A thrown bot lands on the navmesh floor under its spot with the player's fall damage and walks back to its party (EncounterDisplacementRecovery); with no path or no progress it recalls to the raid after 5 s. Healers heal displaced raiders first; the party calls it in /group.",
+     "confidence": "read"
+    }
+   ],
+   "aiTactics": {
+    "rangedAdds": [
+     "GolestandtMessenger"
+    ],
+    "since": "1.2",
+    "summary": "Messengers (on since 1.2, AllowDragonMessengers): from 50% every 80-90 s four to six messengers (GolestandtMessenger, 1,500 health, they never fight) run out of the lair and each calls four to six adds where its path ends; the raid's casters and archers run each one down (ranged adds) while melee and healers stay on the dragon. Stare (glare, 1,000 around the raider it picks, 6 s warning): everyone within it but the picked raider and the tank steps out, away from him, and healers heal him first. Look-around stun and breath (2,000 around the dragon, 6 s warning): casters, archers and healers step out past 2,250 until it lands; melee can't make it and take it. Each one is called in /group (EncounterSignals, EncounterCalls)."
    }
   },
   "hall-of-the-corrupt/aidonthearchwizard": {
@@ -1357,7 +1625,13 @@
   "iarnvidiur-s-lair/iarnvidiur": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs": "31bd6ef22d8d81a88a10e99c33a6bddee5b08e76ddce5d818a1b588d84db13a2"
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs": "a44df58d5e6bb1e6074e126068ca591c46ff429d97300fb60f2996312b4fa3c6"
+   },
+   "rules": {
+    "teleport@143": {
+     "tactic": "Teleport: on since 1.2 for bots too (AllowBotDisplacement for Iarnvidiur). A moved bot lands at one of four spots about 2,000 from him and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "iarnvidiur-s-lair/lydsyg": {
@@ -1423,7 +1697,14 @@
   "krondon/krevoricik": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "146de3a3f7b0a15f3ce4296e14a73966d8e908fc5bfa367df3cc1018de72b59f"
+    "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "e064a5f8e93f2360c66c6ae74555da16cf04536b27b707c09e7a78baada04617"
+   },
+   "aiTactics": {
+    "rangedAdds": [
+     "KrevolAdd"
+    ],
+    "summary": "Ranged add (1.2): his forgotten ghost (4,000 health, one at a time) explodes 30 s after it appears for 800 matter damage in 700 around it, so the casters and archers kill it as it comes while melee stay on him. His toss (one hit in ten throws its striker 400 straight up) is on for bots too: they land by him and fight on.",
+    "since": "1.2"
    }
   },
   "krondon/lurfosherald": {
@@ -1435,13 +1716,13 @@
   "krondon/morgusurgalorg": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/MorgusUrgalorg .cs": "52e5bc6478a7fc8c154a7423a91fdd4843068c67cda4d20d4323f0a1c6057bcb"
+    "source/server/GameServer/scripts/namedmobs/Krondon/MorgusUrgalorg .cs": "d8ec7f910be988b9193b1af519cc62b014f574658855e111380509cb76107865"
    }
   },
   "krondon/orshom": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "8d2e120d34b915ce2e459612498985039185d7361df433a9a9de0cc99f838d02"
+    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "1c2b8ef32670482a2447267a8a178634b8509ad599a56654b457d1d55b3e694c"
    },
    "notes": "Level 80, 30,000 health, 20% melee and 30% magic resists, tether 3,800. When he gets a target he lights Orshom's Fire at 31406,69599 (907 from his spawn): an epic NPC with 10,000 health that takes only Cold damage, never moves or attacks, and casts Fire Burn (500 Heat, radius 300) on its own spot every 3 s. At 50% he pulls Orylle (level 83, 40,000 health) into the fight; Orylle pulls him too when she is attacked. Orylle throws real players (never bots) into the fire spot while the fire burns.",
    "currentRaidAi": "2026-11-05/06 overnight (owner's notes; that run's log is on the owner's PC): the Albion Krondon raid lost at Orshom twice, lowest 59% then 28%, Special Forces joined. Not seen in a log here. Read from the script, the likely killer is the fire: a raider it burns fights back (it is an epic NPC with a target), so bots stood in 500 every 3 s hitting a target only cold hurts, and the route's 'it is fighting the raid' switch could send the whole raid there.",
@@ -1451,7 +1732,7 @@
     ],
     "hazardRadius": 300,
     "since": "1.2",
-    "summary": "Hazard: Orshom's Fire is never a target (the route skips it and never switches to it; a raider aiming at it fights Orshom or Orylle instead), and a raider within 450 of it steps out to 600 before fighting on."
+    "summary": "Hazard: Orshom's Fire is never a target (the route skips it and never switches to it; a raider aiming at it fights Orshom or Orylle instead), and a raider within 450 of it steps out to 600 before fighting on. Cold casters (1.2): raiders with a cold damage spell put the fire out from outside its radius (it takes only cold, 10,000 health), casting only their cold spells at it; with the fire out Orylle has nothing to throw raiders into (EpicEncounterTactics.Krondon)."
    },
    "rules": {
     "immune_while@365": {
@@ -1473,7 +1754,7 @@
   "krondon/orylle": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "8d2e120d34b915ce2e459612498985039185d7361df433a9a9de0cc99f838d02"
+    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "1c2b8ef32670482a2447267a8a178634b8509ad599a56654b457d1d55b3e694c"
    },
    "notes": "Krondon's final: level 83, 40,000 health, 30/40% resists, tether 3,800; joins Orshom Brong's fight (see him).",
    "aiTactics": {
@@ -1483,7 +1764,7 @@
     ],
     "hazardRadius": 300,
     "since": "1.2",
-    "summary": "After Orshom Brong: while Orshom lives the party Orylle fights holds her and everyone else kills Orshom (30,000 health, lower resists) first; the route goes for Orshom before her. Hazard: stay out of Orshom's Fire, as for him."
+    "summary": "After Orshom Brong: while Orshom lives the party Orylle fights holds her and everyone else kills Orshom (30,000 health, lower resists) first; the route goes for Orshom before her. Hazard: stay out of Orshom's Fire, as for him. Cold casters (1.2): raiders with a cold damage spell put the fire out from outside its radius (it takes only cold, 10,000 health), casting only their cold spells at it; with the fire out Orylle has nothing to throw raiders into (EpicEncounterTactics.Krondon)."
    }
   },
   "krondon/scurceolhyrde": {
@@ -1524,7 +1805,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs": "7fd6006aded2a9ce15d30543416ccfc02a9f5feaaec6e0c537dfb567f3d92cef"
+    "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs": "2b82f3796af153cc314cd5a8cad896927b2518a77a524d45aa35e393effc53c9"
    }
   },
   "krondon/ulorbysen": {
@@ -1556,6 +1837,10 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AvartackTheChampion.cs": "c7a546a688cb23eb4a554d2e8bd644774271cab73f97c1f2c3c0d6b024caa026"
+   },
+   "aiTactics": {
+    "summary": "Face him: his back style lands on a target that has turned its back on him (he stands 160-200 degrees off its facing), so the raider he fights turns to him whenever he gets 120 degrees or more off its facing.",
+    "since": "1.2"
    }
   },
   "marfach-caverns/blacklady": {
@@ -1568,18 +1853,20 @@
      "difficulty": "needs new raid AI"
     },
     "adds@207": {
-     "summary": "Each brain turn in combat (every 2 s), a 20% chance to spawn one Ogress (level 50-55, 2,500 health, aggro 1,200) at one of two spots, up to 5 alive. Ogresses put healer and caster classes on their aggro list at 150 and others at 10 (GetPlayersInRadius: real players only).",
+     "summary": "Each brain turn in combat (every 2 s), a 20% chance to spawn one Ogress (level 50-55, 2,500 health, aggro 1,200) at one of two spots, up to 5 alive. Ogresses put healer and caster classes on their aggro list at 150 and others at 10 (real players and bots since 1.2, EncounterTargets).",
      "tactic": "One party kills Ogresses as they appear; they are script-spawned adds, so the route already puts them first.",
      "difficulty": "easy for the current raid AI"
     }
    },
    "aiTactics": {
     "fightAtHomeRadius": 1100,
-    "summary": "Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed."
+    "summary": "Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed. Spread (1.2, epic wave 2): her Void Strike (cold 400, every 6-12 s) lands 350 around her target, so casters and healers outside her target's party stand 600 from that target.",
+    "spreadRadius": 350,
+    "since": "1.2"
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs": "79b4405bf7c6dfc9bc71e9238231ccf3cd5a10f1eacc7b02d124e94ef8c7a67b"
+    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs": "b9b1fb6ac72b95f0dc51ff62bce049212d48f17b68730715bd8e746fc40d0beb"
    }
   },
   "marfach-caverns/bluelady": {
@@ -1627,8 +1914,9 @@
   "midgard-named-mobs-classic-zones/oona": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs": "3079b70b902642971a70fa26007bd6df42bea80a2334594b003174fd44121915"
-   }
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs": "1dc707fccf9f06656947638293af6c3cf6b0ac6028f9c9326b97a2fdde53a192"
+   },
+   "notes": "1.2: an undead rises from each raider she kills, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'Oona.Undead'): no new undead while 70 are up, the Midgard dragon raid's period size."
   },
   "midgard-named-mobs-classic-zones/raumarikrevenant": {
    "verified": true,
@@ -1705,7 +1993,13 @@
   "midgard-named-mobs-classic-zones/ydenia": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs": "5233e97cf9925374a0939b6b78fe3315b5ad58d5da45c8c4e045d65efcffa52e"
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs": "f4a394bfb6c32d7e694d0e336643539e9bb181a480a9e10db2411ad887385c97"
+   },
+   "rules": {
+    "teleport@153": {
+     "tactic": "Throw of her target into the water: on since 1.2 for bots too (AllowBotDisplacement for Ydenia). A moved bot lands at one of four spots in the water; an off-tank picks her up meanwhile and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "midgard-named-mobs-shrouded-isles/basilius": {
@@ -1717,7 +2011,13 @@
   "midgard-named-mobs-shrouded-isles/boligar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs": "c42f90da28992a5dc86f53f3d4c0751a1b04886574053db9f83a0014d0d852f8"
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs": "3e81d99dc4a6fe06a5c9e7e86b4714427ff2633e3d7825183846681c7f345ad1"
+   },
+   "rules": {
+    "teleport@156": {
+     "tactic": "Port: on since 1.2 for bots too (AllowBotDisplacement for Boligar). A moved bot lands at one of four spots about 1,000 from him and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "midgard-named-mobs-shrouded-isles/chieftarek": {
@@ -1747,7 +2047,13 @@
   "midgard-named-mobs-shrouded-isles/mortufoghus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs": "cb68d88c71261f8985838757c57b7dc47d48cae78a0df1fd104ef80afaae91c1"
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs": "910bcad151c667e0c1a72a408660e2de5dca862ef8018bdf5f8b3d83d6217a7d"
+   },
+   "rules": {
+    "teleport@171": {
+     "tactic": "Throw: on since 1.2 for bots too (AllowBotDisplacement for Mortufoghus). A moved bot lands up to 1,500 from him on the floor nearest the spot (a fifth of its health as fall damage, as for players) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "midgard-named-mobs-shrouded-isles/shredclaw": {
@@ -1789,7 +2095,13 @@
   "open-world/glaciergiant": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "108f8cec1d0f52c5292c61ab3ecbba0900ef4568e417042517e830de9ca19c3f"
+    "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "12c06112f7f057486c362e7b5faec6604e7739fb03319f9a9c68ad21ab2c9b07"
+   },
+   "rules": {
+    "teleport@180": {
+     "tactic": "Kick: on since 1.2 for bots too (AllowBotDisplacement for GlacierGiant). A moved bot flies up to about 12,000 units, falls and and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "open-world/gnat": {
@@ -1807,27 +2119,29 @@
   "open-world/moranthemighty": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "3b23f640c300478931f75387d98e910323f4dfb123f2b600f0397fcb03433070"
-   }
+    "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "faf306406385799b4d8b9b2af801bdb6d7dd4f10ec3ac641a06cd9b038b24583"
+   },
+   "notes": "1.2 (wave 2): below 50% each brain turn has a 5% chance to start a gust, and a gust throws ONE random raider (WindVictims) to one of three camps, whose monsters then attack it. The loop used to throw every raider within 2,000 (a one-element list per raider), in the original too. Bots are thrown too (AllowBotDisplacement on); the camp's own monsters attack, never bots or Moran."
   },
   "open-world/ofgreenknight": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "9c4f41705b39a834414fa82f2602f659b2b1dc5c1608105d7231434752f92b06"
-   }
+    "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "d89b0e6d6adae7ee4a944ffcd0a31db5aad5c2152946ccd568d570d7095e386f"
+   },
+   "notes": "1.2: a tree grows at every raider within 4,000 every 25-35 s, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'OFGreenKnight.Trees'): at most 70 trees a wave, the period size of the Albion dragon raid whose way he is on. 1.2 (wave 3): his fight starts by a real player's whisper (\"defend it\") as before, or for a bot raid: eight or more level 50 raiders of an autonomous raid expedition standing within 1,000 of him for 20 s, and the one nearest him challenges him (OFGreenKnight.TryStartFight). Passing bot groups and a player's companions never start him. No raid route goes to him today."
   },
   "open-world/yar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Yar.cs": "e2ffa172eca1beb7af889d425248ba5bcd22ec6c99a65c038754f3ce563d989b"
+    "source/server/GameServer/scripts/namedmobs/Yar.cs": "9e919f2a641bc86fe7652fe8af16cc736f5f86468873a9b31b7f0eeedb72a058"
    }
   },
   "summoner-s-hall/grandsummonergovannon": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "c132394348b47059a3c7427a8b46a6282c7c6b2633f0d14d4d459219a93a141d"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "b1670c27f8287fd476963dcd604ed0c3d6ee926691321f3dca547a4262198f83"
    },
-   "notes": "Level 80, 200,000 health (300,000 behind AllowGovannonFullHealth, off), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, throws real players only). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
+   "notes": "Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
    "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known.",
    "aiTactics": {
     "spreadRadius": 300,
@@ -1837,7 +2151,10 @@
      "SummonedDemon"
     ],
     "since": "1.2",
-    "summary": "Spread in demon form: while he is the demon (model 636), casters, archers and healers outside his target's party keep 550 from that target, out of his Shroud of Agony (radius 300 around it), and fight and heal from there; melee can't get clear (every melee spot is inside 300 of his target) and fight on, kept up by healers who are no longer in it. Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him."
+    "summary": "Spread in demon form: while he is the demon (model 636), casters, archers and healers outside his target's party keep 550 from that target, out of his Shroud of Agony (radius 300 around it), and fight and heal from there; melee can't get clear (every melee spot is inside 300 of his target) and fight on, kept up by healers who are no longer in it. Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him. Shade (1.2, epic wave 2): if the sacrifice and the demon both reach his altar the Shade of Aelfgar comes (10,000 health) and sends a raider within 2,000 up to the gallery every 10-20 s (bots too since 1.2; they walk back down or recall): the whole raid kills it first, then him. His full 300,000 health is on (AllowGovannonFullHealth).",
+    "requiredAdds": [
+     "ShadeOfAelfgar"
+    ]
    },
    "rules": {
     "adds@311": {
@@ -1856,25 +2173,42 @@
     "phase@304": {
      "tactic": "In the raid AI (EpicEncounterTactics): spread while he has the demon model (636).",
      "difficulty": "needs new raid AI"
+    },
+    "teleport@689": {
+     "tactic": "Shade of Aelfgar's gallery port: on since 1.2 for bots too (AllowBotDisplacement for ShadeOfAelfgar). A moved bot lands on the gallery 834 above his floor and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
     }
    }
   },
   "summoner-s-hall/summonercunovinda": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "07a221b7d2168ae615e73edf3d3fecd75e4e724fc5dfe292fee0f83759d879ae"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "71371583d6bed9cab527981da675b0a7d501642eb66f584d00692147801cd770"
+   },
+   "rules": {
+    "teleport@234": {
+     "tactic": "Ledge throw: on since 1.2 for bots too (AllowBotDisplacement for SummonerCunovinda). A moved bot lands on the ledge 1,060 above her floor and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "summoner-s-hall/summonerlossren": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "8ae1d2761326e5c7753464c61e5cad23b20da2695914f41890909ccb1ac4103f"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "889fa7d0b06549afa47c2d560e9754906e8d6b345901088efc12d4f24f3eab15"
+   },
+   "aiTactics": {
+    "rangedAdds": [
+     "ExplodeUndead"
+    ],
+    "summary": "Infected ghoul: casters and archers kill the ghoul (4,000 health, walks at 110) as it crawls toward its raider, and that raider walks away from it (it bursts for 1,000 in 500 when it reaches its target); the rest stay on Lossren and her tortured souls.",
+    "since": "1.2"
    }
   },
   "summoner-s-hall/summonerroesia": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs": "d8c2fdb4251b6e18fe8c1e6138486c6b6cfd3c75e1e2dd814e3e2387244b5257"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs": "a11dc500e720562928b31c3f1079bbac635db52cb9899978742fff9105c99d58"
    }
   },
   "trollheim/dagar": {
@@ -1884,28 +2218,28 @@
    }
   },
   "trollheim/nosdoden": {
-   "notes": "Level 80, 100,000 health. Every 10% from 90% down to 10% he spawns a wave of about 12-18 'essence of fallen' (level 60-62, 2,500 health, aggro 1,500) at his feet: nine waves, roughly 110-160 adds in one fight. His Acidic cloud (Body DoT 150 for 60 s, radius 500) and Call of Void (Cold 1,100, radius 550) go on random real players within 2,000 only (GetPlayersInRadius), so bots never draw them. Spirits of the fallen are made only from dead real players.",
+   "notes": "Level 80, 100,000 health. Every 10% from 90% down to 10% he spawns a wave of about 12-18 'essence of fallen' (level 60-62, 2,500 health, aggro 1,500) at his feet: nine waves, roughly 110-160 adds in one fight. His Acidic cloud (Body DoT 150 for 60 s, radius 500) and Call of Void (Cold 1,100, radius 550) go on a random raider within 2,000 (real players and bots since 1.2, EncounterTargets). Spirits of the fallen are made from dead raiders, bots included (since 1.2). A bot raid larger than Trollheim's period raid (64) gets at most 64 live spirits.",
    "currentRaidAi": "2026-11-05: lost twice at full size (support 80 and 132, Special Forces joined both times). The essence waves are script-spawned, not epic, so the route does put them first; the raid still died.",
    "rules": {
-    "adds@674": {
+    "adds@683": {
      "summary": "SpawnEssences: about 12-18 essence of fallen (NosdodenSummonedAdds, StandardMobBrain-based, aggro range 1,500) around him at each of nine thresholds (90, 80, ... 10%).",
      "tactic": "Push him one 10% step at a time: stop damage on him at each threshold, AoE classes and two parties burn the wave down at his feet, healers keep the tank up, then the next step. Don't let three waves stack.",
      "difficulty": "needs new raid AI"
     },
-    "phase@577": {
+    "phase@586": {
      "summary": "At 90/80/70/60/50/40/30/20/10% health: one essence wave each (SpawnEssences).",
      "tactic": "Damage pacing: a raid that blows through two thresholds at once doubles the wave.",
      "difficulty": "needs new raid AI"
     },
-    "adds@158": {
-     "summary": "EnemyKilled: when he kills a real player he makes a 'Spirit of <name>' ghost with that player's race, armour and class behaviour (GameBot deaths never make one).",
-     "tactic": "Off for bots today: it picks only real players (GameBot is a GameNPC, not a GamePlayer). To play it with bots: a dead bot's ghost fights the raid; kill it, or res the bot (the ghost dies when its owner lives again).",
-     "difficulty": "off today"
+    "adds@167": {
+     "summary": "EnemyKilled: when he kills a raider (a real player, or a bot since 1.2) he makes a 'Spirit of <name>' ghost with that raider's race, size, armour and class behaviour. Flood guard (1.2): no new spirit while 64 are up (Trollheim's period raid; EncounterFloodGuard 'Nosdoden.Spirits').",
+     "tactic": "A dead raider's ghost fights the raid: kill it, or res the raider (the ghost dies when its owner lives again).",
+     "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "051a7b31283af19fee23593bd9ea76682a27309dc03a94681559bce109f14aa3"
+    "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "a86a7ccee708d250944290b7982db60b6774f0eace754622d9274d9e59be6a19"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -1935,7 +2269,7 @@
   "tur-suil/balor": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs": "a9477171adf115c8bb1764506e50bef9f16f232c01ca76ab1df16a2cfae31bee"
+    "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs": "45e3e0d9512d66fc91e2c678e469f6099dffc708a083fced658cb9d7f702b43f"
    }
   },
   "tur-suil/kieracdestroyer": {
@@ -1977,7 +2311,7 @@
   "tuscaran-glacier/birghir": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "7136db091fcc4565c05dc388dbcf0ebe6463da1cc3e6b93c28b3202427741afb"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "c9bad5dfb31d1e1c4e6d7077b3f516d5a8b5735d5c9dff17f87b89fa71a120fc"
    }
   },
   "tuscaran-glacier/fallingice": {
@@ -1991,37 +2325,57 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/FallingIce.cs": "27ce0908e96c664642e3ec04c1bd8c5e6869b4f5c6f5ba2aca5363017eebf4a3"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/FallingIce.cs": "c3dadde9c091ee2b698e8e18d2cb1be14a683c63e0c40ccbc2a921e7e7d71aa5"
    }
   },
   "tuscaran-glacier/fornfrusenen": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "902b66c51eecf6e1743f713eae627d606f0ff2e553bf4a9621a0a8ca51faad94"
+   },
+   "aiTactics": {
+    "summary": "Shards first: while he is above 35% the raid kills his 2-3 shards (each party takes one), each one taking a quarter of his health; at 35% or less the shards no longer hurt him and the raid kills him (his death removes them). Close in: he takes damage only from within 200 of him and the shards only from within 400 of his spot, so every raider, casters too, fights from within 120-180 of him or 320 of his spot.",
+    "since": "1.2"
+   },
+   "rules": {
+    "immune_while@104": {
+     "tactic": "In the raid AI (EpicEncounterTactics.Tuscaran): every raider attacking him, casters too, stands within 120-180 of him.",
+     "difficulty": "easy for the current raid AI"
+    },
+    "immune_while@233": {
+     "tactic": "In the raid AI: raiders on a shard stand within 320 of his spot; the shards die first while he is above 35%.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "tuscaran-glacier/guthlac": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "7136db091fcc4565c05dc388dbcf0ebe6463da1cc3e6b93c28b3202427741afb"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "c9bad5dfb31d1e1c4e6d7077b3f516d5a8b5735d5c9dff17f87b89fa71a120fc"
    }
   },
   "tuscaran-glacier/hakr": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "b745a3588f7bb91559d24dbbbd71bd554a2c110c2264a778907918fdd5d89b62"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "28131ab46a78822da6ec37da3081f5affa4f259ca3106efb0aaf612dc55033e9"
+   },
+   "rules": {
+    "teleport@210": {
+     "tactic": "Toss: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for Hakr). A moved bot falls 220 by him (about 4% fall damage) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "tuscaran-glacier/hjalmar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "275e75682c460266e74b69c4ecea06a67666c2822ba021ac9e2ddb3490d230c6"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "a2367981ea7a3d1c861c00022dc93b18ab190a4bce6adf2c424cc3faec87c448"
    }
   },
   "tuscaran-glacier/hjalmarsuttungcontroller": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "275e75682c460266e74b69c4ecea06a67666c2822ba021ac9e2ddb3490d230c6"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "a2367981ea7a3d1c861c00022dc93b18ab190a4bce6adf2c424cc3faec87c448"
    }
   },
   "tuscaran-glacier/hord": {
@@ -2033,7 +2387,29 @@
   "tuscaran-glacier/hurika": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "e1e39b483c515c83a04986d5ec43de8de45ccec4b172d2ce8fd8ce1e740d1510"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "724944d493d223a602c0c681ea4a1f3be317b427e958be09c17d14657cc52d35"
+   },
+   "rules": {
+    "teleport@652": {
+     "tactic": "Gust: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for Hurika). A moved bot falls 500-700 straight down by her (about 23-33% fall damage) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    },
+    "position_puzzle@428": {
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
+    },
+    "position_puzzle@470": {
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
+    },
+    "position_puzzle@506": {
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
+    },
+    "position_puzzle@616": {
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
+    }
    }
   },
   "tuscaran-glacier/issorden": {
@@ -2045,25 +2421,60 @@
   "tuscaran-glacier/jailer": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "f68680bbe041558b0a4471b2fe24e0bacf0d9f14b80fe70929b8f8e31ed986b3"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "27b31260d426329c3185bf9a481d6012b3df56789a32e46a4c68cdac1888001b"
+   },
+   "aiTactics": {
+    "summary": "Jail rescue (AllowDisplacement, bots too since 1.2): the jail opens when his two tunnel guardians (20,000 health each, at the jail) are dead. Once the fight is on, one bot party (two in a raid of eight parties or more; never the party he fights or the real player's) goes down the tunnel, kills both and comes back (an errand: no path, no progress or past its budget and it rejoins the fight). Every raider jailed after that walks free at once; one jailed before fights the guards with the team, and the recovery frees it when they die (or recalls it after 3 minutes).",
+    "since": "1.2"
+   },
+   "rules": {
+    "teleport@167": {
+     "tactic": "Jail: on since 1.2 for bots too (AllowDisplacement, AllowBotDisplacement for Jailer). In the raid AI (EpicEncounterTactics.Tuscaran, an errand): once the fight is on one bot party (two in a raid of eight or more) goes down the tunnel, kills the two guardians and comes back; a jailed bot fights the guards where it lands and walks free when they are dead (recovery jail rule), or recalls after 3 minutes.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "tuscaran-glacier/kingtuscar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "8e304d98cda194e4bd00a9c2437f85b7bd57e68d168e88e58837a10f72021e84"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3db6dc495cb911f4e8055232b8e2ea7d4ff08dcb29286b6bb1848f583f78c8ef"
+   },
+   "aiTactics": {
+    "after": "QueenKula",
+    "summary": "Twin heal (AllowTuscarTwinHeal, on since 1.2): damage to one twin heals the other while it is hurt, so the raid kills Queen Kula first (the route musters for her) and only the King's own target fights him; the rest of his party turns on her too. Casters and healers on Kula keep clear of his hammers and Thor's Might (500 around his target). Nobody stands in Kula's frost circle.",
+    "since": "1.2"
+   },
+   "rules": {
+    "heal@539": {
+     "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "tuscaran-glacier/kvasir": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "e5c585f338292eb70d61bc290c846548563de0fdf0969d8230e367e61839e881"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "1a09970adb5da75b4298b461c2a289de9c913e7c8ab0fe316bdd48c37d21f092"
+   },
+   "aiTactics": {
+    "summary": "Cold heal (AllowKvasirColdHeal, on since 1.2): no bot casts a cold spell at him (EpicEncounterTactics.ForbidsSpell; casters use their other lines). Scream: from 3 s before his primal scream is due until 4.5 s after his mesmerize (800 around his target, 2 s after the scream), everyone but his target's party stands 1,050 from his target; melee wait there, casters and healers keep casting.",
+    "since": "1.2"
+   },
+   "rules": {
+    "immune_while@31": {
+     "tactic": "Cold heal (on since 1.2): no bot casts a cold spell at him (EpicEncounterTactics.ForbidsSpell on every bot's offensive casts); casters use their other lines.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "tuscaran-glacier/nokkvi": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs": "c0fd21b6b0420b60bfec2e291807a2494cd8d9686dfbb7a72fde8258831e18c2"
+   },
+   "aiTactics": {
+    "summary": "Damage split with Council Vagn: Nokkvi resists 90% of melee, so the casters fight him while both live (see Vagn).",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/otrygg": {
@@ -2075,25 +2486,43 @@
   "tuscaran-glacier/ozur": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs": "919e4a542ee6d21bbdfa153cb5d6ade286ee2e5249e5e7b817522d330c6545d5"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs": "79b05c5cd0d0a976643381cb00c4f121d424a538bf470a481db3dad9f0b4e7ac"
    }
   },
   "tuscaran-glacier/queenkula": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "8e304d98cda194e4bd00a9c2437f85b7bd57e68d168e88e58837a10f72021e84"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3db6dc495cb911f4e8055232b8e2ea7d4ff08dcb29286b6bb1848f583f78c8ef"
+   },
+   "aiTactics": {
+    "summary": "Killed first (see King Tuscar). Her drag to the throne (AllowDisplacement, bots too since 1.2) puts a raider in her frost circle, where it is mesmerized or rooted: a bot waits it out like a player (the recovery's walk does not count crowd control as a stall; at most 5 minutes) and walks back. Frost circle (AllowPositionPuzzle, on): no raider fights within 450 of 34128,56095; one that gets there steps out to 600.",
+    "since": "1.2"
+   },
+   "rules": {
+    "teleport@280": {
+     "tactic": "Drag to her throne: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for QueenKula). A moved bot lands in her frost circle, waits out the mesmerize or root there like a player (crowd control is no stall; at most 5 minutes) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    },
+    "position_puzzle@293": {
+     "tactic": "Frost circle: on since 1.2 (AllowPositionPuzzle for QueenKula). In the raid AI (EpicEncounterTactics.Tuscaran): no raider fights within 450 of 34128,56095; one that gets there steps out to 600. A raider she drags there is held by the circle until the crowd control ends, then walks out.",
+     "difficulty": "easy for the current raid AI"
+    },
+    "heal@75": {
+     "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "tuscaran-glacier/skuf": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "00675a6799f362bf98e12ff83038acc80a445405c2f3be22905162d122f9e6cf"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "4d889113864409dfe983eab5c48fe7da4ece538a406d74d4e51a06e720fddd9e"
    }
   },
   "tuscaran-glacier/steinvor": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "00675a6799f362bf98e12ff83038acc80a445405c2f3be22905162d122f9e6cf"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "4d889113864409dfe983eab5c48fe7da4ece538a406d74d4e51a06e720fddd9e"
    }
   },
   "tuscaran-glacier/suttung": {
@@ -2107,19 +2536,41 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "275e75682c460266e74b69c4ecea06a67666c2822ba021ac9e2ddb3490d230c6"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "a2367981ea7a3d1c861c00022dc93b18ab190a4bce6adf2c424cc3faec87c448"
    }
   },
   "tuscaran-glacier/torst": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "e1e39b483c515c83a04986d5ec43de8de45ccec4b172d2ce8fd8ce1e740d1510"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "724944d493d223a602c0c681ea4a1f3be317b427e958be09c17d14657cc52d35"
+   },
+   "rules": {
+    "position_puzzle@50": {
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
+    },
+    "position_puzzle@70": {
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
+    },
+    "position_puzzle@155": {
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
+    },
+    "position_puzzle@284": {
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
+    }
    }
   },
   "tuscaran-glacier/vagn": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs": "c0fd21b6b0420b60bfec2e291807a2494cd8d9686dfbb7a72fde8258831e18c2"
+   },
+   "aiTactics": {
+    "summary": "Damage split with Council Nokkvi: Vagn resists 90% of magic, so casters fight Nokkvi and everyone else (melee, archers, hybrids, pets) fights Vagn while both live.",
+    "since": "1.2"
    }
   }
  }
