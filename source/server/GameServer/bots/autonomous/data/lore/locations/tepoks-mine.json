@@ -37,7 +37,7 @@
       "source": "source/server/GameServer/bots/autonomous/AutonomousDungeonPolicy.cs"
     }
   ],
-  "story": "The mine under the cliff in the Black Mountains was the townsfolk's, once. They dug silver out of it and built a house beside the entrance, which is a ruin now. Then the goblins came down out of the mountains and took it, and the townsfolk who were in it at the time are still there: the undead miners who swing their picks in the lower shafts and do not look up when you pass.\n\nWhat the goblins did next surprised everyone. They kept the mine working. Overseer Tepok runs it like a guild hall, with a goblin for every job: whips to keep the diggers digging, watchers on the passages, cleaners and snatchers, beastmasters for the cave lions and bears, patrol leaders and monitors and somewhere, the old stories say, a goblin who calls himself the Director. Red dwarves dig in the far galleries by some arrangement nobody understands, and their young are touchy; strike one and his whole family comes. Tepok's Mine is easy to find, the old guides said, and extremely difficult to walk out of.",
+  "story": "The mine under the cliff in the Black Mountains was the townsfolk's, once. They dug silver out of it and built a house beside the entrance, which is a ruin now. Then the goblins came down out of the mountains and took it, and the townsfolk who were in it at the time are still there: the undead miners who swing their picks in the lower shafts and do not look up when you pass.\n\nWhat the goblins did next surprised everyone. They kept the mine working. Overseer Tepok runs it like a counting-house, with a goblin for every job: whips to keep the diggers digging, watchers on the passages, cleaners and snatchers, beastmasters for the cave lions and bears, patrol leaders and monitors and somewhere, the old stories say, a goblin who calls himself the Director. Red dwarves dig in the far galleries by some arrangement nobody understands, and their young are touchy; strike one and his whole family comes. Tepok's Mine is easy to find, the old guides said, and extremely difficult to walk out of.",
   "legend": "Easy to find, hard to walk out of. Do not pull the red dwarf youths unless you want the whole clan. The undead miners will leave you alone if you leave them alone. Tepok himself is a red con for most and hits for a hundred; goblins have bosses too.",
   "atmosphere": {
     "firstEntry": [
@@ -92,7 +92,7 @@
   "loremaster": {
     "intro": "Tepok's Mine was the townsfolk's until the [goblins] took it. The townsfolk are still there, in their way: the [miners].",
     "topics": {
-      "goblins": "They kept the mine working, which no one expected. Overseer Tepok runs it like a guild hall, a goblin for every trade, whips and watchers and beastmasters.",
+      "goblins": "They kept the mine working, which no one expected. Overseer Tepok runs it like a counting-house, a goblin for every trade, whips and watchers and beastmasters.",
       "miners": "The dead diggers of the lower shafts, who were in the mine when it fell. They swing their picks and leave you be if you leave them be."
     }
   },

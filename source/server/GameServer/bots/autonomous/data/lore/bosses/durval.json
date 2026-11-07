@@ -11,7 +11,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs"
     }
   ],
-  "story": "Durval was a priest of the dead on Caldey before Morgana came, and he took her coming as the answer to his prayers. He keeps a barrow on the isle where his corpse-delvers dig and his white lights hover, and he goes nowhere without them: strike him and the delvers and the lights all turn at once. He spreads a plague of his own brewing, wraps himself in a shield of bones, and lulls the careless to sleep in the middle of the fight so that they wake up surrounded.",
+  "story": "Durval was a priest of the dead on Caldey before Morgana came, and he took her coming as the answer to his prayers. He keeps a barrow on the isle where his corpse-delvers dig and his white lights hover, and he goes nowhere without them: strike him and the delvers and the lights all turn at once. He spreads a plague of his own brewing, wraps himself in a shield of bones, and lulls the careless to sleep in the middle of battle so that they wake up surrounded.",
   "legend": "Nine of his household come with him: five corpse delvers and four white lights. He mesmerizes, so keep a cure for it handy, and his plague wants curing too. Clear his household, break the bone shield, then him. Never fight him on fresh-dug ground.",
   "yells": {
     "aggro": [

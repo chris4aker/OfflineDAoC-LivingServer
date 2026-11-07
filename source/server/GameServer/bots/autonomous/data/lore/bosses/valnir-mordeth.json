@@ -11,7 +11,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/ValnirMordeth.cs"
     }
   ],
-  "story": "Valnir Mordeth crouches in a pit in the Dales of Devwy with his essence ghouls around him, and the ghouls feed him. Every spell they cast at his enemies mends him by as much as it hurts them, so the longer they live, the longer he does. He breathes an acid that clings and burns, and spreads a plague, and when a fight is over he calls up fresh ghouls to wait for the next one. The garrison calls his pit the larder, and does not say whose.",
+  "story": "Valnir Mordeth crouches in a pit in the Dales of Devwy with his essence ghouls around him, and the ghouls feed him. Every spell they cast at his enemies mends him by as much as it hurts them, so the longer they live, the longer he does. He breathes an acid that clings and burns, and spreads a plague, and when the dead are still again he calls up fresh ghouls to wait for the living. The garrison calls his pit the larder, and does not say whose.",
   "legend": "His essence ghouls heal him with every spell they land, so kill the ghouls first, every time, and keep killing them as more come every half minute. Cure his plague and heal his acid breath. Never fight him at the pit's edge.",
   "yells": {
     "aggro": [],
