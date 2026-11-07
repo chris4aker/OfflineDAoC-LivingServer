@@ -302,3 +302,122 @@ cant get back from here, porting
 stuck where it threw me, porting back
 no way down from here, coming back the long way
 stuck, gimme a sec to port back
+
+# ---- epic mechanics (1.2, epic wave 2: EpicEncounterTactics dungeon rules) ----------------------------------------
+# A gamebot of the real player's party calls the boss's mechanic as the raid plays it: once per topic per party every
+# 45 s. {boss} is the boss, {target} the other one the call is about (the partner, the add, the raider). Keep each topic
+# about its moment.
+
+# ---- epic_twin_heal: King Tuscar heals off Queen Kula's damage, so only his tank hits him ---------------------------
+@kind combat
+@topic epic_twin_heal
+@who *
+@needs in_player_group
+dont touch the king, all on kula
+off tuscar! hitting him heals her
+[only the mt|just the tank] on the king, rest on kula
+kula first, leave the king to the tank
+stop dps on tuscar, it heals kula
+everyone on {target}, king is tank only
+
+# ---- epic_frost_circle: out of Queen Kula's frost circle by her throne ---------------------------------------------
+@kind combat
+@topic epic_frost_circle
+@who *
+@needs in_player_group
+stay out of the ice circle
+dont stand by the throne, it freezes ya
+[out of the circle|off the circle], it roots
+circle by the throne = mezzed, stay off it
+if she ports ya to the throne just wait it out
+
+# ---- epic_kvasir_cold: no cold spells on Icelord Kvasir --------------------------------------------------------------
+@kind combat
+@topic epic_kvasir_cold
+@who *
+@needs in_player_group
+no cold on kvasir, it heals him
+casters, no frost nukes on him
+dont use cold, he eats it
+[cold heals him|frost heals him], use something else
+no ice dd on kvasir pls
+
+# ---- epic_kvasir_scream: Kvasir's scream mezzes around his target ----------------------------------------------------
+@kind combat
+@topic epic_kvasir_scream
+@who *
+@needs in_player_group
+scream inc, spread off the tank
+get away from his target, aoe mezz
+[back off|step back], he's gonna scream
+mezz inc, everyone off the mt
+scream! get clear of the tank
+
+# ---- epic_jail_team: this party goes down the tunnel to kill Jailer Vifil's guards ----------------------------------
+@kind combat
+@topic epic_jail_team
+@who *
+@needs in_player_group
+we're on jail duty, follow me down the tunnel
+our grp takes the jail guards, lets go
+jail run, kill the 2 guards and come back
+[we got|our group has] the jail, down the tunnel
+
+# ---- epic_jail_team_away: another party went to open the jail ------------------------------------------------------
+@kind combat
+@topic epic_jail_team_away
+@who *
+@needs in_player_group
+{target}'s grp is on the jail guards
+jail team is going, we stay on {boss}
+someone's clearing the jail, keep on him
+if ya get jailed, the guards will be dead soon
+
+# ---- epic_forn_shards: kill Fornfrusenen's shards first --------------------------------------------------------------
+@kind combat
+@topic epic_forn_shards
+@who *
+@needs in_player_group
+shards first, each one takes a chunk off him
+kill the shards, they hurt him when they die
+[on the shards|shards], leave {boss} for now
+each shard = a quarter of his hp, kill em
+
+# ---- epic_close_in: the boss takes damage only from up close --------------------------------------------------------
+@kind combat
+@topic epic_close_in
+@who *
+@needs in_player_group
+get in close, he's immune from range
+casters move in, ranged does nothing
+[stack on him|everyone close], he only takes dmg up close
+too far and ya do 0, get close
+
+# ---- epic_council_split: casters on Nokkvi, melee on Vagn -------------------------------------------------------------
+@kind combat
+@topic epic_council_split
+@who *
+@needs in_player_group
+casters on nokkvi, melee on vagn
+vagn eats magic, nokkvi eats melee, split up
+[melee vagn, casters nokkvi|casters nokkvi, melee vagn]
+wrong one, swap to {target}
+
+# ---- epic_ghoul_kite: the infected ghoul crawls toward this raider ---------------------------------------------------
+@kind combat
+@topic epic_ghoul_kite
+@who *
+@needs in_player_group
+ghoul on me, kiting it
+it's coming for me, kill the ghoul
+[ghoul|zombie] on me, nuke it before it pops
+backing off the ghoul, it explodes
+
+# ---- epic_face_him: the raider Avartack fights faces him -------------------------------------------------------------
+@kind combat
+@topic epic_face_him
+@who *
+@needs in_player_group
+facing him, his back hit hurts
+dont turn your back on him
+[turn around|face him], he hits harder from behind

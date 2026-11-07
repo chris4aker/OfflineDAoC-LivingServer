@@ -334295,6 +334295,1128 @@
    "id": "0560d1664eb5"
   },
   {
+   "kind": "combat",
+   "topic": "epic_twin_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "dont touch the king, all on kula",
+   "id": "3f0f72de3dc3"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_twin_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "off tuscar! hitting him heals her",
+   "id": "874064f0be39"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_twin_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "only the mt on the king, rest on kula",
+   "family": "3d6af44388",
+   "id": "efe6d0296684"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_twin_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "just the tank on the king, rest on kula",
+   "family": "3d6af44388",
+   "id": "a0672c9b9faa"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_twin_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "kula first, leave the king to the tank",
+   "id": "bb7628e08e46"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_twin_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stop dps on tuscar, it heals kula",
+   "id": "4168751fbc89"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_twin_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "everyone on {target}, king is tank only",
+   "id": "d0c4d9e0d4a4"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_frost_circle",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stay out of the ice circle",
+   "id": "c9379ed40e3d"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_frost_circle",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "dont stand by the throne, it freezes ya",
+   "id": "b1143cfbcd6f"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_frost_circle",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "out of the circle, it roots",
+   "family": "79399c7d1c",
+   "id": "eb261a657438"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_frost_circle",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "off the circle, it roots",
+   "family": "79399c7d1c",
+   "id": "044250bfddd4"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_frost_circle",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "circle by the throne = mezzed, stay off it",
+   "id": "fa4203ad47cd"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_frost_circle",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "if she ports ya to the throne just wait it out",
+   "id": "d3306d2fd850"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_kvasir_cold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "no cold on kvasir, it heals him",
+   "id": "03dc505aa610"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_kvasir_cold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "casters, no frost nukes on him",
+   "id": "ff21db107d49"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_kvasir_cold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "dont use cold, he eats it",
+   "id": "c423f6fdc932"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_kvasir_cold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "cold heals him, use something else",
+   "family": "f77bb67381",
+   "id": "f5ae707a60b5"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_kvasir_cold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "frost heals him, use something else",
+   "family": "f77bb67381",
+   "id": "7ad8332b937a"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_kvasir_cold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "no ice dd on kvasir pls",
+   "id": "6de97526d77b"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_kvasir_scream",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "scream inc, spread off the tank",
+   "id": "bf1aaf92a88b"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_kvasir_scream",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "get away from his target, aoe mezz",
+   "id": "40cd03adc33b"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_kvasir_scream",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "back off, he's gonna scream",
+   "family": "63e41e1b3b",
+   "id": "fbbb3f38f4e4"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_kvasir_scream",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "step back, he's gonna scream",
+   "family": "63e41e1b3b",
+   "id": "5ce6a9aaa9fe"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_kvasir_scream",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "mezz inc, everyone off the mt",
+   "id": "256484a2120d"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_kvasir_scream",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "scream! get clear of the tank",
+   "id": "7d028553f726"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_jail_team",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "we're on jail duty, follow me down the tunnel",
+   "id": "ba13db3b1be9"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_jail_team",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "our grp takes the jail guards, lets go",
+   "id": "2ea3ffb96832"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_jail_team",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "jail run, kill the 2 guards and come back",
+   "id": "1803a06e1f96"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_jail_team",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "we got the jail, down the tunnel",
+   "family": "53e05fd781",
+   "id": "ebf8ccd3aeeb"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_jail_team",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "our group has the jail, down the tunnel",
+   "family": "53e05fd781",
+   "id": "507dc231b04b"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_jail_team_away",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target}'s grp is on the jail guards",
+   "id": "1f37dd79bfe6"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_jail_team_away",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "jail team is going, we stay on {boss}",
+   "id": "67e9ad3f8560"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_jail_team_away",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "someone's clearing the jail, keep on him",
+   "id": "71e90cc3b07b"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_jail_team_away",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "if ya get jailed, the guards will be dead soon",
+   "id": "ab3c7905aa2e"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_forn_shards",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "shards first, each one takes a chunk off him",
+   "id": "6fb288db9d26"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_forn_shards",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "kill the shards, they hurt him when they die",
+   "id": "2d823131911f"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_forn_shards",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "on the shards, leave {boss} for now",
+   "family": "28f55a5647",
+   "id": "362d59493120"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_forn_shards",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "shards, leave {boss} for now",
+   "family": "28f55a5647",
+   "id": "e6205d321fda"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_forn_shards",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "each shard = a quarter of his hp, kill em",
+   "id": "5b775883368c"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_close_in",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "get in close, he's immune from range",
+   "id": "e2e29cf47c8d"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_close_in",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "casters move in, ranged does nothing",
+   "id": "3460c172218e"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_close_in",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "stack on him, he only takes dmg up close",
+   "family": "ae74fdffa1",
+   "id": "b273f35a9045"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_close_in",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "everyone close, he only takes dmg up close",
+   "family": "ae74fdffa1",
+   "id": "3d34da3d946a"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_close_in",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "too far and ya do 0, get close",
+   "id": "f4b9791bc845"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_council_split",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "casters on nokkvi, melee on vagn",
+   "id": "6914e24764db"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_council_split",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "vagn eats magic, nokkvi eats melee, split up",
+   "id": "ce9f2538483f"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_council_split",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "melee vagn, casters nokkvi",
+   "family": "06ae1d3153",
+   "id": "1c2d66537376"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_council_split",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "casters nokkvi, melee vagn",
+   "family": "06ae1d3153",
+   "id": "7dc81cc7c5f1"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_council_split",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "wrong one, swap to {target}",
+   "id": "565260329e2e"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_ghoul_kite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ghoul on me, kiting it",
+   "id": "16ada0ae8114"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_ghoul_kite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "it's coming for me, kill the ghoul",
+   "id": "f1477cc6a005"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_ghoul_kite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "ghoul on me, nuke it before it pops",
+   "family": "3e57667d24",
+   "id": "cd2165861265"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_ghoul_kite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "zombie on me, nuke it before it pops",
+   "family": "3e57667d24",
+   "id": "fea457c3d7cf"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_ghoul_kite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "backing off the ghoul, it explodes",
+   "id": "eef2c1d38f4a"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_face_him",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "facing him, his back hit hurts",
+   "id": "c83a2ffce8d1"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_face_him",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "dont turn your back on him",
+   "id": "2304fba1e97f"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_face_him",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "turn around, he hits harder from behind",
+   "family": "3ebc1580dd",
+   "id": "899019cf0cc1"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_face_him",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "face him, he hits harder from behind",
+   "family": "3ebc1580dd",
+   "id": "4d47242daf37"
+  },
+  {
    "kind": "deed",
    "topic": "named_solo",
    "who": [],

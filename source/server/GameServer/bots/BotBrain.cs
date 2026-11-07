@@ -1343,6 +1343,9 @@ namespace DOL.AI.Brain
             // before any follow, pull or rally order of this turn can send it elsewhere.
             if (EncounterDisplacementRecovery.Think(BotBody))
                 return;
+            // 1.2: a raid party sent on an encounter errand (Jailer Vifil's tunnel guards) walks there, clears it and comes back.
+            if (EpicEncounterTactics.ThinkErrand(BotBody))
+                return;
             bool nativeSpeedTravelStarted;
             if (CompanionFollowPolicy.ObserveAndCancelBuffs(BotBody, out nativeSpeedTravelStarted))
             {
@@ -4333,6 +4336,7 @@ namespace DOL.AI.Brain
                 !BardBotCrowdControlPolicy.AllowsOrdinaryOffense((eCharacterClass)BotBody.CharacterClass.ID, spell.SpellType) ||
                 !ShamanBotCombatPolicy.AllowsOrdinaryOffense((eCharacterClass)BotBody.CharacterClass.ID, spell) ||
                 BotSpellPower.BlocksAttackerRotation(BotBody, spell) ||
+                EpicEncounterTactics.ForbidsSpell(BotBody, target, spell) ||
                 !NeedsOffensiveSpellApplication(target, spell) ||
                 Body.GetSkillDisabledDuration(spell) > 0 || Body.Mana < BotBody.PowerCost(spell))
                 return false;
@@ -4376,7 +4380,8 @@ namespace DOL.AI.Brain
 
             bool casted = false;
 
-            if (Body.TargetObject is GameLiving living && NeedsOffensiveSpellApplication(living, spell))
+            if (Body.TargetObject is GameLiving living && NeedsOffensiveSpellApplication(living, spell) &&
+                !EpicEncounterTactics.ForbidsSpell(BotBody, living, spell))
             {
                 AimGroundSpell(spell, living);
                 casted = Body.CastSpell(spell, m_mobSpellLine);
@@ -4457,7 +4462,8 @@ namespace DOL.AI.Brain
         {
             if (spell == null || IsOutclassedDamageSpell(spell) || Body.Mana < BotBody.PowerCost(spell) ||
                 !BardBotCrowdControlPolicy.AllowsOrdinaryOffense((eCharacterClass)BotBody.CharacterClass.ID, spell.SpellType) ||
-                spell.HasRecastDelay && Body.GetSkillDisabledDuration(spell) > 0)
+                spell.HasRecastDelay && Body.GetSkillDisabledDuration(spell) > 0 ||
+                EpicEncounterTactics.ForbidsSpell(BotBody, Body.TargetObject as GameLiving, spell))
                 return false;
 
             bool castSpell = false;

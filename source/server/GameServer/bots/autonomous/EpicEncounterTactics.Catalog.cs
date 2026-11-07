@@ -12,6 +12,8 @@ namespace DOL.GS
         public static readonly Tactic[] Catalog =
         [
             new("Xanxicar", "crystal-cave/xanxicar", [], 0, null, 0, [80, 60, 40, 20], 2500),
+            new("Krackenschtein", "fomor-city/krackenschtein", [], 0, null),
+            new("Myrddraxis", "fomor-city/myrddraxis", [], 0, null, 0, [80, 75, 60, 50, 40, 25, 20], 2150),
             new("EarthPrimal", "galladoria/earthprimal", ["GuardianEarthmender", "MagicalEarthmender", "NaturalEarthmender", "ShadowyEarthmender"], 0, null) { ClassRules = [new("GuardianEarthmender", [eCharacterClass.Blademaster, eCharacterClass.Hero, eCharacterClass.Champion, eCharacterClass.Animist, eCharacterClass.Valewalker]), new("MagicalEarthmender", [eCharacterClass.Eldritch, eCharacterClass.Enchanter, eCharacterClass.Mentalist, eCharacterClass.Animist, eCharacterClass.Valewalker]), new("NaturalEarthmender", [eCharacterClass.Bard, eCharacterClass.Druid, eCharacterClass.Warden, eCharacterClass.Animist, eCharacterClass.Valewalker]), new("ShadowyEarthmender", [eCharacterClass.Nightshade, eCharacterClass.Ranger, eCharacterClass.Animist, eCharacterClass.Valewalker])], ClassRuleSwitch = "AllowEarthmenderClassPuzzle" },
             new("SpindlerBroodmother", "galladoria/spindlerbroodmother", [], 0, null) { RangedAdds = ["SBAdds"], DeathAdds = ["SBDeadAdds"] },
             new("AidonTheArchwizard", "hall-of-the-corrupt/aidonthearchwizard", ["AidonCopyFire", "AidonCopyIce", "AidonCopyAir", "AidonCopyEarth"], 1100, null, 1, null, 0),
@@ -19,9 +21,18 @@ namespace DOL.GS
             new("Orshom", "krondon/orshom", [], 0, null) { Hazards = ["OrshomFire"], HazardRadius = 300 },
             new("ScurceolHyrde", "krondon/scurceolhyrde", ["LyftMihtOne", "LyftMihtTwo", "LyftMihtThree", "LyftMihtFour"], 1500, null),
             new("AncientBlackOak", "marfach-caverns/ancientblackoak", [], 0, "BlackLady"),
-            new("BlackLady", "marfach-caverns/blacklady", [], 1100, null),
-            new("GrandSummonerGovannon", "summoner-s-hall/grandsummonergovannon", [], 0, null) { SpreadRadius = 300, SpreadWhileModel = 636, RangedAdds = ["SummonedSacrifice", "SummonedDemon"] },
+            new("Avartack", "marfach-caverns/avartack", [], 0, null),
+            new("BlackLady", "marfach-caverns/blacklady", [], 1100, null) { SpreadRadius = 350 },
+            new("GrandSummonerGovannon", "summoner-s-hall/grandsummonergovannon", ["ShadeOfAelfgar"], 0, null) { SpreadRadius = 300, SpreadWhileModel = 636, RangedAdds = ["SummonedSacrifice", "SummonedDemon"] },
+            new("SummonerLossren", "summoner-s-hall/summonerlossren", [], 0, null) { RangedAdds = ["ExplodeUndead"] },
             new("Nosdoden", "trollheim/nosdoden", ["NosdodenSummonedAdds"], 0, null),
+            new("Vagn", "tuscaran-glacier/vagn", [], 0, null),
+            new("Nokkvi", "tuscaran-glacier/nokkvi", [], 0, null),
+            new("Fornfrusenen", "tuscaran-glacier/fornfrusenen", [], 0, null),
+            new("Kvasir", "tuscaran-glacier/kvasir", [], 0, null),
+            new("Jailer", "tuscaran-glacier/jailer", [], 0, null),
+            new("QueenKula", "tuscaran-glacier/queenkula", [], 0, null),
+            new("KingTuscar", "tuscaran-glacier/kingtuscar", [], 0, null) { After = "QueenKula" },
         ];
 
         /// <summary>Every raided encounter's leash (tether from its script or npc template, and whether it resets when

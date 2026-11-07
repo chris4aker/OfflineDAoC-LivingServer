@@ -810,12 +810,30 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "8025ccf0e6a8ffe9c60d27d7c25337d2c8d5a35d185e1d04b20d62595e743d83"
+   },
+   "aiTactics": {
+    "summary": "Close in: he takes damage only from within 300, so every raider, casters too, fights from within 220-280 of him. His throw (four spots 465 above his floor) takes bots too since 1.2; they fall and walk back.",
+    "since": "1.2"
    }
   },
   "fomor-city/myrddraxis": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "5d8d41065ab6bcaaf3c7f24ebfa22abd8d32c62b18b7d967075c2c691b9ab17c"
+   },
+   "aiTactics": {
+    "blastThresholds": [
+     80,
+     75,
+     60,
+     50,
+     40,
+     25,
+     20
+    ],
+    "blastRadius": 2150,
+    "summary": "Breaths at health thresholds: within 3% above 80/60/40/20% (stunning breath, 30 s stun in 1,800) and 75/50/25% (Breath of Annihilation, 2,000 heat in 1,800), and for 9 s after crossing one, everyone but the party he fights stands 2,350 from him; the 5-6 s warning in the script lands inside that window. Fomor City has no raid of its own (no path in on its navmesh), so this steers the gamebots that fight there.",
+    "since": "1.2"
    }
   },
   "fomor-city/nogoribando": {
@@ -1629,6 +1647,10 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AvartackTheChampion.cs": "c7a546a688cb23eb4a554d2e8bd644774271cab73f97c1f2c3c0d6b024caa026"
+   },
+   "aiTactics": {
+    "summary": "Face him: his back style lands on a target that has turned its back on him (he stands 160-200 degrees off its facing), so the raider he fights turns to him whenever he gets 120 degrees or more off its facing.",
+    "since": "1.2"
    }
   },
   "marfach-caverns/blacklady": {
@@ -1648,7 +1670,9 @@
    },
    "aiTactics": {
     "fightAtHomeRadius": 1100,
-    "summary": "Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed."
+    "summary": "Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed. Spread (1.2, epic wave 2): her Void Strike (cold 400, every 6-12 s) lands 350 around her target, so casters and healers outside her target's party stand 600 from that target.",
+    "spreadRadius": 350,
+    "since": "1.2"
    },
    "verified": true,
    "scriptHashes": {
@@ -1912,7 +1936,10 @@
      "SummonedDemon"
     ],
     "since": "1.2",
-    "summary": "Spread in demon form: while he is the demon (model 636), casters, archers and healers outside his target's party keep 550 from that target, out of his Shroud of Agony (radius 300 around it), and fight and heal from there; melee can't get clear (every melee spot is inside 300 of his target) and fight on, kept up by healers who are no longer in it. Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him."
+    "summary": "Spread in demon form: while he is the demon (model 636), casters, archers and healers outside his target's party keep 550 from that target, out of his Shroud of Agony (radius 300 around it), and fight and heal from there; melee can't get clear (every melee spot is inside 300 of his target) and fight on, kept up by healers who are no longer in it. Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him. Shade (1.2, epic wave 2): if the sacrifice and the demon both reach his altar the Shade of Aelfgar comes (10,000 health) and sends a raider within 2,000 up to the gallery every 10-20 s (bots too since 1.2; they walk back down or recall): the whole raid kills it first, then him. His full 300,000 health is on (AllowGovannonFullHealth).",
+    "requiredAdds": [
+     "ShadeOfAelfgar"
+    ]
    },
    "rules": {
     "adds@311": {
@@ -1944,6 +1971,13 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "889fa7d0b06549afa47c2d560e9754906e8d6b345901088efc12d4f24f3eab15"
+   },
+   "aiTactics": {
+    "rangedAdds": [
+     "ExplodeUndead"
+    ],
+    "summary": "Infected ghoul: casters and archers kill the ghoul (4,000 health, walks at 110) as it crawls toward its raider, and that raider walks away from it (it bursts for 1,000 in 500 when it reaches its target); the rest stay on Lossren and her tortured souls.",
+    "since": "1.2"
    }
   },
   "summoner-s-hall/summonerroesia": {
@@ -2073,6 +2107,10 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "902b66c51eecf6e1743f713eae627d606f0ff2e553bf4a9621a0a8ca51faad94"
+   },
+   "aiTactics": {
+    "summary": "Shards first: while he is above 35% the raid kills his 2-3 shards (each party takes one), each one taking a quarter of his health; at 35% or less the shards no longer hurt him and the raid kills him (his death removes them). Close in: he takes damage only from within 200 of him and the shards only from within 400 of his spot, so every raider, casters too, fights from within 120-180 of him or 320 of his spot.",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/guthlac": {
@@ -2121,24 +2159,41 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "27b31260d426329c3185bf9a481d6012b3df56789a32e46a4c68cdac1888001b"
+   },
+   "aiTactics": {
+    "summary": "Jail rescue (AllowDisplacement, bots too since 1.2): the jail opens when his two tunnel guardians (20,000 health each, at the jail) are dead. Once the fight is on, one bot party (two in a raid of eight parties or more; never the party he fights or the real player's) goes down the tunnel, kills both and comes back (an errand: no path, no progress or past its budget and it rejoins the fight). Every raider jailed after that walks free at once; one jailed before fights the guards with the team, and the recovery frees it when they die (or recalls it after 3 minutes).",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/kingtuscar": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3db6dc495cb911f4e8055232b8e2ea7d4ff08dcb29286b6bb1848f583f78c8ef"
+   },
+   "aiTactics": {
+    "after": "QueenKula",
+    "summary": "Twin heal (AllowTuscarTwinHeal, on since 1.2): damage to one twin heals the other while it is hurt, so the raid kills Queen Kula first (the route musters for her) and only the King's own target fights him; the rest of his party turns on her too. Casters and healers on Kula keep clear of his hammers and Thor's Might (500 around his target). Nobody stands in Kula's frost circle.",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/kvasir": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "1a09970adb5da75b4298b461c2a289de9c913e7c8ab0fe316bdd48c37d21f092"
+   },
+   "aiTactics": {
+    "summary": "Cold heal (AllowKvasirColdHeal, on since 1.2): no bot casts a cold spell at him (EpicEncounterTactics.ForbidsSpell; casters use their other lines). Scream: from 3 s before his primal scream is due until 4.5 s after his mesmerize (800 around his target, 2 s after the scream), everyone but his target's party stands 1,050 from his target; melee wait there, casters and healers keep casting.",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/nokkvi": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs": "c0fd21b6b0420b60bfec2e291807a2494cd8d9686dfbb7a72fde8258831e18c2"
+   },
+   "aiTactics": {
+    "summary": "Damage split with Council Vagn: Nokkvi resists 90% of melee, so the casters fight him while both live (see Vagn).",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/otrygg": {
@@ -2157,6 +2212,10 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3db6dc495cb911f4e8055232b8e2ea7d4ff08dcb29286b6bb1848f583f78c8ef"
+   },
+   "aiTactics": {
+    "summary": "Killed first (see King Tuscar). Her drag to the throne (AllowDisplacement, bots too since 1.2) puts a raider in her frost circle, where it is mesmerized or rooted: a bot waits it out like a player (the recovery's walk does not count crowd control as a stall; at most 5 minutes) and walks back. Frost circle (AllowPositionPuzzle, on): no raider fights within 450 of 34128,56095; one that gets there steps out to 600.",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/skuf": {
@@ -2195,6 +2254,10 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs": "c0fd21b6b0420b60bfec2e291807a2494cd8d9686dfbb7a72fde8258831e18c2"
+   },
+   "aiTactics": {
+    "summary": "Damage split with Council Nokkvi: Vagn resists 90% of magic, so casters fight Nokkvi and everyone else (melee, archers, hybrids, pets) fights Vagn while both live.",
+    "since": "1.2"
    }
   }
  }

@@ -77,12 +77,12 @@
   "source/server/GameServer/scripts/namedmobs/EncounterFloodGuard.cs": "64a95af9f337614ccdfd78221efba27096c87725a2c3c8f3d204f9566412213d",
   "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "25da681fa8a3bd7e96d89b02f6d0622363d00ce77445f6c4c3e3444e9a47df39",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
-  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "05e427cc2e5990feda6ee8aadf73233b4da489422c4ef453f51a368797f804c9",
+  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "95e1e9f813dc426d4e4d38cff0b1a0ef8e174aff69878b590966bb455e62482c",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "47dede9429ce25a534a73793e7b5940c337b6c4314b3b0fe57a6c0e301e96eeb",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
   "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe",
   "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "ddbafcd28c0d85ab9a71d42b179edd8a4d705e1c1b8daf8c0c37f235702d65a2",
-  "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "8025ccf0e6a8ffe9c60d27d7c25337d2c8d5a35d185e1d04b20d62595e743d83",
+  "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "147e40217973555da2bb68a1e23c4f843b08c5dbd72950246678153b23ffd458",
   "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "5d8d41065ab6bcaaf3c7f24ebfa22abd8d32c62b18b7d967075c2c691b9ab17c",
   "source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs": "5d3b338eec35ec06bacef311189dc0066981669f761bf95d88deaf814d987712",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "9f7b96e78af9a1c70b23bd8e099c65f5b704906fec526087baea2d68f7878910",
@@ -224,6 +224,12 @@
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
    "line": 19,
    "perEncounter": true,
+   "shippedFor": [
+    "QueenKula=true",
+    "Jailer=true",
+    "Hakr=true",
+    "Hurika=true"
+   ],
    "about": "/// Easmarach, Spindler, the Horsemen room, Bane of Hope, Jailer Vifil, Hakr, Hurika, Kula, the waterfall)."
   },
   {
@@ -232,6 +238,9 @@
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
    "line": 21,
    "perEncounter": true,
+   "shippedFor": [
+    "QueenKula=true"
+   ],
    "about": "Split-position puzzles (Olcasgean's safe points, Conservator, Easmarach close range, Kula's circle)."
   },
   {
@@ -268,7 +277,20 @@
     "AlbGolestandt=true",
     "MidGjalpinulva=true",
     "HibCuuldurach=true",
-    "Xanxicar=true"
+    "Xanxicar=true",
+    "QueenKula=true",
+    "Jailer=true",
+    "Hakr=true",
+    "Hurika=true",
+    "SummonerCunovinda=true",
+    "ShadeOfAelfgar=true",
+    "Iarnvidiur=true",
+    "Boligar=true",
+    "Mortufoghus=true",
+    "Ydenia=true",
+    "GlacierGiant=true",
+    "Krackenschtein=true",
+    "Anurigunda=true"
    ],
    "about": "/// On per encounter where the bots' recovery is proven (EncounterDisplacement, EncounterDisplacementRecovery)."
   },
@@ -297,7 +319,7 @@
    "name": "AllowHorsemenTetherHeal",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 66,
+   "line": 67,
    "restores": true,
    "about": "Fames, Morbus and Funus heal to full when drawn past their tether (not only when the fight is over)."
   },
@@ -305,7 +327,7 @@
    "name": "AllowFunusWeaponPuzzle",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 69,
+   "line": 70,
    "restores": true,
    "about": "/// listed weapon; any other attacker (pets included) heals him to full."
   },
@@ -313,7 +335,7 @@
    "name": "AllowSacristanPatrol",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 71,
+   "line": 72,
    "restores": true,
    "about": "Skeletal Sacristan walks his loop at 220 without stopping, with 70% magic resists."
   },
@@ -321,7 +343,7 @@
    "name": "AllowSoulReckonerFullShield",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 73,
+   "line": 74,
    "restores": true,
    "about": "Soul Reckoner takes no damage at all while a reckoned soul lives (not a quarter)."
   },
@@ -329,7 +351,7 @@
    "name": "AllowSoulReckonerSmallRoom",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 75,
+   "line": 76,
    "restores": true,
    "about": "Soul Reckoner's room is 900 units from its middle (not 1,500)."
   },
@@ -337,7 +359,7 @@
    "name": "AllowAroonDamageOrder",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 78,
+   "line": 79,
    "restores": true,
    "about": "/// crush, body, cold, energy, heat, matter, spirit); each Scaith is immune until the one before it is dead."
   },
@@ -345,7 +367,7 @@
    "name": "AllowGalladoriaBridgeSpot",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 81,
+   "line": 82,
    "restores": true,
    "about": "/// the original counted real players only, which a bot raid could never meet)."
   },
@@ -353,7 +375,7 @@
    "name": "AllowFullFirePatches",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 83,
+   "line": 84,
    "restores": true,
    "about": "The Fire primal's trail of fire hits 220 in a 450 radius (not 120 in 300)."
   },
@@ -361,7 +383,7 @@
    "name": "AllowEarthmenderClassPuzzle",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 86,
+   "line": 87,
    "restores": true,
    "about": "/// the raid AI sends each raider to an Earthmender its class hurts (EpicEncounterTactics class rules)."
   },
@@ -369,7 +391,7 @@
    "name": "AllowEarthmendersPassive",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 88,
+   "line": 89,
    "restores": true,
    "about": "Earthmenders never attack (they only heal)."
   },
@@ -377,7 +399,7 @@
    "name": "AllowEarthmenderQuickReset",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 90,
+   "line": 91,
    "restores": true,
    "about": "An Earthmender heals to full 30 s after its last fight even with raiders in the room."
   },
@@ -385,7 +407,7 @@
    "name": "AllowEarthmenderMutualHeal",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 92,
+   "line": 93,
    "restores": true,
    "about": "Earthmenders heal each other as well as the Earth primal."
   },
@@ -393,7 +415,7 @@
    "name": "AllowBeathaHealsXaga",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 94,
+   "line": 95,
    "restores": true,
    "about": "Beatha's damage heals Xaga by twice the amount."
   },
@@ -401,45 +423,45 @@
    "name": "AllowFairyFlight",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 96,
+   "line": 97,
    "restores": true,
    "about": "Beatha and Tine circle the room even while they are fought."
   },
   {
    "name": "AllowGovannonFullHealth",
-   "value": "false",
-   "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 98,
-   "restores": true,
-   "about": "Grand Summoner Govannon has 300,000 health (not 200,000)."
-  },
-  {
-   "name": "AllowKvasirColdHeal",
-   "value": "false",
+   "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
    "line": 100,
    "restores": true,
-   "about": "Cold damage heals Icelord Kvasir by a fifth of his health and does no damage."
+   "about": "/// sacrifice and demon at range and spreads in his demon form (EpicEncounterTactics); the owner tests the win rate."
+  },
+  {
+   "name": "AllowKvasirColdHeal",
+   "value": "true",
+   "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
+   "line": 103,
+   "restores": true,
+   "about": "/// cold at him (EpicEncounterTactics.ForbidsSpell)."
   },
   {
    "name": "AllowTuscarTwinHeal",
-   "value": "false",
+   "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 102,
+   "line": 106,
    "restores": true,
-   "about": "Damage to King Tuscar heals Queen Kula, and damage to her heals him, while the other is below full health."
+   "about": "/// On since 1.2: the raid kills Kula first and only the King's own target fights him (EpicEncounterTactics)."
   },
   {
    "name": "ResetQuietMilliseconds",
    "value": "8000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 195
+   "line": 222
   },
   {
    "name": "PetDevourIntervalMilliseconds",
    "value": "5000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 203
+   "line": 230
   }
  ],
  "ruleKinds": {
@@ -1007,7 +1029,7 @@
    "teleport": 32,
    "tether": 54
   },
-  "rulesVerified": 862,
+  "rulesVerified": 858,
   "rulesRead": 494,
   "rulesInferred": 368,
   "handEntries": 2
@@ -9398,10 +9420,9 @@
      "method": "BlockEntrance",
      "subtype": "fixed_spot",
      "displacement": "Barrier",
-     "affects": "real players only (bots are never picked)",
      "verified": true,
-     "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
+     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
+     "difficulty": "unsafe for bots today",
      "tacticSource": "default for its kind",
      "key": "teleport@107"
     },
@@ -9488,7 +9509,7 @@
      "method": "TakeDamage",
      "subtype": "attacker_position",
      "condition": "if (!source.IsWithinRadius(this, 300))",
-     "verified": true,
+     "verified": false,
      "tactic": "Fight it up close: casters and archers move in to the allowed distance or switch to the adds.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -9498,53 +9519,52 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health",
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs",
-     "line": 204,
-     "lineEnd": 215,
+     "line": 207,
+     "lineEnd": 218,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "KrackenschteinBrain",
      "method": "Think",
-     "verified": true,
+     "verified": false,
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@204"
+     "key": "reset@207"
     },
     {
      "kind": "teleport",
      "summary": "Throws TeleportTarget into the air or across the room: one of 4 spots (MoveTo 180, 32956, 37669, 16465, 1028; 180, 31879, 38149, 16465, 2109; 180, 31727, 37401, 16465, 3225; 180, 32159, 36387, 16465, 3618)",
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs",
-     "line": 186,
-     "lineEnd": 189,
+     "line": 189,
+     "lineEnd": 192,
      "anchor": "case 1: EncounterDisplacement.Move(TeleportTarget, 180, 32956, 37669, 16465, 1028, DisplacementKind.Throw, Body); break;",
      "confidence": "inferred",
      "sourceClass": "KrackenschteinBrain",
      "method": "TeleportRandomTarget",
      "subtype": "air_toss",
      "displacement": "Throw",
-     "affects": "real players only (bots are never picked)",
-     "verified": true,
-     "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
+     "verified": false,
+     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
+     "difficulty": "unsafe for bots today",
      "tacticSource": "default for its kind",
-     "key": "teleport@186"
+     "key": "teleport@189"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"KrackenschteinBaf\" (8 in the world database: 7 fomorian gentarn, 1 fomorian wolfentry)",
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs",
-     "line": 222,
-     "lineEnd": 222,
+     "line": 225,
+     "lineEnd": 225,
      "anchor": "if (npc.IsAlive && npc.PackageID == \"KrackenschteinBaf\")",
      "confidence": "read",
      "sourceClass": "KrackenschteinBrain",
      "method": "Think",
      "packSize": 8,
-     "verified": true,
+     "verified": false,
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@222"
+     "key": "linked_pack@225"
     }
    ],
    "spells": [
@@ -9559,7 +9579,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs",
-     "line": 243,
+     "line": 246,
      "sourceClass": "KrackenschteinBrain"
     },
     {
@@ -9573,7 +9593,7 @@
      "value": null,
      "target": "AREA",
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs",
-     "line": 270,
+     "line": 273,
      "sourceClass": "KrackenschteinBrain"
     }
    ],
@@ -9590,7 +9610,12 @@
    "templateTetherRange": 4500,
    "raids": [],
    "raidAi": "no raid",
-   "verified": true
+   "verificationStale": true,
+   "aiTactics": {
+    "summary": "Close in: he takes damage only from within 300, so every raider, casters too, fights from within 220-280 of him. His throw (four spots 465 above his floor) takes bots too since 1.2; they fall and walk back.",
+    "since": "1.2"
+   },
+   "verified": false
   },
   {
    "id": "fomor-city/myrddraxis",
@@ -10038,6 +10063,20 @@
    "templateTetherRange": 4500,
    "raids": [],
    "raidAi": "no raid",
+   "aiTactics": {
+    "blastThresholds": [
+     80,
+     75,
+     60,
+     50,
+     40,
+     25,
+     20
+    ],
+    "blastRadius": 2150,
+    "summary": "Breaths at health thresholds: within 3% above 80/60/40/20% (stunning breath, 30 s stun in 1,800) and 75/50/25% (Breath of Annihilation, 2,000 heat in 1,800), and for 9 s after crossing one, everyone but the party he fights stands 2,350 from him; the 5-6 s warning in the script lands inside that window. Fomor City has no raid of its own (no path in on its navmesh), so this steers the gamebots that fight there.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -20181,10 +20220,9 @@
      "method": "TeleportPlayer",
      "subtype": "fixed_spot",
      "displacement": "Teleport",
-     "affects": "real players only (bots are never picked)",
      "verified": true,
-     "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
+     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
+     "difficulty": "unsafe for bots today",
      "tacticSource": "default for its kind",
      "key": "teleport@143"
     }
@@ -22670,7 +22708,11 @@
      "role": "final"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Face him: his back style lands on a target that has turned its back on him (he stands 160-200 degrees off its facing), so the raider he fights turns to him whenever he gets 120 degrees or more off its facing.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -22825,7 +22867,9 @@
    "currentRaidAi": "2026-11-05: taken to 44%, drawn 1,618 from her spawn and leashed home at full health (AUTONOMOUS_TETHER_RESET); the raid then switched to the Oak and never came back to her.",
    "aiTactics": {
     "fightAtHomeRadius": 1100,
-    "summary": "Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed."
+    "summary": "Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed. Spread (1.2, epic wave 2): her Void Strike (cold 400, every 6-12 s) lands 350 around her target, so casters and healers outside her target's party stand 600 from that target.",
+    "spreadRadius": 350,
+    "since": "1.2"
    },
    "verified": true
   },
@@ -25039,10 +25083,9 @@
      "method": "YdeniaPort",
      "subtype": "air_toss",
      "displacement": "Throw",
-     "affects": "real players only (bots are never picked)",
      "verified": true,
-     "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
+     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
+     "difficulty": "unsafe for bots today",
      "tacticSource": "default for its kind",
      "key": "teleport@153"
     },
@@ -25256,10 +25299,9 @@
      "method": "TeleportPlayer",
      "subtype": "fixed_spot",
      "displacement": "Teleport",
-     "affects": "real players only (bots are never picked)",
      "verified": true,
-     "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
+     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
+     "difficulty": "unsafe for bots today",
      "tacticSource": "default for its kind",
      "key": "teleport@156"
     }
@@ -25739,10 +25781,9 @@
      "method": "ThrowPlayer",
      "subtype": "fixed_spot",
      "displacement": "Teleport",
-     "affects": "real players only (bots are never picked)",
      "verified": true,
-     "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
+     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
+     "difficulty": "unsafe for bots today",
      "tacticSource": "default for its kind",
      "key": "teleport@171"
     }
@@ -26451,10 +26492,9 @@
      "method": "TeleportPlayer",
      "subtype": "air_toss",
      "displacement": "Throw",
-     "affects": "real players only (bots are never picked)",
      "verified": true,
-     "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
+     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
+     "difficulty": "unsafe for bots today",
      "tacticSource": "default for its kind",
      "key": "teleport@180"
     }
@@ -27413,11 +27453,10 @@
      "method": "PickRandomTarget",
      "subtype": "fixed_spot",
      "displacement": "Teleport",
-     "affects": "real players only (bots are never picked)",
      "from": "add",
      "verified": true,
-     "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
+     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
+     "difficulty": "unsafe for bots today",
      "tacticSource": "default for its kind",
      "key": "teleport@689"
     },
@@ -27469,8 +27508,8 @@
      ],
      "restored": true,
      "verified": true,
-     "tactic": "Off today (AllowGovannonFullHealth is false). To play it: follow the mechanic.",
-     "difficulty": "off today",
+     "tactic": "On: the original is back (AllowGovannonFullHealth is true) and the raid AI plays it (see Encounters with raid tactics).",
+     "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
      "key": "offline_change@35"
     }
@@ -27555,7 +27594,10 @@
      "SummonedDemon"
     ],
     "since": "1.2",
-    "summary": "Spread in demon form: while he is the demon (model 636), casters, archers and healers outside his target's party keep 550 from that target, out of his Shroud of Agony (radius 300 around it), and fight and heal from there; melee can't get clear (every melee spot is inside 300 of his target) and fight on, kept up by healers who are no longer in it. Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him."
+    "summary": "Spread in demon form: while he is the demon (model 636), casters, archers and healers outside his target's party keep 550 from that target, out of his Shroud of Agony (radius 300 around it), and fight and heal from there; melee can't get clear (every melee spot is inside 300 of his target) and fight on, kept up by healers who are no longer in it. Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him. Shade (1.2, epic wave 2): if the sacrifice and the demon both reach his altar the Shade of Aelfgar comes (10,000 health) and sends a raider within 2,000 up to the gallery every 10-20 s (bots too since 1.2; they walk back down or recall): the whole raid kills it first, then him. His full 300,000 health is on (AllowGovannonFullHealth).",
+    "requiredAdds": [
+     "ShadeOfAelfgar"
+    ]
    },
    "verified": true
   },
@@ -27645,10 +27687,9 @@
      "method": "CastBolt",
      "subtype": "fixed_spot",
      "displacement": "Teleport",
-     "affects": "real players only (bots are never picked)",
      "verified": true,
-     "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
+     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
+     "difficulty": "unsafe for bots today",
      "tacticSource": "default for its kind",
      "key": "teleport@234"
     }
@@ -27951,7 +27992,14 @@
      "role": "objective"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "rangedAdds": [
+     "ExplodeUndead"
+    ],
+    "summary": "Infected ghoul: casters and archers kill the ghoul (4,000 health, walks at 110) as it crawls toward its raider, and that raider walks away from it (it bursts for 1,000 in 500 when it reaches its target); the rest stay on Lossren and her tortured souls.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -30414,7 +30462,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Damage split with Council Nokkvi: Vagn resists 90% of magic, so casters fight Nokkvi and everyone else (melee, archers, hybrids, pets) fights Vagn while both live.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -30527,7 +30579,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Damage split with Council Vagn: Nokkvi resists 90% of melee, so the casters fight him while both live (see Vagn).",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -31604,7 +31660,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Shards first: while he is above 35% the raid kills his 2-3 shards (each party takes one), each one taking a quarter of his health; at 35% or less the shards no longer hurt him and the raid kills him (his death removes them). Close in: he takes damage only from within 200 of him and the shards only from within 400 of his spot, so every raider, casters too, fights from within 120-180 of him or 320 of his spot.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -31952,7 +32012,6 @@
       "AllowDisplacement"
      ],
      "displacement": "Throw",
-     "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
@@ -32194,8 +32253,8 @@
      ],
      "restored": true,
      "verified": true,
-     "tactic": "Off today (AllowKvasirColdHeal is false). To play it: follow the mechanic.",
-     "difficulty": "off today",
+     "tactic": "On: the original is back (AllowKvasirColdHeal is true) and the raid AI plays it (see Encounters with raid tactics).",
+     "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
      "key": "offline_change@27"
     }
@@ -32247,7 +32306,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Cold heal (AllowKvasirColdHeal, on since 1.2): no bot casts a cold spell at him (EpicEncounterTactics.ForbidsSpell; casters use their other lines). Scream: from 3 s before his primal scream is due until 4.5 s after his mesmerize (800 around his target, 2 s after the scream), everyone but his target's party stands 1,050 from his target; melee wait there, casters and healers keep casting.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -32826,7 +32889,6 @@
       "AllowDisplacement"
      ],
      "displacement": "Jail",
-     "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
@@ -32851,7 +32913,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Jail rescue (AllowDisplacement, bots too since 1.2): the jail opens when his two tunnel guardians (20,000 health each, at the jail) are dead. Once the fight is on, one bot party (two in a raid of eight parties or more; never the party he fights or the real player's) goes down the tunnel, kills both and comes back (an errand: no path, no progress or past its budget and it rejoins the fight). Every raider jailed after that walks free at once; one jailed before fights the guards with the team, and the recovery frees it when they die (or recalls it after 3 minutes).",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -32996,7 +33062,6 @@
       "AllowDisplacement"
      ],
      "displacement": "Teleport",
-     "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
@@ -33103,8 +33168,8 @@
      ],
      "restored": true,
      "verified": true,
-     "tactic": "Off today (AllowTuscarTwinHeal is false). To play it: follow the mechanic.",
-     "difficulty": "off today",
+     "tactic": "On: the original is back (AllowTuscarTwinHeal is true) and the raid AI plays it (see Encounters with raid tactics).",
+     "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
      "key": "offline_change@61"
     }
@@ -33170,7 +33235,11 @@
      "role": "final"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Killed first (see King Tuscar). Her drag to the throne (AllowDisplacement, bots too since 1.2) puts a raider in her frost circle, where it is mesmerized or rooted: a bot waits it out like a player (the recovery's walk does not count crowd control as a stall; at most 5 minutes) and walks back. Frost circle (AllowPositionPuzzle, on): no raider fights within 450 of 34128,56095; one that gets there steps out to 600.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -33398,8 +33467,8 @@
      ],
      "restored": true,
      "verified": true,
-     "tactic": "Off today (AllowTuscarTwinHeal is false). To play it: follow the mechanic.",
-     "difficulty": "off today",
+     "tactic": "On: the original is back (AllowTuscarTwinHeal is true) and the raid AI plays it (see Encounters with raid tactics).",
+     "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
      "key": "offline_change@525"
     }
@@ -33493,7 +33562,12 @@
      "role": "final"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "after": "QueenKula",
+    "summary": "Twin heal (AllowTuscarTwinHeal, on since 1.2): damage to one twin heals the other while it is hurt, so the raid kills Queen Kula first (the route musters for her) and only the King's own target fights him; the rest of his party turns on her too. Casters and healers on Kula keep clear of his hammers and Thor's Might (500 around his target). Nobody stands in Kula's frost circle.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -33929,7 +34003,6 @@
       "AllowDisplacement"
      ],
      "displacement": "Throw",
-     "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",

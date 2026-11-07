@@ -64,8 +64,12 @@ namespace DOL.GS
         public readonly record struct Order(OrderKind Kind, Vector3 Point = default, int FallPercent = 0, string Reason = null);
 
         /// <summary>What the bot sees this turn. <paramref name="Corridor"/> is asked only when a path back is needed.</summary>
+        /// <param name="Held">Mesmerized, stunned or rooted (Queen Kula's frost circle): it can't walk, which is no stall.</param>
         public readonly record struct Observation(long Now, bool Alive, Vector3 Position, Vector3 ReturnPoint, bool UnderAttack,
-            bool Released, bool AtFight, Func<Vector3, Vector3, bool> Corridor);
+            bool Released, bool AtFight, Func<Vector3, Vector3, bool> Corridor, bool Held = false);
+
+        /// <summary>A walk back held by crowd control ends in the fallback this long after it started at the latest.</summary>
+        public const int MaximumHeldWalkMilliseconds = 300_000;
 
         /// <summary>One bot's recovery (pure state; <see cref="Step"/> moves it on).</summary>
         public sealed class Plan
@@ -78,6 +82,8 @@ namespace DOL.GS
             public bool OnMesh = true;
             public Vector3 ReturnPoint;
             public long Deadline;
+            /// <summary>The latest the walk may end, however long crowd control held it (<see cref="MaximumHeldWalkMilliseconds"/>).</summary>
+            public long HardDeadline;
             public long NextProgressCheck;
             public float DistanceAtCheck;
             public long RecallAt;
@@ -135,6 +141,15 @@ namespace DOL.GS
                     float distance = Vector3.Distance(o.Position, o.ReturnPoint);
                     if (distance <= ArriveRadius || o.AtFight) return Finish(p, "back with the raid");
                     if (o.Now >= p.Deadline) return StartRecall(p, o, "walk back took too long");
+                    if (o.Held)
+                    {
+                        // Mesmerized or rooted where it landed (Kula's throne): it waits it out like a player, then walks on.
+                        if (o.Now >= p.HardDeadline) return StartRecall(p, o, "held too long");
+                        p.NextProgressCheck = o.Now + ProgressWindowMilliseconds;
+                        p.DistanceAtCheck = distance;
+                        p.Deadline = Math.Min(p.HardDeadline, Math.Max(p.Deadline, o.Now + WalkBudget(distance)));
+                        return new(OrderKind.Hold, Reason: "held");
+                    }
                     if (o.UnderAttack)
                     {
                         // Fighting on the way is no stall: the progress window and the walk budget start again when it walks on.
@@ -170,6 +185,7 @@ namespace DOL.GS
             if (o.Corridor != null && !o.Corridor(o.Position, o.ReturnPoint)) return StartRecall(p, o, "no path back");
             p.Stage = Stage.Walking;
             p.Deadline = o.Now + WalkBudget(distance);
+            p.HardDeadline = o.Now + MaximumHeldWalkMilliseconds;
             p.NextProgressCheck = o.Now + ProgressWindowMilliseconds;
             p.DistanceAtCheck = distance;
             return new(OrderKind.Walk, o.ReturnPoint);
@@ -310,7 +326,7 @@ namespace DOL.GS
                 bot.IsWithinRadius(boss, FightRadius);
             bool released = r.Plan.Stage == Stage.Jailed && JailReleased(bot, r.Event.Source, r.Event.Encounter);
             return new Observation(GameLoop.GameLoopTime, bot.IsAlive, position, ReturnPoint(bot, r.Event), UnderAttack(bot),
-                released, atFight, (from, to) => HasPath(bot, from, to));
+                released, atFight, (from, to) => HasPath(bot, from, to), IsHeld(bot));
         }
 
         private static bool Execute(GameBot bot, Record r, Order order)
@@ -409,6 +425,10 @@ namespace DOL.GS
                 return front;
             return e.From;
         }
+
+        /// <summary>Mesmerized, stunned, or rooted (a speed debuff that leaves it almost no speed).</summary>
+        private static bool IsHeld(GameBot bot) => bot.IsMezzed || bot.IsStunned ||
+            bot.effectListComponent?.ContainsEffectForEffectType(eEffect.MovementSpeedDebuff) == true && bot.MaxSpeed <= 20;
 
         private static bool UnderAttack(GameBot bot)
         {
