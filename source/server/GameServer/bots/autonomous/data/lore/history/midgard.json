@@ -185,7 +185,8 @@
         "vale-of-mularn",
         "vanern-swamp",
         "varulvhamn",
-        "vendo-caverns"
+        "vendo-caverns",
+        "west-svealand"
       ],
       "bosses": [
         "aros-the-spiritmaster",
@@ -544,7 +545,8 @@
       "places": [
         "malmohus",
         "myrkwood-forest",
-        "spindelhalla"
+        "spindelhalla",
+        "west-svealand"
       ],
       "bosses": [
         "desukva",
@@ -874,7 +876,8 @@
         "jordheim",
         "munin-sound",
         "myrkwood-forest",
-        "vale-of-mularn"
+        "vale-of-mularn",
+        "west-svealand"
       ],
       "bosses": []
     },
@@ -901,7 +904,8 @@
       "name": "The Dark Pack",
       "summary": "The sveawolves of the Svealands, who raise their young in the open fields while their mothers run the coasts: Morra on East Svealand's shore and Modervarg, the mother wolf of West Svealand.",
       "places": [
-        "east-svealand"
+        "east-svealand",
+        "west-svealand"
       ],
       "bosses": []
     },
@@ -927,6 +931,15 @@
       "bosses": [
         "urtzi"
       ]
+    },
+    {
+      "id": "blodfelag",
+      "name": "The Blodfelag",
+      "summary": "The blood-fellowship of West Svealand: huscarls, drengs and farmers who swore to each other in their own blood and wolves' blood instead of to a jarl, and keep a fort, witches, warhounds and captives for an oath nobody remembers the purpose of; their agents reach the frontier at Odin's Gate.",
+      "places": [
+        "west-svealand"
+      ],
+      "bosses": []
     },
     {
       "id": "deep-ones",
