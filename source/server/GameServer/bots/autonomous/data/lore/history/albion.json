@@ -104,7 +104,8 @@
         "stonehenge-barrows",
         "avalon-city",
         "forest-sauvage",
-        "caer-sidi"
+        "caer-sidi",
+        "camelot-hills"
       ],
       "bosses": [
         "wrath-of-mordred",
@@ -355,7 +356,8 @@
       "name": "The Dark Ones, the court below Darkness Falls",
       "summary": "The demon kingdom under all three realms, ruled by Legion, ordered by rank from princes to thieving imps; the Behemoth kept on its ledge.",
       "places": [
-        "darkness-falls"
+        "darkness-falls",
+        "camelot-hills"
       ],
       "bosses": [
         "legion",
@@ -376,7 +378,8 @@
       "name": "The realm of Camelot",
       "summary": "The king's city and its offices: the Constable and his drawers of reports, the Prydwen Keep rolls, the Church and its hospices, the Academy, the masters of arms and the quieter trades under the streets. Since Camlann it sends the realm out and counts who comes back.",
       "places": [
-        "camelot"
+        "camelot",
+        "camelot-hills"
       ],
       "bosses": []
     },
@@ -389,7 +392,8 @@
         "llyn-barfog",
         "forest-sauvage",
         "lyonesse",
-        "pennine-mountains"
+        "pennine-mountains",
+        "camelot-hills"
       ],
       "bosses": [
         "golestandt",
