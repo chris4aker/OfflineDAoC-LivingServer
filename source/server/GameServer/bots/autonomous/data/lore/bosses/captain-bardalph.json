@@ -17,7 +17,7 @@
     }
   ],
   "story": "The captain who argued. Captain Bardalph kept the outer gate, and he did not like the wizard. He said so at table, in front of Lord Gildas, when Aidon asked for the watch to be doubled: that a wizard who expects visitors on a road that has been quiet for twenty years knows something he is not telling. The wizard smiled at him. Lord Gildas doubled the watch anyway, because the realm had sent the wizard. Like every officer of the Pennine watch, it is bound to its post: one step past where its captain stood it, no blow lands and it walks home at full health. Fight it where it stands. \n\nBardalph was right, and he died at the post he was given anyway, because that was his duty. He is the most bitter of the hall's dead captains. His wounds bleed like his brothers', and his post is the shortest in the hall, a single stretch of gate he will not leave by a step. The clerk's last report says that on the final night, when the wizard came down with four of himself, Bardalph said only: I told you so. The bards of Albion have made a song of that, and the captains' dead in the hall are said to hum it.\n\nHe kept the outer gate because Lord Gildas trusted him most with the road, and the argument at table did not change that; Gildas sent him back to his gate that same night. The clerk thought the lord regretted overruling him by morning. The bards say Bardalph knew he would be proved right and stayed at his post anyway, to see it through.",
-  "legend": "Bardalph bleeds you like Atwell, 65 every three seconds for thirty seconds. His tether is the shortest in the hall, only 1,500, so pull him a single step and fight him right there; drag him further and he is immune and walks home whole. He hits harder than the others when he is low. Kill Darra first, then the captains one at a time. The old hands say if you shout 'you were right' at him he hesitates; it is not true, but everyone does it. And whatever you do, do not argue with him. He has heard it all before.",
+  "legend": "Bardalph bleeds you like Atwell, 65 every three seconds for thirty seconds. His tether is the shortest in the hall, only 1,500, so pull him a single step and fight him right there; drag him further and he is immune and walks home whole. Take the captains one at a time; two bleeding captains on one tank is how raids lose the hall. The old hands say if you shout 'you were right' at him he hesitates; it is not true, but everyone does it. And whatever you do, do not argue with him. He has heard it all before.",
   "yells": {
     "aggro": [
       "I said this would happen. I said it.",
@@ -54,8 +54,8 @@
       "bardalph bleeds too. tether 1500, keep him close",
       "fight it where it stands, off its post its immune",
       "pull him one step only",
-      "kill darra first",
-      "he hits harder when hes low, heals up"
+      "he evades a lot, be patient",
+      "one captain at a time"
     ],
     "aftermathWin": [
       "captain bardalph down, one less on the watch",
@@ -67,8 +67,8 @@
     "aftermathLoss": [
       "someone dragged it off its post again. immune out there",
       "bleeds stacked",
-      "darra was up",
-      "he hit like a truck at the end"
+      "pulled two captains at once",
+      "the tank ran dry on the bleeds"
     ],
     "rumour": [
       "heard bardalph warned them about the wizard and nobody listened",

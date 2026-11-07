@@ -17,7 +17,7 @@
     }
   ],
   "story": "The first cut. Captain Atwell kept the inner gate of the hall, and he was the first of the watch to be touched by what came up the road. He was walking the road at dusk, as he did every night, and something cut him across the forearm that none of the watchmen saw. The Lady Darra bound it four times. It opened four times. He carried it to his post and died of it there, still bleeding. Like every officer of the Pennine watch, it is bound to its post: one step past where its captain stood it, no blow lands and it walks home at full health. Fight it where it stands. \n\nNow every wound Atwell gives opens the same way, bleeding steadily for half a minute, as if the cut he took on the road had become a thing he could hand on. He sits at the captains' table beside the clerk who wrote his name in the last reports, and rises when anyone comes in. The bards say he is waiting for the Lady Darra to come and bind his arm one more time.\n\nThe Camelot loremasters think the thing that cut him on the road was the first of the Summoners' visitors, the ones the wizard expected, and that Atwell was simply the first man it met. If so, it was looking for the watch, and it found it. Every raid that kills Atwell finds his forearm bound in fresh linen, though no living hand has bound it in years.",
-  "legend": "Atwell's blows bleed: 65 every three seconds for half a minute, and the bleeds stack on a tank that is not topped up, so keep a healer on whoever he is hitting from the first swing. Fight him at the captains' table where he stands; one step past his post and he cannot be hurt and walks home at full health. The three captains are best killed one at a time, Atwell first, because he is closest to the door and pulls the others if left. Kill Lady Darra before any of them, or she heals them faster than you can bleed them. Old hands also say: look at his arm after he falls. The bandage is always fresh.",
+  "legend": "Atwell's blows bleed: 65 every three seconds for half a minute, and the bleeds stack on a tank that is not topped up, so keep a healer on whoever he is hitting from the first swing. Fight him at the captains' table where he stands; one step past his post and he cannot be hurt and walks home at full health. The three captains are best killed one at a time, Atwell first, because he is closest to the door and pulls the others if left. Lady Darra does not heal them; she has knights of her own to keep her. Old hands also say: look at his arm after he falls. The bandage is always fresh.",
   "yells": {
     "aggro": [
       "The road is held. Turn back.",
@@ -53,7 +53,7 @@
     "briefing": [
       "atwell bleeds you, 65 every 3 sec. healers keep the tank topped",
       "fight it where it stands, off its post its immune",
-      "kill darra first",
+      "cure the bleeds or heal through, half a minute each",
       "atwell first of the captains, closest to the door"
     ],
     "aftermathWin": [
@@ -66,7 +66,7 @@
     "aftermathLoss": [
       "someone dragged it off its post again. immune out there",
       "the bleeds stacked on the tank",
-      "darra kept healing him",
+      "the tank ran dry on the bleeds",
       "pulled all three captains"
     ],
     "rumour": [
