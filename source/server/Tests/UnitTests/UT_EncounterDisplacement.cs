@@ -87,7 +87,8 @@ namespace DOL.UnitTests
         public void WhatShipsOnIsTheDragonThrowAndTheBotThrowsOfTheDragonsAndXanxicar()
         {
             string[] shipped = EpicEncounterMechanics.PerEncounterValues();
-            Assert.That(shipped, Is.EquivalentTo(new[]
+            // Wave 2 ships more per dungeon (UT_EpicWave2MidHib and the other dungeons' tests); the dragons' and Xanxicar's stay.
+            Assert.That(shipped, Is.SupersetOf(new[]
             {
                 "AllowBotDisplacement@AlbGolestandt=true", "AllowBotDisplacement@HibCuuldurach=true",
                 "AllowBotDisplacement@MidGjalpinulva=true", "AllowBotDisplacement@Xanxicar=true",

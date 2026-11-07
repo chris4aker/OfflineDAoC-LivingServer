@@ -339,21 +339,24 @@ namespace DOL.UnitTests
         [Test]
         public void EveryMovePickAsksTheSameSwitchAsTheMove()
         {
-            // Shipped: the three dragons and Xanxicar move bots; everything else (Legion included) keeps them out of its picks.
-            foreach (Type boss in new[] { typeof(AlbGolestandt), typeof(MidGjalpinulva), typeof(HibCuuldurach), typeof(Xanxicar) })
+            // Shipped: the three dragons and Xanxicar move bots, and since epic wave 2 Vifil, Cunovinda and others (UT_EpicWave2MidHib);
+            // the rest (Legion included) keep them out of its picks.
+            foreach (Type boss in new[] { typeof(AlbGolestandt), typeof(MidGjalpinulva), typeof(HibCuuldurach), typeof(Xanxicar),
+                         typeof(Jailer), typeof(SummonerCunovinda) })
             {
                 var npc = (GameNPC)RuntimeHelpers.GetUninitializedObject(boss);
                 Assert.That(EncounterTargets.DisplacesBots(npc), Is.True, boss.Name);
                 Assert.That(EncounterTargets.DisplacesBots(npc), Is.EqualTo(EpicEncounterMechanics.AllowBotDisplacementFor(npc)), boss.Name);
             }
-            foreach (Type boss in new[] { typeof(DOL.GS.Scripts.Legion), typeof(Jailer), typeof(Olcasgean), typeof(SummonerCunovinda),
-                         typeof(GrandSummonerGovannon), typeof(Orylle) })
+            foreach (Type boss in new[] { typeof(DOL.GS.Scripts.Legion), typeof(Olcasgean), typeof(GrandSummonerGovannon), typeof(Orylle) })
             {
                 var npc = (GameNPC)RuntimeHelpers.GetUninitializedObject(boss);
                 Assert.That(EncounterTargets.DisplacesBots(npc), Is.False, boss.Name + ": player-only as before");
             }
             // One switch per boss turns both on together, and off again.
             var vifil = (GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(Jailer));
+            EpicEncounterMechanics.SetFor("AllowBotDisplacement", "Jailer", false);
+            Assert.That(EncounterTargets.DisplacesBots(vifil), Is.False);
             EpicEncounterMechanics.SetFor("AllowBotDisplacement", "Jailer", true);
             Assert.That(EncounterTargets.DisplacesBots(vifil), Is.True);
             EpicEncounterMechanics.SetFor("AllowBotDisplacement", "Xanxicar", false);

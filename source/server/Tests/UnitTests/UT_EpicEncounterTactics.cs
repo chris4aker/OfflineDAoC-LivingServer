@@ -445,8 +445,11 @@ namespace DOL.UnitTests
             {
                 PropertyInfo p = typeof(EpicEncounterMechanics).GetProperty(name, BindingFlags.Public | BindingFlags.Static);
                 Assert.That(p, Is.Not.Null, name);
-                // 1.2: the Earthmenders' class rule is on; the raid assigns classes to it (UT_EpicEncounterTactics3).
-                Assert.That((bool)p.GetValue(null), Is.EqualTo(name == nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle)), name);
+                // 1.2: the Earthmenders' class rule is on; the raid assigns classes to it (UT_EpicEncounterTactics3). Epic wave 2
+                // (UT_EpicWave2MidHib): the Tuscar/Kula twin heal, Kvasir's cold heal and Govannon's full health.
+                bool played = name is nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle) or nameof(EpicEncounterMechanics.AllowTuscarTwinHeal) or
+                    nameof(EpicEncounterMechanics.AllowKvasirColdHeal) or nameof(EpicEncounterMechanics.AllowGovannonFullHealth);
+                Assert.That((bool)p.GetValue(null), Is.EqualTo(played), name);
             }
         }
 
