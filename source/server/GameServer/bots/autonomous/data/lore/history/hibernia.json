@@ -115,8 +115,10 @@
         "black-lady",
         "blue-lady",
         "chieftain-caimheul",
+        "dreaded-ursine",
         "red-lady",
-        "tawi-shon"
+        "tawi-shon",
+        "tinka"
       ]
     },
     {
@@ -141,6 +143,7 @@
         "hibernia-wilds"
       ],
       "bosses": [
+        "atur",
         "blight",
         "cailean",
         "develin",
@@ -153,11 +156,13 @@
         "juggernaut",
         "kunsgnos",
         "lhia",
+        "lobigan",
         "luriquay",
         "madawg",
         "melancholic-fairy-queen",
         "mikka",
         "orey-eyed-oghamist",
+        "overseer-of-the-silver-hand",
         "shadowgnash",
         "skeaghshee",
         "uafas-capall",
@@ -423,7 +428,8 @@
         "black-lady",
         "blue-lady",
         "chieftain-caimheul",
-        "red-lady"
+        "red-lady",
+        "tinka"
       ]
     },
     {
@@ -497,6 +503,7 @@
         "muire-tomb"
       ],
       "bosses": [
+        "atur",
         "geas-bound-protector",
         "giant-caithor",
         "tawi-shon"
@@ -516,7 +523,10 @@
       "places": [
         "coruscating-mine"
       ],
-      "bosses": []
+      "bosses": [
+        "lobigan",
+        "overseer-of-the-silver-hand"
+      ]
     },
     {
       "id": "old-troubles",
@@ -587,7 +597,9 @@
         "spraggon-den",
         "treibh-caillte"
       ],
-      "bosses": []
+      "bosses": [
+        "dreaded-ursine"
+      ]
     }
   ]
 }

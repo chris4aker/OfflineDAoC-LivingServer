@@ -195,7 +195,11 @@
       "Written below, in a different hand, by whoever found the collar: I am a miner of Howth. I took this off a groom in the upper workings, after. He was not wearing it any more by then. My grandfather dug the Glitter before the court came, and he said the vein was cold on a hot day and rang at night, and that they were not following it, it was leading them. I have been to the sealed door on our side. You can hear picks. Our door was sealed from inside."
     ]
   },
-  "bosses": [],
+  "bosses": [
+    "atur",
+    "lobigan",
+    "overseer-of-the-silver-hand"
+  ],
   "era": "hib-age-of-the-veil",
   "factions": [
     "unseelie-court"

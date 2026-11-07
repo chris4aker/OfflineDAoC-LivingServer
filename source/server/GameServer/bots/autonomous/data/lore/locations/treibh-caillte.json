@@ -190,7 +190,9 @@
       "Last, Hervelina, who gave me her list and her tea. She came into the caves to be alone and stayed because, she says, someone ought to keep count. She told me of the forge below her floor, which the Dreaded Ursine guards, and which the first smiths of the tribe lit before it split. It is still warm. Hursk the alchemist has worked beside it all his life and is no nearer its secret. She thinks the lost tribe is waiting to be lit again. The men of Connla who send the young down for the Faqist say otherwise. They say the forge is waiting for someone else."
     ]
   },
-  "bosses": [],
+  "bosses": [
+    "dreaded-ursine"
+  ],
   "era": "hib-the-old-families",
   "factions": [
     "wild-tribes"
