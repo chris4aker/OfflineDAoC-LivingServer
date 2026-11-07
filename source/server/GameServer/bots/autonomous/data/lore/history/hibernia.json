@@ -32,14 +32,17 @@
         "arracht",
         "badb",
         "balere",
+        "ceracor",
         "coimirceoir",
         "cronwort",
         "curengkur",
         "elro-the-ancient",
+        "eraliwyr",
         "fanged-sinach",
         "fuilwort",
         "gneiss",
         "goldenleaf",
+        "helminth",
         "ixthiar-broodmother",
         "marfoirwort",
         "mollunero",
@@ -134,9 +137,16 @@
         "chieftain-caimheul",
         "danderpaw",
         "dreaded-ursine",
+        "driff-tinel",
+        "hursk-the-alchemist",
+        "king-vian",
+        "lair-overseer",
+        "pericolias-the-dreaded",
         "red-lady",
         "tawi-shon",
-        "tinka"
+        "thorg",
+        "tinka",
+        "webweaver"
       ]
     },
     {
@@ -169,6 +179,7 @@
       "bosses": [
         "abbadona",
         "ailbe",
+        "allyn",
         "amadan",
         "amadan-dubh",
         "aoife",
@@ -177,10 +188,12 @@
         "cailean",
         "curmie",
         "develin",
+        "duga",
         "enan",
         "evern",
         "faerie-queen",
         "flame",
+        "frat",
         "geas-bound-protector",
         "giant-caithor",
         "green-maw",
@@ -196,9 +209,11 @@
         "muroi",
         "niy-the-overseer",
         "orey-eyed-oghamist",
+        "overman-regnal",
         "overseer-of-the-silver-hand",
         "rioldna",
         "sarsoureh",
+        "scratch",
         "shadowgnash",
         "skeaghshee",
         "smidget",
@@ -206,6 +221,8 @@
         "tiomoid",
         "touched",
         "uafas-capall",
+        "underviewer-treeal",
+        "viewer-etol",
         "wyvernic-wraith"
       ]
     },
@@ -663,8 +680,15 @@
         "silvermine-mountains"
       ],
       "bosses": [
+        "allyn",
+        "duga",
+        "frat",
         "lobigan",
-        "overseer-of-the-silver-hand"
+        "overman-regnal",
+        "overseer-of-the-silver-hand",
+        "scratch",
+        "underviewer-treeal",
+        "viewer-etol"
       ]
     },
     {
@@ -803,7 +827,17 @@
         "treibh-caillte"
       ],
       "bosses": [
-        "dreaded-ursine"
+        "ceracor",
+        "dreaded-ursine",
+        "driff-tinel",
+        "eraliwyr",
+        "helminth",
+        "hursk-the-alchemist",
+        "king-vian",
+        "lair-overseer",
+        "pericolias-the-dreaded",
+        "thorg",
+        "webweaver"
       ]
     }
   ]

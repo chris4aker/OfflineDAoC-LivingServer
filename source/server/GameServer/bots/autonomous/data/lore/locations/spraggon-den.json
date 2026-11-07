@@ -180,7 +180,9 @@
       "Last, a warning I was given and pass on. There is a man in the den who is not a spraggon. His name is Eraliwyr and he keeps a lamp and a table of jars beyond the northern crossing, where the spraggon Spriggit crackles with frost. He was very civil to me. He offered me a cup. I did not drink it, and I am alive. The grove in Tir na Nog says the woman Viraniel took a cup from him once, and is not. Be civil back, and keep your hands empty."
     ]
   },
-  "bosses": [],
+  "bosses": [
+    "eraliwyr"
+  ],
   "era": "hib-before-the-names",
   "factions": [
     "wild-tribes"

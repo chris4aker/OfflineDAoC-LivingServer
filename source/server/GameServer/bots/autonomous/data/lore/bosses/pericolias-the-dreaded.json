@@ -1,0 +1,89 @@
+{
+  "id": "pericolias-the-dreaded",
+  "name": "Pericolias the dreaded",
+  "npcNames": [
+    "Pericolias the dreaded"
+  ],
+  "locationId": "treibh-caillte",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Pericolias the dreaded: level 43, a spider body (model 117, the arachnites'), size 51, at about 34,890/27,870 (z 16,097) in the far north-east among arachnites (30-31) and earth golems (39); Ceracor is under 1,000 away; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 224 (read 2026-11-06)"
+    },
+    {
+      "text": "Immortal Gift (Kinney, Ascatinius in Connla): kill the befuddled rock golem on the golem teleporters to reach Hervelina; 'Kill Driff Tinel.' (his blood to Hervelina); 'Kill Ceracor.' (a piece of rock golem); 'Kill Pericolias the Dreaded.' (his fang); 'Find the alchemy book in Hursk the Alchemist's room.' and read it; kill the Dreaded Ursine to reach the forge; use the forge to obtain the Faqist.",
+      "provenance": "game",
+      "source": "DataQuest 'Immortal Gift' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Pericolias is the smallest of the three great spiders of Treibh Caillte and the most feared, which is why Hervelina's list gives him the title the others do not get. The name is not a Hibernian one. Hervelina thinks some scholar of the elves put it on him long ago from an old southern tongue, a word for danger, and that it stuck because nobody who had met him could think of a better.\n\nHe keeps the far north-east of the caves, where the arachnites of his brood spin their webs between the earth golems as other spiders spin between trees. The golems stand there with the stone's patience and do not seem to mind being used as posts, and the arachnites do not trouble them. The ursine patrols do not go that way at all.\n\nWhat makes him dreaded is the fang. The ursine say a scratch from it does not kill quickly but goes on killing, and the old ursine smiths, before the quarrel, are said to have quenched their best work in what the fang let fall. That is why the alchemists of Connla want it, and why Hervelina, who will not lift a hand to anything in the caves, keeps a cloth soaked in vinegar ready for whoever brings one up to her ledge.",
+  "legend": "Pericolias the dreaded (43) is a named spider in the far north-east of Treibh Caillte (about 34.9k/27.9k), in a nest of arachnites (30-31) with earth golems (39) standing all round; Ceracor (42) is under 1,000 away. Immortal Gift wants his fang (give it to Hervelina). Clear the golems and spiders round him first. A group of low to mid 40s. Plain spawn, no script, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "(the small grey spider rises on its legs)",
+      "(webs shiver between the golems)"
+    ],
+    "phases": [],
+    "death": [
+      "(Pericolias curls in on itself and is still)"
+    ],
+    "slay": [
+      "(the dreaded one drinks)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Webs strung between standing stone men."
+    ],
+    "phases": [],
+    "realmFirstKill": "Pericolias the dreaded is dead in his web."
+  },
+  "botLines": {
+    "briefing": [
+      "pericolias is 43, spider in the far north east",
+      "earth golems and arachnites all round. ceracor is close"
+    ],
+    "aftermathWin": [
+      "pericolias down. [fang for hervelina|grats]",
+      "golems didnt join. [nice|lucky]"
+    ],
+    "aftermathLoss": [
+      "the golems joined. [rip|ouch]",
+      "ceracor came too. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] a scratch from pericolias goes on killing after you leave",
+      "the ursine smiths used to quench blades in what his fang let fall"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Pericolias",
+    "text": "The smallest and most feared of Treibh Caillte's great spiders, in the far north-east among the earth golems. His name is an old southern word for danger; his fang goes into the Faqist."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Pericolias the dreaded in Treibh Caillte in {minutes} minutes.",
+    "loss": "Pericolias the dreaded turned back {realm}'s band under {raidLeader} in Treibh Caillte after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "wild-tribes"
+  ],
+  "related": [
+    {
+      "id": "ceracor",
+      "relation": "the waking stone near his nest"
+    },
+    {
+      "id": "dreaded-ursine",
+      "relation": "the forge his fang goes to"
+    }
+  ],
+  "aliases": [
+    "Pericolias the Dreaded",
+    "Pericolias"
+  ]
+}

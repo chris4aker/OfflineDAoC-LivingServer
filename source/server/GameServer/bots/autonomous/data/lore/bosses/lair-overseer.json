@@ -1,0 +1,85 @@
+{
+  "id": "lair-overseer",
+  "name": "Lair Overseer",
+  "npcNames": [
+    "Lair Overseer"
+  ],
+  "locationId": "treibh-caillte",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Lair Overseer: level 39, an ursine body (model 393), size 64, at about 31,630/34,050 (z 13,963) with ursine thralls (35) and an ursine dweller, warrior, sorcerer and shaman (36-39) round him, about 1,500 from King Vian; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 224 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: the Lair Overseer counts the thralls every night, and the count is always the same.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The ursine have their own word for the office, and nobody outside the caves has ever learned it. The realm calls him the Lair Overseer. He keeps the door below King Vian's hall, and the thralls of the south work in sight of him, and every night when the work is done he counts them in.\n\nThe count is always the same. That is the one thing everyone who has watched him agrees on, and the thing the firbolg of Lough Derg tell in their own way. On the first night of winter, they say, when the bowl of milk is set out at the long tunnel's mouth, one of the thralls of the south goes out to it in the dark and drinks, and comes back before the count, and the Lair Overseer counts the same number he always counts, and either he has not noticed in all these years or he has noticed every year and said nothing to the king.\n\nHervelina, who has seen the bowl in the morning, says it is always empty, and that the lair worms do not drink milk. She also says that the Lair Overseer is the only ursine in the caves who has ever brought her anything: a loaf, once, in a hard season, left on the golem stair without a word. She keeps the cloth it was wrapped in. She has not decided what it means.",
+  "legend": "The Lair Overseer (39) stands with a crowd of thralls (35) and a few ursine (a dweller, a warrior, a sorcerer and a shaman, 36-39) in the south of Treibh Caillte (about 31.6k/34.0k), about 1,500 from King Vian (43). Clear the thralls first, then take him without drifting toward the king's hall. A group of high 30s. Plain spawn, no script, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "You are not in the count.",
+      "Back in line. All of you."
+    ],
+    "phases": [],
+    "death": [
+      "The count... it was always... the same..."
+    ],
+    "slay": [
+      "One fewer. The king will not hear it from me."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An ursine counting thralls at the king's door."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Lair Overseer has fallen. The count is short."
+  },
+  "botLines": {
+    "briefing": [
+      "lair overseer is 39 south, thralls and a few ursine round him",
+      "king vian is about 1500 off, dont drift"
+    ],
+    "aftermathWin": [
+      "overseer down. [count's short|grats]",
+      "didnt pull the king. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "the king's hall woke up. [rip|ouch]",
+      "thralls everywhere. [oops|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] a thrall drinks the firbolg milk every winter and the overseer never counts it",
+      "the lair overseer once left hervelina a loaf on the golem stair"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Lair Overseer",
+    "text": "The ursine officer at King Vian's door in Treibh Caillte, who counts the thralls in every night. The count is always the same, even on the night the firbolg bowl of milk is drunk."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Lair Overseer in Treibh Caillte in {minutes} minutes.",
+    "loss": "Lair Overseer turned back {realm}'s band under {raidLeader} in Treibh Caillte after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "wild-tribes"
+  ],
+  "related": [
+    {
+      "id": "king-vian",
+      "relation": "the king at whose door he counts"
+    },
+    {
+      "id": "driff-tinel",
+      "relation": "the keeper of the eastern thralls"
+    }
+  ]
+}
