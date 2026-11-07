@@ -88,7 +88,7 @@
     "keyword": "Develin",
     "text": "Master of the Cursed Forest's pookas, said to be a man who made a bargain with them. He shows himself only at night, after enough of them die."
   },
-  "bookPage": "From Siobhán of Ardee's list, a story grandmother told every child: Develin went into the court wood to make a bargain with the pookas, and won. Never win a bargain with the pookas, she said. If you lose, you lose a cow. If you win, they keep you, because you have proved yourself one of them. Develin has been their master ever since and has hated every night of it. He only comes out when his servants are hurt, and only in the dark. The realm's warriors who kill him say he seems relieved. Grandmother said that was the moral, and sent us to bed.",
+  "bookPage": "From Derbáil of Ardee's list, a story grandmother told every child: Develin went into the court wood to make a bargain with the pookas, and won. Never win a bargain with the pookas, she said. If you lose, you lose a cow. If you win, they keep you, because you have proved yourself one of them. Develin has been their master ever since and has hated every night of it. He only comes out when his servants are hurt, and only in the dark. The realm's warriors who kill him say he seems relieved. Grandmother said that was the moral, and sent us to bed.",
   "chronicle": {
     "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Develin in {minutes} minutes.",
     "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Develin's head after {minutes} minutes."

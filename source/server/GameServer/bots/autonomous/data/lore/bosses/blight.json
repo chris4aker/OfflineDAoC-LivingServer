@@ -93,7 +93,7 @@
     "keyword": "Blight",
     "text": "The sickness of the Cursed Forest's earth. It comes as fire, rot and flesh, and then as a skeleton of every bone it ever took."
   },
-  "bookPage": "From Siobhán of Ardee's list: grandmother said there are three blights and every farmer knows two. The fire blight that scorches, the late blight that rots, and the third, which she would not name but called the blight in the flesh. The Cursed Forest has all three in its earth, she said, and a fourth thing that comes after them, built out of the bones of everything the first three killed. I asked how she knew. She said her own grandmother saw it stand up once, from the edge of the wood, and went home and burned every field she had.",
+  "bookPage": "From Derbáil of Ardee's list: grandmother said there are three blights and every farmer knows two. The fire blight that scorches, the late blight that rots, and the third, which she would not name but called the blight in the flesh. The Cursed Forest has all three in its earth, she said, and a fourth thing that comes after them, built out of the bones of everything the first three killed. I asked how she knew. She said her own grandmother saw it stand up once, from the edge of the wood, and went home and burned every field she had.",
   "chronicle": {
     "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Blight in {minutes} minutes.",
     "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Blight's head after {minutes} minutes."

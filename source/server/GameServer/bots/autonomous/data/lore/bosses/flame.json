@@ -84,7 +84,7 @@
     "keyword": "Flame",
     "text": "The ghost of a hearth-fire from the night the court wood broke. It burns on nothing and strikes at anything warm."
   },
-  "bookPage": "From Siobhán of Ardee's list: grandmother said there was a hearth at the heart of the court wood, with the bright folk on one side and the dark folk on the other, and that on the night the bargain broke nobody put the fire out. It has been burning on nothing ever since and walking about. Never cook over a fire in the Cursed Forest, she said, because you do not know whose fire it is. I have never cooked in any forest since. My husband thinks this is foolish. My husband has never seen a fire walk.",
+  "bookPage": "From Derbáil of Ardee's list: grandmother said there was a hearth at the heart of the court wood, with the bright folk on one side and the dark folk on the other, and that on the night the bargain broke nobody put the fire out. It has been burning on nothing ever since and walking about. Never cook over a fire in the Cursed Forest, she said, because you do not know whose fire it is. I have never cooked in any forest since. My husband thinks this is foolish. My husband has never seen a fire walk.",
   "chronicle": {
     "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Flame in {minutes} minutes.",
     "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Flame's head after {minutes} minutes."

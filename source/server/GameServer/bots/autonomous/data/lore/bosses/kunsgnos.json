@@ -85,7 +85,7 @@
     "keyword": "Kunsgnos",
     "text": "A siabra waterwalker of the Bog of Cullen who came to learn [Madawg]'s craft and stayed. He keeps the middle of the bog between Madawg and Saemus, studying the master and the master's failure."
   },
-  "bookPage": "From Siobhán of Ardee's list: the middle of the Cullen bog, if someone is walking on the black water. That is Kunsgnos, the siabra who came to learn Madawg's craft after Ysberin died, and stayed when the others went home. He keeps a hummock of drowned oak between Madawg's rise and the place where Saemus stands with his crystal, and walks out to look at Saemus most nights. The druids say he is learning both lessons, the craft and what it does to those who take it too quickly. If Madawg falls, he will be the magus by spring.",
+  "bookPage": "From Derbáil of Ardee's list: the middle of the Cullen bog, if someone is walking on the black water. That is Kunsgnos, the siabra who came to learn Madawg's craft after Ysberin died, and stayed when the others went home. He keeps a hummock of drowned oak between Madawg's rise and the place where Saemus stands with his crystal, and walks out to look at Saemus most nights. The druids say he is learning both lessons, the craft and what it does to those who take it too quickly. If Madawg falls, he will be the magus by spring.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Kunsgnos in the Bog of Cullen in {minutes} minutes.",
     "loss": "Kunsgnos turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."

@@ -161,7 +161,7 @@
           "source": "Living Server"
         },
         {
-          "text": "Siobhán of Ardee's grandmother's list of places not to go after dark is the realm's best-known record of the wilds' superstitions (never let a song in the Bog of Cullen finish; if you hear trumpets on Lough Gur after dark, go home).",
+          "text": "Derbáil of Ardee's grandmother's list of places not to go after dark is the realm's best-known record of the wilds' superstitions (never let a song in the Bog of Cullen finish; if you hear trumpets on Lough Gur after dark, go home).",
           "provenance": "original",
           "source": "Living Server"
         }
@@ -243,7 +243,7 @@
           "source": "Living Server"
         },
         {
-          "text": "Aoife ni Riain of Ardee's company ended the Black Lady's song and went on down the road to the Summoner's Hall, the first Hibernian company to reach it by Hibernia's own door; she set a stone from the road in the wall of the Ardee barracks.",
+          "text": "Sinech ni Riain of Ardee's company ended the Black Lady's song and went on down the road to the Summoner's Hall, the first Hibernian company to reach it by Hibernia's own door; she set a stone from the road in the wall of the Ardee barracks.",
           "provenance": "original",
           "source": "Living Server"
         }
@@ -373,7 +373,7 @@
           "source": "https://www.camelotherald.com/article/dark-destiny"
         },
         {
-          "text": "First autumn: Ruairí of Howth's forty went up and seven came home (the King's Law). Second winter: Aibhne found the king's flinch from heat, and the brazier on the Cullen road was lit. Third spring of the isles: Donnchadh of Ardee's hosting of a hundred and twenty held the four doors and the hills wept.",
+          "text": "First autumn: Conaing of Howth's forty went up and seven came home (the King's Law). Second winter: Ethne found the king's flinch from heat, and the brazier on the Cullen road was lit. Third spring of the isles: Dubthach of Ardee's hosting of a hundred and twenty held the four doors and the hills wept.",
           "provenance": "original",
           "source": "Living Server"
         }
@@ -668,7 +668,7 @@
     {
       "id": "sidhe-of-the-hall",
       "name": "The Sidhe of the Hall",
-      "summary": "Sidhe of the Summoner's Hall who serve the summoners as if they had forgotten whose they are (shared id); the realm tells that they stood aside for Aoife ni Riain's company.",
+      "summary": "Sidhe of the Summoner's Hall who serve the summoners as if they had forgotten whose they are (shared id); the realm tells that they stood aside for Sinech ni Riain's company.",
       "places": [],
       "bosses": []
     },

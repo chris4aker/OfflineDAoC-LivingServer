@@ -90,7 +90,7 @@
     "keyword": "Madawg",
     "text": "The siabra magus of the Bog of Cullen who killed Ysberin, the bog's path-keeper, for her staff of black bog-oak. The Druid Prince Lovernios wants the staff. The bog has changed around him."
   },
-  "bookPage": "From Siobhán of Ardee's list: the eastern rise of the Cullen bog, if the mist stands still on a windy night. That is Madawg. He killed Ysberin, who kept the bog paths for forty years with a staff of black bog-oak cut before the bog was a bog, and lost nobody. He came to her hut with the mist one night, and in the morning the staff was gone and we found her on her own path. The paths she kept have closed since. The druids say he woke what was in the wood. The siabra go to him to learn it.",
+  "bookPage": "From Derbáil of Ardee's list: the eastern rise of the Cullen bog, if the mist stands still on a windy night. That is Madawg. He killed Ysberin, who kept the bog paths for forty years with a staff of black bog-oak cut before the bog was a bog, and lost nobody. He came to her hut with the mist one night, and in the morning the staff was gone and we found her on her own path. The paths she kept have closed since. The druids say he woke what was in the wood. The siabra go to him to learn it.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Madawg in the Bog of Cullen in {minutes} minutes.",
     "loss": "Madawg turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."

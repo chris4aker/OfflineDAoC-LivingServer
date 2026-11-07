@@ -90,7 +90,7 @@
     "keyword": "Faerie Queen",
     "text": "Queen of the lesser faerie court that stayed in the [Cursed Forest] when the courts' bargain broke, with her five maids. She keeps half of a moonstone pledge; Brigit of the palace sends the young for it."
   },
-  "bookPage": "From Siobhán of Ardee's list: the eastern glade of the Cursed Forest, at any hour. A faerie court stayed there when the bargain broke, a queen and five maids as tall and pale as she, because she had taken half a moonstone as her share and could not carry it across the Veil. The other half is somewhere else in the wood. While the halves are apart the bargain holds, the bards say. She receives strangers and asks each one a single question. Those who came back will not say what it was. Those who were kept are why the glade is on my list.",
+  "bookPage": "From Derbáil of Ardee's list: the eastern glade of the Cursed Forest, at any hour. A faerie court stayed there when the bargain broke, a queen and five maids as tall and pale as she, because she had taken half a moonstone as her share and could not carry it across the Veil. The other half is somewhere else in the wood. While the halves are apart the bargain holds, the bards say. She receives strangers and asks each one a single question. Those who came back will not say what it was. Those who were kept are why the glade is on my list.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Faerie Queen in the Cursed Forest in {minutes} minutes.",
     "loss": "Faerie Queen turned back {realm}'s band under {raidLeader} in the Cursed Forest after {minutes} minutes."

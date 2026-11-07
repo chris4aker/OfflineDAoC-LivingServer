@@ -95,7 +95,7 @@
     "keyword": "Geas Bound",
     "text": "Two ghosts by the rocks past the Siopa fruit stand in the Bog of Cullen, bound by a geas to guard the hiding place of the Dagda's harp from every hand but the rightful one. They were never told how to know it."
   },
-  "bookPage": "From Siobhán of Ardee's list: the grey rocks past the Siopa fruit stand, after the fruit is sold. Two tall ghosts stand there. The old man at the back of Tir na mBeo says they hid the Dagda's harp in the bog in the age when the Veil was thin, and two of the company were put under a geas to keep it from every hand but the rightful one. A geas binds past death. The trouble is it is exact and stupid: they were never told how to know the rightful hand, so they keep it from everyone. Lobais sends the young anyway.",
+  "bookPage": "From Derbáil of Ardee's list: the grey rocks past the Siopa fruit stand, after the fruit is sold. Two tall ghosts stand there. The old man at the back of Tir na mBeo says they hid the Dagda's harp in the bog in the age when the Veil was thin, and two of the company were put under a geas to keep it from every hand but the rightful one. A geas binds past death. The trouble is it is exact and stupid: they were never told how to know the rightful hand, so they keep it from everyone. Lobais sends the young anyway.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Geas Bound Protector in the Bog of Cullen in {minutes} minutes.",
     "loss": "Geas Bound Protector turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."

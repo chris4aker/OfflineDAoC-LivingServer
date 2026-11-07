@@ -88,7 +88,7 @@
     "keyword": "Cliodna",
     "text": "A queen of the sídhe in the Bog of Cullen. Her song brings sleep, but not the healing kind any more. Bring purges."
   },
-  "bookPage": "From Siobhán of Ardee's list: walk faster on the Cullen road and hum something of your own. Grandmother said the queen of the bog was the most beautiful woman ever seen in this country, once, and that her three bright birds sang the sick to sleep and woke them well. She sings still, among the reeds, to a court that is not there. If you let her song finish, grandmother said, you sleep, and you do not wake well. The realm's clerics say she stuns. Grandmother said that is a cleric's word for it, and that clerics never listen to the end of anything.",
+  "bookPage": "From Derbáil of Ardee's list: walk faster on the Cullen road and hum something of your own. Grandmother said the queen of the bog was the most beautiful woman ever seen in this country, once, and that her three bright birds sang the sick to sleep and woke them well. She sings still, among the reeds, to a court that is not there. If you let her song finish, grandmother said, you sleep, and you do not wake well. The realm's clerics say she stuns. Grandmother said that is a cleric's word for it, and that clerics never listen to the end of anything.",
   "chronicle": {
     "win": "{realm} went into the Bog of Cullen under {raidLeader} and put down Queen Cliodna in {minutes} minutes.",
     "loss": "{realm}'s band under {raidLeader} came back from the Bog of Cullen without Queen Cliodna's head after {minutes} minutes."

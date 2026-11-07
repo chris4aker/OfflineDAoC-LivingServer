@@ -90,7 +90,7 @@
     "keyword": "Saemus",
     "text": "An outlaw of the Cullen bog who went to the siabra for power and got a black-green crystal that holds the bog, for a while. It has been eating him since. He stands alone west of the outlaws' island."
   },
-  "bookPage": "From Siobhán of Ardee's list: the western Cullen bog, if a man stands alone very still and the mist turns round his hand. That is Saemus. He came into the bog with Ide and went to the siabra for something faster than her plants, and they gave him a crystal cut from under the bog. For one summer nothing came near the outlaws' island. Then he did not come back to the fire, and Ide found him standing at the edge, holding it, and he did not know her. The druids say it is a mouth. Lovernios wants it.",
+  "bookPage": "From Derbáil of Ardee's list: the western Cullen bog, if a man stands alone very still and the mist turns round his hand. That is Saemus. He came into the bog with Ide and went to the siabra for something faster than her plants, and they gave him a crystal cut from under the bog. For one summer nothing came near the outlaws' island. Then he did not come back to the fire, and Ide found him standing at the edge, holding it, and he did not know her. The druids say it is a mouth. Lovernios wants it.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Saemus in the Bog of Cullen in {minutes} minutes.",
     "loss": "Saemus turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."

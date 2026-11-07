@@ -95,7 +95,7 @@
     "keyword": "Ide",
     "text": "Wise-woman of the Cullen outlaws on the eastern edge of the Bog of Cullen, taught by Ysberin. Her friend [Saemus] took a siabra crystal and went bad. She tells the realm everything and still will not let it in."
   },
-  "bookPage": "From Siobhán of Ardee's list: the outlaws' island on the east of the Cullen bog, at any hour. They do not trouble us. They fight anyone on their ground. Ide is their wise-woman, who learned the bog from Ysberin the path-keeper and keeps them alive with marsh-plants. She came into the bog with a friend, Saemus, who went to the siabra for something faster than plants and came back with a crystal. Lovernios the Druid Prince came down to ask her about it himself. She told him. She will not say Saemus's name in the camp.",
+  "bookPage": "From Derbáil of Ardee's list: the outlaws' island on the east of the Cullen bog, at any hour. They do not trouble us. They fight anyone on their ground. Ide is their wise-woman, who learned the bog from Ysberin the path-keeper and keeps them alive with marsh-plants. She came into the bog with a friend, Saemus, who went to the siabra for something faster than plants and came back with a crystal. Lovernios the Druid Prince came down to ask her about it himself. She told him. She will not say Saemus's name in the camp.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Ide in the Bog of Cullen in {minutes} minutes.",
     "loss": "Ide turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."

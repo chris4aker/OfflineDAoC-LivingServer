@@ -90,7 +90,7 @@
     "keyword": "Mikka",
     "text": "The map-reader of Caille in the Valley of Bri Leith, on a stone bench under an elm, who reads half a map and says what the other half must say. Mikka read Bran the Giant's map of Nuada's silver wrist."
   },
-  "bookPage": "From Siobhán of Ardee's list: Caille on the Bri Leith road, without a map. Mikka sits on the stone bench under the elm and reads the valley's secret maps, half at a time, and says what the other half must say. The Old Hermit says Mikka was on the bench before he came, and he came before the blademaster's grandfather. The young bring Bran the Giant's half of the Nuada map, and Mikka reads it and sends word to Chief Proinnsias of Howth. A stranger with no map has come to Caille for the wrong reason, my grandmother said.",
+  "bookPage": "From Derbáil of Ardee's list: Caille on the Bri Leith road, without a map. Mikka sits on the stone bench under the elm and reads the valley's secret maps, half at a time, and says what the other half must say. The Old Hermit says Mikka was on the bench before he came, and he came before the blademaster's grandfather. The young bring Bran the Giant's half of the Nuada map, and Mikka reads it and sends word to Chief Proinnsias of Howth. A stranger with no map has come to Caille for the wrong reason, my grandmother said.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Mikka in the Valley of Bri Leith in {minutes} minutes.",
     "loss": "Mikka turned back {realm}'s band under {raidLeader} in the Valley of Bri Leith after {minutes} minutes."

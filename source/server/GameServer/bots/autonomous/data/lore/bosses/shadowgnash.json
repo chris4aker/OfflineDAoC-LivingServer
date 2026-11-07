@@ -85,7 +85,7 @@
     "keyword": "Shadowgnash",
     "text": "The shadow-biter, a black stallion of the [Cursed Forest] left by the Unseelie as an unpaid debt when the courts' bargain broke. He grazes on shadows. Walk with the sun behind you."
   },
-  "bookPage": "From Siobhán of Ardee's list: the Cursed Forest at dusk, when the shadows are long. Shadowgnash grazes then. He is the black of the space under a door and has no shadow of his own, because he eats them: he puts his head down and tears at a tree's shadow as a horse tears grass, and the shadow is shorter after. He has done it to men. There are people on the forest's edge with no shadow, and we do not stand near them. The Unseelie left him when the bargain broke. Walk with the sun behind you. If your shadow gets shorter, run.",
+  "bookPage": "From Derbáil of Ardee's list: the Cursed Forest at dusk, when the shadows are long. Shadowgnash grazes then. He is the black of the space under a door and has no shadow of his own, because he eats them: he puts his head down and tears at a tree's shadow as a horse tears grass, and the shadow is shorter after. He has done it to men. There are people on the forest's edge with no shadow, and we do not stand near them. The Unseelie left him when the bargain broke. Walk with the sun behind you. If your shadow gets shorter, run.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Shadowgnash in the Cursed Forest in {minutes} minutes.",
     "loss": "Shadowgnash turned back {realm}'s band under {raidLeader} in the Cursed Forest after {minutes} minutes."
