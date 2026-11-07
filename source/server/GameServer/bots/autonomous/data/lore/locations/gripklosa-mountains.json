@@ -209,6 +209,9 @@
     ]
   },
   "bosses": [
-    "old-matriarch"
+    "old-matriarch",
+    "sha-ra",
+    "beskydda-grundar",
+    "kreg"
   ]
 }

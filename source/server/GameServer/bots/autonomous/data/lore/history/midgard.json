@@ -336,9 +336,11 @@
       "bosses": [
         "alchemist-phorzbreg",
         "alivor",
+        "anicho",
         "apologet-nesnuir",
         "asutri",
         "basilius",
+        "beskydda-grundar",
         "bokko",
         "boligar",
         "chief-tarek",
@@ -355,11 +357,13 @@
         "elder-council-guthlac",
         "elder-icelord-hjalmar",
         "elder-icelord-suttung",
+        "fisk",
         "fostra-orm",
         "goretooth",
         "gorp",
         "grindvaktare",
         "grul-mgnuk",
+        "hako",
         "hoden",
         "hurika",
         "icelord-agmundr",
@@ -370,9 +374,12 @@
         "issorden",
         "jailer-vifil",
         "jarala-den-kvinnlig",
+        "kampestein",
         "khrin",
         "king-tuscar",
+        "klippe",
         "koli",
+        "kreg",
         "luso",
         "magister-kurgol",
         "masher",
@@ -380,12 +387,18 @@
         "morbax",
         "old-matriarch",
         "olen-den-bartender",
+        "ornulf",
         "overste-callejo",
         "pathfinder-folar",
+        "pirmin",
         "queen-kula",
         "rolf",
         "sallours",
+        "sariloc",
+        "sha-ra",
+        "shiake",
         "shredclaw",
+        "smastein",
         "snemel-den-forsumlig",
         "storrow",
         "torst",
@@ -393,6 +406,7 @@
         "troloss",
         "trude",
         "ulif",
+        "unne",
         "unok",
         "uppsala",
         "urtzi",
@@ -434,6 +448,7 @@
         "tuscaran-glacier"
       ],
       "bosses": [
+        "anicho",
         "council-hord",
         "council-nokkvi",
         "council-otrygg",
@@ -444,6 +459,7 @@
         "elder-icelord-hjalmar",
         "elder-icelord-suttung",
         "fornfrusenen",
+        "hako",
         "icelord-agmundr",
         "icelord-hakr",
         "icelord-kvasir",
@@ -499,6 +515,7 @@
         "alchemist-phorzbreg",
         "apologet-nesnuir",
         "basilius",
+        "beskydda-grundar",
         "dagar",
         "fostra-orm",
         "grindvaktare",
@@ -568,6 +585,7 @@
         "iarnvidiur",
         "koli",
         "lydsyg",
+        "sariloc",
         "skoll",
         "stanga",
         "unok",
@@ -587,7 +605,8 @@
       "bosses": [
         "alivor",
         "asutri",
-        "chief-tarek"
+        "chief-tarek",
+        "shiake"
       ]
     },
     {
@@ -636,6 +655,7 @@
         "cronk",
         "gorp",
         "trude",
+        "unne",
         "uppsala",
         "wulok"
       ]
@@ -674,6 +694,7 @@
         "rolf",
         "rotodjur",
         "serk",
+        "sha-ra",
         "shredclaw",
         "stripe",
         "torst",
@@ -953,6 +974,7 @@
         "delling-crater"
       ],
       "bosses": [
+        "ornulf",
         "vorkald",
         "weaponmaster-zargin"
       ]
@@ -1011,6 +1033,7 @@
         "munin-sound"
       ],
       "bosses": [
+        "kreg",
         "ulif"
       ]
     },
@@ -1022,6 +1045,9 @@
         "munin-sound"
       ],
       "bosses": [
+        "fisk",
+        "pirmin",
+        "shiake",
         "urtzi"
       ]
     },
@@ -1044,6 +1070,17 @@
         "muspelheim"
       ],
       "bosses": []
+    },
+    {
+      "id": "caldera-elements",
+      "name": "The Elements of the Caldera",
+      "summary": "The living stones and vapours of Delling's crater floor: golems of pumice, basalt and obsidian, steam and vapour elements, and the three golems who keep the keys to the dwarven king's box.",
+      "places": [],
+      "bosses": [
+        "kampestein",
+        "klippe",
+        "smastein"
+      ]
     },
     {
       "id": "deep-ones",
