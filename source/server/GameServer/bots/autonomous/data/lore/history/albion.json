@@ -191,7 +191,8 @@
         "crystal-cave",
         "caer-sidi",
         "krondon",
-        "albion-shrouded-isles"
+        "albion-shrouded-isles",
+        "isle-of-glass"
       ],
       "bosses": [
         "duraek-the-empowered",
@@ -229,7 +230,8 @@
         "albion-shrouded-isles",
         "avalon-city",
         "campacorentin-forest",
-        "black-mountains-north"
+        "black-mountains-north",
+        "isle-of-glass"
       ],
       "bosses": [
         "morgana",
@@ -248,7 +250,8 @@
       "places": [
         "avalon-city",
         "crystal-cave",
-        "albion-shrouded-isles"
+        "albion-shrouded-isles",
+        "isle-of-glass"
       ],
       "bosses": [
         "duraek-the-empowered",
@@ -269,7 +272,8 @@
         "caer-sidi",
         "lyonesse",
         "black-mountains-north",
-        "snowdonia"
+        "snowdonia",
+        "isle-of-glass"
       ],
       "bosses": [
         "soul-reckoner",
@@ -400,7 +404,8 @@
         "black-mountains-south",
         "avalon-marsh",
         "hadrians-wall",
-        "snowdonia"
+        "snowdonia",
+        "isle-of-glass"
       ],
       "bosses": []
     },
