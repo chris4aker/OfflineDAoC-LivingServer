@@ -137,9 +137,10 @@ namespace DOL.GS
                     if (o.Now >= p.Deadline) return StartRecall(p, o, "walk back took too long");
                     if (o.UnderAttack)
                     {
-                        // Fighting on the way is progress of a kind: the window starts again when it walks on.
+                        // Fighting on the way is no stall: the progress window and the walk budget start again when it walks on.
                         p.NextProgressCheck = o.Now + ProgressWindowMilliseconds;
                         p.DistanceAtCheck = distance;
+                        p.Deadline = Math.Max(p.Deadline, o.Now + WalkBudget(distance));
                         return new(OrderKind.Fight);
                     }
                     if (o.Now >= p.NextProgressCheck)

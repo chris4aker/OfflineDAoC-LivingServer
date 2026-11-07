@@ -471,7 +471,14 @@ namespace DOL.AI.Brain
 			{
 				checkForMessangers = false;
 				DragonBreath();//Method that handle dragon kabooom breaths
-				// Combat teleports and throws are disabled for offline companion raids.
+				// 1.2: the wing-gust throw (OpenDAoC-Core 3513bad) behind AllowDragonThrow, on per dragon; thrown bots land and
+				// walk back (EncounterDisplacementRecovery).
+				if (CanThrow == false && !IsRestless && EpicEncounterMechanics.AllowDragonThrowFor(Body))
+				{
+					ECSGameTimer throwPlayer = new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ThrowRaiders), DragonEncounterThrow.NextDelay());//2-5 raiders every 60-80s
+					Body.TempProperties.SetProperty("golestandt_throw", throwPlayer);
+					CanThrow = true;
+				}
 				if (CanGlare == false && !Body.IsCasting && !IsRestless)
 				{
 					ECSGameTimer prepareGlare = new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(PrepareGlare), Util.Random(40000, 60000));//Glare at target every 40-60s
@@ -484,7 +491,14 @@ namespace DOL.AI.Brain
 					Body.TempProperties.SetProperty("golestandt_stun", prepareStun);
 					CanStun = true;
 				}
-				// Add summons are budgeted and staggered by EncounterAdds; no messenger waves.
+				// Add summons are budgeted and staggered by EncounterAdds. 1.2: the messenger waves (3513bad) only behind
+				// AllowDragonMessengers (off: the raid AI has no tactic for the runners yet).
+				if (Body.HealthPercent <= 50 && CanSpawnMessengers == false && !IsRestless && EpicEncounterMechanics.AllowDragonMessengersFor(Body))
+				{
+					ECSGameTimer spawnMessengers = new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(SpawnMssengers), Util.Random(80000, 90000));//spawn messengers at 50% hp every 80/90s
+					Body.TempProperties.SetProperty("golestandt_messengers", spawnMessengers);
+					CanSpawnMessengers = true;
+				}
 			}
 
 			if (!IsRestless)
@@ -804,12 +818,38 @@ namespace DOL.AI.Brain
 		}
 		#endregion
 
+		#region Wing-gust throw (1.2)
+		private int ThrowRaiders(ECSGameTimer timer)
+		{
+			if (Body.IsAlive && HasAggro && !IsRestless)
+				DragonEncounterThrow.Throw(Body, AggroList.Keys);
+			CanThrow = false;// set to false, so can throw again
+			return 0;
+		}
+		#endregion
+
 		#region Messengers
 		private int SpawnMssengers(ECSGameTimer timer)
-        {
-            // Retired callback: even a stale timer cannot create another wave.
-            return 0;
-        }
+		{
+			// Restored (3513bad) behind AllowDragonMessengers; a timer left over after the switch is turned off spawns nothing.
+			if (!EpicEncounterMechanics.AllowDragonMessengersFor(Body) || !Body.IsAlive || !HasAggro)
+			{
+				CanSpawnMessengers = false;
+				return 0;
+			}
+			for (int i = 0; i <= Util.Random(3, 5); i++)
+			{
+				GolestandtMessenger messenger = new GolestandtMessenger();
+				messenger.X = 391345 + Util.Random(-100, 100);
+				messenger.Y = 755661 + Util.Random(-100, 100);
+				messenger.Z = 410;
+				messenger.Heading = Body.Heading;
+				messenger.CurrentRegion = Body.CurrentRegion;
+				messenger.AddToWorld();
+			}
+			CanSpawnMessengers = false;
+			return 0;
+		}
 		#endregion
 
 		#region Spells
@@ -1256,9 +1296,31 @@ namespace DOL.AI.Brain
 			return 0;
 		}
 		private protected void SpawnGraniteGiants()
-        {
-            // Retired reinforcement chain. DragonEncounterAdds is the only summon owner.
-        }
+		{
+			// Restored (3513bad) behind AllowDragonMessengers: where its path ends a messenger calls its adds. They join the
+			// dragon's add list, so a reset clears them with the messengers.
+			if (!EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowDragonMessengers), "AlbGolestandt"))
+				return;
+			for (int i = 0; i <= Util.Random(3, 5); i++)
+			{
+				GolestandtSpawnedAdd add = new GolestandtSpawnedAdd();
+				add.X = Body.X + Util.Random(-200, 200);
+				add.Y = Body.Y + Util.Random(-200, 200);
+				add.Z = Body.Z;
+				add.Heading = Body.Heading;
+				add.CurrentRegion = Body.CurrentRegion;
+				if (ChoosePath1)
+					add.PackageID = "ChoosePath1";
+				if (ChoosePath2)
+					add.PackageID = "ChoosePath2";
+				if (ChoosePath3)
+					add.PackageID = "ChoosePath3";
+				if (ChoosePath4)
+					add.PackageID = "ChoosePath4";
+				if (add.AddToWorld() && !AlbGolestandtBrain.DragonAdds.Contains(add))
+					AlbGolestandtBrain.DragonAdds.Add(add);
+			}
+		}
 	}
 }
 
