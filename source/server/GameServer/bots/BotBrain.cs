@@ -1369,6 +1369,10 @@ namespace DOL.AI.Brain
             if (AutonomousStuckWatchdog.Observe(BotBody))
                 return;
 
+            // 1.2: thrown, teleported or jailed by an encounter script: land, then get back to the raid (or wait in the jail).
+            if (EncounterDisplacementRecovery.Think(BotBody))
+                return;
+
             FaceMeleeTarget();
 
             // put away for its player's horse ride: nothing to do until it is back at the player's side. Checked on every
@@ -5404,6 +5408,16 @@ namespace DOL.AI.Brain
                     numNeedHealing = Math.Max(1, numNeedHealing);
                     if (raidPatient.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
                 }
+            }
+
+            // 1.2: a raider an encounter just threw, teleported or jailed comes first (EncounterDisplacementRecovery.PreferPatient).
+            GameLiving displacedPatient = EncounterDisplacementRecovery.DisplacedPatient(BotBody, spellTarget, InSupportReach);
+            if (displacedPatient != null)
+            {
+                spellTarget = displacedPatient;
+                amountToHeal = Math.Max(amountToHeal, displacedPatient.MaxHealth - displacedPatient.Health);
+                numNeedHealing = Math.Max(1, numNeedHealing);
+                if (displacedPatient.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
             }
 
             // Emergency heal

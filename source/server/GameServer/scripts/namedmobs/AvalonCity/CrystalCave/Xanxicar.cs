@@ -221,7 +221,7 @@ namespace DOL.AI.Brain
 					if (RandomTarget.IsAlive && RandomTarget != null && HasAggro)
 					{
 						BroadcastMessage(RandomTarget.Name + " is hurled into the air!");
-						RandomTarget.MoveTo(62, 32338, 32387, 16539, 1830);
+						EncounterDisplacement.Move(RandomTarget, 62, 32338, 32387, 16539, 1830, DisplacementKind.Throw, Body);
 						Port_Enemys.Remove(RandomTarget);
 					}
 				}

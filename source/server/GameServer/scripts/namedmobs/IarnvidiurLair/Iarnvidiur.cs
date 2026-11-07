@@ -140,10 +140,10 @@ namespace DOL.AI.Brain
 			{
 				switch (Util.Random(1, 4))
 				{
-					case 1: TeleportTarget.MoveTo(161, 12563, 13450, 18537, 2997); break;
-					case 2: TeleportTarget.MoveTo(161, 15212, 13331, 18537, 920); break;
-					case 3: TeleportTarget.MoveTo(161, 16958, 13269, 18537, 988); break;
-					case 4: TeleportTarget.MoveTo(161, 11829, 13530, 18537, 2985); break;
+					case 1: EncounterDisplacement.Move(TeleportTarget, 161, 12563, 13450, 18537, 2997, DisplacementKind.Teleport, Body); break;
+					case 2: EncounterDisplacement.Move(TeleportTarget, 161, 15212, 13331, 18537, 920, DisplacementKind.Teleport, Body); break;
+					case 3: EncounterDisplacement.Move(TeleportTarget, 161, 16958, 13269, 18537, 988, DisplacementKind.Teleport, Body); break;
+					case 4: EncounterDisplacement.Move(TeleportTarget, 161, 11829, 13530, 18537, 2985, DisplacementKind.Teleport, Body); break;
 				}
 				Port_Enemys.Remove(TeleportTarget);
 				if (oldTarget != null) Body.TargetObject = oldTarget; //return to old target

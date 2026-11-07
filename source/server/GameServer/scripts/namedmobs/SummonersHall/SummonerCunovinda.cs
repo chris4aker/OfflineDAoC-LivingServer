@@ -231,7 +231,7 @@ namespace DOL.AI.Brain
 				Body.StopFollowing();//stop follow
 				Body.CastSpell(CunovindaBolt, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells),false);//cast bolt
 
-				RandomTarget.MoveTo(Body.CurrentRegionID, 24874, 36116, 17060, 3065);//port player to loc
+				EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 24874, 36116, 17060, 3065, DisplacementKind.Teleport, Body);//port player to loc
 
 				if(Body.TargetObject != null && Body.TargetObject != RandomTarget)
 					Body.TargetObject = RandomTarget;//set target as randomtarget

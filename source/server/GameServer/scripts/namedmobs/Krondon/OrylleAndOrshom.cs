@@ -129,7 +129,7 @@ namespace DOL.AI.Brain
 					RandomTarget = Target;
 					if (RandomTarget.IsAlive && RandomTarget != null)
 					{
-						RandomTarget.MoveTo(61, 31406, 69599, 15605, 2150);
+						EncounterDisplacement.Move(RandomTarget, 61, 31406, 69599, 15605, 2150, DisplacementKind.Throw, Body);
 						Port_Enemys.Remove(RandomTarget);
 					}
 				}

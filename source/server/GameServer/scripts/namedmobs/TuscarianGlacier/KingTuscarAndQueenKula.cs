@@ -277,7 +277,7 @@ namespace DOL.AI.Brain
                         RandomTarget = Target;
                         if (RandomTarget.IsAlive && RandomTarget != null)
                         {
-                            if (EpicEncounterMechanics.AllowDisplacement) RandomTarget.MoveTo(160, 34128, 56095, 11898, 2124);
+                            if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(RandomTarget, 160, 34128, 56095, 11898, 2124, DisplacementKind.Teleport, Body);
                             Port_Enemys.Remove(RandomTarget);
                             RandomTarget = null;//reset random target to null
                             IsTargetPicked = false;
@@ -290,7 +290,7 @@ namespace DOL.AI.Brain
         public static bool message1 = false;
         public void PlayerInCenter()
         {
-            if (!EpicEncounterMechanics.AllowPositionPuzzle) return;
+            if (!EpicEncounterMechanics.AllowPositionPuzzleFor(Body)) return;
             Point3D FrostPoint = new Point3D();
             FrostPoint.X = 34128; FrostPoint.Y = 56095; FrostPoint.Z = 11989;
             foreach(GamePlayer player in Body.GetPlayersInRadius(8000))
