@@ -158,6 +158,218 @@
         "lines": [
           "The high lord's aura drinks the light from your wards."
         ]
+      },
+      {
+        "name": "the Gate crossing",
+        "x": 39793,
+        "y": 32004,
+        "z": 16493,
+        "radius": 1500,
+        "lines": [
+          "Every road in the hollow meets at this crossing.",
+          "Knight, flayer and questioner keep the Gate together.",
+          "The floor is more notch than stone."
+        ]
+      },
+      {
+        "name": "the East Ward",
+        "x": 44108,
+        "y": 30160,
+        "z": 16151,
+        "radius": 3000,
+        "lines": [
+          "Three tunnels meet here, between three halls.",
+          "The Ward belongs to no lord. It is kept between."
+        ]
+      },
+      {
+        "name": "the Marshal's war table",
+        "x": 40000,
+        "y": 43026,
+        "z": 15493,
+        "radius": 1200,
+        "lines": [
+          "A war table. The whole hollow is cut into it.",
+          "Two small officers lean over the stone, counting."
+        ]
+      },
+      {
+        "name": "the approach and the Rolls",
+        "x": 45057,
+        "y": 45808,
+        "z": 15470,
+        "radius": 2500,
+        "lines": [
+          "Ten walls of lines run along the slope.",
+          "A clerk with a chisel stands below the newest wall.",
+          "The Roll of the Visitors. Every line already struck."
+        ]
+      },
+      {
+        "name": "the Queen's chair",
+        "x": 45546,
+        "y": 51300,
+        "z": 15469,
+        "radius": 800,
+        "lines": [
+          "A black chair stands by the door. No one sits in it.",
+          "The cushion on the chair is fresh."
+        ]
+      },
+      {
+        "name": "the chapter house",
+        "x": 16100,
+        "y": 19199,
+        "z": 17772,
+        "radius": 2000,
+        "lines": [
+          "Black knights stand at their posts, unmoving.",
+          "A voice inside is reciting the chapter roll."
+        ]
+      },
+      {
+        "name": "the prince's cloister",
+        "x": 36800,
+        "y": 16100,
+        "z": 16045,
+        "radius": 1500,
+        "lines": [
+          "Grey questioners wait in the cloister, slates in hand.",
+          "A murmur, too low to make out, fills the cloister."
+        ]
+      },
+      {
+        "name": "the far cloister",
+        "x": 30500,
+        "y": 13300,
+        "z": 15900,
+        "radius": 1500,
+        "lines": [
+          "In the far cloister nobody hurries, and nobody leaves.",
+          "Cells line the walls. Some are kept clean."
+        ]
+      },
+      {
+        "name": "the north road",
+        "x": 37200,
+        "y": 10400,
+        "z": 15330,
+        "radius": 1500,
+        "lines": [
+          "The hollow ends here in raw rock.",
+          "Questioners watch the road and the rock beyond it."
+        ]
+      },
+      {
+        "name": "the Mutilators' pit",
+        "x": 17630,
+        "y": 32400,
+        "z": 16010,
+        "radius": 2500,
+        "lines": [
+          "Racks of hooks and mauls line the walls, very clean.",
+          "Wings beat somewhere above the pit."
+        ]
+      },
+      {
+        "name": "the pit's far passage",
+        "x": 15000,
+        "y": 41800,
+        "z": 17376,
+        "radius": 1200,
+        "lines": [
+          "A passage leads out of the pit. Two flayers keep it.",
+          "The Hook goes out this way to fetch."
+        ]
+      },
+      {
+        "name": "the princess's well",
+        "x": 19925,
+        "y": 24829,
+        "z": 17000,
+        "radius": 700,
+        "lines": [
+          "A covered well. Something pale waits beside the water.",
+          "Perfume, and under it, cold water."
+        ]
+      },
+      {
+        "name": "the records",
+        "x": 33049,
+        "y": 35100,
+        "z": 19821,
+        "radius": 900,
+        "lines": [
+          "Slates are stacked to the ceiling, every one written.",
+          "A small knight-shaped figure bends over a slate."
+        ]
+      },
+      {
+        "name": "the Director's chambers",
+        "x": 32575,
+        "y": 33424,
+        "z": 17798,
+        "radius": 1200,
+        "lines": [
+          "Shadows move on the walls that nothing is casting.",
+          "Braziers burn at every height. Something flits between."
+        ]
+      },
+      {
+        "name": "the north kitchen",
+        "x": 38652,
+        "y": 17827,
+        "z": 17775,
+        "radius": 700,
+        "lines": [
+          "A kitchen that smells of coals and something rotting.",
+          "Pots simmer. Nobody is stirring them."
+        ]
+      },
+      {
+        "name": "above the rocot rooms",
+        "x": 18700,
+        "y": 31750,
+        "z": 21853,
+        "radius": 900,
+        "lines": [
+          "The room is warm and close, and smells of coals.",
+          "Something large and soft shifts in the dark."
+        ]
+      },
+      {
+        "name": "the Albion hall",
+        "x": 36793,
+        "y": 24389,
+        "z": 21905,
+        "radius": 1500,
+        "lines": [
+          "Imp stalls ring the hall. Seals change hands here.",
+          "An imp who was once great sulks among the stalls.",
+          "The aleax of Albion keeps the door."
+        ]
+      },
+      {
+        "name": "the Midgard hall",
+        "x": 14411,
+        "y": 14198,
+        "z": 22406,
+        "radius": 1500,
+        "lines": [
+          "Imp stalls ring the hall. The seals are cold.",
+          "The aleax of Midgard keeps the door."
+        ]
+      },
+      {
+        "name": "the Hibernia hall",
+        "x": 42299,
+        "y": 41416,
+        "z": 20361,
+        "radius": 1500,
+        "lines": [
+          "Imp stalls ring the hall. Seals lie on the floor.",
+          "The aleax of Hibernia keeps the door."
+        ]
       }
     ]
   },
@@ -165,12 +377,17 @@
     "lore": [
       "legion keeps a court down there like a king. princes, high lords, dukes, earls, marquises, and every demon knows its rank",
       "the imps in df live by stealing, [heard|word is]. too weak for anything else. [the court is strict|its a pecking order]",
-      "kill all the princes in df and the tunnels shake. [the worm comes up|beliathan comes]"
+      "kill all the princes in df and the tunnels shake. [the worm comes up|beliathan comes]",
+      "the demon court in df has [a roll of precedence|ten rolls cut in the walls]. fall off your line and legion eats you",
+      "the gate in df is kept by [all three demon orders together|knights, mutilators and inquisitors], since their civil war",
+      "mystemas was one of the strongest demons in legion's army. [now hes an imp|got shrunk for jumping the gun]"
     ],
     "rumour": [
       "[heard|someone said] the df door changes hands with the keeps. dont release if it flips while youre in",
       "behemoth is level 99, [heard|they say]. nobody kills it. nobody",
-      "mutilator xagalith has the most honest title in the whole of darkness falls"
+      "mutilator xagalith has the most honest title in the whole of darkness falls",
+      "[heard|word is] the empty black chair by legion's door is the demon queen's. [dont sit in it|nobody sits in it]",
+      "the imps in df steal everything they sell. [from the dukes|from duke aypol mostly]"
     ],
     "tell": [
       "darkness falls? the demon dungeon under all three realms. opens for whoever holds the most keeps. legion at the bottom",
@@ -188,7 +405,21 @@
       "princes": "Abdin, Asmoien and Ba'alorien, and the princess Nahemah. Two of the princes eat the beasts that follow pet-masters, and grow stronger by them. When all four are dead, the tunnels shake and Beliathan comes.",
       "albion's door": "The Church calls it the Mouth. Its door lies in the castle ruins in Camelot Hills, an hour from the king's seat, and it opens only when Albion holds the frontier. Go down as a crusader if you must. Come back as one.",
       "midgard's door": "It is no hall of Hel's. Hel keeps her dead and feasts them; down there they are eaten. Our door lies in the snow above Mularn, by the Huldu, and it opens when Midgard holds the frontier. A prince of that court is worth a verse. Legion is worth a saga, if anyone lives to sing it.",
-      "hibernia's door": "The druids say it is a place where the otherworld was torn the wrong way. The Good Folk have their laws; the demon court has only rank. Our door lies in Connacht and opens when Hibernia holds the frontier. Go, because a realm that never goes is a realm that is afraid."
+      "hibernia's door": "The druids say it is a place where the otherworld was torn the wrong way. The Good Folk have their laws; the demon court has only rank. Our door lies in Connacht and opens when Hibernia holds the frontier. Go, because a realm that never goes is a realm that is afraid.",
+      "roll of precedence": "The court's law since the [feast of thrones]: every demon of rank holds a line on a Roll cut into the walls of the approach, and the Master eats only those who fall from their line. Ten Rolls stand there now; the present one is the Tenth. A demon struck off is examined by the Inquisitors, pronounced by the Chancellor, unmade by the Mutilators and eaten.",
+      "feast of thrones": "The night the hungry one came to the hollow. Thirty lords sat down; nineteen were eaten; eleven knelt, Grand Chancellor Adremal first, who offered the bargain the court still keeps: [Legion] would be Master forever and eat only those who fall from their place on the [roll of precedence].",
+      "blade and the hook": "The feud between Prince Abdin's Chthonic Knights, the Blade, and Prince Asmoien's Mutilators, the Hook, over which prince knelt second at the [feast of thrones]. It ended in the Fourth Roll at the [gate watch]'s crossing, when Gatekeeper Dommel closed every road and let both orders bleed.",
+      "gate watch": "Since the [blade and the hook], the central crossing below the Albion hall has been kept by all three orders in equal number with Gatekeeper Dommel in the middle, so that no order can hold it alone. The Gatekeeper lets the realms through; the dead they leave are his toll.",
+      "east ward": "The ground between the halls of High Lords Oro, Baelerdoth and Saeor, given a line of its own and kept by Duke Bimure with a garrison of all three orders, so that the high lords' followers do not kill each other between the halls.",
+      "queen's chair": "A black stone chair with a red cushion beside the Master's [door], kept empty by the Chamberlain since the Queen, Lilith, went away in the Seventh Roll. Duke Satori once sat in it and has not been seen since.",
+      "mystemas": "An imp of the Albion hall who was once among the strongest in the Master's army. In the Ninth Roll he began to carry out a plan the Master had not finished deciding, and the Master made him small. He sends mortals after Princess Nahemah and Ambassador Mannam, who took the embassy he wanted, and after Director Kobil and Prince Abdin, and calls it a kindness. Ask him about the [seals] and he will tell you more than you paid for.",
+      "seals": "The court's coin: discs of green, blue and white metal from Duke Aypol's hoard, the realms' emerald, sapphire and diamond, stamped with the bargain of the [roll of precedence]. The imps sell the court's own armour for them in the three halls, and every seal that goes up a stair is gone from the hollow for good.",
+      "imps": "The bottom of the Roll: too weak to fight, they steal from the great demons' hoards and sell to anyone who does not step on them. Each realm's hall has its ring of seal merchants, Kodo and Pico and the rest in Albion's, Hulo and Iago in Midgard's, Beelo and Dano in Hibernia's, and [Mystemas] among them, demoted.",
+      "aleax": "Each realm set an aleax at its own hall's door when the doors opened, a guardian of light that keeps the other two realms out of the hall. The court cannot pass them and does not try. The imps say the aleax are the only things in the hollow they have never managed to sell anything to.",
+      "bolo": "An imp of the Albion hall who stands beside [Mystemas] and sells nothing. The other imps say the Chancellor set him there to watch Mystemas, and Mystemas says Bolo is his only friend. Both may be true.",
+      "etho": "An imp of the Hibernia hall who keeps no stall and carries the hall's gossip to the other halls. He knows everything that came down the eastern stair and will tell it for a candle-end.",
+      "black plague": "The sickness the court sent up into the three capitals after the doors opened: a back that burns as if from coals and the smell of rot. The Archivist found it in the records, Malroch the Cook made it, and Lecherous Gress carried it up by night. Albion traced it to the Cook, Midgard to Gress, Hibernia to the Archivist.",
+      "army of shadows": "Prince Abdin's Blade: a host of shadows that Director Kobil is teaching to march in the chambers above the Gate. It holds no line, so it cannot be struck off, and it cannot be counted. The Gatekeeper has sworn it will find the roads long; Earl Glassalab is digging it another."
     }
   },
   "book": {
@@ -211,7 +442,46 @@
     "high-lord-baelerdoth",
     "high-lord-baln",
     "high-lord-oro",
-    "high-lord-saeor"
+    "high-lord-saeor",
+    "ambassador-mannam",
+    "archivist-borath",
+    "caisha",
+    "chamberlain",
+    "chthonic-knights",
+    "director-kobil",
+    "duke-alloc",
+    "duke-aypol",
+    "duke-bimure",
+    "duke-eligar",
+    "duke-harboris",
+    "duke-sallis",
+    "duke-satori",
+    "duke-zepor",
+    "earl-amagin",
+    "earl-fenex",
+    "earl-glassalab",
+    "earl-ipostian",
+    "earl-mercur",
+    "earl-mermer",
+    "earl-oraxus",
+    "earl-vone",
+    "earl-zhalzhak",
+    "field-marshal-nebir",
+    "gatekeeper-dommel",
+    "grand-chancellor-adremal",
+    "inquisitors",
+    "lecherous-gress",
+    "lieutenants",
+    "malroch-the-cook",
+    "marquis-almen",
+    "marquis-chaosmar",
+    "marquis-dortaleon",
+    "marquis-focalleste",
+    "marquis-haurian",
+    "marquis-sabonach",
+    "marquis-scottiax",
+    "marquis-valupa",
+    "mutilators"
   ],
   "realmTakes": {
     "albion": {
@@ -219,7 +489,7 @@
       "legend": "The Church calls it the Mouth, and the knights say a prayer at the castle ruins before going down. When Albion holds the keeps, every guild in Camelot runs to the Hills at once. Never release inside; the walk back from Camelot is the longest walk in the realm.",
       "botLines": {
         "lore": [
-          "the priests in camelot call darkness falls the mouth. [the pit the old enemies got thrown into|a hell under the hills]",
+          "the priests in camelot call darkness falls the mouth. [the pit the old enemies got thrown into|a pit under the hills]",
           "albion's door to df is in the castle ruins in camelot hills. [an hour from the king|right on the king's doorstep]"
         ],
         "rumour": [
