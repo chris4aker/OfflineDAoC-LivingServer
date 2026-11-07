@@ -75,7 +75,7 @@
   "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666",
   "source/server/GameServer/scripts/namedmobs/EncounterDisplacement.cs": "ebab87b045c8d05df4de0a23b7b05ae3d4678d8f2eda04153b47d799c2c0b111",
   "source/server/GameServer/scripts/namedmobs/EncounterFloodGuard.cs": "64a95af9f337614ccdfd78221efba27096c87725a2c3c8f3d204f9566412213d",
-  "source/server/GameServer/scripts/namedmobs/EncounterSignals.cs": "1cb9e3470e7cd34046950a57784ab15bb820d48e0ecd9928636963fa7a0ad127",
+  "source/server/GameServer/scripts/namedmobs/EncounterSignals.cs": "137a8f99707a255afdf4bf720d3992d157eb1b561f8643d06e328786e2ca68ee",
   "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "25da681fa8a3bd7e96d89b02f6d0622363d00ce77445f6c4c3e3444e9a47df39",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "2fc5cfdf9f051a2f91c73110adc69abe0c1ba52111863fe0b2acafad687ad8d5",
