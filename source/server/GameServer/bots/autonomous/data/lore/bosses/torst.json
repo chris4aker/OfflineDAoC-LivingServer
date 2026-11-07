@@ -111,7 +111,7 @@
     "keyword": "Torst",
     "text": "The cock of the griffon roost on the eastern ledge. His wings freeze the air into eddies that hunt on their own. The wind-riders of the island have tried for a generation to steal a chick from him."
   },
-  "bookPage": "From the logbook of Asmund, wind-rider of the Vind Ryttaren. Seventh attempt on the glacier roost. We came at dusk from the east, three riders, low over the crater rim. The cock was on the ledge, the hen on the nest. We were within a spear's throw of the chicks when the cock rose and beat his wings once, and the air froze around Hrafn's griffon, and it fell. We pulled Hrafn out of the snow at the bottom of the glacier, alive. His griffon we did not find. Eighth attempt in the spring. I have said that before.",
+  "bookPage": "From the logbook of Asmund, wind-rider of the Vind Ryttaren. Seventh attempt on the glacier roost. We came at dusk from the east, three riders, low over the crater rim. The cock was on the ledge, the hen on the nest. We were within a spear's throw of the chicks when the cock rose and beat his wings once, and the air froze around Hrafn's griffon, and it fell. We dragged Hrafn out of the snow at the bottom of the glacier, alive. His griffon we did not find. Eighth attempt in the spring. I have said that before.",
   "chronicle": {
     "win": "The griffon Torst fell from his roost before {raidLeader} of {realm} after {minutes} minutes.",
     "loss": "Torst and Hurika swept {raidLeader}'s raid from {realm} off the ledge after {minutes} minutes."
