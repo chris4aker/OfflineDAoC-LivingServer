@@ -49,6 +49,8 @@
         "treal",
         "tudeg",
         "windskimmer",
+        "xcrzrk",
+        "zuraspa",
         "zytka"
       ]
     },
@@ -122,6 +124,7 @@
       "bosses": [
         "ancient-black-oak",
         "avartack-the-champion",
+        "banghaisgidheach",
         "black-lady",
         "blue-lady",
         "chieftain-caimheul",
@@ -159,9 +162,11 @@
         "valley-of-bri-leith"
       ],
       "bosses": [
+        "ailbe",
         "atur",
         "blight",
         "cailean",
+        "curmie",
         "develin",
         "evern",
         "faerie-queen",
@@ -179,8 +184,12 @@
         "mikka",
         "orey-eyed-oghamist",
         "overseer-of-the-silver-hand",
+        "sarsoureh",
         "shadowgnash",
         "skeaghshee",
+        "smidget",
+        "smirky",
+        "tiomoid",
         "uafas-capall",
         "wyvernic-wraith"
       ]
@@ -254,6 +263,7 @@
         "adar-llwch-gwin",
         "adwyth",
         "anhylaw",
+        "ansol",
         "anurigunda",
         "aodhnait",
         "aroon-the-urlamhai",
@@ -267,12 +277,14 @@
         "corrupt-primal-of-fire",
         "corrupt-primal-of-water",
         "cuinn",
+        "declan",
         "dremcis-fuiloltair",
         "drygau",
         "easmarach",
         "eimear",
         "elnara-erea",
         "elnaras-pet",
+        "fachtna",
         "fedail",
         "galmar",
         "giant-sporite-cluster",
@@ -306,7 +318,8 @@
         "twirl",
         "uaimh-lairmaster",
         "ulicia",
-        "xaga"
+        "xaga",
+        "zinsya"
       ]
     },
     {
@@ -512,6 +525,7 @@
         "valley-of-bri-leith"
       ],
       "bosses": [
+        "ailbe",
         "badb",
         "evern",
         "faerie-queen",
@@ -520,7 +534,10 @@
         "madawg",
         "melancholic-fairy-queen",
         "queen-cliodna",
-        "saemus"
+        "saemus",
+        "sarsoureh",
+        "smidget",
+        "smirky"
       ]
     },
     {
@@ -585,6 +602,7 @@
       ],
       "bosses": [
         "atur",
+        "banghaisgidheach",
         "geas-bound-protector",
         "giant-caithor",
         "tawi-shon"
@@ -645,7 +663,9 @@
         "thuxra-the-cackler",
         "tudeg",
         "windskimmer",
+        "xcrzrk",
         "xrrxrax",
+        "zuraspa",
         "zytka"
       ]
     },
@@ -657,13 +677,17 @@
         "cothrom-gorge"
       ],
       "bosses": [
+        "ansol",
         "aodhnait",
         "cuinn",
+        "declan",
         "elnara-erea",
         "elnaras-pet",
+        "fachtna",
         "fedail",
         "treal",
-        "ulicia"
+        "ulicia",
+        "zinsya"
       ]
     },
     {
@@ -701,7 +725,10 @@
         "silvermine-mountains",
         "valley-of-bri-leith"
       ],
-      "bosses": []
+      "bosses": [
+        "curmie",
+        "tiomoid"
+      ]
     },
     {
       "id": "frontier-guard",

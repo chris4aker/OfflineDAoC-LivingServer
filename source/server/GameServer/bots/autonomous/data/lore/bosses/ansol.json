@@ -1,0 +1,85 @@
+{
+  "id": "ansol",
+  "name": "Ansol",
+  "npcNames": [
+    "Ansol"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Ansol: level 45, an outlander body of the bardach/asarlai kind (model 743), faction Outland Residents, at about 336,700/313,700 inside Altan Garran; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Altan Garran's people are faction Outland Residents (garda, conaitheoir, bardach, asarlai) in the walled town at about 336,600/315,500 in Cothrom Gorge.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    }
+  ],
+  "story": "Ansol is a bard of Altan Garran, one of the bardach who keep the town's songs, and the town's songs are mostly about who did not come to help. He sings them on the wall at dusk, facing toward Domnann, loud enough that the Sylvan guides on the high road can hear, and the outlanders say that is the point. When the worts first came up through the gorge floor, Altan Garran sent to the Grove for help, and the Grove sent a letter. Ansol has the letter. He reads it aloud at the end of every song.\n\nHe does not like the realm's companies any better than the Sylvan's. They come through the town on their way to the worts, he says, as if the town were a road. When they come too close to the bards' corner of the wall, he stops singing and draws the knife every outlander carries, and the garda come running, because a bard who stops singing is a bard in trouble.",
+  "legend": "Ansol (45) is one of the named outlanders inside Altan Garran, on the bards' corner of the wall (about 337k/314k). The whole town is hostile to Hibernians: Outland garda (49-53) and conaitheoir are close by and come to help, so pull him out to the edge if you must fight him, and expect adds. Plain spawn, 80-second respawn. Fedail (56) and the Writhing Death quest are in the same town.",
+  "yells": {
+    "aggro": [
+      "The song stops here, Hibernian.",
+      "Garda! A road-walker on the wall!"
+    ],
+    "phases": [],
+    "death": [
+      "Read... the letter... at the end..."
+    ],
+    "slay": [
+      "Another verse for the wall."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A bard on the town wall, singing toward Domnann."
+    ],
+    "phases": [],
+    "realmFirstKill": "Ansol the bard of Altan Garran has fallen silent."
+  },
+  "botLines": {
+    "briefing": [
+      "ansol is 45 on the bards' corner of altan garran",
+      "garda come running, pull him to the edge"
+    ],
+    "aftermathWin": [
+      "ansol down. [song's over|grats]",
+      "pulled him clean. [no garda|nice]"
+    ],
+    "aftermathLoss": [
+      "garda came. [49-53|rip]",
+      "half the town joined. [lol|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] ansol reads the grove's letter out at the end of every song",
+      "the altan garran bards sing about who didnt come to help. thats most of their songs"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ansol",
+    "text": "A bard of Altan Garran who sings the town's songs of who did not come to help, facing toward Domnann, and reads the Grove's letter aloud at the end of each."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Ansol in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Ansol turned back {realm}'s band under {raidLeader} in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "outland-residents"
+  ],
+  "related": [
+    {
+      "id": "fedail",
+      "relation": "who speaks for the town"
+    },
+    {
+      "id": "elnara-erea",
+      "relation": "of the town's oldest family"
+    }
+  ]
+}
