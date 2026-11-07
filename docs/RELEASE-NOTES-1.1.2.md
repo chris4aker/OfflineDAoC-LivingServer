@@ -187,7 +187,8 @@ untouched.
   of 2,000 raids; the models of how likely a raid of a given size is to win are estimates, not measurements.
 - **Run, not played:** the release candidate ran unattended for 22 hours on a copy of a real install, with nobody in
   the game. 13 of its 19 raids were won (the six losses were all among the hardest epics, one of them to the
-  Darkness Falls princes bug fixed above), attackers took about two keeps in three, and the server never stopped.
+  Darkness Falls princes bug fixed above), in its last sieges attackers took about two keeps in three, and the
+  server never stopped.
   This release is that build plus the princes fix. Setup also upgraded a copy of a real Beta 1.1 install to it, and
   the server then started with its settings moved to the new defaults.
 - **Played:** so far only a partial check in the game client, played by Claude through computer use: logging in,
