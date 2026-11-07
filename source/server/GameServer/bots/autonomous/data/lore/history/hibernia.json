@@ -205,7 +205,11 @@
         }
       ],
       "places": [
-        "marfach-caverns"
+        "breifine",
+        "cruachan-gorge",
+        "emain-macha",
+        "marfach-caverns",
+        "mount-collory"
       ],
       "bosses": []
     },
@@ -406,6 +410,7 @@
       "summary": "The people from under the sea, broken at Mag Tuired, who went west to Hy Brasil: the city of Fomor under the shore, a people of trades and households, and the tower of Tur Suil on the crag, which holds the king and his eye.",
       "places": [
         "caillte-garran",
+        "cruachan-gorge",
         "fomor",
         "tur-suil",
         "vale-of-balor"
@@ -450,6 +455,7 @@
       "name": "The Lords of the Undead",
       "summary": "The faction of the called dead (shared id). In Hibernia: Caimheul's household under Breifine, sung back by the three Ladies and keeping the road for the hall below, and the enthralled dead of the frontier who heard the keen.",
       "places": [
+        "breifine",
         "marfach-caverns"
       ],
       "bosses": [
@@ -468,7 +474,9 @@
       "summary": "The people of the mounds and the courts beyond the Veil: fairy queens and lords of the wilds, whose songs and bargains the hill country fears.",
       "places": [
         "bog-of-cullen",
+        "breifine",
         "cursed-forest",
+        "emain-macha",
         "hibernia-wilds",
         "lough-derg",
         "lough-gur",
@@ -660,6 +668,18 @@
         "shannon-estuary",
         "silvermine-mountains",
         "valley-of-bri-leith"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "frontier-guard",
+      "name": "The Frontier Guard",
+      "summary": "The realm's keepers of the hills: the chieftains of the duns of Breifine, Cruachan Gorge, Mount Collory and Emain Macha, their champions and master rangers, the forts of Druim Ligen and Druim Cain, and the two relic keeps that hold the Cauldron of Dagda and Lug's Spear of Lightning.",
+      "places": [
+        "breifine",
+        "cruachan-gorge",
+        "emain-macha",
+        "mount-collory"
       ],
       "bosses": []
     },

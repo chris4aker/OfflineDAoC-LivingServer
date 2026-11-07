@@ -196,9 +196,7 @@
       "I asked her once why we let them stay. She looked at me a long time. Child, she said, we are the ones who came later. The crow was in the bog before the first Hibernian built a fire. The stones stood in Breifine before anyone thought of a keep. We do not let them stay. They let us live beside them, and now and then the realm goes out with its swords to remind them we are good neighbours. That, she said, is what a good neighbour does in Hibernia. I have never heard it put better, so I have written it here."
     ]
   },
-  "bosses": [
-    "evern"
-  ],
+  "bosses": [],
   "era": "hib-age-of-the-veil",
   "factions": [
     "sidhe",
@@ -259,6 +257,22 @@
     },
     {
       "id": "cursed-forest",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "mount-collory",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "cruachan-gorge",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "breifine",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "emain-macha",
       "relation": "a zone of the region, with its own file"
     }
   ]
