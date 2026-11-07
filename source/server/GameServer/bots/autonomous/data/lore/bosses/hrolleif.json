@@ -1,0 +1,117 @@
+{
+  "id": "hrolleif",
+  "name": "Hrolleif",
+  "npcNames": [
+    "Hrolleif"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "bjornvarg",
+      "relation": "the silent bear-wolf he was set beside"
+    },
+    {
+      "id": "gunnolf",
+      "relation": "the western captain whose camp does not answer runners; Hrolleif's does"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Hrolleif is a level-56 drakulv of great size in the far south of Malmohus (722434, 1028199), about a thousand units from the southern Bjornvarg and near a pair of drakulv protectors.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its NPC template puts it in the Pack Drakulv faction, so when a player, a player's pet or a companion bot attacks it, it can bring other Pack Drakulv standing near it into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60162242)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Hrolleifr is an attested Old Norse personal name (Vatnsdaela saga, Landnamabok); the elements are probably 'fame' and 'heir', to verify.",
+      "provenance": "original",
+      "source": "Old Norse name lists (Landnamabok, the sagas), to verify"
+    }
+  ],
+  "story": "If the bear-wolves are the silence of the southern approach, Hrolleif is its voice. He stands within sight of the southern Bjornvarg, near the protectors at the edge of the ruins, and the svartalfar say the dragon set him there on purpose: a guard who will not call for help needs a neighbour who will.\n\nHis name is a man's name, an old one, and the beam-cutters of Svarhamr think the drakulv took it the way they take many of their names, by hearing it. In the first winters of her court, when the drovers of the last steadings still drove south past Skona looking for summer grazing that had gone, a drover called Hrolleif lost his herd to the drakulv on the southern approach and stood on a rock shouting for his sons until the drakulv came back for him. The svartalfar say the drakulv who killed him liked the shouting and kept the name.\n\nHe has kept the shouting too. When Hrolleif is struck, he howls, and the protectors near him come, and anything else of the pack within the sound of it. The camps of the southern approach are laid out close together for that reason, Brisa the beam-cutter says, the way a steading's houses are built within shouting distance of one another. A stranger who walks up the southern way and hears one howl soon hears several.\n\nThe svartalfar tell a story about the pair that the drovers of Gotar repeat. Once, they say, a company of Midgard's warriors came up the southern approach in a snowstorm, and could not see the camps, and went for the larger shape, thinking it the greater danger. It was Hrolleif. They were still fighting the camp at dawn, and the bear-wolf had stood watching them all night, a stone's throw away, and never moved, because nobody had called him.",
+  "legend": "Hrolleif is the loud one of the southern pair in Malmohus: level 56, big, standing about a thousand units from the southern Bjornvarg near a couple of drakulv protectors. No special abilities and not CC-immune, but he's Pack Drakulv, so when you or your companions hit him he can bring nearby drakulv with him (bring-a-friend, once per fight). Pull him with something long range from as far back as you can, clear the protectors first if you can see them, and don't fight him on top of Bjornvarg. Autonomous gamebots don't set off the bring-a-friend, but you and your companion bots do.",
+  "yells": {
+    "aggro": [
+      "Here! HERE! On the southern way!",
+      "Come, all of you, there is meat on the rocks!",
+      "Shout with me, little thing. Shout for your sons."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Louder! Where is everyone? LOUDER!"
+      }
+    ],
+    "death": [
+      "Nobody... came...",
+      "The bear-wolf... heard... and stayed..."
+    ],
+    "slay": [
+      "Shout now. Go on.",
+      "One more voice for the pack.",
+      "The southern way is loud tonight."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The southern way. A drakulv's howl carries far.",
+      "The camps here stand within a shout of each other."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hrolleif howls again. Answers come from the ruins."
+      }
+    ],
+    "realmFirstKill": "Hrolleif's voice is silent. The southern way is quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "hrolleif brings friends, pull from max range",
+      "dont fight him next to bjornvarg",
+      "clear the protectors near him first",
+      "56, no tricks besides the camp coming"
+    ],
+    "aftermathWin": [
+      "kept it to him and one protector, nice",
+      "hrolleif down, the south is quiet",
+      "pulled clean for once",
+      "good pull, no train"
+    ],
+    "aftermathLoss": [
+      "he howled and half the south came",
+      "my companion hit him first and the camp came",
+      "fought him on top of bjornvarg, dumb",
+      "too close to the protectors"
+    ],
+    "rumour": [
+      "hrolleif took his name from a drover who shouted for his sons",
+      "the camps down south are built within shouting distance",
+      "the dragon put a loud one next to the bear wolf on purpose",
+      "a company once fought hrolleif all night and bjornvarg just watched"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hrolleif",
+    "text": "The voice of the southern approach, set beside the silent [Bjornvarg]. His name was a drover's, taken with the drover. When he howls the camps come. See [the names] and [drakulv]."
+  },
+  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: Hrolleif's name is cut small on the beam, with a little mark like a mouth beside it. My teacher put it there. She said a drover's name ought to be marked as a drover's, so that nobody reading the beam would think the drakulv had thought of it themselves. The southern camps are close. When Hrolleif is struck I have heard him at Svarhamr, on a still night, and counted the answers, and cut nothing, because the answers are not names, only the pack. The next morning there are always more marks to make.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} silenced Hrolleif on Malmohus's southern approach in {minutes} minutes.",
+    "loss": "Hrolleif's howl brought the southern camps down on {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

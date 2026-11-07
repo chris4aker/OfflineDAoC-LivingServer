@@ -1,0 +1,112 @@
+{
+  "id": "desukva",
+  "name": "Desukva",
+  "npcNames": [
+    "Desukva"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "svartalfar"
+  ],
+  "related": [
+    {
+      "id": "kariig",
+      "relation": "the twin bloodbinders of the camps below her"
+    },
+    {
+      "id": "eildird",
+      "relation": "the svartalf who went over to the drakulv, whose name Desukva will not say"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Desukva is a level-54 svartalf on high ground in the east of Malmohus (744208, 996886, well above the camps), near a svartalf foister.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Her spawn row puts her in The Svartalfar faction, but her NPC template (60159927, ReplaceMobValues) clears it; she wears an equipment template and has no faction in this world.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Above the eastern camps of Malmohus the ground rises, and on the height stands a svartalf called Desukva who belongs neither to the twins below her nor to Svarhamr. The camps call her the reckoner. She keeps count.\n\nEvery svartalf clan that ever came to Malmohus, the eastern camps say, came for the grey stone, the stone that rings like a bell and holds runes better than iron, the stone of the ore-house the ruins were built from. Desukva's clan cut it longest and kept the tally of what was cut. When the dragon came and the cold went out and the mining stopped, the tally stopped too, and Desukva's grandmother carried the tally-sticks up onto the height so that any svartalf who came back to dig would know where the clan had left off. Nobody came back to dig. Desukva has been keeping the sticks dry ever since, and counting other things to keep her hand in: the drakulv who pass below, the companies of Midgard on the road south, the deaths cut on Svarhamr's beam, which she reads from the height through the smoke of the town's fires and copies onto her sticks in her own marks.\n\nShe has one count she will not make. The svartalfar say that when Eildird walked into the ruins with her hands open, it was past Desukva's height that she walked, and Desukva, a girl herself then, watched her go and did not call out. She has counted everything since but that one. Ask her name of Eildird and she does not seem to hear it.\n\nThe twins below leave her alone. The bloodbinders say a reckoner's height is no one's to take, and that a svartalf who keeps the clan's last tally has more right to Malmohus than any of them. Svarhamr's elders send her bread at midwinter, which she never thanks them for and always eats. Strangers who climb the height to see the tally-sticks are not counted among the welcome. She meets them with the long knife of a cutter of stone.",
+  "legend": "Desukva is a level 54 svartalf on the high ground above the eastern svartalf camps in Malmohus, with a svartalf foister nearby. No faction in this world (her template clears it), no special abilities, not CC-immune, so it's a simple kill as long as you deal with the foister first and don't fall down the slope into the camps below. She's alone up there; nothing else of note. The eastern svartalfar call her the reckoner. If you're in the area for the Kariig twins, she's an easy extra. She's no quest target. Svarhamr's folk say she copies the beam onto tally-sticks.",
+  "yells": {
+    "aggro": [
+      "Not on my count. Not today.",
+      "Off the height. The sticks are not for you.",
+      "One more to tally. Then none."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I will not lose count. Not of you."
+      }
+    ],
+    "death": [
+      "Keep... the sticks dry...",
+      "Count me... someone..."
+    ],
+    "slay": [
+      "Tallied.",
+      "One mark more.",
+      "Down the slope with you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A height above the eastern camps. Bundled sticks, dry.",
+      "The reckoner's height. Everything here is counted."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Desukva does not look at the tally. She knows it."
+      }
+    ],
+    "realmFirstKill": "Desukva the reckoner falls. The tally ends."
+  },
+  "botLines": {
+    "briefing": [
+      "desukva is on the high ground above the east camps, 54",
+      "deal with the foister near her first",
+      "no faction, no tricks",
+      "dont fight on the slope, you'll roll into the camps"
+    ],
+    "aftermathWin": [
+      "desukva down, easy",
+      "the reckoner is done counting",
+      "quick extra after the twins",
+      "kept it on the height"
+    ],
+    "aftermathLoss": [
+      "fell down the slope into the bloodbinders",
+      "the foister plus her, too much for two of us",
+      "aggroed the camp below",
+      "silly death"
+    ],
+    "rumour": [
+      "desukva keeps her clans tally sticks from the old grey stone mining",
+      "she watched eildird walk into the ruins and didnt call out",
+      "svarhamr sends desukva bread at midwinter",
+      "the eastern camps call her the reckoner"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Desukva",
+    "text": "The reckoner of the [svartalfar]'s eastern camps, who keeps her clan's tally of the grey stone of [the ruins] on a height above the [Kariig] twins. She counts everything except one."
+  },
+  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: the reckoner on the eastern height copies our beam. I know because her copy was brought to me once by a scout who had killed her and carried off a bundle of her sticks. They were our marks in her hand, every death on the beam for forty winters, and one stick that had nothing on it but a single notch near the top, very old, and then nothing, as if she had started to count something and stopped. I gave the sticks back. The scout thought me mad. She is up there again now. I hope they reached her.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} ended Desukva's count on the eastern height of Malmohus in {minutes} minutes.",
+    "loss": "Desukva tallied {raidLeader}'s party from {realm} on her height after {minutes} minutes."
+  }
+}

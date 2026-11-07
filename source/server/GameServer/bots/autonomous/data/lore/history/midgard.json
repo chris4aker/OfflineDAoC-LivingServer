@@ -112,9 +112,23 @@
         "raumarik"
       ],
       "bosses": [
+        "arnulv",
+        "bjornvarg",
+        "desukva",
+        "eildird",
+        "geirolf",
         "gjalpinulva",
+        "gunnolf",
+        "hrolleif",
+        "ingardild",
+        "kariig",
+        "kleng",
+        "ljornrn",
         "raumarik-revenant",
+        "steinolf",
+        "ulf",
         "wretch-of-winter",
+        "wyulv",
         "yar"
       ]
     },
@@ -372,11 +386,23 @@
         "raumarik"
       ],
       "bosses": [
+        "arnulv",
+        "bjornvarg",
+        "eildird",
+        "geirolf",
         "gjalpinulva",
+        "gunnolf",
         "hati",
+        "hrolleif",
         "hurjavelen",
         "iarnvidiur",
+        "ingardild",
+        "kleng",
+        "ljornrn",
         "skoll",
+        "steinolf",
+        "ulf",
+        "wyulv",
         "yar"
       ]
     },
@@ -426,7 +452,11 @@
         "malmohus",
         "spindelhalla"
       ],
-      "bosses": []
+      "bosses": [
+        "desukva",
+        "eildird",
+        "kariig"
+      ]
     },
     {
       "id": "skogsra",

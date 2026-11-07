@@ -1,0 +1,117 @@
+{
+  "id": "wyulv",
+  "name": "Wyulv",
+  "npcNames": [
+    "Wyulv"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "gjalpinulva",
+      "relation": "the mother to whom he keeps the high place"
+    },
+    {
+      "id": "kleng",
+      "relation": "the keeper whose attendants pass his height"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Wyulv is a level-54 drakulv of great size on a rise in the south of Malmohus (730477, 1016768), a little above the camps around it, with a drakulv attendant nearby.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its NPC template puts it in the Pack Drakulv faction, so when a player, a player's pet or a companion bot attacks it, it can bring other Pack Drakulv standing near it into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60168066)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Wyulv may render Old Norse Veulfr, 've' (holy place) + 'ulfr' (wolf); to verify.",
+      "provenance": "original",
+      "source": "Old Norse name lists (Landnamabok, the sagas), to verify"
+    }
+  ],
+  "story": "The drakulv have priests, the prast, who carry the dragon's cold magic, and sacrificers who keep her altars in the courtyards of the ruins. Wyulv is neither, and the svartalfar have argued for a long time about what he is. He stands on a rise in the south, a little above the camps, where the attendants pass on their way to the hollow, and he does nothing that anyone can see except watch the sky.\n\nThe beam-cutters of Svarhamr read his name as the holy-place wolf, and they think the rise is the holy place: the spot from which the dragon was first seen coming down out of the north, the winter the cold went out from Malmohus like a spring. A drakulv has stood on it ever since, Brisa says, watching for her return the way a dog sits by the door its master went out of, though she has never left. When the dragon wakes in her hollow, the svartalfar say, Wyulv is the first of her people to turn his head, before any howl comes from the court, and the camps below him take their waking from his.\n\nThe Seithkona Circle in Skona has its own version, and it is less comfortable. The seeresses say Wyulv is not watching for the mother's return. He is watching for the father. When the chain on the Fenris wolf breaks, the end of the north will begin in Malmohus, and someone of the brood must see the sky change first and say so. That, the seeresses say, is Wyulv's work, and every drakulv who has held the name has died without seeing it, and been glad.\n\nWhatever he watches for, he does it among the pack, and the pack answers him. The attendants who pass his rise on their way to the court come up the slope when he calls, and Brisa says it is the only time she has seen them go anywhere except toward the hollow.",
+  "legend": "Wyulv is a level 54 drakulv standing on a little rise in south Malmohus, on the attendants' road to the hollow. Plain mob: no abilities, not CC-immune. He's Pack Drakulv, so whatever drakulv are close when you hit him can come too; usually that's one attendant, sometimes a patrol walking past. Pull him down off the rise toward the north so you're not fighting in sight of the camps below. A group at 50 is plenty. He's no quest target, so most groups kill him on the way to the attendants' road or the hollow. Patrolling drakulv walk this part of the south, so look before you pull.",
+  "yells": {
+    "aggro": [
+      "Not the sky. Only you.",
+      "I watch for something larger than you.",
+      "Down from my place? You first."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The sky has not changed. Then it is not my day."
+      }
+    ],
+    "death": [
+      "Someone else... watch the sky...",
+      "Not yet... it did not change... good..."
+    ],
+    "slay": [
+      "The sky is the same.",
+      "You were not what I was watching for.",
+      "Lie still. I am busy."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A rise above the camps. A drakulv watches the sky.",
+      "The holy place of the brood. Nothing grows here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Wyulv glances up, even now."
+      }
+    ],
+    "realmFirstKill": "Wyulv falls from his rise. Someone else must watch."
+  },
+  "botLines": {
+    "briefing": [
+      "wyulv is on the rise south, 54",
+      "pull him off the rise to the north",
+      "pack drakulv, the attendant near him can come",
+      "no tricks"
+    ],
+    "aftermathWin": [
+      "wyulv down, quick",
+      "kept it off the camps",
+      "he kept looking up the whole time lol",
+      "easy 54"
+    ],
+    "aftermathLoss": [
+      "a patrol walked by mid fight",
+      "fought on the rise and got seen",
+      "the attendant plus a patrol, too much",
+      "bad pull"
+    ],
+    "rumour": [
+      "wyulv stands where the dragon was first seen coming south",
+      "the seers say wyulv watches for the fenris wolf breaking free",
+      "when the dragon wakes wyulv turns his head first",
+      "wyulv might mean the holy place wolf"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Wyulv",
+    "text": "The drakulv on the rise where [dragon] was first seen coming south. He watches the sky; the seeresses say he watches for [the chain] to break. See [the names]."
+  },
+  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: Wyulv's cuts are made deeper than the others, and I asked my teacher why. She said that when the holy-place wolf dies, nobody watches the sky until another takes the rise, and that the days between are the only days in Malmohus when the end of the world could come without anyone saying so first. We cut deep so that we remember to be afraid on those days. I have counted. There have never been more than four of them together. The drakulv do not leave that rise empty.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought Wyulv down from his rise in Malmohus in {minutes} minutes.",
+    "loss": "Wyulv kept his rise in Malmohus against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}
