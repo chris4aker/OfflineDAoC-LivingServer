@@ -1,0 +1,67 @@
+{
+  "id": "ulif",
+  "name": "Ulif",
+  "npcNames": [
+    "Ulif"
+  ],
+  "locationId": "munin-sound",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "aegir-clans"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Ulif is a level-36 clan-man of the skalklan (template faction Skalklan Tribe) in the middle of Munin Sound (330,240/394,730), among skalklan conch-gatherers and oyster-harvesters (33-34) and shellsplitters; aggressive (200 at range 500), no spells, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 155 (0.37b world data)"
+    },
+    {
+      "text": "Ulif as the keeper of the conch beds is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Ulif keeps the conch beds. The skalklan gather conch and oysters in the middle of the sound, in beds that the shell-clan say were laid out by their grandmothers' grandmothers and have never been fished by anyone else, and Ulif is the clan-man who decides who works them and who does not. He is bigger than most of the shell-clan and older, and the conch-gatherers and oyster-harvesters do what he says without looking up.\n\nThe clan remembers everything done to it, the Knarr folk say, the way the sound remembers its drowned, and Ulif is the one who keeps the count. A stranger who takes a conch from the beds is a thief; a stranger who strikes a gatherer is an enemy of the whole clan; and Ulif comes for both with the beds behind him. The fishermen of Knarr say he once let a boy go who had taken a single shell for his mother, and that the clan has never forgiven him for it, and that he has never done it again. The drowned Modolf walks inland of his beds at night, and Ulif lets him pass. Nobody knows why.",
+  "legend": "Ulif is a level 36 skalklan in the middle of Munin Sound, standing among the conch-gatherers and oyster-harvesters (33-34). He's on the Skalklan faction and the camp stands close round him, so pull him clean or clear the edge first. No spells. Hitting skalklan costs you with the shell-clan, so do not do it while you are wearing Juuso's amulet for his quest.",
+  "yells": {
+    "aggro": [
+      "Thief! The beds are the clan's!",
+      "You touch the beds, you touch the clan."
+    ],
+    "death": [
+      "The clan... remembers..."
+    ],
+    "slay": [
+      "Count one more for the beds."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The conch beds. A big clan-man watches the gatherers."
+    ],
+    "realmFirstKill": "Ulif falls. The shell-clan will remember."
+  },
+  "botLines": {
+    "briefing": [
+      "ulif is the 36 skalklan at the conch beds in the middle of munin",
+      "the gatherers round him are skalklan too, pull him away"
+    ],
+    "aftermathWin": [
+      "ulif down, beds are clear",
+      "watch the respawn, its fast"
+    ],
+    "rumour": [
+      "ulif once let a boy go who took one shell for his mother. the clan never forgave him",
+      "ulif lets modolfs ghost walk past his beds at night"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ulif",
+    "text": "The big clan-man of the [skalklan] who keeps the conch beds in the middle of the sound and decides who works them. The clan remembers every theft; Ulif keeps the count."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Ulif at the conch beds of Munin Sound in {minutes} minutes."
+  }
+}

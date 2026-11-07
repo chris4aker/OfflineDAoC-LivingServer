@@ -1,0 +1,122 @@
+{
+  "id": "uppsala",
+  "name": "Uppsala",
+  "npcNames": [
+    "Uppsala"
+  ],
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "tradklan"
+  ],
+  "related": [
+    {
+      "id": "cronk",
+      "relation": "the chief whose household she belongs to, without saying how"
+    },
+    {
+      "id": "trude",
+      "relation": "the chief's elder sister, who watches his hands"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Uppsala is a level-54 tradklan of Cronk's household in north-west Faraheim (370200, 336630), about 670 units from Cronk, with Trude and Unne beside her.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Her spawn carries PackageID CronkBaf: whenever Cronk is fighting, his brain pulls every living CronkBaf NPC within 2,500 into it; Cronk's own brain is aggressive at 800, so Uppsala stands inside his reach.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Cronk.cs"
+    },
+    {
+      "text": "Its template puts it in the Tradklan Tribe faction, so when a player, a player's pet or a companion bot attacks it, it can bring nearby Tradklan Tribe into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60167469)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Uppsala is the name of the old Swedish royal and temple seat (Gamla Uppsala), described in Adam of Bremen's account of its temple.",
+      "provenance": "original",
+      "source": "Adam of Bremen, Gesta IV (public domain)"
+    }
+  ],
+  "story": "Cronk has Trude and Unne at his side, and Uppsala, who is neither wife nor sister and will not say what she is. The tradklan have three answers for her, and the dwarves of Hagall have heard all three, and Uppsala has confirmed none of them.\n\nThe clan's own answer is that she is the memory of the houses. A tree-clan lives in hollow trunks and fears fire more than any other people on Aegir, and when the chiefs before Cronk burned the clan's houses, the trunks that burned were not only homes but the clan's whole history, carved inside the bark, every chief and every quarrel. Uppsala, they say, was the child who had been made to get it all by heart before the fire, and so the clan's past lives now in one tradklan's head instead of in its trees, and she is called after the oldest hall of the old people over the sea because she is the clan's hall now. That is why she stands a little apart and watches: a hall does not join in.\n\nThe southern trunks say otherwise. Bokko's people say Uppsala is the daughter of the last chief before Cronk, the one who burned carelessly, and that Cronk keeps her by him as the chiefs of the old people over the sea kept hostages, so that her father's kin in the south will not try for the fire while she lives.\n\nThe third answer is the medicine men's, and they give it only after dark. They say Uppsala is the one who will take the right of fire when Cronk burns something important, as the dwarves are sure he will, and that she does not need to be his sister for it, because the clan has already chosen. She stands within the chief's reach always, and comes when he is touched, as the whole household does; and the medicine men say she is not coming to save him. She is coming to see.",
+  "legend": "Uppsala is the third of Cronk's household in the tradklan trunks, level 54, standing about 670 from Cronk (inside his 800 aggro range) and right next to Trude. She's CronkBaf like Trude: any fight Cronk is in, she joins, and she's Tradklan Tribe for bring-a-friend. You effectively can't fight her without Cronk. No abilities of her own, not CC-immune. The usual plan is to mez Uppsala and Trude, tank Cronk away from the trunks and kill the household after. No quest needs her; nobody knows what she is to Cronk, and the tradklan won't say. If you're doing Cronk anyway, she's free.",
+  "yells": {
+    "aggro": [
+      "I remember everything. I will remember you.",
+      "The hall stands. The hall watches.",
+      "Chief! They have come into the memory!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "This too will be carved. Somewhere."
+      }
+    ],
+    "death": [
+      "Who will... remember the houses...",
+      "The fire... was never mine... yet..."
+    ],
+    "slay": [
+      "Remembered.",
+      "One more name for the hall.",
+      "Gone. Not forgotten."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A tradklan stands apart from the chief and watches.",
+      "The clan's memory has a face. It is looking at you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Uppsala watches Cronk, not you."
+      }
+    ],
+    "realmFirstKill": "Uppsala falls. The tree-clan's memory goes with her."
+  },
+  "botLines": {
+    "briefing": [
+      "uppsala is in cronks pack too, shes inside his aggro range",
+      "mez her with trude, kill them after cronk",
+      "54, no tricks",
+      "you cant pull her without cronk, dont try"
+    ],
+    "aftermathWin": [
+      "uppsala down, last of the household",
+      "mez held the whole fight",
+      "the trunks are quiet",
+      "cronk and all three, done"
+    ],
+    "aftermathLoss": [
+      "tried to pull uppsala alone, cronk came",
+      "mez broke",
+      "whole household plus darters",
+      "fire everywhere"
+    ],
+    "rumour": [
+      "uppsala is neither cronks wife nor sister and wont say what she is",
+      "the tradklan say uppsala remembers the burned houses by heart",
+      "the southern trunks say uppsala is a hostage",
+      "the medicine men say uppsala will take the fire when cronk burns something important"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Uppsala",
+    "text": "The third of [Cronk]'s household: the clan's memory of its burned houses, or a hostage, or the next to hold the fire, depending who tells it. She watches [Trude] and the chief both. See [tree-clan]."
+  },
+  "bookPage": "From the trap-lines of Solvi of Hagall: the kobold who trades with the tree-clan told me the one called Uppsala once recited the whole history of the clan to a medicine man who had doubted a point of it, from the first trunk to Cronk, and that it took from noon to dark, and that when she reached the night of the burning she stopped and would not go on, and the medicine man did not ask her to. The kobold said he had never heard the tradklan quiet before. He said it was like hearing a wood stop.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} silenced Uppsala, the tree-clan's memory, in Faraheim in {minutes} minutes.",
+    "loss": "Uppsala watched Cronk's household drive off {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "id": "ydenia-of-the-seithkona",
+  "name": "Ydenia of the Seithkona",
+  "catalogKey": "midgard-named-mobs-classic-zones/ydenia",
+  "locationId": "vanern-swamp",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "dark-seithkona"
+  ],
+  "facts": [
+    {
+      "text": "Ydenia of the Seithkona is a level-65 named with 10,000 health on an island of Vanern Swamp.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "She drains life from range, weakens strength and constitution, and throws attackers into the water: 'Feel the power of the Seithkona, fool!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs"
+    },
+    {
+      "text": "Allakhazam places her on an island around 43k, 27k and says she nukes from afar.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/13121"
+    },
+    {
+      "text": "Old Norse seidkona means a woman who works seidr, the seeress's magic.",
+      "provenance": "original",
+      "source": "Old Norse glossary"
+    },
+    {
+      "text": "Ydenia's Lifedrain (320 body, range 1,500, 3 s, uninterruptible, cast while moving) heals her by the damage it does. She puts a strength/constitution debuff (radius 400) on her target when it lacks one.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs"
+    },
+    {
+      "text": "Every 25-35 s she may throw her TARGET into the water round her island (one of four spots) for a seventh of its health as cold damage, but only if the target is a real player: a bot target is never moved. The 'Feel the power of the Seithkona' line is said either way. Dark seithkona within 2,500 join her. She is CC-immune and resets at full health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs"
+    },
+    {
+      "text": "The Viking epic spawns her as a ghost and says her followers protect her in her spirit state.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Midgard/epic/Viking50.cs"
+    }
+  ],
+  "story": "The seithkonur of the Circle in Skona Ravine sit on high seats, platforms of wood raised above the floor, and the other women sing round them until the spirits come close enough to ask. Then the seeress tells what will be. She does not change it. That is the whole of the craft, and the whole of its discipline: to see, and say, and leave the world alone.\n\nYdenia was the best of her winter. She saw further than the old women and said it more plainly, and the Circle was proud of her and a little afraid. Then one midsummer night, singing for a jarl's wife who wanted to know about a son, she saw something else in the song, plain as the fire in front of her: her own death, in water, at dawn, within the year. She said it aloud, as the craft required. Then she said that she would not have it.\n\nThe Circle told her what the Circle tells everyone: what is seen is seen. Ydenia took her seat-boards and two of her sisters who loved her and went down into Vanern, to an island in the eastern water where nobody would interrupt her, and began to sing her death away. She sang for a season. The ferrymen heard her every night. And at dawn on the day she had seen, the bog rose round the island the way it sometimes does, and took her, exactly as she had said.\n\nThe next night she was singing again. The bog had her body; it did not have her. She sits on her high seat with no shadow, and her two sisters stand by her as they did when she was alive, and come to her side the moment anyone threatens her. Her songs have changed. She does not tell now; she takes. Her voice carries across the water and walks with her, and nothing that strikes at her breaks it off; what it draws out of the listener she keeps for herself, and the longer she sings at someone, the stronger she grows. Those who crowd round the one she has named go weak in the arms beside him.\n\nAnd the one she is singing at, she sends into the water. She gives the drowning she refused to the one in front of her, a little of it at a time: one moment they are on the island, the next they are in the cold black pool beside it, with the bog's chill in their chest. She has never done it to anyone she was not looking at. She has never done it, the ferrymen say, to anything that does not breathe; she has no quarrel with clay, or with the dead.\n\nHer tome is on the island, the book of every enchantment she worked before and after. Lynnleigh of Svealand wants it out of the swamp. The Circle wants nothing to do with it, and does not say her name.",
+  "legend": "Ydenia is the Viking epic kill, on the island in the eastern water of Vanern. Level 65, 10,000 health, CC-immune. She casts Lifedrain nonstop: 320 body damage from 1,500 range, uninterruptible, cast on the move, and it heals her for what it does, so you need real damage on her or she out-heals you. She also puts a big strength/con debuff on her target with a 400 radius, so don't bunch up on the tank. Every 25-35 seconds she may throw her target into the water nearby for about a seventh of their health: that only happens if her target is a real player. If a bot is tanking her, nobody gets thrown. If you're the human and she's on you, expect to swim back. Her two dark seithkona on the island join as soon as you touch her, so plan on three. If you all leave, she resets full. Bring body resist.",
+  "yells": {
+    "aggro": [
+      "Feel the power of the seithkona, fool!",
+      "I saw you coming. I always see them coming.",
+      "Sisters! We have a listener."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Into the water with you. Cool your blood."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "I refused the water once. I will refuse you."
+      }
+    ],
+    "death": [
+      "The high seat... is empty...",
+      "The high seat... is empty... as I saw it...",
+      "I said it would be dawn. Why is it dark?"
+    ],
+    "slay": [
+      "I saw this. I sang it.",
+      "The water takes what I give it.",
+      "Lie still. The bog is patient."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A high seat stands on the island. Someone is singing.",
+      "The singer on the high seat casts no shadow."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Ydenia sings someone off the island into the bog!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Ydenia's song falters. Her sisters sing louder."
+      }
+    ],
+    "realmFirstKill": "Ydenia of the Seithkona is silent."
+  },
+  "botLines": {
+    "briefing": [
+      "ydenia drains from 1500 range and heals off it. burn her hard",
+      "she only throws her target and only if its a real player. let a bot tank and nobody swims",
+      "strength con debuff with a 400 radius on her target, dont bunch on the tank",
+      "two dark seithkona join when we touch her. plan on three",
+      "her drain is uninterruptible and she casts on the move, dont bother interrupting"
+    ],
+    "aftermathWin": [
+      "the swamp witch is dead",
+      "the swamp witch is dead. got the tome",
+      "nobody got thrown this time, the bot tanked her",
+      "her sisters went down first, smart"
+    ],
+    "aftermathLoss": [
+      "got thrown in the water four times. [hate her|lol]",
+      "she healed faster than we hit",
+      "everyone stood on the tank and got the debuff",
+      "forgot her sisters"
+    ],
+    "rumour": [
+      "ydenia was a seeress who wanted more than seeing. now she sits on an island in vanern and drinks people",
+      "she has no shadow, look next time",
+      "she saw her own death and still couldnt stop it",
+      "the circle in skona wont say her name",
+      "she never throws anything that doesnt breathe, the ferrymen say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ydenia",
+    "text": "A seithkona, a seeress of the old north, who turned her songs from telling to taking. She keeps a high seat on an island in Vanern and sings the unwary into the bog."
+  },
+  "bookPage": "From the count of Arnkel the ferryman: my mother poled the seeress out to the island, the first time, alive. She paid in silver and said she would not need the boat back. Her two sisters carried the boards of her high seat. My mother heard her sing every night for a season, and on the morning she had foretold the water came up round the island, and in the evening there was only a seat on it. That night the singing began again. Of the eleven I have fished out of that cold pool, every one had been standing in front of her. Not one had been beside her.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} emptied Ydenia's high seat in {minutes} minutes.",
+    "loss": "Ydenia sang {raidLeader}'s party from {realm} into the bog after {minutes} minutes."
+  }
+}

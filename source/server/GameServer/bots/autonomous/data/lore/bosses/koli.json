@@ -1,0 +1,102 @@
+{
+  "id": "koli",
+  "name": "Koli",
+  "npcNames": [
+    "Koli"
+  ],
+  "locationId": "iarnwood",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "servants-of-iarnvidiur"
+  ],
+  "facts": [
+    {
+      "text": "Koli is a level-52 named on the mist elementals' model in the west of the Iarnwood (399600, 421533), among five chaotic miasmas.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, and it is not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Koli as the heart of the miasma and the old one's breath are Living Server lore; the name may echo Old Norse kol, 'coal' (to verify).",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "There is a low place in the west of the Iarnwood where the air does not move. The iron trees stand close round it and the ground is wet, and in it hangs the chaotic miasma, a drifting murk that the bark-gatherers walk round and the dwarves call the old one's breath. Things that go into it come out sick, if they come out. The rot is thickest there, the dwarves say, because the miasma is where the rot breathes out.\n\nIn the middle of the miasma there is something that holds it together. The dwarves call it Koli. They do not know what it is; nobody has seen its shape clearly, only a darker thickening in the murk, roughly the size of a man, that moves when the miasma moves and turns when something comes near. The narfi say it is the first breath the old one ever drew in the wood after the singing stopped, and that it has not finished being breathed out. The dwarves' slate-keepers say it is the rot's own heart, if the rot has one, and that if it were broken the miasma would thin and blow away, and the west of the wood would be clean for a season.\n\nIt has been broken. The slates record it: a company from Faraheim went into the murk, and came out coughing, and said the dark thing had come apart under their axes like smoke. The miasma thinned that spring and the bark in the west was good. By the next autumn it was back, and the dark thing in the middle of it, and the dwarves wrote on the slate the word they use for things the wood will not let go.\n\nKoli has no great craft that anyone has noticed, beyond being where it is, in air that sickens. It is the air that does the harm, the gatherers say, not the thing; but the thing keeps the air.",
+  "legend": "Koli is the named mist thing inside the chaotic miasma in the west of the Iarnwood, level 52, with five chaotic miasmas drifting around it, which will join if you fight in the middle of them. Pull Koli out to the edge or clear the miasmas first. It's a plain spawn with no special abilities and isn't CC-immune, and at level 52 it's one of the easier nameds in the wood for a group. Bring cure disease anyway; everything in that hollow carries the rot. The dwarves say it comes back however many times it's killed. That's just respawning, but they write it on a slate every time.",
+  "yells": {
+    "aggro": [
+      "(The miasma thickens and turns toward you.)",
+      "(A darker shape gathers in the murk.)",
+      "(The air goes heavy and sour.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(The miasma thins round Koli, then thickens again.)"
+      }
+    ],
+    "death": [
+      "(Koli comes apart like smoke under an axe.)",
+      "(For a moment, the air in the hollow is clean.)"
+    ],
+    "slay": [
+      "(The murk closes over the fallen.)",
+      "(The old one's breath settles, heavy.)",
+      "(Something sick drifts away from the body.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air does not move here. A murk hangs in the hollow.",
+      "A darker shape in the miasma, roughly a man's size."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The miasma thins. Something in it is breaking."
+      }
+    ],
+    "realmFirstKill": "Koli is broken. The west of the Iarnwood breathes."
+  },
+  "botLines": {
+    "briefing": [
+      "koli is inside the chaotic miasma, five miasmas around it",
+      "pull it to the edge or clear the miasmas",
+      "plain mob, mez works",
+      "cure disease, everything there has the rot"
+    ],
+    "aftermathWin": [
+      "koli down. the air cleared for a second",
+      "pulled it out of the murk, easy",
+      "the dwarves will write it on a slate",
+      "easiest named in the iarnwood"
+    ],
+    "aftermathLoss": [
+      "fought in the middle of the miasmas, bad idea",
+      "everyone got the rot",
+      "too many miasmas at once",
+      "couldnt see it in the murk"
+    ],
+    "rumour": [
+      "the dwarves call the miasma the old ones breath",
+      "koli is the rots heart, the slate keepers say",
+      "a faraheim company broke koli once and it came back by autumn",
+      "the bark in the west is good the season after koli dies"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Koli",
+    "text": "The dark thing at the heart of the chaotic miasma in the west of the Iarnwood, which the dwarves call the old one's breath. Break it and the [bark] in the west is good for a season. It comes back. See [waiting]."
+  },
+  "bookPage": "From Under the Iron Trees, by Eldrid of Bjarken: in the spring after a company from Faraheim went into the murk in the west, the air there was clean, and the bark we cut was the best in twenty springs, pale and sound all through. My mother cried over it. By the autumn the murk was back, and the dark thing in the middle of it, and the dwarves wrote their word on the slate, the one for what the wood will not let go. We still talk about that spring. We still walk round the west.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Koli, the heart of the miasma, in {minutes} minutes.",
+    "loss": "The old one's breath turned {raidLeader}'s party from {realm} back after {minutes} minutes."
+  }
+}

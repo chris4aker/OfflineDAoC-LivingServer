@@ -1,0 +1,72 @@
+{
+  "id": "thelod",
+  "name": "Thelod",
+  "npcNames": [
+    "Thelod"
+  ],
+  "locationId": "varulvhamn",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "werewolves",
+    "arachites"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Thelod is a level-36 werewolf (faction Varulv; the wolfaur's model) in Varulvhamn's upper halls (31,683/32,466) among wolfaur quixots, pragmatics, werewolf scruffs, churls and wolfspiders, near Ritter; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "'Thraxia's Dilemma' (Fressen of Nalliten): after Te'Bui of Spindelhalla, 'Kill Thelod in Varulvhamn to free the priest' of the arachite priestess Thraxia.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Thelod as the jailer of the arachite priest is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Thelod keeps a priest. When the werewolves and the arachites made their bargain in the west of Skona, something had to be given to hold it, and what was given was a priest of Thraxia's, the arachite priestess of Gotar's skull post. The priest's spirit went to Te'Bui in Spindelhalla, to be kept among the thralls where nobody looks. The priest's body came to Varulvhamn, to Thelod.\n\nThelod keeps him in the upper halls among the quixots and the young wolves, and feeds him, and talks to him, the court says, about things a werewolf should not want to know: what the arachites pray to, what answers. Ritter despises him for it. Thelod does not care. The young Fressen sends after the priest have to take the spirit from Te'Bui and then the body from Thelod, and Thelod fights for his priest like a hound for a bone, because he is not finished with his questions.",
+  "legend": "Thelod is a level 36 Varulv werewolf in Varulvhamn's upper halls among wolfaur quixots, pragmatics and scruffs, near Ritter; the last kill of Thraxia's Dilemma (after Te'Bui in Spindelhalla) to free the priest. Varulv faction, so the halls around him join. Ritter stands close by, so you may end up fighting both. Free the priest and Thraxia's Dilemma is done; go back to Thraxia by day.",
+  "yells": {
+    "aggro": [
+      "The priest is mine. His answers are mine.",
+      "(Thelod snarls over his captive.)"
+    ],
+    "death": [
+      "Ask him... what answers..."
+    ],
+    "slay": [
+      "Questions. Always questions."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A werewolf keeps an arachite priest, and asks him things."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "thelod is the 36 werewolf in the upper halls, last kill of thraxias dilemma",
+      "varulv faction, the halls join"
+    ],
+    "aftermathWin": [
+      "thelod down, priest is free",
+      "back to thraxia, by day"
+    ],
+    "rumour": [
+      "thelod keeps a priest of thraxias as the pledge of the werewolf and arachite bargain",
+      "thelod asks the priest what the arachites pray to"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Thelod",
+    "text": "The werewolf of the upper halls who keeps the body of Thraxia's priest, pledged when the werewolves and arachites made their bargain, and asks it questions. See [upper tunnels]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} freed Thraxia's priest from Thelod in Varulvhamn in {minutes} minutes."
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "id": "fas",
+  "name": "Fas",
+  "npcNames": [
+    "Fas"
+  ],
+  "locationId": "spindelhalla",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "deep-ones"
+  ],
+  "related": [
+    {
+      "id": "ond",
+      "relation": "the other old thing at the bottom, named for evil"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Fas is a level-52 ghostly creature on the many-legged model of the deep ones (466) at the bottom of Spindelhalla (28534, 33318, 14275), among arachite tunnelhosts and warriors, djupt vivunder and usling, cave trows, crushers, an undead troll warrior and cursed thulians.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its template sets the ghost flag (it shows translucent) and gives it no faction; aggressive at short range (200).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60160738, Flags 1)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish fasa means 'horror, dread'; 'fas' may be the root. To verify.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    }
+  ],
+  "story": "The second of the two old things at the bottom of Spindelhalla is the one the svartalfar call dread, and the thralls who scratch prayers on the silk-frames will not scratch its name at all. They draw a shape instead, a circle with legs, and leave it.\n\nThe arachites came up the deep roads one winter from somewhere the cutters had never reached, and they filled the hall of lamps with webs and took the svartalfar for thralls. The free svartalfar of Malmohus say that is the story everyone knows. The story they tell only among themselves is what came up behind them. The arachites were not conquerors, the free svartalfar say. They were running. Something was behind them in the deep, and when they reached the hall of lamps they stopped, because the hall was the highest place they could reach, and the thing behind them stopped too, at the bottom, and has stayed there.\n\nIt has the shape of the deep ones, many-legged, and it is not alive. The thralls who have seen it say you can see the stone of the road through it. The arachite tunnelhosts and warriors who keep the lowest passages keep them toward it, facing down; the prelates at the head of the farm pray toward it; and the free svartalfar say the arachites' whole faith is a fear that has gone down on its knees. Around it the deep has gathered the way the deep gathers round Ond: things that crush and things that crawl, the dead of trolls, the cursed of an older people. It suffers them. It does not suffer anything that comes close.\n\nThe svartalfar of Svarhamr, who watch a dragon, have been asked whether the dragon is the worst thing under Midgard, and an old svartalf of the Dragonbane is said to have answered that she was the worst thing above it. The thralls' story says that when the dragon's cold comes down the roads and the webs freeze, it will freeze the spiders, and the prelates, and that the thralls will walk out over their masters. The free svartalfar say the thralls have never thought about what the spiders were running from, or whether it freezes.",
+  "legend": "Fas is a level 52 ghost on the deep ones' many-legged model at the bottom of Spindelhalla, surrounded by arachite tunnelhosts and warriors, djupt vivunder (51), cave trows, crushers, an undead troll warrior and cursed thulians. Like Ond it has a short aggro range (200) and no faction, so it only comes if you get close and never calls anyone, but the room is packed. Clear the vivunder and the crushers around it first, then pull Fas to cleared ground. No special abilities, not CC-immune. The svartalfar call it dread; it's the other of the two old things at the bottom.",
+  "yells": {
+    "aggro": [
+      "(Something many-legged and see-through turns toward you.)",
+      "(The stone of the road shows through it as it comes.)",
+      "(Fas moves without a sound.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(The arachites in the passage turn their faces to the wall.)"
+      }
+    ],
+    "death": [
+      "(Fas thins, and is gone, like breath on cold stone.)",
+      "(Something at the bottom stops waiting.)"
+    ],
+    "slay": [
+      "(Fas stands over the body, and does not feed.)",
+      "(The deep is still.)",
+      "(Dread settles.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The bottom. Something see-through, many-legged, waits.",
+      "The arachites here all face downward."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The arachites of the deep turn their faces away."
+      }
+    ],
+    "realmFirstKill": "Fas, the dread at the bottom, is gone."
+  },
+  "botLines": {
+    "briefing": [
+      "fas is a 52 ghost at the bottom, short aggro, no faction",
+      "the room is packed, clear vivunder and crushers first",
+      "pull fas to cleared ground",
+      "no tricks"
+    ],
+    "aftermathWin": [
+      "fas down, both old ones done",
+      "cleared the room first, slow but clean",
+      "creepy thing",
+      "the deep is quiet"
+    ],
+    "aftermathLoss": [
+      "crushers joined",
+      "too many arachites",
+      "pulled the undead troll too",
+      "packed room, bad pull"
+    ],
+    "rumour": [
+      "the thralls wont write fas's name, they draw a circle with legs",
+      "the free svartalfar say the arachites were running from fas",
+      "the arachites at the bottom all face down toward fas",
+      "fas is svartalf for dread"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Fas",
+    "text": "The old thing at the bottom named for dread: many-legged and not alive. The free svartalfar say the [arachites] came up the [deep roads] running from it, and stopped at the hall of lamps. See [Ond]."
+  },
+  "bookPage": "From the Silk-Frame Prayers, a frame copied for Odell's list: there is no name on this frame, only a circle with legs drawn in the corner, and under it, in a child's hand: 'The spiders are afraid of something. I saw a prelate pray today and his legs were shaking. If the spiders are afraid of it, it should be our friend. My mother says no. My mother says that the enemy of your enemy is only a bigger enemy, and that we are lucky the spiders are between us and it.' Odell's note in the margin says: this thrall is wise. Find her.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} drove Fas, the dread at the bottom of Spindelhalla, out of the deep in {minutes} minutes.",
+    "loss": "Fas kept the bottom of Spindelhalla against {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "id": "kalph",
+  "name": "Kalph",
+  "npcNames": [
+    "Kalph"
+  ],
+  "locationId": "spindelhalla",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "arachites"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Kalph is a level-47 arachite (the arachites' model) in Spindelhalla (31,678/28,484) among husks, spindel silksters, cave trows, undead troll warriors and mad kobolds; no faction, aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Kalph as the arachites' husk-keeper is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Kalph keeps the husks. When the arachites have taken what they want from a thrall, or a kobold who wandered down, or a troll who came looking for his kin, what is left is a husk, dry and light and still standing, and the husks are Kalph's to keep. He stands among them near the silksters, an arachite of no order the prelates will name, and counts them, and sends the oldest down to the edge for the cave trows to burn for warmth.\n\nThe thralls' prayers on the silk-frames say that Kalph is the one arachite who looks at a husk and sees who it was. They do not say it kindly. Odell of Svarhamr, copying the frames, has a note in the margin beside Kalph's name that says only 'the counter', and the mad kobolds who wander that hall, the frames say, went mad from being counted. He fights all who come among his husks, because they are not husks yet.",
+  "legend": "Kalph is a level 47 arachite in Spindelhalla among the husks (10-11, passive) near spindel silksters (39-43), cave trows and undead troll warriors (47-52) and mad kobolds. No faction on Kalph, but that part of the dungeon is crowded with high mobs, so clear carefully. No spells. The husks themselves are passive, so they won't bother you; it's everything else in that hall. Spindelhalla saying: never stand still among the husks long enough to be counted.",
+  "yells": {
+    "aggro": [
+      "(Kalph's legs click as he counts.)",
+      "Not a husk. Not yet."
+    ],
+    "death": [
+      "(The counting stops.)"
+    ],
+    "slay": [
+      "(One more to count.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Husks stand in rows. Something counts them."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "kalph is a 47 arachite among the husks in spindelhalla",
+      "the trows and undead trolls nearby are worse than him"
+    ],
+    "aftermathWin": [
+      "kalph down",
+      "the husks didnt even move"
+    ],
+    "rumour": [
+      "kalph counts the husks and sends the oldest down for the trows to burn",
+      "the mad kobolds went mad from being counted, the frames say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kalph",
+    "text": "The arachite who keeps and counts the husks of Spindelhalla and sends the oldest to the edge for the trows to burn. Odell calls him the counter. See [the edge]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} stopped Kalph's counting in Spindelhalla in {minutes} minutes."
+  }
+}

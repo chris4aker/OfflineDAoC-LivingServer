@@ -1,0 +1,71 @@
+{
+  "id": "burr",
+  "name": "Burr",
+  "npcNames": [
+    "Burr"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Burr is a named drakulv (the named drakulv's model, large) held by two spawns in Malmohus: a level-47 in the west (692,622/983,068) with no faction, and a level-48 in the middle (729,165/994,461) of the Pack Drakulv faction near a patrolling drakulv and an armguard.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Old Norse burr is a poetic word for 'son'.",
+      "provenance": "myth",
+      "source": "Old Norse/Swedish (to verify)"
+    },
+    {
+      "text": "Burr's name and its two holders are Living Server lore (the drakulv name custom).",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Burr means son, in the old poets' tongue, and the drakulv give it to the hollow's youngest name-holder: the one who will do the work the older ones are too slow for. There are two of them. The beam-cutters of Svarhamr say a drakulv is born nameless and the hollow gives it a name with its work, and when it dies another takes the work and the name; some names are held twice. Burr is held twice because the work is twice: one Burr in the west watches the road the companies take south, and one in the middle runs with the patrols near the dragon's hollow.\n\nThe western Burr belongs to no pack now. Brisa of Svarhamr says he was the son who did not come when Gunnolf refused the dragon's runners, and that the pack let him keep the name and nothing else. The middle Burr is the pack's still, and the patrols answer him. Both are young, both are large, and both fight like what the name says: a son with something to prove.",
+  "legend": "Burr is two named drakulv in Malmohus: a 47 in the west, alone and with no faction, and a 48 in the middle on Pack Drakulv faction near a patrolling drakulv and an armguard, which may be in the fight. Same name, two spawns, both plain heavy hitters. The western one is the easier kill. Old Malmohus hands say if one Burr is down, check the other before you call it.",
+  "yells": {
+    "aggro": [
+      "(A young drakulv's howl.)",
+      "(Burr lowers his head and charges.)"
+    ],
+    "death": [
+      "(A howl cut short.)"
+    ],
+    "slay": [
+      "(He shakes the blood from his jaws.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A young named drakulv, larger than the rest."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "two burrs in malmohus, 47 west alone and 48 middle with a patrol",
+      "west one is easier, no faction"
+    ],
+    "aftermathWin": [
+      "burr down",
+      "the other burr is still up"
+    ],
+    "rumour": [
+      "burr means son in the old tongue, the drakulv give it to the youngest name holder",
+      "the western burr is the son who didnt come when gunnolf refused the dragon"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Burr",
+    "text": "A drakulv name held twice in Malmohus: 'son' in the old tongue, given to the youngest name-holder. One Burr watches the west road alone; one runs with the patrols. See [the names]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut the name of Burr from the beam in Malmohus in {minutes} minutes."
+  }
+}

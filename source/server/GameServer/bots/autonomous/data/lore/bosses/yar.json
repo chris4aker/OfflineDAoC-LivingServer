@@ -1,0 +1,156 @@
+{
+  "id": "yar",
+  "name": "Yar",
+  "catalogKey": "open-world/yar",
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "aliases": [
+    "yar the firstborn",
+    "the firstborn"
+  ],
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "gjalpinulva",
+      "relation": "his mother"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Yar is a level-73 named with 40,000 health in the southwest of Malmohus (region 100 at 695353, 1022775).",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "The first time he is hit at 30% health or below in a fight, five drakulv come to his side, each one an executioner, a soultrapper or a disciple at random; they vanish when he dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Yar.cs"
+    },
+    {
+      "text": "While he fights, every drakulv within 2,000 of him attacks the real players within 2,500 (GameBots are not set on).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Yar.cs"
+    },
+    {
+      "text": "He heals to full and his called kin vanish after 60 seconds out of combat.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Yar.cs"
+    },
+    {
+      "text": "The quest 'Yar the Firstborn' (from Kiaja at Svarhamr) calls him the oldest and strongest of the drakulv, the most powerful of the werewolves, and says to bring an adequate force.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/3236"
+    },
+    {
+      "text": "A Dec 2002 Allakhazam comment says killing Yar reduces the chance of Gjalpinulva's exhale (unverified hearsay); a 2003 comment says one good crowd-control group can do him.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/3223"
+    },
+    {
+      "text": "Swedish drake means dragon and ulv wolf (the compound 'drakulv' to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "Yar is the firstborn of Gjalpinulva, the wolf's daughter of Malmohus: a pup with scales on its back and a wolf's grin that she licked the frost off and named, before the drakulv were a people. The svartalfar of Svarhamr say she bore him; the grandmothers of Gotar say she made him out of the frost of her first winter in the ruins; the drakulv do not discuss it. He is the oldest and strongest of her brood, the most powerful of all the werewolves in the dragonbane's reckoning, and he wears his mother's look more than any of his kin.\n\nHe keeps the south-west of Malmohus, and the drakulv camps there are his. They do not wait to be told when he is in danger. Any of them near enough to hear him come at once, and when he is badly hurt he howls, and a pack of the camps' best comes out of the ruins at his feet. He calls them only once; the drakulv say the firstborn does not ask twice. Left alone long enough to lick his wounds, he rises whole, as his mother does.\n\nThe first company of Midgard to bring him to the edge of death was Gyrd of Nalliten's, out of Gotar, and it went back to bind its wounds after his kin came, and found him whole when it returned. The svartalfar of Svarhamr have paid for his head ever since, through Kiaja, who sends any proven friend after him with a warning to bring enough, and Raxnathor, who rewards those who come back. The dragonbane say a line that loses its eldest has begun to end, and that a dragon in grief breathes less carefully, and they keep a list of everyone who has killed him and dreamed of the mother afterwards. The skalds of Jordheim say he is waiting for the day she flies north to meet her father, when he will run at the front of the brood.",
+  "chapters": [
+    {
+      "title": "The Pup in the Frost",
+      "text": "The first winter Gjalpinulva lay in the ruins of Malmohus, before her court had ranks and her camps had names, the svartalfar of Svarhamr watched her hollow from their walls and counted what came out of it. For most of the winter nothing did. Then, the beam says, a pup came out into the snow at the mouth of the hollow, small and grey and wrong in the shape of its back, and sat in the frost looking at the world, and the dragon put out her head and licked the frost off it and spoke a word. The dragonbane cut the word on the beam as near as they could hear it. It was Yar.\n\nNobody agrees on where he came from. The svartalfar say she bore him, as a wolf bears a pup, and that he is her son in the ordinary way, which makes him the grandson of the wolf the gods bound. The grandmothers of Gotar, who have their own account of everything in the south, say she made him: that she had been alone in the ruins all winter, and took the frost of her own breath off the stones of the hollow and shaped a child out of it, because a dragon without a court is only a beast. The drakulv will not talk about it at all, and the svartalfar say that silence is the only thing all drakulv share.\n\nWhatever he was born of, he grew. He has the long head of a wolf and the scaled back of a dragon, two-legged like the drakulv who came after him, and his eyes are the frozen eyes of his mother. The varulv of Skona, who refused his mother's service, say he is no werewolf at all but something new, and that the word was made for him. The svartalfar call him the most powerful of the werewolves anyway, because the word was the nearest they had, and because a thing does not need to be named rightly to be feared.\n\nAfter him came the rest of the brood, the drakulv who would become armguards and axehands and soultrappers and priests, and his mother ranked them as a court is ranked. She gave him no rank. He was the first, and the drakulv understood without being told that the first does not need one."
+    },
+    {
+      "title": "The South-West Camps",
+      "text": "When the brood was grown, the firstborn went out of the hollow to the south-west corner of the ruins, where the old walls stand highest and the snow lies deepest between them, and the drakulv who followed him built their camps around his hunting ground. They are the best of the brood, the svartalfar say: executioners who carry out the dragon's justice, soultrappers who bind what they kill, disciples who keep the priests' craft. They are his kin in the oldest sense. They would die for him, and the beam says many of them have.\n\nHe is not a priest or a sorcerer. He trusts his claws and his strength and the loyalty of his blood, and he hunts as a wolf hunts, with the pack around him. The svartalfar who have watched him say no drakulv within sight of the firstborn has ever stood aside while he fought. They come from the nearest camps without being called, at a run, as a household comes out of the hall when the lord's voice is raised in the yard, and the dragonbane put it in a saying of their own: the firstborn is never alone, he only looks alone from far away.\n\nGunnolf of the drakulv, who keeps one of the western camps, is not his; Gunnolf's camp answers the dragon's hollow, and the svartalfar say the two have never liked each other. The camps of the south-west answer only Yar. When the dragon wakes and her voice rolls through the canyons, the drakulv of every camp lift their heads, but the south-west camps look first at the firstborn, to see what he will do. He has never yet gone to her. The dragonbane think he is waiting to be asked, and that she has never asked, and that this is the oldest quarrel in Malmohus.\n\nHe has a name among the drakulv that the svartalfar have never been able to translate. The free svartalfar under Myrkwood, who trade with the drakulv, say it means something like the one who came before the asking."
+    },
+    {
+      "title": "The Howl",
+      "text": "The first company of Midgard to bring the firstborn to the edge of death was Gyrd of Nalliten's, out of Gotar, in the years after the dragonbane first sent word north. There were twenty of them, the beam says, and they caught him alone at the edge of his hunting ground and fought him through the drakulv of the nearest camp, and drove him back against the old walls, bleeding, until Gyrd thought they had him.\n\nThen he howled. The svartalfar on Svarhamr heard it across the ruins and say it was not a wolf's howl or a dragon's roar but something between, and that it went on for a long breath. Out of the ruins at his feet came a pack of the camps' best, executioners and soultrappers and disciples, never the same mix twice in the dragonbane's records, and they stood around the firstborn and fought for him with the frenzy of kin who had heard their eldest call. He calls them only once. The drakulv say the firstborn does not ask twice, and those who have heard the howl say there is no second one, however long after the fighting goes on.\n\nGyrd's company broke. They did not run far; Gyrd was a careful man, and he drew them back into the ruins to bind their wounds and count who was left, and to come back at the firstborn while he was still hurt. It took them longer than he meant. When they came back over the wall, the pack was gone, the camps were quiet, and the firstborn was standing in the snow where they had left him, whole, without a mark on him, looking at them as his mother looks at a warband from her hollow.\n\nGyrd came home with nine. He told the skalds at Gotar that the wolf's son heals as his mother heals, if he is left alone long enough to lick his wounds. The drakulv of the south-west say it more simply. They say the firstborn only bleeds while someone is watching."
+    },
+    {
+      "title": "The Price on His Head",
+      "text": "The svartalfar of Svarhamr have paid for the firstborn's head for as long as Midgard has come south. Kiaja, who keeps the dragonbane's trust, sends any friend of the svartalfar who has proved himself after Yar, with a warning to bring an adequate force; Raxnathor rewards those who come back with the head. When the first head was brought in, Kiaja told the warrior who carried it that it was an act of great bravery her people would not soon forget, and sent him to Skipta, who had earned their trust years before. Skipta told him what the dragonbane tell everyone who kills the firstborn: that he would dream of the mother afterwards, and that his name was on the list of those who dream.\n\nThe svartalfar give two reasons for the price. The first is the one they give to warriors. A dragon in grief, they say, breathes less carefully, and the warbands of the road south made it a custom to kill the firstborn on the way to the hollow and swore by it, though nobody could ever prove that the dragon breathed any less for it. The second reason they give only to each other, and Skipta told it to a skald of Jordheim once when she had been drinking: a line that loses its eldest has begun to end. They do not want to grieve the dragon. They want her line to be shorter than it was.\n\nThe drakulv have never forgiven a single head. The free svartalfar under Myrkwood say that every warrior whose name is on Skipta's list is known in the south-west camps, and that the drakulv carve the names into the old walls of his hunting ground, as the dragonbane carve theirs into the beam. There are two lists in Malmohus, the free svartalfar say, and some names are on both.\n\nWhat the firstborn wants, the skalds of Jordheim think they know. Their song of the wolf's daughter ends with her flying north to meet her father on the day the chain breaks, with her brood behind her and Yar at the front. The dragonbane say he has been waiting in the south-west corner of the ruins for that day since the first winter, and that every time he rises whole from his own blood he is practising for it."
+    }
+  ],
+  "legend": "Yar's a group fight with good crowd control: one good CC group can do him, a 2003 comment said, though more is safer. Every drakulv near him joins the moment he's fought, so clear the camps around him first. The first time he drops to 30% he howls once and five drakulv come, a random mix of executioners, soultrappers and disciples, so have mez ready and save power; he never calls twice in one fight, and they vanish when he dies. If you back off for a minute he heals to full and the adds go, so don't let the fight stall. The svartalf quest Yar the Firstborn from Kiaja at Svarhamr sends you after him once your faction is good enough. Raid leaders used to kill Yar on the way to the dragon because they swore it made her breathe less. Nobody ever proved it. His head makes a fine wall trophy, and the wulfen gear he drops is good.",
+  "yells": {
+    "aggro": [
+      "Firstborn of the Wolf's Daughter! You are in my mother's ruins!",
+      "Mother's ruins. Mother's frost. Mother's son.",
+      "The svartalfar sent you? They always send someone."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "KIN! The firstborn calls! COME!"
+      }
+    ],
+    "death": [
+      "Mother... I am... coming home...",
+      "Mother will... feel this..."
+    ],
+    "slay": [
+      "For the brood.",
+      "Another head for Svarhamr's wall? No. Mine.",
+      "The brood eats tonight."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Old claw-marks scar the stones. The firstborn hunts here.",
+      "Drakulv camps surround a tall figure with frozen eyes."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "Yar howls, and the drakulv come running!"
+      },
+      {
+        "trigger": "death",
+        "text": "Yar falls. Far off, the dragon stirs."
+      }
+    ],
+    "realmFirstKill": "Yar the Firstborn is slain. Somewhere, his mother stirs."
+  },
+  "botLines": {
+    "briefing": [
+      "yar calls five drakulv at 30%, a mix of executioners, soultrappers and disciples. mez ready, save power",
+      "killing yar before the dragon, [old habit|cant hurt]",
+      "yar resets after a minute out of combat, keep on him",
+      "kiaja's quest if you have the svartalf faction",
+      "clear the drakulv camps near yar first, every drakulv around comes when he gets hit"
+    ],
+    "aftermathWin": [
+      "yar down. [head on the wall|trophy time]",
+      "the firstborn is dead. hope mom didnt notice",
+      "yar's remains, trophy for the wall",
+      "long claw of the wulfen dropped!"
+    ],
+    "aftermathLoss": [
+      "the adds at 30% got us",
+      "mez broke on the soultrapper and it went wrong",
+      "we let him reset",
+      "the drakulv at 30% hit the healers first",
+      "we backed off to rez and he healed to full. never let yar breathe"
+    ],
+    "rumour": [
+      "[heard|they say] yar is gjalpinulva's firstborn. [kill him first and she breathes less|thats what the old raiders say]",
+      "the svartalfar say a dragon in grief breathes less carefully. thats why kill yar first",
+      "yar is the most powerful of the werewolves, the svarhamr folk say",
+      "everyone who kills yar dreams of the mother after, the svartalfar say",
+      "the drakulv carve the names of yar's killers on the walls down there. [nice|great]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Yar",
+    "text": "The firstborn of [Gjalpinulva]'s brood, the oldest and strongest of the drakulv. When he howls, his kin come. The svartalfar say his mother feels it when he dies."
+  },
+  "bookPage": "From the quest-book of Kiaja of Svarhamr, as a Midgard warrior copied it. 'We thank you. This is an act of great bravery my people will not soon forget.' That is what she said when I came back with the firstborn's head. Then she said I should speak with Skipta, who had earned their trust years before, and that we might share more than I knew. I asked Skipta what Kiaja meant. Skipta said that everyone who kills the firstborn dreams of the mother afterwards, and that the dragonbane keep a list of those who dream. She said my name was on it now.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Yar the Firstborn in Malmohus in {minutes} minutes.",
+    "loss": "Yar's kin answered his call and drove off {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

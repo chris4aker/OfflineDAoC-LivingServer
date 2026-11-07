@@ -1,0 +1,167 @@
+{
+  "id": "mistress-of-runes",
+  "name": "Mistress of Runes",
+  "catalogKey": "dodens-gruva/mistressrunes",
+  "locationId": "dodens-gruva",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "dodens-gruva-bound"
+  ],
+  "related": [
+    {
+      "id": "jarl-ormarr",
+      "relation": "her jarl, who did not listen"
+    },
+    {
+      "id": "thane-dyggve",
+      "relation": "who listened"
+    },
+    {
+      "id": "aros-the-spiritmaster",
+      "relation": "who said he would read the names louder"
+    },
+    {
+      "id": "dodens-gruva",
+      "relation": "the mine her marks laid out"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "The Mistress of Runes is a level-63 named with 30,000 health in Dodens Gruva.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The live class is MistressRunes (MinstressofRunes.cs); MistressOfRunes.cs is an unused older version with no spawn. She casts Odin's Hatred every 10-15 seconds: a 3-second cast that cannot be interrupted, 650 energy damage to everyone within 450 of her target (range 1,500). Every 20-25 seconds Mistress's Vision nearsights (65%, 60 s) one random real player within 2,000 who is not already nearsighted; bots are never chosen. She is CC-immune, reaches 350 in melee, and resets to full health when nobody is left on her list.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/MinstressofRunes.cs"
+    },
+    {
+      "text": "Allakhazam lists her at 55-60; she drops a staff of runes and icy sapphire jewels for all three realms.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4104"
+    },
+    {
+      "text": "Ragnvor the apprentice, the hewer Brodd, the scraped-out name rune and the saying 'never stand at the shoulder of the one she is scolding' are Living Server lore; they tell her uninterruptible spear round her target and her nearsight in-world.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/MinstressofRunes.cs"
+    },
+    {
+      "text": "Odin is the god of runes in Norse myth (Havamal, the rune-winning stanzas); the Mistress's spear-fire is named for his hatred.",
+      "provenance": "myth",
+      "source": "Havamal (public domain)"
+    }
+  ],
+  "story": "The Mistress of Runes came to the frontier out of the north as a runecarver of Odin's craft, and nobody now knows her name. She cut it into the first mark she made in the mine and scraped it out again on the last day. She was the only one on the frontier who could half read the straight-lettered stone on Jarnhaug's crown, and she read the mountain under it better than anyone: where the ore ran, where the rock was sound, where the water waited. For a generation the mine went where her marks said, and prospered.\n\nShe was a scold, and the mine loved her for it. When the hewer Brodd cut past her danger mark to save a day's work, she came down the gallery and called Odin's fire on the face where he stood, and the flame came down out of the rock on Brodd and on the two haulers at his shoulder, and singed all three. The roof fell there the next morning. The saying that came of it is still told: never stand at the shoulder of the one the Mistress is scolding. Another came with it. Nobody ever stopped her halfway through a word.\n\nWhen her marks to the north went wrong she cut the last of them in the stone's own letters: not here. She told the jarl, twice. She went to Thane Dyggve, who would not split the northern face for her sake, and to Aros, who said he would read the names louder. She sent her apprentice, Ragnvor, away to Jordheim with a copy of the stone's letters, and when the picks broke through she went to the gallery where her marks ran out and stood before the last one, and she has stood there since.\n\nShe scolds still. The fire falls on the stranger before her and on everyone close to him, and it falls often. Those who come living to her wall find their eyes going dim, one stranger at a time, even from the far end of the gallery. Ragnvor came back an old woman to copy the wall and had her sight dimmed for her trouble; it passed, and the wise-women of Glenlock keep a wash and a charm for it still. Midgard argues over why she does it. The runemasters say it is so that nobody reads what came after the last mark. Ragnvor said it was so that strangers would know what it was to be warned and not see.",
+  "chapters": [
+    {
+      "title": "The Name She Scraped Out",
+      "text": "Nobody now knows what she was called. The miners called her the Mistress, and the runemasters of Jordheim who have copied her marks call her the Mistress of Runes, and the steadings say that was always enough for her. She came down to the frontier out of the north in the years before Ormarr, a runecarver of Odin's craft, who serves the god that hung nine nights on the tree to win the runes, and she carved for whichever jarl would pay her to read his hills.\n\nA runecarver of her kind does not only write. She reads. The right marks, cut in the right places, tell her where the ore runs under the turf, where the rock is sound, where the water lies waiting behind a face, and she was better at it than anyone the frontier had seen. She was the only one who could half read the old stone on the crown of Jarnhaug, the one with the straight letters running downward, and when Ormarr asked her if the hill was worth digging, she said it was, and also that the stone said something she could not make out, and that she did not like the north side.\n\nShe cut the first mark of the mine on the southern slope, where Dyggve's lightning had split the rock, and the steadings say she cut her own name into it, small, under the mark for ore, as a runecarver does on a great work. It is not there now. The first mark of Dodens Gruva is still on the wall by the mouth, and under it there is a patch of stone scraped smooth with a knife. Her apprentice said afterwards that the Mistress went up and did it herself on the last morning, before the shift went down, and would not say why.\n\nThe apprentice was a steading girl called Ragnvor, who carried the Mistress's chisels for eleven years and was the only person the Mistress ever allowed to stand beside her while she cut. Most of what Midgard knows of the Mistress, it knows from her."
+    },
+    {
+      "title": "Odin's Fire at the Face",
+      "text": "The mine loved her, which surprised the jarl. She was a scold. She walked the galleries every day and looked at every face, and if a hewer had cut a hand's width off her marks she told him so, there and then, in front of the shift, and went on telling him until she had finished. Nobody ever got a word in while the Mistress was speaking, the miners said, and nobody ever stopped her halfway through one. They said it fondly. Her marks kept them alive, and they knew it.\n\nThe hewer Brodd tested her once. He was a good hewer and a proud one, and in the mine's sixth year he cut past one of her danger marks in the eastern galleries to save a day's work, because the ore ran on beyond it and he could see that it did. The Mistress came down the gallery when she heard, and stood in front of him, and scolded him, and as she scolded she called Odin's fire.\n\nIt came down out of the rock above the face where Brodd stood, a spear of flame as long as a man, and it burst on the stone where he stood and in a wide ring all round him. It singed his beard off, and the beards of the two haulers who had been standing at his shoulder to watch him get his scolding. The Mistress finished what she was saying and walked away. The next morning the roof of that face fell in, exactly where Brodd had cut, and nobody was under it.\n\nThe galleries kept a saying from that day, and it outlived the mine's working years: never stand at the shoulder of the one the Mistress is scolding. She did not call the fire often in the working years, the miners said. She did not need to. The ceilings of her last gallery are scorched in rings now, many of them, close together, and the runemasters who go down to copy the wall say that whatever she was keeping back in the working years, she keeps nothing back now."
+    },
+    {
+      "title": "Three She Told",
+      "text": "Her marks to the north went wrong in the last year: a mark cut twice, a mark scratched out, danger three times in a row, and then the ordinary runes stopped and she cut one more, deep, in the straight letters of the stone on the crown. Not here. The steadings count the people she told, and there were three, and then a fourth who was not told but sent.\n\nShe told the jarl, twice, the second time in front of his huscarls, and he laughed. She told Thane Dyggve, who was slow and meant what he said, and he looked at her mark a long time and said he would not split the northern face, and kept his word; it was the only time the thane refused his jarl. She told Aros, who listened and was quiet and then said that if anything below called to the shift, he would read their names louder than it could. She told him it would not be enough. He said it would have to be.\n\nThen she sent Ragnvor away. She gave the girl a copy on birch bark of the old stone's letters, as much of them as she could read, and a message for the runemasters of Jordheim, and put her on a pony the evening before the shift went north. Ragnvor wanted to stay. The Mistress said one of them had to be somewhere else when it happened, so that someone would know what she had cut.\n\nOn the last morning she went up to the mouth and scraped her name off the first mark. Then she went down to the gallery where her marks ran out and stood in front of the last one, with her back to it, facing the way anyone would come, and when the picks went through at midday and the cold came up the galleries, she did not go to the seam and she did not go to the stair. The gothar say she is not bound as the shift is bound. She was never called. She stays because she warned him, and someone has to keep warning."
+    },
+    {
+      "title": "Dim Eyes",
+      "text": "She scolds still. The companies that have come back from her gallery say she stands before the last mark with her chisel in her hand and speaks to the one in front of her, and that as she speaks the fire comes down out of the rock, on the one she is speaking to and on everyone near him, and that she speaks a great deal. They say she never stops in the middle of it.\n\nShe does one thing now that she never did while the mine was worked. Ragnvor came back, as an old woman, the winter after the first Midgard company went down and came up again, to copy the wall herself. She stood at the far end of the gallery, as far from the Mistress as the gallery allowed, and began to copy, and before she had copied a line her eyes went dim, so that she could see the chisel in her own hand and nothing past it. The dimness lifted after a while, and she went closer, and it came again. She copied the wall half-blind over three days. The companies say it is the same for every stranger who comes before her living: the dimness falls on one of them at a time, and passes, and falls again, and standing at the far end of the gallery does not help.\n\nThe wise-women of Glenlock keep a wash for it, snow-water and birch ash, and a charm that goes with it, and the companies who go down to her carry both. The runemasters of Jordheim say the dimming is the last mark's own work: she cut it to keep anyone from reading what came after, and her anger keeps it cut. Ragnvor said otherwise, and wrote it at the end of her copy. The jarl was warned and could not see, she wrote. The Mistress wants every stranger who comes before her to know what that was like.\n\nRagnvor's copy is at Jordheim, with the birch bark. The last line of the wall, in the Mistress's ordinary hand under the deep mark, was read only later, and those who have read it do not keep copies."
+    }
+  ],
+  "legend": "The Mistress of Runes is about two spells. Odin's Hatred, the flaming spear, comes every 10 to 15 seconds: a 3-second cast you can't interrupt, 650 energy to everyone within 450 of her current target. So whoever has her should stand apart, and nobody else stands near the tank; spread wide, keep a healer at range, and bring energy resist. Mistress's Vision is a 65% nearsight for a full minute, every 20 to 25 seconds, on one random real player within 2,000 who isn't already nearsighted, and it never touches the bots. If you're the only real player in the group it's always you, so carry cure nearsight or bring someone who can cure it, and don't count on range. She's CC-immune, reaches about 350 in melee, has 30,000 health and resets to full if everyone drops off her. The staff of runes is the runemasters' prize, and her icy sapphire drops for every realm. Runemasters still say she's the only one in the mine who was right.",
+  "yells": {
+    "aggro": [
+      "I told him. Not here. Not this seam.",
+      "Not here. Not this seam. Not you.",
+      "Read the wall. Read it!",
+      "Stand where I can see you. Not at his shoulder."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=95",
+        "text": "Odin's Hatred, fall on them!"
+      }
+    ],
+    "death": [
+      "Read... the last wall...",
+      "I told him... I told him...",
+      "Ragnvor... did they read it...?"
+    ],
+    "slay": [
+      "You did not read the runes either.",
+      "Blind to the end.",
+      "The runes were plain.",
+      "I said it plainly. I always say it plainly."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Runes run along the wall and stop. The last says: not here.",
+      "Fresh runes are cut over old ones: not here.",
+      "The ceiling is scorched in rings, close together.",
+      "A smooth patch where a name was scraped away."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=95",
+        "text": "Flaming spears fall from above!"
+      },
+      {
+        "trigger": "death",
+        "text": "The Mistress of Runes falls. Her warning stands."
+      }
+    ],
+    "realmFirstKill": "The Mistress of Runes is silent. Her last mark stands."
+  },
+  "botLines": {
+    "briefing": [
+      "mistress of runes: spread off her target for the spears, cure the nearsight",
+      "spread for the mistress's spears",
+      "kill her fast, the spears come often",
+      "mistress spears every 10-15s, 650 energy in 450 round her target, cant interrupt",
+      "nobody stands near the tank on the mistress",
+      "her nearsight only ever goes for you, not us. carry cure nearsight",
+      "range doesnt help vs the nearsight, she reaches 2000"
+    ],
+    "aftermathWin": [
+      "mistress down, got a sapphire",
+      "icebound staff of runes for our rm",
+      "icy sapphire jewel. for every realm, weird",
+      "mistress down, read the wall lol",
+      "mistress down. she was right though",
+      "staff of runes!",
+      "read the wall on the way out [if you can see it|lol]"
+    ],
+    "aftermathLoss": [
+      "we clumped and the spears did the rest",
+      "we clumped",
+      "the spears came three times in a row",
+      "three of us stood at the tanks shoulder. spear",
+      "you were nearsighted the whole time and nobody cured you",
+      "spears just kept coming, she never stops"
+    ],
+    "rumour": [
+      "the runecarver in dodens gruva warned the jarl not to dig. [he dug|nobody listens]",
+      "the mistress heard three tongues when the seam opened. she knew one of them",
+      "she stands in front of her last rune and keeps warning people",
+      "the mistress's last rune says not here. she cut it the day the seam opened",
+      "never stand at the shoulder of the one the mistress is scolding. old miners saying",
+      "the mistress scraped her own name off the first rune in the mine",
+      "her apprentice copied the whole wall half blind, the copy is in jordheim"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Mistress of Runes",
+    "text": "The runecarver who read Jarnhaug for Jarl [Ormarr] and cut the last mark of the mine: not here. She told the jarl, [Dyggve] and [Aros], and sent her apprentice Ragnvor to Jordheim. The miners said never to stand at the shoulder of the one she was scolding. Now she dims the eyes of the living who come before her wall, and the wise-women of Glenlock keep a wash for it."
+  },
+  "bookPage": "From the notebook of a runemaster of Jordheim who went down to the gallery and copied the Mistress's last runes. The marks are the ordinary marks of a mine runecarver: ore, water, sound rock, danger. Then they stop, and one is cut very deep, in letters older than any I know, and it means not here. Beneath it, in her own ordinary hand, she has cut the reason. It took me a long time to read it. It says: because they are calling, and if we answer, we will be theirs. I copied it twice and burned both copies.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} silenced the Mistress of Runes in {minutes} minutes.",
+    "loss": "The Mistress of Runes rained Odin's Hatred on {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

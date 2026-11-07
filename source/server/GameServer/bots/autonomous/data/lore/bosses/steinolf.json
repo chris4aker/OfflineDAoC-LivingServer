@@ -1,0 +1,117 @@
+{
+  "id": "steinolf",
+  "name": "Steinolf",
+  "npcNames": [
+    "Steinolf"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "gunnolf",
+      "relation": "the western captain whose refusal made the hollow need a runner"
+    },
+    {
+      "id": "gjalpinulva",
+      "relation": "the hollow he runs for"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Steinolf is a level-55 drakulv in the middle of Malmohus (724009, 1003599 in the world data) with the script class Steinolf: when he dies, his spawn point moves at random to one of four places, in the south-east (743068, 1024473), the west (705562, 999511), the south (725142, 1017118) or the middle (723803, 1003599), so he returns somewhere else.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/MidgardMobs/Steinolf.cs"
+    },
+    {
+      "text": "His template gives him a running speed of 230, faster than the other named drakulv (200).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60166539)"
+    },
+    {
+      "text": "Its NPC template puts it in the Pack Drakulv faction, so when a player, a player's pet or a companion bot attacks it, it can bring other Pack Drakulv standing near it into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60166539)"
+    },
+    {
+      "text": "Steinolfr, 'stone-wolf', is an attested Old Norse personal name.",
+      "provenance": "original",
+      "source": "Old Norse name lists (Landnamabok, the sagas), to verify"
+    }
+  ],
+  "story": "In the first winters of her court the dragon sent runners from her hollow, and the camps came. Then Gunnolf of the western camps told her that his people would come when she called them herself and not when a runner did, and she never called them herself, and the runners stopped. The svartalfar say the court did not stop needing them. It found one runner it could trust, and gave him a name that is a joke the drakulv appreciate: stone-wolf, for the one drakulv in Malmohus who is never still.\n\nSteinolf belongs to none of the camps. He goes between them, faster than any of the pack, carrying whatever the hollow wants carried: word of a waking, a quarrel between captains, the dragon's anger at a holding that let strangers through. He does not ask the camps to come. He tells them what the court thinks, and leaves, and the camps decide for themselves, which is the only kind of message Gunnolf would ever accept.\n\nThe svartalfar of Svarhamr have tried for generations to follow him and have given up. He is seen in the middle of the ruins, and then on the southern approach, and then in the west among the armguards, and then in the south-east where the attendants walk. Brisa the beam-cutter says the strangest thing about him is what happens when he dies. The ground where he fell does not see a new Steinolf. Some other holding does, at the far end of the ruins, as if the name had run on without its body and found the next one waiting where it was needed. The beam has his name with a little arrow cut after each dot, pointing nowhere in particular, which is the svartalf mark for a death that did not stay put.\n\nMidgard's scouts, who have killed him more than once, say the same thing more plainly: there is no use waiting where Steinolf fell. He will be somewhere else.",
+  "legend": "Steinolf is the wandering named drakulv in Malmohus, level 55. He has a small script: every time he dies, his spawn point jumps at random to one of four places (south-east, west, south, or the middle of the ruins), so he respawns somewhere else and you have to go looking. He also runs faster than other drakulv (speed 230), so don't try to kite him on foot. Otherwise no abilities, not CC-immune, and Pack Drakulv, so whatever drakulv are near the spot he's in can come along. Check the con and look around first: the west spot is near Ingardild's armguards.",
+  "yells": {
+    "aggro": [
+      "No time. No time for you.",
+      "I carry word. You are not word.",
+      "Out of the road!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The hollow will hear of this. I will tell it myself."
+      }
+    ],
+    "death": [
+      "Somewhere... else... next time...",
+      "Run on... without me..."
+    ],
+    "slay": [
+      "Delivered.",
+      "Too slow.",
+      "Word for the hollow: one fewer."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Fresh tracks, long-strided. A runner passed here.",
+      "The stone-wolf is never where he was."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Steinolf looks for a way out. He always does."
+      }
+    ],
+    "realmFirstKill": "Steinolf falls. He will rise somewhere else."
+  },
+  "botLines": {
+    "briefing": [
+      "steinolf moves every time he dies, four spots",
+      "hes fast, 230 speed, no kiting on foot",
+      "look around before you hit, the west spot is near ingardilds armguards",
+      "55, no tricks, pack drakulv"
+    ],
+    "aftermathWin": [
+      "got the runner",
+      "now he'll be up somewhere else",
+      "he tried to bolt at half",
+      "fast but soft"
+    ],
+    "aftermathLoss": [
+      "he ran into the armguards",
+      "couldnt keep up with him",
+      "pulled the camp at the west spot",
+      "lost him and he came back with friends"
+    ],
+    "rumour": [
+      "steinolf is the dragons runner since gunnolf refused the runners",
+      "stone wolf because hes never still, drakulv joke",
+      "theres no point waiting where steinolf died, hes somewhere else",
+      "the svartalfar cut an arrow after his name"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Steinolf",
+    "text": "The stone-wolf, the one runner the hollow kept after [Gunnolf] refused runners. He belongs to no camp, and when he dies he is next seen at the far end of [the ruins]. See [the names]."
+  },
+  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: we had a boy at Svarhamr once who swore he would follow the stone-wolf from one end of the ruins to the other and draw his road on a hide. He came back after nine days with a hide covered in lines that crossed and crossed again and went nowhere, and said there was no road, only a drakulv who was always already leaving. My teacher kept the hide. It hangs under the beam. When a child asks what the arrows after Steinolf's name mean, we show them the hide, and they stop asking.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} caught Steinolf the runner in Malmohus in {minutes} minutes. He will be somewhere else.",
+    "loss": "Steinolf outran {raidLeader}'s party from {realm} in Malmohus after {minutes} minutes."
+  }
+}

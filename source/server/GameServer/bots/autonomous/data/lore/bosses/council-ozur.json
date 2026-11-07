@@ -1,0 +1,156 @@
+{
+  "id": "council-ozur",
+  "name": "Council Ozur",
+  "catalogKey": "tuscaran-glacier/ozur",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "council-hord",
+      "relation": "fellow councillor of the outer seats"
+    },
+    {
+      "id": "icelord-agmundr",
+      "relation": "the icelord he sent a single jailer to help"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Ozur is a level-77 Council member with 100,000 health. He counts real players in sight: under 50 he gains +20% to every resist; at 50-99 he hits harder (Strength 200); at 100+ harder still (Strength 350) but with -20% resists. Bots are not counted, so offline he always has the +20% resists. Ozur's Disease: radius 400 round his target, 120 s, recast 60 s.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He spreads Ozur's Disease in a 400 radius.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Ozur counts real players in sight while he is hurt and fighting: under 50 he gains +20% to every resist; at 50-99 he hits harder (Strength 200) with no bonus; at 100 or more harder still (Strength 350) with -20% resists. Bots are not counted, so in Living Server he always has the +20% resists. He casts Ozur's Disease (radius 400 round his target, 120 s, 3 s cast, recast 60 s). 100,000 health, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs"
+    },
+    {
+      "text": "Ozur's scratches, the dwarf spy's single jailer and the hosts of the old wars are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs"
+    }
+  ],
+  "story": "Ozur was the Council's measurer. Whenever the Icelords came to the ribs demanding war, Ozur asked the same questions: how many enemies, how strong, how near. Then he answered each threat in proportion. Three drakulv at the rim deserved three giants; the Faraheim spy deserved a single jailer; a war-band deserved a war-band. He was never accused of cruelty or of weakness, and Kula, who despised both, liked him for it. Every threat he measured is a scratch on the wall behind his seat, and there are a great many scratches.\n\nHe measured strangers the same way when they came. The cast-out sculptors say that in the years when the realms sent hosts up the crater road, great companies by the hundred, Ozur answered the many by spending himself, swinging harder than he could bear and growing thin-skinned with it; that is how the old songs remember him. Those hosts do not come any more. The strangers who reach the outer seats now come few, and to the few Ozur answers by holding still and hardening, so that his hide is thicker against a handful than it ever was against a host.\n\nHe carries a sickness too, the measurer's sickness, the sculptors call it: when he has looked at the one in front of him long enough, a rot settles on that one and on everyone standing close by, and stays a long while, and every remedy works at half its strength while it stays. The scratches behind his seat stopped the winter Midgard came. The sculptors say he could not decide how to measure it. He was a jailer's son, from the cells at the bottom of the citadel, and he still carries his father's knife, the one that cut every scratch on the wall. The sculptors say the knife is in his belt, waiting for the scratch he never finished.",
+  "chapters": [
+    {
+      "title": "How Many, How Strong, How Near",
+      "text": "Ozur came to the Council late, in its twentieth winter, to fill an outer seat left empty by a councillor who had walked out onto the high ice and not come back. He was a jailer's son, from the cells at the bottom of the citadel, and he had grown up watching his father measure out bread for prisoners, so much and no more, and he brought the habit to the ribs.\n\nWhen the Ice Lords came to the Council demanding war, as they did most winters, Ozur asked the same three questions every time. How many. How strong. How near. The Ice Lords hated it. They wanted the Council to say yes or no, and Ozur would not say either until he had his answers; and when he had them, he did not vote for war or for peace but for exactly as much as the threat deserved.\n\nThree drakulv at the western rim deserved three giants, and Agmundr's household was sent, and no more. The Faraheim spy of the sixtieth winter deserved a single jailer, and Ozur sent one, a cousin of his own, who brought the spy to Agmundr and went home. A war-band deserved a war-band. Kula, who despised cruelty and despised weakness and despised waste most of all, liked him for it, and the sculptors say the queen sent for Ozur more often than for any other councillor of the outer seats.\n\nHe was never once accused of cruelty, or of weakness. He was accused, often, of being tiresome."
+    },
+    {
+      "title": "The Scratches",
+      "text": "Every threat Ozur measured is a scratch on the wall behind his seat in the outer hall, cut with the point of the jailer's knife his father gave him, and there are a great many scratches. The cast-out sculptors at Dellingstad say that each scratch is as long as the threat was large, so that the wall reads like a tally of the island's troubles in the century of peace: short ones for drakulv and spies and varulv, longer ones for the bad winters, and a very long one, near the end, for the morvalt.\n\nThe companies of Midgard who have reached the outer seats have looked at the wall, and some of them have tried to read it, and the runemasters of Jordheim have asked for a copy. The sculptors say the wall cannot be copied because the scratches mean nothing except to Ozur, who knows what each was for. It is not a record, they say. It is a habit.\n\nThe scratches stop the winter Midgard climbed the crater road. There is one more, the sculptors say, begun and not finished: a short line, then a gap, then the knife-point set against the ice again and taken away. They say Ozur sat in front of the wall for a whole night trying to decide how long to make it, and could not, because the strangers kept coming, and every time he thought he had measured them there were more, or fewer, or different ones, and in the morning he put the knife away.\n\nHe has not cut a scratch since. The sculptors say it is the only thing in a century that Ozur could not measure."
+    },
+    {
+      "title": "The Many and the Few",
+      "text": "He measured strangers the way he measured everything, and the cast-out sculptors say the measuring is in his body now as it was always in his head.\n\nIn the years when the realms first sent their hosts up the crater road, great companies of a hundred and more, Ozur answered the many as he had always answered: in proportion. Against a host he spent himself. The old songs of those years remember a councillor who swung harder the more of them there were, harder than a giant can bear, and grew thin-skinned with it, so that the host that crowded him found him striking terribly and bleeding easily at once. That is the Ozur of the old songs, and the companies of Midgard still sing them.\n\nThe hosts do not come any more. The strangers who reach the outer seats now come in companies of a few, and the sculptors say Ozur has measured them too, and answered the few as he answers small threats. He holds still and hardens. He does not swing harder at a handful; he does not need to. His hide is thicker against a few than it ever was against a host, and the companies who come to him expecting the councillor of the old songs find a different one.\n\nThe sculptors say this is not a change in Ozur. It is the same measure. It is only that the companies have changed, and the measurer has not. The cast-out sculptors at Dellingstad find it funny, and say so to Midgard's companies, who do not."
+    },
+    {
+      "title": "The Measurer's Sickness",
+      "text": "He carries a sickness, and the sculptors say he has always carried it, as his father did: the rot of the cells at the bottom of the citadel, where the prisoners lay and the jailers lived among them. The jailers do not die of it. They give it.\n\nWhen Ozur has looked at the one in front of him long enough to take his measure, the rot settles on that one and on everyone standing close round him, a grey sickness that stays a long while and makes every remedy work at half its strength while it stays. Then the councillor looks away, and some time later looks again, and the rot settles again. The splitters who went to Hord with it in the old days called it the measurer's sickness, and said Hord could ease it but not stop it, and that the giants who stood away from the one Ozur was measuring did not catch it.\n\nHe stands in the outer hall now near Hord's heaped seat, the companies say, between the two of them the whole of the Council's idea of itself: the one who measured threats and the one who mended what the threats did. The sculptors say that is why the strangers should not fight them together.\n\nWhen Ozur dies, the companies say, he looks at the wall behind his seat, at the scratch he never finished, as if he had just decided how long it should be. The sculptors say nobody has ever stayed to see whether he cuts it, and that the knife is still in his belt."
+    }
+  ],
+  "legend": "Ozur's famous 'he hits harder the more people are on him' only counts REAL players: at 50 or more he gets stronger, at 100 or more stronger but softer. Bots don't count, so in Living Server it never happens; instead, with fewer than 50 real players around, he gets +20% to every resist. So you don't need the old 'polite pull': bring your whole group, just expect him to be tough. 100,000 health, CC-immune. The thing to watch is Ozur's Disease: every 60 seconds or so it hits everyone within 400 of his target for two minutes and halves their heals, so keep the healers and casters away from the tank and cure disease on whoever is near him. He's next to Hord, so pull them separately. His skull ring drops.",
+  "yells": {
+    "aggro": [
+      "How many of you? Let me count before I answer.",
+      "A threat is met by its own weight.",
+      "One, two... many. Very well.",
+      "How many. How strong. How near."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "So few of you. My hide is answer enough."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Fewer now. The measure is nearly taken."
+      }
+    ],
+    "death": [
+      "The measure... was wrong...",
+      "Add a scratch... for me...",
+      "That long... it should be... that long..."
+    ],
+    "slay": [
+      "In proportion.",
+      "One fewer. I adjust.",
+      "Measured and met.",
+      "Measured."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Tally-marks cover the wall behind a council seat.",
+      "A giant counts you as you enter.",
+      "Scratches cover the wall behind a seat, one unfinished."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ozur weighs the strangers. Few. His hide hardens."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Ozur weighs what is left of you."
+      }
+    ],
+    "realmFirstKill": "The measurer of the outer seats is measured."
+  },
+  "botLines": {
+    "briefing": [
+      "ozur only counts real players, so offline he just has +20% resists. cure his disease",
+      "pull ozur and hord separately",
+      "cure disease on ozur, it hits everyone near the tank",
+      "ozur: cure the disease, thats the whole fight",
+      "ozurs crowd thing only counts real players, never triggers here. he just has +20% resists",
+      "ozurs disease is 400 round the tank, every 60s. heals off the tank, cure disease"
+    ],
+    "aftermathWin": [
+      "cured the disease on ozur every time, easy",
+      "ozur down, cures were on point",
+      "ozur had +20% resists and we still did it",
+      "ozur's skull ring dropped",
+      "measured lol",
+      "cured the disease every time, easy",
+      "skull ring!"
+    ],
+    "aftermathLoss": [
+      "nobody cured ozurs disease and the heals did half",
+      "fifteen people ran in on ozur and he hit for double",
+      "somebody pulled hord with ozur",
+      "he counted us and hit like a landslide",
+      "healers stood next to the tank and all got diseased",
+      "pulled ozur with hord again"
+    ],
+    "rumour": [
+      "ozur counts you, they say. bring a crowd and he gets mean",
+      "every scratch on ozur's wall is a threat he measured. theres a lot of scratches",
+      "ozur hits harder the more real players are there. offline thats never [lol|so just cure]",
+      "ozur measures every threat and answers in kind. [fair giant|fairest giant up there]",
+      "ozur scratched every threat he ever measured on his wall. the last scratch isnt finished",
+      "the old songs say ozur gets angrier the more of you there are. a few of you just make him tougher",
+      "ozur was a jailers son. he still carries the rot of the cells"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ozur",
+    "text": "The measurer of the outer seats, a jailer's son who answered every threat in proportion and scratched each one on the wall behind his seat. Against the hosts of the old wars he swung harder and grew thin-skinned; against the few who come now he hardens. He carries the rot of the cells, and the scratch for Midgard was never finished. He sits near [Hord]."
+  },
+  "bookPage": "From the sculptor's account. Ozur's wall, he said, is the only honest history Tuscaran has. Every scratch is a threat, and every threat was answered with exactly what it deserved: three giants for three drakulv, one jailer for one spy. He did it for a century and nobody thanked him. Then your people came up the road, and he sat in front of the wall all night with his father's knife and could not decide how long to make the line. I asked why. The sculptor said: because you keep coming back. A threat that comes back cannot be measured once. He said Ozur knew that, and it was the first thing in his life he did not know what to do with.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took Council Ozur's measure in {minutes} minutes.",
+    "loss": "Council Ozur weighed {raidLeader}'s raid from {realm} and found it wanting after {minutes} minutes."
+  }
+}

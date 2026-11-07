@@ -1,0 +1,117 @@
+{
+  "id": "master-smed",
+  "name": "Master Smed",
+  "npcNames": [
+    "Master Smed"
+  ],
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "magister-kurgol",
+      "relation": "the magister of the great forge, his rival"
+    },
+    {
+      "id": "fostra-orm",
+      "relation": "the blood orm whose brood his pets come of"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Master Smed is a level-58 morvalt in the west of Trollheim (23324, 46991) among a dozen morvalt butchers (slaktare) and seven pet blood orms (hus'djur blood orm, level 53-54).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "His template makes him a GameEpicNPC (source/server/GameServer/gameobjects/GameEpicNPC.cs): immune to confusion and nearsight while alive, 10,000 + 125 x level health, 1.5x damage factor.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60163829, ClassType GameEpicNPC)"
+    },
+    {
+      "text": "Template: aggressive at range 350, Morvalt Samhalle faction (bring-a-friend).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish smed means 'smith'; husdjur means 'domestic animal, pet'.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    }
+  ],
+  "story": "In the west of Trollheim, below the gate and away from the upper city, the Fathers had a lesser forge for the rough work of the quarries, and a morvalt the others call only Master Smed, the master smith, keeps it. He is not a magister. He has never lit the great forge and says he never wanted to. He mends the butchers' cleavers and the soldiers' axes and he says, to anyone who will listen, that Magister Kurgol's blades are pretty and soft.\n\nHe keeps orms. The blood orms of Trollheim are kin of Fostra Orm, the fostering serpent in the warm water by Dagar's hall, and the Valkyn say the morvalt are afraid of them and with reason. Master Smed is not. He took a clutch of eggs from the warm water when he was young and hatched them in the ashes of his forge, and the orms that came out of the ashes took him for their mother. They coil about the western forge now like dogs about a hearth, and the morvalt have a word for them that means the house-beasts, and none of the butchers who work beside the smith will go near them.\n\nThe butchers are his because the kitchens are next to his forge and he feeds them. That is the whole of his power in the city, and it is more than Kurgol's: the Valkyn say a smith who mends the butchers' blades and keeps orms at his door does not need soldiers. When a stranger comes into the west, the smith comes at him, and the butchers come, and the orms come, all of them at once, as a household turns out for a thief.\n\nHe is hard to kill, harder than any morvalt his size, and the Valkyn say his eyes have been burned clear by the forge so that no shaman's fog will cloud them. Ulfrun of Dyrfjall, the guide Fostra Orm bit, said that the smith's orms were the only ones in Trollheim she was not afraid of, because they had been raised by something that loved them, even a morvalt; and that this made them worse, not better, for anyone who came between them and the forge.",
+  "legend": "Master Smed is a level 58 morvalt smith in the west of Trollheim, with a dozen butchers (52) and seven pet blood orms (53-54) around him. His template makes him an epic-class NPC: about 17,000 health, 1.5x damage, immune to confusion and nearsight. He's aggressive at 350 and Morvalt Samhalle, and the butchers and orms are aggressive and in the same faction, so expect the household when you hit him. Clear the edges, mez what you can, then tank Smed away from the forge. A full group handles it; a small one gets eaten by orms. Don't confuse the orms with Fostra Orm's.",
+  "yells": {
+    "aggro": [
+      "Away from my forge!",
+      "House-beasts! Up! A thief!",
+      "Kurgol sent you? Tell him his blades bend."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Good iron takes a beating. So do I."
+      }
+    ],
+    "death": [
+      "Feed... the orms...",
+      "My forge... keep it hot..."
+    ],
+    "slay": [
+      "Hammered flat.",
+      "Scrap.",
+      "The orms eat well tonight."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The western forge. Blood orms coil by the hearth.",
+      "A smith's hammer rings. Butchers stand near."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Master Smed's orms close in around him."
+      }
+    ],
+    "realmFirstKill": "Master Smed falls at his forge. The orms keen."
+  },
+  "botLines": {
+    "briefing": [
+      "master smed is epic class, ~17k hp, hits hard",
+      "butchers and 7 blood orms, the whole household comes",
+      "mez the edges, tank him off the forge",
+      "no confuse or ns"
+    ],
+    "aftermathWin": [
+      "smed down, the orms were the hard part",
+      "mezzed the butchers, burned the orms",
+      "tough for a 58",
+      "the forge is cold now"
+    ],
+    "aftermathLoss": [
+      "the orms ate our caster",
+      "whole household at once",
+      "too few for that",
+      "confuse doesnt work on him"
+    ],
+    "rumour": [
+      "master smed hatched blood orm eggs in his forge and they think hes their mother",
+      "smed says kurgols blades are pretty and soft",
+      "the butchers are smeds because he feeds them",
+      "smed means smith, thats all the morvalt call him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Master Smed",
+    "text": "The master smith of the western forge, who hatched blood orms of [Fostra Orm]'s kin in his ashes and keeps them as house-beasts. Rival of [Magister Kurgol]."
+  },
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: we kobolds know forges, and I wanted to see the smith's. The Valkyn guide let me look from far off. The forge was a Fathers' forge, square and low, and the smith was at it with his back to us, and round his feet the orms lay in the warm ashes with their eyes shut, like cats. One of them lifted its head and looked at my lamp. The smith said something without turning round and it put its head down again. I have never been so glad of a stranger's word.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put out Master Smed's forge in western Trollheim in {minutes} minutes.",
+    "loss": "Master Smed and his household threw {raidLeader}'s party from {realm} out of the west after {minutes} minutes."
+  }
+}

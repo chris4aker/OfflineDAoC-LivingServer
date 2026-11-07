@@ -1,0 +1,102 @@
+{
+  "id": "masher",
+  "name": "Masher",
+  "npcNames": [
+    "Masher"
+  ],
+  "locationId": "iarnwood",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "wild-beasts"
+  ],
+  "facts": [
+    {
+      "text": "Masher is a level-64 named on the pulverizers' model in the Iarnwood (415207, 444528), with pulverizers and fengundorm nearby; the Iarnwood holds 88 pulverizers (levels 56-64) in the world data.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, and it is not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Masher's name for the pulverizers' habit and the narfi's account are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The pulverizers of the Iarnwood are great flightless birds with beaks like hammers, and they eat the snails and grubs that live in the bark of the iron trees. Iron bark does not break easily. The birds break it anyway, standing at a trunk and hammering at it with their beaks until the bark gives, and the sound carries all through the middle wood, a slow knocking that the bark-gatherers of Bjarken come to steer by. Where the knocking is, the iron trees are being opened, and where the trees are opened, a gatherer can cut bark without blunting a blade.\n\nMasher is the largest of them, and the oldest. The dwarves of Tarek's encampment gave him the name because of what he does to things that are not bark. He does not hammer trees any more. The young pulverizers open the trunks and he takes what they find, and when anything comes near the flock he goes to meet it, and what he meets he mashes. Gatherers have found helmets in the middle wood with the dent of his beak in them, and a dwarf's axe-head folded nearly in half.\n\nThe narfi say the pulverizers came into the Iarnwood when it was still silver, and that the first of them were small, and ate singing beetles, and sang a little themselves. When the rot came and the bark went hard, the birds that lived were the ones that could break it, and every generation since has been bigger and harder in the beak. Masher, the narfi say, is what the wood has made of a songbird. The dwarves say the narfi say that about everything.\n\nHe has nothing of the rot's craft. He does not drink life or hold the eye as the wood's other terrors do. He is only very big, and very old, and does not like to be disturbed while the young ones are working.",
+  "legend": "Masher is the giant pulverizer in the middle of the Iarnwood, level 64: the biggest bird in a wood full of them. He's a plain spawn with no special abilities and isn't CC-immune, so mez and root work, but he hits like a smith's hammer and the pulverizers and fengundorm around him will join if you're sloppy. Clear the edges, pull him clean, and have a solid tank. Gatherers say you can find him by the knocking: where the young pulverizers are hammering the iron trees, he's close. Good hunting for a full group, and the rest of the flock is decent experience too.",
+  "yells": {
+    "aggro": [
+      "(A beak like a hammer swings toward you.)",
+      "(Masher shrieks, and the knocking in the trees stops.)",
+      "(The great bird lowers its head like a ram.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Masher hammers the ground. The iron trees ring.)"
+      }
+    ],
+    "death": [
+      "(The great bird crashes down among the iron roots.)",
+      "(The young pulverizers fall silent.)"
+    ],
+    "slay": [
+      "(Masher hammers the fallen flat.)",
+      "(The knocking starts again, nearby.)",
+      "(Another dented helmet for the middle wood.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A slow knocking in the iron trees. Pulverizers.",
+      "A dwarf's axe-head lies folded nearly in half."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Masher hammers the earth and the iron trees ring."
+      }
+    ],
+    "realmFirstKill": "Masher is dead. The middle wood is quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "masher is a plain mob, mez and root work",
+      "he hits like a hammer, solid tank",
+      "clear the pulverizers and fengundorm around him",
+      "follow the knocking to find him"
+    ],
+    "aftermathWin": [
+      "masher down. the flock went quiet",
+      "mez on the adds worked",
+      "biggest bird in the iarnwood",
+      "found a dented helmet near his spot"
+    ],
+    "aftermathLoss": [
+      "pulled the whole flock",
+      "tank folded like that axe head",
+      "fengundorm came up under us",
+      "he hits way harder than 64"
+    ],
+    "rumour": [
+      "the narfi say masher is what the wood made of a songbird",
+      "bark gatherers steer by the pulverizer knocking",
+      "masher folded a dwarfs axe head in half",
+      "pulverizers open the iron trees for the bark gatherers"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Masher",
+    "text": "The oldest and largest of the Iarnwood's pulverizers, the hammer-beaked birds that open the iron trees for grubs. The [bark] gatherers steer by their knocking. The narfi say the [silver wood] once made songbirds of them."
+  },
+  "bookPage": "From Under the Iron Trees, by Eldrid of Bjarken: we follow the knocking. Where the young pulverizers hammer the trunks, the bark is already split and we can cut it without spoiling our blades, so all of us who gather listen for them. But we listen for the silence too. When the knocking stops all at once, the old one has lifted his head, the dwarves' Masher, and we go back the way we came without talking. I have seen the helmet he left by the trail. It is a dwarf's. The dent goes nearly through.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down Masher in the Iarnwood in {minutes} minutes.",
+    "loss": "Masher hammered {raidLeader}'s party from {realm} into the iron roots after {minutes} minutes."
+  }
+}

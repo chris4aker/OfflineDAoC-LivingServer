@@ -1,0 +1,66 @@
+{
+  "id": "anicho",
+  "name": "Anicho",
+  "npcNames": [
+    "Anicho"
+  ],
+  "locationId": "delling-crater",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Anicho is a level-45 young rime giant (faction Hrimthursa; the giants' model, small for a giant) on the north-eastern rim of Delling Crater (393,122/285,771, z 8,979) with two hrimthursa guards (41-44); aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Anicho as a young giant of the outer watch is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Anicho is young, for a hrimthursa. The rime giants of Tuscaran set a watch on Delling's north-eastern rim, the giants' watch that guards the way up to the glacier, and they put their young on it to be taught patience: a giant who has stood a winter on the rim looking down at Dellingstad's smoke is a giant who will not be in a hurry about anything again. Anicho has stood several. He is still in a hurry.\n\nThe cast-out sculptor of Tuscaran, who talks to Dellingstad's people more than any giant should, says Anicho asked to be sent to the outer watch the season the Icelords argued for war, because he wanted to be first. The Council sent him to the rim instead, with two guards to keep him there. He fights anything that climbs to him, gladly, because nothing else ever happens. The sculptor says he will make a fine Icelord one day, if he lives.",
+  "legend": "Anicho is a level 45 young hrimthursa on Delling's north-east rim with two hrimthursa guards (41-44). Hrimthursa faction. It's high up on the rim on the way toward Tuscaran. The two hrimthursa guards stand right with him. The rim is a long climb from the crater floor, so bring everyone you need before you go up. He's Hrimthursa faction like the guards; they're 41-44 and hit like giants. A group in the mid 40s is right. Good xp, and the view of Tuscaran's ice from up there is worth the climb.",
+  "yells": {
+    "aggro": [
+      "At last! Something to fight!",
+      "The rim is the Council's. You are not."
+    ],
+    "death": [
+      "Too... soon..."
+    ],
+    "slay": [
+      "Patience? No."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A young giant on the rim, impatient, with two guards."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "anicho is a 45 young giant on the north east rim of delling, two guards",
+      "hrimthursa faction"
+    ],
+    "aftermathWin": [
+      "anicho down",
+      "he was happy to fight, weird"
+    ],
+    "rumour": [
+      "the giants put their young on the delling rim to learn patience",
+      "anicho asked for the outer watch to be first in the war and got the rim instead"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Anicho",
+    "text": "A young rime giant of the [giants' watch] on Delling's rim, sent to learn patience the season the Icelords argued for war. He has not learned it."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} gave young Anicho his fight on Delling's rim in {minutes} minutes."
+  }
+}

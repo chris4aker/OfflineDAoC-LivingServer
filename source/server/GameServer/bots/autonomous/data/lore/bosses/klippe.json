@@ -1,0 +1,71 @@
+{
+  "id": "klippe",
+  "name": "Klippe",
+  "npcNames": [
+    "Klippe"
+  ],
+  "locationId": "delling-crater",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "caldera-elements"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Klippe is a level-43 golem (faction Elements of the Caldera; the living stones' model, large) in Delling's caldera (356,986/309,495) among obsidian golems (45-52), a basalt golem and a sulphur-stained skeleton; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "'Gem of the Dwarven King' (Abjorn Onefoot of Hagall): find Ornulf by a rock outside Dellingstad, read the note, kill the golems Smastein, Klippe and Kampestein, then use the three keys on the box in the caldera's steam vent.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Swedish klippa is 'cliff, rock'.",
+      "provenance": "myth",
+      "source": "Swedish (to verify)"
+    }
+  ],
+  "story": "Klippe is the cliff. Of the three golems of the caldera who keep the dwarven king's keys, Klippe is the tallest, a piece of the crater's wall that got up when the crater burned and was given the second key because, Ornulf's note says, a cliff can see a long way and would know who was coming. Klippe stands among the obsidian golems on the west of the floor, taller than all of them, and watches.\n\nBeside it lies a sulphur-stained skeleton, which the dwellers of Dellingstad say was the first who came for the key, and which Klippe has never let anyone move. The town's soothsayers say a cliff keeps what falls at its foot. The young who come for the second key are told to look at the skeleton first, and then decide. None of the young ever has. They take the key and leave the bones where they lie, as the cliff wants.",
+  "legend": "Klippe is a level 43 caldera golem among obsidian golems (45-52) on the west of the caldera floor; the second key for Gem of the Dwarven King. Elements of the Caldera faction. Several obsidian golems stand near him, up to 52. Kill it from the edge of the obsidian golems' ground and pull it to you; the higher golems are the danger. The skeleton beside it is a sulphur-stained skeleton (46), hostile too.",
+  "yells": {
+    "aggro": [
+      "(The cliff leans down.)",
+      "(Stone shifts. A shadow falls over you.)"
+    ],
+    "death": [
+      "(The cliff crumbles. A key falls free.)"
+    ],
+    "slay": [
+      "(Another at its foot.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A cliff stands on the caldera floor, watching."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "klippe is the 43 tall golem in west caldera, second key",
+      "obsidian golems up to 52 round it"
+    ],
+    "aftermathWin": [
+      "got klippes key",
+      "the skeleton next to it was the first one who tried"
+    ],
+    "rumour": [
+      "the skeleton beside klippe was the first who came for the key",
+      "klippe was given the second key because a cliff can see who is coming"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Klippe",
+    "text": "The cliff, the tallest of the three caldera golems who keep the dwarven king's keys, with the bones of the first seeker at its foot. See [caldera]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down Klippe for its key in Delling's caldera in {minutes} minutes."
+  }
+}

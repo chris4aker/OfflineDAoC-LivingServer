@@ -1,0 +1,66 @@
+{
+  "id": "pirmin",
+  "name": "Pirmin",
+  "npcNames": [
+    "Pirmin"
+  ],
+  "locationId": "modernagrav",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "sjoalf"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Pirmin is a level-45 sjoalf (faction Sjoalf; the sjoalf's model) on the coast of Modernagrav (434,980/346,785) among seventeen sjoalf beachcombers (40-42); aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Pirmin as the beachcombers' reckoner is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The sjoalf of Modernagrav's coast comb the beaches, and Pirmin keeps the count. The sea-elves of the isles' waters pray to something in the deep, and their beachcombers walk the tide-line below the rockwall gathering what the sea gives up, which on this coast is mostly bones: the vigil's dead beasts, the morvalt the dig killed, the shells of things nobody can name. Pirmin decides which of it goes back to the water as an offering and which the cult keeps.\n\nOrri of Hagall, the Remnants' slate-writer, scratched on a slate that the sjoalf took one of the great ribs of the place one does not dig down to the shore, a rib longer than a boat, and that Pirmin had it rolled into the sea. Orri broke the slate after. Pirmin fights strangers on his tide-line with the beachcombers round him, for whatever the sea brings in next. The Remnants do not fish there now.",
+  "legend": "Pirmin is a level 45 sjoalf on Modernagrav's coast with seventeen sjoalf beachcombers (40-42). Sjoalf faction. Seventeen beachcombers is a crowd; pull carefully. The beachcombers are 40-42 and there are seventeen of them, so this is a full group's job. Clear from the south end of the tide-line and work in, and don't drag the fight north toward Fisk's waverunners.",
+  "yells": {
+    "aggro": [
+      "The tide gives. You take nothing.",
+      "Beachcombers! A stranger on the line!"
+    ],
+    "death": [
+      "The sea... keeps the count..."
+    ],
+    "slay": [
+      "For the deep."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Sea-elves comb the tide-line. One keeps the count."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "pirmin is the 45 sjoalf on the modernagrav coast with 17 beachcombers",
+      "sjoalf faction"
+    ],
+    "aftermathWin": [
+      "pirmin down",
+      "so many beachcombers"
+    ],
+    "rumour": [
+      "pirmin had one of the great ribs from the dig rolled into the sea",
+      "the sjoalf give back to the deep whatever pirmin says"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Pirmin",
+    "text": "The sjoalf who keeps the count of what the sea gives up on Modernagrav's shore, and sends part of it back to the deep: once a rib of the [bones]. See [Orri]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} ended Pirmin's count on Modernagrav's shore in {minutes} minutes."
+  }
+}

@@ -1,0 +1,262 @@
+{
+  "id": "grand-summoner-govannon",
+  "name": "Grand Summoner Govannon",
+  "catalogKey": "summoner-s-hall/grandsummonergovannon",
+  "locationId": "summoners-hall",
+  "realm": "Neutral",
+  "aliases": [
+    "govannon",
+    "the grand summoner"
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead",
+    "sidhe-of-the-hall"
+  ],
+  "related": [
+    {
+      "id": "summoner-cunovinda",
+      "relation": "his first student"
+    },
+    {
+      "id": "summoner-lossren",
+      "relation": "his gatherer"
+    },
+    {
+      "id": "summoner-roesia",
+      "relation": "his keeper of pain"
+    },
+    {
+      "id": "aros-the-spiritmaster",
+      "relation": "the binder who holds Midgard's dead back from his calling"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Grand Summoner Govannon is the level-80 final of Summoner's Hall for all three realms' raids; the Offline DAoC build gives him 200,000 health (300,000 originally).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "At 80% he grows stronger (Strength 650) and calls a summoned sacrifice and a summoned demon (6,000 health each) at two spots on either side of his room. Neither attacks; both walk to his spot and vanish there. Only if both arrive does the Shade of Aelfgar rise; killing either one on the way stops it. He calls the pair again at 80% of his demon form.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs"
+    },
+    {
+      "text": "At 50% he drops his elven shape, becomes a demon, heals to full health and hits harder still.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs"
+    },
+    {
+      "text": "In demon form only he casts Govannon's Shroud of Agony (matter damage over time in a 300 radius around his target) and his blows can open the Demon's Scar bleed.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs"
+    },
+    {
+      "text": "He takes 40% less melee damage and 70% less magic damage, cannot be crowd-controlled, takes no damage when drawn past his tether, and resets after 30 seconds out of combat.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs"
+    },
+    {
+      "text": "The Shade of Aelfgar (10,000 health) stuns everyone within 500 of its target with Aelfgar's Shout and, while it lives, now and then lifts a random real player within 2,000 to a ledge above the room (GameBots are never picked). The release world also places one Shade beside Govannon; it does not respawn once killed.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs"
+    },
+    {
+      "text": "Allakhazam lists him as a level-80 demon. A period player wrote that you first see an elf caster, then a taller shape, and at 60% his true demon form; 43 people took close to 30 minutes.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/3789"
+    },
+    {
+      "text": "Bot chat says he starts as an elf and finishes as a demon, and tells a 'shield node' story that the script does not have (hearsay).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_shared.lines"
+    },
+    {
+      "text": "Gofannon (Govannon) is the smith son of Don in the Welsh tales (to verify the spelling and role in the Mabinogion).",
+      "provenance": "myth",
+      "source": "Welsh myth, to verify"
+    },
+    {
+      "text": "Aelfgar is an Old English name; aelf means elf and gar spear (to verify).",
+      "provenance": "original",
+      "source": "Old English glossary, to verify"
+    },
+    {
+      "text": "The Shade of Aelfgar rises only when the summoned sacrifice has reached Govannon and the summoned demon is dead; both are cleared when the fight resets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs"
+    },
+    {
+      "text": "When Govannon morphs into his demon form at half health he is restored to full health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs"
+    }
+  ],
+  "story": "Grand Summoner Govannon holds the deepest room of the Summoner's Hall, the hall under all three old frontiers, in a chamber laid out in the pattern of Legion's court. His name is a smith's from the old tales of the west; what he makes is bargains, and his material is the dead. Each realm tells him differently: Camelot's scholars say he was a mage of the old Britons who took a smith's name; the druids of Tir na Nog say he wears the stolen shape of one of the sidhe; Jordheim's skalds say there is no one under the shape at all.\n\nHe came to the empty sidhe hall, the realms' meeting place under their borders, and filled it with summoners: Cunovinda, his first student, Lossren the gatherer, Roesia the keeper of pain. Together they call the dead of Albion, Midgard and Hibernia through the floors of the frontier dungeons, and the dead who answer join the Lords of the Undead. Midgard's miners heard the calling in Dodens Gruva, and Aros bound them rather than let them go.\n\nEvery calling has a price, and Govannon pays his debts. When he is first pressed he strikes a bargain: a sacrifice and a demon walk across the floor from either side of the room to meet at his feet, and if both arrive the price is paid, and his old creditor the Shade of Aelfgar rises out of the floor to collect, with the war-cry that killed him. When he is badly hurt he sheds the elven shape he was paid in long ago, and the demon steps out of it whole, as if every wound before had been given to someone else. His power is the pattern of his room; drawn out of it he is only a shape. Each realm claims the first kill of him, and none of them has stopped the calling for longer than a season. What he is making with the souls, nobody agrees.",
+  "chapters": [
+    {
+      "title": "A Smith's Name",
+      "text": "In the old tales of the west, the tales the bards of Camelot learned from the Britons before Arthur, there was a smith among the children of Don called Gofannon, who forged for the gods and was the greatest maker of his age. The Grand Summoner of the hall under the frontiers carries his name, Govannon, and every realm agrees that he took it on purpose. They agree on nothing else.\n\nThe scholars of Camelot say he was a man once, a mage of the old Britons who studied the summoning of spirits in the years before Camelot, when such studies were not yet forbidden. He took the smith's name because he believed a summoner should be a maker, not a beggar, and that the dead were only another material, like iron. They say he went under the hills to find a place where the dead of every people could be reached, and did not come back up.\n\nThe druids of Tir na Nog say he was never a man. They say the shape he wears, a tall caster in fine robes with the sidhe's long face, belonged to one of the Good Folk of the hollow hills, and that he took it as payment for a bargain the druids will not describe, and wears it before every enemy as an insult to Hibernia. The smith's name, they say, is only a joke on the sidhe, who were the makers of the hall he stole.\n\nThe skalds of Jordheim say there is no one under the shape at all. The Grand Summoner, in their telling, is a thing out of the same dark as the demons of Darkness Falls, and the elf and the name are both masks. They point to Aros the Spiritmaster, who saw a robed figure smile at him from the hall's floor as one craftsman smiles at another, and they say a thing that smiles like that at a binder of souls is a binder of souls itself, and nothing else."
+    },
+    {
+      "title": "The Hall Under the Borders",
+      "text": "The hall was there before him. Every realm's old frontier dungeon digs down to it: Albion's Hall of the Corrupt, Midgard's Dodens Gruva and, the Hibernians say, Marfach Caverns. Each has a stair at the bottom, and each stair ends on the same floor. The druids say the sidhe built it in an age before the realms had names, as a meeting place under the borders where the peoples of the three lands could speak without crossing into each other's country, and that the sidhe magickers and protectors who serve there now are the descendants of its first keepers. A high lord of the sidhe, Ard Tiarna Kieren, still walks its halls.\n\nThe meeting place fell empty in the long years when the peoples above stopped speaking to each other and began to fight. The druids say the sidhe kept it anyway, out of duty, the way a steward keeps a hall whose lord has died. Then the summoner came down one of the stairs, and the stewards found that their hall had a new lord.\n\nHe changed its rooms. He had been to Darkness Falls, the hall's sidhe say, and had stood in the court of the arch-demon Legion, and admired it, because he admires anything that holds a great many souls. So he laid the deepest rooms of the Summoner's Hall out in the pattern of Legion's court, wing for wing, so that the room where Legion sits in Darkness Falls is, in the Summoner's Hall, the room where Govannon sits. The first Midgard company down the stair said it at once: the place looks like Darkness Falls. It was built to.\n\nThe pattern is the source of his strength, the stewards say. Inside the pattern, in the place where Legion's throne would stand, his power flows into him from every wing of the hall. Drawn out of it, past the edge of his room, he is only a shape, and a shape cannot be wounded. Inside it, the stewards say, the pattern turns aside the craft of other casters as a slate roof turns rain, and the blades of the hall's old guards always bit deeper into him than any spell; nor can anything that holds a man still hold him, for the pattern holds him first."
+    },
+    {
+      "title": "The Calling",
+      "text": "Govannon calls. That is what the Summoner's Hall is for now, and what its summoners do all day and all night: they call the dead, of every realm at once, in every realm's tongue. The calling goes up through the stairs into the frontier dungeons above, and through the floors of the mines and tombs and halls of the old frontiers, and the dead who hear it get up and walk down toward it. When they arrive, they belong to the hall. The hall's dead are one people now, whatever realm they came from. The stewards call them the Lords of the Undead, and to strike one of them is to be the enemy of all, because they all came to the same call.\n\nHe trained three summoners to call with him. Cunovinda came first, a name that means white hound in a tongue older than Camelot, and she is still his best student, and puts her enemies somewhere else rather than trade blows. Lossren is his gatherer, who collects the dead the calling brings and keeps the ones that arrive in pieces, and leaves them in a crowd around him. Roesia, who has a Camelot name and curses Albion's knights in their own tongue, is the keeper of pain, who makes sure that every bargain the hall strikes hurts the one who strikes it. Each holds a room of the hall between the stairs and the deepest room.\n\nMidgard's dead heard the calling in Dodens Gruva, when Jarl Ormarr's miners broke into a cold seam above the hall and heard voices in three tongues. The miners died, and their dead began to walk down toward the voices, and the spiritmaster Aros bound them to the mine rather than let the hall have them, and read their names every morning so that they would hear him louder. The robed figure who smiled at Aros from the floor of the hall, the skalds believe, was Govannon, admiring a rival."
+    },
+    {
+      "title": "The Price That Walks",
+      "text": "Every calling has a price, and Govannon always pays it. A sidhe magicker of the hall, who had been one of his students and spoke to a Midgard scholar for reasons of her own, put it plainly: a maker who does not pay is only a thief, and Govannon has never been a thief. The price is a soul, and it walks to him on its own feet.\n\nSo when he is first pressed, he stops to strike a bargain in front of his enemies, and his strength rises with it. A bargain needs two parties, the magicker said, the one who pays and the one who is paid, and so two things come up out of the floor at the far sides of the room, a summoned sacrifice and a summoned demon, and begin to walk toward his feet, slowly, lifting no hand against anyone. When both have reached him, both are consumed, and the price is paid. If either one never arrives, the bargain is void and the debt unpaid, and he hates an unpaid debt more than any wound. He strikes the same bargain again in his second shape; a maker does not change his terms.\n\nPaid prices are collected. Govannon has one old creditor, from the first bargain he ever made, the one that bought him the hall or his shape or both, depending on who tells it. The creditor is the Shade of Aelfgar. Aelfgar is an Old English name, elf-spear, and Camelot's priests say he was a warrior of Albion in the age before Arthur who went under the hills to kill a summoner and died there, shouting his war-cry, and that his ghost was taken as part of the price of that first bargain and has served as its collector since. When the sacrifice and the demon have both come to Govannon's feet, Aelfgar rises out of the floor to collect what is owed, and the war-cry he died with comes out of him again, and everyone near the one he strikes is struck motionless by it. He fights beside the summoner until he is put down. Some companies have found him already standing at the summoner's elbow when they came in, an old debt still waiting from a bargain no one living saw, and fought him before anything else; once put down, he rises again only when a new price is paid. The druids say he is not Govannon's servant, only his creditor, and that this is worse."
+    },
+    {
+      "title": "The Shape He Was Paid In",
+      "text": "Those who reach the deepest room see an elf caster first, tall and robed, with a long sidhe face. Thorkel Hallsson's company said afterwards that he grew taller as he weakened, and that at the last he turned into what they took for his true form, a demon. The hall's sidhe say the elf is the shape he was paid in, long ago, and that he wears it until it is no longer worth wearing. When he is badly hurt he sheds it. The elf splits, and the demon steps out of it, and the demon is whole: every wound his enemies gave the elf belongs to the elf, and the demon has none of them. He hits harder in that shape than in any other, as if the elf had been holding him back.\n\nMidgard's skalds call him the twice-killed, because no one has ever killed him once.\n\nEach realm reads the change its own way. The druids of Tir na Nog say the elf was a real sidhe whom he unmade to take the shape, and that every time the demon steps out of the elf, the living are watching a murder repeated. The scholars of Camelot say he was a man who became a demon by his own studies, and that he wears the elf to mock the sidhe whose hall he took. The skalds of Jordheim say the demon is all there ever was, and the elf a mask, and that the demon's unmarked skin proves it: a mask takes the blows and is thrown away.\n\nThe magicker who had been his student said something none of the three realms say. She said he does not know either. She said that when the elf splits, there is a moment before the demon speaks when the face in the middle looks surprised, every time, as if he had forgotten again which one of them he was."
+    },
+    {
+      "title": "The Agony and the Scar",
+      "text": "His demon shape has its own ways of hurting the living, and the elf has neither. The first is the shroud of agony, a cloak of pain he throws over the one he is fighting and over those crowded close about him, eating at them slowly; the magicker said he wove it from the last breath of the first soul he ever bargained for, and that it remembers the dying and shares it. The second is the demon's scar, the wound his demon shape leaves, which bleeds and keeps bleeding; it is the mark of the bargain, she said, a debt opened in the flesh that does not close until it is paid.\n\nThe third belongs to his creditor. While the Shade of Aelfgar stands in the room, the living are snatched up now and then, one at a time, to a ledge of the room high above the floor, where the bound of the hall stand and watch what happens below. The hall's sidhe call it the gallery of witnesses. The summoner wants his bargains watched, they say, because a bargain no one sees is only a theft, and so his creditor sends a living witness up to stand among the dead ones and see the debt collected. The living climb down. The dead do not.\n\nHis room is guarded at every door by its stewards, the sidhe protectors and magickers, black and grey nobles of the hall's old court, and deep wolves that came down the stairs from the frontiers and never went back. They are the summoner's people, and to strike one is to make enemies of all. Every realm that has gone down to his door has fought through them and past the three summoners, and has met the other realms on the way, because the hall is the only place where all three realms come together, and they have never once come together in peace."
+    },
+    {
+      "title": "Three Claims",
+      "text": "Every realm says it killed the Grand Summoner first. The three accounts cannot all be true, and each realm tells its own as history.\n\nAlbion's chronicle says a company of knights who went down through the Hall of the Corrupt, clearing the hall above and taking its stair to see where the dead were going, reached the deepest room under Sir Edric of Caer Ulfwych and slew the summoner in his demon shape, and that the Shade of Aelfgar, freed for a moment, knelt to Sir Edric before he faded. Camelot's priests still pray for Aelfgar on the day of that kill.\n\nMidgard's account says the first kill was made by forty-three of Jordheim and Glenlock, who came down the stair of Dodens Gruva past the jarl's hound under Thorkel Hallsson, fought through the summoners for half a day, and killed the summoner in a little under the time it takes a skald to sing the long lay of the binding of the wolf. The skalds say that when he died, the picks in Dodens Gruva stopped for a moment, and Aros the Spiritmaster looked up from his reading.\n\nHibernia's account says the first kill was made by the Good Folk of the hall themselves, with Hibernia's help: that a company out of Marfach under the ranger Sinech ni Riain found the sidhe stewards willing to stand aside for once, because the stewards wanted their hall back, and that Ard Tiarna Kieren watched the summoner die and did not lift a hand to save him. The druids say that is the true reason the sidhe of the hall still serve him: they waited too long, and when he came back, they were afraid.\n\nHe came back after all three, in a season or less, because the pattern of the room holds his place for him, and the calling began again."
+    },
+    {
+      "title": "What He Is Making",
+      "text": "Govannon is a maker, and a maker makes something. The souls the hall calls are his material, and he has been working them since before Camelot. Nobody knows what the work is, and the realms disagree as usual.\n\nThe scholars of Camelot say he is making an army: the Lords of the Undead, the dead of every realm in one host, bound to the hall and waiting for the day when the realms above have exhausted each other in their war and there is no one left to stop the dead walking up the three stairs at once. The druids of Tir na Nog say he is making a hall, a second Darkness Falls under the borders, a court of his own to rival Legion's, and that the sidhe were only the first of the stewards he will need. The skalds of Jordheim say he is making nothing at all, that a thing out of the dark only takes, and that the smith's name is the last and best of his jokes.\n\nThe magicker who had been his student gave a fourth answer, and the Midgard scholar who heard it wrote it down and then would not discuss it. She said he is making a bridge. She said that under the hall there is a place where the dead of all three realms are the same, and that he is building a way across to it out of the souls of the three realms, one bargain at a time, and that when it is finished he will go across, and the bridge will come with him, and the realms above will find that their dead have nowhere else to go.\n\nEach realm has gone down to the deepest room to stop the work for a season. Midgard has gone for one more reason. In Dodens Gruva, at the head of the stair, Aros the Spiritmaster reads the names of his miners every morning, and has promised that when the calling stops, they may go. Every death of Govannon gives them a season of quiet. None has given them more."
+    }
+  ],
+  "legend": "Govannon is two fights. At 80% he gets stronger and a sacrifice and a demon walk to his feet from both sides of the room; neither fights, and if both get there the Shade of Aelfgar comes, so kill at least one of them on the way. The shade's shout stuns everyone near its target, and while it lives it throws someone up to the ledge above the room now and then. In a fresh hall the shade is already standing next to him, so kill it first. At 50% he turns demon and heals to full, so pace your power: the second half is the real fight. In demon form he puts the Shroud of Agony on whoever he is hitting and anyone close to them, his hits bleed the tank, and the sacrifice and demon come again at 80%. He shrugs off most magic, so melee and pets do the work, and nothing mezzes or stuns him. Don't drag him off his spot: past his tether he can't be hurt. Period accounts put the hall at four to five groups and the summoner at about forty people and half an hour. Clear all three summoners first, then rest. The shield node story is old raid talk; nobody has found the node.",
+  "yells": {
+    "aggro": [
+      "You came down through your own floors to me. I have been calling your dead for years. Now I call you.",
+      "Three realms' dead and still you come down my stairs alive.",
+      "Watch closely. A bargain unwitnessed is only theft."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=80",
+        "text": "A bargain, then. Walk to me, little sacrifice. Rise, my demon."
+      },
+      {
+        "trigger": "addsDead",
+        "text": "Paid or void, the bargain is closed. Aelfgar knows which."
+      },
+      {
+        "trigger": "formChange",
+        "text": "Enough of this skin. Look at me as I am."
+      }
+    ],
+    "death": [
+      "Every bargain... ends... I forgot...",
+      "The pattern... holds my place..."
+    ],
+    "slay": [
+      "Another voice for my hall.",
+      "You will answer when I call, now.",
+      "Another witness for my gallery."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The deepest room. It is built like Legion's own.",
+      "A tall figure in robes is calling. The dead listen."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=80",
+        "text": "A sacrifice walks toward Govannon. Stop it!"
+      },
+      {
+        "trigger": "addsDead",
+        "text": "The bargain closes. Listen for a war-cry."
+      },
+      {
+        "trigger": "formChange",
+        "text": "Govannon tears off his elven shape. A demon stands!"
+      }
+    ],
+    "realmFirstKill": "The Grand Summoner is silent. The calling has stopped."
+  },
+  "botLines": {
+    "briefing": [
+      "govannon at 80%: a sacrifice and a demon walk to him from both sides. kill either one before it gets there and no shade of aelfgar",
+      "at 50% he goes demon and heals to full. dont blow everything early, second half is the real fight",
+      "dont pull him off his spot, he goes immune past his tether",
+      "clear all three summoners before govannon, then rest and rebuff",
+      "govannon shrugs off most magic. melee and pets on him, casters on the walkers and the shade"
+    ],
+    "aftermathWin": [
+      "govannon down!! [elf, demon, dead|three forms and he still died]",
+      "the calling stopped. [did anyone else hear it stop?|weird quiet down there now]",
+      "the summoner is dead and the sacrifice never got through",
+      "govannon's crown dropped. which one is it"
+    ],
+    "aftermathLoss": [
+      "he went demon at half and healed up and we had nothing left",
+      "let the sacrifice through. aelfgar's shout stunned the whole raid",
+      "we chased him off his spot and he went immune",
+      "the shade kept throwing people up to the gallery. kill one of the walkers next time"
+    ],
+    "rumour": [
+      "grand summoner govannon starts the fight as an elf and finishes it as a demon. nobody knows which one is the real him",
+      "[the old raiders say|word is] there's a shield node in govannon's room. [never seen it|nobody's found it]",
+      "the summoner's room is laid out exactly like legion's in df. on purpose",
+      "every realm says it killed govannon first. nobody agrees"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Govannon",
+    "text": "The Grand Summoner, named for a smith of the old tales because he too is a maker; what he makes is bargains. He wears a sidhe's shape until half his strength is gone, and then the demon steps out of it, whole. Stop his sacrifice reaching his feet, or the Shade of Aelfgar comes to collect."
+  },
+  "bookPage": "Of the bargains of the Grand Summoner, from a sidhe magicker who had been his student, as near as I could follow her. Every calling has a price, she said, and he always pays it, because a maker who does not pay is only a thief. The price walks to him on its own feet. If it arrives, the debt is settled, and the one he owes, an old ghost named Aelfgar, comes up out of the floor to take what is owed. If it does not arrive, he must find another way to pay, and he does not like that. She said the elf he shows is the shape he was paid in, long ago. She would not say what paid it.",
+  "chronicle": {
+    "win": "In the deepest room under the three frontiers, {raidLeader} of {realm} slew Grand Summoner Govannon in {minutes} minutes; the calling stopped.",
+    "loss": "Grand Summoner Govannon added {raidLeader}'s raid from {realm} to the voices of his hall after {minutes} minutes."
+  },
+  "realmTakes": {
+    "albion": {
+      "botLines": {
+        "briefing": [
+          "govannon: sacrifice dies before it reaches him, thats the whole trick. clerics ready for the shade's stun"
+        ],
+        "aftermathWin": [
+          "for albion! the summoner is dead. [huzzah|gg all]"
+        ],
+        "rumour": [
+          "the priests in camelot say the shade of aelfgar was one of ours once. a knight, they say"
+        ]
+      }
+    },
+    "midgard": {
+      "botLines": {
+        "briefing": [
+          "govannon. kill the sacrifice, kill the demon, if the shade comes break the stun. at half he heals to full"
+        ],
+        "aftermathWin": [
+          "thats for ormarr's miners. [the calling is done|aros can rest]"
+        ],
+        "rumour": [
+          "dodens gruva's dead were walking down to him. aros held them back. [now we've finished it|good riddance]"
+        ]
+      }
+    },
+    "hibernia": {
+      "botLines": {
+        "briefing": [
+          "the summoner wears a sidhe's face, dont be fooled. sacrifice dies first, save power for the demon half"
+        ],
+        "aftermathWin": [
+          "the false sidhe is dead. [tir na nog will sing of this|for hibernia]"
+        ],
+        "rumour": [
+          "the druids say govannon wears the shape of one of the good folk. [an insult|shameful]"
+        ]
+      }
+    }
+  }
+}

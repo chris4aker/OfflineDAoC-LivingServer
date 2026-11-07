@@ -1,0 +1,117 @@
+{
+  "id": "grul-mgnuk",
+  "name": "Grul Mgnuk",
+  "npcNames": [
+    "Grul Mgnuk"
+  ],
+  "locationId": "modernagrav",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "basilius",
+      "relation": "the king who comes to the dig only when the calling goes badly"
+    },
+    {
+      "id": "mortufoghus",
+      "relation": "the mammoth who walks between the dig and the bones"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Grul Mgnuk is a level-58 morvalt on high ground at the morvalt dig in north-western Modernagrav (450430, 341664, 8192), among callers (framkalla), watchers (vaktare), searchers (utforska) and andakuva, with a mixer (blandare) further off.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Template: aggressive at short range (200), Morvalt Samhalle faction. When a player, a player's pet or a companion bot attacks it, it can bring nearby morvalt samhalle into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60266103)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish framkalla means 'to call forth, evoke'; vaktare 'watcher'; utforska 'to explore'; blandare 'mixer'. Andakuva is not Swedish (perhaps 'anda' spirit + an unknown word); to verify.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    }
+  ],
+  "story": "Basilius rules the morvalt of Modernagrav and keeps away from the dig. Someone has to keep the dig, and that is Grul Mgnuk, the dig-master, who stands on a rise above the diggers' huts in the north-west with the whole of the work below him, and who has not been further from it than the edge of the dig since the wall came down.\n\nHe was a shaman's son, the dwarves of the Remnants say, and not a shaman, which in the morvalt's eyes is a kind of failure; the callers who call into the bones by night are shamans' work, and Grul Mgnuk cannot call. What he can do is count. He knows how many baskets of earth came off the bones each day from the first day on, and how many callers have gone mad, and how many searchers went out across the island looking for the Mother's head and did not come back, and how far the mammoth's round comes toward the camp in each season. He keeps the counts in knots on a cord, the dwarves say, and the cord is longer than he is tall.\n\nUnder him the dig has the shape of a household. The searchers go out and come back with bones, or without. The mixers make the pastes the callers smear on themselves before they call. The callers call. The watchers stand on the edges and watch for Mortufoghus, who walks between the dig and the bones as if the bones were her calf and every digger a wolf, and the andakuva, whose name the dwarves have never been able to translate, walk among the callers and listen to what comes back. Grul Mgnuk listens to the andakuva.\n\nHe fights when the dig is threatened, and the dig fights with him, because the morvalt of Modernagrav have nothing on the island but the dig, and he is the dig. The dwarves at the post have a grudging respect for him that they have for no other morvalt. Orri of Hagall wrote that Grul Mgnuk is the only one of them who has ever asked what happens if they find her. The answer the andakuva gave him is not on the cord.",
+  "legend": "Grul Mgnuk is the morvalt dig-master, level 58, on a rise above the morvalt dig in north-western Modernagrav, surrounded by the dig's morvalt: nine callers (framkalla, 47-52) right beside him, ten watchers (vaktare, 50-53), searchers and andakuva a bit further out. He's aggressive at short range and Morvalt Samhalle, and so is everything around him, so hitting him can bring the dig. Work in from the edges and kill the callers near him first, or pull him off the rise with range. No special abilities on him, not CC-immune, no quest. Mortufoghus walks her round to the south-east of the dig: check where she is before you start, because her stun and thrown players are live.",
+  "yells": {
+    "aggro": [
+      "The dig! Defend the dig!",
+      "Another knot on the cord. You.",
+      "Callers, keep calling. I will deal with this."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The count is not finished. I am not finished."
+      }
+    ],
+    "death": [
+      "The cord... someone take the cord...",
+      "What happens... if they find her..."
+    ],
+    "slay": [
+      "Counted.",
+      "One knot more.",
+      "Back to the dig."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The morvalt dig. Callers wail into the earth.",
+      "A morvalt on the rise counts knots on a long cord."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The callers fall silent. The dig turns to watch."
+      }
+    ],
+    "realmFirstKill": "Grul Mgnuk the dig-master falls. The count stops."
+  },
+  "botLines": {
+    "briefing": [
+      "grul mgnuk is 58 on the rise above the dig, callers right next to him",
+      "work in from the edges, the dig brings friends",
+      "check where mortufoghus is first",
+      "no tricks on grul himself"
+    ],
+    "aftermathWin": [
+      "dig master down",
+      "edges first worked",
+      "mortufoghus stayed away",
+      "the callers are quiet"
+    ],
+    "aftermathLoss": [
+      "the whole dig came",
+      "mortufoghus walked into us",
+      "too many callers",
+      "pulled from the wrong side"
+    ],
+    "rumour": [
+      "grul mgnuk keeps the dig count in knots on a cord",
+      "grul is a shamans son who cant call",
+      "grul is the only morvalt who ever asked what happens if they find her",
+      "the andakuva listen to what comes back out of the bones"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Grul Mgnuk",
+    "text": "The dig-master on the rise above the [dig], who keeps its counts in knots on a cord and listens to the andakuva. He asked once what happens if they find the [Mother]. See [Basilius]."
+  },
+  "bookPage": "From the slates of Orri of Hagall: I lay on the cliff above the dig a whole night once, to see what the callers did. They smeared themselves with the pastes and lay down on the bones and called, and some of them sang and some screamed, and the one on the rise walked among them with his cord and tied a knot whenever one stopped. Near dawn something came back up out of the earth, a sound like a cow lowing far off, and every morvalt at the dig went still. The one with the cord did not tie a knot for that. He sat down.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Grul Mgnuk's dig in Modernagrav in {minutes} minutes.",
+    "loss": "Grul Mgnuk and the dig counted {raidLeader}'s party from {realm} among the fallen after {minutes} minutes."
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "id": "lydsyg",
+  "name": "Lydsyg",
+  "catalogKey": "iarnvidiur-s-lair/lydsyg",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur",
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "dyranapur",
+      "relation": "queen of the same swarm"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Lydsyg is a level-58 named with 10,000 health; seven skuggande come with it.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It drains life and spreads a long Black Plague.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists Lydsyg as magical, level 52-55; it drops skuggande wings.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/5952"
+    },
+    {
+      "text": "Danish lyd means sound and syg sick: 'sound-sick' (to verify).",
+      "provenance": "original",
+      "source": "Danish glossary, to verify"
+    },
+    {
+      "text": "Lydsyg's script is Dyranapur's under another name and template: Drain Life (250, range 1,500, recast 10-15 s) on its target, Black Plague on 45% of its hits (radius 450 round its target, about 50 minutes), seven skuggande (LydsygBaf). It spawns in the western caves about 16,000 from Dyranapur. 10,000 health, 20% melee / 30% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Lydsyg.cs"
+    },
+    {
+      "text": "Danish lydsyg, roughly 'sound-sick' (to verify). The drone that matches the rotting trees and Faraheim's one night of sleep come from the iarnvidiurs-lair file; the slate-keeper Bodvar's sleep and the dwarves' 'singer's night' are Living Server lore.",
+      "provenance": "original",
+      "source": "Danish, to verify"
+    }
+  ],
+  "story": "Where Dyranapur hums, Lydsyg sings, and its song is the sickness. It hangs in a cave of the western passages, a thing of the skuggande that is not quite one of them: larger, paler, its wings stretched thin as smoke over a body that seems more light than horn. The skuggande gather round it in the dark like a congregation, seven always closest, and fall silent only when it does. Its name is a word of the southern sea-folk, the dwarves say, and means something like sick with sound.\n\nIt does not hum. It drones, a note that gets into the teeth, and the dwarves of Faraheim, who lie awake at night listening to the iron trees, say it is the same note the trees make when the rot works in them, and that its cave is the throat the whole wood sings through. It drinks as its sister queen drinks, a long draught at a time from whatever stands before it, and its sickness spreads round the one it drinks from and stays most of a day.\n\nWhen Lydsyg dies the drone stops, and for one night Faraheim sleeps. The dwarves call it the singer's night. The slate-keeper Bodvar, who had not slept a whole night in thirty years, slept through the first singer's night and woke weeping, and said he had forgotten what quiet was. The next night another singer hangs in the cave, and the drone begins again, and the dwarves of Faraheim lie awake. The skalds of Jordheim say Lydsyg is singing the end of the world into the wood a note at a time, and that the iron trees are learning it; the narfi say the drone is only the sound the old one makes in her sleep, sick as her wood. Nobody in Faraheim has asked the singer.",
+  "chapters": [
+    {
+      "title": "The Singer in the Western Cave",
+      "text": "West of the waterfall room the passages of the old one's house narrow, and turn, and climb, until they come to a cave far from the fall where the swarm keeps something else. The dwarves of the Remnants did not know it was there for a long time. They knew only that the western passages were full of skuggande going one way, toward the cave, and none coming back.\n\nLydsyg hangs there, from the roof of the cave, larger and paler than the rest of the swarm, a thing more light than horn, with its wings stretched thin as smoke round a body that seems lit from inside. The scholars of Jordheim who saw the dwarves' drawings of it called it magical, and the dwarves agree. They are not sure whether the swarm made it or worships it.\n\nThe skuggande gather round it in the dark like a congregation, the dwarves say, hanging from the walls and the roof and the roots, hundreds of them, and seven always closest, folded on the stone just under it like acolytes at an altar. They are silent. The swarm of the waterfall room hums all the time; the swarm of the western cave does not make a sound, because the singer is singing.\n\nIts name is a word of the southern sea-folk, the dwarves of Faraheim say, who traded once with ships from the south, and it means something like sick with sound. The dwarves say the one who named it had been in the cave."
+    },
+    {
+      "title": "The Drone",
+      "text": "It does not hum, as Dyranapur does. It drones: a single low note, without breath or break, that gets into the teeth and the bones of the face and stays there. The Remnants who have been in the western cave say that after an hour of it they could not hear anything else, and after a day of it, back in Faraheim, they could still hear it at night.\n\nFaraheim always could. The dwarves of the Remnants have lived above the Iarnwood for generations, and they lie awake at night listening to the iron trees, because the trees make a sound when the rot works in them, a low groaning in the trunks that goes on until dawn. The slate-keepers of Faraheim say Lydsyg makes the same note. They say it is not that the singer copies the trees. They say the western cave is the throat the whole wood sings through, and that Lydsyg is only the place the sound comes out.\n\nThe singer drinks, as its sister queen drinks: a long draught at a time from whatever stands before it, through a hollow spike, so that the one it drinks from grows weaker and it grows stronger. Its sickness is the same as hers, too. It spreads from the one it drank from to everyone standing close by and stays most of a day, dulling every remedy given while it lasts. The dwarves say the two queens are sisters, and that the only difference between them is the song."
+    },
+    {
+      "title": "The Singer's Night",
+      "text": "The first time a war-party of the Remnants killed Lydsyg, the drone stopped. It stopped in the cave all at once, the dwarves say, like a held note cut off, and the skuggande on the walls began to move for the first time, and the war-party ran.\n\nAnd that night Faraheim slept. The iron trees went on groaning, but the note under the groaning was gone, and the dwarves of the slate-house, who had lain awake every night of their lives, lay down and slept until morning. The slate-keeper Bodvar, who had not slept a whole night in thirty years, slept through it and woke weeping, and said he had forgotten what quiet was. The dwarves call it the singer's night, and they keep it as a holiday when it comes.\n\nIt does not come often. The next night, every time, another singer hangs in the western cave, pale and lit from inside, and the drone begins again, and the dwarves of Faraheim lie awake. The slate-keepers say the wood needs a throat and will always grow one. They say the singer's night is the wood holding its breath.\n\nMidgard's companies who come down to the western cave come, the dwarves say, mostly for the wing cloak and the hammer the priests of Midgard like. The dwarves of Faraheim are grateful anyway. They leave a light in the slate-house window on the night after a company goes down, and if the drone stops, they blow it out and go to bed."
+    },
+    {
+      "title": "Two Queens",
+      "text": "The cave is far from the waterfall room, the whole length of the western passages, and the two queens of the swarm have never been seen together. The dwarves say they do not need to be. The skuggande go between them, back and forth through the western passages, and the Remnants say they carry something, though nobody has seen what. The dwarves who have watched the passages say the ones going west are heavier than the ones coming back.\n\nThe narfi have an account of the singer that Thorgrim of Faraheim wrote down, from the one narfi who would speak to him. It said that the old one is sick, as sick as her wood, and that everything in her house that hurts the living is her fever leaking out of her. It said the drone is the sound she makes in her sleep.\n\nThe skalds of Jordheim say otherwise. They say the drone is a song, and that Lydsyg is singing the end of the world into the wood a note at a time, and that the iron trees are learning it. When the wolves run at the end of everything, the skalds say, the whole Iarnwood will sing the singer's note, and nobody on Aegir will sleep at all.\n\nBodvar, who woke weeping from the first singer's night, wrote on the last slate of his life that he did not care which of them was right. He wrote that he had slept once, all night, and that it had been enough. The slate-keepers read it aloud on every singer's night, before they go to bed."
+    }
+  ],
+  "legend": "Lydsyg is a group named with seven skuggande, and its script is Dyranapur's under another name: it drains its target for 250 every 10 to 15 seconds, and almost half its hits leave Black Plague on everyone within 450 of its target for about fifty minutes. So: clear the bugs, keep the tank topped through the drain, cure the plague, and keep the healers out of the 450 ring round the tank. It lives in the western caves, far from Dyranapur's waterfall room, so you won't pull both. 10,000 health, 20% melee and 30% magic resists, CC-immune. A group of six or seven at fifty does it comfortably. It drops a good wing cloak and a hammer the healers like. Stay off the walls of the cave; the skuggande on them join if bumped.",
+  "yells": {
+    "aggro": [
+      "(A droning note fills the cave.)",
+      "(The skuggande on the walls fall silent.)",
+      "(The drone rises into the teeth.)",
+      "(The drone rises into a shriek.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(The drone gets into your teeth.)"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "(The drone breaks into a shriek.)"
+      }
+    ],
+    "death": [
+      "(The note cuts off.)",
+      "(The cave is very quiet.)",
+      "(The note cuts off, like a held breath.)"
+    ],
+    "slay": [
+      "(Lydsyg hums over the fallen.)",
+      "(The congregation stirs.)",
+      "(The drone settles lower.)",
+      "(The drone goes on, as if nothing had happened.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A drone fills the cave. Your teeth ache.",
+      "The skuggande gather here as at worship.",
+      "A low note that gets into your teeth. The bugs are silent."
+    ],
+    "realmFirstKill": "The singer is silent. Tonight Faraheim sleeps.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Lydsyg's drone breaks into a shriek!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "lydsyg + 7 skuggande, same as the waterfall bug",
+      "lydsyg is in the western caves, nowhere near dyranapur",
+      "cure plague after",
+      "lydsyg drains whoever it is hitting, keep the tank topped",
+      "lydsyg is the same script as dyranapur. drain on the tank, 50 min plague 450 round the tank",
+      "heals stay out of the 450 ring",
+      "clear the 7 skuggande first",
+      "cure the plague before moving on"
+    ],
+    "aftermathWin": [
+      "wing cloak dropped!",
+      "skuggande ephemeral wing!",
+      "willful war hammer for the healer",
+      "the drone stopped. finally",
+      "drone stopped. faraheim sleeps tonight lol",
+      "wing cloak!",
+      "cured everyone after"
+    ],
+    "aftermathLoss": [
+      "got drained and diseased",
+      "bumped the walls and the whole cave came",
+      "drained and diseased",
+      "somebody bumped the skuggande on the walls",
+      "healers stood next to the tank and got plagued",
+      "bumped the walls and pulled the bugs"
+    ],
+    "rumour": [
+      "heard lydsyg means sound-sick. [makes sense|my teeth hurt just hearing it]",
+      "the dwarves say lydsyg's drone is the sound the iron trees make at night",
+      "nobody knows if the skuggande made lydsyg or pray to it",
+      "lydsyg means sound-sick. [makes sense|my teeth hurt just hearing it]",
+      "when lydsyg dies faraheim sleeps one night. the dwarves call it the singers night",
+      "the drone in the western cave is the same note the iron trees make",
+      "a slate keeper slept his first full night in thirty years once"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Lydsyg",
+    "text": "The singer of the western cave, sister to [Dyranapur], paler and stranger. Its drone is the note the rotting iron trees make, and the dwarves say the cave is the throat the whole wood sings through. It drinks as its sister does. When it dies Faraheim sleeps one night, the singer's night; the next night another singer hangs there."
+  },
+  "bookPage": "From Thorgrim of Faraheim's notes. I spent a night at the edge of the Iarnwood to hear the iron trees, because the dwarves said they make a sound. They do. It is a drone, very low, under the wind, and it goes on all night. In the morning my teeth ached. The dwarves laughed and said I had heard the trees singing to the cave, and the cave singing back. I asked what the song was about. One of them said: about being sick for a very long time. Another said: about getting better. They argued about it all through breakfast.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} ended Lydsyg's song in {minutes} minutes.",
+    "loss": "Lydsyg's drone outlasted {raidLeader}'s party from {realm}, after {minutes} minutes."
+  }
+}

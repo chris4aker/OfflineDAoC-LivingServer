@@ -1,0 +1,112 @@
+{
+  "id": "wulok",
+  "name": "Wulok",
+  "npcNames": [
+    "Wulok"
+  ],
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "tradklan"
+  ],
+  "related": [
+    {
+      "id": "cronk",
+      "relation": "the chief whose fire he once tried to carry, and who drove him out"
+    },
+    {
+      "id": "valmak",
+      "relation": "the terror bird among whose flock he lives"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Wulok is a level-54 tradklan alone in the middle of Faraheim (390243, 339367) near a terror bird and deer.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Unlike the other named tradklan, his template gives him no faction: he is not of the Tradklan Tribe and never brings friends.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60168060, FactionID 0)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Every tree-clan has a story about the one who tried to carry fire who was not chief, and the tradklan's is Wulok's, and he is still alive to hear it told.\n\nHe was one of Cronk's own trunks, a young tradklan of the northern clan who believed, as the young do, that the right of fire was only a habit, and that a clan with two fires would be twice as warm. One winter night he took a brand from the chief's hearth and carried it to his own trunk. Nothing burned. That was the trouble, the tradklan say. If his trunk had burned, the clan would have known the law was right and forgiven him. It did not burn. He sat by his own small fire all night, warm, and in the morning the whole clan knew that one tradklan who was not chief had carried fire and nothing had happened, and Cronk could not allow the clan to know that.\n\nSo Cronk put the fire out and put Wulok out. The tradklan have no word for an exile, so they did what a tree-clan does with a branch that has grown wrong: they cut him from the clan. He is not of the tribe now. No tradklan will come to his call and he does not call. He lives in the middle country among the deer and the terror birds, alone, and the skogsra say he has made his own fire every night since, small and careful, on bare stone where nothing can catch, to prove a point that no one is there to see.\n\nThe dwarves of Hagall like him. He is the only tradklan who will trade with them without a kobold between, and he has told them that he does not want to come home, only to be right. Cronk, asked about Wulok, speaks of himself by name for a long time and never once says Wulok's.",
+  "legend": "Wulok is a level 54 tradklan living alone in the middle of Faraheim among the deer, with a terror bird close by. Unlike the other named tradklan, his template gives him NO faction, so he never brings friends and no tradklan will come for him. No abilities, not CC-immune: an easy solo-ish named for a 50 with a pet, or any small group. The thing to watch is the terror bird about 530 away and the deer around him, which can wander into the fight. No quest needs him. If you're hunting the tradklan for faction or fun, he isn't part of the tribe.",
+  "yells": {
+    "aggro": [
+      "Cronk sent you? Cronk sends no one. Cronk is afraid.",
+      "My fire, my stone. Go away.",
+      "Two fires. Twice as warm. I was right."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Nothing burned! Tell them nothing burned!"
+      }
+    ],
+    "death": [
+      "Nothing... burned...",
+      "I was... right..."
+    ],
+    "slay": [
+      "Cold now.",
+      "Tell Cronk.",
+      "Alone is better."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A small fire on bare stone, far from any trunk.",
+      "A tradklan alone, cut from the clan, keeping his point."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Wulok glances at his little fire, still burning."
+      }
+    ],
+    "realmFirstKill": "Wulok the cut-off falls. His fire burns on the stone."
+  },
+  "botLines": {
+    "briefing": [
+      "wulok is 54, no faction, no friends",
+      "terror bird about 500 away, dont pull it",
+      "easy small group named",
+      "he isnt part of the tradklan tribe"
+    ],
+    "aftermathWin": [
+      "wulok down",
+      "no terror bird, nice",
+      "easy",
+      "his little fire is still going lol"
+    ],
+    "aftermathLoss": [
+      "terror bird joined",
+      "deer wandered in",
+      "too few of us",
+      "pulled the bird"
+    ],
+    "rumour": [
+      "wulok carried fire without being chief and nothing burned, so cronk cut him out",
+      "wulok makes a fire on bare stone every night to prove a point",
+      "wulok trades with hagall without a kobold",
+      "cronk never says wuloks name"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Wulok",
+    "text": "The tradklan who carried fire without being chief, and nothing burned; so [Cronk] cut him from the clan. He lives alone among the deer with his small fire on bare stone. See [tree-clan]."
+  },
+  "bookPage": "From the trap-lines of Solvi of Hagall: I shared Wulok's fire one night. I had not meant to; I came on it in the dark and he waved me in. It was the smallest fire I have ever seen do any good, a handful of sticks on a flat rock with a ring of stones round it, and he fed it one stick at a time, all night, and talked. He said the law of fire is a good law and he would keep it if he were chief. He said he was not chief. He said a law that only the chief may test is not a law. Then he slept, and I kept his fire.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put out Wulok's fire in Faraheim in {minutes} minutes.",
+    "loss": "Wulok kept his fire against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "id": "mortufoghus",
+  "name": "Mortufoghus",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/mortufoghus",
+  "locationId": "modernagrav",
+  "realm": "Midgard",
+  "era": "mid-era-ice",
+  "factions": [
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "basilius",
+      "relation": "the morvalt king whose diggers she guards against"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Mortufoghus is a level-77 named with 40,000 health on Modernagrav. It stuns, casts Dark Pact (a 250 area blast) and throws a random attacker up to 1,500 away, who takes falling damage.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls it a big named mammoth that roams, 'her' in one comment; players said it was far above its listed level, that three groups could not get her to half (2003), and that eleven killed it in 45 minutes (2006), noting it throws people far.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/6681"
+    },
+    {
+      "text": "Modernagrav's zone text says the morvalt crossed to the island following rumours of the Mother and found a huge half-buried ancient skeleton with a large undead presence guarding it.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=116"
+    },
+    {
+      "text": "Bot chat argues whether Mortufoghus is part of the Mother, and jokes that the morvalt are digging up a cow.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "In Norse myth the primeval cow Audhumla fed the first giant, Ymir, with her milk.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning (public-domain myth); inspiration"
+    },
+    {
+      "text": "Every 25-35 s she throws a random REAL player within 2,500 who is not her target (bots are never picked) to a spot within 1,500 of her, for a fifth of their health as falling damage. Her blows have a 35% chance to stun her target for 6 s. Dark Pact: 250 cold, radius 1,000 round her target, recast 15-25 s. 40,000 health, CC-immune, reach 350, 20% melee / 30% magic resist; she resets at full health. There is no EpicEncounterMechanics switch: the throw is live.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs"
+    }
+  ],
+  "story": "The morvalt say she was there when they came through the wall. The dwarves at the post, who watched them come, say that is true: the first thing the morvalt saw beyond the gap was a mammoth taller than a longhouse, walking a path she had already worn knee-deep round the bones. Nobody knows how long she had been walking it. The path is older than the dig. The dwarves think it may be older than the rockwall.\n\nShe is a beast of the old ice, the great shaggy cows that walked the north before the giants came down from the mountains, and she should be long dead. Perhaps she is. The dead of the vigil are beasts too, mammoths among them, rotting on their feet; Mortufoghus is not rotting, but she is not young either, and the frost in her hide never melts. The morvalt believe she is the Mother's guardian, or the Mother's own spirit walking, or the Mother herself in a shape their eyes can bear. They argue about it at their fires. Midgard's scholars note, carefully, that the oldest tale of all begins with a cow in the ice, licking the first of everything out of the rime.\n\nWhat is certain is that she guards the bones as a cow guards a calf. She walks between the dig and the vigil, and she lets the morvalt dig only so close. When anything comes at her she answers with her whole weight. The one in front of her she tramples and batters until it cannot stand, and the blows of her tusks leave it dazed and unable to lift a hand. The cold rolls off her in a great breath across everyone crowding near the one she is fighting. And the others, the ones who hang about at the edge thinking themselves out of it, she reaches past the front of the crowd and flings: high, and a long way, so that they come down among the spoil heaps winded and bruised. She has never flung the one she was fighting. The morvalt have noticed, and the bravest of them stand in front of her on purpose, because to be flung is an honour and to be trampled is a death, and they have not yet decided which the Mother prefers.\n\nOrri of Hagall watched her throw a digger over two spoil heaps and saw the digger get up and go back to his spade. He wrote that the morvalt seemed to think it an honour. He also wrote that the mammoth did not look at the digger once he was down, and went back to her path, and that when the vigil's dead turned their heads, she turned hers with them.",
+  "legend": "Mortufoghus is the mammoth on Modernagrav, level 77 and 40,000 health, and she's far tougher than her level says; three groups couldn't get her to half once. Every 25-35 seconds she throws a random real player who is NOT her target to somewhere within 1,500 of her, for a fifth of their health as fall damage. Bots are never thrown, so if you're the only human, you're the one flying unless you're the one she's hitting. She stuns whoever she's hitting (35% a swing, 6 seconds), so have two tanks ready to trade. Dark Pact is a 250 cold blast with a 1,000 radius round her target every 15-25 seconds: spread out from the tank and keep heals rolling. CC-immune, 20% melee and 30% magic resist. She resets full if you all leave. Eleven people did it in 45 minutes once. Don't fight her near the vigil.",
+  "yells": {
+    "aggro": [
+      "(A trumpeting roar rolls across the island.)",
+      "(Mortufoghus lowers her tusks toward the dig.)",
+      "(Frost cracks off her hide as she turns.)"
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "(Mortufoghus tosses someone like a sheaf of hay.)"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "(Mortufoghus bellows, and the dead round the bones turn their heads.)"
+      }
+    ],
+    "death": [
+      "(The great beast kneels beside the bones, and is still.)",
+      "(The frost on her hide melts, at last.)"
+    ],
+    "slay": [
+      "(She noses the fallen, then turns back to the dig.)",
+      "(Her path goes on, round the bones.)",
+      "(The mammoth stamps the earth flat over the fallen.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Ribs like a longhouse rise from the earth. She circles.",
+      "Huge tracks circle the bones, worn knee-deep."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Mortufoghus hurls someone through the air!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The dead of the vigil turn toward the mammoth."
+      }
+    ],
+    "realmFirstKill": "Mortufoghus lies down beside the bones at last."
+  },
+  "botLines": {
+    "briefing": [
+      "mortufoghus: tanks trade aggro, she stuns the one holding her and throws people",
+      "stay away from the cliffs",
+      "she throws a random real player who isnt her target every 25-35 sec, bots never fly",
+      "two tanks, she stuns whoever shes hitting",
+      "spread out from the tank, dark pact is 1000 radius round her target",
+      "shes cc immune and has 40k hp. this takes a while"
+    ],
+    "aftermathWin": [
+      "the mammoth is down. [45 minutes|took forever] but down",
+      "nobody got thrown off a cliff this time",
+      "tank swap worked, she never got two stuns on one guy",
+      "she knelt by the bones when she died"
+    ],
+    "aftermathLoss": [
+      "got thrown off a cliff. [lol|ow]",
+      "everyone stacked on the tank and dark pact ate us",
+      "both tanks stunned at once",
+      "she reset while we ran back"
+    ],
+    "rumour": [
+      "mortufoghus on modernagrav might be part of the mother, [some|people] [say|guess]. [i want|id want] proof",
+      "so the morvalt are digging up a cow. someone tell mortufoghus",
+      "the morvalt think getting thrown by her is an honour",
+      "her path round the bones is older than the dig, the dwarves say",
+      "she never throws the one shes fighting"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Mortufoghus",
+    "text": "A mammoth of the old ice who circles the morvalt's dig on Modernagrav as if the bones were her calf. The morvalt think she is the Mother's guardian. The oldest tale begins with a cow licking giants out of the ice."
+  },
+  "bookPage": "From the slates of Orri of Hagall: the mammoth's path is worn knee-deep and it goes all the way round the bones, and I followed it for a while, at a distance, in her tracks. The tracks are all hers. No calf has ever walked it beside her, and nothing else walks in it; even the morvalt step over. At one place the path bends inward, close to the ribs, and there the ground is pressed flat and wide, as if she lies down there. I think she lies down there at night. I think she puts her head against the bones. I did not wait to see.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} laid Mortufoghus down beside the bones of Modernagrav in {minutes} minutes.",
+    "loss": "Mortufoghus scattered {raidLeader}'s party from {realm} across Modernagrav after {minutes} minutes."
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "id": "mokkurvalve",
+  "name": "Mokkurvalve",
+  "catalogKey": "midgard-named-mobs-classic-zones/mokkurvalve",
+  "locationId": "vanern-swamp",
+  "realm": "Midgard",
+  "era": "mid-era-present",
+  "factions": [
+    "jotuns-of-vanern"
+  ],
+  "related": [
+    {
+      "id": "ulfketill",
+      "relation": "fellow clay-builder of the Vanern jotuns"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Mokkurvalve is a level-70 giant with 30,000 health. As he is hurt, parts of his body fall to the ground and become shards; when he dies he breaks into about twenty.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Mokkurvalve.cs"
+    },
+    {
+      "text": "Allakhazam places him in Vanern Swamp at 60-63; players in 2002 reported the falling body parts reform into smaller giants and that on death he breaks into about 20 'Mokkur Shards' that don't aggro at once.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/2860"
+    },
+    {
+      "text": "This world database has no standing spawn for him.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "In the old tale the giants built Mokkurkalfi, a giant of clay, to stand beside Hrungnir against Thor; it fell to Thor's servant Thjalfi.",
+      "provenance": "myth",
+      "source": "Snorri, Skaldskaparmal (public-domain myth); inspiration"
+    },
+    {
+      "text": "Every 15-35 s while he is fought, a piece of Mokkurvalve's body falls off and becomes 'Mokkurvalve's shard' (level 42-44, 1,500 health), which attacks anyone within 600. On death he breaks into 20 shards at once, within 200 of where he fell; they are not removed by his death, only by a reset while he lives.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Mokkurvalve.cs"
+    },
+    {
+      "text": "He is CC-immune, reaches 350, takes 20% less melee and 30% less magic damage, and heals to full and kills his shards when no one is fighting him. Period players said the shards did not aggro at once; in this script they do.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Mokkurvalve.cs"
+    }
+  ],
+  "story": "Every jotun child in Vanern hears the story the other way round. In the version the swamp tells, the clay giant who stood beside Hrungnir did not lose his nerve. He was let down by his maker, who was in a hurry and gave him a mare's heart because a proper one would not fit. The jotuns of Vanern decided long ago that the fault was in the making, and that the making could be done better. They have been doing it better ever since, in the clay yards in the middle of the swamp, and Mokkurvalve is the furthest they have got.\n\nHe took a hundred jotuns a whole summer. They gave him a proper heart this time: a jotun's, freely given by an old builder who wanted to see the shame undone before he died, and the jotuns still say his name over the clay, though they will not say it to strangers. They dug the clay from the deepest part of the bog and fired him in a pit the size of a hall. He stood up. He walked. He was magnificent. And he would not hold together.\n\nNobody knows why. The builders blame the clay. Ulfketill, who did not work on him, says a pot that size cannot be fired evenly and that anyone could have told them. Whatever the cause, Mokkurvalve sheds. When he is roused, lumps of him fall away into the reeds, now and again, never on any rhythm the builders can name, and every lump lies a moment and then gets up, small and furious, and takes his side. The jotuns call the pieces his children and are a little proud of them.\n\nThe worst of it is the end. The builders gave him a jotun's heart, and a jotun's heart does not go quietly. When he is broken right through he does not fall; he bursts, and the whole of him that is left gets up at once in a crowd of small angry figures round the place where he stood, and every one of them goes for the nearest living thing. They are not strong, one by one. There are a great many of them. The ferrymen who have seen it say the only sensible thing to do when Mokkurvalve goes down is to have expected it.\n\nHe is seldom seen. Some seasons nobody meets him at all, and the swamp folk say the jotuns keep him in the yards, working on him, trying once more to make him hold. When he is walking the swamp again it means they have given up for the year. They never give up for longer.",
+  "legend": "Mokkurvalve is the clay giant of Vanern, level 70, 30,000 health. He isn't always around; this world has no standing spawn for him, so if you see him, it's an event. While you fight him, a shard breaks off every 15-35 seconds and attacks; shards are level 42-44 with 1,500 health, so have someone peel them or just burn them as they come. The big one is the death: he bursts into twenty shards at once, right on top of the group, and they all attack straight away. The old advice was to walk away because they didn't aggro; that's not true here. Plan for it: save your AoE and your heals for the moment he dies, or have the casters stand back so only the melee is in the crowd. He's CC-immune, reach 350, 20% melee and 30% magic resist. If he resets, his shards die with the reset and he's full again.",
+  "yells": {
+    "aggro": [
+      "(The clay giant lurches upright, shedding mud.)",
+      "(Something like a heart booms inside the clay.)",
+      "(Mokkurvalve turns, and a piece of him falls into the reeds.)"
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "(A piece of Mokkurvalve falls away and stands up.)"
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "(A lump of Mokkurvalve stands up in the reeds, small and furious.)"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "(Cracks run through Mokkurvalve like a dry riverbed.)"
+      }
+    ],
+    "death": [
+      "(Mokkurvalve bursts into a heap of shards.)",
+      "(Mokkurvalve bursts, and every piece of him gets up at once.)"
+    ],
+    "slay": [
+      "(Clay closes over the fallen.)",
+      "(The clay giant stamps the reeds flat.)",
+      "(A shard climbs back onto the giant's leg.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A clay giant stands in the bog. Bits of it are moving.",
+      "The reeds are trampled flat. Clay lumps lie in them."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Part of Mokkurvalve's body falls away and rises!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The clay giant is cracking right through."
+      },
+      {
+        "trigger": "death",
+        "text": "Mokkurvalve bursts into a crowd of clay!"
+      }
+    ],
+    "realmFirstKill": "Mokkurvalve has crumbled into the swamp.",
+    "wake": ""
+  },
+  "botLines": {
+    "briefing": [
+      "a shard falls off him every 15-35 sec and attacks. kill them as they come",
+      "when he dies he bursts into twenty shards and they all attack at once. save aoe for that",
+      "casters stand back so the death burst only lands on melee",
+      "hes cc immune and reach 350. dont stand too close if youre cloth"
+    ],
+    "aftermathWin": [
+      "twenty shards and we cleared them all. [proud|nice]",
+      "the burst at the end was nuts",
+      "clay giant down, finally saw him",
+      "we saved the aoe for the burst and it worked"
+    ],
+    "aftermathLoss": [
+      "the death burst ate the casters",
+      "we thought the shards wouldnt aggro. they did",
+      "too many shards before he even died",
+      "nobody had aoe left for the burst"
+    ],
+    "rumour": [
+      "the vanern jotuns build clay giants. mokkurvalve is the biggest. [badly made|falls apart]",
+      "the jotuns keep him in the yards some seasons, working on him",
+      "they gave him a real jotun heart this time, the kobolds say",
+      "his shards are his kids, the jotuns say. theyre proud of them"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Mokkurvalve",
+    "text": "The jotuns of Vanern never stopped building clay giants after the one that stood with Hrungnir. Mokkurvalve is their greatest attempt. He comes apart as he fights, and the parts get up."
+  },
+  "bookPage": "From the count of Arnkel the ferryman: I saw the clay giant broken once, from the boat, at a long distance, which is the right distance. Some Jordheim men had been at him all afternoon. Bits of him kept dropping off into the reeds and getting up, and the men kept knocking them down, and I thought: they will do it. Then they did it. He did not fall. He went up like a bag of grain dropped from a loft, and where he had stood there was a crowd of little clay men, and all of them turned at once. I poled away. Two of the Jordheim men came to the boathouse that night, wet. I did not notch the others. I did not know their names.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke the clay giant Mokkurvalve in {minutes} minutes.",
+    "loss": "Mokkurvalve's pieces buried {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}
