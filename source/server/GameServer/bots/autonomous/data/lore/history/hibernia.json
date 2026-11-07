@@ -228,7 +228,8 @@
         "hy-brasil",
         "koalinth-caverns",
         "shrouded-isles",
-        "tur-suil"
+        "tur-suil",
+        "vigilant-rock"
       ],
       "bosses": [
         "abomos-the-soultrapper",
@@ -340,7 +341,8 @@
       "name": "The Root",
       "summary": "Olcasgean, the titan the Sylvan will not call a god, and everything he has bent in the hollow of Galladoria: the four elements of the isle, the keepers of the rings, the Olcasar and the Uaimh, and the Sylvan who took his side.",
       "places": [
-        "galladoria"
+        "galladoria",
+        "vigilant-rock"
       ],
       "bosses": [
         "aroon-the-urlamhai",
@@ -373,7 +375,8 @@
         "galladoria",
         "hy-brasil",
         "shrouded-isles",
-        "tur-suil"
+        "tur-suil",
+        "vigilant-rock"
       ],
       "bosses": [
         "abomos-the-soultrapper",
