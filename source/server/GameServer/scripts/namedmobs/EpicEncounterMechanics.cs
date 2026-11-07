@@ -117,6 +117,17 @@ namespace DOL.GS
         /// played check: the raid's tactics for him (sacrifice and demon at range, spread in demon form) play either way; a
         /// 60-bot raid took 300,000 about 1% a minute (run 18).</summary>
         public static bool AllowGovannonFullHealth { get => ServerProperties.Properties.EPIC_GOVANNON_FULL_HEALTH; set => ServerProperties.Properties.EPIC_GOVANNON_FULL_HEALTH = value; }
+        /// <summary>Easmarach heals an eighth on the waterfall top every time he falls to 30%, and stays up there (the original).
+        /// Off by default (1.2 play test, 2026-11-07: epic_easmarach_endless_falls_heal): he heals there once a fight, rests,
+        /// and comes back down to fight on. A bot raid can only shoot him on the top (spells take 70% resists): 42% to 34% in
+        /// ten minutes, and each fall to 30% healed him back, so he could never die and Galladoria's last room never came.</summary>
+        public static bool AllowEasmarachEndlessFallsHeal { get => ServerProperties.Properties.EPIC_EASMARACH_ENDLESS_FALLS_HEAL; set => ServerProperties.Properties.EPIC_EASMARACH_ENDLESS_FALLS_HEAL = value; }
+
+        /// <summary>Easmarach goes up the waterfall now (pure): at 30% or less, not already resting there, and (unless the
+        /// endless heal is on) not once already this fight.</summary>
+        public static bool EasmarachRetreats(int healthPercent, bool resting, int fallsHealsThisFight, bool endless) =>
+            healthPercent <= 30 && !resting && (endless || fallsHealsThisFight == 0);
+
         /// <summary>Cold damage heals Icelord Kvasir by a fifth of his health and does no damage. On since 1.2: no bot casts
         /// cold at him (EpicEncounterTactics.ForbidsSpell).</summary>
         public static bool AllowKvasirColdHeal { get => ServerProperties.Properties.EPIC_KVASIR_COLD_HEAL; set => ServerProperties.Properties.EPIC_KVASIR_COLD_HEAL = value; }
@@ -144,7 +155,7 @@ namespace DOL.GS
             nameof(AllowGalladoriaBridgeSpot), nameof(AllowFullFirePatches), nameof(AllowEarthmenderClassPuzzle),
             nameof(AllowEarthmendersPassive), nameof(AllowEarthmenderQuickReset), nameof(AllowEarthmenderMutualHeal),
             nameof(AllowBeathaHealsXaga), nameof(AllowFairyFlight), nameof(AllowGovannonFullHealth), nameof(AllowKvasirColdHeal),
-            nameof(AllowTuscarTwinHeal),
+            nameof(AllowTuscarTwinHeal), nameof(AllowEasmarachEndlessFallsHeal),
         ];
 
         // ---- Per-encounter values ---------------------------------------------------------------------------------------

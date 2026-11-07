@@ -81,6 +81,11 @@ namespace DOL.GS
             public bool Started;
             public bool PreparationNoticeSent;
             public bool Forced;
+            /// <summary>A play test's raid (/epictest): forced recruiting, but the automatic raid's clocks (late and short
+            /// starts at the staging deadline, the four-hour battle window), so it ends the way a real raid does.</summary>
+            public bool Playtest;
+            /// <summary>The raid's staging and battle run on the automatic raid's clocks.</summary>
+            public bool Clocked => !Forced || Playtest;
             public long Created;
             public RealmRaidMuster.Hub Hub;
             public bool HubDeparted;
@@ -380,7 +385,7 @@ namespace DOL.GS
                     raid.Support = raid.Parties.Values.SelectMany(p => p.Members).Cast<GameLiving>().ToArray();
                     int presentAtHub = raid.Parties.Values.Sum(p => PresentAtHub(raid, p));
                     bool departing = !raid.HubDeparted && RealmRaidRecruitmentPolicy.DepartHub(false, presentAtHub,
-                        raid.Forced ? 0 : GameLoop.GameLoopTime - raid.Created, raid.Required);
+                        !raid.Clocked ? 0 : GameLoop.GameLoopTime - raid.Created, raid.Required);
                     raid.HubDeparted |= departing;
                     if (departing) raid.HubDepartedTick = GameLoop.GameLoopTime;
                     // Living Server 1.2: the raid leader briefs the realm on the boss as the raid leaves the muster (docs/LORE.md).
@@ -402,7 +407,7 @@ namespace DOL.GS
                     raid.DungeonRoute?.ObserveCompletion();
                     if (raid.DungeonRoute?.Complete == true)
                     { End(raid, now, CompletionReason(raid, "The final dungeon encounter has been defeated.")); continue; }
-                    if (raid.Started && RealmRaidRecruitmentPolicy.BattleExpired(raid.Forced, now, raid.Deadline))
+                    if (raid.Started && RealmRaidRecruitmentPolicy.BattleExpired(!raid.Clocked, now, raid.Deadline))
                     { End(raid, now, "The four-hour expedition window ended."); continue; }
                     if (!raid.Started)
                     {
@@ -419,11 +424,11 @@ namespace DOL.GS
                             raid.StagingBest = present;
                             raid.StagingArrivalTick = now;
                         }
-                        bool ready = RealmRaidRecruitmentPolicy.Ready(raid.Forced, now - raid.Created, present, DragonLanded(raid), raid.Required);
-                        bool expired = !ready && RealmRaidRecruitmentPolicy.StagingExpired(raid.Forced, now, raid.Created, raid.HubDepartedTick,
+                        bool ready = RealmRaidRecruitmentPolicy.Ready(!raid.Clocked, now - raid.Created, present, DragonLanded(raid), raid.Required);
+                        bool expired = !ready && RealmRaidRecruitmentPolicy.StagingExpired(!raid.Clocked, now, raid.Created, raid.HubDepartedTick,
                             present, DragonLanded(raid), raid.Required, raid.StagingArrivalTick);
                         // Out of time with at least half the raid there: it goes in short, and the rest follow it in.
-                        if (expired && DragonLanded(raid) && RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(raid.Forced, present, raid.Required))
+                        if (expired && DragonLanded(raid) && RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(!raid.Clocked, present, raid.Required))
                         {
                             ready = true;
                             Log.Info($"REALM_RAID_SHORT_START event={raid.Definition.Id} present={present} required={raid.Required} " +
@@ -448,8 +453,10 @@ namespace DOL.GS
                         if (ready)
                         {
                             raid.Started = true;
-                            raid.Deadline = raid.Forced ? long.MaxValue : now + RealmRaidRecruitmentPolicy.BattleMilliseconds;
+                            raid.Deadline = !raid.Clocked ? long.MaxValue : now + RealmRaidRecruitmentPolicy.BattleMilliseconds;
                             RealmEventRecords.Progress(raid.Definition.Id, "Battle", "Expedition began advancing to the encounter.", raid.Support.Length, present);
+                            Log.Info($"REALM_RAID_STARTED event={raid.Definition.Id} present={present} required={raid.Required} " +
+                                     $"support={raid.Support.Length} minutes={(now - raid.Created) / 60_000} forced={raid.Forced} playtest={raid.Playtest}");
                             RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm,
                                 $"The {raid.Definition.Name} expedition is advancing with {present} staged level-50 adventurers.");
                             // An expedition that lost here the last two times brings the Epic Special Forces from the start
@@ -558,8 +565,21 @@ namespace DOL.GS
             }
         }
 
-        public static bool Start(string id, eRealm realm, out string reason, bool forced = false)
+        public static bool Start(string id, eRealm realm, out string reason, bool forced = false) =>
+            Start(id, realm, out reason, forced, 0, null, false);
+
+        /// <summary>
+        /// A play test's raid (/epictest, 1.2): a forced raid of <paramref name="playtestSize"/> bots (the encounter's period
+        /// size, docs/RAID-SIZES.md) instead of the launcher's 300; it goes in when 90% of them stand at the staging post.
+        /// <paramref name="playtestFocus"/> (names or class names) limits the dungeon route to those encounters and the adds
+        /// around them, with no first-hour trash clear: the raid walks to them and fights what attacks it on the way.
+        /// <paramref name="playtestAtStaging"/> musters the raid at its own staging post instead of the realm's hub (a test
+        /// server with only the dungeon's navmeshes, or a test of the fight alone): the walk from the hub is skipped.
+        /// </summary>
+        public static bool Start(string id, eRealm realm, out string reason, bool forced, int playtestSize, string[] playtestFocus,
+            bool playtestAtStaging)
         {
+            int forcedRoster = playtestSize > 0 ? playtestSize : RealmRaidRecruitmentPolicy.MaximumBots;
             RealmRaidMuster.Hub rallyHub = RealmRaidMuster.Hubs.FirstOrDefault(h => h.Event == id);
             // A forced dungeon raid proves its entrance before reserving 300 bots: a route that can never be built
             // reports why at once instead of after the roster is gathered (forced Darkness Falls, 2026-10-11).
@@ -581,10 +601,10 @@ namespace DOL.GS
             }
             if (preview != null) SupersedeAutomatic(realm, id);
             GameBot[][] recruits = forced && rallyHub != null
-                ? AutonomousBotGroupCoordinator.PlanForcedRaid(realm, rallyHub.Region, rallyHub.Center) : [];
-            if (forced && recruits.Sum(p => p.Length) < RealmRaidRecruitmentPolicy.MaximumBots)
+                ? AutonomousBotGroupCoordinator.PlanForcedRaid(realm, rallyHub.Region, rallyHub.Center, forcedRoster) : [];
+            if (forced && recruits.Sum(p => p.Length) < forcedRoster)
             {
-                reason = $"Not started: only {recruits.Sum(p => p.Length)}/300 eligible level-50 bots could be reserved. No tasks were cancelled.";
+                reason = $"Not started: only {recruits.Sum(p => p.Length)}/{forcedRoster} eligible level-50 bots could be reserved. No tasks were cancelled.";
                 return false;
             }
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
@@ -608,10 +628,10 @@ namespace DOL.GS
                 reason = "No muster hub is defined for this event.";
                 foreach (RealmRaidMuster.Hub hub in RealmRaidMuster.Hubs.Where(h => h.Event == id))
                 {
-                    var candidate = new Raid { Definition = definition, Boss = Bosses[id], Forced = forced, Created = now, Hub = hub,
-                        Required = sizing?.Required ?? RealmRaidRecruitmentPolicy.AutonomousMinimumPresent,
-                        RecruitCap = sizing?.RecruitCap ?? RealmRaidRecruitmentPolicy.MaximumBots, Sizing = sizing,
-                        Deadline = forced ? long.MaxValue : now + RealmRaidRecruitmentPolicy.AutonomousStagingLimitMilliseconds };
+                    var candidate = new Raid { Definition = definition, Boss = Bosses[id], Forced = forced, Playtest = playtestSize > 0, Created = now, Hub = hub,
+                        Required = playtestSize > 0 ? PlaytestRequired(playtestSize) : sizing?.Required ?? RealmRaidRecruitmentPolicy.AutonomousMinimumPresent,
+                        RecruitCap = playtestSize > 0 ? playtestSize : sizing?.RecruitCap ?? RealmRaidRecruitmentPolicy.MaximumBots, Sizing = sizing,
+                        Deadline = forced && playtestSize <= 0 ? long.MaxValue : now + RealmRaidRecruitmentPolicy.AutonomousStagingLimitMilliseconds };
                     if (definition.IsDungeon)
                     {
                         if (!RealmRaidDungeonRoute.TryCreate(definition.Region, definition.Trigger, definition.FinalTypes, out var route,
@@ -622,13 +642,21 @@ namespace DOL.GS
                             continue;
                         }
                         candidate.DungeonRoute = route;
+                        if (playtestFocus is { Length: > 0 }) route.Focus = playtestFocus;
                     }
                     else
                         candidate.DragonFight = new RealmRaidDragonFight(candidate.Boss.Name);
                     bool staged = TryStaging(candidate, 0, out var destination);
+                    if (staged && playtestAtStaging)
+                    {
+                        ushort stagingRegion = definition.IsDungeon ? candidate.DungeonRoute.Entrance.SourceRegion : definition.Region;
+                        Zone stagingZone = WorldMgr.GetRegion(stagingRegion)?.GetZone((int)destination.X, (int)destination.Y);
+                        candidate.Hub = new RealmRaidMuster.Hub(id, $"the {definition.Name} staging post (play test)", stagingRegion,
+                            (ushort)(stagingZone?.ID ?? 0), 0, 0, destination);
+                    }
                     bool posted = TryHubPost(candidate, 0, out var origin);
-                    if (!staged || !posted || !RealmRaidMuster.TryRoute(WorldMgr.GetRegion(hub.Region), PathfindingProvider.Instance, realm,
-                            origin, destination, out candidate.OutboundSeams, hub.Via))
+                    if (!staged || !posted || !RealmRaidMuster.TryRoute(WorldMgr.GetRegion(candidate.Hub.Region), PathfindingProvider.Instance, realm,
+                            origin, destination, out candidate.OutboundSeams, candidate.Hub.Via))
                     {
                         reason = "No complete connected hub-to-encounter route was found. No party was assigned.";
                         Log.Warn($"REALM_RAID_START_UNAVAILABLE event={id} hub=\"{hub.Name}\" staging={staged} hubPost={posted} " +
@@ -640,6 +668,9 @@ namespace DOL.GS
                 }
                 if (raid == null) return false;
                 Raids[id] = raid;
+                if (playtestSize > 0)
+                    Log.Info($"REALM_RAID_PLAYTEST_START event={id} size={playtestSize} required={raid.Required} hub=\"{raid.Hub.Name}\" " +
+                             $"focus=\"{string.Join(',', playtestFocus ?? [])}\" reserved={recruits.Sum(p => p.Length)}");
                 if (sizing != null) Log.Info(RealmRaidRecruitmentPolicy.SizedLine(id, GlobalConstants.RealmToName(realm), sizing));
                 // One raid in twenty has a raider who can't wait for the final encounter (bot_living_leeroy).
                 raid.LeeroyRolled = AutonomousRaidLeeroy.On && AutonomousRaidLeeroy.RollForRaid(Random.Shared.NextDouble());
@@ -649,7 +680,9 @@ namespace DOL.GS
                     GlobalConstants.RealmToName(realm), (forced ? "Forced" : "Automatic") + " rally via " + raid.Hub.Name);
                 raid.ForcedParties.AddRange(recruits);
                 foreach (GameBot bot in recruits.SelectMany(p => p)) Reserve(bot, raid);
-                string startCondition = ForcedStartCondition(definition.IsDungeon);
+                string startCondition = playtestSize > 0
+                    ? $"At least {raid.Required} must arrive{(definition.IsDungeon ? " before the dungeon assault" : " and the dragon must land")}."
+                    : ForcedStartCondition(definition.IsDungeon);
                 // One quiet top-of-screen line for the realm's players (automatic and launcher-forced alike),
                 // so a player can join the bots at the rally point.
                 RealmEventNotices.QueueScreen(id, realm, $"A {definition.Name} raid is forming at {raid.Hub.Name}.", AnnouncementKind.PveRealmEvent);
@@ -660,9 +693,68 @@ namespace DOL.GS
                     ? $"{definition.Name}: {recruits.Sum(p => p.Length)} level-50 adventurers reserved; gather at {raid.Hub.Name}. {startCondition}"
                     : $"{definition.Name}: recruiting up to {raid.RecruitCap} level-50 adventurers via {raid.Hub.Name}; at least {raid.Required} must arrive before assault.",
                     "raid_forming", RaidSlots(definition.Name, null));
-                reason = forced ? $"Reserved {recruits.Sum(p => p.Length)} level-50 bots, closest to {raid.Hub.Name} first. The raid starts as soon as 200 are staged and runs until the encounter is defeated or you press Stop event. {startCondition}" :
+                reason = forced ? $"Reserved {recruits.Sum(p => p.Length)} level-50 bots, closest to {raid.Hub.Name} first. The raid starts as soon as {raid.Required} are staged and runs until the encounter is defeated or you press Stop event. {startCondition}" :
                     $"Recruiting up to {raid.RecruitCap} level-50 bots via {raid.Hub.Name}. At least {raid.Required} must arrive before assault; staging can last up to {RealmRaidRecruitmentPolicy.AutonomousStagingLimitMilliseconds / 60_000} minutes.";
                 return true;
+            }
+        }
+
+        /// <summary>A play-test raid goes in when 80% of its roster is staged (rounded up; the rest follow it in, as late arrivals
+        /// of any raid do): an automatic raid's 125% recruits 160 to stage 125 (78%). 90% held a Caer Sidi raid at 87 of 90 for
+        /// half an hour with members out of reach (2026-11-07).</summary>
+        public static int PlaytestRequired(int size) => Math.Max(8, (size * 4 + 4) / 5);
+
+        /// <summary>The bots a running raid has reserved and not yet formed into parties (the play test moves them to the hub).</summary>
+        public static GameBot[] ReservedRecruits(string id)
+        {
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+                return Raids.TryGetValue(id, out Raid raid) ? raid.ForcedParties.SelectMany(p => p).Distinct().ToArray() : [];
+        }
+
+        /// <summary>
+        /// The play test's gather (/epictest gather): before the raid leaves its hub, the party members outside the hub (a
+        /// bot reserved in a capital city was taken out by its own town porter before it formed); after it left and before it
+        /// goes in, the members not yet on the staging ring, and where to put them (the hub, or the entrance's outside point /
+        /// the dragon's lair). It stands in for the walk across the realm, which the container's partial navmeshes can't do.
+        /// </summary>
+        public static GameBot[] MembersToGather(string id, out ushort region, out Vector3 point)
+        {
+            region = 0;
+            point = default;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
+                if (!Raids.TryGetValue(id, out Raid raid) || raid.Started) return [];
+                GameBot[] members = raid.Parties.Values.SelectMany(p => p.Members).Where(b => b.IsAlive).ToArray();
+                if (!raid.HubDeparted)
+                {
+                    region = raid.Hub.Region;
+                    point = raid.Hub.Center;
+                    var hub = new Point3D((int)raid.Hub.Center.X, (int)raid.Hub.Center.Y, (int)raid.Hub.Center.Z);
+                    return members.Where(b => b.CurrentRegionID != raid.Hub.Region || !b.IsWithinRadius(hub, 3_000)).ToArray();
+                }
+                if (raid.DungeonRoute != null)
+                {
+                    var edge = raid.DungeonRoute.Entrance;
+                    region = edge.SourceRegion;
+                    point = new(edge.SourceX, edge.SourceY, edge.SourceZ);
+                }
+                else
+                {
+                    region = raid.Definition.Region;
+                    Point3D home = DragonLairPlacement.Home(raid.Definition.Realm);
+                    point = new(home.X, home.Y, home.Z);
+                }
+                return members.Where(b => !IsStaged(raid, b)).ToArray();
+            }
+        }
+
+        /// <summary>The running raid's muster hub (region and centre), for the play test.</summary>
+        public static bool TryGetHub(string id, out RealmRaidMuster.Hub hub)
+        {
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
+                hub = Raids.TryGetValue(id, out Raid raid) ? raid.Hub : null;
+                return hub != null;
             }
         }
 
@@ -1626,7 +1718,7 @@ namespace DOL.GS
                 if (Raids.TryGetValue(d.Id, out var r)) return new Summary(d.Id, d.Name, GlobalConstants.RealmToName(d.Realm),
                     r.Started ? "RAID — " + (r.DungeonRoute?.Status ?? r.DragonFight?.Status ?? (DragonLanded(r) ? "underway" : "waiting for dragon landing")) :
                     $"Raid rally — {(r.Forced ? "forced" : "automatic")} — {(r.HubDeparted ? "travel/final staging" : r.Hub.Name)}" +
-                        (r.Forced ? " — starts when 200 are staged" + (!DragonLanded(r) ? " and the dragon lands" : "") :
+                        (r.Forced ? $" — starts when {r.Required} are staged" + (!DragonLanded(r) ? " and the dragon lands" : "") :
                         GameLoop.GameLoopTime >= r.Deadline ? !DragonLanded(r) ? " — waiting for dragon landing" : " — waiting for arrivals" : ""),
                     r.Support.Length + r.ForcedParties.Sum(p => p.Count(IsEligible)),
                     !r.HubDeparted ? r.Parties.Values.Sum(p => PresentAtHub(r,p)) : !r.Started ? PresentAtStaging(r) :

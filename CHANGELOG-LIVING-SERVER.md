@@ -658,6 +658,47 @@ tactics.
   - **Checked:** 33 new unit tests (percentiles, merging, self time, locks, output, the scope's cost) and 12 for the
     report tool; the full server suite passes (4,123). Not yet run on a live server: the first L300 run is the owner's.
 
+**Epic encounter play test (1.2).** The epic encounters were run on a real server with the real world and navmeshes, with
+gamebot raids, and these came out of it:
+
+- **`/epictest`, a raid on a chosen encounter now.** For the owner and testers (GM in game, or typed in the server window):
+  `/epictest start <event> [era|start|size] [focus=Name,Name]` opens the launcher's forced raid at the encounter's period
+  size (docs/RAID-SIZES.md) instead of 300, and moves the reserved level 50s to the raid's muster hub; from there the raid
+  forms, travels, stages and fights as any raid. It goes in when 80% are staged, runs on the automatic raid's clocks (a late
+  or short start, the four-hour window) and does not count toward the raid's win-rate record. `focus=` sends the dungeon
+  route only to those named encounters (the way in is still cleared, and a named that attacks the raid is fought).
+  `/epictest gather`, `reset` (an event's cooldown), `status`, `stop`, `list`.
+- **Commands typed in the server window work again.** The console ran every command without an account, so each one
+  failed with an error in the log; it now runs them as an admin named Console.
+- **The server log says what the lore engine says.** Each boss yell and centre-screen line it shows is a `LORE_LINE` line,
+  and each hit that heals Funus to full is an `EPIC_FUNUS_HEALED` line (who, class, weapon), so a fight can be read
+  without the game client.
+- **`/epictest start ... atstaging`** musters the raid at its own staging post (outside the dungeon door, or the dragon's
+  ring) instead of the realm's hub, to test the fight alone.
+- **A boss that heals itself is no longer skipped while the raid wears it down.** The dungeon route set an encounter aside
+  after "no damage for five minutes" unless its health went below its lowest yet. Easmarach takes back an eighth of his
+  health on the waterfall top each time he falls to 30%, so the raid shooting him from the falls stands took him from 42% to
+  35% and he was still skipped (as on the owner's test server on 2026-11-06, at 39-42%); out of combat he healed to full.
+  Health going down since the last look now counts as damage (also Grand Summoner Govannon after his full heal at 50%, and
+  Funus after a stray hit heals him): only a target nobody hurts is set aside.
+- **Easmarach comes back down from the waterfall.** At 30% he climbs the waterfall top and heals an eighth. In the original
+  he heals there every time he falls to 30% again, and on this server he never came back down (no walked path leads off the
+  top), so a bot raid, which can only shoot him up there (his spells resist is 70%), wore him from 42% to 34% in ten minutes,
+  he healed back to 42%, and so on for good: he could not die, and with his push behind the falls on, Galladoria's last room
+  never came. He now heals there once a fight, rests, and walks back down to his spawn to fight on. The original is the
+  owner setting `epic_easmarach_endless_falls_heal` (off).
+- **A raid on its way turns on a named that attacks it.** Walking to its next encounter or its final staging with no
+  target of its own, the dungeon route ignored an epic named fighting it: Caer Sidi's raid walked past the Host to the
+  horsemen's room and he killed 40 of it. It now fights the named that attacks it, as it already did while gathering for
+  another encounter.
+- **Soul Reckoner is led back into his room, and hit while he is in it.** The raid stopped hitting him 200 short of his
+  room's edge, so with him 790 out (still in his 900 room, taking damage) nobody hit him; and the raider he chased was busy
+  with one of his souls, so nobody led him back. The souls spawn where he stands and kept the raid there. Now the raid holds
+  only when he is out of the room, and whoever he chases leads him back to the middle, soul or no soul.
+- **A navmesh audit of the encounters' positions** (`UT_EpicPositionAudit`, a tool run by hand): every throw, teleport and
+  jail landing, and the tactics' waiting spots (Easmarach's waterfall stands, the Sacristan's stations, the Vifil tunnel,
+  Kula's frost circle, the Apocalypse room), checked both ways, to the boss and back.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized

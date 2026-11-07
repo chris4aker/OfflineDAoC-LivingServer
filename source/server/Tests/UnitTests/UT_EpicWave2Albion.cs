@@ -328,9 +328,15 @@ namespace DOL.UnitTests
             Move(reckoner, 28472 + 760, 35857, 15370);
             var lead = EpicEncounterTactics.SoulReckonerAdvice(chased, reckoner, 900);
             Assert.That((lead.Value.Action, lead.Value.StandAt), Is.EqualTo((EpicEncounterTactics.BotAction.StandOff, (Vector3?)EpicEncounterTactics.SoulReckonerRoom)));
+            Assert.That(EpicEncounterTactics.SoulReckonerAdvice(other, reckoner, 900), Is.Null,
+                "760 out he is still in his room and takes damage: the rest keep hitting him (play test 2026-11-07)");
+            Move(reckoner, 28472 + 950, 35857, 15370);
             var hold = EpicEncounterTactics.SoulReckonerAdvice(other, reckoner, 900);
-            Assert.That(hold.Value.Action, Is.EqualTo(EpicEncounterTactics.BotAction.Reposition), "the rest stop hitting but keep him");
+            Assert.That(hold.Value.Action, Is.EqualTo(EpicEncounterTactics.BotAction.Reposition), "out of the room: the rest stop hitting but keep him");
             Assert.That(EpicEncounterTactics.SoulReckonerAdvice(other, reckoner, 1500), Is.Null, "the 1.1 room (1,500): still inside");
+            Assert.That(EpicEncounterTactics.SoulLeaderAdvice(chased, reckoner, 900)?.Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff),
+                "the one he chases leads him back even while it fights a soul");
+            Assert.That(EpicEncounterTactics.SoulLeaderAdvice(other, reckoner, 900), Is.Null, "the others go on with the souls");
         }
 
         // ---- Morbus ---------------------------------------------------------------------------------------------------

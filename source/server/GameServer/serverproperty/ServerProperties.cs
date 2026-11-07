@@ -1311,6 +1311,9 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("npc", "epic_govannon_full_health", "Summoner's Hall: Grand Summoner Govannon has 300,000 health, as in the original (True), or 200,000 (False, the 1.2 default until a played check: a 60-bot raid took him about 1% a minute).", false)]
 		public static bool EPIC_GOVANNON_FULL_HEALTH = false;
 
+		[ServerProperty("npc", "epic_easmarach_endless_falls_heal", "Galladoria: Easmarach heals an eighth on the waterfall top every time he falls to 30% and stays up there, as in the original (True), or heals there once a fight and then comes back down to fight on (False, the 1.2 default: a bot raid can only shoot him up there, about 1% a minute, and never finished him; play test 2026-11-07).", false)]
+		public static bool EPIC_EASMARACH_ENDLESS_FALLS_HEAL = false;
+
 		[ServerProperty("npc", "epic_kvasir_cold_heal", "Tuscaran Glacier: cold damage heals Icelord Kvasir by a fifth of his health and does no damage (True, 1.2). No bot casts cold at him.", true)]
 		public static bool EPIC_KVASIR_COLD_HEAL = true;
 

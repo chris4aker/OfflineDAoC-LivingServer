@@ -54,6 +54,20 @@ namespace DOL.GS
         // Lowest health points seen (not percent: a percent of Galladoria's 125,000-health Corrupt Primal of Fire is 1,250
         // points, and a few raiders wearing him down counted as no damage and he was skipped, run 23).
         private int _targetLowestHealth;
+        // Health at the last look: a boss that heals itself (Easmarach takes an eighth back on the waterfall top each time he
+        // falls to 30%) never goes below its earlier lowest while the raid wears him down from 42% to 35%, and was skipped
+        // "no damage for five minutes" with the raid hitting him (play test, 2026-11-07).
+        private int _targetLastHealth;
+
+        /// <summary>The named a raid with no target turns on (pure): the one attacking it, if any (while it has a target, the
+        /// old rule switches to an attacker only when the target itself is out of combat).</summary>
+        public static GameNPC TurnsOnAttacker(GameNPC target, GameNPC attacker) => target == null ? attacker : null;
+
+        /// <summary>The target took damage since the last look (pure): below its lowest yet, or below the last look's health
+        /// (a boss that healed itself being worn down again: Easmarach's eighth on the waterfall top, Grand Summoner Govannon's
+        /// full heal when he turns demon at 50%, Funus's full heal from a stray hit). "No damage for five minutes" means that:
+        /// a target the raid keeps hurting is fought on (a fight it can't win ends in a wipe or the raid's time-out).</summary>
+        public static bool TargetTookDamage(int health, int lowest, int last) => health < lowest || last > 0 && health < last;
         // Final encounter muster (see MusterForFinal).
         private GameNPC _musterTarget;
         private Vector3 _musterPoint;
@@ -72,6 +86,14 @@ namespace DOL.GS
         private string _setAsideLine;
         /// <summary>This raid has a Leeroy (AutonomousRaidLeeroy): he charges the first final encounter early, once.</summary>
         public bool LeeroyRolled { get; set; }
+        /// <summary>
+        /// A play test's focus (/epictest): the names or class names of the only encounters this route goes for (and the adds
+        /// around them), with no first-hour trash clear; null for every real raid.
+        /// </summary>
+        public string[] Focus { get; set; }
+        /// <summary>The route goes for this monster under its play-test focus (pure; name or class name).</summary>
+        public static bool InFocus(string[] focus, string name, string typeName) =>
+            focus != null && (Array.IndexOf(focus, name) >= 0 || Array.IndexOf(focus, typeName) >= 0);
         private bool _leeroyDone;
         /// <summary>The raider who charged, or null.</summary>
         public string LeeroyName { get; private set; }
@@ -243,7 +265,7 @@ namespace DOL.GS
             _musterProgress.Remove(_target);
             // A reset encounter is back at full health: damage from there is progress again (the lowest health seen
             // was the last attempt's).
-            _targetLowestHealth = _target.Health;
+            _targetLowestHealth = _targetLastHealth = _target.Health;
             _targetProgressTick = now;
             _regrouping = false;
         }
@@ -480,7 +502,7 @@ namespace DOL.GS
                 _target = _chainTarget; _chain = null; _chainTarget = null;
                 // A fresh start: the chain's target kept the previous target's start, so Prince Ba'alorien
                 // inherited Prince Abdin's absence allowance and was skipped at 100% with the raid arriving (2026-10-14).
-                _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _target.Health;
+                _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = _target.Health;
                 _targetClosest = float.MaxValue; _targetApproachTick = now;
                 Hold = false; Status = "Clearing " + _target.Name;
                 return true;
@@ -1189,7 +1211,7 @@ namespace DOL.GS
                      $"reason=\"{reason}\" tactic={EpicEncounterTactics.For(owner)?.Encounter}");
             _target = to; TargetName = to.Name; TargetLevel = to.Level;
             Front = Destination = approach;
-            _targetProgressTick = _targetStartTick = now; _targetLowestHealth = to.Health;
+            _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = to.Health;
             _targetClosest = float.MaxValue; _targetApproachTick = now;
             Hold = false; Status = "Clearing " + to.Name;
         }
@@ -1287,7 +1309,9 @@ namespace DOL.GS
             }
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active)
             {
-                if (_target.Health < _targetLowestHealth) { _targetLowestHealth = _target.Health; _targetProgressTick = now; }
+                if (TargetTookDamage(_target.Health, _targetLowestHealth, _targetLastHealth)) _targetProgressTick = now;
+                _targetLowestHealth = Math.Min(_targetLowestHealth, _target.Health);
+                _targetLastHealth = _target.Health;
                 ReportHealthJump(participants, now);
                 // The no-damage clock runs only while the raid is actually at its target. A raid
                 // wiped or regrouping elsewhere skipped Prince Ba'alorien and Princess Nahemah at
@@ -1322,7 +1346,7 @@ namespace DOL.GS
                              $"reason=\"it is fighting the raid\"");
                     _target = attacker; TargetName = attacker.Name; TargetLevel = attacker.Level;
                     Front = Destination = approach;
-                    _targetProgressTick = _targetStartTick = now; _targetLowestHealth = attacker.Health;
+                    _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = attacker.Health;
                     _targetClosest = float.MaxValue; _targetApproachTick = now;
                     Hold = false; Status = "Clearing " + attacker.Name; return;
                 }
@@ -1364,6 +1388,21 @@ namespace DOL.GS
                 }
             }
             _target = null;
+            // A named that attacks the raid while it has no target (walking to its next encounter or its final staging) is
+            // fought, as it is while the raid gathers for another: play test 2026-11-07, Caer Sidi's raid walked to the
+            // horsemen's room past the Host, who killed 40 of it with nobody turning on him.
+            if (TurnsOnAttacker(_target, HostileEncounter(live, participants)) is { } attacking)
+            {
+                bool resolved = TryEncounterApproach(attacking, participants, out Vector3 approach);
+                log.Warn($"REALM_EXPEDITION_TARGET_SWITCH region={_region} from=\"{TargetName}\" to=\"{attacking.Name}\" level={attacking.Level} " +
+                         $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
+                         $"reason=\"it is fighting the raid on its way\"");
+                _target = attacking; TargetName = attacking.Name; TargetLevel = attacking.Level;
+                Front = Destination = approach;
+                _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = attacking.Health;
+                _targetClosest = float.MaxValue; _targetApproachTick = now;
+                Hold = false; Status = "Clearing " + attacking.Name; return;
+            }
             GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
             if (AdvanceChain(inside, now)) return;
             bool atFront = inside.Any(p => p.IsWithinRadius(new Point3D((int)Front.X, (int)Front.Y, (int)Front.Z), 1000));
@@ -1415,6 +1454,12 @@ namespace DOL.GS
                 !(n is IGameEpicNpc && _clearedNames.Contains(n.Name) && !_finalTypes.Contains(n.GetType().Name)) &&
                 // A neutral expedition goes for its named encounters only; monsters on the way are
                 // fought when they attack (Darkness Falls holds 2,465 spawns).
+                // A play test's focus leaves out the other named encounters (and the final, unless named) while they are out of
+                // combat; the way in is cleared as in any raid (a focus that skipped the first-hour clear left the Caer Sidi raid
+                // fighting the entrance's monsters and never reaching the horsemen's room), and a named that fights the raid is
+                // fought (the Host killed 159 raiders on the way up while the focus left him out, 2026-11-07).
+                !(Focus != null && (n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name)) && !n.InCombat &&
+                  !InFocus(Focus, n.Name, n.GetType().Name)) &&
                 (_objectives == null ? now - _routeStartTick < EpicTrashPhaseMilliseconds || n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name) ||
                         IsEncounterAdd(n, Front, encounters)
                     : RealmRaidNeutralEvents.IsObjective(_objectives, n.Name)))
@@ -1500,7 +1545,7 @@ namespace DOL.GS
                 if (IsOutOfRangedReach(npc.Flags, npc.Z, (int)approach.Z))
                 { _routeRetry[npc] = now + BlockedTargetRetryMilliseconds; continue; }
                 _target = npc; Front = Destination = approach; TargetName = npc.Name; TargetLevel = npc.Level;
-                _targetProgressTick = _targetStartTick = now; _targetLowestHealth = npc.Health;
+                _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = npc.Health;
                 _targetClosest = float.MaxValue; _targetApproachTick = now;
                 _probeCursor = 0; _blockedSince = 0;
                 Hold = false; Status = "Clearing " + npc.Name; return;
