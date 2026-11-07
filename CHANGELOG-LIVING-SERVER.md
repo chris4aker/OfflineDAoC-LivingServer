@@ -8,14 +8,15 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## Beta 1.1.2 (in development)
+## Beta 1.1.2 — 2026-11-07
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized
 by their own wins and losses, that no longer stand for hours at an encounter they can't reach, and their first boss tactics. Playing with your bot
 group: dragon raids that regroup after a wipe and call the Epic Special Forces, quest credit and hand-ins, and quest XP that follows your
 XP-by-level rate. Gamebots in your guild earn merit and pay dues, power comes back faster, fixes from other forks of
 Offline DAoC, updates from the launcher, and a world database that is safe from crashes and backed up every day.
-Built and tested; it ships once it has been played (the checks are in [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md)).
+How it was tested, and what hasn't been played yet, is in the release notes
+([docs/RELEASE-NOTES-1.1.2.md](docs/RELEASE-NOTES-1.1.2.md)).
 
 **Epic raids learn their first encounter rules** (owner 2026-11-06: shipped in 1.1.2, not 1.2). Raids of gamebots now
 know five bosses that beat them by their rules, not by their damage. Everything below is built and covered by automated tests; none of it has been seen in a real raid yet.
