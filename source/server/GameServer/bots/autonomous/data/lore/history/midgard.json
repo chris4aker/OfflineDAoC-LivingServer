@@ -176,6 +176,7 @@
         "cursed-tomb",
         "dodens-gruva",
         "east-svealand",
+        "gotar",
         "nisses-lair",
         "skona-ravine",
         "spindelhalla",
@@ -646,6 +647,7 @@
       "summary": "The dead the valkyries passed by: the Cursed Tomb's draugr, Raumarik's deserters and curses, the Wretch of Winter, the Revenant's fortress.",
       "places": [
         "cursed-tomb",
+        "gotar",
         "jamtland-mountains",
         "raumarik",
         "uppland"
@@ -740,6 +742,7 @@
       "name": "The Arachites",
       "summary": "Spider-folk of Spindelhalla who farm silk with svartalf thralls and pray to something in the deep.",
       "places": [
+        "gotar",
         "spindelhalla"
       ],
       "bosses": []
@@ -850,6 +853,7 @@
       "summary": "Midgard's callings as houses of its gods, with their gothi and gythjur in Jordheim's two temple halls (the Aesir's: Odin, Thor, Tyr, Modi, Bragi, Eir; the eastern: Hel, Ymir, Loki, Skadi), Kelgor's and Bodgar's houses that came with the Valkyn, the trainers who teach their young, and the jarls of the high hall who keep the realm's names and vault.",
       "places": [
         "east-svealand",
+        "gotar",
         "jordheim",
         "vale-of-mularn"
       ],
