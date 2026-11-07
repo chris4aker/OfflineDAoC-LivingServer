@@ -36,7 +36,12 @@
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs"
     },
     {
-      "text": "At half health he 'gains strength from Odin', hits harder and starts Mjolnir's Fury and Thor's Might blasts around him and a bleed.",
+      "text": "At half health (or once Kula is dead) he 'gains strength from Odin', hits harder (Strength 500) and his styles call Mjolnir's Fury (600) and Thor's Might (350) blasts in a 500 radius around his target and the Scar of Gods bleed.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs"
+    },
+    {
+      "text": "From the start of the fight, a blow of his that is blocked has an even chance to call Mjolnir's Fury (500, radius 500 around his target), and a parried one Thor's Might (400).",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs"
     },
@@ -61,7 +66,7 @@
       "source": "Snorri, Gylfaginning (public domain)"
     }
   ],
-  "story": "King Tuscar is a smith before he is a king. The rime-giants say he learned his craft at the forge of the giant who built Asgard's wall in a single winter and was cheated of his wage by Loki's trick and killed by Thor's hammer. Tuscar was the builder's apprentice, the giants say, and when the gods came to settle the bargain he stole an oath-word of Odin's from the forge, the word that had sealed the agreement, and burned it into his hammer's haft. That is why, wounded to half, he calls on Odin and grows stronger: the god's own broken oath answers him. Jordheim's skalds say the story is a giant's boast; the iarn dwarves, who know smiths, believe it.\n\nHe made every weapon of Tuscaran, and the finest axe of his life for Kula, and crossed the sea ice to give it to her. He married her and took the second throne and a crown he wears at feasts, and kept his forge burning behind the thrones. His blows leave wounds that do not close, which he calls the scar of the gods, after the wound his master took; when he is badly hurt the hammer and thunder come down around him, Mjolnir's Fury and Thor's Might, names the giants gave in mockery of the god who killed his master.\n\nWhen Midgard came to the thrones he told its warriors, as he tells every enemy, that his queen carries the best weapon he ever made and that his own is almost as good. When Kula falls before him he forgets the forge and screams for her. What he wants is not winter but one more thing to make; the iarn dwarves say the saddest thing in the glacier is a forge-fire kept lit for a king who is only ever asked for weapons.",
+  "story": "King Tuscar is a smith before he is a king. The rime-giants say he learned his craft at the forge of the giant who built Asgard's wall in a single winter and was cheated of his wage by Loki's trick and killed by Thor's hammer. Tuscar was the builder's apprentice, the giants say, and when the gods came to settle the bargain he stole an oath-word of Odin's from the forge, the word that had sealed the agreement, and burned it into his hammer's haft. That is why, badly wounded, he calls on Odin and grows stronger: the god's own broken oath answers him. Jordheim's skalds say the story is a giant's boast; the iarn dwarves, who know smiths, believe it.\n\nHe made every weapon of Tuscaran, and the finest axe of his life for Kula, and crossed the sea ice to give it to her. He married her and took the second throne and a crown he wears at feasts, and kept his forge burning behind the thrones. A shield or a blade that turns his blow aside calls down the hammer or the thunder on whoever he faces, Mjolnir's Fury and Thor's Might, names the giants gave in mockery of the god who killed his master; when he is badly hurt, or his queen is dead, they come with his own strokes, and his cuts open the scar of the gods, which does not close.\n\nWhen Midgard came to the thrones he told its warriors, as he tells every enemy, that his queen carries the best weapon he ever made and that his own is almost as good. When Kula falls before him he forgets the forge and screams for her. What he wants is not winter but one more thing to make; the iarn dwarves say the saddest thing in the glacier is a forge-fire kept lit for a king who is only ever asked for weapons.",
   "chapters": [
     {
       "title": "The Builder's Apprentice",
@@ -69,7 +74,7 @@
     },
     {
       "title": "The Forge-Halls of the North",
-      "text": "In the north, beyond the sea ice, the rime-giants had forge-halls where the cold was so great that iron rang like glass. Tuscar worked in them for longer than the giants count. He learned to fold ice into steel so that a blade was both at once and would not dull on any stone; a weaponsmith of Bjarkan who handled a broken hrimthursa axe-head says he has made weapons for forty years and does not know how it was done. Tuscar made weapons for every giant clan of the north and took payment in stories, because he collected stories of the gods.\n\nHe collected one story in particular. Every account of Thor's killing of giants that came north across the ice, he heard, and he knew the names of the giants and the names of the blows: Hrungnir's skull broken with the whetstone in Thor's own head, Geirrod and his daughters crushed under the roof-beam, Thrym and all his kin in the wedding hall. He gave the hammer-blows names in his forge, the giants say, the way a smith names his strokes, and he gave them Thor's names, mockingly: Mjolnir's Fury for the heavy downstroke, Thor's Might for the ringing one. They are the names his blows still carry when he fights.\n\nHe forged one wound into his weapons too. The builder at Asgard did not die at once; the giants say Thor's blow left a wound that would not close, and the builder bled into the snow while the gods watched. Tuscar made his blades to do the same. Their cuts do not close; they bleed and keep bleeding. He calls it the scar of the gods, after the scar the gods left on his master, and it is why Midgard's shield-bearers trade places in front of him, one after another, before the scars run too deep."
+      "text": "In the north, beyond the sea ice, the rime-giants had forge-halls where the cold was so great that iron rang like glass. Tuscar worked in them for longer than the giants count. He learned to fold ice into steel so that a blade was both at once and would not dull on any stone; a weaponsmith of Bjarkan who handled a broken hrimthursa axe-head says he has made weapons for forty years and does not know how it was done. Tuscar made weapons for every giant clan of the north and took payment in stories, because he collected stories of the gods.\n\nHe collected one story in particular. Every account of Thor's killing of giants that came north across the ice, he heard, and he knew the names of the giants and the names of the blows: Hrungnir's skull broken with the whetstone in Thor's own head, Geirrod and his daughters crushed under the roof-beam, Thrym and all his kin in the wedding hall. He gave the hammer-blows names in his forge, the giants say, the way a smith names his strokes, and he gave them Thor's names, mockingly: Mjolnir's Fury for the heavy downstroke, Thor's Might for the ringing one. They are the names his blows still carry when he fights.\n\nHe forged the hammer-blows into his weapon as a smith forges a temper, and the giants say they are in it still: a blow turned aside from Tuscar comes back as thunder, on the one who turned it and on everyone standing close about him. The sculptors put it as a saying of the forge-halls: never parry a smith in his own hall.\n\nHe forged one wound into his weapons too. The builder at Asgard did not die at once; the giants say Thor's blow left a wound that would not close, and the builder bled into the snow while the gods watched. Tuscar made his blades to do the same, and keeps that edge for anger. He calls it the scar of the gods, after the scar the gods left on his master, and the giants say he only opens it when he has stopped being a smith and become a mourner or a madman."
     },
     {
       "title": "The Axe for the Coldest Daughter",
@@ -88,7 +93,7 @@
       "text": "Tuscar wants one thing, and it is not winter. Kula wants the world before the gods. The Council wanted peace, the Icelords wanted war, Vifil wants every enemy in a cell. Tuscar wants something to make. The iarn dwarves who have seen his forge, from cracks in the outer ice or as prisoners carried past it to Vifil's cells, say the saddest thing in the glacier is not the frozen army or the last cell. It is the forge behind the thrones, where the fire is kept lit every day for a king who is only ever asked to make weapons.\n\nHe has made other things. The sculptors say there is a shelf in the forge with things on it that no one asked for: a bell of ice-steel that rings without being struck when the glacier shifts, a pair of tongs too fine for any giant's hand, a hinge, taken from nothing, the exact size of the gate-hinges he forged for the wall of Asgard. Nobody knows what the hinge is for. The iarn dwarves think he is waiting for the wall to be finished, so that he can finish his master's work and be paid at last.\n\nWhen he is killed, the forge-fire goes out. It is the only time it does. In a season or less he is on his throne again, because the glacier will not keep its king dead any more than its queen, and the first thing he does, the sculptors say, is go to the forge and light it. The weapons taken from him, his swords and axes and hammers and bows and his runic shields, are carried now by thanes all over Midgard, and every one of them is a piece of the forge behind the thrones. A weaponsmith of Bjarkan asked one of them to let him study the edge. He studied it for a winter and gave it back and never forged ice-steel. He said he understood how it was done, at last, and that he did not want to be the kind of smith who could."
     }
   ],
-  "legend": "Raid leaders call him the anvil: he looks like any other hrimthursa until you are standing in front of him. A visitor in 2003 said he didn't look like a king at all, just a big giant, and then found out. Tanks rotate on him because his bleed stacks up. When he hits half, the hammer and thunder blasts land around him on everyone close, so melee step out for a beat, then back in. Some say kill him first so Kula's rage comes later; some say kill Kula first so his bleeds stop sooner. Nobody says split them. His weapons drop for every class and every guild wants one.",
+  "legend": "Raid leaders call him the anvil: he looks like any other hrimthursa until you are standing in front of him. A visitor in 2003 said he didn't look like a king at all, just a big giant, and then found out. From the first swing, a blow of his that gets blocked or parried can bring Mjolnir's Fury or Thor's Might down in a ring around whoever he is hitting, so the melee don't bunch up on his tank. At half, or the moment Kula dies, he rages: he hits harder, his styles call the hammers and the thunder, and his Scar of Gods bleed lands on the tank. Kill him first and Kula goes to full strength; kill her first and he rages early. Pick one and be ready for it. Nobody says split them. His weapons drop for every class and every guild wants one.",
   "yells": {
     "aggro": [
       "You came for my steel? Then have it, edge first!",
@@ -143,10 +148,10 @@
   },
   "botLines": {
     "briefing": [
-      "tuscar first. he bleeds the tanks so [rotate|swap] every bleed stack",
-      "at half he does the hammer thing around him, melee step out when you see it",
+      "tuscar first. once he rages at half he bleeds his tank, [healers on the mt|keep the mt topped]",
+      "his hammers land around whoever he is hitting. melee [dont stack on his mt|spread around him]",
       "if kula drops first tuscar goes mental. be ready",
-      "tuscar's bleed stacks, tank swap every couple stacks"
+      "blocks and parries on tuscar call his hammers down, even before half. [spread around his mt|dont bunch up]"
     ],
     "aftermathWin": [
       "tuscar down, anyone get the sword? [grats|gz] whoever",
@@ -157,7 +162,7 @@
     "aftermathLoss": [
       "his hammers at half wiped the whole melee train",
       "we split them by accident. never again",
-      "the tank swaps were late, bleed killed both mts",
+      "once he raged the bleed and the hammers killed both mts",
       "we pulled kula into the melee train at his 50%. [bad idea|never again]",
       "the hammers at half got the whole melee train"
     ],
