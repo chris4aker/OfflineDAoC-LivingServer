@@ -16,8 +16,13 @@
     {
       "id": "icelord-kvasir",
       "relation": "named, like him, from the old tale of the mead"
+    },
+    {
+      "id": "issorden",
+      "relation": "the army of bone whose sickness he keeps"
     }
   ],
+  "tier": "epic",
   "facts": [
     {
       "text": "Suttung is a level-81 elder icelord with 100,000 health and the alternate of Hjalmar: the same controller spawns one or the other.",
@@ -25,7 +30,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
     },
     {
-      "text": "He bellows that he is amazed intruders came this far, says he warned the Council to destroy its enemies first, and says he will not mourn 'her' death beyond the grave.",
+      "text": "On aggro he says the price of invading the frozen fortress is death, that intruders mock the Council's pacifism, and that he weeps for no council member who has perished. (Earlier files gave these lines to Hjalmar; the script gives them to Suttung.)",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
     },
@@ -43,44 +48,81 @@
       "text": "In Norse myth Suttungr is the giant who held the mead of poetry, which was brewed from the blood of the wise Kvasir.",
       "provenance": "myth",
       "source": "Snorri, Skaldskaparmal (public-domain myth); used as inspiration"
+    },
+    {
+      "text": "Suttung goes berserk every 20-35 s in combat for 10-20 s (Strength 850). His landed blows have a 15% chance to give his target Valnir Mordeth's Plague (disease, 60 s) if the target is not already diseased. He casts Hjalmar's Ice Blast (450 cold, radius 440 round himself, recast 15 s, uninterruptible). 100,000 health, 40% melee / 70% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "In the Prose Edda, the giant Suttungr hid the mead of poetry, brewed from Kvasir's blood, inside the mountain Hnitbjorg, and Odin took it (Skaldskaparmal; to verify the details).",
+      "provenance": "myth",
+      "source": "Snorri, Skaldskaparmal (public domain), to verify"
+    },
+    {
+      "text": "The stolen bone-shard, the Faraheim thief Nyr and the sickness of the army of bone are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
     }
   ],
-  "story": "Suttung took his name from the giant of the old tale who kept the mead of poetry inside a mountain, the mead that was brewed from the blood of wise Kvasir, and who lost it to Odin when the god came as a serpent through a hole in the rock and flew home as an eagle. The icelords think that is a fine joke, an elder named for a giant who was robbed. Suttung does not. He took the name on purpose, as a warning to himself and everyone else, and he has repeated the warning to the Council every year of his life: what is stolen once is stolen twice. If the glacier does not destroy those who threaten it before they destroy it, it will perish.\n\nHe shares a hall with Hjalmar, which is to say the glacier gives the hall to one of them at a time, with a howl in the ice to say which. When it is Suttung who stands up, he is genuinely amazed to see you. He bellows that he cannot believe you came so far, and promises that your journey ends there, without mercy. Then he says the thing he has been waiting to say: that he warned the Council, that you deserve your fate more than he deserves his, and that he will not mourn her death beyond the grave. Nobody is quite sure which 'her' he means: the queen, the Council, or the glacier itself.\n\nHe fights in fits. For a time he is merely dangerous, an elder giant with a disease he breathes on whoever stands close, a sickness the rime giants traded for long ago with the dead of another land and kept for occasions like this, and an ice blast that rings all around him. Then, every half minute or so, the berserker stance takes him. He swells with it, the hrimthursa say he grows a head taller, and for ten or twenty breaths he hits with a strength that breaks shields. Then the stance fades, and he is merely dangerous again, and he hates you a little more for having lived through it.\n\nWhen he dies he says that he has been robbed, like the mountain of old. It is the only time anyone has heard him sound satisfied.",
-  "legend": "Suttung's berserk comes on a timer, every 20 to 35 seconds, for 10 to 20 seconds. When the message says he goes into berserker stance, the main tank uses everything he has and the healers pile on; when it fades, swap tanks if you need to. Cure his disease or your heals do half. Spread for the ice blast. Fight him in his hall, never dragged, and keep him busy or he resets. He's the easier elder for a raid with strong tanks and the harder one for a raid with weak ones. Some raid leaders swear the howl gives you Suttung when you brought too many casters.",
+  "story": "Suttung took his name from the giant of the old tale who kept the mead of poetry inside a mountain, the mead brewed from wise Kvasir's blood, and lost it to Odin, who came through the rock as a serpent and flew home as an eagle. The icelords think it a fine joke, an elder named for a giant who was robbed. Suttung took it as a warning, and he has given the warning to the Council every year of his life: what is stolen once is stolen twice.\n\nHe was robbed once himself. In the Council's twentieth winter a dwarf of Faraheim named Nyr crept onto the crater floor and cut a shard from the dragon's bones, and Suttung, a young icelord then, chased him to the edge of the Iarnwood. He never caught him. The sculptors say the rage of that chase never left him either; it comes over him in fits still, without warning, and passes, and comes again, and a giant in one of Suttung's fits hits like an avalanche.\n\nThe winter the army of bone came up out of the south of Aegir, Suttung fought it on the eastern ice with his hands, because he would not wait for the Council to vote, and the dead left their sickness in him. He has carried it since. Those he strikes come away with it, a slow plague that dulls every remedy; and the cold of the deep ice is so far into him that it rolls off him in a ring, freezing whatever stands close. He shares Grimolf's hall with Hjalmar, which is to say the glacier gives it to one of them at a time. When it is Suttung who stands up, he tells the strangers that the price of invading the frozen fortress is death, that they mock the Council's peace, and that he weeps for no councillor who has perished.",
+  "chapters": [
+    {
+      "title": "The Robbed Giant's Name",
+      "text": "The giants tell the tale of the mead differently from Jordheim. In Jordheim's telling, wise Kvasir was killed by two dwarves and his blood brewed into a mead that made poets of all who drank it, and the giant Suttung took the mead from the dwarves as the price of his father's life and hid it in a mountain, with his daughter to guard it; and Odin came through the rock as a serpent and talked his way past the daughter and drank it all and flew home as an eagle, and that is where the skalds' art comes from.\n\nIn the giants' telling, Suttung is the only honest one in the story. The dwarves murdered; the god lied and seduced and stole; and the giant who had done nothing but keep what he had been paid lost everything. The hrimthursa tell their children the tale as a warning about gods and dwarves, and they tell it with a good deal of bitterness.\n\nThe elder icelord was given another name by his family, which nobody uses now. He took the name Suttung himself, as a young giant, in front of the Ice Lords' house, and said he took it so that nobody in the citadel would ever forget the end of the tale. What is stolen once is stolen twice, he said. A mountain that has been robbed is a mountain that will be robbed again, because the thief knows the way. The Ice Lords laughed. He did not.\n\nHe has said it to the Council every year since, at every vote, and the sculptors cut no marks for it, because he never asked for a vote. He only said it, and sat down, and waited for the day it came true."
+    },
+    {
+      "title": "Nyr's Shard",
+      "text": "It came true in the twentieth winter of the Council, and the sculptors say Suttung was almost glad. A dwarf of the Remnants of Faraheim named Nyr, a slate-keeper's son who wanted to know what lay under the ice, crept down the crater wall in the dark, onto the floor where the giants had cut down to the dragon's bones, and cut a shard from a rib, and climbed out again with it on his back.\n\nSuttung saw him on the rim. He went after him alone, because the Council would have voted first, and chased the dwarf across the high ice and down onto the island and across it, for days. The sculptors say the young icelord ran in bursts. He would run like the wind for a stretch, roaring, tearing up the snow, and then the rage would go out of him and he would walk, cold and patient, until it came over him again. The dwarf, who could not run like that at all, gained in the walking and lost in the running, and reached the edge of the Iarnwood a breath ahead of him and vanished between the iron trees.\n\nSuttung did not follow him in. He stood at the edge of the wood for a whole day, the dwarves of Faraheim say, and then walked home. Nyr's shard is still in Faraheim, on a shelf in the slate-house, and Thorgrim of Faraheim, who has seen it, says it is cold to the touch on the hottest day of summer and that nobody will sit near it.\n\nThe fits never left Suttung after that chase. They come over him without warning and pass, and come again, and the giants of the citadel who see one coming get out of the way, because a giant in one of Suttung's fits hits like the crater wall coming down."
+    },
+    {
+      "title": "The Sickness of the Bone Army",
+      "text": "The winter the army of bone came up out of the south of Aegir, the winter the western caves were cut in haste, the Council met to vote on whether to march against it, and Suttung did not wait for the vote. He went out onto the eastern ice with a handful of the Ice Lords' house and met the dead hand to hand, because, he said, a vote is a thing that takes a night, and the dead do not sleep.\n\nHe threw them back. The sculptors say the dead broke on him on the eastern ice the way surf breaks on a skerry. But the army of bone carried a sickness, as such armies do, the rot of the grave it had walked out of, and Suttung, who had fought it with his hands, came home with it in him. The seers said he would die of it. He did not. He has carried it ever since, in his arms and his breath, and those he strikes come away with it: a slow plague that dulls every remedy given them, so that wounds close at half the pace they should. The giants call it the bone army's gift, and the companies of Midgard who have met him call it the same.\n\nThat was also the winter he went down into the deep ice to take the cold into himself. The seers say he sat in the oldest cutting for a month, against the bones of the dragon, until the cold of the lid was in him to the marrow; he wanted, he said, to be colder than the dead. He is. The cold rolls off him in a ring now, as heat rolls off a forge, and anything that stands close to him for long freezes. The icesplitters who serve the elders' hall keep a stride further from Suttung than from any other giant in Tuscaran, and the Valkyn scout who watched the hall wrote that the snow never settles within a giant's reach of him."
+    },
+    {
+      "title": "Whose Death Beyond the Grave",
+      "text": "He shares Grimolf's hall with Hjalmar, which is to say the glacier gives it to one of them at a time. When one walks, the other sleeps in the ice of the walls; when the one that walks is killed, the hall stands empty until the glacier is ready, and then one of them stands up, and nobody can say beforehand which. When the living come near the mouth, a howl runs through the tunnels, a sound with no word in it, and the companies of Midgard wait at the mouth to see which elder comes out.\n\nWhen it is Suttung, he tells them that the price of invading the frozen fortress is death: death to them and to their allies. He tells them their presence mocks the peace that his enemies on the Council kept for a century. And he tells them he weeps for no councillor who has perished, which the companies take for cruelty and the sculptors take for grief.\n\nThe sculptors say Suttung was right twice and nobody thanked him. He said what is stolen once is stolen twice, and a dwarf stole from the crater; he said the dead would come up the island, and they came. When Midgard came up the crater road with the Valkyn, he did not even go to the ribs. He went to his hall and waited, because, he said, the thief knows the way now.\n\nThe Valkyn guides at Dyrfjall, who know the tale of the mead from both sides, say there is one thing Suttung has never understood about it. In the old story the giant was robbed because he hid the mead and guarded it. If he had shared it, there would have been nothing to steal. They do not say this to Suttung."
+    }
+  ],
+  "legend": "If the howl gives you Suttung: 100,000 health, 40% melee and 70% magic resists, CC-immune. Three things. He goes berserk every 20 to 35 seconds for 10 to 20 seconds and hits enormously hard while it lasts, so the main tank saves his cooldowns for the berserks and the healers pile on; swap tanks after one if the MT is low. His hits can give the tank Valnir Mordeth's Plague, a disease that halves heals for a minute, so cure disease every time. And his Ice Blast hits everyone within 440 of HIM for 450 cold about every 15 seconds, so only the melee who must stand close should be close; casters and healers stay well outside. Fight him in his hall and don't let him go 30 seconds idle or he resets. He's the easier elder for a raid with strong tanks.",
   "yells": {
     "aggro": [
-      "I am amazed you came so far. Your journey ends at my feet.",
+      "The price of invading our frozen fortress is death!",
       "What is stolen once is stolen twice. Not again. Not here.",
-      "I am amazed you came this far. Your journey ends here."
+      "Your presence mocks the Council's peace. Good. I despise it too.",
+      "What is stolen once is stolen twice."
     ],
     "phases": [
       {
         "trigger": "berserk",
-        "text": "I warned them! Destroy the threat before it destroys us!"
+        "text": "What is stolen once is stolen twice! Not again!"
       },
       {
         "trigger": "health<=50",
-        "text": "I will not mourn her past the grave. Nor you."
+        "text": "I weep for no council member. I will not weep for you."
       },
       {
         "trigger": "health<=50",
-        "text": "You deserve this fate more than I do."
+        "text": "Your presence mocks the pacifists of the Council."
       }
     ],
     "death": [
       "Robbed... like the mountain... of old...",
-      "Robbed... like the mountain of old..."
+      "Robbed... like the mountain of old...",
+      "Nyr... I will find you yet..."
     ],
     "slay": [
       "Broken. As I promised the Council.",
       "Thief.",
-      "Nothing leaves this mountain. Not even you."
+      "Nothing leaves this mountain. Not even you.",
+      "The thief knows the way. You did not."
     ]
   },
   "atmosphere": {
     "lairEntry": [
       "A howl runs through the ice. An icelord has woken.",
-      "An elder icelord laughs somewhere ahead in the ice."
+      "An elder icelord laughs somewhere ahead in the ice.",
+      "The snow never settles near the elder."
     ],
     "phases": [
       {
@@ -89,42 +131,55 @@
       },
       {
         "trigger": "health<=50",
-        "text": "Suttung breathes sickness over the front rank!"
+        "text": "Cold rolls off Suttung in a ring."
       }
     ],
-    "realmFirstKill": "Elder Icelord Suttung falls. His warning was in vain."
+    "realmFirstKill": "Suttung falls. Grimolf's hall stands empty."
   },
   "botLines": {
     "briefing": [
       "if we get suttung, watch for berserker stance, [tank pops cds|healers burst the tank] till it fades",
       "cure disease on suttung or heals do half",
       "suttung disease: cure it every time",
-      "on suttung, swap tanks after each berserk if the mt is low"
+      "on suttung, swap tanks after each berserk if the mt is low",
+      "suttung berserks every 20-35s for 10-20s, tank cooldowns for the berserks",
+      "cure the disease on the tank every time, it halves heals",
+      "suttung ice blast is 440 round him, casters and heals stay out",
+      "suttung or hjalmar, never both"
     ],
     "aftermathWin": [
       "suttung dead. that berserk is no joke",
       "got suttung. the berserks were nasty but we held",
       "suttung down, the old tale guy. the mead one",
-      "suttung's vest dropped, the spiteful one"
+      "suttung's vest dropped, the spiteful one",
+      "what is stolen once is stolen twice [lol|yep]",
+      "held through every berserk",
+      "suttung down, the mead guy"
     ],
     "aftermathLoss": [
       "suttung berserked twice in a row and our mt just [evaporated|vanished]",
       "no cure on the disease and the heals did nothing",
       "two berserks back to back. no tank survives that",
-      "no tank swap after the berserk. dead mt, dead raid"
+      "no tank swap after the berserk. dead mt, dead raid",
+      "healers stood in his ice blast",
+      "berserk landed with the tank diseased",
+      "nobody cured the plague"
     ],
     "rumour": [
       "the giant in the old song who kept the mead was called suttung. same name as the icelord up there. [coincidence|sure]",
       "suttung says he wont mourn 'her' past the grave. nobody knows if he means kula",
       "suttung named himself after the giant who got robbed. on purpose",
-      "suttung warned the council every year. nobody listened"
+      "suttung warned the council every year. nobody listened",
+      "a faraheim dwarf stole a shard of the dragon from under tuscaran once. suttung chased him to the iarnwood",
+      "suttung fought the bone army bare handed and kept their sickness",
+      "the snow never settles near suttung, the valkyn say"
     ]
   },
   "loremasterTopic": {
     "keyword": "Suttung",
-    "text": "The other elder icelord, named for the giant who kept the mead of poetry and lost it. He warned the Council to strike first and was not heeded. He fights in fits of berserker fury and carries a sickness the giants traded for long ago."
+    "text": "The elder icelord named for the robbed giant of the tale of the mead. His warning is that what is stolen once is stolen twice. He chased the Faraheim dwarf Nyr across Aegir in fits of rage that never left him, and fought the army of bone hand to hand and kept its sickness. Cold rolls off him in a ring. He shares Grimolf's hall with [Hjalmar]."
   },
-  "bookPage": "The tale of the mead, as the giants tell it, which is not as Jordheim tells it. The wise one, Kvasir, was killed by dwarves and his blood brewed into a mead, and whoever drank it became a poet. A giant, Suttung, took it from the dwarves as the price of his father's life and hid it inside a mountain with his daughter to guard it. A god came, a stranger with one eye, and seduced the daughter, and drank the mead, and flew away as an eagle. In Jordheim this is told as a clever god. In the glacier it is told as a theft, and the elder who carries that giant's name tells it every winter, so no one forgets.",
+  "bookPage": "The tale of the mead, as the giants tell it, which is not as Jordheim tells it. The wise one, Kvasir, was killed by dwarves and his blood brewed into a mead, and all who drank it became poets. A giant, Suttung, took it from the dwarves as the price of his father's life and hid it inside a mountain with his daughter to guard it. A god came, a stranger with one eye, and seduced the daughter, and drank the mead, and flew away as an eagle. In Jordheim this is told as a clever god. In the glacier it is told as a theft, and the elder who carries that giant's name tells it every winter, so no one forgets.",
   "chronicle": {
     "win": "Suttung's warning came true for him, not for {realm}: {raidLeader}'s raid slew him in {minutes} minutes.",
     "loss": "Elder Icelord Suttung's fury broke {raidLeader}'s raid from {realm} after {minutes} minutes."
