@@ -23,12 +23,12 @@
       "source": "Nibelungenlied (public domain)"
     },
     {
-      "text": "Tarnkappe's empty seat at the lords' table is Living Server lore (Ulfar Thorvaldsson's minutes).",
+      "text": "Tarnkappe's empty seat at the lords' table is Living Server lore (Hallkel Thorvaldsson's minutes).",
       "provenance": "original",
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
     }
   ],
-  "story": "Tarnkappe has a seat at the lords' table and is never in it. Ulfar Thorvaldsson of Skona, who wrote the minutes of the court's arguments as the varulv let him, put an empty chair in every one of his drawings of the table, and wrote the high lord's name beside it. Tarnkappe is the cloak that hides, in the southern tongue, after the cloak the hero of the southern songs stole from a dwarf, and the court says the name was given, not chosen.\n\nHe keeps his wing with advisors and nothing else: no wargs, no moon-watchers, no guards to speak of, eleven werewolves who tell him things. What he does with what they tell him nobody knows. The wolfaur say Tarnkappe is the one high lord who has never argued with the king, and that this frightens them more than Athulf's war or Modolfr's night. The gothi send the young to his wing for the third essence, and the young come back saying it was the easiest of the three, and the wolfaur say that is what he wanted them to think.",
+  "story": "Tarnkappe has a seat at the lords' table and is never in it. Hallkel Thorvaldsson of Skona, who wrote the minutes of the court's arguments as the varulv let him, put an empty chair in every one of his drawings of the table, and wrote the high lord's name beside it. Tarnkappe is the cloak that hides, in the southern tongue, after the cloak the hero of the southern songs stole from a dwarf, and the court says the name was given, not chosen.\n\nHe keeps his wing with advisors and nothing else: no wargs, no moon-watchers, no guards to speak of, eleven werewolves who tell him things. What he does with what they tell him nobody knows. The wolfaur say Tarnkappe is the one high lord who has never argued with the king, and that this frightens them more than Athulf's war or Modolfr's night. The gothi send the young to his wing for the third essence, and the young come back saying it was the easiest of the three, and the wolfaur say that is what he wanted them to think.",
   "legend": "High Lord Tarnkappe is a level 44 Varulv high lord in the quietest wing of Varulvhamn, with eleven werewolf advisors and nothing else. One of the three Werewolf Bane essences. Varulv faction, with the advisors packed round him. Eleven advisors is a lot of bodies for one pull, so split them if you can. His wing is the quietest of the three, which is why people pick him first.",
   "yells": {
     "aggro": [

@@ -150,7 +150,7 @@
     "keyword": "Roesia",
     "text": "The keeper of pain among the summoners. She makes sure every bargain hurts, and mends herself when she is hurt in turn."
   },
-  "bookPage": "From Bersi Hallason's notes. The magicker would not tell me the story of Roesia's son; she said it was Camelot's story and Camelot could keep it. She told me instead what Roesia says to the Grand Summoner when he comes into her chamber, which is nothing. She keeps her eyes on the floor and waits for him to leave. I asked whether she hated him. The magicker said no. She said Roesia keeps the pain of every bargain the hall has ever made, and that if she began to hate anyone for it, she would have to begin with herself. Then she asked me whether I had ever made a bargain. I said no. She said that was what everyone says.",
+  "bookPage": "From Vigfus Hallason's notes. The magicker would not tell me the story of Roesia's son; she said it was Camelot's story and Camelot could keep it. She told me instead what Roesia says to the Grand Summoner when he comes into her chamber, which is nothing. She keeps her eyes on the floor and waits for him to leave. I asked whether she hated him. The magicker said no. She said Roesia keeps the pain of every bargain the hall has ever made, and that if she began to hate anyone for it, she would have to begin with herself. Then she asked me whether I had ever made a bargain. I said no. She said that was what everyone says.",
   "chronicle": {
     "win": "{raidLeader} of {realm} slew Summoner Roesia in {minutes} minutes.",
     "loss": "Summoner Roesia made {raidLeader}'s raid from {realm} pay in full after {minutes} minutes."
