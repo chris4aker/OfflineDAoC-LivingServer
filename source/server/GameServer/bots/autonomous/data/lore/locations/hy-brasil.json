@@ -217,15 +217,7 @@
       "The rest you will find with your own swords: the tower on the crag in the Vale of Balor, the city under the shore, the hollow under Galladoria. Those are the Fomorians' and the Root's, and you came for them, and other books than mine will tell you of them. I ask only that you remember the old troubles when you ride out of Domnann thinking you know what an enemy looks like. And when a guide says no, it is not because she is afraid. It is because she counted. The Sylvan keep a tally of everything: springs, seeds, friends, dead. Hibernia is on every page of it."
     ]
   },
-  "bosses": [
-    "balere",
-    "mollunero",
-    "zytka",
-    "kontar-the-corrupt",
-    "archilus",
-    "elro-the-ancient",
-    "eimear"
-  ],
+  "bosses": [],
   "era": "hib-the-shrouded-isles",
   "factions": [
     "sylvan",
@@ -242,6 +234,10 @@
     },
     {
       "id": "cothrom-gorge",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "worlds-end",
       "relation": "a zone of the region, with its own file"
     },
     {

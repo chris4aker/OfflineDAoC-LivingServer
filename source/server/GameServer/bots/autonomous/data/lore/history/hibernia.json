@@ -23,7 +23,8 @@
       "places": [
         "allta-fearann",
         "cothrom-gorge",
-        "spraggon-den"
+        "spraggon-den",
+        "worlds-end"
       ],
       "bosses": [
         "archilus",
@@ -347,7 +348,8 @@
       "summary": "Olcasgean, the titan the Sylvan will not call a god, and everything he has bent in the hollow of Galladoria: the four elements of the isle, the keepers of the rings, the Olcasar and the Uaimh, and the Sylvan who took his side.",
       "places": [
         "galladoria",
-        "vigilant-rock"
+        "vigilant-rock",
+        "worlds-end"
       ],
       "bosses": [
         "aroon-the-urlamhai",
@@ -569,7 +571,8 @@
         "allta-fearann",
         "cothrom-gorge",
         "hy-brasil",
-        "shrouded-isles"
+        "shrouded-isles",
+        "worlds-end"
       ],
       "bosses": [
         "adar-llwch-gwin",
