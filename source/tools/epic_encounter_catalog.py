@@ -1267,7 +1267,7 @@ def dungeon_of(rel_path: Path, class_name: str, src: Source):
         if parts.startswith(folder + "/"):
             if folder == "Dragons":
                 region = DRAGON_REGIONS.get(rel_path.stem)
-                name = {1: "Golestandt's lair (Dartmoor)", 100: "Gjalpinulva's lair (Myrkwood)", 200: "Cuuldurach's lair (Sheeroe Hills)"}.get(region, name)
+                name = {1: "Golestandt's lair (Dartmoor)", 100: "Gjalpinulva's lair (Malmohus)", 200: "Cuuldurach's lair (Sheeroe Hills)"}.get(region, name)
             return name, region, "read" if region else None
     segs = parts.split("/")
     name = " / ".join(segs[:-1]) if len(segs) > 1 else "Open world"

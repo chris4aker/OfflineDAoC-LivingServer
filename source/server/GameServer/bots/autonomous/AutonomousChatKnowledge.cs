@@ -34,6 +34,9 @@ public static class AutonomousChatKnowledge
             return true;
         if (TryAnswerDragon(player.Realm, query, out answer))
             return true;
+        // Living Server 1.2: "whats in krondon?", "who is the storm keeper?" from the lore bible (docs/LORE.md).
+        if (LoreChat.TryAnswer(query, out answer, player.Realm))
+            return true;
         if (TryAnswerTimeToCap(query, out answer))
             return true;
         if (AsksAboutRealmRaid(query) &&

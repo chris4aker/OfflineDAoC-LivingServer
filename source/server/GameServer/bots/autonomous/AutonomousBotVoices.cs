@@ -64,6 +64,8 @@ public static class AutonomousBotVoices
                 return reader.ReadToEnd();
             }
             VC corpus = VC.Parse(Read("chat.corpus.json"), Read("chat.voices.json"));
+            // Living Server 1.2: the lore bible's lore and rumour lines join the lore pool (docs/LORE.md).
+            corpus = corpus.WithLines(LoreChat.CorpusLines(LoreBible.Current));
             if (Log.IsInfoEnabled)
                 Log.Info($"Bot voices: loaded {corpus.Lines.Length} lines, {corpus.Scenes.Length} scenes, {corpus.Voices.Length} voices");
             return corpus;

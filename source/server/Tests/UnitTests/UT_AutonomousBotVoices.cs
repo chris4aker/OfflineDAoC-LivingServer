@@ -94,7 +94,10 @@ namespace DOL.GS.Tests
         public void Runtime_LoadsTheSameCorpus()
         {
             Assert.That(AutonomousBotVoices.Corpus, Is.Not.Null, "The server finds the embedded corpus.");
-            Assert.That(AutonomousBotVoices.Corpus.Lines.Length, Is.EqualTo(Corpus.Lines.Length));
+            // Living Server 1.2: the server adds the lore bible's lore and rumour lines (LoreChat.CorpusLines) to the built corpus.
+            int lore = LoreChat.CorpusLines(LoreBible.Current).Count(line => Corpus.LineById(line.Id) == null);
+            Assert.That(AutonomousBotVoices.Corpus.Lines.Length, Is.EqualTo(Corpus.Lines.Length + lore));
+            Assert.That(AutonomousBotVoices.Corpus.Lines.Take(Corpus.Lines.Length).Select(line => line.Id), Is.EqualTo(Corpus.Lines.Select(line => line.Id)));
         }
 
         [Test]

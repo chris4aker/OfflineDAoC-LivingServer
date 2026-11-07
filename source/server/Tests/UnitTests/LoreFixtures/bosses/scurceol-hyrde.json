@@ -1,0 +1,41 @@
+{
+  "id": "scurceol-hyrde",
+  "name": "Scurceol Hyrde",
+  "catalogKey": "krondon/scurceolhyrde",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "aliases": ["the storm keeper", "storm-keeper", "scurceol"],
+  "facts": [
+    {"text": "Scurceol Hyrde is a level 81 boss in Krondon (region 61).", "provenance": "game", "source": "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs; docs/encounters/epic-encounters.json"},
+    {"text": "Four Lyft Miht orbs spawn in the corners of his room; while any lives he takes no damage and hits harder, and an orb may throw the player who strikes it.", "provenance": "game", "source": "docs/encounters/epic-encounters.json (krondon/scurceolhyrde)"},
+    {"text": "The name reads as Old English scur ceol hierde, the shepherd of the storm-ship; lyft miht as the might of the air (to verify in Bosworth-Toller).", "provenance": "original", "source": ""}
+  ],
+  "story": "Krondon's storm-keeper was called the Scurceol Hyrde, the shepherd of the storm-ship. His craft was weather. When raiders came for Avalon's shore, he loosed his storm upon them. To hold a storm still he took four airs out of the sky and bound them in the four corners of his chamber as lights, and while they burned nothing in the world could wound him. When Morgana's war broke on Avalon, Krondon fell to the thrawn ogres. The shepherd made his bargain with the ogres' warrior queen: his storm for his hall. He is still down there among the ogres, with the four lights burning, and anyone who strikes a light too hard is thrown about the room like a sail in a gale.",
+  "legend": "Put out the four lights in the corners before you touch him. Until then he cannot be hurt and hits twice as hard. Mind your footing near a light, because it throws you. The old Avalonians say a sudden squall off Caldey means he is restless.",
+  "yells": {
+    "aggro": ["Four airs I took from the sky. Come and take them back."],
+    "phases": [
+      {"trigger": "orbDeath", "text": "One light fewer. The others burn the brighter."},
+      {"trigger": "addsDead", "text": "The winds are loose! Then I am the storm!"}
+    ],
+    "death": ["The squall passes. It always passes."],
+    "slay": ["Another sail torn from its mast."]
+  },
+  "atmosphere": {
+    "lairEntry": ["Four lights burn in the corners. The air is held still."],
+    "phases": [{"trigger": "addsDead", "text": "The lights go out. The storm-keeper can bleed."}],
+    "realmFirstKill": "Krondon's storm is broken. The Hyrde has fallen."
+  },
+  "botLines": {
+    "briefing": ["storm keeper next. four lights in the corners, [kill the lights|put the lights out] first or [dont bother|you are hitting a wall]", "dont stand next to a light when you hit it, [it throws you|you go flying]. lights first, then him"],
+    "aftermathWin": ["[gg|grats all], the storm keeper is down. those lights [never get easier|are still a pain]"],
+    "aftermathLoss": ["we touched him with a light still up. [never again|lesson learned]"],
+    "rumour": ["the storm keeper in krondon has four lights in the corners of his room. [kill the lights|put the lights out] first"]
+  },
+  "loremasterTopic": {"keyword": "storm-keeper", "text": "The Scurceol Hyrde, the shepherd of the storm-ship. He bound four airs as lights in his chamber. While they burn, no blade bites him. Tell your raid leader that before you go, not after."},
+  "bookPage": "",
+  "chronicle": {"win": "{realm} put out the four lights of Krondon and broke the storm-keeper in {minutes} minutes, led by {raidLeader}.", "loss": "The storm-keeper of Krondon threw {realm} from his chamber; {raidLeader} called the retreat."},
+  "era": "albion-old-halls",
+  "factions": ["krondon-keepers"],
+  "related": [{"id": "krondon", "relation": "keeps its weather"}]
+}

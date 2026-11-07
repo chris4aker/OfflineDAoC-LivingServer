@@ -535,8 +535,18 @@ internal sealed partial class MainForm : Form
         tabs.TabPages.Add(events);
         var records = new TabPage("Realm Records") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };
         var eventRecords = new RealmEventRecordsControl(() => RealmEventRecordStore.Locate(_root));
-        records.Controls.Add(eventRecords);
+        // Living Server 1.2: the records and the Bestiary of the Realms (LoreBestiary), side by side.
+        var recordTabs = new TabControl { Dock = DockStyle.Fill };
+        var recordsPage = new TabPage("Records") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };
+        recordsPage.Controls.Add(eventRecords);
+        var bestiaryPage = new TabPage("Bestiary") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };
+        var bestiary = new BestiaryControl(() => RealmEventRecordStore.Locate(_root));
+        bestiaryPage.Controls.Add(bestiary);
+        recordTabs.TabPages.Add(recordsPage);
+        recordTabs.TabPages.Add(bestiaryPage);
+        records.Controls.Add(recordTabs);
         records.Enter += async (_, _) => await eventRecords.RefreshAsync();
+        bestiaryPage.Enter += async (_, _) => await bestiary.RefreshAsync();
         tabs.TabPages.Add(records);
         tabs.TabPages.Add(xpSettings);
         var botGoals = new TabPage("Bot Goals Setting") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };

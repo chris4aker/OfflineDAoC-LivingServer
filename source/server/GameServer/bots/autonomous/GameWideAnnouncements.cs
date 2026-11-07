@@ -48,6 +48,7 @@ namespace DOL.GS
             while (Pending.TryDequeue(out var notice))
             {
                 if (!Enabled(notice.Kind)) continue;
+                LoreAtmosphere.NoteNews();   // realm news always wins over atmosphere lines (Living Server 1.2)
                 foreach (GamePlayer player in ClientService.Instance.GetPlayers())
                 {
                     player.Out.SendMessage(notice.Text, eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
