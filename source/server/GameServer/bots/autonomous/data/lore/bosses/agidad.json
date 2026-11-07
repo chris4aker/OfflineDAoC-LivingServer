@@ -1,0 +1,129 @@
+{
+  "id": "agidad",
+  "name": "Agidad",
+  "npcNames": [
+    "Agidad"
+  ],
+  "locationId": "dartmoor",
+  "realm": "Albion",
+  "aliases": [
+    "the go-between"
+  ],
+  "facts": [
+    {
+      "text": "Agidad: template 770044 (it replaces the spawn's values), level 55, a granite giant elder's model at size 150, at 399984, 751802, on the ground between Golestandt's Bed and Moran's hill; aggro level 200 within 500, faction Granite Giants of Dartmoor, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Two granite giant pounders of his faction stand about 360 from him.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "A faction NPC that is attacked calls friends of its faction within 450, plus 150 for each attacker beyond the first.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: radius 450 + 150 per extra attacker, up to eight; friends must share the faction)"
+    },
+    {
+      "text": "Aggressive NPCs attack anyone in their aggro range, but pass over riders on a steed.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (CheckPlayerAggro: any aggro level above 0 attacks within the aggro range; riders on a steed are skipped)"
+    },
+    {
+      "text": "The name Agidad is unglossed (to verify). The boundary row of the hut-builders, Agidad as the giants' go-between, the two sayings and Brother Aelred's count are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Between the Bed, where Golestandt lies, and Moran's windy hill to the east there is a stretch of open moor that both sides claim. The stonelords who stand with the dragon say the moor is the Bed and every stone of it is hers. The elders and oracles on Moran's hill say the oldest stones were standing before she lay down, and will be standing after. The ground between is where the quarrel lives, and Agidad lives on it.\n\nThe hut-builders, the moor's first people, ran a row of standing stones across that ground, and Brother Aelred of Lostwithiel, who counted their hut circles for the Church after Arthur, believed it was a boundary: one side for the living, one side for whatever lay in the Bed. Agidad stands on the row. The drovers say he was one of its stones once, the tallest, and that when the giants of the moor stood up he stood up with them and did not leave his place. He goes from the Bed to the hill and back, and the giants on both sides let him, and the drovers call him the go-between.\n\nWhat he carries between them, nobody knows. Some of the Prydwen clerks write that he is the Bed's envoy to the elders, and some that he is the elders' spy on the Bed. The oracles on Moran's hill, through the one drover who claims to have heard them speak, say only that a boundary does not belong to either side; it belongs to the boundary. The Stonecrush ogres say he is the giant they most want to eat, because a stone that both sides claim must taste of both.\n\nHe is not friendly. The drovers' saying is \"give the go-between the whole road\", and they keep it, and walk their cattle wide of the row. The pounders who work near him come when he is troubled, because the row is their work too, and the drovers who have seen it say a man who quarrels with Agidad quarrels with his masons as well. Only the riders come through untroubled, the drovers say, because a man in the saddle is going somewhere, and a boundary respects that.\n\nWhen he is broken he stands up again before the dust has settled, and the oracles' word for it is the same as their word for a boundary stone set back in its socket: he is replaced, not raised. The moor needs somebody on the row.",
+  "legend": "Agidad is a level 55 named granite giant in Dartmoor, on the open moor between Golestandt's Bed and Moran's hill. Despite what the old Dartmoor notes say, he is aggressive (the template the server uses sets aggro 200, range 500), and two granite giant pounders work about 360 from him and come in when he is hit, so pull him away or kill the pounders first. No spells or styles in the data: a melee fight with a 55 giant and his helpers, right for a group of fifties. Riding past on a horse is safe; walking past is not. Do not chase him east toward Moran's hill or west toward the Bed, where the stonelords are. He respawns in about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "Off the row.",
+      "The boundary stands. You do not.",
+      "Neither side sent you. Then you are trespass."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Masons! The row is breaking!"
+      }
+    ],
+    "death": [
+      "Set me... back... in my socket...",
+      "The row... holds..."
+    ],
+    "slay": [
+      "Off the row.",
+      "Ground into the boundary.",
+      "Neither side will miss you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A row of standing stones crosses the moor here.",
+      "One of the stones is walking."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The pounders leave their work and come for the row."
+      }
+    ],
+    "realmFirstKill": "Agidad is broken on the row. The boundary is empty."
+  },
+  "botLines": {
+    "briefing": [
+      "agidad, 55 named giant between the dragon's bed and moran's hill. he does aggro, 500 range",
+      "two pounders work about 360 off him and join. kill them or pull him clear first",
+      "no spells, melee giant. group of 50s. dont chase him toward the bed or moran",
+      "80 sec respawn. riding past is safe, walking isnt"
+    ],
+    "aftermathWin": [
+      "go-between down. the row's empty for a minute",
+      "pounders first, then him, clean",
+      "never went near the bed, perfect",
+      "back in 80 sec, move"
+    ],
+    "aftermathLoss": [
+      "read he doesnt aggro. he aggros",
+      "chased him toward the bed and the stonelords came",
+      "forgot the pounders, they flattened the casters",
+      "walked the row at 48, splat"
+    ],
+    "rumour": [
+      "[heard|someone said] agidad was one of the hut-builders' standing stones before he stood up",
+      "heard the drovers say give the go-between the whole road",
+      "[heard|someone said] the stonecrush want to eat agidad because he tastes of both sides",
+      "heard agidad carries word between the dragon's bed and moran's hill, but nobody knows what"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "agidad",
+    "text": "The granite giant who walks the row of standing stones between [golestandt]'s Bed and [moran the mighty]'s hill, on the one stretch of moor both sides claim. The drovers call him the go-between and give him the whole road; his pounders come when he is troubled. The oracles say a boundary belongs to neither side, only to itself, and when he is broken he is set back in his socket, not raised."
+  },
+  "bookPage": "From the count of the hut circles of the moor, made for the Church by Brother Aelred of Lostwithiel. Between the warm ground and the windy hill the old people ran a row of stones, one hundred and four by my count when I came, and one hundred and three when I came back the next summer. The missing stone was the tallest. A drover showed it to me walking, half a mile off, with two smaller giants working at the ground behind it. He said its name was Agidad and that I should give it the whole road. I did. I have written the row down as one hundred and four, because the stone is still on it; it has only stood up.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} broke Agidad on the hut-builders' row in {minutes} minutes.",
+    "loss": "Agidad cleared {raidLeader}'s company of {realm} off the row."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "golestandt",
+      "relation": "walks from her Bed to Moran's hill on the ground both sides claim"
+    },
+    {
+      "id": "moran-the-mighty",
+      "relation": "the elders' hill at the other end of the go-between's road"
+    },
+    {
+      "id": "kez",
+      "relation": "the Stonecrush leader who most wants to eat him"
+    }
+  ]
+}

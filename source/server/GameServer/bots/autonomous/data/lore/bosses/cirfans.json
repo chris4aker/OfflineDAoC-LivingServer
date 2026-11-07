@@ -1,0 +1,129 @@
+{
+  "id": "cirfans",
+  "name": "Cirfans",
+  "npcNames": [
+    "Cirfans"
+  ],
+  "locationId": "cornwall",
+  "realm": "Albion",
+  "aliases": [
+    "the old drake of the cliffs"
+  ],
+  "facts": [
+    {
+      "text": "Cirfans: template 12834, level 50, the brown drakes' model at the Cornwall Drakes' size, on the high cliff in the far south-west of Cornwall at 356721, 680902; aggro level 0, no faction, no spells or styles, respawn 300 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Symbol of the Broken (Master Grundelth, Camelot): at the Lethantis Association's bidding, slay the drake Cirfans and take its heart; then the King's Wight's skull from the Barrows; then a jeweled ritual dagger to Lidmann Halsay, left with Esmond at Cornwall Station.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "An NPC with no faction never calls friends when attacked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "Real-world: Lyonesse is the drowned country of Cornish legend between Land's End and the Scillies; in one telling a single rider, a Trevelyan, outran the sea on a white horse. Not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Lyonesse"
+    },
+    {
+      "text": "The name Cirfans is unglossed (to verify). The drake who watched Lyonesse drown, the Lethantis reading of the unbroken heart, Bened the under-secretary and the fishermen's 'the cliff lends it back' are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The Cornwall drakes nest on the western cliffs above the sea that ate Lyonesse, brown and heavy and very old, and they do not come inland. The Cornish say they were there before the Romans, and they say the eldest of them was already old on the night the sea came in. The hunters of the Station call him Cirfans. He is no bigger than the others; he is only older, and he keeps the highest nest, on the cliff above the giants' valley in the far south-west, where he can see out over the flat water to where the drowned country lies.\n\nThe fishermen of the south coast tell it this way. On the night Lyonesse went under, the drakes of the cliffs rose all together and flew out over it, crying, the way gulls go out over a sinking boat, and in the morning they came back with salt on their wings and nothing in their claws. All but one went back to their ledges and their young, and grew used to the new sea. Cirfans did not. He sat on the highest ledge and looked at the water, and he has looked at it every day since. That is why he does not trouble the drovers on the road below, or the hunters who climb to his ledge: his eye is on the sea, and he has to be struck before he will turn it. And the other drakes do not come to him when he is troubled. They have their own ledges, and their own young, and he has nobody.\n\nThe Lethantis Association, the society of mages in Campacorentin that calls itself older than the Academy, has another reading. Its magi say the drowning of Lyonesse broke the land, and that the broken land left a mark on every living thing that saw it; and that the heart of a creature that watched the breaking and did not break is a symbol of it, the truest one left above the water. They want that heart. They have wanted it for a long time, and they send the realm's young mages to the far south-west for it, and afterwards to the Barrows for the skull of a king's wight, and afterwards the Association makes something of the two and sends it on to Lidmann Halsey at Adribard's Retreat, who sends the Defenders of Albion into Lyonesse. What they make, the Association will not say.\n\nThe fishermen do not believe the heart can be taken. They say the cliff lends it back. A man may climb down from Cirfans's ledge with the old drake's heart in a bag, and look up from the beach before the gulls have settled, and see him sitting there again, looking at the sea.",
+  "legend": "Cirfans is a level 50 drake on the highest cliff in the far south-west of Cornwall, above the Cornish giants' valley. He never aggros, so the drovers and the low-level hunters walk past under him all day. He is a Symbol of the Broken target (the Lethantis Association wants his heart). The data gives him no spells, no breath and no faction, so the other Cornwall drakes will not join: a melee fight with one tough drake, easy for a group of fifties and doable for a strong duo. Mind the giants on the way up and do not fight on the bad cliff path; the hunters say it is worse in the wet. He respawns about five minutes after he dies, so the next mage on the Symbol quest will not wait long.",
+  "yells": {
+    "aggro": [
+      "The drake turns its eye from the sea, at last, to you.",
+      "A cry like a gull's, but deeper.",
+      "Salt rattles on the old drake's wings."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Cirfans looks back at the sea, as if it might help him."
+      }
+    ],
+    "death": [
+      "The old drake folds its wings over the cliff.",
+      "Cirfans lies still on the ledge. The sea goes on."
+    ],
+    "slay": [
+      "The drake looks back at the sea.",
+      "Another body for the beach.",
+      "Cirfans turns back to the water."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The highest ledge. Below it, the drowned country.",
+      "An old drake sits here, looking at the sea."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Cirfans cries out over the water."
+      }
+    ],
+    "realmFirstKill": "Cirfans has fallen from his ledge. The sea goes on."
+  },
+  "botLines": {
+    "briefing": [
+      "cirfans, lvl 50 drake on the top cliff in far sw cornwall. never aggros, no breath, no spells",
+      "no faction, the other drakes wont come. melee him down, group of 50s is overkill",
+      "watch the giants on the way up and the cliff path. dont fight on the path",
+      "symbol of the broken folks, get your heart. he's back in about 5 min if you miss it"
+    ],
+    "aftermathWin": [
+      "heart's in the bag, lethantis can have it",
+      "old drake down. he never even looked at us till we hit",
+      "easy one. now the barrows for the wight",
+      "five min respawn, next mage up"
+    ],
+    "aftermathLoss": [
+      "fought on the cliff path and half of us fell off",
+      "pulled a cornish giant on the way up",
+      "solo at 46, bad idea, hes 50",
+      "he's back already, we were still rezzing on the beach"
+    ],
+    "rumour": [
+      "[heard|someone said] cirfans watched lyonesse drown and has stared at the sea ever since",
+      "heard the lethantis lot want his heart because it saw the land break and didnt",
+      "[heard|someone said] the fishermen say the cliff lends cirfans' heart back",
+      "heard the heart and the barrows wight's skull get made into a dagger for lidmann halsey"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "cirfans",
+    "text": "The eldest of the [cornwall drakes], on the highest cliff above the giants' valley in the far south-west, who has looked out at the drowned country of [lyonesse] since the night it went under. He does not trouble the road below, and the other drakes do not come to him. The [lethantis association] wants his heart as a symbol of what broke and did not break, and makes it, with the skull of the [king's wight], into something for Lidmann Halsey."
+  },
+  "bookPage": "From the daybook of the Lethantis Association, in the hand of Bened, under-secretary. Received from the far south-west, by a young mage of Camelot, the heart of the drake Cirfans, wrapped in sailcloth, still warm, smelling of salt. Entered. The mage asked what it was for. I told her what I am told to tell them: that it is a symbol, and that the society will know what to do with it when it has the second. She asked what the second was. I told her the skull of a king. She went pale and went to the Barrows anyway. Note for the secretary: this is the ninth heart entered in this book under the same name. I do not know how a drake has nine hearts. I am not paid to know.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} took the heart of Cirfans on the Cornish cliffs in {minutes} minutes.",
+    "loss": "Cirfans turned from the sea long enough to throw {raidLeader}'s company of {realm} off his cliff."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "kings-wight",
+      "relation": "the skull the Lethantis Association wants beside his heart for the same working"
+    },
+    {
+      "id": "lyonesse",
+      "relation": "the drowned country he has watched since the night the sea came in"
+    },
+    {
+      "id": "cailleach-uragaig",
+      "relation": "Lidmann Halsey, who receives what is made of his heart, sends the Defenders against her"
+    }
+  ]
+}

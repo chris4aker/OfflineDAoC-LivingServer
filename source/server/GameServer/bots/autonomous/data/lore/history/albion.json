@@ -44,7 +44,11 @@
         "scurceol-hyrde",
         "marsh-lord",
         "kalnraw",
-        "tusker"
+        "tusker",
+        "agidad",
+        "borimo",
+        "trahern",
+        "kez"
       ]
     },
     {
@@ -125,7 +129,8 @@
         "king-of-the-barfog-hills",
         "teazanodwc",
         "mouth",
-        "fester"
+        "fester",
+        "cauld-lad"
       ]
     },
     {
@@ -167,7 +172,12 @@
         "legion",
         "sister-blythe",
         "draco-magnificens",
-        "celain-elrich"
+        "celain-elrich",
+        "leorcelis-grant",
+        "cirfans",
+        "ellyll-seer",
+        "belgrik",
+        "soulfear"
       ]
     },
     {
@@ -211,7 +221,8 @@
         "xanxicar",
         "apocalypse",
         "orylle",
-        "morgana"
+        "morgana",
+        "lord-caddug"
       ]
     },
     {
@@ -257,7 +268,8 @@
         "coliath",
         "amphiptere",
         "valnir-mordeth",
-        "sarcondina"
+        "sarcondina",
+        "leorcelis-grant"
       ]
     },
     {
@@ -281,7 +293,8 @@
         "wenoiak-the-enlightened",
         "xanxicar",
         "qanris-duros",
-        "risnir-cruss"
+        "risnir-cruss",
+        "lord-caddug"
       ]
     },
     {
@@ -306,7 +319,10 @@
         "skeletal-sacristan",
         "spectral-provisioner",
         "sister-blythe",
-        "celain-elrich"
+        "celain-elrich",
+        "lord-caddug",
+        "leorcelis-grant",
+        "soulfear"
       ]
     },
     {
@@ -474,7 +490,16 @@
         "marsh-lord",
         "kalnraw",
         "tusker",
-        "rob-ria"
+        "rob-ria",
+        "cauld-lad",
+        "cirfans",
+        "agidad",
+        "borimo",
+        "trahern",
+        "kez",
+        "ellyll-seer",
+        "belgrik",
+        "soulfear"
       ]
     },
     {
@@ -484,7 +509,9 @@
       "places": [
         "dartmoor"
       ],
-      "bosses": []
+      "bosses": [
+        "kez"
+      ]
     },
     {
       "id": "dead-legions",

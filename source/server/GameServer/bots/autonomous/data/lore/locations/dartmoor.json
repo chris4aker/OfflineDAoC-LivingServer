@@ -264,7 +264,11 @@
   },
   "bosses": [
     "golestandt",
-    "moran-the-mighty"
+    "moran-the-mighty",
+    "agidad",
+    "borimo",
+    "trahern",
+    "kez"
   ],
   "era": "alb-first-stones",
   "factions": [
