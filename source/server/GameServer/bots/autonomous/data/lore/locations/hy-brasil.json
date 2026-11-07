@@ -224,11 +224,6 @@
     "kontar-the-corrupt",
     "archilus",
     "elro-the-ancient",
-    "cronwort",
-    "dremcis-fuiloltair",
-    "beomarbhan",
-    "gneiss",
-    "marfoirwort",
     "milo",
     "oscar",
     "ixthiar-broodmother",
@@ -236,17 +231,6 @@
     "drygau",
     "adwyth",
     "anhylaw",
-    "tachtwort",
-    "fuilwort",
-    "fedail",
-    "elnara-erea",
-    "elnaras-pet",
-    "ulicia",
-    "aodhnait",
-    "treal",
-    "cuinn",
-    "tudeg",
-    "thuxra-the-cackler",
     "eimear"
   ],
   "era": "hib-the-shrouded-isles",
@@ -257,6 +241,10 @@
   "related": [
     {
       "id": "domnann",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "cothrom-gorge",
       "relation": "a zone of the region, with its own file"
     },
     {
