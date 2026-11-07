@@ -190,6 +190,14 @@ namespace DOL.GS
             _ => o?.Name,
         };
 
+        /// <summary>A raid member's model size (a player's eSize, a bot's NPC size).</summary>
+        public static byte SizeOf(GameObject o) => o switch
+        {
+            GamePlayer player => (byte)player.Size,
+            GameNPC npc => npc.Size,
+            _ => 50,
+        };
+
         /// <summary>A message to a real player (a bot has no client: it gets nothing).</summary>
         public static void Tell(GameObject o, string message, eChatType type, eChatLoc loc)
         {
