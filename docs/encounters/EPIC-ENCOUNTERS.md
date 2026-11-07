@@ -90,8 +90,6 @@ These pick real players only (`GetPlayersInRadius`, `is GamePlayer`), so bots ar
 - Dra'argus the Mighty (Avalon City): teleport `DraargusMighty.cs:270`: Teleports player to a fixed spot (MoveTo Body.CurrentRegionID, Body.X, Body.Y, Body.Z, Body.Heading)
 - Sys'sro the Ruthless (Avalon City): teleport `SyssroTheRuthless.cs:261`: Teleports RandomTarget to a fixed spot (MoveTo 50, 41489, 40699, 8145, 2096)
 - Xanxicar (Crystal Cave): teleport `Xanxicar.cs:224`: ThrowPlayer: every 20-40 s a random real player within 2,500 (not his target) is moved to 32338,32387,16539 ('hurled into the air').
-- Beliathan (Darkness Falls): adds `Beliathan.cs:241`: Spawns BeliathanMinion: from PlayerKilledByBeliathan; count 1 spawn call in PlayerKilledByBeliathan
-- High Lord Saeor (Darkness Falls): heal `HighLordSaeor.cs:94`: Heals: mob.Health += player.MaxHealth;
 - Legion (Darkness Falls): teleport `Legion.cs:676`: Teleports player to a fixed spot (MoveTo 249, 48200, 49566, 20833, 1028)
 - Anurigunda (Fomor City): teleport `Anurigunda.cs:106`: Teleports player to a fixed spot (MoveTo 180, 30652, 33089, 16124, 3169)
 - Krackenschtein (Fomor City): teleport `Krackenschtein.cs:186`: Teleports TeleportTarget to a fixed spot: one of 4 spots (MoveTo 180, 32956, 37669, 16465, 1028; 180, 31879, 38149, 16465, 2109; 180, 31727, 37401, 16465, 3225;
@@ -106,7 +104,6 @@ These pick real players only (`GetPlayersInRadius`, `is GamePlayer`), so bots ar
 - Krevo Ricik (Krondon): teleport `KrevoRicik .cs:109`: Throws ad.Attacker into the air or across the room (MoveTo Body.CurrentRegionID, Body.X, Body.Y, Body.Z + 400, Body.Heading)
 - Orylle (Krondon): teleport `OrylleAndOrshom.cs:132`: Teleports RandomTarget to a fixed spot (MoveTo 61, 31406, 69599, 15605, 2150)
 - Scurceol Hyrde (Krondon): teleport `ScurceolHyrde.cs:684`: An orb hit by a real player has a 25% chance (once per pick) to throw that player, 8-15 s later, to one of four spots on the floor and deal 20% of their health 
-- Oona (Midgard Named Mobs / Classic Zones): adds `Oona.cs:114`: Spawns OonaUndeadAdd: from EnemyKilled; count 1 spawn call in EnemyKilled
 - Ydenia of the Seithkona (Midgard Named Mobs / Classic Zones): teleport `Ydenia.cs:153`: Teleports player to a fixed spot (MoveTo 100, 664713, 896689, 1553, 2373)
 - Ydenia of the Seithkona (Midgard Named Mobs / Classic Zones): teleport `Ydenia.cs:163`: Throws player into the air or across the room: one of 3 spots (MoveTo 100, 667220, 894261, 1543, 692; 100, 665968, 892792, 1561, 235; 100, 663895, 893446, 1554,
 - Boligar (Midgard Named Mobs / Shrouded Isles): teleport `Boligar.cs:156`: Teleports TeleportTarget to a fixed spot: one of 4 spots (MoveTo 151, 409989, 378960, 7752, 3040; 151, 411003, 377902, 7704, 3070; 151, 409983, 376894, 7376, 30
@@ -651,7 +648,7 @@ Area spells: Flames of Dura'ek (DirectDamageNoVariance, damage 150, radius 350).
 | adds | Spawns Sys'sro's Pit Monster (PitMonster): when it spawns (via CreatePitMonsters); count 15 spawn calls in CreatePitMonsters | `SyssroTheRuthless.cs:91` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
 | reset | Resets when its aggro list is empty: walks home at full health | `SyssroTheRuthless.cs:272` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 | teleport / fixed_spot | Teleports RandomTarget to a fixed spot (MoveTo 50, 41489, 40699, 8145, 2096) *(real players only (bots are never picked))* | `SyssroTheRuthless.cs:261` | inferred, verified |  | off today | Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them. |
-| aggro_wipe | Clears its aggro list in Think when foreach(GamePlayer player in Body.GetPlayersInRadius((ushort)Body.attackComponent.AttackRange)) && if(player == null \|\| !player.IsAlive) | `SyssroTheRuthless.cs:441` | inferred, verified |  | easy for the current raid AI | Off-tanks pick it up after the wipe; healers keep the casters alive. |
+| aggro_wipe | Clears its aggro list in Think when foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort)Body.attackComponent.AttackRange)) && if(player == null \|\| !player.IsAlive) | `SyssroTheRuthless.cs:441` | inferred, verified |  | easy for the current raid AI | Off-tanks pick it up after the wipe; healers keep the casters alive. |
 | linked_pack | Brings others into the fight: every NPC with PackageID "SyssroBaf" (8 in the world database: 6 syhr'phint alblaster, 2 syhr'phint dragoon) | `SyssroTheRuthless.cs:294` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 | linked_pack | Brings others into the fight | `SyssroTheRuthless.cs:437` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 
@@ -917,7 +914,7 @@ Mechanic change (owner 2026-10-14/15): while a reckoned soul lives he takes a qu
 
 `source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs` lines 11-154. level 80; 100,000 health; npc template 102; raids: dungeon-albion-crystal (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random real player within 2,500 every 20-40 s and glares at another (players only).
+Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random real player within 2,500 every 20-40 s (bots too once EncounterTargets.BotsCanBeDisplaced is on) and glares at another raider, bots included since 1.2 (never a necromancer).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -937,7 +934,7 @@ Area spells: Xanxicar's Stomp (DirectDamageNoVariance, damage 2500, radius 2500)
 
 `source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs` lines 13-268. level 80; 300,000 health; npc template 678903; raids: dragon-hibernia (final); raid AI: dragon fight.
 
-Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.
+Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -968,7 +965,7 @@ No scripted rule found (normal fight: stats, resists, spells).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| adds | Spawns BeliathanMinion: from PlayerKilledByBeliathan; count 1 spawn call in PlayerKilledByBeliathan *(real players only (bots are never picked))* | `Beliathan.cs:241` | inferred, verified |  | off today | Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: kill the adds as they come. |
+| adds | Spawns BeliathanMinion: from PlayerKilledByBeliathan; count 1 spawn call in PlayerKilledByBeliathan | `Beliathan.cs:241` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
 | tether | Tether range 2000: drawn further from its spawn it walks home. | `Beliathan.cs:188` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
 | reset | Resets when its aggro list is empty: walks home, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `Beliathan.cs:262` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
@@ -1018,7 +1015,7 @@ Area spells: Aura of Baelerdoth (ArmorAbsorptionDebuff, damage 0, radius 350).
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `HighLordSaeor.cs:115` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| heal | Heals: mob.Health += player.MaxHealth; *(real players only (bots are never picked))* | `HighLordSaeor.cs:94` | inferred, verified |  | off today | Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: follow the mechanic. |
+| heal | Heals: mob.Health += player.MaxHealth; | `HighLordSaeor.cs:94` | inferred, verified |  | needs new raid AI | Kill or interrupt whatever heals it first. |
 
 #### Legion (`Legion`)
 
@@ -1527,7 +1524,7 @@ Area spells: Tine's Fire (DirectDamageNoVariance, damage 450, radius 450).
 
 `source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs` lines 13-266. level 80; 300,000 health; npc template 694189; raids: dragon-midgard (final); raid AI: dragon fight.
 
-Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.
+Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -1556,7 +1553,7 @@ No scripted rule found (normal fight: stats, resists, spells).
 
 `source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs` lines 13-267. level 80; 300,000 health; npc template 60157497; raids: dragon-albion (final); raid AI: dragon fight.
 
-Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.
+Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2406,7 +2403,7 @@ Area spells: Soul Drain (DamageOverTime, damage 100, radius 350).
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / attacker_position | Takes no damage unless the attacker stands near its spawn (if (!source.IsWithinRadius(spawn, TetherRange))). | `Oona.cs:25` | inferred, verified |  | needs new raid AI | Attack only from where the script allows (see the condition). |
-| adds | Spawns OonaUndeadAdd: from EnemyKilled; count 1 spawn call in EnemyKilled *(real players only (bots are never picked))* | `Oona.cs:114` | inferred, verified |  | off today | Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: kill the adds as they come. |
+| adds | Spawns OonaUndeadAdd: from EnemyKilled; count 1 spawn call in EnemyKilled | `Oona.cs:114` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
 | reset | Resets when its aggro list is empty: walks home at full health | `Oona.cs:171` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 | linked_pack | Brings others into the fight: OonaUndeadSoldierBrain | `Oona.cs:184` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 

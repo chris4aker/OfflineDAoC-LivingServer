@@ -529,6 +529,9 @@ def picks_from_player_list(member: Member) -> bool:
 def player_only(member: Member, receiver: str | None, pos: int | None = None) -> bool:
     """True when the code picks only real players (GamePlayer): bots (GameBot is a GameNPC) are never chosen."""
     body = member.mbody
+    # A pick that moves its victim includes bots only once EncounterTargets.BotsCanBeDisplaced is on (off today).
+    if re.search(r"EncounterTargets\.ForDisplacement", body):
+        return True
     if picks_from_player_list(member):
         return True
     # A death handler that starts with "GamePlayer player = sender as GamePlayer; if (player == null) return;".
@@ -540,6 +543,9 @@ def player_only(member: Member, receiver: str | None, pos: int | None = None) ->
         if re.search(r"\bis\s+GamePlayer\b|PrivLevel", conds) and not re.search(r"GameBot|EpicEncounterActors|EncounterTargets", conds):
             return True
     cls_masked = member.cls.src.masked[member.cls.open_pos:member.cls.end]
+    # A move whose victim was picked elsewhere in the class with EncounterTargets.ForDisplacement: players only today.
+    if receiver and re.search(r"EncounterTargets\.ForDisplacement", cls_masked):
+        return True
     if receiver:
         r = re.escape(receiver.split(".")[-1])
         if re.search(r"\bGamePlayer\s+" + r + r"\b", body) or re.search(r"\bGamePlayer\s+" + r + r"\b", cls_masked) or \

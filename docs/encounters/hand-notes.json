@@ -329,7 +329,7 @@
   "albion-named-mobs-classic-zones/legendaryafanc": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "5ca2c58062ed0e529f4da17a73fb7f86daa4b61b4c60487bea9cb1c9be84d926"
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "3f2fe70068720cbf56ede8cd5ffa6912413683a18b45737495c01dad1db53c83"
    }
   },
   "albion-named-mobs-classic-zones/morgana": {
@@ -419,7 +419,7 @@
   "avalon-city/draargusmighty": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "59035e368b36262cd6b3f2c7503459bd18741ec3e38105cd72bd78ad78e1a855"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "9af5d018b4faaf682e14b110e1e73fb4c777fbfa87b1c7ea78ef0da20541b68a"
    }
   },
   "avalon-city/duraekempowered": {
@@ -431,7 +431,7 @@
   "avalon-city/syssroruthless": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "5acb2842eb2e7a8a107cfd18c647e85925e939e995a0d0e11daa108e861d9843"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "d1ec7c6e40e3a8e38616beae0dc8926ec751af9bfb69a555ad7cb1716f598b24"
    }
   },
   "avalon-city/veraeriusbrave": {
@@ -449,7 +449,7 @@
   "caer-sidi/apocalypse": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "13331d088d06d130784ba1512128c539595975f4d2af5ccd192808affb821a4c"
    }
   },
   "caer-sidi/baneofhope": {
@@ -461,19 +461,19 @@
   "caer-sidi/bellum": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "13331d088d06d130784ba1512128c539595975f4d2af5ccd192808affb821a4c"
    }
   },
   "caer-sidi/cryptlord": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "1b8735746b1c9051f55cc920c7ebbe0941abbd766c33b0a4baae767ce3f3d3d5"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "e2e7619fd86fbe4e47cc123e655884760c8d140a3fd46bd8eeeae5479ac8dc76"
    }
   },
   "caer-sidi/fames": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "13331d088d06d130784ba1512128c539595975f4d2af5ccd192808affb821a4c"
    }
   },
   "caer-sidi/fatechosen": {
@@ -485,13 +485,13 @@
   "caer-sidi/funus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "13331d088d06d130784ba1512128c539595975f4d2af5ccd192808affb821a4c"
    }
   },
   "caer-sidi/host": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "1e80b77de1f2e1bc50d34a432af5eec6c96775d15404d5e1809e39434322667c"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "286be32e65db40412d08665c6aee1ce7f5c1f83d05cf70dba015a9b28d5fba7c"
    }
   },
   "caer-sidi/lichlordilron": {
@@ -515,7 +515,7 @@
   "caer-sidi/morbus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "13331d088d06d130784ba1512128c539595975f4d2af5ccd192808affb821a4c"
    }
   },
   "caer-sidi/silencer": {
@@ -540,13 +540,13 @@
   "caer-sidi/spectralprovisioner": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs": "53056a47bd9af9bbac17a990066e5aeafb0b1be234acf84c094ce6d3b72c2634"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs": "4b063ed9e280b2e8b90d00a2ced49cecc5efede138f783dcbd49cc891f94c759"
    }
   },
   "caer-sidi/spectralprovisionerspawner": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs": "53056a47bd9af9bbac17a990066e5aeafb0b1be234acf84c094ce6d3b72c2634"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs": "4b063ed9e280b2e8b90d00a2ced49cecc5efede138f783dcbd49cc891f94c759"
    }
   },
   "caer-sidi/warlorddorinakka": {
@@ -556,7 +556,7 @@
    }
   },
   "crystal-cave/xanxicar": {
-   "notes": "Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random real player within 2,500 every 20-40 s and glares at another (players only).",
+   "notes": "Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random real player within 2,500 every 20-40 s (bots too once EncounterTargets.BotsCanBeDisplaced is on) and glares at another raider, bots included since 1.2 (never a necromancer).",
    "currentRaidAi": "2026-11-05: lost with support 199 (required 150, Special Forces joined), one named kill.",
    "rules": {
     "phase@337": {
@@ -577,7 +577,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "6533b8df4ed97433e4fe887c95cae1fb66ec6741b7f3ecf0494e8033a52b3415"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "ebe2a199893e38276a88cb8b622bbb3f3f933fe3c370fdc4d6887be92b057886"
    },
    "aiTactics": {
     "blastThresholds": [
@@ -591,7 +591,7 @@
    }
   },
   "cuuldurach-s-lair-sheeroe-hills/hibcuuldurach": {
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "rules": {
     "heal@341": {
      "drop": true
@@ -605,19 +605,19 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "4c9df8312f40c9db8d908ce57c6f96a47d88a294a2867e713e11531f5020f678"
+    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "1ed24ba2c59403b6506577ce99d5b36f51cce47b45d27b26095773d0a429b06d"
    }
   },
   "darkness-falls/behemoth": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "e216d9a7c3a607b9e800d01aa00d029348bf159bca18db0ea787be0449e59b07"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "003afbc8ebf5293f0f738e5ecdad1e51d017fff01601f47501c08c9c2f1cf137"
    }
   },
   "darkness-falls/beliathan": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "97fa422b8631fb1f40c5cce96f0b351ff85a9200df24b37d83d090d87ae95528"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "4ae88d990d66762660703c8dd1c8ed0b44f567b74444b800db1cac36c889c4c5"
    }
   },
   "darkness-falls/highlordbaelerdoth": {
@@ -643,19 +643,19 @@
   "darkness-falls/highlordoro": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "cf017bfe11ca5e811ebdafe29e449fd07cacbef70a440a1ae5b8716ec105e494"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "67f1a42567b5bfe6c1c7b940928a22e9b30698eb6c0e4ab621038c3a23f4008b"
    }
   },
   "darkness-falls/highlordoroclone": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "cf017bfe11ca5e811ebdafe29e449fd07cacbef70a440a1ae5b8716ec105e494"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "67f1a42567b5bfe6c1c7b940928a22e9b30698eb6c0e4ab621038c3a23f4008b"
    }
   },
   "darkness-falls/highlordsaeor": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "0f44370d05d55a397fbcd0c5b2bbdb0ac7c65c96fb347a1cfbe1b5bf5957a19e"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "d71ac59fa177d0ed9c31c5288383aa52892e003d061ecaf28d1b063eddf61eed"
    }
   },
   "darkness-falls/legion": {
@@ -669,7 +669,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "e216d9a7c3a607b9e800d01aa00d029348bf159bca18db0ea787be0449e59b07"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "003afbc8ebf5293f0f738e5ecdad1e51d017fff01601f47501c08c9c2f1cf137"
    }
   },
   "darkness-falls/princeabdin": {
@@ -1048,7 +1048,7 @@
    }
   },
   "gjalpinulva-s-lair-myrkwood/midgjalpinulva": {
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "rules": {
     "heal@338": {
      "drop": true
@@ -1062,11 +1062,11 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "b3b4affcb6076765c54bcb3b4446b1c3144baf461e8f494564f9cf363c7cfb31"
+    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "0ada8d1f1d7040e70a3b9e7569058d761f8adf194e116ceac7498ff3c7829f1c"
    }
   },
   "golestandt-s-lair-dartmoor/albgolestandt": {
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "rules": {
     "heal@339": {
      "drop": true
@@ -1080,7 +1080,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "fb898e2c12cb105fd7017e45c5b6e884e7dddf45a4456176c6eeb39e39c9f23f"
+    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "7e1c2802674264533621f92eb6c48f67f1f036052d940e9ef85f4d9a100e4d78"
    }
   },
   "hall-of-the-corrupt/aidonthearchwizard": {
@@ -1627,7 +1627,7 @@
   "midgard-named-mobs-classic-zones/oona": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs": "3079b70b902642971a70fa26007bd6df42bea80a2334594b003174fd44121915"
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs": "fc7c65ab141bffcf4985dab618602f8234c8b923f5d555363735f93ab965dd2b"
    }
   },
   "midgard-named-mobs-classic-zones/raumarikrevenant": {
@@ -1705,7 +1705,7 @@
   "midgard-named-mobs-classic-zones/ydenia": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs": "5233e97cf9925374a0939b6b78fe3315b5ad58d5da45c8c4e045d65efcffa52e"
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs": "b61b763e5cf00cb7638396d9c55a85375dbc03a0d34899aafd1b1ec5126ce076"
    }
   },
   "midgard-named-mobs-shrouded-isles/basilius": {
@@ -1717,7 +1717,7 @@
   "midgard-named-mobs-shrouded-isles/boligar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs": "c42f90da28992a5dc86f53f3d4c0751a1b04886574053db9f83a0014d0d852f8"
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs": "1d2d3df9e095ab07e77eec39b18de529914a4bae1130ffa9ca36726781bda52f"
    }
   },
   "midgard-named-mobs-shrouded-isles/chieftarek": {
@@ -1747,7 +1747,7 @@
   "midgard-named-mobs-shrouded-isles/mortufoghus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs": "cb68d88c71261f8985838757c57b7dc47d48cae78a0df1fd104ef80afaae91c1"
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs": "ea2bb90070865a1ef6e2caf264c5ab6261ab767b508a275ee270ef66ff894c7c"
    }
   },
   "midgard-named-mobs-shrouded-isles/shredclaw": {
