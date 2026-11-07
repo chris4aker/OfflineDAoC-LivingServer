@@ -110,6 +110,7 @@
         }
       ],
       "places": [
+        "cliffs-of-moher",
         "connacht",
         "marfach-caverns",
         "muire-tomb",
@@ -539,6 +540,7 @@
       "name": "The Restless Dead",
       "summary": "The dead of Hibernia's older graves who do not lie still: the Muire family's tomb and the giants of the Cursed Forest who are owed a burial.",
       "places": [
+        "cliffs-of-moher",
         "connacht",
         "muire-tomb"
       ],
@@ -663,6 +665,7 @@
       "name": "The Wild Tribes",
       "summary": "The koalinth of the sea caves, the spraggons of their den and the ursine of Treibh Caillte: old peoples of Hibernia's wild places with their own chiefs and grudges.",
       "places": [
+        "cliffs-of-moher",
         "koalinth-caverns",
         "spraggon-den",
         "treibh-caillte"

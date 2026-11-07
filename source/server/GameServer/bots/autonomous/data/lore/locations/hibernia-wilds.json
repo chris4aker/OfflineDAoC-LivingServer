@@ -198,7 +198,6 @@
   },
   "bosses": [
     "evern",
-    "tawi-shon",
     "mikka"
   ],
   "era": "hib-age-of-the-veil",
@@ -237,6 +236,10 @@
     },
     {
       "id": "shannon-estuary",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "cliffs-of-moher",
       "relation": "a zone of the region, with its own file"
     },
     {
