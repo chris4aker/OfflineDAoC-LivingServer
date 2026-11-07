@@ -458,15 +458,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -495,11 +495,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -638,13 +638,13 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
-        private GamePlayer RandomTarget
+        private GameLiving randomtarget = null;
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
         public int RandomAttackTarget(ECSGameTimer timer)
         {
             //IList enemies = new ArrayList(AggroTable.Keys);
@@ -671,11 +671,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -811,15 +811,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -848,11 +848,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -990,15 +990,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -1027,11 +1027,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -1169,15 +1169,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -1207,11 +1207,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -1349,15 +1349,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -1387,11 +1387,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -1529,15 +1529,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -1567,11 +1567,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -1709,15 +1709,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -1747,11 +1747,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -1889,15 +1889,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -1927,11 +1927,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {

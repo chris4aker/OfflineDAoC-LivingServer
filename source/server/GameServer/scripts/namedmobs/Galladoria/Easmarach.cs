@@ -195,16 +195,16 @@ namespace DOL.AI.Brain
             if (Body.IsAlive)
             {
                 Point3D nopass = new Point3D(37653, 52843, 10758);//you shall not pass!
-                foreach(GamePlayer player in Body.GetPlayersInRadius(10000))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 10000, bots: EncounterTargets.ForDisplacement))
                 {
                     if(player != null)
                     {
-                        if(player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if(player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (player.IsWithinRadius(nopass, 1000))
                             { 
                                 if (EpicEncounterMechanics.AllowDisplacement) player.MoveTo(Body.CurrentRegionID, 40067, 50494, 11708, 1066);
-                                player.Out.SendMessage("The strong current of the waterfall pushes you behind", eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
+                                EncounterTargets.Tell(player, "The strong current of the waterfall pushes you behind", eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
                             }
                         }
                     }
