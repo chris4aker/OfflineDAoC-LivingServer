@@ -26,7 +26,7 @@
       "source": "docs/encounters/epic-encounters.json"
     },
     {
-      "text": "He lets loose a primal scream that resonates in the ice and stuns those near him; he also mesmerizes in a wide ring and roots.",
+      "text": "He lets loose a primal scream (the message says stunned; the spell is a 60 s mesmerize within 800 of his target) and now and then roots everyone within 1,000 of his target.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs"
     },
@@ -148,7 +148,7 @@
       "kvasir's mez caught both healer groups. [rip|gg]",
       "panicked at the rumble after kvasir and pulled the next room",
       "his scream mezzed the healers and that was it",
-      "half the melee were stunned when the mez hit the rest",
+      "half the melee were within 800 of the tank when the mez hit",
       "healers stood within 800 of the tank and got mezzed",
       "someone aoed the mezzed group awake at the wrong time"
     ],
