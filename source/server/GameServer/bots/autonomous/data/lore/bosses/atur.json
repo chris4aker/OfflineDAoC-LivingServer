@@ -1,0 +1,107 @@
+{
+  "id": "atur",
+  "name": "Atur",
+  "npcNames": [
+    "Atur"
+  ],
+  "locationId": "coruscating-mine",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Atur: level 52, a ghost (flag 1), model 303 (a mainland human body), at about 34,000/21,900 in the deep gallery of the Coruscating Mine; respawn 180 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob table, region 220 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Atur as the Howth foreman who broke through into the last gallery before the court came and died standing in the breach with his lamp lit.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Before the Unseelie took the Glitter, the vein was Howth's, and Howth's foremen followed it down and east for three generations. Atur was the last of them. The Howth miners say he was the best foreman the Silvermine ever had, a man who could tell by the ring of a pick where the silver ran, and who never lost a hewer in twenty years, and who believed, as his grandfather had, that the vein was leading them somewhere.\n\nHe found out where. In his last season he drove a gallery deeper and further east than any Howth crew had gone, toward the place the silver rang loudest, and one morning his pick went through into empty air. The men behind him say a cold came out of the hole like the breath of a cellar opened after a hundred years, and a light, and that Atur put his lamp through the breach to see, and stood there looking for a long time, and then said only, 'Go back up. All of you. Now.' They went. He did not. When the shift came down at noon they found him standing in the breach with his lamp still lit, dead on his feet, looking through.\n\nThe Howth men sealed the gallery with him in it. A season later the courts' bargain broke in the Cursed Forest, and the Unseelie came to the Silvermine and cut their own door and opened the gallery again. Atur was still standing in the breach. He is still standing there now. The court's servants walk past him into the last gallery, the overseer of the Silver Hand among them, and Atur lets them by; anyone else who comes down with breath in them, he turns back the way he turned his own men, and does not wait to be asked twice. The Howth miners think he is still giving the order he gave that morning. Go back up. All of you. Now.",
+  "legend": "Atur is a level 52 ghost in the deep gallery of the Coruscating Mine (about 34k/22k), with Lobigan (51) further along the far end of the vein. Plain mob, no script, 3-minute respawn; a full 50s group handles him. The deep end of the mine is 50s throughout (lode protectors, phantom miners, weeweres up to 56, abysmals), so come down with a group that can clear its way. He does not wander; the gallery he stands in is the way on. Howth miners say to answer him 'we are going back up' before the pull; it changes nothing, but they all do it.",
+  "yells": {
+    "aggro": [
+      "Go back up. All of you. Now.",
+      "Turn round. You have breath in you.",
+      "I said go back up!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "You do not want to see what is through there."
+      }
+    ],
+    "death": [
+      "Then go and look... and be sorry...",
+      "The lamp... keep the lamp lit..."
+    ],
+    "slay": [
+      "Back up. Back up.",
+      "I told you. I told all of you.",
+      "No breath past this breach."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dead man with a lit lamp, standing in a breach.",
+      "Cold comes out of the hole like a cellar's breath."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Atur's lamp flares in the breach."
+      }
+    ],
+    "realmFirstKill": "Atur the foreman is laid. The breach is open."
+  },
+  "botLines": {
+    "briefing": [
+      "atur is a 52 ghost in the deep gallery of coruscating. [plain mob|no script]",
+      "the deep end is all 50s. [clear your way|full group]",
+      "lobigan is past him at the far end",
+      "3 min respawn"
+    ],
+    "aftermathWin": [
+      "atur laid. [the breach is open|go look]",
+      "deep gallery cleared to atur. [nice|grats]",
+      "lobigan next",
+      "said we were going back up first. [tradition|lol]"
+    ],
+    "aftermathLoss": [
+      "weeweres on the way down. [56|ouch]",
+      "group too low for the deep end",
+      "pulled phantom miners with him",
+      "he really meant go back up"
+    ],
+    "rumour": [
+      "[heard|someone said] atur was the last howth foreman before the unseelie came",
+      "atur died standing in the breach with his lamp lit, the howth men say",
+      "[word is|heard] atur lets the overseer of the silver hand pass and nobody else",
+      "the howth miners say answer atur 'we are going back up' before you fight him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Atur",
+    "text": "The last Howth foreman of the [Glitter], who broke through into the mine's last gallery, told his men to go back up, and died standing in the breach with his lamp lit. He turns back everyone who still breathes."
+  },
+  "bookPage": "From the scratchings on a collar found in the Coruscating Mine, with the Howth miner's notes below: my grandfather worked under Atur. He said Atur could hear the silver. In his last season he drove the east gallery further than any of us had gone and his pick went through into air, and a cold came out, and a light, and he put his lamp through and looked for a long time. Then he said go back up, all of you, now. They went. He did not. They found him at noon standing in the breach, dead, still looking. The court walks past him now. He turns everyone else back.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Atur in the Coruscating Mine in {minutes} minutes.",
+    "loss": "Atur turned back {realm}'s band under {raidLeader} in the Coruscating Mine after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "restless-dead"
+  ],
+  "related": [
+    {
+      "id": "lobigan",
+      "relation": "who keeps the far end of the vein beyond him"
+    },
+    {
+      "id": "overseer-of-the-silver-hand",
+      "relation": "whom he lets pass"
+    }
+  ]
+}

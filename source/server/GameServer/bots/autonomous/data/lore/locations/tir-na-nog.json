@@ -1,0 +1,289 @@
+{
+  "id": "tir-na-nog",
+  "name": "Tir na Nog",
+  "realm": "Hibernia",
+  "regions": [
+    201
+  ],
+  "zones": [
+    209
+  ],
+  "summary": "The capital of Hibernia, a city of harpers, druids and training halls in the heart of the realm, between Connacht and Lough Derg.",
+  "facts": [
+    {
+      "text": "Tir na Nog is Hibernia's capital, in the heart of the realm, with the realm's lands running north and south of it; Hibernia is described as closest to nature and magic of the three realms.",
+      "provenance": "mythic",
+      "source": "https://camelotherald.com/node/5"
+    },
+    {
+      "text": "In Irish myth Tír na nÓg, 'the land of youth', is an otherworld beyond the western sea where no one grows old; Oisín went there with Niamh and came home after what seemed three years to find three hundred had passed.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/T%C3%ADr_na_n%C3%93g"
+    },
+    {
+      "text": "Region 201, zone 209. One bind area covers the whole city (radius 15,000 around 29,825/33,165). Two zone gates: west to Lough Derg (about 17,700/35,970) and south to Connacht (about 31,800/38,050).",
+      "provenance": "game",
+      "source": "world data Area and ZonePoint tables (read 2026-11-06)"
+    },
+    {
+      "text": "The fifteen class trainers in the city: Fuinshata (animist), Selia (bard), Luighseach (blademaster), Lasairiona (champion), Daray (druid), Aodh (eldritch), Anwar (enchanter), Riofach (hero), Ena (mentalist), Blathnaid (nightshade), Mavelle (ranger), Muirenn (sluaghbinder), Fuinhel (valewalker), Labhras (warden) and the Hibernia Trainer (master trainer).",
+      "provenance": "game",
+      "source": "world data Mob table, region 201 (read 2026-11-06)"
+    },
+    {
+      "text": "The palace quests: The Moonstone Twin ('Speak with Brigit in the palace'; Robena the harper; the faerie court of the Cursed Forest), Unnatural Powers ('Talk to Lovernios, the Druid Prince, in the palace garden ... so the Druid Court may study it') and The Lost Relics (Lobais 'in the throne room'; Dagda's Harp; the master mentalist 'in the Chamber of Magic').",
+      "provenance": "game",
+      "source": "DataQuest 'The Moonstone Twin', 'Unnatural Powers', 'The Lost Relics' (world data)"
+    },
+    {
+      "text": "Iao keeps the Green Rose Pub ('Two Ales, Ailish!'); Viraniel's Plague begins with Dwerrania 'in the druid grove' and ends in the Spraggon Den; Black Plague sends the young 'downstairs in the building opposite the Nightshade/Ranger guild'.",
+      "provenance": "game",
+      "source": "DataQuest 'Two Ales, Ailish!', 'Viraniel's Plague', 'Black Plague' (world data)"
+    },
+    {
+      "text": "Eilwen keeps the Realm Exchange in the palace (about 33,200/31,340) between two Sentinel Exchange Guards; Channeler Glasny is the city's teleporter; Dream Trees stand in the druid grove (about 33,500/35,400); a bound wisp stands beside Muirenn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 201 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: the three accounts of the city's founding (the harpers' mockery of the land of youth, the druids' grove of the Dream Trees, the sages' elven stones), the Druid Court, the city's habit of sending its young out by the two gates, and Robena's book.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Tir na Nog is named for a country nobody in it will ever see. In the old songs the land of youth lies beyond the western sea, where nobody ages and a summer lasts three hundred years, and the harpers of the city like to say that their founders named it in mockery: a crowded, smoky, quarrelling town in the middle of a hard country, called after paradise by people who knew better. The druids tell it differently. The grove was there first, they say, the Dream Trees on the eastern height that sleep standing and do not grow old, and the druids of the first families held their court among them because a tree that does not age is the nearest thing to the land of youth the mainland has. The city grew up around the court the way a village grows round a well. The sages of the palace have a third account, and it is the one they write down: that the oldest stones of the palace height were cut by the elves before they raised the Veil and went behind it, and that the city is a house its first owners left unlocked.\n\nWhichever is true, the city that stands now is built on three levels down a long slope. The palace keeps the height, with its throne room, its Chamber of Magic and its garden, where Lovernios the Druid Prince sits with the Druid Court. The Dream Trees and the druid grove fill the slope below it to the south, and the callings of the green world are taught there: the druids under Daray, the wardens under Labhras, the bards under Selia, and the animists and valewalkers of the Sylvan and the firbolg who came into the city's life later and were given the grove's edge to teach in. The houses of the fighting paths stand under the north wall, the houses of the magicians on the western terraces, and the quieter callings, the rangers and the nightshades, beside the Connacht gate, where the city's poison-sellers keep their stalls and the building opposite has a cellar that the young are sent down to sooner or later. At the bottom of the slope, where the water runs, is the Green Rose, Iao's pub, and the families who drink there have been drinking there longer than some of the halls above have stood.\n\nIt is not a peaceful city, only a safe one. The sentinels on its terraces are the best the realm has, and the binding-stone of the city holds every Hibernian who has sworn to it, so that a fighter who falls anywhere in the realm wakes here. That is the city's gift and its habit: everyone comes back to Tir na Nog. The druid grove keeps its own sorrows too. Viraniel was a woman of the grove who sickened, and the potion the grove's herb-woman Dwerrania made her did not cure her; it took the flesh off her bones and she went out over the wall a skeleton, and the grove has been sending the young after the cure ever since, down into the Spraggon Den where the alchemist hides.\n\nThe palace sends the young out too, and further. Brigit of the palace sends them to the Cursed Forest for the two halves of a moonstone, by way of a banshee's grave and a dead giant's ghost. Lobais in the throne room keeps the account of the realm's lost relics, and sends them into the Bog of Cullen after the hiding place of the Dagda's harp. Lovernios wants the crystal that ate a man in the bog, so that the Druid Court can study what dark craft made it. The channelers by the palace send companies out across the sea to Hy Brasil, where the Sylvan asked for swords, and the city's sages have been arguing about Sheeroe, the Root and the eye in the tower ever since, in the palace library where the realm's grandmothers' lists and its survivors' accounts are copied and kept.\n\nThat is why the city matters. It is where the realm keeps count. The druid Muirgen who went west with the first swords, the bard Aodhan who wintered in Domnann, Orlaith who led the hundred and forty into the hollow, Ríonach who first came home from the cistern under Fomor: they were all of Tir na Nog, and they all came back to it to be written down. The harpers say the city has the name it has because it is the one place in Hibernia where nobody stays young for long. Everyone who walks out of its two gates comes back older, and the city remembers what they were before.",
+  "legend": "Tir na Nog is the capital (region 201): two gates, west to Lough Derg near Mag Mell and south to Connacht near Ardee. The whole city is one bind area. All fifteen trainers are here: fighting paths (Luighseach blademaster, Lasairiona champion, Riofach hero) under the north wall; magicians (Anwar enchanter, Aodh eldritch, Ena mentalist) on the west terraces; Blathnaid (nightshade) and Mavelle (ranger) by the Connacht gate; Daray, Labhras, Selia, Fuinshata and Fuinhel in the druid grove on the east rise. The Realm Exchange (Eilwen), vault keepers, guild and name registrars, the emblemeer, the enchanter and recharger and Channeler Glasny (teleports, including to Hy Brasil) are in the palace. The crafting masters share one hall in the middle of town. Bards at the gates hasten you out. The palace NPCs give the big 40s quests (Brigit: Moonstone Twin, Lobais: Lost Relics, Lovernios: Unnatural Powers), and Viraniel's Plague starts in the druid grove. Old superstition: never leave the city by the gate you came in by on the same day, or you will be back sooner than you want.",
+  "atmosphere": {
+    "firstEntry": [
+      "Harps on every terrace. Tir na Nog.",
+      "The land of youth, named by people who knew better.",
+      "Dream Trees sleep below the palace.",
+      "Everyone comes back to Tir na Nog.",
+      "Smoke, song and sentinels."
+    ],
+    "areas": [
+      {
+        "name": "the palace",
+        "x": 33250,
+        "y": 32300,
+        "z": 8000,
+        "radius": 1100,
+        "lines": [
+          "The throne room, where the realm keeps count.",
+          "Harpers wait on the palace stair.",
+          "Old stones under the new. The sages say elven."
+        ]
+      },
+      {
+        "name": "the Realm Exchange",
+        "x": 33197,
+        "y": 31340,
+        "z": 8000,
+        "radius": 300,
+        "lines": [
+          "Coin of three realms changes hands here.",
+          "Two sentinels and a broker who never smiles."
+        ]
+      },
+      {
+        "name": "the palace garden",
+        "x": 34800,
+        "y": 31950,
+        "z": 8000,
+        "radius": 500,
+        "lines": [
+          "The Druid Court sits among the hedges.",
+          "Lovernios studies what the bog sends him."
+        ]
+      },
+      {
+        "name": "the crafting hall",
+        "x": 29900,
+        "y": 32450,
+        "z": 7912,
+        "radius": 700,
+        "lines": [
+          "Hammers, needles and the smell of hot dye.",
+          "The masters of every craft under one roof."
+        ]
+      },
+      {
+        "name": "the druid grove",
+        "x": 33900,
+        "y": 35500,
+        "z": 8070,
+        "radius": 1300,
+        "lines": [
+          "The Dream Trees sleep standing.",
+          "A tree that does not age. The nearest thing.",
+          "The green callings are taught under the leaves."
+        ]
+      },
+      {
+        "name": "the north wall",
+        "x": 31000,
+        "y": 26700,
+        "z": 7767,
+        "radius": 1200,
+        "lines": [
+          "Blademasters, champions and heroes drill here.",
+          "Steel on steel under the north wall."
+        ]
+      },
+      {
+        "name": "the western terraces",
+        "x": 23600,
+        "y": 28700,
+        "z": 7200,
+        "radius": 1300,
+        "lines": [
+          "Enchanters, eldritch and mentalists keep the terraces.",
+          "The air tastes of old spells."
+        ]
+      },
+      {
+        "name": "the Connacht gate",
+        "x": 27600,
+        "y": 37100,
+        "z": 7480,
+        "radius": 1200,
+        "lines": [
+          "Rangers and nightshades keep the quiet quarter.",
+          "Poison-sellers by the gate. Mind your cup.",
+          "A bound wisp hums beside its teacher."
+        ]
+      },
+      {
+        "name": "the Green Rose",
+        "x": 23400,
+        "y": 35350,
+        "z": 6445,
+        "radius": 600,
+        "lines": [
+          "The Green Rose. Iao is short of glasses again.",
+          "Families who drank here before the halls stood."
+        ]
+      },
+      {
+        "name": "the Lough Derg gate",
+        "x": 17900,
+        "y": 36000,
+        "z": 6250,
+        "radius": 600,
+        "lines": [
+          "West to Lough Derg and Mag Mell.",
+          "The bards at the gate play you out."
+        ]
+      },
+      {
+        "name": "the south gate",
+        "x": 31750,
+        "y": 37950,
+        "z": 7685,
+        "radius": 400,
+        "lines": [
+          "South to Connacht and Ardee.",
+          "Everyone who leaves comes back older."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "tir na nog is named after the land of youth. [the harpers say as a joke|the druids say because of the dream trees]",
+      "the dream trees in the druid grove sleep standing up and never get old. [creepy|kinda nice]",
+      "the sages say the oldest stones under the palace were cut by the elves. [before the veil|left unlocked]",
+      "lovernios the druid prince sits in the palace garden with the druid court",
+      "brigit in the palace sends you after the two halves of the moonstone. [cursed forest|big epic road]",
+      "lobais in the throne room keeps the account of the lost relics. [dagda's harp|bog of cullen]",
+      "viraniel drank a cure from the druid grove and turned into a skeleton. [spraggon den quest|sad]",
+      "everyone binds in tir na nog. [you always come back here|the city's gift]",
+      "the palace library copies every grandmother's list in the realm. [derbáil's too|nerds]",
+      "muirgen, aodhan and orlaith were all tir na nog folk. [the city keeps count|history]",
+      "the green rose is the oldest pub in hibernia, iao says. [he would say that|probably true]",
+      "the harpers say nobody stays young long in tir na nog. [ironic name|ha]",
+      "two gates out of tnn: west to lough derg, south to connacht. [thats it|dont get lost]"
+    ],
+    "rumour": [
+      "[heard|someone said] iao lost his glasses again. ask ailish",
+      "the cellar opposite the rogue trainers has something in it. [black plague quest|go see]",
+      "[word is|heard] lovernios is studying a crystal that ate a man in the bog of cullen",
+      "never leave tnn by the gate you came in by on the same day. [old superstition|you'll be back]",
+      "[heard|someone said] the dream trees moved in the night once. [druids deny it|lol]",
+      "the channelers by the palace send companies to hy brasil every day now",
+      "[word is|heard] brigit knows exactly what both moonstone halves together would do. [she wont say|hmm]",
+      "someone got lost on the western terraces looking for the enchanter trainer [again|lol]"
+    ],
+    "tell": [
+      "tir na nog is the hib capital. all the trainers, the realm exchange, the crafters, the channelers. bind here",
+      "where is tnn? middle of the realm. gates west to lough derg (mag mell) and south to connacht (ardee)",
+      "is tir na nog dangerous? no. best sentinels in the realm. only your purse is in danger",
+      "where are the trainers in tnn? fighters north wall, casters west terraces, rangers/nightshades south gate, nature types in the grove",
+      "where is the realm exchange? in the palace, eilwen, between two guards",
+      "whats in tnn for 40s? palace quests: brigit (moonstone twin), lobais (lost relics), lovernios (unnatural powers)"
+    ]
+  },
+  "loremaster": {
+    "intro": "Tir na Nog, the young country, named by people who knew better. The [palace] keeps the height and the [Druid Court] its garden; the [Dream Trees] sleep below it; the [trainers] of every path keep their halls down the slope; and at the bottom of it all is the [Green Rose]. Ask me about any of them, or about the [gates].",
+    "topics": {
+      "palace": "The height of the city: the throne room where [Lobais] keeps the realm's account, the Chamber of Magic, the [Realm Exchange], the channelers, and [Brigit]'s rooms. The sages say the oldest stones under it are elven.",
+      "Druid Court": "The druids of the first families, who held court among the [Dream Trees] before there was a city. [Lovernios] the Druid Prince keeps it now in the palace garden. It studies what the wilds send it.",
+      "Lovernios": "The Druid Prince. He wants the crystal that ate a man in the Bog of Cullen, and the bog-oak staff of the path-keeper the siabra killed. The [Druid Court] means to learn what dark craft made both.",
+      "Brigit": "A lady of the [palace] who sends the young after the two halves of a moonstone, by way of a banshee's grave, the Cursed Forest's faerie court and a dead giant's ghost. She has never said why.",
+      "Lobais": "Keeper of the realm's lost relics in the throne room. The Dagda's harp was hidden in the Bog of Cullen, and its guardians cannot tell an heir from a thief.",
+      "Realm Exchange": "Eilwen's counter in the [palace], between two sentinels. Coin of the three realms changes hands there; nobody has ever seen her smile.",
+      "Dream Trees": "The trees of the druid grove below the [palace], which sleep standing and do not grow old. The druids say the city grew round them, and that [Viraniel] was of their grove.",
+      "Viraniel": "A woman of the druid grove who sickened. The grove's herb-woman Dwerrania made her a cure; it took the flesh off her bones and she went over the wall a skeleton. The cure is somewhere in the Spraggon Den.",
+      "Green Rose": "Iao's pub at the bottom of the slope, the oldest in the city. The families who drink there (the Breens, the Clunes) were drinking there before half the halls above were built. Ailish knows where the glasses go.",
+      "gates": "Two: west to Lough Derg and Mag Mell, south to Connacht and Ardee. The bards at the gates play the young out. Everyone comes back; the binding-stone sees to it.",
+      "trainers": "Every path has a hall. The fighting paths under the north wall ([Luighseach], [Lasairiona], [Riofach]); the magicians on the west terraces ([Anwar], [Aodh], [Ena]); [Blathnaid] and [Mavelle] by the south gate; the green callings in the grove ([Daray], [Labhras], [Selia], [Fuinshata], [Fuinhel]); and [Muirenn] apart, with her wisp.",
+      "Luighseach": "The blademasters' trainer, under the north wall. She teaches two blades as the old champions of the fords fought, and sends her young to Ardee for a druid's plant and a hermit's key.",
+      "Lasairiona": "The champions' trainer. Champions of Hibernia fight with the old craft of the hero-tales in their arms; she sends hers to the harpers and to the faerie court before she calls them champions.",
+      "Riofach": "The heroes' trainer, under the north wall: shield, spear and the patience of a ford-keeper. His young go first to Maeve the Crone past Ardee, like everyone's.",
+      "Anwar": "The enchanters' trainer on the western terraces, teacher of the Path of Essence. Enchanters make the light itself bite; the Glimmer of Sheeroe, the sages say, are the thing done without a teacher.",
+      "Aodh": "The eldritch trainer, Path of Focus. Eldritch are the elves' own craft, the void and the cold between things, and the oldest stones under the [palace] are said to be theirs.",
+      "Ena": "The mentalists' trainer, Path of Harmony. Mentalists mend minds and break them; the master mentalist of the Chamber of Magic keeps what is known of the Dagda's harp.",
+      "Blathnaid": "The nightshades' trainer by the south gate. Nightshades are the realm's knives in the dark; the cellar across from her hall is where the city's young first learn what the dark keeps.",
+      "Mavelle": "The rangers' trainer by the south gate, and in the Mag Mell fields beyond it. The rangers of Ardee who found the pass to Sheeroe all learned their bows under her or her predecessors.",
+      "Daray": "The druids' trainer in the grove: the oldest calling in the city, and the one the [Druid Court] was made of.",
+      "Labhras": "The wardens' trainer at the grove's south edge. Wardens keep the roads between the realm's villages as the druids keep its groves.",
+      "Selia": "The bards' trainer near the south gate. The bards of the city keep its songs and play its young out of the [gates]; Bard Daylin and Bard Medrend of the city are hers.",
+      "Fuinshata": "The animists' trainer at the grove's edge. Animists grow their fighters from seed and root, a craft the city learned only after the isle in the west came out of the mist.",
+      "Fuinhel": "The valewalkers' trainer at the grove's edge. Valewalkers fight with the scythe and the strength of the earth itself, the oldest kin-craft of the mainland.",
+      "Muirenn": "A trainer of a path the city does not talk about at dinner, who keeps a bound wisp beside her and her hall apart from the others. The dead of the realm have always had their keeners; Muirenn says they should also have their binders."
+    }
+  },
+  "book": {
+    "title": "The Young Country: A Harper's Walk through Tir na Nog, by Robena the harper",
+    "pages": [
+      "I am Robena, a harper of the city, and the palace pays me to play at its doors and to answer questions about it, which I do better than I play. Strangers ask first why we call this place after the land of youth, a crowded town on a hard slope with smoke over it. I give them all three answers. The harpers say the founders were laughing. The druids say the Dream Trees of the grove do not grow old and the city grew round them. The sages of the palace say the first stones were elven and the house was left unlocked. I believe all three, depending on the hour.",
+      "Walk it from the top. The palace has the height, and the throne room where Lobais keeps the account of the realm's lost things, and the Chamber of Magic, and the garden where Lovernios the Druid Prince sits with the Druid Court and waits for the bog to send him its horrors in a sack. The young carry them up the palace stair still dripping, and the court's clerks write down where each one was found. Below the palace to the south is the grove, where the Dream Trees sleep standing. The druids teach there, and the wardens and the bards, and at the grove's edge the Sylvan and the firbolg teach the green callings the city learned late.",
+      "The fighting halls are under the north wall, and you will hear them before you see them. The magicians keep the western terraces and quarrel about whose path is oldest; Aodh of the eldritch always wins, because he points at the palace stones. By the south gate, in the quiet quarter, are the rangers and the nightshades and the women who sell poisons in small bottles. The cellar of the house across from the nightshades has had something in it for as long as I have lived here. Every young one of the city goes down to it sooner or later, and comes up quieter.",
+      "At the bottom of the slope, where the water runs, is the Green Rose. Iao keeps it, and Iao is always short of glasses, because the young carry them off to Ceannai and Tir Urphost and Caille and leave them in the grass. The Breens drink there, and the Clunes, families older than the halls above them. The true history of Tir na Nog costs a cup for Fidelma Breen. The palace's history costs a harper's fee. They are not the same history, and I play both, though Fidelma's has the better tunes and none of the kings in it.",
+      "The thing to know about the city is that everyone comes back. The binding-stone holds every sworn Hibernian, and the ones who fall in the bogs or the hollow under Hy Brasil wake here and walk down to the Green Rose to say so. The harpers say that is the real reason for the name: it is the land of youth because the young keep walking out of it, and the old keep walking back in. Muirgen did. Aodhan did. Orlaith did, after the hollow. I play them out of the gates, and I play them in again, and I write down what they say. That is the whole of my work."
+    ]
+  },
+  "bosses": [],
+  "era": "hib-the-present",
+  "factions": [
+    "druid-court"
+  ],
+  "related": [
+    {
+      "id": "hibernia-wilds",
+      "relation": "the old country beyond its gates"
+    },
+    {
+      "id": "hy-brasil",
+      "relation": "where its channelers send the realm"
+    },
+    {
+      "id": "muire-tomb",
+      "relation": "where its young go down first"
+    },
+    {
+      "id": "sheeroe-hills",
+      "relation": "whose history its sages argue over"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "id": "amadan",
+  "name": "Amadan",
+  "npcNames": [
+    "Amadan"
+  ],
+  "locationId": "connacht",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Amadan: level 39, at about 346,700/435,200 on the next hill south of Amadan Dubh's; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Amadan as the fool's fool, a man the dark fool touched who began to copy him.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Amadan is the fool's fool. The Ardee folk say he was a shepherd of the north-east who went up to the high hill to find a lost ewe and met the dark fool coming down, and was touched, and did not go mad the way the others did. He went the other way: he began to copy his master. He keeps the next hill south now, with a bundle of grass in his own hand, and goes about at the turn of the year touching whatever he meets with it, and nothing happens.\n\nThe touched laugh at him. That is the only time anyone in the Amadan's hills is heard laughing at something, the Ardee folk say, and it is not kind laughter. Amadan does not seem to notice. He has taken his master's name, or half of it, and he answers to nothing else, and the shepherds of Basar have stopped telling their children his real one in case it is catching.",
+  "legend": "Amadan (39) is on the hill just south of Amadan Dubh's in north-east Connacht (about 347k/435k). Not part of the Touch of Amadan Duhb quest, but close enough to chain with Amadan Dubh (42) or Touched (39), so pull carefully. Amadan touched (29-35) and pookhas fill the slopes. A group of high 30s is fine. Plain spawn, 80-second respawn. Pull from the bottom of the hill, one at a time.",
+  "yells": {
+    "aggro": [
+      "A touch! A touch, like the master!",
+      "(he waves a bundle of grass at you)"
+    ],
+    "phases": [],
+    "death": [
+      "Nothing... happens... it never happens..."
+    ],
+    "slay": [
+      "Did it work? Are you touched?"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A man waving a bundle of grass, hopefully."
+    ],
+    "phases": [],
+    "realmFirstKill": "Amadan, the fool's fool, has fallen on his hill."
+  },
+  "botLines": {
+    "briefing": [
+      "amadan is 39 on the hill south of amadan dubh",
+      "easy to chain with the dubh or touched, careful"
+    ],
+    "aftermathWin": [
+      "amadan down. [fool's fool|lol]",
+      "no chain. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "chained the dubh. [rip|oops]",
+      "touched everywhere. [ouch|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] amadan was a shepherd the dark fool touched, and now he copies him",
+      "the touched laugh at amadan. only thing they laugh at"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Amadan",
+    "text": "The fool's fool: a shepherd the dark fool touched who began to copy him, waving his own bundle of grass on the next hill south. Nothing happens. The touched laugh at him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Amadan in Connacht in {minutes} minutes.",
+    "loss": "Amadan turned back {realm}'s band under {raidLeader} in Connacht after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "amadan-dubh",
+      "relation": "the master he copies"
+    },
+    {
+      "id": "touched",
+      "relation": "his neighbour on the hills"
+    }
+  ]
+}

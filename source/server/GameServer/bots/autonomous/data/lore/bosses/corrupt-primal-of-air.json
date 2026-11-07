@@ -1,0 +1,132 @@
+{
+  "id": "corrupt-primal-of-air",
+  "name": "Corrupt Primal of Air",
+  "catalogKey": "galladoria/airprimal",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "The four Corrupt Primals rise at the waterfall bridge after the voices; Olcasgean wakes only when all four are dead. Their shared line is 'We shall protect.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs"
+    },
+    {
+      "text": "Level 83 with only 900 health; it flies, never melees and never walks home. Pets and turrets deal a fixed 5 per hit; direct damage kills it.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs; docs/encounters/hand-notes.json"
+    }
+  ],
+  "story": "The wind of Hy Brasil was the first of the four to be taken, the Sylvan say, because wind goes everywhere and so went down into the hollow before anything else. The Root kept it. Now it circles high over the bridge, a little knot of stale air that has forgotten how to blow. It has almost no body to wound, and it knows it: it never comes down to fight, never closes, never flees, only hangs there while its kin do the killing. Beasts and summoned things claw at it uselessly, for there is nothing to claw, and Fáelán of Howth found that a single bolt scattered it. The Sylvan say its one gift is that it is easy to forget.\n\nThe Sylvan remember the wind of Hy Brasil as a gentle thing. It carried seeds and rain and the smell of the sea, and on still days it went down into the earth through every crack and cave, because wind goes everywhere. That is how the Root caught it. It went down into the hollow one summer and did not come back up, and the forests had a dry year after, and then a dying one.\n\nWhat hangs over the bridge now is the wind's memory of itself: a knot of stale air with the Root's voice in it. It is the first of the four to speak when strangers come, and the weakest to strike, and it knows both things. So it never comes down. It hangs above the bridge and watches its kin do the killing, and it waits to be forgotten. Beasts and summoned things claw at it and find nothing to claw. One honest spell from below scatters it. The Sylvan say that when it dies a breath of clean wind crosses the bridge, and that those who feel it should say thank you, because the wind was a friend once.\n\nThe wind-singer Fethnat went down after it and did not come back; a mage of Howth named Fáelán first learned, by accident, that a single bolt undoes it; and the Sylvan believe a little of the wind gets home each time the realm frees it.",
+  "legend": "Air goes first and it goes fast: one good nuke from below kills it. Pets and turrets are useless on it, so send them at the others. Casters and archers look up the moment the primals spawn. Forget it and it will hang over the bridge all night while its kin do the killing. Mages and archers should have a target on it before the others have finished rising. If a raid loses its casters early, a single archer can still do it; it is the cheapest kill of the night and the most often forgotten. The Sylvan ask one thing: when it dies, feel the clean wind, and say thank you.",
+  "yells": {
+    "aggro": [
+      "The wind remembers nothing but the Root.",
+      "A whisper of stale air: we shall protect.",
+      "The wind that went down and never came back."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "The wind... moves again."
+      }
+    ],
+    "death": [
+      "The air... moves again.",
+      "A breath of clean wind crosses the bridge."
+    ],
+    "slay": [
+      "We shall protect.",
+      "Breath, taken.",
+      "The air closes over you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four voices speak as one: we shall protect.",
+      "Something circles high above the bridge."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "A breath of clean wind crosses the bridge."
+      }
+    ],
+    "realmFirstKill": "The wind over Galladoria is free again."
+  },
+  "botLines": {
+    "briefing": [
+      "air primal has like nine hundred hp. [one nuke|first caster to look up] kills it. pets dont work on it",
+      "casters, air primal is your job the second it spawns. [one bolt|one nuke] each, done",
+      "pets on fire or earth, not on air. [pets do five damage to it|useless on it]",
+      "air is a flyer, it never comes down. [shoot it from below|look up]"
+    ],
+    "aftermathWin": [
+      "air down in two seconds, [nice eyes casters|well spotted]",
+      "air dead before the others finished spawning. [best start ever|perfect]",
+      "felt the clean wind on the bridge when it died. [the sylvan said we would|nice touch]",
+      "one bolt. [bards will sing of it|i will sing of it]"
+    ],
+    "aftermathLoss": [
+      "everyone forgot the air primal [again|for five minutes]. look up",
+      "nobody looked up for five minutes. [the air primal was still there|forgot it again]",
+      "all the casters died early and [nobody could reach the air|no ranged left]",
+      "pets wasted the whole fight on the air primal. [five damage a hit|send them elsewhere]"
+    ],
+    "rumour": [
+      "somebody said the air primal [only has a handful of hp|dies to one bolt]. sounds too easy",
+      "[heard|someone said] the air primal was the wind of hy brasil once. it went down a cave and never came out",
+      "[word is|someone said] a lone archer finished the air primal after every caster died",
+      "the sylvan say thank the wind when the air primal dies. [i did|felt silly, did it anyway]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Primal of Air",
+    "text": "The wind of the isle, taken first and kept longest. It barely has a body. One true spell scatters it; claws and pets find nothing."
+  },
+  "bookPage": "From Aodhan's notes in Domnann: the Sylvan have a little prayer for wind, said at seed-time, asking it to carry the seed and come home. They say it every year still, though the wind they prayed to went down into the hollow long ago. When I asked why, the fire-keeper said: because it might hear. The Howth men who went down with Orlaith tell me that the guardian of air has almost no body at all, that a single bolt undid it, and that a breath of clean air crosses the bridge when it goes. I told the fire-keeper. She went outside and stood in the doorway for a long time, with her face to the night, and said the prayer again.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Corrupt Primal of Air; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Air after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the sleeper it guards"
+    },
+    {
+      "id": "corrupt-primal-of-water",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-fire",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-earth",
+      "relation": "a fellow guardian"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Wind That Carried Seed",
+      "text": "The Sylvan of Domnann keep a seed-time prayer to the wind, asking it to carry the seed and come home. They have said it every spring for longer than any of them can count, and they still say it, though the wind they prayed to has not come home in an age. In the old days, Lisín the fire-keeper told the bard Aodhan, the wind of Hy Brasil was the gentlest of the four. It carried the seed of every tree from one end of the isle to the other, brought the rain up off the western sea, and on still days it went down into the earth through every crack and cave, because wind goes everywhere. The Sylvan had wind-singers then, who could call it to a field before sowing. The last of them was a woman named Fethnat, and her songs are the only reason the Sylvan still know the words of the prayer.\n\nWind goes everywhere, and that was its undoing. The Sylvan say it was the first of the four the Root caught, long after the Long Pushing had driven him to World's End and his roots had hollowed out Galladoria beneath the isle. One summer the wind went down a cave in the hills above Domnann, as it had a thousand times before, and it did not come up. The forests had a dry year after, with no rain off the sea, and then a dying one, when the seed fell where it dropped and nothing new grew between the old trees.\n\nThe cave the wind went down is still there, above Domnann, and the Sylvan call it Béal na Gaoithe, the wind's mouth. They do not go into it. On the hottest days of summer, they say, the air in its mouth is the only still air on the isle."
+    },
+    {
+      "title": "Fethnat's Last Song",
+      "text": "Fethnat went after it. The Sylvan tell this part with great care, because it is the only account of anyone trying to bring one of the four back. She went down the cave in the hills above Domnann with two apprentices, singing the calling-song, and the apprentices said afterwards that for a long way the air answered: it stirred in the tunnel, it lifted her hair, it came to her the way it always had. Then, in the place where the cave opened into the first of Galladoria's rings, it stopped answering, and something else spoke in it instead, a voice that was the wind's voice with the Root's words in it. Fethnat told her apprentices to go home. They went. She did not come up.\n\nThe Sylvan believe she is still down there, in a way. The guardian of air that hangs above the waterfall bridge speaks first when strangers come, and the apprentices, grown old, swore that its whisper had a woman's breath in it. Lisín did not believe them. Aodhan noted that she would not say why not.\n\nThe apprentices were brother and sister, Lonán and Duinseach, and they lived to be very old in Domnann. Every spring at seed-time they went to the mouth of the cave above the village and sang the first verse of Fethnat's calling-song into it, and every spring, they said, the air in the cave stirred once and was still. When Lonán died, Duinseach went alone. When she died, nobody went, and the Sylvan say that was the year the air in the cave stopped stirring at all."
+    },
+    {
+      "title": "A Knot of Stale Air",
+      "text": "What hangs over the bridge now is the wind's memory of itself: a knot of stale air the size of a man, circling high above the stones, never coming down. It has almost no body. The three hundred and forty, the first company of the realm to reach the bridge, found this out by accident: a mage of Howth named Fáelán, aiming at something else, struck it with a single bolt, and it came apart and drifted down as a breath of clean air across the bridge. He spent the rest of that night insisting nobody believed him, and he was right. Orlaith's hundred and forty believed it.\n\nIt has learned what it is. It never comes down, never closes with anyone, never walks home. It hangs above its kin and lets them do the killing. The hounds and summoned things the Howth men brought down with them clawed at it and found nothing, because there is nothing there for a claw to find; the Sylvan say a claw cannot hold a breath, and that the Root set wind at the top of his door for that reason. The wardens of Domnann say it has one other gift: it is easy to forget. Water rages, fire burns and stone strikes, and wind only hangs, and the Sylvan have a proverb for it, that the thing overhead is the last thing anyone counts.\n\nDaithí of Howth told the story for the rest of his life, in every tavern from Howth to Tir na Nog, and by the end of it the bolt had become a lightning-storm and the guardian a dragon. The Sylvan prefer the first telling. The guardian of air is also the only one of the four that the Sylvan do not fear. They fear what it once was being forgotten."
+    },
+    {
+      "title": "The Breath on the Bridge",
+      "text": "When it dies a breath of clean wind crosses the bridge, and the Sylvan who have gone down with the realm's companies stop, whatever is happening around them, and turn their faces into it. It is the only time in Galladoria that the air smells of the sea. Lisín asked Aodhan to carry one thing back to Tir na Nog: that whoever feels it should say thank you, because the wind was a friend once, and Fethnat's song may still be in it.\n\nIt does not stay dead. The Root takes it again, as he takes all four, and within the season it is circling above the bridge as before. The Sylvan have a theory about that, which Aodhan recorded without comment: that each time the realm frees it, a little of the wind gets home before the Root catches the rest, and that this is why the spring rains off the western sea have been a little heavier every year since Hibernia first went down. The druids of Tir na Nog keep records of the rain in Domnann now, to test it. The records, so far, say the Sylvan may be right.\n\nThe rain records kept at Domnann are in the hand of a druid of Tir na Nog named Ultan, who went out to the isle meaning to disprove the Sylvan and has stayed for years confirming them. He has written to the Circle that the westerly rains have grown heavier by a little each year, and that the years in which the realm went down into Galladoria most often were the wettest. The Circle has not replied. Ultan has started saying the seed-time prayer himself."
+    }
+  ]
+}

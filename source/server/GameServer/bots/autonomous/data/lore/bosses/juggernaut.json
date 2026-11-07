@@ -1,0 +1,109 @@
+{
+  "id": "juggernaut",
+  "name": "Juggernaut",
+  "catalogKey": "hibernia-named-mobs-classic-zones/epicjuggernaut",
+  "locationId": "cursed-forest",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 75, 40,000 health, in the Cursed Forest, with a long tether of 3,600.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Juggernaut.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat: people swear the con colours lie about him, and even the faerie court steps around him.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Nobody knows what Juggernaut was before he was the thing that walks through the Cursed Forest. He has no court, no servants, no tricks, and he needs none. He walks his long road through the rotten wood, and walking trees and blights and dark men all get out of his way. The Seelie and the Unseelie, who quarrel about everything, agree on one thing: give him the road. Some say he is the bargain that broke the wood, given a body so that neither court would have to hold it. Others say he is only very big and very angry. Both are true enough to get you killed.\n\nNobody knows what Juggernaut was before he was the thing that walks through the Cursed Forest. The Sylvan think he is the broken bargain itself, given a body so that neither court would have to hold it: a debt with legs. The Seelie and the Unseelie, who quarrel about everything, agree on one thing only, which is to give him the road. Walking trees step aside. The blight sinks into the earth. The dark men's circle opens.\n\nHe has no court, no servants and no tricks. He does not need them. He simply hits harder than anything his size should, and he ranges far along his road before he turns for home, and he does not tire. Veteran warriors swear the colours that tell a fighter how dangerous a foe is lie about him; the realm's scholars say the colours are accurate and the warriors are frightened. Both may be right. When he falls the whole forest goes still, as though the wood were holding its breath to see whether the debt is paid. It never is. He comes back.",
+  "legend": "No tricks, which is the trick: he simply hits harder than his level should allow. Bring more tanks than you think and keep healers rotating. He ranges far before he turns back, so fight where you pull. Do not pull anything else in the forest at the same time. More tanks than you think, healers rotating, nothing else pulled in the forest. Superstition: step off his road when you hear him; never stand in the line of broken trees. Nicknames: 'the debt', 'big walker'. Superstition: never stand in the line of broken trees he leaves; it is his road, and he wants it back.",
+  "yells": {
+    "aggro": [
+      "The ground shakes with every step.",
+      "The ground shakes with every step.",
+      "Off the road."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Juggernaut does not slow down."
+      }
+    ],
+    "death": [
+      "The forest is still. The road is open.",
+      "The forest holds its breath."
+    ],
+    "slay": [
+      "Juggernaut walks on.",
+      "Walked over.",
+      "Off the road, I said."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Broken trees in a line, as if something walked.",
+      "The trees step aside for something."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Juggernaut keeps coming."
+      }
+    ],
+    "realmFirstKill": "Juggernaut has stopped. The Cursed Forest is still."
+  },
+  "botLines": {
+    "briefing": [
+      "juggernaut hits way over his level. [extra tanks|two tanks minimum], rotate the heals",
+      "two tanks minimum on juggernaut, [rotate|swap when low]",
+      "nothing else pulled in the forest. [clear the road|look around first]",
+      "he ranges far before turning, [fight where we pull|no chasing]"
+    ],
+    "aftermathWin": [
+      "juggernaut down. [the con colours do lie|i believe it now]",
+      "juggernaut down, the forest went still. [creepy|quiet]",
+      "con colours do lie. [hes a monster|believe it]",
+      "two tanks, no deaths. [great tanking|grats]"
+    ],
+    "aftermathLoss": [
+      "he walked through the tank and [then through us|then everyone]. more tanks",
+      "one tank was not enough. [never is|two next time]",
+      "pulled a walking tree with him. [clear first|ugh]",
+      "he walked through the healers. [rotate|peel]"
+    ],
+    "rumour": [
+      "[heard|someone said] even the courts step off the road when juggernaut comes by",
+      "[heard|someone said] juggernaut is the broken court bargain with legs",
+      "both courts give juggernaut the road. [even the unseelie|true]",
+      "[word is|heard] juggernaut always comes back. the debt is never paid"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Juggernaut",
+    "text": "The thing that walks the Cursed Forest. No court commands him and both courts give him the road. He hits harder than his size."
+  },
+  "bookPage": "From Derbáil of Ardee's list, the Cursed Forest, at any hour: grandmother said there is one thing in that wood that even the courts step around, and that it has a stranger's name. Juggernaut, the merchants called it, a word from far away for a thing that cannot be stopped. She said it was the broken bargain, walking. I asked what the bargain was. She said if anybody knew, it would have been paid. The realm's warriors kill it now and then, and the wood holds its breath, and it walks again. Grandmother said debts are like that.",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Juggernaut in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Juggernaut's head after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "cursed-wood"
+  ],
+  "related": [
+    {
+      "id": "blight",
+      "relation": "a fellow creature of the broken wood"
+    },
+    {
+      "id": "cailean",
+      "relation": "a fellow creature of the broken wood"
+    },
+    {
+      "id": "uafas-capall",
+      "relation": "a fellow creature of the broken wood"
+    }
+  ]
+}

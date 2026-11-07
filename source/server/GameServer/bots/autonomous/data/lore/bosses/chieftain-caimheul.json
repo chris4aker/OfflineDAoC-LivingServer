@@ -1,0 +1,167 @@
+{
+  "id": "chieftain-caimheul",
+  "name": "Chieftain Caimheul",
+  "catalogKey": "marfach-caverns/chieftaincaimheul",
+  "locationId": "marfach-caverns",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health, a realm-raid final. He fights with sword and shield and a two-handed weapon and changes according to where his foe stands.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/ChieftainCaimheul.cs"
+    },
+    {
+      "text": "From the front he slams with the shield to stun; against someone at his side he takes his two-hander (thrust, strength 400, parry); against a stun-immune foe he taunts and slashes.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/ChieftainCaimheul.cs"
+    },
+    {
+      "text": "At 50% health he enters a second phase and keeps the strength of 400.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/ChieftainCaimheul.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "'Caimheul' may echo Gaelic Caimbeul, 'crooked mouth'; to verify.",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Living Server lore: Tuathal Garbh of the lake country; the nine hostage-children who died of the coughing sickness; the storming of the crannóg (the first shield cast aside); the herd-boy Mochta's spear from the side (his death, the origin of the flank rule); Avartack away at the ford of the Erne; Nóra's grandmother's yard verse; Cróchnat of Howth's circle and line.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Caimheul ruled the Breifine hills before there were keeps on them. His mother gave him another name; the hills forgot it after Tuathal Garbh of the lake country's knife left his mouth crooked, and only his foster-mother, the keener who would become the Black Lady, used it to the end. He was a hard lord, burning booleys and keeping hostages, and his people loved him because no reaver took a cow from his valleys that he did not take back twice over.\n\nHe taught his sons with a stick in the dust of the yard: the man before him met the bog-oak shield and reeled; the man who would not reel he mocked and slashed at until he came on careless; and the man at his side, where he could not see, he killed first with the long spear, stepping round a reeling man to reach that side. He cast the shield aside only twice in life, both times when he was hurt deep and thought the enemy was about to break. The first time, at Tuathal's crannóg, he took nine hostage-children of the lakes. When Tuathal broke the peace the nine died of a coughing sickness in his hostage-house, and only a keener in red sang for them. The second time, on the reed-flats, a herd-boy named Mochta whose sister had been one of the nine threw a spear into his side, while his champion Avartack was away holding the ford of the Erne.\n\nHe was sung back up on the fourth night and does not hear the voice from below at all. He takes his hall for his dún and every stranger for the lake men, and reads their feet as he read his sons'. His household holds the road; like all of them he is safe beyond his own ground. The first companies ringed him and died at his flanks. Nóra's grandmother sang the keen's yard verse at the muster, and Cróchnat of Howth listened, drew something in the dust that she rubbed out before she went down, and brought him down the next night; when he cast the shield aside, as the verse said he would, her company was ready. The Summoners need give him no orders; he holds their road because he thinks it is his country. He was ours, the oldest soldiers of Breifine say, and the keeners' daughters have added a verse to his keen asking him to find Mochta and the nine on the road and tell them he is sorry.",
+  "legend": "Where you stand decides how he hits. In front he shield-slams and stuns; at his side he swaps to the two-hander and hits much harder, and if his target is stunned he walks round to its side and spears it. A tank who cannot be stunned only gets taunted and slashed. Main tank holds the front, everyone else stays behind him, not beside. After half health he keeps the big weapon out: heal the tank hard. Positioning is the whole fight. Main tank faces him alone, everyone else behind; nobody on the flanks. After half, his two-hander never leaves his hands, so the healers bring their biggest heals for the tank. Raid leaders in Breifine still draw his fight in the dust with a stick: a circle for him, a line for the tank, and everyone else behind the line.",
+  "yells": {
+    "aggro": [
+      "Who stands in my hall? Show me your feet.",
+      "My hall. My hills. Who sent you?",
+      "Stand still. I want to see where you put your feet."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Put the shield down. This needs both hands."
+      }
+    ],
+    "death": [
+      "Sing me... the right way... this time...",
+      "Avartack... the ford... hold the ford..."
+    ],
+    "slay": [
+      "You stood in the wrong place.",
+      "Wrong place.",
+      "Bury that one with the hounds."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Three weapons hang ready. Their owner stands.",
+      "Stand where he wants you, and you die."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Caimheul casts his shield aside!"
+      }
+    ],
+    "realmFirstKill": "Chieftain Caimheul is sung on at last."
+  },
+  "botLines": {
+    "briefing": [
+      "caimheul reads where you stand. front gets shield slams, sides get the big two-hander. [stay behind him|no side positions]",
+      "after half he keeps the two-hander out. [healers on the main tank|big heals ready]",
+      "main tank faces him, everyone else behind, [nobody on the flanks|no side positions]",
+      "front slam stuns, [purge the tank|break the stun] fast",
+      "after half he keeps the two-hander, [biggest heals on the tank|heal hard]"
+    ],
+    "aftermathWin": [
+      "caimheul down. [nobody stood at his side|great positioning everyone]",
+      "crooked mouth is down. [nobody stood beside him|perfect positioning]",
+      "the keening stopped for a moment when he fell. [heard it|me too]",
+      "caimheul down, breifine can sleep. [grats|nice]"
+    ],
+    "aftermathLoss": [
+      "melee stood at his flank and the two-hander [ate them|cleaved them]. behind, not beside",
+      "someone ran round his side and he [spun and cleaved|took the two-hander out]",
+      "the tank got stunned and [nobody purged|we lost it]",
+      "after half he two-handed the tank to pieces. [save heals|heal harder]"
+    ],
+    "rumour": [
+      "[heard|someone said] caimheul was a breifine chieftain before the keeps. the ladies sang him up",
+      "[heard|someone said] caimheul's crooked mouth was a scar from a fight he won",
+      "[word is|heard] caimheul only dropped his shield twice in life",
+      "the hill families still say caimheul kept the raiders off. [not a good man|loved anyway]",
+      "caimheul died to a spear from the side. thats why he [murders|one shots] anyone on his flank",
+      "old woman at the breifine muster sang the yard verse at us. stand there and i do this. weirdly helpful"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Caimheul",
+    "text": "The old chieftain of the Breifine hills, sung back from his grave. He meets the front with his shield and the flank with his long spear, and steps round a dazed man to reach his side. At the end he casts the shield aside."
+  },
+  "bookPage": "They say Caimheul taught his sons with a stick in the yard: stand there, and I do this; stand there, and I do that. Every man in his war-band knew that where he put his feet decided how he died. The keeners sang him back with that lesson in him, and he reads the feet of everyone who comes into his hall still. Nóra says the champions of Howth learn the yard verse of his keen before they learn the keens of their own fathers, and that one of them, Cróchnat, once drew it in the dust of the Breifine road and rubbed it out before anyone could copy it. Her mother, Nóra says, learned the verse the same way, from her own mother, before the realm had sent anyone down at all.",
+  "chronicle": {
+    "win": "{realm} went down into Marfach under {raidLeader} and silenced Chieftain Caimheul in {minutes} minutes.",
+    "loss": "{realm} lost {raidLeader}'s raid to Chieftain Caimheul in the Marfach Caverns after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "black-lady",
+      "relation": "his foster-mother, the eldest keener"
+    },
+    {
+      "id": "avartack-the-champion",
+      "relation": "his champion, away at the ford when he died"
+    },
+    {
+      "id": "red-lady",
+      "relation": "sang for the nine hostage-children who died in his house"
+    },
+    {
+      "id": "blue-lady",
+      "relation": "sang for the blades broken in his wars"
+    },
+    {
+      "id": "ancient-black-oak",
+      "relation": "the tree on his grave, its roots through his bones"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Name the Scar Gave Him",
+      "text": "His mother gave him another name, and the hills forgot it. In his twentieth summer he fought Tuathal Garbh of the lake country, Tuathal the Rough, hand to hand at the edge of a bog, and won while losing half his face to Tuathal's knife. The wound healed crooked and drew his mouth up on one side into something that looked like a half-smile and was not. After that the war-band called him Caimheul, the crooked mouth, and within a few years nobody in Breifine used anything else. Nóra's family say his foster-mother called him by his first name to the end, and was the only one who did.\n\nHe was not a good man, and the keen of Caimheul, which the keeners' daughters still sing, does not pretend he was. He held the Breifine hills by being harder than his neighbours. He burned the booleys of families who would not pay him cattle, and he took hostages from every chieftain on his borders and kept them in a hostage-house below his dún, as the old families did, so that their fathers would keep the peace. His people loved him anyway, the way hill people love a lord who keeps the reavers off. In his years no war-band from the lakes or the coast took a cow from the Breifine valleys that he did not take back twice over.\n\nHis dún stood on the heights where the frontier keeps of Breifine stand now, and the druids of Lough Gur say some of its stones are in their walls. Below it, in the caves under the hill, the chieftains of his line were laid when they died, each in a chamber of his own with his weapons beside him. Caimheul had been down to see the chamber his sons would lay him in. The story is that he paced it, and moved the place where the bier would stand two steps to the left, so that anyone coming through the door would have to face him.\n\nThe scholars of Tir na Nog doubt the gloss of his name. 'Caimheul' may be the old hill form of Caimbeul, crooked mouth, or it may be something older that only sounds like it. The hill country does not care. It says the name and touches the left side of its mouth."
+    },
+    {
+      "title": "The Lesson in the Yard",
+      "text": "He taught his sons with a stick in the dust of the yard, under the oak by his door. He drew a circle for himself and showed them where to stand, and what he would do to them if they stood there. Every man of his war-band learned the same lesson, and the hill country remembers it because Caimheul never once fought any other way.\n\nThe man who faced him met the shield first. His shield was bog oak, black and hard as iron, rimmed and bossed by the smith of his dún, and he did not wait behind it. He drove it into the head of the man before him, because in the hill wars men fought in fords and on bog edges, and a man knocked reeling there drowns or is finished on the ground. If the man facing him was the kind who would not reel, a champion or a madman or one of the old blood whom no blow could daze, Caimheul did not waste the shield on him. He laughed at him. He had a tongue the hill poets envied, and he would mock such a man to his face, slash at him while he mocked, and keep doing it until the man came at him angry and careless.\n\nStand at his side and he forgot the shield entirely. A man at my side, he told his sons, is a man I cannot see, and a man I cannot see I kill first, with the longest thing I have. The longest thing he had was a spear he used with both hands, and when he turned on a flank he dropped the shield behind him in the same movement, drove the spear with the strength of two men, and turned the next blow aside with its shaft where his shield had been. His war-band said a man who came at Caimheul from the side died surprised, and that a man the shield had set reeling seldom saw him step round to his side before the spear came.\n\nHe was buried with all three: the bog-oak shield, the sword he fought with in front, and the long spear. They hang ready in his hall under the hill to this day. When he was sung back up he took them down and stood in the circle he had drawn in his yard, and he reads the feet of everyone who comes into his hall as he read his sons'."
+    },
+    {
+      "title": "Twice in Life",
+      "text": "The hill country says he cast the shield aside twice in his life, and the keen of Caimheul gives a verse to each.\n\nThe first time was at the storming of Tuathal Garbh's crannóg, the island-fort his old enemy had built of timber in the middle of a lake of the lake country. Caimheul's war-band waded out to it along a hidden causeway with the water to their chests, and fought at the palisade for half a day, and could not break it. When at last the lake men began to waver, Caimheul threw his shield into the lake, took the long spear in both hands and went over the palisade with it, and the lake men broke and ran into the water. He took Tuathal's sons as hostages that day, and Tuathal's nephews, and the children of seven other families of the lakes, nine in all, and kept them in the hostage-house below his dún. The household dived for the shield for two days, and found it.\n\nThe keeners' daughters say he has never understood that day. He believes he threw the shield because the lake men were breaking; the hill country says he threw it because he had bled half a day at the palisade and could no longer lift it. Either way the verse is the same: when he is hurt deep enough, the shield goes into the water, the long spear does not leave his hands again, and he strikes harder than he ever did behind the shield, because now he is not defending anything.\n\nThe second time he cast the shield aside, he died. The keen of Caimheul gives that verse last, and sings it slowly."
+    },
+    {
+      "title": "The Spear from the Side",
+      "text": "The peace with the lake country lasted six years on the strength of the nine hostages. In the seventh, Tuathal Garbh broke it, because he was old and his sons had grown up in another man's house and he wanted them back more than he wanted to keep his word. He raided the Breifine valleys at the end of the harvest. That winter a coughing sickness came into the hostage-house below Caimheul's dún, and the nine children of the lakes died of it, one after another, before the spring. The hill country has never agreed whether Caimheul could have saved them. The keen does not say. It says that the only one who sang for them was a keener in red, whom no one paid.\n\nIn the spring Caimheul marched to the lakes to end it. His champion Avartack was not with him. Tuathal had sent a second war-band against the far ford of the Erne, and Caimheul sent Avartack to hold it, because a champion in the ford could turn back a war-band alone, and nobody else could. The two armies met on the reed-flats at the head of the lake. The lake men fought well and began to waver near evening, and Caimheul, sure now of the end, threw his shield aside for the second time and took the spear in both hands.\n\nA herd-boy of the lake country named Mochta, whose sister had been one of the nine, was hiding in the reeds at the chieftain's side with a fowling spear. Nobody had told him to be there. He threw it from the side, where the shield would have been, and it went in under Caimheul's arm, and Caimheul turned on him and killed him with the long spear as he fell, which is the last thing the war-band saw him do. The lake men did not break. They carried their dead home, and the Breifine men carried theirs.\n\nThat is why he does what he does to the flank. A man at my side is a man I cannot see. He said it to his sons for twenty years and died of it anyway, in the reeds, of a boy he never saw, and he has never forgiven a flank since. Avartack held the ford of the Erne that day without a single death on either side, and came home to find his lord laid out on the bier."
+    },
+    {
+      "title": "Sung Back",
+      "text": "He got up on the fourth night exactly as he had lain down: the wound under his arm, the crooked mouth, the habit of looking first at a stranger's feet. The druids of Lough Gur, who have spent longer than anyone trying to learn what the dead of Marfach know, believe he does not know he is dead, or does not count it. He knows his hall, which he takes for the dún on the heights. He knows his champion is on the floor before the door, where a champion should be. He knows there are three women singing somewhere in the dark, and that he has heard the song before, and cannot quite remember where.\n\nHe does not seem to hear the voice from below at all. The druids find that the strangest thing about him. The Ladies turned toward the calling of the Summoners and keep its road; the chieftain was only sung back up, and when he stood he took up what he had left, which was his hills, his hall and his enemies. Every stranger who comes into his hall he takes for the lake men. Who sent you, he asks, which is what he asked every reaver of the lakes before he killed him, and he wants to see where you put your feet.\n\nHis household stands with him. The men of his war-band who went under the hill with him, as the oldest custom allowed, are the reanimated guardians who hold the turns of the road. His wolfhounds, who lay down by the bier and would not eat, are the bloodless hounds by the doors of the upper caves, waiting for his whistle. The enthralled dead who walk the deeper passages are not his: they came down the road later, called by the keen, and stopped where they stopped. He takes no notice of them, as a chieftain takes no notice of beggars at his gate.\n\nThe bog-oak shield, the sword and the long spear hang ready on the wall of his hall. Those who have seen him take them down say he does it the way a man takes down his cloak to go out, without looking. Like every one of the household he is safe from all harm beyond the ground where he was laid, the grave-peace of the fourth night, and like every one of them he has never been wounded anywhere but in his own hall."
+    },
+    {
+      "title": "The Yard Verse",
+      "text": "The first companies of the realm to reach his hall fought him the way anyone fights a great beast: they ringed him and struck from every side at once. He killed the flank first. Every company that ringed him lost those at his sides to the long spear before anyone in front had made a mark on him, and then lost its front to the shield, and the menders who tried to save them were mocked and slashed at by a dead man laughing. The druids of Lough Gur say the first three companies into the hall came out with fewer than half their number between them.\n\nThe answer came out of the keen. A keen is not only grief; it tells the dead man's deeds, verse by verse, so that the dead can carry them on the road, and the keen of Caimheul, as the keeners' families still sing it, has a verse for the yard under the oak. Nóra's grandmother, who had sung it all her life without thinking of it as anything but a song, heard in Breifine how the companies were dying in the hall, and walked to the muster outside the hills and sang that verse in the road, to anyone who would stop.\n\nA champion of Howth named Cróchnat stopped. She had the old woman sing it three times, and then she took a stick and drew something in the dust of the road that nobody else at the muster understood until the next night, and rubbed it out with her boot before she went down. She faced him in his hall with her company at her back. He met her shield-first, as the verse said he would, and when he threw the shield aside, as the verse said he would, her company was ready for it, because the verse said that too.\n\nHe fell on the stones of his hall with the spear in both hands. His last words that first time are the ones the realm still hears from him: sing me the right way, this time. The keeners' daughters sang the keen of Caimheul that night facing forward. The old women of Breifine still sing the yard verse at the muster outside the hills, if anyone asks, and the champions of Howth learn it before they learn the keens of their own fathers."
+    },
+    {
+      "title": "What the Chieftain Wants",
+      "text": "He wants his hills. That is the simplest account and the keeners' daughters believe it. He does not want the road or the hall below or anything the voice wants; he wants the Breifine valleys, his cattle on them, and every stranger who comes over the hills dead in the reeds. He has never stopped fighting Tuathal Garbh. Every company that comes down is the lake men again, and every one he kills is one fewer at the palisade.\n\nThe druids of Lough Gur think that is exactly why the Summoners value him. A chieftain who believes every stranger is his enemy needs no orders. He holds the hall across the road to the Summoner's Hall more surely than any servant would, because he is not holding it for anyone. The road passes his door; whoever would go down it to the hall below must come through the hall of a man who thinks he is still defending his own country.\n\nThe old soldiers of the frontier have a darker account. They say that when the keeps of Breifine are taken and retaken, the chieftain hears it, because the keeps stand on his dún's stones, and that the guardians of the road are restless in those seasons, as if a war-band were being gathered. If he ever came up the road, they say, he would not attack Albion or Midgard. He would take back the heights and hold them against everybody, Hibernia included, and he would be very good at it.\n\nEvery Hibernian company that ends him is told the same thing at the muster by the oldest among them: he was ours. Every other realm's frontier dungeon was done to it from outside. Caimheul was a Hibernian chieftain, laid by Hibernian hands, sung by Hibernian women, and the cruelty in him was the hill country's own. The keeners' daughters have added a verse to his keen since the realm first brought him down. It is short. It names Mochta, the herd-boy from the reeds, and the nine children of the lakes, and asks the chieftain, when he goes on at last, to look for them on the road and tell them he is sorry."
+    }
+  ]
+}

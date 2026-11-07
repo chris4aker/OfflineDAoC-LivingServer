@@ -1,0 +1,85 @@
+{
+  "id": "smidget",
+  "name": "Smidget",
+  "npcNames": [
+    "Smidget"
+  ],
+  "locationId": "lough-gur",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Smidget: two spawns, levels 39 and 42, cluricaun bodies (model 318), faction Clurican, at about 323,200/713,300 and 324,000/714,700 on the north side of the island; respawn 80 seconds; plain spawns.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Occupation of Lough Gur (Aziliz): 'Seek out the cluricaun Smidget on the north side of the island in Lough Gur', 'Fight the curmudgeon Curmie outside Innis Carthaig'; its question is why the gurites stay in Lough Gur and do not attack Innis Carthaig.",
+      "provenance": "game",
+      "source": "DataQuest 'Occupation of Lough Gur' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Smidget is two cluricauns, or one cluricaun who is very good at being in two places, and the people of Innis Carthaig have never settled which. Both of him keep the north side of the island in the lake, and both answer to the name, and when one is put down the other carries on as if nothing had happened. The cluricauns of the realm are the cellar-cousins of the leprechauns, drinkers and wine-thieves, and Smidget is their champion drinker, the lake folk say, which is why there are two of him: he saw double once and it stuck.\n\nHe has a gem that Aziliz of Lough Derg wants, and he knows something about the gurites that she wants more: why the siabra of the lake country stay in Lough Gur, and why they never attack the town. Smidget will not say. He says a cluricaun who tells a secret has to buy the next round, and he has never bought a round in his life.",
+  "legend": "Smidget (39 and 42) is two cluricaun spawns on the north side of the island in Lough Gur (about 323k/714k), and you will usually get both. Cluricauns are social with each other. A group of 40ish handles them. Plain spawns, 80-second respawn. Occupation of Lough Gur (Aziliz) sends you to him for a gem; Smirky (36) is the cousin. Cluricauns are the cellar-cousins of the leprechauns; clear the trips nearby first.",
+  "yells": {
+    "aggro": [
+      "Two of me. Twice the trouble.",
+      "Buy a round or get out."
+    ],
+    "phases": [],
+    "death": [
+      "The other one... will finish my cup..."
+    ],
+    "slay": [
+      "Drink to that."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two cluricauns, or one seen twice, on the island."
+    ],
+    "phases": [],
+    "realmFirstKill": "Smidget, both of him, is down on the island."
+  },
+  "botLines": {
+    "briefing": [
+      "smidget is two spawns, 39 and 42, north side of the island",
+      "occupation of lough gur, you need his gem"
+    ],
+    "aftermathWin": [
+      "both smidgets down. [seeing double|lol]",
+      "got the gem. [aziliz|grats]"
+    ],
+    "aftermathLoss": [
+      "two smidgets plus cluricauns. [rip|lol]",
+      "too low. [42|ouch]"
+    ],
+    "rumour": [
+      "[heard|someone said] smidget saw double once and it stuck. thats why there are two",
+      "smidget knows why the gurites never attack innis carthaig. he wont say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Smidget",
+    "text": "The cluricauns' champion drinker on Lough Gur's island, who is two of himself. He holds a gem Aziliz wants and a secret about the gurites he will not sell."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Smidget in Lough Gur in {minutes} minutes.",
+    "loss": "Smidget turned back {realm}'s band under {raidLeader} in Lough Gur after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "smirky",
+      "relation": "his cousin"
+    },
+    {
+      "id": "curmie",
+      "relation": "on the same errand"
+    }
+  ]
+}

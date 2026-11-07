@@ -1,0 +1,101 @@
+{
+  "id": "uafas-capall",
+  "name": "Uafas Capall",
+  "catalogKey": "hibernia-named-mobs-classic-zones/uafascapall",
+  "locationId": "cursed-forest",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 72, 30,000 health, in the Cursed Forest. He casts Moon Strike, 400 cold.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/UafasCapall.cs"
+    },
+    {
+      "text": "Irish uafás 'horror' + capall 'horse': the horror horse. Bot chat glosses it the same way.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Uafas Capall is the horror horse, the old tongue's name for it, and it grazes in the Cursed Forest under the moon. The stories about it are the stories every Hibernian child hears about the water-horse and the pooka-horse: a fine dark steed that stands quietly to be mounted and then runs, and does not stop until its rider is in a lake or over a cliff. This one has given up pretending to be tame. Its hooves strike with the cold of the moon. The Ardee folk say if you hear it galloping at night, do not look out of the window.\n\nEvery Hibernian child hears the story of the water-horse: a fine dark steed that stands quietly by a lake to be mounted, and then runs, and does not stop until its rider is under the water. The pooka can take the same shape. Uafas Capall, the horror horse, is what happens when such a creature gives up pretending to be tame. It grazes in the Cursed Forest under the moon, a great dark horse with eyes like wet stones, and it has not let anyone near it in a very long time.\n\nIts hooves strike with the cold of the moon. It stays near its grazing ground and turns home if it is drawn too far. The Ardee folk close their shutters on galloping nights, because it is looking for a rider, and a horse that has given up on tameness is not looking for a kind one.",
+  "legend": "A big hitter with a cold strike: cold resists and a sturdy tank. It stays near its grazing ground, so fight it there. Do not try to ride it, the old hibs say, and they say it with a straight face. A big cold hitter: cold resists, a solid tank, fight it where it grazes. Superstition: never whistle for a horse in the Cursed Forest. Something will come. Nicknames: 'the horror horse', 'nightmare'. It is a horse: it kicks behind as well as in front. Healers stand to its side, never behind, and the tank keeps its head, not its flank.",
+  "yells": {
+    "aggro": [
+      "The dark horse stamps and shows its teeth.",
+      "The dark horse stamps and shows its teeth.",
+      "A rider? No. Food."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The horror horse rears under the moon!"
+      }
+    ],
+    "death": [
+      "The horse falls. Its eyes are still open.",
+      "The horse falls. Its eyes are still open."
+    ],
+    "slay": [
+      "Ridden down.",
+      "Ridden down.",
+      "Trampled."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Hoofprints, frozen, in a ring.",
+      "Hoofprints, frozen, in a ring."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Uafas Capall rears and strikes!"
+      }
+    ],
+    "realmFirstKill": "The horror horse of the Cursed Forest is down."
+  },
+  "botLines": {
+    "briefing": [
+      "uafas capall hits with cold. [cold resists|resist buffs], solid tank, fight it where it grazes",
+      "cold resists up, [moon strike hurts|resists], solid tank",
+      "fight it where it grazes. [it walks home|no dragging]",
+      "nobody stands behind it, [it kicks|rear hoof]"
+    ],
+    "aftermathWin": [
+      "the horror horse is down. [nobody tried to ride it|good]",
+      "horror horse down. [nobody tried to ride it|good]",
+      "cold resists did the work. [grats|nice]",
+      "its eyes stayed open. [creepy|ugh]"
+    ],
+    "aftermathLoss": [
+      "it kicked the tank across the clearing and [ran over the healers|trampled us]",
+      "it kicked through the tank. [solid tank|heals]",
+      "no cold resists. [buffs|ouch]",
+      "someone whistled for their horse. [why|something came]"
+    ],
+    "rumour": [
+      "[heard|someone said] if you hear uafas capall galloping at night, dont look out the window",
+      "[heard|someone said] uafas capall is a water horse that gave up pretending",
+      "dont look out the window if you hear it galloping, the ardee folk say",
+      "[word is|heard] never whistle for a horse in the cursed forest"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Uafas Capall",
+    "text": "The horror horse. It grazes in the Cursed Forest under the moon and no longer pretends to be tame. Its hooves strike cold."
+  },
+  "bookPage": "From Derbáil of Ardee's list: grandmother told the water-horse story as every grandmother does, and then added a piece I have never heard anyone else tell. The horses of that kind used to pretend, she said, standing sweetly by the lakes. One of them in the court wood gave up pretending on the night the bargain broke. Uafas Capall, they call it, the horror horse, and it grazes in the Cursed Forest and does not stand sweetly for anyone. If you hear it galloping, she said, do not look out of the window. It is looking for a rider.",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Uafas Capall in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Uafas Capall's head after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "cursed-wood"
+  ],
+  "related": [
+    {
+      "id": "juggernaut",
+      "relation": "a neighbour on the same road"
+    }
+  ]
+}

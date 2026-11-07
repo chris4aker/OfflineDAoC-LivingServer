@@ -1,0 +1,113 @@
+{
+  "id": "geas-bound-protector",
+  "name": "Geas Bound Protector",
+  "npcNames": [
+    "Geas Bound Protector"
+  ],
+  "locationId": "bog-of-cullen",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Geas Bound Protector: two spawns, level 52, ghosts (flag 1), model 337, at about 363,300/765,300 in the Bog of Cullen; respawn 80 seconds; plain spawns.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "The Lost Relics (Lobais, Tir na Nog): talk to the old man in the hut at the back of Tir na mBeo about Dagda's Harp; 'Kill geas bound protectors by the rocks past the Siopa fruit stand in the Bog of Cullen'; later the Stone of Lia Fáil, the four stone slabs northeast of the Ceannai fruit stand, 'use Dagda's Harp', 'Kill the demon Abbadona', 'tell him you were misled'.",
+      "provenance": "game",
+      "source": "DataQuest 'The Lost Relics' (world data)"
+    },
+    {
+      "text": "In Irish myth the Dagda's harp could order the seasons and command men's moods; the Lia Fáil is the stone of destiny at Tara that cried out under the rightful king.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/The_Dagda"
+    },
+    {
+      "text": "Living Server lore: the protectors as heroes bound by a geas to guard the harp's hiding place, who cannot tell a thief from an heir; the misleading of Lobais.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The Bog of Cullen lies under Sheeroe, and the people of Alainn Binn and of the Siopa fruit stand on its edge say the bog has been bad since the sky tore over the ridge, and was bad before that too, only more quietly.\n\nBy the rocks past the Siopa fruit stand, where the bog runs out against a line of grey boulders, two figures stand that the people of Siopa will not go near after the fruit is sold. They are ghosts, tall and armed, and they have stood by the rocks since before Siopa was a stand. The old man in the hut at the back of Tir na mBeo, who knows more about the old relics of the realm than anyone in Tir na Nog cares to admit, says they are the protectors of a hiding place, and that the thing they protected was the Dagda's harp.\n\nThe harp is the oldest relic in Hibernia's stories: the instrument that ordered the seasons and played men to weeping, laughter or sleep, which the Dagda could call to his hand across a hall. The old man says that in the age when the Veil was thin a company of the realm's best hid it in the Cullen bog against the day the Veil wore through, and that two of the company were put under a geas to guard the hiding place until the rightful hand came for it. A geas binds past death. They are still guarding it.\n\nThe trouble with a geas, the druids of Lough Gur say, is that it is very exact and very stupid. The protectors were told to keep the harp from every hand but the rightful one, and they were never told how to know it. So they keep it from everyone. Lobais of Tir na Nog sends young Hibernians past them for the harp, and the protectors fight every one, heir and thief alike, and the harp comes out of the bog only when the protectors have been laid for the night. Then Lobais sends the harp on toward the four stone slabs by Ceannai and the Stone of Lia Fáil, and the young find out at the slabs, too late, that the voice that sent them there was not the Stone's. The old man in Tir na mBeo says the protectors would have known better. Nobody asked them.",
+  "legend": "Two Geas Bound Protectors (52, ghosts) stand by the rocks past the Siopa fruit stand in the Bog of Cullen (about 363k/765k), together, with an 80-second respawn. Plain mobs, no script: two 52s at once, so two tanks or CC on one. They are kills for The Lost Relics (Lobais in Tir na Nog), which goes on to the Stone of Lia Fáil and ends at the four slabs by Ceannai with the demon Abbadona: you were misled, as the quest admits. A 50s group is fine for the protectors. Siopa's fruit stand is a quiet place to rest before the pull.",
+  "yells": {
+    "aggro": [
+      "Not the rightful hand.",
+      "The geas holds. Turn back.",
+      "No hand but one. Not yours."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "We were never told how to know the rightful one."
+      }
+    ],
+    "death": [
+      "The geas... holds... even now...",
+      "Tell the hand... we kept it..."
+    ],
+    "slay": [
+      "Not the rightful hand.",
+      "The geas holds.",
+      "Kept."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two tall ghosts by the grey rocks past Siopa.",
+      "The fruit-sellers leave before dark."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The geas-bound ghosts close ranks by the rocks."
+      }
+    ],
+    "realmFirstKill": "The geas-bound protectors are laid. The harp is unguarded."
+  },
+  "botLines": {
+    "briefing": [
+      "two geas bound protectors, 52 ghosts, by the rocks past siopa. [both at once|two tanks]",
+      "the lost relics quest from lobais. [dagda's harp|kill them]",
+      "plain mobs, no script",
+      "the quest ends at ceannai with a demon. [abbadona|you were misled lol]"
+    ],
+    "aftermathWin": [
+      "both protectors laid. [harp time|lost relics]",
+      "two tanks held both. [nice|grats]",
+      "the old man in tir na mbeo would be sad",
+      "now off to the stone of lia fail"
+    ],
+    "aftermathLoss": [
+      "one tank, two ghosts. [no|wipe]",
+      "pulled something from the bog too. [ugh|careful]",
+      "group too low for two 52s",
+      "cc broke on the second one. [ouch|sorry]"
+    ],
+    "rumour": [
+      "[heard|someone said] the geas bound protectors hid the dagda's harp in the cullen bog",
+      "the protectors cant tell an heir from a thief. [the geas never said how|stupid geas]",
+      "[word is|heard] the siopa fruit sellers leave before dark because of the protectors",
+      "lobais sends you to the slabs at ceannai and [its a demon|you get misled]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Geas Bound",
+    "text": "Two ghosts by the rocks past the Siopa fruit stand in the Bog of Cullen, bound by a geas to guard the hiding place of the Dagda's harp from every hand but the rightful one. They were never told how to know it."
+  },
+  "bookPage": "From Derbáil of Ardee's list: the grey rocks past the Siopa fruit stand, after the fruit is sold. Two tall ghosts stand there. The old man at the back of Tir na mBeo says they hid the Dagda's harp in the bog in the age when the Veil was thin, and two of the company were put under a geas to keep it from every hand but the rightful one. A geas binds past death. The trouble is it is exact and stupid: they were never told how to know the rightful hand, so they keep it from everyone. Lobais sends the young anyway.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Geas Bound Protector in the Bog of Cullen in {minutes} minutes.",
+    "loss": "Geas Bound Protector turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "restless-dead"
+  ],
+  "related": [
+    {
+      "id": "madawg",
+      "relation": "another power of the Cullen bog"
+    }
+  ]
+}
