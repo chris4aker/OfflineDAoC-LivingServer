@@ -262,17 +262,16 @@
     }
    ],
    "raidAi": "generic dungeon route",
-   "notes": "Written by hand: the generator finds no boss here (an initializator and an effect NPC, both GameNPC). Every 25-45 s it shows an eye effect over one random real player in Galladoria for 5 s. Visual only: the effect NPC is untargetable, peaceful, and its brain (OlcasgeanEffectBrain) casts nothing.",
+   "notes": "Written by hand: the generator finds no boss here (an initializator and an effect NPC, both GameNPC). Every 25-45 s it shows an eye effect over one random raider in Galladoria for 5 s (a real player or a bot since 1.2, EncounterTargets.InRegion). Visual only: the effect NPC is untargetable, peaceful, and its brain (OlcasgeanEffectBrain) casts nothing.",
    "rules": [
     {
      "kind": "hazard",
-     "summary": "Every 25-45 s an untargetable 'Eyes Watching You' effect appears on one random real player for 5 s (visual only, no damage).",
+     "summary": "Every 25-45 s an untargetable 'Eyes Watching You' effect appears on one random raider (real player or bot) for 5 s (visual only, no damage).",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs",
      "line": 105,
      "lineEnd": 130,
      "anchor": "public void PickPlayer()",
      "confidence": "read",
-     "affects": "real players only (bots are never picked)",
      "sourceClass": "EyesWatchingYouInitBrain",
      "method": "PickPlayer",
      "tactic": "Nothing to do: it is ambience.",
@@ -280,7 +279,7 @@
     }
    ],
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs": "931f35a51e869304d1980160f2559e24661fc6ac6d59a6405084eceaade0ca25"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs": "96531836730ea2454b604c3f728ab63d265576412dc5263dc1b49d3f6a9099d6"
    }
   },
   {
@@ -728,7 +727,7 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosBrain.cs": "321880a5267affac2a020ab02f741a95d7eb017665f616d701c3315fc3794f2f",
-    "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs": "2a1e19c21f32d541d586915e2b9505b41cda72493183b3ce1dc8650f7753d910"
+    "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs": "5cba5d5c60cf1a5d2a51edeb8269232cbb8d120a24ee58d57bbc4c69859512d3"
    }
   },
   "dodens-gruva/gudlaugr": {
@@ -754,13 +753,13 @@
   "dodens-gruva/mistressrunes": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dodens/MinstressofRunes.cs": "adfb030967b09490f534237d17a13fc0789a7119c5ef6fd48fd9bf25a73da223"
+    "source/server/GameServer/scripts/namedmobs/Dodens/MinstressofRunes.cs": "9e804680de657d7ee80bb749d15b61885210132b58e793635702132debaf858f"
    }
   },
   "dodens-gruva/spiritmasteraros": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "00b3b24581786e8c591d0228899d57370b8e247cf21d1426344653eadcbea487"
+    "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "9dc614ceda5750a5e1919ca934d50bd7dd599d5925a1d536a161d082827d3765"
    }
   },
   "dodens-gruva/thanedyggve": {
@@ -772,19 +771,19 @@
   "fomor-city/anurigunda": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "e3ceb2cb16e859fd21ee26f589dc7b786abe86a6956f1923e15406954f5cfb62"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "a3fdcc908031c908bccb1481551ba35cf4df9541832d45a7adba83c46c2c3581"
    }
   },
   "fomor-city/krackenschtein": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "ce2a3b5bebe789530311b2824e9fb09ec4686bdb05e9d8904b9b76b79e66c7d5"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "6ba268ac2ecefece95fd81acd8a4e9e44cbbc448810b3cb795ff6918378e4059"
    }
   },
   "fomor-city/myrddraxis": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "1f827170b7428801f21a6391a56abd1d18c72dc8507ebfbd98a3d4388b2dc2de"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "5d8d41065ab6bcaaf3c7f24ebfa22abd8d32c62b18b7d967075c2c691b9ab17c"
    }
   },
   "fomor-city/nogoribando": {
@@ -805,21 +804,21 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
    }
   },
   "galladoria/aroon": {
    "notes": "300,000 health. Summons nine Scaith guardians (one per damage type) the first time he fights. The original fight let each damage type hurt him only after the matching Scaith died (Aroon_slash ... Aroon_spirit flags remain); that check was removed for bots and the original code is not in this repository's history.",
    "rules": {
     "aggro_wipe@1372": {
-     "summary": "Each Scaith now and then drops its aggro and picks one random real player from its PlayersToAttack list (List<GamePlayer>).",
-     "tactic": "Off for bots today: it picks only real players (GameBot is a GameNPC, not a GamePlayer). To play it: tanks pick the Scaith back up.",
-     "difficulty": "off today"
+     "summary": "Each Scaith now and then drops its aggro and picks one random raider (real player or bot since 1.2) from its PlayersToAttack list.",
+     "tactic": "Tanks pick the Scaith back up; the raider it picked holds it or brings it back to the tank.",
+     "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "ccb632a3d55ab9e622df2cb1874ef95aaf46c73e9dd428f4078aab09e191dcff"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "9f7b96e78af9a1c70b23bd8e099c65f5b704906fec526087baea2d68f7878910"
    }
   },
   "galladoria/beatha": {
@@ -847,7 +846,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -893,13 +892,13 @@
   "galladoria/easmarach": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "54f836419f50975ca5c7d4df1b25fe764081c4b9b9be87b5f49e84f8b02fae65"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "199db19ddf881e7b8a7b0e0db703320de9519d3a56a9d1dfbcfb672e43d99e75"
    }
   },
   "galladoria/fireprimal": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
    }
   },
   "galladoria/giantsporitecluster": {
@@ -925,7 +924,7 @@
   "galladoria/olcasargeomancer": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "db1e12260333888721c01612fb1f9b2e2874c392103ac68308de886effefc402"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "6e8c9d0a8fd5b5a27046747f0e7ec0665d34926546865bea95978cc8d816ea89"
    }
   },
   "galladoria/olcasgean": {
@@ -944,13 +943,13 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
    }
   },
   "galladoria/olcasgean2": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
    }
   },
   "galladoria/olcasgeaninitializator": {
@@ -970,13 +969,13 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
    }
   },
   "galladoria/organicenergymechanism": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "4eeda42809772bf316ee1a95144177c43a02c704e4a1d02bb6fbc3f5b0313425"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "9d610a662e6d40d389558bc46f7d111775f6de4060424ed6bf224267cde8e52c"
    }
   },
   "galladoria/spindlerbroodmother": {
@@ -995,7 +994,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "149668060824c2e550b27e9244d813e2c7f5b1de4c575e692093e9dd9c9feb30"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "1011e9691b15af482210b6680b7860f4de9a6a58c68bc2b529b96abe399381fe"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -1036,7 +1035,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
    }
   },
   "galladoria/xaga": {

@@ -55,13 +55,13 @@
   "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosBrain.cs": "321880a5267affac2a020ab02f741a95d7eb017665f616d701c3315fc3794f2f",
   "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosState.cs": "4a42f12e31066f93f00df4bc2e8cb8fef4ed363aec55e86f0749427a918c3333",
   "source/server/GameServer/scripts/namedmobs/Dodens/ArosTheSpiritmaster.cs": "3078cd56624f860ec122ea13b3faa87dffeb11f0d74908869fdea8390b3c873a",
-  "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs": "2a1e19c21f32d541d586915e2b9505b41cda72493183b3ce1dc8650f7753d910",
+  "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs": "5cba5d5c60cf1a5d2a51edeb8269232cbb8d120a24ee58d57bbc4c69859512d3",
   "source/server/GameServer/scripts/namedmobs/Dodens/Gudlaugr.cs": "e5bca75835cdf49f1d95f376357350c62764ab1afdb5243f2eb93cceb1a1427e",
-  "source/server/GameServer/scripts/namedmobs/Dodens/Hamar.cs": "5c6f64aecdd881bfc8231dcf53740770eb53fd96c425aded710859b8849129fb",
+  "source/server/GameServer/scripts/namedmobs/Dodens/Hamar.cs": "a50b558a293e1c51b0373913b86500934369f92ef19d1df29207f97446fb4768",
   "source/server/GameServer/scripts/namedmobs/Dodens/JarlOrmarr.cs": "7942c09508ce302e150492d0bde339f8f810383c8835ed3f25af1d27569bc7fc",
-  "source/server/GameServer/scripts/namedmobs/Dodens/MinstressofRunes.cs": "adfb030967b09490f534237d17a13fc0789a7119c5ef6fd48fd9bf25a73da223",
+  "source/server/GameServer/scripts/namedmobs/Dodens/MinstressofRunes.cs": "9e804680de657d7ee80bb749d15b61885210132b58e793635702132debaf858f",
   "source/server/GameServer/scripts/namedmobs/Dodens/MistressOfRunes.cs": "1be2111905ff677a08f5dbae65440e5d324ab6e8398fb165741f131da1d06a66",
-  "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "00b3b24581786e8c591d0228899d57370b8e247cf21d1426344653eadcbea487",
+  "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "9dc614ceda5750a5e1919ca934d50bd7dd599d5925a1d536a161d082827d3765",
   "source/server/GameServer/scripts/namedmobs/Dodens/ThaneDyggve.cs": "517f5c24ba6f17771c2a4b88fc4901ad0ebf1c39d4f8ec23d65e1d4e8560d4d7",
   "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "7e1c2802674264533621f92eb6c48f67f1f036052d940e9ef85f4d9a100e4d78",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonCombatGeometry.cs": "3908bdb98f00d2bf319c7e650eac46fed1472b7533a3ab977f31c527f7a59271",
@@ -72,26 +72,26 @@
   "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "1ed24ba2c59403b6506577ce99d5b36f51cce47b45d27b26095773d0a429b06d",
   "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "0ada8d1f1d7040e70a3b9e7569058d761f8adf194e116ceac7498ff3c7829f1c",
   "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666",
-  "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "7867ef9ff541db87d7ffc8705d9ead96950921700fa3238a9a174630be73c1ed",
+  "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "8281e8f21cee2d198c2b542713a1f66219c23a0af6d2f583ab96ecd3e59ffb66",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "bb3c963aab1f7d18b2124dff2ce2baa4ae7a3cb80470737b2a7d26e126b69198",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "47dede9429ce25a534a73793e7b5940c337b6c4314b3b0fe57a6c0e301e96eeb",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
   "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe",
-  "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "e3ceb2cb16e859fd21ee26f589dc7b786abe86a6956f1923e15406954f5cfb62",
-  "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "ce2a3b5bebe789530311b2824e9fb09ec4686bdb05e9d8904b9b76b79e66c7d5",
-  "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "1f827170b7428801f21a6391a56abd1d18c72dc8507ebfbd98a3d4388b2dc2de",
+  "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "a3fdcc908031c908bccb1481551ba35cf4df9541832d45a7adba83c46c2c3581",
+  "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "6ba268ac2ecefece95fd81acd8a4e9e44cbbc448810b3cb795ff6918378e4059",
+  "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "5d8d41065ab6bcaaf3c7f24ebfa22abd8d32c62b18b7d967075c2c691b9ab17c",
   "source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs": "5d3b338eec35ec06bacef311189dc0066981669f761bf95d88deaf814d987712",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "ccb632a3d55ab9e622df2cb1874ef95aaf46c73e9dd428f4078aab09e191dcff",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "9f7b96e78af9a1c70b23bd8e099c65f5b704906fec526087baea2d68f7878910",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs": "0cbda933dcdfc6bad6b81061392d36c30404dea863ac6c8ad68ae723aa24822d",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "54f836419f50975ca5c7d4df1b25fe764081c4b9b9be87b5f49e84f8b02fae65",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs": "931f35a51e869304d1980160f2559e24661fc6ac6d59a6405084eceaade0ca25",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "199db19ddf881e7b8a7b0e0db703320de9519d3a56a9d1dfbcfb672e43d99e75",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs": "96531836730ea2454b604c3f728ab63d265576412dc5263dc1b49d3f6a9099d6",
   "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs": "63d9d69def059a8a1ba2c6182f0ee50d58b96ae7816fda602452f228012ccc79",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs": "803467b4edadf2428fd2ef50dba29d129204e09353cfd8e8536d9afa4a13e13a",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "db1e12260333888721c01612fb1f9b2e2874c392103ac68308de886effefc402",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "4eeda42809772bf316ee1a95144177c43a02c704e4a1d02bb6fbc3f5b0313425",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "149668060824c2e550b27e9244d813e2c7f5b1de4c575e692093e9dd9c9feb30",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "6e8c9d0a8fd5b5a27046747f0e7ec0665d34926546865bea95978cc8d816ea89",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "9d610a662e6d40d389558bc46f7d111775f6de4060424ed6bf224267cde8e52c",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "1011e9691b15af482210b6680b7860f4de9a6a58c68bc2b529b96abe399381fe",
   "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs": "b378898bd7a8665b766bf4412fc6cf3b31bdb4fc7f76d0994cb1751edb863f0c",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93",
   "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "108f8cec1d0f52c5292c61ab3ecbba0900ef4568e417042517e830de9ca19c3f",
@@ -9186,7 +9186,7 @@
      "maxHealth": 5000,
      "level": null,
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs",
-     "line": 261
+     "line": 262
     }
    ],
    "rules": [
@@ -9194,8 +9194,8 @@
      "kind": "adds",
      "summary": "Spawns AnurigundaAdds: when if (Body.HealthPercent <= 40 && Adds1 == false); count 4 (loop)",
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs",
-     "line": 173,
-     "lineEnd": 188,
+     "line": 174,
+     "lineEnd": 189,
      "anchor": "AnurigundaAdds Add1 = new AnurigundaAdds();",
      "confidence": "inferred",
      "sourceClass": "AnurigundaBrain",
@@ -9210,14 +9210,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@173"
+     "key": "adds@174"
     },
     {
      "kind": "phase",
      "summary": "At 40/20% health (SpawnFomorians): spawns AnurigundaAdds",
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs",
-     "line": 169,
-     "lineEnd": 198,
+     "line": 170,
+     "lineEnd": 199,
      "anchor": "if (Body.HealthPercent <= 40 && Adds1 == false)",
      "confidence": "inferred",
      "sourceClass": "AnurigundaBrain",
@@ -9231,14 +9231,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@169"
+     "key": "phase@170"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health, adds cleared",
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs",
-     "line": 113,
-     "lineEnd": 135,
+     "line": 114,
+     "lineEnd": 136,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "AnurigundaBrain",
@@ -9247,14 +9247,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@113"
+     "key": "reset@114"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home",
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs",
-     "line": 251,
-     "lineEnd": 254,
+     "line": 252,
+     "lineEnd": 255,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "AnurigundaAddsBrain",
@@ -9264,14 +9264,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@251"
+     "key": "reset@252"
     },
     {
      "kind": "teleport",
      "summary": "Teleports player to a fixed spot (MoveTo 180, 30652, 33089, 16124, 3169)",
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs",
-     "line": 106,
-     "lineEnd": 106,
+     "line": 107,
+     "lineEnd": 107,
      "anchor": "player.MoveTo(180, 30652, 33089, 16124, 3169);",
      "confidence": "inferred",
      "sourceClass": "AnurigundaBrain",
@@ -9282,14 +9282,14 @@
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "teleport@106"
+     "key": "teleport@107"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"AnurigundaBaf\" (14 in the world database: 4 fomorian anteen, 4 fomorian batravian, 1 fomorian bolach, 3 fomorian harrien, 1 fomorian shawilet)",
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs",
-     "line": 149,
-     "lineEnd": 149,
+     "line": 150,
+     "lineEnd": 150,
      "anchor": "if (npc.IsAlive && npc.PackageID == \"AnurigundaBaf\")",
      "confidence": "read",
      "sourceClass": "AnurigundaBrain",
@@ -9299,7 +9299,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@149"
+     "key": "linked_pack@150"
     }
    ],
    "spells": [
@@ -9314,7 +9314,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs",
-     "line": 207,
+     "line": 208,
      "sourceClass": "AnurigundaBrain"
     }
    ],
@@ -10268,7 +10268,7 @@
     },
     {
      "kind": "aggro_wipe",
-     "summary": "Each Scaith now and then drops its aggro and picks one random real player from its PlayersToAttack list (List<GamePlayer>).",
+     "summary": "Each Scaith now and then drops its aggro and picks one random raider (real player or bot since 1.2) from its PlayersToAttack list.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs",
      "line": 1372,
      "lineEnd": 1372,
@@ -10276,7 +10276,6 @@
      "confidence": "inferred",
      "sourceClass": "BruScaithBrain",
      "method": "RandomAttackTarget",
-     "affects": "real players only (bots are never picked)",
      "from": "add",
      "alsoIn": [
       "CorpScaithBrain",
@@ -10288,8 +10287,8 @@
       "SpioradScaithBrain",
       "TaesScaithBrain"
      ],
-     "tactic": "Off for bots today: it picks only real players (GameBot is a GameNPC, not a GamePlayer). To play it: tanks pick the Scaith back up.",
-     "difficulty": "off today",
+     "tactic": "Tanks pick the Scaith back up; the raider it picked holds it or brings it back to the tank.",
+     "difficulty": "needs new raid AI",
      "verified": true,
      "key": "aggro_wipe@1372"
     },
@@ -10679,17 +10678,16 @@
     }
    ],
    "raidAi": "generic dungeon route",
-   "notes": "Written by hand: the generator finds no boss here (an initializator and an effect NPC, both GameNPC). Every 25-45 s it shows an eye effect over one random real player in Galladoria for 5 s. Visual only: the effect NPC is untargetable, peaceful, and its brain (OlcasgeanEffectBrain) casts nothing.",
+   "notes": "Written by hand: the generator finds no boss here (an initializator and an effect NPC, both GameNPC). Every 25-45 s it shows an eye effect over one random raider in Galladoria for 5 s (a real player or a bot since 1.2, EncounterTargets.InRegion). Visual only: the effect NPC is untargetable, peaceful, and its brain (OlcasgeanEffectBrain) casts nothing.",
    "rules": [
     {
      "kind": "hazard",
-     "summary": "Every 25-45 s an untargetable 'Eyes Watching You' effect appears on one random real player for 5 s (visual only, no damage).",
+     "summary": "Every 25-45 s an untargetable 'Eyes Watching You' effect appears on one random raider (real player or bot) for 5 s (visual only, no damage).",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs",
      "line": 105,
      "lineEnd": 130,
      "anchor": "public void PickPlayer()",
      "confidence": "read",
-     "affects": "real players only (bots are never picked)",
      "sourceClass": "EyesWatchingYouInitBrain",
      "method": "PickPlayer",
      "tactic": "Nothing to do: it is ambience.",
@@ -11820,7 +11818,7 @@
     },
     {
      "kind": "phase",
-     "summary": "At 50% health (DoPort): calls MoveTo",
+     "summary": "At 50% health (DoPort): calls MoveTo; calls Tell",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
      "line": 765,
      "lineEnd": 804,
