@@ -143,7 +143,8 @@
         "tepoks-mine",
         "lyonesse",
         "forest-sauvage",
-        "pennine-mountains"
+        "pennine-mountains",
+        "black-mountains-south"
       ],
       "bosses": [
         "aidon-the-archwizard",
@@ -382,7 +383,8 @@
       "summary": "The king's city and its offices: the Constable and his drawers of reports, the Prydwen Keep rolls, the Church and its hospices, the Academy, the masters of arms and the quieter trades under the streets. Since Camlann it sends the realm out and counts who comes back.",
       "places": [
         "camelot",
-        "camelot-hills"
+        "camelot-hills",
+        "black-mountains-south"
       ],
       "bosses": []
     },
@@ -397,7 +399,8 @@
         "lyonesse",
         "pennine-mountains",
         "camelot-hills",
-        "salisbury-plains"
+        "salisbury-plains",
+        "black-mountains-south"
       ],
       "bosses": [
         "golestandt",
@@ -450,7 +453,8 @@
       "name": "The Black Mountain goblins",
       "summary": "Goblins who took a silver mine and kept it working under Overseer Tepok.",
       "places": [
-        "tepoks-mine"
+        "tepoks-mine",
+        "black-mountains-south"
       ],
       "bosses": []
     },
