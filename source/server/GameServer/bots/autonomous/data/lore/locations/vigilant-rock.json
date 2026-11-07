@@ -229,7 +229,22 @@
       "Inland the young trees dance, and the vines strangle, and the mantid who keeps the stables brings me fish on feast days, which I did not expect when I came. Before every company leaves Necht for the wild land, I stand in the square with them and we name the four great ones aloud, the skimmer, the gold tree, the wyvern-mother and the strider, so that none of them can say we did not warn them. Then I walk to the shore and watch the valley. Somebody has to, and the trees, it turns out, cannot."
     ]
   },
-  "bosses": [],
+  "bosses": [
+    "laraida",
+    "luaire",
+    "rinne",
+    "taiore",
+    "paud",
+    "regan",
+    "manus",
+    "twirl",
+    "chlorosis",
+    "tuliros",
+    "lysanus",
+    "galmar",
+    "screak",
+    "xrrxrax"
+  ],
   "era": "hib-the-shrouded-isles",
   "factions": [
     "sylvan",
