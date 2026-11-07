@@ -678,7 +678,12 @@ gamebot raids, and these came out of it:
   after "no damage for five minutes" unless its health went below its lowest yet. Easmarach takes back an eighth of his
   health on the waterfall top each time he falls to 30%, so the raid shooting him from the falls stands took him from 42% to
   35% and he was still skipped (as on the owner's test server on 2026-11-06, at 39-42%); out of combat he healed to full.
-  Health going down again, within a quarter of its maximum above the lowest, now counts as damage.
+  Health going down since the last look now counts as damage (also Grand Summoner Govannon after his full heal at 50%, and
+  Funus after a stray hit heals him): only a target nobody hurts is set aside.
+- **Soul Reckoner is led back into his room, and hit while he is in it.** The raid stopped hitting him 200 short of his
+  room's edge, so with him 790 out (still in his 900 room, taking damage) nobody hit him; and the raider he chased was busy
+  with one of his souls, so nobody led him back. The souls spawn where he stands and kept the raid there. Now the raid holds
+  only when he is out of the room, and whoever he chases leads him back to the middle, soul or no soul.
 - **A navmesh audit of the encounters' positions** (`UT_EpicPositionAudit`, a tool run by hand): every throw, teleport and
   jail landing, and the tactics' waiting spots (Easmarach's waterfall stands, the Sacristan's stations, the Vifil tunnel,
   Kula's frost circle, the Apocalypse room), checked both ways, to the boss and back.

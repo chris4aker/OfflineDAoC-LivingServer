@@ -60,10 +60,10 @@ namespace DOL.GS
         private int _targetLastHealth;
 
         /// <summary>The target took damage since the last look (pure): below its lowest yet, or below the last look's health
-        /// while within a quarter of its maximum above that lowest (a self-healing boss being worn down again, not one that
-        /// out-heals the raid back toward full). Only a target nobody hurts counts as a stall.</summary>
-        public static bool TargetTookDamage(int health, int lowest, int last, int maxHealth) =>
-            health < lowest || last > 0 && health < last && health <= (long)lowest + maxHealth / 4;
+        /// (a boss that healed itself being worn down again: Easmarach's eighth on the waterfall top, Grand Summoner Govannon's
+        /// full heal when he turns demon at 50%, Funus's full heal from a stray hit). "No damage for five minutes" means that:
+        /// a target the raid keeps hurting is fought on (a fight it can't win ends in a wipe or the raid's time-out).</summary>
+        public static bool TargetTookDamage(int health, int lowest, int last) => health < lowest || last > 0 && health < last;
         // Final encounter muster (see MusterForFinal).
         private GameNPC _musterTarget;
         private Vector3 _musterPoint;
@@ -1305,7 +1305,7 @@ namespace DOL.GS
             }
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active)
             {
-                if (TargetTookDamage(_target.Health, _targetLowestHealth, _targetLastHealth, _target.MaxHealth)) _targetProgressTick = now;
+                if (TargetTookDamage(_target.Health, _targetLowestHealth, _targetLastHealth)) _targetProgressTick = now;
                 _targetLowestHealth = Math.Min(_targetLowestHealth, _target.Health);
                 _targetLastHealth = _target.Health;
                 ReportHealthJump(participants, now);

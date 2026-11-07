@@ -31,7 +31,7 @@ namespace DOL.GS
             {
                 Summary = "Parties wait at stations along his patrol and hit him as he walks past.",
             },
-            new(nameof(SoulReckoner), [nameof(SoulReckoner)], SoulReckonerInRoom)
+            new(nameof(SoulReckoner), [nameof(SoulReckoner), nameof(ReckonedSoul)], SoulReckonerInRoom)
             {
                 Summary = "Out of his room he takes no damage: the raid holds and his target leads him back in.",
             },
@@ -237,16 +237,35 @@ namespace DOL.GS
         private static Advice? SoulReckonerInRoom(RuleContext c)
         {
             if (c.Target.CurrentRegionID != 60) return null;
-            return SoulReckonerAdvice(c.Raider, c.Target, SoulReckonerRoomRadius);
+            if (c.Target is SoulReckoner) return SoulReckonerAdvice(c.Raider, c.Target, SoulReckonerRoomRadius);
+            // Fighting one of his souls (play test 2026-11-07): he chases a raider that is busy with a soul, and that raider must
+            // still lead him back (nobody did, and the souls, which spawn where he stands, drew him further out).
+            return c.Find(nameof(SoulReckoner)) is { } reckoner ? SoulLeaderAdvice(c.Raider, reckoner, SoulReckonerRoomRadius) : null;
         }
 
+        /// <summary>
+        /// The raid against Soul Reckoner (pure but for positions): inside his room less 200, fight him. The raider he chases
+        /// leads him back to the middle as soon as he is past that line. The others keep hitting him while he is still in the
+        /// room (he takes damage out to its radius: 900, or 1,500 without the original room), and hold, keeping him, only
+        /// beyond it. Play test 2026-11-07: the raid held from 700 on, so he stood 790 out (in the room, taking damage) with
+        /// nobody hitting him and nobody leading him back.
+        /// </summary>
         public static Advice? SoulReckonerAdvice(GameLiving raider, GameNPC reckoner, int roomRadius)
         {
-            if (Flat(At(reckoner), SoulReckonerRoom) <= roomRadius - SoulReckonerRoomMargin) return null;
+            float fromMiddle = Flat(At(reckoner), SoulReckonerRoom);
+            if (fromMiddle <= roomRadius - SoulReckonerRoomMargin) return null;
             if (reckoner.TargetObject == raider)
                 return new(BotAction.StandOff, reckoner, SoulReckonerRoom, "reckoner-room: lead him back into his room");
+            if (fromMiddle <= roomRadius) return null;
             return new(BotAction.Reposition, reckoner, At(raider), $"reckoner-room: out of his room ({roomRadius}) he takes no damage; hold");
         }
+
+        /// <summary>A raider fighting one of the souls whom Soul Reckoner chases leads him back once he is past the room's line
+        /// (pure but for positions); anyone else goes on with the soul.</summary>
+        public static Advice? SoulLeaderAdvice(GameLiving raider, GameNPC reckoner, int roomRadius) =>
+            reckoner.TargetObject == raider && Flat(At(reckoner), SoulReckonerRoom) > roomRadius - SoulReckonerRoomMargin
+                ? new(BotAction.StandOff, reckoner, SoulReckonerRoom, "reckoner-room: he chases me; lead him back into his room")
+                : null;
 
         // ---- the Crypt Lord: his court comes with him ---------------------------------------------------------------------
 
