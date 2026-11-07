@@ -566,20 +566,20 @@ namespace DOL.UnitTests
             UseRegion(1, (393216, 327680), (393216, 393216));
             var afanc = Npc<TestAfanc>(455704, 389644, 2192);
             var brain = Brain<LegendaryAfancBrain>(afanc);
-            var gone = Npc<Bot>(455800, 389644, 2192);
+            // A raider far off (it left, or never came) is never in the pick; one by him is. Objects are placed once: a moved
+            // test NPC keeps its old cell in the zone's grid, so radius lookups would still see it there.
+            var gone = Npc<Bot>(440_000, 389644, 2192);
+            var here = Npc<Bot>(455900, 389644, 2192);
             brain.AddToAggroList(gone, 100);
+            brain.AddToAggroList(here, 100);
             Call(brain, "ThrowPlayer", new object[] { null });
-            Assert.That(gone.Moves, Is.Zero, "a test class has no switch of its own: bots stay");
+            Assert.That((gone.Moves, here.Moves), Is.EqualTo((0, 0)), "a test class has no switch of its own: bots stay");
             ShipAs(nameof(TestAfanc), "LegendaryAfanc");
             var moved = new List<DisplacementEvent>();
             void Record(DisplacementEvent e) => moved.Add(e);
             EncounterDisplacement.Displaced += Record;
             try
             {
-                // A raider who stood by him before and left is no longer picked (his list was never cleared).
-                Move(gone, 440_000, 389644, 2192);
-                var here = Npc<Bot>(455900, 389644, 2192);
-                brain.AddToAggroList(here, 100);
                 try { Call(brain, "ThrowPlayer", new object[] { null }); }
                 catch (TargetInvocationException) { /* the fall damage after the move needs a world; the move comes first */ }
                 Assert.That((gone.Moves, here.Moves), Is.EqualTo((0, 1)));
@@ -590,6 +590,11 @@ namespace DOL.UnitTests
                 Assert.That(EncounterDisplacementRecovery.IsRecovering(here), Is.True);
             }
             finally { EncounterDisplacement.Displaced -= Record; }
+            // His pick list is rebuilt on every throw (it was never cleared, so a raider who had left stayed in it).
+            string script = Source("scripts", "namedmobs", "Albion Named Mobs", "Classic Zones", "LegendaryAfanc.cs");
+            int clear = script.IndexOf("Port_Enemys.Clear();", StringComparison.Ordinal);
+            Assert.That(clear, Is.GreaterThan(script.IndexOf("private int ThrowPlayer", StringComparison.Ordinal)));
+            Assert.That(clear, Is.LessThan(script.IndexOf("EncounterTargets.InRadius(Body, 2500", StringComparison.Ordinal)));
 
             // The recovery: it walks back; with no path (or off the mesh) it is recalled after 5 s, never left there.
             var plan = EncounterDisplacementRecovery.Plan.For(DisplacementKind.Teleport, 0, new Vector3(451486, 393503, 2754), 0, 0, true);
