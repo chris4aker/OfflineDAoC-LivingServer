@@ -5,6 +5,18 @@
   "regions": [
     100
   ],
+  "zones": [
+    116
+  ],
+  "aliases": [
+    "gjalpinulva's lair",
+    "the edge of the world"
+  ],
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood",
+    "svartalfar"
+  ],
   "summary": "The frozen ruins at Midgard's southern edge where Gjalpinulva, the wolf-headed dragon, lies with her drakulv brood.",
   "facts": [
     {
@@ -31,14 +43,31 @@
       "text": "Bot chat says Skona's werewolves will not set foot in Malmohus, that the drakulv were bred by the dragon, and that the svartalfar watch the ruins from the edges.",
       "provenance": "game",
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "The Dragonslayer quest and Dragon Myths & Legends both send Midgard players after Gjalpinulva in Malmohus.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/3822"
+    },
+    {
+      "text": "Malmohus's bestiary lists adolescent dragons (Jarkkonith, Ljoridkorith) at level 60, and the svartalf dragonbane town of Svarhamr with Kiaja and Raxnathor.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=60"
+    },
+    {
+      "text": "Post-period Camelot Herald text says the Varulv were once Gjalpinulva's allies.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/article/dragons-curse-campaign-chapter-5"
     }
   ],
-  "story": "At the southern edge of Midgard, past Skona Ravine where the werewolves hold their ground, the land goes white and broken. Malmohus was someone's once. Nobody remembers whose; the ruins are older than Jordheim and say nothing. For a long time the scouts called it the edge of the world, little known and less explored, and young warriors were told that if they went far enough south they would fall off.\n\nThen the dragon came. The skalds say she is the Fenris wolf's daughter, flown south while the gods were still pleased with their chain, and that she lay down in the ruins and the frost went out from her like water from a spring. She bred a people of her own there, the drakulv, dragon-wolves on two legs with scales on their backs, and her firstborn Yar still hunts the southwest with his kin. Her adolescent young sun themselves on the ridges. The werewolves of Skona, who answer to no master, will not cross into her land at all.\n\nOnly the svartalfar stayed. From their town of Svarhamr they watch her, and some of them have sworn to see her dead, and they will pay an adventurer well to help them. They say she is waiting for her father's chain to break. Every realm has a dragon. Midgard's is the only one that is waiting for the end of the world.",
-  "legend": "When people were new they thought Malmohus was the edge of the world. Raid leaders call the lair the court: fight her in it or not at all. Never say her name inside the ruins, the healers insist. The werewolves won't come here, and they know something. Yar first, the old raid leaders say, for luck.",
+  "story": "I. The edge of the world.\nAt the southern edge of Midgard, past Skona Ravine where the werewolves hold their ground, the land goes white and broken. Malmohus was someone's once. Nobody remembers whose; the ruins are older than Jordheim and say nothing, broken walls and fallen towers under a frost that never lifts. For a long time the scouts called it the edge of the world, little known and less explored, and young warriors were told that if they went far enough south they would fall off into the sea of mist where the serpent sleeps.\n\nII. The wolf's daughter.\nThen the dragon came. The gods bound the Fenris wolf with a chain made of things that do not exist, the sound of a cat's footfall and the roots of a mountain and the breath of a fish, and before the last link closed, the skalds say, he had a daughter. She flew south while the gods were still pleased with themselves. She has a wolf's head and a dragon's wings and a frozen gaze, and she came down in Malmohus among the ruins of a people nobody remembers, and lay down there, and the frost went out from her like water from a spring. Her name is Gjalpinulva: Gjalp for the giantess who once raised a river against Thor, the skalds say, and a she-wolf's ending for her father's line. She calls the keeper of Niflheim her aunt, and if she is Fenris's daughter, that aunt is Hel herself.\n\nIII. The brood.\nShe bred a people of her own in the ruins, the drakulv, dragon-wolves on two legs with scales on their backs and wolves' grins: missionaries and sacrificers, armguards and axehands, executioners and soultrappers, disciples and protectors, and priests and knights among them who carry her magic. Her firstborn Yar, the oldest and strongest of them, hunts the southwest with his kin. Her adolescent young, dragons not yet grown, sun themselves on the ridges and burn whoever comes too close. Scaled vargs, wolf-pups with scales, run in packs. The werewolves of Skona, who answer to no master, will not cross into her land at all, because a dragon who is half wolf would make them answer to her; the heralds of a later age say the varulv were once her allies, and that this is why they fear her.\n\nIV. The watchers.\nOnly the svartalfar stayed. From their town of Svarhamr at the edge of her land they watch her the way fishermen watch weather. Some of them, the dragonbane, have sworn to see her dead, and they will pay an adventurer well to help them, and tell him first to kill the firstborn. They say she is waiting for her father's chain to break. They say that when it does, she will be the first to know.\n\nV. Why it matters.\nEvery realm has a dragon. Albion's is stone and Hibernia's is a king of lights. Midgard's is the only one that is waiting for the end of the world. Her frozen gaze was sung of in the mead halls of a later age; Midgard condemned her, and still sends its whole strength south to the ruins whenever she grows restless, because a realm that lets her rest long enough might wake one morning to find the chain already broken.",
+  "legend": "When people were new they thought Malmohus was the edge of the world. Raid leaders call the lair the court: fight her in it or not at all, because outside it she can't be hurt and she knows it. Cold resists up and keep them up; every breath strips them. When she stares at someone, that someone runs. Stun breaks for the long roar. Kill her babies before they reach the healers. Never say her name inside the ruins, the healers insist; she answers. The werewolves won't come here, and they know something. Yar first, the old raid leaders say, for luck, and because a Dec 2002 comment swore it made her breathe less. Corpses in Malmohus hear her talk; release fast if you don't want to listen. Nicknames: the wolf, the court (her lair), the edge.",
   "atmosphere": {
     "firstEntry": [
       "The edge of the world, they called it. It is colder.",
-      "Frost lies on the ruins like a held breath."
+      "Frost lies on the ruins like a held breath.",
+      "Somewhere south, a wolf's head lies on its paws.",
+      "Drakulv tracks. Two legs, wolf feet."
     ],
     "areas": [
       {
@@ -48,7 +77,9 @@
         "z": 3014,
         "radius": 2400,
         "lines": [
-          "The dragon's court. Frost hangs in the air like smoke."
+          "The dragon's court. Frost hangs in the air like smoke.",
+          "Bones of old raids lie in the frost.",
+          "Do not say her name here."
         ]
       },
       {
@@ -58,9 +89,25 @@
         "z": 2824,
         "radius": 1500,
         "lines": [
-          "Old claw-marks on the stones. The firstborn hunts here."
+          "Old claw-marks on the stones. The firstborn hunts here.",
+          "The drakulv's eldest walks these ruins."
+        ]
+      },
+      {
+        "name": "the frozen ruins",
+        "x": 720896,
+        "y": 999424,
+        "z": 0,
+        "radius": 20000,
+        "lines": [
+          "Ruins of a people nobody remembers.",
+          "Drakulv camps smoke among the broken walls.",
+          "The svartalfar watch from the edges."
         ]
       }
+    ],
+    "raidForming": [
+      "Midgard marches south to face the wolf's daughter."
     ]
   },
   "botLines": {
@@ -68,17 +115,33 @@
       "gjalpinulva is a daughter of the fenris wolf, the skalds say. thats why the wolf head",
       "the drakulvs in malmohus were bred by the dragon. two legs, scales, wolf faces. [nobody asked for that|her kids]",
       "the svartalfar in svarhamr want the dragon dead. [help them|they pay well]",
-      "gjalpinulva calls the keeper of niflheim her aunt. [think about that|if shes fenris's daughter thats hel]"
+      "gjalpinulva calls the keeper of niflheim her aunt. [think about that|if shes fenris's daughter thats hel]",
+      "the gods bound fenris with a chain of things that dont exist. before it closed he had a daughter",
+      "gjalpinulva is named for gjalp, the giantess who raised a river against thor, the skalds say",
+      "the drakulv are gjalpinulva's own people. missionaries, sacrificers, priests, the lot",
+      "yar is the firstborn of the drakulv. oldest and strongest of her brood",
+      "the svartalfar of svarhamr are dragonbane. they want her dead and pay for help",
+      "nobody knows who built the ruins in malmohus. older than jordheim",
+      "the adolescent dragons on the malmohus ridges are hers too. young ones",
+      "gjalpinulva can't be hurt outside her lair. fight her in the court or not at all"
     ],
     "rumour": [
       "skona's werewolves wont set foot in malmohus. [think about that|ask yourself why]",
       "never say the dragon's name inside malmohus. bad luck, my healer insists",
-      "[heard|they say] she's waiting for her father's chain to break. [hope it holds|lets hope]"
+      "[heard|they say] she's waiting for her father's chain to break. [hope it holds|lets hope]",
+      "the heralds say the varulv were once gjalpinulva's allies. thats why skona's werewolves stay out",
+      "if she's fenris's daughter then her aunt is hel. thats what she means by niflheim",
+      "gjalpinulva's waiting for her father's chain to break, the svartalfar say",
+      "the frost in malmohus never lifts. not even in summer",
+      "you can hear her talk to the dead if you dont release. [creepy|dont]"
     ],
     "tell": [
       "malmohus is way south past skona. drakulv everywhere and gjalpinulva in her lair. bring the realm",
       "its the dragon's land. ruins, drakulv, svartalfar in svarhamr, and the wolf-headed dragon herself",
-      "malmohus? gjalpinulva. 70 people, cold resists, fight her in the lair and nowhere else"
+      "malmohus? gjalpinulva. 70 people, cold resists, fight her in the lair and nowhere else",
+      "is the dragon hard? 70 people, cold resists, fight her only in the lair, and run when she stares",
+      "where is gjalpinulva? malmohus, far south past skona. her court is in the southeast ruins",
+      "whats in malmohus? drakulv everywhere, svartalfar at svarhamr, yar the firstborn and the wolf herself"
     ]
   },
   "loremaster": {
@@ -86,14 +149,21 @@
     "topics": {
       "dragon": "Gjalpinulva, the Fenris wolf's daughter, the skalds say. She calls Niflheim's keeper her aunt. Out of her lair she cannot be wounded; inside it she breathes winter at every tenth of her strength. Do not say her name in the ruins.",
       "drakulv": "Her people: dragon-wolves on two legs. Yar was the first of them, her firstborn, and he hunts the southwest still. The old raid leaders kill him on the way, for luck.",
-      "svartalfar": "Dark elves of Svarhamr, who have watched her since she came. Some have sworn to kill her. They say she is waiting for her father's chain to break, and that she will be the first to know."
+      "svartalfar": "Dark elves of Svarhamr, who have watched her since she came. Some have sworn to kill her. They say she is waiting for her father's chain to break, and that she will be the first to know.",
+      "the chain": "The gods bound the Fenris wolf with a fetter made of things that are not: a cat's footfall, a mountain's roots, a fish's breath. Before it closed he had a daughter. If it ever breaks, she will know first.",
+      "the ruins": "Older than Jordheim and silent. Nobody knows who built them. The frost on them never lifts.",
+      "the werewolves": "Skona's werewolves answer to no master and will not set foot in Malmohus. The heralds of a later age said they were once her allies.",
+      "Svarhamr": "The svartalf town at the edge of her land, where the dragonbane watch her. Kiaja and Raxnathor there will send you after [Yar] first.",
+      "the young dragons": "Her adolescent young, on the ridges, not yet grown. They burn whoever comes close. Some say they are what the chain is waiting for."
     }
   },
   "book": {
-    "title": "The Edge of the World",
+    "title": "The Edge of the World, by Sveinn of Gotar",
     "pages": [
       "When I was a boy in Gotar, my uncle said Malmohus was the edge of the world, and that if you walked far enough south past Skona the ground would end and you would fall into the sea of mist where the serpent sleeps. I believed him until I was twenty. Then I walked there. The ground did not end. It went white instead, and broken, and full of ruins that nobody could tell me the builders of, and on the third day I saw a wolf's head on a ridge as long as a longship, resting on its paws, and I understood that my uncle had been kind.",
-      "The svartalfar of Svarhamr took me in. They live at the edge of her land and watch her the way fishermen watch weather. One of them told me the drakulv are her children, every one, and that the first of them, Yar, still hunts the southwest with his kin. She told me the werewolves of Skona answer to no master and will not come here, because a dragon who is half wolf would make them answer to her. Then she told me never to say the dragon's name aloud in the ruins. I asked why. She said: because she answers."
+      "The svartalfar of Svarhamr took me in. They live at the edge of her land and watch her the way fishermen watch weather. One of them told me the drakulv are her children, every one, and that the first of them, Yar, still hunts the southwest with his kin. She told me the werewolves of Skona answer to no master and will not come here, because a dragon who is half wolf would make them answer to her. Then she told me never to say the dragon's name aloud in the ruins. I asked why. She said: because she answers.",
+      "I asked the svartalf about the chain. She said the gods made it of six things that are not: the sound of a cat walking, the beard of a woman, the roots of a mountain, the sinews of a bear, the breath of a fish, the spittle of a bird. She said that is why there are no more of those things in the world. She said the wolf's daughter flew south before the last of them was used, and that the dragonbane believe that while she lives, the chain is not finished. I asked what would finish it. She said: her death, or her father's. I did not ask which the dragonbane hoped for.",
+      "Last page, written on the road home. A raid from Jordheim passed me going south, seventy strong, singing. Two days later it passed me going north, fewer, not singing, but they had a scale in a cart and they were laughing in the quiet way of men who did not expect to be alive. One of them told me she had talked to him while he lay dead on the frost, before his friends raised him. I asked what she said. He said: that his soul was hers now, and that there would be no valkyries. He said he released very quickly the next time."
     ]
   },
   "bosses": [

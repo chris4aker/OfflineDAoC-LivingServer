@@ -4,6 +4,20 @@
   "catalogKey": "open-world/yar",
   "locationId": "malmohus",
   "realm": "Midgard",
+  "aliases": [
+    "yar the firstborn",
+    "the firstborn"
+  ],
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "gjalpinulva",
+      "relation": "his mother"
+    }
+  ],
   "facts": [
     {
       "text": "Yar is a level-73 named with 40,000 health in the southwest of Malmohus (region 100 at 695353, 1022775).",
@@ -31,11 +45,13 @@
       "source": "Swedish glossary, to verify"
     }
   ],
-  "story": "Yar was the first. Before the drakulv were a people, before there were armguards and axehands and soultrappers and priests, there was one pup in the ruins with scales on its back and a wolf's grin, and Gjalpinulva licked the frost off it and named it. He is the oldest of her brood and the strongest, and he hunts the southwest of Malmohus with his kin. When he is hurt badly he howls, and the drakulv come running: executioners, soultrappers and disciples, because the firstborn has never once called and not been answered. The svartalfar of Svarhamr pay well for his head. They say his mother feels it when he dies.",
-  "legend": "Yar's a group fight with good crowd control. At 30% he shouts and his kin come, so have mez ready and save power. Raid leaders used to kill Yar on the way to the dragon because they swore it made her breathe less. Nobody ever proved it. His head makes a fine wall trophy.",
+  "story": "Yar was the first. Before the drakulv were a people, before there were armguards and axehands and soultrappers and priests, there was one pup in the ruins with scales on its back and a wolf's grin, and Gjalpinulva licked the frost off it and named it. He is the oldest of her brood and the strongest, and the svartalfar of Svarhamr, who keep the old tales of Malmohus, call him the most powerful of all the werewolves, the firstborn of the wolf's daughter. He wears his mother's look more than any of his kin: the long wolf's head, the scaled back, the frozen eyes.\n\nHe hunts the southwest of Malmohus with his kin around him, and the drakulv of the camps there are his: executioners and soultrappers and disciples who would die for him and often have. He is a fighter, not a priest or a sorcerer; he trusts his claws and his strength and the loyalty of his blood. When he is hurt badly, at less than a third of his strength, he howls, and the drakulv come running, an executioner, a soultrapper and a disciple, because the firstborn has never once called and not been answered. If the fight leaves him alone for long, he is whole again in a minute; the firstborn heals as his mother does.\n\nThe svartalfar of Svarhamr pay well for his head. Kiaja, who keeps the dragonbane's trust, will send any friend of the svartalfar after him, with a warning to bring an adequate force, and Raxnathor will reward whoever comes back. They say his mother feels it when he dies. They say that is the point: a dragon in grief breathes less carefully. The raid leaders of old turned that into a habit, and killed Yar on the way to every dragon fight, and swore by it. Whether it ever helped, nobody can prove. His head makes a fine wall trophy, and the drakulv never forgive whoever carries it.",
+  "legend": "Yar's a group fight with good crowd control: one good CC group can do him, a 2003 comment said. At 30% he shouts and his kin come, an executioner, a soultrapper and a disciple, so have mez ready and save power. He resets fully after a minute out of combat, so don't let the fight stall. The svartalf quest Yar the Firstborn from Kiaja at Svarhamr sends you after him once your faction is good enough. Raid leaders used to kill Yar on the way to the dragon because they swore it made her breathe less. Nobody ever proved it. His head makes a fine wall trophy, and the wulfen gear he drops is good.",
   "yells": {
     "aggro": [
-      "Firstborn of the Wolf's Daughter! You are in my mother's ruins!"
+      "Firstborn of the Wolf's Daughter! You are in my mother's ruins!",
+      "Mother's ruins. Mother's frost. Mother's son.",
+      "The svartalfar sent you? They always send someone."
     ],
     "phases": [
       {
@@ -44,20 +60,28 @@
       }
     ],
     "death": [
-      "Mother... I am... coming home..."
+      "Mother... I am... coming home...",
+      "Mother will... feel this..."
     ],
     "slay": [
-      "For the brood."
+      "For the brood.",
+      "Another head for Svarhamr's wall? No. Mine.",
+      "The brood eats tonight."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Old claw-marks scar the stones. The firstborn hunts here."
+      "Old claw-marks scar the stones. The firstborn hunts here.",
+      "Drakulv camps surround a tall figure with frozen eyes."
     ],
     "phases": [
       {
         "trigger": "health<=30",
         "text": "Yar howls, and the drakulv come running!"
+      },
+      {
+        "trigger": "death",
+        "text": "Yar falls. Far off, the dragon stirs."
       }
     ],
     "realmFirstKill": "Yar the Firstborn is slain. Somewhere, his mother stirs."
@@ -65,24 +89,34 @@
   "botLines": {
     "briefing": [
       "yar calls 3 drakulv at 30%. mez ready, save power",
-      "killing yar before the dragon, [old habit|cant hurt]"
+      "killing yar before the dragon, [old habit|cant hurt]",
+      "yar resets after a minute out of combat, keep on him",
+      "kiaja's quest if you have the svartalf faction"
     ],
     "aftermathWin": [
       "yar down. [head on the wall|trophy time]",
-      "the firstborn is dead. hope mom didnt notice"
+      "the firstborn is dead. hope mom didnt notice",
+      "yar's remains, trophy for the wall",
+      "long claw of the wulfen dropped!"
     ],
     "aftermathLoss": [
-      "the adds at 30% got us"
+      "the adds at 30% got us",
+      "mez broke on the soultrapper and it went wrong",
+      "we let him reset",
+      "the drakulv at 30% hit the healers first"
     ],
     "rumour": [
-      "[heard|they say] yar is gjalpinulva's firstborn. [kill him first and she breathes less|thats what the old raiders say]"
+      "[heard|they say] yar is gjalpinulva's firstborn. [kill him first and she breathes less|thats what the old raiders say]",
+      "the svartalfar say a dragon in grief breathes less carefully. thats why kill yar first",
+      "yar is the most powerful of the werewolves, the svarhamr folk say",
+      "everyone who kills yar dreams of the mother after, the svartalfar say"
     ]
   },
   "loremasterTopic": {
     "keyword": "Yar",
     "text": "The firstborn of [Gjalpinulva]'s brood, the oldest and strongest of the drakulv. When he howls, his kin come. The svartalfar say his mother feels it when he dies."
   },
-  "bookPage": "",
+  "bookPage": "From the quest-book of Kiaja of Svarhamr, as a Midgard warrior copied it. 'We thank you. This is an act of great bravery my people will not soon forget.' That is what she said when I came back with the firstborn's head. Then she said I should speak with Skipta, who had earned their trust years before, and that we might share more than I knew. I asked Skipta what Kiaja meant. Skipta said that everyone who kills the firstborn dreams of the mother afterwards, and that the dragonbane keep a list of those who dream. She said my name was on it now.",
   "chronicle": {
     "win": "{raidLeader} of {realm} slew Yar the Firstborn in Malmohus in {minutes} minutes.",
     "loss": "Yar's kin answered his call and drove off {raidLeader}'s party from {realm} after {minutes} minutes."

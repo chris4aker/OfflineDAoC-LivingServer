@@ -104,8 +104,13 @@
           "source": "https://camelot.allakhazam.com/db/quest/1770"
         }
       ],
-      "places": [],
-      "bosses": []
+      "places": [
+        "malmohus"
+      ],
+      "bosses": [
+        "gjalpinulva",
+        "yar"
+      ]
     },
     {
       "id": "mid-era-jarls",
@@ -310,13 +315,16 @@
       "name": "The Wolf's Brood",
       "summary": "Gjalpinulva the Fenris wolf's daughter, her drakulv and her firstborn Yar; and, by the grandmothers' tale, the wolves of the Iron Wood.",
       "places": [
-        "iarnvidiurs-lair"
+        "iarnvidiurs-lair",
+        "malmohus"
       ],
       "bosses": [
+        "gjalpinulva",
         "hati",
         "hurjavelen",
         "iarnvidiur",
-        "skoll"
+        "skoll",
+        "yar"
       ]
     },
     {
@@ -352,7 +360,9 @@
       "id": "svartalfar",
       "name": "The Svartalfar",
       "summary": "Dark elves: thralls of the arachites in Spindelhalla, dragon-watchers of Svarhamr in Malmohus.",
-      "places": [],
+      "places": [
+        "malmohus"
+      ],
       "bosses": []
     },
     {
