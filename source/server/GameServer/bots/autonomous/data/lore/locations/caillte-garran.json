@@ -39,6 +39,11 @@
       "text": "Living Server lore: the grove that was lost and the seed that was lost in it; Droighaid's trees; the Fomorians at the top of their stair; the mud-hut mantids as the ones Krrzck shut out; the arbordons that carry things off; Terod's book.",
       "provenance": "original",
       "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawn of Caillte Garran: Goby (22), a lunger body like the river gobblers round it, by the rivers at about 391,200/414,700; respawn 600 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
     }
   ],
   "story": "Caillte Garran means the lost grove, and the Sylvan of Droighaid say there are two reasons for the name, and that both are true. The first is old. Before the Fomorians came, the country west of Domnann was one grove, a great orchard of the Sylvan that ran from the forest's edge to the cliffs above the sea, and when the Fomorians came up out of their city under the shore they came up here first, at the top of their stair, and the orchard was where they cut the timber to shore their passages. The grove was lost to the stair. What is left is scrub and spore and broken trees, and the arbordons that walk among them carrying off whatever is not fastened down.\n\nThe second reason is recent, and Terod of Droighaid tells it to every company that will sit still. The farmers of the realm who came west with the first swords found seeds in Cothrom Gorge, in the rot, and brought them up to Droighaid to see what they were. They were cursed. The Sylvan destroyed what they could. One was lost. Kredril, who lives on Droighaid's outskirts and has studied it ever since, says it was carried off, by an arbordon or a bird or a careless hand, back down into the gorge, and that it grew there into a treant called Feairna-Athar, brutal and raging, that tortures whatever comes near it. The seed road runs from Terod's tree in Droighaid to Kredril, to Emolia at the town's bindstone, who sends travellers across to Jandros in the great trees of Aalid Feie, and from there down into the gorge. Every season someone walks it, and the treant comes back.\n\nDroighaid itself is the Sylvan's second town, built in the trees at the eastern end of the grove where the old orchard met the forest. It is quieter than the Grove of Domnann and busier with trade: Lilerbad keeps a merchant's counter there and more errands than any Sylvan alive, and Ivy Magennis mixes poisons, and the young of the realm come through it on the way west. The Sylvan of Droighaid are orchard people still. They grow what they can in the lee of their trees and they count what the arbordons take.\n\nWest of the town the Fomorians hold a settlement around a house at the top of their stair: bonic and tremulare, militar and radicant, geddon and trodach, the households' working people and their guards. Lilerbad sends the realm's young to clear it, and says it is about a tapestry, and will not say more. Beyond the settlement the stair goes down into the earth toward the city of Fomor, and the realm's customs begin at its top: a coin on the top step, blankets at dawn for anyone who climbs back up.\n\nIn the north-west the mantids keep their mud huts. They are not the Krrzck of the edge, the Sylvan say; they are the ones the Krrzck shut out, or who left, and they call themselves by a name no Hibernian mouth can say. Their surveyors and perusers walk the grove's edge measuring it, and their rebels, the Sylvan say, are rebels against something nobody has been told about. They are not friendly. The pollen spores drift between them and the settlement, and the green stranglers wait in the lower scrub by the rivers, where Goby and the river gobblers fish.\n\nWhy does it matter? Because Caillte Garran is the grove the isle lost first, and the seed it lost last, and both losses are still walking. The Sylvan of Droighaid say that when the seed road is walked often enough the treant will stay down, and that when the Fomorians are driven off the stair the orchard will grow back. They have been planting it a tree at a time, in the lee of Droighaid, since the realm came.",
@@ -138,7 +143,9 @@
         "radius": 3000,
         "lines": [
           "Stranglers wait by the rivers.",
-          "Goby fishes with the gobblers."
+          "Goby fishes with the gobblers.",
+          "Goby lies in the shallows with its mouth open.",
+          "The river gobblers fish where Goby lets them."
         ]
       }
     ]
@@ -167,7 +174,8 @@
       "[heard|someone said] the fomorian settlement sends people down the stair at night",
       "someone forgot the coin on the top step and [fomor went badly|coincidence]",
       "[word is|heard] a new tree took in the young orchard behind droighaid",
-      "goby fishes in the rivers with the gobblers. [22|named]"
+      "goby fishes in the rivers with the gobblers. [22|named]",
+      "[heard|someone said] goby ate a kid's shoe off the droighaid river once"
     ],
     "tell": [
       "caillte garran is west of domnann. droighaid is the town. 18 to 42",
@@ -175,7 +183,8 @@
       "where is the fomor entrance? south west of caillte garran, past the fomorian settlement",
       "is caillte garran hard? mostly 20s-30s. mantids in the north west are 35-42 and aggressive",
       "whats in caillte garran? fomorians, arbordons, pollen spores, mantids, bugbears, the fomor stair",
-      "who gives the lost seed? terod in droighaid. 48-50, ends in cothrom gorge"
+      "who gives the lost seed? terod in droighaid. 48-50, ends in cothrom gorge",
+      "goby is a 22 named lunger by the rivers in caillte garran, river gobblers with it. long respawn"
     ]
   },
   "loremaster": {
@@ -188,7 +197,8 @@
       "settlement": "The Fomorian settlement around a house at the top of the [stair], west of [Droighaid]: households at work and their guards. Lilerbad sends the young to clear it and says it is about a tapestry.",
       "mantids": "The mantids of the mud huts in the north-west, who are not the Krrzck: shut out, or gone of their own will. Their surveyors measure the grove; their rebels rebel against something nobody has been told.",
       "arbordons": "Walking trees of the old orchard that carry off whatever is not fastened down. The abductors carry off larger things. The Sylvan count what they take.",
-      "Terod": "The Sylvan of [Droighaid] who tells the story of the [seed] to every company that will sit still, and writes it down for the ones that will not."
+      "Terod": "The Sylvan of [Droighaid] who tells the story of the [seed] to every company that will sit still, and writes it down for the ones that will not.",
+      "Goby": "Goby is the great fish of the river scrub, a lunger of the kind that lie in the shallows with their mouths open, and the eldest of the river gobblers that fish beside it. Terod's farmers named it for a little fish to make it smaller, the way the frightened do. It takes what comes down the river from [Droighaid], seed and spade and once a child's shoe, and the farmers say that when Goby is gone from its pool the river runs cleaner for a while, and then it is back."
     }
   },
   "book": {
