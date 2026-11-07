@@ -17,6 +17,12 @@ and the raid's own event camp was benched for two hours. A Darkness Falls bot no
 that walk is itself a complete, checked path (both halves of this route are), then goes on from there. The navmesh is
 unchanged. A realm raid's own event camp is never benched by the generic camp-route rule.
 
+**The raid kills Spindler Broodmother's newborns before they kill its healers** (play test, Galladoria). Her newborn
+spindlers (one or two every half minute, 8,000 health each, going for bards, druids, mentalists and wardens) piled up to
+11 alive while the raid's casters and archers were split one party per newborn, and they killed 62 of the 120 raiders who
+died in the lost attempt. Now all the casters and archers take one newborn at a time (the one on a healer first), and a
+party's melee peel a newborn off their own party's healer. Her health, damage, tether and spawn rate are unchanged.
+
 **Dungeons and bosses have their lore.** Living Server 1.2 gives every dungeon, epic dungeon, dragon and named
 boss its own lore (written in `data/lore`, one file per place and per boss; see [docs/LORE.md](docs/LORE.md)), and this is
 the part that shows it to you. All the stories are now in: 107 places and 578 bosses (with 4 realm histories), written for

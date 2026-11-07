@@ -69,6 +69,10 @@ namespace DOL.GS
             /// <summary>The required adds die one at a time in the catalog's order (Aroon's Scaiths: each is immune until the one
             /// before it is dead; Xaga's fairies, Beatha first): the whole raid takes the first one alive, not one each.</summary>
             public bool AddsInOrder { get; init; }
+            /// <summary>The ranged adds hunt the raid's healers and pile up when split one per party (Spindler Broodmother's
+            /// newborns, play test duo3: up to 11 alive, 62 of the raid's deaths): casters and archers all take the same one,
+            /// the one on a healer first, and a party's melee peel one off their own party's healer.</summary>
+            public bool FocusRangedAdds { get; init; }
 
             public bool HasHazards => Hazards is { Length: > 0 } && HazardRadius > 0;
         }
@@ -132,6 +136,9 @@ namespace DOL.GS
         }
 
         public static Tactic For(GameNPC npc) => npc == null ? null : ByType.GetValueOrDefault(npc.GetType().Name);
+
+        /// <summary>The tactic of a boss class name ("SpindlerBroodmother"), or null.</summary>
+        public static Tactic For(string bossType) => bossType == null ? null : ByType.GetValueOrDefault(bossType);
 
         private static Dictionary<string, Leash> _leashes;
         public static Leash LeashOf(GameNPC npc)
@@ -232,6 +239,26 @@ namespace DOL.GS
                                    Array.IndexOf(t.RangedAdds, n.GetType().Name) >= 0 && boss.IsWithinRadius(n, AddSearchRadius))
                 .OrderBy(n => Array.IndexOf(t.RangedAdds, n.GetType().Name)).ThenBy(n => n.ObjectID).ToArray();
         }
+
+        /// <summary>The ranged add the whole raid's casters and archers take: the first one on a healer, else the first.</summary>
+        public static GameNPC FocusedRangedAdd(GameNPC[] adds, Func<GameLiving, bool> isHealer = null)
+        {
+            isHealer ??= IsHealer;
+            return adds.FirstOrDefault(a => a.TargetObject is GameLiving victim && isHealer(victim)) ?? adds[0];
+        }
+
+        /// <summary>A ranged add attacking a healer of this raider's own party (its melee peel it off), or null.</summary>
+        public static GameNPC PeeledRangedAdd(GameLiving raider, GameNPC[] adds, Func<GameLiving, bool> inParty = null,
+            Func<GameLiving, bool> isHealer = null)
+        {
+            if (raider == null) return null;
+            inParty ??= victim => raider.Group?.IsInTheGroup(victim) == true;
+            isHealer ??= IsHealer;
+            return adds.FirstOrDefault(a => a.TargetObject is GameLiving victim && victim != raider && isHealer(victim) && inParty(victim));
+        }
+
+        private static bool IsHealer(GameLiving living) =>
+            BotPartyRoles.IsHealingClass((eCharacterClass)EncounterTargets.ClassId(living));
 
         /// <summary>Within this far past a hazard's radius a raider steps out of it, to this far past it.</summary>
         public const int HazardMargin = 150, HazardStepOut = 300;
@@ -448,10 +475,19 @@ namespace DOL.GS
                     (mine.Length > 0 ? $"one it can hurt ({mine.Length})" : "none it can hurt: the boss"));
             }
             // Casters and archers kill these adds while the rest stay on the boss.
-            if (canShootFlyers && LiveRangedAdds(target, live) is { Length: > 0 } rangedAdds)
+            if (LiveRangedAdds(target, live) is { Length: > 0 } rangedAdds)
             {
-                GameNPC add = rangedAdds[AssignedIndex(partyIndex, rangedAdds.Length)];
-                return new(BotAction.Retarget, add, null, $"ranged-add {Array.IndexOf(rangedAdds, add) + 1}/{rangedAdds.Length} of \"{target.Name}\"");
+                bool focus = For(target).FocusRangedAdds;
+                if (canShootFlyers)
+                {
+                    GameNPC add = focus ? FocusedRangedAdd(rangedAdds) : rangedAdds[AssignedIndex(partyIndex, rangedAdds.Length)];
+                    return new(BotAction.Retarget, add, null,
+                        $"ranged-add {Array.IndexOf(rangedAdds, add) + 1}/{rangedAdds.Length} of \"{target.Name}\"" +
+                        (focus ? " (focus: the whole raid's casters and archers on one)" : ""));
+                }
+                if (focus && PeeledRangedAdd(raider, rangedAdds) is { } peel)
+                    return new(BotAction.Retarget, peel, null,
+                        $"peel: \"{peel.Name}\" is on {(peel.TargetObject as GameLiving)?.Name} of this party");
             }
             GameNPC[] adds = ShieldingAdds(target, live);
             if (adds.Length > 0 && For(target) is { } at2 && ClassRulesApply(at2))
