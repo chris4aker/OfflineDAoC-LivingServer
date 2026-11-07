@@ -72,6 +72,14 @@ namespace DOL.GS
         private string _setAsideLine;
         /// <summary>This raid has a Leeroy (AutonomousRaidLeeroy): he charges the first final encounter early, once.</summary>
         public bool LeeroyRolled { get; set; }
+        /// <summary>
+        /// A play test's focus (/epictest): the names or class names of the only encounters this route goes for (and the adds
+        /// around them), with no first-hour trash clear; null for every real raid.
+        /// </summary>
+        public string[] Focus { get; set; }
+        /// <summary>The route goes for this monster under its play-test focus (pure; name or class name).</summary>
+        public static bool InFocus(string[] focus, string name, string typeName) =>
+            focus != null && (Array.IndexOf(focus, name) >= 0 || Array.IndexOf(focus, typeName) >= 0);
         private bool _leeroyDone;
         /// <summary>The raider who charged, or null.</summary>
         public string LeeroyName { get; private set; }
@@ -1415,7 +1423,9 @@ namespace DOL.GS
                 !(n is IGameEpicNpc && _clearedNames.Contains(n.Name) && !_finalTypes.Contains(n.GetType().Name)) &&
                 // A neutral expedition goes for its named encounters only; monsters on the way are
                 // fought when they attack (Darkness Falls holds 2,465 spawns).
-                (_objectives == null ? now - _routeStartTick < EpicTrashPhaseMilliseconds || n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name) ||
+                (Focus != null ? InFocus(Focus, n.Name, n.GetType().Name) || IsEncounterAdd(n, Front, encounters) && encounters.Any(e =>
+                        InFocus(Focus, e.Name, e.GetType().Name) && e.IsWithinRadius(n, (int)EncounterAddRadius))
+                : _objectives == null ? now - _routeStartTick < EpicTrashPhaseMilliseconds || n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name) ||
                         IsEncounterAdd(n, Front, encounters)
                     : RealmRaidNeutralEvents.IsObjective(_objectives, n.Name)))
                 .OrderBy(n => _finalTypes.Contains(n.GetType().Name) ? 1 : 0)
