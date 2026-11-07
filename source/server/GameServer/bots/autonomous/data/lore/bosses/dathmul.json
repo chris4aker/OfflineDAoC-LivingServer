@@ -1,0 +1,87 @@
+{
+  "id": "dathmul",
+  "name": "Dathmul",
+  "npcNames": [
+    "Dathmul"
+  ],
+  "locationId": "snowdonia",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Dathmul: NPC template 60159760, level 47, the spirit model (as the disturbed presences), ghost, aggro 200 (range 500), no spells, respawn 300 s, alone north-north-east of Caer Hurbury at 548712, 328104.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Feast of the Decadent: destroy the focus Dathmul, a hollow man north-northeast of Caer Hurbury, and take the scroll to Vera Astyrian in Snowdonia Fortress; Symbol of the Broken: slay the hollow man Dathmul and give the dust to Loremaster Alain.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Dathmul as a man emptied to be filled, and the gathering he is a focus for, are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "A hollow man is what is left when something takes out of a man everything that made him himself and leaves the shape standing, the way a cooper leaves the staves of a cask when the wine is drunk. The druids of the west know how it is done. They will not say who taught them.\n\nDathmul was a man once, and the shepherds of Caer Hurbury say he was one of theirs, a herdsman of the eastern pass who went up into the hills one autumn after a strayed ewe and came down in the spring with nothing behind his eyes. He stands north of the keep where he stopped walking, and the wind goes through him. He is not empty. Something has been put into him in place of what was taken, a little at a time, and he is full of it now, a focus, the Academy says, for a gathering that runs from Snowdonia to the barrows under Salisbury, where a wizard called Lichas keeps his school, and on to the Scrolls of Fate.\n\nElvinia Dareal of Caer Witrin wants the focus broken before the gathering is finished. Loremaster Alain wants the dust. Nobody in Caer Hurbury has asked for Dathmul's name back, because nobody there can remember what it was.",
+  "legend": "Dathmul, level 47 ghost, the hollow man alone north-north-east of Caer Hurbury in Snowdonia. Plain melee, no spells, nothing around him. Kill him for Feast of the Decadent (then the scroll to Vera Astyrian, then Lichas in the Barrows) or Symbol of the Broken (the dust goes to Loremaster Alain). Respawn five minutes; quest groups queue for him, so ask in the zone before you pull.",
+  "yells": {
+    "aggro": [
+      "Full. Full. Not yet full.",
+      "Something looks out of me at you."
+    ],
+    "phases": [],
+    "death": [
+      "Empty... again..."
+    ],
+    "slay": [
+      "Room for one more.",
+      "Poured out."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A hollow man where the wind goes through. Not empty."
+    ],
+    "phases": [],
+    "realmFirstKill": "Dathmul has fallen. The focus is broken."
+  },
+  "botLines": {
+    "briefing": [
+      "dathmul is nne of caer hurbury, alone, 47 ghost",
+      "kill dathmul for feast of the decadent or symbol of the broken"
+    ],
+    "aftermathWin": [
+      "dathmul down, got the dust",
+      "focus broken. next the scroll to vera astyrian"
+    ],
+    "aftermathLoss": [
+      "something poured out of him and it hit hard"
+    ],
+    "rumour": [
+      "[heard|someone said] dathmul was a shepherd from caer hurbury once",
+      "heard dathmul is connected to lichas in the barrows somehow"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "dathmul",
+    "text": "A hollow man north of Caer Hurbury in [snowdonia], a herdsman emptied and filled again with something else: a focus, the Academy says, for a gathering that runs to Lichas in the barrows."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} broke the focus Dathmul north of Caer Hurbury in {minutes} minutes.",
+    "loss": "Dathmul stood; {raidLeader} of {realm} could not empty him."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "arawn",
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "wizard-lichas",
+      "relation": "the same gathering of the dead"
+    }
+  ],
+  "tier": "minor"
+}

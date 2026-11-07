@@ -1,0 +1,81 @@
+{
+  "id": "kovos",
+  "name": "Kovos",
+  "npcNames": [
+    "Kovos"
+  ],
+  "locationId": "avalon-isle",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Kovos: NPC template 60162979, level 35, a drakoran model (as Lieutenant Zudd, Ra'ris Delum and Arel Birn), no faction, aggro 200 (range 500), no spells, respawn 80 s, in the middle of the isle at 461558, 473542 with drakoran looters, sawbones and a thaumaturge.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Kovos as the drakoran's master of looters and his tally of books are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "When the drakoran legion came over Avalon Isle after the burning, it did not come to stay at first; it came to pick the bones. The colleges' houses and farms and orchards were full of things the colleges had left, and the legion sent its looters through them, house by house, with sawbones behind them for the wounded and a thaumaturge to say what was worth carrying. Kovos runs that work, and runs it still.\n\nHe is not a captain like Bolin or Vask or Barak, and he does not watch the shores. He watches the carts. The looters bring him what they find, and he sorts it: metal to the smiths, cloth to the camps, food to whoever is hungriest, and books, always, to one side, in a pile that is never burned. Gwilym the cider-man of Wearyall says Kovos cannot read, and keeps the books because someone above him told him to, and that the books go down the stair into the drakoran's own Avalon once a season.\n\nElowen of Caer Gothwaite would give a great deal to know which books, and who reads them below.",
+  "legend": "Kovos, level 35 drakoran, in the middle of Avalon Isle with a few drakoran looters, sawbones and a thaumaturge (31-33). No faction of his own, but the looters around him are aggressive and close, so you will fight two or three at once: kill the thaumaturge first. Plain melee, no spells. Respawn is fast (80 seconds). Good named for a group in the mid thirties.",
+  "yells": {
+    "aggro": [
+      "Put that down. It is counted.",
+      "Looters! Visitors with full packs!"
+    ],
+    "phases": [],
+    "death": [
+      "The pile... do not burn the pile..."
+    ],
+    "slay": [
+      "Sort that one.",
+      "Counted."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A drakoran sorting the colleges' leavings."
+    ],
+    "phases": [],
+    "realmFirstKill": "Kovos has fallen. The looters' carts stand still."
+  },
+  "botLines": {
+    "briefing": [
+      "kovos in the middle of avalon isle, looters and a thaumaturge with him",
+      "kill the thaumaturge first, then kovos"
+    ],
+    "aftermathWin": [
+      "kovos down. the book pile is still there",
+      "got kovos, easy for mid thirties"
+    ],
+    "aftermathLoss": [
+      "the looters swarmed us at kovos"
+    ],
+    "rumour": [
+      "[heard|someone said] kovos keeps every book the looters find and sends them down below",
+      "heard kovos cant even read the books he keeps"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "kovos",
+    "text": "The drakoran master of the looters on [avalon isle], who sorts what the colleges left and keeps every book in a pile that is never burned. The books go down the stair once a season."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} stopped Kovos's carts on Avalon Isle in {minutes} minutes.",
+    "loss": "Kovos counted {raidLeader}'s company of {realm} among his leavings."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "torvarg",
+      "relation": "keeps the hill above his carts"
+    }
+  ],
+  "tier": "minor"
+}

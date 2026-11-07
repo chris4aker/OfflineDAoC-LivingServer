@@ -240,7 +240,15 @@
     ]
   },
   "bosses": [
-    "draco-magnificens"
+    "draco-magnificens",
+    "ellyll-seer",
+    "belgrik",
+    "isolationist-courier",
+    "treefall",
+    "tylwyth-teg-ranger",
+    "saffron",
+    "delfina",
+    "angau"
   ],
   "era": "alb-the-dark-age",
   "factions": [
