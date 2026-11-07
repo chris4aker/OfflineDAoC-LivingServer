@@ -256,6 +256,7 @@
         "alchemist-phorzbreg",
         "apologet-nesnuir",
         "basilius",
+        "bokko",
         "boligar",
         "chief-tarek",
         "council-hord",
@@ -266,12 +267,14 @@
         "cronk",
         "dagar",
         "dalgo",
+        "dalicren",
         "elder-council-birghir",
         "elder-council-guthlac",
         "elder-icelord-hjalmar",
         "elder-icelord-suttung",
         "fostra-orm",
         "goretooth",
+        "gorp",
         "grindvaktare",
         "hurika",
         "icelord-agmundr",
@@ -284,11 +287,14 @@
         "jarala-den-kvinnlig",
         "king-tuscar",
         "koli",
+        "luso",
         "magister-kurgol",
         "masher",
         "master-smed",
+        "morbax",
         "olen-den-bartender",
         "overste-callejo",
+        "pathfinder-folar",
         "queen-kula",
         "sallours",
         "shredclaw",
@@ -297,9 +303,12 @@
         "torst",
         "trollkarl-bonchar",
         "troloss",
+        "trude",
         "unok",
+        "uppsala",
         "valmak",
-        "vasrem"
+        "vasrem",
+        "wulok"
       ]
     },
     {
@@ -495,7 +504,9 @@
       ],
       "bosses": [
         "boligar",
-        "dalgo"
+        "dalgo",
+        "dalicren",
+        "pathfinder-folar"
       ]
     },
     {
@@ -506,7 +517,12 @@
         "faraheim"
       ],
       "bosses": [
-        "cronk"
+        "bokko",
+        "cronk",
+        "gorp",
+        "trude",
+        "uppsala",
+        "wulok"
       ]
     },
     {
@@ -525,9 +541,11 @@
         "dyranapur",
         "goretooth",
         "hurika",
+        "luso",
         "lydsyg",
         "mahattava",
         "masher",
+        "morbax",
         "mortufoghus",
         "rotodjur",
         "shredclaw",

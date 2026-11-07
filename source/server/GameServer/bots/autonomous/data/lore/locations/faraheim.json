@@ -71,6 +71,11 @@
       "text": "Gunnvor's map, the cicadas' summer, the slate-house light, the render packs' border and the tradklan's fire-right are Living Server lore.",
       "provenance": "original",
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Nine further named stand in Faraheim in the world data: Trude and Uppsala of Cronk's CronkBaf pack, Bokko's southern tradklan settlement, Gorp and Wulok (Wulok's template has no faction), the skogsra Dalicren (no faction) and Pathfinder Folar (Shade Seekers), the insect Morbax (Swarm of Aegir) and the scimitar cat Luso among the terror birds.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
     }
   ],
   "story": "Faraheim is the far home: the eastern woods of Aegir, between the iron trees of the Iarnwood to the south and the rockwall that was the end of the island until the morvalt broke it. When the Troll Father walked into Jordheim and Midgard sailed for Aegir with the Valkyn, Faraheim was where the realm put its feet down. Hagall was built in a season on the south-western rise, with Valkyn and kobold and troll guards on its gates, because the three peoples who had come together to take Aegir back did not yet trust anyone else to hold a door. They hold it still.\n\nThe iarn dwarves were already here. The Remnants, last of the free clans, had moved their settlement out of the Iarnwood to its northern edge long before, after the winter of the nine children, and keep it there in the south-east of Faraheim with their griffons and their slate-house. Over the slate-house door is cut the word from the first clan's warning stone. In its window a light is left burning on the night after a company goes down into the old one's lair. The griffons fly only friends.\n\nEverything else in Faraheim is wild, and most of it is older than the dwarves. The skogsra live in the deep woods of the east, the forest folk of the grandmothers' tales, beautiful from the front and hollow behind, who lead travellers off the path. Boligar is the best of them at it. Dalgo the warden keeps the paths closing behind the ones who have been led. The tradklan, a tree-clan of small loud folk, hold the hollow trunks of the north-west under their chief Cronk, who has the right of fire, which in a tree-clan is a serious thing.\n\nThe beasts are another matter. Giant cicadas sing in the western woods all summer, so loud that Hagall's guards stop their ears, and the cicada-killers hunt them. Deer graze the middle country, and the terror birds stand among the deer taller than trolls and do not fly, because they have never needed to; Valmak is the one the others wait for. Gulons, the gluttons, eat what the birds leave. In the east two render packs hunt, the old jaw Goretooth's in the south and his young rival Shredclaw's in the north, and the gastornis and bone crunchers keep out of both their ways. The packs never meet. Between their grounds lies a strip of wood where nothing lives and the dwarves say nothing ever will until one of the two is dead.\n\nIn the south the cold comes up out of the Iarnwood's shadow: cold lights, snow imps, frosty colts and scuttlebugs, and the frostbite wildlings of the Hidden People, who were here before anyone and say so. On the far west, fallen trolls wander that were Trollheim's once and do not remember the way home. On the east shore the sjoalf come up out of the sea. And near Hagall's walls a single crazed morvalt schaman dances alone, facing east, toward the gap in the rockwall and the grave beyond it, waiting for his Mother.\n\nFaraheim matters because it is where Midgard keeps its foot on Aegir. From Hagall the realm goes south to the old one's lair, east through the gap to Modernagrav, west to the glacier and the halls under the mountain. Every one of those roads begins in these woods, and the woods do not stay put.",
@@ -208,7 +213,10 @@
       "the gulons eat whatever the terror birds leave. [glutton is the right name|nothing left]",
       "minerva only flies you if the remnants like you. kill their foes",
       "the cold lights by the iarnwood border come out of the old ones shadow",
-      "the morvalt schaman near hagall isnt harmless, [someone in my guild found out|trust me]"
+      "the morvalt schaman near hagall isnt harmless, [someone in my guild found out|trust me]",
+      "the tradklan have two sets of trunks, cronks up north and bokkos cold ones down south",
+      "the tradklan medicine men in faraheim dont actually heal anything",
+      "theres a scimitar cat living with the terror birds in the middle country"
     ],
     "tell": [
       "faraheim is eastern aegir. skogsra, tradklan, blood renders, terror birds. hagall is the town",
@@ -216,7 +224,8 @@
       "go there for the nameds. bring a full group",
       "hagall is in the south west of faraheim. every trainer and a teleporter",
       "the remnants post with minerva and the griffon is in the south east by the iarnwood",
-      "is faraheim hard? the cicadas are easy, the nameds and the big bird arent"
+      "is faraheim hard? the cicadas are easy, the nameds and the big bird arent",
+      "faraheim nameds: cronk and his household up north, bokko south, dalicren in the low wood, morbax northeast"
     ]
   },
   "loremaster": {
@@ -230,7 +239,9 @@
       "render packs": "Two packs of blood renders in the east: the old jaw [Goretooth]'s in the south, the young [Shredclaw]'s in the north. They never meet; nothing lives between them.",
       "terror birds": "Birds taller than trolls who graze among the deer and do not fly. [Valmak] is the one the others wait for.",
       "Hidden People": "The frostbite wildlings of the south, who say they were on Aegir before anyone. Nobody argues with them very hard.",
-      "Gunnvor": "Gunnvor of Jordheim, a mapmaker who spent three summers drawing Faraheim and wrote a book about why the map lies. See the [skogsra]."
+      "Gunnvor": "Gunnvor of Jordheim, a mapmaker who spent three summers drawing Faraheim and wrote a book about why the map lies. See the [skogsra].",
+      "the southern trunks": "The other half of the [tree-clan], down the western woods under [Bokko], who says the right of fire was his on the night the houses burned. They live without fire. [Gorp] hunts for them; [Wulok], cut from the northern trunks for carrying fire, lives alone in the middle country.",
+      "the low wood": "A fold of skogsra wood between [Hagall] and the east, kept by [Dalicren], whose greenhands move its paths a hand's breadth a night. Hagall's woodcutters tie red cords to the trees. [Pathfinder Folar] walks the south beyond it, finding the way home for the Shade Seekers' dead."
     }
   },
   "book": {
@@ -250,6 +261,15 @@
     "cronk",
     "goretooth",
     "shredclaw",
-    "valmak"
+    "valmak",
+    "trude",
+    "uppsala",
+    "bokko",
+    "gorp",
+    "wulok",
+    "dalicren",
+    "pathfinder-folar",
+    "morbax",
+    "luso"
   ]
 }
