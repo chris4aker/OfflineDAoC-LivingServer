@@ -201,6 +201,7 @@
         "galladoria",
         "hy-brasil",
         "koalinth-caverns",
+        "shrouded-isles",
         "tur-suil"
       ],
       "bosses": [
@@ -218,6 +219,7 @@
         "dremcis-fuiloltair",
         "easmarach",
         "giant-sporite-cluster",
+        "gnat",
         "hurionthex",
         "kierac-the-destroyer",
         "kontar-the-corrupt",
@@ -320,6 +322,7 @@
         "fomor",
         "galladoria",
         "hy-brasil",
+        "shrouded-isles",
         "tur-suil"
       ],
       "bosses": [
@@ -473,7 +476,8 @@
       "name": "The Old Troubles of the Isle",
       "summary": "What was dangerous on Hy Brasil before the Fomorians came: the octonoid mothers of the World's End shore, the walking shrouds of the edge, the rot-flowers, walking stone and killer-plant of Cothrom Gorge, and the hunter of the mantids in Allta Fearann. The Sylvan guides of Domnann name them to every Hibernian company.",
       "places": [
-        "hy-brasil"
+        "hy-brasil",
+        "shrouded-isles"
       ],
       "bosses": [
         "archilus",
@@ -482,6 +486,7 @@
         "cronwort",
         "curengkur",
         "dremcis-fuiloltair",
+        "gnat",
         "gneiss",
         "marfoirwort",
         "mollunero",
