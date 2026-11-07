@@ -140,13 +140,15 @@
         "darkness-falls",
         "tepoks-mine",
         "lyonesse",
-        "forest-sauvage"
+        "forest-sauvage",
+        "pennine-mountains"
       ],
       "bosses": [
         "aidon-the-archwizard",
         "lord-gildas",
         "legion",
-        "sister-blythe"
+        "sister-blythe",
+        "draco-magnificens"
       ]
     },
     {
@@ -375,10 +377,12 @@
         "dartmoor",
         "llyn-barfog",
         "forest-sauvage",
-        "lyonesse"
+        "lyonesse",
+        "pennine-mountains"
       ],
       "bosses": [
         "golestandt",
+        "draco-magnificens",
         "moran-the-mighty",
         "legendary-afanc",
         "king-of-the-barfog-hills",
