@@ -72,6 +72,7 @@
   "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "4c9df8312f40c9db8d908ce57c6f96a47d88a294a2867e713e11531f5020f678",
   "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "b3b4affcb6076765c54bcb3b4446b1c3144baf461e8f494564f9cf363c7cfb31",
   "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666",
+  "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "6b1ec86f543689a4de50f57aa06fb7657aecf29d36671a3406dd9aae0944ae57",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "bb3c963aab1f7d18b2124dff2ce2baa4ae7a3cb80470737b2a7d26e126b69198",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "47dede9429ce25a534a73793e7b5940c337b6c4314b3b0fe57a6c0e301e96eeb",
@@ -936,7 +937,7 @@
   "Player-only mechanics stay player-only for now; the catalog lists every one as a candidate to target bots later. Which matter most for the 'wow' factor (throws, glares, Nosdoden's spirits)?"
  ],
  "counts": {
-  "scripts": 208,
+  "scripts": 209,
   "encounters": 244,
   "encountersWithRules": 228,
   "rules": 850,

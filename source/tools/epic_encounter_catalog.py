@@ -523,7 +523,7 @@ def picks_from_player_list(member: Member) -> bool:
     cls_m = member.cls.src.masked[member.cls.open_pos:member.cls.end]
     lists = re.findall(r"List\s*<\s*GamePlayer\s*>\s+(\w+)", cls_m)
     return any(re.search(r"\b" + re.escape(l) + r"\s*\[", member.mbody) for l in lists) and \
-        not re.search(r"GameBot|EpicEncounterActors", member.mbody)
+        not re.search(r"GameBot|EpicEncounterActors|EncounterTargets", member.mbody)
 
 
 def player_only(member: Member, receiver: str | None, pos: int | None = None) -> bool:
@@ -537,14 +537,14 @@ def player_only(member: Member, receiver: str | None, pos: int | None = None) ->
         return True
     if pos is not None:
         conds = " ".join(member.conditions_at(pos))
-        if re.search(r"\bis\s+GamePlayer\b|PrivLevel", conds) and not re.search(r"GameBot|EpicEncounterActors", conds):
+        if re.search(r"\bis\s+GamePlayer\b|PrivLevel", conds) and not re.search(r"GameBot|EpicEncounterActors|EncounterTargets", conds):
             return True
     cls_masked = member.cls.src.masked[member.cls.open_pos:member.cls.end]
     if receiver:
         r = re.escape(receiver.split(".")[-1])
         if re.search(r"\bGamePlayer\s+" + r + r"\b", body) or re.search(r"\bGamePlayer\s+" + r + r"\b", cls_masked) or \
            re.search(r"foreach\s*\(\s*GamePlayer\s+" + r + r"\b", body):
-            if not re.search(r"\bGameBot\b|EpicEncounterActors", body):
+            if not re.search(r"\bGameBot\b|EpicEncounterActors|EncounterTargets", body):
                 return True
             return False
         if re.search(r"\b(GameLiving|GameObject)\s+" + r + r"\b", body + cls_masked):
