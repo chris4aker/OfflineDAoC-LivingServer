@@ -141,6 +141,7 @@
         }
       ],
       "places": [
+        "bog-of-cullen",
         "coruscating-mine",
         "cursed-forest",
         "hibernia-wilds",
@@ -453,6 +454,7 @@
       "name": "The Sidhe",
       "summary": "The people of the mounds and the courts beyond the Veil: fairy queens and lords of the wilds, whose songs and bargains the hill country fears.",
       "places": [
+        "bog-of-cullen",
         "cursed-forest",
         "hibernia-wilds",
         "lough-derg"
@@ -608,7 +610,9 @@
       "id": "outlaws",
       "name": "The Outlaws of the Wilds",
       "summary": "Men and women of the realm who went into the bogs and hills beyond its law and stayed: the Cullen outlaws on their island in the eastern bog, with their captain Donal and their wise-woman Ide, who keep a watch of their own.",
-      "places": [],
+      "places": [
+        "bog-of-cullen"
+      ],
       "bosses": [
         "donal",
         "ide",
@@ -630,6 +634,7 @@
       "name": "The Siabra",
       "summary": "The siabra, cousins of the elves who did not go behind the Veil, and who hold great stretches of the old country against the realm: the dergan furies and enchanters of Lough Derg, the magi of the Cullen bog, the camps of the Silvermine and the Shannon shore.",
       "places": [
+        "bog-of-cullen",
         "lough-derg",
         "silvermine-mountains"
       ],

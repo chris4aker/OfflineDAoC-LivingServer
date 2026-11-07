@@ -198,17 +198,9 @@
   },
   "bosses": [
     "evern",
-    "badb",
-    "queen-cliodna",
     "melancholic-fairy-queen",
     "tawi-shon",
     "lhia",
-    "madawg",
-    "geas-bound-protector",
-    "ide",
-    "saemus",
-    "kunsgnos",
-    "donal",
     "mikka"
   ],
   "era": "hib-age-of-the-veil",
@@ -243,6 +235,10 @@
     },
     {
       "id": "silvermine-mountains",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "bog-of-cullen",
       "relation": "a zone of the region, with its own file"
     },
     {
