@@ -32,7 +32,8 @@
         "dartmoor",
         "crystal-cave",
         "llyn-barfog",
-        "caer-sidi"
+        "caer-sidi",
+        "salisbury-plains"
       ],
       "bosses": [
         "golestandt",
@@ -149,7 +150,8 @@
         "lord-gildas",
         "legion",
         "sister-blythe",
-        "draco-magnificens"
+        "draco-magnificens",
+        "celain-elrich"
       ]
     },
     {
@@ -260,7 +262,8 @@
         "crypt-lord",
         "skeletal-sacristan",
         "spectral-provisioner",
-        "sister-blythe"
+        "sister-blythe",
+        "celain-elrich"
       ]
     },
     {
@@ -393,7 +396,8 @@
         "forest-sauvage",
         "lyonesse",
         "pennine-mountains",
-        "camelot-hills"
+        "camelot-hills",
+        "salisbury-plains"
       ],
       "bosses": [
         "golestandt",
@@ -436,7 +440,8 @@
       "summary": "The peoples before Rome: the Keltoi priests still chanting in their fogou, the druid dead under the stones, the muryans dwindling.",
       "places": [
         "keltoi-fogou",
-        "stonehenge-barrows"
+        "stonehenge-barrows",
+        "salisbury-plains"
       ],
       "bosses": []
     },
