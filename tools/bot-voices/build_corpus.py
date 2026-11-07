@@ -77,6 +77,8 @@ FLAGS = {'in_group', 'solo', 'in_town', 'in_dungeon', 'in_rvr', 'at_camp', 'trav
          'will_rez',   # will_rez: set only when answering a rez ask the bot will really come to
          'player_rezzed_me',   # gossip: the player really rezzed this bot (bot memory)
          'player_leveling',    # tells: the player is under the level cap (lines about levelling; in-game check 2026-10-27)
+         'bot_leads',          # bot-led groups: a gamebot leads the party the player is in (the player follows)
+         'lead_call',          # bot-led groups: the leader's own calls (BotLedGroups.Announce passes it; no bot has it alone)
          # The talking update: what is true in the world right now (AutonomousChatNews and the RvR event layer).
          'df_ours',            # the bot's realm holds Darkness Falls
          'defending',          # one of the realm's keeps is under siege now ({keep} is that keep)

@@ -24,6 +24,19 @@ Needs the .NET 10 SDK, Python 3 and Godot 4.7.2 (.NET build).
 `placeholders.py` gives the copy plain stand-ins for the 36 interface files it needs (`placeholders.txt`) when the
 converted art isn't there. It only adds files that are missing.
 
+## The scripts as a 0.37c player gets them
+
+`installed_check.py <Godot 4.7.2 executable> <work folder>` (the plain Godot build is enough; CI job `new-client`):
+- takes the released 0.37c scripts from the 0.37 release commit, each checked against
+  `source/tools/release-baselines/0.37/0.37c-new-client.sha256`, and lets Godot make the class cache from them;
+- applies every script entry of `tools/fork-build/content-patches.json` as the installer does, and checks that each
+  result is the script in `source/new-client` (a script changed without a new patch fails);
+- compiles every script (`tests/load_check.gd`), then runs `tests/issue34_probe.gd`: issue #34 (Stealth in the
+  Abilities list, skills onto the quickbar and used, `/stealth`, the merchant's SELL, no APPRAISE without the 1.2
+  network client) with the real interface and a stand-in network client that records what would be sent.
+
+`--released-only` skips the patches: the probe then fails on the released scripts, which is issue #34 itself.
+
 ## Not covered
 
 - What things look like: the art is placeholders.

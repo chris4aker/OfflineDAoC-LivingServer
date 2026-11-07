@@ -682,6 +682,13 @@ namespace DOL.GS
 			}
 		}
 
+		/// <summary>
+		/// The flags written to the database. Normally the same as Flags; a day/night spawn adds its asleep flags (peace,
+		/// can't target, no name) while it sleeps, and those must never be saved (owner 2026-10-31: night ghosts saved
+		/// asleep could never be fought again).
+		/// </summary>
+		protected virtual eFlags FlagsToSave => Flags;
+
 		public override bool IsUnderwater => (m_flags & eFlags.SWIMMING) is eFlags.SWIMMING || base.IsUnderwater;
 
 		/// <summary>
@@ -690,6 +697,15 @@ namespace DOL.GS
 		/// visible to at least one player
 		/// </summary>
 		public virtual bool IsVisibleToPlayers => GameLoop.GameLoopTime - m_lastVisibleToPlayerTick < VISIBLE_TO_PLAYER_SPAN;
+
+		/// <summary>
+		/// A player's companion (and its pet) put away while the player rides a stable route (owner 2026-10-31: they
+		/// disappear, can't be killed, and come back at the player's side when the player gets off; following on foot they
+		/// died). Nobody sees it, nothing can attack it, its brain does nothing (TemporaryGroupStableTravel).
+		/// </summary>
+		public bool StowedForRide { get; set; }
+
+		public override bool IsVisibleTo(GameObject checkObject) => !StowedForRide && base.IsVisibleTo(checkObject);
 
 		/// <summary>
 		/// True while this NPC is close enough to a real player or an autonomous
@@ -1251,7 +1267,7 @@ namespace DOL.GS
 			mob.Charisma = Charisma;
 
 			mob.ClassType = GetType().ToString();
-			mob.Flags = (uint) Flags;
+			mob.Flags = (uint) FlagsToSave;
 			mob.Speed = MaxSpeedBase;
 			mob.RespawnInterval = m_respawnInterval / 1000;
 			mob.HouseNumber = HouseNumber;
@@ -2700,22 +2716,11 @@ namespace DOL.GS
 			if (!base.WhisperReceive(source, text))
 				return false;
 
-			if (source is not GamePlayer player || source.TargetObject is not GameLiving targetLiving)
+			if (source is not GamePlayer player || !text.Equals("task", StringComparison.OrdinalIgnoreCase))
 				return true;
 
-			if (!text.Equals("task", StringComparison.OrdinalIgnoreCase))
-				return true;
-
-			if (KillTask.CheckAvailability(player, targetLiving))
-				KillTask.BuildTask(player, targetLiving);
-			else if (MoneyTask.CheckAvailability(player, targetLiving))
-				MoneyTask.BuildTask(player, targetLiving);
-			else if (CraftTask.CheckAvailability(player, targetLiving))
-				CraftTask.BuildTask(player, targetLiving);
-			else
-				return false;
-
-			return true;
+			// asking this NPC (/s task to a target is whispered to it): the same rules as /task
+			return AbstractTask.TryGiveTask(player, this);
 		}
 
 		public override bool ReceiveItem(GameLiving source, DbInventoryItem item)

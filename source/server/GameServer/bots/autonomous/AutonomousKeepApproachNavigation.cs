@@ -10,8 +10,9 @@ public sealed class AutonomousKeepApproachNavigation : PathfindingMgrBase
 {
     private readonly IPathfindingMgr _nav;
     private readonly Vector3[] _friendlyDoors;
-    public AutonomousKeepApproachNavigation(IPathfindingMgr nav, Vector3[] friendlyDoors)
-    { _nav = nav; _friendlyDoors = friendlyDoors; }
+    private readonly Vector3[] _unregisteredClosedDoors;
+    public AutonomousKeepApproachNavigation(IPathfindingMgr nav, Vector3[] friendlyDoors, Vector3[] unregisteredClosedDoors = null)
+    { _nav = nav; _friendlyDoors = friendlyDoors; _unregisteredClosedDoors = unregisteredClosedDoors ?? []; }
 
     public static IPathfindingMgr ForRealm(IPathfindingMgr nav, Region region, eRealm realm)
     {
@@ -20,10 +21,20 @@ public sealed class AutonomousKeepApproachNavigation : PathfindingMgrBase
         // Owner tests 2026-10-07 (Nottmoor Faste, Caer Erasleigh): once the outer gate was broken, every ram spot at
         // the keep door read "unconnected" because the broken gate still counted as a closed enemy door. A door that
         // is broken or standing open is passable like a friendly one; the mover walks through it.
+        // A postern has no health (it cannot be battered), so "not alive" made every shut enemy postern passable too and
+        // planned walks ran through it (relic audit 2026-10-31, B2; battleground run 19: stormers stuck at a postern).
         var doors = GameServer.KeepManager?.GetKeepsOfRegion(region.ID)
-            .SelectMany(k => k.Doors.Values.Where(d => k.Realm == realm || !d.IsAlive || d.State == eDoorState.Open))
+            .SelectMany(k => k.Doors.Values.Where(d => k.Realm == realm || d.IsAttackableDoor && !d.IsAlive || d.State == eDoorState.Open))
             .Select(d => new Vector3(d.X,d.Y,d.Z)).ToArray() ?? [];
-        return new AutonomousKeepApproachNavigation(nav, doors);
+        // Relic audit 2026-10-31 (B3): the navmesh has no door polygons at the six relic gates (door 02 of each relic
+        // keep), so a shut relic gate of an enemy keep did not block a planned walk at all (UT_RelicShrineReach: it lies
+        // on the open walk to every shrine). Such doors are checked against the planned walk below.
+        var unregistered = DoorMgr.UnregisteredInNavmesh
+            .OfType<DOL.GS.Keeps.GameKeepDoor>()
+            .Where(d => d.CurrentRegionID == region.ID && d.IsAlive && d.State == eDoorState.Closed &&
+                        d.Component?.Keep is { } keep && keep.Realm != realm)
+            .Select(d => new Vector3(d.X,d.Y,d.Z)).ToArray();
+        return new AutonomousKeepApproachNavigation(nav, doors, unregistered);
     }
 
     public override PathfindingResult GetPathStraight(Zone zone, Vector3 start, Vector3 end,
@@ -44,10 +55,22 @@ public sealed class AutonomousKeepApproachNavigation : PathfindingMgrBase
                 // Match Pathfinder.TryApplyAlternativePath exactly: a partial
                 // route ending at the outside of the wall is NOT permission
                 // to aim for an interior endpoint, even when only 48 units away.
-                return alternative.Status==PathfindingStatus.PathFound ? alternative : new(PathfindingStatus.NoPathFound,0);
+                return alternative.Status==PathfindingStatus.PathFound && !CrossesUnregisteredDoor(start,alternative,destination)
+                    ? alternative : new(PathfindingStatus.NoPathFound,0);
             }
         }
-        return result;
+        return CrossesUnregisteredDoor(start,result,destination) ? new(PathfindingStatus.NoPathFound,0) : result;
+    }
+
+    /// <summary>Whether a found walk runs through a shut enemy door the navmesh does not know (DoorMgr.UnregisteredInNavmesh).</summary>
+    private bool CrossesUnregisteredDoor(Vector3 start, PathfindingResult result, Span<WrappedPathfindingNode> nodes)
+    {
+        if (_unregisteredClosedDoors.Length == 0 || result.NodeCount <= 0) return false;
+        var walk = new System.Collections.Generic.List<Vector3>(result.NodeCount + 1) { start };
+        for (int i = 0; i < Math.Min(result.NodeCount, nodes.Length); i++) walk.Add(nodes[i].Position);
+        foreach (var door in _unregisteredClosedDoors)
+            if (AutonomousRelicShrine.WalkPassesDoor(walk, door)) return true;
+        return false;
     }
     public override bool IsAvailable => _nav.IsAvailable;
     public override bool HasNavmesh(Zone zone) => _nav.HasNavmesh(zone);

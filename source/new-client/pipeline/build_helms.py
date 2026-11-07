@@ -30,6 +30,28 @@ OUT = ROOT / 'godot/content/helms'
 FIG_TEX = ROOT / 'godot/content/characters/fig3_textures/original'
 DB = ROOT.parent / 'new class test - CLAUDE VERSION/runtime/data/opendaoc.sqlite3.db'
 PREFIXES = ['bri', 'ava', 'hig', 'sar', 'inc', 'nor', 'tro', 'dwa', 'kob', 'val', 'cel', 'fir', 'elf', 'lur', 'syl']
+# objects.csv Nif1 .. Nif12 are the realm's races in this order - the client picks the column by the wearer's race and
+# gender, whatever the NIF is named (owner 2026-10-19: Albion hats missing - Briton women's NIFs are "albHelm01_brit_f",
+# the Half Ogre columns were skipped as an unknown race, and the full plate helm 93 names albHelm03_Bri_m in all 12)
+COLUMN_RACES = {
+    'alb': ['bri_m', 'bri_f', 'sar_m', 'sar_f', 'hig_m', 'hig_f', 'ava_m', 'ava_f', 'inc_m', 'inc_f', 'hal_m', 'hal_f'],
+    'mid': ['nor_m', 'nor_f', 'dwa_m', 'dwa_f', 'kob_m', 'kob_f', 'tro_m', 'tro_f', 'val_m', 'val_f', 'fro_m', 'fro_f'],
+    'hib': ['cel_m', 'cel_f', 'elf_m', 'elf_f', 'lur_m', 'lur_f', 'fir_m', 'fir_f', 'syl_m', 'syl_f', 'sha_m', 'sha_f'],
+}
+REALM_OF = {r.split('_')[0]: realm for realm, races in COLUMN_RACES.items() for r in races}
+REALM_OF.update({'brit': 'alb', 'alb': 'alb', 'mid': 'mid', 'hib': 'hib'})
+
+
+def row_realm(nifs):
+    """The realm a row's Nif1 .. Nif12 belong to, from the race tags / set prefixes in their names (most votes)."""
+    import re
+    votes = {}
+    for nif in nifs:
+        for tok in re.split(r'[_\d]+', nif.lower()):
+            realm = REALM_OF.get(tok) or REALM_OF.get(tok[:3]) if tok else None
+            if realm:
+                votes[realm] = votes.get(realm, 0) + 1
+    return max(votes, key=votes.get) if votes else None
 
 
 def wanted_models():
@@ -114,11 +136,14 @@ def main():
             missing.append((model, 'no objects.csv row'))
             continue
         # its texture: the Catacombs texture column (the layout the Catacombs helm's UVs use - for the Gandalf hats
-        # b_hat01.dds: cone, brim ring, crown ring and the edge band), else the classic Apply Texture (column 22) -
+        # b_hat01.dds: cone, brim ring, crown ring and the edge band), else the item's Helm skin (column 12) - as
+        # game.dll dresses a Catacombs helm (0x4221ea: the Helm skin, replaced by the Cata Helm Texture when set; it
+        # never reads Apply Texture, column 22, which names the mesh's base atlas: owner 2026-10-19, the Norse Cloth
+        # Cap and 23 more drew N_helm's chain and scales instead of their padded / cloth / reinforced skins) -
         # taken from the exact pskins archive the row names (pskin042.mpk ...): other archives hold same-named copies
         # in the classic layout (owner 2026-10-11: the hat's band was missing / misplaced)
         tex, tex_row = '', None
-        for col in (tex_col, 22):
+        for col in (tex_col, 12):
             if not tex and len(o) > col and o[col].strip() not in ('', '0') and o[col].strip() in pskins:
                 tex_row = pskins[o[col].strip()]
                 tex = tex_row[2].rsplit('.', 1)[0].lower() + (f'__a{int(tex_row[4])}' if tex_row[4].strip().isdigit() else '')
@@ -127,15 +152,13 @@ def main():
         # (owner 2026-10-11: the Albion full plate helm 93 drew pskin001's plain 128 px b_plt1_helm2, not pskin007's)
         helm_row = pskins.get(o[12].strip()) if not tex and len(o) > 12 else None
         entry = {}
-        for col in nif_cols:
-            it = items.get(o[col].strip()) if len(o) > col else None
-            if it is None:
+        row_items = [items.get(o[col].strip()) if len(o) > col else None for col in nif_cols]
+        races = COLUMN_RACES.get(row_realm([it[2].strip() for it in row_items if it is not None]), [])
+        for ci, it in enumerate(row_items):
+            if it is None or ci >= len(races):
                 continue
             nif = it[2].strip()
-            parts = nif.lower().rsplit('_', 2)
-            if len(parts) < 3 or parts[-2] not in PREFIXES or parts[-1] not in ('m', 'f'):
-                continue
-            prefix = f'{parts[-2]}_{parts[-1]}'
+            prefix = races[ci]                             # the column's race, as the client picks it
             path = files.get(nif.lower() + '.nif')
             if path is None:
                 missing.append((model, nif + '.nif not in app/items'))

@@ -54,6 +54,7 @@ public static class AutonomousBotChatCoordinator
 
     public static bool TryStartAmbient(GameBot starter, AutonomousBotChat.Context context)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.ChatAmbient); // AI_PROFILE: measures only
         if (!Eligible(starter))
             return false;
         if (!AutonomousBotVoices.Enabled)
@@ -96,8 +97,9 @@ public static class AutonomousBotChatCoordinator
         void Add(AutonomousChatBudget.Channel channel, long key)
         {
             var band = AutonomousChatBudget.LiveBand(channel, realmBots);
+            // 1.2: the channel's own (ambient) lines against its target; its replies have a budget of their own.
             if (band.Target > 0.0005)
-                options[count++] = new AmbientChoice(channel, key, band, meter.PerMinute(channel, key, now));
+                options[count++] = new AmbientChoice(channel, key, band, meter.AmbientPerMinute(channel, key, now, band.Target));
         }
         // A running debate scene owns the realm's /faction for its duration (AutonomousBotDebates); a player's line there is
         // not followed by an unprompted one for a moment, so it isn't read as an answer.
@@ -107,6 +109,7 @@ public static class AutonomousBotChatCoordinator
         if (factionFree)
         {
             var factionBand = AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Faction, realmBots);
+            // "Thin" is what the player hears: every line, replies too.
             if (regular || Random.Shared.NextDouble() < AutonomousChatRegulars.OthersShare ||
                 meter.PerMinute(AutonomousChatBudget.Channel.Faction, (long)starter.Realm, now) < AutonomousChatRegulars.OthersBelow * factionBand.Target)
                 Add(AutonomousChatBudget.Channel.Faction, (long)starter.Realm);
@@ -336,7 +339,10 @@ public static class AutonomousBotChatCoordinator
         List<AutonomousChatFieldTalk.Step> steps = AutonomousChatFieldTalk.Thread(said, AutonomousChatFieldTalk.Of(starter, random),
             answerer == null ? null : AutonomousChatFieldTalk.Of(answerer, random), third == null ? null : AutonomousChatFieldTalk.Of(third, random),
             memory, random, now);
-        PlayThread(steps, [starter, answerer, third], faction, said.Text, "field thread " + said.Kind);
+        // 1.2, the reply budget: a thread is said whole or not at all, decided once here.
+        if (steps.Count == 0 || !ReplyAllowed(answerer ?? starter, faction, AutonomousChatBudget.ReplyKind.BotThread, "bot " + starter.Name, null, out string code))
+            return;
+        PlayThread(steps, [starter, answerer, third], faction, said.Text, "field thread " + said.Kind, code);
     }
 
     /// <summary>Who answers a line and who may chime in: a regular first, then a bot near the speaker's level, then anyone free.</summary>
@@ -379,7 +385,8 @@ public static class AutonomousBotChatCoordinator
     }
 
     /// <summary>Says a thread's lines on time, each by its speaker, while it can still talk and someone hears.</summary>
-    private static void PlayThread(List<AutonomousChatFieldTalk.Step> steps, GameBot[] speakers, bool faction, string trigger, string rule)
+    private static void PlayThread(List<AutonomousChatFieldTalk.Step> steps, GameBot[] speakers, bool faction, string trigger, string rule,
+        string code = null)
     {
         foreach (AutonomousChatFieldTalk.Step step in steps)
         {
@@ -399,14 +406,15 @@ public static class AutonomousBotChatCoordinator
                 }
                 if (faction && HasFactionAudience(bot.Realm))
                 {
-                    BroadcastFaction(bot.Name, bot.Realm, text);
+                    BroadcastFaction(bot.Name, bot.Realm, text, AsReply);
                     Note(AutonomousChatThreads.Faction(bot.Realm), bot, text, null);
                 }
                 else if (!faction && HasLocalAudience(bot))
-                    SayLine(bot, text);
+                    SayLine(bot, text, AsReply);
                 else
                     return;
-                AutonomousChatWhy.Record(bot, faction ? "faction" : "say", trigger, "said", rule, AutonomousChatReplyFit.Known, "a line in a thread", text, null);
+                AutonomousChatWhy.Record(bot, faction ? "faction" : "say", trigger, "said", rule, AutonomousChatReplyFit.Known, "a line in a thread", text, null,
+                    code: code);
             }
             Schedule(bot, Math.Max(500, step.AtMs), Fire);
         }
@@ -423,7 +431,8 @@ public static class AutonomousBotChatCoordinator
             return;
         long now = GameLoop.GameLoopTime;
         var band = AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Faction, RealmBots(teller.Realm));
-        if (AutonomousChatBudget.Meter.PerMinute(AutonomousChatBudget.Channel.Faction, (long)teller.Realm, now) >= band.Ceiling)
+        // 1.2: the story is the realm's own (ambient) talk; its riffs are replies with their own budget.
+        if (AutonomousChatBudget.Meter.AmbientPerMinute(AutonomousChatBudget.Channel.Faction, (long)teller.Realm, now, band.Target) >= band.Ceiling)
             return;
         var random = Random.Shared;
         (GameBot mate, GameBot third) = Repliers(teller, true, now, random);
@@ -432,6 +441,9 @@ public static class AutonomousBotChatCoordinator
         List<AutonomousChatFieldTalk.Step> steps = AutonomousChatFieldTalk.Story(kind, AutonomousChatFieldTalk.Of(teller, random),
             AutonomousChatFieldTalk.Of(mate, random), third == null ? null : AutonomousChatFieldTalk.Of(third, random), random,
             AutonomousChatFieldTalk.MemoryOf(teller.Realm));
+        // Riffs over the reply budget are left out: the teller tells it alone.
+        if (!ReplyAllowed(mate, true, AutonomousChatBudget.ReplyKind.BotThread, "story " + kind, null, out _))
+            steps = steps.Where(step => step.Who == 0).ToList();
         // The teller says its first line even while still on the ground: a dead bot can type.
         var timed = steps.Select(step => step with { AtMs = step.AtMs + 2_000 + random.Next(2_000) }).ToList();
         PlayStory(timed, [teller, mate, third], kind);
@@ -456,9 +468,11 @@ public static class AutonomousBotChatCoordinator
                     waits++;
                     return 2_000 + Random.Shared.Next(2_000);
                 }
-                BroadcastFaction(bot.Name, bot.Realm, text);
+                bool riff = bot != speakers[0];
+                BroadcastFaction(bot.Name, bot.Realm, text, riff ? AsReply : AutonomousChatBudget.LineKind.Ambient);
                 Note(AutonomousChatThreads.Faction(bot.Realm), bot, text, null);
-                AutonomousChatWhy.Record(bot, "faction", "story " + kind, "said", "story " + kind, AutonomousChatReplyFit.Known, "a story from a real event", text, null);
+                AutonomousChatWhy.Record(bot, "faction", "story " + kind, "said", "story " + kind, AutonomousChatReplyFit.Known, "a story from a real event", text, null,
+                    code: riff ? AutonomousChatWhy.Codes.ReplyInBudget : AutonomousChatWhy.Codes.Ambient);
                 return 0;
             }, Math.Max(500, step.AtMs));
         }
@@ -473,12 +487,12 @@ public static class AutonomousBotChatCoordinator
         return false;
     }
 
-    /// <summary>A bot's /say line, counted against the region's /say budget.</summary>
-    internal static bool SayLine(GameBot bot, string text)
+    /// <summary>A bot's /say line, counted against the region's /say budget (1.2: an ambient line or a reply).</summary>
+    internal static bool SayLine(GameBot bot, string text, AutonomousChatBudget.LineKind kind = AutonomousChatBudget.LineKind.Ambient)
     {
         if (bot == null || !bot.Say(text))
             return false;
-        AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Say, bot.CurrentRegionID, GameLoop.GameLoopTime);
+        AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Say, bot.CurrentRegionID, GameLoop.GameLoopTime, kind);
         return true;
     }
 
@@ -554,6 +568,7 @@ public static class AutonomousBotChatCoordinator
     /// </summary>
     public static bool TrySayEventNews(GameBot preferred, bool witness, string topic, IReadOnlyDictionary<string, string> slots)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.ChatNews); // AI_PROFILE: measures only
         if (!AutonomousBotVoices.Enabled || string.IsNullOrEmpty(topic) || preferred == null || !HasFactionAudience(preferred.Realm))
             return false;
         GameBot speaker = Eligible(preferred) ? preferred : null;
@@ -569,6 +584,7 @@ public static class AutonomousBotChatCoordinator
     /// <summary>World news no realm notice told (AutonomousChatNews): said by a bot that was near it if there is one.</summary>
     public static bool TellNews(ChatNewsItem item)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.ChatNews); // AI_PROFILE: measures only
         if (item == null || !AutonomousBotVoices.Enabled || !HasFactionAudience(item.Realm))
             return false;
         GameBot[] bots = AutonomousBotRegistry.Snapshot().Where(bot => bot.Realm == item.Realm && Eligible(bot)).ToArray();
@@ -643,6 +659,9 @@ public static class AutonomousBotChatCoordinator
             RealmCounts[realm] = (count, now);
         return count;
     }
+
+    /// <summary>A gamebot leader's /lfg ask for a replacement (bot-led groups, B4), sent and counted like any bot /lfg line.</summary>
+    internal static void SendLfgLine(GameBot bot, string text) => SendRealmChannel(bot, "lfg", text);
 
     /// <summary>A bot's line in its realm's /lfg or /trade channel, formatted as the server's /lfg and /trade commands do.</summary>
     private static void SendRealmChannel(GameBot bot, string channel, string text)
@@ -843,17 +862,18 @@ public static class AutonomousBotChatCoordinator
         {
             if (!Eligible(bot))
                 return 0;
+            // 1.2: a follow-up to the bot's own line is said to it, so the reply budget never holds it; it counts as a reply.
             if (scope == ThreadScope.Faction && HasFactionAudience(bot.Realm))
-                BroadcastFaction(bot.Name, bot.Realm, text);
+                BroadcastFaction(bot.Name, bot.Realm, text, AsReply);
             else if (scope == ThreadScope.Say && HasLocalAudience(bot))
-                SayLine(bot, text);
+                SayLine(bot, text, AsReply);
             else if (scope == ThreadScope.Group && bot.Group != null && bot.Group == player?.Group)
                 AutonomousBotGroupChatter.Send(bot, text, remember: false);   // recorded once, below
             else
                 return 0;
             Note(channel, bot, text, invites, player?.Name);
             AutonomousChatWhy.Record(bot, ScopeName(scope), "player " + player?.Name, "said", rule, AutonomousChatReplyFit.Of(rule),
-                "follows on from the conversation", text, to: player?.Name);
+                "follows on from the conversation", text, to: player?.Name, code: AutonomousChatWhy.Codes.ExemptThread);
             return 0;
         }, ReplyDelayMs(bot, null, text, 0, Random.Shared));
     }
@@ -904,6 +924,7 @@ public static class AutonomousBotChatCoordinator
 
     public static void OnPlayerFactionChat(GamePlayer player, string message)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.ChatPlayerReply); // AI_PROFILE: measures only
         if (player == null || string.IsNullOrWhiteSpace(message))
             return;
         BotChatTranscript.Player("faction", player, message);
@@ -940,6 +961,7 @@ public static class AutonomousBotChatCoordinator
 
     public static void OnPlayerLocalChat(GamePlayer player, string message)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.ChatPlayerReply); // AI_PROFILE: measures only
         if (player == null || string.IsNullOrWhiteSpace(message) || player.CurrentRegion == null)
             return;
         BotChatTranscript.Player("say", player, message);
@@ -1086,6 +1108,7 @@ public static class AutonomousBotChatCoordinator
     /// </summary>
     public static void OnPlayerTell(GamePlayer player, GameBot bot, string message)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.ChatPlayerReply); // AI_PROFILE: measures only
         if (player == null || bot == null || string.IsNullOrWhiteSpace(message))
             return;
         BotChatTranscript.Player("tell", player, message, bot.Name);
@@ -1148,6 +1171,19 @@ public static class AutonomousBotChatCoordinator
         bool voices = AutonomousBotVoices.Enabled;
         long now = GameLoop.GameLoopTime;
         string channel = AutonomousChatThreads.Tell(player.Name, bot.Name);
+        // Bot-led groups: the answer to a leader's invite tell. "no thanks" is a no to that leader (as No in the box).
+        if (AutonomousChatThreads.Log.OpenQuestion(channel, now, AutonomousChatThreads.TellMemoryMs) is { } invite &&
+            invite.Invites == BotLedGroups.InviteThread && !message.Contains('?') && AutonomousChatThreads.SaysYes(message) is bool joining)
+        {
+            AutonomousChatThreads.Log.Close(invite);
+            BotLedGroups.OnInviteTellAnswered(bot, player, joining);
+            return new ReplyChoice(AutonomousBotVoices.StyleFor(bot, joining
+                ? Random.Shared.Next(2) == 0 ? "cool, accept the inv" : "great, inv is up"
+                : Random.Shared.Next(2) == 0 ? "np, maybe next time" : "no worries"), "lead invite answer");
+        }
+        // Asking a bot leader with room ("room for a cleric?", "lfg?") gets the group invite box, not "invite me".
+        if (AsksToJoinGroup(message) && BotLedGroups.OnPlayerAsked(player, bot))
+            return new ReplyChoice(null, "lead invite asked");
         if (voices)
         {
             string word = AutonomousChatThreads.FollowUpWord(message);
@@ -1588,18 +1624,53 @@ public static class AutonomousBotChatCoordinator
         return false;
     }
 
-    public static void BroadcastFaction(string speakerName, eRealm realm, string message) =>
-        BroadcastFactionAsWritten(speakerName, realm, AutonomousRoleplayers.VoiceByName(speakerName, realm, message));
+    /// <summary>
+    /// A bot's /faction line, counted by the realm's meter as an ambient line, or (1.2) as a reply when <paramref name="kind"/>
+    /// says so: replies have a budget of their own (AutonomousChatBudget.DecideReply).
+    /// </summary>
+    public static void BroadcastFaction(string speakerName, eRealm realm, string message,
+        AutonomousChatBudget.LineKind kind = AutonomousChatBudget.LineKind.Ambient) =>
+        BroadcastFactionAsWritten(speakerName, realm, AutonomousRoleplayers.VoiceByName(speakerName, realm, message), kind);
 
     /// <summary>A bot's /faction line exactly as written (a roleplayer's own in-character line skips the speech pass).</summary>
-    public static void BroadcastFactionAsWritten(string speakerName, eRealm realm, string message)
+    public static void BroadcastFactionAsWritten(string speakerName, eRealm realm, string message,
+        AutonomousChatBudget.LineKind kind = AutonomousChatBudget.LineKind.Ambient)
     {
         string safe = SendFaction(speakerName, realm, message);
         if (safe != null)
         {
             BotChatTranscript.Bot("faction", speakerName, realm, safe);
-            AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Faction, (long)realm, GameLoop.GameLoopTime);
+            AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Faction, (long)realm, GameLoop.GameLoopTime, kind);
         }
+    }
+
+    private const AutonomousChatBudget.LineKind AsReply = AutonomousChatBudget.LineKind.Reply;
+
+    /// <summary>
+    /// The reply budget (1.2) for a reply in /faction or a region's /say, decided when the reply is planned. False when it is
+    /// held; the hold is recorded for /lswhy with its reason code. Always true with bot voices off (the old chat has no budgets).
+    /// </summary>
+    internal static bool ReplyAllowed(GameBot speaker, bool faction, AutonomousChatBudget.ReplyKind kind, string trigger, string to,
+        out string code)
+    {
+        code = kind == AutonomousChatBudget.ReplyKind.Direct ? AutonomousChatWhy.Codes.ExemptNamed : AutonomousChatWhy.Codes.ReplyInBudget;
+        if (!AutonomousBotVoices.Enabled || speaker == null)
+            return true;
+        var channel = faction ? AutonomousChatBudget.Channel.Faction : AutonomousChatBudget.Channel.Say;
+        long key = faction ? (long)speaker.Realm : speaker.CurrentRegionID;
+        int bots = RealmBots(speaker.Realm);
+        AutonomousChatBudget.ReplyVerdict verdict = AutonomousChatBudget.LiveReply(channel, key, bots, kind);
+        if (kind != AutonomousChatBudget.ReplyKind.Direct)
+            code = AutonomousChatWhy.Codes.Of(verdict, kind);
+        if (AutonomousChatBudget.Says(verdict))
+            return true;
+        var band = AutonomousChatBudget.LiveReplyBand(channel, bots);
+        double measured = AutonomousChatBudget.Meter.RepliesPerMinute(channel, key, GameLoop.GameLoopTime, band.Target);
+        AutonomousChatWhy.Record(speaker, faction ? "faction" : "say", trigger, "held", "reply budget " + kind.ToString().ToLowerInvariant(), 0,
+            $"the channel's replies ran at {measured:0.##}/min, " +
+            (verdict == AutonomousChatBudget.ReplyVerdict.HoldCeiling ? $"at its reply ceiling {band.Ceiling:0.##}" : $"over its reply target {band.Target:0.##}"),
+            to: to, code: code);
+        return false;
     }
 
     private static string SendFaction(string speakerName, eRealm realm, string message)
@@ -1665,6 +1736,8 @@ public static class AutonomousBotChatCoordinator
             .ToArray();
         GameBot[] mentioned = eligible.Where(bot => ContainsMention(message, bot.Name)).ToArray();
         bool directed = mentioned.Length > 0;
+        // 1.2: a line that names a bot is always answered (the reply budget never holds it), as is a /say to the bot in front of you.
+        bool namedInLine = directed;
         // Beta 1.1.2, round 3: a /say line is for one bot also when the player targets it, answers its line, or stands right in
         // front of it with nobody else that close. That bot answers, once.
         if (voices && !faction && !directed && SayAddressee(player, eligible) is { } addressee)
@@ -1730,8 +1803,10 @@ public static class AutonomousBotChatCoordinator
                 string late = AutonomousBotVoices.StyleFor(busy, AfterAFight(JoinReply(busy, player, Random.Shared, message), Random.Shared, riding));
                 if (!HasFactionAudience(busy.Realm))
                     return 0;
-                BroadcastFaction(busy.Name, busy.Realm, late);
+                BroadcastFaction(busy.Name, busy.Realm, late, AsReply);
                 Note(AutonomousChatThreads.Faction(busy.Realm), busy, late, "", player.Name);
+                AutonomousChatWhy.Record(busy, "faction", "player " + player.Name, "said", "join", AutonomousChatReplyFit.Known,
+                    "named in the line, answered after its fight", late, to: player.Name, code: AutonomousChatWhy.Codes.ExemptNamed);
                 return 0;
             }, 5_000);
             return;
@@ -1750,18 +1825,25 @@ public static class AutonomousBotChatCoordinator
         {
             GameBot asked = directed ? mentioned[0] : eligible.OrderBy(bot => bot.GetDistanceTo(player)).First();
             string answer = AutonomousBotVoices.StyleFor(asked, JoinReply(asked, player, Random.Shared, message));
+            if (!ReplyAllowed(asked, faction, directed ? AutonomousChatBudget.ReplyKind.Direct : AutonomousChatBudget.ReplyKind.ToPlayer,
+                    "player " + player.Name, player.Name, out string joinCode))
+                return;
+            if (directed)
+                joinCode = namedInLine ? AutonomousChatWhy.Codes.ExemptNamed : AutonomousChatWhy.Codes.ExemptAddressed;
             _ = new ECSGameTimer(player, _ =>
             {
                 if (!Eligible(asked))
                     return 0;
                 if (faction && HasFactionAudience(asked.Realm))
-                    BroadcastFaction(asked.Name, asked.Realm, answer);
+                    BroadcastFaction(asked.Name, asked.Realm, answer, AsReply);
                 else if (!faction && HasLocalAudience(asked))
-                    SayLine(asked, answer);
+                    SayLine(asked, answer, AsReply);
                 else
                     return 0;
                 Note(faction ? AutonomousChatThreads.Faction(asked.Realm) : AutonomousChatThreads.Say(asked.CurrentRegionID), asked, answer, "",
                     player.Name);
+                AutonomousChatWhy.Record(asked, faction ? "faction" : "say", "player " + player.Name, "said", "join", AutonomousChatReplyFit.Known,
+                    "asked to join a group", answer, to: player.Name, code: joinCode);
                 return 0;
             }, ReplyDelayMs(answer, 0, Random.Shared));
             return;
@@ -1825,6 +1907,7 @@ public static class AutonomousBotChatCoordinator
         bool question = AutonomousChatQuestions.IsQuestion(message);
         int social = 0, reactions = 0;
         string reactionKind = null;
+        bool heldByBudget = false;
         for (int index = 0; index < eligible.Length && index < count + 3 && planned < plan.Total; index++)
         {
             GameBot responder = eligible[index];
@@ -1874,6 +1957,17 @@ public static class AutonomousBotChatCoordinator
             }
             else if (social > plan.Social && !choice.Route.StartsWith("pileon", StringComparison.Ordinal))
                 continue;
+            // 1.2, the reply budget: the first answer to a line said to nobody in particular comes below the channel's reply
+            // ceiling, pile-ons below its target; a line naming a bot (or a /say to the bot in front of you) always gets its answer.
+            AutonomousChatBudget.ReplyKind replyKind = directed ? AutonomousChatBudget.ReplyKind.Direct
+                : primary ? AutonomousChatBudget.ReplyKind.ToPlayer : AutonomousChatBudget.ReplyKind.PileOn;
+            if (!ReplyAllowed(responder, faction, replyKind, "player " + player.Name, player.Name, out string budgetCode))
+            {
+                heldByBudget |= primary;
+                break;
+            }
+            string code = ReplyCode(choice.Route, directed ? namedInLine ? AutonomousChatWhy.Codes.ExemptNamed : AutonomousChatWhy.Codes.ExemptAddressed
+                : budgetCode);
             planned++;
             due = voices ? AutonomousChatArbiter.DelayMs(message, response, Wpm(responder), due, Random.Shared) : ReplyDelayMs(response, due, Random.Shared);
             if (faction)
@@ -1892,9 +1986,9 @@ public static class AutonomousBotChatCoordinator
                 if (speaker == null)
                     return 0;
                 if (faction && HasFactionAudience(speaker.Realm))
-                    BroadcastFaction(speaker.Name, speaker.Realm, text);
+                    BroadcastFaction(speaker.Name, speaker.Realm, text, AsReply);
                 else if (!faction && HasLocalAudience(speaker))
-                    SayLine(speaker, text);
+                    SayLine(speaker, text, AsReply);
                 else
                     return 0;
                 Note(faction ? AutonomousChatThreads.Faction(speaker.Realm) : AutonomousChatThreads.Say(speaker.CurrentRegionID), speaker, text, "",
@@ -1902,7 +1996,7 @@ public static class AutonomousBotChatCoordinator
                 AutonomousChatWhy.Record(speaker, why, "player " + player.Name, outcome, route, fit,
                     outcome == "pileon" ? "a bystander joins in after the first answer"
                     : speaker == responder ? (directed ? "named in the line" : "the best fit of " + eligible.Length + " who heard it")
-                    : "stood in for " + responder.Name + ", who was busy", text, lineId, player.Name);
+                    : "stood in for " + responder.Name + ", who was busy", text, lineId, player.Name, code: code);
                 return 0;
             }, due);
         }
@@ -1910,7 +2004,7 @@ public static class AutonomousBotChatCoordinator
         if (planned > 0)
             AutonomousChatBudget.Meter.Delay(faction ? AutonomousChatBudget.Channel.Faction : AutonomousChatBudget.Channel.Say,
                 faction ? (long)player.Realm : player.CurrentRegionID, GameLoop.GameLoopTime + due + 2_000);
-        if (planned == 0)
+        if (planned == 0 && !heldByBudget)
             AutonomousChatWhy.RecordSilence(player.Realm, why, "player " + player.Name, lastRoute ?? "none", AutonomousChatReplyFit.Of(lastRoute, message),
                 eligible.Length == 0 ? "no bot that heard it could answer" : count == 0 ? $"a line like this ({intent}) draws no answer here"
                     : "no reply fits it", player.Name);
@@ -1922,6 +2016,24 @@ public static class AutonomousBotChatCoordinator
     }
 
     private static readonly DOL.Logging.Logger PlanLog = DOL.Logging.LoggerManager.Create(typeof(AutonomousBotChatCoordinator));
+
+    /// <summary>
+    /// The reason code a reply to a player is recorded with (1.2): a reply the minimum fit turned into something short or into a
+    /// rescue says so; any other the reply budget's code (or an exemption). Pure.
+    /// </summary>
+    public static string ReplyCode(string route, string budgetCode)
+    {
+        route ??= string.Empty;
+        if (route.Contains("contradicts", StringComparison.Ordinal))
+            return AutonomousChatWhy.Codes.ContradictsSelf;
+        if (route.StartsWith("ack", StringComparison.Ordinal) || route.StartsWith("short", StringComparison.Ordinal))
+            return AutonomousChatWhy.Codes.ShortBelowMinimum;
+        if (route.StartsWith("rescue", StringComparison.Ordinal))
+            return AutonomousChatWhy.Codes.RescueBelowMinimum;
+        if (route.StartsWith("pileon", StringComparison.Ordinal) && budgetCode == AutonomousChatWhy.Codes.ReplyInBudget)
+            return AutonomousChatWhy.Codes.PileOn;
+        return budgetCode;
+    }
 
     /// <summary>Who answers a player first: a bot that can really help (a rezzer near a dead player, a bot in the
     /// frontier for "inc", a bot close in level for a group question), then bots whose task matches the words.</summary>
@@ -2027,13 +2139,13 @@ public static class AutonomousBotChatCoordinator
             {
                 GameBot reactor = AutonomousBotRegistry.Snapshot().FirstOrDefault(bot => bot != starter && bot.Realm == starter.Realm && Eligible(bot) &&
                     (faction || bot.CurrentRegion == starter.CurrentRegion && bot.IsWithinRadius(starter, WorldMgr.SAY_DISTANCE)));
-                if (reactor != null)
+                if (reactor != null && ReplyAllowed(reactor, faction, AutonomousChatBudget.ReplyKind.BotThread, "bot " + starter.Name, null, out _))
                     Schedule(reactor, ReplyDelayMs(reaction, 0, Random.Shared), () =>
                     {
                         if (faction && HasFactionAudience(reactor.Realm))
-                            BroadcastFaction(reactor.Name, reactor.Realm, reaction);
+                            BroadcastFaction(reactor.Name, reactor.Realm, reaction, AsReply);
                         else if (!faction && HasLocalAudience(reactor))
-                            SayLine(reactor, reaction);
+                            SayLine(reactor, reaction, AsReply);
                     });
             }
             return;
@@ -2043,6 +2155,9 @@ public static class AutonomousBotChatCoordinator
             ScheduleVoicedBotReplies(starter, opening, faction, openerLine.Invites);
             return;
         }
+        // 1.2, the reply budget: bots answering a bot's opener, decided once for the exchange.
+        if (!fromPlayer && !ReplyAllowed(starter, faction, AutonomousChatBudget.ReplyKind.BotThread, "bot " + starter.Name, null, out _))
+            return;
         bool hasKnowledge = AutonomousChatKnowledge.TryAnswer(starter.Realm, opening, out string knowledge);
         GameBot[] eligible = AutonomousBotRegistry.Snapshot()
             .Where(bot => bot != starter && Eligible(bot) && bot.Realm == starter.Realm)
@@ -2065,12 +2180,12 @@ public static class AutonomousBotChatCoordinator
             {
                 if (faction && HasFactionAudience(responder.Realm))
                 {
-                    BroadcastFaction(responder.Name, responder.Realm, response);
+                    BroadcastFaction(responder.Name, responder.Realm, response, AsReply);
                     said.Add();
                 }
                 else if (!faction && HasLocalAudience(responder))
                 {
-                    SayLine(responder, response);
+                    SayLine(responder, response, AsReply);
                     said.Add();
                 }
             });
@@ -2088,9 +2203,9 @@ public static class AutonomousBotChatCoordinator
                 if (!ClosingFollowsAReply(said.Count))
                     return;
                 if (faction && HasFactionAudience(starter.Realm))
-                    BroadcastFaction(starter.Name, starter.Realm, closing);
+                    BroadcastFaction(starter.Name, starter.Realm, closing, AsReply);
                 else if (!faction && HasLocalAudience(starter))
-                    SayLine(starter, closing);
+                    SayLine(starter, closing, AsReply);
             });
         }
     }
@@ -2134,6 +2249,10 @@ public static class AutonomousBotChatCoordinator
         int count = hasKnowledge ? Math.Min(1, eligible.Length) : BotReplyCount(invites, eligible.Length, Random.Shared);
         if (count == 0)
             return;
+        // 1.2, the reply budget: bots answering a bot's opener, decided once for the exchange.
+        if (!ReplyAllowed(eligible[0], faction, AutonomousChatBudget.ReplyKind.BotThread, "bot " + starter.Name + " (" + invites + ")", starter.Name,
+                out string budgetCode))
+            return;
         var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = starter.Name };
         HashSet<string> scheduled = new(StringComparer.OrdinalIgnoreCase);
         var said = new ReplyTally();
@@ -2167,6 +2286,13 @@ public static class AutonomousBotChatCoordinator
                     }
                 }
             }
+            // 1.2: never a reply that says something untrue of the bot ("im a cleric" from a thane).
+            if (SaysUntrue(responder, response))
+            {
+                AutonomousChatWhy.Record(responder, faction ? "faction" : "say", "bot " + starter.Name + " (" + invites + ")", "held", RuleOf(replyLine, "reply"),
+                    0, "the reply says something untrue of it", response, replyLine?.Id, starter.Name, code: AutonomousChatWhy.Codes.ContradictsSelf);
+                continue;
+            }
             if (!TryAddDistinctResponse(scheduled, response, out response))
                 continue;
             lastReply = response;
@@ -2184,12 +2310,12 @@ public static class AutonomousBotChatCoordinator
                 // Bot-to-bot talk holds its tongue when a scene started after it was scheduled.
                 if (faction && HasFactionAudience(speaker.Realm) && !AutonomousBotDebates.IsRunning(speaker.Realm))
                 {
-                    BroadcastFaction(speaker.Name, speaker.Realm, text);
+                    BroadcastFaction(speaker.Name, speaker.Realm, text, AsReply);
                     said.Add();
                 }
                 else if (!faction && HasLocalAudience(speaker))
                 {
-                    SayLine(speaker, text);
+                    SayLine(speaker, text, AsReply);
                     said.Add();
                 }
                 else
@@ -2197,7 +2323,7 @@ public static class AutonomousBotChatCoordinator
                 Note(faction ? AutonomousChatThreads.Faction(speaker.Realm) : AutonomousChatThreads.Say(speaker.CurrentRegionID), speaker, text, "");
                 AutonomousChatWhy.Record(speaker, faction ? "faction" : "say", "bot " + starter.Name + " (" + invites + ")", "said",
                     hasKnowledge ? "knowledge" : RuleOf(replyLine, "reply"), VC.Specificity(replyLine), "answers what the opener invites", text,
-                    replyLine?.Id, starter.Name);
+                    replyLine?.Id, starter.Name, code: budgetCode);
                 return 0;
             }, due);
         }
@@ -2213,9 +2339,9 @@ public static class AutonomousBotChatCoordinator
             if (!ClosingFollowsAReply(said.Count))
                 return;
             if (faction && HasFactionAudience(starter.Realm) && !AutonomousBotDebates.IsRunning(starter.Realm))
-                BroadcastFaction(starter.Name, starter.Realm, closing.Text);
+                BroadcastFaction(starter.Name, starter.Realm, closing.Text, AsReply);
             else if (!faction && HasLocalAudience(starter))
-                SayLine(starter, closing.Text);
+                SayLine(starter, closing.Text, AsReply);
         });
     }
 
@@ -2418,6 +2544,12 @@ public static class AutonomousBotChatCoordinator
         if (AutonomousChatReplyBudget.CreditFor(message) != null && MomentOf(bot, player, message, channel ?? "tell", addressed) is var credit &&
             AutonomousChatReplyBudget.ClaimsCredit(message, choice.Text, credit.CanHeal, credit.CanRez))
             choice = new ReplyChoice(null, "none credit");
+        // 1.2: a reply that says something untrue about the bot ("im a cleric" from a thane), or a group or trade ad said to a
+        // line about neither, doesn't fit, whatever chose it.
+        if (SaysUntrue(bot, choice.Text))
+            choice = new ReplyChoice(null, "none contradicts (" + choice.Route + ")");
+        else if (AutonomousChatReplyFit.Of(choice.Route, message) < AutonomousChatReplyFit.Known && AutonomousChatReplyFit.WrongSituation(message, choice.Text))
+            choice = new ReplyChoice(null, "none situation (" + choice.Route + ")");
         int fit = AutonomousChatReplyFit.Of(choice.Route, message);
         if (string.IsNullOrWhiteSpace(choice.Text) || AutonomousChatReplyBudget.IsBrushOff(choice.Text))
             fit = Math.Min(fit, AutonomousChatReplyFit.Weak);
@@ -2440,6 +2572,21 @@ public static class AutonomousBotChatCoordinator
         return AutonomousChatReplyBudget.Rescue(moment, choice.Route, Random.Shared) is { } rescue
             ? new ReplyChoice(AutonomousBotVoices.StyleFor(bot, rescue), "rescue (" + choice.Route + ")")
             : new ReplyChoice(null, "silent (" + choice.Route + ")");
+    }
+
+    /// <summary>Whether a line says something untrue of the bot about to say it: another class, role or level (1.2).</summary>
+    internal static bool SaysUntrue(GameBot bot, string text)
+    {
+        if (bot == null || string.IsNullOrWhiteSpace(text))
+            return false;
+        try
+        {
+            return AutonomousChatQuestions.ContradictsSelf(text, AutonomousChatLiveAnswers.FactsOf(bot));
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     /// <summary>What the reply budget knows of a reply's moment: the bot's class, heals and rez, whether it is busy, its last line.</summary>

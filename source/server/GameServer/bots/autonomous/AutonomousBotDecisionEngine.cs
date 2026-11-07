@@ -28,6 +28,8 @@ public enum eWorldServiceKind
     VaultKeeper,
     RealmExchange,
     CraftStation,
+    // A Darkness Falls seals merchant: seal gear bought with the bot's own looted seals (owner 2026-10-30).
+    SealMerchant,
 }
 
 /// <summary>

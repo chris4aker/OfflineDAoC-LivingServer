@@ -60,7 +60,8 @@ public sealed partial class AutonomousWorldBotController
         _ignoredPvpTargets.TryGetValue(target, out long until) && until > GameLoop.GameLoopTime;
 
     /// <summary>A target this bot dropped as unreachable or stalemated; its hits do not pull the bot back in.</summary>
-    internal bool IgnoresTarget(GameLiving target) => target != null && IsIgnoredPvpTarget(target);
+    // A fleeing relic carrier takes no new aggro (relic audit 2026-10-31, L4: hits used to pull it back into the fight).
+    internal bool IgnoresTarget(GameLiving target) => target != null && (_relicCarrierFleeing || IsIgnoredPvpTarget(target));
 
     // Owner 2026-10-07: a melee bot shot at from a keep wall (an archer guard, or an enemy bot up on the wall) must
     // not run around below it for ever. A target with no walkable route (closed enemy doors block the way) is dropped
@@ -126,6 +127,8 @@ public sealed partial class AutonomousWorldBotController
     public bool TryEngageFrontierThreat(BotBrain brain)
     {
         GameBot bot = brain?.BotBody;
+        // L4: a relic carrier does not go looking for fights; Tick decides whether it is cornered.
+        if (GameRelic.IsPlayerCarryingRelic(bot)) return false;
         if (bot?.IsAutonomousWorldBot == true && IsBattleground(bot) && (BreakPvpStalemate(brain, bot) || BreakUnreachableTarget(brain, bot))) return false;
         bool defending = AutonomousRvrDefense.IsCommittedDefender(bot);
         bool siegeFighter = AutonomousRvrDefense.IsCommittedSiegeFighter(bot);
@@ -136,6 +139,8 @@ public sealed partial class AutonomousWorldBotController
             (brain.HasAggro || bot.InCombat || bot.IsAttacking) && previousEngine == null ||
             brain.FSM.GetCurrentState()?.StateType == eFSMStateType.PASSIVE ||
             !_frontierThreat.Due(GameLoop.GameLoopTime, bot.DatabaseID) || IsSafeArea(bot)) return false;
+        // AI_PROFILE: only the scan itself is timed, not the cheap checks above that skip it.
+        using var aiProfile = AiProfile.Scope(AiSystem.FrontierThreatScan);
 
         var nav = PathfindingProvider.Instance;
         if (!nav.IsAvailable || !nav.HasNavmesh(bot.CurrentZone)) return false;
@@ -160,14 +165,19 @@ public sealed partial class AutonomousWorldBotController
                 bot.IsWithinRadius(friendly, 1000) && BotSiegeRuntime.HoldingPosition(friendly) ? 0 : 1)
             .ThenBy(bot.GetDistanceTo).ToArray();
         AutonomousLivingServer.ObserveEnemies(bot, nearby);
+        RvrAwarenessProfile rvrProfile = RvrProfile();
         bool Visible(GameLiving target) => FiringOnRealm(bot, target) || nav.HasLineOfSight(bot.CurrentZone,
             new(bot.X, bot.Y, bot.Z + 48), new(target.X, target.Y, target.Z + 48), nav.BlockingDoorAvoidanceFilters);
         var visible = siegeFighter
             ? _frontierThreat.VisiblePriority(nearby.Where(AutonomousRvrDefense.IsCombatant).ToArray(),
                 nearby.OfType<GameSiegeWeapon>().Cast<GameLiving>().ToArray(), Visible)
-            : _frontierThreat.Visible(nearby, target => FiringOnRealm(bot, target) || nav.HasLineOfSight(bot.CurrentZone,
+            : _frontierThreat.Visible(nearby, target => FiringOnRealm(bot, target) ||
+                // RvR perception: no ray for a player this bot couldn't notice on this scan anyway (observer cap, range).
+                !RvrSkipsLineOfSight(bot, target, defending, rvrProfile, GameLoop.GameLoopTime) && nav.HasLineOfSight(bot.CurrentZone,
                 new(bot.X, bot.Y, bot.Z), new(target.X, target.Y, target.Z), nav.DefaultFilters));
         var visibleTargets=visible.ToArray();
+        // RvR perception (owner 2026-11-01): enemy players, companions and pets only once noticed and after a reaction delay.
+        visibleTargets = PerceiveRvrTargets(bot, visibleTargets, defending || siegeFighter);
         var operatorThreats=visibleTargets.Where(target=>target.IsAttacking && target.TargetObject is GameBot friendly &&
             friendly.Realm==bot.Realm && bot.IsWithinRadius(friendly,1000) && BotSiegeRuntime.HoldingPosition(friendly)).ToArray();
         GameLiving enemy = SelectDistributedRvrTarget(bot, operatorThreats.Length>0 ? operatorThreats : visibleTargets);

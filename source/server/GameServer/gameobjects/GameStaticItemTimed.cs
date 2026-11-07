@@ -123,8 +123,11 @@ namespace DOL.GS
         {
             public bool Equals(IGameStaticItemOwner x, IGameStaticItemOwner y)
             {
+                // Compare the values, not the references: a comparand is often a string built on each call (a gamebot's
+                // "offlinebot:<id>"), so "==" on two objects never matched and (without autoloot) solo
+                // bots never found their own bags: no coin, no loot (owner 2026-10-31).
                 return x.GameStaticItemOwnerComparand != null && y.GameStaticItemOwnerComparand != null ?
-                    x.GameStaticItemOwnerComparand == y.GameStaticItemOwnerComparand :
+                    Equals(x.GameStaticItemOwnerComparand, y.GameStaticItemOwnerComparand) :
                     x.Equals(y);
             }
 

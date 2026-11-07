@@ -159,6 +159,8 @@ namespace DOL.GS
             [System.Runtime.CompilerServices.CallerFilePath] string callerFile = "")
         {
             long profiled = NavQueryProfile.Start();
+            // AI_PROFILE: the outermost step only; nested steps are part of its own time.
+            using var aiProfile = AiProfile.ScopeIf(_stepDepth == 0, AiSystem.RouteZoneStep);
             _stepDepth++;
             try
             {
@@ -688,6 +690,7 @@ namespace DOL.GS
         private static bool CalculateCompleteCorridor(IPathfindingMgr nav, Zone zone, Vector3 start, Vector3 end)
         {
             long profiled = NavQueryProfile.Start();
+            using var aiProfile = AiProfile.Scope(AiSystem.RouteCorridor); // AI_PROFILE: measures only
             try { return CalculateCompleteCorridorCore(nav, zone, start, end, out _); }
             finally { NavQueryProfile.Stop(NavQueryProfile.Kind.Corridor, profiled); }
         }

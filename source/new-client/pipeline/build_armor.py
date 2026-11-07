@@ -153,6 +153,36 @@ def cata_columns(rows, idx, skip):
     return out
 
 
+ROBE_BODY = 7
+
+
+def robe_bodies(rows, out):
+    """Robes on the long robe body mesh (owner 2026-10-19: a troll Bonedancer companion's robe drawn on the vest body
+    with trousers under it). game.dll 0x41b5c1 picks the torso's fig3 body mesh: an item whose objects.csv "Lbody #"
+    (column 15) is 3 - every robe - wears body mesh 7, any other the item's extension; Fig3Figure hides the arms, legs
+    and kilt under it and puts boots / gloves on mesh 3 (0x424817). Sets the body variant of those models in `out`."""
+    objects = {r[0].strip(): r for r in rows('objects.csv') if r and r[0].strip().isdigit()}
+    n = 0
+    for model, entry in out.items():
+        r = objects.get(model)
+        if r is None or len(r) < 16 or r[15].strip() != '3':
+            continue
+        for parts in entry.values():
+            if 'body' in parts:
+                parts['body'][0] = ROBE_BODY
+                n += 1
+    return n
+
+
+def patch_robes():
+    """python build_armor.py --robes: only the robe rule on the existing armor.json (no texture export)."""
+    from build_races import Tables
+    data = json.loads(OUT.read_text(encoding='utf-8'))
+    n = robe_bodies(Tables().rows, data['models'])
+    OUT.write_text(json.dumps(data, indent=1), encoding='utf-8')
+    print(n, 'robe bodies on mesh', ROBE_BODY)
+
+
 def main():
     from build_races import Tables
     rows = Tables().rows                                   # gamedata.mpk csv reader
@@ -203,9 +233,10 @@ def main():
             continue
         save_if_changed(img, TEX / 'original' / f'{t}.png')
     upscale_dir(TEX / 'original', TEX / 'x4plus', factor_after=4)
+    robe_bodies(rows, out)
     OUT.write_text(json.dumps({'models': out, 'missing_textures': missing}, indent=1), encoding='utf-8')
     print(len(out), 'armour models,', len(texs), 'textures,', len(missing), 'missing', missing[:8])
 
 
 if __name__ == '__main__':
-    main()
+    patch_robes() if '--robes' in sys.argv else main()

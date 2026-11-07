@@ -669,7 +669,7 @@ public static class AutonomousBeggars
         int fromSlot = item.SlotPosition;
         string name = item.GetName(0, false);
         int count = item.Count;
-        lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+        using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
         {
             if (!player.Inventory.RemoveItemWithoutDbDeletion(item))
                 return false;

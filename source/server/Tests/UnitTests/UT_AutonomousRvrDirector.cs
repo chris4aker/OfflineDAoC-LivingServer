@@ -16,7 +16,7 @@ public sealed class UT_AutonomousRvrDirector
             Assert.That(AutonomousRvrObjectiveState.Next(true, true, true, true, true), Is.EqualTo(eAutonomousRvrPhase.BreachingDoor));
             Assert.That(AutonomousRvrObjectiveState.Next(true, false, true, true, true), Is.EqualTo(eAutonomousRvrPhase.AssaultingLord));
             Assert.That(AutonomousRvrObjectiveState.Next(true, false, false, true, true), Is.EqualTo(eAutonomousRvrPhase.HuntingEnemy));
-            Assert.That(AutonomousRvrObjectiveState.Next(true, false, false, false, true), Is.EqualTo(eAutonomousRvrPhase.RelicRequiresPlayerCarrier));
+            Assert.That(AutonomousRvrObjectiveState.Next(true, false, false, false, true), Is.EqualTo(eAutonomousRvrPhase.TakingRelic));
         });
     }
 

@@ -32,3 +32,15 @@ database tables whose rows changed.
 - **Cumulative:** each patch goes from the 0.36 base straight to the newest version.
 - **Editions:** one patch for the game (0.36 and 0.36b, told apart by `EDITION.txt`) and one for the new client.
 - Patches are made only when the owner says it is time for the next version.
+
+## 0.37 (the first patch)
+
+`0.37/` records what the published 0.37 update brings an install to: `0.37b-package.sha256` (the game, both editions;
+0.37 differs only in its edition files), `0.37c-new-client.sha256` (the new client), the published game download
+manifest and the patch report. The next patch stays cumulative from 0.36 and also accepts installs of 0.37:
+`make_patch.py --also-from release-baselines/0.37` adds 0.37's fingerprints to every file's accepted starting points.
+
+World updates are field updates where the table has a primary key: only the fields a version changes are written,
+and only where the player's row still has the released value of those fields. The running server rewrites some
+monster fields itself (size, level and stats are re-rolled, and NPCs whose template lists several models pick one at
+spawn), so a whole-row match would wrongly leave real fixes in such rows undone.

@@ -34,7 +34,7 @@ namespace DOL.GS
 
         public static GamePlayer Leader(GameLiving actor)
         {
-            if (Character(actor) is not GameBot { IsTemporaryGroupHelper: true, IsAutonomousWorldBot: false } bot) return null;
+            if (Character(actor) is not GameBot { IsPlayerCompanion: true } bot) return null;
             GamePlayer leader = bot.PlayerGroupLeader ?? bot.Owner;
             return leader != null && bot.Group != null && bot.Group == leader.Group &&
                 bot.Group.IsInTheGroup(bot) && bot.Group.IsInTheGroup(leader) ? leader : null;

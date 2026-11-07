@@ -172,6 +172,26 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(rules[0]["subtype"], "damage_type")
         self.assertIn("except from Cold", rules[0]["summary"])
 
+    def test_a_throw_to_a_fixed_spot_is_a_teleport_like_move_to(self):
+        # Legion (1.2 base): player.MoveTo(...) became DragonCombatGeometry.ThrowPlayer(player, ...), same spot.
+        src = self.write_source(
+            "class LegionBrain : StandardMobBrain {\n"
+            " private int ThrowPlayer(ECSGameTimer timer) {\n"
+            "  foreach (GamePlayer player in Body.GetPlayersInRadius(2500)) {\n"
+            "   DragonCombatGeometry.ThrowPlayer(player, 249, 48200, 49566, 20833, 1028);\n"
+            "  }\n"
+            "  return 0;\n"
+            " }\n"
+            "}\n")
+        cls = cat.parse_classes(src)[0]
+        world = cat.World.__new__(cat.World)
+        world.classes, world.sources = {cls.name: cls}, {src.rel: src}
+        rules = cat.detect_teleports(world, cls, {})
+        self.assertEqual(len(rules), 1)
+        self.assertEqual(rules[0]["subtype"], "fixed_spot")
+        self.assertEqual(rules[0]["line"], 4)
+        self.assertIn("(MoveTo 249, 48200, 49566, 20833, 1028)", rules[0]["summary"])
+
     def test_adds_counter_immunity_is_adds_alive(self):
         sub, text = cat.classify_immunity(None, "if (OrbOne.OrbCount > 0 || OrbTwo.OrbCount > 0)", None)
         self.assertEqual(sub, "adds_alive")

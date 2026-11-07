@@ -17,7 +17,14 @@ static func build(spec: Dictionary, at: Transform3D, far: float, materials: NifM
 	p.local_coords = false
 	var life := maxf(float(spec.lifetime), 0.05)
 	p.lifetime = life
-	p.amount = clampi(maxi(int(spec.max_particles), int(ceil(float(spec.emit_rate) * (life + float(spec.lifetime_random))))), 1, 512)
+	# emit_flags bit 0 ("use the emit rate"): the client births emit_rate a second - num_particles is only the pool it
+	# allocates. Taken as the count, a hand glow's 116-particle pool at 0.067 s lives made ~1,740 a second (30 in the
+	# client) - a solid orb where the original flickers two-frame flashes (owner 2026-10-29, video of the original;
+	# ~360 effect systems: every class hand glow, weapon glows). Without the bit, the pool as before.
+	if int(spec.get("emit_flags", 0)) & 1:
+		p.amount = clampi(int(ceil(float(spec.emit_rate) * (life + float(spec.lifetime_random)))), 1, 512)
+	else:
+		p.amount = clampi(maxi(int(spec.max_particles), int(ceil(float(spec.emit_rate) * (life + float(spec.lifetime_random))))), 1, 512)
 	p.preprocess = life + float(spec.lifetime_random)    # already burning when it comes into view
 	p.visibility_range_end = far
 	var reach := (float(spec.speed) + float(spec.speed_random)) * (life + float(spec.lifetime_random))

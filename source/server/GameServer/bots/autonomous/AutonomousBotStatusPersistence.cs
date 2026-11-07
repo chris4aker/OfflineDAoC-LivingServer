@@ -52,6 +52,18 @@ public static class AutonomousBotStatusPersistence
         }
     }
 
+    /// <summary>A bot deleted for good leaves the save queue (2026-10-30: a released companion's record was gone, its
+    /// failed save requeued the whole batch every second, 918 times, and held up the other bots' saves).</summary>
+    public static void Forget(long botId)
+    {
+        lock (PendingGate)
+        {
+            Pending.Remove(botId);
+            PendingPriority.Remove(botId);
+            PendingInventory.Remove(botId);
+        }
+    }
+
     /// <summary>
     /// Group membership is shown as one launcher card and must not sit behind
     /// thousands of routine activity updates. Priority affects only status-row
@@ -167,14 +179,17 @@ public static class AutonomousBotStatusPersistence
             foreach ((GameBot Bot, OfflineWorldBotRecord Record)[] batch in snapshots.Chunk(WriteBatchSize))
             {
                 bool saved;
-                lock (DatabaseWriteLock)
+                // AI_PROFILE: the wait for the write lock, the status rows and the inventory rows are timed apart.
+                using (AiProfile.Lock(DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 {
-                    saved = GameServer.Database.SaveObject(batch.Select(entry => (DataObject)entry.Record));
+                    using (AiProfile.Scope(AiSystem.DbStatusBatch))
+                        saved = GameServer.Database.SaveObject(batch.Select(entry => (DataObject)entry.Record));
                     if (saved)
                     {
-                        saved = BotInventory.SaveManyIntoDatabase(batch
-                            .Where(entry => inventoryIds.Contains(entry.Bot.DatabaseID) && entry.Bot.Inventory is BotInventory)
-                            .Select(entry => ((BotInventory)entry.Bot.Inventory, entry.Bot.InternalID)));
+                        using (AiProfile.Scope(AiSystem.DbInventoryBatch))
+                            saved = BotInventory.SaveManyIntoDatabase(batch
+                                .Where(entry => inventoryIds.Contains(entry.Bot.DatabaseID) && entry.Bot.Inventory is BotInventory)
+                                .Select(entry => ((BotInventory)entry.Bot.Inventory, entry.Bot.InternalID)));
                     }
                 }
 
@@ -182,6 +197,12 @@ public static class AutonomousBotStatusPersistence
                 {
                     foreach ((GameBot bot, _) in batch)
                     {
+                        // a bot whose row was deleted can never save: drop it instead of retrying the batch forever
+                        if (DOLDB<OfflineWorldBotRecord>.SelectObject(DB.Column("BotId").IsEqualTo(bot.DatabaseID)) == null)
+                        {
+                            Log.Warn($"AUTONOMOUS_STATUS_SAVE_DROPPED bot=\"{bot.Name}\" id={bot.DatabaseID}: its record no longer exists");
+                            continue;
+                        }
                         Queue(bot, inventoryIds.Contains(bot.DatabaseID));
                         if (priorityIds.Contains(bot.DatabaseID))
                             QueueGroupMetadata(bot);

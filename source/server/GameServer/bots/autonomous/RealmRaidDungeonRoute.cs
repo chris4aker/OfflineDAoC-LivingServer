@@ -42,7 +42,9 @@ namespace DOL.GS
         public static bool IsEncounterAdd(GameNPC npc, Vector3 front, IReadOnlyCollection<GameNPC> livingEncounters) =>
             npc.LoadedFromScript && npc is not IGameEpicNpc &&
             Vector3.DistanceSquared(front, new(npc.X, npc.Y, npc.Z)) <= EncounterAddRadius * EncounterAddRadius &&
-            livingEncounters.Any(boss => boss.CurrentRegionID == npc.CurrentRegionID && boss.IsWithinRadius(npc, (int)EncounterAddRadius));
+            (livingEncounters.Any(boss => boss.CurrentRegionID == npc.CurrentRegionID && boss.IsWithinRadius(npc, (int)EncounterAddRadius)) ||
+             // A boss's death burst (Spindler Broodmother's brood) is cleared at its body although the boss is dead.
+             EpicEncounterTactics.IsDeathAdd(npc));
         private readonly Dictionary<GameNPC, long> _routeRetry = new();
         private readonly Dictionary<string, GameNPC> _finals = new();
         private GameNPC _target;
@@ -61,6 +63,9 @@ namespace DOL.GS
         private long _musterEmptySince;
         private bool _musterUnreachable;
         private readonly PullContact _pulls = new();
+        // Early pulls: when each encounter's was last logged, and how many went to the debug log since the last one logged.
+        private readonly Dictionary<string, long> _earlyPullLogged = new(StringComparer.Ordinal);
+        private int _quietEarlyPulls;
         // Per encounter, kept while the raid turns to another one and back (Krondon's Beran and Scurceol, 2026-11-05).
         private readonly Dictionary<GameNPC, MusterProgress> _musterProgress = new();
         // The log line of the reason a muster set its encounter aside (pull unreached, stalled); null for an empty muster.
@@ -206,8 +211,9 @@ namespace DOL.GS
             // minute for over an hour, so the raid never turned to the orbs.
             // An encounter whose tactic sends the raid to the current target is no switch (Scurceol Hyrde attacks the raid
             // while it shoots his orbs; EpicEncounterTactics).
+            // A hazard that burns the raid (Orshom's Fire) is no encounter to turn on either.
             return live.FirstOrDefault(n => n != _target && n is IGameEpicNpc && n.IsAlive && n.InCombat &&
-                                            !EpicEncounterTactics.Covers(n, _target, live) &&
+                                            !EpicEncounterTactics.Covers(n, _target, live) && !EpicEncounterTactics.IsHazard(n) &&
                                             _routeRetry.GetValueOrDefault(n) <= now &&
                                             n.ObjectState == GameObject.eObjectState.Active && !_clearedNames.Contains(n.Name) &&
                                             n.TargetObject is GameLiving victim && raiders.Contains(victim));
@@ -412,6 +418,7 @@ namespace DOL.GS
         public static bool TryCreate(ushort region, Vector3 trigger, string[] finals, out RealmRaidDungeonRoute route,
             eRealm realm = eRealm.None, ushort homeRegion = 0, string[] objectives = null, Vector3? hub = null)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.RouteRaidDungeon); // AI_PROFILE: measures only
             route = null;
             var nav = PathfindingProvider.Instance;
             var why = new List<string>();
@@ -494,6 +501,7 @@ namespace DOL.GS
         /// <summary>The same certified chain for one realm's member (late raid members walk it to their post).</summary>
         public static bool TryDarknessFallsChain(IPathfindingMgr nav, Zone zone, eRealm realm, Vector3 encounter, out Vector3[] chain)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.RouteDarknessFallsChain); // AI_PROFILE: measures only
             // The answer depends on the realm, the post and the mesh only, never on the asking bot. Every
             // raider whose post was not one leg away re-ran the full search (8 approaches x ~38 candidate
             // points, ~300 path queries, ~1 s) on every AI turn; the Prince Abdin raid on 2026-10-12 made
@@ -682,9 +690,25 @@ namespace DOL.GS
                     if (choice == EpicEncounterTactics.EarlyPull.Disengage && _lastBreakOff.TryGetValue(_target, out long last) &&
                         now - last < BreakOffRepeatMilliseconds)
                         choice = EpicEncounterTactics.EarlyPull.Commit;
-                    log.Warn($"REALM_EXPEDITION_EARLY_PULL region={_region} target=\"{_target.Name}\" near={fighting.Length} " +
-                             $"inside={inside.Length} resets={resets} tether={tether} musterFromSpawn={(int)musterFromSpawn} decision={choice} health={_target.HealthPercent} " +
-                             $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z}");
+                    // Logged for a raid's final or a catalogued boss (at most every ten minutes each), and for every pull-back;
+                    // a Darkness Falls named or an epic trash pack that is simply fought goes to the debug log (2026-11-06: 53
+                    // lines in four hours, one per named).
+                    bool isFinal = _finalTypes.Contains(_target.GetType().Name);
+                    long since = _earlyPullLogged.TryGetValue(_target.Name, out long logged) ? now - logged : -1;
+                    string line = $"REALM_EXPEDITION_EARLY_PULL region={_region} target=\"{_target.Name}\" near={fighting.Length} " +
+                                  $"inside={inside.Length} resets={resets} tether={tether} musterFromSpawn={(int)musterFromSpawn} decision={choice} health={_target.HealthPercent} " +
+                                  $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z}";
+                    if (EpicEncounterTactics.EarlyPullWorthLogging(choice, isFinal, EpicEncounterTactics.LeashOf(_target) != null, since))
+                    {
+                        _earlyPullLogged[_target.Name] = now;
+                        log.Warn(line + $" final={isFinal} quietSinceLast={_quietEarlyPulls}");
+                        _quietEarlyPulls = 0;
+                    }
+                    else
+                    {
+                        _quietEarlyPulls++;
+                        if (log.IsDebugEnabled) log.Debug(line);
+                    }
                     if (choice == EpicEncounterTactics.EarlyPull.Disengage)
                     {
                         EpicEncounterTactics.BreakOff(_target, _musterPoint, now + BreakOffMilliseconds);
@@ -974,7 +998,9 @@ namespace DOL.GS
         /// target over and over; three were skipped for no damage and the raid fell from 230 inside to 28 (run 22).
         /// </summary>
         private static bool IsEncounterHazard(GameNPC npc) =>
-            npc.Brain?.GetType().Name is "VortexBrain" or "WaterfallAntipassBrain";
+            npc.Brain?.GetType().Name is "VortexBrain" or "WaterfallAntipassBrain" ||
+            // A catalog hazard (Orshom's Fire: immune but to cold, 500 every 3 s within 300 of it; EpicEncounterTactics).
+            EpicEncounterTactics.IsHazard(npc);
         public const int ThinAttackNear = 16;
 
         /// <summary>

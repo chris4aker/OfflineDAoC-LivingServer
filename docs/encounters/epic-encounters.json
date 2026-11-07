@@ -47,7 +47,7 @@
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs": "ea20ed907819ebba2dba2dde9703fee62d88d8ea945cf8b5a4edb084cdc2d7b9",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "cf017bfe11ca5e811ebdafe29e449fd07cacbef70a440a1ae5b8716ec105e494",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "0f44370d05d55a397fbcd0c5b2bbdb0ac7c65c96fb347a1cfbe1b5bf5957a19e",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "8d6fd48ba5adddf2a722a9a766b3f5edb522a25d5d60923155d72a10e90cc3f7",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "e216d9a7c3a607b9e800d01aa00d029348bf159bca18db0ea787be0449e59b07",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs": "fa9b3318a8cfa33957552bfde7a2659f6438cb4a3c53f4dbbf7b829f6d42db09",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "ed786219f6c2df5a16b38e5369ff20707444d17685919e1a3e6250245112e096",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "2f464529d3943e2dac47145c3310ec786d1b172f1303582acd0c567bdd5f59b0",
@@ -73,7 +73,7 @@
   "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "4fbf80163b3090cc6ca6e86b56b6c4d6df9adecb3334513a2f655b1c2ea19249",
   "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
-  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "9084052aa6ba81476d14fabd8501cec65039beafd222e21df07b4356aa28a83f",
+  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "bb3c963aab1f7d18b2124dff2ce2baa4ae7a3cb80470737b2a7d26e126b69198",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "47dede9429ce25a534a73793e7b5940c337b6c4314b3b0fe57a6c0e301e96eeb",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
   "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe",
@@ -310,17 +310,17 @@
   },
   {
    "name": "AllowEarthmenderClassPuzzle",
-   "value": "false",
+   "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 43,
+   "line": 44,
    "restores": true,
-   "about": "Each Earthmender takes damage only from its own class group (pets always); others do nothing."
+   "about": "/// the raid AI sends each raider to an Earthmender its class hurts (EpicEncounterTactics class rules)."
   },
   {
    "name": "AllowEarthmendersPassive",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 45,
+   "line": 46,
    "restores": true,
    "about": "Earthmenders never attack (they only heal)."
   },
@@ -328,7 +328,7 @@
    "name": "AllowEarthmenderQuickReset",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 47,
+   "line": 48,
    "restores": true,
    "about": "An Earthmender heals to full 30 s after its last fight even with raiders in the room."
   },
@@ -336,7 +336,7 @@
    "name": "AllowEarthmenderMutualHeal",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 49,
+   "line": 50,
    "restores": true,
    "about": "Earthmenders heal each other as well as the Earth primal."
   },
@@ -344,7 +344,7 @@
    "name": "AllowBeathaHealsXaga",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 51,
+   "line": 52,
    "restores": true,
    "about": "Beatha's damage heals Xaga by twice the amount."
   },
@@ -352,7 +352,7 @@
    "name": "AllowFairyFlight",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 53,
+   "line": 54,
    "restores": true,
    "about": "Beatha and Tine circle the room even while they are fought."
   },
@@ -360,7 +360,7 @@
    "name": "AllowGovannonFullHealth",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 55,
+   "line": 56,
    "restores": true,
    "about": "Grand Summoner Govannon has 300,000 health (not 200,000)."
   },
@@ -368,7 +368,7 @@
    "name": "AllowKvasirColdHeal",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 57,
+   "line": 58,
    "restores": true,
    "about": "Cold damage heals Icelord Kvasir by a fifth of his health and does no damage."
   },
@@ -376,7 +376,7 @@
    "name": "AllowTuscarTwinHeal",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 59,
+   "line": 60,
    "restores": true,
    "about": "Damage to King Tuscar heals Queen Kula, and damage to her heals him, while the other is below full health."
   },
@@ -384,13 +384,13 @@
    "name": "ResetQuietMilliseconds",
    "value": "8000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 79
+   "line": 80
   },
   {
    "name": "PetDevourIntervalMilliseconds",
    "value": "5000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 87
+   "line": 88
   }
  ],
  "ruleKinds": {
@@ -541,7 +541,7 @@
    "finals": [
     "AlbGolestandt"
    ],
-   "line": 312
+   "line": 336
   },
   {
    "id": "dragon-midgard",
@@ -553,7 +553,7 @@
    "finals": [
     "MidGjalpinulva"
    ],
-   "line": 313
+   "line": 337
   },
   {
    "id": "dragon-hibernia",
@@ -565,7 +565,7 @@
    "finals": [
     "HibCuuldurach"
    ],
-   "line": 314
+   "line": 338
   },
   {
    "id": "epic-albion",
@@ -577,7 +577,7 @@
    "finals": [
     "Apocalypse"
    ],
-   "line": 315
+   "line": 339
   },
   {
    "id": "epic-midgard",
@@ -590,7 +590,7 @@
     "KingTuscar",
     "QueenKula"
    ],
-   "line": 316
+   "line": 340
   },
   {
    "id": "epic-hibernia",
@@ -602,7 +602,7 @@
    "finals": [
     "Olcasgean"
    ],
-   "line": 317
+   "line": 341
   },
   {
    "id": "summoners-albion",
@@ -614,7 +614,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 318
+   "line": 342
   },
   {
    "id": "summoners-midgard",
@@ -626,7 +626,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 319
+   "line": 343
   },
   {
    "id": "summoners-hibernia",
@@ -638,7 +638,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 320
+   "line": 344
   },
   {
    "id": "darkness-albion",
@@ -650,7 +650,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 321
+   "line": 345
   },
   {
    "id": "darkness-midgard",
@@ -662,7 +662,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 322
+   "line": 346
   },
   {
    "id": "darkness-hibernia",
@@ -674,7 +674,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 323
+   "line": 347
   }
  ],
  "neutralObjectives": {
@@ -875,7 +875,7 @@
     ],
     "places": 4,
     "original": "Each Earthmender takes damage only from its class group (Guardian: blademaster, hero, champion; Magical: eldritch, enchanter, mentalist; Natural: bard, druid, warden; Shadowy: nightshade, ranger; animists, valewalkers and pets hurt all four); they never attack; they heal to full 30 s after a fight; they heal each other and the primal.",
-    "ours": "Everyone hurts them; they fight back; no quick reset while raiders are in the room; they heal the primal only.",
+    "ours": "Since 1.2 the class rule is back on (AllowEarthmenderClassPuzzle) and the raid assigns classes to it. Still changed: they fight back; no quick reset while raiders are in the room; they heal the primal only.",
     "switch": "AllowEarthmenderClassPuzzle, AllowEarthmendersPassive, AllowEarthmenderQuickReset, AllowEarthmenderMutualHeal"
    },
    {
@@ -7712,7 +7712,7 @@
      "maxHealth": 1200,
      "level": null,
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 720
+     "line": 723
     }
    ],
    "rules": [
@@ -7814,9 +7814,9 @@
      "kind": "teleport",
      "summary": "Teleports player to a fixed spot (MoveTo 249, 48200, 49566, 20833, 1028)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 673,
-     "lineEnd": 673,
-     "anchor": "player.MoveTo(249, 48200, 49566, 20833, 1028);",
+     "line": 676,
+     "lineEnd": 676,
+     "anchor": "DragonCombatGeometry.ThrowPlayer(player, 249, 48200, 49566, 20833, 1028);",
      "confidence": "inferred",
      "sourceClass": "LegionBrain",
      "method": "ThrowPlayer",
@@ -7826,7 +7826,7 @@
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "teleport@673"
+     "key": "teleport@676"
     }
    ],
    "spells": [
@@ -7841,7 +7841,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 694,
+     "line": 697,
      "sourceClass": "LegionBrain"
     }
    ],
@@ -7882,8 +7882,8 @@
    "brain": "BehemothBrain",
    "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
    "lines": [
-    804,
-    865
+    807,
+    868
    ],
    "dungeon": "Darkness Falls",
    "region": 249,
@@ -7902,8 +7902,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 882,
-     "lineEnd": 886,
+     "line": 885,
+     "lineEnd": 889,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "BehemothBrain",
@@ -7913,7 +7913,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@882"
+     "key": "reset@885"
     }
    ],
    "spells": [],
@@ -12758,8 +12758,8 @@
       "ShadowyEarthmender"
      ],
      "verified": true,
-     "tactic": "Off today (AllowEarthmenderClassPuzzle is false). To play it: follow the mechanic.",
-     "difficulty": "off today",
+     "tactic": "On: the original is back (AllowEarthmenderClassPuzzle is true) and the raid AI plays it (see Encounters with raid tactics).",
+     "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
      "key": "offline_change@2388"
     },
@@ -12926,9 +12926,49 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; since run 18 they fight back. Tether 890: it barely leaves its spot.",
-   "currentRaidAi": "Run 14 (2026-10-16): skipped at full health while the Earthmenders healed it; the route now treats script-spawned adds near the front as part of the fight (EncounterAddRadius 3,000).",
+   "currentRaidAi": "Run 14 (2026-10-16): skipped at full health while the Earthmenders healed it; the route now treats script-spawned adds near the front as part of the fight (EncounterAddRadius 3,000). 2026-11-06 (build 86eddd8): the raid never reached the primals (deadPrimals=0 all day: the bridge room was not started), so this tactic has not been seen in a run.",
+   "aiTactics": {
+    "requiredAdds": [
+     "GuardianEarthmender",
+     "MagicalEarthmender",
+     "NaturalEarthmender",
+     "ShadowyEarthmender"
+    ],
+    "classRules": {
+     "GuardianEarthmender": [
+      "Blademaster",
+      "Hero",
+      "Champion",
+      "Animist",
+      "Valewalker"
+     ],
+     "MagicalEarthmender": [
+      "Eldritch",
+      "Enchanter",
+      "Mentalist",
+      "Animist",
+      "Valewalker"
+     ],
+     "NaturalEarthmender": [
+      "Bard",
+      "Druid",
+      "Warden",
+      "Animist",
+      "Valewalker"
+     ],
+     "ShadowyEarthmender": [
+      "Nightshade",
+      "Ranger",
+      "Animist",
+      "Valewalker"
+     ]
+    },
+    "classRuleSwitch": "AllowEarthmenderClassPuzzle",
+    "since": "1.2",
+    "summary": "Required adds by class: once the fight is on the raid kills the four Earthmenders (they heal the primal 2,000 each) before the primal. With the original class rule on (AllowEarthmenderClassPuzzle, on since 1.2) each raider takes an Earthmender its class hurts: Guardian: blademasters, heroes, champions; Magical: eldritchs, enchanters, mentalists; Natural: bards, druids, wardens; Shadowy: nightshades, rangers; animists and valewalkers any (spread by party); pets hurt all four. A class none of them takes damage from (bainshee, vampiir, mauler) fights the primal and keeps it busy."
+   },
    "verified": true
   },
   {
@@ -13197,7 +13237,7 @@
    "rules": [
     {
      "kind": "adds",
-     "summary": "When she dies: about 20-25 underdeveloped spindlers at her body.",
+     "summary": "When she dies: about 20-25 underdeveloped spindlers (800 health, level 50) at her body.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
      "line": 90,
      "lineEnd": 90,
@@ -13211,7 +13251,7 @@
      "count": 25,
      "trigger": "when it dies (via SpawnAfterDead)",
      "addIsEpic": false,
-     "tactic": "Healers ready at her death; AoE classes stack on her corpse; the route treats them as adds.",
+     "tactic": "In the raid AI (EpicEncounterTactics): death adds: the route clears them at her body, though she is dead, before moving on.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
      "key": "adds@90"
@@ -13232,10 +13272,9 @@
      "count": 2,
      "trigger": "on a timer (10000 ms)",
      "addIsEpic": false,
+     "tactic": "In the raid AI (EpicEncounterTactics): ranged adds: casters and archers take each newborn as it comes; melee, tanks and healers stay on her.",
+     "difficulty": "needs new raid AI",
      "verified": true,
-     "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
-     "difficulty": "easy for the current raid AI",
-     "tacticSource": "default for its kind",
      "key": "adds@230"
     },
     {
@@ -13327,9 +13366,19 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "notes": "100,000 health, 40/70% resists. 1-2 Newly-born spindlers every 15-35 s in the fight; 20-25 underdeveloped spindlers burst out when she dies. A mezz on a random target every 20-30 s. Her teleport is off for bots.",
-   "currentRaidAi": "2026-11-05 (build 8d7baa3): the Hibernian epic raid wiped at her once (Special Forces arrived).",
+   "currentRaidAi": "2026-11-05 07:19 (owner's notes): the Hibernian epic raid wiped at her (46 fell, 146 living), Special Forces arrived; that log is on the owner's PC. 2026-11-06 (build 86eddd8): killed in 11.0 minutes with 96 mustered, no raider death credited to her; a newborn and an underdeveloped spindler were route targets after her death.",
+   "aiTactics": {
+    "rangedAdds": [
+     "SBAdds"
+    ],
+    "deathAdds": [
+     "SBDeadAdds"
+    ],
+    "since": "1.2",
+    "summary": "Ranged adds: casters and archers kill each newly-born spindler (8,000 health, 1-2 every 25-45 s) as it comes, while melee, tanks and healers stay on her, so newborns never pile on the healers. Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on."
+   },
    "verified": true
   },
   {
@@ -21547,7 +21596,17 @@
      "role": "final"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "Krondon's final: level 83, 40,000 health, 30/40% resists, tether 3,800; joins Orshom Brong's fight (see him).",
+   "aiTactics": {
+    "after": "Orshom",
+    "hazards": [
+     "OrshomFire"
+    ],
+    "hazardRadius": 300,
+    "since": "1.2",
+    "summary": "After Orshom Brong: while Orshom lives the party Orylle fights holds her and everyone else kills Orshom (30,000 health, lower resists) first; the route goes for Orshom before her. Hazard: stay out of Orshom's Fire, as for him."
+   },
    "verified": true
   },
   {
@@ -21591,7 +21650,7 @@
    "rules": [
     {
      "kind": "immune_while",
-     "summary": "Takes no damage except from Cold damage.",
+     "summary": "Orshom's Fire (not Orshom) takes no damage except from Cold damage.",
      "file": "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs",
      "line": 365,
      "lineEnd": 380,
@@ -21602,10 +21661,9 @@
      "subtype": "damage_type",
      "condition": "else (not (damageType == eDamageType.Cold))",
      "from": "add",
-     "verified": true,
-     "tactic": "Only the named damage type hurts it: classes that deal it attack, the rest stand off.",
+     "tactic": "In the raid AI (EpicEncounterTactics): a hazard: nobody attacks it, and raiders keep out of its 300 radius.",
      "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "immune_while@365"
     },
     {
@@ -21623,15 +21681,14 @@
      "addBrain": "OrshomFireBrain",
      "trigger": "from SpawnFire",
      "addIsEpic": true,
-     "verified": true,
-     "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
+     "tactic": "In the raid AI (EpicEncounterTactics): the fire is a hazard, not an add: never a route target, never 'fighting the raid'.",
      "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "adds@328"
     },
     {
      "kind": "phase",
-     "summary": "At 50% health (Think): calls AddAggroListTo",
+     "summary": "At 50% health Orylle joins the fight (he adds his aggro list to her).",
      "file": "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs",
      "line": 302,
      "lineEnd": 315,
@@ -21640,10 +21697,9 @@
      "sourceClass": "OrshomBrain",
      "method": "Think",
      "threshold": 50,
-     "verified": true,
-     "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
+     "tactic": "In the raid AI (EpicEncounterTactics): Orylle's tactic: the party she fights holds her, everyone else finishes Orshom.",
      "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "phase@302"
     },
     {
@@ -21727,7 +21783,17 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "Level 80, 30,000 health, 20% melee and 30% magic resists, tether 3,800. When he gets a target he lights Orshom's Fire at 31406,69599 (907 from his spawn): an epic NPC with 10,000 health that takes only Cold damage, never moves or attacks, and casts Fire Burn (500 Heat, radius 300) on its own spot every 3 s. At 50% he pulls Orylle (level 83, 40,000 health) into the fight; Orylle pulls him too when she is attacked. Orylle throws real players (never bots) into the fire spot while the fire burns.",
+   "currentRaidAi": "2026-11-05/06 overnight (owner's notes; that run's log is on the owner's PC): the Albion Krondon raid lost at Orshom twice, lowest 59% then 28%, Special Forces joined. Not seen in a log here. Read from the script, the likely killer is the fire: a raider it burns fights back (it is an epic NPC with a target), so bots stood in 500 every 3 s hitting a target only cold hurts, and the route's 'it is fighting the raid' switch could send the whole raid there.",
+   "aiTactics": {
+    "hazards": [
+     "OrshomFire"
+    ],
+    "hazardRadius": 300,
+    "since": "1.2",
+    "summary": "Hazard: Orshom's Fire is never a target (the route skips it and never switches to it; a raider aiming at it fights Orshom or Orylle instead), and a raider within 450 of it steps out to 600 before fighting on."
+   },
    "verified": true
   },
   {
@@ -27018,15 +27084,14 @@
      "addBrain": null,
      "trigger": "from Think when if (Body.HealthPercent <= 80 && SpawnSacrifices1 == false)",
      "addIsEpic": false,
+     "tactic": "In the raid AI (EpicEncounterTactics): ranged adds: casters and archers kill the sacrifice and the demon on their walk to the altar; the rest stay on him.",
+     "difficulty": "needs new raid AI",
      "verified": true,
-     "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
-     "difficulty": "easy for the current raid AI",
-     "tacticSource": "default for its kind",
      "key": "adds@311"
     },
     {
      "kind": "adds",
-     "summary": "Spawns ShadeOfAelfgar: from SpawnShadeOfAelfgar; count 1 spawn call in SpawnShadeOfAelfgar",
+     "summary": "Spawns the Shade of Aelfgar (one at a time) once both the sacrifice and the demon have reached his altar (32063,40896) and died there; killed on the way, they never count.",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
      "line": 337,
      "lineEnd": 337,
@@ -27039,10 +27104,9 @@
      "addBrain": "ShadeOfAelfgarBrain",
      "trigger": "from SpawnShadeOfAelfgar",
      "addIsEpic": true,
-     "verified": true,
-     "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
+     "tactic": "Kill the sacrifice and the demon before they reach the altar (ranged adds); a Shade that comes anyway attacks the raid and the route turns on it.",
      "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "adds@337"
     },
     {
@@ -27073,10 +27137,9 @@
      "sourceClass": "GrandSummonerGovannonBrain",
      "method": "Think",
      "threshold": 50,
-     "verified": true,
-     "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
+     "tactic": "In the raid AI (EpicEncounterTactics): at 50% he becomes the demon at full health and starts his Shroud of Agony (radius 300 around his target): the raid spreads (see his tactic).",
      "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "phase@285"
     },
     {
@@ -27090,10 +27153,9 @@
      "sourceClass": "GrandSummonerGovannonBrain",
      "method": "MorphIntoDemon",
      "subtype": "form",
-     "verified": true,
-     "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
+     "tactic": "In the raid AI (EpicEncounterTactics): spread while he has the demon model (636).",
      "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "phase@304"
     },
     {
@@ -27272,7 +27334,19 @@
      "role": "final"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "Level 80, 200,000 health (300,000 behind AllowGovannonFullHealth, off), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, throws real players only). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
+   "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known.",
+   "aiTactics": {
+    "spreadRadius": 300,
+    "spreadWhileModel": 636,
+    "rangedAdds": [
+     "SummonedSacrifice",
+     "SummonedDemon"
+    ],
+    "since": "1.2",
+    "summary": "Spread in demon form: while he is the demon (model 636), casters, archers and healers outside his target's party keep 550 from that target, out of his Shroud of Agony (radius 300 around it), and fight and heal from there; melee can't get clear (every melee spot is inside 300 of his target) and fight on, kept up by healers who are no longer in it. Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him."
+   },
    "verified": true
   },
   {

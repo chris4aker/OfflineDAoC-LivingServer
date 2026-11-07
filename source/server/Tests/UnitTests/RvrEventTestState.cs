@@ -14,7 +14,7 @@ internal static class RvrEventTestState
         AutonomousRvrEventLayer.SiegeScheduling = false;
         // The siege balance is process-wide too: a fixture that ended sieges must not trim the next one's attackers.
         SiegeDefenseBalance.Reset();
-        foreach (string name in new[] { "Events", "CarrierEvents", "CarrierTargets", "Cooldowns", "ReleasedForces", "SelectedKeeps", "SelectedRelics", "DefenseAlarms", "DefenseWarnings", "KeepCombatPressure" })
+        foreach (string name in new[] { "Events", "CarrierEvents", "CarrierTargets", "Cooldowns", "ReleasedForces", "SelectedKeeps", "SelectedRelics", "DefenseAlarms", "DefenseWarnings", "KeepCombatPressure", "Campaigns", "CarrierOrigins", "CarrierMountedSeen" })
         {
             object value = typeof(AutonomousRvrEventLayer).GetField(name, BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
             value.GetType().GetMethod("Clear").Invoke(value, null);

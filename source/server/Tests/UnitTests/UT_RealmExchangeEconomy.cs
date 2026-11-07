@@ -538,6 +538,8 @@ namespace DOL.UnitTests
             ExchangeBot seller = Bot(110, 500);
             string owner = AutonomousBotEconomy.GetOwnerId(seller.DatabaseID);
             MarketCache.AddItem(Listing(owner, 100, (int)eInventorySlot.Consignment_First));
+            for (int extra = 1; extra < AutonomousBotEconomy.MaxBotRealmExchangeListings; extra++)
+                MarketCache.AddItem(Listing(owner, 100, (int)eInventorySlot.Consignment_First + extra));
 
             DbInventoryItem candidate = Item("limit candidate");
             seller.Inventory.AddItem(eInventorySlot.FirstBackpack, candidate);
