@@ -194,7 +194,8 @@
         "albion-shrouded-isles",
         "isle-of-glass",
         "avalon-isle",
-        "aldland"
+        "aldland",
+        "dales-of-devwy"
       ],
       "bosses": [
         "duraek-the-empowered",
@@ -234,7 +235,8 @@
         "campacorentin-forest",
         "black-mountains-north",
         "isle-of-glass",
-        "avalon-isle"
+        "avalon-isle",
+        "dales-of-devwy"
       ],
       "bosses": [
         "morgana",
@@ -256,7 +258,8 @@
         "albion-shrouded-isles",
         "isle-of-glass",
         "avalon-isle",
-        "aldland"
+        "aldland",
+        "dales-of-devwy"
       ],
       "bosses": [
         "duraek-the-empowered",
@@ -279,7 +282,8 @@
         "black-mountains-north",
         "snowdonia",
         "isle-of-glass",
-        "avalon-isle"
+        "avalon-isle",
+        "dales-of-devwy"
       ],
       "bosses": [
         "soul-reckoner",
@@ -413,7 +417,8 @@
         "avalon-marsh",
         "hadrians-wall",
         "snowdonia",
-        "isle-of-glass"
+        "isle-of-glass",
+        "dales-of-devwy"
       ],
       "bosses": []
     },
