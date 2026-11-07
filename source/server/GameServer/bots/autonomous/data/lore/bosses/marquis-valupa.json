@@ -79,7 +79,7 @@
   "phases": [
    {
     "trigger": "health<=50",
-    "text": "Knights! Up the slope. They are out of place."
+    "text": "Out of place. You are all out of place."
    }
   ],
   "death": [
@@ -100,7 +100,7 @@
   "phases": [
    {
     "trigger": "health<=50",
-    "text": "The slope-keeper calls Legion's Own up the approach."
+    "text": "The slope-keeper looks down the approach, counting."
    }
   ],
   "realmFirstKill": "Marquis Valupa has fallen. The approach is in disorder."

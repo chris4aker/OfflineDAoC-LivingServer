@@ -103,7 +103,7 @@
   "phases": [
    {
     "trigger": "health<=50",
-    "text": "Watch! Close the roads."
+    "text": "Watch! The toll is not yet paid."
    },
    {
     "trigger": "health<=20",
@@ -129,7 +129,7 @@
   "phases": [
    {
     "trigger": "health<=50",
-    "text": "The Gatekeeper closes the roads."
+    "text": "The Gatekeeper's voice rolls down every road."
    },
    {
     "trigger": "health<=20",

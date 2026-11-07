@@ -89,7 +89,7 @@
   }
  ],
  "story": "Duke Satori was the Queen's favourite. In the Uncounted Age he was a carrier of messages between the lords, the one demon who could take a threat to a throne and come back whole. Lilith took him to the Feast of Thrones a step behind her, and when she knelt he knelt. The First Roll made him Duke of the Queen's household, at the Queen's side, the only peer whose master was a queen. For six Rolls he carried her words; when Prince Abdin called him a mouth with a title, he carried that to her too.\n\nIn the Seventh Roll the Queen left without telling him. In the Eighth he walked down the approach and sat in her empty chair beside the Master's door, reasoning that the chair was all that was left of her side. The Chamberlain lifted him out by the collar and told him he had mistaken the chair. Nobody has seen Satori since. Most of the court say shame; the Chancellor says policy, since everyone tells secrets to a demon they cannot see; the imps say he was never properly seen anyway.\n\nAdremal cut the Master's name into his line where the Queen's had been, so Satori serves Legion directly and listens on the approach. In the Ninth Roll he overheard Mystemas explaining how he would carry out a plan the Master had not finished deciding, and carried it to the door; Mystemas was made an imp, and still glares at the empty air beside him.\n\nNow he stands unseen near Marquis Valupa and listens to the mortals on the slope as he listens to the court; the Roll of the Visitors holds lines for companies that reached the slope and never reached the door. Albion's scouts call him the shadow on the approach; Midgard's shadowblades call him a demon who learned their trade; Hibernia's nightshades say he hides out of shame, and that this makes him dangerous.",
- "legend": "Satori is stealthed. He stands on the approach to Legion's lair near Marquis Valupa, between the Chancellor and the Throne, and you will not see him until he is on someone, usually a caster at the back. Level 73, no script beyond the stealth. Bring someone who can see hidden things or sweep the slope before you pull Valupa, and keep your healers in the middle of the raid, not at the edge. When he opens up, everyone turns on him at once; he does not have the health of the dukes in Baln's hall. Players call him the shadow on the approach, and the old joke is that if you can hear your own raid leader's plan repeated back to you in a whisper, it is Satori.",
+ "legend": "Satori is stealthed. He stands on the approach to Legion's lair near Marquis Valupa, between the Chancellor and the Throne, and you will not see him until he is on someone. Level 73, no script beyond the stealth. Bring someone who can see hidden things or sweep the slope before you pull Valupa, and keep the group tight so that whoever he opens on is not alone. When he opens up, everyone turns on him at once; at 73 he is a little below the dukes in Baln's hall. Players call him the shadow on the approach, and the old joke is that if you can hear your own raid leader's plan repeated back to you in a whisper, it is Satori.",
  "yells": {
   "aggro": [
    "You were saying? Go on.",
@@ -107,7 +107,7 @@
    "Seen. At last, seen."
   ],
   "slay": [
-   "Your healer said something interesting before that.",
+   "You said something interesting before that.",
    "One fewer voice on the slope.",
    "I will carry that to the door."
   ]
@@ -129,7 +129,7 @@
  "botLines": {
   "briefing": [
    "satori is stealthed on the approach near valupa. [sweep the slope|someone see hidden] before we pull",
-   "healers in the middle, [not at the edge|dont stand at the back], he goes for the soft ones",
+   "stay tight on the slope, [nobody wanders off|no stragglers], he opens on whoever is alone",
    "when satori opens up, [everyone on him|swap to satori]. he goes down quick for a duke",
    "73, stealth is his only trick. [dont panic|stay calm] when he pops"
   ],
@@ -140,7 +140,7 @@
    "the shadow on the approach is dead. [for now|till he respawns]"
   ],
   "aftermathLoss": [
-   "satori ate two healers before we saw him. [need to sweep|bring a see hidden]",
+   "satori opened on us before we saw him. [need to sweep|bring a see hidden]",
    "lost the raid to satori and valupa at once. [bad pull|ugh]",
    "nobody saw satori coming, [again|as usual]",
    "stealth duke wiped the back line. [regroup|rez up]"

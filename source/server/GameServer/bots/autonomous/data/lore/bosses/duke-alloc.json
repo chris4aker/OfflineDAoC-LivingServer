@@ -92,7 +92,7 @@
   }
  ],
  "story": "Duke Alloc is the standard-bearer of High Lord Baln's southern hall, where the court's host musters. In the Uncounted Age he led Baln's endless fanatics and carried Baln's standard, the hide of a lord Baln had killed, on a frame of that lord's bones. He bellowed his master's name all the way to the Feast of Thrones and ruined his voice doing it. When Baln knelt to the Master, Alloc lowered the standard behind him, and has been looking for somewhere to carry it forward since.\n\nHe expected to be Field Marshal on the First Roll. Adremal gave the office to Nebir, a counter of hosts who had never carried a standard. The hall has had two voices since: Alloc leads the host on parade, the Marshal commands it, and the fanatics obey whichever is louder. When Alloc asked the Chancellor to move Nebir's line below his, Adremal told him only the High Lord's line in that hall mattered.\n\nIn the Fourth Roll, during the feud of the Blade and the Hook, he marched Baln's host north to pay an old debt to Prince Abdin. Nebir met him in the arch, counted the column at two hundred and nine and the Mutilators at twice that, and Alloc turned back. Dommel closed the crossing that night. The duke has never forgiven the Marshal for being right.\n\nOnce each Roll he leads the parade of the host through the Gate and down the approach to the Master's door, the court's great spectacle. Since the doors opened he has asked to take the host up a stair every time a door changes hands, and been refused. He and Nebir want the same door, and hate each other over who will go through it first. Albion's knights call him the standard-bearer; Midgard's huscarls, the hoarse one.",
- "legend": "Alloc stands on the west side of Baln's hall in the south of Darkness Falls, with Earl Zh'alzhak and the first Marquis Chaosmar close by and Dukes Aypol and Eligar further east. He is level 75 with no script. The danger is the hall, not the duke: High Lord Baln keeps calling fanatics, and the Field Marshal's group is in the same space. Pull Alloc toward the west wall, away from Baln, and kill him before you touch anything else in the hall. Players call him the hoarse one and say you can hear him from the Gate when the hall is busy. His standard is a prop, nobody has ever looted it, and asking for it in raid chat is a good way to get kicked.",
+ "legend": "Alloc stands on the west side of Baln's hall in the south of Darkness Falls, with Earl Zh'alzhak and the first Marquis Chaosmar close by and Dukes Aypol and Eligar further east. He is level 75 with no script. The danger is the hall, not the duke: once High Lord Baln is fighting he brings out minions every half minute or so, and the Field Marshal's group is in the same space. Pull Alloc toward the west wall, away from Baln, and kill him before you touch anything else in the hall. Players call him the hoarse one and say you can hear him from the Gate when the hall is busy. His standard is a prop, nobody has ever looted it, and asking for it in raid chat is a good way to get kicked.",
  "yells": {
   "aggro": [
    "BALN! Form up! Face me!",
@@ -102,7 +102,7 @@
   "phases": [
    {
     "trigger": "health<=50",
-    "text": "Rally to the standard! Rally!"
+    "text": "The standard does not fall. Neither do I."
    }
   ],
   "death": [
@@ -124,7 +124,7 @@
   "phases": [
    {
     "trigger": "health<=50",
-    "text": "The Duke bellows for the host of the south."
+    "text": "The Duke's ruined voice fills the hall."
    }
   ],
   "realmFirstKill": "Duke Alloc has fallen. The standard of the south is down."

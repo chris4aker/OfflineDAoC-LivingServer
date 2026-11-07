@@ -94,7 +94,7 @@
   }
  ],
  "story": "Field Marshal Nebir commands the court's army. In the Uncounted Age he was not a lord but a counter of hosts, serving High Lord Baln, whose southern hall breeds more fanatics than it can feed, and his work was to stand them in rows. He did not attend the Feast of Thrones. When the First Roll was cut, Adremal wrote him as Field Marshal and Inspector of the Host, seated in Baln's hall and answerable to the Master. He inspects every new knight, Inquisitor and Mutilator by counting it.\n\nHis seat is a war table cut with the whole hollow, between Lieutenant Gargantan, who moves the pieces, and Lieutenant Loran, who keeps the count. After the feud of the Blade and the Hook he asked each order to take one of his officers; only Prince Abdin's knights agreed, and Lieutenant Persun has lived in their chapter house since as the Marshal's eye. When the doors opened he had the frontier above cut into the table's edge.\n\nHis grievance is that the doors answer only to the frontier, and the court holds no keep, so his host cannot go up. Four letters to the Chancellor proposing the court take a keep have had the same answer: the Roll has no line for one. He despises the court's other wars, Mannam's embassy, the plague sent up from the kitchens, and above all Director Kobil's Army of Shadows, which he cannot count. He designed the three-of-each watch at the Gate after Dommel closed the crossing.\n\nHe counts the mortal companies that come down. Albion's knights say he knows Camelot's muster rolls; Midgard's huscarls call him a war-chief without a jarl; Hibernia's druids call him the court's one honest demon, because numbers do not lie. He waits for a door to open for the court.",
- "legend": "Nebir stands at the south end of Baln's hall with Lieutenants Gargantan and Loran right beside him: pull one and you get all three, so plan for three named at once. He is level 70 with no script. The lieutenants are 68 and go down faster; kill them first so the marshal stands alone, and keep the fight away from High Lord Baln, whose fanatics keep coming. Dukes Alloc, Aypol and Eligar and Earl Zh'alzhak sit in the same hall, so clear the hall from the edges in. Old hands say the marshal counts your raid at the Gate before you get to him, and that if you give a false name at the Gate he gets the number wrong. It does not help.",
+ "legend": "Nebir stands at the south end of Baln's hall with Lieutenants Gargantan and Loran within a couple of hundred units of him: expect all three named at once. He is level 70 with no script. The lieutenants are 68 and go down faster; kill them first so the marshal stands alone, and keep the fight away from High Lord Baln, who brings out minions every half minute or so once he is fighting. Dukes Alloc, Aypol and Eligar and Earl Zh'alzhak sit in the same hall, so clear the hall from the edges in. Old hands say the marshal counts your raid at the Gate before you get to him, and that if you give a false name at the Gate he gets the number wrong. It does not help.",
  "yells": {
   "aggro": [
    "Counted at the Gate. You are fewer than you think.",
@@ -130,7 +130,7 @@
   "phases": [
    {
     "trigger": "health<=50",
-    "text": "The Field Marshal calls his lieutenants in."
+    "text": "The Field Marshal shouts the count to his officers."
    },
    {
     "trigger": "health<=20",

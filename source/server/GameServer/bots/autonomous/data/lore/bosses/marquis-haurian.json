@@ -75,7 +75,7 @@
   }
  ],
  "story": "The bargain of the Feast ends the same way every time: a demon struck from the Roll is unmade by a Mutilator into a state the Master can eat, and the Master eats it. Somebody has to do the unmaking at the Master's door, and since the First Roll it has been Marquis Haurian. He is the Master's Carver. He still has a Mutilator's shape, because he was one: one of the first of Prince Asmoien's order, sworn in the western pit when the order was founded to unmake whatever the Inquisition condemned.\n\nWhen the first demon of rank was struck off in the Second Roll, the Chancellor ruled that the unmaking must be done at the Master's door and not in the pit, so that the Master would not have to wait, and Asmoien sent his best. Haurian walked from the pit to the door with his hooks and did the work, and the Master was pleased enough that Adremal raised him to a marquis on the next Roll and wrote his seat as the door itself. He has done every unmaking since. He did not do Mystemas, since Mystemas was moved and not eaten; he was there, hooks ready, when the Chancellor gave the ruling, and the imps say it is the only time anyone has seen the Carver disappointed.\n\nHe stands now close to the Master's door, with Earl Amagin, the Master's Examiner, beside him and the second Marquis Chaosmar near by. Since the doors opened, no mortal has reached the Master's door without passing within reach of his hooks. The knights of the Chthonic Chapter despise him, as they despise all of Asmoien's order, and the Mutilators of the pit regard him as a saint. He regards himself as a craftsman, and says he has never once done a careless piece of work.",
- "legend": "Haurian stands at the bottom of the approach near Legion's door, with Earl Amagin and the second Marquis Chaosmar close by and the Mutilators of Legion's Own around him. Level 68, a Mutilator's body, no script. Pull him with the slope above already cleared, and do not drag the fight toward the Chamberlain. Players call him the Carver and say he is the demon who cuts up the other demons for Legion to eat. He hits like the Mutilators he came from, so the main tank wants healing on him before the pull, not after. Clerics swear the Carver hits harder on anyone already bleeding.",
+ "legend": "Haurian stands at the bottom of the approach near Legion's door, with Earl Amagin and the second Marquis Chaosmar close by and the Mutilators of Legion's Own around him. Level 68, a Mutilator's body, no script. Pull him with the slope above already cleared, and do not drag the fight toward the Chamberlain. Players call him the Carver and say he is the demon who cuts up the other demons for Legion to eat. He has a Mutilator's body and a marquis's level; there is nothing special to him beyond that, but he stands close to the door, so a slow, careful pull matters more than speed.",
  "yells": {
   "aggro": [
    "Hold still. I do careful work.",
@@ -114,14 +114,14 @@
  "botLines": {
   "briefing": [
    "haurian at the bottom of the approach. [clear the slope first|slope first]",
-   "68, mutilator body, hits hard. [mt gets heals before the pull|pre heal the mt]",
+   "68, mutilator body, no tricks. [careful pull|slow pull, near the door]",
    "dont drag haurian toward the chamberlain. [keep it up the slope|pull him up]",
    "amagin and chaosmar are close. [single pulls|one at a time]"
   ],
   "aftermathWin": [
    "haurian down. [carver's done|the carver is dead]",
    "marquis haurian dead. [amagin next|on to amagin]",
-   "haurian done, [nice heals|mt held]",
+   "haurian done, [clean|nice pull]",
    "carver down. [chamberlain soon|nearly at the door]"
   ],
   "aftermathLoss": [

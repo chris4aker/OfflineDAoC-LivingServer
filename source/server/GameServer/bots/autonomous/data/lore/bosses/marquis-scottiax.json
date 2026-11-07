@@ -66,7 +66,7 @@
   }
  ],
  "story": "The imps steal from the great demons of the court, and something has to happen to what they steal. Most of it goes to Marquis Scottiax. He is a marquis of High Lord Baelerdoth's household, with a seat between Baelerdoth's hall and Oro's, and for ten Rolls he has been the fence for the bottom of the Roll: he buys from the imps what they cannot keep, Duke Aypol's green and blue and white metal, the hoard-pieces of dukes and earls, once the cushion of the Queen's chair, and he pays them in the one thing imps want, which is to be left alone. A demon under his protection is not stepped on. He is the richest marquis in the court and the only peer the imps call friend.\n\nHe came to it by being robbed himself. In the Second Roll the imps took his whole hoard in a night, and instead of going to the Chancellor, as Aypol later did, Scottiax went down to the bottom of the Roll and asked the imps what they wanted for it back. They had never been asked before. He paid, and they returned it, and he asked them what else they had. By the Fourth Roll he was buying everything they took.\n\nAypol has asked the Chancellor many times to strike Scottiax off for receiving the court's own metal. Adremal has ruled every time that a marquis who buys is not a marquis who falls. When the imps set up their seal stalls in the realms' entrance halls after the doors opened, the court noticed that their stock was very good and very large, and that Scottiax had supplied it. Mystemas, who knows everything the imps know, says Scottiax is the only demon on the Roll he would not sell out, because Scottiax would buy him first.",
- "legend": "Scottiax stands between High Lord Oro's hall and Baelerdoth's in the east, a little apart from both, with East Ward patrols passing nearby. Level 73, no script. Pull him when the nearest Ward patrol has passed, and keep him away from Duke Bimure. Players say he is the demon the imps sell their loot to, which is why the seal merchants are so well stocked, and that he is the only big demon the imps cheer for. His drops are ordinary. The imps' prices are not. Kill him clean and quickly: the longer the fight drags between the halls, the likelier a second patrol walks into it. Some Midgard groups swear the seal merchants raise their prices the day after he dies.",
+ "legend": "Scottiax stands between High Lord Oro's hall and Baelerdoth's in the east, a little apart from both, with East Ward camps not far off. Level 73, no script. Pull him out toward open ground, away from the Ward camps and from Duke Bimure. Players say he is the demon the imps sell their loot to, which is why the seal merchants are so well stocked, and that he is the only big demon the imps cheer for. His drops are ordinary. The imps' prices are not. Kill him where you pulled him to: drift back between the halls and you are fighting a Ward camp as well. Some Midgard groups swear the seal merchants raise their prices the day after he dies.",
  "yells": {
   "aggro": [
    "What are you selling? No? Then what are you worth?",
@@ -104,7 +104,7 @@
  },
  "botLines": {
   "briefing": [
-   "scottiax is between oro and baelerdoth. [wait for the ward patrol|pull after the patrol passes]",
+   "scottiax is between oro and baelerdoth. [pull him away from the ward camps|away from the camps]",
    "73 no tricks. keep him off bimure. [one at a time|single pull]",
    "scottiax then baelerdoth's room. [mana check|rebuff]",
    "his drops are normal, [dont get excited|nothing special]"
@@ -112,14 +112,14 @@
   "aftermathWin": [
    "scottiax down. [the imps will be sad|imps lost their fence]",
    "marquis scottiax dead. [on to baelerdoth|baelerdoth's room next]",
-   "scottiax done, [nice timing on the patrol|good pull]",
+   "scottiax done, [kept him off the camps|good pull]",
    "the fence is dead. [prices go up now lol|seal prices up]"
   ],
   "aftermathLoss": [
-   "ward patrol came in on scottiax. [bad timing|wipe]",
+   "drifted scottiax into a ward camp. [bad timing|wipe]",
    "pulled bimure with scottiax. [too much|mess]",
    "scottiax got us. [regroup|rez]",
-   "lost the pull between the halls. [slower|watch the patrols]"
+   "lost the pull between the halls. [slower|watch the camps]"
   ],
   "rumour": [
    "[heard|word is] scottiax buys everything the imps steal. [thats where the seal stock comes from|the merchants get it from him]",

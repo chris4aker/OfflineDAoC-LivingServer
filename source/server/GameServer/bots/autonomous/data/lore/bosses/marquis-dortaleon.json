@@ -74,7 +74,7 @@
   }
  ],
  "story": "Marquis Dortaleon died in the Sixth Roll and did not give up his seat. He had been a marquis of High Lord Baln's household, keeping the eastern road out of Baln's hall where it runs toward the Marshal's war table and the East Ward, and by the account of the demons who served under him he was a fastidious, cold, very correct peer, the kind who made sure every demon walking his road knew its line on the Roll. Then he began to rot.\n\nThe court has never said aloud what killed him, but it is not hard to guess. In the Sixth Roll the court's kitchen, under Malroch the Cook in Prince Ba'alorien's north, was working on something the Cook called a dish for the realms. Malroch needed to try it on somebody who could not complain to a prince. The Inquisitors who examined the dead marquis afterwards found a burning down his back, as if he had slept on coals, and the smell of rotten flesh in his rooms; when, many Rolls later, the court sent its Black Plague up into the three capitals, the sick in Camelot and Jordheim and Tir na Nog woke with exactly those signs. The kitchen will not confirm it. Dortaleon will not discuss it.\n\nGrand Chancellor Adremal ruled that nothing in the bargain requires a marquis to be alive, and Dortaleon kept his line. He keeps the eastern road still, dead, correct and stinking, and Duke Harboris kept his duchy two Rolls later on the same ruling. The realms' own bestiaries list Dortaleon among the dead and not among the demons. He corrects them, when he can.",
- "legend": "Dortaleon stands on the road east out of Baln's hall, between the dukes' end of the hall and the Field Marshal's war table, which makes him easy to pull by accident during the Eligar or Nebir fights. Level 73, no script, and he counts as undead, not demon, so check your damage types and slays. Kill him on his own before the Marshal. Players say the smell on that road is the same as the Black Plague in the capitals, and Albion players who did the plague quest swear they know it. Clerics joke that he is the one demon in the dungeon their undead spells were made for.",
+ "legend": "Dortaleon stands on the road east out of Baln's hall, between the dukes' end of the hall and the Field Marshal's war table, which makes him easy to pull by accident during the Eligar or Nebir fights. Level 73, no script, and the world data types him undead rather than demon, which matters to anything that cares about body type. Kill him on his own before the Marshal. Players say the smell on that road is the same as the Black Plague in the capitals, and Albion players who did the plague quest swear they know it. Albion clerics joke that he is the one thing in the dungeon their prayers for the dead were written for.",
  "yells": {
   "aggro": [
    "Your line on the Roll. You have none. Leave my road.",
@@ -113,7 +113,7 @@
  "botLines": {
   "briefing": [
    "dortaleon is on the road east of balns hall. [easy to pull by accident|watch him on the eligar pull]",
-   "hes undead not demon, [check your slays|undead stuff works on him]",
+   "hes typed undead not demon. [weird for df|check the con]",
    "kill dortaleon alone [before the marshal|before nebir]",
    "73, no tricks, just a dead marquis that hits hard"
   ],
@@ -121,7 +121,7 @@
    "dortaleon down. [the road is clear|smell's still there though]",
    "dead marquis is dead again. [lol|properly this time]",
    "dortaleon done, [now the marshal|nebir next]",
-   "marquis dortaleon dead. [undead spells ftw|told you undead works]"
+   "marquis dortaleon dead. [dead again lol|deader now]"
   ],
   "aftermathLoss": [
    "pulled dortaleon into the eligar fight. [mess|wipe]",
@@ -133,7 +133,7 @@
    "[heard|word is] marquis dortaleon died and kept his seat anyway",
    "the road east of balns hall smells like the black plague. [same smell|the albs swear it]",
    "[someone said|my guildie says] the demon cook tried the plague on dortaleon first",
-   "dortaleon is undead. [bring the undead spells|clerics love him]"
+   "dortaleon is undead. [only undead lord in df|a dead demon, go figure]"
   ]
  },
  "loremasterTopic": {

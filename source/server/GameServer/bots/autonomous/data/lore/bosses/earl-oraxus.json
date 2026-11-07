@@ -59,7 +59,7 @@
    "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
   },
   {
-   "text": "High Lord Saeor's script heals him by the health of the player he strikes.",
+   "text": "High Lord Saeor's script heals him by a player's maximum health whenever he kills that player.",
    "provenance": "game",
    "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs"
   },
@@ -74,8 +74,8 @@
    "source": "Living Server"
   }
  ],
- "story": "High Lord Saeor grows strong on what he strikes, and Earl Oraxus tells him what it was worth. He is Saeor's taster. In the Uncounted Age the east was full of demons who would eat anything, and Saeor, who heals on the strength of whatever falls to him, learned early that not all strength is alike. Some of it sustains, some of it sickens, and some of it, taken from the wrong demon, carries that demon's quarrels with it. Oraxus, a squat and careful earl of his household, could tell the difference by touch. He lays a hand on whatever Saeor has cut down and names what is in it, as a herb-wife names a leaf, and Saeor eats accordingly.\n\nHe has advised his lord on everything Saeor has taken since, and the court remembers two of his judgements. In the Third Roll, when High Lord Oro came back as three, Oraxus told Saeor that the two lesser bodies were thin and would feed nothing, and Saeor dropped his claim to one of them while High Lord Baelerdoth was still pressing his; Duke Bimure had refused to carry either claim, and Saeor's withdrawal is the reason that quarrel ended at the Chancellor's table and not in the Ward. In the Sixth Roll it was Oraxus who went west to the Chthonic Chapter house at Saeor's word and touched the shoulder of a knight called Zepor at the end of a patrol. He came back and told his lord that Zepor's strength would never give ground, because it did not know how. Saeor sent for the knight the third time that Roll, and Zepor came.\n\nSince the doors opened Oraxus has had mortals to taste. He stands outside Saeor's hall at the far east end of the hollow with Duke Zepor and Marquis Almen, and the court says he has formed opinions on the three realms. Albion's strength, he says, is iron and prayer and keeps well. Midgard's is cold and rich and goes to the head. Hibernia's comes down the eastern stair first, and he describes it as green, which nobody in the court understands. He has never once been wrong about what a thing was worth. He has been wrong, the Inquisitors note, about who would end up eating it.",
- "legend": "Oraxus stands outside High Lord Saeor's hall at the far east end, with Duke Zepor less than nine hundred units away and Marquis Almen close. Level 71, no script, a squat earl. Kill him before you go near Saeor, because Saeor heals on every hit he lands and you want the room empty when you start on him. Pull Oraxus away from Zepor if you can; the two together will chew through a main tank. Players call him the taster and say he tells Saeor how good you are to eat. Hibernians, who meet him first off the eastern stair, say he called them green, and have never decided whether that was an insult. Albion groups take 'keeps well' as a compliment, which tells you something about Albion.",
+ "story": "High Lord Saeor grows strong on what he strikes, and Earl Oraxus tells him what it was worth. He is Saeor's taster. In the Uncounted Age the east was full of demons who would eat anything, and Saeor, who heals on the strength of whatever he kills, learned early that not all strength is alike. Some of it sustains, some of it sickens, and some of it, taken from the wrong demon, carries that demon's quarrels with it. Oraxus, a squat and careful earl of his household, could tell the difference by touch. He lays a hand on whatever Saeor has cut down and names what is in it, as a herb-wife names a leaf, and Saeor eats accordingly.\n\nHe has advised his lord on everything Saeor has taken since, and the court remembers two of his judgements. In the Third Roll, when High Lord Oro came back as three, Oraxus told Saeor that the two lesser bodies were thin and would feed nothing, and Saeor dropped his claim to one of them while High Lord Baelerdoth was still pressing his; Duke Bimure had refused to carry either claim, and Saeor's withdrawal is the reason that quarrel ended at the Chancellor's table and not in the Ward. In the Sixth Roll it was Oraxus who went west to the Chthonic Chapter house at Saeor's word and touched the shoulder of a knight called Zepor at the end of his watch. He came back and told his lord that Zepor's strength would never give ground, because it did not know how. Saeor sent for the knight the third time that Roll, and Zepor came.\n\nSince the doors opened Oraxus has had mortals to taste. He stands outside Saeor's hall at the far east end of the hollow with Duke Zepor and Marquis Almen, and the court says he has formed opinions on the three realms. Albion's strength, he says, is iron and prayer and keeps well. Midgard's is cold and rich and goes to the head. Hibernia's comes down the eastern stair first, and he describes it as green, which nobody in the court understands. He has never once been wrong about what a thing was worth. He has been wrong, the Inquisitors note, about who would end up eating it.",
+ "legend": "Oraxus stands outside High Lord Saeor's hall at the far east end, with Duke Zepor less than nine hundred units away and Marquis Almen close. Level 71, no script, a squat earl. Kill him before you go near Saeor, because Saeor heals by a whole player's health every time he kills one and you want the room empty, and nobody dying, when you start on him. Pull Oraxus away from Zepor if you can; the two together will chew through a main tank. Players call him the taster and say he tells Saeor how good you are to eat. Hibernians, who meet him first off the eastern stair, say he called them green, and have never decided whether that was an insult. Albion groups take 'keeps well' as a compliment, which tells you something about Albion.",
  "yells": {
   "aggro": [
    "Hold still. Let me see what you are worth.",
@@ -114,7 +114,7 @@
  "botLines": {
   "briefing": [
    "oraxus outside saeors hall, zepor right next to him. [split them|pull oraxus away]",
-   "kill oraxus before saeor. [saeor heals off hits|empty room for saeor]",
+   "kill oraxus before saeor. [saeor heals off kills|empty room for saeor]",
    "zepor and oraxus together eat the mt. [dont|single pulls]",
    "71 no tricks. [squat little earl|easy to lose, assist]"
   ],
@@ -126,7 +126,7 @@
   ],
   "aftermathLoss": [
    "oraxus and zepor together. [mt died|wipe]",
-   "pulled saeor with oraxus. [healed to full|gg]",
+   "pulled saeor with oraxus. [people died and he healed|gg]",
    "oraxus got us. [regroup|rez]",
    "lost the pull at saeors door. [slower|careful]"
   ],
