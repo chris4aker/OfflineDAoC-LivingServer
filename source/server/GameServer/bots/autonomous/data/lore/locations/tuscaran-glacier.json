@@ -1,0 +1,328 @@
+{
+  "id": "tuscaran-glacier",
+  "name": "Tuscaran Glacier",
+  "realm": "Midgard",
+  "regions": [
+    160
+  ],
+  "aliases": [
+    "the glacier",
+    "tuscarian glacier",
+    "tuscaren glacier",
+    "tg"
+  ],
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa",
+    "wild-beasts",
+    "troll-fathers"
+  ],
+  "summary": "The citadel of the hrimthursa rime giants on Aegir, raised on a dragon's bones and torn between a peaceful Council and warlike Icelords.",
+  "facts": [
+    {
+      "text": "Tuscaran Glacier is a level-50 Shrouded Isles dungeon entered from Delling Crater on the isle of Aegir; it became an Epic Zone in patch 1.101 (2010).",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=76"
+    },
+    {
+      "text": "Its bestiary lists 51 creatures: the hrimthursa council and icelords, hrimthursa giants of many trades (sculptors, icesplitters, seers, throne guards), iceweavers, frostbound and icebound skeletons, griffons and Fornfrusenen.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=76"
+    },
+    {
+      "text": "Killing its giants lowers faction with the Hrimthursa and Glacier Harskaren and raises it with Klippa Vaktaren and Vind Ryttaren.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6072"
+    },
+    {
+      "text": "The scripts set a pacifist Council against the warlike Icelords: Hjalmar mocks the Council's pacifism, Birghir admits the Ice Lords were right.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "Players in 2003 killed King Tuscar and Queen Kula with about 100; Living Server sizes the raid at 100.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/olcasgean-has-been-defeated.125921/"
+    },
+    {
+      "text": "Bot chat says the citadel stands on a dead dragon's bones and the elder council sits on its ribs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Hrimthursar in Old Norse are rime-giants; Dellingr, for whom the crater may be named, is a god linked with the dawn (to verify).",
+      "provenance": "myth",
+      "source": "Old Norse myth, to verify"
+    },
+    {
+      "text": "Allakhazam spells it Tuscaren Glacier and the scripts' folder TuscarianGlacier; the world's zone table and this file use Tuscaran.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Falling ice in the western caves is a scripted hazard that cannot be hurt: 'A terrifying cracking sound echoes in the caves!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/FallingIce.cs"
+    },
+    {
+      "text": "A July 2003 sign-up for a Tuscaran raid hoped for four groups and called six 'awesome'.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "The Midgard epic raid of 2026-11-04 wiped at Fornfrusenen and twice at Icelord Agmundr before its Defeated.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Hrimthursa trades in the bestiary: berg, bladehand, depredator, dominator, grinder, harrower, icereaver, icespine, icesplitter, icetouch, rook, sculptor, seer, serac, throne guard, tormentor.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=76"
+    }
+  ],
+  "story": "I. The bones in the ice.\nOn the island of Aegir, in the crater the old maps give to Delling, the god of the dawn, a glacier lies over the bones of a dragon. Nobody living saw it die. The iarn dwarves say it was already old bone when their clans first came to Aegir, and the Troll Fathers, who were older than the dwarves, never spoke of it at all, which the dwarves take to mean that the Fathers knew. Some in Midgard say it was kin to Gjalpinulva. Some say it was something far older, from before the gods set the world in order. The bones do not say. They lie under the ice with their ribs as wide as a fjord, and the cold that comes off them has never once let a summer through.\n\nII. The queen who wanted winter.\nThe hrimthursa, the rime giants, came later. The skalds sing that their queen, Kula, was the youngest and coldest of Bergelmir's line, the giant who alone lived through the flood of Ymir's blood. Her brothers marched south for green land and were lost in it. Kula wanted a winter that would never end, and she found one lying dead in the crater. She raised her citadel on the ribs, cut halls and tunnels through the ice with her icesplitters and her sculptors, and set her iceweavers to weave the walls new every night so that nothing could crack them. When the smith Tuscar came courting with an axe that rang like a bell, she took the axe and then the smith, and gave him a throne beside hers. The glacier has carried his name ever since. Everyone knows whose throne it is.\n\nIII. Council and Icelords.\nTwo kinds of giant serve her, and they hate each other. The Council sits on the dragon's ribs: Birghir the eldest, Guthlac who listens to the ice, Hord the healer, Ozur the measurer, Vagn and Nokkvi who carry the votes, and Otrygg the faithless, who keeps hounds because he never trusted peace. For a century they argued that the ice was enough, that if the glacier left the island alone the island would leave the glacier alone. The Icelords hold the tunnels and argued for a century the other way: Kvasir the horn, Agmundr and his seer, Hakr and the queen's iceweavers, Steinvor the hammer and Skuf the anvil, and the two elders Hjalmar and Suttung, whom the glacier never keeps awake together. The Council won every vote, because a quiet council costs a queen nothing.\n\nIV. What went wrong.\nThen the island came knocking. The morvalt overran Aegir, a Troll Father walked into Jordheim, and Midgard sailed with the Valkyn to take the island back. Midgard's warbands crossed Delling Crater and came up the glacier's tunnels, and the giants learned that the Icelords had been right. Every elder you reach will tell you so. Every icelord will tell you he weeps for no councillor. When Kvasir dies the whole glacier hears it, a rumble running down every tunnel, and the giants march.\n\nV. Older ice.\nBetween and beneath the giants is older ice. Fornfrusenen sleeps in a wall the tunnel-cutters would not touch, and knows the name of whoever wakes him. Issorden's army of bone stands frozen mid-stride on the eastern approach, where Kula stopped them before the citadel was finished. Jailer Vifil keeps a cell for every enemy the queen has named, and one at the end with a door too wide for any giant, which he visits every morning. The griffons Torst and Hurika nest on the high eastern ledge and serve nobody. The cliff-wardens and the wind-riders of the island, the Klippa Vaktaren and the Vind Ryttaren, would like to see the hrimthursa broken, and say so to anyone who brings them hrimthursa blood.\n\nVI. Why it matters.\nTo Midgard the glacier is the long climb, the epic of the Shrouded Isles, the place where a realm learns whether it can fight as one. To the skalds it is the proof that winter has a queen. And to the old dwarves of Aegir it is a lid on something: the dragon under the ice, the sleeper in the wall, the prisoner in the last cell. They say the giants are only the latest to sit on it.",
+  "legend": "Midgard raid leaders call Tuscaran the long climb, and they plan it in pairs: Vagn with Nokkvi, Steinvor with Skuf, Birghir with Guthlac, Torst with Hurika, and the twins at the top. Hord heals himself, so keep the damage on. Ozur hates a crowd, so send only the tanks and a few melee. Otrygg is an add fight. Guthlac's ice spike has to die or everyone has to move. Fornfrusenen is the wall most raids hit, because nothing hurts him from more than a few steps away: casters heal and buff, melee does the work. Agmundr brings six giants, and more raids die to him than to the throne because they think the hard part is over. When the howl runs through the ice, one elder icelord has woken, and you never know which. When Kvasir dies, regroup, because the glacier heard it.\n\nSuperstitions: never shout in the north hall, or the sleeper learns your name. Knock on a council rib if you get the chance; the old hands swear bone rings different from ice. Nobody has ever found the Troll Father in Vifil's cells, and everybody looks. Nicknames: the long climb, the anvil (Tuscar), the wall (Fornfrusenen), the horn (Kvasir).",
+  "atmosphere": {
+    "firstEntry": [
+      "The glacier breathes. Somewhere below, a dragon is bones.",
+      "Rime giants built here. They did not build for guests.",
+      "The walls are woven ice. Something mends them nightly.",
+      "Your breath freezes before it leaves your lips.",
+      "Far below, the ice creaks like an old ship."
+    ],
+    "areas": [
+      {
+        "name": "the council chamber",
+        "x": 34150,
+        "y": 55870,
+        "z": 11900,
+        "radius": 900,
+        "lines": [
+          "The council seats are carved from a dragon's ribs.",
+          "Old voices argued peace here. They are silent now.",
+          "Knock on a rib. Bone rings different from ice."
+        ]
+      },
+      {
+        "name": "the thrones",
+        "x": 34340,
+        "y": 57160,
+        "z": 11950,
+        "radius": 800,
+        "lines": [
+          "Two thrones of ice. One queen.",
+          "Hammer-marks score the ice around the second throne.",
+          "The air here is still, as if afraid to move."
+        ]
+      },
+      {
+        "name": "the hall of the elder icelords",
+        "x": 32021,
+        "y": 53862,
+        "z": 11884,
+        "radius": 900,
+        "lines": [
+          "A howl runs through the ice. One elder wakes.",
+          "Two seats. The glacier only ever fills one."
+        ]
+      },
+      {
+        "name": "the jailer's tunnels",
+        "x": 27074,
+        "y": 61280,
+        "z": 10351,
+        "radius": 1200,
+        "lines": [
+          "Barred cells line the tunnel. Something breathes.",
+          "One door at the end is cut too wide for a giant.",
+          "Tormentors walk here. They have keys."
+        ]
+      },
+      {
+        "name": "the falling ice",
+        "x": 24800,
+        "y": 53000,
+        "z": 11400,
+        "radius": 1500,
+        "lines": [
+          "Icicles hang overhead like spears. Walk softly.",
+          "A crack rings out above. Keep moving."
+        ]
+      },
+      {
+        "name": "Kvasir's tunnel",
+        "x": 20240,
+        "y": 52101,
+        "z": 10924,
+        "radius": 900,
+        "lines": [
+          "Old scream-marks craze the ice of this tunnel.",
+          "The walls here have heard a giant's horn before."
+        ]
+      },
+      {
+        "name": "Agmundr's watch",
+        "x": 15037,
+        "y": 50114,
+        "z": 12408,
+        "radius": 1000,
+        "lines": [
+          "A seer's runes lie on the ice. They foretold you.",
+          "Six giants wait here with their icelord."
+        ]
+      },
+      {
+        "name": "the iceweavers' hall",
+        "x": 25415,
+        "y": 57215,
+        "z": 11357,
+        "radius": 900,
+        "lines": [
+          "Woven ice glistens on every wall. Something mends it.",
+          "Long cold serpents coil in the weave."
+        ]
+      },
+      {
+        "name": "the hammer and the anvil",
+        "x": 30460,
+        "y": 49570,
+        "z": 11384,
+        "radius": 900,
+        "lines": [
+          "Pillars of frost rise here like old graves.",
+          "Two icelords stand watch, one still as stone."
+        ]
+      },
+      {
+        "name": "the outer council seats",
+        "x": 23000,
+        "y": 38500,
+        "z": 13200,
+        "radius": 2200,
+        "lines": [
+          "Lesser council seats line this hall.",
+          "Gnawed bones, tally-marks, a healer's needles.",
+          "The Council's lesser voices still keep their seats."
+        ]
+      },
+      {
+        "name": "the frozen army",
+        "x": 54453,
+        "y": 37638,
+        "z": 11435,
+        "radius": 1200,
+        "lines": [
+          "Skeletons stand frozen mid-stride, weapons raised.",
+          "A dead king's army keeps the queen's order."
+        ]
+      },
+      {
+        "name": "the long-frozen wall",
+        "x": 49618,
+        "y": 32876,
+        "z": 10859,
+        "radius": 700,
+        "lines": [
+          "A shape sleeps in the clear ice. Do not shout.",
+          "Something in the ice knows your name."
+        ]
+      },
+      {
+        "name": "the griffon roost",
+        "x": 50800,
+        "y": 35950,
+        "z": 16154,
+        "radius": 900,
+        "lines": [
+          "Wind and white feathers. The roost is occupied.",
+          "A long fall waits past the ledge."
+        ]
+      }
+    ],
+    "raidForming": [
+      "Midgard gathers for the long climb up Tuscaran."
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the hrimthursa citadel sits on a dead dragon's bones. [nobody knows|nobody asks] what killed the dragon",
+      "tuscaran has a council that wanted peace and icelords that wanted war. [guess who was right|the icelords won the argument when we showed up]",
+      "the glacier's named for tuscar but [everyone|every skald] knows it's kula's throne",
+      "when icelord kvasir dies the [whole glacier|ice] rumbles and the giants start moving. [true story|ask anyone who's been]",
+      "theres a thing frozen in the wall up there called fornfrusenen. [it was there before the giants|older than kula]",
+      "the elder council of the hrimthursa sits right on the dragon's ribs. strange seat for a council",
+      "hord is the council's healer from back when they thought they'd never need one",
+      "ozur on the council answers every threat in proportion. bring a crowd and he hits like a crowd",
+      "vagn and nokkvi are named for a wagon and a boat. they carried the council's votes between them",
+      "the icelords wanted to clean the whole island out. the council said no for a hundred years",
+      "tuscar made kula's axe. thats how he got the crown, the skalds say",
+      "issorden's skeletons came to take the glacier before kula. she froze them standing",
+      "kula's iceweavers weave the walls new every night so the glacier never cracks"
+    ],
+    "rumour": [
+      "[heard|rumour is] the jailer has a troll father in a cell up there. [one day someone checks|nobody's checked]",
+      "only one of the two elder icelords ever shows up. [the glacier picks|you hear a howl and find out which]",
+      "griffons nest at the top of tuscaran glacier. [big ones|huge]. dont go up there alone",
+      "[heard|i heard] knocking on a council rib tells you if its bone or ice. bone rings dull",
+      "the klippa vaktaren and the vind ryttaren want the hrimthursa gone. kill giants and they like you",
+      "dont shout in the north hall of the glacier. [the sleeper learns your name|fornfrusenen hears]",
+      "[my guild says|they say] agmundr kills more raids than the throne does",
+      "the dragon under tuscaran might be gjalpinulva's mother. [cant prove it|nobody can]"
+    ],
+    "tell": [
+      "tuscaran glacier? hrimthursa frost giants. council, icelords, the jailer, and queen kula and king tuscar at the top",
+      "the glacier is the big one on aegir, delling crater. bring a full raid, its a long climb",
+      "its the rime giants' citadel. fornfrusenen is the wall most raids hit, melee only on him",
+      "is tuscaran hard? its the hardest thing midgard has after the dragon. 100 people and a plan for every pair",
+      "where is the glacier? aegir, delling crater, at about 55k 9k. go by dellinstad",
+      "fornfrusenen is melee only, agmundr is six giants, ozur hates crowds. the throne is the easy part, almost"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Tuscaran Glacier. A citadel of rime giants, raised by [Kula] on a dragon's [bones]. Two kinds of giant serve her: the [Council], who wanted peace, and the [Icelords], who wanted war. And there is [older ice] in there than either.\"",
+    "topics": {
+      "Kula": "The coldest of Bergelmir's line. She built where no summer could reach and took the smith Tuscar for king, and kept the throne for herself.",
+      "bones": "A dragon lies dead under the glacier, ribs wide as a fjord. Nobody living saw it die. The elders' seats are carved from its ribs. Some say it was kin to Gjalpinulva; I would not say it in Malmohus.",
+      "Council": "Elders who argued a century that the ice was enough. They won every vote until the island came knocking. Now every one of them will tell you the [Icelords] were right.",
+      "Icelords": "The war-party of the glacier: Kvasir the horn, Agmundr and his seer, Hakr and the iceweavers, Steinvor and Skuf. And the two elders, Hjalmar and Suttung, who never wake together.",
+      "older ice": "Fornfrusenen in the north wall, who knows the name of whoever wakes him. Issorden's dead, frozen mid-stride. The jailer's last cell. Ask me about none of them after dark.",
+      "Delling": "The crater is named, the old maps say, for Delling of the dawn. A strange name for a place where the sun never warms the ice. The town of Dellinstad trades at its edge and bars its doors when the glacier rumbles.",
+      "wind-riders": "The Vind Ryttaren and the Klippa Vaktaren, the wind-riders and cliff-wardens of the island. They have no love for the hrimthursa, and they reward any who bring the giants down. The wind-riders have spent a generation trying to steal a chick from the griffon roost.",
+      "the long climb": "Raid leaders call it that: tunnel by tunnel, every pair of giants in turn, and [Kula] and [Tuscar] at the top. Most raids that fail fail at [Fornfrusenen] or at Agmundr, not at the thrones.",
+      "griffons": "Torst and Hurika, the great griffons of the high ledge. They serve no giant. They are only neighbours with a temper, guarding a nest.",
+      "the cells": "Jailer [Vifil] keeps a cell for every enemy the queen has named, and one at the end with a door too wide for a giant. He visits it every morning. Nobody knows who is in it."
+    }
+  },
+  "book": {
+    "title": "Notes from the Delling Crater, by Ingrid of Dellinstad, trader",
+    "pages": [
+      "I went up to the glacier with a trader from Dellinstad who swore the giants would buy salt. They did not buy salt. They let us stand at the outer ice while a giant with a face like a cliff looked us over, and then a second giant came and the two of them argued over us in their own tongue for most of an hour. My trader understood a little. One wanted us sent away, he said. The other wanted us killed so that no one else would come. In the end the first one won, and we were sent away. The trader said that was the Council and the Icelords. I said I did not care which, so long as the first one kept winning.",
+      "A hrimthursa sculptor, who had been cast out for carving something he should not have, told me the rest over a fire in the crater. The citadel stands on a dead dragon, he said, and the elders sit on its ribs. The queen chose it because nothing so large ever thaws. The king makes the weapons. The jailer keeps the cells, and one cell is not for giants. And in the north wall there is a sleeper that was there before any of it. I asked what he had carved. He said: the sleeper's face, as it will look when it wakes.",
+      "The sculptor told me the names of the Council as a child recites the kings. Birghir, who speaks for peace. Guthlac, who listens to the ice. Hord, who mends. Ozur, who measures. Vagn and Nokkvi, who carry the vote between them like a wagon and a boat. Otrygg, who keeps hounds and is called faithless to his face. Then he named the Icelords, and his voice changed. Kvasir the horn. Agmundr, who trusts his seer. Hakr of the iceweavers. Steinvor and Skuf. And the two elders who cannot share a hall, Hjalmar and Suttung. He said the Council had won every vote for a hundred years. He did not say it as if it were a good thing.",
+      "Last page, written at Dellinstad. A rumble came down from the glacier tonight like a herd moving under the ice, and the old men of the town went quiet and barred their doors. One of them told me it is the sound the glacier makes when an icelord dies, and that the giants march when they hear it. He said it has happened twice in his life. He said both times the Council lost a vote. This morning the raid came back down the crater road from Jordheim's side, singing, with fewer men than went up. I sold them salt. The giants never would."
+    ]
+  },
+  "bosses": [
+    "queen-kula",
+    "king-tuscar",
+    "elder-council-birghir",
+    "elder-council-guthlac",
+    "elder-icelord-hjalmar",
+    "elder-icelord-suttung",
+    "icelord-kvasir",
+    "icelord-agmundr",
+    "icelord-hakr",
+    "icelord-steinvor",
+    "icelord-skuf",
+    "council-otrygg",
+    "council-vagn",
+    "council-nokkvi",
+    "council-hord",
+    "council-ozur",
+    "jailer-vifil",
+    "fornfrusenen",
+    "issorden",
+    "torst",
+    "hurika"
+  ]
+}

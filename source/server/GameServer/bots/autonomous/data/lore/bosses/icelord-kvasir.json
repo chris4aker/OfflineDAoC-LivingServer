@@ -1,0 +1,129 @@
+{
+  "id": "icelord-kvasir",
+  "name": "Icelord Kvasir",
+  "catalogKey": "tuscaran-glacier/kvasir",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "elder-icelord-suttung",
+      "relation": "named, like him, from the tale of the mead"
+    },
+    {
+      "id": "icelord-agmundr",
+      "relation": "brother icelord of the western tunnels"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Kvasir is a level-80 icelord with 100,000 health; two hrimthursa icetouch come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He lets loose a primal scream that resonates in the ice and stuns those near him; he also mesmerizes in a wide ring and roots.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs"
+    },
+    {
+      "text": "When he dies a low rumble runs through the glacier, icicles fall and it sounds as though a swarm of giants is on the move.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs"
+    },
+    {
+      "text": "In the original, cold damage healed him; the Offline DAoC build turns that off for bot raids.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "In Norse myth Kvasir is the wisest of beings, whose blood was brewed into the mead of poetry.",
+      "provenance": "myth",
+      "source": "Snorri, Skaldskaparmal (public-domain myth); used as inspiration"
+    }
+  ],
+  "story": "The icelords give their sons names from the old songs, and Kvasir's father chose the wisest name of all: Kvasir, the being so wise that the gods and the vanir made him together from their spittle as a token of peace, whose blood became the mead of poetry. The father hoped the name would take. It did not. Kvasir grew up loud, broad and quick-tempered, the strongest voice in the tunnels and the least interested in using it for anything but noise. The Council called him a brute. The other icelords called him something more useful: the horn.\n\nEvery hall needs a horn. When the morvalt came over the crater rim in the early days, it was Kvasir who saw them first and screamed, and the scream ran through the ice so that every giant in the citadel heard it and took up arms. He has kept the western tunnels ever since with two of the icetouch beside him, and he has never once let a stranger reach the inner halls without the whole glacier knowing.\n\nHe fights the same way. He mocks you first: to come so far, only to die a horrible death, and would you not rather have chosen a safer road today? Then he screams. It is a primal sound so intense that it resonates in the surrounding ice for several seconds, and everyone near him is stunned by it. Those further out stand dreaming in the wide ring of his mesmerism, and those who run are rooted where they are. The old raiders said cold healed him, that frost fed him like ale; whatever the truth of it, today he bleeds like any giant.\n\nAnd when he dies the ice carries the news. A low rumble runs through the whole glacier, icicles break from the ceilings and shatter on the floors, small cracks open in the walls, and somewhere deeper it sounds as if a swarm of giants were on the move. They are. His last words are that his kind will avenge him, and that you will not make it out alive. He is not wise, but on that one point he has usually been right.",
+  "legend": "Kvasir mezzes in a big ring, stuns those close with his scream, and roots runners, so bring cure-mez, stagger your melee and keep root-break handy. His two icetouch come with him. Don't drag him off his spot. When he goes down, get ready: the rumble means the glacier heard, and the giants come, so regroup, rebuff and don't spread out. The old raiders said frost healed him and fought him with fire only; the new raiders just hit him harder. Nickname: the horn. He mocks you first, then screams; the scream is the stun, so melee should not all be in his face when it comes. After the kill, count your raid before you move on.",
+  "yells": {
+    "aggro": [
+      "Do you not wish you had chosen a safer road today?",
+      "To come this far, only to die a horrible death!",
+      "Do you hear that? That is every giant in the glacier, listening to me."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "HRAAAAH! Hear me, every hall of the ice!"
+      },
+      {
+        "trigger": "death",
+        "text": "My kind will avenge me! You will not make it out alive!"
+      }
+    ],
+    "death": [
+      "My kind... will avenge... me...",
+      "Hear me... every hall..."
+    ],
+    "slay": [
+      "You came so far to die so loudly.",
+      "Loud enough for you?",
+      "The ice heard that one.",
+      "Next!"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Old scream-marks craze the ice of this tunnel.",
+      "Two icetouch giants stand with an icelord, waiting."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "A rumble runs through the glacier. Giants are moving!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Kvasir screams! The ice itself rings with it!"
+      }
+    ],
+    "realmFirstKill": "Icelord Kvasir is silenced. The glacier shudders."
+  },
+  "botLines": {
+    "briefing": [
+      "kvasir screams and stuns everyone near him, melee [stagger in|go in waves]",
+      "when kvasir dies the glacier wakes up, [be ready|regroup fast]",
+      "kvasir's two icetouch come with him",
+      "after kvasir dies, regroup. dont run off, the giants are coming"
+    ],
+    "aftermathWin": [
+      "kvasir down. hear that rumble? here they come",
+      "the horn is broken. [gg|nice]",
+      "kvasir down and the adds after it too. strong raid tonight",
+      "the glacier rumbled when he died. [goosebumps|awesome]"
+    ],
+    "aftermathLoss": [
+      "kvasir's mez caught both healer groups. [rip|gg]",
+      "wiped after kvasir to the giants that came running",
+      "his scream stunned the healers and that was it",
+      "half the melee were stunned when the mez hit the rest"
+    ],
+    "rumour": [
+      "the old songs had a wise man called kvasir. the icelord is not that",
+      "kvasir's father named him after the wisest being in the old songs. it didnt take",
+      "[old raiders say|some say] frost used to heal kvasir. dunno if its true anymore",
+      "when kvasir died last time the whole of dellinstad heard it, they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kvasir",
+    "text": "Named for the wisest being of the old songs, and wise in nothing. He is the glacier's horn: he screams and men fall, and when he dies the ice carries the news to every hall. Expect company."
+  },
+  "bookPage": "From the scout's tally kept at Delling's rim. I was asleep in my crack when the sound came: a scream from inside the ice, very far off, and then the whole crater shook like a drum. Rocks fell from the rim. In the morning a Valkyn came by and told me a warband of Jordheim had killed the icelord they call Kvasir, the horn, and that the scream was his last and the shaking was the glacier answering. He said the warband did not come out until the next night, because every giant in the place had gone looking for them. He said it was worth it. He did not say how many came out.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} silenced Icelord Kvasir in {minutes} minutes, and the glacier shook.",
+    "loss": "Icelord Kvasir's scream scattered {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

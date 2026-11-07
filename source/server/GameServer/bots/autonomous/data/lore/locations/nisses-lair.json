@@ -1,0 +1,68 @@
+{
+  "id": "nisses-lair",
+  "name": "Nisse's Lair",
+  "realm": "Midgard",
+  "regions": [
+    129
+  ],
+  "summary": "The burrow of the tomte under the Vale of Mularn, ruled by the house-spirit Nisse, with spiders in the back.",
+  "facts": [
+    {
+      "text": "Nisse's Lair is a small burrow, the underground home of the tomte and their leader, Nisse; a small but powerful lair of spiders has taken over part of it.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=42"
+    },
+    {
+      "text": "Its bestiary lists Nisse, tomte of many trades (elders, seers, shamans, witch doctors, jagers, warlords, captors and handlers with warhounds), sand lizards, cave spiders, a haunt and a prisoner.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=42"
+    },
+    {
+      "text": "In Scandinavian folklore the nisse or tomte is a small household spirit who looks after a farm if he is treated well and makes trouble if he is not; porridge is the traditional offering.",
+      "provenance": "myth",
+      "source": "Scandinavian folklore (public domain)"
+    },
+    {
+      "text": "Bot chat says Nisse was a house spirit gone bad, and that porridge keeps him harmless; and that the tomte are tougher than they look.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Every farm in Midgard used to have a tomte, a little old man of the house who mended the harness at night and kept the cows calm, so long as he got his porridge with butter in it at midwinter. Forget the butter and things went wrong. The tomte of Mularn are the ones whose butter was forgotten too many times. They went underground, to a burrow below the vale, and they took their grudge with them, and they made it a people: guards and trainers with warhounds, captors who keep prisoners, seers and shamans and witch doctors, a warlord, all very small and very serious.\n\nNisse leads them, the oldest of the house-spirits, who was the tomte of the first farm in the vale and remembers the name of the family that forgot him. He is not wicked, exactly. He is offended, and he has been offended for a long time. In the back of the burrow the spiders have taken a room for themselves, which offends him further.\n\nYoung Midgardians go down to Nisse's Lair for their first real dungeon, and come back with bruises from people half their size.",
+  "legend": "Nisse's Lair is the first dungeon most Midgardians see: tomte from the single digits into the twenties. They are tougher than they look and they keep warhounds. The spiders in the back are worse than the tomte. Leave out porridge, my gran said, with butter, and he's harmless.",
+  "atmosphere": {
+    "firstEntry": [
+      "A tomte burrow. Small doors, small people, long grudges.",
+      "Somebody forgot the butter. The tomte remember."
+    ],
+    "areas": []
+  },
+  "botLines": {
+    "lore": [
+      "the tomte in nisse's lair are house spirits whose porridge got forgotten too many times",
+      "nisse was the tomte of the first farm in the vale, they say"
+    ],
+    "rumour": [
+      "nisse was a house spirit gone bad, my gran said. leave out porridge and he's harmless",
+      "nisse's lair tomte are tougher than they look"
+    ],
+    "tell": [
+      "nisse's lair is the tomte burrow near mularn. first dungeon, singles to twenties",
+      "nisse's lair? tomte with warhounds, and spiders in the back. bring a group"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Nisse's Lair. The [tomte] whose butter was forgotten went underground, and [Nisse] leads them.\"",
+    "topics": {
+      "tomte": "House-spirits who mend the harness and calm the cows, if you put butter in their porridge at midwinter. These ones were forgotten too often.",
+      "Nisse": "The oldest of them, tomte of the first farm in the vale. He is not wicked, exactly. He is offended, and has been for a long time."
+    }
+  },
+  "book": {
+    "title": "Midwinter Porridge",
+    "pages": [
+      "My grandmother put a bowl of porridge on the barn step every midwinter, with a lump of butter melting in the middle, and she would not let us eat until it was done. When I was nine I asked why. She said the tomte had looked after our cows for two hundred years and had never once been paid in silver, and the least we could do was butter. Then she told me about the farm across the vale, where they forgot, and how their cows went dry and their harness rotted and one morning the whole family woke up with their hair braided to the bedposts. I have never forgotten the butter."
+    ]
+  },
+  "bosses": []
+}

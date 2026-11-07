@@ -1,0 +1,72 @@
+{
+  "id": "dalgo",
+  "name": "Dalgo",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/dalgo",
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Dalgo is a level-70 named with 30,000 health in Faraheim; seven skogsra (three greenhands and four woodsmen) come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists Dalgo as a level-70 humanoid in Faraheim.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/5765"
+    },
+    {
+      "text": "In Scandinavian folklore the skogsra is a forest spirit, fair from the front and hollow behind, who leads travellers astray.",
+      "provenance": "myth",
+      "source": "Scandinavian folklore (public domain), to verify details"
+    }
+  ],
+  "story": "Dalgo is the skogsra's warden of the deep woods of Faraheim. Where Boligar leads strangers astray, Dalgo makes sure they stay lost: his greenhands tend the paths so they close behind you, and his woodsmen walk them. He is the strongest of the forest people on Aegir and he has never needed tricks. He keeps his seven close and his axe closer, and the iarn dwarves give his part of the wood a wide berth. Their griffons fly high over it.",
+  "legend": "Dalgo is a pack pull: seven skogsra come with him. Kill the greenhands, tank the woodsmen, then Dalgo. He's level 70 and hits like it; this is a two-group job for most. Good master-level experience if you can manage it.",
+  "yells": {
+    "aggro": [
+      "Greenhands, close the paths. Woodsmen, with me."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The wood does not let go of what it takes."
+      }
+    ],
+    "death": [
+      "The paths... open..."
+    ],
+    "slay": [
+      "Lost for good."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The paths close behind you here. Something tends them."
+    ],
+    "realmFirstKill": "Dalgo, warden of the deep wood, is slain."
+  },
+  "botLines": {
+    "briefing": [
+      "dalgo + 7 skogsra, greenhands first"
+    ],
+    "aftermathWin": [
+      "dalgo down, deep woods open"
+    ],
+    "aftermathLoss": [
+      "the woodsmen and dalgo together were too much"
+    ],
+    "rumour": [
+      "dalgo's greenhands make the paths close behind you in faraheim. [thats why i always get lost|explains a lot]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Dalgo",
+    "text": "Warden of the skogsra's deep wood in Faraheim. His greenhands close the paths behind you; his woodsmen walk them."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut through Dalgo's wood in {minutes} minutes.",
+    "loss": "Dalgo's wood closed over {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

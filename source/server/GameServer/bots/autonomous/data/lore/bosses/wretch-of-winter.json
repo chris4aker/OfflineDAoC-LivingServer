@@ -1,0 +1,77 @@
+{
+  "id": "wretch-of-winter",
+  "name": "Wretch of Winter",
+  "catalogKey": "midgard-named-mobs-classic-zones/wrethofwinterscorp",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "The Wretch of Winter appears in nine forms around Raumarik (scorpion, spider, crab, jotun, ogre, ice, Raumarik, lich and arachite), levels 70-77, each with 30,000 health; the scripts share one name (catalog keys wrethofwinter*).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The beast forms poison; the others cast Frost Shock (400).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists the Wretch of Winter at 70-75 in Raumarik; a 2003 guild ranked the forms spider and jotun easy, wraith harder and arachite toughest.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/2812"
+    },
+    {
+      "text": "Bot chat says new groups are told about the wretch of winter to scare them.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Winter in Raumarik has a wretch, and the wretch has no shape of its own. It borrows. Where a scorpion died in the snow, the wretch gets up in its shell; where an ogre froze, the wretch walks in the ogre. There are nine of it that anyone has counted, spider and crab and jotun and lich, arachite and ogre and the rest, and every one is the same hunger wearing a different coat. The old hunters say it is the cold itself, grown tired of waiting for things to die.",
+  "legend": "Nine Wretches, nine fights. Spider and jotun are easy, the wraith-lich harder, the arachite hardest. Bring cure poison for the beasts and cold resist for the rest. They make a good guild night: hunt all nine and see who drops.",
+  "yells": {
+    "aggro": [
+      "(The snow itself seems to stand up.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(The Wretch's borrowed shape cracks with frost.)"
+      }
+    ],
+    "death": [
+      "(The shape falls empty. Something cold moves on.)"
+    ],
+    "slay": [
+      "(The Wretch looks at the fallen as if measuring a coat.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Something wears the shape of a beast. It is not one."
+    ],
+    "realmFirstKill": "A Wretch of Winter is slain. The cold moves on."
+  },
+  "botLines": {
+    "briefing": [
+      "wretch of winter, nine of them. arachite is the hard one"
+    ],
+    "aftermathWin": [
+      "got the arachite wretch finally"
+    ],
+    "aftermathLoss": [
+      "the arachite wretch wiped us twice"
+    ],
+    "rumour": [
+      "they tell new groups about the wretch of winter to scare them. [it worked on me|works every time]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Wretch of Winter",
+    "text": "Raumarik's cold with no shape of its own. It borrows the bodies of what died in the snow: scorpion, spider, jotun, lich, nine that anyone has counted."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put down a Wretch of Winter in {minutes} minutes.",
+    "loss": "A Wretch of Winter wore down {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

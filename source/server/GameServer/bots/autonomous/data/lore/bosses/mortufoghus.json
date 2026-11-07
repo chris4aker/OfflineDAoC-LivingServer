@@ -1,0 +1,90 @@
+{
+  "id": "mortufoghus",
+  "name": "Mortufoghus",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/mortufoghus",
+  "locationId": "modernagrav",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Mortufoghus is a level-77 named with 40,000 health on Modernagrav. It stuns, casts Dark Pact (a 250 area blast) and throws a random attacker up to 1,500 away, who takes falling damage.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls it a big named mammoth that roams, 'her' in one comment; players said it was far above its listed level, that three groups could not get her to half (2003), and that eleven killed it in 45 minutes (2006), noting it throws people far.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/6681"
+    },
+    {
+      "text": "Modernagrav's zone text says the morvalt crossed to the island following rumours of the Mother and found a huge half-buried ancient skeleton with a large undead presence guarding it.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=116"
+    },
+    {
+      "text": "Bot chat argues whether Mortufoghus is part of the Mother, and jokes that the morvalt are digging up a cow.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "In Norse myth the primeval cow Audhumla fed the first giant, Ymir, with her milk.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning (public-domain myth); inspiration"
+    }
+  ],
+  "story": "The morvalt came to Modernagrav looking for their Mother and found bones: a skeleton half buried in the island, ribs like the beams of a longhouse, older than anything on Aegir. They also found Mortufoghus. She is a mammoth, or was, a great shaggy cow of the ice ages with tusks like plough-beams, and she walks round and round the dig as if the bones were her calf. The morvalt believe she is the Mother's guardian, or the Mother's own spirit, or the Mother herself, and they argue about it at their fires. Midgard's scholars point out that the oldest tale of all begins with a cow licking the first giants out of the ice. The morvalt have not heard that tale. Mortufoghus may have.",
+  "legend": "Mortufoghus throws people a long way and stuns whoever holds her. Bring several tanks to trade aggro, a few healers, and patience: it took eleven people 45 minutes once, and three groups couldn't get her to half another time. Don't fight her near the cliffs. The name is hard to say fast, which is the only easy part.",
+  "yells": {
+    "aggro": [
+      "(A trumpeting roar rolls across the island.)"
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "(Mortufoghus tosses someone like a sheaf of hay.)"
+      }
+    ],
+    "death": [
+      "(The great beast kneels beside the bones, and is still.)"
+    ],
+    "slay": [
+      "(She noses the fallen, then turns back to the dig.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Ribs like a longhouse rise from the earth. She circles."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Mortufoghus hurls someone through the air!"
+      }
+    ],
+    "realmFirstKill": "Mortufoghus lies down beside the bones at last."
+  },
+  "botLines": {
+    "briefing": [
+      "mortufoghus: tanks trade aggro, she stuns the one holding her and throws people",
+      "stay away from the cliffs"
+    ],
+    "aftermathWin": [
+      "the mammoth is down. [45 minutes|took forever] but down"
+    ],
+    "aftermathLoss": [
+      "got thrown off a cliff. [lol|ow]"
+    ],
+    "rumour": [
+      "mortufoghus on modernagrav might be part of the mother, [some|people] [say|guess]. [i want|id want] proof",
+      "so the morvalt are digging up a cow. someone tell mortufoghus"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Mortufoghus",
+    "text": "A mammoth of the old ice who circles the morvalt's dig on Modernagrav as if the bones were her calf. The morvalt think she is the Mother's guardian. The oldest tale begins with a cow licking giants out of the ice."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} laid Mortufoghus down beside the bones of Modernagrav in {minutes} minutes.",
+    "loss": "Mortufoghus scattered {raidLeader}'s party from {realm} across Modernagrav after {minutes} minutes."
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "id": "oona",
+  "name": "Oona",
+  "catalogKey": "midgard-named-mobs-classic-zones/oona",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Oona is a level-65 named with 10,000 health in southwest Raumarik, where the rivers divide; undead soldiers stand with her.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "When she kills someone she raises an undead add, and taunts: 'Perhaps your pathetic gods will grant you another life... Hibernia shall defeat Midgard, and your spirit shall help!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs"
+    },
+    {
+      "text": "She casts Aurora Blast and Bolt of Uncreation, and takes no damage from attackers far from her spawn.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "She is the target of the Hunter and Shadowblade epic 'War Concluded', from Masrim in Fort Atla; the reward is Oona's head.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/653"
+    },
+    {
+      "text": "Oona (Una) is the queen of the fairies in Irish folklore (to verify).",
+      "provenance": "myth",
+      "source": "Irish folklore, to verify"
+    }
+  ],
+  "story": "Oona is Hibernia's, and she came a long way to be in Raumarik. She is named for a fairy queen of the west, and she carries something of the Otherworld with her: the green aurora she throws, the bolt that unmakes what it touches. She stands where Raumarik's rivers divide with a guard of the dead, and every Norseman she kills she raises and adds to it, and tells him as he falls that his spirit will help Hibernia win the war. Midgard's hunters and shadowblades are sent to end that war for her. They bring back her head.",
+  "legend": "Go west to the river and follow it south to where it divides; Oona and her undead are on the point of land. Fight her close, she can't be hurt from range. Don't die near her, she turns you into one of hers. Stay on the far side of the river while you pull her friends.",
+  "yells": {
+    "aggro": [
+      "Northmen. Come closer, so I can see which of you I'll keep."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Your gods are deaf here. Mine are listening."
+      }
+    ],
+    "death": [
+      "Tir na Nog... I see the green..."
+    ],
+    "slay": [
+      "Perhaps your gods will grant you another life. Until then, you are mine."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Where the rivers divide, a green light flickers."
+    ],
+    "realmFirstKill": "Oona of Hibernia is slain where the rivers meet."
+  },
+  "botLines": {
+    "briefing": [
+      "oona at the river fork, kill her undead first, fight her up close"
+    ],
+    "aftermathWin": [
+      "got oona's head! [war concluded|epic done]"
+    ],
+    "aftermathLoss": [
+      "she raised my healer and he killed me. [thanks|lovely]"
+    ],
+    "rumour": [
+      "theres a hib champion in raumarik who turns dead norsemen into her soldiers"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Oona",
+    "text": "A champion of Hibernia, named for a fairy queen, who holds the river fork in Raumarik with a guard of the Norse dead she has raised."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took Oona's head at the river fork in {minutes} minutes.",
+    "loss": "Oona added {raidLeader}'s party from {realm} to her guard after {minutes} minutes."
+  }
+}

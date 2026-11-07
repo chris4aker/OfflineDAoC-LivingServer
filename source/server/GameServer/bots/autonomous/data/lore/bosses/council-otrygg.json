@@ -1,0 +1,118 @@
+{
+  "id": "council-otrygg",
+  "name": "Council Otrygg",
+  "catalogKey": "tuscaran-glacier/otrygg",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "council-hord",
+      "relation": "fellow councillor of the outer seats"
+    },
+    {
+      "id": "council-ozur",
+      "relation": "fellow councillor of the outer seats"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Otrygg is a level-77 member of the hrimthursa Council with 100,000 health who summons eight pets when the fight begins and more as it goes on.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Old Norse otryggr means untrustworthy, unfaithful (to verify).",
+      "provenance": "original",
+      "source": "Old Norse glossary, to verify (Cleasby-Vigfusson)"
+    },
+    {
+      "text": "Killing Council members lowers faction with the Hrimthursa and Glacier Harskaren and raises it with Klippa Vaktaren and Vind Ryttaren.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6030"
+    }
+  ],
+  "story": "Otrygg's name means faithless, and the Council gave it to him as a joke he never forgave. In the first years of the citadel, when the Council was new and the peace was new and everyone believed in it, Otrygg was the one councillor who would not. He voted with Birghir when the vote was for peace, because the queen wanted it, but he made it known that he did not trust peace to keep the door. So the others called him faithless, and laughed, and the name stuck.\n\nHe answered them in his own way. He kept something else to keep the door: a pack of summoned beasts, bred in the side tunnels on scraps from the citadel's table, called up out of the cold eight at a time and more when he asks. When he votes, they sit at his feet. When he fights, they do not sit. The other councillors pretend not to notice the smell of the side tunnels, and vote as he does more often than they admit. Old Birghir once called the pack an insult to the Council's peace. Otrygg said that the day the peace failed, the pack would still be there, and asked which of them would be laughing then.\n\nThe day came. When you reach the outer council seats, Otrygg rises with his pack around him, eight of them at once, and calls up more as the fight goes on, and he does not move from his seat to chase you, because he does not need to. He has waited a century to be proved right. He does not mind that it will kill him. Faithless, they called him. Faithful hounds, he answers, and lets them go.",
+  "legend": "Otrygg is an add fight. Eight pets at once, then more. Bring area damage and a group just for the pets, and do not chase him while they are up. If the pets reach the healers the fight is over, so the add group stands between them. Kill him in place and let the pets come to you. He resets if left out of combat, so keep someone on him. Good boots and a jewel drop off him. His pets are summoned fresh every time he calls them, so there's no clearing them in advance. Stuns on the pets buy the add group time.",
+  "yells": {
+    "aggro": [
+      "Faithless, they called me. Faithful hounds, I answer. Go!",
+      "A century I waited for this. Up, all of you!",
+      "The door needs keeping. My hounds keep it."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "More! There are always more of you, and more of mine."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Where is your peace now, Birghir?"
+      }
+    ],
+    "death": [
+      "Never... trusted... peace...",
+      "I was right... I was right..."
+    ],
+    "slay": [
+      "Feed it to the pack.",
+      "Good dogs.",
+      "That is what a door is for."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Gnawed bones are heaped by a council seat.",
+      "The smell of a kennel hangs over a council seat."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Otrygg's beasts pour out of the side tunnels!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Otrygg calls more beasts from the side tunnels!"
+      }
+    ],
+    "realmFirstKill": "Council Otrygg has fallen. His pack scatters."
+  },
+  "botLines": {
+    "briefing": [
+      "otrygg spawns 8 pets right away. [pbae team|aoe] on the pets, tanks hold otrygg",
+      "otrygg: dont chase him, let the pets come to the aoe",
+      "keep somebody on otrygg or he resets",
+      "aoe group stands between the pets and the healers on otrygg"
+    ],
+    "aftermathWin": [
+      "otrygg's pets got [melted|aoed] nice job",
+      "otrygg and the whole pack down. nice aoe",
+      "the faithless one is dead",
+      "otrygg's jewel dropped"
+    ],
+    "aftermathLoss": [
+      "the pets ran over the healers",
+      "we chased otrygg into the pets",
+      "aoe group was too slow on the second wave",
+      "the second wave of pets caught us mid-aoe"
+    ],
+    "rumour": [
+      "heard otrygg means faithless in the old tongue. [fits|figures]",
+      "otrygg kept a pack of beasts because he never trusted the council's peace. [he was right|smart giant]",
+      "otrygg breeds his pets in the side tunnels on kitchen scraps",
+      "otrygg's name means faithless. the council thought it was funny. he didnt"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Otrygg",
+    "text": "His name means faithless, a Council joke he never forgave. He kept a pack of summoned beasts because he never trusted peace to keep the door."
+  },
+  "bookPage": "A riddle the hrimthursa children ask each other, written down by a Dellinstad trader who heard it from a cast-out sculptor. What has eight mouths and one vote? Otrygg. Why does the faithless one keep hounds? Because hounds never vote for peace. Who will be laughing when the door breaks? The trader said the children did not know the answer to that one, and that the sculptor told them the answer was nobody, and that they did not like that answer, and went on asking it anyway. It is still asked in the tunnels. The children still do.",
+  "chronicle": {
+    "win": "Council Otrygg and his pack fell to {raidLeader} of {realm} in {minutes} minutes.",
+    "loss": "Council Otrygg's pack ran down {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

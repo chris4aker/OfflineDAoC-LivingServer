@@ -1,0 +1,72 @@
+{
+  "id": "hugi",
+  "name": "Hugi",
+  "catalogKey": "midgard-named-mobs-classic-zones/hugi",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Hugi is a level-74 giant with 30,000 health in southwest Raumarik.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists him as a giant whose drops include Hoarfrost armour and a Frozen Cyclops Eye.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4990"
+    },
+    {
+      "text": "In the old tale of Thor's visit to Utgard-Loki, Hugi ('thought') outran Thor's servant Thjalfi three times, because nothing is faster than thought.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning (public-domain myth); inspiration"
+    }
+  ],
+  "story": "In the old tale Thor went to Utgard and was tricked at every game, and his servant Thjalfi raced a lad named Hugi and lost three times, and only afterwards learned that Hugi was thought itself, which no runner can outrun. The giant who walks the southwest of Raumarik is called Hugi too. He is not fast. He is huge and one-eyed and slow as a glacier, and he wears hoarfrost like a cloak, and the joke of his name is lost on him. Or perhaps it is not. The hunters who chase him say he is always a step ahead of where they thought.",
+  "legend": "Hugi is big and slow and hits like a landslide. A group of 50s with a good healer can take him; he drops the hoarfrost set and, if you're lucky, his frozen eye. Don't ask him to race. He wanders a little, so look for the footprints.",
+  "yells": {
+    "aggro": [
+      "Small. Fast. Not fast enough."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hugi thinks... you should run now."
+      }
+    ],
+    "death": [
+      "Hugi... was always... ahead..."
+    ],
+    "slay": [
+      "Too slow."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Huge footprints, filled with hoarfrost."
+    ],
+    "realmFirstKill": "Hugi the giant has fallen in Raumarik."
+  },
+  "botLines": {
+    "briefing": [
+      "hugi is a big tank and spank giant, healers keep the MT up"
+    ],
+    "aftermathWin": [
+      "hugi down, got the cyclops eye!"
+    ],
+    "aftermathLoss": [
+      "he hits like a landslide"
+    ],
+    "rumour": [
+      "hugi was the name of thought itself in the old tale. this hugi isnt very bright though"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hugi",
+    "text": "Named for the lad in the old tale who was thought itself and outran Thjalfi. This Hugi is a slow one-eyed giant in hoarfrost. Hunters say he is always a step ahead anyway."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down Hugi the giant in {minutes} minutes.",
+    "loss": "Hugi stayed a step ahead of {raidLeader}'s party from {realm} for {minutes} minutes, and then turned round."
+  }
+}

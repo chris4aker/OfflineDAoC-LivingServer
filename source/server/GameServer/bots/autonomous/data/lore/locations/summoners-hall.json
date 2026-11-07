@@ -1,0 +1,206 @@
+{
+  "id": "summoners-hall",
+  "name": "Summoner's Hall",
+  "realm": "Neutral",
+  "regions": [
+    248
+  ],
+  "summary": "The hall under all three old frontiers where the Grand Summoner calls the dead of every realm, reached by each realm through its own frontier dungeon.",
+  "facts": [
+    {
+      "text": "Allakhazam's zone page calls Summoner's Hall the place 'where the zones connect across the 3 realms', for levels 35-50: neutral mobs, aggro deep wolves, sidhe magickers, three summoners needing three or four groups each, and the Grand Summoner in what in Darkness Falls is Legion's room.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=74"
+    },
+    {
+      "text": "Its bestiary lists sidhe magickers and coimirceoir, black and grey nobles, Ard Tiarna Kieren, deep wolves, disemboweled undead, gore dappled zombies, a spirit master, the Shade of Aelfgar, the three summoners and the Grand Summoner.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=74"
+    },
+    {
+      "text": "A May 2003 player wrote that the hall's mobs are on the Lords of the Undead faction; a December 2003 player said Midgard enters it from Dodens Gruva.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=74"
+    },
+    {
+      "text": "Allakhazam's Aidon the Archwizard page says he guards the way down to the hall and lists him there; this world's data puts Aidon in Hall of the Corrupt (region 277), which Living Server follows: he guards the Albion approach, not the hall.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/3783"
+    },
+    {
+      "text": "Marfach Caverns was Hibernia's old frontier dungeon (entered from Breifine, removed by New Frontiers); that it also leads to the hall is assumed by symmetry (to verify).",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=70"
+    },
+    {
+      "text": "A Feb 2003 Albion guide says four to five full groups; Living Server sizes each realm's raid at 64 because the raids meet each other on the way in.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/"
+    },
+    {
+      "text": "Bot chat says the hall was a sidhe place before Legion's lot moved in, and that someone is calling the dead of all three realms at once.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_shared.lines"
+    }
+  ],
+  "story": "Under the old frontiers, below the keeps that every realm fought over, the three realms' deepest dungeons all dig down to the same place. Albion's Hall of the Corrupt, Midgard's Dodens Gruva, Hibernia's Marfach Caverns, the Hibernians say: each has a stair at the bottom, and each stair ends on the floor of one hall. Its builders were the sidhe, or something that taught them; its magickers and guards are sidhe still, and its nobles are grey and black. Whatever it was for once, it is the Summoner's Hall now.\n\nThe summoners call. That is what they do, all day and all night, in rooms laid out in the pattern of Legion's court in Darkness Falls, and what they call is the dead. Every frontier dungeon above has felt it. Albion's road runs past the archwizard of the Hall of the Corrupt. Midgard's miners heard it through the floor of Dodens Gruva, and their spiritmaster bound them rather than let them answer. Hibernia's druids say the Good Folk who serve here have forgotten whose they are. The undead who answer are counted among the Lords of the Undead and walk the hall in their hundreds.\n\nThree summoners hold the rooms: Cunovinda the white hound, Lossren the gatherer, Roesia the keeper of pain. Beyond them, in the deepest room, the Grand Summoner Govannon wears a sidhe's face and makes bargains. It is the only place where all three realms' raids come together, and they fight each other on the stairs before they ever reach him.",
+  "legend": "Each realm comes down its own stair and meets the other two in the hall. The three summoners take three or four groups each; the Grand Summoner takes the realm. Old raiders say he's no harder than Legion, only longer. Kill his sacrifice, save power for the demon half. The mobs are neutral until you hit them, then the whole Lords of the Undead lot hates you.",
+  "atmosphere": {
+    "firstEntry": [
+      "Three stairs end on one floor. Something is calling.",
+      "The hall beneath three frontiers. The dead listen here."
+    ],
+    "areas": [
+      {
+        "name": "the Grand Summoner's room",
+        "x": 32050,
+        "y": 40863,
+        "z": 15468,
+        "radius": 1200,
+        "lines": [
+          "A room built like Legion's court. A voice is calling."
+        ]
+      },
+      {
+        "name": "Cunovinda's chamber",
+        "x": 24726,
+        "y": 36141,
+        "z": 15998,
+        "radius": 1000,
+        "lines": [
+          "High ledges ring the chamber. Mind your footing."
+        ]
+      },
+      {
+        "name": "Lossren's chamber",
+        "x": 39276,
+        "y": 41166,
+        "z": 16001,
+        "radius": 1000,
+        "lines": [
+          "The floor is crowded with the gathered dead."
+        ]
+      },
+      {
+        "name": "Roesia's chamber",
+        "x": 34577,
+        "y": 31371,
+        "z": 15998,
+        "radius": 1000,
+        "lines": [
+          "The air aches. Someone keeps the price here."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the summoner's hall is under all three old frontiers. every realm's frontier dungeon has a stair down to it",
+      "three summoners and the grand summoner, and they call the dead from all three realms [at once|all the time]",
+      "the rooms down there are laid out like legion's in df. [someone copied|same builder maybe]",
+      "the mobs in summoner's hall are lords of the undead faction. neutral till you hit one"
+    ],
+    "rumour": [
+      "i heard the summoner's hall was a sidhe place before legion's lot moved in",
+      "[heard|people say] the albs come down from the hall of the corrupt and the hibs from marfach. we meet them on the stairs",
+      "govannon's calling is why the dead walk in the frontier dungeons. [i believe it|makes sense]"
+    ],
+    "tell": [
+      "summoner's hall is where all three realms meet under the old frontier. three summoners and grand summoner govannon",
+      "its the hall under the frontier dungeons. bring three or four groups per summoner, the whole realm for govannon",
+      "summoner's hall? sidhe, undead, three summoners and govannon. and the other realms' raids on the way in"
+    ]
+  },
+  "loremaster": {
+    "intro": "The loremaster says, \"Summoner's Hall. Under the old frontiers, three [stairs] end on one floor. The [summoners] call the dead there, and the [Grand Summoner] makes bargains with what answers.\"",
+    "topics": {
+      "stairs": "Each realm's old frontier dungeon digs down to the same hall: Albion's Hall of the Corrupt, Midgard's Dodens Gruva, Hibernia's Marfach Caverns. Each realm's raid comes down its own stair and meets the others below.",
+      "summoners": "Cunovinda the white hound, who puts you on the ledges; Lossren the gatherer, who keeps the dead in pieces; Roesia, who makes sure the price hurts.",
+      "Grand Summoner": "Govannon, named for a smith of the old tales. He wears a sidhe's face until half his strength is gone, then the demon steps out, whole again. Stop his sacrifice reaching his feet."
+    }
+  },
+  "book": {
+    "title": "Three Stairs, One Floor",
+    "pages": [
+      "I have been down all three stairs, which I believe no one else living can say, and I will tell you what I found: they end on the same floor. An Albion knight and a Hibernian ranger and I stood in the same hall at the same hour, each come down our own stair, and looked at each other, and did not fight, because something in the hall was calling all three of us by name, in our own tongues, and none of us wanted to be the first to stop listening. Then the sidhe guards came, and we ran, each up our own stair, and I have not seen the other two again.",
+      "A sidhe magicker of the hall, who for reasons of her own spoke to me, said the summoners were there before the demons, and the demons were there before the summoners called them, and that neither would say which came first. She said the rooms were laid out like Legion's because the Grand Summoner had been to Legion's court and admired it. She said he admires anything that holds a great many souls. Then she asked my name, and I told her a false one, and she smiled as if that had been the right answer."
+    ]
+  },
+  "bosses": [
+    "grand-summoner-govannon",
+    "summoner-cunovinda",
+    "summoner-lossren",
+    "summoner-roesia"
+  ],
+  "realmTakes": {
+    "albion": {
+      "story": "To Albion the hall is the cellar under the Hall of the Corrupt. The road down runs through that hall, and the archwizard Aidon keeps its lower stair; nobody in Camelot can say whose side he is on, or whether the summoners pass him or go around. Camelot's priests say the Shade of Aelfgar, the spear-ghost who comes when the Grand Summoner's bargain is paid, carries an old English name and was a warrior of Albion before he was a debt. Albion raids go down to clean the cellar, and to give one of their own a proper burial at last.",
+      "legend": "The albs say: through the Hall of the Corrupt, past the archwizard, down the stair, and pray the Hibs aren't on the stairs first. Kill the sacrifice so Aelfgar never rises, and if he does, he's ours and we'll put him down kindly.",
+      "botLines": {
+        "lore": [
+          "the summoner's hall is under the hall of the corrupt. the road down goes past aidon",
+          "the shade of aelfgar has an old english name. the priests say he was one of ours"
+        ],
+        "rumour": [
+          "aidon guards the stair down in the hall of the corrupt. [whose side is he on|nobody knows]"
+        ],
+        "tell": [
+          "summoner's hall? go down through the hall of the corrupt. three summoners and govannon, and the mids and hibs on the way"
+        ]
+      },
+      "loremaster": {
+        "intro": "The Camelot loremaster says, \"The cellar under the Hall of the Corrupt. The archwizard keeps its lower stair, and at the bottom the [summoners] call. One of the ghosts down there, [Aelfgar], was ours.\"",
+        "topics": {
+          "summoners": "Three summoners and their master, Govannon, who makes bargains with the dead.",
+          "Aelfgar": "An old English name, elf-spear. The priests say he was a warrior of Albion before he was the Grand Summoner's debt. Kill the sacrifice and he never rises."
+        }
+      }
+    },
+    "midgard": {
+      "story": "To Midgard the hall is what Jarl Ormarr's miners broke into. When the picks of Dodens Gruva went through the cold seam, they found a floor older than the hill and heard voices calling in three tongues, and the miners died and began to walk down toward the call. Their spiritmaster Aros bound them to the mine so the summoners could not have them, and the picks still ring above. Midgard raids go down the jarl's stair past the puppy that is not a puppy, to finish what Aros started and stop the calling for good.",
+      "legend": "Mids say: down Dodens Gruva, past Gudlaugr on the stair, and into the hall. The calling is why the miners walk. Kill Govannon and maybe Aros can let them rest. Albs and hibs will be on the stairs, so bring enough.",
+      "botLines": {
+        "lore": [
+          "dodens gruva broke into the summoner's hall. thats what the cold seam was",
+          "the summoners called the miners' dead and aros bound them to the mine so they couldnt go"
+        ],
+        "rumour": [
+          "if govannon dies, maybe the dead miners in dodens gruva can rest. [maybe|worth a try]"
+        ],
+        "tell": [
+          "summoner's hall is under dodens gruva, down the stair past the puppy. three summoners and govannon"
+        ]
+      },
+      "loremaster": {
+        "intro": "Loremaster Sigrun says, \"It is what Ormarr's miners broke into: a floor older than the hill, and [voices] calling in three tongues. [Aros] held his dead back from it. Someone should finish what he started.\"",
+        "topics": {
+          "voices": "The summoners call the dead of every realm. Ours heard them through the floor of Dodens Gruva.",
+          "Aros": "The spiritmaster of Dodens Gruva, who bound the dead miners to the mine rather than let the calling have them."
+        }
+      }
+    },
+    "hibernia": {
+      "story": "To Hibernia the hall is a shame. Its magickers and its coimirceoir, its protectors, are sidhe, the Good Folk of the hollow hills, and they serve the summoners as if they had forgotten whose they are; even a high lord, Ard Tiarna Kieren, walks there. The druids of Tir na Nog say the Grand Summoner wears the shape of one of the sidhe, and they take that as an insult worse than any war. Hibernian raids go down from the old frontier, past Marfach, to take the Good Folk back from him, or failing that, to give them rest.",
+      "legend": "Hibs say: don't trust the sidhe in the hall, they've forgotten us. The Grand Summoner wears one of their faces; when he drops it at half, that's when you know what he is. Mez for the summoners' adds, and watch for the albs on the stairs.",
+      "botLines": {
+        "lore": [
+          "the sidhe in the summoner's hall serve the summoners. [the druids are ashamed|its a disgrace]",
+          "govannon wears the shape of one of the good folk. dropping it at half is the only honest thing he does"
+        ],
+        "rumour": [
+          "there's a sidhe high lord in that hall, ard tiarna kieren. [why is he serving them|nobody knows]"
+        ],
+        "tell": [
+          "summoner's hall is under the old frontier. sidhe, undead, three summoners and govannon in a sidhe's shape"
+        ]
+      },
+      "loremaster": {
+        "intro": "The Tir na Nog loremaster says, \"A hall of the [Good Folk] under the old frontier, given over to [summoners]. Its sidhe serve them as if they had forgotten whose they are.\"",
+        "topics": {
+          "Good Folk": "Sidhe magickers and protectors, and a high lord, Kieren, all serving the summoners. The druids want them back.",
+          "summoners": "Three summoners and Govannon, who wears a sidhe's face until half his strength is gone."
+        }
+      }
+    }
+  }
+}

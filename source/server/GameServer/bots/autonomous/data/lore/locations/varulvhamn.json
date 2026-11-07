@@ -1,0 +1,74 @@
+{
+  "id": "varulvhamn",
+  "name": "Varulvhamn",
+  "realm": "Midgard",
+  "regions": [
+    127
+  ],
+  "summary": "The werewolf haven under Skona Ravine where King Hresvelgr holds court and the old wolfaur argue philosophy.",
+  "facts": [
+    {
+      "text": "Varulvhamn is an underground lair of werewolves, less militant than those in Skona though no less aggressive to humans; the older wolfaur are nearer their natural form, more philosophical and even accepting of their Nordic neighbours; werewolf nobles gather there to discuss politics.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=17"
+    },
+    {
+      "text": "Its bestiary lists King Hresvelgr, High Lords Athulf, Modolfr and Tarnkappe, lords with names like Gifttand, Huggtand and Grym, werewolf guards, advisors and nobles, wolfaur lunarians, quixots and pragmatics, frukta and forodande wargs and wolfspiders.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=17"
+    },
+    {
+      "text": "Period comments put its entrance south-west of the Circle of Stones in Skona Ravine near 21k, 40k.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=17"
+    },
+    {
+      "text": "Hraesvelgr in the old songs is a giant in eagle's shape whose wings make the wind.",
+      "provenance": "myth",
+      "source": "Vafthrudnismal (Poetic Edda, public domain)"
+    },
+    {
+      "text": "Bot chat says Skona's werewolves will not set foot in Malmohus.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Below Skona Ravine, past the rope bridge and the werewolf camps, a tunnel goes down into Varulvhamn, the werewolves' haven. It is not a war camp. The werewolves of Skona are the ones who raid; the ones in Varulvhamn are the court. Their king, Hresvelgr, sits there with his high lords and his advisors and his royal guard, and the werewolf nobles of all Midgard come to talk politics in his hall. He took his name from the eagle-giant of the old songs whose wings make the wind. Nobody knows why a wolf chose a bird's name. Perhaps because the wind goes where it likes, and so does he.\n\nThe werewolves share the haven with the wolfaur, the older generation, who are nearly natural in their wolf shapes and further from the old savagery. They are the werewolves' embarrassment: philosophical, open-minded, inclined to say that the Norse are neighbours and not prey. They will still defend their kindred. They will just discuss it first.\n\nThe werewolves keep one law: a wolf answers to the pack and never to a master. That is why none of them will set foot in Malmohus, where a dragon who is half wolf would make them answer to her.",
+  "legend": "Varulvhamn is a good dungeon for the thirties into the forties: everything comes in packs, and it goes deep. Some ramps zone you back up to Skona, so watch your step. The churls at the door die saying 'bite... me'. The wolfaur won't attack first. The king will.",
+  "atmosphere": {
+    "firstEntry": [
+      "The werewolves' haven. A court, not a camp.",
+      "Wolves argue politics in the dark. Mind your manners."
+    ],
+    "areas": []
+  },
+  "botLines": {
+    "lore": [
+      "king hresvelgr rules the werewolves of varulvhamn. hresvelgr was a giant eagle in the old songs. nobody knows why a wolf took the name",
+      "the wolfaur in varulvhamn are the old werewolves. calmer, they talk philosophy. the young ones hate it",
+      "werewolf nobles come to varulvhamn to talk politics. its their court"
+    ],
+    "rumour": [
+      "[the werewolves|even the werewolves] of skona [will not|wont] [set foot|go] [in|near] malmohus. [ask yourself|think about] [why|what they know]",
+      "varulvhamn werewolves hit like a falling tree"
+    ],
+    "tell": [
+      "varulvhamn is under skona ravine, sw of the circle of stones. werewolves and wolfaur, king hresvelgr at the bottom",
+      "varulvhamn? werewolf court. good xp in your thirties, packs everywhere"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Varulvhamn, the werewolves' haven, where King [Hresvelgr] holds court and the [wolfaur] argue.\"",
+    "topics": {
+      "Hresvelgr": "The werewolf king, who took the name of the eagle-giant whose wings make the wind. The wind goes where it likes, and so does he.",
+      "wolfaur": "The older generation, nearly natural in their wolf shapes. They say the Norse are neighbours, not prey. They will still defend their kin."
+    }
+  },
+  "book": {
+    "title": "Minutes of a Werewolf Council",
+    "pages": [
+      "Overheard, and set down by a hunter who hid in a side tunnel of Varulvhamn for a night. The high lord Athulf said the Norse towns should be burned before the spring. A wolfaur, very old, said the Norse had not burned Skona when they could have. The high lord said that was weakness. The wolfaur said it was manners. King Hresvelgr said nothing for a long time, and then he said that a wolf answers to the pack and never to a master, and that the day the pack burns towns because it is told to, it has a master. Then they all went to eat. I left while they were eating."
+    ]
+  },
+  "bosses": []
+}

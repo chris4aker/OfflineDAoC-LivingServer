@@ -1,0 +1,84 @@
+{
+  "id": "glacier-giant",
+  "name": "Glacier Giant",
+  "catalogKey": "open-world/glaciergiant",
+  "locationId": "odins-gate",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "The Glacier Giant is a level-86 giant with 100,000 health in Odin's Gate, standing on the frontier; it resets 30 seconds after leaving combat.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It seizes a random attacker and hurls them to one of six spots well away from the fight and high in the air.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists the Glacier Giant at 73-76 in Odin's Gate and Jamtland Mountains; a 2023 comment gives a one-hour respawn and a 1.5-group kill in five minutes, and a 2003 one jokes about training it to Bledmeer.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/872"
+    },
+    {
+      "text": "Bot chat says it throws people half a zone, that people bet on where they land, that it may be guarding a door, and that killing it takes the fire out of the dragon (an old superstition).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Odin's Gate has a giant and a glacier and no gate. The giant has stood there longer than the frontier keeps, a hill of blue ice with a face, and it does not walk the land as other giants do. It stands. The skalds argue what for. Some say it is a guard left by the gods at the foot of the road to Asgard, and that the gate it guards is folded into the ice behind it. Some say it is only a giant who found a good spot. It belongs to no realm. Albion and Hibernia have their old frontier giants too, a green knight and an ancient tree, and like them this one tolerates no one close. It picks you up and throws you. Not across a room: across the land, high and far. Then it goes back to standing.",
+  "legend": "Everyone dares everyone to walk up to the Glacier Giant. Everyone flies. People used to bet on where the thrown would land; the record is said to be near Uppland. A group and a half can kill it if they come back fast after each throw, because it resets in half a minute. And no, killing it does not take the fire out of the dragon. People still try.",
+  "yells": {
+    "aggro": [
+      "(The glacier groans like a breaking sea.)"
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "(The giant picks someone up, and throws.)"
+      }
+    ],
+    "death": [
+      "(The Glacier Giant cracks, and the ice goes still.)"
+    ],
+    "slay": [
+      "(The giant goes back to standing.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A hill of blue ice with a face. It is watching the road."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "The Glacier Giant hurls someone across the land!"
+      }
+    ],
+    "realmFirstKill": "The Glacier Giant of Odin's Gate has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "glacier giant throws people far. run back FAST, it resets after 30 sec"
+    ],
+    "aftermathWin": [
+      "glacier giant down! [anyone land near uppland?|i flew twice]"
+    ],
+    "aftermathLoss": [
+      "too many people got thrown and it reset"
+    ],
+    "rumour": [
+      "[the glacier giant|that giant at odins gate] [throws|tossed] [people|a runemaster] [halfway|clear] [to uppland|across the zone]",
+      "some say the glacier giant isnt guarding the frontier, hes guarding a door"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Glacier Giant",
+    "text": "The giant of Odin's Gate, a hill of blue ice with a face, who stands and does not walk. Some say it guards a gate folded into the ice. It throws whoever comes close, far and high."
+  },
+  "bookPage": "I asked an old warder at Nottmoor Faste what the giant was guarding. He said: the road. I asked which road. He pointed at the glacier behind it, where there is no road. He said his grandfather told him that when the gods built the road up out of Midgard they set a giant at its foot, and that the road is still there, only folded up in the ice like a letter, and the giant will unfold it for the right traveller. I asked who the right traveller was. He said: not you. Then a runemaster went flying over the wall and he said, nor him.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} felled the Glacier Giant of Odin's Gate in {minutes} minutes.",
+    "loss": "The Glacier Giant threw {raidLeader}'s party from {realm} across the frontier for {minutes} minutes."
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "id": "goretooth",
+  "name": "Goretooth",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/goretooth",
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Goretooth is a level-68 blood render with 30,000 health in eastern Faraheim; four blood renders come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He poisons and stuns.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a named blood render that can poison, damage over time and stun, with a strong BAF, worth 2% of master-level experience.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/5773"
+    }
+  ],
+  "story": "The blood renders of Faraheim are scaled hunters with jaws built for one thing, and Goretooth is the oldest jaw on the island. He hunts with four of his kind in the east, and he has a hunter's patience: a bite, a poison, and a blow that leaves you standing stunned while the others close. The iarn dwarves name their children's nightmares after him. The render packs of Faraheim answer to no one, but every one of them steps aside when he hunts, and waits for what he leaves.",
+  "legend": "Goretooth and four renders. Poison and stun, so cure poison and keep stun-break ready. Worth some master-level experience, which is why you see groups here; plan the pull, he baffs hard. Shredclaw's pack hunts nearby, so don't run through it.",
+  "yells": {
+    "aggro": [
+      "(A hiss and a click of teeth from the undergrowth.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Goretooth's pack closes in.)"
+      }
+    ],
+    "death": [
+      "(The old jaw goes slack.)"
+    ],
+    "slay": [
+      "(The pack feeds.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Gnawed bones in the ferns. The pack is near."
+    ],
+    "realmFirstKill": "Goretooth, the oldest jaw of Faraheim, is slain."
+  },
+  "botLines": {
+    "briefing": [
+      "goretooth + 4 renders, cure poison, stun break"
+    ],
+    "aftermathWin": [
+      "goretooth down, ml xp"
+    ],
+    "aftermathLoss": [
+      "stunned and poisoned, gg"
+    ],
+    "rumour": [
+      "the iarn dwarves name their kids' nightmares after goretooth"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Goretooth",
+    "text": "The oldest jaw among Faraheim's blood renders. A bite, a poison and a blow that leaves you stunned while his pack closes."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Goretooth in {minutes} minutes.",
+    "loss": "Goretooth's pack ran down {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

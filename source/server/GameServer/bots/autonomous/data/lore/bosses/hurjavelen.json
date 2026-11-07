@@ -1,0 +1,115 @@
+{
+  "id": "hurjavelen",
+  "name": "Hurjavelen",
+  "catalogKey": "iarnvidiur-s-lair/hurjavelen",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur",
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "iarnvidiur",
+      "relation": "his mother, whose dagger he stole"
+    },
+    {
+      "id": "stanga",
+      "relation": "whose post he sometimes takes"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Hurjavelen is a level-68 named with 30,000 health; seven grymvarg come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "His bite damages and snares in a 350 radius for 30 seconds, and he spreads Black Plague.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a rare spawn in Stanga's place who spams area disease and hit a spiritmaster for 600+; he drops Iarnvidiur's Pilfered Dagger and demonwolf shields.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4668"
+    }
+  ],
+  "story": "Hurjavelen is the wolf who stole from his mother. Long ago, when he was young and quick and the old one was dozing by the water, he took a dagger from her own hand, a dwarf-made blade she had taken from some long-dead dwarf, and he ran with it in his jaws, all the way out of the lair and into the iron trees. The brood waited for her to punish him. She did not. She watched him go, and when he came back days later with the dagger still in his teeth she let him keep it, and licked his ears, and went back to sleep. That frightened the rest of the brood more than any punishment could have. They have walked carefully around him ever since.\n\nHe comes and goes. Some nights he stands in Stanga's place in the passage to the Ancient Syver with a pack of grymvarg, the cruel wolves, around him, and on those nights the passage fills with sickness: his plague is thicker than Stanga's, spread in a ring, and his bite drags at the legs so that whoever he bites cannot run out of it. He hits casters hard; he seems to know which of a party is soft. On those nights the dwarves keep their children indoors.\n\nHe carries more than the dagger now. The demonwolf shields that drop from him are older than the lair and stranger, tainted with something that is not the old one's plague. The dwarves say Hurjavelen goes further than any of the brood when he runs, further than the Iarnwood, further than Aegir, and that the shields are what he brings home. They do not say where from. Some say the deep places under the frontier, where the dead are called.",
+  "legend": "Hurjavelen is rare: if he's there instead of Stanga, plan for seven grymvarg and an area snare that keeps your melee in his disease. Purge or speed help. He hits casters hard, 600 a swing on a spiritmaster once. Some raid leaders skip him; the pilfered dagger is worth it, and the demonwolf shields. Cure disease constantly and don't let the snare hold the healers in the ring. He comes in place of Stanga, so if the passage guard has a dagger, call it out. Speed and purge are your friends, and so is a healer who never stands still.",
+  "yells": {
+    "aggro": [
+      "(A wolf with a dagger in its jaws grins at you.)",
+      "(Grymvarg slink out behind him.)",
+      "(Hurjavelen laughs. Wolves do not laugh.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Hurjavelen's bite drags you down.)"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "(Hurjavelen snaps, and the plague thickens.)"
+      }
+    ],
+    "death": [
+      "(The stolen dagger falls ringing to the floor.)",
+      "(The grymvarg scatter into the dark.)"
+    ],
+    "slay": [
+      "(Hurjavelen trots off with something shiny.)",
+      "(He goes for the softest of you next.)",
+      "(He drops the dagger to bite, then picks it up again.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Tonight a different wolf stands in Stanga's place.",
+      "Something laughs in the passage. Wolves do not laugh."
+    ],
+    "realmFirstKill": "Hurjavelen the thief is slain. The dagger is found.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Hurjavelen's plague fills the passage!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "hurjavelen is up instead of stanga. 7 grymvarg, aoe snare, cure everything",
+      "purge the snare on hurjavelen or you're stuck in his disease",
+      "casters stay back, he goes for them",
+      "if the passage wolf has a dagger its hurjavelen. call it"
+    ],
+    "aftermathWin": [
+      "got the pilfered dagger!!",
+      "luminous demonwolf shield!",
+      "rare spawn and we got him",
+      "iarnvidiur's pilfered dagger!!"
+    ],
+    "aftermathLoss": [
+      "snared in the disease, [wiped|gg]",
+      "he went straight for the spiritmaster",
+      "seven grymvarg was too many",
+      "snared in the plague ring"
+    ],
+    "rumour": [
+      "heard there's a wolf in the lair that stole a dagger from iarnvidiur and she let him keep it",
+      "hurjavelen runs further than the iarnwood. the demonwolf shields are what he brings home",
+      "iarnvidiur licked hurjavelen's ears after he stole her dagger. the brood was terrified",
+      "hurjavelen laughs. thats how you know its him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hurjavelen",
+    "text": "The wolf who stole a dagger from [Iarnvidiur]'s own hand and was not punished, which frightened the brood more than any punishment. Some nights he stands where [Stanga] should."
+  },
+  "bookPage": "From Thorgrim of Faraheim's notes. A dwarf showed me the scar the thief-wolf gave him: a clean cut, the shape of a blade, on the forearm. He said the wolf had come out of the trees with the dagger in its jaws and cut him the way a man cuts, not the way a wolf bites. He said the wolf's eyes laughed. He said he has fought wolves all his life and never seen one laugh before, and that he does not want to see it again. He said the old one was watching from somewhere. He did not see her. He knew.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took back Iarnvidiur's pilfered dagger from Hurjavelen in {minutes} minutes.",
+    "loss": "Hurjavelen ran down {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

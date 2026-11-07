@@ -1,0 +1,83 @@
+{
+  "id": "ydenia-of-the-seithkona",
+  "name": "Ydenia of the Seithkona",
+  "catalogKey": "midgard-named-mobs-classic-zones/ydenia",
+  "locationId": "vanern-swamp",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Ydenia of the Seithkona is a level-65 named with 10,000 health on an island of Vanern Swamp.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "She drains life from range, weakens strength and constitution, and throws attackers into the water: 'Feel the power of the Seithkona, fool!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs"
+    },
+    {
+      "text": "Allakhazam places her on an island around 43k, 27k and says she nukes from afar.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/13121"
+    },
+    {
+      "text": "Old Norse seidkona means a woman who works seidr, the seeress's magic.",
+      "provenance": "original",
+      "source": "Old Norse glossary"
+    }
+  ],
+  "story": "The seithkonur are the seeresses of the old north, who sit on high seats and sing the spirits close and tell what will be. Ydenia was one of them and wanted more than telling. She took an island in Vanern Swamp for her high seat and turned her songs to taking: she sings the strength out of whoever comes, and drinks their life across the water, and when they come too close she sings them off the island and into the bog. Her sisters do not speak her name. She speaks it for them, loudly.",
+  "legend": "Ydenia hits from range and throws you in the water. Swim back, heal up, try again. Cure the strength debuff on the tanks. Her island is around 43k, 27k in Vanern. Don't stand on the edge. Casters can outrange her if they find the right bank.",
+  "yells": {
+    "aggro": [
+      "Feel the power of the seithkona, fool!"
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Into the water with you. Cool your blood."
+      }
+    ],
+    "death": [
+      "The high seat... is empty..."
+    ],
+    "slay": [
+      "I saw this. I sang it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A high seat stands on the island. Someone is singing."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Ydenia sings someone off the island into the bog!"
+      }
+    ],
+    "realmFirstKill": "Ydenia of the Seithkona is silent."
+  },
+  "botLines": {
+    "briefing": [
+      "ydenia nukes from range and throws you in the water. swim back and cure the debuff"
+    ],
+    "aftermathWin": [
+      "the swamp witch is dead"
+    ],
+    "aftermathLoss": [
+      "got thrown in the water four times. [hate her|lol]"
+    ],
+    "rumour": [
+      "ydenia was a seeress who wanted more than seeing. now she sits on an island in vanern and drinks people"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ydenia",
+    "text": "A seithkona, a seeress of the old north, who turned her songs from telling to taking. She keeps a high seat on an island in Vanern and sings the unwary into the bog."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} emptied Ydenia's high seat in {minutes} minutes.",
+    "loss": "Ydenia sang {raidLeader}'s party from {realm} into the bog after {minutes} minutes."
+  }
+}

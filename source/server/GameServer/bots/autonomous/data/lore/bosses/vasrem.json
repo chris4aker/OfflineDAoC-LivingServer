@@ -1,0 +1,72 @@
+{
+  "id": "vasrem",
+  "name": "Vasrem",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/vasrem",
+  "locationId": "iarnwood",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Vasrem is a level-70 named with 30,000 health in the south-east of the Iarnwood.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He drains life essence (450) from range and debuffs strength-constitution and, in an area, dexterity-quickness.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a named lich that uses lifetaps and debuffs; he drops Vasrem's Eye in three versions.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/5946"
+    }
+  ],
+  "story": "The Iarnwood breeds liches as other forests breed fungus: the rot in the iron trees gets into the dead, and some of them sit up. Vasrem sat up first and has never lain down since. He drinks. The life of anything near him runs to him like water downhill, and what is left of you is weaker and slower than it was. His eye, they say, sees everything that dies in the Iarnwood, and he goes to it. The iron trees around his ground lean away from him.",
+  "legend": "Vasrem lifetaps from range and debuffs everything. Cure the debuffs, keep healers out of his reach, and kill him fast; the longer it goes the stronger he gets off you. His eye drops for casters. Bring cure for the debuffs and someone to call when he starts draining.",
+  "yells": {
+    "aggro": [
+      "Warm. You are so warm."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Give it to me. All of it."
+      }
+    ],
+    "death": [
+      "Cold... again..."
+    ],
+    "slay": [
+      "Drunk dry."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The iron trees lean away from this place."
+    ],
+    "realmFirstKill": "Vasrem the lich of the Iarnwood lies down at last."
+  },
+  "botLines": {
+    "briefing": [
+      "vasrem lifetaps and debuffs, cure and burn him"
+    ],
+    "aftermathWin": [
+      "vasrem's eye dropped!"
+    ],
+    "aftermathLoss": [
+      "he drained the tanks"
+    ],
+    "rumour": [
+      "the rot in the iron trees makes the dead sit up. vasrem sat up first"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Vasrem",
+    "text": "The first of the Iarnwood's dead to sit up from the rot. He drinks the life of anything near him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put Vasrem the lich down in the Iarnwood in {minutes} minutes.",
+    "loss": "Vasrem drank {raidLeader}'s party from {realm} dry after {minutes} minutes."
+  }
+}

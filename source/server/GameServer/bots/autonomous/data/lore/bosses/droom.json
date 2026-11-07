@@ -1,0 +1,115 @@
+{
+  "id": "droom",
+  "name": "Droom",
+  "catalogKey": "iarnvidiur-s-lair/droom",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur"
+  ],
+  "related": [
+    {
+      "id": "iarnvidiur",
+      "relation": "grows in her lair"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Droom is a 30,000-health named; ten narfi come with it.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It casts Droom's Poison and Droom's Acid over time, debuffs strength-constitution and attack speed in an area, and spreads Black Plague.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls Droom a named mushroom (plant); a group of 14 with four healers and two shamans struggled with the poison and disease (2003).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4669"
+    },
+    {
+      "text": "Dutch droom means dream (to verify; the name's intended language is unknown).",
+      "provenance": "original",
+      "source": "glossary, to verify"
+    }
+  ],
+  "story": "Droom is a fungus that dreams. It grows in a wet hollow of the lair, a great pale cap on a stalk as thick as a tree, with gills that breathe slow clouds of spores into the dark. The narfi tend it. They are small grey things of the deep places, older than the dwarves and quieter, and they sit around Droom in a ring and chant, ten of them at a time, the way monks sit around a shrine. They believe the dreams of the Iron Wood itself rise through Droom's stalk from the roots of the iron trees, and that whoever breathes its spores sees them.\n\nWhoever breathes them certainly sees something. Droom's spores slow the arm and thin the blood. Its poisons work in pairs, one that rots and one that burns, each eating at the life for twenty breaths. Its curse drags at strength and endurance in a ring, and another makes every blow come late. And over all of it lies the plague, the same black rot as everywhere in the lair, so that the healers' work goes half to waste. The visions come at the end, the narfi say, as you lie under the cap: the iron trees as they were before the rot, tall and silver and full of birds, and the old one young.\n\nThe healers who have fought it say the visions are only the poison. They do not say it with much conviction. One shaman who chain-cured the whole fight said afterwards that he had seen the silver trees too, from the corner of his eye, and that he had not been poisoned once. The narfi wail when Droom falls. The next season, the dwarves say, a new cap rises in the same hollow, and the narfi sit back down.",
+  "legend": "Droom is a cure fight: poison and disease both, all the time. Shamans chain cure poison and disease while healers heal. Kill the ten narfi first. A group of fourteen with four healers and two shamans struggled in 2003; a six-person kill was claimed too, so it is a skill fight, not a numbers fight. The cap drops for every armour type. Keep the melee rotating so no one sits in the debuff ring too long. The narfi chant faster as Droom weakens; don't panic, it's the same fight. Bring cure items as backup if your shamans run dry, as the old threads advised.",
+  "yells": {
+    "aggro": [
+      "(The narfi chant. The great cap breathes out.)",
+      "(Spores drift down like snow.)",
+      "(The narfi fall silent and stare.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Spores thicken. The edges of the world go soft.)"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "(The narfi chant faster. The dreams deepen.)"
+      }
+    ],
+    "death": [
+      "(Droom collapses. The narfi wail.)",
+      "(The last spores drift down and settle.)"
+    ],
+    "slay": [
+      "(The fallen dream under the cap.)",
+      "(The narfi gather round the dreamer.)",
+      "(Spores settle on the body.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A great cap breathes. The air tastes of dreams.",
+      "Spores drift like snow. The edges of the world go soft."
+    ],
+    "realmFirstKill": "Droom is cut down. The dreaming ends.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Droom's spores thicken into a dream-fog!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "droom = poison + disease nonstop. shamans chain cure, kill the 10 narfi first",
+      "two shamans on cure only for droom",
+      "melee rotate out of the debuff ring",
+      "narfi first, all ten"
+    ],
+    "aftermathWin": [
+      "got the mushroom cap! [lol|grats]",
+      "shimmering mushroom cap for the cloth wearer!",
+      "droom down, and i saw silver trees. [anyone else?|weird]",
+      "cures held the whole fight, gg shamans"
+    ],
+    "aftermathLoss": [
+      "we couldnt cure fast enough on droom",
+      "cures were too slow, again",
+      "the narfi chanted and we died",
+      "shamans ran dry at 30%"
+    ],
+    "rumour": [
+      "the narfi think you see the forest's dreams when droom kills you. [i saw a wall|i saw my bind point]",
+      "the narfi think the iron wood dreams through droom",
+      "a new droom grows in the same hollow every season, the dwarves say",
+      "the narfi chant around droom like monks around a shrine"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Droom",
+    "text": "A fungus that dreams, tended by the narfi like a shrine. Its spores slow the arm and thin the blood."
+  },
+  "bookPage": "From Thorgrim of Faraheim's notes. The narfi do not speak to dwarves, but one of them spoke to me, once, at the edge of the wood, in a voice like a dry leaf. It said the iron trees were silver once, and sang, and that the old one was young, and that the rot came after something happened that it would not name. It said Droom remembers the silver, and that when you die under Droom you remember it too, and that this is a mercy. I asked whether it had died under Droom. It said: many times. Then it went back into the dark.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut down the dreaming fungus Droom in {minutes} minutes.",
+    "loss": "Droom's spores put {raidLeader}'s party from {realm} to sleep after {minutes} minutes."
+  }
+}

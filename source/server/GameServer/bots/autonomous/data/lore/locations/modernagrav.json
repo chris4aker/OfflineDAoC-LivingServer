@@ -1,0 +1,99 @@
+{
+  "id": "modernagrav",
+  "name": "Modernagrav",
+  "realm": "Midgard",
+  "regions": [
+    151
+  ],
+  "summary": "The new island east of Faraheim where the morvalt dig for their Mother among ancient bones and a mammoth walks the dig.",
+  "facts": [
+    {
+      "text": "The morvalt destroyed Faraheim's eastern rockwall following rumours that the Mother lies on the island beyond; they found a huge half-buried ancient skeleton guarded by a large undead presence, and set up a camp to contact its spirit.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=116"
+    },
+    {
+      "text": "The iarn dwarves sent explorers too; Minerva in the iarn dwarf settlement in Faraheim flies their friends to Modernagrav.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=116"
+    },
+    {
+      "text": "Its bestiary lists Basilius, Hoden, Mortufoghus, decaying mammoths, howlers, morvalt of many titles, sjoalf waverunners and spectral beasts.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=116"
+    },
+    {
+      "text": "Modernagrav is a zone of region 151 (Aegir) in the zone table.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Bot chat: the crazed morvalt believe that when the Mother wakes, Trollheim will not be the only thing that falls.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Modernagrav was not on the maps a while ago. Then the morvalt of Faraheim broke down the eastern rockwall, because their shamans had heard that the Mother was on the other side, and there was an island, and the island had a grave in it. The name the dwarves gave it means something like the Mother's grave. Nobody is sure whose idea that was.\n\nWhat the morvalt found was bones. A skeleton lies half-buried in the island, longer than a longhouse, older than the morvalt or the trolls or the Troll Fathers, and the dead stand around it in their hundreds as if keeping a vigil. The morvalt set up camp and began to dig and to call. Their summoners try to speak with the spirit in the bones; their grave-workers clear the earth from the ribs; their deadly ones keep the camp; Basilius keeps all of them. Round and round the dig walks Mortufoghus, a mammoth of the old ice, as if the bones were her calf.\n\nThe iarn dwarves came to watch, as they watch everything on Aegir, and their griffons carry friends across. Midgard's scholars say the oldest tale begins with a cow in the ice and a giant licked out of it. The morvalt say that when the Mother wakes, Trollheim will not be the only thing that falls. They say it smiling.",
+  "legend": "New island, old bones. Get the iarn dwarves to like you and Minerva will fly you over. The dig is morvalt, the vigil is undead, and the mammoth is Mortufoghus, who throws people off the island. Some call the bones the Mother. Some call them a cow. Nobody has measured them, though someone always says he will.",
+  "atmosphere": {
+    "firstEntry": [
+      "An island that was not on the maps. A grave that was.",
+      "The morvalt are digging. The dead are watching them dig."
+    ],
+    "areas": [
+      {
+        "name": "the dig",
+        "x": 451102,
+        "y": 350788,
+        "z": 7022,
+        "radius": 2500,
+        "lines": [
+          "Ribs like a longhouse rise out of the earth."
+        ]
+      },
+      {
+        "name": "the morvalt camp",
+        "x": 483761,
+        "y": 335331,
+        "z": 7304,
+        "radius": 1500,
+        "lines": [
+          "Spades and summoning-poles. The camp is listening."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the morvalt broke the faraheim rockwall to reach modernagrav. they think the mother is buried there",
+      "theres a skeleton on modernagrav bigger than a longhouse, and undead standing round it",
+      "mortufoghus is a mammoth that walks round the dig like its her calf"
+    ],
+    "rumour": [
+      "the crazed morvalt believe that when the mother wakes, trollheim wont be the only thing that falls",
+      "[i'm going out to|someone should] pace the ribs on modernagrav. more than a longhouse and you owe me an ale"
+    ],
+    "tell": [
+      "modernagrav is the new island east of faraheim. morvalt dig, undead, and mortufoghus the mammoth",
+      "get iarn dwarf faction and minerva flies you over to modernagrav",
+      "modernagrav? bones, morvalt and a giant mammoth. bring a group for mortufoghus"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Modernagrav. The [morvalt] broke a wall to find their Mother and found [bones]. A mammoth walks around them.\"",
+    "topics": {
+      "morvalt": "The untamed savages of Aegir. Their shamans say the Mother lies on the island and will wake. Basilius runs the dig.",
+      "bones": "A skeleton longer than a longhouse, older than the Troll Fathers. The dead keep vigil round it. The oldest tale begins with a cow in the ice; Mortufoghus walks round the bones as if they were her calf."
+    }
+  },
+  "book": {
+    "title": "The Rockwall of Faraheim",
+    "pages": [
+      "For as long as Hagall has stood, the eastern rockwall was the end of Faraheim. Then one night the morvalt shamans danced and wailed and the warriors went at the wall with picks and fire, and in the morning there was a gap, and beyond it an island no map had. The iarn dwarf who told me said his people had always known it was there. I asked why they never went. He said: because of what is buried in it. I asked what that was. He said the morvalt think it is their Mother, and that the dwarves hope very much the morvalt are wrong."
+    ]
+  },
+  "bosses": [
+    "mortufoghus",
+    "basilius"
+  ]
+}

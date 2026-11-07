@@ -1,0 +1,123 @@
+{
+  "id": "stanga",
+  "name": "Stanga",
+  "catalogKey": "iarnvidiur-s-lair/stanga",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur"
+  ],
+  "related": [
+    {
+      "id": "iarnvidiur",
+      "relation": "his mistress, who kept him at his post"
+    },
+    {
+      "id": "hurjavelen",
+      "relation": "the thief who sometimes stands in his place"
+    },
+    {
+      "id": "ancient-syver",
+      "relation": "what he guards the passage to"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Stanga is a level-66 named with 30,000 health; five egilvarg come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He spreads Black Plague and a strength-constitution debuff around him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him an undead wolf that guards the passageways to the Ancient Syver; Hurjavelen is a rare spawn in his place.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4667"
+    },
+    {
+      "text": "Swedish stanga means to butt or gore (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "Stanga was the first wolf Iarnvidiur ever set to guard a door. He was the biggest of her first litter, a great grey dog-wolf with a temper and a way of butting with his head that gave him his name, and she set him in the passage to the Ancient Syver so that her other pups would not try their teeth on the old beast and lose. He kept it. He kept it for longer than any wolf should live, through winters and plagues and the coming of the dwarves to the wood above, and in the end he died at it, of the lair's black rot, lying across the passage with his head on his paws.\n\nShe would not let him leave his post. So he did not. He got up again, stiff-legged, bone and fur and plague, and he still stands in the passage with his pack of egilvarg around him, butting at anything that tries to pass. The rot pours off his hide in a cloud. His bite weakens strength and endurance. He does not eat and he does not sleep and he does not grow old any more, and the dwarves who have seen him say there is nothing left in his eyes but the order.\n\nSome nights a different wolf stands there instead: Hurjavelen, the thief, with his stolen dagger and his grymvarg. Nobody knows where Stanga goes on those nights. The dwarves say the old one lets him sleep, once in a while, curled at her feet the way he did as a pup. They say it is the only kindness anyone has ever seen her do.",
+  "legend": "Stanga's pack is five egilvarg; pull clean. Cure disease and the strength-constitution debuff, then he is a straight fight. He's undead, so undead banes help. If Hurjavelen is there instead, you're in for a harder night. His staff drop is for spirit casters only, and the bone he gnaws is a trophy. He guards the way to the Ancient Syver, so kill him first if you're going there. He hits like the dead do, steadily and without tiring, so the tank needs a steady healer rather than burst. The egilvarg are the danger to the healer; one person keeps them busy. Rest before him, the passage beyond has the Ancient Syver.",
+  "yells": {
+    "aggro": [
+      "(The dead wolf rises, stiff-legged, from its post.)",
+      "(Rot pours off his hide.)",
+      "(Stanga lowers his head to butt.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Rot pours off Stanga's hide.)"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "(Stanga will not move from the passage.)"
+      }
+    ],
+    "death": [
+      "(Stanga lies down at his post at last.)",
+      "(His head goes down on his paws.)"
+    ],
+    "slay": [
+      "(Stanga noses the fallen, and returns to his post.)",
+      "(He stands guard over the body.)",
+      "(The egilvarg close in.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dead wolf stands guard. It has stood here a long time.",
+      "Rot drifts off a grey hide in the dark passage."
+    ],
+    "realmFirstKill": "Stanga has left his post at last.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "The dead wolf will not leave his post!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "stanga + 5 egilvarg, cure the debuff and disease",
+      "pull stanga's egilvarg one at a time if you can",
+      "undead bane on stanga",
+      "one person keeps the egilvarg off the healer"
+    ],
+    "aftermathWin": [
+      "stanga down, on to the syver",
+      "stanga's remains dropped, trophy!",
+      "the dead wolf finally lay down",
+      "shimmering gnawed bone!"
+    ],
+    "aftermathLoss": [
+      "the egilvarg add was too much",
+      "all five egilvarg came",
+      "disease stacked and the healer couldnt keep up",
+      "the egilvarg ran over the healer"
+    ],
+    "rumour": [
+      "stanga died at his post and she wouldn't let him leave it. thats a dead wolf you're fighting",
+      "the dwarves say iarnvidiur lets stanga sleep at her feet some nights. thats when hurjavelen stands in",
+      "stanga was the biggest of iarnvidiur's first litter",
+      "stanga still guards the passage after he died. the dwarves say thats faithful, or something worse"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Stanga",
+    "text": "The first wolf [Iarnvidiur] set to guard a door. He died at it of the black rot, and she would not let him leave."
+  },
+  "bookPage": "From Thorgrim of Faraheim's notes. The dwarves of the Remnants have a saying, as faithful as Stanga, and they say it of a good dog and a bad husband both. The old dwarf who taught it to me said that faithfulness is a fine thing in a wolf and a terrible thing in a dead one, and that the old one never understood the difference. Then he said: perhaps she understood it very well. Perhaps that is why she kept him. Then he would not talk about it any more, and went to sit by his own dog, who was very old.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} relieved the dead wolf Stanga of his post in {minutes} minutes.",
+    "loss": "Stanga held his post against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

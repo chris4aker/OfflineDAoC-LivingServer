@@ -1,0 +1,109 @@
+{
+  "id": "council-ozur",
+  "name": "Council Ozur",
+  "catalogKey": "tuscaran-glacier/ozur",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "council-hord",
+      "relation": "fellow councillor of the outer seats"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Ozur is a level-77 Council member with 100,000 health; he hits harder the more players are near him (Strength 200, then 350, at two crowd thresholds).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He spreads Ozur's Disease in a 400 radius.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Ozur was the Council's measurer. Whenever the Icelords came to the ribs demanding war, Ozur asked the same questions: how many enemies, how strong, how near. Then he answered each threat in exact proportion. Three morvalt at the rim deserved three giants. A dwarf spy deserved a single jailer. A war-band deserved a war-band. He was never once accused of cruelty or of weakness, and the queen, who despised both, liked him for it.\n\nEvery scratch on the wall behind his seat is a threat he measured, and every one was answered. There are a great many scratches. The cast-out sculptor told me that Ozur could tell you, for any one of them, what it had been and how many had gone to meet it and how many had come back.\n\nHe fights the same way still. He measures the raid that comes to him. Come at him with a few, and he is an old giant with a cough, the sickness he spreads in a ring around him the only sign that he means you harm. Come at him with a crowd, and he finds a strength the Council never knew he had, and then a greater one if the crowd grows. He thinks this is fair. So do the skalds. A threat should be met by its own weight.\n\nWhen he dies, he says the measure was wrong. It is not clear whether he means his own or yours. The sculptor told me he still remembers the scratch that was for him.",
+  "legend": "Don't zerg Ozur. Send only as many as you need into melee range; the more stand near him, the harder he hits. Cure his disease. Raid leaders call it the polite pull: two tanks, a few melee, healers at range and everyone else waiting their turn. The impatient raid feeds him. He's next to Hord, so pull them separately. A whole raid can be on Ozur only if it takes turns: one tank team in, out, and the next. Raids that get it right say he is the easiest councillor. Raids that don't say he is the hardest. Clear the room first.",
+  "yells": {
+    "aggro": [
+      "How many of you? Let me count before I answer.",
+      "A threat is met by its own weight.",
+      "One, two... many. Very well."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "So many. Then I answer in kind."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Fewer now. I can be gentler."
+      }
+    ],
+    "death": [
+      "The measure... was wrong...",
+      "Add a scratch... for me..."
+    ],
+    "slay": [
+      "In proportion.",
+      "One fewer. I adjust.",
+      "Measured and met."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Tally-marks cover the wall behind a council seat.",
+      "A giant counts you as you enter."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ozur weighs the crowd and grows stronger!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Ozur weighs what is left of you."
+      }
+    ],
+    "realmFirstKill": "Council Ozur has taken his last measure."
+  },
+  "botLines": {
+    "briefing": [
+      "ozur gets stronger the more people are on him. [one group|just the tanks] in melee, rest at range",
+      "pull ozur and hord separately",
+      "everyone not tanking ozur stays back. i mean it",
+      "ozur: [turns|take turns], small team in, rest waiting"
+    ],
+    "aftermathWin": [
+      "kept it small on ozur, worked",
+      "ozur down, the polite pull worked",
+      "nobody crowded ozur. proud of you",
+      "ozur's skull ring dropped"
+    ],
+    "aftermathLoss": [
+      "everyone piled on ozur and he started hitting for twice as much",
+      "fifteen people ran in on ozur and he hit for double",
+      "somebody pulled hord with ozur",
+      "he counted us and hit like a landslide"
+    ],
+    "rumour": [
+      "ozur counts you, they say. bring a crowd and he gets mean",
+      "every scratch on ozur's wall is a threat he measured. theres a lot of scratches",
+      "ozur hits harder the more of you there are. [fair|not fair]",
+      "ozur measures every threat and answers in kind. [fair giant|fairest giant up there]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ozur",
+    "text": "The Council's measurer, who answered every threat in exact proportion. Bring a crowd to his seat and he finds the strength for a crowd."
+  },
+  "bookPage": "From the sculptor's account. I asked Ozur once, as a young carver, why he answered the morvalt with three giants and not thirty. He said that thirty giants would teach the morvalt that we fear them, and three giants would teach them that we do not. He said: the measure is the message. Then he scratched a mark on the wall behind his seat, and told me to remember that one, because it was for me, and I had been answered in proportion. I was twelve winters old. I have remembered it. He laughed when he told me.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took Council Ozur's measure in {minutes} minutes.",
+    "loss": "Council Ozur weighed {raidLeader}'s raid from {realm} and found it wanting after {minutes} minutes."
+  }
+}

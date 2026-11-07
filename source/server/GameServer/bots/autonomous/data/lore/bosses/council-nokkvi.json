@@ -1,0 +1,109 @@
+{
+  "id": "council-nokkvi",
+  "name": "Council Nokkvi",
+  "catalogKey": "tuscaran-glacier/nokkvi",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "council-vagn",
+      "relation": "his inseparable partner"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Nokkvi is a level-78 Council member with 100,000 health, linked to Council Vagn.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam players said he seemed to have a million hit points and resisted every spell (2005).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4690"
+    }
+  ],
+  "story": "Nokkvi is the boat to Vagn's wagon, and like a good boat he does not sink. He sits beside Vagn in the outer council hall and says nothing, and when the Council fought among itself he was the one nobody could move: not with argument, because he did not answer argument, and not with anything else, because nothing worked on him. The other councillors say he has the thickest hide in the glacier. Old tanks of Midgard say the same, with feeling.\n\nHe resists the casting of every school a raid brings against him. Fire slides off him; cold he was born in; the spirit magics of Midgard's casters find nothing in him to take hold of. Blades bite, but only just. A thane who fought him once wrote that his styles were hitting for one, and that the raid had to send someone to kite Vagn the whole time just to give the tanks a chance. That was Nokkvi on a good day. On a bad day he grieves.\n\nWhen the elders voted, the old giants say, Nokkvi only ever raised his hand after Vagn did. Nobody knows what he thinks about the Icelords, or the queen, or the peace he voted for a hundred times. Perhaps nothing. Perhaps everything, and Vagn says it for him. When Vagn dies first, Nokkvi rises, silent, to avenge him, and the outer hall learns that the quiet one was never quiet because he had nothing in him. When Nokkvi dies first, Vagn speaks for both of them, as he always did.\n\nHis last sound, the hrimthursa say, is very like a hull going under: a long creak, and then nothing.",
+  "legend": "Nokkvi is the wall of the pair: lots of health and huge resists. Fast one-handers and every tank you have. Don't waste nukes; debuff him first, then melee. A 2005 thane wrote that his styles were hitting for one, and that someone had to kite Vagn the whole time. Plan the pair before you pull. Nokkvi resets if dragged or left alone for half a minute, like the rest of the Council. If Vagn dies first, Nokkvi grieves and hits harder; plan who dies first and have the healers ready. Most raids kill Nokkvi first with everything they have and accept a louder Vagn after.",
+  "yells": {
+    "aggro": [
+      "...",
+      "(Nokkvi rises without a word.)",
+      "(He looks at Vagn, then at you.)"
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "Vagn. Then I will carry it alone."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "(Nokkvi shrugs off the blows as if they were snow.)"
+      }
+    ],
+    "death": [
+      "...sinking...",
+      "(A long creak, and then nothing.)"
+    ],
+    "slay": [
+      "...",
+      "(Nokkvi steps over the fallen.)",
+      "(He glances at Vagn, who says it for him.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The silent one sits beside the talker.",
+      "His hide is thick as a hull."
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "Nokkvi rises, silent, to avenge Vagn."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Spells slide off Nokkvi like rain off a keel."
+      }
+    ],
+    "realmFirstKill": "Council Nokkvi has sunk at last."
+  },
+  "botLines": {
+    "briefing": [
+      "nokkvi resists everything, debuff first then melee",
+      "nokkvi: debuff then melee, nukes are wasted",
+      "every tank on nokkvi, the kiter holds vagn",
+      "nokkvi first, everything on him, vagn's kiter holds"
+    ],
+    "aftermathWin": [
+      "nokkvi finally down. that took forever",
+      "nokkvi sank lol",
+      "boat down. finally",
+      "nokkvi's mauler dropped"
+    ],
+    "aftermathLoss": [
+      "we did like 10% to nokkvi in five minutes. [not happening|need more tanks]",
+      "our casters nuked nokkvi for 10 minutes for nothing",
+      "the kite on vagn broke and both were on the raid",
+      "vagn died first by accident and nokkvi wrecked us"
+    ],
+    "rumour": [
+      "nokkvi never says a word, they say. just stands there and doesnt die",
+      "nokkvi only raises his hand after vagn does. a hundred years of that",
+      "nokkvi has the thickest hide in the glacier, the giants say",
+      "nokkvi said one word at a feast once. vagn's name. so he wouldnt choke"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Nokkvi",
+    "text": "The boat to [Vagn]'s wagon, and like a good boat he does not sink. He resists nearly every spell and says nothing at all."
+  },
+  "bookPage": "A saying of the hrimthursa, which the sculptor taught me: as silent as Nokkvi. It is said of a giant who will not be argued with, and of the ice in deep winter, and of a door that will not open. It is also, the sculptor said, said of a friend who will stand beside you and never say why. I asked whether Nokkvi had ever said anything at all. The sculptor thought for a long time and then said yes, once, at a feast, when Vagn was choking on a bone: he said Vagn's name. Then he hit him on the back, and Vagn lived, and Nokkvi went back to saying nothing.",
+  "chronicle": {
+    "win": "Silent Nokkvi sank before {raidLeader} of {realm} after {minutes} minutes.",
+    "loss": "Council Nokkvi did not sink; {raidLeader}'s raid from {realm} did, after {minutes} minutes."
+  }
+}

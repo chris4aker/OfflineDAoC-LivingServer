@@ -1,0 +1,120 @@
+{
+  "id": "issorden",
+  "name": "Issorden",
+  "catalogKey": "tuscaran-glacier/issorden",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa",
+    "dishonoured-dead"
+  ],
+  "related": [
+    {
+      "id": "queen-kula",
+      "relation": "the queen who froze his army and gave it orders"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Issorden is a level-78 undead with 100,000 health; seven icebound skeletons come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He turns a frosty stare on one attacker as blue mist crawls from the ice, then roots everyone around (Issorden Root, 1,500 radius) and casts Frost Sphere bolts.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs"
+    },
+    {
+      "text": "Allakhazam lists him as undead, level 78; he drops dragon crystals.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6070"
+    },
+    {
+      "text": "Swedish is means ice and orden order: perhaps 'the order of the ice' (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "Before Kula held the glacier, before the citadel was finished, a war-band came up out of the south of Aegir to take the crater and the dragon-bones under it. Its leader was a dead king even then, a lord of bone from some old people of the island whose name nobody now remembers, and his men were bone too. What he wanted with the bones nobody knows; the iarn dwarves say dead things are drawn to dead things, and the dragon was the largest death on Aegir.\n\nKula met them at the eastern ice and did not fight them. She was not yet strong enough to fight an army, and she was too proud to be seen losing. So she froze them, standing, every skeleton with its weapon raised and its foot lifted for the next stride, and then she walked among them and gave them orders. The dead obey whoever binds them. They are still standing there, and they still keep the order of the ice: Issorden and his seven icebound skeletons guard the eastern approach to the citadel, against everything that comes from the south, exactly as their own king once came.\n\nHis name, in the island's northern tongue, sounds like the order of the ice, and the giants say it was given to him by Kula herself. He has no other now. When strangers come, he turns his frosty stare on one of them; his hands glow and a blue mist crawls out of the small cracks in the ice at his feet. Then the mist roots everyone around him to the floor, all at once, as Kula once rooted his army, and his frost spheres find whoever cannot move.\n\nWhen he dies, he says he is released at last from her order. The skeletons around him do not move. Nobody has ever found out whether they are still under it, or just very tired.",
+  "legend": "Issorden roots the whole area in a big circle. Have purge or root-break ready, spread the healers so the mist can't catch them all, and clear his seven skeletons before you commit. The mist comes before the root, so the first person to see it calls it. Dragon crystals drop here, so every guild wants him. He's out on the eastern side, away from the main climb. He's undead, so the classes with undead banes and spirit damage do well. The skeletons come with him, BAF, so pull from the edge of his hall. Spread out. The east hall is quiet otherwise; rest there first.",
+  "yells": {
+    "aggro": [
+      "The order of the ice. None pass.",
+      "From the south you come. As I came.",
+      "She froze us so. Be frozen."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Stand still. As we stood, when she froze us."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Her order holds me. It will hold you."
+      }
+    ],
+    "death": [
+      "Released... at last... from her order...",
+      "My army... stand down..."
+    ],
+    "slay": [
+      "Stand with us now.",
+      "Another in the ranks.",
+      "Frozen in your stride."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Skeletons stand frozen mid-stride, weapons raised.",
+      "A dead king's army keeps the queen's order."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Blue mist rises. No one can move!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "The mist thickens. Issorden's army stands still."
+      }
+    ],
+    "realmFirstKill": "Issorden is released from the queen's order."
+  },
+  "botLines": {
+    "briefing": [
+      "issorden roots everyone, purge ready. kill the 7 skellies first",
+      "spread the healers on issorden, mist root is big",
+      "the first person who sees blue mist calls it",
+      "pull issorden from the edge, skellies come with him"
+    ],
+    "aftermathWin": [
+      "issorden dropped a dragon crystal!! [grats|gz]",
+      "red dragon crystal dropped!! [huge|grats]",
+      "issorden released lol. his skellies didnt move",
+      "issorden down and nobody got stuck in the mist"
+    ],
+    "aftermathLoss": [
+      "got rooted in the mist and the skellies did the rest",
+      "all the healers rooted together",
+      "we pulled him with the skellies up",
+      "seven skellies and the mist, we never stood a chance"
+    ],
+    "rumour": [
+      "heard issorden was a dead king who came to take the glacier. kula froze him and kept him as a guard",
+      "issorden came from the south to take the dragon bones before kula",
+      "the skeletons by issorden dont move even after he dies. [still under her order?|weird]",
+      "kula froze issorden's army before the citadel was even finished"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Issorden",
+    "text": "A dead king who came with an army of bone to take the glacier before Kula held it. She froze them standing and gave them orders. They keep the eastern ice still."
+  },
+  "bookPage": "A song of the iarn dwarves, translated badly by me, Thorgrim of Faraheim. From the south came the dead king, bone upon bone, to drink from the great death in the crater. The ice-queen met him on the white road. She did not raise her axe. She raised her hand, and the dead stood still, every one, with their feet lifted. She walked among them. She gave them a word. They keep it yet. Do not go to the eastern ice, little ones, the song ends, for the dead are keeping a word there, and they will give it to you.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} released Issorden from the order of the ice in {minutes} minutes.",
+    "loss": "Issorden froze {raidLeader}'s raid from {realm} in place for {minutes} minutes."
+  }
+}

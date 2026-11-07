@@ -1,0 +1,77 @@
+{
+  "id": "kelic",
+  "name": "Kelic",
+  "catalogKey": "midgard-named-mobs-classic-zones/kelic",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Kelic is a level-65 undead named with 10,000 health and followers. He casts Delaceration over time, Cursed Essence (disease) and a long root, and takes no damage from attackers far from his spawn.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He is the target of the mystic epic 'Saving the Clan': Danica says Jango and his deserters took Kelic to Raumarik to dispose of him, that even in death he is strong, and that he wore a curse around a totem that was destroying the clan.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Midgard/epic/Mystic50.cs"
+    },
+    {
+      "text": "Allakhazam lists Kelic and his servants in Raumarik.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/12483"
+    },
+    {
+      "text": "This world database has no standing spawn for Kelic; the epic script creates him when needed.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    }
+  ],
+  "story": "Kelic was a clansman of Midgard who put a curse on his own clan, wound around a totem, for reasons nobody alive remembers. When it began to work, a man named Jango and his deserters took him far into Raumarik to be rid of him, and they left him at the snowline by a stand of trees. He did not stay dead. Even in death he is strong, the map-makers wrote, and his followers stand with him still. The mystics of Midgard are sent to take the totem from him, so that the curse can be broken.",
+  "legend": "Kelic stands at the snowline in northern Raumarik with his followers; they come together. Root breaks and cure disease. Fight him close, he's immune from range. Mystics do him for their epic and should bring friends, as the note on the map says.",
+  "yells": {
+    "aggro": [
+      "Jango? Is that you? No. Another one come for my totem."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The curse holds while I hold it!"
+      }
+    ],
+    "death": [
+      "The clan... will never... be free of me..."
+    ],
+    "slay": [
+      "Another for the curse."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A stand of trees at the snowline. A curse hangs here."
+    ],
+    "realmFirstKill": "Kelic's curse is broken at last."
+  },
+  "botLines": {
+    "briefing": [
+      "kelic plus his servants, root break and cure disease. mystic epic"
+    ],
+    "aftermathWin": [
+      "got kelic's totem, clan's saved"
+    ],
+    "aftermathLoss": [
+      "got rooted and diseased and his servants did the rest"
+    ],
+    "rumour": [
+      "kelic cursed his own clan, and deserters dumped him in raumarik. he got back up"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kelic",
+    "text": "A clansman who cursed his own clan through a totem. Deserters left him dead at Raumarik's snowline. He did not stay dead."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Kelic's curse in {minutes} minutes.",
+    "loss": "Kelic's curse held against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "id": "ulfketill",
+  "name": "Ulfketill",
+  "catalogKey": "midgard-named-mobs-classic-zones/ulfketill",
+  "locationId": "vanern-swamp",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Ulfketill is a level-65 giant with 30,000 health in the west of Vanern Swamp who keeps up to three clay jotun guards around him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He is a step of the Healer and Shaman epic 'The Desire of a God' (level 48), sent by Lyngheid at Fort Atla after word that Loki seeks to cause trouble.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/720"
+    },
+    {
+      "text": "Allakhazam says he travels with several guards; Ulfketill is an Old Norse personal name, ulfr wolf and ketill cauldron (to verify).",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/12112"
+    }
+  ],
+  "story": "The jotuns of Vanern Swamp are not proud of much, but they are proud of Ulfketill, the wolf-kettle, who boils with Loki's mischief and never cools. He took service with the bound god's schemes long ago, and when Loki seeks to cause trouble in Midgard, Ulfketill is one of the hands that does the causing. He does not trust his fellow jotuns to guard him. He makes his own guards out of the swamp clay, three at a time, and when one breaks he makes another.",
+  "legend": "Ulfketill keeps three clay jotuns up at all times, so kill them as he makes them or tank them aside. Seers come here for their epic. He sits with the jotuns in the west of the swamp, so clear the camp before you pull.",
+  "yells": {
+    "aggro": [
+      "The god's work is not done. Clay, rise!"
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Another guard from the mud. And another."
+      }
+    ],
+    "death": [
+      "The kettle... boils over..."
+    ],
+    "slay": [
+      "Back into the swamp."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Clay figures stand in the bog, half-made."
+    ],
+    "realmFirstKill": "Ulfketill the wolf-kettle has boiled dry."
+  },
+  "botLines": {
+    "briefing": [
+      "ulfketill keeps 3 clay jotuns up, kill them as they spawn"
+    ],
+    "aftermathWin": [
+      "ulfketill down, epic step done"
+    ],
+    "aftermathLoss": [
+      "clay guys kept coming"
+    ],
+    "rumour": [
+      "heard ulfketill works for loki. [makes his own guards out of mud|swamp jotun]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ulfketill",
+    "text": "The wolf-kettle of the Vanern jotuns, who serves Loki's mischief and makes his own guards from swamp clay."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cooled Ulfketill's kettle in {minutes} minutes.",
+    "loss": "Ulfketill's clay guards drove off {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

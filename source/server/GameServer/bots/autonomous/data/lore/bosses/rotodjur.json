@@ -1,0 +1,109 @@
+{
+  "id": "rotodjur",
+  "name": "Rotodjur",
+  "catalogKey": "trollheim/rotoddjur",
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "troll-fathers",
+    "wild-beasts"
+  ],
+  "facts": [
+    {
+      "text": "Rotodjur (script Rotoddjur) is a level-71 named with 10,000 health that raises four or five Rotoddjur's Servants and poisons.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "A June 2003 Allakhazam comment describes it as a big mushroom whose 4-5 smaller mushrooms killed a level 50 warrior in about eight seconds.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/6010"
+    },
+    {
+      "text": "Swedish rot means root or rot, and djur animal or beast (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "In the far east halls of Trollheim, where no troll has lived since the Fathers left, the floor grows. It is soft underfoot and faintly warm, and it smells of earth after rain, and in places it rises in pale caps and gills and rootlets that move when no one is looking. The morvalt will not go into the east halls at all. They say the Fathers left something there on purpose, when they went down, to keep the halls empty for their return, and that it has done its work too well.\n\nRotodjur is the oldest thing growing there. It is a fungus the size of a house, with a cap like a hall roof and a beast's appetite, rooted in whatever the Fathers left behind in the east halls: their granaries, the old trolls say, or their archives, or their dead who were not laid on the mound. Its name, in the northern tongue, is something like root-beast or rot-beast, and both fit. It does not move. It does not need to. When something warm comes close, it buds, and the buds walk.\n\nRotodjur's servants are small caps on legs, four or five at a time, and they are hungry too, and they hit far harder than anything that size should. Players of old who cleared the back of the room and baffed it by accident watched the buds kill a level-fifty warrior in about eight seconds. The great cap itself breathes poison over whoever reaches it, slowly, as if it had all the time in the world, which it does.\n\nThe Valkyn, who remember more of the Fathers than they say, believe the east halls were the Fathers' gardens once, and that Rotodjur was a gardener. They say it is only doing what it was told: keeping out everyone who is not family. They do not go in either.",
+  "legend": "Clear the back of the room first so you don't add Rotodjur by accident. When it spawns its servants, kill them fast or kite them; they hit far harder than they look, and one high-level group is not enough. Cure poison on whoever is on the big cap. It resets with its adds cleared if you all die, so there is no chipping it down. Rotodjur's cap helms are the drops. The buds come in a ring around the cap, so the add group stands outside the ring and pulls them out one at a time. Area damage on the buds while they're bunched works if your healers can take it. Don't fight it tired.",
+  "yells": {
+    "aggro": [
+      "(The great cap shudders and splits.)",
+      "(Rootlets lift from the floor like hair standing up.)",
+      "(A deep, wet sound, like breathing.)"
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "(Spores burst. Small caps stand up and walk.)"
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "(Spores burst. Small caps stand up and walk.)"
+      }
+    ],
+    "death": [
+      "(Rotodjur slumps into rot.)",
+      "(The floor of the east halls goes still.)"
+    ],
+    "slay": [
+      "(Rootlets close over the fallen.)",
+      "(The floor grows a little.)",
+      "(The buds settle back into the soil.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor here is soft, and it is growing.",
+      "The floor is soft underfoot. It is alive."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Rotodjur buds, and its buds stand up!"
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "Rotodjur buds, and its buds stand up!"
+      }
+    ],
+    "realmFirstKill": "Rotodjur has rotted away in the east halls."
+  },
+  "botLines": {
+    "briefing": [
+      "rotodjur spawns 4-5 little mushrooms that hit like trucks. [kill them|cc them] first",
+      "clear the back of the room before rotodjur",
+      "two groups at least, the buds are mean",
+      "add group outside the ring for rotodjur's buds"
+    ],
+    "aftermathWin": [
+      "killed the giant mushroom. [lol|what a sentence]",
+      "rotodjur's helm of motion dropped",
+      "giant mushroom dead lol",
+      "nobody died to the buds this time"
+    ],
+    "aftermathLoss": [
+      "the little mushrooms killed our warrior in like 8 seconds",
+      "baffed it by accident clearing the back",
+      "the buds ate the warrior in seconds. again",
+      "the cap's poison wore down the main tank"
+    ],
+    "rumour": [
+      "theres a mushroom the size of a house in trollheim. [im serious|not joking]",
+      "the valkyn think the east halls were the fathers' gardens",
+      "the morvalt wont go into the east halls at all",
+      "rotodjur is the fathers' gardener, the valkyn say. still keeping the halls"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Rotodjur",
+    "text": "The oldest thing growing in Trollheim's empty east halls: a mushroom with a beast's appetite, rooted in what the Fathers left. Its buds walk, and they are hungry."
+  },
+  "bookPage": "From the notes of Hallveig, the Valkyn guide. My grandmother said the Fathers grew food under the mountain, in halls lit by stones that shone, and that they had a gardener there who was not a troll and not a beast. When the morvalt came the gardener was told to keep the halls until the Fathers returned. The morvalt went into the gardens once. They do not talk about what happened. My grandmother said the gardener does not know the Fathers are not coming back, and that no one should tell it, because then it would have nothing to do.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut down Rotodjur in Trollheim's east halls in {minutes} minutes.",
+    "loss": "Rotodjur's buds overran {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

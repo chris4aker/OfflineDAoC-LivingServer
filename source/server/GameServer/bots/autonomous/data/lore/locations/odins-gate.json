@@ -1,0 +1,83 @@
+{
+  "id": "odins-gate",
+  "name": "Odin's Gate",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "summary": "Midgard's old frontier under the glaciers, where a giant of ice stands guard over a gate nobody can find.",
+  "facts": [
+    {
+      "text": "Odin's Gate is a Midgard frontier zone; after New Frontiers it held Nottmoor and Bledmeer Faste.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=38"
+    },
+    {
+      "text": "The Glacier Giant stands in Odin's Gate (region 100 at 651972, 626960); Allakhazam also lists it in Jamtland Mountains.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "Bot chat says each frontier has an old giant that belongs to no realm: a green knight, a glacier giant and Evern.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_shared.lines"
+    },
+    {
+      "text": "Bot chat tells of a hidden road to Asgard, Odin's Gate with no gate, and a door behind the giant.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Odin's Gate is the name on the map, and every new warrior who walks there asks the same question: where is the gate? There is a glacier, white and blue and breaking slowly into the valleys. There are the keeps of the frontier, which change hands with the seasons of the war. There is a giant of ice standing at the foot of the glacier like a man waiting at a door. There is no gate.\n\nThe skalds say there was one. When the gods built the road up out of Midgard to their own hall, they began it here, at the top of the world, and set a giant at its foot to keep it. When the road was finished they folded it into the ice so no giant of the wrong sort could climb it. The Glacier Giant has kept it ever since, and it does not care which realm's banner flies on the keeps. It throws Albion knights and Hibernian rangers and Midgard runemasters with exactly the same indifference.\n\nExplorers still come. They climb the ledges that look carved, and walk the glacier's edge looking for a crack shaped like a door, and some of them stand too close to the giant and learn to fly. Nobody has found the gate. Everyone believes in it.",
+  "legend": "Everybody's guild has a story about someone the giant threw. The best ones land near Uppland. Some say killing the giant takes the fire out of the dragon in Malmohus; it doesn't, and the two are a realm apart. Some say the giant is guarding a door. That one, people half believe.",
+  "atmosphere": {
+    "firstEntry": [
+      "Odin's Gate. A glacier, a giant, and no gate.",
+      "The frontier under the ice. Banners change; the giant stays."
+    ],
+    "areas": [
+      {
+        "name": "the giant's ground",
+        "x": 651972,
+        "y": 626960,
+        "z": 5468,
+        "radius": 2500,
+        "lines": [
+          "The giant of ice stands watch. Do not go closer."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "odin's gate has a giant, a glacier and no gate",
+      "the old skalds say the road to asgard starts behind the glacier giant, folded up in the ice",
+      "each frontier has an old giant that belongs to no realm. ours is the glacier giant"
+    ],
+    "rumour": [
+      "heard killing the glacier giant takes the fire out of the dragon. [i think whoever said that was drunk|nobody checked]",
+      "[dare|i dare] [anyone|someone] to stand still next to the glacier giant for ten seconds. [nobody has|no one ever has]"
+    ],
+    "tell": [
+      "odin's gate is the frontier up north. keeps, a glacier, and the glacier giant. stay away from the giant",
+      "its frontier, so watch for albs and hibs. and the giant throws everyone",
+      "odin's gate? the giant and the keeps. no gate, i looked"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Odin's Gate. The gods built a [road] there once, they say, and set a [giant] at its foot.\"",
+    "topics": {
+      "road": "The road up out of Midgard to the gods' hall. When it was finished they folded it into the ice. Nobody has found it since. Everyone looks.",
+      "giant": "The Glacier Giant. It belongs to no realm and throws all three with the same indifference. Stand back."
+    }
+  },
+  "book": {
+    "title": "Looking for the Gate",
+    "pages": [
+      "Three summers I looked for the gate. I climbed the ledges above Bledmeer that look cut by a mason, and found only wind. I walked the edge of the glacier from end to end with a lantern, looking for a crack the shape of a door, and found a great many cracks and no doors. I sat a night on the ridge waiting for the northern lights to show me the road, as my grandmother promised. They did not. In the morning I went a little too close to the giant, and it threw me, and as I flew I looked down and I swear for one breath I saw a straight white line running up the glacier where no line should be. Then I landed, and it was gone."
+    ]
+  },
+  "bosses": [
+    "glacier-giant"
+  ]
+}

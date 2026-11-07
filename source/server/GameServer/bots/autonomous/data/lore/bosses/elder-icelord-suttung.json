@@ -1,0 +1,132 @@
+{
+  "id": "elder-icelord-suttung",
+  "name": "Elder Icelord Suttung",
+  "catalogKey": "tuscaran-glacier/suttung",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "elder-icelord-hjalmar",
+      "relation": "his rival and alternate"
+    },
+    {
+      "id": "icelord-kvasir",
+      "relation": "named, like him, from the old tale of the mead"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Suttung is a level-81 elder icelord with 100,000 health and the alternate of Hjalmar: the same controller spawns one or the other.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "He bellows that he is amazed intruders came this far, says he warned the Council to destroy its enemies first, and says he will not mourn 'her' death beyond the grave.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "Every 20-35 seconds he goes into a berserker stance for 10-20 seconds and hits far harder (Strength 850).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He spreads a disease named for Valnir Mordeth's Plague and an ice blast around himself.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "In Norse myth Suttungr is the giant who held the mead of poetry, which was brewed from the blood of the wise Kvasir.",
+      "provenance": "myth",
+      "source": "Snorri, Skaldskaparmal (public-domain myth); used as inspiration"
+    }
+  ],
+  "story": "Suttung took his name from the giant of the old tale who kept the mead of poetry inside a mountain, the mead that was brewed from the blood of wise Kvasir, and who lost it to Odin when the god came as a serpent through a hole in the rock and flew home as an eagle. The icelords think that is a fine joke, an elder named for a giant who was robbed. Suttung does not. He took the name on purpose, as a warning to himself and everyone else, and he has repeated the warning to the Council every year of his life: what is stolen once is stolen twice. If the glacier does not destroy those who threaten it before they destroy it, it will perish.\n\nHe shares a hall with Hjalmar, which is to say the glacier gives the hall to one of them at a time, with a howl in the ice to say which. When it is Suttung who stands up, he is genuinely amazed to see you. He bellows that he cannot believe you came so far, and promises that your journey ends there, without mercy. Then he says the thing he has been waiting to say: that he warned the Council, that you deserve your fate more than he deserves his, and that he will not mourn her death beyond the grave. Nobody is quite sure which 'her' he means: the queen, the Council, or the glacier itself.\n\nHe fights in fits. For a time he is merely dangerous, an elder giant with a disease he breathes on whoever stands close, a sickness the rime giants traded for long ago with the dead of another land and kept for occasions like this, and an ice blast that rings all around him. Then, every half minute or so, the berserker stance takes him. He swells with it, the hrimthursa say he grows a head taller, and for ten or twenty breaths he hits with a strength that breaks shields. Then the stance fades, and he is merely dangerous again, and he hates you a little more for having lived through it.\n\nWhen he dies he says that he has been robbed, like the mountain of old. It is the only time anyone has heard him sound satisfied.",
+  "legend": "Suttung's berserk comes on a timer, every 20 to 35 seconds, for 10 to 20 seconds. When the message says he goes into berserker stance, the main tank uses everything he has and the healers pile on; when it fades, swap tanks if you need to. Cure his disease or your heals do half. Spread for the ice blast. Fight him in his hall, never dragged, and keep him busy or he resets. He's the easier elder for a raid with strong tanks and the harder one for a raid with weak ones. Some raid leaders swear the howl gives you Suttung when you brought too many casters.",
+  "yells": {
+    "aggro": [
+      "I am amazed you came so far. Your journey ends at my feet.",
+      "What is stolen once is stolen twice. Not again. Not here.",
+      "I am amazed you came this far. Your journey ends here."
+    ],
+    "phases": [
+      {
+        "trigger": "berserk",
+        "text": "I warned them! Destroy the threat before it destroys us!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "I will not mourn her past the grave. Nor you."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "You deserve this fate more than I do."
+      }
+    ],
+    "death": [
+      "Robbed... like the mountain... of old...",
+      "Robbed... like the mountain of old..."
+    ],
+    "slay": [
+      "Broken. As I promised the Council.",
+      "Thief.",
+      "Nothing leaves this mountain. Not even you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A howl runs through the ice. An icelord has woken.",
+      "An elder icelord laughs somewhere ahead in the ice."
+    ],
+    "phases": [
+      {
+        "trigger": "berserk",
+        "text": "Suttung swells with berserker fury!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Suttung breathes sickness over the front rank!"
+      }
+    ],
+    "realmFirstKill": "Elder Icelord Suttung falls. His warning was in vain."
+  },
+  "botLines": {
+    "briefing": [
+      "if we get suttung, watch for berserker stance, [tank pops cds|healers burst the tank] till it fades",
+      "cure disease on suttung or heals do half",
+      "suttung disease: cure it every time",
+      "on suttung, swap tanks after each berserk if the mt is low"
+    ],
+    "aftermathWin": [
+      "suttung dead. that berserk is no joke",
+      "got suttung. the berserks were nasty but we held",
+      "suttung down, the old tale guy. the mead one",
+      "suttung's vest dropped, the spiteful one"
+    ],
+    "aftermathLoss": [
+      "suttung berserked twice in a row and our mt just [evaporated|vanished]",
+      "no cure on the disease and the heals did nothing",
+      "two berserks back to back. no tank survives that",
+      "no tank swap after the berserk. dead mt, dead raid"
+    ],
+    "rumour": [
+      "the giant in the old song who kept the mead was called suttung. same name as the icelord up there. [coincidence|sure]",
+      "suttung says he wont mourn 'her' past the grave. nobody knows if he means kula",
+      "suttung named himself after the giant who got robbed. on purpose",
+      "suttung warned the council every year. nobody listened"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Suttung",
+    "text": "The other elder icelord, named for the giant who kept the mead of poetry and lost it. He warned the Council to strike first and was not heeded. He fights in fits of berserker fury and carries a sickness the giants traded for long ago."
+  },
+  "bookPage": "The tale of the mead, as the giants tell it, which is not as Jordheim tells it. The wise one, Kvasir, was killed by dwarves and his blood brewed into a mead, and whoever drank it became a poet. A giant, Suttung, took it from the dwarves as the price of his father's life and hid it inside a mountain with his daughter to guard it. A god came, a stranger with one eye, and seduced the daughter, and drank the mead, and flew away as an eagle. In Jordheim this is told as a clever god. In the glacier it is told as a theft, and the elder who carries that giant's name tells it every winter, so no one forgets.",
+  "chronicle": {
+    "win": "Suttung's warning came true for him, not for {realm}: {raidLeader}'s raid slew him in {minutes} minutes.",
+    "loss": "Elder Icelord Suttung's fury broke {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

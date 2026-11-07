@@ -1,0 +1,111 @@
+{
+  "id": "delegalt",
+  "name": "Delegalt",
+  "catalogKey": "iarnvidiur-s-lair/delegalt",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur"
+  ],
+  "related": [
+    {
+      "id": "iarnvidiur",
+      "relation": "his mistress"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Delegalt is a 30,000-health named on the path to Iarnvidiur; fifteen come with him (three animus rondjur, five animus syndig, seven grymvarg).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He spreads Black Plague by touch.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam players said the whole room of animus and dogs adds if not cleared first, and that he dropped two groups (2003).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4670"
+    }
+  ],
+  "story": "Delegalt keeps the animus, the soulless giants of the lair, the way a herdsman keeps cattle. They stand in their long hall on the path to the old one's door, great slow shapes with nothing in their eyes, and he walks among them with a stick and a word for each, and the grymvarg lie between them like sheepdogs. Animus rondjur, the round ones; animus syndig, the sinful ones; the names are northern words and the dwarves say they were given as jokes, by the old one, when the giants still had minds to be insulted with.\n\nThey were giants once, proud ones, from the mountains of Aegir and further. They came to court Iarnvidiur long ago, when she was younger, or they were, and she let them court her. They stayed in her lair too long. The rot got into them, slowly, one winter after another, until there was nothing left in them but the habit of standing, and she gave them to Delegalt to mind. He is the only one of them who kept his wits, or so the dwarves think: some say he was a giant too, the cleverest of the suitors, and that he bargained for his mind with his freedom, and lost the bargain only by half.\n\nHis room is full of them, and of the old one's wolves, and if you touch him, all of them notice. Fifteen come at once: rondjur, syndig and grymvarg, the whole herd stampeding. He carries the plague in his touch. He calls the herd up to trample whoever has come, and he laughs, the dwarves say, the way a man laughs who has not laughed in a hundred years. Two groups who reached him in the early days were dropped by the adds that spawned in the hall before they ever saw what he dropped.",
+  "legend": "Delegalt is a room, not a mob: three rondjur, five syndig and seven grymvarg come with him. Clear the room from the edge before you pull, pulling singles to a safe spot, or the whole hall adds. Two groups died learning that in 2003. After the room is clear he is an ordinary fight with a nasty disease. He's on the path to Iarnvidiur, so the raid has to go through him anyway. He drops a hostile giant's hand axe. Pullers need patience: grymvarg wander between the giants, so watch the paths before each pull. A puller with a sprint and a safe spot by the hall's mouth makes it easy.",
+  "yells": {
+    "aggro": [
+      "Up, my herd! Up, my hounds! We have visitors.",
+      "Visitors! It has been a hundred years!",
+      "Trample them gently. She likes them whole."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "All of you! Trample them!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Herd! Herd! Why do you not come?"
+      }
+    ],
+    "death": [
+      "Who will mind... the herd...",
+      "Free... by half... at last..."
+    ],
+    "slay": [
+      "The herd will graze on you.",
+      "Another for the pasture.",
+      "Lie still. The herd is passing."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Hulking animus stand in the dark like cattle.",
+      "Giants stand in rows with nothing in their eyes.",
+      "A herdsman's stick taps on stone."
+    ],
+    "realmFirstKill": "Delegalt the herdsman is slain. His herd wanders.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Delegalt calls his herd, and the hall shakes!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "delegalt room: clear all the animus and grymvarg first or it all comes",
+      "clear delegalt's room from the edge, singles only",
+      "fifteen adds if you pull him with the room up. fifteen",
+      "pullers bring them to the safe spot one at a time"
+    ],
+    "aftermathWin": [
+      "room cleared, delegalt down. that's how you do it",
+      "room cleared clean, delegalt was easy after",
+      "hostile giant hand axe dropped lol",
+      "fifteen singles pulled clean. puller of the week"
+    ],
+    "aftermathLoss": [
+      "someone pulled delegalt with the room up. [15 adds|whole room]",
+      "somebody aggroed delegalt early",
+      "a grymvarg pathed into the pull and the room came",
+      "the puller died and everything followed him back"
+    ],
+    "rumour": [
+      "the animus in the lair were giants once, they say. iarnvidiur took their minds",
+      "delegalt might have been a giant suitor who kept his mind by half",
+      "iarnvidiur named the animus as jokes when they could still be insulted",
+      "delegalt laughs like he hasnt laughed in a hundred years, they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Delegalt",
+    "text": "The herdsman of the animus, giants who came to court [Iarnvidiur] and stayed too long in her rot. Touch him and the whole herd notices."
+  },
+  "bookPage": "From Thorgrim of Faraheim's notes. The old dwarf said the giants came courting the old one in his grandfather's grandfather's day, one after another, with gifts: iron, gold, a whole mountain's worth of furs. She took the gifts and let them stay. He said the first winter they sang, and the second winter they sang less, and by the tenth they only stood in the hall. He said one of them, the clever one, noticed what was happening and bargained. He said nobody knows what he bargained, only that he can still talk and still cannot leave.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Delegalt's herd on the road to Iarnvidiur in {minutes} minutes.",
+    "loss": "Delegalt's herd trampled {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

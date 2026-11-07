@@ -1,0 +1,137 @@
+{
+  "id": "elder-council-birghir",
+  "name": "Elder Council Birghir",
+  "catalogKey": "tuscaran-glacier/birghir",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "elder-council-guthlac",
+      "relation": "his partner on the ribs"
+    },
+    {
+      "id": "elder-icelord-hjalmar",
+      "relation": "the icelord who mocked his peace"
+    },
+    {
+      "id": "queen-kula",
+      "relation": "his queen, who let him win every vote"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Birghir is a level-80 elder of the hrimthursa Council with 100,000 health, linked to Elder Council Guthlac: pull one and both come.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "On first aggro he is shocked an outsider is inside and calls on Guthlac to defend their King and Queen.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs"
+    },
+    {
+      "text": "He admits the Ice Lords were right and that the Council should have wiped out every dangerous creature on the island.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs"
+    },
+    {
+      "text": "He casts Frost Sphere bolts, Frost Strike, a strength-constitution debuff and a haste debuff.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat says the elder council sits on the dragon's ribs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Birghir is the oldest voice of the Council and its gentlest. He was old already when Kula raised the citadel, and he took his seat on the dragon's ribs as a favour to her, because she needed someone the other giants would listen to. For a hundred winters he argued that the hrimthursa had their ice and needed nothing else. Every raid the Icelords made on the island, he said, only taught other peoples where the glacier was. Leave the dwarves their iron wood, leave the morvalt their savagery, leave the trolls' city to whoever wanted it, and the island would forget there were giants in the crater at all. He won that argument every time it was put to the Council, and every time Kula let him win it, because a quiet council costs a queen nothing.\n\nHjalmar called his peace a mockery. Suttung said it would get them all killed. Birghir answered them both with the same patience, year after year, and Guthlac sat beside him and said nothing and voted with him every time.\n\nThen the island came knocking. The morvalt rose, the Troll Father went to Jordheim, and the warbands of Midgard came across Delling Crater and up the tunnels, and Birghir sat on his rib and listened to the sound of his peace being broken one hall at a time. When you reach him, the first thing he says is that it should not have been possible: an ugly outsider, here, in the heart of the ice. The second thing he says is the truth he has refused to say for a century. The Ice Lords were right. They should have wiped out every dangerous creature on the island. And they are going to do it today.\n\nHe fights with the rage of a pacifist who has just learned what his peace was worth. He weakens your strongest with a curse on their strength and their endurance, slows your fastest, and throws frost spheres at whoever is casting, and his frost strike hits like a falling wall. He calls on Guthlac to defend the King and Queen, and Guthlac comes, as he always has. If he dies first, the last thing he says is for Hjalmar: that he was right. It is the only time he ever said it.",
+  "legend": "The elders are a pair: pull one and both come. Birghir debuffs, Guthlac drops ice spikes. Kill Birghir with casters out of his line of sight, because his frost sphere and frost strike hurt, and keep a cleanser on the tanks for his strength-constitution debuff and the haste debuff. The fight resets if you drag them off the ribs or leave them out of combat for half a minute, so commit. The old guides say the elders are the real test of the glacier: a raid that cannot handle the spikes and the debuffs together will never see Kula. When Birghir gives his speech about the Ice Lords, the old raiders say, the council is finished and he knows it.",
+  "yells": {
+    "aggro": [
+      "Outsiders, here? On the ribs? Guthlac! To the King and Queen!",
+      "Impossible. An outsider, here, on the ribs?",
+      "Guthlac, we must defend our Queen and King!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "A hundred winters I spoke for peace. Hear what I say now!"
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Guthlac... the Ice Lords were right. We were fools."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "We should have cleansed this island. We will begin with you."
+      }
+    ],
+    "death": [
+      "Tell Hjalmar... he was right...",
+      "Peace... was never ours to keep..."
+    ],
+    "slay": [
+      "Peace was never offered to you. I see that now.",
+      "I would have let you live, once.",
+      "The Council votes. You lose."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The council chamber. The seats are carved from ribs.",
+      "Old bone under old ice. The elders are waiting.",
+      "An old giant sits on a rib as if on a throne of patience."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Birghir renounces a century of peace!"
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Birghir rises alone. The council's peace is ended."
+      }
+    ],
+    "realmFirstKill": "The Elder Council is broken. Peace dies on the ribs."
+  },
+  "botLines": {
+    "briefing": [
+      "elders next. birghir and guthlac come together, [cure|clear] the str debuff on tanks fast",
+      "casters stay out of birghir's line, his frost sphere hurts",
+      "dont drag the elders off the ribs, they reset",
+      "birghir also haste debuffs, cleanse the tanks"
+    ],
+    "aftermathWin": [
+      "council down. birghir said the icelords were right right before he died lol",
+      "elders done, on to the throne",
+      "elder council broken. on to the thrones",
+      "birghir said the icelords were right right before he died. [poor guy|lol]"
+    ],
+    "aftermathLoss": [
+      "the elders wiped us. guthlac's spike went off in the middle",
+      "str debuff on both tanks and nobody cleansed",
+      "we pulled the elders off the ribs and they reset at 20%. [ugh|again]",
+      "birghir's frost sphere one-shot our caster group lead"
+    ],
+    "rumour": [
+      "[heard|they say] the council up there were peace lovers once. didnt look peaceful to me",
+      "old birghir argued against war for a hundred years and lost the argument in one night",
+      "birghir's last words are for hjalmar. [they hated each other|figures]",
+      "birghir sat on that rib a hundred years arguing for peace. [then we showed up|bad timing]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Birghir",
+    "text": "The eldest of the Council, who spoke for peace a hundred winters and won every vote because the queen let him. When outsiders reach the ribs he says what he never said before: the Ice Lords were right. He fights beside [Guthlac], as he always sat."
+  },
+  "bookPage": "Minutes of the Council, the hundredth winter, as a cast-out sculptor remembered them for me. Hjalmar spoke for war: the morvalt are rising, the dwarves are watching, strike first. Suttung spoke for war: what is stolen once is stolen twice. Birghir spoke for peace: the ice is enough, and every raid teaches the island the way to our door. Guthlac said nothing. The vote was taken. Peace, by two. The queen yawned and went back to her throne. The sculptor said that was the last vote the Council ever won, and that he carved Birghir that night as he sat on his rib, very old and very sure, and that the carving was why they cast him out.",
+  "chronicle": {
+    "win": "On the dragon's ribs {raidLeader} of {realm} silenced Elder Birghir in {minutes} minutes.",
+    "loss": "Elder Birghir held the ribs against {raidLeader}'s raid from {realm} for {minutes} minutes."
+  }
+}

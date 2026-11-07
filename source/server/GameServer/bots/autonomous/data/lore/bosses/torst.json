@@ -1,0 +1,119 @@
+{
+  "id": "torst",
+  "name": "Torst",
+  "catalogKey": "tuscaran-glacier/torst",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "hurika",
+      "relation": "his mate"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Torst is a level-80 creature with 100,000 health, paired with Hurika on a high ledge of the glacier; the original patrol flight is switched off.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "His powerful wings stir swirling eddies of freezing air (five 'eddie' adds), and he roots and casts Cold Snap around him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs"
+    },
+    {
+      "text": "Allakhazam lists Torst at level 85 and his drops as griffon mantles; the glacier also holds griffon icewings and chicks.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6076"
+    },
+    {
+      "text": "Swedish torst and Old Norse thorsti mean thirst (to verify).",
+      "provenance": "original",
+      "source": "Swedish and Old Norse glossaries, to verify"
+    }
+  ],
+  "story": "High on the eastern ledge, where the glacier meets the sky, the great griffons of the ice keep their roost. They were there before the giants came, the iarn dwarves say, before the dragon died even; there have always been griffons on the high places of Aegir, and the griffon icewings of the glacier are the largest and coldest of them. Torst is the cock of the roost, a beast of cold feathers and a beak like a spear-point, and his name, in the island's northern tongue, means thirst.\n\nNobody knows what he thirsts for. The giants say blood. The wind-riders of the island, the Vind Ryttaren, who fly the lesser griffons of the cliffs, say freedom, and they have spent a generation trying to take a chick from Torst's roost to prove it, and failed every time. The hrimthursa leave him be. He is no one's servant, only a neighbour with a temper, and his ledge is high enough above the citadel that the giants rarely think of him at all.\n\nWhen strangers climb to the roost, Torst comes down to meet them. His powerful wings stir the air into swirling eddies, little whirlwinds of freezing cold that break away from him and hunt on their own, five at a time, threatening to freeze anyone caught in their wake. His beak strikes hard enough to throw a man back. The ground around him snaps with cold, and he roots whoever he dislikes to the ice so that the eddies can find them. Of old he patrolled the skies of the glacier in long circles with his mate; today he keeps to his ledge, but he has lost none of his temper.\n\nHurika fights beside him. They are a pair the way the giants' pairs are not: not allies, not rivals, but mates, guarding a nest, with no other thought between them.",
+  "legend": "Torst and Hurika come together. Torst's eddies are adds, kill or avoid them; his root sets you up for them, so root-break. Hurika throws people off the ledge. Pull them down where it's flat if you can. A 2003 raid of about 60 did it by bolt-pulling the bird down. Kill them together or one keeps going while you work on the other. The griffon mantles are the drops everybody wants. The eddies come in fives; area damage clears them fast if they're grouped. Bring cold resists for the whole raid; the ledge is cold enough without him, and the cold snap stacks with the eddies.",
+  "yells": {
+    "aggro": [
+      "SKRAAAAAH!",
+      "(Torst spreads his wings across half the ledge.)",
+      "(A shriek like ice cracking.)"
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "(Torst beats his wings, and the air itself freezes!)"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "(Torst rakes the ice with his talons, and it snaps with cold.)"
+      }
+    ],
+    "death": [
+      "(a long, falling cry)",
+      "(Torst's wings fold, and he is still.)"
+    ],
+    "slay": [
+      "(Torst screams in triumph)",
+      "(He tears at the fallen, then looks to the nest.)",
+      "(Torst shrieks at the sky.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Wind and feathers. Something huge roosts up here.",
+      "Eddies of freezing air chase each other here."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Torst's wings stir freezing eddies!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The ice snaps with cold under Torst's talons!"
+      }
+    ],
+    "realmFirstKill": "Torst has fallen from the roost of the ice."
+  },
+  "botLines": {
+    "briefing": [
+      "torst and hurika, griffons on the ledge. eddies are adds, kill them",
+      "pull the birds down to the flat if you can",
+      "root break on torst, the root sets you up for the eddies",
+      "kill both birds together"
+    ],
+    "aftermathWin": [
+      "griffons down! [anyone get the mantle?|mantle?]",
+      "frozen griffon mantle dropped!",
+      "two griffons down and nobody fell off. impressive",
+      "torst down. wind blown griffon mantle!"
+    ],
+    "aftermathLoss": [
+      "hurika threw half of us off the ledge, torst ate the rest",
+      "the eddies froze the healers",
+      "we killed hurika and torst wiped us after",
+      "torst rooted the tank in his eddies"
+    ],
+    "rumour": [
+      "there are giant griffons nesting at the top of the glacier. [no joke|seriously]",
+      "the wind riders have tried for years to steal a chick from torst's roost",
+      "[heard|they say] torst means thirst in the old northern tongue",
+      "the griffons were on that glacier before the giants, the dwarves say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Torst",
+    "text": "The cock of the griffon roost on the eastern ledge. His wings freeze the air into eddies that hunt on their own. The wind-riders of the island have tried for a generation to steal a chick from him."
+  },
+  "bookPage": "From the logbook of Asmund, wind-rider of the Vind Ryttaren. Seventh attempt on the glacier roost. We came at dusk from the east, three riders, low over the crater rim. The cock was on the ledge, the hen on the nest. We were within a spear's throw of the chicks when the cock rose and beat his wings once, and the air froze around Hrafn's griffon, and it fell. We pulled Hrafn out of the snow at the bottom of the glacier, alive. His griffon we did not find. Eighth attempt in the spring. I have said that before.",
+  "chronicle": {
+    "win": "The griffon Torst fell from his roost before {raidLeader} of {realm} after {minutes} minutes.",
+    "loss": "Torst and Hurika swept {raidLeader}'s raid from {realm} off the ledge after {minutes} minutes."
+  }
+}

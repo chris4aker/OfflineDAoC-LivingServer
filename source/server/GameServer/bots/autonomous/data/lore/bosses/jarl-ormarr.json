@@ -1,0 +1,123 @@
+{
+  "id": "jarl-ormarr",
+  "name": "Jarl Ormarr",
+  "catalogKey": "dodens-gruva/jarlormarr",
+  "locationId": "dodens-gruva",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "dodens-gruva-bound"
+  ],
+  "related": [
+    {
+      "id": "aros-the-spiritmaster",
+      "relation": "his spiritmaster"
+    },
+    {
+      "id": "thane-dyggve",
+      "relation": "his thane"
+    },
+    {
+      "id": "mistress-of-runes",
+      "relation": "his runecarver, who warned him"
+    },
+    {
+      "id": "gudlaugr",
+      "relation": "his hound"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Jarl Ormarr is a level-65 named with 30,000 health in Dodens Gruva.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He boasts as he fights: 'You call that a hit? I'll show you a hit!' and 'I am a warrior, you can't kill me!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/JarlOrmarr.cs"
+    },
+    {
+      "text": "Allakhazam lists him at 55-64; he drops icebound and niveous gear. The bestiary also lists phantom huscarls in the mine.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6440"
+    },
+    {
+      "text": "Ormarr is an Old Norse personal name; ormr means serpent (to verify).",
+      "provenance": "original",
+      "source": "Old Norse name, to verify"
+    }
+  ],
+  "story": "Ormarr was a jarl of Jamtland in the years before the frontier keeps had the names the war gave them, a big man with a red beard and a voice that carried across a hall, and he dug Dodens Gruva for iron because a jarl without iron is only a rich farmer. He was a good jarl by the measure of his age. He gave rings to his huscarls and held his feasts on the right days and never once sent a man where he would not go himself. His thane Dyggve swung the first hammer of the mine for him; his Mistress of Runes cut its marks; his spiritmaster Aros read the names of its shifts. His hound Gudlaugr slept at his feet.\n\nWhen the Mistress said not here, he laughed. He had never been afraid of a hill in his life. When the cold seam opened and the miners died and the dead began to walk down toward the voices below, he did what a jarl does: he went to fetch them back, at the head of his huscarls, forty men in mail, through the seam and down. The voices took them one by one. Aros came down the stair behind them shouting names, and the jarl stopped, and turned, and came back up, and he was not alive any more, and neither were the forty.\n\nHe does not seem to have noticed. His huscarls walk the galleries as phantoms; he holds his hall at the end of them by a cold hearth, and when strangers come he laughs at them the way he laughed at the hill. You call that a hit? I'll show you a hit! He believes he cannot be killed. Whatever Aros did to him has made that almost true, and the boast has outlived the man by a long way. He fights hard and straight, with no tricks, the way a jarl of the old frontier was expected to fight, and he dies, in the end, surprised.",
+  "legend": "Jarl Ormarr talks a lot and hits hard, but he is a straight fight: one good group can do him. He says he can't be killed; he can. Clear the phantom huscarls on the way, because everything in Dodens Gruva helps everything else and the huscarls hit almost as hard as he does. Tank him in his hall away from the doors. His icy chain and niveous weapons are good drops for the level. Some players still quote his lines at each other: haha, you call that a hit? He hits hardest when he's boasting, so the healer should watch for the lines.",
+  "yells": {
+    "aggro": [
+      "Haha! Come then! A jarl fears nothing under the hill!",
+      "Haha! You call that a hit? I'll show you a hit!",
+      "I am a warrior, you can't kill me!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Is that all? I have been killed before. It did not take."
+      }
+    ],
+    "death": [
+      "Huscarls... to me... one last time...",
+      "Dead? Me? I was... only resting..."
+    ],
+    "slay": [
+      "Another one who thought a jarl could die.",
+      "Huscarls! Drag that one out!",
+      "Ha! Who's next?"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A jarl's hall, cut in the rock. The hearth is cold.",
+      "Phantom huscarls stand at the walls in mail."
+    ],
+    "realmFirstKill": "Jarl Ormarr has died at last, boast and all.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Jarl Ormarr laughs. He has been killed before."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "jarl ormarr is tank and spank, ignore the trash talk",
+      "clear the phantom huscarls first",
+      "tank ormarr away from the doors",
+      "one group is enough for the jarl"
+    ],
+    "aftermathWin": [
+      "he said we couldnt kill him. [we did|lol]",
+      "icy chain dropped!",
+      "you call that a hit? [lol|every time]",
+      "jarl down. he looked surprised"
+    ],
+    "aftermathLoss": [
+      "pulled two huscarls with the jarl [oops|my bad]",
+      "huscarls added",
+      "he hit harder than he talked",
+      "we pulled him with two phantoms"
+    ],
+    "rumour": [
+      "the jarl down there boasts he cant be killed. [he can|took us 5 min]",
+      "jarl ormarr went down to fetch his miners back and came back dead",
+      "the jarl doesnt know hes dead, they say",
+      "ormarr laughed at the hill. the hill won"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ormarr",
+    "text": "The jarl who dug Dodens Gruva for iron and went down at the head of his huscarls when the cold seam opened. He still believes he cannot be killed. Whatever [Aros] did has made it almost true."
+  },
+  "bookPage": "From the third slate, found at the jarl's hall. He said a jarl does not send men where he will not go. He went through the seam with forty men and the voices took them one by one, and Aros came down the stair behind them shouting names, and the jarl stopped, and turned, and came back up, and he was not alive any more, and neither were the forty. He still says he cannot be killed. I think he believes it. I think it is the only thing he has left. I have not told him otherwise. Someone should.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} proved Jarl Ormarr mortal in {minutes} minutes.",
+    "loss": "Jarl Ormarr's boast held against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

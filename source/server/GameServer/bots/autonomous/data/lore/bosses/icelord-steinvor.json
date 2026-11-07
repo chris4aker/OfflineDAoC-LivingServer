@@ -1,0 +1,114 @@
+{
+  "id": "icelord-steinvor",
+  "name": "Icelord Steinvor",
+  "catalogKey": "tuscaran-glacier/steinvor",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "icelord-skuf",
+      "relation": "the anvil to his hammer"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Steinvor is a level-80 icelord with 100,000 health, linked to Icelord Skuf.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He picks a player and raises a Pillar of Ice under them (Pillar of Frost, 750 damage), telling them they are not going anywhere.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs"
+    },
+    {
+      "text": "When he dies two hrimthursa seers appear.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Steinvor and Skuf hold the middle tunnels as a pair, the hammer and the anvil of the icelords. They have stood the same watch since Kula gave it to them, side by side in a hall that leads toward the inner citadel, and nothing has come down that tunnel without meeting both. Steinvor is the one who chooses.\n\nHe looks over a raid the way a woodsman looks over a stand of trees, deciding which to fell first. He settles on one face. He tells that one, by name, that they are not going anywhere, and the ice rises under them: a pillar of frost bursting from the floor where they stand, sharp enough to split mail and cold enough to stop a heart. He picks another, and another. He is patient about it. Steinvor has never been in a hurry; that is what Skuf is for.\n\nHis seers love him for it. Two of the hrimthursa seers of the middle tunnels have watched every fight he has fought from cracks in the walls, reading the runes, and when he falls they come out of hiding to avenge him. They have been waiting the whole fight, and they come fresh, with heals for each other and frost for you.\n\nSteinvor and Skuf never argued about the Council, because they never discussed it. They discussed the tunnel. Steinvor once said, the giants remember, that peace was a matter for those who did not have a tunnel to hold. It is the longest thing anyone heard him say.",
+  "legend": "Steinvor's pillar is targeted: whoever he names, move off the spot and the healers heal through it. Pull Skuf and Steinvor together, they're linked. Kill whichever your raid burns faster, but save power: two seers pop out of the walls when Steinvor dies, and they heal and nuke. Mez one, kill the other. Don't drag either icelord out of the hall or they reset. Raid leaders put a caller on the pillar: the moment Steinvor names someone, the caller says move. The seers come from the walls of the hall itself, so do not stand with your back to a wall when he dies.",
+  "yells": {
+    "aggro": [
+      "Skuf, the anvil. I will be the hammer.",
+      "Let me look at you. Yes. You first.",
+      "You are not going anywhere."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "You are not going anywhere."
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Skuf. Then I am hammer and anvil both."
+      }
+    ],
+    "death": [
+      "Seers... come out... avenge me...",
+      "Seers... out of the walls... now..."
+    ],
+    "slay": [
+      "Pinned and finished.",
+      "Not going anywhere. As I said.",
+      "Who is next? You."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Pillars of frost rise here and there like old graves.",
+      "Two icelords stand watch, one choosing faces."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "Two seers step out of the walls!"
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Steinvor stands alone. The pillars rise faster."
+      }
+    ],
+    "realmFirstKill": "Icelord Steinvor is felled. His seers wail."
+  },
+  "botLines": {
+    "briefing": [
+      "steinvor and skuf together. if steinvor names you, move, pillar comes up under you",
+      "save mana, two seers pop when steinvor dies",
+      "steinvor and skuf reset if dragged, fight them in the hall",
+      "kill whichever dies faster but keep mana for the seers"
+    ],
+    "aftermathWin": [
+      "steinvor and skuf done. seers too",
+      "hammer and anvil down, seers too",
+      "nobody stood on a pillar twice. good job",
+      "steinvor's axe dropped"
+    ],
+    "aftermathLoss": [
+      "seers popped and we had nothing left",
+      "the pillar killed both healers in a row",
+      "seers came out and healed each other forever",
+      "he named the main healer three times in a row"
+    ],
+    "rumour": [
+      "heard steinvor's pillar hits for 750. [stand somewhere else|move your feet]",
+      "steinvor picks one of you by name. creepy",
+      "two seers watch every steinvor fight from inside the walls",
+      "steinvor said peace is for those who dont have a tunnel to hold. longest thing he ever said"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Steinvor",
+    "text": "The hammer of the middle tunnels, paired with [Skuf]. He chooses one face and raises frost beneath it. When he falls, the seers who watched from the walls come to avenge him."
+  },
+  "bookPage": "Overheard by a Valkyn scout in the middle tunnels, as he lay in a crack with his face pressed to the ice. Two giants talking, very slowly. The first said: they will come down the tunnel. The second said nothing. The first said: we will stop them. The second said nothing. The first said: the Council says we should let them pass. The second said: the Council does not have a tunnel. Then they both stood there for the rest of the day, and so did the scout, because he did not dare to move.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke the hammer and the anvil, Steinvor and Skuf, in {minutes} minutes.",
+    "loss": "Icelord Steinvor's pillars held {raidLeader}'s raid from {realm} in place for {minutes} minutes, and then for good."
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "id": "vanern-swamp",
+  "name": "Vanern Swamp",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "summary": "Midgard's western bog of jotuns and clay giants, where a seeress keeps a high seat on an island.",
+  "facts": [
+    {
+      "text": "Allakhazam's Vanern Swamp bestiary lists Mokkurvalve, Ulfketill and Ydenia of the Seithkona among its 50 creatures.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=34"
+    },
+    {
+      "text": "Ulfketill and his clay jotun guards sit in the west of the swamp (zone table and spawns); Ydenia's water is around 43k, 27k.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "The Healer and Shaman epic sends players against Ulfketill and the jotuns of Vanern.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/720"
+    },
+    {
+      "text": "Bot chat says Midgard is built on giants' quarrels: fire giants in Muspelheim, jotuns in Vanern, frost giants on the glacier.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Vanern is wet ground and old grudges. The swamp lies west of the heart of Midgard, reed and black pool and soft clay, and the jotuns who live there are the poorer cousins of the giants of the mountains: they have no glacier, no fire, only mud, and they have made the best of it. They build in clay. They have been building in clay since the oldest tale, when their kind made a clay giant to stand beside Hrungnir against Thor and watched it fall. They are still trying to get it right. Mokkurvalve is their best attempt so far, and he comes apart when he fights.\n\nUlfketill is their pride, the wolf-kettle, who serves the bound god's mischief and keeps clay guards of his own. Loki's trouble comes through Vanern often, and the seers of Midgard come after it.\n\nOn an island in the swamp a seeress keeps a high seat of her own. Ydenia was a seithkona, one of the singing women who tell what will be, and she wanted more than telling. She drinks the life of anyone who comes within her song and throws them into the bog when they come too close.",
+  "legend": "Vanern is where people learn to swim with armour on: Ydenia throws you in, and the bog is deep. The clay giants fall apart if you hit them hard enough, and then the bits get up. Seers come for Ulfketill. Everyone else comes for the jotun camps and leaves muddy.",
+  "atmosphere": {
+    "firstEntry": [
+      "Reed and black water. The jotuns build in clay here.",
+      "Vanern Swamp. The mud remembers every footstep."
+    ],
+    "areas": [
+      {
+        "name": "the jotun camp",
+        "x": 629994,
+        "y": 897954,
+        "z": 2291,
+        "radius": 1600,
+        "lines": [
+          "Clay figures stand half-made in the bog."
+        ]
+      },
+      {
+        "name": "the seeress's island",
+        "x": 665500,
+        "y": 894000,
+        "z": 1550,
+        "radius": 1600,
+        "lines": [
+          "A high seat on an island. Someone is singing."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the vanern jotuns build clay giants. ever since the old tale with hrungnir",
+      "ulfketill is a vanern jotun who works for loki. seers hunt him for their epic",
+      "ydenia on the island in vanern is a seithkona gone bad. [stay off the edges|she throws you in]"
+    ],
+    "rumour": [
+      "mokkurvalve breaks into twenty pieces when he dies. [dont aoe|walk away]",
+      "heard loki's trouble always comes through vanern first"
+    ],
+    "tell": [
+      "vanern swamp, west side. jotuns, clay giants, mokkurvalve, ulfketill and the seeress ydenia on her island",
+      "vanern? good jotun camps, muddy. watch for ydenia on the island",
+      "its the swamp west of the forest. bring someone who can swim"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Vanern. The [jotuns] there build in clay, and have been trying to get it right since the old tale. On an island a [seeress] keeps her own high seat.\"",
+    "topics": {
+      "jotuns": "Poor cousins of the mountain giants, with only mud to work. Ulfketill, the wolf-kettle, serves Loki's mischief. Mokkurvalve is their clay giant, and he comes apart as he fights.",
+      "seeress": "Ydenia of the Seithkona. She wanted more than telling what will be. She drinks life across the water and sings the unwary into the bog."
+    }
+  },
+  "book": {
+    "title": "Clay and Grudges",
+    "pages": [
+      "The jotuns of Vanern told me, through a kobold who had lived with them, that their grandfathers' grandfathers built the clay giant that stood with Hrungnir. It was nine leagues high and it had a mare's heart, because no giant's heart was big enough. When it saw Thor it was so afraid it wet itself, and Thor's servant cut it down. The jotuns do not tell that part. The kobold did. He said they have been building clay giants ever since to prove the first one was a mistake, and that every one so far has come apart. He said they are very close now."
+    ]
+  },
+  "bosses": [
+    "ulfketill",
+    "mokkurvalve",
+    "ydenia-of-the-seithkona"
+  ]
+}

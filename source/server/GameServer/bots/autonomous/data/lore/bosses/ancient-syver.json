@@ -1,0 +1,116 @@
+{
+  "id": "ancient-syver",
+  "name": "Ancient Syver",
+  "catalogKey": "iarnvidiur-s-lair/ancientsyver",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur",
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "stanga",
+      "relation": "the dead wolf who guards its passage"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Ancient Syver is a level-68 reptile with 30,000 health; five syver come with it.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It strikes the ground around it (Ancient Syver's Strike, 350 in a 350 radius), weakens strength, spreads Black Plague and hastens itself.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists hatchling, young and grown syver in the lair, and says the ancient one procs an area hit of about 300.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6429"
+    },
+    {
+      "text": "Stanga, an undead wolf, guards the passages to it.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4667"
+    }
+  ],
+  "story": "The syver are the lair's other brood. They are scaled and woolly at once, a thing between a lizard and a sheep, with hooked teeth and a bleating cry, and the iarn dwarves say the old one keeps them for her wolves to hunt, the way a jarl keeps deer in a park. There are hatchlings and young and grown syver in the passages, scurrying from the light, and the wolves run them down whenever they are hungry, which is always.\n\nThe oldest of them was never hunted. It grew too big for the wolves, and too clever, and too sick: the plague that sits in everything in the lair sits deepest in the Ancient Syver, and it has carried it so long that it no longer seems to notice. It lies at the end of a passage that the dead wolf Stanga guards, with five of its own kind around it, and it is the reason Stanga was set there: the old one did not want her pups to try their teeth on it and lose.\n\nIt fights by weight. Its strike pounds the ground around it hard enough to knock the breath from anyone standing close; it curses the strength out of the arms of whoever fights it, breathes its plague in a ring, and, when it is hurt, hastens itself with a fury that doubles its blows. The iarn dwarves make spears from the scales of syver that die of age, and the petrified spear of the Ancient Syver's kind is the hardest of them. A ring from its hoard, they say, keeps off the rot. They do not say how they know.",
+  "legend": "Ancient Syver comes with five syver, so pull it to a corner and handle the pack first. Its area hit punishes melee in a clump: stagger the tanks and keep the melee spread. Cure disease and the strength debuff, as everywhere in this place. When it hastes itself, the tank needs a heal spike. The hatchlings nearby will join if you fight too close to them. Its staff and fang are the drops casters and tanks fight over. Pull it through Stanga's passage only after Stanga is down, or both come. A tank with a big shield does best against its ground pound.",
+  "yells": {
+    "aggro": [
+      "(The old beast heaves up out of the muck.)",
+      "(A deep bleat, like a horn underground.)",
+      "(The ground shakes as it rises.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Ancient Syver pounds the ground!)"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "(Ancient Syver's fury quickens its blows!)"
+      }
+    ],
+    "death": [
+      "(The ancient one sinks back into the muck.)",
+      "(Its brood scatters into the passages.)"
+    ],
+    "slay": [
+      "(Its brood crowds round the fallen.)",
+      "(The ancient one bleats in triumph.)",
+      "(It pounds the ground over the fallen.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is churned by something very heavy.",
+      "Something very heavy has churned this floor."
+    ],
+    "realmFirstKill": "The Ancient Syver is slain. Its brood scatters.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "The Ancient Syver strikes in a fury!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "ancient syver has 5 syver with it and a ground pound, stagger melee",
+      "handle the 5 syver before the big one",
+      "heal spike the mt when the syver hastes",
+      "stanga first, then the syver"
+    ],
+    "aftermathWin": [
+      "syver down. [nice|clean]",
+      "staff of the ancient syver dropped",
+      "petrified syver spear! [nice|grats]",
+      "ring of the syver dropped"
+    ],
+    "aftermathLoss": [
+      "pounded flat by the big syver",
+      "melee clumped and the pound did the rest",
+      "haste plus str debuff, mt folded",
+      "stanga and the syver together. never again"
+    ],
+    "rumour": [
+      "the wolves in the lair hunt syver. the old one got too big to hunt",
+      "the iarn dwarves make spears from syver scales",
+      "the wolves hunt the syver like deer in a park. not the old one though",
+      "the ancient syver is too big for the wolves to hunt"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Syver",
+    "text": "The lair's scaled, woolly brood, kept for the wolves to hunt. The ancient one grew too big to be hunted and lies behind the dead wolf Stanga."
+  },
+  "bookPage": "From Thorgrim of Faraheim's notes. The dwarf who told me about the syver had one, a young one, on a lead like a dog. It bleated at me. He said the young ones are sweet and the old ones are not, and that the oldest one in the lair is as big as a longhouse and has never been hunted, because even the old one's wolves are afraid of it. He said its scales would make a dwarf's fortune. I asked why no dwarf had made it. He said because a dead dwarf has no use for a fortune, and patted his syver, and it bleated at me again.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew the Ancient Syver in {minutes} minutes.",
+    "loss": "The Ancient Syver pounded {raidLeader}'s party from {realm} into the muck after {minutes} minutes."
+  }
+}

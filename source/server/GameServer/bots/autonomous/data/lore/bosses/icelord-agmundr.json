@@ -1,0 +1,119 @@
+{
+  "id": "icelord-agmundr",
+  "name": "Icelord Agmundr",
+  "catalogKey": "tuscaran-glacier/agmundr",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "icelord-kvasir",
+      "relation": "brother icelord of the western tunnels"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Agmundr is a level-81 icelord with 100,000 health who fights with a pack of six hrimthursa (a depredator, two icespines, two icetouch and a seer).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He tells his target that his seers foretold their coming, and that he sent for no reinforcements because they posed no threat.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs"
+    },
+    {
+      "text": "He casts a 650-damage blast in a 500 radius.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Raid records of 2026-11-04 show the Midgard epic raid wiped twice at Agmundr after Fornfrusenen.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    }
+  ],
+  "story": "Agmundr believes in seers. Most icelords keep a seer the way a jarl keeps a skald, for the look of it, and listen to her when the news is good. Agmundr listens to his always. She told him when the morvalt would come over the rim, and they came. She told him when the dwarves would send a spy, and the spy came, and Agmundr was waiting for him. She has been right about every visitor to the western watch for fifty years, and Agmundr has built his whole command on her word.\n\nSo when she looked at the runes and told him that a party of outsiders would come up the western tunnel, and that they would be no threat, he believed her. He did not send for reinforcements. He did not warn the Council. He kept the band of giants he trusts best with him, a depredator, two icespines, two of the icetouch and the seer herself, and waited for the harmless strangers to arrive.\n\nWhen you reach him he tells you so, without embarrassment: his seer told him you were coming, and since you posed no threat he did not bother to ask for help. Then the six come with him, all at once, because a band that trusts its seer fights as one. He opens the fight with a blast of cold that fills a wide circle around him and does it again whenever enough of you stand close.\n\nIt is the only mercy in him, the not asking for help, and it is not much of one. The raids that die in the glacier mostly die here, at Agmundr's watch, after Fornfrusenen, because they think the hard part is over. Agmundr's seer has been right about that too. When he falls, he cries out that she said nothing of this. When she falls, she does not seem surprised.",
+  "legend": "Agmundr is a pack pull: six hrimthursa come with him, and they all come at once. Plan the seer and the icetouch before anyone touches the icelord: crowd-control the seer, kill the icetouch first, tank the depredator and icespines away from the healers. Spread for his blast, it's a big circle. More raids die here than at the throne, the old hands say, because they arrive tired from Fornfrusenen. The Living Server's own raids wiped here twice in one night. Rest and rebuff before you pull. If you wipe here, it is almost always the icetouch reaching the healers. Put your best crowd control on them.",
+  "yells": {
+    "aggro": [
+      "My seer told me you would come. She said you were no threat.",
+      "To come this far... only to face a terrible death!",
+      "No reinforcements. You are not worth them."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Seer! You said nothing of this!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "She was never wrong before. Never!"
+      }
+    ],
+    "death": [
+      "She... did not foresee... this...",
+      "The runes... lied..."
+    ],
+    "slay": [
+      "Just as she foretold.",
+      "Harmless. Exactly as she said.",
+      "The seer sees you lying there."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A seer's bones and runes are laid out on the ice.",
+      "Six giants wait here with their icelord."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Agmundr roars for the seer who failed him!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Agmundr's seer falls silent. Her runes were wrong!"
+      }
+    ],
+    "realmFirstKill": "Icelord Agmundr is slain. His seer saw nothing."
+  },
+  "botLines": {
+    "briefing": [
+      "agmundr comes with six giants. [cc|mez] the seer, kill the icetouch first",
+      "spread for agmundr's blast, its a big circle",
+      "rest up before agmundr, we come off fornfrusenen tired",
+      "tank the depredator and icespines away from the healers"
+    ],
+    "aftermathWin": [
+      "agmundr down, and the seer with him",
+      "agmundr's band all down. that seer was wrong for once",
+      "past agmundr! [the throne is next|almost there]",
+      "agmundr's foe hammer dropped"
+    ],
+    "aftermathLoss": [
+      "wiped at agmundr again. the adds were too much",
+      "agmundr again. [every time|this guy]",
+      "the icetouch got to the healers",
+      "the blast hit everyone because we stacked"
+    ],
+    "rumour": [
+      "heard agmundr didnt even call for backup because his seer said we're harmless. [rude|fair enough]",
+      "agmundr's seer has been right for fifty years. [except about us|we'll see]",
+      "more raids die at agmundr than at kula, the old raid leaders say",
+      "agmundr didnt call for backup because his seer said we were harmless. [rude|fair]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Agmundr",
+    "text": "An icelord who trusts his seer above his own eyes. She told him you were no threat, so he sent for no help; six of his giants come with him anyway. Deal with the seer before you deal with him."
+  },
+  "bookPage": "Runes found on the ice at the western watch, read by a runemaster of Jordheim who asked not to be named. They are a seer's casting, in the giants' own marks, and they say: strangers on the western road; few; tired; no threat. Below them, cut deeper and in a different hand, the same seer has added a line after the fact: the runes do not lie, but they do not say when. The runemaster said that is the most honest thing he has ever read from a seer. He said he would not want to have been the one who had to tell Agmundr.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} proved Agmundr's seer wrong in {minutes} minutes.",
+    "loss": "Agmundr's seer was right about {realm} today: {raidLeader}'s raid fell after {minutes} minutes."
+  }
+}
