@@ -24,6 +24,11 @@
       "text": "Living Server lore: the bare ring; the crossing-alone custom; Fionn Óg of Connla's hosting of forty in the third summer of the isles and the rowan at the gorge rim; Cronwort as a younger runner.",
       "provenance": "original",
       "source": "Living Server"
+    },
+    {
+      "text": "Writhing Death (Dolph): 'The Outland residents are attacked by a writhing, swarming mass.' Speak to Fedail (or Hedierna) in the outlander town of Altan Garran in Cothrom Gorge; kill Cronwort, Fuilwort and Tachtwort; return their remains to Fedail; kill Marfoirwort, 'the source of the worts'; bring the root to Treal.",
+      "provenance": "game",
+      "source": "DataQuest 'Writhing Death' (world data)"
     }
   ],
   "story": "Marfoirwort is the oldest thing growing in Cothrom Gorge, and the gorge Sylvan who named it, in the cousin tongue of the isle, meant the killer-plant and were not being poetic. It stands at the western head of the gorge, above Gneiss's floor, in the middle of a wide ring of bare ground where nothing has grown for an age, and the ring is the first thing anyone learns about it: everything that ever grew there, it drank.\n\nIt does not need soil. The gorge folk say its roots go into the split and no further, and that it lives on what walks near it. When it strikes, it does not only wound the one it strikes; the life goes out of everything standing close around its prey in the same moment, a sickness that takes the strength out of the blood all at once, and every drop of that strength goes into Marfoirwort and closes its own wounds. The gorge folk have a custom that comes from it, and it is the oldest custom of the gorge: a Sylvan who must cross near the bare ring crosses alone, and the others wait at the edge until he is through, because one throat costs Marfoirwort a meal and five throats standing together feed it for a season.\n\nThe Domnann wardens learned what that meant in the third summer of the isles, when a hosting of Tir na Nog swords came up the gorge to burn it out. Their captain, Fionn Óg of Connla, stood his company shoulder to shoulder round the plant the way a good company stands round anything it means to kill, and Marfoirwort drank from all of them at every strike and was whole by evening. Fionn Óg brought eleven of his forty home and planted a rowan at the gorge rim for the rest. The wardens tell the story to every Hibernian captain who asks for a guide to the western gorge, and most of them still stand too close.\n\nIt is stronger than the octonoid mothers, stronger than Kontar, stronger than anything else on the open isle, and in all the generations of the gorge it has never been seen to grow. It does not need to. The gorge folk think Cronwort's patch on the eastern floor is a younger runner of the same plant, sent out to see whether the road to Domnann is as rich as the gorge, and they watch the bare ring for the day it starts to widen.",
@@ -114,6 +119,18 @@
     {
       "id": "dremcis-fuiloltair",
       "relation": "the other drinker of the gorge"
+    },
+    {
+      "id": "tachtwort",
+      "relation": "a runner (Writhing Death)"
+    },
+    {
+      "id": "fuilwort",
+      "relation": "a runner (Writhing Death)"
+    },
+    {
+      "id": "treal",
+      "relation": "who buries its root"
     }
   ]
 }

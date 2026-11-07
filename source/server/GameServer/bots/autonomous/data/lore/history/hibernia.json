@@ -30,12 +30,16 @@
         "cronwort",
         "curengkur",
         "elro-the-ancient",
+        "fuilwort",
         "gneiss",
         "ixthiar-broodmother",
         "marfoirwort",
         "mollunero",
         "monger",
         "queen-cliodna",
+        "tachtwort",
+        "treal",
+        "tudeg",
         "zytka"
       ]
     },
@@ -211,6 +215,7 @@
         "adwyth",
         "anhylaw",
         "anurigunda",
+        "aodhnait",
         "aroon-the-urlamhai",
         "balor",
         "beatha",
@@ -220,9 +225,13 @@
         "corrupt-primal-of-earth",
         "corrupt-primal-of-fire",
         "corrupt-primal-of-water",
+        "cuinn",
         "dremcis-fuiloltair",
         "drygau",
         "easmarach",
+        "elnara-erea",
+        "elnaras-pet",
+        "fedail",
         "giant-sporite-cluster",
         "gnat",
         "hurionthex",
@@ -241,8 +250,10 @@
         "queen-qunilaria",
         "sargan-the-conqueror",
         "spindler-broodmother",
+        "thuxra-the-cackler",
         "tine",
         "uaimh-lairmaster",
+        "ulicia",
         "xaga"
       ]
     },
@@ -498,13 +509,32 @@
         "cronwort",
         "curengkur",
         "dremcis-fuiloltair",
+        "fuilwort",
         "gnat",
         "gneiss",
         "ixthiar-broodmother",
         "marfoirwort",
         "mollunero",
         "monger",
+        "tachtwort",
+        "thuxra-the-cackler",
+        "tudeg",
         "zytka"
+      ]
+    },
+    {
+      "id": "outland-residents",
+      "name": "The Outlanders of Altan Garran",
+      "summary": "The people of Altan Garran in Cothrom Gorge, who live outside Domnann's law in a walled town of their own, with their garda, their bards and sorcerers, the Erea family and the treants of the garran; besieged by the writhing worts of the gorge and suspicious of every stranger, Hibernians included.",
+      "places": [],
+      "bosses": [
+        "aodhnait",
+        "cuinn",
+        "elnara-erea",
+        "elnaras-pet",
+        "fedail",
+        "treal",
+        "ulicia"
       ]
     },
     {
