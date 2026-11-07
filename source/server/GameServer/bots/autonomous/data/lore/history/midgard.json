@@ -33,6 +33,7 @@
       "places": [],
       "bosses": [
         "fornfrusenen",
+        "glacier-giant",
         "mahattava"
       ]
     },
@@ -178,7 +179,9 @@
           "source": "source/server/GameServer/bots/autonomous/data/chat/lore_shared.lines"
         }
       ],
-      "places": [],
+      "places": [
+        "odins-gate"
+      ],
       "bosses": []
     },
     {
@@ -521,8 +524,12 @@
       "id": "frontier-giants",
       "name": "The Frontier Giants",
       "summary": "The old giants who belong to no realm and stand on the frontiers; Midgard's is the Glacier Giant.",
-      "places": [],
-      "bosses": []
+      "places": [
+        "odins-gate"
+      ],
+      "bosses": [
+        "glacier-giant"
+      ]
     }
   ]
 }
