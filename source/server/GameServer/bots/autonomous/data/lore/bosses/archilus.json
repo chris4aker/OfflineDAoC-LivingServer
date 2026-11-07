@@ -24,7 +24,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawn",
+        "trigger": "health<=89",
         "text": "Archilus shakes violently, and shrouds tear loose!"
       }
     ],
@@ -41,7 +41,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawn",
+        "trigger": "health<=89",
         "text": "Archilus shakes off a flock of shrouds!"
       }
     ],

@@ -29,7 +29,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawn",
+        "trigger": "health<=94",
         "text": "Brothers of the old wood, wake!"
       }
     ],
@@ -46,7 +46,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawn",
+        "trigger": "health<=94",
         "text": "An ancient treant uproots itself beside Elro!"
       }
     ],
