@@ -6,23 +6,23 @@
   "realm": "Albion",
   "facts": [
     {
-      "text": "Level 81, 100,000 health. Sends a target to one of three fixed spots in the region and casts Essense of Souls, heavy magic damage.",
+      "text": "Level 81, 100,000 health. Casts Essense of Souls (damage over time). Its teleport of a target to one of three fixed spots is behind EpicEncounterMechanics.AllowDisplacement, which is off in Living Server.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs"
     }
   ],
-  "story": "Every prison needs a keeper whose work is to make the prisoners stop believing in the door. In Caer Sidi that was the Bane of Hope. It moves those who come near it, suddenly, to the far ends of the fortress, so that friends who were shoulder to shoulder a moment ago are halls apart, and it burns their souls while they look for each other. It is still doing its work, on anyone who will hold still for it.\n\nIts work. Every gaol needs a keeper whose work is not to hold the prisoners but to make them stop believing in the door. In Caer Sidi that was the Bane of Hope. Arawn did not make it cruel; he made it thorough. It moves those who come near it, without warning, to the far ends of the fortress, so that friends who were shoulder to shoulder a moment ago are three halls apart, and it burns their souls with a magic that ends, if the prayers do not come fast enough, in a painful death.\n\nWhy it still works. It did not turn when the gaol rose, nor did it stay loyal; it simply went on doing its work on whoever was within reach, prisoner or raider alike. The prisoners of Caer Sidi avoid its crossing, which is why the halls round it are quieter than most. Albion's raids have learned that the Bane's real danger is not the burn but the scattering: a raider cast away across the fortress who panics and runs blind pulls half of Caer Sidi back with him.",
-  "legend": "It throws people across Caer Sidi to one of three fixed spots. If it happens to you, do not panic and do not run blind: walk back slowly, call where you are, and let the raid send someone if you need it, because the halls between are full. Healers watch for its soul burn, which kills if left alone. Fight it where it stands. Keep a priest near the middle of the room so whoever comes walking back has a heal waiting. Never send the main tank to fetch a lost raider. Let them come home on their own feet, slowly, and call out every hall they pass.",
+  "story": "Every gaol needs a keeper whose work is not to hold the prisoners but to make them stop believing in the door. In Caer Sidi that was the Bane of Hope. Arawn did not make it cruel; he made it thorough. In the old days of the gaol it moved those who came near it, without warning, to the far ends of the fortress, so that men who had planned an escape together woke three halls apart and alone, and while they searched for each other it burned their souls.\n\nIt did not turn when the gaol rose, nor did it stay loyal. It went on with its work on prisoner and rebel alike, and in the first seasons after the rising it did the same to Albion. It scattered Dame Nest's company through four tiers of the dead, and it moved Brother Cadoc three halls away from Dame Ysolde's side in the dark.\n\nThen Ysolde's company broke it, and when it stood again at its post, it had forgotten how to move a man. The Inconnu say the part of it that cast people away was the part that believed they would come back, and that it died the first time someone did. Since that day the Bane of Hope has only burned. Its fire is a sickness of the soul that does its work slowly, and kills unless the prayers come quickly and keep coming. The prisoners still avoid its crossing, from habit, and the halls round it are quieter than most. Brother Cadoc wrote four words across the top of the page that tells of it: there is a door.",
+  "legend": "In the first seasons it threw people across Caer Sidi to one of three spots, and every old guide is full of advice about walking back slowly. Forget that here: it does not port anyone any more. What is left is Essense of Souls, a heavy magic burn that ticks on whoever it picks and kills if nobody heals through it. Healers watch the burn and do not let it run; the rest of the raid stands and fights it where it is. It is a plain fight now, and the danger is a lazy healer, not a lost raider. Old Albion raids still keep a priest in the middle of the room out of habit, and nobody minds, because that is where the burn gets healed anyway. The prisoners avoid its crossing, so the halls round it are quiet: a good place to rest before the climb to Fate's Chosen. Keep a priest near the middle of the room so whoever comes walking back has a heal waiting. Never send the main tank to fetch a lost raider. Let them come home on their own feet, slowly, and call out every hall they pass.",
   "yells": {
     "aggro": [
       "There is no door. There was never a door.",
-      "Hope is a long way off. Let me show you.",
-      "Look behind you. They are gone."
+      "Hope is a long way off.",
+      "Burn, and be alone."
     ],
     "phases": [
       {
         "trigger": "health<=75",
-        "text": "Look for your friends. They are far away now."
+        "text": "Feel your hope go. It burns as it leaves."
       }
     ],
     "death": [
@@ -43,45 +43,45 @@
     "phases": [
       {
         "trigger": "health<=75",
-        "text": "The Bane of Hope casts the raid apart!"
+        "text": "The Bane of Hope burns at the souls of the living!"
       }
     ],
     "realmFirstKill": "The Bane of Hope has fallen. There is a door after all."
   },
   "botLines": {
     "briefing": [
-      "bane of hope ports people across the dungeon. walk back careful, dont pull stuff on the way",
-      "healers watch the soul burn",
-      "call where you landed in raid chat",
-      "fight it where it stands"
+      "bane of hope: no ports here any more, just the soul burn",
+      "healers on the soul burn, it kills if you let it tick",
+      "fight it where it stands",
+      "rest up after, the halls round it are quiet"
     ],
     "aftermathWin": [
       "bane of hope down. we have hope now. lol",
-      "everyone made it back from the ports",
-      "nobody pulled anything on the walk back, impressive",
-      "the crossing is ours"
+      "nobody died to the burn, nice healing",
+      "the crossing is ours",
+      "easy one once you heal the burn"
     ],
     "aftermathLoss": [
-      "three people ported and pulled half of caer sidi back with them",
       "nobody healed the soul burn",
-      "someone ran blind and trained the crypt lord",
-      "we lost a healer to every port"
+      "two people died to the burn while the healers stared at the tank",
+      "we spread the healers too thin and the burn ticked out",
+      "someone pulled the crypt lord's lot on the way in"
     ],
     "rumour": [
-      "heard the bane of hope in caer sidi throws you to the other end of the place",
+      "heard the bane of hope used to throw people to the other end of caer sidi",
       "[someone said|heard] its job was to make prisoners stop believing in the door",
       "heard even the prisoners avoid the bane's crossing",
-      "dont run if the bane ports you, [walk|walk back slow]"
+      "[heard|word is] it forgot how to port people after the first time someone came back"
     ]
   },
   "loremasterTopic": {
     "keyword": "bane of hope",
-    "text": "The keeper whose work was to make prisoners stop believing in the door. It casts those near it to the far ends of the fortress and burns their souls while they search. Walk back with care."
+    "text": "The keeper whose work was to make prisoners stop believing in the door. In the gaol's old days it cast those near it to the far ends of the fortress; since Dame Ysolde's company broke it, it only burns their souls. See [caer sidi]."
   },
   "bookPage": "The Bane of Hope did not seem to fight us so much as rearrange us. One moment Brother Cadoc was at my shoulder; the next he was gone, and I heard later that he had stood up three halls away in the dark with the dead turning to look at him, and had walked back to us slowly, praying aloud the whole way, and had woken nothing. Others were less calm. Dame Ysolde said afterwards that its burning was the lesser cruelty. The greater is that it makes you believe you are alone. We were not. That is how we won.",
   "chronicle": {
-    "win": "{realm}'s raid under {raidLeader} found each other again and ended the Bane of Hope in {minutes} minutes.",
-    "loss": "The Bane of Hope scattered {realm}'s raid through Caer Sidi; {raidLeader} could not gather it."
+    "win": "{realm}'s raid under {raidLeader} kept the prayers coming and ended the Bane of Hope in {minutes} minutes.",
+    "loss": "The Bane of Hope burned through {realm}'s raid in Caer Sidi; {raidLeader} could not keep the prayers coming."
   },
   "era": "alb-the-shrouded-isles",
   "factions": [
