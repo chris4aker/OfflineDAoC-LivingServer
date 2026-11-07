@@ -74,10 +74,12 @@
         "hurjavelen",
         "iarnvidiur",
         "lydsyg",
+        "nedat-gungledar",
         "nosdoden",
         "rotodjur",
         "skoll",
-        "stanga"
+        "stanga",
+        "uppat-gungledar"
       ]
     },
     {
@@ -251,6 +253,8 @@
         "tuscaran-glacier"
       ],
       "bosses": [
+        "alchemist-phorzbreg",
+        "apologet-nesnuir",
         "basilius",
         "boligar",
         "chief-tarek",
@@ -268,6 +272,7 @@
         "elder-icelord-suttung",
         "fostra-orm",
         "goretooth",
+        "grindvaktare",
         "hurika",
         "icelord-agmundr",
         "icelord-hakr",
@@ -276,13 +281,22 @@
         "icelord-steinvor",
         "issorden",
         "jailer-vifil",
+        "jarala-den-kvinnlig",
         "king-tuscar",
         "koli",
+        "magister-kurgol",
         "masher",
+        "master-smed",
+        "olen-den-bartender",
+        "overste-callejo",
         "queen-kula",
+        "sallours",
         "shredclaw",
+        "snemel-den-forsumlig",
+        "storrow",
         "torst",
         "trollkarl-bonchar",
+        "troloss",
         "unok",
         "valmak",
         "vasrem"
@@ -346,8 +360,10 @@
       ],
       "bosses": [
         "jailer-vifil",
+        "nedat-gungledar",
         "nosdoden",
-        "rotodjur"
+        "rotodjur",
+        "uppat-gungledar"
       ]
     },
     {
@@ -370,9 +386,21 @@
         "trollheim"
       ],
       "bosses": [
+        "alchemist-phorzbreg",
+        "apologet-nesnuir",
         "basilius",
         "dagar",
-        "fostra-orm"
+        "fostra-orm",
+        "grindvaktare",
+        "jarala-den-kvinnlig",
+        "magister-kurgol",
+        "master-smed",
+        "olen-den-bartender",
+        "overste-callejo",
+        "sallours",
+        "snemel-den-forsumlig",
+        "storrow",
+        "troloss"
       ]
     },
     {
