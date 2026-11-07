@@ -1,0 +1,241 @@
+{
+  "id": "albion-housing",
+  "name": "Albion Housing",
+  "realm": "Albion",
+  "regions": [
+    2
+  ],
+  "zones": [
+    13,
+    16,
+    17,
+    18,
+    20,
+    64,
+    260,
+    261,
+    262
+  ],
+  "aliases": [
+    "housing",
+    "the grant",
+    "the villages",
+    "caerwent housing"
+  ],
+  "summary": "The king's grant beyond Camelot Hills: nine villages, Caerwent, Rilan, Old Sarum, Dalton, Brisworthy, Aylesbury, Chiltern, Stoneleigh and Sherborne, where the realm's soldiers keep their homes.",
+  "facts": [
+    {
+      "text": "Albion's housing is region 2: nine zones, Caerwent (13), Old Sarum (16), Rilan (17), Dalton (18), Brisworthy (20), Aylesbury (64), Chiltern (260), Sherborne (261) and Stoneleigh (262), laid out three by three. It has no monsters.",
+      "provenance": "game",
+      "source": "world data: Zones/ZonePoint/Mob tables, region 2 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The way in is the zone point 'Housing Alb Entrance' in Camelot Hills (554,895 / 523,579), which arrives in Caerwent (585,030 / 561,505); 'Housing Alb Exit' returns to Camelot Hills.",
+      "provenance": "game",
+      "source": "world data: Zones/ZonePoint/Mob tables, region 2 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Every village has eight vault bankers, merchants, an Albion Decorator, a Market Explorer, hasteners (all named Piper), stable masters, two apprentice taxidermists, the masters of the six crafts and a named 'Master'; Caerwent adds two consignment bankers, more hasteners and market explorers, and Master Visur the teleporter.",
+      "provenance": "game",
+      "source": "world data: Zones/ZonePoint/Mob tables, region 2 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Families across villages: a Morgaudos merchant, a Ripley and a Dinailaine in every village; the armourers Shayl Mercer (Stoneleigh) and Sawyl Mercher (Old Sarum), the alchemists Kyle and Keith Powell and the tailors Bront and Garan Vanora in the same two villages.",
+      "provenance": "game",
+      "source": "world data: Zones/ZonePoint/Mob tables, region 2 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The village names are English and Welsh places: Caerwent the Roman Venta Silurum in Gwent; Old Sarum the hill-fort town above Salisbury; Dalton 'the farm in the dale'; Brisworthy a Dartmoor hamlet; Aylesbury the Buckinghamshire market town; the Chiltern Hills; Stoneleigh 'stony clearing'; Sherborne 'clear stream' (to verify). Not game canon.",
+      "provenance": "myth",
+      "source": "to verify"
+    },
+    {
+      "text": "Autonomous gamebots never plan a trip into housing: their merchant and service search skips housing regions, and their town-teleporter plans never pick a housing destination.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousWorldBotController.cs; AutonomousTownTeleporters.cs"
+    },
+    {
+      "text": "The king's grant, Hild of Caerwent and her rolls, the drawing of lots, the Pipers' name and the families' arrival are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The king's grant. The war of the realms had gone on long enough that the men and women who fought it for Albion began to ask the Constable at Camelot not for pay but for a place: somewhere to come home to that was not a barracks or an inn in the city. The Constable, who keeps a drawer for everything, opened a new one. Beyond Camelot Hills, through a gate a little south of the city's own, lay land that had been the crown's since Uther and had never been settled, and by the king's order it was granted, lot by lot, to those who had served. A grant-reeve, Hild of Caerwent, was sent to keep the rolls.\n\nHow the villages grew. Nine villages grew in the grant, in three rows of three, and each was named by its first settlers for the town they had left. The easternmost, where the road from the Hills arrives, was named Caerwent by folk of the old Roman town on the Severn, and it is still the busiest. Rilan lies north of it and Old Sarum south, named for the hill-fort above the Plains; Dalton sits in the middle where every road crosses; Brisworthy was built by Dartmoor folk who left the moor the year the stone mother woke; Aylesbury brought its own market from the vale; Chiltern, Stoneleigh and Sherborne keep the far west. Sherborne was settled last, and its lots went by the king's order to the widows and children of the realm's dead. Rilan's settlers would never say where their name came from, only that it was a place that was no longer there.\n\nWhat lives there now. Nothing that wants to kill anyone, which is the point of it. No beast, no dead thing, no drakoran or goblin has ever been seen inside the gate, and the Church of Camelot says the land was blessed when it was granted; the old soldiers say the land was simply too dull to haunt. Every village keeps the same market, as the grant required: bankers to hold the settlers' goods in their vaults, eight to a village; merchants and a decorator; the masters of the six crafts; stable masters; the hasteners, who are all called Piper, for reasons every Piper explains differently; a market explorer to say who sells what in which village; and a master who keeps the village's peace. Certain families settled in every village at once and run its trade: there is a Morgaudos merchant in each, and a Ripley, and a Dinailaine, and the grant-reeve's rolls say they came in by the same gate on the same day and drew their lots together. Two families keep their crafts in two villages each and argue across the grant: the armourer Mercer of Stoneleigh and the armourer Mercher of Old Sarum spell the name differently and will not discuss it, and the Powells and the Vanoras keep their alchemy and their tailoring the same way, cousin against cousin.\n\nWhy it matters to Albion. The villages are where the realm keeps what it has won: its coin, its arms, its trophies and its comfort. A company back from Caer Sidi or the Barrows comes home to the grant before it goes to Camelot, and the Pipers at Caerwent's gate have heard every story the realm has, first. The Constable's drawer for the grant is the fullest at Camelot. Hild the grant-reeve wrote in her last roll that a realm that gives its soldiers a home has given them something to lose, and that she was not sure whether the king had meant that as a gift or as a warning.",
+  "legend": "Housing is through the gate in Camelot Hills; you arrive in Caerwent, the east-middle village, and the other eight are laid out three by three west of it: Rilan north-east, Old Sarum south-east, Brisworthy, Dalton and Aylesbury down the middle, Stoneleigh, Chiltern and Sherborne in the west. Caerwent has the consignment bankers, the most market explorers and hasteners, and Master Visur the teleporter. Every village has eight vault bankers, the six crafting masters, merchants, an Albion Decorator, a Market Explorer, stable masters and Pipers (the hasteners) at the gate. No monsters at all, so it is the safest place in the realm to stand around. The Mercer and Mercher armourers spell their name differently; do not ask. Autonomous gamebots never go there (they skip housing for shopping and teleports); a companion bot only comes in if it is following you.",
+  "atmosphere": {
+    "firstEntry": [
+      "The king's grant. Nothing here wants to kill you.",
+      "Hearth-smoke and market noise. Home.",
+      "Nine villages, three by three. Lots drawn, not chosen.",
+      "A Piper at the gate is already in a hurry."
+    ],
+    "areas": [
+      {
+        "name": "Caerwent",
+        "x": 560826,
+        "y": 559970,
+        "z": 3600,
+        "radius": 4000,
+        "lines": [
+          "Caerwent, first of the nine. The Hills road ends here.",
+          "Pipers by the score at the gate. Everyone is in a hurry."
+        ]
+      },
+      {
+        "name": "Rilan",
+        "x": 558710,
+        "y": 493219,
+        "z": 3600,
+        "radius": 4000,
+        "lines": [
+          "Rilan, the northern village of the east. Quiet roofs.",
+          "A Ripley at the well, a Dinailaine at the gate."
+        ]
+      },
+      {
+        "name": "Old Sarum",
+        "x": 558657,
+        "y": 618260,
+        "z": 3600,
+        "radius": 4000,
+        "lines": [
+          "Old Sarum, the south-eastern village. A hill-fort's name.",
+          "Mercher, Powell, Vanora: crafts with family names."
+        ]
+      },
+      {
+        "name": "Dalton",
+        "x": 490051,
+        "y": 558007,
+        "z": 3600,
+        "radius": 4000,
+        "lines": [
+          "Dalton, the middle village. Every road crosses here.",
+          "Six hasteners and nobody in a hurry."
+        ]
+      },
+      {
+        "name": "Brisworthy",
+        "x": 491683,
+        "y": 490403,
+        "z": 3600,
+        "radius": 4000,
+        "lines": [
+          "Brisworthy, the northern village. Moor-folk built here.",
+          "Horses in every yard. Someone always just leaving."
+        ]
+      },
+      {
+        "name": "Aylesbury",
+        "x": 493711,
+        "y": 620814,
+        "z": 3600,
+        "radius": 4000,
+        "lines": [
+          "Aylesbury, the southern village. Hasteners at every corner.",
+          "The busiest stable yards south of Caerwent."
+        ]
+      },
+      {
+        "name": "Chiltern",
+        "x": 426768,
+        "y": 555516,
+        "z": 3600,
+        "radius": 4000,
+        "lines": [
+          "Chiltern, the western village. Hill-folk's roofs.",
+          "The far edge of the grant. The quietest market."
+        ]
+      },
+      {
+        "name": "Stoneleigh",
+        "x": 428211,
+        "y": 493190,
+        "z": 3600,
+        "radius": 4000,
+        "lines": [
+          "Stoneleigh, the north-western village. A stony clearing.",
+          "Mercer, Powell, Vanora: the other half of three families."
+        ]
+      },
+      {
+        "name": "Sherborne",
+        "x": 428461,
+        "y": 620445,
+        "z": 3600,
+        "radius": 4000,
+        "lines": [
+          "Sherborne, the south-western village. A clear stream.",
+          "The last village of the nine, and the last settled."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "housing is the kings grant past the camelot hills gate. lots drawn not chosen",
+      "caerwent in housing is named for the old roman town on the severn",
+      "every hastener in housing is called piper. fifty five of them",
+      "nine housing villages, three by three, caerwent first",
+      "brisworthy was built by dartmoor folk who left when golestandt woke",
+      "sherborne's lots went to the widows and kids of the dead",
+      "theres a morgaudos merchant in every housing village",
+      "nobody knows where rilan's name comes from. a place that isnt there anymore",
+      "mercer in stoneleigh and mercher in old sarum, same family, wont say which spelling is right",
+      "old sarum in housing is named after the old hill fort above salisbury",
+      "dalton is where all the housing roads cross",
+      "nothing hostile in housing at all. safest ground in albion"
+    ],
+    "rumour": [
+      "[heard|someone said] the pipers all give a different reason for the name",
+      "heard the ripleys and dinailaines got a lot in every village on the same day",
+      "[heard|someone said] the grant-reeve's last roll asks if housing was a gift or a warning",
+      "heard the church says housing was blessed. the old soldiers say its just too dull to haunt",
+      "[heard|someone said] the morgaudos had papers from the constable himself",
+      "heard the powells and the vanoras argue across the whole grant",
+      "[heard|someone said] chiltern folk like being the quietest village",
+      "heard caerwent on the severn is still cross about the name"
+    ],
+    "tell": [
+      "how do i get to housing? the gate in camelot hills, you come out in caerwent",
+      "where are the consignment merchants? caerwent, first housing village",
+      "which housing village has the teleporter? caerwent, master visur",
+      "is housing safe? totally, no monsters anywhere",
+      "where's stoneleigh? far north west of housing. sherborne is far south west",
+      "what's in every housing village? bankers, crafting masters, decorator, market explorer, pipers"
+    ]
+  },
+  "loremaster": {
+    "intro": "Beyond Camelot Hills lies [the grant], the king's gift of land to those who served, where [hild] kept the rolls. Nine villages grew there: [caerwent], [rilan], [old sarum], [dalton], [brisworthy], [aylesbury], [chiltern], [stoneleigh] and [sherborne]. Ask too of the [pipers] or the [families].",
+    "topics": {
+      "caerwent": "The first of the nine villages and the busiest, in the east, where the road from Camelot Hills arrives. The grant-reeve kept her office here. It has the consignment bankers, the most hasteners and market explorers, and Master Visur, who can send a traveller home. Its first settlers came from Caerwent on the Severn, the old Roman Venta, and named it for home; the Severn Caerwent's people say it has stolen their name and their trade together. See [the grant].",
+      "rilan": "The north-eastern village, settled second, by families who wanted to be near Caerwent's market and not in it. The grant rolls give no town of the realm called Rilan, and Hild the grant-reeve wrote that the settlers would not say where the name came from, only that it was the name of a place that was no longer there. Master Gerrard keeps it.",
+      "old sarum": "The south-eastern village, named for the old hill-fort above Salisbury Plains where the Romans and the Britons before them kept a town on a ring of earth. Its settlers were drovers and smiths of the Plains, and its crafts' masters are families: Sawyl Mercher the armourer, Keith Powell the alchemist and Garan Vanora the tailor, whose cousins keep the same trades in [stoneleigh]. Master Cormanth keeps it.",
+      "dalton": "The middle village, where the roads between the other eight cross. Dalton means the farm in the dale, and the grant gave it to the realm's farmers who had fought and wanted to farm again; it has more hasteners than it needs and no one in a hurry. Master Seglen keeps it.",
+      "brisworthy": "The northern village, named by moor-folk of Dartmoor's edge after a hamlet of their own on the moor, which they left the year the stone mother woke. They built it with walls of moor-stone and keep the most horses of any village. Master Caladar keeps it.",
+      "aylesbury": "The southern village, settled by the people of the vale below the Chiltern hills, who named it for their market town and brought their market with them; it has the most hasteners outside Caerwent and the busiest stables. Master Caroy keeps it.",
+      "chiltern": "The western village, named for the chalk hills of the realm's heartland by those who came from them. It is the far edge of the grant and the quietest of the nine, and its people say they like it that way. Master Aglorlin keeps it.",
+      "stoneleigh": "The north-western village, whose name means the stony clearing, and the ground bears it out. Its crafts' masters are the other half of the three families of [old sarum]: Shayl Mercer the armourer, Kyle Powell the alchemist and Bront Vanora the tailor. The two armourers spell the family name differently and will not discuss it. Master Carrobeth keeps it.",
+      "sherborne": "The south-western village, last of the nine to be settled, named for the clear stream that runs past it, as the old abbey town of the south was. Its first families were the widows and children of the realm's dead, who were given the grant's last lots by the king's order. Master Aronvan keeps it.",
+      "the grant": "The king's grant of crown land beyond Camelot Hills to those who served in the war of the realms, lot by lot, kept on rolls by [hild] the grant-reeve. Nine villages grew on it: [caerwent], [rilan], [old sarum], [dalton], [brisworthy], [aylesbury], [chiltern], [stoneleigh] and [sherborne].",
+      "hild": "Hild of Caerwent, the grant-reeve the Constable sent to keep the rolls of the king's grant. She drew the villages' lots and wrote their names down as the settlers gave them, and her last roll asks whether a home given to soldiers is a gift or a warning.",
+      "pipers": "Every hastener in the nine villages is called Piper, fifty-five of them. Each Piper says it is a family name, or a title, or a joke of the first grant-reeve's, and no two Pipers tell it the same way.",
+      "families": "The Morgaudos merchants, the Ripleys and the Dinailaines settled every village at once, drawing their lots together on one day. The Mercers and Merchers, the Powells and the Vanoras each keep a craft in both [old sarum] and [stoneleigh] and argue across the grant."
+    }
+  },
+  "book": {
+    "title": "The Rolls of the King's Grant",
+    "pages": [
+      "The Rolls of the King's Grant, kept by Hild of Caerwent, grant-reeve, for the Constable at Camelot. First roll. By the king's order the crown land beyond the Hills is opened to those who have served, a lot to each, the lots to be drawn and not chosen, so that no captain sits next to his own men unless the lots say so. Today forty-one came in at the gate and drew. Most were from the Severn and named the first village for the town they left, Caerwent, which is mine too. I did not argue.",
+      "Second roll. The north-eastern lots are drawn by families who will not say where they come from. They give the name Rilan. There is no Rilan on any roll of the realm I can find. When I asked, an old woman among them said it was a place that was no longer there, and that they would rather have its name here than have no Rilan anywhere. I have written it down. The Constable will want to know where Rilan was. I will tell him I did not ask twice. Their houses went up faster than any in the grant, as if they had built them before, somewhere else, many times.",
+      "Third roll. Three families came in at the gate together this morning, a Morgaudos, a Ripley and a Dinailaine, with papers from the Constable's own hand, and asked to draw a lot in every village at once. The papers allowed it. I do not know what they are to the Constable and the papers did not say. By evening there was a Morgaudos shop in Caerwent with goods in it. I do not know where the goods came from either. The Ripley and the Dinailaine said nothing at all, and paid for their lots in coin of Uther's day, newly struck.",
+      "Of the Pipers. Every hastener who came to the grant gave the name Piper, and I wrote it fifty-five times before I stopped asking. The first said it was his family's name. The second said it was a title, like reeve. The third said it was a joke of mine, which it was not, and the fourth that the king had ordered it so that the settlers would always know who to ask the way. I have decided to believe the fourth. It is the only one that would explain why they are all in such a hurry.",
+      "Last roll. Sherborne's lots are drawn, the last of the grant, and by the king's order they go to the widows and children of those who did not come home. They named it for the clear stream. The armourers Mercer and Mercher are still not speaking. The villages keep their markets and their peace. Nothing has come in at the gate that should not, and I think nothing will. A realm that gives its soldiers a home has given them something to lose. I do not know whether the king meant that as a gift or a warning. I have closed the roll."
+    ]
+  },
+  "bosses": [],
+  "era": "alb-the-present",
+  "factions": [
+    "realm-of-camelot"
+  ]
+}
