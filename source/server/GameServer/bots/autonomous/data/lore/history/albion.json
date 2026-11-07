@@ -42,7 +42,9 @@
         "legendary-afanc",
         "cailleach-uragaig",
         "scurceol-hyrde",
-        "marsh-lord"
+        "marsh-lord",
+        "kalnraw",
+        "tusker"
       ]
     },
     {
@@ -71,7 +73,8 @@
         "tomb-of-mithra",
         "catacombs-of-cardova",
         "lyonesse",
-        "albion-shrouded-isles"
+        "albion-shrouded-isles",
+        "cornwall"
       ],
       "bosses": [
         "cailleach-uragaig",
@@ -411,7 +414,8 @@
         "black-mountains-south",
         "campacorentin-forest",
         "avalon-marsh",
-        "black-mountains-north"
+        "black-mountains-north",
+        "cornwall"
       ],
       "bosses": [
         "golestandt",
@@ -424,7 +428,9 @@
         "fester",
         "cailleach-uragaig",
         "green-knight",
-        "marsh-lord"
+        "marsh-lord",
+        "kalnraw",
+        "tusker"
       ]
     },
     {
@@ -442,7 +448,8 @@
       "summary": "The Roman dead who never stood down: Mithras' soldiers keeping their oaths, the legion of Cardova and its emperor, the magistrate Sanguis.",
       "places": [
         "tomb-of-mithra",
-        "catacombs-of-cardova"
+        "catacombs-of-cardova",
+        "cornwall"
       ],
       "bosses": [
         "lord-sanguis",
