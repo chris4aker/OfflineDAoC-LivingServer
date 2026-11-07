@@ -160,6 +160,16 @@
           "text": "Living Server: Jarl Ormarr's miners broke into the Summoner's Hall and their spiritmaster Aros bound them to the mine.",
           "provenance": "original",
           "source": "Living Server writing"
+        },
+        {
+          "text": "Jordheim grew from a village of heroes over the caves Relder Autansonn found; its founder lies there in his rebuilt longboat.",
+          "provenance": "mythic",
+          "source": "https://www.camelotherald.com/node/462"
+        },
+        {
+          "text": "Living Server: the houses of the gods were given two temple halls in Jordheim, a street apart, by an old peace over Loki's house.",
+          "provenance": "original",
+          "source": "Living Server writing"
         }
       ],
       "places": [
@@ -348,7 +358,9 @@
           "source": "docs/RAID-SIZES.md"
         }
       ],
-      "places": [],
+      "places": [
+        "jordheim"
+      ],
       "bosses": [
         "mokkurvalve"
       ]
@@ -827,6 +839,15 @@
         "vorkald",
         "weaponmaster-zargin"
       ]
+    },
+    {
+      "id": "houses-of-midgard",
+      "name": "The Houses of the Gods",
+      "summary": "Midgard's callings as houses of its gods, with their gothi and gythjur in Jordheim's two temple halls (the Aesir's: Odin, Thor, Tyr, Modi, Bragi, Eir; the eastern: Hel, Ymir, Loki, Skadi), Kelgor's and Bodgar's houses that came with the Valkyn, the trainers who teach their young, and the jarls of the high hall who keep the realm's names and vault.",
+      "places": [
+        "jordheim"
+      ],
+      "bosses": []
     },
     {
       "id": "deep-ones",
