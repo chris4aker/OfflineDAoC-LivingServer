@@ -27,7 +27,7 @@
     }
   ],
   "story": "Roesia is the hall's keeper of pain. She wraps herself in a shield that burns whoever strikes her and spreads a slow agony across her chamber, and when she is hurt at last she knits herself back together with a patience her fellow summoners lack. She keeps the bargains the others make, the hall's sidhe say; she is the one who makes sure the price hurts. Her name is a Camelot name, and the hall's sidhe say she curses Albion raiders in their own tongue, as if she remembers it.",
-  "legend": "Energy resists up for Roesia's pain, and melee watch their health against her damage shield. At 25% she heals over time: save your burst for then and push through it. A small group can take her slowly; a raid takes her fast.",
+  "legend": "Spirit resists up for Roesia's pain (the old guides said energy; the hall says spirit), and melee watch their health against her heat damage shield. At 25% she heals over time: save your burst for then and push through it. A small group can take her slowly; a raid takes her fast.",
   "yells": {
     "aggro": [
       "Every bargain has a price. I am the price."
@@ -59,7 +59,7 @@
   },
   "botLines": {
     "briefing": [
-      "roesia: energy resists, melee watch the damage shield. burst at 25% when she starts healing"
+      "roesia: spirit resists, her pain is spirit. melee watch the damage shield. burst at 25% when she starts healing"
     ],
     "aftermathWin": [
       "roesia down, nice burst at the end"

@@ -140,7 +140,8 @@
         }
       ],
       "places": [
-        "dodens-gruva"
+        "dodens-gruva",
+        "summoners-hall"
       ],
       "bosses": [
         "aros-the-spiritmaster",
@@ -442,7 +443,8 @@
       "name": "The Summoners",
       "summary": "The Grand Summoner Govannon and his three summoners, who call the dead of every realm in the hall under the three frontiers (shared with Albion and Hibernia).",
       "places": [
-        "dodens-gruva"
+        "dodens-gruva",
+        "summoners-hall"
       ],
       "bosses": [
         "grand-summoner-govannon"
@@ -453,7 +455,8 @@
       "name": "The Lords of the Undead",
       "summary": "The faction of the Summoner's Hall's dead, the answerers of the calling (Allakhazam: the hall's mobs are on Lords of the Undead).",
       "places": [
-        "dodens-gruva"
+        "dodens-gruva",
+        "summoners-hall"
       ],
       "bosses": [
         "grand-summoner-govannon"
@@ -463,7 +466,9 @@
       "id": "sidhe-of-the-hall",
       "name": "The Sidhe of the Hall",
       "summary": "Sidhe magickers, protectors and a high lord who serve the summoners as if they had forgotten whose they are (shared).",
-      "places": [],
+      "places": [
+        "summoners-hall"
+      ],
       "bosses": [
         "grand-summoner-govannon"
       ]
