@@ -24,8 +24,17 @@
         "spraggon-den"
       ],
       "bosses": [
+        "archilus",
         "badb",
-        "queen-cliodna"
+        "balere",
+        "cronwort",
+        "curengkur",
+        "elro-the-ancient",
+        "gneiss",
+        "marfoirwort",
+        "mollunero",
+        "queen-cliodna",
+        "zytka"
       ]
     },
     {
@@ -190,6 +199,7 @@
       "places": [
         "fomor",
         "galladoria",
+        "hy-brasil",
         "koalinth-caverns",
         "tur-suil"
       ],
@@ -199,15 +209,18 @@
         "aroon-the-urlamhai",
         "balor",
         "beatha",
+        "beomarbhan",
         "conservator",
         "corrupt-primal-of-air",
         "corrupt-primal-of-earth",
         "corrupt-primal-of-fire",
         "corrupt-primal-of-water",
+        "dremcis-fuiloltair",
         "easmarach",
         "giant-sporite-cluster",
         "hurionthex",
         "kierac-the-destroyer",
+        "kontar-the-corrupt",
         "krackenschtein",
         "master-of-pain",
         "myrddraxis",
@@ -289,6 +302,7 @@
         "easmarach",
         "giant-sporite-cluster",
         "hurionthex",
+        "kontar-the-corrupt",
         "olcasar-geomancer",
         "olcasgean",
         "organic-energy-mechanism",
@@ -310,6 +324,9 @@
       ],
       "bosses": [
         "abomos-the-soultrapper",
+        "dremcis-fuiloltair",
+        "elro-the-ancient",
+        "kontar-the-corrupt",
         "xaga"
       ]
     },
@@ -450,6 +467,26 @@
         "coruscating-mine"
       ],
       "bosses": []
+    },
+    {
+      "id": "old-troubles",
+      "name": "The Old Troubles of the Isle",
+      "summary": "What was dangerous on Hy Brasil before the Fomorians came: the octonoid mothers of the World's End shore, the walking shrouds of the edge, the rot-flowers, walking stone and killer-plant of Cothrom Gorge, and the hunter of the mantids in Allta Fearann. The Sylvan guides of Domnann name them to every Hibernian company.",
+      "places": [
+        "hy-brasil"
+      ],
+      "bosses": [
+        "archilus",
+        "balere",
+        "beomarbhan",
+        "cronwort",
+        "curengkur",
+        "dremcis-fuiloltair",
+        "gneiss",
+        "marfoirwort",
+        "mollunero",
+        "zytka"
+      ]
     },
     {
       "id": "wild-tribes",
