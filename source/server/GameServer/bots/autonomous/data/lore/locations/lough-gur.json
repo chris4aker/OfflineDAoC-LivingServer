@@ -59,6 +59,11 @@
       "text": "Tier C named spawns of Lough Gur: Luchtigern (32, a rat body, DOL.GS.DaySpawn: shown only by day), Trefor (29, gurite; Occupation of Lough Gur; aggressive though the quest speaks to him), Brannigan (28, leprechaun; respawn 600 s).",
       "provenance": "game",
       "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "The Horn Twin (Harmony50.cs): Revelin, a peaceful level-20 NPC the script creates at 343,442/706,235 in region 200 if none exists, sends Blademasters, Druids, Valewalkers, Animists and Mentalists to 'Seek out Cailean in Cursed Forest and kill it'; the horn is given to Revelin for the epic armour.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Hibernia/epic/Harmony50.cs (integration/1.2)"
     }
   ],
   "story": "Lough Gur is ringed with doors. The hills around the lake are hollow, the people of Innis Carthaig say, and the doors into them are everywhere, in the faces of rocks and under old trees and at the bottoms of pools, and most of them have been shut since the Veil came down. On summer nights there is music under the water, trumpets and harps, the court of the lake keeping its feasts, and every grandmother of the realm says the same thing about it: if the trumpets sound after dark, go home.\n\nTwo women of the lake have been shut out. The Melancholic Fairy Queen sits by a door in the hills of the south-west that will not open for her; she was shut out of her own kingdom on the night the courts quarrelled in the Cursed Forest, the Ardee folk say, and she comes to the door every night with her guard behind her, to a fanfare from no instrument anyone can find, and weeps by the water until morning. The melancholic fairies of her court weep with her in the hills, and the militant ones stand over them. Lhia was of the court under the water until Piaras of Howth broke the condition she set him, a year and a day and never by daylight, and the court shut its door on her. She walks the shore looking for him, and takes everyone for him at first.\n\nThere are worse things on the lake roads. The dullahans ride the middle shore, headless, and the old people of Innis Carthaig say that a dullahan stopping at a house means a death in it before the month is out. The far liath comes off the western hills as fog and leads walkers into the water. The scanradh, whose name is only the word for fright, wait in the high ground of the south-west. And the gurite, the siabra of the lake country, hold camps all round the shore, waylayers and footpads and ambushers who rob the lake roads and lookouts who watch them.\n\nThe lake has a lord of the mice. Luchtigern keeps a hall in the west of the lake country among the irewoods, and the luch, the great mice of Lough Gur, large and greater, are his, and the luch catchers and hunters who track them are trying to get to him. The bards of Innis Carthaig sing an old satire in which a poet mocked the king of cats and the mice laughed, and say Luchtigern is the mouse who laughed loudest. The rats are another matter. Rats came into Innis Carthaig and stole the staff the smith Glennard made for the chieftess, and carried it to their den on the hillside, and the town has been paying pipers ever since.\n\nInnis Carthaig is the lake's chief town, on its eastern shore, where Chieftess Niamh keeps her hall and Sholto and Kern the enchanter keep the lake's errands, and the realm's companies stop on their way to Shannon or the bog. Culraid stands in the north-west, smaller and older, under Chief Bran Llyr, whose townsfolk have gone missing into the lake country and who sends the realm after them. In the west the irewoods grow thick, and beyond them is the entrance to Treibh Caillte, where King Vian's lost tribe keep their halls. Old Donnchadh keeps a camp in the east hills with a nightshade commander, and knows about the beast the Last Heir hunts.\n\nWhy does it matter? Because Lough Gur is where the realm keeps its manners with the Otherworld. The druids of Lough Gur, the oldest in the realm, were taught at this lake, Brónach among them; they say that every door around it is a promise one side or the other made and has not kept, and that the lake is the nearest the realm comes to the courts' own country. The trumpets sound most nights. The realm goes home.",
@@ -193,7 +198,8 @@
         "radius": 1000,
         "lines": [
           "An old soldier and a nightshade commander.",
-          "He knows about the beast."
+          "He knows about the beast.",
+          "Revelin waits by the camp fire for the green paths."
         ]
       },
       {
@@ -247,7 +253,8 @@
       "old donnchadh in the east hills says the beast is moving",
       "[heard|someone said] luchtigern only holds court by day. at night his hall is empty",
       "[heard|someone said] trefor the gurite thinks the gurite are digging for treasure under the lake",
-      "[heard|someone said] brannigan says he got out of the court under the water when the doors shut"
+      "[heard|someone said] brannigan says he got out of the court under the water when the doors shut",
+      "[heard|someone said] revelin wont say where the twin of cailean's horn is"
     ],
     "tell": [
       "lough gur is the south west lake zone. innis carthaig is the town. 22 to 56",
@@ -258,7 +265,8 @@
       "where is culraid? north west of lough gur. chief bran llyr",
       "luchtigern is a 32 giant mouse lord in the mouse hall in the western irewoods. day spawn only",
       "trefor is a 29 gurite in the raider camp south west of the lake. occupation of lough gur. hes aggro, mind",
-      "brannigan is a 28 leprechaun in the hills above the south shore of lough gur. long respawn"
+      "brannigan is a 28 leprechaun in the hills above the south shore of lough gur. long respawn",
+      "revelin is by donnchadh's camp in lough gur. the horn twin epic: kill cailean in the cursed forest"
     ]
   },
   "loremaster": {
@@ -275,7 +283,8 @@
       "trumpets": "The music of the court under the water, which sounds on summer nights. Every grandmother of the realm says the same thing: if the trumpets sound after dark, go home. The queen comes to them.",
       "Luchtigern": "Luchtigern is the lord of the luch, the great mice of Lough Gur, and he keeps his hall among the western irewoods. The bards of Innis Carthaig sing an old satire in which a poet mocked the king of cats and the mice laughed, and they say Luchtigern is the mouse who laughed loudest. He keeps court by daylight and not after, as mice do not, and the luch catchers who hunt his people come to his hall in the morning, and find it empty by night.",
       "Trefor": "Trefor is the gurite of the raider camp in the south-west who deals with the realm, or seems to. Aziliz of Lough Derg sends the young to find out what the gurite siabra are doing at the lake, and the road leads to Trefor, who takes a bundle of daggers and a ring and talks about treasure hunting, and asks for more. Harper Brac thinks the gurite are digging for something under the lake. Trefor thinks it is funny that anyone asks.",
-      "Brannigan": "Brannigan is a leprechaun of the southern shore, big for one, who claims to have been at the court under the water when the doors shut and to have got out by the last of them. Nobody believes him, and he does not need them to. He keeps to himself in the hills above the shore, and the dullahans of the riders' road go round his ground, which is more than they do for anyone else."
+      "Brannigan": "Brannigan is a leprechaun of the southern shore, big for one, who claims to have been at the court under the water when the doors shut and to have got out by the last of them. Nobody believes him, and he does not need them to. He keeps to himself in the hills above the shore, and the dullahans of the riders' road go round his ground, which is more than they do for anyone else.",
+      "Revelin": "Revelin keeps company with old Donnchadh at his camp on the east of the lake, and is the one the realm's champions of the green paths come to when they are ready, the blademasters and druids, the valewalkers, animists and mentalists. Revelin sends them to the Cursed Forest after Cailean, a tree gone mad with terror, north-west of the grannies' fort across the river, and asks them to bring back its horn. The horn has a twin, Revelin says, and will not say where."
     }
   },
   "book": {
