@@ -23,6 +23,8 @@ namespace DOL.GS.LoreChannels
         private static readonly object Sync = new();
         private static readonly Dictionary<(int Realm, string Boss), LoreFirstKill> Known = new();
         private static readonly Dictionary<string, LoreBoss> ByClass = new(StringComparer.OrdinalIgnoreCase);
+        /// <summary>Plain world spawns by exact name (a boss file's npcNames).</summary>
+        private static readonly Dictionary<string, LoreBoss> ByName = new(StringComparer.Ordinal);
 
         /// <summary>A realm's first kill of a boss, raised once (on the game loop, at the kill).</summary>
         public static event Action<LoreFirstKill, LoreBoss> FirstKill;
@@ -77,8 +79,12 @@ namespace DOL.GS.LoreChannels
             lock (Sync)
             {
                 ByClass.Clear();
+                ByName.Clear();
                 foreach (LoreBoss boss in LoreChannelHub.Source.AllBosses)
                 {
+                    foreach (string name in boss.NpcNames)
+                        ByName.TryAdd(name, boss);
+                    if (string.IsNullOrEmpty(boss.CatalogKey)) continue;
                     string key = boss.CatalogKey ?? "";
                     int slash = key.LastIndexOf('/');
                     ByClass.TryAdd(slash >= 0 ? key[(slash + 1)..] : key, boss);
@@ -122,7 +128,7 @@ namespace DOL.GS.LoreChannels
             if (sender is not GameNPC npc || npc is GameBot || args is not DyingEventArgs dying) return;
             LoreBoss boss;
             lock (Sync)
-                if (!ByClass.TryGetValue(npc.GetType().Name, out boss)) return;
+                if (!ByClass.TryGetValue(npc.GetType().Name, out boss) && !ByName.TryGetValue(npc.Name ?? "", out boss)) return;
             GameObject killer = dying.Killer;
             GameLiving credited = LoreBooks.PlayerOf(killer) as GameLiving ?? killer as GameLiving;
             if (credited is GameNPC { Brain: DOL.AI.Brain.IControlledBrain pet } && pet.Owner is GameLiving owner) credited = owner;

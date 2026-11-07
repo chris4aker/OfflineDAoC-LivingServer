@@ -211,7 +211,10 @@ public static class LoreBossWatch
         if (npc == null || npc is GameBot)
             return null;
         LoreBible bible = LoreBible.Current;
-        return bible.Bosses.Length == 0 ? null : ByType.GetOrAdd(npc.GetType(), type => bible.BossForClass(type.Name));
+        if (bible.Bosses.Length == 0)
+            return null;
+        // By its script class first (cached per type), then by its exact name (a plain world spawn, npcNames).
+        return ByType.GetOrAdd(npc.GetType(), type => bible.BossForClass(type.Name)) ?? bible.BossForName(npc.Name);
     }
 
     private static void Yell(GameNPC npc, Watched watched, string[] lines, long now, bool force = false)

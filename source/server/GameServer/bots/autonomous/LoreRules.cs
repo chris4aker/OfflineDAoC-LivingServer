@@ -98,20 +98,21 @@ public sealed class AtmosphereThrottle
 public static class LoreEntryRules
 {
     /// <summary>The location the player stands in: by zone when the location lists zones (a lair in an open-world region), else by region.</summary>
+    /// <remarks>
+    /// Several files may claim a region (an umbrella beside its zone files): a file listing the zone wins, then the
+    /// narrowest (fewest regions), then one with areas at coordinates, then the first by id.
+    /// </remarks>
     public static LoreBible.Location LocationAt(LoreBible bible, ushort region, ushort zone)
     {
-        LoreBible.Location byRegion = null;
-        foreach (LoreBible.Location location in bible.LocationsInRegion(region))
-        {
-            if (location.Zones.Length > 0)
-            {
-                if (location.Zones.Contains(zone))
-                    return location;
-            }
-            else
-                byRegion ??= location;
-        }
-        return byRegion;
+        LoreBible.Location[] here = bible.LocationsInRegion(region);
+        LoreBible.Location byZone = here.Where(l => l.Zones.Contains(zone)).OrderBy(l => l.Zones.Length).ThenBy(l => l.Id, StringComparer.Ordinal).FirstOrDefault();
+        if (byZone != null)
+            return byZone;
+        return here.Where(l => l.Zones.Length == 0)
+            .OrderBy(l => l.Regions.Length)
+            .ThenByDescending(l => l.Areas.Any(a => a.X != 0 || a.Y != 0))
+            .ThenBy(l => l.Id, StringComparer.Ordinal)
+            .FirstOrDefault();
     }
 
     /// <summary>The day key of a first-entry line: once per character per day (the PC's calendar day).</summary>

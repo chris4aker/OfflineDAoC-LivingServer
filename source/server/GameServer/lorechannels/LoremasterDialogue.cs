@@ -39,13 +39,17 @@ namespace DOL.GS.LoreChannels
                 _places.TryAdd(LoreSourceExtensions.Key(location.Id), location);
                 foreach (var (keyword, text) in location.Loremaster?.Topics ?? [])
                     AddTopic(keyword, location.Id, text);
+                // A long story: the summary as "the tale of X", each chapter a topic of its own (sent in chat-sized pieces).
+                AddChapters(location.Name, location.Story, location.Chapters, location.Id);
                 foreach (LoreBoss boss in _source.BossesOf(location))
                 {
                     string text = boss.LoremasterTopic?.Text ?? boss.Legend;
                     if (string.IsNullOrWhiteSpace(text)) continue;
                     text += RelatedSentence(boss.Related);
+                    text += ChapterSentence(boss.Name, boss.Chapters);
                     if (boss.LoremasterTopic != null) AddTopic(boss.LoremasterTopic.Keyword, location.Id, text);
                     AddTopic(boss.Name, location.Id, text);
+                    AddChapters(boss.Name, boss.Story, boss.Chapters, location.Id);
                 }
             }
 
@@ -70,6 +74,26 @@ namespace DOL.GS.LoreChannels
         }
 
         private readonly List<LoreHistoryText> _histories;
+
+        public const string TalePrefix = "the tale of ";
+
+        /// <summary>" The whole tale of Krondon is long: ask of [The Making], [The First Raid]..." for a story told in chapters.</summary>
+        private static string ChapterSentence(string name, LoreChapter[] chapters) =>
+            chapters is { Length: > 0 }
+                ? $" [{TalePrefix}{name}] is long in the telling; ask of it a part at a time: {Join(chapters.Select(c => $"[{c.Title}]").ToList())}."
+                : "";
+
+        private void AddChapters(string name, string summary, LoreChapter[] chapters, string locationId)
+        {
+            if (chapters is not { Length: > 0 }) return;
+            AddTopic(TalePrefix + name, locationId, $"{(summary ?? "").Trim()} It is long in the telling; ask of it a part at a time: " +
+                Join(chapters.Select(c => $"[{c.Title}]").ToList()) + ".");
+            for (int i = 0; i < chapters.Length; i++)
+            {
+                string next = i + 1 < chapters.Length ? $" Then ask of [{chapters[i + 1].Title}]." : "";
+                AddTopic(chapters[i].Title, locationId, chapters[i].Text + next);
+            }
+        }
 
         private string LinkTo(string id) => _source.NameOf(id) is { } name ? $"[{name}]" : null;
 
@@ -224,7 +248,7 @@ namespace DOL.GS.LoreChannels
                             !(b.LoremasterTopic != null && linked.Contains(LoreSourceExtensions.Key(b.LoremasterTopic.Keyword))) &&
                             !string.IsNullOrWhiteSpace(b.LoremasterTopic?.Text ?? b.Legend))
                 .Select(b => $"[{b.Name}]").ToList();
-            string text = intro + HistorySentence(place.Era, place.Factions) + RelatedSentence(place.Related);
+            string text = intro + HistorySentence(place.Era, place.Factions) + RelatedSentence(place.Related) + ChapterSentence(place.Name, place.Chapters);
             if (others.Count > 0) text += $" Ask me too of {Join(others)}.";
             if (HasBook(place)) text += $" I have it written down, if you want the [{BookPrefix}{place.Name}].";
             return new(Clean(text), place.Id);

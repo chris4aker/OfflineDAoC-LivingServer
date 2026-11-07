@@ -20,6 +20,8 @@ public sealed record LoreLocation(string Id, string Name, string Realm, int[] Re
     public string Era { get; init; } = "";
     public string[] Factions { get; init; } = [];
     public LoreRelated[] Related { get; init; } = [];
+    /// <summary>The long story in order (epic tier); <see cref="Story"/> is then its summary. Empty when none.</summary>
+    public LoreChapter[] Chapters { get; init; } = [];
     /// <summary>Each realm's own take on a neutral place, by realm id ("realmTakes", Summoner's Hall). Empty when none.</summary>
     public IReadOnlyDictionary<int, LoreRealmTake> RealmTakes { get; init; } = new Dictionary<int, LoreRealmTake>();
 
@@ -67,6 +69,11 @@ public sealed record LoreBoss(string Id, string Name, string CatalogKey, string 
     public string Era { get; init; } = "";
     public string[] Factions { get; init; } = [];
     public LoreRelated[] Related { get; init; } = [];
+    /// <summary>Exact spawn names, for a plain world spawn with no catalog key ("npcNames"). Empty when none.</summary>
+    public string[] NpcNames { get; init; } = [];
+    public LoreChapter[] Chapters { get; init; } = [];
+    /// <summary>"bookPage" as pages (one, or 2-4 for an epic boss); <see cref="BookPage"/> is their text together.</summary>
+    public string[] BookPages { get; init; } = [];
     /// <summary>Each realm's own take on a neutral boss, by realm id ("realmTakes", Govannon). Empty when none.</summary>
     public IReadOnlyDictionary<int, LoreRealmTake> RealmTakes { get; init; } = new Dictionary<int, LoreRealmTake>();
 
@@ -114,6 +121,89 @@ public sealed record LoreFactionText(string Id, string Name, string Summary, str
 public sealed record LoreHistoryText(string Id, string Realm, string Title, string Intro, LoreEraText[] Eras, LoreFactionText[] Factions)
 {
     public int RealmId => LoreRealm.Id(Realm);
+}
+
+/// <summary>One chapter of a long (epic tier) story.</summary>
+public sealed record LoreChapter(string Title, string Text);
+
+/// <summary>
+/// Long lore in readable pieces, never cut inside a word, in order. The limits are the code's own:
+/// <list type="bullet">
+/// <item>A text window (a book page, /lore) is one DetailWindow packet of at most 2,048 bytes (PacketLib168.cs
+/// MAX_PACKET_LENGTH, WriteCustomTextWindowData): what does not fit is dropped silently, and each line is a Pascal string
+/// of at most 255 characters. Text is code page 1252, one byte a character. <see cref="PageChars"/> leaves room for the
+/// caption, the line headers and the footer.</item>
+/// <item>A loremaster's words go out with SayTo, one chat message each (PacketLib1127.SendRawMessage writes the whole
+/// string; the server has no cap). <see cref="SayChars"/> keeps each well inside the packet and readable in the chat
+/// window, as the channels' loremasters did since #92.</item>
+/// </list>
+/// </summary>
+public static class LorePieces
+{
+    public const int SayChars = 480;
+    public const int PageChars = 1_500;
+    public const int PacketBytes = 2_048;
+
+    private static readonly System.Text.RegularExpressions.Regex Sentence = new(@"(?<=[.!?][""')\]]?)\s+", System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    /// <summary>
+    /// The text in pieces of at most <paramref name="max"/> characters: whole paragraphs packed together while they fit
+    /// (paragraphs are lines of the text), a longer paragraph by sentences, a longer sentence by words. Pure.
+    /// </summary>
+    public static List<string> Split(string text, int max = SayChars)
+    {
+        var pieces = new List<string>();
+        if (string.IsNullOrWhiteSpace(text)) return pieces;
+        max = Math.Max(20, max);
+        var current = new System.Text.StringBuilder();
+        void Flush()
+        {
+            if (current.Length > 0) pieces.Add(current.ToString());
+            current.Clear();
+        }
+        void Add(string chunk)
+        {
+            if (current.Length > 0 && current.Length + 1 + chunk.Length > max) Flush();
+            if (current.Length > 0) current.Append(' ');
+            current.Append(chunk);
+        }
+        foreach (string paragraph in text.Replace("\r\n", "\n").Split('\n').Select(p => p.Trim()).Where(p => p.Length > 0))
+        {
+            List<string> chunks = Chunks(paragraph, max);
+            // A paragraph that needs more than one piece starts a piece of its own; whole short paragraphs share one.
+            if (chunks.Count > 1) Flush();
+            foreach (string chunk in chunks) Add(chunk);
+        }
+        Flush();
+        return pieces;
+    }
+
+    /// <summary>A paragraph in chunks of at most <paramref name="max"/>: sentences packed, a long sentence by words.</summary>
+    private static List<string> Chunks(string paragraph, int max)
+    {
+        var chunks = new List<string>();
+        if (paragraph.Length <= max) { chunks.Add(paragraph); return chunks; }
+        var line = new System.Text.StringBuilder();
+        void Put(string unit)
+        {
+            if (line.Length > 0 && line.Length + 1 + unit.Length > max) { chunks.Add(line.ToString()); line.Clear(); }
+            if (line.Length > 0) line.Append(' ');
+            line.Append(unit);
+        }
+        foreach (string sentence in Sentence.Split(paragraph).Select(x => x.Trim()).Where(x => x.Length > 0))
+        {
+            if (sentence.Length <= max) { Put(sentence); continue; }
+            foreach (string word in sentence.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+            {
+                string w = word;
+                // Only a single word longer than a whole piece is ever cut.
+                while (w.Length > max) { if (line.Length > 0) { chunks.Add(line.ToString()); line.Clear(); } chunks.Add(w[..max]); w = w[max..]; }
+                Put(w);
+            }
+        }
+        if (line.Length > 0) chunks.Add(line.ToString());
+        return chunks;
+    }
 }
 
 /// <summary>A lore source that also has the realms' histories.</summary>
@@ -256,6 +346,10 @@ public static class LoreSourceExtensions
     public static LoreBoss FindBossByClass(this ILoreSource source, string className) =>
         source?.AllBosses.FirstOrDefault(b => b.IsClass(className));
 
+    /// <summary>A live NPC's boss: by its script class, then by its exact spawn name (npcNames).</summary>
+    public static LoreBoss FindBossFor(this ILoreSource source, string className, string npcName) =>
+        source.FindBossByClass(className) ?? source?.AllBosses.FirstOrDefault(b => b.NpcNames.Contains(npcName ?? "", StringComparer.Ordinal));
+
     public static IEnumerable<LoreBoss> BossesOf(this ILoreSource source, LoreLocation location)
     {
         if (source == null || location == null) yield break;
@@ -302,7 +396,7 @@ public static class LoreJson
             : [];
         return new LoreLocation(id, Str(e, "name") ?? id, Str(e, "realm") ?? "Neutral", regions, Str(e, "summary"), Str(e, "story"),
             Str(e, "legend"), loremaster, book, Strings(e, "bosses"), areas.ToArray())
-        { RealmTakes = Takes(e), Era = Str(e, "era") ?? "", Factions = Strings(e, "factions"), Related = RelatedOf(e) };
+        { RealmTakes = Takes(e), Era = Str(e, "era") ?? "", Factions = Strings(e, "factions"), Related = RelatedOf(e), Chapters = ChaptersOf(e) };
     }
 
     public static LoreBoss ParseBoss(string json)
@@ -317,10 +411,19 @@ public static class LoreJson
         LoreChronicleText chronicle = null;
         if (e.TryGetProperty("chronicle", out JsonElement c) && c.ValueKind == JsonValueKind.Object)
             chronicle = new LoreChronicleText(Str(c, "win"), Str(c, "loss"));
+        string[] pages = e.TryGetProperty("bookPage", out JsonElement bp) && bp.ValueKind == JsonValueKind.Array ? Strings(e, "bookPage")
+            : Str(e, "bookPage") is { Length: > 0 } one ? [one] : [];
         return new LoreBoss(id, Str(e, "name") ?? id, Str(e, "catalogKey"), Str(e, "locationId"), Str(e, "realm") ?? "Neutral",
-            Str(e, "story"), Str(e, "legend"), topic, Str(e, "bookPage"), chronicle)
-        { RealmTakes = Takes(e), Era = Str(e, "era") ?? "", Factions = Strings(e, "factions"), Related = RelatedOf(e) };
+            Str(e, "story"), Str(e, "legend"), topic, pages.Length == 0 ? null : string.Join(" ", pages), chronicle)
+        {
+            RealmTakes = Takes(e), Era = Str(e, "era") ?? "", Factions = Strings(e, "factions"), Related = RelatedOf(e), NpcNames = Strings(e, "npcNames"),
+            Chapters = ChaptersOf(e), BookPages = pages,
+        };
     }
+
+    private static LoreChapter[] ChaptersOf(JsonElement e) =>
+        Objects(e, "chapters").Select(c => new LoreChapter(Str(c, "title") ?? "", Str(c, "text") ?? ""))
+            .Where(c => c.Title.Length > 0 && c.Text.Length > 0).ToArray();
 
     private static LoreRelated[] RelatedOf(JsonElement e) =>
         e.TryGetProperty("related", out JsonElement r) && r.ValueKind == JsonValueKind.Array

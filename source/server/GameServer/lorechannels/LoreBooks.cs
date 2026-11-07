@@ -94,10 +94,18 @@ namespace DOL.GS.LoreChannels
         {
             var pages = new List<string>();
             if (location?.Book == null) return pages;
-            pages.AddRange(location.Book.Pages.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p.Trim()));
+            var written = new List<string>();
+            written.AddRange(location.Book.Pages.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p.Trim()));
             foreach (LoreBoss boss in source.BossesOf(location))
-                if (!string.IsNullOrWhiteSpace(boss.BookPage))
-                    pages.Add($"Of {boss.Name}. {boss.BookPage.Trim()}");
+            {
+                string[] bossPages = boss.BookPages.Length > 0 ? boss.BookPages : string.IsNullOrWhiteSpace(boss.BookPage) ? [] : [boss.BookPage];
+                for (int i = 0; i < bossPages.Length; i++)
+                    if (!string.IsNullOrWhiteSpace(bossPages[i]))
+                        written.Add(i == 0 ? $"Of {boss.Name}. {bossPages[i].Trim()}" : bossPages[i].Trim());
+            }
+            // A page longer than one text window holds (2,048 bytes, LorePieces.PageChars) goes on over more pages; nothing is cut.
+            foreach (string page in written)
+                pages.AddRange(LorePieces.Split(page, LorePieces.PageChars));
             return pages;
         }
 

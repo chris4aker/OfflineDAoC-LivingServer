@@ -53,6 +53,7 @@ public sealed class LoreBibleSource : ILoreSource, ILoreHistorySource
             l.Areas.Select(a => new LoreArea(a.Name, a.X, a.Y, a.Z, a.Radius)).ToArray())
         {
             RealmTakes = Takes(l.RealmTakes),
+            Chapters = l.Chapters.Select(c => new LoreChapter(c.Title, c.Text)).ToArray(),
             Era = l.Era ?? "",
             Factions = l.Factions,
             Related = ToChannel(l.RelatedTo),
@@ -64,6 +65,9 @@ public sealed class LoreBibleSource : ILoreSource, ILoreHistorySource
             string.IsNullOrWhiteSpace(b.ChronicleWin) && string.IsNullOrWhiteSpace(b.ChronicleLoss) ? null : new LoreChronicleText(b.ChronicleWin, b.ChronicleLoss))
         {
             RealmTakes = Takes(b.RealmTakes),
+            NpcNames = b.NpcNames,
+            Chapters = b.Chapters.Select(c => new LoreChapter(c.Title, c.Text)).ToArray(),
+            BookPages = b.BookPages,
             Era = b.Era ?? "",
             Factions = b.Factions,
             Related = ToChannel(b.RelatedTo),

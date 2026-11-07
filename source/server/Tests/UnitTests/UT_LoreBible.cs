@@ -330,14 +330,157 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void ABookHasAtMostEightPages()
+        public void ABookHasAtMostSixteenPages()
         {
             string page = "\"" + string.Join(" ", Enumerable.Repeat("page", 110)) + "\"";
-            string nine = "\"pages\": [" + string.Join(", ", Enumerable.Repeat(page, 9)) + "]";
-            string eight = "\"pages\": [" + string.Join(", ", Enumerable.Repeat(page, 8)) + "]";
-            Assert.That(ProblemsWith(l => System.Text.RegularExpressions.Regex.Replace(l, "\"pages\": \\[[^\\]]*\\]", nine)), Has.Some.Contains("9 book pages"));
-            Assert.That(ProblemsWith(l => System.Text.RegularExpressions.Regex.Replace(l, "\"pages\": \\[[^\\]]*\\]", eight)), Is.Empty);
+            string seventeen = "\"pages\": [" + string.Join(", ", Enumerable.Repeat(page, 17)) + "]";
+            string sixteen = "\"pages\": [" + string.Join(", ", Enumerable.Repeat(page, 16)) + "]";
+            Assert.That(ProblemsWith(l => System.Text.RegularExpressions.Regex.Replace(l, "\"pages\": \\[[^\\]]*\\]", seventeen)), Has.Some.Contains("17 book pages"));
+            Assert.That(ProblemsWith(l => System.Text.RegularExpressions.Regex.Replace(l, "\"pages\": \\[[^\\]]*\\]", sixteen)), Is.Empty);
         }
+
+        #endregion
+
+        #region Coverage: npcNames, tiers, zone files (coverage audit)
+
+        [Test]
+        public void ABossMatchesByCatalogKeyOrExactSpawnName()
+        {
+            Assert.That(ProblemsWith(editBoss: b => b.Replace("\"catalogKey\": \"krondon/scurceolhyrde\",", "\"npcNames\": [\"Scurceol Hyrde\"],")
+                .Replace("\"trigger\": \"orbDeath\"", "\"trigger\": \"health<=50\"").Replace("\"trigger\": \"addsDead\"", "\"trigger\": \"health<=25\"")), Is.Empty,
+                "npcNames instead of a catalogKey");
+            Assert.That(ProblemsWith(editBoss: b => b.Replace("\"catalogKey\": \"krondon/scurceolhyrde\",", "")), Has.Some.Contains("or npcNames"));
+            Assert.That(ProblemsWith(editBoss: b => b.Replace("\"catalogKey\"", "\"tier\": \"legendary\", \"catalogKey\"")), Has.Some.Contains("tier \"legendary\""));
+            Assert.That(ProblemsWith(editBoss: b => b.Replace("\"catalogKey\"", "\"tier\": \"minor\", \"catalogKey\"")), Is.Empty);
+            string dir = FixtureDir(RepoRoot());
+            string boss = File.ReadAllText(Path.Combine(dir, "bosses/scurceol-hyrde.json"));
+            var named = boss.Replace("\"catalogKey\": \"krondon/scurceolhyrde\",", "\"npcNames\": [\"Thrawn Ogre Chief\", \"Thrawn Ogre Warlord\"],");
+            var twice = ProblemsWith(l => l.Replace("\"bosses\": [\"scurceol-hyrde\"]", "\"bosses\": [\"scurceol-hyrde\", \"ogre-a\", \"ogre-b\"]"), null,
+                ("bosses/ogre-a.json", named.Replace("\"id\": \"scurceol-hyrde\"", "\"id\": \"ogre-a\"")),
+                ("bosses/ogre-b.json", named.Replace("\"id\": \"scurceol-hyrde\"", "\"id\": \"ogre-b\"")));
+            Assert.That(twice, Has.Some.Contains("npcNames \"Thrawn Ogre Chief\" is claimed by"));
+            LoreBible bible = LoreBible.Parse(new[] { ("bosses/ogre-a.json", named.Replace("\"id\": \"scurceol-hyrde\"", "\"id\": \"ogre-a\"")) });
+            Assert.That(bible.BossFor("GameNPC", "Thrawn Ogre Warlord")?.Id, Is.EqualTo("ogre-a"), "a plain spawn by its exact name");
+            Assert.That(bible.BossFor("GameNPC", "thrawn ogre warlord"), Is.Null, "exact names only");
+            Assert.That(Fixture().BossFor("ScurceolHyrde", "anything")?.Id, Is.EqualTo("scurceol-hyrde"), "the class first");
+            Assert.That(LoreChannels.LoreSourceExtensions.FindBossFor(new LoreBibleSource(bible), "GameNPC", "Thrawn Ogre Chief")?.Id, Is.EqualTo("ogre-a"), "the channels match the name too");
+        }
+
+        [Test]
+        public void TheNarrowerFileWinsARegion()
+        {
+            const string Umbrella = "{\"id\":\"hibernia-wilds\",\"name\":\"Wilds\",\"realm\":\"Hibernia\",\"regions\":[200, 181]}";
+            const string Zone = "{\"id\":\"connacht\",\"name\":\"Connacht\",\"realm\":\"Hibernia\",\"regions\":[200]}";
+            const string Lair = "{\"id\":\"sheeroe\",\"name\":\"Sheeroe\",\"realm\":\"Hibernia\",\"regions\":[200],\"zones\":[204]}";
+            LoreBible bible = LoreBible.Parse(new[] { ("locations/hibernia-wilds.json", Umbrella), ("locations/connacht.json", Zone), ("locations/sheeroe.json", Lair) });
+            Assert.That(LoreEntryRules.LocationAt(bible, 200, 201)?.Id, Is.EqualTo("connacht"), "fewer regions than the umbrella");
+            Assert.That(LoreEntryRules.LocationAt(bible, 200, 204)?.Id, Is.EqualTo("sheeroe"), "the zone file first");
+            Assert.That(LoreEntryRules.LocationAt(bible, 181, 1)?.Id, Is.EqualTo("hibernia-wilds"), "the umbrella where nothing narrower is");
+            const string Same = "{\"id\":\"a-zone\",\"name\":\"A\",\"realm\":\"Hibernia\",\"regions\":[200],\"atmosphere\":{\"areas\":[{\"name\":\"x\",\"x\":5,\"y\":5,\"radius\":500,\"lines\":[\"x\"]}]}}";
+            LoreBible tie = LoreBible.Parse(new[] { ("locations/connacht.json", Zone), ("locations/a-zone.json", Same.Replace("a-zone", "z-zone")) });
+            Assert.That(LoreEntryRules.LocationAt(tie, 200, 201)?.Id, Is.EqualTo("z-zone"), "same width: the one with placed areas");
+        }
+
+        #endregion
+
+        #region Epic tier: chapters, long books, pieces
+
+        private static string Paragraphs(int count, int words, string word = "word") =>
+            string.Join("\\n", Enumerable.Range(0, count).Select(p => string.Join(" ", Enumerable.Range(0, words).Select(i => $"{word}{p}x{i}")) + "."));
+
+        private static string WithChapters(string json, int chapters = 5) =>
+            json.TrimEnd().TrimEnd('}') + ", \"tier\": \"epic\", \"chapters\": [" +
+            string.Join(", ", Enumerable.Range(1, chapters).Select(i => $"{{\"title\": \"Part {i}\", \"text\": \"{Paragraphs(4, 90)}\"}}")) + "]}";
+
+        [Test]
+        public void ChaptersAndTheEpicTierParseAndAreChecked()
+        {
+            Assert.That(ProblemsWith(l => WithChapters(l)), Is.Empty);
+            Assert.That(ProblemsWith(editBoss: b => WithChapters(b)), Is.Empty);
+            Assert.That(ProblemsWith(l => WithChapters(l).Replace("\"title\": \"Part 2\"", "\"title\": \"Part 1\"")), Has.Some.Contains("\"Part 1\" is there twice"));
+            Assert.That(ProblemsWith(l => WithChapters(l).Replace("\"tier\": \"epic\"", "\"tier\": \"minor\"")), Has.Some.Contains("location's tier"));
+            Assert.That(ProblemsWith(editBoss: b => b.Replace("\"bookPage\": \"\"", "\"bookPage\": [\"" + Paragraphs(1, 110) + "\", \"" + Paragraphs(1, 110) + "\"]")), Is.Empty,
+                "bookPage as a list");
+            string dir = FixtureDir(RepoRoot());
+            LoreBible bible = LoreBible.Parse(new[]
+            {
+                ("locations/krondon.json", WithChapters(File.ReadAllText(Path.Combine(dir, "locations/krondon.json")))),
+                ("bosses/scurceol-hyrde.json", File.ReadAllText(Path.Combine(dir, "bosses/scurceol-hyrde.json"))
+                    .Replace("\"bookPage\": \"\"", "\"bookPage\": [\"first page.\", \"second page.\"]")),
+                ("history/albion.json", File.ReadAllText(Path.Combine(dir, "history/albion.json"))),
+            });
+            Assert.That(bible.LocationById("krondon").IsEpic && bible.LocationById("krondon").Chapters.Length == 5, Is.True);
+            Assert.That(bible.BossById("scurceol-hyrde").BookPages, Is.EqualTo(new[] { "first page.", "second page." }));
+            Assert.That(bible.DepthReport(), Has.Some.EqualTo("epic locations: 4-10 chapters: 0 of 1 below"));
+            // Bots stay on their short lines: no chapter text reaches the corpus or an answer.
+            Assert.That(LoreChat.CorpusLines(bible).Any(l => l.Text.Contains("word0x")), Is.False);
+            Assert.That(bible.TryAnswer("whats in krondon?", new Random(1), out string answer) && !answer.Contains("word0x"), Is.True);
+        }
+
+        [Test]
+        public void PiecesKeepEveryWordInOrderAndStayUnderTheLimit()
+        {
+            var random = new Random(7);
+            for (int round = 0; round < 50; round++)
+            {
+                int max = random.Next(60, 600);
+                var paragraphs = Enumerable.Range(0, random.Next(1, 8)).Select(_ =>
+                    string.Join(" ", Enumerable.Range(0, random.Next(1, 160)).Select(i => new string('a', random.Next(1, 14)) + (random.Next(9) == 0 ? "." : ""))));
+                string text = string.Join("\n", paragraphs);
+                List<string> pieces = LoreChannels.LorePieces.Split(text, max);
+                Assert.That(pieces.All(p => p.Length <= max), Is.True, $"a piece over {max}");
+                Assert.That(pieces.All(p => p.Length > 0 && p == p.Trim()), Is.True);
+                string[] words = text.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
+                string[] said = pieces.SelectMany(p => p.Split(' ', StringSplitOptions.RemoveEmptyEntries)).ToArray();
+                Assert.That(said, Is.EqualTo(words), "every word, whole and in order");
+            }
+            Assert.That(LoreChannels.LorePieces.Split("One. Two.\nThree.", 100), Is.EqualTo(new[] { "One. Two. Three." }), "short paragraphs share a piece");
+            string longParagraph = string.Join(" ", Enumerable.Repeat("Sentence of words here.", 10));
+            Assert.That(LoreChannels.LorePieces.Split("Short one.\n" + longParagraph + "\nAfter.", 100).First(), Is.EqualTo("Short one."),
+                "a paragraph that needs pieces of its own starts a new one");
+            Assert.That(LoreChannels.LorePieces.Split(longParagraph, 100).All(p => p.EndsWith(".")), Is.True, "cut between sentences");
+            Assert.That(LoreChannels.LorePieces.Split(new string('x', 250), 100).Select(p => p.Length), Is.EqualTo(new[] { 100, 100, 50 }), "only a word longer than a piece is cut");
+            Assert.That(LoreChannels.LorePieces.Split("  ", 100), Is.Empty);
+        }
+
+        /// <summary>The bytes WriteCustomTextWindowData would write for a window (PacketLib168.cs).</summary>
+        private static int WindowBytes(string caption, IEnumerable<string> lines) =>
+            3 + Math.Min(255, caption.Length) + 1 + lines.Sum(l => 1 + (l.Length + 254) / 255 * 1 + l.Length + 1) + 1;
+
+        [Test]
+        public void AnEpicChapterReachesThePlayerInReadablePieces()
+        {
+            string dir = FixtureDir(RepoRoot());
+            string chapterText = string.Join("\n", Enumerable.Range(0, 6).Select(p => string.Join(" ", Enumerable.Range(0, 110).Select(i => $"w{p}-{i}")) + "."));
+            var location = LoreChannels.LoreJson.ParseLocation(File.ReadAllText(Path.Combine(dir, "locations/krondon.json"))) with { };
+            location = location with { Chapters = [new("The Making", chapterText), new("The First Raid", "Short. Then the raid came.")] };
+            var source = new LoreChannels.LoreLibrary([location], []);
+            var dialogue = new LoreChannels.LoremasterDialogue(source, LoreChannels.LoreRealm.Albion, "Loremaster Aldwin");
+            string place = dialogue.Resolve("krondon").Text;
+            Assert.That(place, Does.Contain("[the tale of Krondon]").And.Contain("[The Making]").And.Contain("[The First Raid]"));
+            Assert.That(dialogue.Resolve("the tale of Krondon").Text, Does.StartWith(location.Story.Trim()[..40]), "the summary first");
+            string making = dialogue.Resolve("the making").Text;
+            Assert.That(making, Does.StartWith("w0-0").And.EndWith("Then ask of [The First Raid]."));
+            var pieces = LoreChannels.LoremasterNPC.Pieces(making).ToList();
+            Assert.That(pieces.Count, Is.GreaterThan(5));
+            Assert.That(pieces.All(p => p.Length <= LoreChannels.LorePieces.SayChars), Is.True);
+            Assert.That(string.Join(" ", pieces).Split(' '), Is.EqualTo(making.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)));
+            // A book page longer than one text window turns into more pages, each window inside the 2,048-byte packet.
+            var book = location with { Book = new LoreChannels.LoreBookText("Of the Hall", [chapterText, "A short page."]) };
+            List<string> pages = LoreChannels.LoreBooks.Pages(new LoreChannels.LoreLibrary([book], []), book);
+            Assert.That(pages.Count, Is.GreaterThan(2));
+            Assert.That(string.Join(" ", pages).Split(' '), Is.EqualTo((chapterText.Replace("\n", " ") + " A short page.").Split(' ')));
+            for (int i = 0; i < pages.Count; i++)
+            {
+                var (caption, lines) = LoreChannels.LoreBooks.PageWindow("Of the Hall under the Hill, a book of many pages", pages, i);
+                Assert.That(WindowBytes(caption, lines), Is.LessThan(LoreChannels.LorePieces.PacketBytes), $"page {i + 1}");
+                Assert.That(lines.All(l => l.Length <= 255), Is.True);
+            }
+        }
+
+        #endregion
+
+        #region Depth: history and links
 
         [Test]
         public void HistoryFilesAndLinksResolve()

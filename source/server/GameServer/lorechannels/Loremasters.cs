@@ -195,20 +195,8 @@ namespace DOL.GS.LoreChannels
         public void Rebuild() => _dialogue = new LoremasterDialogue(LoreChannelHub.Source, _definition.Realm, _definition.Name);
 
         /// <summary>Long answers go in pieces (the popup window's lines stay short; the new client stacks them).</summary>
-        public static IEnumerable<string> Pieces(string text, int max = 480)
-        {
-            text = (text ?? "").Trim();
-            while (text.Length > max)
-            {
-                int cut = text.LastIndexOf(". ", max, StringComparison.Ordinal);
-                if (cut < max / 3) cut = text.LastIndexOf(' ', max);
-                if (cut <= 0) cut = max;
-                else cut += 1;
-                yield return text[..cut].Trim();
-                text = text[cut..].Trim();
-            }
-            if (text.Length > 0) yield return text;
-        }
+        /// <summary>A reply in chat-sized pieces, on paragraph, then sentence, then word boundaries (LorePieces).</summary>
+        public static IEnumerable<string> Pieces(string text, int max = LorePieces.SayChars) => LorePieces.Split(text, max);
 
         private void Say(GamePlayer player, string text)
         {

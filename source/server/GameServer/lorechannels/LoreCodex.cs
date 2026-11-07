@@ -160,6 +160,14 @@ namespace DOL.GS.LoreChannels
             var lines = new List<string>();
             if (!string.IsNullOrWhiteSpace(place.Summary)) { lines.AddRange(LoreBooks.Wrap(place.Summary, 200)); lines.Add(" "); }
             if (!string.IsNullOrWhiteSpace(place.Story)) { lines.Add("The story"); lines.AddRange(LoreBooks.Wrap(place.Story, 200)); lines.Add(" "); }
+            // A long story's chapters follow in order; the codex pages them (Paginate), so no page is a wall of text.
+            foreach (LoreChapter chapter in place.Chapters)
+            {
+                lines.Add(chapter.Title);
+                foreach (string piece in LorePieces.Split(chapter.Text, LorePieces.PageChars))
+                    lines.AddRange(LoreBooks.Wrap(piece, 200));
+                lines.Add(" ");
+            }
             if (!string.IsNullOrWhiteSpace(place.Legend)) { lines.Add("What players say"); lines.AddRange(LoreBooks.Wrap(place.Legend, 200)); lines.Add(" "); }
             lines.AddRange(Ties(source, place.Era, place.Factions, place.Related));
             var bosses = bestiary.Where(b => b.Location.Id == place.Id).ToList();

@@ -125,33 +125,83 @@ loremaster, /lore codex and bestiary show its story, legend and loremaster words
 Bot lines are 2003 chat voice: lower case (caps for shouting, "SPREAD", "MT", are fine; a Capitalized word is not), no `{slots}`, at most 160 characters as said. The corpus's `[a|b]` choices
 work (`[a|]` is a or nothing; no nesting). Atmosphere lines are said as written, at most 60 characters, no choices.
 
+## The schema in one place (every writer follows this)
+
+Files under `source/server/GameServer/bots/autonomous/data/lore/`: `locations/<id>.json`, `bosses/<id>.json`,
+`history/<realm>.json`. Everything not marked required is optional; a missing optional field is never a problem.
+
+**Location**
+
+| Field | Required | What |
+|---|---|---|
+| `id`, `name`, `realm` | yes | kebab id = file name; realm Albion, Midgard, Hibernia or Neutral |
+| `regions` | yes (may be `[]`) | region ids; `[]` for a place with no known region (its areas name their own) |
+| `zones` | | zone ids: the location is those zones only (a lair inside an open-world region) |
+| `summary` | yes | one sentence |
+| `facts` | yes (1+) | `{text, provenance, source}`; provenance `mythic`, `game`, `legend`, `myth`, `original`; a source for all but `original` |
+| `story`, `legend` | yes | no maximum; under 130 / 30 words is a warning. Epic tier: `story` is a 300-500 word summary |
+| `chapters` | | `[{title, text}]` in order (epic tier: 4-10 of 250-700 words); each title is a loremaster keyword (60 characters, no brackets, unique in the file) |
+| `tier` | | `"epic"` or left out |
+| `era`, `factions` | | ids in the history files |
+| `related` | | `[{id, relation}]`: a location or boss id, and how it is tied ("rival", "servant", "kin") |
+| `aliases` | | other names players use |
+| `atmosphere.firstEntry` | yes (1+) | lines of 60 characters or fewer |
+| `atmosphere.areas` | | `[{name, region?, x, y, z?, radius, lines}]`, radius 100-30,000; no limit on how many |
+| `atmosphere.raidForming` | | realm-only lines when a raid here forms |
+| `botLines.lore`, `.rumour`, `.tell` | tell 1+, 3+ in all | 2003 chat voice |
+| `loremaster` | yes | `{intro, topics: {keyword: text}}`; no limit on topics; every `[keyword]` resolves (here, a boss's `loremasterTopic`, a realm take) |
+| `book` | yes | `{title, pages}`: 1-16 pages; a page too long for one text window becomes more pages |
+| `bosses` | yes | boss ids; each boss's `locationId` is this location |
+| `realmTakes` | | `{albion|midgard|hibernia: {story, legend, botLines, loremaster, loremasterTopic}}` (any case) |
+
+**Boss**
+
+| Field | Required | What |
+|---|---|---|
+| `id`, `name`, `realm`, `locationId` | yes | the realm is its location's, or the location is Neutral |
+| `catalogKey` or `npcNames` | one of them | `catalogKey`: the epic-encounters.json id or the script class (`MidGjalpinulva`); `npcNames`: exact spawn names of a plain world spawn (a family may list every member). The engine matches the class first, then the exact name |
+| `tier` | | `"epic"`, `"minor"` (level 35-49, the minor floor) or `"major"`/left out |
+| `facts`, `story`, `legend` | yes | as for locations (warnings under 70 / 30 words) |
+| `chapters`, `era`, `factions`, `related`, `aliases` | | as for locations |
+| `yells` | | `{aggro, phases: [{trigger, text}], death, slay}`, 200 characters each |
+| `atmosphere` | 1+ line | `{lairEntry, phases: [{trigger, text}], realmFirstKill, wake}` |
+| `botLines` | 3+ in all | `{briefing, aftermathWin, aftermathLoss, rumour}` |
+| `loremasterTopic` | | `{keyword, text}` |
+| `bookPage` | | one page as text, or a list of pages (epic bosses: 2-4) |
+| `chronicle` | | `{win, loss}` with only `{realm}`, `{raidLeader}`, `{minutes}` |
+| `realmTakes` | | as for locations (`briefing`, `aftermathWin`, `aftermathLoss`, `rumour` bot lines) |
+
+Phase triggers: `health<=N`, `addsSpawn`, `orbDeath`, `addsDead`, `formChange`, `partnerDead`, `death`, `wake`,
+`playerDeath`; `teleport`, `berserk`, `breath`, `glare` are accepted and never fire. The add and partner triggers need
+adds or partners in the catalog.
+
+**History** (`history/<realm>.json`)
+
+| Field | Required | What |
+|---|---|---|
+| `realm` | yes | Albion, Midgard, Hibernia or Neutral |
+| `id` | | defaults to the realm in lower case; the file is `history/<id>.json` |
+| `title`, `summary` (or `intro`) | | |
+| `eras` | yes (1+) | `[{id, order, name, when, summary, text, events, facts, places, bosses}]`, sorted by `order`; `events` holds named events `{name, text, places, bosses}` or facts `{text, provenance, source}` |
+| `factions` | | `[{id, name, realm, summary, text, places, bosses, related}]` |
+
+Era ids are unique everywhere and never a faction's id. A faction id may appear in several realms' files (`summoners`,
+`sidhe-of-the-hall`): each realm tells it its way. Every place, boss, era and faction referenced resolves.
+
 ## What the files must pass
 
-`UT_LoreBible.EveryLoreFilePassesTheSchema` reads `data/lore` as committed and fails with a list of every problem.
-`python tools/bot-voices/build_corpus.py --check` (and `--verify`, in CI) also runs every bot line through the corpus's
-era, banned-word, place and realm checks. In short:
+`UT_LoreBible.EveryLoreFilePassesTheSchema` reads `data/lore` as committed and fails with a list of every problem;
+`python tools/bot-voices/build_corpus.py --check` (and `--verify`, in CI) runs every bot line through the corpus's era,
+banned-word, place and realm checks. Failures: invalid JSON, a file outside the three folders or not named after its id,
+an unknown field, a duplicate id, `catalogKey` or `npcNames` name, a reference that does not resolve, a bad realm,
+provenance, tier or trigger, a fact without its source, an atmosphere line over 60 characters (or with `[a|b]` or
+slots), a bot line that is not chat voice or over 160 characters, a yell over 200, a dead loremaster `[keyword]`, a
+book over 16 pages, a chronicle slot other than the three, a duplicate chapter title.
 
-- **Valid JSON**, in `locations/` or `bosses/`, named after its id; no unknown fields (a typo is caught).
-- **IDs** lower-case kebab, unique among locations and among bosses; no two boss files with the same `catalogKey`.
-- **References resolve:** every boss in a location's `bosses` has a file whose `locationId` is that location, and every
-  boss's location lists it; `catalogKey` is a catalog id or script class; a boss's realm is its location's (or the
-  location is Neutral).
-- **Realm** is Albion, Midgard, Hibernia or Neutral. `zones` need a region; `regions` may be empty.
-- **Facts:** at least one; provenance `mythic` (Mythic's canon), `game` (scripts, world data), `legend` (era player talk),
-  `myth` (the real-world myth a name comes from, not game canon) or `original`; every fact but an `original` one names
-  its source.
-- **Lengths** (with some slack around the brief's): location story 130-460 words, boss story 70-345, legends 30-140, book
-  pages and `bookPage` 50-160.
-- **Atmosphere:** every line 60 characters or fewer, said as written; a location has at least one `firstEntry` line; a
-  boss has at least one atmosphere line of any kind. Areas have a name, x/y, a radius from 100 to 30,000 (a whole zone in an
-  umbrella), a region of the location (their own when the location has none), and lines.
-- **Bot lines:** `[a|b]` parses, lower case (caps only for shouting), no slots, 160 characters or fewer in every way of saying it. A location has
-  at least one `tell` line and three bot lines in all; a boss three bot lines in all.
-- **Yells:** 200 characters or fewer; phase triggers parse; add triggers only for bosses with adds.
-- **Loremaster:** a location has an intro and topics; every `[keyword]` in them is a topic of the location or one of its
-  bosses' `loremasterTopic` keyword. A `loremasterTopic` has both keyword and text.
-- **Book:** a title and at least one page.
-- **Chronicle** slots are only `{realm}`, `{raidLeader}` and `{minutes}`.
+**Advisory only** (printed, never failing): lengths (a story, legend, page or chapter shorter than reads well, anything
+over 1,500 words), and the depth report: `LORE_DEPTH` lines with the count of entries below each depth floor of
+LORE-1.2-DEPTH.md (full, minor and epic tiers) and the history files per realm, followed by up to 40 `LORE_WARNING`
+lines.
 
 ## The engine
 
@@ -234,6 +284,31 @@ voices on.
 
 `/lstest lore` says which lore place you are in and forgets your marks there, so its first-entry, area and lair lines
 show again on the next look.
+
+### Long lore in pieces (epic tier)
+
+A long story never goes out as one wall of text. `LorePieces.Split` (`lorechannels/LoreChannelData.cs`) cuts on paragraph
+boundaries (a line of the text is a paragraph), then sentences, then words; it never cuts inside a word unless one word
+is longer than a whole piece, and keeps the order. The limits are the code's own:
+
+- **Text windows** (book pages, /lore): one DetailWindow packet of at most 2,048 bytes (`PacketLib168.cs`,
+  `MAX_PACKET_LENGTH` and `WriteCustomTextWindowData`); what does not fit is dropped without a word, and each line is a
+  Pascal string of at most 255 characters (code page 1252: a byte a character). A book page is therefore at most
+  1,500 characters (`LorePieces.PageChars`); a longer page goes on over the next pages, so a 16-page book may read as
+  more pages and nothing is cut. No page-count limit exists in the item or book code, so books are not split into volumes.
+- **Loremaster words** go out with `SayTo`, one chat message each; `PacketLib1127.SendRawMessage` writes the whole
+  string (no server cap). Each piece is at most 480 characters (`LorePieces.SayChars`, the channels' size since #92).
+
+The loremaster offers a place's summary first: "[the tale of Krondon] is long in the telling; ask of it a part at a
+time: [The Making], [The First Raid]". Each chapter title is a keyword; a chapter is sent in pieces and ends with "Then
+ask of [the next chapter]". The /lore codex pages the chapters after the summary. Bots never quote chapters: they keep
+to their bot lines.
+
+### Which file is where
+
+A boss is found by its script class first, then by its exact spawn name (`npcNames`). Several location files may claim
+one region (an umbrella beside its zone files): the file listing the zone wins, then the narrowest (fewest regions),
+then one with placed areas. Every file's areas count wherever the player is.
 
 ## Channels: loremasters, lore books, the Herald and the codex
 

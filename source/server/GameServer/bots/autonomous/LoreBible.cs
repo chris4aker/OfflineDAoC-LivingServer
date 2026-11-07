@@ -32,6 +32,9 @@ public sealed class LoreBible
 
     public sealed record Loremaster(string Intro, IReadOnlyDictionary<string, string> Topics);
 
+    /// <summary>One chapter of a long (epic tier) story, in order.</summary>
+    public sealed record Chapter(string Title, string Text);
+
     /// <summary>Another place or boss this one knows ("related": rival, servant, kin, master...).</summary>
     public sealed record Related(string Id, string Relation);
 
@@ -102,6 +105,11 @@ public sealed class LoreBible
         public string Era { get; init; } = string.Empty;
         public string[] Factions { get; init; } = [];
         public Related[] RelatedTo { get; init; } = [];
+        /// <summary>The long story in order ("chapters", epic tier); "story" is then its summary. Optional.</summary>
+        public Chapter[] Chapters { get; init; } = [];
+        /// <summary>"epic" (the epic tier: chapters, a long book) or empty.</summary>
+        public string Tier { get; init; } = string.Empty;
+        public bool IsEpic => string.Equals(Tier, "epic", StringComparison.OrdinalIgnoreCase);
         /// <summary>Each realm's own take (a neutral place), by "albion", "midgard", "hibernia". Optional ("realmTakes").</summary>
         public IReadOnlyDictionary<string, RealmTake> RealmTakes { get; init; } = new Dictionary<string, RealmTake>();
         public string File { get; init; } = string.Empty;
@@ -124,6 +132,16 @@ public sealed class LoreBible
         public string Era { get; init; } = string.Empty;
         public string[] Factions { get; init; } = [];
         public Related[] RelatedTo { get; init; } = [];
+        /// <summary>The long story in order ("chapters", epic tier); "story" is then its summary. Optional.</summary>
+        public Chapter[] Chapters { get; init; } = [];
+        /// <summary>"bookPage" as one page or a list of pages (epic bosses: 2-4).</summary>
+        public string[] BookPages { get; init; } = [];
+        /// <summary>Exact spawn names, for a plain world spawn with no catalog entry or script class (coverage audit). Optional.</summary>
+        public string[] NpcNames { get; init; } = [];
+        /// <summary>"minor" (level 35-49, the minor depth floor) or empty (a full boss).</summary>
+        public string Tier { get; init; } = string.Empty;
+        public bool IsMinor => string.Equals(Tier, "minor", StringComparison.OrdinalIgnoreCase);
+        public bool IsEpic => string.Equals(Tier, "epic", StringComparison.OrdinalIgnoreCase);
         /// <summary>Each realm's own take (a neutral boss: Govannon). Optional ("realmTakes").</summary>
         public IReadOnlyDictionary<string, RealmTake> RealmTakes { get; init; } = new Dictionary<string, RealmTake>();
         public string File { get; init; } = string.Empty;
@@ -158,6 +176,7 @@ public sealed class LoreBible
     private readonly Dictionary<ushort, (Location, Area)[]> _areasByRegion;
     private readonly Dictionary<string, Boss[]> _bossesByClass;
     private readonly Dictionary<string, Boss[]> _bossesByLocation;
+    private readonly Dictionary<string, Boss> _bossesByName;
     private readonly Dictionary<string, (History, Era)> _eras;
     private readonly Dictionary<string, (History, Faction)> _factions;
 
@@ -196,6 +215,11 @@ public sealed class LoreBible
             .ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.Ordinal);
         _bossesByLocation = bosses.GroupBy(b => b.LocationId ?? string.Empty, StringComparer.OrdinalIgnoreCase)
             .ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.OrdinalIgnoreCase);
+        _bossesByName = new Dictionary<string, Boss>(StringComparer.Ordinal);
+        foreach (Boss boss in bosses)
+            foreach (string name in boss.NpcNames)
+                if (!string.IsNullOrWhiteSpace(name))
+                    _bossesByName.TryAdd(name.Trim(), boss);
     }
 
     public static LoreBible Empty { get; } = new([], [], [], []);
@@ -211,6 +235,12 @@ public sealed class LoreBible
     /// <summary>The boss file for a script class ("ScurceolHyrde"), or null. A class with two files (never valid) gives the first.</summary>
     public Boss BossForClass(string className) =>
         className != null && _bossesByClass.TryGetValue(className.ToLowerInvariant(), out Boss[] b) ? b[0] : null;
+
+    /// <summary>The boss file whose npcNames has this exact spawn name, or null.</summary>
+    public Boss BossForName(string npcName) => npcName != null && _bossesByName.TryGetValue(npcName.Trim(), out Boss b) ? b : null;
+
+    /// <summary>A live NPC's boss file: by its script class first, then by its exact name (a plain world spawn).</summary>
+    public Boss BossFor(string className, string npcName) => BossForClass(className) ?? BossForName(npcName);
 
     public bool HasBossClass(string className) => className != null && _bossesByClass.ContainsKey(className.ToLowerInvariant());
 
@@ -369,6 +399,19 @@ public sealed class LoreBible
         }).ToArray();
     }
 
+    private static Chapter[] ParseChapters(JsonElement root, string file, List<string> problems) =>
+        Objects(root, "chapters", file, problems).Select(c =>
+        {
+            Unknown(c, ["title", "text"], file + " chapter", problems);
+            return new Chapter(Str(c, "title"), Str(c, "text"));
+        }).ToArray();
+
+    /// <summary>"bookPage": one page as text, or a list of pages.</summary>
+    private static string[] BookPagesOf(JsonElement root, string file, List<string> problems) =>
+        root.TryGetProperty("bookPage", out JsonElement v) && v.ValueKind == JsonValueKind.Array
+            ? Strs(root, "bookPage", file, problems).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray()
+            : Str(root, "bookPage") is { Length: > 0 } page ? [page] : [];
+
     private static Related[] ParseRelated(JsonElement root, string file, List<string> problems) =>
         Objects(root, "related", file, problems).Select(r =>
         {
@@ -378,13 +421,13 @@ public sealed class LoreBible
 
     private static readonly string[] LocationKeys =
         ["id", "name", "realm", "regions", "zones", "aliases", "summary", "facts", "story", "legend", "atmosphere", "botLines", "loremaster", "book", "bosses", "realmTakes",
-         "era", "factions", "related"];
+         "era", "factions", "related", "chapters", "tier"];
     private static readonly string[] LocationAtmosphereKeys = ["firstEntry", "areas", "raidForming"];
     private static readonly string[] AreaKeys = ["name", "region", "x", "y", "z", "radius", "lines"];
     private static readonly string[] LocationBotKeys = ["lore", "rumour", "tell"];
     private static readonly string[] BossKeys =
         ["id", "name", "catalogKey", "locationId", "realm", "aliases", "facts", "story", "legend", "yells", "atmosphere", "botLines", "loremasterTopic", "bookPage", "chronicle", "realmTakes",
-         "era", "factions", "related"];
+         "era", "factions", "related", "npcNames", "tier", "chapters"];
     private static readonly string[] TakeKeys = ["story", "legend", "botLines", "loremaster", "loremasterTopic"];
     private static readonly string[] YellKeys = ["aggro", "phases", "death", "slay"];
     private static readonly string[] BossAtmosphereKeys = ["lairEntry", "phases", "realmFirstKill", "wake"];
@@ -594,6 +637,8 @@ public sealed class LoreBible
             RaidForming = Strs(atmosphere, "raidForming", file, problems),
             Aliases = Strs(root, "aliases", file, problems),
             RealmTakes = ParseTakes(root, file, LocationBotKeys, problems),
+            Chapters = ParseChapters(root, file, problems),
+            Tier = Str(root, "tier"),
             Era = Str(root, "era"),
             Factions = Strs(root, "factions", file, problems),
             RelatedTo = ParseRelated(root, file, problems),
@@ -620,10 +665,14 @@ public sealed class LoreBible
             Strs(atmosphere, "lairEntry", file, problems), Phases(atmosphere, file + " atmosphere", problems),
             Str(atmosphere, "realmFirstKill"), Str(atmosphere, "wake"), Strs(bot, "briefing", file, problems),
             Strs(bot, "aftermathWin", file, problems), Strs(bot, "aftermathLoss", file, problems), Strs(bot, "rumour", file, problems),
-            Str(topic, "keyword"), Str(topic, "text"), Str(root, "bookPage"), Str(chronicle, "win"), Str(chronicle, "loss"))
+            Str(topic, "keyword"), Str(topic, "text"), string.Join(" ", BookPagesOf(root, file, [])), Str(chronicle, "win"), Str(chronicle, "loss"))
         {
             Aliases = Strs(root, "aliases", file, problems),
             RealmTakes = ParseTakes(root, file, BossBotKeys, problems),
+            NpcNames = Strs(root, "npcNames", file, problems),
+            Chapters = ParseChapters(root, file, problems),
+            BookPages = BookPagesOf(root, file, problems),
+            Tier = Str(root, "tier"),
             Era = Str(root, "era"),
             Factions = Strs(root, "factions", file, problems),
             RelatedTo = ParseRelated(root, file, problems),
@@ -638,7 +687,8 @@ public sealed class LoreBible
     public const int MaxAtmosphereLength = 60;
     public const int MaxBotLineLength = AutonomousBotVoiceCorpus.MaxLength;
     public const int MaxYellLength = 200;
-    public const int MaxBookPages = 8;
+    /// <summary>A location's book: 16 pages at most (epic tier: 8-16). A page too long for one text window turns into more.</summary>
+    public const int MaxBookPages = 16;
     public const int MaxAdvisedWords = 1_500;
     public static readonly string[] Realms = ["Albion", "Midgard", "Hibernia", "Neutral"];
     /// <summary>"myth": the real-world myth a name comes from, not game canon (Balor, Hati and Skoll). Needs its source too.</summary>
@@ -706,6 +756,20 @@ public sealed class LoreBible
                 warnings.Add($"{file}: {what} is {Words(text)} words (at least {low} reads as a story)");
             else if (Words(text) > MaxAdvisedWords)
                 warnings.Add($"{file}: {what} is {Words(text)} words (over {MaxAdvisedWords} is long for one sitting)");
+        }
+        void CheckChapters(Chapter[] chapters, string file)
+        {
+            foreach (Chapter chapter in chapters)
+            {
+                Need(!string.IsNullOrWhiteSpace(chapter.Title), $"{file}: a chapter without a title");
+                Need(!string.IsNullOrWhiteSpace(chapter.Text), $"{file}: chapter \"{chapter.Title}\" has no text");
+                Need((chapter.Title ?? string.Empty).Length <= 60 && !(chapter.Title ?? string.Empty).Contains('['),
+                    $"{file}: chapter title \"{chapter.Title}\" is a loremaster keyword: 60 characters at most, no brackets");
+                if (Words(chapter.Text) is var words && words > 0 && (words < 250 || words > 700))
+                    warnings.Add($"{file}: chapter \"{chapter.Title}\" is {words} words (250-700 reads best)");
+            }
+            foreach (var same in chapters.GroupBy(c => (c.Title ?? string.Empty).Trim(), StringComparer.OrdinalIgnoreCase).Where(g => g.Count() > 1))
+                problems.Add($"{file}: chapter title \"{same.Key}\" is there twice");
         }
         void CheckAtmosphere(IEnumerable<string> lines, string what, string file)
         {
@@ -832,6 +896,8 @@ public sealed class LoreBible
                             $"{f}: loremaster keyword [{m.Groups[1].Value}] has no topic here or in one of its bosses' loremasterTopic");
             }
             CheckTakes(l.RealmTakes, f, 60, 460);   // a take is one realm's angle, shorter than the story
+            Need(string.IsNullOrEmpty(l.Tier) || l.IsEpic, $"{f}: a location's tier is \"epic\" or left out, not \"{l.Tier}\"");
+            CheckChapters(l.Chapters, f);
             if (l.Book == null)
                 problems.Add($"{f}: a book (title and pages)");
             else
@@ -859,13 +925,19 @@ public sealed class LoreBible
             problems.Add($"boss id \"{group.Key}\" is used by {string.Join(", ", group.Select(b => b.File))}");
         foreach (var group in Bosses.Where(b => b.ClassKey.Length > 0).GroupBy(b => b.ClassKey, StringComparer.Ordinal).Where(g => g.Count() > 1))
             problems.Add($"catalogKey \"{group.First().CatalogKey}\" is used by {string.Join(", ", group.Select(b => b.File))}");
+        foreach (var group in Bosses.SelectMany(b => b.NpcNames.Select(n => (Name: n.Trim(), Boss: b))).Where(p => p.Name.Length > 0)
+                     .GroupBy(p => p.Name, StringComparer.Ordinal).Where(g => g.Select(p => p.Boss.Id).Distinct().Count() > 1))
+            problems.Add($"npcNames \"{group.Key}\" is claimed by {string.Join(", ", group.Select(p => p.Boss.File).Distinct())}");
         foreach (Boss b in Bosses)
         {
             string f = b.File;
             CheckId(b.Id, f, "bosses");
             Need(!string.IsNullOrWhiteSpace(b.Name), $"{f}: a name");
             Need(Realms.Contains(b.Realm), $"{f}: realm \"{b.Realm}\" must be one of {string.Join(", ", Realms)}");
-            Need(!string.IsNullOrWhiteSpace(b.CatalogKey), $"{f}: a catalogKey (the epic-encounters.json id or the script class)");
+            Need(!string.IsNullOrWhiteSpace(b.CatalogKey) || b.NpcNames.Any(n => !string.IsNullOrWhiteSpace(n)),
+                $"{f}: a catalogKey (the epic-encounters.json id or the script class) or npcNames (exact spawn names)");
+            foreach (string name in b.NpcNames)
+                Need(!string.IsNullOrWhiteSpace(name) && name == name.Trim(), $"{f}: npcNames \"{name}\" must be the exact spawn name");
             if (catalog != null && !string.IsNullOrWhiteSpace(b.CatalogKey))
                 Need(catalog.Knows(b.CatalogKey), $"{f}: catalogKey \"{b.CatalogKey}\" is no id or script class in docs/encounters/epic-encounters.json");
             Location home = LocationById(b.LocationId);
@@ -899,8 +971,11 @@ public sealed class LoreBible
             Need(b.Briefing.Length + b.AftermathWin.Length + b.AftermathLoss.Length + b.Rumour.Length >= 3, $"{f}: at least 3 bot lines");
             Need(string.IsNullOrWhiteSpace(b.LoremasterKeyword) == string.IsNullOrWhiteSpace(b.LoremasterText),
                 $"{f}: loremasterTopic needs both keyword and text");
-            if (!string.IsNullOrWhiteSpace(b.BookPage))
-                CheckWords(b.BookPage, 50, 160, "bookPage", f);
+            foreach (string page in b.BookPages)
+                CheckWords(page, 50, 160, "bookPage", f);
+            Need(string.IsNullOrEmpty(b.Tier) || b.IsMinor || b.IsEpic || string.Equals(b.Tier, "major", StringComparison.OrdinalIgnoreCase),
+                $"{f}: tier \"{b.Tier}\" must be minor, major or epic (or left out)");
+            CheckChapters(b.Chapters, f);
             foreach ((string text, string what) in new[] { (b.ChronicleWin, "chronicle.win"), (b.ChronicleLoss, "chronicle.loss") })
                 foreach (Match m in SlotRe.Matches(text ?? string.Empty))
                     Need(ChronicleSlots.Contains(m.Groups[1].Value), $"{f}: {what} slot {{{m.Groups[1].Value}}} (only {{realm}}, {{raidLeader}}, {{minutes}})");
@@ -1004,6 +1079,16 @@ public sealed class LoreBible
             ("book 4-8 pages of 100+ words", l => l.Book == null || l.Book.Pages.Length < 4 || l.Book.Pages.Any(p => W(p) < 100)),
             ("an era and a faction", l => string.IsNullOrWhiteSpace(l.Era) || l.Factions.Length == 0),
         };
+        var minorFloors = new (string What, Func<Boss, bool> Short)[]
+        {
+            ("story 150+ words", b => W(b.Story) < 150),
+            ("legend 60+ words", b => W(b.Legend) < 60),
+            ("2+ facts", b => b.Facts.Length < 2),
+            ("aggro 2+, death 1+, slay 1+ yells", b => b.AggroYells.Length < 2 || b.DeathYells.Length < 1 || b.SlayYells.Length < 1),
+            ("lairEntry 1+", b => b.LairEntry.Length < 1),
+            ("briefing, aftermathWin, rumour 2+ each", b => b.Briefing.Length < 2 || b.AftermathWin.Length < 2 || b.Rumour.Length < 2),
+            ("loremasterTopic and chronicle win", b => string.IsNullOrWhiteSpace(b.LoremasterKeyword) || string.IsNullOrWhiteSpace(b.ChronicleWin)),
+        };
         var bossFloors = new (string What, Func<Boss, bool> Short)[]
         {
             ("story 250+ words", b => W(b.Story) < 250),
@@ -1012,15 +1097,40 @@ public sealed class LoreBible
             ("lairEntry 2+ and realmFirstKill", b => b.LairEntry.Length < 2 || string.IsNullOrWhiteSpace(b.RealmFirstKill)),
             ("briefing, aftermathWin, aftermathLoss, rumour 4+ each",
                 b => b.Briefing.Length < 4 || b.AftermathWin.Length < 4 || b.AftermathLoss.Length < 4 || b.Rumour.Length < 4),
-            ("loremasterTopic and bookPage 100+ words", b => string.IsNullOrWhiteSpace(b.LoremasterKeyword) || W(b.BookPage) < 100),
+            ("loremasterTopic and bookPage 100+ words", b => string.IsNullOrWhiteSpace(b.LoremasterKeyword) || b.BookPages.Length == 0 || b.BookPages.Any(p => W(p) < 100)),
             ("chronicle win and loss", b => string.IsNullOrWhiteSpace(b.ChronicleWin) || string.IsNullOrWhiteSpace(b.ChronicleLoss)),
             ("an era, a faction or related", b => string.IsNullOrWhiteSpace(b.Era) && b.Factions.Length == 0 && b.RelatedTo.Length == 0),
+        };
+        static int ChapterWords(Chapter[] c) => c.Sum(x => W(x.Text));
+        var epicPlaces = new (string What, Func<Location, bool> Short)[]
+        {
+            ("4-10 chapters", l => l.Chapters.Length < 4 || l.Chapters.Length > 10),
+            ("chapters 3,000+ words", l => ChapterWords(l.Chapters) < 3000),
+            ("story summary 300-500 words", l => W(l.Story) < 300 || W(l.Story) > 500),
+            ("book 8-16 pages", l => l.Book == null || l.Book.Pages.Length < 8),
+        };
+        var epicBosses = new (string What, Func<Boss, bool> Short)[]
+        {
+            ("4+ chapters", b => b.Chapters.Length < 4),
+            ("chapters 1,000+ words (1,800+ for raid finals and dragons)", b => ChapterWords(b.Chapters) < 1000),
+            ("story summary 300-500 words", b => W(b.Story) < 300 || W(b.Story) > 500),
+            ("bookPage 2-4 pages", b => b.BookPages.Length < 2),
         };
         var report = new List<string>();
         foreach (var (what, isShort) in floors)
             report.Add($"locations: {what}: {Locations.Count(isShort)} of {Locations.Length} below");
+        Boss[] major = Bosses.Where(b => !b.IsMinor && !b.IsEpic).ToArray();
+        Boss[] minor = Bosses.Where(b => b.IsMinor).ToArray();
         foreach (var (what, isShort) in bossFloors)
-            report.Add($"bosses: {what}: {Bosses.Count(isShort)} of {Bosses.Length} below");
+            report.Add($"bosses: {what}: {major.Count(isShort)} of {major.Length} below");
+        foreach (var (what, isShort) in minorFloors)
+            report.Add($"minor bosses: {what}: {minor.Count(isShort)} of {minor.Length} below");
+        Location[] epicL = Locations.Where(l => l.IsEpic).ToArray();
+        Boss[] epicB = Bosses.Where(b => b.IsEpic).ToArray();
+        foreach (var (what, isShort) in epicPlaces)
+            report.Add($"epic locations: {what}: {epicL.Count(isShort)} of {epicL.Length} below");
+        foreach (var (what, isShort) in epicBosses)
+            report.Add($"epic bosses: {what}: {epicB.Count(isShort)} of {epicB.Length} below");
         foreach (string realm in Realms.Take(3))
             report.Add($"history: {realm}: {(HistoryFor(realm) is { } h ? $"{h.Eras.Length} eras, {h.Factions.Length} factions" : "no file yet")}");
         return report;
