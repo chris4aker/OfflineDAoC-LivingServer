@@ -86,13 +86,19 @@ class CatalogFileTests(unittest.TestCase):
 
     def test_move_picks_include_bots_exactly_where_bot_displacement_ships_on(self):
         # 1.2: EncounterTargets.DisplacesBots asks the move's own switch (AllowBotDisplacement per encounter).
-        self.assertEqual(cat.shipped_bot_displacement(), {"AlbGolestandt", "MidGjalpinulva", "HibCuuldurach", "Xanxicar"})
+        # Wave 2 ships more per dungeon; the dragons, Xanxicar and (Midgard/Hibernia wave) Jailer Vifil among them, Legion never.
+        shipped = cat.shipped_bot_displacement()
+        self.assertTrue({"AlbGolestandt", "MidGjalpinulva", "HibCuuldurach", "Xanxicar", "Jailer"} <= shipped)
+        self.assertNotIn("Legion", shipped)
         by_id = {e["id"]: e for e in self.data["encounters"]}
         throw = [r for r in by_id["crystal-cave/xanxicar"]["rules"] if r["kind"] == "teleport"]
         self.assertTrue(throw)
         self.assertNotIn("real players only", throw[0].get("affects") or "", "Xanxicar's throw picks bots as shipped")
         jail = [r for r in by_id["tuscaran-glacier/jailer"]["rules"] if r["kind"] == "teleport"]
-        self.assertIn("real players only", jail[0].get("affects") or "", "elsewhere move picks stay player-only")
+        self.assertNotIn("real players only", jail[0].get("affects") or "", "Vifil's jail picks bots as shipped (wave 2)")
+        olc = [r for r in by_id["galladoria/olcasgean"]["rules"] if r["kind"] == "teleport"]
+        if "Olcasgean" not in shipped and olc:
+            self.assertIn("real players only", olc[0].get("affects") or "", "elsewhere move picks stay player-only")
 
     def test_known_blockers_are_read(self):
         by_id = {e["id"]: e for e in self.data["encounters"]}

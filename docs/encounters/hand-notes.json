@@ -804,16 +804,32 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "ddbafcd28c0d85ab9a71d42b179edd8a4d705e1c1b8daf8c0c37f235702d65a2"
+   },
+   "rules": {
+    "teleport@107": {
+     "tactic": "Doorway push (a barrier: nothing to recover from): on since 1.2 for bots too (AllowBotDisplacement for Anurigunda). Sic: its radius is the region number (180), as in the original, so only raiders right on top of her by the doorway are pushed back into her room.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "fomor-city/krackenschtein": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "8025ccf0e6a8ffe9c60d27d7c25337d2c8d5a35d185e1d04b20d62595e743d83"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "147e40217973555da2bb68a1e23c4f843b08c5dbd72950246678153b23ffd458"
    },
    "aiTactics": {
     "summary": "Close in: he takes damage only from within 300, so every raider, casters too, fights from within 220-280 of him. His throw (four spots 465 above his floor) takes bots too since 1.2; they fall and walk back.",
     "since": "1.2"
+   },
+   "rules": {
+    "teleport@189": {
+     "tactic": "Throw: on since 1.2 for bots too (AllowBotDisplacement for Krackenschtein). A moved bot falls 465 at one of four spots by him and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    },
+    "immune_while@47": {
+     "tactic": "In the raid AI (EpicEncounterTactics.Hibernia): every raider, casters too, fights from within 220-280 of him.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "fomor-city/myrddraxis": {
@@ -1449,6 +1465,12 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs": "a44df58d5e6bb1e6074e126068ca591c46ff429d97300fb60f2996312b4fa3c6"
+   },
+   "rules": {
+    "teleport@143": {
+     "tactic": "Teleport: on since 1.2 for bots too (AllowBotDisplacement for Iarnvidiur). A moved bot lands at one of four spots about 2,000 from him and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "iarnvidiur-s-lair/lydsyg": {
@@ -1804,6 +1826,12 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs": "f4a394bfb6c32d7e694d0e336643539e9bb181a480a9e10db2411ad887385c97"
+   },
+   "rules": {
+    "teleport@153": {
+     "tactic": "Throw of her target into the water: on since 1.2 for bots too (AllowBotDisplacement for Ydenia). A moved bot lands at one of four spots in the water; an off-tank picks her up meanwhile and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "midgard-named-mobs-shrouded-isles/basilius": {
@@ -1816,6 +1844,12 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs": "3e81d99dc4a6fe06a5c9e7e86b4714427ff2633e3d7825183846681c7f345ad1"
+   },
+   "rules": {
+    "teleport@156": {
+     "tactic": "Port: on since 1.2 for bots too (AllowBotDisplacement for Boligar). A moved bot lands at one of four spots about 1,000 from him and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "midgard-named-mobs-shrouded-isles/chieftarek": {
@@ -1846,6 +1880,12 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs": "910bcad151c667e0c1a72a408660e2de5dca862ef8018bdf5f8b3d83d6217a7d"
+   },
+   "rules": {
+    "teleport@171": {
+     "tactic": "Throw: on since 1.2 for bots too (AllowBotDisplacement for Mortufoghus). A moved bot lands up to 1,500 from him on the floor nearest the spot (a fifth of its health as fall damage, as for players) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "midgard-named-mobs-shrouded-isles/shredclaw": {
@@ -1888,6 +1928,12 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "12c06112f7f057486c362e7b5faec6604e7739fb03319f9a9c68ad21ab2c9b07"
+   },
+   "rules": {
+    "teleport@180": {
+     "tactic": "Kick: on since 1.2 for bots too (AllowBotDisplacement for GlacierGiant). A moved bot flies up to about 12,000 units, falls and and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "open-world/gnat": {
@@ -1926,7 +1972,7 @@
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "b1670c27f8287fd476963dcd604ed0c3d6ee926691321f3dca547a4262198f83"
    },
-   "notes": "Level 80, 200,000 health (300,000 behind AllowGovannonFullHealth, off), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, throws real players only; bots too once EncounterTargets.BotsCanBeDisplaced is on). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
+   "notes": "Level 80, 300,000 health (AllowGovannonFullHealth, on since 1.2; 200,000 with it off), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
    "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known.",
    "aiTactics": {
     "spreadRadius": 300,
@@ -1958,6 +2004,10 @@
     "phase@304": {
      "tactic": "In the raid AI (EpicEncounterTactics): spread while he has the demon model (636).",
      "difficulty": "needs new raid AI"
+    },
+    "teleport@689": {
+     "tactic": "Shade of Aelfgar's gallery port: on since 1.2 for bots too (AllowBotDisplacement for ShadeOfAelfgar). A moved bot lands on the gallery 834 above his floor and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
     }
    }
   },
@@ -1965,6 +2015,12 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "71371583d6bed9cab527981da675b0a7d501642eb66f584d00692147801cd770"
+   },
+   "rules": {
+    "teleport@234": {
+     "tactic": "Ledge throw: on since 1.2 for bots too (AllowBotDisplacement for SummonerCunovinda). A moved bot lands on the ledge 1,060 above her floor and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "summoner-s-hall/summonerlossren": {
@@ -2111,6 +2167,16 @@
    "aiTactics": {
     "summary": "Shards first: while he is above 35% the raid kills his 2-3 shards (each party takes one), each one taking a quarter of his health; at 35% or less the shards no longer hurt him and the raid kills him (his death removes them). Close in: he takes damage only from within 200 of him and the shards only from within 400 of his spot, so every raider, casters too, fights from within 120-180 of him or 320 of his spot.",
     "since": "1.2"
+   },
+   "rules": {
+    "immune_while@104": {
+     "tactic": "In the raid AI (EpicEncounterTactics.Tuscaran): every raider attacking him, casters too, stands within 120-180 of him.",
+     "difficulty": "easy for the current raid AI"
+    },
+    "immune_while@233": {
+     "tactic": "In the raid AI: raiders on a shard stand within 320 of his spot; the shards die first while he is above 35%.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "tuscaran-glacier/guthlac": {
@@ -2123,6 +2189,12 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "28131ab46a78822da6ec37da3081f5affa4f259ca3106efb0aaf612dc55033e9"
+   },
+   "rules": {
+    "teleport@210": {
+     "tactic": "Toss: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for Hakr). A moved bot falls 220 by him (about 4% fall damage) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "tuscaran-glacier/hjalmar": {
@@ -2147,6 +2219,28 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "724944d493d223a602c0c681ea4a1f3be317b427e958be09c17d14657cc52d35"
+   },
+   "rules": {
+    "teleport@652": {
+     "tactic": "Gust: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for Hurika). A moved bot falls 500-700 straight down by her (about 23-33% fall damage) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    },
+    "position_puzzle@428": {
+     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
+     "difficulty": "off today"
+    },
+    "position_puzzle@470": {
+     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
+     "difficulty": "off today"
+    },
+    "position_puzzle@506": {
+     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
+     "difficulty": "off today"
+    },
+    "position_puzzle@616": {
+     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
+     "difficulty": "off today"
+    }
    }
   },
   "tuscaran-glacier/issorden": {
@@ -2163,6 +2257,12 @@
    "aiTactics": {
     "summary": "Jail rescue (AllowDisplacement, bots too since 1.2): the jail opens when his two tunnel guardians (20,000 health each, at the jail) are dead. Once the fight is on, one bot party (two in a raid of eight parties or more; never the party he fights or the real player's) goes down the tunnel, kills both and comes back (an errand: no path, no progress or past its budget and it rejoins the fight). Every raider jailed after that walks free at once; one jailed before fights the guards with the team, and the recovery frees it when they die (or recalls it after 3 minutes).",
     "since": "1.2"
+   },
+   "rules": {
+    "teleport@167": {
+     "tactic": "Jail: on since 1.2 for bots too (AllowDisplacement, AllowBotDisplacement for Jailer). In the raid AI (EpicEncounterTactics.Tuscaran, an errand): once the fight is on one bot party (two in a raid of eight or more) goes down the tunnel, kills the two guardians and comes back; a jailed bot fights the guards where it lands and walks free when they are dead (recovery jail rule), or recalls after 3 minutes.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "tuscaran-glacier/kingtuscar": {
@@ -2174,6 +2274,12 @@
     "after": "QueenKula",
     "summary": "Twin heal (AllowTuscarTwinHeal, on since 1.2): damage to one twin heals the other while it is hurt, so the raid kills Queen Kula first (the route musters for her) and only the King's own target fights him; the rest of his party turns on her too. Casters and healers on Kula keep clear of his hammers and Thor's Might (500 around his target). Nobody stands in Kula's frost circle.",
     "since": "1.2"
+   },
+   "rules": {
+    "heal@539": {
+     "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "tuscaran-glacier/kvasir": {
@@ -2184,6 +2290,12 @@
    "aiTactics": {
     "summary": "Cold heal (AllowKvasirColdHeal, on since 1.2): no bot casts a cold spell at him (EpicEncounterTactics.ForbidsSpell; casters use their other lines). Scream: from 3 s before his primal scream is due until 4.5 s after his mesmerize (800 around his target, 2 s after the scream), everyone but his target's party stands 1,050 from his target; melee wait there, casters and healers keep casting.",
     "since": "1.2"
+   },
+   "rules": {
+    "immune_while@31": {
+     "tactic": "Cold heal (on since 1.2): no bot casts a cold spell at him (EpicEncounterTactics.ForbidsSpell on every bot's offensive casts); casters use their other lines.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "tuscaran-glacier/nokkvi": {
@@ -2216,6 +2328,20 @@
    "aiTactics": {
     "summary": "Killed first (see King Tuscar). Her drag to the throne (AllowDisplacement, bots too since 1.2) puts a raider in her frost circle, where it is mesmerized or rooted: a bot waits it out like a player (the recovery's walk does not count crowd control as a stall; at most 5 minutes) and walks back. Frost circle (AllowPositionPuzzle, on): no raider fights within 450 of 34128,56095; one that gets there steps out to 600.",
     "since": "1.2"
+   },
+   "rules": {
+    "teleport@280": {
+     "tactic": "Drag to her throne: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for QueenKula). A moved bot lands in her frost circle, waits out the mesmerize or root there like a player (crowd control is no stall; at most 5 minutes) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI"
+    },
+    "position_puzzle@293": {
+     "tactic": "Frost circle: on since 1.2 (AllowPositionPuzzle for QueenKula). In the raid AI (EpicEncounterTactics.Tuscaran): no raider fights within 450 of 34128,56095; one that gets there steps out to 600. A raider she drags there is held by the circle until the crowd control ends, then walks out.",
+     "difficulty": "easy for the current raid AI"
+    },
+    "heal@75": {
+     "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "tuscaran-glacier/skuf": {
@@ -2248,6 +2374,24 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "724944d493d223a602c0c681ea4a1f3be317b427e958be09c17d14657cc52d35"
+   },
+   "rules": {
+    "position_puzzle@50": {
+     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
+     "difficulty": "off today"
+    },
+    "position_puzzle@70": {
+     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
+     "difficulty": "off today"
+    },
+    "position_puzzle@155": {
+     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
+     "difficulty": "off today"
+    },
+    "position_puzzle@284": {
+     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
+     "difficulty": "off today"
+    }
    }
   },
   "tuscaran-glacier/vagn": {

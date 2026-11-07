@@ -1029,7 +1029,7 @@
    "teleport": 32,
    "tether": 54
   },
-  "rulesVerified": 858,
+  "rulesVerified": 862,
   "rulesRead": 494,
   "rulesInferred": 368,
   "handEntries": 2
@@ -9420,10 +9420,9 @@
      "method": "BlockEntrance",
      "subtype": "fixed_spot",
      "displacement": "Barrier",
+     "tactic": "Doorway push (a barrier: nothing to recover from): on since 1.2 for bots too (AllowBotDisplacement for Anurigunda). Sic: its radius is the region number (180), as in the original, so only raiders right on top of her by the doorway are pushed back into her room.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "unsafe for bots today",
-     "tacticSource": "default for its kind",
      "key": "teleport@107"
     },
     {
@@ -9509,10 +9508,9 @@
      "method": "TakeDamage",
      "subtype": "attacker_position",
      "condition": "if (!source.IsWithinRadius(this, 300))",
-     "verified": false,
-     "tactic": "Fight it up close: casters and archers move in to the allowed distance or switch to the adds.",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
+     "tactic": "In the raid AI (EpicEncounterTactics.Hibernia): every raider, casters too, fights from within 220-280 of him.",
+     "difficulty": "easy for the current raid AI",
+     "verified": true,
      "key": "immune_while@47"
     },
     {
@@ -9525,7 +9523,7 @@
      "confidence": "read",
      "sourceClass": "KrackenschteinBrain",
      "method": "Think",
-     "verified": false,
+     "verified": true,
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -9543,10 +9541,9 @@
      "method": "TeleportRandomTarget",
      "subtype": "air_toss",
      "displacement": "Throw",
-     "verified": false,
-     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "unsafe for bots today",
-     "tacticSource": "default for its kind",
+     "tactic": "Throw: on since 1.2 for bots too (AllowBotDisplacement for Krackenschtein). A moved bot falls 465 at one of four spots by him and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI",
+     "verified": true,
      "key": "teleport@189"
     },
     {
@@ -9560,7 +9557,7 @@
      "sourceClass": "KrackenschteinBrain",
      "method": "Think",
      "packSize": 8,
-     "verified": false,
+     "verified": true,
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -9610,12 +9607,11 @@
    "templateTetherRange": 4500,
    "raids": [],
    "raidAi": "no raid",
-   "verificationStale": true,
    "aiTactics": {
     "summary": "Close in: he takes damage only from within 300, so every raider, casters too, fights from within 220-280 of him. His throw (four spots 465 above his floor) takes bots too since 1.2; they fall and walk back.",
     "since": "1.2"
    },
-   "verified": false
+   "verified": true
   },
   {
    "id": "fomor-city/myrddraxis",
@@ -20220,10 +20216,9 @@
      "method": "TeleportPlayer",
      "subtype": "fixed_spot",
      "displacement": "Teleport",
+     "tactic": "Teleport: on since 1.2 for bots too (AllowBotDisplacement for Iarnvidiur). A moved bot lands at one of four spots about 2,000 from him and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "unsafe for bots today",
-     "tacticSource": "default for its kind",
      "key": "teleport@143"
     }
    ],
@@ -25083,10 +25078,9 @@
      "method": "YdeniaPort",
      "subtype": "air_toss",
      "displacement": "Throw",
+     "tactic": "Throw of her target into the water: on since 1.2 for bots too (AllowBotDisplacement for Ydenia). A moved bot lands at one of four spots in the water; an off-tank picks her up meanwhile and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "unsafe for bots today",
-     "tacticSource": "default for its kind",
      "key": "teleport@153"
     },
     {
@@ -25299,10 +25293,9 @@
      "method": "TeleportPlayer",
      "subtype": "fixed_spot",
      "displacement": "Teleport",
+     "tactic": "Port: on since 1.2 for bots too (AllowBotDisplacement for Boligar). A moved bot lands at one of four spots about 1,000 from him and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "unsafe for bots today",
-     "tacticSource": "default for its kind",
      "key": "teleport@156"
     }
    ],
@@ -25781,10 +25774,9 @@
      "method": "ThrowPlayer",
      "subtype": "fixed_spot",
      "displacement": "Teleport",
+     "tactic": "Throw: on since 1.2 for bots too (AllowBotDisplacement for Mortufoghus). A moved bot lands up to 1,500 from him on the floor nearest the spot (a fifth of its health as fall damage, as for players) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "unsafe for bots today",
-     "tacticSource": "default for its kind",
      "key": "teleport@171"
     }
    ],
@@ -26492,10 +26484,9 @@
      "method": "TeleportPlayer",
      "subtype": "air_toss",
      "displacement": "Throw",
+     "tactic": "Kick: on since 1.2 for bots too (AllowBotDisplacement for GlacierGiant). A moved bot flies up to about 12,000 units, falls and and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "unsafe for bots today",
-     "tacticSource": "default for its kind",
      "key": "teleport@180"
     }
    ],
@@ -27454,10 +27445,9 @@
      "subtype": "fixed_spot",
      "displacement": "Teleport",
      "from": "add",
+     "tactic": "Shade of Aelfgar's gallery port: on since 1.2 for bots too (AllowBotDisplacement for ShadeOfAelfgar). A moved bot lands on the gallery 834 above his floor and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "unsafe for bots today",
-     "tacticSource": "default for its kind",
      "key": "teleport@689"
     },
     {
@@ -27584,7 +27574,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Level 80, 200,000 health (300,000 behind AllowGovannonFullHealth, off), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, throws real players only; bots too once EncounterTargets.BotsCanBeDisplaced is on). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
+   "notes": "Level 80, 300,000 health (AllowGovannonFullHealth, on since 1.2; 200,000 with it off), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
    "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known.",
    "aiTactics": {
     "spreadRadius": 300,
@@ -27687,10 +27677,9 @@
      "method": "CastBolt",
      "subtype": "fixed_spot",
      "displacement": "Teleport",
+     "tactic": "Ledge throw: on since 1.2 for bots too (AllowBotDisplacement for SummonerCunovinda). A moved bot lands on the ledge 1,060 above her floor and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "unsafe for bots today",
-     "tacticSource": "default for its kind",
      "key": "teleport@234"
     }
    ],
@@ -31528,10 +31517,9 @@
      "method": "TakeDamage",
      "subtype": "attacker_position",
      "condition": "if (!source.IsWithinRadius(this, 200))",
+     "tactic": "In the raid AI (EpicEncounterTactics.Tuscaran): every raider attacking him, casters too, stands within 120-180 of him.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Fight it up close: casters and archers move in to the allowed distance or switch to the adds.",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
      "key": "immune_while@104"
     },
     {
@@ -31547,10 +31535,9 @@
      "subtype": "attacker_position",
      "condition": "if (!source.IsWithinRadius(point, 400))",
      "from": "add",
+     "tactic": "In the raid AI: raiders on a shard stand within 320 of his spot; the shards die first while he is above 35%.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Attack only from where the script allows (see the condition).",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
      "key": "immune_while@233"
     },
     {
@@ -32012,10 +31999,9 @@
       "AllowDisplacement"
      ],
      "displacement": "Throw",
+     "tactic": "Toss: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for Hakr). A moved bot falls 220 by him (about 4% fall damage) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
-     "tacticSource": "default for its kind",
      "key": "teleport@210"
     },
     {
@@ -32125,10 +32111,9 @@
      "switch": [
       "AllowKvasirColdHeal"
      ],
+     "tactic": "Cold heal (on since 1.2): no bot casts a cold spell at him (EpicEncounterTactics.ForbidsSpell on every bot's offensive casts); casters use their other lines.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Stop attacking while the condition holds; meet the condition first.",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
      "key": "immune_while@31"
     },
     {
@@ -32889,10 +32874,9 @@
       "AllowDisplacement"
      ],
      "displacement": "Jail",
+     "tactic": "Jail: on since 1.2 for bots too (AllowDisplacement, AllowBotDisplacement for Jailer). In the raid AI (EpicEncounterTactics.Tuscaran, an errand): once the fight is on one bot party (two in a raid of eight or more) goes down the tunnel, kills the two guardians and comes back; a jailed bot fights the guards where it lands and walks free when they are dead (recovery jail rule), or recalls after 3 minutes.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
-     "tacticSource": "default for its kind",
      "key": "teleport@167"
     }
    ],
@@ -33062,10 +33046,9 @@
       "AllowDisplacement"
      ],
      "displacement": "Teleport",
+     "tactic": "Drag to her throne: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for QueenKula). A moved bot lands in her frost circle, waits out the mesmerize or root there like a player (crowd control is no stall; at most 5 minutes) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
-     "tacticSource": "default for its kind",
      "key": "teleport@280"
     },
     {
@@ -33081,10 +33064,9 @@
      "switch": [
       "AllowPositionPuzzle"
      ],
+     "tactic": "Frost circle: on since 1.2 (AllowPositionPuzzle for QueenKula). In the raid AI (EpicEncounterTactics.Tuscaran): no raider fights within 450 of 34128,56095; one that gets there steps out to 600. A raider she drags there is held by the circle until the crowd control ends, then walks out.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Off today (AllowPositionPuzzle is false). To play it: place parties where the puzzle needs them, then fight.",
-     "difficulty": "off today",
-     "tacticSource": "default for its kind",
      "key": "position_puzzle@293"
     },
     {
@@ -33147,10 +33129,9 @@
      "confidence": "inferred",
      "sourceClass": "QueenKula",
      "method": "TakeDamage",
+     "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Kill or interrupt whatever heals it first.",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
      "key": "heal@75"
     },
     {
@@ -33446,10 +33427,9 @@
      "confidence": "inferred",
      "sourceClass": "KingTuscar",
      "method": "TakeDamage",
+     "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Kill or interrupt whatever heals it first.",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
      "key": "heal@539"
     },
     {
@@ -33788,10 +33768,9 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "verified": true,
-     "tactic": "Off today (AllowGlacierGriffonPatrol is false). To play it: place parties where the puzzle needs them, then fight.",
+     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
      "difficulty": "off today",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "position_puzzle@50"
     },
     {
@@ -33807,10 +33786,9 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "verified": true,
-     "tactic": "Off today (AllowGlacierGriffonPatrol is false). To play it: place parties where the puzzle needs them, then fight.",
+     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
      "difficulty": "off today",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "position_puzzle@70"
     },
     {
@@ -33826,10 +33804,9 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "verified": true,
-     "tactic": "Off today (AllowGlacierGriffonPatrol is false). To play it: place parties where the puzzle needs them, then fight.",
+     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
      "difficulty": "off today",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "position_puzzle@155"
     },
     {
@@ -33845,10 +33822,9 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "verified": true,
-     "tactic": "Off today (AllowGlacierGriffonPatrol is false). To play it: place parties where the puzzle needs them, then fight.",
+     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
      "difficulty": "off today",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "position_puzzle@284"
     },
     {
@@ -34003,10 +33979,9 @@
       "AllowDisplacement"
      ],
      "displacement": "Throw",
+     "tactic": "Gust: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for Hurika). A moved bot falls 500-700 straight down by her (about 23-33% fall damage) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
-     "tacticSource": "default for its kind",
      "key": "teleport@652"
     },
     {
@@ -34022,10 +33997,9 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "verified": true,
-     "tactic": "Off today (AllowGlacierGriffonPatrol is false). To play it: place parties where the puzzle needs them, then fight.",
+     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
      "difficulty": "off today",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "position_puzzle@428"
     },
     {
@@ -34041,10 +34015,9 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "verified": true,
-     "tactic": "Off today (AllowGlacierGriffonPatrol is false). To play it: place parties where the puzzle needs them, then fight.",
+     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
      "difficulty": "off today",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "position_puzzle@470"
     },
     {
@@ -34060,10 +34033,9 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "verified": true,
-     "tactic": "Off today (AllowGlacierGriffonPatrol is false). To play it: place parties where the puzzle needs them, then fight.",
+     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
      "difficulty": "off today",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "position_puzzle@506"
     },
     {
@@ -34079,10 +34051,9 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "verified": true,
-     "tactic": "Off today (AllowGlacierGriffonPatrol is false). To play it: place parties where the puzzle needs them, then fight.",
+     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
      "difficulty": "off today",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "position_puzzle@616"
     }
    ],
