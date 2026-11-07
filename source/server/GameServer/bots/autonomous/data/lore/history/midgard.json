@@ -211,9 +211,11 @@
         }
       ],
       "places": [
+        "iarnwood",
         "tuscaran-glacier"
       ],
       "bosses": [
+        "chief-tarek",
         "council-hord",
         "council-nokkvi",
         "council-otrygg",
@@ -236,7 +238,8 @@
         "king-tuscar",
         "queen-kula",
         "torst",
-        "trollkarl-bonchar"
+        "trollkarl-bonchar",
+        "vasrem"
       ]
     },
     {
@@ -330,6 +333,7 @@
       "summary": "Gjalpinulva the Fenris wolf's daughter, her drakulv and her firstborn Yar; and, by the grandmothers' tale, the wolves of the Iron Wood.",
       "places": [
         "iarnvidiurs-lair",
+        "iarnwood",
         "malmohus"
       ],
       "bosses": [
@@ -346,7 +350,8 @@
       "name": "The Servants of Iarnvidiur",
       "summary": "The old one of the Iarnwood and everything in her lair: her wolves, her herd of animus, her plague.",
       "places": [
-        "iarnvidiurs-lair"
+        "iarnvidiurs-lair",
+        "iarnwood"
       ],
       "bosses": [
         "ancient-syver",
@@ -358,7 +363,8 @@
         "iarnvidiur",
         "lydsyg",
         "skoll",
-        "stanga"
+        "stanga",
+        "vasrem"
       ]
     },
     {
@@ -366,9 +372,12 @@
       "name": "The Iarn Dwarves",
       "summary": "The free dwarf clans of Aegir: the Remnants of Faraheim with their griffons, and Chief Tarek's people under the iron trees.",
       "places": [
-        "iarnvidiurs-lair"
+        "iarnvidiurs-lair",
+        "iarnwood"
       ],
-      "bosses": []
+      "bosses": [
+        "chief-tarek"
+      ]
     },
     {
       "id": "svartalfar",
@@ -399,6 +408,7 @@
       "summary": "Great beasts who serve no one: griffons on the glacier, render packs and terror birds in Faraheim, the old fish of Mahattava's lake.",
       "places": [
         "iarnvidiurs-lair",
+        "iarnwood",
         "tuscaran-glacier"
       ],
       "bosses": [
