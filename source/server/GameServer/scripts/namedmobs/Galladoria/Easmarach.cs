@@ -29,7 +29,7 @@ namespace DOL.GS
             if (EpicEncounterActors.IsCombatant(source))
             {
                 Point3D spawn = new Point3D(SpawnPoint.X, SpawnPoint.Y, SpawnPoint.Z);
-                if (EpicEncounterMechanics.AllowPositionPuzzle && !source.IsWithinRadius(spawn, TetherRange))//dont take any dmg 
+                if (EpicEncounterMechanics.AllowPositionPuzzleFor(this) && !source.IsWithinRadius(spawn, TetherRange))//dont take any dmg 
                 {
                     if (damageType == eDamageType.Body || damageType == eDamageType.Cold || damageType == eDamageType.Energy || damageType == eDamageType.Heat
                         || damageType == eDamageType.Matter || damageType == eDamageType.Spirit || damageType == eDamageType.Crush || damageType == eDamageType.Thrust
@@ -195,16 +195,16 @@ namespace DOL.AI.Brain
             if (Body.IsAlive)
             {
                 Point3D nopass = new Point3D(37653, 52843, 10758);//you shall not pass!
-                foreach(GamePlayer player in Body.GetPlayersInRadius(10000))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 10000, bots: EncounterTargets.DisplacesBots(Body)))
                 {
                     if(player != null)
                     {
-                        if(player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if(player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (player.IsWithinRadius(nopass, 1000))
                             { 
-                                if (EpicEncounterMechanics.AllowDisplacement) player.MoveTo(Body.CurrentRegionID, 40067, 50494, 11708, 1066);
-                                player.Out.SendMessage("The strong current of the waterfall pushes you behind", eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
+                                if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(player, Body.CurrentRegionID, 40067, 50494, 11708, 1066, DisplacementKind.Barrier, Body);
+                                EncounterTargets.Tell(player, "The strong current of the waterfall pushes you behind", eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
                             }
                         }
                     }

@@ -66,6 +66,9 @@ namespace DOL.GS
             /// <summary>Adds that burst from the boss's body when it dies (Spindler Broodmother's underdeveloped spindlers): the
             /// route clears them at the body before it moves on.</summary>
             public string[] DeathAdds { get; init; } = [];
+            /// <summary>The required adds die one at a time in the catalog's order (Aroon's Scaiths: each is immune until the one
+            /// before it is dead; Xaga's fairies, Beatha first): the whole raid takes the first one alive, not one each.</summary>
+            public bool AddsInOrder { get; init; }
 
             public bool HasHazards => Hazards is { Length: > 0 } && HazardRadius > 0;
         }
@@ -307,6 +310,12 @@ namespace DOL.GS
         {
             reason = null;
             if (!Present(chosen)) return chosen;
+            // A dungeon rule's route (DungeonRule.Route: the Crypt Lord's court is pulled as his fight).
+            if (DungeonRoute(chosen, live, out string own) is { } owner0 && owner0 != chosen)
+            {
+                reason = own;
+                chosen = owner0;
+            }
             // A hazard is never the raid's target: the boss it sits beside is.
             if (IsHazard(chosen))
             {
@@ -333,7 +342,8 @@ namespace DOL.GS
             GameNPC[] adds = ShieldingAdds(chosen, live);
             // Before the fight is on the raid musters for the boss itself; its adds come once it (or they) fight.
             if (adds.Length == 0 || !FightOn(chosen, live)) return chosen;
-            GameNPC nearest = adds.OrderBy(a => Vector3.DistanceSquared(front, new Vector3(a.X, a.Y, a.Z))).First();
+            GameNPC nearest = For(chosen).AddsInOrder ? adds[0]
+                : adds.OrderBy(a => Vector3.DistanceSquared(front, new Vector3(a.X, a.Y, a.Z))).First();
             reason = (reason == null ? "" : reason + "; ") + $"required-adds of \"{chosen.Name}\" alive={adds.Length}";
             return nearest;
         }
@@ -364,7 +374,8 @@ namespace DOL.GS
             Reposition
         }
 
-        public readonly record struct Advice(BotAction Action, GameNPC Target, Vector3? StandAt, string Reason);
+        /// <param name="Call">The party's call for this decision (a combat_calls.lines topic; dungeon rules), or null.</param>
+        public readonly record struct Advice(BotAction Action, GameNPC Target, Vector3? StandAt, string Reason, string Call = null);
 
         /// <summary>
         /// The tactic for one raider about to attack <paramref name="target"/>. <paramref name="partyIndex"/> spreads the
@@ -380,6 +391,17 @@ namespace DOL.GS
             if (raider == null || !Present(target)) return default;
             if (classId < 0) classId = EpicEncounterRestores.ClassId(raider);
             Vector3 at = new(raider.X, raider.Y, raider.Z);
+            // A raid breaking off from the fight (the boss, or the boss of this add or of this hazard) goes to the muster first.
+            GameNPC fightOwner = (IsHazard(target) ? HazardOwner(target, live) : RequiredAddOwner(target, live)) ?? target;
+            if (BrokenOff(fightOwner, now) is Vector3 rally)
+                return new(BotAction.StandOff, target, rally, $"break-off from \"{fightOwner.Name}\" to the muster");
+            // Epic wave 2 (EpicEncounterTactics.Signals.cs): announced mechanics (out of a glare, a stun, a breath), the safe
+            // spots and the close-range bosses, before any other rule sends the raider anywhere.
+            if (DecideWaveTwo(raider, target, live, partyIndex, canShootFlyers, now, classId) is Advice waveTwo) return waveTwo;
+            // The encounter's own code rules (dungeon rules, EpicEncounterTactics.DungeonRules.cs) come before the catalog's
+            // generic ones, its hazard rule included (cold casters put Orshom's Fire out); null: no opinion.
+            if (DungeonAdvice(new RuleContext(raider, target, live, partyIndex, canShootFlyers, now, classId)) is Advice own)
+                return own;
             // A hazard (Orshom's Fire) is never fought: the boss it sits beside is, from outside its radius.
             if (IsHazard(target))
             {
@@ -389,9 +411,6 @@ namespace DOL.GS
                     return new(BotAction.StandOff, target, clear, $"hazard \"{target.Name}\": out of it, never hit it");
                 return new(BotAction.Retarget, hazardOwner, null, $"hazard of \"{hazardOwner.Name}\": fight it instead");
             }
-            GameNPC fightOwner = RequiredAddOwner(target, live) ?? target;
-            if (BrokenOff(fightOwner, now) is Vector3 rally)
-                return new(BotAction.StandOff, target, rally, $"break-off from \"{fightOwner.Name}\" to the muster");
             if (For(target) is { HasHazards: true } ht)
                 foreach (GameNPC hazard in LiveHazards(target, live))
                     if (HazardEscape(at, new(hazard.X, hazard.Y, hazard.Z), ht.HazardRadius) is Vector3 outOfIt)
@@ -403,6 +422,11 @@ namespace DOL.GS
                 return new(BotAction.Retarget, first, null, $"after \"{first.Name}\": the party \"{target.Name}\" fights holds it");
             if (RequiredAddOwner(target, live) is { } boss && For(boss).KeepAlive > 0 && ShieldingAdds(boss, live).Length == 0)
                 return new(BotAction.Retarget, boss, null, $"keep-alive add of \"{boss.Name}\": fight the boss");
+            // Adds that die in order (Aroon's Scaiths): one that is not the next to die is held by the party it fights, and
+            // everyone else turns to the next one.
+            if (RequiredAddOwner(target, live) is { } orderBoss && For(orderBoss).AddsInOrder && !Holds(raider, target) &&
+                ShieldingAdds(orderBoss, live) is { Length: > 0 } ordered && ordered[0] != target)
+                return new(BotAction.Retarget, ordered[0], null, $"adds in order: \"{ordered[0].Name}\" dies next");
             if (BlastWithdraw(raider, target, now) is Vector3 safe)
                 return new(BotAction.StandOff, target, safe, $"blast at {NextBlast(target)}%: out of {For(target).BlastRadius}");
             // Area hit around the boss's target (Govannon's demon form): everyone outside that target's party stands clear of it.
@@ -439,7 +463,7 @@ namespace DOL.GS
             }
             if (adds.Length > 0)
             {
-                GameNPC add = adds[AssignedIndex(partyIndex, adds.Length)];
+                GameNPC add = For(target).AddsInOrder ? adds[0] : adds[AssignedIndex(partyIndex, adds.Length)];
                 bool flying = (add.Flags & GameNPC.eFlags.FLYING) != 0 &&
                               AutonomousPveTargetPolicy.IsUnreachableFlyer(add.Flags, add.Z, raider.Z);
                 if (!flying || canShootFlyers)
@@ -635,9 +659,16 @@ namespace DOL.GS
         /// </summary>
         public static bool TryHandle(GameBot bot, GameNPC target)
         {
-            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || For(target) == null && !IsTacticPart(target)) return false;
+            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup ||
+                For(target) == null && !IsTacticPart(target) && !HasWaveTwoRule(bot, target, GameLoop.GameLoopTime) && !HasDungeonRule(target))
+                return false;
             IReadOnlyList<GameNPC> live = Nearby(target);
+            DungeonActs(bot, target, live);
             Advice advice = Decide(bot, target, live, PartyIndex(bot), CanShootFlyers(bot));
+            // In a room whose door is barred while its fight is on (Caer Sidi's horsemen), every spot stays inside it.
+            if (advice.StandAt is Vector3 sent) advice = advice with { StandAt = KeepInsideFor(advice.Target ?? target, sent) };
+            // The party's call for what it plays: the rule's own (Advice.Call) or the one for its reason's tag (mech_*).
+            EncounterMechanicCalls.Consider(bot, RequiredAddOwner(target, live) ?? target, advice);
             switch (advice.Action)
             {
                 case BotAction.Retarget:

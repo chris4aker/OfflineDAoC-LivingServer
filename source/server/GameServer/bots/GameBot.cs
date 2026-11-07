@@ -4832,6 +4832,11 @@ namespace DOL.GS
 
         private void SetRanged()
         {
+            // The class's own kind first when it trains more than one (a mercenary's short bow, an armsman's crossbow):
+            // SetRangedWeapon fills only an empty slot, so the ability order below no longer decides it.
+            if (CharacterClass != null && BotRangedCombat.PreferredRangedType((eCharacterClass)CharacterClass.ID) is eObjectType own &&
+                HasAbility(BotRangedCombat.AbilityFor(own)))
+                BotEquipment.SetRangedWeapon(this, own);
             foreach (Ability ability in GetAllAbilities())
             {
                 switch (ability.KeyName)

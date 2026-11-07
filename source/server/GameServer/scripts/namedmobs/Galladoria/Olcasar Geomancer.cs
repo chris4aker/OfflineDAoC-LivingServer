@@ -253,22 +253,22 @@ namespace DOL.AI.Brain
         #region Cast root on random target
         public static bool CanCast2 = false;
         public static bool StartCastRoot = false;
-        public static GamePlayer randomtarget2 = null;
-        public static GamePlayer RandomTarget2
+        public static GameLiving randomtarget2 = null;
+        public static GameLiving RandomTarget2
         {
             get { return randomtarget2; }
             set { randomtarget2 = value; }
         }
-        List<GamePlayer> Enemys_To_Root = new List<GamePlayer>();
+        List<GameLiving> Enemys_To_Root = new List<GameLiving>();
         public int PickRandomTarget2(ECSGameTimer timer)
         {
             if (HasAggro)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!Enemys_To_Root.Contains(player))
                             {
@@ -281,7 +281,7 @@ namespace DOL.AI.Brain
                 {
                     if (CanCast2 == false)
                     {
-                        GamePlayer Target = (GamePlayer)Enemys_To_Root[Util.Random(0, Enemys_To_Root.Count - 1)];//pick random target from list
+                        GameLiving Target = Enemys_To_Root[Util.Random(0, Enemys_To_Root.Count - 1)];//pick random target from list
                         RandomTarget2 = Target;//set random target to static RandomTarget
                         new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastRoot), 2000);
                         CanCast2 = true;
@@ -584,11 +584,11 @@ namespace DOL.AI.Brain
                     Body.CastSpell(addstun, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
                 }
             }
-            foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000))
             {
-                if (player != null && player.IsAlive && player.Client.Account.PrivLevel == 1)
+                if (player != null && player.IsAlive && EncounterTargets.NotGm(player))
                 {
-                    if (player.CharacterClass.ID is 48 or 47 or 42 or 46) //bard,druid,menta,warden
+                    if (EncounterTargets.ClassId(player) is 48 or 47 or 42 or 46) //bard,druid,menta,warden
                     {
                         if (Body.TargetObject != player)
                         {

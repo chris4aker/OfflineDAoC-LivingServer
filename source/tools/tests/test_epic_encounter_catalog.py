@@ -84,6 +84,42 @@ class CatalogFileTests(unittest.TestCase):
             with self.subTest(script=rel):
                 self.assertEqual(cat.script_hash(REPO / rel), digest, "regenerate the catalog")
 
+    def test_move_picks_include_bots_exactly_where_bot_displacement_ships_on(self):
+        # 1.2: EncounterTargets.DisplacesBots asks the move's own switch (AllowBotDisplacement per encounter).
+        # Wave 2 ships more per dungeon: the dragons, Xanxicar, Galladoria's movers, (Midgard/Hibernia) Jailer Vifil and
+        # (Albion) Krondon's orbs, Krevo and Orylle, Sys'sro, Moran among them. Wave 3: Legion (recalled down from his
+        # platform), Easmarach's push, Legendary Afanc and the horsemen's room barrier.
+        shipped = cat.shipped_bot_displacement()
+        self.assertTrue({"AlbGolestandt", "MidGjalpinulva", "HibCuuldurach", "Xanxicar",
+                         "Olcasgean", "WaterfallAntipass", "WaterPrimal", "SpindlerBroodmother", "Jailer",
+                         "Orylle", "LyftMihtOne", "SyssroRuthless", "MoranTheMighty",
+                         "Legion", "Easmarach", "LegendaryAfanc", "ApocInitializator"} <= shipped)
+        self.assertNotIn("Torst", shipped)
+        water = [r for r in {e["id"]: e for e in self.data["encounters"]}["galladoria/waterprimal"]["rules"] if r["kind"] == "teleport"]
+        self.assertNotIn("real players only", water[0].get("affects") or "", "the Water primal's teleport picks bots (wave 2)")
+        by_id = {e["id"]: e for e in self.data["encounters"]}
+        orylle = [r for r in by_id["krondon/orylle"]["rules"] if r["kind"] == "teleport"]
+        self.assertTrue(orylle)
+        self.assertNotIn("real players only", orylle[0].get("affects") or "", "Orylle's throw picks bots as shipped (wave 2)")
+        throw = [r for r in by_id["crystal-cave/xanxicar"]["rules"] if r["kind"] == "teleport"]
+        self.assertTrue(throw)
+        self.assertNotIn("real players only", throw[0].get("affects") or "", "Xanxicar's throw picks bots as shipped")
+        jail = [r for r in by_id["tuscaran-glacier/jailer"]["rules"] if r["kind"] == "teleport"]
+        self.assertNotIn("real players only", jail[0].get("affects") or "", "Vifil's jail picks bots as shipped (wave 2)")
+        olc = [r for r in by_id["galladoria/olcasgean"]["rules"] if r["kind"] == "teleport"]
+        if "Olcasgean" not in shipped and olc:
+            self.assertIn("real players only", olc[0].get("affects") or "", "elsewhere move picks stay player-only")
+
+    def test_pack_links_by_radius_are_read(self):
+        # Wave 3: EncounterPacks.LinkInRadius (Qan'ris Duros, Durval) is a linked pack within its radius.
+        by_id = {e["id"]: e for e in self.data["encounters"]}
+        for eid, package in (("albion-named-mobs-shrouded-isles/qanrisduros", "DurosBaf"),
+                             ("albion-named-mobs-shrouded-isles/durval", "DurvalBaf")):
+            packs = [r for r in by_id[eid]["rules"] if r["kind"] == "linked_pack"]
+            self.assertEqual(len(packs), 1, eid)
+            self.assertIn(f'PackageID "{package}" within 3,500 of it', packs[0]["summary"])
+            self.assertTrue(packs[0].get("packSize"), eid)
+
     def test_known_blockers_are_read(self):
         by_id = {e["id"]: e for e in self.data["encounters"]}
         scurceol = by_id["krondon/scurceolhyrde"]

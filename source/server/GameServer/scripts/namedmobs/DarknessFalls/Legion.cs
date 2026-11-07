@@ -159,7 +159,8 @@ namespace DOL.GS.Scripts
         }
         public override void EnemyKilled(GameLiving enemy)
         {
-            if (enemy != null && enemy is GamePlayer)
+            // Flood guard (1.2): at most the period raid's count of kill heals in 5 minutes (EncounterFloodGuard).
+            if (enemy != null && EncounterTargets.IsRaider(enemy) && EncounterFloodGuard.TryRecent(this, "Legion.KillHeal", GameLoop.GameLoopTime))
             {
                 BroadcastMessage("Legion says, \"Your soul give me new strength.\"");
                 Health += MaxHealth / 40; //heals if boss kill enemy player for 2.5% of his max health
@@ -597,9 +598,9 @@ namespace DOL.AI.Brain
         {
             if (Body.InCombat && Body.IsAlive && HasAggro)
             {
-                foreach (GamePlayer playerNearby in Body.GetPlayersInRadius(2000))
+                foreach (GameLiving playerNearby in EncounterTargets.InRadius(Body, 2000))
                 {
-                    if (playerNearby != null && playerNearby.Client.Account.PrivLevel == 1)
+                    if (playerNearby != null && EncounterTargets.NotGm(playerNearby))
                     {
                         PlayerCountInLegionLair++;
                     }
@@ -607,6 +608,13 @@ namespace DOL.AI.Brain
                         spawnAmount = 1;
                     if (PlayerCountInLegionLair > 4)
                         spawnAmount = PlayerCountInLegionLair / 4;
+                }
+                // Flood guard (1.2): he counts at most the period raid (64: 16 adds a step), as a full raid of players.
+                int counted = EncounterFloodGuard.Cap("Legion.Adds", PlayerCountInLegionLair);
+                if (counted < PlayerCountInLegionLair)
+                {
+                    PlayerCountInLegionLair = counted;
+                    spawnAmount = counted < 4 ? 1 : counted / 4;
                 }
             }
             if (PlayerCountInLegionLair > 0 && spawnAmount > 0)
@@ -627,8 +635,8 @@ namespace DOL.AI.Brain
             }
         }
         #region Legion Port
-        List<GamePlayer> Port_Enemys = new List<GamePlayer>();
-        List<GamePlayer> randomlyPickedPlayers = new List<GamePlayer>();
+        List<GameLiving> Port_Enemys = new List<GameLiving>();
+        List<GameLiving> randomlyPickedPlayers = new List<GameLiving>();
         public void BroadcastMessage(String message)
         {
             foreach (GamePlayer player in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
@@ -650,7 +658,11 @@ namespace DOL.AI.Brain
                 IOrderedEnumerable<KeyValuePair<GameLiving, AggroAmount>> tempAggroTable = aggroList.OrderByDescending(x => x.Value.Effective).Skip(topPlayersToIngore).OrderBy(x => random.Next());
                 foreach(KeyValuePair<GameLiving, AggroAmount> items in tempAggroTable)
                 {
-                    if (items.Key != null && items.Key.IsAlive && items.Key is GamePlayer player)
+                    // 1.2 (epic wave 3): bots on his aggro list are thrown too when his bot displacement is on (shipped on):
+                    // a thrown bot has no walked way down from the platform, so its recovery recalls it to its party after
+                    // 5 s (EncounterDisplacementRecovery: no path back), about the time a player needs for the zone point.
+                    if (items.Key != null && items.Key.IsAlive &&
+                        (items.Key is GamePlayer || items.Key is GameBot && EncounterTargets.DisplacesBots(Body)) && items.Key is GameLiving player)
                     {
                         if (!Port_Enemys.Contains(player))
                         {
@@ -666,14 +678,14 @@ namespace DOL.AI.Brain
 
                     if (randomlyPickedPlayers.Count > 0)
                     {
-                        foreach (GamePlayer player in randomlyPickedPlayers)
+                        foreach (GameLiving player in randomlyPickedPlayers)
                         {
-                            if (player != null && player.IsAlive && player.Client.Account.PrivLevel == 1 && HasAggro && player.IsWithinRadius(Body, 2500))
+                            if (player != null && player.IsAlive && EncounterTargets.NotGm(player) && HasAggro && player.IsWithinRadius(Body, 2500))
                             {
                                 // An encounter throw, not a party portal: companions stay down fighting Legion instead of
                                 // being dragged up to the platform, whose only way down is a zone point bots can't use
                                 // (2026-10-30 livestream: "the bots get stuck on the platform once you teleport back").
-                                DragonCombatGeometry.ThrowPlayer(player, 249, 48200, 49566, 20833, 1028);
+                                EncounterDisplacement.Move(player, 249, 48200, 49566, 20833, 1028, DisplacementKind.Teleport, Body);
                                 //player.BroadcastUpdate();
                             }
                         }

@@ -47,7 +47,7 @@ namespace DOL.GS
         }
         public override void ReturnToSpawnPoint(short speed)
         {
-            if (!EpicEncounterMechanics.AllowGlacierGriffonPatrol)
+            if (!EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(this))
                 base.ReturnToSpawnPoint(speed);
         }
         #region Stats
@@ -67,7 +67,7 @@ namespace DOL.GS
             Model = 696;
             Faction = FactionMgr.GetFactionByID(140);
             MaxSpeedBase = 250;
-            Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrol ? eFlags.FLYING : 0;
+            Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(this) ? eFlags.FLYING : 0;
             RespawnInterval =ServerProperties.Properties.SET_SI_EPIC_ENCOUNTER_RESPAWNINTERVAL * 60000; //1min is 60000 miliseconds
 
             TorstBrain sbrain = new TorstBrain();
@@ -140,7 +140,7 @@ namespace DOL.AI.Brain
             ThinkInterval = 2000;
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
         public static bool point1check = false;
         public static bool point2check = false;
         public static bool point3check = false;
@@ -152,7 +152,7 @@ namespace DOL.AI.Brain
         #region Torst Flying Path
         public void TorstFlyingPath()
         {
-            if (!EpicEncounterMechanics.AllowGlacierGriffonPatrol) return;
+            if (!EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(Body)) return;
             Point3D point1 = new Point3D();
             point1.X = 51166;
             point1.Y = 37442;
@@ -281,7 +281,7 @@ namespace DOL.AI.Brain
                 //set state to RETURN TO SPAWN
                 FSM.SetCurrentState(eFSMStateType.RETURN_TO_SPAWN);
                 Body.Health = Body.MaxHealth;
-                Body.Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrol ? GameNPC.eFlags.FLYING : 0;
+                Body.Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(Body) ? GameNPC.eFlags.FLYING : 0;
                 SpawnEddies = false;
                 if (!RemoveAdds)
                 {
@@ -307,9 +307,9 @@ namespace DOL.AI.Brain
                     CreateEddies();
                     SpawnEddies = true;
                 }
-                foreach (GamePlayer gamePlayer in Body.GetPlayersInRadius(1500))
+                foreach (GameLiving gamePlayer in EncounterTargets.InRadius(Body, 1500))
                 {
-                    if (gamePlayer != null && gamePlayer.IsAlive && gamePlayer.Client.Account.PrivLevel == 1)
+                    if (gamePlayer != null && gamePlayer.IsAlive && EncounterTargets.NotGm(gamePlayer))
                     {
                         if (!PlayersToAttack.Contains(gamePlayer))
                             PlayersToAttack.Add(gamePlayer);
@@ -425,7 +425,7 @@ namespace DOL.GS
 
         public override void ReturnToSpawnPoint(short speed)
         {
-            if (!EpicEncounterMechanics.AllowGlacierGriffonPatrol)
+            if (!EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(this))
                 base.ReturnToSpawnPoint(speed);
         }
 
@@ -467,7 +467,7 @@ namespace DOL.GS
             INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(60162284);
             LoadTemplate(npcTemplate);
             Faction = FactionMgr.GetFactionByID(140);
-            Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrol ? eFlags.FLYING : 0;
+            Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(this) ? eFlags.FLYING : 0;
             RespawnInterval = ServerProperties.Properties.SET_SI_EPIC_ENCOUNTER_RESPAWNINTERVAL * 60000; //1min is 60000 miliseconds
 
             HurikaBrain sbrain = new HurikaBrain();
@@ -503,7 +503,7 @@ namespace DOL.AI.Brain
         #region Hurika Flying Path
         public void HurikaFlyingPath()
         {
-            if (!EpicEncounterMechanics.AllowGlacierGriffonPatrol) return;
+            if (!EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(Body)) return;
             Point3D point1 = new Point3D();
             point1.X = 54652;
             point1.Y = 36348;
@@ -585,10 +585,10 @@ namespace DOL.AI.Brain
             }
         }
         #endregion
-        public List<GamePlayer> Port_Enemys = new List<GamePlayer>();
+        public List<GameLiving> Port_Enemys = new List<GameLiving>();
         public static bool IsTargetPicked = false;
-        public static GamePlayer randomtarget = null;
-        public static GamePlayer RandomTarget
+        public static GameLiving randomtarget = null;
+        public static GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
@@ -613,7 +613,7 @@ namespace DOL.AI.Brain
                 //set state to RETURN TO SPAWN
                 FSM.SetCurrentState(eFSMStateType.RETURN_TO_SPAWN);
                 Body.Health = Body.MaxHealth;
-                Body.Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrol ? GameNPC.eFlags.FLYING : 0;
+                Body.Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(Body) ? GameNPC.eFlags.FLYING : 0;
                 IsTargetPicked = false;
                 RandomTarget = null;
                 if (Port_Enemys.Count > 0)
@@ -626,14 +626,14 @@ namespace DOL.AI.Brain
             }
             if(HasAggro && Body.TargetObject != null)
             {
-                foreach(GamePlayer player in Body.GetPlayersInRadius(1000))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 1000, bots: EncounterTargets.DisplacesBots(Body)))
                 {
-                    if(player != null && player.IsAlive && player.Client.Account.PrivLevel == 1 && !Port_Enemys.Contains(player))
+                    if(player != null && player.IsAlive && EncounterTargets.NotGm(player) && !Port_Enemys.Contains(player))
                         Port_Enemys.Add(player);
                 }
                 if(Port_Enemys.Count > 0)
                 {
-                    GamePlayer Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+                    GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
                     RandomTarget = Target;
                     if (RandomTarget.IsAlive && RandomTarget != null && !IsTargetPicked)
                     {
@@ -649,7 +649,7 @@ namespace DOL.AI.Brain
         {
             if (RandomTarget != null && RandomTarget.IsAlive && HasAggro && Body.IsAlive)
             {
-                if (EpicEncounterMechanics.AllowDisplacement) RandomTarget.MoveTo(Body.CurrentRegionID, Body.X, Body.Y, Body.Z + Util.Random(500, 700), Body.Heading);
+                if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, Body.X, Body.Y, Body.Z + Util.Random(500, 700), Body.Heading, DisplacementKind.Throw, Body);
                 BroadcastMessage(String.Format("A powerful gust of wind generated by Hurika's wings sends {0} flying into the air!", RandomTarget.Name));
             }
             new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetPort), 3500);
