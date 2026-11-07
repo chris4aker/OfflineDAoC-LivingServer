@@ -73,7 +73,7 @@
     "keyword": "lurfos",
     "text": "Orylle's herald. He stands on the road to the deepest hall and lets no one reach the queen unannounced. Fight him clean; she is behind him."
   },
-  "bookPage": "On the road to the queen a great voice called out to know who came, and Sir Cador called back our realm and his name, and the voice said that we were announced, and then that we were dead. Lurfos stood where the road narrows, where the hall-folk's own heralds once stood with staves and lists. We killed him cleanly, because Cador had already been thrown once past that post on his first descent, and knew that the place where the queen throws her challengers lies just behind it, at the feet of a herald with a sword.",
+  "bookPage": "On the road to the queen a great voice called out to know who came, and Sir Cador called back our realm and his name, and the voice said that we were announced, and then that we were dead. Lurfos stood where the road narrows, where the hall-folk's own heralds once stood with staves and lists. We killed him cleanly, because Cador had already been thrown once past that post on his first descent, and knew that the place where the queen throws her challengers lies just behind it, at the feet of Lurfos and his sword.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} silenced Lurfos the Herald on the road to Krondon's queen in {minutes} minutes.",
     "loss": "Lurfos the Herald announced {realm}'s raid as dead; {raidLeader} never reached the queen."
