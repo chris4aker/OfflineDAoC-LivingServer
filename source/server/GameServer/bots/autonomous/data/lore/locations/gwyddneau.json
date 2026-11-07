@@ -1,0 +1,322 @@
+{
+  "id": "gwyddneau",
+  "name": "Gwyddneau",
+  "realm": "Albion",
+  "regions": [
+    51
+  ],
+  "zones": [
+    55
+  ],
+  "aliases": [
+    "clifton",
+    "marw gwlad"
+  ],
+  "summary": "The heights of a drowned country, the one isle Albion never held: the lammia town of Clifton, Morgana's lich on the height, the drowned dead, a wrecked Midgard longship and its king, and the burned ground of Marw Gwlad.",
+  "facts": [
+    {
+      "text": "Gwyddneau is zone 55 of region 51, with about 910 monsters and no realm NPCs: lammia, griffins and cliff yales (Cryptos Mythicos), ancient zombies and other Undead Servants of Morgana, marooned vikings, orc prospectors, aqueous giants, algae, guagaran, water elementals, dark splinters and thrawn ogres.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob tables, region 51 zone 55 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Clifton is the quests' name for the lammia town; its lammia are merchants, a stable master and turn-in takers (Cnieda: thrawn ogre heads; Arvida: clawed mummified hands).",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only); world data: Zones/Mob tables, region 51 zone 55 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lost Treasure: get apple tree sap from the lamia Larionne at the northern end of Clifton; talk if lamias are neutral, else kill her.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lost Stone of Arawn: O'honat speaks of 'a demon who likes to torture animals and other creatures growing stronger in Gwyddneau'; entering Marw Gwlad on the right step gives 'This is Marw Gwlad. The ground beneath your feet is cracked and burned, and the air holds a faint scent of brimstone.' and Nyaegha ambushes, but only while no NPC named Nyaegha exists: not while the standing Nyaegha of Marw Gwlad lives.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
+    },
+    {
+      "text": "King Dulgar is a peaceful level 61 spawn on a Norse model among the marooned vikings on the south-west coast; the marooned viking navigators are not aggressive.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob tables, region 51 zone 55 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The undead-slayers on the heights belong to a faction named Lacula Sept and use the lammia model.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob tables, region 51 zone 55 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Coliath (script class Colialt) is a scripted boss on the height west of Clifton's north end.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Welsh legend, not game canon: Gwyddno Garanhir ruled Cantre'r Gwaelod, a lowland drowned when Seithenyn, keeper of the sea-gates, left them open in drink; that the zone name echoes Gwyddno is to verify. Welsh 'marw' is dead and 'gwlad' country.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Cantre%27r_Gwaelod"
+    },
+    {
+      "text": "The lammia's drowned country and the quarrel over who borrowed the story, Clifton's standing with the old beasts, the Lacula Sept's name and their reading of Coliath, Dulgar's question about the wind, the prospectors' search and Brother Cynog's road-book are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The heights of the drowned country. The lammia of Clifton say that before the isles were isles there was a low country where the western sea is now, fields and towns behind a wall of sea-gates, and that its kings kept their halls on the heights we call Gwyddneau. One night of a feast the keeper of the gates drank with the rest and left them open, and the sea came in, and in the morning the heights were an island. The readers of Avalon wrote the story down from the lammia and found it already in the bards' mouths on the mainland, told of another drowned country with another drunken keeper, and could never decide whether the lammia had borrowed it or the bards had. The isle has kept the drowned king's name, the readers thought. Nobody on it now uses any name but the lammia's.\n\nClifton. Gwyddneau is the one isle Albion never held. It has no fort, no garrison, no harbour of ours. What it has is Clifton, the town of the lammia, which runs along the cliffs of the middle of the isle: armourers and weaponsmiths, an arrow-seller, a stable for the cliff-horses, and buyers who will pay for an ogre's head or a mummified hand and do not say why. The lammia on Aldland's shore sing sailors in. The lammia of Clifton trade with them instead, with anyone whose standing with the old beasts of the isles is good, and a stranger who has hunted their griffins or their cliff yales finds the town's welcome cold and short. Larionne, at the northern end, keeps sap from an apple tree that does not grow on any island, and gives it or does not according to the same reckoning.\n\nThe heights and the dead. Above Clifton's northern end, on the highest ground of the isle, stands Coliath, one of Morgana's liches, with a crowd of the ancient dead about it. The drowned country's own dead walk the north-west of the isle in their scores, ancient and slow and very many, and the pitch-dark skeletons and the ghouls keep the high ground behind them. What Coliath guards on the height nobody knows. The garrison on the Isle of Glass has had a wager on it since the first year of the war. The lammia say it is the barrow of the last king of the low country. A sept of the lammia themselves, the Lacula Sept, walks the ridge below the lich as undead-slayers and lich-hunters; they took their name, they say, in mourning for those of their kind who were taken down into the turning gaol and cursed there into lamps, and they say Coliath guards nothing but itself.\n\nThe wreck. On the south-western coast lies a Midgard longship that will never sail again. Its crew are marooned vikings, marauders and oarsmen and shieldmaidens, and they are hostile to everything on the isle, which they blame for their stranding. Their navigators alone are quiet, because they still watch the stars for a way home. Their king, Dulgar, sits on the shore and harms nobody, and asks every stranger which way the wind sets for the north.\n\nThe rest of the isle. The orcs dig in the west, prospectors of the Kulaclan's kind who have followed something under the heights for years and will not say what. Aqueous giants wade the western shallows with the carnivorous algae and the guagaran. Cliff yales graze the high plain with their yearlings, and griffins nest above Clifton. The drowned come out of the south coast shark-bitten, and the water itself stands up as elementals on the north coast. Krondon's ogres have reached the eastern edge.\n\nMarw Gwlad. In the east, near the Aldland coast, is a patch of ground the Inconnu call Marw Gwlad, the dead country, cracked and burned and smelling of brimstone. A demon called Nyaegha walks it, which tortures beasts and grows stronger by it, and O'honat of the Inconnu at Caer Diogel says it carries a stone that belongs to her master, Arawn. Albion's companies go west from Caer Diogel to the coast and north along it to find the place.\n\nWhy it matters to Albion. Gwyddneau is the isle Albion has never needed to hold, because the lammia hold it and have no quarrel with anyone who keeps the peace of their town. That may change. Morgana's lich keeps the heights above the town, the demon in the east grows stronger by what it hurts, and the Inconnu say that if the stone it carries is not recovered soon it will be too late for Albion.",
+  "legend": "Gwyddneau is the high SI isle north of Aldland, levels 45 to 65, with no Albion town: you get there from Caer Diogel, west to the coast and then north. Clifton, the lammia town along the middle cliffs, has merchants, an arrow seller, a stable master and turn-ins (Cnieda wants thrawn ogre heads, Arvida wants mummified hands), but only if your standing with the lammia's faction is good; kill their griffins and cliff yales and the town turns on you. Larionne at the north end has the apple sap for Lost Treasure. Coliath (78) is on the height just west of the north end of Clifton, with ten or more ancient zombies round it. The north-west is a huge field of ancient zombies, 54 to 61, good for groups. The marooned vikings on the south-west coast are 50s and 60s; King Dulgar is peaceful. Orc prospectors in the west are high 50s. Marw Gwlad in the east is where the Lost Stone of Arawn demon Nyaegha ambushes you on the quest step, but only while the standing Nyaegha there (60, never aggros) is dead: kill it, step out and walk back in quickly, it respawns in about ten seconds. Cliff yale yearlings for the Gwyntell kill task are on the high plain.",
+  "atmosphere": {
+    "firstEntry": [
+      "Gwyddneau. The heights of a drowned country.",
+      "No banner of Albion flies here.",
+      "Lammia voices from the cliffs, bargaining.",
+      "The sea on the left hand, the dead on the right.",
+      "Somewhere east, the ground smells of brimstone."
+    ],
+    "areas": [
+      {
+        "name": "Clifton",
+        "x": 333500,
+        "y": 459000,
+        "z": 4300,
+        "radius": 3000,
+        "lines": [
+          "Clifton, the lammia's town on the cliffs.",
+          "Armourers, arrows, a stable for cliff-horses.",
+          "The welcome here depends on what you have hunted."
+        ]
+      },
+      {
+        "name": "the north end of Clifton",
+        "x": 331187,
+        "y": 444144,
+        "z": 3137,
+        "radius": 800,
+        "lines": [
+          "Larionne keeps sap from a tree no island grows.",
+          "She gives it, or she does not."
+        ]
+      },
+      {
+        "name": "Coliath's height",
+        "x": 327855,
+        "y": 443917,
+        "z": 7514,
+        "radius": 1200,
+        "lines": [
+          "The highest ground of the isle. Something guarded.",
+          "A crowd of the ancient dead stands waiting.",
+          "The wager on the Isle of Glass is still open."
+        ]
+      },
+      {
+        "name": "the lich-hunters' ridge",
+        "x": 325000,
+        "y": 449800,
+        "z": 7200,
+        "radius": 1200,
+        "lines": [
+          "The Lacula Sept hunts the dead up here.",
+          "Lammia with blades, not songs."
+        ]
+      },
+      {
+        "name": "the field of the drowned dead",
+        "x": 312042,
+        "y": 447636,
+        "z": 5508,
+        "radius": 3000,
+        "lines": [
+          "The low country's dead, in their scores.",
+          "Ancient and slow, and very many.",
+          "Pitch-dark skeletons on the slope above."
+        ]
+      },
+      {
+        "name": "the wreck",
+        "x": 306500,
+        "y": 478000,
+        "z": 3800,
+        "radius": 3000,
+        "lines": [
+          "A Midgard longship that will never sail again.",
+          "Marooned and angry at the whole isle.",
+          "The navigators still watch the stars."
+        ]
+      },
+      {
+        "name": "King Dulgar's shore",
+        "x": 300956,
+        "y": 484120,
+        "z": 2851,
+        "radius": 800,
+        "lines": [
+          "A king on the shore, looking north.",
+          "He asks which way the wind sets for home."
+        ]
+      },
+      {
+        "name": "the prospectors' diggings",
+        "x": 302592,
+        "y": 450044,
+        "z": 3044,
+        "radius": 2000,
+        "lines": [
+          "Orc prospectors dig under the heights.",
+          "They will not say what they follow."
+        ]
+      },
+      {
+        "name": "the western shallows",
+        "x": 300600,
+        "y": 455000,
+        "z": 3000,
+        "radius": 1500,
+        "lines": [
+          "Aqueous giants wade the shallows.",
+          "The algae here has teeth."
+        ]
+      },
+      {
+        "name": "the high plain",
+        "x": 341500,
+        "y": 456800,
+        "z": 6200,
+        "radius": 2000,
+        "lines": [
+          "Cliff yales graze the high plain.",
+          "Yearlings on the steepest ledges."
+        ]
+      },
+      {
+        "name": "the griffin cliffs",
+        "x": 328200,
+        "y": 456037,
+        "z": 7332,
+        "radius": 1500,
+        "lines": [
+          "Griffins nest above Clifton.",
+          "Hunt them and the town will know."
+        ]
+      },
+      {
+        "name": "the north coast",
+        "x": 336700,
+        "y": 431900,
+        "z": 3845,
+        "radius": 2000,
+        "lines": [
+          "The water stands up and walks.",
+          "Shieldmaidens far from their ship."
+        ]
+      },
+      {
+        "name": "the drowned coast",
+        "x": 320500,
+        "y": 479500,
+        "z": 4300,
+        "radius": 2000,
+        "lines": [
+          "The drowned come out of the sea shark-bitten.",
+          "Dark splinters, grumbling in the rocks."
+        ]
+      },
+      {
+        "name": "the ogres' edge",
+        "x": 351391,
+        "y": 461501,
+        "z": 4397,
+        "radius": 1500,
+        "lines": [
+          "Krondon's ogres have reached the eastern edge.",
+          "Threshers, far from their hall."
+        ]
+      },
+      {
+        "name": "Marw Gwlad",
+        "x": 348381,
+        "y": 479838,
+        "z": 3320,
+        "radius": 1500,
+        "lines": [
+          "Marw Gwlad. The ground is cracked and burned.",
+          "Brimstone on the air.",
+          "Restless ghosts and savage dragonflies."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "gwyddneau is the only si isle albion never held. no fort, nothing",
+      "clifton is the lammia town on gwyddneau. merchants, a stable, the lot",
+      "the clifton lammia only deal with you if you havent been killing their griffins",
+      "the lammia say gwyddneau was the hills of a drowned country. a drunk let the sea in",
+      "coliath stands on the high ground above clifton. nobody knows what it guards",
+      "the lacula sept are lammia who hunt the dead. blades not songs",
+      "there's a wrecked midgard longship on the sw coast of gwyddneau",
+      "king dulgar sits on the beach asking which way is north. hes harmless",
+      "the north west of gwyddneau is wall to wall ancient zombies",
+      "orc prospectors dig in the west of gwyddneau for something under the hills",
+      "marw gwlad means the dead country. burned ground in the east",
+      "the inconnu say the demon in marw gwlad has a stone of arawn's"
+    ],
+    "rumour": [
+      "[heard|someone said] the isle of glass garrison has had a bet on what coliath guards since the war started",
+      "heard larionne's apple sap comes from a tree that doesnt grow on any island",
+      "[heard|someone said] cnieda buys ogre heads and nobody knows what she does with them",
+      "heard the lacula sept named themselves for lammia cursed in caer sidi",
+      "[heard|someone said] the viking navigators on gwyddneau wont fight, they just watch the stars",
+      "heard the demon in marw gwlad tortures animals to get stronger",
+      "[heard|someone said] the ground in marw gwlad is warm",
+      "heard the orc prospectors have been digging the same spot for years"
+    ],
+    "tell": [
+      "gwyddneau? si isle north of aldland. no albion town, go west from caer diogel then north",
+      "is it hard? 45 to 65. coliath is 78. zombie field in the nw is 54-61",
+      "whats there? clifton the lammia town, coliath, a viking wreck, orc prospectors, marw gwlad",
+      "where's clifton? the middle cliffs. dont kill griffins or they wont sell to you",
+      "where's marw gwlad? east side near the aldland coast. lost stone of arawn",
+      "good xp? the ancient zombie field in the nw for groups, vikings on the sw coast"
+    ]
+  },
+  "loremaster": {
+    "intro": "Gwyddneau, the heights of the [drowned country], the isle Albion never held. Ask of [clifton] and its lammia, [nimea], [cnieda], [arvida] and [larionne]; of [coliath] and the [lacula sept]; of the [drowned dead]; of the [marooned vikings] and King [dulgar]; of the [prospectors]; or of [marw gwlad] and [nyaegha].",
+    "topics": {
+      "clifton": "The lammia's town along the cliffs of middle Gwyddneau: armourers Natana Alcael and Laseria, weaponsmiths Zarassa, Kendris, Raemilla and Eviloren, Leolith the arrow-seller, [nimea] at the stable, and the buyers [cnieda] and [arvida]. Its welcome depends on how you have treated the old beasts of the isle. [larionne] keeps the north end.",
+      "nimea": "The stable-keeper of Clifton, who keeps cliff-horses and the lammia's story of the [drowned country], and charges a friar double for disputing it.",
+      "cnieda": "A lammia of Clifton who buys thrawn ogre heads and does not say why. The ogres have reached the eastern edge of the isle.",
+      "arvida": "A lammia of Clifton who buys clawed mummified hands. She is quicker to draw a blade than the rest of the town, and the town lets her be.",
+      "larionne": "The lammia at the northern end of [clifton], who keeps sap from an apple tree that grows on no island, and gives it or does not according to what she thinks of you. Ariette of Fort Gwyntell wants it.",
+      "drowned country": "The lammia say a low country lay where the western sea is, behind sea-gates, and that its kings held the heights of Gwyddneau until a drunken gate-keeper let the sea in one feast night. The mainland bards tell the same of another country; each side says the other borrowed it.",
+      "coliath": "One of Morgana's liches, on the highest ground above the north end of [clifton], with a crowd of the ancient dead about it. What it guards is the oldest wager on the Isle of Glass; the [lacula sept] says it guards nothing but itself.",
+      "lacula sept": "A sept of the lammia who hunt the dead on the ridge below [coliath], with blades and not songs: undead-slayers and a lich-hunter. They named themselves in mourning for their kin taken into Caer Sidi and cursed there into lamps.",
+      "drowned dead": "The low country's own dead, raised by Morgana: ancient zombies by the score in the north-west of the isle, with pitch-dark skeletons, ghouls and splicers on the slopes behind them.",
+      "marooned vikings": "The crew of a Midgard longship wrecked on the south-western coast: marauders, oarsmen and shieldmaidens who hate the isle, navigators who still watch the stars, and their king [dulgar].",
+      "dulgar": "King Dulgar of the wrecked longship sits on the south-western shore and harms nobody. He asks every stranger which way the wind sets for the north, and asks again the next time.",
+      "prospectors": "Orc prospectors digging in the west of Gwyddneau for something under the heights, which they have followed for years and will not name.",
+      "marw gwlad": "The dead country in the old tongue: a patch of cracked, burned ground smelling of brimstone in the east, by the Aldland coast, where the demon [nyaegha] walks.",
+      "nyaegha": "A demon of [marw gwlad] that tortures beasts and grows stronger by it. O'honat of the Inconnu at Caer Diogel says it carries a lost Stone of Arawn, and that it must be taken back before it is too late for Albion."
+    }
+  },
+  "book": {
+    "title": "A Road-Book to Gwyddneau",
+    "pages": [
+      "A Road-Book to Gwyddneau, kept by Brother Cynog of Caer Diogel, who goes to Clifton for arrows because the fletchers of the lammia are the best in the isles, and comes back with more than arrows. Gwyddneau is the isle we never held. There is no fort. A friar going there goes west from the safe fort to the coast and north along it, with the sea on his left hand, and does not leave the shore until he can see the cliffs of the town. I write down what I am told on the road, and who told me, because on Gwyddneau everybody tells it differently.",
+      "Of the drowned country. Nimea, who keeps the stable at Clifton, told me that a low country lay where the western sea is, behind sea-gates, and that its kings held the heights. One feast night the keeper of the gates drank and left them open, and the sea came in. I said our bards tell the same of a country off the mainland, with a keeper of the same habits. She said our bards had heard it from her grandmother's grandmother. I said the bards would say the other way about. She said that was the trouble with bards, and charged me double for the horse.",
+      "Of Clifton. The lammia keep a peace in their town, and the price of it is how you have behaved to the old beasts of the isle: the griffins above the town, the cliff yales on the high plain. A man who has hunted them is served short and watched to the door. A friar who has not is sold arrows and asked for news. Cnieda buys ogre heads. Arvida buys mummified hands. Neither says what for, and I have learned not to ask the second question in Clifton. Larionne at the north end has sap from an apple tree that grows on no island, and decides about you before you speak.",
+      "Of the height. Above the north end of the town the lich Coliath stands on the highest ground with a crowd of the ancient dead about it. The Isle of Glass has a wager on what it guards. Nimea says the barrow of the last king of the low country. The lammia of the Lacula Sept, who hunt the dead on the ridge below it with blades and not songs, say it guards nothing but itself. They named their sept for their kin who were taken down into Caer Sidi and made lamps there. One of them told me a lich near its end stops striking and starts drinking, and that the only answer is to be quicker than its thirst.",
+      "Of the wreck. On the south-west coast a longship of Midgard lies broken on the rocks, and its crew have been there long enough to hate every stone of the isle. Their king, Dulgar, does not. He sits on the shore and asked me, very courteously, which way the wind sets for the north. I told him. He thanked me and asked again the next time, as if I had not. His navigators do not draw blades either. They watch the sky. The rest of his people would have had my habit off me, and I walked the long way round after that.",
+      "Of the dead country. In the east, by the Aldland shore, is Marw Gwlad, the dead country in the old tongue, cracked ground and brimstone. A demon walks it called Nyaegha that hurts beasts for the pleasure of it and grows stronger by what it hurts. O'honat of the Inconnu, who has a room at the safe fort, says it carries a stone of Arawn's that her people lost, and that if it is not taken back soon it will be too late for Albion. She did not say too late for what. The ground there was warm under my sandals. I did not stay to learn more."
+    ]
+  },
+  "bosses": [
+    "coliath",
+    "nyaegha",
+    "arvida",
+    "larionne",
+    "cnieda"
+  ],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "arawn"
+  ]
+}

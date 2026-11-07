@@ -1,0 +1,154 @@
+{
+  "id": "behemoth",
+  "name": "Behemoth",
+  "catalogKey": "darkness-falls/behemoth",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "aliases": [
+    "behe"
+  ],
+  "facts": [
+    {
+      "text": "Level 99 in Darkness Falls' bestiary.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+    },
+    {
+      "text": "Until April 2002 Legion summoned Behemoth from elsewhere in the dungeon; Mythic then kept it to its own area.",
+      "provenance": "mythic",
+      "source": "https://gamebanshee.com/news/68454-beware-of-legion.html"
+    },
+    {
+      "text": "Level 99, 600,000 health, partnered with Legion in the catalog, on a ledge above Legion's lair (249: 44490, 49588, 20833). No scripted mechanic beyond its reset.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs"
+    },
+    {
+      "text": "2002 comments describe it one-shotting players during Legion raids; a 2009 Grab Bag answer (post-period) said it cannot be killed.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmob=2862"
+    },
+    {
+      "text": "Behemoth: NPC template 60158340 (level 99), 600,000 health, GetResist 40 melee / 70 other, AF 550, absorb 50%, CC immune, aggro range 500; its OnAttackEnemy kills the target of every attack it makes, whatever the result.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs"
+    },
+    {
+      "text": "The Behemoth was in the hollow before the court, was at the Feast and neither knelt nor was eaten, and is on no Roll (neutral history).",
+      "provenance": "original",
+      "source": "history/neutral.json (feature/lore-neutral)"
+    },
+    {
+      "text": "The Master's look at the Feast, Odran's single line and its second line, Sir Cadfan Hir's eighty and the imps' book are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Real-world myth, not game canon: in the Book of Job (40:15-24) God shows Job Behemoth, 'the chief of the ways of God', whose bones are like bars of iron.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Behemoth"
+    }
+  ],
+  "story": "Every account of the hollow agrees that the Behemoth was there first, before the lords, in the Uncounted Age; the Inquisitors say the hollow is only the shape it left when it lay down. It is not a demon, does not speak or bargain or eat souls, and is on no Roll; the Chancellor has never written its name. The Church reads it in Job, the beast of God's first making whom only its maker can approach with a sword; the skalds say it is one of the old ones from before the gods; the druids, a hill that has not yet decided to lie still. Brother Odran's Door-Book gives it one line: the beast on the ledge.\n\nIt lay along the wall of the deepest chamber at the Feast of Thrones. It did not fight or kneel, and when the Master had eaten nineteen lords he looked at it, and it looked back, and he did not try to eat it. The Inquisitors say the bargain is about place and the beast has none; the imps say the Master was afraid. It lies now on a ledge above his lair, breathing like a forge, kept as a man keeps a chained bear.\n\nIt does not need to strike well, only to strike: whatever it swings at it ends, shield or mail or quick feet, landed or not. It is slow to notice anyone not close to its nose. Its hide turns blades and drinks spells. Once the Master called it down, and it did not stop at the enemy, and it went back to its ledge by itself.\n\nSir Cadfan Hir of Camelot Hills, who had killed the Master once, took eighty on to the ledge to see what the Master feared. The beast lifted its head and Cadfan was gone; his company sent a fresh man in front of it all night, and Odran's list of their names fills a leaf. The imps take any odds against its death and have never paid. Odran's last line: do not count it. Count your own and go home.",
+  "legend": "The Behemoth is level 99 with 600,000 health, CC immune, AF 550 with 50% absorb, and 40% melee / 70% other reduction. Every swing it takes kills whatever it swings at, outright: hit, miss, parry, block or evade all end the same way, so no tank survives it and shields or evade do nothing. It sits on the ledge above Legion's lair and only notices you inside 500, so it is easy to leave alone, and that is the advice. It does not come down to help Legion in this server's code. If you insist on trying it, the only theory is a line of throwaway bodies to stand in front of it, one per swing, while everyone else does damage into 600k at those reductions: nobody here has done it, nobody has tested it, and the imps will take your money. Drop out of the fight for 8 seconds and it heals to full.",
+  "yells": {
+    "aggro": [
+      "...",
+      "The ledge shakes. Something lifts its head.",
+      "A breath like a forge, close."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The beast breathes harder. It does not slow."
+      }
+    ],
+    "death": [
+      "The forge-breath stops.",
+      "The ledge is still."
+    ],
+    "slay": [
+      "Ended.",
+      "Gone.",
+      "Not even a mark."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Something on the ledge breathes like a forge.",
+      "The ledge is quiet but for the breathing."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Behemoth lifts its head. Something ends."
+      }
+    ],
+    "realmFirstKill": "The Behemoth has fallen. The court below trembles."
+  },
+  "botLines": {
+    "briefing": [
+      "nobody goes up to the behemoth's ledge. 99, 600k, and every swing kills",
+      "it kills whatever it swings at, hit or miss. shields and evade do nothing",
+      "it only notices you inside 500. walk past and leave it",
+      "it does not come down to help legion here"
+    ],
+    "aftermathWin": [
+      "did we... did we just kill the behemoth",
+      "screenshot it. nobody will believe this",
+      "the imps owe us. good luck collecting",
+      "odran said dont count it. we counted it"
+    ],
+    "aftermathLoss": [
+      "told you. level 99. one hit each",
+      "told you. every swing kills",
+      "the tank died to a miss. a miss",
+      "we never got it under 99%"
+    ],
+    "rumour": [
+      "behemoth is level 99, [heard|they say]. nobody kills it. nobody",
+      "[heard|someone said] legion used to call the behemoth down to fight. not anymore",
+      "[heard|someone said] the master was afraid to eat the behemoth at the feast",
+      "heard the imps will take any bet against the behemoth dying and have never paid out"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "behemoth",
+    "text": "On a ledge above [Legion]'s lair in [Darkness Falls] lies a beast older than the court and on no Roll. It was at the Feast of Thrones and the Master did not try to eat it. Whatever it swings at, it ends, landed or not. The Church forbids Albion's companies the ledge. I would add my voice."
+  },
+  "bookPage": "From Brother Odran's Door-Book, under the heading of things in the hollow that the companies should not count. The beast on the ledge. Sir Cadfan Hir took eighty on to it, in the season after Sir Aldous Fenn broke the Master, to learn what the Master was afraid of. The beast lifted its head and Cadfan was not there any more. Whatever it swings at, it ends; it makes no difference whether the swing lands. They fought it all night, a fresh man in front of it whenever the last was gone. At dawn they came down and it lay down. Below, in another ink: do not count it. Count your own and go home.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} did what no one believed: the Behemoth of Darkness Falls fell in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} climbed to the Behemoth's ledge. The Behemoth was unmoved."
+  },
+  "era": "neu-the-three-doors",
+  "factions": [
+    "dark-ones",
+    "throne-of-legion"
+  ],
+  "related": [
+    {
+      "id": "legion",
+      "relation": "lies on the ledge above his lair; the one thing the Master would not eat"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Before the Count",
+      "text": "Every account of the hollow, the court's and the three realms', agrees on one thing and on almost nothing else: the Behemoth was there first.\n\nThe court calls the age before the Feast of Thrones the Uncounted Age, because nobody kept a count of anything, least of all of the dead, and the court's chroniclers, who will lie about any point touching their own dignity, do not lie about this. The Behemoth was in the hollow before there were lords in it. It was there before there was a hollow, the Inquisitors say, and the hollow is only the shape it left when it lay down. The court has no word for what it is. It is not a demon. It does not speak, or bargain, or eat souls; it is not on any Roll, and the Chancellor, who writes everything, has never written its name.\n\nThe realms name it from their oldest books. The Church of Camelot reads it in Job, where God shows the man of Uz the beast called Behemoth, whose bones are bars of iron and whose strength is in his loins, the first of the ways of God, which only his maker can approach with a sword. The priests say the court has a creature of God's first making chained above its lowest door, and that this is the court's greatest blasphemy. The Midgard skalds say it is one of the old ones that were before the gods, the frost-born kind, left behind in the dark when the world was made from the rest. The druids of Tir na Nog say it is not a beast at all but a hill that has not yet decided to lie still.\n\nBrother Odran's Door-Book does not try to say what it is. It has a single line on the Behemoth, written in the first season, under the heading of things in the hollow that the companies should not count: the beast on the ledge."
+    },
+    {
+      "title": "At the Feast",
+      "text": "The Behemoth was at the Feast of Thrones, and that is the strangest thing in the court's whole history.\n\nThe court says it was lying along the wall of the deepest chamber when the thirty lords came in, as it had lain there since the Uncounted Age began, and that the lords walked round it as men walk round a boulder in a field. The twenty-nine fought. The hungry one ate. The Behemoth did not move. When the eleven knelt, it did not kneel. When the Master had eaten nineteen lords and their voices were speaking out of his single throat, he turned, the court says, and looked at the beast along the wall, and the beast looked back, and the Master did not try to eat it.\n\nNobody below says why. The Inquisitors say the bargain of the Feast is about place, and the Behemoth has no place, so the bargain does not touch it. The Chthonic Knights say the Master was full. The imps, who have never been afraid to say anything about anyone so long as they are far enough away, say the Master was afraid, and that a court whose first law is that its king may eat anyone who falls has, lying along the wall of its deepest room, the one thing in the world that its king will not try to eat.\n\nAfter the Feast the court moved the Behemoth, or the Behemoth moved itself; the accounts differ. It lies now on a ledge above the Master's lair, at the bottom of the long slope where the Rolls are cut, and it breathes there like a forge. The court keeps it as a man keeps a chained bear, the imps say: for show, and for fear, and because nobody has the courage to unchain it. The Chancellor's clerks, who will not write its name, walk past the ledge with their eyes on the Rolls."
+    },
+    {
+      "title": "What It Swings At",
+      "text": "The Behemoth does not fight as anything else in the hollow fights. It does not need to strike well. It needs only to strike.\n\nThat is how the companies of all three realms tell it, and the court says the same. A blow from the beast on the ledge is not turned by a shield, the Midgard bands say, nor slipped by a quick man, nor softened by the best mail of Jordheim; whatever it swings at, it ends, and it makes no difference whether the swing lands. The Church of Camelot says this is the meaning of Job's verse, that only its maker can approach it with a sword. The druids say a hill does not need to aim when it falls. Brother Odran wrote that every company which went up on the ledge and came down again came down without anyone who had stood in front of it.\n\nIt is not quick to wake. It lies on its ledge and breathes, and lets the companies of the realms pass below it on their way to the Master's door, and does not seem to see them. Only a man who comes up close, the imps say, a few strides from its nose, has ever been noticed. The court's own demons do not go up on the ledge at all. Its hide is harder than anything the realms' smiths can shape, the companies say; their spells sink into it and their blades turn half their weight away, and the mark a whole company can leave on it in a night is not a mark that anyone has thought worth describing.\n\nOnce, the imps say, the Master called it down to fight beside him, and it came down, and did not stop at the enemy. That story belongs to the Master. What belongs to the Behemoth is the end of it: that it went back up to its ledge by itself, and lay down again, and has not come down since."
+    },
+    {
+      "title": "Those Who Went Up",
+      "text": "Every realm has a company that went up on the ledge, and none of them has a song that ends well.\n\nAlbion's is in the Door-Book. It was the company of Sir Cadfan Hir of Camelot Hills, a knight who had killed the Master once and wanted, he said, to know what the Master was afraid of. He took eighty up the long slope and past the Master's door and on to the ledge, in the season after Sir Aldous Fenn broke the Master, and he went up first, with his shield. Odran recorded what the survivors told him. The beast lifted its head. Cadfan was not there any more. The company fought it for most of a night, sending a fresh man to stand in front of it whenever the last one was gone, and Odran's list of their names fills a whole leaf. At dawn they came down. The beast lay down. Of its wounds, the survivors said nothing.\n\nMidgard's skalds tell of a thane who went up with three bands and came down alone, and who answered every question about it afterwards with the same three words. Hibernia's bards sing of a champion who went up with no shield at all, on the reasoning that a shield would make no difference, and they sing that the reasoning was sound.\n\nThe imps keep a book on it, as they keep a book on everything. Any imp of the three halls will take a seal against the Behemoth's death, at any odds the buyer likes, and the imps say they have never yet paid out. The Church forbids Albion's companies to go up on the ledge. Brother Odran's last word on the beast, under the single line of the first season, is a second line, added in another ink: it is not a thing to be counted. Do not count it. Count your own and go home."
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "id": "silencer",
+  "name": "Silencer",
+  "catalogKey": "caer-sidi/silencer",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. For every ten attackers he gains a 1% chance, on each hit, to become almost immune to damage for a short time; he changes form during the fight.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/Silencer.cs"
+    },
+    {
+      "text": "Silencer: each distinct attacker counted; per hit, (attackers/10)% chance that 2 s later he resists 99% of everything for 20 s, after which the count is cleared; normal GetResist 30 melee / 50 other; out of tether he goes home at full health; 30 s without combat heals him to full.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/Silencer.cs"
+    },
+    {
+      "text": "The silence-keeper origin, the night every voice called, Ysolde's ten and Brother Cadoc's yearly sermon are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Real-world history, not game canon: the silentiarii were officials of the later Roman and Byzantine court who kept order and silence in the imperial palace.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Silentiarius"
+    }
+  ],
+  "story": "The Silencer keeps the inner halls of Caer Sidi, where in a gaol of the dead noise is a kind of hope: prisoners tapping codes through the stone, calling niche to niche. Arawn set him to end it, and where he walks footsteps make no sound. The Camelot loremasters think he was one of the old Roman emperors' silence-keepers, the ushers who hushed every voice at the palace doors; the Inconnu say only that he was quiet before he came. His shape thins as he works, until when he hushes he is almost nothing, and no one has ever heard him make a sound.\n\nOn the night of the rising every prisoner in the inner halls called out at once, and his hush grew so deep around so many voices that the halls have been soundless since. The Inconnu say that night tells the whole of him: the more voices raised against him, the sooner the hush comes; it lies on him long enough for a slow paternoster, and nothing reaches him through it; and when it lifts he has forgotten every voice that brought it on and begins counting again. Spells reach him muffled even when the hush is off, and a blade does better. He will not be drawn out of the inner halls; brought into the noise of the stairs he turns back and is whole again.\n\nDame Ysolde's company went at him eighty strong, and his stillness came down on them again and again; two died of being too tired to step away. Unable to make herself heard, Ysolde went along the line with her hand on each shoulder and sent in ten: her best swords and two priests. They stood back from each hush without a word and went in again when it lifted, and the ten did what eighty could not.\n\nBrother Cadoc has preached the Silencer every year since, never the same sermon twice. Caer Gothwaite's companies choose their ten at the foot of the crypt stair, and the rest wait at the door.",
+  "legend": "The Silencer is level 81, 100,000 health. Every different person who hits him is counted, and each hit has a chance of one percent per ten people counted (so 80 attackers is 8% a hit) to make him nearly immune: two seconds later he takes 99% less from everything for a full twenty seconds. When that ends his count is wiped and starts again. So a zerg is the worst thing you can do: send ten or so of your best damage dealers and two healers, keep everyone else off him, and when he goes immune stop hitting and wait the twenty seconds out instead of burning cooldowns. Outside the immunity he takes 30% less from melee and 50% less from spells, so the ten should be mostly melee. Do not drag him: off his leash he goes home at full health, and thirty seconds with nobody fighting him also heals him to full. Caer Gothwaite raids pick their ten before they see him.",
+  "yells": {
+    "aggro": [
+      "Hush.",
+      "So loud. All of you, so loud.",
+      "Be still."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "So many voices. So little to say."
+      }
+    ],
+    "death": [
+      "...",
+      "At last... quiet..."
+    ],
+    "slay": [
+      "Quiet now.",
+      "Shh.",
+      "No more calling."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Your footsteps make no sound here.",
+      "The quiet here has weight. It presses on you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Silencer goes still. Blows find nothing."
+      }
+    ],
+    "realmFirstKill": "The Silencer is dead. Caer Sidi can scream again."
+  },
+  "botLines": {
+    "briefing": [
+      "silencer: ten on him, everyone else stays off. more attackers = more immunity",
+      "when he goes immune its 20 seconds. stop hitting and wait it out",
+      "melee mostly, spells do half",
+      "dont drag him off his spot, he resets full"
+    ],
+    "aftermathWin": [
+      "silencer down. it's loud again",
+      "fewer people on him worked. told you",
+      "small team, clean kill",
+      "you can hear your feet again"
+    ],
+    "aftermathLoss": [
+      "the whole raid jumped on him and he was immune the entire time",
+      "people kept swinging through the 20 sec immunity and ran dry",
+      "someone dragged him and he went home full",
+      "too many casters in the ten"
+    ],
+    "rumour": [
+      "heard the silencer gets harder to hurt the more people swing at him",
+      "[someone said|heard] its dead quiet near the silencer",
+      "heard the prisoners blame the silencer for not being able to cheer",
+      "the silencer was the keeper who stopped the prisoners talking through the walls",
+      "heard caer gothwaite picks ten for the silencer before they even see him",
+      "[heard|someone said] nobody has ever heard the silencer make a sound"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "silencer",
+    "text": "The keeper of the inner halls of [Caer Sidi], who ends every sound a prisoner makes. The more voices raised against him, the sooner his hush comes. [Dame Ysolde] sent ten of her company where eighty had failed, and Brother Cadoc has preached him every year since."
+  },
+  "bookPage": "In the inner halls our footsteps made no sound, and when Dame Ysolde called us forward, her voice came out of her mouth and went nowhere, as if swallowed by wool. The Silencer was there. We learned quickly that the more of us struck at him the stiller he became, until our blows seemed to fall on deep water. So she sent ten of us in and kept the rest back, and the ten did what eighty could not. I do not know what that teaches. Brother Cadoc says it is a sermon, and that he will preach it when he has decided on what.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} broke the Silencer's hush in {minutes} minutes.",
+    "loss": "The Silencer stilled {realm}'s raid; {raidLeader} sent too many voices against him."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "caer-sidi-prisoners",
+    "arawn"
+  ],
+  "related": [],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Usher of Silence",
+      "text": "In a gaol of the dead, noise is a kind of hope, and Arawn set one keeper in Caer Sidi to end it.\n\nPrisoners tap on the stone. They call through the walls, from niche to niche and cell to cell; they sing; they work out codes of knocks that run the length of a tier in a night. Every gaol in the world has known it, and every gaoler has tried to stop it, because a prison where men can speak to each other is a prison where men can plan. The keepers of Caer Sidi gave the work to one of their number and called him only the Silencer. He walks the inner halls where the calling used to be loudest, and where he walks, footsteps make no sound.\n\nThe Camelot loremasters think they know where Arawn found him. The emperors of the old Rome, they say, kept officers at court whose whole duty was silence: ushers who stood at the doors of the palace and hushed every voice in the presence of the emperor, and who were called by a word that meant the silence-keepers. When the empire fell, the loremasters reason, the silence-keepers came down the roads to Annwn with everyone else, and Arawn, who had already learned his keepers' Roman manners, gave the most patient of them a hall of his own to keep quiet. The Inconnu neither agree nor disagree. They say only that the Silencer was quiet before he came, and has been quieter since.\n\nHe is thin, and grows thinner as he works. Brother Cadoc of Caer Gothwaite wrote that the Silencer's shape changes under the eye while he moves, as if the quiet were wearing him down to its own outline, and that when he stands still he is almost a man and when he hushes he is almost nothing. He does not speak. Nobody in all the accounts of Caer Sidi has ever heard him make a sound."
+    },
+    {
+      "title": "The Night Every Voice Called",
+      "text": "The Silencer chose no side when the gaol rose. Silence has no side. It simply grew.\n\nOn the night of the rising, the Inconnu say, every prisoner in the inner halls called out at once. They had won, or believed they had; they shouted it through the stone to one another, tier to tier, the first loud thing many of them had done since they died. And the Silencer stood among all those voices and did what he was made to do, and his hush deepened so far, around so many voices, that the inner halls have been soundless ever since. The prisoners who had risen against their keepers found they could not shout their victory, and some of them still blame the Silencer for that more than they blame Arawn.\n\nThat night is the whole of what the realm knows about him, the Inconnu say, if the realm will only read it. The more voices are raised against him, the sooner his hush comes. A lone prisoner tapping on the wall might tap for a night before the hush found him. A crowd shouting together brings it down on them at once. And when it comes it does not flicker; it lies over him like snow, long enough for a slow man to say a paternoster through, and in that time nothing raised against him seems to reach him at all. Then it lifts, and the Silencer has forgotten every voice that brought it on, and the counting begins again from nothing.\n\nThe galleries' sorcerers, who have tried their spells on everything in the fortress, say that even when his hush is not on him their words reach him muffled, as if spoken through wool, and that a blade does better. And the Inconnu add one thing more: he will not be drawn out of the inner halls. Bring him into the noise of the stairs, they say, and he turns back to his quiet and is whole again by the time he reaches it, as if the walk itself had rested him."
+    },
+    {
+      "title": "Ten Who Did What Eighty Could Not",
+      "text": "Dame Ysolde's company came into the inner halls and found its footsteps making no sound, and her voice, when she called them forward, went out of her mouth and nowhere, as if swallowed by wool.\n\nThe Silencer was there. The whole company went at him, eighty strong, and Brother Cadoc wrote that the more of them struck, the stiller he became, until their blows seemed to fall on deep water. He let them strike for as long as a slow prayer and felt nothing, and they stood back gasping, and he came on again, and they went at him again, all of them, and the stillness came down on him again almost at once. Two of the company died in that first hour, of nothing more than being too tired to step away.\n\nYsolde called them off. She could not make herself heard, so she went along the line with her hand on each shoulder in turn, and she sent ten of them back into the hall and held the rest at the door. The ten were her best swords and two priests. Cadoc was not one of them. He watched from the door, and he wrote that with only ten voices raised against him, the Silencer's hush hardly came at all, and when it came the ten stepped back and waited, without a word, for it to lift, and did not waste a blow on it. When it lifted they went in again. The ten did what eighty could not.\n\nHe fell without a sound, as he does everything. The ten came back to the door, and Ysolde put her hand on each of their shoulders again, and Cadoc noticed that nobody in the company had spoken for an hour and that nobody wanted to. They climbed on in silence. It was the stair to the galleries before anyone said a word, and the word was Ennyn's, and it was only: well."
+    },
+    {
+      "title": "The Sermon",
+      "text": "Brother Cadoc said that the Silencer was a sermon and that he would preach it when he understood it. He has preached it at Caer Gothwaite every year since, and it has never been the same sermon twice.\n\nIn the first year he preached that a crowd is not a congregation: that eighty souls shouting together can do less than ten who are of one mind, and that the Church in Albion had too often mistaken the one for the other. The Bishop of Camelot did not like it. In the second year he preached that silence is not the absence of prayer but its loudest form, and that the Silencer, who has never heard a prayer, was the one creature in Caer Sidi that Arawn had made for Cadoc's own trade. The Inconnu liked that one. In the third year he preached on waiting: on the ten who stood back from the hush and did not waste themselves on it, and he said it was the hardest thing he had seen anyone do in the turning gaol, harder than the riders.\n\nThe realm's readings of the Silencer are mostly Cadoc's, because no one else who has met him has had much to say. The Inconnu say he is the one keeper who has never once failed at his task, since the inner halls have been silent every hour since the rising. The bards say he is the last of the Roman silence-keepers, still hushing the presence of an emperor who died a thousand years ago. The Church says he is a foretaste of the silence of the damned.\n\nThe knights of Caer Gothwaite keep a custom. When a company of the garrison goes up to the inner halls, it chooses its ten at the foot of the crypt stair, before anyone has seen the Silencer, and the ten go up with their hands on each other's shoulders, as Ysolde's did. The rest wait at the door of the hall, and the garrison says that the waiting is the harder share."
+    }
+  ]
+}

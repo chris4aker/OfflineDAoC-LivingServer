@@ -1,0 +1,211 @@
+{
+  "id": "crystal-cave",
+  "name": "Crystal Cave",
+  "realm": "Albion",
+  "regions": [
+    62
+  ],
+  "aliases": [
+    "crystal caves",
+    "the crystal caves"
+  ],
+  "summary": "The cavern of light under Avalon City where Xanxicar, the two-headed dragon the drakoran follow, sleeps on his mound.",
+  "facts": [
+    {
+      "text": "Crystal Cave is a level 50 Shrouded Isles dungeon entered by a downward passage near the centre of Avalon City; Allakhazam called it possibly the hardest dungeon in the game to enter, with Caer Sidi a close rival. Its guards are the Xar.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=97"
+    },
+    {
+      "text": "The drakoran are said to be led by a huge dragon.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    },
+    {
+      "text": "Its only catalogued named is Xanxicar (level 80); its guards are xanxicarian elites, and xanxicarian sentries hold the way down in Avalon City.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "An archived 2002-03 newsgroup thread describes Xanxicar as a huge white or silver dragon with two heads, and the guards as the real obstacle.",
+      "provenance": "legend",
+      "source": "https://forums.tomshardware.com/threads/xanxicar-and-the-crystal-caves.166958/"
+    },
+    {
+      "text": "A February 2003 Albion guide: 'a raid of well over a hundred players'; July 2005: he wiped five full groups.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "That Xanxicar is the dragon the drakoran follow is Living Server writing, built on the 'Xanxicarian' guard names and the Avalon Isle text.",
+      "provenance": "original",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    },
+    {
+      "text": "A December 2002 party of five 45+ groups was wiped in about two minutes by two patrolling elites at the entrance; a May 2003 raid of six level-50 groups found the first level-75 guards respawning behind them.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=97"
+    },
+    {
+      "text": "A 2010 patch (1.101) made Avalon City and Crystal Cave an Epic Zone.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=97"
+    },
+    {
+      "text": "The rock-glass of the cellars and the great astrolabe's lenses, the glaziers' rule, the walled vein, the sealed oak door at the 'cistern stair' of the chancellors' court and the clerk Gethin, the crystal stair, the shuttered lanterns, the readers' theory of old light, the custom of coming down whole and the blessing of the last curve, the cracks in the court counted by the dry'ak, Magus Hedydd and Magus Corwen and Corwen's line, and the keeper-and-kept readings are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Mythic's later lore has Morgana trap Merlin in a crystal in a cave where ley lines converge; that this might be the Crystal Cave is one in-world version among several, not canon.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/node/464"
+    },
+    {
+      "text": "Xanxicar's stomp is announced by a bellow and lands a second later on everything near him, at 80, 60, 40 and 20% health (the custom of coming down whole).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs"
+    }
+  ],
+  "story": "The Crystal Cave lies under the warm ground at the heart of Avalon, where Caradoc laid the first college's stone. The college of stars dug into it three hundred years before the burning, cut the clear warm rock-glass into the lenses of its great astrolabe, and kept a glaziers' rule that no one should grind it alone, after dark, or singing; a later master walled the vein up when the cellars began to ring by themselves. On the first night of the burning the astrolabe was smashed, and the drakoran carried its lenses down the stair.\n\nThe stair begins in the wine-cellars of the chancellors' court, behind an oak door the chancellors sealed and forgot, a curve of steps cut in the crystal and worn by feet. A clerk of the court once heard someone behind the door ask his name. The lord of the dry'ak broke the seal on the third night; the Xanxicarian sentries keep the door with the broken seal on its cord. Below, the crystal throws every light back a hundredfold, so the companies go down with shuttered lanterns, the Inconnu with none, and the readers think the cave gives back old light, perhaps the light the astrolabe showed them.\n\nThe Academy holds that the cave is where the lines of the isles run together and where Morgana trapped Merlin; the readers say the cave was there before either of them. The companies of Caer Gothwaite keep a custom from Lady Branwen's company: every man is made whole before the last curve of the stair, because those who were whole when the dragon rose were the ones who got up again, and the cobbles of the court crack each time he rises. The Academy's Magus Corwen said of the light on the mound that it is looking at what is behind us; Magus Hedydd left the school of air for the readers' dusk-reading.\n\nThe dragon is found on his mound again after every fall. The readers think he is the deepest of Avalon's keepers, a lid over the light, and that every company that brings him down lifts it for a while; they are looking for someone who can sing the Quieting.",
+  "legend": "Well over a hundred, the 2003 Albion guide said, and the guards on the way in are worse than the dragon. Two groups of elites patrolling the entrance wiped five groups of forty-fives in two minutes in December 2002, and the level-75 guards inside come back behind you. Send one person in first to scout the patrols; it was the first advice anyone ever wrote about the place. The dragon himself has two heads, a hide like frost on silver, and a stomp: at four, three, two and one fifths of his health he rears up and brings his whole weight down on everything near him. From half, his champions come one after another until he dies. He flings people into the air when he feels like it. A five-group wipe was still news in 2005. Some swear the cave fills with lightning if you dawdle; nobody has proved it, and everybody hurries anyway. Do not touch the light on the mound.",
+  "atmosphere": {
+    "firstEntry": [
+      "The walls give back your light a hundredfold.",
+      "Every guard here bears a dragon's name.",
+      "Light comes back cold and many-coloured from every wall.",
+      "Somewhere ahead, something breathes in two rhythms.",
+      "The Xar patrol here. Scout before you move."
+    ],
+    "areas": [
+      {
+        "name": "Xanxicar's mound",
+        "x": 31577,
+        "y": 35305,
+        "z": 14551,
+        "radius": 1500,
+        "lines": [
+          "Two heads rest on a mound of light. Both are watching.",
+          "Stay out of reach when he rears.",
+          "His champions wait in the dark of the cave."
+        ]
+      },
+      {
+        "name": "the way in",
+        "x": 28648,
+        "y": 31962,
+        "z": 16205,
+        "radius": 900,
+        "lines": [
+          "Elites patrol the entrance. Send a scout first.",
+          "The guards here come back behind you."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "a two-headed dragon called xanxicar sleeps in the crystal cave under avalon. [wait too long|dawdle] and the cave fills with lightning",
+      "[i think|my theory is] xanxicar was [guarding|sitting under] avalon [long before|before] the drakoran came. [maybe that's why it stayed hidden|it was the lock]",
+      "the drakoran follow a huge dragon, the isle stories say. [its xanxicar|thats xanxicar], his guards even carry his name",
+      "the readers of avalon built their city on top of the crystal cave. [on a lid|didnt know]",
+      "the oldest map of avalon has a two headed beast drawn in the middle. [before the colleges|older than the city]",
+      "the xanxicarian elites are xanxicar's household. [like knights of a king|they wear his name]",
+      "dura'ek went down to the crystal cave first. [came back empowered|thats where the power came from]",
+      "the loremasters say kill the dragon and the drakoran have no reason to stay. [we killed him and theyre still there|didnt work yet]",
+      "the crystal cave walls throw every light back a hundred times",
+      "the old guides called the crystal cave maybe the hardest dungeon in the game to get into",
+      "[heard|someone said] xanxicar grew the crystal. or the crystal grew him",
+      "the light the readers saw on the third night was xanxicar waking, [i think|they say]"
+    ],
+    "rumour": [
+      "[heard|someone said] the guards in the crystal cave are worse than the dragon",
+      "[heard|word is] xanxicar wiped five full groups in one go",
+      "heard a light forms on xanxicar's mound when he dies. nobody knows what it is",
+      "send one guy in first to scout the crystal cave patrols. [oldest advice there is|always]",
+      "[heard|someone said] two elites wiped five groups at the crystal cave entrance in two minutes",
+      "[heard|someone said] the level 75 guards in the crystal cave respawn behind you",
+      "nobody touches the light on xanxicar's mound. [nobody|dont]",
+      "[heard|word is] a five group wipe on xanxicar was still news in 2005"
+    ],
+    "tell": [
+      "crystal cave? under avalon city. xanxicar, a two headed dragon, and his xanxicarian guards. raid of over a hundred",
+      "hardest dungeon to get into in albion. the guards hit harder than you think, the dragon stomps",
+      "its the dragon under avalon. stay out of his stomps and kill his champions",
+      "is the crystal cave hard? the guards are harder than the dragon. scout the patrols",
+      "where is the crystal cave? under the middle of avalon city, past the xanxicarian sentries",
+      "what's in the crystal cave? xanxicar and his elites. thats it, and its plenty"
+    ]
+  },
+  "loremaster": {
+    "intro": "Under the burned city a way goes down to a cavern of light, and in it sleeps [Xanxicar]. His [guards] bear his name. Some say the colleges of Avalon were the [lock] on his sleep.",
+    "topics": {
+      "xanxicar": "A dragon with two heads and a hide like frost on silver. When he wakes he rears and crushes all around him, again and again as he weakens. From half his strength his champions come to him, one after another. Keep away from his feet.",
+      "guards": "The Xar, the travellers call them: xanxicarian sentries in the city above, xanxicarian elites in the cave. A king's household is called by the king's name. So is a dragon's.",
+      "lock": "One tale says the scholars built their colleges over him to keep him asleep, and when Morgana burned them the lock broke. Another says he was the keeper and they the prisoners. Both tales agree he did not wake by accident.",
+      "elites": "The Xanxicarian elites, the dragon's household. They patrol the way in, they hit hard enough to break a raid, and the guards inside come back behind you. Send a scout first.",
+      "map": "The oldest map of Avalon, from before the colleges, marks the isle's heart with a beast of two heads. The readers took it for ornament.",
+      "light on the mound": "When Xanxicar dies, a light forms on the mound where he lay. No one has dared to touch it. Some say it is what the readers saw rising on the third night.",
+      "dura'ek": "He went down to the cave first, the clans whisper, and came back Empowered. Ask in Avalon City of [the clans].",
+      "the clans": "Five drakoran clans hold Avalon City above the cave. Whether their lords admit it or not, the cave's master is theirs too.",
+      "lid": "The readers' master of stars said it when he saw the old map: we built our city on a lid. He was right.",
+      "astrolabe": "The great astrolabe of the college of stars, made with lenses cut from the warm rock-glass of the cellars, which is the crystal of the cave. The drakoran carried its lenses down the stair. See [lid].",
+      "cistern stair": "The crystal stair behind the chancellors' sealed oak door, which their book called the way to a cistern. The sentries keep the broken seal on its cord. See [guards].",
+      "last curve": "Where the companies of Caer Gothwaite make every man whole before the cave, because the whole are the ones who get up when [xanxicar] rises. The priests give a blessing there."
+    }
+  },
+  "book": {
+    "title": "The Map with No Name",
+    "pages": [
+      "The Map with No Name, a reader's commentary by Elowen of Caer Gothwaite. The oldest map of Avalon that survives was drawn before the colleges were built. It shows the isle, the marsh, the water, and at the heart of the isle a small drawing of a beast with two heads, and no name at all. The readers of the college thought it a mapmaker's ornament for three hundred years. Those who have gone down the way under the burned city and come back do not think so. They say the drawing is accurate. They say it was drawn from life.",
+      "The way down is guarded by the Xar, as travellers call them: sentries in the city, elites in the cave. The first account I have of the cave is a letter from a knight of Caer Gothwaite who went down in the winter after the burning with five companies of forty men each. Two of the elites met them at the mouth. The knight writes that it took the space of two prayers. He was the only one who walked out. He wrote that the walls threw his torchlight back at him a hundredfold, cold and many-coloured, and that he could hear something breathing, ahead, in two rhythms.",
+      "He sleeps on a mound of stone that gives back light. When he wakes he rears up, both heads high, and brings his weight down on everything near him; the ground lurches, and those beneath him do not rise. He does this not once but as often as he is hurt, at every fifth part of his strength. At the half his champions begin to come, and they do not stop. They are the dragon's household, and they wear his name, and they will die for him one after another until he dies. The knight who wrote to me said it was like watching a king's guard go to the block.",
+      "The clans in the city above deny that the dragon is their master. Their lords say they came to the isles at the witch's call and that the dragon is only a dragon, sleeping under a city they happened to take. And yet their guards say his name over and over, as soldiers say the name of their king, and the Empowered lord who rules them went down to the cave before any of them and came back drinking fire. I do not think the drakoran found the dragon. I think the dragon called them. I think he had been calling for a very long time.",
+      "When he dies, a light forms on the mound where he lay. I have now three accounts of it from companies that killed him, and they agree: a glow, small at first, that grows, and that none of them dared to touch. One of them, a priest of Camelot, wrote that it looked like the light we saw rise on the third night of the burning. I have thought about that a great deal. If he is right, then whatever woke under Avalon that night is not the dragon at all, and the dragon was only its keeper. I do not know what that means. I am keeping the map.",
+      "From the rules of the glaziers of the college of stars, copied by Elowen of Caer Gothwaite from the book saved in the ninth chest. Item: the rock-glass of the cellars is to be ground by two at the wheel and never by one. Item: it is not to be ground after the dusk bell. Item: no glazier shall sing, hum or whistle at the wheel while the rock-glass is on it, on pain of a month's wages. Item: a glazier who dreams of breathing is to report it to the master and be excused the wheel for a week. Below, in the master's hand: four excused this month. Below that, in a later hand: the vein is walled up. Let no one cut it again.",
+      "From the book of the chancellors' court, an entry a century before the burning, saved by Chancellor Rhydderch. The junior clerk Gethin, sent to the cellar for the Michaelmas wine, reports that he heard a voice on the far side of the sealed door at the cistern stair, which asked him his name. He did not answer it. He is commended for not answering, given three days' holiday, and excused the cellar. The wine is moved to the north cellar. Below, a year later, in another hand: the wine is returned to its old place, the north cellar being too cold and the Michaelmas wine not ageing.",
+      "Magus Corwen of the Academy, as reported by the priest of Caer Gothwaite who blessed his company at the last curve of the stair. He came up the stair before the others, very white, and I asked him what he had seen on the mound. He said that he was forbidden to say until the Academy had read his report. Then he said, as if he could not stop himself: it is not looking at us; it is looking at what is behind us. I asked him what was behind us. He looked up the stair toward the court and the city and said nothing more. The Academy has asked me to burn this page. I have not.",
+      "The blessing of the last curve, as given by the priests of Caer Gothwaite to every company that goes down to the Crystal Cave, in the readers' plain translation. Lord, who made the deep places and the light in them, look on these your servants on the stair. Bind what is broken in them, close what is open, and make them whole; and in the hour when the earth is lifted and let fall, let each be found whole, and rise. Bring them up the stair by the way they went down. Below, in Elowen's hand: the drakoran on the stair have learned this, and say it too. I do not know to whom."
+    ]
+  },
+  "bosses": [
+    "xanxicar"
+  ],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "morgana",
+    "old-powers"
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Glass Under the Cellars",
+      "text": "The readers of Avalon found the crystal three hundred years before they understood it, and they made their best instrument out of it.\n\nCaradoc the surveyor laid the first college's stone on the warmest ground on the isle, where the earth rang like glass when it was struck, and the college of stars dug its cellars into that ground in the generation after him. Six feet down the diggers' spades went through the earth into something clear. The college's book calls it a vein of rock-glass and says the masters had it cut out in blocks and carried up, because clear stone was rare and the college meant to build an astrolabe. The glaziers of the college ground the blocks into lenses. The great astrolabe on the upper floor of the college of stars, which could show a reader the moons of the wandering stars on a clear night, was made with them, and it was the wonder of the isles for two hundred years.\n\nNobody at the time asked why the rock-glass was warm when it came out of the ground, or why the lenses cast back more light than went into them, or why the glaziers who ground them dreamed, every one, of the same sound: two great beasts breathing in two rhythms that did not match. The glaziers of the college kept a custom that Elowen of Caer Gothwaite found in its rules after the burning, and copied: that no glazier should grind the rock-glass alone, or after dark, or sing at the wheel. The rule does not say why. Elowen thinks the first glaziers knew, and that the custom is the only account of the cave the colleges ever wrote down, without knowing they were writing it.\n\nThe college of stars stopped cutting the vein in the time of its fourth master, who wrote that the cellars had begun to ring when nobody struck them. He had the vein walled up with ordinary brick and the cellar floor laid over it, and gave orders that the college should dig no deeper. Every master after him kept the order. The last of them was Iorwerth, who sang the Quieting on the longest night for forty years and never went down to the cellars at all.\n\nDra'argus of the drau'gyn holds the college of stars now. The fishermen say his flamethrowers smashed the great astrolabe on the first night and threw its lenses into the street, and that the lenses lay in the ashes for a year, warm, until the drakoran of the Empowered's court gathered every one of them up and carried them down the stair under the chancellors' court. Nobody in Albion knows what was done with them."
+    },
+    {
+      "title": "The Stair Under the Court",
+      "text": "The way down to the cave begins in the wine-cellars of the chancellors' court, behind a door that the readers' governors had sealed and forgotten.\n\nThe court was the last building of the old city, raised at the centre when the colleges were already old, and its builders dug its cellars into the same warm ground as the college of stars, a long stone's throw away. They found a stair already there. It was cut, not grown, in steps of the crystal itself, going down in a long curve, and its treads were worn in the middle as if by feet. The chancellors of the day had the stair's mouth closed with an oak door bound in iron and sealed it with the court's seal, and they wrote in the court's book that the stair was the work of the people before the colleges and led to a cistern. Nobody opened it to check. The wine of the court was kept against that door for three centuries, because the cellar there was the warmest and the wine aged quickest.\n\nOn the second night of the burning Elowen saw the lord of the dry'ak stand on the court steps looking down at the paving as if listening. On the third night he broke the chancellors' seal. The Xanxicarian sentries, who were dry'ak doorkeepers then, posted to keep the readers out of the cellars, hold the stair now, and they keep the old oak door with the broken seal still hanging from it on its cord. The Inconnu who have passed it say the sentries touch the seal as they go by, as a man touches a relic.\n\nBelow the door the stair goes down a long way in its curve, through rock first and then through clear crystal, so that a company going down can see the stair beneath it and the stair above, and its own feet on the treads from below. The companies of Albion who have gone down say it is the worst part of the descent, worse than anything waiting at the bottom, because a man going down a clear stair sees how far there is to fall.\n\nThe chancellors' court book, which Chancellor Rhydderch saved with the charters, has one more entry about the door, in a hand from a century before the burning. A junior clerk of the court, sent down for wine, reported that he had heard someone on the far side of the sealed door ask him his name. He was given a holiday and the wine was moved. Elowen found the entry, and found that the wine had been moved back within the year, because the cellar was warm."
+    },
+    {
+      "title": "The Light of the Cave",
+      "text": "The cave throws back every light that enters it a hundredfold, cold and many-coloured, and the companies of Albion have had to learn how to see in it.\n\nA torch in the Crystal Cave does not light the way ahead. It lights everything at once, walls and roof and the crystal underfoot, and the light comes back from all sides, so that a man with a torch cannot tell a wall from a passage or a passage from a fall. Sir Garan of Caer Gothwaite, the only man to walk out of the first descent, wrote that his company lost more men to the light than they knew, men who walked into the glare and were not seen again. The companies that came after went down with shuttered lanterns, the kind the fishermen of the Avalon shore carry at night, opened a crack and pointed at the floor, and they learned to read the cave by the lines of their own light thrown back from the crystal, as a sailor reads a coast by its breakers.\n\nThe Inconnu have their own way, which they will not teach. They go down with no light at all, and they say the cave makes its own: a faint glow in the crystal that comes and goes, brightest toward the mound and dimmest at the walls. An Inconnu guide told a priest of Camelot that the glow is the cave's breath, and that it comes in two rhythms that do not match. The priest wrote that he had watched for it and seen it, and that it was the most frightening thing he saw in the cave, including the dragon.\n\nThe readers of Caer Gothwaite, who have never been down, have a theory about the light that the companies laugh at and do not quite dismiss. The crystal, they say, is not giving back the light that goes into it. It is giving back light that went into it long ago, all of it, every torch and lamp and star the cave has ever seen, a little at a time; and the cold many-coloured light the companies see is old, perhaps older than the isles. Elowen points out that the great astrolabe's lenses, cut from the same crystal, showed the readers stars that no other instrument in the world could see. Perhaps, she writes, they were not seeing the stars as they were. Perhaps they were seeing the stars as the crystal remembered them.\n\nThe companies' one custom of the light is simpler. They do not look straight at the mound until they must."
+    },
+    {
+      "title": "Merlin's Crystal",
+      "text": "There is a second story about a crystal in a cave, and Albion has never settled whether it is the same story.\n\nMerlin, who read in Avalon's school of making as a boy and carried its arts to Camelot, was taken by the girl who read in every college. Morgana trapped him in a crystal, the oldest account says, in a cave where the lines of power under the land run together, and drank his power out of him there, and came back to Avalon at the head of the drakoran. Where the cave was, no account says. The Academy at Camelot, which has searched for it since, holds that the lines of the isles run together under the heart of Avalon, under the warm ground where Caradoc laid his stone, and that the Crystal Cave is the place. On the Academy's reading Morgana did not come back to Avalon for its libraries at all. She came back for her prison, and the colleges were burned because they stood on top of it.\n\nThe readers of Caer Gothwaite do not believe it. The cave was under their cellars for three hundred years, they say, ringing and warm, before Morgana was born, and its sleeper was on their oldest map before Merlin's grandfather was; the cave did not need Morgana to be what it is. Elowen grants the Academy one point. On the third night, when the light rose out of the ground, the master of stars wept, and she did not understand why. She thinks now that Iorwerth's master had told him something about the crystal that he never told her, and that what he wept for was not the dragon.\n\nThe Inconnu, as ever, give the third version and will not explain it. Their lord Arawn, they say, has known of the sleeper under Avalon since before Annwn had a road, and has never gone near it, and the witch went near it, and that is the whole difference between Arawn and Morgana.\n\nThe Church's answer is that it does not matter. A witch's prison or a dragon's bed, the priests of Caer Gothwaite say, the cave is under a Christian city that was burned by heathens, and the light on the mound is a sign to be prayed over, not a riddle to be read. The priests pray over it from the head of the stair. None of them has gone to the mound to pray over it there.\n\nNobody in any company that has reached the mound has seen a man in the crystal. Several have said they did not look very hard."
+    },
+    {
+      "title": "Coming Down Whole",
+      "text": "The companies that go down to the cave have a custom on the stair that no reader taught them and no priest approves: they go down whole, or they do not go down.\n\nThe custom began after Lady Branwen Hale's company, the first of Albion to bring the dragon down. Branwen's account of the cave, which the Constable's office keeps, says the dragon did not breathe and did not need to. He rose off his mound and brought the whole of himself down, and the cave rang with it, and those beneath him who were whole when he rose were the ones who got up again. Her company learned to listen for his bellow, which came a breath before the fall, and to be whole when it came, and the account says that the men who had let a wound wait were the men she buried. Branwen's sergeants turned it into an order. The companies of Caer Gothwaite turned the order into a custom: on the stair, before the last curve, every man is bound and mended and made whole, and a man who carries a wound past the last curve carries it at his own risk.\n\nThe priests of Caer Gothwaite have a blessing for the last curve of the stair, which they give to each company as it passes. It is short. It asks that each man be found whole in the hour of the dragon's rising. The dry'ak sentries on the stair have heard it given so often that the Inconnu say some of them know it by heart, and that one sentry was heard to say it under his breath, in the drakoran tongue, as an Albion company went by.\n\nThe drakoran of the city know when the dragon rises, as the fishermen's sayings record. The cobbles of the chancellors' court crack each time, a city's length above the cave, short cracks and then a long one, and the dry'ak doorkeepers on the court steps count the cracks as men count a bell. Elowen of Caer Gothwaite asked the fishermen to count them too, the night Branwen went down, and the fishermen came back across the marsh at dawn to say that the long crack had come, and that the court's doorkeepers had gone down on their knees.\n\nThe cracks in the court are still there. The dry'ak fill them with mortar after every company that goes down, and the readers' fishermen, who trade with the stall-keepers at the edge of the marsh, say the mortar is the only work in the occupied city that the drakoran do well."
+    },
+    {
+      "title": "What the Academy Saw",
+      "text": "The Academy at Camelot sent two of its mages down with the second company of Albion to bring the dragon down, to look at the light on the mound, and they came back and said they would prefer not to say what it was. The Academy has kept their report sealed ever since. One line of it is known.\n\nThe mages were Magus Hedydd of the school of air and Magus Corwen of fire, both of whom had studied with Magus Alun of Camelot, who had broken the archwizard Aidon in the Hall of the Corrupt; the Academy sent its best, and said so. They stood at the edge of the mound for an hour while the company rested, Hedydd with her hands held out toward the light and Corwen writing. The company's captain, who did not like waiting in the cave, wrote that the light did not change while they watched it, and that both mages were weeping when they came away.\n\nThe one line is Corwen's, and it is known because Corwen said it aloud at the head of the stair, to the priest of Caer Gothwaite who gave the company its blessing, before the Academy had seen the report: it is not looking at us; it is looking at what is behind us. The priest wrote it down. The Academy asked him to burn the page, and he said he would if the Academy would tell him what it meant. The page is in the priests' chapel at Caer Gothwaite.\n\nWhat lies behind a company standing at the mound is the stair, and the court, and the city of Avalon, and beyond it the realm. The readers of Caer Gothwaite read Corwen's line one way: that the light is the thing the dragon keeps, and that it is turned toward the world above, waiting. The Church reads it as a sign of grace watching over the realm. The Inconnu, who will not go within sight of the light, said only that Corwen was a careful man and should be believed.\n\nMagus Hedydd went back to the Academy and asked to be released from the school of air. She lives at Caer Gothwaite now, among the readers, and has taken up the dusk-reading of the old tongues on the earthen wall beside Elowen. She says she has no gift for it. Elowen says she is learning quicker than anyone since Morgana."
+    },
+    {
+      "title": "The Keeper and the Kept",
+      "text": "Every company that kills the dragon leaves the cave as it found it, except for the light, and every company finds him on his mound again when it next goes down. The three witnesses have three explanations, and the cave itself suggests a fourth.\n\nThe Camelot loremasters say Xanxicar is an old power, like the stone dragon of Dartmoor, and the old powers settle rather than die; a stone is not killed by breaking. The Church says the dragon is sent back each time as a trial, until the realm is worthy. The Inconnu say Arawn's own law has nothing to do with him, which means he is not dead when he falls, only absent, and that absence is not something Annwn can keep.\n\nThe readers of Caer Gothwaite point to the cave. While the dragon lies fallen, they say, the light on the mound grows, uncovered, and when he comes back it is covered again; the companies' accounts agree. The readers think the dragon comes back because the thing beneath him cannot be left bare. He is the lid, they say, as the colleges were a lid on him; Avalon was built in layers, keeper over keeper, and the deepest keeper is the one that matters. Caradoc laid his stone on the warm ground, the college of stars cut lenses from the crystal and walled it up again, the chancellors sealed the stair, Iorwerth sang the Quieting on the longest night. Each of them, Elowen writes, was keeping something without knowing it. Only Morgana, who read in every college, put all their keeping together and understood what it was for.\n\nThe drakoran give a fifth answer, and the Inconnu say it is the truest. The dry'ak prisoners say the dragon is neither keeper nor kept, but host: that the cave is his house, and the light his guest, and that a drakoran does not ask what his host is keeping, only whether he is welcome. They say the Xanxicarian champions are welcome. They say Albion is not.\n\nWhat follows, if the readers are right, is the question nobody in Camelot wants asked aloud. If the dragon is a lid, every company that brings him down lifts it for a while, and the light grows, and nobody yet knows what it grows toward. The Constable's office has asked the readers whether Albion should stop going down. The readers answered that Albion should find somebody who can sing the Quieting before it goes down again, and that they are looking."
+    }
+  ]
+}

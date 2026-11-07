@@ -1,0 +1,141 @@
+{
+  "id": "orshom-brong",
+  "name": "Orshom Brong",
+  "catalogKey": "krondon/orshom",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "aliases": [
+    "orshom"
+  ],
+  "facts": [
+    {
+      "text": "Orshom Brong: level 80, 30,000 health, GetResist 20 melee / 30 other (all damage types hurt him), parry 50, CC immune, tether 3,800. On engage he lights Orshom's Fire at 31406, 69599; at <=50% he puts Orylle on his aggro list.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs"
+    },
+    {
+      "text": "Orshom's Fire: level 80, 10,000 health, takes only cold damage, Fire Burn 500 heat in a 300 radius every 3 s. While it lives Orylle moves a random real player within 2,500 onto its spot every 15-20 s.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs"
+    },
+    {
+      "text": "The encounter catalog's krondon/orshom rule 'takes no damage except from Cold damage' cites line 365, which is OrshomFire.TakeDamage; Orshom himself has no damage filter.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Orshom as the prop of the seams, 'brong', the hearth that went back to its stone, the kneeling keeper, 'the champion keeps the hearth and the queen keeps the champion' and Magus Tegau of the Isle of Glass are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "In the Undercroft Orshom Brong was the clan's greatest prop, the ogre who stood under new roof and took the rock on his shoulders while the crews set timbers, in the soft seams under the sea where cold salt water drips through. The cold got into him and he has hated it since more than anything. Brong is the seams' word for the sound a prop makes when the roof settles on him and he does not fall. He followed Orylle up the shaft first, carrying the stone that closed it, and on the night of the taking she made him champion and consort.\n\nHe drank the great hearth of the deepest hall, whose stone was the guest-stone, after its keeper died between him and her fire. The fire would not stay drunk. Whenever he is roused it comes back up out of him and settles where it was kept, on the guest-stone below the queen's chair, and burns there wide and low. Steel passes through it as through light; flame only feeds it; only frost puts it out, and the hearth's keeper still kneels at its edge. Orshom himself is only a very big ogre, and bleeds like one.\n\nThe guest-law lets a host turn a stranger out only while the hearth burns, so Orshom keeps it burning: when a challenger comes he is roused first, the fire comes to the stone, and only then does Orylle hurl the boldest down her hall on to the stone, into whatever burns there. The one who gets up quickly out of the fire is only scorched. With the stone cold she throws no one. When Orshom is hurt deep enough he roars for her as a prop roars when a roof goes, and she comes to his shoulder.\n\nSir Cador of the Isle of Glass, thrown three times into that fire on his first descent, worked out that he had been using steel on the fire and flame on the ogre. On the second he sent Magus Tegau's ice-mages to the stone while his knights went past it; when the last of the fire guttered, the keeper's ghost laid her hand on the cold stone and no one was thrown again. The knights cut Orshom down with ordinary steel.",
+  "legend": "Forget the old 'only cold hurts Orshom' line: it is wrong, the catalog mixed him up with his fire. Orshom is level 80 with 30,000 health, normal 20% melee / 30% other reduction, parry 50, CC immune, 3,800 tether, and any damage type hurts him. When he is engaged he lights Orshom's Fire on the floor at a fixed spot about 1,200 in front of Orylle's chair: 10,000 health, ONLY cold damage hurts it, and it burns 500 heat in a 300 radius every 3 seconds. While it burns, Orylle throws a random real player within 2,500 every 15 to 20 seconds straight onto it; only the human gets thrown, bots never. So send the cold casters to the fire, not to Orshom, and kill it first: no fire, no throws, no burning floor. Everyone else fights Orshom and Orylle with whatever they have. Pulling either one brings the other, and at 50% he calls her if she is not already in. If you get thrown, get off the fire at once.",
+  "yells": {
+    "aggro": [
+      "Cold! Always cold! Burn for me, hearth!",
+      "The hearth wakes!",
+      "Back to your stone, fire. Burn them."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "My queen! The roof is coming down!"
+      }
+    ],
+    "death": [
+      "Cold... so cold... again...",
+      "The hearth... keep the hearth..."
+    ],
+    "slay": [
+      "Burned through.",
+      "Ash for the hearth.",
+      "Warm now, little one?"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A fire burns low on a stone before the queen's chair.",
+      "A ghost kneels at the edge of the hearthstone."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Orshom roars for his queen!"
+      }
+    ],
+    "realmFirstKill": "Krondon's champion is dead. The hearthstone is cold."
+  },
+  "botLines": {
+    "briefing": [
+      "orshom takes normal dmg, it's his fire on the floor that only takes cold",
+      "cold casters on orshom's fire first, 10k hp. while it burns orylle throws the human onto it",
+      "the fire burns 500 heat 300 radius every 3 sec. if you land in it, move",
+      "pull one, get both. at 50% orshom calls orylle anyway"
+    ],
+    "aftermathWin": [
+      "fire out first, nobody flew after that. nice",
+      "cold on the fire, steel on the ogre. thats how its done",
+      "orshom down. who knew ice was good for something",
+      "frost mages mvp tonight"
+    ],
+    "aftermathLoss": [
+      "we put all the cold on orshom and left the fire burning. wrong target",
+      "the human got thrown into the fire and lay there",
+      "fire mages fed the fire. only cold hurts it",
+      "the 50% call brought orylle in on the healers"
+    ],
+    "rumour": [
+      "[heard|they say] orshom brong drank the fire out of krondon's hearth",
+      "heard the fire in krondon only dies to cold. orshom himself bleeds like anyone",
+      "heard orshom is orylle's consort",
+      "[heard|someone said] an old woman's ghost kneels by the fire on the guest stone"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "orshom brong",
+    "text": "[Orylle]'s champion and consort, once the greatest prop of the [Undercroft]. He drank the hearth of [Krondon]'s deepest hall, and it would not stay in him: it burns on the guest-stone, where only frost puts it out. While it burns the queen may turn guests out. Orshom himself bleeds like any ogre."
+  },
+  "bookPage": "From the notes of Wenna of Caer Gothwaite, the second descent. The fire that Orshom drank did not stay in him. It burns on the old hearthstone below the queen's chair, which the hall-folk called the guest-stone, and the queen throws her guests into it. Our swords went through it as through light; our fire made it taller. Magus Tegau's frost put it out, slowly, as frost puts out a hearth in the morning, and the old keeper's ghost laid her hand on the cold stone. After that no one was thrown. Orshom himself bled like any ogre. Sir Cador says he had been fighting the wrong thing with the wrong weapon.",
+  "chronicle": {
+    "win": "{realm}'s cold-casters under {raidLeader} put out the fire in Orshom Brong at Krondon in {minutes} minutes.",
+    "loss": "Orshom Brong burned through {realm}'s raid; {raidLeader} had too little cold for him."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "orylle",
+      "relation": "his queen"
+    },
+    {
+      "id": "orylle",
+      "relation": "her champion and consort; he keeps the hearth burning so she may turn guests out"
+    },
+    {
+      "id": "lurfos-the-herald",
+      "relation": "Lurfos heated his blade in the fire on the guest-stone"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Prop of the Seams",
+      "text": "In the Undercroft, Orshom Brong held up the roof.\n\nEvery crew of the thrawn ogres had a prop, the largest of them, who stood under a new stretch of tunnel and took the weight of the rock on his shoulders while the others set the timbers. A prop did not dig. He stood. Orshom was the biggest prop the clan had ever had, the ogres say, and he stood under the worst roofs in the seams, the soft ones under the sea where the rock is rotten and the cold salt water beads through the stone, and he held them for days at a time while the crews worked round him. The cold of those seams got into him. The ogres say he has hated the cold ever since more than anything in the world, more than the hall-folk, more than Albion, and that it was the one thing he ever complained of.\n\nHe followed Orylle up the shaft first because he was the only ogre who could carry the stone that closed it. The ogres say she chose him for the climb for that reason and no other, and that she did not look at him twice until the night of the taking, when he walked into the deepest hall after Eadric fell and did what the hall still tells. She made him her champion and her consort before the night was out. The ghosts say she did it because of what he had done to the hearth; the ogres say she did it because he was standing next to her chair and nobody else was. Both, the Inconnu think.\n\nOrshom's name is not a title off any door. Brong is a word of the seams, the ogres say, for the sound a prop makes when the roof he is holding settles on him and he does not fall: a deep sound, more felt than heard, that the crews listened for and were glad of. The ghosts of the queen's hall say they hear it in the floor sometimes when Orshom walks, and that it is the only thing about him they do not mind."
+    },
+    {
+      "title": "The Hearth That Would Not Stay Drunk",
+      "text": "Orshom drank the hearth of the deepest hall, and the hearth did not stay drunk.\n\nThe great fire of Krondon had burned on its hearthstone below the high table since the founding of the hall, kept by the most honoured of the hyrde, and its stone was the guest-stone, where an unannounced stranger was set down to warm himself and begin again. On the night of the taking, the ghosts say, the hearth's keeper stood between the ogre and her fire and was the last of the hall-folk to die, and Orshom put his face into the flames and drank them, for the warmth, because he had been cold since the seams. The fire went into him. It did not stay. A fire kept for the whole life of a hall has a place, the ghosts say, and it goes back to it.\n\nWhenever Orshom is roused, it comes back up out of him and settles where it was kept, on the guest-stone below the queen's chair, and burns there of its own accord, wide and low, scorching whatever stands in it. It is not his fire any more, nor quite the hall's. Steel passes through it as through light and finds nothing; flame passes through it and only feeds it. The ghosts say only frost has ever put it out, as frost puts out the last of a hearth on a winter morning, and that the hearth's keeper, who died for it, still kneels at the edge of the stone and will not let the ogres near.\n\nOrshom himself is only an ogre, around the place where the fire was. He bleeds like one. The ogres boast that he is full of fire still and cannot be hurt, and the ghosts let them boast, but the ghosts of the queen's hall have seen him cut, and seen him bleed, and say there is nothing in him now but a very big ogre who was cold once and is cold again. That is why he lets the fire go to the stone, the ghosts think. He cannot keep it. He keeps it near."
+    },
+    {
+      "title": "While the Hearth Burns",
+      "text": "The hall-folk's guest-law gave a host the right to turn a stranger out only while the hearth burned, and Orylle has never thrown a guest across her hall with the hearthstone cold.\n\nSo Orshom keeps it burning for her. That is how the ghosts describe his part in the queen's court, and they say it with a kind of grudging respect: he is the keeper of the hearth now, though he does not know the title and would not care if he did. When a challenger comes up the road to the high table, Orshom is roused first, and the fire comes up out of him on to the stone, and only then does the queen rise and take the boldest by the elbow and hurl him down her hall on to the guest-stone, into whatever is burning there. The guest-law says he must be set back on the stone to begin again. It does not say the stone must be cold.\n\nWenna of Caer Gothwaite saw it on the second descent, and wrote that the thrown man who got up quickly out of the fire was scorched and the one who lay there a moment to collect himself was not seen to get up at all. The queen watches each thrown man's face as he rises. She cannot throw anyone, the ghosts say, once the fire on the stone is out; the law forbids it, and Orylle keeps the hall's laws as a queen of Krondon would.\n\nWhen Orshom has been hurt deep enough, he roars for her. It is the sound the ogres of the seams make when a roof is going, the ghosts say, and every prop in the Undercroft would have dropped his tools and run to it, and Orylle comes, whether she was minded to or not, and stands at his shoulder. When one of them falls the other roars the fallen one's name. The ghosts say that between them they have made a law the hall-folk never had: that the champion keeps the hearth and the queen keeps the champion."
+    },
+    {
+      "title": "Magus Tegau's Frost",
+      "text": "When Sir Cador of the Isle of Glass came back to the queen's hall with fifty, he brought Magus Tegau and her ice-mages of the Isle of Glass, and he did not send them against Orshom.\n\nCador had been thrown on his first descent, three times, and every time he had landed on the guest-stone in the fire. He had watched his knights' swords go through the fire on the stone as through light, and he had watched his own fire-wizards pour flame into it and make it taller. He had also watched Orshom bleed. On the walk home after the first descent he worked out, Wenna wrote, that his company had been fighting the wrong thing with the wrong weapons: steel on the fire, flame on the ogre. He raised the second company accordingly.\n\nTegau's account is short. Her mages went down the queen's hall to the guest-stone while the knights went past it to the high table, and they put frost into the fire until it was out. It took longer than she liked. The hearth's keeper, she wrote, a ghost of an old woman kneeling at the edge of the stone, watched them do it and did not try to stop them; when the last of it guttered, the ghost put her hand flat on the cold stone, and Tegau's mages stood back and let her. From that moment, Wenna wrote, nobody in Cador's company was thrown again. The queen reached for the nearest knight and her hand fell, as if she had remembered something.\n\nCador's knights cut Orshom down at the high table with ordinary steel. He roared for the queen when he was hurt deep, and she came, and he fell, and she roared his name; Wenna wrote that the sound shook dust from the carvings. The ice-mages of the Isle of Glass were given the credit at Caer Gothwaite, and Tegau refused it and wrote to the readers that the old woman at the stone had done the work. The ogres say Orshom was at the queen's shoulder again within the season, and the fire on the stone again with him."
+    }
+  ]
+}

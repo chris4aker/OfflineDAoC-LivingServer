@@ -1,0 +1,160 @@
+{
+  "id": "bellum",
+  "name": "Bellum",
+  "catalogKey": "caer-sidi/bellum",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 83, 100,000 health; the second Horseman, a minute after Fames. Grants one minute to prepare for war.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "Raises three 'war incarnate' weapons that strike with crush, slash and thrust; heavy armour (AF 350, 20% absorb) soaks melee; he has no spell reduction.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The Horsemen come in order: Fames, then Bellum, Morbus and Funus, each a minute after the last falls; Funus calls Apocalypse. Each brings a fate's bearer.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bellum: AbilityBonus Resist_Slash/Crush/Thrust 99 (capped at 70 by ResistCalculator.HardCap), every magic resist -10, AF 350 and 20% absorb; three war incarnates (level 75, 10,000 health) each call four more of their kind and all die when Bellum dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "Bellum's harness of the dead, the herdsman bearer with open hands, the fall of the weapons on the night of the rising, Dorinakka's saying, 'Bellum's minute' on the frontier, Sir Geraint's notched sword and the line on the gate of Prydwen Keep are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Real-world myth, not game canon: the second horseman of Revelation 6 rides a red horse and is given a great sword to take peace from the earth.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Four_Horsemen_of_the_Apocalypse"
+    }
+  ],
+  "story": "Bellum is War, the second rider before the first cell of Caer Sidi, and the first prisoner Arawn ever locked there who had never been a man: the second shadow that walks beside every army, caught on the road after a forgotten battle and given a body so that it could be held. Every soldier who died in his service left him the harness he died in, and he wears them all, so that a blade glances off him like hail off slate; but no army ever armoured itself against a word, and neither has war. His bearer is the first man killed by another, a herdsman of the hut-builders who walks beside him with open hands.\n\nHe calls war's three oldest shapes, hammer, blade and spear, and each calls its file after it until the hall is full of iron. The dead of the lich's company learned the other half on the night of the rising: when Bellum fell, every weapon fell with him at once. Warlord Dorinakka, who salutes the riders' hall before every drill, made a saying of it that the knights of the Isle of Glass now keep: strike the captain, and the file lies down.\n\nThe frontier keeps' moment of silence before a line closes is called Bellum's minute, and war grants exactly that courtesy. In Dame Ysolde's company Sir Geraint of Caerwent laughed at it, then held the iron off the wizards while their fire and frost brought war down, because his own sword rang on Bellum like a bell. He hung that sword in the chapel at Caer Gothwaite.\n\nThe Church calls Bellum the red horse of the last book; the bards put him at all twelve of Arthur's battles and on both sides at Camlann. The Inconnu say war does not want to win, only to go on. Prydwen Keep has cut his minute into its gate: one minute, then the captain.",
+  "legend": "Bellum comes a minute after Fames: level 83, 100,000 health, crowd-control immune. Melee is nearly wasted on him: his slash, crush and thrust resists sit at the 70% cap on top of AF 350 and 20% absorb, while his magic resists are 10% below zero, so spells hit him harder than normal. Casters do the killing. As he wakes, three war incarnate weapons rise (crush, slash, thrust) and each calls four more of its kind: about fifteen weapons, level 75, 10,000 health each. Do not try to clear them. Every one of them dies the moment Bellum dies, so the melee and tanks peel weapons off the casters and healers while everything with a spell burns Bellum. His fate's bearer comes too; kill it early. If the fight resets the weapons vanish and he is full again. Morbus comes a minute after he dies, so rest then. Prydwen Keep veterans touch the gate going out.",
+  "yells": {
+    "aggro": [
+      "Prepare yourselves for war. One minute, you are granted.",
+      "Every soldier who ever lived marches behind me.",
+      "To arms, then. To all arms."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Hammer, blade and spear. War has no other shapes."
+      }
+    ],
+    "death": [
+      "War... ends... only for the dead...",
+      "Morbus. They are yours."
+    ],
+    "slay": [
+      "It is the fate of man to know pain and loss.",
+      "Another for the long march.",
+      "Fall in with the rest."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Weapons hang in the air, waiting for a hand.",
+      "The air rings like a smithy at war."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Bellum raises the weapons of war!"
+      }
+    ],
+    "realmFirstKill": "Bellum has fallen. War rides no more in Caer Sidi."
+  },
+  "botLines": {
+    "briefing": [
+      "bellum: melee does almost nothing to him, casters burn him, spells hit him extra",
+      "about fifteen weapons come up. dont kill them, they all die when bellum dies",
+      "melee and tanks peel the weapons off the casters and healers",
+      "kill his fate's bearer early",
+      "morbus is a minute after bellum, rest then"
+    ],
+    "aftermathWin": [
+      "two riders down",
+      "war is over. for now",
+      "the weapons died fast, good groups",
+      "casters carried bellum"
+    ],
+    "aftermathLoss": [
+      "we tried to clear the weapons and ran out of mana",
+      "the weapons got loose in the casters",
+      "melee on bellum does nothing, we needed more casters on him",
+      "we didnt rest after fames and paid for it"
+    ],
+    "rumour": [
+      "heard bellum's weapons fight on their own. hammer, sword and spear",
+      "[someone said|heard] melee barely scratches bellum",
+      "heard dorinakka's knights salute toward bellum's hall",
+      "bellum was a war spirit before he was a horseman, [they say|heard]",
+      "heard the frontier keeps call the quiet before a fight bellum's minute",
+      "[heard|someone said] all of bellum's weapons drop when he does"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "bellum",
+    "text": "War, the second of the [four riders]: the shadow that walks beside every army, caught and kept. He wears the harness of every soldier who died for him, and no blade troubles him; no army ever armoured itself against a word. When he falls his weapons fall with him, as [Dorinakka]'s yard learned. See [Fames] and [Morbus]."
+  },
+  "bookPage": "War gave us one minute, as Fames had given us two, and I understood then that the riders were not mocking us; they were keeping a rule. When the minute ended the air of the hall rang like a smithy, and three weapons lifted from the floor where no hand had held them: a hammer, a sword, a spear. They fought us as soldiers fight, without anger and without rest. Our sword-arms did little against the rider himself. It was our wizards who brought War down, and they say still that they have never felt anything so heavy fall.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} broke the weapons of Bellum and unhorsed War in {minutes} minutes.",
+    "loss": "Bellum's war incarnate cut through {realm}'s raid; {raidLeader} lost the second rider."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "caer-sidi-prisoners",
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "fames",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "morbus",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "funus",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "apocalypse",
+      "relation": "the master they ride before"
+    },
+    {
+      "id": "warlord-dorinakka",
+      "relation": "the warlord below salutes him"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Spirit Beside Every Army",
+      "text": "Bellum was the first prisoner Arawn ever locked in Caer Sidi who had never been a man.\n\nEvery army that has ever marched, the Inconnu say, has had a second shadow walking beside it: not a god, though the Romans built it altars, and not a demon, though the Church calls it one, but the thing that makes men who have no quarrel kill each other in rows. It came down every road to Annwn with the dead of every battle, and it came laughing. Arawn caught it on the road after a battle in the hills that no one now remembers, gave it a body so that it could be held, and named it in the Roman tongue, because by then most of the soldiers it brought him were Roman.\n\nThen he armoured it, or it armoured itself; the accounts differ. The Inconnu say that every soldier who has died in Bellum's service has left him the harness he died in, and that he has worn every one of them since, one over another, mail over leather over bronze, until there is no edge that has not already rung on him. A blade that bites a living man glances off Bellum like hail off a slate roof. But no army in all the ages has armoured itself against a word, the Inconnu say, and so neither has war. The Roman priests who cursed their enemies before a battle knew it, and so did Arawn's keepers.\n\nHis bearer is the first man ever killed by another man. The Inconnu say he was a herdsman of the hut-builders, struck down at a spring by a neighbour over the right to water, and that he walks beside Bellum with his hands open, because he never had a weapon. He fights for the rider with those open hands. Brother Cadoc wrote that of all the bearers he was the hardest to look at.\n\nThe dead of Caer Sidi love Bellum, because most of them died in his service, and he is the only one of the four riders whom the prisoners of the gaol salute. Warlord Dorinakka, in the yard below, turns toward the riders' hall before every drill and lifts his blade. The Inconnu say a warlord knows his own god when he sees one."
+    },
+    {
+      "title": "Hammer, Blade and Spear",
+      "text": "War has three oldest shapes, the keepers of Caer Sidi taught, and Bellum calls all three when he rides.\n\nThe hammer came first, because the first weapon was a stone in a fist. The blade came after, when men learned to beat bronze. The spear came with the first army, because a spear is a weapon for men who stand together. When Bellum draws them, they rise from the floor of his hall with no hand to hold them, and the Inconnu call them war incarnate. They do not come alone. Each one, as soon as it is on the wing, calls up its fellows of the same kind, as a file-leader calls his file, and the hall that held three weapons holds ranks of them.\n\nThe prisoners of the gaol learned the other half of it on the night of the rising, when the lich's company climbed the stair. The dead fought Bellum's ranks for most of that night and could not thin them. Then a crypt knight of the company, one of Arawn's own who had turned with the rest, went past the ranks to the rider himself and put the lich's fire into him at the lich's word, and when Bellum fell, every weapon in the hall fell with him, at once, with a sound the Inconnu say was heard three tiers below, like a field of armour laid down at the end of a war.\n\nDorinakka heard it in the yard, and made a drill of it. A file without its leader is iron on the floor, he tells his knights, and so the warlord's knights are drilled to stand about their warlord before they stand anywhere else. The yard's saying went up and down the gaol, and the Inconnu brought it up out of the ground to Caer Gothwaite, where the knights of the Isle of Glass say it now as if it were their own: strike the captain, and the file lies down.\n\nThe Church of Camelot keeps a different account of the three. Its priests say they are the three weapons of the Passion, the hammer of the nails, the sword of the soldiers at the foot of the Cross and the spear of the centurion, and that Bellum carries them to mock the Cross. The Inconnu say war is older than the Cross and has never needed to mock anything."
+    },
+    {
+      "title": "The Soldier's Minute",
+      "text": "Bellum grants a single minute, and the old soldiers of Albion say it is the only honest thing war has ever given.\n\nThe frontier keeps have a custom older than the keeps: before a line closes, it stands for the space of a few breaths in silence, every man looking at the man across from him. The Roman auxiliaries kept it on the Wall, the Prydwen roll says, and the garrisons of Prydwen Keep and Castle Sauvage keep it still. The soldiers call it Bellum's minute. When Dame Ysolde's company climbed to the riders and heard war offer them a single minute, Sir Geraint of Caerwent, who had stood in the line at Castle Sauvage in three summers of the frontier war, laughed out loud, and the rider turned his head toward the laugh as if he knew it.\n\nGeraint's account of the hour that followed is the one the Isle of Glass garrison keeps. The weapons rose, and called their files, and filled the hall, and Ysolde did not send her company against them. She had Dorinakka's saying from Ennyn. She put her shields about her priests and her wizards and set every one of them on the rider. Geraint wrote that his own sword rang on Bellum's harness like a bell and left nothing, and that he stopped striking and held the iron off the wizards instead, which was work enough for a whole company of knights. It was the wizards who brought war down, with fire and frost and the long words, and Geraint said war took their words worse than an unarmoured man would.\n\nWhen Bellum fell, the weapons fell with him, as the dead had found; Geraint said the sound was every armoury in Albion dropped on a stone floor. By morning the iron had gone from the hall, and when later companies climbed, the weapons rose again new.\n\nGeraint went on to take one of the harbingers of the end with his own company, and came back from it, which Sir Rhun did not. He hung his notched sword in the chapel at Caer Gothwaite under the cut names, and wrote under it that it had never once drawn blood from war, and was there for that reason."
+    },
+    {
+      "title": "Every Soldier Who Ever Lived",
+      "text": "War asks nothing of those who climb. Of all the riders he is the only one who does not warn, threaten or explain.\n\nHe tells them what he is, and that every soldier who ever lived marches behind him, and that it is the fate of man to know pain and loss. The Inconnu say that is a courtesy too: war is the one road whose walkers always know where they are going. When he kills a man, he tells him to fall in with the rest, and the Inconnu say the man does. Some of the dead in Dorinakka's yard came there by that road.\n\nThe readings of him differ by who is reading. The Church calls him the red horse of the last book, whose rider was given a great sword to take peace from the earth. The bards of Camelot say he was in every one of Arthur's twelve battles and rode at Camlann for both sides at once. The frontier soldiers say he is only what they are on a bad day, kept, and they are glad someone keeps him. The Inconnu say Arawn locked the end of the world away because it cannot be ended, but locked war away because it would not stop, and that of the two, the second was harder.\n\nWhat he wants, the Inconnu say, is only to go on. War does not want to win. A war that wins is over. In the riders' hall he wants each fight to last, and that is why the hall fills with his iron and why he is the slowest of the four to fall to men who strike him with steel. When he does fall, he gives the climbers to Morbus, who comes after him quietly, and his last words are that war ends only for the dead.\n\nThe garrison of Prydwen Keep cut his minute into its gate the year after Ysolde's company came home. It is a short line low on the left post, where a soldier waiting to go out would see it, and it says only: one minute, then the captain. The soldiers touch it going out. Nobody at the keep will say whether they mean war's captain or their own."
+    }
+  ]
+}

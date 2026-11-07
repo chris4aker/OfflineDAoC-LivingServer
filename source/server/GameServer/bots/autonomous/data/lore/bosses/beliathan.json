@@ -1,0 +1,166 @@
+{
+  "id": "beliathan",
+  "name": "Beliathan",
+  "catalogKey": "darkness-falls/beliathan",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "aliases": [
+    "the worm"
+  ],
+  "facts": [
+    {
+      "text": "Level 70, 100,000 health. It rises only when no prince or princess of Darkness Falls is alive: 'The tunnels rumble and shake..'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs"
+    },
+    {
+      "text": "Every player it kills rises where they fell as a Beliathan minion and attacks.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Players called it the worm and said it spawns after the princes (Allakhazam comments).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+    },
+    {
+      "text": "Beliathan: spawned by a hidden checker every 10 minutes when no NPC with 'prince' in its name lives in region 249; NPC template 60158351 (level 70), 100,000 health, GetResist 40 melee / 70 other, doubled attack interval, melee range 180, tether 2,000.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs"
+    },
+    {
+      "text": "When a GamePlayer killed by Beliathan dies, a Beliathan's Minion (level 50, 550 health) rises at the body and attacks his target; minions vanish with him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs"
+    },
+    {
+      "text": "The readings of the lock, the held breath, the tide-like blows, the worm's tithe argument in the Door-Book and Sir Cynwrig Goch's night of the four are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Real-world myth, not game canon: Leviathan is the great sea beast of the Book of Job (chapter 41) and later demonologies; Beliathan reads as a play on Leviathan and Belial, to verify.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Leviathan"
+    }
+  ],
+  "story": "Under the chapter house of the Chthonic Knights the rock goes deeper than the court has followed it, and at the bottom lives the worm the court calls Beliathan. It is on no Roll, and the court speaks of it as a household speaks of a well that has drowned children. Everyone below agrees on the lock: the worm sleeps while any of the Blood still breathes, and wakes when the last of the four is gone. The Inquisitors say the lock is a clause of the Feast written too small to read; the knights say the worm is the hollow's own hunger and the Blood the stopper in its throat; the imps say the Master likes to keep something worse than himself. The Church sees a Leviathan of the earth; the skalds, a cousin of the serpent at the world's roots; the druids, the hollow's wound trying to close.\n\nIt does not wake at once. The last of the Blood falls and the hollow goes quiet, as if the court were holding its breath, sometimes for a long while; the Inquisitors say the worm wakes only when it is sure every one of the Blood is gone at once, and a company that kills them over too many days may find it never stirs. Then the tunnels rumble and shake, and it comes up. It keeps to the ground it rises on, and turns back if drawn too far. It is quicker than a man can run, but it strikes seldom, like a tide: not often, and all at once.\n\nWhere it kills, a small worm-thing sometimes rises from the floor and goes for whomever the worm is fighting. Not every death raises one, and when the worm dies they all go back into the floor. Let none of us fall to the worm, the Albion prayer says.\n\nSir Cynwrig Goch of Caerwent's company killed three princes in three nights and the princess on the fourth, and was binding its wounds in her bower when the floor shook. It fought the worm all night with short prayers between its blows, and lost two men; from one a worm-thing rose.",
+  "legend": "Beliathan only exists when all four Blood are dead at the same time: Princes Abdin, Ba'alorien and Asmoien and Princess Nahemah (anything with 'prince' in its name counts). A hidden checker looks every 10 minutes, so after the fourth dies you may wait up to ten minutes before 'The tunnels rumble and shake' and the worm appears under the north-west. If one of the Blood respawns before the check, no worm. Beliathan is level 70 with 100,000 health, 40% melee / 70% other reduction, moves fast, swings at half the normal speed, reaches only 180 and resets past 2,000 from where it rose, so fight it there. When it kills a real player, a minion (550 health) rises on the body and attacks; only the human raises one, bots killed by it raise nothing. Kill minions in one hit and keep the human alive. Minions vanish when it dies.",
+  "yells": {
+    "aggro": [
+      "...",
+      "The tunnels rumble and shake.",
+      "Something vast breathes in the dark."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The floor heaves under the worm."
+      }
+    ],
+    "death": [
+      "The deep tunnels fall still.",
+      "The worm sinks into the dark."
+    ],
+    "slay": [
+      "Taken into the deep.",
+      "The floor opens.",
+      "Tithed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The tunnels rumble and shake.",
+      "The floor here is warm, and it moves."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "The fallen rise as Beliathan's creatures!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Beliathan heaves. The tunnels shake."
+      }
+    ],
+    "realmFirstKill": "Beliathan is dead. The deep tunnels are still.",
+    "wake": "The princes are dead. The tunnels rumble and shake."
+  },
+  "botLines": {
+    "briefing": [
+      "worm only comes when all four royals are dead at once. checker runs every 10 min",
+      "it swings slow but it is 100k, 40% melee and 70% magic reduction. melee it",
+      "if the human dies to it a minion pops on the body, 550 hp, one hit it",
+      "dont drag it, it resets past 2000 from where it came up"
+    ],
+    "aftermathWin": [
+      "the worm is dead",
+      "nobody died, so no minions. perfect",
+      "four royals and the worm in one session. gg",
+      "nobody died to it, no minions"
+    ],
+    "aftermathLoss": [
+      "one death became three became ten. classic beliathan",
+      "a prince respawned before the check and the worm never came",
+      "dragged it too far and it reset",
+      "the human died and the minion finished the healer"
+    ],
+    "rumour": [
+      "kill all the princes in df and the tunnels shake. [the worm comes up|beliathan comes]",
+      "[heard|someone said] whoever beliathan kills gets back up on its side",
+      "heard the worm wakes only when every one of the blood is dead at the same time",
+      "[heard|someone said] whoever the worm kills sometimes gets up as a little worm thing"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "beliathan",
+    "text": "The worm of [Darkness Falls], on no Roll, asleep under the chapter house while any of the Blood still breathes. When the last of the four is gone at once, the tunnels rumble and it comes up; it strikes seldom, like a tide. Where it kills, a worm-thing sometimes rises. See [abdin] and [nahemah]."
+  },
+  "bookPage": "From Brother Odran's Door-Book, the account of Sir Cynwrig Goch of Caerwent. We killed three princes in three nights and the princess on the fourth, and I had not thought of the worm once. We were binding our wounds in her bower when the floor began to shake. It came up out of the north-west too fast to flee and too slow to fear; it strikes seldom, like a tide, and between its blows there is time for a short prayer, and we said them. I lost two men. From one, something rose out of the floor, and my squire ended it with one stroke and wept. From the other nothing rose. I do not know why.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} killed the princes, felt the tunnels shake, and ended Beliathan in {minutes} minutes.",
+    "loss": "Beliathan turned {realm}'s fallen against their own; {raidLeader}'s raid became the worm's."
+  },
+  "era": "neu-the-three-doors",
+  "factions": [
+    "dark-ones",
+    "chthonic-chapter"
+  ],
+  "related": [
+    {
+      "id": "prince-abdin",
+      "relation": "one of the four Blood whose lives keep it down"
+    },
+    {
+      "id": "prince-baalorien",
+      "relation": "one of the four Blood whose lives keep it down"
+    },
+    {
+      "id": "prince-asmoien",
+      "relation": "one of the four Blood whose lives keep it down"
+    },
+    {
+      "id": "princess-nahemah",
+      "relation": "one of the four Blood whose lives keep it down"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Stopper in the Throat",
+      "text": "Under the chapter house of the Chthonic Knights, in the north-west of the hollow, the rock goes down further than the court has ever followed it, and at the bottom of it lives the worm.\n\nThe court calls it Beliathan, and does not explain the name. It is on no Roll; it has no rank and holds no seat, and the court speaks of it as a household speaks of a well that has drowned children: carefully, and not at table. What everyone below agrees on is the lock. The worm sleeps while any of the Blood still breathes. While a single prince or the princess lives, Beliathan stays down in the deep tunnels where even the knights do not go; when the last of the four is gone, it wakes.\n\nWhy, nobody below will say the same way twice. The Inquisitors of the north say the lock is in the bargain of the Feast, a clause Adremal wrote so small that the Blood themselves have never read it. The Chthonic Knights, whose chapter house sits on the worm's roof, say Beliathan is the hollow's own hunger, older than any lord, which the Feast gave a body so that it could be kept; the Blood are the stopper in its throat, and four stoppers are safer than one. The imps say only that it was the Master's idea, and that the Master likes to have something in the house that is worse than he is.\n\nThe realms have their readings too. The priests of Camelot point to the old books, which speak of a great beast of the waters called Leviathan, kept by God and let loose at the end; they say the court has made itself a Leviathan in the earth and keeps it for the same day. The Midgard skalds say the worm is a cousin of the serpent at the roots of the world. The druids of Tir na Nog say it is not a worm at all, but the hollow's wound trying to close."
+    },
+    {
+      "title": "When the Blood Are Gone",
+      "text": "Beliathan does not wake at once. That is the thing every company that has seen it remembers first.\n\nThe last of the Blood falls, and nothing happens. The hollow goes quiet, the companies say, as if the whole court were holding its breath, and the knights of the chapter house stop their drill, and the imps in the halls in the roof stop haggling. It may be a long while. Brother Odran's Door-Book records a company that waited half the night in the Albion hall after the princess fell and went home believing the worm a story, and another that had barely begun to bind its wounds before the tunnels rumbled and shook. The Inquisitors say the worm is checking. It wakes, they say, only when it is sure that every one of the Blood is gone at once; and the Blood come back, in their time, so a company that has killed them over too many days may find that the worm never stirs at all.\n\nThen the rumbling comes up through the floor of every hall in the hollow, and the worm comes up after it, out of the deep tunnels under the north-west, to see what has killed its masters. It does not go far. Beliathan keeps to the ground it rises on, the knights say, a little this way and a little that, like a beast that has been chained so long it does not know the chain is gone, and if it is drawn too far it turns and goes back to its hole.\n\nIt is quick for so large a thing, quicker than a man can run. But it strikes seldom. The companies who have stood in front of it say it strikes as a tide comes in: not often, and all at once, and that between one blow and the next a knight has time to say a short prayer, and should."
+    },
+    {
+      "title": "The Worm's Tithe",
+      "text": "Where the worm kills, something of the dead sometimes comes up after it.\n\nThe companies of all three realms have seen it. A mortal falls under Beliathan, and where he fell a small worm-thing rises out of the floor and turns on his friends, and goes for whomever the worm itself is fighting, as if it had been told. It is a weak thing, a thing a single blow can end. But it is one more, and it comes from the dead. The Church of Camelot calls it the worm's tithe and preaches against it. The Midgard skalds call it worse, and their verse about it is never sung in Jordheim with women present.\n\nNot every death raises one. The Door-Book has a long argument about which do, carried on by Brother Odran with himself across three seasons of reports, and it comes to no conclusion; companies have lost men to the worm and seen nothing rise, and lost others and seen the floor open. The Inquisitors say the worm takes a tithe only of those whose souls it has a claim on. The druids say it takes only what is offered. The Albion companies have settled for the simplest answer, which is the one in their prayer: let none of us fall to the worm, and then the question does not arise.\n\nWhen Beliathan dies, the worm-things go back into the floor, every one, at once. The knights of the chapter house say that is the proof they are not the dead at all but the worm's own, and that a man who falls to it is not changed into anything but only robbed. The Church prefers to think so. The Door-Book records that an Albion squire who saw his own knight's worm-thing rise out of the floor where his knight had fallen did not believe a word of it, and would not go down again."
+    },
+    {
+      "title": "The Night of the Four",
+      "text": "Albion's first company against the worm had to kill four of the Blood first, and it did not mean to.\n\nIt was the company of Sir Cynwrig Goch of Caerwent, which had gone down in a long season of open doors to break the Blade on Mystemas's errand, and had then gone on, prince by prince, because the doors stayed open and the company was winning. By the time it reached the princess's bower in the far west it had killed three princes in as many nights, and Cynwrig wrote in the Door-Book that he had not thought about the worm once. The princess fell on the fourth night. The company was binding its wounds in her bower when the floor began to shake.\n\nThey went to meet it. Cynwrig's account is of a beast that came up out of the north-west too fast to flee and too slow to fear, and of a long night of short prayers between its blows. He kept his knights close round the one it struck at, so that no one would be alone when it struck, and his priests did nothing all night but keep the front of the company standing. He lost two men. From one of them, he wrote, a worm-thing rose, and his squire killed it with a single stroke and wept. From the other nothing rose, and nobody in the company has ever known why.\n\nThe worm died in the dark under the chapter house, and the worm-thing in the floor went with it, and the hollow, Cynwrig wrote, breathed out. Midgard's bands say their first kill of the worm came a season earlier, and Hibernia's bards have a song of a druid company that lured it up on purpose. Each capital keeps its own count. The imps say the Master was pleased with all of them, because a court that has lost its whole Blood in four nights is a court in which a great many lines move up the Roll."
+    }
+  ]
+}

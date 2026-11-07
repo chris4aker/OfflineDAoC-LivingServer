@@ -1,0 +1,130 @@
+{
+  "id": "high-lord-saeor",
+  "name": "High Lord Saeor",
+  "catalogKey": "darkness-falls/highlordsaeor",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "High Lord Saeor: NPC template 60162133 (level 70), 100,000 health, GetResist 40 melee / 70 other, CC immune; when a GamePlayer he killed dies within 1,000 of him, he gains that player's maximum health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs"
+    },
+    {
+      "text": "Saeor drinking at the edges of the Feast, the measure, the court's economy of the lesser dead, 'give him no one' and Sir Tomos Llwyd of the Isle of Glass are Living Server writing; 'the drinker of the dead' is from the Darkness Falls file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Of the three halls of the east, High Lord Saeor's is the warmest, because it is the fullest. He came late to the Feast of Thrones and lived because he did: he went round the edges of the deepest chamber where the fallen lay killed but not yet eaten, and drank not their souls, which were the Master's, but their measure, whatever makes a living thing as large as it is. He knelt among the eleven larger than he had come in, and the Master made him a High Lord and said nothing. The court despises him as soldiers despise a man who goes through the pockets of the dead. Duke Zepor keeps his door, Earl Oraxus his books, and Marquis Almen has never seen his lord hungry.\n\nHe drinks the measure of those he kills in the moment they fall: something goes out of the man and into him, the whole size of the man, and he is mended as a cracked cask is mended by a new stave. Only his own kills feed him. Yet not every man: Brother Odran's reports do not agree, and the Inquisitors say he drinks only those who came down of their own will. The Albion captains settled it by a custom said at the muster before every descent into the east: give him no one.\n\nThe court needs him all the same. The lesser fallen, whom the Master will not stoop to, are carried to the edges of the warm hall, and he grows every Roll. Baelerdoth says his East Ward was built for Saeor; the imps bet there will be no Twentieth Roll. The Church says a man lost to him has lost his burial too.\n\nSir Tomos Llwyd of the Isle of Glass brought more priests than any Albion company before him, ringed them behind his knights with one order, no one falls, and changed the knight who held the high lord before each one tired. Saeor fell unfed. Tomos had every man counted at the Albion hall before any sat, and every one answered.",
+  "legend": "High Lord Saeor is level 70 with 100,000 health, CC immune, 40% melee / 70% other reduction, and otherwise a plain melee fight with one rule: when a real player he kills dies within 1,000 of him, he heals by that player's whole maximum health. Only the human feeds him; bots who die to him heal nothing, and deaths to his servants heal nothing. So in a bot raid the one thing that matters is that the human never dies to Saeor: if you are the tank, rotate out early and let a bot tank take him; if you are a healer or caster, stay well back and keep your own health full. Change tanks before they are low anyway, as Sir Tomos did. His hall is quiet otherwise: Duke Zepor, Earl Oraxus and Marquis Almen and a few succubi stand near him. Drop out of the fight for 8 seconds and he resets full.",
+  "yells": {
+    "aggro": [
+      "Come, feed me.",
+      "You are larger than you look.",
+      "Stand closer. Let me see your measure."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Thinner, am I? One of you will mend that."
+      }
+    ],
+    "death": [
+      "Starved... at last...",
+      "Unfed..."
+    ],
+    "slay": [
+      "Your life is mine now. All of it.",
+      "Your measure is mine now. All of it.",
+      "Mended.",
+      "Drunk to the lees."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The high lord here grows fat on the fallen.",
+      "The air in this hall is warm, and full."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Saeor waits for someone to fall."
+      }
+    ],
+    "realmFirstKill": "High Lord Saeor has fallen, starved at last."
+  },
+  "botLines": {
+    "briefing": [
+      "saeor heals by the full max hp of any real player he kills. only the human feeds him",
+      "human stays alive no matter what. if you tank, rotate out early",
+      "bot deaths dont heal him, but rotate tanks before they drop anyway",
+      "plain fight otherwise. dont let it go quiet or he resets"
+    ],
+    "aftermathWin": [
+      "zero deaths on saeor. thats the whole fight",
+      "saeor starved",
+      "give him no one. we gave him no one",
+      "everyone answered the count. gg"
+    ],
+    "aftermathLoss": [
+      "one death, then another, and he was back to full",
+      "i died to him and he healed right back up",
+      "the human tanked too long",
+      "fight went quiet and he reset full"
+    ],
+    "rumour": [
+      "heard saeor heals off everyone he kills",
+      "[someone said|heard] high lord saeor grows fat on the dead",
+      "heard saeor drank from the fallen at the edges of the feast",
+      "[heard|someone said] the old albion captains say give him no one before every saeor pull"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "saeor",
+    "text": "The high lord of the warm hall of [Darkness Falls], the drinker of the dead. He drank at the edges of the Feast while the Master ate, and he drinks the whole measure of those he kills in the moment they fall, though not, the Inquisitors say, every man. Give him no one. Sir Tomos Llwyd did not. See [baelerdoth]."
+  },
+  "bookPage": "From Brother Odran's Door-Book, the account of Sir Tomos Llwyd of the Isle of Glass. I had stood at the muster when the old captains said give him no one, and I did not begin until I was sure we could. I brought more priests than any Albion company has taken down the stair, and set them in a ring behind my knights with one order: no one falls. I changed the knight who held the high lord before he tired, and the next before he tired. It took the night. He fell unfed. At the Albion hall I had every man counted before any sat, and every one answered.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} gave High Lord Saeor no one to feed on and starved him in {minutes} minutes.",
+    "loss": "High Lord Saeor fed on {realm}'s fallen until he was whole; {raidLeader}'s raid was his meal."
+  },
+  "era": "neu-the-three-doors",
+  "factions": [
+    "dark-ones",
+    "eastern-halls"
+  ],
+  "related": [
+    {
+      "id": "high-lord-baelerdoth",
+      "relation": "Baelerdoth says the East Ward was built for him"
+    },
+    {
+      "id": "high-lord-oro",
+      "relation": "a fellow lord of the Eastern Halls"
+    },
+    {
+      "id": "legion",
+      "relation": "drank at the edges of the Feast while the Master ate"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Warm Hall",
+      "text": "Of the three halls of the east, High Lord Saeor's is the warmest, and the court says that is because it is the fullest.\n\nSaeor came late to the Feast of Thrones, the chroniclers say, and lived because he did. He walked into the deepest chamber when the fighting was nearly over and the hungry one was already speaking with many voices, and he did not fight anyone and did not wait; he went round the edges of the chamber where the fallen lay who had been killed but not yet eaten, and he drank from them. Not their souls, which were the Master's. Their measure: whatever it is in a living thing that makes it as large as it is. When the eleven knelt, Saeor knelt among them, larger than when he had come in, and the Master, who had noticed, made him a High Lord and gave him the east, and said nothing about it.\n\nThat is the court's whole history of him, and the court repeats it with distaste. The other lords of the hollow despise him the way soldiers despise a man who goes through the pockets of the dead after a battle, and they fear him for the same reason. His hall is warm because it is crowded. Duke Zepor keeps its door and Earl Oraxus its books, and Marquis Almen, the youngest of his household, stands at his right hand and is said to be the only demon of the east who has never once seen his lord hungry.\n\nThe realms name him by what he does. Albion's companies call him the drinker of the dead. The Midgard skalds say his is the worst hall in the hollow, because a skald hates a thing that profits from the fallen above anything else on earth or under it. The druids of Tir na Nog say only that a lord who grew by drinking at the edges of a feast has never in his existence sat down at the table."
+    },
+    {
+      "title": "The Drinker of the Dead",
+      "text": "Saeor does not eat the dead. He drinks their measure, and he does it in the moment they fall.\n\nA mortal who dies at the high lord's hands, the companies say, does not simply fall. Something goes out of him and into Saeor, all at once, the whole size of the man, and the high lord is mended by it as a cracked cask is mended by a new stave; a company that has worked half the night to bring him down sees the work undone in a breath. It is only his own kills he drinks. A man killed by Saeor's servants feeds no one. A man killed by Saeor feeds him, and feeds him his whole measure, however small or large that was.\n\nAnd yet not every man. The Door-Book, which Brother Odran kept with a reeve's care, has a page of reports on it, and the reports do not agree: there are companies that lost men to the high lord and saw him no stronger for it, and others that lost one man and lost the night. Odran set the reports side by side and could make nothing of them. The Inquisitors of the north, asked through an imp, said that Saeor drinks only those whose souls came down of their own will, because only they are whole when they arrive, and that a man who came at another's bidding has already given part of himself away. Odran wrote it down and did not believe it, and then wrote that he did not disbelieve it either.\n\nThe Albion companies settled the question as they settle most questions in the hollow, by a custom. They do not let anyone die to Saeor. The captains of Camelot Hills say it at the muster in the Albion hall before every descent into the east, in the words of the oldest of them: give him no one. The squires think it is a prayer."
+    },
+    {
+      "title": "The Pockets of the Dead",
+      "text": "The court despises Saeor, and the court needs him, and both for the same reason.\n\nWhen a demon of rank falls from its line, the Master eats it. But the court has a great many demons of no rank, the host and the household and the lesser kind, and when they fall in the court's own quarrels, the Master does not stoop to them. Saeor does. The imps say the court's whole economy of the dead runs through the warm hall: the bodies of the lesser fallen are carried east, to the edges of Saeor's hall, as they were carried to the edges of the Feast, and he drinks what is left in them, and grows. The Chancellor has written that this keeps the hollow clean. The Inquisitors have written that it makes Saeor larger every Roll. Both are true, and nobody below has proposed to stop it.\n\nHis fellow High Lords watch the growing. Baelerdoth, whose East Ward keeps the three halls apart, says the ward was made for Saeor more than for anyone, and that the day the warm hall is full the ward will learn whether it was built strongly enough. Oro says nothing, and keeps the furniture between himself and the passage east. The imps take bets on what Saeor will be by the Twentieth Roll, and the most popular wager is that there will not be a Twentieth.\n\nThe realms have their own fear of him. The Church of Camelot teaches that the dead are owed a burial and a prayer, and its priests say that a company which loses a man to Saeor has lost more than a man: it has lost the burial, because there is nothing left to bury that is not smaller than it was. The Midgard skalds refuse to sing the names of anyone who died in the warm hall. The druids of Hibernia sing them twice."
+    },
+    {
+      "title": "Give Him No One",
+      "text": "The first Albion company to kill High Lord Saeor did it without losing a single man, because its captain would not begin until he was sure it could.\n\nIt was the company of Sir Tomos Llwyd of the Isle of Glass, a careful knight of the ring-forts who had read every page of the Door-Book about the east and had stood at the muster when the old captains said give him no one. He brought more priests than any Albion company had ever taken down the stair, and he set them in a ring behind his knights and gave them one order: no one falls. He changed the knight who held the high lord before that knight was tired, and the next before he was tired, so that Saeor never once had a man in front of him who was close to the end. Odran's Door-Book says the company took most of a night about it, and that Tomos said the office for the dead under his breath for the whole of it, for himself.\n\nSaeor fell without being fed. Duke Zepor shut the door of the warm hall behind the company as they left, the knights said, as a servant shuts the door on guests who have outstayed their welcome; Marquis Almen, who had never seen his lord hungry, stood over him with a face the company did not like. Tomos had every man of his company counted at the Albion hall before he would let any of them sit, and every one answered.\n\nMidgard's bands say they killed the drinker first, and their skalds do not sing it, because they will not sing of the warm hall at all. Hibernia's bards say a druid company did it and lost three, and sing the three names twice. Each capital keeps its own count. The imps say Saeor was back in his hall by the next Roll, and noticeably thinner, and that he has hated the Isle of Glass ever since."
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "id": "deben-se-gecynde",
+  "name": "Deben se Gecynde",
+  "catalogKey": "krondon/debensegecynde",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 80, 30,000 health, GetResist 20 melee / 30 other, CC immune, tether 3,800, melee only. Every 45-70 s while in combat, 1-3 thrawn ogre sceotan (level 65-68, 3,000 health, two-handed slash) and 1-3 thrawn abrecan mages (level 65-68, 2,000 health, 300 heat or 300 cold nukes, 3 s cast) appear beside him; they are cleared only when he resets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/DebenSeGecynde.cs"
+    },
+    {
+      "text": "Se gecynde reads as 'the natural, the rightful, the kindred'; sceotan 'shooters', abrecan 'to break into, storm'; all to verify.",
+      "provenance": "original",
+      "source": "https://bosworthtoller.com/"
+    },
+    {
+      "text": "The horn of the Undercroft, the pick-marks under the footings, Eormen the muster-master and his saying, the broken bows of the gallery and Tegwared's count are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Deben se Gecynde has one argument: Krondon was built on his people's roof. In the Undercroft he was the clan's horn, the ogre allowed to shout, who called every digging crew out of every side-tunnel when a roof fell. He took the name gecynde, the natural, the rightful, the kindred, the week the hall fell. Wenna of Caer Gothwaite went to look and found the hall-folk's footings laid squarely across an older tunnel marked by picks that were not the hall-folk's. The ghosts, asked if he is right, do not deny it and do not answer.\n\nHe blows the hall-folk's own war-horn now, a sea-beast's horn carved with the titles of every cempa who answered it, which the last muster-master, Eormen, never had to sound in earnest. Every ogre who hears it comes, to the horn and not to the enemy: they gather at the muster-master's side and form there. Eormen's saying is cut beneath the muster law: a muster cut down as it gathers never makes a line. The horn calls as long as Deben stands, and those already called stay called; Deben has never dismissed anyone.\n\nHis comers take titles off doors they cannot read. The sceotan, the shooters, broke every bow in the archers' gallery and carry two-handed blades instead. The abrecan, the breakers, learned fire and frost by shape and speak slowly; a breaker jostled in the middle of a word loses it.\n\nThe first company to kill Deben was the garrison of Caer Gothwaite under Tegwared, sergeant-at-arms of the outer wall. He set a dozen men to watch the place at Deben's side where the comers formed, call each one aloud and cut it down before it took a step, and put his best on the breakers: a breaker has to finish his word, so do not let him. The muster never made a line. He lost three men, all after Deben fell, to comers the silence did not send home.",
+  "legend": "Deben is level 80 with 30,000 health, CC immune, 20% melee / 30% other reduction and a 3,800 tether. He only melees. The fight is his muster: every 45 to 70 seconds, one to three thrawn ogre sceotan (level 65 to 68, 3,000 health, big two-handed blades, no bows despite the name) and one to three thrawn abrecan mages (level 65 to 68, 2,000 health) appear right beside him. The mages cast 300 heat or 300 cold nukes with a 3 second cast that can be interrupted, so interrupt them and kill them first. Keep a few people on the spot next to Deben and kill each wave as it appears, before it reaches the healers; waves that live stack with the next. One party holds Deben and grinds him down. Adds still alive when Deben dies do not vanish: finish them. A reset clears them. Caer Gothwaite raids count each wave out loud.",
+  "yells": {
+    "aggro": [
+      "This hall is ours by right! To arms, Krondon!",
+      "We dug under these isles before your fathers were born!",
+      "Sound the horn!"
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Sceotan! Abrecan! The hall calls you!"
+      }
+    ],
+    "death": [
+      "Ours... by right...",
+      "The horn... someone sound the horn..."
+    ],
+    "slay": [
+      "The hall keeps what is its own.",
+      "Rightfully dead.",
+      "Off our roof."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A war-horn hangs on the wall. It is not dusty.",
+      "Fire-scars and frost-scars on the same wall.",
+      "A sea-beast's horn by the door. Its mouthpiece is gone."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Deben sounds the muster. More ogres come!"
+      }
+    ],
+    "realmFirstKill": "Deben se Gecynde has fallen. The muster is silent."
+  },
+  "botLines": {
+    "briefing": [
+      "every 45-70 sec deben gets 1-3 sceotan and 1-3 abrecan mages right beside him",
+      "kill each wave as it shows up, mages first. interrupt their 3 sec nukes",
+      "one party holds deben, a few dps camp the spot next to him",
+      "adds left alive when he dies stay up. finish them before anyone sits"
+    ],
+    "aftermathWin": [
+      "kept the waves down, deben never had a chance",
+      "deben the rightful. rightfully dead",
+      "every wave died on time",
+      "the horn is quiet"
+    ],
+    "aftermathLoss": [
+      "two waves stacked and the mages chain nuked the healers",
+      "nobody interrupted the abrecan mages",
+      "we cheered when deben dropped and his last wave killed three of us",
+      "the sceotan carry two handers, not bows. they walked right into the casters"
+    ],
+    "rumour": [
+      "heard deben in krondon thinks the hall was always theirs",
+      "[someone said|heard] deben's muster never runs out. keep killing",
+      "deben says the ogres dug under the isles first",
+      "heard deben has never won an argument with beran",
+      "heard deben was the ogres' horn blower down in the seams",
+      "[heard|someone said] caer gothwaite drills squires on counting deben's waves out loud"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "deben",
+    "text": "Deben se Gecynde, the Rightful, who says [Krondon] was built on the ogres' roof. He blows the hall-folk's war-horn and his comers gather at his side to form: a muster cut down as it gathers never makes a line. Tegwared of Caer Gothwaite killed him by counting out loud. See [Beran]."
+  },
+  "bookPage": "Deben told us, while his archers came out of the galleries, that the ogres had dug under these isles before the hall-folk ever laid a stone, and that the hall was built on his people's roof without their leave. I do not know if it is true. The ghosts of the hall did not deny it when I asked them. He called himself the Rightful, and he fought as a man fights for his own house, sounding his horn again and again, burning and freezing our front rank while his waves came in. I think he was the only ogre in Krondon who truly loved it.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} cut down Deben's muster wave by wave and felled the Rightful in {minutes} minutes.",
+    "loss": "Deben se Gecynde's muster buried {realm}'s raid; {raidLeader} let the waves stack."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "beran-the-supply-master",
+      "relation": "rival over the siege pitch"
+    },
+    {
+      "id": "orylle",
+      "relation": "his queen"
+    },
+    {
+      "id": "beran-the-supply-master",
+      "relation": "never forgave him for letting the clan's fire touch the pitch"
+    },
+    {
+      "id": "orylle",
+      "relation": "believes her taking of the hall was a homecoming"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Roof of the Undercroft",
+      "text": "Deben se Gecynde has one argument, and he has been making it since before the ogres came up the shaft: Krondon was built on his people's roof.\n\nIn the Undercroft he was the clan's horn. The thrawn ogres dug in long crews far from one another, and when a roof came down or water broke through a seam, someone had to call every crew out of every side-tunnel at once. The ogres made their horns from hollow stone, long and heavy, and a horn-ogre carried his on his back and was the only one of the clan who was allowed to shout. Deben was the loudest of them. The ogres say that when he blew, the crews of the whole seam came running, and that he blew in his sleep.\n\nThe clan had a word it gave to whatever was its own by nature, the way a seam belongs to the ogres who dug it: gecynde, the natural, the rightful, the kindred. Deben took it as his name the week the hall fell, and he has never explained his claim the same way twice. To Wenna of Caer Gothwaite, on her second descent, he said that the hall-folk laid their first stones on top of ogre tunnels without leave, and that a people who build on another people's roof have no right to be surprised when the roof comes up through the floor.\n\nWenna went to look. In the deepest cellar of the hall, below Beran's stores, she found the footings of the hall-folk's walls set squarely across an older tunnel, and in the rock of the tunnel the marks of picks that were not the hall-folk's picks. She drew them. The colleges of Avalon, had any still been standing, would have said the hall-folk were on the isles first; Avalon's readers had always said so. The readers of Caer Gothwaite have the drawing, and have not said anything. The ghosts of the hall, asked plainly whether Deben is right, do not deny it, and do not answer."
+    },
+    {
+      "title": "The Horn by the Muster Door",
+      "text": "The hall-folk's war-horn hangs by the muster-room door where their muster-master hung it, and Deben has never used his own since he found it.\n\nIt is the horn of some great beast of the sea, the ghosts say, washed up on the Avalon shore in the hall's first generation and carved with the titles of every cempa who ever answered it. The muster-master of the hall in its last years was a man the ghosts call Eormen, who had the muster law cut over the door and who, in the ghosts' telling, never once had to sound the horn in earnest. The sea-wolves heard of it and stayed away. Eormen died old and was buried with the horn's mouthpiece, and Deben blows it now without one, which the ghosts say is why it sounds the way it does.\n\nEvery ogre of Krondon who hears it comes. That is the law over the door, and it is the one law of the hall that the ogres have kept more faithfully than the hall-folk ever did, because it was the law Deben had already lived by in the seams. They come to the horn, not to the enemy. They gather at the muster-master's side, a few at a time, and form there, and only then go out. Eormen's own saying is cut beneath the law in smaller letters, and Wenna read it aloud to Sir Cador on the way through: a muster cut down as it gathers never makes a line.\n\nThe horn calls as long as the muster-master stands. The law says nothing about the ones already called. Those who have come do not go home when the horn falls silent, the ghosts say; they were called, and they stay called, until they are dismissed or dead. Deben has never dismissed anyone. Nobody in Krondon has ever heard him say the word."
+    },
+    {
+      "title": "Shooters Without Bows",
+      "text": "The ogres who answer the horn take their titles off the doors around the muster-room, and the ogres cannot read the doors.\n\nThe nearest door is the old archers' gallery, and the title cut over it is sceotan, the shooters. The ogres who took that title have never drawn a bow. Wenna saw them come to the horn with great two-handed blades on their shoulders, the heaviest steel in the muster, and asked a ghost of the gallery why they were called shooters. The ghost said that the ogres had been shown the bows hanging on the gallery wall in the first week, and had tried them, and had broken every one, and had kept the title anyway because it was over the biggest door.\n\nThe second door was the hall's armoury of siege-craft, and its title, abrecan, means something like the breakers, the ones who storm a wall. The ogres gave it to the few of their people who had learned fire and frost from the old hall's books by shape, the way Krondon's ogres learn everything, saying words they do not understand until something happens. They speak slowly. A breaker needs a long breath to get the whole of a word out, and the ghosts say that a breaker who is jostled in the middle of one loses it, and has to begin again, and is furious. The walls around the muster-room are scorched black on one course of stone and frost-cracked on the next, where the breakers have practised on each other.\n\nDeben does not care what his comers are called or what they carry. He cares that they come. When the breakers' fire and frost go over his shoulder he does not look round, the ghosts say, and he has been singed and frozen by his own muster more often than by any enemy of the hall. He calls that loyalty."
+    },
+    {
+      "title": "Tegwared's Count",
+      "text": "The first company of Albion to kill Deben se Gecynde did it by counting out loud.\n\nIt was a company of the garrison of Caer Gothwaite under Tegwared, the sergeant-at-arms of the outer wall, a man who had held a breach against the drakoran in the second summer of the war by doing the same simple thing for a night and a day. He had read Sir Cador's report of the muster. He brought forty, and he gave a dozen of them one duty only: to stand by Deben and watch the place at his side where the comers formed, and to call out each one as it appeared, and to cut it down before it could take a step. He put his two best men on the breakers. A breaker, Tegwared told them, has to finish his word. Do not let him.\n\nThe horn sounded again and again. The garrison men called the count, one and two and a breaker, and the dozen cut down whatever came before it could form, and the rest of the company held Deben and wore him down. Tegwared's own account of it is four lines long and ends: the muster never made a line.\n\nIt cost him three men, and all three died after Deben fell. The last of the comers were still on their feet when the horn went silent, and they did not go home. Tegwared wrote that he had forgotten the law said nothing about the ones already called, and that he would not forget it again.\n\nDeben died saying what he always says: ours, by right. The garrison of Caer Gothwaite still keeps Tegwared's count as a drill on the outer wall, the men calling numbers aloud while a sergeant blows a cow-horn at them, and the squires hate it. The ghosts of the muster-room say Deben was back by the horn within the season, and that the first thing he did was blow it, to see who would come."
+    }
+  ]
+}

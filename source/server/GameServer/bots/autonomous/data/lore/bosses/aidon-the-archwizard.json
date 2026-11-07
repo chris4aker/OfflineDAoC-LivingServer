@@ -1,0 +1,182 @@
+{
+  "id": "aidon-the-archwizard",
+  "name": "Aidon the Archwizard",
+  "catalogKey": "hall-of-the-corrupt/aidonthearchwizard",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "aliases": [
+    "aidon",
+    "the archwizard"
+  ],
+  "facts": [
+    {
+      "text": "Level 75, 40,000 health, 30-40% resists, tether 1,500 (immune past it). A permanent Heat damage shield returns 100 per hit to melee attackers.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs"
+    },
+    {
+      "text": "When first attacked he raises four Illusions of Aidon, fire, ice, air and earth (5,000 health each), whose area spells hit 300 in 350 around their target; he casts Aidon's Fire (500 Heat, radius 350) every 10-15 s. A new set comes 30-45 s after all four die, never while one lives.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Spawns of him exist in region 277 (Hall of the Corrupt) and region 233 (a later Summoner's Hall). Three bot lines put him in the Summoner's Hall.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "'Archwizard: good for about two groups' (Feb 2003 Albion raid guide, likely him).",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Master Ferowl is the Academy's level 50 epic quest giver who sends champions against Morgana's ritual in Lyonesse.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Albion/epic/Academy50.cs"
+    },
+    {
+      "text": "Wizard apprentices spawn in the Hall of the Corrupt.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Magus Cerwyn, Magus Idris, Merewyn, Tam, Magus Alun, the four-ways bargain and the letters to the Constable are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Aidon was the first mage of the Academy of Camelot to master all four elements: the wizards' fire, ice and earth and the theurgists' air. Magus Cerwyn tested him with a brazier, a basin, a stone and an open window, and wrote that she would not see it done again. The Constable sent him to the Pennine watch to learn whether the Summoners' wards on the road to their hall could be broken; Magus Idris had tried before him and never come back.\n\nIn his tower, with his apprentices Merewyn and Tam carrying candles in boxes of a hundred, he learned that the wards are promises: every guardian stands there by a bargain, and a ward is passed by answering it. The Academy says he was deceived, the Church that he sold the watch knowingly, the Inconnu that the Summoners simply made an offer and waited. The Summoners asked for a keeper against each of the four ways a road can be broken, and he gave them four of himself. His four reflections are those selves; he can only renew the payment when all four are spent, and the Inconnu call one reflection left walking the cruellest thing that can be done to him. The fire that wraps him is the Summoners' seal.\n\nHe wrote a list of visitors on Eddison's doubled roster, told the watch on the last night that they would all be kept, and they were. Now he keeps the lower stair to the Summoner's Hall, bound to his floor as the watch is bound to its posts, and is seen at Grand Summoner Govannon's elbow below. The Academy's masters who went to reason with him did not return; Master Ferowl refused to send more. Magus Alun of the Academy killed him with two companies by keeping him one self short. His calm letters to the Constable still come up from the tower, promising to close the road for good.",
+  "legend": "Two groups if you know the trick, the old guide said. When the fight starts Aidon splits into four reflections, fire, ice, air and earth, each with five thousand health and an area spell of its element around its target. Break three of them, one party each, and leave the fourth standing: he calls a new set only when all four are dead, thirty to forty-five seconds after the last one falls. Then everyone on Aidon. His fire shield burns melee for a hundred a hit, which adds up; healers on the melee. He throws a big fire blast into the raid every ten to fifteen seconds, so do not stack. Fight him on his own floor: past his tether he takes no damage and walks home, and the raids that dragged him spent ten minutes hitting a man who could not be hurt. If you see a fourth reflection standing at the end of the fight, nobody touch it until Aidon is down.",
+  "yells": {
+    "aggro": [
+      "Albion sends me visitors again. How thoughtful.",
+      "I read the wards. Now read me.",
+      "Fire, ice, air, earth. Choose."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Fire. Ice. Air. Earth. Choose your death."
+      },
+      {
+        "trigger": "addsDead",
+        "text": "You break my reflections? I have more."
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "Fire. Ice. Air. Earth. Choose your death."
+      }
+    ],
+    "death": [
+      "The wards... were only... promises...",
+      "Tell the Constable... I kept my word... to someone..."
+    ],
+    "slay": [
+      "Your promise is kept. You are mine.",
+      "Another for the road.",
+      "The Summoners thank you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four of him, in four colours. The air hisses.",
+      "Candles burn in the wizard's tower. Many candles."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Aidon divides into fire, ice, air and earth!"
+      }
+    ],
+    "realmFirstKill": "The Archwizard is dead. Albion's road is its own again."
+  },
+  "botLines": {
+    "briefing": [
+      "aidon splits into 4 illusions. kill 3, leave one alive or he makes a new set",
+      "one party per illusion, then everyone on aidon. melee eat his damage shield",
+      "fight him on his floor, past his tether hes immune",
+      "aidon splits into 4 illusions. kill 3, leave one alive or he makes a new set",
+      "dont stack, his fire blast hits around its target"
+    ],
+    "aftermathWin": [
+      "left one illusion up the whole time. thats how you do it",
+      "aidon down. two groups would have done it, honestly",
+      "the archwizard is dead. albion's road is ours",
+      "nobody touched the last illusion. perfect"
+    ],
+    "aftermathLoss": [
+      "someone killed the fourth illusion and he got a whole new set",
+      "his fire aoe plus four illusions. we stacked too tight",
+      "dragged him out and he was immune",
+      "melee died to the shield, not enough heals on them"
+    ],
+    "rumour": [
+      "aidon the archwizard waits in the summoner's hall like he owns it, and nobody can say whose side he is on",
+      "[heard|someone said] you leave one of aidon's copies alive. kill all four and you get four new ones",
+      "heard aidon was the best wizard in camelot once",
+      "the loremasters say aidon is the door between the two halls"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "aidon",
+    "text": "The realm sent him to study the Summoners' wards. He studied them too well. Four reflections attend him, fire, ice, air and earth. Break three and leave one; he calls them anew only when the last is broken."
+  },
+  "bookPage": "To the Constable. I do not know if this will reach you. The wizard came down from his tower tonight with four of himself walking beside him, one in fire, one in ice, one in air and one in stone, and he said that the visitors had come and that we should stand to. We stood to. Nothing came up the road. He looked at us very kindly, as a man looks at friends he has sold, and said that he had read the promise and answered it, and that we would all be kept. I asked him kept by whom. He did not answer.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} left one reflection standing and broke Aidon the Archwizard in {minutes} minutes.",
+    "loss": "Aidon the Archwizard called his reflections again and again; {realm}'s raid under {raidLeader} broke on the fourth."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "summoners"
+  ],
+  "related": [
+    {
+      "id": "lord-gildas",
+      "relation": "the lord he betrayed"
+    },
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "the master he answers"
+    },
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "the master at whose elbow he stands"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Four Elements",
+      "text": "Aidon was the first mage of the Academy of Camelot to master all four elements, and the Academy has never quite forgiven itself for being proud of him.\n\nThe Academy teaches its wizards three: fire, ice and the weight of earth. Air belongs to the theurgists, who call spirits out of it, and the two schools have quarrelled about the boundary for as long as both have existed. Aidon would not keep to one side of it. As a student he sat the wizards' examinations in the morning and the theurgists' in the afternoon, and passed both, and his masters argued for a season about whether to let him. In the end the old head of the Academy, Magus Cerwyn, settled it by sitting the boy down in front of a brazier, a basin of water, a stone and an open window, and asking him to make all four obey at once. He did. Cerwyn wrote in the Academy's book that she had never seen it done and did not expect to see it again.\n\nThe Academy's own account of what came after is short. He grew into the best mage of his generation, and an impatient one. He did not care for the Academy's rule that a mage studies one problem at a time. He liked problems no one else could solve, and he liked them more when he was told to leave them alone.\n\nThe Church's account is longer and less kind. Its priests say a man who would master four elements when three were enough was a man who would always want one thing more, and that the Academy should have seen the shape of what he would become in the shape of what he already was. The Academy answers that the Church says this of every mage it has ever lost."
+    },
+    {
+      "title": "The Commission",
+      "text": "The Constable at Camelot sent Aidon to the Pennine watch with a commission and a problem no one else could solve.\n\nThe road under the Pennines ran down to the Summoner's Hall, the one place where all three realms came within a sword's length of each other, and the Summoners who kept it guarded their road with wards. Albion did not trust the Summoners and could not ignore them, and the Constable wanted to know, if the day came, whether the wards could be broken and the road closed. Three Academy mages had tried before Aidon. Two had come back saying the wards were not magic of any kind they knew. The third, Magus Idris, had not come back at all, and Lord Gildas's watch had found his satchel on the road with its seals unbroken.\n\nAidon took the commission gladly. He took a tower in the hall, at the end of the captains' corridor, and filled it with books, candles and apprentices; the wizard apprentices who still climb that tower are the Academy's last trace in the Pennine watch. Two of them are named in the clerk Tobias's reports, Merewyn and young Tam, who carried the candles up and the wizard's letters down.\n\nFor a season Aidon's letters to the Constable were the most hopeful the watch ever sent. He wrote that the wards were not built of stone but of promises. He wrote that a promise can be read if one has patience. He wrote that he had the patience. The clerk noted that he had stopped coming down to table, and that the candles he asked for came in boxes of a hundred."
+    },
+    {
+      "title": "Wards of Promises",
+      "text": "What Aidon learned in his tower is the reason the Hall of the Corrupt exists, and everyone who studies him tells it differently.\n\nThe Summoners do not ward their road with stone or spell. They ward it with bargains. Every dead thing that guards the way down to their hall stands there because it agreed to, in life or after, in exchange for something the Summoners gave; every ward is a promise kept by someone. To read a ward, Aidon wrote to the Constable, is to read the promise. To break it is to find what the guardian was promised and take it away. To pass it is simpler: one only has to answer it with a promise of one's own.\n\nThe Academy believes Aidon was deceived: that he read the wards so closely that he did not notice the wards reading him, and that by the time he understood what was being offered, he had already half accepted it. The Church believes he was not deceived at all, that he saw exactly what he was being offered and wanted it, and that he sold the Pennine watch knowing what he sold. The Inconnu, who know the Summoners better than anyone in Albion, say a third thing: that the Summoners never deceive anyone, because they do not need to. They simply make an offer, and wait, and somebody always accepts.\n\nAidon's last hopeful letter to the Constable ends with a sentence the Academy has argued over ever since: that he had found a way to close the road for good, and that it would cost less than the realm feared, and that he would explain when it was done."
+    },
+    {
+      "title": "Four of Himself",
+      "text": "What Aidon promised the Summoners, nobody alive knows. What they asked for, the Inconnu say, can be read in what he became.\n\nA road can be broken four ways, the Summoners teach: by fire that burns its gate, by ice that cracks its stone, by air that carries word along it, and by earth that buries it. They asked Aidon for a keeper against each. He had mastered all four elements; he gave them all four. The four reflections that walk beside him now, the Illusions of Aidon in fire, ice, air and earth, are not tricks of light. They are the four selves he gave away, each a true Aidon in one element and nothing else, each guarding the road against its own way of breaking it. When anything threatens him they come out of the walls of his hall, and storm their element on whoever they face.\n\nThe Summoners took the four as one payment, the Inconnu say, and Aidon can make the payment again only when all four have been spent. While even one reflection still walks, he cannot call the others back; when the last falls, he grieves aloud, and then four new selves come out of the walls, and the bargain is whole again. The Inconnu call a single reflection left walking the cruellest thing that can be done to him, because it keeps him one self short, and he knows it.\n\nThe fire that wraps him, that burns every blade that strikes him close, is the Summoners' seal on the bargain. It does not protect him. It marks him as theirs. He renews it the moment it fades, the way a man touches a ring."
+    },
+    {
+      "title": "The Night of the Visitors",
+      "text": "Aidon told the watch that he expected visitors, and he asked Lord Gildas to double the watch on the road.\n\nSergeant Eddison drew up the doubled roster in a single night, and when Lord Gildas had signed it, the wizard asked to see it and wrote a list of names at the bottom in his own hand. None of them was a man of the watch. Eddison showed the list to the clerk Tobias, who wrote it down. Captain Bardalph told the wizard at table that a man who expects visitors on a road that has been quiet for twenty years knows something he is not telling, and Aidon smiled at her.\n\nThen the cut came that would not close, on Captain Atwell's arm. Then the despair that Lieutenant Meade could not explain. Then Lord Gildas's order that no man leave his post. On the last night Aidon came down from his tower with four of himself beside him, fire and ice and air and stone, and told the watch to stand to. They stood to. Nothing came up the road. The clerk's last page says the wizard looked at them kindly, as a man looks at friends he has sold, and said that he had read the promise and answered it, and that they would all be kept.\n\nThe Inconnu say the visitors on Aidon's list never came up the road because they were already in the hall: they were the watch, as it would be after that night, every name on the roster written twice. The Academy says the list was the names of the Summoners themselves, and that Aidon wrote them as a warning nobody read in time. Eddison still carries the roster folded in his tunic. Nobody has taken it from him to find out."
+    },
+    {
+      "title": "The Lower Stair",
+      "text": "Aidon did not leave the Pennine watch when the watch died. The Summoners' bargain bound him to it as tightly as his own words had bound Lord Gildas's men.\n\nHe keeps his hall at the head of the lower stair, the stair that runs from the Hall of the Corrupt down the old road to the Summoner's Hall. The Summoners do not need him to guard it against the dead, who obey them; they need him to guard it against Albion, which does not. So he is bound to his floor as the watch is bound to its posts. Past the edge of his hall no blow lands on him, and he walks back to it as a watchman walks back to his post. The Camelot loremasters call this the one justice in the whole affair: the wizard who sold the watch to the posts is bound to a post himself.\n\nHe is seen below, too. The other realms' scholars who have reached the Summoner's Hall from their own roads report an Albion wizard standing at Grand Summoner Govannon's elbow when the Summoners hold court, as a steward stands at his master's table, and Albion's heralds argued for years about which hall was truly his. The Camelot loremasters say both. He is the door between them: the Summoners' gatekeeper on Albion's road, and Albion's last gift to the Summoners.\n\nHis fire is the Summoners' fire. Every few breaths he throws a great burst of it into the ranks of those who come against him, the same fire that lights the braziers in the Summoner's Hall, and the Inconnu say that is how Govannon keeps an eye on his steward: through the flame."
+    },
+    {
+      "title": "Magus Alun's Two Companies",
+      "text": "The Academy tried to bring Aidon home before anyone tried to kill him.\n\nIt sent its masters to reason with him, one at a time and then in pairs; the Academy keeps the list and does not publish it. None of them came back. Master Ferowl of the Academy, who later sent the realm's champions against Morgana's ritual in Lyonesse, refused to send another, and wrote that the Academy would not feed the Summoners its masters one by one in the hope that Aidon would remember his teachers. Aidon, Ferowl wrote, remembered his teachers perfectly well. That was the problem.\n\nThe first company that came to kill him was led by a theurgist of the Academy, Magus Alun of Camelot, who had sat the air examination in the same year Aidon sat both. Alun took two companies, no more, because he had studied the clerk's reports and Aidon's letters and believed he understood the bargain. What he said to them at the head of the stair the Academy has never written down. The Constable's clerk recorded only that Alun went down with Aidon's last hopeful letter in his sleeve and read it aloud to both companies before they went in, so that every man would know whom he was going to kill, and that Merewyn's candle-box, found in the tower, went down with them unlit.\n\nBoth companies came back. Alun wrote afterwards that the worst moment of that night was not Aidon's fire but the archwizard's face when he understood that the fourth reflection would not be broken: the look of a man who has been kept one self short. Aidon said, as he fell, that the wards were only promises. Alun took the wizard's satchel back to the Academy. Its seals, like Magus Idris's before it, were unbroken."
+    },
+    {
+      "title": "What the Gatekeeper Wants",
+      "text": "Aidon still writes letters. The wizard apprentices who climb his tower carry them down and leave them on the captains' table beside the clerk Tobias, addressed to the Constable at Camelot, and Albion's companies bring them home. The Constable's office has a drawer of them.\n\nThey are not mad. They are calm, precise reports, in Aidon's hand, on the state of the Summoners' wards, and every one of them says the same thing: that he has found a way to close the road for good, that it will cost less than the realm fears, and that he will explain when it is done. The Academy thinks he believes it. The Church thinks he is baiting the realm to send more champions down the stair. The Inconnu think the letters are true, and that what Aidon means by closing the road is that the Summoners' calling will reach Camelot, and that there will then be no road left, because there will be no difference left between the hall above and the hall below.\n\nWhat he wants, then, is the one thing all three agree on: to finish. He began a problem in his tower that no one else could solve, and he has been working on it ever since, and he will not stop until it is solved, whatever the solution costs and whoever pays. If the wards ever fall, the loremasters say, it will be Aidon who brings them down, and he will write to the Constable to explain.\n\nUntil then he keeps the lower stair with his selves around him, and his letters go to the drawer, and the Academy's clerks have a saying for a man kept from finishing his work: he is one self short."
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "id": "funus",
+  "name": "Funus",
+  "catalogKey": "caer-sidi/funus",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 83, 50,000 health; the fourth Horseman, granting sixty seconds. Five seconds after he falls, Apocalypse comes.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "In the original encounter only clerics, and bows and crossbows in certain hands, could hurt him; any other attacker healed him to full. In Offline DAoC that puzzle is off for bot raids (EpicEncounterMechanics.AllowFunusWeaponPuzzle).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The encounter's own text says clerics glow as he appears, and a whisper warns that mundane attacks will do little while the clerics hold an advantage.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "The Horsemen come in order: Fames, then Bellum, Morbus and Funus, each a minute after the last falls; Funus calls Apocalypse. Each brings a fate's bearer.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Funus: 50,000 health, -25 to every resist, heat melee, no damage while out of tether, 30 s without combat heals him to full; the class/weapon puzzle (AllowFunusWeaponPuzzle) is off although Morbus's death broadcast still describes it; Apocalypse spawns 5 s after his death.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "The road of tombs, the hut-builder bearer with his flints, the pyre-proofed harness, 'every hand is a bearer's hand', the office of burial begun again, and the candle at the chapel door of Caer Gothwaite are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Real-world history, not game canon: Roman law (the Twelve Tables) forbade burial inside a city, so tombs lined the roads outside Roman towns.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Roman_funerary_practices"
+    },
+    {
+      "text": "Real-world history, not game canon: the 'Red Lady of Paviland', a man buried with red ochre in a sea cave on the Gower about 33,000 years ago, is among the oldest known ceremonial burials in western Europe (inspiration for the bearer only).",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Red_Lady_of_Paviland"
+    },
+    {
+      "text": "Real-world myth, not game canon: the fourth horseman of Revelation 6 rides a pale horse; his name is Death, and Hades follows with him.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Four_Horsemen_of_the_Apocalypse"
+    }
+  ],
+  "story": "Funus is the Funeral, the fourth and last rider before the first cell of Caer Sidi: not death, which belongs to Arawn alone, but what the living do afterwards. The keepers learned the Roman rites first, from the dead who came to Annwn along the roads of tombs outside every town of the old province, and Arawn made Funus from them: the washing, the lamp, the pyre, the procession, the last word over the urn. He is the gentlest of the four and the slightest, because a funeral is shorter than a war; his bearer is a hunter of the hut-builders, the first soul buried with care, his flints in his hands. Funus hisses like a lamp-wick and gives the climbers a little while to arrange for the event.\n\nHis touch is the pyre's: Sir Geraint of Caerwent wrote that knights in harness proofed against dragonfire stood up to him longest. The old keepers wrote that only priests' prayers and far-flown arrows could touch him. It was true for Dame Ysolde's company, whose priests and bowmen laid him down, but it went out of him with the wall around Morbus when that company ended the end of the world. The priests still glow when he comes, from the fortress's habit, but Sir Geraint of Caerwent's company found the next summer that every hand could wound him, and more readily than his brothers. The bearers of Caer Gothwaite say it at every burial: every hand is a bearer's hand.\n\nHe will not be laid to rest away from his own ground, the floor of the riders' hall, and like the Church's office of burial, a rite that pauses must begin again from the first word. When he falls there is no grace: a voice thanks the climbers for besting its harbingers, and the door is open.\n\nThe Church calls him the pale horse; the Inconnu say the pale rider is their lord, and Funus only the rites after him. Caer Gothwaite lights a candle at its chapel door when a company climbs, and the first of it home puts the candle out.",
+  "legend": "Funus comes a minute after Morbus dies. He is the soft rider: level 83 but only 50,000 health, and every resist he has is 25% below zero, so everything hits him hard. The old Mythic puzzle, where only clerics and archers could hurt him and anything else healed him, is switched off here: when Morbus dies the clerics still glow and the text still says normal attacks do little, but ignore it, everyone can hit him. His melee is heat, so heat resists on the tank. He is crowd-control immune. Keep him on his floor: dragged out past his tether he takes no damage at all. Do not stall either: thirty seconds with nobody fighting him and he is full again. His fate's bearer comes with him. The big one is after: Apocalypse appears five seconds after Funus dies, so save cooldowns and be buffed and in place before the last blow. Old hands say the prayer for the dead before the last rider.",
+  "yells": {
+    "aggro": [
+      "It is the fate of man to die, to expire like the flame of a candle.",
+      "Prepare to die. Sixty seconds you are given.",
+      "Arrange your affairs."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The candle gutters. It is yours, not mine."
+      }
+    ],
+    "death": [
+      "The candle... is lit... for you...",
+      "The door opens. He is coming."
+    ],
+    "slay": [
+      "Another candle out.",
+      "Rest now.",
+      "The rites are said."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Candles burn in rows. One for each of you.",
+      "The clerics glow. The rider of rites is near."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Funus falters. The last door begins to open."
+      }
+    ],
+    "realmFirstKill": "Funus has fallen. The last rider is unhorsed."
+  },
+  "botLines": {
+    "briefing": [
+      "funus is the soft one, 50k and weak to everything. everyone hits him, ignore the cleric glow text",
+      "heat resists on the tank for funus",
+      "keep him on his floor, off his tether he takes no damage",
+      "dont stall, he heals full after half a minute quiet",
+      "apoc comes 5 sec after funus dies. save cooldowns, be in place before he drops"
+    ],
+    "aftermathWin": [
+      "four riders down. here comes the big one",
+      "funus dead. everyone rebuff now",
+      "funus dead. everyone rebuff now",
+      "the clerics really did glow",
+      "all four riders dead, nobody lost"
+    ],
+    "aftermathLoss": [
+      "we spent everything on the riders and had nothing left for funus",
+      "nobody was in place when apoc came out",
+      "funus is the weak one and we still wiped",
+      "too many dead from the riders, not enough left"
+    ],
+    "rumour": [
+      "heard back in the day only clerics and bows could hurt funus. the rest healed him",
+      "[someone said|heard] the clerics glow when funus shows up",
+      "heard funus opens apocalypse's door when he dies",
+      "funus means funeral. not death, the funeral, [heard|apparently]",
+      "heard caer gothwaite lights a candle at the chapel door when a company goes up to the riders",
+      "[heard|someone said] the cleric glow on funus is a leftover, anyone can hit him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "funus",
+    "text": "The funeral, last of the [four riders]: not death, which is Arawn's, but the rites after it. The old keepers wrote that only prayer and the far-flown arrow could touch him; the bearers of Caer Gothwaite say now that every hand is a bearer's hand. When he falls, the door to [Apocalypse] opens. See [Morbus]."
+  },
+  "bookPage": "When the last rider came, every cleric in our company began to glow as though a lamp had been lit inside them, and each of them heard a whisper that their prayers would serve where swords would not. Funus told us gently that it is the fate of man to die, and gave us a little while to arrange for it. I spent mine praying, which is my trade. It was the first time in my life I have felt that a prayer of mine was aimed at something. When he fell, the door at the end of the hall swung open, and Dame Ysolde said only: now.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} laid Funus in his own grave in {minutes} minutes, and opened Apocalypse's door.",
+    "loss": "Funus lit a candle for each of {realm}'s raiders; {raidLeader} never saw the last door."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "caer-sidi-prisoners",
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "fames",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "bellum",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "morbus",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "apocalypse",
+      "relation": "the master they ride before"
+    },
+    {
+      "id": "morbus",
+      "relation": "comes before him, a minute earlier"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Road of Tombs",
+      "text": "The last of the four roads to the dead is the shortest, and every man walks it. It is not death, which belongs to Arawn alone. It is what the living do afterwards.\n\nThe Romans buried along their roads. Their law forbade a grave inside a town, so outside every town of the old province the tombs stood in rows along the highway, the inscriptions turned toward the travellers so that the dead could ask to be remembered as men walked by. The Inconnu say that in those centuries more of the dead came to Annwn along a road of tombs than along any other, with the smell of the pyre still on them, and that the keepers of Caer Sidi learned the Roman rites from them before they learned anything else. When Arawn made the fourth rider, he made him from the rites: the washing, the lamp, the pyre, the procession, the last word said over the urn. He named him Funus, and of the four he is the gentlest.\n\nHe is also the slightest. Brother Cadoc of Caer Gothwaite wrote that after Bellum and Morbus the fourth rider looked half the size of his brothers, and that he understood why on the way down: a funeral is shorter than a war, and takes less out of a man than a plague. Every one of the four roads must be walked by someone, the Inconnu say, but the last is walked by everyone, and so it is the most worn and the least deep.\n\nHis bearer is the first soul ever buried with care: a hunter of the hut-builders, laid on his side with his knees drawn up and red earth on his bones and his flints beside him, in a sea cave on the Gower shore. The Inconnu say he walks at the rider's side with his flints in his hands, and that he was the first of the dead who arrived in Annwn carrying something the living had given him.\n\nFunus speaks in a hiss, like a lamp-wick. It is the fate of man to die, he says, to go out like the flame of a candle, and he gives those who climb a little while to arrange for the event."
+    },
+    {
+      "title": "Pyre and Prayer",
+      "text": "The Romans burned their dead before they buried them, and Funus remembers the pyre.\n\nHis touch is fire. The knights of Dame Ysolde's company, who had been struck by the three riders before him and knew what to expect, found that Funus's blows did not cut or empty or sicken. They burned, the way a pyre burns, close and steady, and Sir Geraint of Caerwent wrote afterwards that the knights who had had their harness proofed against dragonfire in the forges of Camelot stood up to him longest. The Caer Gothwaite garrison has sent its harness to be proofed before the climb ever since, though the smiths of Camelot do not know why.\n\nThe old keepers of Caer Sidi wrote something stranger about him, in the years before the rising: that no hand-held weapon could reach Funus, because a funeral is not a thing you can cut, and that only the prayers of priests, and arrows loosed from far away like the last volley over a grave, could touch him at all. Anything else, they wrote, only fed him. The Church of Camelot was very glad of that page when the Inconnu first showed it, because it seemed to say that the rites of the dead belong to the priests.\n\nIt was true for Dame Ysolde's company. When the third rider fell, the priests in the hall glowed for a moment as if lit from within and felt sure, for no reason they could name, that the fourth rider was theirs; the knights' blows went into Funus like water into sand, and it was the priests and the company's few bowmen who laid him down. It is not true now. The Inconnu say it went out of him with the wall around Morbus, when Ysolde's company ended the end of the world. What is left is the habit. Sir Geraint of Caerwent's company, the summer after, saw its priests glow as Ysolde's had, and found that every hand in the company could wound Funus as well as a priest's, and more readily than any of his brothers. The bearers of Caer Gothwaite have a saying for it now, which they say at every burial in the garrison: every hand is a bearer's hand.\n\nCadoc thought the glow was the fortress remembering, as the knockers of Dartmoor remember."
+    },
+    {
+      "title": "His Own Ground",
+      "text": "A funeral is not held just anywhere, and Funus will not be laid to rest away from his own ground.\n\nRoman law gave every town its road of tombs and every family its plot along it, and a man buried in a stranger's ground was thought to wander. The keepers of Caer Sidi gave Funus the floor of the riders' hall as his ground, the last stretch of the last road, and the Inconnu say nothing can lay him to rest anywhere else. The dead of the lich's company found it out on the night of the rising. They drove him back across his hall and out toward the stair, and on the stair their blows went into him like spades into a dry pond, and he turned and walked back to his floor, unhurried, and they had to follow him there.\n\nThe Church keeps a rule for the office of burial that the priests of Caer Gothwaite say is older than the Church in Albion. If the office is broken off, for a storm or a quarrel or a war party on the road, it is not taken up where it stopped. It is begun again from the first word, because a rite that has paused is a rite that has not been said. Brother Cadoc, who has said the office over more of the dead of Caer Sidi than any priest of the realm, wrote that Funus keeps the same rule. A company that lets the fighting go slack, even for the space of a few psalms, finds the rider whole again and the rite to begin from the first word.\n\nYsolde's company did not let it go slack. It fought Funus where he stood, on his own ground, and kept at him, and Cadoc said the office over him as he fell, the whole of it, without a pause, because he did not know what else to say over a funeral. He thought afterwards that the rider had listened.\n\nWhen Funus fell, there was no grace. A voice came off every wall of the hall at once and thanked the company, quite warmly, for besting its harbingers, and before Cadoc understood that the voice meant the four riders, the door at the end of the hall was open."
+    },
+    {
+      "title": "The Candle at the Door",
+      "text": "Funus is the door, the Inconnu say. When the funeral is over there is nothing left on the road but the end.\n\nThe readings of him agree less than those of any of his brothers. The Church of Camelot says he is the pale horse of the last book, whose rider is named Death and has Hell following after him, and that it is a lie of the Inconnu that he is only a funeral. The Inconnu answer that the pale rider of the Church's book is their own lord, whom no one keeps, and that Funus is the rites that come after him, which anyone can perform. The bards of Camelot say he is the gentlest of the four because he is the only one of them whom every man has seen, at his father's grave and his mother's, and that a thing you have seen often stops being a horror and becomes a custom.\n\nThe custom Albion keeps for him is a candle. In the chapel at Caer Gothwaite, under the names cut on the sill, a candle is lit on the morning a company climbs the turning gaol and set at the chapel door. If the company comes home, the first of it to reach the chapel puts the candle out with finger and thumb, as a priest puts out the lamp at the end of a burial. If it does not come home, the candle burns down by itself, and the garrison says the office over the stub. Ysolde's candle was put out by Ennyn of the Inconnu, who had walked down ahead of the company and reached the chapel first, and the priests argued for a season whether that counted.\n\nWhat Funus wants, the Inconnu say, is what every funeral wants: to be finished, and to be the last thing done. That is why he gives the climbers time to arrange for the event, and why there is no time after him. The companies who have heard the voice off the walls when he falls say the prayer for the dead before they climb to him, at the foot of his floor, because there is never a moment to say it after. Cadoc wrote that he had said it there for himself, and had not minded."
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": "the-grym-household",
+  "name": "Grym household",
+  "npcNames": [
+    "Juliana Grym",
+    "Wydo Grym",
+    "Lucia Grym",
+    "Eva Grym",
+    "Everard Grym",
+    "Warin Grym"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "juliana grym",
+    "wydo grym",
+    "lucia grym",
+    "eva grym",
+    "everard grym",
+    "warin grym"
+  ],
+  "facts": [
+    {
+      "text": "The Grym household: Wydo (39), Juliana (38), Lucia (37), Eva (37), Everard (36) and Warin (36) Grym, ghosts, no faction, no spells, respawn 80 s, a field from the Swetts (~419.2-419.7k, 409.0-409.4k).",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The geese and each member's habit are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The colleges of Avalon let the dales to tenant families who farmed and wove and dyed and kept bees for them, and when the war came the families died in their houses in the first summers and stayed. A drakoran rod holds them there now. The Gryms kept the colleges' geese a field from the Swetts.\n\nJuliana Grym asks every visitor whether something is wrong, and does not wait for the answer.\n\nWydo Grym, the father, counts the geese every evening and finds them short.\n\nLucia Grym talks of the market at Avalon, of what she will buy there, and when.\n\nEva Grym plucked the geese for the readers' quills and is white with down.\n\nEverard Grym and Warin Grym, the boys, drove the flock to the colleges and still whistle for a flock that is not there. The Swetts' Bartholomew used to whistle back, and sometimes, at dusk, he still does.",
+  "legend": "The Grym household: Wydo (39), Juliana (38), Lucia (37), Eva (37), Everard (36) and Warin (36) Grym, ghosts a field from the Swetts by the fort road, with Avalonian apparitions drifting between the two houses. They aggro on sight and stand close; pull singles from the edge. Plain melee, no spells, respawn 80 seconds. The whole house comes back in about a minute and a half, so clear it and move on rather than resting inside.",
+  "yells": {
+    "aggro": [
+      "Is something wrong?",
+      "The geese are short again."
+    ],
+    "phases": [],
+    "death": [
+      "Something... was wrong..."
+    ],
+    "slay": [
+      "Plucked.",
+      "Counted short."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Juliana Grym, at the door of the house.",
+      "Wydo Grym is still at home.",
+      "Lucia Grym is still at home.",
+      "Eva Grym is still at home.",
+      "Everard Grym is still at home.",
+      "Warin Grym is still at home."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Grym house falls quiet. No geese call."
+  },
+  "botLines": {
+    "briefing": [
+      "grym house by the fort road, six of them, pull singles",
+      "the apparitions drift between the grym and swett houses"
+    ],
+    "aftermathWin": [
+      "cleared the gryms",
+      "juliana grym asked if something was wrong. yes"
+    ],
+    "aftermathLoss": [
+      "six gryms at once is too many"
+    ],
+    "rumour": [
+      "[heard|someone said] juliana grym asks everyone if something is wrong",
+      "heard wydo grym counts his geese every evening and they're always short",
+      "[heard|someone said] lucia grym is still planning a trip to the avalon market",
+      "heard eva grym is covered in goose down",
+      "[heard|someone said] everard and warin grym still whistle for the flock"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "grym",
+    "text": "The Gryms kept the colleges' geese a field from the [swett] house in the [dales of devwy]: Juliana who asks if something is wrong, Wydo counting the flock, Lucia and the market, Eva white with down, and the boys Everard and Warin whistling for geese that are gone."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} gave the Grym household their rest for a while, in {minutes} minutes.",
+    "loss": "The Grym household kept house; {raidLeader} of {realm} was shown the door."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn",
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "the-swett-household",
+      "relation": "neighbours a field away"
+    }
+  ],
+  "tier": "minor"
+}

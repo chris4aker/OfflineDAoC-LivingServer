@@ -1,0 +1,661 @@
+{
+  "id": "darkness-falls",
+  "name": "Darkness Falls",
+  "realm": "Neutral",
+  "regions": [
+    249
+  ],
+  "aliases": [
+    "df"
+  ],
+  "summary": "The demon kingdom under all three realms, ruled by the arch-demon Legion, whose door opens only for the realm that holds the most keeps.",
+  "facts": [
+    {
+      "text": "Darkness Falls arrived in patch 1.49 (April 2002). Mythic's text described its demons as keeping a strict hierarchy by power, with titles and underlings, the weakest (the Picullus imps) living by hiding and stealing.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/3d68"
+    },
+    {
+      "text": "It is a vast underground kingdom for levels 15-50, dominated by the arch-demon Legion. Only the realm holding more frontier keeps than both others can open its portal; those already inside may stay until they leave or release. Entrances lie in Camelot Hills, the Vale of Mularn and Connacht; realm-versus-realm combat is on inside.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=62"
+    },
+    {
+      "text": "Its bestiary lists princes, dukes, earls, marquises, a Grand Chancellor, Lilith the Demon Queen and Behemoth at level 99.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+    },
+    {
+      "text": "In April 2002 Mythic strengthened Legion: proper resists, more frequent reclaiming of souls, and Behemoth, which Legion had been summoning from elsewhere in the dungeon, kept to its own area.",
+      "provenance": "mythic",
+      "source": "https://gamebanshee.com/news/68454-beware-of-legion.html"
+    },
+    {
+      "text": "Players noted (2002-03) that Mythic had made a text game called Darkness Falls before Dark Age of Camelot.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=62"
+    },
+    {
+      "text": "Named here: Legion (level 83), Behemoth (99), Beliathan, High Lords Baelerdoth, Baln, Oro and Saeor, Princes Abdin, Asmoien and Ba'alorien, and Princess Nahemah.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Period talk: 'as few as about three groups' for Legion (Feb 2003), '4 fg took him out' (Feb 2004).",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Darkness Falls has no raid tactics in Offline DAoC's raid AI; the catalog lists it for completeness.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Brother Odran of Camelot Hills and his Door-Book, the Church's first map, Lord Hagan's capped well and chapel in Uther's day, the saying 'the Mouth does not spit', the cross in the Albion hall, the castle ruins drawn at the bottom of the imp's map, Gunnhild the Lame of Mularn and the Huldu song, Ciarnat of Connacht, the druid Fionnuala and her wolf, and the Hibernian saying 'leave the hound at the top of the stair' are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "The court's Rolls of Precedence, the Feast of Thrones, the Blade and the Hook, the Gate watch, the wings and their lords, the Army of Shadows, the captain with the white shield, Brother Aldric and Ruadh of the grey cloak are the neutral writer's (history/neutral.json and the court files on feature/lore-neutral); this file follows them.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/lore/history/neutral.json (feature/lore-neutral)"
+    },
+    {
+      "text": "Beliathan comes up only when no prince or princess (Abdin, Ba'alorien, Asmoien, Nahemah) is alive in region 249, checked every ten minutes, with the broadcast 'The tunnels rumble and shake..'; each real player he kills raises a Beliathan's Minion where they fell.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs"
+    },
+    {
+      "text": "High Lord Saeor heals by the whole maximum health of each player he kills; High Lord Baelerdoth, below 25%, answers each hit with a point-blank absorption debuff; High Lord Baln calls minions every 20-35 s while fought; High Lord Oro fights with two clones; Princes Ba'alorien and Asmoien devour the nearest pet within 2,000 every 5 s and heal by its health; Princess Nahemah brings minions and casts Maelstrom (radius 350, range 1,500).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/"
+    }
+  ],
+  "story": "Under the place where Albion, Midgard and Hibernia meet lies a hollow larger than any of their capitals. Three halls sit in its roof, one under each realm, kept by each realm's aleax at the door and by imps at the stalls who sell the court's own armour for the court's own seals. Below the Albion hall the roads meet at the Gate, kept by all three of the court's orders together under Gatekeeper Dommel since the feud of the Blade and the Hook. From there the wings open: the Inquisition's cloisters north, the Chthonic Knights' chapter house north-west, the Mutilators' pit west and Princess Nahemah's bower beyond it, the Hall of War south, three high lords' halls east, and the long slope south-east to the Master's door, its walls cut with the ten Rolls of Precedence and the Roll of the Visitors.\n\nThe court tells its beginning as the Feast of Thrones, when the hungry one ate nineteen lords and Adremal offered the bargain that the Master eats only those who fall from their place; the imps tell it as the first meal of one prince who ate his rival and kept the voice. Albion's door opened, after Arthur, from below a capped well in Lord Hagan's castle in Camelot Hills; Brother Odran, the Church's warden, kept a Door-Book of the openings, which answer to the frontier keeps, and painted the saying that a shut door does not drive out those below: the Mouth does not spit.\n\nAlbion's first company, under the captain with the white shield, died at the Gate with its chaplain Brother Aldric; the Gatekeeper cut Albion's first notch with the captain's shield. Above the Gate Director Kobil keeps to his rooms, teaching Prince Abdin's Army of Shadows to march. The Blood are a lock on the worm Beliathan, which wakes a while after the last of them, the princess too, is gone; two of the princes eat what is led to them on a leash. The high lords' halls grow worse in turn: Baln's hall that grows, Oro who is three, Baelerdoth who rots the armour of those close at his end, Saeor who drinks the dead.\n\nEach realm says what the hollow is for: judgement, glory, nothing. The Chancellor wrote that it is for the war, and that every line on the Roll of the Visitors is struck before it is cut.",
+  "legend": "Whoever holds the most keeps holds the door. If it flips while you are below you can stay and climb out when you like, but release and you are in your capital with no way back until your realm takes the keeps again. The court goes by rank: princes, high lords, dukes, earls, marquises, and the dukes and earls are honest fights with no tricks. The tricks are the lords'. Ba'alorien in the north and Asmoien in the west eat the nearest pet every five seconds and heal by its health, so pet classes leave their pets at the stair. Saeor heals by the whole health of anyone he kills, so nobody dies in his hall. Baelerdoth, below a quarter, strips the armour of everyone around him each time he is hit; melee rotate out at the end. Baln's walls keep giving up minions every twenty to thirty-five seconds while you fight him, so kill fast. Oro is three. Nahemah brings her minions and drops a maelstrom on anyone bunched at range. Kill all three princes and Nahemah, wait, and inside ten minutes the tunnels rumble and Beliathan comes up in the north-west; every one of you he kills makes a minion. Legion falls to four groups who stand close and do not die. The Behemoth falls to nobody. Kneel at the cross in the Albion hall before you go down; the old hands do, and it costs nothing.",
+  "atmosphere": {
+    "firstEntry": [
+      "Darkness Falls. Every demon here knows its rank.",
+      "The door shuts behind you. It opens for strength alone.",
+      "Warm air rises from below. Something is laughing.",
+      "A hall in the roof of a hollow. Imps watch you.",
+      "Far below, every road meets at a crossing."
+    ],
+    "areas": [
+      {
+        "name": "Legion's lair",
+        "x": 45027,
+        "y": 51899,
+        "z": 15468,
+        "radius": 1400,
+        "lines": [
+          "Many voices speak at once. All of them are hungry.",
+          "A ring of voices. All of them are listening."
+        ]
+      },
+      {
+        "name": "the Behemoth's ledge",
+        "x": 44490,
+        "y": 49588,
+        "z": 20833,
+        "radius": 1200,
+        "lines": [
+          "Something on the ledge breathes like a forge.",
+          "Something breathes like a forge above you."
+        ]
+      },
+      {
+        "name": "Prince Abdin's hall",
+        "x": 25647,
+        "y": 17946,
+        "z": 17684,
+        "radius": 800,
+        "lines": [
+          "A prince's hall. He expects you to kneel.",
+          "Black knights stand to the prince's left and right."
+        ]
+      },
+      {
+        "name": "Prince Asmoien's hall",
+        "x": 24868,
+        "y": 32144,
+        "z": 16086,
+        "radius": 800,
+        "lines": [
+          "Your pet whimpers. Something here is hungry for it.",
+          "The prince of the Hook sniffs at your heels."
+        ]
+      },
+      {
+        "name": "Prince Ba'alorien's hall",
+        "x": 36680,
+        "y": 16197,
+        "z": 16051,
+        "radius": 800,
+        "lines": [
+          "Bones of beasts, not men, are piled by the throne.",
+          "The prince of the north looks hungry. At your pets."
+        ]
+      },
+      {
+        "name": "Princess Nahemah's hall",
+        "x": 18560,
+        "y": 24840,
+        "z": 17203,
+        "radius": 800,
+        "lines": [
+          "Perfume, and under it, the smell of a storm.",
+          "Perfume, and a storm gathering under the roof."
+        ]
+      },
+      {
+        "name": "High Lord Baln's hall",
+        "x": 35351,
+        "y": 39179,
+        "z": 14958,
+        "radius": 800,
+        "lines": [
+          "A high lord, and his servants, and theirs.",
+          "The walls of the Hall of War are moving."
+        ]
+      },
+      {
+        "name": "High Lord Oro's hall",
+        "x": 45048,
+        "y": 25215,
+        "z": 15924,
+        "radius": 800,
+        "lines": [
+          "Three high lords sit here. Two are not real.",
+          "One high lord. Three shadows on the wall."
+        ]
+      },
+      {
+        "name": "High Lord Saeor's hall",
+        "x": 49796,
+        "y": 38134,
+        "z": 15925,
+        "radius": 800,
+        "lines": [
+          "The high lord here grows fat on the fallen.",
+          "The warmest hall in the hollow. Do not die here."
+        ]
+      },
+      {
+        "name": "High Lord Baelerdoth's hall",
+        "x": 49208,
+        "y": 31993,
+        "z": 15982,
+        "radius": 800,
+        "lines": [
+          "The high lord's aura drinks the light from your wards.",
+          "Cold. Your armour feels thinner here."
+        ]
+      },
+      {
+        "name": "the Gate crossing",
+        "x": 39793,
+        "y": 32004,
+        "z": 16493,
+        "radius": 1500,
+        "lines": [
+          "Every road in the hollow meets at this crossing.",
+          "Knight, flayer and questioner keep the Gate together.",
+          "The floor is more notch than stone."
+        ]
+      },
+      {
+        "name": "the East Ward",
+        "x": 44108,
+        "y": 30160,
+        "z": 16151,
+        "radius": 3000,
+        "lines": [
+          "Three tunnels meet here, between three halls.",
+          "The Ward belongs to no lord. It is kept between."
+        ]
+      },
+      {
+        "name": "the Marshal's war table",
+        "x": 40000,
+        "y": 43026,
+        "z": 15493,
+        "radius": 1200,
+        "lines": [
+          "A war table. The whole hollow is cut into it.",
+          "Two small officers lean over the stone, counting."
+        ]
+      },
+      {
+        "name": "the approach and the Rolls",
+        "x": 45057,
+        "y": 45808,
+        "z": 15470,
+        "radius": 2500,
+        "lines": [
+          "Ten walls of lines run along the slope.",
+          "A clerk with a chisel stands below the newest wall.",
+          "The Roll of the Visitors. Every line already struck."
+        ]
+      },
+      {
+        "name": "the Queen's chair",
+        "x": 45546,
+        "y": 51300,
+        "z": 15469,
+        "radius": 800,
+        "lines": [
+          "A black chair stands by the door. No one sits in it.",
+          "The cushion on the chair is fresh."
+        ]
+      },
+      {
+        "name": "the chapter house",
+        "x": 16100,
+        "y": 19199,
+        "z": 17772,
+        "radius": 2000,
+        "lines": [
+          "Black knights stand at their posts, unmoving.",
+          "A voice inside is reciting the chapter roll."
+        ]
+      },
+      {
+        "name": "the prince's cloister",
+        "x": 36800,
+        "y": 16100,
+        "z": 16045,
+        "radius": 1500,
+        "lines": [
+          "Grey questioners wait in the cloister, slates in hand.",
+          "A murmur, too low to make out, fills the cloister."
+        ]
+      },
+      {
+        "name": "the far cloister",
+        "x": 30500,
+        "y": 13300,
+        "z": 15900,
+        "radius": 1500,
+        "lines": [
+          "In the far cloister nobody hurries, and nobody leaves.",
+          "Cells line the walls. Some are kept clean."
+        ]
+      },
+      {
+        "name": "the north road",
+        "x": 37200,
+        "y": 10400,
+        "z": 15330,
+        "radius": 1500,
+        "lines": [
+          "The hollow ends here in raw rock.",
+          "Questioners watch the road and the rock beyond it."
+        ]
+      },
+      {
+        "name": "the Mutilators' pit",
+        "x": 17630,
+        "y": 32400,
+        "z": 16010,
+        "radius": 2500,
+        "lines": [
+          "Racks of hooks and mauls line the walls, very clean.",
+          "Wings beat somewhere above the pit."
+        ]
+      },
+      {
+        "name": "the pit's far passage",
+        "x": 15000,
+        "y": 41800,
+        "z": 17376,
+        "radius": 1200,
+        "lines": [
+          "A passage leads out of the pit. Two flayers keep it.",
+          "The Hook goes out this way to fetch."
+        ]
+      },
+      {
+        "name": "the princess's well",
+        "x": 19925,
+        "y": 24829,
+        "z": 17000,
+        "radius": 700,
+        "lines": [
+          "A covered well. Something pale waits beside the water.",
+          "Perfume, and under it, cold water."
+        ]
+      },
+      {
+        "name": "the records",
+        "x": 33049,
+        "y": 35100,
+        "z": 19821,
+        "radius": 900,
+        "lines": [
+          "Slates are stacked to the ceiling, every one written.",
+          "A small knight-shaped figure bends over a slate."
+        ]
+      },
+      {
+        "name": "the Director's chambers",
+        "x": 32575,
+        "y": 33424,
+        "z": 17798,
+        "radius": 1200,
+        "lines": [
+          "Shadows move on the walls that nothing is casting.",
+          "Braziers burn at every height. Something flits between."
+        ]
+      },
+      {
+        "name": "the north kitchen",
+        "x": 38652,
+        "y": 17827,
+        "z": 17775,
+        "radius": 700,
+        "lines": [
+          "A kitchen that smells of coals and something rotting.",
+          "Pots simmer. Nobody is stirring them."
+        ]
+      },
+      {
+        "name": "above the rocot rooms",
+        "x": 18700,
+        "y": 31750,
+        "z": 21853,
+        "radius": 900,
+        "lines": [
+          "The room is warm and close, and smells of coals.",
+          "Something large and soft shifts in the dark."
+        ]
+      },
+      {
+        "name": "the Albion hall",
+        "x": 36793,
+        "y": 24389,
+        "z": 21905,
+        "radius": 1500,
+        "lines": [
+          "Imp stalls ring the hall. Seals change hands here.",
+          "An imp who was once great sulks among the stalls.",
+          "The aleax of Albion keeps the door."
+        ]
+      },
+      {
+        "name": "the Midgard hall",
+        "x": 14411,
+        "y": 14198,
+        "z": 22406,
+        "radius": 1500,
+        "lines": [
+          "Imp stalls ring the hall. The seals are cold.",
+          "The aleax of Midgard keeps the door."
+        ]
+      },
+      {
+        "name": "the Hibernia hall",
+        "x": 42299,
+        "y": 41416,
+        "z": 20361,
+        "radius": 1500,
+        "lines": [
+          "Imp stalls ring the hall. Seals lie on the floor.",
+          "The aleax of Hibernia keeps the door."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "legion keeps a court down there like a king. princes, high lords, dukes, earls, marquises, and every demon knows its rank",
+      "the imps in df live by stealing, [heard|word is]. too weak for anything else. [the court is strict|its a pecking order]",
+      "kill all the princes in df and the tunnels shake. [the worm comes up|beliathan comes]",
+      "the demon court in df has [a roll of precedence|ten rolls cut in the walls]. fall off your line and legion eats you",
+      "the gate in df is kept by [all three demon orders together|knights, mutilators and inquisitors], since their civil war",
+      "mystemas was one of the strongest demons in legion's army. [now hes an imp|got shrunk for jumping the gun]",
+      "albion's df door is under an old chapel in the castle ruins. [the floor is warm|warm floor in winter]",
+      "brother odran kept a book of every time the df door opened. [by the hour|like the tides]",
+      "the mouth does not spit, the castle warden used to say. [shut door doesnt throw you out|you can stay if it shuts]",
+      "first albion group in df died at the gate. [the gatekeeper cuts a notch for every death|the floor is all notches]",
+      "the aleax at the bottom of each stair keeps the other realms out of your hall",
+      "the imps in df sell the demons own armour for the demons own seals",
+      "beliathan sleeps while any of the princes lives. [the princess counts|nahemah too]"
+    ],
+    "rumour": [
+      "[heard|someone said] the df door changes hands with the keeps. dont release if it flips while youre in",
+      "behemoth is level 99, [heard|they say]. nobody kills it. nobody",
+      "mutilator xagalith has the most honest title in the whole of darkness falls",
+      "[heard|word is] the empty black chair by legion's door is the demon queen's. [dont sit in it|nobody sits in it]",
+      "the imps in df steal everything they sell. [from the dukes|from duke aypol mostly]",
+      "[heard|someone said] the imps sell maps of df and every one is different",
+      "[heard|word is] saeor heals off everyone he kills. [dont die in his hall|nobody dies in saeor's]",
+      "[heard|someone said] baln's hall keeps spitting out minions the longer you take",
+      "heard ba'alorien and asmoien eat pets. [leave yours at the stair|pets stay upstairs]"
+    ],
+    "tell": [
+      "darkness falls? the demon dungeon under all three realms. opens for whoever holds the most keeps. legion at the bottom",
+      "demons, seals and other realms all in one place. princes and high lords for groups, legion for a raid",
+      "big shared dungeon. dont release inside if the door changes hands, you cant get back in",
+      "where's the df door? albion's is in the castle ruins in camelot hills",
+      "is df hard? the dukes and earls are groups. the princes and high lords each have a trick. legion is a raid",
+      "how do you get beliathan? kill all three princes and nahemah, then wait. the tunnels shake when he comes"
+    ]
+  },
+  "loremaster": {
+    "intro": "Darkness Falls is the kingdom under the three realms, and it keeps a [court] stricter than any king's. Its [door] opens only for strength. At the bottom sits [Legion], and behind Legion, the [Behemoth].",
+    "topics": {
+      "court": "Princes and high lords, dukes and earls and marquises, a chancellor and a queen, and imps at the bottom who live by theft. Every demon knows its rank and would kill for the next. Kill all the [princes] and something else comes up.",
+      "door": "Each realm has one, and each answers to the frontier: the realm that holds the most keeps finds its door open. If the door changes hands while you are below, you may stay, so long as you do not release. Each realm tells it differently: ask of [albion's door], [midgard's door] or [hibernia's door].",
+      "legion": "Not one demon but many, a court in one body, and it feeds on souls. Every soul it takes mends it. Stand close to it, for it cannot be hurt from afar, and do not die, for each death makes it stronger.",
+      "behemoth": "Kept on a ledge above Legion's lair, as a man keeps a chained bear. It is older and larger than anything else in that kingdom. I know of no one who has killed it. I know of many who tried.",
+      "princes": "Abdin, Asmoien and Ba'alorien, and the princess Nahemah. Two of the princes eat the beasts that follow pet-masters, and grow stronger by them. When all four are dead, the tunnels shake and Beliathan comes.",
+      "albion's door": "The Church calls it the Mouth. Its door lies in the castle ruins in Camelot Hills, an hour from the king's seat, and it opens only when Albion holds the frontier. Go down as a crusader if you must. Come back as one.",
+      "midgard's door": "It is no hall of Hel's. Hel keeps her dead and feasts them; down there they are eaten. Our door lies in the snow above Mularn, by the Huldu, and it opens when Midgard holds the frontier. A prince of that court is worth a verse. Legion is worth a saga, if anyone lives to sing it.",
+      "hibernia's door": "The druids say it is a place where the otherworld was torn the wrong way. The Good Folk have their laws; the demon court has only rank. Our door lies in Connacht and opens when Hibernia holds the frontier. Go, because a realm that never goes is a realm that is afraid.",
+      "roll of precedence": "The court's law since the [feast of thrones]: every demon of rank holds a line on a Roll cut into the walls of the approach, and the Master eats only those who fall from their line. Ten Rolls stand there now; the present one is the Tenth. A demon struck off is examined by the Inquisitors, pronounced by the Chancellor, unmade by the Mutilators and eaten.",
+      "feast of thrones": "The night the hungry one came to the hollow. Thirty lords sat down; nineteen were eaten; eleven knelt, Grand Chancellor Adremal first, who offered the bargain the court still keeps: [Legion] would be Master forever and eat only those who fall from their place on the [roll of precedence].",
+      "blade and the hook": "The feud between Prince Abdin's Chthonic Knights, the Blade, and Prince Asmoien's Mutilators, the Hook, over which prince knelt second at the [feast of thrones]. It ended in the Fourth Roll at the [gate watch]'s crossing, when Gatekeeper Dommel closed every road and let both orders bleed.",
+      "gate watch": "Since the [blade and the hook], the central crossing below the Albion hall has been kept by all three orders in equal number with Gatekeeper Dommel in the middle, so that no order can hold it alone. The Gatekeeper lets the realms through; the dead they leave are his toll.",
+      "east ward": "The ground between the halls of High Lords Oro, Baelerdoth and Saeor, given a line of its own and kept by Duke Bimure with a garrison of all three orders, so that the high lords' followers do not kill each other between the halls.",
+      "queen's chair": "A black stone chair with a red cushion beside the Master's [door], kept empty by the Chamberlain since the Queen, Lilith, went away in the Seventh Roll. Duke Satori once sat in it and has not been seen since.",
+      "mystemas": "An imp of the Albion hall who was once among the strongest in the Master's army. In the Ninth Roll he began to carry out a plan the Master had not finished deciding, and the Master made him small. He sends mortals after Princess Nahemah and Ambassador Mannam, who took the embassy he wanted, and after Director Kobil and Prince Abdin, and calls it a kindness. Ask him about the [seals] and he will tell you more than you paid for.",
+      "seals": "The court's coin: discs of green, blue and white metal from Duke Aypol's hoard, the realms' emerald, sapphire and diamond, stamped with the bargain of the [roll of precedence]. The imps sell the court's own armour for them in the three halls, and every seal that goes up a stair is gone from the hollow for good.",
+      "imps": "The bottom of the Roll: too weak to fight, they steal from the great demons' hoards and sell to anyone who does not step on them. Each realm's hall has its ring of seal merchants, Kodo and Pico and the rest in Albion's, Hulo and Iago in Midgard's, Beelo and Dano in Hibernia's, and [Mystemas] among them, demoted.",
+      "aleax": "Each realm set an aleax at its own hall's door when the doors opened, a guardian of light that keeps the other two realms out of the hall. The court cannot pass them and does not try. The imps say the aleax are the only things in the hollow they have never managed to sell anything to.",
+      "bolo": "An imp of the Albion hall who stands beside [Mystemas] and sells nothing. The other imps say the Chancellor set him there to watch Mystemas, and Mystemas says Bolo is his only friend. Both may be true.",
+      "etho": "An imp of the Hibernia hall who keeps no stall and carries the hall's gossip to the other halls. He knows everything that came down the eastern stair and will tell it for a candle-end.",
+      "black plague": "The sickness the court sent up into the three capitals after the doors opened: a back that burns as if from coals and the smell of rot. The Archivist found it in the records, Malroch the Cook made it, and Lecherous Gress carried it up by night. Albion traced it to the Cook, Midgard to Gress, Hibernia to the Archivist.",
+      "army of shadows": "Prince Abdin's Blade: a host of shadows that Director Kobil is teaching to march in the chambers above the Gate. It holds no line, so it cannot be struck off, and it cannot be counted. The Gatekeeper has sworn it will find the roads long; Earl Glassalab is digging it another.",
+      "door-book": "Brother Odran's record of every opening and shutting of Albion's [door] at the castle ruins, by the hour. The saying painted over the undercroft arch: the Mouth does not spit. A shut door does not drive out those below; only those who give up their dead lose the way back.",
+      "worm": "Beliathan sleeps under the north-west while any of the Blood still breathes. When the last of the [princes] is gone, the princess too, the hollow is quiet a while, then the tunnels shake. Where the worm kills, something of the dead rises after it.",
+      "hall that grows": "Albion's name for High Lord Baln's Hall of War, whose walls give up more of his brood the longer he is fought there. See [court].",
+      "drinker of the dead": "High Lord Saeor of the east, made whole by every mortal who dies in his hall. A company that loses men to him feeds him with them. See [court]."
+    }
+  },
+  "book": {
+    "title": "An Order of Precedence of the Court Below",
+    "pages": [
+      "Every court has its order of precedence, and the court below is stricter than most, for a demon who forgets its place is eaten by the one above. I set the order down here as the captured imp gave it to me, in exchange for a candle-end. At the bottom, the imps, who steal. Above them the common devils, then the marquises and earls and dukes, then the high lords, then the princes. Above the princes, the chancellor and the queen. Above all, Legion. The imp called itself Pico, and said it kept a stall in the Albion hall. I set its name down so that the next reader may ask for it, and bring candle-ends.",
+      "The imp would not say what Legion is. It said only that Legion is everyone, and that when a demon of the court dies badly, Legion takes what is left, and it is not seen again but is somehow there, in the voice. It said that Legion speaks with every voice it has ever eaten. It said this was an honour. It did not look honoured. I gave it a second candle-end and it told me about the ledge. The voices, it said, do not agree with one another, and the Master does not need them to. A court that speaks with one mouth has no need of a council.",
+      "Above Legion's lair, the imp said, is a ledge, and on the ledge lives the Behemoth, which is not of the court at all but older than the court, and which the court keeps as a man keeps a chained bear. Once Legion would call the Behemoth down to fight beside it. Now it stays on its ledge. The imp said this was because the Behemoth once came down and did not stop at the enemy. I did not give it a third candle-end. I did not need to. It added that the court has never put the Behemoth on any Roll, because a beast cannot fall from a place it never held.",
+      "On the matter of the door, the imp was clear. The door opens for strength. Whichever of the three realms above is strongest on the frontier finds its door open, and the court watches the frontier as a gambler watches dice. The princes keep wagers on which realm will come down next. The imp said Prince Abdin had lost a great deal on Albion last season. It seemed to find this very funny. Then it stole the candle-ends back and was gone. I asked how it knew the princes' wagers. It said an imp hears everything that is said over a table, because an imp is always under it.",
+      "From the Door-Book of the castle ruins in Camelot Hills, kept by Brother Odran, warden for the Church. The door opened at the second hour after noon, Albion having taken the keep in the north. Eleven companies went down by dusk. The door shut at the fourth hour of the night, the keep being lost. Three companies were below. They came up singly over the next two days, and none was hindered on the stair; the Mouth does not spit. The fourth company, of Camelot Hills, gave up its dead below and was found in Camelot the same evening, very angry, and unable to go back down. I have recorded this as a warning.",
+      "Brother Odran, on the maps. The imp would not take coin. It took my rosary, and gave me a map drawn on a scrap of demon hide in an ink that smelled of coal, and the map is wrong in every particular and right in one. The roads are where no roads are. The princes' halls are drawn the size of the Master's. The imp's own stall is drawn at the centre, larger than the Gate. And the castle ruins above us are drawn at the very bottom of the hollow, below the Master's door. I asked the imp why. It said that is where the realms keep their door, and that a door is always the deepest part of a house, because everything else is above it.",
+      "Told by Gunnhild the Lame of Mularn, who carried water for the first war-bands to go down from the snow, to a skald of Jordheim. The Huldu would not come within a spear's throw of the door. When the men went down, the Huldu women came and stood at that distance and sang, very low, and the song was not for the men. It was for the door. I asked an old Huldu what the song said. She said it asked the door to remember that it had been a hill. I carried water for five years. Every band that came back up the stair walked past the Huldu without seeing them. The Huldu always counted them as they passed.",
+      "Ciarnat, a bard of Connacht, on the princes' gluttony, from a lament. The druid Fionnuala went down with her wolf at her heel, because she had never gone anywhere without it, and the grey questioners' prince took it from her side as a man takes bread from a plate, and was the better for it. She did not weep. She went down again the next season without it, and her company brought the prince low, and she told me afterwards that she had left the wolf at the top of the stair in the keeping of a child, who was told to give it back to her or to nobody. The child waited three days. That is why we say it.",
+      "From the account of the four who came back from the first Albion company, as taken down by Brother Odran. The crossing was kept by three kinds of demon, black-armoured, grey and robed, and hooked, standing in threes, and they would not let one kind among them stand alone. The captain with the white shield said he would go through. Brother Aldric was praying when they took him and did not stop until he had finished. When we ran, the demon in the middle of the crossing knelt by the captain and took up his shield and cut a mark in the floor with its edge, carefully, like a clerk ruling a page. We did not stay to see if it cut more."
+    ]
+  },
+  "bosses": [
+    "legion",
+    "behemoth",
+    "beliathan",
+    "prince-abdin",
+    "prince-asmoien",
+    "prince-baalorien",
+    "princess-nahemah",
+    "high-lord-baelerdoth",
+    "high-lord-baln",
+    "high-lord-oro",
+    "high-lord-saeor",
+    "ambassador-mannam",
+    "archivist-borath",
+    "caisha",
+    "chamberlain",
+    "chthonic-knights",
+    "director-kobil",
+    "duke-alloc",
+    "duke-aypol",
+    "duke-bimure",
+    "duke-eligar",
+    "duke-harboris",
+    "duke-sallis",
+    "duke-satori",
+    "duke-zepor",
+    "earl-amagin",
+    "earl-fenex",
+    "earl-glassalab",
+    "earl-ipostian",
+    "earl-mercur",
+    "earl-mermer",
+    "earl-oraxus",
+    "earl-vone",
+    "earl-zhalzhak",
+    "field-marshal-nebir",
+    "gatekeeper-dommel",
+    "grand-chancellor-adremal",
+    "inquisitors",
+    "lecherous-gress",
+    "lieutenants",
+    "malroch-the-cook",
+    "marquis-almen",
+    "marquis-chaosmar",
+    "marquis-dortaleon",
+    "marquis-focalleste",
+    "marquis-haurian",
+    "marquis-sabonach",
+    "marquis-scottiax",
+    "marquis-valupa",
+    "mutilators"
+  ],
+  "realmTakes": {
+    "albion": {
+      "story": "Albion's door is in the ruins of the old castle in Camelot Hills, an hour's ride from the king's own seat, and the Church has never forgiven the realm for living so close to it. The priests of Camelot call Darkness Falls the Mouth, and teach that it is the pit the old enemies of the faith were cast into, and that every demon slain in it is a soul spared. Albion's knights go down as crusaders. Its wizards go down for the seals. Its mercenaries go down for the coin, and lie to the priests about it afterwards. Every squire in Camelot Hills has stood at the castle ruins at night and heard something laughing underneath.",
+      "legend": "The Church calls it the Mouth, and the knights say a prayer at the castle ruins before going down. When Albion holds the keeps, every guild in Camelot runs to the Hills at once. Never release inside; the walk back from Camelot is the longest walk in the realm.",
+      "botLines": {
+        "lore": [
+          "the priests in camelot call darkness falls the mouth. [the pit the old enemies got thrown into|a pit under the hills]",
+          "albion's door to df is in the castle ruins in camelot hills. [an hour from the king|right on the king's doorstep]"
+        ],
+        "rumour": [
+          "[heard|someone said] albion has the keeps again. everyone to the hills before the door shuts",
+          "squires dare each other to sleep at the castle ruins in camelot hills. [nobody lasts|nobody does it twice]"
+        ],
+        "tell": [
+          "darkness falls? the demon dungeon, door in the castle ruins in camelot hills. only opens when albion holds the most keeps"
+        ]
+      },
+      "loremaster": {
+        "intro": "The Church calls it the Mouth. Its door lies in the castle ruins in Camelot Hills, an hour from the king's seat, and it opens only when Albion holds the frontier. Go down as a crusader if you must. Come back as one. Ask about [the mouth].",
+        "topics": {
+          "the mouth": "The Church's name for Darkness Falls: the pit the old enemies of the faith were cast into. Every demon slain there is a soul spared, the priests teach."
+        }
+      }
+    },
+    "midgard": {
+      "story": "Midgard's door is in the snow above the Vale of Mularn, near the Huldu camps, and the skalds of Jordheim do not call it a hell. Hel has her own hall and keeps it in good order; this is something else, a hall of the dead that belongs to no god, where the dead are eaten instead of feasted. The Norse go down for glory, because a demon prince slain is a saga verse, and for the seals, because a warrior must eat. They go down laughing and they come up quieter. The old men of Mularn say the Huldu were first to find the door, and that they have been very careful ever since never to open it.",
+      "legend": "The skalds say it is no hall of Hel's, because Hel keeps her dead and Legion eats them. A demon prince is a verse in your saga; Legion is the whole saga. When Midgard holds the keeps, go, and go in force. The Huldu by the door know more than they say.",
+      "botLines": {
+        "lore": [
+          "the skalds say df isnt hel's hall. [hel keeps her dead|hel feasts hers], legion eats them",
+          "midgard's df door is up in the snow over mularn, by the huldu camps. [the huldu never go in|huldu wont go near it]"
+        ],
+        "rumour": [
+          "[heard|someone said] we have the keeps. df is open, get to mularn",
+          "a demon prince is a verse in your saga, [my gran said|the skalds say]. legion is the whole saga"
+        ],
+        "tell": [
+          "darkness falls? demon kingdom under the world. our door is in the snow above mularn. opens when midgard holds the most keeps"
+        ]
+      },
+      "loremaster": {
+        "intro": "It is no hall of Hel's. Hel keeps her dead and feasts them; down there they are eaten. Our door lies in the snow above Mularn, by the Huldu, and it opens when Midgard holds the frontier. A prince of that court is worth a verse. Legion is worth a saga, if anyone lives to sing it. Ask about [glutton-hall].",
+        "topics": {
+          "glutton-hall": "The skalds' name for Legion's kingdom: a hall of the dead that eats its guests instead of feasting them. Hel keeps her dead in good order. This is not her hall."
+        }
+      }
+    },
+    "hibernia": {
+      "story": "Hibernia's door is in Connacht, and the druids of Tir na Nog say plainly what it is: a place where the otherworld was torn the wrong way. The Sidhe hills open onto the lands of the Good Folk, who are dangerous but have their own laws; Darkness Falls opens onto a kingdom with no law but rank, and no courtesy but fear. Hibernians go down because the realm must not be the one that never goes, and because the demons' seals buy what nothing above ground can. The bards make songs of it, and every song ends with the singer coming home, because the ones who did not come home are not in a position to complain.",
+      "legend": "The druids say the otherworld was torn the wrong way under Connacht. The Good Folk have laws; the demon court has only rank. When Hibernia holds the keeps, the door in Connacht opens, and the whole realm hears it. Pet classes, mind the princes: some of them eat pets.",
+      "botLines": {
+        "lore": [
+          "the druids say df is the otherworld torn the wrong way. [the sidhe have laws|the good folk have rules], the demons only have rank",
+          "our door to darkness falls is in connacht. [opens when we hold the keeps|only when hibernia holds the frontier]"
+        ],
+        "rumour": [
+          "[heard|someone said] hibernia took the keeps. connacht door is open",
+          "the bards sing df songs where everyone comes home. [funny that|the others dont sing]"
+        ],
+        "tell": [
+          "darkness falls? demon court under the realms. our door is in connacht, it opens when hibernia holds the most keeps"
+        ]
+      },
+      "loremaster": {
+        "intro": "The druids say it is a place where the otherworld was torn the wrong way. The Good Folk have their laws; the demon court has only rank. Our door lies in Connacht and opens when Hibernia holds the frontier. Go, because a realm that never goes is a realm that is afraid. Ask about [torn otherworld].",
+        "topics": {
+          "torn otherworld": "The druids' reading of Darkness Falls: the otherworld torn the wrong way. The Good Folk have laws; the court below has only rank and fear."
+        }
+      }
+    }
+  },
+  "era": "neu-the-three-doors",
+  "factions": [
+    "dark-ones",
+    "throne-of-legion",
+    "host-of-the-marshal",
+    "the-gate-watch",
+    "eastern-halls",
+    "inquisition-below",
+    "chthonic-chapter",
+    "mutilators-pit",
+    "nahemahs-bower",
+    "picullus-imps"
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Hollow and Its Maps",
+      "text": "Under the place where Albion, Midgard and Hibernia meet there is a hollow in the rock larger than any of their capitals, and every map of it that has ever come up a stair disagrees with every other.\n\nThe shape is not in dispute. Three halls sit high in the hollow's roof, one under each realm, with a stair down from each. Below the Albion hall the roads meet at a crossing the court calls the Gate. From there the hollow opens outward into its wings: north to the cloisters of the Inquisition, north-west to the chapter house of the Chthonic Knights, west to the Mutilators' long pit and the princess's bower beyond it, south to the Hall of War where the court's host musters, east to the halls of three high lords, and south-east, down a long slope whose walls are cut with lines, to the Master's door. Above the Master's lair is a ledge. Something lives on it.\n\nWhat the hollow is, and how it came to be under three kingdoms at once, is another matter. The priests of Camelot teach that the host of the fallen was cast down from a height and struck here. The skalds of Jordheim say the hollow is a hall that was built and never finished, and that its builders were eaten before they could put a roof on it. The druids of Tir na Nog say it is an otherworld torn open the wrong way, so that its wound faces down instead of out. The court's own chroniclers say the hollow was always theirs, and that the realms grew on its roof like moss on a stone.\n\nThe maps are a trade of their own. The first Albion map was drawn by Brother Odran of Camelot Hills, the Church's warden of the castle ruins, from the accounts of the first companies to come back up, and he drew the Gate as a cross, because the Church held that every road in the hollow ought to lead to judgement. Midgard's first map was cut on a board by a skald who had not been down and called the wings by the names of the nine worlds. Hibernia's was sung, not drawn. The imps of the three halls sell maps too, for seals, and every imp's map is different, because the imps draw the hollow as it would be if each of them were where it wished to be on the Roll.\n\nBrother Odran kept the imps' maps. He wrote that they were the only honest ones, because they showed what the hollow is for: not a place to live, but a ladder."
+    },
+    {
+      "title": "The Feast and the First Meal",
+      "text": "The court below tells its own beginning in two ways, and both are cut into its walls.\n\nThe court's chroniclers tell it as the Feast of Thrones. Thirty of the greatest lords of the hollow met in its deepest chamber, the one that is now the Master's, to settle which of them would rule. Twenty-nine came armed and fought. The thirtieth came hungry and waited, and ate each lord that fell, and kept its voice. When eleven were left they knelt, and Adremal, who knelt first, offered the bargain the court has kept ever since: that the hungry one would be Master forever, and would eat only those who fall from their place. Adremal wrote the bargain down as the First Roll of Precedence, and the Master made him Grand Chancellor for it.\n\nThe imps tell it smaller. Before the court had a king, they say, it had two princes who were equal, and one of them killed the other and, because no one had ever done it, ate him, and found the rival still in him, speaking. The imps call this the first meal and say the Feast of Thrones is only the first meal told by a chancellor, with more chairs. The Chancellor's clerks say the imps cannot count past two.\n\nBoth stories live in the hollow as things a visitor can touch. The Rolls are on the walls of the long slope down to the Master's door, ten of them now, each a wall of lines in the court's script, one line for every demon of rank, with its title and its seat and its master; a line struck through is a demon eaten. The court counts its time by them, and speaks of the Tenth Roll as a man of Camelot speaks of the tenth year of a king. Below the newest wall a clerk with a chisel waits for the next line to be struck. At the bottom of the slope, by the door, there is an eleventh wall that the court did not cut for itself: the Roll of the Visitors, on which the court enters the mortal companies that have come down the stairs, every line of them already struck through.\n\nThe first meal has no wall. The imps say it does not need one, because it is in the Master's mouth, and that anyone who stands close enough to him can hear the rival prince still speaking, underneath the others, in the oldest voice of all. Friar Ansel of Albion, who stood that close, wrote that he heard it. He did not write what it said."
+    },
+    {
+      "title": "The Castle in the Hills",
+      "text": "Albion's door is in the undercroft of a castle in Camelot Hills, an hour's ride from the king's seat, and the castle was a ruin before the door was a door.\n\nIt was built in Uther's day by Lord Hagan of the Hills, who needed water and dug for it, and his well-diggers went down through the chalk and the flint and the old stone below and found, at the bottom of the shaft, warm air coming up from beneath. Hagan had the shaft capped and a chapel built over the cap, and the castle was abandoned in his grandson's time, because the household said the chapel floor was warm in winter and that something under it laughed. When Arthur died and the realms went to war, the cap gave way from below. Nobody in Albion opened the door. It opened.\n\nMidgard's door opened in the same season, in the snow above the Vale of Mularn, where the Huldu had always known better than to dig; Hibernia's in Connacht, in a hill the druids had ringed with stones for longer than they could say. The Chancellor's clerks, on the Tenth Roll, wrote that the court opened all three on purpose, so as to feed on the realms' war instead of waiting for the war to come to it.\n\nThe doors answer to the frontier. A realm that holds more of the frontier's keeps than both the others finds its door open, and the others find theirs shut, and the doors change with the keeps, sometimes in an afternoon. The Church set Brother Odran at the castle ruins as its warden, and he kept a Door-Book, recording each opening and each shutting by the hour, as a reeve records the tides. It shows something the companies of Albion learned to rely on. A shut door lets no one down, but it does not drive out those already below; a company in the hollow when the keeps were lost could stay as long as it liked, and climb back up when it chose, so long as nobody gave up and went home to Camelot by the short road of the dead. The castle's warden has a saying for it, still painted over the undercroft arch: the Mouth does not spit.\n\nEvery squire in Camelot Hills has stood in the ruins at night and heard the laughing under the chapel floor. The Church rings the bells of Camelot harder on feast days, the priests say, so that the court below can hear them. The court has never complained."
+    },
+    {
+      "title": "The Halls in the Roof",
+      "text": "Each realm's stair comes down into a hall in the hollow's roof, and each hall is kept by two kinds of creature that have nothing to do with each other: the aleax at the door and the imps at the stalls.\n\nThe aleax came first. When the doors opened each realm set at the foot of its own stair a guardian of light, a thing the priests of Camelot call an angel and the druids call a borrowed star, and its whole charge is to keep the other two realms out of that realm's hall. The court cannot pass the aleax and has never tried. Albion's aleax was set by a bishop of Camelot, Midgard's by the priests of the hall at Jordheim, Hibernia's by the druids of Tir na Nog; each realm's priests say theirs was the first and that the other two copied it. The imps say the aleax are the only things in the hollow they have never sold anything to.\n\nThe imps came second, and they came for the seals. The court's coin is discs of green, blue and white metal from Duke Aypol's hoard in the Hall of War, which the realms above call emerald, sapphire and diamond, and every demon of rank carries some, as a lord carries his purse. Companies that bring a demon down take its seals. The imps, who are too weak to bring anything down, steal the court's armour and weapons from the great demons' stores and sell them in the three halls for those seals, so that the court's own seals buy the court's own mail, and every seal that goes up a stair is gone from the hollow for good. The Chancellor's clerks call this theft. The imps call it trade with the realms. The realms call it the only honest market in the world, because both sides are thieves.\n\nAlbion's hall has one stall-keeper who sells nothing, and one who was once great. The second is Mystemas, who stood high in the Master's army until he carried out a plan the Master had not finished deciding, and was made small for it on the Ninth Roll; he sends mortals now against the demons who shamed him, and calls it a kindness. The first is Bolo, who stands beside him. The other imps say the Chancellor set Bolo there to watch Mystemas. Mystemas says Bolo is his friend.\n\nBrother Odran's map marks a corner of the Albion hall with a cross, where the companies of Albion kneel before they go down to the Gate. The imps rent the corner out on the days Albion's door is shut."
+    },
+    {
+      "title": "The Gate and the First Company",
+      "text": "The first company of Albion to go down did not get past the Gate, and the floor of the Gate still remembers it.\n\nEvery road in the hollow meets at the crossing below the Albion hall, and Gatekeeper Dommel keeps it. He lets the realms through; the dead they leave are his toll. Since the feud of the Blade and the Hook, when he closed every road out of the crossing and let the Chthonic Knights and the Mutilators bleed each other until the feud was over, the Gate has been kept by all three of the court's orders together and in equal number, knight and flayer and questioner side by side, so that no one order can ever hold it alone. Each order watches the other two more closely than it watches the stairs.\n\nAlbion's first company came down in the first season after the doors opened, under a captain whose name the Church did not record and the court did not care to learn; Brother Odran's Door-Book calls him only the captain with the white shield. He went down the stair with his company and their chaplain, Brother Aldric, and reached the crossing, and the Gate watch took him there. Aldric died at the crossing praying. Of the rest, four came back up the stair to Odran. The Gatekeeper cuts a notch in the floor of his crossing for every mortal who dies there, and the four said that before they ran they saw him kneel and cut the first of Albion's notches with the edge of the captain's white shield. The floor of the Gate is more notch than stone now.\n\nAbove the Gate, in chambers the court reaches by its own ways, Director Kobil keeps to his rooms and teaches an army to march. It is Prince Abdin's Army of Shadows, a host of shadows that holds no line on any Roll and so can never be struck off or counted. Kobil does not come down to the Gate; the army will, the court says, when it is finished. The Gatekeeper has sworn that it will find the roads long. Earl Glassalab, who digs for pay, is said to be digging it another.\n\nThe realms have learned the Gate the hard way. Midgard's skalds made a verse of their own first band's dead and Hibernia's bards a lament for theirs; Ruadh of the grey cloak, who lived through it, came back through the Gate the next winter and was the first mortal to refuse a duke of the court to his face. Albion's priests made a prayer. It is said in the Albion hall by the cross on Odran's map, for Brother Aldric, before every company goes down to the crossing."
+    },
+    {
+      "title": "The Blood and the Worm",
+      "text": "The Blood of the court are the Master's princes, Abdin, Ba'alorien and Asmoien, and the princess Nahemah, and the hollow is arranged around them as a house is arranged around its heirs.\n\nEach holds a wing. Prince Abdin holds the north-west with the Chthonic Knights, his Blade, who take a soul whole and keep it. Prince Ba'alorien holds the north, where the Inquisition examines the dead and decides which souls are the Master's portion and which may go to the Blood. Prince Asmoien holds the west and the long pit of the Mutilators, his Hook, who unmake what the Inquisition condemns. Princess Nahemah keeps her bower in the far west, with her ambassador Mannam, who carries the court's word to the realms above, and with Caisha, the drowned girl, who waits always on the rim of the well in the princess's room and never leaves it.\n\nTwo of the princes are gluttons in the old way. The prince of the north and the prince of the west eat whatever came down at another's bidding, beast or spirit or sworn follower, and are mended by it as a man is mended by meat: the nearest first, and then the next. The druids of Hibernia, whose servants walk at their heels, have a saying for those two wings: leave the hound at the top of the stair. The princess fights with her household around her, and her storms fall where mortals stand together.\n\nUnder the north-west of the hollow, below the chapter house, lives a worm the court calls Beliathan, and it is the reason the court keeps its Blood so carefully. The worm sleeps while any of the Blood still breathes. The court does not explain this; the Inquisitors say it is in the bargain of the Feast, the skalds say the worm is the hollow's own hunger and the Blood are the stopper in its throat, and the Camelot loremasters say only that the four lives are a single lock. When the last of them is gone, the princess with them, the worm wakes. It does not wake at once. The companies who have done it say the hollow is quiet for a while, as if the court were holding its breath, and then the tunnels rumble and shake, and the worm comes up.\n\nWhere it kills, something of the dead comes up after it. The companies of all three realms have seen it: a mortal falls to the worm, and where he fell a small worm-thing rises and turns on his friends. The Church calls it the worm's tithe. The Midgard skalds call it worse, and their verse about it is never sung in Jordheim with women present."
+    },
+    {
+      "title": "The Eastern Halls and the Hall of War",
+      "text": "The high lords of the court hold the hollow's south and east, and each of them has made his hall in his own image, which is why the realms find each hall worse than the last.\n\nHigh Lord Baln's hall in the south is the Hall of War, where Field Marshal Nebir keeps his war table and the court's host musters. Baln is a lord of the wall-brood, the demons who are cut out of the hollow's own rock, and his hall is made of his kin. The longer he is fought in it, the more of them the walls give up to fight beside him, a few at a time and then a few more; the Albion companies call the Hall of War the hall that grows. Duke Aypol keeps his hoard of seals in a crack of its floor, and Duke Alloc's standard, a lord's hide on its own bones, stands by its north arch.\n\nThe three halls of the east are kept apart by a ward of their own, garrisoned by all three orders under Duke Bimure, so that the high lords' followers do not kill each other in the passages between. High Lord Oro's is the nearest the ward. His lamp-bearer saw him become three in the Third Roll, and he has been three ever since: no company that comes against Oro comes against one demon. High Lord Baelerdoth's hall is the coldest in the hollow, and the court says a wounded Baelerdoth is a thirsty one. Near his end, the companies say, every blow struck on him rots the armour of the men who stand close to strike it, so that the last of him is the hardest; the Albion armourers who mend what comes back up have learned to tell a Baelerdoth hauberk by the way its rings have gone soft. High Lord Saeor's hall is the warmest, and he is the drinker of the dead. Every mortal who dies in his hall makes him whole again by that man's whole measure, so that a company that loses men to Saeor is feeding him with them.\n\nNone of the four bows to the others; all four bow to the Master, and to the Roll. Earl Amagin, the Examiner, who keeps an account of every voice in the Master, stands on the approach to the Master's door, not in any high lord's hall, and the high lords' clerks say he is there to read their lines twice when they fall.\n\nThe realms dispute which hall is worst. Albion's companies say the Hall of War, because it never runs out. Midgard's say Saeor's, because a skald hates a thing that profits from the dead. Hibernia's say Baelerdoth's, because the druids cannot abide the cold."
+    },
+    {
+      "title": "What the Hollow Is For",
+      "text": "The hollow has one way out that the court does not keep, and it is the stair a company came down.\n\nEverything else in it is arranged so that anyone who comes down goes deeper. The doors open for the realm strong enough to be worth eating. The halls in the roof sell the court's armour for the court's seals, so that every company that goes up comes down again for more. The Gate takes its toll and lets the rest through. The Blood are arranged as a lock on the worm, and the high lords as a ladder of halls, each harder than the last, and at the bottom of the long slope, past the Rolls and the Roll of the Visitors and the Queen's empty chair, the Master waits in the ring where all his voices can be heard, with the Behemoth breathing on its ledge above him. The imps say the court keeps the Behemoth there as a man keeps a chained bear, and that it is on no Roll at all.\n\nThe three realms have each decided what the hollow is for, and their answers are their realm-takes on the whole of it. The Church of Camelot calls it the Mouth and says it is for judgement: every demon brought down in it is a soul spared, and every Albion company that goes down goes as a crusade. Midgard's skalds call it the Glutton-hall and say it is for glory: a prince of the court is a verse in a man's saga, and the Master is the whole saga, if anyone lives to sing it. Hibernia's druids say it is the otherworld torn the wrong way and that it is for nothing, which is the most frightening of the three answers, and the bards of Tir na Nog make songs of it in which the singer always comes home.\n\nThe court has its own answer, and the Chancellor wrote it on the Tenth Roll. The hollow is for the war. The realms fight on the frontier for the right to come down, and fight each other on the stairs and at the Gate when they arrive, and the court feeds on all of it, and on the Roll of the Visitors every line is struck before it is cut.\n\nBrother Odran's last entry in the Door-Book, in a shaking hand, is not about the doors. It says that he went down the stair once, alone, to the Albion hall, to see the cross the companies kneel at, and that an imp sold him a map of the hollow for his rosary. On the imp's map the castle ruins of Camelot Hills were drawn at the bottom of the hollow, below the Master's door, as if they were the deepest room in it. Odran wrote that he did not argue. He said the imps draw the hollow as it would be if each of them had its wish."
+    }
+  ]
+}

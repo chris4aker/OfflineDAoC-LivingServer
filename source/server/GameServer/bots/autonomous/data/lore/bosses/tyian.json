@@ -1,0 +1,129 @@
+{
+  "id": "tyian",
+  "name": "Tyian",
+  "npcNames": [
+    "Tyian"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "the bench-servant"
+  ],
+  "facts": [
+    {
+      "text": "Tyian: template 60167339, level 55, a construct at a man's size, on the upper floor of the hall of making at 409442, 433961; aggro level 200 within 500, no spells or styles, respawn 80 seconds; its template gives it no faction.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The lifeless creation (43) stands about 370 from it.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Restoring the Magic (Lady Lurlei of Caer Gothwaite): speak with Adelon on the hill right of the Fort Gwyntell gate; Meical's key from his house below the tower; a metal sphere from the second floor; give the orb to the lifeless creation; kill the Cabalist Meical when he comes to defend it; open Meical's box and read his note; cleanse the broken orb with a pendant. The metal sphere step is Tyian's.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "An NPC with no faction never calls friends when attacked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "Tyian as the old master's bench-servant, the sphere it will not hand over, the bench left laid and the two readings are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "On the second floor of the hall of making was the old master's bench, and at the bench stood Tyian. It was not built to fight, or to carry, or to guard; it was built to hand things. Master Meical would hold out his hand without looking up and Tyian would put the right tool in it, the right file, the right length of wire, and at the end of a day's work the last thing it handed him was the sphere, the small heavy thing of metal that went into the heart of each servant to make it go. The households called Tyian the master's other hand.\n\nThe master's bench is laid still. The tools are where he left them on the last evening, the file across the vice, the wire coiled, and the last sphere he made sits in Tyian's keeping, because the master never held out his hand for it. At the top of the hall stands the thing the master was making, or the thing the drakoran who wears his name is making, the households are not sure which: the lifeless creation, finished in every part but one. A sphere would wake it.\n\nThe fort's registrar has two readings of why Tyian will not hand it over. The households say Tyian is waiting for the master's hand and will give the sphere to no other, and that the new Meical has held out his hand at that bench a hundred times and been ignored. Lady Lurlei of Caer Gothwaite, who sends the realm's young to take it, says Tyian knows exactly what the sphere would wake, and is keeping it from everybody, and is right to.\n\nTyian keeps the bench alone. The lesser servants of the hall are not its fellows and do not come up the stair for it. It comes at anyone who walks onto the second floor as it would at a hand reaching for the master's tools, and when it is broken it is back at the bench almost at once, with the sphere, as if it had only stepped away to fetch something.",
+  "legend": "Tyian is a level 55 construct on the upper floor of Meical's Hall in the south of the Dales of Devwy, next to the lifeless creation. It is aggressive from about 500 away but has no faction in its template, so the hall's other constructs do not come for it (watch for anything that aggros on its own as you climb). No spells or styles in the data: a melee kill for a group of fifties or a strong duo. It holds the metal sphere for Restoring the Magic (Lady Lurlei), which you give to the lifeless creation at the top. Respawn about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "Not the master's hand.",
+      "The tools stay on the bench.",
+      "Hands off."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The master will want the sphere. The master will want it."
+      }
+    ],
+    "death": [
+      "The bench... is laid...",
+      "Hand... it... to him..."
+    ],
+    "slay": [
+      "Put away.",
+      "Back on the bench.",
+      "Not the master's hand."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A workbench, laid as if the master stepped out.",
+      "The file still lies across the vice."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Tyian clutches something small and heavy."
+      }
+    ],
+    "realmFirstKill": "Tyian is broken at the bench. The sphere is free."
+  },
+  "botLines": {
+    "briefing": [
+      "tyian, 55 construct upstairs in meical's hall next to the lifeless thing. aggros at 500",
+      "no faction, the other constructs wont join. careful on the way up though",
+      "plain melee, small group of 50s. restoring the magic folks grab the sphere",
+      "respawn about 80 sec"
+    ],
+    "aftermathWin": [
+      "sphere's ours. lurlei's errand next",
+      "tyian down, the bench is clear",
+      "nobody came up the stair after it",
+      "80 sec, grab it and go"
+    ],
+    "aftermathLoss": [
+      "pulled heavy metals on the way up and fought them on the stair",
+      "duo at 50 vs a 55, close but no",
+      "forgot the sphere, killed it again",
+      "came back as we were reading the quest log"
+    ],
+    "rumour": [
+      "[heard|someone said] tyian handed the old master his tools and still keeps his bench laid",
+      "heard tyian has the sphere that would wake the lifeless thing at the top",
+      "[heard|someone said] the drakoran meical holds out his hand at the bench and tyian ignores him",
+      "heard lady lurlei thinks tyian knows what the sphere would wake"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "tyian",
+    "text": "The old master's bench-servant on the second floor of the hall of [meical], his other hand: it put the right tool in his palm and, last of all each evening, the sphere that went into a servant's heart. It keeps the last sphere still, and will not give it to the drakoran who wears the master's name. A sphere would wake the lifeless creation at the top; Lady Lurlei thinks Tyian knows it."
+  },
+  "bookPage": "Lady Lurlei of Caer Gothwaite, to the young of the realm whom she sends to the Dales, a letter copied into the second book of the registrar of Fort Gwyntell. On the second floor of the hall you will find a bench, laid, and at it the servant Tyian, and in Tyian's keeping a sphere of metal. Take it. Then take it to the top, to the thing that waits there, and do as Adelon tells you. You will be told that Tyian keeps it out of loyalty. I do not believe that. I believe it keeps it because it was there when the master made the thing at the top, and knows what a heart would do in it. Take it anyway. We must know.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} took the last sphere from Tyian at the master's bench in {minutes} minutes.",
+    "loss": "Tyian put {raidLeader}'s company of {realm} back on the bench."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "cabalist-meical",
+      "relation": "ignores the drakoran's outstretched hand at the master's bench"
+    },
+    {
+      "id": "pazia",
+      "relation": "the house-servant below who keeps the master's key"
+    },
+    {
+      "id": "adelon",
+      "relation": "tells the realm's young what to do with the sphere"
+    }
+  ]
+}

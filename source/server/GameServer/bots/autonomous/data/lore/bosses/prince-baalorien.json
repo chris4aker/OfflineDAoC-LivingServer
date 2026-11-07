@@ -1,0 +1,144 @@
+{
+  "id": "prince-baalorien",
+  "name": "Prince Ba'alorien",
+  "catalogKey": "darkness-falls/princebaalorien",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Level 78, 100,000 health. Every 5 seconds the nearest controlled pet within 2,000 dies and he heals by its maximum health (changed from every pet every turn, owner 2026-10-14).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs"
+    },
+    {
+      "text": "Albion's and Hibernia's Darkness Falls raids were each defeated at him on 2026-11-04 (two wipes each).",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Prince Ba'alorien: NPC template 60165031 (level 78, tether 4,500), 100,000 health, GetResist 40 melee / 70 other, CC immune; every 5 s while roused he kills the nearest living IControlledBrain NPC (pets and bots) within 2,000 and heals by its maximum health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs"
+    },
+    {
+      "text": "The law of portions, the bone pile at shoulder height, Fionnuala's grey wolf told at length, Father Ieuan of Caer Ulfwych and his examination are Living Server writing; Fionnuala and Ciarnat of Connacht are from the Darkness Falls file.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Real-world myth, not game canon: Baal is a Canaanite title ('lord') that later demonologies made a king of hell; Ba'alorien reads as built on it, to verify.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Baal"
+    }
+  ],
+  "story": "The Master eats those who fall from their place, and Prince Ba'alorien made himself the one who decides who has fallen. He took the north of the hollow and the Inquisition with it, and wrote their law of portions on the first night of the First Roll: a soul of rank that falls is the Master's; a soul that came of its own will is the Master's portion too; and one that came at another's bidding, a beast, a bound spirit, a sworn follower, belongs to no one until the Blood claim it. Earl Mermer keeps the cloister doors. The Albion priests pray for the dead before they reach the north cloisters, so that they will have been judged once kindly.\n\nHe piles the bones of everything he has eaten beside his throne at shoulder height and rests his arm on it; his brother Asmoien counts knots, he counts bones, and he is ahead. When a company enters his hall its followers falter and he breathes in, and the nearest is gone into him and mends him, and then the next. The skalds sing that his throne has an armrest of hounds.\n\nHibernia learned it from Fionnuala, a druid of Connacht whose grey wolf sat down in his hall, looked at her, and was gone, while the prince was whole again. He did not touch her: she had come of her own will. The bard Ciarnat of Connacht made the song, which ends: leave the hound at the top of the stair. Fionnuala went back the next winter with nothing at her heel, and Hibernia counts the blow she struck as its first kill of him.\n\nAlbion's first company was Father Ieuan's of Caer Ulfwych, a canon lawyer who held the prince bound by his own verdicts. Every man came of his own will and said so at the cloister door, and no one brought a follower; in the hall nothing came to the prince, and he rose in honest anger and fell by his bone pile.",
+  "legend": "Prince Ba'alorien is Asmoien's twin in the north: level 78, 100,000 health, CC immune, 40% melee / 70% other reduction, and the same devour. Every 5 seconds while he is fighting he kills the nearest pet OR BOT within 2,000 and heals by its full health; bots count because the code treats them as controlled creatures, so only the human is never eaten. In a bot raid that is a dead bot and a big heal every 5 seconds. Untested ideas: as few bots inside 2,000 as you can manage, pets dismissed at the top of the stair, healers and casters at maximum range, and enough damage close in to outpace the heals; or a small strong group. Out of the fight for 8 seconds past his reach and he walks home at full health. He is one of the four Blood (with Abdin, Asmoien and Nahemah) who must all be dead before Beliathan can rise. Hibernians will tell you their druid killed him first.",
+  "yells": {
+    "aggro": [
+      "Asmoien will be so jealous.",
+      "Examined, and found to be mine.",
+      "What did you bring me? Show me what follows you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "The nearest first. The pile grows."
+      }
+    ],
+    "death": [
+      "Asmoien... wins...",
+      "Judge me... by my law..."
+    ],
+    "slay": [
+      "Your bones, on my pile.",
+      "Found wanting.",
+      "The Master's portion. Take it to him."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Bones of beasts, not men, are piled by the throne.",
+      "A pile of bones by the throne, at a man's shoulder."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Ba'alorien breathes in. A follower is gone."
+      }
+    ],
+    "realmFirstKill": "Prince Ba'alorien has fallen. His tally ends."
+  },
+  "botLines": {
+    "briefing": [
+      "baalorien eats the nearest pet or bot within 2000 every 5 sec, heals off it",
+      "bots count, not just pets. keep as many of us outside 2000 as we can",
+      "pets dismissed at the top of the stair. leave the hound, like the hibs say",
+      "he is one of the four royals for beliathan"
+    ],
+    "aftermathWin": [
+      "no pets, no heals, dead prince",
+      "baalorien's pile stops growing",
+      "nothing for him to eat, dead prince",
+      "the north cloister is quiet"
+    ],
+    "aftermathLoss": [
+      "three pets in range. he never dropped below 80",
+      "he ate a bot every 5 sec and never dropped below 80",
+      "three pets in range, back to full",
+      "everyone stood inside 2000 of him"
+    ],
+    "rumour": [
+      "heard ba'alorien and asmoien keep score on how many pets they eat",
+      "[someone said|heard] ba'alorien piles pet bones by his throne",
+      "heard ba'alorien and asmoien keep score on how many they eat",
+      "[heard|someone said] a hib druid's wolf got eaten by baalorien and she went back with nothing"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "ba'alorien",
+    "text": "The prince of the north of [Darkness Falls], who wrote the Inquisition's law of portions. What came down at another's bidding, beast or spirit or sworn follower, is his to eat, the nearest first, and each mends him; he piles their bones by his throne. Leave the hound at the top of the stair. See [asmoien]."
+  },
+  "bookPage": "From the account of Father Ieuan of Caer Ulfwych to the bishop. The prince of the north is bound by his own law of portions: what came at another's bidding is his to eat, and what came of its own will is not. So every man of my company came of his own will and said so at the cloister door, and none brought a follower. The Inquisitors examined us. Asked whom I served, I said myself, and God, and in that order today. In his hall the prince breathed in by his pile of bones and nothing came to him. He rose in the first honest anger I have seen below. We killed him by the pile. Their procedure was irregular.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} gave Prince Ba'alorien nothing to eat and ended his tally in {minutes} minutes.",
+    "loss": "Prince Ba'alorien added {realm}'s servants to his pile; {raidLeader}'s raid could not outpace his feasting."
+  },
+  "era": "neu-the-three-doors",
+  "factions": [
+    "dark-ones",
+    "inquisition-below"
+  ],
+  "related": [
+    {
+      "id": "prince-asmoien",
+      "relation": "his rival in appetite; bones against knots"
+    },
+    {
+      "id": "beliathan",
+      "relation": "one of the four Blood whose lives keep the worm down"
+    },
+    {
+      "id": "legion",
+      "relation": "his law of portions decides what is the Master's"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Law of Portions",
+      "text": "The Master eats those who fall from their place. Someone had to decide who had fallen, and from what, and Prince Ba'alorien made himself that someone.\n\nHe took the north of the hollow when the Blood were given their quarters, and with it the order that was to be the court's judges: the Inquisition, who examine every soul that dies below and decide whose it is. Ba'alorien wrote their law himself, the court says, in the first night of the First Roll, while his brothers were still choosing furniture. A soul of rank that falls from its line is the Master's. A soul that came into the hollow of its own will is the Master's portion too, for the bargain is that the hungry one is fed first. And a soul that came at another's bidding, a beast, a bound spirit, a sworn follower, belongs to no one at all until the Blood claim it.\n\nHis brother Asmoien had already been given leave to eat what follows. Ba'alorien's law made sure that Asmoien would not be the only one. The Inquisitors of the north examine the dead with a gravity that the realms find hard to watch, the Church's priests say, and every verdict ends the same way: this one is the Master's, this one is the prince's. The cloister where they sit is the prince's own, and Earl Mermer keeps its doors. The court says Ba'alorien has never once been known to overrule his Inquisitors. The imps say he has never needed to, because he wrote the questions.\n\nThe Church of Camelot hates the Inquisition more than any other order of the court, because it is the only one that pretends to be a court of justice. The Albion priests who go down with the companies say a prayer for the dead before they reach the north cloisters, not after, so that the dead will have been judged once already by someone who meant it kindly."
+    },
+    {
+      "title": "The Tally by the Throne",
+      "text": "Ba'alorien keeps the bones of everything he has eaten in a pile beside his throne, and his brother of the west keeps count on a cord. The two princes have been comparing for ten Rolls.\n\nThe pile is beasts and elementals and the cold husks of bound spirits, and among them, the imps say, things that were men: the sworn and the hired, who came at someone's bidding. Visitors are meant to see it. The prince has the pile kept at the height of his shoulder, so that he can rest an arm on it while he receives them, and Malroch the Cook, whose kitchen is above the prince's cloister, sends down to it what he cannot use. Asmoien counts knots. Ba'alorien counts bones. The imps say the north prince is ahead, and that he intends to stay ahead, and that the only thing that has ever made him angry is a company that came into his hall with nothing at its back.\n\nHe does not hunt any more than his brother does. A company enters his hall and its followers falter, and the prince breathes in, and the nearest of them is gone into him and he is mended by it; and then the next, and the next, the nearest always first. The druids of Hibernia say that his hall is the worst in the hollow for a druid, because a druid's servants are her friends, and they are always the nearest.\n\nThe Midgard skalds have a verse about the pile and sing it to the bands before they go down: the north prince's throne has an armrest of hounds. The Church of Camelot says only that the bones should be buried. Brother Odran's Door-Book records that an Albion company once tried to carry some of them up the stair to do it, and that the prince's Inquisitors followed them as far as the Gate, and examined them there."
+    },
+    {
+      "title": "Fionnuala's Wolf",
+      "text": "Hibernia learned the north prince's appetite from a druid named Fionnuala, and it learned it from her wolf.\n\nShe went down with the first band of Connacht in the season after the doors opened, with a grey wolf she had raised from a cub in the woods of Connacht and called by no name but her own, as the druids of the north call their companions. The bard Ciarnat of Connacht, who went with the band, made the song of it, and Hibernia has never stopped singing it. They came into the prince's hall. The wolf, which had walked at Fionnuala's knee the whole length of the hollow, sat down. It did not whine. It looked at her, Ciarnat sang, as a dog looks at the door when its master is about to leave, and then it was not there, and the prince by the bone pile was whole again where the band's first blows had marked him.\n\nFionnuala lived. The prince did not touch her; she had come down of her own will. She stood in his hall with her hands empty and watched the band's other servants go the same way, one by one, the nearest first, and then she turned and walked back up the hollow alone to the Hibernian hall in the roof, and the band followed her, because there was no point in staying.\n\nCiarnat's song ends with the saying that every druid of Hibernia now knows: leave the hound at the top of the stair. Fionnuala never kept another companion. The bards say she went back down with the band the following winter, alone of the druids with nothing at her heel, and that it was she who struck the north prince last when he fell; the Hibernian court counts it as the realm's first kill of him, and says so to anyone from Albion or Midgard who claims otherwise. The Albion Door-Book does not dispute it. It notes the date, and the wolf."
+    },
+    {
+      "title": "The Examiners Examined",
+      "text": "Albion's first company against the north prince went down to argue with his Inquisitors, and found that the argument was the battle.\n\nIt was led by Father Ieuan of Caer Ulfwych, a canon lawyer of the Church who had spent his life in the bishop's court at Camelot and could not bear to hear that there was a court below with worse law than his. He had read Ciarnat's song in a Camelot copy and Brother Odran's notes on the law of portions, and he told the knights of his company that the prince was bound by his own verdicts. Every one of them, Ieuan said, would come down of his own will and say so aloud at the north cloister; none would bring a follower; and the prince would find nothing in his hall that his law let him eat.\n\nThe Inquisitors examined them at the cloister door, as they examine everything that comes north. Ieuan answered for the company. Earl Mermer asked, through an imp, whom each man served, and Ieuan said: himself, and God, and in that order today. The Inquisitors wrote it down. In the prince's hall Ba'alorien breathed in by his bone pile, and nothing came to him, and he rose from his throne in what Ieuan called the first honest anger he had seen in the hollow, and fought them as any lord of the court fights.\n\nThe company killed him by the pile. Ieuan's account to the bishop is mostly about the Inquisitors' procedure, which he found irregular. Fionnuala's people say he was the second to kill the north prince, Midgard's skalds say the third, and Ieuan, who was a lawyer, said the question was not his to decide. He asked to be buried, when the time came, with a copy of the law of portions in his hands, so that if anyone examined him below he could cite it."
+    }
+  ]
+}

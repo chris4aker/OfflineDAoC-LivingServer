@@ -1,0 +1,139 @@
+{
+  "id": "draargus-the-mighty",
+  "name": "Dra'argus the Mighty",
+  "catalogKey": "avalon-city/draargusmighty",
+  "locationId": "avalon-city",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health. While his Drau'gyn Sphere lives he cannot be damaged; he carries a damage shield (120) and casts Sphere Explosion.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs"
+    },
+    {
+      "text": "January 2003: a named in a house near the Crystal Cave entrance, by the flamethrowers, could not be struck until a large flaming orb on the upper floor was destroyed, which summoned guards; in October 2004 a reply named him Dra'argus.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=66"
+    },
+    {
+      "text": "The drakoran of the city come in five clans whose names echo their lords': drau'gyn (Dra'argus), dry'ak (Dura'ek), syhr'phint (Sys'sro), vyr'em (Vera'erius) and wi'voron (Weno'iak); the lords' linked packs are of their own clan. The clan reading is inferred from names and packs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Dra'argus's 30,000 health, his heat damage shield (120), and his sphere (10,000 health; while it lives he takes no damage and does not attack; struck, it bursts 300 heat r500 every 4 s and drags real players 200-300 from it into its middle) are in his script.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs"
+    },
+    {
+      "text": "The burnt-coast coal 'forty-one fathers deep', the brother who dropped it, the astrolabe's lenses sent down the stair, Magus Corwen's company on the upper floor and 'be in it or be out of it' are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Dra'argus the Mighty is lord of the drau'gyn, one of the two drakoran clans who remember where they came from: a burning mountain on the coast across the western sea. Every drau'gyn lord's hearth-sphere is lit from his father's, back to a coal carried from the mountain in a clay pot; Dra'argus's campaigners told Elowen of Caer Gothwaite it is forty-one fathers deep. He won it by carrying it across the sea in a ship's hold for three weeks after his elder brother dropped it on the shingle; the Avalon fishermen remember a low ship that steamed in the cold.\n\nOn the first night of the burning he went past the libraries to the college of stars, the oldest college, raised on Caradoc's warm Heart. His campaigners broke the great astrolabe and its lenses went down toward the Crystal Cave, a gift to someone. He set his sphere where the astrolabe had stood: for the warm floor, says Elowen; to listen to whatever the city's lid is on, said the master of stars. Dura'ek came after him and took the chancellors' court and the overlordship, and the drau'gyn have never forgiven it.\n\nHe wears his hearth in his skin as well, and burns those who strike him close; Sir Maelon's knights came off the first bridge with their mail fused while the archers could not mark him. While the sphere burns upstairs nothing reaches him and he does not lift his hand. Magus Corwen's company learned that when the sphere is struck it bursts in fire again and again and draws in the living at its edge: those against the walls and those close in came down, the one who hung between did not. The Academy still says of any fire, be in it or be out of it.\n\nHe watches the stair to the Crystal Cave still, to go down (Elowen), to be first to whatever comes up (Sefin of the Inconnu), or to keep it from Dura'ek (the fishermen). When his sphere is relit he stands at its edge.",
+  "legend": "He cannot be hurt while the flaming orb upstairs burns. Send a group up to break it, and only then put the raid on him. Melee eat his damage shield. Players were puzzling this out in January 2003.\n\nPlayers found the orb upstairs in January 2003 and wondered if he was bugged; he is not. While the sphere burns he takes nothing and does not even swing. Break it, and then he dies like anyone. The 2003 posts said guards came when it broke; here nothing comes, the sphere is the whole trick. Send three or four to the upper floor. Once struck, the sphere bursts for 300 fire around itself every four seconds, and it drags anyone hovering at its edge into the middle, so go in close or stay well out. Melee on Dra'argus need steady heals for the burning shield.",
+  "yells": {
+    "aggro": [
+      "Strike, then. Strike all you like.",
+      "The stars burned first. You will burn last.",
+      "Outcriers! Flamethrowers!"
+    ],
+    "phases": [
+      {
+        "trigger": "orbDeath",
+        "text": "My sphere! Who climbed my stairs?"
+      }
+    ],
+    "death": [
+      "Mighty... only while it burned...",
+      "I should have gone down... first..."
+    ],
+    "slay": [
+      "Burned to the bone.",
+      "Ash for the college.",
+      "Another star put out."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A great orb burns upstairs. Its lord cannot be touched.",
+      "The tallest burned college. A great orb burns upstairs."
+    ],
+    "phases": [
+      {
+        "trigger": "orbDeath",
+        "text": "The drau'gyn sphere shatters. Dra'argus can bleed!"
+      }
+    ],
+    "realmFirstKill": "Dra'argus the Mighty has fallen. His fire is out."
+  },
+  "botLines": {
+    "briefing": [
+      "break the orb upstairs first or dra'argus is immune. he wont even swing while it burns",
+      "melee watch his damage shield",
+      "group up the stairs, rest hold him",
+      "orb bursts 300 fire around it every 4 sec, healers on the orb group"
+    ],
+    "aftermathWin": [
+      "someone finally looked up the stairs",
+      "orb first, then the mighty. not so mighty",
+      "drau'gyn have no lord tonight",
+      "clean orb kill"
+    ],
+    "aftermathLoss": [
+      "we hit him for five minutes with the orb still up",
+      "the orb burned the group upstairs, 300 a pop",
+      "his shield ate the melee",
+      "nobody went up the stairs"
+    ],
+    "rumour": [
+      "[heard|someone said] you cant hurt dra'argus until you break the big orb upstairs",
+      "heard dra'argus's house is by the flamethrowers near the crystal cave",
+      "heard dra'argus wants to go down to the crystal cave himself",
+      "dra'argus took the college of stars, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "dra'argus",
+    "text": "The Mighty, lord of the drau'gyn and their flamethrowers. He cannot be wounded while the great orb in his house burns. Break the orb."
+  },
+  "bookPage": "The flame-carriers took the college of stars, the tallest of ours, by the way down. Their lord set a sphere of fire where our great astrolabe stood, on the upper floor, and my fishermen say he cannot be wounded while it burns. One of them watched a company of Albion's knights fight him in the hall below for the better part of an hour, and not one blow landed. Then a boy in the company, bored, climbed the stair to look at the view, and saw the sphere, and threw his spear at it. The fisherman says the lord's scream could be heard across the water.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} climbed the stairs, broke the sphere and ended Dra'argus the Mighty in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} struck Dra'argus the Mighty for nothing; nobody looked up the stairs."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "duraek-the-empowered",
+      "relation": "his rival, who took the overlordship he thinks was his"
+    },
+    {
+      "id": "xanxicar",
+      "relation": "the stair he watches goes down to the Crystal Cave"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Coals from the Burnt Coast",
+      "text": "The drau'gyn are one of the two drakoran clans who remember where they came from, and Dra'argus the Mighty can name the mountain.\n\nIt stands on the coast of burnt mountains across the western sea that the drakoran sing of, and the drau'gyn say it is still burning, and that their clan was born on its slopes from people who learned to carry its fire without being eaten by it. Every drau'gyn lord's hearth, the sphere of flame that is his house and his honour, was lit from his father's, and his father's from his, back to a coal taken from the mountain's side in a clay pot. Dra'argus's campaigners told a reader of Caer Gothwaite, under a flag of parley in the second summer of the war, that their lord's sphere is forty-one fathers deep. The reader, who was Elowen, last of the college of the old tongues, wrote the number down because the campaigners were so proud of it, and wrote under it that she did not know whether drakoran counted generations as men did.\n\nDra'argus was not the eldest son of his house. The drau'gyn custom is that a lord's hearth goes to whichever of his children can carry it from the old hall to the new without letting it fall, and Dra'argus carried his father's sphere across the western sea in the hold of a drakoran ship, three weeks in the dark with the fire in his arms. His elder brother had been given the first turn and had dropped it on the shingle at the water's edge. The drau'gyn do not say what became of the brother. They say the shingle there is black.\n\nThe fishermen of the Avalon shore have their own version of the ship. Ifor Netmender's grandfather saw it come in, they say, on the night before the burning: one ship among the drakoran fleet that rode lower than the rest and steamed in the cold, and from which no one came ashore until the colleges were already alight."
+    },
+    {
+      "title": "The College of Stars",
+      "text": "On the first night of the burning the drau'gyn went to the libraries of Avalon in the order of a list, and Dra'argus went past them all to the college of stars.\n\nHe wanted its upper floor. The college of stars was the oldest of the colleges of Avalon, raised on the warm ground that its founder Caradoc called the Heart, and on its upper floor stood the readers' great astrolabe, where the masters of stars had read the sky for longer than Camelot had stood. Iorwerth, the last master, was not there that night; he was at Caer Gothwaite with the Quieting still in his mouth, and lived there forty years more. Dra'argus's campaigners broke the astrolabe's ring and carried its lenses away, and the readers learned years later that the lenses had gone down the stair toward the Crystal Cave. The Avalon City drakoran say Dra'argus sent them down as a gift. They do not agree to whom.\n\nThen he set his sphere where the astrolabe had stood. Elowen's account says he set it there because the floor was warm, and a drau'gyn hearth wants a warm floor. The master of stars who taught Elowen as a girl, and who had said the readers built their city on a lid, said otherwise: that Dra'argus had chosen the one floor in Avalon nearest to whatever the lid was on, and set his fire there to listen.\n\nDura'ek the Empowered came into the city after him and took the chancellors' court and the overlordship of the five clans, and the drau'gyn have never forgiven it. Dra'argus was the first lord through the gates, the first to burn, the first to raise his hearth in a college. The dry'ak say that is why their lord let him keep it: a man who is first to everything is no danger, because he never stays to finish anything. The drau'gyn say Dura'ek let him keep it because he could not take it."
+    },
+    {
+      "title": "The Burning Lord",
+      "text": "A drau'gyn lord carries his hearth in two places, his campaigners say: in the sphere upstairs, and in his own skin.\n\nDra'argus walks wrapped in a heat that the readers' old word for it, from the college of the old tongues, makes a cloak. A man who strikes him close is struck back by it, burned through his gloves and his sleeves, and the burn comes back on him again as long as he stands close and keeps striking. Sir Maelon of Caer Gothwaite fought Dra'argus's campaigners at the first of the three bridges in the third summer of the war, and the lord himself came onto the bridge at the end of the day. Maelon's account says that the knights who closed with him came back with their mail fused at the elbows, and that the archers who kept off came back whole and could not mark him at all.\n\nThat was the hearth. While the sphere burns on its floor in the college of stars, nothing reaches the Mighty, and he for his part does not lift his hand, as the drau'gyn custom says; Maelon's knights did not know the custom and thought the lord was mocking them. The readers did not learn what the sphere was for a year. The company that learned it was led by Magus Corwen of the Academy, who knew fire, and who went up the stairs of the college with four others while the rest stood in the hall below.\n\nCorwen's account of the upper floor is short. The sphere did not burn them while it was left alone. When they struck it, it answered, a burst of fire round itself again and again for as long as it was struck, and it drew the living at its edge in toward its heart, as a hearth draws the people of a house. The two of Corwen's company who stood back against the walls came down; the two who had stood close and kept striking came down; the one who had hung between, at the edge, did not. Magus Corwen's advice to the Academy afterwards became its saying about any fire: be in it or be out of it."
+    },
+    {
+      "title": "Watching the Stair",
+      "text": "Dra'argus the Mighty sits in the hall of the college of stars below his sphere, with his campaigners and a flamethrower about him, by the head of the stair that goes down to the Crystal Cave, and he watches it.\n\nWhy he watches is the argument the readers of Caer Gothwaite have had about him longest. Elowen held that he means to go down it himself, once his hearth has grown hot enough, to whatever the master of stars said the city's lid was on, and that he sent the astrolabe's lenses down ahead of him the way a man sends his goods ahead to a new house. Sefin of the Inconnu, who walked the burned city with Elowen more than once, said that he is not waiting to go down. He is waiting for something to come up, and means to be the first lord it meets, because he is first to everything. The fishermen say he is only guarding the stair from Dura'ek.\n\nHe is a lord of his clan in every way the drau'gyn honour. He eats the flesh-eaters' meat and keeps the flamethrowers' fires, and his campaigners drill in the college yard with fire-pots and pikes, and when the sphere upstairs is put out he takes up his sword and fights as though he had never been mocked in his life. The companies of Albion who have brought him down say that he is easy to kill once the hearth is out, and impossible before, and that the work is all upstairs.\n\nHis sphere comes back. It is a coal forty-one fathers deep, and the drau'gyn say a hearth that has crossed the sea is not put out by one company of men. When it is relit, Dra'argus goes up the stairs to look at it, the readers say, and stands at its edge for a long time, as no one else who has been on that floor would dare to stand."
+    }
+  ]
+}

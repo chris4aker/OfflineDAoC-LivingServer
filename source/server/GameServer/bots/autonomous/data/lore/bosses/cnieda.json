@@ -1,0 +1,76 @@
+{
+  "id": "cnieda",
+  "name": "Cnieda",
+  "npcNames": [
+    "Cnieda"
+  ],
+  "locationId": "gwyddneau",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Cnieda: level 46, the lammia model, faction Cryptos Mythicos, aggro level 0 (she never starts a fight), respawn 0, a fixed trader in Clifton at 333337, 465963 among the lammia armourers and weaponsmiths; she buys thrawn ogre heads ('I can't get this from you yet, come back when you are stronger!').",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only); world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Cnieda's reason for wanting ogre heads, the cliff-wall and the lammia's reckoning are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The lammia of Clifton are a cliff people, and they remember a country under the western sea that they say was theirs, and they do not like to be crowded. The thrawn ogres who came out of Krondon and over the water to the eastern edge of Gwyddneau have begun to crowd them.\n\nCnieda buys their heads. She sits among the armourers and weaponsmiths of the town and pays good Clifton coin for every thrawn ogre's head brought to her, and she does not say why, and the town does not ask. The stable-keeper Nimea says Cnieda is building a wall, one head at a time, along the eastern cliff path, so that the ogres who come after will see it and understand. The friars of Caer Diogel say she is counting, and that the lammia have a reckoning in mind that a few heads will not settle.\n\nShe is courteous to strangers who keep the town's peace, and patient; she will tell a young traveller to come back when they are stronger, and mean it kindly. She does not start quarrels. The lammia of Clifton say that is because she has never needed to.",
+  "legend": "Cnieda, level 46 lammia of Cryptos Mythicos, is a trader in Clifton: she buys thrawn ogre heads. Aggro level 0, she never attacks first. You only fight her if you attack her, and every lammia trader around her is the same faction, with Arvida next to her quick to draw. Clifton's welcome depends on how you treat its people. Better to sell her heads and leave her be.",
+  "yells": {
+    "aggro": [
+      "You break the peace of Clifton.",
+      "Sisters! A guest has forgotten their manners."
+    ],
+    "phases": [],
+    "death": [
+      "The wall... will be finished... without me..."
+    ],
+    "slay": [
+      "One more for the wall.",
+      "Clifton keeps its peace."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A lammia of Clifton, buying ogre heads."
+    ],
+    "phases": [],
+    "realmFirstKill": "Cnieda has fallen. Clifton will not forget it."
+  },
+  "botLines": {
+    "briefing": [
+      "dont attack cnieda, she's a clifton trader, the whole town comes",
+      "if you must, she's 46 and arvida next to her helps"
+    ],
+    "aftermathWin": [
+      "cnieda down. clifton is not going to like us now",
+      "well that was a terrible idea"
+    ],
+    "aftermathLoss": [
+      "the whole of clifton came"
+    ],
+    "rumour": [
+      "[heard|someone said] cnieda is building a wall of ogre heads on the east cliff",
+      "heard cnieda tells lowbies to come back when they're stronger and means it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "cnieda",
+    "text": "A lammia trader of Clifton on [gwyddneau] who buys thrawn ogre heads and will not say why. Nimea says she is building a wall of them along the eastern cliff path."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} broke the peace of Clifton and felled Cnieda in {minutes} minutes.",
+    "loss": "Clifton kept its peace; {raidLeader} of {realm} was driven out of the town."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "old-powers"
+  ],
+  "tier": "minor"
+}

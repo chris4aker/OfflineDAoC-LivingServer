@@ -1,0 +1,114 @@
+{
+  "id": "moran-the-mighty",
+  "name": "Moran the Mighty",
+  "catalogKey": "open-world/moranthemighty",
+  "locationId": "dartmoor",
+  "realm": "Albion",
+  "aliases": [
+    "moran"
+  ],
+  "facts": [
+    {
+      "text": "Level 73, 40,000 health, a giant (size 230) in Dartmoor east of Golestandt's lair; tether 4,500.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs"
+    },
+    {
+      "text": "From 50% health he picks raiders up 'on gusts of wind' and tosses them to one of three spots on the moor.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Albion bot chat already says he keeps watch in Dartmoor.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "When Moran is first engaged, every NPC within 1,500 of him attacks the players within 2,250; below 50% health a 5% roll each think starts a 5 s timer that throws every real player (GamePlayer) within 2,000 to one of three moor spots, where every NPC within 2,000 attacks them. Bots are never thrown. He heals and walks home after 60 s out of combat.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs"
+    }
+  ],
+  "story": "The granite giants of Dartmoor lie down in the heather and sleep. Moran never lies down. He is taller than any of them and older than most, and he stands on the high ground east of the stone dragon's Bed as though he were keeping watch over her, which the Albion minstrels say he is. The wind on that hill belongs to him. He does not hate anyone. He simply does not let anyone stand on his hill for long.\n\nGuard or rival. The drovers of the Cornish road say Moran is Golestandt's guard: that she cannot see the roads from the Bed and he can, that he has stood on his hill since before Rome watching the roads to the south, and that the gusts which sometimes blow the heather flat across the whole moor are Moran warning her. The frontier riders of Castle Sauvage tell it the other way. Moran, they say, is a giant of the air, not of the granite, older than her get and no kin of hers, and he has been waiting a thousand years for the stone in the Bed to crack so that the moor will be his. The oldest giants of the moor keep his council and not hers, and the riders take that for proof. Sir Arward's scribe Hywel mentions a giant on the eastern hill who did not stand up with the others when the voice came out of the south. He does not say which way it was looking.\n\nThe waking of the hill. Moran's hill is his in a way that no other ground on the moor is anyone's. The drovers say that when he is first struck the whole hill wakes with him, and that whatever lies in the heather near him gets up and comes for the one who struck, so that a man who goes up to Moran goes up to all his neighbours at once. The drovers who cut peat on its lower slopes clear the heather round them before they dig, as a man clears a hearth-side of tinder.\n\nThe wind. While he is still strong he is only a giant who hits very hard. When he has been hurt deep, he calls the wind, and it comes again and again, and it does not choose: it takes up the men who stand about him, all of them it can reach, and throws them off the hill on to the low ground of the moor, where the heather is thick and the granite giants are lying in it, and they wake for whoever lands among them. The drovers say the walk back up Moran's hill is the longest walk on Dartmoor. Their advice to a son who has to make it is short: go slowly, keep your feet out of the deep heather, and do not stop to look at what is lying in it.\n\nIf he is left alone for a while, the drovers say, he forgets whatever troubled him and goes back to where he stands, whole again, as a hill does after rain.",
+  "legend": "Moran the Mighty is a level 73 giant with 40,000 health, CC immune, 20% melee / 30% other reduction, a 450 reach and a 4,500 tether; leave him alone for a minute and he walks home at full health. Two things make the fight, and both pick real players only. When he is first pulled, every mob within 1,500 of him attacks the human, so clear the heather around his hill first. Below half health, every few seconds (a 5% roll each think, so roughly every ten seconds on average) a gust takes every real player within 2,000 and throws them to one of three spots on the moor below, and every mob within 2,000 of the landing spot attacks. Bots are never thrown, so in a bot raid that means the human, again and again: if that is you, stay out of 2,000 once he is under half, or be ready to walk back up slowly through the granite giants. Some Albion raids kill Moran before going south to the Bed, because the drovers swear his wind warns her; nobody has proved it.",
+  "yells": {
+    "aggro": [
+      "Off my hill, small ones.",
+      "The wind sees you.",
+      "South is that way. You will not reach it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Wind! Take them away!"
+      }
+    ],
+    "death": [
+      "Who... watches the mother now...",
+      "The wind... is still..."
+    ],
+    "slay": [
+      "Blown off the hill.",
+      "Chaff.",
+      "The heather will have you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The wind here blows one way: away from the giant.",
+      "A giant taller than the tors. The heather lies flat."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Moran calls the wind! Men are thrown from the hill!"
+      }
+    ],
+    "realmFirstKill": "Moran the Mighty has fallen. The wind on the hill is still."
+  },
+  "botLines": {
+    "briefing": [
+      "first pull sets every mob within 1500 on the human. clear the heather round his hill first",
+      "under 50% his wind throws every real player within 2000 to the moor. bots never get thrown",
+      "human stays out of 2000 once hes under half, the bots finish him",
+      "kill moran before golestandt, the drovers say his wind warns her"
+    ],
+    "aftermathWin": [
+      "moran down. the hill is ours",
+      "nobody got lost on the way back up. nice",
+      "the wind on the hill is still",
+      "nobody pulled a giant on the walk back, amazing"
+    ],
+    "aftermathLoss": [
+      "the walk back pulled three giants",
+      "pulled him with the heather full and everything came",
+      "landed right next to a stonelord. didnt even get up the hill",
+      "i stood next to him under half and got thrown four times"
+    ],
+    "rumour": [
+      "they say moran the mighty keeps watch in dartmoor too. never got close enough to check",
+      "[heard|someone said] moran throws you off his hill with the wind",
+      "heard moran is golestandt's guard",
+      "[heard|someone said] moran is waiting for golestandt's stone to crack so the moor is his"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "moran",
+    "text": "Moran the Mighty, a giant taller than the tors, who keeps the high ground east of the lair. When he is hurt he calls the wind and throws men off his hill like chaff."
+  },
+  "bookPage": "On the third day, Hywel wrote, we saw a giant on the eastern hill who stood when the others lay down and lay down when the others stood. He was taller than the tors. The wind came off his hill so hard that the horses would not face it, and Sir Arward took us the long way round by the bog. On the fifth day, when the voice came out of the south and every giant on the moor stood up and turned toward it, the giant on the hill did not stand. He stayed as he was. I could not see, at that distance, which way he was looking.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} held Moran's hill against the wind and felled the giant in {minutes} minutes.",
+    "loss": "Moran the Mighty blew {realm}'s raid off his hill; {raidLeader} never got them back up the slope."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "golestandt",
+      "relation": "keeps watch over her Bed, or waits for it to crack"
+    }
+  ]
+}

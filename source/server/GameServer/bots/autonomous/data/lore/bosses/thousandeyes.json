@@ -1,0 +1,76 @@
+{
+  "id": "thousandeyes",
+  "name": "ThousandEyes",
+  "npcNames": [
+    "ThousandEyes"
+  ],
+  "locationId": "inishail-island",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "ThousandEyes: NPC template 60167027, level 48, the dragonfly model at size 25 (small), no faction, aggro 200 (range 500), no spells, respawn 80 s, at 274073, 472827 on the south-eastern shore of Inishail with two inishail flies, about 5,000 west of the lammia Veena.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "ThousandEyes as Veena's watcher, the orcs' fear of it and the fly-poisons are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The flies of Inishail are many and the dragonflies of the isle are worse, and the orcs of Toca's village hate all of them, but there is one they fear. It is small, no bigger than a hawk, and it has too many eyes, far too many, set all over its head like the seeds of a poppy, and it hangs over the south-eastern shore where the lammia Veena lives alone and makes her poisons.\n\nThe orcs say ThousandEyes watches for her. When an orc goes down to that shore to steal from her, or to settle a score, the little dragonfly is already there, hanging in the air, looking at him with every eye at once; and by the time he reaches her door Veena knows he is coming, and the poison is ready. Veena says she has never asked it to watch for anyone. She makes her poisons from the flies of the isle, she says, and ThousandEyes is the only one of them she has never once caught, and she thinks it is watching to see whether she ever will.\n\nThe readers' stolen tome, the orcs' margins say, has a page on it, with a line drawn round it and a single word in the orcs' hand: LOOKING.",
+  "legend": "ThousandEyes, level 48, a small dragonfly with a lot of eyes on the south-eastern shore of Inishail, west of Veena, with a couple of inishail flies. No faction, plain melee, no spells, but it is a 48 and hits harder than its size. Respawn 80 seconds. A group in the mid forties takes it easily; the flies come too if you pull close.",
+  "yells": {
+    "aggro": [
+      "It has seen you already.",
+      "Every eye turns."
+    ],
+    "phases": [],
+    "death": [
+      "The eyes... close..."
+    ],
+    "slay": [
+      "Seen. Done.",
+      "Watched, and finished."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A small dragonfly with too many eyes."
+    ],
+    "phases": [],
+    "realmFirstKill": "ThousandEyes has fallen. The shore is unwatched."
+  },
+  "botLines": {
+    "briefing": [
+      "thousandeyes on the se shore of inishail, 48 small dragonfly, a couple of flies with it",
+      "it hits harder than it looks, mid forties group"
+    ],
+    "aftermathWin": [
+      "thousandeyes down. all those eyes and it never saw us coming",
+      "got the little watcher"
+    ],
+    "aftermathLoss": [
+      "it saw us coming, obviously"
+    ],
+    "rumour": [
+      "[heard|someone said] thousandeyes warns veena when the orcs come",
+      "heard veena has never managed to catch thousandeyes for her poisons"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "thousandeyes",
+    "text": "A small dragonfly with far too many eyes that hangs over [veena]'s shore on [inishail island]. The orcs say it watches for her; Veena says it watches her."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} closed every eye of ThousandEyes on Inishail in {minutes} minutes.",
+    "loss": "ThousandEyes saw {raidLeader}'s company of {realm} coming, and so did everything else."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "old-powers"
+  ],
+  "tier": "minor"
+}

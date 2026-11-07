@@ -1,0 +1,141 @@
+{
+  "id": "princess-nahemah",
+  "name": "Princess Nahemah",
+  "catalogKey": "darkness-falls/princessnahemah",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Level 71, 100,000 health, tether 2,000. A minion fights linked with her; she casts Maelstrom.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrincessNahemah.cs"
+    },
+    {
+      "text": "The name echoes Naamah, a demoness of later Jewish tradition; to verify.",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Princess Nahemah: NPC template 60165038 (level 71, female), 100,000 health, GetResist 40 melee / 70 other, CC immune, melee range 180, fast, tether 2,000; on the first hit 5-10 Hopeless Souls (550 health) appear, and each of their hits has a 10% chance to cast Maelstrom (170 heat, radius 350).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrincessNahemah.cs"
+    },
+    {
+      "text": "Nahemah as the Queen's companion and shadow, the Hopeless and the law of portions, Caisha's well and the princess's sorrow, the plan behind Mannam's errand, the safe-conduct in his coat and Dame Mabel of Sauvage are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Real-world myth, not game canon: the Zohar names Naamah among the demon women who walk with Lilith; Nahemah reads as that name, to verify.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Naamah_(demon)"
+    }
+  ],
+  "story": "Princess Nahemah was the youngest of the eleven who knelt at the Feast of Thrones, and the court says the only one who did not look afraid. She came as the Queen's companion, Lilith's shadow, and when the Blood were given their quarters she asked for the far west, as far from the deepest chamber as the hollow runs; the imps say it was arithmetic, for she is the last of the Blood any visitor reaches. The Queen's chair has been empty since the Seventh Roll, and the Inquisitors say the Queen's shadow is the Queen's heir whether or not it is written. The Church's readers know a Naamah who walked with Lilith in older books; the druids say she is the one of the Blood who wants the worm to wake.\n\nHer household is the Hopeless: souls that despaired on the stair, which the law of portions has no line for. They drift about her bower like ash until anyone lays a hand on her, then come to her all at once and stand round her like a cloud. They break at a touch, but a storm goes with them: where one strikes, now and then, the air round its mortal bursts into a whirl of fire that finds a crowd as water finds a hollow. When the princess falls they go out like lamps.\n\nCaisha the drowned girl waits on the rim of her well; the bower says the princess drowned the girl's soul there so that its face would never age, and lends the face out. Ambassador Mannam keeps his apartments in the bower; the imps say it was Nahemah's plan to send him to Albion's throne. Mystemas sends mortals after them both. Brother Odran records an Albion company that killed Mannam and found in his coat a safe-conduct sealed by a lord of Camelot.\n\nNo one outruns her in her bower, but she will not follow far from her well. Dame Mabel of Sauvage took her company in open order, swept the Hopeless away like ash and let the princess come to her. Nahemah laughed as she fell and said a name that was not Caisha's.",
+  "legend": "Princess Nahemah is level 71 with 100,000 health, CC immune, 40% melee / 70% other reduction, a very short reach (180) and a very fast run speed, so do not try to kite her. The first time she is hit, 5 to 10 Hopeless Souls appear around her (550 health each) and join. Every hit they land has a 10% chance of a Maelstrom: 170 heat on everyone within 350 of whoever they hit. So the moment she is pulled, area damage wipes the Hopeless (they die in a hit or two), and everyone stays a good distance apart until they are gone. Then it is a tank-and-spank on a fast lady with a lot of health. She walks home past 2,000 from her spot and resets, so let her come to you rather than chasing. Her minions vanish when she dies. She counts as one of the four royals for Beliathan, and Mystemas's quests send you after her and Ambassador Mannam.",
+  "yells": {
+    "aggro": [
+      "My brothers send such charming visitors.",
+      "Come to me, my hopeless ones.",
+      "You came all this way. Come closer."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Despair is weather, little mortals. Feel it."
+      }
+    ],
+    "death": [
+      "Now... the worm...",
+      "Tell the well... I am..."
+    ],
+    "slay": [
+      "Swept away.",
+      "Hopeless now.",
+      "One more for my household."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Perfume, and under it, the smell of a storm.",
+      "Grey souls drift about the bower like ash."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fire whirls wherever the Hopeless strike!"
+      }
+    ],
+    "realmFirstKill": "Princess Nahemah has fallen. The storm in her hall is spent."
+  },
+  "botLines": {
+    "briefing": [
+      "nahemah pops 5-10 hopeless souls on the first hit. 550 hp each, aoe them right away",
+      "their hits can maelstrom, 170 heat on everyone within 350. spread out till theyre dead",
+      "she runs fast and hits short. dont kite, let her come",
+      "she resets past 2000 from her spot. she is one of the four royals for beliathan"
+    ],
+    "aftermathWin": [
+      "princess down. thats the last royal, get ready for the worm",
+      "maelstrom hurt but we held",
+      "hopeless swept in seconds, princess down",
+      "thats the last royal, get ready for the worm",
+      "open order worked. no maelstrom deaths"
+    ],
+    "aftermathLoss": [
+      "we all stood together in the maelstrom",
+      "we all stood together and the maelstroms chained",
+      "nobody aoed the souls",
+      "chased her past her tether and she reset full"
+    ],
+    "rumour": [
+      "[heard|someone said] nahemah counts as a prince for beliathan",
+      "heard princess nahemah is waiting for her brothers to die",
+      "heard nahemah sent the ambassador to talk albion's king into fighting the other realms",
+      "[heard|someone said] the ambassador wore the drowned girl's face when he went up to camelot"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "nahemah",
+    "text": "The youngest of the Blood of [Darkness Falls], once the Queen's shadow, keeping the far west with the drowned girl [Caisha] and the envoy Mannam. Her household is the Hopeless, souls that despaired on the stair; they break at a touch, but a fire whirls where they strike. While she lives the worm [beliathan] stays down."
+  },
+  "bookPage": "From Brother Odran's Door-Book, the account of Dame Mabel of Sauvage. We went into the princess's bower in open order, every man a long stride from the next, because I had read that her household carries a fire that finds a crowd. When she was touched, grey souls came to her from every corner like ash out of a cold hearth; my mages swept them away before they had struck more than a few blows. She is quicker than anything I have seen, and her reach is short, and she will not follow far from her well. We let her come. She laughed as she fell and said a name I did not know.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} rode out Princess Nahemah's storm and felled her in {minutes} minutes.",
+    "loss": "Princess Nahemah's maelstrom swept {realm}'s raid away; {raidLeader} regrouped at the door."
+  },
+  "era": "neu-the-three-doors",
+  "factions": [
+    "dark-ones",
+    "nahemahs-bower"
+  ],
+  "related": [
+    {
+      "id": "beliathan",
+      "relation": "the last of the four Blood whose lives keep the worm down"
+    },
+    {
+      "id": "legion",
+      "relation": "knelt to the Master at the Queen's side"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Youngest Who Knelt",
+      "text": "Princess Nahemah was the youngest of the eleven who knelt at the Feast of Thrones, and the court's chroniclers say she was the only one of them who did not look afraid.\n\nShe had come to the Feast at the Queen's side, the court says: Lilith's companion, her shadow, the one who carried the Queen's cup. When the hungry one began to eat and the lords began to fall, Nahemah stood behind the Queen's chair and watched, and when Adremal knelt she knelt beside him without being asked, and when the Master gave the Blood their quarters she asked for the far west, as far from the deepest chamber as the hollow runs. Her brothers took this for modesty. The imps say it was arithmetic. A princess at the far end of the hollow is the last of the Blood any visitor reaches.\n\nThe Queen's chair has been empty since the Seventh Roll. The court says only that Lilith is away, and the Chamberlain keeps her door and lets no one sit. Nahemah has never once been seen near the chair. The Inquisitors of the north say she does not need to be; a princess who was the Queen's shadow is the Queen's heir, whether or not anyone writes it on a Roll, and the Chancellor has written nothing.\n\nThe Church of Camelot knows her name from older books than the court's. Its readers say that the rabbis of the east wrote of a Naamah who walked with Lilith, mother of demons, and that the court's princess is that one or wears her name. The Midgard skalds say she is the court's hidden blade. The druids of Tir na Nog say she is the only one of the Blood who wants the worm to wake, because the worm wakes only when every one of them is dead but her, and they would rather she did not know that they have counted it."
+    },
+    {
+      "title": "The Hopeless",
+      "text": "The princess keeps a household of souls that the Inquisition gave her, and they are the saddest thing in the hollow.\n\nWhen the Inquisitors of the north examine the dead, there are some they cannot give to the Master or to the Blood, because there is nothing left in them to give: the souls that came down the stair and gave up. They despaired on the way, the Inquisitors say, and a soul that has despaired has fallen from nothing and follows no one, and the law of portions has no line for it. Nahemah asked for them. The court calls them the Hopeless, and they drift about her bower in the far west like ash in a cold hearth, until she is disturbed.\n\nThen they come to her, all of them, the moment anyone lays a hand on her, and stand round her as a cloud stands round a hill. They are frail things; the Albion priests who have gone down say a Hopeless soul breaks at a touch, like a dead leaf. But a storm goes with them. Where one of them strikes at a mortal, now and then, the air round that mortal bursts into a whirl of fire that catches everyone standing near him, and the companies who have fought in the bower say that the fire finds a crowd as water finds a hollow. Nahemah does not make the storm. Her household carries it, the court says, because despair is weather.\n\nWhen the princess falls, the Hopeless go out like lamps. The Inquisitors say they go nowhere; there is nowhere for them to go. The Church says they are released, and prays for them by name where it can find the names. Gunnhild the Lame of Mularn, who carried water for Midgard's first bands, wrote down a verse she heard the skalds sing over them, and it is the only verse of Midgard about the hollow that is sung for the dead of all three realms."
+    },
+    {
+      "title": "The Well and the Envoy",
+      "text": "The princess's bower has two other tenants, and both of them have business in the realms above.\n\nThe first is Caisha, the drowned girl, who waits always on the rim of the well in the princess's room and never leaves it. The three realms each claim to know who she was, and none agree. What the bower says is plainer: the princess drowned the girl's soul in the well of her own room long before the doors opened, so that its face would never age, and draws the face up out of the water whenever the court needs one that mortals will trust. The princess's women keep the water covered and do not go near the rim.\n\nThe second is Ambassador Mannam, the court's envoy to the realms, who keeps his apartments in the bower because the princess sent him up. It was Nahemah's plan, the imps say, not the Master's: Mannam went up to the throne of Albion in a good coat and the drowned girl's face to argue that Midgard and Hibernia were the true danger, so that Albion would spend itself on the frontier and never think about the hollow under Camelot Hills. Mystemas, standing at the bottom of the Tenth Roll among the imps of the Albion hall, says he was made small for carrying out a plan the Master had not finished deciding. He does not say whose plan he carried out. He sends mortals after the princess and her ambassador before anyone else, and calls it a kindness.\n\nBrother Odran's Door-Book records the first Albion company that went to the bower on Mystemas's errand. It killed the ambassador in his apartments and did not go on to the princess, because the ambassador's coat, when they turned out its pockets, held a letter of safe-conduct sealed with the arms of a lord of Camelot. Odran did not write which lord."
+    },
+    {
+      "title": "No One Outruns Her",
+      "text": "The companies of the realms say one thing about the princess before any other: no one has ever outrun her in her bower.\n\nShe is quick, quicker than any of the Blood, and she likes to move. She paces her bower when she is idle, the imps say, never far, a few strides one way and a few the other, like a cat at a window, and when she is roused she is on a man before he has turned. But she will not follow far. The bower is hers, and the court's ladies keep to their rooms, and the companies have learned that a princess drawn too far from her well will turn and go back to it as if she had remembered something, and be whole again by the time she gets there. Her reach is short. She fights close, with her hands, the way the Queen's companion was taught to fight in a crowded room.\n\nThe first Albion company to kill her came down under Dame Mabel of Sauvage, after Odran's letter about the ambassador reached Camelot and was not answered. Mabel took her company into the bower in open order, every man a long stride from the next, because she had read that the Hopeless brought a fire that finds a crowd. When the princess was touched and her household came, Mabel's mages swept them away like ash before they had struck more than a few blows, and her knights did not chase the princess when she paced, but let her come to them. Mabel wrote that the princess laughed when she fell, and looked towards the well, and said a name that was not Caisha's.\n\nMidgard's bands claim her first and Hibernia's bards say the same of theirs. Each capital keeps its own count. The imps keep another, of how many times the princess has been killed and come back, and they say she has never once looked surprised by it."
+    }
+  ]
+}

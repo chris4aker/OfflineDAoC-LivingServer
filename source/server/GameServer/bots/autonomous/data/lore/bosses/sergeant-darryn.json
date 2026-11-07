@@ -1,0 +1,136 @@
+{
+  "id": "sergeant-darryn",
+  "name": "Sergeant Darryn",
+  "catalogKey": "hall-of-the-corrupt/sergeantdarryn",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Sergeant Darryn, 5,000 health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantDarryn.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Darryn's level 50, 5,000 health, two-handed weapon, template parry 50 with after-parry, parry follow-up and taunt styles, and 35% melee and 25% magic damage reduction are in his script and template; he has no spells and calls no adds.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantDarryn.cs"
+    },
+    {
+      "text": "In the world data the nearest posts to Sergeant Darryn are four wizard apprentices, about 490-750 away; no restless watchmen stand near him.",
+      "provenance": "game",
+      "source": "OfflineDAoC 0.37b world database, Mob table (region 277)"
+    },
+    {
+      "text": "The Caerwent ferry, the ferrymen's 'turn', Maud and Brice and the hundred and thirty letters, the apprentices' lodging and Brice's descent are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Sergeant Darryn was the ferryman's son of the Severn crossing below Caerwent, where he shouted the crossings from the bow at eight; Caerwent still says a very loud man 'could call the ferry at flood'. He also learned the ferrymen's pole-fighting on the landing stages, whose trick was never to strike first: let the blow come, turn it along your own pole, and bring the butt round in the same movement. They called it the turn, and he found it worked as well with the two-handed sword he took north in Lord Gildas's fifth year. Gildas gave him the west passage, and the whole hall learned what calling the ferry at flood meant.\n\nHe married Maud of Camelot and had a son, Brice, whom he saw four times and wrote to every month, dictating to the clerk Tobias at a volume that let the whole hall follow the boy's croup and his fights: stand straight, mind your mother, hit him first. A hundred and thirty letters survive in Camelot. The last, from the last winter, stops in the middle, the only time Tobias knew him to fall quiet.\n\nLord Gildas quartered the wizard Aidon's apprentices, Merewyn and Tam among them, in the west passage, and Darryn never forgave either: a passage of watchmen and wizards' boys was a lodging-house. Master Ferowl of the Academy refused to move them. Darryn taught them the turn with a broom handle; Tam learned that every blow aimed at the sergeant came back along your own broom. The wizard's household is still lodged among his posts.\n\nIn the third spring after the hall was found, Brice, a loud Prydwen sergeant himself, went down with a company of Camelot Hills, answered his father's shout ('I am standing straight, father'), and struck the last blow. The bards sing that Darryn knew him; the company's account says only that he stood still for the length of a short prayer.",
+  "legend": "Darryn is a two-handed sergeant, level 50, 5,000 health, in the west passage. He parries a lot and answers a parry with a follow-up style, so a crowd of melee on him gets punished; tank him, put two or three melee on him at most and let the casters finish him (he still takes a quarter less from magic). His taunt keeps him on the tank. He calls nobody, whatever the old chat says: the danger near him is the wizard's apprentices who loiter in the passage around his post, so clear the nearest of them first, then fight Darryn on his stone. Drawn off his post he takes no damage and walks back at full health. Old Prydwen hands shout 'I am standing straight' at him on the way in; it does nothing, and the bards say it should.",
+  "yells": {
+    "aggro": [
+      "On your feet, you dead dogs! Visitors!",
+      "Stand straight! Shields up!",
+      "Watch! To me!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Stand straight! Stand straight, all of you!"
+      }
+    ],
+    "death": [
+      "Dismissed...",
+      "At... ease..."
+    ],
+    "slay": [
+      "Back to your post. Forever.",
+      "Stand up, soldier. Oh. Never mind.",
+      "Another for the bunks.",
+      "Dismissed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A voice carries through two doors. Stand straight!",
+      "Candles in a lodging-room. They never burn down."
+    ],
+    "phases": [],
+    "realmFirstKill": "Sergeant Darryn is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "darryn parries and hits back off the parry. light melee, casters finish",
+      "he doesnt call anyone, its the wizard apprentices round his post. clear the close ones first",
+      "fight him on his stone, off it hes immune",
+      "5k hp, quick kill"
+    ],
+    "aftermathWin": [
+      "sergeant darryn down, one less on the watch",
+      "darryn down. finally quiet",
+      "watchmen cleared, sergeant dead",
+      "he can stop shouting now",
+      "west passage is clear"
+    ],
+    "aftermathLoss": [
+      "someone dragged him off his post again. immune out there",
+      "pulled him with the apprentices",
+      "too much melee on him, the parry returns ate us",
+      "dragged him into the corridor"
+    ],
+    "rumour": [
+      "heard sergeant darryn's voice carries through two doors",
+      "[someone said|heard] darryn's son went down there years later and answered him",
+      "heard darryn still shouts at his dead men to stand straight",
+      "darra used to tell the hour by darryn's shouting, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "darryn",
+    "text": "Sergeant Darryn was the ferryman's son of [Caerwent] who kept the west passage of the Pennine watch, loud enough to 'call the ferry at flood'. He wrote to his son [Brice] every month, and fought with the ferrymen's [turn]. The wizard's apprentices are still lodged among his posts; see [Aidon]."
+  },
+  "bookPage": "Sergeant Darryn has been shouting since dawn. He says the watchmen of the west passage are slack, and that a doubled watch is twice as many men to be slack, and that he will not have it. I can hear him through two doors as I write. The Lady Darra says she can tell the hour by which man he is shouting at. Tonight, after the trouble on the road, he went quiet for the first time in all my years here, and the quiet was worse than the shouting. In the morning he was shouting again, and we were all, I think, relieved.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Sergeant Darryn from the Pennine watch in {minutes} minutes.",
+    "loss": "Sergeant Darryn held the post against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "lady-darra",
+      "relation": "told the hour by his shouting"
+    },
+    {
+      "id": "aidon-the-archwizard",
+      "relation": "the wizard whose apprentices were lodged in his passage"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Ferryman's Son",
+      "text": "Sergeant Darryn learned to shout on the Severn, where his father kept the ferry below Caerwent and a ferryman who could not be heard across the river at flood did not keep his ferry long.\n\nThe Caerwent ferry ran on a pole and a rope. Darryn's father poled it, and Darryn, from the age of eight, stood in the bow and shouted the crossing to the far bank: who was coming, how many, whether there were beasts. Caerwent still says of a loud man that he could call the ferry, and of a very loud one that he could call it at flood, and the second saying is about Darryn. He could be heard, the town's priest wrote once in a complaint to the reeve, from the church porch with the door shut.\n\nHe learned the pole too, which mattered more than anyone knew until later. The ferrymen of the Severn fought each other on the landing stages with their poles when the fares were disputed, and the trick of a ferry-pole fight was not to strike first. A good poleman let the other man's blow come, turned it aside along his own pole, and in the same movement brought the butt round into the other man's ribs. The ferrymen called it the turn. Darryn's father said a man who struck first on a landing stage was a man who wanted to swim.\n\nDarryn went to the Pennines in Lord Gildas's fifth year, with a draft of Severn men, because his elder brother had the ferry and there was nothing else on the river for a younger son. He took a two-handed sword from the Caerwent smith instead of a pole, and found that the turn worked with a sword as well as it had with ash. He was a sergeant in three years. Lord Gildas gave him the west passage and its watchmen, and the first night, the clerk Tobias wrote, the whole hall learned what Caerwent meant by calling the ferry at flood."
+    },
+    {
+      "title": "Letters to Brice",
+      "text": "Darryn married a Camelot woman called Maud in his ninth year at the watch, on a winter's leave, and they had a son, Brice, whom he saw four times in his life, and to whom he wrote every month.\n\nHe could not write. He dictated the letters to the clerk Tobias at the door of the captains' hall, standing in the corridor outside, and he dictated them at the only volume he had, so that Tobias heard every word through the door and so did everyone else between the outer gate and the sickroom. The watch knew Brice better than it knew most of its own men. It knew when he had the croup and when he was put to his letters and when he fought the baker's boy and lost, and it knew Darryn's opinion of each, which was always the same: stand straight, mind your mother, and the next time hit him first. Lady Darra, who wrote in her Lady Day letters that she could tell the hour by which man Darryn was shouting at, wrote once that she could tell the month by which of Brice's ailments she was hearing about.\n\nTobias kept copies, because Darryn asked him to, so that he could have them read back to him. They are with the clerk's reports in Camelot now, a bundle of a hundred and thirty letters in the same hand, every one beginning the same way. The last is unfinished. It is dated in the last winter and tells the boy to stand straight and mind his mother, and it says that the watch has been doubled, and that his father is well, and that there is nothing on the road. It stops there. Tobias wrote in the margin that the sergeant had gone quiet in the middle of the letter and walked away, and that it was the first time in his years at the watch he had known Darryn to be quiet.\n\nHe was shouting again in the morning, the clerk's report says, and the hall was relieved. The letter was never finished."
+    },
+    {
+      "title": "The Wizard's Lodgers",
+      "text": "When the wizard Aidon came to the Pennine watch, Lord Gildas quartered his apprentices in the west passage, because it was the only part of the hall with empty bunks, and Sergeant Darryn never forgave either of them.\n\nThe apprentices kept a wizard's hours. They read by candle until the small hours and slept through the morning watch, and they did not answer when they were shouted at, which Darryn found harder to bear than anything the road had ever sent. Tobias's reports name two of them, Merewyn and Tam, and record Darryn's view of both at length. He said that a passage which held watchmen and wizards' boys was not a passage but a lodging-house. He said that a doubled watch was twice as many men to be slack, and that the wizard's boys made it three times. The apprentices, for their part, wrote to the Academy asking to be moved, and the Academy's master, Ferowl, declined, and the letter is still in the Academy's files with Ferowl's note on it: the sergeant will be good for them.\n\nHe was, in his way. Darryn taught the apprentices the turn, in the passage, with a broom handle, because he said that a man who could not keep a blow off himself had no business in a frontier hall, wizard or not. Tam learned it and Merewyn did not. Tam's letters home, which his family kept, say that the sergeant never once struck first, and that every blow you aimed at him came back at you along your own broom.\n\nThe apprentices are in the west passage still. Whatever the Summoners made of the wizard's household, they left it where Gildas put it, lodged among Darryn's posts, reading by candles that do not burn down, and the sergeant still keeps the passage around them as if they might at any moment be caught asleep on watch."
+    },
+    {
+      "title": "Brice Comes North",
+      "text": "Brice, son of Darryn, went down the Pennine road a man grown, with a company of Camelot Hills, and his account of it is the one the Prydwen roll keeps beside his father's name.\n\nHe was a sergeant himself by then, in the Prydwen garrison, and he was loud; the roll says so. He went down in the third spring after the hall was found, with a company that meant to see the watch for itself, and he went because his mother had died that winter and he had no one left to tell him not to. The company came along the west passage among the wizard's lodgers, and in the passage they heard a voice they did not need telling about, telling the watch to stand straight.\n\nBrice's account says that he answered it. He said, at the top of his voice: I am standing straight, father. The company's other accounts say that the shouting stopped. They say that the sergeant of the west passage stood quite still on his stone for as long as it takes to say a short prayer, and then came at them, turning every blow aside and sending it back, as he had taught the wizard's boys, and that it took them a long time to bring him down. Brice struck the last blow. He would not say afterwards whether he had meant to.\n\nThe bards have made the meeting into a song, and in the song Darryn knows his son and lays down his sword. The Church's priests, who buried Brice at Prydwen thirty years later, say that the song is a kindness and should be sung, and that the company's account is the truth and should be kept. The Inconnu, asked, said that the sergeant heard the voice, and that a voice was all the watch had ever known of the boy.\n\nDarryn is at his post in the west passage again, and the companies hear him through two doors. The sergeants of Prydwen, on the night the garrison changes, still shout the last line of the unfinished letter down the keep's stair, and wait for the echo."
+    }
+  ]
+}

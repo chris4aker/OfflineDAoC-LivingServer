@@ -1,0 +1,88 @@
+{
+  "id": "celain-elrich",
+  "name": "Celain Elrich",
+  "npcNames": [
+    "Celain Elrich",
+    "Celain Eirich"
+  ],
+  "locationId": "salisbury-plains",
+  "realm": "Albion",
+  "aliases": [
+    "celain"
+  ],
+  "facts": [
+    {
+      "text": "Celain Elrich's world spawn at the outer stones (586793, 588200) is a hidden marker (no model, ghost, no name, untargetable, package ClassicQuest); his NPC template 12671, spelled Celain Eirich, is level 36 with the phantom pages' model.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 1 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Secret Orders (Heather Barclay, Swanton Keep) sends players to take care of the necromancer Celain Elrich by the outer stones of the Barrows, then on to Graham Mal'Toinia in Ludlow, the Llyn Cythraul, Melechan in Odin's Gate and an Arawn commander who asks 'knowledge or power'.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Classic quest steps can spawn their monster for the player on that step (ClassicQuests.TrySpawnEvent); that Celain is one is inferred from his hidden marker, not checked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/quests/QuestsMgr/ClassicQuests.cs"
+    },
+    {
+      "text": "Celain as a student of the under-streets, the dead as a library, the orders in a known hand and his choice of power are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Celain Elrich was a student of the quieter trades under the streets of Camelot, the schools the Constable's maps do not show, and he was a good one, which is to say that he asked the dead questions and wrote down what they said. The masters of the under-streets teach that the dead of Albion are a library, and that a reader does not move the books. Celain wanted to move them. He went out to the Plains in the years after the diggers opened the mounds, when the presences began to stand on the open grass at dusk, and he went to the outer stones of the great circle, where the barrows of kings run closest to the surface, and stayed.\n\nHe carries orders. Everybody who has dealt with him agrees on that, and nobody agrees on whose. The librarians of the Academy say the orders are in a hand they have seen before, on letters that went north to Swanton Keep and south to Llyn Barfog and into Midgard's own hills; Heather Barclay at Swanton has a collection of them and will not show it to anyone she has not tested. Some say the orders come from a commander of Arawn who keeps a hill in the Pennines and asks every messenger a single question: knowledge or power. Celain, the Academy says, chose power.\n\nHe is not easy to find. The shepherds of West Downs walk past the outer stones every evening and have never seen him, and the presences on the grass do not part for them. He shows himself to the ones who have been sent for him, as if he had been told to expect them. The Church says that is how every necromancer is found: by someone who was already looking.",
+  "legend": "Celain Elrich is a quest target, not a camp: Secret Orders from Heather Barclay in Swanton Keep sends you to the outer stones of Stonehenge for him. You will not find him there without the quest; the world data only has a hidden marker, and the quest brings him out when you are on that step (untested in game). He is a necromancer of about level 36 to 41 among the disturbed presences and ghasts at the outer stones, so clear the presences near you first and do not fight him at dusk with a crowd of undead around you.",
+  "yells": {
+    "aggro": [
+      "You were sent. I was told you would be.",
+      "Knowledge or power? I chose. Now you choose."
+    ],
+    "phases": [],
+    "death": [
+      "The orders... were not mine..."
+    ],
+    "slay": [
+      "Another book for the library."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The presences part. Someone was expecting you."
+    ],
+    "phases": [],
+    "realmFirstKill": "Celain Elrich's orders are broken at the stones."
+  },
+  "botLines": {
+    "briefing": [
+      "celain elrich is a secret orders target, by the outer stones of stonehenge",
+      "clear the presences near the stones first, he brings undead friends at dusk"
+    ],
+    "aftermathWin": [
+      "celain down, now go read whatever orders he had",
+      "back to heather in swanton with it"
+    ],
+    "aftermathLoss": [
+      "the presences swarmed us before he did"
+    ],
+    "rumour": [
+      "[heard|someone said] celain elrich only shows up for people who were sent for him",
+      "heard his orders are in the same hand as letters in swanton and llyn barfog"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "celain elrich",
+    "text": "A student of the quieter trades under Camelot who went to the outer stones of the great circle to ask the dead questions, and stayed. He carries orders in a hand the Academy has seen before, on letters to Swanton Keep and beyond; some say they come from a commander of Arawn who asks every messenger: knowledge or power. He is seen only by those sent to find him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} broke Celain Elrich's orders at the outer stones in {minutes} minutes.",
+    "loss": "Celain Elrich keeps his orders at the outer stones; {raidLeader} of {realm} came away without them."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "arawn"
+  ],
+  "tier": "minor"
+}

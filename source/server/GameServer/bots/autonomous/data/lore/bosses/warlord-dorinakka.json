@@ -1,0 +1,131 @@
+{
+  "id": "warlord-dorinakka",
+  "name": "Warlord Dorinakka",
+  "catalogKey": "caer-sidi/warlorddorinakka",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health, tether 2,000. Pulling him brings twelve crypt knights.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/WarlordDorinakka.cs"
+    },
+    {
+      "text": "The bounty quest's hunt reason says he rallies Caer Sidi's war-dead.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Bounty/BountyQuest.cs"
+    },
+    {
+      "text": "Dorinakka: level 81, 100,000 health, tether 2,000, GetResist 40 melee / 70 everything else, twelve DorinakkaBaf crypt knights join when he has a target.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/WarlordDorinakka.cs"
+    },
+    {
+      "text": "The headland and horse-skull standard, the yard as his headland, Sir Emrys and the returned salute, and the rolled-up file are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Warlord Dorinakka was sent to Caer Sidi because he would not lay down his sword. He commanded a warband before the Romans, held a western headland for a summer against three tribes, and died at its neck the last of his band, his horse-skull standard going into the sea. When Arawn's keepers came for his soul he killed two of them, and so they put him in the gaol's yard, where you keep a soldier you cannot trust indoors. The bards call him a hero; the Inconnu, a captain, who never once asked what the war was for.\n\nWhen the gaol rose he found Arawn's crypt knights leaderless in the yard and drilled them, and they march in his file and come when he calls. He salutes the riders' hall, where Bellum rides, before every drill, and after the night war's weapons fell he drilled his knights to stand about their warlord first. He does not leave the yard: a captain who leaves his line is a deserter, and if a battle draws him too far he walks back to his ground and it begins again. The galleries' sorcerers above have done less to the yard than one spearman in the gate; he has always said a battle is won in the line.\n\nDame Ysolde's company met the best-ordered charge any of them had faced. She held the warlord in the gate with Sir Emrys and rolled up the file from its end in pairs, as the Romans taught on the Wall, her wizards kept against the gate wall. Dorinakka fought on alone and saluted the riders' hall as he fell, and Sir Emrys returned the salute.\n\nThe bounty-masters say he rallies the war-dead; the Inconnu, that the Crypt Lord gives him orders he has not noticed; Prydwen Keep, that he waits for someone to tell him the war is over. Caer Gothwaite's captains now return his salute before his line comes on.",
+  "legend": "Dorinakka is level 81, 100,000 health, and comes with his twelve crypt knights. It is a melee fight on all of them: the warlord takes 40% less from melee but 70% less from everything else. He has a short leash, about 2,000: drag him past it and he walks home with his knights and the fight starts over, so hold him close to where he stands. The main tank holds the warlord; off-tanks and melee kill the knights in pairs from the end of the line inward, and the warlord comes apart without them. Keep the casters back against a wall where the knights cannot reach them; they heal and buff more than they nuke. The knights hit hard, so if you do not have the off-tanks, do not pull the yard. Caer Gothwaite raids wait for his salute at the gate and return it.",
+  "yells": {
+    "aggro": [
+      "Form ranks! The living are at the gate!",
+      "Knights! Shields up!",
+      "I did not lay it down for Arawn. I will not for you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hold the line! Hold, you dead dogs!"
+      }
+    ],
+    "death": [
+      "Still... standing... still...",
+      "Hold the... line..."
+    ],
+    "slay": [
+      "Next rank.",
+      "Fall out.",
+      "Dismissed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Dead knights at drill. Their warlord is watching.",
+      "A yard of packed earth, scarred by drill."
+    ],
+    "phases": [],
+    "realmFirstKill": "Warlord Dorinakka has laid down his sword at last."
+  },
+  "botLines": {
+    "briefing": [
+      "dorinakka plus 12 knights. melee fight, spells do little on them",
+      "short leash, 2000. hold him where he stands or he walks home and resets",
+      "kill the knights in pairs from the end of the line, tank holds the warlord",
+      "casters back against the wall, out of the knights' reach"
+    ],
+    "aftermathWin": [
+      "the warlord's muster is over",
+      "twelve knights and a warlord. gg",
+      "he finally laid down his sword",
+      "knights died fast, good offtanking"
+    ],
+    "aftermathLoss": [
+      "the knights overran the casters",
+      "dragged him and he went home",
+      "not enough off tanks for twelve knights",
+      "the knights hit way harder than they look"
+    ],
+    "rumour": [
+      "heard dorinakka drills arawn's own crypt knights now",
+      "[someone said|heard] dorinakka never laid down his sword, even dead",
+      "heard dorinakka salutes bellum before every drill",
+      "the inconnu say the crypt lord gives dorinakka orders and he hasnt noticed",
+      "heard caer gothwaite raids salute dorinakka before his charge",
+      "[heard|someone said] dorinakka's standard was a horse skull"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "dorinakka",
+    "text": "The warlord in the yard of [Caer Sidi], who would not lay down his sword even for Arawn's keepers. He drilled the leaderless crypt knights into a file and salutes [Bellum]'s hall before every drill. The Inconnu say the [Crypt Lord] gives him orders he has not noticed."
+  },
+  "bookPage": "In the yard the dead knights were at drill when we came, twelve of them in a line, and their warlord walking the line as a living sergeant would, correcting the angle of a shield here, the set of a foot there. He saw us and did not hurry. He formed them up. He told them the living were at the gate. Then he came at us at their head, and it was the best-ordered charge I have ever faced. Brother Cadoc said afterwards that it was almost a pity to break it. I did not think it was a pity at all.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} ended Warlord Dorinakka's bloody muster in {minutes} minutes.",
+    "loss": "Dorinakka's crypt knights held the line against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "caer-sidi-prisoners"
+  ],
+  "related": [
+    {
+      "id": "bellum",
+      "relation": "the god of war he salutes"
+    },
+    {
+      "id": "crypt-lord",
+      "relation": "gives him orders"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Shore Nobody Names",
+      "text": "Dorinakka was sent to Caer Sidi because he would not lay down his sword, and he has not laid it down yet.\n\nHe commanded a warband in a war nobody now remembers, on a shore nobody now names. The Inconnu say it was before the Romans, when the tribes of the west fought each other along the sea-cliffs for the landing-places, and that Dorinakka held a headland for a summer against three tribes at once and died at its neck with his sword in his hand, the last of his band standing. His standard was a horse's skull on an ash pole. It went into the sea with him, and the Inconnu say the fishermen of that coast dredged up horse-skulls for a hundred years and threw them back.\n\nWhen Arawn's keepers came along the shore for his soul, he fought them too. He killed two, which no dead man had done before, and the keepers who survived did not take him to the Deadlands with the rest of the war-dead. They took him to Caer Sidi, with the others who would not stop, and put him in the yard, because a yard is where you keep a soldier you cannot trust indoors.\n\nThe Church of Camelot has nothing good to say of him and very little to say at all; he was a heathen, and he died fighting heathens. The bards of the west say he was a hero and that the tribes who killed him sang him afterward, which the bards say is the only proper end for an enemy. The Inconnu, who have known him in the yard for longer than the bards have been singing, say he is not a hero or a villain but a captain, which is a harder thing to be, and that he has never once in all his ages in the yard asked what the war was for."
+    },
+    {
+      "title": "The Yard",
+      "text": "The yard of Caer Sidi lies between the crypts and the galleries, a long walled square of pale stone where Arawn's crypt knights drilled between their watches as the soldiers of the living do.\n\nWhen the gaol rose, the knights lost their keepers and had no one to tell them what to do, and Dorinakka found them there, leaderless, standing about the yard. He did what he had always done. He drilled them. They have marched at his back since, a file of them, in better order than they ever kept for Arawn, and they come when he calls. Before every drill he lifts his sword toward the riders' hall above, where Bellum rides, because a warlord knows his own god when he sees him. On the night of the rising, when war fell in the riders' hall and all his weapons dropped at once, Dorinakka heard it in the yard and made a drill of it: a file without its leader is iron on the floor. So his knights are drilled to stand about their warlord before they stand anywhere else.\n\nHe does not leave the yard. The Inconnu say that a captain who leaves his line in the middle of a battle is a deserter, by every law of war Dorinakka ever knew, and that if a battle carries him too far from his ground he turns and walks back to it, unhurried, and his knights with him, and the battle is to begin again from the start. The prisoners of the galleries, who have watched him from their windows for ages, say the yard is his headland. He died once for leaving it too late, and he will not be drawn out of it now.\n\nHis knights are Arawn's own, armoured in the gaol's pale iron, and the Inconnu say that the best of the galleries' sorcerers have thrown everything they know at the yard from the windows above and done less than a single spearman in the gate. Dorinakka has a soldier's contempt for spells. He has always said a battle is won in the line."
+    },
+    {
+      "title": "The Best-Ordered Charge",
+      "text": "Dame Ysolde's company came into the yard while the dead knights were at drill, and Brother Cadoc wrote that it was the best-ordered charge any of them had ever faced.\n\nThe knights were in a line, and their warlord was walking the line as a living sergeant would, correcting the angle of a shield here, the set of a foot there. He saw the company and did not hurry. He formed his file up. He told them the living were at the gate. Then he came at the company at their head, and the line came with him in a single wall of pale iron, every shield touching the next, and Cadoc said it was almost a pity to break it.\n\nYsolde did not try to break it in the middle. She had been a knight of the frontier for twenty years and she knew what the Romans taught every auxiliary on the Wall: a line is rolled up from its end. She held the warlord with her best shield, Sir Cai's brother Sir Emrys, in the gate of the yard where Dorinakka had come to meet them and where he stood his ground, and she sent her knights in pairs against the last man of the file, and then the next, and the next, inward, until the warlord stood alone in the middle of his yard with his file lying around him. Her wizards she kept back against the gate wall, where the knights could not reach them; they did little else, and she did not ask them to.\n\nDorinakka fought on alone, longer than Cadoc thought any dead thing could. When he fell he lifted his sword toward the riders' hall, as he does before every drill, and Sir Emrys, who had held him, returned the salute. Ysolde rebuked him for it on the stair, and then, Cadoc wrote, said that she would have done the same."
+    },
+    {
+      "title": "The Salute at the Gate",
+      "text": "Dorinakka stands in his yard again, drilling his file, and the realm has three opinions of what he is waiting for.\n\nThe bounty-masters of Albion say he rallies Caer Sidi's war-dead and post a price on him accordingly. The Inconnu say the Crypt Lord gives him his orders through the forerunners, and that he has not yet noticed, and that when he does notice there will be a war inside the gaol worth watching. The frontier soldiers of Prydwen Keep, who have heard Sir Emrys's account and approve of it, say he is waiting for the war to end, and that no one has ever come to tell him it has.\n\nWhat he wants, Brother Cadoc thought, is a war worth dying in. He died once on a headland for a cause nobody remembers, and the Inconnu say the forgetting troubles him more than the death. Bellum, whom he salutes, gave him a minute's grace and a reason, and the riders above are the only war in the gaol that means anything. Dorinakka cannot climb to them. He is a prisoner, and the yard is his cell, and he keeps it as a captain keeps a headland: facing outward, his file about him, ready.\n\nThe knights of the Isle of Glass have kept Sir Emrys's salute. Every company of Caer Gothwaite that comes into the yard waits at the gate until the warlord has formed his file and lifted his sword, and its captain lifts hers in answer before the line comes on. When the warlord falls, the captain salutes him again. Sir Emrys's own sword, which he used to return the first salute, is not in the chapel at Caer Gothwaite with the others. He gave it to the fishermen of the western coast, who say it is the first thing in a hundred years they have dredged up and kept."
+    }
+  ]
+}

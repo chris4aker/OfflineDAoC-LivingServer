@@ -1,0 +1,125 @@
+{
+  "id": "tristram-adamson",
+  "name": "Tristram Adamson",
+  "npcNames": [
+    "Tristram Adamson"
+  ],
+  "locationId": "caldey",
+  "realm": "Albion",
+  "aliases": [
+    "the shin-bone buyer"
+  ],
+  "facts": [
+    {
+      "text": "Tristram Adamson: template 60167266, level 54, a man of Little Haven at 357633, 379785; faction Caldey Outpost, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Rotted Ebon Skeleton Tibia XP Item is a turn-in quest Tristram Adamson gives at levels 48-49; an NPC that gives a quest leaves players in its level range alone, and companions are judged by their owner.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only); source/server/GameServer/quests/QuestsMgr/QuestTalkTruce.cs (an NPC that gives a quest leaves a player in its level range alone; companions are judged by their owner)"
+    },
+    {
+      "text": "The Caldey Outpost's base hostility is 30, a neutral standing: its people do not attack a newcomer.",
+      "provenance": "game",
+      "source": "world data: Faction table (base hostility); source/server/GameServer/gameutils/Faction.cs (above 75 aggressive, above 25 neutral) and StandardMobBrain.CanAggroTarget (faction NPCs attack by standing)"
+    },
+    {
+      "text": "A faction NPC that is attacked calls friends of its faction within 450, plus 150 for each attacker beyond the first (the clan's barbarian defenders stand 560 to 800 off).",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: radius 450 + 150 per extra attacker, up to eight; friends must share the faction)"
+    },
+    {
+      "text": "Tristram as cousin to Gracien Adamson, registrar of Fort Gwyntell (a game NPC), the shin-bone reckoning, the wall of the Isle of Glass and the cousins' two books are Living Server writing; that he pays for ebon skeletons' shin-bones so they cannot walk to the wall is from the Caldey file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The Adamsons are a family of clerks. Gracien Adamson keeps the register of names at Fort Gwyntell in the Dales, and a second book besides, of the dales' dead who still give their names. His cousin Tristram came to Caldey in the first year of the war to keep the accounts of the colleges' burying isle, and was in Little Haven when the isle stood up, and stayed. The cousins write to each other. Gracien's letters are about names. Tristram's are about bones.\n\nThe ebon skeletons are the worst of Caldey's walking dead for one reason: they walk off the isle. The black dead of the deep graves go down into the water on the eastern strand and come up again on the Isle of Glass, under the wall of Caer Gothwaite, and the garrison there has buried them a second time more often than it likes. Tristram worked out why they reach it and the others do not. They walk the whole way, under the sea, on the bottom. A skeleton that walks needs its legs; a skeleton without a shin-bone does not walk anywhere. So he pays for shin-bones. He has done the reckoning on the back of the ledger: so many tibias paid for, so many fewer at the Gothwaite wall, and he sends the reckoning to the garrison every quarter and the garrison sends back a thank-you and a complaint.\n\nHe keeps the bones in a shed behind his house, two to a skeleton, and writes them up as his cousin writes up names: one column for what came in, one for what he can prove will never walk again. The second column is the longer. He says that is the difference between his book and Gracien's. Gracien can never prove anybody is dead. Tristram can always prove a skeleton is lame.\n\nHe has never harmed anyone; he is a clerk. The clan's defenders count him among the outpost's own, and would come down off the wall for him, he says, though he hopes never to find out.",
+  "legend": "Tristram Adamson is a level 54 villager of Little Haven on Caldey who buys Rotted Ebon Skeleton Tibias (his turn-in, levels 48 to 49). He is not hostile: the Caldey Outpost faction starts neutral, and he leaves players of his quest's level band alone. Killing him brings the clan's barbarian defenders (same faction) and sours your standing with the outpost; there is no quest for it. No spells or styles in the data. The ebon skeletons whose shin-bones he wants walk Caldey itself, and his turn-in pays well for its level band. The other Little Haven buyers (Rose, Huidelon Cariston, Waleron Douglas) stand close by.",
+  "yells": {
+    "aggro": [
+      "I am a clerk!",
+      "Defenders! A thief in the bone-shed!",
+      "This is not in the ledger."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Column two! You will be in column two!"
+      }
+    ],
+    "death": [
+      "Tell Gracien... the reckoning...",
+      "Two to a skeleton..."
+    ],
+    "slay": [
+      "Lamed.",
+      "Written up.",
+      "It will never walk again."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A shed of shin-bones, two to a skeleton.",
+      "A clerk's reckoning, pinned to the door."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The clan's defenders run down from the wall."
+      }
+    ],
+    "realmFirstKill": "Tristram Adamson has fallen. The reckoning stops."
+  },
+  "botLines": {
+    "briefing": [
+      "tristram adamson, 54, the shin bone guy in little haven. turn-in, not a mob",
+      "clan is neutral, he wont aggro. hit him and the defenders come and your standing drops",
+      "no spells. no quest to kill him",
+      "bring him ebon skeleton tibias at 48-49"
+    ],
+    "aftermathWin": [
+      "tristram down. who does that",
+      "defenders were rough",
+      "the gothwaite garrison will hate us now",
+      "no more shin bone money for a bit"
+    ],
+    "aftermathLoss": [
+      "the wall came down on us",
+      "hit him by mistake with an aoe, clan wiped us",
+      "54 clerk, still a 54",
+      "never hit the clerks"
+    ],
+    "rumour": [
+      "[heard|someone said] tristram adamson buys shin bones so the ebon skeletons cant walk to the gothwaite wall",
+      "heard he's cousin to gracien adamson, the registrar at fort gwyntell",
+      "[heard|someone said] tristram sends the gothwaite garrison a shin bone reckoning every quarter",
+      "heard gracien can never prove anyone's dead but tristram can always prove a skeleton is lame"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "tristram adamson",
+    "text": "A clerk of [little haven], cousin to Gracien Adamson the registrar of Fort Gwyntell. He pays for the shin-bones of the ebon skeletons, because they walk off [caldey] under the sea to the wall of Caer Gothwaite, and a skeleton without a shin walks nowhere. He sends the garrison his reckoning every quarter. He keeps the bones two to a skeleton, in a shed."
+  },
+  "bookPage": "Tristram Adamson of Little Haven, to his cousin Gracien Adamson, registrar of Fort Gwyntell. Cousin: your last letter asks how I can be sure the skeletons whose shins I have bought will not walk again. I am not sure they are dead. Nobody on this isle is. I am sure they are lame. You keep a book in which nothing can be proved, and I keep one in which everything can, and I think we are both doing the same work: writing down what the war cannot take back. This quarter, one hundred and twelve shins, fifty-six skeletons. The garrison at the wall writes that it has buried eleven fewer. They also write that the smell from my shed reaches them across the water. That is untrue, but I have entered it.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} struck down Tristram Adamson of Little Haven in {minutes} minutes, and the clan saw it.",
+    "loss": "The clan's defenders drove {raidLeader}'s company of {realm} away from Tristram Adamson's door."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "realm-of-camelot"
+  ],
+  "related": [
+    {
+      "id": "dales-of-devwy",
+      "relation": "his cousin Gracien Adamson keeps the register at Fort Gwyntell"
+    },
+    {
+      "id": "isle-of-glass",
+      "relation": "the ebon skeletons walk under the sea to the wall of Caer Gothwaite"
+    }
+  ]
+}

@@ -1,0 +1,295 @@
+{
+  "id": "avalon-city",
+  "name": "Avalon City",
+  "realm": "Albion",
+  "regions": [
+    50
+  ],
+  "aliases": [
+    "avalon"
+  ],
+  "summary": "The burned seat of Albion's learning on the Shrouded Isles, occupied by five drakoran clans who have taken up the trades of the city they destroyed.",
+  "facts": [
+    {
+      "text": "Morgana, seeking all of Arthur's former lands, allied with the drakoran, dragon-men said to be led by a huge dragon. They devastated Avalon Isle and its capital, Albion's centre of learning, and drove out its people.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    },
+    {
+      "text": "Avalon City is a largely destroyed dungeon for levels 35-50; Arawn leads the Inconnu to reclaim it.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=66"
+    },
+    {
+      "text": "In Mythic's Catacombs lore Morgana trapped Merlin in a crystal in a cave of converging ley lines and attacked Avalon with the drakoran horde; Arawn's forces are stretched by his war against the drakoran in Avalon.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/node/464"
+    },
+    {
+      "text": "The drakoran of the city come in five clans whose names echo their lords': drau'gyn (Dra'argus), dry'ak (Dura'ek), syhr'phint (Sys'sro), vyr'em (Vera'erius) and wi'voron (Weno'iak); the lords' linked packs are of their own clan. The clan reading is inferred from names and packs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Their ranks carry old English trade names: reeve, sutler, joyner, lorimer, tranter, catchpole, stallman, acater, halberdier, alblaster.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Players in January 2003 described a named near the Crystal Cave entrance, by the flamethrowers, who could not be struck until a great flaming orb upstairs was destroyed; an October 2004 reply named him Dra'argus the Mighty.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=66"
+    },
+    {
+      "text": "No period raid count was found for Dura'ek; the raid is sized like Krondon.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Existing bot chat says the drakoran have mystics, medics and sawbones, and asks who empowered Dura'ek.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "Albion bot chat: the old guides said the marsh ran right up to the edges of Avalon City; the drakoran have mystics, medics and sawbones.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "The dusk-reading of the causeway (the water taught to forget), the colleges' order on Elowen's list (stars, old tongues, law, healing, the school of making, then cloister, old schools, observatory, yards and the chancellors' court), Chancellor Rhydderch and the charters, Mistress Angharad and Morgana's question, Ifor Netmender and the boats, the nine chests, Sir Maelon's attempt by the bridges, Sefin of the Inconnu, the fishermen's sayings for Weno'iak and Vera'erius and the drau'gyn hearth and syhr'phint pit customs are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Dra'argus takes no damage and does not attack while his Drau'gyn Sphere lives; once roused it bursts 300 heat in a 500 radius every 4 s and pulls real players 200-300 from it into its middle. Sys'sro throws a random real player near him (never his target, never a bot) into his pit every 10-15 s; the 15 pit beasts take no damage and die with him. Vera'erius heals himself (400, 3 s cast, every 8 s) at or below 70% and is healed by body and spirit damage. Weno'iak's Annihilate (450 spirit) bursts in a 500 radius around himself; his Lights hit one target at up to 1,500.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/"
+    }
+  ],
+  "story": "Avalon stood on an isle in a marsh, and the readers of its second college, the old tongues, taught the water to forget it was there: at dusk a reader walked the causeway and read the water its own history, and the path stayed dry. Elowen of Caer Gothwaite, last of that college, walked it eleven years. Nobody has walked it since the burning, and the marsh is remembering its way back into the lower streets.\n\nElowen's list keeps the colleges in their order: stars on Caradoc's warm ground, the old tongues, the law with its charters, healing at its spring, and the school of making from which the Academy of Camelot descends; then the cloister, the old schools, the observatory, the yards and the chancellors' court, where Chancellor Rhydderch stayed to carry the charters out burning. Morgana read in every college, taught the dusk-reading by Mistress Angharad, and asked whether the water could be made to remember something it had never been; on the first night the flamethrowers burned the libraries in the order of the list.\n\nThe fishermen of the Avalon shore took the readers off by boat, Ifor Netmender among them; nine chests reached Caer Gothwaite, and some of what burned survives only as the colleges' payment of books to Krondon, kept by ogres. The drakoran live in the city by trade and clan. The fishermen say stand off from the reeve-lord Weno'iak, whose light breaks every man close about him; the vyr'em say a swordsman who binds his own wounds must be given no breath to do it. The drau'gyn lord does not lift his hand, nor can a hand be lifted against him, while his clan's fire burns, and the fire draws in whoever hovers at its edge; the catchpole's beasts are outlived, not fought, and lie down when their master falls.\n\nSir Maelon's attempt to retake the city by the bridges drowned in a marsh that remembered; the Inconnu Sefin said Avalon will be retaken only when someone walks the causeway at dusk with the right words. The city is a door held over the stair to the Crystal Cave, and the readers' children say Elowen's list at dusk on the earthen wall.",
+  "legend": "Every lord in Avalon City has a trick, and every trick has killed a raid, and the Albion guilds who raided it in 2003 learned them the hard way. Dra'argus cannot be hurt until you break the great flaming orb upstairs in his house, and players were puzzling that out at the turn of the year. Dura'ek drinks fire and frost, so leave the wizards on his avowries. Vera'erius drinks body and spirit. Sys'sro throws you into his pit with fifteen beasts. Weno'iak rides with sixteen horsemen and their steeds. The city is a thousand mobs deep, so raids move street by street, and the drakoran sneaks at the back entrance con red to anyone under forty. The old guides said the marsh ran right to the city's edges; nobody has ever found those edges. The readers of Caer Gothwaite still keep a list of the colleges, and some raiders carry a copy so they know which ruin they are standing in. Never call it a ruin to an old reader. They say it is only occupied.",
+  "atmosphere": {
+    "firstEntry": [
+      "Avalon burned. The drakoran live in the ashes now.",
+      "The libraries are gone. Dragon-men keep the streets.",
+      "Ash on the cobbles. The colleges are gone.",
+      "Drakoran reeves keep the streets you were taught in.",
+      "A city of readers, kept by those who burned it."
+    ],
+    "areas": [
+      {
+        "name": "Dura'ek's court",
+        "x": 32425,
+        "y": 28962,
+        "z": 8756,
+        "radius": 900,
+        "lines": [
+          "The heart of the burned city. Its lord is empowered.",
+          "Six avowries stand at the chair. Their lord drinks fire.",
+          "The chancellors' court. A drakoran sits in the chair."
+        ]
+      },
+      {
+        "name": "the flamethrowers' house",
+        "x": 26899,
+        "y": 37223,
+        "z": 8644,
+        "radius": 800,
+        "lines": [
+          "A great orb burns upstairs. Its lord cannot be touched.",
+          "The college of stars, burned first.",
+          "Look up the stairs."
+        ]
+      },
+      {
+        "name": "the pit",
+        "x": 41505,
+        "y": 39496,
+        "z": 8040,
+        "radius": 800,
+        "lines": [
+          "The ground falls away into a pit. Something moves in it.",
+          "Fifteen beasts in the old cloister garden.",
+          "If one of yours goes in, go in after them."
+        ]
+      },
+      {
+        "name": "the cavalry yards",
+        "x": 35817,
+        "y": 33952,
+        "z": 8625,
+        "radius": 900,
+        "lines": [
+          "Warsteeds stamp in the yards of the colleges.",
+          "Sixteen riders and steeds keep the yards.",
+          "The readers' observatory overlooks the yards."
+        ]
+      },
+      {
+        "name": "the way down",
+        "x": 23787,
+        "y": 40092,
+        "z": 8676,
+        "radius": 1500,
+        "lines": [
+          "The sentries here bear a dragon's name.",
+          "The stair under the heart of the city.",
+          "Below, light comes back cold and many-coloured."
+        ]
+      },
+      {
+        "name": "the landing",
+        "x": 31159,
+        "y": 47380,
+        "z": 8314,
+        "radius": 1200,
+        "lines": [
+          "The marsh was meant to run right to these edges.",
+          "Drakoran sneaks watch the landing."
+        ]
+      },
+      {
+        "name": "the back gate",
+        "x": 21094,
+        "y": 42184,
+        "z": 7911,
+        "radius": 1000,
+        "lines": [
+          "The back entrance. Something red watches it.",
+          "The road the readers fled by."
+        ]
+      },
+      {
+        "name": "the swordsmen's quarter",
+        "x": 23752,
+        "y": 28660,
+        "z": 8791,
+        "radius": 900,
+        "lines": [
+          "Swordsmen in ranks. Their lord stands at the front.",
+          "The vyr'em do not hide behind anyone."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the drakoran burned avalon city to rubble, and someone held their leash",
+      "the drakoran aren't stupid beasts. they have mystics, medics and sawbones. that's an army",
+      "[five|5] drakoran clans in avalon city, one lord each. [and they took up the trades|reeves and sutlers and joiners], like it was their city all along",
+      "avalon city was where albion kept its learning. merlin studied there. [so did morgana|so did the witch]",
+      "the guards on the way down to the crystal cave are called xanxicarian. [named after the dragon|think about that]",
+      "avalon city had a college for everything. stars, law, healing, old tongues. [all ash now|burned]",
+      "the readers watched avalon burn from their boats. on the third night a light came up out of the ground",
+      "the readers in caer gothwaite still keep a list of the colleges so someone knows which ruin was which",
+      "five clans in avalon city. drau'gyn, dry'ak, syhr'phint, vyr'em, wi'voron. [one lord each|five lords]",
+      "the drau'gyn keep the flamethrowers in avalon. dra'argus is their lord",
+      "the syhr'phint are the catchpoles in avalon city. [sys'sro runs them|they keep order for the drakoran]",
+      "the drakoran in avalon have reeves and sutlers and joiners. [like a real city|they live there now]",
+      "the wi'voron are the drakoran cavalry. weno'iak rides with them"
+    ],
+    "rumour": [
+      "dura'ek the empowered leads the drakoran in avalon city, they say. empowered by whom is the question",
+      "[heard|someone said] you cant hurt dra'argus until you break the big orb upstairs",
+      "[heard|word is] fire and frost heal dura'ek. bring something else",
+      "[heard|someone said] the light that came up out of avalon was merlin's crystal",
+      "[heard|someone said] the light that came up out of avalon was xanxicar waking",
+      "never call avalon city a ruin to an old reader. [occupied, they say|its only occupied]",
+      "[heard|word is] the drakoran sneaks at the back gate con red to anyone under forty",
+      "heard the inconnu fight in avalon's streets because morgana steals arawn's dead"
+    ],
+    "tell": [
+      "avalon city? the burned city on the isles. five drakoran lords, dura'ek the empowered at the heart, and the way down to the crystal cave",
+      "drakoran occupied city. every lord has a trick, ask before you pull. raid for dura'ek",
+      "burned ruins full of dragon-men. the crystal cave entrance is in the middle",
+      "is avalon city hard? its a thousand mobs deep. raid for duraek, groups for the streets",
+      "where is avalon city? on avalon isle in the shrouded isles. boat from the isle of glass",
+      "what's in avalon city? five drakoran lords and the way down to the crystal cave"
+    ]
+  },
+  "loremaster": {
+    "intro": "Avalon was Albion's seat of learning, and [Morgana] burned it. The [drakoran] did not leave. Five clans hold it now under five lords, and the greatest of them is [Dura'ek].",
+    "topics": {
+      "morgana": "Merlin's own pupil, taught in Avalon's colleges. She came back at the head of the dragon-men, and the libraries burned first. Arawn sent his Inconnu to fight her here, for she steals his dead.",
+      "drakoran": "Dragon-men, and no beasts. They have reeves and sutlers, joiners and physicians, catchpoles and stall-keepers. Five clans, each under a lord: [Dra'argus], Dura'ek, [Sys'sro], [Vera'erius] and [Weno'iak]. They are said to follow a dragon of their own. Ask about the [Crystal Cave].",
+      "dura'ek": "The Empowered. He rules the city from its heart, and fire and frost only feed him. The clans whisper that his power is not his own. I think they are right, and I think I know whose it is.",
+      "dra'argus": "The Mighty, lord of the drau'gyn and their flamethrowers. He cannot be wounded while the great orb in his house burns. Break the orb.",
+      "sys'sro": "The Ruthless. Fifteen beasts live in his pit, and he throws men into it. Keep your back to the wall.",
+      "vera'erius": "The Brave. Spirit and body magic heal him, and when he is hurt he heals himself. Bring steel.",
+      "weno'iak": "The Enlightened. His clan rides warsteeds, and he burns men with a light that is not fire.",
+      "crystal cave": "Under the heart of the city a way goes down, guarded by sentries who carry the name Xanxicarian. At the bottom sleeps a dragon with two heads. I do not think the drakoran found him. I think he called them.",
+      "colleges": "Avalon had a college for every art: stars, law, healing, the old tongues, the magic Merlin carried to Camelot. The readers of Caer Gothwaite keep their list in order, against the day the city is retaken.",
+      "readers": "The scholars of Avalon who fled by boat to Caer Gothwaite. They watched the burning, and on the third night they saw a light rise from the city's heart. Ask about the [crystal cave].",
+      "clans": "Drau'gyn of [Dra'argus], dry'ak of [Dura'ek], syhr'phint of [Sys'sro], vyr'em of [Vera'erius], wi'voron of [Weno'iak]. Each clan keeps its quarter and its trade.",
+      "third night": "On the third night of the burning a cold, many-coloured light rose out of the ground at the city's heart. Some readers say Xanxicar woke. Some say Merlin's crystal was brought there. No one has gone to see and returned.",
+      "inconnu": "Arawn's servants, who fight in Avalon's streets because Morgana steals their lord's dead. Albion's knights fight beside them, uneasily.",
+      "causeway": "The path across the marsh that the readers of the old tongues kept dry at dusk by reading the water its own history. Nobody has walked it since the burning, and the marsh is coming back. See [colleges].",
+      "drau'gyn hearth": "A drau'gyn lord's fire of his clan's own working. While it burns he lifts no hand and no hand can be lifted against him; it bursts when struck and draws in whoever hovers at its edge. See [dra'argus].",
+      "catchpole's pit": "Sys'sro's beasts answer to him alone. No blade wounds them; they are outlived, and lie down when he falls. He throws in whoever stands near, never the one he fights. See [sys'sro].",
+      "bridges": "Sir Maelon of Caer Gothwaite tried to retake Avalon by the three marsh bridges and the remembering water drowned his men at the third. The Inconnu say the city will be retaken only from the [causeway]."
+    }
+  },
+  "book": {
+    "title": "What the Scholars Left",
+    "pages": [
+      "What the Scholars Left, set down at Caer Gothwaite by Elowen, last of the readers of the college of the old tongues, so that something of us is written somewhere. Our city stood across the water from the marsh, and the marsh ran right to its edges, for our masters had made the water forget it was there. We had a college for every art. Merlin read with us as a boy. So did the girl who came back. We taught her well. That is the whole of our shame, and it is enough. I set down here the colleges in their order, so that someone will know.",
+      "She did not come alone. She came with the dragon-men, and they burned the libraries first, because she knew where they were; she had read in every one of them. We fled by boat. From the water we watched the colleges come down one by one: the stars on the first night, the law and the healing on the second. On the third night we saw something we have not been able to explain, a light rising out of the ground at the heart of the city, cold and many-coloured, as if the earth itself were made of glass. Our master of stars wept. I did not know why until much later.",
+      "Our fishermen go close sometimes. They say the dragon-men did not leave. They live in our houses. They have reeves and sutlers and joiners, catchpoles who keep order in our streets, physicians who tend their wounded in our hospital. There are five clans of them, each with a lord, and the clans have taken our quarters as if by lot: the flame-carriers have the tall college by the way down, the halberdiers have the chancellors' court, the catchpoles the cloister, the swordsmen the old schools, the riders the yards. They are not beasts. That is the worst of it. They are citizens.",
+      "The greatest lord sits in the court of our chancellors and is called the Empowered. My fishermen say his own people do not believe the power is his. One of them saw a wizard of the Inconnu throw fire at him in the street and watched the drakoran lord stand in the flame and grow stronger. Frost the same. Steel, the fisherman said, steel he did not like at all. I have written to Camelot about steel. Camelot has written back that it is aware of steel. I think they are not yet aware of what is under the court.",
+      "One fisherman went closer than the rest and came back with a word he had heard the guards say over and over, as soldiers say the name of their king: Xanxicar. We have looked for it in what books we saved. It is in none of them. But the oldest map of Avalon in our possession, drawn before the colleges were built, marks the heart of the isle with a small drawing of a beast with two heads, and no name at all. Our master of stars said, when he saw it, that we had built our city on a lid.",
+      "The Inconnu come to Caer Gothwaite sometimes, pale and quiet, to speak with the knights. I asked one of them what his lord wanted with our city. He said his lord wanted nothing with our city; his lord wanted the witch, who steals the dead, and the witch's friends were in our city, and so his people would fight there until the witch had no friends. I asked him whether the city would be ours again afterwards. He looked at me for a long time and said that the dead do not keep cities, and that I should keep my list.",
+      "The list of the colleges of Avalon in their order, as kept by Elowen of Caer Gothwaite. The stars, on the warm ground. The old tongues. The law. Healing, at the spring. The school of making. The cloister. The old schools. The observatory. The yards. The chancellors' court, at the centre. Of these, the old tongues, the law and healing are burned to the ground, and I cannot say where they stood within a hundred paces. The rest are held, by clan, as written in the margin. And the water, which was here first, and which we taught to forget, and which has not forgiven us. Children of Caer Gothwaite: say it all, the last line too.",
+      "Ifor Netmender of the Avalon shore, as told to a reader of Caer Gothwaite. I took the mistress off on the second night with her books, and she sat in the bows and watched the fire and did not speak until we were past the causeway. Then she asked me to stop the boat. She stood up, in my boat, in the dark, and said something over the water, long, in no tongue I know, and the water went still all round us as if it were listening. Then she sat down and said we could go on. I asked what she had said. She said she had told it where it had been, so it would know where it was going.",
+      "Sefin of the Inconnu to the Constable at Camelot, after the bridges, as the Constable's clerk set it down. She says she told the knight Maelon at the third bridge that the water was rising and that it was not the tide. He said that the readers' plan showed the bridge as sound. She says the plan was right and the knight was wrong, because the plan was drawn when the water still forgot. She brought her people home dry. She asks the Constable to send no more armies to Avalon by the bridges, and to send instead, if he has one, somebody who can speak to water. The Constable asks the readers whether they have one. The readers say: one.",
+      "From the colleges' book of the old tongues, in the hand of Mistress Angharad, saved in the ninth chest. The Lady Morgana walked the causeway alone tonight for the first time and kept it dry from dusk until the bell. At the end of the path she asked me whether the water could be made to remember something it had never been. I did not answer. I have closed the library to her for a year. I write this down so that my successors know that I was asked, and that I did not answer, and that I do not know whether I was right. Below, in another hand, Elowen's: she was not."
+    ]
+  },
+  "bosses": [
+    "duraek-the-empowered",
+    "draargus-the-mighty",
+    "syssro-the-ruthless",
+    "veraerius-the-brave",
+    "wenoiak-the-enlightened"
+  ],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "morgana",
+    "arawn"
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Water That Forgot",
+      "text": "Avalon stood on an isle in a marsh, and for as long as the colleges stood a traveller could walk to them dry-shod at dusk, because the readers had taught the water to forget that it was there.\n\nThe craft belonged to the college of the old tongues, the second college of Avalon, founded a generation after Caradoc the surveyor laid the first stone. Its readers held that every made thing has a name it was given and a name it gives itself, and that water, which has been everywhere, has forgotten most of both. At dusk each day a reader of the old tongues walked out along the causeway path and spoke over the marsh, in a tongue older than the isles, a list of the things the water had once been: rain, river, ice, the sea before there were shores. The water listened to its own history, the readers said, and while it listened it forgot to be in the way. The path stayed dry until morning.\n\nElowen of Caer Gothwaite, the last reader of that college, walked the causeway at dusk for eleven years before the burning. She wrote that it was the dullest duty in Avalon and the only one that never failed, and that the travellers who came across dry-shod never once knew why. The fishermen of the Avalon shore knew. They called the dusk-reader the water's grandmother and left the causeway alone at that hour, out of manners.\n\nNobody has walked the causeway at dusk since the third night of the burning. The water has been remembering ever since. The old guides of the isles said the marsh ran right up to the city's edges; it does, now, and further every year, so that the lower streets of the occupied city stand in black water at the full of the moon and the drakoran have built walkways of plank over them. Elowen says the marsh is not rising. It is only remembering where it used to be.\n\nThe readers of Caer Gothwaite dispute whether the craft could be done again. Elowen says it could, by anyone who has the tongue and walks the path every dusk without fail, and that she is too old and the path is held by the enemy. The Academy at Camelot, which never trusted the old tongues, says the craft was only a tide-table read aloud. The Inconnu, asked, said that the water under Avalon does not forget easily, and that the readers had been very lucky for a very long time."
+    },
+    {
+      "title": "The Colleges in Their Order",
+      "text": "Elowen keeps a list of the colleges of Avalon in the order they were founded, so that someone will know which ruin was which on the day the city is taken back, and the list is itself the best history of the city that survives.\n\nFirst was the college of stars, which Caradoc founded on the warm ground at the heart of the isle and which grew into the tallest building in Avalon, with the great astrolabe on its upper floor. Second, the old tongues, whose readers taught the water to forget. Third, the law, whose readers swore on entering never to give an opinion they had not written down first, and whose college kept the isle's oldest charters. Fourth, healing, built around a spring in the south of the isle, whose water its readers said took the heat out of any wound. Fifth, the school of making, where the arts that Merlin later carried to Camelot were first taught, and from which the Academy of Camelot descends, though the Academy prefers to forget it. After the five came the cloister, where readers of every college walked between lectures; the old schools, where the children of the colleges learned their letters; the observatory, built by the college of stars when its own roof grew too crowded; the stable-yards; and the chancellors' court at the centre, where the readers' governors sat.\n\nThe last of the chancellors was Rhydderch of the law, who held the chair for nineteen years and was in it on the first night of the burning. He sent the readers to the boats and stayed to carry the charters of the law out of the court himself. The fishermen who waited for him said he came down to the water at dawn with his arms full and his robe alight, and would not let them take the charters from him until he was in the boat. He died at Caer Gothwaite a month later. The charters are there still.\n\nEvery quarter of the occupied city is a college on Elowen's list. The drakoran took them, as the Empowered's own chroniclers say, as Morgana had promised: the flame-carriers the college of stars, the doorkeepers the chancellors' court, the catchpoles the cloister, the swordsmen the old schools, the riders the observatory and the yards. The colleges of the old tongues, the law and healing they did not take, because they had burned them to the ground. Elowen says that is the one thing the list cannot tell anyone: where those three were. There is nothing left to point at."
+    },
+    {
+      "title": "The Pupil",
+      "text": "Merlin read at Avalon as a boy, and so did a girl called Morgana, and the colleges have argued ever since about which of the two they taught worse.\n\nMorgana came to the isles as Arthur's half-sister, to be educated as a lady of Uther's house was educated, which meant a year of letters and a husband. She stayed seven years. She read in every college on the list, the only pupil the readers ever allowed to do so, because the masters could not agree which of them she belonged to, and each wanted her. The college of the old tongues claimed her first. Her teacher there was Mistress Angharad, Elowen's own master's master, who wrote in the college's book that the girl learned the dusk-reading in a single season and asked, on the first evening she walked the causeway alone, whether the water could be made to remember something it had never been.\n\nAngharad did not answer her. She closed the college's library to Morgana for a year, the only punishment the readers ever gave her, and Morgana spent the year in the college of stars instead, where the master of the day taught her what the great astrolabe was for, and in the school of making, where Merlin was already a name. When she left the isles at last she kissed Angharad's hand at the causeway and said she would come back to finish her reading. Angharad wrote that down too.\n\nThe three accounts of what the colleges did wrong do not agree. The college of stars, what is left of it, says Morgana was taught nothing she could not have found elsewhere, and that the fault was in the girl. The Academy at Camelot says the fault was in the school of making, which taught her the arts before it taught her what they cost; that is the Academy's reason for forgetting it descends from that school. The Church says the fault was in letting a woman read in every college at once. Elowen says the fault was Angharad's, because Angharad saw the question and did not answer it, and a question unanswered is a question the asker answers herself.\n\nOn the first night of the burning, Elowen writes, the drau'gyn flamethrowers went to the libraries of the colleges in the order of the list, without a guide, as though they had been given it. The college of the old tongues they burned last of the three, and they burned the causeway path with it."
+    },
+    {
+      "title": "The Boats and the Books",
+      "text": "The readers left Avalon by boat, over three nights, and the fishermen of the Avalon shore carried them.\n\nThe fishermen owed the colleges nothing. For generations the readers had bought their quiet sea from the storm-keeper of Krondon, across the strait, with books, and the fishermen had paid their own share of the storm-tithe in fish. But they came, every boat on the shore, and lay off the causeway in the dark while the colleges burned, and took the readers off in the order they came down to the water. Ifor Netmender, whose boat took Elowen, said afterwards that the readers brought more books than clothes, and that his boat sat so low on the second night that he made two of the masters choose between their books and their wives. One chose the books. Ifor put him ashore on the Isle of Glass and would not take his fare.\n\nWhat the boats saved is in the readers' store at Caer Gothwaite: nine chests and some loose bundles, the charters of the law that Chancellor Rhydderch carried out burning, the oldest map of the isle, and less than a twentieth part of what the colleges held. For some of what burned there is a second copy in the world, and it is in the worst place there could be. The books the colleges paid to Krondon for their quiet sea are on the shelves of the hall-folk's library under the hill, where the thrawn ogres keep them and copy them into shapes. Wenna of Caer Gothwaite, who went down into Krondon twice, found the colleges' seals on the bindings and wept, and the readers have asked the Constable every winter since for a company to bring them out.\n\nThe readers settled at Caer Gothwaite behind the earthen wall and the three ring-forts, and they have never stopped being a college in exile. They keep the list. They keep the dusk on the earthen wall, where Elowen still speaks the water's history over the ditch every evening, out of habit, though the ditch is dry. They teach. The children of Caer Gothwaite learn their letters from readers who once taught in the old schools, and are told on their first day that the schools are held by the swordsmen of the vyr'em and drilled in, and that one day they will be schools again.\n\nIfor Netmender's grandson still fishes the Avalon shore. He says the drakoran sometimes come down to the water at dusk and stand looking at the causeway, as if they had heard there was something to see."
+    },
+    {
+      "title": "Citizens of the Burned City",
+      "text": "The strangest thing about Avalon is that it is busy.\n\nThe drakoran did not burn the city to leave it. They live in it, by clan and by trade, and the trades they took are the city's own, with the colleges' names for them. There are reeves of the wi'voron who keep tallies of the stores on the readers' own slates, sutlers and acaters who buy in what the clans eat, joiners who mend the roofs badly and lorimers who keep the harness of the cavalry, tranters with carts in the streets, catchpoles at the corners, stall-keepers in the market square where the readers bought their ink, and physicians in the old hospital who have never heard of the healing college's spring and would not drink from it if they had. The readers' fishermen, who trade with the stall-keepers on the quiet at the edge of the marsh, say the drakoran pay fairly and haggle badly, and that they ask, every time, what the city was like before.\n\nEach clan's lord keeps his quarter in his own fashion, and the fishermen have a saying for each. Of Weno'iak, the riders' lord, who keeps the observatory and the yards and whose cavalry rides when he rides, they say: stand off from the reeve-lord. His light is not fire, and it does not travel; it breaks every man close about him at once, and those who kept their distance had only his eye to face, which was bad enough. Of Vera'erius, the swordsmen's lord in the old schools, they say he is the only honest one, and the knights of Albion agree. The withering spells of the Academy and the spirit-spells of the Inconnu only mend him, so the knights fight him with steel; and when he is hurt he stops to bind himself, and the vyr'em themselves have a saying that the knights have taken up: a swordsman who binds his own wounds must be given no breath to do it.\n\nThe readers of Caer Gothwaite do not know what to make of it. Elowen writes that the clans are not beasts, and that this is the worst of it. The Church says the drakoran are aping their betters and will tire of it. The Inconnu say the clans are doing what every conqueror does, which is to put on the coat of the conquered, and that in a few generations the drakoran will believe they built Avalon. Weno'iak, the fishermen say, has already begun to say so, and sits in the observatory at night with a lamp and the readers' own books."
+    },
+    {
+      "title": "The Hearth and the Pit",
+      "text": "Two of the clans brought customs of their own to Avalon, and the city has learned to fear both.\n\nThe drau'gyn carry fire. A drau'gyn lord does not keep a hearth as a man does; he keeps a fire of his clan's own working, a sphere of flame that is his house and his honour, and the clan's custom is that while it burns he does not lift his hand, and no hand can be lifted against him. Dra'argus set his on the upper floor of the college of stars, where the great astrolabe stood, and sits in the hall below it untouchable, waiting. The Inconnu who first fought him there struck at him for the better part of an hour and never marked him, and he never struck back; it was a boy of an Albion company, bored, who climbed the stair to see the view and found the fire. The drau'gyn hearth is not easily put out. Struck at, it bursts, again and again, and it breathes in like a forge; the Inconnu say a man who hovers at the edge of it is drawn into the middle of it, and that the safe places are close in or well away.\n\nThe syhr'phint keep order, and their lord Sys'sro keeps a pit. He dug it in the cloister garden where the readers' old pear tree stood, and keeps in it beasts that are his clan's own, that answer to the catchpole and to nobody else. No blade has ever wounded one of them, the fishermen say; the catchpoles' beasts are not fought but outlived, and when their master falls they lie down where they are. Sys'sro does not throw into the pit the one he is fighting. He throws whoever stands near, as a catchpole takes a bystander to frighten a crowd. One fisherman saw a knight of Albion thrown in. His companions did not go down after him; they went for the lord, all at once, and when Sys'sro fell the beasts lay down and the knight climbed out over them.\n\nThe other three clans despise both customs. The vyr'em say a lord who hides behind a fire is no lord, and a lord who needs a pit is no swordsman. The dry'ak say nothing, and hold the doors. The wi'voron say both customs are older than the drakoran's coming to the isles, and that the drau'gyn and the syhr'phint are the only clans who remember where they came from. The Camelot loremasters have written that down, and have not yet decided whether it matters."
+    },
+    {
+      "title": "The Bridges",
+      "text": "Albion has tried once to take Avalon back by force, and the readers do not like to speak of it.\n\nIn the third summer of the war Sir Maelon of Caer Gothwaite, a knight who had grown up under the earthen wall on the readers' stories, asked the Constable for leave to retake the city by the bridges, the three stone causeways the colleges had built across the marsh channels on the landward side. He had two hundred men, a company of Inconnu under a guide called Sefin, and the readers' oldest plan of the city, drawn by Rhydderch's clerks. He took the first bridge in an hour. The vyr'em held the second all day, at the front, as their lord holds every front. On the third, at dusk, the marsh came up around Maelon's men as they crossed, black and cold and quicker than any tide, because nobody had read the water its history that evening or any evening for three years, and the water remembered that the bridges had been built across it without its leave.\n\nMaelon brought sixty men home. Sefin of the Inconnu brought all of hers, because she had seen the water rising and would not cross; she told the Constable afterwards that she had warned Maelon, and Maelon did not deny it. The Constable has granted no leave to retake the city since. Companies go in, as the Inconnu do, to strike at the clans' lords and come out again; nobody goes in to stay.\n\nThe readers' answer was to send Elowen to the earthen wall at dusk to read the water its history over the dry ditch, so that the craft would not be forgotten as well as the path. The Church's answer was a sermon on pride. The Inconnu's answer was Sefin's, given to the Constable in a sentence the Constable's office has kept: that Avalon will be taken back on the day someone walks the causeway at dusk with the right words, and not one day before, and that whoever does it will need an army behind them and no army in front.\n\nThe drakoran have kept the bridges as Maelon left them, the first one broken, the second scarred, the third standing. The fishermen say Vera'erius walks out on the second bridge some evenings and looks at the scars, and that he seems pleased with them."
+    },
+    {
+      "title": "A City on a Lid",
+      "text": "Under the chancellors' court there is a stair, and the readers of Avalon built their whole city on top of it without knowing it was there.\n\nElowen's master of stars said it first, when he saw the oldest map of the isle with its small two-headed beast at the heart: we built our city on a lid. What is under the lid the Crystal Cave's own story tells, and the readers of Caer Gothwaite keep that story separately, in a different chest, because Elowen says the city and what lies under it should not be read together. The one thing the city's story needs from it is this: that the light the readers saw rise from the heart of Avalon on the third night of the burning came out of the ground under the chancellors' court, and that the drakoran lord who holds that court went down the stair that night and came up the master of the other four.\n\nSo the city is not only occupied. It is a door, held. The dry'ak keep its doors above, the Xanxicarian sentries keep the stair below, and the other clans keep the quarters around it, as a household keeps the rooms around the room where something sleeps. The readers think the clans did not choose Avalon because it was Albion's seat of learning, whatever Morgana told them. They think the clans were called to it, and that the burning of the colleges was only the clearing of the house.\n\nThe three witnesses disagree, as always, about what Albion should do. The Church wants the city burned again, properly, and the stair filled in. The Academy wants the colleges' ground back for the Academy, which means the school of making, and says nothing about the stair at all. The Inconnu want the witch's friends gone from the isle and do not care who keeps the city afterwards, so long as it is not Morgana. The readers want their colleges, in their order, and the causeway walked at dusk.\n\nElowen's list ends with a line she added after the bridges. It is not the name of a college. It says: and the water, which was here first, and which we taught to forget, and which has not forgiven us. The readers' children at Caer Gothwaite learn the list by heart, last line and all, and say it at dusk on the earthen wall, all together, over the dry ditch, as though someone might be listening."
+    }
+  ]
+}

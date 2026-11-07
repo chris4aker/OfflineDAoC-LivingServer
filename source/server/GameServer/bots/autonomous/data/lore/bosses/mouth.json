@@ -1,0 +1,116 @@
+{
+  "id": "mouth",
+  "name": "Mouth",
+  "catalogKey": "albion-named-mobs-classic-zones/mouth",
+  "locationId": "llyn-barfog",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "30,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 20% of melee and 30% of everything else.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Mouth.cs"
+    },
+    {
+      "text": "30% of its hits add a Lifedrain (500 body); every point of its spell damage heals it.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Mouth.cs"
+    },
+    {
+      "text": "Every 20-35 s while it fights a 'Mouth's minion' (level 55-59) appears beside it; minions die with it or when it resets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Mouth.cs"
+    },
+    {
+      "text": "It walks home at full health when nobody is left on its aggro list; respawn is the epic-encounter interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/serverproperty/ServerProperties.cs (set_epic_game_encounter_respawninterval, default 60)"
+    },
+    {
+      "text": "The chewed ground, its get, Crim's watch and the hill folk's refusal to name it are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The hill folk of Llyn Barfog gave it no name but what it is: a mouth. It lives in a den on the eastern slope above the hobgoblins' hills, where the ground itself looks chewed, the turf bitten down to the stone in half-moons the size of cart wheels, and it eats. That is all it does. The old men of Barfog say it came through the lake's door the night the lady took her cattle home, because it was hungry, and that it has never once stopped being hungry since.\n\nWhen it fights, it eats from whoever it is fighting. Its bite takes more than flesh: something of the bitten man's strength goes into it, and whatever it takes it keeps, so that the longer a man stands in front of it, the longer it stands too. The hobgoblins, who have lost more to it than anyone, say a man should never be left to be chewed on long without someone pouring strength back into him, because a mouth that is fed does not tire.\n\nIt has get. Smaller mouths, its own kind, come to it while it fights, one after another, from wherever they were in the hills, and each is hungry as it is. The hill folk believe they come for the meal, not to save it. When the great mouth is still, the small ones are still too, and the hobgoblins say that is the only proof anyone has that they are its children and not just its neighbours.\n\nA man called Crim lives on the slope below the den, alone, and watches it. He has watched it for years. Twr ap Alsig says Crim lost his brother to it and has been waiting for someone to shut it ever since. Crim says nothing of the kind, but he keeps a count of the companies that go up, and of those that come down.",
+  "legend": "Mouth, level 62, 30k, in its den on the eastern slope of Llyn Barfog. 30% of its hits add a 500 body lifedrain on its target, and the drain heals it, so keep the tank healed hard and keep dps on it: the longer it chews, the longer it lives. Every 20 to 35 seconds a minion (55-59) appears next to it; have someone pick each one up or kill it fast, and they all die when Mouth does. No mez, no stun. Body resist on the tank helps. A wipe resets it to full and clears the minions; it respawns about an hour after death.",
+  "yells": {
+    "aggro": [
+      "The ground cracks open in a ring of teeth.",
+      "A wet, hungry sound from the den.",
+      "Mouth opens."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Mouth opens wider."
+      }
+    ],
+    "death": [
+      "The great jaws go slack.",
+      "The den is quiet. Nothing is chewing."
+    ],
+    "slay": [
+      "Eaten.",
+      "The jaws close.",
+      "Mouth is fed, and wants more."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ground here is chewed.",
+      "Half-moon bites in the turf, as big as wheels."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Mouth calls its young to the feast!"
+      }
+    ],
+    "realmFirstKill": "Mouth is shut for good."
+  },
+  "botLines": {
+    "briefing": [
+      "mouth, 62, 30k. 30% of its hits drain 500 off the tank and heal it. heal the tank hard",
+      "a minion pops every 20-35 sec, grab it or kill it fast",
+      "minions die when mouth dies. dont chase them at the end",
+      "cant cc it. body resist on the tank helps"
+    ],
+    "aftermathWin": [
+      "mouth is shut",
+      "that thing was just teeth",
+      "kept the tank up and it starved. nice",
+      "go tell crim"
+    ],
+    "aftermathLoss": [
+      "it kept draining the tank back to full itself",
+      "minions piled up, we ignored them too long",
+      "the tank went down to two drains in a row",
+      "not enough dps, it healed faster than we hit"
+    ],
+    "rumour": [
+      "heard there's a thing at llyn barfog just called mouth. nobody knows what else to call it",
+      "[someone said|heard] mouth eats you to heal itself",
+      "heard crim below the den counts who goes up and who comes down",
+      "[heard|someone said] mouth's minions only come for the meal"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "mouth",
+    "text": "The hill folk gave it no name but what it is. It lives where the ground looks chewed on the eastern slope of Llyn Barfog, eats the strength of whoever it fights and keeps it, and smaller mouths come to it, one after another, for the meal."
+  },
+  "bookPage": "From the Barfog Book of Twr ap Alsig. Of Mouth, and of Crim. Crim lives alone on the slope below the den and keeps a count, cut on the post of his door: a notch for every company that goes up, a cross for every one that comes down whole. There are more notches than crosses. I asked him once whether he lost someone to it. He said a mouth that is fed does not tire, and that he had seen companies stand and let it chew on one man with nobody pouring strength back into him, and come down short. I said that was not what I asked. He said it was what he answered.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} shut Mouth for good on Barfog's eastern slope in {minutes} minutes.",
+    "loss": "Mouth fed on {raidLeader}'s company of {realm}, and is hungry still."
+  },
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "fester",
+      "relation": "the other hunger of the hills; Mouth eats, Fester rots"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "id": "srral-dulss",
+  "name": "Sr'ral Dulss",
+  "npcNames": [
+    "Sr'ral Dulss"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Sr'ral Dulss: NPC template 60166507, level 39, the drakoran elite model, no faction, aggro 200 (range 500), no spells, respawn 80 s, in the west of the dales at 395570, 416446 among drakoran mystics (42), medics (40) and condottieri (40).",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Sr'ral Dulss as the condottieri's paymaster is Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The drakoran legion does not do all its own fighting in the dales. It hires. The condottieri of the western ground are sell-swords of the legion's lesser clans, with medics to keep them working and mystics to keep them honest, and Sr'ral Dulss pays them.\n\nSr'ral Dulss keeps the purse and the roll, and is the only one of the company who knows exactly what each blade costs and what each has earned, and who will not be paid this season. The condottieri hate their paymaster as sell-swords always hate the one who holds the money, and they would cut that throat in a moment if the legion would let them. The legion will not, and so they stand round Sr'ral Dulss like a wall, because if anyone else killed their paymaster they would never see a coin again.\n\nGracien Adamson at the fort says that is the most honest arrangement in the dales.",
+  "legend": "Sr'ral Dulss, level 39 drakoran, in the west of the dales with drakoran mystics (42), medics (40) and condottieri (40) around. No faction, but the camp is thick and aggressive: kill the mystics and medics first; nothing has spells in the data, but they are aggressive and close, and they all come. Plain melee, no spells. Respawn 80 seconds. Good named for the high thirties.",
+  "yells": {
+    "aggro": [
+      "You are not on the roll.",
+      "Condottieri! Earn your pay!"
+    ],
+    "phases": [],
+    "death": [
+      "The purse... nobody... gets paid..."
+    ],
+    "slay": [
+      "Struck from the roll.",
+      "Unpaid."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A paymaster among sell-swords who hate the purse."
+    ],
+    "phases": [],
+    "realmFirstKill": "Sr'ral Dulss has fallen. Nobody gets paid this season."
+  },
+  "botLines": {
+    "briefing": [
+      "srral dulss in the west dales, mystics medics condottieri round him, kill the casters first",
+      "39 drakoran, plain melee"
+    ],
+    "aftermathWin": [
+      "srral down. the condottieri wont be paid",
+      "got the paymaster"
+    ],
+    "aftermathLoss": [
+      "the mystics shredded us before we reached him"
+    ],
+    "rumour": [
+      "[heard|someone said] the condottieri guard srral dulss because he has the purse",
+      "heard srral dulss knows what every blade in the legion costs"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "srral dulss",
+    "text": "The paymaster of the drakoran condottieri in the west of the [dales of devwy], whom the sell-swords hate and guard for the same reason: the purse."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} struck Sr'ral Dulss off the roll in the western dales in {minutes} minutes.",
+    "loss": "Sr'ral Dulss paid the condottieri well that day; {raidLeader} of {realm} fell back."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "tier": "minor"
+}

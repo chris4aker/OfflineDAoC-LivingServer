@@ -1,0 +1,341 @@
+{
+  "id": "black-mountains-north",
+  "name": "Black Mtns. North",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    3
+  ],
+  "aliases": [
+    "black mountains north",
+    "bmn"
+  ],
+  "summary": "The high valleys of the northern Black Mountains: Swanton Keep and its three questions, Snowdonia Station, the hill-folk, the goblin king, the druids' cemetery and the orders that pass through the western pass.",
+  "facts": [
+    {
+      "text": "Black Mtns. North is zone 3 of region 1, with Swanton Keep and Snowdonia Station and about 380 monsters: bears, spiders, lions, smugglers, wargs, cockatrices, hill-folk, druids and their dead, ghost miners, goblins and dragon ants.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob tables, region 1 zone 3 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Sergeant Cosworth and Sir Gerenth are scripted skeletons in the druids' faction who call their own helpers when they are fought.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/SgtCosworth.cs, source/server/GameServer/scripts/mobs/AlbionMobs/SgtGerenth.cs"
+    },
+    {
+      "text": "Departed Hero: Morgana raised the knight Sir Gerenth from the dead and left him with druids in a cemetery in the North Black Mountains; put him to rest and bring back his bone dagger.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Barnett's Shield and Bedelia's Grief: Mootang, in the back left hut of the goblin camp near Swanton Keep, goaded Barnett on King Smugluk's order; Barbaric Tales: Mystic Ulfwag keeps half the book of knowledge in the fort south of Swanton Keep.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Path of the Renegade: take the Arawnite messenger's orders in the pass; Omis deciphers them. Oaken Boots: ghost miners appear at night up the hill past the dragon ants north of Snowdonia Station.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Deserter Amano: Lord Prydwen sends players to end the deserter Amano's treachery.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Real-world folklore: the Cauld Lad of Hylton is an English ghost-brownie, a stable boy killed by his master, who tidied the house at night and left when given a gift; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Cauld_Lad_of_Hylton"
+    },
+    {
+      "text": "Cadwgan the gate-warden and his Gate-Book, the three questions as Swanton's (carried north by Bardalph), Alrek's 'the hills', the beaks as a necromancer's forgotten first studies, Erick Redbeard's contempt for the mine bargain, Elam the priest who read a book in the wrong order and Amano running from what he saw are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The high valleys. North of Humberton and Ludlow the Black Mountains close in, and the road climbs between bare tops and dark woods toward Snowdonia and the frontier. This is the old hill country, and the hill-folk were here before any king: tall people in furs and paint who keep a chief and a shaman and a camp of their own in the north-western valleys and do not think of themselves as Albion's at all. The Romans drove a mine into the hill above the station and worked it with slaves; the mine fell in long ago, and the miners who were in it at the time still come out at night and walk up the hill past the ants' nests with their picks on their shoulders. Mathien of Snowdonia Station, whose children are smiths in the south, has watched them from his door for thirty years. He says they are always going to work. He has never seen them come home.\n\nThe keep and the station. Two places of the realm hold the valleys. Swanton Keep stands on the northern height, the realm's last castle before the frontier road, with a garrison, a gate-warden and a gate that has been kept the same way for as long as the keep has stood: every stranger is asked who sent him, what he carries and who will answer for him. The questions are older than the keep's present walls, and a gate-warden's daughter of Swanton took them north to the Pennine watch, where she is still asking them. Snowdonia Station, in the middle valley, keeps the road, the stable and the trade, with a leech and a weapon-seller called Osric who denies that he owns any land.\n\nWhat went wrong. The hills are full of other people's business. The goblins of the Black Mountains have a camp near Swanton with a king of their own, Smugluk, and a fort south of the keep where their mystic Ulfwag keeps half of a book that a knight of Swanton wants back; it was Smugluk who set his warrior Mootang to goad young Barnett of Humberton into the ambush that killed him, and Barnett's mother has never stopped asking for his sword. The druids of southern Albion keep a cemetery west of the station where Morgana's work lies uneasy: a knight of the realm, Sir Gerenth, raised from the dead by her and left in the druids' keeping, and his sergeant Cosworth beside him, with a necromancer the hill-folk call Leorcelis Grant among the stones. Followers of Arawn send messengers through the western pass with orders in a hand the Academy recognises. A band of initiates in crimson keep camps at the edges of the hills and will not say whom they serve. And near the station, in the long dusk of the high valleys, the hill-folk say a lad walks who is cold to the touch and hates to be thanked.\n\nWhat lives there now. Smugglers and trackers work the eastern woods and keep a chief of their own. Wargs hunt the western slopes, cockatrices nest on the stony ground below Swanton, rock elementals stand in the eastern hills, and howling maidens keen in the woods north of the keep. Four strange things keep the slopes east of Swanton and answer to names that sound like a joke: Glimbeak, Grimbeak, Slimbeak and Trimbeak, a dead druid, a wolf and two skeletons. The hill-folk say they were a necromancer's first studies, and that he forgot them when he moved on.\n\nWhy it matters to Albion. The north road to Snowdonia and the frontier runs through these valleys, and so does every report that comes down from the war. Swanton Keep reads them first. Heather Barclay at Swanton collects orders that were never meant for her, and sends the young south and north and into Midgard's own hills to find out who wrote them. She has not told anyone what she has found. She asks, instead, whether they chose knowledge or power.",
+  "legend": "Black Mountains North sits between Black Mtns South and Snowdonia, levels 10 to 30. Swanton Keep in the north has trainers, Sir Verin (Barbaric Tales), Omis (who deciphers things) and Heather Barclay, who starts the Secret Orders chain. Snowdonia Station in the middle has the stable, a healer and Cranly (Thinking Cap). The goblin camp near Swanton holds Mootang (back left hut) and King Smugluk; Mystic Ulfwag is in the fort south of the keep. Sir Gerenth and Sergeant Cosworth are skeletons in the druids' cemetery west of the station and each brings friends. The Arawnite Messenger is in the western pass (Path of the Renegade). Ghost miners come out at night north of the station past the dragon ants. The Crimson Initiates are high twenties and come in pairs at the edges of the zone. Leave the Cauld Lad near the station and Leorcelis Grant by the cemetery alone below fifty: both are fifties and hit like it. The four beaks east of Swanton are an easy fifteen for a duo.",
+  "atmosphere": {
+    "firstEntry": [
+      "The high valleys. The road climbs north.",
+      "Swanton's walls on the height. Questions at the gate.",
+      "Hill-folk smoke in the western valleys.",
+      "Picks clink on the hill at night. No one is digging.",
+      "A cold wind, and a colder lad, they say."
+    ],
+    "areas": [
+      {
+        "name": "Swanton Keep",
+        "x": 510845,
+        "y": 381386,
+        "z": 7992,
+        "radius": 1000,
+        "lines": [
+          "Swanton Keep. Who sent you? What do you carry?",
+          "Heather Barclay reads orders not meant for her.",
+          "Sir Verin wants both halves of a book."
+        ]
+      },
+      {
+        "name": "Snowdonia Station",
+        "x": 523035,
+        "y": 408818,
+        "z": 4353,
+        "radius": 1000,
+        "lines": [
+          "Snowdonia Station. The road north starts here.",
+          "Mathien watches the hill for the night miners.",
+          "Cranly frowns at a family cap that is not here."
+        ]
+      },
+      {
+        "name": "the goblin camp near Swanton",
+        "x": 501121,
+        "y": 395371,
+        "z": 4000,
+        "radius": 1500,
+        "lines": [
+          "Goblin huts. Mootang laughs in the back left one.",
+          "King Smugluk gives the orders. Barnett died of one."
+        ]
+      },
+      {
+        "name": "Ulfwag's fort",
+        "x": 501875,
+        "y": 395274,
+        "z": 4000,
+        "radius": 800,
+        "lines": [
+          "A goblin fort south of Swanton.",
+          "Mystic Ulfwag guards half a book he cannot read."
+        ]
+      },
+      {
+        "name": "the druids' cemetery",
+        "x": 495000,
+        "y": 408300,
+        "z": 4000,
+        "radius": 1500,
+        "lines": [
+          "A cemetery the druids keep. Morgana's work lies here.",
+          "Sir Gerenth and Sergeant Cosworth, unquiet.",
+          "A necromancer walks among the stones."
+        ]
+      },
+      {
+        "name": "the western pass",
+        "x": 488019,
+        "y": 407567,
+        "z": 4000,
+        "radius": 1200,
+        "lines": [
+          "The western pass. An Arawnite Messenger waits.",
+          "Orders in a hand the Academy knows."
+        ]
+      },
+      {
+        "name": "the hill-folk's valley",
+        "x": 489500,
+        "y": 392000,
+        "z": 4000,
+        "radius": 3000,
+        "lines": [
+          "The hill-folk's camp. Fur, paint and spears.",
+          "Hill Chief Alrek does not count himself Albion's."
+        ]
+      },
+      {
+        "name": "the beaks' slope",
+        "x": 515600,
+        "y": 387000,
+        "z": 5000,
+        "radius": 3000,
+        "lines": [
+          "Glimbeak, Grimbeak, Slimbeak, Trimbeak.",
+          "A dead druid, a wolf and two skeletons. Forgotten."
+        ]
+      },
+      {
+        "name": "the miners' hill",
+        "x": 509707,
+        "y": 392975,
+        "z": 4500,
+        "radius": 1500,
+        "lines": [
+          "Ghost miners walk up the hill at night.",
+          "Picks on their shoulders. Always going to work."
+        ]
+      },
+      {
+        "name": "the smugglers' woods",
+        "x": 522000,
+        "y": 396000,
+        "z": 4500,
+        "radius": 3000,
+        "lines": [
+          "Smugglers and trackers in the eastern woods.",
+          "The forest chief takes a cut of everything."
+        ]
+      },
+      {
+        "name": "Elam's hollow",
+        "x": 534144,
+        "y": 407696,
+        "z": 4500,
+        "radius": 900,
+        "lines": [
+          "Heretic Elam preaches to the trees.",
+          "The trees do not argue. Elam prefers that."
+        ]
+      },
+      {
+        "name": "Redbeard's rocks",
+        "x": 509925,
+        "y": 409534,
+        "z": 4500,
+        "radius": 900,
+        "lines": [
+          "Erick Redbeard and the red dwarf matrons.",
+          "A red dwarf far from the mine, and proud of it."
+        ]
+      },
+      {
+        "name": "the deserter's camp",
+        "x": 502585,
+        "y": 398854,
+        "z": 4500,
+        "radius": 800,
+        "lines": [
+          "Amano's camp. A deserter's fire, small and low.",
+          "He listens for horses. Lord Adribard's horses."
+        ]
+      },
+      {
+        "name": "the north-western crimson camp",
+        "x": 489694,
+        "y": 381768,
+        "z": 4500,
+        "radius": 1200,
+        "lines": [
+          "Crimson Initiates at the edge of the hills.",
+          "Red robes, and nobody says whose."
+        ]
+      },
+      {
+        "name": "the south-western crimson camp",
+        "x": 488986,
+        "y": 414742,
+        "z": 4500,
+        "radius": 1200,
+        "lines": [
+          "Two in crimson by the road. Always two.",
+          "A Crimson Initiate watches the south-west road."
+        ]
+      },
+      {
+        "name": "the howling woods",
+        "x": 516424,
+        "y": 380391,
+        "z": 7000,
+        "radius": 1500,
+        "lines": [
+          "Howling maidens keen in the woods.",
+          "A cry that is almost a name."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "swanton keep asks every stranger three questions. bardalph took them to the pennines",
+      "the hill-folk in bmn dont think theyre albion at all",
+      "ghost miners walk up the hill north of snowdonia station at night",
+      "king smugluk set mootang on barnett. thats why bedelia wants both their heads",
+      "morgana raised sir gerenth and left him with the druids in the cemetery",
+      "heather barclay at swanton collects orders that werent meant for her",
+      "the arawnite messenger in the western pass carries orders in a hand the academy knows",
+      "osric at snowdonia station sells swords and says he owns no land",
+      "the four beaks east of swanton were a necro's first pets, [heard|they say]",
+      "the crimson initiates wont say who they serve",
+      "mathien at the station leaves his stable open at night. ask him why",
+      "black mtns north is the road to snowdonia and the frontier"
+    ],
+    "rumour": [
+      "[heard|someone said] hill chief alrek answered all three gate questions with 'the hills'",
+      "heard the crimson initiates always come in pairs",
+      "[heard|someone said] the arawnite messenger chose power",
+      "heard glimbeak grimbeak slimbeak and trimbeak still guard the slope where they were made",
+      "[heard|someone said] elam preaches to the trees because they dont argue",
+      "heard erick redbeard calls the other red dwarves tenants",
+      "[heard|someone said] ulfwag sleeps with his head on half a book",
+      "heard mootang laughs about barnett in his hut",
+      "[heard|someone said] king smugluk sends his warriors to do his insults for him",
+      "heard sergeant cosworth would rather be dead than relieved. well",
+      "[heard|someone said] sir gerenth's dead come to him when you hit him",
+      "heard amano says he ran from what he saw, not from the war",
+      "[heard|someone said] theres a cold lad near the station who hates being thanked"
+    ],
+    "tell": [
+      "black mtns north? between black mtns south and snowdonia. swanton keep and snowdonia station",
+      "is it hard? 10 to 30. watch the crimson initiates, high 20s and in pairs",
+      "whats there? swanton keep, the goblin camp, the druid cemetery, ghost miners at night",
+      "mootang's in the back left hut of the goblin camp near swanton. smugluk's in the same camp",
+      "ulfwag is in the goblin fort south of swanton keep",
+      "gerenth and cosworth are skeletons in the druid cemetery west of the station. both bring friends",
+      "arawnite messenger is in the western pass",
+      "the beaks are on the slope east of swanton. easy for a duo",
+      "alrek is in the hill-folk valley in the nw. elam is in a hollow in the eastern hills",
+      "erick redbeard is on the rocks below the station with the red dwarf matrons",
+      "amano is at a small camp in the middle hills",
+      "crimson initiates camp at the nw and sw edges of the zone"
+    ]
+  },
+  "loremaster": {
+    "intro": "The northern Black Mountains, the high valleys. Ask of [swanton keep] and [heather barclay], of [snowdonia station], the [hill-folk], the [ghost miners], [barnett] and the [cemetery], or of the hills' own: the [crimson initiate], the [arawnite messenger], the [beaks], [heretic elam], [hill chief alrek], [king smugluk], [mootang], [mystic ulfwag], [erick redbeard], [sergeant cosworth], [sir gerenth] and [amano].",
+    "topics": {
+      "swanton keep": "The realm's last castle on the northern height before the frontier road. Its gate asks every stranger three questions: who sent you, what do you carry, who will answer for you. Sir Verin, [heather barclay] and Omis keep there. Captain Bardalph of the Pennine watch was the gate-warden's daughter.",
+      "heather barclay": "Keeper of Swanton Keep's letters, who collects orders that were never meant for her and sends the young to find out who wrote them. She asks each one, when they come back: knowledge, or power.",
+      "snowdonia station": "The station in the middle valley, with the stable, a healer, Cranly the merchant, Mathien whose children are smiths in the south, and Osric the weapon-seller, who owns no land.",
+      "hill-folk": "The tall people of the north-western valleys, in furs and paint, with warriors, avengers, guards, shamans and a chief, [hill chief alrek]. They were here before any king and do not count themselves Albion's.",
+      "ghost miners": "Romans worked a mine above the station with slaves, and it fell in. The miners walk up the hill past the ants' nests at night with their picks on their shoulders. Mathien says they are always going to work and he has never seen them come home.",
+      "barnett": "Barnett of Humberton, Sir Gleran's best man, was goaded by [mootang] on [king smugluk]'s order into an ambush and killed. His mother Bedelia wants his shield and sword home.",
+      "cemetery": "The druids' burying ground west of the station, where Morgana left [sir gerenth] and [sergeant cosworth] raised and unquiet, and a necromancer walks the stones.",
+      "crimson initiate": "Initiates in crimson robes keep small camps at the far edges of the hills, one in the north-west under the hill-folk's valley and one in the south-west by the road. They are stronger than anything else in the valleys, they travel in pairs, and they will not say whom they serve; the Academy thinks they are the lowest rank of something that has a highest rank. The hill-folk give them a wide berth, which the garrison at Swanton finds more worrying than the robes.",
+      "arawnite messenger": "The Arawnite Messenger waits in the western pass for whoever is meant to take his orders, and the orders are in a hand that Heather Barclay of Swanton says she has seen on letters to Ludlow and Llyn Barfog. Captain Rhodri of the frontier wants the orders taken from him; Omis of Swanton can read them. The Followers of Arawn say the messenger is a man who chose power.",
+      "beaks": "Glimbeak, Grimbeak, Slimbeak and Trimbeak keep the slopes east of Swanton Keep: a dead druid, a wolf and two skeletons, with names that sound like a joke. The hill-folk say they were a necromancer's first studies, made in his youth and given names as a child names its toys, and that he forgot them when he moved on to harder work. They have not forgotten him. They still keep the slope where he made them.",
+      "heretic elam": "Elam is a preacher of some wrong faith who keeps a hollow in the eastern hills and preaches to the trees, because the trees do not argue. The Church at Swanton calls him a heretic and the garrison calls him harmless, and both are a little wrong: he is not harmless to anyone who interrupts. He was a priest of Ludlow once, the station says, until he read a book in the wrong order.",
+      "hill chief alrek": "Hill Chief Alrek leads the hill-folk of the north-western valleys and came once to the gate of Swanton Keep with three spears behind him, answered the gate-warden's three questions with the same two words each time, the hills, drank a cup in the yard and went home. He looks at the realm's walls as a man looks at a house he has let to a stranger. He does not attack the keep. He does not need to.",
+      "king smugluk": "King Smugluk is the goblin king of the camp near Swanton Keep. It was his order that sent Mootang to goad young Barnett of Humberton into an ambush, and Barnett's mother Bedelia wants Smugluk's head for it. The goblins call him king because he says so. Smugluk keeps further back in the camp than his warriors and sends them out to do his insults for him.",
+      "erick redbeard": "Erick Redbeard is a red dwarf who left the galleries of Tepok's Mine and came north with a few matrons of his clan to the rocks below the station, and is proud of it. He says the mine was never the red dwarves' own and that the bargain with the goblins was a shame on his clan. The other red dwarves call him a deserter. He calls them tenants.",
+      "mystic ulfwag": "Mystic Ulfwag is the goblin mystic of the fort south of Swanton Keep. He keeps one half of a book of knowledge that Sir Verin wants back for Lady Nimue; Grilk in the southern mountains has the other half. Ulfwag cannot read it, the goblins say, but he sleeps with his head on it and claims it gives him dreams, and Siom Felanis of Humberton wants his backbone for a staff.",
+      "mootang": "Mootang is the goblin warrior who goaded young Barnett of Humberton, on King Smugluk's order, into riding out alone to his death. He keeps the back left hut of the goblin camp near Swanton Keep and laughs about it. Sir Gleran of Humberton wants his head brought back with the two halves of Barnett's shield, in the order Sir Gleran asks for them.",
+      "sergeant cosworth": "Sergeant Cosworth served under Sir Gerenth in life and stands beside him in the druids' cemetery in death, raised with him by Morgana's work and kept by the druids. He is a skeleton now and still a sergeant: when he is troubled, the dead who served under him come to his side. The frontier lieutenants say he was the kind of sergeant who would rather be dead than relieved.",
+      "amano": "Amano is a deserter of the realm who keeps a small, low fire in a camp in the middle hills and listens for horses. Lord Prydwen in Camelot wants his treachery ended; Lord Adribard of Avalon Marsh wants to know when it is done, and so does Magus Crystolos of the Lethantis Association, who taught him once. Amano says he did not run from the war. He says he ran from what he saw in it.",
+      "sir gerenth": "Sir Gerenth was a knight of the realm whom Morgana raised from the dead and left in the hands of the druids in their cemetery west of Snowdonia Station. He carries a bone dagger that Lieutenant Brude of the frontier wants brought home, and when he is troubled the cemetery's dead come to him as they came when he led them. Brude says the kindest thing anyone can do for Gerenth is to put him to rest."
+    }
+  },
+  "book": {
+    "title": "The Gate-Book of Swanton Keep",
+    "pages": [
+      "The Gate-Book of Swanton Keep, kept by Cadwgan, gate-warden, who had it from the warden before him, who had it from Captain Bardalph's father. The gate of Swanton has three questions and every stranger is asked them: who sent you, what do you carry, who will answer for you. My predecessor's predecessor's daughter took them north to the Pennines and is asking them there yet, they say, at a gate under the hills, of every traveller on the old road. I write down every answer I am given, and the day and the weather beside it, because a lie told in the rain reads differently from one told in the sun. Some of the answers are true.",
+      "Of the hill-folk. They came to the gate once in my time, their chief Alrek with three spears behind him, and I asked him the questions. Who sent you: the hills. What do you carry: the hills. Who will answer for you: the hills. I let him in. He drank one cup in the yard, standing, and looked at our walls as a man looks at a house he is renting to a stranger, and set the cup down upside down on the well-stone, which is a thing the hill-folk do, and went home. The hill-folk do not think of themselves as Albion's. I have stopped trying to explain it to Camelot.",
+      "Of the goblins. King Smugluk keeps the camp below the keep and his mystic keeps the fort south of it, and it was Smugluk who set his warrior Mootang to goad young Barnett of Humberton until the boy rode out alone. Barnett's shield came back in two halves from the boulderlings on the mountainside and his mother Bedelia has the portrait she gave Sir Gleran. Who sent you, I asked the goblin envoy once. He said: the king. What do you carry: insult. Who will answer for you: Mootang. I wrote it down, and the weather, which was fine, and Sir Gleran read it and broke his cup.",
+      "Of the cemetery. West of the station the druids keep a burying ground, and Morgana has left something of hers in it: Sir Gerenth, a knight of ours, raised and handed to the druids to keep, with his sergeant Cosworth beside him, and each of them with company that comes when they are troubled. A necromancer walks the stones there too. The hill-folk call him Leorcelis Grant. Lieutenant Brude of the frontier wants Gerenth put to rest and his bone dagger brought home. I have never had a dead man at my gate. I do not know what I would ask him.",
+      "Of the orders. A messenger of Arawn's people goes through the western pass with orders in a hand that Heather Barclay, who keeps the keep's letters, says she has seen before: on a letter to Ludlow, on a letter to Llyn Barfog, on a letter taken from a necromancer at the great stones of the Plains. She sends the young to find who wrote them. She asks every one of them, when they come back, a question that is not one of my three: knowledge, or power. I have asked her what the right answer is. She says that is what the question is for.",
+      "Of the cold lad. Near the station, in the long dusk, a lad walks who is cold to the touch. The hill-folk say he was a stable boy who was killed for being slow, and that he works at night now in whatever stable will have him, setting it to rights, and that a man who thanks him loses him, and makes him angry. Mathien at the station leaves his stable door open and says nothing. I have never seen the lad at my gate. If he comes, I will ask him the three questions, and I will not thank him for the answers."
+    ]
+  },
+  "bosses": [
+    "cauld-lad",
+    "leorcelis-grant"
+  ],
+  "era": "alb-the-dark-age",
+  "factions": [
+    "goblins",
+    "old-powers",
+    "arawn",
+    "morgana"
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "id": "angau",
+  "name": "Angau",
+  "npcNames": [
+    "Angau"
+  ],
+  "locationId": "pennine-mountains",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Angau: NPC template 60157886, level 40, the skeletal legionnaire model, ghost, no faction, aggro 200 (range 500), no spells, respawn 600 s, on the northern tops of the Pennines at 570248, 357256 with six worms about it.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Welsh: angau means 'death' (to verify against a dictionary).",
+      "provenance": "myth",
+      "source": "to verify"
+    },
+    {
+      "text": "Angau as a soldier who would not be buried, and the worms that will not leave him, are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The hill-folk of the Pennines call him Angau, which is their old word for death, and they do not mean it as a name. They mean it as a warning. He is a soldier, or was, in a harness of a pattern older than any of the caers, and he stands on the northern tops in a hollow full of worms.\n\nThe story the riders tell is that he would not be buried. His company fell on the tops in some war before the caers were built, and the others went into the ground as soldiers do, and he got up out of his grave and stood in it, and said he had not been relieved. The worms came for him as worms do, and could not finish him, and have stayed, as if they were waiting their turn. They are still waiting. The riders say Angau has outlasted three generations of the worms.\n\nCorporal Dilys's book of the tops gives him a line of his own: 'Angau. Do not stop. Do not answer.' The riders have added, in different hands, under it: 'He does not ask anything.' 'He does not need to.'",
+  "legend": "Angau, level 40 ghost legionnaire, on the northern Pennine tops in a hollow with a handful of worms (40). The worms are not his faction but they are right there and aggressive, so clear them first. Plain melee, no spells; crush for the bones. A group around forty handles it. Respawn ten minutes. The riders' advice: do not stop near him.",
+  "yells": {
+    "aggro": [
+      "Not relieved.",
+      "Stand your post!"
+    ],
+    "phases": [],
+    "death": [
+      "Relieved... at last..."
+    ],
+    "slay": [
+      "Into the ground. Not me.",
+      "The worms will have you instead."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dead soldier in a hollow full of worms."
+    ],
+    "phases": [],
+    "realmFirstKill": "Angau has fallen. The worms have him at last."
+  },
+  "botLines": {
+    "briefing": [
+      "angau, 40 ghost on the north tops, worms around him, clear the worms",
+      "crush on angau, he's a skeleton"
+    ],
+    "aftermathWin": [
+      "angau down. the worms finally get their turn",
+      "got angau. creepy hollow"
+    ],
+    "aftermathLoss": [
+      "the worms got us while we were on angau"
+    ],
+    "rumour": [
+      "[heard|someone said] angau means death in the old hill tongue",
+      "heard angau got up out of his own grave because nobody relieved him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "angau",
+    "text": "A dead soldier of a war before the caers who stands in a hollow full of worms on the northern Pennine tops. The hill-folk's name for him is their old word for death."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} put Angau into the ground on the Pennine tops in {minutes} minutes.",
+    "loss": "Angau stood his post; {raidLeader}'s company of {realm} left him to the worms."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "dead-legions",
+    "arawn"
+  ],
+  "tier": "minor"
+}

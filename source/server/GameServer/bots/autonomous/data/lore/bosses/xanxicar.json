@@ -1,0 +1,169 @@
+{
+  "id": "xanxicar",
+  "name": "Xanxicar",
+  "catalogKey": "crystal-cave/xanxicar",
+  "locationId": "crystal-cave",
+  "realm": "Albion",
+  "aliases": [
+    "xanx",
+    "the two headed dragon"
+  ],
+  "facts": [
+    {
+      "text": "Level 80, 100,000 health. At 80, 60, 40 and 20% he announces and brings down Xanxicar's Stomp on everything around him; from 50% Xanxicarian Champions (level 65) come one after another, 15-25 s apart, while he fights.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs"
+    },
+    {
+      "text": "He hurls a random real player within 2,500 into the air every 20-40 s and glares at another; when he dies 'a glowing light begins to form on the mound'.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Two-headed, white or silver, in an archived newsgroup thread; 'well over a hundred players' (Feb 2003); five full groups wiped (Jul 2005).",
+      "provenance": "legend",
+      "source": "https://forums.tomshardware.com/threads/xanxicar-and-the-crystal-caves.166958/"
+    },
+    {
+      "text": "Existing bot chat says the cave fills with lightning if you dawdle; nothing in the script does that. It is kept as hearsay.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "Caradoc the surveyor, the Heart, the Quieting, Iorwerth the last master of stars, Sir Garan, Lady Branwen Hale, Father Odo and the champions' oath are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Xanxicar is the two-headed dragon under Avalon, older than the oldest map of the isle, which marks him at its heart without a name. The Camelot loremasters count him among the old powers, like the stone dragon of Dartmoor; the Inconnu say Arawn will not go near him; the readers of Caer Gothwaite believe he is not the power under Avalon but its keeper, lying on something that matters more than he does. The cave is crystal that throws back every light a hundredfold.\n\nThe surveyor Caradoc laid the first college's stone on the warm ground of the Heart, and for three hundred years the college of stars sang the Quieting there on the longest night, a lullaby or a ward. Morgana, who had sung it as a pupil, burned that college first. On the third night of the burning Dura'ek went down the stair, and Xanxicar woke; the guards who went down after him came up as his household, the Xanxicarian sentries, elites and champions.\n\nDura'ek came up with the dragon's two breaths, so Xanxicar fights with his weight, rearing to stomp the ground, and the cobbles of Avalon crack above. His champions come to him one by one, by their oath that the line must never end. He lifts strangers into the cave's light and glares at others; the readers believe he is searching for Iorwerth, the last master who sang him asleep. Sir Garan lost five companies of forty at the cave's mouth. Lady Branwen Hale, who lost three at the mouth where Garan had lost two hundred and met his champions one after another, brought him down, and Father Odo saw the light that forms on the mound, like the light of the third night. Nobody has touched it, and Elowen has asked Camelot to learn the Quieting in case it is ever needed again.",
+  "legend": "Over a hundred, the old guides said; five groups wiped in one go, said another. He stomps at 80, 60, 40 and 20 percent: a hit on everything within 2,500 of him, one second after he bellows, so you cannot outrun it. Top everyone up before each fifth and heal hard right after. From half, champions keep coming; one party kills each away from the tank. Some swear the cave fills with lightning if you take too long.\n\nThe guards on the way in are worse than he is; send a scout, clear the patrols, and arrive with full mana. The old hands say he is the one dragon in Albion who respects a raid that keeps its distance, and kills one that does not.",
+  "yells": {
+    "aggro": [
+      "Two heads wake. Two hungers.",
+      "You walk on my roof. Did you think I would not hear?",
+      "Readers' children. Come closer."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=80",
+        "text": "Xanxicar bellows in rage and rears to stomp!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Champions! Your lord calls you!"
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "Champions! Your lord calls you!"
+      }
+    ],
+    "death": [
+      "The mound... remembers... me...",
+      "Under me... is more..."
+    ],
+    "slay": [
+      "Up, and down. They always come down.",
+      "Crushed, like the colleges.",
+      "Small, and loud, and done."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two heads rest on a mound of light. Both are watching.",
+      "The ground ripples like the skin of a sleeping beast."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=80",
+        "text": "Xanxicar rears! Get clear of his stomp!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The Xanxicarian champions answer their lord!"
+      }
+    ],
+    "realmFirstKill": "Xanxicar has fallen. A light forms on his mound.",
+    "wake": "Under Avalon the ground lurches. Xanxicar wakes."
+  },
+  "botLines": {
+    "briefing": [
+      "stomps at 80 60 40 20, hits everyone in 2500 a second after the bellow. top up before each",
+      "from 50% champions keep spawning. one party per champion, away from the tank",
+      "this is a hundred man fight. the guards on the way in are the hard part",
+      "scout the patrols before we move"
+    ],
+    "aftermathWin": [
+      "xanxicar down. both heads",
+      "there's a light on the mound. nobody touch it",
+      "the readers of avalon owe us a drink",
+      "two heads, one kill"
+    ],
+    "aftermathLoss": [
+      "half the raid stood in the 40% stomp",
+      "the champions never stopped and we ran out of healers",
+      "the elites wiped us before we got there",
+      "nobody scouted, patrol walked in"
+    ],
+    "rumour": [
+      "a two-headed dragon called xanxicar sleeps in the crystal cave under avalon. [wait too long|dawdle] and the cave fills with lightning",
+      "heard a light forms on xanxicar's mound when he dies. nobody knows what it is",
+      "heard xanxicar is on the oldest map of avalon",
+      "[heard|someone said] xanxicar is the huge dragon the drakoran follow"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "xanxicar",
+    "text": "A dragon with two heads and a hide like frost on silver. When he wakes he rears and crushes all around him, again and again as he weakens. From half his strength his champions come to him, one after another. Keep away from his feet."
+  },
+  "bookPage": "He sleeps on a mound of stone that gives back light. When he wakes he rears up, both heads high, and brings his weight down on everything near him; the ground lurches, and those beneath him do not rise. He does this not once but as often as he is hurt, at every fifth part of his strength. At the half his champions begin to come, and they do not stop. When he dies, a light forms on the mound. A priest of Camelot who saw it wrote to me that it looked like the light we saw rise on the third night of the burning. No one has yet dared to touch it.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} went down under Avalon and brought Xanxicar off his mound in {minutes} minutes.",
+    "loss": "Xanxicar's stomp broke {realm}'s raid in the Crystal Cave; {raidLeader} left the dragon on his mound of light."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "drakoran",
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "duraek-the-empowered",
+      "relation": "his servant, who carries his fire and frost"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Older Than the Map",
+      "text": "The oldest map of Avalon that survives was drawn before the first college was built, and it already marks the heart of the isle with a small beast of two heads and no name. Elowen of Caer Gothwaite keeps it locked away. The readers took the drawing for a mapmaker's ornament for three hundred years.\n\nWhat Xanxicar is, the three sources that study him disagree. The Camelot loremasters count him among the old powers of the land, a sleeper like the stone dragon under Dartmoor, older than men and indifferent to them, and point out that both dragons lie in hollows that give back heat or light, and that both have servants who wear their name or their stone. The Inconnu say nothing about what he is; they say only that their lord Arawn has known of him since before Annwn had a road, and that Arawn does not go near Avalon's heart. The readers of Caer Gothwaite hold the strangest view, which Elowen's master of stars held until he died: that Xanxicar is not the power under Avalon at all, but its keeper, and that what he lies on matters more than he does.\n\nAll three agree on the cave. It is not earth but crystal, grown over ages around the sleeper or out of him, and every light that enters it is thrown back a hundredfold, cold and many-coloured. The crystal is warmest at its centre, where the mound is, and the readers who first dug cellars under their colleges found that the ground there rang like glass when struck. They did not know what they had found. They built on it anyway, because the ground was warm, and warm ground is rare on the isles."
+    },
+    {
+      "title": "The Quieting",
+      "text": "The readers built their city on a lid, and for three hundred years they kept the sleeper asleep without knowing it.\n\nThe founder of the first college, a surveyor called Caradoc whom the readers still honour, laid its foundation stone on the warmest ground he could find, where the earth rang like glass, and called the place the Heart. Every year on the longest night the college of stars held a rite at the Heart that the readers called the Quieting: the masters of the college went down into the deepest cellar and sang a slow chant in the old tongue over the foundation stone, to bless it. The words were Caradoc's. Nobody remembered what they meant. Elowen copied them into her list of the colleges because they were the oldest thing the readers owned.\n\nThe Camelot loremasters believe the Quieting was a lullaby, and that Caradoc knew exactly what he was singing to. The readers' master of stars believed it worse: that it was not a lullaby for the dragon but a ward over what the dragon lay on, and that the dragon slept because the ward kept the thing under him quiet. Both readings agree on what happened when the rite stopped.\n\nMorgana had been a pupil of the colleges, the quickest the readers ever taught. She had sung the Quieting with the college of stars as a girl. When she came back with the drakoran she burned the college of stars first, on the first night, and with it every master who knew the chant; and the longest night that winter passed with no one in the cellar. Elowen believes the witch knew what the Quieting was for. The Camelot loremasters are less sure, but they note that she burned that college before any other, and that she knew where all of them were."
+    },
+    {
+      "title": "The Third Night",
+      "text": "On the third night of the burning the readers, watching from their boats, saw a light rise out of the ground at the heart of the city, cold and many-coloured, as if the earth were glass. The master of stars wept. Elowen did not know why until much later.\n\nThat was the night Dura'ek of the dry'ak went down the stair under the chancellors' court, alone, and came up at dawn burning. Whatever passed between the doorkeepers' lord and the sleeper, it woke Xanxicar for the first time since before the map was drawn. The drakoran guards on the stair, who had been posted there by the clans to keep the readers out of the cellars, heard him wake. They say the ground of Avalon lurched three times, that the cobbles of the court split from end to end, and that a sound came up the stair like two great beasts breathing in two rhythms that did not match.\n\nThe guards went down. They did not come up as dry'ak, or as drau'gyn, or as any of the clans. They came up as his. They took his name, Xanxicarian, as a king's household takes the king's, and set themselves on the stair and in the cave, and the drakoran of the city have been his ever since, whatever their lords say. The Avalon Isle tales that Albion first heard of the dragon-men said they were led by a huge dragon. That was the night the tale became true.\n\nThe readers' master of stars told Elowen before he died that the light they saw was not the dragon waking. It was the thing under him, he said, uncovered for the first time, and the dragon woke because it had."
+    },
+    {
+      "title": "No Breath",
+      "text": "Xanxicar has two heads and a hide like frost on silver, and he does not breathe. He is the only dragon of Albion that has never been seen to open his mouths in anger.\n\nThe Camelot loremasters trace it to the third night. A dragon of two heads should have two breaths, and the dragon under Avalon has none, and the lord who went down to him that night came up drinking fire and frost. Dura'ek has the two breaths. Whether the dragon gave them or the doorkeeper stole them is the quarrel of the Avalon chapters, and it matters here only for what it left Xanxicar with: his weight.\n\nSo he fights with his weight. When Lady Branwen's company came into his cave he rose off his mound, both heads high, and brought the whole of himself down on everything around him, and the ground lurched and those beneath him did not rise. Her account says he did it again each time he weakened, and bellowed in rage before each, and that the men who were whole when the bellow came were the ones who got up again. The cobbles of Avalon crack when he does it, a city's length above; the drakoran of the court say they counted Branwen's progress in the cave by the cracks, short ones, one after another, and then the long one.\n\nThe Inconnu say the stomping is his grief for the breaths, and that he brings his weight down on the ground of Avalon as a man strikes the table where something was taken from him. The dry'ak say it is only a dragon fighting. The readers of Caer Gothwaite note that the stomping is always on the mound, and wonder whether he is pressing something back down."
+    },
+    {
+      "title": "The Household",
+      "text": "Xanxicar's servants are the drakoran who went down after Dura'ek on the third night, and their sons, and they are his and nobody else's.\n\nThey are of three ranks. The sentries hold the stair under the chancellors' court and the way down from the city; the travellers of the isles call them, with the elites, the Xar. The elites hold the cave itself, patrolling the way in, and they are the reason the Crystal Cave is the hardest place in Albion to enter: a knight of Caer Gothwaite, Sir Garan, took five companies of forty down in the first winter after the burning, and two elites met them at the mouth, and Garan wrote that it took the space of two prayers. He was the only one who walked out. Garan wrote that the guards he had passed inside were standing again behind him when he fled.\n\nThe champions are the third rank and the dragon's household knights. They wait in the dark of the cave beyond the mound and do not stir until his blood is on the mound. Then they come to him one by one, each when the one before has fallen, for as long as the dragon lives. The dry'ak prisoners of the Inconnu explain the custom with an oath the champions swear: one at a time, so that the line never ends. A household that sends all its knights at once can be killed all at once, the oath says, but one that sends them one by one has always another.\n\nSir Garan, who came back alone, said he saw the champions in the dark as he fled, standing in a line, and that the line went further back than his torch could reach."
+    },
+    {
+      "title": "Lifted to the Light",
+      "text": "When Xanxicar is fighting one champion of Albion, he looks at the others.\n\nEvery so often he seizes someone in his cave who is not the one he is fighting, lifts him high into the air of the cavern, and lets him fall; and he stares at another with a glare that bores into its target and harms him where he stands. Lady Branwen's company took it for cruelty, a dragon playing with his food. The readers of Caer Gothwaite think otherwise, and their reading is the strangest thing in their whole commentary on him.\n\nThe crystal of the cave throws every light back a hundredfold, they point out, and is brightest high up under the roof. A man lifted into that light can be seen as clearly as a page held to a lamp. The readers believe Xanxicar lifts men to see their faces, and that he is looking for someone. Elowen thinks she knows whom. The last master of the college of stars, Iorwerth, sang the Quieting on the longest night of every year for forty years, and he was not among the masters burned on the first night; he was in Caer Gothwaite on the readers' business, and he died there, old, without ever going back. The dragon, Elowen believes, is looking for the voice that sang him to sleep, and lifts every stranger to the light in case it is him.\n\nThe Camelot loremasters think this sentimental, and say a dragon who wanted a singer would not let him fall. Elowen answers that the dragon has never found the right one, and that nobody knows what he would do if he did. The glare she cannot explain at all."
+    },
+    {
+      "title": "The Company That Came Down",
+      "text": "The first company of Albion to bring Xanxicar down was led by Lady Branwen Hale of Caer Gothwaite, and it went down with the readers' blessing and one of their copies of the Quieting folded in its priests' satchels.\n\nBranwen had studied Sir Garan's letter and the readers' commentaries for two winters before she went. Her plan of the descent, which the Constable's office keeps, runs to eleven pages, and Elowen, who was shown it, said it was the first thing written about the cave that the dragon himself would have understood. She lost three at the mouth to the elites' patrol, where Garan had lost two hundred, and had them carried up and buried in the chancellors' court under the eyes of the dry'ak, who let the burial party pass and did not say why.\n\nThe line lasted a long time. Branwen's account says nine champions came before the dragon fell. Her priests did not sing the Quieting; the readers had asked them not to, unless all else failed, because nobody knew what it would wake if it was sung wrongly. All else did not fail. When Xanxicar fell, the earth lurched one last time under Avalon, and the dragon staggered and toppled from his mound, and a glowing light began to form on the mound where he had lain.\n\nOne of Branwen's priests, Father Odo of Camelot, wrote to Elowen afterwards that the light looked to him exactly like the light the readers had described rising on the third night. Elowen keeps his letter beside the map."
+    },
+    {
+      "title": "The Light on the Mound",
+      "text": "Nobody has touched the light on the mound. No account that has come up the stair tells of anyone laying a hand on it.\n\nLady Branwen's report to the Constable describes it as small at first and then growing, without heat, without sound, in all the colours of the cave. The Constable's office asked the Academy what it was. The Academy asked to see it, and two of its mages went down with the second company of Albion to kill the dragon, and stood at the edge of the mound for an hour, and came back and said they would prefer not to say. The Church's priests in Caer Gothwaite say it is a sign of grace on a place that was cleansed. The Inconnu, who guided Branwen down, will not go within sight of it.\n\nWhat the dragon wants, then, depends on what the light is. If the Camelot loremasters are right and he is an old power like the stone dragon of Dartmoor, he wants what the old powers want, to sleep and for the age of men to end, and he wants his breaths back from Dura'ek. If the readers are right and he is a keeper, he wants the thing under him kept, and he wants the voice that kept it quiet; and each time he has fallen, the thing beneath has lain uncovered until he rose again.\n\nIf he wins, the readers say, Avalon falls into the cave. The city above was built on a lid, and the lid is cracked from end to end now, cobble by cobble, stomp by stomp. Elowen has written to the Constable to ask that someone in Camelot learn the Quieting, in case it is ever needed. The Constable has not answered. The map is still locked away."
+    }
+  ]
+}

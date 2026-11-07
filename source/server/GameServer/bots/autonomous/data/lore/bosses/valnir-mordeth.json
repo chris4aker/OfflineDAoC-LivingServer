@@ -1,0 +1,128 @@
+{
+  "id": "valnir-mordeth",
+  "name": "Valnir Mordeth",
+  "catalogKey": "albion-named-mobs-shrouded-isles/valnirmordeth",
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "valnir",
+    "the larder"
+  ],
+  "facts": [
+    {
+      "text": "Level 70, 30,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 20% of melee and 30% of everything else; faction Undead Servants of Morgana.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/ValnirMordeth.cs"
+    },
+    {
+      "text": "Any spell damage he deals heals him by the same amount: Lifedrain (500 body, instant) on 30% of his melee hits, Valnir Modreth's Breath (80 matter every 4 s for 40 s, only on a target that is not already poisoned) and Valnir Mordeth's Plague (a 120 s disease, only on a target not already diseased). He stops to cast.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/ValnirMordeth.cs"
+    },
+    {
+      "text": "Two or three Essence Ghouls (level 62-66, 5,000 health) wait at his spawn and join him. Each casts Lifedrain (350 body, 3.5 s, uninterruptible, range 1,800) that heals the ghoul and Valnir by the damage dealt. In combat a new ghoul comes 25-35 s after a check only when no ghoul is alive. All ghouls die with him; after a reset 2-3 new ones wait at his spawn.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/ValnirMordeth.cs"
+    },
+    {
+      "text": "He walks home at full health when nobody is left on his aggro list; respawn is the epic-encounter interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/serverproperty/ServerProperties.cs (set_epic_game_encounter_respawninterval, default 60)"
+    },
+    {
+      "text": "Valnir as a struck-off reader of the college of healing, Mistress Nonn's roll, the larder as Morgana's stores and 'whatever passes from one body to another passes through him' are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Valnir Mordeth was a reader of the college of healing in Avalon before the war, and the question he could not leave alone was where strength goes when it leaves a body. The college of healing kept its spring and taught that strength given is strength spent: the one who gives is tired after, the patient is not made from nothing. Valnir did not believe the spring. He believed that what passes from one body to another must pass through something, and that whoever stood in the way could keep a share. Mistress Nonn of the college struck his name from its roll the year before the burning, and wrote beside the scraped line that he had asked her the same question four times and liked her answer less each time.\n\nMorgana gave him a better answer, and a pit. It lies in the west of the Dales of Devwy, north of the old burying ground, and the fort at Gwyntell calls it the larder. Morgana's army of the dead is not fed, but it is stocked, and Valnir keeps the stores: the dead of the western dales, laid by. His ghouls crouch round the edge. They are his kitchen. Whatever they draw out of the living with their craft goes into them and through them, and some of it comes to him; and whatever he draws out himself, with a touch or a breath, he keeps. The Priest of Arawn says he has found the answer to his question and it is as ugly as Mistress Nonn said it would be.\n\nThe larder is never empty for long. When the last ghoul at its edge is put down, another crawls out of the pit before the living have caught their breath; but only one, and only when the edge is bare. When the pit is quiet and nobody is there, he lays fresh ghouls by, a few, to wait for the next living thing on the path.\n\nHis breath clings like an acid mist and does not lift for a long while, and his touch carries a sickness that makes every wound slow to close. He stops to work his craft, and while he works it he does not strike. The western households, the Hoges and the Lindons, are the hardest of the dales' dead to speak to and to leave, and the fort says it is because they live nearest the larder.\n\nThe drakoran war-priest Ris'nir Cruss sat at the larder's edge for a season and learned something there. Valnir never asked him for anything in return. The Priest of Arawn says that means Valnir got his share.",
+  "legend": "Valnir Mordeth, level 70, 30k health, in his pit in the west of the Dales of Devwy. Two or three Essence Ghouls (62-66, 5k each) wait with him and join. Every point of spell damage the ghouls do (a 350 lifedrain, 3.5 s cast, uninterruptible, range 1,800) heals them and Valnir, and every point of his own spell damage heals him too: a 500 lifedrain on 30% of his hits, an acid DoT (80 every 4 s for 40 s) and a 2 minute disease. Kill the ghouls first. A new one only comes 25 to 35 seconds after the last ghoul is dead, and only one at a time, so kill each as it arrives. Cure the disease fast so heals land. He stops meleeing while he casts. All ghouls die when he does. A wipe resets him to full with fresh ghouls at the pit, and he respawns about an hour after he dies.",
+  "yells": {
+    "aggro": [
+      "Fresh stores. Lay them by.",
+      "Come to the edge. Closer.",
+      "The larder is open."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Another mouth for the larder. Feed it."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Your strength looks better on me."
+      }
+    ],
+    "death": [
+      "Where... does it go... now...",
+      "The larder... is empty..."
+    ],
+    "slay": [
+      "Laid by.",
+      "Stores for the lady.",
+      "Nothing wasted."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The larder. Ghouls crouch at its edge.",
+      "Something in the pit is eating well."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "A fresh ghoul crawls out of the pit!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Valnir Mordeth breathes. The mist clings."
+      }
+    ],
+    "realmFirstKill": "Valnir Mordeth has fallen. The larder is empty."
+  },
+  "botLines": {
+    "briefing": [
+      "valnir, 70, 30k. 2-3 essence ghouls with him, every spell they land heals him. ghouls first",
+      "new ghoul only comes 25-35 sec after the last one dies. kill each one as it shows",
+      "his own drains and dot heal him too. cure the disease fast or the heals wont keep up",
+      "he stops swinging when he casts. ghouls die when he dies"
+    ],
+    "aftermathWin": [
+      "larder's empty. valnir down",
+      "ghouls first every time, like i said",
+      "cured every plague, heals never fell behind. nice",
+      "the hoges ghosts will be easier now, maybe"
+    ],
+    "aftermathLoss": [
+      "we ignored the ghouls and he healed faster than we hit",
+      "nobody cured the disease and the tank melted",
+      "killed the last ghoul and forgot another comes. it healed him back up",
+      "wiped, and he's back at full with new ghouls"
+    ],
+    "rumour": [
+      "[heard|someone said] valnir was a healer in avalon who got thrown out of his college",
+      "heard the fort calls valnir's pit the larder",
+      "[heard|someone said] the west ghost families are worst because they live next to the larder",
+      "heard ris'nir sat at valnir's pit for a season learning"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "valnir mordeth",
+    "text": "Once a reader of the college of healing in Avalon, struck from its roll for a question he would not leave alone: where strength goes when it leaves a body. Morgana answered it and gave him a pit in the west of the [dales of devwy], the larder, where his ghouls draw the strength out of the living and some of it comes to him. The larder is never empty for long. [ris'nir cruss] learned the keeping at its edge."
+  },
+  "bookPage": "From the roll of the college of healing in Avalon, one of the nine chests' books at Caer Gothwaite, in the hand of Mistress Nonn. Struck: Valnir Mordeth, reader, of the second bench. He asked me four times where strength goes when it leaves a body, and four times I told him: it is spent, as water is spent from the spring. He said water does not vanish when it is spent; it goes somewhere, and a man who stood in the stream could drink. I said a man who stood in the stream was a dam, and dams were not taught here. He liked my answer less each time. I have scraped his name and I have written this beside it so that nobody scrapes the reason.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} emptied Valnir Mordeth's larder in the Dales of Devwy in {minutes} minutes.",
+    "loss": "Valnir Mordeth laid {raidLeader}'s company of {realm} by in the larder."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "risnir-cruss",
+      "relation": "the drakoran war-priest who sat a season at the larder's edge and learned the keeping"
+    }
+  ]
+}
