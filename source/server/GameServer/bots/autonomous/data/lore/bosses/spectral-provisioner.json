@@ -78,7 +78,7 @@
     "keyword": "provisioner",
     "text": "The keeper of Caer Sidi's stores, who fed the dead from a cauldron that will not boil a coward's portion. Fire, frost and prayer were his tools, so they do not touch him. Bring steel."
   },
-  "bookPage": "In the larders of Caer Sidi there is nothing to eat and something guarding it. The Provisioner turned on us the moment we stepped among the empty shelves, and our wizards threw fire at him, and frost, and he did not so much as notice, and his blows made our swordsmen move as if through deep water. Our raid leader called for the other spells, the crushing and the withering and the lightning, and those he felt. When he fell he said that someone must feed them. I do not know who he meant. I hope it is not us.",
+  "bookPage": "In the larders of Caer Sidi there is nothing to eat and something guarding it. The Provisioner turned on us the moment we stepped among the empty shelves, and our wizards threw fire at him, and frost, and he did not so much as notice, and his blows made our swordsmen move as if through deep water. Dame Ysolde called for the other spells, the crushing and the withering and the lightning, and those he felt. When he fell he said that someone must feed them. I do not know who he meant. I hope it is not us.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} emptied the larders of Caer Sidi and ended the Spectral Provisioner in {minutes} minutes.",
     "loss": "The Spectral Provisioner turned {realm}'s raid away from the stores; {raidLeader} brought the wrong fire."

@@ -86,7 +86,7 @@
     "keyword": "lich lord ilron",
     "text": "Most of the tales I know end at him. He shows you four of himself; only one is true. Find the one that matters."
   },
-  "bookPage": "In the gallery Ilron showed us four of himself, and they moved as he moved and cast as he cast, and our wizards spent their fire on the wrong three. That is where my last raid's story ended, as so many do. This time our raid leader had us wait until each figure stepped into the lamplight and watched for the one whose shadow fell true. It took the length of three heartbeats. Then she called his name and every spell in the raid went to the same place, and the other four stopped, and stood, and were nothing at all.",
+  "bookPage": "In the gallery Ilron showed us four of himself, and they moved as he moved and cast as he cast, and our wizards spent their fire on the wrong three. That is where the company I went up with the summer before had broken. This time Dame Ysolde waited until each figure stepped into the lamplight, and watched for the one whose shadow fell true. It took the length of three heartbeats. Then she called his name and every spell in the company went to the same place, and the other four stopped, and stood, and were nothing at all.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} found the true Ilron among his images and ended him in {minutes} minutes.",
     "loss": "{realm}'s raid under {raidLeader} struck the wrong Ilron; another Caer Sidi tale ends at the lich."

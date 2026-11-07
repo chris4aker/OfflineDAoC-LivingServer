@@ -78,7 +78,7 @@
     "keyword": "silencer",
     "text": "The keeper who ended the prisoners' calling through the stone. The more voices raised against him, the deeper his hush. Send your best, not your most."
   },
-  "bookPage": "In the inner halls our footsteps made no sound, and when our raid leader called the pull, her voice came out of her mouth and went nowhere, as if swallowed by wool. The Silencer was there. We learned quickly that the more of us struck at him the stiller he became, until our blows seemed to fall on deep water. So she sent ten of us in and kept the rest back, and the ten did what eighty could not. I do not know what that teaches. Brother Cadoc says it is a sermon, and that he will preach it when he has decided on what.",
+  "bookPage": "In the inner halls our footsteps made no sound, and when Dame Ysolde called us forward, her voice came out of her mouth and went nowhere, as if swallowed by wool. The Silencer was there. We learned quickly that the more of us struck at him the stiller he became, until our blows seemed to fall on deep water. So she sent ten of us in and kept the rest back, and the ten did what eighty could not. I do not know what that teaches. Brother Cadoc says it is a sermon, and that he will preach it when he has decided on what.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} broke the Silencer's hush in {minutes} minutes.",
     "loss": "The Silencer stilled {realm}'s raid; {raidLeader} sent too many voices against him."

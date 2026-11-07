@@ -88,7 +88,7 @@
     "keyword": "reckoner",
     "text": "The first of Arawn's keepers and the only one who never turned, because he never stopped counting. The souls he counted shield him. Fight him at his table, in his own hall, and clear the souls."
   },
-  "bookPage": "Every soul that comes into Caer Sidi passes a table at the bottom of the fortress, and behind the table sits the Reckoner, and he writes it down: the name, the deeds, the debt. Brother Cadoc's raid found him at his table still. The souls he had counted stood round him like a ledger made flesh, and took our blows for him, and new ones stood up out of the pages as fast as we cut the old ones down. Our priests did not like killing him. One said afterward that he was the only honest servant left in the place.",
+  "bookPage": "Every soul that comes into Caer Sidi passes a table at the bottom of the fortress, and behind the table sits the Reckoner, and he writes it down: the name, the deeds, the debt. Brother Cadoc's company found him at his table still. The souls he had counted stood round him like a ledger made flesh, and took our blows for him, and new ones stood up out of the pages as fast as we cut the old ones down. Our priests did not like killing him. One said afterward that he was the only honest servant left in the place.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} closed the Soul Reckoner's ledger in {minutes} minutes.",
     "loss": "The Soul Reckoner counted {realm}'s raid among his own; {raidLeader} could not clear the souls."

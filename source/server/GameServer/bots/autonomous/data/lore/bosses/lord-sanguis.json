@@ -91,7 +91,7 @@
     "keyword": "sanguis",
     "text": "A Roman magistrate who bought long life with other men's blood. Kill him and, a few breaths later, he rises again from his own red floor as Lich Lord Sanguis. Do not celebrate the first death."
   },
-  "bookPage": "Sanguis we killed once, and the floor of his chapel trembled, and his blood mages rose out of his body like steam out of a pot. Our raid leader shouted that nobody was to touch his corpse, and nobody did, and six heartbeats later the corpse stood up. It was not the magistrate any more. It was what the magistrate had been paying for all those years, with no man left around it. We fought it in the same red room. When it fell the second time, the floor went from red to grey, and stayed grey.",
+  "bookPage": "Sanguis we killed once, and the floor of his chapel trembled, and his blood mages rose out of his body like steam out of a pot. Dame Ysolde shouted that nobody was to touch his corpse, and nobody did, and six heartbeats later the corpse stood up. It was not the magistrate any more. It was what the magistrate had been paying for all those years, with no man left around it. We fought it in the same red room. When it fell the second time, the floor went from red to grey, and stayed grey.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} cut down Lord Sanguis in {minutes} minutes; the red floor stirred.",
     "loss": "Lord Sanguis fed {realm}'s raid to his chapel floor; {raidLeader} never saw the lich."

@@ -78,7 +78,7 @@
     "keyword": "crypt lord",
     "text": "Arawn's warden over the deep crypts. When the gaol rose he let the prisoners think they had won, and then took command of them. Clear his court before you strike him."
   },
-  "bookPage": "We lost nine of eighty in the crypts before our raid leader learned to pull the warden's court in pieces. The dead stand there in ranks, rows upon rows, as if waiting for an inspection, and their lord walks among them. He did not shout when we came. He looked at us as a gaoler looks at new arrivals, and said that we walked in his crypts uninvited, and every head in every rank turned at once. The Inconnu say he was Arawn's best warden. I believe it. He is still a warden. He has only changed masters, and the master is himself.",
+  "bookPage": "We lost nine of eighty in the crypts, in the first hall, among the warden's ranks. The dead stand there in ranks, rows upon rows, as if waiting for an inspection, and their lord walks among them. He did not shout when we came. He looked at us as a gaoler looks at new arrivals, and said that we walked in his crypts uninvited, and every head in every rank turned at once. The Inconnu say he was Arawn's best warden. I believe it. He is still a warden. He has only changed masters, and the master is himself.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} cleared the crypts and broke the Crypt Lord's command in {minutes} minutes.",
     "loss": "The Crypt Lord's court rose as one against {realm}'s raid; {raidLeader} was buried in the rows."

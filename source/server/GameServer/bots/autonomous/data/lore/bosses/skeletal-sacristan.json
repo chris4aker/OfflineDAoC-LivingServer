@@ -78,7 +78,7 @@
     "keyword": "sacristan",
     "text": "The keeper of the sacred vessels. He still walks his round on the high walk, though the vessels are long gone. Stand in his way."
   },
-  "bookPage": "On the high walk we heard footsteps going round and round, always the same pace, always the same round, and our raid leader said that the old raids had chased the Sacristan for an hour and never caught him. So we did not chase him. We stood across the walk in a wall and waited, and he came round to us, still looking for the vessels that are not there, and found us in his way instead. He seemed more puzzled than angry. When he fell he asked who would keep the vessels now. Nobody had an answer that would have comforted him.",
+  "bookPage": "On the high walk we heard footsteps going round and round, always the same pace, always the same round, and Ennyn, our guide, said that the companies before ours had chased the Sacristan for an hour and never caught him. So we did not chase him. We stood across the walk in a wall and waited, and he came round to us, still looking for the vessels that are not there, and found us in his way instead. He seemed more puzzled than angry. When he fell he asked who would keep the vessels now. Nobody had an answer that would have comforted him.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} stood in the Sacristan's way and ended his round in {minutes} minutes.",
     "loss": "The Skeletal Sacristan walked on past {realm}'s raid; {raidLeader} could not stop him."

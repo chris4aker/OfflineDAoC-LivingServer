@@ -78,7 +78,7 @@
     "keyword": "bane of hope",
     "text": "The keeper whose work was to make prisoners stop believing in the door. It casts those near it to the far ends of the fortress and burns their souls while they search. Walk back with care."
   },
-  "bookPage": "The Bane of Hope did not seem to fight us so much as rearrange us. One moment Brother Cadoc was at my shoulder; the next he was gone, and I heard later that he had stood up three halls away in the dark with the dead turning to look at him, and had walked back to us slowly, praying aloud the whole way, and had pulled nothing. Others were less calm. Our raid leader said afterwards that the burn it gives is the lesser danger. The greater is that it makes you believe you are alone. We were not. That is how we won.",
+  "bookPage": "The Bane of Hope did not seem to fight us so much as rearrange us. One moment Brother Cadoc was at my shoulder; the next he was gone, and I heard later that he had stood up three halls away in the dark with the dead turning to look at him, and had walked back to us slowly, praying aloud the whole way, and had woken nothing. Others were less calm. Dame Ysolde said afterwards that its burning was the lesser cruelty. The greater is that it makes you believe you are alone. We were not. That is how we won.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} found each other again and ended the Bane of Hope in {minutes} minutes.",
     "loss": "The Bane of Hope scattered {realm}'s raid through Caer Sidi; {raidLeader} could not gather it."

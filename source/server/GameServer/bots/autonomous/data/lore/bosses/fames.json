@@ -94,7 +94,7 @@
     "keyword": "fames",
     "text": "Famine, in the Roman tongue, and the voice of the four riders. He asks whether you challenge fate. Say yes and he grants you two minutes. He believes a choice made with open eyes is the only kind worth punishing."
   },
-  "bookPage": "Fames looked along our ranks the way a farmer looks along a fence, and stopped at our raid leader, and asked her whether she had come to challenge fate. He asked it gently. He waited. When she said yes, he inclined his head as if she had passed a test he had not expected her to pass, and told us that we were brave, or foolish, and that while our actions would most likely change nothing, we were granted a few grains of time to prepare. Two minutes, in our terms. He seemed to think that generous. It was.",
+  "bookPage": "Fames looked along our ranks the way a farmer looks along a fence, and stopped at Dame Ysolde, and asked her whether she had come to challenge fate. He asked it gently. He waited. When she said yes, he inclined his head as if she had passed a test he had not expected her to pass, and told us that we were brave, or foolish, and that while our actions would most likely change nothing, we were granted a few grains of time to prepare. Enough for two long prayers, in our terms. He seemed to think that generous. It was.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} told Fames yes and unhorsed him in {minutes} minutes.",
     "loss": "{realm}'s raid under {raidLeader} challenged fate at Caer Sidi; Fames answered."

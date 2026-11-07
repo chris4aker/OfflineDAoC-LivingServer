@@ -73,7 +73,7 @@
     "keyword": "fate's chosen",
     "text": "The riders' servant below, set to keep the fate's bearers in order and see who climbs. If your raid cannot pass it cleanly, do not climb further."
   },
-  "bookPage": "Halfway up the fortress a single figure stood at a post, and the fate's bearers who passed it bowed to it as servants bow to a steward. Our raid leader called it the riders' test, and said that if we could not kill it cleanly we would turn back, and meant it. We killed it cleanly. As it fell it said that the riders would be told, and I felt, as I have felt nowhere else in my life, that someone far above us had just learned my name. When Fames looked along our ranks an hour later, I was not surprised that he knew whom to choose.",
+  "bookPage": "Halfway up the fortress a single figure stood at a post, and the fate's bearers who passed it bowed to it as servants bow to a steward. Dame Ysolde called it the riders' test, and said that if we could not kill it cleanly we would turn back, and meant it. We killed it cleanly. As it fell it said that the riders would be told, and I felt, as I have felt nowhere else in my life, that someone far above us had just learned my name. When Fames looked along our ranks an hour later, I was not surprised that he knew whom to choose.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} passed Fate's Chosen in {minutes} minutes; the riders took note.",
     "loss": "Fate's Chosen turned {realm}'s raid back before the riders; {raidLeader} was not ready."

@@ -96,7 +96,7 @@
     "keyword": "funus",
     "text": "The funeral, last of the four riders. Not death, which is Arawn's, but the candle and the rites. The old keepers wrote that no hand-held weapon could reach him, only prayer and the far-flown arrow."
   },
-  "bookPage": "When the last rider came, every cleric in our raid began to glow as though a lamp had been lit inside them, and each of them heard a whisper that their prayers would serve where swords would not. Funus told us gently that it is the fate of man to die, and gave us sixty seconds to arrange for it. I spent mine praying, which is my trade. It was the first time in my life I have felt that a prayer of mine was aimed at something. When he fell, the door at the end of the hall swung open, and our raid leader said: five seconds.",
+  "bookPage": "When the last rider came, every cleric in our company began to glow as though a lamp had been lit inside them, and each of them heard a whisper that their prayers would serve where swords would not. Funus told us gently that it is the fate of man to die, and gave us a little while to arrange for it. I spent mine praying, which is my trade. It was the first time in my life I have felt that a prayer of mine was aimed at something. When he fell, the door at the end of the hall swung open, and Dame Ysolde said only: now.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} laid Funus in his own grave in {minutes} minutes, and opened Apocalypse's door.",
     "loss": "Funus lit a candle for each of {realm}'s raiders; {raidLeader} never saw the last door."

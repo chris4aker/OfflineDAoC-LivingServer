@@ -78,7 +78,7 @@
     "keyword": "host",
     "text": "A multitude in one prisoner. Eight bodies, one man. Strike the true Host and the others fall like coats from their pegs."
   },
-  "bookPage": "Eight of the same man came at us out of the dark, and our raid leader shouted that only one of them was real, and we did not believe her until we had killed two and the other six kept coming. The Inconnu guide said afterwards that the Host was a body-thief in life, a sorcerer who moved from one stolen body to the next, and that Arawn caught him wearing eight at once. When we found the true one and struck him down, the other seven folded where they stood, like coats falling off pegs when the wall gives way behind them.",
+  "bookPage": "Eight of the same man came at us out of the dark, and Dame Ysolde shouted that only one of them was real, and we did not believe her until we had killed two and the other six kept coming. The Inconnu guide said afterwards that the Host was a body-thief in life, a sorcerer who moved from one stolen body to the next, and that Arawn caught him wearing eight at once. When we found the true one and struck him down, the other seven folded where they stood, like coats falling off pegs when the wall gives way behind them.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} found the true Host among eight and ended all of him in {minutes} minutes.",
     "loss": "The Host wore {realm}'s raid down body by body; {raidLeader} never found the real one."
