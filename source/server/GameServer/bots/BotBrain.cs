@@ -1339,6 +1339,10 @@ namespace DOL.AI.Brain
             // Beggars (bot_living_beggars): a few Crafters live on a corner of their capital and do nothing else.
             if (AutonomousBeggars.Think(this))
                 return;
+            // 1.2: thrown, teleported or jailed by an encounter script: land, then get back to the raid (or wait in the jail),
+            // before any follow, pull or rally order of this turn can send it elsewhere.
+            if (EncounterDisplacementRecovery.Think(BotBody))
+                return;
             bool nativeSpeedTravelStarted;
             if (CompanionFollowPolicy.ObserveAndCancelBuffs(BotBody, out nativeSpeedTravelStarted))
             {
@@ -1372,10 +1376,6 @@ namespace DOL.AI.Brain
             BotBody?.EnsureAutonomousRecoveryTimers();
 
             if (AutonomousStuckWatchdog.Observe(BotBody))
-                return;
-
-            // 1.2: thrown, teleported or jailed by an encounter script: land, then get back to the raid (or wait in the jail).
-            if (EncounterDisplacementRecovery.Think(BotBody))
                 return;
 
             FaceMeleeTarget();

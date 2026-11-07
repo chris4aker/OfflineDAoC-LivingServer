@@ -586,6 +586,17 @@ namespace DOL.UnitTests
             Assert.That(DragonEncounterThrow.Throw(dragon, []), Is.Zero);
         }
 
+        [Test]
+        public void TheLandingAuditListsEveryFixedSpot()
+        {
+            var spots = UT_DisplacementLandingAudit.Spots;
+            Assert.That(spots.Count(s => s.Encounter == "AlbGolestandt"), Is.EqualTo(5));
+            Assert.That(spots.Count(s => s.Encounter == "MidGjalpinulva"), Is.EqualTo(5));
+            Assert.That(spots.Count(s => s.Encounter == "HibCuuldurach"), Is.EqualTo(5));
+            Assert.That(spots.Count(s => s.Encounter == "Xanxicar"), Is.EqualTo(1));
+            Assert.That(spots.Select(s => (s.Region, s.X, s.Y, s.Z)).Distinct().Count(), Is.EqualTo(spots.Length));
+        }
+
         [TestCase(typeof(DOL.AI.Brain.AlbGolestandtBrain))]
         [TestCase(typeof(DOL.AI.Brain.MidGjalpinulvaBrain))]
         [TestCase(typeof(DOL.AI.Brain.HibCuuldurachBrain))]

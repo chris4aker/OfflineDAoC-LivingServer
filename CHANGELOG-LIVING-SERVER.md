@@ -14,6 +14,35 @@ Older entries below keep the names they were written with.
      last. Its entries go here, at the top of this section, as "**Dungeons and bosses have their lore**"; keep the
      entries below and the Beta 1.1.2 section as they are. -->
 
+**Boss throws, teleports and jails now hit bots too, and bots get back** (the epic encounters, wave 1). Tested by
+automated tests only; not played in game yet.
+- **Before:** a boss's throw or teleport only ever picked you. Bots were never thrown, so the mechanic either landed on
+  you alone or was switched off. When a boss did throw you, your companions were dragged along with you.
+- **The dragons throw again.** Golestandt, Gjalpinulva and Cuuldurach have their wing gust back, as in the original
+  scripts. Every 60-80 seconds of a fight on the ground the dragon picks two to five raiders within reach (never the one
+  it is fighting) and hurls them high over its lair. You and the bots are picked alike, so with a raid of bots you are
+  thrown less often than before, never more.
+- **Xanxicar's throw can hit bots too.** It already threw you; once the bots are in its pick list (the next step of
+  this work), the bots it throws come back the same way.
+- **A thrown bot comes back.** It falls and takes the same fall damage you would. Then it walks back to its party:
+  your companions to you, a raid bot to its party leader. If something attacks it on the way, it fights back first.
+  - **Never stuck:** if there is no way back on foot, it hasn't got closer in 10 seconds, or the walk takes too long, it
+    says so and is back with its raid after a 5-second recall.
+  - **Jails:** a jailed bot waits and fights whatever attacks it until the jail ends. Jailer Vifil's jail ends when his
+    two tunnel guardians are dead (or the fight ends). Vifil's jail is still switched off.
+  - **Healers** heal a raider who was just thrown, you included, before others, unless someone else is about to die.
+  - **Your party says it:** "Mira got tossed, heals on Mira", "got tossed, omw back", "someone's in the jail".
+- **Your companions stay at the fight when a boss throws you.** Before, they were teleported along with you. Your
+  own throw is exactly as before.
+- **The dragons' messengers are back but switched off.** From half health they send runners out to fetch more
+  monsters. Off until the bots have a way to stop the runners.
+- **Lich Lord Sanguis can be finished.** At 5% health he can't be targeted. Bots never fight what can't be targeted,
+  so a raid could be stuck on his last 5% until he reset. Now spellcasting bots keep casting at him. Melee and archers
+  still can't hit him, the same as for you.
+- **Switches:** every throw, teleport and jail now goes through one place. Each mechanic can be turned on or off per
+  boss. Off unless listed above, so everything else plays as before. The server log's `EPIC_DISPLACEMENT` lines show
+  each throw. `EPIC_DISPLACEMENT_FALLBACK` and `EPIC_DISPLACEMENT_RECALLED` show a bot that had to recall.
+
 **Battleground keeps change hands** (playtest 2026-11-04: in Thidranki 210 level-22 bots fought for 45 minutes, the
 gates fell, and the Renegade Lord never dropped below 100%).
 - **Before:** once the gates were down, every gamebot walked up to the lord on its own, from wherever its last fight or
