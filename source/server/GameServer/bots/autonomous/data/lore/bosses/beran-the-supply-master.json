@@ -83,7 +83,7 @@
     "keyword": "beran",
     "text": "The ogres' keeper of the stores. He found the old siege pitch of Krondon and learned what a torch does to a cask. Spread out when you fight him, and kill his keepers when he calls."
   },
-  "bookPage": "Beran, the ogres say, had never seen a cask until he came to Krondon. He opened the first one in the stores, put a torch to it to see what was inside, and lost his eyebrows, and from that day he has loved the stores as a miser loves his gold. When we came he lit a cask and bellowed for his keepers in the same breath, and stood in the smoke laughing. We spread out across the stores like men crossing a frozen lake. When he fell, the ogres who keep the casks under him simply sat down among the barrels and waited for a new master.",
+  "bookPage": "Beran, the ogres say, had never seen a cask until he came to Krondon. He opened the first one in the stores, put a torch to it to see what was inside, and lost his eyebrows, and from that day he has loved the stores as a miser loves his gold. When we came he lit a cask and bellowed for his keepers in the same breath, and stood in the smoke laughing. We crossed the stores well apart from one another, like men crossing a frozen lake. When he fell, the ogres who keep the casks under him simply sat down among the barrels and waited for a new master.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} kept clear of the pitch-casks and ended Beran the Supply Master in {minutes} minutes.",
     "loss": "Beran the Supply Master lit one cask too many under {realm}'s raid; {raidLeader} was carried out."
