@@ -173,6 +173,6 @@
   "bookPage": "From the notebook of Brannulf, dwarf of the Remnants, a weaver by trade. I have seen the iceweavers at their work through a crack in the outer ice. They go along the wall in the dark, three or four together, and where they pass the wall is whole that was cracked. I could not see the thread. I could only see the cracks close. I would give my beard for a spindle of it. I asked the giant Hakr for one and he laughed and threw me down the tunnel, and I broke two ribs, and I would ask again tomorrow.",
   "chronicle": {
     "win": "Icelord Hakr fell to {raidLeader}'s raid from {realm} in {minutes} minutes, and his iceweavers with him.",
-    "loss": "Icelord Hakr threw {raidLeader}'s raid from {realm} about the ice for {minutes} minutes and won."
+    "loss": "Icelord Hakr and his iceweavers held off {raidLeader}'s raid from {realm} for {minutes} minutes and won."
   }
 }
