@@ -275,6 +275,7 @@
         }
       ],
       "places": [
+        "aegirs-landing",
         "delling-crater",
         "faraheim",
         "gripklosa-mountains",
@@ -424,6 +425,7 @@
       "name": "The Valkyn",
       "summary": "Morvalt tamed by the Troll Fathers, who took a Norse god and joined Midgard.",
       "places": [
+        "aegirs-landing",
         "trollheim"
       ],
       "bosses": [
@@ -435,6 +437,7 @@
       "name": "The Morvalt",
       "summary": "Prehistoric savages who overran Aegir and hold Trollheim; the crazed ones dig for their Mother on Modernagrav.",
       "places": [
+        "aegirs-landing",
         "gripklosa-mountains",
         "modernagrav",
         "trollheim"
@@ -861,6 +864,7 @@
       "name": "The Houses of the Gods",
       "summary": "Midgard's callings as houses of its gods, with their gothi and gythjur in Jordheim's two temple halls (the Aesir's: Odin, Thor, Tyr, Modi, Bragi, Eir; the eastern: Hel, Ymir, Loki, Skadi), Kelgor's and Bodgar's houses that came with the Valkyn, the trainers who teach their young, and the jarls of the high hall who keep the realm's names and vault.",
       "places": [
+        "aegirs-landing",
         "east-svealand",
         "gotar",
         "jordheim",
@@ -893,6 +897,15 @@
       "summary": "The sveawolves of the Svealands, who raise their young in the open fields while their mothers run the coasts: Morra on East Svealand's shore and Modervarg, the mother wolf of West Svealand.",
       "places": [
         "east-svealand"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "aegir-clans",
+      "name": "The Clan-Folk of Aegir",
+      "summary": "The small clan-folk of the Shrouded Isles who are not the tree-clan: the musslaklan of Aegir's Landing's west shore, the skalklan who dispute it with them, and the bergklan of the Gripklosa range. They trade with those the clan has taken in and fight everyone else.",
+      "places": [
+        "aegirs-landing"
       ],
       "bosses": []
     },
