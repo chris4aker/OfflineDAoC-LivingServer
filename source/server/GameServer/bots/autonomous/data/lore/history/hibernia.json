@@ -115,7 +115,8 @@
         "black-lady",
         "blue-lady",
         "chieftain-caimheul",
-        "red-lady"
+        "red-lady",
+        "tawi-shon"
       ]
     },
     {
@@ -144,13 +145,20 @@
         "cailean",
         "develin",
         "evern",
+        "faerie-queen",
         "flame",
+        "geas-bound-protector",
         "giant-caithor",
         "green-maw",
         "juggernaut",
+        "kunsgnos",
+        "lhia",
         "luriquay",
+        "madawg",
         "melancholic-fairy-queen",
+        "mikka",
         "orey-eyed-oghamist",
+        "shadowgnash",
         "skeaghshee",
         "uafas-capall",
         "wyvernic-wraith"
@@ -284,7 +292,10 @@
       ],
       "bosses": [
         "cuuldurach-the-glimmer-king",
-        "maldahar-the-glimmer-prince"
+        "donal",
+        "ide",
+        "maldahar-the-glimmer-prince",
+        "saemus"
       ]
     },
     {
@@ -425,8 +436,13 @@
       "bosses": [
         "badb",
         "evern",
+        "faerie-queen",
+        "kunsgnos",
+        "lhia",
+        "madawg",
         "melancholic-fairy-queen",
-        "queen-cliodna"
+        "queen-cliodna",
+        "saemus"
       ]
     },
     {
@@ -446,6 +462,7 @@
         "juggernaut",
         "luriquay",
         "orey-eyed-oghamist",
+        "shadowgnash",
         "skeaghshee",
         "uafas-capall",
         "wyvernic-wraith"
@@ -480,7 +497,9 @@
         "muire-tomb"
       ],
       "bosses": [
-        "giant-caithor"
+        "geas-bound-protector",
+        "giant-caithor",
+        "tawi-shon"
       ]
     },
     {
@@ -545,6 +564,18 @@
         "fedail",
         "treal",
         "ulicia"
+      ]
+    },
+    {
+      "id": "outlaws",
+      "name": "The Outlaws of the Wilds",
+      "summary": "Men and women of the realm who went into the bogs and hills beyond its law and stayed: the Cullen outlaws on their island in the eastern bog, with their captain Donal and their wise-woman Ide, who keep a watch of their own.",
+      "places": [],
+      "bosses": [
+        "donal",
+        "ide",
+        "mikka",
+        "saemus"
       ]
     },
     {
