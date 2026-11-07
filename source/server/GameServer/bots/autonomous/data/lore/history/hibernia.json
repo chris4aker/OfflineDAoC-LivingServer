@@ -296,8 +296,12 @@
         "sheeroe-hills"
       ],
       "bosses": [
+        "azure-coseal",
+        "azure-dsaldor",
+        "azure-thror",
         "cuuldurach-the-glimmer-king",
         "donal",
+        "glimmer-lords",
         "ide",
         "maldahar-the-glimmer-prince",
         "saemus"
@@ -483,6 +487,7 @@
       ],
       "bosses": [
         "cuuldurach-the-glimmer-king",
+        "glimmer-lords",
         "maldahar-the-glimmer-prince"
       ]
     },
@@ -493,7 +498,11 @@
       "places": [
         "sheeroe-hills"
       ],
-      "bosses": []
+      "bosses": [
+        "azure-coseal",
+        "azure-dsaldor",
+        "azure-thror"
+      ]
     },
     {
       "id": "restless-dead",

@@ -179,7 +179,11 @@
   },
   "bosses": [
     "cuuldurach-the-glimmer-king",
-    "maldahar-the-glimmer-prince"
+    "maldahar-the-glimmer-prince",
+    "glimmer-lords",
+    "azure-dsaldor",
+    "azure-coseal",
+    "azure-thror"
   ],
   "zones": [
     216
