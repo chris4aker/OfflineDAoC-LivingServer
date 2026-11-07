@@ -261,7 +261,9 @@
         }
       ],
       "places": [
+        "delling-crater",
         "faraheim",
+        "gripklosa-mountains",
         "iarnwood",
         "modernagrav",
         "tuscaran-glacier"
@@ -303,6 +305,7 @@
         "issorden",
         "jailer-vifil",
         "jarala-den-kvinnlig",
+        "khrin",
         "king-tuscar",
         "koli",
         "luso",
@@ -310,6 +313,7 @@
         "masher",
         "master-smed",
         "morbax",
+        "old-matriarch",
         "olen-den-bartender",
         "overste-callejo",
         "pathfinder-folar",
@@ -327,6 +331,8 @@
         "uppsala",
         "valmak",
         "vasrem",
+        "vorkald",
+        "weaponmaster-zargin",
         "wulok"
       ]
     },
@@ -354,6 +360,7 @@
       "name": "The Hrimthursa",
       "summary": "The rime giants of Tuscaran Glacier: Queen Kula and King Tuscar, a Council that argued for peace and Icelords who wanted war.",
       "places": [
+        "delling-crater",
         "tuscaran-glacier"
       ],
       "bosses": [
@@ -383,6 +390,7 @@
       "name": "The Troll Fathers",
       "summary": "The ancient precursors of trolls and kobolds who built Trollheim and fled deeper when it fell.",
       "places": [
+        "gripklosa-mountains",
         "trollheim",
         "tuscaran-glacier"
       ],
@@ -410,6 +418,7 @@
       "name": "The Morvalt",
       "summary": "Prehistoric savages who overran Aegir and hold Trollheim; the crazed ones dig for their Mother on Modernagrav.",
       "places": [
+        "gripklosa-mountains",
         "modernagrav",
         "trollheim"
       ],
@@ -553,7 +562,9 @@
       "name": "Beasts of the Wild",
       "summary": "Great beasts who serve no one: griffons on the glacier, render packs and terror birds in Faraheim, the old fish of Mahattava's lake.",
       "places": [
+        "delling-crater",
         "faraheim",
+        "gripklosa-mountains",
         "iarnvidiurs-lair",
         "iarnwood",
         "jamtland-mountains",
@@ -567,12 +578,14 @@
         "dyranapur",
         "goretooth",
         "hurika",
+        "khrin",
         "luso",
         "lydsyg",
         "mahattava",
         "masher",
         "morbax",
         "mortufoghus",
+        "old-matriarch",
         "rolf",
         "rotodjur",
         "serk",
@@ -801,6 +814,18 @@
       ],
       "bosses": [
         "albion-leader"
+      ]
+    },
+    {
+      "id": "dellingstad",
+      "name": "The People of Dellingstad",
+      "summary": "The crater town of Delling: miners, fortifiers, soothsayers and crossbowmen who trade on their own terms and treat strangers, even Midgard's, as enemies until proved friends.",
+      "places": [
+        "delling-crater"
+      ],
+      "bosses": [
+        "vorkald",
+        "weaponmaster-zargin"
       ]
     },
     {
