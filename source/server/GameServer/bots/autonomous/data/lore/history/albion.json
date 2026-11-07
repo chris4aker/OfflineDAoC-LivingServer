@@ -152,7 +152,8 @@
         "forest-sauvage",
         "pennine-mountains",
         "black-mountains-south",
-        "black-mountains-north"
+        "black-mountains-north",
+        "snowdonia"
       ],
       "bosses": [
         "aidon-the-archwizard",
@@ -267,7 +268,8 @@
       "places": [
         "caer-sidi",
         "lyonesse",
-        "black-mountains-north"
+        "black-mountains-north",
+        "snowdonia"
       ],
       "bosses": [
         "soul-reckoner",
@@ -397,7 +399,8 @@
         "camelot-hills",
         "black-mountains-south",
         "avalon-marsh",
-        "hadrians-wall"
+        "hadrians-wall",
+        "snowdonia"
       ],
       "bosses": []
     },
@@ -418,7 +421,8 @@
         "avalon-marsh",
         "black-mountains-north",
         "cornwall",
-        "hadrians-wall"
+        "hadrians-wall",
+        "snowdonia"
       ],
       "bosses": [
         "golestandt",
