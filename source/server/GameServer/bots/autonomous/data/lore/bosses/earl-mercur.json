@@ -1,0 +1,140 @@
+{
+ "id": "earl-mercur",
+ "name": "Earl Mercur",
+ "npcNames": [
+  "Earl Mercur"
+ ],
+ "aliases": [
+  "mercur",
+  "the mirror earl"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "eastern-halls"
+ ],
+ "related": [
+  {
+   "id": "high-lord-oro",
+   "relation": "his lord; went down into the fires with him"
+  },
+  {
+   "id": "duke-sallis",
+   "relation": "asked him in private"
+  },
+  {
+   "id": "marquis-chaosmar",
+   "relation": "asked him how to live in two places"
+  },
+  {
+   "id": "marquis-sabonach",
+   "relation": "shares Oro's door"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Earl Mercur is a level 71 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands outside High Lord Oro's hall in the north-east, with Marquis Sabonach and Duke Sallis.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's map key lists Duke Sallis, Marquis Sabonach and Earl Mercur together, beside High Lord Oro.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "Earl Mercur is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Earl Mercur uses model 686 at size 80. High Lord Oro stands as three spawns of one name in the world data.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "No demonology source found for the name Mercur.",
+   "provenance": "original",
+   "source": "Living Server"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Earl Mercur is the only demon who saw High Lord Oro become three, and he has told it three ways. He was Oro's lamp-bearer in the Uncounted Age, a small bright demon whose skin runs like quicksilver and gives back whatever light is near it, and when Oro went down alone into the deep fires in the Third Roll he was not quite alone. Mercur went ahead of him down the cracks, carrying the light on his own skin. What came back up was three high lords of one shape, speaking with one voice, with Mercur walking in front of them, brighter than before.\n\nThe court sent him to the Inquisitors. He told the north cloister that the deep fire had a face in it like still water, and that Oro looked into it and it looked back twice. He told Duke Sallis, who asked him in private, that Oro had divided himself on purpose, so that no rival would ever know which body to strike. He told the imps, who paid him, that Oro never came back at all, and that the three are the fire's own reflections wearing his shape. The Inquisitors examined all three accounts and reported that Mercur believed each of them completely while he was telling it. The Chancellor wrote on the Roll that the high lord's line was unchanged and the earl's testimony received, which is the Chancellor's way of saying it was not.\n\nSince then Mercur has carried messages for the three Oros, and he is the only courier in the hollow who never needs to ask which of them sent him. He stands outside their hall in the north-east with Duke Sallis and Marquis Sabonach, and his skin shows each Oro a slightly different picture of whatever stands in front of him. Marquis Chaosmar, found in two halls two Rolls later, came to Mercur to ask how a demon lives in more than one place. Mercur told him. The court has three versions of that as well.",
+ "legend": "Mercur stands outside High Lord Oro's hall in the north-east, closer to the Oros than to anything else (one of the three is barely eight hundred units away), with Marquis Sabonach and Duke Sallis nearby. Level 71, no script, a small earl. Pull him away from the hall door and toward Sallis's end so you do not wake the three Oros early; three high lords at once is not something your raid will survive. Players call him the mirror earl, because his skin shows you yourself, and the bards like to say he is the only one who knows which Oro is real. He has told three people three different things, so do not trust any of them, and do not trust the one your guildmate heard either.",
+ "yells": {
+  "aggro": [
+   "Look. That is you. Do you like it?",
+   "Which one sent you? It does not matter. All three.",
+   "I carry light. You carry very little."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Three of you now. Which one is real?"
+   }
+  ],
+  "death": [
+   "Tell the three... tell each of them... something...",
+   "The light goes back to the fire."
+  ],
+  "slay": [
+   "Reflected.",
+   "Gone, like a face in water.",
+   "One of three. Next."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "A shimmer runs along the wall like light on water.",
+   "Three shadows move as one behind a door."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The mirror earl flares. You see yourself in him."
+   }
+  ],
+  "realmFirstKill": "Earl Mercur has fallen. The light runs out of him."
+ },
+ "botLines": {
+  "briefing": [
+   "mercur is outside oros hall. [pull him away from the door|away from the door]",
+   "dont wake the three oros with mercur. [gg if you do|three high lords, no]",
+   "order: sallis, mercur, sabonach, then the oros. [mana check|rebuff]",
+   "71 no tricks, small earl, [easy to lose in the fight|assist the ma]"
+  ],
+  "aftermathWin": [
+   "mercur down. [the mirror is broken|no more shiny]",
+   "earl mercur dead. [sabonach next|on to sabonach]",
+   "mercur done, [oros didnt wake|kept the oros asleep]",
+   "the mirror earl is dead. [now the three oros|full mana for oro]"
+  ],
+  "aftermathLoss": [
+   "woke the oros pulling mercur. [three high lords lol|wipe]",
+   "mercur and sallis together. [too much|mess]",
+   "mercur got us. [regroup|rez]",
+   "lost the pull at oros door. [slower|one at a time]"
+  ],
+  "rumour": [
+   "[heard|word is] earl mercur saw high lord oro split into three",
+   "mercur told three people three stories about oro. [which is true|none of them]",
+   "[someone said|my guildie says] mercur's skin shows you your own face",
+   "chaosmar asked mercur how to be in two places. [lol|the demons are weird]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "mercur",
+  "text": "Earl of High Lord [Oro]'s household, the quicksilver lamp-bearer who went down into the deep fires with his lord in the Third Roll and saw one high lord come back as three. He has given three accounts and believes each while telling it."
+ },
+ "bookPage": "From the commonplace book of a Midgard runemaster, copied in Jordheim: The little earl at the door of the three-fold lord is silver all over, and moving, like the surface of a full cup carried by a man who is walking. When I came near him I saw myself in his skin, and my brother beside me saw himself, and the third of us saw the room behind us with nobody in it. We spoke of it afterwards, all three, and none of us could agree on what we had seen, and I think that is the earl's whole nature. He shows every man a different thing, and every one of them is true.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} put out Earl Mercur's light in {minutes} minutes.",
+  "loss": "Earl Mercur showed {realm}'s raid under {raidLeader} its own face, and it turned back."
+ }
+}

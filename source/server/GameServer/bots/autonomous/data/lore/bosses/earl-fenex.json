@@ -1,0 +1,140 @@
+{
+ "id": "earl-fenex",
+ "name": "Earl Fenex",
+ "npcNames": [
+  "Earl Fenex"
+ ],
+ "aliases": [
+  "fenex",
+  "the singer"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "eastern-halls"
+ ],
+ "related": [
+  {
+   "id": "high-lord-baelerdoth",
+   "relation": "sings him to sleep"
+  },
+  {
+   "id": "duke-harboris",
+   "relation": "whose line he wants"
+  },
+  {
+   "id": "marquis-focalleste",
+   "relation": "shares the hall"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "refused him the line"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Earl Fenex is a level 71 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands in High Lord Baelerdoth's hall in the east, between Duke Harboris and the high lord.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's map key lists Marquis Focalleste, Duke Harboris and Earl Fenex together, beside High Lord Baelerdoth.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "Earl Fenex is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Earl Fenex uses model 637, the dukes' model, at size 125.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "In the Ars Goetia, Phenex (37) is a marquis in the form of a phoenix who sings sweetly and hopes to return to the Seventh Throne; Fenex reads as that name, to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Earl Fenex sings, and for most of the court that is the whole of what is known about him. He belongs to High Lord Baelerdoth's household in the east, and in the Uncounted Age his work was to sing to his master, because Baelerdoth's thirst never sleeps and Fenex's voice was the one thing near him it could not drink. A ward goes thin in that hall, and a demon's strength goes thin, but a song is not held by anyone, and so it cannot be taken. Baelerdoth slept for the first time to Fenex singing, and has slept to nothing else since.\n\nHe is a creature of fire, like the firebird of the old bestiaries, and in the early Rolls he sang beside the braziers that Duke Harboris fed from the deep cracks with the fire in his ribs. When Harboris climbed toward the world in the Eighth Roll and came back a ghost with no fire in him, the braziers of Baelerdoth's hall went out. The court expected the high lord to wake and stay awake. Fenex kept him sleeping by setting himself in the cold braziers and burning there, and singing while he burned, and he has done it every Roll since. Each time he burns a little lower and comes back out of the ash a little smaller. His shape is a duke's and his line an earl's, and the imps say it is the duke's shape that is burning away.\n\nWhat Fenex wants is Harboris's line. It reads Keeper of the Fires, and Harboris keeps it though he has lit nothing since his climb. Fenex walked down the approach in the Ninth Roll to ask the Chancellor for it, and Adremal answered that the bargain does not require a keeper of fires to keep any, as it does not require a marquis to be alive or a duke to have a body. Fenex went back east and sang the answer to Baelerdoth, set to a tune. The court considers it the only joke ever made against the Chancellor that he has not answered. The ghost duke stands a short walk from the singing and does not seem to hear it.",
+ "legend": "Fenex stands in High Lord Baelerdoth's hall in the east, between Duke Harboris and the high lord himself, both within about seven hundred units. That is the whole problem: pull Fenex badly and you have the ghost duke, the high lord, or both. Level 71, no script, duke-sized for an earl. Take Harboris first, then Fenex, then Focalleste, and only then Baelerdoth, and keep every fight out toward the Ward. Players call him the singer and swear you can hear him singing if the hall is quiet, and some say Baelerdoth sleeps until Fenex dies. That part is not true, but it is still a good reason to leave Fenex until just before the high lord and have every buff fresh when he drops.",
+ "yells": {
+  "aggro": [
+   "Hush. My lord is sleeping.",
+   "You came all this way to interrupt a song?",
+   "Burn quietly. He hates to be woken."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Louder, then. If I must, I will sing over you."
+   }
+  ],
+  "death": [
+   "Who will sing... who will keep him sleeping...",
+   "Ash. Again. I will come back smaller."
+  ],
+  "slay": [
+   "Quiet now.",
+   "That is the last verse for you.",
+   "Hush."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "A low song drifts through the hall, warm as embers.",
+   "Ash lies thick in the cold braziers."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The singer burns brighter. The song rises."
+   }
+  ],
+  "realmFirstKill": "Earl Fenex has fallen. The song is ended."
+ },
+ "botLines": {
+  "briefing": [
+   "fenex is between harboris and baelerdoth. [careful pull|pull him out east]",
+   "harboris first, then fenex, then focalleste. [then the high lord|baelerdoth last]",
+   "dont bring the ghost duke with fenex. [one at a time|single pulls]",
+   "71 no tricks but duke sized. [watch the angle|hes big]"
+  ],
+  "aftermathWin": [
+   "fenex down. [no more singing|the song's over]",
+   "earl fenex dead. [focalleste next|on to focalleste]",
+   "fenex done, [baelerdoth didnt wake lol|clean pull]",
+   "the singer is dead. [now the high lord|rebuff for baelerdoth]"
+  ],
+  "aftermathLoss": [
+   "pulled harboris with fenex. [ghost duke wiped us|wipe]",
+   "fenex brought baelerdoth. [abs gone, gg|mess]",
+   "fenex got us. [regroup|rez]",
+   "bad pull in baelerdoths hall again. [slower|one at a time]"
+  ],
+  "rumour": [
+   "[heard|word is] earl fenex sings baelerdoth to sleep",
+   "you can hear singing in baelerdoths hall if its quiet. [creepy|swear it]",
+   "[someone said|my guildie says] fenex wants harboris's title and the chancellor said no",
+   "fenex burns in the braziers and comes back smaller. [phoenix thing|like the bird]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "fenex",
+  "text": "Earl of High Lord [Baelerdoth]'s household, the singer whose voice is the one thing his master's thirst cannot drink. Since Duke [Harboris] came back a ghost, Fenex burns in the cold braziers to keep the hall lit, and he wants the line of Keeper of the Fires."
+ },
+ "bookPage": "From a song of the College of Bards at Tir na Nog, The Singer in the Ash, set down in prose: There is a hall in the east of the pit where the fires went out, and the lord there sleeps. Beside him a singer stands in a cold brazier and sets himself alight and sings, so that the lord will not wake. We heard him from the foot of the eastern stair. Our own bard put down her harp and listened, and afterwards she would not play for three nights. When she played again it was his tune, and she said it was the saddest thing she had ever learned: a song for keeping someone asleep.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} ended Earl Fenex's song in {minutes} minutes.",
+  "loss": "Earl Fenex sang over {realm}'s raid under {raidLeader}, and the high lord slept on."
+ }
+}
