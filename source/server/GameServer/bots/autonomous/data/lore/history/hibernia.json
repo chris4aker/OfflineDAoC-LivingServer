@@ -20,7 +20,9 @@
           "source": "Living Server"
         }
       ],
-      "places": [],
+      "places": [
+        "spraggon-den"
+      ],
       "bosses": [
         "badb",
         "queen-cliodna"
@@ -86,7 +88,8 @@
       ],
       "places": [
         "marfach-caverns",
-        "muire-tomb"
+        "muire-tomb",
+        "treibh-caillte"
       ],
       "bosses": [
         "ancient-black-oak",
@@ -115,6 +118,7 @@
         }
       ],
       "places": [
+        "coruscating-mine",
         "hibernia-wilds"
       ],
       "bosses": [
@@ -186,6 +190,7 @@
       "places": [
         "fomor",
         "galladoria",
+        "koalinth-caverns",
         "tur-suil"
       ],
       "bosses": [
