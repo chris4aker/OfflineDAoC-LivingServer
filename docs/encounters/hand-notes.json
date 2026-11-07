@@ -504,6 +504,14 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs": "01e443b7d98085cd982e19cf197db42c0a7eabc8718686956aac95637f16d9d3"
+   },
+   "notes": "At 5% health he turns untargetable (CANTTARGET) until the fight resets; area spells and running damage over time still hit him. 1.2: bots never fight an untargetable NPC, so the raid would stall on his last 5%; now offensive casters keep him as their target and finish him with spells (EpicEncounterTactics.FinishedBySpells), and the dungeon route keeps him as a target. Untested in a run.",
+   "rules": {
+    "phase@335": {
+     "summary": "At 5% health: announces 'becomes almost untouchable in his last act of agony' and turns untargetable (CANTTARGET) until the fight resets.",
+     "tactic": "Finish him with spells: the offensive casters keep casting at him (nukes, DoTs, area spells; EpicEncounterTactics.FinishedBySpells), melee and archers keep the adds off them.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "caer-sidi/lordsanguis": {

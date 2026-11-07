@@ -840,9 +840,11 @@ Area spells: Mesmerized (Mesmerize, damage 0, radius 300).
 
 `source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs` lines 225-302. level 81; 100,000 health; npc template 60163267; raids: epic-albion (named); raid AI: generic dungeon route; spawned by LordSanguis.
 
+At 5% health he turns untargetable (CANTTARGET) until the fight resets; area spells and running damage over time still hit him. 1.2: bots never fight an untargetable NPC, so the raid would stall on his last 5%; now offensive casters keep him as their target and finish him with spells (EpicEncounterTactics.FinishedBySpells), and the dungeon route keeps him as a target. Untested in a run.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| phase | At 5% health (Think): see the block | `LordSanguis.cs:335` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| phase | At 5% health: announces 'becomes almost untouchable in his last act of agony' and turns untargetable (CANTTARGET) until the fight resets. | `LordSanguis.cs:335` | inferred, verified |  | easy for the current raid AI | Finish him with spells: the offensive casters keep casting at him (nukes, DoTs, area spells; EpicEncounterTactics.FinishedBySpells), melee and archers keep the adds off them. |
 | tether | Tether range 2000: drawn further from its spawn it walks home. | `LordSanguis.cs:283` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
 | reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `LordSanguis.cs:327` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 

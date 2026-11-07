@@ -5895,7 +5895,7 @@
    "rules": [
     {
      "kind": "phase",
-     "summary": "At 5% health (Think): see the block",
+     "summary": "At 5% health: announces 'becomes almost untouchable in his last act of agony' and turns untargetable (CANTTARGET) until the fight resets.",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs",
      "line": 335,
      "lineEnd": 343,
@@ -5904,10 +5904,9 @@
      "sourceClass": "LichLordSanguisBrain",
      "method": "Think",
      "threshold": 5,
+     "tactic": "Finish him with spells: the offensive casters keep casting at him (nukes, DoTs, area spells; EpicEncounterTactics.FinishedBySpells), melee and archers keep the adds off them.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
      "key": "phase@335"
     },
     {
@@ -5954,6 +5953,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "At 5% health he turns untargetable (CANTTARGET) until the fight resets; area spells and running damage over time still hit him. 1.2: bots never fight an untargetable NPC, so the raid would stall on his last 5%; now offensive casters keep him as their target and finish him with spells (EpicEncounterTactics.FinishedBySpells), and the dungeon route keeps him as a target. Untested in a run.",
    "verified": true
   },
   {

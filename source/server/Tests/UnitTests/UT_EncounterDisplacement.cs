@@ -523,6 +523,23 @@ namespace DOL.UnitTests
             Assert.That(R.StageOf(bot), Is.EqualTo(R.Stage.Recalling));
         }
 
+        // ---- Lich Lord Sanguis: finished by spells ------------------------------------------------------------------------
+
+        [Test]
+        public void LichLordSanguisLastFivePercentIsFinishedBySpells()
+        {
+            const GameNPC.eFlags Hidden = GameNPC.eFlags.GHOST | GameNPC.eFlags.CANTTARGET;
+            Assert.That(EpicEncounterTactics.FinishableUntargetable("LichLordSanguis", true, Hidden, true), Is.True);
+            Assert.That(EpicEncounterTactics.FinishableUntargetable("LichLordSanguis", true, GameNPC.eFlags.GHOST, true), Is.False,
+                "targetable: nothing special");
+            Assert.That(EpicEncounterTactics.FinishableUntargetable("LichLordSanguis", true, Hidden, false), Is.False,
+                "out of the fight: left alone (it resets)");
+            Assert.That(EpicEncounterTactics.FinishableUntargetable("LichLordSanguis", false, Hidden, true), Is.False);
+            Assert.That(EpicEncounterTactics.FinishableUntargetable("FirePatch", true, Hidden, true), Is.False,
+                "other untargetable NPCs (the fire primal's trail) stay ignored");
+            Assert.That(EpicEncounterTactics.MayFinishUntargetable(null, null), Is.False);
+        }
+
         // ---- Dragons --------------------------------------------------------------------------------------------------------
 
         [Test]
