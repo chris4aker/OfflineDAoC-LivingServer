@@ -329,12 +329,12 @@ Rules of Beatha (`source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs`
 Rules of Prince Ba'alorien (`source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs`):
 
 - **reset** (verified): Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) `PrinceBaalorien.cs:98`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
-- **pet_devour** (verified): Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health. `PrinceBaalorien.cs:110`. *needs new raid AI*: Pet classes leave or park their pets more than 2,000 away before the pull and fight without them.
+- **pet_devour** (verified): Every 5 s (PetDevourIntervalMilliseconds) the nearest summoned pet within 2,000 (a player's or a bot's, never a bot: EpicEncounterMechanics.NearestDevourablePet) dies and he heals by its maximum health. `PrinceBaalorien.cs:109`. *needs new raid AI*: Pet classes leave or park their pets more than 2,000 away before the pull and fight without them.
 
 Rules of Prince Asmoien (`source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs`):
 
 - **reset** (verified): Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) `PrinceAsmoien.cs:99`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
-- **pet_devour** (verified): Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health. `PrinceAsmoien.cs:111`. *needs new raid AI*: Pet classes leave or park their pets more than 2,000 away before the pull.
+- **pet_devour** (verified): Every 5 s (PetDevourIntervalMilliseconds) the nearest summoned pet within 2,000 (a player's or a bot's, never a bot: EpicEncounterMechanics.NearestDevourablePet) dies and he heals by its maximum health. `PrinceAsmoien.cs:110`. *needs new raid AI*: Pet classes leave or park their pets more than 2,000 away before the pull.
 
 ### 8. Fornfrusenen and Icelord Agmundr (Tuscaran Glacier)
 
@@ -1054,7 +1054,7 @@ Area spells: Lifetap (DirectDamageNoVariance, damage 1000, radius 1000).
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `PrinceAsmoien.cs:99` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| pet_devour | Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health. | `PrinceAsmoien.cs:111` | inferred, verified | PetDevourIntervalMilliseconds | needs new raid AI | Pet classes leave or park their pets more than 2,000 away before the pull. |
+| pet_devour | Every 5 s (PetDevourIntervalMilliseconds) the nearest summoned pet within 2,000 (a player's or a bot's, never a bot: EpicEncounterMechanics.NearestDevourablePet) dies and he heals by its maximum health. | `PrinceAsmoien.cs:110` | inferred, verified | PetDevourIntervalMilliseconds | needs new raid AI | Pet classes leave or park their pets more than 2,000 away before the pull. |
 
 #### Prince Ba'alorien (`PrinceBaalorien`)
 
@@ -1065,7 +1065,7 @@ Prince of Darkness Falls. Every five seconds he eats the nearest pet within 2,00
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `PrinceBaalorien.cs:98` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| pet_devour | Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health. | `PrinceBaalorien.cs:110` | inferred, verified | PetDevourIntervalMilliseconds | needs new raid AI | Pet classes leave or park their pets more than 2,000 away before the pull and fight without them. |
+| pet_devour | Every 5 s (PetDevourIntervalMilliseconds) the nearest summoned pet within 2,000 (a player's or a bot's, never a bot: EpicEncounterMechanics.NearestDevourablePet) dies and he heals by its maximum health. | `PrinceBaalorien.cs:109` | inferred, verified | PetDevourIntervalMilliseconds | needs new raid AI | Pet classes leave or park their pets more than 2,000 away before the pull and fight without them. |
 
 #### Princess Nahemah (`PrincessNahemah`)
 

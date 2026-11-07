@@ -1,19 +1,82 @@
-# Living Server Beta 1.1.2: release notes (draft)
+# Living Server Beta 1.1.2: release notes
 
-The text below the line is the draft of the GitHub release notes for `v1.1.2-beta`. It is a draft for the owner's
-approval: the "How it was tested" section is finished after the owner's played check. In the file table the Setup
-row must keep exactly `(filled in when the exe is built)`: the release workflow replaces only that text with the exe's
-SHA-256. The zip's SHA-256 is filled in by hand when publishing. Nothing here names the Easter eggs or the project's internal vocabulary.
+The text below the line is the GitHub release notes for `v1.1.2-beta`. In the file table the Setup row must keep
+exactly `(filled in when the exe is built)`: the release workflow replaces only that text with the exe's SHA-256. The
+zip's SHA-256 is filled in by hand when publishing. Nothing here names the Easter eggs or the project's internal
+vocabulary.
 
 ---
 
-### A busier realm, raids sized like the era, and bots that count in your guild
+### Raids that know their bosses, a realm that talks like a full server, and bots that count in your guild
 
-1.1.1 fixed your first reports. 1.1.2 is the first update with new things to play: a realm that talks like a full
-server on a busy evening, raids the size they were in 2002-2004 with their first boss tactics, quests that work with
-your bot group, and gamebots that pull their weight in your guild. Under the hood, your world is now safe from crashes and backed up every day.
+1.1.1 fixed your first reports. 1.1.2 is the first update with new things to play. Bot raids get their first boss
+tactics and are sized like the raids of 2002-2004. The realm talks like a full server on a busy evening. Quests work
+with your bot group, and gamebots pull their weight in your guild. Under the hood, your world is now safe from crashes
+and backed up every day.
 
 It's for Offline DAoC **0.37 and 0.37b**, with or without the **0.37c** new client, like 1.1 and 1.1.1.
+
+### Raids that know their bosses
+
+Some bosses can't be beaten by hitting harder, and bot raids used to try anyway. Five of them now get the tactics a
+2003 raid leader would have called:
+
+- **Scurceol Hyrde (Krondon)** can't be hurt while his four floating orbs live. The raid now shoots the orbs down first,
+  one party to an orb, casters and archers from the floor, melee waiting clear of him, and only then turns on him.
+- **Black Lady (Marfach Caverns)** is fought at home. Raids used to drag her out of her room until she went back at
+  full health; now they keep her in reach of her room and lead her back when she strays. Her Ancient Black Oak falls
+  with her, so nobody wastes the night on it.
+- **Aidon the Archwizard (Hall of the Corrupt)** only summons new illusions once all four are dead, so the raid kills
+  three and leaves the last one standing, then everyone fights him.
+- **Nosdoden (Trollheim)** sends a wave of essences as his health falls. The raid stops and clears each wave before
+  going back to him, so the waves don't pile up.
+- **Xanxicar (Crystal Cave)** stomps everything around him at set points in the fight. Before each stomp the raid
+  backs off, and only the party holding him stays in.
+
+For every raid:
+- **A boss that jumps the raid before it's ready** is answered by the whole raid at once, or the raid pulls back
+  together and lets it reset, instead of trickling in by twos and threes.
+- **A lost skirmish no longer uses up an attempt.** Only a fight most of the raid was in, or lost half its people in,
+  counts as one of the raid's two tries.
+- **Raids muster where the boss lives**, and walk to where it actually stands, not to where it last chased someone.
+- **The Darkness Falls princes no longer eat bots.** Princes Asmoien and Ba'alorien devour the nearest pet every few
+  seconds and heal by its health, but they took companion bots and gamebots for pets too, so a raid could never get
+  them down. They now take only summoned pets. Found in this release's long test run.
+
+*The encounter catalog:* every scripted boss in the game was read from its script into one catalog: what it does,
+when, and what a raid needs to do about it. That reading also found 23 places where the game's bosses had been
+softened for bot raids. For 22 of them the original rule, read from the OpenDAoC project's own code, is back in the
+game behind 17 switches, **all off**: those bosses play exactly as in 1.1.1, and each original rule is turned on only
+once the raid has a tactic for it.
+
+### Raids the size they were in the era
+
+- **Period sizes.** Every big raid used to need 200 level 50s. Each one is now measured against the size a
+  comfortable raid had there in 2002-2004, read from the forum raid threads and guides of the time, and starts a
+  quarter above it, because bots play worse than 2003 players: Caer Sidi, Galladoria and Tuscaran Glacier 125,
+  Crystal Cave 150, the dragons 88, Summoner's Hall, Darkness Falls and the smaller dungeons 80, Hall of the Corrupt
+  60, down to 50 for Dodens Gruva and Tur Suil. The table, with each thread's date and quote:
+  [docs/RAID-SIZES.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/RAID-SIZES.md).
+- **Mostly won, never a sure thing.** Each encounter's raid is sized from its own record in the Herald: a win trims
+  the next raid there a little, a defeat adds more back, so it settles where that encounter is won about two times in
+  three. **The bosses are never weakened.** The Herald notes each raid's size.
+- **A time-out without a wipe is no longer a loss.** A raid that runs out its four hours without ever wiping counts as
+  neither, so it doesn't make the next raid bigger.
+- **After a restart** no automatic raid opens until the realm's bots have finished logging in.
+- **Keep sieges remember their balance across restarts**, rebuilt from the Herald's recent sieges.
+- **Attackers no longer roll over keeps.** When attackers keep taking keep after keep, fewer of them come to the
+  next sieges, until defenders win their share again.
+
+### Dragons, the Epic Special Forces, and raids that don't get stuck
+
+- **Dragon raids regroup after a wipe.** The raid falls back to its staging ring, the fallen walk back, the living
+  rebuff, and it goes in again. After two failed attempts it is defeated and goes home, and every realm hears it.
+- **The Epic Special Forces answer a dragon wipe** as they do in dungeons, and now **join a full raid** too: they used
+  to be turned away when the realm's own parties had filled the raid. They come with 24, fewer after wins they helped
+  with, more after losses.
+- **No more hours at a muster.** A raid that can't reach an encounter after three pulls sets it aside for 15 minutes
+  and goes on to the others; a muster that stops gaining raiders for 20 minutes does the same. A raid now fights from a
+  walkable spot even when a monster attacks it from a hard-to-reach one.
 
 ### A realm that talks like a full server
 
@@ -39,65 +102,6 @@ It's for Offline DAoC **0.37 and 0.37b**, with or without the **0.37c** new clie
 for a busy peak server. In a simulated evening at 1,000 bots a realm, a player hears about 12.7 lines a minute across
 the channels, up from 1.9. A blind read of 400 earlier bot lines had judged 53% as believable; re-running those lines
 gives about 70%. Those lines are known, so that is a regression check, and a fresh blind round comes with 1.2.
-
-### Raids the size they were in the era
-
-- **Period sizes.** Every big raid used to need 200 level 50s. Each one is now measured against the size a
-  comfortable raid had there in 2002-2004, from the forum raid threads of the time, and starts a quarter above it,
-  because bots play worse than 2003 players: Caer Sidi, Galladoria and Tuscaran Glacier 125, Crystal Cave 150, the
-  dragons 88, Summoner's Hall, Darkness Falls and the smaller dungeons 80, Hall of the Corrupt 60, down to 50 for
-  Dodens Gruva and Tur Suil.
-  The table and its sources: [docs/RAID-SIZES.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/RAID-SIZES.md).
-- **Mostly won, never a sure thing.** Each encounter's raid is sized from its own record in the Herald: a win trims
-  the next raid there a little, a defeat adds more back, so it settles where that encounter is won about two times in
-  three. **The bosses are never weakened.** The Herald notes each raid's size.
-- **A time-out without a wipe is no longer a loss.** A raid that runs out its four hours without ever wiping counts as
-  neither, so it doesn't make the next raid bigger.
-- **After a restart** no automatic raid opens until the realm's bots have finished logging in.
-- **Keep sieges remember their balance across restarts**, rebuilt from the Herald's recent sieges.
-- **Attackers no longer roll over keeps.** When attackers keep taking keep after keep, fewer of them come to the
-  next sieges, until defenders win their share again.
-
-### Dragons, the Epic Special Forces, and raids that don't get stuck
-
-- **Dragon raids regroup after a wipe.** The raid falls back to its staging ring, the fallen walk back, the living
-  rebuff, and it goes in again. After two failed attempts it is defeated and goes home, and every realm hears it.
-- **The Epic Special Forces answer a dragon wipe** as they do in dungeons, and now **join a full raid** too: they used
-  to be turned away when the realm's own parties had filled the raid. They come with 24, fewer after wins they helped
-  with, more after losses.
-- **No more hours at a muster.** A raid that can't reach an encounter after three pulls sets it aside for 15 minutes
-  and goes on to the others; a muster that stops gaining raiders for 20 minutes does the same. A raid now fights from a
-  walkable spot even when a monster attacks it from a hard-to-reach one.
-
-### Raids that know their bosses
-
-Some bosses can't be beaten by hitting harder, and bot raids used to try anyway. Five of them now get the tactics a
-2003 raid leader would have called:
-
-- **Scurceol Hyrde (Krondon)** can't be hurt while his four floating orbs live. The raid now shoots the orbs down first,
-  one party to an orb, casters and archers from the floor, melee waiting clear of him, and only then turns on him.
-- **Black Lady (Marfach Caverns)** is fought at home. Raids used to drag her out of her room until she went back at
-  full health; now they keep her in reach of her room and lead her back when she strays. Her Ancient Black Oak falls
-  with her, so nobody wastes the night on it.
-- **Aidon the Archwizard (Hall of the Corrupt)** only summons new illusions once all four are dead, so the raid kills
-  three and leaves the last one standing, then everyone fights him.
-- **Nosdoden (Trollheim)** sends a wave of essences as his health falls. The raid stops and clears each wave before
-  going back to him, so the waves don't pile up.
-- **Xanxicar (Crystal Cave)** stomps everything around him at set points in the fight. Before each stomp the raid
-  backs off, and only the party holding him stays in.
-
-For every raid:
-- **A boss that jumps the raid before it's ready** is answered by the whole raid at once, or the raid pulls back
-  together and lets it reset, instead of trickling in by twos and threes.
-- **A lost skirmish no longer uses up an attempt.** Only a fight most of the raid was in, or lost half its people in,
-  counts as one of the raid's two tries.
-- **Raids muster where the boss lives**, and walk to where it actually stands, not to where it last chased someone.
-
-*The research:* every scripted boss in the game was read from its script into one catalog: what it does, when, and
-what a raid needs to do about it. That reading also found 23 places where the game's bosses had been softened for
-bot raids. For 22 of them the original rule, read from the OpenDAoC project's own code, is back in the game behind
-17 switches, **all off**: those bosses play exactly as in 1.1.1, and each original rule is turned on only once the raid has a
-tactic for it.
 
 ### Quests with your bot group
 
@@ -177,13 +181,20 @@ untouched.
 
 ### How it was tested
 
-- **Automated:** the full server suite (4,819 server tests) passes, and on Windows CI the server tests, the
+- **Automated:** the full server suite (4,820 server tests) passes, and on Windows CI the server tests, the
   launcher's Living Server tab, update and Herald tests and the installer script tests passed on this release's
-  build. Setup's own end-to-end tests run when the release is built. The raid sizing was checked against a simulation of 2,000 raids; the models of how likely a
-  raid of a given size is to win are estimates, not measurements.
-- **Played:** [owner: one line on the overnight soak and the played check, filled in before publishing]. Already seen on a playtest PC before this release: the chat level at a 900-bot
-  roster (which set the new default), the server starting from the package with its own libraries, and the
-  remote-desktop Ctrl-click.
+  build. Setup's own end-to-end tests run when the release is built. The raid sizing was checked against a simulation
+  of 2,000 raids; the models of how likely a raid of a given size is to win are estimates, not measurements.
+- **Run, not played:** the release candidate ran unattended for 22 hours on a copy of a real install, with nobody in
+  the game. 13 of its 19 raids were won (the six losses were all among the hardest epics, one of them to the
+  Darkness Falls princes bug fixed above), in its last sieges attackers took about two keeps in three, and the
+  server never stopped.
+  This release is that build plus the princes fix. Setup also upgraded a copy of a real Beta 1.1 install to it, and
+  the server then started with its settings moved to the new defaults.
+- **Played:** so far only a partial check in the game client, played by Claude through computer use: logging in,
+  tells, chat, a guild invite and guild dues. The owner's own played check is still to come. Seen on a playtest PC
+  before this release: the chat level at a 900-bot roster (which set the new default), the server starting from the
+  package with its own libraries, and the remote-desktop Ctrl-click.
 - Please report anything odd on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with the
   `FORK_BUILD` line from `runtime\server\logs\server.log`.
 
@@ -192,12 +203,17 @@ untouched.
 - **Only five bosses have tactics so far.** Darkness Falls' raid bosses, Legion and the other hardest level 70+
   encounters are **not** implemented for bot raids: they are still won on numbers, and a raid can still lose them.
   Other bosses with special rules are fought as before.
-- **The new tactics haven't been seen in a real raid yet.** They pass their automated tests, including test fights
-  with a boss, its adds and a raid; real raids may still find a case they miss.
+- **The new tactics have been seen only in server logs.** In the 22-hour run, Marfach Caverns and Trollheim were won
+  and Aidon's illusion tactic acted, but nobody watched those fights in the game client, and Krondon and Crystal Cave
+  didn't come up. They also pass their automated tests, including test fights with a boss, its adds and a raid.
+- **The hardest epics still lose or time out.** In the same run Summoner's Hall, Galladoria, Hall of the Corrupt and
+  Caer Sidi were lost or ran out of time. Galladoria's Easmarach and Aidon's last illusion are sometimes set aside as
+  "no damage for five minutes"; fixes for both are being built for 1.2.
 - **The 22 restored boss rules stay off.** Turning one on before the raid has a tactic for it would make that boss
   much harder for bots.
-- **Siege results still swing from night to night** in long test runs (one night attackers took few keeps, the next
-  most). 1.1.2 evens them out and logs who is actually at each keep, so the next runs can show why.
+- **The Darkness Falls princes fix has passed its automated test but hasn't been seen in a raid yet.**
+- **Siege results still swing from night to night** in long test runs. 1.1.2 evens them out and logs who is actually
+  at each keep, so the next runs can show why.
 - **New raid sizes need a few raids to settle.** Each encounter's size moves with its own wins and losses, so the
   first nights may swing either way.
 - **Updates from the launcher start after 1.1.2.** 1.1.1 has no update check, so 1.1.2 itself comes by Setup or the
@@ -219,7 +235,7 @@ untouched.
 | File | SHA-256 |
 |---|---|
 | `LivingServer-Setup-1.1.2-beta.exe` | (filled in when the exe is built) |
-| `OfflineDAoC-LivingServer-1.1.2-beta.zip` | (owner: the zip's SHA-256, filled in by hand at publish) |
+| `OfflineDAoC-LivingServer-1.1.2-beta.zip` | (zip SHA-256: filled in by hand at publish) |
 
 ### Credits
 

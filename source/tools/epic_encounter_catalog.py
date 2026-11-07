@@ -999,9 +999,9 @@ def detect_misc(world: World, cls: CsClass, ctx) -> list[Rule]:
                                    f"Changes form in {mb.name} ({summarize_actions(world, mb.body) or 'new model'})", "inferred",
                                    cls, mb, subtype="form"))
         # Pet devour.
-        if re.search(r"GameSummonedPet|IControlledBrain|ControlledNpc|is\s+\w*Pet\b", mbody) and \
+        if re.search(r"GameSummonedPet|IControlledBrain|ControlledNpc|NearestDevourablePet|is\s+\w*Pet\b", mbody) and \
                 re.search(r"\.Die\s*\(|RemoveFromWorld|Health\s*\+=|\.Health\s*=", mbody) and mb.name != "TakeDamage":
-            mm = re.search(r"GameSummonedPet|IControlledBrain|ControlledNpc|is\s+\w*Pet\b", mbody)
+            mm = re.search(r"GameSummonedPet|IControlledBrain|ControlledNpc|NearestDevourablePet|is\s+\w*Pet\b", mbody)
             pos = mb.open_pos + mm.start()
             rules.append(make_rule("pet_devour", src, src.line_of(pos), src.line_of(mb.end),
                                    f"Handles pets in {mb.name} (kills or removes them" +
