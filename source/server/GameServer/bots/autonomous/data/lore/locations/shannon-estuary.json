@@ -44,6 +44,11 @@
       "text": "Living Server lore: the estuary as the end of Sinann's road and Connla as the town that took the well's name; the eriu siabra who claim the land's oldest name; the ollipheist of the river mouth; the pontoons; the dead grove of Ciar; the four stones; Cadwr's book.",
       "provenance": "original",
       "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawns of the Shannon Estuary: Kaen Kedger (34, Siabras; Criofan's Fish), Nasco (34; Search for Nasco's Spear, whose text says night though the spawn is a plain GameNPC), Solas (34, Siabras; Occupation of Lough Gur), Lethe (32), Muir (27, a koalinth body, swimming), Kirwyn (26, beside the peaceful Lucan of Enchanting Willow), Srandamar (23, a deamhan aeir body, ghostly and flying, among lesser zephyrs and two Imp Statues).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
     }
   ],
   "story": "The river that comes down past Lough Gur and the Silvermine meets the sea at the Shannon Estuary, and the harpers of Connla sing every visitor the same song about it before they will sing anything else. Sinann went looking for wisdom at Connla's Well, the song goes, where the hazels let fall their nuts into the water and the salmon eat them, and she was greedy, or brave, or only thirsty, and the well rose up out of its banks and drowned her and carried her down to the sea, and the water she rode is the river. The estuary is where she reached the sea. The fishers of Connla say the water still tastes faintly of hazelnut at the turn of the tide, and they do not mean it as a joke.\n\nConnla took the well's name and stands on the estuary's western shore, half on land and half on pontoons over the water, a town of fishers and boatmen and teachers of every path, where the young of the realm learn to swim before they learn anything else, because the pontoons move. Kyli keeps the pontoon end. Criofan the fisherman keeps the bridge north of town and complains about the siabra who steal his catch. The road from Connla runs east past a guard post toward Innis Carthaig and Lough Gur, and south over the hills to Ceannoi, a merchants' stop on the high road, where the armourers sell scale to anyone going further.\n\nThe siabra of the estuary call themselves eriu, after the oldest name of the land itself, the name the first people gave it before any of the rest of us came, and they say it is theirs by right. The eriu henters keep the eastern hills above the river and the eriu fiscere fish the shore south of the stepping-stone bridge, and between them they hold the estuary's east bank as the Cullen siabra hold the bog. Kaen Kedger keeps a house on the hillside of their camp, and Solas walks the road with them, and further up, by four stone slabs north-east of Ceannoi, waits Abbadona, a demon the realm found where a master mentalist's vision said the Dagda's harp would lead.\n\nAt the river's mouth the ollipheist breed. They are the great water-serpents of the old stories, younger and smaller here than the ones in the songs but still longer than a boat, and they come up the shore at the river mouth in the north-west where the water is brackish. Arracht, which the fishers say is only the word for a monster, haunts the hill above them. The far liath rolls in off the sea on the same shore and leads people into the water, and the fishers tie a rope to their belts when they go out in fog.\n\nNorth of Connla there is a grove of dead trees, and in it Ciar, a woman of the willow who died and would not lie down, and across the estuary her guardian Lucan, who cannot rest while she walks; the young of Tir na Nog are sent to cut the willow and let him go. South of Connla four standing stones stand in a field, and at night Osier comes to them, and the women of Ardee send for a bladder of a wolfhound and water from a dew sheerie to free him. On the curves of the road to Ceannoi a thief called Nasco used to walk at night with a spear that was not his, and Aziliz of the lake wants it back for Howth.\n\nWhy does it matter? Because the estuary is where the realm's water ends. Everything the rivers carry out of the hills passes Connla on its way to the sea: silver dust from the Silvermine, peat from the bog, the lake's music on summer nights. The harpers say the river is still Sinann, still carrying away what she drank, and that a wise person drinks from it only once, at the turn of the tide, and only a little.",
@@ -166,7 +171,75 @@
         "radius": 2500,
         "lines": [
           "The curves of the road to Ceannoi.",
-          "A thief walked here with a stolen spear."
+          "A thief walked here with a stolen spear.",
+          "Nasco walks the curves with a stolen spear.",
+          "A grave-spear on the merchants' road."
+        ]
+      },
+      {
+        "name": "the kedger camp",
+        "x": 337647,
+        "y": 659441,
+        "z": 5048,
+        "radius": 1500,
+        "lines": [
+          "Kaen Kedger's house, and a fish in a bowl.",
+          "Eriu nets drying on the hillside."
+        ]
+      },
+      {
+        "name": "Solas's road",
+        "x": 323199,
+        "y": 674758,
+        "z": 5124,
+        "radius": 1000,
+        "lines": [
+          "Solas waits by the road, and knows things.",
+          "An eriu named for light, standing in shade."
+        ]
+      },
+      {
+        "name": "the flats",
+        "x": 320447,
+        "y": 630654,
+        "z": 4848,
+        "radius": 1000,
+        "lines": [
+          "Lethe the rowdy, picking fights with frogs.",
+          "Mudmen and frogs, and one man with a name."
+        ]
+      },
+      {
+        "name": "the southern shallows",
+        "x": 296763,
+        "y": 621275,
+        "z": 5445,
+        "radius": 1000,
+        "lines": [
+          "Muir lies in the shallows. The sea sent him.",
+          "Chief Gaeth's camp, and a koalinth too near."
+        ]
+      },
+      {
+        "name": "Lucan's watch",
+        "x": 296967,
+        "y": 653996,
+        "z": 5306,
+        "radius": 1000,
+        "lines": [
+          "Kirwyn stands by Lucan, and will not let him rest.",
+          "A siabra watching a ghost."
+        ]
+      },
+      {
+        "name": "the imp statues",
+        "x": 345387,
+        "y": 617309,
+        "z": 5149,
+        "radius": 1200,
+        "lines": [
+          "Srandamar flies above two stone imps.",
+          "Zephyrs round the statues. Do not move them."
         ]
       }
     ]
@@ -195,7 +268,14 @@
       "[heard|someone said] kaen kedger only shows by day behind the building on the kedger hill",
       "abbadona is 45 and high up on the east hills. [lost relics|bring a group]",
       "[word is|heard] the haunted driftwood on the connla beach knocks at night",
-      "danderpaw is out near ceannoi again. [36|named]"
+      "danderpaw is out near ceannoi again. [36|named]",
+      "[heard|someone said] kaen kedger has criofan's golden fish in a bowl and doesnt know about the ring",
+      "[heard|someone said] nasco took that spear out of a howth grave",
+      "[heard|someone said] solas the eriu wants a curmudgeon head before he talks about the gurite",
+      "[heard|someone said] lethe named himself after a river that makes you forget. he cant forget anything",
+      "[heard|someone said] chief gaeth says muir is the sea checking how far the river got",
+      "[heard|someone said] kirwyn the eriu killed lucan ages ago and cant leave him",
+      "[heard|someone said] the imp statues east of connla keep srandamar from flying off"
     ],
     "tell": [
       "shannon estuary is between the silvermine and lough gur. connla is the town. 1 to 38",
@@ -203,7 +283,14 @@
       "is the shannon estuary hard? newbie stuff round connla, 30s siabra on the east bank",
       "whats in the shannon estuary? giant ants, moss sheeries, eriu siabra, ollipheist, crabs",
       "where is ceannoi? south over the hills from connla on the high road. merchants",
-      "where are the ollipheist? river mouth in the north west of the estuary. 34-38"
+      "where are the ollipheist? river mouth in the north west of the estuary. 34-38",
+      "kaen kedger is a 34 eriu kedger behind the house up the east hillside of the kedger camp. criofan's fish",
+      "nasco is a 34 thief on the curves of the ceannoi road. quest says night but hes there all day too",
+      "solas is a 34 eriu near ceannoi. occupation of lough gur. hes aggro even though you need to talk to him",
+      "lethe is a 32 rowdy on the flats north of the dead grove in shannon, by himself",
+      "muir is a 27 koalinth swimming in the shallows south of connla near chief gaeth. long respawn",
+      "kirwyn is a 26 eriu across the estuary next to lucan the peaceful ghost. kirwyn is aggro, lucan isnt",
+      "srandamar is a 23 ghostly flying deamhan way east in shannon with the lesser zephyrs"
     ]
   },
   "loremaster": {
@@ -217,7 +304,14 @@
       "Ciar": "A woman of the willow who died in the grove of dead trees north of [Connla] and would not lie down. Her guardian Lucan, across the estuary, cannot rest while she walks.",
       "four stones": "Four standing stones in a field south of [Connla]. Osier comes to them at night. The women of Ardee know how to free him: a wolfhound's bladder and a dew sheerie's water.",
       "Abbadona": "A demon waiting by four stone slabs on the high ground north-east of [Ceannoi]. The master mentalist's vision sent the seekers of the Dagda's harp there; the harp was played, and Abbadona answered. Lobais was misled, and says so.",
-      "Cadwr": "Harper Cadwr of [Connla], who sings [Sinann]'s song to every visitor before anything else, and sends the young to cure the Amadan's touch."
+      "Cadwr": "Harper Cadwr of [Connla], who sings [Sinann]'s song to every visitor before anything else, and sends the young to cure the Amadan's touch.",
+      "Kaen Kedger": "The kedgers of the eriu are the siabra who catch fish, and Kaen is the best of them, with a house of his own behind the kedger camp on the eastern hillside. Criofan the fisherman of Connla had a golden fish for a pet, and the fish swallowed his pearl ring and swam up the river, and Criofan is sure Kaen caught it. He is right. Kaen keeps the fish in a bowl in his house, the eriu say, and has not yet thought to look inside it.",
+      "Nasco": "On the curves of the road to [Ceannoi] walks a thief called Nasco, with a spear that is not his. Aziliz of Lough Derg, the prophetess, wants the spear back for Howth, and says it was taken from a Howth grave, and that Nasco took to the road with it by night because nobody walks that road by night who has any sense. The Ceannoi merchants say he walks it by day too, now. Old thieves grow bold.",
+      "Solas": "Solas is one of the eriu siabra who walks the road near [Ceannoi], and he is the one Aziliz sends the young to when she wants to know what the gurite siabra are doing at Lough Gur. He knows, and he will tell, for a price: the head of a curmudgeon fighter, which he wants for reasons of his own. Solas means light, the harpers of Connla say. He has never explained the name, and he does not seem to like the sun.",
+      "Lethe": "Lethe is a rowdy of the estuary flats, one of the big quarrelsome men who drink and fight along the river, and the only one with a name, which he gave himself. It is a scholar's name, from a river in a southern tale whose water makes the drinker forget. Lethe drinks from the Shannon and forgets nothing, the Connla harpers say, which is his trouble. He wanders among the mudmen and the frogs of the flats and picks fights with them.",
+      "Muir": "Muir is the sea, in the old tongue, and Muir is what the river folk south of [Connla] call the koalinth who swims up the estuary from the open water every season and lies in their shallows as if he owned them. He is larger than the koalinth of the caverns. Chief Gaeth of the river folk, who keeps a camp close by and does not fight him, says the sea sends him to see how far the river has come, and that one day the sea will want it back.",
+      "Kirwyn": "Kirwyn is an eriu who stands near Lucan, the guardian of Ciar's dead willow grove, and does not let him rest. Lucan asked the young of the realm to free him from Ciar's charge, and they did, and he still stands where he stood, and Kirwyn still stands beside him, a siabra watching a ghost. The Connla folk think Kirwyn was the one who killed Lucan, long ago, and has never been able to leave the place either.",
+      "Srandamar": "Far east of [Connla], where the estuary's hills give out, two stone imps stand on a rise, carved by nobody anyone remembers, and the lesser zephyrs blow round them. Above them flies Srandamar, a deamhan of the air, pale as the zephyrs, and the herders say the statues were carved to keep him there, and that they work, for he has never flown further. They also say nobody should move the statues. Nobody has."
     }
   },
   "book": {
