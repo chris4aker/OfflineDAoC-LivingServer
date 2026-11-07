@@ -10,6 +10,13 @@ Writes into tools/installer/src/Assets/:
   shortcut.ico the game shortcuts' icon: the splash painting's three figures (16 to 256 px)
   stone.jpg    a 512x512 seamless dark stone tile for page backgrounds
 
+and into tools/installer/art/:
+  living-server-title-1024x768.jpg  the game's loading screen (Living Server 1.2, owner 2026-11-07): the splash painting
+                                    with "LIVING SERVER" top left, the source of content/pregame-splash.mpk
+                                    (tools/fork-build/make_pregame_splash.py)
+
+    python tools/installer/art/make_art.py splash-title    (only the loading screen picture)
+
 The welcome painting is Living Server's splash (living-server-splash-source.jpg, owner 2026-10-28); the header and
 shield are the launcher's (Offline DAoC project art). The lettering is added here, in Cinzel
 (SIL Open Font License, fonts/OFL-Cinzel.txt). Deterministic: the same inputs give the same files.
@@ -21,7 +28,8 @@ from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageFo
 
 ROOT = Path(__file__).resolve().parents[3]
 LAUNCHER_ART = ROOT / "source/tools/OfflineDaoc.Launcher/Assets"
-FONT = Path(__file__).resolve().parent / "fonts/Cinzel-wght.ttf"
+ART = Path(__file__).resolve().parent
+FONT = ART / "fonts/Cinzel-wght.ttf"
 OUT = ROOT / "tools/installer/src/Assets"
 
 GOLD_TOP = (255, 236, 176)
@@ -159,6 +167,35 @@ def make_hero():
     return hero.convert("RGB")
 
 
+def make_splash_title(W=1024, H=768, size=58):
+    """The game's loading screen (Living Server 1.2, owner 2026-11-07): the splash painting with "LIVING SERVER" top left,
+    in the welcome page's gold lettering, a gold rule under it and a soft dark patch behind both so they read over the
+    lightning. 1024x768 is the classic client's pregame splash size (pregame/splash.mpk)."""
+    src = Image.open(ART / "living-server-splash-source.jpg").convert("RGB")
+    img = cover(src, (W, H), focus=(0.5, 0.0))
+    img = ImageEnhance.Contrast(img).enhance(1.03)
+    img = darken(img, vignette((W, H), strength=0.42, bottom=0.45))
+    title = gold_text("LIVING SERVER", cinzel(size, 800), tracking=int(size * 0.1), stroke=max(3, size // 22))
+    x, y = int(W * 0.04), int(H * 0.035)
+    r = rule(title.width)
+    band = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(band).ellipse((x - int(W * 0.12), y - int(H * 0.12), x + title.width + int(W * 0.07),
+                                  y + title.height + r.height + int(H * 0.14)), fill=175)
+    band = band.filter(ImageFilter.GaussianBlur(int(W * 0.035)))
+    img = darken(img, band, (10, 8, 6)).convert("RGBA")
+    img.alpha_composite(title, (x, y))
+    img.alpha_composite(r, (x, y + title.height + int(size * 0.08)))
+    return img.convert("RGB")
+
+
+SPLASH_TITLE = ART / "living-server-title-1024x768.jpg"
+
+
+def write_splash_title():
+    make_splash_title().save(SPLASH_TITLE, quality=94)
+    print(f"{SPLASH_TITLE.name}: {SPLASH_TITLE.stat().st_size // 1024} KB")
+
+
 def make_header(shield):
     src = Image.open(LAUNCHER_ART / "offline-daoc-header-source.png").convert("RGB")
     W, H = 1920, 220
@@ -273,7 +310,12 @@ def main():
     make_stone().save(OUT / "stone.jpg", quality=88, optimize=True)
     for f in sorted(OUT.iterdir()):
         print(f"{f.name}: {f.stat().st_size // 1024} KB")
+    write_splash_title()
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    if sys.argv[1:] == ["splash-title"]:
+        write_splash_title()
+    else:
+        main()
