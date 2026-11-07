@@ -175,6 +175,7 @@
       "places": [
         "cursed-tomb",
         "dodens-gruva",
+        "east-svealand",
         "nisses-lair",
         "skona-ravine",
         "spindelhalla",
@@ -748,6 +749,7 @@
       "name": "The Tomte",
       "summary": "House-spirits driven underground by forgotten butter, led by Nisse.",
       "places": [
+        "east-svealand",
         "nisses-lair"
       ],
       "bosses": []
@@ -847,6 +849,7 @@
       "name": "The Houses of the Gods",
       "summary": "Midgard's callings as houses of its gods, with their gothi and gythjur in Jordheim's two temple halls (the Aesir's: Odin, Thor, Tyr, Modi, Bragi, Eir; the eastern: Hel, Ymir, Loki, Skadi), Kelgor's and Bodgar's houses that came with the Valkyn, the trainers who teach their young, and the jarls of the high hall who keep the realm's names and vault.",
       "places": [
+        "east-svealand",
         "jordheim",
         "vale-of-mularn"
       ],
@@ -867,6 +870,15 @@
       "summary": "The hobgoblins of the Vale of Mularn under Smyga, named for sneaking, who raid between Mularn and Haggerfel; Carr left them.",
       "places": [
         "vale-of-mularn"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "dark-pack",
+      "name": "The Dark Pack",
+      "summary": "The sveawolves of the Svealands, who raise their young in the open fields while their mothers run the coasts: Morra on East Svealand's shore and Modervarg, the mother wolf of West Svealand.",
+      "places": [
+        "east-svealand"
       ],
       "bosses": []
     },
