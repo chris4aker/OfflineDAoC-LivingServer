@@ -1929,6 +1929,7 @@ namespace DOL.GS
             {
                 EpicEncounterRestores.TellImmune(source, Name + " absorbs all your damage to heal iself!");
                 BroadcastMessage("Funus takes damage from " + source.Name + " and restoring it's whole health.");
+                EncounterSignals.Note(this, EncounterSignals.Healed);//Living Server 1.2: the lore's "healed" lines (LoreBossWatch)
                 Health += MaxHealth;
                 base.TakeDamage(source, damageType, 0, 0);
                 return;

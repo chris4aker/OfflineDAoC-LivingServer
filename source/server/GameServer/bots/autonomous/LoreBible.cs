@@ -880,7 +880,7 @@ public sealed class LoreBible
                 if (!LoreFightRules.TryParseTrigger(phase.Trigger, out LoreFightRules.Trigger trigger))
                 {
                     problems.Add($"{boss.File}: {what} trigger \"{phase.Trigger}\" is not health<=N (1-99), addsSpawn, orbDeath, addsDead, " +
-                                 "formChange, partnerDead, death, wake, playerDeath, teleport, berserk, breath or glare");
+                                 "formChange, partnerDead, death, wake, playerDeath or a mechanic (" + string.Join(", ", LoreFightRules.MechanicTriggers) + ")");
                     continue;
                 }
                 Need(!string.IsNullOrWhiteSpace(phase.Text), $"{boss.File}: {what} \"{phase.Trigger}\" has no text");

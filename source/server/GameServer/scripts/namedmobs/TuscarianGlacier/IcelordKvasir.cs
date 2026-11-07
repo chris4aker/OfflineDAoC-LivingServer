@@ -223,6 +223,7 @@ namespace DOL.AI.Brain
         private int PrepareMezz(ECSGameTimer timer)
         {
             BroadcastMessage(String.Format("{0} lets loose a primal scream so intense that it resonates in the surrounding ice for several seconds. Many in the immediate vicinite are stunned by the sound!", Body.Name));
+            EncounterSignals.Note(Body, EncounterSignals.Scream);//Living Server 1.2: the lore's "scream" lines (LoreBossWatch)
             new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastMezz), 2000);
             return 0;
         }

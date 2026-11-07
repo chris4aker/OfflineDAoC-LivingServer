@@ -73,6 +73,7 @@ namespace DOL.GS
                     if (npc is KingTuscar && npc.IsAlive && npc.HealthPercent < 100)
                     {
                         npc.Health += damageAmount + criticalAmount;
+                        EncounterSignals.Note(npc, EncounterSignals.TwinHeal);//Living Server 1.2: the lore's "twinHeal" lines (LoreBossWatch)
                         EpicEncounterRestores.TellImmune(source, "Your damage is healing King Tuscar!");
                     }
                 }
@@ -537,6 +538,7 @@ namespace DOL.GS
                     if (npc is QueenKula && npc.IsAlive && npc.HealthPercent < 100)
                     {
                         npc.Health += damageAmount + criticalAmount;
+                        EncounterSignals.Note(npc, EncounterSignals.TwinHeal);//Living Server 1.2: the lore's "twinHeal" lines (LoreBossWatch)
                         EpicEncounterRestores.TellImmune(source, "Your damage is healing Queen Kula!");
                     }
                 }

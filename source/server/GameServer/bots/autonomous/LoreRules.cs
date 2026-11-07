@@ -143,11 +143,13 @@ public static class LoreEntryRules
 /// A boss fight's triggers as pure rules (UT_LoreAtmosphere): the boss's health and its adds are watched every couple of
 /// seconds while it fights, and these rules say which data lines are due. Triggers: "health&lt;=N" (once a fight, when its
 /// health first falls to N% or less), "addsSpawn" (its adds appear), "orbDeath" (one of its adds dies), "addsDead" (the last
-/// of them dies), "formChange" (its model changes); "death" and "wake" come from events (it dies, a dragon wakes).
+/// of them dies), "formChange" (its model changes); "death" and "wake" come from events (it dies, a dragon wakes). The
+/// mechanic triggers (<see cref="MechanicTriggers"/>: a throw or teleport, a glare, a breath, a berserk...) come from the
+/// boss scripts' own announcements (EncounterDisplacement.Displaced, EncounterSignals.Raised and EncounterSignals.Moment).
 /// </summary>
 public static class LoreFightRules
 {
-    public enum Kind { Health, AddSpawn, OrbDeath, AddsDead, FormChange, PartnerDead, Death, Wake, PlayerDeath, ScriptOnly }
+    public enum Kind { Health, AddSpawn, OrbDeath, AddsDead, FormChange, PartnerDead, Death, Wake, PlayerDeath, Mechanic }
 
     public sealed record Trigger(Kind Kind, int Percent)
     {
@@ -155,13 +157,42 @@ public static class LoreFightRules
         public bool NeedsPartners => Kind is Kind.PartnerDead;
         /// <summary>Said by an event, not by looking at the fight: the boss dies, a dragon takes to the sky, it kills a player.</summary>
         public bool ByEvent => Kind is Kind.Death or Kind.Wake or Kind.PlayerDeath;
+        /// <summary>Said when the boss's script announces the mechanic (1.2, the lore-mechanic triggers).</summary>
+        public bool ByScript => Kind is Kind.Mechanic;
     }
 
     /// <summary>
-    /// Triggers the writers use for moments only a boss's own script sees (its teleport, a berserk, a dragon's breath or
-    /// glare). They are valid in the files and never fire from the engine: no generic event says they happened.
+    /// The triggers a boss script announces (1.2). A move (EncounterDisplacement.Displaced) fires its kind: "throw",
+    /// "teleport", "jail", "pull" or "barrier", and "teleport" stands for any move in a file that has no line for the kind
+    /// itself (the writers used it for every throw, push and port). A signal (EncounterSignals.Raised) fires "glare" (or
+    /// "stare"), "stun", "breath", "stomp", "messengers", "retreat" or "safeSpots"; a lore-only moment
+    /// (EncounterSignals.Moment) "berserk" (Suttung), "scream" (Kvasir), "healed" (Funus) or "twinHeal" (Tuscar, Kula).
     /// </summary>
-    public static readonly string[] ScriptOnlyTriggers = ["teleport", "berserk", "breath", "glare"];
+    public static readonly string[] MechanicTriggers =
+    [
+        "teleport", "throw", "jail", "pull", "barrier",
+        "glare", "stare", "stun", "stomp", "breath", "messengers", "retreat", "safeSpots",
+        "berserk", "scream", "healed", "twinHeal",
+    ];
+
+    /// <summary>Triggers the files may use that nothing fires (none since 1.2's mechanic triggers; kept for the schema's message).</summary>
+    public static readonly string[] ScriptOnlyTriggers = [];
+
+    /// <summary>The triggers a move fires, the kind's own first; "teleport" is every move's fallback.</summary>
+    public static string[] DisplacementTriggers(DisplacementKind kind) => kind switch
+    {
+        DisplacementKind.Throw => ["throw", "teleport"],
+        DisplacementKind.Teleport => ["teleport"],
+        DisplacementKind.Jail => ["jail", "teleport"],
+        DisplacementKind.Pull => ["pull", "teleport"],
+        DisplacementKind.Barrier => ["barrier", "teleport"],
+        _ => ["teleport"],
+    };
+
+    /// <summary>The triggers a script's signal or moment fires (EncounterSignals' names; a glare is also a "stare").</summary>
+    public static string[] SignalTriggers(string mechanic) =>
+        string.IsNullOrEmpty(mechanic) ? [] :
+        mechanic == EncounterSignals.Glare ? ["glare", "stare"] : [EncounterSignals.LoreTrigger(mechanic)];
 
     public static bool TryParseTrigger(string text, out Trigger trigger)
     {
@@ -181,8 +212,8 @@ public static class LoreFightRules
             trigger = new Trigger(Kind.PartnerDead, 0);
         else if (string.Equals(t, "playerDeath", StringComparison.OrdinalIgnoreCase))
             trigger = new Trigger(Kind.PlayerDeath, 0);
-        else if (ScriptOnlyTriggers.Contains(t, StringComparer.OrdinalIgnoreCase))
-            trigger = new Trigger(Kind.ScriptOnly, 0);
+        else if (MechanicTriggers.Contains(t, StringComparer.OrdinalIgnoreCase))
+            trigger = new Trigger(Kind.Mechanic, 0);
         else if (string.Equals(t, "orbDeath", StringComparison.OrdinalIgnoreCase))
             trigger = new Trigger(Kind.OrbDeath, 0);
         else if (string.Equals(t, "addsDead", StringComparison.OrdinalIgnoreCase))
@@ -200,10 +231,58 @@ public static class LoreFightRules
         public int Partners = -1;
         public readonly HashSet<string> Said = new(StringComparer.Ordinal);
         public int AtmosphereLines;
+        /// <summary>When each mechanic trigger last yelled (game time).</summary>
+        public readonly Dictionary<string, long> MechanicYelled = new(StringComparer.OrdinalIgnoreCase);
+        public int MechanicAtmosphereLines;
     }
 
     /// <summary>At most this many atmosphere (screen-centre) phase lines in one fight; yells are not capped beyond their own gap.</summary>
     public const int MaxAtmospherePerFight = 2;
+
+    /// <summary>
+    /// At most this many mechanic atmosphere lines in one fight, each trigger once, counted apart from the phase lines so a
+    /// boss whose health lines used theirs still shows its throw. The player's own throttle (one line every 30 s, realm news
+    /// first) still decides when, or whether, each one shows.
+    /// </summary>
+    public const int MaxMechanicAtmospherePerFight = 2;
+
+    /// <summary>A mechanic trigger yells again only after this long (a dragon's breath comes every half minute or so).</summary>
+    public const long MechanicYellGapMs = 60_000;
+
+    /// <summary>What a mechanic says: the trigger it matched, the yells to pick from (empty: none due) and the atmosphere line (or null).</summary>
+    public sealed record MechanicLines(string Trigger, string[] Yells, string Atmosphere);
+
+    /// <summary>
+    /// A boss script announced a mechanic (<paramref name="candidates"/>, best first: <see cref="DisplacementTriggers"/>,
+    /// <see cref="SignalTriggers"/>). The first candidate the boss's file has a line for is the one that fires, or null when
+    /// it has none. Its yells are due once per <see cref="MechanicYellGapMs"/>; its atmosphere line once a fight, at most
+    /// <see cref="MaxMechanicAtmospherePerFight"/> a fight. Updates the fight.
+    /// </summary>
+    public static MechanicLines Mechanic(Fight fight, IReadOnlyCollection<LoreBible.PhaseLine> yells,
+        IReadOnlyCollection<LoreBible.PhaseLine> atmosphere, IEnumerable<string> candidates, long now)
+    {
+        yells ??= [];
+        atmosphere ??= [];
+        static bool Has(IEnumerable<LoreBible.PhaseLine> lines, string trigger) =>
+            lines.Any(p => string.Equals(p.Trigger?.Replace(" ", string.Empty), trigger, StringComparison.OrdinalIgnoreCase) && !string.IsNullOrWhiteSpace(p.Text));
+        string matched = (candidates ?? []).FirstOrDefault(c => !string.IsNullOrEmpty(c) && (Has(yells, c) || Has(atmosphere, c)));
+        if (matched == null)
+            return null;
+        string[] texts = [];
+        if (Has(yells, matched) && (!fight.MechanicYelled.TryGetValue(matched, out long last) || now - last >= MechanicYellGapMs))
+        {
+            fight.MechanicYelled[matched] = now;
+            texts = yells.Where(p => string.Equals(p.Trigger?.Replace(" ", string.Empty), matched, StringComparison.OrdinalIgnoreCase) && !string.IsNullOrWhiteSpace(p.Text))
+                .Select(p => p.Text).ToArray();
+        }
+        string line = null;
+        if (Has(atmosphere, matched) && fight.MechanicAtmosphereLines < MaxMechanicAtmospherePerFight && fight.Said.Add("mechanic:" + matched))
+        {
+            fight.MechanicAtmosphereLines++;
+            line = atmosphere.First(p => string.Equals(p.Trigger?.Replace(" ", string.Empty), matched, StringComparison.OrdinalIgnoreCase) && !string.IsNullOrWhiteSpace(p.Text)).Text;
+        }
+        return new MechanicLines(matched, texts, line);
+    }
 
     /// <summary>
     /// The triggers that fire on this observation (health in %, living adds or -1 when the boss has none to count), in
