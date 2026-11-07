@@ -95,7 +95,7 @@ namespace DOL.AI.Brain
 		{
 			if (Body.IsAlive)
 			{
-				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.ForDisplacement))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.DisplacesBots(Body)))
 				{
 					if (player != null)
 					{

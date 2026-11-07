@@ -328,7 +328,7 @@
   "albion-named-mobs-classic-zones/legendaryafanc": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "3f2fe70068720cbf56ede8cd5ffa6912413683a18b45737495c01dad1db53c83"
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "123a8659aec369ceafca4e82289a861dc74364c9a7faa21e0fee019e1426c302"
    }
   },
   "albion-named-mobs-classic-zones/morgana": {
@@ -418,7 +418,7 @@
   "avalon-city/draargusmighty": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "9af5d018b4faaf682e14b110e1e73fb4c777fbfa87b1c7ea78ef0da20541b68a"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "66c09397ef558fa268635456fdcc1ae59c47aa537653b223e0b82f4ce2858f9f"
    }
   },
   "avalon-city/duraekempowered": {
@@ -430,7 +430,7 @@
   "avalon-city/syssroruthless": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "d1ec7c6e40e3a8e38616beae0dc8926ec751af9bfb69a555ad7cb1716f598b24"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "31227850be06268d935e5f7a1df3e68d3f1bf84ae1f30e92dfd2da3ecd571e78"
    }
   },
   "avalon-city/veraeriusbrave": {
@@ -448,7 +448,7 @@
   "caer-sidi/apocalypse": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "13331d088d06d130784ba1512128c539595975f4d2af5ccd192808affb821a4c"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "2f9b34a39c2dbdf58b041cca62655ff62160426b2e445da2947132b8db3cff89"
    }
   },
   "caer-sidi/baneofhope": {
@@ -460,7 +460,7 @@
   "caer-sidi/bellum": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "13331d088d06d130784ba1512128c539595975f4d2af5ccd192808affb821a4c"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "2f9b34a39c2dbdf58b041cca62655ff62160426b2e445da2947132b8db3cff89"
    }
   },
   "caer-sidi/cryptlord": {
@@ -472,7 +472,7 @@
   "caer-sidi/fames": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "13331d088d06d130784ba1512128c539595975f4d2af5ccd192808affb821a4c"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "2f9b34a39c2dbdf58b041cca62655ff62160426b2e445da2947132b8db3cff89"
    }
   },
   "caer-sidi/fatechosen": {
@@ -484,7 +484,7 @@
   "caer-sidi/funus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "13331d088d06d130784ba1512128c539595975f4d2af5ccd192808affb821a4c"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "2f9b34a39c2dbdf58b041cca62655ff62160426b2e445da2947132b8db3cff89"
    }
   },
   "caer-sidi/host": {
@@ -514,7 +514,7 @@
   "caer-sidi/morbus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "13331d088d06d130784ba1512128c539595975f4d2af5ccd192808affb821a4c"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "2f9b34a39c2dbdf58b041cca62655ff62160426b2e445da2947132b8db3cff89"
    }
   },
   "caer-sidi/silencer": {
@@ -576,7 +576,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "ebe2a199893e38276a88cb8b622bbb3f3f933fe3c370fdc4d6887be92b057886"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "735ae2daa95c5152cf1fc3857aedd20646ea3fd293d30d470fa2602eb622fb44"
    },
    "aiTactics": {
     "blastThresholds": [
@@ -771,13 +771,13 @@
   "fomor-city/anurigunda": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "a3fdcc908031c908bccb1481551ba35cf4df9541832d45a7adba83c46c2c3581"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "7945545ac565c67f8e745607a2f84d75de7458131dafdb7c434e075f391f806c"
    }
   },
   "fomor-city/krackenschtein": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "6ba268ac2ecefece95fd81acd8a4e9e44cbbc448810b3cb795ff6918378e4059"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "3643fdc27118a87d7629d4b0124fc721d626b84fcd64c22b258fec9a778c19f3"
    }
   },
   "fomor-city/myrddraxis": {
@@ -804,7 +804,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
    }
   },
   "galladoria/aroon": {
@@ -846,7 +846,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -892,13 +892,13 @@
   "galladoria/easmarach": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "199db19ddf881e7b8a7b0e0db703320de9519d3a56a9d1dfbcfb672e43d99e75"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "c031478d785e4c3198ff0be7b79980fa75f3fb9783b2e128fa9a8fad9a64334d"
    }
   },
   "galladoria/fireprimal": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
    }
   },
   "galladoria/giantsporitecluster": {
@@ -943,13 +943,13 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
    }
   },
   "galladoria/olcasgean2": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
    }
   },
   "galladoria/olcasgeaninitializator": {
@@ -969,7 +969,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
    }
   },
   "galladoria/organicenergymechanism": {
@@ -994,7 +994,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "1011e9691b15af482210b6680b7860f4de9a6a58c68bc2b529b96abe399381fe"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "9855cbbddb723f333990b8ca7da67dd5d0746871e35b6aa43f9002bc47a681c6"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -1035,7 +1035,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3cdbc466624252d919302f93e2d3c02cc2a6c37c15fde285c9ad3fe5a7a183c8"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
    }
   },
   "galladoria/xaga": {
@@ -1356,7 +1356,7 @@
   "iarnvidiur-s-lair/iarnvidiur": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs": "5c83ef064c7904648bd440c11e42527bff02b3a54559b7158793be6b37a2ff3e"
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs": "f599e6e9f05f06672988b23a8f68898eca455dc79ac95b65a570a7770b64d11e"
    }
   },
   "iarnvidiur-s-lair/lydsyg": {
@@ -1422,7 +1422,7 @@
   "krondon/krevoricik": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "335d4a5ff234be318a12c147c24ab014889ac605801f349c2be90bd3c4535b36"
+    "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "d410af53de1ee9796a9197d55a759655e04121adedb5de3f0b179ae86d9ff3b8"
    }
   },
   "krondon/lurfosherald": {
@@ -1440,7 +1440,7 @@
   "krondon/orshom": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "31bc6c15c170eed80c0e04c1fa9f7d484d14ad0b1ee3b7ba0af57c3b23eab483"
+    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "55a086e4bcc77531c88c4513cea8f858ebcf8b9e3c8d06c9843fb5c2b21ed7b8"
    },
    "notes": "Level 80, 30,000 health, 20% melee and 30% magic resists, tether 3,800. When he gets a target he lights Orshom's Fire at 31406,69599 (907 from his spawn): an epic NPC with 10,000 health that takes only Cold damage, never moves or attacks, and casts Fire Burn (500 Heat, radius 300) on its own spot every 3 s. At 50% he pulls Orylle (level 83, 40,000 health) into the fight; Orylle pulls him too when she is attacked. Orylle throws real players (never bots) into the fire spot while the fire burns.",
    "currentRaidAi": "2026-11-05/06 overnight (owner's notes; that run's log is on the owner's PC): the Albion Krondon raid lost at Orshom twice, lowest 59% then 28%, Special Forces joined. Not seen in a log here. Read from the script, the likely killer is the fire: a raider it burns fights back (it is an epic NPC with a target), so bots stood in 500 every 3 s hitting a target only cold hurts, and the route's 'it is fighting the raid' switch could send the whole raid there.",
@@ -1472,7 +1472,7 @@
   "krondon/orylle": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "31bc6c15c170eed80c0e04c1fa9f7d484d14ad0b1ee3b7ba0af57c3b23eab483"
+    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "55a086e4bcc77531c88c4513cea8f858ebcf8b9e3c8d06c9843fb5c2b21ed7b8"
    },
    "notes": "Krondon's final: level 83, 40,000 health, 30/40% resists, tether 3,800; joins Orshom Brong's fight (see him).",
    "aiTactics": {
@@ -1523,7 +1523,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs": "8ff5ddd7af05e3fdf4bee935c33103690b3145b0e5bb3ab3ecf325508abacf24"
+    "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs": "c99ef3149a4180c7a71be2df1dbd1b75c9b3a500ceb091f99f203e9670dda064"
    }
   },
   "krondon/ulorbysen": {
@@ -1704,7 +1704,7 @@
   "midgard-named-mobs-classic-zones/ydenia": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs": "b61b763e5cf00cb7638396d9c55a85375dbc03a0d34899aafd1b1ec5126ce076"
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs": "7267cd68f85b7e28689e478b29279947714c3bf3130f0ef65407991cade9a768"
    }
   },
   "midgard-named-mobs-shrouded-isles/basilius": {
@@ -1716,7 +1716,7 @@
   "midgard-named-mobs-shrouded-isles/boligar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs": "1d2d3df9e095ab07e77eec39b18de529914a4bae1130ffa9ca36726781bda52f"
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs": "854159419ad141c0296b333352c1a9e27e8c0dd0212e84f275e3a3f5c88d46ab"
    }
   },
   "midgard-named-mobs-shrouded-isles/chieftarek": {
@@ -1746,7 +1746,7 @@
   "midgard-named-mobs-shrouded-isles/mortufoghus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs": "ea2bb90070865a1ef6e2caf264c5ab6261ab767b508a275ee270ef66ff894c7c"
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs": "d197815e7e88c0dc2acc518acbdea0532e1fc89da9c5ec4ccd8ceed8c543bece"
    }
   },
   "midgard-named-mobs-shrouded-isles/shredclaw": {
@@ -1788,7 +1788,7 @@
   "open-world/glaciergiant": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "6a4eba26a698326d2464966b72ac908fd1e92e7ab5d195b14b8d542989a26aa6"
+    "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "8f6b25c9838b28e9cac0ccaf20658b8d9c5a7729b9cf99b70133635a06149dcf"
    }
   },
   "open-world/gnat": {
@@ -1806,7 +1806,7 @@
   "open-world/moranthemighty": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "6c4c461468cc7e515863ed8fe504d0c4cafa8b6e1466feda86d9f3d03bed9dac"
+    "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "83bd426a3414c88fbfabe26904cdd3139716c6d6692f7677d4443ac9c890c2af"
    }
   },
   "open-world/ofgreenknight": {
@@ -1824,7 +1824,7 @@
   "summoner-s-hall/grandsummonergovannon": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "df2a272308ce320ad96de4ac2fb9463b3ef7f6f9f6fc0a93b8f5f6b9541021ed"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "03b3fa19f44559a896a8a43ed636753ae8c4a3f1c8e342b4e2cc49a5f3fdc4cd"
    },
    "notes": "Level 80, 200,000 health (300,000 behind AllowGovannonFullHealth, off), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, throws real players only; bots too once EncounterTargets.BotsCanBeDisplaced is on). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
    "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known.",
@@ -1861,7 +1861,7 @@
   "summoner-s-hall/summonercunovinda": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "d1f6e2e0c55bc07f7c63334db3aa79711eae53bb2f43b0ec4182ca13a6f65fed"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "e281b93baa004243a999bf92db712a0789ad4b27c636ae39e298ae328b63bff1"
    }
   },
   "summoner-s-hall/summonerlossren": {
@@ -2008,7 +2008,7 @@
   "tuscaran-glacier/hakr": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "681026aaa15b289d7ada5a41cb289fcb0a7ba885854eb9f5663d4b5d46e37d99"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "90065852795c35a466e97aa9455dc428800c0c79ec6e92f9b2c5a01048e00ca6"
    }
   },
   "tuscaran-glacier/hjalmar": {
@@ -2032,7 +2032,7 @@
   "tuscaran-glacier/hurika": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "96a333d68c378f315ec3b38dfd2943fab7391ce733e2e95b24c7ab3773b0fa65"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "ac2fa3dd1bd757d11665b776710289d4cc3bb04b8639e92d4cc5d900958e2ec3"
    }
   },
   "tuscaran-glacier/issorden": {
@@ -2044,13 +2044,13 @@
   "tuscaran-glacier/jailer": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "703e612021be90f21db470365845432e9c900049c523763b1dcb37802ebdcc38"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "763bd10281daa6568df01cb8be34c99240bbde15f487803b427d5fd1a7ae6139"
    }
   },
   "tuscaran-glacier/kingtuscar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "20c97edfd496d297987ff1957ef97a35cedb39176ec119665541844d566f6b68"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "b84c661a9478ae1092ec027af85a0bde88ba3b6b7a44a481bfcb24847a659fd4"
    }
   },
   "tuscaran-glacier/kvasir": {
@@ -2080,7 +2080,7 @@
   "tuscaran-glacier/queenkula": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "20c97edfd496d297987ff1957ef97a35cedb39176ec119665541844d566f6b68"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "b84c661a9478ae1092ec027af85a0bde88ba3b6b7a44a481bfcb24847a659fd4"
    }
   },
   "tuscaran-glacier/skuf": {
@@ -2112,7 +2112,7 @@
   "tuscaran-glacier/torst": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "96a333d68c378f315ec3b38dfd2943fab7391ce733e2e95b24c7ab3773b0fa65"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "ac2fa3dd1bd757d11665b776710289d4cc3bb04b8639e92d4cc5d900958e2ec3"
    }
   },
   "tuscaran-glacier/vagn": {

@@ -156,7 +156,7 @@ namespace DOL.AI.Brain
 		List<GameLiving> Teleported_Players = new List<GameLiving>();
 		public void TeleportPlayer()
 		{
-			foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.ForDisplacement))
+			foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.DisplacesBots(Body)))
 			{
 				if (player != null)
 				{

@@ -195,7 +195,7 @@ namespace DOL.AI.Brain
             if (Body.IsAlive)
             {
                 Point3D nopass = new Point3D(37653, 52843, 10758);//you shall not pass!
-                foreach (GameLiving player in EncounterTargets.InRadius(Body, 10000, bots: EncounterTargets.ForDisplacement))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 10000, bots: EncounterTargets.DisplacesBots(Body)))
                 {
                     if(player != null)
                     {

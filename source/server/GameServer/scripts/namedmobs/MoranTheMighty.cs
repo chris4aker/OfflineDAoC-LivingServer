@@ -142,7 +142,7 @@ namespace DOL.AI.Brain
         public int TeleportPlayerAway(ECSGameTimer timer)
         {
             string gender;
-            foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000, bots: EncounterTargets.ForDisplacement))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000, bots: EncounterTargets.DisplacesBots(Body)))
             {
                 if (player == null)
                     return 0;

@@ -197,7 +197,7 @@ namespace DOL.AI.Brain
                             continue;
                         GameLiving living = null;
                         living = enemies[i] as GameLiving;
-                        if (living.IsVisibleTo(Body) && Body.TargetInView && (living is GamePlayer || EncounterTargets.ForDisplacement && living is GameBot))
+                        if (living.IsVisibleTo(Body) && Body.TargetInView && (living is GamePlayer || EncounterTargets.DisplacesBots(Body) && living is GameBot))
                         {
                             damage_enemies.Add(enemies[i] as GameLiving);
                         }

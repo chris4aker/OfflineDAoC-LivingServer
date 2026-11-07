@@ -259,7 +259,7 @@ namespace DOL.AI.Brain
 				Body.SetGroundTarget(Body.X, Body.Y, Body.Z);
 				Body.CastSpell(Sphere_pbaoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
 
-				foreach(GameLiving player in EncounterTargets.InRadius(Body, 300, bots: EncounterTargets.ForDisplacement))
+				foreach(GameLiving player in EncounterTargets.InRadius(Body, 300, bots: EncounterTargets.DisplacesBots(Body)))
                 {
 					if(player != null)
                     {

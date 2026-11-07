@@ -680,7 +680,7 @@ namespace DOL.AI.Brain
                         SpawnAntiPass();
                         spawn_antipass = true;
                     }
-                    foreach (GameLiving player in EncounterTargets.InRadius(Body, 1500, bots: EncounterTargets.ForDisplacement))//pick teleport player
+                    foreach (GameLiving player in EncounterTargets.InRadius(Body, 1500, bots: EncounterTargets.DisplacesBots(Body)))//pick teleport player
                     {
                         if (player != null)
                         {
@@ -1706,7 +1706,7 @@ namespace DOL.AI.Brain
         {
             if (Body.IsAlive && HasAggro)
             {
-                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.ForDisplacement))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.DisplacesBots(Body)))
                 {
                     if (player != null)
                     {
@@ -3353,7 +3353,7 @@ namespace DOL.AI.Brain
         }
         public override void Think()
         {
-            foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort)AggroRange, bots: EncounterTargets.ForDisplacement))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort)AggroRange, bots: EncounterTargets.DisplacesBots(Body)))
             {
                 if (player != null)
                 {

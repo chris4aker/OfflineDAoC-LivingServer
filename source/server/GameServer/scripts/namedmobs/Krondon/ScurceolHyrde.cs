@@ -301,7 +301,7 @@ namespace DOL.AI.Brain
 		}
 		public override void OnAttackedByEnemy(AttackData ad)
 		{
-			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && (ad.Attacker is GamePlayer || EncounterTargets.ForDisplacement && ad.Attacker is GameBot))
+			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && (ad.Attacker is GamePlayer || EncounterTargets.DisplacesBots(Body) && ad.Attacker is GameBot))
 			{
 				RandomTarget = EncounterTargets.AsRaider(ad.Attacker);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(TeleportPlayer), Util.Random(8000, 15000));
@@ -432,7 +432,7 @@ namespace DOL.AI.Brain
 		}
 		public override void OnAttackedByEnemy(AttackData ad)
 		{
-			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && (ad.Attacker is GamePlayer || EncounterTargets.ForDisplacement && ad.Attacker is GameBot))
+			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && (ad.Attacker is GamePlayer || EncounterTargets.DisplacesBots(Body) && ad.Attacker is GameBot))
 			{
 				RandomTarget = EncounterTargets.AsRaider(ad.Attacker);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(TeleportPlayer), Util.Random(8000, 15000));
@@ -563,7 +563,7 @@ namespace DOL.AI.Brain
 		}
 		public override void OnAttackedByEnemy(AttackData ad)
 		{
-			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && (ad.Attacker is GamePlayer || EncounterTargets.ForDisplacement && ad.Attacker is GameBot))
+			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && (ad.Attacker is GamePlayer || EncounterTargets.DisplacesBots(Body) && ad.Attacker is GameBot))
 			{
 				RandomTarget = EncounterTargets.AsRaider(ad.Attacker);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(TeleportPlayer), Util.Random(8000, 15000));
@@ -694,7 +694,7 @@ namespace DOL.AI.Brain
 		}
 		public override void OnAttackedByEnemy(AttackData ad)
 		{
-			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && (ad.Attacker is GamePlayer || EncounterTargets.ForDisplacement && ad.Attacker is GameBot))
+			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && (ad.Attacker is GamePlayer || EncounterTargets.DisplacesBots(Body) && ad.Attacker is GameBot))
 			{
 				RandomTarget = EncounterTargets.AsRaider(ad.Attacker);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(TeleportPlayer), Util.Random(8000, 15000));

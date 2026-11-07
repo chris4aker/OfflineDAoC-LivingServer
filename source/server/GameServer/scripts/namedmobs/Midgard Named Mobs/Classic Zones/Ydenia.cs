@@ -145,7 +145,7 @@ namespace DOL.AI.Brain
         }
 		private void YdeniaPort(GameLiving target)
         {
-			if(target != null && target.IsAlive && EncounterTargets.AsRaider(target) is GameLiving player && (player is GamePlayer || EncounterTargets.ForDisplacement))
+			if(target != null && target.IsAlive && EncounterTargets.AsRaider(target) is GameLiving player && (player is GamePlayer || EncounterTargets.DisplacesBots(Body)))
             {
 				switch(Util.Random(1,4))
                 {

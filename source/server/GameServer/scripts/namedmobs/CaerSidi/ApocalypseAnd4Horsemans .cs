@@ -252,7 +252,7 @@ namespace DOL.GS
             {
                 if(FamesBrain.StartedFames==true || BellumBrain.StartedBellum==true || MorbusBrain.StartedMorbus==true || FunusBrain.StartedFunus==true || ApocalypseBrain.StartedApoc==true)
                 {
-                    foreach (GameLiving player in EncounterTargets.InRadius(this, 1500, bots: EncounterTargets.ForDisplacement))
+                    foreach (GameLiving player in EncounterTargets.InRadius(this, 1500, bots: EncounterTargets.DisplacesBots(this)))
                     {
                         if(player != null)
                         {

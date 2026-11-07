@@ -166,7 +166,7 @@ namespace DOL.AI.Brain
 		List<GameLiving> Enemys_To_Port = new List<GameLiving>();
 		public void TeleportRandomTarget()
 		{
-			foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000, bots: EncounterTargets.ForDisplacement))
+			foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000, bots: EncounterTargets.DisplacesBots(Body)))
 			{
 				if (player != null)
 				{

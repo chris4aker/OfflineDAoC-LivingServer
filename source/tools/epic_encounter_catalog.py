@@ -540,9 +540,9 @@ def player_only(member: Member, receiver: str | None, pos: int | None = None) ->
         if re.search(r"\bis\s+GamePlayer\b|PrivLevel", conds) and not re.search(r"GameBot|EpicEncounterActors|EncounterTargets", conds):
             return True
     cls_masked = member.cls.src.masked[member.cls.open_pos:member.cls.end]
-    # A move whose victim is picked with EncounterTargets.ForDisplacement (in this method or elsewhere in the class)
-    # includes bots only once EncounterTargets.BotsCanBeDisplaced is on: players only today.
-    if receiver and re.search(r"EncounterTargets\.ForDisplacement", cls_masked):
+    # A move whose victim is picked with EncounterTargets.DisplacesBots (in this method or elsewhere in the class)
+    # includes bots only where bots may be displaced (EncounterTargets.BotsCanBeDisplaced, off): players only today.
+    if receiver and re.search(r"EncounterTargets\.(ForDisplacement|DisplacesBots)\b", cls_masked):
         return True
     if receiver:
         r = re.escape(receiver.split(".")[-1])

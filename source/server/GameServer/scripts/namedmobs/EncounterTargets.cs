@@ -36,6 +36,15 @@ namespace DOL.GS
         /// <summary>The bots-in-pool value for a pick that moves its victim (see <see cref="BotsCanBeDisplaced"/>).</summary>
         public static bool ForDisplacement => BotsCanBeDisplaced;
 
+        /// <summary>
+        /// The bots-in-pool value for a pick that moves its victim, for one encounter (the boss, add or object whose script
+        /// picks). Every move pick in the scripts asks this. Today it is <see cref="BotsCanBeDisplaced"/>; with the displacement
+        /// work (feature/epic-displacement, PR #101) merged it becomes that work's per-encounter switch
+        /// (<c>EpicEncounterMechanics.AllowBotDisplacementFor(encounter)</c>), so a pick includes bots exactly where its move
+        /// would move them.
+        /// </summary>
+        public static bool DisplacesBots(GameObject encounter) => BotsCanBeDisplaced;
+
         // ---- the pool ---------------------------------------------------------------------------------------------------
 
         /// <summary>Every raid member in <paramref name="radius"/> of <paramref name="origin"/> the filter accepts, in a

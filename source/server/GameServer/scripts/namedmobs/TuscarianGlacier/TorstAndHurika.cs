@@ -626,7 +626,7 @@ namespace DOL.AI.Brain
             }
             if(HasAggro && Body.TargetObject != null)
             {
-                foreach (GameLiving player in EncounterTargets.InRadius(Body, 1000, bots: EncounterTargets.ForDisplacement))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 1000, bots: EncounterTargets.DisplacesBots(Body)))
                 {
                     if(player != null && player.IsAlive && EncounterTargets.NotGm(player) && !Port_Enemys.Contains(player))
                         Port_Enemys.Add(player);
