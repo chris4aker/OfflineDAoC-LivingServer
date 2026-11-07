@@ -16,8 +16,8 @@
       "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
     }
   ],
-  "story": "Weno'iak leads the wi'voron, the clan of reeves and advisors and of the drakoran cavalry, and he is the one the other lords call when they need to think. He took the scholars' observatory for his own and is said to read in the books the others burned. The Enlightened, they call him, and his light is no fire: it strikes at the spirit and breaks men from the inside. His cuirassiers and their warsteeds keep the yards of the colleges, and they ride when he rides.\n\nThe reeves. The wi'voron are the reeves and advisors of the drakoran host, occupiers and sicklemen and acaters who buy in the stores, and above all the cavalry: cuirassiers on warsteeds, the only drakoran who ride. Weno'iak is their lord, and the one the other lords call when they need to think. He took the readers' observatory and the colleges' stable-yards together, so that he could study by night and ride by day.\n\nThe light. He is said to read in the books the other lords burned; the readers of Caer Gothwaite suspect he saved some on purpose, and that he has been teaching himself from them. The Enlightened, his clan calls him, and his light is no fire: Weno'iak's Lights strike at the spirit and break men from inside, and his Annihilate does it to everyone around his target at once. His eight cuirassiers and their eight warsteeds keep the yards and ride when he rides. The Camelot loremasters think he is the most dangerous of the five, not because he is the strongest, but because he is the one who is learning.",
-  "legend": "Eight cuirassiers and eight warsteeds come with him, so that is seventeen pulls in one. Spread out against his Annihilate, which hits everyone near its target, and bring spirit resist. Off-tanks on the cavalry, and kill the warsteeds before their riders tire of walking.\n\nThe readers of Caer Gothwaite would pay a great deal for whatever books he has; Albion raiders have looked, and found only ash and a few torn pages in his observatory. The warsteeds die faster than their riders; kill them first and the cuirassiers walk. His Lights land on one target at a time, his Annihilate on everyone near it, so the casters spread wide.",
+  "story": "Weno'iak leads the wi'voron, the clan of reeves and advisors and of the drakoran cavalry, and he is the one the other lords call when they need to think. He took the scholars' observatory for his own and is said to read in the books the others burned. The Enlightened, they call him, and his light is no fire: it strikes at the spirit and breaks men from the inside. His cuirassiers and their warsteeds keep the yards of the colleges, and they ride when he rides.\n\nThe reeves. The wi'voron are the reeves and advisors of the drakoran host, occupiers and sicklemen and acaters who buy in the stores, and above all the cavalry: cuirassiers on warsteeds, the only drakoran who ride. Weno'iak is their lord, and the one the other lords call when they need to think. He took the readers' observatory and the colleges' stable-yards together, so that he could study by night and ride by day.\n\nThe light. He is said to read in the books the other lords burned; the readers of Caer Gothwaite suspect he saved some on purpose, and that he has been teaching himself from them. The Enlightened, his clan calls him, and his light is no fire: Weno'iak's Lights strike at the spirit and break men from inside, and his Annihilate does it to everyone close about him at once. His eight cuirassiers and their eight warsteeds keep the yards and ride when he rides. The Camelot loremasters think he is the most dangerous of the five, not because he is the strongest, but because he is the one who is learning.",
+  "legend": "Eight cuirassiers and eight warsteeds come with him, so that is seventeen pulls in one. Spread out against his Annihilate, which hits everyone within 500 of him, and bring spirit resist. Off-tanks on the cavalry, and kill the warsteeds before their riders tire of walking.\n\nThe readers of Caer Gothwaite would pay a great deal for whatever books he has; Albion raiders have looked, and found only ash and a few torn pages in his observatory. The warsteeds die faster than their riders; kill them first and the cuirassiers walk. His Lights land on one target at a time; his Annihilate bursts around himself, so the casters stand well back from him.",
   "yells": {
     "aggro": [
       "Riders! Let them see the light!",
@@ -57,6 +57,7 @@
     "briefing": [
       "wenoiak brings 8 cuirassiers and 8 warsteeds. off tanks on cavalry",
       "spread for his annihilate, spirit resist up",
+      "annihilate hits everyone within 500 of him. casters stay back, spirit resist up",
       "kill warsteeds first",
       "seventeen mobs, plan it"
     ],
@@ -64,10 +65,11 @@
       "seventeen mobs in one pull. gg",
       "the enlightened one wasnt that bright",
       "the cavalry is unhorsed",
-      "spread was perfect for annihilate"
+      "casters stayed out of annihilate the whole time"
     ],
     "aftermathLoss": [
       "we stacked for annihilate. 450 to everyone",
+      "casters stood next to him for annihilate. 450 each",
       "the warsteeds trampled the casters",
       "not enough off tanks",
       "no spirit resist"
