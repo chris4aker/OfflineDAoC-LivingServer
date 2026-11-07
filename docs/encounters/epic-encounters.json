@@ -1028,7 +1028,7 @@
    "teleport": 32,
    "tether": 54
   },
-  "rulesVerified": 787,
+  "rulesVerified": 862,
   "rulesRead": 494,
   "rulesInferred": 368,
   "handEntries": 2
@@ -6759,7 +6759,7 @@
      "addIsEpic": true,
      "tactic": "One party holds and kills each Champion away from the main tank. The route treats an epic NPC as its own encounter, not his add.",
      "difficulty": "needs new raid AI",
-     "verified": false,
+     "verified": true,
      "key": "adds@386"
     },
     {
@@ -6777,7 +6777,7 @@
      "addBrain": "XanxicarianChampionBrain",
      "trigger": "on a timer (Util.Random(15000, 25000) ms)",
      "addIsEpic": true,
-     "verified": false,
+     "verified": true,
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -6802,7 +6802,7 @@
      ],
      "tactic": "On the announcement casters, healers and archers step out of the stomp radius; melee eat it with full health. Healers top up before each threshold.",
      "difficulty": "needs new raid AI",
-     "verified": false,
+     "verified": true,
      "key": "phase@341"
     },
     {
@@ -6816,7 +6816,7 @@
      "sourceClass": "XanxicarBrain",
      "method": "Think",
      "threshold": 50,
-     "verified": false,
+     "verified": true,
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -6832,7 +6832,7 @@
      "confidence": "read",
      "sourceClass": "XanxicarBrain",
      "method": "Think",
-     "verified": false,
+     "verified": true,
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -6852,7 +6852,7 @@
      "displacement": "Throw",
      "tactic": "A thrown bot lands with the player's fall damage and walks back to its party, or recalls after 5 s with no way back (EncounterDisplacementRecovery); healers heal it first and its party calls it in /group.",
      "difficulty": "easy for the current raid AI",
-     "verified": false,
+     "verified": true,
      "key": "teleport@224"
     }
    ],
@@ -6904,7 +6904,6 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "verificationStale": true,
    "notes": "Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random raider within 2,500 every 20-40 s: real players, and bots since 1.2 (his AllowBotDisplacement is on; the pick asks the same switch as the move) and glares at another raider, bots included since 1.2 (never a necromancer).",
    "currentRaidAi": "2026-11-05: lost with support 199 (required 150, Special Forces joined), one named kill.",
    "aiTactics": {
@@ -6918,7 +6917,7 @@
     "summary": "Blasts: within 3% above 80/60/40/20% and for 9 s after crossing one, everyone except the party he is fighting withdraws 2,700 from him; that party pushes him over and takes the 2,500-radius stomp (it is meant to kill whoever is in it), the rest of the raid survives it and comes back. 1.2 wave 2: when he bellows, that party's healers top it up first; when he prepares his glare (450 around a raider, 5 s), everyone near that raider steps away and healers heal him (EncounterSignals).",
     "since": "1.2"
    },
-   "verified": false
+   "verified": true
   },
   {
    "id": "cuuldurach-s-lair-sheeroe-hills/hibcuuldurach",
@@ -6983,7 +6982,7 @@
      "condition": "if (DragonLairPlacement.CanReceiveDamageFrom(source)) && if (!IsWithinRadius(spawnPoint, LairRadius))",
      "tactic": "Fight it in its lair (RealmRaidDragonFight and AutonomousTetherReset already do).",
      "difficulty": "easy for the current raid AI",
-     "verified": false,
+     "verified": true,
      "key": "immune_while@54"
     },
     {
@@ -7005,7 +7004,7 @@
      "switch": [
       "AllowDragonMessengers"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -7031,7 +7030,7 @@
       "AllowDragonMessengers"
      ],
      "from": "add",
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -7051,7 +7050,7 @@
      "switch": [
       "AllowDragonMessengers"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowDragonMessengers is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -7079,7 +7078,7 @@
       20,
       10
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -7095,7 +7094,7 @@
      "confidence": "inferred",
      "sourceClass": "HibCuuldurachBrain",
      "method": "ResetGlareRoam",
-     "verified": false,
+     "verified": true,
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -7119,7 +7118,7 @@
      "tactic": "A thrown bot lands on the navmesh floor under its spot with the player's fall damage and walks back to its party (EncounterDisplacementRecovery); with no path or no progress it recalls to the raid after 5 s. Healers heal displaced raiders first; the party calls it in /group.",
      "confidence": "read",
      "hand": true,
-     "verified": false,
+     "verified": true,
      "key": "teleport@DragonEncounterThrow.cs:81"
     }
    ],
@@ -7213,7 +7212,6 @@
     }
    ],
    "raidAi": "dragon fight",
-   "verificationStale": true,
    "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "aiTactics": {
     "rangedAdds": [
@@ -7222,7 +7220,7 @@
     "since": "1.2",
     "summary": "Messengers (on since 1.2, AllowDragonMessengers): from 50% every 80-90 s four to six messengers (CuuldurachMessenger, 1,500 health, they never fight) run out of the lair and each calls four to six adds where its path ends; the raid's casters and archers run each one down (ranged adds) while melee and healers stay on the dragon. Stare (glare, 1,000 around the raider it picks, 6 s warning): everyone within it but the picked raider and the tank steps out, away from him, and healers heal him first. Look-around stun and breath (2,000 around the dragon, 6 s warning): casters, archers and healers step out past 2,250 until it lands; melee can't make it and take it. Each one is called in /group (EncounterSignals, EncounterCalls)."
    },
-   "verified": false
+   "verified": true
   },
   {
    "id": "darkness-falls/beliathan",
@@ -11575,7 +11573,7 @@
      "from": "add",
      "tactic": "Off today. With the switch on: stay out of the vortices and never target them.",
      "difficulty": "off today",
-     "verified": false,
+     "verified": true,
      "key": "hazard@3226"
     },
     {
@@ -11592,7 +11590,7 @@
       "AllowInvulnerableHazards"
      ],
      "from": "add",
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowInvulnerableHazards is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -11613,7 +11611,7 @@
      "addBrain": "AirPrimalBrain",
      "trigger": "on a timer (via SpawnPrimals)",
      "addIsEpic": true,
-     "verified": false,
+     "verified": true,
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -11634,7 +11632,7 @@
      "addBrain": "WaterPrimalBrain",
      "trigger": "on a timer (via SpawnPrimals)",
      "addIsEpic": true,
-     "verified": false,
+     "verified": true,
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -11655,7 +11653,7 @@
      "addBrain": "FirePrimalBrain",
      "trigger": "on a timer (via SpawnPrimals)",
      "addIsEpic": true,
-     "verified": false,
+     "verified": true,
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -11676,7 +11674,7 @@
      "addBrain": "EarthPrimalBrain",
      "trigger": "on a timer (via SpawnPrimals)",
      "addIsEpic": true,
-     "verified": false,
+     "verified": true,
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -11697,7 +11695,7 @@
      "addBrain": "GuardianEarthmenderBrain",
      "trigger": "on a timer (via SpawnPrimals)",
      "addIsEpic": false,
-     "verified": false,
+     "verified": true,
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -11718,7 +11716,7 @@
      "addBrain": "MagicalEarthmenderBrain",
      "trigger": "on a timer (via SpawnPrimals)",
      "addIsEpic": false,
-     "verified": false,
+     "verified": true,
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -11739,7 +11737,7 @@
      "addBrain": "NaturalEarthmenderBrain",
      "trigger": "on a timer (via SpawnPrimals)",
      "addIsEpic": false,
-     "verified": false,
+     "verified": true,
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -11762,7 +11760,7 @@
      "addIsEpic": false,
      "tactic": "Today they are ordinary targets; with the hazard switch on, route parties around them.",
      "difficulty": "needs new raid AI",
-     "verified": false,
+     "verified": true,
      "key": "adds@223"
     },
     {
@@ -11780,7 +11778,7 @@
      "addBrain": "VortexBrain",
      "trigger": "on a timer (via SpawnPrimals)",
      "addIsEpic": false,
-     "verified": false,
+     "verified": true,
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -11800,7 +11798,7 @@
       "AllowGalladoriaBridgeSpot"
      ],
      "restored": true,
-     "verified": false,
+     "verified": true,
      "tactic": "On: the original is back (AllowGalladoriaBridgeSpot is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -11839,9 +11837,8 @@
     }
    ],
    "raidAi": "generic dungeon route",
-   "verificationStale": true,
    "notes": "Not a monster but the event controller for Galladoria's last room. A raid bot within 1,500 of the waterfall bridge (39652,60831,11893) starts it (a real player must stand within 350); 20 s of messages later it spawns the four Corrupt Primals, the four Earthmenders and eleven Watery Vortices. Olcasgean wakes 25 s after all four primals are dead (OIBrain.DeadPrimalsCount >= 4). 1.2 wave 2: AllowGalladoriaBridgeSpot is on: a raider must stand within 350 of the spot (the route stages its first party there); a raid bot that has stood within 1,500 for 3 minutes still starts it.",
-   "verified": false
+   "verified": true
   },
   {
    "id": "galladoria/olcasgean",
@@ -11915,7 +11912,7 @@
      "addBrain": "WaterfallAntipassBrain",
      "trigger": "from SpawnAntiPass",
      "addIsEpic": false,
-     "verified": false,
+     "verified": true,
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -11940,7 +11937,7 @@
      "switch": [
       "AllowPositionPuzzle"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowPositionPuzzle is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -11963,7 +11960,7 @@
      "addIsEpic": true,
      "tactic": "Both bodies are final encounters for the route; split the raid or kill them one at a time.",
      "difficulty": "needs new raid AI",
-     "verified": false,
+     "verified": true,
      "key": "adds@775"
     },
     {
@@ -11977,7 +11974,7 @@
      "sourceClass": "Olcasgean",
      "method": "OnAttackedByEnemy",
      "threshold": 50,
-     "verified": false,
+     "verified": true,
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -11997,7 +11994,7 @@
      "switch": [
       "AllowPositionPuzzle"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowPositionPuzzle is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -12017,7 +12014,7 @@
      "switch": [
       "AllowPositionPuzzle"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowPositionPuzzle is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -12034,7 +12031,7 @@
      "sourceClass": "OlcasgeanBrain",
      "method": "Think",
      "subtype": "out_of_combat",
-     "verified": false,
+     "verified": true,
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12051,7 +12048,7 @@
      "sourceClass": "OlcasgeanBrain",
      "method": "Think",
      "fightIsOverGate": true,
-     "verified": false,
+     "verified": true,
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12073,7 +12070,7 @@
       "AllowPositionPuzzle"
      ],
      "displacement": "Throw",
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowDisplacement, AllowPositionPuzzle is false). To play it: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -12095,7 +12092,7 @@
      ],
      "displacement": "Barrier",
      "from": "add",
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -12103,7 +12100,7 @@
     },
     {
      "kind": "position_puzzle",
-     "summary": "AllowPositionPuzzle (false today) gates his whole fight script: Root Effects, the throw, the DD spam at whoever is not at the two safe points (40170,62600 and 39237,62644), and the Waterfall Antipass.",
+     "summary": "AllowPositionPuzzle (on for him since 1.2) gates his whole fight script: Root Effects, the throw, the DD spam at whoever is not at the two safe points (40170,62600 and 39237,62644), and the Waterfall Antipass.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
      "line": 673,
      "lineEnd": 764,
@@ -12114,9 +12111,9 @@
      "switch": [
       "AllowPositionPuzzle"
      ],
-     "tactic": "Off today. To play it: two parties stand on the two safe points the whole fight, the rest fight him.",
-     "difficulty": "off today",
-     "verified": false,
+     "tactic": "In the raid AI (EpicEncounterTactics.Signals.cs, safe spots): the raid's two lowest-numbered parties hold one spot each the whole fight and fight the body standing there; everyone else fights where it likes. A thrown raider walks back.",
+     "difficulty": "needs new raid AI",
+     "verified": true,
      "key": "position_puzzle@673"
     },
     {
@@ -12133,7 +12130,7 @@
       "AllowPositionPuzzle"
      ],
      "restored": true,
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowPositionPuzzle is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -12188,13 +12185,12 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "verificationStale": true,
-   "notes": "Level 87, 250,000 health, the final boss. Asleep until all four primals are dead. Spawns a copy of himself (Olcasgean2, a second 250,000-health body) when he wakes. The split-position puzzle (raiders must stand at two points or he spams his DD) and his throws are switched off for bots. 1.2 wave 2: the safe spots, the throw (fixed as OpenDAoC-Core 3513bad: the fork's copy never started and could pick index -1) and the antipass are on for bots.",
+   "notes": "Level 87, 250,000 health, the final boss. Asleep until all four primals are dead. Spawns a copy of himself (Olcasgean2, a second 250,000-health body) when he wakes. The split-position puzzle (raiders must stand at two points or he spams his DD) and his throws are on since 1.2 wave 2. 1.2 wave 2: the safe spots, the throw (fixed as OpenDAoC-Core 3513bad: the fork's copy never started and could pick index -1) and the antipass are on for bots.",
    "aiTactics": {
     "since": "1.2",
     "summary": "Safe spots (AllowPositionPuzzle, on since 1.2): unless a raider stands within 200 of 40,170,62,600 (his copy) and one within 200 of 39,237,62,644 (him) he casts his Root DD without pause; the raid's two lowest-numbered parties hold one spot each the whole fight and fight the body that stands there (they share health), everyone else fights where it likes. Below half he throws one raider every 12-20 s who was not thrown before (bots too since 1.2): it walks back (EncounterDisplacementRecovery). The Waterfall Antipass pushes anyone who tries to leave back into the room until he dies. The party calls an empty spot in /group."
    },
-   "verified": false
+   "verified": true
   },
   {
    "id": "galladoria/olcasgean2",
@@ -12237,7 +12233,7 @@
      "sourceClass": "Olcasgean2",
      "method": "OnAttackedByEnemy",
      "threshold": 50,
-     "verified": false,
+     "verified": true,
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -12254,7 +12250,7 @@
      "sourceClass": "OlcasgeanBrain2",
      "method": "Think",
      "subtype": "out_of_combat",
-     "verified": false,
+     "verified": true,
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12271,7 +12267,7 @@
      "sourceClass": "OlcasgeanBrain2",
      "method": "Think",
      "fightIsOverGate": true,
-     "verified": false,
+     "verified": true,
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12304,8 +12300,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
-   "verificationStale": true,
-   "verified": false
+   "verified": true
   },
   {
    "id": "galladoria/airprimal",
@@ -12350,7 +12345,7 @@
      "condition": "if (source is GameSummonedPet || source is TurretPet)",
      "tactic": "Casters and archers kill it from below with direct damage; pets attack the other primals.",
      "difficulty": "easy for the current raid AI",
-     "verified": false,
+     "verified": true,
      "key": "damage_reduced@1137"
     },
     {
@@ -12364,7 +12359,7 @@
      "sourceClass": "AirPrimalBrain",
      "method": "Think",
      "subtype": "out_of_combat",
-     "verified": false,
+     "verified": true,
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12411,10 +12406,9 @@
     }
    ],
    "raidAi": "generic dungeon route",
-   "verificationStale": true,
    "notes": "900 health (by design: one strong nuke kills it), flies (FLYING), never melees (StartAttack empty), never walks home (ReturnToSpawnPoint does nothing while alive). Pets and turrets deal a fixed 5 per hit.",
    "currentRaidAi": "2026-10-16: it circled 690 above the floor and was skipped; route now shoots flyers within 1,200 from below (RealmRaidDungeonRoute.IsOutOfRangedReach).",
-   "verified": false
+   "verified": true
   },
   {
    "id": "galladoria/waterprimal",
@@ -12460,7 +12454,7 @@
      "condition": "if (WaterPrimalBrain.dontattack)",
      "tactic": "Stop attacking while it is immune; the raid's no-damage clock should not set it aside.",
      "difficulty": "needs new raid AI",
-     "verified": false,
+     "verified": true,
      "key": "immune_while@1567"
     },
     {
@@ -12476,7 +12470,7 @@
      "threshold": 30,
      "tactic": "Stop attacking while it is in the pool; be ready when it comes back.",
      "difficulty": "needs new raid AI",
-     "verified": false,
+     "verified": true,
      "key": "phase@1674"
     },
     {
@@ -12490,7 +12484,7 @@
      "sourceClass": "WaterPrimalBrain",
      "method": "Think",
      "subtype": "out_of_combat",
-     "verified": false,
+     "verified": true,
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12511,7 +12505,7 @@
       "AllowDisplacement"
      ],
      "displacement": "Teleport",
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -12527,7 +12521,7 @@
      "confidence": "inferred",
      "sourceClass": "WaterPrimalBrain",
      "method": "LowOnHealth",
-     "verified": false,
+     "verified": true,
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12543,7 +12537,7 @@
      "confidence": "inferred",
      "sourceClass": "WaterPrimalBrain",
      "method": "LowOnHealth",
-     "verified": false,
+     "verified": true,
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -12576,9 +12570,8 @@
     }
    ],
    "raidAi": "generic dungeon route",
-   "verificationStale": true,
    "notes": "1.2 wave 2: its teleport (a raider within 2,500, to either side of the bridge) is on for bots: they walk back.",
-   "verified": false
+   "verified": true
   },
   {
    "id": "galladoria/fireprimal",
@@ -12634,7 +12627,7 @@
      "confidence": "read",
      "sourceClass": "FirePrimalBrain",
      "method": "FireDS",
-     "verified": false,
+     "verified": true,
      "tactic": "Check who it punishes; switch damage type or attacker if it reflects.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -12655,7 +12648,7 @@
      "addBrain": "TrailOfFireBrain",
      "trigger": "on a timer (1000 ms)",
      "addIsEpic": false,
-     "verified": false,
+     "verified": true,
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12672,7 +12665,7 @@
      "sourceClass": "FirePrimalBrain",
      "method": "Think",
      "subtype": "out_of_combat",
-     "verified": false,
+     "verified": true,
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12693,7 +12686,7 @@
      ],
      "restored": true,
      "from": "add",
-     "verified": false,
+     "verified": true,
      "tactic": "On: the original is back (AllowFullFirePatches is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12740,7 +12733,6 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "verificationStale": true,
    "aiTactics": {
     "hazards": [
      "TrailOfFire"
@@ -12749,7 +12741,7 @@
     "since": "1.2",
     "summary": "Trail of fire (AllowFullFirePatches, on since 1.2: 220 every 2 s in 450): the primal walks its loop and leaves a patch where it stands. Casters and archers shoot it and step out of the patches; melee fight the Water or Earth primal while one lives, and fight the Fire primal in the fire only when it is the last."
    },
-   "verified": false
+   "verified": true
   },
   {
    "id": "galladoria/earthprimal",
@@ -12855,7 +12847,7 @@
       "NaturalEarthmender",
       "ShadowyEarthmender"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12872,7 +12864,7 @@
      "sourceClass": "EarthPrimal",
      "method": "AddToWorld",
      "range": 890,
-     "verified": false,
+     "verified": true,
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12889,7 +12881,7 @@
      "sourceClass": "EarthPrimalBrain",
      "method": "Think",
      "fightIsOverGate": true,
-     "verified": false,
+     "verified": true,
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12912,7 +12904,7 @@
       "NaturalEarthmenderBrain",
       "ShadowyEarthmenderBrain"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12936,7 +12928,7 @@
      ],
      "tactic": "Kill the four Earthmenders first (split one party per Earthmender), then the primal; interrupt their casts if a class can.",
      "difficulty": "needs new raid AI",
-     "verified": false,
+     "verified": true,
      "key": "heal@2570"
     },
     {
@@ -12959,7 +12951,7 @@
       "NaturalEarthmender",
       "ShadowyEarthmender"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "On: the original is back (AllowEarthmenderClassPuzzle is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -12989,7 +12981,7 @@
       "ShadowyEarthmender",
       "ShadowyEarthmenderBrain"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "On: the original is back (AllowEarthmendersPassive is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -13015,7 +13007,7 @@
       "NaturalEarthmenderBrain",
       "ShadowyEarthmenderBrain"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "On: the original is back (AllowEarthmenderQuickReset is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -13041,7 +13033,7 @@
       "NaturalEarthmenderBrain",
       "ShadowyEarthmenderBrain"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "On: the original is back (AllowEarthmenderMutualHeal is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -13129,7 +13121,6 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "verificationStale": true,
    "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; since run 18 they fight back. Tether 890: it barely leaves its spot. 1.2 wave 2: the original Earthmenders are back (AllowEarthmendersPassive: they never attack; AllowEarthmenderQuickReset: one left alone 30 s heals to full; AllowEarthmenderMutualHeal: they heal each other): the raid keeps each class on its own Earthmender until it dies.",
    "currentRaidAi": "Run 14 (2026-10-16): skipped at full health while the Earthmenders healed it; the route now treats script-spawned adds near the front as part of the fight (EncounterAddRadius 3,000). 2026-11-06 (build 86eddd8): the raid never reached the primals (deadPrimals=0 all day: the bridge room was not started), so this tactic has not been seen in a run.",
    "aiTactics": {
@@ -13172,7 +13163,7 @@
     "since": "1.2",
     "summary": "Required adds by class: once the fight is on the raid kills the four Earthmenders (they heal the primal 2,000 each) before the primal. With the original class rule on (AllowEarthmenderClassPuzzle, on since 1.2) each raider takes an Earthmender its class hurts: Guardian: blademasters, heroes, champions; Magical: eldritchs, enchanters, mentalists; Natural: bards, druids, wardens; Shadowy: nightshades, rangers; animists and valewalkers any (spread by party); pets hurt all four. A class none of them takes damage from (bainshee, vampiir, mauler) fights the primal and keeps it busy."
    },
-   "verified": false
+   "verified": true
   },
   {
    "id": "galladoria/organicenergymechanism",
@@ -14100,7 +14091,7 @@
      "condition": "if (DragonLairPlacement.CanReceiveDamageFrom(source)) && if (!IsWithinRadius(spawnPoint, LairRadius))",
      "tactic": "Fight it in its lair (RealmRaidDragonFight and AutonomousTetherReset already do).",
      "difficulty": "easy for the current raid AI",
-     "verified": false,
+     "verified": true,
      "key": "immune_while@54"
     },
     {
@@ -14122,7 +14113,7 @@
      "switch": [
       "AllowDragonMessengers"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -14148,7 +14139,7 @@
       "AllowDragonMessengers"
      ],
      "from": "add",
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -14168,7 +14159,7 @@
      "switch": [
       "AllowDragonMessengers"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowDragonMessengers is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -14196,7 +14187,7 @@
       20,
       10
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -14212,7 +14203,7 @@
      "confidence": "inferred",
      "sourceClass": "MidGjalpinulvaBrain",
      "method": "ResetGlareRoam",
-     "verified": false,
+     "verified": true,
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -14236,7 +14227,7 @@
      "tactic": "A thrown bot lands on the navmesh floor under its spot with the player's fall damage and walks back to its party (EncounterDisplacementRecovery); with no path or no progress it recalls to the raid after 5 s. Healers heal displaced raiders first; the party calls it in /group.",
      "confidence": "read",
      "hand": true,
-     "verified": false,
+     "verified": true,
      "key": "teleport@DragonEncounterThrow.cs:81"
     }
    ],
@@ -14330,7 +14321,6 @@
     }
    ],
    "raidAi": "dragon fight",
-   "verificationStale": true,
    "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "aiTactics": {
     "rangedAdds": [
@@ -14339,7 +14329,7 @@
     "since": "1.2",
     "summary": "Messengers (on since 1.2, AllowDragonMessengers): from 50% every 80-90 s four to six messengers (GjalpinulvaMessenger, 1,500 health, they never fight) run out of the lair and each calls four to six adds where its path ends; the raid's casters and archers run each one down (ranged adds) while melee and healers stay on the dragon. Stare (glare, 1,000 around the raider it picks, 6 s warning): everyone within it but the picked raider and the tank steps out, away from him, and healers heal him first. Look-around stun and breath (2,000 around the dragon, 6 s warning): casters, archers and healers step out past 2,250 until it lands; melee can't make it and take it. Each one is called in /group (EncounterSignals, EncounterCalls)."
    },
-   "verified": false
+   "verified": true
   },
   {
    "id": "golestandt-s-lair-dartmoor/albgolestandt",
@@ -14404,7 +14394,7 @@
      "condition": "if (DragonLairPlacement.CanReceiveDamageFrom(source)) && if (!IsWithinRadius(spawnPoint,LairRadius))",
      "tactic": "Fight it in its lair (RealmRaidDragonFight and AutonomousTetherReset already do).",
      "difficulty": "easy for the current raid AI",
-     "verified": false,
+     "verified": true,
      "key": "immune_while@55"
     },
     {
@@ -14426,7 +14416,7 @@
      "switch": [
       "AllowDragonMessengers"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -14452,7 +14442,7 @@
       "AllowDragonMessengers"
      ],
      "from": "add",
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -14472,7 +14462,7 @@
      "switch": [
       "AllowDragonMessengers"
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Off today (AllowDragonMessengers is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
@@ -14500,7 +14490,7 @@
       20,
       10
      ],
-     "verified": false,
+     "verified": true,
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
@@ -14516,7 +14506,7 @@
      "confidence": "inferred",
      "sourceClass": "AlbGolestandtBrain",
      "method": "ResetGlareRoam",
-     "verified": false,
+     "verified": true,
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
@@ -14540,7 +14530,7 @@
      "tactic": "A thrown bot lands on the navmesh floor under its spot with the player's fall damage and walks back to its party (EncounterDisplacementRecovery); with no path or no progress it recalls to the raid after 5 s. Healers heal displaced raiders first; the party calls it in /group.",
      "confidence": "read",
      "hand": true,
-     "verified": false,
+     "verified": true,
      "key": "teleport@DragonEncounterThrow.cs:81"
     }
    ],
@@ -14634,7 +14624,6 @@
     }
    ],
    "raidAi": "dragon fight",
-   "verificationStale": true,
    "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "aiTactics": {
     "rangedAdds": [
@@ -14643,7 +14632,7 @@
     "since": "1.2",
     "summary": "Messengers (on since 1.2, AllowDragonMessengers): from 50% every 80-90 s four to six messengers (GolestandtMessenger, 1,500 health, they never fight) run out of the lair and each calls four to six adds where its path ends; the raid's casters and archers run each one down (ranged adds) while melee and healers stay on the dragon. Stare (glare, 1,000 around the raider it picks, 6 s warning): everyone within it but the picked raider and the tank steps out, away from him, and healers heal him first. Look-around stun and breath (2,000 around the dragon, 6 s warning): casters, archers and healers step out past 2,250 until it lands; melee can't make it and take it. Each one is called in /group (EncounterSignals, EncounterCalls)."
    },
-   "verified": false
+   "verified": true
   },
   {
    "id": "hall-of-the-corrupt/aidonthearchwizard",

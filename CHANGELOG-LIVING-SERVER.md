@@ -14,6 +14,29 @@ Older entries below keep the names they were written with.
      last. Its entries go here, at the top of this section, as "**Dungeons and bosses have their lore**"; keep the
      entries below and the Beta 1.1.2 section as they are. -->
 
+**The dragons, Xanxicar and Galladoria play their full mechanics, and the bots play them back** (the epic encounters,
+wave 2). Tested by automated tests only; not played in game yet. These fights are harder than before: try them first.
+- **The dragons send their messengers again.** From half health, every 80-90 seconds, four to six messengers run out of
+  the lair; each one that gets away calls four to six adds. The raid's casters and archers now run them down while the
+  melee stay on the dragon, and a bot in your party shouts "runners!".
+- **The raid reacts to the big hits.** When a dragon stares at someone, everyone near that raider (except the tank)
+  steps away from them and the healers heal them first. When a dragon looks around (its long stun) or breathes, the
+  casters, archers and healers step out of reach until it lands, so someone is left standing to heal the melee.
+  Xanxicar's glare works the same way, and when he bellows his party's healers top it up. Your party calls each one.
+- **Olcasgean's two safe spots are back.** Two parties hold the two spots the whole fight, or he casts his Root without
+  pause; below half health he throws raiders again (the bots walk back). His throw had a bug that kept it from ever
+  starting; it now works as in the original. The current at the waterfall keeps the raid in his room until he dies.
+- **Galladoria's other mechanics are back:** the Water primal's and Spindler Broodmother's teleports (bots too), the
+  full fire trail of the Fire primal (melee fight the other primals while casters shoot it; this undoes the 2026-10-19
+  nerf of the fire patches), Aroon's Scaiths that must die in order (the raid kills them one by one), the original
+  Earthmenders (they never attack, heal each other and reset when left alone), Beatha healing Xaga (the raid kills
+  Beatha, then Tine, then Xaga) and the fairies circling the room. Conservator and Easmarach take damage only from up
+  close again; the bots step in. The primals come when a raider stands on the bridge spot again (a bot raid that has
+  waited on the bridge for three minutes starts it anyway).
+- **Still off:** Easmarach pushing raiders back behind the falls (it would block the way to the last room, and the bots
+  can't finish him on the waterfall yet), and Legion throwing bots (his platform has no way down). Legion's adds, his
+  range and his heal on a kill have raid rules now, but the Darkness Falls raid is still not a full raid AI.
+
 **Boss throws, teleports and jails now hit bots too, and bots get back** (the epic encounters, wave 1). Tested by
 automated tests only; not played in game yet.
 - **Before:** a boss's throw or teleport only ever picked you. Bots were never thrown, so the mechanic either landed on

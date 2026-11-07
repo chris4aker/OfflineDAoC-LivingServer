@@ -102,12 +102,17 @@ namespace DOL.GS
         {
             lock (Sync)
             {
+                // Asked on every bot's turn: nothing to allocate while no boss has announced anything.
+                if (Live.Count == 0) return [];
                 var all = new List<EncounterSignal>();
-                foreach (var list in Live.Values)
+                List<GameNPC> done = null;
+                foreach (var (boss, list) in Live)
                 {
                     list.RemoveAll(s => s.Until <= now);
-                    all.AddRange(list.Where(s => s.ActiveAt(now)));
+                    if (list.Count == 0) (done ??= new()).Add(boss);
+                    else all.AddRange(list.Where(s => s.ActiveAt(now)));
                 }
+                if (done != null) foreach (GameNPC boss in done) Live.Remove(boss);
                 return all.ToArray();
             }
         }
