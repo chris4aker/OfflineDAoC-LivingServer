@@ -268,6 +268,17 @@
           "Hunter Derwyn's camp. Arrows, bolts and gossip.",
           "Brother Willem binds the hunters' bites."
         ]
+      },
+      {
+        "name": "Cilydd's camp",
+        "x": 600186,
+        "y": 513284,
+        "z": 2090,
+        "radius": 800,
+        "lines": [
+          "Cilydd Difwych sits on a box he cannot open.",
+          "A bandit fire by the Mithra road."
+        ]
       }
     ]
   },
@@ -300,7 +311,8 @@
       "heard mulgrut maggot still walks round the cemetery with his zombies and his charm",
       "[heard|someone said] thwori is the boss of the river sprites. hes tiny",
       "heard sir jerem's squire graid has been guarding that rock in salisbury for years",
-      "[heard|someone said] the court below rings back when camelot rings the bells"
+      "[heard|someone said] the court below rings back when camelot rings the bells",
+      "[heard|someone said] cilydd difwych has a box he cant open. took it off a courier"
     ],
     "tell": [
       "camelot hills? the starter zone round camelot. cotswold by the gates, prydwen keep at the river bend",
@@ -317,7 +329,8 @@
       "thwori? river sprite boss in the shallows south of cotswold. easy, just small",
       "ygwrch gyrg is on the stone head hill east of cotswold. kill spriggarns till he shows",
       "mulgrut maggot walks between the cemetery west of prydwen and the hill with the tall stone",
-      "the dwarf priests are up north past the stables. aggressive, and the converts help them"
+      "the dwarf priests are up north past the stables. aggressive, and the converts help them",
+      "where's cilydd difwych? bandit camp by the mithra road, east of the gates. the captured courier"
     ]
   },
   "loremaster": {
@@ -347,7 +360,8 @@
       "ygwrch gyrg": "Ygwrch Gyrg is the chief of the spriggarns on the hill with the great stone head east of Cotswold. He killed Sil, Nob's friend, on that hill, and he does not come out for one squire: the spriggarns say a chief shows himself only when his people have been hurt enough to need him. Nob the stableboy wants him dead, and says so to everyone who rides through the northern stables.",
       "lady leana": "Lady Leana is the lady of the faeries of the willow pond north of the stables: the bell-wethers, the wolf-criers and the mischief-makers that torment Nob's horses. Sir Quait tells squires to talk to her first and not to harm her people before they do. Every squire who has tried has come back saying the same thing: there is no talking to her. She thinks the pond and the horses are both hers.",
       "mulgrut maggot": "Mulgrut Maggot was a cleric of the cemetery west of Prydwen Keep who kept a charm of his own making that he would not give up. He walks between the cemetery and the hill with the tall stone with his zombies about him, still keeping it. Hugh Gallen, the armourer of Prydwen, sells the story of the charm to any squire who will buy something first.",
-      "dwarven priests": "Dwarven priests in the northern hills, far from any mountain, with men of Albion who have taken their faith standing guard over them. Nobody at Prydwen will say how they came, or which gods they preach. The Church calls the converts apostates; the converts call the Church late. Both sides draw steel on anyone who comes near the mission without being asked."
+      "dwarven priests": "Dwarven priests in the northern hills, far from any mountain, with men of Albion who have taken their faith standing guard over them. Nobody at Prydwen will say how they came, or which gods they preach. The Church calls the converts apostates; the converts call the Church late. Both sides draw steel on anyone who comes near the mission without being asked.",
+      "cilydd difwych": "Cilydd Difwych is the eldest of the three [difwych] brothers and keeps the bandit camp nearest the Mithra road, where the squires walk down to the tomb with their first swords. He ambushed a courier called Dustan there and took the box Dustan was carrying for Sister Rhigwyn, and he has not opened it, because he cannot open it; the key went west with Dustan, who is held by a druid in the Plains. Cilydd sits on the box as a hen sits on an egg and tells his camp it will make them all rich."
     }
   },
   "book": {

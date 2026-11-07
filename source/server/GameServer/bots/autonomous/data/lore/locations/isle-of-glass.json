@@ -199,7 +199,8 @@
         "radius": 1500,
         "lines": [
           "Flood walks the western fields, and its waters.",
-          "The water has risen here, and kept walking."
+          "The water has risen here, and kept walking.",
+          "The Flood Waters keep close, like a stream to its bed."
         ]
       },
       {
@@ -232,7 +233,8 @@
         "radius": 1200,
         "lines": [
           "Svarm hums over the western marsh, and its spawn.",
-          "Dragonflies as big as gulls."
+          "Dragonflies as big as gulls.",
+          "Svarm Spawn hum round the nest in the reeds."
         ]
       },
       {
@@ -288,7 +290,9 @@
       "[heard|someone said] martley went to the colleges before the war",
       "heard araich bows to ariach. drakoran dont bow",
       "[heard|someone said] torrent runs where theres no stream",
-      "heard the squires knock sogrot down for practice and he gets back up"
+      "heard the squires knock sogrot down for practice and he gets back up",
+      "[heard|someone said] the flood waters are the drowned farms' ditches walking",
+      "heard the svarm spawn get bigger every year. somebody burn those reeds"
     ],
     "tell": [
       "isle of glass? the si starter zone. take the ship from the dock in camelot hills",
@@ -299,7 +303,9 @@
       "the drakoran scout wanders east of anniogel, nw of caifelle",
       "flood is in the western fields, svarm in the western marsh, torrent and alluvian in the east",
       "caldech is in the pools east of the castle. jocias and sogrot in the damp bit north of it",
-      "ewart haralder walks the field below the wall near anniogel"
+      "ewart haralder walks the field below the wall near anniogel",
+      "flood waters? the little water elementals round flood in the west of the isle of glass",
+      "svarm spawn? the young dragonflies round svarm's nest in the west marsh. lowbie stuff"
     ]
   },
   "loremaster": {
@@ -325,7 +331,9 @@
       "caldech": "Caldech is a grindylow of the pools east of the castle, and the Academy wants his soul. Magess Daphnea of Caer Gothwaite says it comes out of him in two pieces, one each time he dies, and that both pieces are needed in the gem before Nia Loaman of Caifelle can make anything of it. The grindylows say Caldech has been killed for his soul so often that he no longer minds.",
       "torrent": "Torrent is the water that runs over the eastern fields where no stream runs, a small fast elemental that the farmers of the east call by its noise. It came up in the same spring as Flood in the west and the globule-shedding water by Caifelle, and the readers count the three of them as one sign: the drowned land of the isles coming back up through the last firm ground.",
       "jocias": "Jocias is an undead who hid from Arawn in the damp places by Caer Gothwaite for years, among the damp skeletons, until the Inconnu fell sick and only the Inconnu, and Tage traced the sickness to the swamp goo in a cellar. When Jocias is caught he flees out of his body into the nearest damp skeleton, and must be caught again there. Master Reginald sends the young after his soul for the Inconnu, who are patient.",
-      "sogrot": "Sogrot is a washed-up skeleton of the damp places north of Caer Gothwaite, one of the war's drowned, who came up out of the water and lay down on the grass and never got up properly. He rattles at anyone who comes near and is weaker than a child. The castle's squires knock him down for practice. He gets up again."
+      "sogrot": "Sogrot is a washed-up skeleton of the damp places north of Caer Gothwaite, one of the war's drowned, who came up out of the water and lay down on the grass and never got up properly. He rattles at anyone who comes near and is weaker than a child. The castle's squires knock him down for practice. He gets up again.",
+      "flood waters": "The Flood Waters are the lesser waters that walk the western fields round [flood], four of them that keep close to it as a stream keeps to its bed. The fishermen of Gothwaite Harbor say they are the old ditches and field drains of the drowned farms, risen with the great water and unable to find their way back down, and that is why they never stray from it. Kill Flood and its waters still walk; kill its waters and Flood runs on alone.",
+      "svarm spawn": "The Svarm Spawn are the brood of [svarm], the great dragonfly of the western marsh: half a dozen young as big as hawks that hum round their parent's nest in the reeds. The harbor children are told the spawn are what the marsh makes of a summer's midges when nobody drains it. Elin Saer writes that they are bigger every year, and that every year the harbor-reeve's men say they will burn the reeds, and do not."
     }
   },
   "book": {
