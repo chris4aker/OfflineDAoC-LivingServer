@@ -157,6 +157,14 @@ namespace DOL.GS
         /// <summary>A raid member's class ID (<see cref="eCharacterClass"/>), or 0.</summary>
         public static int ClassId(GameObject o) => ClassOf(o)?.ID ?? 0;
 
+        /// <summary>A raid member's race name, as the game shows it ("Troll", "Highlander" ...).</summary>
+        public static string RaceName(GameObject o) => o switch
+        {
+            GamePlayer player => player.RaceName,
+            GameBot bot => bot.Client.RaceToTranslatedName(bot.Race, (int)bot.Gender),
+            _ => o?.Name,
+        };
+
         /// <summary>A message to a real player (a bot has no client: it gets nothing).</summary>
         public static void Tell(GameObject o, string message, eChatType type, eChatLoc loc)
         {

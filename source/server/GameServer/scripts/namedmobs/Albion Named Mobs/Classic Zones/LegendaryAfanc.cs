@@ -138,29 +138,29 @@ namespace DOL.AI.Brain
 				player.Out.SendMessage(message, eChatType.CT_Broadcast, eChatLoc.CL_SystemWindow);
 			}
 		}
-		private List<GamePlayer> Port_Enemys = new List<GamePlayer>();
+		private List<GameLiving> Port_Enemys = new List<GameLiving>();
 		private int ThrowPlayer(ECSGameTimer timer)
         {
 			if (HasAggro)
             {
-				foreach(GamePlayer player in Body.GetPlayersInRadius(2500))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.ForDisplacement))
                 {
 					if(player != null)
                     {
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1 && !Port_Enemys.Contains(player))
+						if (player.IsAlive && EncounterTargets.NotGm(player) && !Port_Enemys.Contains(player))
 							Port_Enemys.Add(player);
                     }
                 }
 				if(Port_Enemys.Count > 0)
                 {
-					GamePlayer Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+					GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
 					if (Target != null && Target.IsAlive)
                     {					
 						Target.MoveTo(Body.CurrentRegionID, 451486, 393503, 2754, 2390);
-						if(Target.CharacterClass is not ClassDisciple)
+						if(EncounterTargets.ClassOf(Target) is not ClassDisciple)
                         {
 							Target.TakeDamage(Target, eDamageType.Falling, Target.MaxHealth / 5, 0);
-							Target.Out.SendMessage("You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
+							EncounterTargets.Tell(Target, "You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 						}
                     }
 					CanPort = false;

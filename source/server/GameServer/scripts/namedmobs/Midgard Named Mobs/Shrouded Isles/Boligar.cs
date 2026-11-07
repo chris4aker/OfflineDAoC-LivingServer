@@ -104,22 +104,22 @@ namespace DOL.AI.Brain
 		}
 		public static bool IsTargetTeleported = false;
 		#region Pick player to port
-		public static GamePlayer teleporttarget = null;
-		public static GamePlayer TeleportTarget
+		public static GameLiving teleporttarget = null;
+		public static GameLiving TeleportTarget
 		{
 			get { return teleporttarget; }
 			set { teleporttarget = value; }
 		}
-		List<GamePlayer> Port_Enemys = new List<GamePlayer>();
+		List<GameLiving> Port_Enemys = new List<GameLiving>();
 		public int PickTeleportPlayer(ECSGameTimer timer)
 		{
 			if (Body.IsAlive && HasAggro)
 			{
-				foreach (GamePlayer player in Body.GetPlayersInRadius(1500))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 1500, bots: EncounterTargets.ForDisplacement))
 				{
 					if (player != null)
 					{
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+						if (player.IsAlive && EncounterTargets.NotGm(player))
 						{
 							if (!Port_Enemys.Contains(player))
 							{
@@ -138,7 +138,7 @@ namespace DOL.AI.Brain
 				{
 					if (Port_Enemys.Count > 0)
 					{
-						GamePlayer Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+						GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
 						TeleportTarget = Target;
 						if (TeleportTarget.IsAlive && TeleportTarget != null)
 							new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(TeleportPlayer), 3000);
