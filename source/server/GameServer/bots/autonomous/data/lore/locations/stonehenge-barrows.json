@@ -318,6 +318,9 @@
     ]
   },
   "bosses": [
+    "shade-of-uther-pendragon",
+    "shade-of-ambrosius-aurelianus",
+    "kings-wight",
     "wizard-lichas",
     "priestess-of-purity"
   ],

@@ -57,6 +57,7 @@
         "funus",
         "host",
         "kez",
+        "kings-wight",
         "lich-lord-ilron",
         "lich-lord-sanguis",
         "lord-sanguis",
@@ -157,6 +158,8 @@
         "fester",
         "cauld-lad",
         "llyn-cythraul",
+        "shade-of-ambrosius-aurelianus",
+        "shade-of-uther-pendragon",
         "wizard-lichas"
       ]
     },
@@ -668,6 +671,8 @@
         "huidelon-cariston",
         "isolationist-courier",
         "rose",
+        "shade-of-ambrosius-aurelianus",
+        "shade-of-uther-pendragon",
         "tristram-adamson",
         "waleron-douglas"
       ]
@@ -727,6 +732,7 @@
         "grunge",
         "isolationist-courier",
         "kez",
+        "kings-wight",
         "larionne",
         "llyn-cythraul",
         "morvel-glyne",
@@ -737,6 +743,8 @@
         "priestess-of-purity",
         "saffron",
         "sarcondina",
+        "shade-of-ambrosius-aurelianus",
+        "shade-of-uther-pendragon",
         "soulfear",
         "tegbuk",
         "thousandeyes",
@@ -793,7 +801,9 @@
         "salisbury-plains",
         "campacorentin-forest"
       ],
-      "bosses": []
+      "bosses": [
+        "kings-wight"
+      ]
     },
     {
       "id": "goblins",
