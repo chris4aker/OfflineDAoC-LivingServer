@@ -142,9 +142,14 @@
         }
       ],
       "places": [
+        "cursed-tomb",
         "dodens-gruva",
+        "nisses-lair",
+        "spindelhalla",
         "summoners-hall",
-        "vanern-swamp"
+        "vanern-swamp",
+        "varulvhamn",
+        "vendo-caverns"
       ],
       "bosses": [
         "aros-the-spiritmaster",
@@ -390,7 +395,8 @@
       "name": "The Svartalfar",
       "summary": "Dark elves: thralls of the arachites in Spindelhalla, dragon-watchers of Svarhamr in Malmohus.",
       "places": [
-        "malmohus"
+        "malmohus",
+        "spindelhalla"
       ],
       "bosses": []
     },
@@ -456,7 +462,9 @@
       "id": "dishonoured-dead",
       "name": "The Dishonoured Dead",
       "summary": "The dead the valkyries passed by: the Cursed Tomb's draugr, Raumarik's deserters and curses, the Wretch of Winter, the Revenant's fortress.",
-      "places": [],
+      "places": [
+        "cursed-tomb"
+      ],
       "bosses": [
         "issorden"
       ]
@@ -522,28 +530,36 @@
       "id": "werewolves",
       "name": "The Werewolves",
       "summary": "The varulv of Skona and the court of King Hresvelgr in Varulvhamn, with the old wolfaur.",
-      "places": [],
+      "places": [
+        "varulvhamn"
+      ],
       "bosses": []
     },
     {
       "id": "arachites",
       "name": "The Arachites",
       "summary": "Spider-folk of Spindelhalla who farm silk with svartalf thralls and pray to something in the deep.",
-      "places": [],
+      "places": [
+        "spindelhalla"
+      ],
       "bosses": []
     },
     {
       "id": "tomte",
       "name": "The Tomte",
       "summary": "House-spirits driven underground by forgotten butter, led by Nisse.",
-      "places": [],
+      "places": [
+        "nisses-lair"
+      ],
       "bosses": []
     },
     {
       "id": "vendo",
       "name": "The Vendo",
       "summary": "A hairy, howling people of the caves north of Mularn, with their goblins.",
-      "places": [],
+      "places": [
+        "vendo-caverns"
+      ],
       "bosses": []
     },
     {
