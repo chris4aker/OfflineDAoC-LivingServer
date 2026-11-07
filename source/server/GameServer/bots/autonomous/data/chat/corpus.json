@@ -333782,6 +333782,519 @@
    "id": "2d9156ba610e"
   },
   {
+   "kind": "combat",
+   "topic": "displaced_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} got tossed, heals on {target}",
+   "id": "ea42940ac1fd"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} got thrown, someone heal",
+   "id": "1750b0557de4"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "heals on {target}, got launched",
+   "id": "0fb99270c4fd"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} is flying, heal when they land",
+   "id": "71ebed13c729"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} got punted across the room",
+   "id": "1b59aa6f2e54"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "watch {target}, got tossed",
+   "id": "cb3c1fe98adc"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} took a ride, get a heal on em",
+   "id": "f80a0ede602c"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} threw {target}, heal up",
+   "id": "b65e6c1a3463"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} got ported, keep an eye on em",
+   "id": "017a704ae5dc"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_heal",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "toss on {target}, heals pls",
+   "id": "dbfc3c605c8b"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_jail",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} is in the jail",
+   "id": "5535340d51ee"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_jail",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "someone's in the jail, its {target}",
+   "id": "3abf3fe97b35"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_jail",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} got jailed, kill the guards to get out",
+   "id": "d77666cbbebd"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_jail",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "jail on {target}, hang tight",
+   "id": "d7ed86d123a6"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_jail",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{target} got jailed, we'll get ya",
+   "id": "32bbbe4d3dd8"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_jail",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{boss} jailed {target}, keep going",
+   "id": "2a4378addf2b"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "got tossed, omw back",
+   "id": "f898762df2ec"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ow. running back",
+   "id": "52be0e1d99c1"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "landed, coming back",
+   "id": "250ea63eac2a"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "got thrown, be right there",
+   "id": "7022c48e9de4"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "lol got punted, omw",
+   "id": "b12226d7800b"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "that hurt, heading back",
+   "id": "0c2ae896589f"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_self",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "need a heal, got tossed",
+   "id": "41bdf9791d34"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_stuck",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "cant get back from here, porting",
+   "id": "eaf60fd73f7d"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_stuck",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stuck where it threw me, porting back",
+   "id": "0ba413ee7d74"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_stuck",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "no way down from here, coming back the long way",
+   "id": "47659b4e6129"
+  },
+  {
+   "kind": "combat",
+   "topic": "displaced_stuck",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stuck, gimme a sec to port back",
+   "id": "0560d1664eb5"
+  },
+  {
    "kind": "deed",
    "topic": "named_solo",
    "who": [],

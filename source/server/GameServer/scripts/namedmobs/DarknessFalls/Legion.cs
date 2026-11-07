@@ -673,7 +673,7 @@ namespace DOL.AI.Brain
                                 // An encounter throw, not a party portal: companions stay down fighting Legion instead of
                                 // being dragged up to the platform, whose only way down is a zone point bots can't use
                                 // (2026-10-30 livestream: "the bots get stuck on the platform once you teleport back").
-                                DragonCombatGeometry.ThrowPlayer(player, 249, 48200, 49566, 20833, 1028);
+                                EncounterDisplacement.Move(player, 249, 48200, 49566, 20833, 1028, DisplacementKind.Teleport, Body);
                                 //player.BroadcastUpdate();
                             }
                         }

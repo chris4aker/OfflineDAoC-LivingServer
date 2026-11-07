@@ -267,7 +267,7 @@ namespace DOL.AI.Brain
                         {
 							if(!player.IsWithinRadius(Body,200))
                             {
-								player.MoveTo(Body.CurrentRegionID, Body.X, Body.Y, Body.Z, Body.Heading);
+								EncounterDisplacement.Move(player, Body.CurrentRegionID, Body.X, Body.Y, Body.Z, Body.Heading, DisplacementKind.Pull, Body);
                             }
                         }
                     }

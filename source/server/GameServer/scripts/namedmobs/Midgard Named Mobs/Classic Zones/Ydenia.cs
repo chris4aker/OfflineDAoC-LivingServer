@@ -150,7 +150,7 @@ namespace DOL.AI.Brain
 				switch(Util.Random(1,4))
                 {
 					case 1: 
-						player.MoveTo(100, 664713, 896689, 1553, 2373);
+						EncounterDisplacement.Move(player, 100, 664713, 896689, 1553, 2373, DisplacementKind.Throw, Body);
 						player.TakeDamage(player, eDamageType.Cold, player.MaxHealth / 7, 0);
 						foreach (GamePlayer players in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
 						{
@@ -160,7 +160,7 @@ namespace DOL.AI.Brain
 						EncounterTargets.Tell(player, "Ydenia of the Seithkona throws you into water and you take damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 						break;
 					case 2:
-						player.MoveTo(100, 667220, 894261, 1543, 692);
+						EncounterDisplacement.Move(player, 100, 667220, 894261, 1543, 692, DisplacementKind.Throw, Body);
 						player.TakeDamage(player, eDamageType.Cold, player.MaxHealth / 7, 0);
 						foreach (GamePlayer players in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
 						{
@@ -170,7 +170,7 @@ namespace DOL.AI.Brain
 						EncounterTargets.Tell(player, "Ydenia of the Seithkona throws you into water and you take damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 						break;
 					case 3:
-						player.MoveTo(100, 665968, 892792, 1561, 235);
+						EncounterDisplacement.Move(player, 100, 665968, 892792, 1561, 235, DisplacementKind.Throw, Body);
 						player.TakeDamage(player, eDamageType.Cold, player.MaxHealth / 7, 0);
 						foreach (GamePlayer players in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
 						{
@@ -180,7 +180,7 @@ namespace DOL.AI.Brain
 						EncounterTargets.Tell(player, "Ydenia of the Seithkona throws you into water and you take damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 						break;
 					case 4:
-						player.MoveTo(100, 663895, 893446, 1554, 3482);
+						EncounterDisplacement.Move(player, 100, 663895, 893446, 1554, 3482, DisplacementKind.Throw, Body);
 						player.TakeDamage(player, eDamageType.Cold, player.MaxHealth / 7, 0);
 						foreach (GamePlayer players in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
 						{

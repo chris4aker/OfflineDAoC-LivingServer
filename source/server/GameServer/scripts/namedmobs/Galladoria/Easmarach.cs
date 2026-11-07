@@ -29,7 +29,7 @@ namespace DOL.GS
             if (EpicEncounterActors.IsCombatant(source))
             {
                 Point3D spawn = new Point3D(SpawnPoint.X, SpawnPoint.Y, SpawnPoint.Z);
-                if (EpicEncounterMechanics.AllowPositionPuzzle && !source.IsWithinRadius(spawn, TetherRange))//dont take any dmg 
+                if (EpicEncounterMechanics.AllowPositionPuzzleFor(this) && !source.IsWithinRadius(spawn, TetherRange))//dont take any dmg 
                 {
                     if (damageType == eDamageType.Body || damageType == eDamageType.Cold || damageType == eDamageType.Energy || damageType == eDamageType.Heat
                         || damageType == eDamageType.Matter || damageType == eDamageType.Spirit || damageType == eDamageType.Crush || damageType == eDamageType.Thrust
@@ -203,7 +203,7 @@ namespace DOL.AI.Brain
                         {
                             if (player.IsWithinRadius(nopass, 1000))
                             { 
-                                if (EpicEncounterMechanics.AllowDisplacement) player.MoveTo(Body.CurrentRegionID, 40067, 50494, 11708, 1066);
+                                if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(player, Body.CurrentRegionID, 40067, 50494, 11708, 1066, DisplacementKind.Barrier, Body);
                                 EncounterTargets.Tell(player, "The strong current of the waterfall pushes you behind", eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
                             }
                         }

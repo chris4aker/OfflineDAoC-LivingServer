@@ -168,7 +168,7 @@ namespace DOL.AI.Brain
 					RandomTarget = Target;
 					if (RandomTarget.IsAlive && RandomTarget != null)
 					{
-						RandomTarget.MoveTo(Body.CurrentRegionID, Body.X+Util.Random(-1500,1500), Body.Y + Util.Random(-1500, 1500), Body.Z, Body.Heading);
+						EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, Body.X+Util.Random(-1500,1500), Body.Y + Util.Random(-1500, 1500), Body.Z, Body.Heading, DisplacementKind.Teleport, Body);
 						RandomTarget.TakeDamage(RandomTarget, eDamageType.Falling, RandomTarget.MaxHealth / 5, 0);
 						EncounterTargets.Tell(RandomTarget, "You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 						Port_Enemys.Remove(RandomTarget);

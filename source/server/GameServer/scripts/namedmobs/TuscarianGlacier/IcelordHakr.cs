@@ -207,8 +207,8 @@ namespace DOL.AI.Brain
                         GameLiving PortTarget = damage_enemies[Util.Random(0, damage_enemies.Count - 1)];
                         if (PortTarget.IsVisibleTo(Body) && Body.TargetInView)
                         {
-                            if (EpicEncounterMechanics.AllowDisplacement) PortTarget.MoveTo(Body.CurrentRegionID, Body.X + Util.Random(-50, 50),
-                            Body.Y + Util.Random(-50, 50), Body.Z + 220, Body.Heading);
+                            if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(PortTarget, Body.CurrentRegionID, Body.X + Util.Random(-50, 50),
+                            Body.Y + Util.Random(-50, 50), Body.Z + 220, Body.Heading, DisplacementKind.Throw, Body);
                             BroadcastMessage(String.Format("Icelord Hakr says, '" + PortTarget.Name +" Touchdown! That's a really cool way of putting it!'"));
                             PortTarget = null;
                         }

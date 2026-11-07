@@ -250,3 +250,55 @@ rez going up
 @levels 1-50
 @needs in_player_group
 need power, sitting
+
+# ---- displaced_heal: an encounter threw or ported a raider of the party (1.2, EncounterDisplacementRecovery) ----------
+# {target} is who got moved, {boss} the boss that did it. A groupmate calls it so the healers look.
+@kind combat
+@topic displaced_heal
+@who *
+@needs in_player_group
+{target} got tossed, heals on {target}
+{target} got thrown, someone heal
+heals on {target}, got launched
+{target} is flying, heal when they land
+{target} got punted across the room
+watch {target}, got tossed
+{target} took a ride, get a heal on em
+{boss} threw {target}, heal up
+{target} got ported, keep an eye on em
+toss on {target}, heals pls
+
+# ---- displaced_jail: a raider of the party is in the boss's jail --------------------------------------------------
+@kind combat
+@topic displaced_jail
+@who *
+@needs in_player_group
+{target} is in the jail
+someone's in the jail, its {target}
+{target} got jailed, kill the guards to get out
+jail on {target}, hang tight
+{target} got jailed, we'll get ya
+{boss} jailed {target}, keep going
+
+# ---- displaced_self: the bot itself got thrown and landed ---------------------------------------------------------
+@kind combat
+@topic displaced_self
+@who *
+@needs in_player_group
+got tossed, omw back
+ow. running back
+landed, coming back
+got thrown, be right there
+lol got punted, omw
+that hurt, heading back
+need a heal, got tossed
+
+# ---- displaced_stuck: no way back on foot, the bot uses the short recall -------------------------------------------
+@kind combat
+@topic displaced_stuck
+@who *
+@needs in_player_group
+cant get back from here, porting
+stuck where it threw me, porting back
+no way down from here, coming back the long way
+stuck, gimme a sec to port back

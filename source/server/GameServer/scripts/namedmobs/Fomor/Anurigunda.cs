@@ -104,7 +104,7 @@ namespace DOL.AI.Brain
                 {
 					if(player.IsWithinRadius(entrance,400))
                     {
-						player.MoveTo(180, 30652, 33089, 16124, 3169);
+						EncounterDisplacement.Move(player, 180, 30652, 33089, 16124, 3169, DisplacementKind.Barrier, Body);
                     }
                 }
             }

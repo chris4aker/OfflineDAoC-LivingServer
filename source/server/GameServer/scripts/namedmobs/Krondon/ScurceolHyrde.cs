@@ -288,10 +288,10 @@ namespace DOL.AI.Brain
 			{
 				switch (Util.Random(1, 4))
 				{
-					case 1: RandomTarget.MoveTo(61, 50986, 20031, 16964, 3091); break;
-					case 2: RandomTarget.MoveTo(61, 51936, 21012, 16964, 2093); break;
-					case 3: RandomTarget.MoveTo(61, 52784, 20019, 16964, 982); break;
-					case 4: RandomTarget.MoveTo(61, 51940, 18968, 16964, 26); break;
+					case 1: EncounterDisplacement.Move(RandomTarget, 61, 50986, 20031, 16964, 3091, DisplacementKind.Throw, Body); break;
+					case 2: EncounterDisplacement.Move(RandomTarget, 61, 51936, 21012, 16964, 2093, DisplacementKind.Throw, Body); break;
+					case 3: EncounterDisplacement.Move(RandomTarget, 61, 52784, 20019, 16964, 982, DisplacementKind.Throw, Body); break;
+					case 4: EncounterDisplacement.Move(RandomTarget, 61, 51940, 18968, 16964, 26, DisplacementKind.Throw, Body); break;
 				}
 				RandomTarget.TakeDamage(RandomTarget, eDamageType.Falling, RandomTarget.MaxHealth / 5, 0);
 				EncounterTargets.Tell(RandomTarget, "You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
@@ -419,10 +419,10 @@ namespace DOL.AI.Brain
 			{
 				switch (Util.Random(1, 4))
 				{
-					case 1: RandomTarget.MoveTo(61, 50986, 20031, 16964, 3091); break;
-					case 2: RandomTarget.MoveTo(61, 51936, 21012, 16964, 2093); break;
-					case 3: RandomTarget.MoveTo(61, 52784, 20019, 16964, 982); break;
-					case 4: RandomTarget.MoveTo(61, 51940, 18968, 16964, 26); break;
+					case 1: EncounterDisplacement.Move(RandomTarget, 61, 50986, 20031, 16964, 3091, DisplacementKind.Throw, Body); break;
+					case 2: EncounterDisplacement.Move(RandomTarget, 61, 51936, 21012, 16964, 2093, DisplacementKind.Throw, Body); break;
+					case 3: EncounterDisplacement.Move(RandomTarget, 61, 52784, 20019, 16964, 982, DisplacementKind.Throw, Body); break;
+					case 4: EncounterDisplacement.Move(RandomTarget, 61, 51940, 18968, 16964, 26, DisplacementKind.Throw, Body); break;
 				}
 				RandomTarget.TakeDamage(RandomTarget, eDamageType.Falling, RandomTarget.MaxHealth / 5, 0);
 				EncounterTargets.Tell(RandomTarget, "You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
@@ -550,10 +550,10 @@ namespace DOL.AI.Brain
 			{
 				switch (Util.Random(1, 4))
 				{
-					case 1: RandomTarget.MoveTo(61, 50986, 20031, 16964, 3091); break;
-					case 2: RandomTarget.MoveTo(61, 51936, 21012, 16964, 2093); break;
-					case 3: RandomTarget.MoveTo(61, 52784, 20019, 16964, 982); break;
-					case 4: RandomTarget.MoveTo(61, 51940, 18968, 16964, 26); break;
+					case 1: EncounterDisplacement.Move(RandomTarget, 61, 50986, 20031, 16964, 3091, DisplacementKind.Throw, Body); break;
+					case 2: EncounterDisplacement.Move(RandomTarget, 61, 51936, 21012, 16964, 2093, DisplacementKind.Throw, Body); break;
+					case 3: EncounterDisplacement.Move(RandomTarget, 61, 52784, 20019, 16964, 982, DisplacementKind.Throw, Body); break;
+					case 4: EncounterDisplacement.Move(RandomTarget, 61, 51940, 18968, 16964, 26, DisplacementKind.Throw, Body); break;
 				}
 				RandomTarget.TakeDamage(RandomTarget, eDamageType.Falling, RandomTarget.MaxHealth / 5, 0);
 				EncounterTargets.Tell(RandomTarget, "You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
@@ -681,10 +681,10 @@ namespace DOL.AI.Brain
 			{
 				switch (Util.Random(1, 4))
 				{
-					case 1: RandomTarget.MoveTo(61, 50986, 20031, 16964, 3091); break;
-					case 2: RandomTarget.MoveTo(61, 51936, 21012, 16964, 2093); break;
-					case 3: RandomTarget.MoveTo(61, 52784, 20019, 16964, 982); break;
-					case 4: RandomTarget.MoveTo(61, 51940, 18968, 16964, 26); break;
+					case 1: EncounterDisplacement.Move(RandomTarget, 61, 50986, 20031, 16964, 3091, DisplacementKind.Throw, Body); break;
+					case 2: EncounterDisplacement.Move(RandomTarget, 61, 51936, 21012, 16964, 2093, DisplacementKind.Throw, Body); break;
+					case 3: EncounterDisplacement.Move(RandomTarget, 61, 52784, 20019, 16964, 982, DisplacementKind.Throw, Body); break;
+					case 4: EncounterDisplacement.Move(RandomTarget, 61, 51940, 18968, 16964, 26, DisplacementKind.Throw, Body); break;
 				}
 				RandomTarget.TakeDamage(RandomTarget, eDamageType.Falling, RandomTarget.MaxHealth / 5, 0);
 				EncounterTargets.Tell(RandomTarget, "You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);

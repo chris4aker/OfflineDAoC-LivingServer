@@ -258,7 +258,7 @@ namespace DOL.AI.Brain
 					RandomTarget = Target;
 					if (RandomTarget.IsAlive && RandomTarget != null)
 					{
-						RandomTarget.MoveTo(50, 41489, 40699, 8145, 2096);
+						EncounterDisplacement.Move(RandomTarget, 50, 41489, 40699, 8145, 2096, DisplacementKind.Throw, Body);
 						Port_Enemys.Remove(RandomTarget);
 						RandomTarget = null;//reset random target to null
 						IsTargetPicked = false;

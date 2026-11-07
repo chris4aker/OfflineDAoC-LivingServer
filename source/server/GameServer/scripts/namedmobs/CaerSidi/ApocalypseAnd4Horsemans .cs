@@ -260,7 +260,7 @@ namespace DOL.GS
                             {
                                 if(player.IsWithinRadius(point1,150) && EncounterTargets.NotGm(player))//only players will be ported back
                                 {
-                                    if (EpicEncounterMechanics.AllowDisplacement) player.MoveTo(60, 29469, 25244, 19490, 2014);
+                                    if (EpicEncounterMechanics.AllowDisplacementFor(this)) EncounterDisplacement.Move(player, 60, 29469, 25244, 19490, 2014, DisplacementKind.Barrier, this);
                                     EncounterTargets.Tell(player, "Magic energy moves you to the center of room!", eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
                                 }
                             }
@@ -1368,7 +1368,7 @@ namespace DOL.GS
         {
             if (EpicEncounterActors.IsCombatant(source))
             {
-                if (EpicEncounterMechanics.AllowAddShield && Morbus_Swarm_count > 0)
+                if (EpicEncounterMechanics.AllowAddShieldFor(this) && Morbus_Swarm_count > 0)
                 {
                     if (damageType == eDamageType.Body || damageType == eDamageType.Cold || damageType == eDamageType.Energy || damageType == eDamageType.Heat
                         || damageType == eDamageType.Matter || damageType == eDamageType.Spirit || damageType == eDamageType.Crush || damageType == eDamageType.Thrust

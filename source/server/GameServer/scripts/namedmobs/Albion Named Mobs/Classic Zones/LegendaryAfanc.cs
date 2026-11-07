@@ -156,7 +156,7 @@ namespace DOL.AI.Brain
 					GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
 					if (Target != null && Target.IsAlive)
                     {					
-						Target.MoveTo(Body.CurrentRegionID, 451486, 393503, 2754, 2390);
+						EncounterDisplacement.Move(Target, Body.CurrentRegionID, 451486, 393503, 2754, 2390, DisplacementKind.Teleport, Body);
 						if(EncounterTargets.ClassOf(Target) is not ClassDisciple)
                         {
 							Target.TakeDamage(Target, eDamageType.Falling, Target.MaxHealth / 5, 0);

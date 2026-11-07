@@ -328,7 +328,7 @@
   "albion-named-mobs-classic-zones/legendaryafanc": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "123a8659aec369ceafca4e82289a861dc74364c9a7faa21e0fee019e1426c302"
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "f18563d1dcaba8ad1c158601fe1670c3117e5f02491e8b9e570821371a9831d3"
    }
   },
   "albion-named-mobs-classic-zones/morgana": {
@@ -418,7 +418,7 @@
   "avalon-city/draargusmighty": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "66c09397ef558fa268635456fdcc1ae59c47aa537653b223e0b82f4ce2858f9f"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "9ff04bbae65b44517567d941c5a5c40efc9a9574a5d5ff3ddb332b87afbdb1fd"
    }
   },
   "avalon-city/duraekempowered": {
@@ -430,7 +430,7 @@
   "avalon-city/syssroruthless": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "31227850be06268d935e5f7a1df3e68d3f1bf84ae1f30e92dfd2da3ecd571e78"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "28b464259e35602026380f6dbcdd54ced7ef89ca60d2e7fd7268ce7ff23fcb3b"
    }
   },
   "avalon-city/veraeriusbrave": {
@@ -448,19 +448,19 @@
   "caer-sidi/apocalypse": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "2f9b34a39c2dbdf58b041cca62655ff62160426b2e445da2947132b8db3cff89"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
    }
   },
   "caer-sidi/baneofhope": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs": "3f2bc2dff0c75b5d1537474009a522eca849656ac14411fa760a3483f5639133"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs": "d542dd1cbdb80e979f477a5c38320fc610694471341a665a08deae313b24f26d"
    }
   },
   "caer-sidi/bellum": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "2f9b34a39c2dbdf58b041cca62655ff62160426b2e445da2947132b8db3cff89"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
    }
   },
   "caer-sidi/cryptlord": {
@@ -472,7 +472,7 @@
   "caer-sidi/fames": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "2f9b34a39c2dbdf58b041cca62655ff62160426b2e445da2947132b8db3cff89"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
    }
   },
   "caer-sidi/fatechosen": {
@@ -484,7 +484,7 @@
   "caer-sidi/funus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "2f9b34a39c2dbdf58b041cca62655ff62160426b2e445da2947132b8db3cff89"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
    }
   },
   "caer-sidi/host": {
@@ -503,6 +503,14 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs": "01e443b7d98085cd982e19cf197db42c0a7eabc8718686956aac95637f16d9d3"
+   },
+   "notes": "At 5% health he turns untargetable (CANTTARGET) until the fight resets; area spells and running damage over time still hit him. 1.2: bots never fight an untargetable NPC, so the raid would stall on his last 5%; now offensive casters keep him as their target and finish him with spells (EpicEncounterTactics.FinishedBySpells), and the dungeon route keeps him as a target. Untested in a run.",
+   "rules": {
+    "phase@335": {
+     "summary": "At 5% health: announces 'becomes almost untouchable in his last act of agony' and turns untargetable (CANTTARGET) until the fight resets.",
+     "tactic": "Finish him with spells: the offensive casters keep casting at him (nukes, DoTs, area spells; EpicEncounterTactics.FinishedBySpells), melee and archers keep the adds off them.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "caer-sidi/lordsanguis": {
@@ -514,7 +522,7 @@
   "caer-sidi/morbus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "2f9b34a39c2dbdf58b041cca62655ff62160426b2e445da2947132b8db3cff89"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
    }
   },
   "caer-sidi/silencer": {
@@ -576,7 +584,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "735ae2daa95c5152cf1fc3857aedd20646ea3fd293d30d470fa2602eb622fb44"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "49a9543dd4331f32eb8fb623440c201c5aafea9d36817f920ce432ba664ec54b"
    },
    "aiTactics": {
     "blastThresholds": [
@@ -590,7 +598,7 @@
    }
   },
   "cuuldurach-s-lair-sheeroe-hills/hibcuuldurach": {
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, off (no tactic for the runners yet). Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "rules": {
     "heal@341": {
      "drop": true
@@ -604,13 +612,34 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "1ed24ba2c59403b6506577ce99d5b36f51cce47b45d27b26095773d0a429b06d"
-   }
+    "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "9af7c8aab91f5e9aa05a66e8c96c47ada32dc43c0d43e840ad75c727e76f0466",
+    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "e0d369b595949196534d5ec9f89d8fc4cb1073f00f39cc2ce099ee78a7b40073"
+   },
+   "extraRules": [
+    {
+     "kind": "teleport",
+     "subtype": "air_toss",
+     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Cuuldurach picks 2-5 raiders within 2,500 that are not its target (real players and the bots on its aggro list) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts).",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs",
+     "line": 81,
+     "lineEnd": 101,
+     "anchor": "public static int Throw(GameNPC dragon, IEnumerable<GameLiving> aggro, Random random = null)",
+     "sourceClass": "DragonEncounterThrow",
+     "method": "Throw",
+     "switch": [
+      "AllowDragonThrow",
+      "AllowBotDisplacement"
+     ],
+     "difficulty": "easy for the current raid AI",
+     "tactic": "A thrown bot lands on the navmesh floor under its spot with the player's fall damage and walks back to its party (EncounterDisplacementRecovery); with no path or no progress it recalls to the raid after 5 s. Healers heal displaced raiders first; the party calls it in /group.",
+     "confidence": "read"
+    }
+   ]
   },
   "darkness-falls/behemoth": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "003afbc8ebf5293f0f738e5ecdad1e51d017fff01601f47501c08c9c2f1cf137"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "122cd7f909d84aa87e7ab7140fd1d6ceeb474f84087a425cd018cd79b9a601bd"
    }
   },
   "darkness-falls/beliathan": {
@@ -668,7 +697,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "003afbc8ebf5293f0f738e5ecdad1e51d017fff01601f47501c08c9c2f1cf137"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "122cd7f909d84aa87e7ab7140fd1d6ceeb474f84087a425cd018cd79b9a601bd"
    }
   },
   "darkness-falls/princeabdin": {
@@ -771,13 +800,13 @@
   "fomor-city/anurigunda": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "7945545ac565c67f8e745607a2f84d75de7458131dafdb7c434e075f391f806c"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "ddbafcd28c0d85ab9a71d42b179edd8a4d705e1c1b8daf8c0c37f235702d65a2"
    }
   },
   "fomor-city/krackenschtein": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "3643fdc27118a87d7629d4b0124fc721d626b84fcd64c22b258fec9a778c19f3"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "8025ccf0e6a8ffe9c60d27d7c25337d2c8d5a35d185e1d04b20d62595e743d83"
    }
   },
   "fomor-city/myrddraxis": {
@@ -804,7 +833,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "8bd8507b08de3f9da42b5062c3f1069fb53f797440e02a60c65b68f755d91512"
    }
   },
   "galladoria/aroon": {
@@ -831,7 +860,7 @@
   "galladoria/conservator": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs": "0cbda933dcdfc6bad6b81061392d36c30404dea863ac6c8ad68ae723aa24822d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs": "3d39abfd2a900d792a7f542914506fc4ff7a11790287e2a2547f082c5721ae0a"
    }
   },
   "galladoria/earthprimal": {
@@ -846,7 +875,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "8bd8507b08de3f9da42b5062c3f1069fb53f797440e02a60c65b68f755d91512"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -892,13 +921,13 @@
   "galladoria/easmarach": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "c031478d785e4c3198ff0be7b79980fa75f3fb9783b2e128fa9a8fad9a64334d"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "4548c254242adf0c1e35bb7d0f5c9abf965790a017bd55c7c576de62d2d3e1fa"
    }
   },
   "galladoria/fireprimal": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "8bd8507b08de3f9da42b5062c3f1069fb53f797440e02a60c65b68f755d91512"
    }
   },
   "galladoria/giantsporitecluster": {
@@ -943,13 +972,13 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "8bd8507b08de3f9da42b5062c3f1069fb53f797440e02a60c65b68f755d91512"
    }
   },
   "galladoria/olcasgean2": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "8bd8507b08de3f9da42b5062c3f1069fb53f797440e02a60c65b68f755d91512"
    }
   },
   "galladoria/olcasgeaninitializator": {
@@ -969,7 +998,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "8bd8507b08de3f9da42b5062c3f1069fb53f797440e02a60c65b68f755d91512"
    }
   },
   "galladoria/organicenergymechanism": {
@@ -994,7 +1023,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "9855cbbddb723f333990b8ca7da67dd5d0746871e35b6aa43f9002bc47a681c6"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "d3364e86a4983e519019db10e311a4b299c6d4a38d325dc0c3e1b18815254bf7"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -1035,7 +1064,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "786ec24e31d1e439c354b421e32e107aca0a9f020a2dc673da461c3dacb7d683"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "8bd8507b08de3f9da42b5062c3f1069fb53f797440e02a60c65b68f755d91512"
    }
   },
   "galladoria/xaga": {
@@ -1047,7 +1076,7 @@
    }
   },
   "gjalpinulva-s-lair-myrkwood/midgjalpinulva": {
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, off (no tactic for the runners yet). Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "rules": {
     "heal@338": {
      "drop": true
@@ -1061,11 +1090,32 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "0ada8d1f1d7040e70a3b9e7569058d761f8adf194e116ceac7498ff3c7829f1c"
-   }
+    "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "9af7c8aab91f5e9aa05a66e8c96c47ada32dc43c0d43e840ad75c727e76f0466",
+    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "5d2dcfe983d0efbcd28869623ffb03a44a602080baea1181fe6dd60b4cb04064"
+   },
+   "extraRules": [
+    {
+     "kind": "teleport",
+     "subtype": "air_toss",
+     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Gjalpinulva picks 2-5 raiders within 2,500 that are not its target (real players and the bots on its aggro list) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts).",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs",
+     "line": 81,
+     "lineEnd": 101,
+     "anchor": "public static int Throw(GameNPC dragon, IEnumerable<GameLiving> aggro, Random random = null)",
+     "sourceClass": "DragonEncounterThrow",
+     "method": "Throw",
+     "switch": [
+      "AllowDragonThrow",
+      "AllowBotDisplacement"
+     ],
+     "difficulty": "easy for the current raid AI",
+     "tactic": "A thrown bot lands on the navmesh floor under its spot with the player's fall damage and walks back to its party (EncounterDisplacementRecovery); with no path or no progress it recalls to the raid after 5 s. Healers heal displaced raiders first; the party calls it in /group.",
+     "confidence": "read"
+    }
+   ]
   },
   "golestandt-s-lair-dartmoor/albgolestandt": {
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, off (no tactic for the runners yet). Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "rules": {
     "heal@339": {
      "drop": true
@@ -1079,8 +1129,29 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "7e1c2802674264533621f92eb6c48f67f1f036052d940e9ef85f4d9a100e4d78"
-   }
+    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "a1d0b1d5737a755c3f7f2841d6514a5cac2994808ad51060c3dc81028da48528",
+    "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "9af7c8aab91f5e9aa05a66e8c96c47ada32dc43c0d43e840ad75c727e76f0466"
+   },
+   "extraRules": [
+    {
+     "kind": "teleport",
+     "subtype": "air_toss",
+     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Golestandt picks 2-5 raiders within 2,500 that are not its target (real players and the bots on its aggro list) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts).",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs",
+     "line": 81,
+     "lineEnd": 101,
+     "anchor": "public static int Throw(GameNPC dragon, IEnumerable<GameLiving> aggro, Random random = null)",
+     "sourceClass": "DragonEncounterThrow",
+     "method": "Throw",
+     "switch": [
+      "AllowDragonThrow",
+      "AllowBotDisplacement"
+     ],
+     "difficulty": "easy for the current raid AI",
+     "tactic": "A thrown bot lands on the navmesh floor under its spot with the player's fall damage and walks back to its party (EncounterDisplacementRecovery); with no path or no progress it recalls to the raid after 5 s. Healers heal displaced raiders first; the party calls it in /group.",
+     "confidence": "read"
+    }
+   ]
   },
   "hall-of-the-corrupt/aidonthearchwizard": {
    "verified": true,
@@ -1356,7 +1427,7 @@
   "iarnvidiur-s-lair/iarnvidiur": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs": "f599e6e9f05f06672988b23a8f68898eca455dc79ac95b65a570a7770b64d11e"
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs": "a44df58d5e6bb1e6074e126068ca591c46ff429d97300fb60f2996312b4fa3c6"
    }
   },
   "iarnvidiur-s-lair/lydsyg": {
@@ -1422,7 +1493,7 @@
   "krondon/krevoricik": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "d410af53de1ee9796a9197d55a759655e04121adedb5de3f0b179ae86d9ff3b8"
+    "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "e064a5f8e93f2360c66c6ae74555da16cf04536b27b707c09e7a78baada04617"
    }
   },
   "krondon/lurfosherald": {
@@ -1440,7 +1511,7 @@
   "krondon/orshom": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "55a086e4bcc77531c88c4513cea8f858ebcf8b9e3c8d06c9843fb5c2b21ed7b8"
+    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "1c2b8ef32670482a2447267a8a178634b8509ad599a56654b457d1d55b3e694c"
    },
    "notes": "Level 80, 30,000 health, 20% melee and 30% magic resists, tether 3,800. When he gets a target he lights Orshom's Fire at 31406,69599 (907 from his spawn): an epic NPC with 10,000 health that takes only Cold damage, never moves or attacks, and casts Fire Burn (500 Heat, radius 300) on its own spot every 3 s. At 50% he pulls Orylle (level 83, 40,000 health) into the fight; Orylle pulls him too when she is attacked. Orylle throws real players (never bots) into the fire spot while the fire burns.",
    "currentRaidAi": "2026-11-05/06 overnight (owner's notes; that run's log is on the owner's PC): the Albion Krondon raid lost at Orshom twice, lowest 59% then 28%, Special Forces joined. Not seen in a log here. Read from the script, the likely killer is the fire: a raider it burns fights back (it is an epic NPC with a target), so bots stood in 500 every 3 s hitting a target only cold hurts, and the route's 'it is fighting the raid' switch could send the whole raid there.",
@@ -1472,7 +1543,7 @@
   "krondon/orylle": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "55a086e4bcc77531c88c4513cea8f858ebcf8b9e3c8d06c9843fb5c2b21ed7b8"
+    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "1c2b8ef32670482a2447267a8a178634b8509ad599a56654b457d1d55b3e694c"
    },
    "notes": "Krondon's final: level 83, 40,000 health, 30/40% resists, tether 3,800; joins Orshom Brong's fight (see him).",
    "aiTactics": {
@@ -1523,7 +1594,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs": "c99ef3149a4180c7a71be2df1dbd1b75c9b3a500ceb091f99f203e9670dda064"
+    "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs": "2b82f3796af153cc314cd5a8cad896927b2518a77a524d45aa35e393effc53c9"
    }
   },
   "krondon/ulorbysen": {
@@ -1704,7 +1775,7 @@
   "midgard-named-mobs-classic-zones/ydenia": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs": "7267cd68f85b7e28689e478b29279947714c3bf3130f0ef65407991cade9a768"
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs": "f4a394bfb6c32d7e694d0e336643539e9bb181a480a9e10db2411ad887385c97"
    }
   },
   "midgard-named-mobs-shrouded-isles/basilius": {
@@ -1716,7 +1787,7 @@
   "midgard-named-mobs-shrouded-isles/boligar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs": "854159419ad141c0296b333352c1a9e27e8c0dd0212e84f275e3a3f5c88d46ab"
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs": "3e81d99dc4a6fe06a5c9e7e86b4714427ff2633e3d7825183846681c7f345ad1"
    }
   },
   "midgard-named-mobs-shrouded-isles/chieftarek": {
@@ -1746,7 +1817,7 @@
   "midgard-named-mobs-shrouded-isles/mortufoghus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs": "d197815e7e88c0dc2acc518acbdea0532e1fc89da9c5ec4ccd8ceed8c543bece"
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs": "910bcad151c667e0c1a72a408660e2de5dca862ef8018bdf5f8b3d83d6217a7d"
    }
   },
   "midgard-named-mobs-shrouded-isles/shredclaw": {
@@ -1788,7 +1859,7 @@
   "open-world/glaciergiant": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "8f6b25c9838b28e9cac0ccaf20658b8d9c5a7729b9cf99b70133635a06149dcf"
+    "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "12c06112f7f057486c362e7b5faec6604e7739fb03319f9a9c68ad21ab2c9b07"
    }
   },
   "open-world/gnat": {
@@ -1806,7 +1877,7 @@
   "open-world/moranthemighty": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "83bd426a3414c88fbfabe26904cdd3139716c6d6692f7677d4443ac9c890c2af"
+    "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "1e4281f1e82a152f99318a38e62c74907512296934a5796f2ccfc23df1d11aa7"
    }
   },
   "open-world/ofgreenknight": {
@@ -1824,7 +1895,7 @@
   "summoner-s-hall/grandsummonergovannon": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "03b3fa19f44559a896a8a43ed636753ae8c4a3f1c8e342b4e2cc49a5f3fdc4cd"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "b1670c27f8287fd476963dcd604ed0c3d6ee926691321f3dca547a4262198f83"
    },
    "notes": "Level 80, 200,000 health (300,000 behind AllowGovannonFullHealth, off), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, throws real players only; bots too once EncounterTargets.BotsCanBeDisplaced is on). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
    "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known.",
@@ -1861,7 +1932,7 @@
   "summoner-s-hall/summonercunovinda": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "e281b93baa004243a999bf92db712a0789ad4b27c636ae39e298ae328b63bff1"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "71371583d6bed9cab527981da675b0a7d501642eb66f584d00692147801cd770"
    }
   },
   "summoner-s-hall/summonerlossren": {
@@ -2008,7 +2079,7 @@
   "tuscaran-glacier/hakr": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "90065852795c35a466e97aa9455dc428800c0c79ec6e92f9b2c5a01048e00ca6"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "28131ab46a78822da6ec37da3081f5affa4f259ca3106efb0aaf612dc55033e9"
    }
   },
   "tuscaran-glacier/hjalmar": {
@@ -2032,7 +2103,7 @@
   "tuscaran-glacier/hurika": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "ac2fa3dd1bd757d11665b776710289d4cc3bb04b8639e92d4cc5d900958e2ec3"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "724944d493d223a602c0c681ea4a1f3be317b427e958be09c17d14657cc52d35"
    }
   },
   "tuscaran-glacier/issorden": {
@@ -2044,13 +2115,13 @@
   "tuscaran-glacier/jailer": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "763bd10281daa6568df01cb8be34c99240bbde15f487803b427d5fd1a7ae6139"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "27b31260d426329c3185bf9a481d6012b3df56789a32e46a4c68cdac1888001b"
    }
   },
   "tuscaran-glacier/kingtuscar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "b84c661a9478ae1092ec027af85a0bde88ba3b6b7a44a481bfcb24847a659fd4"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3db6dc495cb911f4e8055232b8e2ea7d4ff08dcb29286b6bb1848f583f78c8ef"
    }
   },
   "tuscaran-glacier/kvasir": {
@@ -2080,7 +2151,7 @@
   "tuscaran-glacier/queenkula": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "b84c661a9478ae1092ec027af85a0bde88ba3b6b7a44a481bfcb24847a659fd4"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3db6dc495cb911f4e8055232b8e2ea7d4ff08dcb29286b6bb1848f583f78c8ef"
    }
   },
   "tuscaran-glacier/skuf": {
@@ -2112,7 +2183,7 @@
   "tuscaran-glacier/torst": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "ac2fa3dd1bd757d11665b776710289d4cc3bb04b8639e92d4cc5d900958e2ec3"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "724944d493d223a602c0c681ea4a1f3be317b427e958be09c17d14657cc52d35"
    }
   },
   "tuscaran-glacier/vagn": {

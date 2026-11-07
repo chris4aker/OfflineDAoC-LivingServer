@@ -210,7 +210,7 @@ namespace DOL.AI.Brain
                     new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(PickRandomTarget), Util.Random(20000, 30000));
                     StartCastMezz = true;
                 }
-                if (EpicEncounterMechanics.AllowDisplacement && Util.Chance(10))
+                if (EpicEncounterMechanics.AllowDisplacementFor(Body) && Util.Chance(10))
                 {
                     if (IsTargetTeleported == false)
                     {
@@ -310,7 +310,7 @@ namespace DOL.AI.Brain
         List<GameLiving> Port_Enemys = new List<GameLiving>();
         public int PickTeleportPlayer(ECSGameTimer timer)
         {
-            if (!EpicEncounterMechanics.AllowDisplacement) return 0;
+            if (!EpicEncounterMechanics.AllowDisplacementFor(Body)) return 0;
             if (Body.IsAlive && HasAggro)
             {
                 foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.DisplacesBots(Body)))
@@ -351,10 +351,10 @@ namespace DOL.AI.Brain
         }
         public int TeleportPlayer(ECSGameTimer timer)
         {
-            if (!EpicEncounterMechanics.AllowDisplacement) return 0;
+            if (!EpicEncounterMechanics.AllowDisplacementFor(Body)) return 0;
             if (TeleportTarget != null && TeleportTarget.IsAlive && HasAggro)
             {
-                if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 21115, 53483, 11286, 2100);
+                if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 21115, 53483, 11286, 2100, DisplacementKind.Teleport, Body);
                 Port_Enemys.Remove(TeleportTarget);
                 TeleportTarget = null;//reset random target to null
                 IsTargetTeleported = false;

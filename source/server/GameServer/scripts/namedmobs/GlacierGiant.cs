@@ -177,12 +177,12 @@ namespace DOL.AI.Brain
 				{
 					switch(Util.Random(1,6))
                     {
-						case 1: RandomTarget.MoveTo(Body.CurrentRegionID, 663537 + Util.Random(-2000,2000), 626415 + Util.Random(-2000, 2000), 7790 + Util.Random(300, 600), Body.Heading); break;
-						case 2: RandomTarget.MoveTo(Body.CurrentRegionID, 647342 + Util.Random(-2000, 2000), 617589 + Util.Random(-2000, 2000), 8533 + Util.Random(300, 600), Body.Heading); break;
-						case 3: RandomTarget.MoveTo(Body.CurrentRegionID, 645157 + Util.Random(-2000, 2000), 630671 + Util.Random(-2000, 2000), 11530 + Util.Random(300, 600), Body.Heading); break;
-						case 4: RandomTarget.MoveTo(Body.CurrentRegionID, 654502 + Util.Random(-2000, 2000), 630523 + Util.Random(-2000, 2000), 8762 + Util.Random(300, 600), Body.Heading); break;
-						case 5: RandomTarget.MoveTo(Body.CurrentRegionID, 670626 + Util.Random(-2000, 2000), 630046 + Util.Random(-2000, 2000), 7515 + Util.Random(300, 600), Body.Heading); break;
-						case 6: RandomTarget.MoveTo(Body.CurrentRegionID, 642185 + Util.Random(-2000, 2000), 620183 + Util.Random(-2000, 2000), 10014 + Util.Random(300, 600), Body.Heading); break;
+						case 1: EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 663537 + Util.Random(-2000,2000), 626415 + Util.Random(-2000, 2000), 7790 + Util.Random(300, 600), Body.Heading, DisplacementKind.Throw, Body); break;
+						case 2: EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 647342 + Util.Random(-2000, 2000), 617589 + Util.Random(-2000, 2000), 8533 + Util.Random(300, 600), Body.Heading, DisplacementKind.Throw, Body); break;
+						case 3: EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 645157 + Util.Random(-2000, 2000), 630671 + Util.Random(-2000, 2000), 11530 + Util.Random(300, 600), Body.Heading, DisplacementKind.Throw, Body); break;
+						case 4: EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 654502 + Util.Random(-2000, 2000), 630523 + Util.Random(-2000, 2000), 8762 + Util.Random(300, 600), Body.Heading, DisplacementKind.Throw, Body); break;
+						case 5: EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 670626 + Util.Random(-2000, 2000), 630046 + Util.Random(-2000, 2000), 7515 + Util.Random(300, 600), Body.Heading, DisplacementKind.Throw, Body); break;
+						case 6: EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 642185 + Util.Random(-2000, 2000), 620183 + Util.Random(-2000, 2000), 10014 + Util.Random(300, 600), Body.Heading, DisplacementKind.Throw, Body); break;
 					}
 					Enemys_To_Port.Remove(RandomTarget);
 					foreach (GamePlayer player in Body.GetPlayersInRadius(2000))

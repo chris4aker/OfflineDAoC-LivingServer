@@ -153,10 +153,10 @@ namespace DOL.AI.Brain
 			{
 				switch (Util.Random(1, 4))
 				{
-					case 1: TeleportTarget.MoveTo(151, 409989, 378960, 7752, 3040); break;
-					case 2: TeleportTarget.MoveTo(151, 411003, 377902, 7704, 3070); break;
-					case 3: TeleportTarget.MoveTo(151, 409983, 376894, 7376, 3097); break;
-					case 4: TeleportTarget.MoveTo(151, 408968, 377920, 7440, 3047); break;
+					case 1: EncounterDisplacement.Move(TeleportTarget, 151, 409989, 378960, 7752, 3040, DisplacementKind.Teleport, Body); break;
+					case 2: EncounterDisplacement.Move(TeleportTarget, 151, 411003, 377902, 7704, 3070, DisplacementKind.Teleport, Body); break;
+					case 3: EncounterDisplacement.Move(TeleportTarget, 151, 409983, 376894, 7376, 3097, DisplacementKind.Teleport, Body); break;
+					case 4: EncounterDisplacement.Move(TeleportTarget, 151, 408968, 377920, 7440, 3047, DisplacementKind.Teleport, Body); break;
 				}
 				Port_Enemys.Remove(TeleportTarget);
 				TeleportTarget = null;//reset random target to null

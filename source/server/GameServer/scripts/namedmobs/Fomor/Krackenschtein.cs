@@ -183,10 +183,10 @@ namespace DOL.AI.Brain
 				TeleportTarget = Target;//set random target to static RandomTarget
 				switch(Util.Random(1,4))
                 {
-					case 1: TeleportTarget.MoveTo(180, 32956, 37669, 16465, 1028); break;
-					case 2: TeleportTarget.MoveTo(180, 31879, 38149, 16465, 2109); break;
-					case 3: TeleportTarget.MoveTo(180, 31727, 37401, 16465, 3225); break;
-					case 4: TeleportTarget.MoveTo(180, 32159, 36387, 16465, 3618); break;
+					case 1: EncounterDisplacement.Move(TeleportTarget, 180, 32956, 37669, 16465, 1028, DisplacementKind.Throw, Body); break;
+					case 2: EncounterDisplacement.Move(TeleportTarget, 180, 31879, 38149, 16465, 2109, DisplacementKind.Throw, Body); break;
+					case 3: EncounterDisplacement.Move(TeleportTarget, 180, 31727, 37401, 16465, 3225, DisplacementKind.Throw, Body); break;
+					case 4: EncounterDisplacement.Move(TeleportTarget, 180, 32159, 36387, 16465, 3618, DisplacementKind.Throw, Body); break;
 				}
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetPort), Util.Random(25000, 35000));
 				CanPort = true;			

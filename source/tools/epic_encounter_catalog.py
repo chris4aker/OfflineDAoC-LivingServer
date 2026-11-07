@@ -466,7 +466,9 @@ def int_or_none(value: str | None):
 # Rule detectors
 # ---------------------------------------------------------------------------------------------------------------------
 
-SWITCH_RE = re.compile(r"EpicEncounterMechanics\.(Allow\w+|PetDevourIntervalMilliseconds|FightIsOver)")
+# A switch is read as EpicEncounterMechanics.AllowX or, since 1.2 (per-encounter values), AllowXFor(encounter).
+SWITCH_RE = re.compile(r"EpicEncounterMechanics\.(Allow\w+?(?=For\s*\()|Allow\w+|PetDevourIntervalMilliseconds|FightIsOver)")
+SWITCH_CALL = r"(?:For\s*\([^()]*\))?"
 ALL_DAMAGE = {"Body", "Cold", "Energy", "Heat", "Matter", "Spirit", "Crush", "Thrust", "Slash"}
 
 
@@ -493,11 +495,11 @@ def switches_for(member: Member, pos: int, world_ctx) -> list[str]:
     found = []
     texts = [src.masked[src.line_starts[src.line_of(pos) - 1]:pos + 200].split("\n")[0]] + member.conditions_at(pos)
     body = member.body
-    early = re.search(r"if\s*\(\s*!\s*(?:DOL\.GS\.)?EpicEncounterMechanics\.(Allow\w+)\s*\)\s*return", body)
+    early = re.search(r"if\s*\(\s*!\s*(?:DOL\.GS\.)?EpicEncounterMechanics\.(Allow\w+?)" + SWITCH_CALL + r"\s*\)\s*return", body)
     if early and member.open_pos + early.start() < pos:
         found.append(early.group(1))
     # if (!Allow...) { ...; return; } before pos: the code after it runs only with the switch on.
-    for blk in re.finditer(r"if\s*\(\s*!\s*(?:DOL\.GS\.)?EpicEncounterMechanics\.(Allow\w+)\s*\)\s*\{[^{}]*\breturn\b[^{}]*\}",
+    for blk in re.finditer(r"if\s*\(\s*!\s*(?:DOL\.GS\.)?EpicEncounterMechanics\.(Allow\w+?)" + SWITCH_CALL + r"\s*\)\s*\{[^{}]*\breturn\b[^{}]*\}",
                            member.mbody):
         if member.open_pos + blk.end() < pos:
             found.append(blk.group(1))
@@ -634,7 +636,7 @@ def detect_take_damage(world: World, cls: CsClass, ctx) -> list[Rule]:
 
 def classify_immunity(world: World, cond: str, cls: CsClass) -> tuple[str, str]:
     # A switch in the condition is reported as the rule's switch; classify what is left.
-    cond = re.sub(r"!?\s*(?:DOL\.GS\.)?EpicEncounterMechanics\.Allow\w+\s*&&\s*", "", cond or "")
+    cond = re.sub(r"!?\s*(?:DOL\.GS\.)?EpicEncounterMechanics\.Allow\w+?" + SWITCH_CALL + r"\s*&&\s*", "", cond or "")
     stripped = re.sub(r"^(else if|if)\s*\((.*)\)$", r"\2", cond.strip())
     if stripped and re.fullmatch(r"[\s(]*damageType\s*==\s*eDamageType\.\w+(\s*\|\|\s*damageType\s*==\s*eDamageType\.\w+)*[\s)]*", stripped):
         types = re.findall(r"eDamageType\.(\w+)", stripped)
@@ -860,7 +862,8 @@ def summarize_actions(world: World, code: str) -> str:
         if world.is_npc(name) and not world.is_brain(name):
             parts.append(f"spawns {name}")
     for name in CALL_RE.findall(code):
-        if name in NOT_ACTIONS or name.startswith("Get") or name in ("CastSpell", "StartAttack", "TurnTo"):
+        if name in NOT_ACTIONS or name.startswith("Get") or name in ("CastSpell", "StartAttack", "TurnTo") or \
+                re.fullmatch(r"Allow\w+For", name):
             continue
         if name[0].isupper() and name not in ("AddToWorld",) and not world.is_npc(name):
             parts.append(f"calls {name}")
@@ -923,12 +926,25 @@ def detect_teleports(world: World, cls: CsClass, ctx) -> list[Rule]:
                  for mm in re.finditer(r"([\w\.\[\]]+)\s*\.\s*MoveTo\s*\(([^;]*)\)\s*;", mb.mbody)]
         moves += [(mm.group(1), mm.start(2), mm.end(2), mm.start(), True)
                   for mm in re.finditer(r"DragonCombatGeometry\s*\.\s*ThrowPlayer\s*\(\s*([\w\.\[\]]+)\s*,([^;]*)\)\s*;", mb.mbody)]
+        # 1.2: EncounterDisplacement.Move(receiver, region, x, y, z, heading, DisplacementKind.K, source): the scripts' moves go
+        # through the displacement API (players as before, bots behind AllowBotDisplacement). The five move values are read
+        # as before; the kind is kept on the rule.
+        for mm in re.finditer(r"EncounterDisplacement\s*\.\s*Move\s*\(\s*([\w\.\[\]]+)\s*,(.*?),\s*DisplacementKind\.(\w+)\s*,\s*\w+\s*\)\s*;",
+                              mb.mbody, re.S):
+            moves.append((mm.group(1), mm.start(2), mm.end(2), mm.start(), "Move:" + mm.group(3)))
         for receiver, args_start, args_end, start, fixed_throw in sorted(moves, key=lambda m: m[3]):
             args = " ".join(src.text[mb.open_pos + args_start:mb.open_pos + args_end].split())
             pos = mb.open_pos + start
             line = src.line_of(pos)
             near = src.text[max(mb.open_pos, pos - 500):pos + 300].lower()
-            if fixed_throw:
+            kind = fixed_throw[5:] if isinstance(fixed_throw, str) else None
+            if fixed_throw is True:
+                sub, what = "fixed_spot", f"Teleports {receiver} to a fixed spot"
+            elif kind == "Throw":
+                sub, what = "air_toss", f"Throws {receiver} into the air or across the room"
+            elif kind == "Jail":
+                sub, what = "jail", f"Jails {receiver}"
+            elif kind in ("Teleport", "Barrier", "Pull"):
                 sub, what = "fixed_spot", f"Teleports {receiver} to a fixed spot"
             elif receiver in ("Body", "this") or receiver.startswith("Body.") and receiver.count(".") == 0:
                 sub, what = "self", "Teleports itself"
@@ -945,7 +961,7 @@ def detect_teleports(world: World, cls: CsClass, ctx) -> list[Rule]:
             sw = switches_for(mb, pos, ctx)
             players = player_only(mb, receiver, pos)
             rules.append(make_rule("teleport", src, line, line, f"{what} (MoveTo {args})", "inferred" if sub != "self" else "read",
-                                   cls, mb, subtype=sub, switch=sw or None,
+                                   cls, mb, subtype=sub, switch=sw or None, displacement=kind,
                                    affects="real players only (bots are never picked)" if players else None))
     return rules
 
@@ -1206,7 +1222,7 @@ def detect_offline_changes(world: World, cls: CsClass, ctx) -> list[Rule]:
             j += 1
         member = next((m for m in cls.members if m.first_line <= i <= m.last_line), None)
         near = "\n".join(src.line(k) for k in range(max(1, i - 8), min(len(src.lines), j + 8) + 1))
-        sw = sorted(set(re.findall(r"EpicEncounterMechanics\.(Allow\w+)", near)))
+        sw = sorted(set(m for m in SWITCH_RE.findall(near) if m.startswith("Allow")))
         rules.append(make_rule("offline_change", src, i, j - 1, " ".join(text)[:400], "read", cls, member,
                                switch=sw or None, restored=bool(sw) or None))
     return rules
@@ -1248,6 +1264,15 @@ def read_raids() -> tuple[list[dict], dict]:
 def read_switches() -> list[dict]:
     src = Source(SWITCH_FILE)
     out = []
+    # 1.2: which settable switches are restores (RestoreSwitches) and which are per-encounter switches (EncounterSwitches),
+    # and the per-encounter values that ship (ShippedPerEncounter: Ship(nameof(X), "Encounter", true)).
+    def names_in(array):
+        m = re.search(array + r"\s*=\s*\[(.*?)\];", src.text, re.S)
+        return set(re.findall(r"nameof\((\w+)\)", m.group(1))) if m else set()
+    restores, per_encounter = names_in("RestoreSwitches"), names_in("EncounterSwitches")
+    shipped = {}
+    for mm in re.finditer(r'Ship\(nameof\((\w+)\),\s*"(\w+)",\s*(true|false)\)', src.text):
+        shipped.setdefault(mm.group(1), []).append(f"{mm.group(2)}={mm.group(3)}")
     for i, line in enumerate(src.lines, 1):
         mm = re.search(r"public static bool (Allow\w+)\s*=>\s*(\w+);", line)
         if mm:
@@ -1256,8 +1281,15 @@ def read_switches() -> list[dict]:
         if mm:
             doc = src.line(i - 1).strip()
             doc = re.sub(r"^///\s*<summary>|</summary>$", "", doc).strip()
-            out.append({"name": mm.group(1), "value": mm.group(2) or "false", "file": rel(src), "line": i, "restores": True,
-                        "about": doc if not doc.startswith("//") or doc.startswith("///") else ""})
+            entry = {"name": mm.group(1), "value": mm.group(2) or "false", "file": rel(src), "line": i}
+            if mm.group(1) in restores or not per_encounter and not restores:
+                entry["restores"] = True
+            if mm.group(1) in per_encounter:
+                entry["perEncounter"] = True
+                if mm.group(1) in shipped:
+                    entry["shippedFor"] = shipped[mm.group(1)]
+            entry["about"] = doc if not doc.startswith("//") or doc.startswith("///") else ""
+            out.append(entry)
         mm = re.search(r"public const int (\w+)\s*=\s*([\d_]+);", line)
         if mm:
             out.append({"name": mm.group(1), "value": mm.group(2).replace("_", ""), "file": rel(src), "line": i})
@@ -1283,8 +1315,9 @@ def dungeon_of(rel_path: Path, class_name: str, src: Source):
             return name, region, "read" if region else None
     segs = parts.split("/")
     name = " / ".join(segs[:-1]) if len(segs) > 1 else "Open world"
-    found = re.findall(r"CurrentRegionID\s*(?:==|=)\s*(\d+)|MoveTo\s*\(\s*(\d+)\s*,", src.masked)
-    nums = [int(a or b) for a, b in found]
+    found = re.findall(r"CurrentRegionID\s*(?:==|=)\s*(\d+)|MoveTo\s*\(\s*(\d+)\s*,|"
+                       r"EncounterDisplacement\s*\.\s*Move\s*\(\s*[\w\.\[\]]+\s*,\s*(\d+)\s*,", src.masked)
+    nums = [int(a or b or c) for a, b, c in found]
     if nums:
         best = max(set(nums), key=nums.count)
         return name, best, "inferred"
@@ -2018,7 +2051,12 @@ def render_md(data: dict) -> str:
         "|---|---|---|",
     ]
     for s in data["switches"]:
-        lines.append(f"| `{s['name']}` | {s['value']} | `{s['file']}:{s['line']}` |")
+        value = s["value"]
+        if s.get("shippedFor"):
+            value += " (per encounter: " + ", ".join(s["shippedFor"]) + ")"
+        elif s.get("perEncounter"):
+            value += " (settable per encounter)"
+        lines.append(f"| `{s['name']}` | {value} | `{s['file']}:{s['line']}` |")
     tact = [e for e in data["encounters"] if e.get("aiTactics")]
     if tact:
         lines += ["", "## Encounters with raid tactics", "",
