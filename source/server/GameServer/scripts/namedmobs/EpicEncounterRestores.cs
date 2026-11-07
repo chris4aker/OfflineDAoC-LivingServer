@@ -86,6 +86,17 @@ namespace DOL.GS
         /// <summary>Kvasir: cold heals him a fifth of his health.</summary>
         public static bool KvasirHealedBy(eDamageType type) => type == eDamageType.Cold;
 
+        private static readonly Logging.Logger Log = Logging.LoggerManager.Create(typeof(EpicEncounterRestores));
+
+        /// <summary>1.2 play test: a hit that healed Funus to full is in the server log (who, what kind, class, weapon).</summary>
+        public static void NoteFunusHeal(GameObject source, GameLiving funus)
+        {
+            if (!Log.IsInfoEnabled) return;
+            string kind = source switch { GamePlayer => "player", GameBot => "bot", GameSummonedPet => "pet", _ => source?.GetType().Name };
+            Log.Info($"EPIC_FUNUS_HEALED source=\"{source?.Name}\" kind={kind} class={(eCharacterClass)ClassId(source)} weapon={WeaponType(source)} " +
+                     $"healthBefore={funus?.HealthPercent}%");
+        }
+
         public static void TellImmune(GameObject source, string text)
         {
             GamePlayer player = source as GamePlayer ?? (source as GameSummonedPet)?.Owner as GamePlayer;

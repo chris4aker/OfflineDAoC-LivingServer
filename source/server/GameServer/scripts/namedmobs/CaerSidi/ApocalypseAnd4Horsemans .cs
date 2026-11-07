@@ -1927,6 +1927,7 @@ namespace DOL.GS
             if (EpicEncounterMechanics.AllowFunusWeaponPuzzle &&
                 !EpicEncounterRestores.FunusAccepts(EpicEncounterRestores.ClassId(source), EpicEncounterRestores.WeaponType(source)))
             {
+                EpicEncounterRestores.NoteFunusHeal(source, this);
                 EpicEncounterRestores.TellImmune(source, Name + " absorbs all your damage to heal iself!");
                 BroadcastMessage("Funus takes damage from " + source.Name + " and restoring it's whole health.");
                 EncounterSignals.Note(this, EncounterSignals.Healed);//Living Server 1.2: the lore's "healed" lines (LoreBossWatch)

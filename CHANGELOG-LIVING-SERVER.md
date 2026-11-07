@@ -658,6 +658,24 @@ tactics.
   - **Checked:** 33 new unit tests (percentiles, merging, self time, locks, output, the scope's cost) and 12 for the
     report tool; the full server suite passes (4,123). Not yet run on a live server: the first L300 run is the owner's.
 
+**Epic encounter play test (1.2).** The epic encounters were run on a real server with the real world and navmeshes, with
+gamebot raids, and these came out of it:
+
+- **`/epictest`, a raid on a chosen encounter now.** For the owner and testers (GM in game, or typed in the server window):
+  `/epictest start <event> [era|start|size] [focus=Name,Name]` opens the launcher's forced raid at the encounter's period
+  size (docs/RAID-SIZES.md) instead of 300, and moves the reserved level 50s to the raid's muster hub; from there the raid
+  forms, travels, stages and fights as any raid. It goes in when 90% are staged, runs on the automatic raid's clocks (a late
+  or short start, the four-hour window) and does not count toward the raid's win-rate record. `focus=` sends the dungeon
+  route only to those encounters (no first-hour trash clear). `/epictest gather`, `status`, `stop`, `list`.
+- **Commands typed in the server window work again.** The console ran every command without an account, so each one
+  failed with an error in the log; it now runs them as an admin named Console.
+- **The server log says what the lore engine says.** Each boss yell and centre-screen line it shows is a `LORE_LINE` line,
+  and each hit that heals Funus to full is an `EPIC_FUNUS_HEALED` line (who, class, weapon), so a fight can be read
+  without the game client.
+- **A navmesh audit of the encounters' positions** (`UT_EpicPositionAudit`, a tool run by hand): every throw, teleport and
+  jail landing, and the tactics' waiting spots (Easmarach's waterfall stands, the Sacristan's stations, the Vifil tunnel,
+  Kula's frost circle, the Apocalypse room), checked both ways, to the boss and back.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized

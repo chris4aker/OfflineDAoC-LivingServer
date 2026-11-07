@@ -475,7 +475,7 @@
   "caer-sidi/apocalypse": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "c1a476a3d72055b27936b316dcdfa80ed3b58fee9717cc1ef234a8681f0fe4fb"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "57065639c7951fb77baa62c549ee14f5d3f6849a916e439dba44bb5b7d4395b5"
    },
    "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two. 1.2 (wave 3): the room barrier (ApocInitializator.DontAllowLeaveRoom: anyone within 150 of the door 29,459,26,401 while a horseman or Apocalypse fights is moved to the middle 29,469,25,244) is on for players and bots (AllowDisplacement and AllowBotDisplacement for ApocInitializator). The raid's muster and every tactic stand-off for the room's encounters are kept within 800 of the middle, the route doesn't leave the room mid-fight, and a bot moved back stays inside (EpicEncounterTactics.HorsemenRoom); a repeated move is logged (EPIC_DISPLACEMENT_BOUNCED). The room's shape was never checked against the navmesh."
   },
@@ -488,7 +488,7 @@
   "caer-sidi/bellum": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "c1a476a3d72055b27936b316dcdfa80ed3b58fee9717cc1ef234a8681f0fe4fb"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "57065639c7951fb77baa62c549ee14f5d3f6849a916e439dba44bb5b7d4395b5"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
@@ -509,7 +509,7 @@
   "caer-sidi/fames": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "c1a476a3d72055b27936b316dcdfa80ed3b58fee9717cc1ef234a8681f0fe4fb"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "57065639c7951fb77baa62c549ee14f5d3f6849a916e439dba44bb5b7d4395b5"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
@@ -526,7 +526,7 @@
   "caer-sidi/funus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "c1a476a3d72055b27936b316dcdfa80ed3b58fee9717cc1ef234a8681f0fe4fb"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "57065639c7951fb77baa62c549ee14f5d3f6849a916e439dba44bb5b7d4395b5"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
@@ -570,7 +570,7 @@
   "caer-sidi/morbus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "c1a476a3d72055b27936b316dcdfa80ed3b58fee9717cc1ef234a8681f0fe4fb"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "57065639c7951fb77baa62c549ee14f5d3f6849a916e439dba44bb5b7d4395b5"
    },
    "aiTactics": {
     "requiredAdds": [

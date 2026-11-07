@@ -34,7 +34,7 @@ namespace DOL.UnitTests
             var center = new Vector3(426905, 416817, 5712);
             Vector3[] spots = Enumerable.Range(0, 130).Select(i => EpicPlaytestCommandHandler.HubSpot(center, i, 130)).ToArray();
             Assert.That(spots.Distinct().Count(), Is.EqualTo(130));
-            Assert.That(spots.All(s => Vector2.Distance(new(s.X, s.Y), new(center.X, center.Y)) is >= 149 and <= 601), Is.True);
+            Assert.That(spots.All(s => Vector2.Distance(new(s.X, s.Y), new(center.X, center.Y)) is >= 59 and <= 241), Is.True);
         }
 
         [Test]

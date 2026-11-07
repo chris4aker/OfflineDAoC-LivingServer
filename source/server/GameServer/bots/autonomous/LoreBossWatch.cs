@@ -225,7 +225,7 @@ public static class LoreBossWatch
         if (boss == null || !Fights.TryAdd(npc, new Watched { Boss = boss }))
             return;
         if (!ScriptSpeaksOn(boss.ClassKey, "aggro") && boss.AggroYells.Length > 0)
-            Yell(npc, Fights[npc], boss.AggroYells, GameLoop.GameLoopTime, force: true);
+            Yell(npc, Fights[npc], boss.AggroYells, GameLoop.GameLoopTime, force: true, trigger: "aggro");
     }
 
     private static void OnDying(DOLEvent e, object sender, EventArgs args)
@@ -242,7 +242,7 @@ public static class LoreBossWatch
                 // A "death" phase is one more way to die: its yell joins the death yells, its atmosphere line goes to the zone.
                 string[] deathYells = boss.DeathYells.Concat(PhaseTexts(boss.PhaseYells, LoreFightRules.Kind.Death)).ToArray();
                 if (!ScriptSpeaksOn(boss.ClassKey, "death") && deathYells.Length > 0)
-                    Yell(npc, watched ?? new Watched { Boss = boss }, deathYells, GameLoop.GameLoopTime, force: true);
+                    Yell(npc, watched ?? new Watched { Boss = boss }, deathYells, GameLoop.GameLoopTime, force: true, trigger: "death");
                 foreach (string line in PhaseTexts(boss.AtmospherePhases, LoreFightRules.Kind.Death).Take(1))
                     LoreAtmosphere.Zone(npc.CurrentZone, line, LoreAtmosphere.PhaseTtlMs);
                 // A realm's first kill is decided and saved once, by LoreFirstKills (the lore channels); its line is OnFirstKill.
@@ -255,7 +255,7 @@ public static class LoreBossWatch
                 if (!ScriptSpeaksOn(watched.Boss.ClassKey, "slay") && slay.Length > 0 && now - watched.LastSlay >= SlayGapMs)
                 {
                     watched.LastSlay = now;
-                    Yell(bossNpc, watched, slay, now, force: true);
+                    Yell(bossNpc, watched, slay, now, force: true, trigger: "slay");
                 }
                 if (watched.Fight.Said.Add("playerDeath") && watched.Fight.AtmosphereLines < LoreFightRules.MaxAtmospherePerFight)
                     foreach (string line in PhaseTexts(watched.Boss.AtmospherePhases, LoreFightRules.Kind.PlayerDeath).Take(1))
@@ -283,7 +283,18 @@ public static class LoreBossWatch
         string[] lines = PhaseTexts(boss?.PhaseYells, kind).ToArray();
         if (npc == null || lines.Length == 0)
             return;
-        npc.Yell(LoreText.Pick(lines[Random.Shared.Next(lines.Length)], Random.Shared));
+        npc.Yell(Logged(npc, "yell", kind.ToString(), LoreText.Pick(lines[Random.Shared.Next(lines.Length)], Random.Shared)));
+    }
+
+    /// <summary>
+    /// 1.2 play test: every line the lore engine speaks is in the server log (LORE_LINE boss, kind yell|screen, trigger, text),
+    /// so a run can be read without a game client.
+    /// </summary>
+    public static string Logged(GameObject source, string kind, string trigger, string text)
+    {
+        if (Log.IsInfoEnabled && text != null)
+            Log.Info($"LORE_LINE boss=\"{source?.Name}\" kind={kind} trigger={trigger} text=\"{text}\"");
+        return text;
     }
 
     /// <summary>The lore boss an NPC is (by its script class), cached per type: the attack event fires for every hit in the world.</summary>
@@ -298,12 +309,12 @@ public static class LoreBossWatch
         return ByType.GetOrAdd(npc.GetType(), type => bible.BossForClass(type.Name)) ?? bible.BossForName(npc.Name);
     }
 
-    private static void Yell(GameNPC npc, Watched watched, string[] lines, long now, bool force = false)
+    private static void Yell(GameNPC npc, Watched watched, string[] lines, long now, bool force = false, string trigger = "")
     {
         if (lines.Length == 0 || !force && now - watched.LastYell < YellGapMs)
             return;
         watched.LastYell = now;
-        npc.Yell(LoreText.Pick(lines[Random.Shared.Next(lines.Length)], Random.Shared));
+        npc.Yell(Logged(npc, "yell", trigger, LoreText.Pick(lines[Random.Shared.Next(lines.Length)], Random.Shared)));
     }
 
     #endregion
@@ -364,12 +375,12 @@ public static class LoreBossWatch
         foreach (string fired in LoreFightRules.Observe(watched.Fight, triggers, npc.HealthPercent, adds, npc.Model, partners))
         {
             string[] yells = boss.PhaseYells.Where(p => string.Equals(p.Trigger, fired, StringComparison.OrdinalIgnoreCase)).Select(p => p.Text).ToArray();
-            Yell(npc, watched, yells, now);
+            Yell(npc, watched, yells, now, trigger: fired);
             LoreBible.PhaseLine line = boss.AtmospherePhases.FirstOrDefault(p => string.Equals(p.Trigger, fired, StringComparison.OrdinalIgnoreCase));
             if (line != null && watched.Fight.AtmosphereLines < LoreFightRules.MaxAtmospherePerFight)
             {
                 watched.Fight.AtmosphereLines++;
-                LoreAtmosphere.Zone(npc.CurrentZone, line.Text, LoreAtmosphere.PhaseTtlMs);
+                LoreAtmosphere.Zone(npc.CurrentZone, Logged(npc, "screen", fired, line.Text), LoreAtmosphere.PhaseTtlMs);
             }
         }
     }
@@ -444,10 +455,10 @@ public static class LoreBossWatch
         if (lines.Yells.Length > 0 && now - watched.LastYell >= YellGapMs)
         {
             watched.LastYell = now;
-            MechanicYell(npc, LoreText.Pick(lines.Yells[Random.Shared.Next(lines.Yells.Length)], Random.Shared));
+            MechanicYell(npc, Logged(npc, "yell", string.Join('|', triggers), LoreText.Pick(lines.Yells[Random.Shared.Next(lines.Yells.Length)], Random.Shared)));
         }
         if (lines.Atmosphere != null)
-            MechanicAtmosphere(npc, LoreText.Pick(lines.Atmosphere, Random.Shared));
+            MechanicAtmosphere(npc, Logged(npc, "screen", string.Join('|', triggers), LoreText.Pick(lines.Atmosphere, Random.Shared)));
         return lines;
     }
 
