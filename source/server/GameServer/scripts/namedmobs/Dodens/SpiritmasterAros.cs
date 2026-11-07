@@ -230,9 +230,9 @@ namespace DOL.AI.Brain
 		}
 		#region Aros Debuff
 		public static bool CanCastDebuff = false;
-		List<GamePlayer> Enemys_To_Debuff = new List<GamePlayer>();
-		public static GamePlayer debufftarget = null;
-		public static GamePlayer DebuffTarget
+		List<GameLiving> Enemys_To_Debuff = new List<GameLiving>();
+		public static GameLiving debufftarget = null;
+		public static GameLiving DebuffTarget
 		{
 			get { return debufftarget; }
 			set { debufftarget = value; }
@@ -241,9 +241,9 @@ namespace DOL.AI.Brain
 		{
 			if (HasAggro)
 			{
-				foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000))
 				{
-					if (player != null && player.IsAlive && player.Client.Account.PrivLevel == 1 && player.CharacterClass is not ClassDisciple)
+					if (player != null && player.IsAlive && EncounterTargets.NotGm(player) && EncounterTargets.ClassOf(player) is not ClassDisciple)
 					{
 						if (!Enemys_To_Debuff.Contains(player))
 							Enemys_To_Debuff.Add(player);
@@ -253,7 +253,7 @@ namespace DOL.AI.Brain
 				{
 					if (CanCastDebuff == false && Body.GetSkillDisabledDuration(Aros_Debuff) == 0)
 					{
-						GamePlayer Target = Enemys_To_Debuff[Util.Random(0, Enemys_To_Debuff.Count - 1)];//pick random target from list
+						GameLiving Target = Enemys_To_Debuff[Util.Random(0, Enemys_To_Debuff.Count - 1)];//pick random target from list
 						DebuffTarget = Target;//set random target to static RandomTarget
 						new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetDebuff), 5000);
 						CanCastDebuff = true;

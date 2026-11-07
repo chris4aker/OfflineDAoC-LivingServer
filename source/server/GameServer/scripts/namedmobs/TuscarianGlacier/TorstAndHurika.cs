@@ -140,7 +140,7 @@ namespace DOL.AI.Brain
             ThinkInterval = 2000;
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
         public static bool point1check = false;
         public static bool point2check = false;
         public static bool point3check = false;
@@ -307,9 +307,9 @@ namespace DOL.AI.Brain
                     CreateEddies();
                     SpawnEddies = true;
                 }
-                foreach (GamePlayer gamePlayer in Body.GetPlayersInRadius(1500))
+                foreach (GameLiving gamePlayer in EncounterTargets.InRadius(Body, 1500))
                 {
-                    if (gamePlayer != null && gamePlayer.IsAlive && gamePlayer.Client.Account.PrivLevel == 1)
+                    if (gamePlayer != null && gamePlayer.IsAlive && EncounterTargets.NotGm(gamePlayer))
                     {
                         if (!PlayersToAttack.Contains(gamePlayer))
                             PlayersToAttack.Add(gamePlayer);
@@ -585,10 +585,10 @@ namespace DOL.AI.Brain
             }
         }
         #endregion
-        public List<GamePlayer> Port_Enemys = new List<GamePlayer>();
+        public List<GameLiving> Port_Enemys = new List<GameLiving>();
         public static bool IsTargetPicked = false;
-        public static GamePlayer randomtarget = null;
-        public static GamePlayer RandomTarget
+        public static GameLiving randomtarget = null;
+        public static GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
@@ -626,14 +626,14 @@ namespace DOL.AI.Brain
             }
             if(HasAggro && Body.TargetObject != null)
             {
-                foreach(GamePlayer player in Body.GetPlayersInRadius(1000))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 1000, bots: EncounterTargets.DisplacesBots(Body)))
                 {
-                    if(player != null && player.IsAlive && player.Client.Account.PrivLevel == 1 && !Port_Enemys.Contains(player))
+                    if(player != null && player.IsAlive && EncounterTargets.NotGm(player) && !Port_Enemys.Contains(player))
                         Port_Enemys.Add(player);
                 }
                 if(Port_Enemys.Count > 0)
                 {
-                    GamePlayer Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+                    GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
                     RandomTarget = Target;
                     if (RandomTarget.IsAlive && RandomTarget != null && !IsTargetPicked)
                     {

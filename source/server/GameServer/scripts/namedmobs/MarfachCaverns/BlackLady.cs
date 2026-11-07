@@ -338,12 +338,12 @@ namespace DOL.AI.Brain
         }
         public override void Think()
         {
-            foreach(GamePlayer player in Body.GetPlayersInRadius(2000))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000))
             {
                 if(player != null)
                 {
-                    if(player.IsAlive && player.IsVisibleTo(Body) && player.Client.Account.PrivLevel == 1 && (player.CharacterClass.ID == 6 || player.CharacterClass.ID == 10 || player.CharacterClass.ID == 48
-                    || player.CharacterClass.ID == 46 || player.CharacterClass.ID == 47 || player.CharacterClass.ID == 42 || player.CharacterClass.ID == 28 || player.CharacterClass.ID == 26))
+                    if(player.IsAlive && player.IsVisibleTo(Body) && EncounterTargets.NotGm(player) && (EncounterTargets.ClassId(player) == 6 || EncounterTargets.ClassId(player) == 10 || EncounterTargets.ClassId(player) == 48
+                    || EncounterTargets.ClassId(player) == 46 || EncounterTargets.ClassId(player) == 47 || EncounterTargets.ClassId(player) == 42 || EncounterTargets.ClassId(player) == 28 || EncounterTargets.ClassId(player) == 26))
                     {
                         if (AggroList.TryAdd(player, new(150)))
                             Body.StartAttack(player);

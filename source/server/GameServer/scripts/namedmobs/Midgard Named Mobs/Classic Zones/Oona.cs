@@ -106,13 +106,13 @@ namespace DOL.GS
 		}
 		public override void EnemyKilled(GameLiving enemy)
         {
-			GamePlayer player = enemy as GamePlayer;
-			if (enemy is GamePlayer)
+			GameLiving player = EncounterTargets.AsRaider(enemy);
+			if (player != null)
 			{
 				if (player != null)
 				{
 					OonaUndeadAdd npc = new OonaUndeadAdd();
-					npc.Name = "undead " + player.RaceName;
+					npc.Name = "undead " + EncounterTargets.RaceName(player);
 					if (player.Race == (int)eRace.Dwarf && player.Gender == eGender.Male)
 						npc.Model = 185;
 					if (player.Race == (int)eRace.Dwarf && player.Gender == eGender.Female)

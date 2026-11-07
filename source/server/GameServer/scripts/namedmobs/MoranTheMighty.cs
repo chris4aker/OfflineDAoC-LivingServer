@@ -113,7 +113,7 @@ namespace DOL.AI.Brain
                     {
                         foreach (GameNPC npc in Body.GetNPCsInRadius(1500))
                         {
-                            foreach (GamePlayer player in Body.GetPlayersInRadius(2250))
+                            foreach (GameLiving player in EncounterTargets.InRadius(Body, 2250))
                             {
                                 npc.StartAttack(player);
                             }
@@ -142,12 +142,12 @@ namespace DOL.AI.Brain
         public int TeleportPlayerAway(ECSGameTimer timer)
         {
             string gender;
-            foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000, bots: EncounterTargets.DisplacesBots(Body)))
             {
                 if (player == null)
                     return 0;
 
-                List<GamePlayer> portPlayer = new List<GamePlayer>();
+                List<GameLiving> portPlayer = new List<GameLiving>();
                 portPlayer.Add(player);
                 int ranPlayer = Util.Random(0, portPlayer.Count - 1);
                 
@@ -173,7 +173,7 @@ namespace DOL.AI.Brain
                     {
                         case 1:
                             BroadcastMessage(String.Format("{0} picked up {1} on gust of winds and tossed {2} away! ", Body.Name, portPlayer[ranPlayer].Name, gender));
-                            portPlayer[ranPlayer].Out.SendSpellEffectAnimation(portPlayer[ranPlayer], portPlayer[ranPlayer], 1735, 0, false, 1);
+                            (portPlayer[ranPlayer] as GamePlayer)?.Out.SendSpellEffectAnimation(portPlayer[ranPlayer], portPlayer[ranPlayer], 1735, 0, false, 1);
                             portPlayer[ranPlayer].MoveTo(1, 401943, 753091, 222, 3499);
                             foreach (GameNPC npc in portPlayer[ranPlayer].GetNPCsInRadius(2000))
                             {
@@ -183,7 +183,7 @@ namespace DOL.AI.Brain
                             break;
                         case 2:
                             BroadcastMessage(String.Format("{0} picked up {1} on gust of winds and tossed {2} away! ", Body.Name, portPlayer[ranPlayer].Name, gender));
-                            portPlayer[ranPlayer].Out.SendSpellEffectAnimation(portPlayer[ranPlayer], portPlayer[ranPlayer], 1735, 0, false, 1);
+                            (portPlayer[ranPlayer] as GamePlayer)?.Out.SendSpellEffectAnimation(portPlayer[ranPlayer], portPlayer[ranPlayer], 1735, 0, false, 1);
                             portPlayer[ranPlayer].MoveTo(1, 406787, 749150, 213, 3926);
                             foreach (GameNPC npc in portPlayer[ranPlayer].GetNPCsInRadius(2000))
                             {
@@ -193,7 +193,7 @@ namespace DOL.AI.Brain
                             break;
                         case 3:
                             BroadcastMessage(String.Format("{0} picked up {1} on gust of winds and tossed {2} away! ", Body.Name, portPlayer[ranPlayer].Name, gender));
-                            portPlayer[ranPlayer].Out.SendSpellEffectAnimation(portPlayer[ranPlayer], portPlayer[ranPlayer], 1735, 0, false, 1);
+                            (portPlayer[ranPlayer] as GamePlayer)?.Out.SendSpellEffectAnimation(portPlayer[ranPlayer], portPlayer[ranPlayer], 1735, 0, false, 1);
                             portPlayer[ranPlayer].MoveTo(1, 401061, 755882, 469, 3050);
                             foreach (GameNPC npc in portPlayer[ranPlayer].GetNPCsInRadius(2000))
                             {

@@ -211,8 +211,8 @@ namespace DOL.AI.Brain
             base.Think();
         }
 
-        public static GamePlayer randomtarget = null;
-        public static GamePlayer RandomTarget
+        public static GameLiving randomtarget = null;
+        public static GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
@@ -227,11 +227,11 @@ namespace DOL.AI.Brain
             if (Body.IsAlive)
             {
                 List<GameLiving> enemies = AggroList.Keys.ToList();
-                foreach (GamePlayer player in Body.GetPlayersInRadius(1100))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 1100))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                             AggroList.TryAdd(player, new());
                     }
                 }
@@ -250,14 +250,14 @@ namespace DOL.AI.Brain
                             continue;
                         GameLiving living = null;
                         living = enemies[i] as GameLiving;
-                        if (living.IsVisibleTo(Body) && Body.TargetInView && living is GamePlayer)
+                        if (living.IsVisibleTo(Body) && Body.TargetInView && EncounterTargets.IsRaider(living))
                         {
                             damage_enemies.Add(enemies[i] as GameLiving);
                         }
                     }
                     if (damage_enemies.Count > 0)
                     {
-                        GamePlayer PortTarget = (GamePlayer)damage_enemies[Util.Random(0, damage_enemies.Count - 1)];
+                        GameLiving PortTarget = damage_enemies[Util.Random(0, damage_enemies.Count - 1)];
                         RandomTarget = PortTarget;
                         PlayerX = RandomTarget.X;
                         PlayerY = RandomTarget.Y;
@@ -704,11 +704,11 @@ namespace DOL.AI.Brain
         {
             if (Body.IsAlive)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                             AggroList.TryAdd(player, new(100));
                     }
                 }

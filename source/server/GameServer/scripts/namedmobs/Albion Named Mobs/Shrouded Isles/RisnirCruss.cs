@@ -66,7 +66,7 @@ namespace DOL.GS
 		}
         public override void EnemyKilled(GameLiving enemy)
         {
-			if (enemy != null && enemy is GamePlayer)
+			if (enemy != null && EncounterTargets.IsRaider(enemy))
             {
 				GameNPC add = new GameNPC();
 				add.Name = "Apparition of " + enemy.Name;

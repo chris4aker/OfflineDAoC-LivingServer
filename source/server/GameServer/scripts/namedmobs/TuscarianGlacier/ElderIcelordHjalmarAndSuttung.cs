@@ -186,9 +186,9 @@ namespace DOL.AI.Brain
             Point3D point = new Point3D(31088, 53870, 11886);
             if(Body.IsAlive)
             {
-                foreach(GamePlayer player in Body.GetPlayersInRadius(8000))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 8000))
                 {
-                    if(player != null && player.IsAlive && player.Client.Account.PrivLevel == 1 && !message2 && player.IsWithinRadius(point, 400))
+                    if(player != null && player.IsAlive && EncounterTargets.NotGm(player) && !message2 && player.IsWithinRadius(point, 400))
                         message2=true;
                 }
                 if(message2 && !message1)
@@ -429,9 +429,9 @@ namespace DOL.AI.Brain
             Point3D point = new Point3D(31088, 53870, 11886);
             if (Body.IsAlive)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(8000))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 8000))
                 {
-                    if (player != null && player.IsAlive && player.Client.Account.PrivLevel == 1 && !message2 && player.IsWithinRadius(point, 400))
+                    if (player != null && player.IsAlive && EncounterTargets.NotGm(player) && !message2 && player.IsWithinRadius(point, 400))
                         message2 = true;
                 }
                 if (message2 && !message1)
