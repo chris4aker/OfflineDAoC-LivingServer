@@ -243,14 +243,25 @@
         ]
       },
       {
-        "name": "Jari's wallows",
-        "x": 497600,
-        "y": 489350,
-        "z": 1600,
-        "radius": 7500,
+        "name": "Jari's deep wallow",
+        "x": 490767,
+        "y": 489129,
+        "z": 797,
+        "radius": 1000,
         "lines": [
           "Churned mud and tusk marks. Jari wallows here.",
           "Two wallows. Jari is in one of them."
+        ]
+      },
+      {
+        "name": "Jari's road wallow",
+        "x": 504513,
+        "y": 489595,
+        "z": 2430,
+        "radius": 1000,
+        "lines": [
+          "Tusk marks by the abbey road. Jari's other wallow.",
+          "The hunters' wager: this one, or the other?"
         ]
       },
       {

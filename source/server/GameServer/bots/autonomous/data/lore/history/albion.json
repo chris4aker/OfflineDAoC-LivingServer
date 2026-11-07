@@ -147,7 +147,8 @@
         "lyonesse",
         "forest-sauvage",
         "pennine-mountains",
-        "black-mountains-south"
+        "black-mountains-south",
+        "black-mountains-north"
       ],
       "bosses": [
         "aidon-the-archwizard",
@@ -222,7 +223,8 @@
         "lyonesse",
         "albion-shrouded-isles",
         "avalon-city",
-        "campacorentin-forest"
+        "campacorentin-forest",
+        "black-mountains-north"
       ],
       "bosses": [
         "morgana",
@@ -260,7 +262,8 @@
       "summary": "The lord of Annwn, Albion's uneasy ally against Morgana. His gaol Caer Sidi has risen against him; his cult in Lyonesse is heresy to Camelot's Church.",
       "places": [
         "caer-sidi",
-        "lyonesse"
+        "lyonesse",
+        "black-mountains-north"
       ],
       "bosses": [
         "soul-reckoner",
@@ -407,7 +410,8 @@
         "salisbury-plains",
         "black-mountains-south",
         "campacorentin-forest",
-        "avalon-marsh"
+        "avalon-marsh",
+        "black-mountains-north"
       ],
       "bosses": [
         "golestandt",
@@ -463,7 +467,8 @@
       "summary": "Goblins who took a silver mine and kept it working under Overseer Tepok.",
       "places": [
         "tepoks-mine",
-        "black-mountains-south"
+        "black-mountains-south",
+        "black-mountains-north"
       ],
       "bosses": []
     },
