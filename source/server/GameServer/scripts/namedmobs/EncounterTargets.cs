@@ -26,24 +26,28 @@ namespace DOL.GS
     public static class EncounterTargets
     {
         /// <summary>
-        /// Picks that MOVE their victim (throws, teleports, jails, pulls) include bots only while this is on. A bot moved
-        /// by a raw <c>MoveTo</c> has no way back to its raid yet; the displacement work (EpicEncounterDisplacement and the
-        /// bot recovery, feature/epic-displacement) turns this on, or replaces it per encounter, once a displaced bot
-        /// recovers. Off by default: today's throws pick real players exactly as before.
+        /// The global bot-displacement switch: <see cref="EpicEncounterMechanics.AllowBotDisplacement"/> (one value, kept here
+        /// under its earlier name). Off: every encounter without its own value picks real players only for a move, as
+        /// before 1.2. Encounters with their own value (<see cref="EpicEncounterMechanics.ShippedPerEncounter"/>, SetFor) keep it.
         /// </summary>
-        public static bool BotsCanBeDisplaced { get; set; }
+        public static bool BotsCanBeDisplaced
+        {
+            get => EpicEncounterMechanics.AllowBotDisplacement;
+            set => EpicEncounterMechanics.AllowBotDisplacement = value;
+        }
 
-        /// <summary>The bots-in-pool value for a pick that moves its victim (see <see cref="BotsCanBeDisplaced"/>).</summary>
+        /// <summary>The bots-in-pool value for a move pick with no encounter (the global switch); scripts pass
+        /// <see cref="DisplacesBots"/> with their encounter instead.</summary>
         public static bool ForDisplacement => BotsCanBeDisplaced;
 
         /// <summary>
         /// The bots-in-pool value for a pick that moves its victim, for one encounter (the boss, add or object whose script
-        /// picks). Every move pick in the scripts asks this. Today it is <see cref="BotsCanBeDisplaced"/>; with the displacement
-        /// work (feature/epic-displacement, PR #101) merged it becomes that work's per-encounter switch
-        /// (<c>EpicEncounterMechanics.AllowBotDisplacementFor(encounter)</c>), so a pick includes bots exactly where its move
-        /// would move them.
+        /// picks). Every move pick in the scripts asks this, and it is the same switch the move asks
+        /// (<see cref="EncounterDisplacement.Move"/> moves a bot only when
+        /// <see cref="EpicEncounterMechanics.AllowBotDisplacementFor(GameObject)"/>): a pick includes bots exactly where its move
+        /// moves them, and stays real players only everywhere else. On as shipped: the three dragons and Xanxicar.
         /// </summary>
-        public static bool DisplacesBots(GameObject encounter) => BotsCanBeDisplaced;
+        public static bool DisplacesBots(GameObject encounter) => EpicEncounterMechanics.AllowBotDisplacementFor(encounter);
 
         // ---- the pool ---------------------------------------------------------------------------------------------------
 

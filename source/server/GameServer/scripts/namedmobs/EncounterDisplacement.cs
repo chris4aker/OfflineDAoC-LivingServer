@@ -104,6 +104,18 @@ namespace DOL.GS
             return living.MoveTo(region, x, y, z, heading);
         }
 
+        /// <summary>A real player's /spawn companions and pet stay at the fight when an encounter moves the player (owner default,
+        /// server property <c>epic_companions_stay_when_thrown</c>, on). Off: the move takes them along like a portal.</summary>
+        public static bool CompanionsStay => ServerProperties.Properties.EPIC_COMPANIONS_STAY_WHEN_THROWN;
+
+        /// <summary>Encounters whose move never takes companions along, whatever the setting: Legion's platform has no way
+        /// down but a zone point bots can't use (2026-10-30: companions dragged up there were stuck).</summary>
+        public static readonly string[] CompanionsAlwaysStay = ["Legion"];
+
+        /// <summary><see cref="CompanionsStay"/> for one encounter (<see cref="CompanionsAlwaysStay"/> always).</summary>
+        public static bool CompanionsStayFor(GameObject source) =>
+            CompanionsStay || Array.IndexOf(CompanionsAlwaysStay, EpicEncounterMechanics.EncounterName(source)) >= 0;
+
         /// <summary>The raider is inside a displacement move right now (a portal handler must not treat it as a party portal).</summary>
         public static bool IsMoving(GameLiving living) => living?.TempProperties.GetProperty<bool>(ActiveKey) == true;
 
@@ -167,8 +179,10 @@ namespace DOL.GS
             long now = GameLoop.GameLoopTime;
             var from = new Vector3(player.X, player.Y, player.Z);
             // Encounter displacement is NOT a party portal: helpers and pets stay at the fight (GamePlayer.MoveTo and
-            // TemporaryGroupStableTravel read the flag); the real client handles its own fall.
-            player.TempProperties.SetProperty(ActiveKey, true);
+            // TemporaryGroupStableTravel read the flag); the real client handles its own fall. The server property
+            // epic_companions_stay_when_thrown (CompanionsStay) set to False makes it one again: they come along.
+            if (CompanionsStayFor(source))
+                player.TempProperties.SetProperty(ActiveKey, true);
             MarkRecovering(player, now);
             bool moved;
             try { moved = player.MoveTo(region, x, y, z, heading); }

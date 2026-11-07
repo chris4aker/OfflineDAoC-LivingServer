@@ -148,10 +148,19 @@ namespace DOL.GS
 			base.AddToWorld();
 			return true;
 		}
+		/// <summary>The live "Spirit of ..." ghosts near him (flood guard, 1.2: at most the period raid's count).</summary>
+		private int LiveSpirits()
+		{
+			int alive = 0;
+			foreach (GameNPC npc in GetNPCsInRadius(5000))
+				if (npc is NosdodenGhostAdd && npc.IsAlive)
+					alive++;
+			return alive;
+		}
 		public override void EnemyKilled(GameLiving enemy)
         {
 			GameLiving player = EncounterTargets.AsRaider(enemy);
-			if (player != null)
+			if (player != null && EncounterFloodGuard.MayAdd("Nosdoden.Spirits", LiveSpirits()))
 			{
 				if (player != null)
 				{

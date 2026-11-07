@@ -596,8 +596,12 @@ namespace DOL.AI.Brain
             {
                 //spawning each tree in radius of 4000 on every player
                 List<GameLiving> player = new List<GameLiving>();
+                // Flood guard (1.2): one wave grows trees at most at the period raid's count of raiders (EncounterFloodGuard).
+                int grown = 0;
                 foreach (GameLiving ppl in EncounterTargets.InRadius(Body, 4000))
                 {
+                    if (ppl.IsAlive && !EncounterFloodGuard.MayAdd("OFGreenKnight.Trees", grown++))
+                        break;
                     player.Add(ppl);
 
                     if (ppl.IsAlive)

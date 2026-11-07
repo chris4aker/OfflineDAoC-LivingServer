@@ -238,6 +238,14 @@ namespace DOL.GS
             if (beliathan == null)
                 return;
 
+            // Flood guard (1.2): at most the period raid's count of live minions (EncounterFloodGuard).
+            int alive = 0;
+            foreach (GameNPC npc in beliathan.GetNPCsInRadius(4000))
+                if (npc.IsAlive && npc.Brain is BeliathanMinionBrain)
+                    alive++;
+            if (!EncounterFloodGuard.MayAdd("Beliathan.Minions", alive))
+                return;
+
             BeliathanMinion sMinion = new BeliathanMinion();
             sMinion.X = player.X;
             sMinion.Y = player.Y;

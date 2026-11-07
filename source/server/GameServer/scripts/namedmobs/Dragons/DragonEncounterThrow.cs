@@ -52,8 +52,10 @@ namespace DOL.GS
         public static int NextDelay() => Util.Random(MinimumIntervalMilliseconds, MaximumIntervalMilliseconds);
 
         /// <summary>
-        /// Who the gust can pick: real players (alive, plain accounts) within <see cref="PickRadius"/> and the bots on the
-        /// dragon's aggro list within it, never its current target. (The targeting pass's shared helper may replace this.)
+        /// Who the gust can pick: real players (alive, plain accounts) within <see cref="PickRadius"/> and, where the dragon may
+        /// move bots (<see cref="EncounterTargets.DisplacesBots"/>, the same switch <see cref="EncounterDisplacement.Move"/> asks),
+        /// the bots on the dragon's aggro list within it; never its current target. With the dragon's bot displacement off the
+        /// gust picks real players only, as the original did. (The aggro list, not every bot in reach: bots fighting it.)
         /// </summary>
         public static List<GameLiving> Candidates(GameNPC dragon, IEnumerable<GameLiving> aggro)
         {
@@ -62,13 +64,31 @@ namespace DOL.GS
             foreach (GamePlayer player in dragon.GetPlayersInRadius(PickRadius))
                 if (player != null && player.IsAlive && player.Client?.Account?.PrivLevel == 1 && player != dragon.TargetObject && !pool.Contains(player))
                     pool.Add(player);
-            if (aggro != null)
+            if (aggro != null && EncounterTargets.DisplacesBots(dragon))
                 foreach (GameLiving living in aggro)
                     if (living is GameBot bot && bot.IsAlive && bot != dragon.TargetObject && bot.CurrentRegionID == dragon.CurrentRegionID &&
                         dragon.IsWithinRadius(bot, PickRadius) && !pool.Contains(bot))
                         pool.Add(bot);
             return pool;
         }
+
+        /// <summary>
+        /// How high above the thrown raider this dragon may hurl, in units; 0 = the original spots (up to about 1,400 above
+        /// the lair floor: about 60% of a raider's health). Server properties epic_dragon_throw_height_golestandt /
+        /// _gjalpinulva / _cuuldurach (owner default 0, the original).
+        /// </summary>
+        public static int MaxThrowHeightFor(GameNPC dragon) => dragon?.GetType().Name switch
+        {
+            "AlbGolestandt" => ServerProperties.Properties.EPIC_DRAGON_THROW_HEIGHT_GOLESTANDT,
+            "MidGjalpinulva" => ServerProperties.Properties.EPIC_DRAGON_THROW_HEIGHT_GJALPINULVA,
+            "HibCuuldurach" => ServerProperties.Properties.EPIC_DRAGON_THROW_HEIGHT_CUULDURACH,
+            _ => 0,
+        };
+
+        /// <summary>The height a spot is thrown to: the spot's own, or at most <paramref name="maxHeight"/> above
+        /// <paramref name="standingZ"/> when the setting softens the throw (never higher than the original spot).</summary>
+        public static int ThrowZ(Spot spot, int standingZ, int maxHeight) =>
+            maxHeight > 0 ? Math.Min(spot.Z, standingZ + maxHeight) : spot.Z;
 
         /// <summary>Two to five of the pool, at random (pure but for <paramref name="random"/>).</summary>
         public static List<GameLiving> Pick(IReadOnlyList<GameLiving> pool, Random random)
@@ -84,15 +104,15 @@ namespace DOL.GS
             Spot[] spots = SpotsFor(dragon);
             if (spots.Length == 0) return 0;
             random ??= Random.Shared;
+            int maxHeight = MaxThrowHeightFor(dragon);
             int moved = 0;
             foreach (GameLiving living in Pick(Candidates(dragon, aggro), random))
             {
                 if (living == null || !living.IsAlive || !living.IsWithinRadius(dragon, MoveRadius)) continue;
-                if (living is GamePlayer player)
-                    player.Out.SendMessage(dragon.Name + " begins flapping his wings violently. You struggle to hold your footing on the ground!",
-                        eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
+                EncounterTargets.Tell(living, dragon.Name + " begins flapping his wings violently. You struggle to hold your footing on the ground!",
+                    eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
                 Spot s = spots[random.Next(spots.Length)];
-                if (EncounterDisplacement.Move(living, dragon.CurrentRegionID, s.X, s.Y, s.Z, s.Heading, DisplacementKind.Throw, dragon))
+                if (EncounterDisplacement.Move(living, dragon.CurrentRegionID, s.X, s.Y, ThrowZ(s, living.Z, maxHeight), s.Heading, DisplacementKind.Throw, dragon))
                     moved++;
             }
             return moved;

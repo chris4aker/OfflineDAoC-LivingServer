@@ -1238,6 +1238,27 @@ namespace DOL.GS.ServerProperties
 		public static double SET_EPIC_ENCOUNTER_WEAPON_DAMAGE_CAP;
 
 		/// <summary>
+		/// Epic encounters (1.2): a boss's throw, teleport or jail does not take your companions and pet along
+		/// (EncounterDisplacement.MovePlayer). Owner default 2026-11-06, to confirm.
+		/// </summary>
+		[ServerProperty("npc", "epic_companions_stay_when_thrown", "Epic encounters: when a boss throws, teleports or jails you, your /spawn companions and your pet stay at the fight and keep fighting (True, the 1.2 default) or are moved along with you as by a portal (False, as most throws did before 1.2; Legion's throw kept them at the fight before too). Bots the boss throws themselves find their way back either way.", true)]
+		public static bool EPIC_COMPANIONS_STAY_WHEN_THROWN = true;
+
+		/// <summary>
+		/// The dragons' wing-gust throw (1.2, DragonEncounterThrow): how high above the thrown raider each dragon may hurl.
+		/// 0 keeps the original lair spots (OpenDAoC-Core 3513bad: up to about 1,400 units, about 60% of a raider's health
+		/// without Safe Fall). Owner default 2026-11-06, to confirm.
+		/// </summary>
+		[ServerProperty("npc", "epic_dragon_throw_height_golestandt", "Golestandt's wing-gust throw: the highest a raider is hurled above where they stood, in units. 0 = the original lair spots (up to about 1,400 units: about 60% of a raider's health from the fall). 712 is the fork's old half throw (about 34%); lower is gentler.", 0)]
+		public static int EPIC_DRAGON_THROW_HEIGHT_GOLESTANDT = 0;
+
+		[ServerProperty("npc", "epic_dragon_throw_height_gjalpinulva", "Gjalpinulva's wing-gust throw: the highest a raider is hurled above where they stood, in units. 0 = the original lair spots (about 60% of a raider's health from the fall). 712 is about 34%; lower is gentler.", 0)]
+		public static int EPIC_DRAGON_THROW_HEIGHT_GJALPINULVA = 0;
+
+		[ServerProperty("npc", "epic_dragon_throw_height_cuuldurach", "Cuuldurach's wing-gust throw: the highest a raider is hurled above where they stood, in units. 0 = the original lair spots (about 60% of a raider's health from the fall). 712 is about 34%; lower is gentler.", 0)]
+		public static int EPIC_DRAGON_THROW_HEIGHT_CUULDURACH = 0;
+
+		/// <summary>
 		/// Allow Roam
 		/// </summary>
 		[ServerProperty("npc", "allow_roam", "Allow mobs to roam on the server", true)]

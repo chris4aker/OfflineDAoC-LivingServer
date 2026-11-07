@@ -202,6 +202,26 @@ namespace DOL.GS
         /// </summary>
         public const int PetDevourIntervalMilliseconds = 5_000;
 
+        /// <summary>
+        /// What the princes devour: a summoned pet, of a real player or of a bot (alive, its brain a controlled brain), never a
+        /// bot itself. A bot's own brain (BotBrain) is a controlled brain too, so the plain "Brain is IControlledBrain" test
+        /// ate companion bots and autonomous gamebots and healed the prince by each one (a dead bot every five seconds in a
+        /// bot raid; found 2026-11-06 by the Albion lore check).
+        /// </summary>
+        public static bool IsDevourablePet(GameNPC npc) =>
+            npc != null && npc is not GameBot && npc.IsAlive && npc.Brain is DOL.AI.Brain.IControlledBrain;
+
+        /// <summary>The pet a prince devours next: the nearest devourable pet among <paramref name="candidates"/>, or null.</summary>
+        public static GameNPC NearestDevourablePet(GameObject prince, System.Collections.Generic.IEnumerable<GameNPC> candidates)
+        {
+            GameNPC pet = null;
+            if (prince == null || candidates == null) return null;
+            foreach (GameNPC candidate in candidates)
+                if (IsDevourablePet(candidate) && (pet == null || prince.GetDistanceTo(candidate) < prince.GetDistanceTo(pet)))
+                    pet = candidate;
+            return pet;
+        }
+
         public static bool FightIsOver(GameNPC boss) => boss == null || !boss.IsAlive || !boss.InCombatInLast(ResetQuietMilliseconds);
     }
 }

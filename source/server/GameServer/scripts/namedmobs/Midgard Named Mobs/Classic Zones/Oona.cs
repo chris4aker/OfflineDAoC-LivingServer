@@ -104,10 +104,19 @@ namespace DOL.GS
 				player.Out.SendMessage(message, eChatType.CT_Say, eChatLoc.CL_ChatWindow);
 			}
 		}
+		/// <summary>Her live undead (flood guard, 1.2: at most the period raid's count).</summary>
+		private int LiveUndead()
+		{
+			int alive = 0;
+			foreach (GameNPC npc in GetNPCsInRadius(8000))
+				if (npc != null && npc.IsAlive && npc.Brain is OonaUndeadAddBrain)
+					alive++;
+			return alive;
+		}
 		public override void EnemyKilled(GameLiving enemy)
         {
 			GameLiving player = EncounterTargets.AsRaider(enemy);
-			if (player != null)
+			if (player != null && EncounterFloodGuard.MayAdd("Oona.Undead", LiveUndead()))
 			{
 				if (player != null)
 				{

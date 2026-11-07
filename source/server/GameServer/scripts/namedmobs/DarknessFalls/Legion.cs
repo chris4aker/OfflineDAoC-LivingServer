@@ -159,7 +159,8 @@ namespace DOL.GS.Scripts
         }
         public override void EnemyKilled(GameLiving enemy)
         {
-            if (enemy != null && EncounterTargets.IsRaider(enemy))
+            // Flood guard (1.2): at most the period raid's count of kill heals in 5 minutes (EncounterFloodGuard).
+            if (enemy != null && EncounterTargets.IsRaider(enemy) && EncounterFloodGuard.TryRecent(this, "Legion.KillHeal", GameLoop.GameLoopTime))
             {
                 BroadcastMessage("Legion says, \"Your soul give me new strength.\"");
                 Health += MaxHealth / 40; //heals if boss kill enemy player for 2.5% of his max health
@@ -607,6 +608,13 @@ namespace DOL.AI.Brain
                         spawnAmount = 1;
                     if (PlayerCountInLegionLair > 4)
                         spawnAmount = PlayerCountInLegionLair / 4;
+                }
+                // Flood guard (1.2): he counts at most the period raid (64: 16 adds a step), as a full raid of players.
+                int counted = EncounterFloodGuard.Cap("Legion.Adds", PlayerCountInLegionLair);
+                if (counted < PlayerCountInLegionLair)
+                {
+                    PlayerCountInLegionLair = counted;
+                    spawnAmount = counted < 4 ? 1 : counted / 4;
                 }
             }
             if (PlayerCountInLegionLair > 0 && spawnAmount > 0)
