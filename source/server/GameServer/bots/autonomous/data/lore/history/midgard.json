@@ -217,24 +217,29 @@
         }
       ],
       "places": [
+        "faraheim",
         "iarnwood",
         "modernagrav",
         "tuscaran-glacier"
       ],
       "bosses": [
         "basilius",
+        "boligar",
         "chief-tarek",
         "council-hord",
         "council-nokkvi",
         "council-otrygg",
         "council-ozur",
         "council-vagn",
+        "cronk",
         "dagar",
+        "dalgo",
         "elder-council-birghir",
         "elder-council-guthlac",
         "elder-icelord-hjalmar",
         "elder-icelord-suttung",
         "fostra-orm",
+        "goretooth",
         "hurika",
         "icelord-agmundr",
         "icelord-hakr",
@@ -245,8 +250,10 @@
         "jailer-vifil",
         "king-tuscar",
         "queen-kula",
+        "shredclaw",
         "torst",
         "trollkarl-bonchar",
+        "valmak",
         "vasrem"
       ]
     },
@@ -382,6 +389,7 @@
       "name": "The Iarn Dwarves",
       "summary": "The free dwarf clans of Aegir: the Remnants of Faraheim with their griffons, and Chief Tarek's people under the iron trees.",
       "places": [
+        "faraheim",
         "iarnvidiurs-lair",
         "iarnwood",
         "modernagrav"
@@ -404,21 +412,31 @@
       "id": "skogsra",
       "name": "The Skogsra",
       "summary": "Forest folk of Faraheim who lead travellers astray, the Shade Seekers among them.",
-      "places": [],
-      "bosses": []
+      "places": [
+        "faraheim"
+      ],
+      "bosses": [
+        "boligar",
+        "dalgo"
+      ]
     },
     {
       "id": "tradklan",
       "name": "The Tradklan",
       "summary": "A small, loud tree-clan of Faraheim led by Cronk.",
-      "places": [],
-      "bosses": []
+      "places": [
+        "faraheim"
+      ],
+      "bosses": [
+        "cronk"
+      ]
     },
     {
       "id": "wild-beasts",
       "name": "Beasts of the Wild",
       "summary": "Great beasts who serve no one: griffons on the glacier, render packs and terror birds in Faraheim, the old fish of Mahattava's lake.",
       "places": [
+        "faraheim",
         "iarnvidiurs-lair",
         "iarnwood",
         "modernagrav",
@@ -427,12 +445,15 @@
       "bosses": [
         "ancient-syver",
         "dyranapur",
+        "goretooth",
         "hurika",
         "lydsyg",
         "mahattava",
         "mortufoghus",
         "rotodjur",
-        "torst"
+        "shredclaw",
+        "torst",
+        "valmak"
       ]
     },
     {
