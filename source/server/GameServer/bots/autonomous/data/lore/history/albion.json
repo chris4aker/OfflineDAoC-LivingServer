@@ -74,7 +74,8 @@
         "catacombs-of-cardova",
         "lyonesse",
         "albion-shrouded-isles",
-        "cornwall"
+        "cornwall",
+        "hadrians-wall"
       ],
       "bosses": [
         "cailleach-uragaig",
@@ -395,7 +396,8 @@
         "camelot",
         "camelot-hills",
         "black-mountains-south",
-        "avalon-marsh"
+        "avalon-marsh",
+        "hadrians-wall"
       ],
       "bosses": []
     },
@@ -415,7 +417,8 @@
         "campacorentin-forest",
         "avalon-marsh",
         "black-mountains-north",
-        "cornwall"
+        "cornwall",
+        "hadrians-wall"
       ],
       "bosses": [
         "golestandt",
@@ -449,7 +452,8 @@
       "places": [
         "tomb-of-mithra",
         "catacombs-of-cardova",
-        "cornwall"
+        "cornwall",
+        "hadrians-wall"
       ],
       "bosses": [
         "lord-sanguis",
