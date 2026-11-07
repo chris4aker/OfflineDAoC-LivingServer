@@ -107,20 +107,20 @@ namespace DOL.AI.Brain
 		}
         #region bolt random enemy
         public static bool CanCast = false;
-		public static GamePlayer randomtarget = null;
-		public static GamePlayer RandomTarget
+		public static GameLiving randomtarget = null;
+		public static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
 		}
-		List<GamePlayer> Enemys_To_DD = new List<GamePlayer>();
+		List<GameLiving> Enemys_To_DD = new List<GameLiving>();
 		public void PickRandomTarget()
 		{
-			foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+			foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000))
 			{
 				if (player != null)
 				{
-					if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+					if (player.IsAlive && EncounterTargets.NotGm(player))
 					{
 						if (!Enemys_To_DD.Contains(player))
 							Enemys_To_DD.Add(player);
@@ -129,7 +129,7 @@ namespace DOL.AI.Brain
 			}
 			if (CanCast == false && Enemys_To_DD.Count > 0)
 			{
-				GamePlayer Target = (GamePlayer)Enemys_To_DD[Util.Random(0, Enemys_To_DD.Count - 1)];//pick random target from list
+				GameLiving Target = Enemys_To_DD[Util.Random(0, Enemys_To_DD.Count - 1)];//pick random target from list
 				RandomTarget = Target;//set random target to static RandomTarget
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastBolt), 1000);
 				CanCast = true;
@@ -157,20 +157,20 @@ namespace DOL.AI.Brain
 		#endregion
 		#region Teleport random enemy
 		public static bool CanPort = false;
-		public static GamePlayer teleporttarget = null;
-		public static GamePlayer TeleportTarget
+		public static GameLiving teleporttarget = null;
+		public static GameLiving TeleportTarget
 		{
 			get { return teleporttarget; }
 			set { teleporttarget = value; }
 		}
-		List<GamePlayer> Enemys_To_Port = new List<GamePlayer>();
+		List<GameLiving> Enemys_To_Port = new List<GameLiving>();
 		public void TeleportRandomTarget()
 		{
-			foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+			foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000, bots: EncounterTargets.ForDisplacement))
 			{
 				if (player != null)
 				{
-					if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+					if (player.IsAlive && EncounterTargets.NotGm(player))
 					{
 						if (!Enemys_To_Port.Contains(player))
 							Enemys_To_Port.Add(player);
@@ -179,7 +179,7 @@ namespace DOL.AI.Brain
 			}
 			if (CanPort == false)
 			{
-				GamePlayer Target = (GamePlayer)Enemys_To_Port[Util.Random(0, Enemys_To_Port.Count - 1)];//pick random target from list
+				GameLiving Target = Enemys_To_Port[Util.Random(0, Enemys_To_Port.Count - 1)];//pick random target from list
 				TeleportTarget = Target;//set random target to static RandomTarget
 				switch(Util.Random(1,4))
                 {
