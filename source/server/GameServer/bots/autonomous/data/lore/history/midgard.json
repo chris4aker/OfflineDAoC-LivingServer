@@ -179,6 +179,7 @@
         "skona-ravine",
         "spindelhalla",
         "summoners-hall",
+        "vale-of-mularn",
         "vanern-swamp",
         "varulvhamn",
         "vendo-caverns"
@@ -756,6 +757,7 @@
       "name": "The Vendo",
       "summary": "A hairy, howling people of the caves north of Mularn, with their goblins.",
       "places": [
+        "vale-of-mularn",
         "vendo-caverns"
       ],
       "bosses": []
@@ -845,7 +847,26 @@
       "name": "The Houses of the Gods",
       "summary": "Midgard's callings as houses of its gods, with their gothi and gythjur in Jordheim's two temple halls (the Aesir's: Odin, Thor, Tyr, Modi, Bragi, Eir; the eastern: Hel, Ymir, Loki, Skadi), Kelgor's and Bodgar's houses that came with the Valkyn, the trainers who teach their young, and the jarls of the high hall who keep the realm's names and vault.",
       "places": [
-        "jordheim"
+        "jordheim",
+        "vale-of-mularn"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "hidden-people",
+      "name": "The Hidden People",
+      "summary": "The huldu of the Vale of Mularn and the Svealands, fair from the front and hollow behind, who lived beside the first farms unseen and stopped hiding when the farms stopped leaving things out for them.",
+      "places": [
+        "vale-of-mularn"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "clan-smyg",
+      "name": "Clan Smyg",
+      "summary": "The hobgoblins of the Vale of Mularn under Smyga, named for sneaking, who raid between Mularn and Haggerfel; Carr left them.",
+      "places": [
+        "vale-of-mularn"
       ],
       "bosses": []
     },
