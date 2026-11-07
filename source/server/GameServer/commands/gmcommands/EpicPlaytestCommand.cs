@@ -18,6 +18,7 @@ namespace DOL.GS.Commands;
     "/epictest list - every raid, its realm, period size and hub",
     "/epictest start <event> [size|era|start] [focus=Name,Name] [nohub] [atstaging] - a forced raid of <size> bots (era = the period size, start = 125%); the reserved bots are moved to its hub unless nohub; atstaging musters it at its own staging post instead of the realm's hub",
     "/epictest gather <event> - move the raid's party members still away from its hub to it (before it leaves), or those not yet on its staging ring to the entrance (before it goes in)",
+    "/epictest front <event> - move the raid's living members inside its dungeon to the route's front (its next target, or the final encounter's trigger): skips the climb, for testing a final room",
     "/epictest reset <event> - clear an event's cooldown after a raid ended (the launcher's reset)",
     "/epictest status - the running raids",
     "/epictest stop <event> - end a running raid")]
@@ -63,18 +64,29 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
                 MoveTo(args[2], where, gatherRegion, gatherPoint, away);
                 Say(client, $"Moving {away.Length} party members to {where} (the hub before the raid leaves it, then the staging post until it goes in).");
                 return;
+            case "front":
+                if (args.Length < 3) { DisplaySyntaxOf(client); return; }
+                GameBot[] behind = AutonomousRealmRaid.MembersToFront(args[2], out ushort frontRegion, out Vector3 frontPoint);
+                if (frontRegion == 0) { Say(client, $"{args[2]} is not inside its dungeon."); return; }
+                MoveTo(args[2], "the route's front", frontRegion, frontPoint, behind);
+                Say(client, $"Moving {behind.Length} raiders to the route's front {(int)frontPoint.X},{(int)frontPoint.Y},{(int)frontPoint.Z}.");
+                return;
             default:
                 Say(client, "/epictest list | start <event> [size|era|start] [focus=Name,Name] [nohub] | status | stop <event>");
                 return;
         }
     }
 
-    /// <summary>The roster size a start asks for (pure): a number, "era" (the period size) or "start" (125% of it).</summary>
+    /// <summary>The roster size a start asks for (pure): a number, "era" (the period size) or "start" (125% of it), made
+    /// whole parties (eights, and a final four): the forced roster is built that way, so a dragon's 70 is 72.</summary>
     public static int SizeFor(string word, int periodSize)
     {
-        if (string.IsNullOrEmpty(word) || word == "era") return periodSize;
-        if (word == "start") return (periodSize * 125 + 99) / 100;
-        return int.TryParse(word, out int n) && n >= 8 ? Math.Min(n, RealmRaidRecruitmentPolicy.MaximumBots) : 0;
+        int size;
+        if (string.IsNullOrEmpty(word) || word == "era") size = periodSize;
+        else if (word == "start") size = (periodSize * 125 + 99) / 100;
+        else if (!int.TryParse(word, out size) || size < 8) return 0;
+        size = Math.Min(size, RealmRaidRecruitmentPolicy.MaximumBots);
+        return size % 8 is 0 or 4 ? size : (size + 7) / 8 * 8;
     }
 
     private static void Start(GameClient client, string[] args)

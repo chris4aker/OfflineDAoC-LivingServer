@@ -706,6 +706,15 @@ gamebot raids, and these came out of it:
   monster on the way) nicked to 84% and left by 91 of 95 living raiders was counted as the raid's first wipe and called
   the Special Forces. A reset now counts as a wipe only from 70% or lower (Spindler Broodmother lost at 42% still does);
   half the raid falling is a wipe as before.
+- **Bow-only raiders keep their bow on Funus.** With his weapon puzzle on, a scout he was fighting had every bow draw
+  interrupted by his hits and switched to her sword each time; every swing healed him to full (462 times in 25 minutes,
+  never below 89%). A bot that may fight a target with its distance weapon only now keeps it when its draw is
+  interrupted or it loses sight.
+- **A boss attacking the raid comes before a lesser named.** On Caer Sidi's lower floor the raid fought the archlich and
+  other named monsters while the Host killed 219 raiders over the run; a boss fighting the raid is now turned on first.
+- **Play-test harness:** a dragon raid's stragglers are gathered on its staging ring, never onto the dragon (the gather
+  pulled Gjalpinulva twice), `/epictest front <event>` moves a raid inside a dungeon to its route's front (to test a final
+  room without the climb), and sizes are whole parties (a dragon's 70 is 72).
 
 ## Beta 1.1.2 (in development)
 
