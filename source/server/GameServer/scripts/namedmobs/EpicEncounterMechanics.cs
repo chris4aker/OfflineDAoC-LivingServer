@@ -55,6 +55,8 @@ namespace DOL.GS
         public static bool AllowBotDisplacementFor(GameObject encounter) => On(nameof(AllowBotDisplacement), encounter);
         public static bool AllowDragonThrowFor(GameObject encounter) => On(nameof(AllowDragonThrow), encounter);
         public static bool AllowDragonMessengersFor(GameObject encounter) => On(nameof(AllowDragonMessengers), encounter);
+        /// <summary>By encounter name, for an add's script that asks for its boss's value ("AlbGolestandt").</summary>
+        public static bool AllowDragonMessengersFor(string encounter) => On(nameof(AllowDragonMessengers), encounter);
 
         // Original OpenDAoC mechanics the fork had edited out for bot raids (docs/encounters/EPIC-ENCOUNTERS.md, "Restored
         // behind switches"). Each is off, so the game plays as before, until the raid AI can play it; the ones it plays are on. The values were read

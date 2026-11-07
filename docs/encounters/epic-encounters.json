@@ -7,7 +7,7 @@
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/CailleachUragaig.cs": "742a59d2fe8155b2718f766c1fefd50d04932db3ab613dfd8b3c5f7ebcea4d28",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Fester.cs": "43e981bf07934f0a8231a81c88448434770946d54cbb70518693ed7e1b10bab3",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/KingOfTheBarfogHills.cs": "95023c311861809f6b79ee8d3f992619fb3d40ad1eb2bc753c8ef16cf78a3027",
-  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "5ca2c58062ed0e529f4da17a73fb7f86daa4b61b4c60487bea9cb1c9be84d926",
+  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "482de79d1acd85c679c195dac10a93cac7d0197b210f4b0547bcda71832b04b4",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs": "7e15d7495a65f5404665e4f3051de7435309bea94a895a922a652dd1ff0d03bf",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Mouth.cs": "ceb60c7908e5a89d8ab4c622bb46dc0d0b6ec4b0ff54076988d57f5a01bf9762",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/SisterBlythe.cs": "892e0fcf04c452655aa6f3ded924b2d2b0945ad6ecbdba24a8714cba41fc5d44",
@@ -23,15 +23,15 @@
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/ValnirMordeth.cs": "8d54e7f51ce0d282a797d6b1c1d919fb1563794980759d2942a8757891a0aacd",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Vortanos.cs": "043ca32ac0443bb16ccadbd99ce2757fbfba911460bd6029dc3e14dbfbbe144d",
   "source/server/GameServer/scripts/namedmobs/Archilus.cs": "9a7b1f7df01cbf9c75612a458ee7147d813a5f071855e9cd509929dd96485834",
-  "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "6533b8df4ed97433e4fe887c95cae1fb66ec6741b7f3ecf0494e8033a52b3415",
-  "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "59035e368b36262cd6b3f2c7503459bd18741ec3e38105cd72bd78ad78e1a855",
+  "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "0d2200c1adce63fee64902d15541f1f8d657d12b6e16910a04d6da380451c1be",
+  "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "63381c11dac907db46142caebb65151f273ed2a68739194d6167812833a86742",
   "source/server/GameServer/scripts/namedmobs/AvalonCity/DuraekEmpowered.cs": "1b4a503df6d398e60ec25599b729006779555528528b05f6f7087e154e73fa27",
-  "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "5acb2842eb2e7a8a107cfd18c647e85925e939e995a0d0e11daa108e861d9843",
+  "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "77ad66a5c926081ff9aa9f91c2bb68c43c260bce0e02dfbdd4c288cadc2e0be2",
   "source/server/GameServer/scripts/namedmobs/AvalonCity/VeraeriusBrave.cs": "f92eb6d85f0d2b90cee7fb7e836af2faa4869cedb6a970cbab27b8d74295617d",
   "source/server/GameServer/scripts/namedmobs/AvalonCity/WenoiakEnlightened.cs": "01037d035afe6761834bbc92154732fc27f2d596680aa686e26e4abdc64b57b5",
   "source/server/GameServer/scripts/namedmobs/BrotherDon.cs": "8964e56930f3d641f924427da766faabeca87ea5d3fcb1cfb62d604e69bb18c7",
-  "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7",
-  "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs": "3f2bc2dff0c75b5d1537474009a522eca849656ac14411fa760a3483f5639133",
+  "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "f0782ce2a0361f760ea2a2bad3594ad32525139e5129c5d7ddd19d98a1632d9c",
+  "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs": "d542dd1cbdb80e979f477a5c38320fc610694471341a665a08deae313b24f26d",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "1b8735746b1c9051f55cc920c7ebbe0941abbd766c33b0a4baae767ce3f3d3d5",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/FateChosen.cs": "b4037d917fcbfb2c84542097738575f0a806e08b6e0c816825f0831f8b454f42",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "1e80b77de1f2e1bc50d34a432af5eec6c96775d15404d5e1809e39434322667c",
@@ -47,7 +47,7 @@
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs": "ea20ed907819ebba2dba2dde9703fee62d88d8ea945cf8b5a4edb084cdc2d7b9",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "cf017bfe11ca5e811ebdafe29e449fd07cacbef70a440a1ae5b8716ec105e494",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "0f44370d05d55a397fbcd0c5b2bbdb0ac7c65c96fb347a1cfbe1b5bf5957a19e",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "e216d9a7c3a607b9e800d01aa00d029348bf159bca18db0ea787be0449e59b07",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "91d8067ce6d73f6213664e044581bff4d2306f7787bdc5597527a480ad9430ab",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs": "fa9b3318a8cfa33957552bfde7a2659f6438cb4a3c53f4dbbf7b829f6d42db09",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "ed786219f6c2df5a16b38e5369ff20707444d17685919e1a3e6250245112e096",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "2f464529d3943e2dac47145c3310ec786d1b172f1303582acd0c567bdd5f59b0",
@@ -63,37 +63,39 @@
   "source/server/GameServer/scripts/namedmobs/Dodens/MistressOfRunes.cs": "1be2111905ff677a08f5dbae65440e5d324ab6e8398fb165741f131da1d06a66",
   "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "00b3b24581786e8c591d0228899d57370b8e247cf21d1426344653eadcbea487",
   "source/server/GameServer/scripts/namedmobs/Dodens/ThaneDyggve.cs": "517f5c24ba6f17771c2a4b88fc4901ad0ebf1c39d4f8ec23d65e1d4e8560d4d7",
-  "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "fb898e2c12cb105fd7017e45c5b6e884e7dddf45a4456176c6eeb39e39c9f23f",
+  "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "51b93028903d59d2a2c9e3972fa0cb18bed8a186bc7607ab112ba70139736916",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonCombatGeometry.cs": "3908bdb98f00d2bf319c7e650eac46fed1472b7533a3ab977f31c527f7a59271",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonDiagnostics.cs": "b1a90e5c650db04f8973ce5015ff5a9175fdd6266a862c965fa39a1fabcb85b9",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterAdds.cs": "c1494caffb7ba37b042544eb45e3703bb35429fd543599ad05528ecb75f2f6cd",
+  "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "9af7c8aab91f5e9aa05a66e8c96c47ada32dc43c0d43e840ad75c727e76f0466",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonFlightLanding.cs": "c6dbfb4c0f5ec02c29d9e5a144d7e86d5a945dfbac7f78d8e297f03a3f6ebb8e",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonLairPlacement.cs": "574af55d780a64ce63e2f2de89b20044ce1c67cfeaa150e5125d230efcc23391",
-  "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "4c9df8312f40c9db8d908ce57c6f96a47d88a294a2867e713e11531f5020f678",
-  "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "b3b4affcb6076765c54bcb3b4446b1c3144baf461e8f494564f9cf363c7cfb31",
+  "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "85414609cd5724952d9d4f334914a7e07a56cbef10a6093c8f31dbec80506d9d",
+  "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "5a5a35d8d3ee2f065239bea298fc884c0d8a9678d4c63b8f93a231eee55db4aa",
   "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666",
+  "source/server/GameServer/scripts/namedmobs/EncounterDisplacement.cs": "991f799a0e11df1a49fe865b3994c76ce94991ccf62ad25ef1d8b9ab000c1796",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
-  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "bb3c963aab1f7d18b2124dff2ce2baa4ae7a3cb80470737b2a7d26e126b69198",
+  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "4eb899ad3474d233835d43557917cbe32436f346508a9287f904f3780f05b81d",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "47dede9429ce25a534a73793e7b5940c337b6c4314b3b0fe57a6c0e301e96eeb",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
   "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe",
-  "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "e3ceb2cb16e859fd21ee26f589dc7b786abe86a6956f1923e15406954f5cfb62",
-  "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "ce2a3b5bebe789530311b2824e9fb09ec4686bdb05e9d8904b9b76b79e66c7d5",
+  "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "d3c93d42c1f64f1e05cd68df1446b6a29b50addd5c56541e74bf44cf90fffe72",
+  "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "3da53dcef29f657fb6a3f43f4c1e348acfb8c1f7d54b24721b9c1d8eac9b76f7",
   "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "1f827170b7428801f21a6391a56abd1d18c72dc8507ebfbd98a3d4388b2dc2de",
   "source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs": "5d3b338eec35ec06bacef311189dc0066981669f761bf95d88deaf814d987712",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "ccb632a3d55ab9e622df2cb1874ef95aaf46c73e9dd428f4078aab09e191dcff",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs": "0cbda933dcdfc6bad6b81061392d36c30404dea863ac6c8ad68ae723aa24822d",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "54f836419f50975ca5c7d4df1b25fe764081c4b9b9be87b5f49e84f8b02fae65",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs": "3d39abfd2a900d792a7f542914506fc4ff7a11790287e2a2547f082c5721ae0a",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "cb8dccc6be1151e66daf2d3c95fd9862087c0b061149f30a377cab2f5e1867f0",
   "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs": "931f35a51e869304d1980160f2559e24661fc6ac6d59a6405084eceaade0ca25",
   "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs": "63d9d69def059a8a1ba2c6182f0ee50d58b96ae7816fda602452f228012ccc79",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs": "803467b4edadf2428fd2ef50dba29d129204e09353cfd8e8536d9afa4a13e13a",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "db1e12260333888721c01612fb1f9b2e2874c392103ac68308de886effefc402",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "134ef4b425d4dabc2b73c0461bcf54d99138b1332d2dae2ca336a2c061e8c428",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "4eeda42809772bf316ee1a95144177c43a02c704e4a1d02bb6fbc3f5b0313425",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "149668060824c2e550b27e9244d813e2c7f5b1de4c575e692093e9dd9c9feb30",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "e5c3cd51f842144bc131e1c5416febdd3f02e30916edc2f47b407cd8d15562f3",
   "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs": "b378898bd7a8665b766bf4412fc6cf3b31bdb4fc7f76d0994cb1751edb863f0c",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93",
-  "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "108f8cec1d0f52c5292c61ab3ecbba0900ef4568e417042517e830de9ca19c3f",
+  "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "953582cfa72962b993ff79d127e362d446b2c897ac03a36e999ec9dba81a260d",
   "source/server/GameServer/scripts/namedmobs/Gnat.cs": "0cc35e556f8aff83f999e735bd6f9664d686fd701955c5884951198730c22f82",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "c683203d719045871e96965b960220e2abc41ea07a64d0ea5297211d8a3e543a",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainAtwell.cs": "2660a077543835d7cdbac811627b37b7ab380474eb9bf81db7d63c065274f684",
@@ -136,7 +138,7 @@
   "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Dyranapur.cs": "86c4e1343a60ddf7553d6f44726c8f85a73c1e16c8bf7faca4a2c449bdf685e1",
   "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Hati.cs": "b45f866977458c1d05c36695e688e9fc580b6015b79d65e64fdc5650c567cfcc",
   "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Hurjavelen.cs": "b232139af678ba92bd1dd639fc4a51d336ccbf5c085550630f3904a80958cae6",
-  "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs": "31bd6ef22d8d81a88a10e99c33a6bddee5b08e76ddce5d818a1b588d84db13a2",
+  "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs": "aae47ca3576dbd42f658fe40e5dec31eeee94da8295d8aba412f62e03c884aee",
   "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Lydsyg.cs": "58b055d2e6018677976e4eaa2f9f5b37d51f3eeafb799c0495dfff6913f4e026",
   "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Mahattava.cs": "7c933eda3886469fb90badc23fab1118f675f719e2ee166da1793823e7c3db29",
   "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Skoll.cs": "96ff2701447217c01b437fbb61fb54387738853b50076f4efa894e34e15585ea",
@@ -146,11 +148,11 @@
   "source/server/GameServer/scripts/namedmobs/Krondon/DrihtenElreden.cs": "f24b92e1dabe64b333934384af8bc50ae639191a2c65eb6361a93500b1c5a07a",
   "source/server/GameServer/scripts/namedmobs/Krondon/Fuladl.cs": "5c77e0755bcf96121b2fa459a5ba574b6b289795ab47a5d850adee33cf270c70",
   "source/server/GameServer/scripts/namedmobs/Krondon/Fulafeallan.cs": "f5ba58840999e90587f405a2b1be64ade0457b090be3aebddc35311537ecf756",
-  "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "146de3a3f7b0a15f3ce4296e14a73966d8e908fc5bfa367df3cc1018de72b59f",
+  "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "87d618e191173d1f4783d3b29361c50c4035b27db7c6ba6eea2c378a02efbf7b",
   "source/server/GameServer/scripts/namedmobs/Krondon/LurfosHerald.cs": "87caa007651e218233567dfbb5641ec0d7fed25f6d08320006c2d3b69befd650",
   "source/server/GameServer/scripts/namedmobs/Krondon/MorgusUrgalorg .cs": "52e5bc6478a7fc8c154a7423a91fdd4843068c67cda4d20d4323f0a1c6057bcb",
-  "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "8d2e120d34b915ce2e459612498985039185d7361df433a9a9de0cc99f838d02",
-  "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs": "7fd6006aded2a9ce15d30543416ccfc02a9f5feaaec6e0c537dfb567f3d92cef",
+  "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "5be32b2d3aa2c169f3fc689a14baf7b5c1f9497272518fcbd58c5dd45c47f37c",
+  "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs": "a2ab06fa5c77e57c8a0cc8521db04433c65f593723d8c0bcabce7bc3587b8c46",
   "source/server/GameServer/scripts/namedmobs/Krondon/UlorAndJehrogSeBysen.cs": "0ac5434189658322d288521185e65e00b48cf3e067506695b1981fca31adf1fc",
   "source/server/GameServer/scripts/namedmobs/MaldaharTheGlimmerPrince.cs": "cb79af21ccefe4c643d37e945ae01ff30ad5e5f3c999dfa682a6d05413028996",
   "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs": "b55ebdb4163258f61661656bd550e975173411aacc683b9fe25646a0136d7491",
@@ -168,21 +170,21 @@
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Runil.cs": "7bf552d955fd5eb28c59e5917aa88b303d39f725f7af60074ee3b73d78df4fee",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ulfketill.cs": "645dfb0ec4ab74d670c66de0c0da84bd69f43361910540e4888b8dae9cdc8d50",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/WretchOfWinter.cs": "60347e5ad9cbbca4a9a3a1c7fc829dd9403429235a7eb568c9544cd35e2dcceb",
-  "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs": "5233e97cf9925374a0939b6b78fe3315b5ad58d5da45c8c4e045d65efcffa52e",
+  "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs": "efa33f77586fb64b6103ced3adb4253e47ad533ee707c55784cbbae76b870fe6",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Basilius.cs": "60f53f2bfd8b4c682a98b1b186b39bfe874fc4cebf2c468580206effc7085c0c",
-  "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs": "c42f90da28992a5dc86f53f3d4c0751a1b04886574053db9f83a0014d0d852f8",
+  "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs": "5c63d6d290c89bb9a7ce31cc20ff0cedc25619a820af50229e8ae404be2e664b",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/ChiefTarek.cs": "7a2ef957bd71f47f33ae86012cad6f6bbe38a8f88f2580d4cc23b5a044ff80f8",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Cronk.cs": "1546cb7c0c138c6b9f884a8540576ece1a0026e4086b03ab961998ba036cd313",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Dalgo.cs": "f72b57c8bdaf0ef19f51543340ca4393117194a9c85b7bcb97c6df9794491774",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Goretooth.cs": "6c422b2360d12e69397c564bbf46b5fd30a84a1fae839ab02e74f0b6c4a68055",
-  "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs": "cb68d88c71261f8985838757c57b7dc47d48cae78a0df1fd104ef80afaae91c1",
+  "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs": "ef40ad4030778d32445e0a0463e2d8808eee4c3505a6450065e9b32e719ffd22",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Shredclaw.cs": "b4a0cce03ac3565174173d7c34bd51e761aac14b911ddf941a9fff671339d447",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Valmak.cs": "459dd23c05add851e92b2f6fd78efd957c3af1a068a3377807552a6d9ab9a725",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Vasrem.cs": "5a6d0d84e1cea4cb4ccaf5c14e582941a6780b5083e5ba5ca17294d5f7430556",
-  "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "3b23f640c300478931f75387d98e910323f4dfb123f2b600f0397fcb03433070",
+  "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "44b49b42495b56e582e68c7adc6402a7b22f7c94632da7c7778684e87d0b717f",
   "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "9c4f41705b39a834414fa82f2602f659b2b1dc5c1608105d7231434752f92b06",
-  "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "c132394348b47059a3c7427a8b46a6282c7c6b2633f0d14d4d459219a93a141d",
-  "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "07a221b7d2168ae615e73edf3d3fecd75e4e724fc5dfe292fee0f83759d879ae",
+  "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "71ece29c4b78b7eba3bbbf569f37ce1f3a803c4a1b77abe7876be0983fc5e2a2",
+  "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "e10bb1a6e917ed34ac4a76407b31e33c5ca7026a84813dad4e493efb0a53ace3",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "8ae1d2761326e5c7753464c61e5cad23b20da2695914f41890909ccb1ac4103f",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs": "d8c2fdb4251b6e18fe8c1e6138486c6b6cfd3c75e1e2dd814e3e2387244b5257",
   "source/server/GameServer/scripts/namedmobs/Trollheim/Dagar.cs": "9c54b8e58b90b96c8d0cc2e20a20b5a50eb5a2f1f156172b47e89e7c3cada7b8",
@@ -203,14 +205,14 @@
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "902b66c51eecf6e1743f713eae627d606f0ff2e553bf4a9621a0a8ca51faad94",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Hord.cs": "f21c3e552ea4280627e1dbb87c762a4a5309d9cbec086d099d6231442327abc3",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs": "968acafc599e2fb740ec84a8df0f79f4c8c2831918dc434648eee93c572b42aa",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "b745a3588f7bb91559d24dbbbd71bd554a2c110c2264a778907918fdd5d89b62",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "0deb6e32e6cd72ce99361e28c81e9c839886d3c10388ed6b66dd5d83374693c0",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "e5c585f338292eb70d61bc290c846548563de0fdf0969d8230e367e61839e881",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "00675a6799f362bf98e12ff83038acc80a445405c2f3be22905162d122f9e6cf",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs": "047313701e409de109730137f1f89fb90f7596bd0247952ad7d929ce0b9ee055",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "f68680bbe041558b0a4471b2fe24e0bacf0d9f14b80fe70929b8f8e31ed986b3",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "8e304d98cda194e4bd00a9c2437f85b7bd57e68d168e88e58837a10f72021e84",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "e8a5c40f551b2db76a7559f3b80af50d4fad8846ce225bdfe77e9591160f6891",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "355ee64adbd51a1812cbc4bc6a152a7e5b39639db4649b644388446c41e6c981",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs": "919e4a542ee6d21bbdfa153cb5d6ade286ee2e5249e5e7b817522d330c6545d5",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "e1e39b483c515c83a04986d5ec43de8de45ccec4b172d2ce8fd8ce1e740d1510",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "47c1d99001e25b8f616353b0b380afa0bb8a83fb96d64c2cafe9e32dca683631",
   "source/server/GameServer/scripts/namedmobs/Yar.cs": "e2ffa172eca1beb7af889d425248ba5bcd22ec6c99a65c038754f3ce563d989b"
  },
  "switches": [
@@ -218,37 +220,82 @@
    "name": "AllowDisplacement",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 10
+   "line": 19,
+   "perEncounter": true,
+   "about": "/// Easmarach, Spindler, the Horsemen room, Bane of Hope, Jailer Vifil, Hakr, Hurika, Kula, the waterfall)."
   },
   {
    "name": "AllowPositionPuzzle",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 11
+   "line": 21,
+   "perEncounter": true,
+   "about": "Split-position puzzles (Olcasgean's safe points, Conservator, Easmarach close range, Kula's circle)."
   },
   {
    "name": "AllowInvulnerableHazards",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 12
+   "line": 23,
+   "perEncounter": true,
+   "about": "Hazards that can't be hurt and must be avoided."
   },
   {
    "name": "AllowAddShield",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 13
+   "line": 25,
+   "perEncounter": true,
+   "about": "A boss that takes no damage while its adds live."
   },
   {
    "name": "AllowGlacierGriffonPatrol",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 17
+   "line": 30,
+   "perEncounter": true,
+   "about": "Torst and Hurika's aerial patrol and pull."
+  },
+  {
+   "name": "AllowBotDisplacement",
+   "value": "false",
+   "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
+   "line": 35,
+   "perEncounter": true,
+   "shippedFor": [
+    "AlbGolestandt=true",
+    "MidGjalpinulva=true",
+    "HibCuuldurach=true",
+    "Xanxicar=true"
+   ],
+   "about": "/// On per encounter where the bots' recovery is proven (EncounterDisplacement, EncounterDisplacementRecovery)."
+  },
+  {
+   "name": "AllowDragonThrow",
+   "value": "false",
+   "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
+   "line": 38,
+   "perEncounter": true,
+   "shippedFor": [
+    "AlbGolestandt=true",
+    "MidGjalpinulva=true",
+    "HibCuuldurach=true"
+   ],
+   "about": "/// the dragon's target) are hurled to one of five spots of the lair. On per dragon since 1.2."
+  },
+  {
+   "name": "AllowDragonMessengers",
+   "value": "false",
+   "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
+   "line": 41,
+   "perEncounter": true,
+   "about": "/// out of the lair and each calls three to six adds where its path ends. Off: the raid AI has no tactic for them yet."
   },
   {
    "name": "AllowHorsemenTetherHeal",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 24,
+   "line": 66,
    "restores": true,
    "about": "Fames, Morbus and Funus heal to full when drawn past their tether (not only when the fight is over)."
   },
@@ -256,7 +303,7 @@
    "name": "AllowFunusWeaponPuzzle",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 27,
+   "line": 69,
    "restores": true,
    "about": "/// listed weapon; any other attacker (pets included) heals him to full."
   },
@@ -264,7 +311,7 @@
    "name": "AllowSacristanPatrol",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 29,
+   "line": 71,
    "restores": true,
    "about": "Skeletal Sacristan walks his loop at 220 without stopping, with 70% magic resists."
   },
@@ -272,7 +319,7 @@
    "name": "AllowSoulReckonerFullShield",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 31,
+   "line": 73,
    "restores": true,
    "about": "Soul Reckoner takes no damage at all while a reckoned soul lives (not a quarter)."
   },
@@ -280,7 +327,7 @@
    "name": "AllowSoulReckonerSmallRoom",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 33,
+   "line": 75,
    "restores": true,
    "about": "Soul Reckoner's room is 900 units from its middle (not 1,500)."
   },
@@ -288,7 +335,7 @@
    "name": "AllowAroonDamageOrder",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 36,
+   "line": 78,
    "restores": true,
    "about": "/// crush, body, cold, energy, heat, matter, spirit); each Scaith is immune until the one before it is dead."
   },
@@ -296,7 +343,7 @@
    "name": "AllowGalladoriaBridgeSpot",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 39,
+   "line": 81,
    "restores": true,
    "about": "/// the original counted real players only, which a bot raid could never meet)."
   },
@@ -304,7 +351,7 @@
    "name": "AllowFullFirePatches",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 41,
+   "line": 83,
    "restores": true,
    "about": "The Fire primal's trail of fire hits 220 in a 450 radius (not 120 in 300)."
   },
@@ -312,7 +359,7 @@
    "name": "AllowEarthmenderClassPuzzle",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 44,
+   "line": 86,
    "restores": true,
    "about": "/// the raid AI sends each raider to an Earthmender its class hurts (EpicEncounterTactics class rules)."
   },
@@ -320,7 +367,7 @@
    "name": "AllowEarthmendersPassive",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 46,
+   "line": 88,
    "restores": true,
    "about": "Earthmenders never attack (they only heal)."
   },
@@ -328,7 +375,7 @@
    "name": "AllowEarthmenderQuickReset",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 48,
+   "line": 90,
    "restores": true,
    "about": "An Earthmender heals to full 30 s after its last fight even with raiders in the room."
   },
@@ -336,7 +383,7 @@
    "name": "AllowEarthmenderMutualHeal",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 50,
+   "line": 92,
    "restores": true,
    "about": "Earthmenders heal each other as well as the Earth primal."
   },
@@ -344,7 +391,7 @@
    "name": "AllowBeathaHealsXaga",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 52,
+   "line": 94,
    "restores": true,
    "about": "Beatha's damage heals Xaga by twice the amount."
   },
@@ -352,7 +399,7 @@
    "name": "AllowFairyFlight",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 54,
+   "line": 96,
    "restores": true,
    "about": "Beatha and Tine circle the room even while they are fought."
   },
@@ -360,7 +407,7 @@
    "name": "AllowGovannonFullHealth",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 56,
+   "line": 98,
    "restores": true,
    "about": "Grand Summoner Govannon has 300,000 health (not 200,000)."
   },
@@ -368,7 +415,7 @@
    "name": "AllowKvasirColdHeal",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 58,
+   "line": 100,
    "restores": true,
    "about": "Cold damage heals Icelord Kvasir by a fifth of his health and does no damage."
   },
@@ -376,7 +423,7 @@
    "name": "AllowTuscarTwinHeal",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 60,
+   "line": 102,
    "restores": true,
    "about": "Damage to King Tuscar heals Queen Kula, and damage to her heals him, while the other is below full health."
   },
@@ -384,13 +431,13 @@
    "name": "ResetQuietMilliseconds",
    "value": "8000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 80
+   "line": 195
   },
   {
    "name": "PetDevourIntervalMilliseconds",
    "value": "5000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 88
+   "line": 203
   }
  ],
  "ruleKinds": {
@@ -936,12 +983,12 @@
   "Player-only mechanics stay player-only for now; the catalog lists every one as a candidate to target bots later. Which matter most for the 'wow' factor (throws, glares, Nosdoden's spirits)?"
  ],
  "counts": {
-  "scripts": 208,
-  "encounters": 244,
+  "scripts": 210,
+  "encounters": 238,
   "encountersWithRules": 228,
-  "rules": 850,
+  "rules": 861,
   "rulesByKind": {
-   "adds": 149,
+   "adds": 155,
    "aggro_wipe": 11,
    "damage_reduced": 3,
    "empowered": 15,
@@ -951,16 +998,16 @@
    "linked_pack": 119,
    "offline_change": 23,
    "pet_devour": 2,
-   "phase": 54,
+   "phase": 57,
    "position_puzzle": 10,
    "reflect": 8,
    "reset": 277,
-   "teleport": 30,
+   "teleport": 32,
    "tether": 54
   },
-  "rulesVerified": 850,
-  "rulesRead": 491,
-  "rulesInferred": 359,
+  "rulesVerified": 861,
+  "rulesRead": 494,
+  "rulesInferred": 367,
   "handEntries": 2
  },
  "scriptsWithoutEncounter": [],
@@ -1363,11 +1410,12 @@
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs",
      "line": 159,
      "lineEnd": 159,
-     "anchor": "Target.MoveTo(Body.CurrentRegionID, 451486, 393503, 2754, 2390);",
+     "anchor": "EncounterDisplacement.Move(Target, Body.CurrentRegionID, 451486, 393503, 2754, 2390, DisplacementKind.Teleport, Body);",
      "confidence": "inferred",
      "sourceClass": "LegendaryAfancBrain",
      "method": "ThrowPlayer",
      "subtype": "fixed_spot",
+     "displacement": "Teleport",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
@@ -3276,11 +3324,12 @@
      "file": "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs",
      "line": 270,
      "lineEnd": 270,
-     "anchor": "player.MoveTo(Body.CurrentRegionID, Body.X, Body.Y, Body.Z, Body.Heading);",
+     "anchor": "EncounterDisplacement.Move(player, Body.CurrentRegionID, Body.X, Body.Y, Body.Z, Body.Heading, DisplacementKind.Pull, Body);",
      "confidence": "inferred",
      "sourceClass": "DraugynSphereBrain",
      "method": "Think",
      "subtype": "fixed_spot",
+     "displacement": "Pull",
      "affects": "real players only (bots are never picked)",
      "from": "add",
      "verified": true,
@@ -3543,15 +3592,16 @@
     },
     {
      "kind": "teleport",
-     "summary": "Teleports RandomTarget to a fixed spot (MoveTo 50, 41489, 40699, 8145, 2096)",
+     "summary": "Throws RandomTarget into the air or across the room (MoveTo 50, 41489, 40699, 8145, 2096)",
      "file": "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs",
      "line": 261,
      "lineEnd": 261,
-     "anchor": "RandomTarget.MoveTo(50, 41489, 40699, 8145, 2096);",
+     "anchor": "EncounterDisplacement.Move(RandomTarget, 50, 41489, 40699, 8145, 2096, DisplacementKind.Throw, Body);",
      "confidence": "inferred",
      "sourceClass": "SyssroRuthlessBrain",
      "method": "ThrowPlayer",
-     "subtype": "fixed_spot",
+     "subtype": "air_toss",
+     "displacement": "Throw",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
@@ -4416,7 +4466,7 @@
      "sourceClass": "Morbus",
      "method": "TakeDamage",
      "subtype": "adds_alive",
-     "condition": "if (EpicEncounterMechanics.AllowAddShield && Morbus_Swarm_count > 0)",
+     "condition": "if (EpicEncounterMechanics.AllowAddShieldFor(this) && Morbus_Swarm_count > 0)",
      "switch": [
       "AllowAddShield"
      ],
@@ -5230,7 +5280,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs",
      "line": 98,
      "lineEnd": 100,
-     "anchor": "case 1: if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 34496, 30879, 14551, 1045); break;",
+     "anchor": "case 1: if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 34496, 30879, 14551, 1045, Displ",
      "confidence": "inferred",
      "sourceClass": "BaneOfHopeBrain",
      "method": "TeleportEnemy",
@@ -5238,6 +5288,7 @@
      "switch": [
       "AllowDisplacement"
      ],
+     "displacement": "Teleport",
      "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
@@ -6752,11 +6803,12 @@
      "file": "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs",
      "line": 224,
      "lineEnd": 224,
-     "anchor": "RandomTarget.MoveTo(62, 32338, 32387, 16539, 1830);",
+     "anchor": "EncounterDisplacement.Move(RandomTarget, 62, 32338, 32387, 16539, 1830, DisplacementKind.Throw, Body);",
      "confidence": "inferred",
      "sourceClass": "XanxicarBrain",
      "method": "ThrowPlayer",
      "subtype": "air_toss",
+     "displacement": "Throw",
      "affects": "real players only (bots are never picked)",
      "tactic": "Off for bots today: it picks only real players (GameBot is a GameNPC, not a GamePlayer). To play it: a thrown bot walks back and rejoins its party.",
      "difficulty": "off today",
@@ -6846,7 +6898,34 @@
    "spawnedBy": null,
    "spawnsEncounters": null,
    "partners": null,
-   "adds": [],
+   "adds": [
+    {
+     "class": "CuuldurachMessenger",
+     "name": "Cuuldurach's messenger",
+     "base": "GameNPC",
+     "brain": "CuuldurachMessengerBrain",
+     "epic": false,
+     "loadedFromScript": null,
+     "flags": null,
+     "maxHealth": 1500,
+     "level": "(byte)Util.Random(50, 55)",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
+     "line": 1008
+    },
+    {
+     "class": "CuuldurachSpawnedAdd",
+     "name": null,
+     "base": "GameNPC",
+     "brain": "CuuldurachSpawnedAdBrain",
+     "epic": false,
+     "loadedFromScript": "true",
+     "flags": null,
+     "maxHealth": 5000,
+     "level": "(byte)Util.Random(60, 64)",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
+     "line": 1336
+    }
+   ],
    "rules": [
     {
      "kind": "immune_while",
@@ -6866,11 +6945,82 @@
      "key": "immune_while@54"
     },
     {
+     "kind": "adds",
+     "summary": "Spawns Cuuldurach's messenger (CuuldurachMessenger): on a timer (Util.Random(80000, 90000) ms); count 1 spawn call in SpawnMssengers",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
+     "line": 846,
+     "lineEnd": 846,
+     "anchor": "CuuldurachMessenger messenger = new CuuldurachMessenger();",
+     "confidence": "inferred",
+     "sourceClass": "HibCuuldurachBrain",
+     "method": "SpawnMssengers",
+     "add": "CuuldurachMessenger",
+     "addBase": "GameNPC",
+     "addBrain": "CuuldurachMessengerBrain",
+     "count": 1,
+     "trigger": "on a timer (Util.Random(80000, 90000) ms)",
+     "addIsEpic": false,
+     "switch": [
+      "AllowDragonMessengers"
+     ],
+     "verified": true,
+     "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
+     "difficulty": "off today",
+     "tacticSource": "default for its kind",
+     "key": "adds@846"
+    },
+    {
+     "kind": "adds",
+     "summary": "Spawns CuuldurachSpawnedAdd: from SpawnGlimmers; count 1 spawn call in SpawnGlimmers",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
+     "line": 1310,
+     "lineEnd": 1310,
+     "anchor": "CuuldurachSpawnedAdd add = new CuuldurachSpawnedAdd();",
+     "confidence": "inferred",
+     "sourceClass": "CuuldurachMessengerBrain",
+     "method": "SpawnGlimmers",
+     "add": "CuuldurachSpawnedAdd",
+     "addBase": "GameNPC",
+     "addBrain": "CuuldurachSpawnedAdBrain",
+     "count": 1,
+     "trigger": "from SpawnGlimmers",
+     "addIsEpic": false,
+     "switch": [
+      "AllowDragonMessengers"
+     ],
+     "from": "add",
+     "verified": true,
+     "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
+     "difficulty": "off today",
+     "tacticSource": "default for its kind",
+     "key": "adds@1310"
+    },
+    {
+     "kind": "phase",
+     "summary": "At 50% health (Think): starts timer SpawnMssengers; calls SetProperty",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
+     "line": 498,
+     "lineEnd": 503,
+     "anchor": "if (Body.HealthPercent <= 50 && CanSpawnMessengers == false && !IsRestless && EpicEncounterMechanics.AllowDragonMessengersFor(Body))",
+     "confidence": "inferred",
+     "sourceClass": "HibCuuldurachBrain",
+     "method": "Think",
+     "threshold": 50,
+     "switch": [
+      "AllowDragonMessengers"
+     ],
+     "verified": true,
+     "tactic": "Off today (AllowDragonMessengers is false). To play it: follow the mechanic.",
+     "difficulty": "off today",
+     "tacticSource": "default for its kind",
+     "key": "phase@498"
+    },
+    {
      "kind": "phase",
      "summary": "At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 740,
-     "lineEnd": 802,
+     "line": 754,
+     "lineEnd": 816,
      "anchor": "if (Body.HealthPercent <= 90 && DragonKaboom1 == false && !Body.IsCasting && !IsRestless)",
      "confidence": "inferred",
      "sourceClass": "HibCuuldurachBrain",
@@ -6891,14 +7041,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@740"
+     "key": "phase@754"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in ResetGlareRoam when if (IsRestless)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 691,
-     "lineEnd": 691,
+     "line": 705,
+     "lineEnd": 705,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "HibCuuldurachBrain",
@@ -6907,7 +7057,28 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@691"
+     "key": "aggro_wipe@705"
+    },
+    {
+     "kind": "teleport",
+     "subtype": "air_toss",
+     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Cuuldurach picks 2-5 raiders within 2,500 that are not its target (real players and the bots on its aggro list) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts).",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs",
+     "line": 81,
+     "lineEnd": 101,
+     "anchor": "public static int Throw(GameNPC dragon, IEnumerable<GameLiving> aggro, Random random = null)",
+     "sourceClass": "DragonEncounterThrow",
+     "method": "Throw",
+     "switch": [
+      "AllowDragonThrow",
+      "AllowBotDisplacement"
+     ],
+     "difficulty": "easy for the current raid AI",
+     "tactic": "A thrown bot lands on the navmesh floor under its spot with the player's fall damage and walks back to its party (EncounterDisplacementRecovery); with no path or no progress it recalls to the raid after 5 s. Healers heal displaced raiders first; the party calls it in /group.",
+     "confidence": "read",
+     "hand": true,
+     "verified": true,
+     "key": "teleport@DragonEncounterThrow.cs:81"
     }
    ],
    "spells": [
@@ -6922,7 +7093,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 827,
+     "line": 867,
      "sourceClass": "HibCuuldurachBrain"
     },
     {
@@ -6936,7 +7107,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 855,
+     "line": 895,
      "sourceClass": "HibCuuldurachBrain"
     },
     {
@@ -6950,7 +7121,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 883,
+     "line": 923,
      "sourceClass": "HibCuuldurachBrain"
     },
     {
@@ -6964,7 +7135,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 911,
+     "line": 951,
      "sourceClass": "HibCuuldurachBrain"
     },
     {
@@ -6978,7 +7149,7 @@
      "value": "50",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 939,
+     "line": 979,
      "sourceClass": "HibCuuldurachBrain"
     }
    ],
@@ -7000,80 +7171,8 @@
     }
    ],
    "raidAi": "dragon fight",
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, off (no tactic for the runners yet). Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "verified": true
-  },
-  {
-   "id": "cuuldurach-s-lair-sheeroe-hills/cuuldurachmessenger",
-   "boss": "Cuuldurach's messenger",
-   "class": "CuuldurachMessenger",
-   "base": "GameNPC",
-   "brain": "CuuldurachMessengerBrain",
-   "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-   "lines": [
-    968,
-    1023
-   ],
-   "dungeon": "Cuuldurach's lair (Sheeroe Hills)",
-   "region": 200,
-   "regionConfidence": "read",
-   "level": null,
-   "levelText": "(byte)Util.Random(50, 55)",
-   "maxHealth": 1500,
-   "npcTemplate": null,
-   "spawnedBy": null,
-   "spawnsEncounters": null,
-   "partners": [
-    "HibCuuldurach"
-   ],
-   "adds": [],
-   "rules": [],
-   "spells": [],
-   "eraNotes": "",
-   "raids": [
-    {
-     "id": "dragon-hibernia",
-     "role": "monster on the way (not an epic NPC)"
-    }
-   ],
-   "raidAi": "dragon fight",
-   "verified": false
-  },
-  {
-   "id": "cuuldurach-s-lair-sheeroe-hills/cuuldurachspawnedadd",
-   "boss": "Cuuldurach Spawned Add",
-   "class": "CuuldurachSpawnedAdd",
-   "base": "GameNPC",
-   "brain": "CuuldurachSpawnedAdBrain",
-   "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-   "lines": [
-    1274,
-    1338
-   ],
-   "dungeon": "Cuuldurach's lair (Sheeroe Hills)",
-   "region": 200,
-   "regionConfidence": "read",
-   "level": null,
-   "levelText": "(byte)Util.Random(60, 64)",
-   "maxHealth": 5000,
-   "npcTemplate": null,
-   "spawnedBy": null,
-   "spawnsEncounters": null,
-   "partners": [
-    "HibCuuldurach"
-   ],
-   "adds": [],
-   "rules": [],
-   "spells": [],
-   "eraNotes": "",
-   "raids": [
-    {
-     "id": "dragon-hibernia",
-     "role": "monster on the way (not an epic NPC)"
-    }
-   ],
-   "raidAi": "dragon fight",
-   "verified": false
   },
   {
    "id": "darkness-falls/beliathan",
@@ -7816,11 +7915,12 @@
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
      "line": 676,
      "lineEnd": 676,
-     "anchor": "DragonCombatGeometry.ThrowPlayer(player, 249, 48200, 49566, 20833, 1028);",
+     "anchor": "EncounterDisplacement.Move(player, 249, 48200, 49566, 20833, 1028, DisplacementKind.Teleport, Body);",
      "confidence": "inferred",
      "sourceClass": "LegionBrain",
      "method": "ThrowPlayer",
      "subtype": "fixed_spot",
+     "displacement": "Teleport",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
@@ -9273,11 +9373,12 @@
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs",
      "line": 106,
      "lineEnd": 106,
-     "anchor": "player.MoveTo(180, 30652, 33089, 16124, 3169);",
+     "anchor": "EncounterDisplacement.Move(player, 180, 30652, 33089, 16124, 3169, DisplacementKind.Barrier, Body);",
      "confidence": "inferred",
      "sourceClass": "AnurigundaBrain",
      "method": "BlockEntrance",
      "subtype": "fixed_spot",
+     "displacement": "Barrier",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
@@ -9392,15 +9493,16 @@
     },
     {
      "kind": "teleport",
-     "summary": "Teleports TeleportTarget to a fixed spot: one of 4 spots (MoveTo 180, 32956, 37669, 16465, 1028; 180, 31879, 38149, 16465, 2109; 180, 31727, 37401, 16465, 3225; 180, 32159, 36387, 16465, 3618)",
+     "summary": "Throws TeleportTarget into the air or across the room: one of 4 spots (MoveTo 180, 32956, 37669, 16465, 1028; 180, 31879, 38149, 16465, 2109; 180, 31727, 37401, 16465, 3225; 180, 32159, 36387, 16465, 3618)",
      "file": "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs",
      "line": 186,
      "lineEnd": 189,
-     "anchor": "case 1: TeleportTarget.MoveTo(180, 32956, 37669, 16465, 1028); break;",
+     "anchor": "case 1: EncounterDisplacement.Move(TeleportTarget, 180, 32956, 37669, 16465, 1028, DisplacementKind.Throw, Body); break;",
      "confidence": "inferred",
      "sourceClass": "KrackenschteinBrain",
      "method": "TeleportRandomTarget",
-     "subtype": "fixed_spot",
+     "subtype": "air_toss",
+     "displacement": "Throw",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
@@ -10394,7 +10496,7 @@
      "sourceClass": "Conservator",
      "method": "TakeDamage",
      "subtype": "attacker_position",
-     "condition": "if (EpicEncounterMechanics.AllowPositionPuzzle && !source.IsWithinRadius(spawn,800))",
+     "condition": "if (EpicEncounterMechanics.AllowPositionPuzzleFor(this) && !source.IsWithinRadius(spawn,800))",
      "switch": [
       "AllowPositionPuzzle"
      ],
@@ -10522,7 +10624,7 @@
      "sourceClass": "Easmarach",
      "method": "TakeDamage",
      "subtype": "attacker_position",
-     "condition": "if (EpicEncounterMechanics.AllowPositionPuzzle && !source.IsWithinRadius(spawn, TetherRange))",
+     "condition": "if (EpicEncounterMechanics.AllowPositionPuzzleFor(this) && !source.IsWithinRadius(spawn, TetherRange))",
      "switch": [
       "AllowPositionPuzzle"
      ],
@@ -10589,7 +10691,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs",
      "line": 206,
      "lineEnd": 206,
-     "anchor": "if (EpicEncounterMechanics.AllowDisplacement) player.MoveTo(Body.CurrentRegionID, 40067, 50494, 11708, 1066);",
+     "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(player, Body.CurrentRegionID, 40067, 50494, 11708, 1066, DisplacementKind.Barr",
      "confidence": "inferred",
      "sourceClass": "EasmarachBrain",
      "method": "Think",
@@ -10597,6 +10699,7 @@
      "switch": [
       "AllowDisplacement"
      ],
+     "displacement": "Barrier",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
@@ -11821,7 +11924,7 @@
     },
     {
      "kind": "phase",
-     "summary": "At 50% health (DoPort): calls MoveTo",
+     "summary": "At 50% health (DoPort): calls Move",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
      "line": 765,
      "lineEnd": 804,
@@ -11879,7 +11982,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
      "line": 773,
      "lineEnd": 796,
-     "anchor": "if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 38399, 60893, 12242, 3548);",
+     "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 38399, 60893, 12242, 3548, DisplacementK",
      "confidence": "inferred",
      "sourceClass": "OlcasgeanBrain",
      "method": "DoPort",
@@ -11888,6 +11991,7 @@
       "AllowDisplacement",
       "AllowPositionPuzzle"
      ],
+     "displacement": "Throw",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off today (AllowDisplacement, AllowPositionPuzzle is false). To play it: recover the moved raider: walk back to the fight, or free them.",
@@ -11901,7 +12005,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
      "line": 3363,
      "lineEnd": 3363,
-     "anchor": "if (EpicEncounterMechanics.AllowDisplacement) player.MoveTo(Body.CurrentRegionID, 39664, 60792, 11542, 4078);",
+     "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(player, Body.CurrentRegionID, 39664, 60792, 11542, 4078, DisplacementKind.Barr",
      "confidence": "inferred",
      "sourceClass": "WaterfallAntipassBrain",
      "method": "Think",
@@ -11909,6 +12013,7 @@
      "switch": [
       "AllowDisplacement"
      ],
+     "displacement": "Barrier",
      "affects": "real players only (bots are never picked)",
      "from": "add",
      "verified": true,
@@ -11923,7 +12028,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
      "line": 658,
      "lineEnd": 739,
-     "anchor": "if (EpicEncounterMechanics.AllowPositionPuzzle && HasAggro && Body.TargetObject != null)//Player-only split-position/throw puzzle disabled for offline raids.",
+     "anchor": "if (EpicEncounterMechanics.AllowPositionPuzzleFor(Body) && HasAggro && Body.TargetObject != null)//Player-only split-position/throw puzzle disabled for offline ",
      "confidence": "read",
      "sourceClass": "OlcasgeanBrain",
      "method": "Think",
@@ -11941,7 +12046,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
      "line": 658,
      "lineEnd": 658,
-     "anchor": "if (EpicEncounterMechanics.AllowPositionPuzzle && HasAggro && Body.TargetObject != null)//Player-only split-position/throw puzzle disabled for offline raids.",
+     "anchor": "if (EpicEncounterMechanics.AllowPositionPuzzleFor(Body) && HasAggro && Body.TargetObject != null)//Player-only split-position/throw puzzle disabled for offline ",
      "confidence": "read",
      "sourceClass": "OlcasgeanBrain",
      "method": "Think",
@@ -12311,7 +12416,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
      "line": 1751,
      "lineEnd": 1752,
-     "anchor": "case 1: if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 38626, 60891, 11771, 2881); break;",
+     "anchor": "case 1: if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 38626, 60891, 11771, 2881, Displ",
      "confidence": "inferred",
      "sourceClass": "WaterPrimalBrain",
      "method": "TeleportPlayer",
@@ -12319,6 +12424,7 @@
      "switch": [
       "AllowDisplacement"
      ],
+     "displacement": "Teleport",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
@@ -13300,7 +13406,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
      "line": 357,
      "lineEnd": 357,
-     "anchor": "if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 21115, 53483, 11286, 2100);",
+     "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 21115, 53483, 11286, 2100, DisplacementK",
      "confidence": "inferred",
      "sourceClass": "SpindlerBroodmotherBrain",
      "method": "TeleportPlayer",
@@ -13308,6 +13414,7 @@
      "switch": [
       "AllowDisplacement"
      ],
+     "displacement": "Teleport",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
@@ -13845,7 +13952,34 @@
    "spawnedBy": null,
    "spawnsEncounters": null,
    "partners": null,
-   "adds": [],
+   "adds": [
+    {
+     "class": "GjalpinulvaMessenger",
+     "name": "Gjalpinulva's messenger",
+     "base": "GameNPC",
+     "brain": "GjalpinulvaMessengerBrain",
+     "epic": false,
+     "loadedFromScript": null,
+     "flags": null,
+     "maxHealth": 1500,
+     "level": "(byte)Util.Random(50, 55)",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
+     "line": 1010
+    },
+    {
+     "class": "GjalpinulvaSpawnedAdd",
+     "name": null,
+     "base": "GameNPC",
+     "brain": "GjalpinulvaSpawnedAdBrain",
+     "epic": false,
+     "loadedFromScript": "true",
+     "flags": null,
+     "maxHealth": 5000,
+     "level": "(byte)Util.Random(60, 64)",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
+     "line": 1327
+    }
+   ],
    "rules": [
     {
      "kind": "immune_while",
@@ -13865,11 +13999,82 @@
      "key": "immune_while@54"
     },
     {
+     "kind": "adds",
+     "summary": "Spawns Gjalpinulva's messenger (GjalpinulvaMessenger): on a timer (Util.Random(80000, 90000) ms); count 1 spawn call in SpawnMssengers",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
+     "line": 845,
+     "lineEnd": 845,
+     "anchor": "GjalpinulvaMessenger messenger = new GjalpinulvaMessenger();",
+     "confidence": "inferred",
+     "sourceClass": "MidGjalpinulvaBrain",
+     "method": "SpawnMssengers",
+     "add": "GjalpinulvaMessenger",
+     "addBase": "GameNPC",
+     "addBrain": "GjalpinulvaMessengerBrain",
+     "count": 1,
+     "trigger": "on a timer (Util.Random(80000, 90000) ms)",
+     "addIsEpic": false,
+     "switch": [
+      "AllowDragonMessengers"
+     ],
+     "verified": true,
+     "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
+     "difficulty": "off today",
+     "tacticSource": "default for its kind",
+     "key": "adds@845"
+    },
+    {
+     "kind": "adds",
+     "summary": "Spawns GjalpinulvaSpawnedAdd: from SpawnDrakulvs; count 1 spawn call in SpawnDrakulvs",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
+     "line": 1301,
+     "lineEnd": 1301,
+     "anchor": "GjalpinulvaSpawnedAdd add = new GjalpinulvaSpawnedAdd();",
+     "confidence": "inferred",
+     "sourceClass": "GjalpinulvaMessengerBrain",
+     "method": "SpawnDrakulvs",
+     "add": "GjalpinulvaSpawnedAdd",
+     "addBase": "GameNPC",
+     "addBrain": "GjalpinulvaSpawnedAdBrain",
+     "count": 1,
+     "trigger": "from SpawnDrakulvs",
+     "addIsEpic": false,
+     "switch": [
+      "AllowDragonMessengers"
+     ],
+     "from": "add",
+     "verified": true,
+     "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
+     "difficulty": "off today",
+     "tacticSource": "default for its kind",
+     "key": "adds@1301"
+    },
+    {
+     "kind": "phase",
+     "summary": "At 50% health (Think): starts timer SpawnMssengers; calls SetProperty",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
+     "line": 495,
+     "lineEnd": 500,
+     "anchor": "if (Body.HealthPercent <= 50 && CanSpawnMessengers == false && !IsRestless && EpicEncounterMechanics.AllowDragonMessengersFor(Body))",
+     "confidence": "inferred",
+     "sourceClass": "MidGjalpinulvaBrain",
+     "method": "Think",
+     "threshold": 50,
+     "switch": [
+      "AllowDragonMessengers"
+     ],
+     "verified": true,
+     "tactic": "Off today (AllowDragonMessengers is false). To play it: follow the mechanic.",
+     "difficulty": "off today",
+     "tacticSource": "default for its kind",
+     "key": "phase@495"
+    },
+    {
      "kind": "phase",
      "summary": "At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 739,
-     "lineEnd": 801,
+     "line": 753,
+     "lineEnd": 815,
      "anchor": "if (Body.HealthPercent <= 90 && DragonKaboom1 == false && !Body.IsCasting && !IsRestless)",
      "confidence": "inferred",
      "sourceClass": "MidGjalpinulvaBrain",
@@ -13890,14 +14095,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@739"
+     "key": "phase@753"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in ResetGlareRoam when if (IsRestless)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 690,
-     "lineEnd": 690,
+     "line": 704,
+     "lineEnd": 704,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "MidGjalpinulvaBrain",
@@ -13906,7 +14111,28 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@690"
+     "key": "aggro_wipe@704"
+    },
+    {
+     "kind": "teleport",
+     "subtype": "air_toss",
+     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Gjalpinulva picks 2-5 raiders within 2,500 that are not its target (real players and the bots on its aggro list) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts).",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs",
+     "line": 81,
+     "lineEnd": 101,
+     "anchor": "public static int Throw(GameNPC dragon, IEnumerable<GameLiving> aggro, Random random = null)",
+     "sourceClass": "DragonEncounterThrow",
+     "method": "Throw",
+     "switch": [
+      "AllowDragonThrow",
+      "AllowBotDisplacement"
+     ],
+     "difficulty": "easy for the current raid AI",
+     "tactic": "A thrown bot lands on the navmesh floor under its spot with the player's fall damage and walks back to its party (EncounterDisplacementRecovery); with no path or no progress it recalls to the raid after 5 s. Healers heal displaced raiders first; the party calls it in /group.",
+     "confidence": "read",
+     "hand": true,
+     "verified": true,
+     "key": "teleport@DragonEncounterThrow.cs:81"
     }
    ],
    "spells": [
@@ -13921,7 +14147,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 826,
+     "line": 866,
      "sourceClass": "MidGjalpinulvaBrain"
     },
     {
@@ -13935,7 +14161,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 854,
+     "line": 894,
      "sourceClass": "MidGjalpinulvaBrain"
     },
     {
@@ -13949,7 +14175,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 882,
+     "line": 922,
      "sourceClass": "MidGjalpinulvaBrain"
     },
     {
@@ -13963,7 +14189,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 910,
+     "line": 950,
      "sourceClass": "MidGjalpinulvaBrain"
     },
     {
@@ -13977,7 +14203,7 @@
      "value": "50",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 938,
+     "line": 978,
      "sourceClass": "MidGjalpinulvaBrain"
     }
    ],
@@ -13999,80 +14225,8 @@
     }
    ],
    "raidAi": "dragon fight",
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, off (no tactic for the runners yet). Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "verified": true
-  },
-  {
-   "id": "gjalpinulva-s-lair-myrkwood/gjalpinulvamessenger",
-   "boss": "Gjalpinulva's messenger",
-   "class": "GjalpinulvaMessenger",
-   "base": "GameNPC",
-   "brain": "GjalpinulvaMessengerBrain",
-   "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-   "lines": [
-    970,
-    1025
-   ],
-   "dungeon": "Gjalpinulva's lair (Myrkwood)",
-   "region": 100,
-   "regionConfidence": "read",
-   "level": null,
-   "levelText": "(byte)Util.Random(50, 55)",
-   "maxHealth": 1500,
-   "npcTemplate": null,
-   "spawnedBy": null,
-   "spawnsEncounters": null,
-   "partners": [
-    "MidGjalpinulva"
-   ],
-   "adds": [],
-   "rules": [],
-   "spells": [],
-   "eraNotes": "",
-   "raids": [
-    {
-     "id": "dragon-midgard",
-     "role": "monster on the way (not an epic NPC)"
-    }
-   ],
-   "raidAi": "dragon fight",
-   "verified": false
-  },
-  {
-   "id": "gjalpinulva-s-lair-myrkwood/gjalpinulvaspawnedadd",
-   "boss": "Gjalpinulva Spawned Add",
-   "class": "GjalpinulvaSpawnedAdd",
-   "base": "GameNPC",
-   "brain": "GjalpinulvaSpawnedAdBrain",
-   "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-   "lines": [
-    1265,
-    1329
-   ],
-   "dungeon": "Gjalpinulva's lair (Myrkwood)",
-   "region": 100,
-   "regionConfidence": "read",
-   "level": null,
-   "levelText": "(byte)Util.Random(60, 64)",
-   "maxHealth": 5000,
-   "npcTemplate": null,
-   "spawnedBy": null,
-   "spawnsEncounters": null,
-   "partners": [
-    "MidGjalpinulva"
-   ],
-   "adds": [],
-   "rules": [],
-   "spells": [],
-   "eraNotes": "",
-   "raids": [
-    {
-     "id": "dragon-midgard",
-     "role": "monster on the way (not an epic NPC)"
-    }
-   ],
-   "raidAi": "dragon fight",
-   "verified": false
   },
   {
    "id": "golestandt-s-lair-dartmoor/albgolestandt",
@@ -14094,7 +14248,34 @@
    "spawnedBy": null,
    "spawnsEncounters": null,
    "partners": null,
-   "adds": [],
+   "adds": [
+    {
+     "class": "GolestandtMessenger",
+     "name": "Golestandt's messenger",
+     "base": "GameNPC",
+     "brain": "GolestandtMessengerBrain",
+     "epic": false,
+     "loadedFromScript": null,
+     "flags": null,
+     "maxHealth": 1500,
+     "level": "(byte)Util.Random(50, 55)",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
+     "line": 1004
+    },
+    {
+     "class": "GolestandtSpawnedAdd",
+     "name": null,
+     "base": "GameNPC",
+     "brain": "GolestandtSpawnedAdBrain",
+     "epic": false,
+     "loadedFromScript": "true",
+     "flags": null,
+     "maxHealth": 5000,
+     "level": "(byte)Util.Random(60, 64)",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
+     "line": 1332
+    }
+   ],
    "rules": [
     {
      "kind": "immune_while",
@@ -14114,11 +14295,82 @@
      "key": "immune_while@55"
     },
     {
+     "kind": "adds",
+     "summary": "Spawns Golestandt's messenger (GolestandtMessenger): on a timer (Util.Random(80000, 90000) ms); count 1 spawn call in SpawnMssengers",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
+     "line": 842,
+     "lineEnd": 842,
+     "anchor": "GolestandtMessenger messenger = new GolestandtMessenger();",
+     "confidence": "inferred",
+     "sourceClass": "AlbGolestandtBrain",
+     "method": "SpawnMssengers",
+     "add": "GolestandtMessenger",
+     "addBase": "GameNPC",
+     "addBrain": "GolestandtMessengerBrain",
+     "count": 1,
+     "trigger": "on a timer (Util.Random(80000, 90000) ms)",
+     "addIsEpic": false,
+     "switch": [
+      "AllowDragonMessengers"
+     ],
+     "verified": true,
+     "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
+     "difficulty": "off today",
+     "tacticSource": "default for its kind",
+     "key": "adds@842"
+    },
+    {
+     "kind": "adds",
+     "summary": "Spawns GolestandtSpawnedAdd: from SpawnGraniteGiants; count 1 spawn call in SpawnGraniteGiants",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
+     "line": 1306,
+     "lineEnd": 1306,
+     "anchor": "GolestandtSpawnedAdd add = new GolestandtSpawnedAdd();",
+     "confidence": "inferred",
+     "sourceClass": "GolestandtMessengerBrain",
+     "method": "SpawnGraniteGiants",
+     "add": "GolestandtSpawnedAdd",
+     "addBase": "GameNPC",
+     "addBrain": "GolestandtSpawnedAdBrain",
+     "count": 1,
+     "trigger": "from SpawnGraniteGiants",
+     "addIsEpic": false,
+     "switch": [
+      "AllowDragonMessengers"
+     ],
+     "from": "add",
+     "verified": true,
+     "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
+     "difficulty": "off today",
+     "tacticSource": "default for its kind",
+     "key": "adds@1306"
+    },
+    {
+     "kind": "phase",
+     "summary": "At 50% health (Think): starts timer SpawnMssengers; calls SetProperty",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
+     "line": 496,
+     "lineEnd": 501,
+     "anchor": "if (Body.HealthPercent <= 50 && CanSpawnMessengers == false && !IsRestless && EpicEncounterMechanics.AllowDragonMessengersFor(Body))",
+     "confidence": "inferred",
+     "sourceClass": "AlbGolestandtBrain",
+     "method": "Think",
+     "threshold": 50,
+     "switch": [
+      "AllowDragonMessengers"
+     ],
+     "verified": true,
+     "tactic": "Off today (AllowDragonMessengers is false). To play it: follow the mechanic.",
+     "difficulty": "off today",
+     "tacticSource": "default for its kind",
+     "key": "phase@496"
+    },
+    {
      "kind": "phase",
      "summary": "At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 736,
-     "lineEnd": 798,
+     "line": 750,
+     "lineEnd": 812,
      "anchor": "if (Body.HealthPercent <= 90 && DragonKaboom1 == false && !Body.IsCasting && !IsRestless)",
      "confidence": "inferred",
      "sourceClass": "AlbGolestandtBrain",
@@ -14139,14 +14391,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@736"
+     "key": "phase@750"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in ResetGlareRoam when if (IsRestless)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 687,
-     "lineEnd": 687,
+     "line": 701,
+     "lineEnd": 701,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "AlbGolestandtBrain",
@@ -14155,7 +14407,28 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@687"
+     "key": "aggro_wipe@701"
+    },
+    {
+     "kind": "teleport",
+     "subtype": "air_toss",
+     "summary": "Wing-gust throw (restored 1.2 from 3513bad): every 60-80 s of a fight on the ground Golestandt picks 2-5 raiders within 2,500 that are not its target (real players and the bots on its aggro list) and hurls each one still within 2,000 to one of five spots high above its lair floor (the fall hurts).",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs",
+     "line": 81,
+     "lineEnd": 101,
+     "anchor": "public static int Throw(GameNPC dragon, IEnumerable<GameLiving> aggro, Random random = null)",
+     "sourceClass": "DragonEncounterThrow",
+     "method": "Throw",
+     "switch": [
+      "AllowDragonThrow",
+      "AllowBotDisplacement"
+     ],
+     "difficulty": "easy for the current raid AI",
+     "tactic": "A thrown bot lands on the navmesh floor under its spot with the player's fall damage and walks back to its party (EncounterDisplacementRecovery); with no path or no progress it recalls to the raid after 5 s. Healers heal displaced raiders first; the party calls it in /group.",
+     "confidence": "read",
+     "hand": true,
+     "verified": true,
+     "key": "teleport@DragonEncounterThrow.cs:81"
     }
    ],
    "spells": [
@@ -14170,7 +14443,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 823,
+     "line": 863,
      "sourceClass": "AlbGolestandtBrain"
     },
     {
@@ -14184,7 +14457,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 851,
+     "line": 891,
      "sourceClass": "AlbGolestandtBrain"
     },
     {
@@ -14198,7 +14471,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 879,
+     "line": 919,
      "sourceClass": "AlbGolestandtBrain"
     },
     {
@@ -14212,7 +14485,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 907,
+     "line": 947,
      "sourceClass": "AlbGolestandtBrain"
     },
     {
@@ -14226,7 +14499,7 @@
      "value": "50",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 935,
+     "line": 975,
      "sourceClass": "AlbGolestandtBrain"
     }
    ],
@@ -14248,80 +14521,8 @@
     }
    ],
    "raidAi": "dragon fight",
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, off (no tactic for the runners yet). Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "verified": true
-  },
-  {
-   "id": "golestandt-s-lair-dartmoor/golestandtmessenger",
-   "boss": "Golestandt's messenger",
-   "class": "GolestandtMessenger",
-   "base": "GameNPC",
-   "brain": "GolestandtMessengerBrain",
-   "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-   "lines": [
-    964,
-    1019
-   ],
-   "dungeon": "Golestandt's lair (Dartmoor)",
-   "region": 1,
-   "regionConfidence": "read",
-   "level": null,
-   "levelText": "(byte)Util.Random(50, 55)",
-   "maxHealth": 1500,
-   "npcTemplate": null,
-   "spawnedBy": null,
-   "spawnsEncounters": null,
-   "partners": [
-    "AlbGolestandt"
-   ],
-   "adds": [],
-   "rules": [],
-   "spells": [],
-   "eraNotes": "",
-   "raids": [
-    {
-     "id": "dragon-albion",
-     "role": "monster on the way (not an epic NPC)"
-    }
-   ],
-   "raidAi": "dragon fight",
-   "verified": false
-  },
-  {
-   "id": "golestandt-s-lair-dartmoor/golestandtspawnedadd",
-   "boss": "Golestandt Spawned Add",
-   "class": "GolestandtSpawnedAdd",
-   "base": "GameNPC",
-   "brain": "GolestandtSpawnedAdBrain",
-   "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-   "lines": [
-    1270,
-    1334
-   ],
-   "dungeon": "Golestandt's lair (Dartmoor)",
-   "region": 1,
-   "regionConfidence": "read",
-   "level": null,
-   "levelText": "(byte)Util.Random(60, 64)",
-   "maxHealth": 5000,
-   "npcTemplate": null,
-   "spawnedBy": null,
-   "spawnsEncounters": null,
-   "partners": [
-    "AlbGolestandt"
-   ],
-   "adds": [],
-   "rules": [],
-   "spells": [],
-   "eraNotes": "",
-   "raids": [
-    {
-     "id": "dragon-albion",
-     "role": "monster on the way (not an epic NPC)"
-    }
-   ],
-   "raidAi": "dragon fight",
-   "verified": false
   },
   {
    "id": "hall-of-the-corrupt/aidonthearchwizard",
@@ -19957,11 +20158,12 @@
      "file": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs",
      "line": 143,
      "lineEnd": 146,
-     "anchor": "case 1: TeleportTarget.MoveTo(161, 12563, 13450, 18537, 2997); break;",
+     "anchor": "case 1: EncounterDisplacement.Move(TeleportTarget, 161, 12563, 13450, 18537, 2997, DisplacementKind.Teleport, Body); break;",
      "confidence": "inferred",
      "sourceClass": "IarnvidiurBrain",
      "method": "TeleportPlayer",
      "subtype": "fixed_spot",
+     "displacement": "Teleport",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
@@ -21198,11 +21400,12 @@
      "file": "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs",
      "line": 109,
      "lineEnd": 109,
-     "anchor": "ad.Attacker.MoveTo(Body.CurrentRegionID, Body.X, Body.Y, Body.Z + 400, Body.Heading);",
+     "anchor": "EncounterDisplacement.Move(ad.Attacker, Body.CurrentRegionID, Body.X, Body.Y, Body.Z + 400, Body.Heading, DisplacementKind.Throw, Body);",
      "confidence": "inferred",
      "sourceClass": "KrevoRicikBrain",
      "method": "OnAttackedByEnemy",
      "subtype": "air_toss",
+     "displacement": "Throw",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
@@ -21547,15 +21750,16 @@
     },
     {
      "kind": "teleport",
-     "summary": "Teleports RandomTarget to a fixed spot (MoveTo 61, 31406, 69599, 15605, 2150)",
+     "summary": "Throws RandomTarget into the air or across the room (MoveTo 61, 31406, 69599, 15605, 2150)",
      "file": "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs",
      "line": 132,
      "lineEnd": 132,
-     "anchor": "RandomTarget.MoveTo(61, 31406, 69599, 15605, 2150);",
+     "anchor": "EncounterDisplacement.Move(RandomTarget, 61, 31406, 69599, 15605, 2150, DisplacementKind.Throw, Body);",
      "confidence": "inferred",
      "sourceClass": "OrylleBrain",
      "method": "ThrowPlayer",
-     "subtype": "fixed_spot",
+     "subtype": "air_toss",
+     "displacement": "Throw",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
@@ -21954,11 +22158,12 @@
      "file": "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs",
      "line": 684,
      "lineEnd": 687,
-     "anchor": "case 1: RandomTarget.MoveTo(61, 50986, 20031, 16964, 3091); break;",
+     "anchor": "case 1: EncounterDisplacement.Move(RandomTarget, 61, 50986, 20031, 16964, 3091, DisplacementKind.Throw, Body); break;",
      "confidence": "inferred",
      "sourceClass": "LyftMihtBrain4",
      "method": "TeleportPlayer",
-     "subtype": "fixed_spot",
+     "subtype": "air_toss",
+     "displacement": "Throw",
      "affects": "real players only (bots are never picked)",
      "from": "add",
      "alsoIn": [
@@ -24807,39 +25012,22 @@
     },
     {
      "kind": "teleport",
-     "summary": "Teleports player to a fixed spot (MoveTo 100, 664713, 896689, 1553, 2373)",
+     "summary": "Throws player into the air or across the room: one of 4 spots (MoveTo 100, 664713, 896689, 1553, 2373; 100, 667220, 894261, 1543, 692; 100, 665968, 892792, 1561, 235; 100, 663895, 893446, 1554, 3482)",
      "file": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs",
      "line": 153,
-     "lineEnd": 153,
-     "anchor": "player.MoveTo(100, 664713, 896689, 1553, 2373);",
+     "lineEnd": 183,
+     "anchor": "EncounterDisplacement.Move(player, 100, 664713, 896689, 1553, 2373, DisplacementKind.Throw, Body);",
      "confidence": "inferred",
      "sourceClass": "YdeniaBrain",
      "method": "YdeniaPort",
-     "subtype": "fixed_spot",
+     "subtype": "air_toss",
+     "displacement": "Throw",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
      "key": "teleport@153"
-    },
-    {
-     "kind": "teleport",
-     "summary": "Throws player into the air or across the room: one of 3 spots (MoveTo 100, 667220, 894261, 1543, 692; 100, 665968, 892792, 1561, 235; 100, 663895, 893446, 1554, 3482)",
-     "file": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs",
-     "line": 163,
-     "lineEnd": 183,
-     "anchor": "player.MoveTo(100, 667220, 894261, 1543, 692);",
-     "confidence": "inferred",
-     "sourceClass": "YdeniaBrain",
-     "method": "YdeniaPort",
-     "subtype": "air_toss",
-     "affects": "real players only (bots are never picked)",
-     "verified": true,
-     "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
-     "tacticSource": "default for its kind",
-     "key": "teleport@163"
     },
     {
      "kind": "linked_pack",
@@ -25045,11 +25233,12 @@
      "file": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs",
      "line": 156,
      "lineEnd": 159,
-     "anchor": "case 1: TeleportTarget.MoveTo(151, 409989, 378960, 7752, 3040); break;",
+     "anchor": "case 1: EncounterDisplacement.Move(TeleportTarget, 151, 409989, 378960, 7752, 3040, DisplacementKind.Teleport, Body); break;",
      "confidence": "inferred",
      "sourceClass": "BoligarBrain",
      "method": "TeleportPlayer",
      "subtype": "fixed_spot",
+     "displacement": "Teleport",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
@@ -25527,11 +25716,12 @@
      "file": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs",
      "line": 171,
      "lineEnd": 171,
-     "anchor": "RandomTarget.MoveTo(Body.CurrentRegionID, Body.X+Util.Random(-1500,1500), Body.Y + Util.Random(-1500, 1500), Body.Z, Body.Heading);",
+     "anchor": "EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, Body.X+Util.Random(-1500,1500), Body.Y + Util.Random(-1500, 1500), Body.Z, Body.Heading, Displace",
      "confidence": "inferred",
      "sourceClass": "MortufoghusBrain",
      "method": "ThrowPlayer",
      "subtype": "fixed_spot",
+     "displacement": "Teleport",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
@@ -26234,15 +26424,16 @@
     },
     {
      "kind": "teleport",
-     "summary": "Teleports RandomTarget to a fixed spot: one of 6 spots (MoveTo Body.CurrentRegionID, 663537 + Util.Random(-2000,2000), 626415 + Util.Random(-2000, 2000), 7790 + Util.Random(300, 600), Body.Heading; Body.CurrentRegionID, 647342 + Util.Random(-2000, 2000), 617589 + Util.Random(-2000, 2000), 8533 + Util.Random(300, 600), Body.Heading; Body.CurrentRegionID, 645157 + Util.Random(-2000, 2000), 630671 + Util.Random(-2000, 2000), 11530 + Util.Random(300, 600), Body.Heading; Body.CurrentRegionID, 654502 + Util.Random(-2000, 2000), 630523 + Util.Random(-2000, 2000), 8762 + Util.Random(300, 600), Body.Heading; Body.CurrentRegionID, 670626 + Util.Random(-2000, 2000), 630046 + Util.Random(-2000, 2000), 7515 + Util.Random(300, 600), Body.Heading; Body.CurrentRegionID, 642185 + Util.Random(-2000, 2000), 620183 + Util.Random(-2000, 2000), 10014 + Util.Random(300, 600), Body.Heading)",
+     "summary": "Throws RandomTarget into the air or across the room: one of 6 spots (MoveTo Body.CurrentRegionID, 663537 + Util.Random(-2000,2000), 626415 + Util.Random(-2000, 2000), 7790 + Util.Random(300, 600), Body.Heading; Body.CurrentRegionID, 647342 + Util.Random(-2000, 2000), 617589 + Util.Random(-2000, 2000), 8533 + Util.Random(300, 600), Body.Heading; Body.CurrentRegionID, 645157 + Util.Random(-2000, 2000), 630671 + Util.Random(-2000, 2000), 11530 + Util.Random(300, 600), Body.Heading; Body.CurrentRegionID, 654502 + Util.Random(-2000, 2000), 630523 + Util.Random(-2000, 2000), 8762 + Util.Random(300, 600), Body.Heading; Body.CurrentRegionID, 670626 + Util.Random(-2000, 2000), 630046 + Util.Random(-2000, 2000), 7515 + Util.Random(300, 600), Body.Heading; Body.CurrentRegionID, 642185 + Util.Random(-2000, 2000), 620183 + Util.Random(-2000, 2000), 10014 + Util.Random(300, 600), Body.Heading)",
      "file": "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs",
      "line": 180,
      "lineEnd": 185,
-     "anchor": "case 1: RandomTarget.MoveTo(Body.CurrentRegionID, 663537 + Util.Random(-2000,2000), 626415 + Util.Random(-2000, 2000), 7790 + Util.Random(300, 600), Body.Headin",
+     "anchor": "case 1: EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 663537 + Util.Random(-2000,2000), 626415 + Util.Random(-2000, 2000), 7790 + Util.Random(3",
      "confidence": "inferred",
      "sourceClass": "GlacierGiantBrain",
      "method": "TeleportPlayer",
-     "subtype": "fixed_spot",
+     "subtype": "air_toss",
+     "displacement": "Throw",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
@@ -26559,11 +26750,12 @@
      "file": "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs",
      "line": 177,
      "lineEnd": 197,
-     "anchor": "portPlayer[ranPlayer].MoveTo(1, 401943, 753091, 222, 3499);",
+     "anchor": "EncounterDisplacement.Move(portPlayer[ranPlayer], 1, 401943, 753091, 222, 3499, DisplacementKind.Throw, Body);",
      "confidence": "inferred",
      "sourceClass": "MoranBrain",
      "method": "TeleportPlayerAway",
      "subtype": "air_toss",
+     "displacement": "Throw",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
@@ -27198,11 +27390,12 @@
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
      "line": 689,
      "lineEnd": 689,
-     "anchor": "RandomTarget.MoveTo(Body.CurrentRegionID, 32091, 39684, 16302, 4094);",
+     "anchor": "EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 32091, 39684, 16302, 4094, DisplacementKind.Teleport, Body);",
      "confidence": "inferred",
      "sourceClass": "ShadeOfAelfgarBrain",
      "method": "PickRandomTarget",
      "subtype": "fixed_spot",
+     "displacement": "Teleport",
      "affects": "real players only (bots are never picked)",
      "from": "add",
      "verified": true,
@@ -27429,11 +27622,12 @@
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs",
      "line": 234,
      "lineEnd": 234,
-     "anchor": "RandomTarget.MoveTo(Body.CurrentRegionID, 24874, 36116, 17060, 3065);//port player to loc",
+     "anchor": "EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 24874, 36116, 17060, 3065, DisplacementKind.Teleport, Body);//port player to loc",
      "confidence": "inferred",
      "sourceClass": "SummonerCunovindaBrain",
      "method": "CastBolt",
      "subtype": "fixed_spot",
+     "displacement": "Teleport",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
@@ -31743,7 +31937,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs",
      "line": 210,
      "lineEnd": 210,
-     "anchor": "if (EpicEncounterMechanics.AllowDisplacement) PortTarget.MoveTo(Body.CurrentRegionID, Body.X + Util.Random(-50, 50),",
+     "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(PortTarget, Body.CurrentRegionID, Body.X + Util.Random(-50, 50),",
      "confidence": "inferred",
      "sourceClass": "HakrBrain",
      "method": "TeleportPlayer",
@@ -31751,6 +31945,7 @@
      "switch": [
       "AllowDisplacement"
      ],
+     "displacement": "Throw",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
@@ -32612,18 +32807,19 @@
     },
     {
      "kind": "teleport",
-     "summary": "Teleports PortTarget to a fixed spot (MoveTo Body.CurrentRegionID, 16631, 58683, 10858, 2191)",
+     "summary": "Jails PortTarget (MoveTo Body.CurrentRegionID, 16631, 58683, 10858, 2191)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
      "line": 167,
      "lineEnd": 167,
-     "anchor": "if (EpicEncounterMechanics.AllowDisplacement) PortTarget.MoveTo(Body.CurrentRegionID, 16631, 58683, 10858, 2191);",
+     "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(PortTarget, Body.CurrentRegionID, 16631, 58683, 10858, 2191, DisplacementKind.",
      "confidence": "inferred",
      "sourceClass": "JailerBrain",
      "method": "TeleportPlayer",
-     "subtype": "fixed_spot",
+     "subtype": "jail",
      "switch": [
       "AllowDisplacement"
      ],
+     "displacement": "Jail",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
@@ -32785,7 +32981,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
      "line": 280,
      "lineEnd": 280,
-     "anchor": "if (EpicEncounterMechanics.AllowDisplacement) RandomTarget.MoveTo(160, 34128, 56095, 11898, 2124);",
+     "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(RandomTarget, 160, 34128, 56095, 11898, 2124, DisplacementKind.Teleport, Body)",
      "confidence": "inferred",
      "sourceClass": "QueenKulaBrain",
      "method": "PickPlayer",
@@ -32793,6 +32989,7 @@
      "switch": [
       "AllowDisplacement"
      ],
+     "displacement": "Teleport",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
@@ -32806,7 +33003,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
      "line": 293,
      "lineEnd": 293,
-     "anchor": "if (!EpicEncounterMechanics.AllowPositionPuzzle) return;",
+     "anchor": "if (!EpicEncounterMechanics.AllowPositionPuzzleFor(Body)) return;",
      "confidence": "read",
      "sourceClass": "QueenKulaBrain",
      "method": "PlayerInCenter",
@@ -33504,7 +33701,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs",
      "line": 50,
      "lineEnd": 51,
-     "anchor": "if (!EpicEncounterMechanics.AllowGlacierGriffonPatrol)",
+     "anchor": "if (!EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(this))",
      "confidence": "read",
      "sourceClass": "Torst",
      "method": "ReturnToSpawnPoint",
@@ -33523,7 +33720,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs",
      "line": 70,
      "lineEnd": 70,
-     "anchor": "Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrol ? eFlags.FLYING : 0;",
+     "anchor": "Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(this) ? eFlags.FLYING : 0;",
      "confidence": "read",
      "sourceClass": "Torst",
      "method": "AddToWorld",
@@ -33542,7 +33739,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs",
      "line": 155,
      "lineEnd": 155,
-     "anchor": "if (!EpicEncounterMechanics.AllowGlacierGriffonPatrol) return;",
+     "anchor": "if (!EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(Body)) return;",
      "confidence": "read",
      "sourceClass": "TorstBrain",
      "method": "TorstFlyingPath",
@@ -33561,7 +33758,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs",
      "line": 284,
      "lineEnd": 295,
-     "anchor": "Body.Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrol ? GameNPC.eFlags.FLYING : 0;",
+     "anchor": "Body.Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(Body) ? GameNPC.eFlags.FLYING : 0;",
      "confidence": "read",
      "sourceClass": "TorstBrain",
      "method": "Think",
@@ -33718,7 +33915,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs",
      "line": 652,
      "lineEnd": 652,
-     "anchor": "if (EpicEncounterMechanics.AllowDisplacement) RandomTarget.MoveTo(Body.CurrentRegionID, Body.X, Body.Y, Body.Z + Util.Random(500, 700), Body.Heading);",
+     "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, Body.X, Body.Y, Body.Z + Util.Random(500, ",
      "confidence": "inferred",
      "sourceClass": "HurikaBrain",
      "method": "TeleportPlayer",
@@ -33726,6 +33923,7 @@
      "switch": [
       "AllowDisplacement"
      ],
+     "displacement": "Throw",
      "affects": "real players only (bots are never picked)",
      "verified": true,
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
@@ -33739,7 +33937,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs",
      "line": 428,
      "lineEnd": 429,
-     "anchor": "if (!EpicEncounterMechanics.AllowGlacierGriffonPatrol)",
+     "anchor": "if (!EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(this))",
      "confidence": "read",
      "sourceClass": "Hurika",
      "method": "ReturnToSpawnPoint",
@@ -33758,7 +33956,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs",
      "line": 470,
      "lineEnd": 470,
-     "anchor": "Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrol ? eFlags.FLYING : 0;",
+     "anchor": "Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(this) ? eFlags.FLYING : 0;",
      "confidence": "read",
      "sourceClass": "Hurika",
      "method": "AddToWorld",
@@ -33777,7 +33975,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs",
      "line": 506,
      "lineEnd": 506,
-     "anchor": "if (!EpicEncounterMechanics.AllowGlacierGriffonPatrol) return;",
+     "anchor": "if (!EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(Body)) return;",
      "confidence": "read",
      "sourceClass": "HurikaBrain",
      "method": "HurikaFlyingPath",
@@ -33796,7 +33994,7 @@
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs",
      "line": 616,
      "lineEnd": 621,
-     "anchor": "Body.Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrol ? GameNPC.eFlags.FLYING : 0;",
+     "anchor": "Body.Flags = EpicEncounterMechanics.AllowGlacierGriffonPatrolFor(Body) ? GameNPC.eFlags.FLYING : 0;",
      "confidence": "read",
      "sourceClass": "HurikaBrain",
      "method": "Think",

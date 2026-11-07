@@ -1303,7 +1303,7 @@ namespace DOL.AI.Brain
 		{
 			// Restored (3513bad) behind AllowDragonMessengers: where its path ends a messenger calls its adds. They join the
 			// dragon's add list, so a reset clears them with the messengers.
-			if (!EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowDragonMessengers), "HibCuuldurach"))
+			if (!EpicEncounterMechanics.AllowDragonMessengersFor("HibCuuldurach"))
 				return;
 			for (int i = 0; i <= Util.Random(3, 5); i++)
 			{
