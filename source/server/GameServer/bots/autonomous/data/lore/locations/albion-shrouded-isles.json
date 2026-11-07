@@ -12,7 +12,6 @@
     57
   ],
   "aliases": [
-    "caldey",
     "inishail"
   ],
   "summary": "Avalon's war-torn isles, Caldey, the Dales of Devwy, Gwyddneau and Inishail, where Morgana's dead and the drakoran hold the open ground.",
@@ -171,9 +170,6 @@
     ]
   },
   "bosses": [
-    "amphiptere",
-    "durval",
-    "vortanos",
     "sarcondina",
     "spirit-of-lord-emthoro"
   ]

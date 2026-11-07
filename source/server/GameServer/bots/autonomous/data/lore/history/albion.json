@@ -196,7 +196,8 @@
         "avalon-isle",
         "aldland",
         "dales-of-devwy",
-        "gwyddneau"
+        "gwyddneau",
+        "caldey"
       ],
       "bosses": [
         "duraek-the-empowered",
@@ -238,7 +239,8 @@
         "isle-of-glass",
         "avalon-isle",
         "dales-of-devwy",
-        "gwyddneau"
+        "gwyddneau",
+        "caldey"
       ],
       "bosses": [
         "morgana",
@@ -286,7 +288,8 @@
         "isle-of-glass",
         "avalon-isle",
         "dales-of-devwy",
-        "gwyddneau"
+        "gwyddneau",
+        "caldey"
       ],
       "bosses": [
         "soul-reckoner",
@@ -421,7 +424,8 @@
         "hadrians-wall",
         "snowdonia",
         "isle-of-glass",
-        "dales-of-devwy"
+        "dales-of-devwy",
+        "caldey"
       ],
       "bosses": []
     },
