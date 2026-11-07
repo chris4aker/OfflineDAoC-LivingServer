@@ -186,7 +186,15 @@ public class UT_LoreChannelHerald
         if (!File.Exists(catalog)) catalog = FindUp("docs/encounters/epic-encounters.json");
         string json = File.ReadAllText(catalog);
         foreach (LoreBoss boss in embedded.AllBosses)
+        {
+            // A plain world spawn has no catalog entry: it names its exact spawn names instead (npcNames).
+            if (string.IsNullOrWhiteSpace(boss.CatalogKey))
+            {
+                Assert.That(boss.NpcNames, Is.Not.Empty, $"{boss.Id}: a catalogKey or npcNames");
+                continue;
+            }
             Assert.That(json, Does.Contain($"\"id\": \"{boss.CatalogKey}\"").Or.Contain($"\"class\": \"{boss.CatalogKey}\""), boss.Id);
+        }
         foreach (LoreLocation location in embedded.AllLocations)
         {
             var dialogue = new LoremasterDialogue(embedded, location.RealmId == 0 ? 1 : location.RealmId, "x");
