@@ -1,0 +1,148 @@
+{
+ "id": "director-kobil",
+ "name": "Director Kobil",
+ "npcNames": [
+  "Director Kobil"
+ ],
+ "aliases": [
+  "kobil",
+  "the director"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-present",
+ "factions": [
+  "dark-ones",
+  "chthonic-chapter"
+ ],
+ "related": [
+  {
+   "id": "prince-abdin",
+   "relation": "his prince; the Army is his Blade"
+  },
+  {
+   "id": "gatekeeper-dommel",
+   "relation": "swears the Army will find the roads long"
+  },
+  {
+   "id": "field-marshal-nebir",
+   "relation": "cannot count his Army"
+  },
+  {
+   "id": "earl-glassalab",
+   "relation": "digs his Army a road"
+  },
+  {
+   "id": "archivist-borath",
+   "relation": "his neighbour above the centre"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Director Kobil is a level 53 GameEpicNPC of the Demon Lords faction with the flying flag (32), in the high chambers above the Gate (z about 17,800), about 1,740 units from Archivist Borath.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's Darkness Falls map key lists 'Director Kobil (wanders)'.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "In 'Breaking the Blade' Mystemas says Prince Abdin's plans must be broken and sends players to kill Director Kobil and then Prince Abdin; Hibernia's giver calls it the fight against the Army of Shadows, and Mystemas's own version goes on to Legion.",
+   "provenance": "game",
+   "source": "world data: DataQuest table"
+  },
+  {
+   "text": "Director Kobil uses model 639, the model of the avernal quasits, at size 133.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "De Plancy's infernal court has a director of theatres (Kobal; the page read spells it 'Robals', to verify); Kobil may read as that name.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/Classification_of_demons"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Director Kobil keeps the court's shadows, and before he raised an army out of them he made them act. He is a small winged thing of the quasit kind, light enough to drift on the warm air that rises from the deep fires, and in the Uncounted Age he was nothing at all, a flitter round the lords' braziers. He found that a quasit hanging between a fire and a wall throws a shadow larger than any lord, and that a shadow, if one is patient with it, can be taught to move by itself.\n\nWhen the First Roll was cut, the court wanted spectacle to go with its new manners, and Kobil gave it one. He put the Feast of Thrones on the wall of the approach in shadow, every lord who was eaten and every lord who knelt, and the court watched itself kneel and was delighted. Adremal wrote him a line as Director of the Spectacles, under Prince Abdin, who had paid for the braziers. For eight Rolls Kobil staged the court's histories in shadow: the Blade and the Hook at the crossing, the three Oros coming up out of the fires, the Queen's chair standing empty. The court's memory of its own feuds is partly his, and the Inquisitors have noted that his plays do not always end the way the feuds did.\n\nIn the Ninth Roll Prince Abdin watched the Director's shadows fight the feud of the Blade and the Hook again on the wall and asked how long they would go on fighting if nobody stopped them. Kobil did not know. The prince told him to find out. The Director has worked on that question in the chambers above the Gate ever since, high over the crossing near the Archivist's records, and the answer is the Army of Shadows: a host that does not eat or sleep, holds no line and so cannot be struck from one, and cannot be counted, which is what Field Marshal Nebir hates most about it. Abdin's Roll now calls Kobil Director of the Army, and the court has stopped asking for plays.\n\nThe Army is the prince's Blade, and Kobil is its hilt. Everyone in the court with an interest in Abdin's plans failing, which is most of it, knows that the shadows were taught by one demon and answer to one demon, and that a blade with a broken hilt is only a sharp piece of iron lying on a floor. The Gatekeeper has said the Army will find the roads long. Earl Glassalab is digging it another. The imps who have seen the Director say he never sets foot on the floor of his chambers, but hangs in the warm air between the braziers where every shadow in the room is his, as if somebody once told him that a shadow on the floor is an easy one to step on.",
+ "legend": "Kobil is the flying director in the high chambers above the Gate, near Archivist Borath, and he hangs in the air between the braziers. The old guides say he wanders; here he keeps to his chambers. Level 53, which makes him the easiest great office in the court by far, and the first kill of every realm's Breaking the Blade quest: Mystemas sends you after Kobil, then Prince Abdin, and in Midgard's version on to Legion. He respawns in about five minutes, so get the quest credit and move on to Abdin; he is more annoying than dangerous. Players call him the puppeteer or the shadow-master and say that if Kobil dies first, Abdin's Army of Shadows never marches. That is mostly the quest talking. Hibernia believes it anyway and sings about it.",
+ "yells": {
+  "aggro": [
+   "Places. Everyone to their places.",
+   "You are standing in my light.",
+   "A new scene. You are not in it for long."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Shadows! Off the wall and onto the floor!"
+   }
+  ],
+  "death": [
+   "The hilt... the Blade... without me it is iron...",
+   "Lights down. Curtain."
+  ],
+  "slay": [
+   "Exit, pursued.",
+   "And scene.",
+   "Your shadow stays. You do not."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Shadows move on the wall that nothing here is casting.",
+   "A small winged shape drifts from brazier to brazier."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The Director's shadows peel off the walls."
+   }
+  ],
+  "realmFirstKill": "Director Kobil has fallen. The shadows stop moving."
+ },
+ "botLines": {
+  "briefing": [
+   "kobil is up in the rooms above the gate. [hes a flyer|he hangs over the braziers]",
+   "53, easiest of the big names. [breaking the blade starts here|kobil first then abdin]",
+   "kobil respawns fast. [get the credit and go|dont hang around]",
+   "after kobil, abdin. [rebuff before the prince|mana check]"
+  ],
+  "aftermathWin": [
+   "kobil down. [the blade is broken|step one done]",
+   "director kobil dead. [now abdin|on to the prince]",
+   "kobil done, [easy|told you hes easy]",
+   "the puppeteer's dead. [no army of shadows lol|shadows stopped]"
+  ],
+  "aftermathLoss": [
+   "took the wrong stair to kobil. [lost|where are the rooms]",
+   "kobil pulled the gate on us. [too close to the crossing|wipe]",
+   "kobil got us somehow. [embarrassing|rez]",
+   "pulled the gate on the way up to kobil. [slower|stay together]"
+  ],
+  "rumour": [
+   "[heard|word is] director kobil used to put on shadow plays for the demons",
+   "kobil is building prince abdin an army of shadows. [kill him first|break the blade]",
+   "[someone said|my guildie says] the gatekeeper hates kobil's army. [cant be counted|cant charge it toll]",
+   "kobil is the only big demon in df under 60. [free kill|easy]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "kobil",
+  "text": "Director Kobil, a quasit of Prince [Abdin]'s, who taught the court's shadows to act and now, in the chambers above the Gate, is teaching them to march: the [Army of Shadows]. The court calls him the hilt of the prince's Blade."
+ },
+ "bookPage": "From a Hibernian bard's notes, written on the stair home after the Blade was broken: The chambers over the Gate are lit by braziers set at every height, and between every fire and every wall there is a shadow, and none of them belongs to anything in the room. We stood in the doorway and watched them. They were acting. It took me a while to understand the play: a hall, thirty thrones, a guest at the end of the table who grew, and grew, and ate. The court's Feast, as the imps tell it. The shadows playing the dead lords bowed at the end. Then they stepped off the wall and came for us.",
+ "bookPages": [
+  "From a Hibernian bard's notes, written on the stair home after the Blade was broken: The chambers over the Gate are lit by braziers set at every height, and between every fire and every wall there is a shadow, and none of them belongs to anything in the room. We stood in the doorway and watched them. They were acting. It took me a while to understand the play: a hall, thirty thrones, a guest at the end of the table who grew, and grew, and ate. The court's Feast, as the imps tell it. The shadows playing the dead lords bowed at the end. Then they stepped off the wall and came for us.",
+  "The notes go on: The thing that made them was no bigger than a hound, winged, and it would not keep still. It drifted from fire to fire, and every time it moved the shadows on the walls moved with it, and when it hung between two braziers it had two shadows and both of them fought. We caught it at last over the stair to the crossing. When it fell, every shadow in the chambers stopped where it was, mid-step, like mummers when the lamps go out, and stayed so. They are standing there yet, our scout says. Nobody has thought of a reason to disturb them."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} broke the hilt of Prince Abdin's Blade: Director Kobil fell in {minutes} minutes.",
+  "loss": "Director Kobil and his shadows drove {realm}'s raid under {raidLeader} out of the chambers above the Gate."
+ }
+}
