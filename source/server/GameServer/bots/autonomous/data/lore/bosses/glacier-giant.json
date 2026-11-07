@@ -59,7 +59,7 @@
   },
   "botLines": {
     "briefing": [
-      "glacier giant throws people far. run back FAST, it resets after 30 sec"
+      "glacier giant throws people far. run back fast, it resets after 30 sec"
     ],
     "aftermathWin": [
       "glacier giant down! [anyone land near uppland?|i flew twice]"
