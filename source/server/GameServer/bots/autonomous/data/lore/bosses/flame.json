@@ -2,7 +2,7 @@
   "id": "flame",
   "name": "Flame",
   "catalogKey": "hibernia-named-mobs-classic-zones/flame",
-  "locationId": "hibernia-wilds",
+  "locationId": "cursed-forest",
   "realm": "Hibernia",
   "facts": [
     {

@@ -2,7 +2,7 @@
   "id": "juggernaut",
   "name": "Juggernaut",
   "catalogKey": "hibernia-named-mobs-classic-zones/epicjuggernaut",
-  "locationId": "hibernia-wilds",
+  "locationId": "cursed-forest",
   "realm": "Hibernia",
   "facts": [
     {

@@ -2,7 +2,7 @@
   "id": "wyvernic-wraith",
   "name": "Wyvernic Wraith",
   "catalogKey": "hibernia-named-mobs-classic-zones/wyvernicwraith",
-  "locationId": "hibernia-wilds",
+  "locationId": "cursed-forest",
   "realm": "Hibernia",
   "facts": [
     {

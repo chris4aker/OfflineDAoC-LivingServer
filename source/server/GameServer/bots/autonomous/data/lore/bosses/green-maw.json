@@ -2,7 +2,7 @@
   "id": "green-maw",
   "name": "Green Maw",
   "catalogKey": "hibernia-named-mobs-classic-zones/greenmaw",
-  "locationId": "hibernia-wilds",
+  "locationId": "cursed-forest",
   "realm": "Hibernia",
   "facts": [
     {

@@ -2,7 +2,7 @@
   "id": "blight",
   "name": "Blight",
   "catalogKey": "hibernia-named-mobs-classic-zones/blight",
-  "locationId": "hibernia-wilds",
+  "locationId": "cursed-forest",
   "realm": "Hibernia",
   "facts": [
     {

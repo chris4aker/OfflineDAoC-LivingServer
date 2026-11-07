@@ -201,18 +201,6 @@
     "badb",
     "queen-cliodna",
     "melancholic-fairy-queen",
-    "juggernaut",
-    "blight",
-    "cailean",
-    "giant-caithor",
-    "develin",
-    "flame",
-    "luriquay",
-    "green-maw",
-    "orey-eyed-oghamist",
-    "skeaghshee",
-    "uafas-capall",
-    "wyvernic-wraith",
     "tawi-shon",
     "lhia",
     "madawg",
@@ -221,9 +209,7 @@
     "saemus",
     "kunsgnos",
     "donal",
-    "mikka",
-    "shadowgnash",
-    "faerie-queen"
+    "mikka"
   ],
   "era": "hib-age-of-the-veil",
   "factions": [
@@ -261,6 +247,10 @@
     },
     {
       "id": "connacht",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "cursed-forest",
       "relation": "a zone of the region, with its own file"
     }
   ]

@@ -142,6 +142,7 @@
       ],
       "places": [
         "coruscating-mine",
+        "cursed-forest",
         "hibernia-wilds",
         "lough-derg",
         "silvermine-mountains"
@@ -452,6 +453,7 @@
       "name": "The Sidhe",
       "summary": "The people of the mounds and the courts beyond the Veil: fairy queens and lords of the wilds, whose songs and bargains the hill country fears.",
       "places": [
+        "cursed-forest",
         "hibernia-wilds",
         "lough-derg"
       ],
@@ -472,6 +474,7 @@
       "name": "The Cursed Wood",
       "summary": "What walks in the Cursed Forest after the Seelie and Unseelie bargain broke: the court's debts and leavings, from the Juggernaut to the giants and the green things of the wood.",
       "places": [
+        "cursed-forest",
         "hibernia-wilds"
       ],
       "bosses": [
