@@ -150,6 +150,9 @@
         "hamar",
         "jarl-ormarr",
         "mistress-of-runes",
+        "summoner-cunovinda",
+        "summoner-lossren",
+        "summoner-roesia",
         "thane-dyggve"
       ]
     },
@@ -447,7 +450,10 @@
         "summoners-hall"
       ],
       "bosses": [
-        "grand-summoner-govannon"
+        "grand-summoner-govannon",
+        "summoner-cunovinda",
+        "summoner-lossren",
+        "summoner-roesia"
       ]
     },
     {
@@ -459,7 +465,10 @@
         "summoners-hall"
       ],
       "bosses": [
-        "grand-summoner-govannon"
+        "grand-summoner-govannon",
+        "summoner-cunovinda",
+        "summoner-lossren",
+        "summoner-roesia"
       ]
     },
     {
