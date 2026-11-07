@@ -119,7 +119,12 @@
         "wrath-of-mordred",
         "green-knight",
         "golestandt",
-        "morgana"
+        "morgana",
+        "legendary-afanc",
+        "king-of-the-barfog-hills",
+        "teazanodwc",
+        "mouth",
+        "fester"
       ]
     },
     {
@@ -285,6 +290,7 @@
       "places": [
         "caer-sidi",
         "lyonesse",
+        "llyn-barfog",
         "black-mountains-north",
         "snowdonia",
         "isle-of-glass",
