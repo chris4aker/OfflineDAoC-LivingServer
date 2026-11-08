@@ -101,6 +101,10 @@ public static class AutonomousObjectiveAssignments
         // TargetName is the camp's monster while the bot works a camp (a kill elsewhere has no camp and no effect).
         if (!string.IsNullOrWhiteSpace(record.CurrentCampId))
             AutonomousCampDangerBench.RecordKill(AutonomousCampDangerBench.SpeciesKey(bot.CurrentRegionID, record.TargetName));
+        // True 1.65: kills offset empty hunts in the camp memory
+        if (AutonomousCampCompetition.TryGetSpot(record.CurrentCampId, out AutonomousCampCompetition.CampSpot spot) && !spot.Dungeon)
+            AutonomousCampEmptyMemory.RecordKill(AutonomousCampEmptyMemory.Key(spot.Region, spot.Name, spot.X, spot.Y),
+                GameLoop.GameLoopTime);
     }
 
     public static bool HasActiveRvrTenure(OfflineWorldBotRecord record, DateTime utcNow)
