@@ -94,6 +94,72 @@ namespace DOL.GS
             return new Vector3(at.X, at.Y, raiderZ);
         }
 
+        // ---- the melee ring (owner 2026-11-08, Govannon's demon: "melee spread over 3 ring spots") -------------------
+
+        /// <summary>
+        /// Ring spot <paramref name="slot"/> of <paramref name="spots"/> around <paramref name="boss"/> (pure): at
+        /// <paramref name="radius"/> from him, <c>360 / spots</c> degrees apart, starting at <paramref name="angle"/> (radians).
+        /// Three spots at 190 lie 329 apart, so an area hit of 300 around a raider at one spot misses the other two.
+        /// </summary>
+        public static Vector3 RingSpot(Vector3 boss, float angle, int slot, int spots, float radius, float raiderZ)
+        {
+            spots = Math.Max(1, spots);
+            float a = angle + (float)(2 * Math.PI) * (((slot % spots) + spots) % spots) / spots;
+            return new Vector3(boss.X + radius * MathF.Cos(a), boss.Y + radius * MathF.Sin(a), raiderZ);
+        }
+
+        /// <summary>The ring's slot of a party (pure): its place in the raid's party order, spread over the spots.</summary>
+        public static int RingSlotFor(int partyOrder, int spots) => spots <= 0 ? 0 : (int)((uint)partyOrder % (uint)spots);
+
+        /// <summary>A ring's orientation is kept this long after it was last asked for, then chosen again.</summary>
+        public const long RingMemoryMilliseconds = 30_000;
+
+        private static readonly Dictionary<GameObject, (float Angle, long Seen)> RingAngles = new();
+
+        /// <summary>The ring's orientation around <paramref name="boss"/>: fixed for the fight (so a target swap does not
+        /// send the melee around him), chosen when first asked for: spot 0 behind him as seen from
+        /// <paramref name="firstAnchor"/>.</summary>
+        public static float RingAngle(GameObject boss, Vector3 bossAt, Vector3 firstAnchor, long now)
+        {
+            lock (RingAngles)
+            {
+                if (RingAngles.TryGetValue(boss, out var r) && now - r.Seen <= RingMemoryMilliseconds)
+                {
+                    RingAngles[boss] = (r.Angle, now);
+                    return r.Angle;
+                }
+                Vector2 away = new(bossAt.X - firstAnchor.X, bossAt.Y - firstAnchor.Y);
+                float angle = away.LengthSquared() >= 1 ? MathF.Atan2(away.Y, away.X) : 0f;
+                if (RingAngles.Count > 64) RingAngles.Clear();
+                RingAngles[boss] = (angle, now);
+                return angle;
+            }
+        }
+
+        private static readonly Dictionary<Group, (int Order, long Tick)> PartyOrders = new();
+
+        /// <summary>The party's place in its raid's party order (cached for 10 s), or -1 outside a raid.</summary>
+        public static int PartyOrder(Group group, long now)
+        {
+            if (group == null) return -1;
+            lock (PartyOrders)
+                if (PartyOrders.TryGetValue(group, out var hit) && now - hit.Tick < 10_000) return hit.Order;
+            int order = -1;
+            if (AutonomousRealmRaid.RaidOf(group) is { } raid) order = Array.IndexOf(raid.Parties, group);
+            lock (PartyOrders)
+            {
+                if (PartyOrders.Count > 512) PartyOrders.Clear();
+                PartyOrders[group] = (order, now);
+            }
+            return order;
+        }
+
+        public static void ResetRingForTests()
+        {
+            lock (RingAngles) RingAngles.Clear();
+            lock (PartyOrders) PartyOrders.Clear();
+        }
+
         /// <summary>A raider within <paramref name="radius"/> + <paramref name="margin"/> of the anchor (flat) is in the
         /// area hit's reach (pure).</summary>
         public static bool InReach(Vector3 raider, Vector3 anchor, int radius, int margin) =>

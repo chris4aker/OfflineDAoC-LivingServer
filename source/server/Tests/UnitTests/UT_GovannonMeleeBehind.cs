@@ -70,5 +70,67 @@ namespace DOL.UnitTests
             foreach (var t in EpicEncounterTactics.Catalog) if (t.Boss == "GrandSummonerGovannon") gov = t;
             Assert.That(gov.MeleeBehind, Is.True);
         }
+        [Test]
+        public void ThreeRingSpotsAreClearOfEachOthersShroud()
+        {
+            Vector3 boss = new(32124, 40754, 15466);
+            var spots = new Vector3[3];
+            for (int i = 0; i < 3; i++)
+                spots[i] = EncounterMeleeStations.RingSpot(boss, 0.7f, i, 3, EpicEncounterTactics.RingRadius, 15466);
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.That(Vector2.Distance(new(spots[i].X, spots[i].Y), new(boss.X, boss.Y)), Is.EqualTo(190).Within(0.5));
+                Assert.That(EpicEncounterTactics.RingRadius, Is.InRange(EpicEncounterTactics.BehindDistance, EpicEncounterTactics.BehindReach),
+                    "inside bot melee reach and not closer than the follow order");
+                for (int j = i + 1; j < 3; j++)
+                    Assert.That(Vector2.Distance(new(spots[i].X, spots[i].Y), new(spots[j].X, spots[j].Y)), Is.GreaterThan(300 + 20),
+                        "a Shroud (300) on a raider at one spot misses the other two");
+            }
+            Assert.That(EncounterMeleeStations.RingSpot(boss, 0.7f, 4, 3, 190, 0).X, Is.EqualTo(spots[1].X).Within(0.01), "slots wrap");
+            Assert.That(EncounterMeleeStations.RingSlotFor(0, 3), Is.EqualTo(0));
+            Assert.That(EncounterMeleeStations.RingSlotFor(5, 3), Is.EqualTo(2));
+            Assert.That(EncounterMeleeStations.RingSlotFor(-1, 3), Is.InRange(0, 2));
+        }
+
+        [Test]
+        public void TheRingKeepsItsOrientationThroughATargetSwap()
+        {
+            EncounterMeleeStations.ResetRingForTests();
+            var gov = (GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(GameNPC));
+            Vector3 boss = new(0, 0, 0);
+            float first = EncounterMeleeStations.RingAngle(gov, boss, new(150, 0, 0), 1_000);
+            Assert.That(first, Is.EqualTo(System.MathF.PI).Within(0.001), "spot 0 behind him as seen from his first target");
+            Assert.That(EncounterMeleeStations.RingAngle(gov, boss, new(0, 150, 0), 2_000), Is.EqualTo(first), "a new target moves nobody");
+            Assert.That(EncounterMeleeStations.RingAngle(gov, boss, new(0, 150, 0), 2_000 + EncounterMeleeStations.RingMemoryMilliseconds + 1),
+                Is.Not.EqualTo(first).Within(0.01), "a new fight: chosen again");
+            EncounterMeleeStations.ResetRingForTests();
+        }
+
+        [Test]
+        public void TheNearestTankTauntsOnlyWhenHisTargetIsNotATank()
+        {
+            var healer = (GameLiving)RuntimeHelpers.GetUninitializedObject(typeof(GameBot));
+            var tankNear = (GameLiving)RuntimeHelpers.GetUninitializedObject(typeof(GameBot));
+            var tankFar = (GameLiving)RuntimeHelpers.GetUninitializedObject(typeof(GameBot));
+            bool IsTank(GameLiving l) => l == tankNear || l == tankFar;
+            var tanks = new[] { (tankFar, 400f), (tankNear, 150f) };
+            Assert.That(EpicEncounterTactics.TauntingTank(healer, tanks, IsTank), Is.SameAs(tankNear));
+            Assert.That(EpicEncounterTactics.TauntingTank(tankFar, tanks, IsTank), Is.Null, "on a tank already: nobody taunts");
+            Assert.That(EpicEncounterTactics.TauntingTank(healer, System.Array.Empty<(GameLiving, float)>(), IsTank), Is.Null);
+            Assert.That(EpicEncounterTactics.TauntingTank(null, tanks, IsTank), Is.Null);
+        }
+
+        [Test]
+        public void OnlyGovannonHasTheRingAndTheTaunt()
+        {
+            Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.MeleeRing > 0));
+            Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.TanksTaunt));
+            foreach (var t in EpicEncounterTactics.Catalog)
+                if (t.Boss == "GrandSummonerGovannon")
+                {
+                    Assert.That(t.MeleeRing, Is.EqualTo(3));
+                    Assert.That(t.TanksTaunt, Is.True);
+                }
+        }
     }
 }
