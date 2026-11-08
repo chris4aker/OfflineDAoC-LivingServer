@@ -1309,6 +1309,9 @@ namespace DOL.GS
             }
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active)
             {
+                // A boss that blasts the room (Xanxicar): its withdraw spots on the floor towards the way in.
+                if (Entrance is { } way && way.TargetRegion == _region)
+                    EpicEncounterTactics.EnsureBlastPath(_target, new Vector3(way.TargetX, way.TargetY, way.TargetZ));
                 if (TargetTookDamage(_target.Health, _targetLowestHealth, _targetLastHealth)) _targetProgressTick = now;
                 _targetLowestHealth = Math.Min(_targetLowestHealth, _target.Health);
                 _targetLastHealth = _target.Health;
