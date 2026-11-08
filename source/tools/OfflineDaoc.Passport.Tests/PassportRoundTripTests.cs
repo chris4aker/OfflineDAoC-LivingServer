@@ -1,3 +1,5 @@
+// Character passport tests. From rambodolphin13/DividedRealms (da78651, da92848; credit: rambodolphin13), on a synthetic
+// Living Server schema: no played save is used or committed.
 using System.Data.SQLite;
 using NUnit.Framework;
 
@@ -22,7 +24,12 @@ public partial class PassportRoundTripTests
         CREATE TABLE FactionAggroLevel (FactionAggroLevel_ID TEXT PRIMARY KEY, CharacterID TEXT, FactionID INT, AggroLevel INT);
         CREATE TABLE PlayerXEffect (PlayerXEffect_ID TEXT PRIMARY KEY, ChardID TEXT, Var2 DOUBLE);
         CREATE TABLE TimeXLevel (TimeXLevel_ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, Character_ID TEXT, Character_Name TEXT, Character_Level INT);
-        CREATE TABLE offline_artifact_progress (offline_artifact_progress_ID TEXT PRIMARY KEY, CharacterID TEXT, ArtifactID TEXT, Experience BIGINT);
+        CREATE TABLE offline_player_reputation (offline_player_reputation_ID TEXT PRIMARY KEY, PlayerKey TEXT UNIQUE, PlayerName TEXT, Realm INT, NamedKills INT, Nickname TEXT);
+        CREATE TABLE offline_lore_memory (offline_lore_memory_ID TEXT PRIMARY KEY, MemoryKey TEXT UNIQUE, Value TEXT, UpdatedUtc TEXT);
+        CREATE TABLE offline_bot_memory (offline_bot_memory_ID TEXT PRIMARY KEY, BotId INT, PlayerName TEXT, PlayerRealm INT, Grouped INT);
+        CREATE TABLE bot_profiles (bot_id INTEGER PRIMARY KEY AUTOINCREMENT, OwnerCharacterID TEXT, Name TEXT);
+        CREATE TABLE offline_world_bots (BotId INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Realm INT);
+        CREATE TABLE ServerProperty (ServerProperty_ID TEXT PRIMARY KEY, Category TEXT, "Key" TEXT UNIQUE, Value TEXT);
         CREATE TABLE Inventory (Inventory_ID TEXT PRIMARY KEY, OwnerID TEXT, OwnerLot INT DEFAULT 0, ITemplate_Id TEXT, UTemplate_Id TEXT, SlotPosition INT, Count INT DEFAULT 1);
         CREATE TABLE ItemUnique (Id_nb TEXT PRIMARY KEY, Name TEXT, ItemUnique_ID TEXT);
         CREATE TABLE ItemTemplate (Id_nb TEXT PRIMARY KEY, Name TEXT, ItemTemplate_ID TEXT);
@@ -56,7 +63,12 @@ public partial class PassportRoundTripTests
             INSERT INTO FactionAggroLevel VALUES ('f1','{Id}',5,20);
             INSERT INTO PlayerXEffect VALUES ('e1','{Id}',1.5);
             INSERT INTO TimeXLevel (Character_ID,Character_Name,Character_Level) VALUES ('{Id}','Traveller',50);
-            INSERT INTO offline_artifact_progress VALUES ('a1','{Id}','1014',76000000000);
+            INSERT INTO CharacterXMasterLevel VALUES ('ml1','{Id}');
+            INSERT INTO CharacterXOneTimeDrop VALUES ('od1','{Id}');
+            INSERT INTO offline_player_reputation VALUES ('r1','2:Traveller','Traveller',2,4,'the Bold');
+            INSERT INTO offline_lore_memory VALUES ('l1','entry:camelot:{Id}','2026-11-01','2026-11-01T00:00:00Z');
+            INSERT INTO offline_bot_memory VALUES ('m1',7,'Traveller',2,3);
+            INSERT INTO bot_profiles (OwnerCharacterID,Name) VALUES ('{Id}','Squire');
             INSERT INTO ItemTemplate VALUES ('shared_sword','Sword','t1'),('home_only_shield','Shield','t2');
             INSERT INTO ItemUnique VALUES ('stone#1','Stone','u1'),('listed#1','Listed','u2');
             INSERT INTO Inventory (Inventory_ID,OwnerID,ITemplate_Id,SlotPosition) VALUES ('i1','{Id}','shared_sword',10),('i2','{Id}','home_only_shield',11);
@@ -102,7 +114,7 @@ public partial class PassportRoundTripTests
         Assert.That(passport.Tables["Inventory"].Select(i => i.Text("Inventory_ID")), Is.EquivalentTo(new[] { "i1", "i2", "i3", "vault" }));
         Assert.That(passport.Tables["DOLCharactersXCustomParam"].Select(p => p.Text("KeyName")), Is.EqualTo(new[] { "title" }));
         Assert.That(passport.ItemUnique.Select(u => u.Text("Id_nb")), Is.EqualTo(new[] { "stone#1" }));
-        Assert.That(passport.Tables["offline_artifact_progress"], Has.Count.EqualTo(1));
+        Assert.That(passport.Tables.Keys, Is.EquivalentTo(PassportTables.Travelling.Select(t => t.Table)));
     }
 
     [Test]
@@ -467,8 +479,9 @@ public partial class PassportRoundTripTests
         PassportTables.Travelling.ToDictionary(t => t.Table, t => Dump(runtime,
             $"SELECT * FROM \"{t.Table}\" WHERE \"{t.CharacterColumn}\"='{id}'" + (t.StaysHome.Length > 0 ? $" AND {t.StaysHome}" : "")));
 
-    // Every value as storage class and text; an autoincrement key is a row's only allowed difference.
-    static List<string> Dump(string runtime, string sql)
+    // Every value as storage class and text; an autoincrement key is a row's only allowed difference. Raw keeps every
+    // column (the whole-save comparisons of PassportSafetyTests).
+    static List<string> Dump(string runtime, string sql, bool raw = false)
     {
         using SQLiteConnection connection = Open(runtime);
         using SQLiteCommand command = connection.CreateCommand();
@@ -481,7 +494,9 @@ public partial class PassportRoundTripTests
             for (int i = 0; i < reader.FieldCount; i++)
             {
                 string column = reader.GetName(i);
-                if (column is not ("CustomParamID" or "ID" or "TimeXLevel_ID"))
+                if (raw)
+                    fields.Add(reader.IsDBNull(i) ? "<null>" : $"{reader.GetFieldType(i).Name}:{Convert.ToString(reader.GetValue(i), System.Globalization.CultureInfo.InvariantCulture)}");
+                else if (column is not ("CustomParamID" or "ID" or "TimeXLevel_ID"))
                     fields.Add($"{column}={(reader.IsDBNull(i) ? "<null>" : Convert.ToString(reader.GetValue(i)))}");
             }
             rows.Add(string.Join("|", fields));

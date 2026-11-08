@@ -11,4 +11,10 @@
     <PackageReference Include="NUnit" Version="4.5.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="6.1.0" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- Living Server: every saved-progress table needs a passport decision (PassportPolicyTests), and the player guide
+         names each one. -->
+    <None Include="..\OfflineDaoc.ProgressImport\progress-policy.json" Link="progress-policy.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\..\docs\CHARACTER-PASSPORT.md" Link="CHARACTER-PASSPORT.md" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

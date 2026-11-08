@@ -1,3 +1,4 @@
+// Character passport, the launcher's side. From rambodolphin13/DividedRealms (da92848; credit: rambodolphin13).
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -157,6 +158,8 @@ public static class PassportTravel
     /// <summary>Takes the character back from the host. Once the passport is safe on this PC, the host's confirm is only tidying.</summary>
     public static async Task<IReadOnlyList<string>> ComeHomeAsync(PassportWorld home, VisitorInfo visitor, PassportDeskClient desk, string folder, long? purseCopper = null)
     {
+        // Living Server: a running home server is refused before the host is asked to let the character go.
+        home.Open();
         byte[] passport = await desk.DepartAsync(visitor.CharacterId, purseCopper);
         string path = Path.Combine(Pending(folder), PassportFile.FileName(visitor.HomeName, visitor.TripId, Manifest.Return));
         string partial = path + ".partial";

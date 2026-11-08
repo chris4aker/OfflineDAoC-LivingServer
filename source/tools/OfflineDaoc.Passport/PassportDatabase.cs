@@ -1,3 +1,4 @@
+// Character passport SQLite access. From rambodolphin13/DividedRealms (da78651; credit: rambodolphin13).
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -17,19 +18,60 @@ sealed class PassportDatabase : IDisposable
 
     public PassportDatabase(string path, bool readOnly = false)
     {
-        var builder = new SQLiteConnectionStringBuilder { DataSource = path, ReadOnly = readOnly, FailIfMissing = true, Pooling = false, DefaultTimeout = 60 };
+        // Living Server: the world runs in WAL mode beside a live server (the Passport Desk), so a write waits for the
+        // server's own short writes (BusyTimeout) instead of failing with "database is locked".
+        var builder = new SQLiteConnectionStringBuilder
+        {
+            DataSource = path, ReadOnly = readOnly, FailIfMissing = true, Pooling = false, DefaultTimeout = 60, BusyTimeout = 30_000,
+        };
         _connection = new SQLiteConnection(builder.ConnectionString);
         _connection.Open();
     }
 
     public void Dispose() => _connection.Dispose();
 
+    /// <summary>
+    /// A consistent copy of the whole save (SQLite's online backup API, in one step, so it is safe beside a running
+    /// server). Living Server: the pattern of DOL.Database.SqliteBackups.Create. The copy is written as .part, made a
+    /// standalone file (journal DELETE, no -wal or -shm), checked with quick_check and only then renamed, so a failed
+    /// backup leaves no file and the step that wanted it does not run.
+    /// </summary>
     public static void Backup(string source, string destination)
     {
-        using var from = new PassportDatabase(source, readOnly: true);
-        using var to = new SQLiteConnection(new SQLiteConnectionStringBuilder { DataSource = destination, Pooling = false }.ConnectionString);
-        to.Open();
-        from._connection.BackupDatabase(to, "main", "main", -1, null, 0);
+        string partial = destination + ".part";
+        DeleteLeftovers(partial);
+        try
+        {
+            using (var from = new PassportDatabase(source, readOnly: true))
+            using (var to = new SQLiteConnection(new SQLiteConnectionStringBuilder { DataSource = partial, Pooling = false }.ConnectionString))
+            {
+                to.Open();
+                from._connection.BackupDatabase(to, "main", "main", -1, null, 0);
+                using SQLiteCommand journal = to.CreateCommand();
+                journal.CommandText = "PRAGMA journal_mode=DELETE";
+                journal.ExecuteNonQuery();
+            }
+
+            using (var check = new PassportDatabase(partial, readOnly: true))
+            {
+                string result = Convert.ToString(check.Scalar("PRAGMA quick_check")) ?? "";
+                if (result != "ok")
+                    throw new PassportException("backup_failed", $"The save backup failed its check ({result}). Nothing was changed.");
+            }
+
+            File.Move(partial, destination);
+        }
+        finally
+        {
+            DeleteLeftovers(partial);
+        }
+    }
+
+    static void DeleteLeftovers(string partial)
+    {
+        foreach (string path in new[] { partial, partial + "-journal", partial + "-wal", partial + "-shm" })
+            if (File.Exists(path))
+                File.Delete(path);
     }
 
     public void Transaction(Action body)
@@ -42,7 +84,14 @@ sealed class PassportDatabase : IDisposable
         }
         catch
         {
-            Exec("ROLLBACK");
+            // SQLite ends some failed transactions itself (a full disk, an I/O error); the first error is the one to report.
+            try
+            {
+                Exec("ROLLBACK");
+            }
+            catch (SQLiteException)
+            {
+            }
             throw;
         }
     }

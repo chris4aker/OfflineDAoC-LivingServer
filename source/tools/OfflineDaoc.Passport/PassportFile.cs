@@ -1,3 +1,4 @@
+// Character passport file format. From rambodolphin13/DividedRealms (da78651; credit: rambodolphin13).
 #nullable enable
 using System;
 using System.Collections.Generic;

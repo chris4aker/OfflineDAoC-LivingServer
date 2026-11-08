@@ -1,3 +1,5 @@
+// Character passport command line tool, for tests and manual use. From rambodolphin13/DividedRealms (da78651, da92848;
+// credit: rambodolphin13). Every step backs the save up first (runtime\passport-backups).
 using OfflineDaoc.Passport;
 
 const string Usage = """

@@ -5,6 +5,11 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
+// Character passport. From rambodolphin13/DividedRealms (da78651, da92848; credit: rambodolphin13), with Living Server's
+// changes (1.2): every progress-policy table has a passport decision (PassportTables.Decisions, checked by the tests
+// against progress-policy.json), every step that writes takes a checked backup first (the live Desk too), the passport
+// carries no home account name or slot, a visiting name follows the game's name rule, and the Sluaghbinder may visit only
+// a host that has the class on.
 namespace OfflineDaoc.Passport;
 
 /// <summary>A refusal the player can read. Nothing has changed when one is thrown.</summary>
@@ -14,6 +19,20 @@ public sealed class PassportException(string code, string message) : Exception(m
 }
 
 public sealed record TravellingTable(string Table, string CharacterColumn, string StaysHome = "");
+
+/// <summary>What the passport does with one saved-progress table (progress-policy.json).</summary>
+public enum PassportDecision
+{
+    /// <summary>The character's rows go in the passport and replace the home rows when it comes back.</summary>
+    Travels,
+    /// <summary>Account-wide per realm, moved by its own rule: the purse (money) or the higher value (crafting).</summary>
+    MovedByRule,
+    /// <summary>Belongs to one world. The rows stay where they are, at home and at the host.</summary>
+    StaysInWorld,
+}
+
+/// <param name="PerCharacter">The table has rows for one character (by its id or name) that deliberately do not travel.</param>
+public sealed record TableDecision(PassportDecision Decision, string Why, bool PerCharacter = false);
 
 public static class PassportTables
 {
@@ -35,9 +54,69 @@ public static class PassportTables
         new("FactionAggroLevel", "CharacterID"),
         new("PlayerXEffect", "ChardID"),
         new("TimeXLevel", "Character_ID"),
-        new("offline_artifact_progress", "CharacterID"),
         new("Inventory", "OwnerID", TravellingItems),
     ];
+
+    /// <summary>
+    /// Living Server: the passport's decision for every table of progress-policy.json (ProgressTables and
+    /// OptionalProgressTables). A table added to the policy without a decision here fails PassportPolicyTests.
+    /// ItemUnique travels as the rows the character's items use; ItemTemplate is world data, not progress.
+    /// </summary>
+    public static readonly IReadOnlyDictionary<string, TableDecision> Decisions = new Dictionary<string, TableDecision>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["DOLCharacters"] = new(PassportDecision.Travels, "The character. Account, slot, guild and house bind stay home and are put back."),
+        ["DOLCharactersXCustomParam"] = new(PassportDecision.Travels, "The character's settings. passport.* and Realm Exchange sale money stay in their world.", true),
+        ["CharacterXDataQuest"] = new(PassportDecision.Travels, "Quest steps."),
+        ["Quest"] = new(PassportDecision.Travels, "Quests in progress and done."),
+        ["Task"] = new(PassportDecision.Travels, "Tasks."),
+        ["CharacterXMasterLevel"] = new(PassportDecision.Travels, "Master levels."),
+        ["CharacterXOneTimeDrop"] = new(PassportDecision.Travels, "One-time drops already had."),
+        ["FactionAggroLevel"] = new(PassportDecision.Travels, "Faction standing."),
+        ["PlayerXEffect"] = new(PassportDecision.Travels, "Effects that last through a logout."),
+        ["TimeXLevel"] = new(PassportDecision.Travels, "Level-up times."),
+        ["Inventory"] = new(PassportDecision.Travels, "Worn items, backpack and the character's own vault. House vaults, consignment and Realm Exchange listings stay.", true),
+        ["ItemUnique"] = new(PassportDecision.Travels, "Only the rows the travelling items use."),
+        ["AccountXMoney"] = new(PassportDecision.MovedByRule, "The realm wallet is shared by the account's characters: a purse leaves it and joins the other world's wallet."),
+        ["AccountXCrafting"] = new(PassportDecision.MovedByRule, "Crafting is account wide: each skill keeps the higher value of the two worlds."),
+        ["Account"] = new(PassportDecision.StaysInWorld, "Each world has its own accounts and passwords; none is in the passport."),
+        ["AccountXCustomParam"] = new(PassportDecision.StaysInWorld, "Account settings of that world."),
+        ["DOLCharactersBackup"] = new(PassportDecision.StaysInWorld, "Copies of deleted characters."),
+        ["DOLCharactersBackupXCustomParam"] = new(PassportDecision.StaysInWorld, "Settings of deleted characters."),
+        ["bot_profiles"] = new(PassportDecision.StaysInWorld, "Companion bots stay in the world they were made in and wait for the character there.", true),
+        ["bot_settings"] = new(PassportDecision.StaysInWorld, "Settings of those companions."),
+        ["offline_world_bots"] = new(PassportDecision.StaysInWorld, "That world's autonomous gamebots."),
+        ["offline_world_bot_guild"] = new(PassportDecision.StaysInWorld, "Gamebots' guild memberships."),
+        ["offline_auction_escrow"] = new(PassportDecision.StaysInWorld, "The gamebots' own auction."),
+        ["offline_auction_ledger"] = new(PassportDecision.StaysInWorld, "The gamebots' own auction."),
+        ["offline_auction_listings"] = new(PassportDecision.StaysInWorld, "The gamebots' own auction."),
+        ["realm_exchange_sales"] = new(PassportDecision.StaysInWorld, "That world's Realm Exchange sale ledger; its money is paid out there."),
+        ["Guild"] = new(PassportDecision.StaysInWorld, "Guilds. The character leaves its guild for the trip and rejoins it at home."),
+        ["GuildRank"] = new(PassportDecision.StaysInWorld, "Guild ranks."),
+        ["GuildAlliance"] = new(PassportDecision.StaysInWorld, "Guild alliances."),
+        ["DBHouseCharsXPerms"] = new(PassportDecision.StaysInWorld, "Houses belong to their world."),
+        ["DBHousePermissions"] = new(PassportDecision.StaysInWorld, "Houses belong to their world."),
+        ["DBIndoorItem"] = new(PassportDecision.StaysInWorld, "Houses belong to their world."),
+        ["DBOutdoorItem"] = new(PassportDecision.StaysInWorld, "Houses belong to their world."),
+        ["HouseConsignmentMerchant"] = new(PassportDecision.StaysInWorld, "Houses belong to their world."),
+        ["househookpointitem"] = new(PassportDecision.StaysInWorld, "Houses belong to their world."),
+        ["PlayerBoats"] = new(PassportDecision.StaysInWorld, "Boats belong to their world."),
+        ["offline_bot_guilds"] = new(PassportDecision.StaysInWorld, "That world's gamebot guilds."),
+        ["offline_bot_guild_members"] = new(PassportDecision.StaysInWorld, "That world's gamebot guilds."),
+        ["offline_bot_scenes_heard"] = new(PassportDecision.StaysInWorld, "Per realm, not per character."),
+        ["offline_bot_lines_heard"] = new(PassportDecision.StaysInWorld, "Per realm, not per character."),
+        ["offline_bot_memory"] = new(PassportDecision.StaysInWorld, "What that world's gamebots remember about the character, by name. They remember it again on its next visit.", true),
+        ["offline_bot_nemesis"] = new(PassportDecision.StaysInWorld, "That world's gamebots' grudges, by killer name.", true),
+        ["offline_bot_ragequits"] = new(PassportDecision.StaysInWorld, "Gamebots only."),
+        ["offline_bot_storylines"] = new(PassportDecision.StaysInWorld, "That world's gamebot stories; a player who took a side is named.", true),
+        ["offline_bot_bonds"] = new(PassportDecision.StaysInWorld, "Bonds between that world's gamebots."),
+        ["offline_server_firsts"] = new(PassportDecision.StaysInWorld, "Each world's own firsts."),
+        ["offline_player_reputation"] = new(PassportDecision.StaysInWorld,
+            "Deeds and nickname are what that world's gamebots say about the character, and the running server keeps them in memory, so the Desk could not write them safely.", true),
+        ["passport_visits"] = new(PassportDecision.StaysInWorld, "A host's own list of the visitors it has and where each trip stands."),
+        ["passport_trips"] = new(PassportDecision.StaysInWorld, "Every trip a host ever took in, so a travel file works only once there."),
+        ["offline_lore_memory"] = new(PassportDecision.StaysInWorld,
+            "Which lore lines the character heard in that world, by its id; the running server keeps them in memory.", true),
+    };
 
     /// <summary>
     /// Columns that belong to one world. They are blanked on the way out, and the home values
@@ -78,7 +157,8 @@ public sealed class PassportWorld
     {
         _runtime = runtime,
         Database = Path.Combine(runtime, "data", "opendaoc.sqlite3.db"),
-        Name = new DirectoryInfo(runtime).Parent?.Name ?? "",
+        // Living Server: no folder name in the passport (it can name the player). A live world gives its server name.
+        Name = "",
     };
 
     internal string Open()
@@ -106,14 +186,27 @@ public sealed class PassportWorld
         return Database;
     }
 
+    /// <summary>The folder the step's backups go to: runtime\passport-backups (for the live Desk, beside its data folder).</summary>
+    public string BackupRoot => Path.Combine(_runtime ?? Path.GetDirectoryName(Path.GetDirectoryName(Path.GetFullPath(Database)))!, "passport-backups");
+
+    /// <summary>
+    /// Living Server: every step that writes a save backs it up first, the live Desk too, and a failed backup stops the
+    /// step before anything changes.
+    /// </summary>
     internal void BackUp(string character, string step)
     {
-        if (_runtime == null)
-            return;
-        string root = Path.Combine(_runtime, "passport-backups");
-        string folder = Path.Combine(root, $"{DateTime.Now:yyyyMMdd-HHmmss}-{character}-{step}");
+        string root = BackupRoot;
+        string folder = Path.Combine(root, $"{DateTime.Now:yyyyMMdd-HHmmss-fff}-{character}-{step}");
         Directory.CreateDirectory(folder);
-        PassportDatabase.Backup(Database, Path.Combine(folder, "opendaoc.sqlite3.db"));
+        try
+        {
+            PassportDatabase.Backup(Database, Path.Combine(folder, "opendaoc.sqlite3.db"));
+        }
+        catch
+        {
+            Directory.Delete(folder, true);
+            throw;
+        }
 
         // Each one is a whole save, so only the newest few stay.
         foreach (string old in Directory.GetDirectories(root).OrderByDescending(Path.GetFileName, StringComparer.Ordinal).Skip(BackupsKept))
@@ -132,9 +225,16 @@ public static class PassportEngine
     public const string PurseKey = "passport.purse", LeftKey = "passport.left_utc", CancelledKey = "passport.cancelled", VisitorKey = "passport.visitor";
     const string ProceedsPrefix = "RealmExchange.Proceeds.";
     const string VisitsTable = "passport_visits";
+    /// <summary>
+    /// Living Server: every trip this world ever took in. passport_visits keeps only a character's latest trip, so without
+    /// this a kept copy of an older outbound passport would be taken in again once a later trip was over.
+    /// </summary>
+    const string TripsTable = "passport_trips";
     const string Visiting = "visiting", Departing = "departing", Returned = "returned";
     const string ConvertedPrefix = "passport#";
-    const int RetiredSluaghbinderClass = 63;
+    const int SluaghbinderClass = 63, SluaghbinderNoviceClass = 16, Hibernia = 3;
+    /// <summary>The game's own rule (CharacterCreateRequestHandler): a capital letter, then letters, at least 3. DAoC names are 20 at most.</summary>
+    static readonly System.Text.RegularExpressions.Regex NameRule = new("^[A-Z][a-zA-Z]{2,19}$");
     const int SlotsPerRealm = 10;
     const int NoGuildRank = 9;
 
@@ -196,11 +296,10 @@ public static class PassportEngine
         Manifest manifest = passport.Manifest;
         if (manifest.Direction != Manifest.Outbound)
             throw new PassportException("wrong_direction", "This passport is a return passport. Use it at the character's home.");
-        if (manifest.Class == RetiredSluaghbinderClass)
-            throw new PassportException("class", "This world has no Sluaghbinder class.");
 
         using var db = new PassportDatabase(database);
-        EnsureVisits(db);
+        if ((manifest.Class == SluaghbinderClass || (manifest.Class == SluaghbinderNoviceClass && manifest.Realm == Hibernia)) && !SluaghbinderOn(db))
+            throw new PassportException("class", "This world has the Sluaghbinder class turned off, so a Sluaghbinder can't visit it.");
         Row accountRow = FindAccount(db, account);
         string accountName = accountRow.Text("Name");
 
@@ -210,17 +309,22 @@ public static class PassportEngine
         if (stale != null && (VisitState(db, manifest.CharacterId) != Departing || previousTrip == manifest.TripId ||
                               !stale.Text("AccountName").Equals(accountName, StringComparison.OrdinalIgnoreCase)))
             throw new PassportException("already_here", $"{manifest.Name} is already in this world.");
-        if (previousTrip == manifest.TripId)
+        if (previousTrip == manifest.TripId || TripSeen(db, manifest.TripId))
             throw new PassportException("replayed", "This passport was already used. Start a new trip from home.");
 
         string name = string.IsNullOrWhiteSpace(visitingName) ? manifest.Name : visitingName.Trim();
+        if (!NameRule.IsMatch(name))
+            throw new PassportException("bad_name", $"{name} can't be a name here: a capital letter, then letters only, 3 to 20 in all.");
         if (!name.Equals(stale?.Text("Name"), StringComparison.OrdinalIgnoreCase) && NameTaken(db, name))
             throw new PassportException("name_taken", $"The name {name} is taken in this world. Choose a visiting name.");
         int slot = stale != null ? Convert.ToInt32(stale["AccountSlot"]) : FreeSlot(db, accountName, manifest.Realm);
 
         var notes = new List<string>();
+        world.BackUp(name, "arrive");
         db.Transaction(() =>
         {
+            // Inside the transaction, so a refused or failed arrival leaves even the schema as it was.
+            EnsureVisits(db);
             if (stale != null)
             {
                 RemoveCharacter(db, manifest.CharacterId);
@@ -243,6 +347,8 @@ public static class PassportEngine
             if (Convert.ToInt64(accountRow["Realm"]) == 0)
                 db.Exec("UPDATE Account SET Realm=@r WHERE Name=@a", ("@r", (long)manifest.Realm), ("@a", accountName));
 
+            db.Exec($"INSERT INTO {TripsTable} (trip_id,character_id,arrived_utc) VALUES (@t,@id,@u)",
+                ("@t", manifest.TripId), ("@id", manifest.CharacterId), ("@u", DateTime.UtcNow.ToString("O")));
             db.Exec($"DELETE FROM {VisitsTable} WHERE character_id=@id", ("@id", manifest.CharacterId));
             db.Exec($"INSERT INTO {VisitsTable} (character_id,account,trip_id,state,arrived_utc,host_guild,home_name,purse_copper) VALUES (@id,@a,@t,@s,@u,@g,@n,0)",
                 ("@id", manifest.CharacterId), ("@a", accountName), ("@t", manifest.TripId), ("@s", Visiting),
@@ -259,13 +365,12 @@ public static class PassportEngine
     {
         string database = world.Open();
         using var db = new PassportDatabase(database);
-        EnsureVisits(db);
         Row character = FindCharacter(db, characterName);
         string id = character.Text("DOLCharacters_ID");
         string account = character.Text("AccountName");
         int realm = Convert.ToInt32(character["Realm"]);
 
-        List<Row> visits = db.Rows(VisitsTable, "character_id=@id", ("@id", id));
+        List<Row> visits = !db.HasTable(VisitsTable) ? [] : db.Rows(VisitsTable, "character_id=@id", ("@id", id));
         Row visit = visits.SingleOrDefault() ?? throw new PassportException("not_visiting", $"{character.Text("Name")} is not visiting this world.");
         string state = visit.Text("state");
         if (state is not (Visiting or Departing))
@@ -290,6 +395,8 @@ public static class PassportEngine
         string partial = path + ".partial";
         Directory.CreateDirectory(outFolder);
         File.Delete(partial);
+        if (state == Visiting)
+            world.BackUp(character.Text("Name"), "depart");
 
         try
         {
@@ -321,10 +428,9 @@ public static class PassportEngine
     {
         string database = world.Open();
         using var db = new PassportDatabase(database);
-        EnsureVisits(db);
         Row character = FindCharacter(db, characterName);
         string id = character.Text("DOLCharacters_ID");
-        Row? visit = db.Rows(VisitsTable, "character_id=@id", ("@id", id)).SingleOrDefault();
+        Row? visit = !db.HasTable(VisitsTable) ? null : db.Rows(VisitsTable, "character_id=@id", ("@id", id)).SingleOrDefault();
         if (visit == null || visit.Text("state") != Departing || visit.Text("trip_id") != tripId)
             throw new PassportException("no_departure", $"{character.Text("Name")} has no departure to confirm for trip {tripId}.");
 
@@ -421,8 +527,9 @@ public static class PassportEngine
     /// <summary>Host: the visitors of an account that have not gone home.</summary>
     public static IReadOnlyList<VisitorInfo> Visitors(PassportWorld world, string account)
     {
-        using var db = new PassportDatabase(world.Database);
-        EnsureVisits(db);
+        using var db = new PassportDatabase(world.Database, readOnly: true);
+        if (!db.HasTable(VisitsTable))
+            return [];
         return db.Rows(VisitsTable, "account=@a COLLATE NOCASE AND state<>@s", ("@a", account), ("@s", Returned))
             .Select(v =>
             {
@@ -431,6 +538,42 @@ public static class PassportEngine
                 return new VisitorInfo(id, name, v.Text("home_name"), v.Text("trip_id"), v.Text("state"));
             })
             .ToList();
+    }
+
+    /// <summary>The host's switch, passport / passport_visitors (ServerProperties.PASSPORT_VISITORS): on unless turned off.</summary>
+    public const string VisitorsProperty = "passport_visitors";
+
+    public static bool VisitorsWelcome(PassportWorld world)
+    {
+        using var db = new PassportDatabase(world.Database, readOnly: true);
+        if (!db.HasTable("ServerProperty"))
+            return true;
+        string? value = Convert.ToString(db.Scalar("SELECT Value FROM ServerProperty WHERE \"Key\"=@k COLLATE NOCASE", ("@k", VisitorsProperty)));
+        return !bool.TryParse(value, out bool on) || on;
+    }
+
+    /// <summary>Host: turns visitors on or off with this world's server stopped, after a backup like every other write.</summary>
+    public static void SetVisitorsWelcome(PassportWorld world, bool welcome)
+    {
+        string database = world.Open();
+        using var db = new PassportDatabase(database);
+        if (!db.HasTable("ServerProperty"))
+            throw new PassportException("no_settings", "This world has no settings table yet. Start its server once first.");
+        if (VisitorsWelcome(world) == welcome)
+            return;
+
+        string value = welcome ? "True" : "False";
+        world.BackUp("host", "visitors");
+        db.Transaction(() =>
+        {
+            if (db.Exec("UPDATE ServerProperty SET Value=@v WHERE \"Key\"=@k COLLATE NOCASE", ("@v", value), ("@k", VisitorsProperty)) == 0)
+                db.Insert("ServerProperty", new Row
+                {
+                    ["ServerProperty_ID"] = VisitorsProperty, ["Category"] = "passport", ["Key"] = VisitorsProperty,
+                    ["Description"] = "While hosting, let friends bring their own characters to this world (Character passport).",
+                    ["DefaultValue"] = "True", ["Value"] = value, ["LastTimeRowUpdated"] = DateTime.UtcNow.ToString("O"),
+                });
+        });
     }
 
     /// <summary>Home: the trip a character is away on, if any.</summary>
@@ -476,6 +619,10 @@ public static class PassportEngine
                 passport.Tables[table.Table] = db.Rows(table.Table, WhereCharacter(table), ("@id", id));
 
         Row packed = passport.Tables["DOLCharacters"].Single();
+        // Living Server: no account data beyond what the other world needs. The receiver sets its own account and slot;
+        // home puts its own back from the frozen row (HomeOnlyColumns).
+        packed["AccountName"] = "";
+        packed["AccountSlot"] = 0L;
         packed["GuildID"] = "";
         packed["GuildRank"] = (long)NoGuildRank;
         packed["GuildNote"] = "";
@@ -607,7 +754,17 @@ public static class PassportEngine
 
     static bool NameTaken(PassportDatabase db, string name) =>
         db.Count("SELECT count(*) FROM DOLCharacters WHERE Name=@n COLLATE NOCASE", ("@n", name)) > 0 ||
-        (db.HasTable("offline_world_bots") && db.Count("SELECT count(*) FROM offline_world_bots WHERE Name=@n COLLATE NOCASE", ("@n", name)) > 0);
+        (db.HasTable("offline_world_bots") && db.Count("SELECT count(*) FROM offline_world_bots WHERE Name=@n COLLATE NOCASE", ("@n", name)) > 0) ||
+        (db.HasTable("bot_profiles") && db.Count("SELECT count(*) FROM bot_profiles WHERE Name=@n COLLATE NOCASE", ("@n", name)) > 0);
+
+    /// <summary>classes / enable_sluaghbinder (ServerProperties.ENABLE_SLUAGHBINDER), on unless the world turned it off.</summary>
+    static bool SluaghbinderOn(PassportDatabase db)
+    {
+        if (!db.HasTable("ServerProperty"))
+            return true;
+        string? value = Convert.ToString(db.Scalar("SELECT Value FROM ServerProperty WHERE \"Key\"='enable_sluaghbinder' COLLATE NOCASE"));
+        return !bool.TryParse(value, out bool on) || on;
+    }
 
     static int FreeSlot(PassportDatabase db, string account, int realm)
     {
@@ -626,14 +783,22 @@ public static class PassportEngine
             ("@g", parts[0]), ("@r", long.TryParse(parts.ElementAtOrDefault(1), out long rank) ? rank : NoGuildRank), ("@id", id));
     }
 
-    static void EnsureVisits(PassportDatabase db) => db.Exec(
-        $"CREATE TABLE IF NOT EXISTS {VisitsTable} (character_id TEXT PRIMARY KEY, account TEXT NOT NULL, trip_id TEXT NOT NULL, state TEXT NOT NULL, " +
-        "arrived_utc TEXT NOT NULL, host_guild TEXT NOT NULL DEFAULT '', home_name TEXT NOT NULL, purse_copper BIGINT NOT NULL DEFAULT 0)");
+    static void EnsureVisits(PassportDatabase db)
+    {
+        db.Exec($"CREATE TABLE IF NOT EXISTS {VisitsTable} (character_id TEXT PRIMARY KEY, account TEXT NOT NULL, trip_id TEXT NOT NULL, state TEXT NOT NULL, " +
+            "arrived_utc TEXT NOT NULL, host_guild TEXT NOT NULL DEFAULT '', home_name TEXT NOT NULL, purse_copper BIGINT NOT NULL DEFAULT 0)");
+        db.Exec($"CREATE TABLE IF NOT EXISTS {TripsTable} (trip_id TEXT PRIMARY KEY, character_id TEXT NOT NULL, arrived_utc TEXT NOT NULL)");
+        // A world whose passport_visits predates passport_trips: its trips so far count as seen.
+        db.Exec($"INSERT OR IGNORE INTO {TripsTable} (trip_id,character_id,arrived_utc) SELECT trip_id,character_id,arrived_utc FROM {VisitsTable}");
+    }
+
+    static bool TripSeen(PassportDatabase db, string tripId) =>
+        db.HasTable(TripsTable) && db.Count($"SELECT count(*) FROM {TripsTable} WHERE trip_id=@t", ("@t", tripId)) > 0;
 
     static string? VisitState(PassportDatabase db, string id) =>
         db.HasTable(VisitsTable) ? Convert.ToString(db.Scalar($"SELECT state FROM {VisitsTable} WHERE character_id=@id", ("@id", id))) : null;
 
-    static string? VisitTrip(PassportDatabase db, string id) =>
+    static string? VisitTrip(PassportDatabase db, string id) => !db.HasTable(VisitsTable) ? null :
         Convert.ToString(db.Scalar($"SELECT trip_id FROM {VisitsTable} WHERE character_id=@id", ("@id", id)));
 
     static string? Param(PassportDatabase db, string id, string key) =>
