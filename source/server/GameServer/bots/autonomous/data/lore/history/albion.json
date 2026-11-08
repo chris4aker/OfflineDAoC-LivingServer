@@ -117,7 +117,7 @@
       "id": "alb-the-old-kingdoms",
       "order": 3,
       "name": "The Old Kingdoms (Uther and Arthur)",
-      "summary": "Rome left, and kings rose. Uther took the throne and was buried, the chronicles say, inside the ring of stones; in his day a Roman lord vanished on Dartmoor and Sir Arward's thirty knights rode after him and did not come back. Arthur was king in Camelot. He chained the afanc of Llyn Barfog, sailed Prydwen to Caer Sidi and came home with seven, and fell at Camlann to Mordred. Merlin taught in the colleges of Avalon, and so did his pupil Morgana, who wanted her brother's throne.",
+      "summary": "Rome left, and kings rose. Uther took the throne and was buried, the chronicles say, inside the ring of stones; in his day the Roman lord Articus died on Dartmoor with all his house, and the Duke of Cornwall's son came back alone and would not say what he had seen. Arthur was king in Camelot. He chained the afanc of Llyn Barfog, sailed Prydwen to Caer Sidi and came home with seven, and fell at Camlann to Mordred. Merlin taught in the colleges of Avalon, and so did his pupil Morgana, who wanted her brother's throne.",
       "events": [
         {
           "text": "Arthur's horse dragged the afanc from Llyn Barfog (Welsh folklore).",
@@ -130,9 +130,14 @@
           "source": "https://www.camelotherald.com/node/464"
         },
         {
-          "text": "Albion bot chat tells of Sir Arward's thirty knights in Uther's day.",
+          "text": "Albion bot chat tells of a Roman lord whose household vanished on Dartmoor in Uther's day, and of Sir Arward's thirty knights.",
           "provenance": "original",
           "source": "source/server/GameServer/bots/autonomous/data/chat/gen_alb_threads.lines"
+        },
+        {
+          "text": "In Uther's time Articus, whose father was a man of rank in Rome, settled on Dartmoor to escape Rome's politics; about ten years later the Duke of Cornwall's son found him and all his household dead, and came home alone.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
         }
       ],
       "places": [
@@ -183,6 +188,11 @@
           "text": "Goblins of the Black Mountains seized Tepok's Mine from the townsfolk.",
           "provenance": "mythic",
           "source": "https://camelot.allakhazam.com/zones.html?czone=26"
+        },
+        {
+          "text": "Friars belong to an order called the Brotherhood, founded by churchmen who thought their skills better used on the battlefield; it serves Camelot's army rather than the Church of Albion; that is why friars count among the Defenders of Albion. They follow the king's orders, though their final loyalty is to the Church.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1309.shtml (Camelot Herald, 2004-01-23, Grab Bag; Wayback capture 2005-11-28)"
         }
       ],
       "places": [
@@ -260,6 +270,11 @@
           "text": "Three ring-forts on an earthen border guard the Isle of Glass.",
           "provenance": "mythic",
           "source": "https://camelot.allakhazam.com/zones.html?czone=77"
+        },
+        {
+          "text": "The thrawn ogres of Krondon have counted Albion an enemy since misunderstandings from the days of the drakoran invasion; they were once allies, and the half ogres come of Avalonian and ogre marriages from those days.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
         }
       ],
       "places": [
@@ -367,6 +382,21 @@
           "text": "Raids, first kills and the Herald's records are Living Server features.",
           "provenance": "game",
           "source": "source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs"
+        },
+        {
+          "text": "Sir Arward and thirty of his best fighters went deep into Dartmoor; only his scribe's singed journal came back, falling from the sky before Prydwen Keep with one legible word, Golestandt.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+        },
+        {
+          "text": "A heretic begins as an acolyte of the Church of Albion and renounces that faith to worship Arawn, which is what makes him a heretic in the Church's eyes.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1717.shtml (Camelot Herald, 2004-10-04; Wayback capture 2005-02-08)"
+        },
+        {
+          "text": "In each realm the leaders and chosen others received the same vision of a strange land where heroes were tried against fantastic creatures, and a voice promising them power there. Some called it the gods' doing, some magic, some an enemy's trick, but each realm sent scholars and explorers far into the encircling seas; they found the island remnants of Atlantis and the Halls of Heroes, and learned that the other two realms had been invited too. Albion's ships sail from Caer Gothwaite, and the half ogres joined Albion in the same years.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
         }
       ],
       "places": [
@@ -530,7 +560,8 @@
         "the-swett-household",
         "the-tinctor-household",
         "vortanos"
-      ]
+      ],
+      "text": "Camelot's Church calls a heretic any acolyte of its own who renounces the faith and turns to Arawn."
     },
     {
       "id": "caer-sidi-prisoners",
@@ -576,7 +607,8 @@
         "ulor-se-bysen",
         "jehrog-se-bysen",
         "malefact"
-      ]
+      ],
+      "text": "They were Avalon's allies once, before the drakoran came, and the half ogres who fight for Albion are the children of Avalonian and ogre marriages from those years; since the confusion of the drakoran invasion the ogres of Krondon have counted Albion an enemy."
     },
     {
       "id": "krondon-hall-folk",
@@ -675,7 +707,8 @@
         "shade-of-uther-pendragon",
         "tristram-adamson",
         "waleron-douglas"
-      ]
+      ],
+      "text": "The friars are the Brotherhood, churchmen who chose the battlefield: they march with Camelot's army among the Defenders of Albion and follow the king's orders, though their last loyalty is the Church's."
     },
     {
       "id": "old-powers",

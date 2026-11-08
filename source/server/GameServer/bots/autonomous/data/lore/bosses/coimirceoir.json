@@ -19,8 +19,8 @@
       "source": "https://en.wiktionary.org/wiki/coimirceoir"
     }
   ],
-  "story": "The druids of Tir Urphost named it Coimirceoir, the protector, and say the name is a joke the cliffs are playing on them. It is a basilisk, a great scaled thing of the cockatrice kind, and it keeps the cliff-top north of the village near the vehement guardians, and what it protects nobody knows, because nobody has ever got past it to see.\n\nDruid Tobryn has a theory: that the cliffs had a guardian set on them long ago, before Tawi Shon kept his fire, to watch the sea as the Watchers of Vigilant Rock watch theirs across the water, and that Coimirceoir is what is left of it, or what came after it. The fishers do not care what it protects. They take the long way round, and they tell their children never to look it in the eye. The village children dare each other to touch its scales while it sleeps. None ever has.",
-  "legend": "Coimirceoir (43) is a big named basilisk on the cliff-top north of Tir Urphost (about 242k/458k), near the vehement guardians (40-41). A group of low to mid 40s. Plain spawn, 80-second respawn. Not part of a quest. Mind the cliff edge and the vehement guardians close by. It is a plain spawn with no script; treat it as a big 43 with heavy hits. Fight it away from the edge so nobody is knocked off the cliff while running.",
+  "story": "The druids of Tir Urphost named it Coimirceoir, the protector, and say the name is a joke the cliffs are playing on them. It is a basilisk, a great scaled thing of the cockatrice kind, and it keeps the cliff-top south of the village near the vehement guardians, and what it protects nobody knows, because nobody has ever got past it to see.\n\nDruid Tobryn has a theory: that the cliffs had a guardian set on them long ago, before Tawi Shon kept his fire, to watch the sea as the Watchers of Vigilant Rock watch theirs across the water, and that Coimirceoir is what is left of it, or what came after it. The fishers do not care what it protects. They take the long way round, and they tell their children never to look it in the eye. The village children dare each other to touch its scales while it sleeps. None ever has.",
+  "legend": "Coimirceoir (43) is a big named basilisk on the cliff-top south of Tir Urphost (about 242k/458k), near the vehement guardians (40-41). A group of low to mid 40s. Plain spawn, 80-second respawn. Not part of a quest. Mind the cliff edge and the vehement guardians close by. It is a plain spawn with no script; treat it as a big 43 with heavy hits. Fight it away from the edge so nobody is knocked off the cliff while running.",
   "yells": {
     "aggro": [
       "(the basilisk's gaze settles on you)",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "coimirceoir is a 43 basilisk on the cliff top north of tir urphost",
+      "coimirceoir is a 43 basilisk on the cliff top south of tir urphost",
       "vehement guardians nearby, watch the edge"
     ],
     "aftermathWin": [
@@ -61,7 +61,7 @@
   },
   "loremasterTopic": {
     "keyword": "Coimirceoir",
-    "text": "A great basilisk on the cliff-top north of Tir Urphost, named the protector by the druids. Tobryn thinks it is what is left of a guardian set on the cliffs to watch the sea."
+    "text": "A great basilisk on the cliff-top south of Tir Urphost, named the protector by the druids. Tobryn thinks it is what is left of a guardian set on the cliffs to watch the sea."
   },
   "bookPage": "",
   "chronicle": {

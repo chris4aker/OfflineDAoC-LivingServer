@@ -376,6 +376,16 @@
           "text": "First autumn: Conaing of Howth's forty went up and seven came home (the King's Law). Second winter: Ethne found the king's flinch from heat, and the brazier on the Cullen road was lit. Third spring of the isles: Dubthach of Ardee's hosting of a hundred and twenty held the four doors and the hills wept.",
           "provenance": "original",
           "source": "Living Server"
+        },
+        {
+          "text": "Rangers scouting the Bog of Cullen's northern edge found a new pass out of the mist; the ancient elven sage Tyldifyl told them it led into the Sheeroe Hills, a hidden kingdom of the Otherworld whose king is Cuuldurach, the Glimmer King.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+        },
+        {
+          "text": "Followers of the Great Azure, an old kin of the firbolg who put their faith in a cloudless sky, hold strongholds in the Sheeroe Hills to cleanse them of the glimmers, whom they take for wicked things tainted with death.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
         }
       ],
       "places": [
@@ -411,6 +421,16 @@
           "text": "The druids of Tir na Nog fear the meeting of the eye in the tower and the Root in the hollow: Queen Qunilaria's brood has broken into something under the Vale that smells of sap.",
           "provenance": "original",
           "source": "Living Server"
+        },
+        {
+          "text": "The Queen of the Shar offered her people to Hibernia against Albion and Midgard, meaning to turn on Hibernia once its enemies were beaten. The elves, who alone know the Shar, distrust them, but with the war going badly the Celts argued for the alliance and it was accepted, uneasily.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
+        },
+        {
+          "text": "In each realm the leaders and chosen others received the same vision of a strange land where heroes were tried against fantastic creatures, and a voice promising them power there. Some called it the gods' doing, some magic, some an enemy's trick, but each realm sent scholars and explorers far into the encircling seas; they found the island remnants of Atlantis and the Halls of Heroes, and learned that the other two realms had been invited too. Hibernia's ships sail from a river dock at the foot of the Grove of Domnann.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
         }
       ],
       "places": [
@@ -635,7 +655,7 @@
     {
       "id": "order-of-the-azure",
       "name": "The Order of the Azure",
-      "summary": "Blue-painted firbolg kin who pray to the open sky and keep a crusade against the Glimmer on Sheeroe's southern slopes; their Voices preach in Connacht.",
+      "summary": "Blue-painted firbolg kin who pray to the open sky and keep a crusade against the Glimmer on Sheeroe's northern slopes; their Voices preach in Connacht.",
       "places": [
         "connacht",
         "sheeroe-hills"
