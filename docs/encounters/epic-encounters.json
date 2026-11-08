@@ -676,7 +676,7 @@
    "finals": [
     "AlbGolestandt"
    ],
-   "line": 341
+   "line": 355
   },
   {
    "id": "dragon-midgard",
@@ -688,7 +688,7 @@
    "finals": [
     "MidGjalpinulva"
    ],
-   "line": 342
+   "line": 356
   },
   {
    "id": "dragon-hibernia",
@@ -700,7 +700,7 @@
    "finals": [
     "HibCuuldurach"
    ],
-   "line": 343
+   "line": 357
   },
   {
    "id": "epic-albion",
@@ -712,7 +712,7 @@
    "finals": [
     "Apocalypse"
    ],
-   "line": 344
+   "line": 358
   },
   {
    "id": "epic-midgard",
@@ -725,7 +725,7 @@
     "KingTuscar",
     "QueenKula"
    ],
-   "line": 345
+   "line": 359
   },
   {
    "id": "epic-hibernia",
@@ -737,7 +737,7 @@
    "finals": [
     "Olcasgean"
    ],
-   "line": 346
+   "line": 360
   },
   {
    "id": "summoners-albion",
@@ -749,7 +749,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 347
+   "line": 361
   },
   {
    "id": "summoners-midgard",
@@ -761,7 +761,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 348
+   "line": 362
   },
   {
    "id": "summoners-hibernia",
@@ -773,7 +773,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 349
+   "line": 363
   },
   {
    "id": "darkness-albion",
@@ -785,7 +785,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 350
+   "line": 364
   },
   {
    "id": "darkness-midgard",
@@ -797,7 +797,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 351
+   "line": 365
   },
   {
    "id": "darkness-hibernia",
@@ -809,7 +809,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 352
+   "line": 366
   }
  ],
  "neutralObjectives": {

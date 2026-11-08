@@ -235,6 +235,20 @@ namespace DOL.GS
             if (group == null) return false;
             using (AiProfile.Lock(Sync, AiSystem.LockRaid)) return Membership.TryGetValue(group, out Raid raid) && !raid.Started && raid.Parties.ContainsKey(group);
         }
+        /// <summary>The raid a party belongs to: its event id and its parties in the raid's order (the first party's leader is
+        /// the raid leader, as in its briefing and its ledger row). Null when the group is in no raid.</summary>
+        public static (string Id, Group[] Parties)? RaidOf(Group group)
+        {
+            if (group == null) return null;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+                return Membership.TryGetValue(group, out Raid raid) && raid.Parties.ContainsKey(group)
+                    ? (raid.Definition.Id, raid.Parties.Keys.ToArray()) : null;
+        }
+
+        /// <summary>The raid event whose encounters include this boss class (its final or named boss), or null.</summary>
+        public static string RaidIdForBoss(string bossType) => string.IsNullOrEmpty(bossType) ? null :
+            Definitions.FirstOrDefault(d => d.BossType == bossType || d.FinalTypes.Contains(bossType))?.Id;
+
         public static bool IsReservedFor(GameBot bot, string id) =>
             id != null && BotDutyLeases.HoldsWithReason(bot, eDutyLeaseKind.RealmRaid, DutyLeaseReason.RaidReserved, id);
         public static bool IsForcedExpedition(string id)
