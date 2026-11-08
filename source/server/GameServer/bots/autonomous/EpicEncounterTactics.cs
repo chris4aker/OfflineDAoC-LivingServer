@@ -285,8 +285,11 @@ namespace DOL.GS
             Vector3 at = At(raider), anchorAt = At(anchor), bossAt = At(boss);
             if (raider == anchor)
             {
-                EncounterMeleeStations.Hold(raider, boss, AnchorHoldDistance, now);
-                EncounterMeleeStations.Apply(raider, boss, AnchorHoldDistance);
+                // In the ring his target keeps the ring's distance (it stood at its spot): 185-190 from him, its Shroud misses
+                // the other two spots (about 325 away); at 150 they would lie on its edge (295).
+                int hold = For(boss) is { MeleeRing: > 1 } ? BehindDistance : AnchorHoldDistance;
+                EncounterMeleeStations.Hold(raider, boss, hold, now);
+                EncounterMeleeStations.Apply(raider, boss, hold);
                 return null;
             }
             EncounterMeleeStations.Hold(raider, boss, BehindDistance, now);

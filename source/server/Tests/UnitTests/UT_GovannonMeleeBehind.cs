@@ -100,12 +100,12 @@ namespace DOL.UnitTests
             Vector3 boss = new(0, 0, 0);
             float first = EncounterMeleeStations.RingAngle(gov, boss, new(150, 0, 0), 1_000);
             Assert.That(first, Is.EqualTo(0).Within(0.001), "spot 0 towards his first target");
-            Vector3 tank = new(150, 0, 0);
+            Vector3 tank = new(EpicEncounterTactics.BehindDistance, 0, 0); // his target keeps the ring's distance
             for (int slot = 1; slot < 3; slot++)
             {
                 Vector3 spot = EncounterMeleeStations.RingSpot(boss, first, slot, 3, EpicEncounterTactics.RingRadius, 0);
                 Assert.That(Vector2.Distance(new(spot.X, spot.Y), new(tank.X, tank.Y)), Is.GreaterThan(300 + 10),
-                    "a Shroud on his target (150 from him) misses the other two spots");
+                    "a Shroud on his target (185 from him) misses the other two spots");
             }
             Assert.That(EncounterMeleeStations.RingAngle(gov, boss, new(0, 150, 0), 2_000), Is.EqualTo(first), "a new target moves nobody");
             Assert.That(EncounterMeleeStations.RingAngle(gov, boss, new(0, 150, 0), 2_000 + EncounterMeleeStations.RingMemoryMilliseconds + 1),
