@@ -186,6 +186,9 @@ Everything below is built on branches with green automated tests; nothing is mer
       while the realm is new to him, 5-15% once learned (`feature/1.2-raid-skill`, stacked on #120). An early slice of
       2.0's item 2
 - [ ] Positional styles, step 1 (owner 2026-11-08): bots use side, back and front styles when they are really there (#123)
+- [ ] 1.2.1's movement slice, pulled forward (owner 2026-11-08 11:44): melee bots circle and adjust, casters step
+      between casts, stops and turns that don't snap, town idling at the bank and crowd spots (`feature/1.2-movement`);
+      checked by a container stuck-bot comparison against the 1.2 baseline and the owner's played evening
 - [ ] From 1.2.1, pulled forward (owner 2026-11-08 11:38; #128, CI green, not yet played): Nikse77's follower stutter
       guard (via rambodolphin13), True165's flank step (positional styles step 2, hand port), rambodolphin13's style scoring
 - [ ] The quest harness, repeatable quests and deliveries, epic chains linked without Python (#70)
@@ -255,7 +258,10 @@ Must-haves ship 1.2; anything from a phase that doesn't fit ships as a 1.2.x pat
       a dragon raid; a returning session read on the Herald
 - [ ] Release notes to the rules above
 
-### 1.2.1 — movement that doesn't look scripted, first slice (owner 2026-11-08: before Linux)
+### 1.2.1 — movement that doesn't look scripted, first slice (owner 2026-11-08: before Linux; folded into 1.2 at 11:44)
+
+**Owner 2026-11-08 11:44, "Pull all the 1.2.1 into 1.2":** everything below now ships with 1.2 (`feature/1.2-movement`);
+this stop stays as the record of what the slice holds.
 
 The first slice of 2.0's "Bots as people" item 5, plus the flank step for positional styles. Its own small update, out
 before the Linux build (owner 2026-11-08 06:51, "Before"). Touches pathing: no navmesh changes without evidence (AGENTS.md).
