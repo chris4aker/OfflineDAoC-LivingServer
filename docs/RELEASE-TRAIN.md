@@ -199,6 +199,16 @@ Everything below is built on branches with green automated tests; nothing is mer
       EA client files removed (#59)
 - [ ] Not placed by the split, for the owner to place: his world scripts as Setup steps; the new-client scripts
       (#54); era build weights (#55) go with 1.3's era builds
+- [ ] **Chat that feels like real people (owner 2026-11-08 18:48: "all chat functionality and your errors fixed. It needs
+      to feel like realistic chat with the bots").** Part 1 ships in 1.1.3: threads in order with the right speakers, true
+      replies, reaction caps, no repeats, /faction within its ceiling, every line tagged with its source; proven by the
+      transcript checker on a simulated evening and on a full-population PC log. Part 2 in 1.2: a conversation-level
+      blind test (stretches of bot /faction mixed with real 2002-2004 chat) and rewrites until a judge spots the bots no
+      better than about 60% of the time (85% today, single lines)
+- [ ] **The audit's contradicted claims fixed, not just reworded (audit 2026-11-08):** Scurceol's orbs (in 1.1.3),
+      battleground keeps that never change hands, attackers still taking most keeps, repeated lines, multi-second stalls,
+      bots waiting at frontier teleporters, most thrown bots recalled instead of walking back. Each counts as fixed only
+      when a PC log shows it
 - [ ] Play with friends, pulled forward (owner 2026-11-08 16:50): the 1.2.x stop below, on `feature/1.2-hosting` and
       `feature/1.2-coop-humans` and `feature/1.2-passport`. **Owner 2026-11-08 17:10: no second PC or friend to test with;
       rely on established work and player reports.** So it ships labelled experimental, and the checks are: rambodolphin13's
