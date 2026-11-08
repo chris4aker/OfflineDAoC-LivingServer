@@ -41,7 +41,9 @@ namespace DOL.UnitTests
         public sealed class TacticGiant : GameEpicBoss
         {
             public byte Hp = 100;
+            public bool Fighting = true;
             public override bool IsAlive => true;
+            public override bool InCombat => Fighting;
             public override byte HealthPercent => Hp;
         }
         public sealed class TacticIllusion : GameNPC
@@ -396,8 +398,9 @@ namespace DOL.UnitTests
         [Test]
         public void TheRaidWithdrawsFromABlastButThePartyItFightsHoldsIt()
         {
-            Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 83, -1), Is.True, "within 3% above 80");
-            Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 84, -1), Is.False);
+            // 1.2 (PC 2026-11-07, 110 raiders in one stomp): at least 6% above, more when the raid takes him down faster.
+            Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 86, -1), Is.True, "within 6% above 80");
+            Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 87, -1), Is.False);
             Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 78, 2_000), Is.True, "just crossed");
             Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 78, 10_000), Is.False, "over");
             Assert.That(EpicEncounterTactics.NextBlastBelow([80, 40], 78), Is.EqualTo(40));
@@ -408,6 +411,8 @@ namespace DOL.UnitTests
             var far = Npc<Raider>(35000, 35305, 14551);
             giant.TargetObject = tank;
             var live = new List<GameNPC> { giant };
+            EpicEncounterTactics.ResetBlastForTests();
+            giant.Fighting = true;
             giant.Hp = 90;
             Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 1_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None));
             giant.Hp = 82;

@@ -10,6 +10,14 @@ Older entries below keep the names they were written with.
 
 ## 1.2 (in development)
 
+**The raid gets out of Xanxicar's stomp** (owner's PC test, 2026-11-07, also in 1.1.2). At the 80% stomp 110 of 185
+Albion raiders died in one second: the order to get clear came only 3% above the threshold (the raid took him from 83% to
+80% in 15 s while a bot needs about 12 s to walk out of 2,500), it reached only the raiders whose target was Xanxicar
+himself (not those on his elites and crystals, nor healers), and nothing kept a bot from being walked back in. Now the
+raid withdraws ten seconds of its own damage ahead of each threshold (at least 6%), every raider near him goes,
+whatever it is fighting, and it waits out there until the stomp is over. The party he fights still holds him. His
+stomp is unchanged.
+
 **Dungeons and bosses have their lore.** Living Server 1.2 gives every dungeon, epic dungeon, dragon and named
 boss its own lore (written in `data/lore`, one file per place and per boss; see [docs/LORE.md](docs/LORE.md)), and this is
 the part that shows it to you. All the stories are now in: 107 places and 578 bosses (with 4 realm histories), written for
