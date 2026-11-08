@@ -21,28 +21,29 @@ It's for Offline DAoC **0.37 and 0.37b**, with or without the **0.37c** new clie
 ### The epic encounters, at full strength
 
 - **The bosses' own rules are back on.** In earlier versions many boss mechanics were softened or switched off so bot
-  raids could win. 1.2 turns them back on: Funus's class and weapon puzzle, the horsemen's tether heal, Morbus's swarm,
-  the Skeletal Sacristan's patrol, Soul Reckoner's souls and small room, Aroon's Scaiths in order, the Earthmenders,
-  Beatha healing Xaga, Kvasir's cold heal, King Tuscar and Queen Kula healing each other, the dragons' messengers, and
-  more. Of the 18 restored rules that are now server settings, 16 are on; the original fire patches and Govannon's full
-  300,000 health stay off until they have been played.
+  raids could win. 1.2 turns them back on: the horsemen's tether heal, Morbus's swarm, the Skeletal Sacristan's patrol,
+  Soul Reckoner's souls and small room, Aroon's Scaiths in order, the Earthmenders, Beatha healing Xaga, Kvasir's cold
+  heal, King Tuscar and Queen Kula healing each other, the dragons' messengers, and more. Of the 18 restored rules that
+  are now server settings, 15 are on. Funus's class and weapon puzzle, the original fire patches and Govannon's full
+  300,000 health stay off.
 - **They hit bots too.** Bosses used to choose their throws, glares, debuffs and "random target" spells from real players
   only. Now they choose from the whole raid: you, your companions and the gamebots. With bots around you are one target
   among many, never chosen more often than before.
 - **Thrown bots get back.** The dragons' wing gust is back, and most throws, teleports and jails take bots as well. A thrown
-  bot falls, takes the same fall damage you would, and walks back to its party. If it can't, it recalls to its raid after
-  5 seconds.
+  bot falls and takes the same fall damage you would. It walks back to its party when it can; otherwise it recalls to its
+  raid after 5 seconds. Most thrown bots are recalled: in a long run, 4 in 5 were.
 - **No floods of adds.** A bot raid can be bigger than a 2003 raid. A few bosses that make adds or heals per raider now
   count at most a period-sized raid, so a big bot raid faces what a full raid of players did.
 - **Your companions stay at the fight** when a boss throws you, instead of being dragged along.
 
 ### Raid tactics for the real puzzles
 
-A boss with a puzzle can't be beaten by hitting harder. The raids now know the answer to many of them. The encounter
-catalog lists 40 encounters with a raid tactic that is new or reworked in 1.2. Some of them:
+A boss with a puzzle can't be beaten by hitting harder. The raids now have a plan for many of them. In tests, Govannon
+and Spindler Broodmother have not been beaten yet. The encounter catalog lists 40 encounters with a raid tactic that is
+new or reworked in 1.2. Some of them:
 
-- **Funus (Caer Sidi):** only the classes and weapons he accepts fight him. Clerics fight as they like; scouts,
-  mercenaries, armsmen and infiltrators use their bow or crossbow. Everyone else stands back and calls off their pets.
+- **Funus (Caer Sidi):** his class and weapon puzzle is off by default. Do not turn it on yet: the raid's tactic for it
+  is not finished.
 - **The Earthmenders (Galladoria):** each one takes damage only from its own classes, so each raider takes one its class
   can hurt, and the Earthmenders die before the primal.
 - **Spindler Broodmother:** casters and archers kill each newborn spindler as it comes; the small spindlers that burst
@@ -59,9 +60,8 @@ catalog lists 40 encounters with a raid tactic that is new or reworked in 1.2. S
   over its attempts it learns him and loses fewer. This is still being tuned.]
 
 **Some secrets take a realm time to learn.** A raid of bots may still lose these fights for a while: **Spindler
-Broodmother**, **Grand Summoner Govannon** and **Funus** [owner: the brief says "Funus with its puzzle off"; on this
-build his puzzle is on by default. Confirm which, and say so here]. If a fight is too hard on your world, each restored
-rule is a server setting of its own and can be switched off alone.
+Broodmother** and **Grand Summoner Govannon**. If a fight is too hard on your world, each restored rule is a server
+setting of its own and can be switched off alone.
 
 ### A world whose stories come alive
 
@@ -120,8 +120,6 @@ rule is a server setting of its own and can be switched off alone.
   world, and no Python is needed.
 - **Repeatable quests are offered again**, deliveries in quests without a collect column can be handed in, and a
   collection quest takes its item whatever the case of its name.
-- **Battleground keeps change hands.** Each realm rallies inside the broken gate and goes up to the keep lord together,
-  once there are enough of them. You count as two bots at the rally.
 
 ### Movement that doesn't look scripted
 
@@ -170,8 +168,18 @@ Falls open to solo bots are untouched.
 
 ### How it was tested
 
-- **Automated:** [filled in from this release's CI run: the server suite's count, and the Windows launcher and installer
-  tests]
+A feature counts as working here only once it has been seen working on a real install. Everything else is "tests
+only".
+
+- **Automated (tests only):** [filled in from this release's CI run: the server suite's count, and the Windows launcher
+  and installer tests]
+- **Bot raids in a test world (tests only, bots only):** Easmarach killed (build 8ab2279e), Soul Reckoner killed
+  (4cc22ab4) and Torst killed (8ab2279e). Govannon was not beaten in about 12 runs, and Spindler Broodmother not in
+  about 9. Funus was beaten once, only with fixes that are not in this build.
+- **On a real install** (an overnight run of development build 76600af7, bots only, 7.8 hours): Fornfrusenen, the
+  Council Vagn and Nokkvi, Torst and Hurika were killed; Tuscaran Glacier was lost at Icelord Agmundr. Bot raids skipped Scurceol Hyrde: they could not shoot his orbs.
+  In the battlegrounds, 168 of 169 storms on a keep lord failed and no keep changed hands. The server stalled for 4 to
+  6 seconds three times.
 - **Played:** [owner: one line on the played check, filled in before publishing]
 - Please report anything odd on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with the
   `FORK_BUILD` line from `runtime\server\logs\server.log`.
@@ -185,6 +193,15 @@ Falls open to solo bots are untouched.
   run by bot raids on a test server, but none in a raid with a player in it. The lore, the loremasters, the books and
   the bot-led groups are checked by automated tests. Real play may still find cases they miss.
 - **Some fights are harder than before**, and a raid of bots may lose them for a while (see above).
+- **/faction can get too busy.** On an evening with about 600 bots a realm, it ran well above its ceiling, up to 20
+  lines a minute, with bursts of 10 to 16 reactions. Lower **How much they talk** in the Living Server tab if it is too
+  much.
+- **A very busy server can stall for a few seconds.** In an overnight run with about 600 bots a realm, it stopped for
+  up to 6.2 seconds.
+- **Some gamebots wait a long time at frontier teleporters.** In one night, 368 times a gamebot stood 15 minutes waiting
+  for one before the server moved it on.
+- **Battlegrounds are an endless fight.** Bots storm the keep lord again and again and almost always fail, so the keeps
+  don't change hands and the same bots die over and over.
 - **Bot-led groups:** gamebots don't share your horse or boat; the leader takes its own and waits at the other end. The
   break at the end of a session ends the party: it doesn't walk to town and back with you.
 - **New client:** APPRAISE stays hidden, and you don't see yourself as see-through in Stealth yet. Both need a newer

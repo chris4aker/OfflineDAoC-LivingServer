@@ -98,7 +98,8 @@ covered by automated tests; none of it has been seen in game yet.
 
 **More of the epic fights play in full, and the bots play them** (the epic encounters, wave 3). Tested by automated
 tests only; not played in game yet. Some of these fights get harder: try them first.
-- **Funus: the archers join in.** With his weapon puzzle on, mercenaries, armsmen and infiltrators who own their short
+- **Funus: the archers join in.** His weapon puzzle is off by default; do not turn it on yet, the tactic is not
+  finished (in a test world it was beaten once, only with fixes not yet merged). With his weapon puzzle on, mercenaries, armsmen and infiltrators who own their short
   bow or crossbow now draw it and fight him with it, like the scouts with their longbows; none of them ever swings a melee
   weapon at him, not even when he is on top of them. Bots of those classes start with a plain training bow or crossbow of
   their own kind when they learn it, and earn better ones as before. No bot's pet attacks him or defends its owner
@@ -127,8 +128,8 @@ property (`/serverproperty`, section `npc`), and the game reads it as it plays, 
 `epic_soul_reckoner_small_room`, `epic_aroon_damage_order`, `epic_galladoria_bridge_spot`, `epic_full_fire_patches`,
 `epic_earthmender_class_puzzle`, `epic_earthmenders_passive`, `epic_earthmender_quick_reset`,
 `epic_earthmender_mutual_heal`, `epic_beatha_heals_xaga`, `epic_fairy_flight`, `epic_govannon_full_health`,
-`epic_kvasir_cold_heal`, `epic_tuscar_twin_heal` and `epic_dragon_messengers`. All are on except the full fire patches
-and Govannon's full health, which stay off until they have been played. `epic_encounter_switches` changes any one boss's
+`epic_kvasir_cold_heal`, `epic_tuscar_twin_heal` and `epic_dragon_messengers`. All are on except Funus's weapon puzzle,
+the full fire patches and Govannon's full health, which stay off (15 of the 18 are on). `epic_encounter_switches` changes any one boss's
 switch, for example `AllowBotDisplacement@Orylle=False; AllowPositionPuzzle@Olcasgean=False`.
 
 **The dragons, Xanxicar and Galladoria play their full mechanics, and the bots play them back** (the epic encounters,
@@ -191,7 +192,7 @@ game yet.
 **Caer Sidi, Krondon, Avalon City and the Darkness Falls princes play their original mechanics, and bots play them
 too** (the epic encounters, wave 2, Albion). Tested by automated tests only; not played in game yet. These fights are
 harder than before; tell us where a raid can no longer win.
-- **Funus heals from the wrong hits again.** Only clerics and scouts (with their longbow) hurt him; a hit from anyone
+- **Funus heals from the wrong hits again** (off by default since; do not turn it on yet). Only clerics and scouts (with their longbow) hurt him; a hit from anyone
   else, or a pet, heals him to full, as in the original. The raid's clerics and scouts fight him, everyone else stands
   well back, calls their pets off and keeps area spells off him. If you play another class, stay off him too.
 - **The horsemen heal when dragged too far again.** The raid keeps each horseman near his room and leads him back
@@ -232,8 +233,9 @@ automated tests only; not played in game yet.
 - **One switch per boss.** A boss that may throw bots picks them for its throw, and one that may not (every other boss
   for now, Legion included) picks only real players for it, as before. The boss's other targets (glares, debuffs, adds)
   pick the whole raid everywhere.
-- **A thrown bot comes back.** It falls and takes the same fall damage you would. Then it walks back to its party:
-  your companions to you, a raid bot to its party leader. If something attacks it on the way, it fights back first.
+- **A thrown bot comes back.** It falls and takes the same fall damage you would. Then it walks back to its party when
+  it can: your companions to you, a raid bot to its party leader. If something attacks it on the way, it fights back
+  first. Most thrown bots are recalled instead: in a long run on a real install, 4 in 5 were.
   - **Never stuck:** if there is no way back on foot, it hasn't got closer in 10 seconds, or the walk takes too long, it
     says so and is back with its raid after a 5-second recall.
   - **Jails:** a jailed bot waits and fights whatever attacks it until the jail ends. Jailer Vifil's jail ends when his
@@ -271,8 +273,8 @@ target bots too").
     players.
   - Messages still go to you only; a bot gets the spell, not the text.
 - **Throws, teleports and jails pick bots only where the boss may throw them** (the three dragons and Xanxicar, see
-  above). Everywhere else (Scurceol's orbs, Cunovinda's ledge, Govannon's gallery, the Jailer, the Glacier Giant, Legion
-  and others) they still pick real players only, until each boss's tactic is in place.
+  above). Everywhere else they still picked real players only at this step. Later steps (above) let more bosses pick
+  bots, Scurceol's orbs and Legion's throw among them.
 - **No floods of adds.** With bots counted, a few bosses would make far more adds or heals than any 2003 raid saw: a
   bot raid can be twice its period size. They now count at most the period raid (docs/RAID-SIZES.md), so up to that
   size nothing changes, and a bigger bot raid faces what a full raid of players did:
@@ -286,8 +288,10 @@ target bots too").
   seconds. Now they eat summoned pets only: yours and the bots' pets.
 - **Raids are harder:** mechanics that used to skip the bots now hit them. Not yet played in game.
 
-**Battleground keeps change hands** (playtest 2026-11-04: in Thidranki 210 level-22 bots fought for 45 minutes, the
-gates fell, and the Renegade Lord never dropped below 100%).
+**Battleground rallies: realms go up to the keep lord together** (playtest 2026-11-04: in Thidranki 210 level-22 bots
+fought for 45 minutes, the gates fell, and the Renegade Lord never dropped below 100%). **This did not work on a real
+install:** in an overnight run (development build 76600af7), 168 of 169 storms failed, no keep changed hands in 8
+hours, and the same bots died over and over.
 - **Before:** once the gates were down, every gamebot walked up to the lord on its own, from wherever its last fight or
   its release had left it. They reached him one at a time and died to him one at a time.
 - **Now:** each realm rallies just inside the broken gate, under the lord's room. Its gamebots fight whatever comes at
@@ -518,8 +522,8 @@ audit 2026-11-03).
   or spam wave in the listen, and neither run flagged. The playtester now listens until 10 lines are expected, so these
   listens were 14.5 minutes, shorter than the half hour of the earlier runs.
 - **No quieter on a full server.** The world was re-balanced, not cut: /faction's openers keep 4 a minute at a full server
-  and its answers come on top of them; /lfg and /trade aim at what 1.1.2 actually delivered (1.8 and 1.6 a minute, were
-  1.6 and 1.3); a guild's chat and /say near you have higher floors, so a few bots keep them going. In the evening model
+  and its answers come on top of them; /lfg and /trade aim at what the 1.1.2 chat model predicted (1.8 and 1.6 a minute,
+  were 1.6 and 1.3; on a real install 1.1.3 delivered about 3.2 and 2.3); a guild's chat and /say near you have higher floors, so a few bots keep them going. In the evening model
   (`UT_ChatBudgetSimulation`) at the default "How much they talk" (2), all the channels you hear together go from 7.9 to
   8.4 lines a minute with 300 bots a realm, and from 16.4 to 18.0 with 1,000. A 10-bot realm is quieter than in 1.1.2,
   because it was running far over its budget.
