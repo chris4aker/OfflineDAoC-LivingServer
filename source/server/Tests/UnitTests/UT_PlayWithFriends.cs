@@ -72,7 +72,7 @@ namespace DOL.UnitTests
         {
             private Bot() : base((OfflineWorldBotRecord)null) { }
             public ICharacterClass TestClass;
-            public eRealm TestRealm = eRealm.Albion;
+            public eRealm TestRealm; // set by MakeBot: an uninitialized object runs no field initializer
             public override bool IsAlive => true;
             public override bool IsAttacking => false;
             public override bool IsCasting => false;
@@ -175,6 +175,7 @@ namespace DOL.UnitTests
             Bot bot = Actor<Bot>();
             bot.Name = characterClass.Name;
             bot.TestClass = characterClass;
+            bot.TestRealm = eRealm.Albion;
             if (owner != null)
             {
                 Field(typeof(GameBot), bot, "<Owner>k__BackingField", owner);
@@ -468,15 +469,15 @@ namespace DOL.UnitTests
         [Test]
         public void TheDefaultsLetOneFullRaidAndASecondOneOut()
         {
-            ServerPropertyAttribute Attribute(string field) =>
+            ServerPropertyAttribute PropertyOf(string field) =>
                 typeof(Properties).GetField(field).GetCustomAttribute<ServerPropertyAttribute>();
-            int total = (int)Attribute(nameof(Properties.COMPANION_BUDGET_TOTAL)).DefaultValue;
-            int perPlayer = (int)Attribute(nameof(Properties.COMPANION_BUDGET_PER_PLAYER)).DefaultValue;
+            int total = (int)PropertyOf(nameof(Properties.COMPANION_BUDGET_TOTAL)).DefaultValue;
+            int perPlayer = (int)PropertyOf(nameof(Properties.COMPANION_BUDGET_PER_PLAYER)).DefaultValue;
             Assert.Multiple(() =>
             {
                 Assert.That(perPlayer, Is.GreaterThanOrEqualTo(79), "a /raid 80 has 79 companions");
                 Assert.That(total, Is.GreaterThanOrEqualTo(2 * 79));
-                Assert.That(Attribute(nameof(Properties.COMPANION_BUDGET_TOTAL)).Key, Is.EqualTo("companion_budget_total"));
+                Assert.That(PropertyOf(nameof(Properties.COMPANION_BUDGET_TOTAL)).Key, Is.EqualTo("companion_budget_total"));
             });
         }
 
