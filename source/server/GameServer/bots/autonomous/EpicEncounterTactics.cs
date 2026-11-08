@@ -680,7 +680,7 @@ namespace DOL.GS
 
         /// <summary>The walked floor path from a blasting boss's spawn to <paramref name="exit"/> (the dungeon's way in), found once
         /// per boss (the raid route asks while it fights him): its withdraw spots lie on it.</summary>
-        public static void EnsureBlastPath(GameNPC boss, Vector3 exit)
+        public static void EnsureBlastPath(GameNPC boss, Vector3? exit = null)
         {
             if (boss == null || For(boss) is not { HasBlast: true }) return;
             lock (BlastPaths)
@@ -692,11 +692,14 @@ namespace DOL.GS
             Vector3[] nodes = [];
             var nav = PathfindingProvider.Instance;
             Zone zone = boss.CurrentZone;
-            if (zone != null && nav.IsAvailable && nav.HasNavmesh(zone))
+            // The way into the boss's own region (duo7: the Crystal Cave raid's route entrance is Avalon City's door, in
+            // another region, so no path was found and the old spot in the rock was used again).
+            exit ??= WayIn(boss);
+            if (exit != null && zone != null && nav.IsAvailable && nav.HasNavmesh(zone))
             {
                 var buffer = new WrappedPathfindingNode[512];
                 var start = new Vector3(boss.SpawnPoint.X, boss.SpawnPoint.Y, boss.SpawnPoint.Z);
-                PathfindingResult result = nav.GetPathStraight(zone, start, exit, nav.DefaultFilters, buffer);
+                PathfindingResult result = nav.GetPathStraight(zone, start, exit.Value, nav.DefaultFilters, buffer);
                 if (result.Status is PathfindingStatus.PathFound or PathfindingStatus.PartialPathFound)
                     nodes = buffer.Take(Math.Min(result.NodeCount, buffer.Length)).Select(n => n.Position).ToArray();
             }
@@ -705,6 +708,25 @@ namespace DOL.GS
                 Log.Info($"EPIC_BLAST_PATH boss=\"{boss.Name}\" nodes={nodes.Length} rally=" +
                          (BlastRallyOnPath(nodes, new(boss.SpawnPoint.X, boss.SpawnPoint.Y, boss.SpawnPoint.Z), For(boss).BlastRadius) is Vector3 r
                              ? $"{(int)r.X},{(int)r.Y},{(int)r.Z}" : "none"));
+        }
+
+        /// <summary>The arrival point of the zone point into the boss's region nearest to it, or null.</summary>
+        private static Vector3? WayIn(GameNPC boss)
+        {
+            try
+            {
+                Vector3? best = null;
+                float bestDistance = float.MaxValue;
+                foreach (DOL.Database.DbZonePoint z in DOLDB<DOL.Database.DbZonePoint>.SelectObjects(
+                             DOL.Database.DB.Column("TargetRegion").IsEqualTo(boss.CurrentRegionID)))
+                {
+                    var at = new Vector3(z.TargetX, z.TargetY, z.TargetZ);
+                    float d = Vector2.Distance(new(at.X, at.Y), new(boss.SpawnPoint.X, boss.SpawnPoint.Y));
+                    if (d < bestDistance) { bestDistance = d; best = at; }
+                }
+                return best;
+            }
+            catch (Exception) { return null; }
         }
 
         /// <summary>The first spot on <paramref name="path"/> clear of a blast of <paramref name="radius"/> around
