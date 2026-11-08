@@ -8,6 +8,27 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2.1 (in development)
+
+Movement that doesn't look scripted, first slice. Three ports from other forks (fork survey, 2026-11-08), for autonomous
+gamebots only. They pass automated tests; nobody has played them in game yet.
+
+- **A moving party no longer jerks once a second.** A group follower stopped taking its own faster route (a horse or a
+  town teleporter) from the follow step every turn, which released and re-took its formation follow each second; only the
+  leader picks such a route now. From Nikse77 (b0fcd555), via rambodolphin13's DividedRealms (0996fff6ea), GPL-3.0.
+- **Melee bots chain their styles and stop spamming taunts.** Each usable style is scored: a chain follow-up after its
+  opener landed first, then a back or side style when the bot is there, then reactive styles after an evade, block, parry
+  or miss, then the opener of a chain the bot knows, then the rest by growth. Taunt styles count for little unless the bot
+  is a grouped tank, and two near-equal plain styles take turns. From rambodolphin13's DividedRealms (0146664a), GPL-3.0,
+  merged with 1.2's side, back and front styles (#123).
+- **Melee bots take the flank or the back (positional styles, step 2).** A gamebot that is not a tank and knows a back or
+  side style for its weapon steps behind (or beside) a monster that is fighting someone else, then swings that style. It
+  tries for at most 4 seconds, and again when the monster turns more than 45 degrees or moves more than 100 units (at most
+  every 3 seconds). It only walks to a spot the navigation mesh says it can reach on its own floor; otherwise it stays put.
+  Never for tanks, companions, bots in a player-led group, raid parties, raid dungeons or epic encounters (their own
+  tactics place the raiders). Hand port from shadowofze's OfflineDAoC-True165 (`BotBrain.Flank.cs`, d2187a498), GPL-3.0,
+  without its 1.65-mode switch and its companion "Positioning" option.
+
 ## 1.2 (in development)
 
 **Dungeons and bosses have their lore.** Living Server 1.2 gives every dungeon, epic dungeon, dragon and named
