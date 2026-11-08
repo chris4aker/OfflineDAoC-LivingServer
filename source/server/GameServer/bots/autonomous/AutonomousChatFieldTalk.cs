@@ -973,7 +973,7 @@ public static class AutonomousChatFieldTalk
             new V(late ? "gn all" : evening ? "evening all" : "hi all", "hello_all", late ? Pool("gn", "night") : Pool("o/", "hey", "heya")),
             new V("quiet tonight", "quiet"), new V("who's on", "anyone_on", Pool("me", "here", "o/")),
             // 1.1.3: never a bare "lol" out of nowhere: unprompted, it reads as a laugh at whatever was said before it.
-            new V(late ? "one more lvl then bed" : "need coffee lol", late ? "bedtime" : "coffee"), new V("afk 5", "afk"), new V("brb phone", "brb_phone"),
+            new V(late ? "one more lvl then bed" : "long night lol", late ? "bedtime" : "long_night"), new V("afk 5", "afk"), new V("brb phone", "brb_phone"),
             new V("ok back", "back", Pool("wb")), new V(f.BagFull ? "bags full brb" : "brb drink", "brb_bags"),
             new V(late ? "late crew still here" : "busy tonight", "busy_night"));
     }
@@ -1105,7 +1105,7 @@ public static class AutonomousChatFieldTalk
         ["keeps"] = (["when?", "who took it?"], ["earlier tonight", "while i was afk lol", "dunno, saw it on the map"], ["we'll get it back", "ugh", "always on my break"]),
         ["rally"] = (["how many?", "where r they?"], ["big grp", "10+ at the door", "at the gate", "inside already"], ["porting too", "omw also", "bringing my grp"]),
         ["rvr"] = (["how many?", "which way?"], ["few grps", "small grp", "through the mg"], ["count me in", "omw too"]),
-        ["raid"] = (["what time?", "who's leading?"], ["9ish", "after dinner", "gl is"], ["im in too", "same"]),
+        ["raid"] = (["what time?", "who's leading?"], ["9ish", "in an hour", "gl is"], ["im in too", "same"]),
         ["guild_group"] = (["what lvl?", "where at?"], ["{lvl}", "{zone}", "{lvl} {cls}"], ["me too", "room for 1?"]),
         ["guild_sell"] = (["what stats?", "what lvl is it?"], ["decent", "dunno, check it", "{lvl}ish"], ["dibs after"]),
     };
@@ -1401,7 +1401,7 @@ public static class AutonomousChatFieldTalk
         {
             "place" => Pick(random, $"in {zone}", zone, dun != null ? $"near {dun}" : $"by {zone}", $"{zone}, near the camp"),
             "level" => Pick(random, answerer.Level.ToString(), $"{answerer.Level} {ShortClass(answerer.ClassName, random)}"),
-            "time" => Pick(random, "dunno", "later tonight", "9ish", "after dinner"),
+            "time" => Pick(random, "dunno", "later tonight", "9ish", "in an hour"),
             "price" => Pick(random, PriceFor(answerer.Level, random), "dunno", "not much"),
             "count" => Pick(random, "few", "5 or 6", "big grp", "dunno"),
             "who" => Pick(random, ShortClass(answerer.ClassName, random), "dunno, ask the gl"),
