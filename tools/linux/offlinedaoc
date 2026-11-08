@@ -72,7 +72,7 @@ start() {
   if pid=$(server_pid); then echo "The server is already running (pid $pid)."; return 0; fi
   listening "$p" && die "port $p is in use (another Offline DAoC server?). Not starting."
   [ -f "$SERVER/CoreServer.dll" ] || die "the server is missing ($SERVER/CoreServer.dll)"
-  [ -f "$SERVER/lib/libDetour.so" ] || echo "Warning: lib/libDetour.so is missing; bots will path without navmeshes."
+  [ -f "$SERVER/lib/Detour.so" ] || echo "Warning: lib/Detour.so is missing; bots will path without navmeshes."
   local dotnet; dotnet=$(dotnet_cmd)
   mkdir -p "$RUN" "$RUNTIME/logs"
   rm -f "$FIFO"; mkfifo "$FIFO"

@@ -22,7 +22,7 @@ for the Wine add-on later (the original client is already in the folder). The se
 ```
 ~/Games/OfflineDAoC/                      the game folder (the Windows layout, unchanged)
   runtime/server/                         shadowofze's server + Living Server's GameServer.dll and libraries (same IL)
-  runtime/server/lib/libDetour.so         NEW: Linux twin of lib/Detour.dll (built by Living Server CI from source)
+  runtime/server/lib/Detour.so            NEW: Linux twin of lib/Detour.dll (built by Living Server CI from source)
   runtime/data/opendaoc.sqlite3.db        world and saves (one database for every client and system)
   runtime/account.txt                     the local account (same format; made on first play)
   runtime/client-opendaoc/                the original Windows client (unused on Linux until the Wine add-on)
@@ -38,7 +38,7 @@ for the Wine add-on later (the original client is already in the folder). The se
 
 What Living Server itself publishes for Linux is small: one asset per release,
 `OfflineDAoC-LivingServer-<build>-linux-x64.tar.gz` = the platform-neutral package (the same files as the Windows zip)
-plus `libDetour.so`, the launcher, `install.sh` and pinned download hashes for .NET and Godot. No EA file, no
+plus the Linux Detour library (`lib/Detour.so`), the launcher, `install.sh` and pinned download hashes for .NET and Godot. No EA file, no
 shadowofze file, and (recommended, §6) no copy of .NET or Godot: those come from their publishers.
 
 ## 3. A Linux player's day
@@ -58,7 +58,7 @@ shadowofze file, and (recommended, §6) no copy of .NET or Godot: those come fro
 | Part | Windows today | Linux 1.2.1 | How |
 |---|---|---|---|
 | Server (`GameServer.dll`, CoreBase, CoreDatabase, CoreServer.dll) | framework-dependent .NET 10, `CoreServer.exe` apphost | **reused as is**: `linux/dotnet/dotnet CoreServer.dll` | same IL; the Windows package already carries `runtimes/linux-x64/native/SQLite.Interop.dll` |
-| Detour (navmesh pathing) | `lib/Detour.dll` | **ported**: `lib/libDetour.so` beside it | cmake from `source/server/Pathing/Detour` in CI; `[LibraryImport("lib/Detour")]` resolves it |
+| Detour (navmesh pathing) | `lib/Detour.dll` | **ported**: `lib/Detour.so` beside it | cmake from `source/server/Pathing/Detour` in CI. The file must be named `lib/Detour.so`: with a folder in the import name (`lib/Detour`) .NET tries only `lib/Detour.so` and `lib/Detour` (found in the spike) |
 | `serverconfig.xml` | relative paths with `/` | **reused** | no change needed |
 | .NET runtime | `tools/dotnet` (Windows) | **replaced**: `linux/dotnet` | Microsoft's tarball, SHA-512 from its release metadata |
 | New client scripts, content, `MMOEngine.dll` | in `new-client/godot` | **reused as is** | the managed GodotSharp API is byte-identical between the Windows and Linux 4.7.2 engines (§9) |
@@ -128,14 +128,14 @@ not the product.
   many hours and needs a GPU; it isn't part of 1.2.1.
 - **Third-party runtimes** (.NET: MIT; Godot: MIT) are downloaded from their publishers with pinned hashes. Shipping
   them inside the asset instead is allowed by their licences and is an owner choice (§10).
-- `libDetour.so` is built from the repository's own source (recastnavigation, zlib licence), credited in
+- The Linux Detour library (`lib/Detour.so`) is built from the repository's own source (recastnavigation, zlib licence), credited in
   THIRD_PARTY.md like the Windows DLL.
 
 ## 7. The CI jobs that prove it
 
 | Job | Runner | What it proves | State |
 |---|---|---|---|
-| `linux / linux-package` | ubuntu-22.04 | server build + `libDetour.so` + Microsoft's runtime assembled in the package layout; `offlinedaoc start`; two scripted players log in (playtester `chat-players`, `group-players`); the released 0.37c new client (scripts + content patches) compiles on the Linux Godot .NET engine with its C# built on Linux and **logs in headless with the folder's account**; `stop` (`exit`), start, stop | sketched in this branch (`.github/workflows/linux.yml`); runs on `workflow_dispatch` and on changes under `tools/linux/` |
+| `linux / linux-package` | ubuntu-22.04 | server build + the Linux Detour library + Microsoft's runtime assembled in the package layout; `offlinedaoc start`; two scripted players log in (playtester `chat-players`, `group-players`); the released 0.37c new client (scripts + content patches) compiles on the Linux Godot .NET engine with its C# built on Linux and **logs in headless with the folder's account**; `stop` (`exit`), start, stop | sketched in this branch (`.github/workflows/linux.yml`); runs on `workflow_dispatch` and on changes under `tools/linux/` |
 | `linux / launcher` | ubuntu-latest | the C# launcher: `dotnet test` of the shared code on Linux (account file, port probe, settings save, bot batch, update check with recorded answers) | to build |
 | `linux / install-parity` | ubuntu + windows | the C# install and rollback against the fake game folders of `test-install-scripts.ps1`; the resulting trees and `install-record.json` must equal the ps1's | to build |
 | `linux / real-download` | ubuntu-latest (large disk) | `install.sh` with real downloads: the base game, the 0.37 patch with his patcher on Linux .NET, Living Server, `offlinedaoc play --headless` logging in; stop and resume a part | to build; needs about 45–60 GB of disk (see risks) |
@@ -161,7 +161,7 @@ Existing jobs are not changed. Automated results are what they are: none of them
    `game`, the Windows Godot name) and by port 10300. On Linux the server is a `dotnet` process, so only the port check
    applies; the Linux launcher must refuse updates while its own pid file is live. The same goes for
    `fork-build-common.ps1`'s `Get-Process` list, which the C# port replaces.
-6. **System libraries.** Godot needs glibc 2.28+ (Ubuntu 18.10+, Debian 10+); `libDetour.so` needs 2.14; the server
+6. **System libraries.** Godot needs glibc 2.28+ (Ubuntu 18.10+, Debian 10+); the Detour library needs 2.14; the server
    needs libicu (globalization is on); `SQLite.Interop.dll` (linux-x64) needs 2.14. Very old or musl distributions
    (Alpine) aren't supported.
 7. **Memory.** The server's server-GC with a large bot world plus the client on one machine: as on Windows (16 GB
@@ -174,13 +174,32 @@ Existing jobs are not changed. Automated results are what they are: none of them
 
 ## 9. The prototypes in this branch (2026-11-07, in the container)
 
+All automated, in this container (Ubuntu 24.04, no GPU, no display, no converted content). None is a played session.
+
 | Spike | Result |
 |---|---|
-| Linux server in the package layout | see below |
-| Godot Linux new client | see below |
-| CI job sketch | `.github/workflows/linux.yml`, new file; not run on GitHub yet |
+| **Linux server in the package layout** | **Worked.** `dotnet build` of the server on Linux (the same IL the Windows package ships), Detour built with cmake (needs glibc 2.14), Microsoft's ASP.NET Core 10.0.14 runtime (SHA-512 checked against its release metadata) as `linux/dotnet`, the release `serverconfig.xml` unchanged, a clean test world (`make_test_world.py from-release`). `offlinedaoc start` → listening in 22–26 s; `FORK_BUILD` logged; `lib/Detour.so` mapped; **all 32 `.nav` files of the uploaded navmesh subset loaded through Detour**; two scripted players (playtester `--attach`: `chat-players`, `group-players`) passed; `stop` via `exit`; second start and stop clean. |
+| ↳ found on the way | The Detour file must be **`lib/Detour.so`**, not `libDetour.so`: with a folder in the import name (`lib/Detour`) .NET tries only `lib/Detour.so` and `lib/Detour` (its own error message lists the paths). The first run failed on exactly this. |
+| **Godot Linux new client** | **Worked, headless, without content.** Godot 4.7.2 .NET for Linux (SHA-512 checked). The managed API (`GodotSharp/Api/*`) is **byte-identical** to the Windows engine's: 67 of 73 shared files match, the rest are Windows-only IDE helpers and NuGet containers. The released 0.37c scripts with Living Server's content patches: the C# network client builds on Linux and **all 95 scripts compile** in the mono engine (`load_check.gd`), and `DaocClient.cs` instantiates. Then `offlinedaoc play --headless` (the folder's `account.txt`, the launcher's ENTER REALM arguments) **logged in to the Linux server**: "User offline logging on", "New account created: offline", the Account row present; the client went on to the pregame (realm/character select) scene and stopped there on missing converted content (`content/pregame/pregame.json`), as expected here. Rendering, sound and input were not tried (no GPU or display). No export and no export templates are needed (§4). |
+| ↳ found on the way | The source tree's `server_world.gd` doesn't parse (risk 8): the check uses the released scripts, as players have them. And on a fresh install the first login is the only account creation; the server allows one per IP every 15 minutes (`time_between_account_creation_sameip`), so the smoke logs the new client in before the scripted players. |
+| shadowofze's patcher on Linux .NET | **Started only.** Built from `source/tools/OfflineDaoc.Patcher` and run on `linux/dotnet` against an empty folder: it refused it with exit 4, as designed. Not run on a real 0.36 folder (5 GB download). |
+| **CI job sketch** | **Written, not run on GitHub yet.** `.github/workflows/linux.yml` (new file, `workflow_dispatch` and `tools/linux/**` changes only) runs the same smoke on ubuntu-22.04 with the minimal world (no navmeshes: Detour loads, no zone meshes). |
+| `install-server-build.ps1` under PowerShell 7 on Linux | **Not tried** (the plan ports it to C# instead, §4). |
 
-(Filled in from the runs; see the PR for the details.)
+Container notes: the server ran with `DOTNET_gcServer=0` (a 7 GB container shared with another agent's server); the
+release keeps its server GC setting. The world was a test world; the navmeshes were a 32-zone subset, linked, not copied.
+
+Reproduce (paths are examples):
+```
+cmake -S source/server/Pathing/Detour -B /tmp/detour -DCMAKE_BUILD_TYPE=Release -DSOVERSION=1 -DLIB_VERSION=1.0 && cmake --build /tmp/detour
+dotnet build source/server/CoreServer/CoreServer.csproj -c Release
+python3 source/tools/make_test_world.py from-release --world <clean 0.37b world> --out /tmp/test-world.db
+tools/linux/assemble-server.sh --server-build source/server/Release --detour /tmp/detour/libDetour.so.1.0 \
+    --world /tmp/test-world.db --dotnet <aspnetcore runtime folder> --navmesh <navmesh folder> --out /tmp/OfflineDAoC
+# put Godot 4.7.2 .NET for Linux in /tmp/OfflineDAoC/linux/godot, build the playtester, then:
+tools/linux/smoke-server.sh --game /tmp/OfflineDAoC --playtester <OfflineDaoc.Playtester.dll> \
+    --new-client /tmp/OfflineDAoC/linux/godot/Godot_v4.7.2-stable_mono_linux.x86_64 --out /tmp/smoke
+```
 
 ## 10. Open decisions for the owner
 

@@ -242,7 +242,7 @@ friends try it only once it is complete, so every part is tested in the containe
 `feature/linux-1.2.1`). The Linux folder is the Windows folder plus `linux/`; no shipped Windows file changes.
 - [ ] Owner decisions ([LINUX-1.2.1.md](LINUX-1.2.1.md) §10): the launcher (command line recommended), .NET and Godot
       downloaded or shipped, the original client extracted or not, Linux in the release workflow or a preview first
-- [ ] Server: `libDetour.so` built in CI, Microsoft's .NET runtime pinned, the package layout, start and stop
+- [ ] Server: the Linux Detour library (`lib/Detour.so`) built in CI, Microsoft's .NET runtime pinned, the package layout, start and stop
 - [ ] Shared launcher code out of `MainForm` (bot batches, settings saves), the Windows launcher's tests unchanged
 - [ ] The Linux launcher: start, stop, status, play, account, bots, settings, Herald, update, rollback
 - [ ] Setup on Linux: `install.sh`, shadowofze's game from his releases checked against his manifests, his patcher on

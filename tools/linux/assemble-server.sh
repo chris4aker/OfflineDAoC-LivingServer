@@ -6,14 +6,14 @@
 #       --out /tmp/OfflineDAoC [--dotnet <aspnetcore runtime folder>] [--navmesh <folder>] [--port 10300]
 #
 # The result:
-#   <out>/runtime/server/            the server build (the same IL as Windows), its config, lib/libDetour.so
+#   <out>/runtime/server/            the server build (the same IL as Windows), its config, lib/Detour.so
 #   <out>/runtime/server/navmesh     a symbolic link to --navmesh (never copied), when given
 #   <out>/runtime/data/opendaoc.sqlite3.db   a copy of --world (a test world: never a played database)
 #   <out>/linux/offlinedaoc          the command-line launcher prototype
 #   <out>/linux/dotnet/              the bundled .NET runtime, when --dotnet is given (else the system's dotnet)
 set -euo pipefail
 
-usage() { sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'; exit 2; }
+usage() { sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'; exit 2; }
 SERVER_BUILD="" DETOUR="" WORLD="" OUT="" DOTNET_DIR="" NAVMESH="" PORT=10300
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -39,9 +39,10 @@ mkdir -p "$OUT/runtime/server" "$OUT/runtime/data" "$OUT/runtime/logs" "$OUT/lin
 tar -C "$SERVER_BUILD" --exclude=./logs --exclude=./config/serverconfig.xml --exclude='./*.log' \
     --exclude=./bot-world.json --exclude=./rvr-world.json --exclude=./rvr-relic-campaigns.json -cf - . \
   | tar -C "$OUT/runtime/server" -xf -
-# The Windows package's lib\Detour.dll has a Linux twin: GameServer imports "lib/Detour", which .NET resolves to
-# lib/libDetour.so on Linux. Added beside it, never replacing a Windows file.
-install -m 0755 "$DETOUR" "$OUT/runtime/server/lib/libDetour.so"
+# The Windows package's lib\Detour.dll has a Linux twin. GameServer imports "lib/Detour"; because the name has a
+# folder in it, .NET on Linux tries only lib/Detour.so and lib/Detour (no "lib" prefix: checked in the container,
+# 2026-11-07, where a lib/libDetour.so alone was not found). Added beside the DLL, never replacing a Windows file.
+install -m 0755 "$DETOUR" "$OUT/runtime/server/lib/Detour.so"
 if [ -n "$NAVMESH" ]; then ln -s "$(cd "$NAVMESH" && pwd)" "$OUT/runtime/server/navmesh"; fi
 cp "$WORLD" "$OUT/runtime/data/opendaoc.sqlite3.db"
 
