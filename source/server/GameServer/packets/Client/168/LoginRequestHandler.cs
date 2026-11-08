@@ -296,7 +296,11 @@ namespace DOL.GS.PacketHandler.Client.v168
 							return;
 						}
 
-						switch (HostPassword.CheckNewAccount(hostPasswordHash, password, ipAddress))
+						// From another PC the password is "~" + join token + the friend's own password (HostPassword.Combine);
+						// the account keeps only the own password. This PC's password is used as sent.
+						string accountPassword;
+
+						switch (HostPassword.CheckNewAccount(hostPasswordHash, password, ipAddress, out accountPassword))
 						{
 							case HostPassword.NewAccount.NoHostPassword:
 							{
@@ -320,7 +324,7 @@ namespace DOL.GS.PacketHandler.Client.v168
 							}
 						}
 
-						if (string.IsNullOrEmpty(password))
+						if (string.IsNullOrEmpty(accountPassword))
 						{
 							client.Out.SendLoginDenied(eLoginError.InvalidAccount);
 							success = false;
@@ -383,7 +387,7 @@ namespace DOL.GS.PacketHandler.Client.v168
 
 						playerAccount = new DbAccount();
 						playerAccount.Name = username;
-						playerAccount.Password = CryptPassword(password);
+						playerAccount.Password = CryptPassword(accountPassword);
 						playerAccount.Realm = 0;
 						playerAccount.CreationDate = DateTime.Now;
 						playerAccount.LastLogin = DateTime.Now;
@@ -408,7 +412,9 @@ namespace DOL.GS.PacketHandler.Client.v168
 							playerAccount.Password = CryptPassword(playerAccount.Password);
 						}
 
-						if (!CryptPassword(password).Equals(playerAccount.Password))
+						// Living Server 1.2: also the own-password part of a Join Friend first-login password; the host password
+						// part never opens an account (HostPassword.MatchesAccount).
+						if (!HostPassword.MatchesAccount(playerAccount.Password, password, CryptPassword))
 						{
 							if (Log.IsInfoEnabled)
 								Log.Info("(" + client.TcpEndpointAddress + ") Wrong password!");

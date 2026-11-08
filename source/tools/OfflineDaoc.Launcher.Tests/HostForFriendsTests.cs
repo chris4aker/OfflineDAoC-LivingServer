@@ -259,11 +259,12 @@ public sealed class HostForFriendsTests
         HostForFriends.Enable(_runtime, "swordfish");
         string stored = Value("HostPasswordHash");
 
-        // Two friends behind one router (same address), and a third on Tailscale.
-        Assert.That(HostPassword.AllowsNewAccount(stored, "swordfish", "192.168.1.30"), Is.True);
-        Assert.That(HostPassword.AllowsNewAccount(stored, "swordfish", "192.168.1.30"), Is.True);
-        Assert.That(HostPassword.AllowsNewAccount(stored, "swordfish", "100.90.1.2"), Is.True);
-        Assert.That(HostPassword.AllowsNewAccount(stored, "guess", "203.0.113.25"), Is.False);
+        // Two friends behind one router (same address), and a third on Tailscale, each with an own password.
+        Assert.That(HostPassword.AllowsNewAccount(stored, HostPassword.Combine("swordfish", "aaron-pw"), "192.168.1.30"), Is.True);
+        Assert.That(HostPassword.AllowsNewAccount(stored, HostPassword.Combine("swordfish", "bea-pw"), "192.168.1.30"), Is.True);
+        Assert.That(HostPassword.AllowsNewAccount(stored, HostPassword.Combine("swordfish", "cai-pw"), "100.90.1.2"), Is.True);
+        Assert.That(HostPassword.AllowsNewAccount(stored, "swordfish", "192.168.1.30"), Is.False, "the host password alone makes no account");
+        Assert.That(HostPassword.AllowsNewAccount(stored, HostPassword.Combine("guess", "pw"), "203.0.113.25"), Is.False);
         Assert.That(HostPassword.AllowsNewAccount(stored, "anything", "127.0.0.1"), Is.True, "this PC is never asked");
     }
 
@@ -275,4 +276,35 @@ public sealed class HostForFriendsTests
     [TestCase("swördfish", false)]
     public void HostPasswordRules(string password, bool valid) =>
         Assert.That(HostForFriends.TryCheckHostPassword(password, out _), Is.EqualTo(valid));
+
+    [Test]
+    public void StopHostingRemovesOnlyTheRulesThisLauncherNamed()
+    {
+        var state = HostForFriends.Read(_runtime);
+        var settings = new HostForFriends.Settings
+        {
+            FirewallRules = ["Offline DAoC friends TCP 10301", "Someone else's rule", "Offline DAoC friends UDP 10400"],
+        };
+
+        IReadOnlyList<string> rules = HostForFriends.RulesToRemove(state, settings);
+        Assert.That(rules, Is.EquivalentTo(new[] { "Offline DAoC friends TCP 10301", "Offline DAoC friends UDP 10400", "Offline DAoC friends TCP 10300" }));
+
+        string script = HostForFriends.FirewallRemoveScript(rules.Append("Someone else's rule").Append("Offline DAoC friends \" & del"));
+        Assert.That(script, Does.Not.Contain("Someone else"));
+        Assert.That(script, Does.Not.Contain("& del"));
+        Assert.That(script, Does.Not.Contain("add rule"));
+        Assert.That(script, Does.Contain("delete rule name=\"Offline DAoC friends TCP 10300\""));
+        Assert.That(script.Split('\n').Count(line => line.Contains("delete rule")), Is.EqualTo(3));
+        Assert.That(script, Does.Contain("exit /b %failed%"));
+    }
+
+    [Test]
+    public void TheRuleNamesStartHostingMadeAreRemembered()
+    {
+        HostForFriends.SaveSettings(_runtime, new HostForFriends.Settings { FirewallRules = ["Offline DAoC friends TCP 10300"] });
+        Assert.That(HostForFriends.LoadSettings(_runtime).FirewallRules, Is.EqualTo(new[] { "Offline DAoC friends TCP 10300" }));
+        File.WriteAllText(HostForFriends.SettingsPath(_runtime), "{\"FirewallOpenToInternet\":true}");
+        Assert.That(HostForFriends.LoadSettings(_runtime).FirewallRules, Is.Empty, "older settings files have no names");
+    }
 }
+

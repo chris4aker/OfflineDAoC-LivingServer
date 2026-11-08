@@ -141,6 +141,38 @@ public static class JoinFriend
     public static bool IsValidPassword(string password) =>
         password.Length is >= 1 and <= 20 && password.All(character => character is >= ' ' and <= '~');
 
+    /// <summary>
+    /// The password the client sends (owner's decision, 2026-11-08: every friend has an own password). With the host
+    /// password (first login): "~" + a 6-character join token made from it + the own password, at most 13 characters, so
+    /// it fits the client's 20 (HostPassword.Combine; the host password itself is never sent). Without it (later logins):
+    /// the own password as it is. The host's server keeps only the own password.
+    /// </summary>
+    public static bool TryLoginPassword(string hostPassword, string ownPassword, out string sent, out string error)
+    {
+        sent = string.Empty;
+        if (hostPassword.Length > 0 && !IsValidPassword(hostPassword))
+        {
+            error = "The host password is 6-20 printable ASCII characters, as your friend typed it.";
+            return false;
+        }
+        int ownMax = hostPassword.Length > 0 ? DOL.GS.PacketHandler.Client.v168.HostPassword.MaxOwnPasswordLength : 20;
+        if (!IsValidPassword(ownPassword) || ownPassword.Length > ownMax)
+        {
+            error = hostPassword.Length > 0
+                ? $"Choose your own password: 1-{ownMax} printable ASCII characters (the host password takes the rest of the client's 20)."
+                : "Your password is 1-20 printable ASCII characters.";
+            return false;
+        }
+        if (hostPassword.Length > 0 && string.Equals(hostPassword, ownPassword, StringComparison.Ordinal))
+        {
+            error = "Choose your own password, not the host's: anyone with the host password could use your account.";
+            return false;
+        }
+        sent = hostPassword.Length > 0 ? DOL.GS.PacketHandler.Client.v168.HostPassword.Combine(hostPassword, ownPassword) : ownPassword;
+        error = string.Empty;
+        return true;
+    }
+
     public static async Task<bool> CanReachAsync(IPAddress host, int port, TimeSpan timeout)
     {
         using var client = new TcpClient(AddressFamily.InterNetwork);

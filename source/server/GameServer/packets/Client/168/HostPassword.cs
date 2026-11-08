@@ -11,19 +11,32 @@ using DOL.Network;
 namespace DOL.GS.PacketHandler.Client.v168
 {
     /// <summary>
-    /// The password a host sets in Host for Friends. The login packet carries only an account and a password, so a new
-    /// account from another PC must be made with the host's password; the friend then logs in with it like any other
-    /// account. Accounts that already exist are unaffected, and so is this PC (loopback): single-player automatic account
-    /// creation works as before.
+    /// The password a host sets in Host for Friends, the gate for new accounts from other PCs. Accounts that already
+    /// exist are unaffected, and so is this PC (loopback): single-player automatic account creation works as before.
     ///
     /// Hand port from rambodolphin13/DividedRealms af1fcf8 ("Hosting: invite codes, one button, host password"), Living
-    /// Server 1.2. One change, the owner's decision of 2026-11-08 ("Password is better"): with no host password set, a
-    /// new account from another PC is refused (the fork allowed it). The salt is the fork's, so the hashes match.
-    /// The launcher compiles this file too (HostForFriends.HashHostPassword).
+    /// Server 1.2, with the owner's changes of 2026-11-08:
+    /// - With no host password set, a new account from another PC is refused (the fork allowed it).
+    /// - Every friend has an own password; the host password is never an account's password. The login packet has one
+    ///   password field (the legacy client sends at most 20 printable ASCII characters), so a friend's first login sends
+    ///   <c>~</c> + a 6-character join token + the friend's own password (at most 13 characters): see
+    ///   <see cref="Combine"/>. The token is the first 6 Crockford base-32 characters of SHA-256("LivingServerJoin:" +
+    ///   the stored host password hash), so the host password itself never travels and the server checks the token from
+    ///   the hash it already stores. The account is made with the own password only.
+    /// The salt is the fork's, so the hashes match. The launcher compiles this file too.
     /// </summary>
     public static class HostPassword
     {
         private const string Salt = "DividedRealmsHost:";
+        private const string TokenSalt = "LivingServerJoin:";
+        private const string Alphabet = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+
+        /// <summary>The first character of a first-login password from Join Friend.</summary>
+        public const char Marker = '~';
+        public const int TokenLength = 6;
+        /// <summary>The legacy client's password field.</summary>
+        public const int MaxSentLength = 20;
+        public const int MaxOwnPasswordLength = MaxSentLength - 1 - TokenLength;
 
         public enum NewAccount
         {
@@ -40,19 +53,95 @@ namespace DOL.GS.PacketHandler.Client.v168
             return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(Salt + (password ?? string.Empty)))).ToLowerInvariant();
         }
 
-        public static NewAccount CheckNewAccount(string storedHash, string password, string clientAddress)
+        /// <summary>The join token for a stored host password hash (what the server checks).</summary>
+        public static string TokenForHash(string storedHash)
         {
+            byte[] digest = SHA256.HashData(Encoding.UTF8.GetBytes(TokenSalt + (storedHash ?? string.Empty).Trim().ToLowerInvariant()));
+            var token = new StringBuilder(TokenLength);
+            int buffer = 0, bits = 0, index = 0;
+            while (token.Length < TokenLength)
+            {
+                buffer = ((buffer << 8) | digest[index++]) & 0xFFFF;
+                bits += 8;
+                while (bits >= 5 && token.Length < TokenLength)
+                {
+                    bits -= 5;
+                    token.Append(Alphabet[(buffer >> bits) & 31]);
+                }
+            }
+            return token.ToString();
+        }
+
+        /// <summary>The join token for the host password itself (what Join Friend sends).</summary>
+        public static string TokenForPassword(string hostPassword) => TokenForHash(Hash(hostPassword));
+
+        /// <summary>What Join Friend sends on a first login: <c>~</c>, the join token, then the friend's own password.</summary>
+        public static string Combine(string hostPassword, string ownPassword) =>
+            Marker + TokenForPassword(hostPassword) + (ownPassword ?? string.Empty);
+
+        /// <summary>Splits a first-login password. False for anything else (a plain password).</summary>
+        public static bool TrySplit(string sent, out string token, out string ownPassword)
+        {
+            token = null;
+            ownPassword = null;
+            if (string.IsNullOrEmpty(sent) || sent.Length < 1 + TokenLength + 1 || sent[0] != Marker)
+                return false;
+
+            token = sent.Substring(1, TokenLength);
+            ownPassword = sent.Substring(1 + TokenLength);
+            foreach (char character in token)
+            {
+                if (Alphabet.IndexOf(character) < 0)
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// A new account. This PC: allowed, with the password as sent (unchanged). Another PC: it must send
+        /// <see cref="Combine"/>'s form with the right token; <paramref name="accountPassword"/> is then the friend's own
+        /// password, the only one the account keeps. Null when refused.
+        /// </summary>
+        public static NewAccount CheckNewAccount(string storedHash, string sent, string clientAddress, out string accountPassword)
+        {
+            accountPassword = null;
             if (IPAddress.TryParse(clientAddress, out IPAddress address) && IPAddress.IsLoopback(NetworkTrust.Normalize(address)))
+            {
+                accountPassword = sent;
                 return NewAccount.Allowed;
+            }
 
             if (string.IsNullOrEmpty(storedHash))
                 return NewAccount.NoHostPassword;
 
-            return Matches(storedHash, password) ? NewAccount.Allowed : NewAccount.WrongPassword;
+            if (!TrySplit(sent, out string token, out string own) || !TokenMatches(storedHash, token))
+                return NewAccount.WrongPassword;
+
+            accountPassword = own;
+            return NewAccount.Allowed;
         }
 
-        public static bool AllowsNewAccount(string storedHash, string password, string clientAddress) =>
-            CheckNewAccount(storedHash, password, clientAddress) == NewAccount.Allowed;
+        public static NewAccount CheckNewAccount(string storedHash, string sent, string clientAddress) =>
+            CheckNewAccount(storedHash, sent, clientAddress, out _);
+
+        public static bool AllowsNewAccount(string storedHash, string sent, string clientAddress) =>
+            CheckNewAccount(storedHash, sent, clientAddress) == NewAccount.Allowed;
+
+        /// <summary>
+        /// A login to an account that exists. The password as sent is compared first, as upstream does. Then, for a friend
+        /// whose Join Friend still sent the first-login form, its own-password part is compared. The host password part is
+        /// never checked or needed here: it only gates new accounts, and it never opens an account by itself.
+        /// </summary>
+        public static bool MatchesAccount(string storedAccountPassword, string sent, Func<string, string> crypt)
+        {
+            if (sent == null || storedAccountPassword == null)
+                return false;
+
+            if (crypt(sent).Equals(storedAccountPassword))
+                return true;
+
+            return TrySplit(sent, out _, out string own) && own.Length > 0 && crypt(own).Equals(storedAccountPassword);
+        }
 
         /// <summary>
         /// The upstream rule "one new account per address every 15 minutes" (account / time_between_account_creation_sameip)
@@ -61,22 +150,23 @@ namespace DOL.GS.PacketHandler.Client.v168
         /// the host password keeps it (it is refused before this anyway). The total per address
         /// (total_accounts_allowed_sameip) still applies to everyone.
         /// </summary>
-        public static bool SkipsSameAddressWait(string storedHash, string password, string clientAddress) =>
-            NetworkTrust.IsTrusted(clientAddress) || (!string.IsNullOrEmpty(storedHash) && Matches(storedHash, password));
+        public static bool SkipsSameAddressWait(string storedHash, string sent, string clientAddress) =>
+            NetworkTrust.IsTrusted(clientAddress) ||
+            (!string.IsNullOrEmpty(storedHash) && TrySplit(sent, out string token, out _) && TokenMatches(storedHash, token));
 
-        private static bool Matches(string storedHash, string password)
+        private static bool TokenMatches(string storedHash, string token)
         {
-            if (string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(storedHash) || string.IsNullOrEmpty(token))
                 return false;
 
-            byte[] given = Encoding.ASCII.GetBytes(Hash(password));
-            byte[] stored = Encoding.ASCII.GetBytes(storedHash.Trim().ToLowerInvariant());
-            return CryptographicOperations.FixedTimeEquals(given, stored);
+            byte[] given = Encoding.ASCII.GetBytes(token);
+            byte[] expected = Encoding.ASCII.GetBytes(TokenForHash(storedHash));
+            return CryptographicOperations.FixedTimeEquals(given, expected);
         }
     }
 
     /// <summary>
-    /// Wrong host passwords per address (Living Server 1.2, co-op audit §3: a wrong password had no lockout). After
+    /// Wrong join tokens (host passwords) per address (Living Server 1.2, co-op audit §3: a wrong password had no lockout). After
     /// <see cref="MaxFailures"/> wrong tries within <see cref="Window"/>, that address may not try again until the
     /// window has passed. Only the new-account host password counts; it lives in memory and resets with the server.
     /// </summary>

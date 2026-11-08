@@ -7,7 +7,8 @@ namespace OfflineDaoc.Launcher;
 /// Client-only mode: start this game's client against a friend's server, from their invite code or address.
 /// It never starts the local server or opens the local save. Ported from stefanrows/OfflineDAoC (Join Friend); hand port
 /// from rambodolphin13/DividedRealms af1fcf8 (before the Character passport), Living Server 1.2. Original client only.
-/// The friend's first password is the host's password: the server makes the account with it (HostPassword).
+/// Two password boxes (owner, 2026-11-08): the host password, needed the first time only, and the friend's own
+/// password, the only one their account keeps (JoinFriend.TryLoginPassword, HostPassword.Combine).
 /// </summary>
 internal sealed class JoinFriendForm : Form
 {
@@ -15,6 +16,7 @@ internal sealed class JoinFriendForm : Form
     private readonly JoinClient _client;
     private readonly TextBox _hostAddress = InputBox(64);
     private readonly TextBox _guestAccount = InputBox(20);
+    private readonly TextBox _hostPassword = InputBox(20, password: true);
     private readonly TextBox _password = InputBox(20, password: true);
     private readonly CheckBox _rememberPassword = new()
     {
@@ -56,8 +58,8 @@ internal sealed class JoinFriendForm : Form
         _logsDirectory = Path.Combine(runtime, "logs");
 
         Text = "Join a Friend — Offline DAoC Living Server";
-        ClientSize = new Size(620, 500);
-        MinimumSize = new Size(590, 480);
+        ClientSize = new Size(640, 560);
+        MinimumSize = new Size(600, 540);
         StartPosition = FormStartPosition.CenterScreen;
         BackColor = DaocTheme.Void;
         ForeColor = DaocTheme.Text;
@@ -71,14 +73,14 @@ internal sealed class JoinFriendForm : Form
         {
             Dock = DockStyle.Fill,
             ColumnCount = 1,
-            RowCount = 8,
+            RowCount = 9,
             Padding = new Padding(4),
             BackColor = Color.Transparent,
         };
         layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 38));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 58));
-        for (int index = 0; index < 3; index++)
+        for (int index = 0; index < 4; index++)
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 59));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 28));
         layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
@@ -103,8 +105,9 @@ internal sealed class JoinFriendForm : Form
         }, 0, 1);
         layout.Controls.Add(Field("Invite code from your friend (or their address)", _hostAddress), 0, 2);
         layout.Controls.Add(Field("Your own account name on the host (made on your first login there; not \"offline\")", _guestAccount), 0, 3);
-        layout.Controls.Add(Field("Password: the host password your friend gave you (it stays your password there)", _password), 0, 4);
-        layout.Controls.Add(_rememberPassword, 0, 5);
+        layout.Controls.Add(Field("Host password from your friend (first time only; it makes your account)", _hostPassword), 0, 4);
+        layout.Controls.Add(Field($"Your own password (1-{DOL.GS.PacketHandler.Client.v168.HostPassword.MaxOwnPasswordLength} characters; only you know it)", _password), 0, 5);
+        layout.Controls.Add(_rememberPassword, 0, 6);
 
         var connectionNote = new TableLayoutPanel
         {
@@ -127,7 +130,7 @@ internal sealed class JoinFriendForm : Form
             TextAlign = ContentAlignment.MiddleLeft,
         }, 0, 0);
         connectionNote.Controls.Add(_status, 0, 1);
-        layout.Controls.Add(connectionNote, 0, 6);
+        layout.Controls.Add(connectionNote, 0, 7);
 
         var buttons = new FlowLayoutPanel
         {
@@ -139,7 +142,7 @@ internal sealed class JoinFriendForm : Form
         };
         buttons.Controls.Add(_closeButton);
         buttons.Controls.Add(_joinButton);
-        layout.Controls.Add(buttons, 0, 7);
+        layout.Controls.Add(buttons, 0, 8);
         frame.Controls.Add(layout);
 
         _joinButton.Click += async (_, _) => await JoinAsync();
@@ -151,6 +154,9 @@ internal sealed class JoinFriendForm : Form
         if (_guestAccount.Text.Length == 0)
             _guestAccount.Text = JoinFriend.SuggestAccountName(Environment.UserName, Random.Shared);
     }
+
+    /// <summary>For tests: the two password boxes.</summary>
+    internal (TextBox Host, TextBox Own) PasswordBoxes => (_hostPassword, _password);
 
     private void LoadSavedProfile()
     {
@@ -192,9 +198,9 @@ internal sealed class JoinFriendForm : Form
             return;
         }
         string password = _password.Text;
-        if (!JoinFriend.IsValidPassword(password))
+        if (!JoinFriend.TryLoginPassword(_hostPassword.Text, password, out string sentPassword, out string passwordProblem))
         {
-            SetStatus("The client accepts a password of 1–20 printable ASCII characters.", DaocTheme.Danger);
+            SetStatus(passwordProblem, DaocTheme.Danger);
             return;
         }
         if (!_client.IsInstalled)
@@ -220,7 +226,7 @@ internal sealed class JoinFriendForm : Form
 
         try
         {
-            ProcessStartInfo start = _client.CreateStartInfo(hostAddress, guestAccount, password);
+            ProcessStartInfo start = _client.CreateStartInfo(hostAddress, guestAccount, sentPassword);
             ClientDisplayPreferences.EnsureBorderlessFullscreen(_client.ClientDirectory);
             ClientSessionDiagnostics.Prepare(_logsDirectory);
             Process? client = Process.Start(start);
@@ -233,7 +239,10 @@ internal sealed class JoinFriendForm : Form
 
             ClientSessionDiagnostics.Start(client, _client.ClientDirectory, _logsDirectory, hostAddress);
             SaveProfile(_hostAddress.Text.Trim(), guestAccount, password);
+            // Only the own password is remembered; the host password is needed once.
             _password.Clear();
+            _hostPassword.Clear();
+            _hostPassword.Enabled = false;
             _hostAddress.Enabled = false;
             _guestAccount.Enabled = false;
             _rememberPassword.Enabled = false;

@@ -42,10 +42,11 @@ public static class HostForFriends
 
     public sealed record State(bool Hosting, int LoginPort, int UdpPort, bool AutoAccountCreation, bool Internet = false, bool PasswordSet = false);
 
-    /// <summary>What the firewall rules were last made for.</summary>
+    /// <summary>What the firewall rules were last made for, and their names (STOP HOSTING removes exactly those).</summary>
     public sealed class Settings
     {
         public bool FirewallOpenToInternet { get; set; }
+        public List<string> FirewallRules { get; set; } = [];
     }
 
     public static string ConfigPath(string runtime) => Path.Combine(runtime, "server", "config", "serverconfig.xml");
@@ -266,6 +267,35 @@ public static class HostForFriends
                 script.AppendLine($"netsh advfirewall firewall add rule name=\"{name}\" dir=in action=allow protocol={protocol} " +
                                   $"localport={port} remoteip={remote} program=\"{program}\" profile=any");
         }
+        return script.ToString();
+    }
+
+    /// <summary>
+    /// The rules STOP HOSTING removes: the names recorded when START HOSTING made them, or, for rules made before the
+    /// names were recorded, the names this launcher gives them. Only names this launcher creates are ever listed.
+    /// </summary>
+    public static IReadOnlyList<string> RulesToRemove(State state, Settings settings)
+    {
+        var ours = new HashSet<string>(FirewallRuleNames(state), StringComparer.OrdinalIgnoreCase);
+        IEnumerable<string> recorded = settings.FirewallRules.Where(name => name.StartsWith("Offline DAoC friends ", StringComparison.Ordinal));
+        List<string> names = recorded.Concat(ours).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+        return names;
+    }
+
+    /// <summary>The netsh lines that delete exactly these rules, by name.</summary>
+    public static string FirewallRemoveScript(IEnumerable<string> names)
+    {
+        var script = new StringBuilder();
+        script.AppendLine("@echo off");
+        script.AppendLine("rem Offline DAoC Living Server: remove the Host for Friends firewall rules (by name, nothing else).");
+        script.AppendLine("set failed=0");
+        foreach (string name in names)
+        {
+            if (name.Contains('"') || !name.StartsWith("Offline DAoC friends ", StringComparison.Ordinal))
+                continue;
+            script.AppendLine($"netsh advfirewall firewall show rule name=\"{name}\" >nul 2>&1 && (netsh advfirewall firewall delete rule name=\"{name}\" >nul || set failed=1)");
+        }
+        script.AppendLine("exit /b %failed%");
         return script.ToString();
     }
 

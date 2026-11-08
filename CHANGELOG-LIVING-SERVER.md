@@ -39,13 +39,18 @@ rambodolphin13. The Character passport (da78651f) is not part of it. It passes a
 between two real PCs yet.
 - **The host password is the gate** (owner's decision, 2026-11-08). While you host, a new account from another PC needs
   your password, and without one set no other PC can make an account. Your own PC never needs it, so single-player
-  automatic account creation is unchanged. Five wrong passwords from one address lock it out for 10 minutes. No friend
-  list.
+  automatic account creation is unchanged. Five wrong host passwords from one address lock it out for 10 minutes. No
+  friend list.
+- **Every friend has their own password** (owner, 2026-11-08). Join Friend asks for the host password (first time only)
+  and your own password. The account keeps only your own password, so one friend can't log in as another, and later
+  logins never need the host password. The host password itself is never sent: the first login sends a short join token
+  made from it (see the developer notes in the guide).
 - **One region address per client.** Each client is told the address it connected on (this PC, the home network or
   Tailscale), or the router's internet address for a friend from the internet. Before, a friend on Tailscale or on a
   172.16 network was told an address it could not use.
 - **Firewall rules for this game only:** `CoreServer.exe`, TCP 10300 and UDP 10400, from the home network and Tailscale
-  (any address only with internet hosting). Made once, with Windows' permission.
+  (any address only with internet hosting). Made with Windows' permission. STOP HOSTING removes exactly those rules, by
+  name, and says so in red if it can't.
 - **Internet hosting (opt-in):** the router opens the two ports over UPnP while the server runs and closes them when it
   stops. The router mapping now points at this PC's address on the router's network, each port is asked for on its own,
   and the router's internet address is kept as `PublicIP`.

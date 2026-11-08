@@ -13,6 +13,8 @@ namespace OfflineDaoc.Launcher.Tests;
 public sealed class HostForFriendsFirewallTests
 {
     private string _runtime = string.Empty;
+    // Another program's rule on the same port: STOP HOSTING must leave it.
+    private const string OtherRule = "Living Server test other app TCP 10300";
 
     [SetUp]
     public void SetUp()
@@ -43,6 +45,7 @@ public sealed class HostForFriendsFirewallTests
         try
         {
             RunScript(HostForFriends.FirewallScript(_runtime, HostForFriends.Read(_runtime), add: false), "teardown");
+            Netsh("advfirewall", "firewall", "delete", "rule", $"name={OtherRule}");
         }
         finally
         {
@@ -78,6 +81,30 @@ public sealed class HostForFriendsFirewallTests
         Assert.That(RunScript(HostForFriends.FirewallScript(_runtime, state, add: false), "remove"), Is.EqualTo(0));
         foreach (string name in HostForFriends.FirewallRuleNames(state))
             Assert.That(Netsh("advfirewall", "firewall", "show", "rule", $"name={name}").Exit, Is.Not.EqualTo(0), $"{name} is gone");
+    }
+
+    [Test]
+    public void StopHostingRemovesExactlyTheRulesStartHostingMade()
+    {
+        var state = HostForFriends.Read(_runtime);
+        Assert.That(RunScript(HostForFriends.FirewallScript(_runtime, state, add: true), "add"), Is.EqualTo(0));
+        // What START HOSTING records, as HostForFriendsForm does.
+        var settings = new HostForFriends.Settings { FirewallRules = HostForFriends.FirewallRuleNames(state).ToList() };
+        Assert.That(Netsh("advfirewall", "firewall", "add", "rule", $"name={OtherRule}", "dir=in", "action=allow", "protocol=TCP", "localport=10300").Exit,
+            Is.EqualTo(0));
+
+        // STOP HOSTING's script.
+        IReadOnlyList<string> rules = HostForFriends.RulesToRemove(state, settings);
+        Assert.That(rules, Is.EquivalentTo(new[] { "Offline DAoC friends TCP 10300", "Offline DAoC friends UDP 10400" }));
+        Assert.That(RunScript(HostForFriends.FirewallRemoveScript(rules), "stop"), Is.EqualTo(0));
+
+        foreach (string name in rules)
+            Assert.That(Netsh("advfirewall", "firewall", "show", "rule", $"name={name}").Exit, Is.Not.EqualTo(0), $"{name} is gone");
+        Assert.That(Netsh("advfirewall", "firewall", "show", "rule", $"name={OtherRule}").Exit, Is.EqualTo(0), "another program's rule stays");
+
+        // A second stop (nothing left of ours) succeeds and still leaves the other rule.
+        Assert.That(RunScript(HostForFriends.FirewallRemoveScript(rules), "stop-again"), Is.EqualTo(0));
+        Assert.That(Netsh("advfirewall", "firewall", "show", "rule", $"name={OtherRule}").Exit, Is.EqualTo(0));
     }
 
     // netsh prints "Field:   value" lines; the first of each field is kept.

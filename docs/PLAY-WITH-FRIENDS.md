@@ -15,8 +15,10 @@ Friend first came from [stefanrows/OfflineDAoC](https://github.com/stefanrows/Of
 - **You all need the same game and the same Living Server version.** A code made for another game is refused.
 - **Characters stay in the host's world.** A friend makes a new character on your server. It is saved in your world, not
   theirs. Taking your own character along is not part of 1.2.
-- **The password is the gate.** While you host, a new account from another PC needs your password. Without it the server
-  says "Your account needs an invite". Your own PC never needs it. There is no friend list.
+- **The host password is the gate.** While you host, a new account from another PC needs your password. Without it the
+  server says "Your account needs an invite". Your own PC never needs it. There is no friend list.
+- **Every friend has their own password.** The host password only makes the account. It is never a friend's account
+  password, so one friend can't log in as another.
 - **Home network and Tailscale by default.** Your router stays closed. Internet hosting is a box you tick, and it is off
   by default.
 - **Friends play as players.** Make Me GM only ever changes your own account. Friends never get GM.
@@ -35,11 +37,13 @@ Friend first came from [stefanrows/OfflineDAoC](https://github.com/stefanrows/Of
 5. Press **COPY CODE**. Send your friends the code and the password.
 
 Your own ENTER REALM works as before. **STOP HOSTING** takes effect at the server's next start. It also clears the
-password. Your earlier settings are saved as `runtime\server\config\serverconfig.before-host-for-friends.xml`.
+password and removes the firewall rules (Windows asks for permission). Your earlier settings are saved as
+`runtime\server\config\serverconfig.before-host-for-friends.xml`.
 
 The firewall rules admit only this game's server (`CoreServer.exe`), only on TCP 10300 and UDP 10400, and only from your
-home network and Tailscale (100.64.0.0/10). With internet hosting they admit any address. When you stop hosting, the
-rules stay but do nothing, because the server listens on your PC alone. To remove them, run
+home network and Tailscale (100.64.0.0/10). With internet hosting they admit any address. STOP HOSTING removes exactly
+the rules START HOSTING made, by their names (`Offline DAoC friends TCP 10300`, `Offline DAoC friends UDP 10400`), and
+nothing else. If it can't (for example you said no to Windows), the window says so in red. Then run
 `runtime\host-for-friends-firewall-remove.cmd` as administrator.
 
 ### Internet hosting (opt-in)
@@ -63,11 +67,13 @@ Tick the box only for friends who can't use your home network or Tailscale. Then
 3. Paste the invite code. A plain host address works too.
 4. Choose your own account name for their server. Not `offline`: that is the host's own account (every install has one),
    so the window refuses it and suggests a name.
-5. For the password, type the host's password. The first time, their server makes your account with it. Use the same
-   name and password every time to get back to your characters.
-6. Press **JOIN FRIEND**. The window tries each address in the code and starts the client on the first one that answers.
+5. The first time, type the **host password** your friend gave you, and choose **your own password** (up to 13
+   characters). Their server makes your account with your own password. The host password is not saved.
+6. Later, leave the host password empty and type only your own password. Use the same name and password every time to
+   get back to your characters.
+7. Press **JOIN FRIEND**. The window tries each address in the code and starts the client on the first one that answers.
 
-Tick "Remember my password" to skip typing it next time. It is stored encrypted for your Windows user, in
+Tick "Remember my password" to skip typing your own password next time. It is stored encrypted for your Windows user, in
 `%LOCALAPPDATA%\OfflineDAoC\join-friend.json`.
 
 Join Friend uses the original game client. It does not work with the new (Godot) client yet.
@@ -80,8 +86,8 @@ Join Friend uses the original game client. It does not work with the new (Godot)
 | This code is for a different game | You both need the same game. |
 | Cannot reach your friend's server | Their server has finished starting and they are hosting. Ask for a new code. |
 | Your account needs an invite | The host isn't hosting with a password. They press START HOSTING and restart the server. |
-| Your password is incorrect | First time: the host's password. After that: the password you used the first time. |
-| Service not available | Five wrong passwords in a row. Wait 10 minutes. |
+| Your password is incorrect | First time: type the host password too. After that: your own password from the first time. |
+| Service not available | Five wrong host passwords in a row. Wait 10 minutes. |
 | Logged in, but stuck when entering the world or changing region | Tell us: it is the UDP side (port 10400) or the region address. Session details are in `runtime\logs\client-diagnostics.log` (look for `remote10300`). |
 
 ## Reporting a problem
@@ -109,6 +115,14 @@ invite code or your database.
   from any address but loopback needs the host password; with no hash set, none is made. Existing accounts are
   unaffected. The launcher compiles the same `HostPassword.cs`, so the hashes match. `HostPasswordAttempts` counts wrong
   host passwords per address, in memory.
+- **Password encoding.** The login packet has one password field, and the legacy client sends at most 20 printable ASCII
+  characters. A first login from Join Friend sends `~` + a 6-character join token + the friend's own password (1-13
+  characters): `HostPassword.Combine`. The token is the first 6 Crockford base-32 characters of
+  SHA-256(`LivingServerJoin:` + the stored host password hash), so the host password itself never travels and the
+  server checks the token against the hash it already stores. The account is made with the own password only (hashed as
+  every account is). Later logins send the own password as it is. If the first-login form is sent again to an existing
+  account, only its own-password part is compared (`HostPassword.MatchesAccount`); the plain password is compared first,
+  as before. Loopback logins are used exactly as sent.
 - `NetworkTrust` (CoreBase) says which addresses are trusted: loopback, 10/8, 172.16/12, 192.168/16 and 100.64/10.
   `BaseClient.IsTrustedNetworkConnection` is set once when the client connects. `ClientTimeoutPolicy` gives trusted
   clients the loopback client's exemptions (ping time-out, position time-out, idle kick). The same-address account rule
@@ -121,6 +135,9 @@ invite code or your database.
 - The code defaults (since 1.1.2) are loopback with UPnP and `DetectRegionIP` off. `build_release_037.py` asserts that every
   shipped config is like that and, from 1.2, that it carries no `HostPasswordHash` or `PublicIP`. Host for Friends' files
   (`host-for-friends.json`, the firewall scripts, the `before-` backup) never ship.
+- STOP HOSTING deletes the rules by the names START HOSTING recorded in `runtime\host-for-friends.json`
+  (`HostForFriends.RulesToRemove`, `FirewallRemoveScript`), then reads the firewall back to check.
 - Code: `HostForFriends.cs` / `HostForFriendsForm.cs` (host), `InviteCode.cs`, `JoinFriend.cs` / `JoinFriendForm.cs` /
   `JoinFriendProfile.cs` (guest), `GmAccess.cs`, `Program.cs --join`. Tests: `UT_RegionAddress`, `UT_HostPassword`,
-  `UT_HostingNetwork` (server), `HostForFriendsTests`, `JoinFriendTests`, `GmAccessTests` (launcher).
+  `UT_HostingNetwork` (server), `HostForFriendsTests`, `JoinFriendTests`, `JoinFriendFormTests`, `GmAccessTests`,
+  `HostForFriendsFirewallTests` (launcher; it adds and removes real firewall rules on the CI runner only).

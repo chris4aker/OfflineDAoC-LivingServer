@@ -250,4 +250,31 @@ public sealed class JoinFriendTests
         Assert.That(JoinFriend.AccountProblem("Aaron", null, new Random(1)), Is.Empty);
         Assert.That(JoinFriend.AccountProblem("Bea", null, new Random(2)), Is.Empty);
     }
+
+    [Test]
+    public void AFirstLoginSendsTheJoinTokenAndTheOwnPassword_NeverTheHostPassword()
+    {
+        Assert.That(JoinFriend.TryLoginPassword("swordfish", "aaron-pw", out string sent, out _), Is.True);
+        Assert.That(sent, Does.StartWith("~").And.EndWith("aaron-pw").And.Not.Contain("swordfish"));
+        Assert.That(sent, Has.Length.LessThanOrEqualTo(20));
+        Assert.That(DOL.GS.PacketHandler.Client.v168.HostPassword.AllowsNewAccount(
+            HostForFriends.HashHostPassword("swordfish"), sent, "192.168.1.30"), Is.True);
+    }
+
+    [Test]
+    public void ALaterLoginSendsOnlyTheOwnPassword()
+    {
+        Assert.That(JoinFriend.TryLoginPassword("", "aaron-pw", out string sent, out _), Is.True);
+        Assert.That(sent, Is.EqualTo("aaron-pw"));
+    }
+
+    [TestCase("swordfish", "", false)]
+    [TestCase("swordfish", "1234567890123", true)]
+    [TestCase("swordfish", "12345678901234", false)] // 14: no room beside the host password
+    [TestCase("", "12345678901234567890", true)]
+    [TestCase("swordfish", "swordfish", false)] // the host's password is not your own
+    [TestCase("sw\u00f6rdfish", "aaron-pw", false)]
+    public void PasswordBoxRules(string host, string own, bool valid) =>
+        Assert.That(JoinFriend.TryLoginPassword(host, own, out _, out _), Is.EqualTo(valid));
 }
+

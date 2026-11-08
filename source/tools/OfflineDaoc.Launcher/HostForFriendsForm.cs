@@ -90,7 +90,7 @@ internal sealed class HostForFriendsForm : Form
         layout.Controls.Add(_state, 0, 1);
         layout.Controls.Add(Note(
             "Press START HOSTING, then send friends the invite code and the password. They paste the code into JOIN FRIEND, " +
-            "pick their own account name and use the password. Their characters are saved in YOUR world. They play as players: " +
+            "pick their own name and password, and type your password the first time. Their characters are saved in YOUR world. They play as players: " +
             "Make Me GM stays with your own account."), 0, 2);
 
         var passwordField = new Panel { Dock = DockStyle.Fill, BackColor = Color.Transparent, Padding = new Padding(2, 2, 2, 3) };
@@ -199,7 +199,7 @@ internal sealed class HostForFriendsForm : Form
         try
         {
             if (_current.Hosting)
-                StopHosting();
+                await StopHostingAsync();
             else
                 await StartHostingAsync();
             await RefreshStateAsync();
@@ -211,21 +211,105 @@ internal sealed class HostForFriendsForm : Form
         }
     }
 
-    private void StopHosting()
+    private async Task StopHostingAsync()
     {
         try
         {
             HostForFriends.Disable(_runtime);
-            string remove = Path.Combine(_runtime, HostForFriends.FirewallRemoveScriptName);
-            File.WriteAllText(remove, HostForFriends.FirewallScript(_runtime, _current, add: false));
-            SetStatus("Hosting stopped: the server listens on this PC only and the password is gone. The firewall rules are " +
-                      $"harmless while it does; to remove them, run {HostForFriends.FirewallRemoveScriptName} as administrator." + RestartNote(),
-                DaocTheme.Success);
         }
         catch (Exception exception)
         {
             SetStatus($"Could not change serverconfig.xml: {exception.Message}", DaocTheme.Danger);
+            return;
         }
+
+        // Remove exactly the rules START HOSTING made, by name (owner, 2026-11-08).
+        IReadOnlyList<string> rules = HostForFriends.RulesToRemove(_current, _settings);
+        string remove = Path.Combine(_runtime, HostForFriends.FirewallRemoveScriptName);
+        string? problem = null;
+        try
+        {
+            File.WriteAllText(remove, HostForFriends.FirewallRemoveScript(rules));
+            if (await AnyRulePresentAsync(rules))
+            {
+                SetStatus("Windows will ask for permission to remove the firewall rules…", DaocTheme.GoldLight);
+                problem = await RunElevatedAsync(remove);
+                if (problem == null && await AnyRulePresentAsync(rules))
+                    problem = "the rules are still there";
+            }
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or Win32Exception)
+        {
+            problem = exception.Message;
+        }
+
+        if (problem != null)
+        {
+            SetStatus($"Hosting stopped, but the firewall rules were NOT removed ({problem}). Run {remove} as administrator to remove them." +
+                      RestartNote(), DaocTheme.Danger);
+            return;
+        }
+
+        _settings.FirewallRules = [];
+        try
+        {
+            HostForFriends.SaveSettings(_runtime, _settings);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            // The rules are gone; the next start just makes them again.
+        }
+        SetStatus("Hosting stopped: the server listens on this PC only, the password is gone and the firewall rules are removed." +
+                  RestartNote(), DaocTheme.Success);
+    }
+
+    /// <summary>Runs a script as administrator. Null when it ran; otherwise why not.</summary>
+    private static async Task<string?> RunElevatedAsync(string script)
+    {
+        try
+        {
+            using Process? process = Process.Start(new ProcessStartInfo("cmd.exe")
+            {
+                ArgumentList = { "/c", script },
+                Verb = "runas",
+                UseShellExecute = true,
+                WindowStyle = ProcessWindowStyle.Hidden,
+            });
+            if (process == null)
+                return "Windows did not start it";
+            await process.WaitForExitAsync();
+            // Whether it worked is read back from the firewall (AnyRulePresentAsync), not from the exit code.
+            return null;
+        }
+        catch (Win32Exception exception) when (exception.NativeErrorCode == 1223)
+        {
+            return "Windows permission was declined";
+        }
+        catch (Exception exception) when (exception is Win32Exception or InvalidOperationException)
+        {
+            return exception.Message;
+        }
+    }
+
+    private static async Task<bool> AnyRulePresentAsync(IEnumerable<string> rules)
+    {
+        foreach (string rule in rules)
+        {
+            using Process? process = Process.Start(new ProcessStartInfo("netsh")
+            {
+                ArgumentList = { "advfirewall", "firewall", "show", "rule", $"name={rule}" },
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+            });
+            if (process == null)
+                return true;
+            await process.StandardOutput.ReadToEndAsync();
+            await process.WaitForExitAsync();
+            if (process.ExitCode == 0)
+                return true;
+        }
+        return false;
     }
 
     private async Task StartHostingAsync()
@@ -299,6 +383,7 @@ internal sealed class HostForFriendsForm : Form
             return false;
         }
         _settings.FirewallOpenToInternet = internet;
+        _settings.FirewallRules = HostForFriends.FirewallRuleNames(_current).ToList();
         try
         {
             HostForFriends.SaveSettings(_runtime, _settings);
