@@ -535,6 +535,9 @@ namespace DOL.GS
             else spot = StandOffHold(bot, now);
             if (spot is not Vector3 at) return false;
             var point = new Point3D((int)at.X, (int)at.Y, (int)at.Z);
+            // A melee follow outlives StopAttack and walks the bot straight back to him (duo8: the 48 stomp victims died a
+            // median 66 from him after a 30 s warning, still following him).
+            if (bot.FollowTarget != null) bot.StopFollowing();
             if (!bot.IsWithinRadius(point, 150))
             {
                 if (!bot.IsMovingOnPath) bot.PathTo(point, bot.MaxSpeed);
@@ -607,6 +610,8 @@ namespace DOL.GS
                 case BotAction.LeadHome:
                     if (bot.IsCasting && bot.castingComponent?.SpellHandler?.Spell?.IsHarmful == true) bot.StopCurrentSpellcast();
                     bot.StopAttack();
+                    // The melee follow outlives StopAttack (duo8, Xanxicar): without this the bot walks back to the target.
+                    if (bot.FollowTarget == target) bot.StopFollowing();
                     (bot.Brain as BotBrain)?.RemoveFromAggroList(target);
                     bot.TargetObject = null;
                     if (bot.ControlledBrain?.Body?.TargetObject == target) bot.ControlledBrain.Disengage();
