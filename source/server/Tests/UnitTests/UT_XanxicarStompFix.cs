@@ -61,6 +61,21 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterTactics.NearestBlastSpot([], new(0, 0, 0)), Is.Null);
         }
 
+        // Raid-skill container run duo18: the stomp is centred on his target, so a spot 2,700 from him on the far side from
+        // his target is inside the stomp. Only spots clear of the target too are used.
+        [Test]
+        public void SpotsMustBeClearOfHisTargetToo()
+        {
+            Vector3 boss = new(30000, 30000, 0), target = new(30300, 30000, 0);   // his target beside him, to the east
+            Vector3[] spots = [new(27300, 30000, 0), new(32700, 30000, 0), new(30000, 32700, 0)];  // west, east, north
+            Vector3[] clear = EpicEncounterTactics.ClearOf(spots, target, 2500);
+            Assert.That(clear, Is.EqualTo(new[] { spots[0], spots[2] }),
+                "west is 3,000 from the target and north about 2,717: clear; east is 2,400 from it: inside the stomp");
+            Assert.That(EpicEncounterTactics.NearestBlastSpot(clear, new(31000, 30000, 0)), Is.EqualTo(spots[2]),
+                "a raider east of him goes north, not east past his target's stomp");
+            Assert.That(EpicEncounterTactics.ClearOf(null, target, 2500), Is.Empty);
+        }
+
         [Test]
         public void ARaiderSentOutIsHeldThereUntilTheHoldEnds()
         {
