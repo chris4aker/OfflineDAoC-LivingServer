@@ -66,10 +66,13 @@ namespace DOL.GS
 
         // ---- the call ---------------------------------------------------------------------------------------------------
 
-        /// <summary>A call on time comes this many seconds before the mechanic lands: unlearned 4-7.5, learned 7-11.</summary>
-        public const double CallLeadUnlearnedMin = 4, CallLeadUnlearnedMax = 7.5, CallLeadLearnedMin = 7, CallLeadLearnedMax = 11;
-        /// <summary>The share of calls that come late (unlearned 22%, learned 6%), and how late: 2.5-5 s before it lands.</summary>
-        public const double LateCallUnlearned = 0.22, LateCallLearned = 0.06, LateCallLeadMin = 2.5, LateCallLeadMax = 5;
+        /// <summary>A call on time comes this many seconds before the mechanic lands: unlearned 6.5-10.5, learned 9.5-13.5.
+        /// Container runs duo16/duo17 (Xanxicar): from melee range a raider needs about 8-9 s after the call to get clear of
+        /// his stomp (it hits everyone within 2,500 of his target when it lands, falling off with distance), so calls of
+        /// 4-8 s killed 30-85% of the raiders in range, the learned ones too.</summary>
+        public const double CallLeadUnlearnedMin = 6.5, CallLeadUnlearnedMax = 10.5, CallLeadLearnedMin = 9.5, CallLeadLearnedMax = 13.5;
+        /// <summary>The share of calls that come late (unlearned 22%, learned 5%), and how late: 3-6 s before it lands.</summary>
+        public const double LateCallUnlearned = 0.22, LateCallLearned = 0.05, LateCallLeadMin = 3, LateCallLeadMax = 6;
 
         /// <param name="LeadSeconds">How long before the mechanic lands the caller shouts it.</param>
         /// <param name="Late">It came late (after the caller hesitated or saw it late).</param>
@@ -112,9 +115,9 @@ namespace DOL.GS
         /// risk and a quarter impatience. So 0.5-4 s unlearned, 0.5-2.5 s learned; a patient, careful raider is quick.</summary>
         public const double ReactionMinimumSeconds = 0.5, ReactionSpanUnlearned = 3.5, ReactionSpanLearned = 2.0;
         public const double ReactionRollWeight = 0.5, ReactionRiskWeight = 0.25, ReactionImpatienceWeight = 0.25;
-        /// <summary>Lapse chance before traits (unlearned 16%, learned 6%), times 0.6 + 0.8 * Risk/9 (0.6-1.4), times 1.5 for a
+        /// <summary>Lapse chance before traits (unlearned 16%, learned 5%), times 0.6 + 0.8 * Risk/9 (0.6-1.4), times 1.5 for a
         /// healer (the tank is low when the call comes).</summary>
-        public const double LapseUnlearned = 0.16, LapseLearned = 0.06, HealerLapseFactor = 1.5;
+        public const double LapseUnlearned = 0.16, LapseLearned = 0.05, HealerLapseFactor = 1.5;
         /// <summary>Of the lapses, this share never leaves; the rest leave 2-4 s late.</summary>
         public const double LapseStaysShare = 0.4, LapseLateMinSeconds = 2, LapseLateMaxSeconds = 4;
 

@@ -82,10 +82,10 @@ namespace DOL.UnitTests
             Assert.Multiple(() =>
             {
                 Assert.That(unlearned.Count(c => c.Late) / (double)unlearned.Length, Is.InRange(0.18, 0.26));
-                Assert.That(learned.Count(c => c.Late) / (double)learned.Length, Is.InRange(0.03, 0.09));
-                Assert.That(unlearned.Where(c => !c.Late).Select(c => c.LeadSeconds), Is.All.InRange(4.0, 7.5));
-                Assert.That(learned.Where(c => !c.Late).Select(c => c.LeadSeconds), Is.All.InRange(7.0, 11.0));
-                Assert.That(unlearned.Concat(learned).Where(c => c.Late).Select(c => c.LeadSeconds), Is.All.InRange(2.5, 5.0));
+                Assert.That(learned.Count(c => c.Late) / (double)learned.Length, Is.InRange(0.03, 0.08));
+                Assert.That(unlearned.Where(c => !c.Late).Select(c => c.LeadSeconds), Is.All.InRange(6.5, 10.5));
+                Assert.That(learned.Where(c => !c.Late).Select(c => c.LeadSeconds), Is.All.InRange(9.5, 13.5));
+                Assert.That(unlearned.Concat(learned).Where(c => c.Late).Select(c => c.LeadSeconds), Is.All.InRange(3.0, 6.0));
                 Assert.That(unlearned.Average(c => c.LeadSeconds), Is.LessThan(learned.Average(c => c.LeadSeconds) - 2));
                 // Deterministic per (caller, stomp, seed).
                 Assert.That(RaidDiscipline.CallFor(7, Mechanic, 60, 3, 0.4), Is.EqualTo(RaidDiscipline.CallFor(7, Mechanic, 60, 3, 0.4)));
@@ -178,50 +178,40 @@ namespace DOL.UnitTests
 
         // ---- the model: who gets out of the stomp in time ---------------------------------------------------------------
 
-        // A simple model of one stomp, not a measurement. The stomp is a 2,500 radius hit of 2,500 Energy around his target
-        // (the tank beside him) that falls off with distance (SpellHandler: damage * (1 - distance / radius)); resists and the
-        // hit chance take 10-30% off. Level-50 raiders in drop gear: tank 2,300 health, melee 1,650, healer 1,350, caster
-        // 1,150, at 60-100% health (the holding party, kept topped up, 85-100%). They stand where bots stand at a call: melee
-        // 80-400 from him, healers 700-1,500, casters and archers 1,000-2,000. Out of the call, a raider runs 190 a second
-        // along the floor (beside him to 2,500 in about 13 s) towards a spot 2,750-3,300 out. The party he fights stays in.
-        private const double RunSpeed = 190, SafeAt = 2900;
-        private static readonly Dictionary<RaidDiscipline.Role, int> Health = new()
+        // A simple model of one stomp, fitted to the container runs duo16 and duo17 (Xanxicar, 2026-11-08), not a measurement.
+        // The stomp hits everyone within 2,500 of his target when his cast ends, falling off with distance; a raider dies if
+        // it is still inside its role's lethal distance then (melee 400, healers 1,100, casters and archers 1,200, each
+        // give or take 15%: the melee classes have the health to take it near him). At the call 35% of the raiders in range
+        // stand at melee range (40-160 from him), 20% at 160-900 and 45% at 900-2,000 (EPIC_BLAST_REACT dist). Once a raider
+        // goes it gets out at 150 a second, half a second after its reaction delay (its next brain turn and its path). The
+        // party he fights stays in: 5 of its 8 die (duo17: 5, 5, 0, 5). Fitted: 47% deaths at a 4.5 s lead unlearned
+        // (duo16: 30-42%), 29% at 7.2 s learned (duo17: 24% and 47%); from melee range it takes 8-9 s to get clear.
+        private const double RunSpeed = 150, TurnSeconds = 0.5;
+        private static readonly Dictionary<RaidDiscipline.Role, double> Lethal = new()
         {
-            [RaidDiscipline.Role.Melee] = 1650, [RaidDiscipline.Role.Healer] = 1350, [RaidDiscipline.Role.Caster] = 1150,
+            [RaidDiscipline.Role.Melee] = 400, [RaidDiscipline.Role.Healer] = 1100, [RaidDiscipline.Role.Caster] = 1200,
         };
 
         private sealed record StompResult(int Exposed, int Died, int Within, int WithinDied, bool LateCall);
 
-        private static StompResult Stomp(double familiarity, int seed, int stomp, int raiders = 110)
+        private static StompResult Stomp(double familiarity, int seed, int stomp, int raiders = 130, double? lead = null)
         {
             var rng = new Random(seed * 7919 + stomp);
             var call = RaidDiscipline.CallFor(seed % 13, Mechanic, stomp, seed, familiarity);
-            int died = 0, within = 0;
-            void Land(double distance, int health, double share)
-            {
-                if (distance < 2500) within++;
-                double damage = 2500 * Math.Max(0, 1 - distance / 2500) * (0.7 + rng.NextDouble() * 0.2);
-                if (damage >= health * share) died++;
-            }
-            // The party he fights: his tank, three melee, two healers, two casters.
-            Land(50, 2300, 0.85 + rng.NextDouble() * 0.15);
-            foreach (double d in new[] { 120, 150, 200 }) Land(d, Health[RaidDiscipline.Role.Melee], 0.85 + rng.NextDouble() * 0.15);
-            foreach (double d in new[] { 1000, 1200 }) Land(d, Health[RaidDiscipline.Role.Healer], 0.85 + rng.NextDouble() * 0.15);
-            foreach (double d in new[] { 1500, 1600 }) Land(d, Health[RaidDiscipline.Role.Caster], 0.85 + rng.NextDouble() * 0.15);
+            if (lead is double fixedLead) call = new RaidDiscipline.Call(fixedLead, false);
+            int died = 5, within = 8;
             for (int i = 0; i < raiders - 8; i++)
             {
                 long id = seed * 1000L + i + 1;
                 double pick = rng.NextDouble();
-                var role = pick < 0.4 ? RaidDiscipline.Role.Melee : pick < 0.6 ? RaidDiscipline.Role.Healer : RaidDiscipline.Role.Caster;
-                double start = role switch
-                {
-                    RaidDiscipline.Role.Melee => 80 + rng.NextDouble() * 320,
-                    RaidDiscipline.Role.Healer => 700 + rng.NextDouble() * 800,
-                    _ => 1000 + rng.NextDouble() * 1000,
-                };
+                var role = pick < 0.33 ? RaidDiscipline.Role.Melee : pick < 0.67 ? RaidDiscipline.Role.Caster : RaidDiscipline.Role.Healer;
+                double where = rng.NextDouble();
+                double start = where < 0.35 ? 40 + rng.NextDouble() * 120 : where < 0.55 ? 160 + rng.NextDouble() * 740 : 900 + rng.NextDouble() * 1100;
                 var reaction = RaidDiscipline.ReactionFor(id, AutonomousBotPersonality.For(id).Traits, role, Mechanic, stomp, seed, familiarity);
-                double moving = reaction.Leaves ? Math.Max(0, call.LeadSeconds - reaction.DelaySeconds) : 0;
-                Land(Math.Min(SafeAt, start + RunSpeed * moving), Health[role], 0.6 + rng.NextDouble() * 0.4);
+                double moving = reaction.Leaves ? Math.Max(0, call.LeadSeconds - reaction.DelaySeconds - TurnSeconds) : 0;
+                double at = start + RunSpeed * moving;
+                if (at < 2500) within++;
+                if (at < Lethal[role] * (0.85 + rng.NextDouble() * 0.3)) died++;
             }
             return new StompResult(raiders, died, within, died, call.Late);
         }
@@ -243,9 +233,23 @@ namespace DOL.UnitTests
             Assert.Multiple(() =>
             {
                 Assert.That(share.Average(), Is.InRange(low, high), "deaths over the raiders in his radius");
-                Assert.That(withinShare, Is.InRange(low, high + 0.05), "deaths over those still inside it when it lands");
                 Assert.That(stomps.Count(s => s.Died == 0), Is.Zero, "a stomp nobody dies to is too perfect");
                 Assert.That(share[^1], Is.LessThan(0.7), "and none wipes the raid alone");
+            });
+        }
+
+        [Test]
+        public void TheModelReproducesTheContainerRuns()
+        {
+            // duo16 (unlearned, real leads 4-5 s): 30-42% died; duo17 (learned, leads about 7 s): 24% and 47% at 80/60.
+            double Mean(double f, double lead) => Enumerable.Range(1, 200).Average(seed => Stomp(f, seed, 80, lead: lead).Died / 130.0);
+            double unlearned = Mean(0, 4.5), learned = Mean(1, 7.2), clear = Mean(1, 12);
+            TestContext.WriteLine($"lead 4.5 s unlearned {unlearned:P0}, 7.2 s learned {learned:P0}, 12 s learned {clear:P0}");
+            Assert.Multiple(() =>
+            {
+                Assert.That(unlearned, Is.InRange(0.30, 0.50));
+                Assert.That(learned, Is.InRange(0.20, 0.40));
+                Assert.That(clear, Is.LessThan(0.10), "from 9-10 s on, nearly everyone on time gets out");
             });
         }
 

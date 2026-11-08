@@ -39,13 +39,14 @@ namespace DOL.GS
 
         /// <summary>Xanxicar's stomp lands about this long after his health crosses a threshold: his brain sees it on its next
         /// think, 1 s to the announcement, then his cast (6 s on the spell, about 5 s at his casting speed). duo16: the
-        /// four stomps landed 6.2 s after the crossing, or 0.3-1.3 s before the 7.5 s first assumed.</summary>
-        public const double BlastLandsAfterCrossSeconds = 6.3;
+        /// four stomps landed about 6.2 s after the crossing; duo17 (timed from his cast) 6.9-7.2 s.</summary>
+        public const double BlastLandsAfterCrossSeconds = 6.8;
         /// <summary>Without a cast seen, the raiders inside the radius are counted this long before the landing; the dead
-        /// are counted this long after it.</summary>
-        public const long BlastLandingSnapshotLeadMilliseconds = 400, BlastLandingCountAfterMilliseconds = 2_000;
+        /// are counted this long after it (duo17: the stomp's hits on raiders 700-1,300 out landed 4 s after those beside
+        /// him).</summary>
+        public const long BlastLandingSnapshotLeadMilliseconds = 400, BlastLandingCountAfterMilliseconds = 6_000;
         /// <summary>"back in" comes this long after the landing (plus up to a second).</summary>
-        public const long BlastBackInMilliseconds = 1_500;
+        public const long BlastBackInMilliseconds = 2_500;
 
         /// <summary>
         /// Seconds until the blast lands (pure): from its cast when the boss has started it, else from the crossing, else from
@@ -148,10 +149,10 @@ namespace DOL.GS
             double eta = 0;
             // While he casts it, when it lands is his cast's own end (the cast time his casting speed gives, not the
             // spell's 6 s: duo16, it landed 5 s after the cast began).
-            bool casting = boss.castingComponent?.IsCasting == true;
-            long? castEnd = null;
-            if (casting && boss.castingComponent?.SpellHandler is SpellHandler handler && handler.CastStartTick > 0)
-                castEnd = handler.CastStartTick + handler.CalculateCastingTime();
+            // Only the blast itself counts (duo17: at 80% his cast of something else ended first and was taken as the landing).
+            SpellHandler handler = boss.castingComponent?.IsCasting == true ? boss.castingComponent.SpellHandler : null;
+            bool casting = handler?.Spell is { } spell && spell.Radius == t.BlastRadius;
+            long? castEnd = casting && handler.CastStartTick > 0 ? handler.CastStartTick + handler.CalculateCastingTime() : null;
             lock (BlastCalls)
             {
                 call.NextPulse = now + 200;
