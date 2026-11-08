@@ -132,6 +132,7 @@ ROLE_CLASSES = {
 }
 ROLE_ASK = re.compile(r"\b(?:need|lf|any|looking for)\s+(?:a |an |\d )?(?P<role>tank|healer|cc|mezzer|puller|cleric|druid|shaman|bard)s?\b")
 JOIN_ACK = re.compile(r"^(?:me|x|me pls|x me|me!|sec,? me|can i come|inv pls|me,? .*|\d{1,2} \w+ here|\w+ \d{1,2},? x\??|\w+,? \d{1,2})$")
+NOT_JOIN = re.compile(r"^(?:afk|brb|back|bubs|bubbles|still|ding|lvl|level|almost)\b")
 
 PRESENCE_ACK = {"me", "x", "sup", "me sup", "me whats up", "here", "o", "me pls", "x me", "sec me", "inv pls", "ya", "me too"}
 THANKS = re.compile(r"^(?:ty|thx|thanks|k ty|kk|ty!?|ty all|ty ty|cool ty|makes sense ty|ah ok|ah ty|ok thx|thx makes sense|got one ty|ty omw|k ty|"
@@ -201,6 +202,8 @@ def class_claims(text: str) -> list[tuple[str, int | None]]:
         number = int(before) if before.isdigit() else int(after) if after.isdigit() else None
         if number is not None and not 1 <= number <= 50:
             number = None
+        if before in ("lf", "need", "any", "for", "lfm", "wanted"):
+            continue  # "lf healer 4-8" asks for a class, it doesn't claim one
         if before in ("any", "need", "for", "the", "a", "an", "lf", "vs", "that", "those", "some", "other", "about", "my", "ur", "your",
                       "his", "her", "elf", "dwarf", "norseman", "celt", "briton", "troll", "kobold", "lurikeen", "firbolg", "highlander",
                       "saracen", "avalonian", "inconnu", "valkyn", "shar", "half", "minotaur", "same", "this", "every", "alb", "mid", "hib",
@@ -350,12 +353,14 @@ def check_reactions(report: Report, seq: list[Line]):
             continue
         report.counts["reactions"] += 1
         if line.ex:
-            # A tagged reaction reacts to its own exchange's first line.
-            first = next((p for p in seq[max(0, k - 60):k] if p.ex == line.ex and p.speaker != line.speaker), None)
-            if first is not None:
-                reactions_to[first.n].append(line) if line.src in ("burst", "reaction") else None
-                if line.t - first.t > 45:
-                    report.flag("reaction_late", first, line, note=f"{line.t - first.t}s")
+            # A tagged reaction reacts to its own exchange: a burst to its trigger, a riff to the line just before it.
+            same = [p for p in seq[max(0, k - 60):k] if p.ex == line.ex and p.speaker != line.speaker]
+            if same:
+                ref = same[0] if line.src in ("burst", "reaction") else same[-1]
+                if line.src in ("burst", "reaction"):
+                    reactions_to[ref.n].append(line)
+                if line.t - ref.t > 45:
+                    report.flag("reaction_late", ref, line, note=f"{line.t - ref.t}s")
                 continue
         prior = [p for p in seq[max(0, k - 30):k] if line.t - p.t <= 30 and p.speaker != line.speaker]
         trigger = next((p for p in reversed(prior) if not is_reaction(p) and TRIGGER.search(p.text)), None)
@@ -427,8 +432,10 @@ def check_claims(report: Report, lines: list[Line]):
                 if reply.speaker == line.speaker:
                     continue
                 t = norm(reply.text)
-                if not JOIN_ACK.match(t):
+                if not JOIN_ACK.match(t) or NOT_JOIN.match(t):
                     continue
+                if line.ex and reply.ex and line.ex != reply.ex:
+                    continue  # tagged: an answer to another exchange
                 cls = reply.cls.lower() if reply.cls else None
                 if cls is None:
                     # The class the speaker names in this line or its next line within 20 s.

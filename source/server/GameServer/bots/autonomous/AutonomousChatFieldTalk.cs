@@ -972,7 +972,8 @@ public static class AutonomousChatFieldTalk
             new V("brb food", "brb_food"), new V("brb", "brb"), new V("back", "back", Pool("wb", "wb!")), new V("anyone on?", "anyone_on", Pool("ya", "here", "o/")),
             new V(late ? "gn all" : evening ? "evening all" : "hi all", "hello_all", late ? Pool("gn", "night") : Pool("o/", "hey", "heya")),
             new V("quiet tonight", "quiet"), new V("who's on", "anyone_on", Pool("me", "here", "o/")),
-            new V(late ? "one more lvl then bed" : "lol", late ? "bedtime" : "lol"), new V("afk 5", "afk"), new V("brb phone", "brb_phone"),
+            // 1.1.3: never a bare "lol" out of nowhere: unprompted, it reads as a laugh at whatever was said before it.
+            new V(late ? "one more lvl then bed" : "need coffee lol", late ? "bedtime" : "coffee"), new V("afk 5", "afk"), new V("brb phone", "brb_phone"),
             new V("ok back", "back", Pool("wb")), new V(f.BagFull ? "bags full brb" : "brb drink", "brb_bags"),
             new V(late ? "late crew still here" : "busy tonight", "busy_night"));
     }

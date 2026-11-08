@@ -296,10 +296,10 @@ public class UT_FactionCoherence
             Assert.That(AutonomousChatBursts.CappedSize("revenge", 6, 900, random), Is.InRange(1, 2));
             Assert.That(AutonomousChatBursts.CappedSize("nemesis", 6, 900, random), Is.InRange(1, 2));
             Assert.That(AutonomousChatBursts.CappedSize("keep_lost", 8, 100, random), Is.InRange(1, 3));
-            Assert.That(AutonomousChatBursts.CappedSize("keep_lost", 8, 1_000, random), Is.InRange(1, 4));
+            Assert.That(AutonomousChatBursts.CappedSize("keep_lost", 8, 1_000, random), Is.InRange(1, 3), "a full realm too");
         }
         Assert.That(AutonomousChatBursts.SpreadMs("revenge", AutonomousChatBudget.Current), Is.LessThanOrEqualTo(20_000), "and soon after it");
-        Assert.That(AutonomousChatBursts.SpreadMs("keep_lost", AutonomousChatBudget.Current), Is.LessThanOrEqualTo(60_000));
+        Assert.That(AutonomousChatBursts.SpreadMs("keep_lost", AutonomousChatBudget.Current), Is.LessThanOrEqualTo(45_000));
     }
 
     [Test]
@@ -461,7 +461,7 @@ public class UT_FactionCoherence
                 }
                 return;
             }
-            var rules = plan.Feature == "burst" ? Ex.Rules.Faction with { ReactionWithinMs = 70_000 } : Ex.Rules.Faction;
+            var rules = plan.Feature == "burst" ? Ex.Rules.Faction with { ReactionWithinMs = 55_000 } : Ex.Rules.Faction;
             runs.Add((new Ex.Run(plan.Id, plan.Feature, lane, laneState, plan.Lines, now, rules, firstIndex), plan));
             Ex.Touch(laneState, plan.Id, now);
         }
@@ -709,7 +709,7 @@ public class UT_FactionCoherence
             $"{name}: {e.Said.Count} lines ({e.Said.Count / 180.0:0.00}/min; band {e.Band.Target:0.0}/{e.Band.Ceiling:0.0}; peak {Rate(e).Max:0.0}/min, " +
             $"{Rate(e).SecondsOver} s over the ceiling), out of order {OutOfOrder(e)}, role swaps {RoleSwaps(e)}, untrue answers {RoleFalse(e)}, " +
             $"thread lines after a missing one {Orphans(e)}, personal bursts over two {BurstsOver(e, "nemesis", 2) + BurstsOver(e, "revenge", 2)}, " +
-            $"news bursts over four {BurstsOver(e, "news", 4)}, reaction repeats in 10 min {ReactionRepeats(e)}, exchange adverts {Adverts(e)}";
+            $"news bursts over three {BurstsOver(e, "news", 3)}, reaction repeats in 10 min {ReactionRepeats(e)}, exchange adverts {Adverts(e)}";
         TestContext.Progress.WriteLine("CHAT_SIM " + Line("before", before));
         TestContext.Progress.WriteLine("CHAT_SIM " + Line("after", after));
 
@@ -718,7 +718,7 @@ public class UT_FactionCoherence
         Assert.That(RoleSwaps(after), Is.Zero);
         Assert.That(RoleFalse(after), Is.Zero);
         Assert.That(Orphans(after), Is.Zero);
-        Assert.That(BurstsOver(after, "nemesis", 2) + BurstsOver(after, "revenge", 2) + BurstsOver(after, "news", 4), Is.Zero);
+        Assert.That(BurstsOver(after, "nemesis", 2) + BurstsOver(after, "revenge", 2) + BurstsOver(after, "news", 3), Is.Zero);
         Assert.That(ReactionRepeats(after), Is.Zero);
         Assert.That(Adverts(after), Is.LessThanOrEqualTo(12), "one in 15 minutes at most");
         // Nemesis lines, news and debate beats aren't held (they are the realm's own moments), so a line or two over it.
