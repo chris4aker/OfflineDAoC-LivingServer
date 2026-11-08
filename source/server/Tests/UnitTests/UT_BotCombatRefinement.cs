@@ -273,6 +273,8 @@ namespace DOL.UnitTests
                 .SetValue(bot, new DOL.GS.Effects.GameEffectList(bot));
             var enemy = (GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(GameNPC));
             enemy.attackComponent = new AttackComponent(enemy);
+            bot.movementComponent = new NpcMovementComponent(bot);
+            enemy.movementComponent = new NpcMovementComponent(enemy);
             bot.TargetObject = enemy;
             return (bot, enemy);
         }
@@ -282,6 +284,7 @@ namespace DOL.UnitTests
         private static void Place(GameLiving bot, GameNPC enemy, int angle)
         {
             enemy.X = 1000; enemy.Y = 1000; bot.X = 1000; bot.Y = 900;
+            ((GameNPC)bot).movementComponent.ForceUpdatePosition(); enemy.movementComponent.ForceUpdatePosition();
             enemy.Heading = (ushort)((enemy.GetHeading(bot) + 4096 - angle * 4096 / 360) % 4096);
             bot.Heading = bot.GetHeading(enemy);
         }
@@ -336,6 +339,8 @@ namespace DOL.UnitTests
                 .SetValue(bot, new DOL.GS.Effects.GameEffectList(bot));
             var enemy = (GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(GameNPC));
             enemy.attackComponent = new AttackComponent(enemy);
+            bot.movementComponent = new NpcMovementComponent(bot);
+            enemy.movementComponent = new NpcMovementComponent(enemy);
             bot.TargetObject = enemy;
 
             var anytime = Style((int)eObjectType.Sword, level: 5, growth: .4);
