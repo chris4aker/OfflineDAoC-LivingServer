@@ -64,10 +64,11 @@ namespace DOL.UnitTests
         public void OnlyGovannonHasTheOrder()
         {
             Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.MeleeBehind));
-            Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.HealersHoldInSpread));
+            // The healer hold was dropped after duo7 (15 healers died within 200 of him, kept there): no boss has it.
+            Assert.That(EpicEncounterTactics.Catalog, Has.None.Matches<EpicEncounterTactics.Tactic>(t => t.HealersHoldInSpread));
             EpicEncounterTactics.Tactic gov = null;
             foreach (var t in EpicEncounterTactics.Catalog) if (t.Boss == "GrandSummonerGovannon") gov = t;
-            Assert.That(gov.MeleeBehind && gov.HealersHoldInSpread, Is.True);
+            Assert.That(gov.MeleeBehind, Is.True);
         }
     }
 }

@@ -14,8 +14,7 @@ Older entries below keep the names they were written with.
 Govannon casts Shroud of Agony, about 1,440 damage to everyone within 300 of his target, every 20-35 seconds; every bot in
 melee stood inside it, and in the play test 45 raiders died in the first 90 seconds of the demon. Now his target keeps
 150 from him and the other melee fight him from about 190 behind him on the line from his target, clear of the Shroud,
-re-placing themselves when he changes target or his target moves. Healers keep healing where they stand while melee are
-still inside it, then step clear as before. His health, damage and spells are unchanged. The melee position order is
+re-placing themselves when he changes target or his target moves. His health, damage and spells are unchanged. The melee position order is
 general (EncounterMeleeStations) but switched on for Govannon only.
 
 **Dungeons and bosses have their lore.** Living Server 1.2 gives every dungeon, epic dungeon, dragon and named

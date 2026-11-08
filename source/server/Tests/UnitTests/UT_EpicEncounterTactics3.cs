@@ -201,9 +201,7 @@ namespace DOL.UnitTests
                 "melee step behind him and keep him as their target");
             Assert.That(behind.All(d => Flat(d.A.StandAt.Value, gov) <= 200 && Flat(d.A.StandAt.Value, tank) > 300), Is.True,
                 "behind him: within melee reach of him, clear of 300 around his target");
-            // Healers hold while the melee are still in it, then step clear like the casters.
-            Assert.That(healers.All(r => EpicEncounterTactics.Decide(r, gov, live, 0, false, 2_000, healer).Action ==
-                                         EpicEncounterTactics.BotAction.None), Is.True, "healers keep healing the melee in it");
+            // Healers step clear like the casters (a hold for healers was tried and dropped: duo7).
             Assert.That(EpicEncounterTactics.Decide(tank, gov, live, 0, false, 2_000, warrior).Action,
                 Is.EqualTo(EpicEncounterTactics.BotAction.None), "the one he fights holds him");
 
@@ -212,7 +210,7 @@ namespace DOL.UnitTests
             foreach (var (r, a) in moved.Concat(behind)) Move(r, a.StandAt.Value.X, a.StandAt.Value.Y, a.StandAt.Value.Z);
             var healerMoves = healers.Select(r => (r, A: EpicEncounterTactics.Decide(r, gov, live, 0, false, 2_500, healer))).ToList();
             Assert.That(healerMoves.All(d => d.A.Action == EpicEncounterTactics.BotAction.Reposition), Is.True,
-                "the melee are behind him: the healers step clear too");
+                "the healers step clear");
             foreach (var (r, a) in healerMoves) Move(r, a.StandAt.Value.X, a.StandAt.Value.Y, a.StandAt.Value.Z);
             moved.AddRange(healerMoves);
             Assert.That(everyone.Count(r => Flat(r, tank) <= 300), Is.EqualTo(0), "after: nobody but his target is in it");

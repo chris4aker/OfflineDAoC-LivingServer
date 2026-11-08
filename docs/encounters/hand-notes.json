@@ -2147,13 +2147,12 @@
     "spreadRadius": 300,
     "spreadWhileModel": 636,
     "meleeBehind": true,
-    "healersHoldInSpread": true,
     "rangedAdds": [
      "SummonedSacrifice",
      "SummonedDemon"
     ],
     "since": "1.2",
-    "summary": "Spread in demon form: while he is the demon (model 636), his target keeps 150 from him and the other melee fight him from 185 behind him on the line from his target, clear of his Shroud of Agony (radius 300 around that target; owner 2026-11-07: it took 45 raiders in 90 s, nearly all melee, when they stood in it); casters and archers outside his target's party keep 550 from that target, and healers stay where they heal. Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him. Shade (1.2, epic wave 2): if the sacrifice and the demon both reach his altar the Shade of Aelfgar comes (10,000 health) and sends a raider within 2,000 up to the gallery every 10-20 s (bots too since 1.2; they walk back down or recall): the whole raid kills it first, then him. His full 300,000 health is on (AllowGovannonFullHealth).",
+    "summary": "Spread in demon form: while he is the demon (model 636), his target keeps 150 from him and the other melee fight him from 185 behind him on the line from his target, clear of his Shroud of Agony (radius 300 around that target; owner 2026-11-07: it took 45 raiders in 90 s, nearly all melee, when they stood in it); casters, archers and healers outside his target's party keep 550 from that target (a hold for healers inside it was tried and dropped: duo7, 15 healers died within 200 of him). Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him. Shade (1.2, epic wave 2): if the sacrifice and the demon both reach his altar the Shade of Aelfgar comes (10,000 health) and sends a raider within 2,000 up to the gallery every 10-20 s (bots too since 1.2; they walk back down or recall): the whole raid kills it first, then him. His full 300,000 health is on (AllowGovannonFullHealth).",
     "requiredAdds": [
      "ShadeOfAelfgar"
     ]
