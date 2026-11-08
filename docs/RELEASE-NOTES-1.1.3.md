@@ -39,7 +39,7 @@ that one. If it still can't download, it says so plainly and changes nothing.
 - Xanxicar on a real install, with this build: one Albion raid of 280 bots killed him in 23 minutes with no wipe.
   His four stomps killed 6, at most 1, 6 and 5 raiders. That is one raid, so treat it as a good sign, not a promise.
 - Earlier stages of the same fix were run in a test world and overnight on a real install. One of those overnight
-  raids still lost 54 raiders to one stomp, which is why the last two changes in this update were made.
+  raids still lost 54 raiders to one stomp. This update has two later changes on top of that stage.
 - The Darkness Falls exits are covered by tests against the released world's exit spots. They have not been clicked
   in game yet.
 
