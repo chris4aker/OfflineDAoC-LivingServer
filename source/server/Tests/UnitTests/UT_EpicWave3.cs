@@ -269,6 +269,21 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterTactics.FightsAtRange(armsman, funus), Is.False, "puzzle off: bots fight as they like");
         }
 
+        // Play test duo13 (Caer Sidi, puzzle on): Funus stood on his scouts; the melee-pressure fallback put their swords in
+        // hand (all four traced switches) and 50 of his 51 heals were scout sword hits. The fallback asks the rule first now.
+        [Test]
+        public void AScoutHeStandsOnKeepsItsBowAndNeverFallsBackToMelee()
+        {
+            var funus = Npc<TestFunus>(29467, 25235, 19490);
+            var scout = Archer(new ClassScout(), eObjectType.Longbow, Abilities.Weapon_Longbows, 29_500, 25235, 19490);
+            var noBow = Archer(new ClassScout(), eObjectType.Fired, Abilities.Weapon_Shortbows, 29_520, 25235, 19490);
+            Assert.That(BotBrain.MayFallBackToMelee(scout, funus), Is.False, "a scout with its longbow: bow only on Funus");
+            Assert.That(BotBrain.MayFallBackToMelee(noBow, funus), Is.True, "no longbow: the rule sends it clear, not to its bow");
+            Assert.That(BotBrain.MayFallBackToMelee(scout, Npc<Court>(29600, 25235, 19490)), Is.True, "any other monster");
+            EpicEncounterMechanics.AllowFunusWeaponPuzzle = false;
+            Assert.That(BotBrain.MayFallBackToMelee(scout, funus), Is.True, "puzzle off: bots fight as they like");
+        }
+
         [Test]
         public void EachClassStartsWithItsOwnKindOfDistanceWeapon()
         {
