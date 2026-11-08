@@ -2741,6 +2741,10 @@ namespace DOL.GS
         {
             if (leader == null || leader.Realm != Realm)
                 return false;
+            // Play with friends (1.2): a companion follows its owner and nobody else (BotHumanBinding). Another human's
+            // /pull, pilot or leadership change never takes it.
+            if (Owner != null && leader != Owner)
+                return false;
 
             PlayerGroupLeader = leader;
             // The player now has this gamebot's time: no raid, siege, RvR event or rally takes it (docs/DUTY-LEASE.md).

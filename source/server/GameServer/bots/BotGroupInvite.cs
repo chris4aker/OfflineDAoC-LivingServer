@@ -72,6 +72,13 @@ public static class BotGroupInvite
             return false;
         }
 
+        // Play with friends (1.2): another player's companion follows only its owner (BotHumanBinding).
+        if (bot.Owner != null && bot.Owner != player)
+        {
+            ChatUtil.SendSystemMessage(player, $"{bot.Name} is {bot.Owner.Name}'s companion and follows only them.");
+            return false;
+        }
+
         if (player.Group != null && player.Group.Leader != player)
         {
             ChatUtil.SendSystemMessage(player, BotLedGroups.BotLeadsMessageFor(player) ?? "You are not the leader of your group.");

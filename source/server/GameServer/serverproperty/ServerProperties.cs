@@ -2648,6 +2648,14 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_led_group_join_mode", "Bot-led groups: when you say yes to a gamebot leader's invite. follow = the leader runs the group and you follow (/lead takes over at any time); lead = you become the leader at once and the bots follow you, as bots you /invite do (/lead bot hands it back).", "follow")]
 		public static string BOT_LED_GROUP_JOIN_MODE;
 
+		/// <summary>Play with friends (1.2, CompanionBudget): /spawn and /raid companions on the whole server while more than one real player is online.</summary>
+		[ServerProperty("bots", "companion_budget_total", "Play with friends: while more than one real player is online, the most /spawn and /raid companions the whole server may have out together (each player also has companion_budget_per_player). With one player online neither applies, so a /raid 80 (79 companions) works as always. 0 turns the server total off.", 160)]
+		public static int COMPANION_BUDGET_TOTAL;
+
+		/// <summary>Play with friends (1.2, CompanionBudget): one player's share of the companions while more than one real player is online.</summary>
+		[ServerProperty("bots", "companion_budget_per_player", "Play with friends: while more than one real player is online, the most /spawn and /raid companions one player may have out (79 = a full /raid 80). The server total, companion_budget_total, still applies. With one player online this doesn't apply. 0 turns the per-player share off.", 79)]
+		public static int COMPANION_BUDGET_PER_PLAYER;
+
 		/// <summary>Bot-led groups, B3: a realm raid's leader may invite a level-50 player.</summary>
 		[ServerProperty("bots", "bot_raid_invite_player", "Raid leaders: when a dragon or epic dungeon raid forms in your realm and you are level 50, its raid leader (an officer of a raiding guild) may send you a tell and a box, once per raid. Yes puts you in a party that needs your class (one gamebot of your role steps out); you travel to the muster town yourself. A no is final for that raid. /invites off stops these too.", true)]
 		public static bool BOT_RAID_INVITE_PLAYER;
