@@ -199,6 +199,8 @@ Everything below is built on branches with green automated tests; nothing is mer
       EA client files removed (#59)
 - [ ] Not placed by the split, for the owner to place: his world scripts as Setup steps; the new-client scripts
       (#54); era build weights (#55) go with 1.3's era builds
+- [ ] Play with friends, pulled forward (owner 2026-11-08 16:50): the 1.2.x stop below, on `feature/1.2-hosting` and
+      `feature/1.2-coop-humans`; played: the owner and at least one friend on a second PC
 - [ ] Soaks one system at a time; played: invited into a group and a raid, following a bot leader, a battleground
       session
 
@@ -299,7 +301,14 @@ friends try it only once it is complete, so every part is tested in the containe
 - [ ] Played: one friend's evening on a real Linux desktop with the checklist (install, play, bots, stop, update,
       rollback), reported separately from CI. Nothing is called working on Linux before it
 
-### 1.2.x — play with friends (experimental, right after 1.2)
+### 1.2.x — play with friends (owner 2026-11-08 16:50: pulled into 1.2)
+
+**Owner 2026-11-08 16:50, "Let's pull play with friends into 1.2":** everything below now ships with 1.2. Two
+branches: `feature/1.2-hosting` (Host for Friends, Join Friend, the host password, region address per client, idle
+time-outs, bind defaults, from rambodolphin13's DividedRealms `main`) and `feature/1.2-coop-humans` (group leadership,
+`/pull`, the pilot, host-only commands, a server-wide companion budget, reply throttles, quest credit for every human).
+The Character passport stays a separate decision.
+
 
 Unchanged by the split of 2026-11-06. Owner 2026-11-03: private co-op for about 1–4 players in a thriving bot world; no public server.
 - [ ] The must-fixes from the co-op audit: one region address per client, idle time-outs for remote players, account
