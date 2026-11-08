@@ -287,7 +287,15 @@ namespace DOL.GS
 
         /// <summary>A bot that may fight its target only with its distance weapon (an epic rule: Funus, whom a melee swing heals
         /// to full) keeps it.</summary>
-        private bool KeepsDistanceWeapon => _npcOwner is GameBot bot && EpicEncounterTactics.FightsAtRange(bot, _target as GameLiving);
+        // CheckInterruptTimer stops the attack (CleanUp forgets _target) before OnAimInterrupt asks this, so the bot's own
+        // target counts too. Play test duo14: with only _target asked, every interrupted draw on Funus still went to melee.
+        private bool KeepsDistanceWeapon => _npcOwner is GameBot bot && KeepsDistanceWeaponFor(bot, _target, _npcOwner.TargetObject);
+
+        /// <summary>The bot keeps its distance weapon when either the attack's target or its own current target may be fought
+        /// only at range (pure apart from the rule lookup).</summary>
+        public static bool KeepsDistanceWeaponFor(GameBot bot, GameObject attackTarget, GameObject ownTarget) =>
+            EpicEncounterTactics.FightsAtRange(bot, attackTarget as GameLiving) ||
+            EpicEncounterTactics.FightsAtRange(bot, ownTarget as GameLiving);
 
         /// <summary>The NPC drops its distance weapon for its melee one (pure): only from the distance weapon, and never when it
         /// may fight its target with the distance weapon only. Play test duo4, 2026-11-07: the scout Funus fought had every

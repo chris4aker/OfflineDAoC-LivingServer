@@ -284,6 +284,24 @@ namespace DOL.UnitTests
             Assert.That(BotBrain.MayFallBackToMelee(scout, funus), Is.True, "puzzle off: bots fight as they like");
         }
 
+        // Play test duo14: an interrupted draw stops the attack (its target forgotten) before the switch to melee is decided,
+        // so the bot's own target must keep the bow too; and the reavers he turned on fought back (40 of 110 heals).
+        [Test]
+        public void TheBowStaysWhenTheAttackForgotItsTargetAndAClassHeHealsFromNeverStartsOnHim()
+        {
+            var funus = Npc<TestFunus>(29467, 25235, 19490);
+            var scout = Archer(new ClassScout(), eObjectType.Longbow, Abilities.Weapon_Longbows, 29_500, 25235, 19490);
+            var reaver = Archer(new ClassReaver(), eObjectType.Fired, Abilities.Weapon_Shortbows, 29_520, 25235, 19490);
+            Assert.That(NpcAttackAction.KeepsDistanceWeaponFor(scout, null, funus), Is.True, "attack target forgotten");
+            Assert.That(NpcAttackAction.KeepsDistanceWeaponFor(scout, funus, null), Is.True);
+            Assert.That(NpcAttackAction.KeepsDistanceWeaponFor(scout, null, Npc<Court>(29600, 25235, 19490)), Is.False);
+            Assert.That(GameBot.RefusesAttackOn(reaver, funus), Is.True, "a reaver's hits heal him");
+            Assert.That(GameBot.RefusesAttackOn(scout, funus), Is.False, "a scout with its longbow fights him with it");
+            Assert.That(GameBot.RefusesAttackOn(reaver, Npc<Court>(29600, 25235, 19490)), Is.False, "any other monster");
+            EpicEncounterMechanics.AllowFunusWeaponPuzzle = false;
+            Assert.That(GameBot.RefusesAttackOn(reaver, funus), Is.False, "puzzle off");
+        }
+
         [Test]
         public void EachClassStartsWithItsOwnKindOfDistanceWeapon()
         {

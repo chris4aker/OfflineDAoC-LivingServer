@@ -4495,7 +4495,9 @@ namespace DOL.AI.Brain
             if (spell == null || IsOutclassedDamageSpell(spell) || Body.Mana < BotBody.PowerCost(spell) ||
                 !BardBotCrowdControlPolicy.AllowsOrdinaryOffense((eCharacterClass)BotBody.CharacterClass.ID, spell.SpellType) ||
                 spell.HasRecastDelay && Body.GetSkillDisabledDuration(spell) > 0 ||
-                EpicEncounterTactics.ForbidsSpell(BotBody, Body.TargetObject as GameLiving, spell))
+                EpicEncounterTactics.ForbidsSpell(BotBody, Body.TargetObject as GameLiving, spell) ||
+                // As CanCastOffensiveSpell: nothing on a boss this bot must not hit (duo14: reavers' instant DoTs healed Funus).
+                EpicEncounterTactics.MustNotHit(BotBody, Body.TargetObject as GameLiving))
                 return false;
 
             bool castSpell = false;
