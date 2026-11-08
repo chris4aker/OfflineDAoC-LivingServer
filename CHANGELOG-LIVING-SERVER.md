@@ -10,10 +10,11 @@ Older entries below keep the names they were written with.
 
 ## Beta 1.1.3 — 2026-11-08
 
-A hotfix: the raid gets out of Xanxicar's stomp, two Darkness Falls exits work, and Setup waits out a busy download
-server. How it was tested is in the release notes ([docs/RELEASE-NOTES-1.1.3.md](docs/RELEASE-NOTES-1.1.3.md)).
+A hotfix: the raid gets out of Xanxicar's stomp, two Darkness Falls exits should now work, and Setup waits out a busy
+download server. How it was tested is in the release notes ([docs/RELEASE-NOTES-1.1.3.md](docs/RELEASE-NOTES-1.1.3.md)).
 
-**Two Darkness Falls exits work** (found and fixed by rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
+**Two Darkness Falls exits should now work** (tested against the world data; not clicked in game; found and fixed by
+rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
 and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no
 destination for them. Each now takes you to your realm's usual Darkness Falls exit spot, like every other exit. Nothing
 is written to your world: the server supplies the two missing destinations itself. Thank you, rambodolphin13.
@@ -33,12 +34,15 @@ Chat: a much busier realm, and bots that answer what you actually said. Raids th
 by their own wins and losses, that no longer stand for hours at an encounter they can't reach, and their first boss tactics. Playing with your bot
 group: dragon raids that regroup after a wipe and call the Epic Special Forces, quest credit and hand-ins, and quest XP that follows your
 XP-by-level rate. Gamebots in your guild earn merit and pay dues, power comes back faster, fixes from other forks of
-Offline DAoC, updates from the launcher, and a world database that is safe from crashes and backed up every day.
+Offline DAoC, updates from the launcher, and a world database that opens in a crash-safe mode and is backed up every
+day.
 How it was tested, and what hasn't been played yet, is in the release notes
 ([docs/RELEASE-NOTES-1.1.2.md](docs/RELEASE-NOTES-1.1.2.md)).
 
 **Epic raids learn their first encounter rules** (owner 2026-11-06: shipped in 1.1.2, not 1.2). Raids of gamebots now
-know five bosses that beat them by their rules, not by their damage. Everything below is built and covered by automated tests; none of it has been seen in a real raid yet.
+know five bosses that beat them by their rules, not by their damage. At release all of this had tests only. Seen since
+on a real install, in bot raids on a later development build: Black Lady was fought at home and killed; Scurceol's orbs and Xanxicar's stomp did
+not work (below).
 - **Scurceol Hyrde (Krondon).**
   - **Before:** he takes no damage while his four floating Lyft Miht orbs live, but the raid hit only him, for an hour, and
     all 42 raider deaths were his.
@@ -47,6 +51,8 @@ know five bosses that beat them by their rules, not by their damage. Everything 
     turns on him. Orbs stay dead if he resets.
   - The raid also fights him in his own room: past 1,500 from his spawn it stops hitting him, and the raider he chases
     leads him back.
+  - **On a real install this did not work** (a later development build with the same orbs code). The raid found no floor spot that sees most of the orbs. It killed 1 of
+    the 4, set Scurceol aside three times and took Krondon by going around him. Being fixed.
 - **Black Lady and the Ancient Black Oak (Marfach Caverns).**
   - **Before:** the raid dragged Black Lady out of her room until she went home at full health, then pulled her Oak 91
     times without ever reaching it.
@@ -91,6 +97,8 @@ know five bosses that beat them by their rules, not by their damage. Everything 
   - The spot must be within 1,400 of the add and see it.
   - Raiders who can't hit the add in the air wait at that spot.
   - Only when no add has such a spot is the boss set aside, with the reason for each add (`REALM_EXPEDITION_TACTIC_ASIDE`).
+  - On a real install the raid found no such spot for Scurceol's orbs (above). Its test uses a flat test floor, not
+    Krondon's.
 - **Aidon the Archwizard (Hall of the Corrupt).** The raid kills three of his four illusions and leaves the last one
   alive, because he only summons a new set once all four are dead. Then everyone fights him, near his room. His damage
   shield only hurts melee attackers; it doesn't make him harder to damage, so he can be beaten by design.
@@ -98,7 +106,8 @@ know five bosses that beat them by their rules, not by their damage. Everything 
   kills the wave first. His health then drops one step at a time and waves don't pile up.
 - **Xanxicar (Crystal Cave).** Before 80/60/40/20% and until his stomp has landed, everyone except the party he is
   fighting moves 2,700 away. That party pushes him over and takes the 2,500-radius stomp, which is meant to kill whoever
-  is in it; the rest of the raid survives and comes back.
+  is in it; the rest of the raid survives and comes back. **This did not work:** on the owner's PC (2026-11-07) the
+  first stomp killed 110 of 185 raiders. Fixed in 1.1.3.
 - Not changed: Darkness Falls raid AI, Legion and the hardest level 70+ encounters still have no raid AI.
 
 **Chat: a busier, more human realm** (owner 2026-11-04: shipped in 1.1.2, not as a separate 1.1.3). The goal is a
@@ -165,7 +174,7 @@ realm that feels like a full server at its busiest. How it works and how to tune
   - **Generic agreement:** "good question", "very true" and the like are gone.
   - **Repeats and polish:** near-copies are dropped, the wordings of one line rest for hours once one is said, and most
     bots type in lowercase. Typos are rarer and look typed (a dropped letter).
-  - **The Realm Exchange:** bots mention it only when someone asks where to buy or sell.
+  - **The Realm Exchange:** bots mention it less often. On a real install they still advertised it unprompted.
   - **Templates:** a few grammar slips are fixed.
 - **Typing habits.** About a third of bots have small habits of their own: "u" and "ur", "??", "...", a trailing "lol",
   and for a rare few, the period's leetspeak.
@@ -175,10 +184,13 @@ realm that feels like a full server at its busiest. How it works and how to tune
   - **Automated:** new tests for every part; the full server suite passes.
   - **Simulated evening at 1,000 bots a realm:** about 12.7 lines a minute across the channels a player hears, up from
     about 1.9, with /faction above its busy-peak target of 4 a minute. At 300 bots it's about 5.9, up from 1.2.
-  - **Re-running the first blind evaluation's 400 lines:** the read rate rises from 53% to about 70%, and about a quarter
-    of those lines now get no reply. Those lines are known, so this is a regression check; a fresh blind round judges
-    the result.
-  - **In game:** not yet played.
+  - **The blind test:** 400 player lines, read one at a time, not conversations. The bots read 53% of them as
+    intended; re-running the same lines gives about 70%, and about a quarter of them now get no reply. Those lines are
+    known, so this is a regression check. A blind judge still picked out most bot lines (72% in the first round, 85% in
+    the latest). Conversations over several turns have not been tested.
+  - **On a real install** (the 1.1.3 build, about 600 bots a realm, an evening): /faction ran at about 14 lines a minute
+    for ten minutes, with peaks of 20, above its ceiling, and reactions came in bursts of 10 to 16 lines. A player heard
+    about 15 to 19 lines a minute in all, more than the simulation predicts. Being fixed.
 
 **Raids the size they were in the era, and raids that keep winning bring fewer bots** (2026-11-04)
 - The goal for raids is "mostly successful, high stakes, never a guarantee": about two wins in three. **The bosses are
@@ -288,8 +300,9 @@ realm that feels like a full server at its busiest. How it works and how to tune
     arrived (`defendersFirstAt`), and the attackers' limit.
   - `SIEGE_DEFENSE_BALANCE` shows the attackers' limit.
   - Details: [docs/NIGHT-SIEGES-AND-MARFACH.md](docs/NIGHT-SIEGES-AND-MARFACH.md), section 4.
-- **Checked:** unit tests only (`UT_SiegeBalanceNov06`). Not played in game; a night's run will show whether it brings
-  captures near half.
+- **Checked:** unit tests (`UT_SiegeBalanceNov06`). In a night's run of a later development build on a real install,
+  the attackers' limit sat at its lowest all night and attackers still took 8 of 11 keeps. It did not bring captures
+  near half.
 
 **Dragon raids call the Epic Special Forces after a wipe** (2026-10-30)
 - Dragon raids had no wipe rule at all: after a wipe at the dragon the fallen released to the nearest bind and walked
@@ -315,7 +328,8 @@ realm that feels like a full server at its busiest. How it works and how to tune
 - The launcher's Realm Events tab shows "RAID — regrouping at the staging ring after a wipe (staged/needed, attempt 2 of
   2)". Logs: `REALM_RAID_WIPE` now for dragons too, `REALM_RAID_DRAGON_WIPE` (engaged, fallen, health, how),
   `REALM_RAID_DRAGON_REGROUP`, `REALM_RAID_DRAGON_ENGAGE` (the retry) and `REALM_RAID_DRAGON_BROKE_OFF` (an attempt
-  that ended with most of the raid standing). Automated tests only (`UT_DragonRaidWipes`); not played in game yet.
+  that ended with most of the raid standing). Automated tests (`UT_DragonRaidWipes`). Seen since on a real install (a
+  later development build): a dragon raid wiped, the Special Forces came with 24 and the raid regrouped. Its second try hasn't been seen yet.
 
 **Quests with your bot group** (2026-10-30, review fixes 2026-10-31; [docs/QUESTING.md](docs/QUESTING.md))
 - A kill by the gamebots in your group counts for your quests. Before, only a kill you damaged yourself, or your own
@@ -448,12 +462,14 @@ realm that feels like a full server at its busiest. How it works and how to tune
   their rules. They also no longer need a "waiting for a group" goal to answer an automatic raid, and the realm doesn't
   top up their parties with its own bots. When a party is still refused, `REALM_RAID_SPECIAL_FORCES_FAILED` (and
   `REALM_RAID_FORCED_PARTY_RETRY`) now say why (`refusal="..."`), and raid and Special Forces log lines name Albion as
-  Albion, not `_FirstPlayerRealm`. Checked: unit tests (`UT_SpecialForcesJoinFullRaids`); not played in game yet.
+  Albion, not `_FirstPlayerRealm`. Checked: unit tests (`UT_SpecialForcesJoinFullRaids`). Seen since on a real
+  install (a later development build): the Special Forces joined full raids after a wipe.
 - **The Darkness Falls princes no longer eat bots** (found in the 2026-11-06 overnight test). Princes Asmoien and
   Ba'alorien devour the nearest pet every five seconds and heal by its health, but their pet test matched a bot's own
   brain too, so they ate companion bots and gamebots: the overnight raid did no damage for five minutes and never got a
   prince below 95%. They now eat only summoned pets, a player's or a bot's, never a bot
-  (`EpicEncounterMechanics.IsDevourablePet`). Checked: unit tests (`UT_PrinceDevour`); not played in game yet.
+  (`EpicEncounterMechanics.IsDevourablePet`). Checked: unit tests (`UT_PrinceDevour`). Seen since on a real install
+  (a later development build): a bot raid killed Prince Ba'alorien twice.
 - Repairing an item never checked the crafter's skill: the gate was written as `(percentNeeded / 100) * craftLevel`,
   integer division, so the 50% a repair asks for became 0 and anyone could start one (with a 0% chance below 44% of the
   item's craft level). A repair now needs half the item's craft level in the skill, a repair in the trade window the
@@ -466,8 +482,9 @@ realm that feels like a full server at its busiest. How it works and how to tune
 - **Bots talk twice as much by default: "How much they talk" is 2** (owner 2026-11-04, after the playtest measured it at
   your roster: 900 bots a realm, about 10 am, Albion heard 6.4 lines a minute across /faction, /lfg and /trade with 1,
   and about 15 with 2.5). An install that never changed the setting moves from 1 to 2 once, at its first start; one where
-  it was set in the launcher keeps its value. Each channel's ceiling still holds, so it can't become spam. Checked: unit
-  tests for the default, the one-time move and a value set in the launcher; the levels themselves were measured in game.
+  it was set in the launcher keeps its value. Checked: unit tests for the default, the one-time move and a value set in
+  the launcher; the levels themselves were measured once on a playtest PC. On a real install at 2, /faction can run
+  above its ceiling (see the chat entry above).
 - **Creating a character of a race this server doesn't offer is refused cleanly** (found in the 2026-11-04 playtest; also
   offered to the base game). The game client shows every race up to Labyrinth, but the server's world is Classic and
   Shrouded Isles: Half Ogre, Frostalf, Shar and the Minotaurs have no starting stats. Creating one (a Half Ogre wizard)
@@ -616,7 +633,9 @@ here changes gameplay. The WAL settings and the backup design are ported from lo
   WAL on a file that was journal-off, the integrity check on a damaged file, backup names, rotation, the
   once-a-day rule, the online copy, the stop checkpoint, the ledger move and merge, the network defaults and
   warnings, and the UPnP clean-up with a fake router). There are also 8 new installer checks and 5 Python tests for
-  the release config. None of this has run on a real install or in game yet.
+  the release config. Seen since on the owner's install (2026-11-05 and 2026-11-08): crash-safe mode confirmed, the
+  integrity check passed and a daily backup was written. The installer's database copy and the ledger move have tests
+  only.
 
 **Release gates**
 - **Release gates** (audit 2026-11-03, §8.6). CI also runs on pushes to main. A `versions` check fails when
