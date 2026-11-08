@@ -1,5 +1,9 @@
+// Character passport: the host's Passport Desk. From rambodolphin13/DividedRealms (da92848; credit: rambodolphin13).
+// Living Server 1.2 changes: the Desk never creates an account (a guest logs in to the friend's world once, through the
+// hosting branch's login and host password); the host can turn visitors off (passport / passport_visitors), which stops
+// arrivals but still lets visitors go home; a wrong password waits a second; the world is the server's own resolved
+// database path, and every write is backed up first by the shared engine.
 using System;
-using System.Data.SQLite;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -8,7 +12,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using DOL.Database;
 using DOL.Database.Connection;
-using DOL.Network;
 using DOL.GS.PacketHandler.Client.v168;
 using DOL.GS.ServerProperties;
 using DOL.Logging;
@@ -23,52 +26,78 @@ namespace DOL.GS
 {
     /// <summary>
     /// A hosted world's door for visiting characters (docs/CHARACTER-PASSPORT.md). It listens only while hosting, on the
-    /// login port plus BaseServer.PASSPORT_DESK_PORT_OFFSET, and every call needs the caller's own account and password.
+    /// login port plus <see cref="PortOffset"/>, and every call needs the caller's own account and password.
     /// One call runs at a time, and never for an account that is logged in, so the rows it changes aren't in use.
     /// </summary>
     public static class PassportDesk
     {
         private static readonly Logger log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
         private const long MAX_PASSPORT_BYTES = 64L * 1024 * 1024;
-        private const string TEST_SWITCH = "DIVIDED_REALMS_PASSPORT_DESK"; // Opens the Desk on a private test copy that listens on this PC only.
+        private const string TEST_SWITCH = "OFFLINEDAOC_PASSPORT_DESK"; // Opens the Desk on a private test copy that listens on this PC only.
+        /// <summary>The Desk listens this far above the login port (OfflineDaoc.Passport.PassportDeskClient.PortOffset).</summary>
+        public const int PortOffset = 10;
+        private static readonly TimeSpan WrongLoginDelay = TimeSpan.FromSeconds(1);
         private static readonly SemaphoreSlim Gate = new(1, 1);
         private static PassportWorld _world;
         private static WebApplication _app;
 
+        /// <summary>
+        /// Opens while this world is hosted for friends (it listens on more than this PC: the game's IP is not a loopback
+        /// address), or on a test copy with the test switch, and only on a SQLite world. Hosting with visitors turned off
+        /// still opens it, so visitors already here can go home; it then refuses new arrivals.
+        /// </summary>
+        public static bool ShouldOpen(IPAddress listen, bool sqlite, bool testSwitch) =>
+            sqlite && listen != null && (testSwitch || !IPAddress.IsLoopback(listen));
+
         public static void Start(GameServerConfiguration config)
         {
-            bool hosting = config.IP.Equals(IPAddress.Any);
-
-            if ((!hosting && Environment.GetEnvironmentVariable(TEST_SWITCH) == null) || config.DBType is not EConnectionType.DATABASE_SQLITE)
+            if (!ShouldOpen(config.IP, config.DBType is EConnectionType.DATABASE_SQLITE && WorldDatabaseSafety.DatabasePath != null,
+                    Environment.GetEnvironmentVariable(TEST_SWITCH) != null))
                 return;
 
             try
             {
-                _world = PassportWorld.Live(new SQLiteConnectionStringBuilder(config.DBConnectionString).DataSource, config.ServerName);
+                _world = PassportWorld.Live(WorldDatabaseSafety.DatabasePath, config.ServerName);
 
                 WebApplicationBuilder builder = WebApplication.CreateSlimBuilder();
                 builder.Logging.ClearProviders();
                 builder.WebHost.ConfigureKestrel(options =>
                 {
-                    options.Listen(config.IP, config.Port + BaseServer.PASSPORT_DESK_PORT_OFFSET);
+                    options.Listen(config.IP, config.Port + PortOffset);
                     options.Limits.MaxRequestBodySize = MAX_PASSPORT_BYTES;
                 });
 
                 _app = builder.Build();
-                _app.MapPost("/passport/arrive", context => Guarded(context, true, Arrive));
-                _app.MapGet("/passport/visitors", context => Guarded(context, true, Visitors));
-                _app.MapPost("/passport/depart", context => Guarded(context, false, Depart));
-                _app.MapPost("/passport/depart/confirm", context => Guarded(context, false, Confirm));
+                _app.MapPost("/passport/arrive", context => Guarded(context, Arrive));
+                _app.MapGet("/passport/visitors", context => Guarded(context, Visitors));
+                _app.MapPost("/passport/depart", context => Guarded(context, Depart));
+                _app.MapPost("/passport/depart/confirm", context => Guarded(context, Confirm));
                 _app.StartAsync().GetAwaiter().GetResult();
 
                 if (log.IsInfoEnabled)
-                    log.Info($"Passport Desk is open on port {config.Port + BaseServer.PASSPORT_DESK_PORT_OFFSET}");
+                    log.Info($"Passport Desk is open on port {config.Port + PortOffset} (visitors {(Properties.PASSPORT_VISITORS ? "welcome" : "turned off: only going home")})");
             }
             catch (Exception e)
             {
                 // Hosting works without the Desk; only bringing a character along doesn't.
                 if (log.IsErrorEnabled)
                     log.Error("The Passport Desk could not start", e);
+            }
+        }
+
+        public static void Stop()
+        {
+            WebApplication app = _app;
+            _app = null;
+
+            try
+            {
+                app?.StopAsync().GetAwaiter().GetResult();
+            }
+            catch (Exception e)
+            {
+                if (log.IsWarnEnabled)
+                    log.Warn("The Passport Desk did not stop cleanly", e);
             }
         }
 
@@ -100,7 +129,7 @@ namespace DOL.GS
             return true;
         }
 
-        private static async Task Guarded(HttpContext context, bool mayCreateAccount, Func<HttpContext, DbAccount, Task> call)
+        private static async Task Guarded(HttpContext context, Func<HttpContext, DbAccount, Task> call)
         {
             await Gate.WaitAsync();
 
@@ -108,7 +137,7 @@ namespace DOL.GS
             {
                 string address = context.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? string.Empty;
                 DbAccount account = TryReadBasicAuthorization(context.Request.Headers.Authorization, out string name, out string password)
-                    ? Authenticate(name, password, address, mayCreateAccount)
+                    ? Authenticate(name, password)
                     : null;
 
                 if (account == null)
@@ -116,7 +145,10 @@ namespace DOL.GS
                     if (log.IsInfoEnabled)
                         log.Info($"Passport Desk refused a login from {address}");
 
-                    await Refuse(context, StatusCodes.Status401Unauthorized, "login", "Your account name or password is wrong for this world.");
+                    // One call at a time, so this slows guessing at the whole Desk.
+                    await Task.Delay(WrongLoginDelay);
+                    await Refuse(context, StatusCodes.Status401Unauthorized, "login",
+                        "Your account name or password is wrong for this world. If you have never played there, join it once first.");
                     return;
                 }
 
@@ -150,39 +182,16 @@ namespace DOL.GS
             return context.Response.WriteAsJsonAsync(new { code, message });
         }
 
-        private static DbAccount Authenticate(string name, string password, string address, bool mayCreate)
+        /// <summary>An existing account with the right password (the login handler's own check). The Desk never makes one.</summary>
+        private static DbAccount Authenticate(string name, string password)
         {
             DbAccount account = DOLDB<DbAccount>.FindObjectByKey(name);
 
-            if (account != null)
-            {
-                string stored = account.Password.StartsWith("##") ? account.Password : LoginRequestHandler.CryptPassword(account.Password);
-                return LoginRequestHandler.CryptPassword(password).Equals(stored) ? account : null;
-            }
-
-            GameServerConfiguration config = GameServer.Instance.Configuration;
-
-            if (!mayCreate || password.Length == 0 || !config.AutoAccountCreation || !Properties.ALLOW_AUTO_ACCOUNT_CREATION ||
-                !HostPassword.AllowsNewAccount(config.HostPasswordHash, password, address))
+            if (account == null || string.IsNullOrEmpty(account.Password) || password.Length == 0)
                 return null;
 
-            account = new DbAccount
-            {
-                Name = name,
-                Password = LoginRequestHandler.CryptPassword(password),
-                Realm = 0,
-                CreationDate = DateTime.Now,
-                LastLogin = DateTime.Now,
-                LastLoginIP = address,
-                Language = Properties.SERV_LANGUAGE,
-                PrivLevel = 1,
-            };
-            GameServer.Database.AddObject(account);
-
-            if (log.IsInfoEnabled)
-                log.Info($"New account created at the Passport Desk: {name}");
-
-            return account;
+            string stored = account.Password.StartsWith("##") ? account.Password : LoginRequestHandler.CryptPassword(account.Password);
+            return LoginRequestHandler.CryptPassword(password).Equals(stored) ? account : null;
         }
 
         private static void RefuseWhileLoggedIn(DbAccount account)
@@ -204,6 +213,9 @@ namespace DOL.GS
 
         private static async Task Arrive(HttpContext context, DbAccount account)
         {
+            if (!Properties.PASSPORT_VISITORS)
+                throw new PassportException("visitors_off", "Your friend has turned visitors off. Characters already here can still go home.");
+
             RefuseWhileLoggedIn(account);
             string path = Path.Combine(Path.GetTempPath(), $"passport-{Guid.NewGuid():N}.odpassport");
 

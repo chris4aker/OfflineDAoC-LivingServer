@@ -1,3 +1,4 @@
+// Character passport home lock. From rambodolphin13/DividedRealms (da78651, da92848; credit: rambodolphin13).
 using System;
 using System.Collections.Generic;
 using DOL.Database;
