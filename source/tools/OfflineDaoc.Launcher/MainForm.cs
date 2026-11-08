@@ -1044,7 +1044,7 @@ internal sealed partial class MainForm : Form
         {
             Dock = DockStyle.Fill,
             BackColor = DaocTheme.StoneDark,
-            ColumnCount = 4,
+            ColumnCount = 5,
             RowCount = 1,
             Margin = new Padding(0),
             Padding = new Padding(0),
@@ -1053,6 +1053,7 @@ internal sealed partial class MainForm : Form
         panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 112));
         panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 48));
         panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 168));
+        panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 196)); // Character passport (MainForm.Passport.cs)
         panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         panel.Controls.Add(_footer, 0, 0);
         panel.Controls.Add(_autoRefreshCountdownCaption, 1, 0);
@@ -1063,6 +1064,7 @@ internal sealed partial class MainForm : Form
         _deleteAllBotsButton.Enabled = false;
         _deleteAllBotsButton.Click += async (_, _) => await DeleteAllBotsAsync();
         panel.Controls.Add(_deleteAllBotsButton, 3, 0);
+        panel.Controls.Add(PassportButton(), 4, 0);
         return panel;
     }
 
