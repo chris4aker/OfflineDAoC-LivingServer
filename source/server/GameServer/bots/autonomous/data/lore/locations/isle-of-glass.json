@@ -26,7 +26,7 @@
       "source": "https://camelot.allakhazam.com/zones.html?czone=77"
     },
     {
-      "text": "Under Attack: Commander Slor'vid sits at the campfire in the central of the three camps in the north-west from midnight to 3 A.M. and shows when his lieutenants are attacked; Drakoran Watchers: the scout east of Anniogel and north-west of Caifelle, and the leader Ariach.",
+      "text": "Under Attack: Commander Slor'vid sits at the campfire in the central of the three camps in the north-west from midnight to 3 A.M. and shows when his lieutenants are attacked; Drakoran Watchers: the scout east of Anniogel and west of Caifelle, and the leader Ariach.",
       "provenance": "game",
       "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
     },
@@ -307,7 +307,7 @@
       "ariach, martley and araich are at the single-tent camp in the far west",
       "the drakoran scout wanders east of anniogel, nw of caifelle",
       "flood is in the western fields, svarm in the western marsh, torrent and alluvian in the east",
-      "caldech is in the pools east of the castle. jocias and sogrot in the damp bit north of it",
+      "caldech is in the pools east of the castle. jocias and sogrot in the damp bit south of it",
       "ewart haralder walks the field below the wall near anniogel",
       "flood waters? the little water elementals round flood in the west of the isle of glass",
       "svarm spawn? the young dragonflies round svarm's nest in the west marsh. lowbie stuff"
@@ -329,7 +329,7 @@
       "flood": "Flood is the risen water of the western fields, a water elemental the fishermen named for what it did: it came up out of the drowned land one spring and kept walking, and its lesser waters walk round it. The readers say the drowned land is trying to come back. The farmers of the western fields say it has, and has taken their fields first, and that the readers do not farm.",
       "alluvian": "Alluvian is the water by Caifelle that sheds little globes of itself, one after another, until there are a dozen of them wandering the grass round the fort, a nuisance to the horses and a danger to the young. Captain Hemrick's men kill the globes and Alluvian makes more. The readers of the college of the old tongues say the water is remembering being rain.",
       "ariach": "Ariach directs the drakoran watchers from a single tent in the far west of the isle, with a sealed letter of plans that Frederik Rolby wants. Ely of Caifelle, who has seen Ariach close, swears Ariach is no drakoran at all, and will not say what Ariach is instead. The drakoran obey Ariach without question, which is not how drakoran usually treat anything that is not drakoran.",
-      "wandering drakoran scout": "A wandering drakoran scout of Clan Dry'ak walks too close to the forts, east of Anniogel and north-west of Caifelle, with a sealed letter in his harness. Ely of Caifelle wants it read. The garrison says the scout wanders because he is lost; Ely says he wanders because he is counting the forts' sentries, and that he has counted them correctly every time.",
+      "wandering drakoran scout": "A wandering drakoran scout of Clan Dry'ak walks too close to the forts, east of Anniogel and west of Caifelle, with a sealed letter in his harness. Ely of Caifelle wants it read. The garrison says the scout wanders because he is lost; Ely says he wanders because he is counting the forts' sentries, and that he has counted them correctly every time.",
       "svarm": "Svarm is the greatest of the dragonflies of the western marsh, as big as a gull and as quick as one, and it nests among the reeds with its brood of spawn about it. The fishermen say it came with the war, out of the burning isles, and that before the war the dragonflies of the Isle of Glass were the size of a thumb. Svarm's brood are bigger every year.",
       "araich": "Araich is a drakoran warrior who keeps the fire of Ariach's single tent in the far west, beside Martley. He is the tent's guard and Ariach's shield, and the scouts who report to Ariach report through him first. The garrison of the west fort says Araich has been seen bowing to Ariach, which no drakoran of the camps does to anyone below a commander.",
       "martley": "Martley is a drakoran mage of the single-tent camp in the far west, Ariach's reader of letters. Carys of Caer Gothwaite wants Martley's body brought to Adam Glaze, for reasons she calls the castle's and Adam calls his own, and both of them send it on to Tage. Martley is said to have been a student of the colleges before the war, which would make him the only drakoran who ever was.",

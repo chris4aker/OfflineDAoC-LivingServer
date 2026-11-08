@@ -13,7 +13,7 @@
       "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
     },
     {
-      "text": "Prelude to War (Master Kless, Lieutenant Kuebler): kill Saffron, a small named cockatrice in the trees in the valley south-east of Caer Sursbrooke.",
+      "text": "Prelude to War (Master Kless, Lieutenant Kuebler): kill Saffron, a small named cockatrice in the trees in the valley south-west of Caer Sursbrooke.",
       "provenance": "game",
       "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
     },
@@ -28,8 +28,8 @@
       "source": "LORE"
     }
   ],
-  "story": "The cockatrices of the Pennines are hatched, the shepherds say, from the eggs of cocks too old to crow, warmed by toads under a dunghill, and they come out of the shell with a serpent's tail and an eye nobody sensible meets. Most are dull brown things of the scree. Saffron is small and yellow as the spice it is named for, and it lives in the trees of the valley south-east of Caer Sursbrooke, and it has an owner.\n\nA huntress of the Tylwyth Teg keeps it as a lady keeps a hawk. The fair folk say it was hatched in their woods and is theirs; the shepherds say the fair folk stole it out of a Sursbrooke farmyard before it was hatched, egg and toad and all, and that is why it is yellow. It sits in the branches above the huntress and looks down, and the garrison of the caer do not walk under those trees.\n\nLieutenant Kuebler of Castle Sauvage, gathering what he calls the signs of a war, wants it dead. He says the fair folk do not keep a creature like that for company, and that whatever they mean to send it after, it would be better sent nowhere.",
-  "legend": "Saffron, level 45, a small yellow cockatrice in the trees in the valley south-east of Caer Sursbrooke, with a Tylwyth Teg huntress (43) right next to it. Saffron has no faction so the huntress does not always join, but she is close and aggressive: take her first or pull Saffron away. Plain melee in the data. Prelude to War from Master Kless and Lieutenant Kuebler. Respawn five minutes.",
+  "story": "The cockatrices of the Pennines are hatched, the shepherds say, from the eggs of cocks too old to crow, warmed by toads under a dunghill, and they come out of the shell with a serpent's tail and an eye nobody sensible meets. Most are dull brown things of the scree. Saffron is small and yellow as the spice it is named for, and it lives in the trees of the valley south-west of Caer Sursbrooke, and it has an owner.\n\nA huntress of the Tylwyth Teg keeps it as a lady keeps a hawk. The fair folk say it was hatched in their woods and is theirs; the shepherds say the fair folk stole it out of a Sursbrooke farmyard before it was hatched, egg and toad and all, and that is why it is yellow. It sits in the branches above the huntress and looks down, and the garrison of the caer do not walk under those trees.\n\nLieutenant Kuebler of Castle Sauvage, gathering what he calls the signs of a war, wants it dead. He says the fair folk do not keep a creature like that for company, and that whatever they mean to send it after, it would be better sent nowhere.",
+  "legend": "Saffron, level 45, a small yellow cockatrice in the trees in the valley south-west of Caer Sursbrooke, with a Tylwyth Teg huntress (43) right next to it. Saffron has no faction so the huntress does not always join, but she is close and aggressive: take her first or pull Saffron away. Plain melee in the data. Prelude to War from Master Kless and Lieutenant Kuebler. Respawn five minutes.",
   "yells": {
     "aggro": [
       "Skraaa!",
@@ -70,7 +70,7 @@
   },
   "loremasterTopic": {
     "keyword": "saffron",
-    "text": "A small yellow cockatrice kept by a Tylwyth Teg huntress in the valley south-east of Caer Sursbrooke in the [pennine mountains]. Lieutenant Kuebler counts it among the signs of a war."
+    "text": "A small yellow cockatrice kept by a Tylwyth Teg huntress in the valley south-west of Caer Sursbrooke in the [pennine mountains]. Lieutenant Kuebler counts it among the signs of a war."
   },
   "bookPage": "",
   "chronicle": {

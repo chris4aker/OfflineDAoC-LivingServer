@@ -660,7 +660,7 @@
    "name": "Chthonic Knight Babyzu",
    "level": 65,
    "post": "the East Ward",
-   "story": "Babyzu keeps the Ward's south-western corner, where its ground meets the road from the Gate. He is the Ward's oldest knight and the only one who has served there since the First Roll, and Duke Bimure trusts him with the worst of the duty: standing between the high lords' followers when they come out of their halls to quarrel.",
+   "story": "Babyzu keeps the Ward's north-western corner, where its ground meets the road from the Gate. He is the Ward's oldest knight and the only one who has served there since the First Roll, and Duke Bimure trusts him with the worst of the duty: standing between the high lords' followers when they come out of their halls to quarrel.",
    "yells": {
     "aggro": [
      "Between. Always between."
@@ -679,7 +679,7 @@
    },
    "loremasterTopic": {
     "keyword": "babyzu",
-    "text": "Babyzu keeps the Ward's south-western corner, where its ground meets the road from the Gate. He is the Ward's oldest knight and the only one who has served there since the First Roll, and Duke Bimure trusts him with the worst of the duty: standing between the high lords' followers when they come out of their halls to quarrel."
+    "text": "Babyzu keeps the Ward's north-western corner, where its ground meets the road from the Gate. He is the Ward's oldest knight and the only one who has served there since the First Roll, and Duke Bimure trusts him with the worst of the duty: standing between the high lords' followers when they come out of their halls to quarrel."
    }
   },
   {

@@ -9,7 +9,7 @@
   "tier": "minor",
   "facts": [
     {
-      "text": "Laraida: level 38, a Sylvan body (model 767), faction Olcasgean, at about 389,400/305,900 in the high valley southwest of Necht with Luaire, Rinne and Taiore; respawn 600 seconds; a plain spawn.",
+      "text": "Laraida: level 38, a Sylvan body (model 767), faction Olcasgean, at about 389,400/305,900 in the high valley west of Necht with Luaire, Rinne and Taiore; respawn 600 seconds; a plain spawn.",
       "provenance": "game",
       "source": "world data Mob table, region 181 (read 2026-11-06)"
     },
@@ -20,7 +20,7 @@
     }
   ],
   "story": "Laraida was the eldest of the household that went up into the high valley when the isle divided over the Root. The Necht Sylvan say she was a singer of the old forest-songs, the ones that told the trees which way to grow, and that when the forests of the Long Pushing drove the titan east she was the one who asked, aloud, at a gathering in Domnann, whether the forests had any right to. Nobody answered her. She took her kin up the valley the same night.\n\nShe is the household's voice now. Her bark is black and her songs are slow, and when she sings in the valley the stilters stand still to listen. The Domnann wardens say she still sings the forest-songs, backwards, telling the trees to grow toward the hollow. She is never far from Luaire's tree, and when the realm's young come up the valley with Jyrlan's elixirs she is the first to turn.",
-  "legend": "Laraida (38) stands with Luaire, Rinne and Taiore in the high sylvan valley southwest of Necht (about 389k/306k). The four are close together, so you will usually fight two or more: bring a full group of high 30s, pull with care and kill them one by one. 10-minute respawn. Part of Twisted Evil (Jyrlan in Necht). She hits harder than the others and keeps her distance from the elixir stones. Necht custom: say Domnann's name aloud on the valley road so she knows who sent you.",
+  "legend": "Laraida (38) stands with Luaire, Rinne and Taiore in the high sylvan valley west of Necht (about 389k/306k). The four are close together, so you will usually fight two or more: bring a full group of high 30s, pull with care and kill them one by one. 10-minute respawn. Part of Twisted Evil (Jyrlan in Necht). She hits harder than the others and keeps her distance from the elixir stones. Necht custom: say Domnann's name aloud on the valley road so she knows who sent you.",
   "yells": {
     "aggro": [
       "The trees grow where I tell them.",
@@ -62,7 +62,7 @@
   },
   "loremasterTopic": {
     "keyword": "Laraida",
-    "text": "Eldest of the household that took the Root's side in the high valley southwest of Necht; a singer who asked whether the forests had the right to push the titan. She sings the old songs backwards now."
+    "text": "Eldest of the household that took the Root's side in the high valley west of Necht; a singer who asked whether the forests had the right to push the titan. She sings the old songs backwards now."
   },
   "bookPage": "",
   "chronicle": {
