@@ -36,6 +36,19 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterTactics.InBlastWindow([80, 60], 86, -1), Is.True, "the 6% floor");
         }
 
+        // duo6 (container Crystal Cave): raiders told to go stood at a median 763 from him and 71 died in one second; the
+        // straight-out spot at 2,700 lies in the cave's rock. They walk out on the floor towards the way in instead.
+        [Test]
+        public void TheWithdrawSpotIsOnTheFloorPathTowardsTheWayIn()
+        {
+            Vector3 boss = new(31577, 35305, 14551);
+            Vector3[] path = [boss, new(30500, 35500, 15000), new(29600, 33800, 15600), new(28900, 32600, 16000), new(28648, 31962, 16205)];
+            Vector3? rally = EpicEncounterTactics.BlastRallyOnPath(path, boss, 2500);
+            Assert.That(rally, Is.EqualTo(path[3]), "the first node 2,700 or more from him");
+            Assert.That(EpicEncounterTactics.BlastRallyOnPath(path[..3], boss, 2500), Is.Null, "none clear: the old spot");
+            Assert.That(EpicEncounterTactics.BlastRallyOnPath(null, boss, 2500), Is.Null);
+        }
+
         [Test]
         public void ARaiderSentOutIsHeldThereUntilTheHoldEnds()
         {

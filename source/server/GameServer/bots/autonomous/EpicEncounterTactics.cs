@@ -387,6 +387,11 @@ namespace DOL.GS
             Vector3 b = new(boss.X, boss.Y, boss.Z), r = new(raider.X, raider.Y, raider.Z);
             float d = Vector2.Distance(new(b.X, b.Y), new(r.X, r.Y));
             if (d > t.BlastRadius + 100) return null;
+            // In a closed cave the straight-out spot is inside the rock (duo6: raiders told to go stood at a median 763 from him
+            // and died there): walk out along the floor towards the dungeon's way in instead.
+            Vector3[] path;
+            lock (BlastPaths) BlastPaths.TryGetValue(boss, out path);
+            if (BlastRallyOnPath(path, b, t.BlastRadius) is Vector3 rally) return rally;
             Vector2 dir = d < 1 ? new Vector2(1, 0) : Vector2.Normalize(new Vector2(r.X - b.X, r.Y - b.Y));
             Vector2 at = new Vector2(b.X, b.Y) + dir * (t.BlastRadius + 200);
             return new Vector3(at.X, at.Y, r.Z);
@@ -404,6 +409,48 @@ namespace DOL.GS
             foreach (GameNPC boss in bosses)
                 if (Present(boss) && boss.CurrentRegionID == raider.CurrentRegionID && BlastWithdraw(raider, boss, now) is Vector3 safe)
                     return (boss, safe);
+            return null;
+        }
+
+        private static readonly Dictionary<GameNPC, Vector3[]> BlastPaths = new();
+
+        /// <summary>The walked floor path from a blasting boss's spawn to <paramref name="exit"/> (the dungeon's way in), found once
+        /// per boss (the raid route asks while it fights him): its withdraw spots lie on it.</summary>
+        public static void EnsureBlastPath(GameNPC boss, Vector3 exit)
+        {
+            if (boss == null || For(boss) is not { HasBlast: true }) return;
+            lock (BlastPaths)
+            {
+                if (BlastPaths.ContainsKey(boss)) return;
+                if (BlastPaths.Count > 64) BlastPaths.Clear();
+                BlastPaths[boss] = [];
+            }
+            Vector3[] nodes = [];
+            var nav = PathfindingProvider.Instance;
+            Zone zone = boss.CurrentZone;
+            if (zone != null && nav.IsAvailable && nav.HasNavmesh(zone))
+            {
+                var buffer = new WrappedPathfindingNode[512];
+                var start = new Vector3(boss.SpawnPoint.X, boss.SpawnPoint.Y, boss.SpawnPoint.Z);
+                PathfindingResult result = nav.GetPathStraight(zone, start, exit, nav.DefaultFilters, buffer);
+                if (result.Status is PathfindingStatus.PathFound or PathfindingStatus.PartialPathFound)
+                    nodes = buffer.Take(Math.Min(result.NodeCount, buffer.Length)).Select(n => n.Position).ToArray();
+            }
+            lock (BlastPaths) BlastPaths[boss] = nodes;
+            if (Log.IsInfoEnabled)
+                Log.Info($"EPIC_BLAST_PATH boss=\"{boss.Name}\" nodes={nodes.Length} rally=" +
+                         (BlastRallyOnPath(nodes, new(boss.SpawnPoint.X, boss.SpawnPoint.Y, boss.SpawnPoint.Z), For(boss).BlastRadius) is Vector3 r
+                             ? $"{(int)r.X},{(int)r.Y},{(int)r.Z}" : "none"));
+        }
+
+        /// <summary>The first spot on <paramref name="path"/> clear of a blast of <paramref name="radius"/> around
+        /// <paramref name="boss"/> by 200 (pure), or null (no path, or none of it clear).</summary>
+        public static Vector3? BlastRallyOnPath(Vector3[] path, Vector3 boss, int radius)
+        {
+            if (path is not { Length: > 0 }) return null;
+            foreach (Vector3 node in path)
+                if (Vector2.Distance(new(node.X, node.Y), new(boss.X, boss.Y)) >= radius + 200)
+                    return node;
             return null;
         }
 
@@ -478,6 +525,7 @@ namespace DOL.GS
         {
             lock (BlastRates) { BlastRates.Clear(); System.Threading.Volatile.Write(ref _blastBosses, 0); }
             lock (BlastClocks) BlastClocks.Clear();
+            lock (BlastPaths) BlastPaths.Clear();
             lock (StandOffHolds) { StandOffHolds.Clear(); System.Threading.Volatile.Write(ref _standOffHoldCount, 0); }
         }
 

@@ -1261,6 +1261,9 @@ namespace DOL.GS
             }
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active)
             {
+                // A boss that blasts the room (Xanxicar): its withdraw spots on the floor towards the way in.
+                if (Entrance is { } way && way.TargetRegion == _region)
+                    EpicEncounterTactics.EnsureBlastPath(_target, new Vector3(way.TargetX, way.TargetY, way.TargetZ));
                 if (_target.Health < _targetLowestHealth) { _targetLowestHealth = _target.Health; _targetProgressTick = now; }
                 ReportHealthJump(participants, now);
                 // The no-damage clock runs only while the raid is actually at its target. A raid
