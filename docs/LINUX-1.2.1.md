@@ -135,7 +135,7 @@ not the product.
 
 | Job | Runner | What it proves | State |
 |---|---|---|---|
-| `linux / linux-package` | ubuntu-22.04 | server build + the Linux Detour library + Microsoft's runtime assembled in the package layout; `offlinedaoc start`; two scripted players log in (playtester `chat-players`, `group-players`); the released 0.37c new client (scripts + content patches) compiles on the Linux Godot .NET engine with its C# built on Linux and **logs in headless with the folder's account**; `stop` (`exit`), start, stop | sketched in this branch (`.github/workflows/linux.yml`); runs on `workflow_dispatch` and on changes under `tools/linux/` |
+| `linux / linux-package` | ubuntu-22.04 | server build + the Linux Detour library + Microsoft's runtime assembled in the package layout; `offlinedaoc start`; two scripted players log in (playtester `chat-players`, `group-players`); the released 0.37c new client (scripts + content patches) compiles on the Linux Godot .NET engine with its C# built on Linux and **logs in headless with the folder's account**; `stop` (`exit`), start, stop | in this branch (`.github/workflows/linux.yml`), green on GitHub; runs on `workflow_dispatch` and on changes under `tools/linux/` |
 | `linux / launcher` | ubuntu-latest | the C# launcher: `dotnet test` of the shared code on Linux (account file, port probe, settings save, bot batch, update check with recorded answers) | to build |
 | `linux / install-parity` | ubuntu + windows | the C# install and rollback against the fake game folders of `test-install-scripts.ps1`; the resulting trees and `install-record.json` must equal the ps1's | to build |
 | `linux / real-download` | ubuntu-latest (large disk) | `install.sh` with real downloads: the base game, the 0.37 patch with his patcher on Linux .NET, Living Server, `offlinedaoc play --headless` logging in; stop and resume a part | to build; needs about 45–60 GB of disk (see risks) |
@@ -174,7 +174,8 @@ Existing jobs are not changed. Automated results are what they are: none of them
 
 ## 9. The prototypes in this branch (2026-11-07, in the container)
 
-All automated, in this container (Ubuntu 24.04, no GPU, no display, no converted content). None is a played session.
+All automated: in this container (Ubuntu 24.04, no GPU, no display, no converted content) and, for the CI row, on
+GitHub's ubuntu-22.04 runner. None is a played session.
 
 | Spike | Result |
 |---|---|
@@ -183,7 +184,7 @@ All automated, in this container (Ubuntu 24.04, no GPU, no display, no converted
 | **Godot Linux new client** | **Worked, headless, without content.** Godot 4.7.2 .NET for Linux (SHA-512 checked). The managed API (`GodotSharp/Api/*`) is **byte-identical** to the Windows engine's: 67 of 73 shared files match, the rest are Windows-only IDE helpers and NuGet containers. The released 0.37c scripts with Living Server's content patches: the C# network client builds on Linux and **all 95 scripts compile** in the mono engine (`load_check.gd`), and `DaocClient.cs` instantiates. Then `offlinedaoc play --headless` (the folder's `account.txt`, the launcher's ENTER REALM arguments) **logged in to the Linux server**: "User offline logging on", "New account created: offline", the Account row present; the client went on to the pregame (realm/character select) scene and stopped there on missing converted content (`content/pregame/pregame.json`), as expected here. Rendering, sound and input were not tried (no GPU or display). No export and no export templates are needed (§4). |
 | ↳ found on the way | The source tree's `server_world.gd` doesn't parse (risk 8): the check uses the released scripts, as players have them. And on a fresh install the first login is the only account creation; the server allows one per IP every 15 minutes (`time_between_account_creation_sameip`), so the smoke logs the new client in before the scripted players. |
 | shadowofze's patcher on Linux .NET | **Started only.** Built from `source/tools/OfflineDaoc.Patcher` and run on `linux/dotnet` against an empty folder: it refused it with exit 4, as designed. Not run on a real 0.36 folder (5 GB download). |
-| **CI job sketch** | **Written, not run on GitHub yet.** `.github/workflows/linux.yml` (new file, `workflow_dispatch` and `tools/linux/**` changes only) runs the same smoke on ubuntu-22.04 with the minimal world (no navmeshes: Detour loads, no zone meshes). |
+| **CI job sketch** | **Worked on GitHub.** `.github/workflows/linux.yml` (new file, `workflow_dispatch` and `tools/linux/**` changes only) runs the same smoke on ubuntu-22.04 with the minimal world, no game files: every check passed in run 42434529818 (navmeshes skipped: Detour loads, no zone meshes in CI). The first run (42434303637) found a race in the prototype launcher's start (it checked the process before it had become `dotnet`, 5 ms after starting); fixed. |
 | `install-server-build.ps1` under PowerShell 7 on Linux | **Not tried** (the plan ports it to C# instead, §4). |
 
 Container notes: the server ran with `DOTNET_gcServer=0` (a 7 GB container shared with another agent's server); the
