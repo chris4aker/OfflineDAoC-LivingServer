@@ -469,6 +469,15 @@ public static class AutonomousChatExchange
         }
     }
 
+    private static readonly HashSet<string> Reactions = new(StringComparer.Ordinal)
+    {
+        "oof", "rip", "lol rip", "ouch", "lol", "ha", "heh", "haha", "hehe", "true", "lol true", "gz", "gz gz", "grats", "gratz", "nice", "nice gz",
+        "woot", "ugh", "happens", "happens lol", "classic", "rip grp", "rip me", "lol how", "sweet", "jealous", "lucky", "wb", "o",
+    };
+
+    /// <summary>A pure reaction ("oof", "rip", "lol", "gz"): it says nothing but how the speaker feels about the line before.</summary>
+    public static bool IsReaction(string text) => Reactions.Contains(Normalize(text));
+
     /// <summary>The server's short-reaction window.</summary>
     public static readonly ShortWindow Shorts = new();
 

@@ -41,7 +41,20 @@ MUST be top notch"). Checked by automated tests and a simulated evening only; no
   realm) within a minute, one burst at a time in a realm, each from a bot free to type, and a reaction is left out once
   four other lines came after what it reacts to. Guild threads are said in order and answered by guildmates who fit too.
 - **One "oof" in ten minutes.** A short reaction ("oof", "rip", "lol rip", "gz") a realm's /faction heard in the last ten
-  minutes is picked again or left out, in stories, bursts and single reactions.
+  minutes is picked again or left out, in stories, bursts, threads' answers and single reactions.
+- **/faction keeps to its ceiling.** On the owner's evening /faction ran at 13.6 lines a minute for ten minutes (minutes of
+  17-20) against its ceiling of 10: unprompted lines stopped at the ceiling, but the replies, stories and bursts they
+  started didn't (two overlapping bursts made 10 lines in 38 s). Every line of a bot conversation now waits for room under
+  the ceiling like a busy speaker, and is left out when none comes. The realm's own moments (a nemesis line, keep news, a
+  debate) still speak.
+- **No more "Fair enough. Safe travels."** It came back 30 times in one night: a fixed line from the oldest reply path,
+  outside the no-repeat memory every written line has, like its formal replies ("A merchant price can provide a
+  reasonable minimum value."). With bot voices on that path now says only written lines, or nothing.
+- **Realm Exchange adverts now and then.** A seller advertised 70% of its listings, only three minutes after the last
+  advert or news line (five in 29 minutes on the owner's evening). An advert is now an unprompted /faction line like any
+  other: only while /faction is under its target, and one a realm in 15 minutes. One that no written line fits says "anyone
+  want ... ? make me an offer" or "pc ...?" (was "Does anybody want to make me an offer on ...?") and gets written trade
+  answers.
 - **Every line names its source.** `CHAT_LINE` rows now say which feature said a line (`src=field`, `thread`, `story`,
   `reply`, `burst`, `reaction`, `news`, `debate`, ...), and inside a conversation its id, the line's place and the
   speaker's part (`ex=12 i=2 role=answerer`), with the speaker's real class and level (`cls="Cabalist" lvl=50`). `via=`

@@ -299,6 +299,11 @@ def check_dialogue(report: Report, seq: list[Line]):
         own_q = next((p for p in reversed(window) if p.speaker == line.speaker and is_question(p.text)), None)
         others_since_q = [p for p in window if own_q is not None and p.n > own_q.n and p.speaker != line.speaker]
 
+        # Inside a tagged exchange, an earlier line of the same exchange by someone else is what a line refers to.
+        same_ex_other = bool(line.ex) and any(p.ex == line.ex and p.speaker != line.speaker for p in window)
+        if same_ex_other:
+            continue
+
         # Thanks with no answer since the thanker's question (or no question at all).
         if THANKS.match(t) and not INVITE.match(t):
             if own_q is None:
@@ -344,6 +349,14 @@ def check_reactions(report: Report, seq: list[Line]):
         if not is_reaction(line) or line.who != "bot":
             continue
         report.counts["reactions"] += 1
+        if line.ex:
+            # A tagged reaction reacts to its own exchange's first line.
+            first = next((p for p in seq[max(0, k - 60):k] if p.ex == line.ex and p.speaker != line.speaker), None)
+            if first is not None:
+                reactions_to[first.n].append(line) if line.src in ("burst", "reaction") else None
+                if line.t - first.t > 45:
+                    report.flag("reaction_late", first, line, note=f"{line.t - first.t}s")
+                continue
         prior = [p for p in seq[max(0, k - 30):k] if line.t - p.t <= 30 and p.speaker != line.speaker]
         trigger = next((p for p in reversed(prior) if not is_reaction(p) and TRIGGER.search(p.text)), None)
         if trigger is None:
