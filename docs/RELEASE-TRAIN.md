@@ -186,6 +186,8 @@ Everything below is built on branches with green automated tests; nothing is mer
       while the realm is new to him, 5-15% once learned (`feature/1.2-raid-skill`, stacked on #120). An early slice of
       2.0's item 2
 - [ ] Positional styles, step 1 (owner 2026-11-08): bots use side, back and front styles when they are really there (#123)
+- [ ] From 1.2.1, pulled forward (owner 2026-11-08 11:38; #128, CI green, not yet played): Nikse77's follower stutter
+      guard (via rambodolphin13), True165's flank step (positional styles step 2, hand port), rambodolphin13's style scoring
 - [ ] The quest harness, repeatable quests and deliveries, epic chains linked without Python (#70)
 - [ ] Battlegrounds: realms rally inside the breach and take the keep lord together (#69)
 - [ ] The automated playtester: a scripted player, `make_test_world.py`, eight scenarios (#72)
@@ -259,17 +261,11 @@ The first slice of 2.0's "Bots as people" item 5, plus the flank step for positi
 before the Linux build (owner 2026-11-08 06:51, "Before"). Touches pathing: no navmesh changes without evidence (AGENTS.md).
 - [ ] Melee bots circle and adjust in a fight instead of standing frozen; casters step between casts
 - [ ] Stopping and turning that doesn't snap to a point
-- [ ] Positional styles, step 2: melee bots take the flank or back when the mob faces someone else (step 1, using
-      them when already there, is in 1.2: #123; step 3, Assassins stealthing and opening from stealth, is in 2.0)
+- [x] Positional styles, step 2 (moved to 1.2, #128): melee bots take the flank or back when the mob faces someone else
+      (step 1 is #123; step 3, Assassins stealthing and opening from stealth, is in 2.0)
 - [ ] Town idling: the bank and the usual crowd spots
-- [ ] Ports from the fork survey of 2026-11-08 (credit in the commit, the file header and the changelog):
-  - [ ] Nikse77's follower-stutter guard (via rambodolphin13 0996fff6): a group follower stops taking its own route
-        every turn, so a moving party no longer jerks once a second. Applies cleanly
-  - [ ] Step 2 hand-ported from True165's `BotBrain.Flank.cs` (d2187a49): a non-tank gamebot that knows a back or side
-        style steps there when the mob fights someone else, retries when it turns 45° or moves 100; its pure-rule tests
-        come along. Without True165's 1.65-mode gate and companion option
-  - [ ] rambodolphin13's style scoring (0146664a): chain follow-ups, positionals in place, reactive styles and openers
-        scored, taunts only for a grouped tank. Two small conflicts with #123
+- Moved to 1.2 (owner 2026-11-08 11:38, "Pull the 1.2.1 into 1.2"): the fork survey's three ports (Nikse77's follower
+  stutter guard, True165's flank step as positional styles step 2, rambodolphin13's style scoring), merged in #128
 - [ ] Automated: no new stuck bots against the 1.2 baseline; played: one evening on the owner's PC judging whether it
       looks right (only played checks can judge this)
 - Left in 2.0: `/stick`, sitting on keep walls, the rest of item 5; Assassins' stealth with item 4
