@@ -49,6 +49,14 @@ namespace DOL.GS
             public int SpreadRadius { get; init; }
             /// <summary>Only while the boss has this model (Govannon's demon form, 636; 0: always).</summary>
             public int SpreadWhileModel { get; init; }
+            /// <summary>While the spread is on, melee fight the boss from behind him, clear of the area hit around his target
+            /// (<see cref="EncounterMeleeStations"/>): his target keeps <see cref="AnchorHoldDistance"/> from him and the
+            /// other melee stand <see cref="BehindDistance"/> behind him on the line from his target (owner 2026-11-07,
+            /// Govannon's demon: his Shroud of Agony took 45 raiders in 90 s, nearly all of them melee).</summary>
+            public bool MeleeBehind { get; init; }
+            /// <summary>Healers keep healing where they stand, instead of stepping out of the spread, while melee are still
+            /// inside it (the melee there need them; stepping out costs casts).</summary>
+            public bool HealersHoldInSpread { get; init; }
             /// <summary>Adds the raid's casters and archers kill while everyone else stays on the boss (Govannon's sacrifice and
             /// demon, who summon a Shade if they reach his altar; Spindler Broodmother's newborns).</summary>
             public string[] RangedAdds { get; init; } = [];
@@ -250,6 +258,39 @@ namespace DOL.GS
         /// <summary>A caster or healer this far inside the spread radius of the boss's target moves this far past it.</summary>
         public const int SpreadMargin = 60, SpreadStepOut = 250;
 
+        /// <summary>His target keeps this far from him (he closes to 131 himself) and the other melee stand this far behind
+        /// him (bot melee reach is 200): 131-150 + 185 clears a 300 area hit around his target.</summary>
+        public const int AnchorHoldDistance = 150, BehindDistance = 185, BehindMargin = 10, BehindReach = 195;
+
+        /// <summary>How far behind him a melee raider stands (pure): far enough that the line from his target clears the area
+        /// hit with a little to spare, at least <see cref="BehindDistance"/>, and within bot melee reach (200).</summary>
+        public static float BehindFor(float anchorToBoss, int radius) =>
+            Math.Clamp(radius + BehindMargin + 10 - anchorToBoss, BehindDistance, BehindReach);
+
+        /// <summary>
+        /// The melee position order of a <see cref="Tactic.MeleeBehind"/> boss (Govannon's demon): his target holds
+        /// <see cref="AnchorHoldDistance"/> from him; another melee raider holds <see cref="BehindDistance"/> and, while it is
+        /// within the area hit's reach of his target, steps to the spot behind him first. Renewed each turn, so a target
+        /// swap or a move of his target re-places everyone; null to fight on as it stands.
+        /// </summary>
+        private static Advice? MeleeBehindAdvice(GameLiving raider, GameNPC boss, GameLiving anchor, int radius, long now)
+        {
+            Vector3 at = At(raider), anchorAt = At(anchor), bossAt = At(boss);
+            if (raider == anchor)
+            {
+                EncounterMeleeStations.Hold(raider, boss, AnchorHoldDistance, now);
+                EncounterMeleeStations.Apply(raider, boss, AnchorHoldDistance);
+                return null;
+            }
+            EncounterMeleeStations.Hold(raider, boss, BehindDistance, now);
+            EncounterMeleeStations.Apply(raider, boss, BehindDistance);
+            if (!EncounterMeleeStations.InReach(at, anchorAt, radius, BehindMargin)) return null;
+            float anchorToBoss = Vector2.Distance(new(anchorAt.X, anchorAt.Y), new(bossAt.X, bossAt.Y));
+            Vector3 spot = EncounterMeleeStations.BehindSpot(bossAt, anchorAt, BehindFor(anchorToBoss, radius), at.Z);
+            return new(BotAction.Reposition, boss, spot,
+                $"spread: melee behind \"{boss.Name}\", clear of {radius} around \"{anchor.Name}\"");
+        }
+
         /// <summary>
         /// Where a raider stands clear of an area hit of <paramref name="radius"/> around the boss's target
         /// (<paramref name="anchor"/>), or null when it is already clear or fights in melee. Casters, archers and healers step
@@ -431,10 +472,18 @@ namespace DOL.GS
                 return new(BotAction.StandOff, target, safe, $"blast at {NextBlast(target)}%: out of {For(target).BlastRadius}");
             // Area hit around the boss's target (Govannon's demon form): everyone outside that target's party stands clear of it.
             if (For(target) is { SpreadRadius: > 0 } st && (st.SpreadWhileModel == 0 || target.Model == st.SpreadWhileModel) &&
-                target.TargetObject is GameLiving anchor && !Holds(raider, target))
+                target.TargetObject is GameLiving anchor)
             {
-                bool atRange = canShootFlyers || classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId);
-                if (SpreadSpot(at, new(target.X, target.Y, target.Z), new(anchor.X, anchor.Y, anchor.Z), st.SpreadRadius, atRange) is Vector3 spread)
+                bool healer = classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId);
+                bool atRange = canShootFlyers || healer;
+                // The melee: fight him from behind, clear of the area hit around his target.
+                if (st.MeleeBehind && !atRange && MeleeBehindAdvice(raider, target, anchor, st.SpreadRadius, now) is Advice behind)
+                    return behind;
+                // Healers keep healing where they stand while melee are still in it (stepping out costs casts they need).
+                bool healersHold = healer && st.HealersHoldInSpread && EncounterMeleeStations.AnyInReach(target,
+                    new(anchor.X, anchor.Y, anchor.Z), BehindDistance, st.SpreadRadius, BehindMargin, now);
+                if (!Holds(raider, target) && !healersHold &&
+                    SpreadSpot(at, new(target.X, target.Y, target.Z), new(anchor.X, anchor.Y, anchor.Z), st.SpreadRadius, atRange) is Vector3 spread)
                     return new(BotAction.Reposition, target, spread,
                         $"spread: casters and healers clear of {st.SpreadRadius} around \"{anchor.Name}\"");
             }
@@ -693,6 +742,9 @@ namespace DOL.GS
                     if (advice.StandAt is not Vector3 spot) return false;
                     if (bot.IsCasting) bot.StopCurrentSpellcast();
                     bot.StopAttack();
+                    // A melee position order (EncounterMeleeStations): the walk to the spot ends the old follow, so the
+                    // next attack follows at the order's distance instead of closing back in.
+                    if (EncounterMeleeStations.MinimumFollowFor(bot, advice.Target, GameLoop.GameLoopTime) != null) bot.StopFollowing();
                     bot.PathTo(new Point3D((int)spot.X, (int)spot.Y, (int)spot.Z), bot.MaxSpeed);
                     LogDecision(bot, target, advice);
                     return true;

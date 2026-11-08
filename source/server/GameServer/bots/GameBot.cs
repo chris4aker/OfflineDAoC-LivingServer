@@ -163,6 +163,11 @@ namespace DOL.GS
 
         #endregion
 
+        /// <summary>A tactic's melee position order (EncounterMeleeStations: Govannon's demon) sets how close the bot follows
+        /// the target it fights; otherwise the NPC default.</summary>
+        public override int StickMinimumRange =>
+            EncounterMeleeStations.MinimumFollowFor(this, TargetObject, GameLoop.GameLoopTime) ?? base.StickMinimumRange;
+
         #region IGamePlayer — CharacterClass
 
         protected ICharacterClass m_characterClass;
