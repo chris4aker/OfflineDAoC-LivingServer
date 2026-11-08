@@ -35,7 +35,7 @@
     }
   ],
   "story": "The third dead of the night on the frontier road was Midgard's. Soulsong was a skald, the Arvakr huscarls say, who was walking up from the faste to Grallarhorn with a new song about the horn when he came round a bend into two companies killing each other in the dark. He did what skalds do. He sang, to tell them who he was. Both companies took him for the other's.\n\nHe rose with Ald, and the song rose with him, and it is not a song about the horn any more. The huscarls of Arvakr will not sing it, and the skalds of Jordheim say that is right, because a song made at the moment of a death is a binding, and Soulsong bound himself to that bend of the road with his last verse. He walks a little east of the others, rotted and singing, and fights anyone who interrupts him.",
-  "legend": "Soulsong is a level 43 undead ghost in south Yggdra, the Midgard one of the three ghosts by Fionnuala (with Ald the Bruce and Moira the Quiet). He's alone a bit east of the other two. No faction, no spells. Old Arvakr huscarls won't sing his song; they say it binds. Good xp for a group in the 40s working the three ghosts.",
+  "legend": "Soulsong is a level 43 undead ghost in north Yggdra, the Midgard one of the three ghosts by Fionnuala (with Ald the Bruce and Moira the Quiet). He's alone a bit east of the other two. No faction, no spells. Old Arvakr huscarls won't sing his song; they say it binds. Good xp for a group in the 40s working the three ghosts.",
   "yells": {
     "aggro": [
       "(A rotten voice, singing.) ...and the horn shall wake them all...",
@@ -55,7 +55,7 @@
   },
   "botLines": {
     "briefing": [
-      "soulsong is a 43 undead skald ghost in south yggdra, alone",
+      "soulsong is a 43 undead skald ghost in north yggdra, alone",
       "the midgard one of the three ghosts"
     ],
     "aftermathWin": [

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using DOL.Events;
+using DOL.GS.PacketHandler;
 using DOL.Logging;
 
 namespace DOL.GS;
@@ -283,11 +284,48 @@ public static class LoreBossWatch
         string[] lines = PhaseTexts(boss?.PhaseYells, kind).ToArray();
         if (npc == null || lines.Length == 0)
             return;
-        npc.Yell(Logged(npc, "yell", kind.ToString(), LoreText.Pick(lines[Random.Shared.Next(lines.Length)], Random.Shared)));
+        Speak(npc, kind.ToString(), LoreText.Pick(lines[Random.Shared.Next(lines.Length)], Random.Shared));
     }
 
     /// <summary>
-    /// 1.2 play test: every line the lore engine speaks is in the server log (LORE_LINE boss, kind yell|screen, trigger, text),
+    /// A line written as a stage direction, in parentheses: "(The dead wolf rises, stiff-legged, from its post.)". 729 of the
+    /// bosses' yell lines are written this way for creatures that do not speak (owner PC soak 2026-11-08: they were yelled
+    /// aloud, parentheses and all, 974 times in a night). Pure.
+    /// </summary>
+    public static bool IsStageDirection(string text)
+    {
+        string t = text?.Trim();
+        return t is { Length: > 2 } && t[0] == '(' && t[^1] == ')';
+    }
+
+    /// <summary>A stage direction as the action text players read: no parentheses, a capital first letter and a full stop. Pure.</summary>
+    public static string StageText(string text)
+    {
+        string t = text.Trim()[1..^1].Trim();
+        if (t.Length == 0) return t;
+        t = char.ToUpperInvariant(t[0]) + t[1..];
+        return t[^1] is '.' or '!' or '?' or '\u2026' ? t : t + ".";
+    }
+
+    /// <summary>Where a stage direction goes: the players in yell range, as action text (tests replace it).</summary>
+    public static Action<GameNPC, string> StageAction = (npc, text) =>
+    {
+        foreach (GamePlayer player in npc.GetPlayersInRadius(WorldMgr.YELL_DISTANCE))
+            player.Out.SendMessage(text, eChatType.CT_Emote, eChatLoc.CL_ChatWindow);
+    };
+
+    /// <summary>A boss line: yelled, or shown as action text when it is a stage direction. Logged either way.</summary>
+    public static void Speak(GameNPC npc, string trigger, string text, Action<GameNPC, string> yell = null)
+    {
+        if (npc == null || text == null) return;
+        if (IsStageDirection(text))
+            StageAction(npc, Logged(npc, "action", trigger, StageText(text)));
+        else
+            (yell ?? ((n, t) => n.Yell(t)))(npc, Logged(npc, "yell", trigger, text));
+    }
+
+    /// <summary>
+    /// 1.2 play test: every line the lore engine speaks is in the server log (LORE_LINE boss, kind yell|action|screen, trigger, text),
     /// so a run can be read without a game client.
     /// </summary>
     public static string Logged(GameObject source, string kind, string trigger, string text)
@@ -314,7 +352,7 @@ public static class LoreBossWatch
         if (lines.Length == 0 || !force && now - watched.LastYell < YellGapMs)
             return;
         watched.LastYell = now;
-        npc.Yell(Logged(npc, "yell", trigger, LoreText.Pick(lines[Random.Shared.Next(lines.Length)], Random.Shared)));
+        Speak(npc, trigger, LoreText.Pick(lines[Random.Shared.Next(lines.Length)], Random.Shared));
     }
 
     #endregion
@@ -455,7 +493,7 @@ public static class LoreBossWatch
         if (lines.Yells.Length > 0 && now - watched.LastYell >= YellGapMs)
         {
             watched.LastYell = now;
-            MechanicYell(npc, Logged(npc, "yell", string.Join('|', triggers), LoreText.Pick(lines.Yells[Random.Shared.Next(lines.Yells.Length)], Random.Shared)));
+            Speak(npc, string.Join('|', triggers), LoreText.Pick(lines.Yells[Random.Shared.Next(lines.Yells.Length)], Random.Shared), MechanicYell);
         }
         if (lines.Atmosphere != null)
             MechanicAtmosphere(npc, Logged(npc, "screen", string.Join('|', triggers), LoreText.Pick(lines.Atmosphere, Random.Shared)));

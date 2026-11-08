@@ -1721,6 +1721,14 @@ namespace DOL.GS
         /// <summary>Within this of its slot a party member formation-follows its leader; farther away it paths there first.</summary>
         public const int FormationFollowReach = 2_500;
 
+        /// <summary>
+        /// Pure rule for the follow step (Nikse77 b0fcd555, via rambodolphin13/DividedRealms 0996fff6ea): a faster
+        /// independent route (a stablemaster horse or town teleporter) is only for the leader, and never for a formed PvE
+        /// party. A follower that took one every turn dropped and re-took its formation follow: a one-second stutter.
+        /// </summary>
+        public static bool MayTakeIndependentRouteWhileFollowing(eAutonomousObjectiveKind kind, bool isLeader) =>
+            kind != eAutonomousObjectiveKind.GroupPve && isLeader;
+
         private bool FollowDynamicGroupLeader(GameBot bot, AutonomousBotGroupCoordinator.Directive directive)
         {
             using var aiProfile = AiProfile.Scope(AiSystem.ControllerFollowLeader); // AI_PROFILE: measures only
@@ -1786,7 +1794,10 @@ namespace DOL.GS
             Vector3 strategicDestination = directive.Camp == null
                 ? new Vector3(leader.X, leader.Y, leader.Z)
                 : new Vector3(directive.Camp.X, directive.Camp.Y, directive.Camp.Z);
-            if (directive.ObjectiveKind != eAutonomousObjectiveKind.GroupPve &&
+            // Nikse77 2026-11-01 (via rambodolphin13): only the leader may take an independent route (a town teleporter, a
+            // plotted leg). A member that took one every turn released its formation follow, the next turn re-issued it,
+            // and the party visibly jerked once per second instead of walking behind its leader.
+            if (MayTakeIndependentRouteWhileFollowing(directive.ObjectiveKind, bot == leader) &&
                 TryBeginFasterStableRoute(bot, strategicDestination,
                     directive.Camp?.ZoneName ?? "the group leader"))
                 return true;

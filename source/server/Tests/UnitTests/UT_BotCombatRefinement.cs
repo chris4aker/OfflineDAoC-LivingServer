@@ -240,8 +240,10 @@ namespace DOL.UnitTests
             var low = Style(11, level: 2, growth: .7);
             var high = Style(11, level: 40, growth: .2);
             Assert.That(BotMeleeStylePolicy.IsEligible(low), Is.True);
-            Assert.That(BotMeleeStylePolicy.IsEligible(Style(11, opening: 2)), Is.False);
+            Assert.That(BotMeleeStylePolicy.IsEligible(Style(11, opening: 2)), Is.True);
+            Assert.That(BotMeleeStylePolicy.NeedsPosition(Style(11, opening: 2)), Is.True);
             Assert.That(BotMeleeStylePolicy.IsEligible(Style(11, opening: 1)), Is.True);
+            Assert.That(BotMeleeStylePolicy.NeedsPosition(Style(11, opening: 1)), Is.False);
             Assert.That(BotMeleeStylePolicy.Better(low, high), Is.True);
         }
 
@@ -258,6 +260,72 @@ namespace DOL.UnitTests
             Assert.That(resolver.Invoke(null, new object[] { bot }), Is.EqualTo((int)eCharacterClass.Armsman));
         }
 
+        private static (Assassin Bot, GameNPC Enemy) Duel()
+        {
+            var bot = (Assassin)RuntimeHelpers.GetUninitializedObject(typeof(Assassin));
+            bot.Level = 50; bot.Endurance = 100; bot.Inventory = new BotInventory();
+            var sword = GameInventoryItem.Create(new DbItemTemplate { Name = "sword", Object_Type = (int)eObjectType.Sword,
+                Item_Type = Slot.RIGHTHAND, DPS_AF = 30, SPD_ABS = 35, Quality = 99, Condition = 50000, MaxCondition = 50000 });
+            bot.Inventory.AddItem(eInventorySlot.RightHandWeapon, sword);
+            typeof(GameLiving).GetField("_activeWeapon", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(bot, sword);
+            bot.styleComponent = new NpcStyleComponent(bot);
+            typeof(GameLiving).GetField("m_effects", BindingFlags.Instance | BindingFlags.NonPublic)
+                .SetValue(bot, new DOL.GS.Effects.GameEffectList(bot));
+            var enemy = (GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(GameNPC));
+            enemy.attackComponent = new AttackComponent(enemy);
+            // GameNPC's movement component hides GameLiving's, and turning reads the GameLiving one: set both.
+            ((GameLiving)bot).movementComponent = bot.movementComponent = new NpcMovementComponent(bot);
+            ((GameLiving)enemy).movementComponent = enemy.movementComponent = new NpcMovementComponent(enemy);
+            bot.TargetObject = enemy;
+            return (bot, enemy);
+        }
+
+        /// <summary>Puts the bot 100 from the enemy, facing it, at <paramref name="angle"/> degrees from where the enemy faces
+        /// (0 in front, 90 beside, 180 behind).</summary>
+        private static void Place(GameLiving bot, GameNPC enemy, int angle)
+        {
+            enemy.X = 1000; enemy.Y = 1000; bot.X = 1000; bot.Y = 900;
+            ((GameNPC)bot).movementComponent.ForceUpdatePosition(); enemy.movementComponent.ForceUpdatePosition();
+            enemy.Heading = (ushort)((enemy.GetHeading(bot) + 4096 - angle * 4096 / 360) % 4096);
+            bot.Heading = bot.GetHeading(enemy);
+        }
+
+        [TestCase(180, 0, true)] [TestCase(0, 0, false)] [TestCase(90, 0, false)]
+        [TestCase(90, 1, true)] [TestCase(180, 1, false)] [TestCase(0, 1, false)]
+        [TestCase(0, 2, true)] [TestCase(180, 2, false)]
+        public void PositionalStylesArePickedOnlyFromTheirSpot(int angle, int position, bool picked)
+        {
+            var (bot, enemy) = Duel();
+            var anytime = Style((int)eObjectType.Sword, level: 5, growth: .4);
+            var positional = new Style(new DbStyle { Name = "positional", ID = 93, SpecKeyName = Specs.Sword,
+                SpecLevelRequirement = 5, WeaponTypeRequirement = (int)eObjectType.Sword,
+                OpeningRequirementType = (int)DOL.GS.Styles.Style.eOpening.Positional, OpeningRequirementValue = position,
+                GrowthRate = 5 }, null);
+            bot.Styles = new List<Style> { positional, anytime };
+            Place(bot, enemy, angle);
+            Assert.That(enemy.GetAngle(bot), Is.EqualTo(angle).Within(1));
+
+            Assert.That(BotMeleeStylePolicy.Select(bot, null), Is.SameAs(picked ? positional : anytime));
+            Assert.That(bot.styleComponent.NextCombatBackupStyle, Is.SameAs(anytime), "the anytime backup is never a positional");
+        }
+
+        [Test]
+        public void AQueuedPositionalStyleIsDroppedOnceTheBotIsNoLongerThere()
+        {
+            var (bot, enemy) = Duel();
+            var anytime = Style((int)eObjectType.Sword, level: 5, growth: .4);
+            var back = new Style(new DbStyle { Name = "back", ID = 94, SpecKeyName = Specs.Sword, SpecLevelRequirement = 5,
+                WeaponTypeRequirement = (int)eObjectType.Sword,
+                OpeningRequirementType = (int)DOL.GS.Styles.Style.eOpening.Positional,
+                OpeningRequirementValue = (int)DOL.GS.Styles.Style.eOpeningPosition.Back, GrowthRate = 5 }, null);
+            bot.Styles = new List<Style> { back, anytime };
+            Place(bot, enemy, 180);
+            bot.styleComponent.NextCombatStyle = BotMeleeStylePolicy.Select(bot, null);
+            Assert.That(bot.styleComponent.NextCombatStyle, Is.SameAs(back));
+            Place(bot, enemy, 0); // the boss turned to face it before the swing
+            Assert.That(BotMeleeStylePolicy.Select(bot, null), Is.SameAs(anytime));
+        }
+
         [Test]
         public void AnytimeFallbackCannotBeDisplacedByUnusableOrPositionalStyles()
         {
@@ -272,6 +340,8 @@ namespace DOL.UnitTests
                 .SetValue(bot, new DOL.GS.Effects.GameEffectList(bot));
             var enemy = (GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(GameNPC));
             enemy.attackComponent = new AttackComponent(enemy);
+            bot.movementComponent = new NpcMovementComponent(bot);
+            enemy.movementComponent = new NpcMovementComponent(enemy);
             bot.TargetObject = enemy;
 
             var anytime = Style((int)eObjectType.Sword, level: 5, growth: .4);

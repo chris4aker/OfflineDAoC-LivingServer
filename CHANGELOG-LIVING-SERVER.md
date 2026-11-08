@@ -8,15 +8,42 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2.1 (in development)
+
+Movement that doesn't look scripted, first slice. Three ports from other forks (fork survey, 2026-11-08), for autonomous
+gamebots only. They pass automated tests; nobody has played them in game yet.
+
+- **A moving party no longer jerks once a second.** A group follower stopped taking its own faster route (a horse or a
+  town teleporter) from the follow step every turn, which released and re-took its formation follow each second; only the
+  leader picks such a route now. From Nikse77 (b0fcd555), via rambodolphin13's DividedRealms (0996fff6ea), GPL-3.0.
+- **Melee bots chain their styles and stop spamming taunts.** Each usable style is scored: a chain follow-up after its
+  opener landed first, then a back or side style when the bot is there, then reactive styles after an evade, block, parry
+  or miss, then the opener of a chain the bot knows, then the rest by growth. Taunt styles count for little unless the bot
+  is a grouped tank, and two near-equal plain styles take turns. From rambodolphin13's DividedRealms (0146664a), GPL-3.0,
+  merged with 1.2's side, back and front styles (#123).
+- **Melee bots take the flank or the back (positional styles, step 2).** A gamebot that is not a tank and knows a back or
+  side style for its weapon steps behind (or beside) a monster that is fighting someone else, then swings that style. It
+  tries for at most 4 seconds, and again when the monster turns more than 45 degrees or moves more than 100 units (at most
+  every 3 seconds). It only walks to a spot the navigation mesh says it can reach on its own floor; otherwise it stays put.
+  Never for tanks, companions, bots in a player-led group, raid parties, raid dungeons or epic encounters (their own
+  tactics place the raiders). Hand port from shadowofze's OfflineDAoC-True165 (`BotBrain.Flank.cs`, d2187a498), GPL-3.0,
+  without its 1.65-mode switch and its companion "Positioning" option.
+
 ## 1.2 (in development)
 
-**The raid gets out of Xanxicar's stomp** (owner's PC test, 2026-11-07, also in 1.1.2). At the 80% stomp 110 of 185
+**The raid gets out of Xanxicar's stomp** (owner's PC test, 2026-11-07; also in 1.1.3). At the 80% stomp 110 of 185
 Albion raiders died in one second: the order to get clear came only 3% above the threshold (the raid took him from 83% to
 80% in 15 s while a bot needs about 12 s to walk out of 2,500), it reached only the raiders whose target was Xanxicar
 himself (not those on his elites and crystals, nor healers), and nothing kept a bot from being walked back in. Now the
 raid withdraws ten seconds of its own damage ahead of each threshold (at least 6%), every raider near him goes,
-whatever it is fighting, and it waits out there until the stomp is over. The party he fights still holds him. His
+whatever it is fighting, to the nearest open spot on the cave floor clear of the stomp (which is centred on his
+target), and it waits out there until the stomp is over. The party he fights still holds him. His
 stomp is unchanged.
+
+**Two Darkness Falls exits work** (found and fixed by rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
+and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no
+destination for them. Each now takes you to your realm's usual Darkness Falls exit spot, like every other exit. Nothing
+is written to your world: the server supplies the two missing destinations itself. Thank you, rambodolphin13.
 
 **Dungeons and bosses have their lore.** Living Server 1.2 gives every dungeon, epic dungeon, dragon and named
 boss its own lore (written in `data/lore`, one file per place and per boss; see [docs/LORE.md](docs/LORE.md)), and this is

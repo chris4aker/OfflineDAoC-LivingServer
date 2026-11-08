@@ -570,7 +570,7 @@
    "name": "Inquisitor Morg",
    "level": 68,
    "post": "the East Ward",
-   "story": "Morg keeps the Ward's south-western camp near Duke Bimure and asks every demon that passes the same question, whether it is on the Roll, and then asks it to say its line. The Ward calls him the Toll of the Ward and the Gatekeeper calls him a thief of his custom, and neither has ever been able to make Morg stop.",
+   "story": "Morg keeps the Ward's north-western camp near Duke Bimure and asks every demon that passes the same question, whether it is on the Roll, and then asks it to say its line. The Ward calls him the Toll of the Ward and the Gatekeeper calls him a thief of his custom, and neither has ever been able to make Morg stop.",
    "yells": {
     "aggro": [
      "Your line. Say your line."
@@ -589,7 +589,7 @@
    },
    "loremasterTopic": {
     "keyword": "inquisitor morg",
-    "text": "Morg keeps the Ward's south-western camp near Duke Bimure and asks every demon that passes the same question, whether it is on the Roll, and then asks it to say its line. The Ward calls him the Toll of the Ward and the Gatekeeper calls him a thief of his custom, and neither has ever been able to make Morg stop."
+    "text": "Morg keeps the Ward's north-western camp near Duke Bimure and asks every demon that passes the same question, whether it is on the Roll, and then asks it to say its line. The Ward calls him the Toll of the Ward and the Gatekeeper calls him a thief of his custom, and neither has ever been able to make Morg stop."
    }
   },
   {

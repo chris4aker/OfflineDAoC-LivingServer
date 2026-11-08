@@ -35,7 +35,7 @@ namespace DOL.GS.PacketHandler.Client.v168
             {
                 // DF exit IDs have three realm-specific rows. GM privilege must
                 // not turn an ID-only lookup into a cross-realm exit.
-                zonePoint = DarknessFallsExitPolicy.SelectRealmExit(
+                zonePoint = DarknessFallsExitPolicy.ResolveRealmExit(
                     DOLDB<DbZonePoint>.SelectObjects(whereClause), playerRealm, zonePointId);
             }
             else

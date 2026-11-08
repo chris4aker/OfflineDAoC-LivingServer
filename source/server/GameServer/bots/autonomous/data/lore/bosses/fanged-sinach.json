@@ -19,8 +19,8 @@
       "source": "DataQuest 'Catch of the Day' (world data, read 2026-11-06)"
     }
   ],
-  "story": "On the strand at the foot of the Cliffs of Moher, south of where the tidal sheerie Aessa keeps her pool, there is a thing the cliff dwellers call the fanged sinach. It is a sea-beast with too many teeth that comes up out of the shallows at the tide's turn and lies in the wet sand, and the cliff dwellers, who have hunted that strand longer than Tir Urphost has had boats, will not hunt within sight of it.\n\nThe cliff dwellers say it came up the spring the koalinth did, the spring the isle in the west rose out of the mist and the sea ran cold. The fishers of Tir Urphost say it was always there and the cliff dwellers are only trying to blame the isle for everything. Larylle of Ardee sends the realm's young down the strand to it with a necklace that the cliff dwellers recognise, so that they come too.",
-  "legend": "The Fanged Sinach (43) is a big sea-beast on the beach south of Aessa at the foot of the Cliffs of Moher (about 225k/432k, sea level). Part of Catch of the Day (Larylle in Ardee). The cliff dwellers on the strand (34-44) are social and recognise the quest necklace, so expect them too. A group of low to mid 40s. 5-minute respawn.",
+  "story": "On the strand at the foot of the Cliffs of Moher, north of where the tidal sheerie Aessa keeps her pool, there is a thing the cliff dwellers call the fanged sinach. It is a sea-beast with too many teeth that comes up out of the shallows at the tide's turn and lies in the wet sand, and the cliff dwellers, who have hunted that strand longer than Tir Urphost has had boats, will not hunt within sight of it.\n\nThe cliff dwellers say it came up the spring the koalinth did, the spring the isle in the west rose out of the mist and the sea ran cold. The fishers of Tir Urphost say it was always there and the cliff dwellers are only trying to blame the isle for everything. Larylle of Ardee sends the realm's young down the strand to it with a necklace that the cliff dwellers recognise, so that they come too.",
+  "legend": "The Fanged Sinach (43) is a big sea-beast on the beach north of Aessa at the foot of the Cliffs of Moher (about 225k/432k, sea level). Part of Catch of the Day (Larylle in Ardee). The cliff dwellers on the strand (34-44) are social and recognise the quest necklace, so expect them too. A group of low to mid 40s. 5-minute respawn.",
   "yells": {
     "aggro": [
       "(teeth, rows of them, rise out of the wet sand)",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "fanged sinach is 43 on the beach south of aessa",
+      "fanged sinach is 43 on the beach north of aessa",
       "catch of the day. cliff dwellers come too"
     ],
     "aftermathWin": [
@@ -61,7 +61,7 @@
   },
   "loremasterTopic": {
     "keyword": "Fanged Sinach",
-    "text": "A many-toothed sea-beast of the strand under the Cliffs of Moher, south of Aessa's pool. The cliff dwellers say it came up the spring the isle rose; Tir Urphost says it was always there."
+    "text": "A many-toothed sea-beast of the strand under the Cliffs of Moher, north of Aessa's pool. The cliff dwellers say it came up the spring the isle rose; Tir Urphost says it was always there."
   },
   "bookPage": "",
   "chronicle": {

@@ -3283,6 +3283,10 @@ namespace DOL.AI.Brain
                 }
                 if (Body.TargetObject is GameLiving ambushTarget && TryApproachAmbush(ambushTarget))
                     return;
+                // A damage-dealing gamebot steps behind (or beside) a monster fighting someone else, for its back and
+                // side styles (BotBrain.Flank, hand port from True165). Epic tactics above keep raids to themselves.
+                if (Body.TargetObject is GameLiving flankTarget && TryFlank(flankTarget))
+                    return;
                 if (Body.IsStealthed)
                     Body.Stealth(false);
 

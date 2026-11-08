@@ -8,7 +8,7 @@
   "realm": "Hibernia",
   "facts": [
     {
-      "text": "Tachtwort: level 76, model 903 (the gorge's weed body), size 66, right under the northern wall of Altan Garran at about 336,900/319,100; respawn 80 seconds; a plain spawn with no script.",
+      "text": "Tachtwort: level 76, model 903 (the gorge's weed body), size 66, right under the southern wall of Altan Garran at about 336,900/319,100; respawn 80 seconds; a plain spawn with no script.",
       "provenance": "game",
       "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
     },
@@ -28,8 +28,8 @@
       "source": "Living Server"
     }
   ],
-  "story": "The outlanders of Altan Garran, the walled town on the eastern ledges of Cothrom Gorge, have a name for what is killing them: the writhing death. It is the worts. The rot of the gorge grows in flower-shapes everywhere in Cothrom, but the worts are something more, great weeds with minds, and in the town's lifetime they have come up closer to its walls every summer. The outlanders know what the Domnann wardens only suspect. Noirin the enchanter of Altan Garran, who has cut a piece out of each of them and studied it, says the worts are all one growth, runners sent out by the killer-plant Marfoirwort at the head of the gorge, and that cutting a wort is cutting a finger of something that has a great many fingers.\n\nTachtwort is the nearest of them, and the worst for the town, because it grows right under Altan Garran's northern wall. Its name in the town's speech is the choker. It does not drink, as Marfoirwort does, or burst with the storm as Cronwort does; it strangles. Its tendrils go into the cracks of the wall and into the town's drains and up through the floors of the houses on the north side, and the outlanders who lived there have moved out one family at a time. The garda on the north wall stand their watches with knives to cut the tendrils out of the stones, and every morning there are more.\n\nThe outlanders do not cut Tachtwort down themselves. They did, once, in the first years, and the town's oldest bards sing of the night they burned it to the root and the garda drank in the square, and of the morning after, when it was standing under the wall again as if it had never been touched. Since then Fedail, who speaks for the town to strangers, keeps a different arrangement. He asks the strangers who come to the gate to cut it, and to bring him what is left, and he keeps the remains in a sealed jar in the town's storehouse with Fuilwort's and Cronwort's, because Noirin needs pieces of all three to learn where the fingers lead.",
-  "legend": "Tachtwort is a level 76 wort right under the north wall of Altan Garran in Cothrom Gorge, one of the three kills for Writhing Death (with Cronwort and Fuilwort, before Marfoirwort). No script: a plain melee giant at 76, so bring a full, high group; it hits like a raid mob. It respawns in about 80 seconds, so do not rest on its spot. Mind the town: the Outland garda and residents of Altan Garran are set aggressive in the world data and stand a few hundred units away, so pull it away from the wall, not toward it. Bring its remains to Fedail for the quest.",
+  "story": "The outlanders of Altan Garran, the walled town on the eastern ledges of Cothrom Gorge, have a name for what is killing them: the writhing death. It is the worts. The rot of the gorge grows in flower-shapes everywhere in Cothrom, but the worts are something more, great weeds with minds, and in the town's lifetime they have come up closer to its walls every summer. The outlanders know what the Domnann wardens only suspect. Noirin the enchanter of Altan Garran, who has cut a piece out of each of them and studied it, says the worts are all one growth, runners sent out by the killer-plant Marfoirwort at the head of the gorge, and that cutting a wort is cutting a finger of something that has a great many fingers.\n\nTachtwort is the nearest of them, and the worst for the town, because it grows right under Altan Garran's southern wall. Its name in the town's speech is the choker. It does not drink, as Marfoirwort does, or burst with the storm as Cronwort does; it strangles. Its tendrils go into the cracks of the wall and into the town's drains and up through the floors of the houses on the south side, and the outlanders who lived there have moved out one family at a time. The garda on the south wall stand their watches with knives to cut the tendrils out of the stones, and every morning there are more.\n\nThe outlanders do not cut Tachtwort down themselves. They did, once, in the first years, and the town's oldest bards sing of the night they burned it to the root and the garda drank in the square, and of the morning after, when it was standing under the wall again as if it had never been touched. Since then Fedail, who speaks for the town to strangers, keeps a different arrangement. He asks the strangers who come to the gate to cut it, and to bring him what is left, and he keeps the remains in a sealed jar in the town's storehouse with Fuilwort's and Cronwort's, because Noirin needs pieces of all three to learn where the fingers lead.",
+  "legend": "Tachtwort is a level 76 wort right under the south wall of Altan Garran in Cothrom Gorge, one of the three kills for Writhing Death (with Cronwort and Fuilwort, before Marfoirwort). No script: a plain melee giant at 76, so bring a full, high group; it hits like a raid mob. It respawns in about 80 seconds, so do not rest on its spot. Mind the town: the Outland garda and residents of Altan Garran are set aggressive in the world data and stand a few hundred units away, so pull it away from the wall, not toward it. Bring its remains to Fedail for the quest.",
   "yells": {
     "aggro": [
       "(tendrils pull free of the town wall)",
@@ -54,7 +54,7 @@
   },
   "atmosphere": {
     "lairEntry": [
-      "Tendrils in every crack of the north wall.",
+      "Tendrils in every crack of the south wall.",
       "Houses on this side stand empty."
     ],
     "phases": [
@@ -67,7 +67,7 @@
   },
   "botLines": {
     "briefing": [
-      "tachtwort is 76, under altan garran's north wall. [writhing death|full high group]",
+      "tachtwort is 76, under altan garran's south wall. [writhing death|full high group]",
       "no script, just hits like a truck",
       "pull it away from the town. [garda are aggro|dont drag it into town]",
       "respawns in about 80 sec. [dont rest on it|move off]"
@@ -76,7 +76,7 @@
       "tachtwort down. [fedail gets the remains|bring the piece]",
       "pulled it off the wall like we said. [clean|nice]",
       "one wort down, two to go. [fuilwort next|then cronwort]",
-      "the north wall garda can sleep tonight"
+      "the south wall garda can sleep tonight"
     ],
     "aftermathLoss": [
       "pulled it into the town and the garda joined. [lol|wipe]",
@@ -87,15 +87,15 @@
     "rumour": [
       "[heard|someone said] altan garran burned tachtwort to the root once and it was back by morning",
       "the outlanders say the worts are fingers of marfoirwort. [the quest says so too|source of the worts]",
-      "[word is|heard] the north side houses in altan garran are all empty because of tachtwort",
+      "[word is|heard] the south side houses in altan garran are all empty because of tachtwort",
       "fedail keeps the wort remains in a sealed jar in the storehouse, they say"
     ]
   },
   "loremasterTopic": {
     "keyword": "Tachtwort",
-    "text": "The choker, a great wort under the north wall of Altan Garran in [Cothrom Gorge]. Its tendrils come up through the town's floors. The outlanders say it is a finger of [Marfoirwort]."
+    "text": "The choker, a great wort under the south wall of Altan Garran in [Cothrom Gorge]. Its tendrils come up through the town's floors. The outlanders say it is a finger of [Marfoirwort]."
   },
-  "bookPage": "Noirin the enchanter of Altan Garran: I have cut a piece out of each of the worts and they are the same growth. Tachtwort under our north wall, Fuilwort to the west, Cronwort on the floor below. They are runners, fingers of one hand, and the hand is Marfoirwort at the head of the gorge. We burned Tachtwort to the root in my grandmother's time and it stood under the wall again by morning. Now Fedail asks strangers to cut it, and keeps what is left in a sealed jar for me. When I have enough pieces I will know where the fingers go.",
+  "bookPage": "Noirin the enchanter of Altan Garran: I have cut a piece out of each of the worts and they are the same growth. Tachtwort under our south wall, Fuilwort to the west, Cronwort on the floor below. They are runners, fingers of one hand, and the hand is Marfoirwort at the head of the gorge. We burned Tachtwort to the root in my grandmother's time and it stood under the wall again by morning. Now Fedail asks strangers to cut it, and keeps what is left in a sealed jar for me. When I have enough pieces I will know where the fingers go.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Tachtwort in Cothrom Gorge in {minutes} minutes.",
     "loss": "Tachtwort turned back {realm}'s band under {raidLeader} in Cothrom Gorge after {minutes} minutes."
