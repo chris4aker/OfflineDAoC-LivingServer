@@ -51,6 +51,12 @@ namespace LivingServerSetup
                 Log.Write("WOULD INSTALL " + Payload.BuildName + " (" + Payload.DisplayName + ") for Offline DAoC " + Payload.BaseRelease);
                 return 0;
             }
+            if (args.Get("--classify-download-error") != null)
+            {
+                // tests: what Setup makes of a downloader error message (busy server, dropped connection, other)
+                Log.Write("DOWNLOAD ERROR CLASS " + Engine.ClassifyDownloadError(args.Get("--classify-download-error")));
+                return 0;
+            }
             if (args.Has("--scan"))
             {
                 foreach (var p in GameScanner.FindGames(Path.GetDirectoryName(Application.ExecutablePath)).Concat(args.All("--game")))
