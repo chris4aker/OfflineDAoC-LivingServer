@@ -10,6 +10,11 @@ Older entries below keep the names they were written with.
 
 ## Beta 1.1.3 (hotfix, in development)
 
+**Two Darkness Falls exits work** (found and fixed by rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
+and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no
+destination for them. Each now takes you to your realm's usual Darkness Falls exit spot, like every other exit. Nothing
+is written to your world: the server supplies the two missing destinations itself. Thank you, rambodolphin13.
+
 **The raid gets out of Xanxicar's stomp** (owner's PC test, 2026-11-07). At the 80% stomp 110 of 185 Albion raiders died
 in one second. The order to get clear came only 3% above the threshold, it reached only the raiders whose target was
 Xanxicar himself (not those on his elites and crystals, nor healers), the spot it sent them to lay in the cave's rock,
