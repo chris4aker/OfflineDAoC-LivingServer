@@ -398,15 +398,24 @@ Today 145 encounters are level 70 or more: 31 have a raid tactic, 29 the dragon-
 route (won on numbers), 10 are Darkness Falls with no raid AI (Legion, Behemoth, the princes, the High Lords,
 Beliathan) and 20 have no raid. Built the way 1.2's epics were: research, rules, tactic, unit tests, container runs at
 period sizes, a played raid on the owner's PC, and the raid-skill layer so a realm learns each fight.
-- [ ] Step 1: every 70+ encounter ranked (blocking today, iconic to 2003 players), batches of about 10 (started 2026-11-08)
-- [ ] Step 2: period research on how 2002-2004 raids did Legion, the princes, Behemoth, Apocalypse, Balor, Morgana and
-      the top route-only bosses; Wayback jobs on the owner's PC (started 2026-11-08)
-- [ ] Step 3: a Darkness Falls raid design for the owner: muster and route through the levels, named priority, pet parking
-      for the princes, Legion's platform positions, the way down, add-wave parties, kill-heal discipline, Behemoth, enemy
-      realms inside
-- [ ] Step 4: build in slices (Legion first, then the princes and High Lords, then Behemoth; then the route-only bosses in
-      batches)
+- [x] Step 1: every 70+ encounter ranked (blocking today, iconic to 2003 players), batches of about 10 (2026-11-08)
+- [x] Step 2: period research on how 2002-2004 raids did Legion, the princes, Behemoth, Apocalypse, Balor, Morgana and
+      the top route-only bosses (2026-11-08); Wayback jobs `0d1`-`0d4` queued on the owner's PC to fill the gaps
+- Owner decisions (2026-11-08 16:06):
+  - Bot raids never fight Behemoth (Mythic: he can't be killed). A killable Behemoth is saved for 2.0 (below).
+  - A raider Legion ports runs back west through Behemoth's hall to the zone point "DF LEGION PURGATORY", as players
+    did, instead of the 5 s recall. To check: the hall's navmesh and bots taking that zone point.
+  - Legion's bladeturn strips and soul blast stay (no period source either way); the raid learns not to bubble his
+    target, through familiarity. Revisit if the Wayback fetch shows they are not of the era.
+  - The princes and High Lords get small teams of 1-3 groups with no pets, not the whole raid.
+- [ ] Step 3: a Darkness Falls raid design for the owner: muster and route through the levels, named priority, prince
+      teams, Legion close in with an add team, kill-heal and bubble discipline, the run back from Behemoth's hall,
+      enemy realms inside
+- [ ] Step 4: build in slices (Legion first, then the princes and High Lords; then the route-only bosses in batches)
 - [ ] Step 5: the owner picks which open-world 70+ named deserve realm raids
+- [ ] Later in 2.0: a killable Behemoth (owner 2026-11-08: "save for 2.0"). Proposal, needs his OK on the rules: the 26
+      clinging souls in his hall heal him while they live, so a raid clears them first, then wears him down, for a
+      realm-wide announcement. One recorded 2009 attempt got him to about 35% before he healed back.
 
 **The complete realm.**
 - [ ] Crafting M3–M6 (with no Exchange tax or new sink until the ledger shows a need); the war effort. Start M2–M3
