@@ -20,8 +20,8 @@ unchanged. A realm raid's own event camp is never benched by the generic camp-ro
 **The raid kills Spindler Broodmother's newborns before they kill its healers** (play test, Galladoria). Her newborn
 spindlers (one or two every half minute, 8,000 health each, going for bards, druids, mentalists and wardens) piled up to
 11 alive while the raid's casters and archers were split one party per newborn, and they killed 62 of the 120 raiders who
-died in the lost attempt. Now all the casters and archers take one newborn at a time (the one on a healer first), and a
-party's melee peel a newborn off their own party's healer. Her health, damage, tether and spawn rate are unchanged.
+died in the lost attempt. Now all the casters and archers take one newborn at a time (the one with the least health
+left, so they finish it together), and a party's melee peel a newborn off their own party's casters and healers. Her health, damage, tether and spawn rate are unchanged.
 
 **Dungeons and bosses have their lore.** Living Server 1.2 gives every dungeon, epic dungeon, dragon and named
 boss its own lore (written in `data/lore`, one file per place and per boss; see [docs/LORE.md](docs/LORE.md)), and this is

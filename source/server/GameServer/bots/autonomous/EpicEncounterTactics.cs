@@ -71,7 +71,7 @@ namespace DOL.GS
             public bool AddsInOrder { get; init; }
             /// <summary>The ranged adds hunt the raid's healers and pile up when split one per party (Spindler Broodmother's
             /// newborns, play test duo3: up to 11 alive, 62 of the raid's deaths): casters and archers all take the same one,
-            /// the one on a healer first, and a party's melee peel one off their own party's healer.</summary>
+            /// the one with the least health left, and a party's melee peel one off their own party's casters and healers.</summary>
             public bool FocusRangedAdds { get; init; }
 
             public bool HasHazards => Hazards is { Length: > 0 } && HazardRadius > 0;
@@ -240,22 +240,29 @@ namespace DOL.GS
                 .OrderBy(n => Array.IndexOf(t.RangedAdds, n.GetType().Name)).ThenBy(n => n.ObjectID).ToArray();
         }
 
-        /// <summary>The ranged add the whole raid's casters and archers take: the first one on a healer, else the first.</summary>
-        public static GameNPC FocusedRangedAdd(GameNPC[] adds, Func<GameLiving, bool> isHealer = null)
+        /// <summary>The ranged add the whole raid's casters and archers take: the one with the least health left (ties: the
+        /// lowest object id), so every caster finishes the same one. Play test duo5: "the one on a healer first" changed with
+        /// every newborn's target and the casters still spread over 3-8 of them.</summary>
+        public static GameNPC FocusedRangedAdd(GameNPC[] adds, Func<GameNPC, int> healthPercent = null)
         {
-            isHealer ??= IsHealer;
-            return adds.FirstOrDefault(a => a.TargetObject is GameLiving victim && isHealer(victim)) ?? adds[0];
+            if (adds.Length == 1) return adds[0];
+            healthPercent ??= a => a.HealthPercent;
+            return adds.OrderBy(healthPercent).ThenBy(a => a.ObjectID).First();
         }
 
-        /// <summary>A ranged add attacking a healer of this raider's own party (its melee peel it off), or null.</summary>
+        /// <summary>A ranged add attacking a caster or healer of this raider's own party (its melee peel it off), or null.</summary>
         public static GameNPC PeeledRangedAdd(GameLiving raider, GameNPC[] adds, Func<GameLiving, bool> inParty = null,
-            Func<GameLiving, bool> isHealer = null)
+            Func<GameLiving, bool> isSoft = null)
         {
             if (raider == null) return null;
             inParty ??= victim => raider.Group?.IsInTheGroup(victim) == true;
-            isHealer ??= IsHealer;
-            return adds.FirstOrDefault(a => a.TargetObject is GameLiving victim && victim != raider && isHealer(victim) && inParty(victim));
+            isSoft ??= IsSoftTarget;
+            return adds.FirstOrDefault(a => a.TargetObject is GameLiving victim && victim != raider && isSoft(victim) && inParty(victim));
         }
+
+        /// <summary>A healer or a caster (the ones Spindler's newborns kill: duo5, 46 of their 50 kills).</summary>
+        private static bool IsSoftTarget(GameLiving living) =>
+            IsHealer(living) || living is GameBot bot && BotSpellPower.IsOffensiveCaster(bot);
 
         private static bool IsHealer(GameLiving living) =>
             BotPartyRoles.IsHealingClass((eCharacterClass)EncounterTargets.ClassId(living));

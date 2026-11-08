@@ -8,7 +8,7 @@ namespace DOL.UnitTests
     /// Spindler Broodmother (play test duo3, Galladoria, 2026-11-07): her newborn spindlers (1-2 every half minute, 8,000
     /// health, they go for bards, druids, mentalists and wardens) piled up to 11 alive while the raid's casters and archers
     /// were split one party per add, and killed 62 of the 120 raiders who died in attempt 2. Now the casters and archers all
-    /// take one newborn (the one on a healer first) and a party's melee peel a newborn off their own party's healer.
+    /// take one newborn (the one with the least health left) and a party's melee peel a newborn off their own party's casters and healers.
     /// </summary>
     [TestFixture]
     public class UT_SpindlerNewbornFix
@@ -24,19 +24,21 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void TheCastersAndArchersAllTakeTheNewbornOnAHealer()
+        public void TheCastersAndArchersAllFinishTheSameNewborn()
         {
-            GameBot druid = Bot(), hero = Bot();
+            // Play test duo5: "the one on a healer first" changed with every newborn's target, and the casters still spread
+            // over 3-8 of them. The one with the least health left is the same one for every caster until it dies.
             GameNPC a = Npc(), b = Npc(), c = Npc();
-            a.TargetObject = hero; b.TargetObject = druid; c.TargetObject = null;
-            bool Healer(GameLiving l) => l == druid;
-            Assert.That(EpicEncounterTactics.FocusedRangedAdd([a, b, c], Healer), Is.SameAs(b));
-            b.TargetObject = hero;
-            Assert.That(EpicEncounterTactics.FocusedRangedAdd([a, b, c], Healer), Is.SameAs(a), "none on a healer: the first");
+            var health = new System.Collections.Generic.Dictionary<GameNPC, int> { [a] = 100, [b] = 40, [c] = 70 };
+            Assert.That(EpicEncounterTactics.FocusedRangedAdd([a, b, c], n => health[n]), Is.SameAs(b));
+            health[b] = 100;
+            Assert.That(EpicEncounterTactics.FocusedRangedAdd([a, b, c], n => health[n]), Is.SameAs(c));
+            health[c] = 100;
+            Assert.That(EpicEncounterTactics.FocusedRangedAdd([a, b, c], n => health[n]), Is.SameAs(a), "all full: a fixed order");
         }
 
         [Test]
-        public void APartysMeleePeelANewbornOffTheirOwnHealer()
+        public void APartysMeleePeelANewbornOffTheirOwnCastersAndHealers()
         {
             GameBot melee = Bot(), ownDruid = Bot(), otherDruid = Bot(), ownHero = Bot();
             GameNPC onOther = Npc(), onOwnHero = Npc(), onOwnDruid = Npc();

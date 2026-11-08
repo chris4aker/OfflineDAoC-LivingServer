@@ -1191,7 +1191,7 @@
      "difficulty": "easy for the current raid AI"
     },
     "adds@230": {
-     "tactic": "In the raid AI (EpicEncounterTactics): focused ranged adds: every caster and archer takes the same newborn (the one on a healer first); a party's melee peel one off their own healer; the rest stay on her.",
+     "tactic": "In the raid AI (EpicEncounterTactics): focused ranged adds: every caster and archer takes the same newborn (the one with the least health left); a party's melee peel one off their own casters and healers; the rest stay on her.",
      "difficulty": "needs new raid AI"
     }
    },
@@ -1208,7 +1208,7 @@
     ],
     "focusRangedAdds": true,
     "since": "1.2",
-    "summary": "Ranged adds, focused: all the raid's casters and archers take the same newly-born spindler (8,000 health, 1-2 every 25-45 s; they go for bards, druids, mentalists and wardens), the one on a healer first, and a party's melee peel a newborn off their own party's healer; the rest stay on her (play test duo3: split one party per newborn, up to 11 piled up and killed 62 raiders). Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on."
+    "summary": "Ranged adds, focused: all the raid's casters and archers take the same newly-born spindler (8,000 health, 1-2 every 25-45 s; they go for bards, druids, mentalists and wardens), the one with the least health left, and a party's melee peel a newborn off their own party's casters and healers; the rest stay on her (play test duo3: split one party per newborn, up to 11 piled up and killed 62 raiders). Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on."
    }
   },
   "galladoria/tine": {
