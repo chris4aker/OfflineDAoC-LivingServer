@@ -33,7 +33,7 @@ namespace DOL.GS
         /// <summary>A raider's role for the logs: pet, tank, healer, caster, archer or melee.</summary>
         public static string RoleOf(GameLiving living)
         {
-            if (living is GameNPC { Brain: DOL.AI.Brain.IControlledBrain }) return "pet";
+            if (living is not GameBot && living is GameNPC { Brain: DOL.AI.Brain.IControlledBrain }) return "pet"; // a gamebot's BotBrain is a controlled brain too
             int c = EncounterTargets.ClassId(living);
             if (c <= 0) return living is GameNPC ? "npc" : "other";
             var cls = (eCharacterClass)c;

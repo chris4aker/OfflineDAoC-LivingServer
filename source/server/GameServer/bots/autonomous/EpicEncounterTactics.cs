@@ -325,7 +325,7 @@ namespace DOL.GS
 
         /// <summary>The living is a tank (class role Tank; a pet never is).</summary>
         public static bool IsTankLiving(GameLiving living) =>
-            living != null && living is not GameNPC { Brain: IControlledBrain } &&
+            living != null && (living is GameBot || living is not GameNPC { Brain: IControlledBrain }) &&
             EncounterTargets.ClassId(living) is int c and > 0 && BotPartyRoles.For((eCharacterClass)c) == BotPartyRole.Tank;
 
         /// <summary>
