@@ -207,6 +207,8 @@ public static class AutonomousBotDebates
 
     private sealed class Running
     {
+        /// <summary>The scene's exchange id in the transcript (CHAT_LINE ex=).</summary>
+        public readonly long Exchange = AutonomousChatExchange.NewId();
         public VC.Scene Scene;
         public Dictionary<string, long> Cast;
         public Dictionary<string, string> Shared;
@@ -575,7 +577,8 @@ public static class AutonomousBotDebates
                 continue;
             string filled = VC.ForTimeOfDay(filledVariants[Random.Shared.Next(filledVariants.Length)], DateTime.Now.Hour);
             string line = VC.Style(filled, AutonomousBotVoices.Corpus.VoiceFor(speaker.DatabaseID), Random.Shared);
-            AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
+            using (AutonomousChatExchange.Tag(running.StoryKey != null ? "storyline" : "debate", running.Exchange, running.Beat - 1, beat.Role, speaker))
+                AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
             // In the realm's thread too, so "why?" or "lol" after a debate line goes to the bot that said it.
             AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), speaker, line, "chat");
             lock (Sync)

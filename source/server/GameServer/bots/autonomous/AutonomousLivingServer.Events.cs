@@ -436,10 +436,12 @@ public static partial class AutonomousLivingServer
         {
             if (AutonomousBotVoices.TryEventLine(bot, "nemesis", out string line, slots: slots))
             {
-                Speak(bot, Channel.Faction, line);
-                // Beta 1.1.2: the realm commiserates, a short burst.
+                long exchange = AutonomousChatExchange.NewId();
+                using (AutonomousChatExchange.Tag("nemesis", exchange, 0, "teller", bot))
+                    Speak(bot, Channel.Faction, line);
+                // Beta 1.1.2: the realm commiserates, a short burst (1.1.3: one or two of them).
                 AutonomousChatBursts.React(bot, bot.Realm, "nemesis", line, ["complaint"],
-                    new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = bot.Name });
+                    new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = bot.Name }, exchange: exchange);
             }
         });
     }
@@ -466,10 +468,12 @@ public static partial class AutonomousLivingServer
         {
             if (AutonomousBotVoices.TryEventLine(bot, "revenge", out string line, slots: slots))
             {
-                Speak(bot, Channel.Faction, line);
-                // Beta 1.1.2: a nemesis paid back draws cheers, a short burst.
+                long exchange = AutonomousChatExchange.NewId();
+                using (AutonomousChatExchange.Tag("revenge", exchange, 0, "teller", bot))
+                    Speak(bot, Channel.Faction, line);
+                // Beta 1.1.2: a nemesis paid back draws cheers, a short burst (1.1.3: one or two of them).
                 AutonomousChatBursts.React(bot, bot.Realm, "revenge", line, ["boast"],
-                    new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = bot.Name });
+                    new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = bot.Name }, exchange: exchange);
             }
         });
     }

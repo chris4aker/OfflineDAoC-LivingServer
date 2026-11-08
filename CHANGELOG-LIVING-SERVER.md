@@ -31,6 +31,21 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
 
 ## 1.2 (in development)
 
+**/faction that holds together** (owner 2026-11-08, watching /faction: "faction feels disconnected... The chats MUST be
+top notch"). The same fix as Beta 1.1.3 (see its entry: conversations said in order with each speaker in its part,
+answers only from bots they are true of, follow-ups that fit, reactions in proportion, one short reaction in ten
+minutes, and every `CHAT_LINE` naming its source, exchange, line and the speaker's class and level), on the 1.2 line with
+its reply budget: a thread or a burst is still allowed or held once, as a whole, and its lines count as replies. Also on
+1.2:
+- **A story's teller doesn't repeat itself either.** "dead. again" opened 45 death stories in the overnight soak; a
+  teller's short line the realm heard in the last ten minutes is now said another way, and a story whose first line
+  can't be said isn't told.
+- **Exchange adverts in the period's words.** When no written trade line fits a listing, the seller says "anyone want
+  ... ? make me an offer" or "pc ...?" (was "Does anybody want to make me an offer on ...?"), and the answers are the
+  written trade answers, not "A merchant price can provide a reasonable minimum value." followed by "Fair enough. Safe
+  travels." That formal closing now only comes with bot voices off.
+- **Checked:** automated and simulated only, not played. SIMULATION_NUMBERS_12
+
 **Two Darkness Falls exits work** (found and fixed by rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
 and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no
 destination for them. Each now takes you to your realm's usual Darkness Falls exit spot, like every other exit. Nothing
