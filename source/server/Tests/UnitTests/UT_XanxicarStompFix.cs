@@ -49,6 +49,18 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterTactics.BlastRallyOnPath(null, boss, 2500), Is.Null);
         }
 
+        // PC 2026-11-08 (the floor-path rally on the owner's copy): he followed the raid out to the path spot, 2,944 from his
+        // spawn; at 40% the only clear path spots lay behind him and 54 raiders died walking there. Each raider now takes the
+        // clear spot nearest to it, of the path's and of 16 floor directions around him.
+        [Test]
+        public void EachRaiderTakesTheClearSpotNearestToIt()
+        {
+            Vector3[] spots = [new(26000, 34000, 15900), new(31800, 35400, 14550), new(29100, 31500, 16000)];
+            Assert.That(EpicEncounterTactics.NearestBlastSpot(spots, new(28800, 34300, 15850)), Is.EqualTo(spots[0]));
+            Assert.That(EpicEncounterTactics.NearestBlastSpot(spots, new(29500, 34500, 15800)), Is.EqualTo(spots[1]).Or.EqualTo(spots[2]));
+            Assert.That(EpicEncounterTactics.NearestBlastSpot([], new(0, 0, 0)), Is.Null);
+        }
+
         [Test]
         public void ARaiderSentOutIsHeldThereUntilTheHoldEnds()
         {

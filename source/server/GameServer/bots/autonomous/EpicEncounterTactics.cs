@@ -389,6 +389,10 @@ namespace DOL.GS
             if (d > t.BlastRadius + 100) return null;
             // In a closed cave the straight-out spot is inside the rock (duo6: raiders told to go stood at a median 763 from him
             // and died there): walk out along the floor towards the dungeon's way in instead.
+            // Each raider takes the reachable spot clear of the blast nearest to it, so nobody walks past him to get out
+            // (PC 2026-11-08: he had followed the raid to the one path spot, 2,944 from his spawn; at 40% the only clear path
+            // spots lay behind him and 54 raiders died walking there).
+            if (NearestBlastSpot(BlastSpots(boss, t.BlastRadius), r) is Vector3 spot) return spot;
             Vector3[] path;
             lock (BlastPaths) BlastPaths.TryGetValue(boss, out path);
             if (BlastRallyOnPath(path, b, t.BlastRadius) is Vector3 rally) return rally;
@@ -444,6 +448,64 @@ namespace DOL.GS
                 Log.Info($"EPIC_BLAST_PATH boss=\"{boss.Name}\" nodes={nodes.Length} rally=" +
                          (BlastRallyOnPath(nodes, new(boss.SpawnPoint.X, boss.SpawnPoint.Y, boss.SpawnPoint.Z), For(boss).BlastRadius) is Vector3 r
                              ? $"{(int)r.X},{(int)r.Y},{(int)r.Z}" : "none"));
+        }
+
+        private static readonly Dictionary<(GameNPC, int, int), Vector3[]> BlastSpotCache = new();
+
+        /// <summary>Floor spots clear of a blast of <paramref name="radius"/> around the boss where he stands now: the clear
+        /// nodes of his floor path to the way in, and spots 2,750-3,300 out in 16 directions that have floor and a walked
+        /// corridor from his floor. Cached per 256-unit cell of his position.</summary>
+        public static Vector3[] BlastSpots(GameNPC boss, int radius)
+        {
+            var key = (boss, boss.X >> 8, boss.Y >> 8);
+            lock (BlastSpotCache)
+                if (BlastSpotCache.TryGetValue(key, out Vector3[] cached)) return cached;
+            var spots = new List<Vector3>();
+            Vector3 b = new(boss.X, boss.Y, boss.Z);
+            Vector3[] path;
+            lock (BlastPaths) BlastPaths.TryGetValue(boss, out path);
+            if (path != null)
+                spots.AddRange(path.Where(n => Vector2.Distance(new(n.X, n.Y), new(b.X, b.Y)) >= radius + 200));
+            var nav = PathfindingProvider.Instance;
+            Zone zone = boss.CurrentZone;
+            if (zone != null && nav.IsAvailable && nav.HasNavmesh(zone) &&
+                nav.GetClosestPoint(zone, b, 128, 128, 256, nav.DefaultFilters) is Vector3 floor)
+            {
+                for (int d = 0; d < 16; d++)
+                {
+                    double a = d * Math.PI / 8;
+                    foreach (int r in new[] { radius + 250, radius + 500, radius + 800 })
+                    {
+                        var probe = new Vector3(b.X + (float)(Math.Cos(a) * r), b.Y + (float)(Math.Sin(a) * r), b.Z);
+                        if (nav.GetClosestPoint(zone, probe, 200, 200, 600, nav.DefaultFilters) is not Vector3 at ||
+                            Vector2.Distance(new(at.X, at.Y), new(b.X, b.Y)) < radius + 150 ||
+                            !AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, floor, at)) continue;
+                        spots.Add(at);
+                        break;
+                    }
+                }
+            }
+            Vector3[] result = spots.ToArray();
+            lock (BlastSpotCache)
+            {
+                if (BlastSpotCache.Count > 256) BlastSpotCache.Clear();
+                BlastSpotCache[key] = result;
+            }
+            return result;
+        }
+
+        /// <summary>The spot nearest to the raider (pure), or null when there is none.</summary>
+        public static Vector3? NearestBlastSpot(Vector3[] spots, Vector3 raider)
+        {
+            if (spots is not { Length: > 0 }) return null;
+            Vector3 best = spots[0];
+            float bestDistance = float.MaxValue;
+            foreach (Vector3 s in spots)
+            {
+                float d = Vector3.DistanceSquared(s, raider);
+                if (d < bestDistance) { bestDistance = d; best = s; }
+            }
+            return best;
         }
 
         /// <summary>The arrival point of the zone point into the boss's region nearest to it, or null.</summary>
@@ -551,6 +613,7 @@ namespace DOL.GS
             lock (BlastRates) { BlastRates.Clear(); System.Threading.Volatile.Write(ref _blastBosses, 0); }
             lock (BlastClocks) BlastClocks.Clear();
             lock (BlastPaths) BlastPaths.Clear();
+            lock (BlastSpotCache) BlastSpotCache.Clear();
             lock (StandOffHolds) { StandOffHolds.Clear(); System.Threading.Volatile.Write(ref _standOffHoldCount, 0); }
         }
 
