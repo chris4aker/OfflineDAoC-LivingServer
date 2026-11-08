@@ -364,7 +364,7 @@
   },
   {
    "name": "AllowFunusWeaponPuzzle",
-   "value": "true",
+   "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
    "line": 84,
    "serverProperty": "npc / epic_funus_weapon_puzzle",
@@ -5060,8 +5060,8 @@
      ],
      "restored": true,
      "verified": true,
-     "tactic": "On: the original is back (AllowFunusWeaponPuzzle is true) and the raid AI plays it (see Encounters with raid tactics).",
-     "difficulty": "easy for the current raid AI",
+     "tactic": "Off today (AllowFunusWeaponPuzzle is false). To play it: follow the mechanic.",
+     "difficulty": "off today",
      "tacticSource": "default for its kind",
      "key": "offline_change@1920"
     },
