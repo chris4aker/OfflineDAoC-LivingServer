@@ -742,9 +742,9 @@ namespace DOL.GS
                     if (advice.StandAt is not Vector3 spot) return false;
                     if (bot.IsCasting) bot.StopCurrentSpellcast();
                     bot.StopAttack();
-                    // A melee position order (EncounterMeleeStations): the walk to the spot ends the old follow, so the
-                    // next attack follows at the order's distance instead of closing back in.
-                    if (EncounterMeleeStations.MinimumFollowFor(bot, advice.Target, GameLoop.GameLoopTime) != null) bot.StopFollowing();
+                    // The walk to the spot ends the old melee follow (it outlives StopAttack and pulls the bot back onto its
+                    // target: duo8, Xanxicar), so the next attack follows at its own (or the order's) distance from there.
+                    if (bot.FollowTarget != null && (bot.FollowTarget == advice.Target || bot.FollowTarget == target)) bot.StopFollowing();
                     bot.PathTo(new Point3D((int)spot.X, (int)spot.Y, (int)spot.Z), bot.MaxSpeed);
                     LogDecision(bot, target, advice);
                     return true;
