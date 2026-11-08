@@ -214,8 +214,8 @@ untouched.
 ### Known issues (it's a beta)
 
 - **/faction can get too busy.** On an evening with about 600 bots a realm (the 1.1.3 build, whose chat is 1.1.2's) it
-  ran well above its ceiling, up to 20 lines a minute, with bursts of 10 to 16 reactions. Being fixed. Meanwhile, lower **How much they talk** in the
-  Living Server tab.
+  ran well above its ceiling, up to 20 lines a minute, with bursts of 10 to 16 reactions. Being fixed. Meanwhile,
+  lower **How much they talk** in the Living Server tab.
 - **Bot raids skip Scurceol Hyrde.** On a real install the raid killed 1 of his 4 orbs, set him aside and went on to
   the other bosses. Being fixed.
 - **Xanxicar's stomp can kill most of the raid.** Fixed in 1.1.3.
