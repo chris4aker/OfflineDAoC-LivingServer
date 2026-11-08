@@ -303,19 +303,55 @@ namespace DOL.GS
         /// <summary>And stay out this long after the boss crossed it (Xanxicar: 1 s to the announcement, a 6 s cast).</summary>
         public const long BlastAftermathMilliseconds = 9_000;
         private static readonly Dictionary<GameNPC, (int Health, int Crossed, long Tick)> BlastClocks = new();
+        // The boss's health loss rate (percent a second), sampled once a second and smoothed, and when it was last seen in a
+        // fight: raiders near it withdraw whatever they are fighting (BlastNear).
+        private static readonly Dictionary<GameNPC, (int Health, long Tick, double Rate, long Seen)> BlastRates = new();
+        private static int _blastBosses;
+
+        /// <summary>The boss's current health loss in percent a second (0 when unknown).</summary>
+        public static double BlastRate(GameNPC boss, long now)
+        {
+            int hp = boss.HealthPercent;
+            lock (BlastRates)
+            {
+                if (!BlastRates.TryGetValue(boss, out var r) || hp > r.Health + 20) r = (hp, now, 0, now);
+                if (now - r.Tick >= 1_000)
+                {
+                    double sample = Math.Max(0, (r.Health - hp) * 1000.0 / (now - r.Tick));
+                    r = (hp, now, r.Rate <= 0 ? sample : r.Rate * 0.6 + sample * 0.4, now);
+                }
+                else r = r with { Seen = now };
+                if (BlastRates.Count > 64) BlastRates.Clear();
+                BlastRates[boss] = r;
+                System.Threading.Volatile.Write(ref _blastBosses, BlastRates.Count);
+                return r.Rate;
+            }
+        }
 
         /// <summary>The next threshold the boss has not crossed yet at <paramref name="healthPercent"/>, or 0.</summary>
         public static int NextBlastBelow(int[] thresholds, int healthPercent) =>
             thresholds?.Where(t => t < healthPercent).DefaultIfEmpty(0).Max() ?? 0;
 
         /// <summary>True in the withdraw window: within the margin above a threshold, or just after crossing one.</summary>
-        public static bool InBlastWindow(int[] thresholds, int healthPercent, long sinceCrossMilliseconds)
+        public static bool InBlastWindow(int[] thresholds, int healthPercent, long sinceCrossMilliseconds, double percentPerSecond = 0)
         {
             if (thresholds is not { Length: > 0 }) return false;
             int next = NextBlastBelow(thresholds, healthPercent);
-            if (next > 0 && healthPercent - next <= BlastMarginPercent) return true;
+            if (next > 0 && healthPercent - next <= BlastMargin(percentPerSecond)) return true;
             return sinceCrossMilliseconds >= 0 && sinceCrossMilliseconds < BlastAftermathMilliseconds;
         }
+
+        /// <summary>The raid withdraws this long before the boss reaches a blast threshold: a raider beside him walks out of
+        /// Xanxicar's 2,500 in about 12 s and the stomp lands 7 s after the threshold (1 s announcement, 6 s cast).</summary>
+        public const double BlastLeadSeconds = 10;
+        /// <summary>And never closer than this above it (the 1.1.2 margin was 3%).</summary>
+        public const int BlastMinimumMarginPercent = 6;
+
+        /// <summary>How far above a threshold the withdraw starts (pure): what the raid takes off him in
+        /// <see cref="BlastLeadSeconds"/> at its current rate, at least <see cref="BlastMinimumMarginPercent"/>. PC 1.2 test,
+        /// 2026-11-07: 185 Albion raiders took Xanxicar 83% -> 80% in 15 s; 110 died in the stomp, 158 were within 1,000.</summary>
+        public static int BlastMargin(double percentPerSecond) =>
+            Math.Max(BlastMinimumMarginPercent, (int)Math.Ceiling(Math.Max(0, percentPerSecond) * BlastLeadSeconds));
 
         private static int NextBlast(GameNPC boss) => NextBlastBelow(For(boss)?.BlastThresholds, boss.HealthPercent + 1);
 
@@ -343,7 +379,8 @@ namespace DOL.GS
         public static Vector3? BlastWithdraw(GameLiving raider, GameNPC boss, long now)
         {
             Tactic t = For(boss);
-            if (t is not { HasBlast: true } || !InBlastWindow(t.BlastThresholds, boss.HealthPercent, SinceBlastCross(boss, now)))
+            if (t is not { HasBlast: true } || !boss.InCombat ||
+                !InBlastWindow(t.BlastThresholds, boss.HealthPercent, SinceBlastCross(boss, now), BlastRate(boss, now)))
                 return null;
             if (boss.TargetObject is GameLiving anchor && (anchor == raider || anchor.Group != null && anchor.Group == raider.Group))
                 return null;
@@ -353,6 +390,95 @@ namespace DOL.GS
             Vector2 dir = d < 1 ? new Vector2(1, 0) : Vector2.Normalize(new Vector2(r.X - b.X, r.Y - b.Y));
             Vector2 at = new Vector2(b.X, b.Y) + dir * (t.BlastRadius + 200);
             return new Vector3(at.X, at.Y, r.Z);
+        }
+
+        /// <summary>A blasting boss in its withdraw window near <paramref name="raider"/>, and where to wait it out, whatever
+        /// the raider is fighting (PC 2026-11-07: raiders on Xanxicar's elites and crystals never got the order, which was
+        /// given only to raiders whose target was Xanxicar himself).</summary>
+        public static (GameNPC Boss, Vector3 Safe)? BlastNear(GameLiving raider, long now)
+        {
+            if (raider == null) return null;
+            GameNPC[] bosses;
+            lock (BlastRates)
+                bosses = BlastRates.Where(b => now - b.Value.Seen < 30_000).Select(b => b.Key).ToArray();
+            foreach (GameNPC boss in bosses)
+                if (Present(boss) && boss.CurrentRegionID == raider.CurrentRegionID && BlastWithdraw(raider, boss, now) is Vector3 safe)
+                    return (boss, safe);
+            return null;
+        }
+
+        /// <summary>How long a raider sent out of a blast keeps away (its controller does not walk it back meanwhile).</summary>
+        public const long BlastHoldMilliseconds = 4_000;
+        private static readonly Dictionary<GameLiving, (Vector3 Spot, long Until)> StandOffHolds = new();
+        private static int _standOffHoldCount;
+
+        /// <summary>Keep <paramref name="raider"/> at <paramref name="spot"/> until <paramref name="until"/>.</summary>
+        public static void HoldStandOff(GameLiving raider, Vector3 spot, long until)
+        {
+            if (raider == null) return;
+            lock (StandOffHolds)
+            {
+                if (StandOffHolds.Count > 2_048) StandOffHolds.Clear();
+                StandOffHolds[raider] = (spot, until);
+                System.Threading.Volatile.Write(ref _standOffHoldCount, StandOffHolds.Count);
+            }
+        }
+
+        /// <summary>Where a raider waits out a blast, while it must (the controller asks before it moves a raider).</summary>
+        public static Vector3? StandOffHold(GameLiving raider, long now)
+        {
+            if (raider == null || System.Threading.Volatile.Read(ref _standOffHoldCount) == 0) return null;
+            lock (StandOffHolds)
+            {
+                if (!StandOffHolds.TryGetValue(raider, out var h)) return null;
+                if (h.Until >= now) return h.Spot;
+                StandOffHolds.Remove(raider);
+                System.Threading.Volatile.Write(ref _standOffHoldCount, StandOffHolds.Count);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// BotBrain's first look each turn (beside <see cref="ThinkErrand"/>): an autonomous raider near a boss about to blast,
+        /// or still holding out of one, stops fighting and walks out (or waits there), whatever it is doing: a healer with no
+        /// hostile target, a raider on an add or a crystal, one its controller would walk back to the fight. True: turn used.
+        /// </summary>
+        public static bool ThinkBlast(GameBot bot)
+        {
+            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || !bot.IsAlive) return false;
+            long now = GameLoop.GameLoopTime;
+            if (System.Threading.Volatile.Read(ref _blastBosses) == 0 && System.Threading.Volatile.Read(ref _standOffHoldCount) == 0)
+                return false;
+            Vector3? spot = null;
+            if (BlastNear(bot, now) is { } blast)
+            {
+                spot = blast.Safe;
+                HoldStandOff(bot, blast.Safe, now + BlastHoldMilliseconds);
+                if (bot.TargetObject == blast.Boss || bot.IsAttacking)
+                {
+                    if (bot.IsCasting && bot.castingComponent?.SpellHandler?.Spell?.IsHarmful == true) bot.StopCurrentSpellcast();
+                    bot.StopAttack();
+                    bot.TargetObject = null;
+                }
+                LogDecision(bot, blast.Boss, new(BotAction.StandOff, blast.Boss, blast.Safe,
+                    $"blast at {NextBlast(blast.Boss)}%: out of {For(blast.Boss).BlastRadius}"));
+            }
+            else spot = StandOffHold(bot, now);
+            if (spot is not Vector3 at) return false;
+            var point = new Point3D((int)at.X, (int)at.Y, (int)at.Z);
+            if (!bot.IsWithinRadius(point, 150))
+            {
+                if (!bot.IsMovingOnPath) bot.PathTo(point, bot.MaxSpeed);
+            }
+            else if (bot.IsMoving) bot.StopMoving();
+            return true;
+        }
+
+        public static void ResetBlastForTests()
+        {
+            lock (BlastRates) { BlastRates.Clear(); System.Threading.Volatile.Write(ref _blastBosses, 0); }
+            lock (BlastClocks) BlastClocks.Clear();
+            lock (StandOffHolds) { StandOffHolds.Clear(); System.Threading.Volatile.Write(ref _standOffHoldCount, 0); }
         }
 
         public static bool CanShootFlyers(GameBot bot)
@@ -395,6 +521,8 @@ namespace DOL.GS
         /// </summary>
         public static bool TryHandle(GameBot bot, GameNPC target)
         {
+            // A blast about to land near the bot comes first, whatever it fights (Xanxicar's stomp kills anything within 2,500).
+            if (ThinkBlast(bot)) return true;
             if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || For(target) == null) return false;
             IReadOnlyList<GameNPC> live = Nearby(target);
             Advice advice = Decide(bot, target, live, PartyIndex(bot), CanShootFlyers(bot));

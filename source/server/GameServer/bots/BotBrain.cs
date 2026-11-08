@@ -1257,6 +1257,9 @@ namespace DOL.AI.Brain
             // Beggars (bot_living_beggars): a few Crafters live on a corner of their capital and do nothing else.
             if (AutonomousBeggars.Think(this))
                 return;
+            // Out of a boss's blast before anything else (Xanxicar's stomp), whatever the bot is doing.
+            if (EpicEncounterTactics.ThinkBlast(BotBody))
+                return;
             bool nativeSpeedTravelStarted;
             if (CompanionFollowPolicy.ObserveAndCancelBuffs(BotBody, out nativeSpeedTravelStarted))
             {

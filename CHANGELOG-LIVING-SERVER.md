@@ -8,6 +8,17 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Beta 1.1.3 (hotfix, in development)
+
+**The raid gets out of Xanxicar's stomp** (owner's PC test, 2026-11-07). At the 80% stomp 110 of 185 Albion raiders died
+in one second. The order to get clear came only 3% above the threshold, it reached only the raiders whose target was
+Xanxicar himself (not those on his elites and crystals, nor healers), the spot it sent them to lay in the cave's rock,
+and a bot's melee follow walked it straight back to him. Now the raid withdraws ten seconds of its own damage ahead of
+each threshold (at least 6%), every raider near him goes whatever it is fighting, along the cave floor towards the way
+in, without its melee follow, and waits out there until the stomp is over. The party he fights still holds him. His
+stomp is unchanged. Container check (1.2 line, the same fix, 152 Albion raiders): Xanxicar killed with no wipe; his
+80% stomp killed 5 (before: 71, 49 and 48 in three earlier runs).
+
 ## Beta 1.1.2 — 2026-11-07
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized
