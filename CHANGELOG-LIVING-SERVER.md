@@ -31,6 +31,11 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
 
 ## 1.2 (in development)
 
+**Two Darkness Falls exits work** (found and fixed by rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
+and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no
+destination for them. Each now takes you to your realm's usual Darkness Falls exit spot, like every other exit. Nothing
+is written to your world: the server supplies the two missing destinations itself. Thank you, rambodolphin13.
+
 **Dungeons and bosses have their lore.** Living Server 1.2 gives every dungeon, epic dungeon, dragon and named
 boss its own lore (written in `data/lore`, one file per place and per boss; see [docs/LORE.md](docs/LORE.md)), and this is
 the part that shows it to you. All the stories are now in: 107 places and 578 bosses (with 4 realm histories), written for

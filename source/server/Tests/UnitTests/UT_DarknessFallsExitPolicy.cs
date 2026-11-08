@@ -10,7 +10,7 @@ public class UT_DarknessFallsExitPolicy
     [Test]
     public void EachExitId_UsesCharactersOwnRealmRow_EvenWhenAlbionIsFirst()
     {
-        foreach (ushort id in new ushort[] { 70, 72, 73, 74, 75, 76 })
+        foreach (ushort id in new ushort[] { 70, 71, 72, 73, 74, 75, 76, 77 })
         {
             DbZonePoint[] rows =
             [
@@ -49,5 +49,45 @@ public class UT_DarknessFallsExitPolicy
             Assert.That(DarknessFallsExitPolicy.IsExitRequest(200, 72), Is.False,
                 "Other regions keep their existing portal rules.");
         });
+    }
+
+    [TestCase((ushort)71)]
+    [TestCase((ushort)77)]
+    public void TheMidBossAndLegionExits_LeadEachRealmHome_WhenTheWorldHasNoRow(ushort id)
+    {
+        Assert.That(DarknessFallsExitPolicy.IsExitRequest(249, id), Is.True);
+        foreach (var (realm, home) in new[] { (eRealm.Albion, (ushort)1), (eRealm.Midgard, (ushort)100), (eRealm.Hibernia, (ushort)200) })
+        {
+            DbZonePoint exit = DarknessFallsExitPolicy.ResolveRealmExit([], realm, id);
+            Assert.That(exit, Is.Not.Null, $"{realm} {id}");
+            Assert.That(exit.TargetRegion, Is.EqualTo(home));
+            Assert.That(exit.Id, Is.EqualTo(id));
+        }
+        Assert.That(DarknessFallsExitPolicy.ResolveRealmExit([], eRealm.None, id), Is.Null);
+    }
+
+    [Test]
+    public void AWorldRow_WinsOverTheBuiltInOne()
+    {
+        DbZonePoint own = new() { Id = 77, Realm = 1, SourceRegion = 249, TargetRegion = 1, TargetX = 1 };
+        Assert.That(DarknessFallsExitPolicy.ResolveRealmExit([own], eRealm.Albion, 77), Is.SameAs(own));
+        Assert.That(DarknessFallsExitPolicy.ResolveRealmExit([], eRealm.Albion, 72), Is.Null,
+            "only 71 and 77 have built-in rows; the others come from the world");
+    }
+
+    [Test]
+    public void TheBuiltInExits_GoWhereTheWorldsOtherExitsGo()
+    {
+        // The released world's DF exits 70 and 72-76 all lead to these three spots (checked on a 0.37b world, 2026-11-08).
+        foreach (DbZonePoint exit in DarknessFallsExitPolicy.BuiltInExits)
+        {
+            (int x, int y, int z) want = exit.Realm switch
+            {
+                1 => (599195, 536170, 2960),
+                2 => (760782, 700723, 6292),
+                _ => (324957, 433427, 6317),
+            };
+            Assert.That((exit.TargetX, exit.TargetY, exit.TargetZ), Is.EqualTo(want), exit.ObjectId);
+        }
     }
 }
