@@ -107,6 +107,11 @@
           "text": "The quest 'The Legend of Fenrir's Folly' sends players to win a sun fragment back from the Raumarik Revenant.",
           "provenance": "mythic",
           "source": "https://camelot.allakhazam.com/db/quest/1770"
+        },
+        {
+          "text": "A young svartalf scout told Midgard's hunters that Gjalpinulva of Malmohus was fathered by Fenris Wolf on a huge creature no one could name, and that she made the drakulv out of loneliness.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
         }
       ],
       "places": [
@@ -186,6 +191,16 @@
           "text": "Living Server: Svan's sons are the Alfevsons: Siv and Coplin, spirits; Ove, a werewolf of Askheim; Gunnar, a shade in Muspelheim.",
           "provenance": "original",
           "source": "Living Server writing"
+        },
+        {
+          "text": "Many generations ago the svartalf king and queen died suddenly, leaving twin princes, Hauk and Enar, and no one knew which was the firstborn. A human stranger, held for trespass, proposed a contest of arms and of magic-making in exchange for his freedom, then sabotaged Enar's artifact, laid the blame on Hauk and vanished with the kingdom's treasured artifacts.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
+        },
+        {
+          "text": "Hauk left with a few followers and settled in Niflheim, a land of darkness, hard frost and freezing fog at the very bottom of the world; Enar ruled, remorseful, but Hauk would not return. Hauk's descendants are the frostalfs.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
         }
       ],
       "places": [
@@ -427,6 +442,16 @@
           "text": "Living Server raids each epic place with sizes taken from period accounts.",
           "provenance": "game",
           "source": "docs/RAID-SIZES.md"
+        },
+        {
+          "text": "A band of dwarves seeking to strengthen Midgard found the frostalfs, who agreed to fight beside the realm, knowing their fate was still bound to it.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
+        },
+        {
+          "text": "In each realm the leaders and chosen others received the same vision of a strange land where heroes were tried against fantastic creatures, and a voice promising them power there. Some called it the gods' doing, some magic, some an enemy's trick, but each realm sent scholars and explorers far into the encircling seas; they found the island remnants of Atlantis and the Halls of Heroes, and learned that the other two realms had been invited too. Midgard's ships sail from Aegirhamn.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
         }
       ],
       "places": [
@@ -628,7 +653,8 @@
         "rana",
         "smarta",
         "tebui"
-      ]
+      ],
+      "text": "Their oldest grief is the quarrel of the twin princes Hauk and Enar, set on by a treacherous human stranger who left with the kingdom's treasures; Hauk went down into Niflheim, and his descendants, the frostalfs, came back to Midgard's side only lately. Svartalf scouts were the first to tell Midgard what lives in Malmohus."
     },
     {
       "id": "skogsra",
