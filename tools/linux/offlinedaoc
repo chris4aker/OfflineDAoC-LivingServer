@@ -80,10 +80,13 @@ start() {
   echo "Starting the server (log: runtime/logs/server-console.log)..."
   # The console FIFO is opened read-write, so the server's stdin stays open after this shell ends; "exit" stops it.
   ( cd "$SERVER" && exec setsid "$dotnet" CoreServer.dll --start 0<>"$FIFO" >>"$LOG" 2>&1 ) &
-  echo $! > "$PIDFILE"
+  local spid=$!
+  echo "$spid" > "$PIDFILE"
   local waited=0
   while ! listening "$p"; do
-    server_pid >/dev/null || die "the server stopped by itself; the end of runtime/logs/server-console.log says why"
+    # Only whether the process lives: for a moment after '&' it is still this script's subshell, not yet dotnet
+    # (the first CI run, 2026-11-07, reported a start as "stopped by itself" on exactly that).
+    [ -d "/proc/$spid" ] || die "the server stopped by itself; the end of runtime/logs/server-console.log says why"
     [ "$waited" -ge "$START_TIMEOUT" ] && die "the server didn't open port $p within $START_TIMEOUT s"
     sleep 2; waited=$((waited + 2))
   done
