@@ -64,7 +64,16 @@ marked superseded.
 - 1.1's eight branches merged without conflicts because they were small and separate; crafting, events, quests
   and guilds all touch valuation, town routing, chat budgets, raids and voices.
 
-## The base: shadowofze has stopped (checked 2026-10-31, rechecked 2026-11-03)
+## The base: shadowofze stopped 0.37 and started True165 (checked 2026-10-31, rechecked 2026-11-03, corrected 2026-11-08)
+
+**Correction (fork survey 2026-11-08):** shadowofze did not stop. Since 2026-11-01 he ships a separate public repo,
+`shadowofze/OfflineDAoC-True165` (GPL-3.0, unrelated history, 493 commits): v0.1 on 11-01 to v0.4.1 on 11-07, 0.5 under way,
+player bug reports on its Issues page; its THIRD_PARTY.md credits Living Server. The 0.37 line below is still what we build
+on. True165 is now watched as a **second upstream**: the fork-check routine follows its tags, and its code can only be
+hand-ported (credit "Hand port from shadowofze/OfflineDAoC-True165 <sha>"). Survey:
+[audits/2026-11-08/FORK-SURVEY.md](audits/2026-11-08/FORK-SURVEY.md), summarised per stop below.
+
+The 0.37 line:
 
 - His README (2026-10-31) says the project **is on hold and will not receive any more updates**; the 0.37 / 0.37b /
   0.37c downloads stay. There is **no `v0.38` tag**.
@@ -163,6 +172,11 @@ Everything below is built on branches with green automated tests; nothing is mer
       natural break and the pull call (#84)
 - [ ] RvR perception 1.2 (#80): an observer cap per target, calibrated time to notice, duty, pet caps
 - [ ] Replies that don't give bots away (#82): the reply budget, reason codes, `/lswhy me`
+- [ ] Design models from the fork survey (2026-11-08), ideas only (C++, GPL-2.0): mod-playerbots' class-role picker
+      (#3004) for Funus' class and weapon assignment; its "DPS switch to the totem until it dies" (#2979) for Spindler's
+      newborns. Nobody else has solved Spindler, Govannon's demon, Funus, Darkness Falls raid AI or Legion
+- [ ] Owner to decide: rambodolphin13's Darkness Falls exit rows (428ccd7d, tested; a world update adding the
+      missing zone points by Legion's hall), not raid AI
 - [ ] More raid tactics, if the 1.1.2 ones hold up in play: the next restored mechanics turned on one at a time as the
       raid learns them (the catalog's open question). The catalog and first tactics themselves moved to 1.1.2
       (owner 2026-11-06 07:13)
@@ -248,6 +262,14 @@ before the Linux build (owner 2026-11-08 06:51, "Before"). Touches pathing: no n
 - [ ] Positional styles, step 2: melee bots take the flank or back when the mob faces someone else (step 1, using
       them when already there, is in 1.2: #123; step 3, Assassins stealthing and opening from stealth, is in 2.0)
 - [ ] Town idling: the bank and the usual crowd spots
+- [ ] Ports from the fork survey of 2026-11-08 (credit in the commit, the file header and the changelog):
+  - [ ] Nikse77's follower-stutter guard (via rambodolphin13 0996fff6): a group follower stops taking its own route
+        every turn, so a moving party no longer jerks once a second. Applies cleanly
+  - [ ] Step 2 hand-ported from True165's `BotBrain.Flank.cs` (d2187a49): a non-tank gamebot that knows a back or side
+        style steps there when the mob fights someone else, retries when it turns 45° or moves 100; its pure-rule tests
+        come along. Without True165's 1.65-mode gate and companion option
+  - [ ] rambodolphin13's style scoring (0146664a): chain follow-ups, positionals in place, reactive styles and openers
+        scored, taunts only for a grouped tank. Two small conflicts with #123
 - [ ] Automated: no new stuck bots against the 1.2 baseline; played: one evening on the owner's PC judging whether it
       looks right (only played checks can judge this)
 - Left in 2.0: `/stick`, sitting on keep walls, the rest of item 5; Assassins' stealth with item 4
@@ -268,7 +290,8 @@ friends try it only once it is complete, so every part is tested in the containe
       Linux .NET, Living Server installed with its backups and checks, resume after a stop
 - [ ] Living Server install and rollback in C#, with CI parity against `install-server-build.ps1` on the same fake folders
 - [ ] The new client on Linux: Godot 4.7.2 .NET for Linux, its save folder, desktop entries; the source tree's
-      duplicated `server_world.gd` block fixed on its own branch
+      duplicated `server_world.gd` block fixed on its own branch. Look at ThatFontGuy's cross-platform
+      `build_csharp.py` / `run_dev.py` (8d63747e, macOS-focused, untested) for the build step
 - [ ] The updater on Linux: the `-linux-x64.tar.gz` release asset, GitHub's digest, the same package checks
 - [ ] CI green: the Linux package smoke, the launcher tests, install parity, a real-download install, the release asset
 - [ ] Played: one friend's evening on a real Linux desktop with the checklist (install, play, bots, stop, update,
@@ -280,9 +303,13 @@ Unchanged by the split of 2026-11-06. Owner 2026-11-03: private co-op for about 
 - [ ] The must-fixes from the co-op audit: one region address per client, idle time-outs for remote players, account
       names other than `offline`, the one-account-per-IP rule, bots following the group's current leader, `/pull` and
       the pilot taking only your own bots, a server-wide companion cap
-- [ ] Host for Friends and Join Friend in the launcher, ported with credit from rambodolphin13's
-      `feature/play-with-friends` (home network, Tailscale by default, an internet mode limited to listed friends,
-      firewall rules for this game only); automatic account creation off while hosting
+- [ ] Host for Friends and Join Friend in the launcher, ported with credit from rambodolphin13. **Source corrected
+      2026-11-08:** his current work is on DividedRealms `main`, not `feature/play-with-friends`: invite codes, one
+      window, a host password for new accounts from other PCs (af1fcf85), a host on a public IP (b0744a2a). Home network,
+      Tailscale by default, firewall rules for this game only; automatic account creation off while hosting. **Owner to
+      decide:** keep "internet mode limited to listed friends" (our plan) or the password as the only gate (he dropped
+      the friend list)
+- [ ] Look at his Character passport (da78651f, tested): bring your own character to a friend's world and back
 - [ ] The bot population scaled to the extra players' load; the original client first, the new client after
 - [ ] Played: a weekend session with two or three friends
 
@@ -325,7 +352,9 @@ are each soaked and played on their own first (the rules above).
 **A living realm (what 1.3 held).** Design: [LIVE-EVENTS-1.2.md](LIVE-EVENTS-1.2.md),
 [LIVE-EVENTS-ENGINE.md](LIVE-EVENTS-ENGINE.md), the guild tiers entry in the [backlog](LIVING-SERVER-BACKLOG.md).
 - [ ] Live events: the engine on a scripted dragon fight first (M1), with the timeline report
-- [ ] The guild social package with guild tiers (policies, standing, tier benefits and costs)
+- [ ] The guild social package with guild tiers (policies, standing, tier benefits and costs). Reusable: Nikse77's
+      guild name and emblem generators (`AutonomousGuildNames.cs`, `AutonomousGuildEmblems.cs`); not his silent,
+      closed bot guilds
 - [ ] A crowded prime time: the era's channels with reach, a "2003 server" population preset, crowd targets, the
       chat benchmark's second blind round
 - [ ] A server with a past: the shared world-history record, the Herald as dated stories, "since you last played"
@@ -343,12 +372,19 @@ friends) and go with the guild social package.
 - [ ] **2. Skill that varies and improves.** A lasting skill profile per bot player (reactions, positioning, pulls,
       standing in fire, buffs, power use) that gets better with play. Raids learn a boss's mechanic after enough of
       their people have seen it (the "secrets had to be learned" idea, owner 2026-11-07). Mistakes fall mostly on
-      strangers, not the player's own group, with a switch.
+      strangers, not the player's own group, with a switch. The raid slice (leader calls, reactions, realm familiarity)
+      is in 1.2. Seed for the per-monster part: rambodolphin13's `AutonomousMobLessons` (98873c3a, tested: wins and
+      deaths per monster shift a bot's felt con)
 - [ ] **3. Friends, regulars and grudges.** A relationship graph that drives who groups with whom: bots seek people
       they grouped with before, form static groups, hold a grudge after a gank, leave a guild after a bad night, argue
       over loot. Builds on "bots remember you", the rage-quit records and mod-pbc's relationship scoring.
 - [ ] **4. Knowing only what a player would know, in PvE too.** A per-bot memory of places visited; a bot that has never
-      been somewhere asks the way, follows someone and can get lost (extends 1.2's RvR perception).
+      been somewhere asks the way, follows someone and can get lost (extends 1.2's RvR perception). Rumours of hard foes
+      on the roads: rambodolphin13's blocker warnings to same-realm, same-band bots (2d237a7d, tested). Assassins hide,
+      stalk and open from stealth (positional styles step 3): hand port of True165's `BotBrain.StealthOpener.cs`
+      (246ac7f8, untested there, so we write its tests), with RvR stealthers hunting alone or in pairs (True165
+      `AutonomousRvrStealthers.cs`, Nikse77 f5729a48, both tested) and pets dropping a target that stealths (Nikse77
+      1599685d)
 - [ ] **5. Movement that doesn't look scripted.** Strafing, sitting to regen, /stick, overshooting, idling at the bank
       and crowding town spots, sitting on keep walls. Touches pathing: no navmesh changes without evidence (AGENTS.md).
 - [ ] **6. Personal milestones that get talked about.** A goal arc per bot player (epic armour, realm rank 5, an
@@ -357,8 +393,13 @@ friends) and go with the guild social package.
       itself away, before and after. The blind chat read tests lines only.
 
 **The complete realm.**
-- [ ] Crafting M3–M6 (with no Exchange tax or new sink until the ledger shows a need); the war effort
-- [ ] Questing certified complete; the nightly scenarios gate every release
+- [ ] Crafting M3–M6 (with no Exchange tax or new sink until the ledger shows a need); the war effort. Start M2–M3
+      from rambodolphin13's bot crafting and craft orders (93c25b69, ceac061a, e37f8810, 24f8a2e7; in order, tested,
+      his overnight report: 1,147 bots made 8,155 items, skill median 8), paired with our M1 pace settings and checked
+      against our rules (orders hand over at trip ends, selling only at task breaks)
+- [ ] Questing certified complete; the nightly scenarios gate every release. Take rambodolphin13's bot quest runner
+      (93c25b69, 5467fad2, tested): quests parked on a missing monster or blocked road, and its "every bot fails this
+      quest" log as an input to certification
 - [ ] Overnight runs at 900 bots per realm; two weeks with the money supply flat
 - [ ] Release notes and the Reddit post for 2.0
 - [ ] Played: one session per realm; a live event watched; a guild tier earned; a returning session on the Herald; a bot
