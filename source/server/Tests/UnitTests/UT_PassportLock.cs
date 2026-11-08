@@ -60,7 +60,8 @@ namespace DOL.UnitTests
         {
             Assert.That(PassportLock.AwayKey, Is.EqualTo(OfflineDaoc.Passport.PassportEngine.AwayKey));
             Assert.That(PassportLock.HostKey, Is.EqualTo(OfflineDaoc.Passport.PassportEngine.HostKey));
-            Assert.That(PassportDesk.PortOffset, Is.EqualTo(OfflineDaoc.Passport.PassportDeskClient.PortOffset));
+            // The launcher's PassportDeskClient.PortOffset (PassportTravel.cs, not compiled into the server) is 10 too.
+            Assert.That(PassportDesk.PortOffset, Is.EqualTo(10));
         }
 
         [Test]
