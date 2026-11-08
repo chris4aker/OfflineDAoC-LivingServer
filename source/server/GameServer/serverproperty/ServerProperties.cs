@@ -1266,8 +1266,8 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("npc", "epic_horsemen_tether_heal", "Caer Sidi: Fames, Morbus and Funus heal to full when drawn past their tether, as in the original (True, 1.2). The raid fights each horseman near his room and leads him back.", true)]
 		public static bool EPIC_HORSEMEN_TETHER_HEAL = true;
 
-		[ServerProperty("npc", "epic_funus_weapon_puzzle", "Caer Sidi: Funus takes damage only from clerics, and from mercenaries, armsmen, infiltrators and scouts with their listed weapon; any other hit (pets too) heals him to full (True, 1.2). The raid sends clerics, and scouts, mercenaries, armsmen and infiltrators who own their longbow, short bow or crossbow, which they draw and fight with; the rest stand clear and no bot's pet touches him. False: everyone hurts him, as in 1.1. Test first.", true)]
-		public static bool EPIC_FUNUS_WEAPON_PUZZLE = true;
+		[ServerProperty("npc", "epic_funus_weapon_puzzle", "Caer Sidi: Funus takes damage only from clerics, and from mercenaries, armsmen, infiltrators and scouts with their listed weapon; any other hit (pets too) heals him to full (True). Off by default in 1.2 (owner 2026-11-08: off until the bots clear it with no heals). When on, the raid sends clerics, and scouts, mercenaries, armsmen and infiltrators who own their longbow, short bow or crossbow, which they draw and fight with; the rest stand clear and no bot's pet touches him. False (default): everyone hurts him, as in 1.1. Test first.", false)]
+		public static bool EPIC_FUNUS_WEAPON_PUZZLE = false;
 
 		[ServerProperty("npc", "epic_funus_bot_shield_guard", "Caer Sidi: while Funus's weapon puzzle is on, the sting of a damage shield on a bot he hits neither heals nor hurts him (True, 1.2): a bot can't take a shield off, and its sting would heal him to full. False: as the original, the sting of a bot of a class he doesn't take damage from heals him to full. Real players keep the original either way.", true)]
 		public static bool EPIC_FUNUS_BOT_SHIELD_GUARD = true;
