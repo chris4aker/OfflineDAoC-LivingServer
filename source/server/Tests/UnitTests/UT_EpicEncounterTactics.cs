@@ -449,7 +449,7 @@ namespace DOL.UnitTests
                 Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 1_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None));
                 Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 2_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
                     "the window is open but nobody has called it");
-                giant.Hp = 79; // crossed at 3,000: it lands 7.5 s later
+                giant.Hp = 79; // crossed at 3,000: it lands BlastLandsAfterCrossSeconds later
                 var call = RaidDiscipline.CallFor(0, "TacticGiant/blast", 80, 0, 1);
                 long callAt = 3_000 + (long)Math.Ceiling((EpicEncounterTactics.BlastLandsAfterCrossSeconds - call.LeadSeconds) * 1000);
                 if (callAt > 3_000)
@@ -461,9 +461,9 @@ namespace DOL.UnitTests
                     Is.EqualTo(EpicEncounterTactics.BotAction.None), "the party it fights stays in");
                 Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 13_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
                     "the stomp is over: back in");
-                Assert.That(EpicEncounterTactics.BlastEtaSeconds(85, 80, 0.5, -1), Is.EqualTo(17.5).Within(1e-9));
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(85, 80, 0.5, -1), Is.EqualTo(16.3).Within(1e-9));
                 Assert.That(EpicEncounterTactics.BlastEtaSeconds(85, 80, 0, -1), Is.EqualTo(double.PositiveInfinity));
-                Assert.That(EpicEncounterTactics.BlastEtaSeconds(79, 80, 0.5, 2_000), Is.EqualTo(5.5).Within(1e-9));
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(79, 80, 0.5, 2_000), Is.EqualTo(4.3).Within(1e-9));
                 Assert.That(EpicEncounterTactics.BlastEtaSeconds(79, 80, 0.5, 2_000, 4_000), Is.EqualTo(4).Within(1e-9), "the cast says when");
             }
             finally

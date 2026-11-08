@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DOL.GS.PacketHandler;
+using DOL.GS.Spells;
 
 namespace DOL.GS
 {
@@ -37,10 +38,11 @@ namespace DOL.GS
         public static void UncallBlastForTests(string bossType) { if (bossType != "Xanxicar") CalledBlastTypes.Remove(bossType); }
 
         /// <summary>Xanxicar's stomp lands about this long after his health crosses a threshold: his brain sees it on its next
-        /// think, 1 s to the announcement, a 6 s cast.</summary>
-        public const double BlastLandsAfterCrossSeconds = 7.5;
-        /// <summary>The landing is measured on the raiders inside the radius this long before it lands, and the dead counted
-        /// this long after.</summary>
+        /// think, 1 s to the announcement, then his cast (6 s on the spell, about 5 s at his casting speed). duo16: the
+        /// four stomps landed 6.2 s after the crossing, or 0.3-1.3 s before the 7.5 s first assumed.</summary>
+        public const double BlastLandsAfterCrossSeconds = 6.3;
+        /// <summary>Without a cast seen, the raiders inside the radius are counted this long before the landing; the dead
+        /// are counted this long after it.</summary>
         public const long BlastLandingSnapshotLeadMilliseconds = 400, BlastLandingCountAfterMilliseconds = 2_000;
         /// <summary>"back in" comes this long after the landing (plus up to a second).</summary>
         public const long BlastBackInMilliseconds = 1_500;
@@ -73,7 +75,8 @@ namespace DOL.GS
             public double Lead;
             public GameBot Caller;
             public long LandsAt;
-            public bool CastSeen;
+            public bool CastSeen, Landed;
+            public long CastAt;
             public long CrossedAt;
             public List<GameLiving> Exposed;
             public List<GameLiving> Within;
@@ -143,31 +146,46 @@ namespace DOL.GS
             if (call == null) return null;
             bool makeCall = false, snapshot = false, report = false, backIn = false;
             double eta = 0;
+            // While he casts it, when it lands is his cast's own end (the cast time his casting speed gives, not the
+            // spell's 6 s: duo16, it landed 5 s after the cast began).
+            bool casting = boss.castingComponent?.IsCasting == true;
+            long? castEnd = null;
+            if (casting && boss.castingComponent?.SpellHandler is SpellHandler handler && handler.CastStartTick > 0)
+                castEnd = handler.CastStartTick + handler.CalculateCastingTime();
             lock (BlastCalls)
             {
                 call.NextPulse = now + 200;
                 if (since >= 0 && CrossedThreshold(boss) == call.Threshold && call.CrossedAt == 0) call.CrossedAt = now - since;
-                if (cast != null && !call.CastSeen && call.Within == null && call.CrossedAt > 0 && cast.At >= call.CrossedAt - 1_000)
+                if (cast != null && !call.CastSeen && !call.Landed && call.CrossedAt > 0 && cast.At >= call.CrossedAt - 1_000)
                 {
                     call.CastSeen = true;
+                    call.CastAt = cast.At;
                     call.LandsAt = cast.Lands;
                 }
+                if (call.CastSeen && !call.Landed && casting && castEnd is long end) call.LandsAt = end;
                 if (!call.Called && inWindow && call.Threshold == threshold)
                 {
                     eta = BlastEtaSeconds(boss.HealthPercent, call.Threshold, rate, CrossedThreshold(boss) == call.Threshold ? since : -1,
                         call.CastSeen ? call.LandsAt - now : null);
                     if (eta <= call.Planned.LeadSeconds) { call.Called = makeCall = true; call.CalledAt = now; call.Lead = eta; }
                 }
-                // No cast seen: the landing is taken as the crossing plus 7.5 s.
-                if (call.Called && !call.CastSeen && call.LandsAt == 0 && call.CrossedAt > 0 &&
-                    now >= call.CrossedAt + (long)(BlastLandsAfterCrossSeconds * 1000) - BlastLandingSnapshotLeadMilliseconds)
-                    call.LandsAt = call.CrossedAt + (long)(BlastLandsAfterCrossSeconds * 1000);
-                if (call.Called && call.LandsAt > 0 && call.Within == null && now >= call.LandsAt - BlastLandingSnapshotLeadMilliseconds)
+                if (call.Called && !call.Landed)
                 {
-                    call.Within = []; // claimed; filled below
-                    snapshot = true;
+                    if (call.CastSeen)
+                    {
+                        // The raiders inside it are counted on every look while he casts; the last count before his cast
+                        // ends is the one at the landing.
+                        if (casting) snapshot = true;
+                        else if (call.Within != null || now > call.LandsAt + 1_000) { call.Landed = true; call.LandsAt = Math.Min(now, call.LandsAt + 1_000); }
+                    }
+                    // No cast seen: the landing is taken as the crossing plus its usual delay.
+                    else if (call.CrossedAt > 0 && now >= call.CrossedAt + (long)(BlastLandsAfterCrossSeconds * 1000) - BlastLandingSnapshotLeadMilliseconds)
+                    {
+                        call.LandsAt = call.CrossedAt + (long)(BlastLandsAfterCrossSeconds * 1000);
+                        call.Landed = snapshot = true;
+                    }
                 }
-                if (call.Within != null && !snapshot && !call.Reported && now >= call.LandsAt + BlastLandingCountAfterMilliseconds)
+                if (call.Landed && !snapshot && !call.Reported && now >= call.LandsAt + BlastLandingCountAfterMilliseconds)
                     call.Reported = report = true;
                 if (call.Reported && !report && !call.BackInSaid &&
                     now >= call.LandsAt + BlastBackInMilliseconds + (long)(1_000 * RaidDiscipline.Roll(
@@ -179,7 +197,8 @@ namespace DOL.GS
             {
                 GameLiving center = boss.TargetObject as GameLiving ?? boss;
                 List<GameLiving> within = RaidersWithin(boss, center, t.BlastRadius);
-                lock (BlastCalls) { call.Within = within; call.Center = center; }
+                // A count that finished after the landing would hold only the survivors.
+                lock (BlastCalls) if (!call.Landed || call.Within == null) { call.Within = within; call.Center = center; }
             }
             if (report) ReportBlastLanding(boss, t, call);
             if (backIn) SayToRaid(call, CallerOf(call.Parties), RaidDiscipline.BackInLine(call.PlannedCallerId, MechanicKey(boss), call.Threshold, call.Seed));
@@ -279,7 +298,9 @@ namespace DOL.GS
             int holdingWithin = holding == null ? 0 : within.Count(l => l.Group == holding);
             int holdingDied = holding == null ? 0 : within.Count(l => l.Group == holding && !l.IsAlive);
             if (Log.IsInfoEnabled)
-                Log.Info($"EPIC_BLAST_LANDED boss=\"{boss.Name}\" threshold={call.Threshold} source={(call.CastSeen ? "cast" : "crossing+7.5s")} " +
+                Log.Info($"EPIC_BLAST_LANDED boss=\"{boss.Name}\" threshold={call.Threshold} source={(call.CastSeen ? "cast" : "crossing")} " +
+                         $"afterCross={(call.CrossedAt > 0 ? (call.LandsAt - call.CrossedAt) / 1000.0 : -1):0.0}s " +
+                         $"castMs={(call.CastSeen ? call.LandsAt - call.CastAt : -1)} realLead={(call.LandsAt - call.CalledAt) / 1000.0:0.0}s " +
                          $"center=\"{center?.Name}\" within={within.Count} died={died} share={(within.Count == 0 ? 0 : died / (double)within.Count):0.00} " +
                          $"exposedAtCall={exposed.Count} exposedDied={exposedDied} " +
                          $"exposedShare={(exposed.Count == 0 ? 0 : exposedDied / (double)exposed.Count):0.00} " +
