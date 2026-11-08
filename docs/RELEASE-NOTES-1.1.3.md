@@ -6,10 +6,22 @@ zip's SHA-256 is filled in when publishing. Nothing here names the Easter eggs o
 
 ---
 
-### A hotfix: out of Xanxicar's stomp, two Darkness Falls exits, and a patient Setup
+### A hotfix: chat that holds together, out of Xanxicar's stomp, two Darkness Falls exits, and a patient Setup
 
 1.1.3 is a small update on top of 1.1.2. It's for Offline DAoC **0.37 and 0.37b**, with or without the **0.37c** new
 client, like 1.1.2. Install it over 1.1.2 (or earlier) and keep everything; the launcher offers it as an update.
+
+### Chat that holds together
+
+In /faction the bots' conversations could come apart: an answer before its question, a thanks for an answer that never
+came, "sup" at the very end, a cabalist saying "me" to "need a tank", and a kill line cheered by five or six bots over a
+minute and a half, with "oof" heard again and again.
+
+Now a conversation is said in order, one line after another, and stops when someone can't go on, so nobody answers
+nothing. A bot answers a call for a tank, a healer or its own class only if that is what it plays, and only near the
+level asked for. Follow-up questions fit what was said. A bot's own good or bad moment draws one or two replies, big
+realm news a few, and the same short "oof" or "rip" isn't heard twice in ten minutes. The realm is just as busy; it
+reads like people talking to each other.
 
 ### The raid gets out of Xanxicar's stomp
 
@@ -36,6 +48,8 @@ that one. If it still can't download, it says so plainly and changes nothing.
 ### How it was tested
 
 - Automated: every server, launcher and Setup test passes on GitHub, including a real download install.
+- Chat: new tests for each part, and a simulated three-hour evening of /faction played with the old timing and the new,
+  checked by a tool that reads the chat log. It has not been played in game yet.
 - Xanxicar: bot raids in a test world, with the same fix on the 1.2 line, killed him without a wipe, and his first
   stomp killed 5 raiders instead of 48 to 110.
 - The Darkness Falls exits are covered by tests against the released world's exit spots. They have not been clicked

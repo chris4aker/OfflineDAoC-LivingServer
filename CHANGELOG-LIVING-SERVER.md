@@ -10,8 +10,52 @@ Older entries below keep the names they were written with.
 
 ## Beta 1.1.3 — 2026-11-08
 
-A hotfix: the raid gets out of Xanxicar's stomp, two Darkness Falls exits work, and Setup waits out a busy download
-server. How it was tested is in the release notes ([docs/RELEASE-NOTES-1.1.3.md](docs/RELEASE-NOTES-1.1.3.md)).
+A hotfix: /faction chat that holds together, the raid gets out of Xanxicar's stomp, two Darkness Falls exits work, and
+Setup waits out a busy download server. How it was tested is in the release notes
+([docs/RELEASE-NOTES-1.1.3.md](docs/RELEASE-NOTES-1.1.3.md)).
+
+**/faction that holds together** (owner 2026-11-08, watching 1.1.3's /faction: "faction feels disconnected... The chats
+MUST be top notch"). Checked by automated tests and a simulated evening only; not yet played.
+- **Conversations in order, each speaker in its part.** Every line of a bot conversation (a question and its answers, a
+  story about a death, the replies to a remark) was its own timer, set when the conversation was planned. A line held
+  back 2-4 s because the channel had just carried one (up to three times) then came after the line meant to follow it,
+  and a line whose speaker was fighting was dropped while the rest still played: "main line first" before the question
+  it answers, the asker's thanks before the answer, "sup" last; "kk inv" before "what lvl r u?". Now a conversation is
+  said one line after another, each timed from the line before it. A line whose speaker can't say it (fighting, gone)
+  ends the conversation, so nobody thanks an answer that never came; a third bot's aside is just left out. A short reply
+  ("which part?", "ty") is not said once three other lines have scrolled its question away, and an "anyone?" two minutes
+  later only if its speaker said nothing else meanwhile. At most three conversations run in a realm's /faction at once.
+- **Answers that are true of the bot.** "need a tank for sh barrows" drew "sec, me" and "cab, 50" from a cabalist. A
+  group ask is now answered only by a bot that fills the role it asks for (tank, healer, crowd control, puller, damage, or
+  a named class) and is in its levels (the range it names, else within 6 of the asker); "any reavers on?" is answered
+  "me" by a reaver only. Asks name only classes of the asker's realm (an Albion "any druids on?" was possible).
+- **Follow-ups that fit.** The asker no longer asks the answerer's question ("solo or grp?" after "any reavers on?"); it
+  asks the question it had ("what do u put points in at 50?"). A gear, crafting or epic question no longer runs on to
+  "which part?" and "the map helps"; only quest, hand-in and bind questions get a "where exactly?", answered with a place.
+  Nobody asks a level or class the answer already gave. An answer that asks back ("where at?") is answered by the asker,
+  with no "ty" to a question. In a death story "where?" comes only when the teller didn't say where, and the teller then
+  says where. A trade post answered "gl selling, someone will want it" no longer gets "ill keep it then".
+- **Reactions in proportion.** A bot's revenge or nemesis line drew three to eight reactions over a minute and a half,
+  and two of them ran into each other ("that stinks" and "nice!" to two lines at once). Now a bot's own moment draws one
+  or two reactions within 20 s, realm news (keeps, relics, raids, Darkness Falls) three at most (four from 300 bots a
+  realm) within a minute, one burst at a time in a realm, each from a bot free to type, and a reaction is left out once
+  four other lines came after what it reacts to. Guild threads are said in order and answered by guildmates who fit too.
+- **One "oof" in ten minutes.** A short reaction ("oof", "rip", "lol rip", "gz") a realm's /faction heard in the last ten
+  minutes is picked again or left out, in stories, bursts and single reactions.
+- **Every line names its source.** `CHAT_LINE` rows now say which feature said a line (`src=field`, `thread`, `story`,
+  `reply`, `burst`, `reaction`, `news`, `debate`, ...), and inside a conversation its id, the line's place and the
+  speaker's part (`ex=12 i=2 role=answerer`), with the speaker's real class and level (`cls="Cabalist" lvl=50`). `via=`
+  skips the delivery wrappers, so it names the code that chose the line (most lines showed
+  `BroadcastFactionAsWritten`).
+- **Measured:** `source/tools/chat_audit.py` reads `CHAT_LINE` logs and counts conversations out of order or with swapped
+  parts (exact with the new fields, heuristic without), thanks and follow-ups with nothing to refer to, untrue class,
+  level and role answers, reactions with no trigger, late reactions, pile-ons, repeated reactions, and lines a minute per
+  channel. On the owner's 1.1.3 evening (13 min of /faction at 11.8 lines a minute): one presence answer after the asker
+  had closed, one level question after the invite, one follow-up before any answer, one thanks with no answer, one trade
+  closing that didn't follow, one join answer from a class that can't fill the role, 6 pile-ons (13 reactions past the
+  second), 3 late reactions, 2 repeated reactions. On a 4.6-hour overnight 1.2-line soak: 207 repeated reactions within ten
+  minutes, 9 pile-ons, 5 thanks with no answer.
+  SIMULATION_NUMBERS
 
 **Two Darkness Falls exits work** (found and fixed by rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
 and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no

@@ -46,31 +46,78 @@ public static class AutonomousChatBursts
         return Math.Clamp((int)Math.Round((low + random.Next(high - low + 1)) * crowd), 1, high + 2);
     }
 
+    /// <summary>A bot's own moment (a nemesis, a revenge): one or two bots react, not a crowd.</summary>
+    public static bool Personal(string trigger) => trigger is "nemesis" or "revenge";
+
+    /// <summary>
+    /// How many reactions a burst may have (1.1.3, owner 2026-11-08: three congratulations within 13 s to one kill line, and a
+    /// fourth 40 s later): one or two for a bot's own moment, at most three for realm news (four from 300 bots a realm). Pure.
+    /// </summary>
+    public static int CappedSize(string trigger, int size, int realmBots, Random random)
+    {
+        if (Personal(trigger))
+            return random.NextDouble() < 0.4 ? 2 : 1;
+        return Math.Clamp(size, 1, realmBots >= 300 ? 4 : 3);
+    }
+
+    /// <summary>How long after its trigger a burst's reactions may come: 20 s for a bot's own moment, a minute for news.</summary>
+    public static int SpreadMs(string trigger, AutonomousChatBudget.Settings settings) =>
+        Math.Min(Math.Max(5, settings.BurstSpreadS) * 1_000, Personal(trigger) ? 20_000 : 60_000);
+
+    private static readonly Dictionary<eRealm, long> RunningUntil = new();
+
+    /// <summary>
+    /// Whether a burst may start in the realm now: one at a time (1.1.3: a commiseration and a cheer ran into each other, "that
+    /// stinks" and "nice!" to two lines at once). Claims the realm until <paramref name="until"/> when it may.
+    /// </summary>
+    public static bool TryClaim(eRealm realm, long now, long until)
+    {
+        lock (RunningUntil)
+        {
+            if (RunningUntil.TryGetValue(realm, out long busy) && now < busy)
+                return false;
+            RunningUntil[realm] = until;
+            return true;
+        }
+    }
+
     /// <summary>
     /// A burst of reactions in /faction to what <paramref name="first"/> just said (or to an event no bot said), from reply lines
-    /// answering <paramref name="answerSets"/> in order (for news: "news_keep_lost", then "news").
+    /// answering <paramref name="answerSets"/> in order (for news: "news_keep_lost", then "news"). <paramref name="exchange"/> is
+    /// the trigger line's exchange id (the reactions are its lines 1, 2...), or 0.
     /// </summary>
     public static void React(GameBot first, eRealm realm, string trigger, string said, string[] answerSets, IReadOnlyDictionary<string, string> slots = null,
-        bool towns = false)
+        bool towns = false, long exchange = 0)
     {
         if (!AutonomousBotVoices.Enabled || answerSets == null || answerSets.Length == 0 || !AutonomousBotChatCoordinator.HasFactionAudience(realm))
             return;
         AutonomousChatBudget.Settings settings = AutonomousChatBudget.Current;
         int realmBots = AutonomousBotChatCoordinator.RealmBots(realm);
         var random = Random.Shared;
-        int size = Size(settings, realmBots, random);
+        long now = GameLoop.GameLoopTime;
+        int size = CappedSize(trigger, Size(settings, realmBots, random), realmBots, random);
+        int spread = SpreadMs(trigger, settings);
+        if (!TryClaim(realm, now, now + spread + 5_000))
+        {
+            AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Faction, AutonomousChatWhy.Held.Ceiling);
+            return;
+        }
+        // Bots plausibly there to react: free to type, and for a bot's own frontier moment, ones in the same region first.
         GameBot[] crowd = AutonomousBotRegistry.Snapshot()
-            .Where(bot => bot != first && bot.Realm == realm && AutonomousLivingServer.CanTalk(bot) && !bot.IsTemporaryGroupHelper)
-            .OrderBy(_ => random.Next()).Take(size * 3).ToArray();
+            .Where(bot => bot != first && bot.Realm == realm && AutonomousLivingServer.CanTalk(bot) && !bot.IsTemporaryGroupHelper && !bot.InCombat)
+            .OrderByDescending(bot => Personal(trigger) && first != null && bot.CurrentRegion == first.CurrentRegion ? 1 : 0)
+            .ThenBy(_ => random.Next()).Take(size * 3).ToArray();
         if (crowd.Length == 0)
             return;
-        int[] delays = Delays(size, settings.BurstSpreadS * 1_000, random);
+        string lane = AutonomousChatExchange.FactionKey(realm);
+        int[] delays = Delays(size, spread, random);
         var heard = new HashSet<string>(StringComparer.Ordinal);
         if (!string.IsNullOrEmpty(said))
             heard.Add(AutonomousChatFiller.Skeleton(said));
-        var spoken = new HashSet<GameBot>();
-        int next = 0;
-        using AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Replying(said, "faction:" + realm, GameLoop.GameLoopTime);
+        var speakers = new List<GameBot> { first };
+        var lines = new List<AutonomousChatExchange.Line>();
+        int next = 0, at = 0;
+        using AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Replying(said, "faction:" + realm, now);
         for (int i = 0; i < delays.Length; i++)
         {
             string text = null;
@@ -80,36 +127,38 @@ public static class AutonomousChatBursts
                 GameBot candidate = crowd[next];
                 foreach (string answers in answerSets)
                     if (AutonomousBotVoices.TryLine(candidate, "reply", out VC.Picked picked, answers: answers, slots: slots, relax: true,
-                            filter: line => !heard.Contains(AutonomousChatFiller.Skeleton(line.Text))))
+                            filter: line => !heard.Contains(AutonomousChatFiller.Skeleton(line.Text)) &&
+                                            AutonomousChatExchange.Shorts.Fresh(lane, line.Text, now)))
                     {
-                        if (heard.Add(AutonomousChatFiller.Skeleton(picked.Text)))
+                        if (heard.Add(AutonomousChatFiller.Skeleton(picked.Text)) && AutonomousChatExchange.Shorts.TryUse(lane, picked.Text, now))
                             (text, speaker) = (picked.Text, candidate);
                         break;
                     }
             }
             if (text == null)
                 break;
-            string line = text;
-            GameBot bot = speaker;
-            int order = i;
-            AutonomousLivingServer.Later(bot, delays[i], () => AutonomousLivingServer.CanTalk(bot) && !AutonomousBotDebates.IsRunning(realm), () =>
+            speakers.Add(speaker);
+            lines.Add(new AutonomousChatExchange.Line(speakers.Count - 1, text, delays[i] - at, "reactor", Optional: true, Reaction: true));
+            at = delays[i];
+        }
+        int total = lines.Count;
+        var rules = AutonomousChatExchange.Rules.Faction with { ReactionWithinMs = spread + 10_000 };
+        AutonomousChatExchange.Play("burst", exchange != 0 ? exchange : AutonomousChatExchange.NewId(), lane, lines, speakers.ToArray(),
+            bot => AutonomousLivingServer.CanTalk(bot) && !AutonomousBotDebates.IsRunning(realm), (bot, line) =>
             {
-                long now = GameLoop.GameLoopTime;
+                long when = GameLoop.GameLoopTime;
                 var band = AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Faction, realmBots);
-                if (AutonomousChatBudget.Meter.PerMinute(AutonomousChatBudget.Channel.Faction, (long)realm, now) >= band.Ceiling)
+                if (AutonomousChatBudget.Meter.PerMinute(AutonomousChatBudget.Channel.Faction, (long)realm, when) >= band.Ceiling)
                 {
                     AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Faction, AutonomousChatWhy.Held.Ceiling);
-                    return;
+                    return false;
                 }
-                lock (spoken)
-                    if (!spoken.Add(bot))
-                        return;
-                AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, realm, line);
-                AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), bot, line, "");
-                AutonomousChatWhy.Record(bot, "faction", "burst " + trigger, "said", "burst " + string.Join(',', answerSets), order,
-                    $"reaction {order + 1} of {delays.Length} to {trigger}", line);
-            });
-        }
+                AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, realm, line.Text);
+                AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), bot, line.Text, "");
+                AutonomousChatWhy.Record(bot, "faction", "burst " + trigger, "said", "burst " + string.Join(',', answerSets), line.Who,
+                    $"reaction {line.Who} of {total} to {trigger}", line.Text);
+                return true;
+            }, rules);
         if (towns)
             TownBroadcast(realm, trigger, answerSets, slots, heard, settings, random);
     }
