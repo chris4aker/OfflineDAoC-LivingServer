@@ -75,16 +75,18 @@ namespace DOL.UnitTests
         {
             Assert.That(DefaultOf("epic_full_fire_patches"), Is.EqualTo(false));
             Assert.That(DefaultOf("epic_govannon_full_health"), Is.EqualTo(false));
-            Assert.That(DefaultOf("epic_funus_weapon_puzzle"), Is.EqualTo(true));
+            Assert.That(DefaultOf("epic_funus_weapon_puzzle"), Is.EqualTo(false));
             Assert.That(DefaultOf("epic_dragon_messengers"), Is.EqualTo(true));
             Assert.That(DefaultOf("epic_encounter_switches"), Is.EqualTo(""));
-            // Off until a played check: the owner's 2026-10-19 fire-patch nerf stays, Govannon stays at 200,000.
+            // Off until a played check: the owner's 2026-10-19 fire-patch nerf stays, Govannon stays at 200,000, and Funus's puzzle
+            // stays off (owner 2026-11-08: off until the bots clear it with no heals; the last container run still had 6).
             Assert.That(EpicEncounterMechanics.AllowFullFirePatches, Is.False);
+            Assert.That(EpicEncounterMechanics.AllowFunusWeaponPuzzle, Is.False);
             Assert.That(EpicEncounterMechanics.AllowGovannonFullHealth, Is.False);
-            // On as their engineers set them; the Funus puzzle is flagged (only clerics and longbow scouts can hurt him).
+            // On as their engineers set them.
             foreach (string on in new[]
                      {
-                         nameof(EpicEncounterMechanics.AllowFunusWeaponPuzzle), nameof(EpicEncounterMechanics.AllowTuscarTwinHeal),
+                         nameof(EpicEncounterMechanics.AllowTuscarTwinHeal),
                          nameof(EpicEncounterMechanics.AllowKvasirColdHeal), nameof(EpicEncounterMechanics.AllowEarthmenderMutualHeal),
                          nameof(EpicEncounterMechanics.AllowBeathaHealsXaga), nameof(EpicEncounterMechanics.AllowSacristanPatrol),
                      })
