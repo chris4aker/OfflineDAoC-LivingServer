@@ -307,7 +307,7 @@ friends try it only once it is complete, so every part is tested in the containe
 branches: `feature/1.2-hosting` (Host for Friends, Join Friend, the host password, region address per client, idle
 time-outs, bind defaults, from rambodolphin13's DividedRealms `main`) and `feature/1.2-coop-humans` (group leadership,
 `/pull`, the pilot, host-only commands, a server-wide companion budget, reply throttles, quest credit for every human).
-The Character passport stays a separate decision.
+Owner 2026-11-08 17:07: the Character passport is included too (`feature/1.2-passport`).
 
 
 Unchanged by the split of 2026-11-06. Owner 2026-11-03: private co-op for about 1–4 players in a thriving bot world; no public server.
