@@ -3166,6 +3166,7 @@ namespace DOL.AI.Brain
         {
             if (!IsActive)
                 return;
+            NoteCastForStep();
 
             if (AutonomousDefensivePull.Hold(BotBody))
             {
@@ -3284,6 +3285,10 @@ namespace DOL.AI.Brain
                 // side styles (BotBrain.Flank, hand port from True165). Epic tactics above keep raids to themselves.
                 if (Body.TargetObject is GameLiving flankTarget && TryFlank(flankTarget))
                     return;
+                // Then, standing there and swinging, it circles a little now and then instead of standing like a post
+                // (BotBrain.CombatMovement). A tank holding aggro stays put; raids and player-led groups as before.
+                if (Body.TargetObject is GameLiving circleTarget && TryCircle(circleTarget))
+                    return;
                 if (Body.IsStealthed)
                     Body.Stealth(false);
 
@@ -3332,6 +3337,11 @@ namespace DOL.AI.Brain
                     Body.StopAttack();
                     return;
                 }
+
+                // A caster steps aside now and then right after a cast ended, never during one (BotBrain.CombatMovement).
+                if (rangedCaster && !outOfPowerMelee && Body.TargetObject is GameLiving casterStepTarget &&
+                    TryCasterStep(casterStepTarget))
+                    return;
 
                 bool bowCycleOwnsAction = Body.attackComponent != null &&
                     Body.rangeAttackComponent != null &&

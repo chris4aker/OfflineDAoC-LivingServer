@@ -741,6 +741,43 @@ Built and checked by tools; nobody has seen it in the game client yet.
   new one, an unknown one left alone, ROLLBACK.cmd after each and PREPARE-FOR-UPDATE.cmd. The archive was unpacked again:
   eight entries, and the picture decodes to the approved image pixel for pixel. Not yet checked: the game client showing it.
 
+**Movement that doesn't look scripted** (planned as 1.2.1, the first slice of 2.0's "bots as people"; owner 2026-11-08:
+"Pull all the 1.2.1 into 1.2"). For gamebots only: your companions and the bots in your own group behave as before, and
+raids and epic encounters keep their own positions (their tactics, stations and blast dodges stay in charge). Each of
+these is a habit players had, not a random wobble. They pass automated tests; nobody has played them in game yet.
+Nobody else's fork has bot strafing (fork survey, 2026-11-08), so this is our own.
+- **Melee bots circle in a fight instead of standing frozen.** A melee gamebot hitting a monster that fights someone else
+  takes a short arc around it now and then (every 7-15 seconds, 28-60 units, never more than 45 degrees), at the distance
+  it already stands. It steps away from a party member it is standing in (checked every 2.5 seconds), out of the monster's
+  face to the nearer side, and never out of the spot for its back or side style: the flank step picks the spot, circling
+  keeps the bot from standing there like a post. It keeps swinging and keeps its styles queued while it steps.
+- **Tanks holding aggro stay put and face the monster.** A bot the monster is hitting in a solo fight takes only a small
+  step now and then (every 21-45 seconds).
+- **Casters step between casts.** Right after a cast ends, now and then (every 12-24 seconds), a caster takes one short step
+  to the side and a little back, only to a spot it still sees its target from, and casts again as it stops. Never during
+  a cast, never with a monster on it.
+- **Every step stays on the ground it can walk.** Each step is a few short legs walked on the navigation mesh first: on dry
+  ground, on the bot's own floor (no step up or down more than 32), never through a wall or off a ledge. If the mesh
+  doesn't allow it, the bot doesn't move. No navigation mesh was changed.
+- **Fewer snapped turns and stops.** Each leg is short enough that the bot keeps facing its target instead of turning
+  sideways to walk and snapping back. A gamebot following its party leader, or standing at a monster, no longer re-faces
+  it on every follow check (twice a second): only when it is more than 30 degrees off. A wide look around, a wave at you or
+  a cheer is turned in steps of at most 45 degrees about a tenth of a second apart instead of one snap. Each gamebot
+  stops its melee approach a few units short of the usual distance (the same for it every fight), so a monster's
+  attackers don't all stand on one exact ring.
+- **Town breaks at the bank and the usual crowd spots.** A gamebot on a town break no longer stands on one spot for its
+  15-30 minutes. A minute or so after it walks in, and then every 2-6 minutes, it wanders over to the bank (the vault
+  keeper, the usual spot), a merchant, a trainer, or a crowd already standing in town (other bots or you; a crowd of 12 is
+  left alone), stands in front of what it came to or on the crowd's edge on its side, and faces it. Only a short walk
+  with a complete path, inside the town, on dry ground, on the same floor, out of every monster's aggro range, and never
+  while it rests or fights.
+- **Measured.** The AI profiler (`AI_PROFILE`) has two new systems, `combat.movement` and `town.hangout`. Every 5 minutes the
+  server log counts the steps (`BOT_COMBAT_MOVEMENT`: circles, small steps, steps aside, legs, blocked steps, caster steps)
+  and the town wandering (`AUTONOMOUS_TOWN_HANGOUT`).
+- **What the server can't do.** The game has no "strafe" for an NPC: the original client shows a bot that walks while
+  facing its target either as a side step or as a slide, and only playing it shows which. A walk longer than a step still
+  turns the bot to face where it goes in one update, and the client's own smoothing of a stop is the client's.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized

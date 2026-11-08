@@ -226,7 +226,8 @@ namespace DOL.GS
                 switch (choice.Move)
                 {
                     case BodyMove.Look:
-                        bot.TurnTo(Turned(bot.Heading, choice.HeadingOffset));
+                        // Living Server 1.2: a wide look is sent in steps instead of one snap (BotTurning).
+                        BotTurning.TurnGradually(bot, Turned(bot.Heading, choice.HeadingOffset));
                         Count(ref _looks);
                         return false;
                     case BodyMove.Emote:
@@ -236,7 +237,7 @@ namespace DOL.GS
                     case BodyMove.Greet:
                         lock (state.Greeted)
                             state.Greeted[watcher.Name] = now;
-                        bot.TurnTo(watcher);
+                        BotTurning.TurnGradually(bot, watcher);
                         AutonomousLivingServer.Later(bot, 350 + Random.Shared.Next(500),
                             () => Eligible(bot) && bot.IsWithinRadius(watcher, GreetRadius * 2), () => bot.Emote(choice.Emote));
                         Count(ref _greets);
@@ -284,7 +285,7 @@ namespace DOL.GS
                     eEmote emote = Pick(CheerEmotes, Random.Shared.NextDouble());
                     AutonomousLivingServer.Later(bot, 600 + i * 900 + Random.Shared.Next(1_200), () => Eligible(bot), () =>
                     {
-                        bot.TurnTo(who);
+                        BotTurning.TurnGradually(bot, who);
                         bot.Emote(emote);
                         Count(ref _cheers);
                     });
