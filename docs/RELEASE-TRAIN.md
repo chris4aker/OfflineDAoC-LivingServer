@@ -306,9 +306,8 @@ Unchanged by the split of 2026-11-06. Owner 2026-11-03: private co-op for about 
 - [ ] Host for Friends and Join Friend in the launcher, ported with credit from rambodolphin13. **Source corrected
       2026-11-08:** his current work is on DividedRealms `main`, not `feature/play-with-friends`: invite codes, one
       window, a host password for new accounts from other PCs (af1fcf85), a host on a public IP (b0744a2a). Home network,
-      Tailscale by default, firewall rules for this game only; automatic account creation off while hosting. **Owner to
-      decide:** keep "internet mode limited to listed friends" (our plan) or the password as the only gate (he dropped
-      the friend list)
+      Tailscale by default, firewall rules for this game only; automatic account creation off while hosting. **Owner
+      2026-11-08 10:08: the host password is the gate** ("Password is better"), as in his fork; no friend list
 - [ ] Look at his Character passport (da78651f, tested): bring your own character to a friend's world and back
 - [ ] The bot population scaled to the extra players' load; the original client first, the new client after
 - [ ] Played: a weekend session with two or three friends
