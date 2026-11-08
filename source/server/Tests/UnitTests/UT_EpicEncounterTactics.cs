@@ -450,7 +450,8 @@ namespace DOL.UnitTests
             // Tuscaran Glacier and Summoner's Hall (UT_EpicWave2MidHib).
             nameof(EpicEncounterMechanics.AllowTuscarTwinHeal), nameof(EpicEncounterMechanics.AllowKvasirColdHeal),
             // Caer Sidi (UT_EpicWave2Albion).
-            nameof(EpicEncounterMechanics.AllowHorsemenTetherHeal), nameof(EpicEncounterMechanics.AllowFunusWeaponPuzzle),
+            // (Funus's weapon puzzle is off by default in 1.2: the owner's call, 2026-11-08.)
+            nameof(EpicEncounterMechanics.AllowHorsemenTetherHeal),
             nameof(EpicEncounterMechanics.AllowSacristanPatrol), nameof(EpicEncounterMechanics.AllowSoulReckonerFullShield),
             nameof(EpicEncounterMechanics.AllowSoulReckonerSmallRoom),
         ];

@@ -31,6 +31,7 @@ namespace DOL.UnitTests
         private Region _region;
         private ushort _nextId = 1_900;
         private EpicTestServerScope _server;
+        private bool _funusPuzzle;
 
         public sealed class Bot : GameBot
         {
@@ -85,6 +86,9 @@ namespace DOL.UnitTests
             EpicEncounterMechanics.ResetPerEncounter();
             EncounterDisplacementRecovery.ForgetAll();
             EncounterMechanicCalls.Reset();
+            // The Funus tests play his puzzle, which ships off in 1.2 (owner 2026-11-08): on here, put back after.
+            _funusPuzzle = EpicEncounterMechanics.AllowFunusWeaponPuzzle;
+            EpicEncounterMechanics.AllowFunusWeaponPuzzle = true;
         }
 
         [TearDown]
@@ -93,7 +97,7 @@ namespace DOL.UnitTests
             EpicEncounterMechanics.ResetPerEncounter();
             EncounterDisplacementRecovery.ForgetAll();
             EncounterMechanicCalls.Reset();
-            EpicEncounterMechanics.AllowFunusWeaponPuzzle = true;
+            EpicEncounterMechanics.AllowFunusWeaponPuzzle = _funusPuzzle;
             EpicEncounterMechanics.FunusBotShieldGuard = true;
             _server.Dispose();
         }

@@ -30,6 +30,7 @@ namespace DOL.UnitTests
         private ushort _nextId = 900;
         private EpicTestServerScope _server;
         private Func<GameLiving, eDamageType, bool> _deals;
+        private bool _funusPuzzle;
 
         public sealed class Bot : GameBot
         {
@@ -82,6 +83,9 @@ namespace DOL.UnitTests
             EncounterDisplacementRecovery.ForgetAll();
             EncounterMechanicCalls.Reset();
             _deals = EpicEncounterTactics.DealsDamageType;
+            // The Funus tests play his puzzle, which ships off in 1.2 (owner 2026-11-08): on here, put back after.
+            _funusPuzzle = EpicEncounterMechanics.AllowFunusWeaponPuzzle;
+            EpicEncounterMechanics.AllowFunusWeaponPuzzle = true;
         }
 
         [TearDown]
@@ -91,7 +95,7 @@ namespace DOL.UnitTests
             EncounterDisplacementRecovery.ForgetAll();
             EncounterMechanicCalls.Reset();
             EpicEncounterTactics.DealsDamageType = _deals;
-            EpicEncounterMechanics.AllowFunusWeaponPuzzle = true;
+            EpicEncounterMechanics.AllowFunusWeaponPuzzle = _funusPuzzle;
             EpicEncounterMechanics.AllowSacristanPatrol = true;
             EpicEncounterMechanics.AllowSoulReckonerSmallRoom = true;
             _server.Dispose();
@@ -163,8 +167,8 @@ namespace DOL.UnitTests
         public void CaerSidisFiveRestoresAndTheAlbionMovesShipOn()
         {
             Assert.That(EpicEncounterMechanics.AllowHorsemenTetherHeal, Is.True);
-            Assert.That(EpicEncounterMechanics.AllowFunusWeaponPuzzle, Is.True);
             Assert.That(EpicEncounterMechanics.AllowSacristanPatrol, Is.True);
+            // Funus's weapon puzzle ships off (owner 2026-11-08); UT_EpicOwnerSettings checks its default.
             Assert.That(EpicEncounterMechanics.AllowSoulReckonerFullShield, Is.True);
             Assert.That(EpicEncounterMechanics.AllowSoulReckonerSmallRoom, Is.True);
             string[] shipped = EpicEncounterMechanics.PerEncounterValues();
