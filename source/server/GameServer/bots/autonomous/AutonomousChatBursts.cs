@@ -51,18 +51,18 @@ public static class AutonomousChatBursts
 
     /// <summary>
     /// How many reactions a burst may have (1.1.3, owner 2026-11-08: three congratulations within 13 s to one kill line, and a
-    /// fourth 40 s later): one or two for a bot's own moment, at most three for realm news (four from 300 bots a realm). Pure.
+    /// fourth 40 s later): one or two for a bot's own moment, at most three for realm news (a keep, a relic, a raid). Pure.
     /// </summary>
     public static int CappedSize(string trigger, int size, int realmBots, Random random)
     {
         if (Personal(trigger))
             return random.NextDouble() < 0.4 ? 2 : 1;
-        return Math.Clamp(size, 1, realmBots >= 300 ? 4 : 3);
+        return Math.Clamp(size, 1, 3);
     }
 
-    /// <summary>How long after its trigger a burst's reactions may come: 20 s for a bot's own moment, a minute for news.</summary>
+    /// <summary>How long after its trigger a burst's reactions may come: 20 s for a bot's own moment, 45 s for news.</summary>
     public static int SpreadMs(string trigger, AutonomousChatBudget.Settings settings) =>
-        Math.Min(Math.Max(5, settings.BurstSpreadS) * 1_000, Personal(trigger) ? 20_000 : 60_000);
+        Math.Min(Math.Max(5, settings.BurstSpreadS) * 1_000, Personal(trigger) ? 20_000 : 45_000);
 
     private static readonly Dictionary<eRealm, long> RunningUntil = new();
 
