@@ -73,6 +73,14 @@ namespace DOL.GS
             /// newborns, play test duo3: up to 11 alive, 62 of the raid's deaths): casters and archers all take the same one,
             /// the one with the least health left, and a party's melee peel one off their own party's casters and healers.</summary>
             public bool FocusRangedAdds { get; init; }
+            /// <summary>Up to this many whole parties of the raid, with their healers, work only the ranged adds, taking the
+            /// ones on the raid's healers and casters first; everyone else stays on the boss (owner 2026-11-08, Spindler
+            /// Broodmother: "2-3 newborn-only parties"). 0: off. Replaces <see cref="FocusRangedAdds"/> where set.</summary>
+            public int AddParties { get; init; }
+            /// <summary>Area casters aim their area spells at the boss or a ranged add where the most of the boss and its ranged
+            /// adds stand within the spell's radius (owner 2026-11-08, Spindler Broodmother: "AoE on her spot"; her newborns
+            /// appear within 50-80 of her). Gated to this tactic: the shared caster AI then picks the area spell itself.</summary>
+            public bool AreaOnClump { get; init; }
 
             public bool HasHazards => Hazards is { Length: > 0 } && HazardRadius > 0;
         }
@@ -482,7 +490,25 @@ namespace DOL.GS
                     (mine.Length > 0 ? $"one it can hurt ({mine.Length})" : "none it can hurt: the boss"));
             }
             // Casters and archers kill these adds while the rest stay on the boss.
-            if (LiveRangedAdds(target, live) is { Length: > 0 } rangedAdds)
+            GameNPC[] rangedAdds = LiveRangedAdds(target, live);
+            if (rangedAdds.Length > 0)
+            {
+                Tactic rt = For(target);
+                LogRangedAdds(target, rangedAdds.Length, now);
+                // Area casters: on the clump of the boss and her adds (Spindler's spot) where their area spell hits the most.
+                if (rt.AreaOnClump && AreaClumpAdvice(raider, target, rangedAdds, now) is Advice clump) return clump;
+                if (rt.AddParties > 0)
+                {
+                    // Newborn-only parties take the adds (healers keep their party up); the rest stay on the boss.
+                    if (!(classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId)) &&
+                        IsAddParty(raider, rt.AddParties, now) && AddPartyTarget(rangedAdds) is { } newborn)
+                        return new(BotAction.Retarget, newborn, null,
+                            $"add party: ranged-add {Array.IndexOf(rangedAdds, newborn) + 1}/{rangedAdds.Length} of \"{target.Name}\"" +
+                            (newborn.TargetObject is GameLiving on ? $" (on {on.Name})" : ""));
+                    rangedAdds = [];
+                }
+            }
+            if (rangedAdds.Length > 0)
             {
                 bool focus = For(target).FocusRangedAdds;
                 if (canShootFlyers)
