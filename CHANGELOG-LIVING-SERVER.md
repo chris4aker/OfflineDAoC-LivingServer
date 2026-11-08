@@ -8,7 +8,10 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## Beta 1.1.3 (hotfix, in development)
+## Beta 1.1.3 — 2026-11-08
+
+A hotfix: the raid gets out of Xanxicar's stomp, two Darkness Falls exits work, and Setup waits out a busy download
+server. How it was tested is in the release notes ([docs/RELEASE-NOTES-1.1.3.md](docs/RELEASE-NOTES-1.1.3.md)).
 
 **Two Darkness Falls exits work** (found and fixed by rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
 and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no
