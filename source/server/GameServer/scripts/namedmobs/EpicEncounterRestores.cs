@@ -113,6 +113,20 @@ namespace DOL.GS
 
         private static readonly System.Collections.Generic.Dictionary<int, long> HealTraces = new();
 
+        /// <summary>Play test diagnostic: a bot that may fight <paramref name="target"/> only at range was switched to melee.</summary>
+        public static void NoteMeleeSwitch(GameObject bot, GameLiving target)
+        {
+            if (bot == null || !Log.IsInfoEnabled) return;
+            long now = GameLoop.GameLoopTime;
+            lock (HealTraces)
+            {
+                int key = -bot.ObjectID;
+                if (HealTraces.TryGetValue(key, out long last) && now - last < 600_000) return;
+                HealTraces[key] = now;
+            }
+            Log.Info($"EPIC_MELEE_SWITCH_TRACE bot=\"{bot.Name}\" target=\"{target.Name}\" stack={System.Environment.StackTrace.Replace(System.Environment.NewLine, " | ")}");
+        }
+
         public static void TellImmune(GameObject source, string text)
         {
             GamePlayer player = source as GamePlayer ?? (source as GameSummonedPet)?.Owner as GamePlayer;
