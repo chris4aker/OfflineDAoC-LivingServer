@@ -75,6 +75,26 @@ namespace LivingServerSetup
                                 message.IndexOf("timed out", StringComparison.OrdinalIgnoreCase) >= 0 ||
                                 message.IndexOf("connection was closed", StringComparison.OrdinalIgnoreCase) >= 0);
 
+        /// <summary>
+        /// A download error that means GitHub's download server was busy or briefly down (429, 500, 502, 503, 504), not that
+        /// anything is wrong with the game or the connection. A player saw "503" from a fresh install on 2026-11-08: the
+        /// downloader's curl.exe retries such errors five times, 5 s apart, then its PowerShell fallback failed the same way. Pure.
+        /// </summary>
+        public static bool LooksLikeBusyServer(string message) => message != null && BusyServer.IsMatch(message);
+
+        static readonly Regex BusyServer = new Regex(
+            @"\((?:429|500|502|503|504)\)|returned (?:an )?error:?\s*\(?(?:429|500|502|503|504)\b|does not indicate success:\s*(?:429|500|502|503|504)\b" +
+            @"|Service Unavailable|Server Unavailable|Bad Gateway|Gateway Time-?out|Too Many Requests|Internal Server Error",
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+        /// <summary>How long Setup waits before running the official downloader again after a busy server, one entry per try
+        /// (7.5 minutes in all). Finished parts are kept, so each try continues from the last finished part.</summary>
+        public static readonly int[] BusyRetrySeconds = { 30, 60, 120, 240 };
+
+        /// <summary>busy, network or other: what Setup makes of a download error (--classify-download-error). Pure.</summary>
+        public static string ClassifyDownloadError(string message) =>
+            LooksLikeBusyServer(message) ? "busy" : LooksLikeNetworkDrop(message) ? "network" : "other";
+
         sealed class Step
         {
             public StepId Id;
@@ -618,22 +638,48 @@ namespace LivingServerSetup
             {
                 foreach (var args in runs)
                 {
-                    var job = new ScriptJob();
-                    bool filesChanged = false;
-                    job.Line += (line, err) =>
+                    ScriptJob job;
+                    bool filesChanged;
+                    int code;
+                    int busyTries = 0;
+                    while (true)
                     {
-                        if (err) return;
-                        OnUpstreamLine(line);
-                        var m = Regex.Match(line, @"^Done\. Your game is now in (.+), with your progress\.");
-                        if (m.Success) freshFolder = m.Groups[1].Value.Trim();
-                        if (line.StartsWith("Some game files in that folder were changed")) filesChanged = true;
-                    };
-                    int code = job.Run(script, args, cts.Token);
-                    if (cts.IsCancellationRequested) throw new StepFailed("Stopped.");
+                        job = new ScriptJob();
+                        filesChanged = false;
+                        bool changed = false;
+                        job.Line += (line, err) =>
+                        {
+                            if (err) return;
+                            OnUpstreamLine(line);
+                            var m = Regex.Match(line, @"^Done\. Your game is now in (.+), with your progress\.");
+                            if (m.Success) freshFolder = m.Groups[1].Value.Trim();
+                            if (line.StartsWith("Some game files in that folder were changed")) changed = true;
+                        };
+                        bool folderBefore = Directory.Exists(gamePath);
+                        code = job.Run(script, args, cts.Token);
+                        filesChanged = changed;
+                        if (cts.IsCancellationRequested) throw new StepFailed("Stopped.");
+                        // GitHub's download server busy (429/5xx): wait and run the downloader again by itself, as Try again
+                        // would; finished parts are kept. Only while the game folder is as it was, so a half-unpacked
+                        // folder is still left to Try again and its checks.
+                        if (code != 0 && !filesChanged && busyTries < BusyRetrySeconds.Length && LooksLikeBusyServer(job.LastError) &&
+                            Directory.Exists(gamePath) == folderBefore)
+                        {
+                            int wait = BusyRetrySeconds[busyTries++];
+                            Log.Write("GitHub's download server was busy (" + job.LastError + "); trying again in " + wait + " s (" + busyTries + " of " + BusyRetrySeconds.Length + ").");
+                            SetStatus("GitHub's download server is busy. Trying again in " + wait + " seconds (" + busyTries + " of " + BusyRetrySeconds.Length + ")...",
+                                "Finished downloads are kept; nothing needs doing.");
+                            if (cts.Token.WaitHandle.WaitOne(TimeSpan.FromSeconds(wait))) throw new StepFailed("Stopped.");
+                            continue;
+                        }
+                        break;
+                    }
                     if (code != 0)
                     {
                         var msg = job.LastError ?? "The official downloader stopped with code " + code + ".";
-                        var f = new StepFailed(msg, LooksLikeNetworkDrop(msg)
+                        var f = new StepFailed(msg, LooksLikeBusyServer(msg)
+                            ? "GitHub's download server is busy right now (Setup tried again " + busyTries + " times). Finished downloads are kept: click Try again in a few minutes and it continues where it stopped."
+                            : LooksLikeNetworkDrop(msg)
                             ? "The internet connection dropped while downloading. Finished downloads are kept: when you're back online, click Try again and it continues where it stopped."
                             : "Finished downloads are kept: click Try again and it continues where it stopped.");
                         if (filesChanged)
