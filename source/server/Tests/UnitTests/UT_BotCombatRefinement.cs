@@ -273,8 +273,9 @@ namespace DOL.UnitTests
                 .SetValue(bot, new DOL.GS.Effects.GameEffectList(bot));
             var enemy = (GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(GameNPC));
             enemy.attackComponent = new AttackComponent(enemy);
-            bot.movementComponent = new NpcMovementComponent(bot);
-            enemy.movementComponent = new NpcMovementComponent(enemy);
+            // GameNPC's movement component hides GameLiving's, and turning reads the GameLiving one: set both.
+            ((GameLiving)bot).movementComponent = bot.movementComponent = new NpcMovementComponent(bot);
+            ((GameLiving)enemy).movementComponent = enemy.movementComponent = new NpcMovementComponent(enemy);
             bot.TargetObject = enemy;
             return (bot, enemy);
         }
