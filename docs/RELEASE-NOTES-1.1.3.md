@@ -38,6 +38,8 @@ that one. If it still can't download, it says so plainly and changes nothing.
 - Automated: every server, launcher and Setup test passes on GitHub, including a real download install.
 - Xanxicar: bot raids in a test world, with the same fix on the 1.2 line, killed him without a wipe, and his first
   stomp killed 5 raiders instead of 48 to 110.
+- Xanxicar on a real install, with this build: one Albion raid of 280 bots killed him in 23 minutes with no wipe.
+  His four stomps killed 6, at most 1, 6 and 5 raiders.
 - The Darkness Falls exits are covered by tests against the released world's exit spots. They have not been clicked
   in game yet.
 
