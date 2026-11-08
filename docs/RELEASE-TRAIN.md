@@ -393,6 +393,21 @@ friends) and go with the guild social package.
 - [ ] **Measured by a played "who's real?" session:** the owner and a friend play an evening and tag every bot that gave
       itself away, before and after. The blind chat read tests lines only.
 
+**Darkness Falls and the hardest epics (owner 2026-11-08 12:06; its own part, may ship as a point release when ready).**
+Today 145 encounters are level 70 or more: 31 have a raid tactic, 29 the dragon-fight logic, 55 only the generic dungeon
+route (won on numbers), 10 are Darkness Falls with no raid AI (Legion, Behemoth, the princes, the High Lords,
+Beliathan) and 20 have no raid. Built the way 1.2's epics were: research, rules, tactic, unit tests, container runs at
+period sizes, a played raid on the owner's PC, and the raid-skill layer so a realm learns each fight.
+- [ ] Step 1: every 70+ encounter ranked (blocking today, iconic to 2003 players), batches of about 10 (started 2026-11-08)
+- [ ] Step 2: period research on how 2002-2004 raids did Legion, the princes, Behemoth, Apocalypse, Balor, Morgana and
+      the top route-only bosses; Wayback jobs on the owner's PC (started 2026-11-08)
+- [ ] Step 3: a Darkness Falls raid design for the owner: muster and route through the levels, named priority, pet parking
+      for the princes, Legion's platform positions, the way down, add-wave parties, kill-heal discipline, Behemoth, enemy
+      realms inside
+- [ ] Step 4: build in slices (Legion first, then the princes and High Lords, then Behemoth; then the route-only bosses in
+      batches)
+- [ ] Step 5: the owner picks which open-world 70+ named deserve realm raids
+
 **The complete realm.**
 - [ ] Crafting M3–M6 (with no Exchange tax or new sink until the ledger shows a need); the war effort. Start M2–M3
       from rambodolphin13's bot crafting and craft orders (93c25b69, ceac061a, e37f8810, 24f8a2e7; in order, tested,
