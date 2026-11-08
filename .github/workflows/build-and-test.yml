@@ -129,13 +129,13 @@ jobs:
           name: server-test-results
           path: "**/TestResults/*.trx"
 
-      # The launcher ships in the build too (its Living Server tab and, from 1.1.2, its update check). Their own tests
-      # must pass; the rest of the launcher tests run in the informational launcher job below.
+      # The launcher ships in the build too (its Living Server tab, from 1.1.2 its update check, from 1.2 Host for Friends
+      # and Join Friend). Their own tests must pass; the rest of the launcher tests run in the informational launcher job below.
       - name: Build launcher and test the Living Server tab
         shell: bash
         run: |
           dotnet build source/tools/OfflineDaoc.Launcher/OfflineDaoc.Launcher.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
-          out=$(dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }} --filter "FullyQualifiedName~SocialExpansionSettingsTests|FullyQualifiedName~HeraldPageTests|FullyQualifiedName~LoreBestiaryTests|FullyQualifiedName~Tests.Update" 2>&1) || { echo "$out"; echo "::error title=Living Server tab tests::failed"; exit 1; }
+          out=$(dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }} --filter "FullyQualifiedName~SocialExpansionSettingsTests|FullyQualifiedName~HeraldPageTests|FullyQualifiedName~LoreBestiaryTests|FullyQualifiedName~Tests.Update|FullyQualifiedName~HostForFriendsTests|FullyQualifiedName~JoinFriendTests|FullyQualifiedName~GmAccessTests|FullyQualifiedName~HostForFriendsFirewallTests" 2>&1) || { echo "$out"; echo "::error title=Living Server tab tests::failed"; exit 1; }
           summary=$(echo "$out" | grep -E "(Passed|Failed)!" | tail -n 1 || true)
           echo "::notice title=Living Server tab tests::${summary:-no summary line found}"
 
@@ -167,7 +167,7 @@ jobs:
           # Whole files the content patches ship (content-patches.json "File" entries): Living Server's loading screen.
           Copy-Item tools/fork-build/content "$dir/content" -Recurse
           Copy-Item tools/claude-version/set_bot_guilds.py, tools/claude-version/set_bot_social.py, tools/claude-version/set_xp_by_level.py, tools/claude-version/carry_social_tables.py, tools/claude-version/epic_chains.py, tools/claude-version/epic_chains_data.json, tools/claude-version/lore_books.py "$dir/tools/claude-version"
-          Copy-Item docs/BOT-GUILDS.md, docs/BOT-PERSONALITIES.md, docs/XP-BY-LEVEL-RANGE.md, docs/LIVING-SERVER.md, docs/KNOWN-ISSUES.md "$dir/docs"
+          Copy-Item docs/BOT-GUILDS.md, docs/BOT-PERSONALITIES.md, docs/XP-BY-LEVEL-RANGE.md, docs/LIVING-SERVER.md, docs/KNOWN-ISSUES.md, docs/PLAY-WITH-FRIENDS.md "$dir/docs"
           $launcher = "source/tools/OfflineDaoc.Launcher/bin/Release/net10.0-windows"
           New-Item -ItemType Directory -Path "$dir/launcher" -Force | Out-Null
           $launcherInfo = @()

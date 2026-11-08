@@ -51,6 +51,12 @@ namespace DOL.Config
 		private ushort _udpPort;
 
 		/// <summary>
+		/// The internet (public) address of the server, given to clients connecting from the internet.
+		/// Null until set in the config or found by UPnP. Ported from rambodolphin13/DividedRealms 6f22a7a.
+		/// </summary>
+		private IPAddress _publicIP;
+
+		/// <summary>
 		/// Constructs a server configuration with default values.
 		/// Living Server 1.1.2 (audit 2026-11-03): the defaults reach this PC only. The upstream defaults listened on every
 		/// network (0.0.0.0) and asked the router to open the ports to the internet (UPnP), so a lost serverconfig.xml was
@@ -123,6 +129,17 @@ namespace DOL.Config
 		}
 
 		/// <summary>
+		/// Gets/sets the internet (public) address of the server: what clients connecting from the internet are told
+		/// to use for the game connection (RegionAddress.ForClient). "auto" in the config leaves it for UPnP to find.
+		/// Only Host for Friends' internet mode uses it; home network and Tailscale friends never need it.
+		/// </summary>
+		public IPAddress PublicIP
+		{
+			get { return _publicIP; }
+			set { _publicIP = value; }
+		}
+
+		/// <summary>
 		/// Whether or not to enable UPnP mapping.
 		/// </summary>
 		public bool EnableUPnP
@@ -162,6 +179,10 @@ namespace DOL.Config
 
 			_enableUPnP = root["Server"]["EnableUPnP"].GetBoolean(_enableUPnP);
 			_detectRegionIP = root["Server"]["DetectRegionIP"].GetBoolean(_detectRegionIP);
+
+			// Living Server 1.2: "auto" (or nothing) leaves it for UPnP to find; an unreadable value counts as "auto".
+			ip = root["Server"]["PublicIP"].GetString("auto")?.Trim();
+			_publicIP = ip is null or "" or "auto" || !IPAddress.TryParse(ip, out IPAddress publicIP) ? null : publicIP;
 
 
 		}
@@ -217,6 +238,7 @@ namespace DOL.Config
 			root["Server"]["UdpPort"].Set(_udpPort);
 			root["Server"]["EnableUPnP"].Set(_enableUPnP);
 			root["Server"]["DetectRegionIP"].Set(_detectRegionIP);
+			root["Server"]["PublicIP"].Set(_publicIP?.ToString() ?? "auto");
 		}
 
 		/// <summary>

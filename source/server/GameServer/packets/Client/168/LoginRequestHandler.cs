@@ -282,6 +282,44 @@ namespace DOL.GS.PacketHandler.Client.v168
 							return;
 						}
 
+						// Living Server 1.2 (play with friends): a new account from another PC needs the host password
+						// (Host for Friends). This PC is never asked. From rambodolphin13/DividedRealms af1fcf8.
+						string hostPasswordHash = GameServer.Instance.Configuration.HostPasswordHash;
+
+						if (HostPasswordAttempts.Shared.IsLockedOut(ipAddress, DateTime.UtcNow))
+						{
+							if (Log.IsWarnEnabled)
+								Log.Warn($"HOST_PASSWORD new account refused, too many wrong host passwords from this address lately - {username}:{ipAddress}");
+
+							client.Out.SendLoginDenied(eLoginError.ServiceNotAvailable);
+							success = false;
+							return;
+						}
+
+						switch (HostPassword.CheckNewAccount(hostPasswordHash, password, ipAddress))
+						{
+							case HostPassword.NewAccount.NoHostPassword:
+							{
+								if (Log.IsInfoEnabled)
+									Log.Info($"HOST_PASSWORD new account refused, another PC and no host password is set (Host for Friends) - {username}:{ipAddress}");
+
+								client.Out.SendLoginDenied(eLoginError.AccountNeedsInvite);
+								success = false;
+								return;
+							}
+							case HostPassword.NewAccount.WrongPassword:
+							{
+								HostPasswordAttempts.Shared.RecordFailure(ipAddress, DateTime.UtcNow);
+
+								if (Log.IsInfoEnabled)
+									Log.Info($"HOST_PASSWORD new account refused, not the host password - {username}:{ipAddress}");
+
+								client.Out.SendLoginDenied(eLoginError.IncorrectPassword);
+								success = false;
+								return;
+							}
+						}
+
 						if (string.IsNullOrEmpty(password))
 						{
 							client.Out.SendLoginDenied(eLoginError.InvalidAccount);
@@ -295,13 +333,15 @@ namespace DOL.GS.PacketHandler.Client.v168
 
 						TimeSpan timeSpan;
 						int totalAccount = 0;
+						bool skipSameAddressWait = HostPassword.SkipsSameAddressWait(hostPasswordHash, password, ipAddress);
 						var accountsFromSameIp = await DOLDB<DbAccount>.SelectObjectsAsync(DB.Column("LastLoginIP").IsEqualTo(ipAddress));
 
 						foreach (DbAccount ac in accountsFromSameIp)
 						{
 							timeSpan = DateTime.Now - ac.CreationDate;
 
-							if (timeSpan.TotalMinutes < Properties.TIME_BETWEEN_ACCOUNT_CREATION_SAMEIP)
+							// Not for this PC, the home network, Tailscale or the host password (two friends behind one router).
+							if (timeSpan.TotalMinutes < Properties.TIME_BETWEEN_ACCOUNT_CREATION_SAMEIP && !skipSameAddressWait)
 							{
 								if (Log.IsWarnEnabled)
 									Log.Warn($"Account creation: too many from same IP within set minutes - {username}:{ipAddress}");
