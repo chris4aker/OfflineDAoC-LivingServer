@@ -14,8 +14,8 @@ Older entries below keep the names they were written with.
 in one second. The order to get clear came only 3% above the threshold, it reached only the raiders whose target was
 Xanxicar himself (not those on his elites and crystals, nor healers), the spot it sent them to lay in the cave's rock,
 and a bot's melee follow walked it straight back to him. Now the raid withdraws ten seconds of its own damage ahead of
-each threshold (at least 6%), every raider near him goes whatever it is fighting, along the cave floor towards the way
-in, without its melee follow, and waits out there until the stomp is over. The party he fights still holds him. His
+each threshold (at least 6%), every raider near him goes whatever it is fighting, to the reachable spot on the cave floor
+clear of the stomp nearest to it (never past him), without its melee follow, and waits out there until the stomp is over. The party he fights still holds him. His
 stomp is unchanged. Container check (1.2 line, the same fix, 152 Albion raiders): Xanxicar killed with no wipe; his
 80% stomp killed 5 (before: 71, 49 and 48 in three earlier runs).
 
