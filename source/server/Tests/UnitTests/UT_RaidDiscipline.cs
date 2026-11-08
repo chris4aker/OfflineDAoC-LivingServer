@@ -83,7 +83,8 @@ namespace DOL.UnitTests
             {
                 Assert.That(unlearned.Count(c => c.Late) / (double)unlearned.Length, Is.InRange(0.11, 0.19));
                 Assert.That(learned.Count(c => c.Late) / (double)learned.Length, Is.InRange(0.03, 0.08));
-                Assert.That(unlearned.Where(c => !c.Late).Select(c => c.LeadSeconds), Is.All.InRange(6.5, 10.5));
+                Assert.That(unlearned.Where(c => !c.Late).Select(c => c.LeadSeconds), Is.All.InRange(7.5, 10.5));
+                Assert.That(RaidDiscipline.CallLeadUnlearnedMin, Is.GreaterThanOrEqualTo(RaidDiscipline.LateCallLeadMax), "on time starts where late ends");
                 Assert.That(learned.Where(c => !c.Late).Select(c => c.LeadSeconds), Is.All.InRange(9.5, 13.5));
                 Assert.That(unlearned.Concat(learned).Where(c => c.Late).Select(c => c.LeadSeconds), Is.All.InRange(5.5, 7.5));
                 Assert.That(unlearned.Average(c => c.LeadSeconds), Is.LessThan(learned.Average(c => c.LeadSeconds) - 2));

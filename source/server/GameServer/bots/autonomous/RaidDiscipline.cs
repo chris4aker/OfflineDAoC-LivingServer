@@ -79,11 +79,13 @@ namespace DOL.GS
 
         // ---- the call ---------------------------------------------------------------------------------------------------
 
-        /// <summary>A call on time comes this many seconds before the mechanic lands: unlearned 6.5-10.5, learned 9.5-13.5.
+        /// <summary>A call on time comes this many seconds before the mechanic lands: unlearned 7.5-10.5, learned 9.5-13.5.
         /// Container runs duo16/duo17 (Xanxicar): from melee range a raider needs about 8-9 s after the call to get clear of
         /// his stomp (it hits everyone within 2,500 of his target when it lands, falling off with distance), so calls of
-        /// 4-8 s killed 30-85% of the raiders in range, the learned ones too.</summary>
-        public const double CallLeadUnlearnedMin = 6.5, CallLeadUnlearnedMax = 10.5, CallLeadLearnedMin = 9.5, CallLeadLearnedMax = 13.5;
+        /// 4-8 s killed 30-85% of the raiders in range, the learned ones too. Unlearned started at 6.5 until duo21-duo24: an
+        /// on-time call of 6.6-7.3 s killed 33-49% (as many as a late call: 47% at 6.8 s, 41% at 6.6 s), so "on time" and
+        /// "late" were the same call, and duo24 wiped at 40% after three of them; on time now starts where late ends.</summary>
+        public const double CallLeadUnlearnedMin = 7.5, CallLeadUnlearnedMax = 10.5, CallLeadLearnedMin = 9.5, CallLeadLearnedMax = 13.5;
         /// <summary>The share of calls that come late (unlearned 15%, learned 5%), and how late: 5.5-7.5 s before it lands,
         /// short of the 8-9 s a raider at melee range needs. Late calls of 4.2 and 4.3 s (duo19, duo20) killed 61% and 72% of
         /// the raiders in range and both raids wiped: a wipe from the stomp alone, which the owner counts as mistuned.</summary>
