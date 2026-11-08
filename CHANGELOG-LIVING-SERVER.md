@@ -10,6 +10,11 @@ Older entries below keep the names they were written with.
 
 ## 1.2 (in development)
 
+**A bot-led group keeps you through a zone change** (owner's PC test, 2026-11-07). A player who joined a gamebot's
+group was let go ("left") as soon as they were out of the world for a moment: a region change, a zone change across
+regions or a GM /jump takes the player out of the world while the client loads. The group now waits for you while you
+are still in it, for up to two minutes out of the world (linkdead keeps its own five minutes).
+
 **Dungeons and bosses have their lore.** Living Server 1.2 gives every dungeon, epic dungeon, dragon and named
 boss its own lore (written in `data/lore`, one file per place and per boss; see [docs/LORE.md](docs/LORE.md)), and this is
 the part that shows it to you. All the stories are now in: 107 places and 578 bosses (with 4 realm histories), written for

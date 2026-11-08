@@ -180,6 +180,8 @@ public static partial class AutonomousBotGroupCoordinator
         public BotPveGroupRole PlayerRole { get; set; }
         public BotLedGroups.FollowState Follow { get; set; }
         public Vector3 PlayerLastPosition { get; set; }
+        // When the hosted player was first seen out of the world (a zone or region change, a /jump), or 0.
+        public long PlayerAwaySince { get; set; }
         public ushort PlayerLastRegion { get; set; }
         /// <summary>Started from the player's own group by /lead bot (B2): its gamebots' own goals may differ.</summary>
         public bool FromPlayersGroup { get; init; }
