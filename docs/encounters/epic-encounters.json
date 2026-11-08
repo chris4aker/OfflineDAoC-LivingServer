@@ -13609,7 +13609,7 @@
      "count": 2,
      "trigger": "on a timer (10000 ms)",
      "addIsEpic": false,
-     "tactic": "In the raid AI (EpicEncounterTactics): ranged adds: casters and archers take each newborn as it comes; melee, tanks and healers stay on her.",
+     "tactic": "In the raid AI (EpicEncounterTactics): focused ranged adds: every caster and archer takes the same newborn (the one on a healer first); a party's melee peel one off their own healer; the rest stay on her.",
      "difficulty": "needs new raid AI",
      "verified": true,
      "key": "adds@230"
@@ -13713,8 +13713,9 @@
     "deathAdds": [
      "SBDeadAdds"
     ],
+    "focusRangedAdds": true,
     "since": "1.2",
-    "summary": "Ranged adds: casters and archers kill each newly-born spindler (8,000 health, 1-2 every 25-45 s) as it comes, while melee, tanks and healers stay on her, so newborns never pile on the healers. Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on."
+    "summary": "Ranged adds, focused: all the raid's casters and archers take the same newly-born spindler (8,000 health, 1-2 every 25-45 s; they go for bards, druids, mentalists and wardens), the one on a healer first, and a party's melee peel a newborn off their own party's healer; the rest stay on her (play test duo3: split one party per newborn, up to 11 piled up and killed 62 raiders). Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on."
    },
    "verified": true
   },
