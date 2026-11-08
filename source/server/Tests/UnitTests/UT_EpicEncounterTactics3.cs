@@ -195,12 +195,17 @@ namespace DOL.UnitTests
             moved.AddRange(casters.Select(r => (r, EpicEncounterTactics.Decide(r, gov, live, 0, true, 2_000, runemaster))));
             Assert.That(moved.All(d => d.A.Action == EpicEncounterTactics.BotAction.Reposition && d.A.StandAt != null), Is.True,
                 "casters step clear and keep him as their target");
-            // Owner 2026-11-07: the melee fight him from behind, clear of the Shroud around his target.
-            var behind = melee.Select(r => (r, A: EpicEncounterTactics.Decide(r, gov, live, 0, false, 2_000, warrior))).ToList();
+            // Owner 2026-11-08: the melee fight him from three ring spots, each party at its own (2026-11-07: one spot behind him).
+            EncounterMeleeStations.ResetRingForTests();
+            var behind = melee.Select(r => (r, A: EpicEncounterTactics.Decide(r, gov, live, 0, false, 2_000, warrior)))
+                .Where(d => d.A.Action != EpicEncounterTactics.BotAction.None).ToList();
             Assert.That(behind.All(d => d.A.Action == EpicEncounterTactics.BotAction.Reposition && d.A.Target == gov), Is.True,
-                "melee step behind him and keep him as their target");
-            Assert.That(behind.All(d => Flat(d.A.StandAt.Value, gov) <= 200 && Flat(d.A.StandAt.Value, tank) > 300), Is.True,
-                "behind him: within melee reach of him, clear of 300 around his target");
+                "melee step to their ring spot and keep him as their target");
+            Assert.That(behind.All(d => Math.Abs(Flat(d.A.StandAt.Value, gov) - EpicEncounterTactics.RingRadius) < 1), Is.True,
+                "the ring: within melee reach of him");
+            Vector3 spot0 = EncounterMeleeStations.RingSpot(new(gov.X, gov.Y, gov.Z), 0, 0, 3, EpicEncounterTactics.RingRadius, gov.Z);
+            Assert.That(behind.All(d => Flat(d.A.StandAt.Value, tank) > 300 || Vector3.Distance(d.A.StandAt.Value, spot0) < 1), Is.True,
+                "only the spot towards his target is inside 300 around it");
             // Healers step clear like the casters (a hold for healers was tried and dropped: duo7).
             Assert.That(EpicEncounterTactics.Decide(tank, gov, live, 0, false, 2_000, warrior).Action,
                 Is.EqualTo(EpicEncounterTactics.BotAction.None), "the one he fights holds him");
@@ -213,9 +218,11 @@ namespace DOL.UnitTests
                 "the healers step clear");
             foreach (var (r, a) in healerMoves) Move(r, a.StandAt.Value.X, a.StandAt.Value.Y, a.StandAt.Value.Z);
             moved.AddRange(healerMoves);
-            Assert.That(everyone.Count(r => Flat(r, tank) <= 300), Is.EqualTo(0), "after: nobody but his target is in it");
+            Assert.That(casters.Concat(healers).Count(r => Flat(r, tank) <= 300), Is.EqualTo(0), "after: no caster or healer is in it");
+            Assert.That(melee.Count(r => Flat(r, tank) <= 300), Is.LessThan(melee.Count),
+                "after: only the melee of the spot towards his target are in it");
             Assert.That(melee.All(r => EpicEncounterTactics.Decide(r, gov, live, 0, false, 3_000, warrior).Action ==
-                                       EpicEncounterTactics.BotAction.None), Is.True, "behind him they fight on");
+                                       EpicEncounterTactics.BotAction.None), Is.True, "at their spots they fight on");
             Assert.That(casters.Concat(healers).All(r => Flat(r, tank) >= 540 && Flat(r, gov) <= 1500), Is.True, "at range, in spell range");
             // Out of it, they fight on from there.
             Assert.That(casters.All(r => EpicEncounterTactics.Decide(r, gov, live, 0, true, 3_000, runemaster).Action ==

@@ -117,8 +117,9 @@ namespace DOL.GS
         private static readonly Dictionary<GameObject, (float Angle, long Seen)> RingAngles = new();
 
         /// <summary>The ring's orientation around <paramref name="boss"/>: fixed for the fight (so a target swap does not
-        /// send the melee around him), chosen when first asked for: spot 0 behind him as seen from
-        /// <paramref name="firstAnchor"/>.</summary>
+        /// send the melee around him), chosen when first asked for: spot 0 towards <paramref name="firstAnchor"/> (his target
+        /// then). His target holds 150 from him, so an area hit of 300 on it reaches spot 0 only: the other two lie about 317
+        /// from it (with spot 0 behind him instead, two spots would lie 183 from his target, inside it).</summary>
         public static float RingAngle(GameObject boss, Vector3 bossAt, Vector3 firstAnchor, long now)
         {
             lock (RingAngles)
@@ -128,7 +129,7 @@ namespace DOL.GS
                     RingAngles[boss] = (r.Angle, now);
                     return r.Angle;
                 }
-                Vector2 away = new(bossAt.X - firstAnchor.X, bossAt.Y - firstAnchor.Y);
+                Vector2 away = new(firstAnchor.X - bossAt.X, firstAnchor.Y - bossAt.Y);
                 float angle = away.LengthSquared() >= 1 ? MathF.Atan2(away.Y, away.X) : 0f;
                 if (RingAngles.Count > 64) RingAngles.Clear();
                 RingAngles[boss] = (angle, now);
