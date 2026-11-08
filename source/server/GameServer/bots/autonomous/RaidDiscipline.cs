@@ -79,20 +79,20 @@ namespace DOL.GS
 
         // ---- the call ---------------------------------------------------------------------------------------------------
 
-        /// <summary>A call on time comes this many seconds before the mechanic lands: unlearned 8.5-10.5, learned 9.5-13.5.
+        /// <summary>A call on time comes this many seconds before the mechanic lands: unlearned 8.0-10.5, learned 9.5-13.5.
         /// Container runs duo16/duo17 (Xanxicar): from melee range a raider needs about 8-9 s after the call to get clear of
         /// his stomp (it hits everyone within 2,500 of his target when it lands, falling off with distance), so calls of
         /// 4-8 s killed 30-85% of the raiders in range, the learned ones too. Unlearned started at 6.5 until duo21-duo24: an
         /// on-time call of 6.6-7.3 s killed 33-49% (as many as a late call: 47% at 6.8 s, 41% at 6.6 s), so "on time" and
         /// "late" were the same call, and duo24 wiped at 40% after three of them; on time now starts where late ends.
         /// duo25 (7.5 s, late call forced at 80%): the late 6.8 s call killed 44%, a 9.0 s call 41%, and the raid wiped at 46%;
-        /// so on time 8.5-10.5 and late 7.0-8.5.</summary>
-        public const double CallLeadUnlearnedMin = 8.5, CallLeadUnlearnedMax = 10.5, CallLeadLearnedMin = 9.5, CallLeadLearnedMax = 13.5;
-        /// <summary>The share of calls that come late (unlearned 15%, learned 5%), and how late: 7.0-8.5 s before it lands,
+        /// so on time 8.0-10.5 and late 7.0-8.0 (the stomp model of UT_RaidDiscipline: 25.1% unlearned, 7.7% learned; at 8.5 it gave 23.6%, under the band).</summary>
+        public const double CallLeadUnlearnedMin = 8.0, CallLeadUnlearnedMax = 10.5, CallLeadLearnedMin = 9.5, CallLeadLearnedMax = 13.5;
+        /// <summary>The share of calls that come late (unlearned 15%, learned 5%), and how late: 7.0-8.0 s before it lands,
         /// short of the 8-9 s a raider at melee range needs. Late calls of 4.2 and 4.3 s (duo19, duo20) killed 61% and 72% of
         /// the raiders in range and both raids wiped: a wipe from the stomp alone, which the owner counts as mistuned. At
         /// 5.5-7.5 s (duo24, duo25, forced at 80%) a late call killed 44-47% and both raids wiped by 40-46%.</summary>
-        public const double LateCallUnlearned = 0.15, LateCallLearned = 0.05, LateCallLeadMin = 7.0, LateCallLeadMax = 8.5;
+        public const double LateCallUnlearned = 0.15, LateCallLearned = 0.05, LateCallLeadMin = 7.0, LateCallLeadMax = 8.0;
 
         /// <param name="LeadSeconds">How long before the mechanic lands the caller shouts it.</param>
         /// <param name="Late">It came late (after the caller hesitated or saw it late).</param>
