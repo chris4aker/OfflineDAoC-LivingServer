@@ -53,6 +53,19 @@ namespace DOL.GS
             set => System.Threading.Volatile.Write(ref _override, value is double v ? Math.Clamp(v, 0, 1) : -1);
         }
 
+        private static int _lateCallAt;
+
+        /// <summary>The GM play-test override (/epictest latecall): the call of this blast threshold always comes late (-1: every
+        /// threshold; 0: off, the usual roll). Test only, to see what a late call costs without waiting for the 15% roll.</summary>
+        public static int ForceLateCallAt
+        {
+            get => System.Threading.Volatile.Read(ref _lateCallAt);
+            set => System.Threading.Volatile.Write(ref _lateCallAt, value);
+        }
+
+        /// <summary>The play-test override applies to this occurrence (pure).</summary>
+        public static bool ForcedLate(int forceAt, int occurrence) => forceAt == -1 || forceAt > 0 && forceAt == occurrence;
+
         /// <summary>The realm's familiarity with a raid's encounter (the override when a play test set one; 0 for no raid).</summary>
         public static double FamiliarityOf(string raidId) =>
             FamiliarityOverride ?? (string.IsNullOrEmpty(raidId) ? 0 : Familiarity(RealmRaidRecord.GetResults(raidId)));
@@ -81,10 +94,11 @@ namespace DOL.GS
         public readonly record struct Call(double LeadSeconds, bool Late);
 
         /// <summary>When the caller calls this occurrence of the mechanic (pure, deterministic).</summary>
-        public static Call CallFor(long callerId, string mechanic, int occurrence, int seed, double familiarity)
+        /// <param name="forceLate">Test only (/epictest latecall): this call comes late whatever the roll.</param>
+        public static Call CallFor(long callerId, string mechanic, int occurrence, int seed, double familiarity, bool forceLate = false)
         {
             ulong key = Key(callerId, mechanic, occurrence, seed);
-            bool late = Roll(key, 1) < Lerp(LateCallUnlearned, LateCallLearned, familiarity);
+            bool late = forceLate || Roll(key, 1) < Lerp(LateCallUnlearned, LateCallLearned, familiarity);
             double lead = late
                 ? LateCallLeadMin + Roll(key, 2) * (LateCallLeadMax - LateCallLeadMin)
                 : Lerp(CallLeadUnlearnedMin, CallLeadLearnedMin, familiarity) +

@@ -132,7 +132,8 @@ namespace DOL.GS
                 var fresh = new BlastCall
                 {
                     Threshold = threshold, RaidId = raidId, Familiarity = familiarity, Seed = seed, Parties = parties,
-                    PlannedCallerId = plannedId, Planned = RaidDiscipline.CallFor(plannedId, MechanicKey(boss), threshold, seed, familiarity),
+                    PlannedCallerId = plannedId, Planned = RaidDiscipline.CallFor(plannedId, MechanicKey(boss), threshold, seed, familiarity,
+                        RaidDiscipline.ForcedLate(RaidDiscipline.ForceLateCallAt, threshold)),
                 };
                 lock (BlastCalls)
                 {

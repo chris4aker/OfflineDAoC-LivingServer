@@ -271,5 +271,26 @@ namespace DOL.UnitTests
             // The model is kinder to late calls than the container was (duo19/duo20: 61% and 72% at 4.2-4.3 s).
             Assert.That(late, Is.GreaterThan(onTime + 0.05));
         }
+        [Test]
+        public void APlayTestCanForceOneCallLate()
+        {
+            Assert.That(RaidDiscipline.ForcedLate(0, 80), Is.False, "off");
+            Assert.That(RaidDiscipline.ForcedLate(80, 80), Is.True);
+            Assert.That(RaidDiscipline.ForcedLate(80, 60), Is.False, "only that threshold");
+            Assert.That(RaidDiscipline.ForcedLate(-1, 20), Is.True, "all");
+            for (long caller = 1; caller < 200; caller++)
+            {
+                RaidDiscipline.Call forced = RaidDiscipline.CallFor(caller, "Xanxicar", 80, 0, 0, forceLate: true);
+                Assert.That(forced.Late, Is.True);
+                Assert.That(forced.LeadSeconds, Is.InRange(RaidDiscipline.LateCallLeadMin, RaidDiscipline.LateCallLeadMax));
+                RaidDiscipline.Call usual = RaidDiscipline.CallFor(caller, "Xanxicar", 80, 0, 0);
+                if (usual.Late) Assert.That(usual, Is.EqualTo(forced), "a call that rolled late is the same call");
+            }
+            Assert.That(DOL.GS.Commands.EpicPlaytestCommandHandler.SetLateCall("80"), Does.Contain("80% call"));
+            Assert.That(RaidDiscipline.ForceLateCallAt, Is.EqualTo(80));
+            Assert.That(DOL.GS.Commands.EpicPlaytestCommandHandler.SetLateCall("off"), Does.Contain("off"));
+            Assert.That(RaidDiscipline.ForceLateCallAt, Is.EqualTo(0));
+            Assert.That(DOL.GS.Commands.EpicPlaytestCommandHandler.SetLateCall("x"), Does.Contain("not a threshold"));
+        }
     }
 }
