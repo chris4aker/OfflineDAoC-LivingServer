@@ -23,8 +23,8 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
     }
   ],
-  "story": "The fengundar of the Iarnwood belong to the old one, as everything under the iron trees does in the end, and they are kept for her by Sariloc. The iarn dwarves of Chief Tarek's stockade say he came into the wood as a stranger, a wanderer like Vasrem, and that he did not die first the way Vasrem did: he made himself useful. He herds the fengundar along the low ground in the south of the wood where the rot is thickest, and brings them back, and the old one lets him live.\n\nEldrid of Bjarken, who gathers bark at the wood's edge, says the narfi will not speak of Sariloc at all, which they do only for the living who serve the old one willingly. The dwarves count him a Servant and say so on the warning stone. He fights strangers with the fengundar round him, because a herd-keeper who loses his herd to strangers is the next thing the old one eats.",
-  "legend": "Sariloc is a level 48 Servant of Iarnvidiur in the south of the Iarnwood with fengundar (43-50) round him. Servants of Iarnvidiur faction, with the fengundar close round him. The fengundar round him are up to 50. He stands on the low ground in the south of the wood where the miasma is thick. A mid-to-high 40s group handles it; pull fengundar off the edges first.",
+  "story": "The fengundar of the Iarnwood belong to the old one, as everything under the iron trees does in the end, and they are kept for her by Sariloc. The iarn dwarves of Chief Tarek's stockade say he came into the wood as a stranger, a wanderer like Vasrem, and that he did not die first the way Vasrem did: he made himself useful. He herds the fengundar along the low ground in the north of the wood where the rot is thickest, and brings them back, and the old one lets him live.\n\nEldrid of Bjarken, who gathers bark at the wood's edge, says the narfi will not speak of Sariloc at all, which they do only for the living who serve the old one willingly. The dwarves count him a Servant and say so on the warning stone. He fights strangers with the fengundar round him, because a herd-keeper who loses his herd to strangers is the next thing the old one eats.",
+  "legend": "Sariloc is a level 48 Servant of Iarnvidiur in the north of the Iarnwood with fengundar (43-50) round him. Servants of Iarnvidiur faction, with the fengundar close round him. The fengundar round him are up to 50. He stands on the low ground in the north of the wood where the miasma is thick. A mid-to-high 40s group handles it; pull fengundar off the edges first.",
   "yells": {
     "aggro": [
       "The herd is hers. You are not.",
@@ -44,7 +44,7 @@
   },
   "botLines": {
     "briefing": [
-      "sariloc is the 48 servant of iarnvidiur with the fengundar in south iarnwood",
+      "sariloc is the 48 servant of iarnvidiur with the fengundar in north iarnwood",
       "fengundar up to 50 round him"
     ],
     "aftermathWin": [

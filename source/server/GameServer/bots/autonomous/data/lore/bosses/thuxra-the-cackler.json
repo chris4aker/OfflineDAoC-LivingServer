@@ -8,7 +8,7 @@
   "realm": "Hibernia",
   "facts": [
     {
-      "text": "Thuxra the Cackler: level 60, model 844 (the arboreal spirit and tree dervish body), size 77, at about 302,200/276,700 in the southern Cothrom Gorge; respawn 80 seconds; a plain spawn with no script.",
+      "text": "Thuxra the Cackler: level 60, model 844 (the arboreal spirit and tree dervish body), size 77, at about 302,200/276,700 in the northern Cothrom Gorge; respawn 80 seconds; a plain spawn with no script.",
       "provenance": "game",
       "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
     },
@@ -23,8 +23,8 @@
       "source": "Living Server"
     }
   ],
-  "story": "The arboreal spirits of Hy Brasil are the souls of the forest, the Sylvan say, the part of a wood that is not any one tree, and most of them are benevolent, or at least indifferent: they drift between the trunks of the southern woods and tend what they tend, and the Sylvan leave them gifts of water. When the gorge split, some of the spirits of the woods that fell into it fell with them. They are the remnants now, foragers and defenders of woods that are not there any more. And one of them laughed.\n\nThuxra was the spirit of a wood that the gorge clans called the Laughing Wood before the split, for the sound the wind made in it, and the clans say he was its laughter. When the wood went down into Cothrom and the rot of the gorge came up through what was left of it, the laughter did not stop. It changed. The gorge folk call him the Cackler now, and the sound he makes in the southern gorge is the one sound in all of Cothrom that the gorge clans teach their children to run from, before the shrillers' cry or the hoofbeats of Dremcis's dead stag.\n\nThe tree dervishes of the isle, the dancing spirits that spin in the woods of Vigilant Rock and titter as they go, are thought by the Sylvan of Necht to be his kin: spirits of laughing woods, too, that were not broken. The dervishes will not go into the gorge. The Necht singers say it is because they hear Thuxra and recognise themselves.\n\nHe is the saddest of the gorge's troubles, the Sylvan say, because what he is laughing at is the wood he was, and he cannot stop. The gorge clans leave water for the benevolent spirits of the southern woods every spring. They leave none in the southern gorge. A few of the old women of the clans, they say, still do, on the night of the split, and pour it out on the bare stone, and do not stay to hear what he makes of it.",
-  "legend": "Thuxra the Cackler is a level 60 arboreal spirit in the southern Cothrom Gorge (about 302k/277k). Plain melee, no script, 80-second respawn. A strong full group of 50s handles him; the arboreal remnants around the southern gorge (36-44) are easy but can drift in, so clear first. Do not confuse him with the benevolent arboreal spirits elsewhere on the isle, which are not hostile to everyone. The gorge folk teach their children to run from his laugh; you may want to as well, if you are under 55. The tree dervishes of Vigilant Rock are a different faction and not near him.",
+  "story": "The arboreal spirits of Hy Brasil are the souls of the forest, the Sylvan say, the part of a wood that is not any one tree, and most of them are benevolent, or at least indifferent: they drift between the trunks of the northern woods and tend what they tend, and the Sylvan leave them gifts of water. When the gorge split, some of the spirits of the woods that fell into it fell with them. They are the remnants now, foragers and defenders of woods that are not there any more. And one of them laughed.\n\nThuxra was the spirit of a wood that the gorge clans called the Laughing Wood before the split, for the sound the wind made in it, and the clans say he was its laughter. When the wood went down into Cothrom and the rot of the gorge came up through what was left of it, the laughter did not stop. It changed. The gorge folk call him the Cackler now, and the sound he makes in the northern gorge is the one sound in all of Cothrom that the gorge clans teach their children to run from, before the shrillers' cry or the hoofbeats of Dremcis's dead stag.\n\nThe tree dervishes of the isle, the dancing spirits that spin in the woods of Vigilant Rock and titter as they go, are thought by the Sylvan of Necht to be his kin: spirits of laughing woods, too, that were not broken. The dervishes will not go into the gorge. The Necht singers say it is because they hear Thuxra and recognise themselves.\n\nHe is the saddest of the gorge's troubles, the Sylvan say, because what he is laughing at is the wood he was, and he cannot stop. The gorge clans leave water for the benevolent spirits of the northern woods every spring. They leave none in the northern gorge. A few of the old women of the clans, they say, still do, on the night of the split, and pour it out on the bare stone, and do not stay to hear what he makes of it.",
+  "legend": "Thuxra the Cackler is a level 60 arboreal spirit in the northern Cothrom Gorge (about 302k/277k). Plain melee, no script, 80-second respawn. A strong full group of 50s handles him; the arboreal remnants around the northern gorge (36-44) are easy but can drift in, so clear first. Do not confuse him with the benevolent arboreal spirits elsewhere on the isle, which are not hostile to everyone. The gorge folk teach their children to run from his laugh; you may want to as well, if you are under 55. The tree dervishes of Vigilant Rock are a different faction and not near him.",
   "yells": {
     "aggro": [
       "Ha. Ha ha. Ha.",
@@ -49,7 +49,7 @@
   },
   "atmosphere": {
     "lairEntry": [
-      "A laugh in the southern gorge. Run, the clans say.",
+      "A laugh in the northern gorge. Run, the clans say.",
       "Bare stone. Someone poured water on it once."
     ],
     "phases": [
@@ -62,7 +62,7 @@
   },
   "botLines": {
     "briefing": [
-      "thuxra the cackler is 60, southern cothrom gorge. [plain melee|no script]",
+      "thuxra the cackler is 60, northern cothrom gorge. [plain melee|no script]",
       "clear the arboreal remnants around him first",
       "strong 50s group fine",
       "not the benevolent spirits. [different mob|dont mix them up]"

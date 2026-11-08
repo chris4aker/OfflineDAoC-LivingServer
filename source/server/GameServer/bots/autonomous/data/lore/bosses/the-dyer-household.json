@@ -17,7 +17,7 @@
   ],
   "facts": [
     {
-      "text": "The Dyer household: Edyo (48), Celm (45), Cerdic (45) and Earma (44) Dyer, ghosts, no faction, no spells, respawn 80 s, in the south of the dyers' hamlet (~432.0-432.4k, 390.5-391.0k); Beonoc Dyer (50) is the head of the house.",
+      "text": "The Dyer household: Edyo (48), Celm (45), Cerdic (45) and Earma (44) Dyer, ghosts, no faction, no spells, respawn 80 s, in the north of the dyers' hamlet (~432.0-432.4k, 390.5-391.0k); Beonoc Dyer (50) is the head of the house.",
       "provenance": "game",
       "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
     },
@@ -28,7 +28,7 @@
     }
   ],
   "story": "The colleges of Avalon let the dales to tenant families who farmed and wove and dyed and kept bees for them, and when the war came the families died in their houses in the first summers and stayed. A drakoran rod holds them there now. The Dyers dyed blue, and quarrelled with the Tinctors over whose name was older. Beonoc Dyer, the head of the house, is a tale of his own.\n\nEdyo Dyer kept the vats and the household's books, and still stirs a vat that has been dry for years.\n\nCelm Dyer cut the woad and carried it, and comes in from the field at dusk with empty arms.\n\nCerdic Dyer was the one who started the quarrel with the Tinctors, over a stretch of the stream, and still stands on the bank to see that no red runs into the blue.\n\nEarma Dyer, the youngest, was learning the trade, and has blue hands to the elbow, and always will.",
-  "legend": "The Dyer household: Edyo (48), Celm (45), Cerdic (45) and Earma (44) Dyer, ghosts in the south of the dyers' hamlet, with Beonoc Dyer (50) as the head of the house nearby. They stand together and aggro on sight; pull singles from the edge. Plain melee, no spells, respawn 80 seconds. The Tinctors are a short walk north-west. The whole house comes back in about a minute and a half, so clear it and move on rather than resting inside.",
+  "legend": "The Dyer household: Edyo (48), Celm (45), Cerdic (45) and Earma (44) Dyer, ghosts in the north of the dyers' hamlet, with Beonoc Dyer (50) as the head of the house nearby. They stand together and aggro on sight; pull singles from the edge. Plain melee, no spells, respawn 80 seconds. The Tinctors are a short walk south-west. The whole house comes back in about a minute and a half, so clear it and move on rather than resting inside.",
   "yells": {
     "aggro": [
       "Keep off the blue!",

@@ -9,7 +9,7 @@
   "tier": "minor",
   "facts": [
     {
-      "text": "Lysanus: level 40, a sylvanshade body (model 889), at about 423,200/343,500 in the north of the vine woods; respawn 80 seconds.",
+      "text": "Lysanus: level 40, a sylvanshade body (model 889), at about 423,200/343,500 in the south of the vine woods; respawn 80 seconds.",
       "provenance": "game",
       "source": "world data Mob table, region 181 (read 2026-11-06)"
     },
@@ -19,8 +19,8 @@
       "source": "Living Server"
     }
   ],
-  "story": "The sylvanshades of Hy Brasil are shadows of Sylvan that came loose in the hollow under Galladoria and came home without their owners, the guides of Domnann say. Most of them have forgotten whose they were. Lysanus has not. It walks the north of the vine woods above Necht, slinking with the others, and says one name over and over, and the Necht Sylvan know the name: a warden of the coast who went down with the first companies and did not come up.\n\nThe warden's family still lives in Necht. They will not go into the vine woods, and they will not let anyone else say the name aloud near them, because they are afraid of what would answer. The guides call Lysanus by the shade's own name instead, which it took from somewhere, and which nobody in Necht has ever heard anywhere else. The guides of Domnann say a shade that remembers is more dangerous than one that has forgotten, because it is still looking.",
-  "legend": "Lysanus (40) is a named sylvanshade in the north of the vine woods (about 423k/344k), with slinking sylvanshades (38-44) around it and cutthroat vines nearby. Clear the area and pull. 80-second respawn. Plain spawn with no script. The cutthroat vines (37-42) are thick on the south side of its patch and root where they kill, so come in from the north. It hits like the slinking shades around it, only harder; a group of 40s is plenty.",
+  "story": "The sylvanshades of Hy Brasil are shadows of Sylvan that came loose in the hollow under Galladoria and came home without their owners, the guides of Domnann say. Most of them have forgotten whose they were. Lysanus has not. It walks the south of the vine woods above Necht, slinking with the others, and says one name over and over, and the Necht Sylvan know the name: a warden of the coast who went down with the first companies and did not come up.\n\nThe warden's family still lives in Necht. They will not go into the vine woods, and they will not let anyone else say the name aloud near them, because they are afraid of what would answer. The guides call Lysanus by the shade's own name instead, which it took from somewhere, and which nobody in Necht has ever heard anywhere else. The guides of Domnann say a shade that remembers is more dangerous than one that has forgotten, because it is still looking.",
+  "legend": "Lysanus (40) is a named sylvanshade in the south of the vine woods (about 423k/344k), with slinking sylvanshades (38-44) around it and cutthroat vines nearby. Clear the area and pull. 80-second respawn. Plain spawn with no script. The cutthroat vines (37-42) are thick on the north side of its patch and root where they kill, so come in from the south. It hits like the slinking shades around it, only harder; a group of 40s is plenty.",
   "yells": {
     "aggro": [
       "(the shade says a name, and it is not yours)",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "lysanus is a 40 sylvanshade in the north vine woods",
+      "lysanus is a 40 sylvanshade in the south vine woods",
       "slinking shades and vines around, clear first"
     ],
     "aftermathWin": [
@@ -61,7 +61,7 @@
   },
   "loremasterTopic": {
     "keyword": "Lysanus",
-    "text": "A sylvanshade of the north vine woods that remembers whose shadow it was, and says his name over and over: a Necht warden who went down into the hollow and did not come up."
+    "text": "A sylvanshade of the south vine woods that remembers whose shadow it was, and says his name over and over: a Necht warden who went down into the hollow and did not come up."
   },
   "bookPage": "",
   "chronicle": {

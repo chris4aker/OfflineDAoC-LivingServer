@@ -31,7 +31,7 @@
     }
   ],
   "story": "Moira was a sentinel of Hibernia who led a company into Yggdra after the horn, and she was called the Quiet because she never gave an order aloud: her company watched her hands. That was why the night went as it did. When her company met Albion's on the frontier road in the dark, nobody heard either side coming, and by the time Ald the Bruce shouted his challenge, Moira's hands had already moved.\n\nShe stands a little apart from Ald now, alone, without her company, and the Arvakr huscarls say that is because her company never rose. Only she did. Fionnuala, the Hibernian informer Midgard's rogues deal with, keeps her post near Moira, and the huscarls say she goes to the ghost at night and talks to her, and Moira does not answer, because she never did. Moira fights all who come near, without a word, and her hands still move before anyone sees.",
-  "legend": "Moira the Quiet is a level 44 Hibernian ghost in south Yggdra, near Ald the Bruce and Soulsong. She stands alone (her company never rose), so she's the easiest of the three to pull. No faction, no spells. Fionnuala, the informer for the rogue epic War Concluded, is close by; don't attack her if you still need her. The ghosts don't respawn instantly, so finish the three before moving on.",
+  "legend": "Moira the Quiet is a level 44 Hibernian ghost in north Yggdra, near Ald the Bruce and Soulsong. She stands alone (her company never rose), so she's the easiest of the three to pull. No faction, no spells. Fionnuala, the informer for the rogue epic War Concluded, is close by; don't attack her if you still need her. The ghosts don't respawn instantly, so finish the three before moving on.",
   "yells": {
     "aggro": [
       "(She says nothing. Her hands move.)",
@@ -51,7 +51,7 @@
   },
   "botLines": {
     "briefing": [
-      "moira the quiet is a 44 hib ghost in south yggdra, alone, easiest of the three",
+      "moira the quiet is a 44 hib ghost in north yggdra, alone, easiest of the three",
       "fionnuala is near her, leave fionnuala alone if you need her for the epic"
     ],
     "aftermathWin": [

@@ -632,7 +632,7 @@
    "name": "Mutilator Laicanroth",
    "level": 67,
    "post": "the East Ward",
-   "story": "Laicanroth is the senior Mutilator of the East Ward and keeps its southern camp, near High Lord Baelerdoth's road. It unmakes for Duke Bimure: when a quarrel between the halls ends in a death, Laicanroth takes the body to pieces before any high lord can claim it. Duke Bimure considers it the most useful demon in the Ward and has never thanked it.",
+   "story": "Laicanroth is the senior Mutilator of the East Ward and keeps its northern camp, near High Lord Baelerdoth's road. It unmakes for Duke Bimure: when a quarrel between the halls ends in a death, Laicanroth takes the body to pieces before any high lord can claim it. Duke Bimure considers it the most useful demon in the Ward and has never thanked it.",
    "yells": {
     "aggro": [
      "Before your lord claims you. Now."
@@ -651,7 +651,7 @@
    },
    "loremasterTopic": {
     "keyword": "laicanroth",
-    "text": "Laicanroth is the senior Mutilator of the East Ward and keeps its southern camp, near High Lord Baelerdoth's road. It unmakes for Duke Bimure: when a quarrel between the halls ends in a death, Laicanroth takes the body to pieces before any high lord can claim it."
+    "text": "Laicanroth is the senior Mutilator of the East Ward and keeps its northern camp, near High Lord Baelerdoth's road. It unmakes for Duke Bimure: when a quarrel between the halls ends in a death, Laicanroth takes the body to pieces before any high lord can claim it."
    }
   },
   {
