@@ -200,7 +200,12 @@ Everything below is built on branches with green automated tests; nothing is mer
 - [ ] Not placed by the split, for the owner to place: his world scripts as Setup steps; the new-client scripts
       (#54); era build weights (#55) go with 1.3's era builds
 - [ ] Play with friends, pulled forward (owner 2026-11-08 16:50): the 1.2.x stop below, on `feature/1.2-hosting` and
-      `feature/1.2-coop-humans`; played: the owner and at least one friend on a second PC
+      `feature/1.2-coop-humans` and `feature/1.2-passport`. **Owner 2026-11-08 17:10: no second PC or friend to test with;
+      rely on established work and player reports.** So it ships labelled experimental, and the checks are: rambodolphin13's
+      tested code; our unit tests; a container test with two scripted clients, one from a non-loopback address (host
+      password, region address, idle time-outs, bots and credit with two humans) and a passport round trip between two
+      worlds; the Windows CI runner for the launcher's firewall rules; a GitHub issue form for co-op reports. The release
+      notes say plainly it was not played on two PCs
 - [ ] Soaks one system at a time; played: invited into a group and a raid, following a bot leader, a battleground
       session
 
