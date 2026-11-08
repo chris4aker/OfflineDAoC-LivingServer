@@ -49,6 +49,12 @@ checklist for that day, written for 0.38.
    - For each file the update changed: if shadowofze's version already has the fix (0.38c slides portcullises
      too), drop the patch. If it doesn't, make a patch against the 0.38 file with `make_content_patch.py` and keep
      both entries.
+   - The classic client's loading screen (`pregame/splash.mpk`, Living Server 1.2) is marked "Keep": ROLLBACK.cmd and
+     PREPARE-FOR-UPDATE.cmd leave Living Server's in place (owner 2026-11-07). The patcher checks only the files an
+     update lists (`OfflineDaoc.Patcher`, step 3), and 0.37 doesn't list it (same SHA-256 in the 0.36b and 0.37b
+     baselines). If a new update lists it, its patcher stops on it as a changed file: run the update with its
+     overwrite option (the patcher backs it up), then INSTALL.cmd, whose entry would need that release's file as
+     "Released".
 5. **All-in-one installer** (`installer/all-in-one`, PR #26). It pins shadowofze's `Get-OfflineDAoC.ps1` by
    SHA-256 and knows the 0.37 and 0.36 starting points. It already reads a `BaseRelease` list (2026-10-28): a game
    on any listed release takes Living Server as it is, and new installs and updates go to the newest listed. For
