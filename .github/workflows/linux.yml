@@ -1,4 +1,4 @@
-# Living Server 1.2.1, the Linux build (docs/LINUX-1.2.1.md). A sketch: it proves on GitHub's Linux runners what a
+# Living Server 1.2.2, the Linux build (docs/LINUX-1.2.2.md). A sketch: it proves on GitHub's Linux runners what a
 # Linux player's folder needs, without game files: the server build with a Linux Detour library and a bundled .NET
 # runtime starts in the package layout, two scripted players log in (the playtester), the released 0.37c new client
 # compiles and logs in headless on the Linux Godot .NET engine, and the server stops and starts again.

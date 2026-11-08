@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Living Server 1.2.1 Linux prototype (docs/LINUX-1.2.1.md): assembles a clean Linux game folder around a server build,
+# Living Server 1.2.2 Linux prototype (docs/LINUX-1.2.2.md): assembles a clean Linux game folder around a server build,
 # in the layout a Linux player's folder would have. For tests and CI only; it never touches an installed game.
 #
 #   tools/linux/assemble-server.sh --server-build source/server/Release --detour libDetour.so --world test-world.db \

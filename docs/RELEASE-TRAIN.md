@@ -166,6 +166,12 @@ Everything below is built on branches with green automated tests; nothing is mer
 - [ ] More raid tactics, if the 1.1.2 ones hold up in play: the next restored mechanics turned on one at a time as the
       raid learns them (the catalog's open question). The catalog and first tactics themselves moved to 1.1.2
       (owner 2026-11-06 07:13)
+- [ ] Raid skill for scripted mechanics (owner 2026-11-08 06:28): the raid leader calls the mechanic and bots react to
+      the call, each bot reacts at its own speed from its personality with a few misses, and the realm learns a boss
+      over its attempts and wins. Xanxicar's stomp first; target per stomp: about 25-35% of the raiders near him die
+      while the realm is new to him, 5-15% once learned (`feature/1.2-raid-skill`, stacked on #120). An early slice of
+      2.0's item 2
+- [ ] Positional styles, step 1 (owner 2026-11-08): bots use side, back and front styles when they are really there (#123)
 - [ ] The quest harness, repeatable quests and deliveries, epic chains linked without Python (#70)
 - [ ] Battlegrounds: realms rally inside the breach and take the keep lord together (#69)
 - [ ] The automated playtester: a scripted player, `make_test_world.py`, eight scenarios (#72)
@@ -233,14 +239,27 @@ Must-haves ship 1.2; anything from a phase that doesn't fit ships as a 1.2.x pat
       a dragon raid; a returning session read on the Herald
 - [ ] Release notes to the rules above
 
-### 1.2.1 — Linux build (owner 2026-11-07)
+### 1.2.1 — movement that doesn't look scripted, first slice (owner 2026-11-08: before Linux)
+
+The first slice of 2.0's "Bots as people" item 5, plus the flank step for positional styles. Its own small update, out
+before the Linux build (owner 2026-11-08 06:51, "Before"). Touches pathing: no navmesh changes without evidence (AGENTS.md).
+- [ ] Melee bots circle and adjust in a fight instead of standing frozen; casters step between casts
+- [ ] Stopping and turning that doesn't snap to a point
+- [ ] Positional styles, step 2: melee bots take the flank or back when the mob faces someone else (step 1, using
+      them when already there, is in 1.2: #123; step 3, Assassins stealthing and opening from stealth, is in 2.0)
+- [ ] Town idling: the bank and the usual crowd spots
+- [ ] Automated: no new stuck bots against the 1.2 baseline; played: one evening on the owner's PC judging whether it
+      looks right (only played checks can judge this)
+- Left in 2.0: `/stick`, sitting on keep walls, the rest of item 5; Assassins' stealth with item 4
+
+### 1.2.2 — Linux build (owner 2026-11-07; renumbered from 1.2.1 on 2026-11-08)
 
 Owner 2026-11-07 18:51, option 2: the server, a launcher and the 0.37c new client, all native Linux. The original
 Windows client under Wine is out of scope (a later add-on once someone can try it). The owner has no Linux machine and
 friends try it only once it is complete, so every part is tested in the container and in GitHub's Linux CI first. Plan:
-[LINUX-1.2.1.md](LINUX-1.2.1.md); prototypes in `tools/linux/` and `.github/workflows/linux.yml` (PR on
+[LINUX-1.2.2.md](LINUX-1.2.2.md); prototypes in `tools/linux/` and `.github/workflows/linux.yml` (PR on
 `feature/linux-1.2.1`). The Linux folder is the Windows folder plus `linux/`; no shipped Windows file changes.
-- [ ] Owner decisions ([LINUX-1.2.1.md](LINUX-1.2.1.md) §10): the launcher (command line recommended), .NET and Godot
+- [ ] Owner decisions ([LINUX-1.2.2.md](LINUX-1.2.2.md) §10): the launcher (command line recommended), .NET and Godot
       downloaded or shipped, the original client extracted or not, Linux in the release workflow or a preview first
 - [ ] Server: the Linux Detour library (`lib/Detour.so`) built in CI, Microsoft's .NET runtime pinned, the package layout, start and stop
 - [ ] Shared launcher code out of `MainForm` (bot batches, settings saves), the Windows launcher's tests unchanged
@@ -408,7 +427,8 @@ On 2026-11-07:
 |---|---|
 | 1.1.2 | Released 2026-11-07 (`v1.1.2-beta`, "Raise the Banners", the latest release; Setup built and tested by CI) |
 | 1.2 | On `integration/1.2`: bots that play with you, the epic encounters at full strength (#102, #106, #110), the lore bible (#107, #108), the titled loading screen (#115); automated tests, container raids and one PC raid |
-| 1.2.1 | Planned (owner 2026-11-07): the Linux build; plan and container prototypes on `feature/linux-1.2.1` |
+| 1.2.1 | Planned (owner 2026-11-08): the first movement slice (strafing, flanking for positional styles, town idling) |
+| 1.2.2 | Planned (owner 2026-11-07; was 1.2.1): the Linux build; plan and container prototypes on `feature/linux-1.2.1` |
 | 1.2.x | Planned (play with friends) |
 | 2.0 | Planned: a living realm (was 1.3), bots as people, the complete realm |
 

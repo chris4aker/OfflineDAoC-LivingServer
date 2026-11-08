@@ -1,6 +1,6 @@
-# Living Server 1.2.1 on Linux: the plan
+# Living Server 1.2.2 on Linux: the plan
 
-Owner decision, 2026-11-07 18:51: **option 2**. 1.2.1 is a native Linux build of the server, a launcher and the 0.37c
+Owner decision, 2026-11-07 18:51: **option 2**. 1.2.2 is a native Linux build of the server, a launcher and the 0.37c
 **new client** (Godot). The original Windows client under Wine is **out of scope**; it is a later add-on once someone
 can try it. The owner has no Linux machine, and friends will try it only once it is complete, so every part must be
 testable in this container and in GitHub's Linux CI. **Nothing here has been run on a real Linux desktop yet.**
@@ -55,7 +55,7 @@ shadowofze file, and (recommended, §6) no copy of .NET or Godot: those come fro
 
 ## 4. What is reused, ported or replaced
 
-| Part | Windows today | Linux 1.2.1 | How |
+| Part | Windows today | Linux 1.2.2 | How |
 |---|---|---|---|
 | Server (`GameServer.dll`, CoreBase, CoreDatabase, CoreServer.dll) | framework-dependent .NET 10, `CoreServer.exe` apphost | **reused as is**: `linux/dotnet/dotnet CoreServer.dll` | same IL; the Windows package already carries `runtimes/linux-x64/native/SQLite.Interop.dll` |
 | Detour (navmesh pathing) | `lib/Detour.dll` | **ported**: `lib/Detour.so` beside it | cmake from `source/server/Pathing/Detour` in CI. The file must be named `lib/Detour.so`: with a folder in the import name (`lib/Detour`) .NET tries only `lib/Detour.so` and `lib/Detour` (found in the spike) |
@@ -87,7 +87,7 @@ The dashboards (population, Exchange, groups, RvR, battlegrounds, records, besti
 | CI testable | yes (Avalonia headless) | yes (Godot headless) | yes, completely (the prototype already is) |
 | Effort | 3–5 weeks | 3–4 weeks | 1.5–2.5 weeks |
 
-**Recommendation: C for 1.2.1**, built as a .NET console program over the launcher's own non-UI code, so Windows and
+**Recommendation: C for 1.2.2**, built as a .NET console program over the launcher's own non-UI code, so Windows and
 Linux run the same logic. Most of it is already UI-free (`PortableCredentials`, `ServerPortProbe`,
 `SocialExpansionSettings` and its recommended set, `BotCharacterGenerator`, `RollingServerLog`, `KeepRelicReset`,
 `HeraldPage`, `Updates/*`). The bot batches and the XP/GM saves are still inside `MainForm.cs` and move into shared
@@ -125,7 +125,7 @@ not the product.
   used on Linux).
 - **The player's own client, later.** The content pipeline (`source/new-client/pipeline`, Python + Real-ESRGAN, whose
   ncnn-vulkan build exists for Linux) can convert a player's own DAoC client into the new client's content. It takes
-  many hours and needs a GPU; it isn't part of 1.2.1.
+  many hours and needs a GPU; it isn't part of 1.2.2.
 - **Third-party runtimes** (.NET: MIT; Godot: MIT) are downloaded from their publishers with pinned hashes. Shipping
   them inside the asset instead is allowed by their licences and is an owner choice (§10).
 - The Linux Detour library (`lib/Detour.so`) is built from the repository's own source (recastnavigation, zlib licence), credited in
@@ -204,13 +204,13 @@ tools/linux/smoke-server.sh --game /tmp/OfflineDAoC --playtester <OfflineDaoc.Pl
 
 ## 10. Open decisions for the owner
 
-1. **The launcher:** C (command line, recommended) for 1.2.1, with A (a window) later if the friends ask?
+1. **The launcher:** C (command line, recommended) for 1.2.2, with A (a window) later if the friends ask?
 2. **.NET and Godot downloaded from their publishers** (small asset, recommended) or **shipped inside** the Linux asset
    (about 160 MB more, no third-party download at install)?
 3. **Extract the original Windows client** on Linux (keeps the folder identical and ready for the Wine add-on;
    recommended) or skip it to save disk?
-4. **Linux in the release workflow from 1.2.1 on**, or a separate "Linux preview" release first?
-5. **Who runs the first real check:** one friend, with the checklist, before 1.2.1 is announced?
+4. **Linux in the release workflow from 1.2.2 on**, or a separate "Linux preview" release first?
+5. **Who runs the first real check:** one friend, with the checklist, before 1.2.2 is announced?
 
 ## 11. Effort
 

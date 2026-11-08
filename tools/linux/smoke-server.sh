@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Living Server 1.2.1 Linux prototype (docs/LINUX-1.2.1.md): the headless smoke of a Linux game folder made by
+# Living Server 1.2.2 Linux prototype (docs/LINUX-1.2.2.md): the headless smoke of a Linux game folder made by
 # assemble-server.sh. Starts the server with linux/offlinedaoc as a player would and checks the log (the build, Detour,
 # navmeshes). Optionally (--new-client <engine>) the released 0.37c new client is checked on that Linux engine
 # (tools/linux/newclient_check.py) and started headless with `offlinedaoc play --headless` (ENTER REALM: the folder's

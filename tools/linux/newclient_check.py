@@ -1,4 +1,4 @@
-"""Living Server 1.2.1 Linux prototype (docs/LINUX-1.2.1.md): the 0.37c new client as a player gets it, on the Linux
+"""Living Server 1.2.2 Linux prototype (docs/LINUX-1.2.2.md): the 0.37c new client as a player gets it, on the Linux
 Godot .NET engine. No game content is needed (the converted content stays the player's download).
 
     python3 -I tools/linux/newclient_check.py <Godot 4.7.2 mono linux executable> <work folder>
