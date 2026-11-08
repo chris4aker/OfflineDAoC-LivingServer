@@ -96,7 +96,7 @@ namespace DOL.UnitTests
         public void TheRingKeepsItsOrientationThroughATargetSwap()
         {
             EncounterMeleeStations.ResetRingForTests();
-            var gov = (GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(GameNPC));
+            var gov = new object(); // the boss is only the ring's key
             Vector3 boss = new(0, 0, 0);
             float first = EncounterMeleeStations.RingAngle(gov, boss, new(150, 0, 0), 1_000);
             Assert.That(first, Is.EqualTo(0).Within(0.001), "spot 0 towards his first target");
