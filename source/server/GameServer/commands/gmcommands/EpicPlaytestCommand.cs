@@ -20,6 +20,7 @@ namespace DOL.GS.Commands;
     "/epictest gather <event> - move the raid's party members still away from its hub to it (before it leaves), or those not yet on its staging ring to the entrance (before it goes in)",
     "/epictest reset <event> - clear an event's cooldown after a raid ended (the launcher's reset)",
     "/epictest status - the running raids",
+    "/epictest familiarity <0..1|off> - test only: how well the realm knows every encounter for the raid discipline (calls, reactions, lapses; off = from the raid record). Also familiarity=<0..1> on start",
     "/epictest stop <event> - end a running raid")]
 public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, ICommandHandler
 {
@@ -55,6 +56,10 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
                     ? $"{args[2]}: the event cooldown is cleared (the encounter itself must be alive)."
                     : $"{args[2]} is running: stop it first.");
                 return;
+            case "familiarity":
+                if (args.Length < 3) { Say(client, $"Raid familiarity: {(RaidDiscipline.FamiliarityOverride is double f ? f.ToString("0.00") : "from the raid record")}"); return; }
+                Say(client, SetFamiliarity(args[2]));
+                return;
             case "gather":
                 if (args.Length < 3) { DisplaySyntaxOf(client); return; }
                 if (!AutonomousRealmRaid.TryGetHub(args[2], out var gatherHub)) { Say(client, $"{args[2]} is not running."); return; }
@@ -64,9 +69,24 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
                 Say(client, $"Moving {away.Length} party members to {where} (the hub before the raid leaves it, then the staging post until it goes in).");
                 return;
             default:
-                Say(client, "/epictest list | start <event> [size|era|start] [focus=Name,Name] [nohub] | status | stop <event>");
+                Say(client, "/epictest list | start <event> [size|era|start] [focus=Name,Name] [nohub] [familiarity=0..1] | status | stop <event> | familiarity <0..1|off>");
                 return;
         }
+    }
+
+    /// <summary>The play test's familiarity override (pure but for setting it): a number 0-1, or off.</summary>
+    public static string SetFamiliarity(string word)
+    {
+        if (string.Equals(word, "off", StringComparison.OrdinalIgnoreCase))
+        {
+            RaidDiscipline.FamiliarityOverride = null;
+            return "Raid familiarity: from the raid record again.";
+        }
+        if (!double.TryParse(word, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double f) ||
+            f < 0 || f > 1)
+            return $"Familiarity \"{word}\" is not a number from 0 to 1, or off.";
+        RaidDiscipline.FamiliarityOverride = f;
+        return $"Raid familiarity forced to {f:0.00} (test only; /epictest familiarity off to undo).";
     }
 
     /// <summary>The roster size a start asks for (pure): a number, "era" (the period size) or "start" (125% of it).</summary>
@@ -82,7 +102,10 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
         if (args.Length < 3) { DisplaySyntaxOf(client); return; }
         var definition = AutonomousRealmRaid.Definitions.FirstOrDefault(d => d.Id == args[2]);
         if (definition == null) { Say(client, $"No raid {args[2]}; /epictest list shows them."); return; }
-        string sizeWord = args.Skip(3).FirstOrDefault(a => !a.StartsWith("focus=", StringComparison.OrdinalIgnoreCase) && a != "nohub" && a != "atstaging");
+        string sizeWord = args.Skip(3).FirstOrDefault(a => !a.StartsWith("focus=", StringComparison.OrdinalIgnoreCase) &&
+            !a.StartsWith("familiarity=", StringComparison.OrdinalIgnoreCase) && a != "nohub" && a != "atstaging");
+        if (args.Skip(3).FirstOrDefault(a => a.StartsWith("familiarity=", StringComparison.OrdinalIgnoreCase)) is string fam)
+            Say(client, SetFamiliarity(fam["familiarity=".Length..]));
         int size = SizeFor(sizeWord?.ToLowerInvariant(), definition.SuggestedBots);
         if (size <= 0) { Say(client, $"Size \"{sizeWord}\" is not a number of 8 or more, era or start."); return; }
         string[] focus = args.Skip(3).Where(a => a.StartsWith("focus=", StringComparison.OrdinalIgnoreCase))
