@@ -652,7 +652,12 @@ namespace DOL.GS
             if (holds && !IsCalledBlast(boss)) return null;
             Vector3 b = new(boss.X, boss.Y, boss.Z), r = new(raider.X, raider.Y, raider.Z);
             float d = Vector2.Distance(new(b.X, b.Y), new(r.X, r.Y));
-            if (d > t.BlastRadius + 100) return null;
+            // The stomp is an area spell on his target (Target ENEMY, Radius 2,500), so it is centred on that raider, not on
+            // him (raid-skill container run duo18: 24 raiders who left on time at 40% still died at spots clear of him but
+            // not of his target). A raider is out only when it is clear of both, and goes only to spots clear of both.
+            Vector3 c = StompCentre(boss, t.BlastRadius);
+            float dc = Vector2.Distance(new(c.X, c.Y), new(r.X, r.Y));
+            if (d > t.BlastRadius + 100 && dc > t.BlastRadius + 100) return null;
             // 1.2 raid discipline (EpicEncounterTactics.RaidCalls.cs): a called blast waits for the raid's call, then for the
             // raider's own reaction; the party he fights stays in on purpose.
             if (IsCalledBlast(boss))
@@ -665,7 +670,7 @@ namespace DOL.GS
             // Each raider takes the reachable spot clear of the blast nearest to it, so nobody walks past him to get out
             // (PC 2026-11-08: he had followed the raid to the one path spot, 2,944 from his spawn; at 40% the only clear path
             // spots lay behind him and 54 raiders died walking there).
-            if (NearestBlastSpot(BlastSpots(boss, t.BlastRadius), r) is Vector3 spot) return spot;
+            if (NearestBlastSpot(ClearOf(BlastSpots(boss, t.BlastRadius), c, t.BlastRadius), r) is Vector3 spot) return spot;
             Vector3[] path;
             lock (BlastPaths) BlastPaths.TryGetValue(boss, out path);
             if (BlastRallyOnPath(path, b, t.BlastRadius) is Vector3 rally) return rally;
@@ -770,6 +775,19 @@ namespace DOL.GS
             }
             return result;
         }
+
+        /// <summary>Where his stomp lands: on his target when it is alive and within the stomp's reach, else on him.</summary>
+        private static Vector3 StompCentre(GameNPC boss, int radius) =>
+            boss.TargetObject is GameLiving target && target.IsAlive && target.CurrentRegionID == boss.CurrentRegionID &&
+            boss.IsWithinRadius(target, radius)
+                ? new Vector3(target.X, target.Y, target.Z)
+                : new Vector3(boss.X, boss.Y, boss.Z);
+
+        /// <summary>The spots at least <paramref name="radius"/> + 150 from <paramref name="centre"/> (pure): clear of a stomp
+        /// centred there. The ring around him leaves 150-250 to spare, so a target beside him rules out only the spots on
+        /// its far side.</summary>
+        public static Vector3[] ClearOf(Vector3[] spots, Vector3 centre, int radius) =>
+            (spots ?? []).Where(s => Vector2.Distance(new(s.X, s.Y), new(centre.X, centre.Y)) >= radius + 150).ToArray();
 
         /// <summary>The spot nearest to the raider (pure), or null when there is none.</summary>
         public static Vector3? NearestBlastSpot(Vector3[] spots, Vector3 raider)
