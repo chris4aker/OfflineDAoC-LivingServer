@@ -6,8 +6,16 @@ namespace DOL.GS
     /// <summary>Shared companion/world-bot selection; native openings and costs remain authoritative.</summary>
     public static class BotMeleeStylePolicy
     {
-        public static bool IsEligible(Style style) => style != null &&
-            style.OpeningRequirementType != Style.eOpening.Positional && !style.StealthRequirement;
+        /// <summary>
+        /// Styles a bot may pick. Side, back and front styles count (owner 2026-11-08: bots never used them, so a bot
+        /// behind a boss swung its front styles): CanUseStyle checks the real angle to the target at selection and again at
+        /// the swing, so one is only picked when the bot really is beside or behind. Stealth openers stay out: bots do not
+        /// stalk (2.0, with what bots can know).
+        /// </summary>
+        public static bool IsEligible(Style style) => style != null && !style.StealthRequirement;
+
+        /// <summary>A side, back or front style: usable only from that spot.</summary>
+        public static bool NeedsPosition(Style style) => style?.OpeningRequirementType == Style.eOpening.Positional;
 
         public static bool Better(Style candidate, Style current) => current == null ||
             candidate.GrowthRate > current.GrowthRate ||
