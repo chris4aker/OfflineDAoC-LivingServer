@@ -81,11 +81,11 @@ namespace DOL.UnitTests
                                   $"{unlearned.Average(c => c.LeadSeconds):0.0} s / {learned.Average(c => c.LeadSeconds):0.0} s");
             Assert.Multiple(() =>
             {
-                Assert.That(unlearned.Count(c => c.Late) / (double)unlearned.Length, Is.InRange(0.18, 0.26));
+                Assert.That(unlearned.Count(c => c.Late) / (double)unlearned.Length, Is.InRange(0.14, 0.22));
                 Assert.That(learned.Count(c => c.Late) / (double)learned.Length, Is.InRange(0.03, 0.08));
                 Assert.That(unlearned.Where(c => !c.Late).Select(c => c.LeadSeconds), Is.All.InRange(6.5, 10.5));
                 Assert.That(learned.Where(c => !c.Late).Select(c => c.LeadSeconds), Is.All.InRange(9.5, 13.5));
-                Assert.That(unlearned.Concat(learned).Where(c => c.Late).Select(c => c.LeadSeconds), Is.All.InRange(3.0, 6.0));
+                Assert.That(unlearned.Concat(learned).Where(c => c.Late).Select(c => c.LeadSeconds), Is.All.InRange(4.0, 6.5));
                 Assert.That(unlearned.Average(c => c.LeadSeconds), Is.LessThan(learned.Average(c => c.LeadSeconds) - 2));
                 // Deterministic per (caller, stomp, seed).
                 Assert.That(RaidDiscipline.CallFor(7, Mechanic, 60, 3, 0.4), Is.EqualTo(RaidDiscipline.CallFor(7, Mechanic, 60, 3, 0.4)));

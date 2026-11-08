@@ -71,8 +71,9 @@ namespace DOL.GS
         /// his stomp (it hits everyone within 2,500 of his target when it lands, falling off with distance), so calls of
         /// 4-8 s killed 30-85% of the raiders in range, the learned ones too.</summary>
         public const double CallLeadUnlearnedMin = 6.5, CallLeadUnlearnedMax = 10.5, CallLeadLearnedMin = 9.5, CallLeadLearnedMax = 13.5;
-        /// <summary>The share of calls that come late (unlearned 22%, learned 5%), and how late: 3-6 s before it lands.</summary>
-        public const double LateCallUnlearned = 0.22, LateCallLearned = 0.05, LateCallLeadMin = 3, LateCallLeadMax = 6;
+        /// <summary>The share of calls that come late (unlearned 18%, learned 5%), and how late: 4-6.5 s before it lands
+        /// (duo19: an unlearned call 4.2 s before the 80% stomp killed 61% of the raiders in range, and the raid wiped).</summary>
+        public const double LateCallUnlearned = 0.18, LateCallLearned = 0.05, LateCallLeadMin = 4, LateCallLeadMax = 6.5;
 
         /// <param name="LeadSeconds">How long before the mechanic lands the caller shouts it.</param>
         /// <param name="Late">It came late (after the caller hesitated or saw it late).</param>
