@@ -233,6 +233,28 @@ Must-haves ship 1.2; anything from a phase that doesn't fit ships as a 1.2.x pat
       a dragon raid; a returning session read on the Herald
 - [ ] Release notes to the rules above
 
+### 1.2.1 — Linux build (owner 2026-11-07)
+
+Owner 2026-11-07 18:51, option 2: the server, a launcher and the 0.37c new client, all native Linux. The original
+Windows client under Wine is out of scope (a later add-on once someone can try it). The owner has no Linux machine and
+friends try it only once it is complete, so every part is tested in the container and in GitHub's Linux CI first. Plan:
+[LINUX-1.2.1.md](LINUX-1.2.1.md); prototypes in `tools/linux/` and `.github/workflows/linux.yml` (PR on
+`feature/linux-1.2.1`). The Linux folder is the Windows folder plus `linux/`; no shipped Windows file changes.
+- [ ] Owner decisions ([LINUX-1.2.1.md](LINUX-1.2.1.md) §10): the launcher (command line recommended), .NET and Godot
+      downloaded or shipped, the original client extracted or not, Linux in the release workflow or a preview first
+- [ ] Server: `libDetour.so` built in CI, Microsoft's .NET runtime pinned, the package layout, start and stop
+- [ ] Shared launcher code out of `MainForm` (bot batches, settings saves), the Windows launcher's tests unchanged
+- [ ] The Linux launcher: start, stop, status, play, account, bots, settings, Herald, update, rollback
+- [ ] Setup on Linux: `install.sh`, shadowofze's game from his releases checked against his manifests, his patcher on
+      Linux .NET, Living Server installed with its backups and checks, resume after a stop
+- [ ] Living Server install and rollback in C#, with CI parity against `install-server-build.ps1` on the same fake folders
+- [ ] The new client on Linux: Godot 4.7.2 .NET for Linux, its save folder, desktop entries; the source tree's
+      duplicated `server_world.gd` block fixed on its own branch
+- [ ] The updater on Linux: the `-linux-x64.tar.gz` release asset, GitHub's digest, the same package checks
+- [ ] CI green: the Linux package smoke, the launcher tests, install parity, a real-download install, the release asset
+- [ ] Played: one friend's evening on a real Linux desktop with the checklist (install, play, bots, stop, update,
+      rollback), reported separately from CI. Nothing is called working on Linux before it
+
 ### 1.2.x — play with friends (experimental, right after 1.2)
 
 Unchanged by the split of 2026-11-06. Owner 2026-11-03: private co-op for about 1–4 players in a thriving bot world; no public server.
@@ -386,6 +408,7 @@ On 2026-11-07:
 |---|---|
 | 1.1.2 | Released 2026-11-07 (`v1.1.2-beta`, "Raise the Banners", the latest release; Setup built and tested by CI) |
 | 1.2 | On `integration/1.2`: bots that play with you, the epic encounters at full strength (#102, #106, #110), the lore bible (#107, #108), the titled loading screen (#115); automated tests, container raids and one PC raid |
+| 1.2.1 | Planned (owner 2026-11-07): the Linux build; plan and container prototypes on `feature/linux-1.2.1` |
 | 1.2.x | Planned (play with friends) |
 | 2.0 | Planned: a living realm (was 1.3), bots as people, the complete realm |
 

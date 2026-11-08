@@ -1,0 +1,99 @@
+# Living Server 1.2.1, the Linux build (docs/LINUX-1.2.1.md). A sketch: it proves on GitHub's Linux runners what a
+# Linux player's folder needs, without game files: the server build with a Linux Detour library and a bundled .NET
+# runtime starts in the package layout, two scripted players log in (the playtester), the released 0.37c new client
+# compiles and logs in headless on the Linux Godot .NET engine, and the server stops and starts again.
+# Separate from build-and-test (no existing job changes). Runs on demand and on changes to the Linux files only.
+name: linux
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "tools/linux/**"
+      - ".github/workflows/linux.yml"
+
+permissions:
+  contents: read
+
+env:
+  # Pinned downloads, each checked against the hash its publisher lists.
+  DOTNET_RUNTIME_VERSION: "10.0.14"
+  GODOT_VERSION: "4.7.2"
+  GODOT_MONO_SHA512: "1855960b27ee3ef5e66e5e228cced69d55637b24334a7411162687dcd077d8f9f645348cdb8eae984bec8135d49ed855a1e3a16476786b8bce60774fd8402d13"
+
+jobs:
+  linux-package:
+    # The oldest supported runner: what builds here (libDetour.so) runs on newer distributions too.
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # newclient_check.py reads the released 0.37c scripts from the v0.37 commit
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build the server (the same IL as the Windows package)
+        run: |
+          cp source/server/CoreServer/config/serverconfig.example.xml source/server/CoreServer/config/serverconfig.xml
+          dotnet build source/server/CoreServer/CoreServer.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
+
+      - name: Build the Linux Detour library
+        run: |
+          cmake -S source/server/Pathing/Detour -B "$RUNNER_TEMP/detour" -DCMAKE_BUILD_TYPE=Release -DSOVERSION=1 -DLIB_VERSION=1.0
+          cmake --build "$RUNNER_TEMP/detour" -j
+          so=$(find "$RUNNER_TEMP/detour" -maxdepth 1 -type f -name 'libDetour.so*' | head -n 1)
+          echo "DETOUR=$so" >> "$GITHUB_ENV"
+          echo "::notice title=libDetour.so::$(sha256sum "$so" | cut -c1-64), needs $(objdump -T "$so" | grep -o 'GLIBC_[0-9.]*' | sort -uV | tail -n 1)"
+
+      - name: The bundled .NET runtime (Microsoft's ASP.NET Core runtime, hash from its release metadata)
+        run: |
+          meta=$(curl -sSfL https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json)
+          read -r url hash < <(echo "$meta" | python3 -c "
+          import json,sys,os
+          v=os.environ['DOTNET_RUNTIME_VERSION']
+          r=[x for x in json.load(sys.stdin)['releases'] if x['release-version']==v][0]
+          f=[f for f in r['aspnetcore-runtime']['files'] if f['rid']=='linux-x64' and f['name'].endswith('.tar.gz') and 'composite' not in f['name']][0]
+          print(f['url'], f['hash'])")
+          curl -sSfL --retry 3 -o "$RUNNER_TEMP/aspnetcore.tgz" "$url"
+          echo "$hash  $RUNNER_TEMP/aspnetcore.tgz" | sha512sum -c -
+          mkdir -p "$RUNNER_TEMP/dotnet" && tar -C "$RUNNER_TEMP/dotnet" -xzf "$RUNNER_TEMP/aspnetcore.tgz"
+
+      - name: Godot ${{ env.GODOT_VERSION }} .NET for Linux (SHA-512 from its release page)
+        run: |
+          curl -sSfL --retry 3 -o "$RUNNER_TEMP/godot.zip" "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_mono_linux_x86_64.zip"
+          echo "$GODOT_MONO_SHA512  $RUNNER_TEMP/godot.zip" | sha512sum -c -
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          echo "GODOT=$RUNNER_TEMP/godot/Godot_v${GODOT_VERSION}-stable_mono_linux_x86_64/Godot_v${GODOT_VERSION}-stable_mono_linux.x86_64" >> "$GITHUB_ENV"
+
+      - name: Assemble a Linux game folder (minimal test world, no game files)
+        run: |
+          python3 source/tools/make_test_world.py minimal --out "$RUNNER_TEMP/minimal.db"
+          tools/linux/assemble-server.sh --server-build source/server/Release --detour "$DETOUR" \
+            --world "$RUNNER_TEMP/minimal.db" --dotnet "$RUNNER_TEMP/dotnet" --out "$RUNNER_TEMP/OfflineDAoC"
+
+      - name: Smoke - start, log in (scripted players and the new client), stop, start, stop
+        run: |
+          dotnet build source/tools/OfflineDaoc.Playtester -c Release
+          tools/linux/smoke-server.sh --game "$RUNNER_TEMP/OfflineDAoC" \
+            --playtester source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll \
+            --new-client "$GODOT" --out "$RUNNER_TEMP/smoke"
+
+      - name: Put the outcome on the run page
+        if: always()
+        run: |
+          [ -f "$RUNNER_TEMP/smoke/smoke.txt" ] && { echo '```'; cat "$RUNNER_TEMP/smoke/smoke.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY" || true
+
+      # CI's own throwaway logs and reports (a minimal test world and a random CI account; no player data).
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: linux-smoke
+          path: |
+            ${{ runner.temp }}/smoke/*.txt
+            ${{ runner.temp }}/smoke/*.log
+            ${{ runner.temp }}/smoke/playtest/report.*
+            ${{ runner.temp }}/smoke/new-client/login-client.log
+          if-no-files-found: warn

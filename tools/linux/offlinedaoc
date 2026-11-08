@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+# Living Server 1.2.1 Linux prototype (docs/LINUX-1.2.1.md): the command-line launcher of a Linux game folder.
+# It lives in <game>/linux/ and does what the Windows launcher's buttons do that a game needs to be played:
+#
+#   offlinedaoc start          START SERVER: runs runtime/server in the background, waits until it accepts logins
+#   offlinedaoc stop           STOP SERVER: types "exit" at the server console (a clean save); never kills it
+#   offlinedaoc status         running or stopped, and where the log is
+#   offlinedaoc play [args]    ENTER REALM: starts the server if needed, then the new client logged in with
+#                              runtime/account.txt (extra args go to Godot, e.g. --headless)
+#   offlinedaoc account        prints the account file (made on first use, as the Windows launcher makes it)
+#
+# Shared with Windows: runtime/account.txt (PortableCredentials' format), runtime/logs/server-console.log, the world
+# database, the port check (only one server on the port), "exit" on the console to stop, --custom-class=off on a
+# game with the Sluaghbinder switched off. Linux-only state lives in linux/run/.
+# Environment: OFFLINEDAOC_GAME (the game folder; default the folder above this script),
+# OFFLINEDAOC_START_TIMEOUT (seconds to wait for the server, default 900).
+set -euo pipefail
+
+GAME=${OFFLINEDAOC_GAME:-$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)}
+RUNTIME="$GAME/runtime"
+SERVER="$RUNTIME/server"
+RUN="$GAME/linux/run"
+LOG="$RUNTIME/logs/server-console.log"
+FIFO="$RUN/server-console.fifo"
+PIDFILE="$RUN/server.pid"
+START_TIMEOUT=${OFFLINEDAOC_START_TIMEOUT:-900}
+
+die() { echo "offlinedaoc: $*" >&2; exit 1; }
+
+dotnet_cmd() {
+  if [ -x "$GAME/linux/dotnet/dotnet" ]; then
+    export DOTNET_ROOT="$GAME/linux/dotnet" DOTNET_MULTILEVEL_LOOKUP=0
+    echo "$GAME/linux/dotnet/dotnet"
+  elif command -v dotnet >/dev/null 2>&1; then
+    command -v dotnet
+  else
+    die "no .NET runtime (linux/dotnet is missing and there is no dotnet on PATH)"
+  fi
+}
+
+port() {
+  local p
+  p=$(sed -n 's:.*<Port>\([0-9]*\)</Port>.*:\1:p' "$SERVER/config/serverconfig.xml" 2>/dev/null | head -n 1)
+  echo "${p:-10300}"
+}
+
+listening() { (exec 3<>"/dev/tcp/127.0.0.1/$1") 2>/dev/null; }
+
+server_pid() {
+  [ -f "$PIDFILE" ] || return 1
+  local pid; pid=$(cat "$PIDFILE")
+  # this game's server only: the process must still be a dotnet running this folder's CoreServer.dll
+  [ -d "/proc/$pid" ] && tr '\0' ' ' < "/proc/$pid/cmdline" | grep -q "CoreServer.dll" &&
+    [ "$(readlink -f "/proc/$pid/cwd")" = "$(readlink -f "$SERVER")" ] && { echo "$pid"; return 0; }
+  return 1
+}
+
+account() {
+  local f="$RUNTIME/account.txt"
+  if [ ! -f "$f" ]; then
+    # PortableCredentials.ReadOrCreate: "Account: offline", a 20-hex-digit password, CRLF; never replaced once made
+    local pw; pw=$(od -An -N10 -tx1 /dev/urandom | tr -d ' \n' | tr 'a-f' 'A-F')
+    ( set -o noclobber; printf 'Account: offline\r\nPassword: %s\r\n' "$pw" > "$f" ) 2>/dev/null || true
+  fi
+  ACCOUNT=$(sed -n 's/^[Aa]ccount:[[:space:]]*//p' "$f" | tr -d '\r' | head -n 1)
+  PASSWORD=$(sed -n 's/^[Pp]assword:[[:space:]]*//p' "$f" | tr -d '\r' | head -n 1)
+  [ -n "$ACCOUNT" ] && [ -n "$PASSWORD" ] || die "runtime/account.txt is invalid. Restore it from your backup; don't delete it."
+}
+
+start() {
+  local p; p=$(port)
+  if pid=$(server_pid); then echo "The server is already running (pid $pid)."; return 0; fi
+  listening "$p" && die "port $p is in use (another Offline DAoC server?). Not starting."
+  [ -f "$SERVER/CoreServer.dll" ] || die "the server is missing ($SERVER/CoreServer.dll)"
+  [ -f "$SERVER/lib/libDetour.so" ] || echo "Warning: lib/libDetour.so is missing; bots will path without navmeshes."
+  local dotnet; dotnet=$(dotnet_cmd)
+  mkdir -p "$RUN" "$RUNTIME/logs"
+  rm -f "$FIFO"; mkfifo "$FIFO"
+  [ -f "$LOG" ] && mv -f "$LOG" "$LOG.1"
+  echo "Starting the server (log: runtime/logs/server-console.log)..."
+  # The console FIFO is opened read-write, so the server's stdin stays open after this shell ends; "exit" stops it.
+  ( cd "$SERVER" && exec setsid "$dotnet" CoreServer.dll --start 0<>"$FIFO" >>"$LOG" 2>&1 ) &
+  echo $! > "$PIDFILE"
+  local waited=0
+  while ! listening "$p"; do
+    server_pid >/dev/null || die "the server stopped by itself; the end of runtime/logs/server-console.log says why"
+    [ "$waited" -ge "$START_TIMEOUT" ] && die "the server didn't open port $p within $START_TIMEOUT s"
+    sleep 2; waited=$((waited + 2))
+  done
+  echo "RUNNING (port $p, after ${waited}s)."
+}
+
+stop() {
+  local pid
+  pid=$(server_pid) || { echo "The server isn't running."; rm -f "$PIDFILE"; return 0; }
+  echo "Stopping the server safely..."
+  echo exit > "$FIFO"
+  for _ in $(seq 1 60); do
+    [ -d "/proc/$pid" ] || { rm -f "$PIDFILE" "$FIFO"; echo "Stopped."; return 0; }
+    sleep 1
+  done
+  die "the server is still shutting down after 60 s; it has not been force-closed"
+}
+
+status() {
+  if pid=$(server_pid); then
+    if listening "$(port)"; then echo "RUNNING (pid $pid, port $(port))"; else echo "STARTING (pid $pid)"; fi
+  else
+    echo "STOPPED"
+  fi
+}
+
+edition_args() {
+  # A 0.37 game (classes / enable_sluaghbinder = False) offers the classic classes only, as on Windows.
+  local db="$RUNTIME/data/opendaoc.sqlite3.db" v=""
+  if command -v python3 >/dev/null 2>&1 && [ -f "$db" ]; then
+    v=$(python3 -I -c 'import sqlite3,sys
+c=sqlite3.connect("file:"+sys.argv[1]+"?mode=ro",uri=True)
+r=c.execute("SELECT Value FROM ServerProperty WHERE `Key`=?",("enable_sluaghbinder",)).fetchone()
+print(r[0] if r else "")' "$db" 2>/dev/null || true)
+  fi
+  case "${v,,}" in false|0) echo "--custom-class=off" ;; esac
+}
+
+play() {
+  local engine
+  engine=$(ls "$GAME"/linux/godot/Godot_v*_mono_linux*.x86_64 2>/dev/null | head -n 1 || true)
+  [ -n "$engine" ] || die "the new client's engine is missing (linux/godot)"
+  [ -f "$GAME/new-client/godot/project.godot" ] || die "the new client is missing (new-client/godot)"
+  status | grep -q RUNNING || start
+  account
+  local dotnet; dotnet=$(dotnet_cmd)
+  mkdir -p "$GAME/new-client/save"
+  # Windows sets APPDATA=new-client\save; on Linux Godot's user:// follows XDG_DATA_HOME.
+  exec env XDG_DATA_HOME="$GAME/new-client/save" DOTNET_ROOT="$(dirname "$dotnet")" \
+    "$engine" "$@" --path "$GAME/new-client/godot" -- --server=127.0.0.1 "--account=$ACCOUNT" "--password=$PASSWORD" $(edition_args)
+}
+
+case "${1:-}" in
+  start) start ;;
+  stop) stop ;;
+  status) status ;;
+  play) shift; play "$@" ;;
+  account) account; echo "$RUNTIME/account.txt (account $ACCOUNT)" ;;
+  *) sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'; exit 2 ;;
+esac
