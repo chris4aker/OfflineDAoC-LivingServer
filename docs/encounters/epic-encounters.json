@@ -80,7 +80,7 @@
   "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "25da681fa8a3bd7e96d89b02f6d0622363d00ce77445f6c4c3e3444e9a47df39",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "1907282adb0de082eeff10f6331a8d8270776eb3abb13d3996734996183d3bb0",
-  "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "c29e9841d934758a13259ab0c739e979f14d01e0ebaaf29267ff61d7134e3027",
+  "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "cdc59166c4aeb7f3946a436feab3e597d0384fb27d87438c856db55dc77fb758",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
   "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe",
   "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "ddbafcd28c0d85ab9a71d42b179edd8a4d705e1c1b8daf8c0c37f235702d65a2",
