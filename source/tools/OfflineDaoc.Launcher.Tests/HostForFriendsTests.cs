@@ -1,3 +1,4 @@
+#nullable enable
 using System.Net;
 using System.Xml.Linq;
 using DOL.GS.PacketHandler.Client.v168;

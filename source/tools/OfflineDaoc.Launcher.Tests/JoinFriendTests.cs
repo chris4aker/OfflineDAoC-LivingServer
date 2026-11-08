@@ -1,3 +1,4 @@
+#nullable enable
 using System.Net;
 using NUnit.Framework;
 

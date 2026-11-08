@@ -156,7 +156,8 @@ namespace DOL.UnitTests
 
                 File.WriteAllText(file.FullName, "<?xml version=\"1.0\" encoding=\"utf-8\"?><root><Server><HostPasswordHash>abc</HostPasswordHash></Server></root>");
                 var loaded = new GameServerConfiguration();
-                loaded.LoadFromXMLFile(file);
+                // A fresh FileInfo: the first one cached "does not exist" from before the save.
+                loaded.LoadFromXMLFile(new FileInfo(file.FullName));
                 Assert.That(loaded.HostPasswordHash, Is.EqualTo("abc"));
             }
             finally
