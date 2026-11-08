@@ -164,6 +164,26 @@ if ($Scenario -contains 'newest') {
             Check ($r.Code -eq 0 -and $r.Log -match "WOULD INSTALL $([regex]::Escape($embedded)) " -and $r.Log -match [regex]::Escape($case.Expect)) "newest: a $($case.Name) digest is refused and the embedded package is installed"
         }
     } else { Write-Host '   INFO  newest: the embedded package is not older than GitHub''s newest, so the digest cases were not run' }
+
+    # 1.1.3: a busy GitHub download server (429/5xx) is retried by Setup itself; a dropped connection and anything else
+    # still go to Try again. The messages are the real forms from Windows PowerShell 5.1, PowerShell 7 and curl.exe.
+    $cases = @(
+        @{ Msg = 'The remote server returned an error: (503) Server Unavailable.'; Expect = 'busy' },
+        @{ Msg = 'Response status code does not indicate success: 503 (Service Unavailable).'; Expect = 'busy' },
+        @{ Msg = 'The remote server returned an error: (502) Bad Gateway.'; Expect = 'busy' },
+        @{ Msg = 'The remote server returned an error: (429) Too Many Requests.'; Expect = 'busy' },
+        @{ Msg = 'curl: (22) The requested URL returned error: 504'; Expect = 'busy' },
+        @{ Msg = 'The remote name could not be resolved: ''github.com'''; Expect = 'network' },
+        @{ Msg = 'The operation has timed out.'; Expect = 'network' },
+        @{ Msg = 'The remote server returned an error: (404) Not Found.'; Expect = 'other' },
+        @{ Msg = 'Sluaghbinder patch verification failed.'; Expect = 'other' }
+    )
+    $i = 0
+    foreach ($case in $cases) {
+        $i++
+        $r = Setup "busy-classify-$i" @('--classify-download-error', $case.Msg)
+        Check ($r.Code -eq 0 -and $r.Log -match "DOWNLOAD ERROR CLASS $($case.Expect)\b") "download errors: '$($case.Msg)' is $($case.Expect)"
+    }
 }
 
 if ($Scenario -contains 'fresh') {
