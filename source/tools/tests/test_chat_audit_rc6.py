@@ -146,8 +146,10 @@ class Rc6CheckTests(unittest.TestCase):
             chat(10, "Brenna", "died to frontier patrol ugh", "src=field ex=2 i=0 role=asker cap=8.0"),
             chat(20, "Cadoc", "staging at the mg, objective is the keep", "src=other", ch="group"),
             chat(30, "Dagny", "the stable master has routes", "src=field ex=3 i=0 role=asker cap=8.0"),
+            # RC10 on the owner's PC, in /say: a goal name as a monster.
+            chat(40, "Cedric", "careful group rendezvouses link", "src=field ex=4 i=0 role=asker cap=5.6", ch="say"),
         ])
-        self.assertEqual(s["counts"]["internal_vocabulary"], 3, s["examples"])
+        self.assertEqual(s["counts"]["internal_vocabulary"], 4, s["examples"])
         self.assertFalse(s["verdict_ok"])
 
     def test_a_question_answered_by_a_bare_reaction(self):

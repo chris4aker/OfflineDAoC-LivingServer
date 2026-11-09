@@ -209,6 +209,9 @@ public class UT_ChatAfterRC6
     [TestCase("frontier patrol near death stalkers", null)]
     [TestCase("grind camp large skeletons", null)]
     [TestCase("Final encounter staging", null)]
+    [TestCase("group rendezvous", null)]
+    [TestCase("raid muster", null)]
+    [TestCase("keep siege", null)]
     [TestCase("shard golem", "shard golem")]
     [TestCase("elder beech", "elder beech")]
     [TestCase("Briaelaewen", null)]
@@ -274,6 +277,8 @@ public class UT_ChatAfterRC6
     [TestCase("third time tonight", 2, "third time tonight")]
     [TestCase("anyone heading to the frontier tonight? heh", 11, "anyone heading to the frontier today? heh")]
     [TestCase("nice to see the guild on tonight", 23, "nice to see the guild on tonight")]
+    [TestCase("first night in the frontier how do i even start", 15, "first time in the frontier how do i even start")]
+    [TestCase("first night in the frontier, keep me alive pls", 22, "first night in the frontier, keep me alive pls")]
     public void ALineFitsTheTimeOfDay(string text, int hour, string said) => Assert.That(VC.ForTimeOfDay(text, hour), Is.EqualTo(said));
 
     private static readonly Regex Evening = new(@"\b(tonight|tonite|this evening|evening)\b");

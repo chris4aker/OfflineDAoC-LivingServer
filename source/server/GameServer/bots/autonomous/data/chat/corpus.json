@@ -367509,9 +367509,28 @@
    "needs": [],
    "intent": "",
    "mood": "friendly",
-   "weight": 1.0,
-   "text": "anyone know if {player} is on tonight? want to group again",
-   "id": "8dddb55fca71"
+   "weight": 0.7071,
+   "text": "{player}, u around? want to group again",
+   "family": "55bcba5105",
+   "id": "41e60be18601"
+  },
+  {
+   "kind": "gossip",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "friendly",
+   "weight": 0.7071,
+   "text": "{player}, free? want to group again",
+   "family": "55bcba5105",
+   "id": "96c266ccbd73"
   },
   {
    "kind": "reply",
@@ -705648,6 +705667,11 @@
     50
    ],
    "roles": {
+    "A": {
+     "type": [],
+     "class": [],
+     "task": "rvr"
+    },
     "B": {
      "type": [
       "NoLifer"

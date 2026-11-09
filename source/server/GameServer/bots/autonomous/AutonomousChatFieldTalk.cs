@@ -2487,8 +2487,11 @@ public static class AutonomousChatFieldTalk
         return target.ToLowerInvariant();
     }
 
+    // RC10 on the owner's PC: "careful group rendezvouses link" in /say. The goal names the controller writes into TargetName
+    // (AutonomousBotVoices.IsPlaceName lists the same words) are no monster either.
     private static readonly System.Text.RegularExpressions.Regex ObjectiveName = new(
-        @"\b(patrol|near|camp|grind|grinding|objective|staging|route|toward|towards|roam|roaming)\b|[:/(]|\d",
+        @"\b(patrol|near|camp|grind|grinding|objective|staging|route|toward|towards|roam|roaming|rendezvous|muster|mustering|egress|" +
+        @"matchmaking|formation|assignment|waypoint|meetup|gathering|escort|siege|assault)\b|[:/(]|\d",
         System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
 
     internal static Facts Of(GameBot bot, Random random)
