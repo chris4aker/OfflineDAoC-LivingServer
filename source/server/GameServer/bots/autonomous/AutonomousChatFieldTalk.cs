@@ -1769,9 +1769,13 @@ public static class AutonomousChatFieldTalk
                 steps.Add(new Step(0, thanksOther, AutonomousChatArbiter.DelayMs(other, thanksOther, 40, at, random)));
             return steps;
         }
-        if (random.NextDouble() < FollowUpChance(true) && FollowUp(said, true, random, memory, now) is { } done &&
-            !(nothing && GoesSomewhere(done)))
+        if (random.NextDouble() < FollowUpChance(true) && FollowUp(said, true, random, memory, now) is { } done)
+        {
+            // After a "no" the asker says ok, not "omw" or "ty, inv" (RC6 and RC8 on the owner's PC).
+            if (nothing && GoesSomewhere(done))
+                done = Pick(random, "k ty", "ok ty", "k", "np ty");
             steps.Add(new Step(0, done, AutonomousChatArbiter.DelayMs(answer, done, 40, at, random)));
+        }
         return steps;
     }
 
@@ -1795,7 +1799,8 @@ public static class AutonomousChatFieldTalk
     /// <summary>"omw", "porting", "k omw": a line that says the speaker is heading somewhere. Pure.</summary>
     public static bool GoesSomewhere(string line) =>
         !string.IsNullOrWhiteSpace(line) &&
-        System.Text.RegularExpressions.Regex.IsMatch(" " + AutonomousChatQuestions.Normalize(line) + " ", @" (omw|on my way|porting|heading|coming) ");
+        // RC8 on the owner's PC: "city of camelot anyone??" "not that i know" "ty, inv".
+        System.Text.RegularExpressions.Regex.IsMatch(" " + AutonomousChatQuestions.Normalize(line) + " ", @" (omw|on my way|porting|heading|coming|inv|invite|inviting) ");
 
     /// <summary>
     /// A small story from a real event, for regulars to riff on for a minute or two (round 7): a ding to 50, a death, a wipe in

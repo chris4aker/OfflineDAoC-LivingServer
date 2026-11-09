@@ -711443,6 +711443,12 @@
     25
    ],
    "roles": {
+    "A": {
+     "type": [],
+     "class": [
+      "Necromancer"
+     ]
+    },
     "B": {
      "type": [],
      "class": [

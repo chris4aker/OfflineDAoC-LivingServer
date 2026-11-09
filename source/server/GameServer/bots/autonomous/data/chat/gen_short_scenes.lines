@@ -816,6 +816,7 @@ B: empty beats crowded | avalon isle is more fun | to each their own
 @topic necromancer
 @levels 5-25
 @scene sh_alb_necro_shade
+@role A class=Necromancer
 @role B class=Necromancer
 @role C type=*
 A: necro question, why did i turn into a shadow | i cast my pet and became a shade?? | what is shade form, am i bugged
