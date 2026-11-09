@@ -207,6 +207,19 @@ class ChatAuditTests(unittest.TestCase):
         s = self.say_rows(sorted(rows))
         self.assertEqual(s["counts"]["say_minutes_over_ceiling"], 0)
 
+    def test_an_armour_slot_is_not_a_class_claim(self):
+        # RC2 live check (2026-11-09): an infiltrator 26 buying arm armour was read as an armsman claim.
+        c = self.counts([(0, "Wulfrun", "wtb leather arms 4 26 inf", 'src=other cls="Infiltrator" lvl=26')])
+        self.assertEqual(c["class_claim_false"], 0)
+        self.assertEqual(c["two_classes_claimed"], 0)
+        self.assertEqual(chat_audit.class_claims("wtb leather arms 4 26 inf"), [("infiltrator", 26)])
+        self.assertEqual(chat_audit.class_claims("wts studded arms, pst"), [])
+        self.assertEqual(chat_audit.class_claims("anyone selling chain arms 40?"), [])
+        # A real armsman still claims one, and a false one is still caught.
+        self.assertEqual(chat_audit.class_claims("arms 45 lfg"), [("armsman", 45)])
+        c = self.counts([(0, "Wulfrun", "arms 45 lfg", 'src=other cls="Infiltrator" lvl=45')])
+        self.assertEqual(c["class_claim_false"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()

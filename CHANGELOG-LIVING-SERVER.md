@@ -60,7 +60,8 @@ its reply budget: a thread or a burst is still allowed or held once, as a whole,
   count and its reactions stay within the reply budget. Also from the RC1 check: a gamebot's way back after a release is
   told to its own group (only with a player in it), not in /say (a wall of "released, running back" at Camelot's bind);
   a bot greets a player once per meeting (ten minutes); a deed names a place it could happen (`/lstest deed` never names
-  a capital, and a streak or gank only a frontier zone); /say lines carry `cap=` and `chat_audit.py` checks them. Tests only.
+  a capital, and a streak or gank only a frontier zone); /say lines carry `cap=` and `chat_audit.py` checks them. Tests only. After RC2 the checker reads an armour slot in a
+  trade line ("wtb leather arms 4 26 inf") as the item, not an armsman claim.
 - **Checked:** automated and simulated only, not played. `source/tools/chat_audit.py` on the owner's 1.1.3 evening: one each
   of an answer after the asker closed, a level question after the invite, a follow-up before any answer, a thanks with no
   answer, a trade closing that didn't follow and a join answer from a class that can't fill the role; 6 pile-ons (+13
