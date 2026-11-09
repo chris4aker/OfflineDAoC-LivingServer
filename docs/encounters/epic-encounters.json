@@ -21547,7 +21547,15 @@
      "role": "final"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "hazards": [
+     "OrshomFire"
+    ],
+    "hazardRadius": 300,
+    "hazardDamageType": "Cold",
+    "summary": "Ground hazard: Orshom's Fire, as for Orshom Brong (raiders with a Cold spell shoot it from outside its 300, everyone else stays out of it and fights the twins)."
+   },
    "verified": true
   },
   {
@@ -21727,7 +21735,17 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "Level 80, 30,000 health, tether 3,800. When his fight starts he lights Orshom's Fire (OrshomFire) at 31406,69599,15605, about 900 from his spawn: a GameEpicNPC that never moves or melees (MaxSpeedBase 0, empty StartAttack), takes damage only of type Cold, has 10,000 health and RespawnInterval -1, aggro range 2,500, and casts Fire Burn on its own spot every 3 s (500 Heat, radius 300). His reset removes it. Orylle throws a random real player within 2,500 into it every 15-20 s while it burns (GetPlayersInRadius: never a bot). At 50% Orshom pulls Orylle into the fight.",
+   "currentRaidAi": "PC test 2026-11-09 (build b72716e, forced Krondon): the fire is an IGameEpicNpc in combat with raiders, so the route turned on it (REALM_EXPEDITION_EARLY_PULL target=\"Orshom's Fire\" decision=Commit at 04:12:33) and the raid's melee walked into its 300: AUTONOMOUS_BOT_DEATH killer=\"Orshom's Fire\" 100 times between 04:12 and 04:18, 97 of them with activity \"Fighting Orshom's Fire\"; it was skipped for no damage for five minutes. Now the route never takes it as a target or encounter, and raiders follow the hazard tactic.",
+   "aiTactics": {
+    "hazards": [
+     "OrshomFire"
+    ],
+    "hazardRadius": 300,
+    "hazardDamageType": "Cold",
+    "summary": "Ground hazard: Orshom's Fire (a fire pit he lights when his fight starts, 10,000 health, hit only by Cold) burns everything within 300 every 3 s and draws everyone within 2,500 into a fight with it. It is never the raid's target: raiders with a Cold spell shoot it from outside its 300, everyone else stays out of it and fights Orshom Brong and Orylle."
+   },
    "verified": true
   },
   {

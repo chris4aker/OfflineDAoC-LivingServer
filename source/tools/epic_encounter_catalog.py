@@ -1886,6 +1886,12 @@ def render_tactics_cs(data: dict) -> str:
             blast = ", ".join(str(int(x)) for x in t.get("blastThresholds", []))
             extra = (f", {int(t.get('keepAlive', 0))}, " + (f"[{blast}]" if blast else "null") +
                      f", {int(t.get('blastRadius', 0))}")
+        if t.get("hazards"):
+            # Ground hazards (Orshom's Fire): named arguments, so the rows above keep their shape.
+            hazards = ", ".join(f'"{h}"' for h in t["hazards"])
+            vulnerable = f'"{t["hazardDamageType"]}"' if t.get("hazardDamageType") else "null"
+            extra += (f", Hazards: [{hazards}], HazardRadius: {int(t.get('hazardRadius', 0))}, "
+                      f"HazardDamageType: {vulnerable}")
         rows.append(f'            new("{e["class"]}", "{e["id"]}", [{adds}], {int(t.get("fightAtHomeRadius", 0))}, {dies}{extra}),')
     leashes = []
     for e in data["encounters"]:

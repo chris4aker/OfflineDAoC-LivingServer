@@ -17,6 +17,10 @@ namespace DOL.GS
     /// Past it the raid stops hitting it and whoever it chases leads it home, before its tether resets it.</item>
     /// <item><b>Dies with</b>: an encounter that dies when another does (the Ancient Black Oak with Black Lady). The raid
     /// turns on the other one instead.</item>
+    /// <item><b>Ground hazards</b>: a scripted NPC that is a burning patch of floor, not a monster (Orshom's Fire: it never
+    /// moves, burns everything within its radius and takes only one damage type). It is never the raid's target or a battle
+    /// post; raiders who deal that damage type shoot it from outside its radius, everyone else steps out of it and fights the
+    /// boss.</item>
     /// </list>
     /// Autonomous gamebots only: companion bots and player-led groups are not steered.
     /// </summary>
@@ -33,11 +37,16 @@ namespace DOL.GS
         /// once all four are dead): the boss is fought once no more than this many live, and nobody attacks the last ones.</param>
         /// <param name="BlastThresholds">Health percents at which the boss starts a raid-wide area hit (Xanxicar's stomp).</param>
         /// <param name="BlastRadius">That hit's radius around the boss's target.</param>
+        /// <param name="Hazards">Class names of the ground hazards of this encounter (empty: none).</param>
+        /// <param name="HazardRadius">How far a hazard burns around its own spot.</param>
+        /// <param name="HazardDamageType">The only damage type that hurts a hazard (an eDamageType name; null: none).</param>
         public sealed record Tactic(string Boss, string Encounter, string[] RequiredAdds, int FightAtHomeRadius, string DiesWith,
-            int KeepAlive = 0, int[] BlastThresholds = null, int BlastRadius = 0)
+            int KeepAlive = 0, int[] BlastThresholds = null, int BlastRadius = 0, string[] Hazards = null, int HazardRadius = 0,
+            string HazardDamageType = null)
         {
             public bool HasRequiredAdds => RequiredAdds is { Length: > 0 };
             public bool HasBlast => BlastThresholds is { Length: > 0 } && BlastRadius > 0;
+            public bool HasHazards => Hazards is { Length: > 0 } && HazardRadius > 0;
         }
 
         /// <summary>An encounter's leash from the catalog: its tether, and whether it resets (walks home at full health) when
@@ -67,12 +76,16 @@ namespace DOL.GS
         {
             Extra[tactic.Boss] = tactic;
             _byType = null;
+            _hazards = null;
+            _requiredAddClasses = null;
         }
 
         public static void Unregister(string boss)
         {
             Extra.Remove(boss);
             _byType = null;
+            _hazards = null;
+            _requiredAddClasses = null;
         }
 
         public static Tactic For(GameNPC npc) => npc == null ? null : ByType.GetValueOrDefault(npc.GetType().Name);
@@ -109,6 +122,135 @@ namespace DOL.GS
             GameNPC[] adds = LiveRequiredAdds(boss, live);
             int keep = For(boss)?.KeepAlive ?? 0;
             return adds.Length > keep ? adds : [];
+        }
+
+        // ---- ground hazards (Orshom's Fire) -----------------------------------------------------------------------
+
+        /// <summary>A ground hazard's rule, by its class (from every tactic that lists it).</summary>
+        public sealed record Hazard(string Class, int Radius, eDamageType? VulnerableTo, string[] Owners);
+
+        private static Dictionary<string, Hazard> _hazards;
+
+        private static Dictionary<string, Hazard> Hazards
+        {
+            get
+            {
+                if (_hazards != null) return _hazards;
+                var map = new Dictionary<string, Hazard>(StringComparer.Ordinal);
+                foreach (Tactic t in ByType.Values.Where(t => t.HasHazards))
+                foreach (string h in t.Hazards)
+                {
+                    eDamageType? type = Enum.TryParse(t.HazardDamageType, true, out eDamageType parsed) ? parsed : null;
+                    map[h] = map.TryGetValue(h, out Hazard known)
+                        ? known with { Radius = Math.Max(known.Radius, t.HazardRadius), Owners = [.. known.Owners, t.Boss] }
+                        : new Hazard(h, t.HazardRadius, type, [t.Boss]);
+                }
+                return _hazards = map;
+            }
+        }
+
+        /// <summary>The hazard rule of <paramref name="npc"/>, or null when it is no ground hazard.</summary>
+        public static Hazard HazardOf(GameNPC npc) => npc == null ? null : Hazards.GetValueOrDefault(npc.GetType().Name);
+
+        public static bool IsHazard(GameNPC npc) => HazardOf(npc) != null;
+
+        /// <summary>A raider stays this much further out than a hazard's radius (its centre is the NPC's spot; the spell's
+        /// radius is measured to the raider, who is not a point).</summary>
+        public const int HazardMargin = 150;
+        /// <summary>A raider sent out of a hazard goes to this distance from its spot.</summary>
+        public const int HazardExitDistance = 250;
+
+        /// <summary>Whether <paramref name="at"/> is inside a hazard of <paramref name="radius"/> at <paramref name="hazard"/>,
+        /// with the margin (pure): across, and within a floor's height of it.</summary>
+        public static bool InsideHazard(Vector3 hazard, int radius, Vector3 at) =>
+            Vector2.Distance(new(hazard.X, hazard.Y), new(at.X, at.Y)) < radius + HazardMargin && MathF.Abs(hazard.Z - at.Z) < 300;
+
+        /// <summary>The spot a raider at <paramref name="at"/> steps out to (pure): straight away from the hazard, to
+        /// <see cref="HazardExitDistance"/> past its radius, at the raider's height.</summary>
+        public static Vector3 HazardExit(Vector3 hazard, int radius, Vector3 at)
+        {
+            Vector2 d = new(at.X - hazard.X, at.Y - hazard.Y);
+            Vector2 dir = d.LengthSquared() < 1 ? new Vector2(1, 0) : Vector2.Normalize(d);
+            Vector2 p = new Vector2(hazard.X, hazard.Y) + dir * (radius + HazardExitDistance);
+            return new Vector3(p.X, p.Y, at.Z);
+        }
+
+        /// <summary>The living boss whose fight <paramref name="hazard"/> belongs to (it fights it instead), or null.</summary>
+        public static GameNPC HazardOwner(GameNPC hazard, IReadOnlyList<GameNPC> live)
+        {
+            Hazard h = HazardOf(hazard);
+            if (h == null || !Present(hazard)) return null;
+            return live.Where(b => Present(b) && b != hazard && b.CurrentRegionID == hazard.CurrentRegionID &&
+                                   Array.IndexOf(h.Owners, b.GetType().Name) >= 0 && b.IsWithinRadius(hazard, AddSearchRadius))
+                .OrderBy(b => b.InCombat ? 0 : 1).ThenBy(b => b.GetDistanceTo(hazard)).FirstOrDefault();
+        }
+
+        /// <summary>Whether <paramref name="raider"/> has a damaging spell of <paramref name="type"/> (a hazard hit only by Cold:
+        /// a wizard's or theurgist's ice).</summary>
+        public static bool DealsDamageType(GameLiving raider, eDamageType type)
+        {
+            if (raider is not GameNPC npc) return false;
+            static bool Has(IEnumerable<Spell> spells, eDamageType t) => spells != null && spells.Any(s => s != null && s.Damage > 0 && s.DamageType == t);
+            return Has(npc.HarmfulSpells, type) || Has(npc.InstantHarmfulSpells, type) || npc is GameBot bot && Has(bot.BoltSpells, type);
+        }
+
+        // Live hazards the raid route has seen (RealmRaidDungeonRoute.AdvanceCore), so a raider anywhere near one steps out
+        // whatever it is fighting (ThinkBlast) and no battle post is placed in one (RealmRaidFormation).
+        private static readonly Dictionary<GameNPC, int> LiveHazards = new();
+        private static int _liveHazardCount;
+
+        /// <summary>Notes the hazards among <paramref name="live"/> (a region's NPCs) and forgets the ones gone.</summary>
+        public static void ObserveHazards(IEnumerable<GameNPC> live)
+        {
+            if (Hazards.Count == 0) return;
+            lock (LiveHazards)
+            {
+                foreach (GameNPC gone in LiveHazards.Keys.Where(n => !Present(n)).ToArray()) LiveHazards.Remove(gone);
+                foreach (GameNPC npc in live ?? [])
+                    if (Present(npc) && HazardOf(npc) is { } h) LiveHazards[npc] = h.Radius;
+                System.Threading.Volatile.Write(ref _liveHazardCount, LiveHazards.Count);
+            }
+        }
+
+        /// <summary>A live hazard <paramref name="at"/> stands in (in <paramref name="region"/>), or null.</summary>
+        public static GameNPC HazardAt(ushort region, Vector3 at)
+        {
+            if (System.Threading.Volatile.Read(ref _liveHazardCount) == 0) return null;
+            lock (LiveHazards)
+                foreach (var (npc, radius) in LiveHazards)
+                    if (Present(npc) && npc.CurrentRegionID == region && InsideHazard(new(npc.X, npc.Y, npc.Z), radius, at))
+                        return npc;
+            return null;
+        }
+
+        /// <summary>The advice for a raider about to attack a ground hazard (pure but for the spell check): a raider that
+        /// can hurt it shoots it from outside its radius; anyone else steps out of it and fights its boss.</summary>
+        public static Advice DecideHazard(GameLiving raider, GameNPC hazard, IReadOnlyList<GameNPC> live, bool hurtsIt)
+        {
+            Hazard h = HazardOf(hazard);
+            Vector3 spot = new(hazard.X, hazard.Y, hazard.Z), at = new(raider.X, raider.Y, raider.Z);
+            Vector3? exit = InsideHazard(spot, h.Radius, at) ? HazardExit(spot, h.Radius, at) : null;
+            string kind = h.VulnerableTo is { } t ? $"only {t} hurts it" : "nothing hurts it";
+            if (hurtsIt)
+                return exit is Vector3 out1
+                    ? new(BotAction.StandOff, hazard, out1, $"ground hazard \"{hazard.Name}\": out of its {h.Radius} first, then shoot it")
+                    : default;
+            if (exit is Vector3 out2)
+                return new(BotAction.StandOff, hazard, out2, $"ground hazard \"{hazard.Name}\" ({kind}): out of its {h.Radius}");
+            if (HazardOwner(hazard, live) is { } owner)
+                return new(BotAction.Retarget, owner, null, $"ground hazard \"{hazard.Name}\" ({kind}): fight \"{owner.Name}\"");
+            return new(BotAction.StandOff, hazard, null, $"ground hazard \"{hazard.Name}\" ({kind}): leave it");
+        }
+
+        private static HashSet<string> _requiredAddClasses;
+
+        /// <summary>Whether some tactic lists <paramref name="npc"/>'s class as a required add (a cheap check before the
+        /// region lookup: BotBrain asks for every target of every autonomous bot).</summary>
+        public static bool IsRequiredAddClass(GameNPC npc)
+        {
+            if (npc == null) return false;
+            var set = _requiredAddClasses ??= ByType.Values.SelectMany(t => t.RequiredAdds ?? []).ToHashSet(StringComparer.Ordinal);
+            return set.Contains(npc.GetType().Name);
         }
 
         /// <summary>The living boss <paramref name="npc"/> is a required add of, or null.</summary>
@@ -199,6 +341,9 @@ namespace DOL.GS
         public static Advice Decide(GameLiving raider, GameNPC target, IReadOnlyList<GameNPC> live, int partyIndex, bool canShootFlyers, long now)
         {
             if (raider == null || !Present(target)) return default;
+            if (HazardOf(target) != null)
+                return DecideHazard(raider, target, live,
+                    HazardOf(target).VulnerableTo is eDamageType type && DealsDamageType(raider, type));
             GameNPC fightOwner = RequiredAddOwner(target, live) ?? target;
             if (BrokenOff(fightOwner, now) is Vector3 rally)
                 return new(BotAction.StandOff, target, rally, $"break-off from \"{fightOwner.Name}\" to the muster");
@@ -228,6 +373,13 @@ namespace DOL.GS
                 return new(BotAction.StandOff, add, StandFor(target) ?? new Vector3(add.X, add.Y, raider.Z),
                     $"required-add {Array.IndexOf(adds, add) + 1}/{adds.Length} of \"{target.Name}\" is out of melee reach");
             }
+            // A raider whose own target is a flying required add it can't reach or shoot (melee on one of Scurceol Hyrde's orbs:
+            // PC 2026-11-09, AUTONOMOUS_ROUTE_RECOVERY goal="Lyft Miht" pathStatus=PartialPathFound) holds at its boss's floor
+            // stand instead of walking under it; only the boss's own target was steered before.
+            if (!canShootFlyers && RequiredAddOwner(target, live) is { } addOwner && (target.Flags & GameNPC.eFlags.FLYING) != 0 &&
+                AutonomousPveTargetPolicy.IsUnreachableFlyer(target.Flags, target.Z, raider.Z))
+                return new(BotAction.StandOff, target, StandFor(addOwner) ?? StandFor(target) ?? new Vector3(raider.X, raider.Y, raider.Z),
+                    $"required-add of \"{addOwner.Name}\" is out of melee reach: hold at the floor stand");
             if (OutsideHome(target) && !AutonomousTetherReset.IsOutOfTether(target))
                 return new(target.TargetObject == raider ? BotAction.LeadHome : BotAction.StandOff, target, null,
                     $"fight-at-home {(int)target.GetDistanceTo(target.SpawnPoint)}>{For(target).FightAtHomeRadius}");
@@ -609,10 +761,28 @@ namespace DOL.GS
         {
             if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || !bot.IsAlive) return false;
             long now = GameLoop.GameLoopTime;
-            if (System.Threading.Volatile.Read(ref _blastBosses) == 0 && System.Threading.Volatile.Read(ref _standOffHoldCount) == 0)
+            if (System.Threading.Volatile.Read(ref _blastBosses) == 0 && System.Threading.Volatile.Read(ref _standOffHoldCount) == 0 &&
+                System.Threading.Volatile.Read(ref _liveHazardCount) == 0)
                 return false;
             Vector3? spot = null;
-            if (BlastNear(bot, now) is { } blast)
+            // Standing in a ground hazard (Orshom's Fire): out of it first, whatever the bot fights (a boss can stand beside it).
+            if (HazardAt(bot.CurrentRegionID, new(bot.X, bot.Y, bot.Z)) is { } hazard && HazardOf(hazard) is { } rule)
+            {
+                Vector3 exit = HazardExit(new(hazard.X, hazard.Y, hazard.Z), rule.Radius, new(bot.X, bot.Y, bot.Z));
+                if (PathfindingProvider.Instance is { IsAvailable: true } nav && bot.CurrentZone is { } zone && nav.HasNavmesh(zone) &&
+                    nav.GetClosestPoint(zone, exit, 96, 96, 256, nav.DefaultFilters) is Vector3 floor)
+                    exit = floor;
+                HoldStandOff(bot, exit, now + BlastHoldMilliseconds);
+                if (bot.TargetObject == hazard)
+                {
+                    if (bot.IsCasting && bot.castingComponent?.SpellHandler?.Spell?.IsHarmful == true) bot.StopCurrentSpellcast();
+                    bot.StopAttack();
+                    bot.TargetObject = null;
+                }
+                LogDecision(bot, hazard, new(BotAction.StandOff, hazard, exit, $"standing in ground hazard \"{hazard.Name}\": out of its {rule.Radius}"));
+                spot = exit;
+            }
+            else if (BlastNear(bot, now) is { } blast)
             {
                 spot = blast.Safe;
                 HoldStandOff(bot, blast.Safe, now + BlastHoldMilliseconds);
@@ -646,6 +816,7 @@ namespace DOL.GS
             lock (BlastPaths) BlastPaths.Clear();
             lock (BlastSpotCache) BlastSpotCache.Clear();
             lock (StandOffHolds) { StandOffHolds.Clear(); System.Threading.Volatile.Write(ref _standOffHoldCount, 0); }
+            lock (LiveHazards) { LiveHazards.Clear(); System.Threading.Volatile.Write(ref _liveHazardCount, 0); }
         }
 
         public static bool CanShootFlyers(GameBot bot)
@@ -690,12 +861,16 @@ namespace DOL.GS
         {
             // A blast about to land near the bot comes first, whatever it fights (Xanxicar's stomp kills anything within 2,500).
             if (ThinkBlast(bot)) return true;
-            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || For(target) == null) return false;
+            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup ||
+                For(target) == null && HazardOf(target) == null &&
+                !(IsRequiredAddClass(target) && IsRequiredAddOfLiveBoss(target, Nearby(target)))) return false;
             IReadOnlyList<GameNPC> live = Nearby(target);
             Advice advice = Decide(bot, target, live, PartyIndex(bot), CanShootFlyers(bot));
             switch (advice.Action)
             {
                 case BotAction.Retarget:
+                    // A ground hazard is left for good, not only this turn (it would come back as the bot's highest aggro).
+                    if (HazardOf(target) != null) (bot.Brain as BotBrain)?.RemoveFromAggroList(target);
                     bot.TargetObject = advice.Target;
                     (bot.Brain as BotBrain)?.AddToAggroList(advice.Target, 1_000);
                     LogDecision(bot, target, advice);

@@ -13,6 +13,8 @@ namespace DOL.GS
         [
             new("Xanxicar", "crystal-cave/xanxicar", [], 0, null, 0, [80, 60, 40, 20], 2500),
             new("AidonTheArchwizard", "hall-of-the-corrupt/aidonthearchwizard", ["AidonCopyFire", "AidonCopyIce", "AidonCopyAir", "AidonCopyEarth"], 1100, null, 1, null, 0),
+            new("Orylle", "krondon/orylle", [], 0, null, Hazards: ["OrshomFire"], HazardRadius: 300, HazardDamageType: "Cold"),
+            new("Orshom", "krondon/orshom", [], 0, null, Hazards: ["OrshomFire"], HazardRadius: 300, HazardDamageType: "Cold"),
             new("ScurceolHyrde", "krondon/scurceolhyrde", ["LyftMihtOne", "LyftMihtTwo", "LyftMihtThree", "LyftMihtFour"], 1500, null),
             new("AncientBlackOak", "marfach-caverns/ancientblackoak", [], 0, "BlackLady"),
             new("BlackLady", "marfach-caverns/blacklady", [], 1100, null),
