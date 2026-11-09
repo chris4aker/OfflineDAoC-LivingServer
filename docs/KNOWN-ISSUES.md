@@ -37,6 +37,8 @@ haven't been watched on a real install yet, so treat them as likely, not certain
   so the next report should show why.
 - **Bot parties never take a new member once they set off**, so an "lfm" post from a bot party is only a last call
   while it forms.
+- **A bot that offers to group may walk on before you meet.** It doesn't wait where it was; if it's too far by the time
+  you invite, it tells you where it is.
 
 ## Beta 1.1.3: what has been seen on a real install
 
@@ -49,6 +51,11 @@ haven't been watched on a real install yet, so treat them as likely, not certain
   Hills. Not tried yet from Midgard or Hibernia.
 - **Chat, before today's fixes:** a bot that grouped with the player greeted them once when they met again, answered
   the player's /faction question about a camp, and offered to group after the player's /lfg post.
+- **Chat, sixth to twelfth release candidates** (about five hours by day, Real clock): true answers to the player's
+  /faction questions within 16-34 seconds; a friend's honest answer to small talk; a far bot saying where it is; an idle
+  duo that stays quiet; the way to a zone; 88-100% of bot questions answered within a minute. Each build's log showed a
+  few lines that didn't fit, all fixed; the last one (an offer from across the zone saying "same mobs") is tests only. A
+  bot answering your own /trade post hasn't been seen yet.
 - **Setup waiting out a busy download server:** tests only.
 
 ## Always on
