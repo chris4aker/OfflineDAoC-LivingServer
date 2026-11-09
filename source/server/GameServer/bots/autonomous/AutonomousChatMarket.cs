@@ -218,9 +218,12 @@ namespace DOL.GS
         /// What the poster says a few minutes on, only when it is true then: a group post's "nvm full" once the group is full, an
         /// lfg post's "got a grp ty" once the bot is grouped, a sale's "sold" once the item is gone. Null otherwise. Pure.
         /// </summary>
-        public static string Closing(Post post, bool groupFull, bool grouped, bool stillHas, Random random) => post switch
+        /// 1.1.3 (after RC5): <paramref name="stoppedShort"/> is a bot party that stopped recruiting before it was full (it set
+        /// off as it was, AutonomousBotGroupCoordinator.RecruitingPost): it says so, not "full".
+        public static string Closing(Post post, bool groupFull, bool grouped, bool stillHas, Random random, bool stoppedShort = false) => post switch
         {
             Post.Lfm when groupFull => Pick(random, "nvm full", "full ty", "full now, ty all", "nm full"),
+            Post.Lfm when stoppedShort => Pick(random, "nm, heading out", "nvm, going as is", "nm, we're off"),
             Post.Lfg when grouped => Pick(random, "nvm got a grp", "got a grp ty", "nm found one"),
             Post.Wts when !stillHas => Pick(random, "sold ty", "sold", "nvm sold"),
             _ => null,

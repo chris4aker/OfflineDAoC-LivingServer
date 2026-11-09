@@ -386,6 +386,8 @@ public class UT_ChatEngagement
         Ex.Lane laneState = Ex.LaneOf(lane);
         var shorts = new Ex.ShortWindow();
         var memory = new Field.Memory();
+        // Each bot keeps its story, as AutonomousChatStance.Shared does in the live code (1.1.3, after RC5); the old way had none.
+        var stance = newCode ? new AutonomousChatStance() : null;
         var meter = new AutonomousChatBudget.ChannelMeter();
         var band = AutonomousChatBudget.Band(AutonomousChatBudget.Current, AutonomousChatBudget.Channel.Faction, SimRealmBots, 20, false, 1.0);
         evening.Ceiling = band.Ceiling;
@@ -553,7 +555,7 @@ public class UT_ChatEngagement
                 if (starter != null && meter.TryStart(AutonomousChatBudget.Channel.Faction, key, now, band, random) is AutonomousChatBudget.Verdict.Speak or AutonomousChatBudget.Verdict.SpeakUnderFloor)
                 {
                     starter.RestUntil = now + (Regular(starter, now) ? Regulars.RegularRestMs : 2 * 60_000 + random.Next(2 * 60_000));
-                    if (Field.Line("faction", starter.Facts, memory, random, now) is { } said)
+                    if (Field.Line("faction", starter.Facts, memory, random, now, stance) is { } said)
                     {
                         long ex = Ex.NewId();
                         // AutonomousBotChatCoordinator.TryField (1.1.3, after RC5): a question only when there is room for its answer.

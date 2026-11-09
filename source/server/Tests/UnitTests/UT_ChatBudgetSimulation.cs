@@ -752,7 +752,9 @@ public class UT_ChatBudgetSimulation
             // the other inviting lines about seven in ten.
             var threads = threadShape[(bots, true)];
             Assert.That(threads.Rate, Is.InRange(0.75, 0.97), $"inviting /faction lines answered at {bots}");
-            Assert.That(threads.Long, Is.InRange(0.12, 0.35), $"threads of 4+ lines at {bots}");
+            // 1.1.3, after RC5: a bot's lines now fit its state (no "lfg" or "lf duo" from a bot in a group, no trainer question
+            // from a 50, ...), which shifts the mix of openers; at 1,000 bots 11.1% of answered threads ran to four lines.
+            Assert.That(threads.Long, Is.InRange(0.10, 0.35), $"threads of 4+ lines at {bots}");
             Assert.That(lifeShape[(bots, true)], Is.LessThanOrEqualTo(1), $"life lines in one guild evening at {bots}");
             // Round 8: answers take a person's time, and no line starts within 2-3 s of the last. Fewer /faction gaps are 2 s or less
             // than chance would give at this rate (about 15% for 5 lines a minute); the stream judge had seen 19 of 41.

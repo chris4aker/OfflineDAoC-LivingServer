@@ -136,6 +136,43 @@ chat code) and passed both.
   `chat_audit.py` counts bot questions with no reply within 60 s (`VERDICT FAIL` above 25%; RC3 and RC5 fail) and reports
   the share of /lfg and /trade posts with a reply. On the simulated evening 80 of 90 questions are answered within a
   minute (34 of 114 before) and the checker passes. Tests only.
+- **An item is paired only with a class that can use it (after RC5).** On the owner's PC: "99% adroit focus staff any good
+  for pally?", "95% adroit focus staff any good for friar?", "99% earthshaker chain boots any good for sorc?", "99%
+  matterbender medium shield any good for infil?" and "wtb a shield for a 30 cabalist pst". A bot asks about its own item
+  only when its class can use it, by the server's own rule for the live bot (the class's real weapon and armour skills)
+  and a focus staff only for a caster; armour it wants is the weight its class wears at its level, by the game's item
+  generator ("armor for a 29 cabalist" is cloth, a 15 paladin's is chain); arrows only for an archer; "my old ..." only
+  for an item it could have worn; a written line that pairs an item with a class that can't use it is skipped.
+  `chat_audit.py` counts "an item paired with a class that can't use it" (FAIL). Tests only.
+- **One story per bot in its group posts (after RC5).** Thorroir, a 50 minstrel, said in /broadcast within twelve
+  minutes "minst lfg 50, x me", "lfm barrows 47-50", "lf1m dps barrows pst" and "lf1m 47-50 xp grp stonehenge", and
+  later "any minsts around? need tips". A bot now keeps one story for 30 minutes across /lfg, /broadcast, /trade,
+  /faction and /say: it looks for a group or forms one, not both, and its posts name one dungeon, by the word it first
+  used for it ("barrows", not "barrows" then "stonehenge"). When its state changes it says so where it posted, once ("nm got a
+  grp", "nvm, full", or "nm, heading out" for a party that set off short of eight; one closing per post, whether the
+  /lfg reply's closing or the bot's next post says it) and may then start a new story. A WTS line may still repeat every few minutes as a macro, as players'
+  /macro did in 2003, but a bot runs one macro at a time and it stops once the item is no longer in its bags; it only
+  sells what it carries. `chat_audit.py` counts "a speaker looks for a group and forms one within 30 min" and "a
+  speaker's group posts name two dungeons within 10 min" (FAIL). Tests only.
+- **Group posts follow the bot's real group state (after RC5).** The server log shows Thorroir in a group from 05:36
+  when it posted "minst lfg 50, x me" at 05:38. Now only a bot out of a group that wants one (group matchmaking holds it,
+  or it is out for RvR) posts "lfg"; a bot on a solo task doesn't, and a bot in a group never does. Only the leader of a
+  bot party that is still assembling with seats free posts "lfm", naming the role the party really lacks (healer, tank,
+  cc, else dps), its real camp and its members' levels; the post stops when the party sets off. Bot parties are formed at
+  their full size and not backfilled, so such a post is the assembly's last call. `chat_audit.py` reports, for
+  information, an "lfg" from a bot the log shows grouped (AUTONOMOUS_GROUP_FORMED until its TASK_ENDED or NO_SHOW).
+  Tests only.
+- **A question fits the asker (after RC5).** A level 50 paladin asked "where's the paladin trainer", a 50 cleric "where's
+  the clr trainer", a 50 minstrel "any minsts around? need tips". Only a character of level 20 or less asks where its own
+  trainer is, only one under 40 asks for tips on its own class, and a 50 asks for no xp group ("50 minst lf xp grp"), no
+  xp spot and no "still 50 lol"; every level a question names is the asker's own. `chat_audit.py` counts "a 50 asks where
+  its class trainer is or for tips on its own class" (FAIL). Tests only.
+- **A PvE line names no enemy realm's zone (after RC5).** Albion bots in the Midgard and Hibernia frontier said "where do i
+  hand in the uppland quest?", "which stable for uppland?", "grinding odin's gate at 29", "back in uppland", "where do i
+  bind in jamtland mtns" and "dread commanders in jamtland mountains hate me". A quest, stable, bind, camp, grinding, xp
+  or duo line, and a monster death story, now names only a zone of the bot's own realm (a death in an enemy frontier is
+  "in frontier"); talk of the frontier itself may still name it ("inc", keeps, relics, "lfg 50 merc, odin's gate").
+  `chat_audit.py` counts "a PvE line names an enemy realm's zone" (FAIL). Tests only.
 - **The checker reads "arms" in a trade line as armour (after RC2).** On the owner's RC2 evening (6a83c038, 68 minutes)
   `chat_audit.py` failed only on "wtb leather arms 4 26 inf", an Infiltrator 26 buying arm armour, read as an armsman
   claim ("class claim not the speaker's", "one speaker claims two classes"). A class word that is also an armour slot is

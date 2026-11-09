@@ -912,6 +912,7 @@ public class UT_FactionCoherence
         Ex.Lane laneState = Ex.LaneOf(lane);
         var shorts = new Ex.ShortWindow();
         var memory = new Field.Memory();
+        var stance = new AutonomousChatStance();
         var meter = new AutonomousChatBudget.ChannelMeter();
         AutonomousChatBudget.Settings settings = AutonomousChatBudget.Current;
         var band = AutonomousChatBudget.Band(settings, AutonomousChatBudget.Channel.Faction, SimRealmBots, 20, false, 1.0);
@@ -1061,7 +1062,8 @@ public class UT_FactionCoherence
                                 [starter, Pick(starter)]));
                     }
                 }
-                else if (Field.Line("faction", starter.Facts, memory, random, now) is { } said)
+                // The new way keeps each bot's story (AutonomousChatStance.Shared in the live code).
+                else if (Field.Line("faction", starter.Facts, memory, random, now, fixedCode ? stance : null) is { } said)
                 {
                     long ex = Ex.NewId();
                     // 1.1.3, after RC5 (AutonomousBotChatCoordinator.TryField): a question is asked only when the channel has room
