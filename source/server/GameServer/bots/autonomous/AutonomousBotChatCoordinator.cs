@@ -340,6 +340,9 @@ public static class AutonomousBotChatCoordinator
                 if (!BroadcastFaction(starter.Name, starter.Realm, text))
                     return false;
                 Note(AutonomousChatThreads.Faction(starter.Realm), starter, text, null);
+                // 1.1.3: a group or camp asked for in /faction may be asked after later tonight (AutonomousChatRecall).
+                if (AutonomousChatRecall.AskedOf(said.Kind) is { } asked)
+                    AutonomousChatRecall.Of(starter.Realm).Add(new AutonomousChatRecall.Note(asked, starter.DatabaseID, starter.Name, said.Idea, GameLoop.GameLoopTime));
                 break;
             default:
                 if (!SayLine(starter, text))
@@ -393,6 +396,9 @@ public static class AutonomousBotChatCoordinator
         PlayThread(steps, [starter, answerer, third], faction, said.Text, "field thread " + said.Kind, exchange);
     }
 
+    /// <summary>How many bots of the speaker's realm <see cref="Repliers"/> looks at.</summary>
+    public const int RepliersSlice = 200;
+
     /// <summary>Who answers a line and who may chime in: a regular first, then a bot near the speaker's level, then anyone free.</summary>
     private static (GameBot Answerer, GameBot Third) Repliers(GameBot starter, bool faction, long now, Random random, Func<GameBot, bool> fits = null)
     {
@@ -401,10 +407,14 @@ public static class AutonomousBotChatCoordinator
             return (null, null);
         int realmBots = RealmBots(starter.Realm);
         GameBot regular = null, near = null, any = null, second = null;
-        for (int i = 0, at = random.Next(roster.Length); i < Math.Min(roster.Length, 200); i++, at = (at + 1) % roster.Length)
+        // 1.1.3: a slice of 200 bots of the speaker's realm (it was 200 of all three realms), so a regular is found most times.
+        for (int i = 0, seen = 0, at = random.Next(roster.Length); i < roster.Length && seen < RepliersSlice; i++, at = (at + 1) % roster.Length)
         {
             GameBot bot = roster[at];
-            if (bot == starter || bot.Realm != starter.Realm || !Eligible(bot) ||
+            if (bot.Realm != starter.Realm)
+                continue;
+            seen++;
+            if (bot == starter || !Eligible(bot) ||
                 !faction && (bot.CurrentRegion != starter.CurrentRegion || !bot.IsWithinRadius(starter, WorldMgr.SAY_DISTANCE)) ||
                 fits != null && !fits(bot))
                 continue;
@@ -480,6 +490,9 @@ public static class AutonomousBotChatCoordinator
         if (!AutonomousChatExchange.RoomFor(lane, now))
             return;
         var random = Random.Shared;
+        // 1.1.3: the realm's regulars tell their deaths; most of the quiet many keep theirs to themselves (AutonomousChatRegulars).
+        if (kind is "death" or "wipe" && !AutonomousChatRegulars.TellsOwnStory(IsRegular(teller, now), random))
+            return;
         (GameBot mate, GameBot third) = Repliers(teller, true, now, random);
         if (mate == null)
             return;
@@ -490,6 +503,9 @@ public static class AutonomousBotChatCoordinator
         steps = KeepFreshShorts(steps, text => AutonomousChatExchange.Shorts.TryUse(lane, text, now));
         if (steps.Count == 0)
             return;
+        // 1.1.3: once its first line is heard, a death told is remembered for tonight's follow-ups ("staying away from X now?").
+        if (kind == "death")
+            AutonomousChatRecall.Of(teller.Realm).ExpectStory(teller.DatabaseID, AutonomousChatFieldTalk.Of(teller, random).Monster, now);
         // The teller says its first line even while still on the ground: a dead bot can type.
         var timed = steps.Select(step => step with { AtMs = step.AtMs + 2_000 + random.Next(2_000) }).ToList();
         PlayStory(timed, [teller, mate, third], kind);
@@ -1204,7 +1220,7 @@ public static class AutonomousBotChatCoordinator
                 {
                     if (!AutonomousLivingServer.IsSpeaker(bot) || !bot.IsAlive || player.ObjectState != GameObject.eObjectState.Active)
                         return 0;
-                    AutonomousLivingServer.Tell(bot, player, reply.Text);
+                    AutonomousLivingServer.Tell(bot, player, reply.Text, reply.Route == FriendInviteRoute ? AutonomousLivingServer.AskGroupInvite : null);
                     AutonomousChatWhy.Record(bot, "tell", "tell from " + player.Name, reply.Route.StartsWith("ack", StringComparison.Ordinal) ? "ack" : "said",
                         reply.Route, AutonomousChatReplyFit.Of(reply.Route, message), "a tell to it gets an answer", reply.Text, reply.Line?.Id, player.Name);
                     return 0;
@@ -1277,6 +1293,9 @@ public static class AutonomousBotChatCoordinator
             return new ReplyChoice(AutonomousBotVoices.StyleFor(bot, WhereText(Clean(bot.CurrentZone?.Description, "the frontier"),
                 bot.CurrentZone != null && bot.CurrentZone == player.CurrentZone, bot.Level, bot.CharacterClass?.Name ?? "adventurer", Random.Shared)),
                 "live where");
+        // 1.1.3 (RC5 on the owner's PC): a friend answers small talk from what it is doing and where you grouped.
+        if (voices && AutonomousLivingServer.TryFriendChat(bot, player, message, out bool offers) is { } friendly)
+            return new ReplyChoice(AutonomousBotVoices.StyleFor(bot, friendly), offers ? FriendInviteRoute : "friend chat");
         if (voices && AutonomousChatLiveAnswers.AnswerQuestion(bot, message, true, Random.Shared) is { } fact)
             return new ReplyChoice(fact, "fact " + (AutonomousChatQuestions.SelfQuestion(message) ?? "world"));
         if (!shortTalk && AutonomousChatKnowledge.TryAnswer(player, message, out string knowledge))
@@ -1728,6 +1747,10 @@ public static class AutonomousBotChatCoordinator
         BotChatTranscript.Bot("faction", speakerName, realm, safe);
         AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Faction, (long)realm, GameLoop.GameLoopTime);
         AutonomousChatExchange.NoteLine(AutonomousChatExchange.FactionKey(realm), speakerName, GameLoop.GameLoopTime);
+        // 1.1.3: what the channel really carried, for tonight's follow-ups (AutonomousChatRecall).
+        if (source?.Speaker != null)
+            AutonomousChatRecall.Of(realm).Heard(source.Feature, source.Exchange, source.Role, source.Speaker.DatabaseID, speakerName,
+                source.Feature == "debate" ? AutonomousBotDebates.RunningTopic(realm) : null, now);
         return true;
     }
 
@@ -2617,6 +2640,9 @@ public static class AutonomousBotChatCoordinator
 
     /// <summary>A reply, the route that chose it (as <c>ChatAuditRoute</c> names routes) and the corpus line, if any (C0).</summary>
     internal readonly record struct ReplyChoice(string Text, string Route, VC.Line Line = null);
+
+    /// <summary>A friend's small-talk answer that asks the player along ("want in?"): "sure" is then answered with how to group.</summary>
+    internal const string FriendInviteRoute = "friend chat invite";
 
     /// <summary>How many of a conversation's scheduled replies were actually said (they run on timers).</summary>
     private sealed class ReplyTally

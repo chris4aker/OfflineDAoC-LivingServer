@@ -650,6 +650,104 @@ def print_report(summary: dict, show: int):
                 print(f"      [{key}] {example}")
 
 
+# ---- informational: engagement, follow-ups, regulars (1.1.3; not part of the verdict) ------------------------------------
+
+TO_FIELD = re.compile(r' to="([^"]*)"')
+
+
+def player_names(lines: list[Line]) -> set[str]:
+    """The real players of a log: who spoke as who=player, and who bot tells went to (to=)."""
+    names = {l.speaker for l in lines if l.who == "player" and l.speaker not in ("?", "")}
+    for l in lines:
+        if l.who == "bot" and l.ch == "tell":
+            match = TO_FIELD.search(l.raw)
+            if match:
+                names.add(match.group(1))
+    return names
+
+
+def player_directed(lines: list[Line], names: set[str] | None = None) -> dict:
+    """Bot lines aimed at or naming a real player: a tell to them, src=player, or their name in the text. Per hour, by channel."""
+    names = player_names(lines) if names is None else names
+    pattern = re.compile(r"\b(" + "|".join(re.escape(n) for n in sorted(names)) + r")\b", re.I) if names else None
+    hits = []
+    for l in lines:
+        if l.who != "bot":
+            continue
+        to = TO_FIELD.search(l.raw)
+        if (l.ch == "tell" and to and to.group(1) in names) or l.src == "player" or (pattern and pattern.search(l.text)):
+            hits.append(l)
+    minutes = max(1.0, (lines[-1].t - lines[0].t + 1) / 60.0) if lines else 1.0
+    by_channel = Counter(l.ch for l in hits)
+    return {"players": sorted(names), "lines": len(hits), "per_hour": round(len(hits) * 60.0 / minutes, 1),
+            "by_channel": dict(sorted(by_channel.items())), "by_role": dict(Counter(l.role or l.src for l in hits).most_common(12))}
+
+
+def speaker_concentration(lines: list[Line], channel: str = "faction", top: int = 10) -> dict:
+    """How much of a channel its busiest speakers carry: distinct speakers, the top N's share, the busiest's count (per realm)."""
+    out = {}
+    by_realm: dict[str, Counter] = defaultdict(Counter)
+    for l in lines:
+        if l.ch == channel and l.who == "bot":
+            by_realm[l.realm][l.speaker] += 1
+    for realm, counts in by_realm.items():
+        total = sum(counts.values())
+        best = counts.most_common(top)
+        out[realm] = {"lines": total, "speakers": len(counts), f"top{top}_share": round(sum(n for _, n in best) / total, 3) if total else 0.0,
+                      "busiest": best[0] if best else None, "top": best}
+    return out
+
+
+FOLLOWUP_MIN_AGE_S = 10 * 60
+
+
+def follow_ups(lines: list[Line]) -> dict:
+    """Follow-up exchanges (src=followup): how many, and how many refer back to a real earlier line: the bot asked after
+    (role=answerer) spoke in the same realm's channel at least ten minutes before the question, and the question names it."""
+    exchanges: dict[tuple, list[Line]] = defaultdict(list)
+    for l in lines:
+        if l.src == "followup" and l.ex:
+            exchanges[(l.ch, l.realm, l.ex)].append(l)
+    anchored = unanchored = 0
+    examples = []
+    for (ch, realm, _), seq in exchanges.items():
+        ask = next((l for l in seq if l.role == "asker"), None)
+        answer = next((l for l in seq if l.role == "answerer"), None)
+        subject = answer.speaker if answer else None
+        if ask is None or subject is None:
+            continue
+        earlier = any(p.ch == ch and p.realm == realm and p.speaker == subject and p.src != "followup" and ask.t - p.t >= FOLLOWUP_MIN_AGE_S
+                      for p in lines if p.n < ask.n)
+        named = subject.lower() in ask.text.lower()
+        if earlier and named:
+            anchored += 1
+        else:
+            unanchored += 1
+        if len(examples) < 6:
+            examples.append(f"{ask.t // 60:>3}:{ask.t % 60:02d} {ask.speaker}: {ask.text} | {subject}: {answer.text}" + ("" if earlier and named else "  [no earlier line]"))
+    return {"exchanges": len(exchanges), "lines": sum(len(v) for v in exchanges.values()), "anchored": anchored, "unanchored": unanchored,
+            "bits": sum(1 for l in lines if l.src == "bit"), "examples": examples}
+
+
+def engagement(path: str) -> dict:
+    """The informational metrics of one log (printed after its report, written with --json)."""
+    lines = read(path)
+    return {"player_directed": player_directed(lines), "faction_concentration": speaker_concentration(lines), "follow_ups": follow_ups(lines)}
+
+
+def print_engagement(info: dict, show: int):
+    pd = info["player_directed"]
+    print(f"   [info] lines aimed at or naming the player ({', '.join(pd['players']) or 'none seen'}): {pd['lines']} ({pd['per_hour']}/h) {pd['by_channel']}")
+    for realm, c in info["faction_concentration"].items():
+        print(f"   [info] {realm} /faction: {c['lines']} lines from {c['speakers']} speakers, top 10 carry {c['top10_share'] * 100:.0f}%, "
+              f"busiest {c['busiest'][0]} {c['busiest'][1]}" if c["busiest"] else f"   [info] {realm} /faction: no lines")
+    fu = info["follow_ups"]
+    print(f"   [info] follow-ups: {fu['exchanges']} exchanges ({fu['lines']} lines), {fu['anchored']} refer to a real earlier line, "
+          f"{fu['unanchored']} don't; running bits {fu['bits']}")
+    for example in fu["examples"][:show]:
+        print(f"      [followup] {example}")
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("logs", nargs="+")
@@ -666,8 +764,10 @@ def main(argv=None) -> int:
         passed, reasons = verdict(summary)
         summary["verdict"] = "PASS" if passed else "FAIL"
         summary["verdict_reasons"] = reasons
+        summary["engagement"] = engagement(path)
         summaries.append(summary)
         print_report(summary, args.show)
+        print_engagement(summary["engagement"], args.show)
         if args.github:
             c = summary["counts"]
             name = summary["log"].replace("\\", "/").rsplit("/", 1)[-1]
