@@ -644,6 +644,18 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousLivingServer.OfferFits("hey, want to duo here? im {level} {class}", true), Is.True);
         }
 
+        /// <summary>RC6 on the owner's PC: "what class?" was answered "coming from mount collory".</summary>
+        [Test]
+        public void WhatClassIsAnsweredWithAClass()
+        {
+            Assert.That(AutonomousChatFieldTalk.QuestionKind("what class?"), Is.EqualTo("class"));
+            Assert.That(AutonomousChatFieldTalk.Fits("coming from mount collory", "class"), Is.False);
+            Assert.That(AutonomousChatFieldTalk.Fits("in lough derg", "class"), Is.False);
+            Assert.That(AutonomousChatFieldTalk.Fits("bard 29", "class"), Is.True);
+            Assert.That(AutonomousChatFieldTalk.Fits("cab, 50", "class"), Is.True);
+            Assert.That(AutonomousChatFieldTalk.Fits("dunno", "class"), Is.True);
+        }
+
         /// <summary>RC6 on the owner's PC: written /lfg lines that claim a group or a want slipped past the group-state check.</summary>
         [TestCase("group at Coruscating Mine needs a healer, pst", "lfm")]
         [TestCase("group has room near Connacht, all classes welcome", "lfm")]

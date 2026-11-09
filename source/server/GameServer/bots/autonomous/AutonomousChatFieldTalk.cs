@@ -2022,11 +2022,28 @@ public static class AutonomousChatFieldTalk
             return "place";
         if (System.Text.RegularExpressions.Regex.IsMatch(t, @"^ (when|what time)| when | what time | how long "))
             return "time";
-        if (System.Text.RegularExpressions.Regex.IsMatch(t, @"^ (who|whos|who s) | (what|which) (class|race) "))
+        // RC6 on the owner's PC: "what class?" was answered "coming from mount collory".
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (what|which|wat) class "))
+            return "class";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @"^ (who|whos|who s) | (what|which) race "))
             return "who";
         if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (what|wat) (lvl|level) | lvl $| how high "))
             return "level";
         return null;
+    }
+
+    /// <summary>
+    /// Whether a (normalised) answer names a class, in full or as players shortened it ("cab", "pally", "sb", "arms"): the answer
+    /// to "what class?", where "arms" is the class. Pure.
+    /// </summary>
+    public static bool NamesAClass(string normalized)
+    {
+        string t = " " + (normalized ?? string.Empty) + " ";
+        foreach ((string name, string[] words) in ClassWords)
+            if (t.Contains(" " + name.ToLowerInvariant() + " ", StringComparison.Ordinal) ||
+                words.Any(word => t.Contains(" " + word + " ", StringComparison.Ordinal)))
+                return true;
+        return false;
     }
 
     private static readonly HashSet<string> NotAnAnswer = new(StringComparer.Ordinal)
@@ -2053,6 +2070,8 @@ public static class AutonomousChatFieldTalk
                     @"\d+ ?ish|\d+ ?(pm|am)\b|\b(tonight|later|tomorrow|sat|sun|weekend|after|earlier|ago|last night|morning|soon|now|dinner|lunch|tuesday|yesterday|hour|hours|min|mins|while|long)\b");
             case "who":
                 return !System.Text.RegularExpressions.Regex.IsMatch(a, @"^\d+$");
+            case "class":
+                return dunno || NamesAClass(a);
             case "level":
                 return dunno || System.Text.RegularExpressions.Regex.IsMatch(a, @"\d");
             default:
@@ -2074,6 +2093,7 @@ public static class AutonomousChatFieldTalk
             "price" => Pick(random, PriceFor(answerer.Level, random), "dunno", "not much"),
             "count" => Pick(random, "few", "5 or 6", "big grp", "dunno"),
             "who" => Pick(random, ShortClass(answerer.ClassName, random), "dunno, ask the gl"),
+            "class" => Pick(random, ShortClass(answerer.ClassName, random), $"{ShortClass(answerer.ClassName, random)} {answerer.Level}"),
             _ => null,
         };
     }
