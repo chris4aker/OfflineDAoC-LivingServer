@@ -613,6 +613,10 @@ public static class AutonomousBotChatCoordinator
         // 1.1.3, after RC6: one death story per realm in seven minutes (three frontier deaths told in under two minutes).
         if (kind == "death" && !DeathStoryRoom(LastDeathStory.TryGetValue(teller.Realm, out long lastDeath) ? lastDeath : long.MinValue / 2, now))
             return;
+        // RC7 on the owner's PC: "dead. again" and "wiped lol" started four seconds apart, one bot riffing on both, and another
+        // wipe two minutes later. A realm hears one story at a time, three minutes apart at least.
+        if (!AnyStoryRoom(LastStory.TryGetValue(teller.Realm, out long lastStory) ? lastStory : long.MinValue / 2, now))
+            return;
         (GameBot mate, GameBot third) = Repliers(teller, true, now, random);
         if (mate == null)
             return;
@@ -625,6 +629,7 @@ public static class AutonomousBotChatCoordinator
             return;
         if (kind == "death")
             LastDeathStory[teller.Realm] = now;
+        LastStory[teller.Realm] = now + steps[^1].AtMs;
         // 1.1.3: once its first line is heard, a death told is remembered for tonight's follow-ups ("staying away from X now?").
         if (kind == "death")
             AutonomousChatRecall.Of(teller.Realm).ExpectStory(teller.DatabaseID, AutonomousChatFieldTalk.Of(teller, random).Monster, now);
@@ -637,6 +642,15 @@ public static class AutonomousBotChatCoordinator
     public const long DeathStoryGapMs = 7 * 60_000;
 
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<eRealm, long> LastDeathStory = new();
+
+    /// <summary>The least gap between the end of one story in a realm and the start of the next (RC7 on the owner's PC).</summary>
+    public const long AnyStoryGapMs = 3 * 60_000;
+
+    /// <summary>When the realm's last story ends (its last line), game time.</summary>
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<eRealm, long> LastStory = new();
+
+    /// <summary>Whether any story may start at <paramref name="now"/> when the realm's last one ends at <paramref name="lastEnd"/>. Pure.</summary>
+    public static bool AnyStoryRoom(long lastEnd, long now) => now - lastEnd >= AnyStoryGapMs;
 
     /// <summary>Whether a death story may be told at <paramref name="now"/> after the realm's last one at <paramref name="last"/>. Pure.</summary>
     public static bool DeathStoryRoom(long last, long now) => now - last >= DeathStoryGapMs || now < last;

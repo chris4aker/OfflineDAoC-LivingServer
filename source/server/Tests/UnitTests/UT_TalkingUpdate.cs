@@ -644,6 +644,19 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousLivingServer.OfferFits("hey, want to duo here? im {level} {class}", true), Is.True);
         }
 
+        /// <summary>RC7 on the owner's PC: two stories at once, a third two minutes later; "which way" answered "few grps".</summary>
+        [Test]
+        public void OneStoryAtATimeAndWhereGetsAPlace()
+        {
+            Assert.That(AutonomousBotChatCoordinator.AnyStoryRoom(100_000, 104_000), Is.False);
+            Assert.That(AutonomousBotChatCoordinator.AnyStoryRoom(100_000, 100_000 + AutonomousBotChatCoordinator.AnyStoryGapMs), Is.True);
+            Assert.That(AutonomousChatFieldTalk.Fits("few grps", "place"), Is.False);
+            Assert.That(AutonomousChatFieldTalk.Fits("3 grps", "place"), Is.False);
+            Assert.That(AutonomousChatFieldTalk.Fits("through the mg", "place"), Is.True);
+            Assert.That(AutonomousChatFieldTalk.RunsOnAbout(new AutonomousChatFieldTalk.Said("port to frontier up?", "rvr", null) { Family = "rvr_port" }), Is.False);
+            Assert.That(AutonomousChatFieldTalk.RunsOnAbout(new AutonomousChatFieldTalk.Said("any grps out?", "rvr", null) { Family = "rvr_grps" }), Is.True);
+        }
+
         /// <summary>RC7 on the owner's PC: "lfg Stonehenge Barrows or anywhere with xp" from a cabalist out in Odin's Gate for rvr.</summary>
         [TestCase("lfg Stonehenge Barrows or anywhere with xp", true, false)]
         [TestCase("lfg Stonehenge Barrows or anywhere with xp", false, true)]

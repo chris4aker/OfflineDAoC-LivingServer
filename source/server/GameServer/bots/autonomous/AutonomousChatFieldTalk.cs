@@ -1738,7 +1738,7 @@ public static class AutonomousChatFieldTalk
                 return steps;
             }
         }
-        else if (!nothing && random.NextDouble() < LongThreadChance && said.Kind is not ("class" or "help") && More.TryGetValue(said.Kind, out var more) &&
+        else if (!nothing && random.NextDouble() < LongThreadChance && said.Kind is not ("class" or "help") && RunsOnAbout(said) && More.TryGetValue(said.Kind, out var more) &&
             Fresh(more.Ask.Where(text => !AlreadyAnswered(text, answer)).ToArray(), asker) is { } ask &&
             (FreshFitting(more.Reply, answerer, QuestionKind(ask)) ?? (AnswerFor(QuestionKind(ask), answerer, random) is { } plain ? Finish(plain, random) : null)) is { } reply)
         {
@@ -1774,6 +1774,13 @@ public static class AutonomousChatFieldTalk
             steps.Add(new Step(0, done, AutonomousChatArbiter.DelayMs(answer, done, 40, at, random)));
         return steps;
     }
+
+    /// <summary>
+    /// Whether a line's kind-wide follow-ups ("how many?", "which way?") fit it: for rvr only a line about enemies or the zerg
+    /// (RC7 on the owner's PC: "port to frontier up?" "ya, porter in camelot" ran on with "which way" "few grps"). Pure.
+    /// </summary>
+    public static bool RunsOnAbout(Said said) =>
+        said?.Kind != "rvr" || said.Family is "rvr_grps" or "rvr_zerg" or "rvr_enemy";
 
     /// <summary>"quiet atm", "havent seen any", "dunno", "nope": an answer that says there is nothing to go on. Pure.</summary>
     public static bool SaysNothing(string answer)
@@ -2067,7 +2074,8 @@ public static class AutonomousChatFieldTalk
         {
             case "place":
                 return dunno || !NotAnAnswer.Contains(a) && !System.Text.RegularExpressions.Regex.IsMatch(a, @"(^\d|\b\d{1,2}\b)") &&
-                       !System.Text.RegularExpressions.Regex.IsMatch(a, @"^(few|big grp|small grp|lots|couple|a few|many)$");
+                       // RC7 on the owner's PC: "which way" was answered "few grps".
+                       !System.Text.RegularExpressions.Regex.IsMatch(a, @"^(few|big|small|lots|couple|a few|many|\d+)( grps?| groups?| of them)?$");
             case "price":
                 return dunno || System.Text.RegularExpressions.Regex.IsMatch(a, @"\b\d+ ?(p|g|s|plat|gold|silver)\b|not much|cheap|broker|offers|free|worth|nothing");
             case "count":
