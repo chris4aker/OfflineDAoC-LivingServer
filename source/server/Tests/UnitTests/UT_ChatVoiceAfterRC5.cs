@@ -126,11 +126,14 @@ namespace DOL.GS.Tests
             if (folder != null)
                 foreach (string file in Directory.GetFiles(folder, "*.cs"))
                 {
-                    string code = File.ReadAllText(file);
+                    // Windows checkouts have CRLF line ends.
+                    string code = File.ReadAllText(file).Replace("\r\n", "\n");
                     for (int at = code.IndexOf("RealmEventNotices.Queue(", StringComparison.Ordinal); at >= 0;
                          at = code.IndexOf("RealmEventNotices.Queue(", at + 1, StringComparison.Ordinal))
                     {
                         int end = code.IndexOf(";\n", at, StringComparison.Ordinal);
+                        if (end < 0)
+                            end = code.Length;
                         foreach (var parts in Interpolated(code[at..end]))
                             notices.Add(string.Concat(parts.Select(p => p.Hole ? Sample(p.Text) : p.Text)));
                     }
