@@ -102,6 +102,12 @@ chat code) and passed both.
   City of Camelot". A real deed names the zone where it happened (the monster's or the player's body); `/lstest deed` names
   where the GM stands only if it could happen there (no capital; a streak or a gank only in the frontier), else a hunting
   zone of the realm or a frontier zone. Tests only.
+- **A death story's opener keeps the ten-minute rule too (after RC3).** On the owner's RC3 evening (b72716e, 34 minutes)
+  different bots opened a death story with "dead. again." seven times, twice within a minute. A story line of three
+  words or more is told once an evening, so once the longer openers had each been told only the two-word one was left,
+  and the teller's own short line was let past the channel's ten-minute window (only the replies kept it). Now the
+  teller's short line keeps the window as well: the story picks another opener, and with none left it isn't told.
+  Tests only.
 - **The checker reads "arms" in a trade line as armour (after RC2).** On the owner's RC2 evening (6a83c038, 68 minutes)
   `chat_audit.py` failed only on "wtb leather arms 4 26 inf", an Infiltrator 26 buying arm armour, read as an armsman
   claim ("class claim not the speaker's", "one speaker claims two classes"). A class word that is also an armour slot is

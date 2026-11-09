@@ -742,6 +742,52 @@ public class UT_FactionCoherence
         }
     }
 
+    /// <summary>
+    /// Owner's PC, RC3 2026-11-09: with the evening's memory on, every longer death opener was told once and then each death
+    /// story opened with "dead. again.", seven times in half an hour from different bots. The teller's short line now keeps
+    /// the ten-minute window too, and a story whose opener the channel just heard is not told.
+    /// </summary>
+    [Test]
+    public void ATellersShortOpenerIsNotHeardTwiceInTenMinutes()
+    {
+        var random = new Random(7);
+        var window = new Ex.ShortWindow();
+        var memory = new Field.Memory();
+        string lane = NewLane();
+        long now = 0;
+        var heard = new Dictionary<string, long>();
+        int told = 0;
+        for (int i = 0; i < 200; i++, now += 30_000)
+        {
+            List<Field.Step> story = Field.Story("death", Facts(i, "Scout", 30), Facts(i + 1, "Cleric", 31), Facts(i + 2, "Wizard", 33), random,
+                memory, text => window.Fresh(lane, text, now));
+            long at = now;
+            story = AutonomousBotChatCoordinator.KeepFreshShorts(story, text => window.TryUse(lane, text, at));
+            if (story.Count > 0)
+            {
+                told++;
+                Assert.That(story[0].Who, Is.EqualTo(0), "a story starts with its teller");
+            }
+            foreach (Field.Step step in story.Where(s => Ex.IsShort(s.Text)))
+            {
+                string norm = Ex.Normalize(step.Text);
+                Assert.That(!heard.TryGetValue(norm, out long last) || now - last >= Ex.ShortWindow.WindowMs, Is.True,
+                    $"\"{step.Text}\" again {(now - last) / 1000} s later");
+                heard[norm] = now;
+            }
+        }
+        Assert.That(told, Is.GreaterThan(5), "stories are still told");
+    }
+
+    [Test]
+    public void AStoryWhoseOpenerIsStaleIsNotToldAndAStaleRiffIsLeftOut()
+    {
+        var steps = new List<Field.Step> { new(0, "dead. again.", 0), new(1, "lol rip", 2_000), new(0, "third time tonight in lyonesse", 4_000) };
+        Assert.That(AutonomousBotChatCoordinator.KeepFreshShorts(steps, text => Ex.Normalize(text) != "dead again"), Is.Empty);
+        List<Field.Step> kept = AutonomousBotChatCoordinator.KeepFreshShorts(steps, text => Ex.Normalize(text) != "lol rip");
+        Assert.That(kept.Select(s => s.Text), Is.EqualTo(new[] { "dead. again.", "third time tonight in lyonesse" }));
+    }
+
     // ---- 4. the transcript and trade closings ---------------------------------------------------------------------------
 
     [TestCase("gl selling, someone will want it", false)]
