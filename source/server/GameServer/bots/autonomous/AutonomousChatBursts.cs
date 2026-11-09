@@ -70,6 +70,56 @@ public static class AutonomousChatBursts
     public static int SpreadMs(string trigger, AutonomousChatBudget.Settings settings) =>
         Math.Min(Math.Max(5, settings.BurstSpreadS) * 1_000, Personal(trigger) ? 20_000 : 40_000);
 
+    /// <summary>
+    /// The longer reactions a channel heard over the evening (1.1.3, after RC5: "ugh, that one again", "oh well not my keep" and
+    /// "lol of course" came back to the next keep lost). A reaction of three words or more ("ugh that one again") rests for
+    /// <see cref="EveningMemory.WindowMs"/> in the channel, by its skeleton, so "ugh, that one again" and "ugh that one again"
+    /// are one line; the one- and two-word ones ("oof", "again??") keep the ten-minute rule (AutonomousChatExchange.Shorts).
+    /// A burst that runs out of fresh lines is shorter, never longer, so the caps hold.
+    /// </summary>
+    public sealed class EveningMemory
+    {
+        public const long WindowMs = 3 * 60 * 60_000L;
+        public const int MinimumWords = 3;
+        private readonly Dictionary<(string Key, string Skeleton), long> _heard = new();
+
+        /// <summary>Whether the rule covers the reaction (three words or more). Pure.</summary>
+        public static bool Covers(string text) =>
+            AutonomousChatExchange.Normalize(text).Split(' ', StringSplitOptions.RemoveEmptyEntries).Length >= MinimumWords;
+
+        private static string KeyOf(string text) => AutonomousChatFiller.Skeleton(text);
+
+        /// <summary>Whether the reaction was not heard in the channel this evening (always true for a short one).</summary>
+        public bool Fresh(string key, string text, long now)
+        {
+            if (!Covers(text))
+                return true;
+            lock (_heard)
+                return !_heard.TryGetValue((key, KeyOf(text)), out long at) || now - at >= WindowMs;
+        }
+
+        /// <summary>Claims the reaction for the channel when it is fresh; false when it was heard this evening.</summary>
+        public bool TryUse(string key, string text, long now)
+        {
+            if (!Covers(text))
+                return true;
+            lock (_heard)
+            {
+                var k = (key, KeyOf(text));
+                if (_heard.TryGetValue(k, out long at) && now - at < WindowMs)
+                    return false;
+                if (_heard.Count > 4_096)
+                    foreach (var old in _heard.Where(pair => now - pair.Value >= WindowMs).Select(pair => pair.Key).ToList())
+                        _heard.Remove(old);
+                _heard[k] = now;
+                return true;
+            }
+        }
+    }
+
+    /// <summary>The server's evening memory of longer reactions.</summary>
+    public static readonly EveningMemory Evening = new();
+
     private static readonly Dictionary<eRealm, long> RunningUntil = new();
 
     /// <summary>
@@ -134,9 +184,10 @@ public static class AutonomousChatBursts
                 foreach (string answers in answerSets)
                     if (AutonomousBotVoices.TryLine(candidate, "reply", out VC.Picked picked, answers: answers, slots: slots, relax: true,
                             filter: line => !heard.Contains(AutonomousChatFiller.Skeleton(line.Text)) &&
-                                            AutonomousChatExchange.Shorts.Fresh(lane, line.Text, now)))
+                                            AutonomousChatExchange.Shorts.Fresh(lane, line.Text, now) && Evening.Fresh(lane, line.Text, now)))
                     {
-                        if (heard.Add(AutonomousChatFiller.Skeleton(picked.Text)) && AutonomousChatExchange.Shorts.TryUse(lane, picked.Text, now))
+                        if (heard.Add(AutonomousChatFiller.Skeleton(picked.Text)) && Evening.Fresh(lane, picked.Text, now) &&
+                            AutonomousChatExchange.Shorts.TryUse(lane, picked.Text, now) && Evening.TryUse(lane, picked.Text, now))
                             (text, speaker) = (picked.Text, candidate);
                         break;
                     }
@@ -181,14 +232,16 @@ public static class AutonomousChatBursts
             if (AutonomousChatBroadcast.Listeners(bot).Count == 0)
                 continue;
             string text = null;
+            string town = "town:" + realm;
+            long now = GameLoop.GameLoopTime;
             foreach (string answers in answerSets)
                 if (AutonomousBotVoices.TryLine(bot, "reply", out VC.Picked picked, answers: answers, slots: slots, relax: true,
-                        filter: line => !heard.Contains(AutonomousChatFiller.Skeleton(line.Text))))
+                        filter: line => !heard.Contains(AutonomousChatFiller.Skeleton(line.Text)) && Evening.Fresh(town, line.Text, now)))
                 {
                     text = picked.Text;
                     break;
                 }
-            if (text == null || !heard.Add(AutonomousChatFiller.Skeleton(text)))
+            if (text == null || !heard.Add(AutonomousChatFiller.Skeleton(text)) || !Evening.TryUse(town, text, now))
                 continue;
             lines++;
             string line = text;

@@ -657,6 +657,8 @@ public static class AutonomousBotChatCoordinator
 
     private static bool SayNews(GameBot speaker, bool witness, string topic, IReadOnlyDictionary<string, string> slots)
     {
+        // The names as players typed them ("ailinne", "hibs"), not as the herald writes them (1.1.3, after RC5).
+        slots = RealmEventSpoken.ChatSlots(slots, Random.Shared);
         if (!AutonomousBotVoices.TryLine(speaker, "news", out VC.Picked picked, topic: topic, slots: slots,
                 flags: witness ? ["witness"] : null, withoutFlags: witness ? null : ["witness"]))
             return false;
