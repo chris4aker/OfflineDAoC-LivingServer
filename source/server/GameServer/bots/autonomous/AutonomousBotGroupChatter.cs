@@ -115,8 +115,12 @@ public static class AutonomousBotGroupChatter
         // 1.1.3: a line that fits the group's real size and the bot's state ("who is main assist?" not in a duo).
         int size = members.Length;
         bool away = AutonomousChatEngagement.WasAway(bot.DatabaseID, now, bot.IsReturningAfterRelease);
+        // RC6 on the owner's PC: "oom, give me a minute" and "need a quick med" from a wizard at full power. A line about the bot's
+        // own power or a rest fits only when it is low.
+        bool low = bot.MaxMana > 0 && bot.ManaPercent < 40 || bot.EndurancePercent < 30 || bot.HealthPercent < 50;
         if (!AutonomousBotVoices.TryLine(bot, "group", out VC.Picked picked,
-                filter: line => (hunted || !AutonomousBotCombatCalls.IsHuntTalk(line.Text)) && AutonomousChatEngagement.FitsGroup(line.Text, size, away)))
+                filter: line => (hunted || !AutonomousBotCombatCalls.IsHuntTalk(line.Text)) && (low || !AutonomousBotCombatCalls.ClaimsLow(line.Text)) &&
+                                AutonomousChatEngagement.FitsGroup(line.Text, size, away)))
             return false;
         Send(bot, picked.Text, picked.Line?.Invites ?? "");
         AutonomousChatWhy.Record(bot, "group", "ambient", "said", AutonomousBotChatCoordinator.RuleOf(picked.Line, "group"), VC.Specificity(picked.Line),
@@ -324,6 +328,8 @@ public static class AutonomousBotGroupChatter
     /// player it answered), so "why?", "ty" and answers to its questions follow on as in /faction.</summary>
     internal static void Send(GameBot bot, string text, string invites = "", string to = null, bool remember = true)
     {
+        // 1.1.3, after RC6: the time-of-day pass every bot line takes (AutonomousBotVoiceCorpus.ForNow).
+        text = AutonomousBotVoiceCorpus.ForNow(text);
         if (bot.Group != null && AutonomousLivingServer.GroupHasPlayer(bot.Group))
         {
             bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);

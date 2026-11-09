@@ -152,6 +152,71 @@ public static partial class AutonomousLivingServer
     private static readonly System.Text.RegularExpressions.Regex HereWords = new(
         @"\b(here|same area|same mobs|soloing|same zone|out here)\b|\{zone\}", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
+    /// <summary>
+    /// A duo offer from a bot too far off to be invited, with where it is (RC6 on the owner's PC: "want to team up for a bit?" from
+    /// another zone, then "too far away to join you"). The offer's own end mark is kept off the join. Pure.
+    /// </summary>
+    public static string WithWhere(string offer, string zone, bool sameZone, Random random)
+    {
+        if (string.IsNullOrWhiteSpace(offer))
+            return offer;
+        string z = AutonomousChatFieldTalk.ShortZone(zone, random);
+        if (string.IsNullOrWhiteSpace(zone))
+            return offer.TrimEnd() + (random.Next(2) == 0 ? " (not close tho, meet up?)" : ", gotta meet up first tho");
+        string body = offer.TrimEnd().TrimEnd('?', '!', '.', ',');
+        return sameZone
+            ? body + (random.Next(2) == 0 ? $"? other side of {z} tho, come find me" : $"? im across {z}, meet up and inv")
+            : body + (random.Next(3) switch
+            {
+                0 => $"? im in {z} tho, come find me",
+                1 => $"? im out in {z}, meet up and inv me",
+                _ => $"? in {z} atm if u wanna meet up",
+            });
+    }
+
+    /// <summary>
+    /// The player invited an autonomous gamebot by name from too far away: besides the system's "meet up first", a free bot
+    /// answers by tell with where it is (RC6 on the owner's PC), once a minute at most.
+    /// </summary>
+    public static void OnInviteTooFar(GamePlayer player, GameBot bot)
+    {
+        if (player?.Client == null || !IsSpeaker(bot))
+            return;
+        Log.Info($"BOT_INVITE_RESULT bot=\"{bot.Name}\" player=\"{player.Name}\" from=player result=too_far zone=\"{PlaceOf(bot)}\"");
+        if (!TellsOn || CoolTowards(bot, player))
+            return;
+        long now = GameLoop.GameLoopTime;
+        var key = (bot.DatabaseID, player.Name + "|toofar");
+        lock (LastTellPair)
+        {
+            if (LastTellPair.TryGetValue(key, out long at) && now - at < 60_000)
+                return;
+            LastTellPair[key] = now;
+        }
+        string line = TooFarReply(PlaceOf(bot), bot.CurrentZone != null && bot.CurrentZone == player.CurrentZone, Random.Shared);
+        Later(bot, 2_000 + Random.Shared.Next(3_000), () => IsSpeaker(bot) && player.Client != null, () =>
+        {
+            using (AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 0, "too_far", bot))
+                Tell(bot, player, AutonomousBotVoices.StyleFor(bot, line));
+        });
+    }
+
+    /// <summary>What a bot says to an invite from too far away: where it is, and to meet up. Pure.</summary>
+    public static string TooFarReply(string zone, bool sameZone, Random random)
+    {
+        if (string.IsNullOrWhiteSpace(zone))
+            return random.Next(2) == 0 ? "cant join from here, meet up?" : "too far, come find me and inv";
+        string z = AutonomousChatFieldTalk.ShortZone(zone, random);
+        return sameZone
+            ? random.Next(2) == 0 ? $"im on the other side of {z}, come find me and inv" : $"other end of {z} lol, meet up?"
+            : random.Next(3) switch
+            {
+                0 => $"im in {z}, come find me and inv",
+                1 => $"cant from here, im out in {z}. meet up?",
+                _ => $"in {z} atm, inv me when ur close",
+            };
+    }
+
     /// <summary>A duo-offer line that says "here" fits only a bot in the player's zone.</summary>
     // (Needs voices and bot_voices_tells, not memory: the bot answers a player's /lfg, it doesn't recall them.)
     public static bool OfferFits(string lineText, bool sameZone) => sameZone || !HereWords.IsMatch(lineText ?? string.Empty);
@@ -175,7 +240,10 @@ public static partial class AutonomousLivingServer
                     return !LastTellPair.TryGetValue((bot.DatabaseID, player.Name), out long told) || now - told >= TellPairCooldownMs;
             })
             .Where(bot => !TryRecall(bot, player, out OfflineBotMemoryRecord row) || MoodOf(row) != "cool")
-            .OrderByDescending(bot => bot.CurrentZone == player.CurrentZone)
+            // RC6 on the owner's PC: a wizard in another zone offered "want to team up for a bit?" and the player's /invite
+            // got "too far away to join you". A bot close enough to invite offers first.
+            .OrderByDescending(bot => BotGroupInvite.CloseEnoughToInviteByName(player, bot))
+            .ThenByDescending(bot => bot.CurrentZone == player.CurrentZone)
             .ThenBy(_ => Random.Shared.Next())
             .Take(4).ToArray();
         int offers = Random.Shared.NextDouble() < 0.3 ? 2 : 1;
@@ -185,6 +253,7 @@ public static partial class AutonomousLivingServer
             if (offers == 0 || Random.Shared.NextDouble() >= 0.75)
                 continue;
             bool sameZone = bot.CurrentZone == player.CurrentZone;
+            bool close = BotGroupInvite.CloseEnoughToInviteByName(player, bot);
             bool known = TryRecall(bot, player, out OfflineBotMemoryRecord row);
             IReadOnlyDictionary<string, string> slots = known ? MemorySlots(row, player)
                 : new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = player.Name };
@@ -195,8 +264,10 @@ public static partial class AutonomousLivingServer
                 LastTellPair[(bot.DatabaseID, player.Name)] = now;
             delay += 3_000 + Random.Shared.Next(12_000);
             string invites = picked.Line?.Invites == "ask" ? AskGroupInvite : picked.Line?.Invites;
+            // A bot too far off for an invite says where it is, as a player would ("..., im in avalon marsh tho, come find me?").
+            string text = close ? picked.Text : WithWhere(picked.Text, PlaceOf(bot), sameZone, Random.Shared);
             Later(bot, delay, () => CanTalk(bot) && bot.Group == null && player.ObjectState == GameObject.eObjectState.Active && player.Group == null,
-                () => Tell(bot, player, picked.Text, invites));
+                () => Tell(bot, player, text, invites));
             offers--;
         }
     }
@@ -230,7 +301,10 @@ public static partial class AutonomousLivingServer
             Dictionary<string, string> slots = MemorySlots(row, player);
             string[] flags = Known;
             double score = Random.Shared.NextDouble() + Math.Min(3, row.Grouped + row.Rezzed) * 0.2;
-            if (FitsHelpOffer(bot.Level, player.Level, bot.CurrentZone == player.CurrentZone, Distance(bot)))
+            // 1.1.3, after RC6: a hand is offered only by a friend free to give it (out of a group, on no duty, not riding); the
+            // levels are the help offer's own (eight or more above), not a duo's.
+            if (FitsHelpOffer(bot.Level, player.Level, bot.CurrentZone == player.CurrentZone, Distance(bot)) &&
+                FreeToOffer(player.Group != null, bot.Group != null, BotGroupInvite.DutyOf(bot), bot.IsOnStableMasterRoute, player.Level, player.Level))
                 options.Add((score + 0.6, bot, "help_offer", slots, flags));
             options.Add((score + 0.3, bot, "news_tell", slots, flags));
             if (row.LastTopic == "group")

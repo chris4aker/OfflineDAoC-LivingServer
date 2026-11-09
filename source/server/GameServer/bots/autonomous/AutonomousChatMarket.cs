@@ -29,6 +29,22 @@ namespace DOL.GS
             _ => Post.None,
         };
 
+        /// <summary>
+        /// What a player's /trade post is: a sale ("wts 99% cap", "selling ...") or a wanted post ("wtb", "buying", "anyone selling",
+        /// "looking for a ..."), else none (RC6 on the owner's PC: the player's "wts 99% arcane cloth cap, cheap" drew nothing). Pure.
+        /// </summary>
+        public static Post PostOf(string text)
+        {
+            string t = " " + AutonomousChatQuestions.Normalize(text ?? string.Empty) + " ";
+            if (Regex.IsMatch(t, @" (anyone|any1|anybody|who s|whos) (selling|sell|got|have) "))
+                return Post.Wtb;
+            if (Regex.IsMatch(t, @" (wts|selling|for sale|fs) "))
+                return Post.Wts;
+            if (Regex.IsMatch(t, @" (wtb|buying|anyone selling|any1 selling|anyone sell|looking for a|looking for an|lf a|lf an|need a|need an|need some) "))
+                return Post.Wtb;
+            return Post.None;
+        }
+
         /// <summary>The share of posts of a kind that get a public reply (most go by /send, as in 2003).</summary>
         public static double ReplyShare(Post post) => post switch
         {
@@ -139,7 +155,10 @@ namespace DOL.GS
         /// A bot's reply to a post, from its own state: <paramref name="solo"/> whether it is without a group, <paramref name="hasWanted"/>
         /// whether it carries what a wtb post wants. Pure.
         /// </summary>
-        public static Reply ReplyTo(Post post, string postText, AutonomousChatFieldTalk.Facts replier, bool solo, bool hasWanted, Random random)
+        /// 1.1.3, after RC6: an xp question ("how many bubbles?") only to an lfg post for xp by a poster under 50 (<paramref name="posterLevel"/>;
+        /// 0 reads the level from the post): "lfg rvr 50 friar" drew "how many bubbles?".
+        public static Reply ReplyTo(Post post, string postText, AutonomousChatFieldTalk.Facts replier, bool solo, bool hasWanted, Random random,
+            int posterLevel = 0)
         {
             string cls = AutonomousChatFieldTalk.ShortClass(replier?.ClassName, random), lvl = replier?.Level.ToString() ?? "";
             string role = NeedOf(postText, replier?.Level ?? 1).Role;
@@ -163,7 +182,7 @@ namespace DOL.GS
                             1 => new Reply($"same, {lvl} {cls} lfg too", null),
                             _ => new Reply("me too, duo?", "duo"),
                         }
-                        : random.Next(2) == 0 ? new Reply("what spec?", "spec") : new Reply("how many bubbles?", "bubbles");
+                        : random.Next(2) == 0 || !AsksXp(postText, posterLevel) ? new Reply("what spec?", "spec") : new Reply("how many bubbles?", "bubbles");
                 case Post.Wts:
                     return random.Next(5) switch
                     {
@@ -180,6 +199,32 @@ namespace DOL.GS
                 default:
                     return new Reply(null, null);
             }
+        }
+
+        /// <summary>"lfg rvr 50 friar", "lf rr grp", "lfg keep take": a post for the frontier, not for xp. Pure.</summary>
+        public static bool IsRvrPost(string text)
+        {
+            string t = " " + AutonomousChatQuestions.Normalize(text ?? string.Empty) + " ";
+            return Regex.IsMatch(t, " (rvr|rr|rps|keep|keeps|relic|relics|frontier|bg|battleground|siege|zerg|8v8|fg rvr) ");
+        }
+
+        /// <summary>The level a group post names ("lfg 38 sm": 38), or 0. Pure.</summary>
+        public static int LevelNamed(string text)
+        {
+            Match level = Regex.Match(text ?? string.Empty, @"(?<![\w-])([1-9]|[1-4]\d|50)(?![\w%-])");
+            return level.Success ? int.Parse(level.Value) : 0;
+        }
+
+        /// <summary>
+        /// Whether an xp question ("how many bubbles?", "what lvl?", "xp?") fits a post (1.1.3, after RC6): not one for the frontier
+        /// and not one from a 50 (<paramref name="posterLevel"/>, or the level the post names when 0), who has no bubbles left. Pure.
+        /// </summary>
+        public static bool AsksXp(string postText, int posterLevel = 0)
+        {
+            if (IsRvrPost(postText))
+                return false;
+            int level = posterLevel > 0 ? posterLevel : LevelNamed(postText);
+            return level is 0 or < 50;
         }
 
         /// <summary>
@@ -227,7 +272,7 @@ namespace DOL.GS
                 case "spec":
                     return string.IsNullOrWhiteSpace(spec) ? null : spec;
                 case "bubbles":
-                    return poster.Bubbles > 0 ? $"{poster.Bubbles} to {poster.Level + 1}" : null;
+                    return poster.Bubbles > 0 && poster.Level < 50 ? $"{poster.Bubbles} to {poster.Level + 1}" : null;
                 case "duo":
                     return Pick(random, "sure, pst", "k, where u at?", "sure");
                 case "paying":

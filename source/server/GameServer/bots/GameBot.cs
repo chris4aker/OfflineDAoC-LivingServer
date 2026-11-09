@@ -976,6 +976,8 @@ namespace DOL.GS
             IsReturningAfterRelease = false;
             _stableReturnPlan = null;
             CompleteStableMasterRoute();
+            // 1.1.3, after RC6: how many were on it, read before the death clears the tracker, for how the death is told.
+            int attackers = IsAutonomousWorldBot ? AutonomousDeathDiagnostics.Attackers(this) : 0;
 
             if (IsAutonomousWorldBot && PersistentRecord != null)
             {
@@ -993,7 +995,7 @@ namespace DOL.GS
             {
                 AutonomousBotStatusPersistence.Queue(this);
                 AutonomousBotGuildSocial.OnBotDeath(this);
-                AutonomousBotVoices.OnBotDeath(this);
+                AutonomousBotVoices.OnBotDeath(this, killer, attackers);
                 AutonomousLivingServer.OnBotDied(this, killer);
             }
             StartDeathRecoveryTimer();
@@ -1157,8 +1159,8 @@ namespace DOL.GS
                 release = new Point3D(capital.X, capital.Y, capital.Z);
             }
             release ??= _deathLocation;
-            if (IsAutonomousWorldBot)
-                AutonomousLivingServer.OnBotReleasing(this);
+            // RC6 on the owner's PC: "long run back to Pennine Mountains" and "released, running back" in the same second.
+            bool toldGroup = IsAutonomousWorldBot && AutonomousLivingServer.OnBotReleasing(this);
             // Transfer the corpse first: a failed MoveTo must not revive the bot
             // at its killer or cause HandleDeathRecovery to discard its timer.
             bool moved;
@@ -1182,7 +1184,7 @@ namespace DOL.GS
             _nextReturnRoleplayTick = GameLoop.GameLoopTime + Util.Random(45_000, 90_000);
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
-            if (returnToParty)
+            if (returnToParty && !toldGroup)
                 TellOwnGroup(ReturnDialogue("release"));
 
             if (PersistentRecord != null)

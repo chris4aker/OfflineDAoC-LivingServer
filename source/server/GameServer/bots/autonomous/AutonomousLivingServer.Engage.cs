@@ -93,9 +93,10 @@ public static partial class AutonomousLivingServer
                 .OrderByDescending(f => f.Row.Grouped + f.Row.Rezzed * 2 + Random.Shared.NextDouble() * 2).FirstOrDefault();
             if (friend.Bot == null || !EngageTurn(player, now))
                 return;
-            bool duo = player.Group == null && friend.Bot.Group == null && BotGroupInvite.DutyOf(friend.Bot) == BotGroupInvite.Duty.None &&
-                       Math.Abs(friend.Bot.Level - player.Level) <= 3;
-            TellLater(friend.Bot, player, Engagement.LoginTell(player.Name, duo, Random.Shared), 0, duo ? AskGroupInvite : null, role: "login");
+            // 1.1.3, after RC6: the duo offer only from a friend free to group now and not setting off somewhere (a bot on its way
+            // to a stable master offered "im solo atm if u want company" and answered the invite with "on a horse").
+            bool duo = FreeToOffer(friend.Bot, player) && AutonomousBotVoices.TravelingTo(friend.Bot) == null;
+            TellLater(friend.Bot, player, Engagement.LoginTell(player.Name, duo, Random.Shared, DateTime.Now.Hour), 0, duo ? AskGroupInvite : null, role: "login");
         });
     }
 
@@ -257,10 +258,20 @@ public static partial class AutonomousLivingServer
         string zone = string.IsNullOrWhiteSpace(facts.Zone) ? null : facts.Zone;
         var doing = new Engagement.Doing(zone, facts.InGroup || facts.InTown || facts.InRvR ? null : facts.Monster, facts.Destination, facts.InGroup,
             facts.InTown, facts.InRvR, facts.InDungeon);
-        offers = player.Group == null && bot.Group == null && BotGroupInvite.DutyOf(bot) == BotGroupInvite.Duty.None &&
-                 Math.Abs(bot.Level - player.Level) <= 3 && !bot.IsOnStableMasterRoute;
+        offers = FreeToOffer(bot, player);
         return Engagement.FriendChat(player.Name, doing, row.LastPlace, offers, Random.Shared);
     }
+
+    /// <summary>
+    /// Whether a bot may offer to group with the player (1.1.3, after RC6): both out of a group, the bot on no duty and not riding a
+    /// stable route, and within three levels. Every offer to group by tell asks this (a friend's small talk, its login hello). Pure.
+    /// </summary>
+    public static bool FreeToOffer(bool playerGrouped, bool botGrouped, BotGroupInvite.Duty duty, bool onStableRoute, int botLevel, int playerLevel) =>
+        !playerGrouped && !botGrouped && duty == BotGroupInvite.Duty.None && !onStableRoute && Math.Abs(botLevel - playerLevel) <= 3;
+
+    internal static bool FreeToOffer(GameBot bot, GamePlayer player) =>
+        bot != null && player != null && FreeToOffer(player.Group != null, bot.Group != null, BotGroupInvite.DutyOf(bot), bot.IsOnStableMasterRoute,
+            bot.Level, player.Level);
 
     #endregion
 

@@ -381,6 +381,8 @@ public static class AutonomousBotChatCoordinator
                 break;
         }
         AutonomousChatWhy.Record(starter, channel, "ambient", "said", "field " + said.Kind, AutonomousChatReplyFit.Known, reason, text, null);
+        // 1.1.3, after RC6: a "brb" starts the bot's time away and a "back" ends it, as in /group (AutonomousChatEngagement).
+        AutonomousChatEngagement.NoteGroupLine(starter.DatabaseID, text, GameLoop.GameLoopTime);
         if (channel is "faction" or "say")
         {
             ScheduleFieldThread(starter, said, channel == "faction", exchange);
@@ -608,16 +610,21 @@ public static class AutonomousBotChatCoordinator
         // 1.1.3: the realm's regulars tell their deaths; most of the quiet many keep theirs to themselves (AutonomousChatRegulars).
         if (kind is "death" or "wipe" && !AutonomousChatRegulars.TellsOwnStory(IsRegular(teller, now), random))
             return;
+        // 1.1.3, after RC6: one death story per realm in seven minutes (three frontier deaths told in under two minutes).
+        if (kind == "death" && !DeathStoryRoom(LastDeathStory.TryGetValue(teller.Realm, out long lastDeath) ? lastDeath : long.MinValue / 2, now))
+            return;
         (GameBot mate, GameBot third) = Repliers(teller, true, now, random);
         if (mate == null)
             return;
         // 1.1.3: a riff ("oof", "rip") the channel heard in the last ten minutes is picked again or left out.
         List<AutonomousChatFieldTalk.Step> steps = AutonomousChatFieldTalk.Story(kind, AutonomousChatFieldTalk.Of(teller, random),
             AutonomousChatFieldTalk.Of(mate, random), third == null ? null : AutonomousChatFieldTalk.Of(third, random), random,
-            AutonomousChatFieldTalk.MemoryOf(teller.Realm), text => AutonomousChatExchange.Shorts.Fresh(lane, text, now));
+            AutonomousChatFieldTalk.MemoryOf(teller.Realm), text => AutonomousChatExchange.Shorts.Fresh(lane, text, now), now);
         steps = KeepFreshShorts(steps, text => AutonomousChatExchange.Shorts.TryUse(lane, text, now));
         if (steps.Count == 0)
             return;
+        if (kind == "death")
+            LastDeathStory[teller.Realm] = now;
         // 1.1.3: once its first line is heard, a death told is remembered for tonight's follow-ups ("staying away from X now?").
         if (kind == "death")
             AutonomousChatRecall.Of(teller.Realm).ExpectStory(teller.DatabaseID, AutonomousChatFieldTalk.Of(teller, random).Monster, now);
@@ -625,6 +632,14 @@ public static class AutonomousBotChatCoordinator
         var timed = steps.Select(step => step with { AtMs = step.AtMs + 2_000 + random.Next(2_000) }).ToList();
         PlayStory(timed, [teller, mate, third], kind);
     }
+
+    /// <summary>How long a realm waits after a death story before it hears another (1.1.3, after RC6); wipes and dings to 50 keep their own pace.</summary>
+    public const long DeathStoryGapMs = 7 * 60_000;
+
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<eRealm, long> LastDeathStory = new();
+
+    /// <summary>Whether a death story may be told at <paramref name="now"/> after the realm's last one at <paramref name="last"/>. Pure.</summary>
+    public static bool DeathStoryRoom(long last, long now) => now - last >= DeathStoryGapMs || now < last;
 
     /// <summary>
     /// A story's steps without the short lines the channel heard in the last ten minutes, the teller's included: a story whose
@@ -677,7 +692,7 @@ public static class AutonomousBotChatCoordinator
     /// <summary>A bot's /say line, counted against the region's /say budget.</summary>
     internal static bool SayLine(GameBot bot, string text)
     {
-        if (bot == null || !bot.Say(text))
+        if (bot == null || !bot.Say(VC.ForNow(text)))
             return false;
         AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Say, bot.CurrentRegionID, GameLoop.GameLoopTime);
         AutonomousChatExchange.NoteLine(AutonomousChatExchange.SayKey(bot.CurrentRegionID), bot.Name, GameLoop.GameLoopTime);
@@ -857,7 +872,7 @@ public static class AutonomousBotChatCoordinator
     /// <summary>A bot's line in its realm's /lfg or /trade channel, formatted as the server's /lfg and /trade commands do.</summary>
     private static void SendRealmChannel(GameBot bot, string channel, string text)
     {
-        string safe = (text ?? string.Empty).Trim();
+        string safe = VC.ForNow((text ?? string.Empty).Trim());
         if (safe.Length == 0)
             return;
         if (safe.Length > 240)
@@ -893,7 +908,7 @@ public static class AutonomousBotChatCoordinator
             bool solo = replier.Group == null || replier.Group.MemberCount <= 1;
             string wanted = post == AutonomousChatMarket.Post.Wtb ? AutonomousChatMarket.WantedInName(said.Text) : null;
             AutonomousChatMarket.Reply reply = AutonomousChatMarket.ReplyTo(post, said.Text, AutonomousChatFieldTalk.Of(replier, random), solo,
-                wanted != null && Carries(replier, wanted), random);
+                wanted != null && Carries(replier, wanted), random, poster.Level);
             if (!string.IsNullOrWhiteSpace(reply.Text))
             {
                 lines.Add(new AutonomousChatExchange.Line(1, reply.Text, AutonomousChatArbiter.DelayMs(said.Text, reply.Text, 40, 0, random), "answerer"));
@@ -947,22 +962,62 @@ public static class AutonomousBotChatCoordinator
     }
 
     /// <summary>A bot of the poster's realm, outside its group, that a post is true for (a slice of the roster).</summary>
-    private static GameBot MarketReplier(GameBot poster, AutonomousChatMarket.Post post, string text, Random random)
+    private static GameBot MarketReplier(GameBot poster, AutonomousChatMarket.Post post, string text, Random random) =>
+        MarketReplier(poster.Realm, poster.Level, poster.Group, poster, post, text, random);
+
+    private static GameBot MarketReplier(eRealm realm, int posterLevel, Group posterGroup, GameLiving poster, AutonomousChatMarket.Post post, string text,
+        Random random)
     {
         GameBot[] roster = AutonomousBotRegistry.Snapshot();
         for (int i = 0, at = roster.Length == 0 ? 0 : random.Next(roster.Length); i < Math.Min(roster.Length, 200); i++, at = (at + 1) % roster.Length)
         {
             GameBot bot = roster[at];
-            if (bot == poster || bot.Realm != poster.Realm || !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper || !bot.IsAlive ||
-                bot.ObjectState != GameObject.eObjectState.Active || AutonomousBeggars.Is(bot) || bot.Group != null && bot.Group == poster.Group)
+            if (bot == poster || bot.Realm != realm || !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper || !bot.IsAlive ||
+                bot.ObjectState != GameObject.eObjectState.Active || AutonomousBeggars.Is(bot) || bot.Group != null && bot.Group == posterGroup)
                 continue;
             bool solo = bot.Group == null || bot.Group.MemberCount <= 1;
             var light = new AutonomousChatFieldTalk.Facts(bot.DatabaseID, bot.Realm, bot.CharacterClass?.Name ?? bot.ClassName, bot.Level, null, null, false,
                 false, false, !solo, bot.Group?.MemberCount ?? 1, false, false, false, false, null, null, 0, false, null, 0, 0, IsHealer(bot), null);
-            if (AutonomousChatMarket.CanReply(post, text, poster.Level, light, solo))
+            if (AutonomousChatMarket.CanReply(post, text, posterLevel, light, solo))
                 return bot;
         }
         return null;
+    }
+
+    /// <summary>
+    /// The player's own /trade post now and then gets a bot's public reply, as a bot's post does (RC6 on the owner's PC: the
+    /// player's "wts 99% arcane cloth cap, cheap" drew nothing): "how much?" from a bot that could wear it, "/t me, have one" from a
+    /// bot that carries what is wanted. Under the channel's ceiling, after a typing pause.
+    /// </summary>
+    public static void OnPlayerTradePost(GamePlayer player, string message)
+    {
+        if (!AutonomousBotVoices.Enabled || player?.Client == null || !HasFactionAudience(player.Realm))
+            return;
+        AutonomousChatMarket.Post post = AutonomousChatMarket.PostOf(message);
+        var random = Random.Shared;
+        if (post is not (AutonomousChatMarket.Post.Wts or AutonomousChatMarket.Post.Wtb) || random.NextDouble() >= AutonomousChatMarket.ReplyShare(post))
+            return;
+        GameBot replier = MarketReplier(player.Realm, player.Level, player.Group, player, post, message, random);
+        if (replier == null)
+            return;
+        bool solo = replier.Group == null || replier.Group.MemberCount <= 1;
+        string wanted = post == AutonomousChatMarket.Post.Wtb ? AutonomousChatMarket.WantedInName(message) : null;
+        AutonomousChatMarket.Reply reply = AutonomousChatMarket.ReplyTo(post, message, AutonomousChatFieldTalk.Of(replier, random), solo,
+            wanted != null && Carries(replier, wanted), random);
+        if (string.IsNullOrWhiteSpace(reply.Text))
+            return;
+        int delay = AutonomousChatArbiter.DelayMs(message, reply.Text, 40, 0, random) + 4_000 + random.Next(10_000);
+        AutonomousLivingServer.Later(replier, delay,
+            () => replier.IsAlive && replier.ObjectState == GameObject.eObjectState.Active && player.Client != null &&
+                  AutonomousChatExchange.Fits(AutonomousChatBudget.Meter.PerMinute(AutonomousChatBudget.Channel.Trade, (long)replier.Realm, GameLoop.GameLoopTime),
+                      AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Trade, RealmBots(replier.Realm)).Ceiling),
+            () =>
+            {
+                string text = AutonomousChatIdiolect.Apply(reply.Text, replier.DatabaseID, false, Random.Shared, terse: true);
+                using (AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 1, "answerer", replier))
+                    SendRealmChannel(replier, "trade", text);
+                Note("trade:" + replier.Realm, replier, text, null);
+            });
     }
 
     /// <summary>Whether a bot carries an item whose name has the word in it (a "helm", a "potion").</summary>
@@ -1937,6 +1992,8 @@ public static class AutonomousBotChatCoordinator
     public static bool BroadcastFactionAsWritten(string speakerName, eRealm realm, string message)
     {
         LastHeld = null;
+        // 1.1.3, after RC6: whatever wrote it, a line says "today", not "tonight", by day on the PC's clock ("busy tonight" at 10:44 AM).
+        message = VC.ForNow(message);
         AutonomousChatExchange.Source source = AutonomousChatExchange.Current;
         bool scene = AutonomousChatExchange.IsScene(source);
         // A tagged event or a line to the player goes; a running scene owns the channel; every other line fits under the
@@ -1968,6 +2025,9 @@ public static class AutonomousBotChatCoordinator
         BotChatTranscript.Bot("faction", speakerName, realm, safe);
         AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Faction, (long)realm, GameLoop.GameLoopTime);
         AutonomousChatExchange.NoteLine(AutonomousChatExchange.FactionKey(realm), speakerName, GameLoop.GameLoopTime);
+        // 1.1.3, after RC6: a bot's "brb" or "back" in /faction counts for its time away (AutonomousChatEngagement.WasAway).
+        if (source?.Speaker != null)
+            AutonomousChatEngagement.NoteGroupLine(source.Speaker.DatabaseID, safe, now);
         // 1.1.3: what the channel really carried, for tonight's follow-ups (AutonomousChatRecall).
         if (source?.Speaker != null)
             AutonomousChatRecall.Of(realm).Heard(source.Feature, source.Exchange, source.Role, source.Speaker.DatabaseID, speakerName,

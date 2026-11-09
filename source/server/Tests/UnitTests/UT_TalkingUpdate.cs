@@ -644,6 +644,73 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousLivingServer.OfferFits("hey, want to duo here? im {level} {class}", true), Is.True);
         }
 
+        /// <summary>RC6 on the owner's PC: written /lfg lines that claim a group or a want slipped past the group-state check.</summary>
+        [TestCase("group at Coruscating Mine needs a healer, pst", "lfm")]
+        [TestCase("group has room near Connacht, all classes welcome", "lfm")]
+        [TestCase("33 minstrel looking for group, got time", "lfg")]
+        [TestCase("ranger 50 lf anything with xp pst", "lfg")]
+        [TestCase("any group need a 50 minstrel? happy to travel", "lfg")]
+        [TestCase("any1 need a 32 theurgist? pst", "lfg")]
+        [TestCase("looking for a duo partner 50 scout", "lfg")]
+        [TestCase("wtb a shield for a 50 armsman", null)]
+        [TestCase("looking for plate arms, will pay", null)]
+        public void AWrittenGroupPostIsReadForItsStance(string text, string stance) =>
+            Assert.That(AutonomousChatStance.SeekOf(text), Is.EqualTo(stance));
+
+        /// <summary>RC6 on the owner's PC: the player's "wts 99% arcane cloth cap, cheap" in /trade drew nothing.</summary>
+        [TestCase("wts 99% arcane cloth cap, cheap", AutonomousChatMarket.Post.Wts)]
+        [TestCase("selling a 98% sword pst", AutonomousChatMarket.Post.Wts)]
+        [TestCase("wtb cloth legs pst", AutonomousChatMarket.Post.Wtb)]
+        [TestCase("anyone selling a necklace?", AutonomousChatMarket.Post.Wtb)]
+        [TestCase("lol", AutonomousChatMarket.Post.None)]
+        [TestCase("where is the trainer", AutonomousChatMarket.Post.None)]
+        public void APlayersTradePostIsReadAsASaleOrAWant(string text, AutonomousChatMarket.Post post) =>
+            Assert.That(AutonomousChatMarket.PostOf(text), Is.EqualTo(post));
+
+        /// <summary>RC6 on the owner's PC: "which stable 4 group rendezvous?" in /faction.</summary>
+        [TestCase("group rendezvous", false)]
+        [TestCase("the group rendezvous", false)]
+        [TestCase("frontier patrol near death stalkers", false)]
+        [TestCase("Iarn Dwarf Camp", true)]
+        [TestCase("Hagall", true)]
+        [TestCase("Avalon Marsh", true)]
+        [TestCase("Caer Benowyc", true)]
+        public void OnlyARealPlaceIsADestinationToTalkAbout(string destination, bool place) =>
+            Assert.That(AutonomousBotVoices.IsPlaceName(destination), Is.EqualTo(place));
+
+        /// <summary>RC6 on the owner's PC: "any grps out?" "quiet atm" ran on with "how many?" "small grp" "count me in".</summary>
+        [TestCase("quiet atm", true)]
+        [TestCase("havent seen any", true)]
+        [TestCase("dunno, quiet tonight", true)]
+        [TestCase("nope sry", true)]
+        [TestCase("beno under attack", false)]
+        [TestCase("few grps", false)]
+        [TestCase("try the crafters in camelot", false)]
+        public void AnAnswerThatSaysThereIsNothingEndsTheThread(string answer, bool nothing)
+        {
+            Assert.That(AutonomousChatFieldTalk.SaysNothing(answer), Is.EqualTo(nothing));
+            Assert.That(AutonomousChatFieldTalk.GoesSomewhere("k omw"), Is.True);
+            Assert.That(AutonomousChatFieldTalk.GoesSomewhere("ty"), Is.False);
+        }
+
+        /// <summary>RC6 on the owner's PC: "want to team up for a bit?" from another zone, then "too far away to join you".</summary>
+        [Test]
+        public void AnOfferFromTooFarSaysWhereTheBotIs()
+        {
+            for (int seed = 0; seed < 40; seed++)
+            {
+                string far = AutonomousLivingServer.WithWhere("50 wizard here, want to team up for a bit?", "Avalon Marsh", false, new Random(seed));
+                Assert.That(far, Does.StartWith("50 wizard here, want to team up for a bit?"), far);
+                Assert.That(far, Does.Contain("avalon marsh"), far);
+                Assert.That(far, Does.Not.Contain("??"), far);
+                string across = AutonomousLivingServer.WithWhere("want to duo?", "Pennine Mountains", true, new Random(seed));
+                Assert.That(across, Does.Contain("pennine"), across);
+                string reply = AutonomousLivingServer.TooFarReply("Avalon Marsh", false, new Random(seed));
+                Assert.That(reply, Does.Contain("avalon marsh"), reply);
+                Assert.That(AutonomousLivingServer.TooFarReply(null, false, new Random(seed)), Is.Not.Empty);
+            }
+        }
+
         [Test]
         public void EveryTellTopicHasLinesAndOffersNeverPromiseAnInvite()
         {

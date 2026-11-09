@@ -38,14 +38,21 @@ public sealed class AutonomousChatStance
     private static readonly Regex Forming = new(
         @"\blf\d*m\b|\blf ?\d more\b|\bneed (?:a |an |\d )?(?:heal|heals|healer|tank|cc|mezzer|dps|puller|caster|support|cleric|druid|shaman|bard|\d more)\b(?! pots?\b)|" +
         @"\blf (?:a |an )?(?:heal|healer|tank|cc|mezzer|dps|puller|caster|support|cleric|druid|shaman|bard|\d more)\b(?! pots?\b)|\bforming\b|\bgrp up for\b|" +
-        @"\bif anyone wants to join\b|\bany1 lf grp\b|\banyone up for\b|\bgrp lf\d*m\b|\broom for \d\b",
+        @"\bif anyone wants to join\b|\bany1 lf grp\b|\banyone up for\b|\bgrp lf\d*m\b|\broom for \d\b|" +
+        // RC6 on the owner's PC: "group at Coruscating Mine needs a healer, pst" and "group has room near Connacht, all classes
+        // welcome" from bots in full rvr parties went unchecked.
+        @"\bneeds (?:a |an |\d )?(?:heal|heals|healer|tank|cc|mezzer|dps|puller|caster|support|cleric|druid|shaman|bard|\d more)\b(?! pots?\b)|" +
+        @"\b(?:gr(?:ou)?p|we) (?:has|have|got) (?:room|a spot|spots|\d spots?)\b|\bspots? (?:open|left)\b|\ball classes welcome\b",
         RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
     // Looking for one: "lfg 50 minst", "lf grp 38 thane", "looking for a grp", "any grps for a 24 ranger?", "lf duo",
     // "any room for a 30 cleric?", "free for grps", "lf rvr grp".
     private static readonly Regex Seeking = new(
         @"\blfg\b|\blf (?:xp |rvr |a )?gr(?:ou)?p\b|\blooking for a gr(?:ou)?p\b|\bany gr(?:ou)?ps (?:for|need)\b|\bany room for\b|\bfree for grps\b|" +
-        @"\bwants a grp\b|\blf duo\b|\bwanna duo\b|\bany rvr grps lf\b",
+        @"\bwants a grp\b|\blf duo\b|\bwanna duo\b|\bany rvr grps lf\b|" +
+        // RC6: "33 minstrel looking for group", "lf anything with xp", "any1 need a 32 theurgist?", "looking for a duo partner".
+        @"\blooking for (?:a )?(?:gr(?:ou)?p|duo|xp|any)\w*\b|\blf (?:any|anything|duo)\b|\bany ?(?:1|one|group|grp) need (?:a|an) \d|" +
+        @"\blooking, any level\b|\bneed a gr(?:ou)?p\b",
         RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
     /// <summary>"lfm" for a line that forms a group, "lfg" for one that looks for a group, null for anything else. Pure.</summary>

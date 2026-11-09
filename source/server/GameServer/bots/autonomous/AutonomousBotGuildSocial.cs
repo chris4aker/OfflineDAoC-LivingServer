@@ -930,7 +930,8 @@ public static class AutonomousBotGuildSocial
 
     public static void SendGuildLine(Guild guild, string speaker, string text)
     {
-        string safe = (text ?? string.Empty).Trim();
+        // 1.1.3, after RC6: "anyone heading to the frontier tonight?" at 11:08 AM (AutonomousBotVoiceCorpus.ForNow).
+        string safe = AutonomousBotVoiceCorpus.ForNow((text ?? string.Empty).Trim());
         if (safe.Length == 0)
             return;
         if (safe.Length > Lines.MaxLength)

@@ -45,6 +45,8 @@ namespace DOL.GS.Commands
                 if (!BotGroupInvite.CloseEnoughToInviteByName(client.Player, worldBot))
                 {
                     client.Out.SendMessage($"{worldBot.Name} is too far away to join you. Meet up first.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                    // RC6 on the owner's PC: the bot that offered to group answers too, with where it is.
+                    AutonomousLivingServer.OnInviteTooFar(client.Player, worldBot);
                     return;
                 }
                 BotGroupInvite.TryInvite(client.Player, worldBot);
