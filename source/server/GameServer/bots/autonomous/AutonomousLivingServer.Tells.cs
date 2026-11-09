@@ -227,6 +227,14 @@ public static partial class AutonomousLivingServer
     public static bool OfferFits(string lineText, bool sameZone) => sameZone || !HereWords.IsMatch(lineText ?? string.Empty);
 
     /// <summary>
+    /// A duo offer that asks the player's level ("hey, im {level}, you?") doesn't answer an /lfg post that gave it (RC11 on the
+    /// owner's PC: "50 lf xp grp" drew "hey, im 50, u?"). Pure.
+    /// </summary>
+    public static bool OfferFitsPost(string lineText, string post) =>
+        !System.Text.RegularExpressions.Regex.IsMatch(post ?? string.Empty, @"\b\d{1,2}\b") ||
+        !System.Text.RegularExpressions.Regex.IsMatch(lineText ?? string.Empty, @",\s*(you|u)\?\s*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    /// <summary>
     /// The player looked for a group in /lfg: a solo bot of about the same level (any zone, the same zone first) may send a
     /// tell offering to group, a few seconds later. Once per bot and player in six hours.
     /// </summary>
@@ -263,7 +271,7 @@ public static partial class AutonomousLivingServer
             IReadOnlyDictionary<string, string> slots = known ? MemorySlots(row, player)
                 : new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = player.Name };
             if (!AutonomousBotVoices.TryLine(bot, "tell", out VC.Picked picked, topic: "group_offer", slots: slots,
-                    flags: known ? ["knows_player"] : null, filter: line => OfferFits(line.Text, sameZone)))
+                    flags: known ? ["knows_player"] : null, filter: line => OfferFits(line.Text, sameZone) && OfferFitsPost(line.Text, message)))
                 continue;
             lock (LastTellPair)
                 LastTellPair[(bot.DatabaseID, player.Name)] = now;
