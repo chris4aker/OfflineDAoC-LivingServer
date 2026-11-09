@@ -1257,6 +1257,9 @@ namespace DOL.AI.Brain
             // Beggars (bot_living_beggars): a few Crafters live on a corner of their capital and do nothing else.
             if (AutonomousBeggars.Think(this))
                 return;
+            // Out of a boss's blast before anything else (Xanxicar's stomp), whatever the bot is doing.
+            if (EpicEncounterTactics.ThinkBlast(BotBody))
+                return;
             bool nativeSpeedTravelStarted;
             if (CompanionFollowPolicy.ObserveAndCancelBuffs(BotBody, out nativeSpeedTravelStarted))
             {
@@ -4967,6 +4970,8 @@ namespace DOL.AI.Brain
                 }
                 _rezTarget = corpse;
                 _rezTargetSince = now;
+                // 1.1.3: the healer says it is coming ("need a rez? omw"), once per death (AutonomousLivingServer.Engage.cs).
+                AutonomousLivingServer.OnRezClaimed(bot, corpse);
             }
             if (!CheckHealSpell(resurrection))
                 return false;

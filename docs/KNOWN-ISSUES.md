@@ -1,10 +1,62 @@
-# Living Server Beta 1.1.1: known issues and what's not tested yet
+# Living Server Beta 1.1.3: known issues and what's not tested yet
 
 For players. What to expect, what hasn't been checked in game, and known problems. The full list
 of changes is in [CHANGELOG-LIVING-SERVER.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/CHANGELOG-LIVING-SERVER.md).
 The Living Server was called the Social Expansion up to 0.37-se.2; Beta 1.0 was that build, and Beta 1.1
 (2026-10-29) added the talking update, the living world, 2003-style names, the one-click Setup and the fixes
 taken from other forks and from Offline DAoC 0.38.
+
+A feature here counts as working only once it has been seen working on a real install. Until then it says "tests
+only".
+
+## Seen on a real install, and fixed in 1.1.3 by tests only
+
+These were seen on the owner's PC with 1.1.2 or the 1.1.3 release candidates and are fixed in this update. The fixes
+haven't been watched on a real install yet, so treat them as likely, not certain.
+
+- **Chat that didn't sound like a real server:** most bot questions in /faction got no answer, realm news came out of
+  a bot's mouth like a herald's announcement, a bot could look for a group and form one in the same minute, items were
+  asked about for classes that can't use them, and Albion bots talked about Midgard's frontier as if it were home.
+- **A raid started from the launcher could wait forever for one bot**, and one bot stuck in another dungeon held a
+  Krondon raid at its gathering town until it was killed by hand. A raid now goes after 15 minutes with nine in ten.
+- **Orshom's Fire killed a hundred raiders in one Krondon raid.** Raiders now stay out of it.
+- **Attackers took most keeps** (12 of 16 bot sieges in one night), mostly because defenders were called only when
+  the battle began. They're now called as the enemy army marches, and the balance aims at about half.
+- **Gamebots waited 15 minutes in their capital for a frontier porter** (779 times in one night). They now go to the
+  border keep first.
+- **The server stalled for a second or more on a busy night.** Two heavy searches are capped. The 4-6 second stalls
+  were in Krondon raids before Scurceol's orb fix, which also bounds that search; it hasn't been timed on a real install.
+
+## Still not right
+
+- **Bots don't fall when they die.** The game client plays the lying-dead pose only for player characters. The only
+  death animation it plays for any other character also removes it from the world, so a fallen bot couldn't be rezzed.
+  There's no safe way around it without changing the game client.
+- **A bot stuck searching for a camp for minutes** (464 times in one night, mostly level 50s at Tir na Nog's bind):
+  the cause isn't found yet. The bot now clears its search memory after 3 minutes and the log records what it held,
+  so the next report should show why.
+- **Bot parties never take a new member once they set off**, so an "lfm" post from a bot party is only a last call
+  while it forms.
+- **A bot that offers to group may walk on before you meet.** It doesn't wait where it was; if it's too far by the time
+  you invite, it tells you where it is.
+
+## Beta 1.1.3: what has been seen on a real install
+
+- **Xanxicar's stomp fix:** one Albion raid of 280 bots killed him in 23 minutes with no wipe (a build before the chat
+  fixes; the stomp code is the same).
+- **Scurceol Hyrde's orbs:** a raid of 200 shot the four orbs down from the floor in 10 minutes and killed him 50
+  seconds later, with no raider killed by him or his orbs (third release candidate; the raid fixes made after it are
+  tests only).
+- **The two Darkness Falls exits:** clicked once each with an Albion character; both went to Albion's exit in Camelot
+  Hills. Not tried yet from Midgard or Hibernia.
+- **Chat, before today's fixes:** a bot that grouped with the player greeted them once when they met again, answered
+  the player's /faction question about a camp, and offered to group after the player's /lfg post.
+- **Chat, sixth to twelfth release candidates** (about five hours by day, Real clock): true answers to the player's
+  /faction questions within 16-34 seconds; a friend's honest answer to small talk; a far bot saying where it is; an idle
+  duo that stays quiet; the way to a zone; 88-100% of bot questions answered within a minute. Each build's log showed a
+  few lines that didn't fit, all fixed; the last one (an offer from across the zone saying "same mobs") is tests only. A
+  bot answering your own /trade post hasn't been seen yet.
+- **Setup waiting out a busy download server:** tests only.
 
 ## Always on
 
@@ -33,13 +85,10 @@ These apply even with every Living Server switch off:
 ## Beta 1.1: what hasn't been checked yet
 
 - **Quests and quest markers.** Beta 1.1 carries HearthDAoC's quest changes (name matching, delivery items, the
-  25-quest journal, one marker scheme, the epic chains) and they have **not been played in game**. The code also
-  has defects that would make quests feel broken for a solo player: a kill by your bot group gives you no quest
-  credit unless you damaged the monster yourself; a hand-in is refused once you are above the quest's maximum
-  level; quest experience ignores the XP-by-level setting; and the epic chains are not linked until a world script
-  runs, which the installer doesn't do yet. The list with the fixes planned for 1.1.1 is in
-  [QUESTING.md](QUESTING.md). The new client also colours "this NPC is your current step" as if the quest were in
-  progress elsewhere.
+  25-quest journal, one marker scheme, the epic chains) and they have **not been played in game**. 1.1.2 added
+  quest credit for your bot group's kills, hand-ins above the quest's level and quest XP by level: tests only. The
+  epic chains are not linked until a world script runs, which the installer doesn't do yet. Details are in
+  [QUESTING.md](QUESTING.md).
 - **Sieges at a normal bot count.** Their timers really run from 1.1 on (they were off in every earlier build),
   so musters, marches, repels and the four-hour cap fire where they used to be skipped. Checked only on the test
   copy at about 1,000 bots.
@@ -48,19 +97,13 @@ These apply even with every Living Server switch off:
 - **Smaller rosters:** automatic raids open only when a realm has 80 eligible level-50 bots online, so a small
   roster rarely gets them, and a roster filled only with the Lv.1 and Lv.50 buttons has no bots between levels 20
   and 49 until they level.
-- **Dragon raids don't call the Epic Special Forces** after a wipe yet; dungeon raids do.
-- **Bots don't fall when they die:** the game client keeps a dead pose only for players. A fix was tried and left
-  out.
 - **The talking update's own in-game list** (combat calls in a real fight, a keep's news retold a minute later,
   /lfg and /trade in the original client, chat volume at 900 bots a realm) is still being worked through.
-- The community's first reports are on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues):
-  the launcher staying on STARTING, a party that doesn't disband, bots released in a battleground standing in the
-  capital, the friends list, and the new client's hotbars. They are the 1.1.1 list.
 
-## Beta 1.1.2: updates from the launcher and Setup
+## Beta 1.1.2 and 1.1.3: updates from the launcher and Setup
 
-- **Not yet tried on a real Windows PC.** CI tests the update path without the window on a fake game folder, and
-  Setup's choice of package against GitHub. Still to check by hand: the GET UPDATE button, the dialog and its three
+- **Not yet tried on a real Windows PC.** 1.1.3 is the first release the launcher can offer as an update. CI tests
+  the update path without the window on a fake game folder, and Setup's choice of package against GitHub. Still to check by hand: the GET UPDATE button, the dialog and its three
   choices, the download progress line, the install window and its "Press Enter" step, the launcher opening again
   and saying how it went, a 0.37c game (both launchers), a game folder in a path with spaces, Setup installing a
   downloaded package all the way through its window, and SmartScreen or antivirus reactions to the PowerShell step.
@@ -125,10 +168,8 @@ meetup fix drop two no-shows (in the server log).
   - A bot in the frontier may answer your "inc" with "omw" without coming.
   - Bots don't know what you are doing beyond your words: a "gz" is answered only by a bot that just
     levelled, and other replies guess from the words alone.
-  - Chat volume hasn't been tuned for very large rosters (1,000+ bots a realm).
-  - In development for Beta 1.1 (the talking update, [bot-voices/TALKING-UPDATE.md](bot-voices/TALKING-UPDATE.md)):
-    true-only lines, conversation threads, combat calls, bot tells and /lfg and /trade traffic. They're tested
-    without a running world only; its "Not checked in game yet" list is what's left.
+  - Chat volume: see "/faction can get too busy" at the top.
+  - Chat has been tested one line at a time, not as conversations over several turns.
 - **Added the 0.37c new client after installing this?** Run `INSTALL.cmd` again so the new client's
   launcher gets the Living Server tab and its gate fixes too.
 - **Versions:** Living Server is for Offline DAoC 0.37 / 0.37b / 0.37c only, and the installer refuses anything
@@ -161,8 +202,8 @@ meetup fix drop two no-shows (in the server log).
 
 ## Save safety and network (1.1.2)
 
-- **Seen on one real install so far.** On the owner's Windows test install (2026-11-05) the server logged WAL
-  confirmed, the integrity check `ok` and a written daily backup. The installer's database copy and the ledger move
+- **Seen on the owner's install** (2026-11-05 and 2026-11-08): the server logged WAL confirmed, the integrity check
+  `ok` and a written daily backup. The installer's database copy and the ledger move
   have been checked in automated tests (Linux and the Windows CI). A start should log
   `DB_SAFETY ...`, `DB_SAFETY journal_mode=wal confirmed` and `DB_INTEGRITY ... result=ok`. About 5 minutes later it
   should log `DB_BACKUP result=written`.

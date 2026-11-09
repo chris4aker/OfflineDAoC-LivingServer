@@ -13,6 +13,7 @@
 @role D type=Leveler
 @role E type=NoLifer
 @role F type=*
+@role A class=Cleric
 A: {q} respecced my cleric to smite last night and my guild acts like i kicked a dog | {q} went smite on my cleric and now nobody in guild will group me | {q} my guild found out i went smite and the reaction was not kind
 B: smite cleric here, welcome to the club. we have jackets | smite is fine, ignore them. you can actually kill things now | as a fellow smite cleric, the looks never stop, you get used to it
 C: as a tank i just want to know who is keeping me alive in a pull | the tank side of me wants to know who heals when you are busy smiting
@@ -81,7 +82,7 @@ D: a friar statue holding a staff and a heal potion | holding a staff in one han
 @role C class=Armsman
 @role D type=NoLifer
 @role E class=Cleric,Friar
-A: armsmen, settle something for me. polearm, two hander or crossbow? | {q} new armsman, which weapon line actually matters | polearm or two handed, and is crossbow worth any points at all
+A: armsmen, settle something for me. polearm, two hander or crossbow? | {q} rolling an armsman alt, which weapon line actually matters | polearm or two handed, and is crossbow worth any points at all
 B: polearm. the reach, the positional styles, it feels like what an armsman should be | polearm all day, nothing says albion like a halberd
 C: two handed. bigger swings, simpler setup, less fussing with positions | two hander here. i do not want to dance around a monster to hit hard
 B: the dancing is the fun part | positionals are half the class, you skip half the class
@@ -177,7 +178,7 @@ B: still should have been merc
 @role C class=Armsman,Mercenary,Paladin
 @role D type=NoLifer
 @role E class=Wizard,Sorcerer,Cabalist
-A: the mids on the boards are crying about scouts again | read another thread tonight, every hib on there wants scouts nerfed | {q} the other realms have a new favorite complaint and it is us scouts
+A: the mids on the boards are crying about scouts again | read another thread tonight, every hib on there wants scouts nerfed | {q} the other realms have a new favorite complaint and it is our scouts
 B: let them cry. the bow is the only thing i have | they cry because we are the only thing that hits them before they reach the wall
 C: to be fair, getting shot from across a field is miserable | i have been shot by their hunters from forever away, i get the complaint
 B: their hunters and rangers do the same thing to us
@@ -195,10 +196,10 @@ E: stealthed archers make everyone nervous, that is the real complaint | the ste
 ?A: so scouts are overpowered at range and helpless up close. sounds balanced
 D: balanced in the most annoying way possible
 ~ 20
-C: INC, mid group crossing toward Caer Benowyc | INC at Caer Benowyc, looks like a full group of mids
+C: ok enough, who is heading out? frontier needs bodies more than this argument | anyway, the frontier needs bodies more than this argument
 B: on my way, i will find a hill | omw. hill time
-E: this is why we need scouts lol | well, argument over, go shoot something
-A: go get them, i will be there after this sit | heading over, someone tell the merc to stop dancing
+E: and this is why we need scouts out there lol | well, argument over, go shoot something
+A: go on, i will catch up after this sit | heading out too, someone tell the merc to stop dancing
 
 @topic infiltrators
 @levels 30-50
@@ -207,9 +208,9 @@ A: go get them, i will be there after this sit | heading over, someone tell the 
 @role C class=Infiltrator,Scout
 @role D type=Leveler
 @role E type=Daredevil
-A: going infil hunting in the frontier tonight, anyone want to duo | {q} any infiltrators up for a stealth hunt in Forest Sauvage tonight
+A: who is going infil hunting in the frontier tonight, any takers | {q} any infiltrators up for a stealth hunt in Forest Sauvage tonight
 B: i am in. last night in Snowdonia was a feast | count me in, i had a great run in Snowdonia last night
-C: careful, their shadowblades have been sweeping Pennine Mountains | heads up, a pack of nightshades has been camping the Pennine roads
+C: careful, their shadowblades love hunting other stealthers | heads up, their nightshades go looking for infils on purpose
 B: good. i want a stealther fight more than a lone caster anyway
 D: as someone who gets ganked on the way to the keeps, i hate all of you | every time i run to a keep alone i meet one of you. well, one of theirs
 B: we hunt their lone runners, not ours. we are on your side | we only stab enemies. you are safe from me, i promise
@@ -231,7 +232,7 @@ B: anyone without stealth following two infils is a bell following two cats | lo
 C: stay at the keep and we will bring the fight to you
 E: deal. i will be the bait
 B: perfect, now we have bait | bait is a noble role
-A: meet at the border keep in ten, stealth up before you leave the gate
+A: have fun out there, and stealth up before you leave the gate
 
 @topic minstrels
 @levels 20-50
@@ -240,6 +241,7 @@ A: meet at the border keep in ten, stealth up before you leave the gate
 @role C class=Sorcerer
 @role D type=Socialite
 @role E type=Leveler
+@role A class=Minstrel
 A: is it just me or does every group invite open with "u have speed?" | {q} anyone else play a minstrel and feel like a horse with a lute
 B: every single invite. speed first, everything else second | i got invited, then asked to sing, then asked to sing faster
 C: at least they want you. sorcerers get invited and then ignored until the adds come
@@ -272,7 +274,7 @@ B: and then ask for speed | you say that, but you would still ask for speed
 @role C class=Wizard
 @role D class=Wizard,Theurgist
 @role E type=NoLifer
-A: wizards, earth, cold or fire, which line are you running? | {q} new wizard here, which line do i dump points into | earth cold or fire, and dont tell me it does not matter
+A: wizards, earth, cold or fire, which line are you running? | {q} rolling a wizard alt, which line do i dump points into | earth cold or fire, and dont tell me it does not matter
 B: fire. it is the biggest number on the screen and that is all i want | fire, because when it lands everyone notices
 C: cold. the steady choice, less flashy but i rarely regret it | cold. less noise, more consistency
 D: earth. nobody talks about earth and that is why i like it | earth here, we are rare and smug about it
@@ -287,7 +289,7 @@ C: they are bad until the enemy buffs heat resist, then you sit there useless | 
 ~ 25
 ?E: this exact argument was on the boards last spring | this argument is older than my account
 ?B: and fire won that one too
-A: unrelated, how do you guys survive pulls? everything i hit runs straight at me | side question, how do you live through a pull? my healer keeps yelling
+A: unrelated, how do you guys survive pulls? every wizard i group with eats the first add | side question, how does a wizard live through a pull? our healer keeps yelling at ours
 D: let the tank hit it first. a wizard pulling is a wizard dying | count to three after the tank engages, then cast. always
 B: and dont stand in front, you are made of paper | remember you are wearing cloth. paper cloth
 ?C: wet paper
@@ -405,9 +407,9 @@ A: ok rolling one. ill name the copy after my cat
 @role C class=Cleric
 @role D type=Socialite
 @role E type=Leveler
-A: grouped with a necro tonight and i still do not understand what happened | {q} can someone explain necromancers to me, i healed one and got confused
+A: grouped with a necro tonight and i still do not understand what happened | {q} can someone explain necromancers to me, our healer got so confused
 B: necro here, ask away, we are used to it | ask me, i am the pet. or the shade. depends when you ask
-A: i tried to heal him and the heal went to the pet | my heals kept landing on the pet instead of the robe guy
+A: our cleric tried to heal him and the heal went to the pet | the heals kept landing on the pet instead of the robe guy
 B: correct. the pet is my body now. heal the pet | the pet is the real target. i am just a shade along for the ride
 C: as a cleric, this broke my brain for a week | took me weeks to remember to heal the big pet, not the little ghost
 ~ 25
@@ -439,6 +441,7 @@ D: necromancers, the only class with a user manual
 @role C type=Explorer
 @role D type=Socialite
 @role E type=NoLifer
+@role A levels=1-9
 A: first character ever, just left Cotswold. where should i go next | {q} brand new, finished the Cotswold quests, what comes after | hi all, first night playing, where do people level after Cotswold
 B: welcome! Camelot Hills first, the snakes and bandits are easy xp | grats on starting. Camelot Hills next, plenty of snakes and young boars
 C: and stay away from anything red or purple, even if it looks like a snake | rule one, check the con color. purple snakes are not your friends
@@ -471,7 +474,8 @@ D: good luck! shout if you need help | holler if you get stuck, someone will com
 @role C type=Explorer
 @role D type=Daredevil
 @role E type=NoLifer
-A: outleveled Cornwall tonight. where do people go in the 30s these days | {q} done with the moor wolves in Cornwall, what is next for a 31 | ding 30 in cornwall, where to now
+@role A levels=28-34
+A: outleveled Cornwall tonight. where do people go in the 30s these days | {q} done with the moor wolves in Cornwall, what is next for the low 30s | outleveled cornwall, where to now
 B: gz! Llyn Barfog is decent if you can find a group | grats. Llyn Barfog has groups most evenings
 C: Lyonesse has the hamadryads, quiet and pretty | try Lyonesse, the hamadryads, nobody is ever there
 D: or Dartmoor if you like living dangerously | Dartmoor. bring a healer and an exit plan
@@ -568,9 +572,9 @@ B: see you all saturday :)
 @role D class=Cleric,Friar
 @role E type=Leveler levels=30-49
 @role F class=Armsman,Paladin
-A: anyone at Caer Berkstead? the lord has been hit twice tonight | {q} Caer Berkstead got hit again, anyone nearby
-B: we lost Caer Erasleigh an hour ago and nobody even noticed | Erasleigh fell earlier, the claim is gone too
-C: i noticed. i was the only one there | i was there. alone. it was a long minute
+A: {q} why does it feel like every night one of our keeps gets hit and nobody is home | {q} anyone else notice our keeps fall while the whole realm is leveling
+B: keeps fall all the time and half the realm never even notices | a keep flips, the claim goes with it, and nobody blinks
+C: i notice. i am usually the only one there | i have been the only one at a door before. it was a long minute
 ~ 25
 D: we need a keep defense group. who is on | we should keep a standing defense group for the evening, who is in
 E: i would but i am leveling, two bubbles to go | after this level maybe, i am close
@@ -583,15 +587,15 @@ C: i will go out and hunt their siege before it gets set up | i will ride out an
 ?B: ride out alone? you remember last time
 C: last time was a learning experience | last time i learned a lot about their stealthers
 ~ 25
-A: if we hold Berkstead tonight, we can push to Caer Boldiam after | hold Berkstead and we could retake Erasleigh before morning
+A: if we can hold what we have for one night, then we push | hold our own keeps first, then we can dream about theirs
 B: one thing at a time. hold first | first we hold, then we dream
 ?F: holding is my favorite thing to do anyway
 ~ 20
-E: ding! ok i am free, omw | DING, heading to berkstead now
+E: ding! ok i am free, omw | DING, ok where is this defense group
 D: gz! now hurry | grats, and run
-C: INC at Berkstead, hibs with a ram on the main door | they are at the main gate of Berkstead with a ram, INC
-F: everyone to the door, go go | door team on me, move
-B: here we go | told you they would come back
+C: ok enough talk, who is heading out to the keeps? | anyway, our keeps need bodies more than they need this thread
+F: door team, form up on me | anyone who wants door duty, group with me
+B: here we go | about time someone said it
 
 @topic relic_raid
 @levels 40-50
@@ -601,32 +605,32 @@ B: here we go | told you they would come back
 @role C type=Daredevil
 @role D type=Socialite
 @role E type=Leveler
-A: woke up, logged in, and our relic is gone from Castle Excalibur | {q} who was awake at 5am? because the mids were, and our relic is gone
-B: they hit Castle Excalibur at five am with a full zerg | 5am raid on Excalibur. nobody was online to stop it
+A: {q} why do relic raids always happen at five am, who is awake for that | {q} the mids love a dawn relic raid, have you noticed
+B: they come when nobody is online to stop them | dawn raids work because every defender is asleep
 C: classic. nobody defends at five | of course they came at dawn. they always come at dawn
-D: a guildmate told me when i got up for coffee | heard it from my guild this morning, thought it was a joke
+D: the worst is hearing about it from your guild over coffee | finding out over breakfast is the worst part
 ~ 25
 E: does it even matter? i barely notice the relic bonus while leveling | honest question, does losing one relic change my leveling at all
 B: it matters in the frontier. every bonus matters | it matters to the people fighting. it matters to me
 C: it matters because it is our relic, that is enough | it is ours. that is the whole point
 ?D: pride is a bonus too
 ~ 30
-A: is Castle Myrddin still ours at least? | please tell me Myrddin still has its relic
-B: Myrddin is fine. for now | Myrddin is safe, i checked an hour ago
-C: then we take Excalibur's back tonight. prime time, full realm | tonight we go get it. eight o'clock, everyone
-D: i will post in every guild chat i am in | spreading the word in my guild and alliance channels
+A: so do we guard the relic castles all night or just retake at prime time | is it worth keeping a night watch on the relic castles
+B: a night watch gets bored and logs. retaking is easier | nobody sits a night watch for long, trust me
+C: prime time with a full realm beats any night watch | then you hit back at eight o'clock, everyone
+D: and i would post it in every guild chat i am in | i would spread the word in my guild and alliance channels
 ?E: i can come after dinner, i want to see a relic raid once
 ~ 25
-B: the relic sits deep in their castle. we will need rams and a lot of healers | we need rams, siege and every cleric that can log in
-C: and someone to scout their numbers before we commit | i will scout ahead and count heads
+B: a relic sits deep in the castle. you need rams and a lot of healers | any relic raid needs rams, siege and every cleric that can log in
+C: and someone to scout their numbers before you commit | i always scout ahead and count heads
 D: you just want to go ahead alone again
 C: alone is how i scout best | i scout better alone, everyone else is loud
 ~ 20
-A: ok. tonight, eight, meet at the border keep | eight tonight, gather at the gate, bring everyone
-E: first relic raid, i am excited and nervous | my first relic raid. what do i bring
+A: ok enough, who is heading out tonight? | anyway, this argument wont hold a single door
+E: i still have never seen a relic raid, what do you even bring | first relic raid for me whenever it happens, what do i bring
 B: potions, patience and a bind point near the front | bring potions and a lot of patience
 ?D: and snacks. relic raids take forever
-A: see everyone tonight | tonight then. albion wakes up
+A: see everyone out there | albion wakes up eventually
 @needs
 
 @topic dragon_raid
@@ -671,14 +675,14 @@ B: sunday then. log in early, buffs at the gate | sunday, gather early, we leave
 @scene alb_df_open
 @role B type=Leveler
 @role C type=NoLifer
-@role D type=Explorer
+@role D type=Explorer levels=30-38
 @role E type=Daredevil
-A: is DF open for us right now? | {q} anyone know if albion has Darkness Falls tonight
-B: we have it! got in an hour ago, the demons are thick | yes, open since this afternoon. go while it lasts
-C: we have it because three guilds took keeps at lunch | we have it because someone held the keeps all day, thank them
-A: thank you keep people | heroes of the lunch break
+A: {q} how do you even tell if DF is open for us | {q} anyone know how albion keeps Darkness Falls open
+B: walk to the entrance and see if it lets you in, that is the test | it opens when we hold enough keeps, go while it lasts
+C: and when it is open, thank whoever held the keeps | it stays open because someone holds the keeps all day, thank them
+A: thank you keep people | heroes of the frontier
 ~ 25
-D: first time going down there. what do i hunt at 33 | i am 33, what is safe in DF for me
+D: first time going down there soon. what do i hunt in the low 30s | low 30s here, what is safe in DF for me
 B: the familiars and apprentice necyomancers near the entrance | stay near the entrance, the demoniac familiars are your speed
 E: and do not wander deeper alone. the plated fiends will flatten you | go too deep and a plated fiend will introduce itself
 ?D: noted. no plated anything
@@ -696,7 +700,7 @@ D: i will be the one dying near the entrance meanwhile | i will be at the entran
 A: careful though, if the mids take the keeps tonight we get kicked out | it closes the second we lose the keep count, remember
 B: then everyone leveling in DF should go defend once in a while | that is the deal. we level here, we defend there
 ?E: or at least stop complaining when DF closes
-D: heading down now. wish me luck | ok going in, wave if you see me
+D: next time it is open i am going down. wish me luck | next time we have it i am going in, wave if you see me
 B: good luck, watch out for the deamhaness
 
 @topic guild_recruiting

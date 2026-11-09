@@ -644,6 +644,111 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousLivingServer.OfferFits("hey, want to duo here? im {level} {class}", true), Is.True);
         }
 
+        /// <summary>RC7 on the owner's PC: two stories at once, a third two minutes later; "which way" answered "few grps".</summary>
+        [Test]
+        public void OneStoryAtATimeAndWhereGetsAPlace()
+        {
+            Assert.That(AutonomousBotChatCoordinator.AnyStoryRoom(100_000, 104_000), Is.False);
+            Assert.That(AutonomousBotChatCoordinator.AnyStoryRoom(100_000, 100_000 + AutonomousBotChatCoordinator.AnyStoryGapMs), Is.True);
+            Assert.That(AutonomousChatFieldTalk.Fits("few grps", "place"), Is.False);
+            Assert.That(AutonomousChatFieldTalk.Fits("3 grps", "place"), Is.False);
+            Assert.That(AutonomousChatFieldTalk.Fits("through the mg", "place"), Is.True);
+            Assert.That(AutonomousChatFieldTalk.RunsOnAbout(new AutonomousChatFieldTalk.Said("port to frontier up?", "rvr", null) { Family = "rvr_port" }), Is.False);
+            Assert.That(AutonomousChatFieldTalk.RunsOnAbout(new AutonomousChatFieldTalk.Said("any grps out?", "rvr", null) { Family = "rvr_grps" }), Is.True);
+        }
+
+        /// <summary>RC7 on the owner's PC: "lfg Stonehenge Barrows or anywhere with xp" from a cabalist out in Odin's Gate for rvr.</summary>
+        [TestCase("lfg Stonehenge Barrows or anywhere with xp", true, false)]
+        [TestCase("lfg Stonehenge Barrows or anywhere with xp", false, true)]
+        [TestCase("lf rvr grp 50 cab", true, true)]
+        [TestCase("lf rvr grp 50 cab", false, false)]
+        [TestCase("lfg 50 cab", true, true)]
+        [TestCase("lfg 50 cab", false, true)]
+        public void AGroupPostFitsTheBotsTask(string text, bool rvrTask, bool fits) =>
+            Assert.That(AutonomousChatFieldTalk.FitsTask(text, rvrTask), Is.EqualTo(fits));
+
+        /// <summary>RC6 on the owner's PC: "what class?" was answered "coming from mount collory".</summary>
+        [Test]
+        public void WhatClassIsAnsweredWithAClass()
+        {
+            Assert.That(AutonomousChatFieldTalk.QuestionKind("what class?"), Is.EqualTo("class"));
+            Assert.That(AutonomousChatFieldTalk.Fits("coming from mount collory", "class"), Is.False);
+            Assert.That(AutonomousChatFieldTalk.Fits("in lough derg", "class"), Is.False);
+            Assert.That(AutonomousChatFieldTalk.Fits("bard 29", "class"), Is.True);
+            Assert.That(AutonomousChatFieldTalk.Fits("cab, 50", "class"), Is.True);
+            Assert.That(AutonomousChatFieldTalk.Fits("dunno", "class"), Is.True);
+        }
+
+        /// <summary>RC6 on the owner's PC: written /lfg lines that claim a group or a want slipped past the group-state check.</summary>
+        [TestCase("group at Coruscating Mine needs a healer, pst", "lfm")]
+        [TestCase("group has room near Connacht, all classes welcome", "lfm")]
+        [TestCase("33 minstrel looking for group, got time", "lfg")]
+        [TestCase("ranger 50 lf anything with xp pst", "lfg")]
+        [TestCase("any group need a 50 minstrel? happy to travel", "lfg")]
+        [TestCase("any1 need a 32 theurgist? pst", "lfg")]
+        [TestCase("looking for a duo partner 50 scout", "lfg")]
+        [TestCase("wtb a shield for a 50 armsman", null)]
+        [TestCase("looking for plate arms, will pay", null)]
+        public void AWrittenGroupPostIsReadForItsStance(string text, string stance) =>
+            Assert.That(AutonomousChatStance.SeekOf(text), Is.EqualTo(stance));
+
+        /// <summary>RC6 on the owner's PC: the player's "wts 99% arcane cloth cap, cheap" in /trade drew nothing.</summary>
+        [TestCase("wts 99% arcane cloth cap, cheap", AutonomousChatMarket.Post.Wts)]
+        [TestCase("selling a 98% sword pst", AutonomousChatMarket.Post.Wts)]
+        [TestCase("wtb cloth legs pst", AutonomousChatMarket.Post.Wtb)]
+        [TestCase("anyone selling a necklace?", AutonomousChatMarket.Post.Wtb)]
+        [TestCase("lol", AutonomousChatMarket.Post.None)]
+        [TestCase("where is the trainer", AutonomousChatMarket.Post.None)]
+        public void APlayersTradePostIsReadAsASaleOrAWant(string text, AutonomousChatMarket.Post post) =>
+            Assert.That(AutonomousChatMarket.PostOf(text), Is.EqualTo(post));
+
+        /// <summary>RC6 on the owner's PC: "which stable 4 group rendezvous?" in /faction.</summary>
+        [TestCase("group rendezvous", false)]
+        [TestCase("the group rendezvous", false)]
+        [TestCase("frontier patrol near death stalkers", false)]
+        [TestCase("Iarn Dwarf Camp", true)]
+        [TestCase("Hagall", true)]
+        [TestCase("Avalon Marsh", true)]
+        [TestCase("Caer Benowyc", true)]
+        public void OnlyARealPlaceIsADestinationToTalkAbout(string destination, bool place) =>
+            Assert.That(AutonomousBotVoices.IsPlaceName(destination), Is.EqualTo(place));
+
+        /// <summary>RC6 on the owner's PC: "any grps out?" "quiet atm" ran on with "how many?" "small grp" "count me in".</summary>
+        [TestCase("quiet atm", true)]
+        [TestCase("havent seen any", true)]
+        [TestCase("dunno, quiet tonight", true)]
+        [TestCase("nope sry", true)]
+        [TestCase("beno under attack", false)]
+        [TestCase("few grps", false)]
+        [TestCase("try the crafters in camelot", false)]
+        public void AnAnswerThatSaysThereIsNothingEndsTheThread(string answer, bool nothing)
+        {
+            Assert.That(AutonomousChatFieldTalk.SaysNothing(answer), Is.EqualTo(nothing));
+            Assert.That(AutonomousChatFieldTalk.GoesSomewhere("k omw"), Is.True);
+            Assert.That(AutonomousChatFieldTalk.GoesSomewhere("ty"), Is.False);
+            Assert.That(AutonomousChatFieldTalk.GoesSomewhere("ty, inv"), Is.True, "RC8: 'not that i know' then 'ty, inv'");
+        }
+
+        /// <summary>RC6 on the owner's PC: "want to team up for a bit?" from another zone, then "too far away to join you".</summary>
+        [Test]
+        public void AnOfferFromTooFarSaysWhereTheBotIs()
+        {
+            for (int seed = 0; seed < 40; seed++)
+            {
+                string far = AutonomousLivingServer.WithWhere("50 wizard here, want to team up for a bit?", "Avalon Marsh", false, new Random(seed));
+                Assert.That(far, Does.StartWith("50 wizard here, want to team up for a bit?"), far);
+                Assert.That(far, Does.Contain("avalon marsh"), far);
+                Assert.That(far, Does.Not.Contain("??"), far);
+                string named = AutonomousLivingServer.WithWhere("hi im 50 scout want to duo in Pennine Mountains?", "Pennine Mountains", true, new Random(seed));
+                Assert.That(named.ToLowerInvariant().Split("pennine").Length - 1, Is.EqualTo(1), named);
+                string across = AutonomousLivingServer.WithWhere("want to duo?", "Pennine Mountains", true, new Random(seed));
+                Assert.That(across, Does.Contain("pennine"), across);
+                string reply = AutonomousLivingServer.TooFarReply("Avalon Marsh", false, new Random(seed));
+                Assert.That(reply, Does.Contain("avalon marsh"), reply);
+                Assert.That(AutonomousLivingServer.TooFarReply(null, false, new Random(seed)), Is.Not.Empty);
+            }
+        }
+
         [Test]
         public void EveryTellTopicHasLinesAndOffersNeverPromiseAnInvite()
         {

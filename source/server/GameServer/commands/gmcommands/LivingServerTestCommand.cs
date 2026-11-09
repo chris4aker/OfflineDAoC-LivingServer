@@ -52,12 +52,12 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                 return;
             case "spammer":
                 Say(client, Off(Properties.BOT_LIVING_CHARACTERS, "bot_living_characters") ??
-                    (AutonomousGoldSpammers.StartSoon(realm) ? "A gold spammer starts in /faction within a second." : "A spammer is already at it in your realm."));
+                    (AutonomousGoldSpammers.StartSoon(realm) ? $"A gold spammer starts in /faction {WhenFaction(realm)}." : "A spammer is already at it in your realm."));
                 return;
             case "roleplayer":
                 int roleplayers = AutonomousRoleplayers.SpeakSoon(realm);
                 Say(client, Off(Properties.BOT_LIVING_CHARACTERS, "bot_living_characters") ??
-                    (roleplayers > 0 ? $"One of {roleplayers} roleplayer(s) online speaks in /faction within a second (and may be mocked)." : "No roleplayer of your realm is online and free to talk."));
+                    (roleplayers > 0 ? $"One of {roleplayers} roleplayer(s) online speaks in /faction {WhenFaction(realm)} (and may be mocked)." : "No roleplayer of your realm is online and free to talk."));
                 return;
             case "rumour":
             case "rumor":
@@ -224,6 +224,12 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
     private static string OnOff(bool on) => on ? "on" : "OFF";
 
     private static string Off(bool on, string setting) => on ? null : $"That part is off ({setting}); turn it on in the launcher's Living Server tab.";
+
+    /// <summary>When a line asked for now really reaches /faction (live test 2026-11-08: "within a second" came 4.5 minutes later).</summary>
+    private static string WhenFaction(eRealm realm) =>
+        AutonomousBotDebates.IsRunning(realm) ? "once the scene playing in /faction now is over"
+        : !AutonomousBotChatCoordinator.FactionRoom(realm) ? "as soon as /faction has room under its ceiling (it waits up to three minutes; LIVING_FEATURE_DROPPED in the log if it gave up)"
+        : "within a few seconds";
 
     private static void Say(GameClient client, string text) =>
         client.Out.SendMessage(text, eChatType.CT_System, eChatLoc.CL_SystemWindow);

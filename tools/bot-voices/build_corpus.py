@@ -378,6 +378,13 @@ def parse_file(path, problems):
                 # levels=35-49: a role whose lines only fit some levels ("i am not 50 yet"; live test 2026-10-18).
                 if 'levels' in req:
                     scene['roles'][role]['levels'] = parse_levels(req['levels'], where)
+                # task=rvr: a role whose lines tell what the bot is doing out there ("made it to {keep}", "first realm points"),
+                # cast only from bots really out for rvr (1.1.3 RC10 on the owner's PC: a 40 grinding in Avalon told it).
+                if 'task' in req:
+                    if req['task'] not in ('rvr',):
+                        problems.append(f'{where}: unknown task {req["task"]} (rvr)')
+                    else:
+                        scene['roles'][role]['task'] = req['task']
             elif key == 'exit':
                 # "@exit A": when the scene plays to its end, the bot cast as A logs off for a few hours (the rage quit).
                 if scene is None or not re.fullmatch(r'[A-H]', value):

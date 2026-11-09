@@ -65,6 +65,8 @@ public static partial class AutonomousRvrEventLayer
         public bool ThirdRealmIntervenes = Random.Shared.NextDouble() < RealmEventPolicy.ThirdRealmChance;
         public bool DefenseMustering, DefenseMarching;
         public long DefenseMusterDeadlineTick, DefenseMusterStartTick;
+        /// <summary>When scouts saw the attacking army march and the keep's realm was called (0: not yet). CallDefendersAtMarch.</summary>
+        public long DefenseCalledTick;
         /// <summary>The losing realm's one counterattack after a player took its keep (StartRetake).</summary>
         public bool Retake;
         public int RetakeCap;
@@ -785,6 +787,7 @@ public static partial class AutonomousRvrEventLayer
             : RealmEventPolicy.RecruitmentMilliseconds(0)));
         RealmEventNotices.Queue(active.TargetId, active.AttackerRealm, $"The army marches on {Place(active.Target.Name)}! Form up at the siege camp.",
             "siege_attack", RealmEventNotices.KeepSlots(active.Target.Name, active.DefenderRealm));
+        CallDefendersAtMarch(active, nowTick);
         var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
         if (log.IsInfoEnabled)
         {
@@ -798,6 +801,32 @@ public static partial class AutonomousRvrEventLayer
                      $" reason=\"{reason}\"");
         }
     }
+
+    /// <summary>
+    /// Scouts see the army leave its border keep, and the keep's realm is called to defend it now, not when the attackers
+    /// reach its walls. Owner's PC, 1.1.3 RC nights (2026-11-08/09): of 18 bot sieges 12 keeps fell, in 4-11 minutes of
+    /// battle for 8 of them; the defenders were called only as the battle began (RVR_DEFENSE_MUSTER in the same second as
+    /// RVR_SIEGE_STARTED), and the first one reached the keep 3-14 minutes later (7 captures), or never (5). Every siege whose
+    /// defenders were there within two minutes of the battle's start was held (3 of 3). The march itself took 9-37 minutes,
+    /// time the defenders now have to gather and man the walls. The third realm still joins only once the battle is on.
+    /// </summary>
+    private static void CallDefendersAtMarch(ActiveEvent active, long nowTick)
+    {
+        if (!RealmEventPolicy.DefendersCalledAtMarch(SiegeScheduling, active.DefenseReaction, active.Retake) ||
+            active.DefenseCalledTick > 0) return;
+        active.AttackObserved = true;
+        active.DefenseCalledTick = nowTick;
+        RealmEventNotices.Queue(active.TargetId, active.DefenderRealm,
+            $"Scouts report {GlobalConstants.RealmToName(active.AttackerRealm)}'s army marching on {Place(active.Target.Name)}! Gather to defend it.",
+            "siege_defend", RealmEventNotices.KeepSlots(active.Target.Name, active.AttackerRealm));
+        var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
+        if (log.IsInfoEnabled) log.Info($"RVR_DEFENSE_CALLED target={active.TargetId} defenders={GlobalConstants.RealmToName(active.DefenderRealm)} " +
+            $"marched={active.MarchedAttackers} cap={DefenderCapFor(active)} reason=\"scouts saw the army march\"");
+    }
+
+    /// <summary>A bot siege whose defenders are being gathered: its battle is on, or scouts saw its army march.</summary>
+    private static bool RecruitsDefenders(ActiveEvent active) =>
+        active.BattleStarted || !active.DefenseReaction && active.DefenseCalledTick > 0;
 
     /// <summary>
     /// The attacking realm's level-50 gamebots online and how many of them are on RvR duty: what a siege muster can draw
