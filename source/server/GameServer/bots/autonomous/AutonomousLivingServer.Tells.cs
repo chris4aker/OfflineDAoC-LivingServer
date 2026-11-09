@@ -226,6 +226,17 @@ public static partial class AutonomousLivingServer
     // (Needs voices and bot_voices_tells, not memory: the bot answers a player's /lfg, it doesn't recall them.)
     public static bool OfferFits(string lineText, bool sameZone) => sameZone || !HereWords.IsMatch(lineText ?? string.Empty);
 
+    private static readonly System.Text.RegularExpressions.Regex NearWords = new(
+        @"\b(here|same mobs|soloing|out here)\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    /// <summary>
+    /// The same for a bot in the zone but too far to invite, whose offer then says where it is: a line that says it is near
+    /// doesn't fit (RC12 on the owner's PC: "we keep going after the same mobs lol want to group? im across pennine
+    /// mountains, meet up and inv"). Pure.
+    /// </summary>
+    public static bool OfferFits(string lineText, bool sameZone, bool close) =>
+        OfferFits(lineText, sameZone) && (close || !NearWords.IsMatch(lineText ?? string.Empty));
+
     /// <summary>
     /// A duo offer that asks the player's level ("hey, im {level}, you?") doesn't answer an /lfg post that gave it (RC11 on the
     /// owner's PC: "50 lf xp grp" drew "hey, im 50, u?"). Pure.
@@ -271,7 +282,7 @@ public static partial class AutonomousLivingServer
             IReadOnlyDictionary<string, string> slots = known ? MemorySlots(row, player)
                 : new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = player.Name };
             if (!AutonomousBotVoices.TryLine(bot, "tell", out VC.Picked picked, topic: "group_offer", slots: slots,
-                    flags: known ? ["knows_player"] : null, filter: line => OfferFits(line.Text, sameZone) && OfferFitsPost(line.Text, message)))
+                    flags: known ? ["knows_player"] : null, filter: line => OfferFits(line.Text, sameZone, close) && OfferFitsPost(line.Text, message)))
                 continue;
             lock (LastTellPair)
                 LastTellPair[(bot.DatabaseID, player.Name)] = now;

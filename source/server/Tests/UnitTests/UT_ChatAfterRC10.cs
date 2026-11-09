@@ -102,6 +102,15 @@ public class UT_ChatAfterRC10
     public void AnOfferDoesntAskTheLevelThePostGave(string line, string post, bool fits) =>
         Assert.That(AutonomousLivingServer.OfferFitsPost(line, post), Is.EqualTo(fits));
 
+    [TestCase("we keep going after the same mobs lol, want to group?", true, false, false)]
+    [TestCase("we keep going after the same mobs lol, want to group?", true, true, true)]
+    [TestCase("hey, want to duo here? im {level} {class}", true, false, false)]
+    [TestCase("you looking for a group? im {level}, same area", true, false, true)]
+    [TestCase("you looking for a group? im {level}, same area", false, false, false)]
+    [TestCase("want to group? xp is better with two", false, false, true)]
+    public void AFarOfferDoesntSayItIsNear(string line, bool sameZone, bool close, bool fits) =>
+        Assert.That(AutonomousLivingServer.OfferFits(line, sameZone, close), Is.EqualTo(fits));
+
     [TestCase("Pennine Mountains", "Albion", true)]
     [TestCase("Cornwall", "midgard", true)]
     [TestCase("Camelot Hills", "Camelot Hills", true)]
