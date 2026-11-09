@@ -228,7 +228,7 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
     /// <summary>When a line asked for now really reaches /faction (live test 2026-11-08: "within a second" came 4.5 minutes later).</summary>
     private static string WhenFaction(eRealm realm) =>
         AutonomousBotDebates.IsRunning(realm) ? "once the scene playing in /faction now is over"
-        : !AutonomousBotChatCoordinator.FactionRoom(realm) ? "as soon as /faction has room under its ceiling"
+        : !AutonomousBotChatCoordinator.FactionRoom(realm) ? "as soon as /faction has room under its ceiling (it waits up to three minutes; LIVING_FEATURE_DROPPED in the log if it gave up)"
         : "within a few seconds";
 
     private static void Say(GameClient client, string text) =>

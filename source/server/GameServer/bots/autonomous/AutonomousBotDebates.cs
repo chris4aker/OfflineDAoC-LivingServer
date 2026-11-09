@@ -86,6 +86,29 @@ public static class AutonomousBotDebates
         return speakersAround >= 2 ? BeatDecision.Skip : BeatDecision.End;
     }
 
+    /// <summary>
+    /// The rule for a beat whose role already spoke in this scene (1.1.3, live check 2026-11-08: dunce_pause_game's dunce was
+    /// Iagoys for its first line and Yno, a stand-in, for the rest, and Yno rage quit). A role keeps its bot for the whole scene
+    /// once it has spoken; it is never recast. A free one speaks; a busy one (fighting, casting, or dead in the world) is waited
+    /// for up to <see cref="MaxBusyWaitMs"/> and then speaks anyway, as players typed between pulls and from the floor (the
+    /// same Iagoys came back 81 s later in the live log, in a fight); one that left (logged off, out of the realm) ends the
+    /// scene. A role that hasn't spoken yet follows <see cref="DecideBeat(SpeakerState,long,bool,int)"/>.
+    /// </summary>
+    public static BeatDecision DecideBeat(SpeakerState castSpeaker, long waitedMs, bool standInAvailable, int speakersAround, bool roleSpoke)
+    {
+        if (!roleSpoke)
+            return DecideBeat(castSpeaker, waitedMs, standInAvailable, speakersAround);
+        return castSpeaker switch
+        {
+            SpeakerState.Free => BeatDecision.Speak,
+            SpeakerState.Busy => waitedMs < MaxBusyWaitMs ? BeatDecision.Wait : BeatDecision.Speak,
+            _ => BeatDecision.End,
+        };
+    }
+
+    /// <summary>Whether a role may be given another bot: never once it has spoken, and never a storyline's protagonist. Pure.</summary>
+    public static bool MayRecast(bool roleSpoke, bool storyProtagonist) => !roleSpoke && !storyProtagonist;
+
     /// <summary>Typing pace: 3 seconds plus about 60 ms a character, within 3-10 seconds.</summary>
     public static int BeatDelayMs(string text) => Math.Clamp(3_000 + (text?.Length ?? 0) * 60, 3_000, 10_000);
 
@@ -521,9 +544,13 @@ public static class AutonomousBotDebates
             if (running.WaitingSince == 0 && running.RoomWaits == 0 && beat.Optional && Random.Shared.NextDouble() < 0.5 || beat.Variants.Length == 0)
                 continue;
             SpeakerState state = CastState(realm, running, beat.Role);
-            // A protagonist who died is waited for like a busy one: it releases or is raised in well under three minutes
-            // (in-game check 2026-10-28: a romance episode ended "a protagonist left" when one of the pair died mid-scene).
-            if (running.StoryKey != null && beat.Role is "A" or "B" && state == SpeakerState.Gone && DeadInWorld(realm, running, beat.Role))
+            bool roleSpoke;
+            lock (Sync)
+                roleSpoke = running.Said.Any(said => said.Role == beat.Role);
+            // A protagonist, or any role that already spoke, who died is waited for like a busy one: it releases or is raised in
+            // well under three minutes (in-game check 2026-10-28: a romance episode ended "a protagonist left" when one of the
+            // pair died mid-scene).
+            if ((roleSpoke || running.StoryKey != null && beat.Role is "A" or "B") && state == SpeakerState.Gone && DeadInWorld(realm, running, beat.Role))
                 state = SpeakerState.Busy;
             long waited = running.WaitingSince == 0 ? 0 : now - running.WaitingSince;
             // A storyline's protagonist is never replaced: a busy one is waited for (up to three minutes), and one who
@@ -541,9 +568,21 @@ public static class AutonomousBotDebates
                 End(realm, "a protagonist left");
                 return;
             }
-            GameBot speaker = state == SpeakerState.Free || state == SpeakerState.Busy && waited >= MaxBusyWaitMs || state == SpeakerState.Gone
-                ? SpeakerFor(realm, running, beat.Role) : null;
-            switch (DecideBeat(state, waited, speaker != null, SpeakersAround(realm, running)))
+            // A role that spoke: its own bot, whatever it is doing, while it is in the game; never another.
+            GameBot speaker = roleSpoke
+                ? state != SpeakerState.Gone && running.Cast.TryGetValue(beat.Role, out long castId) && AutonomousBotRegistry.TryGet(castId, out GameBot own) ? own : null
+                : state == SpeakerState.Free || state == SpeakerState.Busy && waited >= MaxBusyWaitMs || state == SpeakerState.Gone
+                    ? SpeakerFor(realm, running, beat.Role) : null;
+            BeatDecision decision = DecideBeat(state, waited, speaker != null, SpeakersAround(realm, running), roleSpoke);
+            // A role that spoke keeps its bot: if that bot has left the game, the scene ends (never recast).
+            if (roleSpoke && decision == BeatDecision.Speak && speaker == null)
+                decision = BeatDecision.End;
+            if (roleSpoke && decision == BeatDecision.End)
+            {
+                End(realm, $"role {beat.Role} spoke and its bot left");
+                return;
+            }
+            switch (decision)
             {
                 case BeatDecision.Wait:
                     if (running.WaitingSince == 0)
@@ -753,7 +792,7 @@ public static class AutonomousBotDebates
             AutonomousLivingServer.Later(speaker, due, () => Eligible(speaker, realm) && AutonomousBotChatCoordinator.HasFactionAudience(realm), () =>
             {
                 // An answer to the real player (1.1.3: not held by the ceiling).
-                using var playerTag = AutonomousChatExchange.Tag("player", 0, 0, "answerer", speaker);
+                using var playerTag = AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 1, "answerer", speaker);
                 AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, text);
                 AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), speaker, text, "chat", player.Name);
             });
@@ -779,8 +818,12 @@ public static class AutonomousBotDebates
     {
         if (running.Cast.TryGetValue(role, out long id) && AutonomousBotRegistry.TryGet(id, out GameBot cast) && Eligible(cast, realm))
             return cast;
-        if (running.StoryKey != null && role is "A" or "B")
-            return null;   // a storyline's protagonist has no stand-in
+        bool spoke;
+        lock (Sync)
+            spoke = running.Said.Any(said => said.Role == role);
+        // A storyline's protagonist has no stand-in, and a role that spoke keeps its bot (1.1.3: the dunce changed after line 1).
+        if (!MayRecast(spoke, running.StoryKey != null && role is "A" or "B"))
+            return null;
         running.Scene.Roles.TryGetValue(role, out VC.RoleSpec spec);
         var taken = running.Cast.Values.ToHashSet();
         GameBot replacement = AutonomousBotRegistry.Snapshot()

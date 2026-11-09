@@ -87,6 +87,8 @@ public static class AutonomousRoleplayers
 
     private static readonly ConcurrentDictionary<eRealm, long> NextAmbientAt = new();
     private static readonly ConcurrentDictionary<eRealm, long> LastMockAt = new();
+    /// <summary>A realm's in-character line that /faction held: its exchange and since when it waits (1.1.3 RC1 follow-up).</summary>
+    private static readonly ConcurrentDictionary<eRealm, (long Exchange, long Since)> Due = new();
     public const long AmbientMinMs = 20 * 60_000, AmbientSpreadMs = 25 * 60_000, MockRestMs = 4 * 60_000;
 
     /// <summary>GM test (/lstest roleplayer): an online roleplayer of the realm speaks on the next pulse. Returns how many are online.</summary>
@@ -109,26 +111,53 @@ public static class AutonomousRoleplayers
         foreach (eRealm realm in new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia })
         {
             if (!AutonomousBotChatCoordinator.HasFactionAudience(realm))
+            {
+                if (Due.TryRemove(realm, out var gone))
+                    Log.Info(AutonomousChatExchange.DroppedLog("roleplayer", realm, gone.Exchange, now - gone.Since, "no_audience"));
                 continue;
+            }
             long next = NextAmbientAt.GetOrAdd(realm, _ => now + AmbientMinMs / 2 + Random.Shared.Next((int)AmbientSpreadMs));
             if (now < next || AutonomousBotDebates.IsRunning(realm))
                 continue;
             NextAmbientAt[realm] = now + AmbientMinMs + Random.Shared.Next((int)AmbientSpreadMs);
+            bool waiting = Due.TryGetValue(realm, out var due);
+            long exchange = waiting ? due.Exchange : AutonomousChatExchange.NewId();
             GameBot rp = AutonomousBotRegistry.Snapshot().Where(bot => bot.Realm == realm && Is(bot) && AutonomousLivingServer.CanTalk(bot))
                 .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
-            if (rp == null || !AutonomousBotVoices.TryEventLine(rp, "roleplay", out string line, "ambient"))
-                continue;
-            // Already in character: sent as written (not through the speech pass).
-            // Held (a scene is playing, or /faction is full): the roleplayer tries again in a few seconds, not in half an hour.
-            if (!AutonomousBotChatCoordinator.BroadcastFactionAsWritten(rp.Name, realm, line))
+            string line = null;
+            bool said = false;
+            if (rp != null && AutonomousBotVoices.TryEventLine(rp, "roleplay", out line, "ambient"))
             {
+                // Already in character: sent as written (not through the speech pass).
+                using var tag = AutonomousChatExchange.Tag("roleplayer", exchange, 0, "roleplayer", rp);
+                said = AutonomousBotChatCoordinator.BroadcastFactionAsWritten(rp.Name, realm, line);
+            }
+            if (!said)
+            {
+                string held = line == null ? (rp == null ? "no_bot" : "no_line") : AutonomousBotChatCoordinator.LastHeld;
+                // Nothing to say and nothing waiting: as before, the next try is the usual while away.
+                if (!waiting && line == null)
+                    continue;
+                if (!waiting)
+                {
+                    Due[realm] = (exchange, now);
+                    Log.Info(AutonomousChatExchange.DueLog("roleplayer", realm, exchange, $" held={held}"));
+                }
+                else if (AutonomousChatExchange.AfterTry(false, held, due.Since, AutonomousBotDebates.LastSceneEnd(realm), now) == AutonomousChatExchange.DueStep.GiveUp)
+                {
+                    Due.TryRemove(realm, out _);
+                    Log.Info(AutonomousChatExchange.DroppedLog("roleplayer", realm, exchange, now - due.Since, held));
+                    continue;
+                }
+                // Held (a scene is playing, or /faction is full): the roleplayer tries again in a few seconds, not in half an hour.
                 NextAmbientAt[realm] = now + 5_000 + Random.Shared.Next(5_000);
                 continue;
             }
+            Due.TryRemove(realm, out _);
             AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), rp, line, "chat");
-            Log.Info($"ROLEPLAY_AMBIENT realm={GlobalConstants.RealmToName(realm)} bot=\"{rp.Name}\"");
+            Log.Info($"ROLEPLAY_AMBIENT realm={GlobalConstants.RealmToName(realm)} bot=\"{rp.Name}\"" + (waiting ? $" waited_s={(now - due.Since) / 1_000}" : ""));
             if (Random.Shared.NextDouble() < 0.6)
-                Mock(rp, realm, now);
+                Mock(rp, realm, now, exchange);
         }
     }
 
@@ -139,8 +168,12 @@ public static class AutonomousRoleplayers
     }
 
     /// <summary>Another bot mocks the roleplayer, and the roleplayer answers in character.</summary>
-    private static void Mock(GameBot rp, eRealm realm, long now)
+    private static void Mock(GameBot rp, eRealm realm, long now, long exchange = 0)
     {
+        // The mock goes on with the roleplayer's line (lines 1 and 2 of its exchange), or starts its own.
+        int first = exchange != 0 ? 1 : 0;
+        if (exchange == 0)
+            exchange = AutonomousChatExchange.NewId();
         if (LastMockAt.TryGetValue(realm, out long last) && now - last < MockRestMs)
             return;
         GameBot mocker = AutonomousBotRegistry.Snapshot()
@@ -154,13 +187,18 @@ public static class AutonomousRoleplayers
         {
             if (!AutonomousBotVoices.TryEventLine(mocker, "roleplay", out string mock, "mock", new Dictionary<string, string> { ["target"] = rp.Name }))
                 return;
-            if (!AutonomousBotChatCoordinator.BroadcastFaction(mocker.Name, realm, mock))
+            bool mocked;
+            using (AutonomousChatExchange.Tag("roleplayer", exchange, first, "mocker", mocker))
+                mocked = AutonomousBotChatCoordinator.BroadcastFaction(mocker.Name, realm, mock);
+            if (!mocked)
                 return;
             Log.Info($"ROLEPLAY_MOCK realm={GlobalConstants.RealmToName(realm)} bot=\"{rp.Name}\" mocker=\"{mocker.Name}\"");
             AutonomousLivingServer.Later(rp, 6_000 + Random.Shared.Next(8_000), () => AutonomousLivingServer.CanTalk(rp), () =>
             {
-                if (AutonomousBotVoices.TryEventLine(rp, "roleplay", out string answer, "answer", new Dictionary<string, string> { ["target"] = mocker.Name }))
-                    AutonomousBotChatCoordinator.BroadcastFactionAsWritten(rp.Name, realm, answer);
+                if (!AutonomousBotVoices.TryEventLine(rp, "roleplay", out string answer, "answer", new Dictionary<string, string> { ["target"] = mocker.Name }))
+                    return;
+                using var tag = AutonomousChatExchange.Tag("roleplayer", exchange, first + 1, "roleplayer", rp);
+                AutonomousBotChatCoordinator.BroadcastFactionAsWritten(rp.Name, realm, answer);
             });
         });
     }

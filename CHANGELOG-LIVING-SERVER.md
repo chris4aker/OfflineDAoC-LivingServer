@@ -66,6 +66,27 @@ MUST be top notch"). Checked by automated tests and a simulated evening only; no
   heard 7 lines in 7 s as a debate ended). A roleplayer held back tries again in a few seconds.
 - **`/lstest roleplayer` and `/lstest spammer` say when the line really comes:** within a few seconds, once the scene
   playing now is over, or as soon as /faction has room.
+- **A scene's part keeps its bot (after RC1).** The owner's check of RC1 (d30ba0fa, 2026-11-08) heard the dunce of
+  `dunce_pause_game` start as Iagoys and go on as Yno, who rage quit: Iagoys was in a fight for over 45 s, and the scene
+  gave the part to another bot. Now a part that has spoken is never given to another bot, in a dunce scene, a storyline
+  episode or a debate: a speaker fighting, casting or dead is waited for (45 s) and then says its line anyway, as players
+  typed between pulls; one that left the game ends the scene (`BOT_DEBATE_END reason="role A spoke and its bot left"`).
+  Tests only (every scene in the corpus, with its first speaker busy for minutes, and gone).
+- **A gold spammer, a rumour or a roleplayer that is due gets its turn (after RC1).** In the same check
+  `/lstest spammer` logged `GOLD_SPAMMER_START` and the spammer said nothing for over two minutes: it came as a debate
+  began, /faction stayed at its ceiling after it, and every held ad was spent with the next tried 18-48 s later.
+  `/lstest rumour` said "no free bot of your realm had a line for it" when /faction had held the line, and a held rumour
+  was lost. Now a held ad, rumour or in-character line keeps its turn and is tried again every few seconds; its lines still
+  count against the ceiling. Time behind a scene doesn't count; after three minutes without room it gives up
+  (`LIVING_FEATURE_DROPPED`). The log says when one is due (`LIVING_FEATURE_DUE feature=spammer|rumour|roleplayer ex=`),
+  `GOLD_SPAMMER_START` comes with the first ad really said, and a spammer that never spoke is not banned or cheered.
+  `/lstest rumour` tells apart a scene playing, a full /faction, no free bot and no written line, and the first free bot
+  with a line tells it (only one bot was asked before). The rumour's replies, the spammer's reactions and the
+  roleplayer's mockery share the line's exchange id. Tests only.
+- **Replies to the player each have their own exchange id.** RC1 tagged them all `ex=0`, so the checker read them as one
+  conversation and reported it out of order. `chat_audit.py` also treats `ex=0` as no exchange (for RC1 logs), and now
+  counts features that were due and never spoke in /faction: one is enough for `VERDICT FAIL`. The simulated evening has
+  a spammer every 40 minutes, a rumour every 20 and a roleplayer's line every 15, each waiting for its turn, and none silent.
 - **One reaction in ten minutes, whatever says it.** The ten-minute window also holds back a pure reaction ("lol", "been
   there", "nice going") at the moment it is sent, from any path, not only the ones that plan around it. A conversation's
   line comes at most about 40 s after the one before it, or not at all.
