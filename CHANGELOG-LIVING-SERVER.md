@@ -11,11 +11,13 @@ Older entries below keep the names they were written with.
 ## Beta 1.1.3 — 2026-11-08
 
 A hotfix: /faction chat that holds together, the raid gets out of Xanxicar's stomp, Scurceol Hyrde's orbs are shot down
-from the floor, two Darkness Falls exits should now work, and Setup waits out a busy download server. How it was tested is in the release notes
+from the floor, two Darkness Falls exits work, and Setup waits out a busy download server. How it was tested is in the release notes
 ([docs/RELEASE-NOTES-1.1.3.md](docs/RELEASE-NOTES-1.1.3.md)).
 
 **/faction that holds together** (owner 2026-11-08, watching 1.1.3's /faction: "faction feels disconnected... The chats
-MUST be top notch"). Checked by automated tests and a simulated evening only; not yet played.
+MUST be top notch"). Checked by automated tests and a simulated evening, then on the owner's PC: the chat checker
+read 68 minutes of an evening on the second release candidate (6a83c03) and 34 minutes on the third (b72716e, the same
+chat code) and passed both.
 - **Conversations in order, each speaker in its part.** Every line of a bot conversation (a question and its answers, a
   story about a death, the replies to a remark) was its own timer, set when the conversation was planned. A line held
   back 2-4 s because the channel had just carried one (up to three times) then came after the line meant to follow it,
@@ -71,7 +73,8 @@ MUST be top notch"). Checked by automated tests and a simulated evening only; no
   gave the part to another bot. Now a part that has spoken is never given to another bot, in a dunce scene, a storyline
   episode or a debate: a speaker fighting, casting or dead is waited for (45 s) and then says its line anyway, as players
   typed between pulls; one that left the game ends the scene (`BOT_DEBATE_END reason="role A spoke and its bot left"`).
-  Tests only (every scene in the corpus, with its first speaker busy for minutes, and gone).
+  Tests (every scene in the corpus, with its first speaker busy for minutes, and gone), then on the owner's PC with
+  RC2 (6a83c038): `/lstest dunce` played `dunce_pet_warrior` with one speaker from start to rage quit.
 - **A gold spammer, a rumour or a roleplayer that is due gets its turn (after RC1).** In the same check
   `/lstest spammer` logged `GOLD_SPAMMER_START` and the spammer said nothing for over two minutes: it came as a debate
   began, /faction stayed at its ceiling after it, and every held ad was spent with the next tried 18-48 s later.
@@ -82,13 +85,15 @@ MUST be top notch"). Checked by automated tests and a simulated evening only; no
   `GOLD_SPAMMER_START` comes with the first ad really said, and a spammer that never spoke is not banned or cheered.
   `/lstest rumour` tells apart a scene playing, a full /faction, no free bot and no written line, and the first free bot
   with a line tells it (only one bot was asked before). The rumour's replies, the spammer's reactions and the
-  roleplayer's mockery share the line's exchange id. Tests only.
+  roleplayer's mockery share the line's exchange id. On the owner's PC with RC2 (6a83c038): `/lstest spammer` spoke
+  after a 7 s wait and ran its five ads with reactions; `/lstest rumour` said honestly that no rare named was near.
 - **No wall of "released, running back" at the bind (after RC1).** Standing at Camelot's bind the owner heard about 25
   lines in 45 s from different bots ("released, running back", "at bind, omw back", "no rez, released. coming back to
   you"): a gamebot's word to its own group about its way back went out in /say to everyone near. These lines (released,
   horse, off the horse, back, still on the way) now go to the bot's own group, and only when a player is in it; a group of
   bots says nothing. /say lines carry their ceiling (`cap=`), and `chat_audit.py` prints the /say lines a minute and fails a
-  log with a minute of /say above its ceiling around the player. Tests only.
+  log with a minute of /say above its ceiling around the player. On the owner's PC with RC2 (6a83c038), at a busy
+  bind: 1.3-2.6 /say lines a minute.
 - **One greeting per bot per meeting (after RC1).** Cabowyn said "hey Manawatch! good to see you again" and a second later
   "hey hey Manawatch, City of Camelot treat you well after i left?": a GM test had cleared the greeting cooldowns while the
   first greeting was on its way. A bot that greeted a player, or is about to, doesn't greet them again for ten minutes,
@@ -142,7 +147,8 @@ MUST be top notch"). Checked by automated tests and a simulated evening only; no
   ceiling). Busiest two minutes 10.0 lines a minute before, 7.0 after, against a ceiling of 7.1; minutes above the
   ceiling 81 before, 0 after (events and lines to the player aside). The checker's verdict: FAIL before, PASS after.
 
-**Two Darkness Falls exits should now work** (tested against the world data; not clicked in game; found and fixed by
+**Two Darkness Falls exits work** (tested against the world data, and clicked in game on the owner's PC with the second
+release candidate, 6a83c03: both took an Albion character to Camelot Hills; found and fixed by
 rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
 and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no
 destination for them. Each now takes you to your realm's usual Darkness Falls exit spot, like every other exit. Nothing
@@ -157,8 +163,11 @@ clear of the stomp nearest to it (never past him), without its melee follow, and
 stomp is unchanged. Container check (1.2 line, the same fix, 152 Albion raiders): Xanxicar killed with no wipe; his
 80% stomp killed 5 (before: 71, 49 and 48 in three earlier runs).
 
-**Scurceol Hyrde's orbs are shot down from real floor spots** (owner's PC soak, 2026-11-08). Tests only: not yet seen
-on a PC. 1.1.2's tactic (the orbs first, from the floor) never got going on the real world. Three times the raid found
+**Scurceol Hyrde's orbs are shot down from real floor spots** (owner's PC soak, 2026-11-08). Seen once on the owner's
+PC with the third release candidate (b72716e), 2026-11-09: a forced Albion raid of 200 shot the four orbs down in 10
+minutes, each from its own floor spot (`approach=ranged-stand`, 1,053 and 1,279 from the orbs it logged), killed
+Scurceol 50 seconds after the last, and lost nobody to him or his orbs. One raider stuck in Avalon City held the raid
+at Caer Diogel until it was killed by hand and walked back (known issues). 1.1.2's tactic (the orbs first, from the floor) never got going on the real world. Three times the raid found
 "no reachable floor spot within 1400 has line of sight to it" and set it aside. One orb of four died, Scurceol was never
 killed, he killed 156 raiders, and the raid won Krondon by going around him.
 - **Why** (from the real Krondon navigation mesh): each orb hangs about 50 above the top of its own rock perch. The

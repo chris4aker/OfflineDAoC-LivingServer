@@ -11,15 +11,16 @@ only".
 
 ## Seen on a real install, and not right yet (Beta 1.1.2 and 1.1.3)
 
-The chat figures are from the 1.1.3 build. The others are from an overnight run of a later development build, with
-bots only.
+Each item says which build it was seen on. "Overnight run" means a later development build, with bots only.
 
-- **/faction can get too busy.** On an evening with about 600 bots a realm, /faction ran at about 14 lines a minute
-  for ten minutes, with peaks of 20. That is above its own ceiling. Big moments drew bursts of 10 to 16 reactions,
-  where 3 to 6 were meant. Being fixed. Meanwhile, lower **How much they talk** in the Living Server tab.
-- **Bot raids skip Scurceol Hyrde (Krondon).** The raid is meant to shoot his four floating orbs first. On a real
-  install it found no spot to shoot most of them from, killed 1 of the 4, and set him aside. It won Krondon by going
-  around him. Being fixed.
+- **A raid started from the launcher can wait forever for one bot (1.1.3).** It leaves its gathering town only when
+  all 200 are there, and a tight town (Caer Diogel, for Krondon) has room for exactly 200. In one Krondon raid one
+  raider stood inside Avalon City, waiting for its party's puller, who was already in Caer Diogel, and the raid
+  waited at 199 for 12 minutes until that bot was killed by hand and walked back. Raids the realm schedules by itself
+  don't wait like this: they leave after half an hour with enough there. If it happens, press **Stop event** and start
+  it again.
+- **The same short line from many bots (1.1.3).** In half an hour different bots said "dead. again" seven times in
+  /faction. Each bot keeps to the ten-minute rule, but the realm as a whole doesn't yet.
 - **Attackers still take most keeps.** The 1.1.2 siege balance sends fewer attackers when they keep winning, but in
   a night's run attackers still took 8 of 11 keeps.
 - **A very busy server can stall for a few seconds.** In an overnight run with about 600 bots a realm, the server
@@ -32,8 +33,14 @@ bots only.
 
 - **Xanxicar's stomp fix** has been seen once on a real install: one Albion raid of 280 bots killed him in 23 minutes
   with no wipe. One raid is a good sign, not a promise.
-- **The two Darkness Falls exits** (by Legion's hall and near the Midgard boss): tests only. They have not been
-  clicked in game.
+- **Scurceol Hyrde's orbs** have been seen once on a real install: a raid of 200 shot the four orbs down from the
+  floor in 10 minutes and killed him 50 seconds later, with no raider killed by him or his orbs. One raid is a good
+  sign, not a promise.
+- **The two Darkness Falls exits** (by Legion's hall and near the Midgard boss) were clicked once each on a real
+  install, with an Albion character: both went to Albion's exit in Camelot Hills. Not tried yet from Midgard or
+  Hibernia.
+- **The chat fixes** were read by the chat checker on a real install for 68 and 34 minutes, and passed. Not seen yet:
+  a bot greeting you again when you meet it later, and a bot telling of your deeds in a real place.
 - **Setup waiting out a busy download server:** tests only.
 
 ## Always on

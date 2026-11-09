@@ -28,8 +28,7 @@ fight it still has its say a little later, and if it has left the game the scene
 roleplayer's line that has to wait for a busy /faction now gets its turn a few seconds later instead of being lost.
 Bots coming back from their bind tell their own group, so a busy bind is no longer a wall of "released, running back"
 in /say. A bot greets you once when you meet, and a bot's story of your deeds names a place where it could have
-happened. These were found in the owner's check of the first release candidate; the fixes are checked by tests only
-so far.
+happened. These were found in the owner's check of the first release candidate and checked again on the second.
 
 ### The raid gets out of Xanxicar's stomp
 
@@ -69,12 +68,24 @@ that one. If it still can't download, it says so plainly and changes nothing.
 
 - Automated: every server, launcher and Setup test passes on GitHub, including a real download install.
 - Chat: new tests for each part, and a simulated three-hour evening of /faction played with the old timing and the new,
-  checked by a tool that reads the chat log. It has not been played in game yet.
+  checked by a tool that reads the chat log.
+  On a real install (the owner's PC, a test copy of the game), the same tool read 68 minutes of an evening on the
+  second release candidate and 34 minutes on the third (the server code that ships): no line out of order, no bot
+  claiming a class, level or role it doesn't have, and /faction under its ceiling. Started on purpose with a test command: a dunce scene played by one
+  bot from start to finish, rage quit included; a gold spammer; a rumour that honestly says it doesn't know one.
+  Seen without any prompting: a guild invite, a bot joining the group and talking in it, that bot remembering the group
+  afterwards, and tells from bots that remembered earlier groups. Not seen yet: a bot greeting you again when you meet
+  it later. Still too repetitive: different bots said the same "dead. again" seven times in half an hour.
 - Xanxicar on a real install, with the 1.1.3 build before the chat fix (the stomp code is the same): one Albion raid of 280 bots killed him in 23 minutes with no wipe.
   His four stomps killed 6, at most 1, 6 and 5 raiders. That is one raid, so treat it as a good sign, not a promise.
 - Earlier stages of the same fix were run in a test world and overnight on a real install. One of those overnight
   raids still lost 54 raiders to one stomp. This update has two later changes on top of that stage.
-- Scurceol's orbs: tests only. Automated tests run on a recorded copy of Krondon's real map data around the orbs: every
+- Scurceol's orbs on a real install, with the third release candidate (the server code that ships): one Albion raid
+  of 200, started from the launcher's Realm Events tab, shot the four orbs down in 10 minutes, each from its own spot
+  on the floor, and killed Scurceol 50 seconds after the last one. None of the raid died to him or his orbs. One
+  raider was stuck in another dungeon and the raid waited for it at the gathering town, so it was sent back by hand
+  (it is in the known issues). That is one raid, so treat it as a good sign, not a promise.
+- Scurceol's orbs in tests. Automated tests run on a recorded copy of Krondon's real map data around the orbs: every
   orb gets a spot the raid can walk to, in range and with a clear line, and the 1.1.2 search finds none there, as on
   the owner's PC.
   In a test world (the development container, not a real install), with this fix on the 1.1.3 build before the chat
@@ -82,9 +93,9 @@ that one. If it still can't download, it says so plainly and changes nothing.
   then Scurceol in just over a minute. He killed 16 raiders. A second run killed them too, more
   slowly: the orbs took an hour and 45 minutes, and he killed 6. An earlier stage of the fix, with one spot for
   all four orbs, was stopped at the first orb: in 15 minutes the raid had brought it to half.
-  Nobody has watched this on a real install yet.
-- The Darkness Falls exits are covered by tests against the released world's exit spots. They have not been clicked
-  in game yet.
+- The Darkness Falls exits are covered by tests against the released world's exit spots. On a real install, with the
+  second release candidate (the exit code is the same in this build), both exits took an Albion character to Albion's
+  usual Darkness Falls exit in Camelot Hills.
 
 ### Files
 
