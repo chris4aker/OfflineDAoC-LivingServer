@@ -297,6 +297,72 @@ With the schedule off the ramp's target is the whole roster whatever the hour. W
   minutes, and /faction 118-137 lines an hour at 3-6 am against 388-421 at 7-11 pm, every hour under its ceiling.
   Tests only.
 
+**Defenders are called when the enemy army marches, so a defended keep often holds** (owner's PC, 1.1.3 release
+candidate nights, 2026-11-08 and 11-09: keeps "flipping all over"). In about 15 hours of logs 18 bot sieges ended: 12 keeps
+captured, 4 defended, 2 failed rallies.
+- **Why the attackers won:** the keep's realm was told only when the battle began (`RVR_DEFENSE_MUSTER` in the same second
+  as `RVR_SIEGE_STARTED`). Eight of the 12 keeps fell 4-11 minutes into the battle. The first defender reached the keep 3-14
+  minutes after the start in 7 of the captures and never in the other 5 (`defendersFirstAt`); several were warbands breaking
+  off an attack in another realm's frontier. Every siege with defenders at the keep within two minutes of the start was
+  held (3 of 3). Committed defenders were not the limit: they were walking.
+- **Now:** scouts see the army leave its border keep. The keep's realm is told at once ("Scouts report Albion's army
+  marching on Dun Bolg!", `RVR_DEFENSE_CALLED`), its free level 50 warbands are called within seconds, gather at their
+  muster for up to 6 minutes (10 when it is thin) and then man the walls. The march took 9-37 minutes in these logs, so
+  the defense is usually in place when the attackers arrive. The third realm still joins only once the battle is on. A
+  player's own attack and the retake after a player's capture keep their rules.
+- **The siege balance aims at about half** (owner 2026-11-09). It used to steer towards attackers winning about two sieges
+  in three (owner, 2026-10-19); with defenders arriving in time it would have pulled them away again until attackers won
+  most. Now, of the last six sieges, four or more captured adds defenders, two or fewer takes them away, and three holds
+  (thresholds 0.65 and 0.35, were 0.8 and 0.45). In a simulation over ten models of the attackers' chance (`UT_SiegeBalanceNov06`)
+  it settles at 44-56% captured, 50% on average; the old thresholds settled at 53-61%. In the logs it sat at its limit
+  all night (share 1.0, attackers 96) and still lost 12 of 16 finished sieges.
+- **Battleground keeps** do change hands, rarely: Dun Murdaigean went from unclaimed to Albion between 04:34 and 19:32 on
+  11/08 (outside the logs). In the 15 logged hours no battleground lord fell below 85% and at most 7 bots were on one.
+  Not changed here.
+- Tests only.
+
+**Gamebots in their capital go to their own frontier for the porter** (owner's PC, 1.1.3 nights). 779 times a gamebot
+stood 15 minutes "Waiting for a frontier teleporter" and the watchdog moved it on (Tir na Nog 404, Camelot 227, Jordheim
+148). Each stood on its capital's bind after a release, sent to a keep in another realm's frontier (Mjollner Faste 118
+times, Glenlock Faste 66, Dun Bolg 59 and more). Only its own frontier's porter goes there, and that porter is used only
+from inside the frontier, so it waited in a city with no porter, and the watchdog put it back on the same spot (recovery counts up to 24). Now such a bot first travels to its realm's border keep (Castle Sauvage, Svasud Faste, Druim Ligen), where the
+medallion merchant and the porter are, and rides from there. Tests only.
+
+**A camp search that holds a bot for minutes is reset** (owner's PC, 1.1.3 nights). 464 times a gamebot stood 15 minutes
+"Searching for a valid XP camp", nearly all level 50s on their capital's bind (Tir na Nog most). In the 11/09 log 72 of 91
+went on to a camp only after their next login, from the same spot, so what held them was in the bot's own planning
+memory, not the world; which part is not shown by these logs. After 3 minutes of failed searches a bot now drops its own
+death caution and failed-camp memories as a fresh login does, and logs what it held (`AUTONOMOUS_CAMP_SEARCH_RESET`), so
+the next night shows the cause. Tests only.
+
+**Fewer server stalls on a busy night** (owner's PC: AI profile of 2026-11-07/08 and the 1.1.3 nights; 17 stalls over a
+second in the server logs, 3 of 4-6 seconds in the night before).
+- **The 4.5-6.1 s stalls** were Krondon raids: the raid pulse took 4,520-6,140 ms in the same second as each
+  "no reachable floor spot within 1400" for Scurceol's orbs (05:38, 05:54, 06:19 on 11/08). That build's search
+  checked 277-321 reachable floor spots per orb; 1.1.3's new orb search (above) tries at most 8 walks per orb. Not changed
+  again here, and not yet timed on a real install.
+- **One bot's AI turn of 2.0-2.2 s** (3 of the 17): a Sluaghbinder searching a dampwood mite camp proved one target's
+  route after another (1,906-1,970 path queries and 1,013-1,060 corridor checks in one turn). A camp search now proves
+  at most 4 routes and casts at most 24 dungeon sight lines; the rest wait for the next search a second later, and a
+  target whose route failed is skipped for a minute. In a test on a mesh with no routes (79 queries per failed proof),
+  one search over 200 targets makes 316 queries instead of 15,800.
+- **Group formation passes of 0.3-1.3 s** (46 times in 800 one-minute profile samples, 10 of them over 0.7 s), held under the lock every grouped bot's turn waits on
+  (that lock's waits were 16% of all AI time). Nearly all of it was rendezvous route searches (up to 390 ms each). A pass
+  now stops once it has spent 150 ms after its first leader and goes on 15 seconds later.
+- **Not changed:** 12 of the 17 stalls also had a 443-687 ms garbage collection pause in them (heap about 2 GB).
+- Tests only.
+
+**Bots still don't fall when they die** (looked at again for 1.1.3; nothing shipped). The left-out fix (23c88a12, Beta 1.1)
+sent the player-death packet for a bot; the client plays that pose only for player characters, so in game it did nothing.
+The other server-side ways all break something:
+- The only death animation the client plays for a non-player is on the remove-object packet for a dead NPC (how monsters
+  die). The client then deletes the object: the corpse can't be targeted, so it can't be rezzed, and the group window
+  loses it until the bot is sent again, standing.
+- The NPC create and update packets have no dead or lying-down flag (statue only freezes the model), and a 0% health
+  update leaves the model standing, as the bots do now.
+- A separate corpse prop would need a client model and new client art IDs, and still couldn't be the rez target.
+- Tests only (nothing in game changed).
+
 ## Beta 1.1.2 — 2026-11-07
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized
