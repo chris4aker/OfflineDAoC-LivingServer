@@ -1145,12 +1145,12 @@ public static class AutonomousChatFieldTalk
         string dun = ShortDungeon(f.Dungeon, random), zone = ShortZone(f.Zone, random), lvl = f.Level.ToString(), cls = ShortClass(f.ClassName, random);
         return Make(random, "ask_group", (dun ?? zone) + ":" + f.Level / 5, SeekStill, SeekThanks,
             new V(dun != null ? $"anyone up for {dun}?" : "anyone xping?", "group_up", Joins),
-            new V(dun != null ? $"any grps in {dun}?" : "any grps out?", "group_any", Pool("dunno, check lfg", "saw some in lfg", "not that i know")),
+            new V(dun != null ? $"any grps in {dun}?" : "any grps out?", "group_any", Pool("dunno, check lfg", "saw some in lfg", "not that i know", "few posting in lfg earlier", "none i saw", "check lfg, was a couple")),
             new V($"anyone wanna duo in {zone}?", "group_duo", Joins), new V($"lf duo {lvl} {cls}", "group_duo", Joins),
-            new V($"anyone xping in {zone}?", "group_where", Pool("dunno, check lfg", "not me sry", "think so, check lfg")),
-            new V($"{zone} anyone?", "group_where", Pool("not me sry", "dunno, check lfg", "not that i know")),
+            new V($"anyone xping in {zone}?", "group_where", Pool("dunno, check lfg", "not me sry", "think so, check lfg", "not atm", "nope, elsewhere")),
+            new V($"{zone} anyone?", "group_where", Pool("not me sry", "dunno, check lfg", "not that i know", "nope", "not me, other side of the realm")),
             new V(dun != null ? $"{dun} grp?" : "grp anyone?", "group_up", Joins), new V("any1 lf grp?", "group_lf", Pool("me", "x", "me, {lvl}", "me pls")),
-            new V($"anyone near {zone}?", "group_where", Pool("not me sry", "dunno, check lfg", "not that i know")));
+            new V($"anyone near {zone}?", "group_where", Pool("not me sry", "dunno, check lfg", "not that i know", "not atm sry", "was earlier, left")));
     }
 
     private static Said NeedClass(Facts f, Random random)
@@ -1277,7 +1277,7 @@ public static class AutonomousChatFieldTalk
                 : new V($"{cls}s, any respec tips at 50?", "class_spec", SpecAdvice(f.ClassName)),
             new V($"any {cls}s on? quick q", "class_q", Pool("{same}me, whats up", "{same}me", "{same}me, sup")),
             f.Level <= 45 ? new V($"is {cls} fun after {f.Level + 5}?", "class_later", Pool($"gets better at {f.Level + 5}", "ya, more fun in a grp", "ya, rvr is where its fun"))
-                : new V($"anyone else play {cls}?", "class_others", Pool("{same}me", "my alt is one")),
+                : new V($"anyone else play {cls}?", "class_others", Pool("{same}me", "my alt is one", "{same}ya, me", "used to, rerolled", "my bro does")),
             f.Level < 50
                 ? new V($"{cls}s, where did u xp at {lvl}?", "class_xp", ShortDungeon(f.Dungeon, random) is { } xpDun
                     ? Pool($"{xpDun} with a grp", $"{xpDun} mostly", $"solo outside {xpDun}") : Pool("lfg grps mostly", "solo outside town"))
@@ -1332,7 +1332,7 @@ public static class AutonomousChatFieldTalk
             new V($"what spec for a {lvl} {cls}?", "ask_spec", SpecAdvice(f.ClassName)),
             new V($"{cls}s, what do u put points in at {lvl}?", "ask_spec", SpecAdvice(f.ClassName)),
             want.Any(char.IsDigit) ? new V($"anyone selling {want}?", "ask_have", have)
-                : new V($"is {want} worth it at {lvl}?", "ask_worth", Pool("ya, if its cheap", "only if u cant find better", "ya, any upgrade helps", "nah, wait for a drop")));
+                : new V($"is {want} worth it at {lvl}?", "ask_worth", Pool("ya, if its cheap", "only if u cant find better", "ya, any upgrade helps", "nah, wait for a drop", "depends what they want for it", "if u got the coin sure")));
     }
 
     private static Said Crafter(Facts f, Random random)
@@ -1731,6 +1731,20 @@ public static class AutonomousChatFieldTalk
                 steps.Add(new Step(0, thanks, AutonomousChatArbiter.DelayMs(reply, thanks, 40, at, random)));
             return steps;
         }
+        // A "dunno" isn't the end of it when someone else knows: the asker asks again and a third bot gives an answer from the
+        // same true pool ("any grps in keltoi?" "not that i know" "anyone else?" "saw some in lfg").
+        if (nothing && third != null && random.NextDouble() < LongThreadChance &&
+            Answer(said, third, memory, random, now) is { } other && !SaysNothing(other) && !other.TrimEnd().EndsWith('?'))
+        {
+            string again = Pick(random, "anyone else?", "anyone?", "any1 else know?", "nobody?");
+            at = AutonomousChatArbiter.DelayMs(answer, again, 40, at, random);
+            steps.Add(new Step(0, again, at));
+            at = AutonomousChatArbiter.DelayMs(again, other, 40, at, random);
+            steps.Add(new Step(2, other, at));
+            if (FollowUp(said, true, random, memory, now) is { } thanksOther)
+                steps.Add(new Step(0, thanksOther, AutonomousChatArbiter.DelayMs(other, thanksOther, 40, at, random)));
+            return steps;
+        }
         if (random.NextDouble() < FollowUpChance(true) && FollowUp(said, true, random, memory, now) is { } done &&
             !(nothing && GoesSomewhere(done)))
             steps.Add(new Step(0, done, AutonomousChatArbiter.DelayMs(answer, done, 40, at, random)));
@@ -2077,7 +2091,7 @@ public static class AutonomousChatFieldTalk
         string dun = ShortDungeon(f.Dungeon, random);
         var ways = new List<V>(12)
         {
-            new($"anyone know the {lvl}ish quest in {zone}?", "q_quest", Pool("did it, kill 10 then go back", "dunno that one", "ask the guard in town", "did it, easy one")),
+            new($"anyone know the {lvl}ish quest in {zone}?", "q_quest", Pool("did it, kill 10 then go back", "dunno that one", "ask the guard in town", "did it, easy one", "never did it", "skipped that one")),
             new($"where to hand in the {zone} quest?", "q_handin", Pool("back in town", "the guy that gave it", "back to whoever gave it", "check ur journal, it says who")),
             new($"how do i get to {f.World?.Frontier?.ToLowerInvariant() ?? "the frontier"} from here?", "q_frontier", Pool("port from the capital", "horse to the border keep", "porter in town")),
             new($"where do i bind in {zone}?", "q_bind", Pool("at the bindstone in town", "nearest town", "by the inn")),
