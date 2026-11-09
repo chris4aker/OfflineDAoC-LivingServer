@@ -358,6 +358,10 @@ reading the lines showed what it couldn't see; it now checks for each of these, 
   "group has room near Connacht, all classes welcome", "lfg Stonehenge Barrows or anywhere with xp") are checked against
   the bot's real group and task: those three came from bots in full rvr parties or out for rvr.
 - **No internal names.** "which stable 4 group rendezvous?": an internal goal name is never a destination in chat.
+- **Debates and scenes don't invent the frontier.** In a debate about scouts a paladin said "it is us scouts", and the
+  debate ended with "INC, mid group crossing toward Caer Benowyc" though no army was there. Scripted threads and short
+  scenes no longer announce attacks, keeps changing hands, lost relics or enemies at a named place (about 240 lines
+  reworded into opinions and calls to head out), and a role that speaks as a class, level or race is cast from it.
 - **Your /trade post gets answers too.** The player's "wts 99% arcane cloth cap, cheap" drew nothing; only bot posts were
   answered. A player's sale or wanted post now draws a bot's reply as often as a bot's does.
 
