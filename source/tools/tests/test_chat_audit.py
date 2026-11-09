@@ -128,6 +128,85 @@ class ChatAuditTests(unittest.TestCase):
         self.assertFalse(passed)
         self.assertTrue(any("ceiling unknown" in r for r in reasons))
 
+    def test_replies_to_a_player_tagged_ex0_are_not_one_exchange(self):
+        c = self.counts([(0, "Drazzeeeen", "check the exchange in camelot", "src=player ex=0 i=0 role=answerer cap=7.0"),
+                         (180, "Speedysaracen", "later", "src=player ex=0 i=0 role=answerer cap=7.0")])
+        self.assertEqual(c["exact_role_swap"], 0)
+        self.assertEqual(c["exact_out_of_order"], 0)
+
+    def feature_rows(self, rows):
+        """rows: (second, raw text after the stamp) for any log row, or (second, speaker, text, fields) for a CHAT_LINE."""
+        handle = tempfile.NamedTemporaryFile("w", suffix=".chat.log", delete=False, encoding="utf-8")
+        for second, *rest in rows:
+            stamp = f"11/08 20:{second // 60:02d}:{second % 60:02d}"
+            if len(rest) == 1:
+                handle.write(f"{stamp} | INF | DOL.GS.Test | {rest[0]}\n")
+            else:
+                speaker, text, fields = rest
+                handle.write(f'{stamp} | INF | DOL.GS.BotChatTranscript | CHAT_LINE who=bot ch=faction realm=Albion from="{speaker}" via=Test {fields} text="{text}"\n')
+        handle.close()
+        try:
+            summary = chat_audit.summarize(chat_audit.audit(handle.name, ceiling=10))
+            summary["verdict"] = chat_audit.verdict(summary)
+            return summary
+        finally:
+            os.unlink(handle.name)
+
+    def test_a_feature_that_was_due_and_never_spoke_fails(self):
+        # The RC1 live check: a spammer started (due) and said nothing; the rumour that waited spoke.
+        s = self.feature_rows([(0, "LIVING_FEATURE_DUE feature=spammer realm=Albion ex=41 name=\"Xkqhoaa\""),
+                               (2, "LIVING_FEATURE_DUE feature=rumour realm=Albion ex=42 topic=named_up held=ceiling"),
+                               (20, "Natalie", "heard grimwold is up again in black mtns", "src=rumour ex=42 i=0 role=teller cap=10.0"),
+                               (300, "Aldric", "anyone seen my horse", "src=ambient ex=43 i=0 role=opener cap=10.0")])
+        self.assertEqual(s["counts"]["features_due"], 2)
+        self.assertEqual(s["counts"]["features_silent"], 1, "the spammer")
+        passed, reasons = s["verdict"]
+        self.assertFalse(passed)
+        self.assertIn("silent features 1", reasons)
+
+    def test_a_feature_given_up_counts_but_not_one_nobody_could_hear(self):
+        s = self.feature_rows([(0, "LIVING_FEATURE_DUE feature=roleplayer realm=Albion ex=7 held=ceiling"),
+                               (181, "LIVING_FEATURE_DROPPED feature=roleplayer realm=Albion ex=7 waited_s=181 reason=ceiling"),
+                               (190, "LIVING_FEATURE_DUE feature=spammer realm=Albion ex=8"),
+                               (200, "LIVING_FEATURE_DROPPED feature=spammer realm=Albion ex=8 waited_s=10 reason=no_audience"),
+                               (205, "Aldric", "anyone seen my horse", "src=ambient ex=9 i=0 role=opener cap=10.0")])
+        self.assertEqual(s["counts"]["features_silent"], 1)
+        self.assertEqual(s["counts"]["features_given_up"], 1)
+
+    def test_a_feature_due_near_the_end_of_the_log_is_not_judged(self):
+        s = self.feature_rows([(0, "Aldric", "anyone seen my horse", "src=ambient ex=9 i=0 role=opener cap=10.0"),
+                               (60, "LIVING_FEATURE_DUE feature=spammer realm=Albion ex=8")])
+        self.assertEqual(s["counts"]["features_due"], 1)
+        self.assertEqual(s["counts"]["features_silent"], 0)
+
+    def say_rows(self, rows):
+        handle = tempfile.NamedTemporaryFile("w", suffix=".chat.log", delete=False, encoding="utf-8")
+        for second, speaker, text, fields in rows:
+            handle.write(f'11/08 21:{second // 60:02d}:{second % 60:02d} | INF | DOL.GS.BotChatTranscript | CHAT_LINE who=bot ch=say '
+                         f'realm=Albion from="{speaker}" via=Test {fields} text="{text}"\n')
+        handle.close()
+        try:
+            summary = chat_audit.summarize(chat_audit.audit(handle.name, ceiling=10))
+            summary["verdict"] = chat_audit.verdict(summary)
+            return summary
+        finally:
+            os.unlink(handle.name)
+
+    def test_a_wall_of_say_at_the_bind_fails(self):
+        # The RC1 live check at Camelot's bind: about 25 "released, running back" lines in 45 s.
+        lines = ["released, running back", "at bind, omw back", "no rez, released. coming back to you"]
+        s = self.say_rows([(i * 2, f"Bot{i}", lines[i % 3], "src=other cap=5.0") for i in range(25)])
+        self.assertGreater(s["counts"]["say_minutes_over_ceiling"], 0)
+        passed, reasons = s["verdict"]
+        self.assertFalse(passed)
+        self.assertTrue(any("/say" in r for r in reasons), reasons)
+
+    def test_say_under_its_ceiling_and_answers_to_the_player_pass(self):
+        rows = [(i * 30, f"Bot{i}", "anyone selling arrows", "src=other cap=5.0") for i in range(8)]
+        rows += [(241 + i, f"Ans{i}", "hi there", f"src=player ex={100 + i} i=1 role=answerer cap=5.0") for i in range(6)]
+        s = self.say_rows(sorted(rows))
+        self.assertEqual(s["counts"]["say_minutes_over_ceiling"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

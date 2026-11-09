@@ -18,6 +18,9 @@ Reports, per log:
     to a role ask from a class that can't fill it, one speaker claiming two classes
   * reactions with no trigger in the previous 30 s, late reactions, pile-ons (more than two reactions to one trigger)
   * repeated short reactions (the same reaction within 10 minutes in one channel) and repeated short lines of any kind
+  * silent features: a gold spammer, rumour or roleplayer line that was due (LIVING_FEATURE_DUE feature= realm= ex=) and
+    never said in /faction (no CHAT_LINE with that src= and ex=), whether it gave up (LIVING_FEATURE_DROPPED) or not; one
+    dropped because nobody was left to hear it (reason=no_audience) isn't counted, nor one due in the log's last minutes
 
 Python standard library only. Usage:
     python3 chat_audit.py LOG [LOG ...] [--json OUT] [--channel faction] [--show N]
@@ -32,6 +35,9 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 
 ROW = re.compile(r"^(?P<stamp>\d\d/\d\d \d\d:\d\d:\d\d).*?CHAT_LINE (?P<body>.*)$")
+FEATURE_ROW = re.compile(r"^(?P<stamp>\d\d/\d\d \d\d:\d\d:\d\d).*?LIVING_FEATURE_(?P<kind>DUE|DROPPED) (?P<body>.*)$")
+# How long a due feature may wait for its turn (AutonomousChatExchange.DueWaitMs), plus a little slack.
+DUE_WAIT_S = 180 + 30
 PAIR = re.compile(r'(\w+)=(?:"([^"]*)"|(\S+))')
 
 
@@ -66,13 +72,31 @@ def parse_stamp(stamp: str) -> int:
     return ((int(month) * 31 + int(day)) * 24 + h) * 3600 + m * 60 + s
 
 
-def read(path: str) -> list[Line]:
+@dataclass
+class Feature:
+    t: int
+    kind: str  # DUE or DROPPED
+    feature: str
+    realm: str
+    ex: str
+    reason: str = ""
+
+
+def read(path: str, features: list[Feature] | None = None) -> list[Line]:
+    """The CHAT_LINE rows; with a list, the LIVING_FEATURE_DUE/DROPPED rows go into it (same clock)."""
     lines: list[Line] = []
     first = None
     with open(path, encoding="utf-8", errors="replace") as handle:
         for raw in handle:
             match = ROW.match(raw.rstrip("\n"))
             if not match:
+                due = FEATURE_ROW.match(raw.rstrip("\n")) if features is not None else None
+                if due:
+                    fields = {key: quoted if quoted or bare == "" else bare for key, quoted, bare in PAIR.findall(due.group("body"))}
+                    stamp = parse_stamp(due.group("stamp"))
+                    first = stamp if first is None else first
+                    features.append(Feature(stamp - first, due.group("kind"), fields.get("feature", "?"), fields.get("realm", "?"),
+                                            fields.get("ex", ""), fields.get("reason", "")))
                 continue
             fields: dict[str, str] = {}
             body = match.group("body")
@@ -90,8 +114,11 @@ def read(path: str) -> list[Line]:
             lvl = fields.get("lvl")
             index = fields.get("i")
             cap = fields.get("cap")
+            # ex=0 is no exchange (1.1.3 RC1 tagged every reply to a player ex=0).
+            ex = fields.get("ex", "")
+            ex = "" if ex in ("0", "-") else ex
             lines.append(Line(len(lines), stamp - first, fields.get("who", "bot"), fields.get("ch", "?"), fields.get("realm", "?"),
-                              fields.get("from", "?"), text, fields.get("via", ""), fields.get("src", ""), fields.get("ex", ""),
+                              fields.get("from", "?"), text, fields.get("via", ""), fields.get("src", ""), ex,
                               int(index) if index and index.lstrip("-").isdigit() else None, fields.get("role", ""), fields.get("cls", ""),
                               int(lvl) if lvl and lvl.isdigit() else None, float(cap) if cap and re.match(r"^\d+(\.\d+)?$", cap) else None,
                               raw.rstrip("\n")))
@@ -249,19 +276,24 @@ class Report:
 CEILING_EXEMPT = ("event", "player")
 
 
-def check_ceiling(report: Report, lines: list[Line], ceiling: float | None):
-    """Seconds and minutes in which the bots' /faction lines the ceiling holds ran above it (two-minute rate, as the server
-    measures it). The ceiling comes from each line's cap= field, else from --ceiling."""
+def check_ceiling(report: Report, lines: list[Line], ceiling: float | None, channel: str = "faction"):
+    """Seconds and minutes in which the bots' lines in a channel the ceiling holds ran above it (two-minute rate, as the
+    server measures it). The ceiling comes from each line's cap= field, else from --ceiling (/faction) or --say-ceiling.
+    /say: only the lines the player heard are logged, so this is the rate around the player (1.1.3 RC1 live check: about 25
+    "released, running back" lines in 45 s at Camelot's bind)."""
+    prefix = "" if channel == "faction" else channel + "_"
     by_realm: dict[str, list[Line]] = defaultdict(list)
     for l in lines:
-        if l.ch == "faction" and l.who == "bot":
+        if l.ch == channel and l.who == "bot":
             by_realm[l.realm].append(l)
-    report.ceiling_known = True
+    if channel == "faction":
+        report.ceiling_known = True
     for realm, seq in by_realm.items():
         counted = [l.t for l in seq if l.src not in CEILING_EXEMPT]
         caps = [(l.t, l.cap) for l in seq if l.cap is not None]
         if not caps and ceiling is None:
-            report.ceiling_known = False
+            if channel == "faction":
+                report.ceiling_known = False
             continue
         lo = hi = 0
         c = 0
@@ -279,16 +311,40 @@ def check_ceiling(report: Report, lines: list[Line], ceiling: float | None):
             rate = (hi - lo) / 2.0
             peak = max(peak, rate)
             if rate > cap_now + 1e-9:
-                report.counts["seconds_over_ceiling"] += 1
+                report.counts[prefix + "seconds_over_ceiling"] += 1
                 minutes.add(t // 60)
-        report.counts["minutes_over_ceiling"] += len(minutes)
-        report.peak_rate[realm] = (peak, cap_now)
+        report.counts[prefix + "minutes_over_ceiling"] += len(minutes)
+        report.peak_rate[realm if channel == "faction" else f"{realm} /{channel}"] = (peak, cap_now)
 
 
-def audit(path: str, channel_filter: str | None = None, ceiling: float | None = None) -> Report:
-    lines = read(path)
+def check_features(report: Report, lines: list[Line], features: list[Feature]):
+    """Every feature that was due spoke: a /faction line with its src= and ex= (see the module notes)."""
+    end = max([l.t for l in lines] + [f.t for f in features] + [0])
+    spoke = {(l.src, l.realm, l.ex) for l in lines if l.ch == "faction" and l.ex}
+    dropped = {(f.feature, f.realm, f.ex): f.reason for f in features if f.kind == "DROPPED"}
+    for f in features:
+        if f.kind != "DUE":
+            continue
+        report.counts["features_due"] += 1
+        key = (f.feature, f.realm, f.ex)
+        if key in spoke:
+            continue
+        reason = dropped.get(key)
+        if reason == "no_audience" or reason is None and end - f.t < DUE_WAIT_S:
+            continue
+        if reason is not None:
+            report.counts["features_given_up"] += 1
+        report.counts["features_silent"] += 1
+        report.examples["features_silent"].append(f"{f.t // 60:>3}:{f.t % 60:02d} {f.feature} ex={f.ex} ({f.realm}) never spoke" +
+                                                  (f"  [gave up: {reason}]" if reason else ""))
+
+
+def audit(path: str, channel_filter: str | None = None, ceiling: float | None = None, say_ceiling: float | None = None) -> Report:
+    features: list[Feature] = []
+    lines = read(path, features)
     report = Report(path, len(lines))
     if not lines:
+        check_features(report, lines, features)
         return report
     span = max(60, lines[-1].t - lines[0].t + 1)
     report.minutes = span / 60.0
@@ -339,6 +395,8 @@ def audit(path: str, channel_filter: str | None = None, ceiling: float | None = 
         check_repeats(report, seq)
     check_claims(report, lines)
     check_ceiling(report, lines, ceiling)
+    check_ceiling(report, lines, say_ceiling, "say")
+    check_features(report, lines, features)
     return report
 
 
@@ -519,12 +577,18 @@ KINDS = [
     ("short_line_repeat_10min", "same short line (<=3 words) again within 10 min"),
     ("seconds_over_ceiling", "seconds /faction ran above its ceiling (lines it holds)"),
     ("minutes_over_ceiling", "minutes with any second above the ceiling"),
+    ("say_seconds_over_ceiling", "seconds /say around the player ran above its ceiling (lines it holds)"),
+    ("say_minutes_over_ceiling", "minutes with any second of /say above its ceiling"),
+    ("features_due", "spammers, rumours, roleplayer lines due (LIVING_FEATURE_DUE)"),
+    ("features_silent", "of them never said in /faction"),
+    ("features_given_up", "of those, given up (LIVING_FEATURE_DROPPED)"),
 ]
 
 
 def verdict(summary: dict) -> tuple[bool, list[str]]:
     """PASS only with: 0 out of order (exact when the log has exchange ids, else the heuristic dialogue slips), 0 untrue
-    role/class/level answers, 0 late or repeated reactions, pile-ons only within the caps, 0 minutes above the ceiling."""
+    role/class/level answers, 0 late or repeated reactions, pile-ons only within the caps, 0 minutes above the ceiling, and no
+    feature that was due and never spoke, and 0 minutes of /say above its ceiling (when the log has it)."""
     c = summary["counts"]
     out_of_order = c["exact_out_of_order"] + c["exact_role_swap"] if summary["tagged_lines"] else (
         c["answer_after_close"] + c["asks_after_invite"] + c["followup_before_answer"] + c["thanks_without_answer"])
@@ -535,6 +599,8 @@ def verdict(summary: dict) -> tuple[bool, list[str]]:
         ("repeated reactions", c["reaction_repeat_10min"]),
         ("pile-ons over the caps", c["pileon"]),
         ("minutes above the ceiling", c["minutes_over_ceiling"]),
+        ("minutes /say above its ceiling", c["say_minutes_over_ceiling"]),
+        ("silent features", c["features_silent"]),
     ]
     reasons = [f"{name} {n}" for name, n in checks if n]
     if not summary["ceiling_known"]:
@@ -568,6 +634,7 @@ def print_report(summary: dict, show: int):
         print(f"   {summary['counts'][key]:>5}  ({summary['per_hour'][key]:>6}/h)  {label}")
     for realm, rate in summary["peak_rate"].items():
         print(f"   {realm}: busiest two minutes {rate['peak']}/min against a ceiling of {rate['ceiling']}/min (events and lines to the player aside)")
+    print("   /say lines a minute (bots and you): " + str(summary["lines_per_minute"].get("say", 0)) + ", busiest minute " + str(summary["busiest_minute"].get("say", 0)))
     if show:
         for key, label in KINDS:
             for example in summary["examples"].get(key, [])[:show]:
@@ -582,10 +649,11 @@ def main(argv=None) -> int:
     parser.add_argument("--show", type=int, default=0, help="examples per check")
     parser.add_argument("--github", action="store_true", help="also print one GitHub Actions notice per log")
     parser.add_argument("--ceiling", type=float, help="/faction ceiling in lines a minute, for logs without cap= fields")
+    parser.add_argument("--say-ceiling", type=float, help="/say ceiling in lines a minute, for logs whose /say lines have no cap=")
     args = parser.parse_args(argv)
     summaries = []
     for path in args.logs:
-        summary = summarize(audit(path, args.channel, args.ceiling))
+        summary = summarize(audit(path, args.channel, args.ceiling, args.say_ceiling))
         passed, reasons = verdict(summary)
         summary["verdict"] = "PASS" if passed else "FAIL"
         summary["verdict_reasons"] = reasons
@@ -599,7 +667,8 @@ def main(argv=None) -> int:
                   f"role swaps {c['exact_role_swap']}, false role answers {c['role_answer_false']}, false class {c['class_claim_false']}, "
                   f"false level {c['level_claim_false']}, thanks without answer {c['thanks_without_answer']}, follow-up before answer "
                   f"{c['followup_before_answer']}, pile-ons {c['pileon']} (+{c['pileon_lines_over_two']} lines), late reactions {c['reaction_late']}, "
-                  f"no-trigger reactions {c['reaction_no_trigger']}, repeated reactions {c['reaction_repeat_10min']}")
+                  f"no-trigger reactions {c['reaction_no_trigger']}, repeated reactions {c['reaction_repeat_10min']}, "
+                  f"silent features {c['features_silent']} of {c['features_due']} due")
     for summary in summaries:
         name = summary["log"].replace("\\", "/").rsplit("/", 1)[-1]
         print(f"VERDICT {summary['verdict']}: {name}" + (f" ({'; '.join(summary['verdict_reasons'])})" if summary["verdict_reasons"] else ""))

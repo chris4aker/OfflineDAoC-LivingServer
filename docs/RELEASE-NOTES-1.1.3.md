@@ -23,6 +23,14 @@ level asked for. Follow-up questions fit what was said. A bot's own good or bad 
 realm news a few, and the same short "oof" or "rip" isn't heard twice in ten minutes. The realm is just as busy; it
 reads like people talking to each other.
 
+In a dunce's scene, a debate or a storyline episode, a part stays with the bot that started it: if that bot is in a
+fight it still has its say a little later, and if it has left the game the scene ends. A gold spammer, a rumour or a
+roleplayer's line that has to wait for a busy /faction now gets its turn a few seconds later instead of being lost.
+Bots coming back from their bind tell their own group, so a busy bind is no longer a wall of "released, running back"
+in /say. A bot greets you once when you meet, and a bot's story of your deeds names a place where it could have
+happened. These were found in the owner's check of the first release candidate; the fixes are checked by tests only
+so far.
+
 ### The raid gets out of Xanxicar's stomp
 
 In a bot raid on Xanxicar in Crystal Cave, his first stomp killed 110 of 185 raiders in one second. The order to get

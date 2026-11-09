@@ -109,7 +109,7 @@ public static partial class AutonomousLivingServer
                 Later(bot, 4_000 + i * 3_500 + Random.Shared.Next(4_000), () => bot.IsAlive, () =>
                 {
                     // 1.1.3: grats to the real player is said to them (not held by the ceiling); to a bot it waits its turn.
-                    using var tag = who is GamePlayer ? AutonomousChatExchange.Tag("player", 0, 0, "grats", bot) : default;
+                    using var tag = who is GamePlayer ? AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 1, "grats", bot) : default;
                     if (AutonomousBotVoices.TryEventLine(bot, "grats", out string line, "fifty", slots, noRepeat: false))
                         Speak(bot, Channel.Faction, line);
                 });

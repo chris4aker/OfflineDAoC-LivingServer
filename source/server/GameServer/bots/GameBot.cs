@@ -1183,7 +1183,7 @@ namespace DOL.GS
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
             if (returnToParty)
-                Say(ReturnDialogue("release"));
+                TellOwnGroup(ReturnDialogue("release"));
 
             if (PersistentRecord != null)
             {
@@ -1351,7 +1351,7 @@ namespace DOL.GS
                 IsReturningAfterRelease = false;
                 _stableReturnPlan = null;
                 CompleteStableMasterRoute();
-                Say(ReturnDialogue("arrive"));
+                TellOwnGroup(ReturnDialogue("arrive"));
                 Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
                 BotGroupRelease.FinishReturn(this); // Fork: as an invitation does
                 return false;
@@ -1365,7 +1365,7 @@ namespace DOL.GS
                 if (!TryCompleteStableMasterRouteAfterArrival())
                     return true;
                 _stableReturnPlan = null;
-                Say(ReturnDialogue("dismount"));
+                TellOwnGroup(ReturnDialogue("dismount"));
             }
 
             _stableReturnPlan ??= FindFasterStableRoute(destination);
@@ -1399,7 +1399,7 @@ namespace DOL.GS
                     return true;
                 }
                 _stableReturnPlan = null;
-                Say(ReturnDialogue("mount"));
+                TellOwnGroup(ReturnDialogue("mount"));
                 return true;
             }
 
@@ -1436,7 +1436,23 @@ namespace DOL.GS
             if (GameLoop.GameLoopTime < _nextReturnRoleplayTick || IsCasting || InCombat)
                 return;
             _nextReturnRoleplayTick = GameLoop.GameLoopTime + Util.Random(60_000, 120_000);
-            Say(ReturnDialogue(stage));
+            TellOwnGroup(ReturnDialogue(stage));
+        }
+
+        /// <summary>
+        /// Where a line about the way back after a release goes: the bot's own group, and only when a player is in it (1.1.3 RC1,
+        /// live check 2026-11-08 at Camelot's bind: about 25 "released, running back" lines in 45 s in /say, from bots of other
+        /// groups, to everyone standing there). "group", or null when nobody needs to hear it. Pure.
+        /// </summary>
+        public static string ReturnLineChannel(bool inGroup, bool groupHasPlayer) => inGroup && groupHasPlayer ? "group" : null;
+
+        private void TellOwnGroup(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text) || ReturnLineChannel(Group != null, AutonomousLivingServer.GroupHasPlayer(Group)) == null)
+                return;
+            text = AutonomousRoleplayers.Voice(this, text);
+            Group.SendMessageToGroupMembers(this, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
+            BotChatTranscript.Bot("group", Name, Realm, text);
         }
 
         // Play test 2026-10-27: an autonomous gamebot in the player's group said "I have caught up. Returning to formation." —
