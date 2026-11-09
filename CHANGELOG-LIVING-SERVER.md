@@ -10,8 +10,11 @@ Older entries below keep the names they were written with.
 
 ## Beta 1.1.3 — 2026-11-08
 
-A hotfix: /faction chat that holds together, the raid gets out of Xanxicar's stomp, Scurceol Hyrde's orbs are shot down
-from the floor, two Darkness Falls exits work, and Setup waits out a busy download server. How it was tested is in the release notes
+Started as a hotfix (/faction chat that holds together, out of Xanxicar's stomp, Scurceol Hyrde's orbs shot down from the
+floor, two Darkness Falls exits, Setup waiting out a busy download server) and grew after the owner's overnight checks of
+the release candidates on 2026-11-09 (owner: "Hold 1.1.3 and fix everything you identified", "You need to come up with
+fixes for ALL of that"): bot chat that sounds like a real server, bots that notice the player, raids that don't stall,
+keeps defended in time, quiet nights, fewer stalls. How it was tested, and on which build, is in the release notes
 ([docs/RELEASE-NOTES-1.1.3.md](docs/RELEASE-NOTES-1.1.3.md)).
 
 **/faction that holds together** (owner 2026-11-08, watching 1.1.3's /faction: "faction feels disconnected... The chats

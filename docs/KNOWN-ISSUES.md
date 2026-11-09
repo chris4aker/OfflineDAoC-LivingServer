@@ -9,37 +9,46 @@ taken from other forks and from Offline DAoC 0.38.
 A feature here counts as working only once it has been seen working on a real install. Until then it says "tests
 only".
 
-## Seen on a real install, and not right yet (Beta 1.1.2 and 1.1.3)
+## Seen on a real install, and fixed in 1.1.3 by tests only
 
-Each item says which build it was seen on. "Overnight run" means a later development build, with bots only.
+These were seen on the owner's PC with 1.1.2 or the 1.1.3 release candidates and are fixed in this update. The fixes
+haven't been watched on a real install yet, so treat them as likely, not certain.
 
-- **A raid started from the launcher can wait forever for one bot (1.1.3).** It leaves its gathering town only when
-  all 200 are there, and a tight town (Caer Diogel, for Krondon) has room for exactly 200. In one Krondon raid one
-  raider stood inside Avalon City, waiting for its party's puller, who was already in Caer Diogel, and the raid
-  waited at 199 for 12 minutes until that bot was killed by hand and walked back. Raids the realm schedules by itself
-  don't wait like this: they leave after half an hour with enough there. If it happens, press **Stop event** and start
-  it again.
-- **Attackers still take most keeps.** The 1.1.2 siege balance sends fewer attackers when they keep winning, but in
-  a night's run attackers still took 8 of 11 keeps.
-- **A very busy server can stall for a few seconds.** In an overnight run with about 600 bots a realm, the server
-  stopped for 4 to 6 seconds three times, and 13 minutes had a pause of over a second.
-- **Some gamebots wait a long time at frontier teleporters.** In one night the server found a gamebot that had stood
-  15 minutes waiting for a frontier teleporter 368 times, and moved it on. 122 more times one had stood that long
-  searching for a camp.
+- **Chat that didn't sound like a real server:** most bot questions in /faction got no answer, realm news came out of
+  a bot's mouth like a herald's announcement, a bot could look for a group and form one in the same minute, items were
+  asked about for classes that can't use them, and Albion bots talked about Midgard's frontier as if it were home.
+- **A raid started from the launcher could wait forever for one bot**, and one bot stuck in another dungeon held a
+  Krondon raid at its gathering town until it was killed by hand. A raid now goes after 15 minutes with nine in ten.
+- **Orshom's Fire killed a hundred raiders in one Krondon raid.** Raiders now stay out of it.
+- **Attackers took most keeps** (12 of 16 bot sieges in one night), mostly because defenders were called only when
+  the battle began. They're now called as the enemy army marches, and the balance aims at about half.
+- **Gamebots waited 15 minutes in their capital for a frontier porter** (779 times in one night). They now go to the
+  border keep first.
+- **The server stalled for a second or more on a busy night.** Two heavy searches are capped. The 4-6 second stalls
+  were in Krondon raids before Scurceol's orb fix, which also bounds that search; it hasn't been timed on a real install.
 
-## Beta 1.1.3: what hasn't been checked yet
+## Still not right
 
-- **Xanxicar's stomp fix** has been seen once on a real install: one Albion raid of 280 bots killed him in 23 minutes
-  with no wipe. One raid is a good sign, not a promise.
-- **Scurceol Hyrde's orbs** have been seen once on a real install: a raid of 200 shot the four orbs down from the
-  floor in 10 minutes and killed him 50 seconds later, with no raider killed by him or his orbs. One raid is a good
-  sign, not a promise.
-- **The two Darkness Falls exits** (by Legion's hall and near the Midgard boss) were clicked once each on a real
-  install, with an Albion character: both went to Albion's exit in Camelot Hills. Not tried yet from Midgard or
-  Hibernia.
-- **The chat fixes** were read by the chat checker on a real install for 68 and 34 minutes, and passed, and a bot that
-  grouped with the player greeted them once when they met again. Not seen yet: a bot telling of your deeds in a real
-  place. The two fixes made after that check (death stories) are tests only.
+- **Bots don't fall when they die.** The game client plays the lying-dead pose only for player characters. The only
+  death animation it plays for any other character also removes it from the world, so a fallen bot couldn't be rezzed.
+  There's no safe way around it without changing the game client.
+- **A bot stuck searching for a camp for minutes** (464 times in one night, mostly level 50s at Tir na Nog's bind):
+  the cause isn't found yet. The bot now clears its search memory after 3 minutes and the log records what it held,
+  so the next report should show why.
+- **Bot parties never take a new member once they set off**, so an "lfm" post from a bot party is only a last call
+  while it forms.
+
+## Beta 1.1.3: what has been seen on a real install
+
+- **Xanxicar's stomp fix:** one Albion raid of 280 bots killed him in 23 minutes with no wipe (a build before the chat
+  fixes; the stomp code is the same).
+- **Scurceol Hyrde's orbs:** a raid of 200 shot the four orbs down from the floor in 10 minutes and killed him 50
+  seconds later, with no raider killed by him or his orbs (third release candidate; the raid fixes made after it are
+  tests only).
+- **The two Darkness Falls exits:** clicked once each with an Albion character; both went to Albion's exit in Camelot
+  Hills. Not tried yet from Midgard or Hibernia.
+- **Chat, before today's fixes:** a bot that grouped with the player greeted them once when they met again, answered
+  the player's /faction question about a camp, and offered to group after the player's /lfg post.
 - **Setup waiting out a busy download server:** tests only.
 
 ## Always on
@@ -81,8 +90,6 @@ These apply even with every Living Server switch off:
 - **Smaller rosters:** automatic raids open only when a realm has 80 eligible level-50 bots online, so a small
   roster rarely gets them, and a roster filled only with the Lv.1 and Lv.50 buttons has no bots between levels 20
   and 49 until they level.
-- **Bots don't fall when they die:** the game client keeps a dead pose only for players. A fix was tried and left
-  out.
 - **The talking update's own in-game list** (combat calls in a real fight, a keep's news retold a minute later,
   /lfg and /trade in the original client, chat volume at 900 bots a realm) is still being worked through.
 
