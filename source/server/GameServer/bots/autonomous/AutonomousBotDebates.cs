@@ -797,8 +797,14 @@ public static class AutonomousBotDebates
     private static int SpeakersAround(eRealm realm, Running running) =>
         running.Cast.Values.Count(id => AutonomousBotRegistry.TryGet(id, out GameBot bot) && StateOf(bot, realm) != SpeakerState.Gone);
 
+    private static readonly ConcurrentDictionary<eRealm, long> SceneEndedAt = new();
+
+    /// <summary>When the realm's last scene ended (long.MinValue / 2: none yet), for the re-spacing after it.</summary>
+    public static long LastSceneEnd(eRealm realm) => SceneEndedAt.TryGetValue(realm, out long at) ? at : long.MinValue / 2;
+
     private static void End(eRealm realm, string reason)
     {
+        SceneEndedAt[realm] = GameLoop.GameLoopTime;
         lock (Sync)
         {
             if (Scenes.Remove(realm, out Running running))

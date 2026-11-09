@@ -58,6 +58,14 @@ MUST be top notch"). Checked by automated tests and a simulated evening only; no
   two minutes is a scene cut (`BOT_DEBATE_END reason="no room in /faction"`), and a dunce who already spoke still sends
   its parting tell and rage quits then. Checked on every scene in the corpus, on a realm already at its ceiling with a
   keep falling mid-scene.
+- **You are answered during a scene too.** A line to or about you is never held by a scene or the ceiling, and "where do i
+  buy a better staff for my elem?" (no answer at all in the live test) now gets a true one: the Realm Exchange in your
+  capital, or the crafter who makes it (a fletcher for staves and bows, a weaponcrafter, an armorcrafter or a tailor).
+- **No rush when a scene ends.** For two minutes after a scene a line that starts something waits ten seconds after the
+  line before it (three seconds otherwise), and /lfg and /trade no longer wait for a /faction scene at all (the live test
+  heard 7 lines in 7 s as a debate ended). A roleplayer held back tries again in a few seconds.
+- **`/lstest roleplayer` and `/lstest spammer` say when the line really comes:** within a few seconds, once the scene
+  playing now is over, or as soon as /faction has room.
 - **One reaction in ten minutes, whatever says it.** The ten-minute window also holds back a pure reaction ("lol", "been
   there", "nice going") at the moment it is sent, from any path, not only the ones that plan around it. A conversation's
   line comes at most about 40 s after the one before it, or not at all.

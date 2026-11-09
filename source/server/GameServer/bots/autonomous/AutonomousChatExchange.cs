@@ -42,6 +42,39 @@ public static class AutonomousChatExchange
     /// </summary>
     public static bool ExemptFromCeiling(Source source) => source != null && source.Feature is "event" or "player";
 
+    /// <summary>
+    /// After a scene ends, the first lines that waited for it would all go at once (live test 2026-11-08: 7 lines in 7 s): for
+    /// this long an opener needs <see cref="ResumeSpacingMs"/> since the channel's last line; otherwise <see cref="OpenerSpacingMs"/>.
+    /// </summary>
+    public const long ResumeAfterSceneMs = 120_000, ResumeSpacingMs = 10_000, OpenerSpacingMs = 3_000;
+
+    /// <summary>Whether a line starts something (an opener: untagged, or line 0 of its exchange) rather than goes on with one.</summary>
+    public static bool IsOpener(Source source) => source == null || source.Index == 0;
+
+    /// <summary>
+    /// The /faction sink's rule (AutonomousBotChatCoordinator.BroadcastFactionAsWritten), pure: null when the line may be said,
+    /// else why it is held. A tagged event or a line to the player always goes. A running scene owns the channel: only its own
+    /// lines go. Every other line must fit under the ceiling, and an opener must keep its distance from the line before it
+    /// (more so in the two minutes after a scene, so the lines that waited don't all land at once).
+    /// </summary>
+    public static string SinkHold(Source source, bool sceneRunning, bool fits, long now, long lastLineAt, long sceneEndedAt)
+    {
+        if (ExemptFromCeiling(source))
+            return null;
+        bool scene = IsScene(source);
+        if (sceneRunning && !scene)
+            return "scene";
+        if (!fits)
+            return "ceiling";
+        if (!scene && IsOpener(source))
+        {
+            long spacing = now - sceneEndedAt < ResumeAfterSceneMs ? ResumeSpacingMs : OpenerSpacingMs;
+            if (now - lastLineAt < spacing)
+                return "spacing";
+        }
+        return null;
+    }
+
     /// <summary>A line of a running debate, storyline or dunce scene (AutonomousBotDebates): it owns /faction while it plays.</summary>
     public static bool IsScene(Source source) => source != null && source.Feature is "debate" or "storyline";
 

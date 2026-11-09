@@ -119,8 +119,12 @@ public static class AutonomousRoleplayers
             if (rp == null || !AutonomousBotVoices.TryEventLine(rp, "roleplay", out string line, "ambient"))
                 continue;
             // Already in character: sent as written (not through the speech pass).
+            // Held (a scene is playing, or /faction is full): the roleplayer tries again in a few seconds, not in half an hour.
             if (!AutonomousBotChatCoordinator.BroadcastFactionAsWritten(rp.Name, realm, line))
+            {
+                NextAmbientAt[realm] = now + 5_000 + Random.Shared.Next(5_000);
                 continue;
+            }
             AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), rp, line, "chat");
             Log.Info($"ROLEPLAY_AMBIENT realm={GlobalConstants.RealmToName(realm)} bot=\"{rp.Name}\"");
             if (Random.Shared.NextDouble() < 0.6)
