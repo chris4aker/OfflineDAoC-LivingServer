@@ -181,7 +181,7 @@ public class UT_ChatThreads
     [TestCase("when did we lose rena?", "time")]
     [TestCase("raid tonight, what time?", "time")]
     [TestCase("who's leading?", "who")]
-    [TestCase("what class?", "who")]
+    [TestCase("what class?", "class")]
     [TestCase("what lvl r u?", "level")]
     [TestCase("anyone up for keltoi?", null)]
     public void AQuestionAsksForAKindOfAnswer(string question, string kind) => Assert.That(Field.QuestionKind(question), Is.EqualTo(kind), question);

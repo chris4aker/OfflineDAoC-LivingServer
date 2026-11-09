@@ -745,7 +745,9 @@ public class UT_ChatBudgetSimulation
             // Round 5: regulars. /faction has fewer speakers than lines, and its top tenth of speakers carry 40-65% of the lines.
             var shape = speakerShape[(bots, true)];
             // Round 6: 45-55% at a busy peak (research: about 60%); a small server's few regulars may carry a little more.
-            Assert.That(shape.TopFaction, bots >= 1_000 ? Is.InRange(0.45, 0.55) : Is.InRange(0.40, 0.75), $"top tenth's share of /faction at {bots}");
+            // 1.1.3 after RC6 (owner's call, 2026-11-09): up to 58%, so "what class?" can be answered only with a class
+            // (fewer bots fit that answer, so the regulars carry a little more of /faction; about 0.557 in the simulation).
+            Assert.That(shape.TopFaction, bots >= 1_000 ? Is.InRange(0.45, 0.58) : Is.InRange(0.40, 0.75), $"top tenth's share of /faction at {bots}");
             Assert.That(shape.Per30Faction, Is.LessThanOrEqualTo(22), $"speakers per 30 /faction lines at {bots}");
             // Round 7: a line that invites a reply usually gets one, and some threads run on; a guild hears one life line an evening at most.
             // 1.1.3, after RC5 (owner's PC: most bot questions unanswered): a question is always answered when a bot can answer it,
