@@ -385,6 +385,188 @@ public class UT_FactionCoherence
     public void NotEveryLineIsABuyQuestion(string line) => Assert.That(AutonomousChatKnowledge.TryAnswerBuyGear(eRealm.Albion, line, out _), Is.False, line);
 
     [Test]
+    public void ARoleThatSpokeKeepsItsBot()
+    {
+        var Free = AutonomousBotDebates.SpeakerState.Free;
+        var Busy = AutonomousBotDebates.SpeakerState.Busy;
+        var Gone = AutonomousBotDebates.SpeakerState.Gone;
+        // Not yet spoken: as before (a stand-in may take it).
+        Assert.That(AutonomousBotDebates.DecideBeat(Gone, 0, true, 3, roleSpoke: false), Is.EqualTo(AutonomousBotDebates.BeatDecision.Speak));
+        // Spoken: the same bot or nothing (live check 2026-11-08: the dunce was Iagoys, then Yno).
+        Assert.That(AutonomousBotDebates.DecideBeat(Free, 0, true, 3, roleSpoke: true), Is.EqualTo(AutonomousBotDebates.BeatDecision.Speak));
+        Assert.That(AutonomousBotDebates.DecideBeat(Busy, 10_000, true, 3, roleSpoke: true), Is.EqualTo(AutonomousBotDebates.BeatDecision.Wait));
+        Assert.That(AutonomousBotDebates.DecideBeat(Busy, AutonomousBotDebates.MaxBusyWaitMs, true, 3, roleSpoke: true), Is.EqualTo(AutonomousBotDebates.BeatDecision.Speak),
+            "still fighting after the wait: the same bot types between swings (PlayBeat gives it its own bot, never a stand-in)");
+        Assert.That(AutonomousBotDebates.DecideBeat(Gone, 0, true, 5, roleSpoke: true), Is.EqualTo(AutonomousBotDebates.BeatDecision.End), "left the game: the scene ends");
+        Assert.That(AutonomousBotDebates.MayRecast(roleSpoke: false, storyProtagonist: false), Is.True);
+        Assert.That(AutonomousBotDebates.MayRecast(roleSpoke: true, storyProtagonist: false), Is.False);
+        Assert.That(AutonomousBotDebates.MayRecast(roleSpoke: false, storyProtagonist: true), Is.False);
+    }
+
+    /// <summary>
+    /// Every scene in the corpus (the dunce's roasts, storyline episodes, debates), played by the beat rules (a model of
+    /// PlayBeat's decisions), with the first speaker, right after its first line, busy for minutes in one run and gone from the
+    /// game in another: a role is said by one bot only, never a stand-in once it has spoken. A busy one is waited for and then
+    /// says its lines (the scene plays to its end, a dunce to its rage quit); one that left ends the scene.
+    /// </summary>
+    [Test]
+    public void ARoleIsSaidByOneBotInEveryScene()
+    {
+        VC.Scene[] scenes = AutonomousBotVoices.Corpus.Scenes;
+        int dunces = 0, stories = 0, debates = 0, ended = 0, busyPlayedOut = 0, busyOthers = 0;
+        foreach (VC.Scene scene in scenes)
+            foreach (string mode in new[] { "leaves", "busy" })
+            {
+                bool story = AutonomousBotStorylines.IsStory(scene);
+                var cast = scene.SpeakingRoles.Select((role, i) => (role, id: 1_000L + i)).ToDictionary(c => c.role, c => c.id);
+                long nextStandIn = 9_000;
+                var speakersOf = new Dictionary<string, HashSet<long>>();
+                var said = new HashSet<string>();
+                string victim = scene.SpeakingRoles[0];
+                bool victimHit = false, end = false;
+                long waited = 0;
+                for (int b = 0; b < scene.Beats.Length && !end; b++)
+                {
+                    VC.Beat beat = scene.Beats[b];
+                    if (beat.IsPause || beat.Variants.Length == 0)
+                        continue;
+                    var state = AutonomousBotDebates.SpeakerState.Free;
+                    if (beat.Role == victim && victimHit)
+                        state = mode == "leaves" ? AutonomousBotDebates.SpeakerState.Gone : AutonomousBotDebates.SpeakerState.Busy;
+                    bool spoke = said.Contains(beat.Role);
+                    bool protagonist = story && beat.Role is "A" or "B";
+                    // A storyline's protagonist is never replaced: waited for up to three minutes, else the episode ends.
+                    if (protagonist && state != AutonomousBotDebates.SpeakerState.Free)
+                    {
+                        if (state == AutonomousBotDebates.SpeakerState.Busy && waited < AutonomousBotDebates.StoryBusyWaitMs)
+                        {
+                            waited += AutonomousBotDebates.BusyRetryMs;
+                            b--;
+                            continue;
+                        }
+                        end = true;
+                        ended++;
+                        break;
+                    }
+                    long? speaker = spoke ? (state != AutonomousBotDebates.SpeakerState.Gone ? cast[beat.Role] : null)
+                        : state == AutonomousBotDebates.SpeakerState.Free ? cast[beat.Role]
+                        : AutonomousBotDebates.MayRecast(spoke, protagonist) ? nextStandIn++ : null;
+                    var decision = AutonomousBotDebates.DecideBeat(state, waited, speaker != null, scene.SpeakingRoles.Length, spoke);
+                    if (decision == AutonomousBotDebates.BeatDecision.Wait)
+                    {
+                        waited += AutonomousBotDebates.BusyRetryMs;
+                        b--;
+                        continue;
+                    }
+                    waited = 0;
+                    if (decision == AutonomousBotDebates.BeatDecision.End || spoke && speaker == null)
+                    {
+                        end = true;
+                        ended++;
+                        break;
+                    }
+                    if (decision == AutonomousBotDebates.BeatDecision.Skip || speaker == null)
+                        continue;
+                    if (speaker != cast[beat.Role])
+                        cast[beat.Role] = speaker.Value;   // a stand-in for a role nobody heard yet
+                    (speakersOf.TryGetValue(beat.Role, out var who) ? who : speakersOf[beat.Role] = new HashSet<long>()).Add(speaker.Value);
+                    said.Add(beat.Role);
+                    if (beat.Role == victim)
+                        victimHit = true;
+                }
+                foreach (var role in speakersOf)
+                    Assert.That(role.Value.Count, Is.EqualTo(1), $"{scene.Id} ({mode}): role {role.Key} said by {role.Value.Count} bots");
+                if (mode == "busy" && !story)
+                {
+                    busyOthers++;
+                    if (!end)
+                        busyPlayedOut++;
+                }
+                if (scene.Exit.Length > 0)
+                    dunces++;
+                else if (story)
+                    stories++;
+                else
+                    debates++;
+            }
+        Assert.That(dunces, Is.GreaterThanOrEqualTo(12), "the dunce scenes, both ways");
+        Assert.That(stories, Is.GreaterThan(0));
+        Assert.That(debates, Is.GreaterThan(0));
+        Assert.That(ended, Is.GreaterThan(0), "scenes whose first speaker left ended");
+        Assert.That(busyPlayedOut, Is.EqualTo(busyOthers), "a busy speaker that spoke is waited for and goes on: every dunce scene and debate plays out");
+    }
+
+    [Test]
+    public void AFeatureThatIsDueKeepsItsTurn()
+    {
+        const long due = 100_000, never = long.MinValue / 2;
+        Assert.That(Ex.AfterTry(true, null, due, never, due), Is.EqualTo(Ex.DueStep.Said));
+        Assert.That(Ex.AfterTry(false, "ceiling", due, never, due + 30_000), Is.EqualTo(Ex.DueStep.Retry));
+        Assert.That(Ex.AfterTry(false, "ceiling", due, never, due + Ex.DueWaitMs), Is.EqualTo(Ex.DueStep.GiveUp), "three minutes without room");
+        Assert.That(Ex.AfterTry(false, "scene", due, never, due + 10 * 60_000), Is.EqualTo(Ex.DueStep.Retry), "a scene's time is not counted");
+        Assert.That(Ex.AfterTry(false, "ceiling", due, due + 5 * 60_000, due + 6 * 60_000), Is.EqualTo(Ex.DueStep.Retry), "counted from the scene's end");
+        Assert.That(Ex.AfterTry(false, "spacing", due, due + 5 * 60_000, due + 8 * 60_000), Is.EqualTo(Ex.DueStep.GiveUp));
+        var random = new Random(3);
+        for (int i = 0; i < 50; i++)
+            Assert.That(AutonomousGoldSpammers.NextAdIn(true, null, 0, never, due, random), Is.InRange(18_000, 47_999), "a said ad: the next in 18-48 s");
+        Assert.That(AutonomousGoldSpammers.NextAdIn(false, "ceiling", due, never, due + 1_000, random), Is.EqualTo(Ex.DueRetryMs), "a held ad: again in 3 s");
+        Assert.That(AutonomousGoldSpammers.NextAdIn(false, "ceiling", due, never, due + Ex.DueWaitMs, random), Is.Null);
+        Assert.That(Ex.DueLog("spammer", eRealm.Albion, 42, " name=\"Xkqhoaa\""), Is.EqualTo("LIVING_FEATURE_DUE feature=spammer realm=Albion ex=42 name=\"Xkqhoaa\""));
+        Assert.That(Ex.DroppedLog("rumour", eRealm.Midgard, 7, 181_500, "ceiling"), Is.EqualTo("LIVING_FEATURE_DROPPED feature=rumour realm=Midgard ex=7 waited_s=181 reason=ceiling"));
+    }
+
+    /// <summary>
+    /// The live check of 1.1.3 RC1 (2026-11-08 21:31): a gold spammer turned up 4 s before a debate, which owned /faction for
+    /// 35 s, and the channel then sat at its ceiling for two minutes. The RC1 way spent each held ad and tried the next 18-48 s
+    /// later (33 s here, the mean): every ad of the wave was held and the spammer never spoke. The fixed way keeps the ad and
+    /// tries every 3 s: it speaks as soon as there is room, and the whole wave is said. Played through the sink's own rule (<see cref="Ex.SinkHold"/>).
+    /// </summary>
+    [Test]
+    public void ASpammerThatTurnsUpAsASceneBeginsStillSpams()
+    {
+        const long sceneFrom = 4_000, sceneTo = 39_000, roomFrom = sceneTo + 120_000;
+        string Held(long now, long lastLine) =>
+            Ex.SinkHold(new Ex.Source("spammer", 1, 0, "spammer"), now >= sceneFrom && now < sceneTo, now >= roomFrom, now, lastLine,
+                now >= sceneTo ? sceneTo : long.MinValue / 2);
+        (int Said, long FirstAt) Play(bool rc1)
+        {
+            var random = new Random(5);
+            int adsLeft = 5, said = 0;
+            long firstAt = -1, lastLine = sceneTo, heldSince = 0;
+            for (long next = 0; adsLeft > 0 && next < 30 * 60_000;)
+            {
+                long now = next;
+                string held = Held(now, lastLine);
+                if (held == null)
+                {
+                    said++;
+                    adsLeft--;
+                    lastLine = now;
+                    heldSince = 0;
+                    firstAt = firstAt < 0 ? now : firstAt;
+                    next = now + (rc1 ? 18_000 + random.Next(30_000) : AutonomousGoldSpammers.NextAdIn(true, null, 0, 0, now, random)!.Value);
+                    continue;
+                }
+                if (rc1)
+                {
+                    adsLeft--;   // RC1: a held ad was spent, and the next tried 18-48 s on (here the mean, 33 s)
+                    next = now + 33_000;
+                    continue;
+                }
+                heldSince = heldSince == 0 ? Math.Max(now, 1) : heldSince;
+                if (AutonomousGoldSpammers.NextAdIn(false, held, heldSince, now >= sceneTo ? sceneTo : long.MinValue / 2, now, random) is not long retry)
+                    break;
+                next = now + retry;
+            }
+            return (said, firstAt);
+        }
+        Assert.That(Play(rc1: true).Said, Is.Zero, "the RC1 way: a started spammer said nothing (as seen live)");
+        var fixedWay = Play(rc1: false);
+        Assert.That(fixedWay.Said, Is.EqualTo(5), "the whole wave is said");
+        Assert.That(fixedWay.FirstAt, Is.InRange(roomFrom, roomFrom + Ex.DueRetryMs), "its first ad as soon as there is room");
+    }
+
+    [Test]
     public void ASceneBeatWaitsForRoomAndOnlyACutSceneLosesItsEnd()
     {
         Assert.That(AutonomousBotDebates.DecideRoom(true, 0), Is.EqualTo(AutonomousBotDebates.RoomDecision.Speak));
@@ -559,6 +741,9 @@ public class UT_FactionCoherence
         public readonly List<string> Log = [];
         public readonly List<(long At, long Ex, int Index, string Role, string Speaker, string Feature, string Text)> Said = [];
         public readonly Dictionary<long, Plan> Plans = [];
+        /// <summary>The living-world features that decided to speak (a spammer, a rumour, a roleplayer's line), and those given up.</summary>
+        public readonly List<(string Feature, long Ex, long At)> Due = [];
+        public int Dropped;
         public (double Floor, double Target, double Ceiling) Band;
     }
 
@@ -687,6 +872,26 @@ public class UT_FactionCoherence
         string[] remarks = ["cant believe its tuesday already", "first kill after login never drops anything", "the frontier was busy last night",
             "love the music in this zone", "bwgans are the worst", "anyone else lag in camelot?", "need more bag space lol"];
         string[] reactions = ["lol", "heh", "true", "ha", "lol true", "true true"];
+        // The living-world features that decide to speak, on a fixed clock (a gold spammer every 40 minutes, not during a scene;
+        // a rumour every 20, whenever; a roleplayer's line every 15, not during a scene). The new way they wait for their turn
+        // (Ex.AfterTry: every 3 s, the roleplayer every 5-10 s, given up after three minutes outside a scene); each must speak.
+        var dues = new List<(string Feature, long Ex, long Since, long NextTry, SimBot Speaker, string Text)>();
+        var wanted = new HashSet<string>();
+        var spammer = new SimBot { Id = 99_999, Name = "Xkqhoaab", Class = "", Level = 1, Zone = Zones[0] };
+        string Stamp(long now)
+        {
+            long t = baseTime + now;
+            return $"11/08 {t / 3_600_000 % 24:00}:{t / 60_000 % 60:00}:{t / 1_000 % 60:00}";
+        }
+        void Due(long now, string feature, SimBot speaker, string text)
+        {
+            if (dues.Any(waiting => waiting.Feature == feature))
+                return;
+            long ex = Ex.NewId();
+            dues.Add((feature, ex, now, now, speaker, text));
+            evening.Due.Add((feature, ex, now));
+            evening.Log.Add($"{Stamp(now)} | INF | DOL.GS.Sim | " + Ex.DueLog(feature, eRealm.Albion, ex));
+        }
         string[] beats = ["is a house worth the coin?", "a house is a home, plus storage", "its a weekly rent bill for a room u visit twice",
             "decorate it right and ur friends will visit", "my friends are in the frontier lol", "maybe a small cottage to start"];
         for (long now = 0; now < lengthMs; now += 1_000)
@@ -801,6 +1006,39 @@ public class UT_FactionCoherence
                 else
                     debateUntil = sceneEndedAt = now + 2_000;
             }
+            if (now % 2_400_000 == 1_500_000)
+                wanted.Add("spammer");
+            if (now % 1_200_000 == 420_000)
+                wanted.Add("rumour");
+            if (now % 900_000 == 660_000)
+                wanted.Add("roleplayer");
+            if (wanted.Remove("rumour"))
+                Due(now, "rumour", bots[random.Next(bots.Count)], "heard grimwold is up again in black mtns");
+            if (now >= debateUntil && wanted.Remove("spammer"))
+                Due(now, "spammer", spammer, "WTS cheap plat w w w . F A S T G 0 L D . C 0 M");
+            if (now >= debateUntil && wanted.Remove("roleplayer"))
+                Due(now, "roleplayer", bots[random.Next(bots.Count)], "hail, good folk! the road to caer sursbrooke is safe this eve");
+            for (int k = 0; k < dues.Count; k++)
+            {
+                var pending = dues[k];
+                if (pending.NextTry > now)
+                    continue;
+                bool dueSaid = Say(now, pending.Speaker, pending.Feature, pending.Ex, 0, pending.Feature == "rumour" ? "teller" : pending.Feature, pending.Text);
+                string dueHeld = dueSaid ? null : now < debateUntil ? "scene" : "ceiling";
+                Ex.DueStep dueStep = Ex.AfterTry(dueSaid, dueHeld, pending.Since, sceneEndedAt, now);
+                if (dueStep == Ex.DueStep.Retry)
+                {
+                    dues[k] = (pending.Feature, pending.Ex, pending.Since,
+                        now + (pending.Feature == "roleplayer" ? 5_000 + random.Next(5_000) : Ex.DueRetryMs), pending.Speaker, pending.Text);
+                    continue;
+                }
+                dues.RemoveAt(k--);
+                if (dueStep == Ex.DueStep.GiveUp)
+                {
+                    evening.Dropped++;
+                    evening.Log.Add($"{Stamp(now)} | INF | DOL.GS.Sim | " + Ex.DroppedLog(pending.Feature, eRealm.Albion, pending.Ex, now - pending.Since, dueHeld));
+                }
+            }
             // A bot lists an item about every two minutes and advertises it 70% of the time (BotBrain, TryAdvertiseExchangeItem).
             if (random.NextDouble() < 1 / 120.0 && random.NextDouble() < 0.7 && !debate)
             {
@@ -909,6 +1147,8 @@ public class UT_FactionCoherence
             return (max, over);
         }
         int Adverts(Evening e) => e.Said.Count(s => s.Feature == "exchange_ad");
+        // A spammer, rumour or roleplayer that decided to speak and never did (live check of RC1: a started spammer was silent).
+        int Silent(Evening e) => e.Due.Count(d => !e.Said.Any(s => s.Ex == d.Ex));
         // The most lines (events aside) in any ten seconds of the two minutes after a debate ended (live test: 7 in 7 s).
         int AfterScene(Evening e)
         {
@@ -924,7 +1164,9 @@ public class UT_FactionCoherence
             $"{name}: {e.Said.Count} lines ({e.Said.Count / 180.0:0.00}/min; band {e.Band.Target:0.0}/{e.Band.Ceiling:0.0}; peak {Rate(e).Max:0.0}/min, " +
             $"{Rate(e).SecondsOver} s over the ceiling), out of order {OutOfOrder(e)}, role swaps {RoleSwaps(e)}, untrue answers {RoleFalse(e)}, " +
             $"thread lines after a missing one {Orphans(e)}, personal bursts over two {BurstsOver(e, "nemesis", 2) + BurstsOver(e, "revenge", 2)}, " +
-            $"event bursts over three {BurstsOver(e, "event", 3) + BurstsOver(e, "news", 3)}, most lines in 10 s after a debate {AfterScene(e)}, reaction repeats in 10 min {ReactionRepeats(e)}, exchange adverts {Adverts(e)}";
+            $"event bursts over three {BurstsOver(e, "event", 3) + BurstsOver(e, "news", 3)}, most lines in 10 s after a debate {AfterScene(e)}, reaction repeats in 10 min {ReactionRepeats(e)}, exchange adverts {Adverts(e)}, " +
+            $"features due {e.Due.Count} (spammer {e.Due.Count(d => d.Feature == "spammer")}, rumour {e.Due.Count(d => d.Feature == "rumour")}, " +
+            $"roleplayer {e.Due.Count(d => d.Feature == "roleplayer")}), silent {Silent(e)}, given up {e.Dropped}";
         TestContext.Progress.WriteLine("CHAT_SIM " + Line("before", before));
         TestContext.Progress.WriteLine("CHAT_SIM " + Line("after", after));
 
@@ -936,6 +1178,11 @@ public class UT_FactionCoherence
         Assert.That(BurstsOver(after, "nemesis", 2) + BurstsOver(after, "revenge", 2) + BurstsOver(after, "event", 3), Is.Zero);
         Assert.That(ReactionRepeats(after), Is.Zero);
         Assert.That(Adverts(after), Is.LessThanOrEqualTo(12), "one in 15 minutes at most");
+        // Every spammer, rumour and roleplayer line that was due was said.
+        Assert.That(after.Due.Count(d => d.Feature == "spammer"), Is.GreaterThanOrEqualTo(4));
+        Assert.That(after.Due.Count(d => d.Feature == "rumour"), Is.GreaterThanOrEqualTo(8));
+        Assert.That(after.Due.Count(d => d.Feature == "roleplayer"), Is.GreaterThanOrEqualTo(10));
+        Assert.That(Silent(after), Is.Zero, Line("after", after));
         // After a debate the lines that waited don't all land at once: an opener at most every ten seconds for two minutes.
         // (an opener and its own answers may share ten seconds).
         Assert.That(AfterScene(after), Is.LessThanOrEqualTo(3), Line("after", after));

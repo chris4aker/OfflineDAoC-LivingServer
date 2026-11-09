@@ -75,6 +75,38 @@ public static class AutonomousChatExchange
         return null;
     }
 
+    // ---- a feature that is due: a gold spammer, a rumour, a roleplayer's line ---------------------------------------------
+
+    /// <summary>
+    /// How long a feature that has decided to speak in /faction waits for its first line to be said, and how often it tries
+    /// (1.1.3 RC1, live check 2026-11-08: a gold spammer logged its start, its ads were held by a scene and the ceiling after
+    /// it, each held ad was spent, and it never spoke; a held rumour was lost and /lstest said "no line"). Its lines count
+    /// against the ceiling like any line, but it keeps its turn: tried again every <see cref="DueRetryMs"/>, given up (logged)
+    /// after <see cref="DueWaitMs"/>.
+    /// </summary>
+    public const long DueWaitMs = 180_000, DueRetryMs = 3_000;
+
+    public enum DueStep { Said, Retry, GiveUp }
+
+    /// <summary>
+    /// What a due feature does after a try: said; held by a running scene, try again (a scene owns the channel and ends on its
+    /// own, so waiting behind it costs nothing); otherwise try again soon, or give up once it has waited
+    /// <see cref="DueWaitMs"/> since it was due or since the last scene ended, whichever is later. Pure.
+    /// </summary>
+    public static DueStep AfterTry(bool said, string held, long dueSince, long sceneEndedAt, long now) =>
+        said ? DueStep.Said
+        : held == "scene" ? DueStep.Retry
+        : now - Math.Max(dueSince, sceneEndedAt) >= DueWaitMs ? DueStep.GiveUp
+        : DueStep.Retry;
+
+    /// <summary>The log line of a feature that is waiting for its turn (chat_audit.py checks that its exchange is said).</summary>
+    public static string DueLog(string feature, eRealm realm, long exchange, string detail = "") =>
+        $"LIVING_FEATURE_DUE feature={feature} realm={GlobalConstants.RealmToName(realm)} ex={exchange}{detail}";
+
+    /// <summary>The log line of a due feature that gave up without a line (no_audience: nobody was left to hear it).</summary>
+    public static string DroppedLog(string feature, eRealm realm, long exchange, long waitedMs, string reason) =>
+        $"LIVING_FEATURE_DROPPED feature={feature} realm={GlobalConstants.RealmToName(realm)} ex={exchange} waited_s={waitedMs / 1_000} reason={reason ?? "held"}";
+
     /// <summary>A line of a running debate, storyline or dunce scene (AutonomousBotDebates): it owns /faction while it plays.</summary>
     public static bool IsScene(Source source) => source != null && source.Feature is "debate" or "storyline";
 

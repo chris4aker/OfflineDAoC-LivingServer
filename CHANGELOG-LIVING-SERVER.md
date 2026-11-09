@@ -51,6 +51,13 @@ its reply budget: a thread or a burst is still allowed or held once, as a whole,
   through it too. A running debate, storyline or dunce scene owns /faction (other lines yield to it), waits for room beat
   by beat, and a dunce cut short after it spoke still rage quits. Every /faction line carries `cap=`, and
   `chat_audit.py` ends with `VERDICT PASS` or `FAIL`.
+- **The fixes after 1.1.3 RC1, as in 1.1.3** (see its entry): a scene's part keeps the bot that started it (a busy or dead
+  one is waited for and then speaks; one that left the game ends the scene; never recast, unlike the RC1 dunce that went
+  from Iagoys to Yno); a gold spammer, rumour or roleplayer line held by /faction keeps its turn (tried every few seconds,
+  given up and logged after three minutes outside a scene, `LIVING_FEATURE_DUE`/`DROPPED`), `GOLD_SPAMMER_START` comes with
+  the first ad said, and `/lstest rumour` tells its reasons apart; each reply to the player has its own exchange id; and
+  `chat_audit.py` fails a log with a feature that was due and never spoke. On 1.2 the spammer's ads keep their scene-sized
+  count and its reactions stay within the reply budget. Tests only.
 - **Checked:** automated and simulated only, not played. `source/tools/chat_audit.py` on the owner's 1.1.3 evening: one each
   of an answer after the asker closed, a level question after the invite, a follow-up before any answer, a thanks with no
   answer, a trade closing that didn't follow and a join answer from a class that can't fill the role; 6 pile-ons (+13

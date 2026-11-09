@@ -314,7 +314,7 @@ public static partial class AutonomousLivingServer
                     flags: flags.ToArray(), mood: "friendly"))
             {
                 // About the real player (1.1.3: a line about you is not held by the ceiling).
-                using (AutonomousChatExchange.Tag("player", 0, 0, "gossip", bot))
+                using (AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 0, "gossip", bot))
                     Speak(bot, Channel.Faction, line);
                 return bot;
             }

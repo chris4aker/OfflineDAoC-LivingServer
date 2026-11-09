@@ -916,7 +916,7 @@ public static class AutonomousBotChatCoordinator
             if (!Eligible(bot))
                 return 0;
             // 1.2: a follow-up to the bot's own line is said to it, so the reply budget never holds it; it counts as a reply.
-            using var playerTag = AutonomousChatExchange.Tag("player", 0, 0, "answerer", bot);
+            using var playerTag = AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 1, "answerer", bot);
             if (scope == ThreadScope.Faction && HasFactionAudience(bot.Realm))
                 BroadcastFaction(bot.Name, bot.Realm, text, AsReply);
             else if (scope == ThreadScope.Say && HasLocalAudience(bot))
@@ -1693,6 +1693,10 @@ public static class AutonomousBotChatCoordinator
         return false;
     }
 
+    /// <summary>Why this thread's last /faction line wasn't said (scene, ceiling, spacing, duplicate, empty), or null when it was.</summary>
+    [ThreadStatic]
+    public static string LastHeld;
+
     /// <summary>
     /// A bot's /faction line through the speech pass, counted by the realm's meter as an ambient line, or (1.2) as a reply when
     /// <paramref name="kind"/> says so: replies have a budget of their own (AutonomousChatBudget.DecideReply). False when it
@@ -1711,6 +1715,7 @@ public static class AutonomousBotChatCoordinator
     public static bool BroadcastFactionAsWritten(string speakerName, eRealm realm, string message,
         AutonomousChatBudget.LineKind kind = AutonomousChatBudget.LineKind.Ambient)
     {
+        LastHeld = null;
         AutonomousChatExchange.Source source = AutonomousChatExchange.Current;
         bool scene = AutonomousChatExchange.IsScene(source);
         // A tagged event or a line to the player goes; a running scene owns the channel; every other line fits under the
@@ -1721,6 +1726,7 @@ public static class AutonomousBotChatCoordinator
                 AutonomousChatBudget.Meter.LastLine(AutonomousChatBudget.Channel.Faction, (long)realm), AutonomousBotDebates.LastSceneEnd(realm)) is { } held)
         {
             AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Faction, held == "ceiling" ? AutonomousChatWhy.Held.Ceiling : AutonomousChatWhy.Held.Gap);
+            LastHeld = held;
             return false;
         }
         // A pure reaction ("lol", "oof", "been there") the realm heard in the last ten minutes isn't said again, whatever path
@@ -1729,11 +1735,15 @@ public static class AutonomousBotChatCoordinator
             !AutonomousChatExchange.Shorts.SayOrHold(AutonomousChatExchange.FactionKey(realm), message, GameLoop.GameLoopTime))
         {
             AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Faction, AutonomousChatWhy.Held.Duplicate);
+            LastHeld = "duplicate";
             return false;
         }
         string safe = SendFaction(speakerName, realm, message);
         if (safe == null)
+        {
+            LastHeld = "empty";
             return false;
+        }
         BotChatTranscript.Bot("faction", speakerName, realm, safe);
         AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Faction, (long)realm, GameLoop.GameLoopTime, kind);
         AutonomousChatExchange.NoteLine(AutonomousChatExchange.FactionKey(realm), speakerName, GameLoop.GameLoopTime);
@@ -1899,7 +1909,7 @@ public static class AutonomousBotChatCoordinator
                 string late = AutonomousBotVoices.StyleFor(busy, AfterAFight(JoinReply(busy, player, Random.Shared, message), Random.Shared, riding));
                 if (!HasFactionAudience(busy.Realm))
                     return 0;
-                using var playerTag = AutonomousChatExchange.Tag("player", 0, 0, "answerer", busy);
+                using var playerTag = AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 1, "answerer", busy);
                 BroadcastFaction(busy.Name, busy.Realm, late, AsReply);
                 Note(AutonomousChatThreads.Faction(busy.Realm), busy, late, "", player.Name);
                 AutonomousChatWhy.Record(busy, "faction", "player " + player.Name, "said", "join", AutonomousChatReplyFit.Known,
@@ -1931,7 +1941,7 @@ public static class AutonomousBotChatCoordinator
             {
                 if (!Eligible(asked))
                     return 0;
-                using var playerTag = AutonomousChatExchange.Tag("player", 0, 0, "answerer", asked);
+                using var playerTag = AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 1, "answerer", asked);
                 if (faction && HasFactionAudience(asked.Realm))
                     BroadcastFaction(asked.Name, asked.Realm, answer, AsReply);
                 else if (!faction && HasLocalAudience(asked))
@@ -2002,6 +2012,8 @@ public static class AutonomousBotChatCoordinator
         // "lol" or "+1" for a joke or a remark), never a second answer to a question. Each reply arrives after its bot read the
         // line, thought and typed at its own speed.
         AutonomousChatArbiter.Plan plan = new(count > 0 ? 1 : 0, 0, 0);
+        // The answers to one player line are one exchange in the transcript (1.1.3: every reply to a player shared ex=0).
+        long playerExchange = AutonomousChatExchange.NewId();
         bool question = AutonomousChatQuestions.IsQuestion(message);
         int social = 0, reactions = 0;
         string reactionKind = null;
@@ -2069,6 +2081,7 @@ public static class AutonomousBotChatCoordinator
             string code = ReplyCode(choice.Route, directed ? namedInLine ? AutonomousChatWhy.Codes.ExemptNamed : AutonomousChatWhy.Codes.ExemptAddressed
                 : budgetCode);
             planned++;
+            int replyIndex = planned;
             due = voices ? AutonomousChatArbiter.DelayMs(message, response, Wpm(responder), due, Random.Shared) : ReplyDelayMs(response, due, Random.Shared);
             if (faction)
                 NoteFactionResponder(player.Realm, responder);
@@ -2085,7 +2098,7 @@ public static class AutonomousBotChatCoordinator
                     bot => Eligible(bot) && !bot.InCombat && !bot.IsCasting && (faction || HasLocalAudience(bot)), spoken);
                 if (speaker == null)
                     return 0;
-                using var playerTag = AutonomousChatExchange.Tag("player", 0, 0, primary ? "answerer" : "pileon", speaker);
+                using var playerTag = AutonomousChatExchange.Tag("player", playerExchange, replyIndex, primary ? "answerer" : "pileon", speaker);
                 if (faction && HasFactionAudience(speaker.Realm))
                     BroadcastFaction(speaker.Name, speaker.Realm, text, AsReply);
                 else if (!faction && HasLocalAudience(speaker))
