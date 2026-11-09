@@ -1638,6 +1638,8 @@ public static partial class AutonomousBotGroupCoordinator
         GameBot[] available = activeRoster
             .Where(bot => bot.IsAlive && !bot.IsTemporaryGroupHelper && !bot.IsPlayerLedGroup && bot.Group == null && bot.CurrentRegion != null &&
                           !AutonomousRealmRaid.IsReserved(bot) &&
+                          // A bot the schedule is sending home finishes and logs off; it starts no new party (1.1.3).
+                          !AutonomousBotSchedule.LeavingSoon(bot) &&
                           // siege recruits are merged into full parties by FormSiegeParties, not random warbands
                           !(objectiveKind == eAutonomousObjectiveKind.RvR &&
                             AutonomousRvrEventLayer.IsForceCommitted($"rvr-{bot.DatabaseID}", GameLoop.GameLoopTime)) &&

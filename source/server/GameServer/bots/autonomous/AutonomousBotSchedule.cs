@@ -82,38 +82,66 @@ public static class AutonomousBotSchedule
         return minute % cycle < online;
     }
 
-    // Share of the roster online by local hour (a 2002 North American evening crowd).
+    // Share of the roster online by local hour (a 2002 North American evening crowd). 1.1.3: a deeper trough, so a
+    // 2,700-bot roster has about 330 online at 5 a.m. on a weekday (the 1.1.2 curve kept a fifth, about 560; a 2003
+    // server had a few hundred at 4-6 a.m.) and the whole evening crowd from 7 to 11 p.m.
     private static readonly double[] Weekday =
     [
-        0.45, 0.35, 0.28, 0.22, 0.20, 0.20, 0.24, 0.30, 0.34, 0.36, 0.38, 0.42,
-        0.46, 0.48, 0.50, 0.54, 0.60, 0.70, 0.82, 0.92, 0.96, 0.95, 0.85, 0.62,
+        0.42, 0.32, 0.24, 0.17, 0.13, 0.12, 0.14, 0.19, 0.25, 0.30, 0.34, 0.38,
+        0.44, 0.46, 0.48, 0.52, 0.58, 0.68, 0.80, 0.90, 0.96, 0.97, 0.90, 0.66,
     ];
 
     private static readonly double[] Weekend =
     [
-        0.60, 0.48, 0.38, 0.30, 0.25, 0.24, 0.26, 0.32, 0.42, 0.52, 0.62, 0.70,
-        0.74, 0.76, 0.78, 0.80, 0.82, 0.86, 0.90, 0.95, 0.97, 0.96, 0.90, 0.75,
+        0.58, 0.46, 0.35, 0.25, 0.18, 0.15, 0.16, 0.20, 0.30, 0.42, 0.55, 0.64,
+        0.70, 0.74, 0.76, 0.78, 0.80, 0.84, 0.89, 0.95, 0.98, 0.98, 0.93, 0.76,
     ];
 
-    /// <summary>The share of the roster the clock mode wants online at this local time (hour curve, interpolated by minute).</summary>
+    /// <summary>Friday from 6 p.m., Saturday and Sunday use the weekend curve.</summary>
+    public static bool IsWeekend(DateTime local) => local.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday ||
+                                                     local.DayOfWeek == DayOfWeek.Friday && local.Hour >= 18;
+
+    private static double CurveAt(DateTime local) => (IsWeekend(local) ? Weekend : Weekday)[local.Hour];
+
+    /// <summary>
+    /// The share of the roster the clock mode wants online at this local time (hour curve, interpolated by minute). Each
+    /// hour runs toward the next hour's value on the curve of that next hour's day, so Friday 6 p.m. and Monday midnight,
+    /// where the weekday and weekend curves meet, are smooth (1.1.2 stepped there: about 400 bots of 2,700 at once on
+    /// Monday 00:00).
+    /// </summary>
     public static double ClockShare(DateTime local)
     {
-        bool weekend = local.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday ||
-                       local.DayOfWeek == DayOfWeek.Friday && local.Hour >= 18;
-        double[] curve = weekend ? Weekend : Weekday;
-        double here = curve[local.Hour], next = curve[(local.Hour + 1) % 24];
-        return here + (next - here) * (local.Minute / 60.0);
+        DateTime hour = new(local.Year, local.Month, local.Day, local.Hour, 0, 0, local.Kind);
+        double here = CurveAt(hour), next = CurveAt(hour.AddHours(1));
+        return here + (next - here) * ((local - hour).TotalMinutes / 60.0);
     }
+
+    /// <summary>The hours (local) in which each bot's place in line moves from one day's to the next: the quiet hours.</summary>
+    public const int ReshuffleStartHour = 2, ReshuffleHours = 3;
+
+    /// <summary>
+    /// A bot's place in the day's line, 0-1: online when it is under the hour's share. Stable from 5 a.m. to 2 a.m., so a
+    /// bot doesn't flicker on and off and a bot up early is still up when the evening fills; between 2 and 5 a.m. it moves
+    /// a little at a time to the next day's place, so different bots play late on different days. 1.1.2 changed every
+    /// place at midnight at once: about 17% of the roster (some 450 of 2,700 bots) wanted to swap in the same minute. Pure.
+    /// </summary>
+    public static double ClockPlace(long botId, DateTime local)
+    {
+        DateTime shifted = local.AddHours(-ReshuffleStartHour);
+        double blend = Math.Clamp(shifted.TimeOfDay.TotalHours / ReshuffleHours, 0.0, 1.0);
+        double today = Unit(botId, 1000 + DayKey(shifted)), yesterday = Unit(botId, 1000 + DayKey(shifted.AddDays(-1)));
+        double offset = yesterday + (today - yesterday) * blend;
+        return (Unit(botId, 4) + 0.25 * offset) % 1.0;
+    }
+
+    private static int DayKey(DateTime day) => day.Year * 400 + day.DayOfYear;
 
     public static bool ClockOnline(long botId, BotPersonalityType type, DateTime local)
     {
         double share = ClockShare(local);
         if (type == BotPersonalityType.NoLifer)
             share = Math.Min(1.0, share * 1.5 + 0.1);
-        // Each bot's place in line for the day: stable for the day, so it doesn't flicker on and off.
-        int day = local.Year * 400 + local.DayOfYear;
-        double place = (Unit(botId, 4) + 0.25 * Unit(botId, 1000 + day)) % 1.0;
-        return place < share;
+        return ClockPlace(botId, local) < share;
     }
 
     public static bool ScheduledOnline(Mode mode, long botId, BotPersonalityType type, TimeSpan sinceStart, DateTime local) => mode switch
@@ -122,6 +150,20 @@ public static class AutonomousBotSchedule
         Mode.Clock => ClockOnline(botId, type, local),
         _ => true,
     };
+
+    /// <summary>
+    /// How many bots the population controller may queue for login now while a schedule is on (pure). <paramref name="desired"/>
+    /// is the schedule's number (through the startup ramp), <paramref name="scheduledOnline"/> those of them online,
+    /// <paramref name="totalOnline"/> every gamebot online (scheduled-off bots still finishing something included). For their
+    /// first 15 minutes those overstaying bots count, so logins wait for them (10% slack); after that they no longer hold the
+    /// schedule back; and the total never runs more than a quarter over the schedule's number.
+    /// </summary>
+    public static int LoginsWanted(int desired, int scheduledOnline, int totalOnline, int recentOverstays, int pending)
+    {
+        int missing = desired - scheduledOnline - pending;
+        missing = Math.Min(missing, desired + desired / 10 - scheduledOnline - recentOverstays - pending);
+        return Math.Min(missing, desired + desired / 4 - totalOnline - pending);
+    }
 
     #endregion
 
@@ -221,13 +263,39 @@ public static class AutonomousBotSchedule
     private static readonly ConcurrentDictionary<long, byte> LeavingNow = new();
     public const int MaxLogoutsPerScan = 3;
 
+    /// <summary>
+    /// A gamebot the schedule (or a break) wants offline now but that is still online, finishing something. It joins no
+    /// new group or automatic raid and isn't counted in a raid's crowd, so it can finish and log off instead of being drawn
+    /// into the next two hours (1.1.3). Always false with the schedule and breaks off.
+    /// </summary>
+    public static bool LeavingSoon(GameBot bot) => Active && bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper &&
+                                                   bot.PersistentRecord != null && !WantsOnline(bot.PersistentRecord, DateTime.UtcNow);
+
     /// <summary>Only bots that can leave without breaking anything: ungrouped, alive, idle, not carrying or sieging.</summary>
     public static bool CanLogOut(GameBot bot) =>
-        bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper && bot.ObjectState == GameObject.eObjectState.Active &&
-        bot.IsAlive && bot.Group == null && !bot.InCombat && !bot.IsCasting && !bot.IsOnStableMasterRoute &&
-        !bot.IsReturningAfterRelease && !BotSiegeRuntime.Assigned(bot) &&
-        bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK) == null &&
-        string.IsNullOrEmpty(bot.TempProperties.GetProperty<string>("RvrEventForce"));
+        bot != null && CanLogOut(bot.IsAutonomousWorldBot, bot.IsTemporaryGroupHelper, bot.ObjectState == GameObject.eObjectState.Active,
+            bot.IsAlive, bot.Group != null, bot.InCombat || bot.IsCasting, bot.IsOnStableMasterRoute || bot.IsReturningAfterRelease,
+            BotSiegeRuntime.Assigned(bot), bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK) != null,
+            InRealmEvent(bot));
+
+    /// <summary>
+    /// The logout rule, pure: an autonomous gamebot (not a helper) in the world, alive, ungrouped, not fighting or casting,
+    /// not travelling or running back after a death, not at a siege, carrying no relic and not committed to a realm event.
+    /// </summary>
+    public static bool CanLogOut(bool autonomous, bool temporaryHelper, bool inWorld, bool alive, bool grouped, bool busyFighting,
+        bool travelling, bool atSiege, bool carryingRelic, bool inRealmEvent) =>
+        autonomous && !temporaryHelper && inWorld && alive && !grouped && !busyFighting && !travelling && !atSiege && !carryingRelic && !inRealmEvent;
+
+    /// <summary>
+    /// Committed to a realm event (a siege muster, march or battle, a defense, a relic run). Every RvR gamebot carries its
+    /// force id ("rvr-&lt;id&gt;") once it has run its RvR goal, and it is never cleared; 1.1.2 read "has a force id" as
+    /// "in an event", so an RvR bot could never log out on a schedule or take a break (1.1.3). The id's event is asked instead.
+    /// </summary>
+    public static bool InRealmEvent(GameBot bot)
+    {
+        string force = bot?.TempProperties.GetProperty<string>("RvrEventForce");
+        return !string.IsNullOrEmpty(force) && AutonomousRvrEventLayer.IsForceCommitted(force, GameLoop.GameLoopTime);
+    }
 
     internal static void Pulse(long now)
     {
@@ -402,8 +470,7 @@ public static class AutonomousBotSchedule
             GameBot[] candidates = members.OfType<GameBot>().Where(bot => bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper &&
                 bot.IsAlive && !bot.IsCasting && !bot.IsOnStableMasterRoute && !BotSiegeRuntime.Assigned(bot) &&
                 bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK) == null &&
-                string.IsNullOrEmpty(bot.TempProperties.GetProperty<string>("RvrEventForce")) &&
-                !Frozen.ContainsKey(bot.DatabaseID)).ToArray();
+                !InRealmEvent(bot) && !Frozen.ContainsKey(bot.DatabaseID)).ToArray();
             if (candidates.Length == 0)
                 continue;
             LastLinkdead[group] = now;
