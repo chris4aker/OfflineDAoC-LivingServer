@@ -31,6 +31,9 @@ namespace DOL.GS
         /// </summary>
         public static string ChatKillerKind(GameObject killer) => killer switch
         {
+            // RC7 on the owner's PC: a gamebot's brain is a controlled brain with no owner, so an enemy bot read as a monster
+            // ("adds in murdaigean hate me" after one enemy friar). A bot is a bot before anything else.
+            GameBot => "bot",
             DOL.GS.Keeps.GameKeepGuard or GameGuard => "guard",
             GameNPC { Brain: DOL.AI.Brain.IControlledBrain brain } => brain.GetLivingOwner() is GamePlayer or GameBot ? "pet" : "monster",
             _ => KillerKind(killer),
@@ -39,7 +42,7 @@ namespace DOL.GS
         /// <summary>The class of the enemy behind a kill (the player or bot, or a pet's owner), or null.</summary>
         public static string KillerClassName(GameObject killer)
         {
-            GameLiving who = killer is GameNPC { Brain: DOL.AI.Brain.IControlledBrain brain } ? brain.GetLivingOwner() : killer as GameLiving;
+            GameLiving who = killer is not GameBot && killer is GameNPC { Brain: DOL.AI.Brain.IControlledBrain brain } ? brain.GetLivingOwner() : killer as GameLiving;
             return who switch
             {
                 GamePlayer player => player.CharacterClass?.Name,
