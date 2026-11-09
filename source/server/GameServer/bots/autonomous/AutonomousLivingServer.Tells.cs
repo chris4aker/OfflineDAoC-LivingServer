@@ -164,6 +164,11 @@ public static partial class AutonomousLivingServer
         if (string.IsNullOrWhiteSpace(zone))
             return offer.TrimEnd() + (random.Next(2) == 0 ? " (not close tho, meet up?)" : ", gotta meet up first tho");
         string body = offer.TrimEnd().TrimEnd('?', '!', '.', ',');
+        // RC7 on the owner's PC: "want to duo in Pennine Mountains? im across pennine mtns, meet up and inv". An offer that
+        // already names the zone only adds that the bot is far.
+        string firstWord = z.Split(' ')[0];
+        if (offer.Contains(zone.Trim(), StringComparison.OrdinalIgnoreCase) || firstWord.Length > 3 && offer.Contains(firstWord, StringComparison.OrdinalIgnoreCase))
+            return body + (random.Next(2) == 0 ? "? other side of it tho, meet up and inv" : "? not close tho, come find me");
         return sameZone
             ? body + (random.Next(2) == 0 ? $"? other side of {z} tho, come find me" : $"? im across {z}, meet up and inv")
             : body + (random.Next(3) switch

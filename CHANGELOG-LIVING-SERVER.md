@@ -325,6 +325,46 @@ player online in Albion, 5 bot lines named the player, no topic ever came back, 
   ceiling.
   The checker's verdict on both: PASS. Tests only.
 
+**Chat fixes from the sixth and seventh release candidates on the owner's PC** (eff81a0 and b036b3c, 2026-11-09, played
+as an Albion 50 and a new Hibernian with the Bot schedule on Real clock). The chat checker passed RC6's 74 minutes, but
+reading the lines showed what it couldn't see; it now checks for each of these, and fails RC6's log.
+- **A friend's answer to small talk is kept.** "hey! what u up to?" by tell to a friend drew "not sure, try /advice": the
+  friend's real answer had no score in the reply budget, which swapped it for a stock line. On RC7 the same tell drew "hey
+  Manawatch! rvr in Odin's Gate, its busy, wanna duo?", true of the bot.
+- **Group banter only about a hunt you shared.** A wizard grouped with the player fought alone, died, ran back and said
+  "clean pull, ty", "loot is yours", "xp is flying, good call on this camp", "oom, give me a minute" (at full power) and
+  "pull?", every 20-40 seconds, while the player had not fought. Hunting talk now needs a fight the player took part in
+  that ended with nobody dead; buff talk counts as hunting talk; "I'm low" lines need the bot to be low. On RC7 an idle duo
+  heard one line in three minutes.
+- **A far bot says where it is.** A bot in another zone offered to group and the player's invite said "too far away". A
+  bot close enough to invite now offers first; one further off says where it is; an invite from too far gets the bot's
+  tell ("other end of pennine mtns lol meet up?", RC7).
+- **One line on release.** A dead groupmate said "long run back to Pennine Mountains" and "released, running back" in
+  the same second, and asked "any rez near ...?" in a duo where the player can't rez. Now one line, and the group ask
+  only when a player in it can rez.
+- **Threads that follow their answers.** "any grps out?" "quiet atm" ran on with "how many?" "small grp" "count me in"
+  "omw". An answer that says there is nothing ends the run-on (another bot may answer "anyone else?" from the same true
+  pool); rvr follow-ups come only after a line about enemies or the zerg, and a count is no answer to "which way".
+- **Deaths told by their real killer.** A death to a monster in the frontier was told as a gank ("got caught by the
+  bridge"), one or two attackers became "a zerg, 20+", an enemy bot became "the guards", and an objective name became a
+  monster ("died to frontier patrol near death stalkers"). A bot now remembers what killed it, how many were on it and
+  what class it was, and the story and the death line follow that. One death story per realm in seven minutes, one story
+  of any kind at a time with three minutes between, and a place ("the bridge", "outside the gate") not twice in half an
+  hour. A rez request gets a rez answer, not "oof".
+- **The time of day.** "busy tonight" at 10 AM, "anyone heading to the frontier tonight?" in guild chat at 11 AM: on
+  every channel "tonight" reads "today" by day and "this morning" "earlier" after noon.
+- **The bot's real state.** "ok back" only after a brb or a death. No "how many bubbles?" to an rvr post or to a 50. A duo
+  offer only from a bot that is free. Written /lfg and /faction group posts ("group at Coruscating Mine needs a healer",
+  "group has room near Connacht, all classes welcome", "lfg Stonehenge Barrows or anywhere with xp") are checked against
+  the bot's real group and task: those three came from bots in full rvr parties or out for rvr.
+- **No internal names.** "which stable 4 group rendezvous?": an internal goal name is never a destination in chat.
+- **Debates and scenes don't invent the frontier.** In a debate about scouts a paladin said "it is us scouts", and the
+  debate ended with "INC, mid group crossing toward Caer Benowyc" though no army was there. Scripted threads and short
+  scenes no longer announce attacks, keeps changing hands, lost relics or enemies at a named place (about 240 lines
+  reworded into opinions and calls to head out), and a role that speaks as a class, level or race is cast from it.
+- **Your /trade post gets answers too.** The player's "wts 99% arcane cloth cap, cheap" drew nothing; only bot posts were
+  answered. A player's sale or wanted post now draws a bot's reply as often as a bot's does.
+
 **Two Darkness Falls exits work** (tested against the world data, and clicked in game on the owner's PC with the second
 release candidate, 6a83c03: both took an Albion character to Camelot Hills; found and fixed by
 rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
