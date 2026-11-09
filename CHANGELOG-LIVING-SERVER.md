@@ -206,6 +206,38 @@ killed, he killed 156 raiders, and the raid won Krondon by going around him.
   - The stage before every orb had its own spot: stopped at the first orb, at half after 15 minutes, with 9-11 raiders
     on it.
 
+**A day with a prime time and a quiet night** (owner's PC test copy, 2026-11-09). At 05:20 2,673 gamebots were online,
+about 900 a realm, and Albion's /faction ran 323 lines an hour at 02:00 and 291 at 03:00, nearly the evening's 300-450.
+The server log said `bot_schedule=off`: the Bot schedule on the launcher's Living Server tab was off on that copy, so
+every bot stayed online all night. The rise seen that night from about 840 online to 2,673 was not the roster growing:
+the server was restarted at 01:10, 04:27 and 05:25, and each time the startup ramp logged the whole roster back in over
+15 minutes, about 180 bots a minute (844 four minutes after the 04:27 start, 2,718 at 04:42, the same ~2,715 each time).
+With the schedule off the ramp's target is the whole roster whatever the hour. With "Real clock" on:
+- **A deeper night.** The clock curve now keeps about an eighth of the roster before dawn on a weekday (about 330-370
+  of 2,700 at 4-6 am; the old curve kept a fifth, about 560) and nearly all of it from 7 to 11 pm; weekends are busier
+  all day.
+- **No jumps.** Every bot's place in the day's line changed at midnight at once, so about 450 bots wanted to swap in the
+  same minute; the places now move a little at a time between 2 and 5 am. The weekday and weekend curves stepped at
+  Friday 6 pm and Monday midnight (about 400 bots at once); they now run smoothly into each other. The most bots the
+  schedule sends home in any minute of a week is 26 (logouts run at up to 36 a minute).
+- **RvR bots log off too.** A bot that had ever run its RvR goal could never log off or take a break: it keeps its force
+  name for good, and that was read as "busy in a realm event". Now only a bot whose force is in a running event (a siege,
+  a defense, a relic run) stays.
+- **Finish, then leave.** A bot the schedule is sending home joins no new party and answers no automatic raid, and an
+  automatic raid is sized to the level 50s who stay. A bot in a party, a raid or a siege still finishes it before logging
+  off. After a start in the night the startup ramp spreads the schedule's number over its 15 minutes (it let the few
+  hundred all in within two minutes).
+- **The launcher** shows the Bot schedule first in the Server life card, with what Off and Real clock mean, and the
+  status line always says whether it is on. Setup already turns Real clock on for a new install; the server's own
+  default stays off.
+- **Chat follows the crowd.** /faction's target and ceiling already scale with the bots online and the hour; with fewer
+  bots at night the quiet hours are quiet. A simulated weekday (`UT_LivingServerDay`: 2,700 bots, a third in parties,
+  the real schedule, login, logout and chat-budget rules, a model of one realm's /faction): with the schedule off,
+  258-291 /faction lines an hour at 2-5 am against 407-427 at 7-11 pm (the PC's night); with Real clock, 2,532-2,620
+  online at 7-9 pm and 371 at 4:30 am, no party member logged out, at most 21 logouts in a minute and 132 in ten
+  minutes, and /faction 118-137 lines an hour at 3-6 am against 388-421 at 7-11 pm, every hour under its ceiling.
+  Tests only.
+
 ## Beta 1.1.2 — 2026-11-07
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized
