@@ -544,6 +544,26 @@ public static class AutonomousChatFieldTalk
     /// A field line for a channel (faction, say, lfg, trade, broadcast, guild), or null when the facts give nothing to say
     /// there. Tries a few draws for one whose text, family, idea and item the realm hasn't heard lately. Pure.
     /// </summary>
+    private static readonly System.Text.RegularExpressions.Regex Capital = new(@"^(city of camelot|camelot|jordheim|tir na nog)$",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    /// <summary>
+    /// Whether a line fits a bot standing in its zone when that zone is a capital: it doesn't hunt, camp, group, quest or port
+    /// "in" the capital ("lf 2 more for city of camelot", "grinding city of camelot at 50"). Any line fits elsewhere. Pure.
+    /// </summary>
+    public static bool FitsCapital(string text, string zone)
+    {
+        if (string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(zone) || !Capital.IsMatch(zone.Trim()))
+            return true;
+        string t = text.ToLowerInvariant();
+        string z = zone.Trim().ToLowerInvariant();
+        string names = System.Text.RegularExpressions.Regex.Escape(z) + (z.StartsWith("city of ", StringComparison.Ordinal)
+            ? "|" + System.Text.RegularExpressions.Regex.Escape(z["city of ".Length..]) : string.Empty);
+        return !System.Text.RegularExpressions.Regex.IsMatch(t,
+            @"\b(camp|camps|camping|xp|xping|duo|group|grp|quest|port|guildies|more|grind|grinding|hunt|hunting|pull|pulling|mobs?)\b[^,?.!]*\b(in|near|to|for|at|around)\s+(" + names + @")\b" +
+            @"|^(" + names + @")\s*(anyone|camp|grp|group)|\bgrinding\s+(" + names + @")\b|\?\s*(" + names + @")$");
+    }
+
     public static Said Line(string channel, Facts facts, Memory memory, Random random, long now = 0, AutonomousChatStance stance = null)
     {
         if (facts == null)
@@ -587,6 +607,10 @@ public static class AutonomousChatFieldTalk
             // 1.1.3, after RC6: "back" only from a bot that said it was away or died ("ok back" from one that had said neither),
             // and "tonight" is "today" by day ("busy tonight" at 10:44 AM), in the line and in its answers.
             if (!FitsAway(said.Text, facts))
+                continue;
+            // RC11 on the owner's PC: "city of camelot anyone", "where do 41s camp in city of camelot?". A capital is no place
+            // to hunt, camp or group in.
+            if (!FitsCapital(said.Text, facts.Zone))
                 continue;
             said = AtHour(said, facts.LocalHour);
             string named = NamedDungeon(said.Text, facts.Dungeon);
@@ -1265,8 +1289,11 @@ public static class AutonomousChatFieldTalk
             : Pool($"{dun}", $"try {dun}", $"{dun} with a grp", $"outside {dun}");
         return Make(random, "camp", "ask:" + zone + ":" + f.Level / 3, Pool($"anyone? {lvl} here", "nm found one", "ok, guess ill wander"),
             Pool("ty", "k ty", "ty, omw", "cool"),
-            new V($"good camp for {lvl}?", "camp_ask", answers), new V($"where do {lvl}s camp in {zone}?", "camp_ask_zone", answers),
-            new V($"{zone} camp for {lvl}?", "camp_ask_zone", answers), new V($"anything good to camp at {lvl}?", "camp_ask", answers));
+            new V($"good camp for {lvl}?", "camp_ask", answers),
+            // RC11 on the owner's PC: nobody camps in a town ("where do 41s camp in city of camelot?").
+            f.InTown ? new V($"where should a {lvl} camp?", "camp_ask", answers) : new V($"where do {lvl}s camp in {zone}?", "camp_ask_zone", answers),
+            f.InTown ? new V($"heading out, camp for {lvl}?", "camp_ask", answers) : new V($"{zone} camp for {lvl}?", "camp_ask_zone", answers),
+            new V($"anything good to camp at {lvl}?", "camp_ask", answers));
     }
 
     /// <summary>"lf X for Y" with a real dungeon for the level (round 6).</summary>
@@ -1488,12 +1515,15 @@ public static class AutonomousChatFieldTalk
             options.Add((() => Ding(f, random) with { Kind = "guild_ding" }, 6));
         if (f.Level < 50 && !f.InRvR)
             options.Add((() => Make(random, "guild_group", dun ?? zone, SeekStill, SeekThanks,
-                new V($"anyone want to group, {lvl} in {zone}", "g_group", Joins), new V($"anyone around {lvl}? {zone}", "g_around", Joins),
+                f.InTown ? new V($"anyone want to group, {lvl}, heading out", "g_group", Joins) : new V($"anyone want to group, {lvl} in {zone}", "g_group", Joins),
+                f.InTown ? new V($"anyone around {lvl}? in town", "g_around", Joins) : new V($"anyone around {lvl}? {zone}", "g_around", Joins),
                 new V($"any1 {Math.Max(1, f.Level - 2)}-{Math.Min(50, f.Level + 2)} wanna xp?", "g_group", Joins),
                 new V(dun != null ? $"{dun} anyone? {lvl} {cls}" : $"xp anyone? {lvl} {cls}", "g_dun", Joins),
-                new V($"lf guildies for {dun ?? zone}", "g_dun", Joins), new V($"who's {lvl}ish, wanna duo", "g_duo", Joins),
-                new V($"need 1 more for {dun ?? zone}", "g_more", Joins), new V($"{lvl} {cls} lf grp in guild?", "g_lfgrp", Joins),
-                new V($"anyone in guild near {lvl}?", "g_near", Joins), new V($"guild grp for {dun ?? zone}?", "g_grp_for", Joins),
+                new V(dun != null || !f.InTown ? $"lf guildies for {dun ?? zone}" : $"lf guildies to xp with, {lvl}", "g_dun", Joins),
+                new V($"who's {lvl}ish, wanna duo", "g_duo", Joins),
+                new V(dun != null || !f.InTown ? $"need 1 more for {dun ?? zone}" : $"need 1 more, {lvl}ish, leaving town", "g_more", Joins),
+                new V($"{lvl} {cls} lf grp in guild?", "g_lfgrp", Joins),
+                new V($"anyone in guild near {lvl}?", "g_near", Joins), new V(dun != null || !f.InTown ? $"guild grp for {dun ?? zone}?" : "guild grp anyone?", "g_grp_for", Joins),
                 new V($"who wants to xp, {lvl} {cls} here", "g_who_xp", Joins), new V($"{dun ?? zone} tonight, anyone?", "g_tonight", Joins)), 3));
         if (f.Level >= 35)
         {
@@ -2179,14 +2209,16 @@ public static class AutonomousChatFieldTalk
         string dun = ShortDungeon(f.Dungeon, random);
         var ways = new List<V>(12)
         {
-            new($"anyone know the {lvl}ish quest in {zone}?", "q_quest", Pool("did it, kill 10 then go back", "dunno that one", "ask the guard in town", "did it, easy one", "never did it", "skipped that one")),
+            new(f.InTown ? $"anyone know a good {lvl}ish quest?" : $"anyone know the {lvl}ish quest in {zone}?", "q_quest",
+                Pool("did it, kill 10 then go back", "dunno that one", "ask the guard in town", "did it, easy one", "never did it", "skipped that one")),
             new($"where to hand in the {zone} quest?", "q_handin", Pool("back in town", "the guy that gave it", "back to whoever gave it", "check ur journal, it says who")),
             new($"how do i get to {f.World?.Frontier?.ToLowerInvariant() ?? "the frontier"} from here?", "q_frontier", Pool("port from the capital", "horse to the border keep", "porter in town")),
             new($"where do i bind in {zone}?", "q_bind", Pool("at the bindstone in town", "nearest town", "by the inn")),
             new($"anyone know where to buy {cls} stuff at {lvl}?", "q_gear", Pool("merchants in the capital", "crafters, pst one", "the broker")),
             new("what do i need to start crafting?", "q_craft", Pool("go see the crafting trainer", "tools from the merchant", "lots of money lol",
                 $"crafting trainers in {CapitalWord(f.Realm)}, start there")),
-            new($"is there a port to {dun ?? zone}?", "q_port", Pool("no, run", "horse most of the way", "dunno")),
+            dun != null || !f.InTown ? new($"is there a port to {dun ?? zone}?", "q_port", Pool("no, run", "horse most of the way", "dunno"))
+                : new("which porter goes to the frontier?", "q_port", Pool("the one by the gate", "porter in town", "ask a guard")),
         };
         // 1.1.3, after RC5: only an item the class can use ("99% adroit focus staff any good for pally?" on the owner's PC).
         if (UsesItem(f))

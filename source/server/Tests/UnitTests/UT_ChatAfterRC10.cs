@@ -54,12 +54,25 @@ public class UT_ChatAfterRC10
     {
         var random = new Random(9);
         Field.Facts town = Facts("City of Camelot", inTown: true) with { Level = 41 };
-        for (int i = 0; i < 4000; i++)
+        for (int i = 0; i < 8000; i++)
         {
-            string text = Field.Line("faction", town with { Id = i }, null, random)?.Text ?? "";
-            Assert.That(text, Does.Not.Match(@"(in|near) (city of )?camelot\?|^(city of )?camelot anyone"), text);
+            string text = Field.Line(i % 2 == 0 ? "faction" : "guild", town with { Id = i }, null, random)?.Text ?? "";
+            Assert.That(text, Does.Not.Match(@"(camp|camps|xp|xping|duo|group|grp|quest|port|guildies|more)\b[^,?]* (in|near|to|for|at) (city of )?camelot|" +
+                                             @"^(city of )?camelot (anyone|camp)|around \d+\? (city of )?camelot"), text);
         }
     }
+
+    [TestCase("lf 2 more for city of camelot", "City of Camelot", false)]
+    [TestCase("where do 41s camp in city of camelot?", "City of Camelot", false)]
+    [TestCase("city of camelot anyone", "City of Camelot", false)]
+    [TestCase("anyone around 41? camelot", "City of Camelot", false)]
+    [TestCase("grinding jordheim at 50", "Jordheim", false)]
+    [TestCase("where do i bind in city of camelot?", "City of Camelot", true)]
+    [TestCase("back in camelot", "City of Camelot", true)]
+    [TestCase("lf 2 more for camelot hills", "Camelot Hills", true)]
+    [TestCase("anyone selling dye in tir na nog?", "Tir na Nog", true)]
+    public void ACapitalIsNoPlaceToHunt(string text, string zone, bool fits) =>
+        Assert.That(Field.FitsCapital(text, zone), Is.EqualTo(fits));
 
     [TestCase("got one ty", true)]
     [TestCase("ty, inv", true)]
