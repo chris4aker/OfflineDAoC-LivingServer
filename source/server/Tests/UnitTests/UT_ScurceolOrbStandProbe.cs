@@ -69,6 +69,55 @@ namespace DOL.UnitTests
             return false;
         }
 
+        /// <summary>The recorded fixture's area and cell (UnitTests/Data/krondon_scurceol_mesh.txt.gz): every floor within 1,400 of an orb.</summary>
+        internal const int FixtureMinX = 49_800, FixtureMaxX = 54_150, FixtureMinY = 17_800, FixtureMaxY = 22_300, FixtureCell = 25;
+
+        /// <summary>
+        /// Records the fixture (gzip the file written): on a 25 grid over the orbs' room, every mesh surface (highest first) and, for those within 300 of
+        /// Scurceol's floor height, whether the raid walks there from his floor (the real corridor check). A "w" after a height
+        /// marks a walkable one. Env as above; OFFLINE_DAOC_PROOF_OUT is the fixture file written.
+        /// </summary>
+        [Test]
+        public void RecordFixture()
+        {
+            string root = Environment.GetEnvironmentVariable("OFFLINE_DAOC_NAV_ROOT");
+            string dbPath = Environment.GetEnvironmentVariable("OFFLINE_DAOC_DB");
+            string output = Environment.GetEnvironmentVariable("OFFLINE_DAOC_PROOF_OUT");
+            Assume.That(root != null && dbPath != null && output != null);
+            string previous = Environment.CurrentDirectory;
+            var loaded = new List<Zone>();
+            var lines = new List<string> { "# Krondon (zone 61) navmesh around Scurceol Hyrde's orbs, recorded by UT_ScurceolOrbStandProbe.RecordFixture",
+                "# from the 0.37b world's zone061.nav on a 25 grid. Line: X, Y, then every walkable surface there (highest first);",
+                "# \"w\": the raid walks there from Scurceol's floor (real corridor check; only surfaces within 300 of his floor were checked)." };
+            try
+            {
+                string native = NativeDetour(root);
+                NativeLibrary.SetDllImportResolver(typeof(LocalPathfindingMgr).Assembly,
+                    (name, asm, search) => name == "lib/Detour" ? NativeLibrary.Load(native) : IntPtr.Zero);
+                Environment.CurrentDirectory = root;
+                using var db = new SQLiteConnection($"Data Source={dbPath};Read Only=True;Pooling=False;");
+                db.Open();
+                Region region = UT_AuditedDungeonInstalledMesh.BuildRegion(db, 61, loaded);
+                IPathfindingMgr nav = PathfindingProvider.LocalPathfindingMgr;
+                Zone zone = region.GetZone((int)Scurceol.X, (int)Scurceol.Y);
+                Vector3 anchor = nav.GetClosestPoint(zone, Scurceol, 64, 64, 256, nav.DefaultFilters) ?? Scurceol;
+                for (int x = FixtureMinX; x <= FixtureMaxX; x += FixtureCell)
+                for (int y = FixtureMinY; y <= FixtureMaxY; y += FixtureCell)
+                {
+                    List<float> layers = Layers(nav, zone, x, y);
+                    if (layers.Count == 0) continue;
+                    lines.Add($"{x} {y} " + string.Join(" ", layers.Select(z =>
+                        $"{(int)MathF.Round(z)}{(MathF.Abs(z - anchor.Z) <= 300 && AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, anchor, new Vector3(x, y, z)) ? "w" : "")}")));
+                }
+            }
+            finally
+            {
+                foreach (Zone z in loaded) LocalPathfindingMgr.UnloadNavMesh(z);
+                Environment.CurrentDirectory = previous;
+            }
+            File.WriteAllLines(output, lines);
+        }
+
         [Test]
         public void ProbeOrbStands()
         {
@@ -108,8 +157,8 @@ namespace DOL.UnitTests
                     {
                         // The ring candidates in the search's order: the first sighted ones, with their walk from Scurceol's floor.
                         var ring = new List<Vector3>();
-                        for (int radius = 200; radius <= 1400; radius += 100)
-                        for (int degrees = 0; degrees < 360; degrees += 15)
+                        for (int radius = 200; radius <= 1400; radius += 50)
+                        for (int degrees = 0; degrees < 360; degrees += 10)
                         {
                             float a = degrees * MathF.PI / 180f;
                             if (nav.GetClosestPoint(zone, new Vector3(orb.X + MathF.Cos(a) * radius, orb.Y + MathF.Sin(a) * radius, anchor.Z), 48, 48, 320, nav.DefaultFilters) is Vector3 f &&
@@ -125,6 +174,19 @@ namespace DOL.UnitTests
                             if (++shown >= 30) break;
                         }
                         lines.Add($"ORB{i + 1}\tRINGCOUNT\t{ring.Count}");
+                    }
+                    foreach (int aimUp in new[] { 0, 10, 20, 30, 40, 60 })
+                    {
+                        int clear = 0, all = 0;
+                        for (int dx = -1400; dx <= 1400; dx += 50)
+                        for (int dy = -1400; dy <= 1400; dy += 50)
+                        {
+                            if (nav.GetClosestPoint(zone, new Vector3(orb.X + dx, orb.Y + dy, anchor.Z), 24, 24, RealmRaidDungeonRoute.RequiredAddStandFloorBand, nav.DefaultFilters) is not Vector3 f ||
+                                Vector3.Distance(f, orb) > RealmRaidDungeonRoute.RequiredAddRangedReach || Vector3.Distance(f, Scurceol) < 700) continue;
+                            all++;
+                            if (RealmRaidDungeonRoute.HasSightToAirborne(nav, zone, f, orb + new Vector3(0, 0, aimUp - RealmRaidDungeonRoute.SightAimHeight))) clear++;
+                        }
+                        lines.Add($"ORB{i + 1}\tAIM\t+{aimUp}\tclear={clear}\tof={all}");
                     }
                     if (under is Vector3 u)
                         lines.Add($"ORB{i + 1}\tunder-walk-from-boss\t{AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, anchor, u)}\t" +

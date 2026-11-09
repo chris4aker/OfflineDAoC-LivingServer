@@ -373,7 +373,7 @@ namespace DOL.GS
         /// 0 of the 277-321 reachable floor spots within 1,400 of each orb passed (PC soak: "no reachable floor spot within 1400
         /// has line of sight to it", three times; one orb of four died). The probe's 3-D line from the platform found 53, 254,
         /// 1-35 and 154 clear spots for the four orbs.
-        /// Now: floor spots on rings around the add (every 100 out to 1,400, every 15 degrees) and the old four, within reach
+        /// Now: floor spots on rings around the add (every 50 out to 1,400, every 10 degrees) and the old four, within reach
         /// of it, on the boss's floor (<see cref="RequiredAddStandFloorBand"/>) and not on the boss, are tried nearest the add first (those beyond <see cref="RequiredAddStandBossClearance"/>
         /// of the boss before the rest); a spot needs <see cref="HasSightToAirborne"/>, then a walk from the raid.
         /// False, with why, when none works.
@@ -399,8 +399,10 @@ namespace DOL.GS
                 Add(nav.GetClosestPoint(zone, Vector3.Lerp(boss, level, t), 96, 96, 256, nav.DefaultFilters));
             // The raid's floor around the add: the boss's own height, where the raid fights.
             float floorZ = bossFloor?.Z ?? boss.Z;
-            for (int radius = 200; radius <= RequiredAddRangedReach; radius += 100)
-            for (int degrees = 0; degrees < 360; degrees += 15)
+            // Every 50 out and every 10 degrees: on the real mesh orb 3's clear spots are a few patches of the platform's far edge,
+            // and a sparser ring (every 100, every 15 degrees) found one.
+            for (int radius = 200; radius <= RequiredAddRangedReach; radius += 50)
+            for (int degrees = 0; degrees < 360; degrees += 10)
             {
                 float a = degrees * MathF.PI / 180f;
                 Add(nav.GetClosestPoint(zone, new Vector3(add.X + MathF.Cos(a) * radius, add.Y + MathF.Sin(a) * radius, floorZ),
