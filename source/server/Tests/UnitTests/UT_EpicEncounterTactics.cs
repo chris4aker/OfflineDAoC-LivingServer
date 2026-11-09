@@ -186,6 +186,15 @@ namespace DOL.UnitTests
             var standSpot = new Vector3(50500, 19500, 17000);
             EpicEncounterTactics.SetStand(boss, standSpot);
             Assert.That(EpicEncounterTactics.Decide(melee, boss, live, 1, canShootFlyers: false).StandAt, Is.EqualTo(standSpot));
+            // Each orb has its own stand too: a shooter out of reach of its orb (1,667 from orb B) walks there first, then shoots.
+            var standB = new Vector3(50600, 19300, 17000);
+            EpicEncounterTactics.SetStand(orbB, standB);
+            var walk = EpicEncounterTactics.Decide(caster, boss, live, 1, canShootFlyers: true);
+            Assert.That((walk.Action, walk.Target, walk.StandAt), Is.EqualTo((EpicEncounterTactics.BotAction.StandOff, (GameNPC)orbB, (Vector3?)standB)));
+            var atStand = Npc<Raider>(50650, 19350, 17000);
+            var shoot = EpicEncounterTactics.Decide(atStand, boss, live, 1, canShootFlyers: true);
+            Assert.That((shoot.Action, shoot.Target), Is.EqualTo((EpicEncounterTactics.BotAction.Retarget, (GameNPC)orbB)), "778 from it: in reach");
+            Assert.That(EpicEncounterTactics.Decide(melee, boss, live, 1, canShootFlyers: false).StandAt, Is.EqualTo(standSpot), "melee wait at the route's stand");
             Assert.That(EpicEncounterTactics.Decide(caster, tree, live, 0, true).Target, Is.SameAs(boss), "the tree dies with the boss");
 
             // Orb A dies: everyone left goes to orb B.

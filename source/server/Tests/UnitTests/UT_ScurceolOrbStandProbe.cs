@@ -69,6 +69,50 @@ namespace DOL.UnitTests
             return false;
         }
 
+        /// <summary>
+        /// On the installed Krondon mesh with the real Detour library and the route's own walk check (TryResolve from Scurceol's
+        /// floor): every orb gets a stand in range, well off Scurceol, with a clear line; the 1.1.2 search gets none.
+        /// </summary>
+        [Test]
+        public void InstalledMeshGivesEveryOrbAStand()
+        {
+            string root = Environment.GetEnvironmentVariable("OFFLINE_DAOC_NAV_ROOT");
+            string dbPath = Environment.GetEnvironmentVariable("OFFLINE_DAOC_DB");
+            Assume.That(root != null && dbPath != null);
+            string previous = Environment.CurrentDirectory;
+            var loaded = new List<Zone>();
+            try
+            {
+                string native = NativeDetour(root);
+                NativeLibrary.SetDllImportResolver(typeof(LocalPathfindingMgr).Assembly,
+                    (name, asm, search) => name == "lib/Detour" ? NativeLibrary.Load(native) : IntPtr.Zero);
+                Environment.CurrentDirectory = root;
+                using var db = new SQLiteConnection($"Data Source={dbPath};Read Only=True;Pooling=False;");
+                db.Open();
+                Region region = UT_AuditedDungeonInstalledMesh.BuildRegion(db, 61, loaded);
+                IPathfindingMgr nav = PathfindingProvider.LocalPathfindingMgr;
+                Zone zone = region.GetZone((int)Scurceol.X, (int)Scurceol.Y);
+                Vector3 anchor = nav.GetClosestPoint(zone, Scurceol, 64, 64, 256, nav.DefaultFilters) ?? Scurceol;
+                Vector3? Reach(Vector3 floor, Func<Vector3, bool> accept) =>
+                    AutonomousZonePointApproach.TryResolve(nav, zone, anchor, floor, 220, out Vector3 a, accept) ? a : null;
+                foreach (Vector3 orb in Orbs)
+                {
+                    Assert.That(LegacyTryRangedStand(nav, zone, orb, Scurceol, f => Reach(f, null), out _, out string legacy), Is.False, legacy);
+                    Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, zone, orb, Scurceol, Reach, out Vector3 stand, out string why), Is.True, why);
+                    TestContext.Progress.WriteLine($"orb {orb}: stand {stand}: {why}");
+                    Assert.That(Vector3.Distance(stand, orb), Is.LessThanOrEqualTo(RealmRaidDungeonRoute.RequiredAddRangedReach));
+                    Assert.That(Vector3.Distance(stand, Scurceol), Is.GreaterThanOrEqualTo(RealmRaidDungeonRoute.RequiredAddStandBossClearance));
+                    Assert.That(RealmRaidDungeonRoute.HasSightToAirborne(nav, zone, stand, orb));
+                    Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, anchor, stand), "the raid walks there from Scurceol's floor");
+                }
+            }
+            finally
+            {
+                foreach (Zone z in loaded) LocalPathfindingMgr.UnloadNavMesh(z);
+                Environment.CurrentDirectory = previous;
+            }
+        }
+
         /// <summary>The recorded fixture's area and cell (UnitTests/Data/krondon_scurceol_mesh.txt.gz): every floor within 1,400 of an orb.</summary>
         internal const int FixtureMinX = 49_800, FixtureMaxX = 54_150, FixtureMinY = 17_800, FixtureMaxY = 22_300, FixtureCell = 25;
 

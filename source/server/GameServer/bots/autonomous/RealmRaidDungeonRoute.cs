@@ -1281,21 +1281,25 @@ namespace DOL.GS
                 }
                 return null;
             }
+            // Every add gets its own stand: its party's shooters fight it from there (EpicEncounterTactics.Decide). In 1.1.2 only the
+            // route's add had one, and on the 2026-11-08 container run the shooters given the other three orbs walked under them.
             var reasons = new List<string>();
             foreach (GameNPC a in adds)
             {
                 Zone zone = WorldMgr.GetRegion(_region)?.GetZone(a.X, a.Y);
-                if (TryRangedStand(nav, zone, At(a), At(boss), Reach, out stand, out string found))
+                if (TryRangedStand(nav, zone, At(a), At(boss), Reach, out Vector3 own, out string found))
                 {
-                    add = a; why = found;
-                    EpicEncounterTactics.SetStand(boss, stand);
-                    return true;
+                    EpicEncounterTactics.SetStand(a, own);
+                    if (add == null) { add = a; stand = own; reasons.Insert(0, found); }
+                    continue;
                 }
                 reasons.Add($"{a.Name}@{a.X},{a.Y},{a.Z}: {found}");
                 _routeRetry[a] = now + 60_000;
             }
             why = string.Join("; ", reasons);
-            return false;
+            if (add == null) return false;
+            EpicEncounterTactics.SetStand(boss, stand);
+            return true;
         }
 
         /// <summary>No required add of <paramref name="boss"/> can be fought (no ranged raider sees one from the floor):

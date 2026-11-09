@@ -214,8 +214,17 @@ namespace DOL.GS
                 GameNPC add = adds[AssignedIndex(partyIndex, adds.Length)];
                 bool flying = (add.Flags & GameNPC.eFlags.FLYING) != 0 &&
                               AutonomousPveTargetPolicy.IsUnreachableFlyer(add.Flags, add.Z, raider.Z);
+                Vector3? addStand = flying ? StandFor(add) : null;
                 if (!flying || canShootFlyers)
+                {
+                    // A shooter out of reach of its add walks to that add's own floor stand first, not under it.
+                    Vector3 at = new(raider.X, raider.Y, raider.Z);
+                    if (addStand is Vector3 own && Vector3.Distance(at, new(add.X, add.Y, add.Z)) > RealmRaidDungeonRoute.RequiredAddRangedReach &&
+                        Vector3.Distance(at, own) > StandArrivalRadius)
+                        return new(BotAction.StandOff, add, own,
+                            $"required-add {Array.IndexOf(adds, add) + 1}/{adds.Length} of \"{target.Name}\": to its floor stand");
                     return new(BotAction.Retarget, add, null, $"required-add {Array.IndexOf(adds, add) + 1}/{adds.Length} of \"{target.Name}\"");
+                }
                 return new(BotAction.StandOff, add, StandFor(target) ?? new Vector3(add.X, add.Y, raider.Z),
                     $"required-add {Array.IndexOf(adds, add) + 1}/{adds.Length} of \"{target.Name}\" is out of melee reach");
             }
@@ -230,7 +239,11 @@ namespace DOL.GS
         private static readonly Dictionary<GameNPC, Vector3> Stands = new();
 
         /// <summary>The floor spot the raid route fights <paramref name="boss"/>'s required adds from
-        /// (RealmRaidDungeonRoute.TryRangedStand): raiders who can't hit an add in the air wait there, not under it.</summary>
+        /// (RealmRaidDungeonRoute.TryRangedStand): raiders who can't hit an add in the air wait there, not under it. Each required
+        /// add also has its own (keyed by the add): its party's shooters go there when out of reach of it.</summary>
+        /// <summary>A raider within this of its stand is there (TryHandle walks it there from farther).</summary>
+        public const int StandArrivalRadius = 300;
+
         public static void SetStand(GameNPC boss, Vector3 stand)
         {
             lock (Stands)
@@ -698,7 +711,7 @@ namespace DOL.GS
                     if (bot.ControlledBrain?.Body?.TargetObject == target) bot.ControlledBrain.Disengage();
                     if (advice.Action == BotAction.LeadHome)
                         bot.PathTo(new Point3D(target.SpawnPoint.X, target.SpawnPoint.Y, target.SpawnPoint.Z), bot.MaxSpeed);
-                    else if (advice.StandAt is Vector3 at && !bot.IsWithinRadius(new Point3D((int)at.X, (int)at.Y, (int)at.Z), 300))
+                    else if (advice.StandAt is Vector3 at && !bot.IsWithinRadius(new Point3D((int)at.X, (int)at.Y, (int)at.Z), StandArrivalRadius))
                         bot.PathTo(new Point3D((int)at.X, (int)at.Y, (int)at.Z), bot.MaxSpeed);
                     LogDecision(bot, target, advice);
                     return true;
