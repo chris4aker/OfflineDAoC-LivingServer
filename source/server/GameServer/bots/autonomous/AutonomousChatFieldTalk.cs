@@ -1574,6 +1574,25 @@ public static class AutonomousChatFieldTalk
             }
             return null;
         }
+        // A frontier death's own lines are remembered for the evening whatever their length (1.1.3, after RC5), and a short one
+        // the channel heard in the last ten minutes is picked again or left out.
+        string Told(Random r, string[] options)
+        {
+            for (int attempt = 0; attempt < 8; attempt++)
+            {
+                string text = options[r.Next(options.Length)];
+                if (AutonomousChatExchange.IsShort(text) && freshReaction != null && !freshReaction(text))
+                    continue;
+                string skeleton = AutonomousChatFiller.Skeleton(text);
+                if (memory == null)
+                    return text;
+                if (memory.Seen(skeleton))
+                    continue;
+                memory.Add(skeleton);
+                return text;
+            }
+            return null;
+        }
         string monsters = teller?.Monster == null ? "adds" : AutonomousBotVoiceCorpus.Plural(teller.Monster);
         switch (kind)
         {
@@ -1586,19 +1605,42 @@ public static class AutonomousChatFieldTalk
                 lines.Add((0, Pick(random, "rvr tomorrow, bed now", "epic first", "sleep lol", "frontier tomorrow", "alt maybe", "bed, gz me tomorrow lol")));
                 break;
             case "death" when teller?.InRvR == true:
-                // A frontier death is to other players, not to a kind of monster (owner's PC, RC3 2026-11-09).
+            {
+                // A frontier death is to other players, not to a kind of monster (owner's PC, RC3 2026-11-09). 1.1.3, after RC5:
+                // "got ganked lol" twice in 13 minutes, so each step has a wide pool, and the teller's line is kept out of the
+                // evening's memory however short it is.
                 string front = ShortZone(teller.Zone, random);
-                lines.Add((0, Pick(random, "ganked again", "got ganked lol", $"zerged in {front}", "stealther got me", "ran into a zerg, dead",
-                    $"dead in {front} again", "8 of them on me lol")));
-                string ask = Riff(random, "rip", "lol rip", "ouch", "where?", "oof");
+                string opener = Told(random, RvrDeathOpeners(front, random));
+                lines.Add((0, opener));
+                // "where?" only when the teller didn't say where (as for a death to monsters).
+                bool toldWhere = opener != null && (opener.Contains(front, StringComparison.OrdinalIgnoreCase) ||
+                    new[] { "milegate", "bridge", "keep", "road", "gate", "lake" }.Any(word => opener.Contains(word, StringComparison.Ordinal)));
+                string ask = toldWhere
+                    ? Riff(random, "rip", "lol rip", "ouch", "oof", "by who?", "how many?", "lol again?", "ugh")
+                    : Riff(random, "rip", "lol rip", "ouch", "where?", "oof", "where at?", "by who?", "how many?", "lol again?");
                 lines.Add((1, ask));
-                lines.Add((0, ask != null && ask.StartsWith("where", StringComparison.Ordinal)
-                    ? Pick(random, $"{front}", $"in {front}", $"{front}, near the keep")
-                    : Pick(random, "never saw them coming", "lost a bubble too", "third time tonight", "had 2 on me before i could run")));
+                bool askedWhere = ask != null && ask.StartsWith("where", StringComparison.Ordinal);
+                bool who = ask is "by who?" or "how many?";
+                string answer = askedWhere ? Told(random, RvrDeathPlaces(front, random))
+                    : who ? Told(random, RvrDeathWho(random))
+                    : Told(random, RvrDeathAfter(front, random));
+                // A question with no fresh answer left is not asked (no "where?" left hanging).
+                if (answer == null && (askedWhere || who))
+                    lines[^1] = (1, null);
+                lines.Add((0, answer));
                 if (third != null && random.NextDouble() < 0.5)
-                    lines.Add((2, Riff(random, "stick with the zerg lol", "bring a group", $"same happened to me in {ShortZone(third.Zone, random)}",
-                        "happens")));
+                {
+                    // "same happened to me in ..." names a frontier: the third's own when it is out there too, else the teller's
+                    // (RC5: "ganked in jamtland mtns" drew "same happened to me in dales of devwy", a hunting zone), and an enemy
+                    // realm's frontier only as "their frontier" (the line speaks of the third's own past, as a PvE line would).
+                    string mineZone = third.InRvR ? third.Zone : teller.Zone;
+                    string mine = IsForeignZone(third.Realm, mineZone) ? "their frontier" : ShortZone(mineZone, random);
+                    lines.Add((2, Riff(random, "stick with the zerg lol", "bring a group", $"same happened to me in {mine}", "happens", "thats rvr",
+                        "they sit on that spot", "solo in the frontier, brave", "group up next time", $"{mine} is full of them tonight",
+                        "should've stayed with the grp", "welcome to the frontier lol", "they're everywhere tonight")));
+                }
                 break;
+            }
             case "death":
                 // 1.1.3, after RC5: a monster death in an enemy realm's frontier is told without naming that realm's zone ("dread
                 // commanders in jamtland mountains hate me" from an Albion bot).
@@ -1649,6 +1691,48 @@ public static class AutonomousChatFieldTalk
         }
         return steps;
     }
+
+    /// <summary>
+    /// How a frontier death is told (1.1.3, after RC5): who got the teller (a gank, a zerg, a stealther, a group, the guards) and
+    /// where (a milegate, a bridge, a keep, the zone), in the words players typed. Several hundred ways; pure but for the draw.
+    /// </summary>
+    public static string[] RvrDeathOpeners(string front, Random random)
+    {
+        string[] how = ["ganked", "got ganked", "zerged", "got zerged", "stealthed", "got stealthed", "jumped", "got jumped", "picked off",
+            "got picked off", "caught", "got caught", "farmed", "got farmed", "ran into a grp", "ran into a zerg", "ran into 8 of them",
+            "a stealther got me", "an assassin got me", "a full grp got me", "the guards got me", "died to a guard", "3 of them on me",
+            "4 v 1, dead", "1 v 5 lol, dead", "train of reds", "mezzed and dead"];
+        string[] at = ["", "", $" in {front}", $" in {front}", " at the milegate", " by the bridge", " outside the keep", " near the keep",
+            " on the road", " by the portal keep", $" at the {front} milegate", " right outside the gate", " by the lake", " on the bridge"];
+        string[] tail = ["", "", "", " lol", " again", " ugh", ", rip me", " heh", ", never saw them", " zzz"];
+        var options = new string[24];
+        for (int i = 0; i < options.Length; i++)
+            options[i] = how[random.Next(how.Length)] + at[random.Next(at.Length)] + tail[random.Next(tail.Length)];
+        return options;
+    }
+
+    /// <summary>Where it happened, when asked "where?". Pure but for the draw.</summary>
+    public static string[] RvrDeathPlaces(string front, Random random) =>
+    [
+        front, $"in {front}", $"{front}, near the keep", $"{front} milegate", $"by the bridge in {front}", $"outside the keep in {front}",
+        $"{front}, on the road", $"{front} by the lake", "milegate", "right by our keep lol", $"{front}, just past the gate", $"middle of {front}",
+    ];
+
+    /// <summary>Who did it, when asked "by who?" or "how many?". Pure but for the draw.</summary>
+    public static string[] RvrDeathWho(Random random) =>
+    [
+        "no idea, never saw them", "stealthers, 2 i think", "full grp", "like 8", "3 or 4", "a zerg, 20+", "just one stealther lol",
+        "2 assassins", "a grp of 6 or so", "whole zerg", "too many to count", "a fg with a healer", "one caster, a lot of dots", "dunno, i was mezzed",
+    ];
+
+    /// <summary>What came after: how it went, in the teller's words. Pure but for the draw.</summary>
+    public static string[] RvrDeathAfter(string front, Random random) =>
+    [
+        "never saw them coming", "lost a bubble too", "third time tonight", "had 2 on me before i could run", "was just running to the keep",
+        "they were waiting at the gate", "didnt even get a cast off", "mezzed and stunned, gg", "should've waited for the grp", "rr is not happening tonight",
+        $"{front} is a death trap tonight", "zerg came over the hill", "porting back", "they farm that bridge all night", "almost got away too",
+        "was afk for like a second lol", "my grp ran lol", "at least i got one of them", "heading back out", "walk of shame back to the keep",
+    ];
 
     private static string Fill(string text, Facts facts, Random random)
     {

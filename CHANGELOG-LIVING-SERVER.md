@@ -114,6 +114,39 @@ chat code) and passed both.
   the same way ("died to summoner roesias again"). Now only a kind of monster ("thrawn ogre miner") is talked about as
   one; a person, a guard or a named creature is not, in stories and in the bots' other lines. A death in the frontier is
   told as one ("got ganked lol", "zerged in emain", "stealther got me"). Tests only.
+- **Realm news in a player's words, not the herald's (after RC5).** On the owner's RC5 evening bots said the realm's
+  announcements in /faction word for word: "Krondon: recruiting up to 120 level-50 adventurers via Caer Diogel; at least
+  93 must arrive before assault.", "The Krondon expedition is advancing with 200 staged level-50 adventurers.", "Fighting
+  has broken out at Dun Crimthain. There is an opportunity to intervene." and "Warbands are gathering to assault Nottmoor
+  Faste. Join them at the siege camp". When a bot says one now, it says it the way a player typed it, short and in
+  lowercase, with the names as chat shortened them and no head counts ("krondon raid forming at diogel, need 50s", "fight
+  going at crimthain, anyone?", "warband going to nottm, siege camp"), in several ways for each announcement. Bots
+  telling the news in their own words shorten the names too ("we lost ailinne to hibs", not "we lost Dun Ailinne to
+  Hibernia"). The announcement at the top of the screen, and a notice with no bot to say it, read as before. Tests only.
+- **Reactions to the realm's news vary over an evening (after RC5).** "ugh, that one again" (RC3 and RC5), "oh well not
+  my keep" and "lol of course" came back to the next keep lost. A reaction of three words or more is now heard once in a
+  channel in three hours, however it is punctuated, and each kind of news (a keep taken or lost, a siege held or failed,
+  a relic, a raid's end, Darkness Falls) has about twice as many reactions to choose from. A burst that runs out of fresh
+  reactions is shorter, never longer: one short reaction per ten minutes and the reaction caps hold as before. Tests only.
+- **Debaters type, they don't narrate (after RC5).** Next to "lol rip", some debaters wrote like a book: "People said the
+  same before the dragon lairs. One winter they were just there, all three realms, same week." A debate line is now typed
+  in its speaker's own style and habits: a long turn goes out as two or three chat lines split where a player would hit
+  enter, no writer capitalises the second sentence of a line or ends it with a full stop, and a terse writer takes the
+  shortest way the scene gives to say it, without commas. What each speaker says is unchanged. Tests only.
+- **More ways to tell a frontier death (after RC5).** "got ganked lol" came twice in 13 minutes on RC5. A frontier death
+  story now has hundreds of openers (ganked, zerged, stealthed, caught at the milegate or the bridge, ran into a group,
+  died to a guard...), more answers to "where?", "by who?" and "how many?", and the teller's lines are kept for the
+  evening however short. "same happened to me in ..." names a frontier zone, an enemy realm's only as "their frontier":
+  RC5's "ganked in jamtland mtns" drew "same happened to me in dales of devwy", a hunting zone. Tests only.
+- **A deed names the monster and where (after RC5).** RC5's `/lstest deed solo` read "not lying, i just saw Manawatch kill
+  a named monster, no help at all". A witness now names where it happened in most of its lines, with the zone as chat
+  wrote it ("black mtns"), and names the real monster; the forced test takes the targeted or nearest named monster and
+  says so when there is none. Tests only.
+- **The checker finds lines in system voice (after RC5).** `chat_audit.py` counts bot lines in /faction, /say, /lfg, /trade
+  and /broadcast that read as a game announcement ("level-50 adventurers", "There is an opportunity", "Join them at", a
+  semicolon, a formally capitalised paragraph of more than 15 words), with examples under `--show`; one is enough for
+  `VERDICT FAIL`. It also counts, for information, the same reaction of three words or more again within an hour. It
+  fails the owner's RC3, RC4 and RC5 logs and passes the simulated evening of this build. Tests only.
 - **Bots answer each other's questions, and /lfg and /trade get replies (after RC5).** On the owner's RC3 evening (b72716e,
   151 minutes) 71 of the 106 questions bots asked in /faction got no other line at all, and on RC5 (b8f30f9, 30 minutes)
   15 of 21; counting only replies from someone else within a minute, 86 of 106 and 17 of 20 went unanswered. Half of them

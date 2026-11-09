@@ -331763,10 +331763,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "i swear, i just saw {player} solo {target}. alone",
-   "family": "fa1c0f6a61",
-   "id": "38e9844753f1"
+   "weight": 0.2041,
+   "text": "i swear, i just saw {player} solo {target} in {place}",
+   "family": "4e0a7463a1",
+   "id": "03aacb414984"
   },
   {
    "kind": "deed",
@@ -331781,10 +331781,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "i swear, i just saw {player} solo {target}. by themself",
-   "family": "fa1c0f6a61",
-   "id": "2c20fa6e0ea5"
+   "weight": 0.2041,
+   "text": "i swear, i just saw {player} solo {target} in {place}, alone",
+   "family": "4e0a7463a1",
+   "id": "68daafd99247"
   },
   {
    "kind": "deed",
@@ -331799,10 +331799,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "i swear, i just saw {player} solo {target}. no help at all",
-   "family": "fa1c0f6a61",
-   "id": "180d2c019d2a"
+   "weight": 0.2041,
+   "text": "i swear, i just saw {player} solo {target} out in {place}. no help at all",
+   "family": "4e0a7463a1",
+   "id": "8a9183199374"
   },
   {
    "kind": "deed",
@@ -331817,10 +331817,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "i swear, i just saw {player} kill {target}. alone",
-   "family": "fa1c0f6a61",
-   "id": "2eaf6bc15743"
+   "weight": 0.2041,
+   "text": "i swear, i just saw {player} solo {target} alone",
+   "family": "4e0a7463a1",
+   "id": "f64c58babb27"
   },
   {
    "kind": "deed",
@@ -331835,10 +331835,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "i swear, i just saw {player} kill {target}. by themself",
-   "family": "fa1c0f6a61",
-   "id": "5061452371dc"
+   "weight": 0.2041,
+   "text": "i swear, i just saw {player} kill {target} in {place}",
+   "family": "4e0a7463a1",
+   "id": "5ae113fc6b74"
   },
   {
    "kind": "deed",
@@ -331853,10 +331853,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "i swear, i just saw {player} kill {target}. no help at all",
-   "family": "fa1c0f6a61",
-   "id": "607fa09a3f71"
+   "weight": 0.2041,
+   "text": "i swear, i just saw {player} kill {target} in {place}, alone",
+   "family": "4e0a7463a1",
+   "id": "ab9a4fb03f1b"
   },
   {
    "kind": "deed",
@@ -331871,10 +331871,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "i promise, i just saw {player} solo {target}. alone",
-   "family": "fa1c0f6a61",
-   "id": "f740ee53b9ed"
+   "weight": 0.2041,
+   "text": "i swear, i just saw {player} kill {target} out in {place}. no help at all",
+   "family": "4e0a7463a1",
+   "id": "9f2bf1bf4b12"
   },
   {
    "kind": "deed",
@@ -331889,10 +331889,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "i promise, i just saw {player} solo {target}. by themself",
-   "family": "fa1c0f6a61",
-   "id": "046a6fb53960"
+   "weight": 0.2041,
+   "text": "i swear, i just saw {player} kill {target} alone",
+   "family": "4e0a7463a1",
+   "id": "060c510e14bc"
   },
   {
    "kind": "deed",
@@ -331907,10 +331907,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "i promise, i just saw {player} solo {target}. no help at all",
-   "family": "fa1c0f6a61",
-   "id": "a7adc5b5992a"
+   "weight": 0.2041,
+   "text": "i promise, i just saw {player} solo {target} in {place}",
+   "family": "4e0a7463a1",
+   "id": "cd13a2d2c327"
   },
   {
    "kind": "deed",
@@ -331925,10 +331925,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "i promise, i just saw {player} kill {target}. alone",
-   "family": "fa1c0f6a61",
-   "id": "3771a9b940d0"
+   "weight": 0.2041,
+   "text": "i promise, i just saw {player} solo {target} in {place}, alone",
+   "family": "4e0a7463a1",
+   "id": "2fc1eadc9f0b"
   },
   {
    "kind": "deed",
@@ -331943,10 +331943,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "i promise, i just saw {player} kill {target}. by themself",
-   "family": "fa1c0f6a61",
-   "id": "4458982ab753"
+   "weight": 0.2041,
+   "text": "i promise, i just saw {player} solo {target} out in {place}. no help at all",
+   "family": "4e0a7463a1",
+   "id": "3cd4a095d555"
   },
   {
    "kind": "deed",
@@ -331961,10 +331961,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "i promise, i just saw {player} kill {target}. no help at all",
-   "family": "fa1c0f6a61",
-   "id": "4acc8503c1c7"
+   "weight": 0.2041,
+   "text": "i promise, i just saw {player} solo {target} alone",
+   "family": "4e0a7463a1",
+   "id": "e0f296e10dc5"
   },
   {
    "kind": "deed",
@@ -331979,10 +331979,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "not lying, i just saw {player} solo {target}. alone",
-   "family": "fa1c0f6a61",
-   "id": "d9dd931e1cb3"
+   "weight": 0.2041,
+   "text": "i promise, i just saw {player} kill {target} in {place}",
+   "family": "4e0a7463a1",
+   "id": "26bccfe05623"
   },
   {
    "kind": "deed",
@@ -331997,10 +331997,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "not lying, i just saw {player} solo {target}. by themself",
-   "family": "fa1c0f6a61",
-   "id": "1a4a08179c6d"
+   "weight": 0.2041,
+   "text": "i promise, i just saw {player} kill {target} in {place}, alone",
+   "family": "4e0a7463a1",
+   "id": "a76d8124ac6d"
   },
   {
    "kind": "deed",
@@ -332015,10 +332015,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "not lying, i just saw {player} solo {target}. no help at all",
-   "family": "fa1c0f6a61",
-   "id": "1b9880c8841a"
+   "weight": 0.2041,
+   "text": "i promise, i just saw {player} kill {target} out in {place}. no help at all",
+   "family": "4e0a7463a1",
+   "id": "265dd65f7c4a"
   },
   {
    "kind": "deed",
@@ -332033,10 +332033,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "not lying, i just saw {player} kill {target}. alone",
-   "family": "fa1c0f6a61",
-   "id": "9711cba4f7ea"
+   "weight": 0.2041,
+   "text": "i promise, i just saw {player} kill {target} alone",
+   "family": "4e0a7463a1",
+   "id": "4ffdbf1a7efb"
   },
   {
    "kind": "deed",
@@ -332051,10 +332051,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "not lying, i just saw {player} kill {target}. by themself",
-   "family": "fa1c0f6a61",
-   "id": "2e103116f347"
+   "weight": 0.2041,
+   "text": "not lying, i just saw {player} solo {target} in {place}",
+   "family": "4e0a7463a1",
+   "id": "7f61510ac96c"
   },
   {
    "kind": "deed",
@@ -332069,10 +332069,118 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "text": "not lying, i just saw {player} kill {target}. no help at all",
-   "family": "fa1c0f6a61",
-   "id": "ac696eb4a4dc"
+   "weight": 0.2041,
+   "text": "not lying, i just saw {player} solo {target} in {place}, alone",
+   "family": "4e0a7463a1",
+   "id": "8af44c0eb2b3"
+  },
+  {
+   "kind": "deed",
+   "topic": "named_solo",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "text": "not lying, i just saw {player} solo {target} out in {place}. no help at all",
+   "family": "4e0a7463a1",
+   "id": "e734482d4392"
+  },
+  {
+   "kind": "deed",
+   "topic": "named_solo",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "text": "not lying, i just saw {player} solo {target} alone",
+   "family": "4e0a7463a1",
+   "id": "cec4b08e0d32"
+  },
+  {
+   "kind": "deed",
+   "topic": "named_solo",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "text": "not lying, i just saw {player} kill {target} in {place}",
+   "family": "4e0a7463a1",
+   "id": "b0ca01712529"
+  },
+  {
+   "kind": "deed",
+   "topic": "named_solo",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "text": "not lying, i just saw {player} kill {target} in {place}, alone",
+   "family": "4e0a7463a1",
+   "id": "76495b7fdf6b"
+  },
+  {
+   "kind": "deed",
+   "topic": "named_solo",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "text": "not lying, i just saw {player} kill {target} out in {place}. no help at all",
+   "family": "4e0a7463a1",
+   "id": "e0030a5df3f3"
+  },
+  {
+   "kind": "deed",
+   "topic": "named_solo",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "text": "not lying, i just saw {player} kill {target} alone",
+   "family": "4e0a7463a1",
+   "id": "5249005c245f"
   },
   {
    "kind": "deed",
@@ -555251,6 +555359,226 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
+    "news_siege_held"
+   ],
+   "text": "held!",
+   "id": "b6d91a59a22a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_held"
+   ],
+   "text": "nice hold",
+   "id": "49d68724d7ba"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_held"
+   ],
+   "text": "walls held, gj",
+   "id": "51a24f016cef"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_held"
+   ],
+   "text": "ty for coming out",
+   "id": "8e732dcdedb1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_held"
+   ],
+   "text": "lol they gave up",
+   "id": "fe564189e237"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_held"
+   ],
+   "text": "ha, go home",
+   "id": "52c1bfd4c248"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_held"
+   ],
+   "text": "good defense all",
+   "id": "fb089e6fec3a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_held"
+   ],
+   "text": "that was close",
+   "id": "788a9ed54009"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_held"
+   ],
+   "text": "nice work on the doors",
+   "id": "f88c8c4c78c1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_held"
+   ],
+   "text": "they'll try again later",
+   "id": "5d20f5d45120"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_held"
+   ],
+   "text": "doors held up",
+   "id": "f5350bdd822a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
     "news_siege_failed"
    ],
    "text": "next time",
@@ -555415,6 +555743,206 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
+    "news_siege_failed"
+   ],
+   "text": "oh well",
+   "id": "41bb7e46bf86"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_failed"
+   ],
+   "text": "we'll get it next time",
+   "id": "45a545209663"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_failed"
+   ],
+   "text": "too many of them",
+   "id": "59495edfab92"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_failed"
+   ],
+   "text": "should've brought more",
+   "id": "480a5559c557"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_failed"
+   ],
+   "text": "eh, worth a try",
+   "id": "ff2725904395"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_failed"
+   ],
+   "text": "back to the keep i guess",
+   "id": "b7874702f7cf"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_failed"
+   ],
+   "text": "they had too many",
+   "id": "401502f35d90"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_failed"
+   ],
+   "text": "close one",
+   "id": "32333a450f78"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_failed"
+   ],
+   "text": "bah, out of time",
+   "id": "70102dabfa37"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_siege_failed"
+   ],
+   "text": "they held up good",
+   "id": "c14ecced319d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
     "news_keep_won"
    ],
    "text": "gj realm!",
@@ -555563,6 +556091,306 @@
    ],
    "text": "about time we took that one",
    "id": "216e3a5d2f16"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "gj gj",
+   "id": "da74de25810b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "ours again",
+   "id": "04084e1f4ff7"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "nice, who was on it?",
+   "id": "d77eaae4bdc9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "sweet, more keeps",
+   "id": "ecd6cf846859"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "took long enough lol",
+   "id": "af915cc559f2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "that was quick",
+   "id": "31ee7667e921"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "gj, now hold it",
+   "id": "073e14b96a27"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "ty all",
+   "id": "156d1f951243"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "go realm",
+   "id": "2e5f691b8c2a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "lets keep this one a while",
+   "id": "09441dc866a0"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "gz realm",
+   "id": "e5910da5f331"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "free rp tonight lol",
+   "id": "2dbc10329961"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "that one is always fun to take",
+   "id": "a4533204d6f5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "nice push",
+   "id": "11d774a56fa8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_won"
+   ],
+   "text": "they will want that back",
+   "id": "6814a23a75f3"
   },
   {
    "kind": "reply",
@@ -555765,6 +556593,366 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
+    "news_keep_lost"
+   ],
+   "text": "seriously?",
+   "id": "e2e3f2d467bd"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "where was everyone",
+   "id": "a945f122a9d0"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "ugh, again",
+   "id": "c1c9848d2212"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "figures, again",
+   "id": "5a875eace037"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "bah",
+   "id": "132d2354cba2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "who was home?",
+   "id": "263be6f3201a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "well that sucks",
+   "id": "bf56f3662d1e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "they just walked in huh",
+   "id": "9cbae99b497e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "that keep never stays ours",
+   "id": "888488c6c047"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "no defenders again i bet",
+   "id": "f91c7f6ae2e7"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "lol rip keep",
+   "id": "4400c602269f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "wonderful",
+   "id": "c1b40239b23e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "and nobody called it?",
+   "id": "020633864307"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "back to square one",
+   "id": "5b05b3f4cb8d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "great, there goes the rp bonus",
+   "id": "a344f3e59c66"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "next time someone shout please",
+   "id": "6feceae94dfb"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "they waited till we logged lol",
+   "id": "d2a320f102c9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_lost"
+   ],
+   "text": "every night",
+   "id": "326ffeb3c9d0"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
     "news_keep_other"
    ],
    "text": "let them fight",
@@ -555913,6 +557101,206 @@
    ],
    "text": "free keep for us later then",
    "id": "502799b23488"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_other"
+   ],
+   "text": "good, let them bleed",
+   "id": "ec510578b6ba"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_other"
+   ],
+   "text": "heh, good for us",
+   "id": "699d6775081c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_other"
+   ],
+   "text": "more for us later",
+   "id": "f54b9c15900a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_other"
+   ],
+   "text": "busy night for them",
+   "id": "07e324768778"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_other"
+   ],
+   "text": "keep killing each other pls",
+   "id": "c0878a2f07c5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_other"
+   ],
+   "text": "fine by me lol",
+   "id": "eb5f78917067"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_other"
+   ],
+   "text": "they can have it lol",
+   "id": "6488c86897c2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_other"
+   ],
+   "text": "wonder who's next",
+   "id": "a52d47ed251e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_other"
+   ],
+   "text": "they always fight over that one",
+   "id": "bc1fd9bf74e6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_keep_other"
+   ],
+   "text": "good, less of them for us",
+   "id": "fa1bb02e4f04"
   },
   {
    "kind": "reply",
@@ -556113,6 +557501,206 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
+    "news_relic_lost"
+   ],
+   "text": "oh no",
+   "id": "cf0dc813604d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_lost"
+   ],
+   "text": "nooo the relic",
+   "id": "f0a41ba92f31"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_lost"
+   ],
+   "text": "that's bad",
+   "id": "bf1d1a4b0561"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_lost"
+   ],
+   "text": "great, now what",
+   "id": "f320ef133627"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_lost"
+   ],
+   "text": "gotta get that back",
+   "id": "49410bec3ec9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_lost"
+   ],
+   "text": "unreal",
+   "id": "623c2a246fbe"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_lost"
+   ],
+   "text": "who let that happen",
+   "id": "77beead9d121"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_lost"
+   ],
+   "text": "relic gone, wonderful",
+   "id": "838ff5b2d8cd"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_lost"
+   ],
+   "text": "we need a relic raid asap",
+   "id": "eb16b398f9ea"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_lost"
+   ],
+   "text": "my dmg lol",
+   "id": "3372ce384ed0"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
     "news_relic_won"
    ],
    "text": "woohoo!",
@@ -556259,6 +557847,206 @@
    ],
    "text": "now we hold it",
    "id": "8de1851169c9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_won"
+   ],
+   "text": "woo relic!",
+   "id": "018140c12317"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_won"
+   ],
+   "text": "relic!!",
+   "id": "8a35a3bc8a26"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_won"
+   ],
+   "text": "nice carry",
+   "id": "533f867c4295"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_won"
+   ],
+   "text": "gg, huge",
+   "id": "ca7fada1225f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_won"
+   ],
+   "text": "they'll be mad lol",
+   "id": "9d8615fe387a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_won"
+   ],
+   "text": "big night",
+   "id": "af835e49a3d5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_won"
+   ],
+   "text": "great work all",
+   "id": "4487427c0d06"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_won"
+   ],
+   "text": "keep it safe this time",
+   "id": "03b64546140e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_won"
+   ],
+   "text": "ty carriers",
+   "id": "95d39735d3e8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_won"
+   ],
+   "text": "love relic nights",
+   "id": "ae8a8e5fc02b"
   },
   {
    "kind": "reply",
@@ -556423,6 +558211,166 @@
    ],
    "text": "lets not lose it again please",
    "id": "b8be3990e5b1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_back"
+   ],
+   "text": "finally home",
+   "id": "396f366c0d07"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_back"
+   ],
+   "text": "yay",
+   "id": "88f838bbcf4d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_back"
+   ],
+   "text": "back where it belongs",
+   "id": "ce5fb350c224"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_back"
+   ],
+   "text": "good, it's home",
+   "id": "09db1a0529ba"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_back"
+   ],
+   "text": "about time it came back",
+   "id": "53e5c7624506"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_back"
+   ],
+   "text": "ty all who went",
+   "id": "7d0b1bd82b16"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_back"
+   ],
+   "text": "phew, finally",
+   "id": "b2ccc4b1f3c8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_relic_back"
+   ],
+   "text": "gj all, huge",
+   "id": "19f0c24638aa"
   },
   {
    "kind": "reply",
@@ -556625,6 +558573,186 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
+    "news_df_won"
+   ],
+   "text": "df time!",
+   "id": "1251df91fba8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_won"
+   ],
+   "text": "df open, nice",
+   "id": "6decdf1cb90a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_won"
+   ],
+   "text": "woot df",
+   "id": "dd160db0388b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_won"
+   ],
+   "text": "seal farming tonight",
+   "id": "6dcbe3ed2f80"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_won"
+   ],
+   "text": "df groups forming?",
+   "id": "dc7da6d0e285"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_won"
+   ],
+   "text": "nice, df",
+   "id": "1fdd4d315c8d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_won"
+   ],
+   "text": "gj realm, df is ours",
+   "id": "43d938f67955"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_won"
+   ],
+   "text": "love having df",
+   "id": "a9e23724450a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_won"
+   ],
+   "text": "time to farm",
+   "id": "5745afbcebba"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
     "news_df_lost"
    ],
    "text": "there goes df",
@@ -556773,6 +558901,166 @@
    ],
    "text": "seal prices going up then",
    "id": "c0b174653ef5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_lost"
+   ],
+   "text": "no more df",
+   "id": "ab35eb1dbb6b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_lost"
+   ],
+   "text": "bye df",
+   "id": "91eb567cd021"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_lost"
+   ],
+   "text": "ugh, lost df",
+   "id": "45bf2f02a872"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_lost"
+   ],
+   "text": "there go my seals",
+   "id": "daaf6a02afa4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_lost"
+   ],
+   "text": "df gone already?",
+   "id": "346cf88cf93c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_lost"
+   ],
+   "text": "we need keeps back",
+   "id": "91fad0e92039"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_lost"
+   ],
+   "text": "back to the frontier then",
+   "id": "d2e548d21e7c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_df_lost"
+   ],
+   "text": "df was nice while it lasted",
+   "id": "51a8007ccf59"
   },
   {
    "kind": "reply",
@@ -557147,6 +559435,226 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
+    "news_raid_won"
+   ],
+   "text": "gz!! what dropped",
+   "id": "9cc01640a3d0"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_won"
+   ],
+   "text": "nice kill",
+   "id": "0304b169199b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_won"
+   ],
+   "text": "gg raid",
+   "id": "b475f0bf1086"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_won"
+   ],
+   "text": "grats all",
+   "id": "8093174ef896"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_won"
+   ],
+   "text": "big one, gz",
+   "id": "2646cd4efa75"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_won"
+   ],
+   "text": "who looted?",
+   "id": "c91e1ba92a67"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_won"
+   ],
+   "text": "about time we got that one",
+   "id": "ec965eea0b39"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_won"
+   ],
+   "text": "nice, what dropped?",
+   "id": "eee6949df3b3"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_won"
+   ],
+   "text": "gz all, well done",
+   "id": "1d1e16ddaccf"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_won"
+   ],
+   "text": "quick kill, nice",
+   "id": "64abd513381d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_won"
+   ],
+   "text": "woot, gz raid",
+   "id": "8bc41bd1a51f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
     "news_raid_wiped"
    ],
    "text": "that boss is mean",
@@ -557297,6 +559805,226 @@
    ],
    "text": "need more healers for that one",
    "id": "f999dfe0fc8b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_wiped"
+   ],
+   "text": "ouch, rip",
+   "id": "7331d10da1c0"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_wiped"
+   ],
+   "text": "rip raid",
+   "id": "271d3b19a8d9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_wiped"
+   ],
+   "text": "that's a long run back",
+   "id": "7901f2bdbdcf"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_wiped"
+   ],
+   "text": "maybe next time",
+   "id": "262bb2a30a7b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_wiped"
+   ],
+   "text": "gl next pull",
+   "id": "a2f28ead6d00"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_wiped"
+   ],
+   "text": "ugh, wipes",
+   "id": "e5110c093c7a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_wiped"
+   ],
+   "text": "that boss hits hard",
+   "id": "4d46ad0a220e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_wiped"
+   ],
+   "text": "who died first lol",
+   "id": "453ea56dfc39"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_wiped"
+   ],
+   "text": "rez and go again?",
+   "id": "7774a8af4a18"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_wiped"
+   ],
+   "text": "happens to everyone",
+   "id": "f839baa0c004"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "news_raid_wiped"
+   ],
+   "text": "bring more heals next time",
+   "id": "3ec832a684f7"
   },
   {
    "kind": "reply",

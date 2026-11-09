@@ -555,7 +555,7 @@ public static class AutonomousBotVoices
     /// </summary>
     public static bool TryEventLine(GameBot bot, string kind, out string text, string topic = null,
         IReadOnlyDictionary<string, string> slots = null, IEnumerable<string> flags = null, bool noRepeat = true,
-        string intent = null, string mood = null, Random random = null)
+        string intent = null, string mood = null, Random random = null, Func<VC.Line, bool> filter = null)
     {
         text = null;
         if (Corpus == null || bot == null || !bot.IsAutonomousWorldBot || bot.DatabaseID <= 0)
@@ -579,6 +579,7 @@ public static class AutonomousBotVoices
                 Intent = intent,
                 Topic = topic,
                 Mood = mood,
+                Filter = filter,
                 RelaxTo = VC.RecentLines.Relaxed,
                 LocalHour = DateTime.Now.Hour,
                 NeedSlots = NeedSlotsFor(bot),

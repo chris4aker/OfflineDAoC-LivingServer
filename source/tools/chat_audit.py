@@ -18,6 +18,9 @@ Reports, per log:
     to a role ask from a class that can't fill it, one speaker claiming two classes
   * reactions with no trigger in the previous 30 s, late reactions, pile-ons (more than two reactions to one trigger)
   * repeated short reactions (the same reaction within 10 minutes in one channel) and repeated short lines of any kind
+  * lines in system voice: a bot line in /faction, /say, /lfg, /trade or /broadcast that reads as a game announcement ("level-50
+    adventurers", "There is an opportunity", "Join them at", a semicolon, a formally capitalised paragraph); a VERDICT failure.
+    Also, for information, the same reaction of three words or more again within 60 minutes in one channel
   * silent features: a gold spammer, rumour or roleplayer line that was due (LIVING_FEATURE_DUE feature= realm= ex=) and
     never said in /faction (no CHAT_LINE with that src= and ex=), whether it gave up (LIVING_FEATURE_DROPPED) or not; one
     dropped because nobody was left to hear it (reason=no_audience) isn't counted, nor one due in the log's last minutes
@@ -405,6 +408,9 @@ def audit(path: str, channel_filter: str | None = None, ceiling: float | None = 
         check_reactions(report, seq)
         check_repeats(report, seq)
     check_claims(report, lines)
+    check_system_voice(report, lines)
+    for seq in streams.values():
+        check_reaction_hour(report, seq)
     check_speaker_fit(report, lines, path)
     check_ceiling(report, lines, ceiling)
     check_ceiling(report, lines, say_ceiling, "say")
@@ -874,6 +880,94 @@ KINDS = [
 ]
 
 
+# ---- the voice checks (1.1.3, after RC5) ------------------------------------------------------------------------------
+
+# A game announcement in a bot's mouth (owner's PC, RC5: "Krondon: recruiting up to 120 level-50 adventurers via Caer Diogel;
+# at least 93 must arrive before assault." in /faction from a bot). Bots type like players; only the system herald writes so.
+SYSTEM_VOICE = re.compile(
+    r"level-\d+ adventurers|\bthere is an opportunity\b|\bjoin them at\b|\brecruiting up to\b|\bmust arrive before\b|"
+    r"\bhas broken out at\b|\bexpedition is advancing\b|\bdeparting together\b|\blate arrivals\b|\bstaged level\b|"
+    r"\breinforcements (?:are welcome|join)\b|\brally to its defen[cs]e\b|\bwarbands are (?:gathering|marching)\b|"
+    r"\bseize your opportunity\b|\b(?:available|nearby) warbands\b|\bform up at\b|\bhold the walls\b|\bstand by (?:your|ur) realm\b|"
+    r"\bthe army marches\b|\bdefen[cs]e rally marches\b|\bthe expedition\b|\barrived at the hub\b", re.I)
+# ";)" and ";P" are smileys, not a herald's semicolon.
+SEMICOLON = re.compile(r";(?![)PpDd(])")
+VOICE_CHANNELS = ("faction", "say", "lfg", "trade", "broadcast")
+# The system's own speaker (RealmEventNotices with no bot to say it): it keeps the written notice.
+SYSTEM_SPEAKERS = ("Realm herald",)
+FORMAL_WORDS = 15
+
+
+def system_voice_reason(text: str) -> str | None:
+    """Why a line reads as a game announcement rather than typed chat, or None: a herald's phrase, a semicolon, or a line
+    over FORMAL_WORDS words in two or more sentences that each start with a capital (a narrator's paragraph)."""
+    hit = SYSTEM_VOICE.search(text)
+    if hit:
+        return f'"{hit.group(0)}"'
+    if SEMICOLON.search(text):
+        return "semicolon"
+    stripped = text.strip()
+    sentences = [s for s in re.split(r"(?<=[.!?])\s+", stripped) if s]
+    letters = [ch for ch in stripped if ch.isalpha()]
+    # A shout in capitals (a gold spammer's "CHEAP GOLD!!!") is no herald.
+    shouting = letters and sum(ch.isupper() for ch in letters) > len(letters) / 2
+    tokens = stripped.split()
+    # Spaced-out letters (a spammer's "w w w . F A S T G 0 L D") are no sentences.
+    spaced = sum(1 for token in tokens if len(token) == 1) > len(tokens) / 3
+    if not shouting and not spaced and len(tokens) > FORMAL_WORDS and len(sentences) >= 2 and all(s[0].isupper() for s in sentences):
+        return "formal paragraph"
+    return None
+
+
+def check_system_voice(report: Report, lines: list[Line]):
+    """Bot lines in /faction, /say, /lfg, /trade and /broadcast in system voice (a VERDICT failure)."""
+    for line in lines:
+        if line.who != "bot" or line.ch not in VOICE_CHANNELS or line.speaker in SYSTEM_SPEAKERS:
+            continue
+        reason = system_voice_reason(line.text)
+        if reason:
+            report.flag("system_voice", line, note=f"/{line.ch} {line.src or line.via}: {reason}")
+
+
+# Interjections a reaction may start or end with ("ugh, that one again" is "that one again").
+INTERJECTIONS = {"lol", "heh", "hehe", "haha", "ha", "ugh", "oh", "hmm", "oof", "lmao", "bah", "meh", "well"}
+
+
+def reaction_skeleton(text: str) -> str:
+    w = words(text)
+    while w and w[0] in INTERJECTIONS:
+        w = w[1:]
+    while w and w[-1] in INTERJECTIONS:
+        w = w[:-1]
+    return " ".join(w) or norm(text)
+
+
+def check_reaction_hour(report: Report, seq: list[Line]):
+    """Informational: the same reaction of three words or more again within 60 minutes in one channel (by its skeleton, so
+    "ugh, that one again" and "ugh that one again" are one)."""
+    last: dict[str, int] = {}
+    for line in seq:
+        if line.who != "bot" or not is_reaction(line) or len(words(line.text)) < 3:
+            continue
+        key = reaction_skeleton(line.text)
+        if key in last and line.t - last[key] < 3600:
+            report.flag("reaction_repeat_60min", line, note=f"again after {(line.t - last[key]) // 60} min")
+        last[key] = line.t
+
+
+VOICE_KINDS = [
+    ("system_voice", "bot lines in system voice (/faction, /say, /lfg, /trade, /broadcast)"),
+    ("reaction_repeat_60min", "same 3+ word reaction again within 60 min (informational)"),
+]
+
+
+def voice_checks(counts) -> list[tuple[str, int]]:
+    """The voice checks the verdict fails on: any bot line in system voice."""
+    return [("lines in system voice", counts["system_voice"])]
+
+KINDS.extend(VOICE_KINDS)
+
+
 def verdict(summary: dict) -> tuple[bool, list[str]]:
     """PASS only with: 0 out of order (exact when the log has exchange ids, else the heuristic dialogue slips), 0 untrue
     role/class/level answers, 0 late or repeated reactions, pile-ons only within the caps, 0 minutes above the ceiling, and no
@@ -894,6 +988,7 @@ def verdict(summary: dict) -> tuple[bool, list[str]]:
         ("minutes /say above its ceiling", c["say_minutes_over_ceiling"]),
         ("silent features", c["features_silent"]),
     ]
+    checks += voice_checks(c)
     reasons = [f"{name} {n}" for name, n in checks if n]
     reasons += unanswered_reasons(summary)
     if not summary["ceiling_known"]:
