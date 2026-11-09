@@ -37,8 +37,9 @@ Each item says which build it was seen on. "Overnight run" means a later develop
 - **The two Darkness Falls exits** (by Legion's hall and near the Midgard boss) were clicked once each on a real
   install, with an Albion character: both went to Albion's exit in Camelot Hills. Not tried yet from Midgard or
   Hibernia.
-- **The chat fixes** were read by the chat checker on a real install for 68 and 34 minutes, and passed. Not seen yet:
-  a bot greeting you again when you meet it later, and a bot telling of your deeds in a real place.
+- **The chat fixes** were read by the chat checker on a real install for 68 and 34 minutes, and passed, and a bot that
+  grouped with the player greeted them once when they met again. Not seen yet: a bot telling of your deeds in a real
+  place. The two fixes made after that check (death stories) are tests only.
 - **Setup waiting out a busy download server:** tests only.
 
 ## Always on

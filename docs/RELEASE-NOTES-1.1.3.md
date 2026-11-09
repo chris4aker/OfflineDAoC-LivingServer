@@ -73,9 +73,9 @@ that one. If it still can't download, it says so plainly and changes nothing.
   second release candidate and 34 minutes on the third (the server code that ships): no line out of order, no bot
   claiming a class, level or role it doesn't have, and /faction under its ceiling. Started on purpose with a test command: a dunce scene played by one
   bot from start to finish, rage quit included; a gold spammer; a rumour that honestly says it doesn't know one.
-  Seen without any prompting: a guild invite, a bot joining the group and talking in it, that bot remembering the group
-  afterwards, and tells from bots that remembered earlier groups. Not seen yet: a bot greeting you again when you meet
-  it later. The third candidate's check also heard different bots open the same death story, "dead. again", seven
+  Seen without any prompting: a guild invite, a guild's recruiter asking in /say, a bot joining the group and talking in
+  it, that bot remembering the group afterwards and greeting the player when they met again hours later ("look who it
+  is, hey Manawatch"), and tells from bots that remembered earlier groups. The third candidate's check also heard different bots open the same death story, "dead. again", seven
   times in half an hour, and frontier deaths told as if an enemy player were a kind of monster ("train of
   sneakywarriors, im dead"). Both are fixed in this build and checked by tests only.
 - Xanxicar on a real install, with the 1.1.3 build before the chat fix (the stomp code is the same): one Albion raid of 280 bots killed him in 23 minutes with no wipe.
