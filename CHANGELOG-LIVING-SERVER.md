@@ -108,6 +108,12 @@ chat code) and passed both.
   and the teller's own short line was let past the channel's ten-minute window (only the replies kept it). Now the
   teller's short line keeps the window as well: the story picks another opener, and with none left it isn't told.
   Tests only.
+- **A frontier death isn't told as a monster (after RC3).** In the owner's RC2 and RC3 evenings most death stories from
+  the frontier read "siuses in murdaigean hate me", "train of sneakywarriors, im dead" or "killed by xdemonxes at 27": the
+  story took the bot's last target, an enemy player, as a kind of monster and made it plural. Named creatures came out
+  the same way ("died to summoner roesias again"). Now only a kind of monster ("thrawn ogre miner") is talked about as
+  one; a person, a guard or a named creature is not, in stories and in the bots' other lines. A death in the frontier is
+  told as one ("got ganked lol", "zerged in emain", "stealther got me"). Tests only.
 - **The checker reads "arms" in a trade line as armour (after RC2).** On the owner's RC2 evening (6a83c038, 68 minutes)
   `chat_audit.py` failed only on "wtb leather arms 4 26 inf", an Infiltrator 26 buying arm armour, read as an armsman
   claim ("class claim not the speaker's", "one speaker claims two classes"). A class word that is also an armour slot is
