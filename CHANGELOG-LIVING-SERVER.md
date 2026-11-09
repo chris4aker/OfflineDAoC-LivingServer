@@ -294,6 +294,43 @@ killed, he killed 156 raiders, and the raid won Krondon by going around him.
   - The stage before every orb had its own spot: stopped at the first orb, at half after 15 minutes, with 9-11 raiders
     on it.
 
+**Raid fixes from the forced Krondon raid** (owner's PC, third release candidate b72716e, 2026-11-09: a forced Albion
+raid from the launcher's Realm Events tab, 176 minutes from start to Orylle's death, 38 of them waiting at Caer Diogel).
+- **A forced raid no longer waits forever for its last member.** It reserved 300 level 50s, but Caer Diogel had room
+  for only 25 parties (13 of its 38 formation posts are on ground too tight), so 200 bots formed parties and the raid
+  needed every one of them at the hub. It had 125 there at 01:30 and 199 from 01:45 on; the last one was stuck in
+  Avalon City, and the raid left at 01:57 only after he was killed by hand. Now a forced raid waits 15 minutes for
+  everyone, then goes with 90% (180 of 200), and after 30 minutes with half; the rest follow as late members, as in
+  an automatic raid. The same applies at its staging outside the dungeon, counted from when it left the hub. When the
+  hub has no post left, the raid needs only what its posts hold, and the other reserved bots go back to their own
+  play: on the PC 100 of them waited three hours for a post that never came, kept out of every other group. Tests only.
+- **A raider left behind in another dungeon walks out.** That straggler, Ferken, stood in Avalon City on "Holding before
+  dungeon threat" from 01:16 to 01:55, waiting for his party's puller, who was at Caer Diogel. The wait is meant to end
+  after 90 seconds, but its clock started again whenever another monster became the first one in his way. Now the
+  clock runs for the whole wait whichever monster is in the way, nobody waits for a puller when no one of their party
+  is in their region, and such a raider goes around the monster when the floor allows it (otherwise fights it) on its
+  way to the party. Tests only.
+- **The raid walks to its next pack on its own floor.** Inside Krondon several packs took 3-4 minutes to reach, with
+  nobody within 1,000 of the target, and then died in 10-20 seconds. The raid took the nearest monster in a straight
+  line, which in Krondon is often one on the floor 1,500 below: at 02:30 it went down to an atelic ooze, at 02:34 back up
+  to a foreman, at 02:38 down to another ooze. Now a monster on another floor counts as eight times as far for each unit
+  of height, so the raid clears the floor it stands on first. Tests only.
+- **Parties clear the trash on their way to a muster.** While the raid gathers for a named encounter, a party may not
+  start a fight, so each party stopped for 90 seconds before every monster on its walk there and then fought it anyway.
+  The musters took 6 to 20 minutes (Ulor se Bysen: 13 of 100 after 10 minutes, in at 19 minutes, with 174 coin drops
+  from monsters killed in Krondon in that time). Now the party's puller pulls an ordinary monster in the way at once, with the usual
+  checks (health, a whole party, close together). An epic encounter in the way still waits for the raid. Tests only.
+- **Nobody fights Orshom's Fire.** The fire pit Orshom Brong lights when his fight starts burns everything within 300
+  every 3 seconds and can only be hurt by cold. The raid took it for an encounter that was fighting it, turned on it,
+  and 100 raiders burned in it between 04:12 and 04:18; after five minutes without damage it was set aside. Now it is
+  never the raid's target and no party post is placed in it. A raider with a cold spell shoots it from outside its
+  radius, everyone else steps out of it and fights the twins, and anyone standing in it steps out first, whatever it is
+  fighting. The fire and the twins are unchanged. Tests only.
+- **Melee stays off Scurceol Hyrde's floating orbs.** 11 seconds after the raid turned to the orbs from a floor spot,
+  it switched to another orb "fighting the raid" and made the orb's spot in the air its destination: 111 of the 172 route
+  recoveries toward Lyft Miht that followed aimed into the air. Now an orb is fought only through the orbs' own plan,
+  and a melee raider whose target is an orb it can't reach waits at the orbs' floor spot. Tests only.
+
 **A day with a prime time and a quiet night** (owner's PC test copy, 2026-11-09). At 05:20 2,673 gamebots were online,
 about 900 a realm, and Albion's /faction ran 323 lines an hour at 02:00 and 291 at 03:00, nearly the evening's 300-450.
 The server log said `bot_schedule=off`: the Bot schedule on the launcher's Living Server tab was off on that copy, so
@@ -325,6 +362,72 @@ With the schedule off the ramp's target is the whole roster whatever the hour. W
   online at 7-9 pm and 371 at 4:30 am, no party member logged out, at most 21 logouts in a minute and 132 in ten
   minutes, and /faction 118-137 lines an hour at 3-6 am against 388-421 at 7-11 pm, every hour under its ceiling.
   Tests only.
+
+**Defenders are called when the enemy army marches, so a defended keep often holds** (owner's PC, 1.1.3 release
+candidate nights, 2026-11-08 and 11-09: keeps "flipping all over"). In about 15 hours of logs 18 bot sieges ended: 12 keeps
+captured, 4 defended, 2 failed rallies.
+- **Why the attackers won:** the keep's realm was told only when the battle began (`RVR_DEFENSE_MUSTER` in the same second
+  as `RVR_SIEGE_STARTED`). Eight of the 12 keeps fell 4-11 minutes into the battle. The first defender reached the keep 3-14
+  minutes after the start in 7 of the captures and never in the other 5 (`defendersFirstAt`); several were warbands breaking
+  off an attack in another realm's frontier. Every siege with defenders at the keep within two minutes of the start was
+  held (3 of 3). Committed defenders were not the limit: they were walking.
+- **Now:** scouts see the army leave its border keep. The keep's realm is told at once ("Scouts report Albion's army
+  marching on Dun Bolg!", `RVR_DEFENSE_CALLED`), its free level 50 warbands are called within seconds, gather at their
+  muster for up to 6 minutes (10 when it is thin) and then man the walls. The march took 9-37 minutes in these logs, so
+  the defense is usually in place when the attackers arrive. The third realm still joins only once the battle is on. A
+  player's own attack and the retake after a player's capture keep their rules.
+- **The siege balance aims at about half** (owner 2026-11-09). It used to steer towards attackers winning about two sieges
+  in three (owner, 2026-10-19); with defenders arriving in time it would have pulled them away again until attackers won
+  most. Now, of the last six sieges, four or more captured adds defenders, two or fewer takes them away, and three holds
+  (thresholds 0.65 and 0.35, were 0.8 and 0.45). In a simulation over ten models of the attackers' chance (`UT_SiegeBalanceNov06`)
+  it settles at 44-56% captured, 50% on average; the old thresholds settled at 53-61%. In the logs it sat at its limit
+  all night (share 1.0, attackers 96) and still lost 12 of 16 finished sieges.
+- **Battleground keeps** do change hands, rarely: Dun Murdaigean went from unclaimed to Albion between 04:34 and 19:32 on
+  11/08 (outside the logs). In the 15 logged hours no battleground lord fell below 85% and at most 7 bots were on one.
+  Not changed here.
+- Tests only.
+
+**Gamebots in their capital go to their own frontier for the porter** (owner's PC, 1.1.3 nights). 779 times a gamebot
+stood 15 minutes "Waiting for a frontier teleporter" and the watchdog moved it on (Tir na Nog 404, Camelot 227, Jordheim
+148). Each stood on its capital's bind after a release, sent to a keep in another realm's frontier (Mjollner Faste 118
+times, Glenlock Faste 66, Dun Bolg 59 and more). Only its own frontier's porter goes there, and that porter is used only
+from inside the frontier, so it waited in a city with no porter, and the watchdog put it back on the same spot (recovery counts up to 24). Now such a bot first travels to its realm's border keep (Castle Sauvage, Svasud Faste, Druim Ligen), where the
+medallion merchant and the porter are, and rides from there. Tests only.
+
+**A camp search that holds a bot for minutes is reset** (owner's PC, 1.1.3 nights). 464 times a gamebot stood 15 minutes
+"Searching for a valid XP camp", nearly all level 50s on their capital's bind (Tir na Nog most). In the 11/09 log 72 of 91
+went on to a camp only after their next login, from the same spot, so what held them was in the bot's own planning
+memory, not the world; which part is not shown by these logs. After 3 minutes of failed searches a bot now drops its own
+death caution and failed-camp memories as a fresh login does, and logs what it held (`AUTONOMOUS_CAMP_SEARCH_RESET`), so
+the next night shows the cause. Tests only.
+
+**Fewer server stalls on a busy night** (owner's PC: AI profile of 2026-11-07/08 and the 1.1.3 nights; 17 stalls over a
+second in the server logs, 3 of 4-6 seconds in the night before).
+- **The 4.5-6.1 s stalls** were Krondon raids: the raid pulse took 4,520-6,140 ms in the same second as each
+  "no reachable floor spot within 1400" for Scurceol's orbs (05:38, 05:54, 06:19 on 11/08). That build's search
+  checked 277-321 reachable floor spots per orb; 1.1.3's new orb search (above) tries at most 8 walks per orb. Not changed
+  again here, and not yet timed on a real install.
+- **One bot's AI turn of 2.0-2.2 s** (3 of the 17): a Sluaghbinder searching a dampwood mite camp proved one target's
+  route after another (1,906-1,970 path queries and 1,013-1,060 corridor checks in one turn). A camp search now proves
+  at most 4 routes and casts at most 24 dungeon sight lines; the rest wait for the next search a second later, and a
+  target whose route failed is skipped for a minute. In a test on a mesh with no routes (79 queries per failed proof),
+  one search over 200 targets makes 316 queries instead of 15,800.
+- **Group formation passes of 0.3-1.3 s** (46 times in 800 one-minute profile samples, 10 of them over 0.7 s), held under the lock every grouped bot's turn waits on
+  (that lock's waits were 16% of all AI time). Nearly all of it was rendezvous route searches (up to 390 ms each). A pass
+  now stops once it has spent 150 ms after its first leader and goes on 15 seconds later.
+- **Not changed:** 12 of the 17 stalls also had a 443-687 ms garbage collection pause in them (heap about 2 GB).
+- Tests only.
+
+**Bots still don't fall when they die** (looked at again for 1.1.3; nothing shipped). The left-out fix (23c88a12, Beta 1.1)
+sent the player-death packet for a bot; the client plays that pose only for player characters, so in game it did nothing.
+The other server-side ways all break something:
+- The only death animation the client plays for a non-player is on the remove-object packet for a dead NPC (how monsters
+  die). The client then deletes the object: the corpse can't be targeted, so it can't be rezzed, and the group window
+  loses it until the bot is sent again, standing.
+- The NPC create and update packets have no dead or lying-down flag (statue only freezes the model), and a 0% health
+  update leaves the model standing, as the bots do now.
+- A separate corpse prop would need a client model and new client art IDs, and still couldn't be the rez target.
+- Tests only (nothing in game changed).
 
 ## Beta 1.1.2 — 2026-11-07
 
