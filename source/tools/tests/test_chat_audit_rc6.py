@@ -104,6 +104,25 @@ class Rc6CheckTests(unittest.TestCase):
         self.assertEqual(chat_audit.claimed_attackers("full grp"), 8)
         self.assertIsNone(chat_audit.claimed_attackers("killed by elder beeches at 26"))
 
+    def test_a_wipe_counts_the_whole_group_s_fight(self):
+        # RC10 on the owner's PC: a group of five wiped in Darkness Falls to three different monsters; the teller had one on it.
+        def grouped(second, bot, killer, attackers, zone="Darkness Falls"):
+            return (second, f'AUTONOMOUS_BOT_DEATH bot="{bot}" id=1 level=50 class="Reaver" realm=Albion group=5 killer="{killer}" '
+                            f'killerKind=monster killerLevel=60 con=PURPLE attackers={attackers} armorPieces=6 region=249 zone="{zone}"')
+        s = self.summary([
+            grouped(0, "Neil", "nightmare", 1),
+            grouped(1, "Leeo", "mahr", 1),
+            grouped(9, "Toxic", "chthonian crawler", 1),
+            chat(40, "Toxic", "wiped lol", story(9) + " i=0 role=teller"),
+            chat(48, "Toxic", "pulled 3 at once", story(9) + " i=2 role=teller"),
+            grouped(300, "Ulf", "nightmare", 1),
+            grouped(305, "Vala", "nightmare", 2),
+            grouped(310, "Wenn", "mahr", 1, zone="Otherplace"),
+            chat(330, "Ulf", "wiped lol", story(10) + " i=0 role=teller"),
+            chat(338, "Ulf", "pulled 3 at once", story(10) + " i=2 role=teller"),
+        ])
+        self.assertEqual(s["counts"]["death_story_attackers"], 1, s["examples"])
+
     def test_a_story_long_after_the_death_is_informational(self):
         s = self.summary([
             death(0, "Aldric", "shard golem", "monster", 1),

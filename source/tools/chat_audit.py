@@ -1264,6 +1264,8 @@ class Death:
     killer: str
     kind: str  # monster, bot, player, pet
     attackers: int | None
+    group: int = 1  # the bot's group size (group=), 1 when solo
+    zone: str = ""
 
 
 @dataclass
@@ -1292,8 +1294,10 @@ def read_facts(path: str) -> tuple[list[Death], list[InviteResult]]:
                 clock = parse_stamp(match.group("stamp"))
                 if pattern is DEATH_ROW:
                     attackers = f.get("attackers", "")
+                    group = f.get("group", "")
                     deaths.append(Death(clock, f.get("bot", "?"), f.get("realm", "?"), f.get("killer", "?"), f.get("killerKind", "?").lower(),
-                                        int(attackers) if attackers.isdigit() else None))
+                                        int(attackers) if attackers.isdigit() else None, int(group) if group.isdigit() else 1,
+                                        f.get("zone", "")))
                 else:
                     invites.append(InviteResult(clock, f.get("bot", "?"), f.get("player", "?"), f.get("result", "?"), f.get("duty", "")))
                 break
@@ -1381,6 +1385,23 @@ def death_stories(lines: list[Line]) -> list[tuple[str, list[Line]]]:
     return stories
 
 
+# A grouped bot's death within this of groupmates' deaths in the same zone is one fight: a wipe is told for the group.
+GROUP_FIGHT_S = 30
+
+
+def fight_attackers(death: Death, deaths: list[Death]) -> int | None:
+    """How many attackers a death story may claim: the bot's own, or for a grouped bot the fight's, the most on any of the
+    bots of its realm that died in that zone within GROUP_FIGHT_S, or as many different killers as they had (RC10 on the
+    owner's PC: a group of five wiped in Darkness Falls to a nightmare, a mahr and a crawler, and "pulled 3 at once" was
+    true of the group though one crawler was on the teller)."""
+    if death.attackers is None or death.group < 2 or not death.zone:
+        return death.attackers
+    fight = [d for d in deaths if d.realm == death.realm and d.zone == death.zone and d.group >= 2
+             and abs(d.clock - death.clock) <= GROUP_FIGHT_S]
+    most = max((d.attackers for d in fight if d.attackers is not None), default=death.attackers)
+    return max(most, len({d.killer for d in fight}))
+
+
 def check_death_stories(report: Report, lines: list[Line], deaths: list[Death]):
     by_bot: dict[tuple[str, str], list[Death]] = defaultdict(list)
     for d in deaths:
@@ -1408,8 +1429,10 @@ def check_death_stories(report: Report, lines: list[Line], deaths: list[Death]):
                 if hit:
                     report.flag("death_story_monster_for_rvr", l, note=f'"{hit.group(0)}"; {teller} {fact}')
             claimed = claimed_attackers(l.text)
-            if death.attackers is not None and death.attackers <= 2 and claimed is not None and claimed > death.attackers:
-                report.flag("death_story_attackers", l, note=f"claims {claimed}; {teller} {fact}")
+            had = fight_attackers(death, deaths)
+            if had is not None and had <= 2 and claimed is not None and claimed > had:
+                note = f"claims {claimed}; {teller} {fact}" + (f", the fight {had}" if had != death.attackers else "")
+                report.flag("death_story_attackers", l, note=note)
 
 
 # 2. Time of day -----------------------------------------------------------------------------------------------------------
