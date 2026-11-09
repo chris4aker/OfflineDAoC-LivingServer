@@ -114,6 +114,28 @@ chat code) and passed both.
   the same way ("died to summoner roesias again"). Now only a kind of monster ("thrawn ogre miner") is talked about as
   one; a person, a guard or a named creature is not, in stories and in the bots' other lines. A death in the frontier is
   told as one ("got ganked lol", "zerged in emain", "stealther got me"). Tests only.
+- **Bots answer each other's questions, and /lfg and /trade get replies (after RC5).** On the owner's RC3 evening (b72716e,
+  151 minutes) 71 of the 106 questions bots asked in /faction got no other line at all, and on RC5 (b8f30f9, 30 minutes)
+  15 of 21; counting only replies from someone else within a minute, 86 of 106 and 17 of 20 went unanswered. Half of them
+  were written with no answers ("where's the paladin trainer", "what spec for a 50 inf?", "any stealthers out?", "fastest
+  way to darkness falls?"); the rest were dropped by a 30% chance of no answer, an answer that could be said only once an
+  evening, or an answerer who was fighting by the time its answer was due. Now every question has answers that fit it (the
+  trainer in the capital, the class's usual spec and weapon, drops or spellcrafted gear by level, back to whoever gave the
+  quest, kills and keeps for realm points), and where the world has the fact the bot says that: the real class trainer and
+  its zone, the stable master with the route, the camps bots of that level use, an enemy stealther the realm can see, who
+  is really at a keep. A question is always answered when a bot can answer it; one that would find the channel at its
+  ceiling or with three threads running isn't asked. A heard answer comes back after 30-60 minutes, another bot that can
+  answer says a busy answerer's line when it says nothing about that bot, and a regular answers a question first two times
+  in five, so the regulars still carry about half of /faction. A player's "where do i get my spells
+  trained?" (RC2: "no idea") names the trainer, and a player's spec, crafting, quest, realm point and epic questions, in
+  /faction, /say or a tell, get the same answers. In /lfg and /trade (RC3: 260 and 213 posts, no reply to any) a share of
+  posts get a short reply from a bot it is true for ("x" or "still need a healer?" from a solo healer in the levels asked
+  for, "how much?" from a bot that wears that armour, "/t me, have one" from a bot carrying it), the poster's answer is
+  true (its asking price, its real spec, "ya, 1 spot" only while its group has room), and a few minutes later "nvm full",
+  "got a grp" or "sold" only when that happened. Every line still waits for room under its channel's ceiling.
+  `chat_audit.py` counts bot questions with no reply within 60 s (`VERDICT FAIL` above 25%; RC3 and RC5 fail) and reports
+  the share of /lfg and /trade posts with a reply. On the simulated evening 80 of 90 questions are answered within a
+  minute (34 of 114 before) and the checker passes. Tests only.
 - **The checker reads "arms" in a trade line as armour (after RC2).** On the owner's RC2 evening (6a83c038, 68 minutes)
   `chat_audit.py` failed only on "wtb leather arms 4 26 inf", an Infiltrator 26 buying arm armour, read as an armsman
   claim ("class claim not the speaker's", "one speaker claims two classes"). A class word that is also an armour slot is
@@ -242,6 +264,38 @@ raid from the launcher's Realm Events tab, 176 minutes from start to Orylle's de
   it switched to another orb "fighting the raid" and made the orb's spot in the air its destination: 111 of the 172 route
   recoveries toward Lyft Miht that followed aimed into the air. Now an orb is fought only through the orbs' own plan,
   and a melee raider whose target is an orb it can't reach waits at the orbs' floor spot. Tests only.
+
+**A day with a prime time and a quiet night** (owner's PC test copy, 2026-11-09). At 05:20 2,673 gamebots were online,
+about 900 a realm, and Albion's /faction ran 323 lines an hour at 02:00 and 291 at 03:00, nearly the evening's 300-450.
+The server log said `bot_schedule=off`: the Bot schedule on the launcher's Living Server tab was off on that copy, so
+every bot stayed online all night. The rise seen that night from about 840 online to 2,673 was not the roster growing:
+the server was restarted at 01:10, 04:27 and 05:25, and each time the startup ramp logged the whole roster back in over
+15 minutes, about 180 bots a minute (844 four minutes after the 04:27 start, 2,718 at 04:42, the same ~2,715 each time).
+With the schedule off the ramp's target is the whole roster whatever the hour. With "Real clock" on:
+- **A deeper night.** The clock curve now keeps about an eighth of the roster before dawn on a weekday (about 330-370
+  of 2,700 at 4-6 am; the old curve kept a fifth, about 560) and nearly all of it from 7 to 11 pm; weekends are busier
+  all day.
+- **No jumps.** Every bot's place in the day's line changed at midnight at once, so about 450 bots wanted to swap in the
+  same minute; the places now move a little at a time between 2 and 5 am. The weekday and weekend curves stepped at
+  Friday 6 pm and Monday midnight (about 400 bots at once); they now run smoothly into each other. The most bots the
+  schedule sends home in any minute of a week is 26 (logouts run at up to 36 a minute).
+- **RvR bots log off too.** A bot that had ever run its RvR goal could never log off or take a break: it keeps its force
+  name for good, and that was read as "busy in a realm event". Now only a bot whose force is in a running event (a siege,
+  a defense, a relic run) stays.
+- **Finish, then leave.** A bot the schedule is sending home joins no new party and answers no automatic raid, and an
+  automatic raid is sized to the level 50s who stay. A bot in a party, a raid or a siege still finishes it before logging
+  off. After a start in the night the startup ramp spreads the schedule's number over its 15 minutes (it let the few
+  hundred all in within two minutes).
+- **The launcher** shows the Bot schedule first in the Server life card, with what Off and Real clock mean, and the
+  status line always says whether it is on. Setup already turns Real clock on for a new install; the server's own
+  default stays off.
+- **Chat follows the crowd.** /faction's target and ceiling already scale with the bots online and the hour; with fewer
+  bots at night the quiet hours are quiet. A simulated weekday (`UT_LivingServerDay`: 2,700 bots, a third in parties,
+  the real schedule, login, logout and chat-budget rules, a model of one realm's /faction): with the schedule off,
+  258-291 /faction lines an hour at 2-5 am against 407-427 at 7-11 pm (the PC's night); with Real clock, 2,532-2,620
+  online at 7-9 pm and 371 at 4:30 am, no party member logged out, at most 21 logouts in a minute and 132 in ten
+  minutes, and /faction 118-137 lines an hour at 3-6 am against 388-421 at 7-11 pm, every hour under its ceiling.
+  Tests only.
 
 ## Beta 1.1.2 — 2026-11-07
 

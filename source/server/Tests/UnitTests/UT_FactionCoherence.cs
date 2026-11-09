@@ -875,7 +875,7 @@ public class UT_FactionCoherence
         public Field.Facts Facts => UT_FactionCoherence.Facts(Id, Class, Level, Zone);
     }
 
-    private sealed record Plan(long Id, string Feature, List<Ex.Line> Lines, SimBot[] Speakers, Field.Said Said = null);
+    private sealed record Plan(long Id, string Feature, List<Ex.Line> Lines, SimBot[] Speakers, Field.Said Said = null, SimBot[] StandIns = null);
 
     /// <summary>What a simulated evening said, by exchange, and the /faction band it was held to.</summary>
     private sealed class Evening
@@ -886,6 +886,8 @@ public class UT_FactionCoherence
         /// <summary>The living-world features that decided to speak (a spammer, a rumour, a roleplayer's line), and those given up.</summary>
         public readonly List<(string Feature, long Ex, long At)> Due = [];
         public int Dropped;
+        /// <summary>Questions not asked because the channel had no room for their answer (the new way only).</summary>
+        public int QuestionsHeld;
         public (double Floor, double Target, double Ceiling) Band;
     }
 
@@ -956,6 +958,7 @@ public class UT_FactionCoherence
             return null;
         }
         var legacy = new List<(long Due, Plan Plan, int Line, int Waits)>();
+        var spoke = new HashSet<(long, int)>();
         var runs = new List<(Ex.Run Run, Plan Plan)>();
         var beatsDue = new List<(long Due, Plan Plan, int Line, int Waits)>();
         void Start(long now, Plan plan, int firstIndex = 1)
@@ -1036,7 +1039,9 @@ public class UT_FactionCoherence
         }
         string[] beats = ["is a house worth the coin?", "a house is a home, plus storage", "its a weekly rent bill for a room u visit twice",
             "decorate it right and ur friends will visit", "my friends are in the frontier lol", "maybe a small cottage to start"];
-        for (long now = 0; now < lengthMs; now += 1_000)
+        // From one second: the budget meter takes a line stamped 0 for an empty slot (the game's clock is never 0), so a first line
+        // at 0 went uncounted and the channel ran half a line over its ceiling in the first minute (1.1.3, after RC5).
+        for (long now = 1_000; now < lengthMs; now += 1_000)
         {
             bool debate = now < debateUntil;
             // Unprompted openers, through the realm's budget (AutonomousBotChatCoordinator.TryStartBudgeted): none during a debate.
@@ -1059,9 +1064,13 @@ public class UT_FactionCoherence
                 else if (Field.Line("faction", starter.Facts, memory, random, now) is { } said)
                 {
                     long ex = Ex.NewId();
-                    if (Say(now, starter, "field", ex, 0, "asker", said.Text) && said.Answers != null && (!fixedCode || Ex.RunningCount(lane, now) < Ex.MaxRunning))
+                    // 1.1.3, after RC5 (AutonomousBotChatCoordinator.TryField): a question is asked only when the channel has room
+                    // for its answer too.
+                    if (fixedCode && Field.WantsAnswer(said) && (Ex.RunningCount(lane, now) >= Ex.MaxRunning || !Ex.Fits(PerMinute(now) + 0.5, band.Ceiling)))
+                        evening.QuestionsHeld++;
+                    else if (Say(now, starter, "field", ex, 0, "asker", said.Text) && said.Answers != null && (!fixedCode || Ex.RunningCount(lane, now) < Ex.MaxRunning))
                     {
-                        Func<SimBot, bool> fits = fixedCode ? bot => Field.CanAnswer(said, bot.Class, bot.Level, Field.Fills(bot.Class, "healer")) : null;
+                        Func<SimBot, bool> fits = fixedCode ? bot => Field.CanGiveAnswer(said, bot.Class, bot.Level, Field.Fills(bot.Class, "healer")) : null;
                         SimBot answerer = Pick(starter, fits), third = Pick(starter, bot => bot != answerer && (fits == null || fits(bot)));
                         List<Field.Step> steps = null;
                         for (int attempt = 0; attempt < (fixedCode ? 3 : 1); attempt++)
@@ -1074,8 +1083,18 @@ public class UT_FactionCoherence
                         if (fixedCode && steps != null)
                             foreach (Field.Step st in steps.Where(st => st.Who != 0 && Ex.IsReaction(st.Text)))
                                 shorts.TryUse(lane, st.Text, now);
+                        // A busy answerer's answer is said by another bot that can answer, unless it is about the answerer itself
+                        // (AutonomousBotChatCoordinator.ScheduleFieldThread).
+                        SimBot[] standIns = null;
+                        if (fixedCode && steps != null && answerer != null && !steps.Any(st => st.Who == 1 && Field.MentionsSelf(st.Text, answerer.Facts)))
+                            standIns = Enumerable.Range(0, 4)
+                                .Select(_ => Pick(starter, bot => bot != answerer && bot != third && fits(bot) &&
+                                                                  Field.Fills(bot.Class, "healer") == Field.Fills(answerer.Class, "healer") &&
+                                                                  (said.SameClass == null || bot.Class == answerer.Class)))
+                                .Where(bot => bot != null).Distinct().ToArray();
                         if (steps is { Count: > 0 })
-                            Start(now, new Plan(ex, "thread", Ex.FromSteps(steps, ["asker", "answerer", "third"], step => step.Who == 2), [starter, answerer, third], said));
+                            Start(now, new Plan(ex, "thread", Ex.FromSteps(steps, ["asker", "answerer", "third"], step => step.Who == 2), [starter, answerer, third], said,
+                                standIns));
                     }
                 }
             }
@@ -1215,10 +1234,23 @@ public class UT_FactionCoherence
                 var (run, plan) = runs[k];
                 if (run.DueAt > now)
                     continue;
-                long? next = run.Step(now, line => line.Who < plan.Speakers.Length && plan.Speakers[line.Who] is { } bot && now >= debateUntil &&
-                                                   (plan.Feature == "event" || Room(now)) && (plan.Feature == "story" && line.Who == 0 || !Busy(bot, now)),
+                long? next = run.Step(now, line =>
+                    {
+                        // A stand-in for a busy answerer that hasn't spoken yet (Ex.Play's standIns).
+                        if (line.Who == 1 && plan.StandIns is { Length: > 0 } && !spoke.Contains((plan.Id, 1)) && plan.Speakers[1] is { } first && Busy(first, now) &&
+                            plan.StandIns.FirstOrDefault(bot => !Busy(bot, now)) is { } free)
+                            plan.Speakers[1] = free;
+                        return line.Who < plan.Speakers.Length && plan.Speakers[line.Who] is { } bot && now >= debateUntil &&
+                               (plan.Feature == "event" || Room(now)) && (plan.Feature == "story" && line.Who == 0 || !Busy(bot, now));
+                    },
                     line => line.Who < plan.Speakers.Length ? plan.Speakers[line.Who]?.Name : null,
-                    (line, index) => Say(now, plan.Speakers[line.Who], plan.Feature, plan.Id, index, line.Role, line.Text), random);
+                    (line, index) =>
+                    {
+                        if (!Say(now, plan.Speakers[line.Who], plan.Feature, plan.Id, index, line.Role, line.Text))
+                            return false;
+                        spoke.Add((plan.Id, line.Who));
+                        return true;
+                    }, random);
                 if (next == null)
                 {
                     Ex.Finish(laneState, plan.Id);
@@ -1289,26 +1321,36 @@ public class UT_FactionCoherence
             return (max, over);
         }
         int Adverts(Evening e) => e.Said.Count(s => s.Feature == "exchange_ad");
+        // Bot questions answered by someone else within 60 s (chat_audit.py check_unanswered: rhetorical ones aside).
+        (int Asked, int Answered) Questions(Evening e)
+        {
+            var asked = e.Said.Where(s => s.Feature == "field" && s.Index == 0 && s.Text.TrimEnd().EndsWith('?') && !Rhetorical(s.Text) &&
+                                          s.At <= hours3 - 60_000).ToList();
+            return (asked.Count, asked.Count(q => e.Said.Any(r => r.Ex == q.Ex && r.Speaker != q.Speaker && r.At >= q.At && r.At - q.At <= 60_000)));
+        }
         // A spammer, rumour or roleplayer that decided to speak and never did (live check of RC1: a started spammer was silent).
         int Silent(Evening e) => e.Due.Count(d => !e.Said.Any(s => s.Ex == d.Ex));
-        // The most lines (events aside) in any ten seconds of the two minutes after a debate ended (live test: 7 in 7 s).
+        // The most exchanges (events aside) with a line in any ten seconds of the two minutes after a debate ended (live test: 7
+        // lines in 7 s). 1.1.3, after RC5: exchanges, not lines: one story or thread talking at its own pace (four lines in eight
+        // seconds) is no rush of lines that waited for the scene.
         int AfterScene(Evening e)
         {
             var ends = e.Said.Where(s => s.Feature == "debate").GroupBy(s => s.Ex).Select(g => g.Max(s => s.At)).ToArray();
-            long[] times = e.Said.Where(s => s.Feature is not ("event" or "debate")).Select(s => s.At).OrderBy(t => t).ToArray();
+            var lines = e.Said.Where(s => s.Feature is not ("event" or "debate")).Select(s => (s.At, s.Ex)).ToArray();
             int most = 0;
             foreach (long end in ends)
                 for (long t = end; t < end + 120_000; t += 1_000)
-                    most = Math.Max(most, times.Count(at => at >= t && at < t + 10_000));
+                    most = Math.Max(most, lines.Where(l => l.At >= t && l.At < t + 10_000).Select(l => l.Ex).Distinct().Count());
             return most;
         }
         string Line(string name, Evening e) =>
             $"{name}: {e.Said.Count} lines ({e.Said.Count / 180.0:0.00}/min; band {e.Band.Target:0.0}/{e.Band.Ceiling:0.0}; peak {Rate(e).Max:0.0}/min, " +
             $"{Rate(e).SecondsOver} s over the ceiling), out of order {OutOfOrder(e)}, role swaps {RoleSwaps(e)}, untrue answers {RoleFalse(e)}, " +
             $"thread lines after a missing one {Orphans(e)}, personal bursts over two {BurstsOver(e, "nemesis", 2) + BurstsOver(e, "revenge", 2)}, " +
-            $"event bursts over three {BurstsOver(e, "event", 3) + BurstsOver(e, "news", 3)}, most lines in 10 s after a debate {AfterScene(e)}, reaction repeats in 10 min {ReactionRepeats(e)}, exchange adverts {Adverts(e)}, " +
+            $"event bursts over three {BurstsOver(e, "event", 3) + BurstsOver(e, "news", 3)}, most exchanges in 10 s after a debate {AfterScene(e)}, reaction repeats in 10 min {ReactionRepeats(e)}, exchange adverts {Adverts(e)}, " +
             $"features due {e.Due.Count} (spammer {e.Due.Count(d => d.Feature == "spammer")}, rumour {e.Due.Count(d => d.Feature == "rumour")}, " +
-            $"roleplayer {e.Due.Count(d => d.Feature == "roleplayer")}), silent {Silent(e)}, given up {e.Dropped}";
+            $"roleplayer {e.Due.Count(d => d.Feature == "roleplayer")}), silent {Silent(e)}, given up {e.Dropped}, " +
+            $"questions answered in 60 s {Questions(e).Answered}/{Questions(e).Asked}, held for room {e.QuestionsHeld}";
         TestContext.Progress.WriteLine("CHAT_SIM " + Line("before", before));
         TestContext.Progress.WriteLine("CHAT_SIM " + Line("after", after));
 
@@ -1334,5 +1376,16 @@ public class UT_FactionCoherence
         Assert.That(Rate(after).Max, Is.LessThanOrEqualTo(after.Band.Ceiling), Line("after", after));
         // Coherent, not thin: the evening stays above the realm's target (the 1.1.2 model's busy-peak design) on average.
         Assert.That(after.Said.Count / 180.0, Is.GreaterThan(after.Band.Target), Line("after", after));
+        // 1.1.3, after RC5 (owner's PC: 71 of 106 bot questions unanswered): at least four in five questions get an answer
+        // within a minute.
+        Assert.That(Questions(after).Asked, Is.GreaterThan(50), Line("after", after));
+        Assert.That(Questions(after).Answered, Is.GreaterThanOrEqualTo(0.8 * Questions(after).Asked), Line("after", after));
+    }
+
+    /// <summary>A question that wants no answer (chat_audit.py RHETORICAL): one word, an opening laugh or groan, the pride tags.</summary>
+    private static bool Rhetorical(string text)
+    {
+        string t = System.Text.RegularExpressions.Regex.Replace(System.Text.RegularExpressions.Regex.Replace(text.ToLowerInvariant(), "[^a-z0-9]+", " "), @"\s+", " ").Trim();
+        return System.Text.RegularExpressions.Regex.IsMatch(t, @"^(?:\S+|(?:lol|heh|haha|ugh|bleh|argh|ok|so|well)\b.*|only \d+ \w+|.*\bnot bad|.*\bkeeps not bad)$");
     }
 }

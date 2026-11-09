@@ -219,12 +219,12 @@ namespace DOL.GS
         /// An automatic raid recruits level 50s waiting for a group and level 50s grinding solo (who earn no
         /// experience there); RvR bots are left to the frontier.
         /// </summary>
-        public static bool MayAnswerAutomaticRaid(GameBot bot) => bot != null &&
+        public static bool MayAnswerAutomaticRaid(GameBot bot) => bot != null && !AutonomousBotSchedule.LeavingSoon(bot) &&
             (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.GroupPve) ||
              bot.Level >= 50 && AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.SoloPve));
 
         private static int OnlineLevelFifty(eRealm realm) =>
-            AutonomousBotRegistry.Snapshot().Count(b => IsEligible(b) && b.Realm == realm);
+            AutonomousBotRegistry.Snapshot().Count(b => IsEligible(b) && b.Realm == realm && !AutonomousBotSchedule.LeavingSoon(b));
 
         private static readonly eRealm[] ScheduledRealms = [eRealm.Albion, eRealm.Midgard, eRealm.Hibernia];
         private static readonly Dictionary<eRealm, long> NextScheduled = new();

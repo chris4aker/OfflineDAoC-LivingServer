@@ -75,8 +75,10 @@ public class UT_ChatThreads
     public void ALineThatInvitesAReplyUsuallyGetsOneAndSomeRunOn()
     {
         var random = new Random(9);
-        var said = new Field.Said("anyone up for keltoi?", "ask_group", ["me", "x", "me pls", "{lvl} {cls} here"]);
+        // Not a question: about seven in ten get a reply (a question always does when a bot can answer, 1.1.3 after RC5).
+        var said = new Field.Said("camping skeletons if anyone wants to join", "ask_group", ["me", "x", "me pls", "{lvl} {cls} here"]);
         Assert.That(Field.ReplyChance(said), Is.GreaterThanOrEqualTo(0.7));
+        Assert.That(Field.ReplyChance(new Field.Said("anyone up for keltoi?", "ask_group", ["me", "x"])), Is.EqualTo(1.0), "a question");
         int answered = 0, longer = 0, three = 0;
         for (int i = 0; i < 2_000; i++)
         {
