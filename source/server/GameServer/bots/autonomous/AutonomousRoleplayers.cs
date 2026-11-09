@@ -119,7 +119,8 @@ public static class AutonomousRoleplayers
             if (rp == null || !AutonomousBotVoices.TryEventLine(rp, "roleplay", out string line, "ambient"))
                 continue;
             // Already in character: sent as written (not through the speech pass).
-            AutonomousBotChatCoordinator.BroadcastFactionAsWritten(rp.Name, realm, line);
+            if (!AutonomousBotChatCoordinator.BroadcastFactionAsWritten(rp.Name, realm, line))
+                continue;
             AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), rp, line, "chat");
             Log.Info($"ROLEPLAY_AMBIENT realm={GlobalConstants.RealmToName(realm)} bot=\"{rp.Name}\"");
             if (Random.Shared.NextDouble() < 0.6)
@@ -149,7 +150,8 @@ public static class AutonomousRoleplayers
         {
             if (!AutonomousBotVoices.TryEventLine(mocker, "roleplay", out string mock, "mock", new Dictionary<string, string> { ["target"] = rp.Name }))
                 return;
-            AutonomousBotChatCoordinator.BroadcastFaction(mocker.Name, realm, mock);
+            if (!AutonomousBotChatCoordinator.BroadcastFaction(mocker.Name, realm, mock))
+                return;
             Log.Info($"ROLEPLAY_MOCK realm={GlobalConstants.RealmToName(realm)} bot=\"{rp.Name}\" mocker=\"{mocker.Name}\"");
             AutonomousLivingServer.Later(rp, 6_000 + Random.Shared.Next(8_000), () => AutonomousLivingServer.CanTalk(rp), () =>
             {

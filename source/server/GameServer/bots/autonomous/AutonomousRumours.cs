@@ -197,8 +197,9 @@ public static class AutonomousRumours
             .OrderBy(_ => Random.Shared.Next()).Take(3).ToArray();
         if (bots.Length == 0 || !AutonomousBotVoices.TryEventLine(bots[0], "rumour", out string line, topic, slots))
             return false;
+        if (!AutonomousBotChatCoordinator.BroadcastFaction(bots[0].Name, realm, line))
+            return false;
         LastRumourAt[realm] = now;
-        AutonomousBotChatCoordinator.BroadcastFaction(bots[0].Name, realm, line);
         AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), bots[0], line, "chat");
         int due = 0;
         foreach (GameBot bot in bots.Skip(1).Take(1 + Random.Shared.Next(2)))

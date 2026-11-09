@@ -226,10 +226,11 @@ public static partial class AutonomousLivingServer
 
     internal enum Channel { Say, Group, Faction, Guild }
 
-    internal static void Speak(GameBot bot, Channel channel, string text)
+    /// <summary>Says a line in a channel; false when it wasn't said (1.1.3: /faction may hold it at the realm's ceiling).</summary>
+    internal static bool Speak(GameBot bot, Channel channel, string text)
     {
         if (string.IsNullOrWhiteSpace(text) || !IsSpeaker(bot))
-            return;
+            return false;
         if (channel is Channel.Group or Channel.Guild)
             text = AutonomousRoleplayers.Voice(bot, text);   // /say goes through GameBot.Say, /faction through BroadcastFaction
         switch (channel)
@@ -246,14 +247,13 @@ public static partial class AutonomousLivingServer
                 }
                 break;
             case Channel.Faction:
-                if (RealmHasPlayer(bot.Realm))
-                    AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, bot.Realm, text);
-                break;
+                return RealmHasPlayer(bot.Realm) && AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, bot.Realm, text);
             case Channel.Guild:
                 if (bot.Guild != null && AutonomousBotGuildSocial.HasListener(bot.Guild))
                     AutonomousBotGuildSocial.SendGuildLine(bot.Guild, bot.Name, text);
                 break;
         }
+        return true;
     }
 
     /// <summary>Runs an action on the bot's (or player's) timer after a delay, if it is still in the game and the condition still holds then.</summary>

@@ -38,7 +38,7 @@ public static class BotChatTranscript
         string via;
         try { via = Via(new StackTrace(1, false)); } catch { via = "?"; }
         Log.Info($"CHAT_LINE who=bot ch={channel} realm={GlobalConstants.RealmToName(realm)} from=\"{speaker}\"" + (to != null ? $" to=\"{to}\"" : "") +
-                 $" via={via}{SourceFields(speaker, realm, via)} text=\"{Clean(text)}\"");
+                 $" via={via}{SourceFields(speaker, realm, via)}{CapField(channel, realm)} text=\"{Clean(text)}\"");
     }
 
     /// <summary>" src=thread ex=12 i=2 role=answerer cls=\"Cabalist\" lvl=50" for the line being said now.</summary>
@@ -61,6 +61,21 @@ public static class BotChatTranscript
         if (bot != null)
             fields += $" cls=\"{bot.CharacterClass?.Name ?? bot.ClassName}\" lvl={bot.Level}";
         return fields;
+    }
+
+    /// <summary>" cap=6.9": the realm's /faction ceiling when the line was said, so a log can be checked against it alone.</summary>
+    public static string CapField(string channel, eRealm realm)
+    {
+        if (channel != "faction")
+            return "";
+        try
+        {
+            return " cap=" + AutonomousBotChatCoordinator.FactionCeiling(realm).ToString("0.0", System.Globalization.CultureInfo.InvariantCulture);
+        }
+        catch
+        {
+            return "";
+        }
     }
 
     /// <summary>The feature a line outside any exchange came from, by the code that chose it.</summary>

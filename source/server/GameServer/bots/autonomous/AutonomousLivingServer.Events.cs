@@ -108,6 +108,8 @@ public static partial class AutonomousLivingServer
                 GameBot bot = realm[i];
                 Later(bot, 4_000 + i * 3_500 + Random.Shared.Next(4_000), () => bot.IsAlive, () =>
                 {
+                    // 1.1.3: grats to the real player is said to them (not held by the ceiling); to a bot it waits its turn.
+                    using var tag = who is GamePlayer ? AutonomousChatExchange.Tag("player", 0, 0, "grats", bot) : default;
                     if (AutonomousBotVoices.TryEventLine(bot, "grats", out string line, "fifty", slots, noRepeat: false))
                         Speak(bot, Channel.Faction, line);
                 });
@@ -185,7 +187,9 @@ public static partial class AutonomousLivingServer
             GameBot[] cheer = AutonomousBotRegistry.Snapshot()
                 .Where(bot => bot != who && bot.Realm == who.Realm && CanTalk(bot))
                 .OrderBy(_ => Random.Shared.Next()).Take(Random.Shared.Next(1, 3)).ToArray();
-            for (int i = 0; i < cheer.Length; i++)
+            // 1.1.3: with bot voices on, the burst below is the realm's cheer (a tagged event, capped at three); the separate
+            // cheers came on top of it.
+            for (int i = 0; i < (AutonomousBotVoices.Enabled ? 0 : cheer.Length); i++)
             {
                 GameBot bot = cheer[i];
                 Later(bot, 6_000 + i * 4_000 + Random.Shared.Next(4_000), () => bot.IsAlive, () =>
@@ -437,10 +441,12 @@ public static partial class AutonomousLivingServer
             if (AutonomousBotVoices.TryEventLine(bot, "nemesis", out string line, slots: slots))
             {
                 long exchange = AutonomousChatExchange.NewId();
+                bool said;
                 using (AutonomousChatExchange.Tag("nemesis", exchange, 0, "teller", bot))
-                    Speak(bot, Channel.Faction, line);
-                // Beta 1.1.2: the realm commiserates, a short burst (1.1.3: one or two of them).
-                AutonomousChatBursts.React(bot, bot.Realm, "nemesis", line, ["complaint"],
+                    said = Speak(bot, Channel.Faction, line);
+                // Beta 1.1.2: the realm commiserates, a short burst (1.1.3: one or two of them, and none when the line was held).
+                if (said)
+                    AutonomousChatBursts.React(bot, bot.Realm, "nemesis", line, ["complaint"],
                     new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = bot.Name }, exchange: exchange);
             }
         });
@@ -469,10 +475,12 @@ public static partial class AutonomousLivingServer
             if (AutonomousBotVoices.TryEventLine(bot, "revenge", out string line, slots: slots))
             {
                 long exchange = AutonomousChatExchange.NewId();
+                bool said;
                 using (AutonomousChatExchange.Tag("revenge", exchange, 0, "teller", bot))
-                    Speak(bot, Channel.Faction, line);
-                // Beta 1.1.2: a nemesis paid back draws cheers, a short burst (1.1.3: one or two of them).
-                AutonomousChatBursts.React(bot, bot.Realm, "revenge", line, ["boast"],
+                    said = Speak(bot, Channel.Faction, line);
+                // Beta 1.1.2: a nemesis paid back draws cheers, a short burst (1.1.3: one or two of them, and none when the line was held).
+                if (said)
+                    AutonomousChatBursts.React(bot, bot.Realm, "revenge", line, ["boast"],
                     new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = bot.Name }, exchange: exchange);
             }
         });

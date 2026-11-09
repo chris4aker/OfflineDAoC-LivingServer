@@ -46,6 +46,12 @@ public static class AutonomousChatBursts
         return Math.Clamp((int)Math.Round((low + random.Next(high - low + 1)) * crowd), 1, high + 2);
     }
 
+    /// <summary>
+    /// A realm's big moment said on purpose (a keep, a relic, a raid's end, Darkness Falls, a server first): its burst is a tagged
+    /// event (CHAT_LINE src=event), capped at three, and not held by /faction's ceiling (1.1.3).
+    /// </summary>
+    public static bool IsEvent(string trigger) => trigger == "first" || BurstsOn(trigger);
+
     /// <summary>A bot's own moment (a nemesis, a revenge): one or two bots react, not a crowd.</summary>
     public static bool Personal(string trigger) => trigger is "nemesis" or "revenge";
 
@@ -60,9 +66,9 @@ public static class AutonomousChatBursts
         return Math.Clamp(size, 1, 3);
     }
 
-    /// <summary>How long after its trigger a burst's reactions may come: 20 s for a bot's own moment, 45 s for news.</summary>
+    /// <summary>How long after its trigger a burst's reactions may come: 20 s for a bot's own moment, 40 s for an event.</summary>
     public static int SpreadMs(string trigger, AutonomousChatBudget.Settings settings) =>
-        Math.Min(Math.Max(5, settings.BurstSpreadS) * 1_000, Personal(trigger) ? 20_000 : 45_000);
+        Math.Min(Math.Max(5, settings.BurstSpreadS) * 1_000, Personal(trigger) ? 20_000 : 40_000);
 
     private static readonly Dictionary<eRealm, long> RunningUntil = new();
 
@@ -142,16 +148,20 @@ public static class AutonomousChatBursts
             at = delays[i];
         }
         int total = lines.Count;
-        var rules = AutonomousChatExchange.Rules.Faction with { ReactionWithinMs = spread + 10_000 };
-        AutonomousChatExchange.Play("burst", exchange != 0 ? exchange : AutonomousChatExchange.NewId(), lane, lines, speakers.ToArray(),
-            bot => AutonomousLivingServer.CanTalk(bot) && !AutonomousBotDebates.IsRunning(realm), (bot, line) =>
+        var rules = AutonomousChatExchange.Rules.Faction with { ReactionWithinMs = Math.Min(spread + 10_000, 44_000) };
+        // An event's reactions are said as the event (not held by the ceiling); a bot's own moment's wait for room like any line.
+        bool isEvent = IsEvent(trigger);
+        AutonomousChatExchange.Play(isEvent ? "event" : "burst", exchange != 0 ? exchange : AutonomousChatExchange.NewId(), lane, lines, speakers.ToArray(),
+            bot => AutonomousLivingServer.CanTalk(bot) && !AutonomousBotDebates.IsRunning(realm) && (isEvent || AutonomousBotChatCoordinator.FactionRoom(realm)),
+            (bot, line) =>
             {
                 // 1.2: a burst's reactions are replies to the news, said below the realm's reply ceiling (not its target: a big
-                // moment is allowed to be loud).
+                // moment is allowed to be loud); an event's aren't held by it either (1.1.3: tagged, capped at three).
                 var verdict = AutonomousChatBudget.LiveReply(AutonomousChatBudget.Channel.Faction, (long)realm, realmBots, AutonomousChatBudget.ReplyKind.Burst);
-                if (!AutonomousChatBudget.Says(verdict))
+                if (!isEvent && !AutonomousChatBudget.Says(verdict))
                     return false;
-                AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, realm, line.Text, AutonomousChatBudget.LineKind.Reply);
+                if (!AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, realm, line.Text, AutonomousChatBudget.LineKind.Reply))
+                    return false;
                 AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), bot, line.Text, "");
                 AutonomousChatWhy.Record(bot, "faction", "burst " + trigger, "said", "burst " + string.Join(',', answerSets), line.Who,
                     $"reaction {line.Who} of {total} to {trigger}", line.Text,
