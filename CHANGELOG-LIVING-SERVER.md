@@ -83,6 +83,20 @@ MUST be top notch"). Checked by automated tests and a simulated evening only; no
   `/lstest rumour` tells apart a scene playing, a full /faction, no free bot and no written line, and the first free bot
   with a line tells it (only one bot was asked before). The rumour's replies, the spammer's reactions and the
   roleplayer's mockery share the line's exchange id. Tests only.
+- **No wall of "released, running back" at the bind (after RC1).** Standing at Camelot's bind the owner heard about 25
+  lines in 45 s from different bots ("released, running back", "at bind, omw back", "no rez, released. coming back to
+  you"): a gamebot's word to its own group about its way back went out in /say to everyone near. These lines (released,
+  horse, off the horse, back, still on the way) now go to the bot's own group, and only when a player is in it; a group of
+  bots says nothing. /say lines carry their ceiling (`cap=`), and `chat_audit.py` prints the /say lines a minute and fails a
+  log with a minute of /say above its ceiling around the player. Tests only.
+- **One greeting per bot per meeting (after RC1).** Cabowyn said "hey Manawatch! good to see you again" and a second later
+  "hey hey Manawatch, City of Camelot treat you well after i left?": a GM test had cleared the greeting cooldowns while the
+  first greeting was on its way. A bot that greeted a player, or is about to, doesn't greet them again for ten minutes,
+  whatever cleared the cooldowns; `/lstest greet` says so. Tests only.
+- **A deed names a place it could happen (after RC1).** A forced deed read "saw Manawatch's group take a named monster in
+  City of Camelot". A real deed names the zone where it happened (the monster's or the player's body); `/lstest deed` names
+  where the GM stands only if it could happen there (no capital; a streak or a gank only in the frontier), else a hunting
+  zone of the realm or a frontier zone. Tests only.
 - **Replies to the player each have their own exchange id.** RC1 tagged them all `ex=0`, so the checker read them as one
   conversation and reported it out of order. `chat_audit.py` also treats `ex=0` as no exchange (for RC1 logs), and now
   counts features that were due and never spoke in /faction: one is enough for `VERDICT FAIL`. The simulated evening has

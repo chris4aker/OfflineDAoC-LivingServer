@@ -566,6 +566,56 @@ public class UT_FactionCoherence
         Assert.That(fixedWay.FirstAt, Is.InRange(roomFrom, roomFrom + Ex.DueRetryMs), "its first ad as soon as there is room");
     }
 
+    /// <summary>The RC1 live check at Camelot's bind (2026-11-08): about 25 "released, running back" lines in 45 s in /say.</summary>
+    [Test]
+    public void TheWayBackAfterAReleaseIsToldToTheBotsOwnGroup()
+    {
+        Assert.That(GameBot.ReturnLineChannel(inGroup: true, groupHasPlayer: true), Is.EqualTo("group"));
+        Assert.That(GameBot.ReturnLineChannel(inGroup: true, groupHasPlayer: false), Is.Null, "a bots-only group needs no word");
+        Assert.That(GameBot.ReturnLineChannel(inGroup: false, groupHasPlayer: false), Is.Null);
+        // And never /say: the code that said it there is gone (each stage goes through TellOwnGroup).
+        for (var dir = new DirectoryInfo(TestContext.CurrentContext.TestDirectory); dir != null; dir = dir.Parent)
+        {
+            string file = Path.Combine(dir.FullName, "GameServer", "bots", "GameBot.cs");
+            if (!File.Exists(file))
+                continue;
+            Assert.That(File.ReadAllText(file), Does.Not.Contain("Say(ReturnDialogue("));
+            break;
+        }
+    }
+
+    /// <summary>The RC1 live check: Cabowyn greeted Manawatch twice a second apart (a GM test had cleared the cooldowns).</summary>
+    [Test]
+    public void ABotGreetsAPlayerOncePerMeeting()
+    {
+        const long now = 50 * 60_000, never = long.MinValue / 2;
+        Assert.That(AutonomousLivingServer.MayGreet(never, 0, now), Is.True);
+        Assert.That(AutonomousLivingServer.MayGreet(never, now + 1_500, now), Is.False, "a greeting on its way");
+        Assert.That(AutonomousLivingServer.MayGreet(now - 1_000, 0, now), Is.False, "greeted a second ago");
+        Assert.That(AutonomousLivingServer.MayGreet(now - AutonomousLivingServer.MeetingMs + 1, 0, now), Is.False);
+        Assert.That(AutonomousLivingServer.MayGreet(now - AutonomousLivingServer.MeetingMs, 0, now), Is.True, "a new meeting");
+    }
+
+    /// <summary>The RC1 live check: a forced deed read "saw Manawatch's group take a named monster in City of Camelot".</summary>
+    [Test]
+    public void ADeedNamesAPlaceItCouldHappen()
+    {
+        Assert.That(AutonomousPlayerDeeds.PlausiblePlace(AutonomousPlayerDeeds.Kind.NamedGroup, capital: true, frontier: false), Is.False);
+        Assert.That(AutonomousPlayerDeeds.PlausiblePlace(AutonomousPlayerDeeds.Kind.NamedGroup, capital: false, frontier: false), Is.True);
+        Assert.That(AutonomousPlayerDeeds.PlausiblePlace(AutonomousPlayerDeeds.Kind.SillyDeath, capital: true, frontier: false), Is.False);
+        Assert.That(AutonomousPlayerDeeds.PlausiblePlace(AutonomousPlayerDeeds.Kind.RvrStreak, capital: false, frontier: false), Is.False, "a streak is in the frontier");
+        Assert.That(AutonomousPlayerDeeds.PlausiblePlace(AutonomousPlayerDeeds.Kind.Ganked, capital: false, frontier: true), Is.True);
+        var zones = new List<(string Name, bool Frontier, bool Home)>
+        {
+            ("City of Camelot", false, false), ("Salisbury Plains", false, true), ("Forest Sauvage", true, false), ("Vale of Mularn", false, false),
+        };
+        var random = new Random(1);
+        Assert.That(AutonomousPlayerDeeds.TestPlace(AutonomousPlayerDeeds.Kind.NamedGroup, "City of Camelot", false, zones, random), Is.EqualTo("Salisbury Plains"));
+        Assert.That(AutonomousPlayerDeeds.TestPlace(AutonomousPlayerDeeds.Kind.RvrStreak, "City of Camelot", false, zones, random), Is.EqualTo("Forest Sauvage"));
+        Assert.That(AutonomousPlayerDeeds.TestPlace(AutonomousPlayerDeeds.Kind.NamedSolo, "Black Mountains North", true, zones, random), Is.EqualTo("Black Mountains North"));
+        Assert.That(AutonomousPlayerDeeds.TestPlace(AutonomousPlayerDeeds.Kind.Fell, "City of Camelot", false, [("City of Camelot", false, false)], random), Is.Null);
+    }
+
     [Test]
     public void ASceneBeatWaitsForRoomAndOnlyACutSceneLosesItsEnd()
     {

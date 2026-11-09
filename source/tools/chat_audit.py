@@ -276,19 +276,24 @@ class Report:
 CEILING_EXEMPT = ("event", "player")
 
 
-def check_ceiling(report: Report, lines: list[Line], ceiling: float | None):
-    """Seconds and minutes in which the bots' /faction lines the ceiling holds ran above it (two-minute rate, as the server
-    measures it). The ceiling comes from each line's cap= field, else from --ceiling."""
+def check_ceiling(report: Report, lines: list[Line], ceiling: float | None, channel: str = "faction"):
+    """Seconds and minutes in which the bots' lines in a channel the ceiling holds ran above it (two-minute rate, as the
+    server measures it). The ceiling comes from each line's cap= field, else from --ceiling (/faction) or --say-ceiling.
+    /say: only the lines the player heard are logged, so this is the rate around the player (1.1.3 RC1 live check: about 25
+    "released, running back" lines in 45 s at Camelot's bind)."""
+    prefix = "" if channel == "faction" else channel + "_"
     by_realm: dict[str, list[Line]] = defaultdict(list)
     for l in lines:
-        if l.ch == "faction" and l.who == "bot":
+        if l.ch == channel and l.who == "bot":
             by_realm[l.realm].append(l)
-    report.ceiling_known = True
+    if channel == "faction":
+        report.ceiling_known = True
     for realm, seq in by_realm.items():
         counted = [l.t for l in seq if l.src not in CEILING_EXEMPT]
         caps = [(l.t, l.cap) for l in seq if l.cap is not None]
         if not caps and ceiling is None:
-            report.ceiling_known = False
+            if channel == "faction":
+                report.ceiling_known = False
             continue
         lo = hi = 0
         c = 0
@@ -306,10 +311,10 @@ def check_ceiling(report: Report, lines: list[Line], ceiling: float | None):
             rate = (hi - lo) / 2.0
             peak = max(peak, rate)
             if rate > cap_now + 1e-9:
-                report.counts["seconds_over_ceiling"] += 1
+                report.counts[prefix + "seconds_over_ceiling"] += 1
                 minutes.add(t // 60)
-        report.counts["minutes_over_ceiling"] += len(minutes)
-        report.peak_rate[realm] = (peak, cap_now)
+        report.counts[prefix + "minutes_over_ceiling"] += len(minutes)
+        report.peak_rate[realm if channel == "faction" else f"{realm} /{channel}"] = (peak, cap_now)
 
 
 def check_features(report: Report, lines: list[Line], features: list[Feature]):
@@ -334,7 +339,7 @@ def check_features(report: Report, lines: list[Line], features: list[Feature]):
                                                   (f"  [gave up: {reason}]" if reason else ""))
 
 
-def audit(path: str, channel_filter: str | None = None, ceiling: float | None = None) -> Report:
+def audit(path: str, channel_filter: str | None = None, ceiling: float | None = None, say_ceiling: float | None = None) -> Report:
     features: list[Feature] = []
     lines = read(path, features)
     report = Report(path, len(lines))
@@ -390,6 +395,7 @@ def audit(path: str, channel_filter: str | None = None, ceiling: float | None = 
         check_repeats(report, seq)
     check_claims(report, lines)
     check_ceiling(report, lines, ceiling)
+    check_ceiling(report, lines, say_ceiling, "say")
     check_features(report, lines, features)
     return report
 
@@ -571,6 +577,8 @@ KINDS = [
     ("short_line_repeat_10min", "same short line (<=3 words) again within 10 min"),
     ("seconds_over_ceiling", "seconds /faction ran above its ceiling (lines it holds)"),
     ("minutes_over_ceiling", "minutes with any second above the ceiling"),
+    ("say_seconds_over_ceiling", "seconds /say around the player ran above its ceiling (lines it holds)"),
+    ("say_minutes_over_ceiling", "minutes with any second of /say above its ceiling"),
     ("features_due", "spammers, rumours, roleplayer lines due (LIVING_FEATURE_DUE)"),
     ("features_silent", "of them never said in /faction"),
     ("features_given_up", "of those, given up (LIVING_FEATURE_DROPPED)"),
@@ -580,7 +588,7 @@ KINDS = [
 def verdict(summary: dict) -> tuple[bool, list[str]]:
     """PASS only with: 0 out of order (exact when the log has exchange ids, else the heuristic dialogue slips), 0 untrue
     role/class/level answers, 0 late or repeated reactions, pile-ons only within the caps, 0 minutes above the ceiling, and no
-    feature that was due and never spoke."""
+    feature that was due and never spoke, and 0 minutes of /say above its ceiling (when the log has it)."""
     c = summary["counts"]
     out_of_order = c["exact_out_of_order"] + c["exact_role_swap"] if summary["tagged_lines"] else (
         c["answer_after_close"] + c["asks_after_invite"] + c["followup_before_answer"] + c["thanks_without_answer"])
@@ -591,6 +599,7 @@ def verdict(summary: dict) -> tuple[bool, list[str]]:
         ("repeated reactions", c["reaction_repeat_10min"]),
         ("pile-ons over the caps", c["pileon"]),
         ("minutes above the ceiling", c["minutes_over_ceiling"]),
+        ("minutes /say above its ceiling", c["say_minutes_over_ceiling"]),
         ("silent features", c["features_silent"]),
     ]
     reasons = [f"{name} {n}" for name, n in checks if n]
@@ -625,6 +634,7 @@ def print_report(summary: dict, show: int):
         print(f"   {summary['counts'][key]:>5}  ({summary['per_hour'][key]:>6}/h)  {label}")
     for realm, rate in summary["peak_rate"].items():
         print(f"   {realm}: busiest two minutes {rate['peak']}/min against a ceiling of {rate['ceiling']}/min (events and lines to the player aside)")
+    print("   /say lines a minute (bots and you): " + str(summary["lines_per_minute"].get("say", 0)) + ", busiest minute " + str(summary["busiest_minute"].get("say", 0)))
     if show:
         for key, label in KINDS:
             for example in summary["examples"].get(key, [])[:show]:
@@ -639,10 +649,11 @@ def main(argv=None) -> int:
     parser.add_argument("--show", type=int, default=0, help="examples per check")
     parser.add_argument("--github", action="store_true", help="also print one GitHub Actions notice per log")
     parser.add_argument("--ceiling", type=float, help="/faction ceiling in lines a minute, for logs without cap= fields")
+    parser.add_argument("--say-ceiling", type=float, help="/say ceiling in lines a minute, for logs whose /say lines have no cap=")
     args = parser.parse_args(argv)
     summaries = []
     for path in args.logs:
-        summary = summarize(audit(path, args.channel, args.ceiling))
+        summary = summarize(audit(path, args.channel, args.ceiling, args.say_ceiling))
         passed, reasons = verdict(summary)
         summary["verdict"] = "PASS" if passed else "FAIL"
         summary["verdict_reasons"] = reasons
