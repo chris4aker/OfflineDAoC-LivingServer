@@ -3007,9 +3007,10 @@ public static class AutonomousBotChatCoordinator
             return AutonomousHolidays.On && Random.Shared.NextDouble() < AutonomousHolidays.AmbientShare(AutonomousHolidays.Now) &&
                    AutonomousBotVoices.TryLine(starter, "ambient", out picked, topic: "holiday") ||
                    // Beta 1.1.2: lore musings only now and then as a /faction opener, no unasked Exchange plugs.
+                   // RC7 on the owner's PC: a written /faction opener kept no story ("lfg Stonehenge Barrows" from a bot out in rvr).
                    AutonomousBotVoices.TryLine(starter, AutonomousBotVoices.AmbientKind(starter, faction, Random.Shared), out picked,
-                       filter: AmbientLineFits(faction, starter.Realm)) ||
-                   AutonomousBotVoices.TryLine(starter, "ambient", out picked, filter: AmbientLineFits(faction, starter.Realm))
+                       filter: KeepsStory(starter, faction ? "faction" : "say", AmbientLineFits(faction, starter.Realm))) ||
+                   AutonomousBotVoices.TryLine(starter, "ambient", out picked, filter: KeepsStory(starter, faction ? "faction" : "say", AmbientLineFits(faction, starter.Realm)))
                 ? Written(starter.Realm, picked)
                 : null;
 

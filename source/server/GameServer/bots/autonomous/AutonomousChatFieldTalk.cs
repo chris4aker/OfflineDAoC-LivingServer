@@ -57,6 +57,9 @@ public static class AutonomousChatFieldTalk
         /// <summary>Whether a solo bot wants a group (awaiting group matchmaking, or out for rvr), or null when unknown.</summary>
         public bool? SeeksGroup { get; init; }
 
+        /// <summary>Whether the bot's task is rvr (true), something else (false), or unknown (null): an rvr bot looks for an rvr group.</summary>
+        public bool? RvrTask { get; init; }
+
         /// <summary>The post the bot's group could make (it is the leader of a party still assembling with seats free), or null.</summary>
         public AutonomousBotGroupCoordinator.RecruitPost Recruit { get; init; }
 
@@ -629,10 +632,31 @@ public static class AutonomousChatFieldTalk
             return true;
         return AutonomousChatStance.SeekOf(text) switch
         {
-            "lfg" => !f.InGroup && f.SeeksGroup != false,
+            // RC7 on the owner's PC: a cabalist out in Odin's Gate for rvr posted "lfg Stonehenge Barrows or anywhere with xp".
+            "lfg" => !f.InGroup && f.SeeksGroup != false && FitsTask(text, f.RvrTask),
             "lfm" => !f.Live || f.Recruit != null,
             _ => true,
         };
+    }
+
+    private static readonly System.Text.RegularExpressions.Regex XpWords = new(
+        @"\b(xp|exp|bubbles?|camp|lvling|leveling|levelling|dungeon|barrows|fogou|catacombs|tomb|mine|keltoi|spindel|tepok|krondon|mithra)\b",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    private static readonly System.Text.RegularExpressions.Regex RvrWords = new(
+        @"\b(rvr|realm points|rps?|keep|keeps|frontier|emain|hadrian'?s|odin'?s|zerg|8v8|fg)\b",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    /// <summary>
+    /// Whether a group post fits the bot's task: an xp or dungeon post not from a bot out for rvr, an rvr post not from a bot that
+    /// is levelling; unknown fits either. Pure.
+    /// </summary>
+    public static bool FitsTask(string text, bool? rvrTask)
+    {
+        if (rvrTask == null || string.IsNullOrWhiteSpace(text))
+            return true;
+        bool xp = XpWords.IsMatch(text), rvr = RvrWords.IsMatch(text);
+        return rvrTask.Value ? !xp || rvr : !rvr || xp;
     }
 
     /// <summary>
@@ -2474,6 +2498,7 @@ public static class AutonomousChatFieldTalk
         {
             Live = true,
             SeeksGroup = bot.Group == null ? seeksGroup : null,
+            RvrTask = AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR),
             Recruit = recruit,
             ItemType = itemType,
             ItemUsable = usable,

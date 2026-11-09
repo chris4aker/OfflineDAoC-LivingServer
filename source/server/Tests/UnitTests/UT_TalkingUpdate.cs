@@ -644,6 +644,16 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousLivingServer.OfferFits("hey, want to duo here? im {level} {class}", true), Is.True);
         }
 
+        /// <summary>RC7 on the owner's PC: "lfg Stonehenge Barrows or anywhere with xp" from a cabalist out in Odin's Gate for rvr.</summary>
+        [TestCase("lfg Stonehenge Barrows or anywhere with xp", true, false)]
+        [TestCase("lfg Stonehenge Barrows or anywhere with xp", false, true)]
+        [TestCase("lf rvr grp 50 cab", true, true)]
+        [TestCase("lf rvr grp 50 cab", false, false)]
+        [TestCase("lfg 50 cab", true, true)]
+        [TestCase("lfg 50 cab", false, true)]
+        public void AGroupPostFitsTheBotsTask(string text, bool rvrTask, bool fits) =>
+            Assert.That(AutonomousChatFieldTalk.FitsTask(text, rvrTask), Is.EqualTo(fits));
+
         /// <summary>RC6 on the owner's PC: written /lfg lines that claim a group or a want slipped past the group-state check.</summary>
         [TestCase("group at Coruscating Mine needs a healer, pst", "lfm")]
         [TestCase("group has room near Connacht, all classes welcome", "lfm")]
@@ -703,6 +713,8 @@ namespace DOL.GS.Tests
                 Assert.That(far, Does.StartWith("50 wizard here, want to team up for a bit?"), far);
                 Assert.That(far, Does.Contain("avalon marsh"), far);
                 Assert.That(far, Does.Not.Contain("??"), far);
+                string named = AutonomousLivingServer.WithWhere("hi im 50 scout want to duo in Pennine Mountains?", "Pennine Mountains", true, new Random(seed));
+                Assert.That(named.ToLowerInvariant().Split("pennine").Length - 1, Is.EqualTo(1), named);
                 string across = AutonomousLivingServer.WithWhere("want to duo?", "Pennine Mountains", true, new Random(seed));
                 Assert.That(across, Does.Contain("pennine"), across);
                 string reply = AutonomousLivingServer.TooFarReply("Avalon Marsh", false, new Random(seed));
