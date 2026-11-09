@@ -272,6 +272,38 @@ public class UT_ChatAnswers
     }
 
     [Test]
+    public void APartyHasASpotOnlyWhileItIsStillRecruitingThatRole()
+    {
+        // Bot parties are formed at their full size and never backfilled: once a party stops recruiting it has no spot, whatever
+        // its size (1.1.3, after RC5: any party under eight answered "ya, 1 spot").
+        (string, bool)[] noHealer = [("Armsman", false), ("Wizard", false), ("Minstrel", false)];
+        (string, bool)[] withHealer = [("Armsman", false), ("Cleric", true), ("Wizard", false)];
+        Assert.That(Market.SpotFor(null, recruiting: false, noHealer), Is.False, "a party that set off has no seat");
+        Assert.That(Market.SpotFor("healer", recruiting: false, noHealer), Is.False);
+        Assert.That(Market.SpotFor("healer", recruiting: true, noHealer), Is.True, "still recruiting and no healer yet");
+        Assert.That(Market.SpotFor("healer", recruiting: true, withHealer), Is.False, "it already has its healer");
+        Assert.That(Market.SpotFor("tank", recruiting: true, withHealer), Is.False, "an armsman is its tank");
+        Assert.That(Market.SpotFor("dps", recruiting: true, withHealer), Is.True, "a free seat takes dps");
+        Assert.That(Market.SpotFor(null, recruiting: true, withHealer), Is.True);
+        // The reply says which role it asks about, so the poster's answer can be checked against it.
+        var random = new Random(3);
+        for (int i = 0; i < 60; i++)
+        {
+            Market.Reply reply = Market.ReplyTo(Market.Post.Lfm, "lf1m healer barrows 31-37", Facts(i, cls: "Cleric", level: 33), true, false, random);
+            if (reply.Text.StartsWith("still need a", StringComparison.Ordinal))
+                Assert.That(reply.Role, Is.EqualTo("healer"), reply.Text);
+            else if (reply.Asks == "room")
+                Assert.That(reply.Role, Is.Null, reply.Text);
+        }
+        string filled = Market.PosterAnswer("room", Market.Post.Lfm, "lf1m healer", Facts(3, level: 40), null,
+            Market.SpotFor("healer", true, withHealer), true, random, roleFilled: "healer");
+        Assert.That(filled, Does.Contain("healer").And.Not.StartWith("ya"));
+        string gone = Market.PosterAnswer("room", Market.Post.Lfm, "lf1m healer", Facts(3, level: 40), null,
+            Market.SpotFor(null, false, noHealer), true, random);
+        Assert.That(gone, Does.Contain("full").Or.Contain("filled"));
+    }
+
+    [Test]
     public void ThePostersAnswersAreTrueOfIt()
     {
         var random = new Random(4);

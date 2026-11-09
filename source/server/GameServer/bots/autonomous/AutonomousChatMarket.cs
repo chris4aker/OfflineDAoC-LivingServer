@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -9,9 +10,10 @@ namespace DOL.GS
     /// /trade posts drew no reply at all: the channels read as monologues. In 2003 most of this went by /send, so most posts stay
     /// unanswered here too, but a share get a short public answer from a bot it is true for: "x" or "still need a healer?" from a
     /// solo bot of the role and levels asked for, "how much?" from a bot that could wear the armour, "/t me, have one" from a bot
-    /// that carries what is wanted. The poster then says what is true of it: its real spec, its asking price, "ya, 1 spot" while
-    /// its group has room, and a while later "nvm full", "got a grp" or "sold" only when that happened. Pure; the coordinator
-    /// (AutonomousBotChatCoordinator.ScheduleMarketReply) reads the live bots and plays the lines under the channel's ceiling.
+    /// that carries what is wanted. The poster then says what is true of it: its real spec, its asking price, "ya, 1 spot" only
+    /// while its party is still recruiting (<see cref="SpotFor"/>), and a while later "nvm full", "got a grp" or "sold" only
+    /// when that happened. Pure; the coordinator (AutonomousBotChatCoordinator.ScheduleMarketReply) reads the live bots and
+    /// plays the lines under the channel's ceiling.
     /// </summary>
     public static class AutonomousChatMarket
     {
@@ -127,8 +129,11 @@ namespace DOL.GS
             }
         }
 
-        /// <summary>A reply and what it asks of the poster ("price", "room", "spec", "have", "level", or null for nothing).</summary>
-        public readonly record struct Reply(string Text, string Asks);
+        /// <summary>
+        /// A reply and what it asks of the poster ("price", "room", "spec", "have", "level", or null for nothing), and for a "room"
+        /// question the role it asks about ("still need a healer?": "healer"), or null for a seat of any kind.
+        /// </summary>
+        public readonly record struct Reply(string Text, string Asks, string Role = null);
 
         /// <summary>
         /// A bot's reply to a post, from its own state: <paramref name="solo"/> whether it is without a group, <paramref name="hasWanted"/>
@@ -146,7 +151,7 @@ namespace DOL.GS
                         0 => new Reply("x", null),
                         1 => new Reply("x me", null),
                         2 => new Reply($"{lvl} {cls} x", null),
-                        3 => new Reply(role is null or "support" ? "still need ppl?" : $"still need a {(role == "healer" ? "healer" : role)}?", "room"),
+                        3 => role is null or "support" ? new Reply("still need ppl?", "room") : new Reply($"still need a {role}?", "room", role),
                         4 => new Reply($"{cls} {lvl}, room?", "room"),
                         _ => new Reply("/t me", null),
                     };
@@ -178,11 +183,27 @@ namespace DOL.GS
         }
 
         /// <summary>
+        /// Whether a bot party has a seat for the role a reply asks about (1.1.3, after RC5): a party is formed at its full size and
+        /// never backfilled, so only one still recruiting (assembling with free seats, AutonomousBotGroupCoordinator.RecruitingPost)
+        /// has one at all, and "still need a healer?" is yes only while no member already fills that role. A seat of any kind (null,
+        /// "dps", "caster", "puller") needs only the free seat. <paramref name="roster"/> is the party's members. Pure.
+        /// </summary>
+        public static bool SpotFor(string role, bool recruiting, IEnumerable<(string ClassName, bool IsHealer)> roster)
+        {
+            if (!recruiting)
+                return false;
+            if (role is not ("healer" or "tank" or "cc"))
+                return true;
+            return roster == null || !roster.Any(member => Fills(member.ClassName, member.IsHealer, role));
+        }
+
+        /// <summary>
         /// The poster's answer to a reply, true of it now: its asking price (the one the post named, or one for its level), "ya, 1
-        /// spot" only while its group has room, its real spec, whether it still has the item. Null for none. Pure.
+        /// spot" only when <paramref name="groupHasRoom"/> (<see cref="SpotFor"/>; <paramref name="roleFilled"/> is the role asked
+        /// about when the party still recruits but already has it), its real spec, whether it still has the item. Null for none. Pure.
         /// </summary>
         public static string PosterAnswer(string asks, Post post, string postText, AutonomousChatFieldTalk.Facts poster, string spec, bool groupHasRoom,
-            bool stillHas, Random random)
+            bool stillHas, Random random, string roleFilled = null)
         {
             if (asks == null || poster == null)
                 return random.NextDouble() < 0.4 ? Pick(random, "/t me", "pst", "k pst") : null;
@@ -190,7 +211,11 @@ namespace DOL.GS
             switch (asks)
             {
                 case "room":
-                    return groupHasRoom ? Pick(random, "ya, 1 spot", "ya, pst", "ya, still room") : Pick(random, "nope full, sry", "just filled, sry");
+                    if (groupHasRoom)
+                        return Pick(random, "ya, 1 spot", "ya, pst", "ya, still room");
+                    // Still recruiting, but the role asked about is filled: "got a healer already", not "full".
+                    return roleFilled != null ? Pick(random, $"got a {roleFilled} already, sry", $"nah, have a {roleFilled}")
+                        : Pick(random, "nope full, sry", "just filled, sry");
                 case "price":
                     if (!stillHas)
                         return Pick(random, "sold sry", "just sold it");
