@@ -29,9 +29,10 @@ that really happened.
 
 **Bots sound like players.** Realm news comes out of a bot's mouth the way a player would type it ("krondon raid forming
 at diogel, need 50s"), not as a herald's announcement. Reactions to news vary over an evening instead of "ugh, that one
-again" every time. Debaters type in short lines instead of writing like a book. A death in the frontier is told as one
-("got ganked lol", "zerged in emain"), never as if an enemy player were a kind of monster, and a story of your deeds
-names the real monster and where.
+again" every time. Debaters type in short lines instead of writing like a book. A death is told by what really killed the bot: a
+gank as a gank ("got ganked lol"), never as if an enemy player were a kind of monster, a monster by its name, the guards
+as the guards, and never more attackers than there were. A story of your deeds names the real monster and where. Nobody
+says "tonight" in the morning, and debates don't announce attacks that aren't happening.
 
 **Bots keep one story.** A bot either looks for a group or forms one, not both, and posts for the dungeon it's really
 going to. Only a bot that's really solo posts "lfg", and only a party that's still forming posts "lfm". An item is only
@@ -40,8 +41,9 @@ talk names only zones of the bot's own realm.
 
 **Bots notice you.** Friends say hi when you log in, a grats when you ding, "ouch, u ok?" when you die near them, and a
 healer offers a rez. Now and then a solo bot near your level invites you, with a real invitation. A busy bot you invite
-says why it can't ("sry, on the raid in krondon atm"), and a friend answers your small talk with what it's really doing.
-Group chat fits a duo, and guild chat sounds like people.
+says why it can't ("sry, on the raid in krondon atm"), one too far away says where it is, and a friend answers your
+small talk with what it's really doing. Your own /trade posts get answers too. Group chat fits a duo and talks about the
+hunt only when you hunted together, and guild chat sounds like people.
 
 **An evening that remembers, and regulars you get to know.** A handful of talkative regulars carry about half of /faction
 all evening, each with its own manner and running jokes, and they ask after earlier talk ("did you ever find that
@@ -98,10 +100,20 @@ Every server, launcher and Setup test passes on GitHub, including a real downloa
 says which build it came from. Release candidates (RC) are the test builds; the last one is what ships.
 
 **On a real install (the owner's PC, a test copy of the game):**
-- Chat, RC2 to RC5 (the chat code before today's fixes): a chat-checking tool read 68, 151, 43 and 30 minutes of
-  evenings. No line out of order, no bot claiming a class, level or role it doesn't have, /faction under its ceiling.
-  Reading the lines themselves showed what the tool couldn't: unanswered questions, herald-style news, contradicting
-  bots, items for the wrong class. Those are what today's fixes are about, and the tool now checks for all of them.
+- Chat, RC2 to RC5: a chat-checking tool read 68, 151, 43 and 30 minutes of evenings. No line out of order, no bot
+  claiming a class, level or role it doesn't have, /faction under its ceiling. Reading the lines themselves showed what
+  the tool couldn't: unanswered questions, herald-style news, contradicting bots, items for the wrong class.
+- Chat, RC6 (the fixes for those): 74 minutes as an Albion 50 and a new Hibernian, with the Bot schedule on Real
+  clock. Asked in /faction where to hunt at 35, where a trainer is and where a new character should level, the player
+  got true answers within 16-34 seconds. Reading the log showed new problems: a friend's answer swapped for "not sure,
+  try /advice", a grouped bot talking about pulls and loot when nobody had fought, deaths told against what killed the
+  bot, "tonight" in the morning, debates announcing attacks that weren't happening. The checker now looks for each.
+- Chat, RC7: 77 minutes. A friend's answer to "hey! what u up to?" was true of the bot ("rvr in Odin's Gate, its busy,
+  wanna duo?"), a far bot said where it was, an idle duo heard one group line in three minutes, 93% of bot questions
+  were answered within a minute. The checker found one death told wrong.
+- Chat, RC8: 46 minutes, 88% of bot questions answered within a minute, nothing out of time or place. The checker found
+  a wipe by enemy players told as a wipe by monsters and a "stick with the zerg" after a death to the guards.
+- The last two fixes (those two stories, and "ok" after a no) are in the build that ships and are tests only.
 - Seen without prompting on those builds: a guild invite and a recruiter in /say, a bot that grouped with the player
   remembering it and greeting them hours later ("look who it is, hey Manawatch"), a tell from a bot that really had
   grouped with the player, an answer in /faction to the player's question about a camp, and a solo bot answering the
@@ -113,7 +125,8 @@ says which build it came from. Release candidates (RC) are the test builds; the 
 - The Darkness Falls exits, on RC2: both took an Albion character to Albion's usual exit.
 
 **Tests only so far** (automated tests and simulated evenings, not yet seen on a real install): everything else above,
-including all of today's chat fixes, the raid fixes after RC3, the keep defense, the porter, the stalls and quiet nights.
+including the raid fixes after RC3, the keep defense, the porter and the stalls. Real clock ran during the RC6-RC8
+checks, by day; a full quiet night hasn't been watched.
 In a simulated three-hour evening, 94% of the bots' questions were answered within a minute, with no herald-style line,
 no contradicting bot and /faction under its ceiling.
 
