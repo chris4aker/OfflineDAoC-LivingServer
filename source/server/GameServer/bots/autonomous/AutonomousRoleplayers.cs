@@ -60,6 +60,10 @@ public static class AutonomousRoleplayers
 
     private static readonly string[] Flourishes = [", forsooth", ", m'lord", " *bows*", ", huzzah!", ", by my troth", ", verily", " *tips hat*"];
 
+    /// <summary>Flourishes that read inside a question: a question keeps its "?" after one (RC10 on the owner's PC: "saw
+    /// thee soloing, duo?" went out as "saw thee soloing duo, by my troth", an offer that no longer asked).</summary>
+    private static readonly string[] QuestionFlourishes = [", forsooth", ", m'lord", ", by my troth", ", verily"];
+
     /// <summary>A line in a roleplayer's thee-and-thou speech, with a flourish now and then. Pure for a given random.</summary>
     public static string Speak(string text, Random random)
     {
@@ -67,7 +71,12 @@ public static class AutonomousRoleplayers
             return text;
         string result = Olde.Replace(text, match => OldeMap.TryGetValue(match.Value, out string with) ? with : match.Value);
         if (random.NextDouble() < 0.3 && result.Length < 110 && !result.EndsWith('*'))
-            result = result.TrimEnd('.', '!', '?', ' ') + Flourishes[random.Next(Flourishes.Length)];
+        {
+            int pick = random.Next(Flourishes.Length);
+            result = result.TrimEnd(' ').EndsWith('?')
+                ? result.TrimEnd('?', ' ') + QuestionFlourishes[pick % QuestionFlourishes.Length] + "?"
+                : result.TrimEnd('.', '!', '?', ' ') + Flourishes[pick];
+        }
         return result.Length <= 160 ? result : text;
     }
 
