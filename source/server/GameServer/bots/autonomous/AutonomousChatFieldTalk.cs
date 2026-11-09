@@ -1500,7 +1500,10 @@ public static class AutonomousChatFieldTalk
             }
             return null;
         }
-        if (random.NextDouble() < LongThreadChance && said.Family != null && FamilyMore.TryGetValue(said.Family, out var family))
+        // RC6 on the owner's PC: "any grps out?" "quiet atm" ran on with "how many?" "small grp" "count me in". An answer that
+        // says there is nothing doesn't run on, and isn't met with "omw".
+        bool nothing = SaysNothing(answer);
+        if (!nothing && random.NextDouble() < LongThreadChance && said.Family != null && FamilyMore.TryGetValue(said.Family, out var family))
         {
             var pairs = family.Pairs.Where(pair => !AlreadyAnswered(pair.Ask, answer)).ToArray();
             var pair = pairs.Length == 0 ? default : pairs[random.Next(pairs.Length)];
@@ -1520,7 +1523,7 @@ public static class AutonomousChatFieldTalk
                 return steps;
             }
         }
-        else if (random.NextDouble() < LongThreadChance && said.Kind is not ("class" or "help") && More.TryGetValue(said.Kind, out var more) &&
+        else if (!nothing && random.NextDouble() < LongThreadChance && said.Kind is not ("class" or "help") && More.TryGetValue(said.Kind, out var more) &&
             Fresh(more.Ask.Where(text => !AlreadyAnswered(text, answer)).ToArray(), asker) is { } ask &&
             (FreshFitting(more.Reply, answerer, QuestionKind(ask)) ?? (AnswerFor(QuestionKind(ask), answerer, random) is { } plain ? Finish(plain, random) : null)) is { } reply)
         {
@@ -1537,10 +1540,26 @@ public static class AutonomousChatFieldTalk
                 steps.Add(new Step(0, thanks, AutonomousChatArbiter.DelayMs(reply, thanks, 40, at, random)));
             return steps;
         }
-        if (random.NextDouble() < FollowUpChance(true) && FollowUp(said, true, random, memory, now) is { } done)
+        if (random.NextDouble() < FollowUpChance(true) && FollowUp(said, true, random, memory, now) is { } done &&
+            !(nothing && GoesSomewhere(done)))
             steps.Add(new Step(0, done, AutonomousChatArbiter.DelayMs(answer, done, 40, at, random)));
         return steps;
     }
+
+    /// <summary>"quiet atm", "havent seen any", "dunno", "nope": an answer that says there is nothing to go on. Pure.</summary>
+    public static bool SaysNothing(string answer)
+    {
+        if (string.IsNullOrWhiteSpace(answer))
+            return false;
+        string t = " " + AutonomousChatQuestions.Normalize(answer) + " ";
+        return System.Text.RegularExpressions.Regex.IsMatch(t,
+            @" (quiet|havent seen|haven t seen|not seen|no idea|no clue|dunno|nope|nobody|no one|none|nothing|not me|no enemies) ");
+    }
+
+    /// <summary>"omw", "porting", "k omw": a line that says the speaker is heading somewhere. Pure.</summary>
+    public static bool GoesSomewhere(string line) =>
+        !string.IsNullOrWhiteSpace(line) &&
+        System.Text.RegularExpressions.Regex.IsMatch(" " + AutonomousChatQuestions.Normalize(line) + " ", @" (omw|on my way|porting|heading|coming) ");
 
     /// <summary>
     /// A small story from a real event, for regulars to riff on for a minute or two (round 7): a ding to 50, a death, a wipe in

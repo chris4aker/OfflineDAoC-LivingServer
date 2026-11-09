@@ -644,6 +644,39 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousLivingServer.OfferFits("hey, want to duo here? im {level} {class}", true), Is.True);
         }
 
+        /// <summary>RC6 on the owner's PC: "any grps out?" "quiet atm" ran on with "how many?" "small grp" "count me in".</summary>
+        [TestCase("quiet atm", true)]
+        [TestCase("havent seen any", true)]
+        [TestCase("dunno, quiet tonight", true)]
+        [TestCase("nope sry", true)]
+        [TestCase("beno under attack", false)]
+        [TestCase("few grps", false)]
+        [TestCase("try the crafters in camelot", false)]
+        public void AnAnswerThatSaysThereIsNothingEndsTheThread(string answer, bool nothing)
+        {
+            Assert.That(AutonomousChatFieldTalk.SaysNothing(answer), Is.EqualTo(nothing));
+            Assert.That(AutonomousChatFieldTalk.GoesSomewhere("k omw"), Is.True);
+            Assert.That(AutonomousChatFieldTalk.GoesSomewhere("ty"), Is.False);
+        }
+
+        /// <summary>RC6 on the owner's PC: "want to team up for a bit?" from another zone, then "too far away to join you".</summary>
+        [Test]
+        public void AnOfferFromTooFarSaysWhereTheBotIs()
+        {
+            for (int seed = 0; seed < 40; seed++)
+            {
+                string far = AutonomousLivingServer.WithWhere("50 wizard here, want to team up for a bit?", "Avalon Marsh", false, new Random(seed));
+                Assert.That(far, Does.StartWith("50 wizard here, want to team up for a bit?"), far);
+                Assert.That(far, Does.Contain("avalon marsh"), far);
+                Assert.That(far, Does.Not.Contain("??"), far);
+                string across = AutonomousLivingServer.WithWhere("want to duo?", "Pennine Mountains", true, new Random(seed));
+                Assert.That(across, Does.Contain("pennine"), across);
+                string reply = AutonomousLivingServer.TooFarReply("Avalon Marsh", false, new Random(seed));
+                Assert.That(reply, Does.Contain("avalon marsh"), reply);
+                Assert.That(AutonomousLivingServer.TooFarReply(null, false, new Random(seed)), Is.Not.Empty);
+            }
+        }
+
         [Test]
         public void EveryTellTopicHasLinesAndOffersNeverPromiseAnInvite()
         {
