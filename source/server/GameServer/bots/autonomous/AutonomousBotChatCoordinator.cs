@@ -581,6 +581,9 @@ public static class AutonomousBotChatCoordinator
                     if (!BroadcastFaction(bot.Name, bot.Realm, text))
                         return false;
                     Note(AutonomousChatThreads.Faction(bot.Realm), bot, text, null);
+                    // The asker found what it asked for: tonight's follow-up doesn't ask after it.
+                    if (bot == starter && AutonomousChatRecall.SaysFound(line.Text))
+                        AutonomousChatRecall.Of(bot.Realm).Settle(bot.DatabaseID, AutonomousChatRecall.Kind.AskedGroup);
                 }
                 else if (!SayLine(bot, text))
                     return false;
