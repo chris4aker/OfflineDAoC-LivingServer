@@ -1431,7 +1431,7 @@ def check_time_of_day(report: Report, lines: list[Line]):
 
 
 # 3. Internal vocabulary ----------------------------------------------------------------------------------------------------
-INTERNAL_WORDS = re.compile(r"\b(?:rendezvous|objectives?|frontier patrols?|matchmaking|staging|egress|waypoints?|assignments?)\b")
+INTERNAL_WORDS = re.compile(r"\b(?:rendezvous(?:es)?|objectives?|frontier patrols?|matchmaking|staging|egress|waypoints?|assignments?)\b")
 
 
 def check_internal_words(report: Report, lines: list[Line]):

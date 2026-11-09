@@ -39,9 +39,12 @@ public sealed class AutonomousBotVoiceCorpus
     }
 
     /// <summary>Who may play a scene role: personality types, classes and, for lines like "i am not 50 yet", levels.</summary>
-    public sealed record RoleSpec(string[] Types, string[] Classes, int LevelLow = 1, int LevelHigh = 50)
+    public sealed record RoleSpec(string[] Types, string[] Classes, int LevelLow = 1, int LevelHigh = 50, string Task = null)
     {
         public bool LevelFits(int level) => level >= LevelLow && level <= LevelHigh;
+
+        /// <summary>"@role A task=rvr": the role tells what its bot is doing in the frontier, so only a bot out for rvr plays it.</summary>
+        public bool TaskFits(bool rvrTask) => Task != "rvr" || rvrTask;
     }
 
     public sealed record Scene(string Id, string Topic, string Realm, int LevelLow, int LevelHigh,
@@ -140,7 +143,8 @@ public sealed class AutonomousBotVoiceCorpus
             foreach (JsonProperty role in r.EnumerateObject())
             {
                 (int roleLow, int roleHigh) = Levels(role.Value);
-                roles[role.Name] = new RoleSpec(Strs(role.Value, "type"), Strs(role.Value, "class"), roleLow, roleHigh);
+                roles[role.Name] = new RoleSpec(Strs(role.Value, "type"), Strs(role.Value, "class"), roleLow, roleHigh,
+                    role.Value.TryGetProperty("task", out JsonElement task) ? task.GetString() : null);
             }
         var beats = e.GetProperty("beats").EnumerateArray().Select(b =>
         {
@@ -453,6 +457,8 @@ public sealed class AutonomousBotVoiceCorpus
         {
             result = Regex.Replace(result, @"\b(tonight|tonite|this evening)\b", "today", options);
             result = Regex.Replace(result, @"\ball night\b", "all day", options);
+            // RC10 on the owner's PC: "first night in the frontier" at 15:05.
+            result = Regex.Replace(result, @"\bfirst night\b", "first time", options);
         }
         if (localHour >= 12 || localHour < 5)
             result = Regex.Replace(result, @"\bthis morning\b", "earlier", options);

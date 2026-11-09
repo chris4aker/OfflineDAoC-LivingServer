@@ -744,6 +744,7 @@ B: look at that, a guild is born | recruiting works, who knew
 @topic newbie_frontier
 @levels 40-50
 @scene rvr_newbie_frontier
+@role A task=rvr
 @role B type=NoLifer
 @role C type=Socialite
 @role D type=Daredevil

@@ -49,7 +49,7 @@ public static class AutonomousBotDebates
     #region Pure rules (tested)
 
     /// <summary>A bot that could speak. <paramref name="InTown"/>: on a town break, so least likely to be pulled into a fight.</summary>
-    public readonly record struct Candidate(long Id, BotPersonalityType Type, string ClassName, int Level, bool InTown = false);
+    public readonly record struct Candidate(long Id, BotPersonalityType Type, string ClassName, int Level, bool InTown = false, bool RvrTask = false);
 
     /// <summary>Where a cast speaker is when its line is due.</summary>
     public enum SpeakerState { Free, Busy, Gone }
@@ -136,7 +136,8 @@ public static class AutonomousBotDebates
     public static bool LevelFits(VC.Scene scene, int level) => level >= scene.LevelLow - LevelSlack && level <= scene.LevelHigh + LevelSlack;
 
     public static bool Fits(VC.RoleSpec spec, Candidate candidate) =>
-        spec == null || VC.TypeFits(spec.Types, candidate.Type) && VC.ClassFits(spec.Classes, candidate.ClassName) && spec.LevelFits(candidate.Level);
+        spec == null || VC.TypeFits(spec.Types, candidate.Type) && VC.ClassFits(spec.Classes, candidate.ClassName) && spec.LevelFits(candidate.Level) &&
+        spec.TaskFits(candidate.RvrTask);
 
     /// <summary>
     /// Casts a scene's speaking roles from distinct candidates. A role's class requirement is kept;
@@ -163,12 +164,13 @@ public static class AutonomousBotDebates
             .ThenBy(_ => random.Next()).ToArray();
         // Roles with requirements first, so the open roles don't take the only fitting bot.
         foreach (string role in scene.SpeakingRoles.Where(r => !cast.ContainsKey(r)).OrderByDescending(r => scene.Roles.TryGetValue(r, out var s) ?
-                     s.Classes.Length * 2 + s.Types.Length + (s.LevelLow > 1 || s.LevelHigh < 50 ? 4 : 0) : 0))
+                     s.Classes.Length * 2 + s.Types.Length + (s.LevelLow > 1 || s.LevelHigh < 50 ? 4 : 0) + (s.Task != null ? 8 : 0) : 0))
         {
             scene.Roles.TryGetValue(role, out VC.RoleSpec spec);
             Candidate chosen = pool.FirstOrDefault(c => !used.Contains(c.Id) && Fits(spec, c));
             if (chosen.Id == 0 && spec != null && spec.Types.Length > 0)
-                chosen = pool.FirstOrDefault(c => !used.Contains(c.Id) && VC.ClassFits(spec.Classes, c.ClassName) && spec.LevelFits(c.Level));
+                chosen = pool.FirstOrDefault(c => !used.Contains(c.Id) && VC.ClassFits(spec.Classes, c.ClassName) && spec.LevelFits(c.Level) &&
+                                                  spec.TaskFits(c.RvrTask));
             if (chosen.Id == 0)
                 return null;
             cast[role] = chosen.Id;
@@ -391,7 +393,8 @@ public static class AutonomousBotDebates
 
     private static Candidate CandidateOf(GameBot bot) =>
         new(bot.DatabaseID, AutonomousBotPersonality.For(bot).Type, bot.CharacterClass?.Name ?? bot.ClassName ?? string.Empty, bot.Level,
-            bot.PersistentRecord?.ObjectivePhase == AutonomousWorldBotController.TownIdlePhase);
+            bot.PersistentRecord?.ObjectivePhase == AutonomousWorldBotController.TownIdlePhase,
+            AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR));
 
     private static SpeakerState StateOf(GameBot bot, eRealm realm)
     {
