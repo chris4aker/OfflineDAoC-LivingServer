@@ -151,6 +151,12 @@ CLASS_WORDS = {
 WORD_CLASS = {w: cls for cls, ws in CLASS_WORDS.items() for w in ws}
 # "healer" is a class and a role word; a claim "healer here" from a cleric is fine, so it is only a class in "{n} healer".
 AMBIGUOUS = {"healer", "hunter"}
+# Class words that are also armour slots: "wtb leather arms 4 26 inf" is an infiltrator buying arm armour, not an armsman
+# (RC2 live check, 2026-11-09). In a trade line, or after an armour word, such a word is the item.
+SLOT_CLASS_WORDS = {"arms"}
+TRADE_WORDS = {"wtb", "wts", "wtt", "selling", "buying", "sell", "buy", "pc", "price", "trade", "trading"}
+ARMOUR_WORDS = {"leather", "studded", "chain", "plate", "cloth", "scale", "reinforced", "mail", "quilted", "padded", "roman",
+                "crafted", "spellcrafted", "sc", "armor", "armour", "my", "new", "old", "dragonslayer", "epic", "drop", "the"}
 
 ROLE_CLASSES = {
     "tank": {"paladin", "armsman", "reaver", "warrior", "thane", "hero", "champion", "sluaghbinder"},
@@ -225,12 +231,15 @@ def class_claims(text: str) -> list[tuple[str, int | None]]:
     t = norm(text)
     tokens = t.split()
     claims = []
+    trade = any(token in TRADE_WORDS for token in tokens)
     for k, token in enumerate(tokens):
         cls = WORD_CLASS.get(token)
         if not cls:
             continue  # plurals ("any reavers on?") ask about a class, they don't claim one
         before = tokens[k - 1] if k > 0 else ""
         after = tokens[k + 1] if k + 1 < len(tokens) else ""
+        if token in SLOT_CLASS_WORDS and (trade or before in ARMOUR_WORDS):
+            continue  # an armour slot ("wtb leather arms"), not a class
         number = int(before) if before.isdigit() else int(after) if after.isdigit() else None
         if number is not None and not 1 <= number <= 50:
             number = None

@@ -97,6 +97,11 @@ MUST be top notch"). Checked by automated tests and a simulated evening only; no
   City of Camelot". A real deed names the zone where it happened (the monster's or the player's body); `/lstest deed` names
   where the GM stands only if it could happen there (no capital; a streak or a gank only in the frontier), else a hunting
   zone of the realm or a frontier zone. Tests only.
+- **The checker reads "arms" in a trade line as armour (after RC2).** On the owner's RC2 evening (6a83c038, 68 minutes)
+  `chat_audit.py` failed only on "wtb leather arms 4 26 inf", an Infiltrator 26 buying arm armour, read as an armsman
+  claim ("class claim not the speaker's", "one speaker claims two classes"). A class word that is also an armour slot is
+  now the item in a trade line (wtb, wts, selling, ...) or after an armour word (leather, chain, studded, ...); "arms 45
+  lfg" is still an armsman. With it the RC2 log passes. A checker fix only; the server is unchanged.
 - **Replies to the player each have their own exchange id.** RC1 tagged them all `ex=0`, so the checker read them as one
   conversation and reported it out of order. `chat_audit.py` also treats `ex=0` as no exchange (for RC1 logs), and now
   counts features that were due and never spoke in /faction: one is enough for `VERDICT FAIL`. The simulated evening has
