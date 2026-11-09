@@ -341,54 +341,136 @@ namespace DOL.GS
 
         /// <summary>How far from a required add its ranged raiders stand at most: inside the usual 1,500 spell range, with room to spare.</summary>
         public const int RequiredAddRangedReach = 1_400;
+        /// <summary>A ranged stand is never closer than this to the boss (Scurceol's melee reach is 350)...</summary>
+        public const int RequiredAddStandMinimumBossDistance = 400;
+        /// <summary>...and is looked for first beyond this (his aggro range is 600), so the casters don't stand in his fight.</summary>
+        public const int RequiredAddStandBossClearance = 700;
+        /// <summary>A stand is on the raid's floor around the boss: within this of his floor's height. On the real Krondon mesh the
+        /// platform is 17,050-17,250 (his floor 17,178) and the orbs' perch slopes start at 17,307: those slopes see their orb
+        /// but nobody can walk onto them, and every walk tried on one costs a corridor search.</summary>
+        public const int RequiredAddStandFloorBand = 112;
+        /// <summary>The sight line runs from a raider's eyes, this far over the stand, to this far over the add's own spot.</summary>
+        public const int SightEyeHeight = 60, SightAimHeight = 20;
+        /// <summary>Walkable mesh within this band over the sight line means solid ground there (a ledge, a perch, a rock top).</summary>
+        public const int SightSolidBand = 400;
+        /// <summary>The mesh's own height error: a surface less than this over the line does not block it.</summary>
+        public const int SightTolerance = 8;
+        /// <summary>The sight line is sampled this often (world units across).</summary>
+        public const int SightSampleStep = 32;
+        /// <summary>Where the floor ray toward the add ends, the floor beyond must fall away by more than this (a drop, not a wall).</summary>
+        public const int SightDropStep = 64;
+        /// <summary>How far below a drop's edge the ground under it is looked for.</summary>
+        public const int SightDropDepth = 3_000;
+        /// <summary>At most this many stands with sight are tried against the raid's walk (each try is a corridor search).</summary>
+        public const int RequiredAddStandReachTries = 8;
 
         /// <summary>
         /// Krondon, 2026-11-06 (01:49 and 02:16): Scurceol Hyrde's tactic sent the raid to his four Lyft Miht orbs, which float
-        /// 230-580 above him (450-790 above the room floor). The ground-route gate (an approach within 256 of the target's height) failed
-        /// for every orb, they were set aside a minute at a time, and the raid walked off to Fuladl; no orb was attacked
-        /// and Scurceol was never fought. A required add is not walked to: its ranged raiders stand on a floor spot the raid
-        /// can reach, within <see cref="RequiredAddRangedReach"/> of it and with sight to the floor under it. Tried: the
-        /// floor under the add, the boss's floor, and two points between them. False, with why, when none works.
+        /// 230-580 above him. The ground-route gate failed for every orb, and the raid walked off to Fuladl. 1.1.2 fought them from a
+        /// floor spot instead, but tested sight with the mesh's floor ray to the floor under the orb. The real mesh (probe
+        /// UT_ScurceolOrbStandProbe, 2026-11-08) shows why that never worked: each orb hangs 48-55 over the top of its own rock
+        /// perch, 400-530 across a pit (floor 900 lower) from the platform the raid stands on. A floor ray can't cross a pit, so
+        /// 0 of the 277-321 reachable floor spots within 1,400 of each orb passed (PC soak: "no reachable floor spot within 1400
+        /// has line of sight to it", three times; one orb of four died). The probe's 3-D line from the platform found 53, 254,
+        /// 1-35 and 154 clear spots for the four orbs.
+        /// Now: floor spots on rings around the add (every 100 out to 1,400, every 15 degrees) and the old four, within reach
+        /// of it, on the boss's floor (<see cref="RequiredAddStandFloorBand"/>) and not on the boss, are tried nearest the add first (those beyond <see cref="RequiredAddStandBossClearance"/>
+        /// of the boss before the rest); a spot needs <see cref="HasSightToAirborne"/>, then a walk from the raid.
+        /// False, with why, when none works.
         /// </summary>
-        /// <param name="reach">The approach the raid can walk to for a floor point, or null when none is proven.</param>
-        public static bool TryRangedStand(IPathfindingMgr nav, Zone zone, Vector3 add, Vector3 boss, Func<Vector3, Vector3?> reach,
-            out Vector3 stand, out string why)
+        /// <param name="reach">The approach the raid can walk to for a floor point (only approaches the filter accepts), or null
+        /// when none is proven.</param>
+        public static bool TryRangedStand(IPathfindingMgr nav, Zone zone, Vector3 add, Vector3 boss,
+            Func<Vector3, Func<Vector3, bool>, Vector3?> reach, out Vector3 stand, out string why)
         {
             stand = default;
             if (nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
             { why = "no navigation mesh here"; return false; }
-            Vector3? under = nav.GetClosestPoint(zone, add, 128, 128, RangedFlyerReach, nav.DefaultFilters);
             var floors = new List<Vector3>();
             void Add(Vector3? p)
             {
                 if (p is Vector3 v && !floors.Any(f => Vector3.DistanceSquared(f, v) < 48 * 48)) floors.Add(v);
             }
-            Add(under);
-            Add(nav.GetClosestPoint(zone, boss, 64, 64, 256, nav.DefaultFilters));
+            Add(nav.GetClosestPoint(zone, add, 128, 128, RangedFlyerReach, nav.DefaultFilters));
+            Vector3? bossFloor = nav.GetClosestPoint(zone, boss, 64, 64, 256, nav.DefaultFilters);
+            Add(bossFloor);
             var level = new Vector3(add.X, add.Y, boss.Z);
             foreach (float t in new[] { 0.67f, 0.33f })
                 Add(nav.GetClosestPoint(zone, Vector3.Lerp(boss, level, t), 96, 96, 256, nav.DefaultFilters));
+            // The raid's floor around the add: the boss's own height, where the raid fights.
+            float floorZ = bossFloor?.Z ?? boss.Z;
+            for (int radius = 200; radius <= RequiredAddRangedReach; radius += 100)
+            for (int degrees = 0; degrees < 360; degrees += 15)
+            {
+                float a = degrees * MathF.PI / 180f;
+                Add(nav.GetClosestPoint(zone, new Vector3(add.X + MathF.Cos(a) * radius, add.Y + MathF.Sin(a) * radius, floorZ),
+                    48, 48, 320, nav.DefaultFilters));
+            }
             if (floors.Count == 0)
             { why = "no floor under it or near its boss"; return false; }
-            int reached = 0, inRange = 0;
-            foreach (Vector3 floor in floors)
+            bool Allowed(Vector3 p) => Vector3.Distance(p, add) <= RequiredAddRangedReach &&
+                                       Vector3.Distance(p, boss) >= RequiredAddStandMinimumBossDistance &&
+                                       MathF.Abs(p.Z - floorZ) <= RequiredAddStandFloorBand;
+            Vector3[] ordered = floors.Where(Allowed)
+                .OrderBy(p => Vector3.Distance(p, boss) < RequiredAddStandBossClearance ? 1 : 0)
+                .ThenBy(p => Vector3.DistanceSquared(p, add)).ToArray();
+            if (ordered.Length == 0)
+            { why = $"none of {floors.Count} floor spots is within {RequiredAddRangedReach} of it, off its boss and on his floor"; return false; }
+            bool Accept(Vector3 p) => Allowed(p) && HasSightToAirborne(nav, zone, p, add);
+            int sighted = 0, tried = 0;
+            foreach (Vector3 floor in ordered)
             {
-                if (reach(floor) is not Vector3 approach) continue;
-                reached++;
-                if (Vector3.Distance(approach, add) > RequiredAddRangedReach) continue;
-                inRange++;
-                // The mesh ray runs along the floor: sight to the floor under the add (or to the spot below it at the
-                // stand's height when it hovers over nothing).
-                Vector3 sight = under ?? new Vector3(add.X, add.Y, approach.Z);
-                if (Vector3.DistanceSquared(approach, sight) > 1 && !nav.HasLineOfSight(zone, approach, sight, nav.DefaultFilters)) continue;
-                stand = approach;
-                why = $"ranged from the floor {(int)Vector3.Distance(approach, add)} away";
-                return true;
+                if (!HasSightToAirborne(nav, zone, floor, add)) continue;
+                sighted++;
+                if (reach(floor, Accept) is Vector3 approach)
+                {
+                    stand = approach;
+                    why = $"ranged from the floor {(int)Vector3.Distance(approach, add)} away, {(int)Vector3.Distance(approach, boss)} from its boss";
+                    return true;
+                }
+                if (++tried >= RequiredAddStandReachTries) break;
             }
-            why = reached == 0 ? $"none of {floors.Count} floor spots under or near it is reachable from the raid"
-                : inRange == 0 ? $"no reachable floor spot within {RequiredAddRangedReach} of it"
-                : $"no reachable floor spot within {RequiredAddRangedReach} has line of sight to it";
+            why = sighted == 0 ? $"none of {ordered.Length} floor spots within {RequiredAddRangedReach} has a clear line to it"
+                : $"none of the {tried} nearest floor spots with a clear line to it is reachable from the raid";
             return false;
+        }
+
+        /// <summary>
+        /// Whether a raider on <paramref name="floor"/> sees <paramref name="add"/> in the air, judged from the mesh (the server has
+        /// no other geometry). The mesh holds only walkable surfaces, so two checks:
+        /// 1. The 3-D line from the eyes to the add passes under no walkable surface (within <see cref="SightSolidBand"/> over it):
+        ///    the top of a ledge, a wall or the add's own perch in the way.
+        /// 2. A wall up to the ceiling has no top: the floor ray toward the spot under the add either gets there, or the floor ends
+        ///    at a drop, where the ground beyond lies more than <see cref="SightDropStep"/> lower (the pit, not a wall).
+        /// </summary>
+        public static bool HasSightToAirborne(IPathfindingMgr nav, Zone zone, Vector3 floor, Vector3 add)
+        {
+            Vector3 eye = floor + new Vector3(0, 0, SightEyeHeight), aim = add + new Vector3(0, 0, SightAimHeight);
+            float across = Vector2.Distance(new(eye.X, eye.Y), new(aim.X, aim.Y));
+            int samples = Math.Max(1, (int)(across / SightSampleStep));
+            // From the add's end first: its perch blocks most lines, so a blocked line is found in a few queries.
+            for (int k = samples - 1; k >= 1; k--)
+            {
+                Vector3 at = Vector3.Lerp(eye, aim, k / (float)samples);
+                if (nav.GetClosestPointInBounds(zone, at, new Vector3(-4, -4, SightTolerance), new Vector3(4, 4, SightSolidBand),
+                        nav.DefaultFilters) != null)
+                    return false;
+            }
+            var under = new Vector3(add.X, add.Y, floor.Z);
+            if (across < 1 || nav.HasLineOfSight(zone, floor, under, nav.DefaultFilters)) return true;
+            // Where the floor ray stops (to a 64th of the way, 5-20 units)...
+            float reached = 0, stopped = 1;
+            for (int i = 0; i < 6; i++)
+            {
+                float mid = (reached + stopped) / 2;
+                if (nav.HasLineOfSight(zone, floor, Vector3.Lerp(floor, under, mid), nav.DefaultFilters)) reached = mid; else stopped = mid;
+            }
+            // ...and just past it, the highest ground from the floor's height down.
+            Vector3 dir = Vector3.Normalize(under - floor);
+            Vector3 past = Vector3.Lerp(floor, under, stopped) + dir * 32;
+            Vector3? beyond = nav.GetClosestPointInBounds(zone, past, new Vector3(-8, -8, -SightDropDepth), new Vector3(8, 8, SightDropStep),
+                nav.DefaultFilters);
+            return beyond is Vector3 ground && ground.Z < floor.Z - SightDropStep;
         }
 
         private RealmRaidDungeonRoute(ushort region, DbZonePoint entrance, Vector3 entry, Vector3 trigger, string[] finals,
@@ -1186,13 +1268,13 @@ namespace DOL.GS
             Vector3[] anchors = DistinctAnchors(Front, participants
                 .Where(p => p.IsAlive && p.CurrentRegionID == _region && (p.Group == null || p.Group.LivingLeader == p))
                 .Select(At), 6);
-            Vector3? Reach(Vector3 floor)
+            Vector3? Reach(Vector3 floor, Func<Vector3, bool> accept)
             {
                 foreach (Vector3 anchor in anchors)
                 {
                     Zone anchorZone = WorldMgr.GetRegion(_region)?.GetZone((int)anchor.X, (int)anchor.Y);
                     if (anchorZone != null && nav.HasNavmesh(anchorZone) &&
-                        AutonomousZonePointApproach.TryResolve(nav, anchorZone, anchor, floor, 220, out Vector3 approach))
+                        AutonomousZonePointApproach.TryResolve(nav, anchorZone, anchor, floor, 220, out Vector3 approach, accept))
                         return approach;
                 }
                 return null;

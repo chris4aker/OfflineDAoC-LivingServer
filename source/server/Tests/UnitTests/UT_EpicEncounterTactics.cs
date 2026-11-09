@@ -306,7 +306,7 @@ namespace DOL.UnitTests
             Zone zone = UT_RealmRaidFormation.Zone();
             foreach (Vector3 orb in Orbs)
             {
-                Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, zone, orb, Scurceol, floor => floor, out Vector3 stand, out string why), Is.True, why);
+                Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, zone, orb, Scurceol, (floor, _) => floor, out Vector3 stand, out string why), Is.True, why);
                 Assert.That(stand, Is.EqualTo(new Vector3(orb.X, orb.Y, 17174)), "the floor under it");
                 Assert.That(Vector3.Distance(stand, orb), Is.LessThanOrEqualTo(RealmRaidDungeonRoute.RequiredAddRangedReach));
             }
@@ -317,11 +317,11 @@ namespace DOL.UnitTests
         {
             // No floor under the orb (only within 700 of Scurceol): the boss's floor is 1,163 from orb 1, within reach.
             var nav = new Floor { Z = 17174, Centre = new(Scurceol.X, Scurceol.Y), Radius = 700 };
-            Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), Orbs[0], Scurceol, f => f, out Vector3 stand, out string why),
+            Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), Orbs[0], Scurceol, (f, _) => f, out Vector3 stand, out string why),
                 Is.False, "the mesh ray to a spot over the chasm leaves the floor: no sight is proven");
             Assert.That(why, Does.Contain("line of sight"));
             nav.Radius = 1100; // the floor reaches under the orb's edge
-            Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), Orbs[0], Scurceol, f => f, out stand, out why), Is.True, why);
+            Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), Orbs[0], Scurceol, (f, _) => f, out stand, out why), Is.True, why);
             Assert.That(Vector3.Distance(stand, Orbs[0]), Is.LessThanOrEqualTo(RealmRaidDungeonRoute.RequiredAddRangedReach));
         }
 
@@ -334,7 +334,7 @@ namespace DOL.UnitTests
             var nav = new Floor { Z = trouble == "no floor" ? 10_000 : 17174, Wall = trouble == "wall" };
             Vector3 orb = trouble == "too far" ? Orbs[0] + new Vector3(0, 0, 1_600) : Orbs[0];
             // The proven approach lands beside the floor point (within the resolver's 220), so sight is checked.
-            Func<Vector3, Vector3?> reach = trouble == "unreachable" ? _ => null : f => f + new Vector3(150, 0, 0);
+            Func<Vector3, Func<Vector3, bool>, Vector3?> reach = trouble == "unreachable" ? (_, _) => null : (f, _) => f + new Vector3(150, 0, 0);
             if (trouble == "too far") nav.Centre = new(Scurceol.X, Scurceol.Y);
             Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), orb, Scurceol, reach, out _, out string why), Is.False);
             Assert.That(why, Does.Contain(reason));
