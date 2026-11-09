@@ -10,8 +10,8 @@ Older entries below keep the names they were written with.
 
 ## Beta 1.1.3 — 2026-11-08
 
-A hotfix: /faction chat that holds together, the raid gets out of Xanxicar's stomp, two Darkness Falls exits should now work, and
-Setup waits out a busy download server. How it was tested is in the release notes
+A hotfix: /faction chat that holds together, the raid gets out of Xanxicar's stomp, Scurceol Hyrde's orbs are shot down
+from the floor, two Darkness Falls exits should now work, and Setup waits out a busy download server. How it was tested is in the release notes
 ([docs/RELEASE-NOTES-1.1.3.md](docs/RELEASE-NOTES-1.1.3.md)).
 
 **/faction that holds together** (owner 2026-11-08, watching 1.1.3's /faction: "faction feels disconnected... The chats
@@ -116,6 +116,34 @@ each threshold (at least 6%), every raider near him goes whatever it is fighting
 clear of the stomp nearest to it (never past him), without its melee follow, and waits out there until the stomp is over. The party he fights still holds him. His
 stomp is unchanged. Container check (1.2 line, the same fix, 152 Albion raiders): Xanxicar killed with no wipe; his
 80% stomp killed 5 (before: 71, 49 and 48 in three earlier runs).
+
+**Scurceol Hyrde's orbs are shot down from real floor spots** (owner's PC soak, 2026-11-08). Tests only: not yet seen
+on a PC. 1.1.2's tactic (the orbs first, from the floor) never got going on the real world. Three times the raid found
+"no reachable floor spot within 1400 has line of sight to it" and set it aside. One orb of four died, Scurceol was never
+killed, he killed 156 raiders, and the raid won Krondon by going around him.
+- **Why** (from the real Krondon navigation mesh): each orb hangs about 50 above the top of its own rock perch. The
+  perch rises out of a pit about 900 deep, 400-530 across from the platform where the raid and Scurceol stand. The
+  sight check walked the mesh's floor to the spot under the orb, and a floor walk can't cross a pit. From the 277-321
+  reachable spots within 1,400 of each orb, none passed. The 1.1.2 test used a pretend floor that always saw, so it
+  could not fail.
+- **Now:**
+  - The search tries spots all around each orb (every 50 out to 1,400, every 10 degrees) on Scurceol's floor, at least
+    400 from him, those beyond 700 from him first.
+  - Sight is a line from a raider's eyes to the orb. No ledge, rock top or perch may be in the way, and the floor
+    toward the orb must end at a drop, not at a wall.
+  - Every orb gets its own spot. A caster or archer out of reach of its party's orb walks to that orb's spot first,
+    then shoots. Before, only the raid's current orb had a spot, and the shooters given the other three walked under
+    them.
+  - Scurceol and his orbs are unchanged.
+- **Tested:** automated tests on a recorded copy of the real Krondon mesh around the orbs. Every orb gets a spot the raid
+  walks to, in range and clear of him. The 1.1.2 search finds none on the same copy, as on the PC. Container runs
+  (test world, real meshes, a test-only way to open the raid; the 1.1.3 build before the chat fix plus this fix):
+  - Albion, 80 needed (125% of Krondon's 64), 101-104 in the raid at the fight: all four orbs dead in 43 minutes,
+    Scurceol 1.3 minutes later, 16 raiders killed by him, the tactic never set aside.
+  - A second run, same build and size: all four orbs dead in 105 minutes (the first took 38), Scurceol 0.8 minutes
+    later, 6 raiders killed by him, the tactic never set aside.
+  - The stage before every orb had its own spot: stopped at the first orb, at half after 15 minutes, with 9-11 raiders
+    on it.
 
 ## Beta 1.1.2 — 2026-11-07
 

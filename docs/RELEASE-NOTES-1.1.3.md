@@ -6,7 +6,7 @@ zip's SHA-256 is filled in when publishing. Nothing here names the Easter eggs o
 
 ---
 
-### A hotfix: chat that holds together, out of Xanxicar's stomp, two Darkness Falls exits, and a patient Setup
+### A hotfix: chat that holds together, out of Xanxicar's stomp, Scurceol's orbs, two Darkness Falls exits, and a patient Setup
 
 1.1.3 is a small update on top of 1.1.2. It's for Offline DAoC **0.37 and 0.37b**, with or without the **0.37c** new
 client, like 1.1.2. Install it over 1.1.2 (or earlier) and keep everything; the launcher offers it as an update.
@@ -33,6 +33,18 @@ Now the raid pulls back in good time before each stomp. Every raider near him go
 nearest open spot on the cave floor that the stomp can't reach, and waits there until it is over. The party fighting
 him still holds him. Xanxicar himself is unchanged: same health, same stomp.
 
+### Scurceol Hyrde's orbs are shot down from the floor
+
+Scurceol Hyrde in Krondon can't be hurt while his four floating orbs live. 1.1.2 taught the raid to shoot the orbs
+first, from the floor. In the owner's overnight test the raid never found a place to shoot from: one orb died, Scurceol
+lived, and he killed 156 raiders.
+
+The reason was in the dungeon's map data. Each orb floats just above its own rock perch, across a deep pit from the
+platform the raid stands on. The check for "can I see it from here" walked along the floor to the spot under the orb,
+and nobody can walk across a pit. Now the raid looks for spots all around each orb on Scurceol's platform, well away
+from him, from which a straight line to the orb is clear. Each party's casters and archers go to their own orb's spot
+and shoot from there. Scurceol and his orbs are unchanged.
+
 ### Two Darkness Falls exits work
 
 The exit by Legion's hall and the one near the Midgard boss did nothing when you clicked them. Each now takes you to
@@ -54,6 +66,15 @@ that one. If it still can't download, it says so plainly and changes nothing.
   His four stomps killed 6, at most 1, 6 and 5 raiders. That is one raid, so treat it as a good sign, not a promise.
 - Earlier stages of the same fix were run in a test world and overnight on a real install. One of those overnight
   raids still lost 54 raiders to one stomp. This update has two later changes on top of that stage.
+- Scurceol's orbs: tests only. Automated tests run on a recorded copy of Krondon's real map data around the orbs: every
+  orb gets a spot the raid can walk to, in range and with a clear line, and the 1.1.2 search finds none there, as on
+  the owner's PC.
+  In a test world (the development container, not a real install), with this fix on the 1.1.3 build before the chat
+  fix and a test-only way to open the raid: an Albion Krondon raid (80 needed, about 100 taking part) killed all four orbs in 43 minutes and
+  then Scurceol in just over a minute. He killed 16 raiders. A second run killed them too, more
+  slowly: the orbs took an hour and 45 minutes, and he killed 6. An earlier stage of the fix, with one spot for
+  all four orbs, was stopped at the first orb: in 15 minutes the raid had brought it to half.
+  Nobody has watched this on a real install yet.
 - The Darkness Falls exits are covered by tests against the released world's exit spots. They have not been clicked
   in game yet.
 
