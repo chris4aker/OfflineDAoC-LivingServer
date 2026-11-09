@@ -281,8 +281,8 @@ public static class AutonomousBotVoices
         // 2026-10-28: a friar brought along to Camelot Hills said "mountain algaes at Camelot Hills are the best xp for my
         // level", her last solo target (in Aldland) placed in the zone she stood in. Only a live fight is named then.
         bool withPlayer = bot.IsPlayerLedGroup;
-        string monster = withPlayer ? FightingNow(bot)
-            : !string.IsNullOrWhiteSpace(record?.TargetName) ? record.TargetName.Trim().ToLowerInvariant() : null;
+        // A capitalised target (a person, a guard, a named creature) is no kind of monster (AutonomousChatFieldTalk.MonsterKind).
+        string monster = withPlayer ? FightingNow(bot) : AutonomousChatFieldTalk.MonsterKind(record?.TargetName, false);
         var slots = new Dictionary<string, string>(StringComparer.Ordinal)
         {
             ["me"] = bot.Name,
@@ -317,7 +317,7 @@ public static class AutonomousBotVoices
     /// <summary>The monster the bot is fighting right now (lower case), or null.</summary>
     private static string FightingNow(GameBot bot) =>
         bot.TargetObject is GameNPC { IsAlive: true } npc && npc is not GameBot && npc.Realm == eRealm.None &&
-        !string.IsNullOrWhiteSpace(npc.Name) ? npc.Name.Trim().ToLowerInvariant() : null;
+        !string.IsNullOrWhiteSpace(npc.Name) ? AutonomousChatFieldTalk.MonsterKind(npc.Name, false) : null;
 
     /// <summary>Values a whole conversation shares: one keep, one frontier, one enemy, one capital, one dungeon.</summary>
     public static Dictionary<string, string> SharedSlots(eRealm realm, int level, Random random, string currentDungeon = null)

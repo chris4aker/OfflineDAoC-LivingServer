@@ -1277,6 +1277,20 @@ public static class AutonomousChatFieldTalk
                 lines.Add((1, Pick(random, "what now, rvr?", "epic next?", "alt time?", "now the real game starts lol", "rvr now?", "time for rps?")));
                 lines.Add((0, Pick(random, "rvr tomorrow, bed now", "epic first", "sleep lol", "frontier tomorrow", "alt maybe", "bed, gz me tomorrow lol")));
                 break;
+            case "death" when teller?.InRvR == true:
+                // A frontier death is to other players, not to a kind of monster (owner's PC, RC3 2026-11-09).
+                string front = ShortZone(teller.Zone, random);
+                lines.Add((0, Pick(random, "ganked again", "got ganked lol", $"zerged in {front}", "stealther got me", "ran into a zerg, dead",
+                    $"dead in {front} again", "8 of them on me lol")));
+                string ask = Riff(random, "rip", "lol rip", "ouch", "where?", "oof");
+                lines.Add((1, ask));
+                lines.Add((0, ask != null && ask.StartsWith("where", StringComparison.Ordinal)
+                    ? Pick(random, $"{front}", $"in {front}", $"{front}, near the keep")
+                    : Pick(random, "never saw them coming", "lost a bubble too", "third time tonight", "had 2 on me before i could run")));
+                if (third != null && random.NextDouble() < 0.5)
+                    lines.Add((2, Riff(random, "stick with the zerg lol", "bring a group", $"same happened to me in {ShortZone(third.Zone, random)}",
+                        "happens")));
+                break;
             case "death":
                 string zone = ShortZone(teller?.Zone, random);
                 string told = Pick(random, $"died to {monsters} again", $"{monsters} got me lol", "dead. again.", $"train of {monsters}, im dead",
@@ -1624,6 +1638,20 @@ public static class AutonomousChatFieldTalk
     }
 
     /// <summary>The facts of a live bot, for one line.</summary>
+    /// <summary>
+    /// The kind of monster a bot is fighting, as players name it ("thrawn ogre miner"), or null. A target whose name starts with a
+    /// capital is a person, a guard or a named creature, not a kind of monster: on the owner's PC (RC2 and RC3, 2026-11-08/09) most
+    /// death stories in the frontier read "siuses in murdaigean hate me", "train of sneakywarriors, im dead" or "died to summoner
+    /// roesias again". Pure.
+    /// </summary>
+    public static string MonsterKind(string targetName, bool playerLedGroup)
+    {
+        string target = targetName?.Trim();
+        if (playerLedGroup || string.IsNullOrEmpty(target) || char.IsUpper(target[0]))
+            return null;
+        return target.ToLowerInvariant();
+    }
+
     internal static Facts Of(GameBot bot, Random random)
     {
         AutonomousBotVoiceCorpus.Speaker speaker = AutonomousBotVoices.SpeakerFor(bot);
@@ -1651,7 +1679,7 @@ public static class AutonomousChatFieldTalk
                     (int)eInventorySlot.HeadArmor or (int)eInventorySlot.HandsArmor or (int)eInventorySlot.FeetArmor or (int)eInventorySlot.TorsoArmor or
                     (int)eInventorySlot.LegsArmor or (int)eInventorySlot.ArmsArmor;
             }
-        string monster = !string.IsNullOrWhiteSpace(record?.TargetName) && !bot.IsPlayerLedGroup ? record.TargetName.Trim().ToLowerInvariant() : null;
+        string monster = MonsterKind(record?.TargetName, bot.IsPlayerLedGroup);
         int groupSize = bot.Group?.MemberCount ?? 1;
         return new Facts(bot.DatabaseID, bot.Realm, bot.CharacterClass?.Name ?? bot.ClassName, bot.Level, zone,
             inDungeon ? zone : AutonomousBotVoices.DungeonFor(bot.Realm, bot.Level, random), flags.Contains("in_rvr"), inDungeon,

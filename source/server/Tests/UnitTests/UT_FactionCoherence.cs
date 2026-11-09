@@ -742,6 +742,52 @@ public class UT_FactionCoherence
         }
     }
 
+    [TestCase("thrawn ogre miner", false, "thrawn ogre miner")]
+    [TestCase("  apple fly ", false, "apple fly")]
+    [TestCase("Sneakywarrior", false, null)]
+    [TestCase("Summoner Roesia", false, null)]
+    [TestCase("Bledmeer Jarl", false, null)]
+    [TestCase("thrawn ogre miner", true, null)]
+    [TestCase("", false, null)]
+    [TestCase(null, false, null)]
+    public void OnlyAKindOfMonsterIsTalkedAboutAsOne(string target, bool playerLed, string kind) =>
+        Assert.That(Field.MonsterKind(target, playerLed), Is.EqualTo(kind));
+
+    /// <summary>
+    /// Owner's PC, RC2 and RC3 (2026-11-08/09): a bot killed in the frontier told "siuses in murdaigean hate me" or "train of
+    /// sneakywarriors, im dead". A frontier death is told as one, with no monster in it.
+    /// </summary>
+    [Test]
+    public void AFrontierDeathIsToldAsOneWithNoMonsterInIt()
+    {
+        var random = new Random(3);
+        for (int i = 0; i < 300; i++)
+        {
+            Field.Facts teller = Facts(i, "Scout", 50, "Emain Macha") with { InRvR = true, Monster = null };
+            List<Field.Step> story = Field.Story("death", teller, Facts(i + 1, "Cleric", 50), Facts(i + 2, "Wizard", 50), random);
+            Assert.That(story, Is.Not.Empty);
+            Assert.That(story[0].Who, Is.EqualTo(0));
+            foreach (Field.Step step in story)
+            {
+                Assert.That(step.Text, Does.Not.Contain("adds").And.Not.Contain("skeleton").And.Not.Contain("camp"), step.Text);
+                Assert.That(step.Text, Does.Not.Contain("pulled"), step.Text);
+            }
+        }
+    }
+
+    [Test]
+    public void APveDeathStillNamesItsKindOfMonster()
+    {
+        var random = new Random(5);
+        bool named = false;
+        for (int i = 0; i < 100 && !named; i++)
+        {
+            List<Field.Step> story = Field.Story("death", Facts(i, "Scout", 30), Facts(i + 1, "Cleric", 31), null, random);
+            named = story.Any(step => step.Text.Contains("skeletons"));
+        }
+        Assert.That(named, Is.True, "\"large skeletons\" is told in some PvE death story");
+    }
+
     // ---- 4. the transcript and trade closings ---------------------------------------------------------------------------
 
     [TestCase("gl selling, someone will want it", false)]

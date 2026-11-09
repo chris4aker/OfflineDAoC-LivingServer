@@ -40,6 +40,10 @@ its reply budget: a thread or a burst is still allowed or held once, as a whole,
 - **A story's teller doesn't repeat itself either.** "dead. again" opened 45 death stories in the overnight soak; a
   teller's short line the realm heard in the last ten minutes is now said another way, and a story whose first line
   can't be said isn't told.
+- **A frontier death isn't told as a monster.** The same fix as Beta 1.1.3 (after its RC3): most frontier death stories
+  read "siuses in murdaigean hate me" or "train of sneakywarriors, im dead", an enemy player taken for a kind of monster
+  and made plural (named creatures too: "summoner roesias"). Only a kind of monster is talked about as one now, and a
+  frontier death is told as one ("got ganked lol"). Tests only.
 - **Exchange adverts in the period's words.** When no written trade line fits a listing, the seller says "anyone want
   ... ? make me an offer" or "pc ...?" (was "Does anybody want to make me an offer on ...?"), and the answers are the
   written trade answers, not "A merchant price can provide a reasonable minimum value." followed by "Fair enough. Safe
