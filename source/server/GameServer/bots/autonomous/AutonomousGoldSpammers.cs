@@ -138,7 +138,10 @@ public static class AutonomousGoldSpammers
             {
                 // Nobody left to hear a spammer that hasn't said anything yet: it never came.
                 if (Waves.TryGetValue(realm, out Wave waiting) && !waiting.Started && Waves.TryRemove(realm, out _))
+                {
+                    NextWaveAt[realm] = now + FirstWaveMinMs + Random.Shared.Next((int)FirstWaveSpreadMs);
                     Log.Info(AutonomousChatExchange.DroppedLog("spammer", realm, waiting.Exchange, now - waiting.DueSince, "no_audience"));
+                }
                 continue;
             }
             if (Waves.TryGetValue(realm, out Wave wave))
