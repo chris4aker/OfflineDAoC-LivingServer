@@ -262,8 +262,9 @@ namespace DOL.UnitTests
                     "attackers took every keep: more defenders");
                 Assert.That(SiegeDefenseBalance.NextShift(0, [true, false, false, false, false, false]), Is.EqualTo(-SiegeDefenseBalance.Step),
                     "attackers lost nearly every siege: fewer defenders");
-                // 1.1.3: a defended keep usually holds. Two captures in six leave it as it is; two in three add defenders.
-                Assert.That(SiegeDefenseBalance.NextShift(0, [true, false, true, false, false, false]), Is.Zero, "two in six: unchanged");
+                // Owner 2026-11-09: about half. Three captures in six hold; two take defenders away, four (or two in three) add them.
+                Assert.That(SiegeDefenseBalance.NextShift(0, [true, false, true, false, false, false]), Is.EqualTo(-SiegeDefenseBalance.Step),
+                    "two in six: fewer defenders");
                 Assert.That(SiegeDefenseBalance.NextShift(0, [true, false, true, false, true, false]), Is.Zero, "half: unchanged");
                 Assert.That(SiegeDefenseBalance.NextShift(0, [true, true, false]), Is.EqualTo(SiegeDefenseBalance.Step),
                     "two in three: more defenders");

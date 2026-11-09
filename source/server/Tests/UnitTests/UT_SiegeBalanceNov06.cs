@@ -56,10 +56,68 @@ namespace DOL.UnitTests
             Assert.That(SiegeDefenseBalance.NextShift(0.375, mostlyDefended), Is.EqualTo(0.25));
             Assert.That(SiegeDefenseBalance.NextShift(0.25, mostlyDefended), Is.EqualTo(0.125), "then the share falls");
             Assert.That(SiegeDefenseBalance.NextShift(0.375, [true, false, true, false, true, false]), Is.EqualTo(0.375),
-                "three in six: unchanged (1.1.3)");
+                "three in six: unchanged (owner 2026-11-09: about half)");
             Assert.That(SiegeDefenseBalance.NextShift(0.375, [true, true, false, true, false, true]), Is.EqualTo(0.5),
-                "four in six: attackers still win most, more defenders (1.1.3)");
+                "four in six: more defenders");
         });
+
+        // ---- The simulation: does the balance settle near half? (owner 2026-11-09: attackers win about half) ----
+
+        /// <summary>
+        /// A model of the attackers' chance to take a keep by the balance's shift: a logistic curve that falls as the shift adds
+        /// defenders (and then trims attackers). Where it crosses one half and how steeply are unknown, so the cases move both:
+        /// a strong defense that holds even with few defenders (the half point at -0.125) to one that needs the full trim (+0.375).
+        /// It is a model, not a measurement.
+        /// </summary>
+        private static double AttackerChance(double shift, double half, double steep) =>
+            1 / (1 + Math.Exp(steep * (shift - half)));
+
+        private static (double Share, double MeanShift) SimulateSieges(double half, double steep, int sieges, int seed)
+        {
+            var random = new Random(seed);
+            var window = new System.Collections.Generic.Queue<bool>();
+            double shift = 0, shiftSum = 0;
+            int counted = 0, won = 0;
+            for (int siege = 0; siege < sieges; siege++)
+            {
+                bool captured = random.NextDouble() < AttackerChance(shift, half, steep);
+                window.Enqueue(captured);
+                while (window.Count > SiegeDefenseBalance.Window) window.Dequeue();
+                shift = SiegeDefenseBalance.NextShift(shift, window.ToArray());
+                if (siege < sieges / 10) continue; // a settling-in tenth
+                counted++;
+                won += captured ? 1 : 0;
+                shiftSum += shift;
+            }
+            return (won / (double)counted, shiftSum / counted);
+        }
+
+        [TestCase(-0.125, 8)]
+        [TestCase(-0.125, 16)]
+        [TestCase(0.0, 8)]
+        [TestCase(0.0, 16)]
+        [TestCase(0.125, 8)]
+        [TestCase(0.125, 16)]
+        [TestCase(0.25, 8)]
+        [TestCase(0.25, 16)]
+        [TestCase(0.375, 8)]
+        [TestCase(0.375, 16)]
+        public void TheBalanceSettlesNearHalf(double half, double steep)
+        {
+            var (share, meanShift) = SimulateSieges(half, steep, 20_000, 1);
+            TestContext.WriteLine($"half point {half:+0.###;-0.###;0}, steepness {steep}: attackers won {share:P1}, mean shift {meanShift:+0.###;-0.###}");
+            Assert.That(share, Is.InRange(0.42, 0.58), "about half");
+        }
+
+        [Test]
+        public void OnAverageTheBalanceSettlesAtHalf()
+        {
+            double[] halves = [-0.125, 0, 0.125, 0.25, 0.375];
+            double[] steeps = [8, 16];
+            double mean = halves.SelectMany(half => steeps.Select(steep => SimulateSieges(half, steep, 20_000, 1).Share)).Average();
+            TestContext.WriteLine($"mean attacker share over ten curves: {mean:P1}");
+            Assert.That(mean, Is.InRange(0.47, 0.53));
+        }
 
         [Test]
         public void TheOwnersNightWouldHaveTrimmedTheAttackersByTheThirdCapture()

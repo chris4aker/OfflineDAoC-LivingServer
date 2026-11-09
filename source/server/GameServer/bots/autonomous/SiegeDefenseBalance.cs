@@ -33,12 +33,13 @@ public static class SiegeDefenseBalance
     public const double MaximumAttackerTrim = 0.25;
     /// <summary>
     /// Attacker win share above which defenders get more, and below which they get fewer. Was 0.8 / 0.45 (owner 2026-10-19:
-    /// sieges won about two times in three). 1.1.3 (owner's goal for the RC nights, 2026-11-09: in 2003 most sieges against a
-    /// defended keep failed or took long, and keeps changed hands a few times a night): now more than half captured adds
-    /// defenders and fewer than one in five takes them away, so the balance settles at two or three captures in six instead
-    /// of steering back to attackers winning most once the defenders arrive in time (AutonomousRvrEventLayer.CallDefendersAtMarch).
+    /// sieges won about two times in three). Owner 2026-11-09: about half. With the defenders now called when the army marches
+    /// (AutonomousRvrEventLayer.CallDefendersAtMarch), 0.65 / 0.35 is a band around one half: of the last six, four or more
+    /// captured adds defenders, two or fewer takes them away, three holds. In the balance simulation (UT_SiegeBalanceNov06,
+    /// a model of the attackers' chance by the shift, ten curves) it settles at 0.44-0.56, 0.50 on average; 0.8 / 0.45 settled
+    /// at 0.53-0.61 and 0.5 / 0.2 (the first 1.1.3 draft) at 0.39-0.47.
     /// </summary>
-    public const double HighWinShare = 0.5, LowWinShare = 0.2;
+    public const double HighWinShare = 0.65, LowWinShare = 0.35;
     /// <summary>Sieges replayed from the ledger at start: four windows, twice the steps from one limit to the other.</summary>
     public const int LedgerResults = 24;
 
