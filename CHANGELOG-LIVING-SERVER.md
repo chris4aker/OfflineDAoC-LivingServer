@@ -325,7 +325,7 @@ player online in Albion, 5 bot lines named the player, no topic ever came back, 
   ceiling.
   The checker's verdict on both: PASS. Tests only.
 
-**Chat fixes from the sixth and seventh release candidates on the owner's PC** (eff81a0 and b036b3c, 2026-11-09, played
+**Chat fixes from the sixth, seventh and eighth release candidates on the owner's PC** (eff81a0, b036b3c and f18b44f, 2026-11-09, played
 as an Albion 50 and a new Hibernian with the Bot schedule on Real clock). The chat checker passed RC6's 74 minutes, but
 reading the lines showed what it couldn't see; it now checks for each of these, and fails RC6's log.
 - **A friend's answer to small talk is kept.** "hey! what u up to?" by tell to a friend drew "not sure, try /advice": the
@@ -362,6 +362,11 @@ reading the lines showed what it couldn't see; it now checks for each of these, 
   debate ended with "INC, mid group crossing toward Caer Benowyc" though no army was there. Scripted threads and short
   scenes no longer announce attacks, keeps changing hands, lost relics or enemies at a named place (about 240 lines
   reworded into opinions and calls to head out), and a role that speaks as a class, level or race is cast from it.
+- **Stories that fit the death, after RC7 and RC8.** An enemy gamebot was read as a monster (its brain is a controlled
+  one with no owner), so "adds in murdaigean hate me" followed a death to one enemy friar; a group wiped by enemy bots
+  told "wiped on adds"; "aggroed the guards, dead" drew "stick with the zerg". A bot is a bot first, a wipe to enemies is
+  told as one, and a guard death or one to one or two enemies draws no crowd riff. After a "no" the asker says "k ty",
+  not "ty, inv".
 - **Your /trade post gets answers too.** The player's "wts 99% arcane cloth cap, cheap" drew nothing; only bot posts were
   answered. A player's sale or wanted post now draws a bot's reply as often as a bot's does.
 
