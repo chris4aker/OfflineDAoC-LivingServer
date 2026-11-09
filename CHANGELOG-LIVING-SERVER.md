@@ -42,11 +42,20 @@ MUST be top notch"). Checked by automated tests and a simulated evening only; no
   four other lines came after what it reacts to. Guild threads are said in order and answered by guildmates who fit too.
 - **One "oof" in ten minutes.** A short reaction ("oof", "rip", "lol rip", "gz") a realm's /faction heard in the last ten
   minutes is picked again or left out, in stories, bursts, threads' answers and single reactions.
-- **/faction keeps to its ceiling.** On the owner's evening /faction ran at 13.6 lines a minute for ten minutes (minutes of
-  17-20) against its ceiling of 10: unprompted lines stopped at the ceiling, but the replies, stories and bursts they
-  started didn't (two overlapping bursts made 10 lines in 38 s). Every line of a bot conversation now waits for room under
-  the ceiling like a busy speaker, and is left out when none comes. The realm's own moments (a nemesis line, keep news, a
-  debate) still speak.
+- **/faction keeps to its ceiling, whoever speaks.** On the owner's evening /faction ran at 13.6 lines a minute for ten
+  minutes (minutes of 17-20) against its ceiling of 10: unprompted lines stopped at the ceiling, but replies, stories,
+  bursts, nemesis and revenge lines, news, debates, rumours, bonds, gold spammers and Leeroy's friends didn't. Now every
+  bot line in /faction passes one gate: it is said only if it fits under the realm's ceiling (the rate it would make, over
+  two minutes, as the server measures it). A conversation's line waits for room like a busy speaker, a debate's beat waits
+  (the scene owns the channel, so it drains), and a line that starts more (a rumour, a bond, a nemesis line and its burst)
+  starts nothing when it is held. Two kinds pass the gate, tagged in the log so a check can tell them apart: `src=event`, a
+  realm's big moment said on purpose (a keep or relic taken, a raid's end, Darkness Falls, a server first, the raid's
+  Leeroy), whose burst is itself capped at three reactions within 40 s; and `src=player`, a line to or about the real player
+  (bots answer you first). With bot voices on, a server first no longer adds its separate cheers on top of its burst.
+- **One reaction in ten minutes, whatever says it.** The ten-minute window also holds back a pure reaction ("lol", "been
+  there", "nice going") at the moment it is sent, from any path, not only the ones that plan around it. A conversation's
+  line comes at most about 40 s after the one before it, or not at all.
+- **Every /faction line carries its ceiling** (`cap=6.9`), so a log can be checked on its own.
 - **No more "Fair enough. Safe travels."** It came back 30 times in one night: a fixed line from the oldest reply path,
   outside the no-repeat memory every written line has, like its formal replies ("A merchant price can provide a
   reasonable minimum value."). With bot voices on that path now says only written lines, or nothing.
@@ -62,8 +71,10 @@ MUST be top notch"). Checked by automated tests and a simulated evening only; no
   `BroadcastFactionAsWritten`).
 - **Measured:** `source/tools/chat_audit.py` reads `CHAT_LINE` logs and counts conversations out of order or with swapped
   parts (exact with the new fields, heuristic without), thanks and follow-ups with nothing to refer to, untrue class,
-  level and role answers, reactions with no trigger, late reactions, pile-ons, repeated reactions, and lines a minute per
-  channel. On the owner's 1.1.3 evening (13 min of /faction at 11.8 lines a minute): one presence answer after the asker
+  level and role answers, reactions with no trigger, late reactions, pile-ons over the caps, repeated reactions, lines a
+  minute per channel, and the seconds and minutes /faction ran above its ceiling (events and lines to the player aside).
+  Its last line is a verdict: `VERDICT PASS` only with nothing out of order, no untrue answer, no late or repeated
+  reaction, no pile-on over the caps and no minute above the ceiling. On the owner's 1.1.3 evening (13 min of /faction at 11.8 lines a minute): one presence answer after the asker
   had closed, one level question after the invite, one follow-up before any answer, one thanks with no answer, one trade
   closing that didn't follow, one join answer from a class that can't fill the role, 6 pile-ons (13 reactions past the
   second), 3 late reactions, 2 repeated reactions. On a 4.6-hour overnight 1.2-line soak: 207 repeated reactions within ten

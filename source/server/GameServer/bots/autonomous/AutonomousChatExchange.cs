@@ -35,6 +35,16 @@ public static class AutonomousChatExchange
     /// <summary>The source of the line being said on this thread now, or null.</summary>
     public static Source Current => _current;
 
+    /// <summary>
+    /// The features /faction's ceiling doesn't hold (1.1.3): "event", a realm's big moment said on purpose (a keep or relic
+    /// taken, a server first, the raid's Leeroy), itself capped (AutonomousChatBursts.CappedSize); and "player", a line said to
+    /// or about the real player (bots answer you first). Every other bot line waits for room or isn't said.
+    /// </summary>
+    public static bool ExemptFromCeiling(Source source) => source != null && source.Feature is "event" or "player";
+
+    /// <summary>Whether one more line fits under a channel's ceiling: the rate it would make, not the rate before it. Pure.</summary>
+    public static bool Fits(double perMinute, double ceiling, double windowMinutes = 2.0) => perMinute + 1.0 / windowMinutes <= ceiling + 1e-9;
+
     /// <summary>Tags the lines said until the scope is disposed (the transcript reads it).</summary>
     public static Scope Tag(string feature, long exchange, int index, string role, GameBot speaker = null) =>
         new(new Source(feature, exchange, index, role, speaker));
@@ -43,14 +53,21 @@ public static class AutonomousChatExchange
     public readonly struct Scope : IDisposable
     {
         private readonly Source _previous;
+        private readonly bool _set;
 
         public Scope(Source source)
         {
             _previous = _current;
             _current = source;
+            _set = true;
         }
 
-        public void Dispose() => _current = _previous;
+        /// <summary>Restores the tag before this one (a default scope, which set none, changes nothing).</summary>
+        public void Dispose()
+        {
+            if (_set)
+                _current = _previous;
+        }
     }
 
     // ---- lanes: what a channel carried -------------------------------------------------------------------------------------
@@ -170,8 +187,8 @@ public static class AutonomousChatExchange
         /// <summary>No reaction once this many other lines came since the trigger, or this long after it.</summary>
         public int MaxSinceTrigger { get; init; } = 4;
         public long ReactionWithinMs { get; init; } = 45_000;
-        /// <summary>No line (but a lone one) this long after the exchange's last.</summary>
-        public long MaxLateMs { get; init; } = 45_000;
+        /// <summary>No line (but a lone one) this long after the exchange's last (with its waits, at most about 42 s).</summary>
+        public long MaxLateMs { get; init; } = 25_000;
 
         public static readonly Rules Faction = new();
         public static readonly Rules Say = new() { SpacingMs = 0, MaxInterleaveShort = 4, MaxInterleave = 8 };
@@ -435,6 +452,22 @@ public static class AutonomousChatExchange
         public const long WindowMs = 10 * 60_000;
         private readonly Dictionary<(string Key, string Text), long> _heard = new();
 
+        /// <summary>
+        /// A reaction about to be said in the channel (the send itself, every path): false when the channel heard it in the window;
+        /// otherwise it is recorded as said now (a plan's own claim, which lies ahead, doesn't hold it back). 1.1.3.
+        /// </summary>
+        public bool SayOrHold(string key, string text, long now)
+        {
+            string norm = Normalize(text);
+            lock (_heard)
+            {
+                if (_heard.TryGetValue((key, norm), out long at) && at <= now && now - at < WindowMs)
+                    return false;
+                _heard[(key, norm)] = now;
+                return true;
+            }
+        }
+
         /// <summary>Whether the reaction was not heard in the channel in the window.</summary>
         public bool Fresh(string key, string text, long now)
         {
@@ -469,10 +502,20 @@ public static class AutonomousChatExchange
         }
     }
 
+    // The reactions source/tools/chat_audit.py counts (keep the two lists together).
     private static readonly HashSet<string> Reactions = new(StringComparer.Ordinal)
     {
-        "oof", "rip", "lol rip", "ouch", "lol", "ha", "heh", "haha", "hehe", "true", "lol true", "gz", "gz gz", "grats", "gratz", "nice", "nice gz",
-        "woot", "ugh", "happens", "happens lol", "classic", "rip grp", "rip me", "lol how", "sweet", "jealous", "lucky", "wb", "o",
+        "oof", "rip", "lol rip", "ouch", "ugh", "bleh", "gz", "gz gz", "grats", "gratz", "grats grats", "grats man", "nice", "nice gz", "woot", "wow nice",
+        "sweet", "lucky", "lucky you", "lucky you lol", "jealous", "show off", "well earned", "well played", "well done", "nice going", "nice score",
+        "good stuff", "go you", "way to go", "look at you", "must be nice", "not bad at all", "very nice", "brag brag brag", "teach me",
+        "pics or it didnt happen", "classic", "happens", "happens lol", "rip grp", "that stinks", "that sucks", "ugh that sucks", "ugh same",
+        "ugh the worst", "rough", "rough night huh", "bad luck", "been there", "bleh been there", "hang in there", "it gets better", "ah man",
+        "sorry that is rough", "oof sorry", "oof sorry heh", "thats annoying", "argh hate that", "ugh i feel you", "the dice hate us all",
+        "the worst feeling", "thats just mean", "dont let it get to you", "happens to the best of us", "yep happened to me too",
+        "next one will go better", "take a break maybe", "been there haha", "grr i know that one", "been like that all night haha",
+        "aww sorry that is awful", "ha welcome to my week", "yep it does that", "forgive me unlucky", "gz u earned it", "gz you earned it",
+        "ha nice now find something meaner", "now thats a good night", "lol", "heh", "haha", "hehe", "true", "lol true", "true true", "ha", "rip me",
+        "lol how",
     };
 
     /// <summary>A pure reaction ("oof", "rip", "lol", "gz"): it says nothing but how the speaker feels about the line before.</summary>

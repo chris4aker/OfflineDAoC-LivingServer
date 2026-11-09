@@ -325,6 +325,33 @@ public class UT_FactionCoherence
     }
 
     [Test]
+    public void EveryLineButATaggedEventFitsUnderTheCeiling()
+    {
+        Assert.That(Ex.Fits(6.0, 7.1), Is.True, "12 lines in two minutes, a 13th makes 6.5");
+        Assert.That(Ex.Fits(6.7, 7.1), Is.False, "a 15th would make 7.2");
+        Assert.That(Ex.Fits(6.5, 7.0), Is.True, "exactly at the ceiling fits");
+        Assert.That(Ex.ExemptFromCeiling(new Ex.Source("event", 1, 0, "teller")), Is.True);
+        Assert.That(Ex.ExemptFromCeiling(new Ex.Source("player", 0, 0, "answerer")), Is.True);
+        foreach (string feature in new[] { "thread", "story", "burst", "nemesis", "revenge", "news", "debate", "exchange_ad", "ambient", "field", "reaction" })
+            Assert.That(Ex.ExemptFromCeiling(new Ex.Source(feature, 1, 0, "x")), Is.False, feature);
+        Assert.That(Ex.ExemptFromCeiling(null), Is.False, "an untagged line waits its turn too");
+        Assert.That(AutonomousChatBursts.IsEvent("keep_lost") && AutonomousChatBursts.IsEvent("relic_won") && AutonomousChatBursts.IsEvent("first"), Is.True);
+        Assert.That(AutonomousChatBursts.IsEvent("nemesis") || AutonomousChatBursts.IsEvent("revenge"), Is.False);
+    }
+
+    [Test]
+    public void AReactionAnyPathSaysIsHeardOnceInTenMinutes()
+    {
+        var window = new Ex.ShortWindow();
+        Assert.That(window.TryUse("faction:1", "lol", 0), Is.True, "a plan claims it");
+        Assert.That(window.SayOrHold("faction:1", "lol", 3_000), Is.True, "and says it");
+        Assert.That(window.SayOrHold("faction:1", "LOL", 200_000), Is.False, "another path's \"lol\" three minutes later is held");
+        Assert.That(window.SayOrHold("faction:1", "lol", 603_000), Is.True, "ten minutes after it was said");
+        Assert.That(Ex.IsReaction("been there"), Is.True);
+        Assert.That(Ex.IsReaction("caer benowyc fell, mids have it"), Is.False);
+    }
+
+    [Test]
     public void AStoryLeavesOutARiffTheChannelJustHeard()
     {
         var random = new Random(12);
@@ -398,11 +425,12 @@ public class UT_FactionCoherence
     /// <summary>
     /// An evening of a realm's /faction on a simulated clock, with every path that writes to it: unprompted openers (through
     /// the real budget meter: field lines and written remarks), the threads and single reactions they draw, stories from deaths
-    /// and wipes, nemesis and revenge lines with their bursts, keep news with its burst, debate scenes, and Realm Exchange
-    /// adverts. <paramref name="fixedCode"/> false plays it the old way: every line of an exchange on its own timer with the
-    /// old spacing rule, a busy speaker's thread line dropped, bursts of 3-6 (by the crowd) over 90 s that may overlap, no
-    /// short-reaction window, no ceiling for replies, adverts 3 minutes apart. True plays the same plans through
-    /// <see cref="Ex.Run"/> with the new answerer choice, caps, window, ceiling gate and advert rest. Both use the same seed.
+    /// and wipes, nemesis and revenge lines with their bursts, keep news (an event) with its burst, debate scenes, and Realm
+    /// Exchange adverts. <paramref name="fixedCode"/> false plays it the old way: every line of an exchange on its own timer with
+    /// the old spacing rule, a busy speaker's thread line dropped, bursts of 3-6 (by the crowd) over 90 s that may overlap, no
+    /// short-reaction window, only openers and burst lines held by the ceiling, adverts 3 minutes apart. True plays the same
+    /// plans through <see cref="Ex.Run"/> and the same rule as <c>AutonomousBotChatCoordinator.BroadcastFactionAsWritten</c>:
+    /// every line fits under the ceiling or isn't said, but a tagged event; debates wait for room. Both use the same seed.
     /// </summary>
     private static Evening Simulate(bool fixedCode, int seed, long lengthMs)
     {
@@ -423,18 +451,27 @@ public class UT_FactionCoherence
             Level = 5 + (i * 37 + seed) % 46, Zone = Zones[i % Zones.Length],
         }).ToList();
         bool Busy(SimBot bot, long now) => (now / 1_000 + bot.Id * 7) % 60 < 15;
-        bool Room(long now) => meter.PerMinute(AutonomousChatBudget.Channel.Faction, key, now) < band.Ceiling;
+        double PerMinute(long now) => meter.PerMinute(AutonomousChatBudget.Channel.Faction, key, now);
+        // The old ceiling check (bursts, stories' start): the rate before the line; the new one: the rate the line would make.
+        bool OldRoom(long now) => PerMinute(now) < band.Ceiling;
+        bool Room(long now) => Ex.Fits(PerMinute(now), band.Ceiling);
         long debateUntil = -1, lastAdvert = -10 * 60_000_000L, lastAmbientNews = -10 * 60_000_000L, burstUntil = -1;
         long baseTime = 20 * 3_600_000L;
-        void Emit(long now, SimBot bot, string feature, long ex, int index, string role, string text)
+        // AutonomousBotChatCoordinator.BroadcastFactionAsWritten: false when the line doesn't fit and isn't a tagged event.
+        bool Say(long now, SimBot bot, string feature, long ex, int index, string role, string text)
         {
+            if (bot == null || fixedCode && feature != "event" && !Room(now))
+                return false;
+            if (fixedCode && Ex.IsReaction(text) && !shorts.SayOrHold(lane, text, now))
+                return false;
             Ex.NoteLine(lane, bot.Name, now);
             meter.Count(AutonomousChatBudget.Channel.Faction, key, now);
             evening.Said.Add((now, ex, index, role, bot.Name, feature, text));
             long t = baseTime + now;
             evening.Log.Add($"11/08 {t / 3_600_000 % 24:00}:{t / 60_000 % 60:00}:{t / 1_000 % 60:00} | INF | DOL.GS.BotChatTranscript | CHAT_LINE who=bot ch=faction " +
                             $"realm=Albion from=\"{bot.Name}\" via=Sim src={feature} ex={ex} i={index} role={role} cls=\"{bot.Class}\" lvl={bot.Level} " +
-                            $"text=\"{text.Replace('"', '\'')}\"");
+                            $"cap={band.Ceiling.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture)} text=\"{text.Replace('"', '\'')}\"");
+            return true;
         }
         SimBot Pick(SimBot not, Func<SimBot, bool> fits = null)
         {
@@ -448,6 +485,7 @@ public class UT_FactionCoherence
         }
         var legacy = new List<(long Due, Plan Plan, int Line, int Waits)>();
         var runs = new List<(Ex.Run Run, Plan Plan)>();
+        var beatsDue = new List<(long Due, Plan Plan, int Line, int Waits)>();
         void Start(long now, Plan plan, int firstIndex = 1)
         {
             evening.Plans[plan.Id] = plan;
@@ -461,7 +499,7 @@ public class UT_FactionCoherence
                 }
                 return;
             }
-            var rules = plan.Feature == "burst" ? Ex.Rules.Faction with { ReactionWithinMs = 55_000 } : Ex.Rules.Faction;
+            var rules = plan.Feature is "burst" or "event" ? Ex.Rules.Faction with { ReactionWithinMs = 44_000 } : Ex.Rules.Faction;
             runs.Add((new Ex.Run(plan.Id, plan.Feature, lane, laneState, plan.Lines, now, rules, firstIndex), plan));
             Ex.Touch(laneState, plan.Id, now);
         }
@@ -494,13 +532,13 @@ public class UT_FactionCoherence
                 last = delay;
             }
             if (lines.Count > 0)
-                Start(now, new Plan(ex, "burst", lines, speakers.ToArray()));
+                Start(now, new Plan(ex, fixedCode && AutonomousChatBursts.IsEvent(trigger) ? "event" : "burst", lines, speakers.ToArray()));
         }
         string[] boasts = ["nice going", "well earned", "show off", "gz", "nice!", "well played", "lucky you", "now thats a good night", "grats grats", "way to go",
             "ha, nice, now find something meaner", "sweet", "woot, nice"];
         string[] complaints = ["oof", "ugh, that sucks", "that stinks", "bad luck", "been there", "rough night huh", "the dice hate us all", "hang in there",
             "thats annoying", "bleh, been there", "argh, hate that"];
-        string[] news = ["again??", "omw", "who has it now", "ugh, not again", "need to take it back", "where is everyone", "porting", "gj all", "we'll get it back"];
+        string[] news = ["again??", "omw", "who has it now", "ugh, not again", "need to take it back", "where is everyone", "porting", "we'll get it back"];
         string[] remarks = ["cant believe its tuesday already", "first kill after login never drops anything", "the frontier was busy last night",
             "love the music in this zone", "bwgans are the worst", "anyone else lag in camelot?", "need more bag space lol"];
         string[] reactions = ["lol", "heh", "true", "ha", "lol true", "true true"];
@@ -518,17 +556,18 @@ public class UT_FactionCoherence
                 {
                     // A written remark, and now and then one fitting reaction (WrittenReaction, 30%).
                     long ex = Ex.NewId();
-                    Emit(now, starter, "ambient", ex, 0, "opener", remarks[random.Next(remarks.Length)]);
-                    string reaction = reactions[random.Next(reactions.Length)];
-                    if (random.NextDouble() < 0.3 && (!fixedCode || shorts.TryUse(lane, reaction, now)))
-                        Start(now, new Plan(ex, "reaction", [new Ex.Line(1, reaction, 2_500 + random.Next(2_000), "reactor", Optional: true, Reaction: true)],
-                            [starter, Pick(starter)]));
+                    if (Say(now, starter, "ambient", ex, 0, "opener", remarks[random.Next(remarks.Length)]))
+                    {
+                        string reaction = reactions[random.Next(reactions.Length)];
+                        if (random.NextDouble() < 0.3 && (!fixedCode || shorts.TryUse(lane, reaction, now)))
+                            Start(now, new Plan(ex, "reaction", [new Ex.Line(1, reaction, 2_500 + random.Next(2_000), "reactor", Optional: true, Reaction: true)],
+                                [starter, Pick(starter)]));
+                    }
                 }
                 else if (Field.Line("faction", starter.Facts, memory, random, now) is { } said)
                 {
                     long ex = Ex.NewId();
-                    Emit(now, starter, "field", ex, 0, "asker", said.Text);
-                    if (said.Answers != null && (!fixedCode || Ex.RunningCount(lane, now) < Ex.MaxRunning))
+                    if (Say(now, starter, "field", ex, 0, "asker", said.Text) && said.Answers != null && (!fixedCode || Ex.RunningCount(lane, now) < Ex.MaxRunning))
                     {
                         Func<SimBot, bool> fits = fixedCode ? bot => Field.CanAnswer(said, bot.Class, bot.Level, Field.Fills(bot.Class, "healer")) : null;
                         SimBot answerer = Pick(starter, fits), third = Pick(starter, bot => bot != answerer && (fits == null || fits(bot)));
@@ -549,7 +588,7 @@ public class UT_FactionCoherence
                 }
             }
             // A story from a death or a wipe about every two minutes (TellStory: below the ceiling, not during a debate).
-            if (random.NextDouble() < 1 / 120.0 && !debate && Room(now) && (!fixedCode || Ex.RunningCount(lane, now) < Ex.MaxRunning))
+            if (random.NextDouble() < 1 / 120.0 && !debate && (fixedCode ? Room(now) : OldRoom(now)) && (!fixedCode || Ex.RunningCount(lane, now) < Ex.MaxRunning))
             {
                 SimBot teller = bots[random.Next(bots.Count)], mate = Pick(teller), third = Pick(teller, bot => bot != mate);
                 string kind = random.NextDouble() < 0.75 ? "death" : "wipe";
@@ -562,50 +601,70 @@ public class UT_FactionCoherence
                     Start(now, new Plan(Ex.NewId(), "story", Ex.FromSteps(story.Select(st => st with { AtMs = st.AtMs + 2_000 }), ["teller", "riff", "riff"],
                         step => step.Who == 2), [teller, mate, third]), firstIndex: 0);
             }
-            // A nemesis or a revenge about every three minutes, and its burst.
+            // A nemesis or a revenge about every three minutes, and its burst (none when the line itself was held).
             if (random.NextDouble() < 1 / 180.0 && !debate)
             {
                 SimBot teller = bots[random.Next(bots.Count)];
                 bool revenge = random.NextDouble() < 0.5;
                 long ex = Ex.NewId();
-                Emit(now, teller, revenge ? "revenge" : "nemesis", ex, 0, "teller",
-                    revenge ? "got that dwarf berserker. we are even" : "same norseman spiritmaster got me at caledon again");
-                Burst(now, teller, ex, revenge ? "revenge" : "nemesis", revenge ? boasts : complaints);
+                if (Say(now, teller, revenge ? "revenge" : "nemesis", ex, 0, "teller",
+                        revenge ? "got that dwarf berserker. we are even" : "same norseman spiritmaster got me at caledon again"))
+                    Burst(now, teller, ex, revenge ? "revenge" : "nemesis", revenge ? boasts : complaints);
             }
-            // Keep news about every 25 minutes, and its burst.
+            // A keep lost about every 25 minutes: the realm's event, with its burst.
             if (random.NextDouble() < 1 / 1_500.0 && !debate)
             {
                 SimBot teller = bots[random.Next(bots.Count)];
                 long ex = Ex.NewId();
-                Emit(now, teller, "news", ex, 0, "teller", "caer benowyc fell, mids have it");
-                lastAmbientNews = now;
-                Burst(now, teller, ex, "keep_lost", news);
+                if (Say(now, teller, fixedCode ? "event" : "news", ex, 0, "teller", "caer benowyc fell, mids have it"))
+                {
+                    lastAmbientNews = now;
+                    Burst(now, teller, ex, "keep_lost", news);
+                }
             }
-            // A debate scene about every twenty minutes: six beats seven seconds apart; it owns the channel while it runs.
+            // A debate scene about every twenty minutes: six beats seven seconds apart; it owns the channel while it runs, and
+            // (the new way) a beat waits for room, three seconds at a time, up to two minutes.
             if (!debate && random.NextDouble() < 1 / 1_200.0)
             {
                 long ex = Ex.NewId();
                 SimBot a = bots[random.Next(bots.Count)], b = Pick(a), c = Pick(a, bot => bot != b);
                 SimBot[] cast = [a, b, c];
                 var lines = beats.Select((text, i) => new Ex.Line(i % 3, text, 7_000, i % 3 == 0 ? "A" : i % 3 == 1 ? "B" : "C")).ToList();
-                debateUntil = now + 7_000 * beats.Length + 2_000;
-                evening.Plans[ex] = new Plan(ex, "debate", lines, cast);
-                for (int i = 0; i < beats.Length; i++)
-                    legacy.Add((now + 7_000L * (i + 1), evening.Plans[ex], i, 3));
+                var plan = new Plan(ex, "debate", lines, cast);
+                evening.Plans[ex] = plan;
+                beatsDue.Add((now + 7_000, plan, 0, 0));
+                debateUntil = long.MaxValue;
+            }
+            for (int k = 0; k < beatsDue.Count; k++)
+            {
+                var (due, plan, index, waits) = beatsDue[k];
+                if (due > now)
+                    continue;
+                beatsDue.RemoveAt(k--);
+                if (fixedCode && !Room(now))
+                {
+                    if (waits < AutonomousBotDebates.MaxRoomWaits)
+                        beatsDue.Add((now + AutonomousBotDebates.RoomRetryMs, plan, index, waits + 1));
+                    else
+                        debateUntil = now;
+                    continue;
+                }
+                Ex.Line line = plan.Lines[index];
+                Say(now, plan.Speakers[line.Who], "debate", plan.Id, index, line.Role, line.Text);
+                if (index + 1 < plan.Lines.Count)
+                    beatsDue.Add((now + 7_000, plan, index + 1, 0));
+                else
+                    debateUntil = now + 2_000;
             }
             // A bot lists an item about every two minutes and advertises it 70% of the time (BotBrain, TryAdvertiseExchangeItem).
             if (random.NextDouble() < 1 / 120.0 && random.NextDouble() < 0.7 && !debate)
             {
                 bool ok = now - Math.Max(lastAdvert, lastAmbientNews) >= 180_000 &&
-                          (!fixedCode || now - lastAdvert >= AutonomousBotChatCoordinator.ExchangeAdvertRestMs &&
-                              meter.PerMinute(AutonomousChatBudget.Channel.Faction, key, now) < band.Target);
-                if (ok)
-                {
+                          (!fixedCode || now - lastAdvert >= AutonomousBotChatCoordinator.ExchangeAdvertRestMs && PerMinute(now) < band.Target);
+                if (ok && Say(now, bots[random.Next(bots.Count)], "exchange_ad", Ex.NewId(), 0, "seller", "anyone want a ghostly cloak? make me an offer"))
                     lastAdvert = now;
-                    Emit(now, bots[random.Next(bots.Count)], "exchange_ad", Ex.NewId(), 0, "seller", "anyone want a ghostly cloak? make me an offer");
-                }
             }
-            // Due lines, the old way (and every debate beat).
+            // Due lines, the old way.
             for (int k = 0; k < legacy.Count; k++)
             {
                 var (due, plan, index, waits) = legacy[k];
@@ -613,7 +672,7 @@ public class UT_FactionCoherence
                     continue;
                 Ex.Line line = plan.Lines[index];
                 SimBot bot = line.Who < plan.Speakers.Length ? plan.Speakers[line.Who] : null;
-                // The old spacing rule held thread and story lines (PlayThread, PlayStory); bursts and debates had none.
+                // The old spacing rule held thread and story lines (PlayThread, PlayStory); bursts had none.
                 if (bot != null && plan.Feature is "thread" or "story" && waits < 3 && now - laneState.LastAt < 2_000)
                 {
                     legacy[k] = (now + 2_000 + random.Next(2_000), plan, index, waits + 1);
@@ -621,23 +680,20 @@ public class UT_FactionCoherence
                 }
                 legacy.RemoveAt(k--);
                 // PlayThread's Schedule dropped a line whose speaker was fighting; a burst's line held at the ceiling or in a debate.
-                if (bot == null || plan.Feature == "thread" && Busy(bot, now) || plan.Feature == "burst" && (!Room(now) || now < debateUntil))
+                if (bot == null || plan.Feature == "thread" && Busy(bot, now) || plan.Feature == "burst" && (!OldRoom(now) || now < debateUntil))
                     continue;
-                Emit(now, bot, plan.Feature, plan.Id, (plan.Feature is "story" or "debate" ? 0 : 1) + index, line.Role, line.Text);
+                Say(now, bot, plan.Feature, plan.Id, (plan.Feature == "story" ? 0 : 1) + index, line.Role, line.Text);
             }
-            // Due lines, the new way: busy speakers, a debate and a full channel all wait.
+            // Due lines, the new way: busy speakers, a debate and a full channel all wait (an event's lines but for the channel).
             for (int k = 0; k < runs.Count; k++)
             {
                 var (run, plan) = runs[k];
                 if (run.DueAt > now)
                     continue;
-                long? next = run.Step(now, line => line.Who < plan.Speakers.Length && plan.Speakers[line.Who] is { } bot && now >= debateUntil && Room(now) &&
-                                                   (plan.Feature == "story" && line.Who == 0 || !Busy(bot, now)),
-                    line => line.Who < plan.Speakers.Length ? plan.Speakers[line.Who]?.Name : null, (line, index) =>
-                    {
-                        Emit(now, plan.Speakers[line.Who], plan.Feature, plan.Id, index, line.Role, line.Text);
-                        return true;
-                    }, random);
+                long? next = run.Step(now, line => line.Who < plan.Speakers.Length && plan.Speakers[line.Who] is { } bot && now >= debateUntil &&
+                                                   (plan.Feature == "event" || Room(now)) && (plan.Feature == "story" && line.Who == 0 || !Busy(bot, now)),
+                    line => line.Who < plan.Speakers.Length ? plan.Speakers[line.Who]?.Name : null,
+                    (line, index) => Say(now, plan.Speakers[line.Who], plan.Feature, plan.Id, index, line.Role, line.Text), random);
                 if (next == null)
                 {
                     Ex.Finish(laneState, plan.Id);
@@ -672,7 +728,7 @@ public class UT_FactionCoherence
             // A line whose earlier non-optional line was never said: an answer to nothing on screen.
             return said.Any(i => Enumerable.Range(0, i).Any(j => !p.Lines[j].Optional && !said.Contains(j)));
         });
-        int BurstsOver(Evening e, string trigger, int cap) => e.Said.Where(s => s.Feature == "burst")
+        int BurstsOver(Evening e, string trigger, int cap) => e.Said.Where(s => s.Feature is "burst" or "event" && s.Index > 0)
             .GroupBy(s => s.Ex).Count(g => e.Said.Any(t => t.Ex == g.Key && t.Index == 0 && t.Feature == trigger) && g.Count() > cap);
         int ReactionRepeats(Evening e)
         {
@@ -686,20 +742,23 @@ public class UT_FactionCoherence
             }
             return repeats;
         }
-        // The /faction rate as the server measures it (over two minutes), each second.
+        // The /faction rate as the server measures it (over two minutes), each second, of the lines the ceiling holds: all but
+        // tagged events (the old way had no tags, so all of its lines count).
         (double Max, int SecondsOver) Rate(Evening e)
         {
-            long[] times = e.Said.Select(s => s.At).OrderBy(t => t).ToArray();
+            long[] times = e.Said.Where(s => s.Feature != "event").Select(s => s.At).OrderBy(t => t).ToArray();
             double max = 0;
             int over = 0;
             for (long t = 120_000; t < hours3; t += 1_000)
             {
-                int lo = Array.BinarySearch(times, t - 120_000), hi = Array.BinarySearch(times, t);
-                lo = lo < 0 ? ~lo : lo;
-                hi = hi < 0 ? ~hi : hi + 1;
-                double perMinute = (hi - lo) / 2.0;
+                // AutonomousChatBudget.ChannelMeter.PerMinute: the lines of the last two minutes, halved.
+                int n = 0;
+                foreach (long at in times)
+                    if (at > t - 120_000 && at <= t)
+                        n++;
+                double perMinute = n / 2.0;
                 max = Math.Max(max, perMinute);
-                if (perMinute > e.Band.Ceiling)
+                if (perMinute > e.Band.Ceiling + 1e-9)
                     over++;
             }
             return (max, over);
@@ -709,7 +768,7 @@ public class UT_FactionCoherence
             $"{name}: {e.Said.Count} lines ({e.Said.Count / 180.0:0.00}/min; band {e.Band.Target:0.0}/{e.Band.Ceiling:0.0}; peak {Rate(e).Max:0.0}/min, " +
             $"{Rate(e).SecondsOver} s over the ceiling), out of order {OutOfOrder(e)}, role swaps {RoleSwaps(e)}, untrue answers {RoleFalse(e)}, " +
             $"thread lines after a missing one {Orphans(e)}, personal bursts over two {BurstsOver(e, "nemesis", 2) + BurstsOver(e, "revenge", 2)}, " +
-            $"news bursts over three {BurstsOver(e, "news", 3)}, reaction repeats in 10 min {ReactionRepeats(e)}, exchange adverts {Adverts(e)}";
+            $"event bursts over three {BurstsOver(e, "event", 3) + BurstsOver(e, "news", 3)}, reaction repeats in 10 min {ReactionRepeats(e)}, exchange adverts {Adverts(e)}";
         TestContext.Progress.WriteLine("CHAT_SIM " + Line("before", before));
         TestContext.Progress.WriteLine("CHAT_SIM " + Line("after", after));
 
@@ -718,12 +777,13 @@ public class UT_FactionCoherence
         Assert.That(RoleSwaps(after), Is.Zero);
         Assert.That(RoleFalse(after), Is.Zero);
         Assert.That(Orphans(after), Is.Zero);
-        Assert.That(BurstsOver(after, "nemesis", 2) + BurstsOver(after, "revenge", 2) + BurstsOver(after, "news", 3), Is.Zero);
+        Assert.That(BurstsOver(after, "nemesis", 2) + BurstsOver(after, "revenge", 2) + BurstsOver(after, "event", 3), Is.Zero);
         Assert.That(ReactionRepeats(after), Is.Zero);
         Assert.That(Adverts(after), Is.LessThanOrEqualTo(12), "one in 15 minutes at most");
-        // Nemesis lines, news and debate beats aren't held (they are the realm's own moments), so a line or two over it.
-        Assert.That(Rate(after).Max, Is.LessThanOrEqualTo(after.Band.Ceiling + 1.5), Line("after", after));
-        Assert.That(Rate(after).SecondsOver, Is.LessThanOrEqualTo(Rate(before).SecondsOver), "never further past the ceiling than before");
-        Assert.That(after.Said.Count, Is.GreaterThan(before.Said.Count * 0.6), "coherent, not quiet");
+        // Every line but a tagged event fits under the ceiling.
+        Assert.That(Rate(after).SecondsOver, Is.Zero, Line("after", after));
+        Assert.That(Rate(after).Max, Is.LessThanOrEqualTo(after.Band.Ceiling), Line("after", after));
+        // Coherent, not thin: the evening stays above the realm's target (the 1.1.2 model's busy-peak design) on average.
+        Assert.That(after.Said.Count / 180.0, Is.GreaterThan(after.Band.Target), Line("after", after));
     }
 }

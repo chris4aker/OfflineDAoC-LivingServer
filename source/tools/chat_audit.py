@@ -51,6 +51,7 @@ class Line:
     role: str = ""
     cls: str = ""
     lvl: int | None = None
+    cap: float | None = None
     raw: str = ""
 
     @property
@@ -88,10 +89,12 @@ def read(path: str) -> list[Line]:
             first = stamp if first is None else first
             lvl = fields.get("lvl")
             index = fields.get("i")
+            cap = fields.get("cap")
             lines.append(Line(len(lines), stamp - first, fields.get("who", "bot"), fields.get("ch", "?"), fields.get("realm", "?"),
                               fields.get("from", "?"), text, fields.get("via", ""), fields.get("src", ""), fields.get("ex", ""),
                               int(index) if index and index.lstrip("-").isdigit() else None, fields.get("role", ""), fields.get("cls", ""),
-                              int(lvl) if lvl and lvl.isdigit() else None, raw.rstrip("\n")))
+                              int(lvl) if lvl and lvl.isdigit() else None, float(cap) if cap and re.match(r"^\d+(\.\d+)?$", cap) else None,
+                              raw.rstrip("\n")))
     return lines
 
 
@@ -230,6 +233,8 @@ class Report:
     per_minute: dict = field(default_factory=dict)
     busiest_minute: dict = field(default_factory=dict)
     counts: Counter = field(default_factory=Counter)
+    peak_rate: dict = field(default_factory=dict)
+    ceiling_known: bool = True
     examples: dict = field(default_factory=lambda: defaultdict(list))
 
     def flag(self, kind: str, *lines: Line, note: str = ""):
@@ -238,7 +243,47 @@ class Report:
             self.examples[kind].append(" | ".join(f"{l.t // 60:>3}:{l.t % 60:02d} {l.speaker}: {l.text}" for l in lines) + (f"  [{note}]" if note else ""))
 
 
-def audit(path: str, channel_filter: str | None = None) -> Report:
+# Lines the /faction ceiling doesn't hold: a realm event said on purpose, and lines to or about the real player.
+CEILING_EXEMPT = ("event", "player")
+
+
+def check_ceiling(report: Report, lines: list[Line], ceiling: float | None):
+    """Seconds and minutes in which the bots' /faction lines the ceiling holds ran above it (two-minute rate, as the server
+    measures it). The ceiling comes from each line's cap= field, else from --ceiling."""
+    by_realm: dict[str, list[Line]] = defaultdict(list)
+    for l in lines:
+        if l.ch == "faction" and l.who == "bot":
+            by_realm[l.realm].append(l)
+    report.ceiling_known = True
+    for realm, seq in by_realm.items():
+        counted = [l.t for l in seq if l.src not in CEILING_EXEMPT]
+        caps = [(l.t, l.cap) for l in seq if l.cap is not None]
+        if not caps and ceiling is None:
+            report.ceiling_known = False
+            continue
+        lo = hi = 0
+        c = 0
+        cap_now = caps[0][1] if caps else ceiling
+        peak = 0.0
+        minutes = set()
+        for t in range(seq[0].t, seq[-1].t + 1):
+            while c < len(caps) and caps[c][0] <= t:
+                cap_now = caps[c][1]
+                c += 1
+            while hi < len(counted) and counted[hi] <= t:
+                hi += 1
+            while lo < hi and counted[lo] <= t - 120:
+                lo += 1
+            rate = (hi - lo) / 2.0
+            peak = max(peak, rate)
+            if rate > cap_now + 1e-9:
+                report.counts["seconds_over_ceiling"] += 1
+                minutes.add(t // 60)
+        report.counts["minutes_over_ceiling"] += len(minutes)
+        report.peak_rate[realm] = (peak, cap_now)
+
+
+def audit(path: str, channel_filter: str | None = None, ceiling: float | None = None) -> Report:
     lines = read(path)
     report = Report(path, len(lines))
     if not lines:
@@ -291,6 +336,7 @@ def audit(path: str, channel_filter: str | None = None) -> Report:
         check_reactions(report, seq)
         check_repeats(report, seq)
     check_claims(report, lines)
+    check_ceiling(report, lines, ceiling)
     return report
 
 
@@ -356,8 +402,9 @@ def check_reactions(report: Report, seq: list[Line]):
             # A tagged reaction reacts to its own exchange: a burst to its trigger, a riff to the line just before it.
             same = [p for p in seq[max(0, k - 60):k] if p.ex == line.ex and p.speaker != line.speaker]
             if same:
-                ref = same[0] if line.src in ("burst", "reaction") else same[-1]
-                if line.src in ("burst", "reaction"):
+                burst = line.src in ("burst", "reaction", "event")
+                ref = same[0] if burst else same[-1]
+                if burst:
                     reactions_to[ref.n].append(line)
                 if line.t - ref.t > 45:
                     report.flag("reaction_late", ref, line, note=f"{line.t - ref.t}s")
@@ -377,10 +424,12 @@ def check_reactions(report: Report, seq: list[Line]):
             continue
         reactions_to[trigger.n].append(line)
     for trigger_n, reacting in reactions_to.items():
-        if len(reacting) > 2:
-            report.counts["pileon_lines_over_two"] += len(reacting) - 2
-            trig = next(l for l in seq if l.n == trigger_n)
-            report.flag("pileon", trig, *reacting, note=f"{len(reacting)} reactions")
+        trig = next(l for l in seq if l.n == trigger_n)
+        # The caps: a realm event (src=event) draws up to three reactions, anything else up to two.
+        cap = 3 if trig.src == "event" else 2
+        if len(reacting) > cap:
+            report.counts["pileon_lines_over_two"] += len(reacting) - cap
+            report.flag("pileon", trig, *reacting, note=f"{len(reacting)} reactions, cap {cap}")
 
 
 def check_repeats(report: Report, seq: list[Line]):
@@ -466,7 +515,31 @@ KINDS = [
     ("pileon_lines_over_two", "reaction lines past the second"),
     ("reaction_repeat_10min", "same reaction again within 10 min"),
     ("short_line_repeat_10min", "same short line (<=3 words) again within 10 min"),
+    ("seconds_over_ceiling", "seconds /faction ran above its ceiling (lines it holds)"),
+    ("minutes_over_ceiling", "minutes with any second above the ceiling"),
 ]
+
+
+def verdict(summary: dict) -> tuple[bool, list[str]]:
+    """PASS only with: 0 out of order (exact when the log has exchange ids, else the heuristic dialogue slips), 0 untrue
+    role/class/level answers, 0 late or repeated reactions, pile-ons only within the caps, 0 minutes above the ceiling."""
+    c = summary["counts"]
+    out_of_order = c["exact_out_of_order"] + c["exact_role_swap"] if summary["tagged_lines"] else (
+        c["answer_after_close"] + c["asks_after_invite"] + c["followup_before_answer"] + c["thanks_without_answer"])
+    checks = [
+        ("out of order", out_of_order),
+        ("untrue role/class/level", c["role_answer_false"] + c["class_claim_false"] + c["level_claim_false"]),
+        ("late reactions", c["reaction_late"]),
+        ("repeated reactions", c["reaction_repeat_10min"]),
+        ("pile-ons over the caps", c["pileon"]),
+        ("minutes above the ceiling", c["minutes_over_ceiling"]),
+    ]
+    reasons = [f"{name} {n}" for name, n in checks if n]
+    if not summary["ceiling_known"]:
+        reasons.append("ceiling unknown (no cap= in the log; pass --ceiling)")
+    if not summary["tagged_lines"]:
+        reasons.append("no exchange ids (a pre-1.1.3 log: heuristic checks only)")
+    return not reasons, reasons
 
 
 def summarize(report: Report) -> dict:
@@ -478,6 +551,8 @@ def summarize(report: Report) -> dict:
         "counts": {k: report.counts[k] for k, _ in KINDS},
         "per_hour": {k: round(report.counts[k] * per_hour, 1) for k, _ in KINDS},
         "examples": {k: v for k, v in report.examples.items()},
+        "peak_rate": {realm: {"peak": round(p, 1), "ceiling": round(cap, 1)} for realm, (p, cap) in report.peak_rate.items()},
+        "ceiling_known": report.ceiling_known,
     }
 
 
@@ -489,6 +564,8 @@ def print_report(summary: dict, show: int):
           "   busiest minute: " + ", ".join(f"{ch} {n}" for ch, n in summary["busiest_minute"].items()))
     for key, label in KINDS:
         print(f"   {summary['counts'][key]:>5}  ({summary['per_hour'][key]:>6}/h)  {label}")
+    for realm, rate in summary["peak_rate"].items():
+        print(f"   {realm}: busiest two minutes {rate['peak']}/min against a ceiling of {rate['ceiling']}/min (events and lines to the player aside)")
     if show:
         for key, label in KINDS:
             for example in summary["examples"].get(key, [])[:show]:
@@ -502,10 +579,14 @@ def main(argv=None) -> int:
     parser.add_argument("--channel", help="only this channel's dialogue checks (lines/min cover all)")
     parser.add_argument("--show", type=int, default=0, help="examples per check")
     parser.add_argument("--github", action="store_true", help="also print one GitHub Actions notice per log")
+    parser.add_argument("--ceiling", type=float, help="/faction ceiling in lines a minute, for logs without cap= fields")
     args = parser.parse_args(argv)
     summaries = []
     for path in args.logs:
-        summary = summarize(audit(path, args.channel))
+        summary = summarize(audit(path, args.channel, args.ceiling))
+        passed, reasons = verdict(summary)
+        summary["verdict"] = "PASS" if passed else "FAIL"
+        summary["verdict_reasons"] = reasons
         summaries.append(summary)
         print_report(summary, args.show)
         if args.github:
@@ -517,6 +598,12 @@ def main(argv=None) -> int:
                   f"false level {c['level_claim_false']}, thanks without answer {c['thanks_without_answer']}, follow-up before answer "
                   f"{c['followup_before_answer']}, pile-ons {c['pileon']} (+{c['pileon_lines_over_two']} lines), late reactions {c['reaction_late']}, "
                   f"no-trigger reactions {c['reaction_no_trigger']}, repeated reactions {c['reaction_repeat_10min']}")
+    for summary in summaries:
+        name = summary["log"].replace("\\", "/").rsplit("/", 1)[-1]
+        print(f"VERDICT {summary['verdict']}: {name}" + (f" ({'; '.join(summary['verdict_reasons'])})" if summary["verdict_reasons"] else ""))
+        if args.github:
+            print(f"::notice title=Chat audit verdict {name}::{summary['verdict']}" +
+                  (f" ({'; '.join(summary['verdict_reasons'])})" if summary["verdict_reasons"] else ""))
     if args.json:
         with open(args.json, "w", encoding="utf-8") as handle:
             json.dump(summaries, handle, indent=1)

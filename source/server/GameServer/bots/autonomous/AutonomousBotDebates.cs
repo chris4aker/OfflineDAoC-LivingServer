@@ -205,10 +205,15 @@ public static class AutonomousBotDebates
 
     #region Runtime
 
+    /// <summary>A debate beat that waits for room under /faction's ceiling tries again this often, at most this many times.</summary>
+    public const int RoomRetryMs = 3_000, MaxRoomWaits = 40;
+
     private sealed class Running
     {
         /// <summary>The scene's exchange id in the transcript (CHAT_LINE ex=).</summary>
         public readonly long Exchange = AutonomousChatExchange.NewId();
+        /// <summary>How many times the current beat waited for room under /faction's ceiling.</summary>
+        public int RoomWaits;
         public VC.Scene Scene;
         public Dictionary<string, long> Cast;
         public Dictionary<string, string> Shared;
@@ -565,6 +570,21 @@ public static class AutonomousBotDebates
                 continue;
             string filled = VC.ForTimeOfDay(filledVariants[Random.Shared.Next(filledVariants.Length)], DateTime.Now.Hour);
             string line = VC.Style(filled, AutonomousBotVoices.Corpus.VoiceFor(speaker.DatabaseID), Random.Shared);
+            // 1.1.3: a beat waits for room under /faction's ceiling (the scene owns the channel, so it drains), up to two minutes.
+            if (!AutonomousBotChatCoordinator.FactionRoom(realm))
+            {
+                if (running.RoomWaits++ >= MaxRoomWaits)
+                {
+                    End(realm, "no room in /faction");
+                    return;
+                }
+                if (running.WaitingSince == 0)
+                    running.WaitingSince = now;
+                running.Beat--;
+                running.NextAt = now + RoomRetryMs;
+                return;
+            }
+            running.RoomWaits = 0;
             using (AutonomousChatExchange.Tag(running.StoryKey != null ? "storyline" : "debate", running.Exchange, running.Beat - 1, beat.Role, speaker))
                 AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
             // In the realm's thread too, so "why?" or "lol" after a debate line goes to the bot that said it.
@@ -713,6 +733,8 @@ public static class AutonomousBotDebates
             GameBot speaker = bot;
             AutonomousLivingServer.Later(speaker, due, () => Eligible(speaker, realm) && AutonomousBotChatCoordinator.HasFactionAudience(realm), () =>
             {
+                // An answer to the real player (1.1.3: not held by the ceiling).
+                using var playerTag = AutonomousChatExchange.Tag("player", 0, 0, "answerer", speaker);
                 AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, text);
                 AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), speaker, text, "chat", player.Name);
             });

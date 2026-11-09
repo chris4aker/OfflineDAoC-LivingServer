@@ -85,6 +85,49 @@ class ChatAuditTests(unittest.TestCase):
         flagged = {k: v for k, v in c.items() if v and k != "short_line_repeat_10min"}
         self.assertEqual(flagged, {})
 
+    def audit_rows(self, rows, ceiling=None):
+        path = log(rows)
+        try:
+            summary = chat_audit.summarize(chat_audit.audit(path, ceiling=ceiling))
+            return summary, chat_audit.verdict(summary)
+        finally:
+            os.unlink(path)
+
+    def test_the_ceiling_counts_only_lines_it_holds(self):
+        # 16 bot lines in 60 s is 8 a minute over two minutes against a cap of 6: above it, unless they are a tagged event.
+        busy = [(k * 4, f"B{k}", f"line {k}", f"src=field ex={100 + k} i=0 role=asker cap=6.0") for k in range(16)]
+        summary, (passed, reasons) = self.audit_rows(busy)
+        self.assertGreater(summary["counts"]["minutes_over_ceiling"], 0)
+        self.assertFalse(passed)
+        event = [(k * 4, f"B{k}", f"line {k}", f"src=event ex=7 i={k} role=reactor cap=6.0") for k in range(16)]
+        summary, _ = self.audit_rows(event)
+        self.assertEqual(summary["counts"]["minutes_over_ceiling"], 0)
+
+    def test_a_clean_tagged_evening_passes(self):
+        rows = [
+            (0, "Aldric", "any reavers on? quick q", 'src=field ex=9 i=0 role=asker cls="Reaver" lvl=50 cap=7.0'),
+            (5, "Brenna", "me, sup", 'src=thread ex=9 i=1 role=answerer cls="Reaver" lvl=47 cap=7.0'),
+            (10, "Aldric", "what do u put points in at 50?", 'src=thread ex=9 i=2 role=asker cls="Reaver" lvl=50 cap=7.0'),
+            (15, "Brenna", "main line first", 'src=thread ex=9 i=3 role=answerer cls="Reaver" lvl=47 cap=7.0'),
+            (18, "Aldric", "makes sense ty", 'src=thread ex=9 i=4 role=asker cls="Reaver" lvl=50 cap=7.0'),
+            (60, "Cuthbert", "caer benowyc fell, mids have it", "src=event ex=10 i=0 role=teller cap=7.0"),
+            (64, "D1", "again??", "src=event ex=10 i=1 role=reactor cap=7.0"),
+            (70, "D2", "omw", "src=event ex=10 i=2 role=reactor cap=7.0"),
+            (78, "D3", "need to take it back", "src=event ex=10 i=3 role=reactor cap=7.0"),
+        ]
+        summary, (passed, reasons) = self.audit_rows(rows)
+        self.assertTrue(passed, reasons)
+        self.assertEqual(summary["counts"]["pileon"], 0, "an event draws up to three")
+        rows.append((82, "D4", "porting", "src=event ex=10 i=4 role=reactor cap=7.0"))
+        summary, (passed, _) = self.audit_rows(rows)
+        self.assertEqual(summary["counts"]["pileon"], 1, "but not four")
+        self.assertFalse(passed)
+
+    def test_an_old_log_without_ids_or_cap_cannot_pass(self):
+        _, (passed, reasons) = self.audit_rows([(0, "A", "hi all"), (5, "B", "o/")])
+        self.assertFalse(passed)
+        self.assertTrue(any("ceiling unknown" in r for r in reasons))
+
 
 if __name__ == "__main__":
     unittest.main()
