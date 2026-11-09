@@ -897,8 +897,13 @@ public static class AutonomousBotChatCoordinator
             if (!string.IsNullOrWhiteSpace(reply.Text))
             {
                 lines.Add(new AutonomousChatExchange.Line(1, reply.Text, AutonomousChatArbiter.DelayMs(said.Text, reply.Text, 40, 0, random), "answerer"));
+                // A bot party has a seat only while it is still recruiting, and for a role only one it still lacks (1.1.3, after RC5: any
+                // party under eight answered "ya, 1 spot", but parties are formed at their full size and never backfilled).
+                bool recruiting = AutonomousBotGroupCoordinator.RecruitingPost(poster) != null;
+                bool spot = AutonomousChatMarket.SpotFor(reply.Role, recruiting,
+                    poster.Group?.GetMembersInTheGroup().OfType<GameBot>().Select(member => (member.CharacterClass?.Name ?? member.ClassName, IsHealer(member))));
                 string answer = AutonomousChatMarket.PosterAnswer(reply.Asks, post, said.Text, AutonomousChatFieldTalk.Of(poster, random),
-                    AutonomousChatLiveAnswers.SpecText(poster), poster.Group == null || poster.Group.MemberCount < 8, StillHas(poster, item), random);
+                    AutonomousChatLiveAnswers.SpecText(poster), spot, StillHas(poster, item), random, recruiting && !spot ? reply.Role : null);
                 if (answer != null)
                     lines.Add(new AutonomousChatExchange.Line(0, answer, AutonomousChatArbiter.DelayMs(reply.Text, answer, 40, 0, random), "asker"));
             }

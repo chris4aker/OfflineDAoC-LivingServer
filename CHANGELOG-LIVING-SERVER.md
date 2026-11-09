@@ -169,6 +169,11 @@ chat code) and passed both.
   `chat_audit.py` counts bot questions with no reply within 60 s (`VERDICT FAIL` above 25%; RC3 and RC5 fail) and reports
   the share of /lfg and /trade posts with a reply. On the simulated evening 80 of 90 questions are answered within a
   minute (34 of 114 before) and the checker passes. Tests only.
+- **"ya, 1 spot" only from a party that is still recruiting (after RC5).** The /lfg replies above had the poster say "ya,
+  1 spot" or "ya, still room" for any bot party under eight. Bot parties are formed at their full size and never take
+  anyone later, so a party has a seat only while it is still assembling with seats free; and "still need a healer?" is
+  yes only while nobody in it fills that role. A party that set off says "nope full, sry"; one still forming that has its
+  healer says "got a healer already, sry". Tests only.
 - **An item is paired only with a class that can use it (after RC5).** On the owner's PC: "99% adroit focus staff any good
   for pally?", "95% adroit focus staff any good for friar?", "99% earthshaker chain boots any good for sorc?", "99%
   matterbender medium shield any good for infil?" and "wtb a shield for a 30 cabalist pst". A bot asks about its own item
