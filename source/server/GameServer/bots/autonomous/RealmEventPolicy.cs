@@ -71,6 +71,14 @@ namespace DOL.GS
         public static bool BreaksOffToDefend(int defenders, int defenderCap, int attackers, int marchedAttackers, int forceSize) =>
             defenders * 2 < defenderCap && attackers - forceSize >= (Math.Max(attackers, marchedAttackers) + 1) / 2;
 
+        /// <summary>
+        /// Whether a bot siege calls its keep's realm when the attacking army marches (scouts see it leave its border keep), not
+        /// when it reaches the walls (1.1.3, AutonomousRvrEventLayer.CallDefendersAtMarch). A player's attack keeps its own
+        /// immediate defense, and the losing realm's one retake keeps its rules; the legacy unscheduled sieges are unchanged.
+        /// </summary>
+        public static bool DefendersCalledAtMarch(bool siegeScheduling, bool defenseReaction, bool retake) =>
+            siegeScheduling && !defenseReaction && !retake;
+
         /// <summary>No defense muster once the battle is on and attackers are at the keep (owner, 2026-10-20).</summary>
         public static bool DefendersSkipMuster(bool battleStarted, int attackersPresent) => battleStarted && attackersPresent > 0;
 

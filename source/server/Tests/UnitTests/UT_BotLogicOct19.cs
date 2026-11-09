@@ -260,9 +260,13 @@ namespace DOL.UnitTests
                 Assert.That(SiegeDefenseBalance.NextShift(0, [true, true]), Is.Zero, "too few results");
                 Assert.That(SiegeDefenseBalance.NextShift(0, [true, true, true]), Is.EqualTo(SiegeDefenseBalance.Step),
                     "attackers took every keep: more defenders");
-                Assert.That(SiegeDefenseBalance.NextShift(0, [true, false, true, false, false, false]), Is.EqualTo(-SiegeDefenseBalance.Step),
-                    "attackers lost most: fewer defenders");
-                Assert.That(SiegeDefenseBalance.NextShift(0, [true, true, false]), Is.Zero, "two in three: unchanged");
+                Assert.That(SiegeDefenseBalance.NextShift(0, [true, false, false, false, false, false]), Is.EqualTo(-SiegeDefenseBalance.Step),
+                    "attackers lost nearly every siege: fewer defenders");
+                // 1.1.3: a defended keep usually holds. Two captures in six leave it as it is; two in three add defenders.
+                Assert.That(SiegeDefenseBalance.NextShift(0, [true, false, true, false, false, false]), Is.Zero, "two in six: unchanged");
+                Assert.That(SiegeDefenseBalance.NextShift(0, [true, false, true, false, true, false]), Is.Zero, "half: unchanged");
+                Assert.That(SiegeDefenseBalance.NextShift(0, [true, true, false]), Is.EqualTo(SiegeDefenseBalance.Step),
+                    "two in three: more defenders");
                 Assert.That(SiegeDefenseBalance.NextShift(0.25, [true, true, true]), Is.EqualTo(0.375),
                     "past the share's limit the attackers' cap is trimmed (2026-11-06)");
                 Assert.That(SiegeDefenseBalance.RatioAt(0.75, 0.375), Is.EqualTo(1.0), "the share never more than 0.25 off the setting");

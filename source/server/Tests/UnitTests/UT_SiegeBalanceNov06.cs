@@ -48,15 +48,17 @@ namespace DOL.UnitTests
         public void TheShiftGoesTwoStepsPastTheShareAndComesBackTheSameWay() => Assert.Multiple(() =>
         {
             bool[] allCaptured = [true, true, true, true, true, true];
-            bool[] mostlyDefended = [true, false, false, false, false, true];
+            bool[] mostlyDefended = [true, false, false, false, false, false];
             Assert.That(SiegeDefenseBalance.NextShift(0.25, allCaptured), Is.EqualTo(0.375), "still captured at the share's limit");
             Assert.That(SiegeDefenseBalance.NextShift(0.375, allCaptured), Is.EqualTo(0.5));
             Assert.That(SiegeDefenseBalance.NextShift(0.5, allCaptured), Is.EqualTo(0.5), "the limit");
             Assert.That(SiegeDefenseBalance.NextShift(0.5, mostlyDefended), Is.EqualTo(0.375), "defenders win: the trim comes off first");
             Assert.That(SiegeDefenseBalance.NextShift(0.375, mostlyDefended), Is.EqualTo(0.25));
             Assert.That(SiegeDefenseBalance.NextShift(0.25, mostlyDefended), Is.EqualTo(0.125), "then the share falls");
-            Assert.That(SiegeDefenseBalance.NextShift(0.5, [true, true, false, true, false, true]), Is.EqualTo(0.5),
-                "four in six: unchanged");
+            Assert.That(SiegeDefenseBalance.NextShift(0.375, [true, false, true, false, true, false]), Is.EqualTo(0.375),
+                "three in six: unchanged (1.1.3)");
+            Assert.That(SiegeDefenseBalance.NextShift(0.375, [true, true, false, true, false, true]), Is.EqualTo(0.5),
+                "four in six: attackers still win most, more defenders (1.1.3)");
         });
 
         [Test]

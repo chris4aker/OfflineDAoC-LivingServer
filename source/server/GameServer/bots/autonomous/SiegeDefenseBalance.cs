@@ -31,8 +31,14 @@ public static class SiegeDefenseBalance
     /// <summary>How far past <see cref="MaximumShift"/> the shift goes on the defenders' side: the share of the attackers'
     /// cap that it takes away (two steps: 128, 112, 96 for a keep; 240, 210, 180 for a relic keep).</summary>
     public const double MaximumAttackerTrim = 0.25;
-    /// <summary>Attacker win share above which defenders get more, and below which they get fewer.</summary>
-    public const double HighWinShare = 0.8, LowWinShare = 0.45;
+    /// <summary>
+    /// Attacker win share above which defenders get more, and below which they get fewer. Was 0.8 / 0.45 (owner 2026-10-19:
+    /// sieges won about two times in three). 1.1.3 (owner's goal for the RC nights, 2026-11-09: in 2003 most sieges against a
+    /// defended keep failed or took long, and keeps changed hands a few times a night): now more than half captured adds
+    /// defenders and fewer than one in five takes them away, so the balance settles at two or three captures in six instead
+    /// of steering back to attackers winning most once the defenders arrive in time (AutonomousRvrEventLayer.CallDefendersAtMarch).
+    /// </summary>
+    public const double HighWinShare = 0.5, LowWinShare = 0.2;
     /// <summary>Sieges replayed from the ledger at start: four windows, twice the steps from one limit to the other.</summary>
     public const int LedgerResults = 24;
 

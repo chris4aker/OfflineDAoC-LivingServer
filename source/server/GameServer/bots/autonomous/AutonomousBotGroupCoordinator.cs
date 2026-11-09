@@ -1592,6 +1592,13 @@ public static partial class AutonomousBotGroupCoordinator
         }
     }
 
+    /// <summary>The time one group formation pass may spend once it has tried a leader.</summary>
+    public const long FormationPassBudgetMilliseconds = 150;
+
+    /// <summary>Whether a formation pass has spent its budget: at least one leader tried and the budget used. Pure.</summary>
+    public static bool FormationPassSpent(int leadersTried, long elapsedMilliseconds) =>
+        leadersTried > 0 && elapsedMilliseconds >= FormationPassBudgetMilliseconds;
+
     private static void TryFormGroups()
     {
         TryFormGroups(eAutonomousObjectiveKind.GroupPve);
@@ -1651,6 +1658,8 @@ public static partial class AutonomousBotGroupCoordinator
         var claimed = new HashSet<GameBot>();
         var recruitCrossings = new Dictionary<(eRealm Realm, ushort Region), DbZonePoint>();
         int rendezvousChecks = 0;
+        var passClock = System.Diagnostics.Stopwatch.StartNew();
+        int leadersTried = 0;
         // RvR stages at the realm's fixed border keep, so the leader is the
         // bot closest to it. PvE meets around its leader and keeps the
         // shuffled draw below.
@@ -1685,8 +1694,13 @@ public static partial class AutonomousBotGroupCoordinator
             // (Raised from 4 checks / 35% leader draw: only 248 groups formed in
             // an eight-hour run while 3,640 bots timed out waiting.)
             if (rendezvousChecks >= 6) break;
+            // The pass runs under the coordinator's lock, which every grouped bot's turn waits on. Owner's PC (AI profile,
+            // 2026-11-07/08): one pass took 0.3-1.3 s 46 times, nearly all of it the rendezvous route searches (route.zone_step
+            // up to 390 ms each). Once it has spent its time budget it stops; the next pass, 15 s later, goes on.
+            if (FormationPassSpent(leadersTried, passClock.ElapsedMilliseconds)) break;
             if (claimed.Contains(leader))
                 continue;
+            leadersTried++;
             // (PvE used to skip 40% of leaders at random; with the longest waits first, a cap on tries keeps the cost.)
             if (objectiveKind == eAutonomousObjectiveKind.GroupPve && ++leaderAttempts > MaximumPveLeaderAttemptsPerPass)
                 break;

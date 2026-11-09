@@ -663,10 +663,10 @@ namespace DOL.UnitTests
             Assert.Multiple(() =>
             {
                 Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.ShiftAfter(sixOfSeven)));
-                Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.MaximumShift + SiegeDefenseBalance.Step),
-                    "6 of 7 captured: defenders at +0.25, and the attackers trimmed one step (2026-11-06)");
+                Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.MaximumShift + SiegeDefenseBalance.MaximumAttackerTrim),
+                    "6 of 7 captured: defenders at +0.25, and the attackers trimmed both steps (1.1.3: more than half captured adds defenders)");
                 Assert.That(SiegeDefenseBalance.Ratio(0.75), Is.EqualTo(1.0));
-                Assert.That(SiegeDefenseBalance.AttackerCap(128), Is.EqualTo(112));
+                Assert.That(SiegeDefenseBalance.AttackerCap(128), Is.EqualTo(96));
             });
         }
 

@@ -28,6 +28,21 @@ public sealed partial class AutonomousWorldBotController
             home, passage.Location.X, passage.Location.Y, passage.Location.Z, bot.Level, false, true));
     }
 
+    /// <summary>
+    /// The first leg to another realm's frontier for a bot outside the three frontier regions (its capital after a release):
+    /// its own frontier's border keep, where the porter and its medallion merchant stand. Null when the bot is already in a
+    /// frontier region, the destination is no porter frontier, or its own frontier can't be reached from here either.
+    /// </summary>
+    private static CampDestination HomeFrontierLeg(GameBot bot, CampDestination destination)
+    {
+        ushort home = AutonomousFrontierTransport.HomeFrontier(bot.Realm);
+        if (!AutonomousFrontierTransport.NeedsHomeFrontierFirst(bot.CurrentRegionID, destination.RegionId, home)) return null;
+        var passage = AutonomousFrontierTransport.Destination(bot.Realm, home);
+        if (passage == null || FindNextCrossing(bot, home, passage.Location.X, passage.Location.Y) == null) return null;
+        return new("rvr-home-frontier", passage.Location.Name, "frontier",
+            home, passage.Location.X, passage.Location.Y, passage.Location.Z, bot.Level, false, true);
+    }
+
     /// <summary>Beyond this distance from the medallion merchant a bot enters the frontier on foot through its own border keep.</summary>
     private const int FrontierMedallionReach = 20_000;
 
