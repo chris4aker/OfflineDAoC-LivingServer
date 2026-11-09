@@ -186,6 +186,15 @@ namespace DOL.UnitTests
             var standSpot = new Vector3(50500, 19500, 17000);
             EpicEncounterTactics.SetStand(boss, standSpot);
             Assert.That(EpicEncounterTactics.Decide(melee, boss, live, 1, canShootFlyers: false).StandAt, Is.EqualTo(standSpot));
+            // Each orb has its own stand too: a shooter out of reach of its orb (1,667 from orb B) walks there first, then shoots.
+            var standB = new Vector3(50600, 19300, 17000);
+            EpicEncounterTactics.SetStand(orbB, standB);
+            var walk = EpicEncounterTactics.Decide(caster, boss, live, 1, canShootFlyers: true);
+            Assert.That((walk.Action, walk.Target, walk.StandAt), Is.EqualTo((EpicEncounterTactics.BotAction.StandOff, (GameNPC)orbB, (Vector3?)standB)));
+            var atStand = Npc<Raider>(50650, 19350, 17000);
+            var shoot = EpicEncounterTactics.Decide(atStand, boss, live, 1, canShootFlyers: true);
+            Assert.That((shoot.Action, shoot.Target), Is.EqualTo((EpicEncounterTactics.BotAction.Retarget, (GameNPC)orbB)), "778 from it: in reach");
+            Assert.That(EpicEncounterTactics.Decide(melee, boss, live, 1, canShootFlyers: false).StandAt, Is.EqualTo(standSpot), "melee wait at the route's stand");
             Assert.That(EpicEncounterTactics.Decide(caster, tree, live, 0, true).Target, Is.SameAs(boss), "the tree dies with the boss");
 
             // Orb A dies: everyone left goes to orb B.
@@ -279,66 +288,7 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterTactics.BreakOffShakesOff(false, 1000, 1400), Is.False, "one that never resets chases");
         }
 
-        // ---- ranged stands for floating required adds ---------------------------------------------------------------
-
-        /// <summary>A floor at one height inside a radius of its centre (none outside: a chasm), with an optional wall.</summary>
-        private sealed class Floor : PathfindingMgrBase
-        {
-            public float Z, Radius = float.MaxValue;
-            public Vector2 Centre;
-            public bool Wall;
-            public override bool IsAvailable => true;
-            public override bool HasNavmesh(Zone zone) => true;
-            public override Vector3? GetClosestPoint(Zone zone, Vector3 p, float x, float y, float z, EDtPolyFlags[] filters) =>
-                Math.Abs(p.Z - Z) <= z && Vector2.Distance(new(p.X, p.Y), Centre) <= Radius ? new Vector3(p.X, p.Y, Z) : null;
-            public override bool HasLineOfSight(Zone zone, Vector3 from, Vector3 to, EDtPolyFlags[] filters) =>
-                !Wall && Vector2.Distance(new(to.X, to.Y), Centre) <= Radius;
-        }
-
-        // Krondon, 2026-11-06: Scurceol Hyrde where he stood and the four Lyft Miht orbs 234-577 above him (the test floor is at his height).
-        private static readonly Vector3 Scurceol = new(51941, 20068, 17174);
-        private static readonly Vector3[] Orbs = [new(51236, 20849, 17669), new(51316, 19228, 17408), new(52702, 19214, 17751), new(52713, 20841, 17511)];
-
-        [Test]
-        public void FloatingOrbsAreShotFromTheFloorNotWalkedTo()
-        {
-            var nav = new Floor { Z = 17174 };
-            Zone zone = UT_RealmRaidFormation.Zone();
-            foreach (Vector3 orb in Orbs)
-            {
-                Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, zone, orb, Scurceol, floor => floor, out Vector3 stand, out string why), Is.True, why);
-                Assert.That(stand, Is.EqualTo(new Vector3(orb.X, orb.Y, 17174)), "the floor under it");
-                Assert.That(Vector3.Distance(stand, orb), Is.LessThanOrEqualTo(RealmRaidDungeonRoute.RequiredAddRangedReach));
-            }
-        }
-
-        [Test]
-        public void AnOrbOverAChasmIsShotFromBesideItsBoss()
-        {
-            // No floor under the orb (only within 700 of Scurceol): the boss's floor is 1,163 from orb 1, within reach.
-            var nav = new Floor { Z = 17174, Centre = new(Scurceol.X, Scurceol.Y), Radius = 700 };
-            Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), Orbs[0], Scurceol, f => f, out Vector3 stand, out string why),
-                Is.False, "the mesh ray to a spot over the chasm leaves the floor: no sight is proven");
-            Assert.That(why, Does.Contain("line of sight"));
-            nav.Radius = 1100; // the floor reaches under the orb's edge
-            Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), Orbs[0], Scurceol, f => f, out stand, out why), Is.True, why);
-            Assert.That(Vector3.Distance(stand, Orbs[0]), Is.LessThanOrEqualTo(RealmRaidDungeonRoute.RequiredAddRangedReach));
-        }
-
-        [TestCase("wall", "line of sight")]
-        [TestCase("unreachable", "reachable from the raid")]
-        [TestCase("too far", "within 1400")]
-        [TestCase("no floor", "no floor")]
-        public void AnOrbNobodyCanShootSetsTheTacticAsideAndSaysWhy(string trouble, string reason)
-        {
-            var nav = new Floor { Z = trouble == "no floor" ? 10_000 : 17174, Wall = trouble == "wall" };
-            Vector3 orb = trouble == "too far" ? Orbs[0] + new Vector3(0, 0, 1_600) : Orbs[0];
-            // The proven approach lands beside the floor point (within the resolver's 220), so sight is checked.
-            Func<Vector3, Vector3?> reach = trouble == "unreachable" ? _ => null : f => f + new Vector3(150, 0, 0);
-            if (trouble == "too far") nav.Centre = new(Scurceol.X, Scurceol.Y);
-            Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), orb, Scurceol, reach, out _, out string why), Is.False);
-            Assert.That(why, Does.Contain(reason));
-        }
+        // Ranged stands for floating required adds (Scurceol's orbs): UT_ScurceolOrbStands, on the real Krondon mesh.
 
         [Test]
         public void ABreakOffSendsRaidersToTheMusterFromTheBossAndItsAdds()
