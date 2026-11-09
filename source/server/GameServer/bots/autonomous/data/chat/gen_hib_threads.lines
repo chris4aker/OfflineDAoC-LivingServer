@@ -201,8 +201,8 @@ C: i would debuff you both and walk away | i would debuff you and you would both
 E: put all three in one group and stop arguing | a group with all three is a good group, honestly
 A: hero tanks, champion debuffs, blademaster kills. everyone has a job | ok so everyone gets a job
 ?B: and i get the job where things hit me, as usual | and i take the hits, like always
-F: INC dun crauchon, big alb group at the door | inc at dun crauchon, albs at the gate, lots of them
-B: that settles it. everyone to crauchon | heroes to the front, see you there
+F: ok enough, who is heading out? the frontier needs bodies more than this argument | anyway, emain needs bodies more than this argument
+B: that settles it. heroes to the front | heroes first, see you out there
 C: debuffs ready, omw | omw
 D: last one there is a lurikeen | race you
 
@@ -245,8 +245,8 @@ A: i will relay that word for word | lol will do
 @role D type=Daredevil
 @role E type=Leveler
 A: any of our stealthers out? i keep getting picked off on the road | who is hunting stealthers tonight
-B: me. sitting by the road to dun crimthain waiting for a lone alb | nightshade on the road near dun crimthain, send me targets
-C: ranger here, on the hill above the road. i see them before you do | i have the hill, i see everything that moves
+B: me, when i am out. lone albs on the roads are the best targets | nightshade here, send me targets
+C: ranger here. from a hill i see them before you do | i take the hill, i see everything that moves
 B: and i reach them before you do | seeing is nice, stabbing is better
 C: i do not need to reach them, that is the point of a bow | you walk to them, my arrows fly
 ~ 25
@@ -262,11 +262,11 @@ C: very. shoot it as it runs at you, celtic dual when it arrives | yes, arrows o
 B: nightshade levels slower, i will admit it | nightshade leveling is a grind, no lie
 D: slow leveling, but the best frontier stories | but nightshade gets the better stories
 ~ 20
-B: hold on, enemy stealther on the road | brb, something just moved by the bridge
-C: got it in sight, mid shadowblade, heading your way | i see it. shadowblade, coming toward you
-D: well? | who got it
-B: i did, he is down | that one is mine
-C: i hit it twice before you showed up | i shot it first, you stole the kill
+B: best one was a shadowblade who walked right past me on a road | once had a mid stealther walk right past me by a bridge
+C: i remember, i had him in sight the whole way | and i had him spotted before you even moved
+D: well? | who got him
+B: i did, he went down | that one was mine
+C: i hit him twice before you showed up | i shot him first, you stole the kill
 ?D: a frontier kill steal, report it to the officers | ks in the frontier, a new low
 E: and the debate continues | lol so nobody wins, as usual
 
@@ -309,30 +309,30 @@ D: i will run at him, as discussed | i will be the bait, i always am
 @role D class=Eldritch
 @role E type=Socialite
 @role F type=*
-A: albs at dun ailinne with a ram, anyone near? | need defenders at dun ailinne, albs at the door
-B: on the wall already, shrooms planted | already here, turrets on the wall and counting
-C: please do not plant the whole wall, my frame rate cannot take it | how many shrooms are up there, my game is a slideshow
+A: {q} is it just me or do animists win every keep defense now | {q} honest question, are animists the best keep defenders we have
+B: put me on a wall with shrooms and watch | give me a wall and i will fill it with turrets
+C: please do not plant the whole wall, my frame rate cannot take it | last defense with three animists was a slideshow for me
 B: enough to keep the ram crew busy | as many as the wall will hold
-D: the turrets are doing more damage than i am right now | love the shrooms, the albs stop at the door and just melt
+D: the turrets do more damage than i do some nights | love the shrooms, ram crews stop at the door and just melt
 C: they are doing more damage to my computer | my poor computer is choking on them
 ?E: turn the spell effects down, it helps | lower your settings, trust me
 ~ 30
-C: complaints aside, a wall full of shrooms is scary | honestly animists are the best keep defenders we have
+C: complaints aside, a wall full of shrooms is scary | honestly nothing holds a wall like an animist
 B: thank you. i waited all of shrouded isles for this | finally some respect for the mushroom people
 E: do animists do anything besides sit on walls? | what does an animist do away from a keep
 B: out in the world we plant and kite, it is its own style | we level with turrets, plant, back up, plant again
 D: had one in my group in domnann, it was fun to watch | i grouped with one in hy brasil, the turrets held the adds
 ~ 25
-F: ram is on the door, more albs coming over the hill | door is taking hits, more of them coming
-B: planting on the inner side too | moving turrets to cover the door
-C: my screen is a sea of mushrooms | i can no longer see the albs, only fungus
-D: nuking the ram crew from the wall | dropping everything i have on the ram crew
-?E: someone keep the animist alive, he is our army | druids, heal the animist
+F: best part is when the ram crew reaches the door and finds a carpet of mushrooms | the ram crews hate it, you can see them stop and stare
+B: i always plant the inner side too | some turrets over the door, some on the inner side
+C: and my screen becomes a sea of mushrooms | i can never see the albs, only fungus
+D: while i nuke the ram crew from the wall, it works | i drop everything on the ram crew, the shrooms do the rest
+?E: just keep the animist alive, he is the army | druids, always heal the animist first
 ~ 20
-F: they broke off, the door is still up | door held, they are running
+F: and the door usually holds when the shrooms are up | in my experience the door holds and they run
 B: the shrooms win again | another keep saved by mushrooms
 C: ok, i take it back, plant all you want | fine. i surrender to the fungus
-A: well defended, ty everyone | lol good work all
+A: ok, who is heading out? the walls need shrooms more than this argument | lol fine, plant away
 
 @topic hib_valewalker
 @levels 20-45
@@ -374,26 +374,27 @@ A: let us know how the spells go | report back on what the spells actually do
 @role C type=Explorer
 @role D type=Socialite
 @role E type=Daredevil
-A: first night ever, i am a lurikeen in mag mell. what now? | brand new to the game, standing in mag mell, where do i start
+@role A levels=1-10
+A: first night ever, standing in mag mell. what now? | brand new to the game, standing in mag mell, where do i start
 B: welcome! stay around mag mell until things there go green | welcome. stay near mag mell for a few levels, then follow the road
 C: talk to the npcs in town too, some of them have tasks | read the quest givers in town, easy xp and some gear
 D: and say hi in faction any time, we do not bite | glad to have you, ask anything you want
 ~ 25
-A: got a level! what do the colors on monster names mean | level 4. what do the con colors mean
+A: got a level! what do the colors on monster names mean | just dinged. what do the con colors mean
 B: green and blue are your friends, yellow is a fair fight, orange is a risk | grey is free, green is easy, blue is good, yellow is even
 E: red and purple are where the fun is | red and purple are for brave people
 B: red and purple are how you meet your bind point | do not listen to E, red means run
 ?D: E has died more than anyone in hibernia | E learned that the hard way. many times
 ~ 30
-A: level 7, still mag mell? | 7 now, where next
+A: dinged again, still mag mell? | a few levels up now, where next
 C: lough derg. the lough wolves and orchard nippers are perfect for you | head into lough derg, plenty of lough wolves at your level
 B: careful with the lough wolf cadgers, they hit harder | the cadgers are tougher than the regular wolves, watch the names
 A: something called a water beetle just bit me | what is a water beetle and why is it chasing me
 E: that is lunch, hit it back | hit it back harder
 ~ 20
 D: which class are you going for? | what did you roll by the way
-A: stalker, i want to be a nightshade at 5 | stalker now, nightshade soon
-D: lurikeen nightshade, very sneaky and very small | a stealthy lurikeen is a classic
+A: {class}, for now anyway | {class}, still learning what that means
+D: nice pick, hibernia needs more of those | good choice, you will have fun
 C: after lough derg, connacht has room for a hunter | connacht next, lots of space and lots of feccans
 B: low teens, silvermine mts. walking rocks and badgers give good xp | then silvermine mts, the walking rocks are slow and worth it
 ?E: and the luricaduanes. they look friendly. they are not | beware the luricaduane, small but rude
@@ -411,7 +412,8 @@ A: will do. back to the wolves | off to lough derg, wish me luck
 @role D class=Druid
 @role E type=Daredevil
 @role F type=Socialite
-A: 16 and soloing is getting slow, where are the groups | lf group or advice, 16 and everything takes forever
+@role A levels=12-19
+A: mid teens and soloing is getting slow, where are the groups | lf group or advice, still in my teens and everything takes forever
 B: muire tomb, groups form at the entrance this time of night | muire tomb, there is always someone forming at the door
 C: or shannon estuary if you want to keep soloing, the sandmen are slow | shannon estuary, sand crabs and sandmen, easy solo
 D: muire is better xp, just do not go in without a healer | the tomb with a group, and bring a healer
@@ -433,7 +435,7 @@ E: and a puller who knows the den | and someone who can pull clean
 ?B: careful with the spraggon cutters, they hurt | the cutters are the ones to watch
 ~ 20
 F: group forming at muire tomb, 2 spots, who wants in | muire group at the entrance, need 2
-A: me! 16, i can tank a bit | inv please, 16
+A: me! inv please, on my way | inv please, i can be there fast
 F: sent | invite sent
 D: i will come heal | i am in, i will heal
 E: i will come too, just to prove a point | i am coming, and i will not die this time
@@ -446,7 +448,8 @@ D: then i am definitely bringing power | that is what you said last time
 @role C type=Leveler
 @role D type=Daredevil
 @role E class=Bard
-A: 38 and bored of my usual camp, where else is there | need a new zone for my late 30s, sick of my camp
+@role A levels=35-40
+A: late 30s and bored of my usual camp, where else is there | need a new zone for my late 30s, sick of my camp
 B: cliffs of moher. the view alone is worth the trip | have you been to the cliffs of moher? go, it is beautiful
 C: a view does not give xp. find a camp people use and stay | scenery is nice, but stick with a busy camp
 D: the cursed forest. it lives up to the name and i love it | cursed forest, it is called cursed for a reason
@@ -547,31 +550,31 @@ B: good luck and do not get lost again | welcome to tir na nog, officially
 @role D class=Druid
 @role E type=Socialite levels=35-44
 @role F type=*
-A: 4am and midgard is at dun dagda with a ram, anyone awake? | dun dagda under attack, mids at the door, anyone up
+A: {q} anyone else notice midgard always hits the relic keeps around 4am | {q} why are the night raids on our relics always the mids
 B: of course it is 4am, they always come when we sleep | naturally they wait until we are all asleep
-C: heading over from dun lamfhota, give me a few | on my way from dun lamfhota
-D: druid on, where do you want me | i am up, i can heal the door crew
-B: how many of them | numbers?
-A: at least a full group and a ram, maybe more behind | eight or so and a ram, more on the hill
+C: i have run to a relic defense half asleep more than once | last time i ran over in my pajamas
+D: druid here, at that hour i always end up healing the door crew | if i am up, i heal the door crew, every time
+B: how many do they even bring at that hour | and how many do they bring?
+A: usually a full group and a ram, maybe more behind | eight or so and a ram, more on the hill
 ~ 20
 E: just logged in to check a sale, why is faction full at this hour | wait, why is everyone awake
-B: relic raid at dagda, grab your gear | mids hitting dun dagda, get over here
-E: i am way too low for this, i will just die | i am not 50, what am i going to do
+B: arguing about mid relic raids at 4am, weigh in | night raids on our relics, the usual complaint
+E: i would be way too low for a relic defense anyway | i am not 50, what would i even do
 C: a lowbie can still stand on the wall and yell inc | you can still count them from the wall
 ?D: yes please, eyes are worth a lot | a scout is a scout
 ~ 25
-A: outer door at half | the door is down to half
-C: i am behind them now, going for the casters | coming up behind them, hitting their healers
-D: on the wall, heals up | healing from the wall
-B: champions, valor on the ram crew | get the debuffs on whoever is at the ram
+A: the outer door always falls faster than we expect | by the time enough of us wake up the door is at half
+C: best trick is getting behind them and hitting their casters | i always go around behind and hit their healers
+D: i heal from the wall, safer | a druid on the wall is worth two in the yard
+B: and champions, valor on the ram crew, always | debuffs on whoever is at the ram, every time
 ?F: rangers, aim at their healers | arrows from the wall, target the healers
 ~ 30
-A: they broke, they are running for the border | they are pulling back
-C: caught a few stragglers on the way out | got three on the road
-D: everyone who died, come to the gate for rez | rezzing at the gate
-E: is it over? did we win? | did we win?
-B: we held. the relic stays home | the relic stays. good night hibernia
-E: best thing i have seen at 4am | worth staying up for
+A: hold long enough and they break and run for the border | they always pull back once a few of us stand firm
+C: and the stragglers on the way out are free realm points | the road home is where i get my kills
+D: then i rez everyone at the gate | and then it is rezzing at the gate till dawn
+E: so do we usually win those? | does the relic usually stay?
+B: if enough of us wake up, the relic stays home | more often than you think. good night hibernia
+E: sounds worth staying up for | ok, next time i stay up
 ?A: they will be back tomorrow night | same time tomorrow, i bet
 @needs
 
@@ -583,29 +586,29 @@ E: best thing i have seen at 4am | worth staying up for
 @role D class=Bard
 @role E class=Enchanter
 @role F type=Leveler
-A: crauchon has albs and mids at it, emain is chaos | emain is on fire again, three realms at dun crauchon
+A: best thing in the game is a three way fight in emain, nobody can tell me otherwise | {q} anyone else live for the three realm fights in emain
 B: nothing better than a three way fight | the best fight in the game, three realms in one field
 F: my computer cannot handle emain, last time i froze and died | i went once and my screen turned into a slideshow
 C: everybody lags in emain, push through | turn everything down and run in
 E: i turn the effects down and play by sound | effects off, i just listen for the bard
-D: speed is up, stay close | speed on, follow me to the field
+D: i just keep speed up and everyone follows me in | speed on and follow the bard, that is my whole plan
 ~ 25
-B: who is leading, we need one voice | who is calling targets
-C: i will call. their clerics first | assist me, i am on the alb clerics
+B: the problem is always who leads, you need one voice | the hard part is who calls targets
+C: i always call their clerics first | when i lead, it is the alb clerics first, every time
 E: if we focus their healers we win this | their healers fall fast if we all hit them
-D: mezzing the mid group by the trees, do not hit them yet | mez down on the mids, leave them alone for now
+D: mez one realm and fight the other, that is the trick | i mez the mids and we fight the albs first
 ?F: which ones are the mids, i cannot tell | sorry, how do i tell albs from mids in this mess
 ~ 30
-F: ok i made it to the field, still lagging | i am here, frames are terrible
+F: last time i made it to the field and just lagged | i got there once and the frames were terrible
 B: lag or not, hit the casters | just keep swinging at whatever is in a robe
-C: two clerics down, rps for everyone | dropped their healers, rps coming in
-E: my pbae just caught the whole ram crew | pbae on the ram, they are all low
-?D: mez is gone anyway, burn it all | whoever broke the mez, good timing for once
+C: drop two clerics and the rps roll in | once their healers drop, the rps come fast
+E: best is a pbae on a whole ram crew | i love catching a ram crew with one pbae
+?D: and when the mez breaks, just burn it all | someone always breaks the mez anyway, then you burn
 ~ 20
-A: albs are falling back, mids facing us alone now | albs ran, the mids are left
-B: just the mids now, finish this | last group standing, finish it
-D: pull back to the keep if it turns | stay together, speed is still up
-F: i got my first realm kill ever! | i got a kill! my first rps
+A: and then one realm runs and you are alone with the other | then the albs run and it is just us and the mids
+B: and the last realm standing gets the field | last group standing wins the night
+D: and if it turns, pull back to the keep | stay together and stay on the speed
+F: my first realm kill ever was in one of those | my first rps ever were in a three way mess like that
 C: gz! the first one is the sweetest | gz, the start of a bad habit
 E: gz, now you are hooked | welcome to emain
 
@@ -616,15 +619,15 @@ E: gz, now you are hooked | welcome to emain
 @role C type=NoLifer
 @role D type=Leveler
 @role E type=Crafter
-A: our guild finally claimed dun bolg | guild just claimed dun bolg, banners up
-B: grats! enjoy it while it lasts | nice, how long until someone takes it
+A: {q} our guild wants to claim a keep, good idea or not | {q} would it be dumb to put our guild banner on a keep
+B: go for it, enjoy it while it lasts | sure, how long until someone takes it
 C: claiming is easy, holding it is the job | holding a keep is the part that matters
 A: we have a few night owls, we will manage | we have people on at odd hours, should be fine
 D: sorry, what is the point of claiming a keep | what does claiming even do
 C: your guild's name on the walls, some pride, and a reason to log in for defense | pride, and a reason to log in when the door gets hit
 E: and you are the ones everyone yells at when it falls | and the guild gets the blame when it falls
 ~ 30
-B: we held dun nged a while back, good week | our guild had dun nged for a week once
+B: our guild held a keep for a week once, good week | we had one once, for a week
 C: until midgard took it at 3am | and lost it while you slept
 B: let us not relive that | we do not talk about that
 ?D: still sounds like decoration to me | i still say claiming is mostly decoration
@@ -635,11 +638,11 @@ E: send me a tell, guild discount | pst, i will price it fair
 C: also make a list of who plays when, you will need it | post a defense list, who is on at what hours
 A: good idea, on it | will do
 ~ 20
-D: any room in your guild? i am 41 | is your guild recruiting
+D: any room in your guild for a leveler? | is your guild recruiting
 A: always, pst me | yes, small but active, send me a tell
 B: and bring a druid if you know one | we need healers, as always
 ?C: the walls do not heal themselves | keeps need healers more than anything
-A: come visit dun bolg sometime | see you all at dun bolg
+A: come visit once we have one | see you all out there
 
 @topic hib_glimmer_king
 @levels 45-50
@@ -683,8 +686,8 @@ A: saturday it is, glimmer king beware | see you saturday
 @role D type=NoLifer
 @role E type=Daredevil
 A: do we still have DF? | anyone know if darkness falls is open to us right now
-D: yep, we still hold the most keeps | yes, we have the keeps
-B: good, i want to farm the demoniac familiars | heading in to farm familiars then
+D: no idea, it changes with the keeps | check the entrance, it changes every time a keep falls
+B: if it is open, i want to farm the demoniac familiars | whenever we have it i farm familiars
 C: df is the creepiest place in the game and i love it | i love df, so dark and strange
 E: the deeper you go the better it gets | deeper halls are where the real loot is
 ~ 25
@@ -692,19 +695,19 @@ A: is df worth it at 30? | what level range is best for df
 B: anywhere in your 30s, plenty to fight | 30s is great, the upper halls are full
 C: watch the necyomancers, they cast | the necyomancers are tricky
 E: the plated fiends are my favorite | plated fiends hit hard but go down
-?D: enjoy it, the albs are locked out | and nobody else's realm in there, it is ours
+?D: and when it is ours, the other realms are locked out | when we hold it, nobody else's realm gets in
 ~ 30
 D: if we lose keeps, df closes, simple as that | we have to keep holding keeps or df closes
 B: which is why i defend keeps even as a leveler | and that is why pve players should care about rvr
 C: so that is why the frontier matters to me | i never thought of it that way
 E: defend the keeps, keep df | the best reason to defend there is
 ~ 25
-A: lfg df, 32 | anyone want to group in darkness falls
-B: i will, i am 33 | sure, meet at the entrance
+A: anyone want to group in df next time it is ours | next time we have df, anyone want to group
+B: i will | sure, send me a tell
 E: me too, i want a deamhaness pull | me too, looking for a deamhaness
 C: careful with those, they hurt | those are not a joke, go careful
 ?D: famous last words in df | let me know how that goes
-A: invites out | group is forming, invites sent
+A: ok, sending tells | i will send tells when it opens
 
 @topic hib_guild_recruit
 @levels 1-50
@@ -745,7 +748,7 @@ E: gl | enjoy
 @role B type=Crafter
 @role C type=Crafter
 @role D type=NoLifer
-@role E type=Leveler
+@role E type=Leveler levels=15-40
 A: anyone here with really high tailoring, i need a quote | who has their tailoring way up? looking to order a set
 B: me, and my bank account is still crying about it | that would be me. every silver i ever earned went into leather
 C: crafting is a money sink, everyone knows that going in | nobody gets rich leveling a craft, you pay to get good
@@ -756,7 +759,7 @@ D: it puts gems in your armor for extra stats | you socket gems into crafted gea
 ~ 25
 C: a full sc suit costs a fortune, be warned | a fully spellcrafted suit is no small purchase
 D: at 50 it is a must if you go to the frontier | worth every coin once you are 50 and fighting players
-E: i am 24, so that can wait | not even close to that yet, i will wait
+E: i am nowhere near 50, so that can wait | not even close to that yet, i will wait
 B: wise. buy cheap until 50, then go big | smart, do not spend big on gear you will outlevel
 ?C: start a savings pile now though | but start saving now, seriously
 ~ 30
@@ -813,7 +816,7 @@ A: thanks for the stories | good stories tonight, night everyone
 @role C type=Daredevil
 @role D type=NoLifer
 @role E type=*
-A: just got back from thidranki, those albs never stood a chance | thidranki tonight was all hibernia, what a run
+A: best thidranki night i ever had, those albs never stood a chance | remember that night thidranki was all hibernia
 B: we mez you, then we sing about it. that is hibernia | mez the group, sing the victory song, repeat
 C: the albs kept charging into the mez like it was not there | i watched four albs walk straight into a mez and stand there
 D: to be fair, the mids had our number in the second half | the mids took the keep back once, let us be honest
