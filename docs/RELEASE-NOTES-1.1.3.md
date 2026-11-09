@@ -50,8 +50,10 @@ that one. If it still can't download, it says so plainly and changes nothing.
 - Automated: every server, launcher and Setup test passes on GitHub, including a real download install.
 - Chat: new tests for each part, and a simulated three-hour evening of /faction played with the old timing and the new,
   checked by a tool that reads the chat log. It has not been played in game yet.
-- Xanxicar: bot raids in a test world, with the same fix on the 1.2 line, killed him without a wipe, and his first
-  stomp killed 5 raiders instead of 48 to 110.
+- Xanxicar on a real install, with the 1.1.3 build before the chat fix (the stomp code is the same): one Albion raid of 280 bots killed him in 23 minutes with no wipe.
+  His four stomps killed 6, at most 1, 6 and 5 raiders. That is one raid, so treat it as a good sign, not a promise.
+- Earlier stages of the same fix were run in a test world and overnight on a real install. One of those overnight
+  raids still lost 54 raiders to one stomp. This update has two later changes on top of that stage.
 - The Darkness Falls exits are covered by tests against the released world's exit spots. They have not been clicked
   in game yet.
 
