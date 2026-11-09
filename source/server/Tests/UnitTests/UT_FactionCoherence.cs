@@ -341,6 +341,50 @@ public class UT_FactionCoherence
     }
 
     [Test]
+    public void TheFactionSinksRule()
+    {
+        var player = new Ex.Source("player", 0, 0, "answerer");
+        var evt = new Ex.Source("event", 7, 1, "reactor");
+        var beat = new Ex.Source("debate", 8, 3, "B");
+        var opener = new Ex.Source("field", 9, 0, "asker");
+        var reply = new Ex.Source("thread", 9, 1, "answerer");
+        long never = long.MinValue / 2, now = 1_000_000;
+        // A player's question is answered while a scene plays and while /faction is full (live test 2026-11-08: no answer for two
+        // minutes during a debate).
+        Assert.That(Ex.SinkHold(player, sceneRunning: true, fits: false, now, now - 100, never), Is.Null);
+        Assert.That(Ex.SinkHold(evt, true, false, now, now - 100, never), Is.Null, "an event goes");
+        Assert.That(Ex.SinkHold(beat, true, true, now, now - 100, never), Is.Null, "the scene's own line goes");
+        Assert.That(Ex.SinkHold(beat, true, false, now, now - 100, never), Is.EqualTo("ceiling"), "and waits for room");
+        Assert.That(Ex.SinkHold(reply, true, true, now, now - 100, never), Is.EqualTo("scene"), "anything else yields to the scene");
+        Assert.That(Ex.SinkHold(null, true, true, now, now - 100, never), Is.EqualTo("scene"));
+        Assert.That(Ex.SinkHold(reply, false, false, now, now - 100, never), Is.EqualTo("ceiling"));
+        Assert.That(Ex.SinkHold(reply, false, true, now, now - 100, never), Is.Null, "a reply in a conversation has its own spacing");
+        Assert.That(Ex.SinkHold(opener, false, true, now, now - 2_000, never), Is.EqualTo("spacing"), "an opener keeps 3 s from the last line");
+        Assert.That(Ex.SinkHold(opener, false, true, now, now - 4_000, never), Is.Null);
+        // Just after a scene ended: ten seconds between openers, so the lines that waited don't all land at once.
+        Assert.That(Ex.SinkHold(opener, false, true, now, now - 4_000, now - 30_000), Is.EqualTo("spacing"));
+        Assert.That(Ex.SinkHold(null, false, true, now, now - 9_000, now - 30_000), Is.EqualTo("spacing"), "an untagged line too");
+        Assert.That(Ex.SinkHold(opener, false, true, now, now - 11_000, now - 30_000), Is.Null);
+        Assert.That(Ex.SinkHold(opener, false, true, now, now - 4_000, now - 130_000), Is.Null, "two minutes on, as usual");
+    }
+
+    [TestCase("where do i buy a better staff for my elem?", eRealm.Albion, "fletcher", "camelot")]
+    [TestCase("where can i get a new sword", eRealm.Midgard, "weaponcrafter", "jordheim")]
+    [TestCase("who sells chain armor around here", eRealm.Albion, "armorcrafter", "camelot")]
+    [TestCase("where do i buy better gear at 30?", eRealm.Hibernia, "tir na nog", "tir na nog")]
+    public void WhereDoIBuyGetsATrueAnswer(string question, eRealm realm, string mentions, string capital)
+    {
+        Assert.That(AutonomousChatKnowledge.TryAnswerBuyGear(realm, question, out string answer), Is.True, question);
+        Assert.That(answer, Does.Contain(mentions).And.Contain(capital), answer);
+        Assert.That(answer, Is.EqualTo(answer.ToLowerInvariant()), "typed like the period");
+    }
+
+    [TestCase("my staff is better than yours")]
+    [TestCase("where is the cleric trainer")]
+    [TestCase("anyone want to group")]
+    public void NotEveryLineIsABuyQuestion(string line) => Assert.That(AutonomousChatKnowledge.TryAnswerBuyGear(eRealm.Albion, line, out _), Is.False, line);
+
+    [Test]
     public void ASceneBeatWaitsForRoomAndOnlyACutSceneLosesItsEnd()
     {
         Assert.That(AutonomousBotDebates.DecideRoom(true, 0), Is.EqualTo(AutonomousBotDebates.RoomDecision.Speak));
@@ -554,12 +598,14 @@ public class UT_FactionCoherence
         // The old ceiling check (bursts, stories' start): the rate before the line; the new one: the rate the line would make.
         bool OldRoom(long now) => PerMinute(now) < band.Ceiling;
         bool Room(long now) => Ex.Fits(PerMinute(now), band.Ceiling);
-        long debateUntil = -1, lastAdvert = -10 * 60_000_000L, lastAmbientNews = -10 * 60_000_000L, burstUntil = -1;
+        long debateUntil = -1, lastAdvert = -10 * 60_000_000L, lastAmbientNews = -10 * 60_000_000L, burstUntil = -1, sceneEndedAt = long.MinValue / 2;
         long baseTime = 20 * 3_600_000L;
         // AutonomousBotChatCoordinator.BroadcastFactionAsWritten: false when the line doesn't fit and isn't a tagged event.
         bool Say(long now, SimBot bot, string feature, long ex, int index, string role, string text)
         {
-            if (bot == null || fixedCode && feature != "event" && !Room(now))
+            if (bot == null)
+                return false;
+            if (fixedCode && Ex.SinkHold(new Ex.Source(feature, ex, index, role), now < debateUntil, Room(now), now, laneState.LastAt, sceneEndedAt) != null)
                 return false;
             if (fixedCode && Ex.IsReaction(text) && !shorts.SayOrHold(lane, text, now))
                 return false;
@@ -745,7 +791,7 @@ public class UT_FactionCoherence
                     if (waits < AutonomousBotDebates.MaxRoomWaits)
                         beatsDue.Add((now + AutonomousBotDebates.RoomRetryMs, plan, index, waits + 1));
                     else
-                        debateUntil = now;
+                        debateUntil = sceneEndedAt = now;
                     continue;
                 }
                 Ex.Line line = plan.Lines[index];
@@ -753,7 +799,7 @@ public class UT_FactionCoherence
                 if (index + 1 < plan.Lines.Count)
                     beatsDue.Add((now + 7_000, plan, index + 1, 0));
                 else
-                    debateUntil = now + 2_000;
+                    debateUntil = sceneEndedAt = now + 2_000;
             }
             // A bot lists an item about every two minutes and advertises it 70% of the time (BotBrain, TryAdvertiseExchangeItem).
             if (random.NextDouble() < 1 / 120.0 && random.NextDouble() < 0.7 && !debate)
@@ -863,11 +909,22 @@ public class UT_FactionCoherence
             return (max, over);
         }
         int Adverts(Evening e) => e.Said.Count(s => s.Feature == "exchange_ad");
+        // The most lines (events aside) in any ten seconds of the two minutes after a debate ended (live test: 7 in 7 s).
+        int AfterScene(Evening e)
+        {
+            var ends = e.Said.Where(s => s.Feature == "debate").GroupBy(s => s.Ex).Select(g => g.Max(s => s.At)).ToArray();
+            long[] times = e.Said.Where(s => s.Feature is not ("event" or "debate")).Select(s => s.At).OrderBy(t => t).ToArray();
+            int most = 0;
+            foreach (long end in ends)
+                for (long t = end; t < end + 120_000; t += 1_000)
+                    most = Math.Max(most, times.Count(at => at >= t && at < t + 10_000));
+            return most;
+        }
         string Line(string name, Evening e) =>
             $"{name}: {e.Said.Count} lines ({e.Said.Count / 180.0:0.00}/min; band {e.Band.Target:0.0}/{e.Band.Ceiling:0.0}; peak {Rate(e).Max:0.0}/min, " +
             $"{Rate(e).SecondsOver} s over the ceiling), out of order {OutOfOrder(e)}, role swaps {RoleSwaps(e)}, untrue answers {RoleFalse(e)}, " +
             $"thread lines after a missing one {Orphans(e)}, personal bursts over two {BurstsOver(e, "nemesis", 2) + BurstsOver(e, "revenge", 2)}, " +
-            $"event bursts over three {BurstsOver(e, "event", 3) + BurstsOver(e, "news", 3)}, reaction repeats in 10 min {ReactionRepeats(e)}, exchange adverts {Adverts(e)}";
+            $"event bursts over three {BurstsOver(e, "event", 3) + BurstsOver(e, "news", 3)}, most lines in 10 s after a debate {AfterScene(e)}, reaction repeats in 10 min {ReactionRepeats(e)}, exchange adverts {Adverts(e)}";
         TestContext.Progress.WriteLine("CHAT_SIM " + Line("before", before));
         TestContext.Progress.WriteLine("CHAT_SIM " + Line("after", after));
 
@@ -879,6 +936,10 @@ public class UT_FactionCoherence
         Assert.That(BurstsOver(after, "nemesis", 2) + BurstsOver(after, "revenge", 2) + BurstsOver(after, "event", 3), Is.Zero);
         Assert.That(ReactionRepeats(after), Is.Zero);
         Assert.That(Adverts(after), Is.LessThanOrEqualTo(12), "one in 15 minutes at most");
+        // After a debate the lines that waited don't all land at once: an opener at most every ten seconds for two minutes.
+        // (an opener and its own answers may share ten seconds).
+        Assert.That(AfterScene(after), Is.LessThanOrEqualTo(3), Line("after", after));
+        Assert.That(AfterScene(after), Is.LessThanOrEqualTo(AfterScene(before)), "never a bigger rush than the old way");
         // Every line but a tagged event fits under the ceiling.
         Assert.That(Rate(after).SecondsOver, Is.Zero, Line("after", after));
         Assert.That(Rate(after).Max, Is.LessThanOrEqualTo(after.Band.Ceiling), Line("after", after));

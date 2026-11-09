@@ -134,6 +134,11 @@ public static class AutonomousBotChatCoordinator
             if (regular || Random.Shared.NextDouble() < AutonomousChatRegulars.OthersShare ||
                 meter.PerMinute(AutonomousChatBudget.Channel.Faction, (long)starter.Realm, now) < AutonomousChatRegulars.OthersBelow * factionBand.Target)
                 Add(AutonomousChatBudget.Channel.Faction, (long)starter.Realm);
+        }
+        // 1.1.3: a /faction scene owns /faction only; /lfg and /trade go on meanwhile (they used to wait for it and then all
+        // came at once: live test 2026-11-08, 7 lines in 7 s as a debate ended).
+        if (factionAudience)
+        {
             Add(AutonomousChatBudget.Channel.Lfg, (long)starter.Realm);
             Add(AutonomousChatBudget.Channel.Trade, (long)starter.Realm);
         }
@@ -1707,18 +1712,15 @@ public static class AutonomousBotChatCoordinator
         AutonomousChatBudget.LineKind kind = AutonomousChatBudget.LineKind.Ambient)
     {
         AutonomousChatExchange.Source source = AutonomousChatExchange.Current;
-        bool exempt = AutonomousChatExchange.ExemptFromCeiling(source);
         bool scene = AutonomousChatExchange.IsScene(source);
-        // A running debate, storyline or dunce scene owns /faction while it plays: every other line but an event or one to the
-        // player yields to it, so the scene finds room within seconds and plays to its end (its exit included).
-        if (!exempt && !scene && AutonomousBotDebates.IsRunning(realm))
+        // A tagged event or a line to the player goes; a running scene owns the channel; every other line fits under the
+        // ceiling, and an opener keeps its distance (AutonomousChatExchange.SinkHold).
+        long now = GameLoop.GameLoopTime;
+        if (!string.IsNullOrWhiteSpace(message) &&
+            AutonomousChatExchange.SinkHold(source, AutonomousBotDebates.IsRunning(realm), FactionRoom(realm), now,
+                AutonomousChatBudget.Meter.LastLine(AutonomousChatBudget.Channel.Faction, (long)realm), AutonomousBotDebates.LastSceneEnd(realm)) is { } held)
         {
-            AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Faction, AutonomousChatWhy.Held.Gap);
-            return false;
-        }
-        if (!string.IsNullOrWhiteSpace(message) && !exempt && !FactionRoom(realm))
-        {
-            AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Faction, AutonomousChatWhy.Held.Ceiling);
+            AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Faction, held == "ceiling" ? AutonomousChatWhy.Held.Ceiling : AutonomousChatWhy.Held.Gap);
             return false;
         }
         // A pure reaction ("lol", "oof", "been there") the realm heard in the last ten minutes isn't said again, whatever path

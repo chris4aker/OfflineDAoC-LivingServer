@@ -48,6 +48,8 @@ public static class AutonomousChatKnowledge
             return true;
         if (TryAnswerHowTo(query, out answer))
             return true;
+        if (TryAnswerBuyGear(player.Realm, query, out answer))
+            return true;
         return LooksLikeLocationQuestion(query) && TryAnswerLocation(player.Realm, query, out answer);
     }
 
@@ -578,6 +580,43 @@ public static class AutonomousChatKnowledge
             "buy them from the stable master, every big town has one");
         return true;
     }
+
+    /// <summary>
+    /// "where do i buy a better staff for my elem?" (live test 2026-11-08: no answer at all): the Realm Exchange in the capital,
+    /// or the crafter who makes it (staves and bows a fletcher, weapons a weaponcrafter, armor an armorcrafter or a tailor).
+    /// Pure but for the pick.
+    /// </summary>
+    public static bool TryAnswerBuyGear(eRealm realm, string text, out string answer)
+    {
+        answer = string.Empty;
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+        string t = " " + new string(text.ToLowerInvariant().Select(c => char.IsLetterOrDigit(c) ? c : ' ').ToArray()) + " ";
+        bool asks = HasAnyPhrase(t, " where ", " who sells ", " anyone sell ", " how do i get ", " where can i get ", " where to get ") &&
+                    HasAnyPhrase(t, " buy ", " get ", " find ", " sells ", " sell ", " better ", " new ", " upgrade ");
+        if (!asks)
+            return false;
+        string crafter =
+            HasAnyPhrase(t, " staff ", " staves ", " staffs ", " bow ", " bows ", " longbow ", " arrows ", " crossbow ") ? "fletcher"
+            : HasAnyPhrase(t, " sword ", " axe ", " hammer ", " mace ", " spear ", " blade ", " dagger ", " weapon ", " weapons ", " club ", " scythe ", " flail ",
+                " rapier ", " polearm ", " halberd ") ? "weaponcrafter"
+            : HasAnyPhrase(t, " robe ", " cloth ", " leather ", " vest ") ? "tailor"
+            : HasAnyPhrase(t, " armor ", " armour ", " chain ", " plate ", " scale ", " helm ", " boots ", " gloves ", " legs ", " sleeves ", " chest ", " shield ")
+                ? "armorcrafter" : null;
+        bool jewelry = HasAnyPhrase(t, " ring ", " necklace ", " bracer ", " belt ", " cloak ", " jewel ", " jewelry ");
+        if (crafter == null && !jewelry && !HasAnyPhrase(t, " gear ", " stuff ", " items ", " equipment "))
+            return false;
+        string capital = realm switch { eRealm.Midgard => "jordheim", eRealm.Hibernia => "tir na nog", _ => "camelot" };
+        answer = crafter != null
+            ? Pick($"realm exchange in {capital}, or get a {crafter} to make you one", $"check the exchange in {capital}. a {crafter} can make one too",
+                $"a {crafter} can make it, or look on the realm exchange in {capital}")
+            : jewelry
+                ? Pick($"mostly drops, but check the realm exchange in {capital}", $"exchange in {capital} sometimes has some, otherwise drops")
+                : Pick($"realm exchange in {capital}, or a crafter", $"check the exchange in {capital}, crafters too");
+        return true;
+    }
+
+    private static bool HasAnyPhrase(string padded, params string[] phrases) => phrases.Any(padded.Contains);
 
     private static bool LooksLikeStableQuestion(string text) =>
         text.Contains("stable master", StringComparison.OrdinalIgnoreCase) ||
