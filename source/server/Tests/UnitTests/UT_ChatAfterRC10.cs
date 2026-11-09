@@ -49,6 +49,18 @@ public class UT_ChatAfterRC10
         Assert.That(heard, Is.True, "out in a zone the line is still said");
     }
 
+    [Test]
+    public void ABotInTownAsksForAGroupToHeadOutWith()
+    {
+        var random = new Random(9);
+        Field.Facts town = Facts("City of Camelot", inTown: true) with { Level = 41 };
+        for (int i = 0; i < 4000; i++)
+        {
+            string text = Field.Line("faction", town with { Id = i }, null, random)?.Text ?? "";
+            Assert.That(text, Does.Not.Match(@"(in|near) (city of )?camelot\?|^(city of )?camelot anyone"), text);
+        }
+    }
+
     [TestCase("got one ty", true)]
     [TestCase("ty, inv", true)]
     [TestCase("kk inv", true)]

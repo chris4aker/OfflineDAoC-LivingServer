@@ -1167,14 +1167,20 @@ public static class AutonomousChatFieldTalk
     private static Said AskGroup(Facts f, Random random)
     {
         string dun = ShortDungeon(f.Dungeon, random), zone = ShortZone(f.Zone, random), lvl = f.Level.ToString(), cls = ShortClass(f.ClassName, random);
+        string[] where = Pool("dunno, check lfg", "not me sry", "think so, check lfg", "not atm", "nope, elsewhere");
+        // RC11 on the owner's PC: "city of camelot anyone" from a bot that had just ported to Camelot. Nobody xps in a town: a
+        // bot in one asks for a group to head out with instead.
+        V Out(string inZone, string fromTown, string kind, string[] answers) => new(f.InTown ? fromTown : inZone, kind, answers);
         return Make(random, "ask_group", (dun ?? zone) + ":" + f.Level / 5, SeekStill, SeekThanks,
             new V(dun != null ? $"anyone up for {dun}?" : "anyone xping?", "group_up", Joins),
             new V(dun != null ? $"any grps in {dun}?" : "any grps out?", "group_any", Pool("dunno, check lfg", "saw some in lfg", "not that i know", "few posting in lfg earlier", "none i saw", "check lfg, was a couple")),
-            new V($"anyone wanna duo in {zone}?", "group_duo", Joins), new V($"lf duo {lvl} {cls}", "group_duo", Joins),
-            new V($"anyone xping in {zone}?", "group_where", Pool("dunno, check lfg", "not me sry", "think so, check lfg", "not atm", "nope, elsewhere")),
-            new V($"{zone} anyone?", "group_where", Pool("not me sry", "dunno, check lfg", "not that i know", "nope", "not me, other side of the realm")),
+            Out($"anyone wanna duo in {zone}?", "anyone wanna duo? heading out now", "group_duo", Joins), new V($"lf duo {lvl} {cls}", "group_duo", Joins),
+            Out($"anyone xping in {zone}?", "anyone heading out to xp?", f.InTown ? "group_up" : "group_where", f.InTown ? Joins : where),
+            Out($"{zone} anyone?", "grp anyone? in town, can come to u", f.InTown ? "group_up" : "group_where",
+                f.InTown ? Joins : Pool("not me sry", "dunno, check lfg", "not that i know", "nope", "not me, other side of the realm")),
             new V(dun != null ? $"{dun} grp?" : "grp anyone?", "group_up", Joins), new V("any1 lf grp?", "group_lf", Pool("me", "x", "me, {lvl}", "me pls")),
-            new V($"anyone near {zone}?", "group_where", Pool("not me sry", "dunno, check lfg", "not that i know", "not atm sry", "was earlier, left")));
+            Out($"anyone near {zone}?", "anyone leaving town soon? lf grp", f.InTown ? "group_up" : "group_where",
+                f.InTown ? Joins : Pool("not me sry", "dunno, check lfg", "not that i know", "not atm sry", "was earlier, left")));
     }
 
     private static Said NeedClass(Facts f, Random random)
