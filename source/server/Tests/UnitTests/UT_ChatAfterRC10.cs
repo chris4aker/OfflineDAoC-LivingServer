@@ -70,6 +70,13 @@ public class UT_ChatAfterRC10
             Is.EquivalentTo(new[] { (7L, Recall.Kind.AskedCamp), (8L, Recall.Kind.AskedGroup) }));
     }
 
+    [TestCase("hey, im {level}, you?", "50 lf xp grp", false)]
+    [TestCase("hey, im {level}, you?", "lfg", true)]
+    [TestCase("hey, want to duo here? im {level} {class}", "50 lf xp grp", true)]
+    [TestCase("your level looks close to mine, want to group up?", "lf grp 50 theurg", true)]
+    public void AnOfferDoesntAskTheLevelThePostGave(string line, string post, bool fits) =>
+        Assert.That(AutonomousLivingServer.OfferFitsPost(line, post), Is.EqualTo(fits));
+
     [TestCase("Pennine Mountains", "Albion", true)]
     [TestCase("Cornwall", "midgard", true)]
     [TestCase("Camelot Hills", "Camelot Hills", true)]
