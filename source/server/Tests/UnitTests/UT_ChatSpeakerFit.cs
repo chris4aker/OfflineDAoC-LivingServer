@@ -159,7 +159,8 @@ public class UT_ChatSpeakerFit
 
     // ---- 2. one story per speaker, and the real group state --------------------------------------------------------------
 
-    private static readonly Regex Closing = new(@"^(?:nm got a grp|nvm, grouped|nm found a grp ty|got a grp, ty|nvm, full|grp full ty|full now, ty|nm full)$");
+    private static readonly Regex Closing = new(
+        @"^(?:nm got a grp|nvm, grouped|nm found a grp ty|got a grp, ty|nvm, full|grp full ty|full now, ty|nm full|nm, heading out|nvm, going as is|nm, we're off)$");
 
     /// <summary>A bot's group posts, over two hours in every channel, with its state changing: one stance and one dungeon a while.</summary>
     [Test]
@@ -274,6 +275,46 @@ public class UT_ChatSpeakerFit
                 Assert.That(next?.Kind, Is.Not.EqualTo("lfm"), "no lfm right after its lfg without a word");
         }
         Assert.That(closed, Is.GreaterThan(50));
+    }
+
+    /// <summary>
+    /// One closing per post (merged with the /lfg market's closings, AutonomousChatMarket): a closing the market said ends the
+    /// story so the bot's next post doesn't close it again, and one the bot's next post said leaves the market nothing to say.
+    /// A party that stopped short says it set off, not "full".
+    /// </summary>
+    [Test]
+    public void AGroupPostIsClosedOnceAndTruly()
+    {
+        var random = new Random(9);
+        Field.Facts seeking = Facts(1, "Minstrel", 50) with { Live = true, SeeksGroup = true };
+        Field.Facts grouped = Facts(1, "Minstrel", 50, inGroup: true, groupSize: 5) with { Live = true };
+        var post = new AutonomousBotGroupCoordinator.RecruitPost("healer", 3, "Stonehenge Barrows", true, 46, 50);
+        for (int i = 0; i < 50; i++)
+        {
+            // The market closed the lfg ("got a grp ty"): the next /lfg post says no closing of its own.
+            var stance = new Stance();
+            Assert.That(Field.Line("lfg", seeking, null, random, 0, stance)?.Kind, Is.EqualTo("lfg"));
+            Assert.That(stance.TryClose(1, "lfg", 120_000), Is.True);
+            Assert.That(stance.TryClose(1, "lfg", 130_000), Is.False, "closed once");
+            Field.Said next = Field.Line("lfg", grouped with { Recruit = post }, null, random, 180_000, stance);
+            Assert.That(next == null || !Closing.IsMatch(next.Text), Is.True, next?.Text);
+            // The bot's next post closed it: the market's closing finds nothing open.
+            stance = new Stance();
+            Field.Line("lfg", seeking, null, random, 0, stance);
+            Field.Said closing = Field.Line("lfg", grouped, null, random, 120_000, stance);
+            Assert.That(closing?.Text, Does.Match(Closing), "the bot is in a group now");
+            Assert.That(stance.TryClose(1, "lfg", 200_000), Is.False);
+            // A party that set off short of eight says so; a full one says full.
+            stance = new Stance();
+            Assert.That(Field.Line("lfg", grouped with { Recruit = post }, null, random, 0, stance)?.Kind, Is.EqualTo("lfm"));
+            Assert.That(Field.Line("lfg", grouped, null, random, 60_000, stance)?.Text, Does.Match(@"heading out|going as is|we're off"));
+            stance = new Stance();
+            Field.Line("lfg", grouped with { Recruit = post }, null, random, 0, stance);
+            Assert.That(Field.Line("lfg", grouped with { GroupSize = 8 }, null, random, 60_000, stance)?.Text, Does.Match(@"full"));
+        }
+        Assert.That(AutonomousChatMarket.Closing(AutonomousChatMarket.Post.Lfm, false, true, true, random), Is.Null, "not full, still recruiting");
+        Assert.That(AutonomousChatMarket.Closing(AutonomousChatMarket.Post.Lfm, false, true, true, random, stoppedShort: true), Does.Match(@"heading out|going as is|we're off"));
+        Assert.That(AutonomousChatMarket.Closing(AutonomousChatMarket.Post.Lfm, true, true, true, random), Does.Contain("full"));
     }
 
     // ---- 3. questions that fit the asker -----------------------------------------------------------------------------------

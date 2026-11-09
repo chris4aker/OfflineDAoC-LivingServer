@@ -251,7 +251,7 @@ namespace DOL.GS
                         DefenseWarnings[pair.Key] = warning with { Next = now + 5000 };
                     }
                 }
-                if (!Events.Values.Any(e => e.BattleStarted)) return;
+                if (!Events.Values.Any(RecruitsDefenders)) return;
             }
 
             // Resolve coordinator IDs BEFORE taking the event lock (the group
@@ -275,7 +275,9 @@ namespace DOL.GS
                         active.Present[bot.DatabaseID] = (candidate.Force.GroupId, bot.Realm, now, bot, new(bot.X, bot.Y, bot.Z), bot.CurrentRegionID);
                     else active.Present.Remove(bot.DatabaseID);
                 }
-                foreach (var active in Events.Values.Where(e => e.BattleStarted && IsLatestDefenseFocus(e))
+                // A bot siege whose army was seen marching gathers its defenders before the battle (CallDefendersAtMarch);
+                // attackers and the third realm are recruited only once the battle is on.
+                foreach (var active in Events.Values.Where(e => RecruitsDefenders(e) && IsLatestDefenseFocus(e))
                              .OrderByDescending(e => e.LastPressureTick).ToArray())
                 {
                     int before = active.Attackers.Values.Sum() + active.Defenders.Values.Sum() + active.ThirdRealm.Values.Sum();
@@ -286,6 +288,7 @@ namespace DOL.GS
                                  Vector2.DistanceSquared(new(b.X, b.Y), new(active.Target.X, active.Target.Y)) : float.MaxValue)))
                     {
                         Force force = candidate.Force;
+                        if (!active.BattleStarted && force.Realm != active.DefenderRealm) continue;
                         if (Participants(active, force.Realm).ContainsKey(force.GroupId)) continue;
                         if (ReleasedForces.ContainsKey(force.GroupId) ||
                             CarrierEvents.Values.Any(c => c.Participants.Values.Any(r => r.ContainsKey(force.GroupId)))) continue;
@@ -317,6 +320,10 @@ namespace DOL.GS
                         // The keep's own realm gathers first and marches in as one wave (allies and third realm do not).
                         if (active.DefenseReaction && force.Realm == active.DefenderRealm && !active.DefenseMustering && !active.DefenseMarching)
                             BeginDefenseMuster(active, now, PlayerDefenseMusterMilliseconds);
+                        // A bot siege's defenders called at the march gather at their muster and man the walls together.
+                        else if (!active.DefenseReaction && !active.BattleStarted && SiegeScheduling && force.Realm == active.DefenderRealm &&
+                                 !active.DefenseMustering && !active.DefenseMarching)
+                            BeginDefenseMuster(active, now);
                     }
                     int assigned = active.Attackers.Values.Sum() + active.Defenders.Values.Sum() + active.ThirdRealm.Values.Sum();
                     if (assigned != before)

@@ -318,7 +318,10 @@ public static partial class AutonomousLivingServer
             }
             if (AutonomousBotDebates.IsRunning(realm))
                 continue;
-            GossipAbout(players[Random.Shared.Next(players.Count)], out _);
+            // 1.1.3: gossip naming the player takes one of their turns (AutonomousChatEngagement), so it never piles on.
+            GamePlayer subject = players[Random.Shared.Next(players.Count)];
+            if (EngageTurn(subject, now))
+                GossipAbout(subject, out _);
         }
     }
 

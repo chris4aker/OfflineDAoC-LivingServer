@@ -144,6 +144,23 @@ public sealed class AutonomousChatStance
         }
     }
 
+    /// <summary>
+    /// Closes the bot's open group post of this stance ("lfg" or "lfm") once, for a closing said elsewhere (the /lfg market's
+    /// "got a grp ty", AutonomousChatMarket): true when such a post was open in the window, and its story then ends, so
+    /// <see cref="Outrun"/> doesn't close it a second time. False when it was already closed or the bot moved on.
+    /// </summary>
+    public bool TryClose(long speaker, string seek, long now)
+    {
+        lock (_by)
+        {
+            if (!_by.TryGetValue(speaker, out Entry e) || e.Seek == null || e.Seek != seek || !Within(e.SeekAt, now))
+                return false;
+            e.Seek = null;
+            e.Dungeon = null;
+            return true;
+        }
+    }
+
     /// <summary>The word a bot used for its dungeon in the window ("barrows" for Stonehenge Barrows), or null.</summary>
     public string DungeonWordOf(long speaker, long now)
     {

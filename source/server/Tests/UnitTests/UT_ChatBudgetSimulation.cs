@@ -301,16 +301,18 @@ public class UT_ChatBudgetSimulation
             }
             return fallback ?? all[random.Next(all.Count)];
         }
-        Bot Near(long now, Bot to, Func<Bot, bool> pool)
+        Bot Near(long now, Bot to, Func<Bot, bool> pool, double regularShare = 1.0)
         {
-            // AutonomousBotChatCoordinator.Repliers: a regular first, then a bot near the speaker's level, then anyone.
+            // AutonomousBotChatCoordinator.Repliers: a regular first (for a question two times in five), then a bot near the
+            // speaker's level, then anyone.
+            bool regularFirst = regularShare >= 1 || random.NextDouble() < regularShare;
             Bot near = null, any = null;
             for (int tries = 0; tries < 200; tries++)
             {
                 Bot mate = all[random.Next(all.Count)];
                 if (mate == to || !pool(mate))
                     continue;
-                if (Regular(mate, now))
+                if (regularFirst && Regular(mate, now))
                     return mate;
                 if (near == null && Math.Abs(mate.Level - to.Level) <= 5)
                     near = mate;
@@ -332,8 +334,10 @@ public class UT_ChatBudgetSimulation
         {
             // AutonomousBotChatCoordinator.ScheduleFieldThread.
             // 1.1.3: only a bot that can answer it (the role and levels it asks for).
-            bool Fits(Bot other) => AutonomousChatFieldTalk.CanAnswer(said, other.Class, other.Level, other.Class is "Cleric" or "Friar");
-            Bot mate = Near(now, bot, other => pool(other) && Fits(other)), third = Near(now, bot, other => other != mate && pool(other) && Fits(other));
+            // 1.1.3, after RC5: and one that has an answer ("any reavers on?" is for a reaver).
+            bool Fits(Bot other) => AutonomousChatFieldTalk.CanGiveAnswer(said, other.Class, other.Level, other.Class is "Cleric" or "Friar");
+            double share = AutonomousChatFieldTalk.WantsAnswer(said) ? AutonomousBotChatCoordinator.QuestionRegularShare : 1.0;
+            Bot mate = Near(now, bot, other => pool(other) && Fits(other), share), third = Near(now, bot, other => other != mate && pool(other) && Fits(other));
             var steps = AutonomousChatFieldTalk.Thread(said, FactsOf(bot, now, random), mate == null ? null : FactsOf(mate, now, random),
                 third == null ? null : FactsOf(third, now, random), memory, random, now);
             Play(now, channel, steps, [bot, mate, third], said.Answers != null);
@@ -744,8 +748,10 @@ public class UT_ChatBudgetSimulation
             Assert.That(shape.TopFaction, bots >= 1_000 ? Is.InRange(0.45, 0.55) : Is.InRange(0.40, 0.75), $"top tenth's share of /faction at {bots}");
             Assert.That(shape.Per30Faction, Is.LessThanOrEqualTo(22), $"speakers per 30 /faction lines at {bots}");
             // Round 7: a line that invites a reply usually gets one, and some threads run on; a guild hears one life line an evening at most.
+            // 1.1.3, after RC5 (owner's PC: most bot questions unanswered): a question is always answered when a bot can answer it,
+            // the other inviting lines about seven in ten.
             var threads = threadShape[(bots, true)];
-            Assert.That(threads.Rate, Is.InRange(0.6, 0.85), $"inviting /faction lines answered at {bots}");
+            Assert.That(threads.Rate, Is.InRange(0.75, 0.97), $"inviting /faction lines answered at {bots}");
             // 1.1.3, after RC5: a bot's lines now fit its state (no "lfg" or "lf duo" from a bot in a group, no trainer question
             // from a 50, ...), which shifts the mix of openers; at 1,000 bots 11.1% of answered threads ran to four lines.
             Assert.That(threads.Long, Is.InRange(0.10, 0.35), $"threads of 4+ lines at {bots}");
@@ -795,7 +801,8 @@ public class UT_ChatBudgetSimulation
         // Round 6: at least 95% of the lines of three words or more are distinct over three hours.
         foreach (string channel in DistinctChannels)
             Assert.That(evening.DistinctShare(channel), Is.GreaterThanOrEqualTo(0.95), channel);
-        Assert.That(evening.TopTenthShare("faction"), Is.InRange(0.45, 0.60), "the regulars carry about half of /faction");
+        // 1.1.3: an evening keeps one cast of regulars (no staggered rotation), so over three hours they carry a little more.
+        Assert.That(evening.TopTenthShare("faction"), Is.InRange(0.45, 0.70), "the regulars carry about half of /faction");
         Assert.That(evening.SpeakersPer30("faction"), Is.LessThanOrEqualTo(22));
         List<string> faction = evening.Lines["faction"];
         Assert.That(faction.GroupBy(t => t).Max(g => g.Count()) / (double)faction.Count, Is.LessThan(0.02), "no one short reply carries /faction");
