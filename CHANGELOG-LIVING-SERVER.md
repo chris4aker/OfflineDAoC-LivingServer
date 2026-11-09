@@ -44,7 +44,14 @@ its reply budget: a thread or a burst is still allowed or held once, as a whole,
   ... ? make me an offer" or "pc ...?" (was "Does anybody want to make me an offer on ...?"), and the answers are the
   written trade answers, not "A merchant price can provide a reasonable minimum value." followed by "Fair enough. Safe
   travels." That formal closing now only comes with bot voices off.
-- **Checked:** automated and simulated only, not played. SIMULATION_NUMBERS_12
+- **Checked:** automated and simulated only, not played. `source/tools/chat_audit.py` on the owner's 1.1.3 evening: one each
+  of an answer after the asker closed, a level question after the invite, a follow-up before any answer, a thanks with no
+  answer, a trade closing that didn't follow and a join answer from a class that can't fill the role; 6 pile-ons (+13
+  reactions), 3 late reactions, 2 repeated reactions. On the overnight 1.2-line soak (4.6 h): 207 repeated reactions
+  within ten minutes, 9 pile-ons, 5 thanks with no answer. The simulated evening (the same as 1.1.3's; it doesn't model
+  1.2's separate reply budget): out of order 30 before, 0 after; pile-ons 23 before, 2 after (keep news at its cap of
+  three); late reactions 28 before, 0 after; repeated reactions 72 before, 0 after; 5.72 lines a minute before, 5.06
+  after; busiest two minutes 9.5 before, 8.5 after against a ceiling of 7.1.
 
 **Two Darkness Falls exits work** (found and fixed by rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
 and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no
