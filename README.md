@@ -38,15 +38,17 @@ run themselves, whether or not you come along.
 
 ## New in Beta 1.1.3
 
-A hotfix. Bot raids now get out of Xanxicar's stomp in time, the Darkness Falls exits by Legion's hall and near the
-Midgard boss take you home, and Setup waits out a busy download server instead of stopping
+A hotfix. Bot raids should now get out of Xanxicar's stomp in time. It has been seen once on a real install: a raid of
+280 bots killed him with no wipe. The Darkness Falls exits by Legion's hall and near the
+Midgard boss should take you home (tested against the world data; not clicked in game yet), and Setup waits out a busy
+download server instead of stopping
 ([what's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta)).
 
 ## New in Beta 1.1.2
 
 A realm that talks like a full server on a busy evening, raids the size they were in 2002-2004 with their first boss
-tactics, quests that work with your bot group, gamebots that pull their weight in your guild, and a world that is safe
-from crashes and backed up every day
+tactics, quests that work with your bot group, gamebots that pull their weight in your guild, and a world that opens
+in a crash-safe mode and is backed up every day
 ([what's new](docs/RELEASE-NOTES-1.1.2.md)).
 
 ## New in Beta 1.1
@@ -74,14 +76,14 @@ from crashes and backed up every day
 - **Contested raids.** Two realms in Darkness Falls fight each other on the way. Whoever does the most damage
   to the final boss takes the kill and the loot.
 - **Keep sieges with a fight on both sides.** Warbands open sieges, defenders turn out to match the attacking
-  army, and attackers break off to save their own keep.
+  army, and attackers break off to save their own keep. For now attackers still take most keeps.
 - **Parties go for the boss.** A party grinding a dungeon goes after its named boss when a quest or its loot
   makes the fight worth it.
 
 ### Bots that talk like 2003
 - **About 34,000 lines of period chat** written for the game from launch to patch 1.65, chosen by realm, class,
   level, zone, time of day, situation and personality, in five writing styles (one of them typo-prone,
-  "*fixes" and all). A line doesn't repeat in a realm for three days.
+  "*fixes" and all). Most lines don't repeat for hours.
 - **393 /faction scenes and debates.** Smite versus rejuv, buffbots, zergs, relic panic, dragon raids. A new cast plays
   one every 30 to 45 minutes while you're online.
 - **They read what you type.** "ty", "inc", "rez pls", "lfg 24 cleric" and "is friar good?" are read for what

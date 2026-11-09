@@ -7,22 +7,25 @@ vocabulary.
 
 ---
 
+Corrected on 2026-11-08: some claims below were overstated; see Known issues.
+
 ### Raids that know their bosses, a realm that talks like a full server, and bots that count in your guild
 
 1.1.1 fixed your first reports. 1.1.2 is the first update with new things to play. Bot raids get their first boss
 tactics and are sized like the raids of 2002-2004. The realm talks like a full server on a busy evening. Quests work
-with your bot group, and gamebots pull their weight in your guild. Under the hood, your world is now safe from crashes
-and backed up every day.
+with your bot group, and gamebots pull their weight in your guild. Under the hood, your world now opens in a crash-safe
+mode and is backed up every day.
 
 It's for Offline DAoC **0.37 and 0.37b**, with or without the **0.37c** new client, like 1.1 and 1.1.1.
 
 ### Raids that know their bosses
 
-Some bosses can't be beaten by hitting harder, and bot raids used to try anyway. Five of them now get the tactics a
-2003 raid leader would have called:
+Some bosses can't be beaten by hitting harder, and bot raids used to try anyway. Five of them now have a plan, like
+the one a 2003 raid leader would have called. Two of the five did not work on a real install (Scurceol and Xanxicar):
 
-- **Scurceol Hyrde (Krondon)** can't be hurt while his four floating orbs live. The raid now shoots the orbs down first,
-  one party to an orb, casters and archers from the floor, melee waiting clear of him, and only then turns on him.
+- **Scurceol Hyrde (Krondon)** can't be hurt while his four floating orbs live. The raid is meant to shoot the orbs
+  first. On a real install (a later build with the same orbs code) it could not find a spot to shoot most of them
+  from, so it skips him and goes on to the other bosses.
 - **Black Lady (Marfach Caverns)** is fought at home. Raids used to drag her out of her room until she went back at
   full health; now they keep her in reach of her room and lead her back when she strays. Her Ancient Black Oak falls
   with her, so nobody wastes the night on it.
@@ -30,8 +33,8 @@ Some bosses can't be beaten by hitting harder, and bot raids used to try anyway.
   three and leaves the last one standing, then everyone fights him.
 - **Nosdoden (Trollheim)** sends a wave of essences as his health falls. The raid stops and clears each wave before
   going back to him, so the waves don't pile up.
-- **Xanxicar (Crystal Cave)** stomps everything around him at set points in the fight. Before each stomp the raid
-  backs off, and only the party holding him stays in.
+- **Xanxicar (Crystal Cave)** stomps everything around him at set points in the fight. In 1.1.2 the raid does not get
+  out in time: most of the raid can die in the first stomp. Fixed in 1.1.3.
 
 For every raid:
 - **A boss that jumps the raid before it's ready** is answered by the whole raid at once, or the raid pulls back
@@ -64,8 +67,8 @@ once the raid has a tactic for it.
   neither, so it doesn't make the next raid bigger.
 - **After a restart** no automatic raid opens until the realm's bots have finished logging in.
 - **Keep sieges remember their balance across restarts**, rebuilt from the Herald's recent sieges.
-- **Attackers no longer roll over keeps.** When attackers keep taking keep after keep, fewer of them come to the
-  next sieges, until defenders win their share again.
+- **When attackers keep winning, fewer of them come.** In a night's run of a later development build, attackers
+  still took 8 of 11 keeps.
 
 ### Dragons, the Epic Special Forces, and raids that don't get stuck
 
@@ -100,8 +103,11 @@ once the raid has a tactic for it.
 
 *The research:* the channels, places, hours and bursts come from a study of 2003 chat; the levels are set on purpose
 for a busy peak server. In a simulated evening at 1,000 bots a realm, a player hears about 12.7 lines a minute across
-the channels, up from 1.9. A blind read of 400 earlier bot lines had judged 53% as believable; re-running those lines
-gives about 70%. Those lines are known, so that is a regression check, and a fresh blind round comes with 1.2.
+the channels, up from 1.9. On a real install with about 600 bots a realm (the 1.1.3 build, same chat) it was 15 to 19,
+so the simulation guesses low.
+In a blind test of 400 player lines (one line at a time, not conversations), the bots read 53% of them as intended;
+re-running the same lines gives about 70%. A blind judge still picked out most bot lines (72% in the first round, 85% in
+the latest). Conversations over several turns have not been tested.
 
 ### Quests with your bot group
 
@@ -191,29 +197,43 @@ untouched.
   server never stopped.
   This release is that build plus the princes fix. Setup also upgraded a copy of a real Beta 1.1 install to it, and
   the server then started with its settings moved to the new defaults.
-- **Played:** so far only a partial check in the game client, played by Claude through computer use: logging in,
-  tells, chat, a guild invite and guild dues. The owner's own played check is still to come. Seen on a playtest PC
-  before this release: the chat level at a 900-bot roster (which set the new default), the server starting from the
-  package with its own libraries, and the remote-desktop Ctrl-click.
+- **Played:** the owner's own played check
+  ([PLAYED-CHECK-1.1.2.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/PLAYED-CHECK-1.1.2.md))
+  has not been done yet.
+- **Checked by Claude through computer use** (not the owner's play): logging in, tells, chat, a guild invite and guild
+  dues in the game client.
+- **Seen on a playtest PC before this release:** the chat level at a 900-bot roster (which set the new default), the
+  server starting from the package with its own libraries, and the remote-desktop Ctrl-click.
+- **Seen on a real install since release** (bot raids, nobody watching). With the 1.1.3 build: crash-safe mode, the
+  start check, the daily backup and the siege balance rebuilt at a restart. With a later development build: Black Lady
+  fought at home and killed, Prince Ba'alorien killed twice, and a dragon raid regrouping after a wipe with the Special
+  Forces.
 - Please report anything odd on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with the
   `FORK_BUILD` line from `runtime\server\logs\server.log`.
 
 ### Known issues (it's a beta)
 
+- **/faction can get too busy.** On an evening with about 600 bots a realm (the 1.1.3 build, whose chat is 1.1.2's) it
+  ran well above its ceiling, up to 20 lines a minute, with bursts of 10 to 16 reactions. Being fixed. Meanwhile,
+  lower **How much they talk** in the Living Server tab.
+- **Bot raids skip Scurceol Hyrde.** On a real install the raid killed 1 of his 4 orbs, set him aside and went on to
+  the other bosses. Being fixed.
+- **Xanxicar's stomp can kill most of the raid.** Fixed in 1.1.3.
+- **Attackers still take most keeps.** In a night's run of a later development build they took 8 of 11, with the
+  balance at its limit for defenders.
 - **Only five bosses have tactics so far.** Darkness Falls' raid bosses, Legion and the other hardest level 70+
   encounters are **not** implemented for bot raids: they are still won on numbers, and a raid can still lose them.
   Other bosses with special rules are fought as before.
 - **The new tactics have been seen only in server logs.** In the 22-hour run, Marfach Caverns and Trollheim were won
-  and Aidon's illusion tactic acted, but nobody watched those fights in the game client, and Krondon and Crystal Cave
-  didn't come up. They also pass their automated tests, including test fights with a boss, its adds and a raid.
+  and Aidon's illusion tactic acted, but nobody watched those fights in the game client. Krondon and Crystal Cave
+  didn't come up in that run; on a real install since, both tactics failed (above).
 - **The hardest epics still lose or time out.** In the same run Summoner's Hall, Galladoria, Hall of the Corrupt and
   Caer Sidi were lost or ran out of time. Galladoria's Easmarach and Aidon's last illusion are sometimes set aside as
   "no damage for five minutes"; fixes for both are being built for 1.2.
 - **The 22 restored boss rules stay off.** Turning one on before the raid has a tactic for it would make that boss
   much harder for bots.
-- **The Darkness Falls princes fix has passed its automated test but hasn't been seen in a raid yet.**
-- **Siege results still swing from night to night** in long test runs. 1.1.2 evens them out and logs who is actually
-  at each keep, so the next runs can show why.
+- **The Darkness Falls princes fix has been seen working since:** on a real install, with a later development build,
+  a bot raid killed Prince Ba'alorien twice.
 - **New raid sizes need a few raids to settle.** Each encounter's size moves with its own wins and losses, so the
   first nights may swing either way.
 - **Updates from the launcher start after 1.1.2.** 1.1.1 has no update check, so 1.1.2 itself comes by Setup or the
