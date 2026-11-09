@@ -1346,6 +1346,9 @@ namespace DOL.AI.Brain
             // 1.2: a raid party sent on an encounter errand (Jailer Vifil's tunnel guards) walks there, clears it and comes back.
             if (EpicEncounterTactics.ThinkErrand(BotBody))
                 return;
+            // Out of a boss's blast before anything else (Xanxicar's stomp), whatever the bot is doing.
+            if (EpicEncounterTactics.ThinkBlast(BotBody))
+                return;
             bool nativeSpeedTravelStarted;
             if (CompanionFollowPolicy.ObserveAndCancelBuffs(BotBody, out nativeSpeedTravelStarted))
             {

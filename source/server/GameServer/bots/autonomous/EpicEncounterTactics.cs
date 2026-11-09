@@ -567,19 +567,55 @@ namespace DOL.GS
         /// <summary>And stay out this long after the boss crossed it (Xanxicar: 1 s to the announcement, a 6 s cast).</summary>
         public const long BlastAftermathMilliseconds = 9_000;
         private static readonly Dictionary<GameNPC, (int Health, int Crossed, long Tick)> BlastClocks = new();
+        // The boss's health loss rate (percent a second), sampled once a second and smoothed, and when it was last seen in a
+        // fight: raiders near it withdraw whatever they are fighting (BlastNear).
+        private static readonly Dictionary<GameNPC, (int Health, long Tick, double Rate, long Seen)> BlastRates = new();
+        private static int _blastBosses;
+
+        /// <summary>The boss's current health loss in percent a second (0 when unknown).</summary>
+        public static double BlastRate(GameNPC boss, long now)
+        {
+            int hp = boss.HealthPercent;
+            lock (BlastRates)
+            {
+                if (!BlastRates.TryGetValue(boss, out var r) || hp > r.Health + 20) r = (hp, now, 0, now);
+                if (now - r.Tick >= 1_000)
+                {
+                    double sample = Math.Max(0, (r.Health - hp) * 1000.0 / (now - r.Tick));
+                    r = (hp, now, r.Rate <= 0 ? sample : r.Rate * 0.6 + sample * 0.4, now);
+                }
+                else r = r with { Seen = now };
+                if (BlastRates.Count > 64) BlastRates.Clear();
+                BlastRates[boss] = r;
+                System.Threading.Volatile.Write(ref _blastBosses, BlastRates.Count);
+                return r.Rate;
+            }
+        }
 
         /// <summary>The next threshold the boss has not crossed yet at <paramref name="healthPercent"/>, or 0.</summary>
         public static int NextBlastBelow(int[] thresholds, int healthPercent) =>
             thresholds?.Where(t => t < healthPercent).DefaultIfEmpty(0).Max() ?? 0;
 
         /// <summary>True in the withdraw window: within the margin above a threshold, or just after crossing one.</summary>
-        public static bool InBlastWindow(int[] thresholds, int healthPercent, long sinceCrossMilliseconds)
+        public static bool InBlastWindow(int[] thresholds, int healthPercent, long sinceCrossMilliseconds, double percentPerSecond = 0)
         {
             if (thresholds is not { Length: > 0 }) return false;
             int next = NextBlastBelow(thresholds, healthPercent);
-            if (next > 0 && healthPercent - next <= BlastMarginPercent) return true;
+            if (next > 0 && healthPercent - next <= BlastMargin(percentPerSecond)) return true;
             return sinceCrossMilliseconds >= 0 && sinceCrossMilliseconds < BlastAftermathMilliseconds;
         }
+
+        /// <summary>The raid withdraws this long before the boss reaches a blast threshold: a raider beside him walks out of
+        /// Xanxicar's 2,500 in about 12 s and the stomp lands 7 s after the threshold (1 s announcement, 6 s cast).</summary>
+        public const double BlastLeadSeconds = 10;
+        /// <summary>And never closer than this above it (the 1.1.2 margin was 3%).</summary>
+        public const int BlastMinimumMarginPercent = 6;
+
+        /// <summary>How far above a threshold the withdraw starts (pure): what the raid takes off him in
+        /// <see cref="BlastLeadSeconds"/> at its current rate, at least <see cref="BlastMinimumMarginPercent"/>. PC 1.2 test,
+        /// 2026-11-07: 185 Albion raiders took Xanxicar 83% -> 80% in 15 s; 110 died in the stomp, 158 were within 1,000.</summary>
+        public static int BlastMargin(double percentPerSecond) =>
+            Math.Max(BlastMinimumMarginPercent, (int)Math.Ceiling(Math.Max(0, percentPerSecond) * BlastLeadSeconds));
 
         private static int NextBlast(GameNPC boss) => NextBlastBelow(For(boss)?.BlastThresholds, boss.HealthPercent + 1);
 
@@ -607,16 +643,260 @@ namespace DOL.GS
         public static Vector3? BlastWithdraw(GameLiving raider, GameNPC boss, long now)
         {
             Tactic t = For(boss);
-            if (t is not { HasBlast: true } || !InBlastWindow(t.BlastThresholds, boss.HealthPercent, SinceBlastCross(boss, now)))
+            if (t is not { HasBlast: true } || !boss.InCombat ||
+                !InBlastWindow(t.BlastThresholds, boss.HealthPercent, SinceBlastCross(boss, now), BlastRate(boss, now)))
                 return null;
             if (boss.TargetObject is GameLiving anchor && (anchor == raider || anchor.Group != null && anchor.Group == raider.Group))
                 return null;
             Vector3 b = new(boss.X, boss.Y, boss.Z), r = new(raider.X, raider.Y, raider.Z);
             float d = Vector2.Distance(new(b.X, b.Y), new(r.X, r.Y));
-            if (d > t.BlastRadius + 100) return null;
+            // The stomp is an area spell on his target (Target ENEMY, Radius 2,500), so it is centred on that raider, not on
+            // him (raid-skill container run duo18: 24 raiders who left on time at 40% still died at spots clear of him but
+            // not of his target). A raider is out only when it is clear of both, and goes only to spots clear of both.
+            Vector3 c = StompCentre(boss, t.BlastRadius);
+            float dc = Vector2.Distance(new(c.X, c.Y), new(r.X, r.Y));
+            if (d > t.BlastRadius + 100 && dc > t.BlastRadius + 100) return null;
+            // In a closed cave the straight-out spot is inside the rock (duo6: raiders told to go stood at a median 763 from him
+            // and died there): walk out along the floor towards the dungeon's way in instead.
+            // Each raider takes the reachable spot clear of the blast nearest to it, so nobody walks past him to get out
+            // (PC 2026-11-08: he had followed the raid to the one path spot, 2,944 from his spawn; at 40% the only clear path
+            // spots lay behind him and 54 raiders died walking there).
+            if (NearestBlastSpot(ClearOf(BlastSpots(boss, t.BlastRadius), c, t.BlastRadius), r) is Vector3 spot) return spot;
+            Vector3[] path;
+            lock (BlastPaths) BlastPaths.TryGetValue(boss, out path);
+            if (BlastRallyOnPath(path, b, t.BlastRadius) is Vector3 rally) return rally;
             Vector2 dir = d < 1 ? new Vector2(1, 0) : Vector2.Normalize(new Vector2(r.X - b.X, r.Y - b.Y));
             Vector2 at = new Vector2(b.X, b.Y) + dir * (t.BlastRadius + 200);
             return new Vector3(at.X, at.Y, r.Z);
+        }
+
+        /// <summary>A blasting boss in its withdraw window near <paramref name="raider"/>, and where to wait it out, whatever
+        /// the raider is fighting (PC 2026-11-07: raiders on Xanxicar's elites and crystals never got the order, which was
+        /// given only to raiders whose target was Xanxicar himself).</summary>
+        public static (GameNPC Boss, Vector3 Safe)? BlastNear(GameLiving raider, long now)
+        {
+            if (raider == null) return null;
+            GameNPC[] bosses;
+            lock (BlastRates)
+                bosses = BlastRates.Where(b => now - b.Value.Seen < 30_000).Select(b => b.Key).ToArray();
+            foreach (GameNPC boss in bosses)
+                if (Present(boss) && boss.CurrentRegionID == raider.CurrentRegionID && BlastWithdraw(raider, boss, now) is Vector3 safe)
+                    return (boss, safe);
+            return null;
+        }
+
+        private static readonly Dictionary<GameNPC, Vector3[]> BlastPaths = new();
+
+        /// <summary>The walked floor path from a blasting boss's spawn to <paramref name="exit"/> (the dungeon's way in), found once
+        /// per boss (the raid route asks while it fights him): its withdraw spots lie on it.</summary>
+        public static void EnsureBlastPath(GameNPC boss, Vector3? exit = null)
+        {
+            if (boss == null || For(boss) is not { HasBlast: true }) return;
+            lock (BlastPaths)
+            {
+                if (BlastPaths.ContainsKey(boss)) return;
+                if (BlastPaths.Count > 64) BlastPaths.Clear();
+                BlastPaths[boss] = [];
+            }
+            Vector3[] nodes = [];
+            var nav = PathfindingProvider.Instance;
+            Zone zone = boss.CurrentZone;
+            // The way into the boss's own region (duo7: the Crystal Cave raid's route entrance is Avalon City's door, in
+            // another region, so no path was found and the old spot in the rock was used again).
+            exit ??= WayIn(boss);
+            if (exit != null && zone != null && nav.IsAvailable && nav.HasNavmesh(zone))
+            {
+                var buffer = new WrappedPathfindingNode[512];
+                var start = new Vector3(boss.SpawnPoint.X, boss.SpawnPoint.Y, boss.SpawnPoint.Z);
+                PathfindingResult result = nav.GetPathStraight(zone, start, exit.Value, nav.DefaultFilters, buffer);
+                if (result.Status is PathfindingStatus.PathFound or PathfindingStatus.PartialPathFound)
+                    nodes = buffer.Take(Math.Min(result.NodeCount, buffer.Length)).Select(n => n.Position).ToArray();
+            }
+            lock (BlastPaths) BlastPaths[boss] = nodes;
+            if (Log.IsInfoEnabled)
+                Log.Info($"EPIC_BLAST_PATH boss=\"{boss.Name}\" nodes={nodes.Length} rally=" +
+                         (BlastRallyOnPath(nodes, new(boss.SpawnPoint.X, boss.SpawnPoint.Y, boss.SpawnPoint.Z), For(boss).BlastRadius) is Vector3 r
+                             ? $"{(int)r.X},{(int)r.Y},{(int)r.Z}" : "none"));
+        }
+
+        private static readonly Dictionary<(GameNPC, int, int), Vector3[]> BlastSpotCache = new();
+
+        /// <summary>Floor spots clear of a blast of <paramref name="radius"/> around the boss where he stands now: the clear
+        /// nodes of his floor path to the way in, and spots 2,750-3,300 out in 16 directions that have floor and a walked
+        /// corridor from his floor. Cached per 256-unit cell of his position.</summary>
+        public static Vector3[] BlastSpots(GameNPC boss, int radius)
+        {
+            var key = (boss, boss.X >> 8, boss.Y >> 8);
+            lock (BlastSpotCache)
+                if (BlastSpotCache.TryGetValue(key, out Vector3[] cached)) return cached;
+            var spots = new List<Vector3>();
+            Vector3 b = new(boss.X, boss.Y, boss.Z);
+            Vector3[] path;
+            lock (BlastPaths) BlastPaths.TryGetValue(boss, out path);
+            if (path != null)
+                spots.AddRange(path.Where(n => Vector2.Distance(new(n.X, n.Y), new(b.X, b.Y)) >= radius + 200));
+            var nav = PathfindingProvider.Instance;
+            Zone zone = boss.CurrentZone;
+            if (zone != null && nav.IsAvailable && nav.HasNavmesh(zone) &&
+                nav.GetClosestPoint(zone, b, 128, 128, 256, nav.DefaultFilters) is Vector3 floor)
+            {
+                for (int d = 0; d < 16; d++)
+                {
+                    double a = d * Math.PI / 8;
+                    foreach (int r in new[] { radius + 250, radius + 500, radius + 800 })
+                    {
+                        var probe = new Vector3(b.X + (float)(Math.Cos(a) * r), b.Y + (float)(Math.Sin(a) * r), b.Z);
+                        if (nav.GetClosestPoint(zone, probe, 200, 200, 600, nav.DefaultFilters) is not Vector3 at ||
+                            Vector2.Distance(new(at.X, at.Y), new(b.X, b.Y)) < radius + 150 ||
+                            !AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, floor, at)) continue;
+                        spots.Add(at);
+                        break;
+                    }
+                }
+            }
+            Vector3[] result = spots.ToArray();
+            lock (BlastSpotCache)
+            {
+                if (BlastSpotCache.Count > 256) BlastSpotCache.Clear();
+                BlastSpotCache[key] = result;
+            }
+            return result;
+        }
+
+        /// <summary>Where his stomp lands: on his target when it is alive and within the stomp's reach, else on him.</summary>
+        private static Vector3 StompCentre(GameNPC boss, int radius) =>
+            boss.TargetObject is GameLiving target && target.IsAlive && target.CurrentRegionID == boss.CurrentRegionID &&
+            boss.IsWithinRadius(target, radius)
+                ? new Vector3(target.X, target.Y, target.Z)
+                : new Vector3(boss.X, boss.Y, boss.Z);
+
+        /// <summary>The spots at least <paramref name="radius"/> + 150 from <paramref name="centre"/> (pure): clear of a stomp
+        /// centred there. The ring around him leaves 150-250 to spare, so a target beside him rules out only the spots on
+        /// its far side.</summary>
+        public static Vector3[] ClearOf(Vector3[] spots, Vector3 centre, int radius) =>
+            (spots ?? []).Where(s => Vector2.Distance(new(s.X, s.Y), new(centre.X, centre.Y)) >= radius + 150).ToArray();
+
+        /// <summary>The spot nearest to the raider (pure), or null when there is none.</summary>
+        public static Vector3? NearestBlastSpot(Vector3[] spots, Vector3 raider)
+        {
+            if (spots is not { Length: > 0 }) return null;
+            Vector3 best = spots[0];
+            float bestDistance = float.MaxValue;
+            foreach (Vector3 s in spots)
+            {
+                float d = Vector3.DistanceSquared(s, raider);
+                if (d < bestDistance) { bestDistance = d; best = s; }
+            }
+            return best;
+        }
+
+        /// <summary>The arrival point of the zone point into the boss's region nearest to it, or null.</summary>
+        private static Vector3? WayIn(GameNPC boss)
+        {
+            try
+            {
+                Vector3? best = null;
+                float bestDistance = float.MaxValue;
+                foreach (DOL.Database.DbZonePoint z in DOLDB<DOL.Database.DbZonePoint>.SelectObjects(
+                             DOL.Database.DB.Column("TargetRegion").IsEqualTo(boss.CurrentRegionID)))
+                {
+                    var at = new Vector3(z.TargetX, z.TargetY, z.TargetZ);
+                    float d = Vector2.Distance(new(at.X, at.Y), new(boss.SpawnPoint.X, boss.SpawnPoint.Y));
+                    if (d < bestDistance) { bestDistance = d; best = at; }
+                }
+                return best;
+            }
+            catch (Exception) { return null; }
+        }
+
+        /// <summary>The first spot on <paramref name="path"/> clear of a blast of <paramref name="radius"/> around
+        /// <paramref name="boss"/> by 200 (pure), or null (no path, or none of it clear).</summary>
+        public static Vector3? BlastRallyOnPath(Vector3[] path, Vector3 boss, int radius)
+        {
+            if (path is not { Length: > 0 }) return null;
+            foreach (Vector3 node in path)
+                if (Vector2.Distance(new(node.X, node.Y), new(boss.X, boss.Y)) >= radius + 200)
+                    return node;
+            return null;
+        }
+
+        /// <summary>How long a raider sent out of a blast keeps away (its controller does not walk it back meanwhile).</summary>
+        public const long BlastHoldMilliseconds = 4_000;
+        private static readonly Dictionary<GameLiving, (Vector3 Spot, long Until)> StandOffHolds = new();
+        private static int _standOffHoldCount;
+
+        /// <summary>Keep <paramref name="raider"/> at <paramref name="spot"/> until <paramref name="until"/>.</summary>
+        public static void HoldStandOff(GameLiving raider, Vector3 spot, long until)
+        {
+            if (raider == null) return;
+            lock (StandOffHolds)
+            {
+                if (StandOffHolds.Count > 2_048) StandOffHolds.Clear();
+                StandOffHolds[raider] = (spot, until);
+                System.Threading.Volatile.Write(ref _standOffHoldCount, StandOffHolds.Count);
+            }
+        }
+
+        /// <summary>Where a raider waits out a blast, while it must (the controller asks before it moves a raider).</summary>
+        public static Vector3? StandOffHold(GameLiving raider, long now)
+        {
+            if (raider == null || System.Threading.Volatile.Read(ref _standOffHoldCount) == 0) return null;
+            lock (StandOffHolds)
+            {
+                if (!StandOffHolds.TryGetValue(raider, out var h)) return null;
+                if (h.Until >= now) return h.Spot;
+                StandOffHolds.Remove(raider);
+                System.Threading.Volatile.Write(ref _standOffHoldCount, StandOffHolds.Count);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// BotBrain's first look each turn (beside <see cref="ThinkErrand"/>): an autonomous raider near a boss about to blast,
+        /// or still holding out of one, stops fighting and walks out (or waits there), whatever it is doing: a healer with no
+        /// hostile target, a raider on an add or a crystal, one its controller would walk back to the fight. True: turn used.
+        /// </summary>
+        public static bool ThinkBlast(GameBot bot)
+        {
+            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || !bot.IsAlive) return false;
+            long now = GameLoop.GameLoopTime;
+            if (System.Threading.Volatile.Read(ref _blastBosses) == 0 && System.Threading.Volatile.Read(ref _standOffHoldCount) == 0)
+                return false;
+            Vector3? spot = null;
+            if (BlastNear(bot, now) is { } blast)
+            {
+                spot = blast.Safe;
+                HoldStandOff(bot, blast.Safe, now + BlastHoldMilliseconds);
+                if (bot.TargetObject == blast.Boss || bot.IsAttacking)
+                {
+                    if (bot.IsCasting && bot.castingComponent?.SpellHandler?.Spell?.IsHarmful == true) bot.StopCurrentSpellcast();
+                    bot.StopAttack();
+                    bot.TargetObject = null;
+                }
+                LogDecision(bot, blast.Boss, new(BotAction.StandOff, blast.Boss, blast.Safe,
+                    $"blast at {NextBlast(blast.Boss)}%: out of {For(blast.Boss).BlastRadius}"));
+            }
+            else spot = StandOffHold(bot, now);
+            if (spot is not Vector3 at) return false;
+            var point = new Point3D((int)at.X, (int)at.Y, (int)at.Z);
+            // A melee follow outlives StopAttack and walks the bot straight back to him (duo8: the 48 stomp victims died a
+            // median 66 from him after a 30 s warning, still following him).
+            if (bot.FollowTarget != null) bot.StopFollowing();
+            if (!bot.IsWithinRadius(point, 150))
+            {
+                if (!bot.IsMovingOnPath) bot.PathTo(point, bot.MaxSpeed);
+            }
+            else if (bot.IsMoving) bot.StopMoving();
+            return true;
+        }
+
+        public static void ResetBlastForTests()
+        {
+            lock (BlastRates) { BlastRates.Clear(); System.Threading.Volatile.Write(ref _blastBosses, 0); }
+            lock (BlastClocks) BlastClocks.Clear();
+            lock (BlastPaths) BlastPaths.Clear();
+            lock (BlastSpotCache) BlastSpotCache.Clear();
+            lock (StandOffHolds) { StandOffHolds.Clear(); System.Threading.Volatile.Write(ref _standOffHoldCount, 0); }
         }
 
         public static bool CanShootFlyers(GameBot bot)
@@ -659,6 +939,8 @@ namespace DOL.GS
         /// </summary>
         public static bool TryHandle(GameBot bot, GameNPC target)
         {
+            // A blast about to land near the bot comes first, whatever it fights (Xanxicar's stomp kills anything within 2,500).
+            if (ThinkBlast(bot)) return true;
             if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup ||
                 For(target) == null && !IsTacticPart(target) && !HasWaveTwoRule(bot, target, GameLoop.GameLoopTime) && !HasDungeonRule(target))
                 return false;
@@ -680,6 +962,8 @@ namespace DOL.GS
                 case BotAction.LeadHome:
                     if (bot.IsCasting && bot.castingComponent?.SpellHandler?.Spell?.IsHarmful == true) bot.StopCurrentSpellcast();
                     bot.StopAttack();
+                    // The melee follow outlives StopAttack (duo8, Xanxicar): without this the bot walks back to the target.
+                    if (bot.FollowTarget == target) bot.StopFollowing();
                     (bot.Brain as BotBrain)?.RemoveFromAggroList(target);
                     bot.TargetObject = null;
                     if (bot.ControlledBrain?.Body?.TargetObject == target) bot.ControlledBrain.Disengage();
