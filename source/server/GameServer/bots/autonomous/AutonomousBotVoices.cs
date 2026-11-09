@@ -238,6 +238,11 @@ public static class AutonomousBotVoices
     public static bool IsPlaceName(string destination) =>
         !string.IsNullOrWhiteSpace(destination) &&
         !System.Text.RegularExpressions.Regex.IsMatch(destination, @"\b(rendezvous|patrol|objective|muster|staging|egress|matchmaking|formation|grind|assignment|waypoint)\b",
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase) &&
+        // RC10 on the owner's PC: "which stable for master visur?" while the bot took the porter. A porter or trainer is no
+        // place, nor an internal portal side ("Odin Hib", "Emain Alb", "Home Mid").
+        !System.Text.RegularExpressions.Regex.IsMatch(destination,
+            @"^(master|channeler|stor gothi|gothi|stable ?master|porter|teleporter|trainer|merchant|guard|captain)\b|^(glasny|visur|annark)$|\b(alb|mid|hib)$|^home\b",
             System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
     /// <summary>Whether a bot is in a dungeon. The capitals are one zone at the dungeon offset, so the server calls them

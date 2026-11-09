@@ -533,6 +533,14 @@ public static class AutonomousChatKnowledge
         return true;
     }
 
+    /// <summary>
+    /// Whether naming a place's area tells the asker nothing: the place is the area, or the area is the whole realm (RC10 on the
+    /// owner's PC: "how do i get to pennine mountains from here" was answered "pennine mountains? thats in albion"). Pure.
+    /// </summary>
+    public static bool AreaSaysNothing(string name, string area) =>
+        string.IsNullOrWhiteSpace(area) || area.Equals(name, StringComparison.OrdinalIgnoreCase) ||
+        System.Text.RegularExpressions.Regex.IsMatch(area.Trim(), @"^(albion|midgard|hibernia)$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
     private static bool TryAnswerLocation(eRealm realm, string query, out string answer)
     {
         answer = string.Empty;
@@ -588,8 +596,9 @@ public static class AutonomousChatKnowledge
             return true;
         }
 
-        answer = place.Area.Equals(place.Name, StringComparison.OrdinalIgnoreCase)
-            ? Pick($"{place.Name} is its own zone, a stable master can get you close", $"{place.Name}? take a horse from a stable master")
+        answer = AreaSaysNothing(place.Name, place.Area)
+            ? Pick($"{place.Name} is its own zone, a stable master can get you close", $"{place.Name}? take a horse from a stable master",
+                $"{place.Name}, a horse gets you most of the way")
             : Pick($"{place.Name} is in {place.Area}", $"{place.Name}? thats in {place.Area}", $"in {place.Area}, follow the road",
                 $"{place.Area}, a horse gets you most of the way");
         return true;

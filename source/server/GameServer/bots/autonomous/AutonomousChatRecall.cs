@@ -75,6 +75,16 @@ public static class AutonomousChatRecall
             }
         }
 
+        /// <summary>
+        /// A bot said in its thread that it found what it asked for ("got one ty"): nothing is left to ask after (RC10 on the owner's
+        /// PC: "any healers on?" "me" "got one ty", and 24 minutes later "u ever find a grp earlier?" "nah, ended up soloing").
+        /// </summary>
+        public void Settle(long botId, Kind kind)
+        {
+            lock (_notes)
+                _notes.RemoveAll(note => note.BotId == botId && note.Kind == kind);
+        }
+
         /// <summary>A story is about to be told: its teller's first line, once heard, makes a <see cref="Kind.Died"/> note.</summary>
         public void ExpectStory(long tellerId, string monster, long now)
         {
@@ -178,6 +188,10 @@ public static class AutonomousChatRecall
             return store;
         }
     }
+
+    /// <summary>Whether a line says its speaker found the group or the player it asked for ("got one ty", "ty, inv"). Pure.</summary>
+    public static bool SaysFound(string text) => !string.IsNullOrWhiteSpace(text) &&
+        System.Text.RegularExpressions.Regex.IsMatch(text.ToLowerInvariant(), @"\b(got one|got a (grp|group)|found one|inv sent|ty,? inv|kk inv)\b");
 
     /// <summary>What a field line asked about, if it is something a follow-up can ask after ("u ever find a grp?"). Pure.</summary>
     public static Kind? AskedOf(string fieldKind) => fieldKind switch

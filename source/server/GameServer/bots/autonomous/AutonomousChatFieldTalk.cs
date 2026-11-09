@@ -1334,7 +1334,9 @@ public static class AutonomousChatFieldTalk
         ways.Add(random.Next(3) switch
         {
             0 => new V($"{f.Level} {ShortClass(f.ClassName, random)}, still grinding", "status_grind"),
-            1 => new V($"grinding {zone} at {f.Level}", "status_grind_zone"),
+            // RC10 on the owner's PC: "grinding city of camelot at 50" from a bot back at its bind after a death.
+            1 when !f.InTown => new V($"grinding {zone} at {f.Level}", "status_grind_zone"),
+            1 => new V($"{f.Level} {ShortClass(f.ClassName, random)}, still grinding", "status_grind"),
             _ when f.Level < 50 => new V($"still {f.Level} lol", "status_still"),
             _ => new V("50 and still grinding lol", "status_grind"),
         });
