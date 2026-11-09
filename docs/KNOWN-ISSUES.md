@@ -19,8 +19,6 @@ Each item says which build it was seen on. "Overnight run" means a later develop
   waited at 199 for 12 minutes until that bot was killed by hand and walked back. Raids the realm schedules by itself
   don't wait like this: they leave after half an hour with enough there. If it happens, press **Stop event** and start
   it again.
-- **The same short line from many bots (1.1.3).** In half an hour different bots said "dead. again" seven times in
-  /faction. Each bot keeps to the ten-minute rule, but the realm as a whole doesn't yet.
 - **Attackers still take most keeps.** The 1.1.2 siege balance sends fewer attackers when they keep winning, but in
   a night's run attackers still took 8 of 11 keeps.
 - **A very busy server can stall for a few seconds.** In an overnight run with about 600 bots a realm, the server

@@ -1253,7 +1253,9 @@ public static class AutonomousChatFieldTalk
             for (int attempt = 0; attempt < 6; attempt++)
             {
                 string text = options[r.Next(options.Length)];
-                if (who != 0 && freshReaction != null && !freshReaction(text))
+                // The teller's own short line too (owner's PC, RC3 2026-11-09: once the longer openers had each been told,
+                // every death story opened with "dead. again." and it was heard seven times in half an hour).
+                if ((who != 0 || AutonomousChatExchange.IsShort(text)) && freshReaction != null && !freshReaction(text))
                     continue;
                 string skeleton = AutonomousChatFiller.Skeleton(text);
                 if (memory == null || skeleton.Split(' ').Length <= 2)

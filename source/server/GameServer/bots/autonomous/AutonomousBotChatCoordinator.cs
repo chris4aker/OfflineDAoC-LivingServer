@@ -487,12 +487,34 @@ public static class AutonomousBotChatCoordinator
         List<AutonomousChatFieldTalk.Step> steps = AutonomousChatFieldTalk.Story(kind, AutonomousChatFieldTalk.Of(teller, random),
             AutonomousChatFieldTalk.Of(mate, random), third == null ? null : AutonomousChatFieldTalk.Of(third, random), random,
             AutonomousChatFieldTalk.MemoryOf(teller.Realm), text => AutonomousChatExchange.Shorts.Fresh(lane, text, now));
-        steps = steps.Where(step => step.Who == 0 || !AutonomousChatExchange.IsShort(step.Text) || AutonomousChatExchange.Shorts.TryUse(lane, step.Text, now)).ToList();
+        steps = KeepFreshShorts(steps, text => AutonomousChatExchange.Shorts.TryUse(lane, text, now));
         if (steps.Count == 0)
             return;
         // The teller says its first line even while still on the ground: a dead bot can type.
         var timed = steps.Select(step => step with { AtMs = step.AtMs + 2_000 + random.Next(2_000) }).ToList();
         PlayStory(timed, [teller, mate, third], kind);
+    }
+
+    /// <summary>
+    /// A story's steps without the short lines the channel heard in the last ten minutes, the teller's included: a story whose
+    /// first line is such a line is not told at all (owner's PC, RC3 2026-11-09: "dead. again." from seven bots in half an hour,
+    /// because the teller's lines were let through). <paramref name="claim"/> claims a short line for the channel. Pure.
+    /// </summary>
+    public static List<AutonomousChatFieldTalk.Step> KeepFreshShorts(List<AutonomousChatFieldTalk.Step> steps, Func<string, bool> claim)
+    {
+        var kept = new List<AutonomousChatFieldTalk.Step>(steps.Count);
+        for (int i = 0; i < steps.Count; i++)
+        {
+            AutonomousChatFieldTalk.Step step = steps[i];
+            if (AutonomousChatExchange.IsShort(step.Text) && !claim(step.Text))
+            {
+                if (i == 0)
+                    return [];
+                continue;
+            }
+            kept.Add(step);
+        }
+        return kept;
     }
 
     private static void PlayStory(List<AutonomousChatFieldTalk.Step> steps, GameBot[] speakers, string kind)

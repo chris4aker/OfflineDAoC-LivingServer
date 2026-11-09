@@ -75,7 +75,8 @@ that one. If it still can't download, it says so plainly and changes nothing.
   bot from start to finish, rage quit included; a gold spammer; a rumour that honestly says it doesn't know one.
   Seen without any prompting: a guild invite, a bot joining the group and talking in it, that bot remembering the group
   afterwards, and tells from bots that remembered earlier groups. Not seen yet: a bot greeting you again when you meet
-  it later. Still too repetitive: different bots said the same "dead. again" seven times in half an hour.
+  it later. The third candidate's check also heard different bots open the same death story, "dead. again", seven
+  times in half an hour; that is fixed in this build and checked by tests only.
 - Xanxicar on a real install, with the 1.1.3 build before the chat fix (the stomp code is the same): one Albion raid of 280 bots killed him in 23 minutes with no wipe.
   His four stomps killed 6, at most 1, 6 and 5 raiders. That is one raid, so treat it as a good sign, not a promise.
 - Earlier stages of the same fix were run in a test world and overnight on a real install. One of those overnight
