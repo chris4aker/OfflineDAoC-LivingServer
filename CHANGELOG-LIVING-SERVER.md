@@ -370,9 +370,9 @@ reading the lines showed what it couldn't see; it now checks for each of these, 
 - **Your /trade post gets answers too.** The player's "wts 99% arcane cloth cap, cheap" drew nothing; only bot posts were
   answered. A player's sale or wanted post now draws a bot's reply as often as a bot's does.
 
-**Chat fixes from the tenth and eleventh release candidates on the owner's PC** (1517b73 and 9f44f75, 2026-11-09, played
-as an Albion 50 with the Bot schedule on Real clock). The checker passed both runs once it counted a group's wipe as one
-fight; reading the lines showed the rest.
+**Chat fixes from the tenth to twelfth release candidates on the owner's PC** (1517b73, 9f44f75 and 153370a, 2026-11-09,
+played as an Albion 50 with the Bot schedule on Real clock). The checker passed all three once it counted a group's wipe
+as one fight; reading the lines showed the rest.
 - **"what class?" is answered with a class.** "spraggon grp?" "sec, me" "what class?" "coming from mount collory" (RC6):
   any answer that wasn't a number fitted. It now takes a class or a dunno. Fewer bots fit that answer, so the simulated
   /faction leans a little more on its regulars; the test's bound moved from 55% to 58% (the owner's call).
@@ -392,7 +392,9 @@ fight; reading the lines showed the rest.
 - **A way to a zone of your realm.** "how do i get to pennine mountains from here" was answered "pennine mountains?
   thats in albion". On RC11 "how do i get to cornwall from here?" drew "Cornwall is its own zone, a stable master can get u
   close".
-- **An offer to your /lfg doesn't ask what you said.** "50 lf xp grp" drew "hey, im 50, u?".
+- **An offer to your /lfg doesn't ask what you said.** "50 lf xp grp" drew "hey, im 50, u?" (RC11); on RC12 the offers
+  didn't. A bot too far to invite no longer says "we keep going after the same mobs" while it says where it is (RC12;
+  tests only).
 
 **Two Darkness Falls exits work** (tested against the world data, and clicked in game on the owner's PC with the second
 release candidate, 6a83c03: both took an Albion character to Camelot Hills; found and fixed by
