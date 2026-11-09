@@ -714,6 +714,7 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousChatFieldTalk.SaysNothing(answer), Is.EqualTo(nothing));
             Assert.That(AutonomousChatFieldTalk.GoesSomewhere("k omw"), Is.True);
             Assert.That(AutonomousChatFieldTalk.GoesSomewhere("ty"), Is.False);
+            Assert.That(AutonomousChatFieldTalk.GoesSomewhere("ty, inv"), Is.True, "RC8: 'not that i know' then 'ty, inv'");
         }
 
         /// <summary>RC6 on the owner's PC: "want to team up for a bit?" from another zone, then "too far away to join you".</summary>
