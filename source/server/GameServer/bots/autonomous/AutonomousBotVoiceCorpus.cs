@@ -431,13 +431,32 @@ public sealed class AutonomousBotVoiceCorpus
     /// <summary>
     /// By day, "tonight" reads "today" and "all night" reads "all day", so the many lines that say
     /// "tonight" fit a noon session too (0.36-se.4; lines that only fit the evening say so with @needs).
+    /// 1.1.3, after RC6 (owner's PC, 10:44 AM: "busy tonight" in /faction): "this evening" reads "today" by day as well, and
+    /// "this morning" reads "earlier" from noon on and before 5 AM. Every bot line in /faction, /say, /lfg and /trade passes
+    /// here on its way out (AutonomousBotChatCoordinator), and the field lines, threads and stories when they are made.
     /// </summary>
+    /// <summary>
+    /// <see cref="ForTimeOfDay"/> on the PC's clock now: the one time-of-day pass every bot line takes on its way out, whatever
+    /// picked it (corpus, field talk, guild lines, stories, threads, debates, tells), at each channel's sender: /faction, /say,
+    /// /lfg and /trade (AutonomousBotChatCoordinator), /broadcast (AutonomousChatBroadcast), /group (AutonomousBotGroupChatter),
+    /// /guild (AutonomousBotGuildSocial.SendGuildLine) and tells (AutonomousLivingServer.Tell). 1.1.3, after RC6.
+    /// </summary>
+    public static string ForNow(string text) => ForTimeOfDay(text, DateTime.Now.Hour);
+
     public static string ForTimeOfDay(string text, int localHour)
     {
-        if (string.IsNullOrEmpty(text) || TimeFlag(localHour) != "day")
+        if (string.IsNullOrEmpty(text))
             return text;
-        string result = Regex.Replace(text, @"\b(tonight|tonite)\b", "today", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-        return Regex.Replace(result, @"\ball night\b", "all day", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.CultureInvariant;
+        string result = text;
+        if (TimeFlag(localHour) == "day")
+        {
+            result = Regex.Replace(result, @"\b(tonight|tonite|this evening)\b", "today", options);
+            result = Regex.Replace(result, @"\ball night\b", "all day", options);
+        }
+        if (localHour >= 12 || localHour < 5)
+            result = Regex.Replace(result, @"\bthis morning\b", "earlier", options);
+        return result;
     }
 
     #endregion
