@@ -26,6 +26,11 @@ Reports, per log:
     dropped because nobody was left to hear it (reason=no_audience) isn't counted, nor one due in the log's last minutes
   * bot questions with no reply within 60 s (see check_unanswered for what counts as a question)
   * /lfg and /trade posts with any reply (informational)
+  * (RC6, 2026-11-09) lines against the log's facts and the clock (see check_story_facts): a death story that doesn't match
+    the teller's last AUTONOMOUS_BOT_DEATH (RvR words for a monster kill, a monster for a player kill, more attackers than
+    there were), "tonight" in the morning, internal words ("rendezvous"), a question answered by a bare "oof", a run-on after
+    a "quiet atm", one bot twice in /group within 3 s, too much hunting banter in /group, "back" from nowhere; and, for
+    information, /group hunting talk and a duo offer by tell that the bot then declined for a duty (BOT_INVITE_RESULT)
 
 Python standard library only. Usage:
     python3 chat_audit.py LOG [LOG ...] [--json OUT] [--channel faction] [--show N]
@@ -64,6 +69,7 @@ class Line:
     lvl: int | None = None
     cap: float | None = None
     raw: str = ""
+    clock: int = 0  # the log's own stamp (parse_stamp), for the time of day and the AUTONOMOUS_* rows
 
     @property
     def stream(self) -> tuple[str, str]:
@@ -126,7 +132,7 @@ def read(path: str, features: list[Feature] | None = None) -> list[Line]:
                               fields.get("from", "?"), text, fields.get("via", ""), fields.get("src", ""), ex,
                               int(index) if index and index.lstrip("-").isdigit() else None, fields.get("role", ""), fields.get("cls", ""),
                               int(lvl) if lvl and lvl.isdigit() else None, float(cap) if cap and re.match(r"^\d+(\.\d+)?$", cap) else None,
-                              raw.rstrip("\n")))
+                              raw.rstrip("\n"), stamp))
     return lines
 
 
@@ -417,6 +423,7 @@ def audit(path: str, channel_filter: str | None = None, ceiling: float | None = 
     check_features(report, lines, features)
     check_unanswered(report, lines)
     check_market_replies(report, lines)
+    check_story_facts(report, lines, path)
     return report
 
 
@@ -989,6 +996,7 @@ def verdict(summary: dict) -> tuple[bool, list[str]]:
         ("silent features", c["features_silent"]),
     ]
     checks += voice_checks(c)
+    checks += story_fact_checks(c)
     reasons = [f"{name} {n}" for name, n in checks if n]
     reasons += unanswered_reasons(summary)
     if not summary["ceiling_known"]:
@@ -1228,6 +1236,376 @@ def print_market(summary: dict):
 
 
 KINDS.extend(MARKET_KINDS)
+
+
+# ---- lines against the log's facts and the clock (1.1.3, after RC6) ------------------------------------------------------
+#
+# RC6 on the owner's PC (2026-11-09, 23 minutes, VERDICT PASS) still read wrong in places: death stories that weren't the
+# death the server logged (a monster kill told as "got caught by the bridge", one attacker told as "had 2 on me", two as "a
+# zerg, 20+", a bot kill told as "the guards got me"), "busy tonight" at 10:44, "which stable 4 group rendezvous?", "rez in
+# murdaigean?" answered "oof", "quiet atm" followed by "how many?" / "small grp" / "omw", a group bot saying two lines in one
+# second and eleven lines of hunting banter in six minutes, "ok back" from a bot that had been nowhere, and a login "im solo
+# atm if u want company" from a bot that declined the invite five minutes later for its stable route. The server rows these
+# read besides CHAT_LINE:
+#
+#     AUTONOMOUS_BOT_DEATH bot="X" ... realm=Albion ... killer="Y" killerKind=monster|bot|player|pet ... attackers=N ...
+#     BOT_INVITE_RESULT bot="X" player="P" ... result=grouped|declined [duty=StableRoute ...]
+
+DEATH_ROW = re.compile(r"^(?P<stamp>\d\d/\d\d \d\d:\d\d:\d\d).*?AUTONOMOUS_BOT_DEATH (?P<body>.*)$")
+INVITE_ROW = re.compile(r"^(?P<stamp>\d\d/\d\d \d\d:\d\d:\d\d).*?BOT_INVITE_RESULT (?P<body>.*)$")
+
+
+@dataclass
+class Death:
+    clock: int
+    bot: str
+    realm: str
+    killer: str
+    kind: str  # monster, bot, player, pet
+    attackers: int | None
+
+
+@dataclass
+class InviteResult:
+    clock: int
+    bot: str
+    player: str
+    result: str
+    duty: str
+
+
+def read_facts(path: str) -> tuple[list[Death], list[InviteResult]]:
+    """The AUTONOMOUS_BOT_DEATH and BOT_INVITE_RESULT rows of a log (clock as Line.clock)."""
+    deaths: list[Death] = []
+    invites: list[InviteResult] = []
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        for raw in handle:
+            if "AUTONOMOUS_BOT_DEATH" not in raw and "BOT_INVITE_RESULT" not in raw:
+                continue
+            raw = raw.rstrip("\n")
+            for pattern in (DEATH_ROW, INVITE_ROW):
+                match = pattern.match(raw)
+                if not match:
+                    continue
+                f = {key: quoted if quoted or bare == "" else bare for key, quoted, bare in PAIR.findall(match.group("body"))}
+                clock = parse_stamp(match.group("stamp"))
+                if pattern is DEATH_ROW:
+                    attackers = f.get("attackers", "")
+                    deaths.append(Death(clock, f.get("bot", "?"), f.get("realm", "?"), f.get("killer", "?"), f.get("killerKind", "?").lower(),
+                                        int(attackers) if attackers.isdigit() else None))
+                else:
+                    invites.append(InviteResult(clock, f.get("bot", "?"), f.get("player", "?"), f.get("result", "?"), f.get("duty", "")))
+                break
+    return deaths, invites
+
+
+def at(line: Line) -> str:
+    """The line's clock time, for notes."""
+    return f"{line.clock % 86400 // 3600:02d}:{line.clock % 3600 // 60:02d}:{line.clock % 60:02d}"
+
+
+# 1. Death stories against the death -----------------------------------------------------------------------------------------
+STORY_DEATH_WITHIN_S = 600
+DEATH_LINE = re.compile(r"\b(?:died|dead|ganked|got me|killed by)\b")
+# RvR words: a death at the hands of the enemy realm. A monster kill told so didn't happen.
+RVR_WORDS = re.compile(
+    r"\b(?:gank(?:ed|ers?|ing)?|zerg(?:ed|s|ing)?|stealth(?:ed|ers?|ies)?|farmed|jumped|picked off|milegate|mg|albs|mids|hibs|"
+    r"ran into a (?:grp|group)|caught (?:by|at|on) the bridge)\b")
+# Monster words: a kill by monsters. A kill by an enemy player told so didn't happen (the log's own monster killers are
+# added per log).
+MONSTER_WORDS = re.compile(
+    r"\b(?:guards? got me|the guards?|guards|frontier patrol|patrols?|mobs?|adds|the named|golems?|giants?|spiders?|wolf|wolves|"
+    r"bears?|orcs?|skeletons?|zombies?|ghosts?|undead|serpents?|drakes?|dragons?|wyverns?|beasts?|monsters?|critters?)\b")
+NUMBER_WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10, "a couple": 2}
+NUM = r"(\d+|one|two|three|four|five|six|seven|eight|nine|ten|a couple)"
+# How many attackers a line claims: "2 on me", "x3", "20+", "like 8", "3 or 4", "4 v 1", "1 v 5", "a grp of 6", "full grp", a zerg.
+CLAIMS = [
+    (re.compile(rf"\b{NUM}\s*(?:on me|of (?:them|em)|guys|ppl|people|enemies|adds|at once)\b"), lambda m: m.group(1)),
+    (re.compile(r"(?<![a-z0-9])x\s?(\d+)\b|\b(\d+)x\b"), lambda m: m.group(1) or m.group(2)),
+    (re.compile(r"\b(\d+)\s*\+"), lambda m: m.group(1)),
+    (re.compile(rf"\blike {NUM}\b"), lambda m: m.group(1)),
+    (re.compile(r"\b(\d+) or (\d+)\b"), lambda m: m.group(1)),
+    (re.compile(r"\b(\d+) ?vs? ?(\d+)\b"), lambda m: max(int(m.group(1)), int(m.group(2)))),
+    (re.compile(rf"\b(?:grp|group) of {NUM}\b"), lambda m: m.group(1)),
+    (re.compile(r"\b(?:full|whole) (?:grp|group|realm)\b|\bzerg(?:ed|s|ing)?\b"), lambda m: 8),
+    (re.compile(r"\b(?:ran into|by|jumped by|caught by) (?:a|some) (?:grp|group)\b"), lambda m: 3),
+]
+
+
+def claimed_attackers(text: str) -> int | None:
+    """The most attackers a line claims, or None."""
+    t = text.lower()
+    best = None
+    for pattern, value in CLAIMS:
+        for m in pattern.finditer(t):
+            v = value(m)
+            n = v if isinstance(v, int) else NUMBER_WORDS.get(v) if v in NUMBER_WORDS else int(v)
+            if n is not None and n <= 200:
+                best = n if best is None else max(best, n)
+    return best
+
+
+def monster_names(deaths: list[Death]) -> re.Pattern | None:
+    """The log's monster killers ("elder beech", "lammia enchantress"), singular or plural, as one pattern."""
+    names = sorted({d.killer.lower() for d in deaths if d.kind == "monster" and d.killer not in ("?", "")}, key=len, reverse=True)
+    if not names:
+        return None
+    return re.compile(r"(?<![a-z0-9])(?:" + "|".join(re.escape(n) for n in names) + r")(?:e?s)?(?![a-z0-9])")
+
+
+def death_stories(lines: list[Line]) -> list[tuple[str, list[Line]]]:
+    """(teller, lines) for each /faction death story: a told story (src=story, role=teller) with all its exchange's lines
+    (the riffs and the answers belong to it), and a field or ambient line that says the speaker died, with its exchange."""
+    by_ex: dict[tuple[str, str], list[Line]] = defaultdict(list)
+    for l in lines:
+        if l.ch == "faction" and l.ex:
+            by_ex[(l.realm, l.ex)].append(l)
+    stories = []
+    seen = set()
+    for l in lines:
+        if l.ch != "faction" or l.who != "bot":
+            continue
+        key = (l.realm, l.ex)
+        story = l.src == "story" and l.role == "teller"
+        field_death = l.src in ("field", "ambient") and (l.i in (0, None)) and DEATH_LINE.search(l.text.lower())
+        if not (story or field_death):
+            continue
+        if l.ex:
+            if key in seen:
+                continue
+            seen.add(key)
+            stories.append((l.speaker, by_ex[key]))
+        else:
+            stories.append((l.speaker, [l]))
+    return stories
+
+
+def check_death_stories(report: Report, lines: list[Line], deaths: list[Death]):
+    by_bot: dict[tuple[str, str], list[Death]] = defaultdict(list)
+    for d in deaths:
+        by_bot[(d.realm, d.bot)].append(d)
+    monsters = monster_names(deaths)
+    for teller, seq in death_stories(lines):
+        first = next(l for l in seq if l.speaker == teller)
+        report.counts["death_stories"] += 1
+        death = next((d for d in reversed(by_bot.get((first.realm, teller), []))
+                      if first.clock - STORY_DEATH_WITHIN_S <= d.clock <= first.clock + 5), None)
+        if death is None:
+            if deaths:  # a log with no death rows at all (a simulated one) can't say
+                report.flag("info_death_story_no_death", first,
+                            note=f"no AUTONOMOUS_BOT_DEATH for {teller} in the {STORY_DEATH_WITHIN_S // 60} min before")
+            continue
+        fact = f"died {first.clock - death.clock}s before to {death.killer} ({death.kind}, attackers={death.attackers})"
+        for l in seq:
+            t = l.text.lower()
+            if death.kind == "monster":
+                hit = RVR_WORDS.search(t)
+                if hit:
+                    report.flag("death_story_rvr_for_monster", l, note=f'"{hit.group(0)}"; {teller} {fact}')
+            else:
+                hit = MONSTER_WORDS.search(t) or (monsters.search(t) if monsters else None)
+                if hit:
+                    report.flag("death_story_monster_for_rvr", l, note=f'"{hit.group(0)}"; {teller} {fact}')
+            claimed = claimed_attackers(l.text)
+            if death.attackers is not None and death.attackers <= 2 and claimed is not None and claimed > death.attackers:
+                report.flag("death_story_attackers", l, note=f"claims {claimed}; {teller} {fact}")
+
+
+# 2. Time of day -----------------------------------------------------------------------------------------------------------
+EVENING_WORDS = re.compile(r"\b(?:tonight|tonite|this evening)\b")
+MORNING_WORDS = re.compile(r"\bthis morning\b")
+
+
+def check_time_of_day(report: Report, lines: list[Line]):
+    """"tonight" before 17:00 and "this morning" from 12:00 on, by the log's own clock."""
+    for l in lines:
+        if l.who != "bot":
+            continue
+        hour = l.clock % 86400 // 3600
+        t = l.text.lower()
+        if hour < 17 and EVENING_WORDS.search(t):
+            report.flag("time_of_day_wrong", l, note=f"at {at(l)}")
+        elif hour >= 12 and MORNING_WORDS.search(t):
+            report.flag("time_of_day_wrong", l, note=f"at {at(l)}")
+
+
+# 3. Internal vocabulary ----------------------------------------------------------------------------------------------------
+INTERNAL_WORDS = re.compile(r"\b(?:rendezvous|objectives?|frontier patrols?|matchmaking|staging|egress|waypoints?|assignments?)\b")
+
+
+def check_internal_words(report: Report, lines: list[Line]):
+    """The server's own words (goal, group and route code) in a bot's mouth."""
+    for l in lines:
+        if l.who == "bot" and l.speaker not in SYSTEM_SPEAKERS:
+            hit = INTERNAL_WORDS.search(l.text.lower())
+            if hit:
+                report.flag("internal_vocabulary", l, note=f'/{l.ch} "{hit.group(0)}"')
+
+
+# 4 and 5. Answers inside an exchange ---------------------------------------------------------------------------------------
+BARE_REACTION = {"oof", "rip", "lol", "ouch", "heh", "lol rip", "rip lol", "nice", "gz", "ugh", "haha", "ha", "lmao", "oof lol", "f"}
+NOTHING_ANSWER = re.compile(r"\b(?:quiet|havent seen|haven t seen|not seen|dunno|nope|no idea|nobody|no one|noone|nothing|none)\b")
+# The asker's referential follow-up to an answer ("how many?", "which way?"); "anyone else know?" asks again and is fine.
+RUN_ON_QUESTION = re.compile(r"^(?:how many|how big|how far|how long|which|where|what|who|when|u sure|really)\b")
+RUN_ON = re.compile(r"^(?:k |ok |kk )?(?:omw|on my way|otw|count me in|coming|heading over|be right there|inv me|x me)\b")
+
+
+def exchanges_of(lines: list[Line]) -> dict[tuple[str, str, str], list[Line]]:
+    out: dict[tuple[str, str, str], list[Line]] = defaultdict(list)
+    for l in lines:
+        if l.ex and l.i is not None:
+            out[(l.ch, l.realm, l.ex)].append(l)
+    for seq in out.values():
+        seq.sort(key=lambda l: (l.i, l.n))
+    return out
+
+
+def check_exchange_answers(report: Report, lines: list[Line]):
+    """A question whose answer is only a reaction ("rez in murdaigean?" / "oof"), and an exchange that runs on after its
+    answer said there was nothing ("any grps out?" / "quiet atm" / "how many?" ... "omw")."""
+    for (ch, realm, ex), seq in exchanges_of(lines).items():
+        for k, line in enumerate(seq[:-1]):
+            if not line.text.rstrip().endswith("?") or line.role in ("riff", "reactor") or RHETORICAL.match(norm(line.text)):
+                continue
+            reply = next((r for r in seq[k + 1:] if r.speaker != line.speaker), None)
+            if reply is not None and reply.role == "answerer" and norm(reply.text) in BARE_REACTION:
+                report.flag("question_bare_reaction", line, reply, note=f"/{ch} ex={ex}")
+        asker = next((l.speaker for l in seq if l.role == "asker"), seq[0].speaker)
+        for k, answer in enumerate(seq):
+            if answer.role != "answerer" or answer.speaker == asker or not NOTHING_ANSWER.search(norm(answer.text)):
+                continue
+            later = [l for l in seq[k + 1:] if RUN_ON.match(norm(l.text)) or (
+                l.speaker == asker and l.text.rstrip().endswith("?") and RUN_ON_QUESTION.match(norm(l.text)) and len(words(l.text)) <= 5)]
+            if later:
+                report.flag("run_on_after_nothing", answer, *later, note=f"/{ch} ex={ex}")
+            break
+
+
+# 6, 7. The group channel ---------------------------------------------------------------------------------------------------
+GROUP_REPEAT_S = 3
+HUNT_TALK = re.compile(r"\b(?:pulls?|pulling|pulled|camp|xp|drops?|dropping|dropped|loot|kills?|killing|oom|med|buffs?)\b")
+HUNT_BURST_LINES = 6
+HUNT_BURST_S = 600
+
+
+def check_group_channel(report: Report, lines: list[Line]):
+    """One bot twice in /group within 3 s; and the group banter (TryGroupLine) that talks of hunting: counted, and more than
+    six such lines in ten minutes in one group is a failure (too chatty for a duo). The log shows the /group lines the player
+    sees, so a realm's lines are the player's group."""
+    group = [l for l in lines if l.ch == "group" and l.who == "bot"]
+    last: dict[tuple[str, str], Line] = {}
+    for l in group:
+        prev = last.get((l.realm, l.speaker))
+        if prev is not None and l.clock - prev.clock <= GROUP_REPEAT_S:
+            report.flag("group_same_bot_3s", prev, l, note=f"{l.clock - prev.clock}s apart")
+        last[(l.realm, l.speaker)] = l
+    hunt: dict[str, list[Line]] = defaultdict(list)
+    for l in group:
+        if "TryGroupLine" in l.via and HUNT_TALK.search(l.text.lower()):
+            report.flag("info_group_hunt_talk", l)
+            hunt[l.realm].append(l)
+    for realm, seq in hunt.items():
+        lo = 0
+        bursting = False
+        for hi, l in enumerate(seq):
+            while seq[lo].clock <= l.clock - HUNT_BURST_S:
+                lo += 1
+            window = seq[lo:hi + 1]
+            if len(window) > HUNT_BURST_LINES and not bursting:
+                bursting = True
+                start = window[0]
+                end = next((x for x in reversed(seq) if x.clock - start.clock < HUNT_BURST_S), l)
+                n = sum(1 for x in seq if start.clock <= x.clock < start.clock + HUNT_BURST_S)
+                report.flag("group_hunt_talk_burst", start, end,
+                            note=f"{n} hunting lines from {at(start)} within {HUNT_BURST_S // 60} min ({', '.join(sorted({x.speaker for x in window}))})")
+            elif len(window) <= HUNT_BURST_LINES:
+                bursting = False
+
+
+# 8. "back" from nowhere ------------------------------------------------------------------------------------------------
+BACK_LINE = re.compile(r"^(?:ok |k |kk |and )?(?:back|re|im back|i m back|back now|bk|back again)$")
+AWAY_LINE = re.compile(r"\b(?:brb|afk|bio|bbiab|bbl|away|phone|door|dinner|food|shall return|be right back|be back|gtg|g2g|sec|smoke|kids?)\b")
+BACK_WITHIN_S = 1800
+
+
+def check_back_lines(report: Report, lines: list[Line], deaths: list[Death]):
+    """A bot's /faction "back" ("ok back", "re") with no brb/afk/away line of its own and no AUTONOMOUS_BOT_DEATH in the 30 min
+    before. A log with no AUTONOMOUS_BOT_DEATH rows (a simulated one) can't say whether the bot died, so it isn't checked."""
+    if not deaths:
+        return
+    for k, l in enumerate(lines):
+        if l.who != "bot" or l.ch != "faction" or not BACK_LINE.match(norm(l.text)):
+            continue
+        away = any(p.speaker == l.speaker and p.realm == l.realm and l.clock - p.clock <= BACK_WITHIN_S and AWAY_LINE.search(norm(p.text))
+                   for p in lines[:k])
+        died = any(d.bot == l.speaker and d.realm == l.realm and 0 <= l.clock - d.clock <= BACK_WITHIN_S for d in deaths)
+        if not away and not died:
+            report.flag("back_from_nowhere", l, note=f"no brb/afk line or death in the {BACK_WITHIN_S // 60} min before")
+
+
+# 9. A duo offer, then declined for a duty (informational) ---------------------------------------------------------------
+DUO_OFFER = re.compile(r"\b(?:solo atm|want company|wanna duo|want to duo|wanna team up|want to team up|lf duo|up for a duo)\b")
+OFFER_DECLINED_WITHIN_S = 600
+
+
+def check_offer_declined(report: Report, lines: list[Line], invites: list[InviteResult]):
+    """A bot's tell offering the player company, then the bot declining the player's invite within 10 min for a duty."""
+    for l in lines:
+        if l.who != "bot" or l.ch != "tell" or not DUO_OFFER.search(l.text.lower()):
+            continue
+        to = TO_FIELD.search(l.raw)
+        declined = next((r for r in invites if r.bot == l.speaker and r.result == "declined" and 0 <= r.clock - l.clock <= OFFER_DECLINED_WITHIN_S
+                         and (to is None or r.player == to.group(1))), None)
+        if declined:
+            report.flag("info_offer_then_declined", l, note=f"declined {declined.clock - l.clock}s later, duty={declined.duty or '?'}")
+
+
+def check_story_facts(report: Report, lines: list[Line], path: str):
+    deaths, invites = read_facts(path)
+    report.counts["info_deaths_logged"] += len(deaths)
+    check_death_stories(report, lines, deaths)
+    check_time_of_day(report, lines)
+    check_internal_words(report, lines)
+    check_exchange_answers(report, lines)
+    check_group_channel(report, lines)
+    check_back_lines(report, lines, deaths)
+    check_offer_declined(report, lines, invites)
+
+
+STORY_FACT_KINDS = [
+    ("info_deaths_logged", "(info) AUTONOMOUS_BOT_DEATH rows in the log"),
+    ("death_stories", "/faction death stories (told stories and field death lines)"),
+    ("death_story_rvr_for_monster", "death story lines with RvR words for a monster kill"),
+    ("death_story_monster_for_rvr", "death story lines naming monsters or guards for a player/bot kill"),
+    ("death_story_attackers", "death story lines claiming more attackers than there were (1-2)"),
+    ("info_death_story_no_death", "(info) death stories with no death of the teller in the 10 min before"),
+    ("time_of_day_wrong", "\"tonight\" before 17:00 or \"this morning\" after 12:00"),
+    ("internal_vocabulary", "bot lines with internal words (rendezvous, objective, staging...)"),
+    ("question_bare_reaction", "questions answered by a bare reaction (oof, rip, lol...)"),
+    ("run_on_after_nothing", "exchanges that run on after a nothing answer (quiet, dunno...)"),
+    ("group_same_bot_3s", "one bot twice in /group within 3 s"),
+    ("info_group_hunt_talk", "(info) /group banter lines with hunting talk (TryGroupLine)"),
+    ("group_hunt_talk_burst", f"/group hunting banter over {HUNT_BURST_LINES} lines in {HUNT_BURST_S // 60} min"),
+    ("back_from_nowhere", "\"back\" with no brb/afk or death in the 30 min before (logs with death rows)"),
+    ("info_offer_then_declined", "(info) duo offers by tell, then the invite declined for a duty"),
+]
+
+
+def story_fact_checks(counts) -> list[tuple[str, int]]:
+    """The RC6 checks the verdict fails on."""
+    return [
+        ("death story contradicts the death", counts["death_story_rvr_for_monster"] + counts["death_story_monster_for_rvr"] + counts["death_story_attackers"]),
+        ("wrong time of day", counts["time_of_day_wrong"]),
+        ("internal vocabulary", counts["internal_vocabulary"]),
+        ("questions answered by a bare reaction", counts["question_bare_reaction"]),
+        ("run-on after a nothing answer", counts["run_on_after_nothing"]),
+        ("same bot twice in /group within 3 s", counts["group_same_bot_3s"]),
+        ("/group hunting banter bursts", counts["group_hunt_talk_burst"]),
+        ("back from nowhere", counts["back_from_nowhere"]),
+    ]
+
+
+KINDS.extend(STORY_FACT_KINDS)
 
 
 def main(argv=None) -> int:
