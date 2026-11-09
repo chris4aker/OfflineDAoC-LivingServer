@@ -1157,8 +1157,8 @@ namespace DOL.GS
                 release = new Point3D(capital.X, capital.Y, capital.Z);
             }
             release ??= _deathLocation;
-            if (IsAutonomousWorldBot)
-                AutonomousLivingServer.OnBotReleasing(this);
+            // RC6 on the owner's PC: "long run back to Pennine Mountains" and "released, running back" in the same second.
+            bool toldGroup = IsAutonomousWorldBot && AutonomousLivingServer.OnBotReleasing(this);
             // Transfer the corpse first: a failed MoveTo must not revive the bot
             // at its killer or cause HandleDeathRecovery to discard its timer.
             bool moved;
@@ -1182,7 +1182,7 @@ namespace DOL.GS
             _nextReturnRoleplayTick = GameLoop.GameLoopTime + Util.Random(45_000, 90_000);
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
-            if (returnToParty)
+            if (returnToParty && !toldGroup)
                 TellOwnGroup(ReturnDialogue("release"));
 
             if (PersistentRecord != null)
