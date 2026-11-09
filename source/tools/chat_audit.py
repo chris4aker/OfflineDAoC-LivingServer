@@ -794,7 +794,8 @@ def check_enemy_zone(report: Report, lines: list[Line]):
         t = l.text.lower()
         enemy = next((z for r, zones in FRONTIER_ZONES.items() if r != realm for z in zones
                       if re.search(rf"(?<![a-z']){re.escape(z)}(?![a-z'])", t)), None)
-        if enemy and PVE_WORDS.search(t):
+        # An rvr line may name the frontier and still say "duo" ("rvr in odin's gate, its busy, wanna duo?", RC7).
+        if enemy and PVE_WORDS.search(t) and not re.search(r"\b(?:rvr|realm points|keeps?|frontier)\b", t) and not RVR_WORDS.search(t):
             report.flag("pve_enemy_zone", l, note=f"{l.realm} bot, {enemy}")
 
 
