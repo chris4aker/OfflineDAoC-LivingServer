@@ -1662,14 +1662,24 @@ public static class AutonomousBotChatCoordinator
     /// </summary>
     public static bool BroadcastFactionAsWritten(string speakerName, eRealm realm, string message)
     {
-        if (!string.IsNullOrWhiteSpace(message) && !AutonomousChatExchange.ExemptFromCeiling(AutonomousChatExchange.Current) && !FactionRoom(realm))
+        AutonomousChatExchange.Source source = AutonomousChatExchange.Current;
+        bool exempt = AutonomousChatExchange.ExemptFromCeiling(source);
+        bool scene = AutonomousChatExchange.IsScene(source);
+        // A running debate, storyline or dunce scene owns /faction while it plays: every other line but an event or one to the
+        // player yields to it, so the scene finds room within seconds and plays to its end (its exit included).
+        if (!exempt && !scene && AutonomousBotDebates.IsRunning(realm))
+        {
+            AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Faction, AutonomousChatWhy.Held.Gap);
+            return false;
+        }
+        if (!string.IsNullOrWhiteSpace(message) && !exempt && !FactionRoom(realm))
         {
             AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Faction, AutonomousChatWhy.Held.Ceiling);
             return false;
         }
         // A pure reaction ("lol", "oof", "been there") the realm heard in the last ten minutes isn't said again, whatever path
-        // chose it (1.1.3; the planners pick another one first).
-        if (AutonomousChatExchange.IsReaction(message) &&
+        // chose it (1.1.3; the planners pick another one first). A scene's written lines are its own.
+        if (!scene && AutonomousChatExchange.IsReaction(message) &&
             !AutonomousChatExchange.Shorts.SayOrHold(AutonomousChatExchange.FactionKey(realm), message, GameLoop.GameLoopTime))
         {
             AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Faction, AutonomousChatWhy.Held.Duplicate);

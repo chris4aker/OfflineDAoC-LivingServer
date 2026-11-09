@@ -181,6 +181,8 @@ TRIGGER = re.compile(
 
 
 def is_reaction(line: Line) -> bool:
+    if line.src in ("debate", "storyline"):
+        return False  # a scene's written lines (a dunce's roast is the scene, not a pile-on)
     if line.src in ("burst", "reaction") or line.role in ("reactor", "riff"):
         return True
     return bool(REACTION.match(norm(line.text)))

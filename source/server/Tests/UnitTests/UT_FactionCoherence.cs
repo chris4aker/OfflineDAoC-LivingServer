@@ -5,6 +5,7 @@ using System.Linq;
 using NUnit.Framework;
 using Ex = DOL.GS.AutonomousChatExchange;
 using Field = DOL.GS.AutonomousChatFieldTalk;
+using VC = DOL.GS.AutonomousBotVoiceCorpus;
 
 namespace DOL.GS.Tests;
 
@@ -337,6 +338,104 @@ public class UT_FactionCoherence
         Assert.That(Ex.ExemptFromCeiling(null), Is.False, "an untagged line waits its turn too");
         Assert.That(AutonomousChatBursts.IsEvent("keep_lost") && AutonomousChatBursts.IsEvent("relic_won") && AutonomousChatBursts.IsEvent("first"), Is.True);
         Assert.That(AutonomousChatBursts.IsEvent("nemesis") || AutonomousChatBursts.IsEvent("revenge"), Is.False);
+    }
+
+    [Test]
+    public void ASceneBeatWaitsForRoomAndOnlyACutSceneLosesItsEnd()
+    {
+        Assert.That(AutonomousBotDebates.DecideRoom(true, 0), Is.EqualTo(AutonomousBotDebates.RoomDecision.Speak));
+        Assert.That(AutonomousBotDebates.DecideRoom(false, 0), Is.EqualTo(AutonomousBotDebates.RoomDecision.Wait));
+        Assert.That(AutonomousBotDebates.DecideRoom(false, AutonomousBotDebates.MaxRoomWaits - 1), Is.EqualTo(AutonomousBotDebates.RoomDecision.Wait));
+        Assert.That(AutonomousBotDebates.DecideRoom(false, AutonomousBotDebates.MaxRoomWaits), Is.EqualTo(AutonomousBotDebates.RoomDecision.Cut));
+        Assert.That(AutonomousBotDebates.DecideRoom(true, AutonomousBotDebates.MaxRoomWaits), Is.EqualTo(AutonomousBotDebates.RoomDecision.Speak));
+        // A dunce cut short after its own lines still rage quits; one cut before it spoke doesn't.
+        Assert.That(AutonomousBotDebates.ExitOnCut("A", ["A", "B", "C"]), Is.True);
+        Assert.That(AutonomousBotDebates.ExitOnCut("A", ["B"]), Is.False);
+        Assert.That(AutonomousBotDebates.ExitOnCut("", ["A"]), Is.False, "a scene with no exit");
+        Assert.That(Ex.IsScene(new Ex.Source("debate", 1, 0, "A")) && Ex.IsScene(new Ex.Source("storyline", 1, 0, "B")), Is.True);
+        Assert.That(Ex.IsScene(new Ex.Source("thread", 1, 0, "asker")), Is.False);
+    }
+
+    /// <summary>
+    /// Every scene in the corpus (debates, storyline episodes, the dunce's roasts) played as AutonomousBotDebates.PlayBeat plays
+    /// it, on a realm whose /faction is already at its ceiling: the two minutes before are full, every other line yields to the
+    /// scene (BroadcastFactionAsWritten), and a realm event's capped burst lands in the middle. Each beat waits for room
+    /// (DecideRoom), never longer than the cut, and the scene plays every line in order to its end, so a dunce's exit runs.
+    /// A model of the beat loop, not the game's timers: no bots log off here.
+    /// </summary>
+    [Test]
+    public void EveryScenePlaysToItsEndOnARealmAtItsCeiling()
+    {
+        var settings = AutonomousChatBudget.Current;
+        var band = AutonomousChatBudget.Band(settings, AutonomousChatBudget.Channel.Faction, SimRealmBots, 20, false, 1.0);
+        VC.Scene[] scenes = AutonomousBotVoices.Corpus.Scenes;
+        Assert.That(scenes.Length, Is.GreaterThan(20));
+        int dunces = 0, stories = 0, debates = 0;
+        foreach (VC.Scene scene in scenes)
+        {
+            var meter = new AutonomousChatBudget.ChannelMeter();
+            const long key = 1;
+            long now = 10 * 60_000;
+            // Full: as many lines in the last two minutes as the ceiling allows.
+            int full = (int)Math.Floor(band.Ceiling * 2);
+            for (int i = 0; i < full; i++)
+                meter.Count(AutonomousChatBudget.Channel.Faction, key, now - 119_000 + i * (118_000 / Math.Max(1, full)));
+            var said = new List<string>();
+            int waits = 0, beatIndex = 0;
+            bool cut = false, eventSaid = false;
+            foreach (VC.Beat beat in scene.Beats)
+            {
+                if (beat.IsPause)
+                {
+                    now += Math.Max(1, beat.PauseSeconds) * 1_000L;
+                    continue;
+                }
+                if (beat.Variants.Length == 0)
+                    continue;
+                // A keep falls during the scene: its tagged event and capped burst go out, not held, and count in the meter.
+                if (!eventSaid && beatIndex == 1)
+                {
+                    for (int e = 0; e < 4; e++)
+                        meter.Count(AutonomousChatBudget.Channel.Faction, key, now + e * 3_000);
+                    eventSaid = true;
+                }
+                while (true)
+                {
+                    var decision = AutonomousBotDebates.DecideRoom(Ex.Fits(meter.PerMinute(AutonomousChatBudget.Channel.Faction, key, now), band.Ceiling), waits);
+                    if (decision == AutonomousBotDebates.RoomDecision.Speak)
+                        break;
+                    if (decision == AutonomousBotDebates.RoomDecision.Cut)
+                    {
+                        cut = true;
+                        break;
+                    }
+                    waits++;
+                    now += AutonomousBotDebates.RoomRetryMs;
+                }
+                if (cut)
+                    break;
+                waits = 0;
+                meter.Count(AutonomousChatBudget.Channel.Faction, key, now);
+                said.Add(beat.Role);
+                beatIndex++;
+                now += AutonomousBotDebates.BeatDelayMs(beat.Variants[0]);
+            }
+            Assert.That(cut, Is.False, $"{scene.Id} was cut at a full channel");
+            Assert.That(said, Is.EqualTo(scene.Beats.Where(beat => !beat.IsPause && beat.Variants.Length > 0).Select(beat => beat.Role).ToList()),
+                $"{scene.Id}: every line, in order");
+            if (scene.Exit.Length > 0)
+            {
+                dunces++;
+                Assert.That(said, Does.Contain(scene.Exit), $"{scene.Id}: the dunce spoke, so its exit runs at the end");
+            }
+            else if (AutonomousBotStorylines.IsStory(scene))
+                stories++;
+            else
+                debates++;
+        }
+        Assert.That(dunces, Is.GreaterThanOrEqualTo(6), "the dunce scenes");
+        Assert.That(stories, Is.GreaterThan(0), "storyline episodes");
+        Assert.That(debates, Is.GreaterThan(0), "debates");
     }
 
     [Test]

@@ -52,6 +52,12 @@ MUST be top notch"). Checked by automated tests and a simulated evening only; no
   realm's big moment said on purpose (a keep or relic taken, a raid's end, Darkness Falls, a server first, the raid's
   Leeroy), whose burst is itself capped at three reactions within 40 s; and `src=player`, a line to or about the real player
   (bots answer you first). With bot voices on, a server first no longer adds its separate cheers on top of its burst.
+- **A debate, a storyline episode or a dunce's roast plays to its end.** While a scene plays it owns the realm's
+  /faction: every other line but an event or one to the player yields to it, so each beat finds room under the ceiling
+  within seconds. A beat waits for room three seconds at a time (an optional beat isn't re-rolled meanwhile); only after
+  two minutes is a scene cut (`BOT_DEBATE_END reason="no room in /faction"`), and a dunce who already spoke still sends
+  its parting tell and rage quits then. Checked on every scene in the corpus, on a realm already at its ceiling with a
+  keep falling mid-scene.
 - **One reaction in ten minutes, whatever says it.** The ten-minute window also holds back a pure reaction ("lol", "been
   there", "nice going") at the moment it is sent, from any path, not only the ones that plan around it. A conversation's
   line comes at most about 40 s after the one before it, or not at all.
