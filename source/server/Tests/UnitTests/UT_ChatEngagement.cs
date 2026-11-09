@@ -340,6 +340,23 @@ public class UT_ChatEngagement
             Subjects.TryGetValue(ask.Ex, out string subject) && ask.Text.Contains(subject.ToLowerInvariant()) &&
             Faction.Any(s => s.Speaker == subject && s.Feature != "followup" && ask.At - s.At >= 10 * 60_000));
         public int Bits => Faction.Count(s => s.Feature == "bit");
+
+        /// <summary>Bot questions answered by someone else within 60 s (as chat_audit.py check_unanswered: rhetorical ones aside).</summary>
+        public (int Asked, int Answered) Questions
+        {
+            get
+            {
+                var asked = Faction.Where(s => s.Feature == "field" && s.Index == 0 && s.Text.TrimEnd().EndsWith('?') && !Rhetorical(s.Text) &&
+                                               s.At <= 3 * 3_600_000L - 60_000).ToList();
+                return (asked.Count, asked.Count(q => Faction.Any(r => r.Ex == q.Ex && r.Speaker != q.Speaker && r.At >= q.At && r.At - q.At <= 60_000)));
+            }
+        }
+
+        private static bool Rhetorical(string text)
+        {
+            string t = System.Text.RegularExpressions.Regex.Replace(System.Text.RegularExpressions.Regex.Replace(text.ToLowerInvariant(), "[^a-z0-9]+", " "), @"\s+", " ").Trim();
+            return System.Text.RegularExpressions.Regex.IsMatch(t, @"^(?:\S+|(?:lol|heh|haha|ugh|bleh|argh|ok|so|well)\b.*|only \d+ \w+|.*\bnot bad|.*\bkeeps not bad)$");
+        }
     }
 
     /// <summary>The 1.1.2 rule for who is a regular: a three-hour rotation staggered by bot, 1.2% of the realm.</summary>
@@ -415,9 +432,11 @@ public class UT_ChatEngagement
             return true;
         }
         var realmBots = bots.ToArray();
-        // AutonomousBotChatCoordinator.Repliers: a regular first, then a bot near the speaker's level, then anyone free (a slice).
-        (SimBot, SimBot) Repliers(SimBot starter, long now, Func<SimBot, bool> fits = null)
+        // AutonomousBotChatCoordinator.Repliers: a regular first (a question: two times in five), then a bot near the speaker's
+        // level, then anyone free (a slice); fitting bots past those go to the stand-ins, up to four.
+        (SimBot, SimBot) Repliers(SimBot starter, long now, Func<SimBot, bool> fits = null, List<SimBot> spare = null, double regularShare = 1.0)
         {
+            bool regularFirst = regularShare >= 1 || random.NextDouble() < regularShare;
             SimBot regular = null, near = null, any = null, second = null;
             // The slice: 200 of the realm's bots now; before, 200 of all three realms' (about 66 of this one).
             int slice = newCode ? AutonomousBotChatCoordinator.RepliersSlice : 66;
@@ -426,22 +445,27 @@ public class UT_ChatEngagement
                 SimBot bot = realmBots[at];
                 if (bot == starter || fits != null && !fits(bot))
                     continue;
-                if (regular == null && Regular(bot, now))
+                if (regularFirst && regular == null && Regular(bot, now))
                     regular = bot;
                 else if (near == null && Math.Abs(bot.Level - starter.Level) <= 5)
                     near = bot;
                 else if (any == null)
                     any = bot;
-                else
-                    second ??= bot;
+                else if (second == null)
+                    second = bot;
+                else if (spare != null && spare.Count < 4)
+                    spare.Add(bot);
             }
             SimBot answerer = regular ?? near ?? any;
-            return (answerer, new[] { near, any, second }.FirstOrDefault(bot => bot != null && bot != answerer));
+            SimBot chime = new[] { near, any, second }.FirstOrDefault(bot => bot != null && bot != answerer);
+            spare?.InsertRange(0, new[] { near, any, second }.Where(bot => bot != null && bot != answerer && bot != chime));
+            return (answerer, chime);
         }
-        var runs = new List<(Ex.Run Run, SimBot[] Speakers, string Feature)>();
-        void Start(long now, long id, string feature, List<Ex.Line> lines, SimBot[] speakers, int firstIndex = 1)
+        var runs = new List<(Ex.Run Run, SimBot[] Speakers, string Feature, SimBot[] StandIns)>();
+        var spoke = new HashSet<(long, int)>();
+        void Start(long now, long id, string feature, List<Ex.Line> lines, SimBot[] speakers, int firstIndex = 1, SimBot[] standIns = null)
         {
-            runs.Add((new Ex.Run(id, feature, lane, laneState, lines, now, Ex.Rules.Faction, firstIndex), speakers, feature));
+            runs.Add((new Ex.Run(id, feature, lane, laneState, lines, now, Ex.Rules.Faction, firstIndex), speakers, feature, standIns));
             Ex.Touch(laneState, id, now);
         }
         string[] beats = ["is a house worth the coin?", "a house is a home, plus storage", "its a weekly rent bill for a room u visit twice",
@@ -501,9 +525,9 @@ public class UT_ChatEngagement
             }
             if (now >= nextGossip)
             {
+                // AutonomousLivingServer.TryGossip: now through the player's turns too.
                 nextGossip = now + AutonomousLivingServer.GossipRealmCooldownMinMs + random.Next(30 * 60_000);
-                pacer.Note(Player, now);
-                if (Say(now, friend, "player", Ex.NewId(), 0, "gossip", "grouped with " + Player + " the other day, solid player"))
+                if (Turn(now) && Say(now, friend, "player", Ex.NewId(), 0, "gossip", "grouped with " + Player + " the other day, solid player"))
                 {
                     if (PlayerGrouped(now)) evening.PlayerLinesGrouped++; else evening.PlayerLinesSolo++;
                 }
@@ -532,16 +556,27 @@ public class UT_ChatEngagement
                     if (Field.Line("faction", starter.Facts, memory, random, now) is { } said)
                     {
                         long ex = Ex.NewId();
-                        if (Say(now, starter, "field", ex, 0, "asker", said.Text))
+                        // AutonomousBotChatCoordinator.TryField (1.1.3, after RC5): a question only when there is room for its answer.
+                        bool held = Field.WantsAnswer(said) && (Ex.RunningCount(lane, now) >= Ex.MaxRunning || !Ex.Fits(PerMinute(now) + 0.5, band.Ceiling));
+                        if (!held && Say(now, starter, "field", ex, 0, "asker", said.Text))
                         {
                             if (newCode && Recall.AskedOf(said.Kind) is { } asked)
                                 recall.Add(new Recall.Note(asked, starter.Id, starter.Name, said.Idea, now));
                             if (said.Answers != null && Ex.RunningCount(lane, now) < Ex.MaxRunning)
                             {
-                                (SimBot answerer, SimBot third) = Repliers(starter, now, bot => Field.CanAnswer(said, bot.Class, bot.Level, Field.Fills(bot.Class, "healer")));
+                                // ScheduleFieldThread: a bot that has an answer, a regular first two times in five for a question,
+                                // and stand-ins for a busy answerer (unless the answer is about the answerer itself).
+                                Func<SimBot, bool> fits = bot => Field.CanGiveAnswer(said, bot.Class, bot.Level, Field.Fills(bot.Class, "healer"));
+                                var spare = new List<SimBot>(4);
+                                (SimBot answerer, SimBot third) = Repliers(starter, now, fits, spare,
+                                    Field.WantsAnswer(said) ? AutonomousBotChatCoordinator.QuestionRegularShare : 1.0);
                                 List<Field.Step> steps = Field.Thread(said, starter.Facts, answerer?.Facts, third?.Facts, memory, random, now);
+                                SimBot[] standIns = answerer == null || steps.Any(st => st.Who == 1 && Field.MentionsSelf(st.Text, answerer.Facts)) ? null
+                                    : spare.Where(bot => bot != third && Field.Fills(bot.Class, "healer") == Field.Fills(answerer.Class, "healer") &&
+                                                         (said.SameClass == null || bot.Class == answerer.Class)).ToArray();
                                 if (steps.All(st => st.Who == 0 || !Ex.IsReaction(st.Text) || shorts.TryUse(lane, st.Text, now)) && steps.Count > 0)
-                                    Start(now, ex, "thread", Ex.FromSteps(steps, ["asker", "answerer", "third"], step => step.Who == 2), [starter, answerer, third]);
+                                    Start(now, ex, "thread", Ex.FromSteps(steps, ["asker", "answerer", "third"], step => step.Who == 2), [starter, answerer, third],
+                                        standIns: standIns);
                             }
                         }
                     }
@@ -643,13 +678,26 @@ public class UT_ChatEngagement
             // ---- due lines (Ex.Run, as AutonomousChatExchange.Play) ----
             for (int k = 0; k < runs.Count; k++)
             {
-                var (run, speakers, feature) = runs[k];
+                var (run, speakers, feature, standIns) = runs[k];
                 if (run.DueAt > now)
                     continue;
-                long? next = run.Step(now, line => line.Who < speakers.Length && speakers[line.Who] is { } bot && now >= debateUntil && Room(now) &&
-                                                   (feature == "story" && line.Who == 0 || !Busy(bot, now)),
+                long? next = run.Step(now, line =>
+                    {
+                        // A stand-in for a busy answerer that hasn't spoken yet (AutonomousChatExchange.Play's standIns).
+                        if (line.Who == 1 && standIns is { Length: > 0 } && !spoke.Contains((run.Id, 1)) && speakers[1] is { } first && Busy(first, now) &&
+                            standIns.FirstOrDefault(bot => !Busy(bot, now)) is { } free)
+                            speakers[1] = free;
+                        return line.Who < speakers.Length && speakers[line.Who] is { } bot && now >= debateUntil && Room(now) &&
+                               (feature == "story" && line.Who == 0 || !Busy(bot, now));
+                    },
                     line => line.Who < speakers.Length ? speakers[line.Who]?.Name : null,
-                    (line, index) => Say(now, speakers[line.Who], feature, run.Id, index, line.Role, line.Text), random);
+                    (line, index) =>
+                    {
+                        if (!Say(now, speakers[line.Who], feature, run.Id, index, line.Role, line.Text))
+                            return false;
+                        spoke.Add((run.Id, line.Who));
+                        return true;
+                    }, random);
                 if (next == null)
                 {
                     Ex.Finish(laneState, run.Id);
@@ -677,7 +725,7 @@ public class UT_ChatEngagement
             $"{name}: /faction {e.Faction.Count()} lines ({e.Faction.Count() / 180.0:0.00}/min, ceiling {e.Ceiling:0.0}) from {e.Speakers} speakers, " +
             $"top 10 carry {e.TopTenShare * 100:0}%, busiest {e.Busiest}; lines aimed at the player {e.PlayerLines} ({e.PlayerLines / 3.0:0.0}/h: " +
             $"solo {e.PlayerLinesSolo / 2.0:0.0}/h, grouped {e.PlayerLinesGrouped:0.0}/h); follow-ups {e.FollowUps} ({e.FollowUpsAnchored} about a real earlier line), " +
-            $"running bits {e.Bits}";
+            $"running bits {e.Bits}; questions answered in 60 s {e.Questions.Answered}/{e.Questions.Asked}";
         TestContext.Progress.WriteLine("ENGAGE_SIM " + Line("before", before));
         TestContext.Progress.WriteLine("ENGAGE_SIM " + Line("after", after));
 
@@ -690,6 +738,8 @@ public class UT_ChatEngagement
         Assert.That(after.FollowUpsAnchored, Is.EqualTo(after.FollowUps), "every follow-up refers to a real earlier line");
         Assert.That(before.FollowUps, Is.Zero);
         Assert.That(after.Bits, Is.GreaterThan(0));
+        // The answers (#155) hold with the cast: at least four in five bot questions get an answer.
+        Assert.That(after.Questions.Answered, Is.GreaterThanOrEqualTo(after.Questions.Asked * 0.8), Line("after", after));
         // Engagement: a few lines an hour (the paced ones never past the allowance; a ding's /say grats and a healer's rez on top).
         Assert.That(after.PlayerLinesSolo / 2.0, Is.InRange(2.5, Engagement.SoloPerHour + 3.0), Line("after", after));
         Assert.That(after.PlayerLinesGrouped, Is.InRange(2, Engagement.WarmPerHour + 3), Line("after", after));

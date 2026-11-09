@@ -317,6 +317,13 @@ public static class AutonomousBotChatCoordinator
             AutonomousChatFieldTalk.MemoryOf(starter.Realm), random, GameLoop.GameLoopTime);
         if (said == null)
             return false;
+        // 1.1.3 (owner's PC, RC3 and RC5 2026-11-09: most bot questions in /faction drew nothing): a question is asked only when
+        // the channel has room for its answer too, under the ceiling and with fewer than three threads running.
+        if (channel is "faction" or "say" && AutonomousChatFieldTalk.WantsAnswer(said) && !RoomToAnswer(starter, channel == "faction"))
+        {
+            AutonomousChatWhy.CountHeld(choice.Channel, AutonomousChatWhy.Held.Ceiling);
+            return false;
+        }
         string text = AutonomousChatIdiolect.Apply(said.Text, starter.DatabaseID, false, random, terse: true);
         if (!Fresh(choice, text))
             return false;
@@ -329,6 +336,7 @@ public static class AutonomousBotChatCoordinator
             case "trade":
                 SendRealmChannel(starter, channel, text);
                 Note(channel + ":" + starter.Realm, starter, text, null);
+                ScheduleMarketReply(starter, said, channel, exchange);
                 break;
             case "broadcast":
                 if (!AutonomousChatBroadcast.Send(starter, text, listeners))
@@ -371,19 +379,31 @@ public static class AutonomousBotChatCoordinator
         // 1.1.3: no more than three threads at once in a channel; past that nobody could follow them.
         if (!AutonomousChatExchange.RoomFor(lane, now))
             return;
-        // 1.1.3: only a bot that can answer it says "me" (the role and levels it asks for: no "cab, 50" to "need a tank").
-        (GameBot answerer, GameBot third) = Repliers(starter, faction, now, random,
-            bot => AutonomousChatFieldTalk.CanAnswer(said, bot.CharacterClass?.Name ?? bot.ClassName, bot.Level,
-                bot.CharacterClass != null && BotPartyRoles.IsHealingClass((eCharacterClass)bot.CharacterClass.ID)));
+        // 1.1.3: only a bot that can answer it says "me" (the role and levels it asks for: no "cab, 50" to "need a tank"); after
+        // RC5, only one that has an answer at all ("any reavers on? quick q" is for a reaver).
+        Func<GameBot, bool> fits = bot => AutonomousChatFieldTalk.CanGiveAnswer(said, bot.CharacterClass?.Name ?? bot.ClassName, bot.Level, IsHealer(bot));
+        var spare = new List<GameBot>(4);
+        (GameBot answerer, GameBot third) = Repliers(starter, faction, now, random, fits, spare,
+            AutonomousChatFieldTalk.WantsAnswer(said) ? QuestionRegularShare : 1.0);
+        // "any1 at bold?": a bot that is really there answers it first.
+        if (said.Place != null && said.Family is "rvr_keep" or "rvr_out" && answerer != null && !AtPlace(answerer, said.Place) &&
+            spare.FirstOrDefault(bot => AtPlace(bot, said.Place)) is { } there)
+        {
+            spare.Remove(there);
+            spare.Add(answerer);
+            answerer = there;
+        }
         AutonomousChatFieldTalk.Memory memory = AutonomousChatFieldTalk.MemoryOf(starter.Realm);
+        AutonomousChatFieldTalk.Facts answererFacts = answerer == null ? null : AutonomousChatFieldTalk.Of(answerer, random);
+        string known = answerer == null ? null : KnownAnswer(starter, answerer, said, random);
         List<AutonomousChatFieldTalk.Step> steps = null;
         // 1.1.3: an answer that is only a reaction ("oof", "rip", "lol") the channel heard in the last ten minutes is said
         // another way, or the line goes unanswered.
         for (int attempt = 0; attempt < 3; attempt++)
         {
             steps = AutonomousChatFieldTalk.Thread(said, AutonomousChatFieldTalk.Of(starter, random),
-                answerer == null ? null : AutonomousChatFieldTalk.Of(answerer, random), third == null ? null : AutonomousChatFieldTalk.Of(third, random),
-                memory, random, now);
+                answererFacts, third == null ? null : AutonomousChatFieldTalk.Of(third, random),
+                memory, random, now, known);
             if (steps.All(step => step.Who == 0 || !AutonomousChatExchange.IsReaction(step.Text) || AutonomousChatExchange.Shorts.Fresh(lane, step.Text, now)))
                 break;
             steps = null;
@@ -393,19 +413,86 @@ public static class AutonomousBotChatCoordinator
         foreach (AutonomousChatFieldTalk.Step step in steps)
             if (step.Who != 0 && AutonomousChatExchange.IsReaction(step.Text))
                 AutonomousChatExchange.Shorts.TryUse(lane, step.Text, now);
-        PlayThread(steps, [starter, answerer, third], faction, said.Text, "field thread " + said.Kind, exchange);
+        // 1.1.3, after RC5: when the answerer is fighting by the time its answer is due, another bot that can answer says it, as
+        // long as the answer says nothing about the bot that would have said it ("me, thane 31") and it is of the same kind
+        // (a healer for a healer's answer, the asker's class for "{same}" answers).
+        GameBot[] standIns = answerer == null || steps.Any(step => step.Who == 1 && AutonomousChatFieldTalk.MentionsSelf(step.Text, answererFacts))
+            ? null
+            : spare.Where(bot => bot != third && IsHealer(bot) == IsHealer(answerer) &&
+                                 (said.SameClass == null || string.Equals(bot.CharacterClass?.Name, answerer.CharacterClass?.Name, StringComparison.OrdinalIgnoreCase)) &&
+                                 (said.Place == null || AtPlace(bot, said.Place) == AtPlace(answerer, said.Place)))
+                .ToArray();
+        PlayThread(steps, [starter, answerer, third], faction, said.Text, "field thread " + said.Kind, exchange, standIns);
     }
 
     /// <summary>How many bots of the speaker's realm <see cref="Repliers"/> looks at.</summary>
     public const int RepliersSlice = 200;
 
-    /// <summary>Who answers a line and who may chime in: a regular first, then a bot near the speaker's level, then anyone free.</summary>
-    private static (GameBot Answerer, GameBot Third) Repliers(GameBot starter, bool faction, long now, Random random, Func<GameBot, bool> fits = null)
+    /// <summary>How often a regular answers a question first (two times in five); otherwise a bot near the asker's level or anyone (1.1.3, after RC5).</summary>
+    public const double QuestionRegularShare = 0.4;
+
+    private static bool IsHealer(GameBot bot) => bot?.CharacterClass != null && BotPartyRoles.IsHealingClass((eCharacterClass)bot.CharacterClass.ID);
+
+    /// <summary>Whether the channel can carry a question and its answer now: two more lines under the ceiling, and room for a thread.</summary>
+    private static bool RoomToAnswer(GameBot asker, bool faction)
+    {
+        long now = GameLoop.GameLoopTime;
+        string lane = faction ? AutonomousChatExchange.FactionKey(asker.Realm) : AutonomousChatExchange.SayKey(asker.CurrentRegionID);
+        if (!AutonomousChatExchange.RoomFor(lane, now))
+            return false;
+        return !faction || AutonomousChatExchange.Fits(
+            AutonomousChatBudget.Meter.PerMinute(AutonomousChatBudget.Channel.Faction, (long)asker.Realm, now) + 1.0 / 2.0, FactionCeiling(asker.Realm));
+    }
+
+    private static bool AtPlace(GameBot bot, string place) => AutonomousChatLiveAnswers.IsAt(bot, place);
+
+    /// <summary>
+    /// The answer the live world gives to a bot's question, or null for the written answers (1.1.3, after RC5): the class
+    /// trainer and its town, the stable master with the route, the camps bots of that level really use, the enemies and enemy
+    /// stealthers the realm can see, and who of the realm is at a keep or in a zone.
+    /// </summary>
+    private static string KnownAnswer(GameBot asker, GameBot answerer, AutonomousChatFieldTalk.Said said, Random random)
+    {
+        try
+        {
+            switch (said.Family)
+            {
+                case "ask_trainer" or "say_trainer":
+                    return AutonomousChatKnowledge.TrainerAnswer(asker.Realm, asker.CharacterClass?.ID ?? 0, asker, random);
+                case "ask_way" or "ask_stable" or "say_stable" or "q_frontier":
+                    return AutonomousChatKnowledge.TryAnswer(asker.Realm, said.Text.TrimEnd('?') + "?", out string way) && !string.IsNullOrWhiteSpace(way) ? way : null;
+                case "camp_ask" or "camp_ask_zone" or "ask_xp" or "ask_xp_good" or "ask_xp_spot" or "ask_xp_best" or "ask_xp_go" or "ask_xp_spots":
+                    return random.NextDouble() < 0.6 ? AutonomousChatLiveAnswers.WhereToHunt(answerer, null, said.Text, random) : null;
+                case "rvr_stealth":
+                    return AutonomousChatLiveAnswers.StealthSighting(answerer, random);
+                case "rvr_enemy":
+                    return AutonomousChatLiveAnswers.EnemySighting(answerer, random);
+                case "rvr_keep" or "rvr_out" when said.Place != null:
+                    return AutonomousChatLiveAnswers.WhoIsAt(answerer, said.Place, random);
+                default:
+                    return null;
+            }
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Who answers a line and who may chime in: a regular first, then a bot near the speaker's level, then anyone free.
+    /// <paramref name="regularShare"/> is how often a regular is taken first (1.1.3, after RC5: with every question answered,
+    /// regulars first every time carried more of /faction than real channels' top tenth, about 60%). Fitting bots past the
+    /// answerer and the third go into <paramref name="spare"/>, up to four, as stand-ins.
+    /// </summary>
+    private static (GameBot Answerer, GameBot Third) Repliers(GameBot starter, bool faction, long now, Random random, Func<GameBot, bool> fits = null,
+        List<GameBot> spare = null, double regularShare = 1.0)
     {
         GameBot[] roster = AutonomousBotRegistry.Snapshot();
         if (roster.Length < 2)
             return (null, null);
         int realmBots = RealmBots(starter.Realm);
+        bool regularFirst = regularShare >= 1 || random.NextDouble() < regularShare;
         GameBot regular = null, near = null, any = null, second = null;
         // 1.1.3: a slice of 200 bots of the speaker's realm (it was 200 of all three realms), so a regular is found most times.
         for (int i = 0, seen = 0, at = random.Next(roster.Length); i < roster.Length && seen < RepliersSlice; i++, at = (at + 1) % roster.Length)
@@ -418,19 +505,23 @@ public static class AutonomousBotChatCoordinator
                 !faction && (bot.CurrentRegion != starter.CurrentRegion || !bot.IsWithinRadius(starter, WorldMgr.SAY_DISTANCE)) ||
                 fits != null && !fits(bot))
                 continue;
-            if (regular == null && AutonomousChatRegulars.IsRegular(bot.DatabaseID, AutonomousBotPersonality.For(bot).Type, now, realmBots))
+            if (regularFirst && regular == null && AutonomousChatRegulars.IsRegular(bot.DatabaseID, AutonomousBotPersonality.For(bot).Type, now, realmBots))
                 regular = bot;
             else if (near == null && Math.Abs(bot.Level - starter.Level) <= 5)
                 near = bot;
             else if (any == null)
                 any = bot;
-            else
-                second ??= bot;
-            if (regular != null && near != null)
+            else if (second == null)
+                second = bot;
+            else if (spare != null && spare.Count < 4)
+                spare.Add(bot);
+            if ((regular != null || !regularFirst) && near != null && (spare == null || spare.Count >= 4))
                 break;
         }
         GameBot answerer = regular ?? near ?? any;
         GameBot third = new[] { near, any, second }.FirstOrDefault(bot => bot != null && bot != answerer);
+        if (spare != null)
+            spare.InsertRange(0, new[] { near, any, second }.Where(bot => bot != null && bot != answerer && bot != third));
         return (answerer, third);
     }
 
@@ -448,7 +539,8 @@ public static class AutonomousBotChatCoordinator
     /// own timer, so a line put back for spacing came after the next one). A line whose speaker can't say it ends the thread
     /// (a third bot's chime is skipped instead), and so does a short line whose referent other talk has scrolled away.
     /// </summary>
-    private static void PlayThread(List<AutonomousChatFieldTalk.Step> steps, GameBot[] speakers, bool faction, string trigger, string rule, long exchange)
+    private static void PlayThread(List<AutonomousChatFieldTalk.Step> steps, GameBot[] speakers, bool faction, string trigger, string rule, long exchange,
+        GameBot[] answererStandIns = null)
     {
         if (steps == null || steps.Count == 0 || speakers[0] == null)
             return;
@@ -470,7 +562,8 @@ public static class AutonomousBotChatCoordinator
                     return false;
                 AutonomousChatWhy.Record(bot, faction ? "faction" : "say", trigger, "said", rule, AutonomousChatReplyFit.Known, "a line in a thread", text, null);
                 return true;
-            }, faction ? AutonomousChatExchange.Rules.Faction : AutonomousChatExchange.Rules.Say);
+            }, faction ? AutonomousChatExchange.Rules.Faction : AutonomousChatExchange.Rules.Say,
+            standIns: answererStandIns is { Length: > 0 } ? [null, answererStandIns] : null);
     }
 
     /// <summary>
@@ -751,7 +844,90 @@ public static class AutonomousBotChatCoordinator
             player.Out.SendMessage(formatted, lfg ? eChatType.CT_LFG : eChatType.CT_Trade, eChatLoc.CL_ChatWindow);
         BotChatTranscript.Bot(channel, bot.Name, bot.Realm, safe);
         AutonomousChatBudget.Meter.Count(lfg ? AutonomousChatBudget.Channel.Lfg : AutonomousChatBudget.Channel.Trade, (long)bot.Realm, GameLoop.GameLoopTime);
+        AutonomousChatExchange.NoteLine(MarketLane(channel, bot.Realm), bot.Name, GameLoop.GameLoopTime);
     }
+
+    private static string MarketLane(string channel, eRealm realm) => channel + ":" + (int)realm;
+
+    /// <summary>
+    /// A visible reply to an /lfg or /trade post now and then (1.1.3, after RC5: on the owner's PC 260 /lfg and 213 /trade posts
+    /// drew no reply at all), from a bot it is true for, with the poster's answer, and a few minutes later the poster's "nvm
+    /// full" or "sold" when that happened (AutonomousChatMarket). Every line waits for room under the channel's ceiling.
+    /// </summary>
+    private static void ScheduleMarketReply(GameBot poster, AutonomousChatFieldTalk.Said said, string channel, long exchange)
+    {
+        AutonomousChatMarket.Post post = AutonomousChatMarket.KindOf(said?.Kind);
+        if (post == AutonomousChatMarket.Post.None || !HasFactionAudience(poster.Realm))
+            return;
+        var random = Random.Shared;
+        var meter = channel == "lfg" ? AutonomousChatBudget.Channel.Lfg : AutonomousChatBudget.Channel.Trade;
+        string item = said.Item;
+        var lines = new List<AutonomousChatExchange.Line>(3);
+        GameBot replier = null;
+        if (random.NextDouble() < AutonomousChatMarket.ReplyShare(post) && (replier = MarketReplier(poster, post, said.Text, random)) != null)
+        {
+            bool solo = replier.Group == null || replier.Group.MemberCount <= 1;
+            string wanted = post == AutonomousChatMarket.Post.Wtb ? AutonomousChatMarket.WantedInName(said.Text) : null;
+            AutonomousChatMarket.Reply reply = AutonomousChatMarket.ReplyTo(post, said.Text, AutonomousChatFieldTalk.Of(replier, random), solo,
+                wanted != null && Carries(replier, wanted), random);
+            if (!string.IsNullOrWhiteSpace(reply.Text))
+            {
+                lines.Add(new AutonomousChatExchange.Line(1, reply.Text, AutonomousChatArbiter.DelayMs(said.Text, reply.Text, 40, 0, random), "answerer"));
+                string answer = AutonomousChatMarket.PosterAnswer(reply.Asks, post, said.Text, AutonomousChatFieldTalk.Of(poster, random),
+                    AutonomousChatLiveAnswers.SpecText(poster), poster.Group == null || poster.Group.MemberCount < 8, StillHas(poster, item), random);
+                if (answer != null)
+                    lines.Add(new AutonomousChatExchange.Line(0, answer, AutonomousChatArbiter.DelayMs(reply.Text, answer, 40, 0, random), "asker"));
+            }
+        }
+        if (post != AutonomousChatMarket.Post.Wtb && random.NextDouble() < AutonomousChatMarket.ClosingShare)
+            lines.Add(new AutonomousChatExchange.Line(0, "closing", AutonomousChatMarket.ClosingAfterMs(random), "closing", Optional: true, Lone: true));
+        if (lines.Count == 0)
+            return;
+        AutonomousChatExchange.Play("market", exchange, MarketLane(channel, poster.Realm), lines, [poster, replier],
+            bot => bot != null && bot.IsAlive && bot.ObjectState == GameObject.eObjectState.Active && !bot.IsCasting &&
+                   AutonomousChatExchange.Fits(AutonomousChatBudget.Meter.PerMinute(meter, (long)bot.Realm, GameLoop.GameLoopTime),
+                       AutonomousChatBudget.LiveBand(meter, RealmBots(bot.Realm)).Ceiling),
+            (bot, line) =>
+            {
+                string text = line.Role == "closing"
+                    ? AutonomousChatMarket.Closing(post, poster.Group?.MemberCount >= 8, poster.Group?.MemberCount > 1, StillHas(poster, item), Random.Shared)
+                    : line.Text;
+                if (string.IsNullOrWhiteSpace(text))
+                    return false;
+                text = AutonomousChatIdiolect.Apply(text, bot.DatabaseID, false, Random.Shared, terse: true);
+                SendRealmChannel(bot, channel, text);
+                Note(channel + ":" + bot.Realm, bot, text, null);
+                return true;
+            }, AutonomousChatExchange.Rules.Say);
+    }
+
+    /// <summary>A bot of the poster's realm, outside its group, that a post is true for (a slice of the roster).</summary>
+    private static GameBot MarketReplier(GameBot poster, AutonomousChatMarket.Post post, string text, Random random)
+    {
+        GameBot[] roster = AutonomousBotRegistry.Snapshot();
+        for (int i = 0, at = roster.Length == 0 ? 0 : random.Next(roster.Length); i < Math.Min(roster.Length, 200); i++, at = (at + 1) % roster.Length)
+        {
+            GameBot bot = roster[at];
+            if (bot == poster || bot.Realm != poster.Realm || !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper || !bot.IsAlive ||
+                bot.ObjectState != GameObject.eObjectState.Active || AutonomousBeggars.Is(bot) || bot.Group != null && bot.Group == poster.Group)
+                continue;
+            bool solo = bot.Group == null || bot.Group.MemberCount <= 1;
+            var light = new AutonomousChatFieldTalk.Facts(bot.DatabaseID, bot.Realm, bot.CharacterClass?.Name ?? bot.ClassName, bot.Level, null, null, false,
+                false, false, !solo, bot.Group?.MemberCount ?? 1, false, false, false, false, null, null, 0, false, null, 0, 0, IsHealer(bot), null);
+            if (AutonomousChatMarket.CanReply(post, text, poster.Level, light, solo))
+                return bot;
+        }
+        return null;
+    }
+
+    /// <summary>Whether a bot carries an item whose name has the word in it (a "helm", a "potion").</summary>
+    private static bool Carries(GameBot bot, string inName) => bot?.Inventory != null && bot.Inventory.AllItems.Any(entry => entry != null &&
+        entry.SlotPosition >= (int)eInventorySlot.FirstBackpack && entry.SlotPosition <= (int)eInventorySlot.LastBackpack &&
+        entry.Name?.Contains(inName, StringComparison.OrdinalIgnoreCase) == true);
+
+    /// <summary>Whether a poster still has the item its sale named (true for a post that named none).</summary>
+    private static bool StillHas(GameBot bot, string item) => string.IsNullOrWhiteSpace(item) || bot?.Inventory != null &&
+        bot.Inventory.AllItems.Any(entry => entry != null && string.Equals(entry.Name, item, StringComparison.OrdinalIgnoreCase));
 
     /// <summary>Remembers what a bot said in a channel, so the player's next line can follow it up (AutonomousChatThreads).</summary>
     internal static void Note(string channel, GameBot bot, string text, string invites, string to = null) =>
