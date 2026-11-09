@@ -50,6 +50,23 @@ public class UT_ChatAfterRC6
         Assert.That(lines.Any(text => text.Contains("shard golems")), Is.True, "the story names the monster that killed it");
     }
 
+    /// <summary>RC8 on the owner's PC: "aggroed the guards, dead" drew "stick with the zerg".</summary>
+    [Test]
+    public void AGuardOrSmallDeathDrawsNoCrowdRiff()
+    {
+        var crowd = new Regex(@"zerg|full of them|everywhere|sit on that spot");
+        Field.Facts guard = Facts(1, "Sorcerer", 30, "Caledonia", rvr: true) with { KilledBy = "guard", Attackers = 2 };
+        Field.Facts two = Facts(1, "Sorcerer", 30, "Caledonia", rvr: true) with { KilledBy = "bot", Attackers = 2, KillerClass = "Hero" };
+        foreach (Field.Facts teller in new[] { guard, two })
+        {
+            var random = new Random(7);
+            for (int i = 0; i < 300; i++)
+                foreach (Field.Step step in Field.Story("death", teller with { Id = i }, Facts(i + 1, "Cleric", 30), Facts(i + 2, "Wizard", 30), random))
+                    if (step.Who == 2)
+                        Assert.That(crowd.IsMatch(step.Text), Is.False, step.Text);
+        }
+    }
+
     /// <summary>RC8 on the owner's PC: a group wiped by enemy bots told "wiped on adds" and "adds linked, all of them".</summary>
     [Test]
     public void AWipeToEnemiesIsToldAsOne()

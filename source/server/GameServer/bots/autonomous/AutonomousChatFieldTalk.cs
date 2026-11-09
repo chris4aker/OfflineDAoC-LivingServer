@@ -1917,9 +1917,16 @@ public static class AutonomousChatFieldTalk
                     // realm's frontier only as "their frontier" (the line speaks of the third's own past, as a PvE line would).
                     string mineZone = third.InRvR ? third.Zone : teller.Zone;
                     string mine = IsForeignZone(third.Realm, mineZone) ? "their frontier" : ShortZone(mineZone, random);
-                    lines.Add((2, Riff(random, "stick with the zerg lol", "bring a group", $"same happened to me in {mine}", "happens", "thats rvr",
-                        "they sit on that spot", "solo in the frontier, brave", "group up next time", $"{mine} is full of them tonight",
-                        "should've stayed with the grp", "welcome to the frontier lol", "they're everywhere tonight")));
+                    // RC8 on the owner's PC: "stick with the zerg" after "aggroed the guards, dead". A guard death gets guard riffs, and a
+                    // death to one or two gets none about crowds.
+                    lines.Add((2, teller.KilledBy == "guard"
+                        ? Riff(random, "dont aggro the guards lol", "guards hit hard", "happens", "stay off the keep walls lol", "those guards are no joke")
+                        : teller.Attackers is > 0 and <= 2
+                            ? Riff(random, "bring a group", $"same happened to me in {mine}", "happens", "thats rvr", "solo in the frontier, brave",
+                                "group up next time", "should've stayed with the grp", "welcome to the frontier lol")
+                            : Riff(random, "stick with the zerg lol", "bring a group", $"same happened to me in {mine}", "happens", "thats rvr",
+                                "they sit on that spot", "solo in the frontier, brave", "group up next time", $"{mine} is full of them tonight",
+                                "should've stayed with the grp", "welcome to the frontier lol", "they're everywhere tonight")));
                 }
                 break;
             }
