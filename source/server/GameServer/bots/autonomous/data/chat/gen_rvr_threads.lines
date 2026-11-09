@@ -755,7 +755,7 @@ A: ok on my way, is {frontier} dangerous? | i see {frontier} on the map, is it s
 B: nowhere is safe | lol no
 D: if you see nobody around, assume someone is there | stealthers on the roads, stick near other people
 ~ 25
-A: i am at {keep}, there is nobody here | i made it, its empty
+A: made it to {keep}, how do i find a group from here | ok i got to {keep}, how do people find groups out here
 C: wait a bit, people come and go | sit there a while, a group always shows up
 ?A: ok, waiting. what now | what do i do while i wait
 B: make an assist macro while you wait | check your gear, sell junk, set up assist
