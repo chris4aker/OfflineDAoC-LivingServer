@@ -403,6 +403,7 @@ def audit(path: str, channel_filter: str | None = None, ceiling: float | None = 
         check_reactions(report, seq)
         check_repeats(report, seq)
     check_claims(report, lines)
+    check_speaker_fit(report, lines, path)
     check_ceiling(report, lines, ceiling)
     check_ceiling(report, lines, say_ceiling, "say")
     check_features(report, lines, features)
@@ -565,6 +566,273 @@ def check_claims(report: Report, lines: list[Line]):
                 break
 
 
+# ---- a line fits its speaker (1.1.3, after RC5) -------------------------------------------------------------------------
+# On the owner's PC (RC3-RC5, 2026-11-09): Thorroir, a 50 minstrel, said "minst lfg 50, x me", "lfm barrows 47-50",
+# "lf1m 47-50 xp grp stonehenge" and "any minsts around? need tips" within twelve minutes; "99% adroit focus staff any good
+# for pally?"; Albion bots asked "where do i hand in the uppland quest?". These checks read one speaker's lines together.
+
+# The same stance words as AutonomousChatStance.SeekOf: forming a group ("lfm") or looking for one ("lfg").
+SEEK_FORMING = re.compile(
+    r"\blf\d*m\b|\blf ?\d more\b|\bneed (?:a |an |\d )?(?:heal|heals|healer|tank|cc|mezzer|dps|puller|caster|support|cleric|druid|shaman|"
+    r"bard|\d more)\b(?! pots?\b)|\blf (?:a |an )?(?:heal|healer|tank|cc|mezzer|dps|puller|caster|support|cleric|druid|shaman|bard|"
+    r"\d more)\b(?! pots?\b)|\bforming\b|\bgrp up for\b|\bif anyone wants to join\b|\bany1 lf grp\b|\banyone up for\b|\bgrp lf\d*m\b|\broom for \d\b")
+SEEK_LOOKING = re.compile(
+    r"\blfg\b|\blf (?:xp |rvr |a )?gr(?:ou)?p\b|\blooking for a gr(?:ou)?p\b|\bany gr(?:ou)?ps (?:for|need)\b|\bany room for\b|"
+    r"\bfree for grps\b|\bwants a grp\b|\blf duo\b|\bwanna duo\b|\bany rvr grps lf\b")
+# A post that ends the story: "nm got a grp", "nvm, full" (AutonomousChatFieldTalk's outrun closing) and the like.
+SEEK_CLOSED = re.compile(r"^(?:nm|nvm|nevermind)?,? ?(?:got a grp|grouped|found a grp|full|grp full|full now)\b|\b(?:got a grp|grp full|nm full)\b")
+# Lines that are a scene's or a feature's script, or someone else's turn: not the speaker's own story.
+NOT_OWN_STORY_SRC = {"debate", "storyline", "story", "spammer", "rumour", "roleplayer", "news", "event", "burst", "reaction"}
+NOT_OWN_STORY_ROLE = {"answerer", "reactor", "riff", "third", "B", "C"}
+
+DUNGEON_WORDS = {
+    "tomb of mithra": ["tomb of mithra", "mithra tomb", "mithra", "tomb"], "tepok's mine": ["tepok's mine", "tepoks", "tepok"],
+    "keltoi fogou": ["keltoi fogou", "keltoi", "fogou"], "stonehenge barrows": ["stonehenge barrows", "sh barrows", "barrows", "stonehenge"],
+    "nisse's lair": ["nisse's lair", "nisses", "nisse"], "cursed tomb": ["cursed tomb", "ct"], "vendo caverns": ["vendo caverns", "vendos", "vendo"],
+    "varulvhamn": ["varulvhamn", "varulv", "varul"], "spindelhalla": ["spindelhalla", "spindel", "spindle"],
+    "muire tomb": ["muire tomb", "muire"], "spraggon den": ["spraggon den", "sprag den", "spraggon"],
+    "koalinth tribal caverns": ["koalinth tribal caverns", "koalinth", "koal"], "treibh caillte": ["treibh caillte", "treibh", "tc"],
+    "coruscating mine": ["coruscating mine", "coruscating", "cm"],
+}
+DUNGEON_ALIAS = sorted(((w, d) for d, ws in DUNGEON_WORDS.items() for w in ws), key=lambda pair: -len(pair[0]))
+
+# Frontier zones by realm (AutonomousChatLiveAnswers.FrontierHome), as ShortZone writes them too.
+FRONTIER_ZONES = {
+    "albion": ["forest sauvage", "snowdonia", "pennine mountains", "pennine mtns", "hadrian's wall"],
+    "midgard": ["uppland", "yggdra forest", "jamtland mountains", "jamtland mtns", "odin's gate"],
+    "hibernia": ["emain macha", "breifine", "cruachan gorge", "mount collory"],
+}
+PVE_WORDS = re.compile(r"\b(?:quest|hand in|stable|bind|trainer|camp|camping|grinding|xp|duo|hate me|on the horse|back in|third time tonight|"
+                       r"same happened to me)\b")
+
+# Items and classes, the common cases (AutonomousChatGear has the full rule): the heaviest armour a class wears at a level,
+# who may hold a staff, a focus staff, a shield of a size, a bow, a two-hander, an instrument.
+ARMOR_RANK = {"cloth": 1, "leather": 2, "studded": 3, "reinforced": 3, "chain": 4, "scale": 4, "plate": 5}
+HIB_ARMOR = {"reinforced", "scale"}
+CLASS_ARMOR = {  # (from level, armour), as GeneratedUniqueItem.Get*ArmorType
+    "armsman": [(1, "studded"), (5, "chain"), (15, "plate")], "paladin": [(1, "studded"), (10, "chain"), (20, "plate")],
+    "mercenary": [(1, "studded"), (10, "chain")], "reaver": [(1, "studded"), (10, "chain")],
+    "minstrel": [(1, "leather"), (10, "studded"), (20, "chain")], "cleric": [(1, "leather"), (10, "studded"), (20, "chain")],
+    "scout": [(1, "leather"), (10, "studded")], "friar": [(1, "leather")], "infiltrator": [(1, "leather")],
+    "cabalist": [(1, "cloth")], "necromancer": [(1, "cloth")], "sorcerer": [(1, "cloth")], "theurgist": [(1, "cloth")], "wizard": [(1, "cloth")],
+    "warrior": [(1, "studded"), (10, "chain")], "thane": [(1, "studded"), (12, "chain")], "skald": [(1, "studded"), (20, "chain")],
+    "berserker": [(1, "studded")], "savage": [(1, "studded")], "shadowblade": [(1, "leather")], "hunter": [(1, "leather"), (10, "studded")],
+    "healer": [(1, "leather"), (10, "studded"), (20, "chain")], "shaman": [(1, "leather"), (10, "studded"), (20, "chain")],
+    "runemaster": [(1, "cloth")], "spiritmaster": [(1, "cloth")], "bonedancer": [(1, "cloth")],
+    "hero": [(1, "reinforced"), (15, "scale")], "champion": [(1, "reinforced"), (20, "scale")], "blademaster": [(1, "reinforced")],
+    "warden": [(1, "leather"), (10, "reinforced"), (20, "scale")], "druid": [(1, "leather"), (10, "reinforced"), (20, "scale")],
+    "bard": [(1, "leather"), (15, "reinforced")], "ranger": [(1, "leather"), (10, "reinforced")], "nightshade": [(1, "leather")],
+    "valewalker": [(1, "cloth")], "eldritch": [(1, "cloth")], "enchanter": [(1, "cloth")], "mentalist": [(1, "cloth")], "animist": [(1, "cloth")],
+    "sluaghbinder": [(1, "reinforced"), (20, "scale")],
+}
+HIB_CLASSES = {"hero", "champion", "blademaster", "warden", "druid", "bard", "ranger", "nightshade", "valewalker", "eldritch", "enchanter",
+               "mentalist", "animist", "sluaghbinder"}
+FOCUS_CASTERS = {"cabalist", "necromancer", "sorcerer", "theurgist", "wizard", "runemaster", "spiritmaster", "bonedancer", "eldritch",
+                 "enchanter", "mentalist", "animist"}
+STAFF_CLASSES = FOCUS_CASTERS | {"cleric", "friar", "druid", "healer", "shaman"}
+SHIELD_SIZE = {  # the largest shield a class carries; a class not listed carries none
+    "armsman": 3, "paladin": 3, "reaver": 3, "warrior": 3, "hero": 3, "sluaghbinder": 3, "mercenary": 2, "cleric": 2, "thane": 2,
+    "champion": 2, "blademaster": 2, "warden": 2, "friar": 1, "minstrel": 1, "scout": 1, "infiltrator": 1, "skald": 1, "berserker": 1,
+    "savage": 1, "shadowblade": 1, "healer": 1, "shaman": 1, "druid": 1, "bard": 1, "ranger": 1, "nightshade": 1,
+}
+ITEM_USERS = [  # an item word and the classes that use it
+    (re.compile(r"\blongbow\b"), {"scout"}), (re.compile(r"\bcrossbow\b"), {"armsman", "infiltrator"}),
+    (re.compile(r"\b(?:composite|compound) bow\b"), {"hunter"}), (re.compile(r"\brecurved? bow\b"), {"ranger"}),
+    (re.compile(r"\b(?:lute|drum|flute|harp|lyre)\b"), {"minstrel", "bard"}), (re.compile(r"\bscythe\b"), {"valewalker", "sluaghbinder"}),
+    (re.compile(r"\b(?:halberd|lucerne|lochaber|partisan|polearm)\b"), {"armsman"}), (re.compile(r"\bflail\b"), {"reaver"}),
+    (re.compile(r"\b(?:great sword|greatsword|great axe|great hammer|two handed|claymore)\b"),
+     {"armsman", "paladin", "warrior", "thane", "skald", "berserker", "savage", "shadowblade", "hero", "champion"}),
+]
+
+
+def armor_at(cls: str, level: int | None) -> str | None:
+    steps = CLASS_ARMOR.get(cls)
+    if not steps:
+        return None
+    level = 50 if level is None else level
+    return [armor for start, armor in steps if level >= start][-1]
+
+
+def can_use(cls: str, level: int | None, item: str) -> bool:
+    """The common cases of AutonomousChatGear.CanUse, from the item's name."""
+    item = item.lower()
+    if cls not in CLASS_ARMOR:
+        return True
+    if re.search(r"\bfocus\b", item):
+        return cls in FOCUS_CASTERS
+    if re.search(r"\b(?:shield|buckler)\b", item):
+        size = 3 if re.search(r"\b(?:large|tower)\b", item) else 2 if "medium" in item else 1
+        return SHIELD_SIZE.get(cls, 0) >= size
+    if re.search(r"\b(?:quarter)?staff\b", item):
+        return cls in STAFF_CLASSES
+    for pattern, users in ITEM_USERS:
+        if pattern.search(item):
+            return cls in users
+    armor = next((a for a in ARMOR_RANK if re.search(rf"\b{a}\b", item)), None)
+    if armor:
+        if (armor in HIB_ARMOR) != (cls in HIB_CLASSES) and armor not in ("cloth", "leather"):
+            return False
+        return ARMOR_RANK[armor] <= ARMOR_RANK[armor_at(cls, level)]
+    return True
+
+
+ITEM_FOR_CLASS = [
+    re.compile(r"^(?:\d+% )?(?P<item>.+?) any good for (?:a |an |my )?(?:\d+ )?(?P<cls>[a-z]+)\b"),
+    re.compile(r"\b(?:wtb|wts|selling|buying|anyone selling|looking for|lf) (?P<item>.+?) for (?:a |an |my )?(?:lvl |level )?(?:\d+ )?(?P<cls>[a-z]+)\b"),
+]
+OWN_GEAR = re.compile(r"\b(?:wtb|anyone selling|anyone have|anyone got spare|need|looking for|lf|buying|who has) (?P<item>(?:\d+ )?"
+                      r"(?:cloth|leather|studded|chain|plate|reinforced|scale) (?:helm|gloves|boots|sleeves|legs|vest|arms|armor|armour))\b")
+OWN_TRAINER = re.compile(r"\bwhere(?:'s| is| s)? the (?:(?P<cls>[a-z]+) )?trainer\b")
+OWN_TIPS = re.compile(r"\bany (?P<cls>[a-z]+?)s? (?:around|on)\b.*\bneed tips\b|\bneed tips\b")
+
+
+def own_story(l: Line) -> bool:
+    return l.who == "bot" and l.src not in NOT_OWN_STORY_SRC and l.role not in NOT_OWN_STORY_ROLE and l.ch != "tell"
+
+
+def seek_of(text: str) -> str | None:
+    t = text.lower()
+    if SEEK_FORMING.search(t):
+        return "lfm"
+    return "lfg" if SEEK_LOOKING.search(t) else None
+
+
+def dungeon_in(text: str) -> str | None:
+    t = text.lower()
+    for word, dungeon in DUNGEON_ALIAS:
+        if re.search(rf"(?<![a-z0-9']){re.escape(word)}(?![a-z0-9'])", t):
+            return dungeon
+    return None
+
+
+def check_self_contradiction(report: Report, lines: list[Line]):
+    """One speaker's group posts across /lfg, /broadcast, /trade, /faction, /say: looking for a group and forming one within 30
+    minutes (no "nm got a grp" between), two dungeons within 10 minutes; and a 50 asking where its class trainer is or for
+    tips on its own class."""
+    by_speaker: dict[tuple[str, str], list[Line]] = defaultdict(list)
+    for l in lines:
+        if own_story(l):
+            by_speaker[(l.realm, l.speaker)].append(l)
+    for seq in by_speaker.values():
+        flagged_seek = flagged_place = False
+        for k, line in enumerate(seq):
+            seek = seek_of(line.text)
+            if seek:
+                report.counts["group_posts"] += 1
+            place = dungeon_in(line.text) if seek else None
+            for later in seq[k + 1:]:
+                if later.t - line.t >= 1800:
+                    break
+                if SEEK_CLOSED.search(norm(later.text)):
+                    break
+                other = seek_of(later.text)
+                if seek and other and other != seek and not flagged_seek:
+                    report.flag("self_lfg_and_lfm", line, later, note=f"{later.t - line.t}s apart")
+                    flagged_seek = True
+                there = dungeon_in(later.text) if other else None
+                if place and there and there != place and later.t - line.t < 600 and not flagged_place:
+                    report.flag("self_two_destinations", line, later, note=f"{place} / {there}")
+                    flagged_place = True
+            cls = (line.cls or "").lower()
+            if line.lvl is not None and line.lvl >= 50 and cls:
+                t = norm(line.text).replace("where s", "where's")
+                trainer = OWN_TRAINER.search(line.text.lower())
+                tips = OWN_TIPS.search(t)
+                named = (trainer or tips).group("cls") if (trainer or tips) else None
+                if (trainer or tips) and (named is None or WORD_CLASS.get(named) == cls or WORD_CLASS.get(named.rstrip("s")) == cls):
+                    report.flag("self_own_class_ask", line, note=f"is a {line.lvl} {line.cls}")
+
+
+def check_item_class(report: Report, lines: list[Line]):
+    """An item paired with a class that can't use it ("99% adroit focus staff any good for pally?"), and a want of armour the
+    speaker's own class can't wear ("wtb chain boots" from a sorcerer)."""
+    for l in lines:
+        if l.who != "bot" or l.role in NOT_OWN_STORY_ROLE:
+            continue
+        t = l.text.lower()
+        for pattern in ITEM_FOR_CLASS:
+            match = pattern.search(t)
+            if match and match.group("cls") in WORD_CLASS:
+                cls = WORD_CLASS[match.group("cls")]
+                level = l.lvl if l.cls and l.cls.lower() == cls else None
+                if not can_use(cls, level, match.group("item")):
+                    report.flag("item_class_unusable", l, note=f"{cls} can't use it")
+                break
+        else:
+            own = OWN_GEAR.search(t)
+            if own and l.cls and "alt" not in t and not can_use(l.cls.lower(), l.lvl, own.group("item")):
+                report.flag("item_class_unusable", l, note=f"a {l.lvl} {l.cls} can't wear it")
+
+
+def check_enemy_zone(report: Report, lines: list[Line]):
+    """A PvE line (a quest, a stable, a bind, a trainer, a camp, xp, a monster death) naming another realm's frontier zone
+    ("where do i hand in the uppland quest?" from an Albion bot). Talk of the frontier itself (inc, keeps, rvr) may name it."""
+    for l in lines:
+        if l.who != "bot" or l.src in ("event", "news", "spammer"):
+            continue
+        realm = l.realm.lower()
+        if realm not in FRONTIER_ZONES:
+            continue
+        t = l.text.lower()
+        enemy = next((z for r, zones in FRONTIER_ZONES.items() if r != realm for z in zones
+                      if re.search(rf"(?<![a-z']){re.escape(z)}(?![a-z'])", t)), None)
+        if enemy and PVE_WORDS.search(t):
+            report.flag("pve_enemy_zone", l, note=f"{l.realm} bot, {enemy}")
+
+
+GROUP_FORMED = re.compile(r"^(?P<stamp>\d\d/\d\d \d\d:\d\d:\d\d).*AUTONOMOUS_GROUP_FORMED group=(?P<group>\S+) .*?members=\"(?P<members>[^\"]*)\"")
+GROUP_ENDED = re.compile(r"^(?P<stamp>\d\d/\d\d \d\d:\d\d:\d\d).*AUTONOMOUS_GROUP_TASK_ENDED group=(?P<group>\S+) .*?members=\"(?P<members>[^\"]*)\"")
+GROUP_NO_SHOW = re.compile(r"^(?P<stamp>\d\d/\d\d \d\d:\d\d:\d\d).*AUTONOMOUS_GROUP_NO_SHOW \{\"group\":\"(?P<group>[^\"]+)\",\"bot\":\"(?P<bot>[^\"]+)\"")
+
+
+def check_lfg_while_grouped(report: Report, lines: list[Line], path: str):
+    """Informational: an "lfg" post from a bot the log shows in a group then (AUTONOMOUS_GROUP_FORMED until its
+    AUTONOMOUS_GROUP_TASK_ENDED or the bot's AUTONOMOUS_GROUP_NO_SHOW)."""
+    first = None
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        for raw in handle:
+            match = ROW.match(raw)
+            if match:
+                first = parse_stamp(match.group("stamp"))
+                break
+    if first is None:
+        return
+    joined: dict[str, list[list[int]]] = defaultdict(list)
+    open_at: dict[tuple[str, str], int] = {}
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        for raw in handle:
+            if "AUTONOMOUS_GROUP_" not in raw:
+                continue
+            for pattern, start in ((GROUP_FORMED, True), (GROUP_ENDED, False)):
+                match = pattern.match(raw)
+                if match:
+                    t = parse_stamp(match.group("stamp")) - first
+                    for member in filter(None, match.group("members").split(",")):
+                        if start:
+                            open_at[(match.group("group"), member)] = t
+                        elif (match.group("group"), member) in open_at:
+                            joined[member].append([open_at.pop((match.group("group"), member)), t])
+            match = GROUP_NO_SHOW.match(raw)
+            if match and (match.group("group"), match.group("bot")) in open_at:
+                joined[match.group("bot")].append([open_at.pop((match.group("group"), match.group("bot"))), parse_stamp(match.group("stamp")) - first])
+    for (group, member), t in open_at.items():
+        joined[member].append([t, 10 ** 9])
+    if not joined:
+        return
+    report.counts["info_group_log_known"] = 1
+    for l in lines:
+        if own_story(l) and seek_of(l.text) == "lfg" and any(a <= l.t < b for a, b in joined.get(l.speaker, [])):
+            report.flag("info_lfg_while_grouped", l, note="the log shows it in a group")
+
+
+def check_speaker_fit(report: Report, lines: list[Line], path: str | None = None):
+    check_self_contradiction(report, lines)
+    check_item_class(report, lines)
+    check_enemy_zone(report, lines)
+    if path:
+        check_lfg_while_grouped(report, lines, path)
+
+
 KINDS = [
     ("exact_out_of_order", "exchange lines out of order (exact)"),
     ("exact_role_swap", "exchange roles swapped (exact)"),
@@ -578,6 +846,13 @@ KINDS = [
     ("class_claim_false", "class claim not the speaker's (cls=)"),
     ("level_claim_false", "level claim not the speaker's (lvl=)"),
     ("two_classes_claimed", "one speaker claims two classes"),
+    ("group_posts", "group posts (lfg/lfm) by their own speakers"),
+    ("self_lfg_and_lfm", "a speaker looks for a group and forms one within 30 min"),
+    ("self_two_destinations", "a speaker's group posts name two dungeons within 10 min"),
+    ("self_own_class_ask", "a 50 asks where its class trainer is or for tips on its own class"),
+    ("item_class_unusable", "an item paired with a class that can't use it"),
+    ("pve_enemy_zone", "a PvE line names an enemy realm's zone"),
+    ("info_lfg_while_grouped", "(info) an lfg post from a bot the log shows grouped"),
     ("reaction_no_trigger", "reaction with no trigger in 30 s"),
     ("reaction_late", "reaction more than 30 s after its trigger"),
     ("pileon", "triggers with more than two reactions"),
@@ -604,6 +879,9 @@ def verdict(summary: dict) -> tuple[bool, list[str]]:
     checks = [
         ("out of order", out_of_order),
         ("untrue role/class/level", c["role_answer_false"] + c["class_claim_false"] + c["level_claim_false"]),
+        ("speaker contradicts itself", c["self_lfg_and_lfm"] + c["self_two_destinations"] + c["self_own_class_ask"]),
+        ("item for a class that can't use it", c["item_class_unusable"]),
+        ("PvE line names an enemy zone", c["pve_enemy_zone"]),
         ("late reactions", c["reaction_late"]),
         ("repeated reactions", c["reaction_repeat_10min"]),
         ("pile-ons over the caps", c["pileon"]),

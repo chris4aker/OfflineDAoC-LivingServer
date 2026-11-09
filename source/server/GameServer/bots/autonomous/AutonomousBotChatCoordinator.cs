@@ -221,9 +221,11 @@ public static class AutonomousBotChatCoordinator
                 if (TryField(starter, kind, choice, reason))
                     return true;
                 // A written lfg or trade line is never a crafted one (round 3).
-                if (!AutonomousBotVoices.TryLine(starter, kind, out VC.Picked picked, filter: AmbientLineFits(false)) || !Fresh(choice, picked.Text))
+                if (!AutonomousBotVoices.TryLine(starter, kind, out VC.Picked picked, filter: KeepsStory(starter, kind, AmbientLineFits(false))) ||
+                    !Fresh(choice, picked.Text))
                     return false;
                 SendRealmChannel(starter, kind, picked.Text);
+                NoteStory(starter, kind, picked.Text);
                 Note(kind + ":" + starter.Realm, starter, picked.Text, picked.Line?.Invites);
                 AutonomousChatWhy.Record(starter, kind, "ambient", "said", RuleOf(picked.Line, kind), VC.Specificity(picked.Line), reason, picked.Text, picked.Line?.Id);
                 return true;
@@ -236,14 +238,17 @@ public static class AutonomousBotChatCoordinator
                     return true;
                 double roll = Random.Shared.NextDouble();
                 string kind = roll < 0.5 ? "trade" : roll < 0.75 ? "lfg" : "ambient";
-                if (!AutonomousBotVoices.TryLine(starter, kind, out VC.Picked picked, flags: ["in_town"], filter: AmbientLineFits(false, starter.Realm)) &&
-                    !AutonomousBotVoices.TryLine(starter, kind == "ambient" ? "trade" : "ambient", out picked, flags: ["in_town"], filter: AmbientLineFits(false, starter.Realm)))
+                if (!AutonomousBotVoices.TryLine(starter, kind, out VC.Picked picked, flags: ["in_town"],
+                        filter: KeepsStory(starter, "broadcast", AmbientLineFits(false, starter.Realm))) &&
+                    !AutonomousBotVoices.TryLine(starter, kind == "ambient" ? "trade" : "ambient", out picked, flags: ["in_town"],
+                        filter: KeepsStory(starter, "broadcast", AmbientLineFits(false, starter.Realm))))
                     return false;
                 if (picked.Line?.Kind == "ambient")
                     NoteWritten(starter.Realm, picked.Line);
                 if (!Fresh(choice, picked.Text) || !AutonomousChatBroadcast.Send(starter, picked.Text, listeners))
                     return false;
                 AutonomousChatWhy.Record(starter, "broadcast", "ambient", "said", RuleOf(picked.Line, kind), VC.Specificity(picked.Line), reason, picked.Text, picked.Line?.Id);
+                NoteStory(starter, "broadcast", picked.Text);
                 if (picked.Line?.Kind == "trade")
                     AutonomousChatBroadcast.StartMacro(starter, picked.Text, AutonomousChatBudget.Current, Random.Shared);
                 return true;
@@ -270,6 +275,23 @@ public static class AutonomousBotChatCoordinator
             }
         }
     }
+
+    /// <summary>
+    /// A written line keeps the bot's story and state as a field line does (1.1.3, after RC5): no "lfg" from a bot in a group
+    /// or one with a solo task, no "lfm" from a group that isn't recruiting, and no group post of the other stance than the one
+    /// the bot took in the last 30 minutes (AutonomousChatStance).
+    /// </summary>
+    private static Func<VC.Line, bool> KeepsStory(GameBot starter, string channel, Func<VC.Line, bool> fits)
+    {
+        AutonomousChatFieldTalk.Facts facts = AutonomousChatFieldTalk.Of(starter, Random.Shared);
+        long now = GameLoop.GameLoopTime;
+        return line => fits(line) && line?.Text is { } text && AutonomousChatFieldTalk.FitsGroupState(text, facts) &&
+                       AutonomousChatStance.Shared.Allows(starter.DatabaseID, text, null, now);
+    }
+
+    /// <summary>A written group post sets the bot's story (AutonomousChatStance).</summary>
+    private static void NoteStory(GameBot starter, string channel, string text) =>
+        AutonomousChatStance.Shared.Note(starter.DatabaseID, text, null, null, GameLoop.GameLoopTime, channel);
 
     /// <summary>
     /// Ambient lines a channel may carry (Beta 1.1.2 filler rules): lore musings and crafted lines only as a rare /faction
@@ -314,7 +336,7 @@ public static class AutonomousBotChatCoordinator
         if (!AutonomousBotVoices.Enabled || random.NextDouble() >= AutonomousChatFieldTalk.Share(channel))
             return false;
         AutonomousChatFieldTalk.Said said = AutonomousChatFieldTalk.Line(channel, AutonomousChatFieldTalk.Of(starter, random),
-            AutonomousChatFieldTalk.MemoryOf(starter.Realm), random, GameLoop.GameLoopTime);
+            AutonomousChatFieldTalk.MemoryOf(starter.Realm), random, GameLoop.GameLoopTime, AutonomousChatStance.Shared);
         if (said == null)
             return false;
         string text = AutonomousChatIdiolect.Apply(said.Text, starter.DatabaseID, false, random, terse: true);
@@ -334,7 +356,7 @@ public static class AutonomousBotChatCoordinator
                 if (!AutonomousChatBroadcast.Send(starter, text, listeners))
                     return false;
                 if (said.Kind == "wts")
-                    AutonomousChatBroadcast.StartMacro(starter, text, AutonomousChatBudget.Current, random);
+                    AutonomousChatBroadcast.StartMacro(starter, text, AutonomousChatBudget.Current, random, said.Item);
                 break;
             case "faction":
                 if (!BroadcastFaction(starter.Name, starter.Realm, text))

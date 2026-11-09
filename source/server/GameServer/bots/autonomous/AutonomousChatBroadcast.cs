@@ -86,22 +86,43 @@ public static class AutonomousChatBroadcast
         return true;
     }
 
+    // The bots with a macro running, and until when (one macro a bot).
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<long, long> Running = new();
+
+    /// <summary>Whether a macro may start for this bot now: none of its own is running (one macro a bot). Pure but for the table.</summary>
+    public static bool MayStartMacro(long botId, long now) => !Running.TryGetValue(botId, out long until) || now > until;
+
+    /// <summary>Whether a bot still carries an item of this name (a macro stops once the item is sold or gone).</summary>
+    public static bool Carries(GameBot bot, string item) =>
+        string.IsNullOrWhiteSpace(item) || bot?.Inventory?.AllItems?.Any(entry => entry != null &&
+            string.Equals(entry.Name, item, StringComparison.OrdinalIgnoreCase)) == true;
+
     /// <summary>
     /// A macro: the same WTS line again every few minutes for a while (the 2003 texture rule: every 3-8 minutes for 15-40
     /// minutes, jittered), while the seller stays and someone hears it. Each repeat waits its turn under the ceiling.
+    /// 1.1.3, after RC5: a repeat of the same WTS line every several minutes was real 2003 behaviour (players' /macro), so it
+    /// stays, but a bot runs one macro at a time (a second WTS doesn't stack a second one), and a macro for a named
+    /// <paramref name="item"/> stops once the bot no longer carries it: it only ever sells what is in its bags.
     /// </summary>
-    public static void StartMacro(GameBot bot, string text, AutonomousChatBudget.Settings settings, Random random)
+    public static void StartMacro(GameBot bot, string text, AutonomousChatBudget.Settings settings, Random random, string item = null)
     {
         if (bot == null || string.IsNullOrEmpty(text) || random.NextDouble() >= settings.MacroChance)
             return;
+        if (!MayStartMacro(bot.DatabaseID, GameLoop.GameLoopTime))
+            return;
         long until = GameLoop.GameLoopTime + 1_000L * (settings.MacroLastMinS + random.Next(Math.Max(1, settings.MacroLastMaxS - settings.MacroLastMinS)));
+        Running[bot.DatabaseID] = until;
         ushort region = bot.CurrentRegionID;
         int Repeat() => 1_000 * (settings.MacroRepeatMinS + random.Next(Math.Max(1, settings.MacroRepeatMaxS - settings.MacroRepeatMinS)));
         _ = new ECSGameTimer(bot, _ =>
         {
             long now = GameLoop.GameLoopTime;
-            if (now > until || bot.ObjectState != GameObject.eObjectState.Active || !bot.IsAlive || bot.CurrentRegionID != region || bot.InCombat)
+            if (now > until || bot.ObjectState != GameObject.eObjectState.Active || !bot.IsAlive || bot.CurrentRegionID != region || bot.InCombat ||
+                !Carries(bot, item))
+            {
+                Running.TryRemove(bot.DatabaseID, out long ended);
                 return 0;
+            }
             AutonomousChatBudget.Channel channel = ChannelOf(bot);
             List<GamePlayer> listeners = Listeners(bot);
             if (listeners.Count == 0)
