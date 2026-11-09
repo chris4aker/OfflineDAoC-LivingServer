@@ -644,6 +644,17 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousLivingServer.OfferFits("hey, want to duo here? im {level} {class}", true), Is.True);
         }
 
+        /// <summary>RC6 on the owner's PC: "which stable 4 group rendezvous?" in /faction.</summary>
+        [TestCase("group rendezvous", false)]
+        [TestCase("the group rendezvous", false)]
+        [TestCase("frontier patrol near death stalkers", false)]
+        [TestCase("Iarn Dwarf Camp", true)]
+        [TestCase("Hagall", true)]
+        [TestCase("Avalon Marsh", true)]
+        [TestCase("Caer Benowyc", true)]
+        public void OnlyARealPlaceIsADestinationToTalkAbout(string destination, bool place) =>
+            Assert.That(AutonomousBotVoices.IsPlaceName(destination), Is.EqualTo(place));
+
         /// <summary>RC6 on the owner's PC: "any grps out?" "quiet atm" ran on with "how many?" "small grp" "count me in".</summary>
         [TestCase("quiet atm", true)]
         [TestCase("havent seen any", true)]

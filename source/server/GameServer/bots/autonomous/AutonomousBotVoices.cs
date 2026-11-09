@@ -198,8 +198,18 @@ public static class AutonomousBotVoices
             string.Equals(destination, bot.CurrentZone?.Description, StringComparison.OrdinalIgnoreCase) ||
             string.Equals(destination, bot.CurrentRegion?.Description, StringComparison.OrdinalIgnoreCase))
             return null;
-        return destination;
+        // RC6 on the owner's PC: "which stable 4 group rendezvous?" in /faction. An internal goal name is no destination to talk about.
+        return IsPlaceName(destination) ? destination : null;
     }
+
+    /// <summary>
+    /// Whether a travel destination is a place a player would name (a zone, town, keep or dungeon), not an internal goal name
+    /// ("group rendezvous", "frontier patrol near ...", "staging"). Pure.
+    /// </summary>
+    public static bool IsPlaceName(string destination) =>
+        !string.IsNullOrWhiteSpace(destination) &&
+        !System.Text.RegularExpressions.Regex.IsMatch(destination, @"\b(rendezvous|patrol|objective|muster|staging|egress|matchmaking|formation|grind|assignment|waypoint)\b",
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
     /// <summary>Whether a bot is in a dungeon. The capitals are one zone at the dungeon offset, so the server calls them
     /// dungeons; in the live test of se.4 a bot in Camelot said "lfg City of Camelot".</summary>

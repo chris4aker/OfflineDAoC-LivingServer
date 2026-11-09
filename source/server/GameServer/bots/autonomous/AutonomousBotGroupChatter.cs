@@ -115,8 +115,12 @@ public static class AutonomousBotGroupChatter
         // 1.1.3: a line that fits the group's real size and the bot's state ("who is main assist?" not in a duo).
         int size = members.Length;
         bool away = AutonomousChatEngagement.WasAway(bot.DatabaseID, now, bot.IsReturningAfterRelease);
+        // RC6 on the owner's PC: "oom, give me a minute" and "need a quick med" from a wizard at full power. A line about the bot's
+        // own power or a rest fits only when it is low.
+        bool low = bot.MaxMana > 0 && bot.ManaPercent < 40 || bot.EndurancePercent < 30 || bot.HealthPercent < 50;
         if (!AutonomousBotVoices.TryLine(bot, "group", out VC.Picked picked,
-                filter: line => (hunted || !AutonomousBotCombatCalls.IsHuntTalk(line.Text)) && AutonomousChatEngagement.FitsGroup(line.Text, size, away)))
+                filter: line => (hunted || !AutonomousBotCombatCalls.IsHuntTalk(line.Text)) && (low || !AutonomousBotCombatCalls.ClaimsLow(line.Text)) &&
+                                AutonomousChatEngagement.FitsGroup(line.Text, size, away)))
             return false;
         Send(bot, picked.Text, picked.Line?.Invites ?? "");
         AutonomousChatWhy.Record(bot, "group", "ambient", "said", AutonomousBotChatCoordinator.RuleOf(picked.Line, "group"), VC.Specificity(picked.Line),
