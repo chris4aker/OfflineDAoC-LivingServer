@@ -402,6 +402,9 @@ public sealed class AutonomousBotVoiceCorpus
             pool.RemoveAt(index);
             if (!TryFill(line.Text, SlotsForLine(line, request.Slots, request.NeedSlots), out string filled))
                 continue;
+            // 1.1.3, after RC5: no item paired with a class that can't use it ("wtb a shield for a 30 cabalist").
+            if (AutonomousChatGear.PairsUnusable(filled, speaker?.Level ?? 50))
+                continue;
             if (request.LocalHour is int hour)
                 filled = ForTimeOfDay(filled, hour);
             Voice voice = VoiceFor(speaker.Id);

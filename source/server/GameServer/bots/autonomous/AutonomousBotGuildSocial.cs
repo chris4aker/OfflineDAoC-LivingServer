@@ -306,7 +306,6 @@ public static class AutonomousBotGuildSocial
         AutonomousBeggars.OnPlayerAsked(player, message, "guild");
         if (!Enabled || player?.Guild == null || string.IsNullOrWhiteSpace(message))
             return;
-        BotChatTranscript.Player("guild", player, message, player.Guild.Name);
         Guild guild = player.Guild;
         // Beta 1.1.2, second pass: spam draws nothing.
         if (AutonomousBotChatCoordinator.Screened(player, message, "guild"))

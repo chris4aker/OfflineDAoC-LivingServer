@@ -123,6 +123,24 @@ public static class AutonomousFrontierTransport
         _ => null,
     };
 
+    /// <summary>A realm's own frontier region (Albion 1, Midgard 100, Hibernia 200), 0 for none.</summary>
+    public static ushort HomeFrontier(eRealm realm) => realm switch
+    {
+        eRealm.Albion => 1,
+        eRealm.Midgard => 100,
+        eRealm.Hibernia => 200,
+        _ => 0,
+    };
+
+    /// <summary>
+    /// Whether a bot in <paramref name="currentRegion"/> must reach its own frontier before it can ride a porter to
+    /// <paramref name="destinationRegion"/>: it stands outside the three frontier regions (a capital, a dungeon) and the
+    /// destination is another realm's frontier. Pure.
+    /// </summary>
+    public static bool NeedsHomeFrontierFirst(ushort currentRegion, ushort destinationRegion, ushort homeFrontier) =>
+        homeFrontier != 0 && currentRegion is not (1 or 100 or 200) &&
+        destinationRegion is 1 or 100 or 200 && destinationRegion != homeFrontier;
+
     /// <summary>The frontiers a bot standing in one of the three frontier regions can reach by its realm's porter.</summary>
     public static ushort[] PorterFrontiers(eRealm realm, ushort currentRegion) =>
         currentRegion is 1 or 100 or 200

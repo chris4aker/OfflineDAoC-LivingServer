@@ -53,6 +53,8 @@ namespace DOL.GS.Commands
             if (player.Client.Account.PrivLevel == 1)
                 player.Client.Player.TempProperties.SetProperty(LFG_TIMEOUT_KEY, GameLoop.GameLoopTime);
 
+            // Offline DAoC 1.1.3: the player's post is in the chat transcript (CHAT_LINE who=player ch=lfg).
+            BotChatTranscript.Player("lfg", player, message);
             // Offline DAoC (the talking update): a solo gamebot of about your level may answer by tell.
             AutonomousLivingServer.OnPlayerLfg(player, message);
         }

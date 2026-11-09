@@ -58,6 +58,7 @@ namespace DOL.GS
                 ($@"^The armies at {K} are committed to battle", "siege_others"),
                 ($@"^The armies at {K} have about twenty minutes left to muster", "siege_others_soon"),
                 ($@"^{K} is under attack!", "keep_attacked"),
+                ($@"^Scouts report {W}'s army marching on {K}!", "keep_army_coming"),
                 ($@"^Our forces are attacking {K}\.", "keep_ours_attacking"),
                 ($@"^Enemy armies are clashing at {K}\.", "keep_others_fighting"),
                 ($@"^Fighting has broken out at {K}\.", "keep_others_fighting"),
@@ -182,6 +183,11 @@ namespace DOL.GS
                 [
                     $"{keep} under attack, need ppl", $"{keep} getting hit!", enemy != null ? $"{enemy} hitting {keep}, anyone?" : $"{keep} needs defenders",
                     $"defend {keep}!", $"{keep} is getting sieged, who's close?",
+                ],
+                "keep_army_coming" =>
+                [
+                    $"{winner} zerg heading for {keep}, defend", $"big {winner} army moving on {keep}", $"{winner} coming for {keep}, get there",
+                    $"scouts saw {winner} marching on {keep}", $"{keep} about to get hit, {winner} on the way",
                 ],
                 "keep_ours_attacking" => [$"we're on {keep}, need help", $"hitting {keep}, come", $"{keep} siege, anyone close?"],
                 "keep_others_fighting" =>

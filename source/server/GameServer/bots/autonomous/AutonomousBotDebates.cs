@@ -312,6 +312,13 @@ public static class AutonomousBotDebates
                 ? (running.StoryKey, running.StoryA, running.StoryB) : null;
     }
 
+    /// <summary>The topic of the debate playing in a realm's /faction now ("housing"), or null (AutonomousChatRecall).</summary>
+    public static string RunningTopic(eRealm realm)
+    {
+        lock (Sync)
+            return Scenes.TryGetValue(realm, out Running running) && running.StoryKey == null ? running.Scene?.Topic : null;
+    }
+
     public static bool IsRunning(eRealm realm)
     {
         // Switched off mid-scene, the scene's timer stops: it must not hold /faction for good (audit 2026-10-16).

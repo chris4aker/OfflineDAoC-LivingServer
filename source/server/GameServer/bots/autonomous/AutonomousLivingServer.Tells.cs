@@ -21,6 +21,9 @@ public static partial class AutonomousLivingServer
     public const long TellGapMinMs = 25 * 60_000;
     public const long TellGapSpreadMs = 20 * 60_000;
     public const long TellPairCooldownMs = 6 * 60 * 60_000L;
+    /// <summary>How many of the unprompted duo offers come with a real invitation (1.1.3).</summary>
+    public const double RealInviteShare = 0.5;
+
     /// <summary>The invitation recorded with a duo or help offer, so "sure" is answered with how to group.</summary>
     public const string AskGroupInvite = "ask_group";
 
@@ -114,6 +117,10 @@ public static partial class AutonomousLivingServer
         }
         if (!player.IsAlive || player.InCombat)
             return;
+        // 1.1.3: an unprompted tell takes one of the player's turns (AutonomousChatEngagement: a few an hour solo, more grouped or
+        // among friends); in a full hour it waits for the next gap.
+        if (!EngageTurn(player, now))
+            return;
         StartTell(player, now);
     }
 
@@ -126,6 +133,14 @@ public static partial class AutonomousLivingServer
                 continue;
             lock (LastTellPair)
                 LastTellPair[(bot.DatabaseID, player.Name)] = now;
+            // 1.1.3: half the duo offers come with a real invitation (a yes/no box; "yes" really groups the bot).
+            if (topic == "group_offer" && player.Group == null && Random.Shared.NextDouble() < RealInviteShare)
+            {
+                bool known = TryRecall(bot, player, out _);
+                TellLater(bot, player, AutonomousChatEngagement.DuoInviteTell(player.Name, known, Random.Shared), 0,
+                    after: () => SendRealInvite(bot, player), role: "duo_invite");
+                return (bot, topic);
+            }
             // Only a duo offer is answered with how to group; "need directions?" is a real question (review 2026-10-26).
             string invites = topic == "group_offer" && picked.Line?.Invites == "ask" ? AskGroupInvite : picked.Line?.Invites;
             Later(bot, 0, () => CanTalk(bot) && player.ObjectState == GameObject.eObjectState.Active, () => Tell(bot, player, picked.Text, invites));

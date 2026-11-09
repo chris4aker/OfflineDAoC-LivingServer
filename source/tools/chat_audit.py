@@ -24,6 +24,8 @@ Reports, per log:
   * silent features: a gold spammer, rumour or roleplayer line that was due (LIVING_FEATURE_DUE feature= realm= ex=) and
     never said in /faction (no CHAT_LINE with that src= and ex=), whether it gave up (LIVING_FEATURE_DROPPED) or not; one
     dropped because nobody was left to hear it (reason=no_audience) isn't counted, nor one due in the log's last minutes
+  * bot questions with no reply within 60 s (see check_unanswered for what counts as a question)
+  * /lfg and /trade posts with any reply (informational)
 
 Python standard library only. Usage:
     python3 chat_audit.py LOG [LOG ...] [--json OUT] [--channel faction] [--show N]
@@ -409,9 +411,12 @@ def audit(path: str, channel_filter: str | None = None, ceiling: float | None = 
     check_system_voice(report, lines)
     for seq in streams.values():
         check_reaction_hour(report, seq)
+    check_speaker_fit(report, lines, path)
     check_ceiling(report, lines, ceiling)
     check_ceiling(report, lines, say_ceiling, "say")
     check_features(report, lines, features)
+    check_unanswered(report, lines)
+    check_market_replies(report, lines)
     return report
 
 
@@ -571,6 +576,274 @@ def check_claims(report: Report, lines: list[Line]):
                 break
 
 
+# ---- a line fits its speaker (1.1.3, after RC5) -------------------------------------------------------------------------
+# On the owner's PC (RC3-RC5, 2026-11-09): Thorroir, a 50 minstrel, said "minst lfg 50, x me", "lfm barrows 47-50",
+# "lf1m 47-50 xp grp stonehenge" and "any minsts around? need tips" within twelve minutes; "99% adroit focus staff any good
+# for pally?"; Albion bots asked "where do i hand in the uppland quest?". These checks read one speaker's lines together.
+
+# The same stance words as AutonomousChatStance.SeekOf: forming a group ("lfm") or looking for one ("lfg").
+SEEK_FORMING = re.compile(
+    r"\blf\d*m\b|\blf ?\d more\b|\bneed (?:a |an |\d )?(?:heal|heals|healer|tank|cc|mezzer|dps|puller|caster|support|cleric|druid|shaman|"
+    r"bard|\d more)\b(?! pots?\b)|\blf (?:a |an )?(?:heal|healer|tank|cc|mezzer|dps|puller|caster|support|cleric|druid|shaman|bard|"
+    r"\d more)\b(?! pots?\b)|\bforming\b|\bgrp up for\b|\bif anyone wants to join\b|\bany1 lf grp\b|\banyone up for\b|\bgrp lf\d*m\b|\broom for \d\b")
+SEEK_LOOKING = re.compile(
+    r"\blfg\b|\blf (?:xp |rvr |a )?gr(?:ou)?p\b|\blooking for a gr(?:ou)?p\b|\bany gr(?:ou)?ps (?:for|need)\b|\bany room for\b|"
+    r"\bfree for grps\b|\bwants a grp\b|\blf duo\b|\bwanna duo\b|\bany rvr grps lf\b")
+# A post that ends the story: "nm got a grp", "nvm, full" (AutonomousChatFieldTalk's outrun closing) and the like.
+SEEK_CLOSED = re.compile(r"^(?:nm|nvm|nevermind)?,? ?(?:got a grp|grouped|found a grp|found one|full|grp full|full now|heading out|going as is|"
+                         r"we re off)\b|\b(?:got a grp|grp full|nm full)\b")
+# Lines that are a scene's or a feature's script, or someone else's turn: not the speaker's own story.
+NOT_OWN_STORY_SRC = {"debate", "storyline", "story", "spammer", "rumour", "roleplayer", "news", "event", "burst", "reaction"}
+NOT_OWN_STORY_ROLE = {"answerer", "reactor", "riff", "third", "B", "C"}
+
+DUNGEON_WORDS = {
+    "tomb of mithra": ["tomb of mithra", "mithra tomb", "mithra", "tomb"], "tepok's mine": ["tepok's mine", "tepoks", "tepok"],
+    "keltoi fogou": ["keltoi fogou", "keltoi", "fogou"], "stonehenge barrows": ["stonehenge barrows", "sh barrows", "barrows", "stonehenge"],
+    "nisse's lair": ["nisse's lair", "nisses", "nisse"], "cursed tomb": ["cursed tomb", "ct"], "vendo caverns": ["vendo caverns", "vendos", "vendo"],
+    "varulvhamn": ["varulvhamn", "varulv", "varul"], "spindelhalla": ["spindelhalla", "spindel", "spindle"],
+    "muire tomb": ["muire tomb", "muire"], "spraggon den": ["spraggon den", "sprag den", "spraggon"],
+    "koalinth tribal caverns": ["koalinth tribal caverns", "koalinth", "koal"], "treibh caillte": ["treibh caillte", "treibh", "tc"],
+    "coruscating mine": ["coruscating mine", "coruscating", "cm"],
+}
+DUNGEON_ALIAS = sorted(((w, d) for d, ws in DUNGEON_WORDS.items() for w in ws), key=lambda pair: -len(pair[0]))
+
+# Frontier zones by realm (AutonomousChatLiveAnswers.FrontierHome), as ShortZone writes them too.
+FRONTIER_ZONES = {
+    "albion": ["forest sauvage", "snowdonia", "pennine mountains", "pennine mtns", "hadrian's wall"],
+    "midgard": ["uppland", "yggdra forest", "jamtland mountains", "jamtland mtns", "odin's gate"],
+    "hibernia": ["emain macha", "breifine", "cruachan gorge", "mount collory"],
+}
+PVE_WORDS = re.compile(r"\b(?:quest|hand in|stable|bind|trainer|camp|camping|grinding|xp|duo|hate me|on the horse|back in|third time tonight|"
+                       r"same happened to me)\b")
+
+# Items and classes, the common cases (AutonomousChatGear has the full rule): the heaviest armour a class wears at a level,
+# who may hold a staff, a focus staff, a shield of a size, a bow, a two-hander, an instrument.
+ARMOR_RANK = {"cloth": 1, "leather": 2, "studded": 3, "reinforced": 3, "chain": 4, "scale": 4, "plate": 5}
+HIB_ARMOR = {"reinforced", "scale"}
+CLASS_ARMOR = {  # (from level, armour), as GeneratedUniqueItem.Get*ArmorType
+    "armsman": [(1, "studded"), (5, "chain"), (15, "plate")], "paladin": [(1, "studded"), (10, "chain"), (20, "plate")],
+    "mercenary": [(1, "studded"), (10, "chain")], "reaver": [(1, "studded"), (10, "chain")],
+    "minstrel": [(1, "leather"), (10, "studded"), (20, "chain")], "cleric": [(1, "leather"), (10, "studded"), (20, "chain")],
+    "scout": [(1, "leather"), (10, "studded")], "friar": [(1, "leather")], "infiltrator": [(1, "leather")],
+    "cabalist": [(1, "cloth")], "necromancer": [(1, "cloth")], "sorcerer": [(1, "cloth")], "theurgist": [(1, "cloth")], "wizard": [(1, "cloth")],
+    "warrior": [(1, "studded"), (10, "chain")], "thane": [(1, "studded"), (12, "chain")], "skald": [(1, "studded"), (20, "chain")],
+    "berserker": [(1, "studded")], "savage": [(1, "studded")], "shadowblade": [(1, "leather")], "hunter": [(1, "leather"), (10, "studded")],
+    "healer": [(1, "leather"), (10, "studded"), (20, "chain")], "shaman": [(1, "leather"), (10, "studded"), (20, "chain")],
+    "runemaster": [(1, "cloth")], "spiritmaster": [(1, "cloth")], "bonedancer": [(1, "cloth")],
+    "hero": [(1, "reinforced"), (15, "scale")], "champion": [(1, "reinforced"), (20, "scale")], "blademaster": [(1, "reinforced")],
+    "warden": [(1, "leather"), (10, "reinforced"), (20, "scale")], "druid": [(1, "leather"), (10, "reinforced"), (20, "scale")],
+    "bard": [(1, "leather"), (15, "reinforced")], "ranger": [(1, "leather"), (10, "reinforced")], "nightshade": [(1, "leather")],
+    "valewalker": [(1, "cloth")], "eldritch": [(1, "cloth")], "enchanter": [(1, "cloth")], "mentalist": [(1, "cloth")], "animist": [(1, "cloth")],
+    "sluaghbinder": [(1, "reinforced"), (20, "scale")],
+}
+HIB_CLASSES = {"hero", "champion", "blademaster", "warden", "druid", "bard", "ranger", "nightshade", "valewalker", "eldritch", "enchanter",
+               "mentalist", "animist", "sluaghbinder"}
+FOCUS_CASTERS = {"cabalist", "necromancer", "sorcerer", "theurgist", "wizard", "runemaster", "spiritmaster", "bonedancer", "eldritch",
+                 "enchanter", "mentalist", "animist"}
+STAFF_CLASSES = FOCUS_CASTERS | {"cleric", "friar", "druid", "healer", "shaman"}
+SHIELD_SIZE = {  # the largest shield a class carries; a class not listed carries none
+    "armsman": 3, "paladin": 3, "reaver": 3, "warrior": 3, "hero": 3, "sluaghbinder": 3, "mercenary": 2, "cleric": 2, "thane": 2,
+    "champion": 2, "blademaster": 2, "warden": 2, "friar": 1, "minstrel": 1, "scout": 1, "infiltrator": 1, "skald": 1, "berserker": 1,
+    "savage": 1, "shadowblade": 1, "healer": 1, "shaman": 1, "druid": 1, "bard": 1, "ranger": 1, "nightshade": 1,
+}
+ITEM_USERS = [  # an item word and the classes that use it
+    (re.compile(r"\blongbow\b"), {"scout"}), (re.compile(r"\bcrossbow\b"), {"armsman", "infiltrator"}),
+    (re.compile(r"\b(?:composite|compound) bow\b"), {"hunter"}), (re.compile(r"\brecurved? bow\b"), {"ranger"}),
+    (re.compile(r"\b(?:lute|drum|flute|harp|lyre)\b"), {"minstrel", "bard"}), (re.compile(r"\bscythe\b"), {"valewalker", "sluaghbinder"}),
+    (re.compile(r"\b(?:halberd|lucerne|lochaber|partisan|polearm)\b"), {"armsman"}), (re.compile(r"\bflail\b"), {"reaver"}),
+    (re.compile(r"\b(?:great sword|greatsword|great axe|great hammer|two handed|claymore)\b"),
+     {"armsman", "paladin", "warrior", "thane", "skald", "berserker", "savage", "shadowblade", "hero", "champion"}),
+]
+
+
+def armor_at(cls: str, level: int | None) -> str | None:
+    steps = CLASS_ARMOR.get(cls)
+    if not steps:
+        return None
+    level = 50 if level is None else level
+    return [armor for start, armor in steps if level >= start][-1]
+
+
+def can_use(cls: str, level: int | None, item: str) -> bool:
+    """The common cases of AutonomousChatGear.CanUse, from the item's name."""
+    item = item.lower()
+    if cls not in CLASS_ARMOR:
+        return True
+    if re.search(r"\bfocus\b", item):
+        return cls in FOCUS_CASTERS
+    if re.search(r"\b(?:shield|buckler)\b", item):
+        size = 3 if re.search(r"\b(?:large|tower)\b", item) else 2 if "medium" in item else 1
+        return SHIELD_SIZE.get(cls, 0) >= size
+    if re.search(r"\b(?:quarter)?staff\b", item):
+        return cls in STAFF_CLASSES
+    for pattern, users in ITEM_USERS:
+        if pattern.search(item):
+            return cls in users
+    armor = next((a for a in ARMOR_RANK if re.search(rf"\b{a}\b", item)), None)
+    if armor:
+        if (armor in HIB_ARMOR) != (cls in HIB_CLASSES) and armor not in ("cloth", "leather"):
+            return False
+        return ARMOR_RANK[armor] <= ARMOR_RANK[armor_at(cls, level)]
+    return True
+
+
+ITEM_FOR_CLASS = [
+    re.compile(r"^(?:\d+% )?(?P<item>.+?) any good for (?:a |an |my )?(?:\d+ )?(?P<cls>[a-z]+)\b"),
+    re.compile(r"\b(?:wtb|wts|selling|buying|anyone selling|looking for|lf) (?P<item>.+?) for (?:a |an |my )?(?:lvl |level )?(?:\d+ )?(?P<cls>[a-z]+)\b"),
+]
+OWN_GEAR = re.compile(r"\b(?:wtb|anyone selling|anyone have|anyone got spare|need|looking for|lf|buying|who has) (?P<item>(?:\d+ )?"
+                      r"(?:cloth|leather|studded|chain|plate|reinforced|scale) (?:helm|gloves|boots|sleeves|legs|vest|arms|armor|armour))\b")
+OWN_TRAINER = re.compile(r"\bwhere(?:'s| is| s)? the (?:(?P<cls>[a-z]+) )?trainer\b")
+OWN_TIPS = re.compile(r"\bany (?P<cls>[a-z]+?)s? (?:around|on)\b.*\bneed tips\b|\bneed tips\b")
+
+
+def own_story(l: Line) -> bool:
+    return l.who == "bot" and l.src not in NOT_OWN_STORY_SRC and l.role not in NOT_OWN_STORY_ROLE and l.ch != "tell"
+
+
+def seek_of(text: str) -> str | None:
+    t = text.lower()
+    if SEEK_FORMING.search(t):
+        return "lfm"
+    return "lfg" if SEEK_LOOKING.search(t) else None
+
+
+def dungeon_in(text: str) -> str | None:
+    t = text.lower()
+    for word, dungeon in DUNGEON_ALIAS:
+        if re.search(rf"(?<![a-z0-9']){re.escape(word)}(?![a-z0-9'])", t):
+            return dungeon
+    return None
+
+
+def check_self_contradiction(report: Report, lines: list[Line]):
+    """One speaker's group posts across /lfg, /broadcast, /trade, /faction, /say: looking for a group and forming one within 30
+    minutes (no "nm got a grp" between), two dungeons within 10 minutes; and a 50 asking where its class trainer is or for
+    tips on its own class."""
+    by_speaker: dict[tuple[str, str], list[Line]] = defaultdict(list)
+    for l in lines:
+        if own_story(l):
+            by_speaker[(l.realm, l.speaker)].append(l)
+    for seq in by_speaker.values():
+        flagged_seek = flagged_place = False
+        for k, line in enumerate(seq):
+            seek = seek_of(line.text)
+            if seek:
+                report.counts["group_posts"] += 1
+            place = dungeon_in(line.text) if seek else None
+            for later in seq[k + 1:]:
+                if later.t - line.t >= 1800:
+                    break
+                if SEEK_CLOSED.search(norm(later.text)):
+                    break
+                other = seek_of(later.text)
+                if seek and other and other != seek and not flagged_seek:
+                    report.flag("self_lfg_and_lfm", line, later, note=f"{later.t - line.t}s apart")
+                    flagged_seek = True
+                there = dungeon_in(later.text) if other else None
+                if place and there and there != place and later.t - line.t < 600 and not flagged_place:
+                    report.flag("self_two_destinations", line, later, note=f"{place} / {there}")
+                    flagged_place = True
+            cls = (line.cls or "").lower()
+            if line.lvl is not None and line.lvl >= 50 and cls:
+                t = norm(line.text).replace("where s", "where's")
+                trainer = OWN_TRAINER.search(line.text.lower())
+                tips = OWN_TIPS.search(t)
+                named = (trainer or tips).group("cls") if (trainer or tips) else None
+                if (trainer or tips) and (named is None or WORD_CLASS.get(named) == cls or WORD_CLASS.get(named.rstrip("s")) == cls):
+                    report.flag("self_own_class_ask", line, note=f"is a {line.lvl} {line.cls}")
+
+
+def check_item_class(report: Report, lines: list[Line]):
+    """An item paired with a class that can't use it ("99% adroit focus staff any good for pally?"), and a want of armour the
+    speaker's own class can't wear ("wtb chain boots" from a sorcerer)."""
+    for l in lines:
+        if l.who != "bot" or l.role in NOT_OWN_STORY_ROLE:
+            continue
+        t = l.text.lower()
+        for pattern in ITEM_FOR_CLASS:
+            match = pattern.search(t)
+            if match and match.group("cls") in WORD_CLASS:
+                cls = WORD_CLASS[match.group("cls")]
+                level = l.lvl if l.cls and l.cls.lower() == cls else None
+                if not can_use(cls, level, match.group("item")):
+                    report.flag("item_class_unusable", l, note=f"{cls} can't use it")
+                break
+        else:
+            own = OWN_GEAR.search(t)
+            if own and l.cls and "alt" not in t and not can_use(l.cls.lower(), l.lvl, own.group("item")):
+                report.flag("item_class_unusable", l, note=f"a {l.lvl} {l.cls} can't wear it")
+
+
+def check_enemy_zone(report: Report, lines: list[Line]):
+    """A PvE line (a quest, a stable, a bind, a trainer, a camp, xp, a monster death) naming another realm's frontier zone
+    ("where do i hand in the uppland quest?" from an Albion bot). Talk of the frontier itself (inc, keeps, rvr) may name it."""
+    for l in lines:
+        if l.who != "bot" or l.src in ("event", "news", "spammer"):
+            continue
+        realm = l.realm.lower()
+        if realm not in FRONTIER_ZONES:
+            continue
+        t = l.text.lower()
+        enemy = next((z for r, zones in FRONTIER_ZONES.items() if r != realm for z in zones
+                      if re.search(rf"(?<![a-z']){re.escape(z)}(?![a-z'])", t)), None)
+        if enemy and PVE_WORDS.search(t):
+            report.flag("pve_enemy_zone", l, note=f"{l.realm} bot, {enemy}")
+
+
+GROUP_FORMED = re.compile(r"^(?P<stamp>\d\d/\d\d \d\d:\d\d:\d\d).*AUTONOMOUS_GROUP_FORMED group=(?P<group>\S+) .*?members=\"(?P<members>[^\"]*)\"")
+GROUP_ENDED = re.compile(r"^(?P<stamp>\d\d/\d\d \d\d:\d\d:\d\d).*AUTONOMOUS_GROUP_TASK_ENDED group=(?P<group>\S+) .*?members=\"(?P<members>[^\"]*)\"")
+GROUP_NO_SHOW = re.compile(r"^(?P<stamp>\d\d/\d\d \d\d:\d\d:\d\d).*AUTONOMOUS_GROUP_NO_SHOW \{\"group\":\"(?P<group>[^\"]+)\",\"bot\":\"(?P<bot>[^\"]+)\"")
+
+
+def check_lfg_while_grouped(report: Report, lines: list[Line], path: str):
+    """Informational: an "lfg" post from a bot the log shows in a group then (AUTONOMOUS_GROUP_FORMED until its
+    AUTONOMOUS_GROUP_TASK_ENDED or the bot's AUTONOMOUS_GROUP_NO_SHOW)."""
+    first = None
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        for raw in handle:
+            match = ROW.match(raw)
+            if match:
+                first = parse_stamp(match.group("stamp"))
+                break
+    if first is None:
+        return
+    joined: dict[str, list[list[int]]] = defaultdict(list)
+    open_at: dict[tuple[str, str], int] = {}
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        for raw in handle:
+            if "AUTONOMOUS_GROUP_" not in raw:
+                continue
+            for pattern, start in ((GROUP_FORMED, True), (GROUP_ENDED, False)):
+                match = pattern.match(raw)
+                if match:
+                    t = parse_stamp(match.group("stamp")) - first
+                    for member in filter(None, match.group("members").split(",")):
+                        if start:
+                            open_at[(match.group("group"), member)] = t
+                        elif (match.group("group"), member) in open_at:
+                            joined[member].append([open_at.pop((match.group("group"), member)), t])
+            match = GROUP_NO_SHOW.match(raw)
+            if match and (match.group("group"), match.group("bot")) in open_at:
+                joined[match.group("bot")].append([open_at.pop((match.group("group"), match.group("bot"))), parse_stamp(match.group("stamp")) - first])
+    for (group, member), t in open_at.items():
+        joined[member].append([t, 10 ** 9])
+    if not joined:
+        return
+    report.counts["info_group_log_known"] = 1
+    for l in lines:
+        if own_story(l) and seek_of(l.text) == "lfg" and any(a <= l.t < b for a, b in joined.get(l.speaker, [])):
+            report.flag("info_lfg_while_grouped", l, note="the log shows it in a group")
+
+
+def check_speaker_fit(report: Report, lines: list[Line], path: str | None = None):
+    check_self_contradiction(report, lines)
+    check_item_class(report, lines)
+    check_enemy_zone(report, lines)
+    if path:
+        check_lfg_while_grouped(report, lines, path)
+
+
 KINDS = [
     ("exact_out_of_order", "exchange lines out of order (exact)"),
     ("exact_role_swap", "exchange roles swapped (exact)"),
@@ -584,6 +857,13 @@ KINDS = [
     ("class_claim_false", "class claim not the speaker's (cls=)"),
     ("level_claim_false", "level claim not the speaker's (lvl=)"),
     ("two_classes_claimed", "one speaker claims two classes"),
+    ("group_posts", "group posts (lfg/lfm) by their own speakers"),
+    ("self_lfg_and_lfm", "a speaker looks for a group and forms one within 30 min"),
+    ("self_two_destinations", "a speaker's group posts name two dungeons within 10 min"),
+    ("self_own_class_ask", "a 50 asks where its class trainer is or for tips on its own class"),
+    ("item_class_unusable", "an item paired with a class that can't use it"),
+    ("pve_enemy_zone", "a PvE line names an enemy realm's zone"),
+    ("info_lfg_while_grouped", "(info) an lfg post from a bot the log shows grouped"),
     ("reaction_no_trigger", "reaction with no trigger in 30 s"),
     ("reaction_late", "reaction more than 30 s after its trigger"),
     ("pileon", "triggers with more than two reactions"),
@@ -698,6 +978,9 @@ def verdict(summary: dict) -> tuple[bool, list[str]]:
     checks = [
         ("out of order", out_of_order),
         ("untrue role/class/level", c["role_answer_false"] + c["class_claim_false"] + c["level_claim_false"]),
+        ("speaker contradicts itself", c["self_lfg_and_lfm"] + c["self_two_destinations"] + c["self_own_class_ask"]),
+        ("item for a class that can't use it", c["item_class_unusable"]),
+        ("PvE line names an enemy zone", c["pve_enemy_zone"]),
         ("late reactions", c["reaction_late"]),
         ("repeated reactions", c["reaction_repeat_10min"]),
         ("pile-ons over the caps", c["pileon"]),
@@ -707,6 +990,7 @@ def verdict(summary: dict) -> tuple[bool, list[str]]:
     ]
     checks += voice_checks(c)
     reasons = [f"{name} {n}" for name, n in checks if n]
+    reasons += unanswered_reasons(summary)
     if not summary["ceiling_known"]:
         reasons.append("ceiling unknown (no cap= in the log; pass --ceiling)")
     if not summary["tagged_lines"]:
@@ -736,6 +1020,8 @@ def print_report(summary: dict, show: int):
           "   busiest minute: " + ", ".join(f"{ch} {n}" for ch, n in summary["busiest_minute"].items()))
     for key, label in KINDS:
         print(f"   {summary['counts'][key]:>5}  ({summary['per_hour'][key]:>6}/h)  {label}")
+    print_unanswered(summary)
+    print_market(summary)
     for realm, rate in summary["peak_rate"].items():
         print(f"   {realm}: busiest two minutes {rate['peak']}/min against a ceiling of {rate['ceiling']}/min (events and lines to the player aside)")
     print("   /say lines a minute (bots and you): " + str(summary["lines_per_minute"].get("say", 0)) + ", busiest minute " + str(summary["busiest_minute"].get("say", 0)))
@@ -743,6 +1029,205 @@ def print_report(summary: dict, show: int):
         for key, label in KINDS:
             for example in summary["examples"].get(key, [])[:show]:
                 print(f"      [{key}] {example}")
+
+
+# ---- informational: engagement, follow-ups, regulars (1.1.3; not part of the verdict) ------------------------------------
+
+TO_FIELD = re.compile(r' to="([^"]*)"')
+
+
+def player_names(lines: list[Line]) -> set[str]:
+    """The real players of a log: who spoke as who=player, and who bot tells went to (to=)."""
+    names = {l.speaker for l in lines if l.who == "player" and l.speaker not in ("?", "")}
+    for l in lines:
+        if l.who == "bot" and l.ch == "tell":
+            match = TO_FIELD.search(l.raw)
+            if match:
+                names.add(match.group(1))
+    return names
+
+
+def player_directed(lines: list[Line], names: set[str] | None = None) -> dict:
+    """Bot lines aimed at or naming a real player: a tell to them, src=player, or their name in the text. Per hour, by channel."""
+    names = player_names(lines) if names is None else names
+    pattern = re.compile(r"\b(" + "|".join(re.escape(n) for n in sorted(names)) + r")\b", re.I) if names else None
+    hits = []
+    for l in lines:
+        if l.who != "bot":
+            continue
+        to = TO_FIELD.search(l.raw)
+        if (l.ch == "tell" and to and to.group(1) in names) or l.src == "player" or (pattern and pattern.search(l.text)):
+            hits.append(l)
+    minutes = max(1.0, (lines[-1].t - lines[0].t + 1) / 60.0) if lines else 1.0
+    by_channel = Counter(l.ch for l in hits)
+    return {"players": sorted(names), "lines": len(hits), "per_hour": round(len(hits) * 60.0 / minutes, 1),
+            "by_channel": dict(sorted(by_channel.items())), "by_role": dict(Counter(l.role or l.src for l in hits).most_common(12))}
+
+
+def speaker_concentration(lines: list[Line], channel: str = "faction", top: int = 10) -> dict:
+    """How much of a channel its busiest speakers carry: distinct speakers, the top N's share, the busiest's count (per realm)."""
+    out = {}
+    by_realm: dict[str, Counter] = defaultdict(Counter)
+    for l in lines:
+        if l.ch == channel and l.who == "bot":
+            by_realm[l.realm][l.speaker] += 1
+    for realm, counts in by_realm.items():
+        total = sum(counts.values())
+        best = counts.most_common(top)
+        out[realm] = {"lines": total, "speakers": len(counts), f"top{top}_share": round(sum(n for _, n in best) / total, 3) if total else 0.0,
+                      "busiest": best[0] if best else None, "top": best}
+    return out
+
+
+FOLLOWUP_MIN_AGE_S = 10 * 60
+
+
+def follow_ups(lines: list[Line]) -> dict:
+    """Follow-up exchanges (src=followup): how many, and how many refer back to a real earlier line: the bot asked after
+    (role=answerer) spoke in the same realm's channel at least ten minutes before the question, and the question names it."""
+    exchanges: dict[tuple, list[Line]] = defaultdict(list)
+    for l in lines:
+        if l.src == "followup" and l.ex:
+            exchanges[(l.ch, l.realm, l.ex)].append(l)
+    anchored = unanchored = 0
+    examples = []
+    for (ch, realm, _), seq in exchanges.items():
+        ask = next((l for l in seq if l.role == "asker"), None)
+        answer = next((l for l in seq if l.role == "answerer"), None)
+        subject = answer.speaker if answer else None
+        if ask is None or subject is None:
+            continue
+        earlier = any(p.ch == ch and p.realm == realm and p.speaker == subject and p.src != "followup" and ask.t - p.t >= FOLLOWUP_MIN_AGE_S
+                      for p in lines if p.n < ask.n)
+        named = subject.lower() in ask.text.lower()
+        if earlier and named:
+            anchored += 1
+        else:
+            unanchored += 1
+        if len(examples) < 6:
+            examples.append(f"{ask.t // 60:>3}:{ask.t % 60:02d} {ask.speaker}: {ask.text} | {subject}: {answer.text}" + ("" if earlier and named else "  [no earlier line]"))
+    return {"exchanges": len(exchanges), "lines": sum(len(v) for v in exchanges.values()), "anchored": anchored, "unanchored": unanchored,
+            "bits": sum(1 for l in lines if l.src == "bit"), "examples": examples}
+
+
+def engagement(path: str) -> dict:
+    """The informational metrics of one log (printed after its report, written with --json)."""
+    lines = read(path)
+    return {"player_directed": player_directed(lines), "faction_concentration": speaker_concentration(lines), "follow_ups": follow_ups(lines)}
+
+
+def print_engagement(info: dict, show: int):
+    pd = info["player_directed"]
+    print(f"   [info] lines aimed at or naming the player ({', '.join(pd['players']) or 'none seen'}): {pd['lines']} ({pd['per_hour']}/h) {pd['by_channel']}")
+    for realm, c in info["faction_concentration"].items():
+        print(f"   [info] {realm} /faction: {c['lines']} lines from {c['speakers']} speakers, top 10 carry {c['top10_share'] * 100:.0f}%, "
+              f"busiest {c['busiest'][0]} {c['busiest'][1]}" if c["busiest"] else f"   [info] {realm} /faction: no lines")
+    fu = info["follow_ups"]
+    print(f"   [info] follow-ups: {fu['exchanges']} exchanges ({fu['lines']} lines), {fu['anchored']} refer to a real earlier line, "
+          f"{fu['unanchored']} don't; running bits {fu['bits']}")
+    for example in fu["examples"][:show]:
+        print(f"      [followup] {example}")
+# ---- bot questions nobody answered (1.1.3, after RC5) ---------------------------------------------------------------------
+#
+# The owner's PC, RC3 and RC5 (2026-11-09): most questions bots asked in /faction drew no reply at all, so the channel read
+# like people talking past each other. A question here is a bot's field line that opens its exchange (src=field i=0) in
+# /faction or /say and ends in "?". A rhetorical or ambient one is left out: one word ("lag?"), a line that opens with a laugh
+# or a groan ("lol", "ugh"), or the realm-pride tags ("only 4 keeps?", "not bad?"). It is answered when another speaker says a
+# line of the same exchange (same channel, realm and ex=) within 60 s; the asker's own "still lf..." is not an answer. Logs
+# without exchange ids (before 1.1.3) aren't counted. The verdict fails when more than 25% of at least 10 questions went
+# unanswered.
+
+UNANSWERED_WITHIN_S = 60
+UNANSWERED_MAX_SHARE = 0.25
+UNANSWERED_MIN_QUESTIONS = 10
+RHETORICAL = re.compile(r"^(?:\S+|(?:lol|heh|haha|ugh|bleh|argh|ok|so|well)\b.*|only \d+ \w+|.*\bnot bad|.*\bkeeps not bad)$")
+UNANSWERED_KINDS = [
+    ("questions_asked", "bot questions (field openers ending in ?, rhetorical ones aside)"),
+    ("questions_unanswered", f"of them with no reply within {UNANSWERED_WITHIN_S} s"),
+]
+
+
+def is_open_question(line: Line) -> bool:
+    """A bot's question that wants an answer (see the notes above)."""
+    if line.who != "bot" or line.src != "field" or line.i != 0 or line.ch not in ("faction", "say") or not line.ex:
+        return False
+    return line.text.rstrip().endswith("?") and not RHETORICAL.match(norm(line.text))
+
+
+def check_unanswered(report: Report, lines: list[Line]):
+    """Bot questions with no reply from anyone else in their exchange within 60 s."""
+    by_exchange: dict[tuple[str, str, str], list[Line]] = defaultdict(list)
+    for l in lines:
+        if l.ex:
+            by_exchange[(l.ch, l.realm, l.ex)].append(l)
+    end = lines[-1].t if lines else 0
+    for q in lines:
+        if not is_open_question(q) or end - q.t < UNANSWERED_WITHIN_S:
+            continue  # a question in the log's last minute may still be answered after it
+        report.counts["questions_asked"] += 1
+        replies = [l for l in by_exchange[(q.ch, q.realm, q.ex)] if l.speaker != q.speaker and 0 <= l.t - q.t <= UNANSWERED_WITHIN_S]
+        if not replies:
+            report.flag("questions_unanswered", q, note=f"/{q.ch} ex={q.ex}")
+
+
+def unanswered_share(counts) -> float:
+    return counts["questions_unanswered"] / counts["questions_asked"] if counts["questions_asked"] else 0.0
+
+
+def unanswered_reasons(summary: dict) -> list[str]:
+    """The verdict's reason when too many bot questions went unanswered."""
+    c = summary["counts"]
+    share = unanswered_share(c)
+    if c["questions_asked"] >= UNANSWERED_MIN_QUESTIONS and share > UNANSWERED_MAX_SHARE:
+        return [f"unanswered questions {c['questions_unanswered']} of {c['questions_asked']} ({share:.0%}, more than {UNANSWERED_MAX_SHARE:.0%})"]
+    return []
+
+
+def print_unanswered(summary: dict):
+    c = summary["counts"]
+    if c["questions_asked"]:
+        print(f"   bot questions answered within {UNANSWERED_WITHIN_S} s: {c['questions_asked'] - c['questions_unanswered']} of {c['questions_asked']} "
+              f"({1 - unanswered_share(c):.0%}; the verdict fails above {UNANSWERED_MAX_SHARE:.0%} unanswered)")
+
+
+KINDS.extend(UNANSWERED_KINDS)
+
+
+# ---- replies to /lfg and /trade posts (1.1.3, after RC5; informational) ------------------------------------------------
+#
+# RC3 on the owner's PC: 260 /lfg and 213 /trade posts, no reply to any of them. Most of this went by /send in 2003, so most
+# posts stay unanswered; the share of posts (src=field i=0 lines in /lfg and /trade) with a reply from another speaker in
+# their exchange is reported, not judged.
+
+MARKET_KINDS = [
+    ("lfg_posts", "/lfg posts (field openers)"),
+    ("lfg_posts_replied", "of them with a reply"),
+    ("trade_posts", "/trade posts (field openers)"),
+    ("trade_posts_replied", "of them with a reply"),
+]
+
+
+def check_market_replies(report: Report, lines: list[Line]):
+    """/lfg and /trade posts that drew a reply from anyone else in their exchange (informational)."""
+    speakers: dict[tuple[str, str, str], set] = defaultdict(set)
+    for l in lines:
+        if l.ex and l.ch in ("lfg", "trade"):
+            speakers[(l.ch, l.realm, l.ex)].add(l.speaker)
+    for l in lines:
+        if l.ch in ("lfg", "trade") and l.src == "field" and l.i == 0 and l.ex:
+            report.counts[l.ch + "_posts"] += 1
+            if speakers[(l.ch, l.realm, l.ex)] - {l.speaker}:
+                report.counts[l.ch + "_posts_replied"] += 1
+
+
+def print_market(summary: dict):
+    c = summary["counts"]
+    for ch in ("lfg", "trade"):
+        if c[ch + "_posts"]:
+            print(f"   /{ch} posts with a reply: {c[ch + '_posts_replied']} of {c[ch + '_posts']} ({c[ch + '_posts_replied'] / c[ch + '_posts']:.0%}, informational)")
+
+
+KINDS.extend(MARKET_KINDS)
 
 
 def main(argv=None) -> int:
@@ -761,8 +1246,10 @@ def main(argv=None) -> int:
         passed, reasons = verdict(summary)
         summary["verdict"] = "PASS" if passed else "FAIL"
         summary["verdict_reasons"] = reasons
+        summary["engagement"] = engagement(path)
         summaries.append(summary)
         print_report(summary, args.show)
+        print_engagement(summary["engagement"], args.show)
         if args.github:
             c = summary["counts"]
             name = summary["log"].replace("\\", "/").rsplit("/", 1)[-1]

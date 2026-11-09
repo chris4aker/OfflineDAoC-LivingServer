@@ -47,6 +47,8 @@ The raid AI (`EpicEncounterTactics`, autonomous gamebots only) plays these tacti
 |---|---|
 | Xanxicar (Crystal Cave) | Blasts: within 3% above 80/60/40/20% and for 9 s after crossing one, everyone except the party he is fighting withdraws 2,700 from him; that party pushes him over and takes the 2,500-radius stomp (it is meant to kill whoever is in it), the rest of the raid survives it and comes back. |
 | Aidon the Archwizard (Hall of the Corrupt) | Required adds, keep one: once the fight is on the raid kills three of his four illusions (each party takes one) and leaves the last alive, because he summons a new set only when all four are dead; then everyone fights him. Fight at home: past 1,100 from his spawn (tether 1,500) the raid stops hitting him and leads him back. |
+| Orylle (Krondon) | Ground hazard: Orshom's Fire, as for Orshom Brong (raiders with a Cold spell shoot it from outside its 300, everyone else stays out of it and fights the twins). |
+| Orshom Brong (Krondon) | Ground hazard: Orshom's Fire (a fire pit he lights when his fight starts, 10,000 health, hit only by Cold) burns everything within 300 every 3 s and draws everyone within 2,500 into a fight with it. It is never the raid's target: raiders with a Cold spell shoot it from outside its 300, everyone else stays out of it and fights Orshom Brong and Orylle. |
 | Scurceol Hyrde (Krondon) | Required adds: the four Lyft Miht orbs are the raid's targets while any lives (each party takes one; fought from a floor spot within 1,400 that the raid can reach and that sees the orb; melee that can't reach a flying orb waits at that spot); nobody hits him until the last orb is dead. Fight at home: past 1,500 from his spawn the raid stops hitting him and the raider he chases leads him back. |
 | Ancient Black Oak (Marfach Caverns) | Dies with Black Lady: while she lives the raid fights her instead of the Oak. |
 | Black Lady (Marfach Caverns) | Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed. |
@@ -2208,7 +2210,7 @@ Area spells: Fire Strike (DirectDamageNoVariance, damage 300, radius 300); Ice S
 
 #### Orylle (`Orylle`)
 
-`source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs` lines 11-83. level 83; 40,000 health; raids: dungeon-albion-krondon (final); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs` lines 11-83. level 83; 40,000 health; raids: dungeon-albion-krondon (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2219,7 +2221,9 @@ Area spells: Fire Strike (DirectDamageNoVariance, damage 300, radius 300); Ice S
 
 #### Orshom Brong (`Orshom`)
 
-`source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs` lines 182-254. level 80; 30,000 health; raids: dungeon-albion-krondon (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs` lines 182-254. level 80; 30,000 health; raids: dungeon-albion-krondon (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+
+Level 80, 30,000 health, tether 3,800. When his fight starts he lights Orshom's Fire (OrshomFire) at 31406,69599,15605, about 900 from his spawn: a GameEpicNPC that never moves or melees (MaxSpeedBase 0, empty StartAttack), takes damage only of type Cold, has 10,000 health and RespawnInterval -1, aggro range 2,500, and casts Fire Burn on its own spot every 3 s (500 Heat, radius 300). His reset removes it. Orylle throws a random real player within 2,500 into it every 15-20 s while it burns (GetPlayersInRadius: never a bot). At 50% Orshom pulls Orylle into the fight.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|

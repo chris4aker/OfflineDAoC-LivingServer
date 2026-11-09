@@ -1351,7 +1351,8 @@ namespace DOL.GS
                 IsReturningAfterRelease = false;
                 _stableReturnPlan = null;
                 CompleteStableMasterRoute();
-                TellOwnGroup(ReturnDialogue("arrive"));
+                // 1.1.3 (RC5 on the owner's PC): "back" only after a death; a bot that walked to the player after an invite is "here".
+                TellOwnGroup(ReturnDialogue(_deathTick > 0 && GameLoop.GameLoopTime - _deathTick < 20 * 60_000 ? "arrive" : "arrive_walk"));
                 Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
                 BotGroupRelease.FinishReturn(this); // Fork: as an invitation does
                 return false;
@@ -1473,6 +1474,12 @@ namespace DOL.GS
             "stable" => "grabbing a horse, faster",
             "mount" => string.IsNullOrEmpty(stableDestination) ? "on a horse, be there soon" : $"horse to {stableDestination}, be there soon",
             "dismount" => "off the horse, almost there",
+            "arrive_walk" => random.Next(3) switch
+            {
+                0 => "here",
+                1 => "made it, ready",
+                _ => "ok here, whats the plan",
+            },
             "arrive" => random.Next(3) switch
             {
                 0 => "back",

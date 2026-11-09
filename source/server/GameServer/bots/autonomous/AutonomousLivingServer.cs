@@ -73,6 +73,7 @@ public static partial class AutonomousLivingServer
         GameEventMgr.AddHandler(GamePlayerEvent.LevelUp, new DOLEventHandler(OnPlayerLevelUp));
         GameEventMgr.AddHandler(GamePlayerEvent.RRLevelUp, new DOLEventHandler(OnPlayerRealmRankUp));
         GameEventMgr.AddHandler(GameLivingEvent.Dying, new DOLEventHandler(OnLivingDying));
+        GameEventMgr.AddHandler(GamePlayerEvent.GameEntered, new DOLEventHandler(OnPlayerEnteredEngage));
         _nextNemesisPrune = Environment.TickCount64 + NemesisPruneIntervalMs;
         _flushTimer = new Timer(_ =>
         {
@@ -91,6 +92,18 @@ public static partial class AutonomousLivingServer
         // Deeds (bot_living_deeds): a named kill, an enemy kill or the player's own death a bot may have seen.
         if (sender is GameLiving dead)
             AutonomousPlayerDeeds.OnDeath(dead, (args as DyingEventArgs)?.Killer);
+        // 1.1.3: a solo player's death is seen by the bots standing by (AutonomousLivingServer.Engage.cs).
+        if (sender is GamePlayer { Group: null } solo)
+        {
+            try
+            {
+                EngagePlayerDeath(solo);
+            }
+            catch (Exception exception)
+            {
+                Log.Warn("Living Server: a bystander's reaction to a death", exception);
+            }
+        }
         if (sender is not GamePlayer { Group: not null } player)
             return;
         try
@@ -109,6 +122,7 @@ public static partial class AutonomousLivingServer
         GameEventMgr.RemoveHandler(GamePlayerEvent.LevelUp, new DOLEventHandler(OnPlayerLevelUp));
         GameEventMgr.RemoveHandler(GamePlayerEvent.RRLevelUp, new DOLEventHandler(OnPlayerRealmRankUp));
         GameEventMgr.RemoveHandler(GameLivingEvent.Dying, new DOLEventHandler(OnLivingDying));
+        GameEventMgr.RemoveHandler(GamePlayerEvent.GameEntered, new DOLEventHandler(OnPlayerEnteredEngage));
         _flushTimer?.Dispose();
         _flushTimer = null;
         FlushAll(wait: true);
@@ -196,6 +210,7 @@ public static partial class AutonomousLivingServer
             AutonomousBotSchedule.Pulse(now);
             if (MemoryOn)
                 MemoryPulse(now);
+            EngagePulse(now);
             AutonomousLivingWorld.Pulse(now);
         }
         catch (Exception exception)

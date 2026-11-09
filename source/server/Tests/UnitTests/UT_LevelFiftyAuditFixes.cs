@@ -47,7 +47,7 @@ namespace DOL.UnitTests
         [TestCase(false, 74, 199, true, false)]   // before the late window: 200 still required
         [TestCase(false, 80, 179, true, false)]
         [TestCase(false, 80, 190, false, false)]  // a dragon must still be landed
-        [TestCase(true, 80, 190, true, false)]    // player-forced raids keep the 200 rule
+        [TestCase(true, 14, 190, true, false)]    // player-forced raids keep the 200 rule inside their 15-minute patience (2026-11-09)
         [TestCase(false, 15, 200, true, true)]    // normal start unchanged
         public void NearlyFullAutomaticRaidStartsLate(bool forced, int minutes, int present, bool landed, bool expected) =>
             Assert.That(RealmRaidRecruitmentPolicy.Ready(forced, minutes * 60_000L, present, landed), Is.EqualTo(expected));

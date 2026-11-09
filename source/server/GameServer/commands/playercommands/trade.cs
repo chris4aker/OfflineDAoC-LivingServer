@@ -40,6 +40,8 @@ namespace DOL.GS.Commands
 
             string message = string.Join(" ", args, 1, args.Length - 1);
             Broadcast(client.Player, message);
+            // Offline DAoC 1.1.3: the player's post is in the chat transcript (CHAT_LINE who=player ch=trade).
+            BotChatTranscript.Player("trade", client.Player, message);
             AutonomousBeggars.OnPlayerAsked(client.Player, message, "trade");
         }
 
