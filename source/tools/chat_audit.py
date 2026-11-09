@@ -21,6 +21,8 @@ Reports, per log:
   * silent features: a gold spammer, rumour or roleplayer line that was due (LIVING_FEATURE_DUE feature= realm= ex=) and
     never said in /faction (no CHAT_LINE with that src= and ex=), whether it gave up (LIVING_FEATURE_DROPPED) or not; one
     dropped because nobody was left to hear it (reason=no_audience) isn't counted, nor one due in the log's last minutes
+  * bot questions with no reply within 60 s (see check_unanswered for what counts as a question)
+  * /lfg and /trade posts with any reply (informational)
 
 Python standard library only. Usage:
     python3 chat_audit.py LOG [LOG ...] [--json OUT] [--channel faction] [--show N]
@@ -406,6 +408,8 @@ def audit(path: str, channel_filter: str | None = None, ceiling: float | None = 
     check_ceiling(report, lines, ceiling)
     check_ceiling(report, lines, say_ceiling, "say")
     check_features(report, lines, features)
+    check_unanswered(report, lines)
+    check_market_replies(report, lines)
     return report
 
 
@@ -612,6 +616,7 @@ def verdict(summary: dict) -> tuple[bool, list[str]]:
         ("silent features", c["features_silent"]),
     ]
     reasons = [f"{name} {n}" for name, n in checks if n]
+    reasons += unanswered_reasons(summary)
     if not summary["ceiling_known"]:
         reasons.append("ceiling unknown (no cap= in the log; pass --ceiling)")
     if not summary["tagged_lines"]:
@@ -641,6 +646,8 @@ def print_report(summary: dict, show: int):
           "   busiest minute: " + ", ".join(f"{ch} {n}" for ch, n in summary["busiest_minute"].items()))
     for key, label in KINDS:
         print(f"   {summary['counts'][key]:>5}  ({summary['per_hour'][key]:>6}/h)  {label}")
+    print_unanswered(summary)
+    print_market(summary)
     for realm, rate in summary["peak_rate"].items():
         print(f"   {realm}: busiest two minutes {rate['peak']}/min against a ceiling of {rate['ceiling']}/min (events and lines to the player aside)")
     print("   /say lines a minute (bots and you): " + str(summary["lines_per_minute"].get("say", 0)) + ", busiest minute " + str(summary["busiest_minute"].get("say", 0)))
@@ -648,6 +655,109 @@ def print_report(summary: dict, show: int):
         for key, label in KINDS:
             for example in summary["examples"].get(key, [])[:show]:
                 print(f"      [{key}] {example}")
+
+
+# ---- bot questions nobody answered (1.1.3, after RC5) ---------------------------------------------------------------------
+#
+# The owner's PC, RC3 and RC5 (2026-11-09): most questions bots asked in /faction drew no reply at all, so the channel read
+# like people talking past each other. A question here is a bot's field line that opens its exchange (src=field i=0) in
+# /faction or /say and ends in "?". A rhetorical or ambient one is left out: one word ("lag?"), a line that opens with a laugh
+# or a groan ("lol", "ugh"), or the realm-pride tags ("only 4 keeps?", "not bad?"). It is answered when another speaker says a
+# line of the same exchange (same channel, realm and ex=) within 60 s; the asker's own "still lf..." is not an answer. Logs
+# without exchange ids (before 1.1.3) aren't counted. The verdict fails when more than 25% of at least 10 questions went
+# unanswered.
+
+UNANSWERED_WITHIN_S = 60
+UNANSWERED_MAX_SHARE = 0.25
+UNANSWERED_MIN_QUESTIONS = 10
+RHETORICAL = re.compile(r"^(?:\S+|(?:lol|heh|haha|ugh|bleh|argh|ok|so|well)\b.*|only \d+ \w+|.*\bnot bad|.*\bkeeps not bad)$")
+UNANSWERED_KINDS = [
+    ("questions_asked", "bot questions (field openers ending in ?, rhetorical ones aside)"),
+    ("questions_unanswered", f"of them with no reply within {UNANSWERED_WITHIN_S} s"),
+]
+
+
+def is_open_question(line: Line) -> bool:
+    """A bot's question that wants an answer (see the notes above)."""
+    if line.who != "bot" or line.src != "field" or line.i != 0 or line.ch not in ("faction", "say") or not line.ex:
+        return False
+    return line.text.rstrip().endswith("?") and not RHETORICAL.match(norm(line.text))
+
+
+def check_unanswered(report: Report, lines: list[Line]):
+    """Bot questions with no reply from anyone else in their exchange within 60 s."""
+    by_exchange: dict[tuple[str, str, str], list[Line]] = defaultdict(list)
+    for l in lines:
+        if l.ex:
+            by_exchange[(l.ch, l.realm, l.ex)].append(l)
+    end = lines[-1].t if lines else 0
+    for q in lines:
+        if not is_open_question(q) or end - q.t < UNANSWERED_WITHIN_S:
+            continue  # a question in the log's last minute may still be answered after it
+        report.counts["questions_asked"] += 1
+        replies = [l for l in by_exchange[(q.ch, q.realm, q.ex)] if l.speaker != q.speaker and 0 <= l.t - q.t <= UNANSWERED_WITHIN_S]
+        if not replies:
+            report.flag("questions_unanswered", q, note=f"/{q.ch} ex={q.ex}")
+
+
+def unanswered_share(counts) -> float:
+    return counts["questions_unanswered"] / counts["questions_asked"] if counts["questions_asked"] else 0.0
+
+
+def unanswered_reasons(summary: dict) -> list[str]:
+    """The verdict's reason when too many bot questions went unanswered."""
+    c = summary["counts"]
+    share = unanswered_share(c)
+    if c["questions_asked"] >= UNANSWERED_MIN_QUESTIONS and share > UNANSWERED_MAX_SHARE:
+        return [f"unanswered questions {c['questions_unanswered']} of {c['questions_asked']} ({share:.0%}, more than {UNANSWERED_MAX_SHARE:.0%})"]
+    return []
+
+
+def print_unanswered(summary: dict):
+    c = summary["counts"]
+    if c["questions_asked"]:
+        print(f"   bot questions answered within {UNANSWERED_WITHIN_S} s: {c['questions_asked'] - c['questions_unanswered']} of {c['questions_asked']} "
+              f"({1 - unanswered_share(c):.0%}; the verdict fails above {UNANSWERED_MAX_SHARE:.0%} unanswered)")
+
+
+KINDS.extend(UNANSWERED_KINDS)
+
+
+# ---- replies to /lfg and /trade posts (1.1.3, after RC5; informational) ------------------------------------------------
+#
+# RC3 on the owner's PC: 260 /lfg and 213 /trade posts, no reply to any of them. Most of this went by /send in 2003, so most
+# posts stay unanswered; the share of posts (src=field i=0 lines in /lfg and /trade) with a reply from another speaker in
+# their exchange is reported, not judged.
+
+MARKET_KINDS = [
+    ("lfg_posts", "/lfg posts (field openers)"),
+    ("lfg_posts_replied", "of them with a reply"),
+    ("trade_posts", "/trade posts (field openers)"),
+    ("trade_posts_replied", "of them with a reply"),
+]
+
+
+def check_market_replies(report: Report, lines: list[Line]):
+    """/lfg and /trade posts that drew a reply from anyone else in their exchange (informational)."""
+    speakers: dict[tuple[str, str, str], set] = defaultdict(set)
+    for l in lines:
+        if l.ex and l.ch in ("lfg", "trade"):
+            speakers[(l.ch, l.realm, l.ex)].add(l.speaker)
+    for l in lines:
+        if l.ch in ("lfg", "trade") and l.src == "field" and l.i == 0 and l.ex:
+            report.counts[l.ch + "_posts"] += 1
+            if speakers[(l.ch, l.realm, l.ex)] - {l.speaker}:
+                report.counts[l.ch + "_posts_replied"] += 1
+
+
+def print_market(summary: dict):
+    c = summary["counts"]
+    for ch in ("lfg", "trade"):
+        if c[ch + "_posts"]:
+            print(f"   /{ch} posts with a reply: {c[ch + '_posts_replied']} of {c[ch + '_posts']} ({c[ch + '_posts_replied'] / c[ch + '_posts']:.0%}, informational)")
+
+
+KINDS.extend(MARKET_KINDS)
 
 
 def main(argv=None) -> int:
