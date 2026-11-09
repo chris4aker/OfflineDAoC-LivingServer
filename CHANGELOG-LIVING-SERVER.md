@@ -370,6 +370,30 @@ reading the lines showed what it couldn't see; it now checks for each of these, 
 - **Your /trade post gets answers too.** The player's "wts 99% arcane cloth cap, cheap" drew nothing; only bot posts were
   answered. A player's sale or wanted post now draws a bot's reply as often as a bot's does.
 
+**Chat fixes from the tenth and eleventh release candidates on the owner's PC** (1517b73 and 9f44f75, 2026-11-09, played
+as an Albion 50 with the Bot schedule on Real clock). The checker passed both runs once it counted a group's wipe as one
+fight; reading the lines showed the rest.
+- **"what class?" is answered with a class.** "spraggon grp?" "sec, me" "what class?" "coming from mount collory" (RC6):
+  any answer that wasn't a number fitted. It now takes a class or a dunno. Fewer bots fit that answer, so the simulated
+  /faction leans a little more on its regulars; the test's bound moved from 55% to 58% (the owner's call).
+- **A roleplayer's question stays a question.** "hail saw thee soloing duo, by my troth": the flourish ate the "?". It
+  now goes before it.
+- **No goal names as monsters or places.** "careful group rendezvouses link" in /say, and "which stable for master
+  visur?" from a bot taking the porter: a goal name is no monster, and a porter or trainer is no place.
+- **Gossip about you while you're on asks you.** "anyone know if Manawatch is on today? want to group again" was said
+  while the player was online; it is now "Manawatch, u around? want to group again", heard on RC11.
+- **A scene tells the frontier only through a bot that's there.** A 40 grinding in Avalon played the newcomer's "made
+  it to Castle Excalibur", "first realm points", "dead now but worth it". That role now goes only to a bot out for rvr,
+  and "first night in the frontier" reads "first time" by day.
+- **No grinding a town.** "grinding city of camelot at 50" from a bot back at its bind, and "city of camelot anyone"
+  from one that had just ported there: in a town a bot asks for a group to head out with.
+- **One story about finding a group.** "any healers on?" "me" "got one ty", then 24 minutes later "u ever find a grp
+  earlier?" "nah, ended up soloing": a bot that said it found one is not asked after.
+- **A way to a zone of your realm.** "how do i get to pennine mountains from here" was answered "pennine mountains?
+  thats in albion". On RC11 "how do i get to cornwall from here?" drew "Cornwall is its own zone, a stable master can get u
+  close".
+- **An offer to your /lfg doesn't ask what you said.** "50 lf xp grp" drew "hey, im 50, u?".
+
 **Two Darkness Falls exits work** (tested against the world data, and clicked in game on the owner's PC with the second
 release candidate, 6a83c03: both took an Albion character to Camelot Hills; found and fixed by
 rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall

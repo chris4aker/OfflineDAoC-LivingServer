@@ -23,7 +23,8 @@ isn't heard twice in ten minutes. A dunce's scene, a debate or a story keeps its
 
 **Questions get answers.** Most questions bots asked in /faction used to hang there unanswered. Now someone answers,
 and the answer is true where the game knows it: the real trainer and where to find them, the usual spec, where bots of
-that level really hunt, how realm points work, back to whoever gave you a quest. Your own questions get the same. /lfg and
+that level really hunt, how realm points work, back to whoever gave you a quest, the way to a zone ("Cornwall is its own
+zone, a stable master can get u close"), and "what class?" gets a class. Your own questions get the same. /lfg and
 /trade get some replies too ("x", "pst price?", "still need a healer?"), and a poster says "nvm full" or "sold" only when
 that really happened.
 
@@ -32,17 +33,20 @@ at diogel, need 50s"), not as a herald's announcement. Reactions to news vary ov
 again" every time. Debaters type in short lines instead of writing like a book. A death is told by what really killed the bot: a
 gank as a gank ("got ganked lol"), never as if an enemy player were a kind of monster, a monster by its name, the guards
 as the guards, and never more attackers than there were. A story of your deeds names the real monster and where. Nobody
-says "tonight" in the morning, and debates don't announce attacks that aren't happening.
+says "tonight" in the morning, debates don't announce attacks that aren't happening, and a newcomer's first trip to the
+frontier is told only by a bot that's really out there.
 
 **Bots keep one story.** A bot either looks for a group or forms one, not both, and posts for the dungeon it's really
 going to. Only a bot that's really solo posts "lfg", and only a party that's still forming posts "lfm". An item is only
 asked about for a class that can use it, a level 50 doesn't ask where its own trainer is, and quest, stable and camp
-talk names only zones of the bot's own realm.
+talk names only zones of the bot's own realm. A bot in town asks for a group to head out with rather than "grinding" the
+town, and a bot that said it found a group isn't asked later whether it ever did.
 
 **Bots notice you.** Friends say hi when you log in, a grats when you ding, "ouch, u ok?" when you die near them, and a
 healer offers a rez. Now and then a solo bot near your level invites you, with a real invitation. A busy bot you invite
 says why it can't ("sry, on the raid in krondon atm"), one too far away says where it is, and a friend answers your
-small talk with what it's really doing. Your own /trade posts get answers too. Group chat fits a duo and talks about the
+small talk with what it's really doing. A bot answering your /lfg doesn't ask the level you just posted, and a friend
+who'd like to group again asks you directly while you're on. Your own /trade posts get answers too. Group chat fits a duo and talks about the
 hunt only when you hunted together, and guild chat sounds like people.
 
 **An evening that remembers, and regulars you get to know.** A handful of talkative regulars carry about half of /faction
@@ -113,7 +117,18 @@ says which build it came from. Release candidates (RC) are the test builds; the 
   were answered within a minute. The checker found one death told wrong.
 - Chat, RC8: 46 minutes, 88% of bot questions answered within a minute, nothing out of time or place. The checker found
   a wipe by enemy players told as a wipe by monsters and a "stick with the zerg" after a death to the guards.
-- The last two fixes (those two stories, and "ok" after a no) are in the build that ships and are tests only.
+- Chat, RC10 (the fixes for those): 49 minutes. A friend's answer was true ("in a grp in Pennine Mountains atm"), a solo
+  bot in the player's zone answered /lfg within 14 seconds, and an invite from too far drew "im in snowdonia come find me
+  and inv", true of where the bot was by then. 26 of 27 bot questions were answered within a minute. Reading the lines
+  found nine more slips (a roleplayer's question losing its "?", "group rendezvouses" as a monster, "is Manawatch on
+  today?" while the player was on, a scene's frontier newcomer who was grinding in Avalon, "which stable for master
+  visur?", "grinding city of camelot", a bot asked after a group it had said it found, "pennine mountains? thats in
+  albion"), all fixed.
+- Chat, RC11: 20 minutes, the checker passed, 13 of 13 bot questions answered within a minute. "how do i get to cornwall
+  from here?" drew "Cornwall is its own zone, a stable master can get u close", and a friend who'd grouped with the player
+  asked "Manawatch, u around? want to group again". Two small slips (an /lfg offer asking the level the player had just
+  posted, "city of camelot anyone") are fixed.
+RC12_PLACEHOLDER
 - Seen without prompting on those builds: a guild invite and a recruiter in /say, a bot that grouped with the player
   remembering it and greeting them hours later ("look who it is, hey Manawatch"), a tell from a bot that really had
   grouped with the player, an answer in /faction to the player's question about a camp, and a solo bot answering the
@@ -125,7 +140,7 @@ says which build it came from. Release candidates (RC) are the test builds; the 
 - The Darkness Falls exits, on RC2: both took an Albion character to Albion's usual exit.
 
 **Tests only so far** (automated tests and simulated evenings, not yet seen on a real install): everything else above,
-including the raid fixes after RC3, the keep defense, the porter and the stalls. Real clock ran during the RC6-RC8
+including the raid fixes after RC3, the keep defense, the porter and the stalls. Real clock ran during the RC6-RC12
 checks, by day; a full quiet night hasn't been watched.
 In a simulated three-hour evening, 94% of the bots' questions were answered within a minute, with no herald-style line,
 no contradicting bot and /faction under its ceiling.
