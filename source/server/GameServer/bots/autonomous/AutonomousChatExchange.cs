@@ -42,6 +42,9 @@ public static class AutonomousChatExchange
     /// </summary>
     public static bool ExemptFromCeiling(Source source) => source != null && source.Feature is "event" or "player";
 
+    /// <summary>A line of a running debate, storyline or dunce scene (AutonomousBotDebates): it owns /faction while it plays.</summary>
+    public static bool IsScene(Source source) => source != null && source.Feature is "debate" or "storyline";
+
     /// <summary>Whether one more line fits under a channel's ceiling: the rate it would make, not the rate before it. Pure.</summary>
     public static bool Fits(double perMinute, double ceiling, double windowMinutes = 2.0) => perMinute + 1.0 / windowMinutes <= ceiling + 1e-9;
 

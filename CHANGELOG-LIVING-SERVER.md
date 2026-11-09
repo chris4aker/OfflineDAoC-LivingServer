@@ -44,6 +44,13 @@ its reply budget: a thread or a burst is still allowed or held once, as a whole,
   ... ? make me an offer" or "pc ...?" (was "Does anybody want to make me an offer on ...?"), and the answers are the
   written trade answers, not "A merchant price can provide a reasonable minimum value." followed by "Fair enough. Safe
   travels." That formal closing now only comes with bot voices off.
+- **One ceiling for every /faction line.** As in 1.1.3: every bot line in /faction is said only if it fits under the
+  realm's ceiling, but a tagged realm event (`src=event`: a keep or relic taken, a raid's end, Darkness Falls, a server
+  first, Leeroy; its burst capped at three within 40 s, and not held by the reply budget either) or a line to or about the
+  real player (`src=player`). Lines that start more start nothing when held; the lore briefings and after-raid lines go
+  through it too. A running debate, storyline or dunce scene owns /faction (other lines yield to it), waits for room beat
+  by beat, and a dunce cut short after it spoke still rage quits. Every /faction line carries `cap=`, and
+  `chat_audit.py` ends with `VERDICT PASS` or `FAIL`.
 - **Checked:** automated and simulated only, not played. `source/tools/chat_audit.py` on the owner's 1.1.3 evening: one each
   of an answer after the asker closed, a level question after the invite, a follow-up before any answer, a thanks with no
   answer, a trade closing that didn't follow and a join answer from a class that can't fill the role; 6 pile-ons (+13

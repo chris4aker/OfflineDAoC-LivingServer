@@ -529,8 +529,8 @@ public static class AutonomousBotDebates
                 running.NextAt = now + Math.Max(1, beat.PauseSeconds) * 1_000L;
                 return;
             }
-            // An optional beat is rolled once, not again on every retry while its speaker is busy.
-            if (running.WaitingSince == 0 && beat.Optional && Random.Shared.NextDouble() < 0.5 || beat.Variants.Length == 0)
+            // An optional beat is rolled once, not again on every retry while its speaker is busy or the channel full.
+            if (running.WaitingSince == 0 && running.RoomWaits == 0 && beat.Optional && Random.Shared.NextDouble() < 0.5 || beat.Variants.Length == 0)
                 continue;
             SpeakerState state = CastState(realm, running, beat.Role);
             // A protagonist who died is waited for like a busy one: it releases or is raised in well under three minutes
@@ -582,19 +582,22 @@ public static class AutonomousBotDebates
                 continue;
             string filled = VC.ForTimeOfDay(filledVariants[Random.Shared.Next(filledVariants.Length)], DateTime.Now.Hour);
             string line = VC.Style(filled, AutonomousBotVoices.Corpus.VoiceFor(speaker.DatabaseID), Random.Shared);
-            // 1.1.3: a beat waits for room under /faction's ceiling (the scene owns the channel, so it drains), up to two minutes.
-            if (!AutonomousBotChatCoordinator.FactionRoom(realm))
+            // 1.1.3: a beat waits for room under /faction's ceiling. The scene owns the channel while it plays (every other line
+            // but an event or one to the player yields to it, BroadcastFactionAsWritten), so room comes within seconds; the cut
+            // after two minutes is a safety net, and a dunce who already spoke still rage quits then.
+            switch (DecideRoom(AutonomousBotChatCoordinator.FactionRoom(realm), running.RoomWaits))
             {
-                if (running.RoomWaits++ >= MaxRoomWaits)
-                {
+                case RoomDecision.Wait:
+                    if (running.RoomWaits++ == 0 && Log.IsInfoEnabled)
+                        Log.Info($"BOT_DEBATE_WAIT realm={GlobalConstants.RealmToName(realm)} scene={running.Scene.Id} role={beat.Role} beat={running.Beat} reason=\"no room in /faction\"");
+                    running.Beat--;
+                    running.NextAt = now + RoomRetryMs;
+                    return;
+                case RoomDecision.Cut:
+                    if (ExitOnCut(running.Scene.Exit, running.Said.Select(said => said.Role)))
+                        PlayExit(realm, running);
                     End(realm, "no room in /faction");
                     return;
-                }
-                if (running.WaitingSince == 0)
-                    running.WaitingSince = now;
-                running.Beat--;
-                running.NextAt = now + RoomRetryMs;
-                return;
             }
             running.RoomWaits = 0;
             using (AutonomousChatExchange.Tag(running.StoryKey != null ? "storyline" : "debate", running.Exchange, running.Beat - 1, beat.Role, speaker))
@@ -611,6 +614,23 @@ public static class AutonomousBotDebates
             running.NextAt = now + BeatDelayMs(NextText(running));
             return;
         }
+        PlayExit(realm, running);
+        End(realm, "finished");
+    }
+
+    /// <summary>What a beat does about /faction's room: speak, wait (3 s, then again), or, after two minutes, cut the scene.</summary>
+    public enum RoomDecision { Speak, Wait, Cut }
+
+    /// <summary>The room decision for a beat, pure: speak when there is room, wait up to <see cref="MaxRoomWaits"/> times, then cut.</summary>
+    public static RoomDecision DecideRoom(bool room, int roomWaits) => room ? RoomDecision.Speak : roomWaits < MaxRoomWaits ? RoomDecision.Wait : RoomDecision.Cut;
+
+    /// <summary>Whether a scene cut short still plays its exit: it has one ("@exit A") and that role already spoke. Pure.</summary>
+    public static bool ExitOnCut(string exitRole, IEnumerable<string> rolesSaid) =>
+        !string.IsNullOrEmpty(exitRole) && rolesSaid != null && rolesSaid.Contains(exitRole, StringComparer.Ordinal);
+
+    /// <summary>The scene's exit: the dunce who rage quits ("@exit A") sends a player who joined in a parting tell and logs off.</summary>
+    private static void PlayExit(eRealm realm, Running running)
+    {
         // The dunce who rage quits ("@exit A") logs off once the pile-on is over.
         if (!string.IsNullOrEmpty(running.Scene.Exit) && running.Cast.TryGetValue(running.Scene.Exit, out long quitter) &&
             AutonomousBotRegistry.TryGet(quitter, out GameBot dunce))
@@ -629,7 +649,6 @@ public static class AutonomousBotDebates
                 AutonomousLivingServer.Tell(dunce, witness, parting, "none");
             AutonomousBotSchedule.RageQuit(dunce, Random.Shared);
         }
-        End(realm, "finished");
     }
 
     #region A player joins in
