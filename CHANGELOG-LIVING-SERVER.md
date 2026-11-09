@@ -68,7 +68,14 @@ MUST be top notch"). Checked by automated tests and a simulated evening only; no
   closing that didn't follow, one join answer from a class that can't fill the role, 6 pile-ons (13 reactions past the
   second), 3 late reactions, 2 repeated reactions. On a 4.6-hour overnight 1.2-line soak: 207 repeated reactions within ten
   minutes, 9 pile-ons, 5 thanks with no answer.
-  SIMULATION_NUMBERS
+  A simulated three-hour evening (`UT_FactionCoherence.AnEveningHoldsTogether`: 160 made-up Albion bots, the band of 594
+  bots a realm at 8 pm, every path that writes to /faction, the same plans played the old way and the new; audited on
+  GitHub): conversations out of order 30 before, 0 after; pile-ons 23 (+31 reactions past the second) before, 2 after
+  (keep news, three reactions each, the new cap); late reactions 28 before, 0 after; repeated reactions within ten
+  minutes 72 before, 0 after; thanks with no answer 2 before, 0 after; untrue role, class or level answers 0 after;
+  5.72 lines a minute before, 5.06 after (most of the difference is the reactions past the second). Busiest two minutes
+  9.5 lines a minute before, 8.5 after, against a ceiling of 7.1; time above the ceiling 24% before, 10% after (the
+  channel now sits at its ceiling instead of past it; nemesis lines, news and debates aren't held).
 
 **Two Darkness Falls exits work** (found and fixed by rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
 and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no
