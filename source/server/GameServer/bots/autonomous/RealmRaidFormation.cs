@@ -16,7 +16,10 @@ namespace DOL.GS
             position = default;
             if (slot < 0 || slot >= RealmRaidRecruitmentPolicy.FormationSlots || nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) return false;
             bool epicInterior = zone.ID is 60 or 160 or 191 or 248 or 249 || AutonomousRealmRaid.IsRaidDungeon(zone.ID);
-            bool Valid(Vector3 floor) => nav.HasLineOfSight(zone, center, floor, nav.DefaultFilters) &&
+            // Never a post inside a ground hazard (Orshom's Fire: PC 2026-11-09, the front 200 from it put parties in its 300).
+            ushort region = zone.ZoneRegion?.ID ?? 0;
+            bool Valid(Vector3 floor) => EpicEncounterTactics.HazardAt(region, floor) == null &&
+                nav.HasLineOfSight(zone, center, floor, nav.DefaultFilters) &&
                 AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, center, floor) &&
                 AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, floor, center);
             for (int attempt = 0; attempt < (epicInterior ? 22 : 6); attempt++)

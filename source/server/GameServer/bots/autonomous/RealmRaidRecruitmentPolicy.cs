@@ -241,11 +241,43 @@ public static class RealmRaidRecruitmentPolicy
     // Forced raids (started by the player) go in as soon as 200 are staged and, for a dragon,
     // it has landed. They have no staging or battle time limit: they run until the encounter
     // is defeated, the player presses Stop event, or the server stops.
+    // 2026-11-09: a forced raid no longer waits for every member forever (ForcedGoesNow); for a forced raid
+    // <paramref name="elapsed"/> is how long it has waited at this step (since it left the hub, for its staging).
     public static bool Ready(bool forced, long elapsed, int present, bool landed, int required = AutonomousMinimumPresent) =>
-        elapsed >= (forced ? 0 : AutonomousMinimumStagingMilliseconds) &&
-        (present >= required ||
-         !forced && elapsed >= AutonomousLateStartMilliseconds && present >= LateStartMinimum(required)) &&
+        (forced
+            ? ForcedGoesNow(present, required, elapsed)
+            : elapsed >= AutonomousMinimumStagingMilliseconds &&
+              (present >= required || elapsed >= AutonomousLateStartMilliseconds && present >= LateStartMinimum(required))) &&
         landed;
+
+    /// <summary>
+    /// How long a forced raid waits at its hub, or at its staging after it left the hub, for the whole raid before it
+    /// goes with the late-start share (<see cref="LateStartMinimum"/>: 180 of 200).
+    /// PC test 2026-11-09 (build b72716e, forced Krondon from Caer Diogel): the hub held 125 at 01:30 and 199 of the 200 it
+    /// needed from 01:45 on; the last member was stuck in Avalon City, and the raid left only at 01:57, after the owner killed
+    /// him by hand (38 minutes at the hub). The 25 parties had all formed by 01:22, so 15 minutes is time for every member
+    /// who can walk there; a member who has not come by then follows the raid as a late member, as in an automatic raid.
+    /// </summary>
+    public const long ForcedPatienceMilliseconds = 15 * 60_000L;
+    /// <summary>After this long (the automatic raids' hub patience) a forced raid goes with half of what it needs
+    /// (<see cref="DeadlineStartPercent"/>, at least <see cref="MinimumRaidBots"/>): a forced raid never waits forever.</summary>
+    public const long ForcedLastCallMilliseconds = HubPatienceMilliseconds;
+
+    /// <summary>A forced raid goes on (leaves its hub, or goes in from its staging) when everyone it needs is there, after
+    /// <see cref="ForcedPatienceMilliseconds"/> with the late-start share, or after <see cref="ForcedLastCallMilliseconds"/>
+    /// with half. <paramref name="waited"/>: how long it has waited at this step.</summary>
+    public static bool ForcedGoesNow(int present, int required, long waited) =>
+        present >= required ||
+        waited >= ForcedPatienceMilliseconds && present >= LateStartMinimum(required) ||
+        waited >= ForcedLastCallMilliseconds && present >= Math.Max(Math.Min(MinimumRaidBots, required), (required * DeadlineStartPercent + 99) / 100);
+
+    /// <summary>
+    /// What a forced raid must stage once its hub has no formation post left: everyone its posts hold, at most 200.
+    /// PC test 2026-11-09: Caer Diogel had 25 usable posts of 38 (13 on ground too tight), so 25 parties (200 bots) formed
+    /// and the other 100 reserved bots waited for a post for three hours, logging REALM_RAID_NO_MUSTER_POST every minute
+    /// and kept out of every other group meanwhile. A hub with fewer posts would have needed more bots than it can hold.
+    /// </summary>
+    public static int ForcedRequiredForPosts(int required, int postedBots) => Math.Clamp(postedBots, 1, Math.Max(1, required));
 
     /// <summary>
     /// Who must be staged for a late start: 90% of a full 200 (180), but 70% of a raid scaled to the roster. The
@@ -281,8 +313,12 @@ public static class RealmRaidRecruitmentPolicy
     /// <remarks>2026-10-21 at 900 per realm: the Midgard Summoner's Hall rally recruited 102 for a full 200 raid, never
     /// reached the 120 early departure and failed with nobody staged. After the hub's patience a raid leaves with half
     /// of what it needs, the share it may go in short with at its deadline.</remarks>
-    public static bool DepartHub(bool alreadyDeparted, int presentBots, long elapsed = 0, int required = AutonomousMinimumPresent) =>
-        alreadyDeparted || presentBots >= required ||
+    /// <remarks>A forced raid (<paramref name="forced"/>) leaves by <see cref="ForcedGoesNow"/>, <paramref name="elapsed"/> being
+    /// how long its rally has run (it used to need every one of its 200, with no time limit: PC 2026-11-09).</remarks>
+    public static bool DepartHub(bool alreadyDeparted, int presentBots, long elapsed = 0, int required = AutonomousMinimumPresent,
+        bool forced = false) =>
+        alreadyDeparted || presentBots >= required || forced && ForcedGoesNow(presentBots, required, elapsed) ||
+        !forced &&
         elapsed >= HubPatienceMilliseconds && presentBots >= Math.Min(required * HubEarlyDepartureMinimum / AutonomousMinimumPresent,
             Math.Max(MinimumRaidBots, (required * DeadlineStartPercent + 99) / 100));
 

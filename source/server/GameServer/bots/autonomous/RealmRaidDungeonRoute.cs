@@ -206,15 +206,20 @@ namespace DOL.GS
             // minute for over an hour, so the raid never turned to the orbs.
             // An encounter whose tactic sends the raid to the current target is no switch (Scurceol Hyrde attacks the raid
             // while it shoots his orbs; EpicEncounterTactics).
+            // Never a ground hazard or a boss's required add: PC 2026-11-09 (forced Krondon), the raid turned on Orshom's Fire
+            // (a fire pit only Cold hurts) and 100 raiders burned in it; and 11 s after the tactic sent it to a floor stand for
+            // one of Scurceol Hyrde's orbs it switched to another orb "fighting the raid", with its raw spot in the air as the
+            // front (111 route recoveries aimed into the air). Both are fought through their tactic, not as an encounter.
             return live.FirstOrDefault(n => n != _target && n is IGameEpicNpc && n.IsAlive && n.InCombat &&
                                             !EpicEncounterTactics.Covers(n, _target, live) &&
+                                            !IsEncounterHazard(n) && !EpicEncounterTactics.IsRequiredAddOfLiveBoss(n, live) &&
                                             _routeRetry.GetValueOrDefault(n) <= now &&
                                             n.ObjectState == GameObject.eObjectState.Active && !_clearedNames.Contains(n.Name) &&
                                             n.TargetObject is GameLiving victim && raiders.Contains(victim));
         }
 
         private bool IsMusteredEncounter(GameNPC npc) =>
-            (npc is IGameEpicNpc || _finalTypes.Contains(npc.GetType().Name)) &&
+            (npc is IGameEpicNpc || _finalTypes.Contains(npc.GetType().Name)) && !IsEncounterHazard(npc) &&
             // A boss's required adds are fought as part of its fight, without a muster of their own (EpicEncounterTactics).
             !EpicEncounterTactics.IsRequiredAddOfLiveBoss(npc, _live);
         // The region's NPCs as of this turn (AdvanceCore), for the tactic checks.
@@ -992,6 +997,24 @@ namespace DOL.GS
         private float _frontClosest = float.MaxValue;
         private Vector3 _frontClosestFor;
 
+        /// <summary>Height within which a monster counts as on the raid's floor (the approach search's own band).</summary>
+        public const float SameFloorBand = 256f;
+        /// <summary>Units across a unit of height beyond <see cref="SameFloorBand"/> is weighed as (see <see cref="WalkEstimate"/>).</summary>
+        public const float FloorChangeWeight = 8f;
+
+        /// <summary>
+        /// How far the raid's next target is, as the raid walks (pure): the distance across, plus <see cref="FloorChangeWeight"/>
+        /// per unit of height past <see cref="SameFloorBand"/>. The route took the nearest target in a straight line, and in
+        /// Krondon a monster on the floor 1,500 below is "near" but a long walk round (PC test 2026-11-09, build b72716e): the
+        /// raid went from the thrawn ogres at Z 14,600 to an atelic ooze 600 across and 1,500 down (02:30), back up to a
+        /// foreman (02:34) and down to another ooze (02:38), with nobody within 1,000 of the target for 3-4 minutes each time,
+        /// while packs on its own floor were reached in under a minute. With a weight of 8, a monster a floor away
+        /// (1,250 past the band: 10,000) comes after everything within 10,000 on the raid's floor, so the raid clears the
+        /// floor it stands on before it changes floors.
+        /// </summary>
+        public static float WalkEstimate(Vector3 from, Vector3 to) =>
+            Vector2.Distance(new(from.X, from.Y), new(to.X, to.Y)) + FloorChangeWeight * Math.Max(0f, MathF.Abs(to.Z - from.Z) - SameFloorBand);
+
         /// <summary>The living raider with the most living raiders within 1,000 units (the raid's main body).</summary>
         private static bool TryRegroupFront(GameLiving[] inside, out Vector3 front)
         {
@@ -1057,8 +1080,9 @@ namespace DOL.GS
         /// are out of reach, come back every six minutes and hit hard. Taken as the primal's adds, they were the raid's
         /// target over and over; three were skipped for no damage and the raid fell from 230 inside to 28 (run 22).
         /// </summary>
+        // The ground hazards of the tactics (Orshom's Fire) are hazards too (EpicEncounterTactics).
         private static bool IsEncounterHazard(GameNPC npc) =>
-            npc.Brain?.GetType().Name is "VortexBrain" or "WaterfallAntipassBrain";
+            npc.Brain?.GetType().Name is "VortexBrain" or "WaterfallAntipassBrain" || EpicEncounterTactics.IsHazard(npc);
         public const int ThinAttackNear = 16;
 
         /// <summary>
@@ -1320,6 +1344,8 @@ namespace DOL.GS
             if (_routeStartTick == 0) _routeStartTick = now;
             GameNPC[] live = WorldMgr.GetRegion(_region)?.Objects.OfType<GameNPC>().ToArray() ?? [];
             _live = live;
+            // Raiders step out of a ground hazard and no battle post goes in one (EpicEncounterTactics.ObserveHazards).
+            EpicEncounterTactics.ObserveHazards(live);
             foreach (GameNPC stale in _routeRetry.Keys.Where(n => !n.IsAlive || n.ObjectState != GameObject.eObjectState.Active).ToArray())
                 _routeRetry.Remove(stale);
             foreach (GameNPC npc in live.Where(n => _finalTypes.Contains(n.GetType().Name)))
@@ -1484,7 +1510,7 @@ namespace DOL.GS
                     : RealmRaidNeutralEvents.IsObjective(_objectives, n.Name)))
                 .OrderBy(n => _finalTypes.Contains(n.GetType().Name) ? 1 : 0)
                 .ThenBy(n => IsEncounterAdd(n, Front, encounters) ? 0 : 1)
-                .ThenBy(n => Vector3.DistanceSquared(Front, new(n.X, n.Y, n.Z))).ToArray();
+                .ThenBy(n => WalkEstimate(Front, new(n.X, n.Y, n.Z))).ToArray();
             // Probe from the front and from where the parties actually stand, near or far:
             // Tuscaran's front once sat on a pad under the floor its parties stood on.
             Vector3[] anchors = DistinctAnchors(Front, inside

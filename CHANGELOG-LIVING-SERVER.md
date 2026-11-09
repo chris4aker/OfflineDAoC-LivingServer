@@ -206,6 +206,43 @@ killed, he killed 156 raiders, and the raid won Krondon by going around him.
   - The stage before every orb had its own spot: stopped at the first orb, at half after 15 minutes, with 9-11 raiders
     on it.
 
+**Raid fixes from the forced Krondon raid** (owner's PC, third release candidate b72716e, 2026-11-09: a forced Albion
+raid from the launcher's Realm Events tab, 176 minutes from start to Orylle's death, 38 of them waiting at Caer Diogel).
+- **A forced raid no longer waits forever for its last member.** It reserved 300 level 50s, but Caer Diogel had room
+  for only 25 parties (13 of its 38 formation posts are on ground too tight), so 200 bots formed parties and the raid
+  needed every one of them at the hub. It had 125 there at 01:30 and 199 from 01:45 on; the last one was stuck in
+  Avalon City, and the raid left at 01:57 only after he was killed by hand. Now a forced raid waits 15 minutes for
+  everyone, then goes with 90% (180 of 200), and after 30 minutes with half; the rest follow as late members, as in
+  an automatic raid. The same applies at its staging outside the dungeon, counted from when it left the hub. When the
+  hub has no post left, the raid needs only what its posts hold, and the other reserved bots go back to their own
+  play: on the PC 100 of them waited three hours for a post that never came, kept out of every other group. Tests only.
+- **A raider left behind in another dungeon walks out.** That straggler, Ferken, stood in Avalon City on "Holding before
+  dungeon threat" from 01:16 to 01:55, waiting for his party's puller, who was at Caer Diogel. The wait is meant to end
+  after 90 seconds, but its clock started again whenever another monster became the first one in his way. Now the
+  clock runs for the whole wait whichever monster is in the way, nobody waits for a puller when no one of their party
+  is in their region, and such a raider goes around the monster when the floor allows it (otherwise fights it) on its
+  way to the party. Tests only.
+- **The raid walks to its next pack on its own floor.** Inside Krondon several packs took 3-4 minutes to reach, with
+  nobody within 1,000 of the target, and then died in 10-20 seconds. The raid took the nearest monster in a straight
+  line, which in Krondon is often one on the floor 1,500 below: at 02:30 it went down to an atelic ooze, at 02:34 back up
+  to a foreman, at 02:38 down to another ooze. Now a monster on another floor counts as eight times as far for each unit
+  of height, so the raid clears the floor it stands on first. Tests only.
+- **Parties clear the trash on their way to a muster.** While the raid gathers for a named encounter, a party may not
+  start a fight, so each party stopped for 90 seconds before every monster on its walk there and then fought it anyway.
+  The musters took 6 to 20 minutes (Ulor se Bysen: 13 of 100 after 10 minutes, in at 19 minutes, with 174 coin drops
+  from monsters killed in Krondon in that time). Now the party's puller pulls an ordinary monster in the way at once, with the usual
+  checks (health, a whole party, close together). An epic encounter in the way still waits for the raid. Tests only.
+- **Nobody fights Orshom's Fire.** The fire pit Orshom Brong lights when his fight starts burns everything within 300
+  every 3 seconds and can only be hurt by cold. The raid took it for an encounter that was fighting it, turned on it,
+  and 100 raiders burned in it between 04:12 and 04:18; after five minutes without damage it was set aside. Now it is
+  never the raid's target and no party post is placed in it. A raider with a cold spell shoots it from outside its
+  radius, everyone else steps out of it and fights the twins, and anyone standing in it steps out first, whatever it is
+  fighting. The fire and the twins are unchanged. Tests only.
+- **Melee stays off Scurceol Hyrde's floating orbs.** 11 seconds after the raid turned to the orbs from a floor spot,
+  it switched to another orb "fighting the raid" and made the orb's spot in the air its destination: 111 of the 172 route
+  recoveries toward Lyft Miht that followed aimed into the air. Now an orb is fought only through the orbs' own plan,
+  and a melee raider whose target is an orb it can't reach waits at the orbs' floor spot. Tests only.
+
 ## Beta 1.1.2 — 2026-11-07
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized

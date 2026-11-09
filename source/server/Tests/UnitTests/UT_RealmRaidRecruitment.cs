@@ -64,7 +64,7 @@ public class UT_RealmRaidRecruitment
         Assert.That(RealmRaidRecruitmentPolicy.Eligible(level, autonomous, temporary, playerLed), Is.EqualTo(expected));
 
     [TestCase(true, 0, 240, true, true)] [TestCase(true, 45, 200, true, true)] // forced: no muster wait
-    [TestCase(true, 45, 199, true, false)] [TestCase(true, 50, 240, false, false)]
+    [TestCase(true, 14, 199, true, false)] [TestCase(true, 50, 240, false, false)] // forced: 200 until its 15-minute patience (2026-11-09)
     [TestCase(false, 14, 240, true, false)] [TestCase(false, 15, 200, true, true)]
     [TestCase(false, 45, 199, true, false)] [TestCase(false, 59, 8, true, false)]
     [TestCase(false, 30, 240, false, false)]
