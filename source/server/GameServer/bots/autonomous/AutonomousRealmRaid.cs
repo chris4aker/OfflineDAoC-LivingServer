@@ -223,7 +223,6 @@ namespace DOL.GS
             (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.GroupPve) ||
              bot.Level >= 50 && AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.SoloPve));
 
-        // With a bot schedule on, the level 50s it is sending home don't count: the raid is sized to who stays (1.1.3).
         private static int OnlineLevelFifty(eRealm realm) =>
             AutonomousBotRegistry.Snapshot().Count(b => IsEligible(b) && b.Realm == realm && !AutonomousBotSchedule.LeavingSoon(b));
 
