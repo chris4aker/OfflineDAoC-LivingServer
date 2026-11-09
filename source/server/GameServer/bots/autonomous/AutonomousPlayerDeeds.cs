@@ -397,6 +397,8 @@ public static class AutonomousPlayerDeeds
             }
             if (!AutonomousBotVoices.TryEventLine(witness, "deed", out string line, topic, slots))
                 return;
+            // About the real player's deed (1.1.3: not held by the ceiling).
+            using var playerTag = AutonomousChatExchange.Tag("player", 0, 0, "witness", witness);
             AutonomousBotChatCoordinator.BroadcastFaction(witness.Name, realm, line);
             AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), witness, line, "chat");
             React(realm, witness, player, topic, slots);
@@ -416,6 +418,7 @@ public static class AutonomousPlayerDeeds
             GameBot speaker = bot;
             AutonomousLivingServer.Later(speaker, due, () => AutonomousLivingServer.CanTalk(speaker), () =>
             {
+                using var playerTag = AutonomousChatExchange.Tag("player", 0, 0, "reactor", speaker);
                 if (AutonomousBotVoices.TryEventLine(speaker, "deed_reply", out string line, topic, slots))
                     AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
             });
@@ -477,6 +480,7 @@ public static class AutonomousPlayerDeeds
                 if (count != null) slots["count"] = count;
                 if (AutonomousBotVoices.TryEventLine(speaker, "deed", out string line, topic, slots))
                 {
+                    using var playerTag = AutonomousChatExchange.Tag("player", 0, 0, "witness", speaker);
                     AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
                     AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), speaker, line, "chat");
                     React(realm, speaker, player, topic, slots);

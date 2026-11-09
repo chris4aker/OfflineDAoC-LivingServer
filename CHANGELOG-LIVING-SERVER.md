@@ -10,8 +10,97 @@ Older entries below keep the names they were written with.
 
 ## Beta 1.1.3 — 2026-11-08
 
-A hotfix: the raid gets out of Xanxicar's stomp, two Darkness Falls exits should now work, and Setup waits out a busy
-download server. How it was tested is in the release notes ([docs/RELEASE-NOTES-1.1.3.md](docs/RELEASE-NOTES-1.1.3.md)).
+A hotfix: /faction chat that holds together, the raid gets out of Xanxicar's stomp, two Darkness Falls exits should now work, and
+Setup waits out a busy download server. How it was tested is in the release notes
+([docs/RELEASE-NOTES-1.1.3.md](docs/RELEASE-NOTES-1.1.3.md)).
+
+**/faction that holds together** (owner 2026-11-08, watching 1.1.3's /faction: "faction feels disconnected... The chats
+MUST be top notch"). Checked by automated tests and a simulated evening only; not yet played.
+- **Conversations in order, each speaker in its part.** Every line of a bot conversation (a question and its answers, a
+  story about a death, the replies to a remark) was its own timer, set when the conversation was planned. A line held
+  back 2-4 s because the channel had just carried one (up to three times) then came after the line meant to follow it,
+  and a line whose speaker was fighting was dropped while the rest still played: "main line first" before the question
+  it answers, the asker's thanks before the answer, "sup" last; "kk inv" before "what lvl r u?". Now a conversation is
+  said one line after another, each timed from the line before it. A line whose speaker can't say it (fighting, gone)
+  ends the conversation, so nobody thanks an answer that never came; a third bot's aside is just left out. A short reply
+  ("which part?", "ty") is not said once three other lines have scrolled its question away, and an "anyone?" two minutes
+  later only if its speaker said nothing else meanwhile. At most three conversations run in a realm's /faction at once.
+- **Answers that are true of the bot.** "need a tank for sh barrows" drew "sec, me" and "cab, 50" from a cabalist. A
+  group ask is now answered only by a bot that fills the role it asks for (tank, healer, crowd control, puller, damage, or
+  a named class) and is in its levels (the range it names, else within 6 of the asker); "any reavers on?" is answered
+  "me" by a reaver only. Asks name only classes of the asker's realm (an Albion "any druids on?" was possible).
+- **Follow-ups that fit.** The asker no longer asks the answerer's question ("solo or grp?" after "any reavers on?"); it
+  asks the question it had ("what do u put points in at 50?"). A gear, crafting or epic question no longer runs on to
+  "which part?" and "the map helps"; only quest, hand-in and bind questions get a "where exactly?", answered with a place.
+  Nobody asks a level or class the answer already gave. An answer that asks back ("where at?") is answered by the asker,
+  with no "ty" to a question. In a death story "where?" comes only when the teller didn't say where, and the teller then
+  says where. A trade post answered "gl selling, someone will want it" no longer gets "ill keep it then".
+- **Reactions in proportion.** A bot's revenge or nemesis line drew three to eight reactions over a minute and a half,
+  and two of them ran into each other ("that stinks" and "nice!" to two lines at once). Now a bot's own moment draws one
+  or two reactions within 20 s, realm news (keeps, relics, raids, Darkness Falls) three at most (four from 300 bots a
+  realm) within a minute, one burst at a time in a realm, each from a bot free to type, and a reaction is left out once
+  four other lines came after what it reacts to. Guild threads are said in order and answered by guildmates who fit too.
+- **One "oof" in ten minutes.** A short reaction ("oof", "rip", "lol rip", "gz") a realm's /faction heard in the last ten
+  minutes is picked again or left out, in stories, bursts, threads' answers and single reactions.
+- **/faction keeps to its ceiling, whoever speaks.** On the owner's evening /faction ran at 13.6 lines a minute for ten
+  minutes (minutes of 17-20) against its ceiling of 10: unprompted lines stopped at the ceiling, but replies, stories,
+  bursts, nemesis and revenge lines, news, debates, rumours, bonds, gold spammers and Leeroy's friends didn't. Now every
+  bot line in /faction passes one gate: it is said only if it fits under the realm's ceiling (the rate it would make, over
+  two minutes, as the server measures it). A conversation's line waits for room like a busy speaker, a debate's beat waits
+  (the scene owns the channel, so it drains), and a line that starts more (a rumour, a bond, a nemesis line and its burst)
+  starts nothing when it is held. Two kinds pass the gate, tagged in the log so a check can tell them apart: `src=event`, a
+  realm's big moment said on purpose (a keep or relic taken, a raid's end, Darkness Falls, a server first, the raid's
+  Leeroy), whose burst is itself capped at three reactions within 40 s; and `src=player`, a line to or about the real player
+  (bots answer you first). With bot voices on, a server first no longer adds its separate cheers on top of its burst.
+- **A debate, a storyline episode or a dunce's roast plays to its end.** While a scene plays it owns the realm's
+  /faction: every other line but an event or one to the player yields to it, so each beat finds room under the ceiling
+  within seconds. A beat waits for room three seconds at a time (an optional beat isn't re-rolled meanwhile); only after
+  two minutes is a scene cut (`BOT_DEBATE_END reason="no room in /faction"`), and a dunce who already spoke still sends
+  its parting tell and rage quits then. Checked on every scene in the corpus, on a realm already at its ceiling with a
+  keep falling mid-scene.
+- **You are answered during a scene too.** A line to or about you is never held by a scene or the ceiling, and "where do i
+  buy a better staff for my elem?" (no answer at all in the live test) now gets a true one: the Realm Exchange in your
+  capital, or the crafter who makes it (a fletcher for staves and bows, a weaponcrafter, an armorcrafter or a tailor).
+- **No rush when a scene ends.** For two minutes after a scene a line that starts something waits ten seconds after the
+  line before it (three seconds otherwise), and /lfg and /trade no longer wait for a /faction scene at all (the live test
+  heard 7 lines in 7 s as a debate ended). A roleplayer held back tries again in a few seconds.
+- **`/lstest roleplayer` and `/lstest spammer` say when the line really comes:** within a few seconds, once the scene
+  playing now is over, or as soon as /faction has room.
+- **One reaction in ten minutes, whatever says it.** The ten-minute window also holds back a pure reaction ("lol", "been
+  there", "nice going") at the moment it is sent, from any path, not only the ones that plan around it. A conversation's
+  line comes at most about 40 s after the one before it, or not at all.
+- **Every /faction line carries its ceiling** (`cap=6.9`), so a log can be checked on its own.
+- **No more "Fair enough. Safe travels."** It came back 30 times in one night: a fixed line from the oldest reply path,
+  outside the no-repeat memory every written line has, like its formal replies ("A merchant price can provide a
+  reasonable minimum value."). With bot voices on that path now says only written lines, or nothing.
+- **Realm Exchange adverts now and then.** A seller advertised 70% of its listings, only three minutes after the last
+  advert or news line (five in 29 minutes on the owner's evening). An advert is now an unprompted /faction line like any
+  other: only while /faction is under its target, and one a realm in 15 minutes. One that no written line fits says "anyone
+  want ... ? make me an offer" or "pc ...?" (was "Does anybody want to make me an offer on ...?") and gets written trade
+  answers.
+- **Every line names its source.** `CHAT_LINE` rows now say which feature said a line (`src=field`, `thread`, `story`,
+  `reply`, `burst`, `reaction`, `news`, `debate`, ...), and inside a conversation its id, the line's place and the
+  speaker's part (`ex=12 i=2 role=answerer`), with the speaker's real class and level (`cls="Cabalist" lvl=50`). `via=`
+  skips the delivery wrappers, so it names the code that chose the line (most lines showed
+  `BroadcastFactionAsWritten`).
+- **Measured:** `source/tools/chat_audit.py` reads `CHAT_LINE` logs and counts conversations out of order or with swapped
+  parts (exact with the new fields, heuristic without), thanks and follow-ups with nothing to refer to, untrue class,
+  level and role answers, reactions with no trigger, late reactions, pile-ons over the caps, repeated reactions, lines a
+  minute per channel, and the seconds and minutes /faction ran above its ceiling (events and lines to the player aside).
+  Its last line is a verdict: `VERDICT PASS` only with nothing out of order, no untrue answer, no late or repeated
+  reaction, no pile-on over the caps and no minute above the ceiling. On the owner's 1.1.3 evening (13 min of /faction at 11.8 lines a minute): one presence answer after the asker
+  had closed, one level question after the invite, one follow-up before any answer, one thanks with no answer, one trade
+  closing that didn't follow, one join answer from a class that can't fill the role, 6 pile-ons (13 reactions past the
+  second), 3 late reactions, 2 repeated reactions. On a 4.6-hour overnight 1.2-line soak: 207 repeated reactions within ten
+  minutes, 9 pile-ons, 5 thanks with no answer.
+  A simulated three-hour evening (`UT_FactionCoherence.AnEveningHoldsTogether`: 160 made-up Albion bots, the band of 594
+  bots a realm at 8 pm, every path that writes to /faction, the same plans played the old way and the new; audited on
+  GitHub): conversations out of order 30 before, 0 after; pile-ons 23 (+31 reactions past the second) before, 2 after
+  (keep news, three reactions each, the new cap); late reactions 28 before, 0 after; repeated reactions within ten
+  minutes 72 before, 0 after; thanks with no answer 2 before, 0 after; untrue role, class or level answers 0 after;
+  5.55 lines a minute before, 4.57 after (most of the difference is the reactions past the cap and the time over the
+  ceiling). Busiest two minutes 10.0 lines a minute before, 7.0 after, against a ceiling of 7.1; minutes above the
+  ceiling 81 before, 0 after (events and lines to the player aside). The checker's verdict: FAIL before, PASS after.
 
 **Two Darkness Falls exits should now work** (tested against the world data; not clicked in game; found and fixed by
 rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall

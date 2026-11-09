@@ -205,8 +205,15 @@ public static class AutonomousBotDebates
 
     #region Runtime
 
+    /// <summary>A debate beat that waits for room under /faction's ceiling tries again this often, at most this many times.</summary>
+    public const int RoomRetryMs = 3_000, MaxRoomWaits = 40;
+
     private sealed class Running
     {
+        /// <summary>The scene's exchange id in the transcript (CHAT_LINE ex=).</summary>
+        public readonly long Exchange = AutonomousChatExchange.NewId();
+        /// <summary>How many times the current beat waited for room under /faction's ceiling.</summary>
+        public int RoomWaits;
         public VC.Scene Scene;
         public Dictionary<string, long> Cast;
         public Dictionary<string, string> Shared;
@@ -510,8 +517,8 @@ public static class AutonomousBotDebates
                 running.NextAt = now + Math.Max(1, beat.PauseSeconds) * 1_000L;
                 return;
             }
-            // An optional beat is rolled once, not again on every retry while its speaker is busy.
-            if (running.WaitingSince == 0 && beat.Optional && Random.Shared.NextDouble() < 0.5 || beat.Variants.Length == 0)
+            // An optional beat is rolled once, not again on every retry while its speaker is busy or the channel full.
+            if (running.WaitingSince == 0 && running.RoomWaits == 0 && beat.Optional && Random.Shared.NextDouble() < 0.5 || beat.Variants.Length == 0)
                 continue;
             SpeakerState state = CastState(realm, running, beat.Role);
             // A protagonist who died is waited for like a busy one: it releases or is raised in well under three minutes
@@ -563,7 +570,26 @@ public static class AutonomousBotDebates
                 continue;
             string filled = VC.ForTimeOfDay(filledVariants[Random.Shared.Next(filledVariants.Length)], DateTime.Now.Hour);
             string line = VC.Style(filled, AutonomousBotVoices.Corpus.VoiceFor(speaker.DatabaseID), Random.Shared);
-            AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
+            // 1.1.3: a beat waits for room under /faction's ceiling. The scene owns the channel while it plays (every other line
+            // but an event or one to the player yields to it, BroadcastFactionAsWritten), so room comes within seconds; the cut
+            // after two minutes is a safety net, and a dunce who already spoke still rage quits then.
+            switch (DecideRoom(AutonomousBotChatCoordinator.FactionRoom(realm), running.RoomWaits))
+            {
+                case RoomDecision.Wait:
+                    if (running.RoomWaits++ == 0 && Log.IsInfoEnabled)
+                        Log.Info($"BOT_DEBATE_WAIT realm={GlobalConstants.RealmToName(realm)} scene={running.Scene.Id} role={beat.Role} beat={running.Beat} reason=\"no room in /faction\"");
+                    running.Beat--;
+                    running.NextAt = now + RoomRetryMs;
+                    return;
+                case RoomDecision.Cut:
+                    if (ExitOnCut(running.Scene.Exit, running.Said.Select(said => said.Role)))
+                        PlayExit(realm, running);
+                    End(realm, "no room in /faction");
+                    return;
+            }
+            running.RoomWaits = 0;
+            using (AutonomousChatExchange.Tag(running.StoryKey != null ? "storyline" : "debate", running.Exchange, running.Beat - 1, beat.Role, speaker))
+                AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
             // In the realm's thread too, so "why?" or "lol" after a debate line goes to the bot that said it.
             AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), speaker, line, "chat");
             lock (Sync)
@@ -576,6 +602,23 @@ public static class AutonomousBotDebates
             running.NextAt = now + BeatDelayMs(NextText(running));
             return;
         }
+        PlayExit(realm, running);
+        End(realm, "finished");
+    }
+
+    /// <summary>What a beat does about /faction's room: speak, wait (3 s, then again), or, after two minutes, cut the scene.</summary>
+    public enum RoomDecision { Speak, Wait, Cut }
+
+    /// <summary>The room decision for a beat, pure: speak when there is room, wait up to <see cref="MaxRoomWaits"/> times, then cut.</summary>
+    public static RoomDecision DecideRoom(bool room, int roomWaits) => room ? RoomDecision.Speak : roomWaits < MaxRoomWaits ? RoomDecision.Wait : RoomDecision.Cut;
+
+    /// <summary>Whether a scene cut short still plays its exit: it has one ("@exit A") and that role already spoke. Pure.</summary>
+    public static bool ExitOnCut(string exitRole, IEnumerable<string> rolesSaid) =>
+        !string.IsNullOrEmpty(exitRole) && rolesSaid != null && rolesSaid.Contains(exitRole, StringComparer.Ordinal);
+
+    /// <summary>The scene's exit: the dunce who rage quits ("@exit A") sends a player who joined in a parting tell and logs off.</summary>
+    private static void PlayExit(eRealm realm, Running running)
+    {
         // The dunce who rage quits ("@exit A") logs off once the pile-on is over.
         if (!string.IsNullOrEmpty(running.Scene.Exit) && running.Cast.TryGetValue(running.Scene.Exit, out long quitter) &&
             AutonomousBotRegistry.TryGet(quitter, out GameBot dunce))
@@ -594,7 +637,6 @@ public static class AutonomousBotDebates
                 AutonomousLivingServer.Tell(dunce, witness, parting, "none");
             AutonomousBotSchedule.RageQuit(dunce, Random.Shared);
         }
-        End(realm, "finished");
     }
 
     #region A player joins in
@@ -710,6 +752,8 @@ public static class AutonomousBotDebates
             GameBot speaker = bot;
             AutonomousLivingServer.Later(speaker, due, () => Eligible(speaker, realm) && AutonomousBotChatCoordinator.HasFactionAudience(realm), () =>
             {
+                // An answer to the real player (1.1.3: not held by the ceiling).
+                using var playerTag = AutonomousChatExchange.Tag("player", 0, 0, "answerer", speaker);
                 AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, text);
                 AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), speaker, text, "chat", player.Name);
             });
@@ -753,8 +797,14 @@ public static class AutonomousBotDebates
     private static int SpeakersAround(eRealm realm, Running running) =>
         running.Cast.Values.Count(id => AutonomousBotRegistry.TryGet(id, out GameBot bot) && StateOf(bot, realm) != SpeakerState.Gone);
 
+    private static readonly ConcurrentDictionary<eRealm, long> SceneEndedAt = new();
+
+    /// <summary>When the realm's last scene ended (long.MinValue / 2: none yet), for the re-spacing after it.</summary>
+    public static long LastSceneEnd(eRealm realm) => SceneEndedAt.TryGetValue(realm, out long at) ? at : long.MinValue / 2;
+
     private static void End(eRealm realm, string reason)
     {
+        SceneEndedAt[realm] = GameLoop.GameLoopTime;
         lock (Sync)
         {
             if (Scenes.Remove(realm, out Running running))

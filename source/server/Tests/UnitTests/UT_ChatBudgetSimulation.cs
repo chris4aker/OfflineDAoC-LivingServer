@@ -331,7 +331,9 @@ public class UT_ChatBudgetSimulation
         void Field(long now, Bot bot, string channel, AutonomousChatFieldTalk.Said said, AutonomousChatFieldTalk.Memory memory, Func<Bot, bool> pool)
         {
             // AutonomousBotChatCoordinator.ScheduleFieldThread.
-            Bot mate = Near(now, bot, pool), third = Near(now, bot, other => other != mate && pool(other));
+            // 1.1.3: only a bot that can answer it (the role and levels it asks for).
+            bool Fits(Bot other) => AutonomousChatFieldTalk.CanAnswer(said, other.Class, other.Level, other.Class is "Cleric" or "Friar");
+            Bot mate = Near(now, bot, other => pool(other) && Fits(other)), third = Near(now, bot, other => other != mate && pool(other) && Fits(other));
             var steps = AutonomousChatFieldTalk.Thread(said, FactsOf(bot, now, random), mate == null ? null : FactsOf(mate, now, random),
                 third == null ? null : FactsOf(third, now, random), memory, random, now);
             Play(now, channel, steps, [bot, mate, third], said.Answers != null);

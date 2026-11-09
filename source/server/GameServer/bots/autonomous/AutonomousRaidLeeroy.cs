@@ -166,8 +166,10 @@ public static class AutonomousRaidLeeroy
             BotChatTranscript.Bot("yell", leeroy.Name, leeroy.Realm, shout);
         // And in /faction, so the whole realm hears him go (owner 2026-10-29: "the leeroy character should also be shouting
         // in faction when they run in"). Sent as written: the speech pass would tidy it.
+        // 1.1.3: the raid's big moment, a tagged event (his shout, one call, one word after the raid).
         if (AutonomousBotChatCoordinator.HasFactionAudience(leeroy.Realm))
-            AutonomousBotChatCoordinator.BroadcastFactionAsWritten(leeroy.Name, leeroy.Realm, shout);
+            using (AutonomousChatExchange.Tag("event", AutonomousChatExchange.NewId(), 0, "leeroy", leeroy))
+                AutonomousBotChatCoordinator.BroadcastFactionAsWritten(leeroy.Name, leeroy.Realm, shout);
         Log.Info($"RAID_LEEROY bot=\"{leeroy.Name}\" class=\"{leeroy.CharacterClass?.Name}\" boss=\"{boss.Name}\" raid=\"{raidName}\" " +
                  $"region={leeroy.CurrentRegionID} raiders={raiders.Count}");
 
@@ -197,7 +199,8 @@ public static class AutonomousRaidLeeroy
             _ = new ECSGameTimer(caller, _ =>
             {
                 if (caller.ObjectState == GameObject.eObjectState.Active && AutonomousBotChatCoordinator.HasFactionAudience(caller.Realm))
-                    AutonomousBotChatCoordinator.BroadcastFaction(caller.Name, caller.Realm, call);
+                    using (AutonomousChatExchange.Tag("event", AutonomousChatExchange.NewId(), 1, "caller", caller))
+                        AutonomousBotChatCoordinator.BroadcastFaction(caller.Name, caller.Realm, call);
                 return 0;
             }, delay + 6_000 + random.Next(6_000));
         }
@@ -218,7 +221,8 @@ public static class AutonomousRaidLeeroy
         string line = Fill(lines[random.Next(lines.Length)], leeroy, boss);
         _ = new ECSGameTimer(speaker, _ =>
         {
-            AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
+            using (AutonomousChatExchange.Tag("event", AutonomousChatExchange.NewId(), 2, "teller", speaker))
+                AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
             return 0;
         }, 20_000 + random.Next(40_000));
     }
