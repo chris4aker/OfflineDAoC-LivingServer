@@ -644,6 +644,19 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousLivingServer.OfferFits("hey, want to duo here? im {level} {class}", true), Is.True);
         }
 
+        /// <summary>RC6 on the owner's PC: written /lfg lines that claim a group or a want slipped past the group-state check.</summary>
+        [TestCase("group at Coruscating Mine needs a healer, pst", "lfm")]
+        [TestCase("group has room near Connacht, all classes welcome", "lfm")]
+        [TestCase("33 minstrel looking for group, got time", "lfg")]
+        [TestCase("ranger 50 lf anything with xp pst", "lfg")]
+        [TestCase("any group need a 50 minstrel? happy to travel", "lfg")]
+        [TestCase("any1 need a 32 theurgist? pst", "lfg")]
+        [TestCase("looking for a duo partner 50 scout", "lfg")]
+        [TestCase("wtb a shield for a 50 armsman", null)]
+        [TestCase("looking for plate arms, will pay", null)]
+        public void AWrittenGroupPostIsReadForItsStance(string text, string stance) =>
+            Assert.That(AutonomousChatStance.SeekOf(text), Is.EqualTo(stance));
+
         /// <summary>RC6 on the owner's PC: the player's "wts 99% arcane cloth cap, cheap" in /trade drew nothing.</summary>
         [TestCase("wts 99% arcane cloth cap, cheap", AutonomousChatMarket.Post.Wts)]
         [TestCase("selling a 98% sword pst", AutonomousChatMarket.Post.Wts)]
