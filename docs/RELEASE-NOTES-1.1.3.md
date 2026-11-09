@@ -129,7 +129,7 @@ one small fix, named below.
   from here?" drew "Cornwall is its own zone, a stable master can get u close", and a friend who'd grouped with the player
   asked "Manawatch, u around? want to group again". Two small slips (an /lfg offer asking the level the player had just
   posted, "city of camelot anyone") are fixed.
-- Chat, RC12 (the build that ships but one small fix): 17 minutes, the checker passed, every bot question answered
+- Chat, RC12 (the build that ships but one small fix): 21 minutes, the checker passed, every bot question answered
   within a minute. The player's "50 lf xp grp" drew offers that no longer asked the level it gave, and nothing was said
   about hunting or grouping in a capital. One offer said "we keep going after the same mobs" from across the zone; that
   last fix is in the build that ships and is tests only.
