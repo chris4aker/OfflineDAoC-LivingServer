@@ -70,7 +70,7 @@ public static class AutonomousChatBroadcast
     /// <summary>Sends a bot's /broadcast to the players who hear it, as the /broadcast command formats it, and counts it.</summary>
     public static bool Send(GameBot bot, string text, List<GamePlayer> listeners = null)
     {
-        string safe = (text ?? string.Empty).Trim();
+        string safe = AutonomousBotVoiceCorpus.ForNow((text ?? string.Empty).Trim());
         if (bot == null || safe.Length == 0)
             return false;
         if (safe.Length > 240)

@@ -324,6 +324,8 @@ public static class AutonomousBotGroupChatter
     /// player it answered), so "why?", "ty" and answers to its questions follow on as in /faction.</summary>
     internal static void Send(GameBot bot, string text, string invites = "", string to = null, bool remember = true)
     {
+        // 1.1.3, after RC6: the time-of-day pass every bot line takes (AutonomousBotVoiceCorpus.ForNow).
+        text = AutonomousBotVoiceCorpus.ForNow(text);
         if (bot.Group != null && AutonomousLivingServer.GroupHasPlayer(bot.Group))
         {
             bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);

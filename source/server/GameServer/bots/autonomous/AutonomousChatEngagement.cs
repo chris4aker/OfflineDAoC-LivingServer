@@ -127,11 +127,18 @@ public static class AutonomousChatEngagement
     private static string Pick(Random random, params string[] lines) => lines[random.Next(lines.Length)];
 
     /// <summary>A friend's tell when the player logs in (a few seconds to a minute after). <paramref name="canDuo"/>: solo and near their level.</summary>
-    public static string LoginTell(string player, bool canDuo, Random random) => canDuo
-        ? Pick(random, $"hey {player}! on tonight? want to duo in a bit?", $"{player}! perfect timing, wanna group up?",
-            $"oh hey {player}, im solo atm if u want company")
-        : Pick(random, $"hey {player}! good to see u on", $"{player}! o/", $"evening {player} :)", $"oh hey {player}, welcome back",
-            $"look who logged in, hi {player}");
+    /// 1.1.3, after RC6: "evening" and "on tonight?" only by the PC's evening or night (<paramref name="localHour"/>).
+    public static string LoginTell(string player, bool canDuo, Random random, int localHour = 20)
+    {
+        string flag = AutonomousBotVoiceCorpus.TimeFlag(localHour);
+        string greeting = flag == "evening" ? $"evening {player} :)" : flag == "day" && localHour < 12 ? $"morning {player} :)" : $"hey hey {player}";
+        string line = canDuo
+            ? Pick(random, $"hey {player}! on tonight? want to duo in a bit?", $"{player}! perfect timing, wanna group up?",
+                $"oh hey {player}, im solo atm if u want company")
+            : Pick(random, $"hey {player}! good to see u on", $"{player}! o/", greeting, $"oh hey {player}, welcome back",
+                $"look who logged in, hi {player}");
+        return AutonomousBotVoiceCorpus.ForTimeOfDay(line, localHour);
+    }
 
     /// <summary>A friend's tell when the player dings (one who isn't standing there: the bots nearby say grats in /say).</summary>
     public static string LevelUpTell(string player, int level, Random random) => level >= 50
@@ -295,7 +302,7 @@ public static class AutonomousChatEngagement
 
     private static readonly Dictionary<long, long> AwaySince = new();
 
-    /// <summary>Notes a bot's /group line: a "brb" starts its time away, a "back" ends it.</summary>
+    /// <summary>Notes a bot's /group line (and, 1.1.3 after RC6, its /faction and field lines): a "brb" starts its time away, a "back" ends it.</summary>
     public static void NoteGroupLine(long botId, string text, long now)
     {
         lock (AwaySince)

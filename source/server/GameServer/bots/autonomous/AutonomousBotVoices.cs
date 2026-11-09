@@ -87,11 +87,40 @@ public static class AutonomousBotVoices
     public static bool JustLeveled(GameBot bot) =>
         bot?.DatabaseID > 0 && LeveledAt.TryGetValue(bot.DatabaseID, out long leveled) && GameLoop.GameLoopTime - leveled < JustLeveledMs;
 
-    public static void NoteDeath(GameBot bot)
+    public static void NoteDeath(GameBot bot, GameObject killer = null, int attackers = 0)
     {
         if (bot?.DatabaseID > 0)
-            DiedAt[bot.DatabaseID] = GameLoop.GameLoopTime;
+        {
+            long now = GameLoop.GameLoopTime;
+            DiedAt[bot.DatabaseID] = now;
+            Deaths[bot.DatabaseID] = Death(now, killer, attackers);
+        }
     }
+
+    /// <summary>
+    /// What killed a bot, as its death is told (1.1.3, after RC6): <paramref name="Killer"/> is
+    /// <see cref="AutonomousDeathDiagnostics.ChatKillerKind"/> ("monster", "guard", "pet", "bot", "player", "none"),
+    /// <paramref name="Monster"/> the killing monster's kind ("shard golem", or null for a named one or another killer),
+    /// <paramref name="Attackers"/> how many were on the bot (0: unknown), <paramref name="KillerClass"/> the enemy's class.
+    /// </summary>
+    public sealed record DeathNote(long At, string Killer, string Monster, int Attackers, string KillerClass);
+
+    private static readonly ConcurrentDictionary<long, DeathNote> Deaths = new();
+
+    /// <summary>The note of a death at <paramref name="now"/> by <paramref name="killer"/>.</summary>
+    public static DeathNote Death(long now, GameObject killer, int attackers)
+    {
+        string kind = AutonomousDeathDiagnostics.ChatKillerKind(killer);
+        return new DeathNote(now, kind, kind == "monster" ? AutonomousChatFieldTalk.MonsterKind(killer?.Name, false) : null, Math.Max(0, attackers),
+            kind is "bot" or "player" or "pet" ? AutonomousDeathDiagnostics.KillerClassName(killer) : null);
+    }
+
+    /// <summary>
+    /// The bot's death in the last <see cref="JustDiedMs"/>, or null: a death line or story the bot tells then names what
+    /// really killed it (RC6: a paladin killed by one enemy bot said "died to frontier patrol near death stalkers ugh").
+    /// </summary>
+    public static DeathNote RecentDeath(GameBot bot) =>
+        bot?.DatabaseID > 0 && Deaths.TryGetValue(bot.DatabaseID, out DeathNote note) && GameLoop.GameLoopTime - note.At < JustDiedMs ? note : null;
 
     public static VC.Speaker SpeakerFor(GameBot bot)
     {
@@ -635,9 +664,13 @@ public static class AutonomousBotVoices
             AutonomousBotChatCoordinator.TellStory("ding50", bot);
     }
 
-    public static void OnBotDeath(GameBot bot)
+    /// <summary>
+    /// A gamebot died (GameBot.ProcessDeath): what killed it and how many were on it are noted first, so the death's /say
+    /// moment, its /faction story and its field lines tell the real killer (1.1.3, after RC6).
+    /// </summary>
+    public static void OnBotDeath(GameBot bot, GameObject killer = null, int attackers = 0)
     {
-        NoteDeath(bot);
+        NoteDeath(bot, killer, attackers);
         SayMoment(bot, "death", 0.25, 3_000);
         // Round 7: now and then a death becomes a short story in /faction.
         if (bot != null && Random.Shared.NextDouble() < StoryDeathChance)

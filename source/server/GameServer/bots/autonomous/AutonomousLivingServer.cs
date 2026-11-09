@@ -380,7 +380,7 @@ public static partial class AutonomousLivingServer
     {
         if (string.IsNullOrWhiteSpace(text) || !IsSpeaker(bot) || player?.Client == null)
             return;
-        text = AutonomousRoleplayers.Voice(bot, text);
+        text = AutonomousBotVoiceCorpus.ForNow(AutonomousRoleplayers.Voice(bot, text));
         ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", bot.Name, text);
         BotChatTranscript.Bot("tell", bot.Name, bot.Realm, text, player.Name);
         // The talking update: the player's next tell to this bot continues this exchange.

@@ -230,7 +230,10 @@ public static partial class AutonomousLivingServer
             Dictionary<string, string> slots = MemorySlots(row, player);
             string[] flags = Known;
             double score = Random.Shared.NextDouble() + Math.Min(3, row.Grouped + row.Rezzed) * 0.2;
-            if (FitsHelpOffer(bot.Level, player.Level, bot.CurrentZone == player.CurrentZone, Distance(bot)))
+            // 1.1.3, after RC6: a hand is offered only by a friend free to give it (out of a group, on no duty, not riding); the
+            // levels are the help offer's own (eight or more above), not a duo's.
+            if (FitsHelpOffer(bot.Level, player.Level, bot.CurrentZone == player.CurrentZone, Distance(bot)) &&
+                FreeToOffer(player.Group != null, bot.Group != null, BotGroupInvite.DutyOf(bot), bot.IsOnStableMasterRoute, player.Level, player.Level))
                 options.Add((score + 0.6, bot, "help_offer", slots, flags));
             options.Add((score + 0.3, bot, "news_tell", slots, flags));
             if (row.LastTopic == "group")
