@@ -799,7 +799,8 @@ public class UT_ChatBudgetSimulation
         // Round 6: at least 95% of the lines of three words or more are distinct over three hours.
         foreach (string channel in DistinctChannels)
             Assert.That(evening.DistinctShare(channel), Is.GreaterThanOrEqualTo(0.95), channel);
-        Assert.That(evening.TopTenthShare("faction"), Is.InRange(0.45, 0.60), "the regulars carry about half of /faction");
+        // 1.1.3: an evening keeps one cast of regulars (no staggered rotation), so over three hours they carry a little more.
+        Assert.That(evening.TopTenthShare("faction"), Is.InRange(0.45, 0.70), "the regulars carry about half of /faction");
         Assert.That(evening.SpeakersPer30("faction"), Is.LessThanOrEqualTo(22));
         List<string> faction = evening.Lines["faction"];
         Assert.That(faction.GroupBy(t => t).Max(g => g.Count()) / (double)faction.Count, Is.LessThan(0.02), "no one short reply carries /faction");

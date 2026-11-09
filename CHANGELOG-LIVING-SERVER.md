@@ -181,6 +181,72 @@ chat code) and passed both.
   ceiling). Busiest two minutes 10.0 lines a minute before, 7.0 after, against a ceiling of 7.1; minutes above the
   ceiling 81 before, 0 after (events and lines to the player aside). The checker's verdict: FAIL before, PASS after.
 
+**Bots that notice you, an evening that remembers, regulars you get to know** (owner's PC, RC3: in 2.5 hours with the
+player online in Albion, 5 bot lines named the player, no topic ever came back, and 301 bots spoke in /faction, the busiest
+34 lines, the top ten a quarter of them). All behind the switches they already had; none of it seen on the owner's PC yet.
+- **Bots take notice of you.** A friend (a bot you grouped with or rezzed, never one that is cool towards you) sends a
+  hello when you log in, grats when you ding while it is elsewhere (the bots by you still say it in /say, your guild in
+  /guild), and a wave when you reach a zone it is hunting in. A bot standing by when you die alone says "ouch, u ok?",
+  and a healer that has really set out to rez you says "need a rez? omw" (once a death, by tell when it is farther off).
+  A bot next to you notices a good item you just put on (99-100% quality or above your level). Unprompted lines to you
+  share one allowance: about five an hour, five minutes apart, solo; about nine, three minutes apart, grouped or with two
+  friends online. The bots' old tells and their /faction gossip about you take a turn too. A death seen in front of a bot
+  needs only a minute since the last line. Tests only.
+- **Real invites.** Half of a solo bot's "want to duo?" tells now come with a real invitation, a yes/no box; yes groups
+  you with it (you lead, as when you invite), and a bot that got busy meanwhile says so. Tests only.
+- **A bot that turns your invite down says why (RC5 on the owner's PC).** Captainwaffle, a friend inside Krondon on an
+  automatic realm raid, ignored an invite without a word. A bot on a raid, a siege, a relic run, a realm force or a horse,
+  or in another player's group, now answers by tell besides the system line ("sry, on the raid in Krondon atm", "in a grp,
+  maybe later?"; a friend adds "catch u after?"). An invite that reached the bot but could not add it to the group was
+  silent; it now says "... could not join your group". Every invite of a gamebot logs `BOT_INVITE_RESULT` (grouped,
+  declined and why, failed), so the next evening's log shows what happened. Why the RC5 invite was silent could not be
+  read from the logs (they end before it). Tests only.
+- **A friend answers your small talk (RC5 on the owner's PC).** "hey what are you up to tonight?" to Ilaan, who had
+  grouped with the player twice at Avalon City, drew "might wander somewhere new". A friend now answers "hey", "wyd" or
+  "what are you up to" with your name and what it is really doing ("hey Manawatch! killing thrawn ogres in Gwyddneau, want
+  in?"), asks you along only when it is free to group and near your level ("sure" is answered with how to group), and
+  otherwise names where you grouped ("Avalon City again sometime?"). Tests only.
+- **An evening that remembers itself.** Each realm keeps a short memory of what its /faction really carried tonight: who
+  asked for a group or a camp, whose death was told and to what, who argued with whom in a debate and about what. A note
+  is made only once its line was heard. Between 12 minutes and three hours later, at most one in 6-12 minutes and only
+  while /faction is under its target, a regular (or the other side of the debate) asks after it: "aldric u ever find a
+  grp earlier?", "staying away from bwgans now? lol", "still think ur wrong about houses btw". The bot asked answers from
+  what is true for it now: "ya, been grouped since" only when it is in a group, "found one in Lyonesse" only when it is at a
+  camp there; a second death tonight is counted ("ur 2 deaths in tonight lol"). The lines are `src=followup` exchanges. Tests only.
+- **Regulars you get to know.** The realm's talkative regulars used to rotate one by one through the evening (a three-hour
+  turn staggered by bot), so the channel slowly passed through everyone. The cast now holds for six hours, so one evening
+  has one cast. Each regular has a part (the helpful one, the joker, the complainer, the guild recruiter, the old hand) and
+  two running bits of its own it comes back to every 35-65 minutes ("if anyone needs me ill be face down in a bog
+  somewhere"; a recruiter names its real guild), at most one a realm in 8-14 minutes, under the target. A regular tells
+  its own deaths and wipes; anyone else about four times in ten. Who answers a line is looked for among 200 bots of the
+  speaker's realm (it was 200 of all three realms), so a regular is found most times. Tests only.
+- **Group chat that fits the group (RC5 on the owner's PC).** In a duo of the player and Ratoul: "ty for the inv, where
+  are you all?", "who is main assist?", and "back" out of nowhere. A /group line to several people, or about the main
+  assist or the puller, now needs three or more in the group; "back" needs a "brb" of the bot's own in the last 15
+  minutes or a death. A bot that walked over after an invite says "here" or "made it, ready", not "back" (that is for a
+  bot back from a release). Tests only.
+- **Guild chat in a player's guild sounds like players and doesn't repeat (RC5 on the owner's PC).** Anjaaaaa said "Just
+  checking in. All well with everyone?" twice in eight minutes. The fallback lines of bots in your own guild are now
+  written as players typed ("hows everyone doing tonight"), in the bot's own style, and the guild doesn't hear one again
+  within the hour, like the other guild lines. Tests only.
+- **The transcript covers guild chat and your posts.** Bot lines in your own guild's chat, and your /lfg, /trade and /gu
+  posts (whatever the guild settings), are now `CHAT_LINE` rows (`ch=guild`, `who=player ch=lfg`, ...). Tests only.
+- **Measured.** `chat_audit.py` prints three informational lines per log (not part of the verdict): lines aimed at or
+  naming the player per hour (tells to them, `src=player`, their name in a line), the top ten speakers' share of /faction,
+  and follow-up exchanges with how many refer to a real earlier line (the bot asked after spoke in that channel at least
+  ten minutes before, and the question names it), plus running bits. On the owner's RC logs (before this change): RC3
+  (b72716e, 2.5 h) 3.2 lines an hour aimed at the player, top ten 24% of /faction from 301 speakers; RC4 8.3 an hour over
+  43 minutes (greetings in /say), top ten 30%; RC5 6.0 an hour over 30 minutes, top ten 38%; no follow-ups in any.
+  A simulated three-hour evening (`UT_ChatEngagement`: 594 made-up Albion bots, the 1.1.3 /faction rules with the answers
+  of #155 (a question only with room for its answer, a regular first two times in five, a stand-in for a busy answerer), a
+  player who logs in, dings every 25 minutes, dies three times, moves zone, puts on two good items and is grouped for an
+  hour; the old way and this branch on the same seed; audited on GitHub with the other simulated evenings): top ten 33% of
+  /faction from 291 speakers before, 42% from 265 after (the busiest regular 67 lines); bot questions answered within a
+  minute 93% before, 94% after; follow-ups 0 before, 15 after, each answered and about a line its bot really said at least
+  ten minutes before; running bits 13; lines aimed at the player 4.3 an hour before, 6.7 after; never above the /faction
+  ceiling.
+  The checker's verdict on both: PASS. Tests only.
+
 **Two Darkness Falls exits work** (tested against the world data, and clicked in game on the owner's PC with the second
 release candidate, 6a83c03: both took an Albion character to Camelot Hills; found and fixed by
 rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall

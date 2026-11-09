@@ -51,6 +51,8 @@ namespace DOL.GS.Commands
 			string text = string.Join(" ", args, 1, args.Length - 1);
 			string message = "[Guild] " + client.Player.Name + ": \"" + text + "\"";
 			client.Player.Guild.SendMessageToGuildMembers(message, eChatType.CT_Guild, eChatLoc.CL_ChatWindow);
+			// Offline DAoC 1.1.3: every player /gu line is in the chat transcript, whatever the guild settings (CHAT_LINE ch=guild).
+			BotChatTranscript.Player("guild", client.Player, text, client.Player.Guild.Name);
 			AutonomousBotGuildSocial.OnPlayerGuildChat(client.Player, text);
 			// Gamebot members may answer (AutonomousBotGuilds).
 			AutonomousBotGuilds.OnPlayerGuildChat(client.Player, text);
