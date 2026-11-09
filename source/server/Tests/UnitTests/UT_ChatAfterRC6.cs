@@ -50,6 +50,21 @@ public class UT_ChatAfterRC6
         Assert.That(lines.Any(text => text.Contains("shard golems")), Is.True, "the story names the monster that killed it");
     }
 
+    /// <summary>RC8 on the owner's PC: a group wiped by enemy bots told "wiped on adds" and "adds linked, all of them".</summary>
+    [Test]
+    public void AWipeToEnemiesIsToldAsOne()
+    {
+        var random = new Random(5);
+        Field.Facts teller = Facts(1, "Armsman", 33, "Caledonia", rvr: true) with { KilledBy = "bot", Attackers = 2 };
+        var monsterWords = new Regex(@"\b(adds|linked|respawned|pulled 3|the named|a train)\b");
+        for (int i = 0; i < 300; i++)
+            foreach (Field.Step step in Field.Story("wipe", teller with { Id = i }, Facts(i + 1, "Cleric", 33), Facts(i + 2, "Wizard", 33), random))
+                Assert.That(monsterWords.IsMatch(step.Text), Is.False, step.Text);
+        Field.Facts pve = Facts(1, "Armsman", 33, "Lyonesse") with { KilledBy = "monster", Monster = "spriggarn", Attackers = 4 };
+        Assert.That(Enumerable.Range(0, 200).SelectMany(i => Field.Story("wipe", pve with { Id = i }, Facts(i + 1, "Cleric", 33), null, random))
+            .Any(step => step.Text.Contains("spriggarn")), Is.True, "a wipe to monsters still names them");
+    }
+
     [Test]
     public void AnEnemyKillWithOneAttackerClaimsNoCrowd()
     {

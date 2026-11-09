@@ -1943,6 +1943,22 @@ public static class AutonomousChatFieldTalk
                     lines.Add((2, Riff(random, $"they hit hard at {third.Level}", $"{monsters} are nasty at {teller?.Level}", "bring a healer lol",
                         $"same happened to me in {HomeZoneWord(third, random)}", "happens")));
                 break;
+            case "wipe" when KilledByEnemy(teller) || teller?.KilledBy == null && teller?.InRvR == true:
+            {
+                // RC8 on the owner's PC: a group wiped by enemy bots in the frontier told "wiped on adds" and "adds linked, all of
+                // them". A wipe to enemies is told as one.
+                string front = ShortZone(teller?.Zone, random);
+                string enemy = Plural(EnemyWord(teller?.Realm ?? eRealm.None, random));
+                lines.Add((0, Pick(random, "grp wiped lol", "whole grp got rolled", $"wiped by a {EnemyWord(teller?.Realm ?? eRealm.None, random)} grp",
+                    $"fg wipe in {front}", "our grp got farmed", $"{enemy} rolled us")));
+                lines.Add((1, Riff(random, "what happened?", "lol how", "rip grp", "ouch")));
+                lines.Add((0, Pick(random, "they had a better healer", "got mezzed, gg", "they had more", "we went too far from the keep",
+                    "stealthers first, then their fg", "lost our healer first")));
+                if (third != null)
+                    lines.Add((2, Riff(random, "happens", "thats rvr", "rip", "regroup and go again", "lol")));
+                lines.Add((0, Pick(random, "back to it", "running back", "regrouping", "rezzing up")));
+                break;
+            }
             case "wipe":
                 string where = ShortDungeon(teller?.Dungeon, random) ?? ShortZone(teller?.Zone, random);
                 lines.Add((0, Pick(random, "wiped lol", "whole grp wiped", "wipe. ugh", $"wiped on {monsters}", $"grp wiped in {where}", $"{where} wipe lol")));
