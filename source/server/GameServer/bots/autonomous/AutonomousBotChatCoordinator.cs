@@ -2057,7 +2057,9 @@ public static class AutonomousBotChatCoordinator
                 continue;
             // 1.2, the reply budget: the first answer to a line said to nobody in particular comes below the channel's reply
             // ceiling, pile-ons below its target; a line naming a bot (or a /say to the bot in front of you) always gets its answer.
-            AutonomousChatBudget.ReplyKind replyKind = directed ? AutonomousChatBudget.ReplyKind.Direct
+            // A player's question to the realm always gets its first answer, like a line that names a bot (live test 2026-11-08:
+            // "where do i buy a better staff for my elem?" went unanswered while a debate ran).
+            AutonomousChatBudget.ReplyKind replyKind = directed || primary && question ? AutonomousChatBudget.ReplyKind.Direct
                 : primary ? AutonomousChatBudget.ReplyKind.ToPlayer : AutonomousChatBudget.ReplyKind.PileOn;
             if (!ReplyAllowed(responder, faction, replyKind, "player " + player.Name, player.Name, out string budgetCode))
             {
