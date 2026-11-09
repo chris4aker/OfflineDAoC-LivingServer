@@ -947,22 +947,62 @@ public static class AutonomousBotChatCoordinator
     }
 
     /// <summary>A bot of the poster's realm, outside its group, that a post is true for (a slice of the roster).</summary>
-    private static GameBot MarketReplier(GameBot poster, AutonomousChatMarket.Post post, string text, Random random)
+    private static GameBot MarketReplier(GameBot poster, AutonomousChatMarket.Post post, string text, Random random) =>
+        MarketReplier(poster.Realm, poster.Level, poster.Group, poster, post, text, random);
+
+    private static GameBot MarketReplier(eRealm realm, int posterLevel, Group posterGroup, GameLiving poster, AutonomousChatMarket.Post post, string text,
+        Random random)
     {
         GameBot[] roster = AutonomousBotRegistry.Snapshot();
         for (int i = 0, at = roster.Length == 0 ? 0 : random.Next(roster.Length); i < Math.Min(roster.Length, 200); i++, at = (at + 1) % roster.Length)
         {
             GameBot bot = roster[at];
-            if (bot == poster || bot.Realm != poster.Realm || !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper || !bot.IsAlive ||
-                bot.ObjectState != GameObject.eObjectState.Active || AutonomousBeggars.Is(bot) || bot.Group != null && bot.Group == poster.Group)
+            if (bot == poster || bot.Realm != realm || !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper || !bot.IsAlive ||
+                bot.ObjectState != GameObject.eObjectState.Active || AutonomousBeggars.Is(bot) || bot.Group != null && bot.Group == posterGroup)
                 continue;
             bool solo = bot.Group == null || bot.Group.MemberCount <= 1;
             var light = new AutonomousChatFieldTalk.Facts(bot.DatabaseID, bot.Realm, bot.CharacterClass?.Name ?? bot.ClassName, bot.Level, null, null, false,
                 false, false, !solo, bot.Group?.MemberCount ?? 1, false, false, false, false, null, null, 0, false, null, 0, 0, IsHealer(bot), null);
-            if (AutonomousChatMarket.CanReply(post, text, poster.Level, light, solo))
+            if (AutonomousChatMarket.CanReply(post, text, posterLevel, light, solo))
                 return bot;
         }
         return null;
+    }
+
+    /// <summary>
+    /// The player's own /trade post now and then gets a bot's public reply, as a bot's post does (RC6 on the owner's PC: the
+    /// player's "wts 99% arcane cloth cap, cheap" drew nothing): "how much?" from a bot that could wear it, "/t me, have one" from a
+    /// bot that carries what is wanted. Under the channel's ceiling, after a typing pause.
+    /// </summary>
+    public static void OnPlayerTradePost(GamePlayer player, string message)
+    {
+        if (!AutonomousBotVoices.Enabled || player?.Client == null || !HasFactionAudience(player.Realm))
+            return;
+        AutonomousChatMarket.Post post = AutonomousChatMarket.PostOf(message);
+        var random = Random.Shared;
+        if (post is not (AutonomousChatMarket.Post.Wts or AutonomousChatMarket.Post.Wtb) || random.NextDouble() >= AutonomousChatMarket.ReplyShare(post))
+            return;
+        GameBot replier = MarketReplier(player.Realm, player.Level, player.Group, player, post, message, random);
+        if (replier == null)
+            return;
+        bool solo = replier.Group == null || replier.Group.MemberCount <= 1;
+        string wanted = post == AutonomousChatMarket.Post.Wtb ? AutonomousChatMarket.WantedInName(message) : null;
+        AutonomousChatMarket.Reply reply = AutonomousChatMarket.ReplyTo(post, message, AutonomousChatFieldTalk.Of(replier, random), solo,
+            wanted != null && Carries(replier, wanted), random);
+        if (string.IsNullOrWhiteSpace(reply.Text))
+            return;
+        int delay = AutonomousChatArbiter.DelayMs(message, reply.Text, 40, 0, random) + 4_000 + random.Next(10_000);
+        AutonomousLivingServer.Later(replier, delay,
+            () => replier.IsAlive && replier.ObjectState == GameObject.eObjectState.Active && player.Client != null &&
+                  AutonomousChatExchange.Fits(AutonomousChatBudget.Meter.PerMinute(AutonomousChatBudget.Channel.Trade, (long)replier.Realm, GameLoop.GameLoopTime),
+                      AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Trade, RealmBots(replier.Realm)).Ceiling),
+            () =>
+            {
+                string text = AutonomousChatIdiolect.Apply(reply.Text, replier.DatabaseID, false, Random.Shared, terse: true);
+                using (AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 1, "answerer", replier))
+                    SendRealmChannel(replier, "trade", text);
+                Note("trade:" + replier.Realm, replier, text, null);
+            });
     }
 
     /// <summary>Whether a bot carries an item whose name has the word in it (a "helm", a "potion").</summary>

@@ -644,6 +644,16 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousLivingServer.OfferFits("hey, want to duo here? im {level} {class}", true), Is.True);
         }
 
+        /// <summary>RC6 on the owner's PC: the player's "wts 99% arcane cloth cap, cheap" in /trade drew nothing.</summary>
+        [TestCase("wts 99% arcane cloth cap, cheap", AutonomousChatMarket.Post.Wts)]
+        [TestCase("selling a 98% sword pst", AutonomousChatMarket.Post.Wts)]
+        [TestCase("wtb cloth legs pst", AutonomousChatMarket.Post.Wtb)]
+        [TestCase("anyone selling a necklace?", AutonomousChatMarket.Post.Wtb)]
+        [TestCase("lol", AutonomousChatMarket.Post.None)]
+        [TestCase("where is the trainer", AutonomousChatMarket.Post.None)]
+        public void APlayersTradePostIsReadAsASaleOrAWant(string text, AutonomousChatMarket.Post post) =>
+            Assert.That(AutonomousChatMarket.PostOf(text), Is.EqualTo(post));
+
         /// <summary>RC6 on the owner's PC: "which stable 4 group rendezvous?" in /faction.</summary>
         [TestCase("group rendezvous", false)]
         [TestCase("the group rendezvous", false)]

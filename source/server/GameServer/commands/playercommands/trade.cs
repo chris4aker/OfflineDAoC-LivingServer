@@ -43,6 +43,8 @@ namespace DOL.GS.Commands
             // Offline DAoC 1.1.3: the player's post is in the chat transcript (CHAT_LINE who=player ch=trade).
             BotChatTranscript.Player("trade", client.Player, message);
             AutonomousBeggars.OnPlayerAsked(client.Player, message, "trade");
+            // RC6 on the owner's PC: a bot now and then answers the player's post, as it does a bot's.
+            AutonomousBotChatCoordinator.OnPlayerTradePost(client.Player, message);
         }
 
         private static void Broadcast(GamePlayer player, string message)

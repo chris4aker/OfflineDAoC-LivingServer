@@ -29,6 +29,22 @@ namespace DOL.GS
             _ => Post.None,
         };
 
+        /// <summary>
+        /// What a player's /trade post is: a sale ("wts 99% cap", "selling ...") or a wanted post ("wtb", "buying", "anyone selling",
+        /// "looking for a ..."), else none (RC6 on the owner's PC: the player's "wts 99% arcane cloth cap, cheap" drew nothing). Pure.
+        /// </summary>
+        public static Post PostOf(string text)
+        {
+            string t = " " + AutonomousChatQuestions.Normalize(text ?? string.Empty) + " ";
+            if (Regex.IsMatch(t, @" (anyone|any1|anybody|who s|whos) (selling|sell|got|have) "))
+                return Post.Wtb;
+            if (Regex.IsMatch(t, @" (wts|selling|for sale|fs) "))
+                return Post.Wts;
+            if (Regex.IsMatch(t, @" (wtb|buying|anyone selling|any1 selling|anyone sell|looking for a|looking for an|lf a|lf an|need a|need an|need some) "))
+                return Post.Wtb;
+            return Post.None;
+        }
+
         /// <summary>The share of posts of a kind that get a public reply (most go by /send, as in 2003).</summary>
         public static double ReplyShare(Post post) => post switch
         {
