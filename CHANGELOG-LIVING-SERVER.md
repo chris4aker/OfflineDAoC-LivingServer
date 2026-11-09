@@ -57,7 +57,10 @@ its reply budget: a thread or a burst is still allowed or held once, as a whole,
   given up and logged after three minutes outside a scene, `LIVING_FEATURE_DUE`/`DROPPED`), `GOLD_SPAMMER_START` comes with
   the first ad said, and `/lstest rumour` tells its reasons apart; each reply to the player has its own exchange id; and
   `chat_audit.py` fails a log with a feature that was due and never spoke. On 1.2 the spammer's ads keep their scene-sized
-  count and its reactions stay within the reply budget. Tests only.
+  count and its reactions stay within the reply budget. Also from the RC1 check: a gamebot's way back after a release is
+  told to its own group (only with a player in it), not in /say (a wall of "released, running back" at Camelot's bind);
+  a bot greets a player once per meeting (ten minutes); a deed names a place it could happen (`/lstest deed` never names
+  a capital, and a streak or gank only a frontier zone); /say lines carry `cap=` and `chat_audit.py` checks them. Tests only.
 - **Checked:** automated and simulated only, not played. `source/tools/chat_audit.py` on the owner's 1.1.3 evening: one each
   of an answer after the asker closed, a level question after the invite, a follow-up before any answer, a thanks with no
   answer, a trade closing that didn't follow and a join answer from a class that can't fill the role; 6 pile-ons (+13

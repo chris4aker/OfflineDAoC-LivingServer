@@ -63,14 +63,18 @@ public static class BotChatTranscript
         return fields;
     }
 
-    /// <summary>" cap=6.9": the realm's /faction ceiling when the line was said, so a log can be checked against it alone.</summary>
+    /// <summary>
+    /// " cap=6.9": the realm's /faction (or, 1.1.3, /say) ceiling when the line was said, so a log can be checked against it
+    /// alone.
+    /// </summary>
     public static string CapField(string channel, eRealm realm)
     {
-        if (channel != "faction")
+        if (channel is not ("faction" or "say"))
             return "";
         try
         {
-            return " cap=" + AutonomousBotChatCoordinator.FactionCeiling(realm).ToString("0.0", System.Globalization.CultureInfo.InvariantCulture);
+            double cap = channel == "faction" ? AutonomousBotChatCoordinator.FactionCeiling(realm) : AutonomousBotChatCoordinator.SayCeiling(realm);
+            return " cap=" + cap.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture);
         }
         catch
         {

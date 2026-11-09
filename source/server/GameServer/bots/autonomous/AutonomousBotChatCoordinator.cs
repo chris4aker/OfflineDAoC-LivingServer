@@ -28,6 +28,9 @@ public static class AutonomousBotChatCoordinator
     /// <summary>The realm's /faction ceiling now, in lines a minute (chat-budget.json, scaled by the hour and the bots online).</summary>
     internal static double FactionCeiling(eRealm realm) => AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Faction, RealmBots(realm)).Ceiling;
 
+    /// <summary>The /say ceiling now, in lines a minute around one place (chat-budget.json, scaled like /faction's).</summary>
+    internal static double SayCeiling(eRealm realm) => AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Say, RealmBots(realm)).Ceiling;
+
     /// <summary>When the realm last heard an unprompted Realm Exchange advert.</summary>
     private static readonly Dictionary<eRealm, long> LastExchangeAdvert = new();
 

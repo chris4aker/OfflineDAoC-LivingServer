@@ -179,6 +179,34 @@ class ChatAuditTests(unittest.TestCase):
         self.assertEqual(s["counts"]["features_due"], 1)
         self.assertEqual(s["counts"]["features_silent"], 0)
 
+    def say_rows(self, rows):
+        handle = tempfile.NamedTemporaryFile("w", suffix=".chat.log", delete=False, encoding="utf-8")
+        for second, speaker, text, fields in rows:
+            handle.write(f'11/08 21:{second // 60:02d}:{second % 60:02d} | INF | DOL.GS.BotChatTranscript | CHAT_LINE who=bot ch=say '
+                         f'realm=Albion from="{speaker}" via=Test {fields} text="{text}"\n')
+        handle.close()
+        try:
+            summary = chat_audit.summarize(chat_audit.audit(handle.name, ceiling=10))
+            summary["verdict"] = chat_audit.verdict(summary)
+            return summary
+        finally:
+            os.unlink(handle.name)
+
+    def test_a_wall_of_say_at_the_bind_fails(self):
+        # The RC1 live check at Camelot's bind: about 25 "released, running back" lines in 45 s.
+        lines = ["released, running back", "at bind, omw back", "no rez, released. coming back to you"]
+        s = self.say_rows([(i * 2, f"Bot{i}", lines[i % 3], "src=other cap=5.0") for i in range(25)])
+        self.assertGreater(s["counts"]["say_minutes_over_ceiling"], 0)
+        passed, reasons = s["verdict"]
+        self.assertFalse(passed)
+        self.assertTrue(any("/say" in r for r in reasons), reasons)
+
+    def test_say_under_its_ceiling_and_answers_to_the_player_pass(self):
+        rows = [(i * 30, f"Bot{i}", "anyone selling arrows", "src=other cap=5.0") for i in range(8)]
+        rows += [(241 + i, f"Ans{i}", "hi there", f"src=player ex={100 + i} i=1 role=answerer cap=5.0") for i in range(6)]
+        s = self.say_rows(sorted(rows))
+        self.assertEqual(s["counts"]["say_minutes_over_ceiling"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

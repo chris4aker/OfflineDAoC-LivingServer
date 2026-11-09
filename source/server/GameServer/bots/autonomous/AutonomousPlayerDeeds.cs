@@ -287,7 +287,7 @@ public static class AutonomousPlayerDeeds
         Log.Info($"PLAYER_DEED player=\"{player.Name}\" kind={TopicOf(kind)} target=\"{target}\" witness=\"{witness.Name}\"");
 
         var slots = SlotsOf(player, row);
-        slots["place"] = AutonomousLivingServer.PlaceOf(player);
+        slots["place"] = PlaceOfDeed(where, player);
         if (target != null) slots["target"] = target;
         if (count != null) slots["count"] = count;
         if (enemy != null) slots["enemy"] = enemy;
@@ -323,6 +323,16 @@ public static class AutonomousPlayerDeeds
         }
         Reputations.TryGet(KeyOf(player.Realm, player.Name), out OfflinePlayerReputationRecord row);
         var slots = SlotsOf(player, row);
+        // Where it could have happened: here, unless here is a capital (or, for a fight with the enemy, not the frontier).
+        Zone zone = player.CurrentZone;
+        string place = TestPlace(kind, zone?.Description,
+            PlausiblePlace(kind, AutonomousBotVoices.IsCapitalRegion(player.CurrentRegionID), IsFrontier(zone)), WorldZones(player.Realm), Random.Shared);
+        if (place == null)
+        {
+            why = "you are somewhere it couldn't have happened and no fitting zone was found; try in a hunting zone (the frontier for streak or ganked)";
+            return false;
+        }
+        slots["place"] = place;
         slots["target"] = target ?? "a named monster";
         slots["count"] = "5";
         slots["enemy"] = AutonomousLivingServer.RealmPlural(player.Realm == eRealm.Albion ? eRealm.Midgard : eRealm.Albion);
@@ -330,6 +340,52 @@ public static class AutonomousPlayerDeeds
         Tell(witness, player, TopicOf(kind), slots, 5_000, TellTries);
         why = witness.Name;
         return true;
+    }
+
+    /// <summary>The zone a deed is told for: where it happened (the monster's or the player's body), else the player's.</summary>
+    private static string PlaceOfDeed(GameObject where, GamePlayer player) =>
+        where?.CurrentZone?.Description is { Length: > 0 } zone ? zone : AutonomousLivingServer.PlaceOf(player);
+
+    /// <summary>
+    /// Whether a deed of this kind could happen where the player stands: none in a capital (no named monster or deadly fall
+    /// there), and a kill streak or a gank only in the frontier (1.1.3 RC1, live check 2026-11-08: a forced deed read "saw
+    /// Manawatch's group take a named monster in City of Camelot"). Pure.
+    /// </summary>
+    public static bool PlausiblePlace(Kind kind, bool capital, bool frontier) =>
+        !capital && (kind is not (Kind.RvrStreak or Kind.Ganked) || frontier);
+
+    /// <summary>
+    /// The place a GM-forced deed names: where the player stands when it could happen there, else a zone where it could
+    /// (a frontier zone for a streak or a gank, a hunting zone of the player's realm for the rest), or null. Pure for a given random.
+    /// </summary>
+    public static string TestPlace(Kind kind, string here, bool herePlausible, IReadOnlyList<(string Name, bool Frontier, bool Home)> zones, Random random)
+    {
+        if (herePlausible && !string.IsNullOrEmpty(here))
+            return here;
+        bool rvr = kind is Kind.RvrStreak or Kind.Ganked;
+        var fits = zones.Where(z => !string.IsNullOrEmpty(z.Name) && (rvr ? z.Frontier : z.Home && !z.Frontier)).Select(z => z.Name).Distinct().ToArray();
+        return fits.Length == 0 ? null : fits[random.Next(fits.Length)];
+    }
+
+    private static bool IsFrontier(Zone zone) => zone != null && (zone.IsRvR || zone.ZoneRegion?.IsRvR == true);
+
+    /// <summary>The world's outdoor zones: frontier ones, and the realm's own hunting lands (no capital, no dungeon).</summary>
+    private static List<(string Name, bool Frontier, bool Home)> WorldZones(eRealm realm)
+    {
+        var zones = new List<(string Name, bool Frontier, bool Home)>();
+        foreach (Region region in WorldMgr.GetAllRegions())
+        {
+            if (region == null || AutonomousBotVoices.IsCapitalRegion(region.ID) || region.IsDungeon)
+                continue;
+            foreach (Zone zone in region.Zones)
+            {
+                if (zone == null || zone.IsDungeon || string.IsNullOrEmpty(zone.Description))
+                    continue;
+                bool frontier = IsFrontier(zone);
+                zones.Add((zone.Description, frontier, !frontier && AutonomousWorldBotController.ProtectedRealm(region.ID, zone.ID) == realm));
+            }
+        }
+        return zones;
     }
 
     private static Dictionary<string, string> SlotsOf(GamePlayer player, OfflinePlayerReputationRecord row)
