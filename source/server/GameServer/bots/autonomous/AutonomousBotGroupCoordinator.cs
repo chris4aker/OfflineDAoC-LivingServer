@@ -1050,7 +1050,7 @@ public static partial class AutonomousBotGroupCoordinator
     /// forever with the tank following a stationary leader.  Combat, damage,
     /// aggro, death and loot continue through the normal BotBrain.
     /// </summary>
-    public static bool TryHandoffDungeonBlocker(GameBot reporter, GameNPC blocker, out GameBot puller)
+    public static bool TryHandoffDungeonBlocker(GameBot reporter, GameNPC blocker, out GameBot puller, bool raidDungeonTrash = false)
     {
         puller = null;
         if (reporter?.Group == null || blocker?.IsAlive != true ||
@@ -1080,7 +1080,7 @@ public static partial class AutonomousBotGroupCoordinator
 
         // This retains every normal between-pull gate: the current locked
         // roster, no casualty, full resources, tight formation, and tank puller.
-        if (!CanInitiateNewPull(puller, corridorBlocker: true) || puller.Brain is not BotBrain brain)
+        if (!CanInitiateNewPull(puller, corridorBlocker: true, raidDungeonTrash) || puller.Brain is not BotBrain brain)
         {
             puller = null;
             return false;
@@ -1165,7 +1165,9 @@ public static partial class AutonomousBotGroupCoordinator
     /// Proactive pulls use 90/80/80 readiness, but an active post-combat
     /// recovery episode still runs to full. Attacked-by-enemy responses are
     /// never gated here.</summary>
-    public static bool CanInitiateNewPull(GameBot bot, bool corridorBlocker = false)
+    /// <param name="raidDungeonTrash">The corridor blocker is an ordinary monster inside the bot's own raid dungeon
+    /// (AutonomousDungeonPolicy.ExpeditionMayClearCorridor).</param>
+    public static bool CanInitiateNewPull(GameBot bot, bool corridorBlocker = false, bool raidDungeonTrash = false)
     {
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup || bot.Group == null)
             return true;
@@ -1178,7 +1180,8 @@ public static partial class AutonomousBotGroupCoordinator
             // initiate a fresh pull ahead of the staging/landing order.
             if (AutonomousRealmRaid.GetTravelView(bot) is { } expedition)
             {
-                if (expedition.Hold && !(corridorBlocker && expedition.Crossing)) return false;
+                if (!AutonomousDungeonPolicy.ExpeditionMayClearCorridor(expedition.Hold, expedition.Crossing, corridorBlocker,
+                        raidDungeonTrash)) return false;
                 // Only locally present living members take part in puller
                 // selection. A casualty or reinforcement across the world is
                 // not a veto on every surviving party's combat.
