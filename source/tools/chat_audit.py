@@ -600,7 +600,7 @@ SEEK_LOOKING = re.compile(
 SEEK_CLOSED = re.compile(r"^(?:nm|nvm|nevermind)?,? ?(?:got a grp|grouped|found a grp|found one|full|grp full|full now|heading out|going as is|"
                          r"we re off)\b|\b(?:got a grp|grp full|nm full)\b")
 # Lines that are a scene's or a feature's script, or someone else's turn: not the speaker's own story.
-NOT_OWN_STORY_SRC = {"debate", "storyline", "tale", "story", "spammer", "rumour", "roleplayer", "news", "event", "burst", "reaction"}
+NOT_OWN_STORY_SRC = {"debate", "storyline", "tale", "tale_after", "story", "spammer", "rumour", "roleplayer", "news", "event", "burst", "reaction"}
 NOT_OWN_STORY_ROLE = {"answerer", "reactor", "riff", "third", "B", "C"}
 
 DUNGEON_WORDS = {

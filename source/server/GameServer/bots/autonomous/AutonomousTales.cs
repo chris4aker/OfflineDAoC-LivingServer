@@ -444,38 +444,85 @@ public static class AutonomousTales
             if (finished)
                 state.Due.Add((now + AftermathDelayMs + (long)(Random.Shared.NextDouble() * AftermathSpreadMs), () => Aftermath(realm, loreId, tellerId)));
             else if (linesSaid >= 4 && reason == "the teller left")
-                state.Due.Add((now + 8_000, () => SayAs(realm, tellerId, "listener",
+                state.Due.Add((now + 8_000, () => SayAfter(realm, tellerId, "listener",
                     CutShort[Random.Shared.Next(CutShort.Length)].Replace("{teller}", teller ?? "the teller"))));
         }
         Log.Info($"TALE_END realm={GlobalConstants.RealmToName(realm)} scene={scene.Id} teller=\"{teller}\" finished={finished} lines={linesSaid} reason=\"{reason}\"");
     }
 
-    /// <summary>One line in /faction from a bot of the realm that is free to type and is not <paramref name="notId"/>.</summary>
-    private static bool SayAs(eRealm realm, long notId, string role, string text)
+    /// <summary>
+    /// One line in /faction from a bot of the realm that is free to type and is not <paramref name="notId"/>. Null when it was
+    /// said; else why not: no_audience, no_bot, empty, or the sink's hold (scene, ceiling, spacing, duplicate).
+    /// </summary>
+    private static string TrySay(eRealm realm, long notId, string feature, string role, string text, long exchange)
     {
+        if (string.IsNullOrWhiteSpace(text))
+            return "empty";
+        if (ClientService.Instance.GetPlayersOfRealm(realm).Count == 0)
+            return "no_audience";
         GameBot speaker = AutonomousBotRegistry.Snapshot()
             .Where(bot => Speaks(bot, realm) && bot.DatabaseID != notId && !bot.InCombat && !bot.IsCasting)
             .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
-        if (speaker == null || string.IsNullOrWhiteSpace(text) || ClientService.Instance.GetPlayersOfRealm(realm).Count == 0)
-            return false;
-        using (AutonomousChatExchange.Tag("tale", AutonomousChatExchange.NewId(), 0, role, speaker))
-            return AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, text);
+        if (speaker == null)
+            return "no_bot";
+        using (AutonomousChatExchange.Tag(feature, exchange, 0, role, speaker))
+            return AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, text) ? null : AutonomousBotChatCoordinator.LastHeld ?? "held";
+    }
+
+    /// <summary>
+    /// A line after a tale (the rumour, a listener's grumble): not a scene's line, so it fits under /faction's ceiling like any
+    /// other (src=tale_after), but it keeps its turn like a rumour or a gold spammer (AutonomousChatExchange.AfterTry): tried
+    /// again at each pulse, given up (LIVING_FEATURE_DROPPED) after three minutes. PC check 2026-11-10, build cf2c873: the
+    /// rumour after a finished tale was tried once, in the busy minute after the scene, and lost without a log line.
+    /// <paramref name="said"/> runs once the line is in the channel.
+    /// </summary>
+    private static void SayAfter(eRealm realm, long notId, string role, string text, Action said = null, long exchange = 0, long since = 0)
+    {
+        long now = GameLoop.GameLoopTime;
+        bool first = exchange == 0;
+        if (first)
+        {
+            exchange = AutonomousChatExchange.NewId();
+            since = now;
+        }
+        string why = TrySay(realm, notId, "tale_after", role, text, exchange);
+        if (why == null)
+        {
+            said?.Invoke();
+            return;
+        }
+        bool over = why is "no_audience" or "empty" or "duplicate" ||
+            AutonomousChatExchange.AfterTry(false, why, since, AutonomousBotDebates.LastSceneEnd(realm), now) == AutonomousChatExchange.DueStep.GiveUp;
+        if (first && !over)
+            Log.Info(AutonomousChatExchange.DueLog("tale_after", realm, exchange, $" role={role} held={why}"));
+        if (over)
+        {
+            if (!first)
+                Log.Info(AutonomousChatExchange.DroppedLog("tale_after", realm, exchange, now - since, why));
+            else
+                Log.Info($"TALE_AFTER_NOT_SAID realm={GlobalConstants.RealmToName(realm)} role={role} reason={why}");
+            return;
+        }
+        RealmState state = State(realm);
+        lock (state)
+            state.Due.Add((now + AutonomousChatExchange.DueRetryMs, () => SayAfter(realm, notId, role, text, said, exchange, since)));
     }
 
     /// <summary>
     /// After a finished tale: half the time, when the realm's raid on that boss can form, a bot has heard that one is forming
-    /// and it opens a few minutes later (the realm's own automatic raid, sized and invited like any other); otherwise one
-    /// of the boss's rumours from its lore file.
+    /// and it opens a few minutes after the line is said (the realm's own automatic raid, sized and invited like any other);
+    /// otherwise one of the boss's rumours from its lore file.
     /// </summary>
     private static void Aftermath(eRealm realm, string loreId, long tellerId)
     {
         LoreBible.Boss boss = LoreBible.Current.BossById(loreId);
         string raidId = RaidIdFor(loreId, realm);
+        string realmName = GlobalConstants.RealmToName(realm);
         if (boss != null && raidId != null && Properties.BOT_LIVING_TALE_RAIDS && Random.Shared.NextDouble() < TrueRumourChance &&
             AutonomousRealmRaid.CouldStartForTale(raidId, realm, out _))
         {
-            string name = boss.Name.ToLowerInvariant();
-            if (SayAs(realm, tellerId, "rumour", RaidRumours[Random.Shared.Next(RaidRumours.Length)].Replace("{boss}", name)))
+            string line = RaidRumours[Random.Shared.Next(RaidRumours.Length)].Replace("{boss}", boss.Name.ToLowerInvariant());
+            SayAfter(realm, tellerId, "rumour", line, () =>
             {
                 RealmState state = State(realm);
                 long at = GameLoop.GameLoopTime + RaidDelayMs + (long)(Random.Shared.NextDouble() * RaidSpreadMs);
@@ -483,15 +530,17 @@ public static class AutonomousTales
                     state.Due.Add((at, () =>
                     {
                         bool opened = AutonomousRealmRaid.StartForTale(raidId, realm, out string reason);
-                        Log.Info($"TALE_RAID realm={GlobalConstants.RealmToName(realm)} event={raidId} opened={opened} reason=\"{reason}\"");
+                        Log.Info($"TALE_RAID realm={realmName} event={raidId} opened={opened} reason=\"{reason}\"");
                     }));
-                Log.Info($"TALE_RUMOUR realm={GlobalConstants.RealmToName(realm)} about={loreId} kind=raid event={raidId}");
-                return;
-            }
+                Log.Info($"TALE_RUMOUR realm={realmName} about={loreId} kind=raid event={raidId}");
+            });
+            return;
         }
-        if (boss?.RumourFor(realm) is { Length: > 0 } rumours &&
-            SayAs(realm, tellerId, "rumour", LoreText.Pick(rumours[Random.Shared.Next(rumours.Length)], Random.Shared)))
-            Log.Info($"TALE_RUMOUR realm={GlobalConstants.RealmToName(realm)} about={loreId} kind=lore");
+        if (boss?.RumourFor(realm) is { Length: > 0 } rumours)
+            SayAfter(realm, tellerId, "rumour", LoreText.Pick(rumours[Random.Shared.Next(rumours.Length)], Random.Shared),
+                () => Log.Info($"TALE_RUMOUR realm={realmName} about={loreId} kind=lore"));
+        else
+            Log.Info($"TALE_RUMOUR realm={realmName} about={loreId} kind=none");
     }
 
     /// <summary>
@@ -553,7 +602,9 @@ public static class AutonomousTales
         if (known2.Length == 0 || known2.Any(k => AutonomousBotRegistry.TryGet(k.Id, out GameBot bot) && Speaks(bot, realm)))
             return false;
         string away = known2[Random.Shared.Next(known2.Length)].Name;
-        return SayAs(realm, 0, "answerer", TellerAway[Random.Shared.Next(TellerAway.Length)].Replace("{teller}", away));
+        // An answer to the player: the ceiling doesn't hold it (src=player).
+        return TrySay(realm, 0, "player", "answerer", TellerAway[Random.Shared.Next(TellerAway.Length)].Replace("{teller}", away),
+            AutonomousChatExchange.NewId()) == null;
     }
 
     #endregion
