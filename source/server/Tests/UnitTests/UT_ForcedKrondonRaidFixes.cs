@@ -272,7 +272,7 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterTactics.HazardAt(61, new Vector3(31406, 69599, 15605 + 1500)), Is.Null, "another floor");
             Assert.That(EpicEncounterTactics.HazardAt(62, new Vector3(31406, 69599, 15605)), Is.Null, "another region");
             Vector3 exit = EpicEncounterTactics.HazardExit(new(31406, 69599, 15605), 300, new(31477, 69574, 15611));
-            Assert.That(Vector2.Distance(new(exit.X, exit.Y), new(31406, 69599)), Is.EqualTo(550).Within(0.5));
+            Assert.That(Vector2.Distance(new(exit.X, exit.Y), new(31406, 69599)), Is.EqualTo(300 + EpicEncounterTactics.HazardExitDistance).Within(0.5));
             Assert.That(exit.X, Is.GreaterThan(31406), "away from it, on the raider's side");
         }
 

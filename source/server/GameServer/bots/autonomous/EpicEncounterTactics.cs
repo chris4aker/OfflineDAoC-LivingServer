@@ -50,6 +50,8 @@ namespace DOL.GS
             string HazardDamageType = null)
         {
             public bool HasRequiredAdds => RequiredAdds is { Length: > 0 };
+            /// <summary>Never null (the catalog's rows leave it out).</summary>
+            public string[] Hazards { get; init; } = Hazards ?? [];
             public bool HasBlast => BlastThresholds is { Length: > 0 } && BlastRadius > 0;
 
             /// <summary>The boss casts an area hit of this radius around its target (Govannon's Shroud of Agony, 300): casters,
@@ -203,7 +205,7 @@ namespace DOL.GS
         /// radius is measured to the raider, who is not a point).</summary>
         public const int HazardMargin = 150;
         /// <summary>A raider sent out of a hazard goes to this distance from its spot.</summary>
-        public const int HazardExitDistance = 250;
+        public const int HazardExitDistance = HazardStepOut;
 
         /// <summary>Whether <paramref name="at"/> is inside a hazard of <paramref name="radius"/> at <paramref name="hazard"/>,
         /// with the margin (pure): across, and within a floor's height of it.</summary>
