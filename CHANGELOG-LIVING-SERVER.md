@@ -31,6 +31,11 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
 
 ## 1.2 (in development)
 
+**A bot-led group keeps you through a zone change** (owner's PC test, 2026-11-07). A player who joined a gamebot's
+group was let go ("left") as soon as they were out of the world for a moment: a region change, a zone change across
+regions or a GM /jump takes the player out of the world while the client loads. The group now waits for you while you
+are still in it, for up to two minutes out of the world (linkdead keeps its own five minutes).
+
 **Melee fight Grand Summoner Govannon's demon from behind** (owner, 2026-11-07: "teach positioning"). In his demon form
 Govannon casts Shroud of Agony, about 1,440 damage to everyone within 300 of his target, every 20-35 seconds; every bot in
 melee stood inside it, and in the play test 45 raiders died in the first 90 seconds of the demon. Now his target keeps
