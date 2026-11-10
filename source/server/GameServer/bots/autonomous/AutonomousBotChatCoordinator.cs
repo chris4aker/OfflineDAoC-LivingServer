@@ -1332,6 +1332,9 @@ public static class AutonomousBotChatCoordinator
             return;
         if (AutonomousBotGuildSocial.TryAnswerGuildRequest(player, message, true))
             return;
+        // Tales: a question during a tale is the teller's to answer; "tell the one about legion" starts one.
+        if (AutonomousTales.OnPlayerFactionChat(player, message))
+            return;
         if (TryThreadReply(player, message, AutonomousChatThreads.Faction(player.Realm), ThreadScope.Faction))
             return;
         // A player who joins a running debate ("nah, necros are fine") is answered in it, by the side they took or the other.

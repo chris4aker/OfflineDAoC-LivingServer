@@ -214,6 +214,8 @@ public static partial class AutonomousLivingServer
             BotLedGroups.Pulse(now);
             EngagePulse(now);
             AutonomousLivingWorld.Pulse(now);
+            // Tales: the realm's storyteller, the rumour after it, fireside tales in a resting group.
+            AutonomousTales.Pulse(now);
         }
         catch (Exception exception)
         {

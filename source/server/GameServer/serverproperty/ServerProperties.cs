@@ -2660,6 +2660,14 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_living_characters", "Server life: now and then a gold spammer floods /faction until it is banned, and a few bots roleplay in thee-and-thou speech while the realm mocks them.", true)]
 		public static bool BOT_LIVING_CHARACTERS;
 
+		/// <summary>Tales: the realm's storyteller in /faction, fireside tales in a group (AutonomousTales).</summary>
+		[ServerProperty("bots", "bot_living_tales", "Server life: now and then a bot asks the realm's storyteller for the tale of a dragon or a boss in /faction, others hush the channel, and it is told in a dozen lines; you can ask for one too (\"tell the one about legion\"). Resting in a boss's place with a gamebot in your group, a groupmate tells the short version. Needs bot voices and debates.", true)]
+		public static bool BOT_LIVING_TALES;
+
+		/// <summary>The rumour after a tale may be true: the realm's raid on that boss forms a few minutes later.</summary>
+		[ServerProperty("bots", "bot_living_tale_raids", "Server life: about half the time, the rumour that follows a tale is true: the realm's own automatic raid on that boss forms a few minutes later (only when one could form anyway). Off: the rumour is always just lore.", true)]
+		public static bool BOT_LIVING_TALE_RAIDS;
+
 		/// <summary>True rumours: real rare spawns and undefended enemy keeps (AutonomousRumours).</summary>
 		[ServerProperty("bots", "bot_living_rumours", "Server life: bots pass on rumours that are true: a rare named monster that just spawned, or an enemy keep whose guards are down. Go and see.", true)]
 		public static bool BOT_LIVING_RUMOURS;
