@@ -235,6 +235,20 @@ namespace DOL.GS
             if (group == null) return false;
             using (AiProfile.Lock(Sync, AiSystem.LockRaid)) return Membership.TryGetValue(group, out Raid raid) && !raid.Started && raid.Parties.ContainsKey(group);
         }
+        /// <summary>The raid a party belongs to: its event id and its parties in the raid's order (the first party's leader is
+        /// the raid leader, as in its briefing and its ledger row). Null when the group is in no raid.</summary>
+        public static (string Id, Group[] Parties)? RaidOf(Group group)
+        {
+            if (group == null) return null;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+                return Membership.TryGetValue(group, out Raid raid) && raid.Parties.ContainsKey(group)
+                    ? (raid.Definition.Id, raid.Parties.Keys.ToArray()) : null;
+        }
+
+        /// <summary>The raid event whose encounters include this boss class (its final or named boss), or null.</summary>
+        public static string RaidIdForBoss(string bossType) => string.IsNullOrEmpty(bossType) ? null :
+            Definitions.FirstOrDefault(d => d.BossType == bossType || d.FinalTypes.Contains(bossType))?.Id;
+
         public static bool IsReservedFor(GameBot bot, string id) =>
             id != null && BotDutyLeases.HoldsWithReason(bot, eDutyLeaseKind.RealmRaid, DutyLeaseReason.RaidReserved, id);
         public static bool IsForcedExpedition(string id)
@@ -749,12 +763,45 @@ namespace DOL.GS
                 }
                 else
                 {
+                    // A dragon raid gathers on its staging ring, never on the lair's home (play test duo4: a gather to the
+                    // home put 15 bots on Gjalpinulva before the raid started).
                     region = raid.Definition.Region;
-                    Point3D home = DragonLairPlacement.Home(raid.Definition.Realm);
-                    point = new(home.X, home.Y, home.Z);
+                    if (!TryDragonGatherPoint(raid.StagingPosts.OrderBy(p => p.Key).Select(p => p.Value), out point)) return [];
                 }
                 return members.Where(b => !IsStaged(raid, b)).ToArray();
             }
+        }
+
+        /// <summary>Play test only: the raid's living members inside its dungeon that are not within 1,000 of the route's front
+        /// (its next target's approach, or the final encounter's trigger), and that front. It lets a test skip the climb to
+        /// the final room (Caer Sidi's lower floor wiped every raid of the 2026-11-07 play test before the horsemen).</summary>
+        public static GameBot[] MembersToFront(string id, out ushort region, out Vector3 point)
+        {
+            region = 0;
+            point = default;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
+                if (!Raids.TryGetValue(id, out Raid raid) || !raid.Started || raid.DungeonRoute == null) return [];
+                region = raid.DungeonRoute.Region;
+                point = raid.DungeonRoute.Front;
+                var front = new Point3D((int)point.X, (int)point.Y, (int)point.Z);
+                ushort inside = region;
+                return raid.Parties.Values.SelectMany(p => p.Members)
+                    .Where(b => b.IsAlive && b.CurrentRegionID == inside && !b.IsWithinRadius(front, 1_000)).ToArray();
+            }
+        }
+
+        /// <summary>Where the play test gathers a departed dragon raid's stragglers: its first staging post (the ring around
+        /// the lair), or nowhere while it has none.</summary>
+        public static bool TryDragonGatherPoint(IEnumerable<Vector3> stagingPosts, out Vector3 point)
+        {
+            point = default;
+            foreach (Vector3 post in stagingPosts)
+            {
+                point = post;
+                return true;
+            }
+            return false;
         }
 
         /// <summary>The running raid's muster hub (region and centre), for the play test.</summary>

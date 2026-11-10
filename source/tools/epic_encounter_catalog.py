@@ -2017,6 +2017,14 @@ def render_tactics_cs(data: dict) -> str:
             init.append(f"SpreadRadius = {int(t['spreadRadius'])}")
             if t.get("spreadWhileModel"):
                 init.append(f"SpreadWhileModel = {int(t['spreadWhileModel'])}")
+            if t.get("meleeBehind"):
+                init.append("MeleeBehind = true")
+            if t.get("meleeRing"):
+                init.append(f"MeleeRing = {int(t['meleeRing'])}")
+            if t.get("tanksTaunt"):
+                init.append("TanksTaunt = true")
+            if t.get("healersHoldInSpread"):
+                init.append("HealersHoldInSpread = true")
         if t.get("rangedAdds"):
             init.append(f"RangedAdds = {names('rangedAdds')}")
         if t.get("after"):
@@ -2031,6 +2039,12 @@ def render_tactics_cs(data: dict) -> str:
             init.append(f"DeathAdds = {names('deathAdds')}")
         if t.get("addsInOrder"):
             init.append("AddsInOrder = true")
+        if t.get("focusRangedAdds"):
+            init.append("FocusRangedAdds = true")
+        if t.get("addParties"):
+            init.append(f"AddParties = {int(t['addParties'])}")
+        if t.get("areaOnClump"):
+            init.append("AreaOnClump = true")
         body = (" { " + ", ".join(init) + " }") if init else ""
         rows.append(f'            new("{e["class"]}", "{e["id"]}", [{adds}], {int(t.get("fightAtHomeRadius", 0))}, {dies}{extra}){body},')
     leashes = []

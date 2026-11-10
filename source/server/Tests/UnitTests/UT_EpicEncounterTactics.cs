@@ -380,6 +380,51 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void ACalledBlastWaitsForTheRaidsCallNotForHisHealth()
+        {
+            // 1.2 raid discipline: the window opens as before, but nobody moves until the caller has called it, a lead
+            // before it lands (Xanxicar's stomp; a test giant here).
+            EpicEncounterTactics.CallBlastForTests("TacticGiant");
+            RaidDiscipline.FamiliarityOverride = 1;
+            try
+            {
+                var giant = Npc<TacticGiant>(31577, 35305, 14551);
+                var tank = Npc<Raider>(31600, 35305, 14551);
+                var caster = Npc<Raider>(32577, 35305, 14551);
+                giant.TargetObject = tank;
+                var live = new List<GameNPC> { giant };
+                EpicEncounterTactics.ResetBlastForTests();
+                giant.Fighting = true;
+                giant.Hp = 82; // in the window, but he is not losing health: no call yet
+                Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 1_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None));
+                Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 2_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
+                    "the window is open but nobody has called it");
+                giant.Hp = 79; // crossed at 3,000: it lands BlastLandsAfterCrossSeconds later
+                var call = RaidDiscipline.CallFor(0, "TacticGiant/blast", 80, 0, 1);
+                long callAt = 3_000 + (long)Math.Ceiling((EpicEncounterTactics.BlastLandsAfterCrossSeconds - call.LeadSeconds) * 1000);
+                if (callAt > 3_000)
+                    Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 3_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
+                        $"called {call.LeadSeconds:0.0} s before it lands");
+                var w = EpicEncounterTactics.Decide(caster, giant, live, 0, true, Math.Max(callAt, 3_000) + 250);
+                Assert.That(w.Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff), "out on the call");
+                Assert.That(EpicEncounterTactics.Decide(tank, giant, live, 0, false, Math.Max(callAt, 3_000) + 500).Action,
+                    Is.EqualTo(EpicEncounterTactics.BotAction.None), "the party it fights stays in");
+                Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 13_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
+                    "the stomp is over: back in");
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(85, 80, 0.5, -1), Is.EqualTo(16.8).Within(1e-9));
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(85, 80, 0, -1), Is.EqualTo(double.PositiveInfinity));
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(79, 80, 0.5, 2_000), Is.EqualTo(4.8).Within(1e-9));
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(79, 80, 0.5, 2_000, 4_000), Is.EqualTo(4).Within(1e-9), "the cast says when");
+            }
+            finally
+            {
+                EpicEncounterTactics.UncallBlastForTests("TacticGiant");
+                RaidDiscipline.FamiliarityOverride = null;
+                EpicEncounterTactics.ResetBlastForTests();
+            }
+        }
+
+        [Test]
         public void NosdodensWavesAreFoughtBeforeHim()
         {
             var nosdoden = EpicEncounterTactics.All.Single(t => t.Boss == "Nosdoden");

@@ -527,6 +527,92 @@ namespace DOL.UnitTests
             });
         }
 
+        // ---- With raid discipline (2026-11-08): the realm learns the boss ----
+
+        /// <summary>
+        /// The size learner with the realm learning the boss (RaidDiscipline.Familiarity from the same record): an unlearned
+        /// raid needs <paramref name="unlearnedExtra"/> more points of its period size for the same chance (more of it dies
+        /// to the stomps), shrinking as familiarity grows. A model, not a measurement.
+        /// </summary>
+        private static (List<double> Sizes, List<bool> Wins, List<double> Familiarity) SimulateLearning(int raids, int seed,
+            double learnedHalf, double unlearnedExtra, double interruptedShare = 0)
+        {
+            var random = new Random(seed);
+            var ledger = new List<RaidResult>();
+            var sizes = new List<double>();
+            var wins = new List<bool>();
+            var familiarity = new List<double>();
+            for (int raid = 0; raid < raids; raid++)
+            {
+                List<RaidResult> record = RealmRaidRecord.CountedResults(ledger);
+                var sizing = RealmRaidRecruitmentPolicy.Size(100, record, Rules);
+                double f = RaidDiscipline.Familiarity(record);
+                if (random.NextDouble() < interruptedShare) { ledger.Add("Interrupted"); continue; }
+                bool win = random.NextDouble() < WinChance(sizing.Percent, learnedHalf + unlearnedExtra * (1 - f));
+                ledger.Add(new RaidResult(win ? Win : Loss, false, sizing.RecordedPercent));
+                sizes.Add(sizing.Percent);
+                wins.Add(win);
+                familiarity.Add(f);
+            }
+            return (sizes, wins, familiarity);
+        }
+
+        // the size it wins 2 in 3 at once learned, and how much more an unlearned raid needs
+        [TestCase(1, 105, 30)]
+        [TestCase(2, 105, 60)]
+        [TestCase(3, 120, 45)]
+        [TestCase(4, 85, 45)]
+        public void WithTheRealmLearningTheBossItStillSettlesNearTwoInThreeWithoutSwinging(int seed, double learnedHalf, double unlearnedExtra)
+        {
+            var (sizes, wins, familiarity) = SimulateLearning(2000, seed, learnedHalf, unlearnedExtra, interruptedShare: 0.3);
+            int settled = sizes.Count / 4;
+            double rate = wins.Skip(settled).Count(w => w) / (double)(wins.Count - settled);
+            double mean = sizes.Skip(settled).Average();
+            double spread = Math.Sqrt(sizes.Skip(settled).Average(s => (s - mean) * (s - mean)));
+            var (plainSizes, plainWins) = (SimulateLearning(2000, seed, learnedHalf, 0, 0.3).Sizes, SimulateLearning(2000, seed, learnedHalf, 0, 0.3).Wins);
+            double plainMean = plainSizes.Skip(settled).Average();
+            double plainSpread = Math.Sqrt(plainSizes.Skip(settled).Average(s => (s - plainMean) * (s - plainMean)));
+            TestContext.WriteLine($"seed {seed}: won {rate:P1} at {mean:0.#}% (spread {spread:0.#}) once settled; without learning " +
+                                  $"{plainWins.Skip(settled).Count(w => w) / (double)(plainWins.Count - settled):P1} at {plainMean:0.#}% (spread {plainSpread:0.#}); " +
+                                  $"familiarity {familiarity[0]:0.00} -> {familiarity[4]:0.00} after 4 -> {familiarity[19]:0.00} after 20");
+            Assert.Multiple(() =>
+            {
+                Assert.That(rate, Is.InRange(0.62, 0.72), "about two in three");
+                Assert.That(mean, Is.EqualTo(plainMean).Within(5), "learned, it settles where the plain learner does");
+                Assert.That(spread, Is.LessThan(plainSpread + 3), "and swings no more than it");
+                double[] moves = sizes.Zip(sizes.Skip(1), (a, b) => Math.Abs(a - b)).ToArray();
+                Assert.That(moves.Max(), Is.LessThanOrEqualTo(Rules.LossAddPercent + 1e-9), "one step at most between raids");
+                Assert.That(familiarity[0], Is.EqualTo(0), "a fresh world is unlearned");
+                Assert.That(familiarity.Zip(familiarity.Skip(1), (a, b) => b >= a).All(x => x), Is.True, "it never unlearns");
+            });
+        }
+
+        [Test]
+        public void EarlyRaidsLoseAndGrowAndLaterOnesWinWithFewerBots()
+        {
+            // The owner's arc, over 300 fresh worlds: the first raids at a boss lose more and grow the raid, the later ones
+            // win more with fewer bots. Learned, it wins 2 in 3 at 115%; unlearned it needs 45 points more.
+            const int worlds = 300, raids = 30;
+            var size = new double[raids];
+            var won = new double[raids];
+            for (int world = 0; world < worlds; world++)
+            {
+                var (sizes, wins, _) = SimulateLearning(raids, 1000 + world, 105, 45);
+                for (int i = 0; i < raids; i++) { size[i] += sizes[i] / worlds; won[i] += (wins[i] ? 1.0 : 0) / worlds; }
+            }
+            double firstWins = won.Take(3).Average(), laterWins = won.Skip(15).Average();
+            double peak = size.Take(10).Max(), later = size.Skip(20).Average();
+            TestContext.WriteLine($"won {firstWins:P0} of the first three, {laterWins:P0} from the 16th; size {size[0]:0}% -> peak " +
+                                  $"{peak:0}% (raid {Array.IndexOf(size, peak) + 1}) -> {later:0}% from the 21st");
+            Assert.Multiple(() =>
+            {
+                Assert.That(firstWins, Is.LessThan(0.5), "early raids lose more");
+                Assert.That(peak, Is.GreaterThan(size[0] + 5), "and grow");
+                Assert.That(laterWins, Is.InRange(0.6, 0.75), "later raids win about two in three");
+                Assert.That(later, Is.LessThan(peak - 10), "with fewer bots");
+            });
+        }
+
         [Test]
         public void TheFirstWinsTrimAtOnceAndTheSizeComesDownWithinTwentyRaids()
         {

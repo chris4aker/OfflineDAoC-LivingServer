@@ -163,6 +163,11 @@ namespace DOL.GS
 
         #endregion
 
+        /// <summary>A tactic's melee position order (EncounterMeleeStations: Govannon's demon) sets how close the bot follows
+        /// the target it fights; otherwise the NPC default.</summary>
+        public override int StickMinimumRange =>
+            EncounterMeleeStations.MinimumFollowFor(this, TargetObject, GameLoop.GameLoopTime) ?? base.StickMinimumRange;
+
         #region IGamePlayer — CharacterClass
 
         protected ICharacterClass m_characterClass;
@@ -2937,6 +2942,17 @@ namespace DOL.GS
             if (target != null && IsRecoveryResting)
                 return;
 
+            // 1.2 epic rule (Funus with his weapon puzzle): a bot never starts an attack on a boss it must not hit (its hits
+            // heal him to full), and an archer that may fight him with its distance weapon only starts with that weapon.
+            // Play test duo14: reavers he turned on fought back in melee (40 of his 110 heals).
+            if (target is GameLiving living && EpicEncounterTactics.MustNotHit(this, living))
+            {
+                if (RefusesAttackOn(this, living))
+                    return;
+                if (ActiveWeaponSlot != eActiveWeaponSlot.Distance)
+                    SwitchWeapon(eActiveWeaponSlot.Distance);
+            }
+
             // A ranged shot owns its aim/release animation.  Reissuing the
             // same target every think pulse used to reset that state, producing
             // repeated bow preparation with no completed shot.  Suppress only
@@ -2950,6 +2966,11 @@ namespace DOL.GS
 
             base.StartAttack(target);
         }
+
+        /// <summary>The bot must not hit <paramref name="target"/> at all and has no distance weapon it may fight it with (an
+        /// epic rule: Funus while his puzzle is on, for a class he takes no damage from), so it starts no attack on it.</summary>
+        public static bool RefusesAttackOn(GameBot bot, GameLiving target) =>
+            EpicEncounterTactics.MustNotHit(bot, target) && !EpicEncounterTactics.FightsAtRange(bot, target);
 
         public override bool AddToWorld()
         {
@@ -4977,6 +4998,11 @@ namespace DOL.GS
 
         public override void SwitchWeapon(eActiveWeaponSlot slot)
         {
+            // Play test diagnostic (Funus): who puts the melee weapon in hand of a bot that may fight its target only
+            // with its distance weapon. Once per bot every ten minutes, the call path.
+            if (slot != eActiveWeaponSlot.Distance && ActiveWeaponSlot == eActiveWeaponSlot.Distance &&
+                TargetObject is GameLiving rangedOnly && EpicEncounterTactics.FightsAtRange(this, rangedOnly))
+                EpicEncounterRestores.NoteMeleeSwitch(this, rangedOnly);
             // GameNPC.SwitchWeapon intentionally stops and restarts an active
             // attack, even when the requested slot is already selected. That
             // is useful for scripted NPCs, but inventory/equipment refreshes
@@ -5083,7 +5109,23 @@ namespace DOL.GS
         {
             if (target != null && IsRecoveryResting)
                 return;
-            base.Follow(target, minDistance, maxDistance);
+            base.Follow(target, MeleeStandOff(target, minDistance), maxDistance);
+        }
+
+        /// <summary>
+        /// Living Server 1.2, "arrive slightly short": an autonomous gamebot's melee approach to a monster stops 0-20 units
+        /// short of the stick distance, the same for the same bot every fight (BotCombatMovement.StandOff), so bots don't all
+        /// stand on one exact ring. Not for companions, player-led groups, dragons, epic encounters or raid dungeons.
+        /// </summary>
+        private int MeleeStandOff(GameObject target, int minDistance)
+        {
+            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsEpicSpecialForce || IsPlayerLedGroup ||
+                target == null || target != TargetObject || target is not GameNPC monster || monster is GameBot ||
+                minDistance != StickMinimumRange || ActiveWeaponSlot == eActiveWeaponSlot.Distance ||
+                DragonCombatGeometry.TargetReach(monster) > 0 || EpicEncounterTactics.For(monster) != null ||
+                EpicEncounterTactics.IsTacticPart(monster) || AutonomousRealmRaid.IsRaidDungeon(CurrentRegionID))
+                return minDistance;
+            return BotCombatMovement.StandOff(minDistance, DatabaseID > 0 ? DatabaseID : ObjectID);
         }
 
         public new void StopFollowing()

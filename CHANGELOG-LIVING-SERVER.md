@@ -31,6 +31,31 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
 
 ## 1.2 (in development)
 
+**A bot-led group keeps you through a zone change** (owner's PC test, 2026-11-07). A player who joined a gamebot's
+group was let go ("left") as soon as they were out of the world for a moment: a region change, a zone change across
+regions or a GM /jump takes the player out of the world while the client loads. The group now waits for you while you
+are still in it, for up to two minutes out of the world (linkdead keeps its own five minutes).
+
+**Melee fight Grand Summoner Govannon's demon from behind** (owner, 2026-11-07: "teach positioning"). In his demon form
+Govannon casts Shroud of Agony, about 1,440 damage to everyone within 300 of his target, every 20-35 seconds; every bot in
+melee stood inside it, and in the play test 45 raiders died in the first 90 seconds of the demon. Now his target keeps
+150 from him and the other melee fight him from about 190 behind him on the line from his target, clear of the Shroud,
+re-placing themselves when he changes target or his target moves. His health, damage and spells are unchanged. The melee position order is
+general (EncounterMeleeStations) but switched on for Govannon only.
+
+**The Darkness Falls raid walks to Princess Nahemah from Ba'alorien's room** (owner's 1.1.2 test, 2026-11-07). After
+Prince Ba'alorien died, every Hibernian raider's path to Nahemah's muster failed: Detour cuts a 20,000-unit corridor at
+its 256-polygon limit, and Darkness Falls accepts only complete paths, so each raider got "no path", 37 gave up the goal
+and the raid's own event camp was benched for two hours. A Darkness Falls bot now walks a cut corridor's own end when
+that walk is itself a complete, checked path (both halves of this route are), then goes on from there. The navmesh is
+unchanged. A realm raid's own event camp is never benched by the generic camp-route rule.
+
+**The raid kills Spindler Broodmother's newborns before they kill its healers** (play test, Galladoria). Her newborn
+spindlers (one or two every half minute, 8,000 health each, going for bards, druids, mentalists and wardens) piled up to
+11 alive while the raid's casters and archers were split one party per newborn, and they killed 62 of the 120 raiders who
+died in the lost attempt. Now all the casters and archers take one newborn at a time (the one with the least health
+left, so they finish it together), and a party's melee peel a newborn off their own party's casters and healers. Her health, damage, tether and spawn rate are unchanged.
+
 **The raid gets out of Xanxicar's stomp** (owner's PC test, 2026-11-07; also in 1.1.3). At the 80% stomp 110 of 185
 Albion raiders died in one second: the order to get clear came only 3% above the threshold (the raid took him from 83% to
 80% in 15 s while a bot needs about 12 s to walk out of 2,500), it reached only the raiders whose target was Xanxicar
@@ -798,6 +823,60 @@ Built and checked by tools; nobody has seen it in the game client yet.
 - **Checked:** the installer tests (fake game folders) for shadowofze's loading screen to the new one, the 1.1 one to the
   new one, an unknown one left alone, ROLLBACK.cmd after each and PREPARE-FOR-UPDATE.cmd. The archive was unpacked again:
   eight entries, and the picture decodes to the approved image pixel for pixel. Not yet checked: the game client showing it.
+
+**Epic encounter play test, round 2.**
+
+- **A brush with a named monster on the way no longer counts as the raid's wipe.** A dungeon raid counted an attempt as a
+  wipe when the encounter healed back to full after being taken to 85% or lower. In Caer Sidi a calcified manes (a named
+  monster on the way) nicked to 84% and left by 91 of 95 living raiders was counted as the raid's first wipe and called
+  the Special Forces. A reset now counts as a wipe only from 70% or lower (Spindler Broodmother lost at 42% still does);
+  half the raid falling is a wipe as before.
+- **Bow-only raiders keep their bow on Funus.** With his weapon puzzle on, a scout he was fighting had every bow draw
+  interrupted by his hits and switched to her sword each time; every swing healed him to full (462 times in 25 minutes,
+  never below 89%). A bot that may fight a target with its distance weapon only now keeps it when its draw is
+  interrupted or it loses sight.
+- **A boss attacking the raid comes before a lesser named.** On Caer Sidi's lower floor the raid fought the archlich and
+  other named monsters while the Host killed 219 raiders over the run; a boss fighting the raid is now turned on first.
+- **Play-test harness:** a dragon raid's stragglers are gathered on its staging ring, never onto the dragon (the gather
+  pulled Gjalpinulva twice), `/epictest front <event>` moves a raid inside a dungeon to its route's front (to test a final
+  room without the climb), and sizes are whole parties (a dragon's 70 is 72).
+
+**Movement that doesn't look scripted** (planned as 1.2.1, the first slice of 2.0's "bots as people"; owner 2026-11-08:
+"Pull all the 1.2.1 into 1.2"). For gamebots only: your companions and the bots in your own group behave as before, and
+raids and epic encounters keep their own positions (their tactics, stations and blast dodges stay in charge). Each of
+these is a habit players had, not a random wobble. They pass automated tests; nobody has played them in game yet.
+Nobody else's fork has bot strafing (fork survey, 2026-11-08), so this is our own.
+- **Melee bots circle in a fight instead of standing frozen.** A melee gamebot hitting a monster that fights someone else
+  takes a short arc around it now and then (every 7-15 seconds, 28-60 units, never more than 45 degrees), at the distance
+  it already stands. It steps away from a party member it is standing in (checked every 2.5 seconds), out of the monster's
+  face to the nearer side, and never out of the spot for its back or side style: the flank step picks the spot, circling
+  keeps the bot from standing there like a post. It keeps swinging and keeps its styles queued while it steps.
+- **Tanks holding aggro stay put and face the monster.** A bot the monster is hitting in a solo fight takes only a small
+  step now and then (every 21-45 seconds).
+- **Casters step between casts.** Right after a cast ends, now and then (every 12-24 seconds), a caster takes one short step
+  to the side and a little back, only to a spot it still sees its target from, and casts again as it stops. Never during
+  a cast, never with a monster on it.
+- **Every step stays on the ground it can walk.** Each step is a few short legs walked on the navigation mesh first: on dry
+  ground, on the bot's own floor (no step up or down more than 32), never through a wall or off a ledge. If the mesh
+  doesn't allow it, the bot doesn't move. No navigation mesh was changed.
+- **Fewer snapped turns and stops.** Each leg is short enough that the bot keeps facing its target instead of turning
+  sideways to walk and snapping back. A gamebot following its party leader, or standing at a monster, no longer re-faces
+  it on every follow check (twice a second): only when it is more than 30 degrees off. A wide look around, a wave at you or
+  a cheer is turned in steps of at most 45 degrees about a tenth of a second apart instead of one snap. Each gamebot
+  stops its melee approach a few units short of the usual distance (the same for it every fight), so a monster's
+  attackers don't all stand on one exact ring.
+- **Town breaks at the bank and the usual crowd spots.** A gamebot on a town break no longer stands on one spot for its
+  15-30 minutes. A minute or so after it walks in, and then every 2-6 minutes, it wanders over to the bank (the vault
+  keeper, the usual spot), a merchant, a trainer, or a crowd already standing in town (other bots or you; a crowd of 12 is
+  left alone), stands in front of what it came to or on the crowd's edge on its side, and faces it. Only a short walk
+  with a complete path, inside the town, on dry ground, on the same floor, out of every monster's aggro range, and never
+  while it rests or fights.
+- **Measured.** The AI profiler (`AI_PROFILE`) has two new systems, `combat.movement` and `town.hangout`. Every 5 minutes the
+  server log counts the steps (`BOT_COMBAT_MOVEMENT`: circles, small steps, steps aside, legs, blocked steps, caster steps)
+  and the town wandering (`AUTONOMOUS_TOWN_HANGOUT`).
+- **What the server can't do.** The game has no "strafe" for an NPC: the original client shows a bot that walks while
+  facing its target either as a side step or as a slide, and only playing it shows which. A walk longer than a step still
+  turns the bot to face where it goes in one update, and the client's own smoothing of a stop is the client's.
 
 ## Beta 1.1.3 — 2026-11-08
 

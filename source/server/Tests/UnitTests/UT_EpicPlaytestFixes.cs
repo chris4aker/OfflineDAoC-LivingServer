@@ -71,6 +71,29 @@ namespace DOL.UnitTests
             Assert.That(RealmRaidDungeonRoute.TurnsOnAttacker(other, host), Is.Null, "with a target the old switch rule decides");
         }
 
+        // Caer Sidi (run duo4): on the lower floor the raid fought cursed lacula, black revenant and the archlich (epic NPCs,
+        // each "fighting the raid on its way") while the Host, an epic boss, killed 52 of it; nobody turned on him, and the
+        // raid wiped at the archlich. A boss attacking the raid comes before a lesser named; a boss target is kept.
+        [Test]
+        public void ABossAttackingTheRaidComesBeforeALesserNamed()
+        {
+            var host = (GameNPC)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(GameEpicBoss));
+            var archlich = (GameNPC)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(GameEpicNPC));
+            var crypt = (GameNPC)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(GameEpicBoss));
+            Assert.That(RealmRaidDungeonRoute.TurnsOnAttacker(archlich, host), Is.SameAs(host));
+            Assert.That(RealmRaidDungeonRoute.TurnsOnAttacker(crypt, host), Is.Null, "a boss target is not dropped for another boss");
+            Assert.That(RealmRaidDungeonRoute.TurnsOnAttacker(host, archlich), Is.Null, "a lesser named does not pull it off a boss");
+            Assert.That(RealmRaidDungeonRoute.TurnsOnAttacker(host, host), Is.Null);
+        }
+
+        // Funus with his weapon puzzle on (run duo4): the scout he fought had every bow draw interrupted by his hits and switched
+        // to her sword on each interrupt; each swing healed him to full (186 times in ten minutes, never below 89%).
+        [TestCase(eActiveWeaponSlot.Distance, false, true)]
+        [TestCase(eActiveWeaponSlot.Distance, true, false)]
+        [TestCase(eActiveWeaponSlot.Standard, false, false)]
+        public void ABowOnlyBotKeepsItsBowWhenItsDrawIsInterrupted(eActiveWeaponSlot slot, bool fightsAtRangeOnly, bool switches) =>
+            Assert.That(NpcAttackAction.MaySwitchToMelee(slot, fightsAtRangeOnly), Is.EqualTo(switches));
+
         [Test]
         public void TheFirstLookIsNoProgressByItself() =>
             Assert.That(RealmRaidDungeonRoute.TargetTookDamage(50_000, 50_000, 0), Is.False);

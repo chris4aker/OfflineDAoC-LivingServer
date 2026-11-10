@@ -59,6 +59,21 @@ namespace DOL.GS
             public int SpreadRadius { get; init; }
             /// <summary>Only while the boss has this model (Govannon's demon form, 636; 0: always).</summary>
             public int SpreadWhileModel { get; init; }
+            /// <summary>While the spread is on, melee fight the boss from behind him, clear of the area hit around his target
+            /// (<see cref="EncounterMeleeStations"/>): his target keeps <see cref="AnchorHoldDistance"/> from him and the
+            /// other melee stand <see cref="BehindDistance"/> behind him on the line from his target (owner 2026-11-07,
+            /// Govannon's demon: his Shroud of Agony took 45 raiders in 90 s, nearly all of them melee).</summary>
+            public bool MeleeBehind { get; init; }
+            /// <summary>Healers keep healing where they stand, instead of stepping out of the spread, while melee are still
+            /// inside it (the melee there need them; stepping out costs casts).</summary>
+            public bool HealersHoldInSpread { get; init; }
+            /// <summary>With <see cref="MeleeBehind"/>: the melee fight him from this many ring spots around him instead of one
+            /// spot behind him, each party at its own spot (owner 2026-11-08, Govannon's demon: "melee spread over 3 ring
+            /// spots"), so an area hit on one melee raider reaches about a third of the melee. 0: the one spot behind him.</summary>
+            public int MeleeRing { get; init; }
+            /// <summary>While the spread is on and the boss's target is not a tank, the raid tank nearest to him that fights
+            /// him taunts him (taunt spell where its class has one, taunt style) (owner 2026-11-08: "tanks taunt him back").</summary>
+            public bool TanksTaunt { get; init; }
             /// <summary>Adds the raid's casters and archers kill while everyone else stays on the boss (Govannon's sacrifice and
             /// demon, who summon a Shade if they reach his altar; Spindler Broodmother's newborns).</summary>
             public string[] RangedAdds { get; init; } = [];
@@ -75,6 +90,19 @@ namespace DOL.GS
             /// <summary>The required adds die one at a time in the catalog's order (Aroon's Scaiths: each is immune until the one
             /// before it is dead; Xaga's fairies, Beatha first): the whole raid takes the first one alive, not one each.</summary>
             public bool AddsInOrder { get; init; }
+            /// <summary>The ranged adds hunt the raid's healers and pile up when split one per party (Spindler Broodmother's
+            /// newborns, play test duo3: up to 11 alive, 62 of the raid's deaths): casters and archers all take the same one,
+            /// the one with the least health left, and a party's melee peel one off their own party's casters and healers.</summary>
+            public bool FocusRangedAdds { get; init; }
+            /// <summary>Up to this many whole parties of the raid, with their healers, work only the ranged adds, taking the
+            /// ones on the raid's healers and casters first; everyone else stays on the boss (owner 2026-11-08, Spindler
+            /// Broodmother: "2-3 newborn-only parties"). 0: off. Replaces <see cref="FocusRangedAdds"/> where set.</summary>
+            public int AddParties { get; init; }
+            /// <summary>Area casters aim their area spells at the boss or a ranged add where the most of the boss and its ranged
+            /// adds stand within the spell's radius (owner 2026-11-08, Spindler Broodmother: "AoE on her spot"; her newborns
+            /// appear within 50-80 of her). Gated to this tactic: the shared caster AI then picks the area spell itself.</summary>
+            public bool AreaOnClump { get; init; }
+
             public bool HasHazards => Hazards is { Length: > 0 } && HazardRadius > 0;
         }
 
@@ -136,6 +164,9 @@ namespace DOL.GS
         }
 
         public static Tactic For(GameNPC npc) => npc == null ? null : ByType.GetValueOrDefault(npc.GetType().Name);
+
+        /// <summary>The tactic of a boss class name ("SpindlerBroodmother"), or null.</summary>
+        public static Tactic For(string bossType) => bossType == null ? null : ByType.GetValueOrDefault(bossType);
 
         private static Dictionary<string, Leash> _leashes;
         public static Leash LeashOf(GameNPC npc)
@@ -348,6 +379,33 @@ namespace DOL.GS
                 .OrderBy(n => Array.IndexOf(t.RangedAdds, n.GetType().Name)).ThenBy(n => n.ObjectID).ToArray();
         }
 
+        /// <summary>The ranged add the whole raid's casters and archers take: the one with the least health left (ties: the
+        /// lowest object id), so every caster finishes the same one. Play test duo5: "the one on a healer first" changed with
+        /// every newborn's target and the casters still spread over 3-8 of them.</summary>
+        public static GameNPC FocusedRangedAdd(GameNPC[] adds, Func<GameNPC, int> healthPercent = null)
+        {
+            if (adds.Length == 1) return adds[0];
+            healthPercent ??= a => a.HealthPercent;
+            return adds.OrderBy(healthPercent).ThenBy(a => a.ObjectID).First();
+        }
+
+        /// <summary>A ranged add attacking a caster or healer of this raider's own party (its melee peel it off), or null.</summary>
+        public static GameNPC PeeledRangedAdd(GameLiving raider, GameNPC[] adds, Func<GameLiving, bool> inParty = null,
+            Func<GameLiving, bool> isSoft = null)
+        {
+            if (raider == null) return null;
+            inParty ??= victim => raider.Group?.IsInTheGroup(victim) == true;
+            isSoft ??= IsSoftTarget;
+            return adds.FirstOrDefault(a => a.TargetObject is GameLiving victim && victim != raider && isSoft(victim) && inParty(victim));
+        }
+
+        /// <summary>A healer or a caster (the ones Spindler's newborns kill: duo5, 46 of their 50 kills).</summary>
+        private static bool IsSoftTarget(GameLiving living) =>
+            IsHealer(living) || living is GameBot bot && BotSpellPower.IsOffensiveCaster(bot);
+
+        private static bool IsHealer(GameLiving living) =>
+            BotPartyRoles.IsHealingClass((eCharacterClass)EncounterTargets.ClassId(living));
+
         /// <summary>Within this far past a hazard's radius a raider steps out of it, to this far past it.</summary>
         public const int HazardStepOut = 300;
 
@@ -364,6 +422,110 @@ namespace DOL.GS
 
         /// <summary>A caster or healer this far inside the spread radius of the boss's target moves this far past it.</summary>
         public const int SpreadMargin = 60, SpreadStepOut = 250;
+
+        /// <summary>His target keeps this far from him (he closes to 131 himself) and the other melee stand this far behind
+        /// him (bot melee reach is 200): 131-150 + 185 clears a 300 area hit around his target.</summary>
+        public const int AnchorHoldDistance = 150, BehindDistance = 185, BehindMargin = 10, BehindReach = 195;
+
+        /// <summary>How far behind him a melee raider stands (pure): far enough that the line from his target clears the area
+        /// hit with a little to spare, at least <see cref="BehindDistance"/>, and within bot melee reach (200).</summary>
+        public static float BehindFor(float anchorToBoss, int radius) =>
+            Math.Clamp(radius + BehindMargin + 10 - anchorToBoss, BehindDistance, BehindReach);
+
+        /// <summary>
+        /// The melee position order of a <see cref="Tactic.MeleeBehind"/> boss (Govannon's demon): his target holds
+        /// <see cref="AnchorHoldDistance"/> from him; another melee raider holds <see cref="BehindDistance"/> and, while it is
+        /// within the area hit's reach of his target, steps to the spot behind him first. Renewed each turn, so a target
+        /// swap or a move of his target re-places everyone; null to fight on as it stands.
+        /// </summary>
+        private static Advice? MeleeBehindAdvice(GameLiving raider, GameNPC boss, GameLiving anchor, int radius, long now)
+        {
+            Vector3 at = At(raider), anchorAt = At(anchor), bossAt = At(boss);
+            if (raider == anchor)
+            {
+                // In the ring his target keeps the ring's distance (it stood at its spot): 185-190 from him, its Shroud misses
+                // the other two spots (about 325 away); at 150 they would lie on its edge (295).
+                int hold = For(boss) is { MeleeRing: > 1 } ? BehindDistance : AnchorHoldDistance;
+                EncounterMeleeStations.Hold(raider, boss, hold, now);
+                EncounterMeleeStations.Apply(raider, boss, hold);
+                return null;
+            }
+            EncounterMeleeStations.Hold(raider, boss, BehindDistance, now);
+            EncounterMeleeStations.Apply(raider, boss, BehindDistance);
+            if (For(boss) is { MeleeRing: > 1 } ring)
+                return MeleeRingAdvice(raider, boss, at, anchorAt, bossAt, ring.MeleeRing, now);
+            if (!EncounterMeleeStations.InReach(at, anchorAt, radius, BehindMargin)) return null;
+            float anchorToBoss = Vector2.Distance(new(anchorAt.X, anchorAt.Y), new(bossAt.X, bossAt.Y));
+            Vector3 spot = EncounterMeleeStations.BehindSpot(bossAt, anchorAt, BehindFor(anchorToBoss, radius), at.Z);
+            return new(BotAction.Reposition, boss, spot,
+                $"spread: melee behind \"{boss.Name}\", clear of {radius} around \"{anchor.Name}\"");
+        }
+
+        /// <summary>The ring spots lie this far from him (between <see cref="BehindDistance"/> and <see cref="BehindReach"/>);
+        /// a melee raider further than <see cref="RingTolerance"/> from its spot walks to it.</summary>
+        public const int RingRadius = 190, RingTolerance = 90;
+
+        /// <summary>
+        /// The melee ring (owner 2026-11-08, Govannon's demon): every melee raider but his target fights him from its party's
+        /// spot of <paramref name="spots"/> around him. The ring keeps its orientation for the fight (a target swap moves
+        /// nobody but the new target) and moves with him. Null when the raider is at its spot.
+        /// </summary>
+        private static Advice? MeleeRingAdvice(GameLiving raider, GameNPC boss, Vector3 at, Vector3 anchorAt, Vector3 bossAt,
+            int spots, long now)
+        {
+            int order = EncounterMeleeStations.PartyOrder(raider.Group, now);
+            int slot = EncounterMeleeStations.RingSlotFor(order >= 0 ? order : PartyIndex(raider), spots);
+            float angle = EncounterMeleeStations.RingAngle(boss, bossAt, anchorAt, now);
+            Vector3 spot = EncounterMeleeStations.RingSpot(bossAt, angle, slot, spots, RingRadius, at.Z);
+            if (Vector2.Distance(new(at.X, at.Y), new(spot.X, spot.Y)) <= RingTolerance) return null;
+            return new(BotAction.Reposition, boss, spot, $"spread: melee ring spot {slot + 1}/{spots} around \"{boss.Name}\"");
+        }
+
+        /// <summary>The living is a tank (class role Tank; a pet never is).</summary>
+        public static bool IsTankLiving(GameLiving living) =>
+            living != null && (living is GameBot || living is not GameNPC { Brain: IControlledBrain }) &&
+            EncounterTargets.ClassId(living) is int c and > 0 && BotPartyRoles.For((eCharacterClass)c) == BotPartyRole.Tank;
+
+        /// <summary>
+        /// Which raider taunts (pure): the tank nearest to the boss among <paramref name="tanks"/> (those fighting him), when
+        /// his target is not a tank; null when it is, or no tank fights him.
+        /// </summary>
+        public static GameLiving TauntingTank(GameLiving bossTarget, IEnumerable<(GameLiving Tank, float Distance)> tanks,
+            Func<GameLiving, bool> isTank = null)
+        {
+            isTank ??= IsTankLiving;
+            if (bossTarget == null || isTank(bossTarget)) return null;
+            return tanks.Where(t => t.Tank != null).OrderBy(t => t.Distance).Select(t => t.Tank).FirstOrDefault();
+        }
+
+        /// <summary>The tanks within this of the boss that fight him are asked; the nearest taunts.</summary>
+        public const int TauntSearchRadius = 1_500;
+
+        private static readonly Dictionary<GameNPC, (long Tick, GameLiving Tank)> TauntPicks = new();
+
+        /// <summary>The raider should taunt <paramref name="boss"/> now (<see cref="Tactic.TanksTaunt"/>): the spread is on, his
+        /// target is not a tank, and this raider is the nearest raid tank fighting him (chosen once a second).</summary>
+        public static bool TauntDue(GameLiving raider, GameNPC boss, IReadOnlyList<GameNPC> live, long now)
+        {
+            if (raider == null || For(boss) is not { TanksTaunt: true, SpreadRadius: > 0 } t ||
+                t.SpreadWhileModel != 0 && boss.Model != t.SpreadWhileModel || !IsTankLiving(raider))
+                return false;
+            GameLiving pick;
+            lock (TauntPicks)
+            {
+                if (TauntPicks.TryGetValue(boss, out var hit) && now - hit.Tick < 1_000) return hit.Tank == raider;
+            }
+            pick = TauntingTank(boss.TargetObject as GameLiving,
+                live.OfType<GameBot>().Where(b => b.IsAlive && b.IsAutonomousWorldBot && b.Realm == raider.Realm &&
+                        b.TargetObject == boss && IsTankLiving(b) && boss.IsWithinRadius(b, TauntSearchRadius))
+                    .Select(b => ((GameLiving)b, (float)boss.GetDistanceTo(b))));
+            lock (TauntPicks)
+            {
+                if (TauntPicks.Count > 64) TauntPicks.Clear();
+                TauntPicks[boss] = (now, pick);
+            }
+            return pick == raider;
+        }
 
         /// <summary>
         /// Where a raider stands clear of an area hit of <paramref name="radius"/> around the boss's target
@@ -542,10 +704,20 @@ namespace DOL.GS
                 return new(BotAction.StandOff, target, safe, $"blast at {NextBlast(target)}%: out of {For(target).BlastRadius}");
             // Area hit around the boss's target (Govannon's demon form): everyone outside that target's party stands clear of it.
             if (For(target) is { SpreadRadius: > 0 } st && (st.SpreadWhileModel == 0 || target.Model == st.SpreadWhileModel) &&
-                target.TargetObject is GameLiving anchor && !Holds(raider, target))
+                target.TargetObject is GameLiving anchor)
             {
-                bool atRange = canShootFlyers || classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId);
-                if (SpreadSpot(at, new(target.X, target.Y, target.Z), new(anchor.X, anchor.Y, anchor.Z), st.SpreadRadius, atRange) is Vector3 spread)
+                // Who he fights and where his area hit lands (EpicEncounterTactics.SummonersHall.cs): log lines only.
+                TraceSpreadTarget(target, anchor, st.SpreadRadius, now);
+                bool healer = classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId);
+                bool atRange = canShootFlyers || healer;
+                // The melee: fight him from behind, clear of the area hit around his target.
+                if (st.MeleeBehind && !atRange && MeleeBehindAdvice(raider, target, anchor, st.SpreadRadius, now) is Advice behind)
+                    return behind;
+                // Healers keep healing where they stand while melee are still in it (stepping out costs casts they need).
+                bool healersHold = healer && st.HealersHoldInSpread && EncounterMeleeStations.AnyInReach(target,
+                    new(anchor.X, anchor.Y, anchor.Z), BehindDistance, st.SpreadRadius, BehindMargin, now);
+                if (!Holds(raider, target) && !healersHold &&
+                    SpreadSpot(at, new(target.X, target.Y, target.Z), new(anchor.X, anchor.Y, anchor.Z), st.SpreadRadius, atRange) is Vector3 spread)
                     return new(BotAction.Reposition, target, spread,
                         $"spread: casters and healers clear of {st.SpreadRadius} around \"{anchor.Name}\"");
             }
@@ -559,10 +731,37 @@ namespace DOL.GS
                     (mine.Length > 0 ? $"one it can hurt ({mine.Length})" : "none it can hurt: the boss"));
             }
             // Casters and archers kill these adds while the rest stay on the boss.
-            if (canShootFlyers && LiveRangedAdds(target, live) is { Length: > 0 } rangedAdds)
+            GameNPC[] rangedAdds = LiveRangedAdds(target, live);
+            if (rangedAdds.Length > 0)
             {
-                GameNPC add = rangedAdds[AssignedIndex(partyIndex, rangedAdds.Length)];
-                return new(BotAction.Retarget, add, null, $"ranged-add {Array.IndexOf(rangedAdds, add) + 1}/{rangedAdds.Length} of \"{target.Name}\"");
+                Tactic rt = For(target);
+                LogRangedAdds(target, rangedAdds.Length, now);
+                // Area casters: on the clump of the boss and her adds (Spindler's spot) where their area spell hits the most.
+                if (rt.AreaOnClump && AreaClumpAdvice(raider, target, rangedAdds, now) is Advice clump) return clump;
+                if (rt.AddParties > 0)
+                {
+                    // Newborn-only parties take the adds (healers keep their party up); the rest stay on the boss.
+                    if (!(classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId)) &&
+                        IsAddParty(raider, rt.AddParties, now) && AddPartyTarget(rangedAdds) is { } newborn)
+                        return new(BotAction.Retarget, newborn, null,
+                            $"add party: ranged-add {Array.IndexOf(rangedAdds, newborn) + 1}/{rangedAdds.Length} of \"{target.Name}\"" +
+                            (newborn.TargetObject is GameLiving on ? $" (on {on.Name})" : ""));
+                    rangedAdds = [];
+                }
+            }
+            if (rangedAdds.Length > 0)
+            {
+                bool focus = For(target).FocusRangedAdds;
+                if (canShootFlyers)
+                {
+                    GameNPC add = focus ? FocusedRangedAdd(rangedAdds) : rangedAdds[AssignedIndex(partyIndex, rangedAdds.Length)];
+                    return new(BotAction.Retarget, add, null,
+                        $"ranged-add {Array.IndexOf(rangedAdds, add) + 1}/{rangedAdds.Length} of \"{target.Name}\"" +
+                        (focus ? " (focus: the whole raid's casters and archers on one)" : ""));
+                }
+                if (focus && PeeledRangedAdd(raider, rangedAdds) is { } peel)
+                    return new(BotAction.Retarget, peel, null,
+                        $"peel: \"{peel.Name}\" is on {(peel.TargetObject as GameLiving)?.Name} of this party");
             }
             GameNPC[] adds = ShieldingAdds(target, live);
             if (adds.Length > 0 && For(target) is { } at2 && ClassRulesApply(at2))
@@ -769,15 +968,17 @@ namespace DOL.GS
 
         /// <summary>Where a raider waits out a blast: <see cref="Tactic.BlastRadius"/> plus 200 from the boss, on its own
         /// side. Null when there is no blast now, the raider is already out, or it is in the party the boss is fighting
-        /// (that party keeps it busy and takes the hit; the rest of the raid survives it).</summary>
+        /// (that party keeps it busy and takes the hit; the rest of the raid survives it). For a called blast
+        /// (<see cref="IsCalledBlast"/>) also null until the raid's call and this raider's reaction delay, and for good when it
+        /// lapsed.</summary>
         public static Vector3? BlastWithdraw(GameLiving raider, GameNPC boss, long now)
         {
             Tactic t = For(boss);
             if (t is not { HasBlast: true } || !boss.InCombat ||
                 !InBlastWindow(t.BlastThresholds, boss.HealthPercent, SinceBlastCross(boss, now), BlastRate(boss, now)))
                 return null;
-            if (boss.TargetObject is GameLiving anchor && (anchor == raider || anchor.Group != null && anchor.Group == raider.Group))
-                return null;
+            bool holds = boss.TargetObject is GameLiving anchor && (anchor == raider || anchor.Group != null && anchor.Group == raider.Group);
+            if (holds && !IsCalledBlast(boss)) return null;
             Vector3 b = new(boss.X, boss.Y, boss.Z), r = new(raider.X, raider.Y, raider.Z);
             float d = Vector2.Distance(new(b.X, b.Y), new(r.X, r.Y));
             // The stomp is an area spell on his target (Target ENEMY, Radius 2,500), so it is centred on that raider, not on
@@ -786,6 +987,13 @@ namespace DOL.GS
             Vector3 c = StompCentre(boss, t.BlastRadius);
             float dc = Vector2.Distance(new(c.X, c.Y), new(r.X, r.Y));
             if (d > t.BlastRadius + 100 && dc > t.BlastRadius + 100) return null;
+            // 1.2 raid discipline (EpicEncounterTactics.RaidCalls.cs): a called blast waits for the raid's call, then for the
+            // raider's own reaction; the party he fights stays in on purpose.
+            if (IsCalledBlast(boss))
+            {
+                BlastCall call = PulseBlastCall(boss, raider, now);
+                if (!CalledNow(call, t, boss, now) || !RaiderGoes(boss, call, raider, now, holds)) return null;
+            }
             // In a closed cave the straight-out spot is inside the rock (duo6: raiders told to go stood at a median 763 from him
             // and died there): walk out along the floor towards the dungeon's way in instead.
             // Each raider takes the reachable spot clear of the blast nearest to it, so nobody walks past him to get out
@@ -810,8 +1018,12 @@ namespace DOL.GS
             lock (BlastRates)
                 bosses = BlastRates.Where(b => now - b.Value.Seen < 30_000).Select(b => b.Key).ToArray();
             foreach (GameNPC boss in bosses)
-                if (Present(boss) && boss.CurrentRegionID == raider.CurrentRegionID && BlastWithdraw(raider, boss, now) is Vector3 safe)
-                    return (boss, safe);
+            {
+                if (!Present(boss) || boss.CurrentRegionID != raider.CurrentRegionID) continue;
+                // The call's clock (the call, the landing's count, "back in") runs whether or not this raider is near him.
+                if (IsCalledBlast(boss)) PulseBlastCall(boss, raider, now);
+                if (BlastWithdraw(raider, boss, now) is Vector3 safe) return (boss, safe);
+            }
             return null;
         }
 
@@ -1044,6 +1256,7 @@ namespace DOL.GS
             lock (BlastClocks) BlastClocks.Clear();
             lock (BlastPaths) BlastPaths.Clear();
             lock (BlastSpotCache) BlastSpotCache.Clear();
+            ResetBlastCalls();
             lock (StandOffHolds) { StandOffHolds.Clear(); System.Threading.Volatile.Write(ref _standOffHoldCount, 0); }
             lock (SeenHazards) { SeenHazards.Clear(); System.Threading.Volatile.Write(ref _liveHazardCount, 0); }
         }
@@ -1095,6 +1308,9 @@ namespace DOL.GS
                 return false;
             IReadOnlyList<GameNPC> live = Nearby(target);
             DungeonActs(bot, target, live);
+            // Tanks taunt him back when his target is not a tank (Govannon's demon); the bot fights on as decided below.
+            if (TauntDue(bot, target, live, GameLoop.GameLoopTime) && bot.Brain is BotBrain tankBrain)
+                LogTaunt(bot, target, tankBrain.TauntForEncounter(target));
             Advice advice = Decide(bot, target, live, PartyIndex(bot), CanShootFlyers(bot));
             // In a room whose door is barred while its fight is on (Caer Sidi's horsemen), every spot stays inside it.
             if (advice.StandAt is Vector3 sent) advice = advice with { StandAt = KeepInsideFor(advice.Target ?? target, sent) };
@@ -1128,6 +1344,9 @@ namespace DOL.GS
                     if (advice.StandAt is not Vector3 spot) return false;
                     if (bot.IsCasting) bot.StopCurrentSpellcast();
                     bot.StopAttack();
+                    // The walk to the spot ends the old melee follow (it outlives StopAttack and pulls the bot back onto its
+                    // target: duo8, Xanxicar), so the next attack follows at its own (or the order's) distance from there.
+                    if (bot.FollowTarget != null && (bot.FollowTarget == advice.Target || bot.FollowTarget == target)) bot.StopFollowing();
                     bot.PathTo(new Point3D((int)spot.X, (int)spot.Y, (int)spot.Z), bot.MaxSpeed);
                     LogDecision(bot, target, advice);
                     return true;
