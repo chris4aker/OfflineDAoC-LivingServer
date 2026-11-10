@@ -403,14 +403,17 @@ namespace DOL.UnitTests
         // ---- Spindler Broodmother -------------------------------------------------------------------------------------
 
         [Test]
-        public void CastersTakeTheNewbornsAndTheBroodIsClearedAtHerBody()
+        public void OnlyAddPartiesAndAreaCastersLeaveHerAndTheBroodIsClearedAtHerBody()
         {
             var brood = Npc<Brood3>(21283, 51707, 10876);
             var newborn = Npc<Newborn3>(21300, 51750, 10876);
             var live = new List<GameNPC> { brood, newborn };
             var caster = Npc<Raider>(21600, 51700, 10876);
             var tank = Npc<Raider>(21400, 51700, 10876);
-            Assert.That(EpicEncounterTactics.Decide(caster, brood, live, 0, true, 1_000, (int)eCharacterClass.Eldritch).Target, Is.SameAs(newborn));
+            // Owner 2026-11-08: newborn-only parties and area spells on her spot; a caster outside the add parties and with no
+            // area spell stays on her (before: every caster and archer took the newborns).
+            Assert.That(EpicEncounterTactics.Decide(caster, brood, live, 0, true, 1_000, (int)eCharacterClass.Eldritch).Action,
+                Is.EqualTo(EpicEncounterTactics.BotAction.None), "not in an add party: stay on her");
             Assert.That(EpicEncounterTactics.Decide(tank, brood, live, 0, false, 1_000, (int)eCharacterClass.Hero).Action,
                 Is.EqualTo(EpicEncounterTactics.BotAction.None), "melee stay on her");
 

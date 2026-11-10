@@ -31,6 +31,19 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
 
 ## 1.2 (in development)
 
+**The Darkness Falls raid walks to Princess Nahemah from Ba'alorien's room** (owner's 1.1.2 test, 2026-11-07). After
+Prince Ba'alorien died, every Hibernian raider's path to Nahemah's muster failed: Detour cuts a 20,000-unit corridor at
+its 256-polygon limit, and Darkness Falls accepts only complete paths, so each raider got "no path", 37 gave up the goal
+and the raid's own event camp was benched for two hours. A Darkness Falls bot now walks a cut corridor's own end when
+that walk is itself a complete, checked path (both halves of this route are), then goes on from there. The navmesh is
+unchanged. A realm raid's own event camp is never benched by the generic camp-route rule.
+
+**The raid kills Spindler Broodmother's newborns before they kill its healers** (play test, Galladoria). Her newborn
+spindlers (one or two every half minute, 8,000 health each, going for bards, druids, mentalists and wardens) piled up to
+11 alive while the raid's casters and archers were split one party per newborn, and they killed 62 of the 120 raiders who
+died in the lost attempt. Now all the casters and archers take one newborn at a time (the one with the least health
+left, so they finish it together), and a party's melee peel a newborn off their own party's casters and healers. Her health, damage, tether and spawn rate are unchanged.
+
 **The raid gets out of Xanxicar's stomp** (owner's PC test, 2026-11-07; also in 1.1.3). At the 80% stomp 110 of 185
 Albion raiders died in one second: the order to get clear came only 3% above the threshold (the raid took him from 83% to
 80% in 15 s while a bot needs about 12 s to walk out of 2,500), it reached only the raiders whose target was Xanxicar

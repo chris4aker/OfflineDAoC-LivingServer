@@ -30,7 +30,7 @@ namespace DOL.GS
         /// <summary>Returns true when this report put the camp on the bench.</summary>
         public static bool ReportFailure(string campId, long botId, DateTime? nowUtc = null)
         {
-            if (string.IsNullOrWhiteSpace(campId) || botId <= 0)
+            if (string.IsNullOrWhiteSpace(campId) || botId <= 0 || IsRealmRaidCamp(campId))
                 return false;
             DateTime now = nowUtc ?? DateTime.UtcNow;
             Record record = Records.GetOrAdd(campId, _ => new Record());
@@ -54,8 +54,16 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>A realm raid's own event camp (realm-event-&lt;event&gt;): never benched by this generic rule. 1.1.2 test,
+        /// 2026-11-07: three Hibernian raiders whose path to Princess Nahemah failed benched "realm-event-darkness-hibernia"
+        /// for two hours; the raid owns its route and its retries (RealmRaidDungeonRoute).</summary>
+        public static bool IsRealmRaidCamp(string campId) =>
+            campId != null && campId.StartsWith(RealmRaidCampPrefix, StringComparison.OrdinalIgnoreCase);
+
+        public const string RealmRaidCampPrefix = "realm-event-";
+
         public static bool IsQuarantined(string campId, DateTime? nowUtc = null) =>
-            !string.IsNullOrWhiteSpace(campId) && Records.TryGetValue(campId, out Record record) &&
+            !string.IsNullOrWhiteSpace(campId) && !IsRealmRaidCamp(campId) && Records.TryGetValue(campId, out Record record) &&
             record.QuarantinedUntilUtc > (nowUtc ?? DateTime.UtcNow);
 
         public static void ResetForTests() => Records.Clear();

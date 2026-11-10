@@ -1191,7 +1191,7 @@
      "difficulty": "easy for the current raid AI"
     },
     "adds@230": {
-     "tactic": "In the raid AI (EpicEncounterTactics): ranged adds: casters and archers take each newborn as it comes; melee, tanks and healers stay on her.",
+     "tactic": "In the raid AI (EpicEncounterTactics): focused ranged adds: every caster and archer takes the same newborn (the one with the least health left); a party's melee peel one off their own casters and healers; the rest stay on her.",
      "difficulty": "needs new raid AI"
     }
    },
@@ -1206,8 +1206,10 @@
     "deathAdds": [
      "SBDeadAdds"
     ],
+    "addParties": 3,
+    "areaOnClump": true,
     "since": "1.2",
-    "summary": "Ranged adds: casters and archers kill each newly-born spindler (8,000 health, 1-2 every 25-45 s) as it comes, while melee, tanks and healers stay on her, so newborns never pile on the healers. Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on."
+    "summary": "Newborn-only parties and area spells on her spot (owner 2026-11-08): the newly-born spindlers (8,000 health, 1-2 every 25-45 s, born within 50-80 of her; they go for bards, druids, mentalists and wardens) are worked by 2-3 whole parties with their healers (2 up to 14 parties, 3 above), which take the newborns on the raid's healers and casters first, the one with the least health among those; every raider with an area damage spell (Eldritch, Mentalist, Enchanter, Animist shrooms and others) aims it at her or a newborn, wherever the most of them stand within its radius; everyone else stays on her. Before (play test duo6-duo10): all casters and archers on one newborn plus a melee peel held newborns at 2-8 for 9 minutes but she was never killed (wipes at 38-57%). Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on."
    }
   },
   "galladoria/tine": {
