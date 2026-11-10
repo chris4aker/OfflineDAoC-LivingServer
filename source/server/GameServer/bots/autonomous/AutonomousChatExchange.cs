@@ -107,8 +107,10 @@ public static class AutonomousChatExchange
     public static string DroppedLog(string feature, eRealm realm, long exchange, long waitedMs, string reason) =>
         $"LIVING_FEATURE_DROPPED feature={feature} realm={GlobalConstants.RealmToName(realm)} ex={exchange} waited_s={waitedMs / 1_000} reason={reason ?? "held"}";
 
-    /// <summary>A line of a running debate, storyline or dunce scene (AutonomousBotDebates): it owns /faction while it plays.</summary>
-    public static bool IsScene(Source source) => source != null && source.Feature is "debate" or "storyline";
+    /// <summary>A line of a running debate, storyline, dunce scene or tale (AutonomousBotDebates): it owns /faction while it
+    /// plays. (PC check 2026-11-10, build cf2c873: a tale's lines were tagged "tale", which this did not know, so the tale held
+    /// /faction and its own lines with it; nothing was heard.)</summary>
+    public static bool IsScene(Source source) => source != null && source.Feature is "debate" or "storyline" or "tale";
 
     /// <summary>Whether one more line fits under a channel's ceiling: the rate it would make, not the rate before it. Pure.</summary>
     public static bool Fits(double perMinute, double ceiling, double windowMinutes = 2.0) => perMinute + 1.0 / windowMinutes <= ceiling + 1e-9;

@@ -67,7 +67,9 @@ forgets today's fireside tales so the next rest tells one.
 
 Log lines: `TALE_TELLER`, `TALE_START`, `TALE_NOT_STARTED`, `TALE_END` (finished, lines, reason), `TALE_ASIDE`,
 `TALE_REQUEST`, `TALE_RUMOUR` (kind=raid or lore), `TALE_RAID` (opened, reason), `TALE_FIRESIDE`. The scene's lines are
-`CHAT_LINE src=tale`.
+`CHAT_LINE src=tale`; the lines after it (the rumour, a grumble when a tale is cut short) are `src=tale_after`: they are not
+the scene's, so they fit under /faction's ceiling, and they keep their turn for three minutes (`LIVING_FEATURE_DUE` /
+`LIVING_FEATURE_DROPPED feature=tale_after`).
 
 ## Writing a tale
 
