@@ -165,6 +165,38 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousBotCombatCalls.FoughtRecently(null, 0), Is.False);
         }
 
+        /// <summary>RC6 on the owner's PC: a bot that fought alone and died said "clean pull, ty" and "loot is yours" after.</summary>
+        [Test]
+        public void HuntingTalkNeedsAFightThePlayerTookPartInAndWon()
+        {
+            var always = new System.Random(1);
+            // The bot fights alone in the player's group and dies: no hunting talk after.
+            var solo = new AutonomousBotCombatCalls.GroupState();
+            AutonomousBotCombatCalls.GroupEvent(solo, new(true, 3, 2, 2, false), 1_000, always);
+            AutonomousBotCombatCalls.GroupEvent(solo, new(true, 3, 2, 1, false), 5_000, always);
+            AutonomousBotCombatCalls.GroupEvent(solo, new(false, 0, 2, 1, false), 9_000, always);
+            Assert.That(AutonomousBotCombatCalls.HuntedTogether(solo, 20_000), Is.False);
+            // The player fights alongside and nobody dies: hunting talk fits for ten minutes.
+            var shared = new AutonomousBotCombatCalls.GroupState();
+            AutonomousBotCombatCalls.GroupEvent(shared, new(true, 1, 2, 2, false, PlayerFighting: true), 1_000, always);
+            AutonomousBotCombatCalls.GroupEvent(shared, new(false, 0, 2, 2, false), 9_000, always);
+            Assert.That(AutonomousBotCombatCalls.HuntedTogether(shared, 20_000), Is.True);
+            Assert.That(AutonomousBotCombatCalls.HuntedTogether(shared, 9_000 + AutonomousBotCombatCalls.HuntTalkWindowMs + 1), Is.False);
+            // The player fights, but a member dies in it: no "clean pull".
+            var lost = new AutonomousBotCombatCalls.GroupState();
+            AutonomousBotCombatCalls.GroupEvent(lost, new(true, 2, 2, 2, false, PlayerFighting: true), 1_000, always);
+            AutonomousBotCombatCalls.GroupEvent(lost, new(false, 0, 2, 1, false), 9_000, always);
+            Assert.That(AutonomousBotCombatCalls.HuntedTogether(lost, 20_000), Is.False);
+        }
+
+        [TestCase("oom, give me a minute", true)]
+        [TestCase("need a quick med before the next one", true)]
+        [TestCase("one more pull then i need a break", true)]
+        [TestCase("clean pull, ty", false)]
+        [TestCase("glad i grouped with you, honestly", false)]
+        public void ALineAboutBeingLowIsKnown(string line, bool low) =>
+            Assert.That(AutonomousBotCombatCalls.ClaimsLow(line), Is.EqualTo(low));
+
         [Test]
         public void TeleMobPrefersTheCampNearThePlayersLevel()
         {

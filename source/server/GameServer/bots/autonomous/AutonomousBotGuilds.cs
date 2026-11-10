@@ -280,33 +280,45 @@ namespace DOL.GS
 
         private static readonly string[] JoinLines =
         [
-            "Glad to be here. Thanks for the invite!", "Happy to ride with this guild.", "Thanks for having me, everyone.",
-            "Proud to wear the colors. Call on me anytime.",
+            "ty for the invite!", "glad to be here, ty", "ty for having me", "hi guild, ty for the inv",
         ];
 
+        // 1.1.3 (RC5 on the owner's PC: "Just checking in. All well with everyone?" twice in eight minutes): the fallback lines
+        // are written as players typed, and a guild doesn't hear one again within the hour (AutonomousBotGuildSocial.FreshLine).
         private static readonly string[] GuildOpeners =
         [
-            "Evening, guild. Anyone out hunting?", "Good hunting to all of you today.", "Does anyone need a hand with anything?",
-            "Anyone want to group up later?", "Just checking in. All well with everyone?", "The roads have been busy today.",
-            "Anyone heading to the frontier tonight?", "If anyone needs company for a dungeon, let me know.",
-            "Nice to see the guild active today.", "Remember to train when you level, everyone.", "Stay safe out there, guild.",
-            "Found a decent camp earlier. Anyone hunting nearby?",
+            "evening guild, anyone out hunting?", "anyone need a hand with anything?", "anyone want to group up later?",
+            "hows everyone doing tonight", "roads were busy earlier", "anyone heading to the frontier tonight?",
+            "if anyone wants a dungeon run lmk", "nice to see the guild on tonight", "dont forget to train when u ding",
+            "found a decent camp earlier, anyone hunting near?",
         ];
 
         private static readonly string[] GuildReplies =
         [
-            "Doing well, thanks.", "Out hunting myself right now.", "I could join a bit later.", "Same here, all quiet.",
-            "Good to hear from you.", "Count me in if a group forms.", "Busy for now, but I will check back.",
-            "Safe travels.", "Sounds good to me.", "Let me know where you end up.",
+            "doing ok, ty", "out hunting myself", "could join in a bit", "same, all quiet here", "count me in if a grp forms",
+            "busy for now, maybe later", "sounds good", "lmk where u end up",
         ];
 
         private static string Pick(string[] lines) => lines[Random.Shared.Next(lines.Length)];
 
-        /// <summary>A guild message in the same format players use (/gu).</summary>
+        /// <summary>A fallback line the guild hasn't heard in the hour (as written; the guild remembers it so), in the bot's style, or null.</summary>
+        private static string FreshFallback(Guild guild, GameBot bot, string[] pool, long now)
+        {
+            string raw = AutonomousBotGuildSocial.FreshLine(guild.GuildID, () => Pick(pool), now);
+            if (raw == null)
+                return null;
+            AutonomousBotGuildSocial.NoteHeard(guild.GuildID, raw, now);
+            return AutonomousBotVoices.StyleFor(bot, raw);
+        }
+
+        /// <summary>
+        /// A guild message in the same format players use (/gu). 1.1.3: through the guild channel's one sender, so the line is in the
+        /// chat transcript (CHAT_LINE ch=guild), counted, and remembered for the guild's repeat window.
+        /// </summary>
         public static void SpeakInGuild(GameBot bot, Guild guild, string message)
         {
             if (bot == null || guild == null || string.IsNullOrWhiteSpace(message)) return;
-            guild.SendMessageToGuildMembers($"[Guild] {bot.Name}: \"{message.Trim()}\"", eChatType.CT_Guild, eChatLoc.CL_ChatWindow);
+            AutonomousBotGuildSocial.SendGuildLine(guild, bot.Name, message.Trim());
         }
 
         private static bool CanTalk(GameBot bot) =>
@@ -328,7 +340,10 @@ namespace DOL.GS
                 GameBot starter = talkers[Random.Shared.Next(talkers.Length)];
                 // Living Server: with bot voices on, a corpus line, answered in kind (AutonomousBotGuildSocial).
                 string opener = AutonomousBotGuildSocial.VoicedPlayerGuildOpener(starter, out string invites);
-                SpeakInGuild(starter, guild, opener ?? Pick(GuildOpeners));
+                // 1.1.3: a fallback opener the guild heard in the last hour is not said again.
+                string said = opener ?? FreshFallback(guild, starter, GuildOpeners, now);
+                if (said == null) continue;
+                SpeakInGuild(starter, guild, said);
                 ScheduleReplies(guild, starter, null, opener == null ? Random.Shared.Next(0, 3)
                     : AutonomousBotChatCoordinator.BotReplyCount(invites, Math.Min(2, talkers.Length - 1), Random.Shared), opener, invites);
             }
@@ -367,7 +382,7 @@ namespace DOL.GS
                       AutonomousBotChatCoordinator.GenerateFactionReply(incoming)
                     : opener != null
                         ? AutonomousBotGuildSocial.VoicedPlayerGuildAnswer(talkers[index], opener, invites)
-                        : Pick(GuildReplies);
+                        : FreshFallback(guild, talkers[index], GuildReplies, GameLoop.GameLoopTime);
                 if (reply == null) continue;
                 if (!used.Add(reply)) continue;
                 ScheduleReply(talkers[index], guild, reply, 1_800 + index * 2_000 + Random.Shared.Next(1_200));

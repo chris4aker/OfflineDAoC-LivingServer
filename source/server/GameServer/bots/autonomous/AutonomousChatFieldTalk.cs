@@ -50,6 +50,138 @@ public static class AutonomousChatFieldTalk
 
         /// <summary>A guildmate who just logged in (guild lines: "o/ bran").</summary>
         public string GuildmateArrived { get; init; }
+
+        /// <summary>Facts read from a live bot (<see cref="Of"/>): the group state below is then known, not guessed.</summary>
+        public bool Live { get; init; }
+
+        /// <summary>Whether a solo bot wants a group (awaiting group matchmaking, or out for rvr), or null when unknown.</summary>
+        public bool? SeeksGroup { get; init; }
+
+        /// <summary>Whether the bot's task is rvr (true), something else (false), or unknown (null): an rvr bot looks for an rvr group.</summary>
+        public bool? RvrTask { get; init; }
+
+        /// <summary>The post the bot's group could make (it is the leader of a party still assembling with seats free), or null.</summary>
+        public AutonomousBotGroupCoordinator.RecruitPost Recruit { get; init; }
+
+        /// <summary>The <see cref="Item"/>'s object type (<see cref="eObjectType"/>), or 0 when unknown (read from its name).</summary>
+        public int ItemType { get; init; }
+
+        /// <summary>Whether the speaker's class can use its <see cref="Item"/> by the server's rule (a live bot), or null when unknown.</summary>
+        public bool? ItemUsable { get; init; }
+
+        /// <summary>
+        /// What killed the speaker in its recent death (1.1.3, after RC6), as AutonomousDeathDiagnostics.ChatKillerKind writes it:
+        /// "monster", "guard", "pet" (an enemy's), "bot", "player", or null when unknown or no recent death. A death to a monster
+        /// is told with the monster lines even in the frontier, one to an enemy with the frontier lines anywhere.
+        /// </summary>
+        public string KilledBy { get; init; }
+
+        /// <summary>How many were on the speaker when it died (0: unknown): with one, no line claims several.</summary>
+        public int Attackers { get; init; }
+
+        /// <summary>The class of the enemy that killed the speaker, or null.</summary>
+        public string KillerClass { get; init; }
+
+        /// <summary>
+        /// Whether the speaker said it was away ("brb", "afk") lately or died (live facts), or null when unknown: a "back" line
+        /// only from one that was (RC6: "ok back" in /faction from a bot that had said neither).
+        /// </summary>
+        public bool? WasAway { get; init; }
+
+        /// <summary>Whether the speaker lies dead now (live facts), or null when unknown: only a dead bot asks for a rez.</summary>
+        public bool? Dead { get; init; }
+    }
+
+    /// <summary>Whether the facts' recent death was to an enemy (a player, a bot or an enemy's pet). Pure.</summary>
+    public static bool KilledByEnemy(Facts f) => f?.KilledBy is "bot" or "player" or "pet";
+
+    /// <summary>
+    /// Whether a death is told as a frontier death: one to an enemy or a guard, or, when the killer is unknown, one in RvR (the
+    /// old rule). A death to a monster is a monster death wherever it happened (RC6: a shard golem in the frontier was told
+    /// "got caught by the bridge"). Pure.
+    /// </summary>
+    public static bool ToldAsRvrDeath(Facts f) =>
+        f != null && (KilledByEnemy(f) || f.KilledBy == "guard" || f.KilledBy == null && f.InRvR);
+
+    private const System.Text.RegularExpressions.RegexOptions DeathRx =
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled;
+
+    // A crowd without a number: three or more ("zerged", "ran into a grp", "a full grp got me", "train of reds").
+    private static readonly System.Text.RegularExpressions.Regex CrowdOfAttackers = new(
+        @"\b(zerg|zerged|grp got me|full grp|ran into a (grp|zerg)|whole zerg|too many|a fg|grp of|train of reds)\b", DeathRx);
+
+    // Several without a number: two or more ("they were waiting at the gate", "stealthers", "train of skeletons").
+    private static readonly System.Text.RegularExpressions.Regex SeveralAttackers = new(
+        @"\b(of them|they were waiting|stealthers|assassins|train of|linked)\b", DeathRx);
+
+    private static readonly System.Text.RegularExpressions.Regex OneAttacker = new(@"\b(just one|just an? |one caster|one [a-z]+$|1 v 1)\b", DeathRx);
+
+    private static readonly System.Text.RegularExpressions.Regex[] CountClaims =
+    [
+        new(@"\bhad (?<n>\d+) on me\b", DeathRx), new(@"\b(?<n>\d+) of them\b", DeathRx), new(@"\b(?<n>\d+) v 1\b", DeathRx),
+        new(@"\b1 v (?<n>\d+)\b", DeathRx), new(@"\bx(?<n>\d+)\b", DeathRx), new(@"\bpulled (?<n>two|three|\d+)\b", DeathRx),
+        new(@"\blike (?<n>\d+)\b", DeathRx), new(@"\b(?<n>\d+) or (?<m>\d+)\b", DeathRx), new(@"\bstealthers, (?<n>\d+)\b", DeathRx),
+        new(@"\b(?<n>\d+) assassins\b", DeathRx), new(@"\bgrp of (?<n>\d+)\b", DeathRx), new(@"\b(?<n>\d+)\+", DeathRx),
+    ];
+
+    /// <summary>
+    /// Whether a death line fits how many were on the teller (1.1.3, after RC6: one enemy bot, and the story said "had 2 on me
+    /// before i could run"; two elder beeches, and "elder beeches x3, no chance"). A number it claims ("had 2 on me", "x3", "3
+    /// of them", "4 v 1", "pulled two") is that many; a crowd ("zerged", "ran into a grp", "full grp") three or more; "they",
+    /// "stealthers" or "train of ..." two or more; "just one" one. Unknown (0) allows any. Pure.
+    /// </summary>
+    public static bool FitsAttackers(string text, int attackers)
+    {
+        if (string.IsNullOrEmpty(text) || attackers <= 0)
+            return true;
+        foreach (System.Text.RegularExpressions.Regex claim in CountClaims)
+        {
+            System.Text.RegularExpressions.Match match = claim.Match(text);
+            if (!match.Success)
+                continue;
+            int low = Count(match.Groups["n"].Value);
+            int high = match.Groups["m"].Success ? Count(match.Groups["m"].Value) : match.Value.EndsWith('+') ? int.MaxValue : low;
+            if (match.Value.Contains(" or so", StringComparison.Ordinal) || claim.ToString().Contains("grp of", StringComparison.Ordinal))
+                high = low + 2;
+            if (attackers < low || attackers > high)
+                return false;
+        }
+        if (attackers < 3 && CrowdOfAttackers.IsMatch(text))
+            return false;
+        if (attackers < 2 && SeveralAttackers.IsMatch(text))
+            return false;
+        return attackers == 1 || !OneAttacker.IsMatch(text);
+
+        static int Count(string word) => word switch { "two" => 2, "three" => 3, _ => int.TryParse(word, out int n) ? n : 0 };
+    }
+
+    private static readonly System.Text.RegularExpressions.Regex GuardWords = new(@"\bguards?\b",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    private static readonly System.Text.RegularExpressions.Regex StealthWords = new(@"\b(stealth\w*|assassins?)\b",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    private static readonly HashSet<string> StealthClasses = new(StringComparer.OrdinalIgnoreCase)
+        { "Infiltrator", "Scout", "Minstrel", "Nightshade", "Ranger", "Shadowblade", "Hunter" };
+
+    /// <summary>
+    /// Whether a frontier death line fits its killer (1.1.3, after RC6): no guard named for a death to an enemy, and no
+    /// stealther for one to a known class that can't stealth; with the killer unknown, any. Also <see cref="FitsAttackers"/>. Pure.
+    /// </summary>
+    public static bool FitsDeath(string text, Facts f)
+    {
+        if (string.IsNullOrEmpty(text) || f == null)
+            return true;
+        if (!FitsAttackers(text, f.Attackers))
+            return false;
+        if (KilledByEnemy(f) && GuardWords.IsMatch(text))
+            return false;
+        if (f.KillerClass != null && !StealthClasses.Contains(f.KillerClass) && StealthWords.IsMatch(text))
+            return false;
+        // A death to an enemy costs no experience in DAoC: no "lost a bubble" for it, nor at 50.
+        if ((KilledByEnemy(f) || f.Level >= 50) && text.Contains("bubble", StringComparison.OrdinalIgnoreCase))
+            return false;
+        return true;
     }
 
     /// <summary>
@@ -88,6 +220,15 @@ public static class AutonomousChatFieldTalk
 
         /// <summary>The asker's class, for answers marked {same} ("any reavers on?" is answered "me" by a reaver only).</summary>
         public string SameClass { get; init; }
+
+        /// <summary>
+        /// Whether the line asks a question (it was written with a "?", which <see cref="Finish"/> sometimes drops). A question is
+        /// answered whenever someone can answer it (owner's PC, RC3 and RC5 2026-11-09: 71 of 106 bot questions drew nothing).
+        /// </summary>
+        public bool Asks { get; init; }
+
+        /// <summary>The place a question asks about ("any1 at bold?": Caer Boldiam; "anyone in hadrian's wall?"), for a live answer.</summary>
+        public string Place { get; init; }
     }
 
     /// <summary>
@@ -102,6 +243,27 @@ public static class AutonomousChatFieldTalk
             return false;
         return said.Role == null || Fills(className, said.Role, isHealer);
     }
+
+    /// <summary>
+    /// Whether a bot can give one of the line's answers at all: <see cref="CanAnswer"/>, and when every answer is marked {same}
+    /// or {healer}, it is of the asker's class or a healer (RC5: "any reavers on? quick q" went to a bot of another class, which
+    /// had nothing to say, so nobody answered). Pure.
+    /// </summary>
+    public static bool CanGiveAnswer(Said said, string className, int level, bool isHealer = false)
+    {
+        if (!CanAnswer(said, className, level, isHealer))
+            return false;
+        if (said.Answers == null || said.Answers.Length == 0)
+            return true;
+        if (said.Answers.All(a => a.StartsWith("{same}", StringComparison.Ordinal)) &&
+            !string.Equals(className, said.SameClass, StringComparison.OrdinalIgnoreCase))
+            return false;
+        return isHealer || !said.Answers.All(a => a.StartsWith("{healer}", StringComparison.Ordinal));
+    }
+
+    /// <summary>Whether a line is a question that has answers, so it should get one (1.1.3, after RC5). Pure.</summary>
+    public static bool WantsAnswer(Said said) => said?.Answers is { Length: > 0 } && said.Kind != "social" &&
+                                                 (said.Asks || said.Text?.TrimEnd().EndsWith('?') == true);
 
     /// <summary>Whether a class fills a group role ("tank", "healer", "cc", "puller", "dps", "class:Druid"). Pure.</summary>
     public static bool Fills(string className, string role, bool isHealer = false)
@@ -164,6 +326,7 @@ public static class AutonomousChatFieldTalk
             // "{s}" is the subject as said ("keltoi", "cleric"), not its key ("keltoi:4").
             Unanswered = unanswered?.Select(line => line.Replace("{s}", subject?.Split(':')[0] ?? string.Empty).Trim()).ToArray(),
             Thanks = way.Answers == null ? null : thanks,
+            Asks = way.Text.TrimEnd().EndsWith('?'),
         };
     }
 
@@ -381,10 +544,42 @@ public static class AutonomousChatFieldTalk
     /// A field line for a channel (faction, say, lfg, trade, broadcast, guild), or null when the facts give nothing to say
     /// there. Tries a few draws for one whose text, family, idea and item the realm hasn't heard lately. Pure.
     /// </summary>
-    public static Said Line(string channel, Facts facts, Memory memory, Random random, long now = 0)
+    private static readonly System.Text.RegularExpressions.Regex Capital = new(@"^(city of camelot|camelot|jordheim|tir na nog)$",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    /// <summary>
+    /// Whether a line fits a bot standing in its zone when that zone is a capital: it doesn't hunt, camp, group, quest or port
+    /// "in" the capital ("lf 2 more for city of camelot", "grinding city of camelot at 50"). Any line fits elsewhere. Pure.
+    /// </summary>
+    public static bool FitsCapital(string text, string zone)
+    {
+        if (string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(zone) || !Capital.IsMatch(zone.Trim()))
+            return true;
+        string t = text.ToLowerInvariant();
+        string z = zone.Trim().ToLowerInvariant();
+        string names = System.Text.RegularExpressions.Regex.Escape(z) + (z.StartsWith("city of ", StringComparison.Ordinal)
+            ? "|" + System.Text.RegularExpressions.Regex.Escape(z["city of ".Length..]) : string.Empty);
+        return !System.Text.RegularExpressions.Regex.IsMatch(t,
+            @"\b(camp|camps|camping|xp|xping|duo|group|grp|quest|port|guildies|more|grind|grinding|hunt|hunting|pull|pulling|mobs?)\b[^,?.!]*\b(in|near|to|for|at|around)\s+(" + names + @")\b" +
+            @"|^(" + names + @")\s*(anyone|camp|grp|group)|\bgrinding\s+(" + names + @")\b|\?\s*(" + names + @")$");
+    }
+
+    public static Said Line(string channel, Facts facts, Memory memory, Random random, long now = 0, AutonomousChatStance stance = null)
     {
         if (facts == null)
             return null;
+        // 1.1.3, after RC5: a post the bot's state has outrun is closed where it was made, once, if it was lately: "nm got a grp" after an "lfg"
+        // once the bot is in a group, "nvm, full" after an "lfm" once its party set off. Its story then ends.
+        if (stance?.Outrun(facts.Id, channel, facts.InGroup, !facts.Live || facts.Recruit != null, now) is { } outrun &&
+            outrun.AgeMs < OutrunCloseMs)
+            return new Said(Finish(outrun.Seek == "lfg" ? Pick(random, "nm got a grp", "nvm, grouped", "nm found a grp ty", "got a grp, ty")
+                : facts.GroupSize >= 8 ? Pick(random, "nvm, full", "grp full ty", "full now, ty", "nm full")
+                : Pick(random, "nm, heading out", "nvm, going as is", "nm, we're off"), random), "social", null) { Family = "outrun" };
+        // A bot's group posts keep the dungeon it named in the last 30 minutes (a bot outside a dungeon draws one for its level
+        // each time: "lfm barrows" then "lf1m ... stonehenge" four minutes apart).
+        string keptDungeon = stance?.DungeonOf(facts.Id, now);
+        if (keptDungeon != null && !facts.InDungeon)
+            facts = facts with { Dungeon = keptDungeon };
         for (int attempt = 0; attempt < 16; attempt++)
         {
             Said said = channel switch
@@ -404,6 +599,28 @@ public static class AutonomousChatFieldTalk
             if (said == null || string.IsNullOrWhiteSpace(said.Text))
                 continue;
             said = said with { Text = Finish(said.Text, random) };
+            // 1.1.3, after RC5: what fits the speaker. A PvE line names no zone of an enemy realm ("where do i hand in the
+            // uppland quest?" from an Albion bot), and a group post keeps the speaker's story: looking for a group or forming
+            // one, one dungeon, by one name.
+            if (NamesForeignZone(said, facts) || !FitsGroupState(said.Text, facts))
+                continue;
+            // 1.1.3, after RC6: "back" only from a bot that said it was away or died ("ok back" from one that had said neither),
+            // and "tonight" is "today" by day ("busy tonight" at 10:44 AM), in the line and in its answers.
+            if (!FitsAway(said.Text, facts))
+                continue;
+            // RC11 on the owner's PC: "city of camelot anyone", "where do 41s camp in city of camelot?". A capital is no place
+            // to hunt, camp or group in.
+            if (!FitsCapital(said.Text, facts.Zone))
+                continue;
+            said = AtHour(said, facts.LocalHour);
+            string named = NamedDungeon(said.Text, facts.Dungeon);
+            if (stance != null)
+            {
+                if (!stance.Allows(facts.Id, said.Text, named, now))
+                    continue;
+                if (named != null && stance.DungeonWordOf(facts.Id, now) is { } word)
+                    said = said with { Text = UseDungeonWord(said.Text, named, word) };
+            }
             // A group ask is answered by bots near the asker's level (or in the range it names).
             if (said.LevelMax == 0 && (said.Kind == "ask_group" || ReferenceEquals(said.Answers, Joins)))
                 said = said with { LevelMin = Math.Max(1, facts.Level - 6), LevelMax = Math.Min(50, facts.Level + 6) };
@@ -418,17 +635,183 @@ public static class AutonomousChatFieldTalk
             memory?.Add(skeleton);
             memory?.Use(said.Family, said.Idea, now);
             memory?.UseFrame(said.Frame, now);
+            stance?.Note(facts.Id, said.Text, named, named == null ? null : DungeonWordIn(said.Text, named), now, channel);
             return said;
         }
         return null;
     }
 
+    // ---- what fits the speaker (1.1.3, after RC5) -----------------------------------------------------------------------------
+
+    /// <summary>How long after a group post a bot closes it ("nm got a grp") when its state outran it: its whole story window.</summary>
+    public const long OutrunCloseMs = AutonomousChatStance.WindowMs;
+
+    /// <summary>
+    /// Whether a group post fits the speaker's real state (1.1.3, after RC5): an "lfg" only from a bot out of a group that
+    /// wants one, an "lfm" only from a group that is recruiting (live facts; facts without the live state allow any). Pure.
+    /// </summary>
+    public static bool FitsGroupState(string text, Facts f)
+    {
+        if (f == null)
+            return true;
+        return AutonomousChatStance.SeekOf(text) switch
+        {
+            // RC7 on the owner's PC: a cabalist out in Odin's Gate for rvr posted "lfg Stonehenge Barrows or anywhere with xp".
+            "lfg" => !f.InGroup && f.SeeksGroup != false && FitsTask(text, f.RvrTask),
+            "lfm" => !f.Live || f.Recruit != null,
+            _ => true,
+        };
+    }
+
+    private static readonly System.Text.RegularExpressions.Regex XpWords = new(
+        @"\b(xp|exp|bubbles?|camp|lvling|leveling|levelling|dungeon|barrows|fogou|catacombs|tomb|mine|keltoi|spindel|tepok|krondon|mithra)\b",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    private static readonly System.Text.RegularExpressions.Regex RvrWords = new(
+        @"\b(rvr|realm points|rps?|keep|keeps|frontier|emain|hadrian'?s|odin'?s|zerg|8v8|fg)\b",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    /// <summary>
+    /// Whether a group post fits the bot's task: an xp or dungeon post not from a bot out for rvr, an rvr post not from a bot that
+    /// is levelling; unknown fits either. Pure.
+    /// </summary>
+    public static bool FitsTask(string text, bool? rvrTask)
+    {
+        if (rvrTask == null || string.IsNullOrWhiteSpace(text))
+            return true;
+        bool xp = XpWords.IsMatch(text), rvr = RvrWords.IsMatch(text);
+        return rvrTask.Value ? !xp || rvr : !rvr || xp;
+    }
+
+    /// <summary>
+    /// Whether a "back" line ("back", "ok back", "re") fits the speaker (1.1.3, after RC6): only one that said it was away or died
+    /// lately (<see cref="Facts.WasAway"/>; unknown allows it), as in /group (AutonomousChatEngagement.FitsGroup). Pure.
+    /// </summary>
+    public static bool FitsAway(string text, Facts f) => f?.WasAway != false || !AutonomousChatEngagement.SaysBack(text);
+
+    /// <summary>A line, its answers and its follow-ups as said at the PC's local hour ("tonight" by day reads "today"). Pure.</summary>
+    public static Said AtHour(Said said, int localHour)
+    {
+        if (said == null)
+            return null;
+        // A pool with nothing to change stays the same array (Line knows the joiners' pool by reference).
+        string[] Map(string[] pool)
+        {
+            if (pool == null)
+                return null;
+            string[] mapped = pool.Select(text => AutonomousBotVoiceCorpus.ForTimeOfDay(text, localHour)).ToArray();
+            return mapped.SequenceEqual(pool, StringComparer.Ordinal) ? pool : mapped;
+        }
+        return said with
+        {
+            Text = AutonomousBotVoiceCorpus.ForTimeOfDay(said.Text, localHour), Answers = Map(said.Answers), Unanswered = Map(said.Unanswered),
+            Thanks = Map(said.Thanks),
+        };
+    }
+
+    /// <summary>The highest level that asks where its own class trainer is: by 20 a character has trained there a dozen times.</summary>
+    public const int TrainerAskMaxLevel = 20;
+
+    /// <summary>The kinds that may name an enemy realm's frontier zone: the frontier's own talk, and a death or a group post there.</summary>
+    private static readonly HashSet<string> FrontierKinds = new(StringComparer.Ordinal) { "inc", "ask_keep", "relic", "rvr", "rally", "keeps", "death", "lfg", "lfm" };
+
+    /// <summary>Whether a zone is another realm's frontier for this speaker (a zone of no realm, or its own, is not).</summary>
+    public static bool IsForeignZone(eRealm realm, string zone)
+    {
+        eRealm home = AutonomousChatLiveAnswers.FrontierHome(zone?.Trim());
+        return home != eRealm.None && realm != eRealm.None && home != realm;
+    }
+
+    /// <summary>
+    /// Whether a line names an enemy realm's zone where only a home zone fits (owner's PC, RC3 2026-11-09, all Albion: "where do
+    /// i hand in the uppland quest?", "which stable for uppland?", "grinding odin's gate at 29", "back in uppland"). Talk of the
+    /// frontier itself may name it ("inc", keeps, relics, a death there, "lfg 50 merc, odin's gate"), but not for xp or a duo.
+    /// Pure.
+    /// </summary>
+    public static bool NamesForeignZone(Said said, Facts facts)
+    {
+        if (said == null || facts == null)
+            return false;
+        bool foreignHere = IsForeignZone(facts.Realm, facts.Zone), foreignThere = IsForeignZone(facts.Realm, facts.Destination);
+        if (!foreignHere && !foreignThere)
+            return false;
+        string text = said.Text?.ToLowerInvariant() ?? string.Empty;
+        bool names = foreignHere && ZoneWords(facts.Zone).Any(word => ContainsWord(text, word)) ||
+                     foreignThere && ZoneWords(facts.Destination).Any(word => ContainsWord(text, word));
+        if (!names)
+            return false;
+        if (!FrontierKinds.Contains(said.Kind ?? string.Empty))
+            return true;
+        return said.Kind is "lfg" or "lfm" && System.Text.RegularExpressions.Regex.IsMatch(text, @"\b(?:xp|duo|camp)\b");
+    }
+
+    /// <summary>The ways <see cref="ShortZone"/> writes a zone ("jamtland mountains", "jamtland mtns").</summary>
+    private static IEnumerable<string> ZoneWords(string zone)
+    {
+        if (string.IsNullOrWhiteSpace(zone))
+            yield break;
+        string z = zone.Trim().ToLowerInvariant();
+        if (z.StartsWith("the ", StringComparison.Ordinal))
+            z = z[4..];
+        yield return z;
+        string shortened = z.Replace("mountains", "mtns").Replace("mountain", "mtn").Replace(" north", " n").Replace(" south", " s");
+        if (shortened != z)
+            yield return shortened;
+    }
+
+    private static bool ContainsWord(string text, string word) =>
+        System.Text.RegularExpressions.Regex.IsMatch(text, @"(?<![a-z0-9'])" + System.Text.RegularExpressions.Regex.Escape(word) + @"(?![a-z0-9'])");
+
+    /// <summary>A zone word for a PvE line about the speaker's own place: "frontier" in an enemy realm's frontier zone.</summary>
+    private static string HomeZoneWord(Facts f, Random random) =>
+        f != null && IsForeignZone(f.Realm, f.Zone) ? "frontier" : ShortZone(f?.Zone, random);
+
+    /// <summary>The ways chat names a dungeon: its words ("barrows", "sh barrows", "stonehenge") and its name.</summary>
+    private static IEnumerable<string> DungeonAliases(string dungeon)
+    {
+        if (string.IsNullOrWhiteSpace(dungeon))
+            return [];
+        string name = dungeon.Trim().ToLowerInvariant();
+        IEnumerable<string> words = DungeonWords.TryGetValue(dungeon.Trim(), out string[] list) ? list : [];
+        return words.Append(name).Distinct().OrderByDescending(word => word.Length);
+    }
+
+    /// <summary>The dungeon a line names (the speaker's <paramref name="dungeon"/>, by any of its names), or null. Pure.</summary>
+    public static string NamedDungeon(string text, string dungeon) =>
+        dungeon != null && text != null && DungeonAliases(dungeon).Any(word => ContainsWord(text.ToLowerInvariant(), word)) ? dungeon : null;
+
+    private static string DungeonWordIn(string text, string dungeon) =>
+        DungeonAliases(dungeon).FirstOrDefault(word => ContainsWord(text.ToLowerInvariant(), word));
+
+    /// <summary>The line with every name of the dungeon written as <paramref name="word"/> ("stonehenge" -> "barrows").</summary>
+    private static string UseDungeonWord(string text, string dungeon, string word)
+    {
+        string pattern = @"(?<![a-z0-9'])(?:" + string.Join("|", DungeonAliases(dungeon).Select(System.Text.RegularExpressions.Regex.Escape)) + @")(?![a-z0-9'])";
+        return System.Text.RegularExpressions.Regex.Replace(text, pattern, word);
+    }
+
+    /// <summary>
+    /// Whether a bot's own item is one its class can use (the server's rule for a live bot, <see cref="Facts.ItemUsable"/>, else
+    /// <see cref="AutonomousChatGear.CanUse"/>); a focus staff only for a caster. Only then does a line pair the item with the
+    /// bot's class ("99% adroit focus staff any good for pally?" on the owner's PC, RC5). Pure.
+    /// </summary>
+    public static bool UsesItem(Facts f)
+    {
+        if (f?.Item == null)
+            return false;
+        if (AutonomousChatGear.IsFocusStaff(f.Item) && !AutonomousChatGear.IsFocusCaster(f.ClassName))
+            return false;
+        return f.ItemUsable ?? AutonomousChatGear.CanUse(f.ClassName, f.Level, f.ItemType, f.Item);
+    }
+
     /// <summary>
     /// Another bot's short answer to a field line, in its own words: "me, thane 31" names the answerer's class and level; an
-    /// answer marked {healer} comes only from a healer. Tries a few for one the channel hasn't heard lately (three words or
-    /// more; "me" and "omw" may repeat). Null for none. Pure.
+    /// answer marked {healer} comes only from a healer. Tries a few for one the channel hasn't heard this evening (three words or
+    /// more; "me" and "omw" may repeat); when all of them have been heard, one not heard in the last 30-60 minutes (1.1.3, after
+    /// RC5: each answer was said once an evening, so a question asked a fourth time had none left and went unanswered). Null
+    /// for none. Pure.
     /// </summary>
-    public static string Answer(Said said, Facts answerer, Memory memory, Random random)
+    public static string Answer(Said said, Facts answerer, Memory memory, Random random, long now = 0)
     {
         if (said?.Answers == null || said.Answers.Length == 0)
             return null;
@@ -436,6 +819,7 @@ public static class AutonomousChatFieldTalk
         if (answerer != null && !CanAnswer(said, answerer.ClassName, answerer.Level, answerer.IsHealer))
             return null;
         string asked = QuestionKind(said.Text);
+        string rested = null;
         for (int attempt = 0; attempt < 6; attempt++)
         {
             string text = said.Answers[random.Next(said.Answers.Length)];
@@ -464,13 +848,26 @@ public static class AutonomousChatFieldTalk
             if (memory != null && skeleton.Split(' ').Length > 2)
             {
                 if (memory.Seen(skeleton))
+                {
+                    if (rested == null && !memory.Rested(null, AnswerIdea(skeleton), now))
+                        rested = text;
                     continue;
+                }
                 memory.Add(skeleton);
+                memory.Use(null, AnswerIdea(skeleton), now);
             }
             return text;
         }
+        if (rested != null)
+        {
+            memory?.Use(null, AnswerIdea(AutonomousChatFiller.Skeleton(rested)), now);
+            return rested;
+        }
         return asked == null ? null : AnswerFor(asked, answerer, random) is { } plain ? Finish(plain, random) : null;
     }
+
+    /// <summary>The idea an answer rests under (30-60 minutes, <see cref="Memory.IdeaRestMs"/>) once the evening has heard it.</summary>
+    private static string AnswerIdea(string skeleton) => "answer:" + skeleton;
 
     /// <summary>A follow-up from the speaker: thanks after an answer, or "still lf"/"nm" when nobody answered. Null for none. Pure.</summary>
     public static string FollowUp(Said said, bool answered, Random random, Memory memory = null, long now = 0)
@@ -526,31 +923,57 @@ public static class AutonomousChatFieldTalk
         if (f.Level < 5)
             return null;
         string cls = ShortClass(f.ClassName, random), lvl = f.Level.ToString(), dun = ShortDungeon(f.Dungeon, random);
-        // A group with room looks for more; a rvr-level bot looks for a rvr group now and then.
-        if (f.InGroup && f.GroupSize is > 1 and < 8 && random.NextDouble() < 0.7)
+        // A group with room looks for more; a rvr-level bot looks for a rvr group now and then. 1.1.3, after RC5: posts follow
+        // the bot's real state. A bot in a group never posts "lfg"; only a group that really has seats and lacks someone posts
+        // "lfm" (Facts.Recruit, from the group coordinator: the leader of a party still assembling), naming the role it lacks,
+        // its camp and its levels. Facts without the live state (Recruit and SeeksGroup unknown) keep the old draw.
+        if (f.InGroup)
         {
-            int missing = Math.Clamp(8 - f.GroupSize, 1, 4);
-            string need = Pick(random, "heal", "healer", "tank", "cc", "mezzer", "dps", "any", "caster", "support");
-            string band = $"{Math.Max(1, f.Level - 3)}-{Math.Min(50, f.Level + 3)}";
-            string where = dun ?? ShortZone(f.Zone, random);
-            return new Said(Pick(random,
+            AutonomousBotGroupCoordinator.RecruitPost post = f.Recruit;
+            if (post == null && (f.Live || f.GroupSize >= 8 || f.GroupSize <= 1))
+                return null;
+            int missing = post?.Missing ?? Math.Clamp(8 - f.GroupSize, 1, 4);
+            string need = post == null ? Pick(random, "heal", "healer", "tank", "cc", "mezzer", "dps", "any", "caster", "support")
+                : post.Need switch
+                {
+                    "healer" => Pick(random, "heal", "healer"),
+                    "cc" => Pick(random, "cc", "mezzer"),
+                    _ => post.Need,
+                };
+            string band = post == null ? $"{Math.Max(1, f.Level - 3)}-{Math.Min(50, f.Level + 3)}"
+                : post.Low == post.High ? post.Low.ToString() : $"{post.Low}-{post.High}";
+            string where = post?.Where == null ? dun ?? ShortZone(f.Zone, random)
+                : post.WhereIsDungeon ? ShortDungeon(post.Where, random) : ShortZone(post.Where, random);
+            string xpGrp = (post?.High ?? f.Level) < 50 ? "xp grp" : "grp";
+            Said lfm = new(Pick(random,
                 $"lf{missing}m {where}", $"lf{missing}m {need} {where}", $"lfm {where} {band}", $"lf1m {need} {where} pst",
-                $"lfm {band} {where}, need {need}", $"lf {need} for {where} pst", $"{where} grp lf{missing}m", $"lf{missing}m {band} xp grp {where}",
+                $"lfm {band} {where}, need {need}", $"lf {need} for {where} pst", $"{where} grp lf{missing}m", $"lf{missing}m {band} {xpGrp} {where}",
                 $"need {need} {where} x me", $"lf1m {need}, {where}, {band}"), "lfm", null);
+            return post == null ? lfm : lfm with
+            {
+                Role = RoleOf(post.Need),
+                LevelMin = Math.Max(1, post.Low - 3),
+                LevelMax = Math.Min(50, post.High + 3),
+            };
         }
+        // A solo bot that doesn't want a group (a solo task) doesn't post one.
+        if (f.SeeksGroup == false)
+            return null;
         if ((f.InRvR || f.Level >= 40) && random.NextDouble() < 0.35)
             return new Said(Pick(random,
                 $"lfg rvr {lvl} {cls}", $"{lvl} {cls} lf rvr grp", $"any rvr grps lf {cls}?", $"lf rvr grp {cls} {lvl} pst",
                 $"{cls} lfg rvr", $"lfg {f.World?.Frontier?.ToLowerInvariant() ?? "rvr"} {cls}"), "lfg", null);
         string zone = ShortZone(f.Zone, random);
+        // No xp at the level cap: a 50 looks for a group, not an xp group.
+        string xp = f.Level < 50 ? "xp " : string.Empty;
         // Round 8: the terse posts ("lfg 38 thane") may repeat as on any server; the sentence shapes are frames, rested and capped.
         return Make(random, "lfg", cls + ":" + lvl, null, null,
             new V($"lfg {lvl} {cls}", null), new V($"{lvl} {cls} lfg", null), new V($"lfg {lvl} {cls} pst", null), new V($"lf grp {lvl} {cls}", null),
             new V($"{cls} {lvl} lfg", null), new V(dun != null ? $"lfg {dun} {lvl} {cls}" : $"lfg {lvl} {cls} any", null),
-            new V(dun != null ? $"{lvl} {cls} lfg {dun}" : $"{lvl} {cls} lfg xp", null), new V($"{lvl} {cls} lf xp grp", null),
+            new V(dun != null ? $"{lvl} {cls} lfg {dun}" : $"{lvl} {cls} lfg {xp}".TrimEnd(), null), new V($"{lvl} {cls} lf {xp}grp", null),
             new V($"lfg {lvl} {cls}, {zone}", null), new V($"lfg {cls} {lvl} /t", null), new V($"{cls} lfg {lvl}, x me", null),
             new V($"any grps for {lvl} {cls}?", "lfg_anygrps"), new V($"{lvl} {cls} lf duo {zone}", "lfg_duo"), new V($"{lvl} {cls} lfg anything", "lfg_anything"),
-            new V($"any room for a {lvl} {cls}?", "lfg_room"), new V($"{cls} {lvl} looking for a grp", "lfg_looking"), new V($"lf xp grp, {lvl} {cls}", "lfg_xpgrp"),
+            new V($"any room for a {lvl} {cls}?", "lfg_room"), new V($"{cls} {lvl} looking for a grp", "lfg_looking"), new V($"lf {xp}grp, {lvl} {cls}", "lfg_xpgrp"),
             new V($"{lvl} {cls} free for grps", "lfg_free"), new V($"{lvl} {cls} wants a grp in {dun ?? zone}", "lfg_wants"));
     }
 
@@ -569,11 +992,13 @@ public static class AutonomousChatFieldTalk
                 $"wts {quality}{item} x me"), "wts", null, item);
         }
         string want = WantFor(f, random);
+        // Asked in /say in town too, where a thread answers it (1.1.3, after RC5).
+        string[] seller = Pool("try the broker", $"merchants in {CapitalWord(f.Realm)}", "crafters can make it, pst one", "nope sry");
         return Make(random, "wtb", want, null, null,
             new V($"wtb {want} pst", null), new V($"wtb {want}", null),
             new V(want.Any(char.IsDigit) ? $"wtb {want} asap" : $"wtb {want} for {f.Level} {ShortClass(f.ClassName, random)}", want.Any(char.IsDigit) ? null : "wtb_for"),
-            new V($"anyone selling {want}?", "wtb_anyone"), new V($"lf {want} pst", null), new V($"wtb {want}, paying ok", "wtb_paying"),
-            new V($"any1 selling {want}", "wtb_any1"), new V($"need {want}, anyone?", "wtb_need"), new V($"who has {want}?", "wtb_who"),
+            new V($"anyone selling {want}?", "wtb_anyone", seller), new V($"lf {want} pst", null), new V($"wtb {want}, paying ok", "wtb_paying"),
+            new V($"any1 selling {want}", "wtb_any1"), new V($"need {want}, anyone?", "wtb_need", seller), new V($"who has {want}?", "wtb_who", seller),
             new V($"buying {want}", "wtb_buying"), new V($"looking for {want}, will pay", "wtb_looking"));
     }
 
@@ -639,6 +1064,7 @@ public static class AutonomousChatFieldTalk
     private static Said Say(Facts f, Random random, bool broadcast = false)
     {
         string cls = ShortClass(f.ClassName, random);
+        string[] pots = Pool("the merchant has em", "try the merchant", $"alchemists in {CapitalWord(f.Realm)}", "nope sry");
         if (f.InTown)
         {
             if (f.Item != null && random.NextDouble() < 0.4)
@@ -649,13 +1075,17 @@ public static class AutonomousChatFieldTalk
                     new V($"lfg {f.Level} {cls}", null, Joins), new V("anyone grouping?", "say_grouping", Joins),
                     new V("any healers around?", "say_healers", Pool("{healer}me", "{healer}me, {lvl}")),
                     new V("anyone heading out?", "say_out", Pool("me", "in a bit", "me, where to?")), new V($"{f.Level} {cls} lf grp", null, Joins),
-                    new V("anyone selling pots?", "say_pots"), new V($"any {cls}s around? need tips", "say_tips"));
+                    new V("anyone selling pots?", "say_pots", pots),
+                    // 1.1.3, after RC5: tips about one's own class only while learning it ("any minsts around? need tips" from a 50).
+                    f.Level < 40 ? new V($"any {cls}s around? need tips", "say_tips", Pool("{same}me, whats up", "{same}sure, ask"))
+                        : new V("anyone selling dye?", "say_dye"));
             return Make(random, "social", null, SeekStill, SeekThanks,
                 new V($"lfg {f.Level} {cls}", null, Joins), new V("anyone grouping?", "say_grouping", Joins), new V("brb", "brb"),
                 new V("back", "back"), new V("any healers around?", "say_healers", Pool("{healer}me", "{healer}me, {lvl}")),
                 new V("anyone heading out?", "say_out", Pool("me", "in a bit", "me, where to?")),
-                f.Destination != null ? new V($"which stable for {ShortZone(f.Destination, random)}?", "say_stable") : new V("where is the trainer", "say_trainer"),
-                new V($"{f.Level} {cls} lf grp", null, Joins), new V("afk 5", "afk"), new V("anyone selling pots?", "say_pots"), new V("brb selling", "brb_selling"));
+                f.Destination != null ? new V($"which stable for {ShortZone(f.Destination, random)}?", "say_stable", TravelAnswers(f.Realm))
+                    : f.Level <= TrainerAskMaxLevel ? new V("where is the trainer", "say_trainer", TrainerAnswers(f, random)) : new V("anyone selling dye?", "say_dye"),
+                new V($"{f.Level} {cls} lf grp", null, Joins), new V("afk 5", "afk"), new V("anyone selling pots?", "say_pots", pots), new V("brb selling", "brb_selling"));
         }
         string monster = f.Monster;
         string monsters = monster == null ? null : AutonomousBotVoiceCorpus.Plural(monster);
@@ -667,7 +1097,7 @@ public static class AutonomousChatFieldTalk
             new V("this camp taken?", "say_taken", Pool("go ahead", "its free", "ya sry", "were leaving soon")),
             new V("anyone grouping here?", "say_grouping", Joins), new V($"lf grp here {f.Level} {cls}", null, Joins), new V("sry ks", null),
             new V("camp free if u want it", "say_free", Pool("ty", "ty!", "thx")), new V("anyone camping this?", "say_taken", Pool("ya", "me sry", "go ahead")),
-            new V(monster != null ? $"{monster} up?" : "anything up?", "say_up"),
+            new V(monster != null ? $"{monster} up?" : "anything up?", "say_up", Pool("not yet", "dunno, just got here", "was a min ago")),
             new V("anyone wanna duo?", "say_duo", Joins), new V("oom brb", "oom"), new V("careful adds", "adds"),
             new V(f.IsHealer ? "need heals?" : "any healers here?", f.IsHealer ? "say_offerheal" : "say_healers",
                 f.IsHealer ? Pool("ya pls", "nah im ok", "ty") : Pool("{healer}me", "{healer}me, sec")));
@@ -720,24 +1150,34 @@ public static class AutonomousChatFieldTalk
     private static Said Rvr(Facts f, WorldView w, Random random)
     {
         string frontier = f.World?.Frontier?.ToLowerInvariant() ?? "the frontier";
-        string own = w.OwnKeeps.Length > 0 ? ShortKeep(w.OwnKeeps[random.Next(w.OwnKeeps.Length)], random) : "the keep";
+        string ownFull = w.OwnKeeps.Length > 0 ? w.OwnKeeps[random.Next(w.OwnKeeps.Length)] : null;
+        string own = ownFull != null ? ShortKeep(ownFull, random) : "the keep";
         string[] where = w.AttackedKeeps.Length > 0
             ? Pool($"{ShortKeep(w.AttackedKeeps[0], random)} under attack", $"at {ShortKeep(w.AttackedKeeps[0], random)}", $"hitting {ShortKeep(w.AttackedKeeps[0], random)}")
-            : null;
-        return Make(random, "rvr", null, Pool("anyone?", "nm"), Pool("ty", "k omw", "omw"),
+            : Pool("quiet atm", "dunno, quiet tonight", "havent seen any");
+        Said said = Make(random, "rvr", null, Pool("anyone?", "nm"), Pool("ty", "k omw", "omw"),
             new V("any grps out?", "rvr_grps", where), new V("anyone out tonight?", "rvr_out", Pool("me", "few of us", "me, {cls}")),
             new V($"anyone in {frontier}?", "rvr_out", Pool("me", "few of us", "on my way")),
             new V("rvr grp forming pst", "rvr_form", Joins), new V("where's the zerg", "rvr_zerg", where), new V("where is everyone", "rvr_zerg", where),
-            new V($"any1 at {own}?", "rvr_keep"), new V($"quiet in {frontier}", "rvr_quiet"), new V("port to frontier up?", "rvr_port"),
-            new V("any stealthers out?", "rvr_stealth"), new V("lf rvr grp", "rvr_lf", Pool("x", "me too", "x me")),
+            new V($"any1 at {own}?", "rvr_keep", Pool("dunno, not me", "not me, check the map", "dunno")), new V($"quiet in {frontier}", "rvr_quiet"),
+            new V("port to frontier up?", "rvr_port", Pool("ya", "should be", $"ya, porter in {CapitalWord(f.Realm)}")),
+            new V("any stealthers out?", "rvr_stealth", Pool("havent seen any", "always lol, stick together", "dunno, watch ur back")),
+            new V("lf rvr grp", "rvr_lf", Pool("x", "me too", "x me")),
             new V("anyone want to hit a keep?", "rvr_hit", Pool("me", "im in", "which one?", "x")), new V($"{EnemyWord(f.Realm, random)} out?", "rvr_enemy", where));
+        // The place it asks about, for the live answer (who of the realm is really there).
+        return said.Family switch
+        {
+            "rvr_keep" when ownFull != null => said with { Place = ownFull },
+            "rvr_out" when said.Text.Contains(frontier, StringComparison.Ordinal) && f.World?.Frontier != null => said with { Place = f.World.Frontier },
+            _ => said,
+        };
     }
 
     private static Said AskXp(Facts f, Random random)
     {
         string lvl = f.Level.ToString(), cls = ShortClass(f.ClassName, random);
         string dun = ShortDungeon(f.Dungeon, random);
-        string[] answers = f.Dungeon == null ? null
+        string[] answers = f.Dungeon == null ? Pool("check lfg, someone always xps at that lvl", "solo outside town is ok", "lfg for a dungeon grp")
             : Pool(dun, $"try {dun}", $"{dun} prob", $"{dun} at {lvl}", $"{dun} if u get a grp", $"{dun} is ok at {lvl}", $"{dun} or solo outside");
         return Make(random, "ask_xp", (f.Level / 5).ToString(), Pool("nm found one", $"anyone? {lvl} here", "nm, trying {s} solo", $"no one? ok {dun ?? "solo"} it is"),
             Pool("ty", "ty!", "k ty", "kk", "cool ty", "ty, omw"),
@@ -751,13 +1191,20 @@ public static class AutonomousChatFieldTalk
     private static Said AskGroup(Facts f, Random random)
     {
         string dun = ShortDungeon(f.Dungeon, random), zone = ShortZone(f.Zone, random), lvl = f.Level.ToString(), cls = ShortClass(f.ClassName, random);
+        string[] where = Pool("dunno, check lfg", "not me sry", "think so, check lfg", "not atm", "nope, elsewhere");
+        // RC11 on the owner's PC: "city of camelot anyone" from a bot that had just ported to Camelot. Nobody xps in a town: a
+        // bot in one asks for a group to head out with instead.
+        V Out(string inZone, string fromTown, string kind, string[] answers) => new(f.InTown ? fromTown : inZone, kind, answers);
         return Make(random, "ask_group", (dun ?? zone) + ":" + f.Level / 5, SeekStill, SeekThanks,
             new V(dun != null ? $"anyone up for {dun}?" : "anyone xping?", "group_up", Joins),
-            new V(dun != null ? $"any grps in {dun}?" : "any grps out?", "group_any"),
-            new V($"anyone wanna duo in {zone}?", "group_duo", Joins), new V($"lf duo {lvl} {cls}", "group_duo", Joins),
-            new V($"anyone xping in {zone}?", "group_where"), new V($"{zone} anyone?", "group_where"),
+            new V(dun != null ? $"any grps in {dun}?" : "any grps out?", "group_any", Pool("dunno, check lfg", "saw some in lfg", "not that i know", "few posting in lfg earlier", "none i saw", "check lfg, was a couple")),
+            Out($"anyone wanna duo in {zone}?", "anyone wanna duo? heading out now", "group_duo", Joins), new V($"lf duo {lvl} {cls}", "group_duo", Joins),
+            Out($"anyone xping in {zone}?", "anyone heading out to xp?", f.InTown ? "group_up" : "group_where", f.InTown ? Joins : where),
+            Out($"{zone} anyone?", "grp anyone? in town, can come to u", f.InTown ? "group_up" : "group_where",
+                f.InTown ? Joins : Pool("not me sry", "dunno, check lfg", "not that i know", "nope", "not me, other side of the realm")),
             new V(dun != null ? $"{dun} grp?" : "grp anyone?", "group_up", Joins), new V("any1 lf grp?", "group_lf", Pool("me", "x", "me, {lvl}", "me pls")),
-            new V($"anyone near {zone}?", "group_where"));
+            Out($"anyone near {zone}?", "anyone leaving town soon? lf grp", f.InTown ? "group_up" : "group_where",
+                f.InTown ? Joins : Pool("not me sry", "dunno, check lfg", "not that i know", "not atm sry", "was earlier, left")));
     }
 
     private static Said NeedClass(Facts f, Random random)
@@ -783,17 +1230,20 @@ public static class AutonomousChatFieldTalk
     {
         string monsters = AutonomousBotVoiceCorpus.Plural(f.Monster), zone = ShortZone(f.Zone, random);
         return Make(random, "camp", f.Monster, Pool("nm got it", $"nm, {monsters} were free", "nvm found a spot"), Pool("ty", "k", "kk"),
-            new V($"{monsters} in {zone} free?", "camp_free"), new V($"anyone camping {monsters}?", "camp_free"),
-            new V($"{monsters} drop anything good?", "camp_drops"), new V($"{f.Monster} up anyone?", "camp_up"),
+            new V($"{monsters} in {zone} free?", "camp_free", Pool("dunno, go look", "not me, go for it", "dunno, havent been")),
+            new V($"anyone camping {monsters}?", "camp_free", Pool("not me, go for it", "dunno, go look", "not me")),
+            new V($"{monsters} drop anything good?", "camp_drops", Pool("mostly junk", "some decent stuff", "coin mostly lol", "now and then")),
+            new V($"{f.Monster} up anyone?", "camp_up", Pool("dunno", "didnt see it", "dunno, not there")),
             new V($"camping {monsters} if anyone wants to join", "camp_join", Pool("me", "where at?", "x", "me, {lvl}")));
     }
 
     private static Said Travel(Facts f, Random random)
     {
         string dest = ShortZone(f.Destination, random);
-        return Make(random, "travel", dest, Pool("nm found it", $"nm, found {dest}"), null,
-            new V($"where is {dest}?", "ask_way"), new V($"how do i get to {dest}", "ask_way"), new V($"which stable for {dest}?", "ask_stable"),
-            new V($"fastest way to {dest}?", "ask_way"));
+        string[] way = TravelAnswers(f.Realm);
+        return Make(random, "travel", dest, Pool("nm found it", $"nm, found {dest}"), Pool("ty", "k ty", "ty!"),
+            new V($"where is {dest}?", "ask_way", way), new V($"how do i get to {dest}", "ask_way", way), new V($"which stable for {dest}?", "ask_stable", way),
+            new V($"fastest way to {dest}?", "ask_way", way));
     }
 
     /// <summary>A rally while a keep is really under attack: "all to beno", "grp up for bled def" (round 6).</summary>
@@ -835,11 +1285,15 @@ public static class AutonomousChatFieldTalk
     private static Said CampAsk(Facts f, Random random)
     {
         string lvl = f.Level.ToString(), zone = ShortZone(f.Zone, random), dun = ShortDungeon(f.Dungeon, random);
-        string[] answers = dun == null ? null : Pool($"{dun}", $"try {dun}", $"{dun} with a grp", $"outside {dun}");
+        string[] answers = dun == null ? Pool("check lfg, someone always camps there", "solo outside town is ok", "lfg for a dungeon grp")
+            : Pool($"{dun}", $"try {dun}", $"{dun} with a grp", $"outside {dun}");
         return Make(random, "camp", "ask:" + zone + ":" + f.Level / 3, Pool($"anyone? {lvl} here", "nm found one", "ok, guess ill wander"),
             Pool("ty", "k ty", "ty, omw", "cool"),
-            new V($"good camp for {lvl}?", "camp_ask", answers), new V($"where do {lvl}s camp in {zone}?", "camp_ask_zone", answers),
-            new V($"{zone} camp for {lvl}?", "camp_ask_zone", answers), new V($"anything good to camp at {lvl}?", "camp_ask", answers));
+            new V($"good camp for {lvl}?", "camp_ask", answers),
+            // RC11 on the owner's PC: nobody camps in a town ("where do 41s camp in city of camelot?").
+            f.InTown ? new V($"where should a {lvl} camp?", "camp_ask", answers) : new V($"where do {lvl}s camp in {zone}?", "camp_ask_zone", answers),
+            f.InTown ? new V($"heading out, camp for {lvl}?", "camp_ask", answers) : new V($"{zone} camp for {lvl}?", "camp_ask_zone", answers),
+            new V($"anything good to camp at {lvl}?", "camp_ask", answers));
     }
 
     /// <summary>"lf X for Y" with a real dungeon for the level (round 6).</summary>
@@ -863,7 +1317,7 @@ public static class AutonomousChatFieldTalk
         return Make(random, "camp", "named:" + dun, Pool("nm", "guess it's down"), Pool("ty", "k ty"),
             new V($"anyone seen the named in {dun}?", "named", Pool("not tonight", "dunno", "was up earlier")),
             new V($"{dun} named up?", "named", Pool("dunno", "not when i left", "think so")),
-            new V($"who's camping the {dun} named", "named"));
+            new V($"who's camping the {dun} named", "named", Pool("dunno", "nobody i think", "dunno, go look")));
     }
 
     /// <summary>Class talk tied to the speaker's real class and level (round 6).</summary>
@@ -874,9 +1328,17 @@ public static class AutonomousChatFieldTalk
         // 2026-11-08: the asker asked "solo or grp?", the answerer's question).
         Said said = Make(random, "class", (f.ClassName ?? "").ToLowerInvariant() + ":" + f.Level / 5, Pool("nobody? ok lol", "nm figured it out"),
             Pool("ty", "ty!", "makes sense ty", "k ty"),
-            new V($"{cls}s, sc or drops at {lvl}?", "class_gear"), new V($"what weapon for a {lvl} {cls}?", "class_weapon"),
-            new V($"{cls} {lvl}, what should i put points in?", "class_spec"), new V($"any {cls}s on? quick q", "class_q", Pool("{same}me, whats up", "{same}me", "{same}me, sup")),
-            f.Level <= 45 ? new V($"is {cls} fun after {f.Level + 5}?", "class_later") : new V($"anyone else play {cls}?", "class_others", Pool("{same}me", "my alt is one")), new V($"{cls}s, where did u xp at {lvl}?", "class_xp"));
+            new V($"{cls}s, sc or drops at {lvl}?", "class_gear", GearAdvice(f.Level)), new V($"what weapon for a {lvl} {cls}?", "class_weapon", WeaponAdvice(f.ClassName)),
+            // 1.1.3, after RC5: a 50 has spent its points and has no xp to find; it asks about a respec or gear instead.
+            f.Level < 50 ? new V($"{cls} {lvl}, what should i put points in?", "class_spec", SpecAdvice(f.ClassName))
+                : new V($"{cls}s, any respec tips at 50?", "class_spec", SpecAdvice(f.ClassName)),
+            new V($"any {cls}s on? quick q", "class_q", Pool("{same}me, whats up", "{same}me", "{same}me, sup")),
+            f.Level <= 45 ? new V($"is {cls} fun after {f.Level + 5}?", "class_later", Pool($"gets better at {f.Level + 5}", "ya, more fun in a grp", "ya, rvr is where its fun"))
+                : new V($"anyone else play {cls}?", "class_others", Pool("{same}me", "my alt is one", "{same}ya, me", "used to, rerolled", "my bro does")),
+            f.Level < 50
+                ? new V($"{cls}s, where did u xp at {lvl}?", "class_xp", ShortDungeon(f.Dungeon, random) is { } xpDun
+                    ? Pool($"{xpDun} with a grp", $"{xpDun} mostly", $"solo outside {xpDun}") : Pool("lfg grps mostly", "solo outside town"))
+                : new V($"{cls}s, sc or drops at 50?", "class_gear", GearAdvice(50)));
         return said with { SameClass = f.ClassName };
     }
 
@@ -905,8 +1367,11 @@ public static class AutonomousChatFieldTalk
         ways.Add(random.Next(3) switch
         {
             0 => new V($"{f.Level} {ShortClass(f.ClassName, random)}, still grinding", "status_grind"),
-            1 => new V($"grinding {zone} at {f.Level}", "status_grind_zone"),
-            _ => new V($"still {f.Level} lol", "status_still"),
+            // RC10 on the owner's PC: "grinding city of camelot at 50" from a bot back at its bind after a death.
+            1 when !f.InTown => new V($"grinding {zone} at {f.Level}", "status_grind_zone"),
+            1 => new V($"{f.Level} {ShortClass(f.ClassName, random)}, still grinding", "status_grind"),
+            _ when f.Level < 50 => new V($"still {f.Level} lol", "status_still"),
+            _ => new V("50 and still grinding lol", "status_grind"),
         });
         ways.Add(new V($"back in {zone}", "status_zone"));
         ways.Add(new V(f.IsHealer ? "sitting for pow" : "sitting, need hp", "status_sit"));
@@ -918,19 +1383,25 @@ public static class AutonomousChatFieldTalk
     {
         string cls = ShortClass(f.ClassName, random), lvl = f.Level.ToString();
         string want = WantFor(f, random);
+        string[] have = Pool("try the broker", $"merchants in {CapitalWord(f.Realm)}", "crafters can make it, pst one", "nope sry");
         return Make(random, "ask", cls + ":" + want, Pool("nm found it", $"nobody? ok", $"still need {want}"), Pool("ty", "ty!", "k ty", "cool"),
-            new V($"anyone have {want}?", "ask_have"), new V($"anyone got spare {want}", "ask_have"),
-            new V($"where's the {cls} trainer", "ask_trainer"), new V($"what spec for a {lvl} {cls}?", "ask_spec"),
-            new V($"{cls}s, what do u put points in at {lvl}?", "ask_spec"),
-            want.Any(char.IsDigit) ? new V($"anyone selling {want}?", "ask_have") : new V($"is {want} worth it at {lvl}?", "ask_worth"));
+            new V($"anyone have {want}?", "ask_have", have), new V($"anyone got spare {want}", "ask_have", have),
+            // 1.1.3, after RC5: only a young character asks where its own trainer is (a 50 paladin asked "where's the paladin trainer").
+            f.Level <= TrainerAskMaxLevel ? new V($"where's the {cls} trainer", "ask_trainer", TrainerAnswers(f, random)) : new V($"anyone got spare {want}?", "ask_have", have),
+            new V($"what spec for a {lvl} {cls}?", "ask_spec", SpecAdvice(f.ClassName)),
+            new V($"{cls}s, what do u put points in at {lvl}?", "ask_spec", SpecAdvice(f.ClassName)),
+            want.Any(char.IsDigit) ? new V($"anyone selling {want}?", "ask_have", have)
+                : new V($"is {want} worth it at {lvl}?", "ask_worth", Pool("ya, if its cheap", "only if u cant find better", "ya, any upgrade helps", "nah, wait for a drop", "depends what they want for it", "if u got the coin sure")));
     }
 
     private static Said Crafter(Facts f, Random random)
     {
         string craft = Pick(random, "armorcrafters", "weaponcrafters", "fletchers", "tailors", "spellcrafters", "alchemists");
         string one = craft[..^1], article = "aeiou".Contains(one[0]) ? "an" : "a";
+        string[] crafters = Pool($"try the crafters in {CapitalWord(f.Realm)}", "check the broker", $"few in {CapitalWord(f.Realm)} usually");
         return Make(random, "crafter", one + ":" + f.Level / 10, Pool("nm found one", "still lf " + article + " " + one, $"any {craft}? anyone", $"no {craft} on? ok"), null,
-            new V($"any {craft} on?", "need_crafter"), new V($"need {article} {one} pst", "need_crafter"), new V($"any good {craft} around?", "need_crafter"),
+            new V($"any {craft} on?", "need_crafter", crafters), new V($"need {article} {one} pst", "need_crafter"),
+            new V($"any good {craft} around?", "need_crafter", crafters),
             new V($"{one} on? pst", "need_crafter"));
     }
 
@@ -955,14 +1426,47 @@ public static class AutonomousChatFieldTalk
             Unanswered = f.Level >= 50 ? Pool("finally lol", "now what", "rvr time") : Pool("off to train", $"{f.Level + 1} next lol", "trainer time", "finally lol"),
         };
 
-    private static Said Death(Facts f, Random random) =>
-        new(Pick(random, "died lol", "rip me", f.Monster != null ? $"died to {AutonomousBotVoiceCorpus.Plural(f.Monster)} ugh" : "died ugh",
-            "argh died", $"rez in {ShortZone(f.Zone, random)}?", "lost a bubble, ugh", "train lol, dead", "need rez pls"), "death",
-            Pool("rip", "ouch", "lol rip", "oof"))
+    /// <summary>
+    /// A bot's own death in a line (1.1.3, after RC6: a paladin killed by one enemy bot said "died to frontier patrol near death
+    /// stalkers ugh"): a death to an enemy is told as a gank, with the enemy's class when known and no monster; one to a monster
+    /// names the monster that killed it; no line claims a crowd it didn't have. Pure.
+    /// </summary>
+    private static Said Death(Facts f, Random random)
+    {
+        // A rez request is answered as one (RC6: "rez in murdaigean?" drew "oof"): "omw" or "where at?" only from a healer,
+        // "no rez on me sry" from anyone, and asked only while the bot still lies dead.
+        if (f.Dead != false && random.NextDouble() < 0.25)
+            return new Said(Pick(random, $"rez in {ShortZone(f.Zone, random)}?", "need rez pls", "any rez?", $"rez pls, {ShortZone(f.Zone, random)}"), "death",
+                Pool("{healer}omw", "{healer}where at?", "{healer}sec, coming", "too far sry", "no rez on me sry", "cant, sry, too far"))
+            {
+                Asks = true,
+                Thanks = Pool("k", "k ty", "np"),
+                Unanswered = Pool("released, running back", "nm, released", "k releasing", "nvm, running back"),
+            };
+        var options = new List<string> { "died lol", "rip me", "argh died" };
+        if (KilledByEnemy(f))
+        {
+            string cls = f.KillerClass == null ? null : ShortClass(f.KillerClass, random);
+            options.AddRange(["got ganked", "ganked lol", "got jumped ugh", "died ugh"]);
+            if (cls != null)
+                options.AddRange([$"died to {("aeiou".Contains(cls[0]) ? "an" : "a")} {cls}", $"{cls} got me ugh"]);
+        }
+        else if (f.KilledBy == "guard")
+            options.AddRange(["guards got me lol", "died to a guard ugh"]);
+        else
+        {
+            options.Add(f.Monster != null ? $"died to {AutonomousBotVoiceCorpus.Plural(f.Monster)} ugh" : "died ugh");
+            options.Add("lost a bubble, ugh");
+            if (f.Attackers != 1)
+                options.Add("train lol, dead");
+        }
+        string[] fitting = options.Where(text => FitsDeath(text, f)).ToArray();
+        return new(Pick(random, fitting), "death", Pool("rip", "ouch", "lol rip", "oof"))
         {
             Thanks = Pool("ty", "heh ty", "ugh ya"),
             Unanswered = Pool("released, running back", "got a rez ty", "back up", "ok running back"),
         };
+    }
 
     private static Said Social(Facts f, Random random)
     {
@@ -973,7 +1477,8 @@ public static class AutonomousChatFieldTalk
             new V(late ? "gn all" : evening ? "evening all" : "hi all", "hello_all", late ? Pool("gn", "night") : Pool("o/", "hey", "heya")),
             new V("quiet tonight", "quiet"), new V("who's on", "anyone_on", Pool("me", "here", "o/")),
             // 1.1.3: never a bare "lol" out of nowhere: unprompted, it reads as a laugh at whatever was said before it.
-            new V(late ? "one more lvl then bed" : "long night lol", late ? "bedtime" : "long_night"), new V("afk 5", "afk"), new V("brb phone", "brb_phone"),
+            new V(late ? "one more lvl then bed" : evening ? "long night lol" : "long day lol", late ? "bedtime" : "long_night"), new V("afk 5", "afk"),
+            new V("brb phone", "brb_phone"),
             new V("ok back", "back", Pool("wb")), new V(f.BagFull ? "bags full brb" : "brb drink", "brb_bags"),
             new V(late ? "late crew still here" : "busy tonight", "busy_night"));
     }
@@ -1010,12 +1515,15 @@ public static class AutonomousChatFieldTalk
             options.Add((() => Ding(f, random) with { Kind = "guild_ding" }, 6));
         if (f.Level < 50 && !f.InRvR)
             options.Add((() => Make(random, "guild_group", dun ?? zone, SeekStill, SeekThanks,
-                new V($"anyone want to group, {lvl} in {zone}", "g_group", Joins), new V($"anyone around {lvl}? {zone}", "g_around", Joins),
+                f.InTown ? new V($"anyone want to group, {lvl}, heading out", "g_group", Joins) : new V($"anyone want to group, {lvl} in {zone}", "g_group", Joins),
+                f.InTown ? new V($"anyone around {lvl}? in town", "g_around", Joins) : new V($"anyone around {lvl}? {zone}", "g_around", Joins),
                 new V($"any1 {Math.Max(1, f.Level - 2)}-{Math.Min(50, f.Level + 2)} wanna xp?", "g_group", Joins),
                 new V(dun != null ? $"{dun} anyone? {lvl} {cls}" : $"xp anyone? {lvl} {cls}", "g_dun", Joins),
-                new V($"lf guildies for {dun ?? zone}", "g_dun", Joins), new V($"who's {lvl}ish, wanna duo", "g_duo", Joins),
-                new V($"need 1 more for {dun ?? zone}", "g_more", Joins), new V($"{lvl} {cls} lf grp in guild?", "g_lfgrp", Joins),
-                new V($"anyone in guild near {lvl}?", "g_near", Joins), new V($"guild grp for {dun ?? zone}?", "g_grp_for", Joins),
+                new V(dun != null || !f.InTown ? $"lf guildies for {dun ?? zone}" : $"lf guildies to xp with, {lvl}", "g_dun", Joins),
+                new V($"who's {lvl}ish, wanna duo", "g_duo", Joins),
+                new V(dun != null || !f.InTown ? $"need 1 more for {dun ?? zone}" : $"need 1 more, {lvl}ish, leaving town", "g_more", Joins),
+                new V($"{lvl} {cls} lf grp in guild?", "g_lfgrp", Joins),
+                new V($"anyone in guild near {lvl}?", "g_near", Joins), new V(dun != null || !f.InTown ? $"guild grp for {dun ?? zone}?" : "guild grp anyone?", "g_grp_for", Joins),
                 new V($"who wants to xp, {lvl} {cls} here", "g_who_xp", Joins), new V($"{dun ?? zone} tonight, anyone?", "g_tonight", Joins)), 3));
         if (f.Level >= 35)
         {
@@ -1051,14 +1559,17 @@ public static class AutonomousChatFieldTalk
             string[] want = Pool("me!", "me pls", "what lvl?", "me, i need one", "what stats?", "dibs");
             options.Add((() => (f.ItemIsGear
                 ? Make(random, "guild_sell", item, Pool("nobody? ok merchant it is", "last call"), Pool("sending", "trade me", "k, where r u"),
-                    new V($"selling my old {item} if anyone wants", "g_sell", want), new V($"anyone need {article} {item}? free for guild", "g_give", want),
+                    // "my old" only for an item the bot could have worn (1.1.3, after RC5).
+                    UsesItem(f) ? new V($"selling my old {item} if anyone wants", "g_sell", want) : new V($"selling {article} {item} if anyone wants", "g_sell", want),
+                    new V($"anyone need {article} {item}? free for guild", "g_give", want),
                     new V($"got {article} {item} spare, anyone?", "g_give", want), new V($"{item} up for grabs", "g_give", want),
-                    new V($"who wants {article} {item}", "g_give", want), new V($"old {item} free to a guildie", "g_give", want))
+                    new V($"who wants {article} {item}", "g_give", want),
+                    UsesItem(f) ? new V($"old {item} free to a guildie", "g_give", want) : new V($"{item} free to a guildie", "g_give", want))
                 : Make(random, "guild_sell", item, null, Pool("sending", "trade me"),
                     new V($"anyone need {item}?", "g_drop", Pool("me", "what for?", "nah")), new V($"got some {item} if anyone needs it", "g_drop", Pool("me", "how many?")),
                     new V($"{item} free to whoever wants it", "g_drop", want), new V($"who collects {item}", "g_drop", Pool("me lol", "nobody lol")))) with { Item = item }, 1.2));
         }
-        bool late = f.LocalHour >= 23 || f.LocalHour < 4;
+        bool late = f.LocalHour >= 23 || f.LocalHour < 4, evening = f.LocalHour is >= 17 and < 23;
         options.Add((() => Make(random, "social", null, null, null,
             new V("brb", "g_brb"), new V("back", "g_back", Pool("wb", "wb!")), new V("lag?", "g_lag", Pool("lag here too", "not for me", "ya, bad")),
             new V("lag", "g_lag", Pool("same", "ya")), new V("brb food", "g_food"), new V("afk 5", "g_afk"),
@@ -1066,7 +1577,7 @@ public static class AutonomousChatFieldTalk
             new V(late ? "gn guild" : "o/", "g_hello", late ? Pool("night", "gn") : Pool("o/", "hey")),
             new V("quiet tonight", "g_quiet"), new V("who's on", "g_who", Pool("me", "here", "o/")), new V("ok back", "g_back", Pool("wb")),
             new V("brb phone", "g_phone"), new V("laggy for anyone else?", "g_lag", Pool("ya", "fine here", "bit")),
-            new V(late ? "bed, night" : "evening", "g_hello", late ? Pool("night", "gn") : Pool("o/", "evening"))), 2.2));
+            new V(late ? "bed, night" : evening ? "evening" : "hi all", "g_hello", late ? Pool("night", "gn") : evening ? Pool("o/", "evening") : Pool("o/", "hey"))), 2.2));
         double total = options.Sum(o => o.Weight), draw = random.NextDouble() * total;
         foreach ((Func<Said> make, double weight) in options)
         {
@@ -1084,9 +1595,13 @@ public static class AutonomousChatFieldTalk
 
     /// <summary>
     /// How likely a line that invites a reply gets one (round 7: real channels answer about seven in ten). Lines with no
-    /// answers invite nothing; the small talk of a channel ("brb", "back") is answered less.
+    /// answers invite nothing; the small talk of a channel ("brb", "back") is answered less. 1.1.3 (owner's PC, RC3 and RC5
+    /// 2026-11-09): a real question is always answered when a bot can answer it; what still leaves one unanswered is a channel
+    /// at its ceiling or with three threads running (the asker then doesn't ask it, see
+    /// <c>AutonomousBotChatCoordinator.TryField</c>), or no free bot to say the answer.
     /// </summary>
-    public static double ReplyChance(Said said) => said?.Answers == null ? 0 : said.Kind == "social" ? 0.45 : Math.Max(0.7, AnswerChance(said.Kind));
+    public static double ReplyChance(Said said) => said?.Answers == null ? 0 : WantsAnswer(said) ? 1.0 :
+        said.Kind == "social" ? 0.45 : Math.Max(0.7, AnswerChance(said.Kind));
 
     /// <summary>The share of answered lines that try to run on (a follow-up question, its answer, a thanks); about one in five does.</summary>
     public const double LongThreadChance = 0.28;
@@ -1129,6 +1644,35 @@ public static class AutonomousChatFieldTalk
             ["^ that"]),
     };
 
+    /// <summary>
+    /// Whether a line says something about its speaker: its level, its class, its zone or dungeon ("me, thane 31", "in lyonesse").
+    /// Such a line can only be said by that bot; any other line of an answer may be said by another bot that can answer the
+    /// question when the first one is busy fighting (1.1.3, after RC5). Pure.
+    /// </summary>
+    public static bool MentionsSelf(string text, Facts speaker)
+    {
+        if (string.IsNullOrWhiteSpace(text) || speaker == null)
+            return false;
+        string t = " " + AutonomousChatQuestions.Normalize(text) + " ";
+        if (t.Contains(" " + speaker.Level + " ", StringComparison.Ordinal) || t.Contains(" me ", StringComparison.Ordinal) ||
+            t.StartsWith(" me", StringComparison.Ordinal) || t.Contains(" im ", StringComparison.Ordinal) || t.Contains(" my ", StringComparison.Ordinal))
+            return true;
+        if (speaker.ClassName != null && ClassWords.TryGetValue(speaker.ClassName.Trim(), out string[] words) &&
+            words.Append(speaker.ClassName.Trim().ToLowerInvariant()).Any(word => t.Contains(" " + word + " ", StringComparison.Ordinal)))
+            return true;
+        foreach (string place in new[] { speaker.Zone, speaker.Dungeon })
+        {
+            if (string.IsNullOrWhiteSpace(place))
+                continue;
+            string p = AutonomousChatQuestions.Normalize(place);
+            if (p.StartsWith("the ", StringComparison.Ordinal))
+                p = p[4..];
+            if (p.Length > 0 && t.Contains(" " + p.Split(' ')[0] + " ", StringComparison.Ordinal))
+                return true;
+        }
+        return false;
+    }
+
     /// <summary>Whether an answer already gives what a follow-up would ask ("what lvl r u?" after "me, cab 50"). Pure.</summary>
     public static bool AlreadyAnswered(string ask, string answer)
     {
@@ -1146,14 +1690,30 @@ public static class AutonomousChatFieldTalk
     /// <summary>
     /// The thread a field line starts (round 7: lines invited replies that never came, and nothing ran on). About seven in ten
     /// inviting lines get an answer; one in five of those runs on to a follow-up question, its answer and a thanks, and a third
-    /// bot sometimes chimes in. With no answer the speaker may follow up alone. Every line is from the speaker's own state. Pure.
+    /// bot sometimes chimes in. With no answer the speaker may follow up alone. Every line is from the speaker's own state.
+    /// <paramref name="known"/> is the answer the live world gives (the class trainer's name and town, the stable with the
+    /// route, the camps bots of that level use, who is at a keep): said instead of a written one (1.1.3, after RC5). Pure.
     /// </summary>
-    public static List<Step> Thread(Said said, Facts asker, Facts answerer, Facts third, Memory memory, Random random, long now = 0)
+    public static List<Step> Thread(Said said, Facts asker, Facts answerer, Facts third, Memory memory, Random random, long now = 0,
+        string known = null)
+    {
+        List<Step> steps = ThreadSteps(said, asker, answerer, third, memory, random, now, known);
+        // "earlier tonight" is "earlier today" by day (1.1.3, after RC6).
+        int? hour = (asker ?? answerer)?.LocalHour;
+        if (hour is { } h)
+            for (int i = 0; i < steps.Count; i++)
+                steps[i] = steps[i] with { Text = AutonomousBotVoiceCorpus.ForTimeOfDay(steps[i].Text, h) };
+        return steps;
+    }
+
+    private static List<Step> ThreadSteps(Said said, Facts asker, Facts answerer, Facts third, Memory memory, Random random, long now,
+        string known)
     {
         var steps = new List<Step>(6);
         if (said == null)
             return steps;
-        string answer = answerer != null && random.NextDouble() < ReplyChance(said) ? Answer(said, answerer, memory, random) : null;
+        string answer = answerer == null || random.NextDouble() >= ReplyChance(said) ? null
+            : !string.IsNullOrWhiteSpace(known) ? Finish(known, random) : Answer(said, answerer, memory, random, now);
         if (answer == null)
         {
             if (random.NextDouble() < FollowUpChance(false) && FollowUp(said, false, random, memory, now) is { } alone)
@@ -1193,7 +1753,10 @@ public static class AutonomousChatFieldTalk
             }
             return null;
         }
-        if (random.NextDouble() < LongThreadChance && said.Family != null && FamilyMore.TryGetValue(said.Family, out var family))
+        // RC6 on the owner's PC: "any grps out?" "quiet atm" ran on with "how many?" "small grp" "count me in". An answer that
+        // says there is nothing doesn't run on, and isn't met with "omw".
+        bool nothing = SaysNothing(answer);
+        if (!nothing && random.NextDouble() < LongThreadChance && said.Family != null && FamilyMore.TryGetValue(said.Family, out var family))
         {
             var pairs = family.Pairs.Where(pair => !AlreadyAnswered(pair.Ask, answer)).ToArray();
             var pair = pairs.Length == 0 ? default : pairs[random.Next(pairs.Length)];
@@ -1213,7 +1776,7 @@ public static class AutonomousChatFieldTalk
                 return steps;
             }
         }
-        else if (random.NextDouble() < LongThreadChance && said.Kind is not ("class" or "help") && More.TryGetValue(said.Kind, out var more) &&
+        else if (!nothing && random.NextDouble() < LongThreadChance && said.Kind is not ("class" or "help") && RunsOnAbout(said) && More.TryGetValue(said.Kind, out var more) &&
             Fresh(more.Ask.Where(text => !AlreadyAnswered(text, answer)).ToArray(), asker) is { } ask &&
             (FreshFitting(more.Reply, answerer, QuestionKind(ask)) ?? (AnswerFor(QuestionKind(ask), answerer, random) is { } plain ? Finish(plain, random) : null)) is { } reply)
         {
@@ -1230,17 +1793,59 @@ public static class AutonomousChatFieldTalk
                 steps.Add(new Step(0, thanks, AutonomousChatArbiter.DelayMs(reply, thanks, 40, at, random)));
             return steps;
         }
+        // A "dunno" isn't the end of it when someone else knows: the asker asks again and a third bot gives an answer from the
+        // same true pool ("any grps in keltoi?" "not that i know" "anyone else?" "saw some in lfg").
+        if (nothing && third != null && random.NextDouble() < LongThreadChance &&
+            Answer(said, third, memory, random, now) is { } other && !SaysNothing(other) && !other.TrimEnd().EndsWith('?'))
+        {
+            string again = Pick(random, "anyone else?", "anyone?", "any1 else know?", "nobody?");
+            at = AutonomousChatArbiter.DelayMs(answer, again, 40, at, random);
+            steps.Add(new Step(0, again, at));
+            at = AutonomousChatArbiter.DelayMs(again, other, 40, at, random);
+            steps.Add(new Step(2, other, at));
+            if (FollowUp(said, true, random, memory, now) is { } thanksOther)
+                steps.Add(new Step(0, thanksOther, AutonomousChatArbiter.DelayMs(other, thanksOther, 40, at, random)));
+            return steps;
+        }
         if (random.NextDouble() < FollowUpChance(true) && FollowUp(said, true, random, memory, now) is { } done)
+        {
+            // After a "no" the asker says ok, not "omw" or "ty, inv" (RC6 and RC8 on the owner's PC).
+            if (nothing && GoesSomewhere(done))
+                done = Pick(random, "k ty", "ok ty", "k", "np ty");
             steps.Add(new Step(0, done, AutonomousChatArbiter.DelayMs(answer, done, 40, at, random)));
+        }
         return steps;
     }
+
+    /// <summary>
+    /// Whether a line's kind-wide follow-ups ("how many?", "which way?") fit it: for rvr only a line about enemies or the zerg
+    /// (RC7 on the owner's PC: "port to frontier up?" "ya, porter in camelot" ran on with "which way" "few grps"). Pure.
+    /// </summary>
+    public static bool RunsOnAbout(Said said) =>
+        said?.Kind != "rvr" || said.Family is "rvr_grps" or "rvr_zerg" or "rvr_enemy";
+
+    /// <summary>"quiet atm", "havent seen any", "dunno", "nope": an answer that says there is nothing to go on. Pure.</summary>
+    public static bool SaysNothing(string answer)
+    {
+        if (string.IsNullOrWhiteSpace(answer))
+            return false;
+        string t = " " + AutonomousChatQuestions.Normalize(answer) + " ";
+        return System.Text.RegularExpressions.Regex.IsMatch(t,
+            @" (quiet|havent seen|haven t seen|not seen|no idea|no clue|dunno|nope|nobody|no one|none|nothing|not me|no enemies) ");
+    }
+
+    /// <summary>"omw", "porting", "k omw": a line that says the speaker is heading somewhere. Pure.</summary>
+    public static bool GoesSomewhere(string line) =>
+        !string.IsNullOrWhiteSpace(line) &&
+        // RC8 on the owner's PC: "city of camelot anyone??" "not that i know" "ty, inv".
+        System.Text.RegularExpressions.Regex.IsMatch(" " + AutonomousChatQuestions.Normalize(line) + " ", @" (omw|on my way|porting|heading|coming|inv|invite|inviting) ");
 
     /// <summary>
     /// A small story from a real event, for regulars to riff on for a minute or two (round 7): a ding to 50, a death, a wipe in
     /// a bot group. Three to six lines between two or three speakers, from their own state. Pure.
     /// </summary>
     public static List<Step> Story(string kind, Facts teller, Facts mate, Facts third, Random random, Memory memory = null,
-        Func<string, bool> freshReaction = null)
+        Func<string, bool> freshReaction = null, long now = 0)
     {
         var lines = new List<(int Who, string Text)>(6);
         // A line of three words or more is told once an evening: the next story picks another way to say it, or leaves it out.
@@ -1250,14 +1855,38 @@ public static class AutonomousChatFieldTalk
         string Riff(Random r, params string[] options) => PickFor(1, r, options);
         string PickFor(int who, Random r, string[] options)
         {
+            if (options == null || options.Length == 0)
+                return null;
             for (int attempt = 0; attempt < 6; attempt++)
             {
                 string text = options[r.Next(options.Length)];
-                // 1.2: the teller's short lines too ("dead. again" from five tellers in an hour).
-                if (freshReaction != null && (who != 0 || AutonomousChatExchange.IsShort(text)) && !freshReaction(text))
+                // The teller's own short line too (owner's PC, RC3 2026-11-09: once the longer openers had each been told,
+                // every death story opened with "dead. again." and it was heard seven times in half an hour).
+                if ((who != 0 || AutonomousChatExchange.IsShort(text)) && freshReaction != null && !freshReaction(text))
                     continue;
                 string skeleton = AutonomousChatFiller.Skeleton(text);
                 if (memory == null || skeleton.Split(' ').Length <= 2)
+                    return text;
+                if (memory.Seen(skeleton))
+                    continue;
+                memory.Add(skeleton);
+                return text;
+            }
+            return null;
+        }
+        // A frontier death's own lines are remembered for the evening whatever their length (1.1.3, after RC5), and a short one
+        // the channel heard in the last ten minutes is picked again or left out.
+        string Told(Random r, string[] options)
+        {
+            if (options == null || options.Length == 0)
+                return null;
+            for (int attempt = 0; attempt < 8; attempt++)
+            {
+                string text = options[r.Next(options.Length)];
+                if (AutonomousChatExchange.IsShort(text) && freshReaction != null && !freshReaction(text))
+                    continue;
+                string skeleton = AutonomousChatFiller.Skeleton(text);
+                if (memory == null)
                     return text;
                 if (memory.Seen(skeleton))
                     continue;
@@ -1277,24 +1906,78 @@ public static class AutonomousChatFieldTalk
                 lines.Add((1, Pick(random, "what now, rvr?", "epic next?", "alt time?", "now the real game starts lol", "rvr now?", "time for rps?")));
                 lines.Add((0, Pick(random, "rvr tomorrow, bed now", "epic first", "sleep lol", "frontier tomorrow", "alt maybe", "bed, gz me tomorrow lol")));
                 break;
-            case "death" when teller?.InRvR == true:
-                // A frontier death is to other players, not to a kind of monster (owner's PC, RC3 2026-11-09).
+            case "death" when ToldAsRvrDeath(teller):
+            {
+                // A frontier death is to other players, not to a kind of monster (owner's PC, RC3 2026-11-09). 1.1.3, after RC5:
+                // "got ganked lol" twice in 13 minutes, so each step has a wide pool, and the teller's line is kept out of the
+                // evening's memory however short it is. After RC6: a death to an enemy (or a guard) is told so wherever it was,
+                // and each line fits the real killer and how many were on the teller ("had 2 on me" after one enemy bot).
                 string front = ShortZone(teller.Zone, random);
-                lines.Add((0, Pick(random, "ganked again", "got ganked lol", $"zerged in {front}", "stealther got me", "ran into a zerg, dead",
-                    $"dead in {front} again", "8 of them on me lol")));
-                string ask = Riff(random, "rip", "lol rip", "ouch", "where?", "oof");
+                string[] Fit(string[] options) => options.Where(text => FitsDeath(text, teller)).ToArray();
+                string cls = teller.KillerClass == null ? null : ShortClass(teller.KillerClass, random);
+                string aCls = cls == null ? null : ("aeiou".Contains(cls[0]) ? "an " : "a ") + cls;
+                string[] openers = teller.KilledBy == "guard"
+                    ? ["the guards got me", "died to a guard", "keep guards got me lol", "aggroed the guards, dead", "guards, dead. ugh",
+                        $"guards at the {front} keep got me", "too close to the walls lol"]
+                    : RvrDeathOpeners(front, random);
+                if (aCls != null)
+                    openers = [.. openers, $"died to {aCls}", $"{aCls} got me", $"{aCls} got me in {front}", $"killed by {aCls} lol"];
+                // A place ("outside the gate", "milegate", "bridge") the realm heard in a death story in the last 30-60 minutes is
+                // not told again (RC6: "outside the gate" twice in two minutes).
+                bool PlaceRested(string text) => memory != null && DeathPlace(text) is { } place && memory.Rested(null, "death_place:" + place, now);
+                string opener = Told(random, Fit(openers).Where(text => !PlaceRested(text)).ToArray());
+                if (memory != null && DeathPlace(opener) is { } toldPlace)
+                    memory.Use(null, "death_place:" + toldPlace, now);
+                lines.Add((0, opener));
+                // "where?" only when the teller didn't say where (as for a death to monsters).
+                bool toldWhere = opener != null && (opener.Contains(front, StringComparison.OrdinalIgnoreCase) ||
+                    new[] { "milegate", "bridge", "keep", "road", "gate", "lake" }.Any(word => opener.Contains(word, StringComparison.Ordinal)));
+                string ask = toldWhere
+                    ? Riff(random, "rip", "lol rip", "ouch", "oof", "by who?", "how many?", "lol again?", "ugh")
+                    : Riff(random, "rip", "lol rip", "ouch", "where?", "oof", "where at?", "by who?", "how many?", "lol again?");
                 lines.Add((1, ask));
-                lines.Add((0, ask != null && ask.StartsWith("where", StringComparison.Ordinal)
-                    ? Pick(random, $"{front}", $"in {front}", $"{front}, near the keep")
-                    : Pick(random, "never saw them coming", "lost a bubble too", "third time tonight", "had 2 on me before i could run")));
+                bool askedWhere = ask != null && ask.StartsWith("where", StringComparison.Ordinal);
+                bool who = ask is "by who?" or "how many?";
+                string[] whoPool = teller.KilledBy == "guard" ? ["the guards lol", "keep guards", "just the guards"]
+                    : aCls != null ? [.. RvrDeathWho(random), $"{aCls}", $"just {aCls}", $"one {cls}"]
+                    : RvrDeathWho(random);
+                string answer = askedWhere ? Told(random, RvrDeathPlaces(front, random).Where(text => !PlaceRested(text)).ToArray())
+                    : who ? Told(random, Fit(whoPool))
+                    : Told(random, Fit(RvrDeathAfter(front, random)));
+                // A question with no fresh answer left is not asked (no "where?" left hanging).
+                if (answer == null && (askedWhere || who))
+                    lines[^1] = (1, null);
+                lines.Add((0, answer));
                 if (third != null && random.NextDouble() < 0.5)
-                    lines.Add((2, Riff(random, "stick with the zerg lol", "bring a group", $"same happened to me in {ShortZone(third.Zone, random)}",
-                        "happens")));
+                {
+                    // "same happened to me in ..." names a frontier: the third's own when it is out there too, else the teller's
+                    // (RC5: "ganked in jamtland mtns" drew "same happened to me in dales of devwy", a hunting zone), and an enemy
+                    // realm's frontier only as "their frontier" (the line speaks of the third's own past, as a PvE line would).
+                    string mineZone = third.InRvR ? third.Zone : teller.Zone;
+                    string mine = IsForeignZone(third.Realm, mineZone) ? "their frontier" : ShortZone(mineZone, random);
+                    // RC8 on the owner's PC: "stick with the zerg" after "aggroed the guards, dead". A guard death gets guard riffs, and a
+                    // death to one or two gets none about crowds.
+                    lines.Add((2, teller.KilledBy == "guard"
+                        ? Riff(random, "dont aggro the guards lol", "guards hit hard", "happens", "stay off the keep walls lol", "those guards are no joke")
+                        : teller.Attackers is > 0 and <= 2
+                            ? Riff(random, "bring a group", $"same happened to me in {mine}", "happens", "thats rvr", "solo in the frontier, brave",
+                                "group up next time", "should've stayed with the grp", "welcome to the frontier lol")
+                            : Riff(random, "stick with the zerg lol", "bring a group", $"same happened to me in {mine}", "happens", "thats rvr",
+                                "they sit on that spot", "solo in the frontier, brave", "group up next time", $"{mine} is full of them tonight",
+                                "should've stayed with the grp", "welcome to the frontier lol", "they're everywhere tonight")));
+                }
                 break;
+            }
             case "death":
-                string zone = ShortZone(teller?.Zone, random);
-                string told = Pick(random, $"died to {monsters} again", $"{monsters} got me lol", "dead. again.", $"train of {monsters}, im dead",
-                    $"{monsters} in {zone} hate me", $"killed by {monsters} at {teller?.Level}");
+                // 1.1.3, after RC5: a monster death in an enemy realm's frontier is told without naming that realm's zone ("dread
+                // commanders in jamtland mountains hate me" from an Albion bot).
+                // After RC6: told with the monster that really killed the teller (its facts carry the death), and no count it
+                // didn't have ("x3" for two, "train of" for one).
+                string zone = HomeZoneWord(teller, random);
+                string[] FitMonster(params string[] options) => options.Where(text => FitsDeath(text, teller)).ToArray();
+                int count = teller?.Attackers ?? 0;
+                string told = Pick(random, FitMonster($"died to {monsters} again", $"{monsters} got me lol", "dead. again.", $"train of {monsters}, im dead",
+                    $"{monsters} in {zone} hate me", $"killed by {monsters} at {teller?.Level}"));
                 lines.Add((0, told));
                 // "where?" only when the teller didn't say where, and then the teller says where (owner 2026-11-08: "where?" was
                 // answered "pulled two by accident").
@@ -1304,11 +1987,28 @@ public static class AutonomousChatFieldTalk
                 bool asked = riff != null && riff.StartsWith("where", StringComparison.Ordinal);
                 lines.Add((0, asked
                     ? Pick(random, $"{zone}, near the camp", $"by the {zone} camp", $"in {zone}")
-                    : Pick(random, $"third time tonight in {zone}", "lost a bubble too", $"{monsters} x3, no chance", "pulled two by accident")));
+                    : Pick(random, FitMonster($"third time tonight in {zone}", "lost a bubble too", count >= 2 ? $"{monsters} x{count}, no chance" : $"{monsters} x3, no chance",
+                        "pulled two by accident", count == 1 ? "it hit way too hard" : "too many at once"))));
                 if (third != null && random.NextDouble() < 0.5)
                     lines.Add((2, Riff(random, $"they hit hard at {third.Level}", $"{monsters} are nasty at {teller?.Level}", "bring a healer lol",
-                        $"same happened to me in {ShortZone(third.Zone, random)}", "happens")));
+                        $"same happened to me in {HomeZoneWord(third, random)}", "happens")));
                 break;
+            case "wipe" when KilledByEnemy(teller) || teller?.KilledBy == null && teller?.InRvR == true:
+            {
+                // RC8 on the owner's PC: a group wiped by enemy bots in the frontier told "wiped on adds" and "adds linked, all of
+                // them". A wipe to enemies is told as one.
+                string front = ShortZone(teller?.Zone, random);
+                string enemy = Plural(EnemyWord(teller?.Realm ?? eRealm.None, random));
+                lines.Add((0, Pick(random, "grp wiped lol", "whole grp got rolled", $"wiped by a {EnemyWord(teller?.Realm ?? eRealm.None, random)} grp",
+                    $"fg wipe in {front}", "our grp got farmed", $"{enemy} rolled us")));
+                lines.Add((1, Riff(random, "what happened?", "lol how", "rip grp", "ouch")));
+                lines.Add((0, Pick(random, "they had a better healer", "got mezzed, gg", "they had more", "we went too far from the keep",
+                    "stealthers first, then their fg", "lost our healer first")));
+                if (third != null)
+                    lines.Add((2, Riff(random, "happens", "thats rvr", "rip", "regroup and go again", "lol")));
+                lines.Add((0, Pick(random, "back to it", "running back", "regrouping", "rezzing up")));
+                break;
+            }
             case "wipe":
                 string where = ShortDungeon(teller?.Dungeon, random) ?? ShortZone(teller?.Zone, random);
                 lines.Add((0, Pick(random, "wiped lol", "whole grp wiped", "wipe. ugh", $"wiped on {monsters}", $"grp wiped in {where}", $"{where} wipe lol")));
@@ -1333,12 +2033,64 @@ public static class AutonomousChatFieldTalk
             if (text == null)
                 continue;
             string finished = text.Contains("DING") || text.Contains(":D") ? text : Finish(text, random);
+            // "third time tonight" is "third time today" by day (1.1.3, after RC6).
+            if (teller != null)
+                finished = AutonomousBotVoiceCorpus.ForTimeOfDay(finished, teller.LocalHour);
             at = before == null ? 0 : AutonomousChatArbiter.DelayMs(before, finished, 40, at, random);
             steps.Add(new Step(who, finished, at));
             before = finished;
         }
         return steps;
     }
+
+    /// <summary>
+    /// How a frontier death is told (1.1.3, after RC5): who got the teller (a gank, a zerg, a stealther, a group, the guards) and
+    /// where (a milegate, a bridge, a keep, the zone), in the words players typed. Several hundred ways; pure but for the draw.
+    /// </summary>
+    public static string[] RvrDeathOpeners(string front, Random random)
+    {
+        string[] how = ["ganked", "got ganked", "zerged", "got zerged", "stealthed", "got stealthed", "jumped", "got jumped", "picked off",
+            "got picked off", "caught", "got caught", "farmed", "got farmed", "ran into a grp", "ran into a zerg", "ran into 8 of them",
+            "a stealther got me", "an assassin got me", "a full grp got me", "the guards got me", "died to a guard", "3 of them on me",
+            "4 v 1, dead", "1 v 5 lol, dead", "train of reds", "mezzed and dead"];
+        string[] at = ["", "", $" in {front}", $" in {front}", " at the milegate", " by the bridge", " outside the keep", " near the keep",
+            " on the road", " by the portal keep", $" at the {front} milegate", " right outside the gate", " by the lake", " on the bridge"];
+        string[] tail = ["", "", "", " lol", " again", " ugh", ", rip me", " heh", ", never saw them", " zzz"];
+        var options = new string[24];
+        for (int i = 0; i < options.Length; i++)
+            options[i] = how[random.Next(how.Length)] + at[random.Next(at.Length)] + tail[random.Next(tail.Length)];
+        return options;
+    }
+
+    private static readonly System.Text.RegularExpressions.Regex DeathPlaces = new(@"\b(milegate|bridge|gate|portal keep|keep|road|lake|walls)\b",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    /// <summary>The place a frontier death line names ("outside the gate": "gate"), or null (1.1.3, after RC6). Pure.</summary>
+    public static string DeathPlace(string text) =>
+        text != null && DeathPlaces.Match(text) is { Success: true } match ? match.Value.ToLowerInvariant() : null;
+
+    /// <summary>Where it happened, when asked "where?". Pure but for the draw.</summary>
+    public static string[] RvrDeathPlaces(string front, Random random) =>
+    [
+        front, $"in {front}", $"{front}, near the keep", $"{front} milegate", $"by the bridge in {front}", $"outside the keep in {front}",
+        $"{front}, on the road", $"{front} by the lake", "milegate", "right by our keep lol", $"{front}, just past the gate", $"middle of {front}",
+    ];
+
+    /// <summary>Who did it, when asked "by who?" or "how many?". Pure but for the draw.</summary>
+    public static string[] RvrDeathWho(Random random) =>
+    [
+        "no idea, never saw them", "stealthers, 2 i think", "full grp", "like 8", "3 or 4", "a zerg, 20+", "just one stealther lol",
+        "2 assassins", "a grp of 6 or so", "whole zerg", "too many to count", "a fg with a healer", "one caster, a lot of dots", "dunno, i was mezzed",
+    ];
+
+    /// <summary>What came after: how it went, in the teller's words. Pure but for the draw.</summary>
+    public static string[] RvrDeathAfter(string front, Random random) =>
+    [
+        "never saw them coming", "lost a bubble too", "third time tonight", "had 2 on me before i could run", "was just running to the keep",
+        "they were waiting at the gate", "didnt even get a cast off", "mezzed and stunned, gg", "should've waited for the grp", "rr is not happening tonight",
+        $"{front} is a death trap tonight", "zerg came over the hill", "porting back", "they farm that bridge all night", "almost got away too",
+        "was afk for like a second lol", "my grp ran lol", "at least i got one of them", "heading back out", "walk of shame back to the keep",
+    ];
 
     private static string Fill(string text, Facts facts, Random random)
     {
@@ -1367,11 +2119,28 @@ public static class AutonomousChatFieldTalk
             return "place";
         if (System.Text.RegularExpressions.Regex.IsMatch(t, @"^ (when|what time)| when | what time | how long "))
             return "time";
-        if (System.Text.RegularExpressions.Regex.IsMatch(t, @"^ (who|whos|who s) | (what|which) (class|race) "))
+        // RC6 on the owner's PC: "what class?" was answered "coming from mount collory".
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (what|which|wat) class "))
+            return "class";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @"^ (who|whos|who s) | (what|which) race "))
             return "who";
         if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (what|wat) (lvl|level) | lvl $| how high "))
             return "level";
         return null;
+    }
+
+    /// <summary>
+    /// Whether a (normalised) answer names a class, in full or as players shortened it ("cab", "pally", "sb", "arms"): the answer
+    /// to "what class?", where "arms" is the class. Pure.
+    /// </summary>
+    public static bool NamesAClass(string normalized)
+    {
+        string t = " " + (normalized ?? string.Empty) + " ";
+        foreach ((string name, string[] words) in ClassWords)
+            if (t.Contains(" " + name.ToLowerInvariant() + " ", StringComparison.Ordinal) ||
+                words.Any(word => t.Contains(" " + word + " ", StringComparison.Ordinal)))
+                return true;
+        return false;
     }
 
     private static readonly HashSet<string> NotAnAnswer = new(StringComparer.Ordinal)
@@ -1388,7 +2157,8 @@ public static class AutonomousChatFieldTalk
         {
             case "place":
                 return dunno || !NotAnAnswer.Contains(a) && !System.Text.RegularExpressions.Regex.IsMatch(a, @"(^\d|\b\d{1,2}\b)") &&
-                       !System.Text.RegularExpressions.Regex.IsMatch(a, @"^(few|big grp|small grp|lots|couple|a few|many)$");
+                       // RC7 on the owner's PC: "which way" was answered "few grps".
+                       !System.Text.RegularExpressions.Regex.IsMatch(a, @"^(few|big|small|lots|couple|a few|many|\d+)( grps?| groups?| of them)?$");
             case "price":
                 return dunno || System.Text.RegularExpressions.Regex.IsMatch(a, @"\b\d+ ?(p|g|s|plat|gold|silver)\b|not much|cheap|broker|offers|free|worth|nothing");
             case "count":
@@ -1398,6 +2168,8 @@ public static class AutonomousChatFieldTalk
                     @"\d+ ?ish|\d+ ?(pm|am)\b|\b(tonight|later|tomorrow|sat|sun|weekend|after|earlier|ago|last night|morning|soon|now|dinner|lunch|tuesday|yesterday|hour|hours|min|mins|while|long)\b");
             case "who":
                 return !System.Text.RegularExpressions.Regex.IsMatch(a, @"^\d+$");
+            case "class":
+                return dunno || NamesAClass(a);
             case "level":
                 return dunno || System.Text.RegularExpressions.Regex.IsMatch(a, @"\d");
             default:
@@ -1419,6 +2191,7 @@ public static class AutonomousChatFieldTalk
             "price" => Pick(random, PriceFor(answerer.Level, random), "dunno", "not much"),
             "count" => Pick(random, "few", "5 or 6", "big grp", "dunno"),
             "who" => Pick(random, ShortClass(answerer.ClassName, random), "dunno, ask the gl"),
+            "class" => Pick(random, ShortClass(answerer.ClassName, random), $"{ShortClass(answerer.ClassName, random)} {answerer.Level}"),
             _ => null,
         };
     }
@@ -1436,23 +2209,29 @@ public static class AutonomousChatFieldTalk
         string dun = ShortDungeon(f.Dungeon, random);
         var ways = new List<V>(12)
         {
-            new($"anyone know the {lvl}ish quest in {zone}?", "q_quest", Pool("did it, kill 10 then go back", "dunno that one", "ask the guard in town", "did it, easy one")),
-            new($"where do i hand in the {zone} quest?", "q_handin", Pool("back in town", "the guy that gave it", "dunno, check the journal")),
+            new(f.InTown ? $"anyone know a good {lvl}ish quest?" : $"anyone know the {lvl}ish quest in {zone}?", "q_quest",
+                Pool("did it, kill 10 then go back", "dunno that one", "ask the guard in town", "did it, easy one", "never did it", "skipped that one")),
+            new($"where to hand in the {zone} quest?", "q_handin", Pool("back in town", "the guy that gave it", "back to whoever gave it", "check ur journal, it says who")),
             new($"how do i get to {f.World?.Frontier?.ToLowerInvariant() ?? "the frontier"} from here?", "q_frontier", Pool("port from the capital", "horse to the border keep", "porter in town")),
             new($"where do i bind in {zone}?", "q_bind", Pool("at the bindstone in town", "nearest town", "by the inn")),
             new($"anyone know where to buy {cls} stuff at {lvl}?", "q_gear", Pool("merchants in the capital", "crafters, pst one", "the broker")),
-            new("what do i need to start crafting?", "q_craft", Pool("go see the crafting trainer", "tools from the merchant", "lots of money lol")),
-            new($"is there a port to {dun ?? zone}?", "q_port", Pool("no, run", "horse most of the way", "dunno")),
+            new("what do i need to start crafting?", "q_craft", Pool("go see the crafting trainer", "tools from the merchant", "lots of money lol",
+                $"crafting trainers in {CapitalWord(f.Realm)}, start there")),
+            dun != null || !f.InTown ? new($"is there a port to {dun ?? zone}?", "q_port", Pool("no, run", "horse most of the way", "dunno"))
+                : new("which porter goes to the frontier?", "q_port", Pool("the one by the gate", "porter in town", "ask a guard")),
         };
-        if (f.Item != null)
+        // 1.1.3, after RC5: only an item the class can use ("99% adroit focus staff any good for pally?" on the owner's PC).
+        if (UsesItem(f))
             ways.Add(new V($"{(f.ItemIsGear ? f.ItemQuality + "% " : "")}{f.Item.ToLowerInvariant()} any good for {cls}?", "q_item",
                 Pool("not really", "ok for now", "sell it", "keep it till {lvl}")));
         if (f.Level >= 45)
-            ways.Add(new V($"anyone done the {cls} epic?", "q_epic", Pool("not yet", "{healer}did mine last week", "need a grp for it", "ask in guild")));
+            ways.Add(new V($"anyone done the {cls} epic?", "q_epic", Pool("not yet", "{healer}did mine last week", "need a grp for it", "ask in guild",
+                "did it, long chain", "long chain, ur trainer starts it")));
         if (dun != null)
             ways.Add(new V($"what's the named in {dun} drop?", "q_named", Pool("dunno, never got it", "decent stuff", "jewelry mostly i think")));
         if (f.InRvR || f.Level >= 35)
-            ways.Add(new V("how do realm points work?", "q_rps", Pool("kill enemies, get rps", "kills and keeps", "keeps give a lot")));
+            ways.Add(new V("how do realm points work?", "q_rps", Pool("kill enemies, get rps", "kills and keeps", "keeps give a lot",
+                "kill enemy players in the frontier", "enemy kills, keeps and towers")));
         return Make(random, "help", (f.Level / 5) + ":" + zone, Pool("nm found it", "nobody? ok", "guess ill figure it out"), Pool("ty", "ty!", "k ty", "cool"),
             ways.ToArray());
     }
@@ -1483,6 +2262,19 @@ public static class AutonomousChatFieldTalk
         ["warden"] = ["warden"], ["eldritch"] = ["eld", "eldritch"], ["enchanter"] = ["ench", "chanter"], ["mentalist"] = ["menta", "ment"],
         ["animist"] = ["animist", "ani"], ["valewalker"] = ["vw", "valewalker"],
     };
+
+    // Words that are a class in "lfg 30 heal" but usually something else in a question ("what spec for heals", "war").
+    private static readonly HashSet<string> AmbiguousClassWords = new(StringComparer.Ordinal) { "heal", "war", "hunt", "arms", "pal", "sav", "shade", "ani", "ment", "sham" };
+
+    /// <summary>The class a line names ("what spec for a 50 inf?" is Infiltrator), or null. Pure.</summary>
+    public static string ClassNamed(string text)
+    {
+        string t = " " + AutonomousChatQuestions.Normalize(text ?? string.Empty) + " ";
+        foreach ((string cls, string[] words) in ClassWords)
+            if (words.Append(cls).Where(word => !AmbiguousClassWords.Contains(word)).Any(word => t.Contains(" " + word + " ", StringComparison.Ordinal) || t.Contains(" " + word + "s ", StringComparison.Ordinal)))
+                return char.ToUpperInvariant(cls[0]) + cls[1..];
+        return null;
+    }
 
     /// <summary>A class as chat wrote it ("zerk", "sm", "pally"), or the lowercase name.</summary>
     public static string ShortClass(string className, Random random)
@@ -1568,30 +2360,111 @@ public static class AutonomousChatFieldTalk
         return $"{(1 + random.Next(9)) * 5}s";
     }
 
-    private static readonly HashSet<string> Plate = new(StringComparer.OrdinalIgnoreCase) { "armsman", "paladin" };
+    // ---- answers for the questions that had none (1.1.3, after RC5) -----------------------------------------------------------
+    // Owner's PC, RC3 and RC5 (2026-11-09): "where's the paladin trainer", "what spec for a 50 inf?", "necros, sc or drops at
+    // 27?", "any stealthers out?", "fastest way to darkness falls?" were written with no answers, so nobody ever answered them.
+    // Each now carries answers that fit it; where the live world has the fact, the coordinator says that instead (Thread's known).
 
-    private static readonly HashSet<string> Chain = new(StringComparer.OrdinalIgnoreCase)
-        { "mercenary", "reaver", "cleric", "minstrel", "warrior", "thane", "skald", "healer", "shaman" };
-
-    private static readonly HashSet<string> Cloth = new(StringComparer.OrdinalIgnoreCase)
+    /// <summary>A realm's capital as chat wrote it, where every class trainer of the realm stands.</summary>
+    public static string CapitalWord(eRealm realm) => realm switch
     {
-        "wizard", "sorcerer", "theurgist", "cabalist", "necromancer", "runemaster", "spiritmaster", "bonedancer", "eldritch", "enchanter",
-        "mentalist", "animist", "valewalker",
+        eRealm.Albion => "camelot",
+        eRealm.Midgard => "jordheim",
+        eRealm.Hibernia => "tir na nog",
+        _ => "the capital",
     };
 
-    private static readonly HashSet<string> Studded = new(StringComparer.OrdinalIgnoreCase) { "berserker", "savage", "hunter", "scout" };
-    private static readonly HashSet<string> Leather = new(StringComparer.OrdinalIgnoreCase) { "infiltrator", "shadowblade", "nightshade" };
+    /// <summary>A class's usual spec and weapon as players gave them (the classic lines of each class).</summary>
+    private static readonly Dictionary<string, (string[] Spec, string[] Weapon)> ClassTips = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["armsman"] = (["polearm and shield", "max polearm, rest in shield", "2h or polearm, some shield"], ["a polearm", "polearm or a 2h", "a 2h"]),
+        ["paladin"] = (["chants and 2h", "max chants, rest in 2h", "chants first, then slash or 2h"], ["a 2h", "2h, or slash and a shield"]),
+        ["mercenary"] = (["dual wield and slash", "max dw, rest in slash", "dw first, then thrust or slash"], ["two slash weapons", "dw, slash or thrust"]),
+        ["reaver"] = (["soulrending and flex", "max flex, rest in soulrending", "flex and soulrending, a bit of shield"], ["a flex weapon", "flex, whips are fine"]),
+        ["cleric"] = (["rejuv, rest in enhance", "smite if u solo, rejuv for grps", "max rejuv for grps"], ["a mace and a shield", "crush, whatever drops"]),
+        ["friar"] = (["staff and rejuv", "max staff, rest in rejuv", "staff and enhance"], ["a quarterstaff", "staff, always"]),
+        ["minstrel"] = (["instruments, rest in slash", "max instruments", "instruments and stealth"], ["a slash blade", "rapier or slash, whatever drops"]),
+        ["scout"] = (["longbow and stealth", "max longbow, some stealth", "bow first, shield later"], ["a longbow", "longbow, small shield for melee"]),
+        ["infiltrator"] = (["critical strike, envenom and stealth", "cs and envenom, rest in stealth", "max cs, then envenom"], ["two thrust daggers", "dw thrust, slash ok"]),
+        ["sorcerer"] = (["body for grps, mind for cc", "max mind, rest in body", "matter if u solo"], ["a staff", "staff, caster stats"]),
+        ["wizard"] = (["fire for solo, earth for grps", "max fire", "earth if u want pbae"], ["a staff", "staff, caster stats"]),
+        ["theurgist"] = (["air for grps, earth for solo", "max earth, pets do the work", "ice for dmg"], ["a staff", "staff, caster stats"]),
+        ["cabalist"] = (["matter for solo, body for grps", "max matter", "body and spirit"], ["a staff", "staff, caster stats"]),
+        ["necromancer"] = (["deathsight or painworking", "painworking for grps", "max deathsight for solo"], ["a staff", "staff, ur pet does the rest"]),
+        ["warrior"] = (["shield and hammer", "max shield, rest in axe or hammer", "parry and a weapon line"], ["a 2h hammer or axe", "hammer and a shield"]),
+        ["thane"] = (["stormcalling and hammer", "max stormcalling, rest in hammer", "hammer and shield, some storm"], ["a hammer", "hammer and a shield"]),
+        ["skald"] = (["battlesongs and 2h", "max battlesongs", "songs and hammer"], ["a 2h hammer or axe", "a 2h"]),
+        ["berserker"] = (["left axe and axe", "max left axe", "lefthand and axe, some parry"], ["two axes", "axes, both hands"]),
+        ["savage"] = (["savagery and hand to hand", "max h2h, rest in savagery", "h2h first"], ["hand to hand claws", "h2h, both hands"]),
+        ["hunter"] = (["beastcraft and composite bow", "spear or bow, beastcraft", "max bow, some stealth"], ["a composite bow", "a spear and a bow"]),
+        ["shadowblade"] = (["critical strike and left axe", "cs and envenom", "max cs, then left axe"], ["two axes", "a 2h sword for cs"]),
+        ["healer"] = (["mending, rest in pac", "pac for cc, mending for heals", "max mending for grps"], ["a hammer and a shield", "hammer, whatever drops"]),
+        ["shaman"] = (["mending or cave", "cave for solo, mending for grps", "max mending"], ["a hammer and a shield", "hammer, whatever drops"]),
+        ["runemaster"] = (["darkness or runecarving", "max darkness", "runes if u want pbae"], ["a staff", "staff, caster stats"]),
+        ["spiritmaster"] = (["darkness or summoning", "darkness for solo", "max summoning for the pet"], ["a staff", "staff, caster stats"]),
+        ["bonedancer"] = (["bone army", "max bone army", "army, rest in darkness"], ["a staff", "staff, the pets do the work"]),
+        ["hero"] = (["large weapons and shield", "shield and blades", "max shield, rest in large"], ["a large weapon", "a spear or large weapon"]),
+        ["champion"] = (["valor and large weapons", "max valor", "valor and blades"], ["a large weapon", "large or blades"]),
+        ["blademaster"] = (["celtic dual and blades", "max celtic dual", "cd and piercing"], ["two blades", "blades in both hands"]),
+        ["ranger"] = (["archery and pathfinding", "max recurve bow", "bow and pathfinding, some stealth"], ["a recurve bow", "recurve bow, blades for melee"]),
+        ["nightshade"] = (["critical strike and stealth", "cs and piercing", "max cs, then stealth"], ["two piercers", "blades or piercing"]),
+        ["druid"] = (["nurture or nature", "nurture for grps, nature for the pet", "max regrowth for heals"], ["blunt and a shield", "a hammer, whatever drops"]),
+        ["warden"] = (["regrowth and nurture", "blades and nurture", "max nurture"], ["blades and a shield", "blunt or blades with a shield"]),
+        ["bard"] = (["music and regrowth", "max music", "music and nurture"], ["blades", "blades or blunt, whatever drops"]),
+        ["eldritch"] = (["light or void", "max light", "void for dmg"], ["a staff", "staff, caster stats"]),
+        ["enchanter"] = (["light or enchantments", "light and mana", "enchant for the pet"], ["a staff", "staff, caster stats"]),
+        ["mentalist"] = (["mentalism for heals, light for dmg", "max light", "mana and mentalism"], ["a staff", "staff, caster stats"]),
+        ["animist"] = (["arboreal or creeping", "creeping for shrooms", "max arboreal"], ["a staff", "staff, the shrooms do the work"]),
+        ["valewalker"] = (["scythe and arboreal", "max scythe", "scythe, some parry"], ["a scythe", "scythe, always"]),
+    };
 
+    /// <summary>Spec advice for a class ("cs and envenom, rest in stealth" for an infiltrator), or a general rule for one not listed. Pure.</summary>
+    public static string[] SpecAdvice(string className) =>
+        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Spec.Append("max ur main line first").ToArray()
+            : Pool("max ur main line first", "main line, rest wherever", "ask ur trainer, he shows the lines");
+
+    /// <summary>The weapon a class uses ("two thrust daggers" for an infiltrator). Pure.</summary>
+    public static string[] WeaponAdvice(string className) =>
+        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Weapon.Append("whatever ur spec is").ToArray()
+            : Pool("whatever ur spec is", "best one that drops lol");
+
+    /// <summary>Where a class trains: every class trainer of the realm stands in its capital. Pure.</summary>
+    public static string[] TrainerAnswers(Facts f, Random random)
+    {
+        string cap = CapitalWord(f.Realm), cls = ShortClass(f.ClassName, random);
+        return Pool($"your trainer in {cap}", $"in {cap}", $"{cap}, {cls} trainer is there", $"theres one in {cap}, ask a guard", $"{cap}, by the other trainers");
+    }
+
+    /// <summary>"sc or drops at 27?": drops while levelling, spellcrafted gear at the cap. Pure.</summary>
+    public static string[] GearAdvice(int level) => level switch
+    {
+        < 35 => Pool("drops till 40ish", "drops, sc later", "drops, u outlevel it fast", "drops, save ur money"),
+        < 45 => Pool("drops for now, sc at 45ish", "drops, sc at 50", "drops, unless u have money"),
+        _ => Pool("sc if u can afford it", "sc for rvr", "sc, drops dont cut it at 50", "sc if u rvr"),
+    };
+
+    private static string[] TravelAnswers(eRealm realm) =>
+        Pool("ask a stable master, they have routes", "horse most of the way", $"stable master in {CapitalWord(realm)}", "horse from the stable, then run");
+
+    /// <summary>
+    /// The armour a class wears at 50 as chat names it ("plate", "chain", "cloth", "scale"), by the game's item rule
+    /// (<see cref="AutonomousChatGear.ArmorWord"/>; 1.1.3, after RC5), or null for a class it doesn't know. Pure.
+    /// </summary>
+    public static string ArmorOf(string className) => AutonomousChatGear.ArmorWord(className?.Trim(), 50);
+
+    /// <summary>
+    /// Something to buy for the bot's own class and level: armour of the weight the class wears then, by the game's own item
+    /// rule (1.1.3, after RC5: "armor for a 29 cabalist" is cloth, a 15 paladin's is chain), or a slot, jewelry or pots.
+    /// </summary>
     private static string WantFor(Facts f, Random random)
     {
-        string cls = f.ClassName?.Trim() ?? string.Empty;
-        string armor = Plate.Contains(cls) ? "plate" : Chain.Contains(cls) ? "chain" : Cloth.Contains(cls) ? "cloth" : Studded.Contains(cls) ? "studded"
-            : Leather.Contains(cls) ? "leather" : null;
+        string armor = AutonomousChatGear.ArmorWord(f.ClassName?.Trim(), f.Level);
         string slot = Pick(random, "helm", "gloves", "boots", "sleeves", "legs", "vest", "arms");
         return random.Next(4) switch
         {
             0 when armor != null => $"{armor} {slot}",
-            1 => Pick(random, "pots", "power pots", "heal pots", "dye", "arrows", "a cloak", "a ring", "bracers", "a necklace", "a belt"),
+            1 when AutonomousChatGear.UsesBow(f.ClassName) && random.Next(6) == 0 => "arrows",
+            1 => Pick(random, "pots", "power pots", "heal pots", "dye", "a cloak", "a ring", "bracers", "a necklace", "a belt"),
             2 when armor != null => $"{f.Level} {armor} {slot}",
             _ => $"{slot} for lvl {f.Level}",
         };
@@ -1644,13 +2517,22 @@ public static class AutonomousChatFieldTalk
     /// death stories in the frontier read "siuses in murdaigean hate me", "train of sneakywarriors, im dead" or "died to summoner
     /// roesias again". Pure.
     /// </summary>
+    /// 1.1.3, after RC6: nor is a goal or an objective the controller wrote there ("frontier patrol near death stalkers", "grind
+    /// camp ...", "Final encounter staging"): "died to frontier patrol near death stalkers ugh" in /faction.
     public static string MonsterKind(string targetName, bool playerLedGroup)
     {
         string target = targetName?.Trim();
-        if (playerLedGroup || string.IsNullOrEmpty(target) || char.IsUpper(target[0]))
+        if (playerLedGroup || string.IsNullOrEmpty(target) || char.IsUpper(target[0]) || ObjectiveName.IsMatch(target))
             return null;
         return target.ToLowerInvariant();
     }
+
+    // RC10 on the owner's PC: "careful group rendezvouses link" in /say. The goal names the controller writes into TargetName
+    // (AutonomousBotVoices.IsPlaceName lists the same words) are no monster either.
+    private static readonly System.Text.RegularExpressions.Regex ObjectiveName = new(
+        @"\b(patrol|near|camp|grind|grinding|objective|staging|route|toward|towards|roam|roaming|rendezvous|muster|mustering|egress|" +
+        @"matchmaking|formation|assignment|waypoint|meetup|gathering|escort|siege|assault)\b|[:/(]|\d",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
 
     internal static Facts Of(GameBot bot, Random random)
     {
@@ -1663,6 +2545,8 @@ public static class AutonomousChatFieldTalk
         int quality = 0;
         bool gear = false;
         long best = -1;
+        int itemType = 0;
+        bool? usable = null;
         if (bot.Inventory != null)
             foreach (var entry in bot.Inventory.AllItems)
             {
@@ -1675,17 +2559,53 @@ public static class AutonomousChatFieldTalk
                 best = entry.Price;
                 item = entry.Name;
                 quality = entry.Quality;
+                itemType = entry.Object_Type;
+                usable = entry.Template != null && GameServer.ServerRules?.CheckAbilityToUseItem(bot, entry.Template) == true;
                 gear = entry.Item_Type is >= (int)eInventorySlot.RightHandWeapon and <= (int)eInventorySlot.DistanceWeapon or
                     (int)eInventorySlot.HeadArmor or (int)eInventorySlot.HandsArmor or (int)eInventorySlot.FeetArmor or (int)eInventorySlot.TorsoArmor or
                     (int)eInventorySlot.LegsArmor or (int)eInventorySlot.ArmsArmor;
             }
         string monster = MonsterKind(record?.TargetName, bot.IsPlayerLedGroup);
+        // 1.1.3, after RC6: while its death is recent, the bot's monster is what killed it (none for an enemy or a guard):
+        // after the release the controller writes an objective into TargetName ("frontier patrol near death stalkers").
+        AutonomousBotVoices.DeathNote death = AutonomousBotVoices.RecentDeath(bot);
+        if (death?.Killer == "monster")
+            monster = death.Monster ?? monster;
+        else if (death?.Killer is "guard" or "pet" or "bot" or "player")
+            monster = null;
         int groupSize = bot.Group?.MemberCount ?? 1;
+        // 1.1.3, after RC5: the bot's real group state. A solo bot wants a group when group matchmaking holds it or it is out
+        // for rvr; a group recruits only while its party assembles with seats free (AutonomousBotGroupCoordinator).
+        AutonomousBotGroupCoordinator.RecruitPost recruit = null;
+        try
+        {
+            recruit = AutonomousBotGroupCoordinator.RecruitingPost(bot);
+        }
+        catch
+        {
+            // No coordinator state (tests, a minimal world): the bot isn't recruiting.
+        }
+        bool seeksGroup = bot.Group == null && (AutonomousObjectiveAssignments.IsAwaitingGroupMatchmaking(bot) ||
+                                                AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR));
+        string dungeon = inDungeon ? zone : recruit is { WhereIsDungeon: true } ? recruit.Where : AutonomousBotVoices.DungeonFor(bot.Realm, bot.Level, random);
         return new Facts(bot.DatabaseID, bot.Realm, bot.CharacterClass?.Name ?? bot.ClassName, bot.Level, zone,
-            inDungeon ? zone : AutonomousBotVoices.DungeonFor(bot.Realm, bot.Level, random), flags.Contains("in_rvr"), inDungeon,
+            dungeon, flags.Contains("in_rvr"), inDungeon,
             flags.Contains("in_town") || flags.Contains("in_capital"), groupSize > 1, groupSize, flags.Contains("just_leveled"),
             flags.Contains("just_died"), flags.Contains("bag_full"), flags.Contains("at_camp"), monster, item, quality, gear,
             AutonomousBotVoices.TravelingTo(bot), AutonomousBotVoices.Bubbles(bot) ?? 0, DateTime.Now.Hour, flags.Contains("is_healer"),
-            World(bot.Realm));
+            World(bot.Realm))
+        {
+            Live = true,
+            SeeksGroup = bot.Group == null ? seeksGroup : null,
+            RvrTask = AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR),
+            Recruit = recruit,
+            ItemType = itemType,
+            ItemUsable = usable,
+            KilledBy = death?.Killer is "monster" or "guard" or "pet" or "bot" or "player" ? death.Killer : null,
+            Attackers = death?.Attackers ?? 0,
+            KillerClass = death?.KillerClass,
+            WasAway = AutonomousChatEngagement.WasAway(bot.DatabaseID, GameLoop.GameLoopTime, flags.Contains("just_died") || bot.IsReturningAfterRelease),
+            Dead = !bot.IsAlive,
+        };
     }
 }

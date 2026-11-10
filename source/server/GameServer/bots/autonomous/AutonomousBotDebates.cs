@@ -49,7 +49,7 @@ public static class AutonomousBotDebates
     #region Pure rules (tested)
 
     /// <summary>A bot that could speak. <paramref name="InTown"/>: on a town break, so least likely to be pulled into a fight.</summary>
-    public readonly record struct Candidate(long Id, BotPersonalityType Type, string ClassName, int Level, bool InTown = false);
+    public readonly record struct Candidate(long Id, BotPersonalityType Type, string ClassName, int Level, bool InTown = false, bool RvrTask = false);
 
     /// <summary>Where a cast speaker is when its line is due.</summary>
     public enum SpeakerState { Free, Busy, Gone }
@@ -136,7 +136,8 @@ public static class AutonomousBotDebates
     public static bool LevelFits(VC.Scene scene, int level) => level >= scene.LevelLow - LevelSlack && level <= scene.LevelHigh + LevelSlack;
 
     public static bool Fits(VC.RoleSpec spec, Candidate candidate) =>
-        spec == null || VC.TypeFits(spec.Types, candidate.Type) && VC.ClassFits(spec.Classes, candidate.ClassName) && spec.LevelFits(candidate.Level);
+        spec == null || VC.TypeFits(spec.Types, candidate.Type) && VC.ClassFits(spec.Classes, candidate.ClassName) && spec.LevelFits(candidate.Level) &&
+        spec.TaskFits(candidate.RvrTask);
 
     /// <summary>
     /// Casts a scene's speaking roles from distinct candidates. A role's class requirement is kept;
@@ -163,12 +164,13 @@ public static class AutonomousBotDebates
             .ThenBy(_ => random.Next()).ToArray();
         // Roles with requirements first, so the open roles don't take the only fitting bot.
         foreach (string role in scene.SpeakingRoles.Where(r => !cast.ContainsKey(r)).OrderByDescending(r => scene.Roles.TryGetValue(r, out var s) ?
-                     s.Classes.Length * 2 + s.Types.Length + (s.LevelLow > 1 || s.LevelHigh < 50 ? 4 : 0) : 0))
+                     s.Classes.Length * 2 + s.Types.Length + (s.LevelLow > 1 || s.LevelHigh < 50 ? 4 : 0) + (s.Task != null ? 8 : 0) : 0))
         {
             scene.Roles.TryGetValue(role, out VC.RoleSpec spec);
             Candidate chosen = pool.FirstOrDefault(c => !used.Contains(c.Id) && Fits(spec, c));
             if (chosen.Id == 0 && spec != null && spec.Types.Length > 0)
-                chosen = pool.FirstOrDefault(c => !used.Contains(c.Id) && VC.ClassFits(spec.Classes, c.ClassName) && spec.LevelFits(c.Level));
+                chosen = pool.FirstOrDefault(c => !used.Contains(c.Id) && VC.ClassFits(spec.Classes, c.ClassName) && spec.LevelFits(c.Level) &&
+                                                  spec.TaskFits(c.RvrTask));
             if (chosen.Id == 0)
                 return null;
             cast[role] = chosen.Id;
@@ -255,6 +257,8 @@ public static class AutonomousBotDebates
         public long LastSpeakerId;
         public long LastAt;
         public readonly List<(string Role, string Text)> Said = new();
+        /// <summary>The rest of a long beat, still to be typed by the speaker who started it (AutonomousChatDebateSpeech).</summary>
+        public readonly Queue<string> Pending = new();
         /// <summary>Players answered in this scene, so one player gets at most two in-debate answers.</summary>
         public int PlayerAnswers;
         /// <summary>Players who spoke in /faction while the scene ran.</summary>
@@ -318,6 +322,13 @@ public static class AutonomousBotDebates
         lock (Sync)
             return Scenes.TryGetValue(realm, out Running running) && running.StoryKey != null
                 ? (running.StoryKey, running.StoryA, running.StoryB) : null;
+    }
+
+    /// <summary>The topic of the debate playing in a realm's /faction now ("housing"), or null (AutonomousChatRecall).</summary>
+    public static string RunningTopic(eRealm realm)
+    {
+        lock (Sync)
+            return Scenes.TryGetValue(realm, out Running running) && running.StoryKey == null ? running.Scene?.Topic : null;
     }
 
     public static bool IsRunning(eRealm realm)
@@ -392,7 +403,8 @@ public static class AutonomousBotDebates
 
     private static Candidate CandidateOf(GameBot bot) =>
         new(bot.DatabaseID, AutonomousBotPersonality.For(bot).Type, bot.CharacterClass?.Name ?? bot.ClassName ?? string.Empty, bot.Level,
-            bot.PersistentRecord?.ObjectivePhase == AutonomousWorldBotController.TownIdlePhase);
+            bot.PersistentRecord?.ObjectivePhase == AutonomousWorldBotController.TownIdlePhase,
+            AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR));
 
     private static SpeakerState StateOf(GameBot bot, eRealm realm)
     {
@@ -542,8 +554,49 @@ public static class AutonomousBotDebates
             Log.Info($"BOT_DEBATE_START realm={GlobalConstants.RealmToName(realm)} scene={scene.Id} speakers={cast.Count}");
     }
 
+    /// <summary>The pause before the next piece of a beat its speaker split (it is still typing): 2-6 seconds by its length.</summary>
+    public static int ContinuationDelayMs(string text) => Math.Clamp(1_500 + (text?.Length ?? 0) * 45, 2_000, 6_000);
+
+    /// <summary>
+    /// The next piece of a long beat (1.1.3, after RC5): said by the bot that started it, once there is room; dropped when that
+    /// bot left or no room came. True when the beat's turn is over for now (a piece said or waiting), false when there is none.
+    /// </summary>
+    private static bool PlayPending(eRealm realm, Running running, long now)
+    {
+        if (running.Pending.Count == 0)
+            return false;
+        if (!AutonomousBotRegistry.TryGet(running.LastSpeakerId, out GameBot speaker) || speaker.ObjectState != GameObject.eObjectState.Active ||
+            DecideRoom(AutonomousBotChatCoordinator.FactionRoom(realm), running.RoomWaits) == RoomDecision.Cut)
+        {
+            running.Pending.Clear();
+            running.RoomWaits = 0;
+            return false;
+        }
+        if (!AutonomousBotChatCoordinator.FactionRoom(realm))
+        {
+            running.RoomWaits++;
+            running.NextAt = now + RoomRetryMs;
+            return true;
+        }
+        running.RoomWaits = 0;
+        string piece = running.Pending.Dequeue();
+        string role = running.LastRole;
+        using (AutonomousChatExchange.Tag(running.StoryKey != null ? "storyline" : "debate", running.Exchange, running.Beat - 1, role, speaker))
+            AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, piece);
+        AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), speaker, piece, "chat");
+        lock (Sync)
+        {
+            running.LastAt = now;
+            running.Said.Add((role, piece));
+        }
+        running.NextAt = now + (running.Pending.Count > 0 ? ContinuationDelayMs(running.Pending.Peek()) : BeatDelayMs(NextText(running)));
+        return true;
+    }
+
     private static void PlayBeat(eRealm realm, Running running, long now)
     {
+        if (PlayPending(realm, running, now))
+            return;
         while (running.Beat < running.Scene.Beats.Length)
         {
             VC.Beat beat = running.Scene.Beats[running.Beat++];
@@ -619,8 +672,13 @@ public static class AutonomousBotDebates
             string[] filledVariants = FilledVariants(beat, AutonomousBotVoices.SlotsFor(speaker, Random.Shared, running.Shared));
             if (filledVariants.Length == 0)
                 continue;
-            string filled = VC.ForTimeOfDay(filledVariants[Random.Shared.Next(filledVariants.Length)], DateTime.Now.Hour);
-            string line = VC.Style(filled, AutonomousBotVoices.Corpus.VoiceFor(speaker.DatabaseID), Random.Shared);
+            // 1.1.3, after RC5: typed in the speaker's own style, a long turn in two or three chat lines (AutonomousChatDebateSpeech).
+            VC.Voice voice = AutonomousBotVoices.Corpus.VoiceFor(speaker.DatabaseID);
+            string filled = VC.ForTimeOfDay(AutonomousChatDebateSpeech.Variant(filledVariants, voice, Random.Shared), DateTime.Now.Hour);
+            List<string> pieces = AutonomousChatDebateSpeech.Typed(filled, voice, speaker.DatabaseID, Random.Shared);
+            if (pieces.Count == 0)
+                continue;
+            string line = pieces[0];
             // 1.1.3: a beat waits for room under /faction's ceiling. The scene owns the channel while it plays (every other line
             // but an event or one to the player yields to it, BroadcastFactionAsWritten), so room comes within seconds; the cut
             // after two minutes is a safety net, and a dunce who already spoke still rage quits then.
@@ -650,7 +708,10 @@ public static class AutonomousBotDebates
                 running.LastAt = now;
                 running.Said.Add((beat.Role, line));
             }
-            running.NextAt = now + BeatDelayMs(NextText(running));
+            running.Pending.Clear();
+            foreach (string rest in pieces.Skip(1))
+                running.Pending.Enqueue(rest);
+            running.NextAt = now + (running.Pending.Count > 0 ? ContinuationDelayMs(running.Pending.Peek()) : BeatDelayMs(NextText(running)));
             return;
         }
         PlayExit(realm, running);

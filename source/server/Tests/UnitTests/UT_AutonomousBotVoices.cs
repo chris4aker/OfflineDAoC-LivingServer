@@ -79,6 +79,34 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void Scenes_ARoleThatTellsTheFrontierIsCastOutForRvr()
+        {
+            // RC10 on the owner's PC: "first night in the frontier", "made it to Castle Excalibur", "first realm points" from a 40
+            // grinding in Avalon. The newcomer's role (task=rvr) goes only to a bot out for rvr.
+            VC.Scene scene = Corpus.Scenes.Single(s => s.Id == "rvr_newbie_frontier");
+            Assert.That(scene.Roles["A"].Task, Is.EqualTo("rvr"));
+            var types = new[] { BotPersonalityType.NoLifer, BotPersonalityType.Socialite, BotPersonalityType.Daredevil, BotPersonalityType.Leveler,
+                BotPersonalityType.Explorer, BotPersonalityType.Crafter };
+            var grinding = Enumerable.Range(1, 12).Select(i => new Debates.Candidate(i, types[i % types.Length], "Cleric", 45)).ToArray();
+            for (int seed = 0; seed < 20; seed++)
+                Assert.That(Debates.Cast(scene, grinding, new Random(seed)), Is.Null, "no bot out for rvr to play the newcomer");
+            var withOne = grinding.Append(new Debates.Candidate(99, BotPersonalityType.Leveler, "Necromancer", 44, RvrTask: true)).ToArray();
+            for (int seed = 0; seed < 20; seed++)
+                Assert.That(Debates.Cast(scene, withOne, new Random(seed))["A"], Is.EqualTo(99));
+        }
+
+        [Test]
+        public void Gossip_NeverAsksWhetherTheOnlinePlayerIsOn()
+        {
+            // RC10 on the owner's PC: "anyone know if Manawatch is on today? want to group again" in /faction while the player was
+            // on. Gossip only runs while the player is online (AutonomousLivingServer.TryGossip).
+            VC.Line[] gossip = Corpus.Lines.Where(line => line.Kind == "gossip").ToArray();
+            Assert.That(gossip, Is.Not.Empty);
+            Assert.That(gossip.Where(line => Regex.IsMatch(line.Text, @"\b(is|are) (on|online|around)\b|know if \{player\}")).Select(line => line.Text),
+                Is.Empty);
+        }
+
+        [Test]
         public void Tells_AboutLevelling_OnlyGoToPlayersUnderTheCap()
         {
             // In-game check 2026-10-27: a level 50 got "how close are you to your next level?" by tell.

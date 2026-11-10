@@ -1017,6 +1017,8 @@ namespace DOL.GS
             _stableReturnPlan = null;
             CompleteStableMasterRoute();
             BotDutyLeases.OnDied(this); // a battleground rally drops its dead (BotDutyLeaseRules.EndsOnDeath)
+            // 1.1.3, after RC6: how many were on it, read before the death clears the tracker, for how the death is told.
+            int attackers = IsAutonomousWorldBot ? AutonomousDeathDiagnostics.Attackers(this) : 0;
 
             if (IsAutonomousWorldBot && PersistentRecord != null)
             {
@@ -1034,7 +1036,7 @@ namespace DOL.GS
             {
                 AutonomousBotStatusPersistence.Queue(this);
                 AutonomousBotGuildSocial.OnBotDeath(this);
-                AutonomousBotVoices.OnBotDeath(this);
+                AutonomousBotVoices.OnBotDeath(this, killer, attackers);
                 AutonomousLivingServer.OnBotDied(this, killer);
             }
             StartDeathRecoveryTimer();
@@ -1199,8 +1201,8 @@ namespace DOL.GS
                 release = new Point3D(capital.X, capital.Y, capital.Z);
             }
             release ??= _deathLocation;
-            if (IsAutonomousWorldBot)
-                AutonomousLivingServer.OnBotReleasing(this);
+            // RC6 on the owner's PC: "long run back to Pennine Mountains" and "released, running back" in the same second.
+            bool toldGroup = IsAutonomousWorldBot && AutonomousLivingServer.OnBotReleasing(this);
             // Transfer the corpse first: a failed MoveTo must not revive the bot
             // at its killer or cause HandleDeathRecovery to discard its timer.
             if (!MoveCorpseForRelease(releaseRegion, release.X, release.Y, release.Z, Heading))
@@ -1215,7 +1217,7 @@ namespace DOL.GS
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
             ShowStandingToViewers();
-            if (returnToParty)
+            if (returnToParty && !toldGroup)
                 TellOwnGroup(ReturnDialogue("release"));
 
             if (PersistentRecord != null)
@@ -1402,7 +1404,8 @@ namespace DOL.GS
                 IsReturningAfterRelease = false;
                 _stableReturnPlan = null;
                 CompleteStableMasterRoute();
-                TellOwnGroup(ReturnDialogue("arrive"));
+                // 1.1.3 (RC5 on the owner's PC): "back" only after a death; a bot that walked to the player after an invite is "here".
+                TellOwnGroup(ReturnDialogue(_deathTick > 0 && GameLoop.GameLoopTime - _deathTick < 20 * 60_000 ? "arrive" : "arrive_walk"));
                 Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
                 BotGroupRelease.FinishReturn(this); // Fork: as an invitation does
                 return false;
@@ -1524,6 +1527,12 @@ namespace DOL.GS
             "stable" => "grabbing a horse, faster",
             "mount" => string.IsNullOrEmpty(stableDestination) ? "on a horse, be there soon" : $"horse to {stableDestination}, be there soon",
             "dismount" => "off the horse, almost there",
+            "arrive_walk" => random.Next(3) switch
+            {
+                0 => "here",
+                1 => "made it, ready",
+                _ => "ok here, whats the plan",
+            },
             "arrive" => random.Next(3) switch
             {
                 0 => "back",

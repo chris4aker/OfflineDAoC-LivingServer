@@ -54,6 +54,10 @@ public static class AutonomousChatReplyFit
             route.StartsWith("knowledge", StringComparison.Ordinal) || route.StartsWith("context", StringComparison.Ordinal) ||
             route is "join" or "tell invited")
             return Known;
+        // RC6 on the owner's PC: a friend's answer to "what u up to?" (what it is really doing) scored as weak, and the budget
+        // swapped it for "not sure, try /advice".
+        if (route.StartsWith("friend chat", StringComparison.Ordinal))
+            return Known;
         if (route.StartsWith("thread", StringComparison.Ordinal))
             // "which wing?" and "...?" checks drew stock lines that didn't answer them (blind round 1: 0 of 2).
             return route is "thread followup_which" or "thread followup_confirm" ? Weak : Specific;

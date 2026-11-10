@@ -12,7 +12,7 @@ namespace DOL.GS
         public static readonly Tactic[] Catalog =
         [
             new("DraargusMighty", "avalon-city/draargusmighty", ["DraugynSphere"], 0, null),
-            new("SyssroRuthless", "avalon-city/syssroruthless", [], 0, null) { Hazards = ["PitMonster"], HazardRadius = 250 },
+            new("SyssroRuthless", "avalon-city/syssroruthless", [], 0, null, Hazards: ["PitMonster"], HazardRadius: 250, HazardDamageType: null),
             new("Fames", "caer-sidi/fames", [], 2700, null),
             new("Bellum", "caer-sidi/bellum", [], 2700, null),
             new("Morbus", "caer-sidi/morbus", ["MorbusSwarm"], 2700, null),
@@ -31,7 +31,7 @@ namespace DOL.GS
             new("Conservator", "galladoria/conservator", [], 600, null),
             new("Easmarach", "galladoria/easmarach", [], 0, null),
             new("Olcasgean", "galladoria/olcasgean", [], 0, null),
-            new("FirePrimal", "galladoria/fireprimal", [], 0, null) { Hazards = ["TrailOfFire"], HazardRadius = 450 },
+            new("FirePrimal", "galladoria/fireprimal", [], 0, null, Hazards: ["TrailOfFire"], HazardRadius: 450, HazardDamageType: null),
             new("EarthPrimal", "galladoria/earthprimal", ["GuardianEarthmender", "MagicalEarthmender", "NaturalEarthmender", "ShadowyEarthmender"], 0, null) { ClassRules = [new("GuardianEarthmender", [eCharacterClass.Blademaster, eCharacterClass.Hero, eCharacterClass.Champion, eCharacterClass.Animist, eCharacterClass.Valewalker]), new("MagicalEarthmender", [eCharacterClass.Eldritch, eCharacterClass.Enchanter, eCharacterClass.Mentalist, eCharacterClass.Animist, eCharacterClass.Valewalker]), new("NaturalEarthmender", [eCharacterClass.Bard, eCharacterClass.Druid, eCharacterClass.Warden, eCharacterClass.Animist, eCharacterClass.Valewalker]), new("ShadowyEarthmender", [eCharacterClass.Nightshade, eCharacterClass.Ranger, eCharacterClass.Animist, eCharacterClass.Valewalker])], ClassRuleSwitch = "AllowEarthmenderClassPuzzle" },
             new("SpindlerBroodmother", "galladoria/spindlerbroodmother", [], 0, null) { RangedAdds = ["SBAdds"], DeathAdds = ["SBDeadAdds"] },
             new("Xaga", "galladoria/xaga", ["Beatha", "Tine"], 0, null) { AddsInOrder = true },
@@ -39,8 +39,8 @@ namespace DOL.GS
             new("AlbGolestandt", "golestandt-s-lair-dartmoor/albgolestandt", [], 0, null) { RangedAdds = ["GolestandtMessenger"] },
             new("AidonTheArchwizard", "hall-of-the-corrupt/aidonthearchwizard", ["AidonCopyFire", "AidonCopyIce", "AidonCopyAir", "AidonCopyEarth"], 1100, null, 1, null, 0),
             new("KrevoRicik", "krondon/krevoricik", [], 0, null) { RangedAdds = ["KrevolAdd"] },
-            new("Orylle", "krondon/orylle", [], 0, null) { Hazards = ["OrshomFire"], HazardRadius = 300, After = "Orshom" },
-            new("Orshom", "krondon/orshom", [], 0, null) { Hazards = ["OrshomFire"], HazardRadius = 300 },
+            new("Orylle", "krondon/orylle", [], 0, null, Hazards: ["OrshomFire"], HazardRadius: 300, HazardDamageType: "Cold") { After = "Orshom" },
+            new("Orshom", "krondon/orshom", [], 0, null, Hazards: ["OrshomFire"], HazardRadius: 300, HazardDamageType: "Cold"),
             new("ScurceolHyrde", "krondon/scurceolhyrde", ["LyftMihtOne", "LyftMihtTwo", "LyftMihtThree", "LyftMihtFour"], 1500, null),
             new("AncientBlackOak", "marfach-caverns/ancientblackoak", [], 0, "BlackLady"),
             new("Avartack", "marfach-caverns/avartack", [], 0, null),

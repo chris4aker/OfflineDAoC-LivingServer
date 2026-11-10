@@ -799,17 +799,591 @@ Built and checked by tools; nobody has seen it in the game client yet.
   new one, an unknown one left alone, ROLLBACK.cmd after each and PREPARE-FOR-UPDATE.cmd. The archive was unpacked again:
   eight entries, and the picture decodes to the approved image pixel for pixel. Not yet checked: the game client showing it.
 
-## Beta 1.1.2 (in development)
+## Beta 1.1.3 — 2026-11-08
+
+Started as a hotfix (/faction chat that holds together, out of Xanxicar's stomp, Scurceol Hyrde's orbs shot down from the
+floor, two Darkness Falls exits, Setup waiting out a busy download server) and grew after the owner's overnight checks of
+the release candidates on 2026-11-09 (owner: "Hold 1.1.3 and fix everything you identified", "You need to come up with
+fixes for ALL of that"): bot chat that sounds like a real server, bots that notice the player, raids that don't stall,
+keeps defended in time, quiet nights, fewer stalls. How it was tested, and on which build, is in the release notes
+([docs/RELEASE-NOTES-1.1.3.md](docs/RELEASE-NOTES-1.1.3.md)).
+
+**/faction that holds together** (owner 2026-11-08, watching 1.1.3's /faction: "faction feels disconnected... The chats
+MUST be top notch"). Checked by automated tests and a simulated evening, then on the owner's PC: the chat checker
+read 68 minutes of an evening on the second release candidate (6a83c03) and 34 minutes on the third (b72716e, the same
+chat code) and passed both.
+- **Conversations in order, each speaker in its part.** Every line of a bot conversation (a question and its answers, a
+  story about a death, the replies to a remark) was its own timer, set when the conversation was planned. A line held
+  back 2-4 s because the channel had just carried one (up to three times) then came after the line meant to follow it,
+  and a line whose speaker was fighting was dropped while the rest still played: "main line first" before the question
+  it answers, the asker's thanks before the answer, "sup" last; "kk inv" before "what lvl r u?". Now a conversation is
+  said one line after another, each timed from the line before it. A line whose speaker can't say it (fighting, gone)
+  ends the conversation, so nobody thanks an answer that never came; a third bot's aside is just left out. A short reply
+  ("which part?", "ty") is not said once three other lines have scrolled its question away, and an "anyone?" two minutes
+  later only if its speaker said nothing else meanwhile. At most three conversations run in a realm's /faction at once.
+- **Answers that are true of the bot.** "need a tank for sh barrows" drew "sec, me" and "cab, 50" from a cabalist. A
+  group ask is now answered only by a bot that fills the role it asks for (tank, healer, crowd control, puller, damage, or
+  a named class) and is in its levels (the range it names, else within 6 of the asker); "any reavers on?" is answered
+  "me" by a reaver only. Asks name only classes of the asker's realm (an Albion "any druids on?" was possible).
+- **Follow-ups that fit.** The asker no longer asks the answerer's question ("solo or grp?" after "any reavers on?"); it
+  asks the question it had ("what do u put points in at 50?"). A gear, crafting or epic question no longer runs on to
+  "which part?" and "the map helps"; only quest, hand-in and bind questions get a "where exactly?", answered with a place.
+  Nobody asks a level or class the answer already gave. An answer that asks back ("where at?") is answered by the asker,
+  with no "ty" to a question. In a death story "where?" comes only when the teller didn't say where, and the teller then
+  says where. A trade post answered "gl selling, someone will want it" no longer gets "ill keep it then".
+- **Reactions in proportion.** A bot's revenge or nemesis line drew three to eight reactions over a minute and a half,
+  and two of them ran into each other ("that stinks" and "nice!" to two lines at once). Now a bot's own moment draws one
+  or two reactions within 20 s, realm news (keeps, relics, raids, Darkness Falls) three at most (four from 300 bots a
+  realm) within a minute, one burst at a time in a realm, each from a bot free to type, and a reaction is left out once
+  four other lines came after what it reacts to. Guild threads are said in order and answered by guildmates who fit too.
+- **One "oof" in ten minutes.** A short reaction ("oof", "rip", "lol rip", "gz") a realm's /faction heard in the last ten
+  minutes is picked again or left out, in stories, bursts, threads' answers and single reactions.
+- **/faction keeps to its ceiling, whoever speaks.** On the owner's evening /faction ran at 13.6 lines a minute for ten
+  minutes (minutes of 17-20) against its ceiling of 10: unprompted lines stopped at the ceiling, but replies, stories,
+  bursts, nemesis and revenge lines, news, debates, rumours, bonds, gold spammers and Leeroy's friends didn't. Now every
+  bot line in /faction passes one gate: it is said only if it fits under the realm's ceiling (the rate it would make, over
+  two minutes, as the server measures it). A conversation's line waits for room like a busy speaker, a debate's beat waits
+  (the scene owns the channel, so it drains), and a line that starts more (a rumour, a bond, a nemesis line and its burst)
+  starts nothing when it is held. Two kinds pass the gate, tagged in the log so a check can tell them apart: `src=event`, a
+  realm's big moment said on purpose (a keep or relic taken, a raid's end, Darkness Falls, a server first, the raid's
+  Leeroy), whose burst is itself capped at three reactions within 40 s; and `src=player`, a line to or about the real player
+  (bots answer you first). With bot voices on, a server first no longer adds its separate cheers on top of its burst.
+- **A debate, a storyline episode or a dunce's roast plays to its end.** While a scene plays it owns the realm's
+  /faction: every other line but an event or one to the player yields to it, so each beat finds room under the ceiling
+  within seconds. A beat waits for room three seconds at a time (an optional beat isn't re-rolled meanwhile); only after
+  two minutes is a scene cut (`BOT_DEBATE_END reason="no room in /faction"`), and a dunce who already spoke still sends
+  its parting tell and rage quits then. Checked on every scene in the corpus, on a realm already at its ceiling with a
+  keep falling mid-scene.
+- **You are answered during a scene too.** A line to or about you is never held by a scene or the ceiling, and "where do i
+  buy a better staff for my elem?" (no answer at all in the live test) now gets a true one: the Realm Exchange in your
+  capital, or the crafter who makes it (a fletcher for staves and bows, a weaponcrafter, an armorcrafter or a tailor).
+- **No rush when a scene ends.** For two minutes after a scene a line that starts something waits ten seconds after the
+  line before it (three seconds otherwise), and /lfg and /trade no longer wait for a /faction scene at all (the live test
+  heard 7 lines in 7 s as a debate ended). A roleplayer held back tries again in a few seconds.
+- **`/lstest roleplayer` and `/lstest spammer` say when the line really comes:** within a few seconds, once the scene
+  playing now is over, or as soon as /faction has room.
+- **A scene's part keeps its bot (after RC1).** The owner's check of RC1 (d30ba0fa, 2026-11-08) heard the dunce of
+  `dunce_pause_game` start as Iagoys and go on as Yno, who rage quit: Iagoys was in a fight for over 45 s, and the scene
+  gave the part to another bot. Now a part that has spoken is never given to another bot, in a dunce scene, a storyline
+  episode or a debate: a speaker fighting, casting or dead is waited for (45 s) and then says its line anyway, as players
+  typed between pulls; one that left the game ends the scene (`BOT_DEBATE_END reason="role A spoke and its bot left"`).
+  Tests (every scene in the corpus, with its first speaker busy for minutes, and gone), then on the owner's PC with
+  RC2 (6a83c038): `/lstest dunce` played `dunce_pet_warrior` with one speaker from start to rage quit.
+- **A gold spammer, a rumour or a roleplayer that is due gets its turn (after RC1).** In the same check
+  `/lstest spammer` logged `GOLD_SPAMMER_START` and the spammer said nothing for over two minutes: it came as a debate
+  began, /faction stayed at its ceiling after it, and every held ad was spent with the next tried 18-48 s later.
+  `/lstest rumour` said "no free bot of your realm had a line for it" when /faction had held the line, and a held rumour
+  was lost. Now a held ad, rumour or in-character line keeps its turn and is tried again every few seconds; its lines still
+  count against the ceiling. Time behind a scene doesn't count; after three minutes without room it gives up
+  (`LIVING_FEATURE_DROPPED`). The log says when one is due (`LIVING_FEATURE_DUE feature=spammer|rumour|roleplayer ex=`),
+  `GOLD_SPAMMER_START` comes with the first ad really said, and a spammer that never spoke is not banned or cheered.
+  `/lstest rumour` tells apart a scene playing, a full /faction, no free bot and no written line, and the first free bot
+  with a line tells it (only one bot was asked before). The rumour's replies, the spammer's reactions and the
+  roleplayer's mockery share the line's exchange id. On the owner's PC with RC2 (6a83c038): `/lstest spammer` spoke
+  after a 7 s wait and ran its five ads with reactions; `/lstest rumour` said honestly that no rare named was near.
+- **No wall of "released, running back" at the bind (after RC1).** Standing at Camelot's bind the owner heard about 25
+  lines in 45 s from different bots ("released, running back", "at bind, omw back", "no rez, released. coming back to
+  you"): a gamebot's word to its own group about its way back went out in /say to everyone near. These lines (released,
+  horse, off the horse, back, still on the way) now go to the bot's own group, and only when a player is in it; a group of
+  bots says nothing. /say lines carry their ceiling (`cap=`), and `chat_audit.py` prints the /say lines a minute and fails a
+  log with a minute of /say above its ceiling around the player. On the owner's PC with RC2 (6a83c038), at a busy
+  bind: 1.3-2.6 /say lines a minute.
+- **One greeting per bot per meeting (after RC1).** Cabowyn said "hey Manawatch! good to see you again" and a second later
+  "hey hey Manawatch, City of Camelot treat you well after i left?": a GM test had cleared the greeting cooldowns while the
+  first greeting was on its way. A bot that greeted a player, or is about to, doesn't greet them again for ten minutes,
+  whatever cleared the cooldowns; `/lstest greet` says so. Tests only.
+- **A deed names a place it could happen (after RC1).** A forced deed read "saw Manawatch's group take a named monster in
+  City of Camelot". A real deed names the zone where it happened (the monster's or the player's body); `/lstest deed` names
+  where the GM stands only if it could happen there (no capital; a streak or a gank only in the frontier), else a hunting
+  zone of the realm or a frontier zone. Tests only.
+- **A death story's opener keeps the ten-minute rule too (after RC3).** On the owner's RC3 evening (b72716e, 34 minutes)
+  different bots opened a death story with "dead. again." seven times, twice within a minute. A story line of three
+  words or more is told once an evening, so once the longer openers had each been told only the two-word one was left,
+  and the teller's own short line was let past the channel's ten-minute window (only the replies kept it). Now the
+  teller's short line keeps the window as well: the story picks another opener, and with none left it isn't told.
+  Tests only.
+- **A frontier death isn't told as a monster (after RC3).** In the owner's RC2 and RC3 evenings most death stories from
+  the frontier read "siuses in murdaigean hate me", "train of sneakywarriors, im dead" or "killed by xdemonxes at 27": the
+  story took the bot's last target, an enemy player, as a kind of monster and made it plural. Named creatures came out
+  the same way ("died to summoner roesias again"). Now only a kind of monster ("thrawn ogre miner") is talked about as
+  one; a person, a guard or a named creature is not, in stories and in the bots' other lines. A death in the frontier is
+  told as one ("got ganked lol", "zerged in emain", "stealther got me"). Tests only.
+- **Realm news in a player's words, not the herald's (after RC5).** On the owner's RC5 evening bots said the realm's
+  announcements in /faction word for word: "Krondon: recruiting up to 120 level-50 adventurers via Caer Diogel; at least
+  93 must arrive before assault.", "The Krondon expedition is advancing with 200 staged level-50 adventurers.", "Fighting
+  has broken out at Dun Crimthain. There is an opportunity to intervene." and "Warbands are gathering to assault Nottmoor
+  Faste. Join them at the siege camp". When a bot says one now, it says it the way a player typed it, short and in
+  lowercase, with the names as chat shortened them and no head counts ("krondon raid forming at diogel, need 50s", "fight
+  going at crimthain, anyone?", "warband going to nottm, siege camp"), in several ways for each announcement. Bots
+  telling the news in their own words shorten the names too ("we lost ailinne to hibs", not "we lost Dun Ailinne to
+  Hibernia"). The announcement at the top of the screen, and a notice with no bot to say it, read as before. Tests only.
+- **Reactions to the realm's news vary over an evening (after RC5).** "ugh, that one again" (RC3 and RC5), "oh well not
+  my keep" and "lol of course" came back to the next keep lost. A reaction of three words or more is now heard once in a
+  channel in three hours, however it is punctuated, and each kind of news (a keep taken or lost, a siege held or failed,
+  a relic, a raid's end, Darkness Falls) has about twice as many reactions to choose from. A burst that runs out of fresh
+  reactions is shorter, never longer: one short reaction per ten minutes and the reaction caps hold as before. Tests only.
+- **Debaters type, they don't narrate (after RC5).** Next to "lol rip", some debaters wrote like a book: "People said the
+  same before the dragon lairs. One winter they were just there, all three realms, same week." A debate line is now typed
+  in its speaker's own style and habits: a long turn goes out as two or three chat lines split where a player would hit
+  enter, no writer capitalises the second sentence of a line or ends it with a full stop, and a terse writer takes the
+  shortest way the scene gives to say it, without commas. What each speaker says is unchanged. Tests only.
+- **More ways to tell a frontier death (after RC5).** "got ganked lol" came twice in 13 minutes on RC5. A frontier death
+  story now has hundreds of openers (ganked, zerged, stealthed, caught at the milegate or the bridge, ran into a group,
+  died to a guard...), more answers to "where?", "by who?" and "how many?", and the teller's lines are kept for the
+  evening however short. "same happened to me in ..." names a frontier zone, an enemy realm's only as "their frontier":
+  RC5's "ganked in jamtland mtns" drew "same happened to me in dales of devwy", a hunting zone. Tests only.
+- **A deed names the monster and where (after RC5).** RC5's `/lstest deed solo` read "not lying, i just saw Manawatch kill
+  a named monster, no help at all". A witness now names where it happened in most of its lines, with the zone as chat
+  wrote it ("black mtns"), and names the real monster; the forced test takes the targeted or nearest named monster and
+  says so when there is none. Tests only.
+- **The checker finds lines in system voice (after RC5).** `chat_audit.py` counts bot lines in /faction, /say, /lfg, /trade
+  and /broadcast that read as a game announcement ("level-50 adventurers", "There is an opportunity", "Join them at", a
+  semicolon, a formally capitalised paragraph of more than 15 words), with examples under `--show`; one is enough for
+  `VERDICT FAIL`. It also counts, for information, the same reaction of three words or more again within an hour. It
+  fails the owner's RC3, RC4 and RC5 logs and passes the simulated evening of this build. Tests only.
+- **Bots answer each other's questions, and /lfg and /trade get replies (after RC5).** On the owner's RC3 evening (b72716e,
+  151 minutes) 71 of the 106 questions bots asked in /faction got no other line at all, and on RC5 (b8f30f9, 30 minutes)
+  15 of 21; counting only replies from someone else within a minute, 86 of 106 and 17 of 20 went unanswered. Half of them
+  were written with no answers ("where's the paladin trainer", "what spec for a 50 inf?", "any stealthers out?", "fastest
+  way to darkness falls?"); the rest were dropped by a 30% chance of no answer, an answer that could be said only once an
+  evening, or an answerer who was fighting by the time its answer was due. Now every question has answers that fit it (the
+  trainer in the capital, the class's usual spec and weapon, drops or spellcrafted gear by level, back to whoever gave the
+  quest, kills and keeps for realm points), and where the world has the fact the bot says that: the real class trainer and
+  its zone, the stable master with the route, the camps bots of that level use, an enemy stealther the realm can see, who
+  is really at a keep. A question is always answered when a bot can answer it; one that would find the channel at its
+  ceiling or with three threads running isn't asked. A heard answer comes back after 30-60 minutes, another bot that can
+  answer says a busy answerer's line when it says nothing about that bot, and a regular answers a question first two times
+  in five, so the regulars still carry about half of /faction. A player's "where do i get my spells
+  trained?" (RC2: "no idea") names the trainer, and a player's spec, crafting, quest, realm point and epic questions, in
+  /faction, /say or a tell, get the same answers. In /lfg and /trade (RC3: 260 and 213 posts, no reply to any) a share of
+  posts get a short reply from a bot it is true for ("x" or "still need a healer?" from a solo healer in the levels asked
+  for, "how much?" from a bot that wears that armour, "/t me, have one" from a bot carrying it), the poster's answer is
+  true (its asking price, its real spec, "ya, 1 spot" only while its group has room), and a few minutes later "nvm full",
+  "got a grp" or "sold" only when that happened. Every line still waits for room under its channel's ceiling.
+  `chat_audit.py` counts bot questions with no reply within 60 s (`VERDICT FAIL` above 25%; RC3 and RC5 fail) and reports
+  the share of /lfg and /trade posts with a reply. On the simulated evening 80 of 90 questions are answered within a
+  minute (34 of 114 before) and the checker passes. Tests only.
+- **"ya, 1 spot" only from a party that is still recruiting (after RC5).** The /lfg replies above had the poster say "ya,
+  1 spot" or "ya, still room" for any bot party under eight. Bot parties are formed at their full size and never take
+  anyone later, so a party has a seat only while it is still assembling with seats free; and "still need a healer?" is
+  yes only while nobody in it fills that role. A party that set off says "nope full, sry"; one still forming that has its
+  healer says "got a healer already, sry". Tests only.
+- **An item is paired only with a class that can use it (after RC5).** On the owner's PC: "99% adroit focus staff any good
+  for pally?", "95% adroit focus staff any good for friar?", "99% earthshaker chain boots any good for sorc?", "99%
+  matterbender medium shield any good for infil?" and "wtb a shield for a 30 cabalist pst". A bot asks about its own item
+  only when its class can use it, by the server's own rule for the live bot (the class's real weapon and armour skills)
+  and a focus staff only for a caster; armour it wants is the weight its class wears at its level, by the game's item
+  generator ("armor for a 29 cabalist" is cloth, a 15 paladin's is chain); arrows only for an archer; "my old ..." only
+  for an item it could have worn; a written line that pairs an item with a class that can't use it is skipped.
+  `chat_audit.py` counts "an item paired with a class that can't use it" (FAIL). Tests only.
+- **One story per bot in its group posts (after RC5).** Thorroir, a 50 minstrel, said in /broadcast within twelve
+  minutes "minst lfg 50, x me", "lfm barrows 47-50", "lf1m dps barrows pst" and "lf1m 47-50 xp grp stonehenge", and
+  later "any minsts around? need tips". A bot now keeps one story for 30 minutes across /lfg, /broadcast, /trade,
+  /faction and /say: it looks for a group or forms one, not both, and its posts name one dungeon, by the word it first
+  used for it ("barrows", not "barrows" then "stonehenge"). When its state changes it says so where it posted, once ("nm got a
+  grp", "nvm, full", or "nm, heading out" for a party that set off short of eight; one closing per post, whether the
+  /lfg reply's closing or the bot's next post says it) and may then start a new story. A WTS line may still repeat every few minutes as a macro, as players'
+  /macro did in 2003, but a bot runs one macro at a time and it stops once the item is no longer in its bags; it only
+  sells what it carries. `chat_audit.py` counts "a speaker looks for a group and forms one within 30 min" and "a
+  speaker's group posts name two dungeons within 10 min" (FAIL). Tests only.
+- **Group posts follow the bot's real group state (after RC5).** The server log shows Thorroir in a group from 05:36
+  when it posted "minst lfg 50, x me" at 05:38. Now only a bot out of a group that wants one (group matchmaking holds it,
+  or it is out for RvR) posts "lfg"; a bot on a solo task doesn't, and a bot in a group never does. Only the leader of a
+  bot party that is still assembling with seats free posts "lfm", naming the role the party really lacks (healer, tank,
+  cc, else dps), its real camp and its members' levels; the post stops when the party sets off. Bot parties are formed at
+  their full size and not backfilled, so such a post is the assembly's last call. `chat_audit.py` reports, for
+  information, an "lfg" from a bot the log shows grouped (AUTONOMOUS_GROUP_FORMED until its TASK_ENDED or NO_SHOW).
+  Tests only.
+- **A question fits the asker (after RC5).** A level 50 paladin asked "where's the paladin trainer", a 50 cleric "where's
+  the clr trainer", a 50 minstrel "any minsts around? need tips". Only a character of level 20 or less asks where its own
+  trainer is, only one under 40 asks for tips on its own class, and a 50 asks for no xp group ("50 minst lf xp grp"), no
+  xp spot and no "still 50 lol"; every level a question names is the asker's own. `chat_audit.py` counts "a 50 asks where
+  its class trainer is or for tips on its own class" (FAIL). Tests only.
+- **A PvE line names no enemy realm's zone (after RC5).** Albion bots in the Midgard and Hibernia frontier said "where do i
+  hand in the uppland quest?", "which stable for uppland?", "grinding odin's gate at 29", "back in uppland", "where do i
+  bind in jamtland mtns" and "dread commanders in jamtland mountains hate me". A quest, stable, bind, camp, grinding, xp
+  or duo line, and a monster death story, now names only a zone of the bot's own realm (a death in an enemy frontier is
+  "in frontier"); talk of the frontier itself may still name it ("inc", keeps, relics, "lfg 50 merc, odin's gate").
+  `chat_audit.py` counts "a PvE line names an enemy realm's zone" (FAIL). Tests only.
+- **The checker reads "arms" in a trade line as armour (after RC2).** On the owner's RC2 evening (6a83c038, 68 minutes)
+  `chat_audit.py` failed only on "wtb leather arms 4 26 inf", an Infiltrator 26 buying arm armour, read as an armsman
+  claim ("class claim not the speaker's", "one speaker claims two classes"). A class word that is also an armour slot is
+  now the item in a trade line (wtb, wts, selling, ...) or after an armour word (leather, chain, studded, ...); "arms 45
+  lfg" is still an armsman. With it the RC2 log passes. A checker fix only; the server is unchanged.
+- **Replies to the player each have their own exchange id.** RC1 tagged them all `ex=0`, so the checker read them as one
+  conversation and reported it out of order. `chat_audit.py` also treats `ex=0` as no exchange (for RC1 logs), and now
+  counts features that were due and never spoke in /faction: one is enough for `VERDICT FAIL`. The simulated evening has
+  a spammer every 40 minutes, a rumour every 20 and a roleplayer's line every 15, each waiting for its turn, and none silent.
+- **One reaction in ten minutes, whatever says it.** The ten-minute window also holds back a pure reaction ("lol", "been
+  there", "nice going") at the moment it is sent, from any path, not only the ones that plan around it. A conversation's
+  line comes at most about 40 s after the one before it, or not at all.
+- **Every /faction line carries its ceiling** (`cap=6.9`), so a log can be checked on its own.
+- **No more "Fair enough. Safe travels."** It came back 30 times in one night: a fixed line from the oldest reply path,
+  outside the no-repeat memory every written line has, like its formal replies ("A merchant price can provide a
+  reasonable minimum value."). With bot voices on that path now says only written lines, or nothing.
+- **Realm Exchange adverts now and then.** A seller advertised 70% of its listings, only three minutes after the last
+  advert or news line (five in 29 minutes on the owner's evening). An advert is now an unprompted /faction line like any
+  other: only while /faction is under its target, and one a realm in 15 minutes. One that no written line fits says "anyone
+  want ... ? make me an offer" or "pc ...?" (was "Does anybody want to make me an offer on ...?") and gets written trade
+  answers.
+- **Every line names its source.** `CHAT_LINE` rows now say which feature said a line (`src=field`, `thread`, `story`,
+  `reply`, `burst`, `reaction`, `news`, `debate`, ...), and inside a conversation its id, the line's place and the
+  speaker's part (`ex=12 i=2 role=answerer`), with the speaker's real class and level (`cls="Cabalist" lvl=50`). `via=`
+  skips the delivery wrappers, so it names the code that chose the line (most lines showed
+  `BroadcastFactionAsWritten`).
+- **Measured:** `source/tools/chat_audit.py` reads `CHAT_LINE` logs and counts conversations out of order or with swapped
+  parts (exact with the new fields, heuristic without), thanks and follow-ups with nothing to refer to, untrue class,
+  level and role answers, reactions with no trigger, late reactions, pile-ons over the caps, repeated reactions, lines a
+  minute per channel, and the seconds and minutes /faction ran above its ceiling (events and lines to the player aside).
+  Its last line is a verdict: `VERDICT PASS` only with nothing out of order, no untrue answer, no late or repeated
+  reaction, no pile-on over the caps and no minute above the ceiling. On the owner's 1.1.3 evening (13 min of /faction at 11.8 lines a minute): one presence answer after the asker
+  had closed, one level question after the invite, one follow-up before any answer, one thanks with no answer, one trade
+  closing that didn't follow, one join answer from a class that can't fill the role, 6 pile-ons (13 reactions past the
+  second), 3 late reactions, 2 repeated reactions. On a 4.6-hour overnight 1.2-line soak: 207 repeated reactions within ten
+  minutes, 9 pile-ons, 5 thanks with no answer.
+  A simulated three-hour evening (`UT_FactionCoherence.AnEveningHoldsTogether`: 160 made-up Albion bots, the band of 594
+  bots a realm at 8 pm, every path that writes to /faction, the same plans played the old way and the new; audited on
+  GitHub): conversations out of order 30 before, 0 after; pile-ons 23 (+31 reactions past the second) before, 2 after
+  (keep news, three reactions each, the new cap); late reactions 28 before, 0 after; repeated reactions within ten
+  minutes 72 before, 0 after; thanks with no answer 2 before, 0 after; untrue role, class or level answers 0 after;
+  5.55 lines a minute before, 4.57 after (most of the difference is the reactions past the cap and the time over the
+  ceiling). Busiest two minutes 10.0 lines a minute before, 7.0 after, against a ceiling of 7.1; minutes above the
+  ceiling 81 before, 0 after (events and lines to the player aside). The checker's verdict: FAIL before, PASS after.
+
+**Bots that notice you, an evening that remembers, regulars you get to know** (owner's PC, RC3: in 2.5 hours with the
+player online in Albion, 5 bot lines named the player, no topic ever came back, and 301 bots spoke in /faction, the busiest
+34 lines, the top ten a quarter of them). All behind the switches they already had; none of it seen on the owner's PC yet.
+- **Bots take notice of you.** A friend (a bot you grouped with or rezzed, never one that is cool towards you) sends a
+  hello when you log in, grats when you ding while it is elsewhere (the bots by you still say it in /say, your guild in
+  /guild), and a wave when you reach a zone it is hunting in. A bot standing by when you die alone says "ouch, u ok?",
+  and a healer that has really set out to rez you says "need a rez? omw" (once a death, by tell when it is farther off).
+  A bot next to you notices a good item you just put on (99-100% quality or above your level). Unprompted lines to you
+  share one allowance: about five an hour, five minutes apart, solo; about nine, three minutes apart, grouped or with two
+  friends online. The bots' old tells and their /faction gossip about you take a turn too. A death seen in front of a bot
+  needs only a minute since the last line. Tests only.
+- **Real invites.** Half of a solo bot's "want to duo?" tells now come with a real invitation, a yes/no box; yes groups
+  you with it (you lead, as when you invite), and a bot that got busy meanwhile says so. Tests only.
+- **A bot that turns your invite down says why (RC5 on the owner's PC).** Captainwaffle, a friend inside Krondon on an
+  automatic realm raid, ignored an invite without a word. A bot on a raid, a siege, a relic run, a realm force or a horse,
+  or in another player's group, now answers by tell besides the system line ("sry, on the raid in Krondon atm", "in a grp,
+  maybe later?"; a friend adds "catch u after?"). An invite that reached the bot but could not add it to the group was
+  silent; it now says "... could not join your group". Every invite of a gamebot logs `BOT_INVITE_RESULT` (grouped,
+  declined and why, failed), so the next evening's log shows what happened. Why the RC5 invite was silent could not be
+  read from the logs (they end before it). Tests only.
+- **A friend answers your small talk (RC5 on the owner's PC).** "hey what are you up to tonight?" to Ilaan, who had
+  grouped with the player twice at Avalon City, drew "might wander somewhere new". A friend now answers "hey", "wyd" or
+  "what are you up to" with your name and what it is really doing ("hey Manawatch! killing thrawn ogres in Gwyddneau, want
+  in?"), asks you along only when it is free to group and near your level ("sure" is answered with how to group), and
+  otherwise names where you grouped ("Avalon City again sometime?"). Tests only.
+- **An evening that remembers itself.** Each realm keeps a short memory of what its /faction really carried tonight: who
+  asked for a group or a camp, whose death was told and to what, who argued with whom in a debate and about what. A note
+  is made only once its line was heard. Between 12 minutes and three hours later, at most one in 6-12 minutes and only
+  while /faction is under its target, a regular (or the other side of the debate) asks after it: "aldric u ever find a
+  grp earlier?", "staying away from bwgans now? lol", "still think ur wrong about houses btw". The bot asked answers from
+  what is true for it now: "ya, been grouped since" only when it is in a group, "found one in Lyonesse" only when it is at a
+  camp there; a second death tonight is counted ("ur 2 deaths in tonight lol"). The lines are `src=followup` exchanges. Tests only.
+- **Regulars you get to know.** The realm's talkative regulars used to rotate one by one through the evening (a three-hour
+  turn staggered by bot), so the channel slowly passed through everyone. The cast now holds for six hours, so one evening
+  has one cast. Each regular has a part (the helpful one, the joker, the complainer, the guild recruiter, the old hand) and
+  two running bits of its own it comes back to every 35-65 minutes ("if anyone needs me ill be face down in a bog
+  somewhere"; a recruiter names its real guild), at most one a realm in 8-14 minutes, under the target. A regular tells
+  its own deaths and wipes; anyone else about four times in ten. Who answers a line is looked for among 200 bots of the
+  speaker's realm (it was 200 of all three realms), so a regular is found most times. Tests only.
+- **Group chat that fits the group (RC5 on the owner's PC).** In a duo of the player and Ratoul: "ty for the inv, where
+  are you all?", "who is main assist?", and "back" out of nowhere. A /group line to several people, or about the main
+  assist or the puller, now needs three or more in the group; "back" needs a "brb" of the bot's own in the last 15
+  minutes or a death. A bot that walked over after an invite says "here" or "made it, ready", not "back" (that is for a
+  bot back from a release). Tests only.
+- **Guild chat in a player's guild sounds like players and doesn't repeat (RC5 on the owner's PC).** Anjaaaaa said "Just
+  checking in. All well with everyone?" twice in eight minutes. The fallback lines of bots in your own guild are now
+  written as players typed ("hows everyone doing tonight"), in the bot's own style, and the guild doesn't hear one again
+  within the hour, like the other guild lines. Tests only.
+- **The transcript covers guild chat and your posts.** Bot lines in your own guild's chat, and your /lfg, /trade and /gu
+  posts (whatever the guild settings), are now `CHAT_LINE` rows (`ch=guild`, `who=player ch=lfg`, ...). Tests only.
+- **Measured.** `chat_audit.py` prints three informational lines per log (not part of the verdict): lines aimed at or
+  naming the player per hour (tells to them, `src=player`, their name in a line), the top ten speakers' share of /faction,
+  and follow-up exchanges with how many refer to a real earlier line (the bot asked after spoke in that channel at least
+  ten minutes before, and the question names it), plus running bits. On the owner's RC logs (before this change): RC3
+  (b72716e, 2.5 h) 3.2 lines an hour aimed at the player, top ten 24% of /faction from 301 speakers; RC4 8.3 an hour over
+  43 minutes (greetings in /say), top ten 30%; RC5 6.0 an hour over 30 minutes, top ten 38%; no follow-ups in any.
+  A simulated three-hour evening (`UT_ChatEngagement`: 594 made-up Albion bots, the 1.1.3 /faction rules with the answers
+  of #155 (a question only with room for its answer, a regular first two times in five, a stand-in for a busy answerer), a
+  player who logs in, dings every 25 minutes, dies three times, moves zone, puts on two good items and is grouped for an
+  hour; the old way and this branch on the same seed; audited on GitHub with the other simulated evenings): top ten 33% of
+  /faction from 291 speakers before, 42% from 265 after (the busiest regular 67 lines); bot questions answered within a
+  minute 93% before, 94% after; follow-ups 0 before, 15 after, each answered and about a line its bot really said at least
+  ten minutes before; running bits 13; lines aimed at the player 4.3 an hour before, 6.7 after; never above the /faction
+  ceiling.
+  The checker's verdict on both: PASS. Tests only.
+
+**Chat fixes from the sixth, seventh and eighth release candidates on the owner's PC** (eff81a0, b036b3c and f18b44f, 2026-11-09, played
+as an Albion 50 and a new Hibernian with the Bot schedule on Real clock). The chat checker passed RC6's 74 minutes, but
+reading the lines showed what it couldn't see; it now checks for each of these, and fails RC6's log.
+- **A friend's answer to small talk is kept.** "hey! what u up to?" by tell to a friend drew "not sure, try /advice": the
+  friend's real answer had no score in the reply budget, which swapped it for a stock line. On RC7 the same tell drew "hey
+  Manawatch! rvr in Odin's Gate, its busy, wanna duo?", true of the bot.
+- **Group banter only about a hunt you shared.** A wizard grouped with the player fought alone, died, ran back and said
+  "clean pull, ty", "loot is yours", "xp is flying, good call on this camp", "oom, give me a minute" (at full power) and
+  "pull?", every 20-40 seconds, while the player had not fought. Hunting talk now needs a fight the player took part in
+  that ended with nobody dead; buff talk counts as hunting talk; "I'm low" lines need the bot to be low. On RC7 an idle duo
+  heard one line in three minutes.
+- **A far bot says where it is.** A bot in another zone offered to group and the player's invite said "too far away". A
+  bot close enough to invite now offers first; one further off says where it is; an invite from too far gets the bot's
+  tell ("other end of pennine mtns lol meet up?", RC7).
+- **One line on release.** A dead groupmate said "long run back to Pennine Mountains" and "released, running back" in
+  the same second, and asked "any rez near ...?" in a duo where the player can't rez. Now one line, and the group ask
+  only when a player in it can rez.
+- **Threads that follow their answers.** "any grps out?" "quiet atm" ran on with "how many?" "small grp" "count me in"
+  "omw". An answer that says there is nothing ends the run-on (another bot may answer "anyone else?" from the same true
+  pool); rvr follow-ups come only after a line about enemies or the zerg, and a count is no answer to "which way".
+- **Deaths told by their real killer.** A death to a monster in the frontier was told as a gank ("got caught by the
+  bridge"), one or two attackers became "a zerg, 20+", an enemy bot became "the guards", and an objective name became a
+  monster ("died to frontier patrol near death stalkers"). A bot now remembers what killed it, how many were on it and
+  what class it was, and the story and the death line follow that. One death story per realm in seven minutes, one story
+  of any kind at a time with three minutes between, and a place ("the bridge", "outside the gate") not twice in half an
+  hour. A rez request gets a rez answer, not "oof".
+- **The time of day.** "busy tonight" at 10 AM, "anyone heading to the frontier tonight?" in guild chat at 11 AM: on
+  every channel "tonight" reads "today" by day and "this morning" "earlier" after noon.
+- **The bot's real state.** "ok back" only after a brb or a death. No "how many bubbles?" to an rvr post or to a 50. A duo
+  offer only from a bot that is free. Written /lfg and /faction group posts ("group at Coruscating Mine needs a healer",
+  "group has room near Connacht, all classes welcome", "lfg Stonehenge Barrows or anywhere with xp") are checked against
+  the bot's real group and task: those three came from bots in full rvr parties or out for rvr.
+- **No internal names.** "which stable 4 group rendezvous?": an internal goal name is never a destination in chat.
+- **Debates and scenes don't invent the frontier.** In a debate about scouts a paladin said "it is us scouts", and the
+  debate ended with "INC, mid group crossing toward Caer Benowyc" though no army was there. Scripted threads and short
+  scenes no longer announce attacks, keeps changing hands, lost relics or enemies at a named place (about 240 lines
+  reworded into opinions and calls to head out), and a role that speaks as a class, level or race is cast from it.
+- **Stories that fit the death, after RC7 and RC8.** An enemy gamebot was read as a monster (its brain is a controlled
+  one with no owner), so "adds in murdaigean hate me" followed a death to one enemy friar; a group wiped by enemy bots
+  told "wiped on adds"; "aggroed the guards, dead" drew "stick with the zerg". A bot is a bot first, a wipe to enemies is
+  told as one, and a guard death or one to one or two enemies draws no crowd riff. After a "no" the asker says "k ty",
+  not "ty, inv".
+- **Your /trade post gets answers too.** The player's "wts 99% arcane cloth cap, cheap" drew nothing; only bot posts were
+  answered. A player's sale or wanted post now draws a bot's reply as often as a bot's does.
+
+**Chat fixes from the tenth to twelfth release candidates on the owner's PC** (1517b73, 9f44f75 and 153370a, 2026-11-09,
+played as an Albion 50 with the Bot schedule on Real clock). The checker passed all three once it counted a group's wipe
+as one fight; reading the lines showed the rest.
+- **"what class?" is answered with a class.** "spraggon grp?" "sec, me" "what class?" "coming from mount collory" (RC6):
+  any answer that wasn't a number fitted. It now takes a class or a dunno. Fewer bots fit that answer, so the simulated
+  /faction leans a little more on its regulars; the test's bound moved from 55% to 58% (the owner's call).
+- **A roleplayer's question stays a question.** "hail saw thee soloing duo, by my troth": the flourish ate the "?". It
+  now goes before it.
+- **No goal names as monsters or places.** "careful group rendezvouses link" in /say, and "which stable for master
+  visur?" from a bot taking the porter: a goal name is no monster, and a porter or trainer is no place.
+- **Gossip about you while you're on asks you.** "anyone know if Manawatch is on today? want to group again" was said
+  while the player was online; it is now "Manawatch, u around? want to group again", heard on RC11.
+- **A scene tells the frontier only through a bot that's there.** A 40 grinding in Avalon played the newcomer's "made
+  it to Castle Excalibur", "first realm points", "dead now but worth it". That role now goes only to a bot out for rvr,
+  and "first night in the frontier" reads "first time" by day.
+- **No grinding a town.** "grinding city of camelot at 50" from a bot back at its bind, and "city of camelot anyone"
+  from one that had just ported there: in a town a bot asks for a group to head out with.
+- **One story about finding a group.** "any healers on?" "me" "got one ty", then 24 minutes later "u ever find a grp
+  earlier?" "nah, ended up soloing": a bot that said it found one is not asked after.
+- **A way to a zone of your realm.** "how do i get to pennine mountains from here" was answered "pennine mountains?
+  thats in albion". On RC11 "how do i get to cornwall from here?" drew "Cornwall is its own zone, a stable master can get u
+  close".
+- **An offer to your /lfg doesn't ask what you said.** "50 lf xp grp" drew "hey, im 50, u?" (RC11); on RC12 the offers
+  didn't. A bot too far to invite no longer says "we keep going after the same mobs" while it says where it is (RC12;
+  tests only).
+
+**Two Darkness Falls exits work** (tested against the world data, and clicked in game on the owner's PC with the second
+release candidate, 6a83c03: both took an Albion character to Camelot Hills; found and fixed by
+rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
+and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no
+destination for them. Each now takes you to your realm's usual Darkness Falls exit spot, like every other exit. Nothing
+is written to your world: the server supplies the two missing destinations itself. Thank you, rambodolphin13.
+
+**The raid gets out of Xanxicar's stomp** (owner's PC test, 2026-11-07). At the 80% stomp 110 of 185 Albion raiders died
+in one second. The order to get clear came only 3% above the threshold, it reached only the raiders whose target was
+Xanxicar himself (not those on his elites and crystals, nor healers), the spot it sent them to lay in the cave's rock,
+and a bot's melee follow walked it straight back to him. Now the raid withdraws ten seconds of its own damage ahead of
+each threshold (at least 6%), every raider near him goes whatever it is fighting, to the reachable spot on the cave floor
+clear of the stomp nearest to it (never past him), without its melee follow, and waits out there until the stomp is over. The party he fights still holds him. His
+stomp is unchanged. Container check (1.2 line, the same fix, 152 Albion raiders): Xanxicar killed with no wipe; his
+80% stomp killed 5 (before: 71, 49 and 48 in three earlier runs).
+
+**Scurceol Hyrde's orbs are shot down from real floor spots** (owner's PC soak, 2026-11-08). Seen once on the owner's
+PC with the third release candidate (b72716e), 2026-11-09: a forced Albion raid of 200 shot the four orbs down in 10
+minutes, each from its own floor spot (`approach=ranged-stand`, 1,053 and 1,279 from the orbs it logged), killed
+Scurceol 50 seconds after the last, and lost nobody to him or his orbs. One raider stuck in Avalon City held the raid
+at Caer Diogel until it was killed by hand and walked back (known issues). 1.1.2's tactic (the orbs first, from the floor) never got going on the real world. Three times the raid found
+"no reachable floor spot within 1400 has line of sight to it" and set it aside. One orb of four died, Scurceol was never
+killed, he killed 156 raiders, and the raid won Krondon by going around him.
+- **Why** (from the real Krondon navigation mesh): each orb hangs about 50 above the top of its own rock perch. The
+  perch rises out of a pit about 900 deep, 400-530 across from the platform where the raid and Scurceol stand. The
+  sight check walked the mesh's floor to the spot under the orb, and a floor walk can't cross a pit. From the 277-321
+  reachable spots within 1,400 of each orb, none passed. The 1.1.2 test used a pretend floor that always saw, so it
+  could not fail.
+- **Now:**
+  - The search tries spots all around each orb (every 50 out to 1,400, every 10 degrees) on Scurceol's floor, at least
+    400 from him, those beyond 700 from him first.
+  - Sight is a line from a raider's eyes to the orb. No ledge, rock top or perch may be in the way, and the floor
+    toward the orb must end at a drop, not at a wall.
+  - Every orb gets its own spot. A caster or archer out of reach of its party's orb walks to that orb's spot first,
+    then shoots. Before, only the raid's current orb had a spot, and the shooters given the other three walked under
+    them.
+  - Scurceol and his orbs are unchanged.
+- **Tested:** automated tests on a recorded copy of the real Krondon mesh around the orbs. Every orb gets a spot the raid
+  walks to, in range and clear of him. The 1.1.2 search finds none on the same copy, as on the PC. Container runs
+  (test world, real meshes, a test-only way to open the raid; the 1.1.3 build before the chat fix plus this fix):
+  - Albion, 80 needed (125% of Krondon's 64), 101-104 in the raid at the fight: all four orbs dead in 43 minutes,
+    Scurceol 1.3 minutes later, 16 raiders killed by him, the tactic never set aside.
+  - A second run, same build and size: all four orbs dead in 105 minutes (the first took 38), Scurceol 0.8 minutes
+    later, 6 raiders killed by him, the tactic never set aside.
+  - The stage before every orb had its own spot: stopped at the first orb, at half after 15 minutes, with 9-11 raiders
+    on it.
+
+**Raid fixes from the forced Krondon raid** (owner's PC, third release candidate b72716e, 2026-11-09: a forced Albion
+raid from the launcher's Realm Events tab, 176 minutes from start to Orylle's death, 38 of them waiting at Caer Diogel).
+- **A forced raid no longer waits forever for its last member.** It reserved 300 level 50s, but Caer Diogel had room
+  for only 25 parties (13 of its 38 formation posts are on ground too tight), so 200 bots formed parties and the raid
+  needed every one of them at the hub. It had 125 there at 01:30 and 199 from 01:45 on; the last one was stuck in
+  Avalon City, and the raid left at 01:57 only after he was killed by hand. Now a forced raid waits 15 minutes for
+  everyone, then goes with 90% (180 of 200), and after 30 minutes with half; the rest follow as late members, as in
+  an automatic raid. The same applies at its staging outside the dungeon, counted from when it left the hub. When the
+  hub has no post left, the raid needs only what its posts hold, and the other reserved bots go back to their own
+  play: on the PC 100 of them waited three hours for a post that never came, kept out of every other group. Tests only.
+- **A raider left behind in another dungeon walks out.** That straggler, Ferken, stood in Avalon City on "Holding before
+  dungeon threat" from 01:16 to 01:55, waiting for his party's puller, who was at Caer Diogel. The wait is meant to end
+  after 90 seconds, but its clock started again whenever another monster became the first one in his way. Now the
+  clock runs for the whole wait whichever monster is in the way, nobody waits for a puller when no one of their party
+  is in their region, and such a raider goes around the monster when the floor allows it (otherwise fights it) on its
+  way to the party. Tests only.
+- **The raid walks to its next pack on its own floor.** Inside Krondon several packs took 3-4 minutes to reach, with
+  nobody within 1,000 of the target, and then died in 10-20 seconds. The raid took the nearest monster in a straight
+  line, which in Krondon is often one on the floor 1,500 below: at 02:30 it went down to an atelic ooze, at 02:34 back up
+  to a foreman, at 02:38 down to another ooze. Now a monster on another floor counts as eight times as far for each unit
+  of height, so the raid clears the floor it stands on first. Tests only.
+- **Parties clear the trash on their way to a muster.** While the raid gathers for a named encounter, a party may not
+  start a fight, so each party stopped for 90 seconds before every monster on its walk there and then fought it anyway.
+  The musters took 6 to 20 minutes (Ulor se Bysen: 13 of 100 after 10 minutes, in at 19 minutes, with 174 coin drops
+  from monsters killed in Krondon in that time). Now the party's puller pulls an ordinary monster in the way at once, with the usual
+  checks (health, a whole party, close together). An epic encounter in the way still waits for the raid. Tests only.
+- **Nobody fights Orshom's Fire.** The fire pit Orshom Brong lights when his fight starts burns everything within 300
+  every 3 seconds and can only be hurt by cold. The raid took it for an encounter that was fighting it, turned on it,
+  and 100 raiders burned in it between 04:12 and 04:18; after five minutes without damage it was set aside. Now it is
+  never the raid's target and no party post is placed in it. A raider with a cold spell shoots it from outside its
+  radius, everyone else steps out of it and fights the twins, and anyone standing in it steps out first, whatever it is
+  fighting. The fire and the twins are unchanged. Tests only.
+- **Melee stays off Scurceol Hyrde's floating orbs.** 11 seconds after the raid turned to the orbs from a floor spot,
+  it switched to another orb "fighting the raid" and made the orb's spot in the air its destination: 111 of the 172 route
+  recoveries toward Lyft Miht that followed aimed into the air. Now an orb is fought only through the orbs' own plan,
+  and a melee raider whose target is an orb it can't reach waits at the orbs' floor spot. Tests only.
+
+**A day with a prime time and a quiet night** (owner's PC test copy, 2026-11-09). At 05:20 2,673 gamebots were online,
+about 900 a realm, and Albion's /faction ran 323 lines an hour at 02:00 and 291 at 03:00, nearly the evening's 300-450.
+The server log said `bot_schedule=off`: the Bot schedule on the launcher's Living Server tab was off on that copy, so
+every bot stayed online all night. The rise seen that night from about 840 online to 2,673 was not the roster growing:
+the server was restarted at 01:10, 04:27 and 05:25, and each time the startup ramp logged the whole roster back in over
+15 minutes, about 180 bots a minute (844 four minutes after the 04:27 start, 2,718 at 04:42, the same ~2,715 each time).
+With the schedule off the ramp's target is the whole roster whatever the hour. With "Real clock" on:
+- **A deeper night.** The clock curve now keeps about an eighth of the roster before dawn on a weekday (about 330-370
+  of 2,700 at 4-6 am; the old curve kept a fifth, about 560) and nearly all of it from 7 to 11 pm; weekends are busier
+  all day.
+- **No jumps.** Every bot's place in the day's line changed at midnight at once, so about 450 bots wanted to swap in the
+  same minute; the places now move a little at a time between 2 and 5 am. The weekday and weekend curves stepped at
+  Friday 6 pm and Monday midnight (about 400 bots at once); they now run smoothly into each other. The most bots the
+  schedule sends home in any minute of a week is 26 (logouts run at up to 36 a minute).
+- **RvR bots log off too.** A bot that had ever run its RvR goal could never log off or take a break: it keeps its force
+  name for good, and that was read as "busy in a realm event". Now only a bot whose force is in a running event (a siege,
+  a defense, a relic run) stays.
+- **Finish, then leave.** A bot the schedule is sending home joins no new party and answers no automatic raid, and an
+  automatic raid is sized to the level 50s who stay. A bot in a party, a raid or a siege still finishes it before logging
+  off. After a start in the night the startup ramp spreads the schedule's number over its 15 minutes (it let the few
+  hundred all in within two minutes).
+- **The launcher** shows the Bot schedule first in the Server life card, with what Off and Real clock mean, and the
+  status line always says whether it is on. Setup already turns Real clock on for a new install; the server's own
+  default stays off.
+- **Chat follows the crowd.** /faction's target and ceiling already scale with the bots online and the hour; with fewer
+  bots at night the quiet hours are quiet. A simulated weekday (`UT_LivingServerDay`: 2,700 bots, a third in parties,
+  the real schedule, login, logout and chat-budget rules, a model of one realm's /faction): with the schedule off,
+  258-291 /faction lines an hour at 2-5 am against 407-427 at 7-11 pm (the PC's night); with Real clock, 2,532-2,620
+  online at 7-9 pm and 371 at 4:30 am, no party member logged out, at most 21 logouts in a minute and 132 in ten
+  minutes, and /faction 118-137 lines an hour at 3-6 am against 388-421 at 7-11 pm, every hour under its ceiling.
+  Tests only.
+
+**Defenders are called when the enemy army marches, so a defended keep often holds** (owner's PC, 1.1.3 release
+candidate nights, 2026-11-08 and 11-09: keeps "flipping all over"). In about 15 hours of logs 18 bot sieges ended: 12 keeps
+captured, 4 defended, 2 failed rallies.
+- **Why the attackers won:** the keep's realm was told only when the battle began (`RVR_DEFENSE_MUSTER` in the same second
+  as `RVR_SIEGE_STARTED`). Eight of the 12 keeps fell 4-11 minutes into the battle. The first defender reached the keep 3-14
+  minutes after the start in 7 of the captures and never in the other 5 (`defendersFirstAt`); several were warbands breaking
+  off an attack in another realm's frontier. Every siege with defenders at the keep within two minutes of the start was
+  held (3 of 3). Committed defenders were not the limit: they were walking.
+- **Now:** scouts see the army leave its border keep. The keep's realm is told at once ("Scouts report Albion's army
+  marching on Dun Bolg!", `RVR_DEFENSE_CALLED`), its free level 50 warbands are called within seconds, gather at their
+  muster for up to 6 minutes (10 when it is thin) and then man the walls. The march took 9-37 minutes in these logs, so
+  the defense is usually in place when the attackers arrive. The third realm still joins only once the battle is on. A
+  player's own attack and the retake after a player's capture keep their rules.
+- **The siege balance aims at about half** (owner 2026-11-09). It used to steer towards attackers winning about two sieges
+  in three (owner, 2026-10-19); with defenders arriving in time it would have pulled them away again until attackers won
+  most. Now, of the last six sieges, four or more captured adds defenders, two or fewer takes them away, and three holds
+  (thresholds 0.65 and 0.35, were 0.8 and 0.45). In a simulation over ten models of the attackers' chance (`UT_SiegeBalanceNov06`)
+  it settles at 44-56% captured, 50% on average; the old thresholds settled at 53-61%. In the logs it sat at its limit
+  all night (share 1.0, attackers 96) and still lost 12 of 16 finished sieges.
+- **Battleground keeps** do change hands, rarely: Dun Murdaigean went from unclaimed to Albion between 04:34 and 19:32 on
+  11/08 (outside the logs). In the 15 logged hours no battleground lord fell below 85% and at most 7 bots were on one.
+  Not changed here.
+- Tests only.
+
+**Gamebots in their capital go to their own frontier for the porter** (owner's PC, 1.1.3 nights). 779 times a gamebot
+stood 15 minutes "Waiting for a frontier teleporter" and the watchdog moved it on (Tir na Nog 404, Camelot 227, Jordheim
+148). Each stood on its capital's bind after a release, sent to a keep in another realm's frontier (Mjollner Faste 118
+times, Glenlock Faste 66, Dun Bolg 59 and more). Only its own frontier's porter goes there, and that porter is used only
+from inside the frontier, so it waited in a city with no porter, and the watchdog put it back on the same spot (recovery counts up to 24). Now such a bot first travels to its realm's border keep (Castle Sauvage, Svasud Faste, Druim Ligen), where the
+medallion merchant and the porter are, and rides from there. Tests only.
+
+**A camp search that holds a bot for minutes is reset** (owner's PC, 1.1.3 nights). 464 times a gamebot stood 15 minutes
+"Searching for a valid XP camp", nearly all level 50s on their capital's bind (Tir na Nog most). In the 11/09 log 72 of 91
+went on to a camp only after their next login, from the same spot, so what held them was in the bot's own planning
+memory, not the world; which part is not shown by these logs. After 3 minutes of failed searches a bot now drops its own
+death caution and failed-camp memories as a fresh login does, and logs what it held (`AUTONOMOUS_CAMP_SEARCH_RESET`), so
+the next night shows the cause. Tests only.
+
+**Fewer server stalls on a busy night** (owner's PC: AI profile of 2026-11-07/08 and the 1.1.3 nights; 17 stalls over a
+second in the server logs, 3 of 4-6 seconds in the night before).
+- **The 4.5-6.1 s stalls** were Krondon raids: the raid pulse took 4,520-6,140 ms in the same second as each
+  "no reachable floor spot within 1400" for Scurceol's orbs (05:38, 05:54, 06:19 on 11/08). That build's search
+  checked 277-321 reachable floor spots per orb; 1.1.3's new orb search (above) tries at most 8 walks per orb. Not changed
+  again here, and not yet timed on a real install.
+- **One bot's AI turn of 2.0-2.2 s** (3 of the 17): a Sluaghbinder searching a dampwood mite camp proved one target's
+  route after another (1,906-1,970 path queries and 1,013-1,060 corridor checks in one turn). A camp search now proves
+  at most 4 routes and casts at most 24 dungeon sight lines; the rest wait for the next search a second later, and a
+  target whose route failed is skipped for a minute. In a test on a mesh with no routes (79 queries per failed proof),
+  one search over 200 targets makes 316 queries instead of 15,800.
+- **Group formation passes of 0.3-1.3 s** (46 times in 800 one-minute profile samples, 10 of them over 0.7 s), held under the lock every grouped bot's turn waits on
+  (that lock's waits were 16% of all AI time). Nearly all of it was rendezvous route searches (up to 390 ms each). A pass
+  now stops once it has spent 150 ms after its first leader and goes on 15 seconds later.
+- **Not changed:** 12 of the 17 stalls also had a 443-687 ms garbage collection pause in them (heap about 2 GB).
+- Tests only.
+
+**Bots still don't fall when they die** (looked at again for 1.1.3; nothing shipped). The left-out fix (23c88a12, Beta 1.1)
+sent the player-death packet for a bot; the client plays that pose only for player characters, so in game it did nothing.
+The other server-side ways all break something:
+- The only death animation the client plays for a non-player is on the remove-object packet for a dead NPC (how monsters
+  die). The client then deletes the object: the corpse can't be targeted, so it can't be rezzed, and the group window
+  loses it until the bot is sent again, standing.
+- The NPC create and update packets have no dead or lying-down flag (statue only freezes the model), and a 0% health
+  update leaves the model standing, as the bots do now.
+- A separate corpse prop would need a client model and new client art IDs, and still couldn't be the rez target.
+- Tests only (nothing in game changed).
+
+## Beta 1.1.2 — 2026-11-07
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized
 by their own wins and losses, that no longer stand for hours at an encounter they can't reach, and their first boss tactics. Playing with your bot
 group: dragon raids that regroup after a wipe and call the Epic Special Forces, quest credit and hand-ins, and quest XP that follows your
 XP-by-level rate. Gamebots in your guild earn merit and pay dues, power comes back faster, fixes from other forks of
-Offline DAoC, updates from the launcher, and a world database that is safe from crashes and backed up every day.
-Built and tested; it ships once it has been played (the checks are in [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md)).
+Offline DAoC, updates from the launcher, and a world database that opens in a crash-safe mode and is backed up every
+day.
+How it was tested, and what hasn't been played yet, is in the release notes
+([docs/RELEASE-NOTES-1.1.2.md](docs/RELEASE-NOTES-1.1.2.md)).
 
 **Epic raids learn their first encounter rules** (owner 2026-11-06: shipped in 1.1.2, not 1.2). Raids of gamebots now
-know five bosses that beat them by their rules, not by their damage. Everything below is built and covered by automated tests; none of it has been seen in a real raid yet.
+know five bosses that beat them by their rules, not by their damage. At release all of this had tests only. Seen since
+on a real install, in bot raids on a later development build: Black Lady was fought at home and killed; Scurceol's orbs and Xanxicar's stomp did
+not work (below).
 - **Scurceol Hyrde (Krondon).**
   - **Before:** he takes no damage while his four floating Lyft Miht orbs live, but the raid hit only him, for an hour, and
     all 42 raider deaths were his.
@@ -818,6 +1392,8 @@ know five bosses that beat them by their rules, not by their damage. Everything 
     turns on him. Orbs stay dead if he resets.
   - The raid also fights him in his own room: past 1,500 from his spawn it stops hitting him, and the raider he chases
     leads him back.
+  - **On a real install this did not work** (a later development build with the same orbs code). The raid found no floor spot that sees most of the orbs. It killed 1 of
+    the 4, set Scurceol aside three times and took Krondon by going around him. Being fixed.
 - **Black Lady and the Ancient Black Oak (Marfach Caverns).**
   - **Before:** the raid dragged Black Lady out of her room until she went home at full health, then pulled her Oak 91
     times without ever reaching it.
@@ -862,6 +1438,8 @@ know five bosses that beat them by their rules, not by their damage. Everything 
   - The spot must be within 1,400 of the add and see it.
   - Raiders who can't hit the add in the air wait at that spot.
   - Only when no add has such a spot is the boss set aside, with the reason for each add (`REALM_EXPEDITION_TACTIC_ASIDE`).
+  - On a real install the raid found no such spot for Scurceol's orbs (above). Its test uses a flat test floor, not
+    Krondon's.
 - **Aidon the Archwizard (Hall of the Corrupt).** The raid kills three of his four illusions and leaves the last one
   alive, because he only summons a new set once all four are dead. Then everyone fights him, near his room. His damage
   shield only hurts melee attackers; it doesn't make him harder to damage, so he can be beaten by design.
@@ -869,7 +1447,8 @@ know five bosses that beat them by their rules, not by their damage. Everything 
   kills the wave first. His health then drops one step at a time and waves don't pile up.
 - **Xanxicar (Crystal Cave).** Before 80/60/40/20% and until his stomp has landed, everyone except the party he is
   fighting moves 2,700 away. That party pushes him over and takes the 2,500-radius stomp, which is meant to kill whoever
-  is in it; the rest of the raid survives and comes back.
+  is in it; the rest of the raid survives and comes back. **This did not work:** on the owner's PC (2026-11-07) the
+  first stomp killed 110 of 185 raiders. Fixed in 1.1.3.
 - Not changed: Darkness Falls raid AI, Legion and the hardest level 70+ encounters still have no raid AI.
 
 **Chat: a busier, more human realm** (owner 2026-11-04: shipped in 1.1.2, not as a separate 1.1.3). The goal is a
@@ -936,7 +1515,7 @@ realm that feels like a full server at its busiest. How it works and how to tune
   - **Generic agreement:** "good question", "very true" and the like are gone.
   - **Repeats and polish:** near-copies are dropped, the wordings of one line rest for hours once one is said, and most
     bots type in lowercase. Typos are rarer and look typed (a dropped letter).
-  - **The Realm Exchange:** bots mention it only when someone asks where to buy or sell.
+  - **The Realm Exchange:** bots mention it less often. On a real install they still advertised it unprompted.
   - **Templates:** a few grammar slips are fixed.
 - **Typing habits.** About a third of bots have small habits of their own: "u" and "ur", "??", "...", a trailing "lol",
   and for a rare few, the period's leetspeak.
@@ -946,10 +1525,13 @@ realm that feels like a full server at its busiest. How it works and how to tune
   - **Automated:** new tests for every part; the full server suite passes.
   - **Simulated evening at 1,000 bots a realm:** about 12.7 lines a minute across the channels a player hears, up from
     about 1.9, with /faction above its busy-peak target of 4 a minute. At 300 bots it's about 5.9, up from 1.2.
-  - **Re-running the first blind evaluation's 400 lines:** the read rate rises from 53% to about 70%, and about a quarter
-    of those lines now get no reply. Those lines are known, so this is a regression check; a fresh blind round judges
-    the result.
-  - **In game:** not yet played.
+  - **The blind test:** 400 player lines, read one at a time, not conversations. The bots read 53% of them as
+    intended; re-running the same lines gives about 70%, and about a quarter of them now get no reply. Those lines are
+    known, so this is a regression check. A blind judge still picked out most bot lines (72% in the first round, 85% in
+    the latest). Conversations over several turns have not been tested.
+  - **On a real install** (the 1.1.3 build, about 600 bots a realm, an evening): /faction ran at about 14 lines a minute
+    for ten minutes, with peaks of 20, above its ceiling, and reactions came in bursts of 10 to 16 lines. A player heard
+    about 15 to 19 lines a minute in all, more than the simulation predicts. Being fixed.
 
 **Raids the size they were in the era, and raids that keep winning bring fewer bots** (2026-11-04)
 - The goal for raids is "mostly successful, high stakes, never a guarantee": about two wins in three. **The bosses are
@@ -1059,8 +1641,9 @@ realm that feels like a full server at its busiest. How it works and how to tune
     arrived (`defendersFirstAt`), and the attackers' limit.
   - `SIEGE_DEFENSE_BALANCE` shows the attackers' limit.
   - Details: [docs/NIGHT-SIEGES-AND-MARFACH.md](docs/NIGHT-SIEGES-AND-MARFACH.md), section 4.
-- **Checked:** unit tests only (`UT_SiegeBalanceNov06`). Not played in game; a night's run will show whether it brings
-  captures near half.
+- **Checked:** unit tests (`UT_SiegeBalanceNov06`). In a night's run of a later development build on a real install,
+  the attackers' limit sat at its lowest all night and attackers still took 8 of 11 keeps. It did not bring captures
+  near half.
 
 **Dragon raids call the Epic Special Forces after a wipe** (2026-10-30)
 - Dragon raids had no wipe rule at all: after a wipe at the dragon the fallen released to the nearest bind and walked
@@ -1086,7 +1669,8 @@ realm that feels like a full server at its busiest. How it works and how to tune
 - The launcher's Realm Events tab shows "RAID — regrouping at the staging ring after a wipe (staged/needed, attempt 2 of
   2)". Logs: `REALM_RAID_WIPE` now for dragons too, `REALM_RAID_DRAGON_WIPE` (engaged, fallen, health, how),
   `REALM_RAID_DRAGON_REGROUP`, `REALM_RAID_DRAGON_ENGAGE` (the retry) and `REALM_RAID_DRAGON_BROKE_OFF` (an attempt
-  that ended with most of the raid standing). Automated tests only (`UT_DragonRaidWipes`); not played in game yet.
+  that ended with most of the raid standing). Automated tests (`UT_DragonRaidWipes`). Seen since on a real install (a
+  later development build): a dragon raid wiped, the Special Forces came with 24 and the raid regrouped. Its second try hasn't been seen yet.
 
 **Quests with your bot group** (2026-10-30, review fixes 2026-10-31; [docs/QUESTING.md](docs/QUESTING.md))
 - A kill by the gamebots in your group counts for your quests. Before, only a kill you damaged yourself, or your own
@@ -1219,7 +1803,14 @@ realm that feels like a full server at its busiest. How it works and how to tune
   their rules. They also no longer need a "waiting for a group" goal to answer an automatic raid, and the realm doesn't
   top up their parties with its own bots. When a party is still refused, `REALM_RAID_SPECIAL_FORCES_FAILED` (and
   `REALM_RAID_FORCED_PARTY_RETRY`) now say why (`refusal="..."`), and raid and Special Forces log lines name Albion as
-  Albion, not `_FirstPlayerRealm`. Checked: unit tests (`UT_SpecialForcesJoinFullRaids`); not played in game yet.
+  Albion, not `_FirstPlayerRealm`. Checked: unit tests (`UT_SpecialForcesJoinFullRaids`). Seen since on a real
+  install (a later development build): the Special Forces joined full raids after a wipe.
+- **The Darkness Falls princes no longer eat bots** (found in the 2026-11-06 overnight test). Princes Asmoien and
+  Ba'alorien devour the nearest pet every five seconds and heal by its health, but their pet test matched a bot's own
+  brain too, so they ate companion bots and gamebots: the overnight raid did no damage for five minutes and never got a
+  prince below 95%. They now eat only summoned pets, a player's or a bot's, never a bot
+  (`EpicEncounterMechanics.IsDevourablePet`). Checked: unit tests (`UT_PrinceDevour`). Seen since on a real install
+  (a later development build): a bot raid killed Prince Ba'alorien twice.
 - Repairing an item never checked the crafter's skill: the gate was written as `(percentNeeded / 100) * craftLevel`,
   integer division, so the 50% a repair asks for became 0 and anyone could start one (with a 0% chance below 44% of the
   item's craft level). A repair now needs half the item's craft level in the skill, a repair in the trade window the
@@ -1232,8 +1823,9 @@ realm that feels like a full server at its busiest. How it works and how to tune
 - **Bots talk twice as much by default: "How much they talk" is 2** (owner 2026-11-04, after the playtest measured it at
   your roster: 900 bots a realm, about 10 am, Albion heard 6.4 lines a minute across /faction, /lfg and /trade with 1,
   and about 15 with 2.5). An install that never changed the setting moves from 1 to 2 once, at its first start; one where
-  it was set in the launcher keeps its value. Each channel's ceiling still holds, so it can't become spam. Checked: unit
-  tests for the default, the one-time move and a value set in the launcher; the levels themselves were measured in game.
+  it was set in the launcher keeps its value. Checked: unit tests for the default, the one-time move and a value set in
+  the launcher; the levels themselves were measured once on a playtest PC. On a real install at 2, /faction can run
+  above its ceiling (see the chat entry above).
 - **Creating a character of a race this server doesn't offer is refused cleanly** (found in the 2026-11-04 playtest; also
   offered to the base game). The game client shows every race up to Labyrinth, but the server's world is Classic and
   Shrouded Isles: Half Ogre, Frostalf, Shar and the Minotaurs have no starting stats. Creating one (a Half Ogre wizard)
@@ -1382,7 +1974,9 @@ here changes gameplay. The WAL settings and the backup design are ported from lo
   WAL on a file that was journal-off, the integrity check on a damaged file, backup names, rotation, the
   once-a-day rule, the online copy, the stop checkpoint, the ledger move and merge, the network defaults and
   warnings, and the UPnP clean-up with a fake router). There are also 8 new installer checks and 5 Python tests for
-  the release config. None of this has run on a real install or in game yet.
+  the release config. Seen since on the owner's install (2026-11-05 and 2026-11-08): crash-safe mode confirmed, the
+  integrity check passed and a daily backup was written. The installer's database copy and the ledger move have tests
+  only.
 
 **Release gates**
 - **Release gates** (audit 2026-11-03, §8.6). CI also runs on pushes to main. A `versions` check fails when

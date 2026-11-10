@@ -42,6 +42,8 @@ public static partial class AutonomousLivingServer
             }
             if (GratsOn)
                 Grats(who, level);
+            if (who is GamePlayer player)
+                EngageLevelUp(player, level);
             AutonomousBotBodyLanguage.CheerDing(who);
         }
         catch (Exception exception)
@@ -547,7 +549,9 @@ public static partial class AutonomousLivingServer
                         Tell(bot, rezzer, ask);
                 }
             }
-            else if ((channel == Channel.Group || PlayerHears(bot)) && Random.Shared.NextDouble() < 0.4 &&
+            // RC6 on the owner's PC: "any rez near Pennine Mountains?" in /group to a duo whose player can't rez. In a player's
+            // group the bot asks only when one of its players can.
+            else if ((channel == Channel.Group ? GroupPlayerCanRez(bot.Group) : PlayerHears(bot)) && Random.Shared.NextDouble() < 0.4 &&
                      AutonomousBotVoices.TryEventLine(bot, "rez_ask", out string general, "general", flags: ["just_died"], noRepeat: false))
                 Speak(bot, channel, general);
         });
@@ -570,17 +574,21 @@ public static partial class AutonomousLivingServer
     public static bool HasNearbyPlayerRezzer(GameBot bot) => DeathOn && IsSpeaker(bot) && NearbyRezzer(bot) != null;
 
     /// <summary>The bot is about to release to its bind point.</summary>
-    public static void OnBotReleasing(GameBot bot)
+    public static bool OnBotReleasing(GameBot bot)
     {
         if (!DeathOn || !IsSpeaker(bot))
-            return;
+            return false;
         // A failed release transfer retries every 3 s; the corpse line is said once per death.
         if (!AskedAtDeath.TryRemove(bot.DatabaseID, out _))
-            return;
+            return false;
         Channel channel = GroupHasPlayer(bot.Group) ? Channel.Group : Channel.Say;
+        bool toldGroup = false;
         if ((channel == Channel.Group || PlayerHears(bot)) && Random.Shared.NextDouble() < 0.6 &&
             AutonomousBotVoices.TryEventLine(bot, "corpse", out string line, flags: ["just_died"], noRepeat: false))
+        {
             Speak(bot, channel, line);
+            toldGroup = channel == Channel.Group;
+        }
         // Bots do not get resurrection illness; a level 10+ bot in a player's group may still grumble about it.
         if (GroupHasPlayer(bot.Group) && bot.Level >= Properties.RESS_SICKNESS_LEVEL && Random.Shared.NextDouble() < 0.35)
             Later(bot, 12_000 + Random.Shared.Next(10_000), () => bot.IsAlive && GroupHasPlayer(bot.Group), () =>
@@ -588,7 +596,12 @@ public static partial class AutonomousLivingServer
                 if (AutonomousBotVoices.TryEventLine(bot, "sickness", out string sick, noRepeat: false))
                     Speak(bot, Channel.Group, sick);
             });
+        return toldGroup;
     }
+
+    /// <summary>Whether a player in the group could rez (a rez class).</summary>
+    private static bool GroupPlayerCanRez(Group group) =>
+        group != null && group.GetPlayersInTheGroup().Any(player => player != null && IsRezClass(player));
 
     /// <summary>
     /// The bot was rezzed. Returns true when a Living Server thank-you was scheduled (the caller then

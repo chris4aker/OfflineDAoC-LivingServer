@@ -332,14 +332,54 @@ public static class AutonomousPlayerDeeds
             why = "you are somewhere it couldn't have happened and no fitting zone was found; try in a hunting zone (the frontier for streak or ganked)";
             return false;
         }
+        // The real monster: the one targeted, else the nearest named one (1.1.3, after RC5: "kill a named monster").
+        target ??= kind is Kind.NamedSolo or Kind.NamedGroup ? NearestNamed(player) : null;
+        if (target == null && kind is Kind.NamedSolo or Kind.NamedGroup)
+        {
+            why = "no named monster is targeted or near you to have been killed; target one first";
+            return false;
+        }
         slots["place"] = place;
-        slots["target"] = target ?? "a named monster";
+        if (target != null)
+            slots["target"] = target;
         slots["count"] = "5";
         slots["enemy"] = AutonomousLivingServer.RealmPlural(player.Realm == eRealm.Albion ? eRealm.Midgard : eRealm.Albion);
         Log.Info($"PLAYER_DEED player=\"{player.Name}\" kind={TopicOf(kind)} target=\"{target}\" witness=\"{witness.Name}\" forced=lstest");
         Tell(witness, player, TopicOf(kind), slots, 5_000, TellTries);
         why = witness.Name;
         return true;
+    }
+
+    /// <summary>How often a witnessed deed is told without its place (1.1.3, after RC5): now and then.</summary>
+    public const double NoPlaceShare = 0.15;
+
+    /// <summary>
+    /// Whether a deed's line must name its place: a deed a bot saw (not a reputation repeated, nor a nickname) with a known
+    /// place, but for one in <see cref="NoPlaceShare"/>. <paramref name="roll"/> is a draw in [0, 1). Pure.
+    /// </summary>
+    public static bool NamesPlace(string topic, bool hasPlace, double roll) =>
+        hasPlace && topic is "named_solo" or "named_group" or "rvr_streak" or "ganked" or "silly_death" or "fell" && roll >= NoPlaceShare;
+
+    /// <summary>A deed's slots as chat wrote them: the zone short ("black mtns", no "the"), the rest as they are. Pure but for the draw.</summary>
+    public static Dictionary<string, string> ChatSlots(IReadOnlyDictionary<string, string> slots, Random random = null)
+    {
+        var said = new Dictionary<string, string>(StringComparer.Ordinal);
+        if (slots == null)
+            return said;
+        foreach ((string key, string value) in slots)
+            said[key] = key == "place" && !string.IsNullOrWhiteSpace(value) ? AutonomousChatFieldTalk.ShortZone(value, random ?? Random.Shared) : value;
+        return said;
+    }
+
+    /// <summary>The nearest living named monster within 4,000 units of the player, or null.</summary>
+    private static string NearestNamed(GamePlayer player)
+    {
+        GameNPC best = null;
+        foreach (GameNPC npc in player.GetNPCsInRadius(4_000))
+            if (npc.IsAlive && IsNamed(npc.Name, npc.Realm == eRealm.None, npc is GameBot or GameKeepGuard || (npc.Flags & GameNPC.eFlags.PEACE) != 0) &&
+                (best == null || player.GetDistanceTo(npc) < player.GetDistanceTo(best)))
+                best = npc;
+        return best?.Name;
     }
 
     /// <summary>The zone a deed is told for: where it happened (the monster's or the player's body), else the player's.</summary>
@@ -451,7 +491,13 @@ public static class AutonomousPlayerDeeds
                     Tell(witness, player, topic, slots, RetryDelayMs(scene), tries - 1);
                 return;
             }
-            if (!AutonomousBotVoices.TryEventLine(witness, "deed", out string line, topic, slots))
+            // 1.1.3, after RC5: a witness names where it happened, as chat wrote the zone ("not lying, i just saw Manawatch kill a
+            // named monster, no help at all" named neither); a line without the place is the odd one out.
+            Dictionary<string, string> said = ChatSlots(slots);
+            string line = null;
+            if (!(NamesPlace(topic, said.ContainsKey("place"), Random.Shared.NextDouble()) &&
+                  AutonomousBotVoices.TryEventLine(witness, "deed", out line, topic, said, filter: l => l.Text.Contains("{place}", StringComparison.Ordinal))) &&
+                !AutonomousBotVoices.TryEventLine(witness, "deed", out line, topic, said))
                 return;
             // About the real player's deed (1.1.3: not held by the ceiling).
             using var playerTag = AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 0, "witness", witness);

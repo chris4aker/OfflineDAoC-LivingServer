@@ -48,10 +48,51 @@ public static class AutonomousChatKnowledge
             return true;
         if (TryAnswerHowTo(query, out answer))
             return true;
+        if (TryAnswerCommon(query, player.Realm, player.CharacterClass?.Name, player.Level, Random.Shared, out answer))
+            return true;
         if (TryAnswerBuyGear(player.Realm, query, out answer))
             return true;
         return LooksLikeLocationQuestion(query) && TryAnswerLocation(player.Realm, query, out answer);
     }
+
+    /// <summary>
+    /// The common questions of a levelling player, as the bots ask them in /faction too (1.1.3, after RC5): a spec or a weapon
+    /// for a class (the class named, else the asker's), spellcrafted gear or drops at a level, how to start crafting, where to
+    /// hand in a quest, how realm points work, the epic. Answered the way the field answers are. Pure.
+    /// </summary>
+    public static bool TryAnswerCommon(string text, eRealm realm, string askerClass, int askerLevel, Random random, out string answer)
+    {
+        answer = string.Empty;
+        if (string.IsNullOrWhiteSpace(text) || !(text.Contains('?') || AsksSomething(text)))
+            return false;
+        string t = " " + AutonomousChatQuestions.Normalize(text) + " ";
+        bool Has(string pattern) => System.Text.RegularExpressions.Regex.IsMatch(t, pattern);
+        string cls = AutonomousChatFieldTalk.ClassNamed(text) ?? askerClass;
+        string[] pool = null;
+        if (Has(@" (what|which|wat) spec | (put|spend|spending) (my |ur |your )?(spec )?points | points in at | how (should|do) i spec "))
+            pool = AutonomousChatFieldTalk.SpecAdvice(cls);
+        else if (Has(@" (what|which) (weapon|weap) "))
+            pool = AutonomousChatFieldTalk.WeaponAdvice(cls);
+        else if (Has(@" sc or drops | drops or sc | (worth|should i) (sc|spellcraft)"))
+            pool = AutonomousChatFieldTalk.GearAdvice(AutonomousChatLiveAnswers.LevelAsked(text, askerLevel));
+        else if (Has(@" (start|starting|get into|begin|learn) (to )?craft| how (do i|to|can i) craft| crafting (start|work) "))
+            pool = [$"go see a crafting trainer in {AutonomousChatFieldTalk.CapitalWord(realm)}, then buy tools from the merchant",
+                "crafting trainer first, he sets you up, tools from the merchant", $"the crafting trainers in {AutonomousChatFieldTalk.CapitalWord(realm)}"];
+        else if (Has(@" (hand|turn) (in|it in) | where do i (finish|complete|return) ") && Has(@" quest | it "))
+            pool = ["back to whoever gave it, your journal says who", "the npc that gave it, check the journal", "back to the quest giver"];
+        else if (Has(@" (realm points|rps|rp) work | (get|earn|farm) (rps|realm points|rp) "))
+            pool = ["kill enemy players in the frontier, keeps and towers give some too", "enemy kills in the frontier, and taking keeps",
+                "rvr kills, more if you group, keeps give a lot"];
+        else if (Has(@" epic "))
+            pool = ["its a long chain, your trainer starts it at 50", "ask your trainer at 50, long chain", "did mine, long chain, bring a group"];
+        if (pool == null || pool.Length == 0)
+            return false;
+        answer = pool[random.Next(pool.Length)];
+        return true;
+    }
+
+    private static bool AsksSomething(string text) =>
+        System.Text.RegularExpressions.Regex.IsMatch(" " + AutonomousChatQuestions.Normalize(text) + " ", @"^ (what|which|where|how|is|should|any1|anyone|wat) ");
 
     /// <summary>
     /// "is it true theres a dragon in midgard?", "where is the hib dragon?": each realm's dragon and its zone (world data:
@@ -259,7 +300,58 @@ public static class AutonomousChatKnowledge
     public static bool LooksLikeTrainerQuestion(string text) =>
         HasWord(text, "trainer") || HasWord(text, "trainers") || HasPhrase(text, "where do i train") ||
         HasPhrase(text, "where to train") || HasPhrase(text, "who trains") || HasPhrase(text, "where can i train") ||
-        HasPhrase(text, "where do you train");
+        HasPhrase(text, "where do you train") || AsksWhereToTrain(text);
+
+    /// <summary>
+    /// "where do i get my spells trained?", "where do i learn new spells", "how do i get trained": a question about training
+    /// with no "trainer" in it (owner's PC, RC2 2026-11-08: the player's question drew "no idea"). Only a question: "just
+    /// trained, heading out" is not one. Pure.
+    /// </summary>
+    public static bool AsksWhereToTrain(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+        string t = " " + AutonomousChatQuestions.Normalize(text) + " ";
+        bool asks = text.Contains('?') || System.Text.RegularExpressions.Regex.IsMatch(t, @"^ (where|wheres|where s|how|who|any1|anyone) ");
+        return asks && System.Text.RegularExpressions.Regex.IsMatch(t,
+            @" (trained|get trained|train my|train up|my spells|new spells|learn spells|learn new|spells trained|skills trained|spend my points|my spec points) ");
+    }
+
+    /// <summary>
+    /// The answer to "where's my trainer": the nearest trainer of the class from the world data ("go see Lady Fridwulf in
+    /// Camelot City"), else the capital, where every class of the realm trains ("your paladin trainer in camelot"). Null for
+    /// no class. 1.1.3, after RC5: bots asking where their trainer is in /faction get this too.
+    /// </summary>
+    public static string TrainerAnswer(eRealm realm, int classId, GameObject near, Random random)
+    {
+        if (classId == 0)
+            return null;
+        string className = null;
+        try
+        {
+            className = AllClasses().FirstOrDefault(c => c?.ID == classId)?.Name;
+            var trainers = TrainersOf(realm, classId);
+            if (trainers.Count > 0)
+                return TrainerText(trainers, className, near, random);
+        }
+        catch
+        {
+            // No world loaded (tests, a minimal world): the capital, which is true for every class.
+        }
+        return GenericTrainerAnswer(realm, className ?? ((eCharacterClass)classId).ToString(), random);
+    }
+
+    /// <summary>"your paladin trainer in camelot": every class trainer of a realm stands in its capital. Pure.</summary>
+    public static string GenericTrainerAnswer(eRealm realm, string className, Random random)
+    {
+        string cap = AutonomousChatFieldTalk.CapitalWord(realm), cls = string.IsNullOrWhiteSpace(className) ? "class" : className.Trim().ToLowerInvariant();
+        return random.Next(3) switch
+        {
+            0 => $"your {cls} trainer in {cap}",
+            1 => $"the {cls} trainer in {cap}, he trains ur spells",
+            _ => $"{cap}, ur {cls} trainer is there",
+        };
+    }
 
     private static bool TryAnswerTrainer(eRealm realm, string query, int askerClassId, GamePlayer asker, out string answer)
     {
@@ -279,21 +371,34 @@ public static class AutonomousChatKnowledge
         if (classId == 0)
             return false;
         var trainers = TrainersOf(realm, classId);
-        if (trainers.Count == 0)
+        string name = AllClasses().FirstOrDefault(c => c?.ID == classId)?.Name;
+        // 1.1.3: with no trainer in the world data, the capital, where every class of the asker's realm trains (not "no idea");
+        // only for the asker's own class, which surely trains there (an Albion "where's the druid trainer" stays unanswered).
+        if (trainers.Count == 0 && classId != askerClassId)
             return false;
+        answer = trainers.Count == 0 ? GenericTrainerAnswer(realm, name, Random.Shared) : TrainerText(trainers, name, asker, Random.Shared);
+        return true;
+    }
+
+    private static string TrainerText(List<(string Name, string Zone, ushort Region, bool Capital, int X, int Y)> trainers, string name, GameObject asker,
+        Random random)
+    {
         // The nearest one in the asker's own region, then the capital.
         var best = trainers.OrderByDescending(t => asker != null && t.Region == asker.CurrentRegionID)
             .ThenBy(t => asker != null && t.Region == asker.CurrentRegionID ? Math.Pow(t.X - asker.X, 2) + Math.Pow(t.Y - asker.Y, 2) : 0)
             .ThenByDescending(t => t.Capital).First();
-        string className = AllClasses().FirstOrDefault(c => c?.ID == classId)?.Name?.ToLowerInvariant() ?? "your class";
+        string className = name?.ToLowerInvariant() ?? "your class";
         var other = trainers.FirstOrDefault(t => t.Zone != best.Zone);
         // Worded to read right when a voice drops the commas (live test 2026-10-18: "Lieutenant Mhoudi in Campacorentin Forest they
         // train scouts").
-        answer = other.Name != null && Random.Shared.Next(3) == 0
+        return other.Name != null && random.Next(3) == 0
             ? $"{best.Name} in {best.Zone} trains {className}s, theres one in {other.Zone} too"
-            : Pick($"{className} trainer is {best.Name} in {best.Zone}", $"{best.Name} trains {className}s in {best.Zone}",
-                $"go see {best.Name} in {best.Zone}");
-        return true;
+            : random.Next(3) switch
+            {
+                0 => $"{className} trainer is {best.Name} in {best.Zone}",
+                1 => $"{best.Name} trains {className}s in {best.Zone}",
+                _ => $"go see {best.Name} in {best.Zone}",
+            };
     }
 
     private static readonly object TrainerSync = new();
@@ -431,6 +536,14 @@ public static class AutonomousChatKnowledge
         return true;
     }
 
+    /// <summary>
+    /// Whether naming a place's area tells the asker nothing: the place is the area, or the area is the whole realm (RC10 on the
+    /// owner's PC: "how do i get to pennine mountains from here" was answered "pennine mountains? thats in albion"). Pure.
+    /// </summary>
+    public static bool AreaSaysNothing(string name, string area) =>
+        string.IsNullOrWhiteSpace(area) || area.Equals(name, StringComparison.OrdinalIgnoreCase) ||
+        System.Text.RegularExpressions.Regex.IsMatch(area.Trim(), @"^(albion|midgard|hibernia)$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
     private static bool TryAnswerLocation(eRealm realm, string query, out string answer)
     {
         answer = string.Empty;
@@ -486,8 +599,9 @@ public static class AutonomousChatKnowledge
             return true;
         }
 
-        answer = place.Area.Equals(place.Name, StringComparison.OrdinalIgnoreCase)
-            ? Pick($"{place.Name} is its own zone, a stable master can get you close", $"{place.Name}? take a horse from a stable master")
+        answer = AreaSaysNothing(place.Name, place.Area)
+            ? Pick($"{place.Name} is its own zone, a stable master can get you close", $"{place.Name}? take a horse from a stable master",
+                $"{place.Name}, a horse gets you most of the way")
             : Pick($"{place.Name} is in {place.Area}", $"{place.Name}? thats in {place.Area}", $"in {place.Area}, follow the road",
                 $"{place.Area}, a horse gets you most of the way");
         return true;
