@@ -37,6 +37,13 @@ people work and the complete realm.
 This replaces "1.2 is one comprehensive update" (2026-11-01) and the 1.3 written on 2026-11-03; both are kept below,
 marked superseded.
 
+Changed 2026-11-10 (owner): **the epic encounters and the lore are part of 1.2, not a 1.2.1.** Asked whether 1.2 should
+ship as its headline alone with the epic encounters and lore as a 1.2.1, the owner chose one release: "I want 1.2.1 in
+1.2. I feel like the lore and epic encounters is a huge massive part and main selling point." So 1.2 is bots that play
+with you, the epic encounters (the restored boss mechanics, the raid tactics and the raid skill layer) and the lore.
+Play with friends stays the stop right after it (1.2.x); the Linux build stays parked. Beta 1.1.3 (published
+2026-11-09) is merged into the 1.2 line.
+
 ## Rules for every stop
 
 - A stop ships only after its in-game check on the owner's PC, reported separately from automated tests
@@ -174,8 +181,18 @@ Everything below is built on branches with green automated tests; nothing is mer
       EA client files removed (#59)
 - [ ] Not placed by the split, for the owner to place: his world scripts as Setup steps; the new-client scripts
       (#54); era build weights (#55) go with 1.3's era builds
+- [ ] The epic encounters (owner 2026-11-10: part of 1.2): boss throws, teleports and jails that take bots too, the
+      restored mechanics of the dragons, Xanxicar, Galladoria, Tuscaran Glacier, Summoner's Hall, Caer Sidi, Krondon,
+      Avalon City and the Darkness Falls princes, each a setting; raid tactics round 3; the raid skill layer (the leader
+      calls, bots react in their own time, the realm learns a boss). Not in it: a Darkness Falls raid AI, a Legion raid
+      plan, and the hardest level 70+ encounters
+- [ ] The lore (owner 2026-11-10: part of 1.2): the lore engine, atmosphere lines, boss yells and mechanic lines,
+      loremasters, books, the Herald chronicle and bestiary, the new client's codex
+- [ ] Beta 1.1.3 merged into the 1.2 line (its chat, raid and siege fixes)
 - [ ] Soaks one system at a time; played: invited into a group and a raid, following a bot leader, a battleground
-      session
+      session; for the epic encounters and the lore, one realm's raids at a time in overnight runs on the test copy,
+      each fight counted as working only once it is seen in a PC log, and the release notes say plainly which fights
+      the raids still lose
 
 ### 1.2 as planned on 2026-11-01 — the comprehensive update (superseded 2026-11-06 by the split)
 
