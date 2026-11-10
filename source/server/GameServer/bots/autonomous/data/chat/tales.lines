@@ -1,0 +1,630 @@
+# Tales (Living Server 1.2, the owner's idea, 2026-11-10): now and then a bot in /faction asks the realm's storyteller for
+# a story about a dragon or a boss. A couple of others hush the channel and beg, the teller tells it in a dozen lines with
+# a question or two that lead it along, and it ends in a quiet moment. What follows (a related rumour, sometimes a raid
+# that really forms) is the engine's, not the scene's (AutonomousTales).
+#
+# Roles: A asks, B is the TELLER (the engine casts the realm's storyteller there and fills {name_b} with its name),
+# C hushes the channel, D begs and asks the questions, E is the one who has heard it too often, F is the newcomer.
+# A scene is one telling; each realm tells its own bosses, and Legion and Govannon the way that realm tells them.
+# Every tale keeps to the lore files (data/lore/bosses/*.json: the "story" of each). New writing, in chat voice: a teller
+# types, it does not recite. Topic "tale_<lore id>"; these scenes never play as ordinary debates.
+
+@kind debate
+@realm alb
+
+@topic tale_golestandt
+@levels 1-50
+@scene tale_golestandt
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} you on? tell the stone dragon one again | hey {name_b}, do the golestandt story, half the realm never heard it
+C: oh yes. everyone hush, {name_b} is telling the dartmoor one | shh all, golestandt story incoming
+?E: we have heard the dartmoor one a hundred times lol | here we go, the bed of granite again
+D: go on {name_b}, please | pleeease {name_b}, the new ppl need to hear about gole
+B: fine, fine. sit down then | ok ok. once, and no talking over me
+B: south end of dartmoor theres a warm hollow in the granite. the cornish drovers call it the Bed
+B: she sleeps in it. and she and the Bed are one stone. hit her anywhere else and the granite takes the blow for her
+?F: so thats why nothing hurts her outside the lair? | wait, is that why we only fight her in the hollow
+B: thats why. and the giants in the heather are her children. shards of the Bed that got up and walked off
+B: back in uther's day a roman lord named articus died out there with his whole house
+B: the duke of cornwall's son came home from it alone, burnt, and never once said what he saw
+~ 8
+D: so how did we even learn her name? | then who named her, if nobody came back?
+B: sir arward rode south with thirty, the year the dragons woke. none of them came home
+B: but their scribe's journal fell out of a clear sky at prydwen keep. scorched. one word branded on the last page
+C: golestandt.
+B: an old roman armourer forged heat wards against her. held once. failed the second time
+B: camelot's armourers still sell those wards. only in pairs. one for her and one for you
+?E: ok that part still gets me | fine, the pairs bit is good, i admit it
+~ 25
+F: ...i am never going near dartmoor again | i walk past that hollow every day. not anymore
+A: thanks {name_b}. gets me every time | told it better than last time, {name_b}
+
+@topic tale_apocalypse
+@levels 1-50
+@scene tale_apocalypse
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b}, whats actually at the top of caer sidi? you know the story right | {name_b} tell them about the four riders of caer sidi
+C: quiet in faction for a minute, this one is worth it | hush everyone, caer sidi story
+D: yes please, i only know there are four horsemen up there | do tell {name_b}, i never got the riders explained
+B: alright. top cell of caer sidi. the first one arawn ever built
+B: the inconnu say whats in it is the end of the world. arawn couldnt destroy it. you cant end an ending, only keep it
+B: so he built the whole turning gaol under that one door to keep it
+?F: and the four riders are the guards? | so the horsemen are its jailers
+B: not jailers. heralds. fames, bellum, morbus, funus. the four roads to the dead, in the roman tongue
+B: and arawn's law binds them. they have to ASK you first. do you challenge fate
+B: arthur climbed to them once. he said no. came home with six men. thats the seven the bards sing about
+~ 8
+D: did anyone ever say yes? | ok so who was the first to answer yes?
+B: a company of the dead, when morgana's theft set the prisoners rising. they climbed and said yes
+B: he ended every one of them and shut his door again. from the inside
+B: the strongest he kept. his harbingers. remade from whoever falls in front of him
+?E: cheerful as always {name_b} | and people wonder why i skip caer sidi raids
+B: dame ysolde of caer gothwaite took eighty up there. seventy one came home. first time anyone brought him down
+B: they say the whole fortress stopped turning for one breath
+~ 25
+F: stopped turning. wow | and we just... go up there for loot
+C: he asks everyone why they came early, they say. i would have no answer
+
+@topic tale_xanxicar
+@levels 1-50
+@scene tale_xanxicar
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} is it true theres a dragon under avalon? someone said two heads | {name_b}, tell the one about the crystal cave
+C: shh, let {name_b} talk. this is the xanxicar one | everybody quiet, avalon story
+D: go ahead {name_b}, i always wondered whats under that isle | yes tell it, i have only seen the cave mouth
+B: ok. there is a map of avalon older than any other. it marks something at the heart of the isle. no name on it
+B: thats him. xanxicar. two heads, older than the map. the inconnu say even arawn wont go near him
+B: a surveyor called caradoc laid the first college's stone right on the warm ground above him
+B: and for three hundred years the college of stars sang over him on the longest night. the Quieting, they called it
+?F: like a lullaby? for a dragon? | they sang a dragon to sleep every year
+B: a lullaby or a ward, nobody is sure which. it worked either way
+B: morgana sang it herself as a pupil. and that college is the first one she burned
+~ 8
+D: so who woke him? | and then he woke up i guess?
+B: third night of the burning, dura'ek went down the stair. the guards who followed him came up as xanxicar's household
+B: dura'ek came up with the dragon's two breaths. so xanxicar fights with his weight now. he rears and the cobbles crack
+?E: yeah we noticed. 110 of us noticed | the stomp. dont remind me
+B: sir garan lost five companies of forty at the cave mouth. five
+B: the readers at caer gothwaite think he isnt even the power under avalon. just its keeper. lying on something worse
+~ 25
+F: lying on something worse. great | so what is he keeping
+A: nobody knows. thats the part i like | {name_b} always stops right there
+
+@realm mid
+
+@topic tale_gjalpinulva
+@levels 1-50
+@scene tale_gjalpinulva
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} you there? tell the one about the dragon in malmohus | skald {name_b}! the gjalpinulva story, come on
+C: quiet in the hall, {name_b} is telling the frost dragon | shh, all of you. malmohus story
+?E: oh good, the wolf's daughter again | i can recite this one by now
+D: tell it {name_b}, i only ever heard pieces | please {name_b}, i want the whole thing for once
+B: ha. alright. ale down, ears open | fine. once, properly
+B: the skalds say she is the fenris wolf's daughter. born before the gods finished his fetter
+B: nobody agrees on the mother. jordheim says the giantess gjalp. the old women of aegir say iarnvidiur of the iron wood
+B: she flew south over raumarik and skona and came down in the ruins of malmohus. and the cold went out from her like water
+?F: is that why the ground is frozen there | so the frost in malmohus is HER
+B: its her cloak. she wears the frost. outside her court no blow lands on her at all
+B: she bred the drakulv there. yar was the firstborn. she ranked them like a court
+B: then she called the varulv of skona to serve her. roared their envoys still while she named her terms
+~ 8
+D: and they agreed?? | did the wolves bend the knee?
+B: king hresvelgr of varulvhamn told her no. and no werewolf has crossed into malmohus since
+B: the svartalfar went to the ruins too. the first of them met her eyes and froze where they stood
+B: the ones who lived founded the dragonbane of svarhamr. they have watched her ever since
+B: hallbjorn of fort atla led the first eighty against her. found her bare only in her own hollow
+?E: and that is still the only place she bleeds. ask me how i know
+~ 25
+F: remind me to never look her in the eye | the freezing part. ugh
+C: good telling {name_b}. the fire feels warmer now
+
+@topic tale_king-tuscar
+@levels 1-50
+@scene tale_king_tuscar
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b}, why does king tuscar shout for odin when hes losing? hes a giant | {name_b} tell the tuscar story, the one with the hammer
+C: listen up, this is a good one. the smith king | hush, {name_b} knows the tuscaran story
+D: yes! i always wondered about the odin thing | go on {name_b}, the glacier king
+B: so. tuscar was a smith long before he was a king
+B: the rime giants say he was apprentice to the giant who built asgard's wall in one winter
+B: you know that one. loki cheated the builder of his wage and thor's hammer paid him instead
+?F: the builder got killed for doing the job? | wait the gods just didnt pay
+B: they didnt pay. and when they came to settle it, the apprentice stole something from the forge
+B: an oath-word of odin's. the one that sealed the bargain. he burned it into the haft of his hammer
+B: thats why he calls on odin when hes hurt, and gets stronger. the god's own broken oath answers him
+~ 8
+D: is that true or just giants bragging? | do the skalds believe that?
+B: jordheim's skalds say its a giant's boast. the iarn dwarves believe it. and dwarves know smiths
+B: he made every weapon in tuscaran. the best axe of his life he made for kula. crossed the sea ice to give it to her
+B: he tells every enemy the same thing. my queen carries the best weapon i ever made. mine is almost as good
+?E: and then he hits you with almost as good | i have met almost as good. it hurt
+B: but kill kula in front of him and he forgets the forge. he just screams for her
+~ 25
+F: now i feel bad for a giant | ...that got sad fast
+A: every time. thanks {name_b} | skal, {name_b}
+
+@topic tale_nosdoden
+@levels 1-50
+@scene tale_nosdoden
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} whats the thing at the bottom of trollheim? the valkyn wont talk about it | {name_b}, tell the nosdoden one
+C: quiet a moment, trollheim story | everyone hush, this one is grim
+D: please do, i got lost down there once and heard things | tell it {name_b}, i want to know what i ran from
+B: alright. under the deepest holy hall of trollheim the troll fathers raised a mound
+B: thats where their dead were given back to the land. and the vaettir, the land spirits, gathered on it
+B: the fathers were famous for wisdom. this is where it came from. they asked the dead
+?F: and something ate the dead? i see where this goes | let me guess, it didnt stay guarded
+B: when the morvalt broke the city the keepers fled. all but one, grimsa. the mound lay open
+B: something came to it. jordheim says a dragon. the dwarves say it came UP from below, not down
+B: it lay on the mound and fed on the spirits. and the feeding turned its scales to slime and its jaws to tentacles
+B: the valkyn named it. nosdoden. death's muzzle
+~ 8
+D: has anyone fought it and lived? | so what happens if you cut it?
+B: ketil grimsson's war band found out. every deep cut let out a host of the dead it had swallowed
+B: and every one of ketil's men who died near it stood up again. own face, own craft. fighting for the worm
+?E: worst wipe of my life was to my own healer down there | i have been killed by my own guildmate's ghost. true story
+B: but a woman named sigrid, tending the wounded, found the one mercy in that place
+B: call a fallen man back before the worm is done with him, and he keeps his own spirit. it only takes what is left lying
+~ 25
+F: so never leave anyone on the floor. got it | rez fast. noted. forever
+C: the worm takes only what is left lying. i hate that line
+
+@realm hib
+
+@topic tale_cuuldurach-the-glimmer-king
+@levels 1-50
+@scene tale_cuuldurach
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} are you about? tell the glimmer king story | {name_b}, the tale of cuuldurach, if you would
+C: hush now, all. {name_b} tells the sheeroe hills one | quiet, friends, this is the glimmer king
+?E: the one where the grass goes grey. again | i know how this one ends, the door stays open
+D: oh please do {name_b} | go on {name_b}, i have never heard it start to finish
+B: very well. gather in | once more then, and listen this time
+B: the hills above the bog of cullen were only summer pasture. shepherds, sheep, nothing more
+B: but they were always one of the realms of the otherworld too. unseen. with its own law and its own king
+B: then one summer the sky tore over the ridge. a pass appeared that had not been there the day before
+?F: a door just opened? in the hills? | the pass was not there before?
+B: and through it came cuuldurach with a court of cold light. and the grass went grey behind him
+B: the elven sage tyldifyl told the rangers plainly. sheeroe was always his. only the door is new
+B: he is the only HE among the three dragons. and the only one who came as a king
+~ 8
+D: why did it open though? | does anyone know why that summer?
+B: no one agrees. the druids of lough gur say the veil wore thin after the bargain broke in the cursed forest
+B: he warns once, from the sky. he keeps a chamberlain. his heir maldahar rides the borders
+B: conaing of howth took forty to his lair, the first to reach it. and found no blade would bite him once he left it
+B: the druids named that the King's Law. a king may not be wounded on ground that is not his
+?E: which is why we drag nobody anywhere. we fight him at home
+~ 25
+F: a king may not be wounded on ground not his. i like that | cold light. i can almost see it
+A: thank you {name_b}. lovely as ever | beautifully told, {name_b}
+
+@topic tale_olcasgean
+@levels 1-50
+@scene tale_olcasgean
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} what is actually at the bottom of galladoria? the sylvan go quiet when i ask | {name_b}, tell us of the root
+C: hush, everyone, {name_b} has the galladoria tale | quiet now, this is the old one. older than us
+D: yes, tell it. i have only seen the first rooms | please {name_b}, the whole of it
+B: his name is olcasgean. the Root. he was old and angry before the first forest of hy brasil woke
+B: the sylvan will not call him a god. the scholars of tir na nog say titan
+B: in the Long Pushing the forest grew against him for an age and drove him back to world's end
+?F: the forest fought him? the trees themselves? | a forest can push?
+B: it set keeper trees to watch him. elro at the edge, who held. and aroon in the hollow below, who rotted
+B: but roots do not go away. they go down
+B: where his roots ended they made galladoria. a hollow like a mouth, bending the isle's rivers toward it
+~ 8
+D: and the things living in there now? | so what happened to everything inside?
+B: everything that drank that water changed. the broodmother. the conservator. aroon. all of it his now
+B: last he took the isle's four elements, wind, water, fire and stone, and set them at the waterfall bridge to guard his sleep
+B: hibernia's first three hundred and forty broke on his first law. no one near him who does not stand where he allows
+?E: we broke on it too, last month | two spots. he allows two spots. ask our guild
+B: orlaith of tir na nog brought a hundred and forty, stood where he allowed, and found he rises as two trunks. each with a full life
+B: they cut both
+~ 25
+F: they go down. i keep hearing that part | two trunks. of course there are two
+C: well told {name_b}. the wardens say he has grown hungrier since
+
+@topic tale_black-lady
+@levels 1-50
+@scene tale_black_lady
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b}, who was the black lady before marfach? someone said she was a singer | {name_b} tell the keener's tale, the sad one
+C: quiet a while, friends. the marfach story | hush, this one deserves the silence
+D: i would like to hear it {name_b} | tell it, i have only fought her, never understood her
+B: she was the eldest of three keeners. hired to sing the chieftain caimheul on, in the hills of breifine
+B: a keener sings facing the road. she never looks back at the grave. the eldest had kept that rule forty years
+B: but she had raised caimheul in her own house by the lake. his foster mother. and they asked her to keen him anyway
+?F: oh no | they asked his own mother to sing him gone
+B: she planted an acorn in the floor of his grave. and it sprouted in the dark
+B: on the fourth night a kind voice answered her from below. why should you ever stop?
+B: and she looked back over her shoulder. and her two sisters looked where she looked
+~ 8
+D: whose voice was it? | and what answered her?
+B: the druids of tir na nog believe it was the calling of the summoners
+B: it gave the whole household the grave peace. on the ground where they were laid they can be wounded. beyond it, nothing touches them
+B: and when the household came back to the grave, the chieftain was standing
+B: the oak went black as bog oak. she gave it her breath. it stands while she returns, and stops when she falls
+?E: and her mourners go straight for the healers. every time | they hate menders. anyone who will not let the dead go
+~ 25
+F: she just could not stop singing | i will think of this next time we are in marfach
+A: thank you {name_b} | i always go quiet after that one
+
+# Legion and Govannon, as each realm tells them.
+
+@realm alb
+
+@topic tale_legion
+@levels 1-50
+@scene tale_legion_alb
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} tell them why its called legion. the df one | {name_b}, the legion story, before the next raid goes down
+C: everyone shut up a second, this is the darkness falls one | hush. {name_b} tells legion properly
+D: go on {name_b}, i only know it eats bubbles | please, i have always wanted the real story of that thing
+B: right. the imps down there will talk for a candle end. this is what they say
+B: in the beginning two princes stood equal at the top of the demon court
+B: one killed the other. and ate him. and kept his voice
+?F: kept his voice?? | it talks with the dead one's voice?
+B: and he ate every demon who challenged him after. until he spoke with a hundred voices. so the court named him legion
+B: camelot's priests say he is the thing in the gospel that named itself for its number
+B: his kingdom has three doors. ours is in camelot hills. they open only for the realm holding the most keeps
+~ 8
+D: and he really heals when we die? | is it true every death feeds it?
+B: every one of us who dies in that room mends him. thats not a saying. thats how he eats
+B: he swallows the wards our priests wrap round the fighters too. a friar named ansel had his prayer eaten
+B: ansel never prayed a ward again
+?E: i watched a raid feed it back to full once. forty deaths | so stop dying in there. simple
+B: the roll in camelot names sir aldous fenn as the first of ours to break him
+~ 25
+F: never prayed again. that one stays with you | i need a minute after that
+C: pray for the souls inside it, the priests say. pray later, i say
+
+@realm mid
+
+@topic tale_legion
+@levels 1-50
+@scene tale_legion_mid
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b}! the glutton hall story. the young ones havent heard it | {name_b} tell them about legion before they go down there
+C: quiet at the benches. {name_b} has the legion saga | hush, the glutton hall
+D: tell it {name_b}, i want to know what waits under mularn | aye, go on, i have only heard the name
+B: the skalds call his lair the glutton hall. because it eats its guests
+B: there were two princes once, equal, at the top of the demon court
+B: one killed the other, ate him, and kept his voice for his own
+?F: that is a foul way to win a throne | he wears the voice like a trophy?
+B: every challenger after went the same way. a hundred voices in one throat. so they call him legion
+B: three doors lead down. ours is above mularn. they open only for the realm that holds the most keeps
+B: and he heals by eating. every warrior who dies in his hall mends him
+~ 8
+D: so dying there is worse than dying anywhere? | and the ones he eats, where do they go?
+B: die to legion and you get no seat in any hall. thats what the old ones say. he keeps you
+B: he once called the behemoth down from its ledge to fight beside him
+B: it came down and did not stop at the enemy. it stays on its ledge now, and he grew stronger instead
+?E: saw the ledge once. did not look twice | the behemoth just sits up there watching. i hate it
+B: our roll names thane hrolf the tall as the first of midgard to break him
+~ 25
+F: no seat in any hall | i will be very careful under mularn
+A: thats a whole saga right there. thanks {name_b}
+
+@realm hib
+
+@topic tale_legion
+@levels 1-50
+@scene tale_legion_hib
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b}, is it true the bards refuse to sing legion? why? | {name_b} tell the tale the bards will not
+C: hush, all of you. the one beneath connacht | quiet, friends. {name_b} will tell what the bards leave out
+D: i would hear it {name_b} | go on, i have wondered about that door in connacht
+B: the druids call him a lord made of his own subjects. here is why
+B: two princes stood equal at the head of the demon court
+B: one slew the other and ate him, and kept his voice
+?F: a lord made of his own subjects. oh | that is what the druids meant
+B: and so with each who challenged him. a hundred voices now. the court named him legion
+B: the druids say he is what the otherworld becomes with no law in it
+B: three doors lead to him. ours is in connacht. they open only to the realm that holds the most keeps
+~ 8
+D: can he even be hurt? | how does anyone fight such a thing?
+B: only from inside the Choir. the ring where all his voices can hear each other. from beyond it, nothing lands
+B: and each of us who falls in there mends him. he heals by eating
+B: he swallows the turning wards our druids set about the fighters, and pours them back as ruin
+?E: we fed him well last time. shamefully well | stand close, die never. that is the whole of it
+B: hibernia's roll names ealadhach the bard as the first of ours to break him. a bard. and still they will not sing it
+~ 25
+F: a bard broke him and they still will not sing it | i understand the silence now
+C: lets give them something to sing, then
+
+@realm alb
+
+@topic tale_grand-summoner-govannon
+@levels 1-50
+@scene tale_govannon_alb
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} who IS govannon anyway. the summoners hall boss | {name_b}, tell the one about the summoner and his debts
+C: shh, summoner's hall story, pay attention | quiet all. {name_b} knows this one from the camelot scholars
+D: go on {name_b}, i only know to kill the sacrifice first | tell it, i want to know why there is a sacrifice at all
+B: his name is a smith's name, from the old tales of the west. but what he makes is bargains
+B: camelot's scholars say he was a mage of the old britons who took that name for himself
+B: he came to an empty hall under all three frontiers and filled it with summoners. cunovinda was his first student
+?F: under all three? the same hall for every realm? | so the other realms fight him too
+B: the same hall. and from it they call the dead of all three realms down through the floors of the frontier dungeons
+B: every calling has a price. and govannon pays his debts. thats the part to remember
+~ 8
+D: so thats what the sacrifice is? | the sacrifice and the demon walking in, is that a payment?
+B: its a bargain being struck. a sacrifice and a demon walk to meet at his feet. if both arrive, the price is paid
+B: and his old creditor rises out of the floor to collect. the shade of aelfgar. with the war cry that killed him
+B: the priests in camelot say aelfgar was one of ours once. a knight
+?E: so we are killing a knight's ghost down there. lovely | explains the stun. he was a fighter
+B: and hurt govannon badly enough and he sheds the shape he was paid in. the demon steps out whole
+B: as if every wound before had been given to someone else
+~ 25
+F: given to someone else. so who took them | he pays his debts with other people. got it
+A: thanks {name_b}. i will never look at the sacrifice the same way
+
+@realm mid
+
+@topic tale_grand-summoner-govannon
+@levels 1-50
+@scene tale_govannon_mid
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b}, tell the young ones what was calling the dead in dodens gruva | {name_b}! the govannon story, with ormarr's miners in it
+C: quiet, this one is ours. dodens gruva | hush at the fire, {name_b} tells the summoner
+D: aye tell it. my uncle mined there | go on, i never knew the mine and the hall were one story
+B: there is a hall under all three frontiers. an empty sidhe hall, once. a summoner named govannon filled it
+B: jordheim's skalds say there is no one under his shape at all. just the shape
+B: he and his students call the dead. ours too. down through the floors of the frontier dungeons
+?F: he was pulling our dead out of the ground? | our dead answered him?
+B: the miners in dodens gruva heard the calling first. their dead began to walk. downward
+B: spiritmaster aros bound them where they stood rather than let them go to him
+~ 8
+D: so aros is not the villain there? | wait. aros was holding them back?
+B: he held them back. thats why the mine is full of bound dead. better bound than his
+B: govannon pays for every calling. a sacrifice and a demon walk to his feet. if both arrive, his creditor comes to collect
+B: and when he is hurt enough the shape comes off. the demon steps out whole
+?E: at half. heals to full. i have the scars | the half way trick. every single time
+B: like every blow we ever landed went to somebody else
+~ 25
+F: poor aros | i will look at dodens gruva differently now
+A: thats for ormarr's miners. well told {name_b}
+
+@realm hib
+
+@topic tale_grand-summoner-govannon
+@levels 1-50
+@scene tale_govannon_hib
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b}, why do the druids spit when they say govannon | {name_b} tell of the false sidhe under the frontier
+C: quiet now, friends. the summoner's tale | hush. {name_b} tells the one that shames us
+D: please. i have seen his face and it troubled me | tell it {name_b}, why does he look like one of the good folk
+B: because the face is stolen. the druids of tir na nog say he wears the shape of one of the sidhe
+B: the hall he sits in was a sidhe hall. the realms' old meeting place, under all three borders. it stood empty
+B: he filled it with summoners. cunovinda, lossren the gatherer, roesia the keeper of pain
+?F: and they call the dead from there? | what do they summon
+B: the dead of every realm. ours as well. through the floors of the frontier dungeons, down to him
+B: the druids believe it was their calling that answered the black lady in marfach
+~ 8
+D: and the shape? does it ever come off? | what is under the stolen face?
+B: he was paid in that shape long ago. hurt him enough and he sheds it. and the demon steps out whole
+B: as though every wound before was given to another
+B: each calling costs him. a sacrifice and a demon walk to his feet, and if both arrive, something comes to collect
+?E: kill the sacrifice first. i say it every raid | dont be fooled by the face. sacrifice dies first
+~ 25
+F: one of the good folk, worn like a coat | an insult to wear that face
+C: the false sidhe. tir na nog will sing when he falls
+
+# Campfire tales (the same stories, short): told in /group by a groupmate while the party rests in or near the place, to the
+# player in the group. Two roles: A tells, B listens. Topic "fireside_<lore id>"; played by AutonomousTales, never in /faction.
+
+@realm alb
+
+@topic fireside_golestandt
+@levels 1-50
+@scene fireside_golestandt
+@role A type=*
+@role B type=*
+A: you know why nothing hurts gole outside her hollow? | ever hear why the stone dragon only bleeds in her lair
+?B: no? | go on then
+A: she and that hollow are one stone. the drovers call it the Bed. hit her anywhere else and the granite takes it
+A: the giants out here are her kids. bits of the Bed that got up and walked
+B: ...and we are sitting on dartmoor right now. great | so every giant we pulled today was family. nice
+A: {name_b} tells it way better than me. ask in faction sometime
+
+@topic fireside_apocalypse
+@levels 1-50
+@scene fireside_apocalypse
+@role A type=*
+@role B type=*
+A: know what the four riders up top have to do before they fight you? | fun fact about caer sidi while we sit here
+?B: what | ask for a toll?
+A: they have to ask. do you challenge fate. arawn's law. arthur said no and went home with six men
+A: thats the bards' seven. the ones who walked out
+B: and we said yes by walking in. cool. cool cool | so everyone in this group already answered
+A: ask {name_b} for the full one sometime. the door shutting from the inside is the good part
+
+@topic fireside_xanxicar
+@levels 1-50
+@scene fireside_xanxicar
+@role A type=*
+@role B type=*
+A: they used to sing the thing under here to sleep. every year | did you know a whole college sang over this cave once
+?B: sing what to sleep | who did
+A: the college of stars. three hundred years, longest night, a song called the Quieting. over xanxicar
+A: morgana sang it as a student. then burned that college first
+B: so nobody has sung it since. and here we are | that explains the mood down here
+A: {name_b} has the whole story if you catch them in faction
+
+@realm mid
+
+@topic fireside_gjalpinulva
+@levels 1-50
+@scene fireside_gjalpinulva
+@role A type=*
+@role B type=*
+A: cold enough for you? thats her doing, you know | you feel that frost? it is not weather
+?B: whose doing | then what is it
+A: gjalpinulva wears the frost like a cloak. outside her court no blow lands on her. skalds say shes the wolf's daughter
+A: the first svartalfar who met her eyes froze where they stood
+B: so we dont look up. noted | and i thought it was just winter
+A: get {name_b} to tell it properly some night. the werewolf king's answer is the best bit
+
+@topic fireside_king-tuscar
+@levels 1-50
+@scene fireside_king_tuscar
+@role A type=*
+@role B type=*
+A: the king up here made every weapon these giants carry. himself | you know tuscar is a smith, right? before anything else
+?B: a giant blacksmith? | huh
+A: apprentice to the giant who built asgard's wall. the one the gods never paid
+A: best axe he ever made he gave to his queen. crossed the sea ice to hand it to her
+B: romantic. for a thing trying to kill us | so the queen hits harder. good to know
+A: {name_b} tells the whole saga. ask about the oath word on his hammer
+
+@topic fireside_nosdoden
+@levels 1-50
+@scene fireside_nosdoden
+@role A type=*
+@role B type=*
+A: rule for down here. nobody stays dead on the floor. not for a minute | one thing while we rest. if i drop, rez me fast
+?B: why the hurry | thats always the rule?
+A: the worm at the bottom swallows the dead. they stand back up with their own faces and fight for it
+A: but called back in time you keep your spirit. it only takes what is left lying
+B: ok. rezzing fast. always | i am suddenly very fond of our healer
+A: thats ketil grimsson's story. {name_b} tells all of it if you ask
+
+@realm hib
+
+@topic fireside_cuuldurach-the-glimmer-king
+@levels 1-50
+@scene fireside_cuuldurach
+@role A type=*
+@role B type=*
+A: see how the grass is grey up here? it was green once | these hills were just summer pasture, you know. before him
+?B: before who | what happened to it
+A: the glimmer king. one summer the sky tore and a pass opened that was not there the day before
+A: the sage tyldifyl says sheeroe was always his. only the door is new
+B: a door that opens can close. i hope | so we are trespassing. lovely
+A: {name_b} tells it far better. ask for the King's Law
+
+@topic fireside_olcasgean
+@levels 1-50
+@scene fireside_olcasgean
+@role A type=*
+@role B type=*
+A: dont drink the water in here, by the way | notice how every river on this isle bends toward this place
+?B: why not | i did notice that
+A: everything that drank it changed. the root at the bottom made this hollow. like a mouth
+A: the forest pushed him here an age ago. but roots do not go away. they go down
+B: so we are standing in his mouth. thank you for that | i was thirsty until now
+A: {name_b} has the whole tale. the two trunks part is worth hearing
+
+@topic fireside_black-lady
+@levels 1-50
+@scene fireside_black_lady
+@role A type=*
+@role B type=*
+A: you know the lady in here was only hired to sing at a funeral | she was a keener once. the one deeper in
+?B: a singer? her? | and what went wrong
+A: a keener never looks back at the grave. forty years she kept that. then they asked her to sing her own foster son
+A: fourth night a voice from below asked why she should ever stop. and she looked back
+B: ...ok that is sadder than i expected | and now she hates healers. i see it
+A: ask {name_b} for it some evening. bring something to drink
+
+@realm *
+
+@topic fireside_legion
+@levels 1-50
+@scene fireside_legion
+@role A type=*
+@role B type=*
+A: you know why its called legion? | while we catch our breath. know where the name comes from?
+?B: because theres a lot of demons? | no idea
+A: two princes ran this place once. one ate the other and kept his voice. then ate everyone who challenged him
+A: a hundred voices in one body now. and everyone who dies in his room heals him
+B: so we do not die in his room. understood | i liked this place better before you told me
+A: {name_b} tells the long version up top. worth asking
+
+@topic fireside_grand-summoner-govannon
+@levels 1-50
+@scene fireside_govannon
+@role A type=*
+@role B type=*
+A: the summoner at the bottom of this hall pays for everything he calls up | know what the sacrifice in the last room is for?
+?B: pays who | i just kill it when told
+A: its a bargain. sacrifice and demon walk to his feet. if both get there, his creditor comes up through the floor to collect
+A: and hurt him enough and he drops the shape he wears. the demon steps out without a scratch
+B: so kill the walkers. always | thats why everyone yells about the sacrifice
+A: {name_b} tells where the shape came from. depends which realm you ask

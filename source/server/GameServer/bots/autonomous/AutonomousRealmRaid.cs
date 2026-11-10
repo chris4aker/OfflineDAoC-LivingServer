@@ -305,6 +305,48 @@ namespace DOL.GS
             }
         }
         /// <summary>
+        /// Whether the realm's automatic raid on this encounter could open now (AutonomousTales, before a bot says a raid is
+        /// forming): automatic raids are on, the server is past its startup ramp, the realm has no raid, the encounter is up
+        /// and off cooldown, and twice the smallest raid's worth of level 50s are free, as for a scheduled raid.
+        /// </summary>
+        public static bool CouldStartForTale(string id, eRealm realm, out string reason)
+        {
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
+                int online = OnlineLevelFifty(realm);
+                reason = RealmRaidRecruitmentPolicy.ScheduleMinutes <= 0 ? "automatic raids are off"
+                    : !AutonomousPopulationController.StartupRampFinished ? "the realm's gamebots are still logging in"
+                    : !Definitions.Any(d => d.Id == id && d.Realm == realm) ? "no such raid for that realm"
+                    : Raids.Values.Any(r => r.Definition.Realm == realm) ? "the realm already has a raid"
+                    : !Available(id) ? "the encounter is not up, or on cooldown"
+                    : online < RealmRaidRecruitmentPolicy.MinimumScaledBots * 2 ? $"only {online} level 50s of the realm are free"
+                    : null;
+                return reason == null;
+            }
+        }
+
+        /// <summary>
+        /// A tale's raid (AutonomousTales: the rumour after a tale was true): the realm's automatic raid on this encounter
+        /// opens now, sized, recruited and announced like a scheduled one, and the realm's next scheduled raid moves on a
+        /// full slot so the two don't follow each other. False with the reason.
+        /// </summary>
+        public static bool StartForTale(string id, eRealm realm, out string reason)
+        {
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
+                if (!CouldStartForTale(id, realm, out reason) || !Start(id, realm, out reason))
+                    return false;
+                Raid opened = Raids[id];
+                long now = GameLoop.GameLoopTime;
+                NextScheduled[realm] = now + RealmRaidRecruitmentPolicy.NextScheduleMilliseconds(RealmRaidRecruitmentPolicy.ScheduleMinutes, Random.Shared.NextDouble());
+                reason = $"{opened.Definition.Name}: {opened.Required} must gather, up to {opened.RecruitCap} recruited";
+                Log.Info($"REALM_RAID_SCHEDULED event={id} realm={GlobalConstants.RealmToName(realm)} online={OnlineLevelFifty(realm)} required={opened.Required} " +
+                         $"recruitCap={opened.RecruitCap} {SizeField(opened)} forced=tale");
+                return true;
+            }
+        }
+
+        /// <summary>
         /// GM test (/lstest raid): the realm's automatic raid opens now, sized to its online level 50s like a scheduled one
         /// (forced raids from the launcher need 300). <paramref name="dragon"/> picks the realm's dragon, else a random
         /// available raid. Returns false with <paramref name="reason"/>.

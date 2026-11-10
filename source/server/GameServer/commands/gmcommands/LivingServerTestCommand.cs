@@ -15,6 +15,7 @@ namespace DOL.GS.Commands;
     "/lstest list - every part, on or off",
     "/lstest storyline | debate | dunce - the next /faction scene starts now (a storyline episode, any debate, a dunce rage quit)",
     "/lstest spammer | roleplayer | rumour - a gold spammer, a roleplayer's line, a rumour about a rare named in this region",
+    "/lstest tale [boss] | fireside - the realm's storyteller tells a tale in /faction now (of that boss: legion, golestandt, ...); fireside: sit down in a boss's place with a gamebot in your group and a groupmate tells the short one",
     "/lstest tell - a bot starts a tell to you",
     "/lstest memory - what bots remember about you",
     "/lstest remember - your target (or the nearest gamebot) remembers a good group with you; walk away and back to be greeted",
@@ -59,6 +60,28 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                 int roleplayers = AutonomousRoleplayers.SpeakSoon(realm);
                 Say(client, Off(Properties.BOT_LIVING_CHARACTERS, "bot_living_characters") ??
                     (roleplayers > 0 ? $"One of {roleplayers} roleplayer(s) online speaks in /faction {WhenFaction(realm)} (and may be mocked)." : "No roleplayer of your realm is online and free to talk."));
+                return;
+            case "tale":
+                if (Off(Properties.BOT_LIVING_TALES, "bot_living_tales") is string talesOff)
+                    Say(client, talesOff);
+                else
+                {
+                    string about = args.Length > 2 ? string.Join(' ', args.Skip(2)) : null;
+                    string loreId = about == null ? null : AutonomousTales.RequestedLore(about,
+                        LoreBible.Current.Bosses.Select(boss => (boss.Id, LoreBible.NamesOf(boss.Name, boss.Id, boss.Aliases))));
+                    Say(client, AutonomousTales.TryStart(realm, loreId, null, out string noTale)
+                        ? $"The realm's storyteller is asked for a tale in /faction{(loreId != null ? " (" + loreId + ")" : "")}; it starts within a few seconds."
+                        : $"No tale: {noTale}.");
+                }
+                return;
+            case "fireside":
+                if (Off(Properties.BOT_LIVING_TALES, "bot_living_tales") is string firesideOff)
+                    Say(client, firesideOff);
+                else
+                {
+                    AutonomousTales.ForgetFiresides(gm);
+                    Say(client, "Fireside tales forgotten for today. Sit down out of combat, in a group with a gamebot, in a place that has a tale (a dragon's zone, an epic dungeon, Darkness Falls, Summoner's Hall): a groupmate tells it within ten seconds.");
+                }
                 return;
             case "rumour":
             case "rumor":

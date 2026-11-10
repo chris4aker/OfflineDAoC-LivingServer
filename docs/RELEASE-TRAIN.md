@@ -188,7 +188,11 @@ Everything below is built on branches with green automated tests; nothing is mer
       plan, and the hardest level 70+ encounters
 - [ ] The lore (owner 2026-11-10: part of 1.2): the lore engine, atmosphere lines, boss yells and mechanic lines,
       loremasters, books, the Herald chronicle and bestiary, the new client's codex
-- [ ] Beta 1.1.3 merged into the 1.2 line (its chat, raid and siege fixes)
+- [x] Beta 1.1.3 merged into the 1.2 line (its chat, raid and siege fixes; #174, 2026-11-10)
+- [ ] Tales (owner 2026-11-10: "I love the fuller version", "it needs to be in 1.2"; [TALES.md](TALES.md)): the realm's
+      storyteller asked for a boss's story in /faction, hushed and told, the quiet after it, a rumour that is sometimes a
+      raid really forming, a player's own request and questions, fireside tales in a resting group. Played: one tale
+      heard to its end, one asked for, one that led to a raid, one fireside tale
 - [ ] Soaks one system at a time; played: invited into a group and a raid, following a bot leader, a battleground
       session; for the epic encounters and the lore, one realm's raids at a time in overnight runs on the test copy,
       each fight counted as working only once it is seen in a PC log, and the release notes say plainly which fights

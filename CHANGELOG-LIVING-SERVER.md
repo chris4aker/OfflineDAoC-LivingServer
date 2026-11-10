@@ -31,6 +31,24 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
 
 ## 1.2 (in development)
 
+**Tales: the realm's storyteller, and stories by the fire** (the owner's idea, 2026-11-10: "a bot in faction asks another
+famous bot to tell the story about X..."; how it works: [docs/TALES.md](docs/TALES.md)). Built and covered by automated
+tests; nobody has heard one in game yet.
+- **A tale in /faction.** Now and then a bot asks the realm's storyteller, by name, for the story of a dragon or a boss.
+  Others hush the channel and beg, the storyteller tells it in about a dozen lines with a question from a listener leading
+  it along, the channel goes quiet for half a minute, and a rumour about the same boss follows.
+- **Sometimes the rumour is true.** About half the time, when the realm's raid on that boss could form anyway, the rumour
+  is that one is forming, and six to twelve minutes later the realm's own automatic raid on it opens.
+- **Storytellers are people.** Up to two per realm, kept across restarts; other bots name them and only they tell.
+- **You can ask** ("tell the one about legion"), and a question asked during a tale is answered by the storyteller.
+- **It can go wrong.** A storyteller pulled into a fight for more than three minutes never finishes, and a listener says
+  so; the tale is told another night.
+- **Fireside tales.** Sit down out of combat in a boss's place with a gamebot in your group and a groupmate tells the short
+  version in /group, once a day per tale.
+- Fifteen tales in 1.2: three bosses per realm, and Legion and Govannon as each realm tells them, each kept to its lore
+  file. A realm starts one on its own at most every three hours or so. Settings `bot_living_tales` and
+  `bot_living_tale_raids` (both on); GM checks `/lstest tale [boss]` and `/lstest fireside`.
+
 **A bot-led group keeps you through a zone change** (owner's PC test, 2026-11-07). A player who joined a gamebot's
 group was let go ("left") as soon as they were out of the world for a moment: a region change, a zone change across
 regions or a GM /jump takes the player out of the world while the client loads. The group now waits for you while you

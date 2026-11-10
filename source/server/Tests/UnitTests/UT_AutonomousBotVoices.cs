@@ -195,7 +195,8 @@ namespace DOL.GS.Tests
             Dictionary<string, string> slots = FullSlots();
             // A storyline episode also gets its two protagonists' names and, for an ending, the player who took a side.
             var story = new Dictionary<string, string>(slots) { ["name_a"] = "Aelwyn", ["name_b"] = "Brannoc", ["player"] = "Kaelith" };
-            Assert.That(Corpus.Scenes.Where(scene => !Debates.Playable(scene, _ => AutonomousBotStorylines.IsStory(scene) ? story : slots))
+            // A tale gets its storyteller's name ({name_b}) and the asker's (AutonomousTales).
+            Assert.That(Corpus.Scenes.Where(scene => !Debates.Playable(scene, _ => AutonomousBotStorylines.IsStory(scene) || AutonomousTales.IsTaleScene(scene) ? story : slots))
                 .Select(scene => scene.Id), Is.Empty);
         }
 
