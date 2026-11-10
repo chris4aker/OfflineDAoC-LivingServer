@@ -31,6 +31,13 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
 
 ## 1.2 (in development)
 
+**Melee fight Grand Summoner Govannon's demon from behind** (owner, 2026-11-07: "teach positioning"). In his demon form
+Govannon casts Shroud of Agony, about 1,440 damage to everyone within 300 of his target, every 20-35 seconds; every bot in
+melee stood inside it, and in the play test 45 raiders died in the first 90 seconds of the demon. Now his target keeps
+150 from him and the other melee fight him from about 190 behind him on the line from his target, clear of the Shroud,
+re-placing themselves when he changes target or his target moves. His health, damage and spells are unchanged. The melee position order is
+general (EncounterMeleeStations) but switched on for Govannon only.
+
 **The Darkness Falls raid walks to Princess Nahemah from Ba'alorien's room** (owner's 1.1.2 test, 2026-11-07). After
 Prince Ba'alorien died, every Hibernian raider's path to Nahemah's muster failed: Detour cuts a 20,000-unit corridor at
 its 256-polygon limit, and Darkness Falls accepts only complete paths, so each raider got "no path", 37 gave up the goal

@@ -45,7 +45,7 @@ namespace DOL.GS
             new("AncientBlackOak", "marfach-caverns/ancientblackoak", [], 0, "BlackLady"),
             new("Avartack", "marfach-caverns/avartack", [], 0, null),
             new("BlackLady", "marfach-caverns/blacklady", [], 1100, null) { SpreadRadius = 350 },
-            new("GrandSummonerGovannon", "summoner-s-hall/grandsummonergovannon", ["ShadeOfAelfgar"], 0, null) { SpreadRadius = 300, SpreadWhileModel = 636, RangedAdds = ["SummonedSacrifice", "SummonedDemon"] },
+            new("GrandSummonerGovannon", "summoner-s-hall/grandsummonergovannon", ["ShadeOfAelfgar"], 0, null) { SpreadRadius = 300, SpreadWhileModel = 636, MeleeBehind = true, MeleeRing = 3, TanksTaunt = true, RangedAdds = ["SummonedSacrifice", "SummonedDemon"] },
             new("SummonerLossren", "summoner-s-hall/summonerlossren", [], 0, null) { RangedAdds = ["ExplodeUndead"] },
             new("Nosdoden", "trollheim/nosdoden", ["NosdodenSummonedAdds"], 0, null),
             new("Vagn", "tuscaran-glacier/vagn", [], 0, null),

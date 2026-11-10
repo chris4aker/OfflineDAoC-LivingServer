@@ -3941,6 +3941,18 @@ namespace DOL.AI.Brain
                 !Body.IsWithinRadius(victim, GROUP_DEFENSE_ASSIST_RADIUS))
                 return false;
 
+            return TauntNow(target, false);
+        }
+
+        /// <summary>
+        /// An encounter tactic's taunt (EpicEncounterTactics.TauntDue: Govannon's demon, when his target is not a tank): the
+        /// class's taunt spell when one is ready (Paladin chants, Sluaghbinder), and a taunt style that fits the weapon in
+        /// hand as the next style (every tank class has them). True when a taunt spell was cast.
+        /// </summary>
+        public bool TauntForEncounter(GameLiving target) => IsTankClass && target != null && TauntNow(target, true);
+
+        private bool TauntNow(GameLiving target, bool usableStyleOnly)
+        {
             if (GameLoop.GameLoopTime >= _nextPriorityTauntTick)
             {
                 // Instant taunts (no cast time, like the Sluaghbinder's) are
@@ -3962,6 +3974,8 @@ namespace DOL.AI.Brain
 
             Style tauntStyle = BotBody.StylesTaunt?
                 .Where(style => style.Level <= Body.Level)
+                .Where(style => !usableStyleOnly || Body.ActiveWeapon != null &&
+                    StyleProcessor.CanUseStyle(Body.attackComponent?.attackAction?.LastAttackData, Body, style, Body.ActiveWeapon))
                 .OrderByDescending(style => style.Level)
                 .FirstOrDefault();
             if (tauntStyle != null)

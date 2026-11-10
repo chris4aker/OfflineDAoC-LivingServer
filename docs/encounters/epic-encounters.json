@@ -27790,12 +27790,15 @@
    "aiTactics": {
     "spreadRadius": 300,
     "spreadWhileModel": 636,
+    "meleeBehind": true,
+    "meleeRing": 3,
+    "tanksTaunt": true,
     "rangedAdds": [
      "SummonedSacrifice",
      "SummonedDemon"
     ],
     "since": "1.2",
-    "summary": "Spread in demon form: while he is the demon (model 636), casters, archers and healers outside his target's party keep 550 from that target, out of his Shroud of Agony (radius 300 around it), and fight and heal from there; melee can't get clear (every melee spot is inside 300 of his target) and fight on, kept up by healers who are no longer in it. Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him. Shade (1.2, epic wave 2): if the sacrifice and the demon both reach his altar the Shade of Aelfgar comes (10,000 health) and sends a raider within 2,000 up to the gallery every 10-20 s (bots too since 1.2; they walk back down or recall): the whole raid kills it first, then him. His full 300,000 health is on (AllowGovannonFullHealth).",
+    "summary": "Spread in demon form: while he is the demon (model 636), his target keeps 150 from him and the other melee fight him from three ring spots 120 degrees apart, 190 from him, each party at its own spot (owner 2026-11-08: a Shroud of Agony, radius 300 around his target, on one melee raider then reaches about a third of the melee; before that, 2026-11-07, the melee fought from one spot behind him: duo9 still lost 6-12 a minute); while his target is not a tank, the raid tank nearest to him taunts him (taunt style, and the Paladin or Sluaghbinder taunt spell; owner 2026-11-08: duo9 tactic lines named casters, healers and pets as his target about half the time); casters, archers and healers outside his target's party keep 550 from that target (a hold for healers inside it was tried and dropped: duo7, 15 healers died within 200 of him). Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him. Shade (1.2, epic wave 2): if the sacrifice and the demon both reach his altar the Shade of Aelfgar comes (10,000 health) and sends a raider within 2,000 up to the gallery every 10-20 s (bots too since 1.2; they walk back down or recall): the whole raid kills it first, then him. His full 300,000 health is on (AllowGovannonFullHealth).",
     "requiredAdds": [
      "ShadeOfAelfgar"
     ]
