@@ -5109,7 +5109,23 @@ namespace DOL.GS
         {
             if (target != null && IsRecoveryResting)
                 return;
-            base.Follow(target, minDistance, maxDistance);
+            base.Follow(target, MeleeStandOff(target, minDistance), maxDistance);
+        }
+
+        /// <summary>
+        /// Living Server 1.2, "arrive slightly short": an autonomous gamebot's melee approach to a monster stops 0-20 units
+        /// short of the stick distance, the same for the same bot every fight (BotCombatMovement.StandOff), so bots don't all
+        /// stand on one exact ring. Not for companions, player-led groups, dragons, epic encounters or raid dungeons.
+        /// </summary>
+        private int MeleeStandOff(GameObject target, int minDistance)
+        {
+            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsEpicSpecialForce || IsPlayerLedGroup ||
+                target == null || target != TargetObject || target is not GameNPC monster || monster is GameBot ||
+                minDistance != StickMinimumRange || ActiveWeaponSlot == eActiveWeaponSlot.Distance ||
+                DragonCombatGeometry.TargetReach(monster) > 0 || EpicEncounterTactics.For(monster) != null ||
+                EpicEncounterTactics.IsTacticPart(monster) || AutonomousRealmRaid.IsRaidDungeon(CurrentRegionID))
+                return minDistance;
+            return BotCombatMovement.StandOff(minDistance, DatabaseID > 0 ? DatabaseID : ObjectID);
         }
 
         public new void StopFollowing()
