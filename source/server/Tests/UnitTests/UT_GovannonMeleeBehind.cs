@@ -131,7 +131,9 @@ namespace DOL.UnitTests
         public void OnlyGovannonHasTheRingAndTheTaunt()
         {
             Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.MeleeRing > 0));
-            Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.TanksTaunt));
+            // The taunt: Govannon while his spread is on, and (2026-11-10) Spindler Broodmother through her whole fight.
+            Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.TanksTaunt && t.SpreadRadius > 0));
+            Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(2).Matches<EpicEncounterTactics.Tactic>(t => t.TanksTaunt));
             foreach (var t in EpicEncounterTactics.Catalog)
                 if (t.Boss == "GrandSummonerGovannon")
                 {

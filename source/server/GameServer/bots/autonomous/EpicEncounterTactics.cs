@@ -59,6 +59,10 @@ namespace DOL.GS
             public int SpreadRadius { get; init; }
             /// <summary>Only while the boss has this model (Govannon's demon form, 636; 0: always).</summary>
             public int SpreadWhileModel { get; init; }
+            /// <summary>A realm that knows the encounter (<see cref="FormUpFamiliarity"/>) forms up for the spread before the boss
+            /// changes: from this health percent down, whatever his model (Govannon turns into the demon at 50%, heals to full
+            /// and hits a pile with his first Shroud; play tests duo22-26: up to 38 raiders died in that minute). 0: off.</summary>
+            public int SpreadFromHealth { get; init; }
             /// <summary>While the spread is on, melee fight the boss from behind him, clear of the area hit around his target
             /// (<see cref="EncounterMeleeStations"/>): his target keeps <see cref="AnchorHoldDistance"/> from him and the
             /// other melee stand <see cref="BehindDistance"/> behind him on the line from his target (owner 2026-11-07,
@@ -498,17 +502,51 @@ namespace DOL.GS
             return tanks.Where(t => t.Tank != null).OrderBy(t => t.Distance).Select(t => t.Tank).FirstOrDefault();
         }
 
+        /// <summary>How well a realm must know an encounter (RaidDiscipline.FamiliarityOf: three lost raids are 0.39) before its
+        /// raid forms up ahead of the boss's change (<see cref="Tactic.SpreadFromHealth"/>). A realm that never fought him
+        /// learns it the hard way first.</summary>
+        public const double FormUpFamiliarity = 0.35;
+
+        /// <summary>Whether a tactic's spread is on (pure): always when it names no model, while the boss shows that model, and
+        /// for a realm that knows him from <see cref="Tactic.SpreadFromHealth"/> down.</summary>
+        public static bool SpreadOn(Tactic t, int model, int healthPercent, double familiarity) =>
+            t is { SpreadRadius: > 0 } &&
+            (t.SpreadWhileModel == 0 || model == t.SpreadWhileModel ||
+             t.SpreadFromHealth > 0 && healthPercent <= t.SpreadFromHealth && familiarity >= FormUpFamiliarity);
+
+        private static readonly Dictionary<string, (long Tick, double Value)> FormUpFamiliarities = new(StringComparer.Ordinal);
+
+        /// <summary>The spread of <paramref name="boss"/> is on for <paramref name="raider"/>'s raid now. The realm's familiarity
+        /// is read from its raid record at most every 30 s.</summary>
+        public static bool SpreadOn(GameLiving raider, GameNPC boss, Tactic t, long now)
+        {
+            if (t is not { SpreadRadius: > 0 } || boss == null) return false;
+            if (t.SpreadWhileModel == 0 || boss.Model == t.SpreadWhileModel) return true;
+            if (t.SpreadFromHealth <= 0) return false;
+            // The realm's familiarity first: a realm that doesn't know him never looks at his health here.
+            string raidId = AutonomousRealmRaid.RaidOf(raider?.Group)?.Id ?? AutonomousRealmRaid.RaidIdForBoss(boss.GetType().Name);
+            double familiarity;
+            lock (FormUpFamiliarities)
+            {
+                if (!FormUpFamiliarities.TryGetValue(raidId ?? "", out var known) || now - known.Tick > 30_000 || now < known.Tick)
+                    FormUpFamiliarities[raidId ?? ""] = known = (now, RaidDiscipline.FamiliarityOf(raidId));
+                familiarity = known.Value;
+            }
+            return familiarity >= FormUpFamiliarity && boss.InCombat && SpreadOn(t, boss.Model, boss.HealthPercent, familiarity);
+        }
+
         /// <summary>The tanks within this of the boss that fight him are asked; the nearest taunts.</summary>
         public const int TauntSearchRadius = 1_500;
 
         private static readonly Dictionary<GameNPC, (long Tick, GameLiving Tank)> TauntPicks = new();
 
-        /// <summary>The raider should taunt <paramref name="boss"/> now (<see cref="Tactic.TanksTaunt"/>): the spread is on, his
-        /// target is not a tank, and this raider is the nearest raid tank fighting him (chosen once a second).</summary>
+        /// <summary>The raider should taunt <paramref name="boss"/> now (<see cref="Tactic.TanksTaunt"/>): the spread is on (or
+        /// the tactic has none: Spindler Broodmother is held by her tanks through the whole fight), his target is not a tank,
+        /// and this raider is the nearest raid tank fighting him (chosen once a second).</summary>
         public static bool TauntDue(GameLiving raider, GameNPC boss, IReadOnlyList<GameNPC> live, long now)
         {
-            if (raider == null || For(boss) is not { TanksTaunt: true, SpreadRadius: > 0 } t ||
-                t.SpreadWhileModel != 0 && boss.Model != t.SpreadWhileModel || !IsTankLiving(raider))
+            if (raider == null || For(boss) is not { TanksTaunt: true } t ||
+                t.SpreadRadius > 0 && !SpreadOn(raider, boss, t, now) || !IsTankLiving(raider))
                 return false;
             GameLiving pick;
             lock (TauntPicks)
@@ -703,7 +741,7 @@ namespace DOL.GS
             if (BlastWithdraw(raider, target, now) is Vector3 safe)
                 return new(BotAction.StandOff, target, safe, $"blast at {NextBlast(target)}%: out of {For(target).BlastRadius}");
             // Area hit around the boss's target (Govannon's demon form): everyone outside that target's party stands clear of it.
-            if (For(target) is { SpreadRadius: > 0 } st && (st.SpreadWhileModel == 0 || target.Model == st.SpreadWhileModel) &&
+            if (For(target) is { SpreadRadius: > 0 } st && SpreadOn(raider, target, st, now) &&
                 target.TargetObject is GameLiving anchor)
             {
                 // Who he fights and where his area hit lands (EpicEncounterTactics.SummonersHall.cs): log lines only.

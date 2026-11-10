@@ -2017,14 +2017,16 @@ def render_tactics_cs(data: dict) -> str:
             init.append(f"SpreadRadius = {int(t['spreadRadius'])}")
             if t.get("spreadWhileModel"):
                 init.append(f"SpreadWhileModel = {int(t['spreadWhileModel'])}")
+            if t.get("spreadFromHealth"):
+                init.append(f"SpreadFromHealth = {int(t['spreadFromHealth'])}")
             if t.get("meleeBehind"):
                 init.append("MeleeBehind = true")
             if t.get("meleeRing"):
                 init.append(f"MeleeRing = {int(t['meleeRing'])}")
-            if t.get("tanksTaunt"):
-                init.append("TanksTaunt = true")
             if t.get("healersHoldInSpread"):
                 init.append("HealersHoldInSpread = true")
+        if t.get("tanksTaunt"):
+            init.append("TanksTaunt = true")
         if t.get("rangedAdds"):
             init.append(f"RangedAdds = {names('rangedAdds')}")
         if t.get("after"):
