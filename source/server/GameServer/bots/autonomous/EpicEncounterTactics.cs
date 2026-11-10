@@ -769,15 +769,17 @@ namespace DOL.GS
 
         /// <summary>Where a raider waits out a blast: <see cref="Tactic.BlastRadius"/> plus 200 from the boss, on its own
         /// side. Null when there is no blast now, the raider is already out, or it is in the party the boss is fighting
-        /// (that party keeps it busy and takes the hit; the rest of the raid survives it).</summary>
+        /// (that party keeps it busy and takes the hit; the rest of the raid survives it). For a called blast
+        /// (<see cref="IsCalledBlast"/>) also null until the raid's call and this raider's reaction delay, and for good when it
+        /// lapsed.</summary>
         public static Vector3? BlastWithdraw(GameLiving raider, GameNPC boss, long now)
         {
             Tactic t = For(boss);
             if (t is not { HasBlast: true } || !boss.InCombat ||
                 !InBlastWindow(t.BlastThresholds, boss.HealthPercent, SinceBlastCross(boss, now), BlastRate(boss, now)))
                 return null;
-            if (boss.TargetObject is GameLiving anchor && (anchor == raider || anchor.Group != null && anchor.Group == raider.Group))
-                return null;
+            bool holds = boss.TargetObject is GameLiving anchor && (anchor == raider || anchor.Group != null && anchor.Group == raider.Group);
+            if (holds && !IsCalledBlast(boss)) return null;
             Vector3 b = new(boss.X, boss.Y, boss.Z), r = new(raider.X, raider.Y, raider.Z);
             float d = Vector2.Distance(new(b.X, b.Y), new(r.X, r.Y));
             // The stomp is an area spell on his target (Target ENEMY, Radius 2,500), so it is centred on that raider, not on
@@ -786,6 +788,13 @@ namespace DOL.GS
             Vector3 c = StompCentre(boss, t.BlastRadius);
             float dc = Vector2.Distance(new(c.X, c.Y), new(r.X, r.Y));
             if (d > t.BlastRadius + 100 && dc > t.BlastRadius + 100) return null;
+            // 1.2 raid discipline (EpicEncounterTactics.RaidCalls.cs): a called blast waits for the raid's call, then for the
+            // raider's own reaction; the party he fights stays in on purpose.
+            if (IsCalledBlast(boss))
+            {
+                BlastCall call = PulseBlastCall(boss, raider, now);
+                if (!CalledNow(call, t, boss, now) || !RaiderGoes(boss, call, raider, now, holds)) return null;
+            }
             // In a closed cave the straight-out spot is inside the rock (duo6: raiders told to go stood at a median 763 from him
             // and died there): walk out along the floor towards the dungeon's way in instead.
             // Each raider takes the reachable spot clear of the blast nearest to it, so nobody walks past him to get out
@@ -810,8 +819,12 @@ namespace DOL.GS
             lock (BlastRates)
                 bosses = BlastRates.Where(b => now - b.Value.Seen < 30_000).Select(b => b.Key).ToArray();
             foreach (GameNPC boss in bosses)
-                if (Present(boss) && boss.CurrentRegionID == raider.CurrentRegionID && BlastWithdraw(raider, boss, now) is Vector3 safe)
-                    return (boss, safe);
+            {
+                if (!Present(boss) || boss.CurrentRegionID != raider.CurrentRegionID) continue;
+                // The call's clock (the call, the landing's count, "back in") runs whether or not this raider is near him.
+                if (IsCalledBlast(boss)) PulseBlastCall(boss, raider, now);
+                if (BlastWithdraw(raider, boss, now) is Vector3 safe) return (boss, safe);
+            }
             return null;
         }
 
@@ -1044,6 +1057,7 @@ namespace DOL.GS
             lock (BlastClocks) BlastClocks.Clear();
             lock (BlastPaths) BlastPaths.Clear();
             lock (BlastSpotCache) BlastSpotCache.Clear();
+            ResetBlastCalls();
             lock (StandOffHolds) { StandOffHolds.Clear(); System.Threading.Volatile.Write(ref _standOffHoldCount, 0); }
             lock (SeenHazards) { SeenHazards.Clear(); System.Threading.Volatile.Write(ref _liveHazardCount, 0); }
         }
