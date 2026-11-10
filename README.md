@@ -15,7 +15,7 @@
 
 # Offline DAoC: Living Server
 
-### Your single-player Camelot, alive like a 2003 server. **Beta 1.1.1 is out.**
+### Your single-player Camelot, alive like a 2003 server. **Beta 1.1.3 is out.**
 
 ![Offline DAoC: Living Server](tools/installer/src/Assets/hero.jpg)
 
@@ -29,17 +29,29 @@ the single-player Classic + Shrouded Isles server. Its bots already level, group
 Server gives them a life: personalities, guilds, memories, opinions and a voice, and an endgame they
 run themselves, whether or not you come along.
 
-> **[Download Beta 1.1.1](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.1-beta)**:
+> **[Download Beta 1.1.3](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta)**:
 > one Setup installs Offline DAoC and Living Server from nothing, or adds Living Server to the 0.36 or 0.37
 > game you have (0.37 or 0.37b, with or without the 0.37c new client). Free, every part has its own
 > switch, and one click rolls it back. Formerly the **Social Expansion**: if you had it, install over it
-> and keep everything. [What's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.1-beta) ·
+> and keep everything. [What's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta) ·
 > [Known issues](docs/KNOWN-ISSUES.md)
 
-## New in Beta 1.1
+## New in Beta 1.1.3
 
-Beta 1.1.1 is a fixes-only update to it, for the community's first reports
-([what's fixed](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.1-beta)).
+A hotfix. Bot raids should now get out of Xanxicar's stomp in time. It has been seen once on a real install: a raid of
+280 bots killed him with no wipe. The Darkness Falls exits by Legion's hall and near the
+Midgard boss should take you home (tested against the world data; not clicked in game yet), and Setup waits out a busy
+download server instead of stopping
+([what's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta)).
+
+## New in Beta 1.1.2
+
+A realm that talks like a full server on a busy evening, raids the size they were in 2002-2004 with their first boss
+tactics, quests that work with your bot group, gamebots that pull their weight in your guild, and a world that opens
+in a crash-safe mode and is backed up every day
+([what's new](docs/RELEASE-NOTES-1.1.2.md)).
+
+## New in Beta 1.1
 
 - **One-click Setup.** No game yet? It downloads Offline DAoC with shadowofze's own downloader. On 0.36? It
   updates you to 0.37 with his official updater and keeps your saves. Then it adds Living Server.
@@ -64,14 +76,14 @@ Beta 1.1.1 is a fixes-only update to it, for the community's first reports
 - **Contested raids.** Two realms in Darkness Falls fight each other on the way. Whoever does the most damage
   to the final boss takes the kill and the loot.
 - **Keep sieges with a fight on both sides.** Warbands open sieges, defenders turn out to match the attacking
-  army, and attackers break off to save their own keep.
+  army, and attackers break off to save their own keep. For now attackers still take most keeps.
 - **Parties go for the boss.** A party grinding a dungeon goes after its named boss when a quest or its loot
   makes the fight worth it.
 
 ### Bots that talk like 2003
 - **About 34,000 lines of period chat** written for the game from launch to patch 1.65, chosen by realm, class,
   level, zone, time of day, situation and personality, in five writing styles (one of them typo-prone,
-  "*fixes" and all). A line doesn't repeat in a realm for three days.
+  "*fixes" and all). Most lines don't repeat for hours.
 - **393 /faction scenes and debates.** Smite versus rejuv, buffbots, zergs, relic panic, dragon raids. A new cast plays
   one every 30 to 45 minutes while you're online.
 - **They read what you type.** "ty", "inc", "rez pls", "lfg 24 cleric" and "is friar good?" are read for what
@@ -121,8 +133,8 @@ Beta 1.1.1 is a fixes-only update to it, for the community's first reports
 
 **The easy way: Setup.**
 
-1. Download `LivingServer-Setup-1.1.1-beta.exe` from the
-   [Beta 1.1.1 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.1-beta) and run it.
+1. Download `LivingServer-Setup-1.1.3-beta.exe` from the
+   [Beta 1.1.3 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta) and run it.
    - No game yet? It downloads Offline DAoC with shadowofze's own downloader.
    - On 0.36? It updates the game to 0.37 with his official updater, keeping your saves.
    - Then it adds Living Server.
@@ -134,17 +146,17 @@ Beta 1.1.1 is a fixes-only update to it, for the community's first reports
 
 1. Install Offline DAoC 0.37 or 0.37b (or 0.37c) from [shadowofze's releases](https://github.com/shadowofze/OfflineDAoC/releases),
    or update your 0.36 game to it (below).
-2. Download `OfflineDAoC-LivingServer-1.1.1-beta.zip` from the
-   [Beta 1.1.1 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.1-beta),
+2. Download `OfflineDAoC-LivingServer-1.1.3-beta.zip` from the
+   [Beta 1.1.3 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta),
    unzip it and put its folder in your game folder.
 3. Close the game and server, then double-click `INSTALL.cmd` in that folder.
 4. Open the launcher as usual. It now has a **Living Server** tab.
 
-**Had Beta 1.1, Beta 1.0 or the Social Expansion?** Either way installs over it. Your characters, bots, bot guilds,
+**Had Beta 1.1.2, 1.1.1, 1.1, 1.0 or the Social Expansion?** Either way installs over it. Your characters, bots, bot guilds,
 bot memory and settings stay as they were.
 
 **Still on 0.36 with the Social Expansion?** The 0.37 update only applies to the game's own files, so put
-them back first: put the Beta 1.1.1 folder in your game folder and double-click `PREPARE-FOR-UPDATE.cmd` (it
+them back first: put the Beta 1.1.3 folder in your game folder and double-click `PREPARE-FOR-UPDATE.cmd` (it
 restores the released 0.36 server and launcher from the installer's backups and checks each one). Then
 update the game to 0.37 with its downloader (choice 1, Update), and run `INSTALL.cmd`. If you install 0.37
 fresh instead and bring your progress over, see the package's README.txt for the one extra step.
@@ -163,7 +175,7 @@ From Beta 1.1.2 the launcher looks for a new Living Server when it opens (at mos
   **Check automatically** to turn it off. The steps are logged in `runtime\logs\launcher-updates.log`.
 - **Setup** also installs the newest release's package when it is newer than the one inside it.
 
-Beta 1.1.1 and earlier have no update check: install Beta 1.1.2 once by hand or with Setup.
+Beta 1.1.1 and earlier have no update check: install Beta 1.1.3 once by hand or with Setup.
 
 ## Getting started
 
@@ -178,7 +190,7 @@ A fresh world has no bots yet, and most of these features need some.
    in, or come back after half an hour away, and the first /faction scenes come within about its first
    half hour.
 4. **Check it's running.** The server log (`runtime\server\logs\server.log`) has a line starting
-   `FORK_BUILD name=1.1.1-beta` that lists which features are on.
+   `FORK_BUILD name=1.1.3-beta` that lists which features are on.
 
 ## Undo and uninstall
 

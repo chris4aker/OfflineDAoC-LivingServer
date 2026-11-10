@@ -202,6 +202,22 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousRoleplayers.Speak(line, new Random(1)).Split(new[] { ", forsooth", ", m'lord", " *bows*", ", huzzah!", ", by my troth", ", verily", " *tips hat*" },
                 StringSplitOptions.None)[0].TrimEnd('?', '.', '!', ' '), Is.EqualTo(olde.TrimEnd('?', '.', '!', ' ')));
 
+        [Test]
+        public void ARoleplayersQuestionStaysAQuestion()
+        {
+            // RC10 on the owner's PC: an /lfg offer "saw u soloing duo?" went out as "saw thee soloing duo, by my troth".
+            for (int seed = 0; seed < 200; seed++)
+            {
+                string said = AutonomousRoleplayers.Speak("hey saw u soloing duo?", new Random(seed));
+                Assert.That(said, Does.EndWith("?"), said);
+                Assert.That(said, Does.StartWith("hail saw thee soloing duo"), said);
+                Assert.That(said, Does.Not.Contain("*").And.Not.Contain("!"), said);
+            }
+            Assert.That(Enumerable.Range(0, 200).Select(seed => AutonomousRoleplayers.Speak("hey saw u soloing duo?", new Random(seed))).Distinct().Count(),
+                Is.GreaterThan(2), "the flourish still comes now and then");
+            Assert.That(AutonomousRoleplayers.Speak("good fight.", new Random(3)), Does.Not.EndWith("?"));
+        }
+
         #endregion
 
         #region Rumours

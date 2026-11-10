@@ -156,6 +156,40 @@ namespace DOL.GS
             IsSharedCombatDungeon(attackerRegion) && attackerRegion == targetRegion &&
             attacker != eRealm.None && target != eRealm.None && attacker != target && alive && allowed;
 
+        /// <summary>A hold before a corridor threat is one hold while the bot keeps holding: scans come every 0.75-1 s, so
+        /// a gap longer than this means the bot moved or fought in between, and a new hold begins.</summary>
+        public const long ThreatHoldGapMilliseconds = 5_000;
+
+        /// <summary>
+        /// When the current hold before a corridor threat began (pure). PC test 2026-11-09 (build b72716e): Ferken, a member of
+        /// a forced Krondon raid party, stood in Avalon City on "Holding before dungeon threat" for over 30 minutes (01:16 to
+        /// 01:55) while his party and its puller were at Caer Diogel in another region, and the raid waited for him. The
+        /// 90-second limit was kept per blocker: the clock started again whenever the first threat along his corridor
+        /// changed (roaming monsters take turns at the front of the list). It now runs from the first scan of an unbroken
+        /// hold, whichever monster is in the way.
+        /// </summary>
+        public static long ThreatHoldStart(long holdSince, long lastHeld, long now) =>
+            holdSince <= 0 || lastHeld <= 0 || now - lastHeld > ThreatHoldGapMilliseconds ? now : holdSince;
+
+        /// <summary>
+        /// Whether a party member holds before a corridor threat for its puller (pure): only while some other living member
+        /// of its party is in the same region (a puller in another region never comes) and for at most
+        /// <paramref name="limitMilliseconds"/> of one hold.
+        /// </summary>
+        public static bool HoldsForPuller(bool partyMemberInRegion, long heldMilliseconds, long limitMilliseconds) =>
+            partyMemberInRegion && heldMilliseconds < limitMilliseconds;
+
+        /// <summary>
+        /// Whether a raid party may clear a corridor monster while its raid holds (pure): at a crossing (as before), or a
+        /// monster that is not an epic encounter, inside the raid's own dungeon. PC test 2026-11-09 (forced Krondon): the raid
+        /// holds while it musters for a named encounter, and a held raid let nobody pull, so every party stopped 90 s before
+        /// each monster on its walk to the muster and then fought it anyway (Ulor se Bysen's muster took 19 minutes, with 174
+        /// coin drops from monsters killed in Krondon meanwhile, REALM_RAID_LOOT_MONEY). The puller now pulls it at once, with the party's usual
+        /// gates (resources, roster, cohesion); an epic encounter in the way still waits for the raid's order.
+        /// </summary>
+        public static bool ExpeditionMayClearCorridor(bool hold, bool crossing, bool corridorBlocker, bool ownRaidDungeonTrash) =>
+            !hold || corridorBlocker && (crossing || ownRaidDungeonTrash);
+
         // A follower that was already separated by a death, reconnect, or old
         // transient-leader handoff must be able to clear a legal blocker while
         // walking back to its leader. Normal outbound dungeon pulls remain

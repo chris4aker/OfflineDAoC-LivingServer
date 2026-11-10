@@ -40,9 +40,10 @@ namespace DOL.GS
 
         public static bool DefaultDealsDamageType(GameLiving raider, eDamageType type)
         {
-            if (raider is not GameBot bot) return false;
-            IEnumerable<Spell> spells = (bot.HarmfulSpells ?? []).Concat(bot.InstantHarmfulSpells ?? []).Concat(bot.BoltSpells ?? []);
-            return spells.Any(s => s != null && s.Damage > 0 && s.DamageType == type && s.Level <= bot.Level);
+            if (raider is not GameNPC npc) return false;
+            GameBot bot = npc as GameBot;
+            IEnumerable<Spell> spells = (npc.HarmfulSpells ?? []).Concat(npc.InstantHarmfulSpells ?? []).Concat(bot?.BoltSpells ?? []);
+            return spells.Any(s => s != null && s.Damage > 0 && s.DamageType == type && (bot == null || s.Level <= bot.Level));
         }
 
         /// <summary>

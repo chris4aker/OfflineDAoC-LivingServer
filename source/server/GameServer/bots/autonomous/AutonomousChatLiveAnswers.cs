@@ -3,6 +3,7 @@ using DOL.Database;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using DOL.GS.Keeps;
 using DOL.GS.ServerRules;
 
 namespace DOL.GS;
@@ -117,6 +118,98 @@ public static class AutonomousChatLiveAnswers
 
     /// <summary>How far a bot or player of the realm sees an enemy for "where are the mids?".</summary>
     public const int SightRadius = 3_500;
+
+    /// <summary>The classes that stealth (classic): the assassins and the archers, and the minstrel.</summary>
+    public static bool IsStealther(eCharacterClass cls) => cls is eCharacterClass.Infiltrator or eCharacterClass.Shadowblade or
+        eCharacterClass.Nightshade or eCharacterClass.Scout or eCharacterClass.Hunter or eCharacterClass.Ranger or eCharacterClass.Minstrel;
+
+    /// <summary>
+    /// "any stealthers out?" (1.1.3, after RC5: it was never answered): an enemy stealther a bot or player of the realm can see in
+    /// the frontier now ("saw an inf near hadrian's wall"), else that none was seen. Only what the realm could see, as for
+    /// <see cref="EnemySighting"/>.
+    /// </summary>
+    public static string StealthSighting(GameBot bot, Random random)
+    {
+        if (bot == null)
+            return null;
+        ILookup<ushort, GameLiving> watchers = AutonomousBotRegistry.Snapshot()
+            .Where(other => other.Realm == bot.Realm && other.IsAlive && (other.CurrentZone?.IsRvR == true || other.CurrentRegion?.IsRvR == true))
+            .Concat<GameLiving>(ClientService.Instance.GetPlayersOfRealm(bot.Realm))
+            .ToLookup(watcher => watcher.CurrentRegionID);
+        GameBot[] seen = AutonomousBotRegistry.Snapshot()
+            .Where(other => other.Realm != bot.Realm && other.Realm is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia && other.IsAlive &&
+                            other.CharacterClass != null && IsStealther((eCharacterClass)other.CharacterClass.ID) &&
+                            other.CurrentZone != null && (other.CurrentZone.IsRvR || other.CurrentRegion?.IsRvR == true) &&
+                            !string.IsNullOrWhiteSpace(other.CurrentZone.Description) &&
+                            watchers[other.CurrentRegionID].Any(watcher => watcher.IsWithinRadius(other, SightRadius)))
+            .ToArray();
+        if (seen.Length == 0)
+            return random.Next(3) switch
+            {
+                0 => "havent seen any",
+                1 => "none that i saw",
+                _ => "not that i saw, still watch ur back",
+            };
+        GameBot one = seen[random.Next(seen.Length)];
+        string cls = AutonomousChatFieldTalk.ShortClass(one.CharacterClass.Name, random), zone = one.CurrentZone.Description.ToLowerInvariant();
+        return seen.Length >= 3
+            ? random.Next(2) == 0 ? $"ya, {seen.Length} or so around {zone}" : $"few of them, saw a {cls} near {zone}"
+            : random.Next(2) == 0 ? $"saw a {cls} near {zone}" : $"ya, a {cls} around {zone}";
+    }
+
+    /// <summary>How near a keep a bot counts as at it ("any1 at bold?").</summary>
+    public const int AtKeepRadius = 4_000;
+
+    /// <summary>
+    /// "any1 at bold?", "anyone in hadrian's wall?" (1.1.3, after RC5): who of the realm is really there. The answerer says "me"
+    /// only when it is there; else how many of the realm are, or that nobody is. <paramref name="place"/> is a keep or a zone.
+    /// </summary>
+    public static string WhoIsAt(GameBot answerer, string place, Random random)
+    {
+        if (answerer == null || string.IsNullOrWhiteSpace(place))
+            return null;
+        AbstractGameKeep keep = KeepNamed(place);
+        bool At(GameLiving living) => IsAt(living, place, keep);
+        int there = AutonomousBotRegistry.Snapshot().Count(other => other.Realm == answerer.Realm && other.IsAlive && other != answerer && At(other));
+        string name = keep != null ? AutonomousChatFieldTalk.ShortKeep(keep.Name, random) : place.ToLowerInvariant();
+        if (At(answerer))
+            return there == 0 ? Pick(random, $"me, at {name}", "me, just me tho") : there < 4 ? Pick(random, $"me and {there} more", "me, few of us") :
+                Pick(random, $"me, {there}+ of us here", "me, lots of us here");
+        return there switch
+        {
+            0 => Pick(random, "nobody i think", "dont think so", "nobody last i looked"),
+            < 4 => Pick(random, "a couple i think", $"few of us at {name}", "one or two"),
+            _ => Pick(random, $"ya, {there} or so at {name}", "ya, lots of ppl there"),
+        };
+    }
+
+    /// <summary>Whether a bot or player is at a keep (within <see cref="AtKeepRadius"/>) or in a zone named <paramref name="place"/>.</summary>
+    public static bool IsAt(GameLiving living, string place) => IsAt(living, place, KeepNamed(place));
+
+    private static bool IsAt(GameLiving living, string place, AbstractGameKeep keep)
+    {
+        if (living == null || string.IsNullOrWhiteSpace(place))
+            return false;
+        if (keep != null)
+            return living.CurrentRegion == keep.CurrentRegion &&
+                   Math.Pow(living.X - keep.X, 2) + Math.Pow(living.Y - keep.Y, 2) <= (double)AtKeepRadius * AtKeepRadius;
+        return living is GameBot bot ? IsIn(bot, place) : PlaceMatches(place, [living.CurrentZone?.Description, living.CurrentRegion?.Description], KnownPlaces());
+    }
+
+    private static AbstractGameKeep KeepNamed(string place)
+    {
+        try
+        {
+            return GameServer.KeepManager.GetFrontierKeeps().FirstOrDefault(k => string.Equals(k.Name, place, StringComparison.OrdinalIgnoreCase));
+        }
+        catch
+        {
+            // No frontier loaded: the place is a zone.
+            return null;
+        }
+    }
+
+    private static string Pick(Random random, params string[] options) => options[random.Next(options.Length)];
 
     /// <summary>A sighting off the news board in chat words: "6 mids in Emain Macha, couple min ago". Pure.</summary>
     public static string SightingText(ChatNewsItem item, DateTime now, Random random)

@@ -5154,6 +5154,8 @@ namespace DOL.AI.Brain
                 }
                 _rezTarget = corpse;
                 _rezTargetSince = now;
+                // 1.1.3: the healer says it is coming ("need a rez? omw"), once per death (AutonomousLivingServer.Engage.cs).
+                AutonomousLivingServer.OnRezClaimed(bot, corpse);
             }
             if (!CheckHealSpell(resurrection))
                 return false;

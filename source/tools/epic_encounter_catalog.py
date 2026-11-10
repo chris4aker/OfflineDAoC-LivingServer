@@ -2003,6 +2003,12 @@ def render_tactics_cs(data: dict) -> str:
             blast = ", ".join(str(int(x)) for x in t.get("blastThresholds", []))
             extra = (f", {int(t.get('keepAlive', 0))}, " + (f"[{blast}]" if blast else "null") +
                      f", {int(t.get('blastRadius', 0))}")
+        if t.get("hazards"):
+            # Ground hazards (Orshom's Fire): named arguments, so the rows above keep their shape.
+            hazards = ", ".join(f'"{h}"' for h in t["hazards"])
+            vulnerable = f'"{t["hazardDamageType"]}"' if t.get("hazardDamageType") else "null"
+            extra += (f", Hazards: [{hazards}], HazardRadius: {int(t.get('hazardRadius', 0))}, "
+                      f"HazardDamageType: {vulnerable}")
         init = []
 
         def names(key):
@@ -2013,9 +2019,6 @@ def render_tactics_cs(data: dict) -> str:
                 init.append(f"SpreadWhileModel = {int(t['spreadWhileModel'])}")
         if t.get("rangedAdds"):
             init.append(f"RangedAdds = {names('rangedAdds')}")
-        if t.get("hazards"):
-            init.append(f"Hazards = {names('hazards')}")
-            init.append(f"HazardRadius = {int(t['hazardRadius'])}")
         if t.get("after"):
             init.append(f'After = "{t["after"]}"')
         if t.get("classRules"):
