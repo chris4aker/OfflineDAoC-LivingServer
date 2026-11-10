@@ -59,9 +59,12 @@ namespace DOL.GS
         // "no damage for five minutes" with the raid hitting him (play test, 2026-11-07).
         private int _targetLastHealth;
 
-        /// <summary>The named a raid with no target turns on (pure): the one attacking it, if any (while it has a target, the
-        /// old rule switches to an attacker only when the target itself is out of combat).</summary>
-        public static GameNPC TurnsOnAttacker(GameNPC target, GameNPC attacker) => target == null ? attacker : null;
+        /// <summary>The named a raid turns on (pure): with no target, the one attacking it, if any; while it fights a lesser
+        /// named on its way (an epic NPC, not a boss), an epic boss attacking it. Otherwise the old rule decides (it switches to
+        /// an attacker only when the target itself is out of combat). Play test duo4, 2026-11-07: Caer Sidi's raid fought
+        /// cursed lacula, black revenant and the archlich on the lower floor while the Host killed 52 of it, and wiped.</summary>
+        public static GameNPC TurnsOnAttacker(GameNPC target, GameNPC attacker) =>
+            target == null ? attacker : attacker is GameEpicBoss && target is not GameEpicBoss && attacker != target ? attacker : null;
 
         /// <summary>The target took damage since the last look (pure): below its lowest yet, or below the last look's health
         /// (a boss that healed itself being worn down again: Easmarach's eighth on the waterfall top, Grand Summoner Govannon's
@@ -194,11 +197,17 @@ namespace DOL.GS
 
         /// <summary>
         /// An attempt on a named encounter failed when at least eight raiders were in it and half of them fell (dead,
-        /// released or gone from the dungeon), or when the encounter healed back to 95% after being taken to 85% or
-        /// lower (it reset: nobody was left fighting it).
+        /// released or gone from the dungeon), or when the encounter healed back to 95% after being taken to
+        /// <see cref="ResetWipeLowestPercent"/> or lower (it reset: nobody was left fighting it).
         /// </summary>
         public static bool IsWipe(int engaged, int fallen, int healthPercent, int lowestPercent) =>
-            engaged >= MinimumRaidersAtTarget && (fallen * 2 >= engaged || healthPercent >= 95 && lowestPercent <= 85);
+            engaged >= MinimumRaidersAtTarget && (fallen * 2 >= engaged || healthPercent >= 95 && lowestPercent <= ResetWipeLowestPercent);
+
+        /// <summary>How low a reset encounter must have been for the reset to count as the raid's wipe: 70% (play test
+        /// 2026-11-07: a calcified manes, a named trash monster on Caer Sidi's way, taken to 84% and left by 91 of 95 living
+        /// raiders, was counted as the raid's first wipe; the next such brush would have defeated a raid that had lost nobody).
+        /// A boss the raid wore down and then lost (Spindler Broodmother from 42%) still counts.</summary>
+        public const int ResetWipeLowestPercent = 70;
 
         /// <summary>
         /// A failed attempt counts against the raid (a wipe: one of its two tries, Special Forces called) only when it was the
@@ -237,12 +246,14 @@ namespace DOL.GS
             // (a fire pit only Cold hurts) and 100 raiders burned in it; and 11 s after the tactic sent it to a floor stand for
             // one of Scurceol Hyrde's orbs it switched to another orb "fighting the raid", with its raw spot in the air as the
             // front (111 route recoveries aimed into the air). Both are fought through their tactic, not as an encounter.
-            return live.FirstOrDefault(n => n != _target && n is IGameEpicNpc && n.IsAlive && n.InCombat &&
-                                            !EpicEncounterTactics.Covers(n, _target, live) &&
-                                            !IsEncounterHazard(n) && !EpicEncounterTactics.IsRequiredAddOfLiveBoss(n, live) &&
-                                            _routeRetry.GetValueOrDefault(n) <= now &&
-                                            n.ObjectState == GameObject.eObjectState.Active && !_clearedNames.Contains(n.Name) &&
-                                            n.TargetObject is GameLiving victim && raiders.Contains(victim));
+            // A boss comes before a lesser named (the Host before the trash around him, play test duo4).
+            return live.Where(n => n != _target && n is IGameEpicNpc && n.IsAlive && n.InCombat &&
+                                   !EpicEncounterTactics.Covers(n, _target, live) &&
+                                   !IsEncounterHazard(n) && !EpicEncounterTactics.IsRequiredAddOfLiveBoss(n, live) &&
+                                   _routeRetry.GetValueOrDefault(n) <= now &&
+                                   n.ObjectState == GameObject.eObjectState.Active && !_clearedNames.Contains(n.Name) &&
+                                   n.TargetObject is GameLiving victim && raiders.Contains(victim))
+                       .OrderByDescending(n => n is GameEpicBoss).FirstOrDefault();
         }
 
         private bool IsMusteredEncounter(GameNPC npc) =>
@@ -354,6 +365,8 @@ namespace DOL.GS
         }
         public DbZonePoint Entrance { get; }
         public Vector3 Front { get; private set; }
+        /// <summary>The dungeon region the route runs in.</summary>
+        public ushort Region => _region;
         public Vector3 Destination { get; private set; }
         public string TargetName { get; private set; } = "Encounter staging";
         public int TargetLevel { get; private set; } = 50;
@@ -1294,6 +1307,19 @@ namespace DOL.GS
 
         /// <summary>The current target's tactic sends the raid to another encounter (EpicEncounterTactics): a required add
         /// of the boss, or the boss an encounter dies with. Logged as REALM_EXPEDITION_TACTIC for the run reports.</summary>
+        private void TurnOn(GameNPC attacking, GameLiving[] participants, long now, string reason)
+        {
+            bool resolved = TryEncounterApproach(attacking, participants, out Vector3 approach);
+            log.Warn($"REALM_EXPEDITION_TARGET_SWITCH region={_region} from=\"{TargetName}\" to=\"{attacking.Name}\" level={attacking.Level} " +
+                     $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
+                     $"reason=\"{reason}\"");
+            _target = attacking; TargetName = attacking.Name; TargetLevel = attacking.Level;
+            Front = Destination = approach;
+            _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = attacking.Health;
+            _targetClosest = float.MaxValue; _targetApproachTick = now;
+            Hold = false; Status = "Clearing " + attacking.Name;
+        }
+
         private void SwitchByTactic(GameNPC to, string reason, GameLiving[] participants, long now, Vector3? stand = null)
         {
             Vector3 approach;
@@ -1420,6 +1446,13 @@ namespace DOL.GS
                 }
                 else SwitchByTactic(tacticTarget, tacticReason, participants, now);
             }
+            // A boss attacking the raid while it fights a lesser named on its way is fought first (play test duo4).
+            if (_target?.IsAlive == true && _target is not GameEpicBoss &&
+                TurnsOnAttacker(_target, HostileEncounter(live, participants)) is { } boss)
+            {
+                TurnOn(boss, participants, now, "a boss is fighting the raid while it clears a lesser named");
+                return;
+            }
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active)
             {
                 // A boss that blasts the room (Xanxicar): its withdraw spots on the floor towards the way in.
@@ -1509,15 +1542,8 @@ namespace DOL.GS
             // horsemen's room past the Host, who killed 40 of it with nobody turning on him.
             if (TurnsOnAttacker(_target, HostileEncounter(live, participants)) is { } attacking)
             {
-                bool resolved = TryEncounterApproach(attacking, participants, out Vector3 approach);
-                log.Warn($"REALM_EXPEDITION_TARGET_SWITCH region={_region} from=\"{TargetName}\" to=\"{attacking.Name}\" level={attacking.Level} " +
-                         $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
-                         $"reason=\"it is fighting the raid on its way\"");
-                _target = attacking; TargetName = attacking.Name; TargetLevel = attacking.Level;
-                Front = Destination = approach;
-                _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = attacking.Health;
-                _targetClosest = float.MaxValue; _targetApproachTick = now;
-                Hold = false; Status = "Clearing " + attacking.Name; return;
+                TurnOn(attacking, participants, now, "it is fighting the raid on its way");
+                return;
             }
             GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
             if (AdvanceChain(inside, now)) return;

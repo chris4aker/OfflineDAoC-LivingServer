@@ -2937,6 +2937,17 @@ namespace DOL.GS
             if (target != null && IsRecoveryResting)
                 return;
 
+            // 1.2 epic rule (Funus with his weapon puzzle): a bot never starts an attack on a boss it must not hit (its hits
+            // heal him to full), and an archer that may fight him with its distance weapon only starts with that weapon.
+            // Play test duo14: reavers he turned on fought back in melee (40 of his 110 heals).
+            if (target is GameLiving living && EpicEncounterTactics.MustNotHit(this, living))
+            {
+                if (RefusesAttackOn(this, living))
+                    return;
+                if (ActiveWeaponSlot != eActiveWeaponSlot.Distance)
+                    SwitchWeapon(eActiveWeaponSlot.Distance);
+            }
+
             // A ranged shot owns its aim/release animation.  Reissuing the
             // same target every think pulse used to reset that state, producing
             // repeated bow preparation with no completed shot.  Suppress only
@@ -2950,6 +2961,11 @@ namespace DOL.GS
 
             base.StartAttack(target);
         }
+
+        /// <summary>The bot must not hit <paramref name="target"/> at all and has no distance weapon it may fight it with (an
+        /// epic rule: Funus while his puzzle is on, for a class he takes no damage from), so it starts no attack on it.</summary>
+        public static bool RefusesAttackOn(GameBot bot, GameLiving target) =>
+            EpicEncounterTactics.MustNotHit(bot, target) && !EpicEncounterTactics.FightsAtRange(bot, target);
 
         public override bool AddToWorld()
         {
@@ -4977,6 +4993,11 @@ namespace DOL.GS
 
         public override void SwitchWeapon(eActiveWeaponSlot slot)
         {
+            // Play test diagnostic (Funus): who puts the melee weapon in hand of a bot that may fight its target only
+            // with its distance weapon. Once per bot every ten minutes, the call path.
+            if (slot != eActiveWeaponSlot.Distance && ActiveWeaponSlot == eActiveWeaponSlot.Distance &&
+                TargetObject is GameLiving rangedOnly && EpicEncounterTactics.FightsAtRange(this, rangedOnly))
+                EpicEncounterRestores.NoteMeleeSwitch(this, rangedOnly);
             // GameNPC.SwitchWeapon intentionally stops and restarts an active
             // attack, even when the requested slot is already selected. That
             // is useful for scripted NPCs, but inventory/equipment refreshes

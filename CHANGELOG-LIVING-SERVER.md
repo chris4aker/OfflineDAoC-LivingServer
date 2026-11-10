@@ -799,6 +799,23 @@ Built and checked by tools; nobody has seen it in the game client yet.
   new one, an unknown one left alone, ROLLBACK.cmd after each and PREPARE-FOR-UPDATE.cmd. The archive was unpacked again:
   eight entries, and the picture decodes to the approved image pixel for pixel. Not yet checked: the game client showing it.
 
+**Epic encounter play test, round 2.**
+
+- **A brush with a named monster on the way no longer counts as the raid's wipe.** A dungeon raid counted an attempt as a
+  wipe when the encounter healed back to full after being taken to 85% or lower. In Caer Sidi a calcified manes (a named
+  monster on the way) nicked to 84% and left by 91 of 95 living raiders was counted as the raid's first wipe and called
+  the Special Forces. A reset now counts as a wipe only from 70% or lower (Spindler Broodmother lost at 42% still does);
+  half the raid falling is a wipe as before.
+- **Bow-only raiders keep their bow on Funus.** With his weapon puzzle on, a scout he was fighting had every bow draw
+  interrupted by his hits and switched to her sword each time; every swing healed him to full (462 times in 25 minutes,
+  never below 89%). A bot that may fight a target with its distance weapon only now keeps it when its draw is
+  interrupted or it loses sight.
+- **A boss attacking the raid comes before a lesser named.** On Caer Sidi's lower floor the raid fought the archlich and
+  other named monsters while the Host killed 219 raiders over the run; a boss fighting the raid is now turned on first.
+- **Play-test harness:** a dragon raid's stragglers are gathered on its staging ring, never onto the dragon (the gather
+  pulled Gjalpinulva twice), `/epictest front <event>` moves a raid inside a dungeon to its route's front (to test a final
+  room without the climb), and sizes are whole parties (a dragon's 70 is 72).
+
 ## Beta 1.1.3 — 2026-11-08
 
 Started as a hotfix (/faction chat that holds together, out of Xanxicar's stomp, Scurceol Hyrde's orbs shot down from the

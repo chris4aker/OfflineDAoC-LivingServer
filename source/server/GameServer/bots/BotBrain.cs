@@ -3580,9 +3580,21 @@ namespace DOL.AI.Brain
             return true;
         }
 
+        /// <summary>
+        /// A bot may fall back to its melee weapon on <paramref name="target"/> (pressed in melee, or out of power) unless an
+        /// epic rule says it fights this target with its distance weapon only (Funus: a scout's, mercenary's, armsman's or
+        /// infiltrator's melee hit heals him to full). Play test duo13: every melee switch traced on Funus came from the
+        /// melee-pressure fallback, and 50 of his 51 heals were scouts swinging their swords while he stood on them.
+        /// </summary>
+        public static bool MayFallBackToMelee(GameBot bot, GameLiving target) =>
+            !EpicEncounterTactics.FightsAtRange(bot, target);
+
         private bool TryEngageUnderMeleePressure(GameLiving target)
         {
             if (target?.IsAlive != true || !Body.IsWithinRadius(target, Body.MeleeAttackRange + 35))
+                return false;
+            // The ranged branch of AttackMostWanted keeps the distance weapon; the rule's step-back opens the range.
+            if (!MayFallBackToMelee(BotBody, target))
                 return false;
 
             // Being close to an enemy is not itself an interruption. A caster
@@ -3689,6 +3701,7 @@ namespace DOL.AI.Brain
             if (target?.IsAlive != true || Body.IsCasting ||
                 BotBody?.CharacterClass?.ID == (int)eCharacterClass.Necromancer ||
                 !GameServer.ServerRules.IsAllowedToAttack(Body, target, true) ||
+                !MayFallBackToMelee(BotBody, target) ||
                 !OutOfPowerForOffense())
                 return false;
 
@@ -4489,7 +4502,9 @@ namespace DOL.AI.Brain
             if (spell == null || IsOutclassedDamageSpell(spell) || Body.Mana < BotBody.PowerCost(spell) ||
                 !BardBotCrowdControlPolicy.AllowsOrdinaryOffense((eCharacterClass)BotBody.CharacterClass.ID, spell.SpellType) ||
                 spell.HasRecastDelay && Body.GetSkillDisabledDuration(spell) > 0 ||
-                EpicEncounterTactics.ForbidsSpell(BotBody, Body.TargetObject as GameLiving, spell))
+                EpicEncounterTactics.ForbidsSpell(BotBody, Body.TargetObject as GameLiving, spell) ||
+                // As CanCastOffensiveSpell: nothing on a boss this bot must not hit (duo14: reavers' instant DoTs healed Funus).
+                EpicEncounterTactics.MustNotHit(BotBody, Body.TargetObject as GameLiving))
                 return false;
 
             bool castSpell = false;
