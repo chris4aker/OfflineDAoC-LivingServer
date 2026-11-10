@@ -40,6 +40,50 @@ whatever it is fighting, to the nearest open spot on the cave floor clear of the
 target), and it waits out there until the stomp is over. The party he fights still holds him. His
 stomp is unchanged.
 
+**/faction that holds together** (owner 2026-11-08, watching /faction: "faction feels disconnected... The chats MUST be
+top notch"). The same fix as Beta 1.1.3 (see its entry: conversations said in order with each speaker in its part,
+answers only from bots they are true of, follow-ups that fit, reactions in proportion, one short reaction in ten
+minutes, and every `CHAT_LINE` naming its source, exchange, line and the speaker's class and level), on the 1.2 line with
+its reply budget: a thread or a burst is still allowed or held once, as a whole, and its lines count as replies. Also on
+1.2:
+- **A story's teller doesn't repeat itself either.** "dead. again" opened 45 death stories in the overnight soak; a
+  teller's short line the realm heard in the last ten minutes is now said another way, and a story whose first line
+  can't be said isn't told.
+- **A frontier death isn't told as a monster.** The same fix as Beta 1.1.3 (after its RC3): most frontier death stories
+  read "siuses in murdaigean hate me" or "train of sneakywarriors, im dead", an enemy player taken for a kind of monster
+  and made plural (named creatures too: "summoner roesias"). Only a kind of monster is talked about as one now, and a
+  frontier death is told as one ("got ganked lol"). Tests only.
+- **Exchange adverts in the period's words.** When no written trade line fits a listing, the seller says "anyone want
+  ... ? make me an offer" or "pc ...?" (was "Does anybody want to make me an offer on ...?"), and the answers are the
+  written trade answers, not "A merchant price can provide a reasonable minimum value." followed by "Fair enough. Safe
+  travels." That formal closing now only comes with bot voices off.
+- **One ceiling for every /faction line.** As in 1.1.3: every bot line in /faction is said only if it fits under the
+  realm's ceiling, but a tagged realm event (`src=event`: a keep or relic taken, a raid's end, Darkness Falls, a server
+  first, Leeroy; its burst capped at three within 40 s, and not held by the reply budget either) or a line to or about the
+  real player (`src=player`). Lines that start more start nothing when held; the lore briefings and after-raid lines go
+  through it too. A running debate, storyline or dunce scene owns /faction (other lines yield to it), waits for room beat
+  by beat, and a dunce cut short after it spoke still rage quits. Every /faction line carries `cap=`, and
+  `chat_audit.py` ends with `VERDICT PASS` or `FAIL`.
+- **The fixes after 1.1.3 RC1, as in 1.1.3** (see its entry): a scene's part keeps the bot that started it (a busy or dead
+  one is waited for and then speaks; one that left the game ends the scene; never recast, unlike the RC1 dunce that went
+  from Iagoys to Yno); a gold spammer, rumour or roleplayer line held by /faction keeps its turn (tried every few seconds,
+  given up and logged after three minutes outside a scene, `LIVING_FEATURE_DUE`/`DROPPED`), `GOLD_SPAMMER_START` comes with
+  the first ad said, and `/lstest rumour` tells its reasons apart; each reply to the player has its own exchange id; and
+  `chat_audit.py` fails a log with a feature that was due and never spoke. On 1.2 the spammer's ads keep their scene-sized
+  count and its reactions stay within the reply budget. Also from the RC1 check: a gamebot's way back after a release is
+  told to its own group (only with a player in it), not in /say (a wall of "released, running back" at Camelot's bind);
+  a bot greets a player once per meeting (ten minutes); a deed names a place it could happen (`/lstest deed` never names
+  a capital, and a streak or gank only a frontier zone); /say lines carry `cap=` and `chat_audit.py` checks them. Tests only. After RC2 the checker reads an armour slot in a
+  trade line ("wtb leather arms 4 26 inf") as the item, not an armsman claim.
+- **Checked:** automated and simulated only, not played. `source/tools/chat_audit.py` on the owner's 1.1.3 evening: one each
+  of an answer after the asker closed, a level question after the invite, a follow-up before any answer, a thanks with no
+  answer, a trade closing that didn't follow and a join answer from a class that can't fill the role; 6 pile-ons (+13
+  reactions), 3 late reactions, 2 repeated reactions. On the overnight 1.2-line soak (4.6 h): 207 repeated reactions
+  within ten minutes, 9 pile-ons, 5 thanks with no answer. The simulated evening (the same as 1.1.3's; it doesn't model
+  1.2's separate reply budget): out of order 30 before, 0 after; pile-ons 23 before, 2 after (keep news at its cap of
+  three); late reactions 28 before, 0 after; repeated reactions 72 before, 0 after; 5.72 lines a minute before, 5.06
+  after; busiest two minutes 9.5 before, 8.5 after against a ceiling of 7.1.
+
 **Two Darkness Falls exits work** (found and fixed by rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
 and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no
 destination for them. Each now takes you to your realm's usual Darkness Falls exit spot, like every other exit. Nothing
