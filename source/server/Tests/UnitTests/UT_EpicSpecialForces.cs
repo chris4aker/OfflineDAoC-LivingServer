@@ -43,14 +43,14 @@ namespace DOL.UnitTests
         // An out-of-time rally goes in with half of what it needs (at least 24), a full 200 raid too (2026-10-21).
         [TestCase(false, 103, 150, true)]   // Caer Sidi, 2026-10-20: 103 staged, about 60 more on the road
         [TestCase(false, 90, 132, true)]
-        [TestCase(false, 74, 149, false)]   // under half
+        [TestCase(false, 74, 149, true)]    // under half: who came goes (2026-11-11)
         [TestCase(false, 29, 57, true)]     // half (2026-11-04: the minimum is three parties, 24, no longer 40)
         [TestCase(false, 23, 40, false)]    // half, but under three parties
-        [TestCase(false, 28, 57, false)]    // the Hibernian dragon rally that failed
+        [TestCase(false, 28, 57, true)]     // the Hibernian dragon rally that failed: it goes now
         [TestCase(false, 170, 200, true)]   // Darkness Falls, 2026-10-21: a full raid, 170 staged at its deadline
-        [TestCase(false, 99, 200, false)]   // under half of a full raid
+        [TestCase(false, 99, 200, true)]    // under half of a full raid: it goes now
         [TestCase(true, 150, 150, false)]   // forced raids never go in short
-        public void AnOutOfTimeRallyGoesInShortWithHalfTheRaid(bool forced, int present, int required, bool goes) =>
+        public void AnOutOfTimeRallyGoesInWithWhoCame(bool forced, int present, int required, bool goes) =>
             Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(forced, present, required), Is.EqualTo(goes));
 
         // Defenders follow the attacking army's size when it marched or now, whichever is larger.

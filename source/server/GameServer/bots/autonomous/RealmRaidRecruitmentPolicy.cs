@@ -296,8 +296,21 @@ public static class RealmRaidRecruitmentPolicy
     /// failed with 170 of 200 staged, short of the 180 late start).
     /// </summary>
     public const int DeadlineStartPercent = 50;
+    /// <remarks>
+    /// 2026-11-11 (owner, after his PC's soak on build e17a92b): "go with who came". With the raid sized up after losses
+    /// (145.6% and 165.6%), Midgard's and Hibernia's epic rallies needed 134 and 142, gathered 55 and 69 in 90 minutes,
+    /// never left their hubs (half of what they needed was 67 and 71) and ended "Failed rally" without a fight. An
+    /// automatic raid now goes with whoever came, three parties at least (<see cref="MinimumRaidBots"/>): from its hub
+    /// after the hub's patience, and in from its staging at its deadline. A loss it takes under strength
+    /// (<see cref="UnderStrength"/>) is not a result for its size or the Special Forces, so sizes do not climb on
+    /// raids the realm could not fill.
+    /// </remarks>
     public static bool GoesInShortAtDeadline(bool forced, int present, int required) =>
-        !forced && present >= Math.Max(MinimumRaidBots, (required * DeadlineStartPercent + 99) / 100);
+        !forced && present >= Math.Min(MinimumRaidBots, Math.Max(1, required));
+
+    /// <summary>The raid never had the bots it was sized for: the most it recruited at any time is under what it must
+    /// stage (pure). Its defeat or time-out is then no result for the next raid's size (RealmEventRecordStore.RecordOutcome).</summary>
+    public static bool UnderStrength(int mostRecruited, int required) => mostRecruited < required;
     public static int LateStartMinimum(int required) => required >= AutonomousMinimumPresent
         ? required * AutonomousLateStartMinimumPresent / AutonomousMinimumPresent
         : (required * ScaledLateStartPercent + 99) / 100;
@@ -319,8 +332,7 @@ public static class RealmRaidRecruitmentPolicy
         bool forced = false) =>
         alreadyDeparted || presentBots >= required || forced && ForcedGoesNow(presentBots, required, elapsed) ||
         !forced &&
-        elapsed >= HubPatienceMilliseconds && presentBots >= Math.Min(required * HubEarlyDepartureMinimum / AutonomousMinimumPresent,
-            Math.Max(MinimumRaidBots, (required * DeadlineStartPercent + 99) / 100));
+        elapsed >= HubPatienceMilliseconds && presentBots >= Math.Min(MinimumRaidBots, Math.Max(1, required));
 
     public static bool StagingExpired(bool forced, long elapsed, int present = 0, bool landed = true) =>
         !forced && elapsed >= AutonomousStagingLimitMilliseconds &&

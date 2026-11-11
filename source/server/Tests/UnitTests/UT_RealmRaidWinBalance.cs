@@ -188,7 +188,7 @@ namespace DOL.UnitTests
                     Assert.That(sizing.RecruitCap, Is.GreaterThanOrEqualTo(sizing.Required).And.LessThanOrEqualTo(300));
                     Assert.That(sizing.RecruitCap % 8 == 0 || sizing.RecruitCap == 300, Is.True, $"{full} after {losses} losses and {wins} wins");
                     Assert.That(sizing.Required, Is.InRange((int)Math.Round(full * 0.7), Math.Min(300, full * 2)));
-                    // The short start stays half of what the sized raid needs, never under three parties.
+                    // The short start is whoever came, never under three parties (2026-11-11: it was half of the sized raid).
                     Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, (sizing.Required + 1) / 2, sizing.Required),
                         Is.EqualTo((sizing.Required + 1) / 2 >= RealmRaidRecruitmentPolicy.MinimumRaidBots));
                 }
@@ -196,22 +196,55 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void ASmallRaidGoesInShortWithHalfAndAtLeastThreeParties()
+        public void ALossUnderStrengthIsNoResultForTheNextRaidsSize()
+        {
+            string details = RealmEventRecordStore.WithRaidSize(RealmEventRecordStore.WithUnderStrength(
+                RealmEventRecordStore.WithWipes("Defeated at King Tuscar.", 2), 55, 134), 145.6);
+            Assert.Multiple(() =>
+            {
+                Assert.That(RealmEventRecordStore.UnderStrengthIn(details), Is.True);
+                Assert.That(RealmEventRecordStore.WipesIn(details), Is.EqualTo(2), "the other markers still read");
+                Assert.That(RealmEventRecordStore.RaidSizeIn(details), Is.EqualTo(145.6));
+                Assert.That(RealmEventRecordStore.RecordOutcome("Defeated", details), Is.EqualTo(RealmEventRecordStore.LostUnderStrength));
+                Assert.That(RealmEventRecordStore.RecordOutcome("Timed out", details), Is.EqualTo(RealmEventRecordStore.LostUnderStrength));
+                Assert.That(RealmEventRecordStore.RecordOutcome("Boss defeated", details), Is.EqualTo("Boss defeated"), "a win is a win");
+                Assert.That(RealmEventRecordStore.RecordOutcome("Failed rally", details), Is.EqualTo("Failed rally"));
+                Assert.That(RealmEventRecordStore.FoughtOutcome("Defeated", details), Is.EqualTo("Defeated"), "the chronicle tells it as a defeat");
+                Assert.That(RealmRaidRecord.Counted(RealmEventRecordStore.LostUnderStrength), Is.False);
+                Assert.That(RealmEventRecordStore.WithUnderStrength("x", 134, 134), Is.EqualTo("x"), "a full raid's details carry no marker");
+                Assert.That(RealmEventRecordStore.RecordOutcome("Defeated", RealmEventRecordStore.WithWipes("Defeated at King Tuscar.", 2)),
+                    Is.EqualTo("Defeated"), "at full strength a defeat is a loss");
+                // The next raid's size: a loss under strength adds nothing.
+                Assert.That(RealmRaidRecruitmentPolicy.Size(92, R([Loss, RealmEventRecordStore.LostUnderStrength]), Rules).Percent,
+                    Is.EqualTo(RealmRaidRecruitmentPolicy.Size(92, R([Loss]), Rules).Percent));
+                Assert.That(RealmRaidRecruitmentPolicy.Size(92, R([Loss, Loss]), Rules).Percent,
+                    Is.GreaterThan(RealmRaidRecruitmentPolicy.Size(92, R([Loss]), Rules).Percent));
+            });
+        }
+
+        [Test]
+        public void ARaidGoesWithWhoCameAndAtLeastThreeParties()
         {
             const long patience = RealmRaidRecruitmentPolicy.HubPatienceMilliseconds;
             Assert.Multiple(() =>
             {
                 Assert.That(RealmRaidRecruitmentPolicy.MinimumRaidBots, Is.EqualTo(24));
                 Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 35, 70), Is.True, "a dragon raid: half of 70");
-                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 34, 70), Is.False);
-                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 25, 49), Is.True, "trimmed to 49: half, not 40");
-                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 24, 49), Is.False);
+                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 24, 70), Is.True, "three parties go (2026-11-11)");
+                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 23, 70), Is.False, "under three parties");
                 Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 24, 34), Is.True, "three parties at least");
                 Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 23, 34), Is.False);
-                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 50, 100), Is.True);
+                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 16, 16), Is.True, "a raid that needs fewer than three parties");
                 Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(true, 60, 60), Is.False, "forced raids never go in short");
-                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 30, patience, 60), Is.True, "the hub leaves with half too");
-                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 29, patience, 60), Is.False);
+                // The owner's PC, 2026-11-11 (build e17a92b): Midgard's epic rally needed 134 and gathered 55, Hibernia's
+                // needed 142 and gathered 69. Neither left its hub (half was 67 and 71) and both ended "Failed rally".
+                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 55, patience, 134), Is.True, "Midgard goes with who came");
+                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 69, patience, 142), Is.True, "Hibernia too");
+                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 55, patience - 1, 134), Is.False, "after the hub's patience only");
+                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 23, patience, 134), Is.False, "three parties at least");
+                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 55, 134), Is.True);
+                Assert.That(RealmRaidRecruitmentPolicy.UnderStrength(55, 134), Is.True);
+                Assert.That(RealmRaidRecruitmentPolicy.UnderStrength(135, 113), Is.False, "Albion that morning: 135 recruited for 113");
                 Assert.That(RealmRaidRecruitmentPolicy.LateStartMinimum(60), Is.EqualTo(42), "the late start keeps its 70%");
             });
         }
