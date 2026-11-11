@@ -1234,6 +1234,8 @@ namespace DOL.GS
                 log.Info($"REALM_EXPEDITION_TARGET_STATUS region={_region} target=\"{target.Name}\" level={target.Level} " +
                          $"health={target.HealthPercent}% inCombat={target.InCombat} raidersWithin1000={near} targeting={onIt} " +
                          $"at={target.X},{target.Y},{target.Z} spawnDistance={(int)target.GetDistanceTo(target.SpawnPoint)} busyWith=\"{busyWith}\"");
+                // Where the raid's damage went in that minute, and what hurt it (diagnostics).
+                EpicFightLedger.Report(_region, target.Name, 60);
             }
             if (!Hold || Complete) { _holdSince = 0; return; }
             if (_holdSince == 0) { _holdSince = now; return; }
@@ -1417,6 +1419,7 @@ namespace DOL.GS
             if (_routeStartTick == 0) _routeStartTick = now;
             GameNPC[] live = WorldMgr.GetRegion(_region)?.Objects.OfType<GameNPC>().ToArray() ?? [];
             _live = live;
+            EpicFightLedger.Watch(_region, now);
             // Raiders step out of a ground hazard and no battle post goes in one (EpicEncounterTactics.ObserveHazards).
             EpicEncounterTactics.ObserveHazards(live);
             foreach (GameNPC stale in _routeRetry.Keys.Where(n => !n.IsAlive || n.ObjectState != GameObject.eObjectState.Active).ToArray())
