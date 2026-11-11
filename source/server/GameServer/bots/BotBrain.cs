@@ -1336,6 +1336,9 @@ namespace DOL.AI.Brain
                     BotBody.StopMoving();
                 return;
             }
+            // Sitting out its quit (20 s, as a player's /quit): it does nothing until it is gone or something attacks it.
+            if (AutonomousBotSchedule.IsQuitting(BotBody))
+                return;
             // Beggars (bot_living_beggars): a few Crafters live on a corner of their capital and do nothing else.
             if (AutonomousBeggars.Think(this))
                 return;

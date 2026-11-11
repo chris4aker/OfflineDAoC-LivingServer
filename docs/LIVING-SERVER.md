@@ -159,6 +159,8 @@ Each character gets at most one grats chain every 20 seconds. This is separate f
 - Only bots that can leave without breaking anything log out: ungrouped, alive, out of combat, not
   casting, not on a stable route, not walking back after a release, not carrying a relic, not on a
   siege job and not in an RvR event force. A scheduled-off bot that is busy stays until it's free.
+- A bot that leaves sits down first and is gone 20 seconds later, as a player's `/quit` (1.2). Anything that attacks it
+  in that time ends the quit: it stands up and fights (`LIVING_SERVER_QUIT_CANCELLED`). A rage quit is still instant.
 - At most 3 bots log out every 5 seconds.
 - A bot may say goodnight first: in guild chat when a guild member can hear, otherwise in `/say`
   near you.

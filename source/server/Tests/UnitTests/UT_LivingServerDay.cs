@@ -128,6 +128,23 @@ namespace DOL.GS.Tests
         #region Logging out
 
         [Test]
+        public void ABotSitsOutItsQuitForTwentySecondsUnlessSomethingStopsIt()
+        {
+            // Owner 2026-11-11: a player's /quit sits down and is gone 20 seconds later, unless attacked. Bots vanished three
+            // seconds after saying good night, wherever they stood.
+            Assert.Multiple(() =>
+            {
+                Assert.That(Schedule.QuitSitSeconds, Is.EqualTo(20));
+                Assert.That(Schedule.QuitCheck(true, true, false, now: 5_000, until: 20_000), Is.EqualTo(Schedule.QuitStep.Sit));
+                Assert.That(Schedule.QuitCheck(true, true, false, 20_000, 20_000), Is.EqualTo(Schedule.QuitStep.Leave));
+                Assert.That(Schedule.QuitCheck(false, true, false, 5_000, 20_000), Is.EqualTo(Schedule.QuitStep.Cancel), "attacked: the quit was taken off");
+                Assert.That(Schedule.QuitCheck(true, false, false, 25_000, 20_000), Is.EqualTo(Schedule.QuitStep.Cancel), "grouped or fighting by then");
+                Assert.That(Schedule.QuitCheck(true, true, true, 25_000, 20_000), Is.EqualTo(Schedule.QuitStep.Cancel), "its schedule wants it online again");
+                Assert.That(Schedule.IsQuitting(null), Is.False);
+            });
+        }
+
+        [Test]
         public void OnlyAFreeBotLogsOut()
         {
             Assert.That(Schedule.CanLogOut(true, false, true, true, false, false, false, false, false, false), Is.True);
