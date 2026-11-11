@@ -84,6 +84,12 @@ namespace DOL.GS
             /// hurts; one whose class hurts none fights the boss. Applies while <see cref="ClassRuleSwitch"/> is on (none: always).</summary>
             public AddClasses[] ClassRules { get; init; } = [];
             public string ClassRuleSwitch { get; init; }
+            /// <summary>Monsters, by name, that stand around the boss and come into its fight (Spindler Broodmother's adult
+            /// spindlers, level 75: play test duo28's ledger, about 100,000 of the 340,000 damage the raid took, and one of them
+            /// killed in the whole fight). The route kills those within <see cref="ClearFirstRadius"/> of the boss's spawn
+            /// before it goes for the boss, each as a target of the whole raid.</summary>
+            public string[] ClearFirst { get; init; } = [];
+            public int ClearFirstRadius { get; init; }
             /// <summary>Adds that burst from the boss's body when it dies (Spindler Broodmother's underdeveloped spindlers): the
             /// route clears them at the body before it moves on.</summary>
             public string[] DeathAdds { get; init; } = [];
@@ -329,6 +335,22 @@ namespace DOL.GS
             !Present(npc) ? null : live.FirstOrDefault(b => Present(b) && b != npc && For(b) is { HasRequiredAdds: true } t &&
                 Array.IndexOf(t.RequiredAdds, npc.GetType().Name) >= 0 && b.CurrentRegionID == npc.CurrentRegionID &&
                 b.IsWithinRadius(npc, AddSearchRadius));
+
+        /// <summary>Whether a monster of this name, this far from the boss's spawn, is one the route kills before the boss. Pure.</summary>
+        public static bool IsClearFirst(Tactic tactic, string name, double distanceFromBossSpawn) =>
+            tactic is { ClearFirstRadius: > 0 } && name != null && distanceFromBossSpawn <= tactic.ClearFirstRadius &&
+            Array.IndexOf(tactic.ClearFirst ?? [], name) >= 0;
+
+        private static HashSet<string> _clearFirstNames;
+
+        /// <summary>The living boss whose fight <paramref name="npc"/> would join (it is killed before that boss), or null.</summary>
+        public static GameNPC ClearFirstOwner(GameNPC npc, IReadOnlyList<GameNPC> live)
+        {
+            var names = _clearFirstNames ??= ByType.Values.SelectMany(t => t.ClearFirst ?? []).ToHashSet(StringComparer.Ordinal);
+            if (names.Count == 0 || !Present(npc) || !names.Contains(npc.Name)) return null;
+            return live.FirstOrDefault(b => Present(b) && b != npc && b.CurrentRegionID == npc.CurrentRegionID &&
+                IsClearFirst(For(b), npc.Name, npc.GetDistanceTo(b.SpawnPoint)));
+        }
 
         /// <summary>The fight with <paramref name="boss"/> is on: it or one of its adds is in combat.</summary>
         public static bool FightOn(GameNPC boss, IReadOnlyList<GameNPC> live) =>

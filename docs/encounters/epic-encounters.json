@@ -13715,8 +13715,12 @@
     ],
     "addParties": 3,
     "areaOnClump": true,
+    "clearFirst": [
+     "spindler"
+    ],
+    "clearFirstRadius": 2600,
     "since": "1.2",
-    "summary": "Newborn-only parties and area spells on her spot (owner 2026-11-08): the newly-born spindlers (8,000 health, 1-2 every 25-45 s, born within 50-80 of her; they go for bards, druids, mentalists and wardens) are worked by 2-3 whole parties with their healers (2 up to 14 parties, 3 above), which take the newborns on the raid's healers and casters first, the one with the least health among those; every raider with an area damage spell (Eldritch, Mentalist, Enchanter, Animist shrooms and others) aims it at her or a newborn, wherever the most of them stand within its radius; everyone else stays on her. Before (play test duo6-duo10): all casters and archers on one newborn plus a melee peel held newborns at 2-8 for 9 minutes but she was never killed (wipes at 38-57%). Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on."
+    "summary": "Adult spindlers first (play test duo28's damage ledger, 2026-11-10: the level-75 spindlers standing 1,466 to 2,532 from her spawn came into her fight, dealt about 100,000 of the 340,000 damage the raid took, at about 470 a hit, and one was killed in the whole fight; the route had counted every spindler as cleared once the first one died): the route kills each spindler within 2,600 of her spawn, as a target of the whole raid, before it goes for her. Newborn-only parties and area spells on her spot (owner 2026-11-08): the newly-born spindlers (8,000 health, 1-2 every 25-45 s, born within 50-80 of her; they go for bards, druids, mentalists and wardens) are worked by 2-3 whole parties with their healers (2 up to 14 parties, 3 above), which take the newborns on the raid's healers and casters first, the one with the least health among those; every raider with an area damage spell (Eldritch, Mentalist, Enchanter, Animist shrooms and others) aims it at her or a newborn, wherever the most of them stand within its radius; everyone else stays on her. Before (play test duo6-duo10): all casters and archers on one newborn plus a melee peel held newborns at 2-8 for 9 minutes but she was never killed (wipes at 38-57%). Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on."
    },
    "verified": true
   },

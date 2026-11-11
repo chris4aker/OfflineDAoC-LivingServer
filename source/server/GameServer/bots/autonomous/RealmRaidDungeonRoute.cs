@@ -49,6 +49,7 @@ namespace DOL.GS
         private readonly Dictionary<string, GameNPC> _finals = new();
         private GameNPC _target;
         private int _probeCursor;
+        private long _nextClearFirstLog;
         private static readonly Logging.Logger log = Logging.LoggerManager.Create(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private long _targetProgressTick, _targetStartTick, _holdSince, _nextHoldLog;
         // Lowest health points seen (not percent: a percent of Galladoria's 125,000-health Corrupt Primal of Fire is 1,250
@@ -1587,6 +1588,11 @@ namespace DOL.GS
             if (zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
             { Hold = true; Status = "Blocked: dungeon navigation unavailable"; return; }
             GameNPC[] encounters = live.Where(n => n is IGameEpicNpc && n.IsAlive && n.ObjectState == GameObject.eObjectState.Active).ToArray();
+            // Monsters that would join a boss's fight (EpicEncounterTactics.ClearFirst: Spindler Broodmother's adult spindlers)
+            // are killed before that boss: each is a target although another of its name is already dead, and although a play
+            // test's focus names only the boss.
+            Dictionary<GameNPC, GameNPC> clearFirst = live.Select(n => (Add: n, Boss: EpicEncounterTactics.ClearFirstOwner(n, live)))
+                .Where(pair => pair.Boss != null).ToDictionary(pair => pair.Add, pair => pair.Boss);
             GameNPC[] candidates = live.Where(n => n.IsAlive && n.ObjectState == GameObject.eObjectState.Active && n.Realm == eRealm.None &&
                 n.Level > 0 && n is not GameBot && n is not GameSummonedPet && n.Brain is not IControlledBrain &&
                 n is not GameMerchant && n is not GameTrainer && n is not GameTeleporter && n is not GameTaxi &&
@@ -1596,7 +1602,7 @@ namespace DOL.GS
                 // Hibernian raid stood four minutes by a "grogan" in Galladoria that none of it could attack (run 22).
                 n.TempProperties.GetProperty<bool>(AutonomousPetSupport.SyntheticCharmPetProperty) != true &&
                 !IsEncounterHazard(n) &&
-                !(n is IGameEpicNpc && _clearedNames.Contains(n.Name) && !_finalTypes.Contains(n.GetType().Name)) &&
+                !(n is IGameEpicNpc && _clearedNames.Contains(n.Name) && !_finalTypes.Contains(n.GetType().Name) && !clearFirst.ContainsKey(n)) &&
                 // A neutral expedition goes for its named encounters only; monsters on the way are
                 // fought when they attack (Darkness Falls holds 2,465 spawns).
                 // A play test's focus leaves out the other named encounters (and the final, unless named) while they are out of
@@ -1604,12 +1610,13 @@ namespace DOL.GS
                 // fighting the entrance's monsters and never reaching the horsemen's room), and a named that fights the raid is
                 // fought (the Host killed 159 raiders on the way up while the focus left him out, 2026-11-07).
                 !(Focus != null && (n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name)) && !n.InCombat &&
-                  !InFocus(Focus, n.Name, n.GetType().Name)) &&
+                  !InFocus(Focus, n.Name, n.GetType().Name) &&
+                  !(clearFirst.TryGetValue(n, out GameNPC focusBoss) && InFocus(Focus, focusBoss.Name, focusBoss.GetType().Name))) &&
                 (_objectives == null ? now - _routeStartTick < EpicTrashPhaseMilliseconds || n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name) ||
-                        IsEncounterAdd(n, Front, encounters)
+                        IsEncounterAdd(n, Front, encounters) || clearFirst.ContainsKey(n)
                     : RealmRaidNeutralEvents.IsObjective(_objectives, n.Name)))
                 .OrderBy(n => _finalTypes.Contains(n.GetType().Name) ? 1 : 0)
-                .ThenBy(n => IsEncounterAdd(n, Front, encounters) ? 0 : 1)
+                .ThenBy(n => IsEncounterAdd(n, Front, encounters) || clearFirst.ContainsKey(n) ? 0 : 1)
                 .ThenBy(n => WalkEstimate(Front, new(n.X, n.Y, n.Z))).ToArray();
             // Probe from the front and from where the parties actually stand, near or far:
             // Tuscaran's front once sat on a pad under the floor its parties stood on.
@@ -1625,6 +1632,17 @@ namespace DOL.GS
                 GameNPC npc = candidates[_probeCursor % candidates.Length];
                 _probeCursor = (_probeCursor + 1) % candidates.Length;
                 if (_routeRetry.GetValueOrDefault(npc) > now) continue;
+                // A boss waits while a monster that would join its fight can still be killed first (unless it is fighting already).
+                if (!npc.InCombat && clearFirst.Any(pair => pair.Value == npc && _routeRetry.GetValueOrDefault(pair.Key) <= now))
+                {
+                    if (now >= _nextClearFirstLog)
+                    {
+                        _nextClearFirstLog = now + 60_000;
+                        log.Info($"REALM_EXPEDITION_CLEAR_FIRST region={_region} boss=\"{npc.Name}\" left={clearFirst.Count(pair => pair.Value == npc)} " +
+                                 $"names=\"{string.Join(",", clearFirst.Where(pair => pair.Value == npc).Select(pair => pair.Key.Name).Distinct())}\"");
+                    }
+                    continue;
+                }
                 // A boss shielded by its adds, or one that dies with another, is fought through its tactic (EpicEncounterTactics).
                 if (EpicEncounterTactics.RouteTarget(npc, live, Front, out string candidateTactic) is { } tactical && tactical != npc)
                 {
