@@ -453,14 +453,33 @@ namespace DOL.GS
 
         /// <summary>Where a raider at <paramref name="raider"/> steps to while a spell that will land within
         /// <paramref name="radius"/> of <paramref name="center"/> is being cast, or null when it already stands clear. Pure.</summary>
-        public static Vector3? StepOutOfArea(Vector3 raider, Vector3 center, int radius)
+        /// <remarks><paramref name="fan"/> (the raider's id) turns the way out by up to <see cref="CastFanDegrees"/> either
+        /// side, and gives a raider standing on the centre a way of its own: raiders who stood on one spot (a party on its
+        /// melee station) otherwise all step to one spot again, and the next cast on one of them catches them all (play test
+        /// duo33: a party 4 apart around his target, 31 and 36 caught).</remarks>
+        public static Vector3? StepOutOfArea(Vector3 raider, Vector3 center, int radius, long fan = 0)
         {
             float d = Vector2.Distance(new(raider.X, raider.Y), new(center.X, center.Y));
             if (d > radius + CastMargin) return null;
+            int step = (int)(Math.Abs(fan) % CastFanSteps);
+            double turn = d < 1 ? step * (2 * Math.PI / CastFanSteps)
+                : (step - CastFanSteps / 2) * (CastFanDegrees * Math.PI / 180 / (CastFanSteps / 2));
             Vector2 dir = d < 1 ? new Vector2(1, 0) : Vector2.Normalize(new Vector2(raider.X - center.X, raider.Y - center.Y));
+            if (fan != 0)
+                dir = new Vector2((float)(dir.X * Math.Cos(turn) - dir.Y * Math.Sin(turn)), (float)(dir.X * Math.Sin(turn) + dir.Y * Math.Cos(turn)));
             Vector2 at = new Vector2(center.X, center.Y) + dir * (radius + CastStepOut);
             return new Vector3(at.X, at.Y, raider.Z);
         }
+        /// <summary>The ways out fan over this many steps, up to this many degrees either side of straight out.</summary>
+        public const int CastFanSteps = 9, CastFanDegrees = 32;
+
+        /// <summary>What a raider does while a boss casts its area spell (pure): inside the area it moves out; outside it,
+        /// one that was sent out during this cast holds where it is until the spell has landed; anyone else carries on.
+        /// Play test duo33: a raider past the radius was told nothing, so a melee raider went straight back to its station
+        /// 294 from his target while he was still casting, and three Shrouds caught 25, 31 and 36.</summary>
+        public enum CastStep { CarryOn, MoveOut, HoldOut }
+        public static CastStep StepDuringCast(bool insideArea, bool sentOutThisCast) =>
+            insideArea ? CastStep.MoveOut : sentOutThisCast ? CastStep.HoldOut : CastStep.CarryOn;
 
         /// <summary>Whether <paramref name="boss"/> is casting the spell of that name right now.</summary>
         public static bool IsCasting(GameNPC boss, string spellName) =>
@@ -760,9 +779,12 @@ namespace DOL.GS
                 if (IsCasting(target, st.StepOutOfCast))
                     CastWatch[target] = st.StepOutOfCast;
                 if (raider != anchor && IsCasting(target, st.StepOutOfCast) &&
-                    StepOutOfArea(at, new(anchor.X, anchor.Y, anchor.Z), st.SpreadRadius) is Vector3 outOfCast)
+                    StepOutOfArea(at, new(anchor.X, anchor.Y, anchor.Z), st.SpreadRadius, raider.ObjectID) is Vector3 outOfCast)
+                {
+                    if (raider is GameBot sent) SentOutOfCast[sent] = target;
                     return new(BotAction.Reposition, target, outOfCast,
                         $"cast: out of \"{st.StepOutOfCast}\" ({st.SpreadRadius} around \"{anchor.Name}\")");
+                }
                 bool healer = classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId);
                 bool atRange = canShootFlyers || healer;
                 // The melee: fight him from behind, clear of the area hit around his target.
@@ -1257,6 +1279,12 @@ namespace DOL.GS
         /// duo30b: with only the raiders that fight him stepping out, each Shroud still caught 4 to 10 healers, mid-heal when he
         /// cast, and 8 or 9 pets. True: turn used.
         /// </summary>
+        /// <summary>The raiders sent out of a boss's area spell during its current cast (they hold out there until it lands).</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<GameBot, GameNPC> SentOutOfCast = new();
+        /// <summary>How many of <paramref name="raiders"/> had been sent out of <paramref name="boss"/>'s cast (diagnostics).</summary>
+        internal static int SentOutCount(GameNPC boss, IEnumerable<GameLiving> raiders) =>
+            raiders.Count(r => r is GameBot bot && SentOutOfCast.TryGetValue(bot, out GameNPC of) && of == boss);
+
         private static bool ThinkAreaCast(GameBot bot)
         {
             foreach (var (boss, spell) in CastWatch)
@@ -1264,6 +1292,8 @@ namespace DOL.GS
                 if (!Present(boss) || !IsCasting(boss, spell))
                 {
                     CastWatch.TryRemove(boss, out _);
+                    foreach (var sent in SentOutOfCast.Where(p => p.Value == boss).Select(p => p.Key).ToArray())
+                        SentOutOfCast.TryRemove(sent, out _);
                     continue;
                 }
                 if (boss.CurrentRegionID != bot.CurrentRegionID || boss.TargetObject is not GameLiving anchor ||
@@ -1273,8 +1303,20 @@ namespace DOL.GS
                 if (bot.ControlledBrain?.Body is { IsAlive: true } pet && pet != anchor && pet.TargetObject == boss &&
                     StepOutOfArea(new(pet.X, pet.Y, pet.Z), center, tactic.SpreadRadius) != null)
                     bot.ControlledBrain.Disengage();
-                if (bot == anchor || StepOutOfArea(new(bot.X, bot.Y, bot.Z), center, tactic.SpreadRadius) is not Vector3 exit)
-                    continue;
+                if (bot == anchor) continue;
+                Vector3? way = StepOutOfArea(new(bot.X, bot.Y, bot.Z), center, tactic.SpreadRadius, bot.ObjectID);
+                CastStep step = StepDuringCast(way.HasValue, SentOutOfCast.TryGetValue(bot, out GameNPC sentBy) && sentBy == boss);
+                if (step == CastStep.CarryOn) continue;
+                if (step == CastStep.HoldOut)
+                {
+                    // Out of it: stay out until it has landed (its station, or the boss it fights, is inside).
+                    bot.StopAttack();
+                    if (bot.FollowTarget == boss) bot.StopFollowing();
+                    if (bot.IsMoving) { bot.StopMovingOnPath(); bot.StopMoving(); }
+                    return true;
+                }
+                Vector3 exit = way.Value;
+                SentOutOfCast[bot] = boss;
                 if (bot.IsCasting) bot.StopCurrentSpellcast();
                 bot.StopAttack();
                 if (bot.FollowTarget == boss) bot.StopFollowing();
