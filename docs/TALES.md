@@ -5,7 +5,24 @@ couple others chime in and tell everyone to shut up and listen, and beg the stor
 story with a question or two from others that help lead the story along. Then when it's over everyone is in awe, slightly
 quiet in reflection, and then maybe a couple rumours that are related come next." He chose the fuller version, in 1.2.
 
-Nothing here has been played yet. Everything below is built and covered by automated tests only.
+## What has been seen in game
+
+Owner's PC, test copy, 2026-11-10, staged with `/lstest tale` unless marked. "Tests only" means unit tests and CI.
+
+| What | Seen | Build |
+|---|---|---|
+| A tale starts, is heard line by line, ends with the hush and the closing lines | Yes (Legion, Golestandt; both storytellers) | 15fcc70. On cf2c873 it started and ended but no line was heard. |
+| The storyteller answers a player's question mid-tale | Yes ("who bound him?") | 15fcc70 |
+| A player asks for a tale in plain words ("tell the one about golestandt") | Yes, started within a second | 15fcc70 |
+| The rumour after a finished tale | Yes, twice (once held for 21 s and then said) | 15fcc70 |
+| A fireside tale in /group, naming the storyteller | Yes (Dartmoor, one gamebot in the group) | 15fcc70 |
+| The rumour is a raid that then opens (`TALE_RAID`) | **No. Tests only.** Albion's raid slot was taken both times. | |
+| A tale goes on when a listener leaves; a busy teller is waited for briefly | **Tests only** (the faults were seen on 15fcc70, the fixes are not played yet) | |
+| A tale that starts by itself, without `/lstest` or a request | **Not seen yet** (first one comes 25 minutes into a session) | |
+
+Faults that check found on 15fcc70, fixed after it: the storyteller's answer, a line of the tale and the rumour were the
+same sentence; a tale a player asked for stopped after twelve lines because the bot that begged for it logged off; a
+storyteller who got into a fight after the opening lines kept /faction silent for three minutes.
 
 ## What a player sees
 
@@ -23,11 +40,12 @@ only they tell. If you ask for a tale while neither is online, a bot says so.
 
 **You can ask.** "tell the one about legion", "any stories tonight?" or "Maeve, tell us a tale" in /faction starts one
 within a few seconds (not within twenty minutes of the last). Ask a question while a tale runs and the storyteller answers
-you, at most twice a tale, then goes on.
+you, at most twice a tale, then goes on. The answer and the rumour afterwards are never a sentence the tale itself tells.
 
-**It can go wrong.** A storyteller pulled into a fight is waited for up to three minutes; if it stays busy or leaves, the
-tale simply stops, a listener grumbles, and it is told another night. A cynic may heckle. /faction's ceiling still holds:
-a tale waits for room like any scene.
+**It can go wrong.** A storyteller pulled into a fight is waited for a little (45 seconds at most at one line, a minute
+and a half over the whole tale) and then types between pulls, as a player would. One who leaves the game ends the tale: a
+listener grumbles, and it is told another night. A listener who leaves is no loss: another one asks the next question. A
+cynic may heckle. /faction's ceiling still holds: a tale waits for room like any scene.
 
 **Fireside tales.** Sit down out of combat in a boss's place (a dragon's zone, an epic dungeon, Darkness Falls, Summoner's
 Hall) with a gamebot in your group, and a groupmate tells the short version in /group, five lines or so, and says who in

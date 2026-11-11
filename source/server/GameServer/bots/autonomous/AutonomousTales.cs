@@ -222,6 +222,33 @@ public static class AutonomousTales
         return known.ToArray();
     }
 
+    /// <summary>
+    /// Whether a line says again what one of <paramref name="said"/> says: most of its words (three letters or more) are in
+    /// that line. Pure. (PC check 2026-11-10, build 15fcc70: the teller answered a player with a sentence the tale itself
+    /// said a minute later, and the rumour after the tale was the same sentence a third time.)
+    /// </summary>
+    public static bool Repeats(string line, IEnumerable<string> said)
+    {
+        HashSet<string> words = WordsOf(line);
+        if (words.Count < 4 || said == null)
+            return false;
+        foreach (string other in said)
+        {
+            HashSet<string> theirs = WordsOf(other);
+            if (theirs.Count >= 4 && words.Count(theirs.Contains) >= 0.7 * Math.Min(words.Count, theirs.Count))
+                return true;
+        }
+        return false;
+    }
+
+    private static HashSet<string> WordsOf(string text) =>
+        new string((text ?? string.Empty).ToLowerInvariant().Select(c => char.IsLetter(c) ? c : ' ').ToArray())
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries).Where(word => word.Length >= 3).ToHashSet(StringComparer.Ordinal);
+
+    /// <summary>Every line a tale's scene can say (all the ways of saying each).</summary>
+    public static IEnumerable<string> LinesOf(VC.Scene scene) =>
+        scene?.Beats.Where(beat => !beat.IsPause).SelectMany(beat => beat.Variants) ?? [];
+
     #endregion
 
     #region Runtime
@@ -235,6 +262,8 @@ public static class AutonomousTales
         public long TellerId;
         public string TellerName;
         public int Asides;
+        /// <summary>What the teller answered a player in this tale, so the rumour after it says something else.</summary>
+        public readonly List<string> Answers = new();
         public readonly List<(long At, Action Do)> Due = new();
     }
 
@@ -383,6 +412,7 @@ public static class AutonomousTales
             state.TellerId = teller.DatabaseID;
             state.TellerName = teller.Name;
             state.Asides = 0;
+            state.Answers.Clear();
         }
         Log.Info($"TALE_START realm={GlobalConstants.RealmToName(realm)} scene={scene.Id} teller=\"{teller.Name}\" asked_by=\"{askedBy?.Name ?? "a bot"}\"");
         return true;
@@ -441,8 +471,9 @@ public static class AutonomousTales
                 Remember(LastKey(realm), DateTime.UtcNow.ToString("O"));
             }
             string loreId = LoreIdOf(scene.Topic);
+            string[] heardLines = LinesOf(scene).Concat(state.Answers).ToArray();
             if (finished)
-                state.Due.Add((now + AftermathDelayMs + (long)(Random.Shared.NextDouble() * AftermathSpreadMs), () => Aftermath(realm, loreId, tellerId)));
+                state.Due.Add((now + AftermathDelayMs + (long)(Random.Shared.NextDouble() * AftermathSpreadMs), () => Aftermath(realm, loreId, tellerId, heardLines)));
             else if (linesSaid >= 4 && reason == "the teller left")
                 state.Due.Add((now + 8_000, () => SayAfter(realm, tellerId, "listener",
                     CutShort[Random.Shared.Next(CutShort.Length)].Replace("{teller}", teller ?? "the teller"))));
@@ -513,7 +544,7 @@ public static class AutonomousTales
     /// and it opens a few minutes after the line is said (the realm's own automatic raid, sized and invited like any other);
     /// otherwise one of the boss's rumours from its lore file.
     /// </summary>
-    private static void Aftermath(eRealm realm, string loreId, long tellerId)
+    private static void Aftermath(eRealm realm, string loreId, long tellerId, string[] heard)
     {
         LoreBible.Boss boss = LoreBible.Current.BossById(loreId);
         string raidId = RaidIdFor(loreId, realm);
@@ -536,11 +567,29 @@ public static class AutonomousTales
             });
             return;
         }
-        if (boss?.RumourFor(realm) is { Length: > 0 } rumours)
-            SayAfter(realm, tellerId, "rumour", LoreText.Pick(rumours[Random.Shared.Next(rumours.Length)], Random.Shared),
+        // A rumour the tale did not just tell (its own lines and the teller's answers are often the same lore).
+        string[] fresh = FreshRumours(boss, realm, heard);
+        if (fresh.Length > 0)
+            SayAfter(realm, tellerId, "rumour", fresh[Random.Shared.Next(fresh.Length)],
                 () => Log.Info($"TALE_RUMOUR realm={realmName} about={loreId} kind=lore"));
         else
             Log.Info($"TALE_RUMOUR realm={realmName} about={loreId} kind=none");
+    }
+
+    /// <summary>
+    /// The boss's rumours a bot of the realm may pass on after its tale, one way of saying each, without those that repeat
+    /// <paramref name="heard"/>: the realm's own take first, and when the tale used all of those, the ones every realm tells.
+    /// </summary>
+    public static string[] FreshRumours(LoreBible.Boss boss, eRealm realm, IEnumerable<string> heard, Random random = null)
+    {
+        if (boss == null)
+            return [];
+        random ??= Random.Shared;
+        string[] lines = heard?.ToArray() ?? [];
+        string[] Fresh(IEnumerable<string> rumours) => (rumours ?? []).Select(rumour => LoreText.Pick(rumour, random))
+            .Where(line => !string.IsNullOrWhiteSpace(line) && !Repeats(line, lines)).ToArray();
+        string[] own = Fresh(boss.RumourFor(realm));
+        return own.Length > 0 ? own : Fresh(boss.Rumour);
     }
 
     /// <summary>
@@ -572,12 +621,20 @@ public static class AutonomousTales
                 state.Asides++;
             }
             LoreBible.Boss boss = LoreBible.Current.BossById(LoreIdOf(playing.Topic));
-            string answer = !LoreChat.TryAnswer(message, out string known, realm) || string.IsNullOrWhiteSpace(known)
-                ? boss?.RumourFor(realm) is { Length: > 0 } rumours && Random.Shared.NextDouble() < 0.5
-                    ? LoreText.Pick(rumours[Random.Shared.Next(rumours.Length)], Random.Shared)
-                    : Deflections[Random.Shared.Next(Deflections.Length)]
-                : known;
+            // Not a sentence the tale says itself, or one the teller already answered with.
+            string[] heard;
+            lock (state)
+                heard = LinesOf(playing).Concat(state.Answers).ToArray();
+            string[] fresh = FreshRumours(boss, realm, heard);
+            string answer = LoreChat.TryAnswer(message, out string known, realm) && !string.IsNullOrWhiteSpace(known) && !Repeats(known, heard)
+                ? known
+                : fresh.Length > 0 && Random.Shared.NextDouble() < 0.5
+                    ? fresh[Random.Shared.Next(fresh.Length)]
+                    : Deflections[Random.Shared.Next(Deflections.Length)];
             bool said = AutonomousBotDebates.TellerAside(realm, $"{player.Name}: {answer}");
+            if (said)
+                lock (state)
+                    state.Answers.Add(answer);
             Log.Info($"TALE_ASIDE realm={GlobalConstants.RealmToName(realm)} scene={playing.Id} player=\"{player.Name}\" said={said}");
             return said;
         }

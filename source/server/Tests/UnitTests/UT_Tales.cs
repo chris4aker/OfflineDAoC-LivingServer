@@ -231,5 +231,64 @@ namespace DOL.GS.Tests
             Assert.That(Tales.TellerAway, Has.All.Contain("{teller}"));
             Assert.That(Tales.TrueRumourChance, Is.InRange(0.2, 0.8), "sometimes true, never always");
         }
+
+        [Test]
+        public void ATaleGoesOnWhenAListenerLeaves()
+        {
+            // PC check 2026-11-10, build 15fcc70: the bot that begged for the tale logged off and the tale stopped mid-story.
+            Assert.That(Debates.MayRecast(roleSpoke: true, storyProtagonist: false, taleListener: true), Is.True, "another listener asks");
+            Assert.That(Debates.MayRecast(roleSpoke: true, storyProtagonist: true, taleListener: true), Is.False, "never the teller");
+            Assert.That(Debates.MayRecast(roleSpoke: true, storyProtagonist: false), Is.False, "a debate's role keeps its bot");
+            // With nobody to take the role, its line is skipped while the teller and one listener are still there.
+            Assert.That(Debates.DecideBeat(Debates.SpeakerState.Gone, 0, standInAvailable: false, speakersAround: 3, roleSpoke: false),
+                Is.EqualTo(Debates.BeatDecision.Skip));
+        }
+
+        [Test]
+        public void ABusyTellerIsWaitedForBrieflyThenTypesBetweenPulls()
+        {
+            // PC check 2026-11-10, build 15fcc70: three minutes of a silent /faction while the teller fought.
+            Assert.That(Debates.TaleBusyWaitMs(0), Is.EqualTo(Debates.MaxBusyWaitMs), "the first fight: as long as any speaker");
+            Assert.That(Debates.TaleBusyWaitMs(Debates.MaxBusyWaitMs), Is.EqualTo(Debates.TaleBusyBudgetMs - Debates.MaxBusyWaitMs));
+            Assert.That(Debates.TaleBusyWaitMs(Debates.TaleBusyBudgetMs), Is.EqualTo(Debates.TaleBusyMinMs), "the budget is spent");
+            Assert.That(Debates.TaleBusyWaitMs(10 * Debates.TaleBusyBudgetMs), Is.EqualTo(Debates.TaleBusyMinMs));
+            Assert.That(Debates.TaleBusyBudgetMs, Is.LessThan(Debates.StoryBusyWaitMs));
+        }
+
+        [Test]
+        public void AnAnswerOrRumourDoesNotRepeatTheTale()
+        {
+            // PC check 2026-11-10, build 15fcc70: the teller's answer, a line of the tale and the rumour after it were one sentence.
+            string[] tale =
+            [
+                "camelot's priests say he is the thing in the gospel that named itself for its number",
+                "his kingdom has three doors. ours is in camelot hills",
+            ];
+            Assert.That(Tales.Repeats("camelot's priests say legion is the thing in the gospel that named itself for its number", tale), Is.True);
+            Assert.That(Tales.Repeats("heard the imps sell the way down for a candle end", tale), Is.False);
+            Assert.That(Tales.Repeats("wait for it", tale), Is.False, "a short line is never a repeat");
+            Assert.That(Tales.Repeats("his kingdom has three doors", ["wait for it"]), Is.False);
+        }
+
+        [Test]
+        public void EveryTaleLeavesItsBossARumourItDoesNotTellItself()
+        {
+            // The rumour after a tale is one the tale did not just say, so every tale's boss needs one the tale leaves out.
+            foreach (var scene in TaleScenes)
+            {
+                var boss = LoreBible.Current.BossById(Tales.LoreIdOf(scene.Topic));
+                Assert.That(boss, Is.Not.Null, scene.Id);
+                string[] lines = Tales.LinesOf(scene).ToArray();
+                foreach (eRealm realm in new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia })
+                {
+                    if (!VC.RealmFits(scene.Realm, realm))
+                        continue;
+                    if ((boss.RumourFor(realm) ?? []).Length == 0)
+                        continue;
+                    Assert.That(Tales.FreshRumours(boss, realm, lines, new Random(1)), Is.Not.Empty,
+                        $"{scene.Id} ({realm}): every rumour of {boss.Id} repeats the tale");
+                }
+            }
+        }
     }
 }
