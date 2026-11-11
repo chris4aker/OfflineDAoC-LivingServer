@@ -76,12 +76,14 @@ namespace DOL.GS
             var byRole = new SortedDictionary<string, int>();
             var names = new List<string>();
             int within = 0;
+            var caught = new List<GameLiving>();
             IEnumerable<GameLiving> near = target.GetNPCsInRadius((ushort)spell.Radius).Cast<GameLiving>()
                 .Concat(target.GetPlayersInRadius((ushort)spell.Radius));
             foreach (GameLiving l in near.Append(target).Distinct())
             {
                 if (l == null || !l.IsAlive || l == boss || l.Realm == boss.Realm) continue;
                 within++;
+                caught.Add(l);
                 string role = RoleOf(l);
                 byRole[role] = byRole.TryGetValue(role, out int n) ? n + 1 : 1;
                 if (names.Count < 24) names.Add($"{l.Name}:{role}:{(int)target.GetDistanceTo(l)}");
@@ -89,6 +91,7 @@ namespace DOL.GS
             if (Log.IsInfoEnabled)
                 Log.Info($"EPIC_SPREAD_LANDED boss=\"{boss.Name}\" health={boss.HealthPercent} spell=\"{spell.Name}\" radius={spell.Radius} " +
                          $"target={Who(target)} dist={(int)boss.GetDistanceTo(target)} within={within} " +
+                         $"sentOut={SentOutCount(boss, caught)} moving={caught.Count(c => c != target && c.IsMoving)} " +
                          $"byRole={string.Join(",", byRole.Select(kv => kv.Key + ":" + kv.Value))} who=\"{string.Join(" ", names)}\"");
         }
 
