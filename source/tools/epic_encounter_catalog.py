@@ -2035,6 +2035,9 @@ def render_tactics_cs(data: dict) -> str:
             init.append(f"ClassRules = [{rules}]")
             if t.get("classRuleSwitch"):
                 init.append(f'ClassRuleSwitch = "{t["classRuleSwitch"]}"')
+        if t.get("clearFirst"):
+            init.append(f"ClearFirst = {names('clearFirst')}")
+            init.append(f"ClearFirstRadius = {int(t['clearFirstRadius'])}")
         if t.get("deathAdds"):
             init.append(f"DeathAdds = {names('deathAdds')}")
         if t.get("addsInOrder"):
