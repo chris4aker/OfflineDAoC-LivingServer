@@ -317,5 +317,23 @@ namespace DOL.UnitTests
             twin.TargetObject = raider;
             Assert.That(hostile.Invoke(route, [new GameNPC[] { fire, orb, boss, twin }, raiders]), Is.SameAs(twin));
         }
+
+        [Test]
+        public void AHoldInOnePlaceIsReportedAfterThreeMinutesAndThenEveryThree()
+        {
+            long first = 1_000_000;
+            long limit = AutonomousWorldBotController.DungeonHoldLongMilliseconds;
+            Assert.Multiple(() =>
+            {
+                Assert.That(AutonomousWorldBotController.HoldIsLong(0, first + limit, 0), Is.False, "no hold");
+                Assert.That(AutonomousWorldBotController.HoldIsLong(first, first + limit - 1, 0), Is.False, "under three minutes");
+                Assert.That(AutonomousWorldBotController.HoldIsLong(first, first + limit, 0), Is.True, "three minutes");
+                Assert.That(AutonomousWorldBotController.HoldIsLong(first, first + limit + 1_000, first + 2 * limit), Is.False,
+                    "already reported");
+                Assert.That(AutonomousWorldBotController.HoldIsLong(first, first + 2 * limit, first + 2 * limit), Is.True, "again");
+                // The report is for holds the 90-second limit should have ended.
+                Assert.That(limit, Is.GreaterThan(AutonomousWorldBotController.DungeonThreatHoldLimitMilliseconds));
+            });
+        }
     }
 }
