@@ -266,6 +266,11 @@ namespace DOL.GS.Tests
             ];
             Assert.That(Tales.Repeats("camelot's priests say legion is the thing in the gospel that named itself for its number", tale), Is.True);
             Assert.That(Tales.Repeats("heard the imps sell the way down for a candle end", tale), Is.False);
+            // Build 5300a87: the same fact in other words ("stops" and "stopped", "a second" and "one breath").
+            Assert.That(Tales.Repeats("heard the whole fortress stops turning for a second when apoc dies",
+                ["they say the whole fortress stopped turning for one breath"]), Is.True);
+            Assert.That(Tales.Repeats("someone said apocalypse isnt even angry, just curious",
+                ["they say the whole fortress stopped turning for one breath", "do you challenge fate"]), Is.False);
             Assert.That(Tales.Repeats("wait for it", tale), Is.False, "a short line is never a repeat");
             Assert.That(Tales.Repeats("his kingdom has three doors", ["wait for it"]), Is.False);
         }

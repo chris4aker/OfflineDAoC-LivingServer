@@ -11,18 +11,21 @@ Owner's PC, test copy, 2026-11-10, staged with `/lstest tale` unless marked. "Te
 
 | What | Seen | Build |
 |---|---|---|
-| A tale starts, is heard line by line, ends with the hush and the closing lines | Yes (Legion, Golestandt; both storytellers) | 15fcc70. On cf2c873 it started and ended but no line was heard. |
-| The storyteller answers a player's question mid-tale | Yes ("who bound him?") | 15fcc70 |
+| A tale starts, is heard line by line, ends with the hush and the closing lines | Yes: Legion, Golestandt and Apocalypse, both storytellers, five tales | 15fcc70, 5300a87. On cf2c873 it started and ended but no line was heard. |
+| The storyteller answers a player's question mid-tale | Yes, twice | 15fcc70, 5300a87 |
 | A player asks for a tale in plain words ("tell the one about golestandt") | Yes, started within a second | 15fcc70 |
-| The rumour after a finished tale | Yes, twice (once held for 21 s and then said) | 15fcc70 |
+| The rumour after a finished tale | Yes, four times; held and said later three times | 15fcc70, 5300a87 |
+| The rumour is not a sentence of the tale | Yes on 5300a87 (twice). On 15fcc70 it was. | 5300a87 |
 | A fireside tale in /group, naming the storyteller | Yes (Dartmoor, one gamebot in the group) | 15fcc70 |
-| The rumour is a raid that then opens (`TALE_RAID`) | **No. Tests only.** Albion's raid slot was taken both times. | |
-| A tale goes on when a listener leaves; a busy teller is waited for briefly | **Tests only** (the faults were seen on 15fcc70, the fixes are not played yet) | |
-| A tale that starts by itself, without `/lstest` or a request | **Not seen yet** (first one comes 25 minutes into a session) | |
+| The rumour is a raid that then opens (`TALE_RAID`) | **No. Tests only.** All four rumours were lore; those builds did not log whether the roll or the raid slot decided it. | |
+| A tale goes on when a listener leaves; a busy teller is waited for briefly | **Tests only** (both faults were seen on 15fcc70; on 5300a87 neither situation came up) | |
+| A tale that starts by itself, without `/lstest` or a request | **Not seen yet** (the first one comes 25 minutes into a session) | |
 
-Faults that check found on 15fcc70, fixed after it: the storyteller's answer, a line of the tale and the rumour were the
-same sentence; a tale a player asked for stopped after twelve lines because the bot that begged for it logged off; a
-storyteller who got into a fight after the opening lines kept /faction silent for three minutes.
+Faults those checks found, each fixed in the build after: on cf2c873 no line of a tale was heard and the rumour was lost;
+on 15fcc70 the storyteller's answer, a line of the tale and the rumour were the same sentence, a tale a player asked for
+stopped after twelve lines because the bot that begged for it logged off, and a storyteller who got into a fight after the
+opening lines kept /faction silent for three minutes; on 5300a87 the storyteller's answer said in other words what the
+tale said two minutes later ("the whole fortress stops turning").
 
 ## What a player sees
 
@@ -70,8 +73,9 @@ Server properties, category `bots`, read live:
 | `bot_living_tales` | True | Tales in /faction and fireside tales. Needs bot voices and debates (`bot_voices_debates`). |
 | `bot_living_tale_raids` | True | The rumour after a tale may be a raid that really forms. False: always a lore rumour. |
 
-GM checks: `/lstest tale [boss]` asks the realm's storyteller for a tale now (`/lstest tale legion`); `/lstest fireside`
-forgets today's fireside tales so the next rest tells one.
+GM checks: `/lstest tale [boss]` asks the realm's storyteller for a tale now (`/lstest tale legion`). With `raid` at the
+end (`/lstest tale golestandt raid`) the rumour after it is the raid, without the roll, when that raid can form; the reply
+says why it could not form right now. `/lstest fireside` forgets today's fireside tales so the next rest tells one.
 
 ## Where it lives
 
@@ -84,7 +88,8 @@ forgets today's fireside tales so the next rest tells one.
 | Memory | `offline_lore_memory`, keys `tale:teller:<realm>:<slot>`, `tale:told:<realm>:<scene>`, `tale:last:<realm>`, `tale:fire:<character>:<scene>`. No new table. |
 
 Log lines: `TALE_TELLER`, `TALE_START`, `TALE_NOT_STARTED`, `TALE_END` (finished, lines, reason), `TALE_ASIDE`,
-`TALE_REQUEST`, `TALE_RUMOUR` (kind=raid or lore), `TALE_RAID` (opened, reason), `TALE_FIRESIDE`. The scene's lines are
+`TALE_REQUEST`, `TALE_RUMOUR` (kind=raid or lore; `no_raid=` says why it was not a raid: the roll, or the raid's own
+reason), `TALE_RAID` (opened, reason), `TALE_FIRESIDE`. The scene's lines are
 `CHAT_LINE src=tale`; the lines after it (the rumour, a grumble when a tale is cut short) are `src=tale_after`: they are not
 the scene's, so they fit under /faction's ceiling, and they keep their turn for three minutes (`LIVING_FEATURE_DUE` /
 `LIVING_FEATURE_DROPPED feature=tale_after`).

@@ -15,7 +15,7 @@ namespace DOL.GS.Commands;
     "/lstest list - every part, on or off",
     "/lstest storyline | debate | dunce - the next /faction scene starts now (a storyline episode, any debate, a dunce rage quit)",
     "/lstest spammer | roleplayer | rumour - a gold spammer, a roleplayer's line, a rumour about a rare named in this region",
-    "/lstest tale [boss] | fireside - the realm's storyteller tells a tale in /faction now (of that boss: legion, golestandt, ...); fireside: sit down in a boss's place with a gamebot in your group and a groupmate tells the short one",
+    "/lstest tale [boss] [raid] | fireside - the realm's storyteller tells a tale in /faction now (of that boss: legion, golestandt, ...; with raid: the rumour after it is the raid, when it can form); fireside: sit down in a boss's place with a gamebot in your group and a groupmate tells the short one",
     "/lstest tell - a bot starts a tell to you",
     "/lstest memory - what bots remember about you",
     "/lstest remember - your target (or the nearest gamebot) remembers a good group with you; walk away and back to be greeted",
@@ -66,12 +66,21 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                     Say(client, talesOff);
                 else
                 {
-                    string about = args.Length > 2 ? string.Join(' ', args.Skip(2)) : null;
+                    // "/lstest tale golestandt raid": the rumour after it is the raid, without the roll, when the raid can form.
+                    bool raid = args.Length > 3 && args[^1].Equals("raid", StringComparison.OrdinalIgnoreCase);
+                    string[] words = args.Skip(2).Take(args.Length - 2 - (raid ? 1 : 0)).ToArray();
+                    string about = words.Length > 0 ? string.Join(' ', words) : null;
                     string loreId = about == null ? null : AutonomousTales.RequestedLore(about,
                         LoreBible.Current.Bosses.Select(boss => (boss.Id, LoreBible.NamesOf(boss.Name, boss.Id, boss.Aliases))));
-                    Say(client, AutonomousTales.TryStart(realm, loreId, null, out string noTale)
-                        ? $"The realm's storyteller is asked for a tale in /faction{(loreId != null ? " (" + loreId + ")" : "")}; it starts within a few seconds."
-                        : $"No tale: {noTale}.");
+                    if (!AutonomousTales.TryStart(realm, loreId, null, out string noTale))
+                        Say(client, $"No tale: {noTale}.");
+                    else
+                    {
+                        string noRaid = raid ? AutonomousTales.AskRaidRumour(realm, loreId) : null;
+                        Say(client, $"The realm's storyteller is asked for a tale in /faction{(loreId != null ? " (" + loreId + ")" : "")}; it starts within a few seconds." +
+                            (!raid ? "" : noRaid == null ? " The rumour after it will be the raid, if the raid can still form then."
+                                : $" The rumour after it will be the raid if it can form then; right now it cannot: {noRaid}."));
+                    }
                 }
                 return;
             case "fireside":
