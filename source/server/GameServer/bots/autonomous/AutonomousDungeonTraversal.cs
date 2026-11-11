@@ -42,7 +42,9 @@ namespace DOL.GS
         private void NoteDungeonHold(GameBot bot, GameNPC blocker, long now, long gap, bool restarted, bool separated, bool raidTrash)
         {
             Vector3 at = new(bot.X, bot.Y, bot.Z);
-            if (_dungeonHoldFirst <= 0 || Vector3.Distance(at, _dungeonHoldFirstAt) > DungeonHoldSamePlace)
+            // A new hold (the bot walked on, or came back to this spot after a death or a fight) is counted from now.
+            if (_dungeonHoldFirst <= 0 || Vector3.Distance(at, _dungeonHoldFirstAt) > DungeonHoldSamePlace ||
+                gap > AutonomousDungeonPolicy.ThreatHoldGapMilliseconds)
             {
                 _dungeonHoldFirst = now;
                 _dungeonHoldFirstAt = at;
