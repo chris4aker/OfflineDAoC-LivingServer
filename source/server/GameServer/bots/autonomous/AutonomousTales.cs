@@ -223,27 +223,42 @@ public static class AutonomousTales
     }
 
     /// <summary>
-    /// Whether a line says again what one of <paramref name="said"/> says: most of its words (three letters or more) are in
-    /// that line. Pure. (PC check 2026-11-10, build 15fcc70: the teller answered a player with a sentence the tale itself
-    /// said a minute later, and the rumour after the tale was the same sentence a third time.)
+    /// Whether a line says again what one of <paramref name="said"/> says: half or more of the shorter line's telling words
+    /// (no "the", "heard", "they say"; "stops" and "stopped" count as one word) are in both, three at least. Pure.
+    /// (PC checks 2026-11-10. Build 15fcc70: the teller answered a player with a sentence the tale itself said a minute later,
+    /// and the rumour after the tale was that sentence a third time. Build 5300a87, which compared whole words: "the whole
+    /// fortress stops turning for a second" as the answer, "the whole fortress stopped turning for one breath" in the tale.)
     /// </summary>
     public static bool Repeats(string line, IEnumerable<string> said)
     {
         HashSet<string> words = WordsOf(line);
-        if (words.Count < 4 || said == null)
+        if (words.Count < 3 || said == null)
             return false;
         foreach (string other in said)
         {
             HashSet<string> theirs = WordsOf(other);
-            if (theirs.Count >= 4 && words.Count(theirs.Contains) >= 0.7 * Math.Min(words.Count, theirs.Count))
+            if (theirs.Count < 3)
+                continue;
+            int shared = words.Count(theirs.Contains);
+            if (shared >= 3 && shared * 2 >= Math.Min(words.Count, theirs.Count))
                 return true;
         }
         return false;
     }
 
+    private static readonly HashSet<string> SmallWords = new(StringComparer.Ordinal)
+    {
+        "the", "and", "for", "that", "this", "with", "from", "they", "them", "their", "his", "her", "him", "she", "was", "were",
+        "are", "you", "your", "say", "says", "said", "heard", "someone", "when", "what", "who", "its", "has", "had", "have", "not",
+        "but", "out", "one", "all", "any", "every", "into", "than", "then", "there", "here", "got", "get", "will", "would", "can",
+        "about", "just", "even", "ever", "never", "still", "only", "once", "been", "some",
+    };
+
+    /// <summary>A line's telling words, each cut to its first four letters.</summary>
     private static HashSet<string> WordsOf(string text) =>
         new string((text ?? string.Empty).ToLowerInvariant().Select(c => char.IsLetter(c) ? c : ' ').ToArray())
-            .Split(' ', StringSplitOptions.RemoveEmptyEntries).Where(word => word.Length >= 3).ToHashSet(StringComparer.Ordinal);
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries).Where(word => word.Length >= 3 && !SmallWords.Contains(word))
+            .Select(word => word.Length > 4 ? word[..4] : word).ToHashSet(StringComparer.Ordinal);
 
     /// <summary>Every line a tale's scene can say (all the ways of saying each).</summary>
     public static IEnumerable<string> LinesOf(VC.Scene scene) =>
@@ -264,6 +279,8 @@ public static class AutonomousTales
         public int Asides;
         /// <summary>What the teller answered a player in this tale, so the rumour after it says something else.</summary>
         public readonly List<string> Answers = new();
+        /// <summary>GM check (/lstest tale ... raid): the next rumour is the raid when the raid can form, without the roll.</summary>
+        public bool RaidRumourNext;
         public readonly List<(long At, Action Do)> Due = new();
     }
 
@@ -413,6 +430,7 @@ public static class AutonomousTales
             state.TellerName = teller.Name;
             state.Asides = 0;
             state.Answers.Clear();
+            state.RaidRumourNext = false;
         }
         Log.Info($"TALE_START realm={GlobalConstants.RealmToName(realm)} scene={scene.Id} teller=\"{teller.Name}\" asked_by=\"{askedBy?.Name ?? "a bot"}\"");
         return true;
@@ -549,13 +567,23 @@ public static class AutonomousTales
         LoreBible.Boss boss = LoreBible.Current.BossById(loreId);
         string raidId = RaidIdFor(loreId, realm);
         string realmName = GlobalConstants.RealmToName(realm);
-        if (boss != null && raidId != null && Properties.BOT_LIVING_TALE_RAIDS && Random.Shared.NextDouble() < TrueRumourChance &&
-            AutonomousRealmRaid.CouldStartForTale(raidId, realm, out _))
+        // Why the rumour is not a raid this time, for the log (null: it is).
+        RealmState state = State(realm);
+        bool asked;
+        lock (state)
+        {
+            asked = state.RaidRumourNext;
+            state.RaidRumourNext = false;
+        }
+        string noRaid = boss == null || raidId == null ? "no raid for this tale"
+            : !Properties.BOT_LIVING_TALE_RAIDS ? "bot_living_tale_raids is off"
+            : !asked && Random.Shared.NextDouble() >= TrueRumourChance ? "not this time"
+            : AutonomousRealmRaid.CouldStartForTale(raidId, realm, out string cannot) ? null : cannot;
+        if (noRaid == null)
         {
             string line = RaidRumours[Random.Shared.Next(RaidRumours.Length)].Replace("{boss}", boss.Name.ToLowerInvariant());
             SayAfter(realm, tellerId, "rumour", line, () =>
             {
-                RealmState state = State(realm);
                 long at = GameLoop.GameLoopTime + RaidDelayMs + (long)(Random.Shared.NextDouble() * RaidSpreadMs);
                 lock (state)
                     state.Due.Add((at, () =>
@@ -563,7 +591,7 @@ public static class AutonomousTales
                         bool opened = AutonomousRealmRaid.StartForTale(raidId, realm, out string reason);
                         Log.Info($"TALE_RAID realm={realmName} event={raidId} opened={opened} reason=\"{reason}\"");
                     }));
-                Log.Info($"TALE_RUMOUR realm={realmName} about={loreId} kind=raid event={raidId}");
+                Log.Info($"TALE_RUMOUR realm={realmName} about={loreId} kind=raid event={raidId} opens_in_s={(at - GameLoop.GameLoopTime) / 1_000}");
             });
             return;
         }
@@ -571,9 +599,24 @@ public static class AutonomousTales
         string[] fresh = FreshRumours(boss, realm, heard);
         if (fresh.Length > 0)
             SayAfter(realm, tellerId, "rumour", fresh[Random.Shared.Next(fresh.Length)],
-                () => Log.Info($"TALE_RUMOUR realm={realmName} about={loreId} kind=lore"));
+                () => Log.Info($"TALE_RUMOUR realm={realmName} about={loreId} kind=lore no_raid=\"{noRaid}\""));
         else
-            Log.Info($"TALE_RUMOUR realm={realmName} about={loreId} kind=none");
+            Log.Info($"TALE_RUMOUR realm={realmName} about={loreId} kind=none no_raid=\"{noRaid}\"");
+    }
+
+    /// <summary>
+    /// GM check (/lstest tale ... raid): the rumour after the realm's next finished tale is the raid, without the roll, when
+    /// that raid can form. Returns why it could not form right now (null: it could), for the GM's line.
+    /// </summary>
+    public static string AskRaidRumour(eRealm realm, string loreId)
+    {
+        RealmState state = State(realm);
+        lock (state)
+            state.RaidRumourNext = true;
+        string raidId = RaidIdFor(loreId, realm);
+        return raidId == null ? "no raid for this tale"
+            : !Properties.BOT_LIVING_TALE_RAIDS ? "bot_living_tale_raids is off"
+            : AutonomousRealmRaid.CouldStartForTale(raidId, realm, out string cannot) ? null : cannot;
     }
 
     /// <summary>
