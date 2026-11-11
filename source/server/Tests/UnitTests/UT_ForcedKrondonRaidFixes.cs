@@ -96,9 +96,34 @@ namespace DOL.UnitTests
             Assert.That(AutonomousDungeonPolicy.HoldsForPuller(true, last - since, AutonomousWorldBotController.DungeonThreatHoldLimitMilliseconds),
                 Is.False, "the 90 s limit ends it");
             Assert.That(AutonomousDungeonPolicy.HoldsForPuller(true, 89_000, AutonomousWorldBotController.DungeonThreatHoldLimitMilliseconds), Is.True);
-            // After a fight or a walk (no hold scan for more than 5 s) the next hold is a new one.
+            // After a long fight or walk (no hold scan for more than a minute) the next hold is a new one.
             long later = last + AutonomousDungeonPolicy.ThreatHoldGapMilliseconds + 1;
             Assert.That(AutonomousDungeonPolicy.ThreatHoldStart(since, last, later), Is.EqualTo(later));
+        }
+
+        [Test]
+        public void TheThreatHoldEndsHoweverFarApartItsScansCome()
+        {
+            // Play test duo32 (2026-11-11): a held raid party scans only when it issues a move order, every 6.5 s to 20 s
+            // (median 13 s). With the 5-second gap every scan began a new hold and 80 raiders held for up to 18 minutes.
+            long start = 1_000_000, since = AutonomousDungeonPolicy.ThreatHoldStart(0, 0, start), last = start;
+            foreach (long step in new long[] { 6_534, 13_134, 20_000, 13_134, 6_634, 13_134, 20_000 })
+            {
+                long now = last + step;
+                since = AutonomousDungeonPolicy.ThreatHoldStart(since, last, now, movedSinceHoldBegan: 30);
+                last = now;
+            }
+            Assert.Multiple(() =>
+            {
+                Assert.That(since, Is.EqualTo(start), "one hold");
+                Assert.That(AutonomousDungeonPolicy.HoldsForPuller(true, last - since,
+                    AutonomousWorldBotController.DungeonThreatHoldLimitMilliseconds), Is.False, "ended by the 90 s limit");
+                // A bot that walked on holds anew at the next threat.
+                Assert.That(AutonomousDungeonPolicy.ThreatHoldStart(since, last, last + 1_000,
+                    AutonomousDungeonPolicy.ThreatHoldSamePlace + 1), Is.EqualTo(last + 1_000));
+                Assert.That(AutonomousDungeonPolicy.ThreatHoldStart(since, last, last + 1_000,
+                    AutonomousDungeonPolicy.ThreatHoldSamePlace), Is.EqualTo(since));
+            });
         }
 
         [Test]

@@ -14,6 +14,8 @@ namespace DOL.GS
         private long _dungeonThreatHoldSince;
         // The last scan that held (AutonomousDungeonPolicy.ThreatHoldStart: one hold while the bot keeps holding).
         private long _dungeonThreatHoldLast;
+        // Where the current hold began (AutonomousDungeonPolicy.ThreatHoldSamePlace).
+        private Vector3 _dungeonThreatHoldAt;
         // A corridor threat this bot is walking around because its party is elsewhere (see SeparatedFromParty).
         private GameNPC _dungeonThreatDetour;
         public const long DungeonThreatHoldLimitMilliseconds = 90_000;
@@ -325,7 +327,10 @@ namespace DOL.GS
                 long holdGap = _dungeonThreatHoldLast > 0 ? holdNow - _dungeonThreatHoldLast : 0;
                 long holdBefore = _dungeonThreatHoldSince;
                 _dungeonThreatHoldBlocker = blocker;
-                _dungeonThreatHoldSince = AutonomousDungeonPolicy.ThreatHoldStart(_dungeonThreatHoldSince, _dungeonThreatHoldLast, holdNow);
+                Vector3 holdAt = new(bot.X, bot.Y, bot.Z);
+                _dungeonThreatHoldSince = AutonomousDungeonPolicy.ThreatHoldStart(_dungeonThreatHoldSince, _dungeonThreatHoldLast, holdNow,
+                    Vector3.Distance(holdAt, _dungeonThreatHoldAt));
+                if (_dungeonThreatHoldSince != holdBefore) _dungeonThreatHoldAt = holdAt;
                 _dungeonThreatHoldLast = holdNow;
                 NoteDungeonHold(bot, blocker, holdNow, holdGap, _dungeonThreatHoldSince != holdBefore, separated, raidTrash);
                 if (AutonomousDungeonPolicy.HoldsForPuller(!separated, holdNow - _dungeonThreatHoldSince, DungeonThreatHoldLimitMilliseconds))
