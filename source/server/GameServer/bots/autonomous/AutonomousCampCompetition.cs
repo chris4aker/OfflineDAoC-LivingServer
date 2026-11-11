@@ -276,6 +276,20 @@ public static class AutonomousCampCompetition
     /// The camps to draw from: the uncrowded ones, or when every camp is crowded the least crowded third (at least one).
     /// <paramref name="own"/> is the bot's own current camp, which does not count itself as competition.
     /// </summary>
+    /// <summary>Only the uncrowded camps (none when every one is crowded).</summary>
+    public static T[] Quiet<T>(T[] camps, Func<T, string> id, Func<T, int> liveMobs, string own = null, int partySize = 1)
+    {
+        int Bots(T camp)
+        {
+            int count = Occupancy(id(camp));
+            if (own != null && SameSpawns(id(camp), own))
+                count = Math.Max(0, count - partySize);
+            return count + partySize;
+        }
+        int Mobs(T camp) => SharedLiveMobs(id(camp), liveMobs(camp));
+        return camps.Where(camp => !Crowded(Bots(camp), Mobs(camp))).ToArray();
+    }
+
     public static T[] PreferQuiet<T>(T[] camps, Func<T, string> id, Func<T, int> liveMobs, string own = null, int partySize = 1)
     {
         if (camps.Length <= 1)

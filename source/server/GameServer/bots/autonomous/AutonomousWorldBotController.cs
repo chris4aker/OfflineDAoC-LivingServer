@@ -204,6 +204,12 @@ namespace DOL.GS
         private long _lfgPauseUntilTick;
         private long _lfgNextRollTick;
         private ConColor? _lastEngagedCon;
+        // True 1.65: the con it last died to, and camps it just left as crowded (AutonomousCampCrowdWidening)
+        private ConColor? _lastDeathCon;
+        private long _lastDeathConTick;
+        private readonly List<(string CampId, long Until)> _busyCamps = new();
+        /// <summary>How long crowd widening keeps a bot off the con it died to.</summary>
+        public const long CrowdWideningDiedToMilliseconds = 30 * 60_000;
         private string _lastFailedCampId = string.Empty;
         private string _lastFailedTargetName = string.Empty;
         private AutonomousBotGroupCoordinator.Directive _groupDirective;
@@ -270,7 +276,9 @@ namespace DOL.GS
             int ThreatLevel = 0,
             int PoolMobs = -1,
             // owner 2026-11-08: a merged camp's other anchors (x, y, z triples) tried in turn when its own fails projection
-            int[] FallbackAnchors = null);
+            int[] FallbackAnchors = null,
+            // True 1.65 (its owner 2026-11-10): most live monsters of its name around it fly (AutonomousFlyerCampPolicy)
+            bool FlyerCamp = false);
 
         private static CampCatalogCell[] _campCatalog = [];
 
@@ -3024,6 +3032,9 @@ namespace DOL.GS
                         return true;
                     }
                 }
+                // True 1.65: a solo bot leaving a crowded camp skips it and its same-spawn copies for 10 minutes
+                if (crowdedCamp && AutonomousCampCrowdWidening.BusySiblingMemory)
+                    AutonomousCampCrowdWidening.RememberBusy(_busyCamps, _camp.Id, GameLoop.GameLoopTime);
                 AbandonCamp(bot, $"No live {_camp.MonsterName} remained at the camp");
                 return true;
             }
@@ -3479,6 +3490,11 @@ namespace DOL.GS
             Dictionary<string, CampDestination> destinations = new(StringComparer.OrdinalIgnoreCase);
             Dictionary<string, (eRealm Wing, float Distance)> darknessFallsRoutes = new(StringComparer.OrdinalIgnoreCase);
             List<AutonomousBotDecisionEngine.Camp> camps = new();
+            // True 1.65: a solo bot with no ranged attack is not sent to a flyer camp (mygga); groups keep them
+            eCharacterClass planClass = (eCharacterClass)(bot.CharacterClass?.ID ?? 0);
+            bool skipFlyerCamps = AutonomousFlyerCampPolicy.SkipsCamp(true, !sharedGroup && bot.Group == null,
+                AutonomousFlyerCampPolicy.HasRangedAttack(BotSpellPower.IsOffensiveCaster(bot),
+                    planClass is eCharacterClass.Scout or eCharacterClass.Hunter or eCharacterClass.Ranger));
             // Levelling solo bots weigh travel time (AutonomousBotDecisionEngine.TravelWeightPercent).
             bool weighTravel = !sharedGroup && bot.Level < 50;
             DateTime dangerUtc = DateTime.UtcNow;
@@ -3508,6 +3524,7 @@ namespace DOL.GS
                                         AutonomousOrdinaryPveRealmPolicy.CanAssignCamp(bot.Realm, cell.RegionId,
                                             cell.Zone?.ID ?? 0, planningLevel) &&
                                         AutonomousAuditedCampPolicy.CanAssignToParty(cell.Id, groupSize) &&
+                                        !(skipFlyerCamps && cell.FlyerCamp) &&
                                         // Bot-led groups: a party hosting the player hunts where the player can walk or ride.
                                         (_groupDirective?.HostedPlayer == null || !cell.IsFrontier &&
                                          cell.RegionId != AutonomousDarknessFallsPolicy.RegionId &&
@@ -3695,6 +3712,10 @@ namespace DOL.GS
             }
             // spots that keep coming up empty are left out while other camps remain (AutonomousCampEmptyMemory, True 1.65)
             legalCells = AvoidEmptySpots(legalCells, destinations);
+            // True 1.65: busy siblings, then one con step up when every allowed camp is crowded (solo bots only)
+            if (!sharedGroup && bot.Group == null)
+                legalCells = ApplySoloCrowdRules(bot, legalCells, camps, destinations, environment, minimumTargetCon,
+                    maximumTargetCon, naturalMaximumTargetCon);
             // Less competition first: crowded camps only when every camp is crowded (AutonomousCampCompetition).
             legalCells = AutonomousCampCompetition.PreferQuiet(legalCells, camp => camp.Id, camp => camp.LiveMobCount,
                 bot.PersistentRecord?.CurrentCampId, sharedGroup ? groupSize : 1);
@@ -4088,6 +4109,28 @@ namespace DOL.GS
                 return Math.Max(count, cell.LiveMobCount);
             }
 
+            // True 1.65: most live monsters of the camp's name within the pool radius fly (AutonomousFlyerCampPolicy)
+            bool FlyerNear(CampCatalogCell cell)
+            {
+                if (cell.IsDungeon)
+                    return false;
+                string name = AutonomousCampCompetition.NormalizeName(cell.MonsterName);
+                long reach = (long)poolCell * poolCell;
+                int flying = 0, total = 0;
+                int cx = FloorDiv(cell.X, poolCell), cy = FloorDiv(cell.Y, poolCell);
+                for (int dx = -1; dx <= 1; dx++)
+                    for (int dy = -1; dy <= 1; dy++)
+                        if (byName.TryGetValue((cell.RegionId, name, cx + dx, cy + dy), out var list))
+                            foreach (CampMonster npc in list)
+                                if (DistanceSquared(npc.X, npc.Y, cell.X, cell.Y) <= reach)
+                                {
+                                    total++;
+                                    if (npc.Flying)
+                                        flying++;
+                                }
+                return AutonomousFlyerCampPolicy.IsFlyerCamp(flying, total);
+            }
+
             // one level per distinct live monster of the camp's name within the pool radius (what a bot there hunts)
             int[] PoolLevels(CampCatalogCell cell)
             {
@@ -4163,6 +4206,8 @@ namespace DOL.GS
                     dangerous++;
                     cell = cell with { ThreatLevel = threat };
                 }
+                if (FlyerNear(cell))
+                    cell = cell with { FlyerCamp = true };
                 result.Add(cell);
             }
             // camps per realm and 5-level band; a band with none keeps its source-empty camps as a fallback
@@ -4178,7 +4223,7 @@ namespace DOL.GS
                 if (!needed)
                     continue;
                 fallback++;
-                result.Add(cell with { PoolMobs = PoolNear(cell), ThreatLevel = ThreatNear(cell) });
+                result.Add(cell with { PoolMobs = PoolNear(cell), ThreatLevel = ThreatNear(cell), FlyerCamp = FlyerNear(cell) });
             }
             if (fallback > 0)
                 coverage = CampCoverage(result);
@@ -4332,6 +4377,9 @@ namespace DOL.GS
             _recoverAfterSoloDeath = true;
 
             ConColor failedCon = _lastEngagedCon ?? MaximumTargetCon(groupSize);
+            // crowd widening never sends it back to the con it died to (null: no pull since the last death)
+            _lastDeathCon = _lastEngagedCon;
+            _lastDeathConTick = nowTick;
             ConColor saferCon = (ConColor)Math.Max((int)ConColor.GREEN, (int)failedCon - 1);
             int requiredSteps = (int)naturalMaximum - (int)saferCon;
             _deathDifficultySteps = Math.Clamp(
@@ -6290,6 +6338,73 @@ namespace DOL.GS
             AutonomousCampCompetition.TryGetSpot(campId, out AutonomousCampCompetition.CampSpot spot)
                 ? AutonomousCampEmptyMemory.Key(spot.Region, spot.Name, spot.X, spot.Y)
                 : AutonomousCampEmptyMemory.Key(destination.RegionId, destination.MonsterName, destination.X, destination.Y);
+
+        /// <summary>
+        /// True 1.65 (AutonomousCampCrowdWidening): a solo bot skips camps sharing spawns with ones it just left as crowded
+        /// (never all of them), and, held below its natural con after deaths, takes an uncrowded camp one con step harder
+        /// when every camp it may take is crowded (never the con it died to). The harder list is built only then; the
+        /// at-camp target filter is unchanged.
+        /// </summary>
+        private AutonomousBotDecisionEngine.Camp[] ApplySoloCrowdRules(GameBot bot, AutonomousBotDecisionEngine.Camp[] legalCells,
+            List<AutonomousBotDecisionEngine.Camp> camps, Dictionary<string, CampDestination> destinations,
+            AutonomousBotDecisionEngine.PveEnvironment environment, ConColor minimumTargetCon, ConColor maximumTargetCon,
+            ConColor naturalMaximumTargetCon)
+        {
+            long now = GameLoop.GameLoopTime;
+            if (AutonomousCampCrowdWidening.TryTakeSummary(now, out string summary))
+                Log.Info($"AUTONOMOUS_CAMP_CROWD_SUMMARY {summary}");
+            string own = bot.PersistentRecord?.CurrentCampId;
+            string[] busy = AutonomousCampCrowdWidening.BusySiblingMemory
+                ? AutonomousCampCrowdWidening.ActiveBusy(_busyCamps, now) : Array.Empty<string>();
+            if (busy.Length > 0)
+            {
+                int before = legalCells.Length;
+                legalCells = AutonomousCampCrowdWidening.AvoidBusySiblings(legalCells, busy, camp => camp.Id,
+                    AutonomousCampCompetition.SameSpawns);
+                if (legalCells.Length < before)
+                    AutonomousCampCrowdWidening.CountBusySkipped(bot.Realm);
+            }
+            if (!AutonomousCampCrowdWidening.WidenWhenCrowded || bot.Level < AutonomousCampCrowdWidening.MinimumLevel ||
+                environment != AutonomousBotDecisionEngine.PveEnvironment.Outdoor || maximumTargetCon >= naturalMaximumTargetCon ||
+                legalCells.Length == 0)
+                return legalCells;
+            AutonomousBotDecisionEngine.Camp[] strictQuiet = AutonomousCampCompetition.Quiet(legalCells, camp => camp.Id,
+                camp => camp.LiveMobCount, own);
+            if (!AutonomousCampCrowdWidening.ShouldWiden(true, true, bot.Level, legalCells.Length, strictQuiet.Length,
+                    maximumTargetCon, naturalMaximumTargetCon))
+            {
+                AutonomousCampCrowdWidening.CountStrictQuiet(bot.Realm);
+                return legalCells;
+            }
+            ConColor? diedTo = now - _lastDeathConTick < CrowdWideningDiedToMilliseconds ? _lastDeathCon : null;
+            if (AutonomousCampCrowdWidening.WidenedCeiling(maximumTargetCon, naturalMaximumTargetCon, diedTo) is not ConColor ceiling)
+            {
+                AutonomousCampCrowdWidening.CountBlockedDiedTo(bot.Realm);
+                return legalCells;
+            }
+            AutonomousBotDecisionEngine.Camp[] wider = camps.Where(camp => camp.Reachable && camp.Realm == bot.Realm &&
+                camp.LiveMobCount > 0 && !camp.IsDungeon && camp.RegionId != AutonomousDarknessFallsPolicy.RegionId &&
+                camp.LowestCon >= minimumTargetCon && camp.TypicalCon > maximumTargetCon && camp.TypicalCon <= ceiling).ToArray();
+            if (wider.Length > 0)
+            {
+                wider = AvoidEmptySpots(wider, destinations);
+                wider = AutonomousDeathRecoveryPolicy.PreferFreshTargets(wider, _recentFailedSoloTargets, now).ToArray();
+                wider = AutonomousCampCrowdWidening.AvoidBusySiblings(wider, busy, camp => camp.Id,
+                    AutonomousCampCompetition.SameSpawns);
+            }
+            AutonomousBotDecisionEngine.Camp[] picked = AutonomousCampCrowdWidening.PickWidened(legalCells, wider,
+                set => AutonomousCampCompetition.Quiet(set, camp => camp.Id, camp => camp.LiveMobCount, own));
+            if (picked == null)
+            {
+                AutonomousCampCrowdWidening.CountCrowdedFallback(bot.Realm);
+                return legalCells;
+            }
+            AutonomousCampCrowdWidening.CountWidened(bot.Realm);
+            Log.Info($"AUTONOMOUS_CAMP_WIDENED bot={bot.Name} id={bot.DatabaseID} realm={bot.Realm} level={bot.Level} " +
+                     $"from={maximumTargetCon} to={ceiling} natural={naturalMaximumTargetCon} died_to={(diedTo?.ToString() ?? "none")} " +
+                     $"strict_crowded={legalCells.Length} wider_quiet={picked.Length}");
+            return picked;
+        }
 
         /// <summary>The camps whose spot has not kept coming up empty (all of them when every one has; True 1.65).</summary>
         private static AutonomousBotDecisionEngine.Camp[] AvoidEmptySpots(AutonomousBotDecisionEngine.Camp[] camps,
