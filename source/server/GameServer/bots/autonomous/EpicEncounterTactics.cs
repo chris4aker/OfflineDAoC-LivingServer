@@ -59,6 +59,12 @@ namespace DOL.GS
             public int SpreadRadius { get; init; }
             /// <summary>Only while the boss has this model (Govannon's demon form, 636; 0: always).</summary>
             public int SpreadWhileModel { get; init; }
+            /// <summary>The name of the boss's spell that lands on everyone within <see cref="SpreadRadius"/> of its target
+            /// (Govannon's Shroud of Agony: a four-second cast, then about 1,440 damage over 24 seconds; play test duo28's
+            /// ledger, 122,123 damage to the raid in the minute after his change, 53 raiders in it). While the boss casts it,
+            /// every raider it would catch but that target steps out of the radius, and comes back once it has landed: melee
+            /// cannot fight him from outside it, so standing clear all fight is not an answer for them.</summary>
+            public string StepOutOfCast { get; init; }
             /// <summary>While the spread is on, melee fight the boss from behind him, clear of the area hit around his target
             /// (<see cref="EncounterMeleeStations"/>): his target keeps <see cref="AnchorHoldDistance"/> from him and the
             /// other melee stand <see cref="BehindDistance"/> behind him on the line from his target (owner 2026-11-07,
@@ -442,6 +448,24 @@ namespace DOL.GS
             return new Vector3(at.X, at.Y, raider.Z);
         }
 
+        /// <summary>A raider within this far past the radius of an area spell being cast steps out, to this far past it.</summary>
+        public const int CastMargin = 50, CastStepOut = 120;
+
+        /// <summary>Where a raider at <paramref name="raider"/> steps to while a spell that will land within
+        /// <paramref name="radius"/> of <paramref name="center"/> is being cast, or null when it already stands clear. Pure.</summary>
+        public static Vector3? StepOutOfArea(Vector3 raider, Vector3 center, int radius)
+        {
+            float d = Vector2.Distance(new(raider.X, raider.Y), new(center.X, center.Y));
+            if (d > radius + CastMargin) return null;
+            Vector2 dir = d < 1 ? new Vector2(1, 0) : Vector2.Normalize(new Vector2(raider.X - center.X, raider.Y - center.Y));
+            Vector2 at = new Vector2(center.X, center.Y) + dir * (radius + CastStepOut);
+            return new Vector3(at.X, at.Y, raider.Z);
+        }
+
+        /// <summary>Whether <paramref name="boss"/> is casting the spell of that name right now.</summary>
+        public static bool IsCasting(GameNPC boss, string spellName) =>
+            spellName != null && boss?.castingComponent?.SpellHandler?.Spell?.Name == spellName;
+
         /// <summary>A caster or healer this far inside the spread radius of the boss's target moves this far past it.</summary>
         public const int SpreadMargin = 60, SpreadStepOut = 250;
 
@@ -730,6 +754,12 @@ namespace DOL.GS
             {
                 // Who he fights and where his area hit lands (EpicEncounterTactics.SummonersHall.cs): log lines only.
                 TraceSpreadTarget(target, anchor, st.SpreadRadius, now);
+                // His area spell is being cast: everyone it would catch but his target steps out, and comes back when it has
+                // landed (the advice below sends them back to their spots).
+                if (raider != anchor && IsCasting(target, st.StepOutOfCast) &&
+                    StepOutOfArea(at, new(anchor.X, anchor.Y, anchor.Z), st.SpreadRadius) is Vector3 outOfCast)
+                    return new(BotAction.Reposition, target, outOfCast,
+                        $"cast: out of \"{st.StepOutOfCast}\" ({st.SpreadRadius} around \"{anchor.Name}\")");
                 bool healer = classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId);
                 bool atRange = canShootFlyers || healer;
                 // The melee: fight him from behind, clear of the area hit around his target.
