@@ -28,8 +28,15 @@ Trollheim and Tur Suil 160; the others 96-120) and recruited up to 300, and the 
     realm's 300.
 - **Recruit cap:** a quarter above what the raid must stage, in whole parties (RecruitCap of the full size, scaled by
   the same percentage).
-- **Short start and hub departure:** half of what the sized raid needs, at least three parties (24). The old minimum
-  of 40 was 57% of a 70-bot dragon raid and 82% of one trimmed to 49.
+- **Short start and hub departure** (owner, 2026-11-11: "go with who came"): after the hub's 30 minutes the raid leaves
+  with whoever gathered, and at its staging deadline it goes in with whoever is there, three parties (24) at least.
+  Until then it was half of what the sized raid needs: on the owner's PC (build e17a92b) Midgard's and Hibernia's epic
+  rallies, sized up to 134 and 142 after losses, gathered 55 and 69 in 90 minutes, never left their hubs and ended
+  "Failed rally" without a fight.
+- **A loss under strength is no result:** a raid that never had the bots it was sized for (the most it recruited is
+  under what it must stage) and is defeated or times out does not move the next raid's size or the Special Forces'
+  call-up (`REALM_RAID_ENDED ... mostRecruited= underStrength=True`; in the ledger its details end "Under strength: 55 of
+  134."). A win under strength is a win. The Herald still tells it as a defeat.
 - **Epic Special Forces** (owner, 2026-11-04): "keep 24 and if they are called in on the same raid type where 24 made
   the second run win, it's 16 now". They don't scale with the raid's size. Per encounter: 24 to start; a win they took
   part in makes the next call-up there a party (8) smaller, down to 8 (they always answer a wipe); a win without them

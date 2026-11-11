@@ -15,7 +15,8 @@ namespace DOL.UnitTests
             Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 200, 0), Is.True);
             Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 150, 29 * Minute), Is.False);
             Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 150, 30 * Minute), Is.True);
-            Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 99, 60 * Minute), Is.False);
+            Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 99, 60 * Minute), Is.True, "who came goes (2026-11-11; it was half)");
+            Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 23, 60 * Minute), Is.False, "under three parties");
             Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 102, 31 * Minute), Is.True, "Summoner's Hall, Midgard, 2026-10-21");
         }
 

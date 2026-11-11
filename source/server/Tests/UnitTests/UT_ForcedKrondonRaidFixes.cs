@@ -46,7 +46,9 @@ namespace DOL.UnitTests
             // Automatic raids keep their 30-minute patience with half (the smaller of 120 of 200 and half of what they need).
             Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 199, 25 * Minute, 200), Is.False);
             Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 100, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds, 200), Is.True);
-            Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 99, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds, 200), Is.False);
+            Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 99, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds, 200), Is.True,
+                "an automatic raid goes with who came (2026-11-11)");
+            Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 23, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds, 200), Is.False);
             Assert.That(RealmRaidRecruitmentPolicy.ForcedLastCallMilliseconds, Is.EqualTo(RealmRaidRecruitmentPolicy.HubPatienceMilliseconds));
         }
 

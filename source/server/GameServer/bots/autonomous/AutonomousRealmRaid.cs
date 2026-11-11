@@ -106,6 +106,8 @@ namespace DOL.GS
             public readonly RealmRaidLootOwner.Ledger LootLedger = new();
             public readonly Dictionary<Group, Party> Parties = new();
             public GameLiving[] Support = [];
+            /// <summary>The most bots the raid had recruited at any time (RealmRaidRecruitmentPolicy.UnderStrength).</summary>
+            public int MostRecruited;
             /// <summary>Members released from this raid (no route to the hub); never recruited back.</summary>
             public readonly HashSet<long> Released = new();
             public long NextRefill;
@@ -439,6 +441,7 @@ namespace DOL.GS
                             RemoveParty(group);
                     }
                     raid.Support = raid.Parties.Values.SelectMany(p => p.Members).Cast<GameLiving>().ToArray();
+                    raid.MostRecruited = Math.Max(raid.MostRecruited, raid.Support.Length);
                     int presentAtHub = raid.Parties.Values.Sum(p => PresentAtHub(raid, p));
                     bool departing = !raid.HubDeparted && RealmRaidRecruitmentPolicy.DepartHub(false, presentAtHub,
                         GameLoop.GameLoopTime - raid.Created, raid.Required, !raid.Clocked);
@@ -1730,13 +1733,20 @@ namespace DOL.GS
             // And how many wipes it took: a time-out without one stays out of the record (owner, 2026-11-05).
             // And who led it, for the Herald's chronicle sentence (Living Server 1.2, LoreChronicle): the first party's leader.
             string raidLeader = raid.Parties.Keys.Select(g => g?.LivingLeader?.Name).FirstOrDefault(n => !string.IsNullOrWhiteSpace(n));
+            // And whether it ever had the bots it was sized for: a loss under strength is no result (owner, 2026-11-11).
+            raid.MostRecruited = Math.Max(raid.MostRecruited, raid.Support.Length);
+            bool underStrength = !raid.Forced && raid.Sizing != null &&
+                RealmRaidRecruitmentPolicy.UnderStrength(raid.MostRecruited, raid.Required);
+            string details = RealmEventRecordStore.WithWipes(raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason, raid.Wipes);
+            if (underStrength) details = RealmEventRecordStore.WithUnderStrength(details, raid.MostRecruited, raid.Required);
             RealmEventRecords.Finish(raid.Definition.Id, outcome, LoreChannels.LoreChronicle.WithRaidLeader(RealmEventRecordStore.WithRaidSize(RealmEventRecordStore.WithSpecialForces(
-                RealmEventRecordStore.WithWipes(raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason, raid.Wipes),
-                specialForcesJoined), sizePercent), raidLeader), raid.Support.Length);
+                details, specialForcesJoined), sizePercent), raidLeader), raid.Support.Length);
             if (outcome == "Boss defeated") LastSuccessful[raid.Definition.Realm] = raid.Definition.Id;
-            AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id, AutonomousEpicSpecialForces.RecordOutcome(outcome, raid.Wipes),
+            AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id,
+                RealmEventRecordStore.RecordOutcome(AutonomousEpicSpecialForces.RecordOutcome(outcome, raid.Wipes), underStrength),
                 raid.Forced, sizePercent);
             Log.Info($"REALM_RAID_ENDED event={raid.Definition.Id} outcome=\"{outcome}\" support={raid.Support.Length} required={raid.Required} " +
+                     $"mostRecruited={raid.MostRecruited} underStrength={underStrength} " +
                      $"forced={raid.Forced} minutes={(now - raid.Created) / 60_000} named={named.Length} " +
                      $"specialForces={AutonomousEpicSpecialForces.Count(raid.Definition.Id)} specialForcesJoined={specialForcesJoined} wipes={raid.Wipes} reason=\"{reason}\"");
             if (outcome == "Defeated")
