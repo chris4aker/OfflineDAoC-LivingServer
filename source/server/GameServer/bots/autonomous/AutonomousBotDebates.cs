@@ -68,6 +68,18 @@ public static class AutonomousBotDebates
     public const int MaxBusyWaitMs = 45_000;
     /// <summary>How long a storyline episode waits for a busy protagonist.</summary>
     public const int StoryBusyWaitMs = 180_000;
+    /// <summary>How long a whole tale may wait for its teller in fights, and the least any one line waits.</summary>
+    public const int TaleBusyBudgetMs = 90_000, TaleBusyMinMs = 10_000;
+
+    /// <summary>
+    /// How long a tale waits for its busy teller at this line, given how long it has waited at earlier ones: up to
+    /// <see cref="MaxBusyWaitMs"/> while the tale's budget lasts, then ten seconds a line. After that the teller types between
+    /// pulls, as a player does; only a teller who left the game ends the tale. Pure. (PC check 2026-11-10, build 15fcc70: a
+    /// teller pulled into a fight after the opening lines was waited for three minutes, and the tale held /faction silent all
+    /// that time.)
+    /// </summary>
+    public static long TaleBusyWaitMs(long waitedBeforeMs) =>
+        Math.Clamp(TaleBusyBudgetMs - Math.Max(0, waitedBeforeMs), TaleBusyMinMs, MaxBusyWaitMs);
 
     /// <summary>
     /// The rule for one beat. A free cast speaker speaks. A busy one is waited for (up to
@@ -106,8 +118,14 @@ public static class AutonomousBotDebates
         };
     }
 
-    /// <summary>Whether a role may be given another bot: never once it has spoken, and never a storyline's protagonist. Pure.</summary>
-    public static bool MayRecast(bool roleSpoke, bool storyProtagonist) => !roleSpoke && !storyProtagonist;
+    /// <summary>
+    /// Whether a role may be given another bot: never a storyline's protagonist or a tale's teller, and never once it has
+    /// spoken, but in a tale, whose listeners are a crowd: when the one who asked the first question has left, another asks
+    /// the next (PC check 2026-11-10, build 15fcc70: a tale a player asked for stopped after twelve lines, "role D spoke and
+    /// its bot left"). Pure.
+    /// </summary>
+    public static bool MayRecast(bool roleSpoke, bool storyProtagonist, bool taleListener = false) =>
+        !storyProtagonist && (!roleSpoke || taleListener);
 
     /// <summary>Typing pace: 3 seconds plus about 60 ms a character, within 3-10 seconds.</summary>
     public static int BeatDelayMs(string text) => Math.Clamp(3_000 + (text?.Length ?? 0) * 60, 3_000, 10_000);
@@ -250,6 +268,8 @@ public static class AutonomousBotDebates
         public long StoryA, StoryB;
         /// <summary>The tale this scene is (AutonomousTales: "tale_legion"), or null. Its teller (role B) is never recast.</summary>
         public string TaleTopic;
+        /// <summary>How long this tale has waited for its teller in fights so far (TaleBusyWaitMs).</summary>
+        public long TellerWaitedMs;
         public int Beat;
         public long NextAt;
         /// <summary>When the current beat started waiting for a busy speaker; 0 when not waiting.</summary>
@@ -743,28 +763,50 @@ public static class AutonomousBotDebates
             // pair died mid-scene).
             if ((roleSpoke || IsFixedRole(running, beat.Role)) && state == SpeakerState.Gone && DeadInWorld(realm, running, beat.Role))
                 state = SpeakerState.Busy;
+            // A tale's listener who spoke and has left the game: another listener takes the role, or its line is skipped.
+            if (roleSpoke && running.TaleTopic != null && state == SpeakerState.Gone && !IsFixedRole(running, beat.Role))
+            {
+                roleSpoke = false;
+                if (Log.IsInfoEnabled)
+                    Log.Info($"BOT_DEBATE_RECAST realm={GlobalConstants.RealmToName(realm)} scene={running.Scene.Id} role={beat.Role} beat={running.Beat}");
+            }
             long waited = running.WaitingSince == 0 ? 0 : now - running.WaitingSince;
             // A storyline's protagonist is never replaced: a busy one is waited for (up to three minutes), and one who
             // left or stays busy ends the episode unfinished, so it plays again later with the same pair.
+            // A tale's teller is never replaced either, but is waited for only a little: then it types between pulls.
+            bool tale = running.TaleTopic != null;
+            bool tellerAnyway = false;
             if (IsFixedRole(running, beat.Role) && state != SpeakerState.Free)
             {
-                if (state == SpeakerState.Busy && waited < StoryBusyWaitMs)
+                if (state == SpeakerState.Busy && waited < (tale ? TaleBusyWaitMs(running.TellerWaitedMs) : StoryBusyWaitMs))
                 {
                     if (running.WaitingSince == 0)
+                    {
                         running.WaitingSince = now;
+                        if (tale && Log.IsInfoEnabled)
+                            Log.Info($"BOT_DEBATE_WAIT realm={GlobalConstants.RealmToName(realm)} scene={running.Scene.Id} role={beat.Role} beat={running.Beat} reason=\"the teller is busy\"");
+                    }
                     running.Beat--;
                     running.NextAt = now + BusyRetryMs;
                     return;
                 }
-                End(realm, running.TaleTopic != null ? "the teller left" : "a protagonist left");
-                return;
+                if (!tale || state != SpeakerState.Busy)
+                {
+                    End(realm, tale ? "the teller left" : "a protagonist left");
+                    return;
+                }
+                tellerAnyway = true;
             }
+            if (tale && IsFixedRole(running, beat.Role))
+                running.TellerWaitedMs += waited;
             // A role that spoke: its own bot, whatever it is doing, while it is in the game; never another.
-            GameBot speaker = roleSpoke
+            GameBot speaker = roleSpoke || tellerAnyway
                 ? state != SpeakerState.Gone && running.Cast.TryGetValue(beat.Role, out long castId) && AutonomousBotRegistry.TryGet(castId, out GameBot own) ? own : null
                 : state == SpeakerState.Free || state == SpeakerState.Busy && waited >= MaxBusyWaitMs || state == SpeakerState.Gone
                     ? SpeakerFor(realm, running, beat.Role) : null;
-            BeatDecision decision = DecideBeat(state, waited, speaker != null, SpeakersAround(realm, running), roleSpoke);
+            BeatDecision decision = tellerAnyway && speaker != null
+                ? BeatDecision.Speak
+                : DecideBeat(state, waited, speaker != null, SpeakersAround(realm, running), roleSpoke);
             // A role that spoke keeps its bot: if that bot has left the game, the scene ends (never recast).
             if (roleSpoke && decision == BeatDecision.Speak && speaker == null)
                 decision = BeatDecision.End;
@@ -1022,7 +1064,7 @@ public static class AutonomousBotDebates
         lock (Sync)
             spoke = running.Said.Any(said => said.Role == role);
         // A storyline's protagonist has no stand-in, and a role that spoke keeps its bot (1.1.3: the dunce changed after line 1).
-        if (!MayRecast(spoke, IsFixedRole(running, role)))
+        if (!MayRecast(spoke, IsFixedRole(running, role), running.TaleTopic != null))
             return null;
         running.Scene.Roles.TryGetValue(role, out VC.RoleSpec spec);
         var taken = running.Cast.Values.ToHashSet();
