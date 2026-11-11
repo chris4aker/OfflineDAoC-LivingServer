@@ -47,6 +47,21 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void HisChangeHealsHimToThreeQuartersUnlessTheOriginalIsOn()
+        {
+            // Owner 2026-11-11: "if you can't close it, yeah let's try heals to 75%". Play tests duo30b to duo35.
+            Assert.Multiple(() =>
+            {
+                Assert.That(DOL.GS.EpicEncounterMechanics.AllowGovannonFullHeal, Is.False, "off by default (epic_govannon_full_heal)");
+                Assert.That(DOL.GS.EpicEncounterMechanics.GovannonDemonHealth(200_000, 100_000, fullHeal: false), Is.EqualTo(150_000));
+                Assert.That(DOL.GS.EpicEncounterMechanics.GovannonDemonHealth(200_000, 100_000, fullHeal: true), Is.EqualTo(200_000));
+                Assert.That(DOL.GS.EpicEncounterMechanics.GovannonDemonHealth(300_000, 150_000, false), Is.EqualTo(225_000), "the original 300,000");
+                Assert.That(DOL.GS.EpicEncounterMechanics.GovannonDemonHealth(200_000, 160_000, false), Is.EqualTo(160_000), "never less than he has");
+                Assert.That(DOL.GS.EpicEncounterMechanics.RestoreSwitches, Does.Contain(nameof(DOL.GS.EpicEncounterMechanics.AllowGovannonFullHeal)));
+            });
+        }
+
+        [Test]
         public void ARaiderSentOutHoldsOutUntilTheSpellHasLanded()
         {
             // Play test duo33: past the radius a raider was told nothing, so the melee went back to their station 294 from
