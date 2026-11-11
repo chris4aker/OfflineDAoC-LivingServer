@@ -756,6 +756,9 @@ namespace DOL.GS
                 TraceSpreadTarget(target, anchor, st.SpreadRadius, now);
                 // His area spell is being cast: everyone it would catch but his target steps out, and comes back when it has
                 // landed (the advice below sends them back to their spots).
+                // (Seen here by whoever fights him; ThinkAreaCast then moves the ones who do not: healers, and the pets.)
+                if (IsCasting(target, st.StepOutOfCast))
+                    CastWatch[target] = st.StepOutOfCast;
                 if (raider != anchor && IsCasting(target, st.StepOutOfCast) &&
                     StepOutOfArea(at, new(anchor.X, anchor.Y, anchor.Z), st.SpreadRadius) is Vector3 outOfCast)
                     return new(BotAction.Reposition, target, outOfCast,
@@ -1245,6 +1248,44 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>The bosses seen casting their area spell (<see cref="Tactic.StepOutOfCast"/>), with the spell's name.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<GameNPC, string> CastWatch = new();
+
+        /// <summary>
+        /// A boss near the bot is casting its area spell (Govannon's Shroud of Agony): the bot's pet comes off him, and the bot
+        /// itself, whatever it is doing, breaks its own cast and steps out of the spell's radius around his target. Play test
+        /// duo30b: with only the raiders that fight him stepping out, each Shroud still caught 4 to 10 healers, mid-heal when he
+        /// cast, and 8 or 9 pets. True: turn used.
+        /// </summary>
+        private static bool ThinkAreaCast(GameBot bot)
+        {
+            foreach (var (boss, spell) in CastWatch)
+            {
+                if (!Present(boss) || !IsCasting(boss, spell))
+                {
+                    CastWatch.TryRemove(boss, out _);
+                    continue;
+                }
+                if (boss.CurrentRegionID != bot.CurrentRegionID || boss.TargetObject is not GameLiving anchor ||
+                    For(boss) is not { SpreadRadius: > 0 } tactic)
+                    continue;
+                Vector3 center = new(anchor.X, anchor.Y, anchor.Z);
+                if (bot.ControlledBrain?.Body is { IsAlive: true } pet && pet != anchor && pet.TargetObject == boss &&
+                    StepOutOfArea(new(pet.X, pet.Y, pet.Z), center, tactic.SpreadRadius) != null)
+                    bot.ControlledBrain.Disengage();
+                if (bot == anchor || StepOutOfArea(new(bot.X, bot.Y, bot.Z), center, tactic.SpreadRadius) is not Vector3 exit)
+                    continue;
+                if (bot.IsCasting) bot.StopCurrentSpellcast();
+                bot.StopAttack();
+                if (bot.FollowTarget == boss) bot.StopFollowing();
+                bot.PathTo(new Point3D((int)exit.X, (int)exit.Y, (int)exit.Z), bot.MaxSpeed);
+                LogDecision(bot, boss, new(BotAction.Reposition, boss, exit,
+                    $"cast: out of \"{spell}\" ({tactic.SpreadRadius} around \"{anchor.Name}\"), whatever it was doing"));
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// BotBrain's first look each turn (beside <see cref="ThinkErrand"/>): an autonomous raider near a boss about to blast,
         /// or still holding out of one, stops fighting and walks out (or waits there), whatever it is doing: a healer with no
@@ -1254,6 +1295,7 @@ namespace DOL.GS
         {
             if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || !bot.IsAlive) return false;
             long now = GameLoop.GameLoopTime;
+            if (!CastWatch.IsEmpty && ThinkAreaCast(bot)) return true;
             if (System.Threading.Volatile.Read(ref _blastBosses) == 0 && System.Threading.Volatile.Read(ref _standOffHoldCount) == 0 &&
                 System.Threading.Volatile.Read(ref _liveHazardCount) == 0)
                 return false;
