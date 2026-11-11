@@ -750663,10 +750663,10 @@
     },
     {
      "role": "D",
-     "text": "so what did he answer",
+     "text": "so what did he answer?",
      "variants": [
-      "so what did he answer",
-      "and what did they ask him for"
+      "so what did he answer?",
+      "and what did they ask him for?"
      ],
      "optional": false
     },
@@ -751103,9 +751103,9 @@
     },
     {
      "role": "D",
-     "text": "but the throwing",
+     "text": "but the throwing?",
      "variants": [
-      "but the throwing",
+      "but the throwing?",
       "and the fire?"
      ],
      "optional": false
@@ -751322,7 +751322,7 @@
      "text": "and came back how?",
      "variants": [
       "and came back how?",
-      "what did the dragon do to him"
+      "what did the dragon do to him?"
      ],
      "optional": false
     },
@@ -751543,9 +751543,9 @@
     },
     {
      "role": "D",
-     "text": "bound how",
+     "text": "bound how?",
      "variants": [
-      "bound how",
+      "bound how?",
       "and the name?"
      ],
      "optional": false
@@ -751767,10 +751767,10 @@
     },
     {
      "role": "D",
-     "text": "has anyone killed her",
+     "text": "has anyone killed her?",
      "variants": [
-      "has anyone killed her",
-      "can she even be hurt"
+      "has anyone killed her?",
+      "can she even be hurt?"
      ],
      "optional": false
     },
@@ -752178,10 +752178,10 @@
     },
     {
      "role": "F",
-     "text": "so they grew up together",
+     "text": "so they grew up together?",
      "variants": [
-      "so they grew up together",
-      "brothers then, near enough"
+      "so they grew up together?",
+      "brothers then, near enough?"
      ],
      "optional": true
     },
@@ -752215,10 +752215,10 @@
     },
     {
      "role": "D",
-     "text": "thats a fine oath",
+     "text": "thats a fine oath. isnt it?",
      "variants": [
-      "thats a fine oath",
-      "whats wrong with the oath"
+      "thats a fine oath. isnt it?",
+      "whats wrong with the oath?"
      ],
      "optional": false
     },
@@ -752418,10 +752418,10 @@
     },
     {
      "role": "F",
-     "text": "so a cattle lord",
+     "text": "so a cattle lord?",
      "variants": [
-      "so a cattle lord",
-      "hard how"
+      "so a cattle lord?",
+      "hard how?"
      ],
      "optional": true
     },
@@ -752455,10 +752455,10 @@
     },
     {
      "role": "D",
-     "text": "and the hostages",
+     "text": "and the hostages?",
      "variants": [
-      "and the hostages",
-      "what happened on the reed flats"
+      "and the hostages?",
+      "what happened on the reed flats?"
      ],
      "optional": false
     },
@@ -752687,10 +752687,10 @@
     },
     {
      "role": "D",
-     "text": "gleann glas",
+     "text": "gleann glas?",
      "variants": [
-      "gleann glas",
-      "what was in the valley"
+      "gleann glas?",
+      "what was in the valley?"
      ],
      "optional": false
     },
