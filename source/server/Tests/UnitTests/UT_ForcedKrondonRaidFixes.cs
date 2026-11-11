@@ -319,6 +319,23 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void TheRaidsMesmerizedAreCountedOverTheMinute()
+        {
+            var tally = new RealmRaidDungeonRoute.ControlTally();
+            Assert.That(tally.MezzedAverage, Is.EqualTo(0), "no samples");
+            tally.Add(0, 0);
+            tally.Add(60, 2);
+            tally.Add(30, 0);
+            Assert.Multiple(() =>
+            {
+                Assert.That(tally.Samples, Is.EqualTo(3));
+                Assert.That(tally.MezzedPeak, Is.EqualTo(60));
+                Assert.That(tally.MezzedAverage, Is.EqualTo(30));
+                Assert.That(tally.StunnedPeak, Is.EqualTo(2));
+            });
+        }
+
+        [Test]
         public void AHoldInOnePlaceIsReportedAfterThreeMinutesAndThenEveryThree()
         {
             long first = 1_000_000;

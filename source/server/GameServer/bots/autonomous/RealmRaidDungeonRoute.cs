@@ -1219,10 +1219,37 @@ namespace DOL.GS
         // fared. Once a minute: the current target's health, whether it is in combat, and the raiders around it.
         private long _nextTargetStatusLog;
 
+        /// <summary>How many raiders could not act (mesmerized, stunned) over the samples of one report (diagnostics;
+        /// pure). Play test duo29, 2026-11-10: in the second minute at Spindler Broodmother 25 of about 110 living raiders
+        /// hit her and 11 hit a newborn, with 87 targeting her; she mesmerizes everyone within 300 of a random raider for
+        /// 60 seconds every half minute, and nothing in the log counted it.</summary>
+        public struct ControlTally
+        {
+            public int Samples, MezzedPeak, MezzedSum, StunnedPeak;
+            public void Add(int mezzed, int stunned)
+            {
+                Samples++;
+                MezzedSum += mezzed;
+                if (mezzed > MezzedPeak) MezzedPeak = mezzed;
+                if (stunned > StunnedPeak) StunnedPeak = stunned;
+            }
+            public readonly int MezzedAverage => Samples == 0 ? 0 : (int)Math.Round(MezzedSum / (double)Samples);
+        }
+        /// <summary>The raid's mesmerized and stunned are counted this often while its target fights.</summary>
+        public const long ControlSampleMilliseconds = 5_000;
+        private ControlTally _control;
+        private long _nextControlSample;
+
         public void Advance(GameLiving[] participants, long now)
         {
             AdvanceCore(participants, now);
             GameNPC target = _target;
+            if (target != null && target.IsAlive && target.InCombat && now >= _nextControlSample)
+            {
+                _nextControlSample = now + ControlSampleMilliseconds;
+                _control.Add(participants.Count(p => p.IsAlive && p.CurrentRegionID == target.CurrentRegionID && p.IsMezzed),
+                    participants.Count(p => p.IsAlive && p.CurrentRegionID == target.CurrentRegionID && p.IsStunned));
+            }
             if (target != null && target.IsAlive && now >= _nextTargetStatusLog)
             {
                 _nextTargetStatusLog = now + 60_000;
@@ -1234,7 +1261,9 @@ namespace DOL.GS
                     .GroupBy(p => p.TargetObject.Name).OrderByDescending(g => g.Count()).Take(4).Select(g => $"{g.Key}:{g.Count()}"));
                 log.Info($"REALM_EXPEDITION_TARGET_STATUS region={_region} target=\"{target.Name}\" level={target.Level} " +
                          $"health={target.HealthPercent}% inCombat={target.InCombat} raidersWithin1000={near} targeting={onIt} " +
-                         $"at={target.X},{target.Y},{target.Z} spawnDistance={(int)target.GetDistanceTo(target.SpawnPoint)} busyWith=\"{busyWith}\"");
+                         $"at={target.X},{target.Y},{target.Z} spawnDistance={(int)target.GetDistanceTo(target.SpawnPoint)} busyWith=\"{busyWith}\" " +
+                         $"mezzedAvg={_control.MezzedAverage} mezzedPeak={_control.MezzedPeak} stunnedPeak={_control.StunnedPeak} samples={_control.Samples}");
+                _control = default;
                 // Where the raid's damage went in that minute, and what hurt it (diagnostics).
                 EpicFightLedger.Report(_region, target.Name, 60);
             }
