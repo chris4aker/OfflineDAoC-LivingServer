@@ -5251,6 +5251,45 @@ namespace DOL.AI.Brain
         /// A group member a heal or buff may be aimed at: this bot, or a member within
         /// 2,500 units in the same region that is not being skipped after a failed approach.
         /// </summary>
+        private long _nextRaidCureScan;
+        private long _nextRaidCureLog;
+
+        /// <summary>
+        /// A mesmerized member of this bot's raid, of any party, that it can cure from where it stands, or null: autonomous
+        /// raiders with the cure only, scanned twice a second (<see cref="RaidCureMezz"/>).
+        /// </summary>
+        private GameLiving RaidMezzedToCure()
+        {
+            if (!BotBody.IsAutonomousWorldBot || BotBody.CureMezz == null || BotBody.Group == null) return null;
+            long now = GameLoop.GameLoopTime;
+            if (now < _nextRaidCureScan) return null;
+            _nextRaidCureScan = now + 500;
+            if (AutonomousRealmRaid.GetView(BotBody.Group) == null || !CheckHealSpell(BotBody.CureMezz)) return null;
+            int range = BotBody.castingComponent.CalculateSpellRange(BotBody.CureMezz);
+            var living = new List<GameLiving>();
+            var mezzed = new List<RaidCureMezz.Mezzed>();
+            foreach (GameLiving member in AutonomousRealmRaid.SupportMembers(BotBody))
+            {
+                if (member == null || member == Body || !member.IsAlive || !member.IsMezzed ||
+                    member.CurrentRegion != Body.CurrentRegion || !Body.IsWithinRadius(member, range))
+                    continue;
+                GameBot bot = member as GameBot;
+                living.Add(member);
+                mezzed.Add(new(member.ObjectID, bot?.CureMezz != null,
+                    bot?.CharacterClass != null && BotPartyRoles.IsHealingClass((eCharacterClass)bot.CharacterClass.ID),
+                    BotPartyRoles.IsTank(bot)));
+            }
+            int pick = RaidCureMezz.Choose(mezzed, Body.ObjectID);
+            if (pick < 0) return null;
+            if (now >= _nextRaidCureLog && log.IsInfoEnabled)
+            {
+                _nextRaidCureLog = now + 15_000;
+                log.Info($"RAID_CURE_MEZZ bot={Body.Name} class=\"{BotBody.CharacterClass?.Name}\" target=\"{living[pick].Name}\" " +
+                         $"rank={RaidCureMezz.Rank(mezzed[pick])} mezzedInReach={mezzed.Count} spell=\"{BotBody.CureMezz.Name}\"");
+            }
+            return living[pick];
+        }
+
         private bool InSupportReach(GameLiving member) =>
             member == Body || member != null && member.CurrentRegion == Body.CurrentRegion &&
             Body.IsWithinRadius(member, BotSupportReach.SupportRadius) &&
@@ -5628,6 +5667,13 @@ namespace DOL.AI.Brain
                     else if (CheckHealSpell(BotBody.HealGroup))
                         spellToCast = BotBody.HealGroup;
                 }
+            }
+
+            // The raid's mesmerized, across its parties, before ordinary healing (RaidCureMezz).
+            if (RaidCureMezz.ComesBeforeHealing(numEmergency) && RaidMezzedToCure() is GameLiving raidMezzed)
+            {
+                spellToCast = BotBody.CureMezz;
+                spellTarget = raidMezzed;
             }
 
             // Cast the selected spell
