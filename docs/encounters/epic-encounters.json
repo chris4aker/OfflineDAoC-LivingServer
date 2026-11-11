@@ -79,7 +79,7 @@
   "source/server/GameServer/scripts/namedmobs/EncounterSignals.cs": "28c34dec1840c590c674a26de40d6ac8321c182c004765f3cb553d76c0eca10c",
   "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "25da681fa8a3bd7e96d89b02f6d0622363d00ce77445f6c4c3e3444e9a47df39",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
-  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "1907282adb0de082eeff10f6331a8d8270776eb3abb13d3996734996183d3bb0",
+  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "9298146f9325d4dd090435939aa8f2837bb9eb0f1c4c20c8d9e526fa03f828ae",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "cdc59166c4aeb7f3946a436feab3e597d0384fb27d87438c856db55dc77fb758",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
   "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe",
@@ -187,7 +187,7 @@
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Vasrem.cs": "5a6d0d84e1cea4cb4ccaf5c14e582941a6780b5083e5ba5ca17294d5f7430556",
   "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "faf306406385799b4d8b9b2af801bdb6d7dd4f10ec3ac641a06cd9b038b24583",
   "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "d89b0e6d6adae7ee4a944ffcd0a31db5aad5c2152946ccd568d570d7095e386f",
-  "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "b1670c27f8287fd476963dcd604ed0c3d6ee926691321f3dca547a4262198f83",
+  "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "265f97adb0abe867c5c9b6eaa134aa76d8ab8925922e9c1c5b66aed6636cf46e",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "71371583d6bed9cab527981da675b0a7d501642eb66f584d00692147801cd770",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "889fa7d0b06549afa47c2d560e9754906e8d6b345901088efc12d4f24f3eab15",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs": "a11dc500e720562928b31c3f1079bbac635db52cb9899978742fff9105c99d58",
@@ -489,10 +489,25 @@
    "about": "Grand Summoner Govannon has 300,000 health (not 200,000). Off by default (epic_govannon_full_health) until a played check: the raid's tactics for him (sacrifice and demon at range, spread in demon form) play either way; a 60-bot raid took 300,000 about 1% a minute (run 18)."
   },
   {
-   "name": "AllowEasmarachEndlessFallsHeal",
+   "name": "AllowGovannonFullHeal",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
    "line": 124,
+   "serverProperty": "npc / epic_govannon_full_heal",
+   "restores": true,
+   "about": "Grand Summoner Govannon heals to full when he turns into his demon at 50% (the original). Off by default (epic_govannon_full_heal; owner 2026-11-11): he heals to <see cref=\"GovannonDemonHealPercent\"/>%. Play tests duo30b to duo35 (80 Midgard bots, 200,000 health): with the raid stepping out of his Shroud of Agony it took the demon from full to 48%, 53%, 29% (stopped) and 42% before it wiped, 104,000 to 142,000 damage; at 75% he has 150,000."
+  },
+  {
+   "name": "GovannonDemonHealPercent",
+   "value": "75",
+   "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
+   "line": 126
+  },
+  {
+   "name": "AllowEasmarachEndlessFallsHeal",
+   "value": "false",
+   "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
+   "line": 135,
    "serverProperty": "npc / epic_easmarach_endless_falls_heal",
    "restores": true,
    "about": "Easmarach heals an eighth on the waterfall top every time he falls to 30%, and stays up there (the original). Off by default (1.2 play test, 2026-11-07: epic_easmarach_endless_falls_heal): he heals there once a fight, rests, and comes back down to fight on. A bot raid can only shoot him on the top (spells take 70% resists): 42% to 34% in ten minutes, and each fall to 30% healed him back, so he could never die and Galladoria's last room never came."
@@ -501,7 +516,7 @@
    "name": "AllowKvasirColdHeal",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 133,
+   "line": 144,
    "serverProperty": "npc / epic_kvasir_cold_heal",
    "restores": true,
    "about": "Cold damage heals Icelord Kvasir by a fifth of his health and does no damage. On since 1.2: no bot casts cold at him (EpicEncounterTactics.ForbidsSpell)."
@@ -510,7 +525,7 @@
    "name": "AllowTuscarTwinHeal",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 136,
+   "line": 147,
    "serverProperty": "npc / epic_tuscar_twin_heal",
    "restores": true,
    "about": "Damage to King Tuscar heals Queen Kula, and damage to her heals him, while the other is below full health. On since 1.2: the raid kills Kula first and only the King's own target fights him (EpicEncounterTactics)."
@@ -519,13 +534,13 @@
    "name": "ResetQuietMilliseconds",
    "value": "8000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 360
+   "line": 371
   },
   {
    "name": "PetDevourIntervalMilliseconds",
    "value": "5000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 368
+   "line": 379
   }
  ],
  "ruleKinds": {
@@ -1041,6 +1056,15 @@
     "original": "300,000 health.",
     "ours": "200,000.",
     "switch": "AllowGovannonFullHealth"
+   },
+   {
+    "encounters": [
+     "summoner-s-hall/grandsummonergovannon"
+    ],
+    "places": 1,
+    "original": "At 50% he turns into his demon and heals to full.",
+    "ours": "He heals to 75% (owner, 2026-11-11: bot raids that stepped out of his Shroud still lost with the demon at 29% to 42%).",
+    "switch": "AllowGovannonFullHeal"
    },
    {
     "encounters": [
@@ -27592,14 +27616,14 @@
      "sourceClass": "GrandSummonerGovannonBrain",
      "method": "Think",
      "threshold": 50,
-     "tactic": "In the raid AI (EpicEncounterTactics): at 50% he becomes the demon at full health and starts his Shroud of Agony (radius 300 around his target): the raid spreads, and steps out of the Shroud while he casts it (see his tactic).",
+     "tactic": "In the raid AI (EpicEncounterTactics): at 50% he becomes the demon, healed to 75% (to full with AllowGovannonFullHeal on), and starts his Shroud of Agony (radius 300 around his target): the raid spreads, and steps out of the Shroud while he casts it (see his tactic).",
      "difficulty": "needs new raid AI",
      "verified": true,
      "key": "phase@285"
     },
     {
      "kind": "phase",
-     "summary": "Changes form in MorphIntoDemon (Strength = 800)",
+     "summary": "Changes form in MorphIntoDemon (calls GovannonDemonHealth; Strength = 800)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
      "line": 304,
      "lineEnd": 304,
@@ -27789,7 +27813,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
+   "notes": "Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to 75% (AllowGovannonFullHeal, off by default, server property epic_govannon_full_heal; on, the original: healed to full), strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
    "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known.",
    "aiTactics": {
     "spreadRadius": 300,

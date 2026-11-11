@@ -37,11 +37,13 @@ Difficulty: *easy for the current raid AI* (it would do this with small changes,
 | `AllowBeathaHealsXaga` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:113` |
 | `AllowFairyFlight` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:115` |
 | `AllowGovannonFullHealth` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:119` |
-| `AllowEasmarachEndlessFallsHeal` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:124` |
-| `AllowKvasirColdHeal` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:133` |
-| `AllowTuscarTwinHeal` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:136` |
-| `ResetQuietMilliseconds` | 8000 | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:360` |
-| `PetDevourIntervalMilliseconds` | 5000 | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:368` |
+| `AllowGovannonFullHeal` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:124` |
+| `GovannonDemonHealPercent` | 75 | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:126` |
+| `AllowEasmarachEndlessFallsHeal` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:135` |
+| `AllowKvasirColdHeal` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:144` |
+| `AllowTuscarTwinHeal` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:147` |
+| `ResetQuietMilliseconds` | 8000 | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:371` |
+| `PetDevourIntervalMilliseconds` | 5000 | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:379` |
 
 ## Encounters with raid tactics
 
@@ -112,6 +114,7 @@ Where the fork had changed a mechanic for bots with no switch, the original is b
 | galladoria/beatha | 1 | Beatha's damage heals Xaga by twice the amount. | No heal. | `AllowBeathaHealsXaga` | on (`npc / epic_beatha_heals_xaga`) |
 | galladoria/beatha, galladoria/tine | 2 | The fairies circle the room (250, flying) even while fought. | They hold still while fought. | `AllowFairyFlight` | on (`npc / epic_fairy_flight`) |
 | summoner-s-hall/grandsummonergovannon | 1 | 300,000 health. | 200,000. | `AllowGovannonFullHealth` | off (`npc / epic_govannon_full_health`) |
+| summoner-s-hall/grandsummonergovannon | 1 | At 50% he turns into his demon and heals to full. | He heals to 75% (owner, 2026-11-11: bot raids that stepped out of his Shroud still lost with the demon at 29% to 42%). | `AllowGovannonFullHeal` | off (`npc / epic_govannon_full_heal`) |
 | tuscaran-glacier/kvasir | 1 | Cold damage heals him a fifth of his health and does nothing else (upstream has no out-of-tether immunity for him). | Cold hurts him. | `AllowKvasirColdHeal` | on (`npc / epic_kvasir_cold_heal`) |
 | tuscaran-glacier/queenkula, tuscaran-glacier/kingtuscar | 2 | Damage to one twin heals the other by the same amount while it is below full health. | No heal. | `AllowTuscarTwinHeal` | on (`npc / epic_tuscar_twin_heal`) |
 
@@ -2749,7 +2752,7 @@ Area spells: Might of the Forrest (DirectDamageNoVariance, damage 250, radius 35
 
 `source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs` lines 11-208. level 80; npc template 18801; raids: summoners-albion (final), summoners-midgard (final), summoners-hibernia (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.
+Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to 75% (AllowGovannonFullHeal, off by default, server property epic_govannon_full_heal; on, the original: healed to full), strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2757,8 +2760,8 @@ Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played
 | adds | Spawns 2 kinds of add (summoned sacrifice (SummonedSacrifice), summoned demon (SummonedDemon)): from Think when if (Body.HealthPercent <= 80 && SpawnSacrifices1 == false) | `GrandSummonerGovannon.cs:311` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics): ranged adds: casters and archers kill the sacrifice and the demon on their walk to the altar; the rest stay on him. |
 | adds | Spawns the Shade of Aelfgar (one at a time) once both the sacrifice and the demon have reached his altar (32063,40896) and died there; killed on the way, they never count. | `GrandSummonerGovannon.cs:337` | inferred, verified |  | needs new raid AI | Kill the sacrifice and the demon before they reach the altar (ranged adds); a Shade that comes anyway attacks the raid and the route turns on it. |
 | phase | At 80% health (Think): calls SendSpellEffectAnimation; calls SpawnDemonAndSacrifice; Strength = 650 | `GrandSummonerGovannon.cs:269` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| phase | At 50% health (Think): calls MorphIntoDemon | `GrandSummonerGovannon.cs:285` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics): at 50% he becomes the demon at full health and starts his Shroud of Agony (radius 300 around his target): the raid spreads, and steps out of the Shroud while he casts it (see his tactic). |
-| phase / form | Changes form in MorphIntoDemon (Strength = 800) | `GrandSummonerGovannon.cs:304` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics): spread while he has the demon model (636). |
+| phase | At 50% health (Think): calls MorphIntoDemon | `GrandSummonerGovannon.cs:285` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics): at 50% he becomes the demon, healed to 75% (to full with AllowGovannonFullHeal on), and starts his Shroud of Agony (radius 300 around his target): the raid spreads, and steps out of the Shroud while he casts it (see his tactic). |
+| phase / form | Changes form in MorphIntoDemon (calls GovannonDemonHealth; Strength = 800) | `GrandSummonerGovannon.cs:304` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics): spread while he has the demon model (636). |
 | reset | Resets when its aggro list is empty: walks home at full health, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `GrandSummonerGovannon.cs:234` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 | reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `GrandSummonerGovannon.cs:294` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 | teleport / fixed_spot | Teleports RandomTarget to a fixed spot (MoveTo Body.CurrentRegionID, 32091, 39684, 16302, 4094) | `GrandSummonerGovannon.cs:689` | inferred, verified |  | easy for the current raid AI | Shade of Aelfgar's gallery port: on since 1.2 for bots too (AllowBotDisplacement for ShadeOfAelfgar). A moved bot lands on the gallery 834 above his floor and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group. |

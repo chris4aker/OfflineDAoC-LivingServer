@@ -212,6 +212,15 @@
    },
    {
     "encounters": [
+     "summoner-s-hall/grandsummonergovannon"
+    ],
+    "places": 1,
+    "original": "At 50% he turns into his demon and heals to full.",
+    "ours": "He heals to 75% (owner, 2026-11-11: bot raids that stepped out of his Shroud still lost with the demon at 29% to 42%).",
+    "switch": "AllowGovannonFullHeal"
+   },
+   {
+    "encounters": [
      "tuscaran-glacier/kvasir"
     ],
     "places": 1,
@@ -2147,9 +2156,9 @@
   "summoner-s-hall/grandsummonergovannon": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "b1670c27f8287fd476963dcd604ed0c3d6ee926691321f3dca547a4262198f83"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "265f97adb0abe867c5c9b6eaa134aa76d8ab8925922e9c1c5b66aed6636cf46e"
    },
-   "notes": "Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
+   "notes": "Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to 75% (AllowGovannonFullHeal, off by default, server property epic_govannon_full_heal; on, the original: healed to full), strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
    "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known.",
    "aiTactics": {
     "spreadRadius": 300,
@@ -2179,7 +2188,7 @@
      "difficulty": "needs new raid AI"
     },
     "phase@285": {
-     "tactic": "In the raid AI (EpicEncounterTactics): at 50% he becomes the demon at full health and starts his Shroud of Agony (radius 300 around his target): the raid spreads, and steps out of the Shroud while he casts it (see his tactic).",
+     "tactic": "In the raid AI (EpicEncounterTactics): at 50% he becomes the demon, healed to 75% (to full with AllowGovannonFullHeal on), and starts his Shroud of Agony (radius 300 around his target): the raid spreads, and steps out of the Shroud while he casts it (see his tactic).",
      "difficulty": "needs new raid AI"
     },
     "phase@304": {
