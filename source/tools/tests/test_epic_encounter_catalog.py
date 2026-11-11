@@ -152,7 +152,7 @@ class TacticsAndRestores(unittest.TestCase):
 
     def test_every_offline_change_but_the_old_puzzle_switch_names_its_restore_switch(self):
         restore = {s["name"] for s in self.data["switches"] if s.get("restores")}
-        self.assertEqual(len(restore), 18)  # 1.2 play test: + AllowEasmarachEndlessFallsHeal
+        self.assertEqual(len(restore), 19)  # 1.2 play tests: + AllowEasmarachEndlessFallsHeal, + AllowGovannonFullHeal (owner 2026-11-11)
         changes = [(e["id"], r) for e in self.data["encounters"] for r in e["rules"] if r["kind"] == "offline_change"]
         self.assertGreaterEqual(len(changes), 23)
         for eid, r in changes:
