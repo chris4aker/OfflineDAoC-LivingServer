@@ -60,9 +60,12 @@ Hall) with a gamebot in your group, and a groupmate tells the short version in /
   of a play session. It starts only while a player of that realm is online.
 - The tale the realm heard longest ago comes first; one about the place a player is standing in is preferred six times in
   ten.
-- 1.2 ships fifteen tales: Golestandt, Apocalypse and Xanxicar (Albion); Gjalpinulva, King Tuscar and Nosdoden
-  (Midgard); Cuuldurach, Olcasgean and the Black Lady (Hibernia); and Legion and Govannon as each realm tells them. Each
-  has its fireside version.
+- 1.2 ships twenty-five tales. The first fifteen: Golestandt, Apocalypse and Xanxicar (Albion); Gjalpinulva, King Tuscar
+  and Nosdoden (Midgard); Cuuldurach, Olcasgean and the Black Lady (Hibernia); and Legion and Govannon as each realm tells
+  them. Ten more (2026-11-11), so that every raid's final boss has one: Aidon the Archwizard, Lord Gildas, Orylle and
+  Dura'ek the Empowered (Albion); Aros the Spiritmaster, Iarnvidiur and Queen Kula (Midgard); Avartack the Champion,
+  Chieftain Caimheul and Balor (Hibernia). The ten have passed the corpus check and the unit tests only; none has been
+  heard in game yet. Each has its fireside version.
 
 ## Settings
 

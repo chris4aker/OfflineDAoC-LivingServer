@@ -750529,6 +750529,2984 @@
    "needs": []
   },
   {
+   "id": "tale_aidon-the-archwizard",
+   "topic": "tale_aidon-the-archwizard",
+   "realm": "alb",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} who is the wizard on the stair in the hall of the corrupt",
+     "variants": [
+      "{name_b} who is the wizard on the stair in the hall of the corrupt",
+      "{name_b}, tell the aidon one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "hush all, academy story",
+     "variants": [
+      "hush all, academy story",
+      "quiet in faction, this ones about the archwizard"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "go on {name_b}, my master wont say his name",
+     "variants": [
+      "go on {name_b}, my master wont say his name",
+      "please. the academy pretends he never existed"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "aidon was the first mage of the academy to master all four. fire ice earth, and the theurgists air",
+     "variants": [
+      "aidon was the first mage of the academy to master all four. fire ice earth, and the theurgists air"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "magus cerwyn tested him. a brazier, a basin, a stone, an open window. she wrote she would not see it done again",
+     "variants": [
+      "magus cerwyn tested him. a brazier, a basin, a stone, an open window. she wrote she would not see it done again"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "so the constable sent him to the pennine watch. to learn if the summoners wards on the road could be broken",
+     "variants": [
+      "so the constable sent him to the pennine watch. to learn if the summoners wards on the road could be broken"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "had nobody tried before",
+     "variants": [
+      "had nobody tried before",
+      "and he was the first to try?"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "magus idris tried before him. idris never came back",
+     "variants": [
+      "magus idris tried before him. idris never came back"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "aidon worked above the watch. two apprentices carrying candles up in boxes of a hundred",
+     "variants": [
+      "aidon worked above the watch. two apprentices carrying candles up in boxes of a hundred"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and he learned what a ward is. a promise. every guardian stands there by a bargain. you pass a ward by answering it",
+     "variants": [
+      "and he learned what a ward is. a promise. every guardian stands there by a bargain. you pass a ward by answering it"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "so what did he answer?",
+     "variants": [
+      "so what did he answer?",
+      "and what did they ask him for?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the summoners wanted a keeper against each of the four ways a road can be broken. he gave them four of himself",
+     "variants": [
+      "the summoners wanted a keeper against each of the four ways a road can be broken. he gave them four of himself"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "those are the reflections you fight. fire ice air earth. he can only pay again when all four are spent",
+     "variants": [
+      "those are the reflections you fight. fire ice air earth. he can only pay again when all four are spent"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "which is why you leave one walking. every raid leader screams it",
+     "variants": [
+      "which is why you leave one walking. every raid leader screams it",
+      "leave one up. i have yelled that a hundred times"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "magus alun brought him down that way. two companies, keeping him one self short",
+     "variants": [
+      "magus alun brought him down that way. two companies, keeping him one self short"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the academy says he was deceived. the church says he sold the watch. the inconnu say they made an offer and waited",
+     "variants": [
+      "the academy says he was deceived. the church says he sold the watch. the inconnu say they made an offer and waited"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "his letters still come up the stair. calm ones. promising the constable he will close the road for good",
+     "variants": [
+      "his letters still come up the stair. calm ones. promising the constable he will close the road for good"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "one self short. thats horrible and i will remember it",
+     "variants": [
+      "one self short. thats horrible and i will remember it",
+      "so the fire around him is their seal. huh"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "he still writes letters. that part gets me",
+     "variants": [
+      "he still writes letters. that part gets me",
+      "promising to close the road. every time"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "tale_lord-gildas",
+   "topic": "tale_lord-gildas",
+   "realm": "alb",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} why does the lord at the bottom of the hall of the corrupt face us and not the summoners",
+     "variants": [
+      "{name_b} why does the lord at the bottom of the hall of the corrupt face us and not the summoners",
+      "{name_b}, the gildas one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "quiet, this is the penhallow story",
+     "variants": [
+      "quiet, this is the penhallow story",
+      "hush. hall of the corrupt tale"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "tell it {name_b}. my guild wiped to his poleaxe last week",
+     "variants": [
+      "tell it {name_b}. my guild wiped to his poleaxe last week",
+      "please, i want to know who he was"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "gildas was second son of the house of penhallow. a squire at castle sauvage",
+     "variants": [
+      "gildas was second son of the house of penhallow. a squire at castle sauvage"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he once held a breach in its wall for a night and a day. because nobody had told him he could leave",
+     "variants": [
+      "he once held a breach in its wall for a night and a day. because nobody had told him he could leave"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "thats why the constable picked him for the pennine watch. he would hold the road and never act on his own judgment",
+     "variants": [
+      "thats why the constable picked him for the pennine watch. he would hold the road and never act on his own judgment"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the letter of appointment called that his great virtue",
+     "variants": [
+      "the letter of appointment called that his great virtue"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "sounds like a good soldier to me",
+     "variants": [
+      "sounds like a good soldier to me",
+      "whats wrong with that"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "twenty years nothing came up that road his watch could not turn back. the watch set its hours by his evening round",
+     "variants": [
+      "twenty years nothing came up that road his watch could not turn back. the watch set its hours by his evening round"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "then the realm sent aidon. and gildas trusted him because the realm had sent him. he overruled his own captain",
+     "variants": [
+      "then the realm sent aidon. and gildas trusted him because the realm had sent him. he overruled his own captain"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "and the order? theres always an order in these",
+     "variants": [
+      "and the order? theres always an order in these",
+      "so how did the watch end up dead at its posts"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "that last winter his men began wandering from their posts. so he gave the order. no man leaves his post for any reason",
+     "variants": [
+      "that last winter his men began wandering from their posts. so he gave the order. no man leaves his post for any reason"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the summoners only had to keep his order for him. forever",
+     "variants": [
+      "the summoners only had to keep his order for him. forever"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "thats why the dead watch cant be hurt a step past its posts. and why he is bound to the lowest point of the road",
+     "variants": [
+      "thats why the dead watch cant be hurt a step past its posts. and why he is bound to the lowest point of the road"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "pull them off their post and you hit air. ask me how i know",
+     "variants": [
+      "pull them off their post and you hit air. ask me how i know",
+      "learned that one the expensive way"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "he died there the last night. shield up, facing the summoners hall. waiting for visitors who were already behind him",
+     "variants": [
+      "he died there the last night. shield up, facing the summoners hall. waiting for visitors who were already behind him"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "press him hard and he takes up the penhallow poleaxe. his family says you do that when only honour is left to guard",
+     "variants": [
+      "press him hard and he takes up the penhallow poleaxe. his family says you do that when only honour is left to guard"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "his grand niece dame morwen led the first company to bring him down. she goes back every spring until he knows her",
+     "variants": [
+      "his grand niece dame morwen led the first company to bring him down. she goes back every spring until he knows her"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "until he knows her. ok",
+     "variants": [
+      "until he knows her. ok",
+      "nobody told him he could leave. twice"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "every spring. gods",
+     "variants": [
+      "every spring. gods",
+      "i always go quiet at the grand niece"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "tale_orylle",
+   "topic": "tale_orylle",
+   "realm": "alb",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} tell the one about the queen of krondon",
+     "variants": [
+      "{name_b} tell the one about the queen of krondon",
+      "{name_b} why does orylle throw people"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "shh, krondon story",
+     "variants": [
+      "shh, krondon story",
+      "quiet all, the ogre queen"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "yes please. i got thrown into a fire and nobody explained",
+     "variants": [
+      "yes please. i got thrown into a fire and nobody explained",
+      "go on {name_b}, the krondon one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "orylle was born in the undercroft. the deepest seam of the ogres who dug under the isles before the hall folk built on them",
+     "variants": [
+      "orylle was born in the undercroft. the deepest seam of the ogres who dug under the isles before the hall folk built on them"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "she was the first of her people to climb up and look at what they had been digging under",
+     "variants": [
+      "she was the first of her people to climb up and look at what they had been digging under"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "she found krondon dying of age. its last elder counting empty chairs at the high table",
+     "variants": [
+      "she found krondon dying of age. its last elder counting empty chairs at the high table"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "she took the hall in one night without breaking a door. the elder died asking if she came as guest or enemy",
+     "variants": [
+      "she took the hall in one night without breaking a door. the elder died asking if she came as guest or enemy"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "and which was it",
+     "variants": [
+      "and which was it",
+      "did she answer him"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "then she walked every room. a ghost, the last teacher, translated the titles over the doors",
+     "variants": [
+      "then she walked every room. a ghost, the last teacher, translated the titles over the doors"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and she gave every title to an ogre. the stores, the horn, the school, the road. thats why they all have work",
+     "variants": [
+      "and she gave every title to an ogre. the stores, the horn, the school, the road. thats why they all have work"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "but the throwing?",
+     "variants": [
+      "but the throwing?",
+      "and the fire?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "hall folk guest law. a stranger who came in unannounced was set back on the guest stone to begin again properly",
+     "variants": [
+      "hall folk guest law. a stranger who came in unannounced was set back on the guest stone to begin again properly"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "she hurls challengers down her hall onto that stone. into the fire burning on it. and fights only those who walk back",
+     "variants": [
+      "she hurls challengers down her hall onto that stone. into the fire burning on it. and fights only those who walk back"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "orshom brong drank the great hearth the night she took the hall. she made him champion and consort",
+     "variants": [
+      "orshom brong drank the great hearth the night she took the hall. she made him champion and consort"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "kill one and the other roars the name. loudest thing in albion",
+     "variants": [
+      "kill one and the other roars the name. loudest thing in albion",
+      "when one falls the other screams it. you dont forget"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "sir cador reached her first with twenty and was swept out. he came back with fifty chosen for stubbornness",
+     "variants": [
+      "sir cador reached her first with twenty and was swept out. he came back with fifty chosen for stubbornness"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and ice mages for the fire on the stone. they walked back every time. with the stone cold she throws no one",
+     "variants": [
+      "and ice mages for the fire on the stone. they walked back every time. with the stone cold she throws no one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "chosen for stubbornness. my kind of raid",
+     "variants": [
+      "chosen for stubbornness. my kind of raid",
+      "so you just walk back. every time"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "they say she wants neither to serve nor to rule. only to keep",
+     "variants": [
+      "they say she wants neither to serve nor to rule. only to keep",
+      "guest or enemy. she never did answer"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "tale_duraek-the-empowered",
+   "topic": "tale_duraek-the-empowered",
+   "realm": "alb",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} whats wrong with the drakoran lord in avalon city. fire heals him??",
+     "variants": [
+      "{name_b} whats wrong with the drakoran lord in avalon city. fire heals him??",
+      "{name_b}, tell the one about dura'ek"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "quiet please, avalon city story",
+     "variants": [
+      "quiet please, avalon city story",
+      "hush, {name_b} is telling the empowered"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "please. our wizard nuked him back to full last night",
+     "variants": [
+      "please. our wizard nuked him back to full last night",
+      "go on, i need to know what we did wrong"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "dura'ek was one war lord among five when avalon burned. lord of the dry'ak, the clan that holds doors",
+     "variants": [
+      "dura'ek was one war lord among five when avalon burned. lord of the dry'ak, the clan that holds doors"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "one thing set him apart. he kept more sworn protectors than any other lord. every one bound to die before he does",
+     "variants": [
+      "one thing set him apart. he kept more sworn protectors than any other lord. every one bound to die before he does"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "morgana gave his clan the doors. he took the chancellors court at the heart of the city",
+     "variants": [
+      "morgana gave his clan the doors. he took the chancellors court at the heart of the city"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "a woman saw him standing on the steps there. listening to the paving",
+     "variants": [
+      "a woman saw him standing on the steps there. listening to the paving"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "listening to what",
+     "variants": [
+      "listening to what",
+      "whats under the paving"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "under it lay the stair down to the crystal cave. and what sleeps there",
+     "variants": [
+      "under it lay the stair down to the crystal cave. and what sleeps there"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "on the third night the readers saw a cold light rise from the city. and he went down alone",
+     "variants": [
+      "on the third night the readers saw a cold light rise from the city. and he went down alone"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "and came back how?",
+     "variants": [
+      "and came back how?",
+      "what did the dragon do to him?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "nobody agrees. the clans say xanxicar gave him a gift. his own captured men say he stole from a sleeper",
+     "variants": [
+      "nobody agrees. the clans say xanxicar gave him a gift. his own captured men say he stole from a sleeper"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the readers say he only touched something the dragon lay on. he came up at dawn burning",
+     "variants": [
+      "the readers say he only touched something the dragon lay on. he came up at dawn burning"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "xanxicar has two heads and no breath. dura'ek has two breaths now. fire and frost feed him",
+     "variants": [
+      "xanxicar has two heads and no breath. dura'ek has two breaths now. fire and frost feed him"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "no fire no frost. say it with me",
+     "variants": [
+      "no fire no frost. say it with me",
+      "NO FIRE NO FROST. every pull"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "thats the cry sir kenrick brought him down to. and his six protectors died before him. as they had sworn",
+     "variants": [
+      "thats the cry sir kenrick brought him down to. and his six protectors died before him. as they had sworn"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he forbids the dragons name in his court. he wants to be a lord in his own right",
+     "variants": [
+      "he forbids the dragons name in his court. he wants to be a lord in his own right"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and every sentry on the stair below says it anyway",
+     "variants": [
+      "and every sentry on the stair below says it anyway"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "so our wizard healed him. great",
+     "variants": [
+      "so our wizard healed him. great",
+      "no fire no frost. writing it on my hand"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "he forbids the name and they all say it. i like that bit",
+     "variants": [
+      "he forbids the name and they all say it. i like that bit",
+      "listening to the paving. brr"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "tale_aros-the-spiritmaster",
+   "topic": "tale_aros-the-spiritmaster",
+   "realm": "mid",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} why does the spiritmaster in dodens gruva shout his own name",
+     "variants": [
+      "{name_b} why does the spiritmaster in dodens gruva shout his own name",
+      "{name_b} tell the aros one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "hush, mine story",
+     "variants": [
+      "hush, mine story",
+      "quiet all. dodens gruva"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "tell it. i heard him yelling through two walls",
+     "variants": [
+      "tell it. i heard him yelling through two walls",
+      "{name_b} please, the mine one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "aros was jarl ormarrs spiritmaster. trained in the craft of hels servants. binding spirits to serve",
+     "variants": [
+      "aros was jarl ormarrs spiritmaster. trained in the craft of hels servants. binding spirits to serve"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he believed one thing above all. a good name never dies. and a name said aloud is a rope that holds a soul to the world",
+     "variants": [
+      "he believed one thing above all. a good name never dies. and a name said aloud is a rope that holds a soul to the world"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "every morning at the shaft he read the names of the shift. and promised none would be forgotten",
+     "variants": [
+      "every morning at the shaft he read the names of the shift. and promised none would be forgotten"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "thats kind of nice actually",
+     "variants": [
+      "thats kind of nice actually",
+      "sounds like a good man to work for"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "then a warning was ignored. the picks broke into the cold seam",
+     "variants": [
+      "then a warning was ignored. the picks broke into the cold seam"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the miners heard voices in three tongues calling from the hall below. and died",
+     "variants": [
+      "the miners heard voices in three tongues calling from the hall below. and died"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and their dead began to walk down toward the call. so aros bound them. to keep them",
+     "variants": [
+      "and their dead began to walk down toward the call. so aros bound them. to keep them"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "bound how?",
+     "variants": [
+      "bound how?",
+      "and the name?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he made each of them say HIS name. so they would hear his voice louder than the calling. thats why he still cries it at you",
+     "variants": [
+      "he made each of them say HIS name. so they would hear his voice louder than the calling. thats why he still cries it at you"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he raised bjorn the younger, the strongest of the shift, as his champion",
+     "variants": [
+      "he raised bjorn the younger, the strongest of the shift, as his champion"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and he holds the bound souls in himself. when he spends them they burst out in a storm that empties the room",
+     "variants": [
+      "and he holds the bound souls in himself. when he spends them they burst out in a storm that empties the room"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "the storm. yes. back off when it comes",
+     "variants": [
+      "the storm. yes. back off when it comes",
+      "emptied my whole group once"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "the jarl went down after the dead with forty huscarls. aros followed him down the stair shouting names",
+     "variants": [
+      "the jarl went down after the dead with forty huscarls. aros followed him down the stair shouting names"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and turned him back. dead",
+     "variants": [
+      "and turned him back. dead"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he still reads the names every morning. when the calling below stops the miners may go. he says he has forgotten how",
+     "variants": [
+      "he still reads the names every morning. when the calling below stops the miners may go. he says he has forgotten how"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "so die in there and he learns your name",
+     "variants": [
+      "so die in there and he learns your name",
+      "he keeps them. i dont love that"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "none would be forgotten. he kept the promise. thats the awful part",
+     "variants": [
+      "none would be forgotten. he kept the promise. thats the awful part",
+      "every morning. still"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "tale_iarnvidiur",
+   "topic": "tale_iarnvidiur",
+   "realm": "mid",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} who is the old woman in the iron wood really",
+     "variants": [
+      "{name_b} who is the old woman in the iron wood really",
+      "{name_b}, the iarnvidiur one tonight?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "quiet, aegir story",
+     "variants": [
+      "quiet, aegir story",
+      "hush all. the iron wood"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "please. the dwarves spit when i ask",
+     "variants": [
+      "please. the dwarves spit when i ask",
+      "go on {name_b}, nobody on aegir will tell me"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "depends who tells it. jordheims skalds say she is the giantess of the old songs. east in the iron wood, breeding fenrirs kin",
+     "variants": [
+      "depends who tells it. jordheims skalds say she is the giantess of the old songs. east in the iron wood, breeding fenrirs kin"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the iarn dwarves only say she was on aegir before their first clan",
+     "variants": [
+      "the iarn dwarves only say she was on aegir before their first clan"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and the narfi of her lair say she was young when the iron trees were silver and sang. before a rot they will not name",
+     "variants": [
+      "and the narfi of her lair say she was young when the iron trees were silver and sang. before a rot they will not name"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "so which came first, her or the rot",
+     "variants": [
+      "so which came first, her or the rot",
+      "did she make the rot?"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "the dwarves say her plague made the rot. the narfi say the rot made her",
+     "variants": [
+      "the dwarves say her plague made the rot. the narfi say the rot made her"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "her first litter guards the lair. hati and skoll lie at her door. named for the moon chaser and the sun chaser",
+     "variants": [
+      "her first litter guards the lair. hati and skoll lie at her door. named for the moon chaser and the sun chaser"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "above ground her servants walk the wood looking like anyone. and the dwarf clans lose children to them",
+     "variants": [
+      "above ground her servants walk the wood looking like anyone. and the dwarf clans lose children to them"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "has anyone killed her?",
+     "variants": [
+      "has anyone killed her?",
+      "can she even be hurt?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "her plague is her blood. it eats everything near her and it closes her own wounds",
+     "variants": [
+      "her plague is her blood. it eats everything near her and it closes her own wounds"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "vemunds thirty were the first company in her lair. they could never wound her deeply enough to trouble her",
+     "variants": [
+      "vemunds thirty were the first company in her lair. they could never wound her deeply enough to trouble her"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "ragnheid grimsdottirs warband did it. with dwarf guides. they went down carrying more cures than weapons",
+     "variants": [
+      "ragnheid grimsdottirs warband did it. with dwarf guides. they went down carrying more cures than weapons"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "brewed from the bark of the iron trees. tastes like a forge",
+     "variants": [
+      "brewed from the bark of the iron trees. tastes like a forge",
+      "more cures than weapons. still true"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "and she has a habit. anything that hurts her enough to be a nuisance she sets in the black water under the bridge",
+     "variants": [
+      "and she has a habit. anything that hurts her enough to be a nuisance she sets in the black water under the bridge"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the way a woman sets a pup back in its basket",
+     "variants": [
+      "the way a woman sets a pup back in its basket"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "she comes back. the iron wood has always had an old one. she is waiting for the wolves to run at the end of the world",
+     "variants": [
+      "she comes back. the iron wood has always had an old one. she is waiting for the wolves to run at the end of the world"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "a pup back in its basket. thats what we are to her",
+     "variants": [
+      "a pup back in its basket. thats what we are to her",
+      "more cures than weapons. ok"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "some grandmothers say gjalpinulva is her daughter. just saying",
+     "variants": [
+      "some grandmothers say gjalpinulva is her daughter. just saying",
+      "waiting for the wolves. i hate that she is patient"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "tale_queen-kula",
+   "topic": "tale_queen-kula",
+   "realm": "mid",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} tell the one about the queen in the glacier",
+     "variants": [
+      "{name_b} tell the one about the queen in the glacier",
+      "{name_b}, kula tonight?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "hush, tuscaran story",
+     "variants": [
+      "hush, tuscaran story",
+      "quiet all, the ice queen"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "yes. i only know to kill her and the king together",
+     "variants": [
+      "yes. i only know to kill her and the king together",
+      "please {name_b}, the long one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "kula is the youngest and coldest of bergelmirs line, the skalds say. the rime giant who stayed north when her brothers went south",
+     "variants": [
+      "kula is the youngest and coldest of bergelmirs line, the skalds say. the rime giant who stayed north when her brothers went south"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "why she stayed depends who you ask. jordheim says she wanted endless winter. her cast out sculptors say she was left behind",
+     "variants": [
+      "why she stayed depends who you ask. jordheim says she wanted endless winter. her cast out sculptors say she was left behind"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the dwarves say she was sent",
+     "variants": [
+      "the dwarves say she was sent"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "sent by who",
+     "variants": [
+      "sent by who",
+      "thats the worst of the three"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "she found a dragon dead in the ice of delling crater. so vast nothing could thaw it",
+     "variants": [
+      "she found a dragon dead in the ice of delling crater. so vast nothing could thaw it"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and raised tuscarans citadel on its bones. cutting around a sleeper in the north wall",
+     "variants": [
+      "and raised tuscarans citadel on its bones. cutting around a sleeper in the north wall"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "a dead kings army came up from the south to take the bones. she stilled it with a touch and a breath of sleep. and gave it orders",
+     "variants": [
+      "a dead kings army came up from the south to take the bones. she stilled it with a touch and a breath of sleep. and gave it orders"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "and tuscar?",
+     "variants": [
+      "and tuscar?",
+      "where does the king come in"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "tuscar was a smith. he came courting with an axe and she married him",
+     "variants": [
+      "tuscar was a smith. he came courting with an axe and she married him"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "for a time the two were bound so closely that a wound to one closed the others",
+     "variants": [
+      "for a time the two were bound so closely that a wound to one closed the others"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "she ruled by one law. only the merciless live through a winter",
+     "variants": [
+      "she ruled by one law. only the merciless live through a winter"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "which is why you burn them down together. ask any raid leader",
+     "variants": [
+      "which is why you burn them down together. ask any raid leader",
+      "together or not at all. yes"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "and she keeps a cold older than the gods in reserve. the giants named it thors might. as a joke",
+     "variants": [
+      "and she keeps a cold older than the gods in reserve. the giants named it thors might. as a joke"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the first warband to reach the thrones was told to its face that her guardians were useless. and lost",
+     "variants": [
+      "the first warband to reach the thrones was told to its face that her guardians were useless. and lost"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "a hundred under bergljot steinsdottir won. the queens crown of ice hangs at bjarken. unmelted",
+     "variants": [
+      "a hundred under bergljot steinsdottir won. the queens crown of ice hangs at bjarken. unmelted"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "a wound to one closed the others. thats almost sweet",
+     "variants": [
+      "a wound to one closed the others. thats almost sweet",
+      "came courting with an axe. midgard"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "when she dies the throne room cracks. the skalds say the ice remembers her name",
+     "variants": [
+      "when she dies the throne room cracks. the skalds say the ice remembers her name",
+      "unmelted. still"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "tale_avartack-the-champion",
+   "topic": "tale_avartack-the-champion",
+   "realm": "hib",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} who is the champion before the hall in marfach",
+     "variants": [
+      "{name_b} who is the champion before the hall in marfach",
+      "{name_b} tell avartack tonight"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "hush, breifine story",
+     "variants": [
+      "hush, breifine story",
+      "quiet in faction, the ferrymans son"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "please. he would not die and i want to know why",
+     "variants": [
+      "please. he would not die and i want to know why",
+      "tell it {name_b}, the ford and all"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "avartack was the son of aed dub. the ferryman who kept the ford of the erne",
+     "variants": [
+      "avartack was the son of aed dub. the ferryman who kept the ford of the erne"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he grew up fighting in the water. where a man cannot step back or aside. only reach",
+     "variants": [
+      "he grew up fighting in the water. where a man cannot step back or aside. only reach"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he was fostered beside the boy who became caimheul. the day caimheul was made chieftain he named his foster brother champion",
+     "variants": [
+      "he was fostered beside the boy who became caimheul. the day caimheul was made chieftain he named his foster brother champion"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "so they grew up together?",
+     "variants": [
+      "so they grew up together?",
+      "brothers then, near enough?"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "twenty years he held the fords of breifine in single combat. never lost in the water",
+     "variants": [
+      "twenty years he held the fords of breifine in single combat. never lost in the water"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he kept the law of the water. the ford belongs to whoever faces it. and a turned back may be struck down without shame",
+     "variants": [
+      "he kept the law of the water. the ford belongs to whoever faces it. and a turned back may be struck down without shame"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "his oath was this. i will stand before you until you have no need of me",
+     "variants": [
+      "his oath was this. i will stand before you until you have no need of me"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "thats a fine oath. isnt it?",
+     "variants": [
+      "thats a fine oath. isnt it?",
+      "whats wrong with the oath?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "it has no word in it to end the watch",
+     "variants": [
+      "it has no word in it to end the watch"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the day caimheul died on the reed flats, avartack was away. holding the ford of the erne",
+     "variants": [
+      "the day caimheul died on the reed flats, avartack was away. holding the ford of the erne"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he came home to the bier. went under the hill first. and stood at his lords feet in the grave chamber, facing the door",
+     "variants": [
+      "he came home to the bier. went under the hill first. and stood at his lords feet in the grave chamber, facing the door"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he died on his feet in the third night. so on the fourth, when it happened, he did not need to stand up",
+     "variants": [
+      "he died on his feet in the third night. so on the fourth, when it happened, he did not need to stand up"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "and he is whole again the moment nobody stands against him",
+     "variants": [
+      "and he is whole again the moment nobody stands against him",
+      "someone always faces him. always"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "he takes the floor before the hall for the ford. the first company came at him in a ring and broke at the back",
+     "variants": [
+      "he takes the floor before the hall for the ford. the first company came at him in a ring and broke at the back"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "echna of ardee, a ferrymans daughter, faced him and never turned. her sister on her bank, her company at his sides",
+     "variants": [
+      "echna of ardee, a ferrymans daughter, faced him and never turned. her sister on her bank, her company at his sides"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "when he fell she said the old word that ends a watch. it did not hold. but the ferrymen call it over the water at night",
+     "variants": [
+      "when he fell she said the old word that ends a watch. it did not hold. but the ferrymen call it over the water at night"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "no word to end the watch. oof",
+     "variants": [
+      "no word to end the watch. oof",
+      "so you face him and you do not turn. ok"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "he did not need to stand up. every time",
+     "variants": [
+      "he did not need to stand up. every time",
+      "they call it over the water. i like that they still try"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "tale_chieftain-caimheul",
+   "topic": "tale_chieftain-caimheul",
+   "realm": "hib",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} tell the one about the chieftain in marfach",
+     "variants": [
+      "{name_b} tell the one about the chieftain in marfach",
+      "{name_b}, caimheul?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "quiet, this ones ours",
+     "variants": [
+      "quiet, this ones ours",
+      "hush. the crooked mouth"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "go on. my grandfather called him ours and wouldnt say more",
+     "variants": [
+      "go on. my grandfather called him ours and wouldnt say more",
+      "the chieftain, {name_b}. please"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "caimheul ruled the breifine hills before there were keeps on them",
+     "variants": [
+      "caimheul ruled the breifine hills before there were keeps on them"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "thats not the name his mother gave him. a lake mans knife left his mouth crooked and the hills forgot the other",
+     "variants": [
+      "thats not the name his mother gave him. a lake mans knife left his mouth crooked and the hills forgot the other"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he was a hard lord. burned booleys, kept hostages. his people loved him anyway",
+     "variants": [
+      "he was a hard lord. burned booleys, kept hostages. his people loved him anyway"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "because no reaver took a cow from his valleys that he did not take back twice over",
+     "variants": [
+      "because no reaver took a cow from his valleys that he did not take back twice over"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "so a cattle lord?",
+     "variants": [
+      "so a cattle lord?",
+      "hard how?"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "he taught his sons to fight with a stick in the dust of the yard",
+     "variants": [
+      "he taught his sons to fight with a stick in the dust of the yard"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the man in front meets the shield and reels. the man who wont reel he mocks until he comes on careless",
+     "variants": [
+      "the man in front meets the shield and reels. the man who wont reel he mocks until he comes on careless"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and the man at his side, where he cannot see. that one he kills first. with the long spear",
+     "variants": [
+      "and the man at his side, where he cannot see. that one he kills first. with the long spear"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "and the hostages?",
+     "variants": [
+      "and the hostages?",
+      "what happened on the reed flats?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he took nine hostage children of the lakes. when the peace broke they died of a coughing sickness in his hostage house",
+     "variants": [
+      "he took nine hostage children of the lakes. when the peace broke they died of a coughing sickness in his hostage house"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "only a keener in red sang for them",
+     "variants": [
+      "only a keener in red sang for them"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "years on, on the reed flats, a herd boy named mochta threw a spear into his side. his sister had been one of the nine",
+     "variants": [
+      "years on, on the reed flats, a herd boy named mochta threw a spear into his side. his sister had been one of the nine"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "his champion was away that day. holding a ford",
+     "variants": [
+      "his champion was away that day. holding a ford"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "stand at his flank and you die first. the verse says so",
+     "variants": [
+      "stand at his flank and you die first. the verse says so",
+      "never at his side. front or nowhere"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "he was sung back up and does not hear the voice below at all. he takes every stranger for the lake men",
+     "variants": [
+      "he was sung back up and does not hear the voice below at all. he takes every stranger for the lake men"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "crochnat of howth heard the old yard verse at the muster. drew something in the dust. and brought him down the next night",
+     "variants": [
+      "crochnat of howth heard the old yard verse at the muster. drew something in the dust. and brought him down the next night"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "when he casts the shield aside he is hurt deep and thinks you are about to break. be ready then",
+     "variants": [
+      "when he casts the shield aside he is hurt deep and thinks you are about to break. be ready then"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "he holds their road because he thinks its his country",
+     "variants": [
+      "he holds their road because he thinks its his country",
+      "so he doesnt even know. hm"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "the keeners added a verse. asking him to find mochta and the nine and say he is sorry",
+     "variants": [
+      "the keeners added a verse. asking him to find mochta and the nine and say he is sorry",
+      "he was ours. thats the hard part"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "tale_balor",
+   "topic": "tale_balor",
+   "realm": "hib",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} tell balor. the real one not the nursery one",
+     "variants": [
+      "{name_b} tell balor. the real one not the nursery one",
+      "{name_b} whats up in tur suil above the vale"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "hush, the eye",
+     "variants": [
+      "hush, the eye",
+      "quiet all, tur suil"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "please. i know lugh and the stone. what came after",
+     "variants": [
+      "please. i know lugh and the stone. what came after",
+      "{name_b} tell the second verse"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "you know the first verse. king of the fomorians. an eye poisoned by his fathers druids cauldron that destroyed whatever it saw",
+     "variants": [
+      "you know the first verse. king of the fomorians. an eye poisoned by his fathers druids cauldron that destroyed whatever it saw"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he shut his daughter away on tory against a prophecy. her son lugh drove the eye out through his skull at mag tuired",
+     "variants": [
+      "he shut his daughter away on tory against a prophecy. her son lugh drove the eye out through his skull at mag tuired"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "it fell facing his own host. and destroyed it",
+     "variants": [
+      "it fell facing his own host. and destroyed it"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "everyone knows that part",
+     "variants": [
+      "everyone knows that part",
+      "and thats the end?"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "the sylvan know a second verse. the eyes bearers wrapped it in seven hides and carried it west. walking backwards",
+     "variants": [
+      "the sylvan know a second verse. the eyes bearers wrapped it in seven hides and carried it west. walking backwards"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the fomorians say it followed its people of its own will",
+     "variants": [
+      "the fomorians say it followed its people of its own will"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "on the shore of hy brasil the hides slipped. it looked on a valley for one breath",
+     "variants": [
+      "on the shore of hy brasil the hides slipped. it looked on a valley for one breath"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "gleann glas?",
+     "variants": [
+      "gleann glas?",
+      "what was in the valley?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "a sylvan village. gleann glas. it burned, and everything else in the valley. thats the vale of balor",
+     "variants": [
+      "a sylvan village. gleann glas. it burned, and everything else in the valley. thats the vale of balor"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "on the crag above they built tur suil around it. one window",
+     "variants": [
+      "on the crag above they built tur suil around it. one window"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and grew a king around the eye again. with a household",
+     "variants": [
+      "and grew a king around the eye again. with a household"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "his hide turns everything and he wont bleed outside his chamber",
+     "variants": [
+      "his hide turns everything and he wont bleed outside his chamber",
+      "and then the roof opens. you will see"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "as he weakens an eye opens in the roof, beyond any weapon. it chooses one of those below and burns them until it shuts",
+     "variants": [
+      "as he weakens an eye opens in the roof, beyond any weapon. it chooses one of those below and burns them until it shuts"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "eochaidh of ardee was chosen at the last. fiachna of howth brought the king down the next spring",
+     "variants": [
+      "eochaidh of ardee was chosen at the last. fiachna of howth brought the king down the next spring"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "carrying a smooth stone for lughs sake. every company that climbs tur suil carries one since",
+     "variants": [
+      "carrying a smooth stone for lughs sake. every company that climbs tur suil carries one since"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "i am finding a smooth stone tomorrow",
+     "variants": [
+      "i am finding a smooth stone tomorrow",
+      "it chooses one. great"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "walls do not hold everything. thats how the book ends",
+     "variants": [
+      "walls do not hold everything. thats how the book ends",
+      "and the vale glows red more often. they say"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "fireside_aidon-the-archwizard",
+   "topic": "fireside_aidon-the-archwizard",
+   "realm": "alb",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "when we get to the wizard on the stair, leave one of his copies alive",
+     "variants": [
+      "when we get to the wizard on the stair, leave one of his copies alive",
+      "rule for the archwizard. never kill all four copies"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "why, more loot?",
+     "variants": [
+      "why, more loot?",
+      "isnt that backwards"
+     ],
+     "optional": true
+    },
+    {
+     "role": "A",
+     "text": "the four are him. he paid the summoners with four of himself, one for each element",
+     "variants": [
+      "the four are him. he paid the summoners with four of himself, one for each element"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "he can only pay again when all four are spent. keep one walking and no new set comes",
+     "variants": [
+      "he can only pay again when all four are spent. keep one walking and no new set comes"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "one self short. got it",
+     "variants": [
+      "one self short. got it",
+      "cruel. effective. fine"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "{name_b} tells how he got that way. the academy doesnt like it told",
+     "variants": [
+      "{name_b} tells how he got that way. the academy doesnt like it told"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "fireside_lord-gildas",
+   "topic": "fireside_lord-gildas",
+   "realm": "alb",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "the lord down here drops his shield for a poleaxe when hes half dead. hits much harder",
+     "variants": [
+      "the lord down here drops his shield for a poleaxe when hes half dead. hits much harder",
+      "heads up for gildas. at half health he changes weapons"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "why would he drop a shield",
+     "variants": [
+      "why would he drop a shield",
+      "noted. why though"
+     ],
+     "optional": true
+    },
+    {
+     "role": "A",
+     "text": "family saying. the poleaxe comes out when only honour is left to guard",
+     "variants": [
+      "family saying. the poleaxe comes out when only honour is left to guard"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "he ordered his watch never to leave their posts. the summoners kept the order for him. forever",
+     "variants": [
+      "he ordered his watch never to leave their posts. the summoners kept the order for him. forever"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "so thats why they dont follow us",
+     "variants": [
+      "so thats why they dont follow us",
+      "poor man"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "{name_b} tells the whole of it. theres a grand niece in it",
+     "variants": [
+      "{name_b} tells the whole of it. theres a grand niece in it"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "fireside_orylle",
+   "topic": "fireside_orylle",
+   "realm": "alb",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "if the queen throws you down the hall, walk back. thats the whole test",
+     "variants": [
+      "if the queen throws you down the hall, walk back. thats the whole test",
+      "krondon tip. she throws you, you get up and walk back"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "test?",
+     "variants": [
+      "test?",
+      "into the fire though"
+     ],
+     "optional": true
+    },
+    {
+     "role": "A",
+     "text": "old guest law of the place. a stranger who came in wrong was set back on the guest stone to start again",
+     "variants": [
+      "old guest law of the place. a stranger who came in wrong was set back on the guest stone to start again"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "put out the fire on the stone and she throws no one",
+     "variants": [
+      "put out the fire on the stone and she throws no one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "so the fire first",
+     "variants": [
+      "so the fire first",
+      "walk back. fine. i can walk"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "{name_b} tells how she took the hall in one night",
+     "variants": [
+      "{name_b} tells how she took the hall in one night"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "fireside_duraek-the-empowered",
+   "topic": "fireside_duraek-the-empowered",
+   "realm": "alb",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "before the lord of this city. no fire spells, no cold spells. they heal him",
+     "variants": [
+      "before the lord of this city. no fire spells, no cold spells. they heal him",
+      "remember for dura'ek. heat and cold feed him"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "heal him?",
+     "variants": [
+      "heal him?",
+      "then what do casters do"
+     ],
+     "optional": true
+    },
+    {
+     "role": "A",
+     "text": "he went down to the dragon under the city one night and came up burning. two breaths in him since",
+     "variants": [
+      "he went down to the dragon under the city one night and came up burning. two breaths in him since"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "and his six protectors die before he does. they swore it. so they come first",
+     "variants": [
+      "and his six protectors die before he does. they swore it. so they come first"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "no fire no frost. ok",
+     "variants": [
+      "no fire no frost. ok",
+      "six first, then him"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "{name_b} tells what he found down there. three versions of it",
+     "variants": [
+      "{name_b} tells what he found down there. three versions of it"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "fireside_aros-the-spiritmaster",
+   "topic": "fireside_aros-the-spiritmaster",
+   "realm": "mid",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "you will hear the one at the bottom shouting a name. its his own",
+     "variants": [
+      "you will hear the one at the bottom shouting a name. its his own",
+      "the spiritmaster down here yells his name at everyone. know why?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "vain?",
+     "variants": [
+      "vain?",
+      "why would he"
+     ],
+     "optional": true
+    },
+    {
+     "role": "A",
+     "text": "the dead miners were walking down to something that called them. he made them say his name so his voice was louder",
+     "variants": [
+      "the dead miners were walking down to something that called them. he made them say his name so his voice was louder"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "he carries their souls in him. when he lets them out it empties the room. so we back off then",
+     "variants": [
+      "he carries their souls in him. when he lets them out it empties the room. so we back off then"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "backing off. yes",
+     "variants": [
+      "backing off. yes",
+      "thats almost kind. almost"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "{name_b} tells it properly. bring a drink, its a sad one",
+     "variants": [
+      "{name_b} tells it properly. bring a drink, its a sad one"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "fireside_iarnvidiur",
+   "topic": "fireside_iarnvidiur",
+   "realm": "mid",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "pack cures before we go further in. her plague is the fight",
+     "variants": [
+      "pack cures before we go further in. her plague is the fight",
+      "cures out. the old one down here is all disease"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "cant we just heal through it",
+     "variants": [
+      "cant we just heal through it",
+      "how bad"
+     ],
+     "optional": true
+    },
+    {
+     "role": "A",
+     "text": "her plague is her blood. it eats us and closes her wounds. the first warband to kill her carried more cures than weapons",
+     "variants": [
+      "her plague is her blood. it eats us and closes her wounds. the first warband to kill her carried more cures than weapons"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "and if she drops you in the black water under the bridge, come back up. she does that to nuisances",
+     "variants": [
+      "and if she drops you in the black water under the bridge, come back up. she does that to nuisances"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "nuisance. i can be that",
+     "variants": [
+      "nuisance. i can be that",
+      "cures. yes"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "{name_b} tells who she might be. the skalds and the dwarves dont agree",
+     "variants": [
+      "{name_b} tells who she might be. the skalds and the dwarves dont agree"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "fireside_queen-kula",
+   "topic": "fireside_queen-kula",
+   "realm": "mid",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "the queen and the king up top are married. hurt one and it closes the others wounds",
+     "variants": [
+      "the queen and the king up top are married. hurt one and it closes the others wounds",
+      "for the thrones. the two of them go down together"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "really?",
+     "variants": [
+      "really?",
+      "so we split damage"
+     ],
+     "optional": true
+    },
+    {
+     "role": "A",
+     "text": "he was a smith who came courting with an axe. she married him",
+     "variants": [
+      "he was a smith who came courting with an axe. she married him"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "and when shes angry a cold older than the gods answers every wound. the giants call it thors might",
+     "variants": [
+      "and when shes angry a cold older than the gods answers every wound. the giants call it thors might"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "together then",
+     "variants": [
+      "together then",
+      "courting with an axe. sure"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "{name_b} tells how she built this place on a dead dragon",
+     "variants": [
+      "{name_b} tells how she built this place on a dead dragon"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "fireside_avartack-the-champion",
+   "topic": "fireside_avartack-the-champion",
+   "realm": "hib",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "the champion ahead. somebody faces him at all times. never turn your back",
+     "variants": [
+      "the champion ahead. somebody faces him at all times. never turn your back",
+      "marfach rule. dont all step away from avartack at once"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "or what",
+     "variants": [
+      "or what",
+      "why"
+     ],
+     "optional": true
+    },
+    {
+     "role": "A",
+     "text": "he thinks that floor is a ford. law of the water. a turned back may be struck down",
+     "variants": [
+      "he thinks that floor is a ford. law of the water. a turned back may be struck down"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "and the moment nobody stands against him he is whole again",
+     "variants": [
+      "and the moment nobody stands against him he is whole again"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "face him. dont turn. ok",
+     "variants": [
+      "face him. dont turn. ok",
+      "so no running. lovely"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "{name_b} tells about his oath. it had no ending in it",
+     "variants": [
+      "{name_b} tells about his oath. it had no ending in it"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "fireside_chieftain-caimheul",
+   "topic": "fireside_chieftain-caimheul",
+   "realm": "hib",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "nobody stands at the chieftains side. he kills that one first",
+     "variants": [
+      "nobody stands at the chieftains side. he kills that one first",
+      "caimheul ahead. stay in front of him or well back"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "why the side",
+     "variants": [
+      "why the side",
+      "first? why"
+     ],
+     "optional": true
+    },
+    {
+     "role": "A",
+     "text": "he taught his sons that in the dust of the yard. the man you cannot see dies first. long spear",
+     "variants": [
+      "he taught his sons that in the dust of the yard. the man you cannot see dies first. long spear"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "and when he throws the shield away hes hurt deep and thinks we are breaking. thats the moment",
+     "variants": [
+      "and when he throws the shield away hes hurt deep and thinks we are breaking. thats the moment"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "front or far. ok",
+     "variants": [
+      "front or far. ok",
+      "so the shield going is good news"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "{name_b} tells about the nine. ask on a quiet night",
+     "variants": [
+      "{name_b} tells about the nine. ask on a quiet night"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "fireside_balor",
+   "topic": "fireside_balor",
+   "realm": "hib",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "got a smooth stone on you? everyone who climbs tur suil carries one",
+     "variants": [
+      "got a smooth stone on you? everyone who climbs tur suil carries one",
+      "tur suil custom. smooth stone in your pack"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "a stone",
+     "variants": [
+      "a stone",
+      "for luck?"
+     ],
+     "optional": true
+    },
+    {
+     "role": "A",
+     "text": "for lugh. he put the eye out with one. the fomorians carried it here in seven hides and grew a king around it again",
+     "variants": [
+      "for lugh. he put the eye out with one. the fomorians carried it here in seven hides and grew a king around it again"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "when he weakens an eye opens in the roof and burns one of us till it shuts. nothing reaches it. you live through it",
+     "variants": [
+      "when he weakens an eye opens in the roof and burns one of us till it shuts. nothing reaches it. you live through it"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "finding a stone",
+     "variants": [
+      "finding a stone",
+      "one of us. great"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "{name_b} tells what the eye did to the valley below",
+     "variants": [
+      "{name_b} tells what the eye did to the valley below"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
    "id": "long_buffbots",
    "topic": "buffbots",
    "realm": "*",

@@ -76,6 +76,12 @@ public static class AutonomousTales
         ["apocalypse"] = "epic", ["king-tuscar"] = "epic", ["olcasgean"] = "epic",
         ["legion"] = "darkness", ["grand-summoner-govannon"] = "summoners",
         ["xanxicar"] = "dungeon-albion-crystal", ["nosdoden"] = "dungeon-midgard-trollheim", ["black-lady"] = "dungeon-hibernia-marfach",
+        // The ten final bosses that had no tale until 2026-11-11.
+        ["aidon-the-archwizard"] = "dungeon-albion-corrupt", ["lord-gildas"] = "dungeon-albion-corrupt",
+        ["orylle"] = "dungeon-albion-krondon", ["duraek-the-empowered"] = "dungeon-albion-avalon",
+        ["aros-the-spiritmaster"] = "dungeon-midgard-dodens", ["iarnvidiur"] = "dungeon-midgard-iarnvidiur", ["queen-kula"] = "epic",
+        ["avartack-the-champion"] = "dungeon-hibernia-marfach", ["chieftain-caimheul"] = "dungeon-hibernia-marfach",
+        ["balor"] = "dungeon-hibernia-tursuil",
     };
 
     /// <summary>The realm's raid event on a tale's boss, or null when it has none.</summary>
