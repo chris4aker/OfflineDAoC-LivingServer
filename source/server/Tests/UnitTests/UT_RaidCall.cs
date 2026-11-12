@@ -104,5 +104,22 @@ namespace DOL.GS.Tests
             Assert.That(Tales.LoreIdsForRaid("no-such-raid", eRealm.Albion), Is.Empty);
             Assert.That(Tales.LoreIdsForRaid(null, eRealm.Albion), Is.Empty);
         }
+
+        /// <summary>Owner's PC, 2026-11-12: both of Albion's storytellers were offline and Golestandt's raid had no tale.</summary>
+        [Test]
+        public void ARaidsTaleHasAStandInWhenBothStorytellersAreOut()
+        {
+            var tellers = new HashSet<long> { 1, 2 };
+            var candidates = new[]
+            {
+                new AutonomousTales.TellerCandidate(1, "Thotavyn", BotPersonalityType.Socialite, 50),
+                new AutonomousTales.TellerCandidate(3, "Young", BotPersonalityType.Socialite, 20),
+                new AutonomousTales.TellerCandidate(4, "Veteran", BotPersonalityType.Leveler, 50),
+                new AutonomousTales.TellerCandidate(5, "Talker", BotPersonalityType.Socialite, 40),
+            };
+            Assert.That(AutonomousTales.PickStandIn(candidates, tellers)?.Name, Is.EqualTo("Talker"),
+                "a talker of level 35 or more, never a storyteller, never under 35");
+            Assert.That(AutonomousTales.PickStandIn([candidates[1]], tellers), Is.Null);
+        }
     }
 }
