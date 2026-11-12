@@ -153,7 +153,7 @@ namespace LivingServerSetup
             bool client = o.NewInstall ? o.NewClient : (o.Game.NewClient || o.AddClient);
             if (o.NewInstall)
             {
-                Add(StepId.DownloadGame, "Download Offline DAoC", Manifests.BaseGame, Theme.Gb(Manifests.BaseGame) + " from shadowofze's official release, checked part by part");
+                Add(StepId.DownloadGame, "Download Offline DAoC", Manifests.BaseGame, Theme.Gb(Manifests.BaseGame) + ", shadowofze's release files, checked part by part");
                 Add(StepId.UnpackGame, "Unpack the game", Manifests.BaseGame * 0.45);
                 if (client)
                     Add(StepId.Client, "Download and unpack the new client", Manifests.NewClient * 1.2, Theme.Gb(Manifests.NewClient) + ", in checked parts");

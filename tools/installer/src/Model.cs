@@ -361,11 +361,24 @@ namespace LivingServerSetup
         }
     }
 
-    /// <summary>Sizes of the official downloads, read from shadowofze's release manifests (with fallbacks measured on
-    /// the 0.37 releases, used only if GitHub can't be reached before the install starts).</summary>
+    /// <summary>
+    /// What Setup offers for a new game (owner, 2026-11-12, when shadowofze's repository went offline and Living Server
+    /// took over the 0.37 line): Offline DAoC 0.37 with the original classes and the original client. The 0.37b edition
+    /// (his custom Sluaghbinder class) and the 0.37c new client are no longer offered. Games that already have them keep
+    /// working, and keep getting their updates.
+    /// </summary>
+    internal static class Offers
+    {
+        public static readonly bool Editions = false;
+        public static readonly bool NewClient = false;
+    }
+
+    /// <summary>Sizes of the downloads, read from the release manifests of Living Server's own copy of shadowofze's
+    /// release files (with fallbacks measured on the 0.37 releases, used only if GitHub can't be reached before the
+    /// install starts).</summary>
     internal static class Manifests
     {
-        public const string Upstream = "https://github.com/shadowofze/OfflineDAoC/releases/download/v";
+        public const string Upstream = "https://github.com/chris4aker/OfflineDAoC-base-files/releases/download/v";
         public static readonly HashSet<string> UpdatableFrom = new HashSet<string> { "0.36" };
         public static long BaseGame = 5103650363;          // 0.36b, three parts (0.36 is the same download)
         public static long GamePatch = 38084367;           // 0.37 game update

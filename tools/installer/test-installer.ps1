@@ -190,7 +190,7 @@ if ($Scenario -contains 'fresh') {
     $r = Setup 'fresh-install' @('--new', '--dest', $fresh)
     Check ($r.Code -eq 0) 'fresh: Setup finished'
     Check ((Newest-Release $fresh) -eq $base) "fresh: the game is Offline DAoC $base"
-    Check (!(Test-Path (Join-Path $fresh 'EDITION.txt'))) 'fresh: the b edition (no EDITION.txt)'
+    Check (Test-Path (Join-Path $fresh 'EDITION.txt')) 'fresh: the original classes (EDITION.txt); the b edition is no longer offered'
     Assert-LivingServer $fresh 'fresh'
     $desk = [Environment]::GetFolderPath('DesktopDirectory')
     Check (Test-Path (Join-Path $desk 'Offline DAoC.lnk')) 'fresh: desktop shortcut'

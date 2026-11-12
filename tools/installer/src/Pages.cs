@@ -178,9 +178,9 @@ namespace LivingServerSetup
             var fresh = new ChoiceCard
             {
                 Title = "New install",
-                Body = "Download Offline DAoC " + Payload.BaseRelease + " from shadowofze's official release into a new folder, and add Living Server. " +
-                       "About " + Theme.Gb(Manifests.BaseGame + Manifests.GamePatch) + " to download (" +
-                       Theme.Gb(Manifests.BaseGame + Manifests.GamePatch + Manifests.NewClient + Manifests.ClientPatch) + " with the new client).",
+                Body = "Download Offline DAoC " + Payload.BaseRelease + " by shadowofze into a new folder, and add Living Server. " +
+                       "About " + Theme.Gb(Manifests.BaseGame + Manifests.GamePatch) + " to download" +
+                       (Offers.NewClient ? " (" + Theme.Gb(Manifests.BaseGame + Manifests.GamePatch + Manifests.NewClient + Manifests.ClientPatch) + " with the new client)." : "."),
                 Stripe = Theme.Hibernia,
                 Badge = wz.Games.Any(g => g.IsBase || g.IsUpdatable) ? "NEW GAME" : "RECOMMENDED",
                 BadgeColor = wz.Games.Any(g => g.IsBase || g.IsUpdatable) ? Theme.Muted : Theme.Success,
@@ -326,7 +326,7 @@ namespace LivingServerSetup
             if (game == null)
             {
                 Title = "Prepare your new game";
-                Subtitle = "Everything comes from shadowofze's official release and is checked as it downloads.";
+                Subtitle = "Offline DAoC " + Payload.BaseRelease + " by shadowofze, original classes and client. Every file is checked as it downloads.";
                 folder.Text = prev?.NewInstall == true ? prev.Destination : Wizard.DefaultFolder();
                 Put(folder, 40, y + 18, 386, 34);
                 var browse = Put(new GoldButton("BROWSE"), 434, y + 18, 92, 34);
@@ -334,6 +334,8 @@ namespace LivingServerSetup
                 folder.Box.TextChanged += (s, e) => Changed();
                 y += 84;
                 float y0 = y;
+                if (Offers.Editions)
+                {
                 editionB = Toggle(new OptionToggle(Payload.BaseRelease + "b + Sluaghbinder",
                     "Adds shadowofze's custom Hibernia class.", true, "ed"), ref y, 236);
                 float y1 = y;
@@ -345,9 +347,13 @@ namespace LivingServerSetup
                 editionB.Checked = !(prev?.Classic ?? false);
                 editionClassic.Checked = prev?.Classic ?? false;
                 y += 10;
+                }
+                if (Offers.NewClient)
+                {
                 client = Toggle(new OptionToggle("Add the new client (beta)",
                     "shadowofze's modern client for the same world: " + Theme.Gb(Manifests.NewClient + Manifests.ClientPatch) + " more to download."), ref y, 486);
                 client.Checked = prev?.NewClient ?? false;
+                }
                 importFrom = form.Wizard.Games.Where(g => g.Release != null && g.CompareToBase() < 0 && !g.IsUpdatable).OrderByDescending(g => new Version(g.Release)).FirstOrDefault();
                 if (importFrom != null)
                 {
@@ -376,7 +382,7 @@ namespace LivingServerSetup
                     var lbl = Put(new NoteLabel(note), 40, y, 486, 52);
                     y += 62;
                 }
-                if (!game.NewClient)
+                if (!game.NewClient && Offers.NewClient)
                 {
                     client = Toggle(new OptionToggle("Add the new client (beta)",
                         "shadowofze's modern client for the same world, next to the original one. " + Theme.Gb(Manifests.NewClient + Manifests.ClientPatch) + " more to download."), ref y, 486);
@@ -421,7 +427,7 @@ namespace LivingServerSetup
                 if (d.ShowDialog(Form) != DialogResult.OK) return;
                 var p = d.SelectedPath;
                 if (GameScanner.IsGame(p) || Directory.Exists(p) && Directory.EnumerateFileSystemEntries(p).Any())
-                    p = Wizard.FreeFolder(Path.Combine(p, "playable-v" + Payload.BaseRelease + (editionClassic?.Checked == true ? "" : "b")));
+                    p = Wizard.FreeFolder(Path.Combine(p, "playable-v" + Payload.BaseRelease + (editionClassic == null || editionClassic.Checked ? "" : "b")));
                 folder.Text = p;
             }
         }
@@ -433,8 +439,8 @@ namespace LivingServerSetup
             {
                 o.NewInstall = true;
                 o.Destination = folder.Text.Trim().Trim('"');
-                o.Classic = editionClassic.Checked;
-                o.NewClient = client.Checked;
+                o.Classic = editionClassic == null || editionClassic.Checked;
+                o.NewClient = client?.Checked == true;
                 o.ImportFrom = import?.Checked == true ? importFrom : null;
             }
             else
@@ -505,7 +511,8 @@ namespace LivingServerSetup
             if (game == null)
             {
                 Theme.DrawText(g, "INSTALL TO", Theme.Serif(8f, FontStyle.Bold), R(41, 192, 300, 16), Theme.Gold);
-                Theme.DrawText(g, "EDITION", Theme.Serif(8f, FontStyle.Bold), new Rectangle(Theme.S(41), editionB.Top - Theme.S(20), Theme.S(300), Theme.S(16)), Theme.Gold);
+                if (editionB != null)
+                    Theme.DrawText(g, "EDITION", Theme.Serif(8f, FontStyle.Bold), new Rectangle(Theme.S(41), editionB.Top - Theme.S(20), Theme.S(300), Theme.S(16)), Theme.Gold);
             }
             var panel = R(556, 186, 364, 338);
             Theme.DrawPanel(g, panel);
@@ -893,7 +900,7 @@ namespace LivingServerSetup
                     var notes = new List<string>
                     {
                         "Undo any time: ROLLBACK.cmd in the " + Payload.RootFolder + " folder puts the files Living Server replaced back.",
-                        "Updates to Offline DAoC come from shadowofze's downloader; run this Setup (or a newer one) afterwards to add Living Server again.",
+                        "Offline DAoC " + Payload.BaseRelease + " is the last release of the base game. Living Server updates come through the launcher, or a newer Setup.",
                     };
                     if (r.Note != null) notes.Add(r.Note);
                     if (warn != null) notes.Insert(0, warn);
