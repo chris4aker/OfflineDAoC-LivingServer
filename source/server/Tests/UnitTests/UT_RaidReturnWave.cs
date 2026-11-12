@@ -48,6 +48,18 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void AnEncounterThatResetsWhileTheRaidStandsIsNotTheRaidsWipe()
+        {
+            // Darkness Falls, 2026-11-12: High Lord Oro at 59% reset to 100% with 3 of 80 raiders down.
+            Assert.That(RealmRaidDungeonRoute.IsWipe(80, 3, 100, 59), Is.True, "the old verdict");
+            Assert.That(RealmRaidDungeonRoute.IsResetWithRaidStanding(80, 3, 100, 59), Is.True);
+            Assert.That(RealmRaidDungeonRoute.IsResetWithRaidStanding(80, 20, 100, 59), Is.False, "a quarter fell: the raid lost that fight");
+            Assert.That(RealmRaidDungeonRoute.IsResetWithRaidStanding(80, 3, 80, 59), Is.False, "it did not reset");
+            Assert.That(RealmRaidDungeonRoute.IsResetWithRaidStanding(80, 3, 100, 84), Is.False, "never worn down: not an attempt at all");
+            Assert.That(RealmRaidDungeonRoute.FreeEncounterResets, Is.EqualTo(2));
+        }
+
+        [Test]
         public void LateArrivalsFollowTheWaveThatJustWent()
         {
             Assert.That(RealmRaidReturnWave.Next(30, 0, 3, 0, true), Is.EqualTo(RealmRaidReturnWave.Step.Open));
