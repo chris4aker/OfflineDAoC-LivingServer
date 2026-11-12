@@ -24,6 +24,47 @@ namespace DOL.GS
             public readonly object Sync = new();
             public readonly CompanionRaidResurrectionReservations<GameLiving> Resurrection = new();
             public readonly Dictionary<GameBot, HealClaim> Heals = new();
+            public GameLiving[] Guests = [];
+            public long GuestsUntil;
+        }
+
+        /// <summary>How far round the asking healer a realm raid looks for real players fighting beside it.</summary>
+        public const int RaidGuestRadius = 2_000;
+        /// <summary>... at most this often per raid; every healer of the raid shares the list in between.</summary>
+        public const long RaidGuestRefreshMilliseconds = 1_000;
+
+        /// <summary>Pure (dragon-fight M1): a real player of the raid's realm, alive and in a fight, is healed with the raid.</summary>
+        public static bool IsRaidGuest(bool alive, bool sameRealm, bool inCombat) => alive && sameRealm && inCombat;
+
+        /// <summary>
+        /// dragon-fight M1: real players of the realm fighting beside a realm raid without being in one of its parties
+        /// (a player who came along without joining a party). The raid's shared heal claims covered only its roster, so its healers let
+        /// that player die to the dragon's glare and breaths. Built at most once a second per raid by whichever healer asks
+        /// first (one player-only search round that healer) and shared by all of them; empty outside a realm raid.
+        /// </summary>
+        public static GameLiving[] RaidGuests(GameBot bot)
+        {
+            if (bot == null || AutonomousRealmRaid.GetView(bot.Group) == null)
+                return [];
+            object scope = AutonomousRealmRaid.SupportScope(bot);
+            if (scope == null || scope is Group)
+                return [];
+            State state = States.GetOrCreateValue(scope);
+            long now = GameLoop.GameLoopTime;
+            lock (state.Sync)
+            {
+                if (now < state.GuestsUntil)
+                    return state.Guests;
+                state.GuestsUntil = now + RaidGuestRefreshMilliseconds;
+            }
+            List<GameLiving> found = null;
+            foreach (GamePlayer player in bot.GetPlayersInRadius(RaidGuestRadius))
+                if (player != null && IsRaidGuest(player.IsAlive, player.Realm == bot.Realm, player.InCombat))
+                    (found ??= new List<GameLiving>(2)).Add(player);
+            GameLiving[] guests = found?.ToArray() ?? [];
+            lock (state.Sync)
+                state.Guests = guests;
+            return guests;
         }
         private sealed record HealClaim(GameLiving Target, Spell Spell, long Started, long Expires);
         private static readonly ConditionalWeakTable<object, State> States = new();
@@ -217,7 +258,8 @@ namespace DOL.GS
             State state = States.GetOrCreateValue(scope);
             int range = bot.castingComponent.CalculateSpellRange(spell);
             var candidates = AutonomousRealmRaid.SupportMembers(bot).Concat(AutonomousRealmRaid.SupportPets(bot, range)).Concat(
-                TemporaryCompanionPetHealing.TriageTargets(bot, range).Cast<GameLiving>()).Distinct().ToArray();
+                TemporaryCompanionPetHealing.TriageTargets(bot, range).Cast<GameLiving>()).Concat(RaidGuests(bot))   // M1
+                .Distinct().ToArray();
             lock (state.Sync)
             {
                 long now = GameLoop.GameLoopTime;

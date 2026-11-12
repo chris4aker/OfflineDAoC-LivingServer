@@ -5530,6 +5530,11 @@ namespace DOL.AI.Brain
                 foreach (GameLiving m in AutonomousRealmRaid.SupportPets(BotBody, 1800))
                     if (m.HealthPercent < 80 && (raidPatient == null || m.HealthPercent < raidPatient.HealthPercent))
                         raidPatient = m;
+                // dragon-fight M1 (True 1.65): a real player of the realm fighting beside the raid, not in its parties, is healed too
+                foreach (GameLiving m in BotGroupSupport.RaidGuests(BotBody))
+                    if (m.IsAlive && m.CurrentRegionID == Body.CurrentRegionID && m.HealthPercent < 80 &&
+                        Body.IsWithinRadius(m, 1800) && (raidPatient == null || m.HealthPercent < raidPatient.HealthPercent))
+                        raidPatient = m;
                 if (raidPatient != null && (spellTarget == null || raidPatient.HealthPercent < spellTarget.HealthPercent))
                 {
                     spellTarget = raidPatient;
