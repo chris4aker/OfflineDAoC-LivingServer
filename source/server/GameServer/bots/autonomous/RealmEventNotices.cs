@@ -64,21 +64,22 @@ namespace DOL.GS
 
         // Realm-wide one-line announcements at the top of the screen (no sound, not in the chat box),
         // for the moment a siege begins. Sent from Pulse, never while an event lock is held.
-        private static readonly Dictionary<(string, eRealm), (string Text, AnnouncementKind Kind)> PendingScreen = new();
+        private static readonly Dictionary<(string, eRealm), (string Text, AnnouncementKind Kind, int Sound)> PendingScreen = new();
 
-        public static void QueueScreen(string id, eRealm realm, string text, AnnouncementKind kind)
+        /// <param name="sound">A client sound played with the line to each player who sees it (a raid's call, 1.2); 0 = none.</param>
+        public static void QueueScreen(string id, eRealm realm, string text, AnnouncementKind kind, int sound = 0)
         {
             if (realm == eRealm.None || string.IsNullOrWhiteSpace(text) || !GameWideAnnouncements.Enabled(kind)) return;
             lock (Sync)
             {
                 if (PendingScreen.Count < 32 || PendingScreen.ContainsKey((id, realm)))
-                    PendingScreen[(id, realm)] = (text, kind);
+                    PendingScreen[(id, realm)] = (text, kind, sound);
             }
         }
 
         private static void FlushScreen()
         {
-            KeyValuePair<(string, eRealm), (string Text, AnnouncementKind Kind)>[] screen;
+            KeyValuePair<(string, eRealm), (string Text, AnnouncementKind Kind, int Sound)>[] screen;
             lock (Sync)
             {
                 if (PendingScreen.Count == 0) return;
@@ -90,7 +91,11 @@ namespace DOL.GS
                 {
                     LoreAtmosphere.NoteNews(notice.Key.Item2);   // realm news always wins over atmosphere lines (Living Server 1.2)
                     foreach (GamePlayer player in ClientService.Instance.GetPlayersOfRealm(notice.Key.Item2))
+                    {
                         player.Out.SendMessage(notice.Value.Text, PacketHandler.eChatType.CT_ScreenCenter, PacketHandler.eChatLoc.CL_SystemWindow);
+                        if (notice.Value.Sound > 0)
+                            player.Out.SendSoundEffect((ushort)notice.Value.Sound, 0, 0, 0, 0, 0);
+                    }
                 }
         }
 
