@@ -248,5 +248,16 @@ namespace DOL.UnitTests
                 sessions.Remove(group);
             }
         }
+
+        /// <summary>Owner's PC, 2026-11-12: a raid box answered 38 minutes after the raid went in got "no spot left".</summary>
+        [Test]
+        public void ABoxWhoseRaidLeftIsToldSoNotNoSpot()
+        {
+            Assert.That(AutonomousRealmRaid.RaidBoxGone(true, false), Is.Null, "still forming: the box stands");
+            Assert.That(AutonomousRealmRaid.RaidBoxGone(true, true), Is.EqualTo("raid_started"));
+            Assert.That(AutonomousRealmRaid.RaidBoxGone(false, false), Is.EqualTo("raid_ended"));
+            Assert.That(AutonomousRealmRaid.RaidBoxGoneTell("raid_started"), Does.Not.Contain("no spot"));
+            Assert.That(AutonomousRealmRaid.RaidBoxGoneTell("raid_ended"), Does.Not.Contain("no spot"));
+        }
     }
 }
