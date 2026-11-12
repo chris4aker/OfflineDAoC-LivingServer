@@ -2703,6 +2703,21 @@ namespace DOL.GS
             }
             m_leftOverSpecPoints = Math.Max(0, record.UnspentSpecPoints);
             _lastAutonomousTrainedLevel = IsEpicSpecialForce ? Level : ParseLastTrainedLevel(record.SerializedAbilities, Level, record.SerializedSpecs);
+            // A bot the launcher made at level 50 ("+ Lv.50") has its lifetime build but has never stood at a trainer: it
+            // arrives trained in that build, as a player who leveled there would be. PC 2026-11-11 (build e90bf21): 900 such
+            // bots a realm loaded with every line at 1, 792 of 2,700 had found a trainer after 80 minutes, and raids staged
+            // 20 minutes in were fought by level 50s with level-1 skills (9 of the 72 sent to Golestandt had trained).
+            bool arrivedTrained = !IsEpicSpecialForce && ArrivesTrained(Level, _lastAutonomousTrainedLevel);
+            if (arrivedTrained)
+            {
+                SpendSpecPoints(Level, _lastAutonomousTrainedLevel);
+                _lastAutonomousTrainedLevel = Level;
+                MarkAutonomousStateDirty();
+                if (AutonomousDiagnosticsProperties.Training)
+                    log.Info($"AUTONOMOUS_TRAINING bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" level={Level} " +
+                             $"trainer=\"(arrived trained)\" trainedFrom=1 trainedThrough={Level} " +
+                             $"specializations=\"{string.Join(",", GetSpecList().Where(spec => spec.Trainable && spec.Level > 1).Select(spec => $"{spec.KeyName}:1->{spec.Level}"))}\" unspent={m_leftOverSpecPoints}");
+            }
             RefreshSpecDependantSkills(false);
             SetBotSpells();
             SortStyles();
@@ -2721,8 +2736,8 @@ namespace DOL.GS
                 starterWeaponAdded |= BotRangedCombat.EnsureStarter(this);
                 starterWeaponAdded |= BotStarterInstruments.Ensure(this);
                 RefreshItemBonuses();
-                if (starterWeaponAdded || !buildLocked)
-                    AutonomousBotStatusPersistence.Queue(this, starterWeaponAdded);
+                if (starterWeaponAdded || !buildLocked || arrivedTrained)
+                    AutonomousBotStatusPersistence.Queue(this, starterWeaponAdded || arrivedTrained);
             }
             Experience = Math.Max(0, record.Experience);
             AutonomousRealmPoints = Math.Max(0, record.RealmPoints);
@@ -3425,6 +3440,10 @@ namespace DOL.GS
             // Treat those as current so the migration never double-spends points.
             return string.IsNullOrWhiteSpace(serializedSpecs) ? (byte)1 : currentLevel;
         }
+
+        /// <summary>The launcher makes bots at level 1 or at level 50 only, and a bot that leveled up trains on its way: a
+        /// level-50 bot that never trained was made at 50, and arrives trained in its lifetime build (pure).</summary>
+        public static bool ArrivesTrained(int level, int trainedLevel) => level >= 50 && trainedLevel <= 1;
 
         /// <summary>"trained-level|N|realm-points|M": realm ability points already spent at a trainer (0 when absent).</summary>
         public static int ParseTrainedRealmPoints(string serialized)
