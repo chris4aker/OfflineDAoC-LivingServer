@@ -717,12 +717,15 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// Raiders a final encounter waits for before it is pulled: half of the living raid, at least
-        /// <see cref="MinimumRaidersAtTarget"/> and at most 150; after 20 minutes of mustering a third will do.
+        /// Raiders a final encounter waits for before it is pulled: 70% of the living raid, at least
+        /// <see cref="MinimumRaidersAtTarget"/> and at most 150; after 20 minutes of mustering half will do.
+        /// It was half, and a third after 20 minutes, until 1.2 build 2. Owner's PC, 2026-11-12: raids sized at 125% of
+        /// the period's went in with half of themselves and the rest arrived during the fight (Summoner Roesia 35 of 80,
+        /// Torst 30, Norsob the Annihilator 20, High Lord Baln 40): each attempt was a smaller raid than the one sent.
         /// </summary>
         public static int FinalMusterNeeded(int livingRaiders, long musterMilliseconds) =>
             Math.Max(MinimumRaidersAtTarget, Math.Min(FinalMusterMaximum,
-                (int)(livingRaiders * (musterMilliseconds >= FinalMusterPatienceMilliseconds ? 0.33 : 0.5))));
+                musterMilliseconds >= FinalMusterPatienceMilliseconds ? livingRaiders / 2 : livingRaiders * 7 / 10));
         public const int FinalMusterMaximum = 150;
         public const long FinalMusterPatienceMilliseconds = 20 * 60_000;
         public const int FinalMusterRadius = 1_500;
