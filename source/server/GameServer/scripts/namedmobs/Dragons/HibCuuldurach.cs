@@ -455,6 +455,10 @@ namespace DOL.AI.Brain
 				_lastRoamIndex = 0;
 				ResetChecks = true;//do it only once
 				_flightWatch.End();
+				// The flight glare puts real players on the aggro list and only clears it while still flying; one glared in
+				// the last seconds before touchdown stayed there, so the dragon never healed on a reset and never flew again
+				// (dragon-fight M2). It lands with no foes: anyone within its aggro range is picked up again as usual.
+				ClearAggroList();
 			}
 			if (Body.CurrentRegion.IsNightTime == true && !LockEndRoute)//reset bools to dragon can roam again
 			{
