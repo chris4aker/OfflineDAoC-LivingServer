@@ -413,6 +413,19 @@ namespace DOL.GS
             return count;
         }
 
+        /// <summary>
+        /// Who a boss's call for help reaches: its own kind, a living monster of its realm that is nobody's pet. High Lord
+        /// Baln's first hit ordered every idle NPC within 3,000 to attack, so a raid's own gamebots and pets were told to
+        /// turn on the raider who struck him (Darkness Falls audit M1, 2026-11-11).
+        /// </summary>
+        public static bool IsOwnKind(GameNPC boss, GameNPC mob) =>
+            boss != null && mob != null && mob != boss &&
+            IsOwnKind(mob.Realm == boss.Realm, mob is GameBot, mob.Brain is DOL.AI.Brain.IControlledBrain, mob.IsAlive,
+                (mob.Flags & GameNPC.eFlags.PEACE) != 0);
+
+        public static bool IsOwnKind(bool sameRealm, bool isGameBot, bool hasControlledBrain, bool isAlive, bool isPeaceful) =>
+            sameRealm && isAlive && !isGameBot && !hasControlledBrain && !isPeaceful;
+
         public static bool FightIsOver(GameNPC boss) => boss == null || !boss.IsAlive || !boss.InCombatInLast(ResetQuietMilliseconds);
     }
 }
