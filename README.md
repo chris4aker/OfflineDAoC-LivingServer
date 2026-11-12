@@ -15,7 +15,7 @@
 
 # Offline DAoC: Living Server
 
-### Your single-player Camelot, alive like a 2003 server. **Beta 1.1.3 is out.**
+### Your single-player Camelot, alive like a 2003 server. **Beta 1.1.4 is out.**
 
 ![Offline DAoC: Living Server](tools/installer/src/Assets/hero.jpg)
 
@@ -24,25 +24,27 @@ trainer is. Two clerics are arguing smite against rejuv in /faction while an off
 under attack, and somewhere a raid is forming for Darkness Falls. None of them are people, and all of
 them are playing.
 
-**Living Server** is a free add-on for [shadowofze's Offline DAoC](https://github.com/shadowofze/OfflineDAoC),
+**Living Server** is a free add-on built on shadowofze's Offline DAoC,
 the single-player Classic + Shrouded Isles server. Its bots already level, group and fight. Living
 Server gives them a life: personalities, guilds, memories, opinions and a voice, and an endgame they
 run themselves, whether or not you come along.
 
-> **[Download Beta 1.1.3](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta)**:
+> **November 2026:** shadowofze's Offline DAoC repository is no longer online. Living Server keeps the 0.37 game files
+> itself, so Setup still installs everything you need. His current project is
+> [Offline DAoC True 1.65](https://github.com/shadowofze/OfflineDAoC-True165).
+
+> **[Download Beta 1.1.4](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta)**:
 > one Setup installs Offline DAoC and Living Server from nothing, or adds Living Server to the 0.36 or 0.37
 > game you have (0.37 or 0.37b, with or without the 0.37c new client). Free, every part has its own
 > switch, and one click rolls it back. Formerly the **Social Expansion**: if you had it, install over it
-> and keep everything. [What's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta) ·
+> and keep everything. [What's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta) ·
 > [Known issues](docs/KNOWN-ISSUES.md)
 
-## New in Beta 1.1.3
+## New in Beta 1.1.4
 
-A hotfix. Bot raids should now get out of Xanxicar's stomp in time. It has been seen once on a real install: a raid of
-280 bots killed him with no wipe. The Darkness Falls exits by Legion's hall and near the
-Midgard boss should take you home (tested against the world data; not clicked in game yet), and Setup waits out a busy
-download server instead of stopping
-([what's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta)).
+Setup works again for new players. It now downloads Offline DAoC 0.37 from Living Server's own copy of the game files,
+because shadowofze's repository is no longer online. Nothing in the game changes: if you already play 1.1.3 you can skip
+this one ([what's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta)).
 
 ## New in Beta 1.1.2
 
@@ -133,9 +135,10 @@ in a crash-safe mode and is backed up every day
 
 **The easy way: Setup.**
 
-1. Download `LivingServer-Setup-1.1.3-beta.exe` from the
-   [Beta 1.1.3 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta) and run it.
-   - No game yet? It downloads Offline DAoC with shadowofze's own downloader.
+1. Download `LivingServer-Setup-1.1.4-beta.exe` from the
+   [Beta 1.1.4 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta) and run it.
+   - No game yet? It downloads Offline DAoC 0.37 (original classes, original client) from Living Server's own copy of
+     shadowofze's release files, and checks every file.
    - On 0.36? It updates the game to 0.37 with his official updater, keeping your saves.
    - Then it adds Living Server.
 2. Windows SmartScreen may say "Windows protected your PC", because the exe isn't code-signed. Click
@@ -144,10 +147,10 @@ in a crash-safe mode and is backed up every day
 
 **By hand:**
 
-1. Install Offline DAoC 0.37 or 0.37b (or 0.37c) from [shadowofze's releases](https://github.com/shadowofze/OfflineDAoC/releases),
+1. Install Offline DAoC 0.37 with the downloader on the [0.37 files page](https://github.com/chris4aker/OfflineDAoC-base-files/releases/tag/v0.37),
    or update your 0.36 game to it (below).
-2. Download `OfflineDAoC-LivingServer-1.1.3-beta.zip` from the
-   [Beta 1.1.3 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta),
+2. Download `OfflineDAoC-LivingServer-1.1.4-beta.zip` from the
+   [Beta 1.1.4 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta),
    unzip it and put its folder in your game folder.
 3. Close the game and server, then double-click `INSTALL.cmd` in that folder.
 4. Open the launcher as usual. It now has a **Living Server** tab.
@@ -156,7 +159,7 @@ in a crash-safe mode and is backed up every day
 bot memory and settings stay as they were.
 
 **Still on 0.36 with the Social Expansion?** The 0.37 update only applies to the game's own files, so put
-them back first: put the Beta 1.1.3 folder in your game folder and double-click `PREPARE-FOR-UPDATE.cmd` (it
+them back first: put the Beta 1.1.4 folder in your game folder and double-click `PREPARE-FOR-UPDATE.cmd` (it
 restores the released 0.36 server and launcher from the installer's backups and checks each one). Then
 update the game to 0.37 with its downloader (choice 1, Update), and run `INSTALL.cmd`. If you install 0.37
 fresh instead and bring your progress over, see the package's README.txt for the one extra step.
@@ -175,7 +178,7 @@ From Beta 1.1.2 the launcher looks for a new Living Server when it opens (at mos
   **Check automatically** to turn it off. The steps are logged in `runtime\logs\launcher-updates.log`.
 - **Setup** also installs the newest release's package when it is newer than the one inside it.
 
-Beta 1.1.1 and earlier have no update check: install Beta 1.1.3 once by hand or with Setup.
+Beta 1.1.1 and earlier have no update check: install Beta 1.1.4 once by hand or with Setup.
 
 ## Getting started
 
@@ -190,7 +193,7 @@ A fresh world has no bots yet, and most of these features need some.
    in, or come back after half an hour away, and the first /faction scenes come within about its first
    half hour.
 4. **Check it's running.** The server log (`runtime\server\logs\server.log`) has a line starting
-   `FORK_BUILD name=1.1.3-beta` that lists which features are on.
+   `FORK_BUILD name=1.1.4-beta` that lists which features are on.
 
 ## Undo and uninstall
 
@@ -235,7 +238,7 @@ A fresh world has no bots yet, and most of these features need some.
 
 ## Credits
 
-[shadowofze](https://github.com/shadowofze/OfflineDAoC) made Offline DAoC, and everything here builds on it.
+[shadowofze](https://github.com/shadowofze) made Offline DAoC, and everything here builds on it.
 [OpenDAoC](https://github.com/OpenDAoC/OpenDAoC-Core) is the server underneath. Bot-guild membership, route
 bends and danger memory are adapted from [stefanrows' fork](https://github.com/stefanrows/OfflineDAoC).
 Beta 1.1 also takes fixes from shadowofze's 0.38 work, rambodolphin13's fork and lometur's HearthDAoC, and
@@ -267,13 +270,10 @@ every change in the [changelog](CHANGELOG.md).
 game) and your account, characters, bots and settings stay as they are. If you are new, the same file installs the
 complete game for you.
 
-There are three editions. They are the same game on the same server:
-
-| Edition | What it is | Download |
-|---|---|---|
-| **0.37** (recommended) | The original DAoC client with the classic Classic + SI class list only. There are no Sluaghbinder players or bots. | [v0.37 release](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.37) |
-| **0.37b** | The original DAoC client, with the custom Hibernian class, the **Sluaghbinder** (a pet-summoning undead binder), for players and bots. | [v0.37b release](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.37b) |
-| **0.37c** (BETA) | The game with **two clients**: the original one and a **new client** built in Godot 4. Both play the same account, characters, bots and world, so you can switch whenever you like. It works with 0.37 and with 0.37b. | [v0.37c release](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.37c) |
+Living Server installs one edition for new players: **0.37**, the original DAoC client with the Classic + Shrouded Isles
+classes ([0.37 files](https://github.com/chris4aker/OfflineDAoC-base-files/releases/tag/v0.37)). The other two editions shadowofze made are no longer offered: 0.37b (his custom
+Sluaghbinder class) and 0.37c (his new Godot client, which he continues in Offline DAoC True 1.65). If you already play
+0.37b or 0.37c, your game keeps working with Living Server and keeps getting its updates.
 
 **Handy commands:** [QUICK COMMANDS.txt](QUICK%20COMMANDS.txt) lists the in-game commands and launcher shortcuts: teleport to a bot (`/tele`), find monsters of a level (`/mobs`), add 10 or 100 bots at once (Shift or Ctrl + click), and more. Every command is in [ALL SERVER COMMANDS.txt](ALL%20SERVER%20COMMANDS.txt), and both files are in your game folder too.
 
@@ -331,25 +331,11 @@ builds. In 0.37c, both clients then have your progress. See [docs/TRANSFER-PROGR
 
 ## Older versions
 
-Every earlier release is still available and unchanged:
-- [v0.36](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.36),
-  [v0.36b](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.36b) and
-  [v0.36c](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.36c): the full downloads 0.37 updates.
-- [v0.35](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.35) and
-  [v0.35b](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.35b).
-- [v0.34](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.34) and
-  [v0.34b](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.34b).
-- [v0.33](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.33) and
-  [v0.33b](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.33b).
-- [v0.32](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.32) and
-  [v0.32b](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.32b): Darkness Falls beta.
-- [v0.31](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.31) and
-  [v0.31b](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.31b).
-- [v0.3](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.3).
+Earlier releases (v0.3 to v0.36c) were published in shadowofze's repository, which is no longer online. Living Server
+keeps the 0.36 and 0.37 download files in [OfflineDAoC-base-files](https://github.com/chris4aker/OfflineDAoC-base-files/releases).
 
-Their download helpers are in [older-versions/](older-versions/), and their notes are in
-[docs/history/](docs/history/). Each release's source code stays on its own branch and tag (for
-example `release/v0.36` and `v0.36b`), so older code is always there to compare.
+Their notes are in [docs/history/](docs/history/). The download helpers in [older-versions/](older-versions/) point at
+his repository and no longer download anything.
 
 ## For developers and AI assistants
 
@@ -380,7 +366,7 @@ example `release/v0.36` and `v0.36b`), so older code is always there to compare.
   own.
 - **Raids are still being tuned.** Bot raids have finished Darkness Falls, Summoner's Hall and
   Tuscaran Glacier, but not yet every epic dungeon to its last boss, and no relic has been captured
-  by a bot army yet. See [Known issues](https://github.com/shadowofze/OfflineDAoC/discussions/4).
+  by a bot army yet. See [Known issues](docs/KNOWN-ISSUES.md).
 - **AI-written code can have bugs.** Keep a backup of your save before installing a new build or
   mod. There's no guarantee against regressions.
 - **Licensing:** the original game client is a binary dependency. This repository has the server,
