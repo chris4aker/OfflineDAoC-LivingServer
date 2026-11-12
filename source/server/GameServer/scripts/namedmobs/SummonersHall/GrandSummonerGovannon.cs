@@ -240,6 +240,9 @@ namespace DOL.AI.Brain
 				Body.Health = Body.MaxHealth;
 				if (!RemoveAdds)
 				{
+					// A reset also undoes his phases (sh-bosses M5): before, Strength, size and model were restored only by
+					// the 30-35 s window below, so a raid back inside 30 s met Strength 800 and the demon at full health.
+					RestoreTemplateForm();
 					foreach (GameNPC npc in WorldMgr.GetNPCsFromRegion(Body.CurrentRegionID))
 					{
 						if (npc != null)
@@ -290,13 +293,19 @@ namespace DOL.AI.Brain
 			}
 			if (Body.InCombatInLast(30 * 1000) == false && this.Body.InCombatInLast(35 * 1000) && !HasAggro)
 			{
-				INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(18801);
 				Body.Health = Body.MaxHealth;
-				Body.Model = Convert.ToUInt16(npcTemplate.Model);
-				Body.Size = Convert.ToByte(npcTemplate.Size);
-				Body.Strength = Convert.ToInt16(npcTemplate.Strength);
+				RestoreTemplateForm();
 			}
 			base.Think();
+		}
+		private void RestoreTemplateForm()
+		{
+			INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(18801);
+			if (npcTemplate == null)
+				return;
+			Body.Model = Convert.ToUInt16(npcTemplate.Model);
+			Body.Size = Convert.ToByte(npcTemplate.Size);
+			Body.Strength = Convert.ToInt16(npcTemplate.Strength);
 		}
 		public void MorphIntoDemon()
         {
