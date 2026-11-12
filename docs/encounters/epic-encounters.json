@@ -101,7 +101,7 @@
   "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93",
   "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "12c06112f7f057486c362e7b5faec6604e7739fb03319f9a9c68ad21ab2c9b07",
   "source/server/GameServer/scripts/namedmobs/Gnat.cs": "0cc35e556f8aff83f999e735bd6f9664d686fd701955c5884951198730c22f82",
-  "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "c683203d719045871e96965b960220e2abc41ea07a64d0ea5297211d8a3e543a",
+  "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "eb4a19af9943f41fb676d0fee677eb24025e6215becb5ebf5af8aa3c12a9e372",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainAtwell.cs": "2660a077543835d7cdbac811627b37b7ab380474eb9bf81db7d63c065274f684",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainBardalph.cs": "1e6344c750ac65fbc54d13a04c41d884fc95af67e452582f6341344f77667b96",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainHeathyr.cs": "04866264482b4c82fc0ae6684bd2968cb0c20d584ba707d1e65de5bb540184c8",
@@ -14839,7 +14839,7 @@
      "maxHealth": 5000,
      "level": "75",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 669
+     "line": 685
     },
     {
      "class": "AidonCopyEarth",
@@ -14852,7 +14852,7 @@
      "maxHealth": 5000,
      "level": "75",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 790
+     "line": 806
     },
     {
      "class": "AidonCopyFire",
@@ -14865,7 +14865,7 @@
      "maxHealth": 5000,
      "level": "75",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 424
+     "line": 440
     },
     {
      "class": "AidonCopyIce",
@@ -14878,7 +14878,7 @@
      "maxHealth": 5000,
      "level": "75",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 547
+     "line": 563
     }
    ],
    "rules": [
@@ -14904,8 +14904,8 @@
      "kind": "reflect",
      "summary": "Has a damage shield / reflect spell: Aidon's Damage Shield (DamageShield, damage 100, target SELF)",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 398,
-     "lineEnd": 398,
+     "line": 414,
+     "lineEnd": 414,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -14914,14 +14914,14 @@
      "tactic": "Check who it punishes; switch damage type or attacker if it reflects.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "reflect@398"
+     "key": "reflect@414"
     },
     {
      "kind": "adds",
      "summary": "Spawns 4 kinds of add (Illusion of Aidon the Archwizard (AidonCopyAir), Illusion of Aidon the Archwizard (AidonCopyFire), Illusion of Aidon the Archwizard (AidonCopyEarth), Illusion of Aidon the Archwizard (AidonCopyIce)): on a timer (Util.Random(30000, 45000) ms)",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 279,
-     "lineEnd": 306,
+     "line": 295,
+     "lineEnd": 322,
      "anchor": "AidonCopyAir Add3 = new AidonCopyAir();",
      "confidence": "inferred",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -14940,14 +14940,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@279"
+     "key": "adds@295"
     },
     {
      "kind": "adds",
      "summary": "Spawns 4 kinds of add (Illusion of Aidon the Archwizard (AidonCopyFire), Illusion of Aidon the Archwizard (AidonCopyIce), Illusion of Aidon the Archwizard (AidonCopyAir), Illusion of Aidon the Archwizard (AidonCopyEarth)): from SpawnCopies",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 323,
-     "lineEnd": 353,
+     "line": 339,
+     "lineEnd": 369,
      "anchor": "AidonCopyFire Add1 = new AidonCopyFire();",
      "confidence": "inferred",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -14966,14 +14966,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@323"
+     "key": "adds@339"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health, adds cleared",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 205,
-     "lineEnd": 230,
+     "line": 217,
+     "lineEnd": 246,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -14982,14 +14982,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@205"
+     "key": "reset@217"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 232,
-     "lineEnd": 232,
+     "line": 248,
+     "lineEnd": 248,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -14999,14 +14999,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@232"
+     "key": "reset@248"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 235,
-     "lineEnd": 235,
+     "line": 251,
+     "lineEnd": 251,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -15016,14 +15016,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@235"
+     "key": "reset@251"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: AidonCopyAirBrain",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 184,
-     "lineEnd": 184,
+     "line": 196,
+     "lineEnd": 196,
      "anchor": "AddAggroListTo(npc.Brain as AidonCopyAirBrain);",
      "confidence": "inferred",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -15032,7 +15032,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@184"
+     "key": "linked_pack@196"
     }
    ],
    "spells": [
@@ -15047,7 +15047,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 369,
+     "line": 385,
      "sourceClass": "AidonTheArchwizardBrain"
     },
     {
@@ -15061,7 +15061,7 @@
      "value": null,
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 398,
+     "line": 414,
      "sourceClass": "AidonTheArchwizardBrain"
     },
     {
@@ -15075,7 +15075,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 763,
+     "line": 779,
      "sourceClass": "AidonCopyAirBrain"
     },
     {
@@ -15089,7 +15089,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 883,
+     "line": 899,
      "sourceClass": "AidonCopyEarthBrain"
     },
     {
@@ -15103,7 +15103,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 518,
+     "line": 534,
      "sourceClass": "AidonCopyFireBrain"
     },
     {
@@ -15117,7 +15117,7 @@
      "value": "45",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 640,
+     "line": 656,
      "sourceClass": "AidonCopyIceBrain"
     }
    ],
