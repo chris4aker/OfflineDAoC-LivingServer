@@ -471,7 +471,7 @@ namespace DOL.GS.Tests
             Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.2", untouched), Is.Empty, "a newer build already ran");
             Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.PlanChanges("1.1", untouched).Select(c => c.NewDefault),
                 Is.EqualTo(new[] { "1.5", "False" }));
-            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Version, Is.EqualTo("1.1.2.1"));
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Version, Is.EqualTo("1.2"));
 
             var chosen = new Dictionary<string, (string Value, string DefaultValue)>
             {

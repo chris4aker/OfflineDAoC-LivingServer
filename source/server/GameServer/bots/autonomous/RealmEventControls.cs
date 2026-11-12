@@ -97,7 +97,9 @@ namespace DOL.GS
                     }
                     else if (request.Action == "start")
                     {
-                        bool raidAccepted = AutonomousRealmRaid.Start(request.TargetId, (eRealm)request.Realm, out string raidReason, forced: true);
+                        // 1.2: the boss's tale first, then the call; the raid forms when the tale ends (AutonomousRealmRaid.Call.cs).
+                        bool raidAccepted = AutonomousRealmRaid.BeginForcedCall(request.TargetId, (eRealm)request.Realm, out string raidReason) ||
+                                            AutonomousRealmRaid.Start(request.TargetId, (eRealm)request.Realm, out raidReason, forced: true);
                         Complete(request, raidAccepted, raidReason);
                     }
                     else Complete(request, false, "Unknown action or missing confirmation.");
