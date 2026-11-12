@@ -1370,7 +1370,7 @@
   "hall-of-the-corrupt/aidonthearchwizard": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "c683203d719045871e96965b960220e2abc41ea07a64d0ea5297211d8a3e543a"
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "eb4a19af9943f41fb676d0fee677eb24025e6215becb5ebf5af8aa3c12a9e372"
    },
    "aiTactics": {
     "requiredAdds": [
