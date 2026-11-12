@@ -613,6 +613,11 @@ namespace DOL.GS
 		}
 		public override bool AddToWorld()
 		{
+			// The Shade is Govannon's summon. A database row (from the 2022 world) also stood one 137 units from him, so
+			// a raid could pull it with him before his 80% phase, and its death then blocked that phase's own Shade. Only
+			// the script's Shade comes into the world.
+			if (!LoadedFromScript)
+				return false;
 			INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(18803);
 			LoadTemplate(npcTemplate);
 
