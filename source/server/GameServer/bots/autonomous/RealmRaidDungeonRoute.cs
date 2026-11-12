@@ -382,6 +382,9 @@ namespace DOL.GS
         public string TargetName { get; private set; } = "Encounter staging";
         public int TargetLevel { get; private set; } = 50;
         public bool Hold { get; private set; } = true;
+        /// <summary>Set by the raid each pulse: raiders stand at the way in, waiting to come back in together
+        /// (RealmRaidReturnWave). The muster's "nobody reached it" clock waits for them.</summary>
+        public bool ReturnGathering { get; set; }
         public bool Complete { get; private set; }
         public string Status { get; private set; } = "Entering dungeon";
         public GameNPC[] FinalBosses => _finals.Values.ToArray();
@@ -724,12 +727,15 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// Raiders a final encounter waits for before it is pulled: half of the living raid, at least
-        /// <see cref="MinimumRaidersAtTarget"/> and at most 150; after 20 minutes of mustering a third will do.
+        /// Raiders a final encounter waits for before it is pulled: 70% of the living raid, at least
+        /// <see cref="MinimumRaidersAtTarget"/> and at most 150; after 20 minutes of mustering half will do.
+        /// It was half, and a third after 20 minutes, until 1.2 build 2. Owner's PC, 2026-11-12: raids sized at 125% of
+        /// the period's went in with half of themselves and the rest arrived during the fight (Summoner Roesia 35 of 80,
+        /// Torst 30, Norsob the Annihilator 20, High Lord Baln 40): each attempt was a smaller raid than the one sent.
         /// </summary>
         public static int FinalMusterNeeded(int livingRaiders, long musterMilliseconds) =>
             Math.Max(MinimumRaidersAtTarget, Math.Min(FinalMusterMaximum,
-                (int)(livingRaiders * (musterMilliseconds >= FinalMusterPatienceMilliseconds ? 0.33 : 0.5))));
+                musterMilliseconds >= FinalMusterPatienceMilliseconds ? livingRaiders / 2 : livingRaiders * 7 / 10));
         public const int FinalMusterMaximum = 150;
         public const long FinalMusterPatienceMilliseconds = 20 * 60_000;
         public const int FinalMusterRadius = 1_500;
@@ -894,7 +900,8 @@ namespace DOL.GS
             GameLiving[] musteredRaiders = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region &&
                                                    (p.IsWithinRadius(point, FinalMusterRadius) || p.IsWithinRadius(_target, TargetPresenceRadius))).ToArray();
             int mustered = musteredRaiders.Length;
-            if (mustered > 0) _musterEmptySince = 0;
+            // Raiders waiting at the way in for their return wave are on their way: the muster is not unreachable.
+            if (mustered > 0 || ReturnGathering) _musterEmptySince = 0;
             else if (_musterEmptySince == 0) _musterEmptySince = now;
             else if (MusterUnreachable(_musterEmptySince, now))
             {

@@ -79,6 +79,9 @@ namespace DOL.GS
             public GameNPC Boss;
             public long Deadline;
             public bool Started;
+            /// <summary>Raiders walking back to the dungeon gather at the way in and go in together (RealmRaidReturnWave).</summary>
+            public bool ReturnGathering;
+            public long ReturnOpenUntil, ReturnWaitingSince;
             public bool PreparationNoticeSent;
             public bool Forced;
             /// <summary>A play test's raid (/epictest): forced recruiting, but the automatic raid's clocks (late and short
@@ -144,6 +147,8 @@ namespace DOL.GS
             public long FailedPostUntil;
             public View View;
             public View DestinationView;
+            /// <summary>A dungeon raid's party staging outside the way in, as before the raid went in (return waves).</summary>
+            public View RallyView;
             public readonly HashSet<long> CatchingUp = new();
             public readonly Dictionary<long, long> CorpseSince = new();
             /// <summary>The party size when it joined; released members are replaced up to it.</summary>
@@ -548,6 +553,7 @@ namespace DOL.GS
                     if (raid.Started && raid.DungeonRoute != null)
                     {
                         raid.DungeonRoute.Advance(raid.Support, now);
+                        PulseReturnWave(raid, now);
                         while (raid.DungeonRoute.TryTakeWipe(out string wipedBy, out int failures))
                             OnWipe(raid, wipedBy, failures, now);
                         if (raid.DungeonRoute.Defeated)
@@ -1344,6 +1350,9 @@ namespace DOL.GS
         {
             if (raid.DungeonRoute is { } route)
             {
+                party.RallyView = route.Entrance == null ? null : new(raid.Definition.Id, "RAID — gathering at the way in to go back in together",
+                    new($"realm-event-{raid.Definition.Id}", raid.Definition.Name, raid.Definition.Name, route.Entrance.SourceRegion,
+                        (int)party.Staging.X, (int)party.Staging.Y, (int)party.Staging.Z, false, false, 50), true);
                 Vector3 destination = raid.Started ? route.Destination : party.Staging;
                 ushort region = raid.Started ? raid.Definition.Region : route.Entrance.SourceRegion;
                 string target = raid.Started ? route.TargetName : raid.Definition.Name;
@@ -1428,9 +1437,61 @@ namespace DOL.GS
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Membership.TryGetValue(group, out var raid) || !raid.Parties.TryGetValue(group, out var party)) return null;
+                // Walking back after a release while the raid gathers a return wave: it waits at its party's staging by the
+                // way in, as it did before the raid went in, and enters with the others (RealmRaidReturnWave).
+                if (raid.ReturnGathering && party.RallyView != null && bot.CurrentRegionID != raid.Definition.Region)
+                    return party.RallyView;
                 return raid.HubDeparted && party.CatchingUp.Contains(bot.DatabaseID)
                     ? party.DestinationView ?? party.View : party.View;
             }
+        }
+
+        /// <summary>
+        /// Under the raid lock, each pulse of a started dungeon raid: whether the raiders outside the dungeon gather at the
+        /// way in or go in (RealmRaidReturnWave). Owner's PC, 2026-11-12: after a wipe the released raiders walked back in
+        /// ones and twos through monsters that had come back, died or stalled on the way, and nobody reached the muster
+        /// for 20 minutes (Nosdoden three times, Trollkarl Bonchar, High Lord Oro, Icelord Agmundr, Hurika, Lydsyg).
+        /// </summary>
+        private static void PulseReturnWave(Raid raid, long now)
+        {
+            RealmRaidDungeonRoute route = raid.DungeonRoute;
+            if (!RealmRaidReturnWave.On || route.Entrance == null)
+            {
+                raid.ReturnGathering = false;
+                route.ReturnGathering = false;
+                return;
+            }
+            int outside = 0, waiting = 0, fallen = 0;
+            foreach (GameBot b in raid.Support.OfType<GameBot>())
+            {
+                if (!b.IsAlive) { fallen++; continue; }
+                if (b.CurrentRegionID == raid.Definition.Region) continue;
+                outside++;
+                if (IsStaged(raid, b)) waiting++;
+            }
+            if (waiting == 0) raid.ReturnWaitingSince = 0;
+            else if (raid.ReturnWaitingSince == 0) raid.ReturnWaitingSince = now;
+            long waited = raid.ReturnWaitingSince == 0 ? 0 : now - raid.ReturnWaitingSince;
+            string name = raid.Definition.Id;
+            switch (RealmRaidReturnWave.Next(outside, fallen, waiting, waited, now < raid.ReturnOpenUntil))
+            {
+                case RealmRaidReturnWave.Step.Gather:
+                    if (!raid.ReturnGathering)
+                        Log.Info($"REALM_RAID_RETURN_GATHER event={name} outside={outside} fallen={fallen} waiting={waiting}");
+                    raid.ReturnGathering = true;
+                    break;
+                case RealmRaidReturnWave.Step.Go:
+                    raid.ReturnGathering = false;
+                    raid.ReturnOpenUntil = now + RealmRaidReturnWave.OpenMilliseconds;
+                    raid.ReturnWaitingSince = 0;
+                    Log.Info($"REALM_RAID_RETURN_WAVE event={name} waiting={waiting} outside={outside} fallen={fallen} waited_s={waited / 1000}");
+                    break;
+                default:
+                    raid.ReturnGathering = false;
+                    break;
+            }
+            // While raiders stand at the way in waiting for their wave, the muster inside is not "unreachable".
+            route.ReturnGathering = raid.ReturnGathering && waiting > 0;
         }
 
         // Late/released members skip muster attendance, not the connected exterior route.
