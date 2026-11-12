@@ -113,6 +113,7 @@ namespace DOL.AI.Brain
                     {
                         foreach (GameNPC npc in Body.GetNPCsInRadius(1500))
                         {
+                            if (!EpicEncounterMechanics.IsOwnKind(Body, npc)) continue;
                             foreach (GameLiving player in EncounterTargets.InRadius(Body, 2250))
                             {
                                 npc.StartAttack(player);
