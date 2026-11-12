@@ -415,7 +415,7 @@ namespace DOL.AI.Brain
 			}
 
 			#region Dragon IsRestless fly route activation
-			if (Body.CurrentRegion.IsPM && Body.CurrentRegion.IsNightTime == false && !LockIsRestless && !HasAggro && !Body.InCombatInLast(30000))//Dragon will start roam
+			if (Body.CurrentRegion.IsPM && Body.CurrentRegion.IsNightTime == false && !LockIsRestless && !HasAggro && !Body.InCombatInLast(30000) && _lastRoamIndex < _roamingPathPoints.Count)//Dragon will start roam
 			{
 				if (Glare_Enemys.Count > 0)
 					Glare_Enemys.Clear();
