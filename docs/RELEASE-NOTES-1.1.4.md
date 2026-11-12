@@ -32,9 +32,10 @@ If your game already has either, it keeps working with Living Server and keeps g
 
 - The game files in Living Server's copy were compared with shadowofze's own SHA-256 lists: the three parts of the
   game, the 0.37 update, and the download lists. All match.
-- Setup is attached to this release only after its install test passes. That test downloads the game from the copy and
-  installs it on a clean Windows machine, then adds Living Server. **If there is no Setup exe below yet, the test is
-  still running**; the zip is for adding Living Server to a game you already have.
+- Setup's install tests passed on this release before it was attached: on a clean Windows machine they downloaded the
+  game from the copy and installed it, added Living Server, updated a 0.36b game, and resumed a download that was cut
+  off. These are automated tests, not yet a player's PC: please report what you see.
+- The zip is for adding Living Server by hand to a game you already have.
 
 ### Files
 
