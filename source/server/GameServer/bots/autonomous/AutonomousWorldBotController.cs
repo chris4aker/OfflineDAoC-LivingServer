@@ -286,6 +286,32 @@ namespace DOL.GS
 
         private static CampCatalogCell[] _campCatalog = [];
 
+        /// <summary>True 1.65 (M11 / M6): each published outdoor camp's safe spot by camp id (built with each catalog generation).</summary>
+        private static Dictionary<string, (ushort Region, Vector3 Safe)> _campSafeSpots = new(StringComparer.OrdinalIgnoreCase);
+
+        private static void PublishCampSafeSpots(IEnumerable<CampCatalogCell> cells)
+        {
+            var spots = new Dictionary<string, (ushort, Vector3)>(StringComparer.OrdinalIgnoreCase);
+            foreach (CampCatalogCell cell in cells)
+                if (cell?.Traits.HasSpots == true && !cell.IsDungeon)
+                    spots[cell.Id] = (cell.RegionId, cell.Traits.Safe);
+            System.Threading.Volatile.Write(ref _campSafeSpots, spots);
+        }
+
+        /// <summary>The safe spot of a published camp in this region, worked out by the background builder.</summary>
+        public static bool TryCampSafeSpot(string campId, ushort region, out Vector3 safe)
+        {
+            safe = default;
+            if (campId == null || !System.Threading.Volatile.Read(ref _campSafeSpots).TryGetValue(campId, out var spot) ||
+                spot.Region != region)
+                return false;
+            safe = spot.Safe;
+            return true;
+        }
+
+        /// <summary>The id of the camp this bot is hunting (null when none).</summary>
+        internal string CurrentCampId => _camp?.Id;
+
         private long _nextPocketCheckTick;
         private static long _nextPocketNudgeLog;
 

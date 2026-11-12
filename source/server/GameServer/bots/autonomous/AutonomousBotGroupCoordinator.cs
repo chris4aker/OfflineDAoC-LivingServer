@@ -2034,6 +2034,9 @@ public static partial class AutonomousBotGroupCoordinator
         // Bot-led groups: the hosted player is observed once per pass (meetup, pace, pull gate, AFK, linkdead).
         if (session.HostedPlayer != null && raidView == null && leader != null)
             StepHostedPlayer(session, members, leader);
+        // True 1.65 (veteran review M6): a fighting party calls RUN before a wipe (AutonomousBotGroupCoordinator.GroupRun)
+        if (raidView == null && leader != null && session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve)
+            CheckGroupRun(session, members, leader);
         // B4: the natural break ("last pull then town") and the search for a replacement.
         if (raidView == null && leader != null && StepNaturalBreak(session, members, leader))
             return false;
@@ -2681,6 +2684,7 @@ public static partial class AutonomousBotGroupCoordinator
         if (TryOfferLeadToLastBot(session, reason))
             return;
         session.Ending = true;
+        BotGroupRetreat.Clear(session.Group);
         GameBot[] members = AllBotMembers(session.Group);
         if (session.ObjectiveKind == eAutonomousObjectiveKind.RvR)
             AutonomousRvrEventLayer.RemoveForce(session.Id);

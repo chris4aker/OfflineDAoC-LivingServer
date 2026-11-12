@@ -57,6 +57,13 @@ each commit credited to him. They pass automated tests; nobody has played them i
   Spiritmasters and Nightshades draw their favourite prey more, and a solo bot draws camps weak to its damage more.
 - Parties stand by role once they have a camp: tanks in front toward it, melee on the flanks, healers and casters
   behind.
+- Knowing when to leave (switch `bot_veteran_retreat`, on): a gamebot party calls RUN while everyone is still alive,
+  when more monsters are loose than its tanks can hold with no mez ready and the fight already going wrong, or its
+  healers are out of power, or dead. It runs to a friendly bindstone within 4,000, else the camp's safe spot (worked out
+  ahead on the side with the fewest monsters), else back the way it came, and its next camp is easier. A solo gamebot
+  losing badly with no heal or crowd control ready bails out the same way, once per fight; a solo caster steps back
+  from a monster it rooted or snared; a hired healer whose player died in a lost fight runs and comes back to raise.
+  The party reads one shared picture of its fight (the fight board), rebuilt at most once a second.
 - Darkness Falls: every keep capture recounts all three realms, so only the realm with strictly the most keeps holds
   the door (a capture with no holder used to hand it to the taker).
 

@@ -96,6 +96,7 @@ namespace DOL.GS
                     // result. A worker can never expose a partly built catalog.
                     CampCatalogCell[] published = _campProjected.Where(cell => cell != null).ToArray();
                     Volatile.Write(ref _campCatalog, published);
+                    PublishCampSafeSpots(published);
                     AutonomousCampCompetition.PublishCatalogWithPools(published.Select(cell =>
                         (cell.Id, cell.RegionId, cell.X, cell.Y, cell.MonsterName, cell.LiveMobCount, cell.IsDungeon, cell.PoolMobs)));
                     AutonomousDungeonPopulationPolicy.PublishCatalog(published
@@ -239,6 +240,7 @@ namespace DOL.GS
             _campBuilder = null;
             _campDraft = _campProjected = null;
             _campCatalog = [];
+            PublishCampSafeSpots([]);
             AutonomousCampCompetition.PublishCatalog([]);
             AutonomousDungeonPopulationPolicy.PublishCatalog(null);
             _campBuildInFlight = _hasCampCatalog = false;
