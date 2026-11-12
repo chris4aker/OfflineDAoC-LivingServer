@@ -333,7 +333,11 @@ namespace DOL.AI.Brain
             bool encounterAggro = CheckProximityAggro();
             EncounterAdds.Tick(Body, AggroList.Select(static entry => entry.Key), encounterAggro, IsRestless);
             if (encounterAggro) DragonDiagnostics.Fighting(Body, AggroList.Count);
-			if (!encounterAggro)
+			// The reset waits until the dragon has been out of combat for EpicEncounterMechanics.ResetQuietMilliseconds, as
+			// every other scripted boss's does: in a 200-bot fight the list can be empty for a moment (a tether leash
+			// clears it, and the proximity check is skipped during the 6 s breath cast) and the dragon healed to full on
+			// that think (dragon-fight T2). A wiped or departed raid still resets it.
+			if (!encounterAggro && EpicEncounterMechanics.FightIsOver(Body))
 			{
 				DragonDiagnostics.BeforeReset(Body);
 				Body.Health = Body.MaxHealth;
