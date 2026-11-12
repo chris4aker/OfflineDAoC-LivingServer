@@ -332,7 +332,10 @@ namespace DOL.AI.Brain
         {
 			if (SummonedSacrifice.SacrificeKilledCount == 1 && SummonedDemon.SummonedDemonCount == 1)//both summoned demon and sacrifice must be killed
 			{
-				if (ShadeOfAelfgar.ShadeOfAelfgarCount == 0)//make sure there is only 1 always
+				// Only one Shade at a time. The old gate read ShadeOfAelfgarCount, which counts Shade deaths and is reset
+				// only by a new Shade, so after the first Shade was killed none ever came again until a restart (epic-bosses
+				// M6 kind). The scan runs only once both adds have reached the centre, until the Shade appears.
+				if (!ShadeOfAelfgarAlive())
 				{
 					ShadeOfAelfgar Add1 = new ShadeOfAelfgar();
 					Add1.X = 32128;
@@ -347,6 +350,13 @@ namespace DOL.AI.Brain
 					SummonedSacrifice.SacrificeKilledCount = 0;
 				}
 			}
+		}
+		private bool ShadeOfAelfgarAlive()
+		{
+			foreach (GameNPC npc in Body.GetNPCsInRadius(5000))
+				if (npc is ShadeOfAelfgar && npc.IsAlive)
+					return true;
+			return false;
 		}
 		private Spell m_GovannonDot;
 		public Spell GovannonDot
