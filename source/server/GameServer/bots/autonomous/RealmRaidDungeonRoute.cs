@@ -372,6 +372,9 @@ namespace DOL.GS
         public string TargetName { get; private set; } = "Encounter staging";
         public int TargetLevel { get; private set; } = 50;
         public bool Hold { get; private set; } = true;
+        /// <summary>Set by the raid each pulse: raiders stand at the way in, waiting to come back in together
+        /// (RealmRaidReturnWave). The muster's "nobody reached it" clock waits for them.</summary>
+        public bool ReturnGathering { get; set; }
         public bool Complete { get; private set; }
         public string Status { get; private set; } = "Entering dungeon";
         public GameNPC[] FinalBosses => _finals.Values.ToArray();
@@ -884,7 +887,8 @@ namespace DOL.GS
             GameLiving[] musteredRaiders = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region &&
                                                    (p.IsWithinRadius(point, FinalMusterRadius) || p.IsWithinRadius(_target, TargetPresenceRadius))).ToArray();
             int mustered = musteredRaiders.Length;
-            if (mustered > 0) _musterEmptySince = 0;
+            // Raiders waiting at the way in for their return wave are on their way: the muster is not unreachable.
+            if (mustered > 0 || ReturnGathering) _musterEmptySince = 0;
             else if (_musterEmptySince == 0) _musterEmptySince = now;
             else if (MusterUnreachable(_musterEmptySince, now))
             {
