@@ -239,6 +239,13 @@ public static class AutonomousTales
         "wait for {teller}, i would only ruin it", "{teller} isnt around. shame, its a good one",
     ];
 
+    /// <summary>What a bot says when a player asks for a tale soon after one was told.</summary>
+    public static readonly string[] JustTold =
+    [
+        "we just had one, give it a bit", "heard one not long ago, ask again later",
+        "storytime just ended lol, later", "one at a time, we just had one",
+    ];
+
     /// <summary>The rumour after a tale when the realm's raid on that boss can really form.</summary>
     public static readonly string[] RaidRumours =
     [
@@ -358,6 +365,19 @@ public static class AutonomousTales
     private static long _nextPulse;
 
     private static RealmState State(eRealm realm) => States.GetOrAdd(realm, _ => new RealmState());
+
+    /// <summary>Whether this bot is telling a tale now. Its own chat waits until the tale ends (owner's PC, 2026-11-12,
+    /// build ff5a8bc: the stand-in teller Wigmund said "what spec?" in /faction between two lines of Govannon's tale).</summary>
+    public static bool IsTelling(long botId)
+    {
+        if (botId <= 0)
+            return false;
+        foreach (RealmState state in States.Values)
+            lock (state)
+                if (state.Playing != null && state.TellerId == botId)
+                    return true;
+        return false;
+    }
 
     private static bool Speaks(GameBot bot, eRealm realm) => bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper &&
         bot.Realm == realm && bot.IsAlive && bot.ObjectState == GameObject.eObjectState.Active && bot.DatabaseID > 0 && !AutonomousBeggars.Is(bot);
@@ -780,11 +800,17 @@ public static class AutonomousTales
             state.LastRequestAt = now;
         }
         if (!GapOver(DateTime.UtcNow, RecallUtc(LastKey(realm)), RequestGapMs))
-            return false;
+        {
+            // Owner's PC, 2026-11-12: "tell the one about golestandt" four minutes after a tale got nothing at all. A bot now
+            // says so, the way a player would.
+            Log.Info($"TALE_REQUEST realm={GlobalConstants.RealmToName(realm)} player=\"{player.Name}\" started=False reason=\"a tale was told less than {RequestGapMs / 60_000} minutes ago\"");
+            return TrySay(realm, 0, "player", "answerer", JustTold[Random.Shared.Next(JustTold.Length)], AutonomousChatExchange.NewId()) == null;
+        }
         LoreBible bible = LoreBible.Current;
         string loreId = RequestedLore(message, TalesOf(realm).Select(t => LoreIdOf(t.Topic)).Distinct()
             .Select(id => (id, bible.BossById(id) is { } b ? LoreBible.NamesOf(b.Name, b.Id, b.Aliases) : (IEnumerable<string>)[id])));
-        if (TryStart(realm, loreId, player, out string why))
+        // A player who asks gets the tale even when both storytellers are out: another veteran tells it (as for a raid).
+        if (TryStart(realm, loreId, player, out string why, standIn: true))
             return true;
         Log.Info($"TALE_REQUEST realm={GlobalConstants.RealmToName(realm)} player=\"{player.Name}\" about={loreId ?? "any"} started=False reason=\"{why}\"");
         (long Id, string Name)[] known2 = Tellers(realm);
