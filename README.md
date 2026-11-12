@@ -15,7 +15,7 @@
 
 # Offline DAoC: Living Server
 
-### Your single-player Camelot, alive like a 2003 server. **Beta 1.1.3 is out.**
+### Your single-player Camelot, alive like a 2003 server. **Beta 1.1.4 is out.**
 
 ![Offline DAoC: Living Server](tools/installer/src/Assets/hero.jpg)
 
@@ -33,20 +33,18 @@ run themselves, whether or not you come along.
 > itself, so Setup still installs everything you need. His current project is
 > [Offline DAoC True 1.65](https://github.com/shadowofze/OfflineDAoC-True165).
 
-> **[Download Beta 1.1.3](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta)**:
+> **[Download Beta 1.1.4](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta)**:
 > one Setup installs Offline DAoC and Living Server from nothing, or adds Living Server to the 0.36 or 0.37
 > game you have (0.37 or 0.37b, with or without the 0.37c new client). Free, every part has its own
 > switch, and one click rolls it back. Formerly the **Social Expansion**: if you had it, install over it
-> and keep everything. [What's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta) ·
+> and keep everything. [What's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta) ·
 > [Known issues](docs/KNOWN-ISSUES.md)
 
-## New in Beta 1.1.3
+## New in Beta 1.1.4
 
-A hotfix. Bot raids should now get out of Xanxicar's stomp in time. It has been seen once on a real install: a raid of
-280 bots killed him with no wipe. The Darkness Falls exits by Legion's hall and near the
-Midgard boss should take you home (tested against the world data; not clicked in game yet), and Setup waits out a busy
-download server instead of stopping
-([what's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta)).
+Setup works again for new players. It now downloads Offline DAoC 0.37 from Living Server's own copy of the game files,
+because shadowofze's repository is no longer online. Nothing in the game changes: if you already play 1.1.3 you can skip
+this one ([what's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta)).
 
 ## New in Beta 1.1.2
 
@@ -137,8 +135,8 @@ in a crash-safe mode and is backed up every day
 
 **The easy way: Setup.**
 
-1. Download `LivingServer-Setup-1.1.3-beta.exe` from the
-   [Beta 1.1.3 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta) and run it.
+1. Download `LivingServer-Setup-1.1.4-beta.exe` from the
+   [Beta 1.1.4 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta) and run it.
    - No game yet? It downloads Offline DAoC 0.37 (original classes, original client) from Living Server's own copy of
      shadowofze's release files, and checks every file.
    - On 0.36? It updates the game to 0.37 with his official updater, keeping your saves.
@@ -151,8 +149,8 @@ in a crash-safe mode and is backed up every day
 
 1. Install Offline DAoC 0.37 with the downloader on the [0.37 files page](https://github.com/chris4aker/OfflineDAoC-base-files/releases/tag/v0.37),
    or update your 0.36 game to it (below).
-2. Download `OfflineDAoC-LivingServer-1.1.3-beta.zip` from the
-   [Beta 1.1.3 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.3-beta),
+2. Download `OfflineDAoC-LivingServer-1.1.4-beta.zip` from the
+   [Beta 1.1.4 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta),
    unzip it and put its folder in your game folder.
 3. Close the game and server, then double-click `INSTALL.cmd` in that folder.
 4. Open the launcher as usual. It now has a **Living Server** tab.
@@ -161,7 +159,7 @@ in a crash-safe mode and is backed up every day
 bot memory and settings stay as they were.
 
 **Still on 0.36 with the Social Expansion?** The 0.37 update only applies to the game's own files, so put
-them back first: put the Beta 1.1.3 folder in your game folder and double-click `PREPARE-FOR-UPDATE.cmd` (it
+them back first: put the Beta 1.1.4 folder in your game folder and double-click `PREPARE-FOR-UPDATE.cmd` (it
 restores the released 0.36 server and launcher from the installer's backups and checks each one). Then
 update the game to 0.37 with its downloader (choice 1, Update), and run `INSTALL.cmd`. If you install 0.37
 fresh instead and bring your progress over, see the package's README.txt for the one extra step.
@@ -180,7 +178,7 @@ From Beta 1.1.2 the launcher looks for a new Living Server when it opens (at mos
   **Check automatically** to turn it off. The steps are logged in `runtime\logs\launcher-updates.log`.
 - **Setup** also installs the newest release's package when it is newer than the one inside it.
 
-Beta 1.1.1 and earlier have no update check: install Beta 1.1.3 once by hand or with Setup.
+Beta 1.1.1 and earlier have no update check: install Beta 1.1.4 once by hand or with Setup.
 
 ## Getting started
 
@@ -195,7 +193,7 @@ A fresh world has no bots yet, and most of these features need some.
    in, or come back after half an hour away, and the first /faction scenes come within about its first
    half hour.
 4. **Check it's running.** The server log (`runtime\server\logs\server.log`) has a line starting
-   `FORK_BUILD name=1.1.3-beta` that lists which features are on.
+   `FORK_BUILD name=1.1.4-beta` that lists which features are on.
 
 ## Undo and uninstall
 
