@@ -115,7 +115,10 @@ namespace DOL.AI.Brain
             ThinkInterval = 2000;
         }
 
-        public static bool IsPulled = false;
+        // Per brain: as a static it was cleared only in the 30-35 s after a fight that Vifil survived, so once he was
+        // killed his respawn was pulled with the flag still set and his tunnel guardians never came again until some
+        // later fight ended without a kill (epic-bosses M6 kind). A respawned Vifil gets a new brain.
+        private bool IsPulled = false;
 
         public override void OnAttackedByEnemy(AttackData ad)
         {
