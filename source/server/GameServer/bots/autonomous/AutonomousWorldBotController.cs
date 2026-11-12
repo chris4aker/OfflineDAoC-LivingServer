@@ -250,7 +250,9 @@ namespace DOL.GS
             bool IsDungeon,
             bool IsFrontier,
             ConColor? FallbackMaximumCon = null,
-            int TargetLevel = 0);
+            int TargetLevel = 0,
+            // True 1.65: what the background builder worked out about the camp (AutonomousCampKnowledge)
+            AutonomousCampKnowledge.Traits Traits = default);
 
         private sealed record CampCatalogCell(
             string Id,
@@ -278,7 +280,9 @@ namespace DOL.GS
             // owner 2026-11-08: a merged camp's other anchors (x, y, z triples) tried in turn when its own fails projection
             int[] FallbackAnchors = null,
             // True 1.65 (its owner 2026-11-10): most live monsters of its name around it fly (AutonomousFlyerCampPolicy)
-            bool FlyerCamp = false);
+            bool FlyerCamp = false,
+            // True 1.65: pack factor, casters, creature type and weaknesses (AutonomousCampKnowledge)
+            AutonomousCampKnowledge.Traits Traits = default);
 
         private static CampCatalogCell[] _campCatalog = [];
 
@@ -3609,7 +3613,7 @@ namespace DOL.GS
                     : (int)Math.Round(validLevels.Average());
 
                 destinations[cell.Id] = new(cell.Id, cell.MonsterName, cell.ZoneName, cell.RegionId,
-                    cell.X, cell.Y, cell.Z, cell.LiveMobCount, cell.IsDungeon, cell.IsFrontier);
+                    cell.X, cell.Y, cell.Z, cell.LiveMobCount, cell.IsDungeon, cell.IsFrontier, Traits: cell.Traits);
                 camps.Add(new(
                     cell.Id,
                     cell.ZoneName,
@@ -3730,10 +3734,18 @@ namespace DOL.GS
                 Dictionary<string, int> campsPerMonster = legalCells
                     .GroupBy(camp => AutonomousCampCompetition.NormalizeName(camp.MonsterName))
                     .ToDictionary(group => group.Key, group => group.Count());
+                // True 1.65 (veteran review M11): camp traits from the background builder weigh the draw (AutonomousCampKnowledge)
+                bool knowledge = AutonomousCampKnowledge.Enabled;
+                bool partyHasCrowdControl = knowledge && sharedGroup && bot.Group != null &&
+                    bot.Group.GetMembersInTheGroup().Any(member => member is GameBot mate && KnowsMesmerize(mate));
+                eCharacterClass soloClass = (eCharacterClass)bot.CharacterClass.ID;
+                eDamageType soloDamage = knowledge && !sharedGroup ? AutonomousCampKnowledge.MainDamageType(bot) : eDamageType.Natural;
                 legalCells = legalCells.Select(camp => camp with
                 {
-                    SpreadWeight = SpreadWeight(bot, camp, destinations, ownCamp, party,
-                        campsPerMonster.GetValueOrDefault(AutonomousCampCompetition.NormalizeName(camp.MonsterName), 1))
+                    SpreadWeight = KnowledgeWeight(SpreadWeight(bot, camp, destinations, ownCamp, party,
+                        campsPerMonster.GetValueOrDefault(AutonomousCampCompetition.NormalizeName(camp.MonsterName), 1)),
+                        knowledge, sharedGroup, partyHasCrowdControl, soloClass, soloDamage,
+                        destinations.TryGetValue(camp.Id, out CampDestination known) ? known.Traits : default)
                 }).ToArray();
             }
             // This is the deployed selection point. Each distinct verified
@@ -4131,6 +4143,39 @@ namespace DOL.GS
                 return AutonomousFlyerCampPolicy.IsFlyerCamp(flying, total);
             }
 
+            // True 1.65 (veteran review M11): the camp's monsters (its name, within the pool radius) as AutonomousCampKnowledge sees them
+            AutonomousCampKnowledge.Traits TraitsNear(CampCatalogCell cell)
+            {
+                string name = AutonomousCampCompetition.NormalizeName(cell.MonsterName);
+                long reach = (long)poolCell * poolCell;
+                var found = new List<AutonomousCampKnowledge.Member>();
+                int cx = FloorDiv(cell.X, poolCell), cy = FloorDiv(cell.Y, poolCell);
+                for (int dx = -1; dx <= 1; dx++)
+                    for (int dy = -1; dy <= 1; dy++)
+                        if (byName.TryGetValue((cell.RegionId, name, cx + dx, cy + dy), out var list))
+                            foreach (CampMonster npc in list)
+                                if (DistanceSquared(npc.X, npc.Y, cell.X, cell.Y) <= reach)
+                                    found.Add(new(new Vector3(npc.X, npc.Y, npc.Z), npc.AggroRange, npc.Caster, npc.BodyType, npc.Race));
+                Vector3 anchor = new(cell.X, cell.Y, cell.Z);
+                AutonomousCampKnowledge.Traits traits = AutonomousCampKnowledge.WithWeaknesses(AutonomousCampKnowledge.Measure(found, anchor));
+                // the pull spot and the safe spot, away from the camp's own monsters and the aggressive ones near it
+                var monsters = new List<Vector3>(found.Count + 8);
+                foreach (AutonomousCampKnowledge.Member member in found)
+                    monsters.Add(member.Position);
+                long around = (long)(Math.Max(traits.Radius, AutonomousCampKnowledge.MinimumSocialRange) +
+                                     AutonomousCampKnowledge.SafeSpotMargin + AutonomousCampKnowledge.SafeSpotClearance);
+                around *= around;
+                int tx = FloorDiv(cell.X, threatCell), ty = FloorDiv(cell.Y, threatCell);
+                for (int dx = -1; dx <= 1; dx++)
+                    for (int dy = -1; dy <= 1; dy++)
+                        if (threats.TryGetValue((cell.RegionId, tx + dx, ty + dy), out var list))
+                            foreach (CampMonster npc in list)
+                                if (DistanceSquared(npc.X, npc.Y, cell.X, cell.Y) <= around &&
+                                    !string.Equals(AutonomousCampCompetition.NormalizeName(npc.Name), name, StringComparison.Ordinal))
+                                    monsters.Add(new Vector3(npc.X, npc.Y, npc.Z));
+                return AutonomousCampKnowledge.WithSpots(traits, anchor, monsters);
+            }
+
             // one level per distinct live monster of the camp's name within the pool radius (what a bot there hunts)
             int[] PoolLevels(CampCatalogCell cell)
             {
@@ -4208,6 +4253,8 @@ namespace DOL.GS
                 }
                 if (FlyerNear(cell))
                     cell = cell with { FlyerCamp = true };
+                if (!cell.IsDungeon)
+                    cell = cell with { Traits = TraitsNear(cell) };
                 result.Add(cell);
             }
             // camps per realm and 5-level band; a band with none keeps its source-empty camps as a fallback
@@ -4223,7 +4270,8 @@ namespace DOL.GS
                 if (!needed)
                     continue;
                 fallback++;
-                result.Add(cell with { PoolMobs = PoolNear(cell), ThreatLevel = ThreatNear(cell), FlyerCamp = FlyerNear(cell) });
+                result.Add(cell with { PoolMobs = PoolNear(cell), ThreatLevel = ThreatNear(cell), FlyerCamp = FlyerNear(cell),
+                    Traits = cell.IsDungeon ? default : TraitsNear(cell) });
             }
             if (fallback > 0)
                 coverage = CampCoverage(result);
@@ -6331,6 +6379,33 @@ namespace DOL.GS
             double empty = known ? AutonomousCampEmptyMemory.Factor(EmptyMemoryKey(camp.Id, d), GameLoop.GameLoopTime) : 1;
             return AutonomousCampSpread.Weight(AutonomousBotDecisionEngine.OutdoorSpawnWeight(camp), near, bots,
                 campsOfThisMonster, empty);
+        }
+
+        /// <summary>True 1.65 (veteran review M11): the spread weight times the camp-trait factor for this bot or party.</summary>
+        private static int KnowledgeWeight(int weight, bool enabled, bool party, bool partyHasCrowdControl,
+            eCharacterClass soloClass, eDamageType soloDamage, AutonomousCampKnowledge.Traits traits)
+        {
+            if (!enabled || !traits.Known)
+                return weight;
+            double factor = party ? AutonomousCampKnowledge.GroupFactor(partyHasCrowdControl, traits)
+                : AutonomousCampKnowledge.SoloFactor(soloClass, traits, soloDamage);
+            return Math.Max(1, (int)Math.Round(weight * factor));
+        }
+
+        /// <summary>The bot knows a single-target mesmerize at its level (crowd control for the party; from True 1.65).</summary>
+        private static bool KnowsMesmerize(GameBot bot)
+        {
+            if (bot?.Spells is not { } spells)
+                return false;
+            try
+            {
+                foreach (Spell spell in spells)
+                    if (spell?.SpellType is eSpellType.Mesmerize or eSpellType.Mez && spell.Target == eSpellTarget.ENEMY &&
+                        spell.Level <= bot.Level)
+                        return true;
+            }
+            catch (InvalidOperationException) { } // spell list cleared mid-scan (respec): no preference this pass
+            return false;
         }
 
         /// <summary>The empty-memory key of a camp: its published spot (stable while the id is known), else the destination.</summary>

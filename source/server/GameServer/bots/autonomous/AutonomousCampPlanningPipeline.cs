@@ -13,7 +13,9 @@ namespace DOL.GS
         // metadata is world-lifetime data; mesh queries remain on the game loop.
         private sealed record CampMonster(string InternalId, string Name, int X, int Y, int Z,
             int EffectiveLevel, ushort CurrentRegionID, Zone CurrentZone,
-            AutonomousDungeonGoalCatalog.Point DungeonPoint, bool Aggressive = false, bool Flying = false);
+            AutonomousDungeonGoalCatalog.Point DungeonPoint, bool Aggressive = false, bool Flying = false,
+            // True 1.65: what the background builder needs for camp traits (AutonomousCampKnowledge)
+            int AggroRange = 0, bool Caster = false, byte BodyType = 0, int Race = 0);
 
         private static BackgroundSnapshotBuilder<CampMonster[], CampCatalogCell[]> _campBuilder;
         private static CampCatalogCell[] _campDraft;
@@ -133,7 +135,11 @@ namespace DOL.GS
                         // owner 2026-11-08: camps among much stronger aggressive monsters (AutonomousCampThreatPolicy)
                         npc.Brain is DOL.AI.Brain.StandardMobBrain mob && mob.AggroLevel > 0 && mob.AggroRange > 0,
                         // True 1.65 (its owner 2026-11-10): flyer camps are skipped by solo bots with no ranged attack (AutonomousFlyerCampPolicy)
-                        (npc.Flags & GameNPC.eFlags.FLYING) != 0));
+                        (npc.Flags & GameNPC.eFlags.FLYING) != 0,
+                        (npc.Brain as DOL.AI.Brain.IOldAggressiveBrain)?.AggroRange ?? 0,
+                        npc.CanCastHarmfulSpells || npc.CanCastInstantHarmfulSpells,
+                        (byte)Math.Min(byte.MaxValue, (int)npc.BodyType),
+                        npc.Race));
                 }
             }
             return monsters.ToArray();
