@@ -11,7 +11,7 @@ using DOL.GS.ServerProperties;
 
 namespace DOL.GS.Scripts
 {
-    public class Legion : GameEpicBoss
+    public class Legion : GameEpicBoss, IRaidBossTraits
     {
         private static new readonly Logging.Logger log = Logging.LoggerManager.Create(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -292,6 +292,8 @@ namespace DOL.GS.Scripts
                 Health += ad.Damage / 4;
             base.DealDamage(ad);
         }
+        // Raid-boss traits for the bots (bots/RaidBossTraits.cs, from True 1.65): the 1,400 of TakeDamage above.
+        public int RaidMaxDamageRange => 1400;
     }
 }
 

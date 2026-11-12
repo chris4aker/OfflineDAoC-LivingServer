@@ -927,6 +927,9 @@ namespace DOL.AI.Brain
         {
             if (candidate == null || Body.ControlledBrain is not ControlledMobBrain petBrain)
                 return candidate;
+            // sh-bosses M2 (True 1.65): never at a boss pets cannot hurt; an add instead, or back to its owner (BotBrain.RaidBoss)
+            if (PetsDoNoDamageTo(candidate) && (candidate = PetTargetInsteadOfBoss(candidate, petBrain)) == null)
+                return null;
 
             GameLiving current = petBrain.OrderedAttackTarget;
             if (current == null || current == candidate || candidate == ActiveOrderedPullTarget)
@@ -3232,7 +3235,8 @@ namespace DOL.AI.Brain
                     Body.ActiveWeaponSlot,
                     currentBowTarget.IsAlive && currentBowTarget.ObjectState == GameObject.eObjectState.Active &&
                     (currentBowTarget is not DOL.GS.Keeps.GuardLord || Body.IsWithinRadius(currentBowTarget, 280)),
-                    Body.attackComponent != null && Body.IsWithinRadius(currentBowTarget, Body.attackComponent.AttackRange),
+                    Body.attackComponent != null &&
+                    Body.IsWithinRadius(currentBowTarget, CapRangeForTarget(currentBowTarget, Body.attackComponent.AttackRange)),
                     directAttacker != null && Body.IsWithinRadius(directAttacker, Body.MeleeAttackRange + 200),
                     protectionTarget != null))
                 return;
@@ -3456,7 +3460,8 @@ namespace DOL.AI.Brain
                             if (Body.ActiveWeaponSlot != eActiveWeaponSlot.Distance)
                                 Body.SwitchWeapon(eActiveWeaponSlot.Distance);
 
-                            int rangedAttackRange = Body.attackComponent.AttackRange;
+                            // df-bosses L2 (True 1.65): an archer stands where a raid boss takes damage (Legion: inside 1,400)
+                            int rangedAttackRange = CapRangeForTarget(livingTarget, Body.attackComponent.AttackRange);
                             if (BotRangedCombat.ShouldCloseToRangedRange(
                                     true, distance, rangedAttackRange))
                             {
@@ -3539,7 +3544,8 @@ namespace DOL.AI.Brain
             // target (1,000), not at nuke range (1,500), so every shroom can be
             // planted beside the Animist instead of out by the enemy.
             int shroomRange = BotAnimistPolicy.ShroomStandoffRange(BotBody);
-            return shroomRange > 0 && range > 0 ? Math.Min(range, shroomRange) : range;
+            // df-bosses L2 (True 1.65): never beyond the range a raid boss can be damaged from (BotBrain.RaidBoss)
+            return CapRangeForTarget(target, shroomRange > 0 && range > 0 ? Math.Min(range, shroomRange) : range);
         }
 
         private int SpellApproachRange()
@@ -4118,6 +4124,8 @@ namespace DOL.AI.Brain
             }
             else if (!casted && type == eCheckSpellType.Offensive)
             {
+                // df-bosses L2 (True 1.65): from where the target takes no damage, no attack spell: the caller walks in to range
+                if (BeyondTargetDamageRange()) return false;
                 if (TryPvpCrowdControl()) return true;
                 if (TryBardPveAddMez()) return true;
                 if (TryPveAddControl()) return true;
