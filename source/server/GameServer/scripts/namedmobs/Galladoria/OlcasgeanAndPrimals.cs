@@ -390,9 +390,10 @@ namespace DOL.GS
         }
         protected void ReportNews(GameObject killer)
         {
-            int numPlayers = AwardEpicEncounterKillPoint();
+            AwardEpicEncounterKillPoint();
+            int numPlayers = EpicEncounterMechanics.ForceSize(this);
             String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, numPlayers);
-            NewsMgr.CreateNews(message, killer.Realm, eNewsType.PvE, true);
+            NewsMgr.CreateNews(message, killer?.Realm ?? eRealm.None, eNewsType.PvE, true);
 
             if (Properties.GUILD_MERIT_ON_DRAGON_KILL > 0)
             {
@@ -931,9 +932,10 @@ namespace DOL.GS
         }
         protected void ReportNews(GameObject killer)
         {
-            int numPlayers = AwardEpicEncounterKillPoint();
+            AwardEpicEncounterKillPoint();
+            int numPlayers = EpicEncounterMechanics.ForceSize(this);
             String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, numPlayers);
-            NewsMgr.CreateNews(message, killer.Realm, eNewsType.PvE, true);
+            NewsMgr.CreateNews(message, killer?.Realm ?? eRealm.None, eNewsType.PvE, true);
 
             if (Properties.GUILD_MERIT_ON_DRAGON_KILL > 0)
             {

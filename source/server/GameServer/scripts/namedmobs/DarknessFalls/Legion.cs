@@ -262,9 +262,10 @@ namespace DOL.GS.Scripts
         }
         private void ReportNews(GameObject killer)
         {
-            int numPlayers = AwardLegionKillPoint();
+            AwardLegionKillPoint();
+            int numPlayers = EpicEncounterMechanics.ForceSize(this);
             String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, numPlayers);
-            NewsMgr.CreateNews(message, killer.Realm, eNewsType.PvE, true);
+            NewsMgr.CreateNews(message, killer?.Realm ?? eRealm.None, eNewsType.PvE, true);
 
             if (Properties.GUILD_MERIT_ON_LEGION_KILL <= 0) return;
             foreach (GamePlayer player in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))

@@ -398,6 +398,21 @@ namespace DOL.GS
             return pet;
         }
 
+        /// <summary>
+        /// The size of the force a boss kill notice reports: the real players and the gamebots around the body. The notices
+        /// counted real players only, so a bot raid's kill read "slain by a force of 0 warriors" (dragon-fight M4).
+        /// </summary>
+        public static int ForceSize(GameNPC boss)
+        {
+            if (boss == null)
+                return 0;
+            int count = boss.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE).Count;
+            foreach (GameNPC npc in boss.GetNPCsInRadius(WorldMgr.VISIBILITY_DISTANCE))
+                if (npc is GameBot)
+                    count++;
+            return count;
+        }
+
         public static bool FightIsOver(GameNPC boss) => boss == null || !boss.IsAlive || !boss.InCombatInLast(ResetQuietMilliseconds);
     }
 }
