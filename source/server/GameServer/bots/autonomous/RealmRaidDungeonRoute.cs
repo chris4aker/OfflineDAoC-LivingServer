@@ -220,6 +220,15 @@ namespace DOL.GS
             IsWipe(engaged, fallen, healthPercent, lowestPercent) &&
             (raidAtStart <= 0 || engaged * 2 >= raidAtStart || fallen * 2 >= raidAtStart);
 
+        /// <summary>
+        /// The raid's size for <see cref="IsWipe(int, int, int, int, int)"/>: its living members wherever they are, not only
+        /// those inside the dungeon. Caer Sidi, 2026-11-12 (owner's PC, 152 raiders): after a real wipe at Host most of the
+        /// raid had released and was walking back, so only a few stood inside; eight of them pulled Host early, six fell,
+        /// and against the handful inside that was "half the raid": it was scored as the second failed attempt and the raid
+        /// was defeated with 141 of 152 alive. Raiders on their way back are still the raid.
+        /// </summary>
+        public static int AttemptRaidSize(int livingInside, int livingAnywhere) => Math.Max(livingInside, livingAnywhere);
+
         /// <summary>Raiders a regroup waits for: 70% of the raid's roster (40% after 20 minutes), 8 to 150.</summary>
         public static int RegroupNeeded(int roster, long regroupMilliseconds) =>
             Math.Max(MinimumRaidersAtTarget, Math.Min(FinalMusterMaximum, (int)Math.Ceiling(roster *
@@ -264,7 +273,7 @@ namespace DOL.GS
         // The region's NPCs as of this turn (AdvanceCore), for the tactic checks.
         private IReadOnlyList<GameNPC> _live = [];
 
-        // The raid's living members inside when the attempt began (IsWipe's raid share), and the participants of this turn.
+        // The raid's living members when the attempt began (IsWipe's raid share; AttemptRaidSize), and the participants of this turn.
         private int _attemptRaidSize;
         private GameLiving[] _attemptParticipants;
 
@@ -274,7 +283,8 @@ namespace DOL.GS
             _musterEngagedTick = now;
             _engaged.Clear();
             _engaged.UnionWith(raiders);
-            _attemptRaidSize = _attemptParticipants?.Count(p => p.IsAlive && p.CurrentRegionID == _region) ?? 0;
+            _attemptRaidSize = AttemptRaidSize(_attemptParticipants?.Count(p => p.IsAlive && p.CurrentRegionID == _region) ?? 0,
+                _attemptParticipants?.Count(p => p.IsAlive) ?? 0);
             _attemptLowestPercent = _target.HealthPercent;
             _pulls.Begin();
             // A pull is progress: the next muster for this encounter starts its own count.
