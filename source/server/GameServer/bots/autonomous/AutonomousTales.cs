@@ -134,12 +134,17 @@ public static class AutonomousTales
             }
         }
         VC.Scene scene = ChooseTale(own, null, id => RecallUtc(ToldKey(realm, id))?.Ticks ?? 0, Random.Shared);
-        if (!TryStart(realm, LoreIdOf(scene.Topic), null, out why))
+        if (!TryStart(realm, LoreIdOf(scene.Topic), null, out why, standIn: true))
             return false;
         lock (state)
             state.RaidCall = raidId;
         return true;
     }
+
+    /// <summary>A stand-in for a raid's tale when neither storyteller is on: as <see cref="PickTeller"/>, level 35 or
+    /// more, never one of the storytellers themselves.</summary>
+    public static TellerCandidate? PickStandIn(IEnumerable<TellerCandidate> candidates, ISet<long> tellers) =>
+        PickTeller((candidates ?? []).Where(c => c.Level >= 35), tellers);
 
     /// <summary>A bot that could be a realm's storyteller.</summary>
     public readonly record struct TellerCandidate(long Id, string Name, BotPersonalityType Type, int Level);
@@ -423,7 +428,7 @@ public static class AutonomousTales
     }
 
     /// <summary>The realm's storyteller who is in the game now, choosing new ones while the realm has fewer than two.</summary>
-    private static GameBot TellerOnline(eRealm realm, out (long Id, string Name)[] known)
+    private static GameBot TellerOnline(eRealm realm, out (long Id, string Name)[] known, bool standIn = false)
     {
         GameBot[] online = AutonomousBotRegistry.Snapshot().Where(bot => Speaks(bot, realm)).ToArray();
         known = Tellers(realm);
@@ -445,8 +450,20 @@ public static class AutonomousTales
             known = Tellers(realm);
         }
         var ids = known.Select(k => k.Id).ToHashSet();
-        return online.Where(bot => ids.Contains(bot.DatabaseID)).OrderBy(bot => bot.InCombat || bot.IsCasting ? 1 : 0)
+        GameBot teller = online.Where(bot => ids.Contains(bot.DatabaseID)).OrderBy(bot => bot.InCombat || bot.IsCasting ? 1 : 0)
             .ThenBy(_ => Random.Shared.Next()).FirstOrDefault();
+        if (teller != null || !standIn)
+            return teller;
+        // A raid's tale is not lost because both storytellers are out (owner's PC, 2026-11-12, build af3fe271: Albion's
+        // Thotavyn and Merootek were both offline, and Golestandt's raid was called with no tale). Another veteran of the
+        // realm tells it this once; the realm's storytellers stay who they are.
+        TellerCandidate? standInPick = PickStandIn(online.Where(bot => !bot.InCombat && !bot.IsCasting)
+            .Select(bot => new TellerCandidate(bot.DatabaseID, bot.Name, AutonomousBotPersonality.For(bot).Type, bot.Level)), ids);
+        if (standInPick is not TellerCandidate stand)
+            return null;
+        Log.Info($"TALE_STANDIN realm={GlobalConstants.RealmToName(realm)} bot=\"{stand.Name}\" level={stand.Level} " +
+                 $"reason=\"the realm's storytellers ({string.Join(" or ", known.Select(k => k.Name))}) are not online\"");
+        return online.FirstOrDefault(bot => bot.DatabaseID == stand.Id);
     }
 
     /// <summary>
@@ -454,7 +471,7 @@ public static class AutonomousTales
     /// the one heard longest ago. <paramref name="askedBy"/> is the player who asked for it (the scene then skips its own
     /// asking line). False with the reason when it can't start now.
     /// </summary>
-    public static bool TryStart(eRealm realm, string loreId, GamePlayer askedBy, out string why)
+    public static bool TryStart(eRealm realm, string loreId, GamePlayer askedBy, out string why, bool standIn = false)
     {
         if (!On)
         {
@@ -472,7 +489,7 @@ public static class AutonomousTales
             why = "a /faction scene is running in that realm; wait for it to end";
             return false;
         }
-        GameBot teller = TellerOnline(realm, out var known);
+        GameBot teller = TellerOnline(realm, out var known, standIn);
         if (teller == null)
         {
             why = known.Length == 0 ? "no gamebot of that realm can be its storyteller yet (level 35 or more, online)"

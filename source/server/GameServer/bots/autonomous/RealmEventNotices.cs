@@ -77,6 +77,8 @@ namespace DOL.GS
             }
         }
 
+        private static readonly Logging.Logger NoticeLog = Logging.LoggerManager.Create(typeof(RealmEventNotices));
+
         private static void FlushScreen()
         {
             KeyValuePair<(string, eRealm), (string Text, AnnouncementKind Kind, int Sound)>[] screen;
@@ -90,7 +92,12 @@ namespace DOL.GS
                 if (GameWideAnnouncements.Enabled(notice.Value.Kind))
                 {
                     LoreAtmosphere.NoteNews(notice.Key.Item2);   // realm news always wins over atmosphere lines (Living Server 1.2)
-                    foreach (GamePlayer player in ClientService.Instance.GetPlayersOfRealm(notice.Key.Item2))
+                    var players = ClientService.Instance.GetPlayersOfRealm(notice.Key.Item2);
+                    // A notice with a sound (the raid call's horn) is logged, so a play test can see it went out.
+                    if (notice.Value.Sound > 0)
+                        NoticeLog.Info($"REALM_SCREEN_NOTICE event={notice.Key.Item1} realm={GlobalConstants.RealmToName(notice.Key.Item2)} " +
+                                       $"players={players.Count} sound={notice.Value.Sound} text=\"{notice.Value.Text}\"");
+                    foreach (GamePlayer player in players)
                     {
                         player.Out.SendMessage(notice.Value.Text, PacketHandler.eChatType.CT_ScreenCenter, PacketHandler.eChatLoc.CL_SystemWindow);
                         if (notice.Value.Sound > 0)
