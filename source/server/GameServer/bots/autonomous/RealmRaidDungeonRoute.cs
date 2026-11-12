@@ -229,6 +229,20 @@ namespace DOL.GS
         /// </summary>
         public static int AttemptRaidSize(int livingInside, int livingAnywhere) => Math.Max(livingInside, livingAnywhere);
 
+        /// <summary>
+        /// The encounter reset while the raid still stood: it healed back to 95% after being taken to
+        /// <see cref="ResetWipeLowestPercent"/> or lower, and fewer than a quarter of the raiders in the attempt fell.
+        /// Darkness Falls, 2026-11-12 (owner's PC, Midgard, 80 raiders): High Lord Oro was taken to 59% while the raid
+        /// fought the inquisitors and knights around him, nobody stayed on him and he reset; three raiders had fallen and
+        /// it was scored as the raid's first wipe of two. The first <see cref="FreeEncounterResets"/> such resets of an
+        /// encounter use no attempt: the raid musters again and goes in together. After that they count, so an encounter
+        /// the raid can never hold still ends the raid.
+        /// </summary>
+        public static bool IsResetWithRaidStanding(int engaged, int fallen, int healthPercent, int lowestPercent) =>
+            engaged >= MinimumRaidersAtTarget && fallen * 4 < engaged && healthPercent >= 95 && lowestPercent <= ResetWipeLowestPercent;
+        public const int FreeEncounterResets = 2;
+        private readonly Dictionary<string, int> _freeResets = new(StringComparer.Ordinal);
+
         /// <summary>Raiders a regroup waits for: 70% of the raid's roster (40% after 20 minutes), 8 to 150.</summary>
         public static int RegroupNeeded(int roster, long regroupMilliseconds) =>
             Math.Max(MinimumRaidersAtTarget, Math.Min(FinalMusterMaximum, (int)Math.Ceiling(roster *
@@ -305,6 +319,18 @@ namespace DOL.GS
             _engaged.Clear();
             if (!IsWipe(engaged, fallen, _target.HealthPercent, _attemptLowestPercent))
                 return false;
+            if (IsResetWithRaidStanding(engaged, fallen, _target.HealthPercent, _attemptLowestPercent) &&
+                _freeResets.GetValueOrDefault(_target.Name) < FreeEncounterResets)
+            {
+                int resets = _freeResets[_target.Name] = _freeResets.GetValueOrDefault(_target.Name) + 1;
+                log.Warn($"REALM_EXPEDITION_ENCOUNTER_RESET region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
+                         $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" resets={resets} of={FreeEncounterResets} " +
+                         $"reason=\"the encounter reset while the raid still stood; the raid musters again and no attempt is used\"");
+                _regrouping = true;
+                _regroupSince = _musterSince = now;
+                _targetProgressTick = now;
+                return false;
+            }
             if (!IsWipe(engaged, fallen, _target.HealthPercent, _attemptLowestPercent, _attemptRaidSize))
             {
                 // Lost skirmish: rest and muster again, but it was not the raid's attempt.
