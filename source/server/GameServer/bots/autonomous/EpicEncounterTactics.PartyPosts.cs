@@ -7,22 +7,26 @@ using System.Numerics;
 namespace DOL.GS
 {
     /// <summary>
-    /// Party posts (1.2, owner 2026-11-11: "Tactics only for now"; no number of the encounter changes).
+    /// The curers' post (1.2, owner 2026-11-11: "Tactics only for now"; no number of the encounter changes).
     /// <para>Why: Spindler Broodmother mesmerizes everyone within 300 of one raider, picked at random among those within
-    /// 1,500 of her, for 60 seconds, about every 30 seconds. The raid fought her as one pile under her (seen on the owner's
-    /// PC, 2026-11-11: the sleep icons came up over the whole raid at once), so every cast caught nearly everyone, the
-    /// raiders who cure a mesmerize included: REALM_EXPEDITION_TARGET_STATUS showed 94 to 98 of about 108 raiders
-    /// mesmerized for ten minutes, and the played world's raids had wiped there at 22% and 52% the same day.</para>
-    /// <para>What: a tactic with <see cref="Tactic.PartyPostSpacing"/> gives each party a post on a ring around the boss.
-    /// The party's back line (casters, archers, healers) stands there and fights, heals and cures from it; the melee fight
-    /// her as before. Posts lie at least the spacing apart and further than that from the melee, so one cast catches the
-    /// melee or one party's back line, never the raid, and the curers of every other post are awake to lift it.</para>
+    /// 1,500 of her, for 60 seconds, about every 30 seconds. The raid fights her as one pile under her (seen on the owner's
+    /// PC, 2026-11-11: the sleep icons came up over the whole raid at once), so a cast catches nearly everyone, the
+    /// raiders who cure a mesmerize included, and the few curers it missed (about five at a time: RAID_CURE_MEZZ) lift it
+    /// more slowly than she casts it. The played world's raids wiped there at 22% and 52% that day.</para>
+    /// <para>First try (play test posts1, same day, PC played-world copy): every party's whole back line at its own post.
+    /// About half the raid stood mesmerized instead of four fifths, but her newly-born spindlers, which hunt bards,
+    /// mentalists, druids and wardens, followed the back line to nine posts and no longer bunched for the area spells: 42
+    /// were alive at once (earlier runs: 2 to 8) and the raid wiped at 21%.</para>
+    /// <para>What: a tactic with <see cref="Tactic.CurerPostSpacing"/> sends half of the raid's curers (every second one,
+    /// by its id) to one post beside the fight, further from the melee than her mesmerize reaches; everyone else fights as
+    /// before, in one place, so the newborns still bunch. A cast on the pile leaves the post's curers awake: they cure the
+    /// pile's curers first (RaidCureMezz), and those the rest. A cast on the post leaves the pile's curers awake.</para>
     /// <para>How: <see cref="ThinkPartyPost"/> runs on every brain turn of an autonomous raider (from
-    /// <see cref="ThinkBlast"/>), because a healer has no hostile target and never reaches <see cref="TryHandle"/>. A back
-    /// line raider further than <see cref="PartyPostTolerance"/> from its post walks there between casts; at its post the
-    /// turn is its own. The ring is anchored where the boss stood when the fight was first seen and moves, at most every
-    /// eight seconds, when she has moved <see cref="PartyPostReanchor"/> from that spot (she walks to the raider she
-    /// teleports away).</para>
+    /// <see cref="ThinkBlast"/>), because a healer has no hostile target and never reaches <see cref="TryHandle"/>. A post
+    /// curer further than <see cref="PartyPostTolerance"/> from the post walks there between casts; at the post the turn is
+    /// its own. The post is the first floor spot of a ring around the boss, anchored where she stood when the fight was
+    /// first seen; it moves, at most every eight seconds, when she has moved <see cref="PartyPostReanchor"/> from that spot
+    /// (she walks to the raider she teleports away).</para>
     /// Autonomous gamebots in a realm raid only.
     /// </summary>
     public static partial class EpicEncounterTactics
@@ -88,10 +92,6 @@ namespace DOL.GS
             return kept.ToArray();
         }
 
-        /// <summary>A party's post (pure): its place in the raid's party order over the posts; parties beyond the posts
-        /// share them in turn.</summary>
-        public static int PostSlot(int partyOrder, int posts) => posts <= 0 ? -1 : (int)((uint)partyOrder % (uint)posts);
-
         /// <summary>The ring is anchored anew (pure): it has no anchor yet, or the boss has moved
         /// <see cref="PartyPostReanchor"/> from it and the ring is <see cref="PartyPostReanchorMilliseconds"/> old.</summary>
         public static bool PostsNeedAnchor(Vector3? anchor, Vector3 boss, long anchoredMillisecondsAgo) =>
@@ -100,19 +100,19 @@ namespace DOL.GS
 
         public enum PostStep { CarryOn, Walk }
 
-        /// <summary>What a back line raider does about its post this turn (pure): at it, mid-cast or unable to move it
+        /// <summary>What a post curer does about the post this turn (pure): at it, mid-cast or unable to move it
         /// carries on; else it walks there.</summary>
         public static PostStep StepToPost(float distanceToPost, bool casting, bool cannotMove) =>
             distanceToPost <= PartyPostTolerance || casting || cannotMove ? PostStep.CarryOn : PostStep.Walk;
 
-        /// <summary>The bosses with party posts whose fight is on, with when a raider last fought them.</summary>
+        /// <summary>The bosses with a curers' post whose fight is on, with when a raider last fought them.</summary>
         private static readonly ConcurrentDictionary<GameNPC, long> PostWatch = new();
         private static readonly Dictionary<GameNPC, (Vector3 Anchor, Vector3[] Posts, long Tick)> PostRings = new();
 
-        /// <summary>A raider fights <paramref name="target"/>: if its tactic has party posts, they are on.</summary>
+        /// <summary>A raider fights <paramref name="target"/>: if its tactic has a curers' post, it is on.</summary>
         private static void WatchPartyPosts(GameNPC target, long now)
         {
-            if (For(target) is { PartyPostSpacing: > 0 } && target.InCombat) PostWatch[target] = now;
+            if (For(target) is { CurerPostSpacing: > 0 } && target.InCombat) PostWatch[target] = now;
         }
 
         /// <summary>The floor posts around <paramref name="center"/>: the ring's candidates that have floor, are far enough
@@ -155,13 +155,12 @@ namespace DOL.GS
             }
         }
 
-        /// <summary>The raider stands in the back line: a caster, an archer or a healer.</summary>
-        private static bool IsBackLine(GameBot bot) =>
-            CanShootFlyers(bot) || bot.CharacterClass != null && BotPartyRoles.IsHealingClass((eCharacterClass)bot.CharacterClass.ID);
+        /// <summary>Which curers stand at the post (pure): every second one by its id; the others stay with the raid.</summary>
+        public static bool StandsAtCurerPost(bool canCureMesmerize, long id) => canCureMesmerize && (id & 1) == 0;
 
         /// <summary>
-        /// A boss with party posts is fought near the bot: a back line raider of the raid walks to its party's post, between
-        /// casts, and holds its turn while it walks. False: at its post (or not concerned), the turn is its own.
+        /// A boss with a curers' post is fought near the bot: a post curer of the raid walks to the post, between casts, and
+        /// holds its turn while it walks. False: at the post (or not concerned), the turn is its own.
         /// </summary>
         private static bool ThinkPartyPost(GameBot bot, long now)
         {
@@ -173,22 +172,20 @@ namespace DOL.GS
                     lock (PostRings) PostRings.Remove(boss);
                     continue;
                 }
-                if (boss.CurrentRegionID != bot.CurrentRegionID || For(boss) is not { PartyPostSpacing: > 0 } tactic ||
+                if (boss.CurrentRegionID != bot.CurrentRegionID || For(boss) is not { CurerPostSpacing: > 0 } tactic ||
                     !bot.IsWithinRadius(boss, PartyPostReach))
                     continue;
-                if (!IsBackLine(bot) || AutonomousRealmRaid.RaidOf(bot.Group) == null) return false;
-                Vector3[] posts = PartyPosts(boss, tactic.PartyPostSpacing, now);
-                int order = EncounterMeleeStations.PartyOrder(bot.Group, now);
-                int slot = PostSlot(order >= 0 ? order : PartyIndex(bot), posts.Length);
-                if (slot < 0) return false;
-                Vector3 post = posts[slot];
+                if (!StandsAtCurerPost(bot.CureMezz != null, bot.ObjectID) || AutonomousRealmRaid.RaidOf(bot.Group) == null) return false;
+                Vector3[] posts = PartyPosts(boss, tactic.CurerPostSpacing, now);
+                if (posts.Length == 0) return false;
+                Vector3 post = posts[0];
                 bool cannotMove = bot.IsMezzed || bot.IsStunned;
                 if (StepToPost(Flat(At(bot), post), bot.IsCasting, cannotMove) == PostStep.CarryOn) return false;
                 bot.StopAttack();
                 if (bot.FollowTarget != null) bot.StopFollowing();
                 if (!bot.IsMovingOnPath) bot.PathTo(new Point3D((int)post.X, (int)post.Y, (int)post.Z), bot.MaxSpeed);
                 LogDecision(bot, boss, new(BotAction.Reposition, boss, post,
-                    $"party post {slot + 1}/{posts.Length} of \"{boss.Name}\": the back line stands {tactic.PartyPostSpacing} apart"));
+                    $"curers' post of \"{boss.Name}\": every second curer stands {tactic.CurerPostSpacing} clear of the raid"));
                 return true;
             }
             return false;

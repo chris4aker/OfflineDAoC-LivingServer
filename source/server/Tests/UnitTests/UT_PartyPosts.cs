@@ -6,9 +6,9 @@ using Tactics = DOL.GS.EpicEncounterTactics;
 namespace DOL.GS.Tests
 {
     /// <summary>
-    /// Party posts (1.2, owner 2026-11-11: "Tactics only for now"): Spindler Broodmother's mesmerize lands 300 around one
-    /// random raider, and the raid stood in one pile. Each party's back line now stands at its own post. Pure rules and the
-    /// catalog row; play tests cover the walk, the floor and her fight.
+    /// The curers' post (1.2, owner 2026-11-11: "Tactics only for now"): Spindler Broodmother's mesmerize lands 300 around
+    /// one random raider, and the raid stands in one pile. Every second curer now stands at a post beside the fight. Pure
+    /// rules and the catalog row; play tests cover the walk, the floor and her fight.
     /// </summary>
     [TestFixture]
     public class UT_PartyPosts
@@ -19,10 +19,10 @@ namespace DOL.GS.Tests
         private static float Flat(Vector3 a, Vector3 b) => Vector2.Distance(new(a.X, a.Y), new(b.X, b.Y));
 
         [Test]
-        public void OnlyTheBroodmotherHasPartyPosts()
+        public void OnlyTheBroodmotherHasACurersPost()
         {
-            Assert.That(Tactics.For("SpindlerBroodmother").PartyPostSpacing, Is.EqualTo(Spacing), "her mesmerize's 300 and a margin");
-            Assert.That(Tactics.All.Where(t => t.PartyPostSpacing > 0).Select(t => t.Boss), Is.EquivalentTo(new[] { "SpindlerBroodmother" }));
+            Assert.That(Tactics.For("SpindlerBroodmother").CurerPostSpacing, Is.EqualTo(Spacing), "her mesmerize's 300 and a margin");
+            Assert.That(Tactics.All.Where(t => t.CurerPostSpacing > 0).Select(t => t.Boss), Is.EquivalentTo(new[] { "SpindlerBroodmother" }));
         }
 
         [Test]
@@ -64,12 +64,14 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void APartyKeepsItsPostAndExtraPartiesShare()
+        public void EverySecondCurerStandsAtThePostAndNobodyElse()
         {
-            Assert.That(Tactics.PostSlot(0, 12), Is.EqualTo(0));
-            Assert.That(Tactics.PostSlot(11, 12), Is.EqualTo(11));
-            Assert.That(Tactics.PostSlot(12, 12), Is.EqualTo(0), "a thirteenth party shares the first post");
-            Assert.That(Tactics.PostSlot(5, 0), Is.EqualTo(-1), "no floor posts: nobody is sent anywhere");
+            Assert.That(Tactics.StandsAtCurerPost(true, 1_000), Is.True);
+            Assert.That(Tactics.StandsAtCurerPost(true, 1_001), Is.False, "the other half stays with the raid");
+            Assert.That(Tactics.StandsAtCurerPost(false, 1_000), Is.False, "no cure: fights as before");
+            // Any run of curer ids splits about in half, so a cast on either place leaves curers awake in the other.
+            int atPost = Enumerable.Range(4_700, 21).Count(id => Tactics.StandsAtCurerPost(true, id));
+            Assert.That(atPost, Is.InRange(10, 11));
         }
 
         [Test]
@@ -86,7 +88,7 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void ABackLineRaiderWalksToItsPostBetweenCasts()
+        public void APostCurerWalksToThePostBetweenCasts()
         {
             Assert.That(Tactics.StepToPost(Tactics.PartyPostTolerance + 1, false, false), Is.EqualTo(Tactics.PostStep.Walk));
             Assert.That(Tactics.StepToPost(Tactics.PartyPostTolerance, false, false), Is.EqualTo(Tactics.PostStep.CarryOn), "at its post");
