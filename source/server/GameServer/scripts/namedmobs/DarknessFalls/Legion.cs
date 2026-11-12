@@ -309,7 +309,10 @@ namespace DOL.AI.Brain
         public static bool RemoveAdds = false;
         public static bool IsCreatingSouls = false;
         public static bool CanThrow = false;
-        public static bool CanPbaoe = false;
+        // The blast lock-out belongs to this brain, not to the class: as a static it outlived a reset or a death that
+        // stopped its 10 s timer, and the blast never fired again until a restart (df-bosses M3). It is cleared
+        // wherever that timer is stopped, and a respawned Legion gets a new brain.
+        private bool CanPbaoe = false;
         #region Health check bools
         public static bool adds1 = false;
         public static bool adds2 = false;
@@ -377,6 +380,8 @@ namespace DOL.AI.Brain
                     castaoe.Stop();
                     Body.TempProperties.RemoveProperty("legion_castaoe");
                 }
+                CanPbaoe = false;
+                bladeturnConsumed = 0;
             }
             if (Body.InCombatInLast(60 * 1000) == false && Body.InCombatInLast(65 * 1000))
             {
