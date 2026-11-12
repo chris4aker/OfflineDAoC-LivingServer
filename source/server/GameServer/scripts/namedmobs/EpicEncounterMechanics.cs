@@ -426,6 +426,32 @@ namespace DOL.GS
         public static bool IsOwnKind(bool sameRealm, bool isGameBot, bool hasControlledBrain, bool isAlive, bool isPeaceful) =>
             sameRealm && isAlive && !isGameBot && !hasControlledBrain && !isPeaceful;
 
+        /// <summary>
+        /// Encounters of several bodies that share one health pool (Olcasgean and his second body, the Giant Sporite
+        /// Cluster and its copies) die together, but each body paid out its own loot and experience to whoever had hit
+        /// that body, so a raid that hit two bodies was paid twice (epic-bosses M5). The body that pays takes over the
+        /// others' attackers with this before it dies; the others are left with none and pay nothing.
+        /// </summary>
+        public static void TransferDamageCredit(GameLiving from, GameLiving into)
+        {
+            if (from == null || into == null || from == into)
+                return;
+            System.Collections.Generic.Dictionary<GameLiving, double> taken = new();
+            lock (from.XpGainersLock)
+            {
+                MergeDamageCredit(from.XPGainers, taken);
+                from.XPGainers.Clear();
+            }
+            lock (into.XpGainersLock)
+                MergeDamageCredit(taken, into.XPGainers);
+        }
+
+        public static void MergeDamageCredit<T>(System.Collections.Generic.IDictionary<T, double> from, System.Collections.Generic.IDictionary<T, double> into)
+        {
+            foreach (var pair in from)
+                into[pair.Key] = into.TryGetValue(pair.Key, out double already) ? already + pair.Value : pair.Value;
+        }
+
         public static bool FightIsOver(GameNPC boss) => boss == null || !boss.IsAlive || !boss.InCombatInLast(ResetQuietMilliseconds);
     }
 }

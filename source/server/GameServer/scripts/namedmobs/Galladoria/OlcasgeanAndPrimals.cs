@@ -427,7 +427,11 @@ namespace DOL.GS
                         if (npc is Olcasgean2 boss)
                         {
                             if (boss != null && boss.IsAlive && boss.Brain is OlcasgeanBrain2)
+                            {
+                                // One encounter, one payout: this body takes the second body's attackers (epic-bosses M5).
+                                EpicEncounterMechanics.TransferDamageCredit(boss, this);
                                 boss.RemoveFromWorld();
+                            }
                         }
 
                         if (npc.Brain is VortexBrain)
@@ -454,7 +458,7 @@ namespace DOL.GS
             }
             if (canReportNews)
             {
-                if (killer is not Olcasgean or Olcasgean2)
+                if (killer != null && killer is not (Olcasgean or Olcasgean2))
                     ReportNews(killer);
             }
             base.Die(killer);
@@ -960,6 +964,7 @@ namespace DOL.GS
         }
         public override void Die(GameObject killer)
         {
+            bool mainBodyDied = false;
             foreach (GameNPC npc in GetNPCsInRadius(10000))
             {
                 if (npc != null)
@@ -968,8 +973,15 @@ namespace DOL.GS
                     {
                         if (npc is Olcasgean boss)
                         {
+                            // The main body dies with the real killer and pays for both bodies; this one pays nothing.
+                            // It used to die by its own hand, and both bodies dropped loot when both had been hit
+                            // (epic-bosses M5).
                             if (boss != null && boss.IsAlive && boss.Brain is OlcasgeanBrain)
-                                boss.Die(boss);
+                            {
+                                EpicEncounterMechanics.TransferDamageCredit(this, boss);
+                                boss.Die(killer);
+                                mainBodyDied = true;
+                            }
                         }
 
                         if (npc.Brain is VortexBrain)
@@ -981,9 +993,9 @@ namespace DOL.GS
                 }
             }
 
-            bool canReportNews = true;
+            bool canReportNews = !mainBodyDied; // the main body has already told the players and the news
             // due to issues with attackers the following code will send a notify to all in area in order to force quest credit
-            foreach (GamePlayer player in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+            foreach (GamePlayer player in mainBodyDied ? new List<GamePlayer>() : GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
             {
                 player.Notify(GameLivingEvent.EnemyKilled, killer, new EnemyKilledEventArgs(this));
 
@@ -995,7 +1007,7 @@ namespace DOL.GS
             }
             if (canReportNews)
             {
-                if(killer is not Olcasgean or Olcasgean2)
+                if (killer != null && killer is not (Olcasgean or Olcasgean2))
                     ReportNews(killer);
             }
             base.Die(killer);
