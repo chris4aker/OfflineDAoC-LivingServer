@@ -49,6 +49,14 @@ namespace DOL.AI.Brain
         public static bool FlankAllowed(bool gamebot, bool playerLedGroup, bool tankClass, bool raidOrEpic) =>
             gamebot && !playerLedGroup && !tankClass && !raidOrEpic;
 
+        /// <summary>Parry or evade chance (percent) from which a monster is worth fighting from behind without a back style.</summary>
+        public const int FrontDefenceFlankPercent = 40;
+
+        /// <summary>Pure rule (from Offline DAoC True 1.65, shadowofze): a monster whose parry or evade is this high is
+        /// fought from behind.</summary>
+        public static bool DefendsFromTheFront(int parryChance, int evadeChance) =>
+            parryChance >= FrontDefenceFlankPercent || evadeChance >= FrontDefenceFlankPercent;
+
         /// <summary>Pure rule: a finished flank is tried again once the monster turned or moved away from it.</summary>
         public static bool FlankRetry(long sinceDone, ushort headingThen, ushort headingNow, float moved)
         {
@@ -135,9 +143,12 @@ namespace DOL.AI.Brain
                 return false;
             }
             Style style = FlankStyle();
-            if (style == null)
+            // True 1.65 (df-bosses, Prince Abdin's parry 70): a monster parries only from the front and evades only from the
+            // front half, so a damage dealer with no back or side style still steps behind one that defends this well, as a
+            // veteran does. Raids keep their own positions (EpicEncounterTactics: MeleeBehind).
+            if (style == null && !(target is GameNPC defender && DefendsFromTheFront(defender.ParryChance, defender.EvadeChance)))
                 return Done();
-            var position = (Style.eOpeningPosition)style.OpeningRequirementValue;
+            var position = style == null ? Style.eOpeningPosition.Back : (Style.eOpeningPosition)style.OpeningRequirementValue;
             float angle = target.GetAngle(bot);
             if (InFlankPosition(angle, position))
                 return Done();
