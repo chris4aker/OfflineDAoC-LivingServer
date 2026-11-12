@@ -1,0 +1,133 @@
+{
+  "id": "crypt-lord",
+  "name": "Crypt Lord",
+  "catalogKey": "caer-sidi/cryptlord",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 86, 100,000 health, the highest-levelled named in Caer Sidi besides Apocalypse. Pulling him brings 43 linked dead: dark lights, fate's bearers, forerunners and reckoned souls.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs"
+    },
+    {
+      "text": "The bounty quest's hunt reason says he commands Caer Sidi's restless dead.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Bounty/BountyQuest.cs"
+    },
+    {
+      "text": "Crypt Lord: never walks home (ReturnToSpawnPoint overridden); patrols four corners when idle and aggroes real players within 400 while roaming; 43 CryptLordBaf court join with tether 0 when he has a target, and he joins any court member fighting within visibility distance; 60 s without combat heals him to full.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs"
+    },
+    {
+      "text": "The warden's niches and round, 'he never left his post', the inspection, Iolo of Gothwaite Harbor and Sir Cai among the nine, and the silent entry into the crypts are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The Crypt Lord was Arawn's warden over the deep rows of Caer Sidi, where the prisoners lay between their reckonings, and the best of all the keepers: he slept a night in every niche, and walked a square round of the crypts without stopping so that no prisoner knew which side he would come from. The Inconnu say he was a gaoler of the cells under a Roman forum; the Church, a Saxon turnkey; Brother Cadoc wrote only that he seemed to be counting. The prisoners said the warden never comes back to his post because he never left it: the rows are his post, every yard, and he finishes things where they stand.\n\nWhen the gaol rose he waited, let the prisoners break the lesser keepers, then walked out on his round and told them to form up, and they did. His court stands in ranks for an inspection: dark lights, forerunners, reckoned souls and fate's bearers. A rank that is struck is struck for all; when any of his court fights within his sight he comes, and the whole court with him, past any door. The Soul Reckoner below never turned and writes nothing while the warden stands at his table.\n\nDame Ysolde's company lost nine in his first hall, beginning with the squire Iolo of Gothwaite Harbor, whose arrow at a dark light on the edge of a rank turned the warden from his round. The company held because Ysolde never let it stop to breathe, and he fell at the corner of his own round.\n\nThe bounty-masters say he commands Caer Sidi's dead; the Inconnu, that he commands them for himself and gives Dorinakka his orders; Cadoc, that he is a steward keeping the house of a lord who went away. Caer Gothwaite's companies now enter the crypts silent, bows unstrung, and Iolo's mother pours her first cup on the alehouse step.",
+  "legend": "The Crypt Lord is level 86 with 100,000 health, the highest below the riders, and a melee kill (40% less from melee, 70% less from everything else). His court is 43 dead: dark lights, forerunners, fate's bearers and reckoned souls. When he gets a target, every one of them joins and follows anywhere, with no leash. Worse, if any court member is fighting within sight of him, he joins that fight and brings the rest, so you cannot clear his court a corner at a time near him. He walks a square round of the crypts when idle and jumps a real player who comes within 400 of him on it. He never walks home; he finishes the fight where it is. Pick the spot first, with a wall at your back, AoE groups ready and tanks rotating. Do not let it stall: a minute with nobody fighting him and he is back to full. Old hands enter the crypts with weapons sheathed until the leader says go.",
+  "yells": {
+    "aggro": [
+      "Rise, all of you. The warden calls the count.",
+      "You walk in my crypts uninvited.",
+      "Ranks! Close ranks!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "To me, every one of you! Hold the crypts!"
+      }
+    ],
+    "death": [
+      "The crypts... are unwatched...",
+      "Let Arawn have them back, then."
+    ],
+    "slay": [
+      "Another for the rows.",
+      "Lie down. You are home.",
+      "Your bed was made long ago."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The dead stand in ranks. Their lord is awake.",
+      "The rows run further than your torchlight."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Crypt Lord has fallen. Caer Sidi's dead are leaderless."
+  },
+  "botLines": {
+    "briefing": [
+      "crypt lord brings all 43 of his court, no leash, they follow anywhere",
+      "dont pull his court near him, any of them fighting in his sight brings him and the rest",
+      "he walks a square round, pick the spot with a wall behind us before he comes",
+      "aoe groups on the court, tanks rotate on him, melee kill",
+      "keep it going, a minute quiet and hes full again"
+    ],
+    "aftermathWin": [
+      "crypt lord down. the warden's off duty",
+      "cleared the court first, then him. clean",
+      "forty adds and nobody died, wow",
+      "the rows are empty now"
+    ],
+    "aftermathLoss": [
+      "someone shot a dark light and the whole court came",
+      "we were in the open when he came round the corner",
+      "the court chased us out the door, they dont stop",
+      "we stopped to rest mid fight and he healed full"
+    ],
+    "rumour": [
+      "the crypt lord commands caer sidi's restless dead, [they say|heard]",
+      "[heard|someone said] forty dead come with the crypt lord",
+      "heard the crypt lord let the prisoners think they won",
+      "the inconnu say arawn wants a word with the crypt lord",
+      "heard the crypt lord sleeps a night in every niche in caer sidi",
+      "[heard|someone said] the crypt lord never goes back to his spot, he just keeps fighting"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "crypt lord",
+    "text": "Arawn's warden of the deep rows of [Caer Sidi], the best of the keepers, who walks a square round of the crypts. When the gaol rose he told the prisoners to form up, and they did. A rank of his court that is struck is struck for all. See [Soul Reckoner] and [Dorinakka]."
+  },
+  "bookPage": "We lost nine of eighty in the crypts, in the first hall, among the warden's ranks. The dead stand there in ranks, rows upon rows, as if waiting for an inspection, and their lord walks among them. He did not shout when we came. He looked at us as a gaoler looks at new arrivals, and said that we walked in his crypts uninvited, and every head in every rank turned at once. The Inconnu say he was Arawn's best warden. I believe it. He is still a warden. He has only changed masters, and the master is himself.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} cleared the crypts and broke the Crypt Lord's command in {minutes} minutes.",
+    "loss": "The Crypt Lord's court rose as one against {realm}'s raid; {raidLeader} was buried in the rows."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "arawn",
+    "caer-sidi-prisoners"
+  ],
+  "related": [
+    {
+      "id": "soul-reckoner",
+      "relation": "the keeper below who never turned"
+    },
+    {
+      "id": "warlord-dorinakka",
+      "relation": "commands him, in name"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Warden Who Slept in Every Niche",
+      "text": "Of all Arawn's keepers, the Inconnu say, the warden of the crypts was the best, and that is why he is the most dangerous now.\n\nThe crypts are the deep rows of Caer Sidi, where the prisoners lay between their reckonings, niche over niche in the pale stone, thousands of them. The warden knew every niche and who lay in it. He slept in each of them in turn, the Inconnu say, a night in every one, so that there was no corner of the rows he had not lain in and looked out from, and no prisoner whose view of the crypts he did not know. The other keepers were given one task. He gave himself a second: to walk the rows. He walked a square round of the crypts without stopping, corner to corner and back, so that no prisoner ever knew from which side he would come.\n\nWho he was before, the accounts agree only that he had kept men in the dark when he was alive. The Inconnu say he was a gaoler of the old province, the keeper of the cells under a Roman forum, who came to Annwn and, offered rest, asked for work instead. The Church says he was a turnkey of the Saxon kings and that Arawn chose him for his cruelty. Brother Cadoc, who stood in his crypts, wrote that he did not seem cruel. He seemed to be counting.\n\nThe prisoners of the deep rows feared him more than they feared Arawn. Arawn was far away. The warden was always coming round the corner. They had a saying, which the Inconnu brought up out of the ground with the rest of the gaol's sayings: the warden does not come back to his post, because he never left it. Whatever the warden starts, he finishes where it stands; there is no door behind him he would retreat through, and no place in the crypts he thinks of as home. The rows are his post, every yard of them."
+    },
+    {
+      "title": "The Inspection",
+      "text": "When the gaol rose, the warden of the crypts did not join the rising, and he did not stand against it. He waited.\n\nHe let the prisoners break the lesser keepers, the custodians and the corridor knights, and believe that they had won. He let them come up out of their niches and stand about the rows in the first freedom any of them had known since they died. Then he walked out among them, on his round, and stopped, and told them to form up. The Inconnu say that most of them did it without thinking, because they had been formed up by him for so long, and that the rest did it when they saw the first ones obey. A prisoner who has won his freedom inside his prison still wants someone to tell him what to do with it. They call him the Crypt Lord now.\n\nHis court stands in ranks along the crypts, as if waiting for an inspection: the dark lights, which were once the lamps of the rows; the forerunners, who ran ahead of him on his round to clear the way; the reckoned souls, counted and set aside; and fate's bearers, who wear the riders' cloth but answer to him. The warden taught them one thing above all, and it is the thing the Inconnu warn every company of before it enters the crypts. A rank that is struck is struck for all. When any one of his court is fighting within sight of him, the warden turns from his round and comes, and when the warden comes, the whole court comes with him, from every row, and follows wherever he leads, past any door. The prisoners who tried, in the first nights, to win a corner of the rows by fighting one rank at a time found that out at once.\n\nThe Soul Reckoner, in his hall below, never turned. The Inconnu say the warden goes down to the reckoning hall on certain nights and stands at the Reckoner's table without speaking, and that the Reckoner writes nothing while he stands there."
+    },
+    {
+      "title": "Nine in the First Hall",
+      "text": "Dame Ysolde's company lost nine of its eighty in the Crypt Lord's court, and the garrison of Caer Gothwaite remembers them by name.\n\nBrother Cadoc's account is plain. The company came into the first hall of the crypts and found the dead standing in ranks, rows upon rows, and their lord walking among them on his round. He did not shout. He looked at the living as a gaoler looks at new arrivals and said that they walked in his crypts uninvited, and every head in every rank turned at once. A squire at the back of the company, Iolo of Gothwaite Harbor, had already loosed an arrow at a dark light on the edge of the nearest rank, and the warden turned from his round toward the arrow, and the court came.\n\nThe nine died in the first press, before Ysolde had the company back against the wall of the hall. The names are cut on the sill of the chapel at Caer Gothwaite: Iolo first, at his own mother's asking, and then Sir Cai of the Isle of Glass and seven more. Cadoc wrote that the company held after that only because Ysolde did not let it stop. The warden's ranks came on and on, and if the living had drawn breath long enough to bind their wounds, he said, the warden would have been standing in front of them again unmarked, as if the inspection were just beginning.\n\nHe fell at last at the corner of his own round, where the second row of niches turns, and the court fell about him rank by rank. He said nothing as he died. Cadoc said the office over the nine there, among the dead ranks, before the company went on. He wrote that while he said it he had the feeling, which he did not like, that the warden was listening to see whether he said it correctly."
+    },
+    {
+      "title": "A Gaol with No Lord",
+      "text": "The Crypt Lord is the real master of Caer Sidi under the riders, and he knows it. What he means to do with his mastery, the accounts do not agree.\n\nThe bounty-masters of Albion say he commands Caer Sidi's restless dead, and post the price on him accordingly. The Inconnu say he commands them for himself, and that if Arawn ever retakes his gaol, the warden is the first keeper their lord will want to speak to, and the only one who will not be afraid. Warlord Dorinakka in the yard believes that he commands the crypt knights and the yard; the Inconnu say the warden gives him his orders through the forerunners, and that Dorinakka has not yet noticed. The Church of Camelot says the warden is the devil's sergeant and the gaol a foretaste of the pit, and preaches him at Easter.\n\nThe likeliest reading, Brother Cadoc thought, is the simplest. The warden was the best keeper of a gaol, and the gaol's lord went away, and he went on keeping it, as a steward keeps a house whose master has died abroad. He wants the prisoners in their ranks and the rows in order and every niche accounted for. He does not want freedom; he never thought of himself as a prisoner. He wants the inspection to go well.\n\nThe garrison of Caer Gothwaite has made a custom of the nine. Every company that goes up to the turning gaol now enters the crypts in silence, with no bow strung and no blade drawn until its captain has seen the warden on his round and chosen where to meet him, and the squires are told the story of Iolo and the arrow at the foot of the crypt stair. Iolo's mother keeps an alehouse at Gothwaite Harbor. She draws the first cup of every barrel for her son and pours it on the step, and the fishermen say that the warden of Caer Sidi has never once come round that corner."
+    }
+  ]
+}

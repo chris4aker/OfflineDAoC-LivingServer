@@ -176,6 +176,33 @@ $noDbInstall = Run 'install-server-build.ps1' @('-GameFolder', $noDb)
 Check ($noDbInstall.Code -eq 0 -and (Sha (Join-Path $noDb 'runtime\server\GameServer.dll')) -eq $info['GameServer.dll'] -and
        $noDbInstall.Output -match 'No world database') "database: a game with no database yet still installs`n$($noDbInstall.Output)"
 
+# Living Server 1.2, the epic chains: the server links them in memory and nothing is written to the world for them, so
+# an install and a rollback leave the world database as it was. A world epic_chains.py --apply wrote the links into
+# (its note beside the server) is refused by ROLLBACK.cmd and PREPARE-FOR-UPDATE.cmd until they are put back, since the
+# released server would never offer the Guild of Shadows; -Force rolls back anyway.
+$epic = Join-Path $work 'epic'
+New-FakeGame $epic $base
+$epicDb = Join-Path $epic 'runtime\data\opendaoc.sqlite3.db'
+$epicHash = Sha $epicDb
+$r = Run 'install-server-build.ps1' @('-GameFolder', $epic)
+Check ($r.Code -eq 0 -and (Sha $epicDb) -eq $epicHash -and $r.Output -match 'epic chains are linked by the server') "epic chains: the install writes nothing to the world for them`n$($r.Output)"
+$r = Run 'rollback-server-build.ps1' @('-GameFolder', $epic)
+Check ($r.Code -eq 0 -and (Sha $epicDb) -eq $epicHash -and (Sha (Join-Path $epic 'runtime\server\GameServer.dll')) -ne $info['GameServer.dll']) "epic chains: the rollback has nothing to undo in the world`n$($r.Output)"
+$null = Run 'install-server-build.ps1' @('-GameFolder', $epic)
+$epicNote = Join-Path $epic 'runtime\server\epic-chains-in-world.txt'
+[IO.File]::WriteAllText($epicNote, 'The epic chain links are written into this world''s quest rows (epic_chains.py --apply).')
+$r = Run 'rollback-server-build.ps1' @('-GameFolder', $epic)
+Check ($r.Code -ne 0 -and $r.Output -match 'epic_chains.py rollback --apply' -and (Sha (Join-Path $epic 'runtime\server\GameServer.dll')) -eq $info['GameServer.dll']) "epic chains: a world with the links written into it is refused by ROLLBACK, nothing changed`n$($r.Output)"
+$r = Run 'rollback-server-build.ps1' @('-GameFolder', $epic, '-ToRelease')
+Check ($r.Code -ne 0 -and (Sha (Join-Path $epic 'runtime\server\GameServer.dll')) -eq $info['GameServer.dll']) "epic chains: and by PREPARE-FOR-UPDATE (-ToRelease)`n$($r.Output)"
+$r = Run 'rollback-server-build.ps1' @('-GameFolder', $epic, '-Force')
+Check ($r.Code -eq 0 -and $r.Output -match 'stay written' -and (Sha (Join-Path $epic 'runtime\server\GameServer.dll')) -ne $info['GameServer.dll'] -and
+       (Sha $epicDb) -eq $epicHash) "epic chains: -Force rolls back anyway and says so`n$($r.Output)"
+Remove-Item -LiteralPath $epicNote
+$null = Run 'install-server-build.ps1' @('-GameFolder', $epic)
+$r = Run 'rollback-server-build.ps1' @('-GameFolder', $epic, '-ToRelease')
+Check ($r.Code -eq 0 -and (Sha $epicDb) -eq $epicHash) "epic chains: with the links put back (no note) PREPARE-FOR-UPDATE goes ahead`n$($r.Output)"
+
 # The build placed inside one game folder that has other game folders beside it (playtest 2026-11-04: three
 # side-by-side installs): the folder it sits in wins, without -GameFolder.
 $siblings = Join-Path $work 'siblings'
@@ -343,7 +370,7 @@ Check ($fixInstall.Code -eq 0 -and [IO.File]::ReadAllText($nav) -eq $fixedText) 
 $splash = Join-Path $fixGame 'runtime\client-opendaoc\app\pregame\splash996.mpk'
 Check ([IO.File]::ReadAllText($splash) -eq 'new splash') "content: a whole file under content/ replaces the released one`n$($fixInstall.Output)"
 Check ([IO.File]::ReadAllText((Join-Path $fixGame 'runtime\server\navmesh\zone997.nav')) -eq 'someone else''s mesh' -and
-       $fixInstall.Output -match 'not the released file, left alone' -and $fixInstall.Output -match 'not in this game, skipped') 'content: a changed or missing file is left alone'
+       $fixInstall.Output -match 'not the released file.*left alone' -and $fixInstall.Output -match 'not in this game, skipped') 'content: a changed or missing file is left alone'
 $fixAgain = RunIn $patched 'install-server-build.ps1' @('-GameFolder', $fixGame)
 Check ($fixAgain.Code -eq 0 -and $fixAgain.Output -match 'Already installed') "content: reinstall is a no-op`n$($fixAgain.Output)"
 $fixRollback = RunIn $patched 'rollback-server-build.ps1' @('-GameFolder', $fixGame)
@@ -366,6 +393,131 @@ $damaged = Join-Path $work 'content-damaged'
 New-PatchedGame $damaged
 $damagedInstall = RunIn $patched 'install-server-build.ps1' @('-GameFolder', $damaged)
 Check ($damagedInstall.Code -ne 0 -and (Sha (Join-Path $damaged 'runtime\server\GameServer.dll')) -ne $info['GameServer.dll']) 'content: a patch list that doesn''t match BUILD-INFO.txt is refused'
+
+# Living Server 1.2, the titled loading screen (owner 2026-11-07, "I don't want the original splash screens, I want
+# mine"). Two test builds: "1.1" ships its loading screen over the released one (its entry as 1.1 had it, no Replaces or
+# Keep, and its install record without the 1.2 fields), "1.2" ships the new one with Replaces (the 1.1 one) and Keep.
+# Install: shadowofze's and the 1.1 loading screen are replaced, an unknown one is left alone. ROLLBACK.cmd: the 1.1
+# loading screen comes back, shadowofze's never does. PREPARE-FOR-UPDATE.cmd (-ToRelease): the loading screen stays,
+# since the Offline DAoC patcher doesn't need it. Also an entry with Replaces but no Keep (art995): -ToRelease puts the
+# released file back from the 1.1 install's backup though the newest backup holds the 1.1 version.
+$splashRel = 'runtime/client-opendaoc/app/pregame/splash.mpk'
+$artRel = 'runtime/client-opendaoc/app/art995.dat'
+$shadowSplash = 'shadowofze splash'; $ls11Splash = 'living server 1.1 splash'; $ls12Splash = 'living server 1.2 titled splash'
+$artReleased = 'released art'; $art11 = 'art fixed in 1.1'; $art12 = 'art fixed in 1.2'
+function New-TestBuild([string]$dir, [string]$dllText, $entries, [hashtable]$files) {
+    Copy-Item -LiteralPath $BuildDir -Destination $dir -Recurse
+    New-Item -ItemType Directory -Path (Join-Path $dir 'content') -Force | Out-Null
+    foreach ($name in $files.Keys) { [IO.File]::WriteAllText((Join-Path $dir "content\$name"), $files[$name]) }
+    [IO.File]::WriteAllText((Join-Path $dir 'content-patches.json'), (ConvertTo-Json -InputObject @($entries) -Depth 6))
+    $lines = @(Get-Content -LiteralPath (Join-Path $dir 'BUILD-INFO.txt') | Where-Object { $_ -notlike 'content-patches.json=*' })
+    if ($dllText) {
+        [IO.File]::WriteAllText((Join-Path $dir 'GameServer.dll'), $dllText)
+        $lines = @($lines | ForEach-Object { if ($_ -like 'GameServer.dll=*') { "GameServer.dll=$(Sha (Join-Path $dir 'GameServer.dll'))" } else { $_ } })
+    }
+    $lines += "content-patches.json=$(Sha (Join-Path $dir 'content-patches.json'))"
+    Set-Content -LiteralPath (Join-Path $dir 'BUILD-INFO.txt') -Value $lines -Encoding UTF8
+}
+$build11 = Join-Path $work 'build-1.1'
+New-TestBuild $build11 'fork build 1.1' @(
+    [pscustomobject]@{ Path = $splashRel; Released = (TextSha $shadowSplash); Fixed = (TextSha $ls11Splash); Size = $ls11Splash.Length; File = 'content/pregame-splash.mpk' },
+    [pscustomobject]@{ Path = $artRel; Released = (TextSha $artReleased); Fixed = (TextSha $art11); Size = $art11.Length; File = 'content/art995.dat' }
+) @{ 'pregame-splash.mpk' = $ls11Splash; 'art995.dat' = $art11 }
+$build12 = Join-Path $work 'build-1.2'
+New-TestBuild $build12 $null @(
+    [pscustomobject]@{ Path = $splashRel; Released = (TextSha $shadowSplash); Fixed = (TextSha $ls12Splash); Size = $ls12Splash.Length
+        Replaces = @((TextSha $ls11Splash)); Keep = $true; File = 'content/pregame-splash.mpk' },
+    [pscustomobject]@{ Path = $artRel; Released = (TextSha $artReleased); Fixed = (TextSha $art12); Size = $art12.Length
+        Replaces = @((TextSha $art11)); File = 'content/art995.dat' }
+) @{ 'pregame-splash.mpk' = $ls12Splash; 'art995.dat' = $art12 }
+function New-SplashGame([string]$root, [string]$splashText) {
+    New-FakeGame $root $base
+    New-Item -ItemType Directory -Path (Join-Path $root 'runtime\client-opendaoc\app\pregame') -Force | Out-Null
+    [IO.File]::WriteAllText((Join-Path $root 'runtime\client-opendaoc\app\pregame\splash.mpk'), $splashText)
+    [IO.File]::WriteAllText((Join-Path $root 'runtime\client-opendaoc\app\art995.dat'), $artReleased)
+}
+function SplashOf([string]$root) { [IO.File]::ReadAllText((Join-Path $root 'runtime\client-opendaoc\app\pregame\splash.mpk')) }
+function ArtOf([string]$root) { [IO.File]::ReadAllText((Join-Path $root 'runtime\client-opendaoc\app\art995.dat')) }
+function DllOf([string]$root) { [IO.File]::ReadAllText((Join-Path $root 'runtime\server\GameServer.dll')) }
+# A 1.1 player's game: the 1.1 build installed by the 1.1 installer, whose record has no Released or Keep.
+function Install-As11([string]$root) {
+    $r = RunIn $build11 'install-server-build.ps1' @('-GameFolder', $root)
+    $newest = @(Get-ChildItem (Join-Path $root 'runtime\server\deployment-backups') -Directory | Sort-Object Name)[-1].FullName
+    $recordFile = Join-Path $newest 'install-record.json'
+    $record = Get-Content -LiteralPath $recordFile -Raw | ConvertFrom-Json
+    $record.ContentFiles = @($record.ContentFiles | ForEach-Object { [pscustomobject]@{ Path = $_.Path; OldHash = $_.OldHash; NewHash = $_.NewHash } })
+    $record | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $recordFile -Encoding UTF8
+    Start-Sleep -Seconds 1
+    return $r
+}
+
+# Released -> new, then ROLLBACK.cmd: the server goes back, the new loading screen stays.
+$s1 = Join-Path $work 'splash-released'
+New-SplashGame $s1 $shadowSplash
+$r = RunIn $build12 'install-server-build.ps1' @('-GameFolder', $s1)
+$s1Backup = @(Get-ChildItem (Join-Path $s1 'runtime\server\deployment-backups') -Directory)[0].FullName
+Check ($r.Code -eq 0 -and (SplashOf $s1) -eq $ls12Splash -and $r.Output -match 'splash.mpk: released file, will be fixed' -and
+       [IO.File]::ReadAllText((Join-Path $s1Backup 'content\runtime\client-opendaoc\app\pregame\splash.mpk')) -eq $shadowSplash) "splash: released -> new, shadowofze's backed up`n$($r.Output)"
+$s1Record = Get-Content -LiteralPath (Join-Path $s1Backup 'install-record.json') -Raw | ConvertFrom-Json
+$s1Entry = @($s1Record.ContentFiles | Where-Object { $_.Path -eq $splashRel })[0]
+Check ($s1Entry.Keep -eq $true -and $s1Entry.Released -eq (TextSha $shadowSplash)) 'splash: the install record marks it kept and names the released file'
+$r = RunIn $build12 'rollback-server-build.ps1' @('-GameFolder', $s1)
+Check ($r.Code -eq 0 -and (SplashOf $s1) -eq $ls12Splash -and $r.Output -match 'kept \(the released one is not put back\)' -and
+       (DllOf $s1) -eq 'original release server' -and (ArtOf $s1) -eq $artReleased) "splash: ROLLBACK after a first install keeps the new loading screen, puts the rest back`n$($r.Output)"
+$r = RunIn $build12 'install-server-build.ps1' @('-GameFolder', $s1)
+Check ($r.Code -eq 0 -and (SplashOf $s1) -eq $ls12Splash -and $r.Output -match 'splash.mpk: fixed already') "splash: reinstall after that rollback finds it in place`n$($r.Output)"
+$r = RunIn $build12 'rollback-server-build.ps1' @('-GameFolder', $s1, '-ToRelease')
+Check ($r.Code -eq 0 -and (SplashOf $s1) -eq $ls12Splash -and (DllOf $s1) -eq 'original release server' -and
+       $r.Output -match "splash.mpk: Living Server's own file, kept") "splash: PREPARE-FOR-UPDATE keeps the new loading screen`n$($r.Output)"
+
+# The 1.1 loading screen -> new, then ROLLBACK.cmd twice: the 1.1 one comes back, then stays (never shadowofze's).
+$s2 = Join-Path $work 'splash-ls11'
+New-SplashGame $s2 $shadowSplash
+$r = Install-As11 $s2
+Check ($r.Code -eq 0 -and (SplashOf $s2) -eq $ls11Splash -and (DllOf $s2) -eq 'fork build 1.1') "splash: the 1.1 build installs its loading screen`n$($r.Output)"
+$r = RunIn $build12 'install-server-build.ps1' @('-GameFolder', $s2)
+$s2Backup = @(Get-ChildItem (Join-Path $s2 'runtime\server\deployment-backups') -Directory | Sort-Object Name)[-1].FullName
+Check ($r.Code -eq 0 -and (SplashOf $s2) -eq $ls12Splash -and (ArtOf $s2) -eq $art12 -and
+       $r.Output -match 'splash.mpk: an earlier Living Server version, will be updated' -and
+       [IO.File]::ReadAllText((Join-Path $s2Backup 'content\runtime\client-opendaoc\app\pregame\splash.mpk')) -eq $ls11Splash) "splash: the 1.1 loading screen -> new, backed up`n$($r.Output)"
+$r = RunIn $build12 'rollback-server-build.ps1' @('-GameFolder', $s2)
+Check ($r.Code -eq 0 -and (SplashOf $s2) -eq $ls11Splash -and (ArtOf $s2) -eq $art11 -and (DllOf $s2) -eq 'fork build 1.1') "splash: ROLLBACK puts the 1.1 loading screen back`n$($r.Output)"
+$r = RunIn $build12 'rollback-server-build.ps1' @('-GameFolder', $s2)
+Check ($r.Code -eq 0 -and (SplashOf $s2) -eq $ls11Splash -and (ArtOf $s2) -eq $artReleased -and (DllOf $s2) -eq 'original release server') "splash: ROLLBACK of the 1.1 install keeps its loading screen, never shadowofze's`n$($r.Output)"
+
+# PREPARE-FOR-UPDATE after 1.1 then 1.2: the loading screen stays the new one; art995 goes back to the released file,
+# found in the 1.1 install's backup (the 1.2 install's backup holds the 1.1 version).
+$s3 = Join-Path $work 'splash-prepare'
+New-SplashGame $s3 $shadowSplash
+$null = Install-As11 $s3
+$null = RunIn $build12 'install-server-build.ps1' @('-GameFolder', $s3)
+$dry = RunIn $build12 'rollback-server-build.ps1' @('-GameFolder', $s3, '-ToRelease', '-DryRun')
+Check ($dry.Code -eq 0 -and (ArtOf $s3) -eq $art12 -and (SplashOf $s3) -eq $ls12Splash) "splash: PREPARE-FOR-UPDATE -DryRun changes nothing`n$($dry.Output)"
+$r = RunIn $build12 'rollback-server-build.ps1' @('-GameFolder', $s3, '-ToRelease')
+Check ($r.Code -eq 0 -and (SplashOf $s3) -eq $ls12Splash -and (ArtOf $s3) -eq $artReleased -and (DllOf $s3) -eq 'original release server') "splash: PREPARE-FOR-UPDATE after 1.1 and 1.2 keeps the new loading screen and puts the released art back from the older backup`n$($r.Output)"
+$r = RunIn $build12 'install-server-build.ps1' @('-GameFolder', $s3)
+Check ($r.Code -eq 0 -and (SplashOf $s3) -eq $ls12Splash -and (ArtOf $s3) -eq $art12) "splash: INSTALL after PREPARE-FOR-UPDATE`n$($r.Output)"
+# Without the 1.1 install's backup the released art can't be found: refused, nothing changed.
+$s4 = Join-Path $work 'splash-prepare-lost'
+New-SplashGame $s4 $shadowSplash
+$null = Install-As11 $s4
+$null = RunIn $build12 'install-server-build.ps1' @('-GameFolder', $s4)
+Remove-Item -LiteralPath (@(Get-ChildItem (Join-Path $s4 'runtime\server\deployment-backups') -Directory | Sort-Object Name)[0].FullName) -Recurse -Force
+$r = RunIn $build12 'rollback-server-build.ps1' @('-GameFolder', $s4, '-ToRelease')
+Check ($r.Code -ne 0 -and $r.Output -match 'art995.dat' -and (ArtOf $s4) -eq $art12 -and (SplashOf $s4) -eq $ls12Splash -and
+       (Sha (Join-Path $s4 'runtime\server\GameServer.dll')) -eq $info['GameServer.dll']) "splash: PREPARE-FOR-UPDATE with no released copy of the art left is refused, nothing changed`n$($r.Output)"
+
+# An unknown loading screen (neither shadowofze's nor ours): left alone by the install, ROLLBACK and PREPARE-FOR-UPDATE.
+$s5 = Join-Path $work 'splash-unknown'
+$otherSplash = 'someone else''s splash'
+New-SplashGame $s5 $otherSplash
+$r = RunIn $build12 'install-server-build.ps1' @('-GameFolder', $s5)
+Check ($r.Code -eq 0 -and (SplashOf $s5) -eq $otherSplash -and $r.Output -match 'splash.mpk: not the released file \(nor an earlier Living Server one\), left alone') "splash: an unknown loading screen is left alone`n$($r.Output)"
+$r = RunIn $build12 'rollback-server-build.ps1' @('-GameFolder', $s5)
+Check ($r.Code -eq 0 -and (SplashOf $s5) -eq $otherSplash -and (DllOf $s5) -eq 'original release server') "splash: ROLLBACK leaves the unknown loading screen`n$($r.Output)"
+$null = RunIn $build12 'install-server-build.ps1' @('-GameFolder', $s5)
+$r = RunIn $build12 'rollback-server-build.ps1' @('-GameFolder', $s5, '-ToRelease')
+Check ($r.Code -eq 0 -and (SplashOf $s5) -eq $otherSplash) "splash: PREPARE-FOR-UPDATE leaves the unknown loading screen`n$($r.Output)"
 
 # No game: refused.
 $none = Run 'install-server-build.ps1' @('-GameFolder', (Join-Path $work 'missing'))

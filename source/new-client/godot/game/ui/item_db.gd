@@ -10,7 +10,7 @@ const DAMAGE := {1: "Crush", 2: "Slash", 3: "Thrust"}
 const OBJECT_TYPES := {1: "Generic Weapon", 2: "Crushing", 3: "Slashing", 4: "Thrusting", 8: "Staff", 9: "Longbow",
 		11: "Sword", 12: "Hammer", 13: "Axe", 15: "Composite Bow", 18: "Recurve Bow", 19: "Blades", 20: "Blunt",
 		21: "Piercing", 32: "Cloth", 33: "Leather", 34: "Studded", 35: "Chain", 36: "Plate", 37: "Reinforced",
-		38: "Scale", 41: "Magical", 42: "Shield", 43: "Arrow"}
+		38: "Scale", 41: "Magical", 42: "Shield", 43: "Arrow", 44: "Bolt", 46: "Poison", 16: "Thrown"}
 
 static var _data := {}
 static var _shops := {}
@@ -134,6 +134,37 @@ static func summary(it: Dictionary) -> Array:
 	var kind: String = OBJECT_TYPES.get(ot, "")
 	var cd := "CON: %d%%   DUR: %d%%" % [pct(it, "condition"), pct(it, "durability")]
 	var qb := "QUA: %d%%   BON: %d%%" % [int(it.get("quality", 85)), int(it.get("bonus", 0))]
+	# a merchant's packs (arrows, bolts, poisons, thrown weapons, general goods): how many one purchase gives - the server's
+	# merchant list sends the pack size (owner 2026-10-30: "no indication on how many i get in a stack")
+	var pack := int(it.get("pack", 0))
+	var pack_line := ("%d PER PURCHASE" % pack) if pack > 1 else ""
+	if ot == 43 or ot == 44:
+		# arrows / bolts, as the original client builds them from the merchant list itself (game.dll 0x440E7E,
+		# original-client chat 2026-10-30): the count, the damage type, the weight, and the three grades in SPD_ABS -
+		# damage bits 0-1, range 2-3, accuracy 4-5 (the server's AttackComponent: -15% / normal / +15% / +25%)
+		var n := int(it.get("count", 0)) if int(it.get("count", 0)) > 0 else pack
+		var word := ("BOLT" if ot == 44 else "ARROW") + ("S" if n != 1 else "")
+		out.append(("%d %s" % [n, word]) if n > 0 else word)
+		if DAMAGE.has(int(it.get("type_damage", 0))):
+			out.append(("%s DAMAGE" % DAMAGE[int(it.type_damage)]).to_upper())
+		if int(it.get("weight", 0)) > 0:
+			out.append("WEIGHT: %.1f LBS" % (int(it.weight) / 10.0))
+		var sa := int(it.get("spd_abs", 0))
+		out.append("DAMAGE: %s" % ["LIGHT (-15%)", "MEDIUM", "HEAVY (+15%)", "X-HEAVY (+25%)"][sa & 3])
+		out.append("RANGE: %s" % ["SHORT (-15%)", "MEDIUM", "LONG (+15%)", "X-LONG (+25%)"][(sa >> 2) & 3])
+		out.append("ACCURACY: %s" % ["ROUGH (-15%)", "NORMAL", "FINE (+15%)", "FOOTED (+25%)"][(sa >> 4) & 3])
+		if pack > 1 and int(it.get("count", 0)) > 0:
+			out.append(pack_line)
+		return out
+	if ot == 46:                                          # poison (the original: "Poison", weight, count, level)
+		out.append("POISON")
+		if int(it.get("weight", 0)) > 0:
+			out.append("WEIGHT: %.1f LBS" % (int(it.weight) / 10.0))
+		if pack > 1:
+			out.append(pack_line)
+		if int(it.get("level", 0)) > 0:
+			out.append("LEVEL %d" % int(it.level))
+		return out
 	if ot >= 32 and ot <= 38:
 		out.append_array([("%s ARMOR" % kind).to_upper(), "FACTOR: %d" % int(it.dps_af), "ABSORB: %d%%" % int(it.spd_abs), cd, qb])
 	elif ot == SHIELD_TYPE:
@@ -143,10 +174,16 @@ static func summary(it: Dictionary) -> Array:
 		if DAMAGE.has(int(it.get("type_damage", 0))):
 			out.append(("%s DAMAGE" % DAMAGE[int(it.type_damage)]).to_upper())
 		out.append("DPS: %.1f   SPD: %.1f" % [int(it.dps_af) / 10.0, int(it.spd_abs) / 10.0])
+		if pack_line != "":
+			out.append(pack_line)
 		out.append_array([cd, qb])
 		if int(it.get("hand", 0)) == 1:
 			out.append("TWO-HANDED")
 	else:
+		if kind != "" and pack_line != "":
+			out.append(kind.to_upper())
+		if pack_line != "":
+			out.append(pack_line)
 		out.append_array([cd, qb])
 	return out
 

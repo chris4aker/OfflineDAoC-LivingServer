@@ -1,0 +1,386 @@
+{
+  "id": "galladoria",
+  "name": "Galladoria",
+  "realm": "Hibernia",
+  "regions": [
+    191
+  ],
+  "summary": "The hollow under Hy Brasil where the roots of the titan Olcasgean end, guarded by everything his rot has grown.",
+  "facts": [
+    {
+      "text": "Shrouded Isles (2002) gave Hibernia Hy Brasil, the lost home of the Sylvan, who asked the realm for help against the Fomorians.",
+      "provenance": "mythic",
+      "source": "https://archive.rpgamer.com/news/Q3-2002/080502g.html"
+    },
+    {
+      "text": "The Sylvan are bark-skinned folk of Hy Brasil's forests, allied with Hibernia's races against the ever-encroaching Fomorians.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/news/69207-new-shrouded-isles-information.html"
+    },
+    {
+      "text": "Galladoria is region 191, Hibernia's epic dungeon; the realm raid's final is Olcasgean (level 87).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Its halls hold the Olcasar (stonemelders, tainters, deepstalkers, a spikelord, a belladonna), Uaimh diggers and delvers, spindlers, sporites, lurkers, bottom feeders, hypogean beasts and deep shrouders.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Every 25-45 seconds an untargetable 'Eyes Watching You' effect hangs over one random player for five seconds; it does nothing else.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "At the waterfall bridge a voice announces intruders, a deep voice answers, and the four Corrupt Primals rise; Olcasgean wakes only when all four are dead.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs"
+    },
+    {
+      "text": "In May 2003 Olcasgean was killed by 140 players after an attempt by 340 failed.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/olcasgean-has-been-defeated.125921/ (via docs/RAID-SIZES.md)"
+    },
+    {
+      "text": "Bot chat calls Olcasgean a titan banished to World's End whose roots taint the isle. World's End is a real Hy Brasil zone (region 181); the banishment itself is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines; source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Irish olc means 'evil, bad'; the rest of the name Olcasgean is unglossed (to verify). Uaimh is Irish for 'cave'; eas for 'waterfall'.",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "The Olcasgean Initializator starts the last room when a raid bot comes within 1,500 of the waterfall bridge (39652, 60831); 20 seconds of voices later it spawns the four primals, four Earthmenders and eleven Watery Vortices.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Region 191 is the only region of the zone Galladoria; its raid is epic-hibernia, suggested size 100.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Living Server raid runs: run 12 (2026-10-15) held at the bridge for 40 minutes without starting the room, which led to the bridge trigger; runs 14-18 reworked the Earthmenders; the raid wiped at the Spindler Broodmother and at Tine on 2026-11-05.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "The Watery Vortex is an invulnerable hazard only when AllowInvulnerableHazards is on; today it takes normal damage.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "The galleries also hold sylvanshades by bot-chat report ('sylvanshades in galladoria'); the catalog's navigation list does not name them.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Every 25-45 s an untargetable 'Eyes Watching You' effect appears over one random real player for 5 s; it is visual only and does no damage.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json (galladoria/eyes-watching-you)"
+    },
+    {
+      "text": "Living Server lore: Béal an Uisce ('the water's mouth', to verify), the fold where the streams run inland; the rings and the throat; Dara the woodcutter's hundred and his axe that puts out leaves (origin of the leaf custom); Domnann's water-tasters and the twist of grey bark; the Root's slow voice spelling his own name; Cluain an Fhéir under the bridge; Lisín's last words to Aodhan.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "In a fold of Hy Brasil every stream runs the wrong way, inland, into a mouth in the hillside the Sylvan call Béal an Uisce, the water's mouth; beyond it is Galladoria. The Sylvan say it is where the Root's roots end after the Long Pushing drove him to World's End; the scholars of Tir na Nog say the hollow is older and the roots grew toward it; the Fomorians thought it a good omen. The water goes in clean and does not come out, and the springs of Domnann sour one by one. Nobody drinks past the mouth, and the last of each company out leaves a green leaf on its stones.\n\nThe halls run down in rings, as water runs round a drain. The outer ring, the throat, holds only hungry things. Below it the stone softens and the roots come through: the Uaimh dens, the Olcasar galleries, the spore-gallery from Xaga's staff, the Broodmother's chamber under the spinner caves, the beating mechanism and the Conservator's pool, Aroon's hall and Hurionthex's, each keeper in its own ring. The innermost ring is the falls of Easmarach, then the bridge and the sanctum.\n\nThe Sylvan went down first: a hundred with axes under Dara the woodcutter, who were let walk far in and then sat down and stayed; their shades walk the halls still. Dara's axe came home on the mouth-stones putting out leaves, and the custom of the leaf began. The sap bends everything that drinks it, the Olcasar, the Uaimh, the keepers, even the four elements; trees in World's End grey from the roots up, and Domnann keeps water-tasters who mark sour springs with a twist of grey bark.\n\nEyes open in the stone of the lower rings, look at one person, and close; they have never harmed anyone, and everyone moves anyway. At the bridge, which runs where the hay meadow Cluain an Fhéir sank, the walls speak, a slow voice spells a forgotten word, and the four guardians rise; when the last falls the Root wakes as two. The falls once threw the living back behind the curtain and have slackened since. The three hundred and forty went first, Orlaith's hundred and forty cut him, and Domnann sings all their names every spring. A root is cut and the tree lives, Lisín said; each cutting buys the springs a month, while Qunilaria's diggers near the roots from the south and the Underneath waits below the falls.",
+  "legend": "A hundred is enough if they listen; three hundred is not enough if they don't. Clear the halls in order and do not wake the deep things two at a time. At the bridge, kill the four primals and nothing else matters until they are dead: air first with spells, fire with healers ready, water when it comes back from its pool, earth after its four menders. Then he wakes, and he is two of him. Raiders call him the Root, the bridge the Gate, and the last fight 'two-trunk', because he wakes as two. Old hands say: do not drink the water anywhere past the mouth, do not touch a vortex, and never stand under the roots when the eyes open. The eyes are harmless, everybody says, and everybody moves when one opens over them. Superstitions: the first to cross the bridge sings, so the voice knows you are not afraid; the last out leaves a leaf on the bridge for the Sylvan who never came home.",
+  "atmosphere": {
+    "firstEntry": [
+      "The walls are warm, and they are breathing.",
+      "Roots as thick as towers. Something drinks here.",
+      "You feel eyes in the stone.",
+      "The water past the mouth does not run out clean.",
+      "Somewhere below, something vast is breathing.",
+      "The Sylvan sang their dead before you came in."
+    ],
+    "areas": [
+      {
+        "name": "the mouth of Galladoria",
+        "x": 32072,
+        "y": 29524,
+        "z": 17051,
+        "radius": 1200,
+        "lines": [
+          "Every root in Hy Brasil ends somewhere. Here.",
+          "Lurkers in the pools, and the stone still hard.",
+          "The roots begin here, and go down."
+        ]
+      },
+      {
+        "name": "the waterfall bridge",
+        "x": 39652,
+        "y": 60831,
+        "z": 11893,
+        "radius": 2500,
+        "lines": [
+          "A voice from everywhere: intruders in the sanctum.",
+          "Beyond the falls, something vast is tired.",
+          "Four voices answer it: we shall protect."
+        ]
+      },
+      {
+        "name": "the pool of the Conservator",
+        "x": 31246,
+        "y": 40938,
+        "z": 13433,
+        "radius": 900,
+        "lines": [
+          "The water glows. Something is saving it.",
+          "Coins of light lie on the bottom, hoarded.",
+          "Stand close, or it does not feel you at all."
+        ]
+      },
+      {
+        "name": "the falls of Easmarach",
+        "x": 37918,
+        "y": 50523,
+        "z": 9865,
+        "radius": 1200,
+        "lines": [
+          "The current pulls at your legs like hands.",
+          "The falls roar like a held breath let go.",
+          "Behind the curtain, a ledge, and a long way back."
+        ]
+      },
+      {
+        "name": "the brood chamber",
+        "x": 21283,
+        "y": 51707,
+        "z": 10876,
+        "radius": 1200,
+        "lines": [
+          "The floor is soft. It moves.",
+          "Egg-sacs hang from the roof like fruit.",
+          "Something large shifts in the middle of the floor."
+        ]
+      },
+      {
+        "name": "the mechanism's chamber",
+        "x": 49406,
+        "y": 31276,
+        "z": 14392,
+        "radius": 1200,
+        "lines": [
+          "A pulse in the stone, slow as a heart.",
+          "Root, stone and wet flesh, all one engine.",
+          "The bottom feeders gather where it beats."
+        ]
+      },
+      {
+        "name": "Aroon's hall",
+        "x": 51478,
+        "y": 43359,
+        "z": 10369,
+        "radius": 1500,
+        "lines": [
+          "Nine shadows stand where none were cast.",
+          "A keeper-tree, rotten at the heart, waits.",
+          "Each shadow holds a different way to die."
+        ]
+      },
+      {
+        "name": "the Uaimh den",
+        "x": 38123,
+        "y": 44719,
+        "z": 14468,
+        "radius": 1200,
+        "lines": [
+          "Gnawed bones, stacked with care.",
+          "The den-keeper's smell is everywhere."
+        ]
+      },
+      {
+        "name": "the Olcasar galleries",
+        "x": 39115,
+        "y": 36863,
+        "z": 14977,
+        "radius": 1500,
+        "lines": [
+          "Statues that have not decided to be statues.",
+          "Rubble on the floor, and it twitches."
+        ]
+      },
+      {
+        "name": "Xaga's garden",
+        "x": 27482,
+        "y": 54821,
+        "z": 12935,
+        "radius": 1300,
+        "lines": [
+          "Two lights circle the room, fire and something pale.",
+          "Seeds sprout in the cracks, and they are wrong."
+        ]
+      },
+      {
+        "name": "the sporite gallery",
+        "x": 37527,
+        "y": 48247,
+        "z": 13781,
+        "radius": 1200,
+        "lines": [
+          "The blooms turn toward you. All of them.",
+          "Cold spores hang in the air like breath."
+        ]
+      },
+      {
+        "name": "the hall of many faces",
+        "x": 55672,
+        "y": 43536,
+        "z": 12417,
+        "radius": 1300,
+        "lines": [
+          "Footprints of four creatures, ending in one.",
+          "Something here is wearing a borrowed shape."
+        ]
+      },
+      {
+        "name": "the sanctum",
+        "x": 39237,
+        "y": 62644,
+        "z": 11685,
+        "radius": 1500,
+        "lines": [
+          "The Root sleeps here, and he is tired.",
+          "Two trunks of stone and root, one will."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "galladoria is where olcasgean's roots end. [everything down there drank the sap|the whole place is rotten with him]",
+      "the sylvan call olcasgean the root. [not a god|they wont say god]. just the root",
+      "theres a voice at the bridge in galladoria. [it says intruders|it knows youre there] before you see anything",
+      "some sylvan went down to cut the root and [never came out|stayed]. the sylvanshades are them, my guild says",
+      "the voice at the galladoria bridge [spells out protect|says p r o t e c t] like it forgot the word. gives me chills",
+      "140 hibs killed olcasgean the first time, after 340 failed. [the sylvan sing their names|domnann remembers]",
+      "galladoria goes down in rings, like water round a drain. [every ring is worse|the bottom is the root]",
+      "the four primals at the bridge were the isle's own wind, water, fire and stone. [the root bent them|sylvan grieve for them]",
+      "the eyes in the galladoria walls are harmless [they say|apparently]. everyone still moves when one opens over them",
+      "xaga's staff seeded the sporites in galladoria. [her garden|her mess], we clean it up",
+      "the conservator hoards the isle's sap and the mechanism pumps it. [kill both and the walls go quiet|thats the heart and the purse]",
+      "when olcasgean wakes he is two of him. [two trunks, one root|we call it two-trunk]"
+    ],
+    "rumour": [
+      "[heard|someone said] the eyes in the galladoria walls [opened on him|looked right at him] three times in one run",
+      "word is the waterfall in galladoria [got stronger|is pushing people back] again. easmarach must be up",
+      "[heard|someone said] the trees in world's end are [sicker|greyer] since the last galladoria raid failed",
+      "[word is|heard] a sylvan from domnann went down to galladoria alone to find her brother. [nobody stopped her|brave or mad]",
+      "somebody touched a watery vortex at the bridge [and it took half his health|and regretted it]. dont",
+      "[heard|someone swears] the voice at the bridge said a name last night. [a sylvan name|one of the hundred and forty]",
+      "the springs in domnann tasted [sour|wrong] this week. [the root is stirring|galladoria again]",
+      "[heard|someone said] the realm raid wiped on the broodmother and the special forces had to [come in|bail us out]"
+    ],
+    "tell": [
+      "galladoria is the hib epic dungeon. olcasgean at the bottom, four primals before him, a hundred people minimum",
+      "the root's hollow under hy brasil. clear the halls, kill the four primals at the bridge, then the titan wakes",
+      "is galladoria hard? its the hib epic. a hundred people who listen, more if they dont. the bridge is the real test",
+      "where is galladoria? under hy brasil, where olcasgean's roots end. the sylvan in domnann can point you",
+      "whats at the bottom of galladoria? the four primals at the bridge, then olcasgean, who wakes up as two",
+      "galladoria in order: halls first, then easmarach at the falls, then the bridge. dont skip the falls"
+    ]
+  },
+  "loremaster": {
+    "intro": "Galladoria. The hollow at the end of the roots, under Hy Brasil. The Sylvan will tell you about the [Root] if you sit with them long enough. Everything down there has drunk his sap: the [Olcasar], the [Uaimh], the things that keep the [world soul]. And at the bottom, past the falls, the [four guardians].",
+    "topics": {
+      "Root": "Olcasgean, whom the forests drove out to World's End before the first songs. His roots went down instead of away. The Sylvan say he is tired. They do not say he is asleep.",
+      "Olcasar": "Stone that learned to hate. Their geomancer can tear a piece off himself and send it to fight, and call his fallen back up from the floor.",
+      "Uaimh": "The cave-folk. Uaimh is only the old word for a cave. Their lairmaster runs home when he is hurt, and he is worse at home.",
+      "world soul": "The sap of the isle, as the Sylvan see it. Down there a mechanism pumps it and a conservator hoards it, and both will spend it on you.",
+      "four guardians": "Air, water, fire and earth, the isle's own elements, turned to keep the Root's sleep. While one stands, he does not wake. When the last falls, he does.",
+      "Sylvan": "Bark-skinned folk of Hy Brasil's forests. They asked Hibernia for swords against the Fomorians, and did not dare ask for help against the [Root].",
+      "World's End": "The far edge of Hy Brasil, where the forests drove the [Root] before the first songs. Its trees sicken whenever he stirs.",
+      "eyes": "Now and then an eye opens in the stone over one of the raid, looks, and closes. It does nothing. The Sylvan say he is tired, not asleep.",
+      "bridge": "The last way to the sanctum. When you reach it the walls speak, the [four guardians] answer, and the fight begins whether you are ready or not."
+    }
+  },
+  "book": {
+    "title": "What the Sylvan Told Us of the Root",
+    "pages": [
+      "Set down by Aodhan, bard of Tir na Nog, who sat a winter with the Sylvan of Domnann. I asked the old Sylvan woman who kept the fire why her people do not go down into Galladoria. She said they did. A hundred of her kin went down with axes to cut the Root where it ends, and the Root let them walk a long way in before it began to drink them. Some of them are still there, she said, and they are not unhappy. That is the worst of it. She would not say more that night, and I did not ask, for her hands were shaking on the fire-iron.",
+      "Of the Root himself she told me this. He was old when the forest was young, and the forest did not love him. It pushed him to the edge of the world and he went, and he has been there since, at World's End, thinking. His roots kept going. They run under the whole isle, and where they end they have made a hollow like a mouth, and the water that runs down into it does not come out clean. She called the hollow by its name, Galladoria, and then spat into the fire, which I had never seen a Sylvan do.",
+      "Of the things in the hollow: everything that drinks the sap changes. The Olcasar were stone and became stone that hates. The Uaimh were cave-folk and became the cave's servants. Xaga was one of their own, a keeper of seeds, and she went down willingly to learn what grew there, and she learned. Aroon was a keeper-tree and is now a keeper of nothing but himself. Hurionthex wears any face. There is a heart down there that pumps the sap and a miser that hoards it. She named each one, slowly, as if counting the dead.",
+      "The four that keep his sleep are the isle's own. Wind and water, fire and stone: they were the land's before they were his, and the Sylvan grieve for them as for kin gone wrong. When a stranger crosses the bridge they speak with one voice and say they will protect. Then the Root answers from beneath the falls, and he sounds very tired. Those who heard it say tired is not the same as weak. When the four fall he rises, and he rises as two, for a root that is cut grows another trunk.",
+      "The old woman showed me where the streams go. In one fold of the isle they run inland, every one, into a mouth in the hillside she called Béal an Uisce, the water's mouth, and they do not come out. The springs of Domnann that rose from the same hills have soured one by one. The village keeps water-tasters, old Sylvan who taste each spring every morning and tie a twist of grey bark by the sour ones. I watched a child of four stop at a spring, see the bark, and walk on without being told. I did not see a single Sylvan drink past the mouth.",
+      "A hundred of her kin went in with axes under Dara the woodcutter, before the realm came, and her mother's brother went with them. She remembered them singing. The Root let them walk a long way in, she said, and their songs grew slower, and somewhere below the throat they sat down. Dara's axe was found on the mouth-stones one spring, clean, its haft putting out leaves. It hangs over his door still. They cut the leaves back each spring and lay them at the mouth for the hundred, and that is why the realm's people leave a leaf there.",
+      "The eyes, she said, are nothing to be afraid of, and then she told me to step aside if one opened over me. They open in the stone of the lower rings, the colour of wet bark, and look at one person, and close. No one has ever been harmed by one. She said they are the Root's attention drifting through the hollow, the way a sleeper hears a door in the night and lets it go. I asked why step aside, then. She said it is best not to be what a sleeper remembers when he wakes.",
+      "The bridge runs where a hay meadow was, she told me, Cluain an Fhéir, before the hollow grew up under it and it sank in the summer of the great slip. The Sylvan mowed it every summer of her childhood. That is why the bridge smells of cut grass in the heat, and why the fire that keeps the Root's sleep hates it. When the realm's people cross, she said, the first of them sings, so the voice in the walls will know they are not afraid. She thought Orlaith began it, and that Orlaith sang very badly.",
+      "In the spring after the isle came out of the mist, Hibernia went down. Three hundred and forty went first and came back fewer. A hundred and forty went next, with the Sylvan's own songs in their ears, and they cut him down. The old woman told me that night the springs of Domnann ran sweet for a month. Then they soured again, slowly, the way they always do. She was not bitter about it. A root is cut, she said, and the tree lives. That is why the realm must keep going down."
+    ]
+  },
+  "bosses": [
+    "olcasgean",
+    "corrupt-primal-of-air",
+    "corrupt-primal-of-water",
+    "corrupt-primal-of-fire",
+    "corrupt-primal-of-earth",
+    "aroon-the-urlamhai",
+    "conservator",
+    "easmarach",
+    "giant-sporite-cluster",
+    "hurionthex",
+    "olcasar-geomancer",
+    "organic-energy-mechanism",
+    "spindler-broodmother",
+    "uaimh-lairmaster",
+    "xaga",
+    "tine",
+    "beatha"
+  ],
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root",
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the Root sleeps at its bottom"
+    },
+    {
+      "id": "hy-brasil",
+      "relation": "the isle above it"
+    },
+    {
+      "id": "tur-suil",
+      "relation": "the Fomorians' tower on the same isle"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Mouth Where the Streams Go",
+      "text": "There is a fold in the land of Hy Brasil where every stream runs the wrong way. Everywhere else on the isle the water goes down to the sea; there it goes inland, under the trees and over the stones, and into a mouth in the hillside, and does not come out. The Sylvan call the mouth Béal an Uisce, the water's mouth, and the hollow beyond it Galladoria, and they will say the second name only once in a sitting. Aodhan of Tir na Nog, the bard who wintered in Domnann, saw the old fire-keeper Lisín spit into the fire after she said it, and he had never seen a Sylvan do that before.\n\nThe Sylvan have three accounts of what lies inside, as they have of everything about the Root. In their own account Galladoria is simply where the roots end. The Root was driven to World's End in the Long Pushing, they say, and he went; but roots do not go away, they go down, and his ran under the whole isle, and where they ended they hollowed the rock into a wet, warm place like the inside of a mouth. The scholars of Tir na Nog, who call the Root a titan and a child of the first earth, say Galladoria is older than the roots and that they grew toward it, as a tree's roots grow toward water. And the Fomorians, the Sylvan have heard, say the hollow was there when they came and that they thought it a good omen.\n\nEveryone agrees about the water. It goes in clean at Béal an Uisce and it does not come out, and the springs of Domnann that once ran from the same hills have been going sour one by one for as long as the Sylvan can remember: Tobar Lisín, Tobar na Craoibhe, the springs the Sylvan named after the people who kept them. The Sylvan believe the water that runs into the hollow is drunk by the Root and comes back up through the isle bad. A spring that goes sour in Domnann, they say, is the Root breathing out.\n\nThe Sylvan keep two customs at the mouth that the realm has taken up. Nobody drinks any water past Béal an Uisce, however clear it looks, however thirsty the going-down has made them. And the last of any company to come out leaves a green leaf on the stones of the mouth for the Sylvan who went in and did not come home, of whom there are many more than the realm knows."
+    },
+    {
+      "title": "The Rings",
+      "text": "The halls of Galladoria run downward in rings, the way water runs round a drain, and the Sylvan who have been in them say the rings are the hollow's own shape and not anyone's building: the water cut them, turning, for longer than the forest has stood. Each ring is lower than the last and warmer, and each holds something that the one above it does not.\n\nThe outermost ring is still stone. What lives there is only hungry: lurkers in the wet corners, cave drifters that hang in the dark, bottom feeders that come up out of the pools when anything walks past them. The Sylvan call it the throat, and say it is the only ring where the things that live are what they always were.\n\nBelow the throat the stone softens. Roots as thick as towers come through the ceiling and go down through the floor, and between them the cave-folk of the Uaimh dug their dens, before the cave began to tell them what to do. The Olcasar stand along the galleries like statues that have not decided to be statues. In one gallery a great colony of spores blooms on the walls, shaken long ago from Xaga's staff; in another the Spindler Broodmother keeps a chamber whose floor is soft and moves, directly under the dry spinner caves of Domnann. Further down, a knot of root and wet stone beats like a heart, the mechanism that keeps the sap of the isle moving, and not far off the Conservator sits at its glowing pool and keeps what the mechanism pumps. Aroon keeps a hall with shadows in it, and Hurionthex a hall with faces. Every one of them is something the Root has bent, and each keeps its own ring and does not come to another's.\n\nThe innermost ring is the falls. The water of Béal an Uisce, all of it, comes down there at last in a single curtain into the dark, and Easmarach is its will. Past the falls is the bridge, and past the bridge the sanctum, where the four elements of the isle stand over the sleeper.\n\nThe Sylvan have a saying from the rings that they use of any trouble that gets worse the further in it goes: it is a ring below the throat. And they say that the warmth in the lower rings is not the warmth of the earth. It is the warmth of something breathing."
+    },
+    {
+      "title": "The Hundred and Their Axes",
+      "text": "The Sylvan went down first. Long before Hibernia came to Hy Brasil, before the Fomorians had finished their city, the Sylvan of Domnann decided to end it. A hundred of them went in at Béal an Uisce with axes, under a woodcutter of Domnann named Dara who had cut more trees for the village than anyone living, to find the Root where it ends and cut it. Lisín's mother's brother went with them. Lisín told Aodhan that she remembered them going, singing, with their axes on their shoulders, and that the whole village came down to the mouth to watch.\n\nThe Root let them walk a long way in before he began to drink them, Lisín said. That is the part the Sylvan find hardest. The hundred went down through the throat and into the softened rings, and they cut what they found, and they were not stopped. They were changed. The sap is in the air of the lower rings as well as the water, and it is warm, and it is patient, and the axes grew heavier on the hundred's shoulders the further down they went, and their songs grew slower, and somewhere in the rings below the throat they stopped singing and sat down.\n\nTheir shades walk the halls of Galladoria still. The realm's companies have seen them: Sylvan, pale, with axes, going nowhere. They are not unhappy, Lisín said, and that is the worst of it. Some of the Sylvan who took the Root's side came from among them, the Domnann wardens believe, the ones whose names are no longer said in the village; the rest simply stayed.\n\nDara's axe came home. It was found at the mouth one spring, laid on the stones where the leaves are laid now, its edge clean and its haft green with new growth, as if it had been planted. Nobody in Domnann knows who carried it out. It hangs in the village over the door of the house where Dara lived, and it has never stopped putting out leaves; the Sylvan cut them back every spring and leave them at the mouth, and that is where the custom of the leaf began.\n\nThe Sylvan did not go down in numbers again. When Hy Brasil came out of the mist and the realm's ships came, and the Sylvan asked Hibernia for swords against the Fomorians, they did not ask for help against the Root. Aodhan asked Lisín why. She said they did not believe anyone could help, and that a hundred axes had taught them so."
+    },
+    {
+      "title": "What the Sap Does",
+      "text": "Everything that drinks the sap changes, the Sylvan say, and they mean it plainly, as a farmer means that a field left fallow grows weeds. The sap pools in the lower rings of Galladoria and goes bad there, and what lives in it or drinks it becomes something the Root can use.\n\nThe Olcasar were stone once, ordinary stone of the deep places, and the sap taught them to hate. The Uaimh were cave-folk who traded honey with the Sylvan for salt and dug their dens in the warm rock, and the sap taught them to listen to the cave; the last Sylvan trader to visit them, a woman named Cuach, saw them digging in silence toward the roots, and her family keeps a sealed jar of the trading honey to this day. The keepers the Sylvan taught their children about, the keeper-trees and the seed-keepers and the shape-walkers, went down into the hollow for their own good reasons and came back up as something else, or did not come up. Even the four elements of the isle, wind and water, fire and stone, which were the land's before they were anyone's, drank and were turned.\n\nThe sap does not stay in the hollow. The Sylvan of World's End say the trees there sicken from the roots up, a ring of grey bark climbing a little higher every season. The springs of Domnann sour one at a time. And the Sylvan who drink from a soured spring before it is known to be sour begin to change, slowly, so that their families notice before they do: they grow quiet, and warm to the touch, and go walking at night toward Béal an Uisce. The village keeps water-tasters now, old Sylvan who taste every spring each morning and mark the sour ones with a twist of grey bark, and a Sylvan child of Domnann learns to look for the twist of bark before she learns her letters.\n\nThe druids of Tir na Nog have tried to understand the sap and have come no further than the Sylvan. They say it is the world soul gone wrong, the green strength of the isle pooled where it should run, as blood pools in a bruise. The Sylvan say that is a scholar's way of saying the Root is thirsty. Either way, they agree on the cure, and it is the only cure anyone has found. The springs of Domnann run sweet for a while each time the Root is cut. Then they sour again, slowly, the way they always do."
+    },
+    {
+      "title": "The Eyes in the Stone",
+      "text": "Those who have been in Galladoria all say the stone watches them, and they are not wrong. Now and then, in the lower rings, an eye opens in the dark wall above one of them, a long-lidded eye the colour of wet bark, and looks, and closes again. It does nothing else. It has never been known to do anything else. It looks at one at a time, and not for long, and then it is gone, and a little later it opens somewhere else over someone else.\n\nThe Sylvan only nod at it. He is tired, they say. He is not asleep. They believe the eyes are the Root's attention, drifting through the stone of the hollow the way a sleeper's attention drifts through a house at night, noticing a door, a footstep, a draught, and letting it go. The scholars of Tir na Nog have tried to see where the eyes come from and have never found the wall they were in once they had shut.\n\nNobody in the realm has ever come to harm from an eye. Everybody moves when one opens over them anyway. The realm's old hands make a joke of it at the musters, and then step aside in the hollow when the stone above them opens, and the Sylvan who go down with them say that is wisdom, not foolishness: a thing that is only looking is still looking, and it is best not to be what it remembers.\n\nAt the bottom of the rings the attention stops drifting. When strangers reach the bridge, the walls speak. A voice that comes from everywhere at once, from the stone and the water and the roots in the ceiling, announces that intruders have entered the sanctum. A deeper voice answers it, slowly, from beneath the falls, spelling out a word it seems to have forgotten. Then the four guardians of the isle speak together, wind and water and fire and stone, and promise to protect, and they rise. The Sylvan believe the slow voice is the Root himself, half awake, and that the word he spells is his own name, which he has not needed for a very long time.\n\nSétna of Howth, the bard who went down with the three hundred and forty, wrote a song of the voices on the bridge. It is never sung in Domnann. The Sylvan say they do not need to hear it; they have heard the real one, in the springs."
+    },
+    {
+      "title": "The Bridge and the Sanctum",
+      "text": "The bridge crosses the dark water below the falls to the sanctum, and the Sylvan say it was not always under the earth. Cluain an Fhéir, the hay meadow of the old village, lay where the bridge now stands, in the days before the Root's hollow grew up under it, and the Sylvan of Domnann mowed it every summer; the meadow sank in the summer of the great slip, the summer the valley of the oak went down, and the hollow closed over it, and the bridge is the line where the old lane ran across the meadow to the river. The fire-keepers say that is why the bridge smells of cut grass in the heat, and the fire guardian hates it.\n\nThe sanctum beyond it is the last room of the hollow, the place where the roots end. The four guardians stand there over the sleeper, the isle's own elements turned to his service. While one of them stands the Root does not wake. When the last falls, he does, and he rises as two, because a root that is cut grows another trunk.\n\nThe falls of Easmarach guard the way to the bridge, and in the first years of the realm on the isle they guarded it harder than they do now: the current threw back anyone who came close, onto a ledge behind the curtain, and the bards of Howth made a song of the wet walk back. The Sylvan say the current has slackened in the seasons since. They are not sure it is a kindness.\n\nHibernia first crossed the bridge in the spring of the year the isles came. Three hundred and forty went down first, with the Sylvan's guides, and came back fewer; a hundred and forty went next, under Orlaith of Tir na Nog, with the Sylvan's songs in their ears and the lessons of the three hundred and forty in their heads, and they cut the Root down. The Sylvan of Domnann sing the names of the hundred and forty, all of them, every spring, at the mouth. It takes most of a morning. They have never shortened it.\n\nOn the bridge, the realm's custom says, the first to cross sings, so that the voice in the walls knows the company is not afraid. Nobody remembers who began it. The Sylvan think it was Orlaith, and that she sang badly, and that the Root has never forgotten.\n\nThe Sylvan who guide the companies down keep a custom of their own at the bridge, which they have never explained to anyone of the realm. At the top of the last stair before it, each of them reaches out and touches the nearest root, gently, as one touches the shoulder of a sleeper one does not wish to wake, and then goes on down."
+    },
+    {
+      "title": "A Root Is Cut, and the Tree Lives",
+      "text": "The Sylvan do not believe the Root can be killed. Lisín told Aodhan so on his last night in Domnann, with her hands steady on the fire-iron for once. A root is cut, she said, and the tree lives. The Root has been cut by the hundred and forty and by company after company since, and he returns, and the four rise with him, and the keepers of the rings return to their halls, and the springs that ran sweet for a month after the cutting begin, slowly, to sour.\n\nThat is why the realm keeps going down, she said, and it is the only reason that matters. Every cutting buys the isle a little time. The rot that climbs out of the hollow climbs more slowly for a while; the grey bark on the trees of World's End stops where it is; a spring that was going sour in Domnann tastes sweet again in the morning and the water-tasters take down their twists of bark. The Sylvan count the realm's friendship in springs. They have names for the springs that came back, and the companies that brought them back.\n\nThe druids of Tir na Nog fear something worse than the rot. Under the tower on the crag to the south, the brood of Queen Qunilaria has been digging downward for longer than the realm has been on the isle, and in recent seasons the Sylvan of the coast say the diggers broke into something soft and very old far below that smells of sap. They believe the eye's diggers are close to the Root's roots. Nobody on Hy Brasil has ever had to think what happens when the eye in the tower and the Root in the hollow meet. The Sylvan of Domnann think the two will fight, and that the isle will shake as it has not shaken since the Long Pushing. The druids think they will join.\n\nAnd there is the Underneath. Below the falls, the Sylvan say, the hollow goes on down past where the roots end, into deep places older than the Root, which may be the same dark that lies under Fomor's cisterns and the same dark the beast of the cistern's egg came out of. Nobody has gone into it and come back. The Sylvan say the Root himself does not go there.\n\nLisín's last words to Aodhan that night were about the realm and not the Root. She said the Sylvan had stopped going down after the hundred because they did not believe anyone could help. She said she had been wrong. Nobody could help for good. But she had not known, until the realm came, that it was possible to help for a month, and to keep coming back."
+    }
+  ]
+}

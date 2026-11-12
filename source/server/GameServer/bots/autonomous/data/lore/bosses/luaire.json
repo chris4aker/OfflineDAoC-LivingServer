@@ -1,0 +1,95 @@
+{
+  "id": "luaire",
+  "name": "Luaire",
+  "npcNames": [
+    "Luaire"
+  ],
+  "locationId": "vigilant-rock",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Luaire: level 38, a Sylvan body (model 767, plant), faction Olcasgean, at about 389,300/306,400; respawn 300 seconds, the quickest of the four.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Twisted Evil (Jyrlan, Necht): 'Kill Luaire and his three named friends', then 'Drop the green elixir at the base of Luaire's tree' and three more elixirs at stones of the valley.",
+      "provenance": "game",
+      "source": "DataQuest 'Twisted Evil' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Luaire planted the tree. When Laraida's household came up the valley, he carried a cutting of a Domnann tree with him and set it in the high ground and sang it upright, and it grew there faster than any tree should, toward the east, toward World's End. The household stands around it still. Jyrlan of Necht calls it Luaire's tree and sends the realm's young to pour a green elixir at its roots, which the Necht druids made to turn its growing back toward the sun.\n\nLuaire is the one who comes back first. Cut him down, and before the elixir has soaked into the ground he is standing at his tree again, and the Necht Sylvan say it is because he is half the tree by now, and a tree that has been cut grows another trunk. The Domnann wardens have a saying about him that they use of anything stubborn: Luaire is back.",
+  "legend": "Luaire (38) is the quest target of Twisted Evil: kill him and his three friends (Laraida, Rinne, Taiore), then pour Jyrlan's green elixir at the base of his tree and the other elixirs at the marked stones. He respawns in about 5 minutes, faster than the others, so do the elixir step promptly. High valley west of Necht. Bring the elixirs in one bag holder so nobody has to run back.",
+  "yells": {
+    "aggro": [
+      "My tree. Get away from my tree.",
+      "Another one with a bottle."
+    ],
+    "phases": [],
+    "death": [
+      "I will be back... before it soaks in..."
+    ],
+    "slay": [
+      "Feed the roots.",
+      "Luaire is back. You are not."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A tree too tall for the valley, leaning east."
+    ],
+    "phases": [],
+    "realmFirstKill": "Luaire is cut down beside his tree."
+  },
+  "botLines": {
+    "briefing": [
+      "luaire is the twisted evil target. kill him and his three friends",
+      "then pour the green elixir at his tree. [hurry|5 min respawn]"
+    ],
+    "aftermathWin": [
+      "luaire down, elixir poured. [twisted evil|done]",
+      "got all four. [nice|grats]"
+    ],
+    "aftermathLoss": [
+      "he respawned before we poured. [lol|again]",
+      "all four at once. [rip|careful pulls]"
+    ],
+    "rumour": [
+      "[heard|someone said] luaire's tree leans toward worlds end. [the root|creepy]",
+      "'luaire is back' is what the domnann wardens say about anything stubborn"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Luaire",
+    "text": "The Root's Sylvan who planted a Domnann cutting in the high valley and sang it upright toward World's End. Necht pours an elixir at its roots. He comes back faster than the rest."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Luaire in Vigilant Rock in {minutes} minutes.",
+    "loss": "Luaire turned back {realm}'s band under {raidLeader} in Vigilant Rock after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root",
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "whose side he took"
+    },
+    {
+      "id": "laraida",
+      "relation": "his elder"
+    },
+    {
+      "id": "rinne",
+      "relation": "kin"
+    },
+    {
+      "id": "taiore",
+      "relation": "kin"
+    }
+  ]
+}

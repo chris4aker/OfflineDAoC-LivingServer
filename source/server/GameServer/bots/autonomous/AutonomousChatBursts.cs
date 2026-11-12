@@ -206,11 +206,17 @@ public static class AutonomousChatBursts
             bot => AutonomousLivingServer.CanTalk(bot) && !AutonomousBotDebates.IsRunning(realm) && (isEvent || AutonomousBotChatCoordinator.FactionRoom(realm)),
             (bot, line) =>
             {
-                if (!AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, realm, line.Text))
+                // 1.2: a burst's reactions are replies to the news, said below the realm's reply ceiling (not its target: a big
+                // moment is allowed to be loud); an event's aren't held by it either (1.1.3: tagged, capped at three).
+                var verdict = AutonomousChatBudget.LiveReply(AutonomousChatBudget.Channel.Faction, (long)realm, realmBots, AutonomousChatBudget.ReplyKind.Burst);
+                if (!isEvent && !AutonomousChatBudget.Says(verdict))
+                    return false;
+                if (!AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, realm, line.Text, AutonomousChatBudget.LineKind.Reply))
                     return false;
                 AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), bot, line.Text, "");
                 AutonomousChatWhy.Record(bot, "faction", "burst " + trigger, "said", "burst " + string.Join(',', answerSets), line.Who,
-                    $"reaction {line.Who} of {total} to {trigger}", line.Text);
+                    $"reaction {line.Who} of {total} to {trigger}", line.Text,
+                    code: AutonomousChatWhy.Codes.Of(verdict, AutonomousChatBudget.ReplyKind.Burst));
                 return true;
             }, rules);
         if (towns)

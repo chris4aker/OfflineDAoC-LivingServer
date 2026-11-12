@@ -19,8 +19,9 @@
 # - first backs up the world database (runtime\data\opendaoc.sqlite3.db, with its -wal and -shm files when present) into
 #   that folder's data\ folder, verified the same way (Living Server 1.1.2). The game is closed, so the files are a
 #   consistent set. ROLLBACK.cmd never puts it back (that would undo your play since); README.txt says how to restore it;
-# - fixes game files listed in content-patches.json in place, only where the file is the released one (anything else is
-#   left alone and reported), backed up the same way.
+# - fixes game files listed in content-patches.json in place, only where the file is the released one or, for a file of
+#   Living Server's own, an earlier Living Server version of it that the entry names ("Replaces"; anything else is left
+#   alone and reported), backed up the same way. Files the entry marks "Keep" (the loading screen) stay on rollback.
 param(
     [string]$GameFolder = '',
     [switch]$DryRun,
@@ -191,16 +192,18 @@ if (@($launcherPlan | Where-Object { $_.State -eq 'unknown' }).Count -gt 0 -and 
     Stop-WithMessage ("A launcher (OfflineDAoC.dll) above is neither the original $base file nor a fork build this script installed. " +
         'Restore the original first, or run with -Force to replace it anyway (it is still backed up).')
 }
-# Game files this build fixes in place: only the released file is changed.
+# Game files this build fixes in place: only the released file is changed, or an earlier Living Server version of a file
+# of ours that the entry names (Replaces, Living Server 1.2: the 1.1 loading screen).
 $contentPlan = @()
 foreach ($patch in $contentPatches) {
     $path = Get-ContentPath $game $patch.Path
     if (!(Test-Path -LiteralPath $path)) { $state = 'not in this game, skipped' }
     else {
         $hash = Get-Sha256 $path
+        $earlier = (Get-ContentPatchReplaces $patch) -contains $hash
         if ($hash -eq $patch.Fixed) { $state = 'fixed already' }
-        elseif ($hash -eq $patch.Released) {
-            $state = 'released file, will be fixed'
+        elseif ($hash -eq $patch.Released -or $earlier) {
+            $state = if ($earlier) { 'an earlier Living Server version, will be updated' } else { 'released file, will be fixed' }
             if ($patch.File) {
                 $shipped = Get-ContentPatchFile $patch $buildDir
                 if (!(Test-Path -LiteralPath $shipped) -or (Get-Sha256 $shipped) -ne $patch.Fixed) {
@@ -209,7 +212,7 @@ foreach ($patch in $contentPatches) {
             }
             $contentPlan += [pscustomobject]@{ Patch = $patch; Path = $path; Hash = $hash }
         }
-        else { $state = 'not the released file, left alone' }
+        else { $state = 'not the released file (nor an earlier Living Server one), left alone' }
     }
     Write-Host "  $($patch.Path): $state"
 }
@@ -321,7 +324,11 @@ foreach ($item in $contentPlan) {
     New-Item -ItemType Directory -Path (Split-Path -Parent $saved) -Force | Out-Null
     Copy-Item -LiteralPath $item.Path -Destination $saved
     if ((Get-Sha256 $saved) -ne $item.Hash) { Stop-WithMessage "Backup of $($item.Patch.Path) failed verification." }
-    $contentEntries += [pscustomobject]@{ Path = $item.Patch.Path; OldHash = $item.Hash; NewHash = $item.Patch.Fixed }
+    # Released: the game's own file, which PREPARE-FOR-UPDATE.cmd puts back even when OldHash is an earlier Living Server one.
+    # Released: the game's own file. Keep: Living Server's own file (the loading screen), which ROLLBACK.cmd never turns
+    # back into the released one (fork-build-common.ps1, Test-ContentKeep).
+    $contentEntries += [pscustomobject]@{ Path = $item.Patch.Path; OldHash = $item.Hash; NewHash = $item.Patch.Fixed
+        Released = $item.Patch.Released; Keep = [bool]($item.Patch.File -and $item.Patch.Keep) }
 }
 
 # Helper scripts (settings switches) go to tools\claude-version, where they find the database.
@@ -432,4 +439,7 @@ $pruned = Remove-OldDatabaseBackups $game 3
 if ($pruned -gt 0) { Write-Host "Removed the world database copies of $pruned older install(s) (the newest 3 are kept; their server files stay)." }
 Write-Host "Start the game as usual. The server log shows: FORK_BUILD name=$($info['BuildName']) commit=$($info['Commit'])"
 Write-Host 'Every new feature is OFF until you switch it on: launcher -> Living Server tab (server stopped). To undo: ROLLBACK.cmd'
+# Living Server 1.2: the epic chains need no step here (and no Python): the server links them as it reads the quests,
+# in memory, so the world keeps its released rows and ROLLBACK.cmd has nothing to undo for them.
+Write-Host 'The epic chains are linked by the server as it reads the quests; nothing is written to your world for them (/epic shows a chain).'
 exit 0

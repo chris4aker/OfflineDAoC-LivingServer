@@ -1,0 +1,127 @@
+{
+  "id": "elro-the-ancient",
+  "name": "Elro the Ancient",
+  "catalogKey": "open-world/elrotheancient",
+  "locationId": "worlds-end",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "He shares a treant model (767) with Aroon the Urlamhai of Galladoria.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs; source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs"
+    },
+    {
+      "text": "Bot chat: 'elro the ancient waits out at world's end. i believe the name'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Elro the Ancient: level 65, 30,000 health, CC immune, resists 20% melee and 30% other, tether 4,500. When a GamePlayer (a real player) damages him while he is between 95% and 90% health, and again between 60% and 55%, an ancient treant (level 50-55) appears for every real player within 2,500 and attacks that player; a third window in the code ('< 25 && > 30') can never be true, so it never fires. All ancient treants within 5,000 die with him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs (integration/1.2)"
+    },
+    {
+      "text": "Elro stands at about 353,000/260,500 in World's End.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    }
+  ],
+  "story": "Sylvan children are taught the two keeper-trees together. Aroon was set to keep the hollow under Galladoria when the Root went down into it, and the rot reached him, and he turned. Elro was set at World's End, at the very edge, to keep watch over the place the forests had driven the titan in the Long Pushing, and he held. That is the teaching, and every Sylvan child can recite it: one rotted, one held.\n\nThe older Sylvan add something the children are not taught until they are grown. Elro held, but holding cost him. He was one of the trees that did the pushing, the oldest of them, and he has stood at the edge of the world with the titan's anger under his roots since before the first Sylvan woke. He is too old to be moved by any song: no charm has ever made him sleep, or stand still, or turn aside, and the Sylvan singers stopped trying generations ago. Somewhere in the long watch he stopped knowing friend from enemy. A Sylvan who walks up to him now is a thing at the edge of the world, and everything at the edge of the world is the titan's.\n\nWhen he is wounded, the edge answers. The grove around him is made of the trees that pushed beside him, ancient treants who sank into the sour ground and have slept there ever since, and the Sylvan say Elro wakes them when the first bark comes off him, and again when he is half felled. Each time the grove comes up out of the ground, one old tree for every stranger standing near him, and each tree goes for its own. After that he does not call again. The Domnann wardens think he has nothing left to call; the singers think the last of the grove is keeping the titan down, and will not come up for anything. When Elro falls, every tree he woke falls with him.\n\nWhy does it matter? Because the edge has not moved. The Sylvan who keep the records in Domnann have marked the boundary of the sour ground every spring for longer than Hibernia has had kings, and it has not crept inland in all that time, though the springs around Kontar's camp have soured and the shrouds walk the headland. Something is holding it. Most Sylvan think it is Elro. A few of the Domnann wardens refuse to guide Hibernian companies to him at all, and some traders of the edge will not deal with a Hibernian who has brought him down, until he stands again. He always does.",
+  "legend": "No mezz, root or stun: he is CC immune. The treants are the fight. Every time a real player hits Elro while he is between 95% and 90%, and again between 60% and 55%, an ancient treant (50-55) spawns for EACH real player within 2,500 and goes for that player. Companions, gamebots and pets do not trigger it and are not counted, so in a bot group the human player should stop hitting him in those two windows and let the bots push him through. The 25-30% wave in the script is broken and never comes. When Elro dies all the treants die with him. Tether 4,500. Some Sylvan traders sulk afterwards; that is flavour.",
+  "yells": {
+    "aggro": [
+      "The edge is kept.",
+      "You stand on the titan's ground.",
+      "Nothing passes the watch."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=95",
+        "text": "Wake, my brothers. A stranger at the edge."
+      },
+      {
+        "trigger": "health<=60",
+        "text": "Wake again. Wake, all who can."
+      }
+    ],
+    "death": [
+      "The watch... someone must keep... the watch...",
+      "Hold... the edge..."
+    ],
+    "slay": [
+      "Kept.",
+      "Back into the sour ground.",
+      "The edge does not move."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A tree as old as the hill. It is watching the sea.",
+      "The ground is sour here. Old trees sleep in it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=95",
+        "text": "The grove of the edge wakes around Elro!"
+      },
+      {
+        "trigger": "health<=60",
+        "text": "The old trees wake again, one for each of you!"
+      }
+    ],
+    "realmFirstKill": "Elro the Ancient has fallen. Who keeps the edge now?"
+  },
+  "botLines": {
+    "briefing": [
+      "treants spawn when a real player hits him at 95-90 and 60-55. [stop hitting in those windows|let the bots do it]",
+      "one treant per real player in range. [stand back if youre not hitting|range matters]",
+      "no cc on elro. [dont try|cc immune]",
+      "all the treants die when he dies. [burn him|finish him]"
+    ],
+    "aftermathWin": [
+      "elro the ancient down. [the treants fell with him|grove went quiet]",
+      "stopped hitting at 95 and 60 like we said. [clean|zero treants]",
+      "the sylvan will sulk. [he'll be back|always is]",
+      "one rotted, one held. [and now we felled the one that held|hmm]"
+    ],
+    "aftermathLoss": [
+      "i kept hitting at 90 and got [three treants|a whole grove] on me",
+      "treants plus elro. [too much|wiped]",
+      "someone tried to root him. [cc immune|nope]",
+      "dragged him past 4500 and he [reset|went home full]"
+    ],
+    "rumour": [
+      "[heard|someone said] elro is the only thing keeping the titan's anger at the edge",
+      "the domnann records say the sour ground at world's end hasnt moved in [an age|forever]",
+      "[word is|heard] some sylvan traders wont deal with you after you kill elro",
+      "elro and aroon were the two keeper trees. [one rotted, one held|the sylvan teach it to kids]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Elro",
+    "text": "The keeper-tree of [World's End], who helped drive the titan to the edge and held when Aroon rotted. No song moves him. Wound him and the old grove wakes, twice, one tree for every stranger near him."
+  },
+  "bookPage": "From Coll of the Domnann guides: one rotted, one held. Every Sylvan child knows it. Aroon rotted in the hollow; Elro held at the edge, and has held so long he has forgotten what he is holding against, so everything that comes to him is the enemy. No song moves him. Hurt him and the grove of the trees that pushed beside him wakes, at the first wound and again when he is half felled, one old tree for every stranger standing near; after that, nothing more comes up, and the singers think the last of the grove is holding the titan down. The sour ground has not crept inland in all our records. I do not guide companies to him.",
+  "chronicle": {
+    "win": "{realm} rode out to World's End under {raidLeader} and killed Elro the Ancient in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at World's End by Elro the Ancient after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "aroon-the-urlamhai",
+      "relation": "the other keeper-tree; Aroon rotted, Elro held"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "the titan he helped drive to the edge"
+    },
+    {
+      "id": "kontar-the-corrupt",
+      "relation": "the chieftain he watched go bad"
+    }
+  ]
+}

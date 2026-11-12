@@ -1,0 +1,223 @@
+{
+  "id": "coruscating-mine",
+  "name": "Coruscating Mine",
+  "realm": "Hibernia",
+  "regions": [
+    220
+  ],
+  "summary": "The Unseelie Court's true-silver mine under the Silvermine Mountains, worked by captives under geas and collar.",
+  "facts": [
+    {
+      "text": "The mine lies in the heart of the Silvermine Mountains and is wholly in the hands of the Unseelie Court, whose bounty hunters raid human and firbolg settlements for workers held by geas, collars or mind-craft.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=23"
+    },
+    {
+      "text": "It is mined for true silver (mithril), prized by both courts; rumour says the Silver Hand of Nuada lies deep within under Unseelie guard, which troubles the Seelie Court. Level 30-45.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=23"
+    },
+    {
+      "text": "The level-25 epic 'Secret of Nuada's Silver' speaks of a Silvermine with two entrances, one guarded and sealed by Siabra, and of 'Nuada's Silver Wrist'.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/quests.html?cquest=313"
+    },
+    {
+      "text": "Region 220 holds silvermine sentries and guards, geas-bound hewers, coerced groovers, collared gemgetters, enthralled silviers, Unseelie overmen, viewers and underviewers, weeweres, vein golems, phantom miners and silver-maddened werewolves.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Bot chat: 'the overseer of the silver hand in coruscating mine. silver hand, like nuada. that is no accident'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Nuada lost his hand in battle and ruled again with a hand of silver.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Nuada_Airgetl%C3%A1m"
+    },
+    {
+      "text": "Region 220 named spawns: Overseer of the Silver Hand (51) with three Guardians of the Silver Hand (50-52) at about 28,100/24,800; Overman Regnal (49), Viewer Etol (49), Underviewer Treeal (42), Duga (42, faction Unseelie Court), Scratch (39), Frat (38), Allyn (36), Frit (38, peaceful), Atur (52, ghost) and Lobigan (51).",
+      "provenance": "game",
+      "source": "world data Mob table, region 220 (read 2026-11-06)"
+    },
+    {
+      "text": "The world data runs the mine from about level 36 to 56 (weeweres 56; abysmals and silvermine guards 54; lode protectors and phantom miners 52), above the 30-45 of the Mythic zone listing.",
+      "provenance": "game",
+      "source": "world data Mob table, region 220"
+    },
+    {
+      "text": "In the quest Secret of Nuada's Silver, Bran the Giant's half of an enchanted map is carried to Mikka near Caille, and the player tells Chief Proinnsias in Howth 'I know where Nuada's Silver Wrist is'.",
+      "provenance": "game",
+      "source": "DataQuest 'Secret of Nuada's Silver A' (world data)"
+    },
+    {
+      "text": "Overman, viewer and underviewer are real mining offices (the viewer judged the workings for the owners); Living Server uses them as the Unseelie ranks of the mine.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Living Server lore: Howth's first vein (the Glitter), the Howth door sealed with Siabra work after the Cursed Forest bargain broke, Duga's tally of hands, Frit and Frat as sister and brother, Atur the Howth foreman who broke through into the last gallery.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Named group: three Guardians of the Silver Hand (50-52) within a few hundred units of the Overseer of the Silver Hand at the west end of the deep workings; plain spawns, respawn 180 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 220 (read 2026-11-06)"
+    }
+  ],
+  "story": "Every Hibernian child knows that Nuada the king lost his hand in battle and could not rule, because a king must be whole, until a hand of silver was made for him. The bards do not say where the silver came from. The Unseelie Court says it knows.\n\nUnder the Silvermine Mountains the dark court works a mine that glitters so brightly in the torchlight that the miners named it for the glitter: Coruscating. What comes out of it is true silver, the metal both courts want for blades and armour and things less easy to name. The Unseelie do not dig it themselves. Their bounty hunters ride down on human and firbolg farmsteads and bring back hands to work, and the hands are kept by geas, or by collars, or by having their minds turned quietly inside out. Hewers who cannot stop hewing. Groovers who cannot remember being anything else. Gemgetters wearing collars that hum. Above them all, Unseelie overmen, viewers and underviewers watch, and a little higher still, an overseer whose title the miners speak with care.\n\nThe rumour the Seelie fear is that deep in the lowest gallery the Unseelie keep the Silver Hand itself, or the silver it was made from, under guard. Some of the miners have gone mad from the silver; some have gone wolf. Nobody has come up from the bottom gallery to say whether the rumour is true.\n\nThe first vein was not the court's. Miners out of Howth found it in their grandfathers' time, a seam so bright under the lamp that the foreman called it the Glitter and the name stuck to the whole working. Howth dug it for three generations and sold the silver in Ardagh. The Howth men say the vein turned under them as they followed it, always down and always east, as if it were leading them somewhere, and that the deeper they went the less the silver behaved like silver: it was cold in the hand on a hot day, and it rang when nobody struck it.\n\nThen the courts' bargain in the Cursed Forest broke, and in the sharing-out that followed the Unseelie named the Glitter as theirs. The Howth men did not argue. They came up one morning to find the head of the shaft sealed with Siabra work and a second way in cut further along the mountain, and the old miners' songs say they heard their own picks still going below them that night, though every man of the shift was at home. The Silvermine has had two doors ever since: the Howth door, sealed, and the court's.\n\nThe court runs the mine the way men run mines, which is the cruelest thing about it. It has an overman, Regnal, who sets the shifts; a viewer, Etol, who walks the workings and judges the seams; an underviewer, Treeal, who keeps the upper galleries at their pace; and Duga, who wears the court's colours and keeps the tally of hands. Scratch, Frat and Allyn are the drivers of the upper workings, collared and cruel at once, which the druids of Howth say is what a collar is for. Frit, Frat's sister, was taken the same night and has never lifted a hand to anyone; she sits in a side passage and does not work, and the overmen leave her be, which frightens the other captives more than any whip.\n\nOver the lower galleries the court has set an older office. The Overseer of the Silver Hand keeps a chamber at the western end of the deep workings with three Guardians of the Silver Hand about him, and the title is the whole of what the court will say about him. Below the overseer the mine changes. The lode protectors and vein golems were struck out of the seam itself, the weeweres and the abysmal came up out of rock no Howth man ever reached, and Lobigan keeps the far gallery where the vein ends, or begins. Atur is there too, or what is left of him: the Howth foreman who broke through into the last gallery in the old days, before the court came, and was found standing in the breach with his lamp still lit. He has not moved from the deep gallery since, and he does not let anyone past who is still breathing.\n\nWhy it matters to the realm: Chief Proinnsias of Howth will tell anyone who brings him the right half of the right map that Nuada's silver wrist lies under the Silvermine, and the bards' story of the king's hand begins with silver nobody can account for. If the hand came out of the Glitter, the court has been mining the realm's kingship for longer than Howth has been mining silver, and the collared hands are digging toward it still.",
+  "legend": "Good money and a long climb back up if you fall off the ramp. Mind the adds: the overmen call the whole gallery. The collared workers are victims, the old druids say, but they will still kill you. Bring a bard to keep the pace up, and never follow the silver-maddened down into the dark. Bigger and meaner than the old 30-45 listing: in this world the mine runs from the high 30s at the mouth to the mid 50s at the bottom (weeweres 56, abysmals and silvermine guards 54). The upper workings are the named camps for a 40s group: Underviewer Treeal and Duga near each other, Scratch, Frat and Allyn closer to the mouth. Frit sits peacefully in a side passage; leave her alone. Overman Regnal and Viewer Etol are 49. The Overseer of the Silver Hand (51) stands with three Guardians of the Silver Hand (50-52) at the west end of the deep workings: four 50s at once, bring a full group. Atur is a ghost, 52, in the deep gallery with Lobigan (51) not far off. Phantom miners and haunting drafts in the dark. Mind the ramps: a fall is a long walk back.",
+  "atmosphere": {
+    "firstEntry": [
+      "The walls glitter. Somewhere, chains clink.",
+      "Captive hands work here, and cannot stop.",
+      "True silver, and the dark court that mines it.",
+      "Two doors: one sealed, one the court cut.",
+      "Picks ring below you. Nobody is down there."
+    ],
+    "areas": [
+      {
+        "name": "the mine mouth",
+        "x": 33534,
+        "y": 33660,
+        "z": 16049,
+        "radius": 1200,
+        "lines": [
+          "Collars hum in the dark like bees.",
+          "The court's door. The Howth door is sealed."
+        ]
+      },
+      {
+        "name": "the upper workings",
+        "x": 29600,
+        "y": 30900,
+        "z": 15950,
+        "radius": 1600,
+        "lines": [
+          "Duga keeps the tally. Every hand is counted.",
+          "Treeal sets the pace. The collars hum it.",
+          "Scratch, Frat and Allyn drive the shift."
+        ]
+      },
+      {
+        "name": "Frit's passage",
+        "x": 29288,
+        "y": 28946,
+        "z": 15975,
+        "radius": 500,
+        "lines": [
+          "A woman sits here and will not work.",
+          "Frit. The overmen leave her be. Why?"
+        ]
+      },
+      {
+        "name": "the overseer's chamber",
+        "x": 28150,
+        "y": 24750,
+        "z": 14210,
+        "radius": 900,
+        "lines": [
+          "The Silver Hand keeps this end of the deep.",
+          "Three guardians, one overseer, no name.",
+          "A Guardian of the Silver Hand, in pale armour."
+        ]
+      },
+      {
+        "name": "the deep gallery",
+        "x": 33200,
+        "y": 23300,
+        "z": 14450,
+        "radius": 1700,
+        "lines": [
+          "A lamp still burns in a dead man's hand.",
+          "Atur stands in the breach he made.",
+          "Lobigan keeps the far end of the vein."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the unseelie run coruscating mine with slaves. [geas, collars, the lot|humans and firbolgs both]",
+      "theres true silver in coruscating. [they say nuada's hand came from there|both courts want it]",
+      "the collared workers in the mine were farmers once. [the unseelie took them|kinda grim xp]",
+      "howth miners found the first vein in coruscating. [they called it the glitter|the court took it later]",
+      "the howth door into silvermine is sealed. siabra work. [the unseelie cut their own|two doors]",
+      "overman regnal, viewer etol, underviewer treeal. [the unseelie run it like a real mine|mine ranks]",
+      "duga wears unseelie colours and keeps count of the slaves. [counts everyone|even you]",
+      "frit sits in a side tunnel and never fights. [leave her|shes frats sister they say]",
+      "the overseer of the silver hand has three guardians with him. [four fifties|bring a full group]",
+      "atur is a ghost in the deep gallery. [old howth foreman|still holding his lamp]",
+      "lobigan keeps the far end of the vein in coruscating. [where it ends or starts|deep]",
+      "weeweres at the bottom of coruscating are 56. [this aint a 30s dungeon|careful]",
+      "chief proinnsias in howth thinks nuadas silver wrist is under silvermine. [do the map quest|bran the giant]",
+      "the silver in coruscating rings when nobody hits it, the howth men say"
+    ],
+    "rumour": [
+      "[heard|someone said] the unseelie keep nuada's silver hand at the bottom of coruscating mine",
+      "[word is|heard] the silver drove another miner [wolf|mad] down there",
+      "[heard|someone said] you can hear picks under the sealed howth door at night",
+      "[word is|heard] the overseer goes down past atur and comes back up smiling",
+      "[heard|someone said] the vein in coruscating [moves|leads somewhere]. always down and east",
+      "someone freed a collared gemgetter once and [it attacked him|it went back to work]",
+      "[heard|someone said] frit has been sitting in that tunnel [for years|since the raid on mag mell]",
+      "[word is|heard] the vein golems are [made of the seam|silver inside]",
+      "[heard|someone said] the collared miners call each guardian of the silver hand a finger of it"
+    ],
+    "tell": [
+      "coruscating mine, under silvermine. unseelie, enslaved miners, golems. thirties to mid forties, mind the ramp",
+      "where is coruscating mine? in the silvermine mountains, near howth and ardagh",
+      "is coruscating hard? the top is fine for 40s. the deep end is 50s, the overseer comes with three guardians",
+      "whats in coruscating? unseelie overmen, collared slaves, golems, phantom miners, weeweres, werewolves",
+      "who is the overseer of the silver hand? unseelie, 51, three guardians. [western end of the deep|deep west]",
+      "who is atur? a ghost in the deep gallery. [52|hits hard]. lobigan is near him",
+      "each guardian of the silver hand is 50-52, three of them, right by the overseer. four fifties, bring a full group"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Coruscating Mine is the [Unseelie] Court's, deep under Silvermine. They dig for [true silver] with stolen hands, under an [overman] and his viewers, and there is a [rumour] the Seelie Court does not like at all.",
+    "topics": {
+      "Unseelie": "The dark court. Their bounty hunters raid our farmsteads for workers and keep them by geas and collar.",
+      "true silver": "Mithril, prized by both courts for blades and armour. It drives some miners mad, and some wolf.",
+      "rumour": "That the [Silver Hand] of Nuada lies in the lowest gallery, under Unseelie guard.",
+      "Silver Hand": "Nuada lost his hand and could not rule until a silver one was made. Where the silver came from, the bards do not say.",
+      "overman": "Regnal, the overman, sets the shifts; Etol the viewer judges the seams; Treeal the underviewer keeps the upper galleries moving; [Duga] keeps the tally. The court runs the mine the way men do.",
+      "Duga": "Duga wears the court's colours openly, which few of its servants down there do. He keeps the tally of hands and counts newcomers without asking their names.",
+      "Frit": "A captive taken from Mag Mell who has never lifted a hand to anyone, Frat's sister, they say. She sits in a side passage and does not work. The overmen leave her be. Ask yourself why.",
+      "Overseer": "The Overseer of the Silver Hand keeps the western end of the deep workings with three Guardians of the Silver Hand. The court gives him no other name. He goes down to look at something, and comes back up smiling.",
+      "Atur": "A Howth foreman of the old days who broke through into the last gallery before the court came, and was found standing in the breach with his lamp lit. He still stands there. [Lobigan] keeps the far end.",
+      "Lobigan": "The court's keeper of the far gallery, where the vein ends, or begins. Nobody has asked him which.",
+      "Glitter": "What the Howth men called their vein before the [Unseelie] took it. It ran always down and east, and rang when nobody struck it. The Howth door is sealed with Siabra work.",
+      "Guardian of the Silver Hand": "The Overseer of the Silver Hand keeps three guardians, sidhe in pale armour who never leave his side, and the collared hands of the Coruscating Mine call them the Silver Hand's fingers, because there should be more of them and nobody has ever counted them as anything but three. They walk with the overseer when he goes east along the deep gallery past [Atur], and they come back with him. The Howth miners say a guardian has never once spoken. They say the overseer speaks for all four."
+    }
+  },
+  "book": {
+    "title": "A Miner's Collar",
+    "pages": [
+      "This was found in the Coruscating Mine on a collar, scratched small on the inside where the overmen would not see. I was a groom in Mag Mell. They came at night on black horses and took six of us, and a brother and sister from the next farm. I do not know how long I have been here. The collar hums when I think of home, so I try not to. The silver is very beautiful. That is the worst of it. I have started to love it. When I hold a piece up to the lamp I forget the collar, and then it hums, and I remember.",
+      "Second scratching. There is a ledger. Duga keeps it, in the court's colours, and he wrote me in it without asking my name: he does not want names, he wants hands. Regnal sets the shifts and Treeal sets the pace, and Scratch drives us, and Scratch was taken from Ardagh on a night like ours, they say, and that is the part I cannot understand. The collar did not make him cruel. It let him. Allyn is worse, because Allyn still says sorry. Frat says nothing at all, and drives us harder than either of them, and never once goes near the side passage.",
+      "Third scratching. The girl from the next farm, Frit, will not work. She sat down in the side passage on the first day and has not got up. Her brother Frat drives the shift now and will not look at her. The overmen walk past her as if she were a lamp. One of the old hewers told me she is the only one of us they are afraid of, because the collar does not hum on her. I do not know if that is true. I think about it when the collar hums.",
+      "Fourth scratching, the letters worse. They say the hand is at the bottom. The king's hand. They say the overseer of the Silver Hand goes down past the dead foreman to look at it, and the dead foreman lets him by, and he comes back up smiling. Today Breanne from Ardee stopped working and did not start again and they took her down. If anyone reads this, tell my mother in Mag Mell I did not forget. Tell the Seelie the rumour is true. Tell them hurry. Tell them it is not the silver they should be afraid of. It is what the silver is for.",
+      "Written below, in a different hand, by whoever found the collar: I am a miner of Howth. I took this off a groom in the upper workings, after. He was not wearing it any more by then. My grandfather dug the Glitter before the court came, and he said the vein was cold on a hot day and rang at night, and that they were not following it, it was leading them. I have been to the sealed door on our side. You can hear picks. Our door was sealed from inside."
+    ]
+  },
+  "bosses": [
+    "atur",
+    "lobigan",
+    "overseer-of-the-silver-hand",
+    "overman-regnal",
+    "viewer-etol",
+    "duga",
+    "underviewer-treeal",
+    "scratch",
+    "frat",
+    "allyn"
+  ],
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "unseelie-court"
+  ]
+}

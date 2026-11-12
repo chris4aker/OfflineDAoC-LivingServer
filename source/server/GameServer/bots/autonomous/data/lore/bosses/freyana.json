@@ -1,0 +1,72 @@
+{
+  "id": "freyana",
+  "name": "Freyana",
+  "npcNames": [
+    "Freyana"
+  ],
+  "locationId": "vanern-swamp",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "dark-seithkona",
+    "dishonoured-dead"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Freyana is a level-46 ghost (ghost flag, the ghoulish dead's model) in Vanern Swamp (656,340/926,993), of class NightSpawn: seen only at night. No faction; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data); source/server/GameServer/scripts/mobs/TimeDependentSpawnNpc.cs"
+    },
+    {
+      "text": "'Saving the Clan' (Anrid, through Danica): 'Seek out Freyana and Ljagnid in Vanern Swamp at night and recover the book', then 'Bring Danica Ljagnid's journal'. Ljagnid is not spawned in the world data.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Freyana as the Grenlock clan's lost seeress is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "When the dark cloud settled over the Grenlock crest and the sword, and harmless creatures began to turn on the clan's people and strange sicknesses took others, Anrid of Jordheim sent word to Danica of Mularn, and Danica sent the mystics into Vanern Swamp at night after two names: Freyana and Ljagnid. Ljagnid had kept a journal. Freyana had kept the clan's memory. Both of them had gone into the swamp to find out what had been done to the crest, and neither had come out.\n\nOnly Freyana is still there, and only by night. The ferrymen of Vanern say she walks among the mud frogs and the vipers on the western bank, a pale dead woman with her hands full of nothing, as if carrying a book that is no longer in them. They say she was a seeress of the Grenlock clan, and that she went to the dark seithkona of Ydenia's high seat to ask what they had done, and was answered. Ljagnid's journal is all that came back. The clan's people say her ghost fights to keep it, because the journal says what she found out, and she would rather nobody else knew it.",
+  "legend": "Freyana is a level 46 ghost in the west of Vanern Swamp who only appears at night (she's a NightSpawn: not shown at all by day). She's a step of Saving the Clan via Danica: recover the book, then bring Danica Ljagnid's journal (Ljagnid himself isn't in the world). No faction, no spells. Wait for night, then any group of the epic level takes her; the mud frogs and vipers nearby are easy.",
+  "yells": {
+    "aggro": [
+      "You come for the book. Everyone comes for the book.",
+      "(The dead woman's empty hands close.)"
+    ],
+    "death": [
+      "(She sighs, and the swamp is quiet.)"
+    ],
+    "slay": [
+      "Now you know too."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A pale woman walks the bank at night, empty-handed."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "freyana is a night only ghost in west vanern, 46",
+      "saving the clan step, wait for dark or she isnt there"
+    ],
+    "aftermathWin": [
+      "got the book for danica",
+      "she only showed after dark, as advertised"
+    ],
+    "rumour": [
+      "freyana was a grenlock seeress who asked the dark seithkona what they did to the crest",
+      "freyana carries a book that isnt in her hands anymore"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Freyana",
+    "text": "A seeress of the Grenlock clan who went into Vanern to ask the dark seithkona what had been done to the crest, and walks the western bank only at night, dead, with nothing in her hands. See [high seat]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took the Grenlock book from Freyana's ghost in Vanern in {minutes} minutes."
+  }
+}

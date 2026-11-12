@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DOL.GS;
 
@@ -79,6 +80,27 @@ public static class AutonomousChatReplyFit
             return Weak;
         }
         return Weak;
+    }
+
+    /// <summary>
+    /// A reply from the wrong situation (1.2; blind round 1's sixth complaint, 18 replies): a group or trade ad ("need a healer
+    /// still?", "wts 97% hauberk", "x me", "pst") said to a line about neither grouping nor trading ("inv pls" aside). Pure.
+    /// </summary>
+    public static bool WrongSituation(string incoming, string reply)
+    {
+        if (string.IsNullOrWhiteSpace(incoming) || string.IsNullOrWhiteSpace(reply))
+            return false;
+        string[] said = AutonomousChatIntentModel.Words(reply);
+        bool ad = AutonomousChatShortTalk.HasPhrase(said, "lfg", "lfm", "lf1m", "lf2m", "lf3m", "wts", "wtb", "pst", "x me", "inv me", "need a healer",
+            "need healer", "need a tank", "need tank", "still need someone", "fill a spot", "for sale", "selling my", "buying any");
+        if (!ad)
+            return false;
+        string[] heard = AutonomousChatIntentModel.Words(incoming);
+        bool about = heard.Any(word => word is "group" or "grp" or "groups" or "grps" or "inv" or "invite" or "join" or "duo" or "lfg" or "lfm" or "lf" or
+                         "healer" or "healers" or "tank" or "tanks" or "need" or "sell" or "selling" or "buy" or "buying" or "wts" or "wtb" or "trade" or
+                         "price" or "cost" or "plat" or "gold" or "camp" or "spot" or "room" or "party" or "anyone" or "any" or "who" or "x" or "pst") ||
+                     AutonomousChatShortTalk.NamesAClass(incoming) || incoming.Any(char.IsDigit);
+        return !about;
     }
 
     /// <summary>"lfm vendo need healer pst", "lf1m tank", "need a healer for barrows": a group looking for members. Pure.</summary>

@@ -1,0 +1,331 @@
+{
+  "id": "west-svealand",
+  "name": "West Svealand",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "zones": [
+    102
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "blodfelag",
+    "dark-pack",
+    "svartalfar",
+    "houses-of-midgard"
+  ],
+  "summary": "The western farm country of the Svear: Huginfel, the hill of thought, the frontier gate of Vindsaul Faste, the blood-fellowship of the blodfelag in the west, a svartalf camp in the south and the sveawolves everywhere.",
+  "facts": [
+    {
+      "text": "West Svealand is zone 102 of region 100. Its towns (Areas): Huginfel in the east (711,535/783,908, radius 3,500) and Vindsaul Faste on the northern edge (704,022/738,009), a frontier faste with Viking archers and huscarls, keep sentinels and Masters of Runes.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Area table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 102 (0.37b world data)"
+    },
+    {
+      "text": "Vindsaul Faste holds a Gothi and a Gythja of the Aesir and a Gothi and a Gythja of the Juton, trainers of every calling (among them Gunnolf the shadowblade trainer, whom the rogue epic names) and Stor Gothi Kranna, the Svasud Faste Emissary.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 102 (0.37b world data)"
+    },
+    {
+      "text": "Its folk: the blodfelag (oathbreakers, warhounds, henchmen, windcallers, svards, wolfwarriors, drengs, partisans, haxa, a thralldriver, soothsayers, captives), sveawolves large, frothing, rabid, grizzled and bloodthirsty (Dark Pack), wind and water sprites, skogsfru (Woodwomen), minor fideals, phantom wolves, black maulers, savage lynxes, svartalf hunters and chanters, shadows and mindless thralls.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 102 (0.37b world data)"
+    },
+    {
+      "text": "The Giant Lemer (class GiantLemer) is unseen and untouchable by day; at night it shows itself with 'A great growl goes through the woods', and when it fights it brings small rats, which are gone again once it gives up the chase.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/MidgardMobs/GiantLemer.cs"
+    },
+    {
+      "text": "Huginfel's quests: Gudlor's 'Living Warning' (Fridgeir 'used to be a guard here ... I sent him on a secret mission to spy on the Blodfelag and he never returned') and 'Protect Huginfell' (Thegn Aki); Samlauf Kolsson's 'Protecting the Healer' (the svartalf assassin Golga); Agnor Crusher's 'Paranoid Guard' (the water sprite Squirt); Sugnhild's 'Lover's Circle' (Swift); Hurg's 'Minx Wiley'.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Anrid of Jordheim's 'Siv's Spirit': 'Find Siv's wife Ulga and acquire the crest piece'; the Alfevsons hold pieces of the Grenlock crest.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "The elder sveawolf's 'Fervent': 'One of our senior elders has declared war on the two-leggers and slays any who cross her path' (Wildtooth, behind the blodfelag fort).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "In Norse myth Huginn (thought) and Muninn (memory) are Odin's ravens; Old Norse blodfelag would read 'blood-fellowship'; in Scandinavian folklore the skogsfru (skogsra) is a forest woman hollow behind.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning (public domain); Old Norse/Swedish (to verify)"
+    },
+    {
+      "text": "The blodfelag's oath, the caravan, the Alfevsons' crest pieces and Gudlor's watch-book are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "West Svealand is the other half of the Svear's country, wilder than the east and closer to the war. The skalds say the Svear who went west were the ones who did not like being told what to do, and their country took after them: thicker woods, colder rivers, more wolves. Its town is Huginfel, the hill of thought, named for Odin's raven who flies out every morning to see the world; the skalds pair it with Munin Sound across the sea, thought and memory, and say a traveller who has seen both has seen what Odin sees. Huginfel is a town of guards and merchants and a watch-captain, Gudlor, who has spies out in every direction and has lost more than one.\n\nThe north of the land is the frontier. Vindsaul Faste stands on its northern edge where the road goes up into the Old Frontiers, a faste of huscarls and archers and Masters of Runes, and the houses keep masters there for the young who are going up to the keeps. There are gothi and gythjur of the Aesir in it, and gothi and gythjur of the Juton beside them, under one roof, which the frontier says is how the gods ought to be kept when there is a war on. Stor Gothi Kranna speaks there for Svasud Faste in the high country.\n\nThe west belongs to the blodfelag, the blood-fellowship. They were huscarls and drengs and farmers once, the skalds say, who swore an oath to each other in blood and wolves' blood instead of to a jarl, and kept it when the jarls came to break them. Now they hold a fort in the west and a holding beyond it, with witches and windcallers and wolfwarriors, warhounds bred from the sveawolves, a thralldriver and captives, and an oath that has gone bad the way oaths do when nobody remembers what they were for. They plan against Huginfel. Gudlor knows it. He sent his best guard to spy on them, and the guard came back wearing their colours.\n\nThe south-west belongs to the svartalfar, a camp of hunters and chanters on the hills, watched from a ridge west of Huginfel by a man the town calls the Piercer. The svartalfar send assassins into Huginfel for the man who heals its sick, and buy Midgard's sons into their service: Thrand of Mularn's brother is one of them. The north belongs to the sveawolves and the sprites, the skogsfru at the river fork who are fair from the front and hollow behind, and the phantom wolves that come out late at night. In the middle south, in the deepest of the wood, there is a rat the size of a cart, which nobody sees by day, and when it comes out at night the woods growl.\n\nThe land is full of the dead and the missing. Siv Alfevson's wife Ulga walks deep in the forest past the blodfelag holding with her husband's piece of the Grenlock crest; a caravan in the north-east has been on the road so long its drivers have turned to robbery; an old wolf called Old Smoke has been grey for as long as anyone in Huginfel has been alive. West Svealand matters because it is the realm's road to the frontier and its oldest quarrel with itself. The keeps are won and lost to the north. The blodfelag remind Huginfel every season that Midgard's worst enemies have not always come from Albion.",
+  "legend": "West Svealand is the 10-20 zone west of East Svealand. Huginfel in the east is the town (Gudlor's quests, Bork's bounties, Saydyn the healer), Vindsaul Faste on the north edge is the frontier faste with every trainer, the Aesir and Juton gothi, and Stor Gothi Kranna, the Svasud Faste emissary. Blodfelag everywhere west: the fort and camp have windcallers and wolfwarriors to 20, Thegn Aki leads the camp (Protect Huginfell), Fridgeir Gestsson patrols past the fort (Living Warning). The svartalf camp is south-west of Huginfel (Golga, Chaes, Kelda; Piercer watches from the ridge). The Giant Lemer in the middle-south woods only appears at night ('A great growl goes through the woods') and calls a few rats when you fight it. Phantom wolves appear around 10 P.M. Never follow a skogsfru into the trees; the old Svear say they're hollow behind.",
+  "atmosphere": {
+    "firstEntry": [
+      "West Svealand. Thicker woods, colder rivers, more wolves.",
+      "The Svear who went west did not like being told.",
+      "Somewhere west, an oath sworn in wolves' blood.",
+      "Huginfel, the hill of thought, watches all of it."
+    ],
+    "areas": [
+      {
+        "name": "Huginfel",
+        "x": 711535,
+        "y": 783908,
+        "z": 4500,
+        "radius": 3500,
+        "lines": [
+          "Huginfel, the hill of thought. Gudlor's spies go out.",
+          "Not all of Gudlor's spies come back.",
+          "Wiley the spriggarn pesters the town's edge."
+        ]
+      },
+      {
+        "name": "Vindsaul Faste",
+        "x": 704022,
+        "y": 738009,
+        "z": 4800,
+        "radius": 3500,
+        "lines": [
+          "Vindsaul Faste. The road goes up to the frontier.",
+          "Aesir and Juton gothi under one roof.",
+          "Stor Gothi Kranna speaks for Svasud Faste."
+        ]
+      },
+      {
+        "name": "the blodfelag fort",
+        "x": 671000,
+        "y": 768000,
+        "z": 4800,
+        "radius": 6000,
+        "lines": [
+          "The blood-fellowship's fort. An oath gone bad.",
+          "Thegn Aki plans against Huginfel.",
+          "Fridgeir Gestsson patrols in their colours now.",
+          "Wildtooth waits behind the fort, at war with all."
+        ]
+      },
+      {
+        "name": "the river hut",
+        "x": 709400,
+        "y": 773000,
+        "z": 4600,
+        "radius": 1800,
+        "lines": [
+          "The blodfelag river hut. Captives, and Helda.",
+          "Squirt the water sprite listens from the river."
+        ]
+      },
+      {
+        "name": "the Huginfel road",
+        "x": 719828,
+        "y": 781087,
+        "z": 4470,
+        "radius": 2500,
+        "lines": [
+          "Ugnof Toestubber walks the road with a wolfhound.",
+          "Rollo of the dwarves wants him for a wrong."
+        ]
+      },
+      {
+        "name": "the svartalf camp",
+        "x": 696300,
+        "y": 792500,
+        "z": 4400,
+        "radius": 2500,
+        "lines": [
+          "The svartalf camp on the hills. The Piercer watches.",
+          "Golga goes out for Huginfel's healer.",
+          "Chaes and Kelda keep the chanters' fires.",
+          "Rip walks the hill above the camp."
+        ]
+      },
+      {
+        "name": "the lemer's wood",
+        "x": 697228,
+        "y": 780217,
+        "z": 5569,
+        "radius": 2500,
+        "lines": [
+          "The deepest wood. By day, nothing here.",
+          "At night a great growl, and the Giant Lemer."
+        ]
+      },
+      {
+        "name": "the western wolves",
+        "x": 679500,
+        "y": 772000,
+        "z": 5600,
+        "radius": 7000,
+        "lines": [
+          "The Growling Ghost has never stopped growling.",
+          "Old Smoke, grey for longer than Huginfel remembers."
+        ]
+      },
+      {
+        "name": "the north-west hill",
+        "x": 671002,
+        "y": 740925,
+        "z": 6825,
+        "radius": 1500,
+        "lines": [
+          "Pawper the bear sits on the hill. Climb carefully.",
+          "The hill is shaped to the bear by now."
+        ]
+      },
+      {
+        "name": "the deep forest",
+        "x": 690114,
+        "y": 760381,
+        "z": 5854,
+        "radius": 2500,
+        "lines": [
+          "Ulga walks here with her dead husband's crest-piece.",
+          "She does not know she is dead, or does not care."
+        ]
+      },
+      {
+        "name": "the river fork",
+        "x": 704768,
+        "y": 757504,
+        "z": 4664,
+        "radius": 2000,
+        "lines": [
+          "The river fork. Guthr the skogsfru waits, fair-faced.",
+          "The Lone Weeping Willow grows near the water."
+        ]
+      },
+      {
+        "name": "the boundary gates",
+        "x": 710642,
+        "y": 744345,
+        "z": 5917,
+        "radius": 2000,
+        "lines": [
+          "Sprites by the boundary gates. Swift has a ring.",
+          "The frontier is close. The wind changes here."
+        ]
+      },
+      {
+        "name": "the caravan road",
+        "x": 715666,
+        "y": 750786,
+        "z": 4857,
+        "radius": 2500,
+        "lines": [
+          "A caravan that never arrived. Thorsgir drives it.",
+          "Skalheng and Henrek guard what they stole.",
+          "Modervarg, the mother wolf, hunts close by."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the svear who went west were the ones who didnt like being told what to do",
+      "huginfel is named for odins raven of thought, munin sound across the sea is memory",
+      "a traveller who has seen huginfel and munin sound has seen what odin sees, the skalds say",
+      "vindsaul faste keeps aesir and juton gothi under one roof, how the gods should be kept in a war",
+      "the blodfelag swore an oath in blood and wolves blood instead of to a jarl",
+      "the blodfelag oath went bad the way oaths do when nobody remembers what they were for",
+      "gudlor sent his best guard to spy on the blodfelag and the guard came back in their colours",
+      "the svartalfar buy midgards sons into their service, thrands brother is one",
+      "the piercer watches the svartalf camp from the ridge west of huginfel",
+      "the skogsfru at the river fork are fair from the front and hollow behind",
+      "the alfevsons held pieces of the grenlock crest, and most of them are dead or worse now",
+      "the blodfelag remind huginfel midgards worst enemies didnt always come from albion"
+    ],
+    "rumour": [
+      "phantom wolves come out late at night in west svealand",
+      "the warhounds of the blodfelag are bred from sveawolves",
+      "the giant lemer only comes out at night. you hear a great growl through the woods first",
+      "fridgeir gestsson was huginfels best guard. gudlor sent him to spy on the blodfelag and he never came back",
+      "the growling ghost is a dead wolf that never stopped growling",
+      "pawper the bear sits up on the north west hill and swats anyone who climbs it",
+      "wildtooth was a sveawolf elder who declared war on the two leggers. the sveawolves want her gone",
+      "golga is the svartalf assassin sent for saydyn the healer",
+      "rip is a svartalf in the south west hills, thrands brother halvor knows him",
+      "chaes and kelda are svartalfar of the camp the piercer watches from the ridge",
+      "swift is a sprite by the boundary gates with a ring that isnt hers",
+      "thegn aki leads the blodfelag camp, gudlor wants him dead before they hit huginfel",
+      "ugnof toestubber patrols round huginfel with a henchman and a wolfhound. rollo has a grudge",
+      "helda keeps the blodfelag captives at the river hut",
+      "old smoke is the oldest wolf in west svealand, grey all over",
+      "squirt the water sprite spies for the blodfelag from the river",
+      "thorsgir, skalheng and henrek run the stolen caravan in the north east with a pack horse and a thrall",
+      "guthr the skogsfru sits at the river fork. never follow her into the trees",
+      "modervarg is the mother wolf, sveck wants her heart for a cape",
+      "ulga is siv alfevsons wife, dead, and she still has his piece of the crest",
+      "the lone weeping willow has a branch signa wants for runes",
+      "wiley is a little spriggarn pest round huginfel, hurg wants him gone"
+    ],
+    "tell": [
+      "west svealand is 10 to 20, huginfel in the east is the town",
+      "vindsaul faste is on the north edge, frontier faste with every trainer",
+      "giant lemer is in the middle south woods, night only, 23, brings rats",
+      "fridgeir gestsson patrols the path past the blodfelag fort with a warhound and a haxa",
+      "growling ghost is west, 20, pawper the bear is on the far north west hill",
+      "wildtooth is behind the blodfelag fort, fervent from the elder sveawolf",
+      "golga, chaes, kelda and rip are at the svartalf camp south west of huginfel",
+      "swift is near the boundary gates in the north, lovers circle",
+      "thegn aki is at the blodfelag camp in the west, protect huginfell",
+      "ugnof toestubber walks round huginfel, helda and squirt are at the blodfelag river hut",
+      "old smoke is a big wolf in the west middle, 15",
+      "thorsgir, skalheng and henrek are the caravan in the north east, 13 to 15",
+      "guthr is at the river fork, looking ahead from greyfell",
+      "modervarg is north east by the drifting spirits, cape of the mother wolf",
+      "ulga is deep in the forest past the blodfelag camp, reach of the shadow",
+      "lone weeping willow is north middle by the water sprites",
+      "wiley is just south of huginfel, minx wiley from hurg"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"West Svealand, the wilder half of the Svear's country. [Huginfel] watches it, [Vindsaul Faste] guards the road to the frontier, the [blodfelag] hold the west, the [svartalf camp] the south-west, and the sveawolves everything between. And in the deepest wood, by night, the [Giant Lemer].\"",
+    "topics": {
+      "Huginfel": "The town of the east, the hill of thought, named for Odin's raven who flies out every morning. Gudlor the watch-captain has spies out in every direction. Saydyn is its healer, and the svartalfar want him dead.",
+      "Vindsaul Faste": "The frontier faste on the northern edge, where the road goes up into the Old Frontiers. Huscarls, archers and Masters of Runes; masters of every house; Aesir and Juton gothi under one roof; Stor Gothi Kranna for Svasud Faste.",
+      "blodfelag": "The blood-fellowship: huscarls, drengs and farmers who swore to each other in blood and wolves' blood instead of to a jarl. They hold a fort and a camp in the west, and an oath gone bad. See [Thegn Aki], [Fridgeir Gestsson].",
+      "svartalf camp": "Svartalf hunters and chanters on the hills south-west of Huginfel, watched from the ridge by the Piercer. They send assassins for Huginfel's healer and buy Midgard's sons. See [Golga], [Rip].",
+      "Gudlor": "Huginfel's watch-captain, who keeps a book of everyone he has sent out and everyone who came back. The second list is shorter. He wrote what he could of it down.",
+      "Giant Lemer": "A rat of the lemming kind the size of a cart in the deepest wood of the middle south. By day there is nothing there. At night a great growl goes through the woods and it is abroad, and when it is fought the small rats come running to it from under the roots, and go back under them when it gives up. Huginfel's children are put to bed before dark for it.",
+      "Fridgeir Gestsson": "Once the best guard of Huginfel, whom Gudlor sent to spy on the [blodfelag]. He never came back. Now he patrols the path beyond their fort in their colours, with a warhound and a haxa at his side. Gudlor sends the young to release him, which in Huginfel means only one thing, and Gudlor does not like saying it. His old shield still hangs in the watch-house.",
+      "Growling Ghost": "The ghost of a wolf in the west woods that died growling and has not stopped. The sveawolves avoid it. The Huginfel hunters say it was the leader of a pack the blodfelag broke to make their first warhounds, and that it is still growling at them. It growls at everyone else too, and bites. The young of Huginfel dare each other to answer it.",
+      "Pawper": "A great black bear that sits on the hill in the far north-west and swats anything that climbs it. The trappers of Vindsaul say Pawper has sat there so long the hill is shaped to him, and that he only gets up to eat, and that a climber looks like dinner from where he sits. Nobody has ever got to the top of the hill while he sat on it.",
+      "Wildtooth": "A senior elder of the sveawolves who declared war on the two-leggers and slays any who cross her path, and went over to the [blodfelag] to do it, in a two-legger's shape. The elder sveawolf who asks for her death says she has shamed the pack. She waits with her minions behind the blodfelag fort. Her minions are wolves who followed her across.",
+      "Golga": "The svartalf assassin the [svartalf camp] sends into Huginfel for Saydyn the healer. Samlauf Kolsson gets the word in time, mostly. Golga comes when someone sits with the healer, and fights to finish the job. The camp says she has never failed twice in a row. Saydyn keeps a dagger under his pillow now, and the watch keeps a guard at his door when they can spare one, which is not often.",
+      "Rip": "A svartalf who walks the hill above the [svartalf camp]. Thrand of Mularn's 'Family Business' leads through the Piercer, Graesen of the camp and Halvor, the brother who went to work for the svartalfar, to Rip. The camp says Rip pays Midgard's sons and keeps the receipts. Halvor says Rip is fair to his hirelings. Thrand says that is the worst of it.",
+      "Chaes": "A svartalf of the [svartalf camp] who keeps the chanters' fires beside [Kelda], and fights for the camp. The Piercer says Chaes is the one who counts the camp's new Midgard recruits, and that the count has grown every season he has watched. He does not come down from the hill to fight; he waits for strangers to climb to the fires.",
+      "Kelda": "A svartalf chanter of the [svartalf camp] with spells of her own, who stands with [Chaes] and [Golga] at the fires. The Piercer says she sings the chanters' hymns to the arachites' god, and that the svartalfar of this camp have forgotten whose god it is. Her songs carry to the ridge at night, and the Piercer says he has started to hum them.",
+      "Swift": "A sprite near the boundary gates in the north, a quick, bright, cruel thing with a ring that is not hers. Sugnhild of Huginfel lost the ring last winter, the winter she will not talk about at the inn, and wants it back. The sprites of the gates say Swift found it fair. Sugnhild says it was a lover's ring, and that the lover is not coming back for it.",
+      "Thegn Aki": "The thegn of the [blodfelag] camp in the west, a dreng of the old kind who leads its windcallers and svards. Gudlor's spies say Aki is planning an attack on Huginfel and Gudlor would rather the young went to him first. The blodfelag say he is the only one of them who still remembers the oath's words. His windcallers stand round him.",
+      "Ugnof Toestubber": "A [blodfelag] who walks the roads round Huginfel with a henchman and a wolfhound. Rollo, a dwarf, says Ugnof wronged him and that he cannot rest until it is set right, and sends the young after him with word for Hilde of Haggerfel. Ugnof has never said what he did; Rollo will not stop saying it. The dwarves of Haggerfel take Rollo's side, loudly.",
+      "Helda": "A woman of the [blodfelag] who keeps the captives at the river hut, among henchmen and warhounds. The captives say she was a captive herself once and took the oath to be let out of the ropes, and that she ties them tighter than anyone. She fights for the hut. The captives do not say her name above a whisper.",
+      "Old Smoke": "The oldest wolf in West Svealand, a big grey sveawolf of the west middle, grey all over like smoke. The Huginfel hunters say he has outlived every pack he ran with, and that the blodfelag tried to take him for their kennels and lost three drengs. He hunts alone now, and attacks anyone on his ground. The hunters leave him alone.",
+      "Squirt": "A water sprite in the river in front of the [blodfelag] hut who spies for the blood-fellowship and carries their messages down the river. Agnor Crusher, a guard of Huginfel, has seen more shadows lately and wants proof; the proof is on Squirt. It bites like a pike. The blodfelag pay it in shiny stones it hides under the river bank, and the bank, the guards say, glitters.",
+      "Thorsgir": "The driver of a caravan in the north-east that never arrived anywhere, with a pack horse and an escaped thrall, among the drifting spirits. The Huginfel traders say the caravan was robbed so long ago that its drivers turned robbers themselves and kept the road. Thorsgir still drives; [Skalheng] and [Henrek] guard. His whip is still a carter's whip, and he uses it on strangers.",
+      "Skalheng": "A dreng who guards the caravan in the north-east with [Thorsgir] and [Henrek]. The traders say Skalheng was hired to protect the caravan from robbers and has been protecting it from its owners ever since. He fights for the pack horse as if it were gold. Nobody knows what is in the packs. Skalheng does not either, and has never looked.",
+      "Henrek": "The third of the caravan in the north-east, with [Thorsgir] and [Skalheng], who keeps its accounts. The traders say every stranger on the road is a debt in Henrek's book, and he collects. The drifting spirits round the caravan were its passengers, the traders say. Henrek counts them too. He has never been seen to pay one. He writes in a hand nobody can read.",
+      "Guthr": "A skogsfru of the Woodwomen at the fork of the river, fair-faced, among her sisters. Greyfell of Fort Atla, who knows nothing of his ancestry, is sent through his uncle in Mularn to her; what she has is the way to the key in Audliten. Never follow her into the trees. She is hollow behind. Greyfell's family, his uncle says, had dealings with her once.",
+      "Modervarg": "The mother wolf of the Dark Pack in the north-east, by the drifting spirits, mother of half the sveawolves of the west. Sveck of East Svealand wants her heart for a cape and sends word on to Olgara in Huginfel. The sveawolves say that when Modervarg dies another mother takes her name. She fights like a mother. Her cubs are never far from her.",
+      "Ulga": "A ghost deep in the forest past the [blodfelag] camp: Siv Alfevson's wife, of the Spirits of Midgard now. She keeps her husband's piece of the Grenlock crest, which Anrid of Jordheim wants, and Aylarn of Huginfel sends the young to find her when they call themselves protectors of Midgard. She fights for the crest-piece as if Siv were still alive to wear it, and she does not let it go easily.",
+      "Lone Weeping Willow": "A willow by the water sprites in the north middle that weeps alone, apart from any grove. Signa of Odin's house in Jordheim sends the young to cut a branch from it for Eirik in Audliten, for runes of darkness. The willow does not give the branch freely. The water sprites round it guard it as if it were theirs, and the runemasters say its sap is the best ink in Midgard for a rune of grief.",
+      "Wiley": "A little spriggarn round Huginfel, a minx, Hurg says, who steals from the town and bites the hand that catches him. The Huginfel children say Wiley was a sprite who wanted to be a man and stopped halfway. He is quick and mean and never far from the walls. Hurg says Wiley stole his boots twice and his dinner more often, and wants him gone before winter."
+    }
+  },
+  "book": {
+    "title": "Gudlor's Book of the Watch",
+    "pages": [
+      "Gudlor, captain of the watch at Huginfel, kept this book: the names of everyone he sent out, and of everyone who came back. I am writing the front of it again for the young who come to me asking for work, so that they know what they are asking for. Huginfel is the hill of thought. The skalds say Odin's raven Huginn flies from here every morning to see the world and comes back every night to tell him. My spies do the same, and not all of them come back, and the raven, as far as anyone knows, has never been caught.",
+      "To the west are the blodfelag. They were men of the Svear like us, huscarls and drengs and farmers, who swore an oath to each other in their own blood and the blood of wolves, and would not swear to a jarl. The jarls came to break them and could not. The oath held. The trouble with an oath that holds is that it keeps holding after everyone has forgotten what it was for. Now they have a fort and witches and warhounds and captives, and they mean to have Huginfel. Their thegn, Aki, still remembers the words. That is what makes him dangerous.",
+      "I sent Fridgeir Gestsson to them. He was my best. He went to spy on the fort and to come back in a month, and he did not come back, and in the spring my scouts saw him on the path past the fort in their colours with a warhound and a haxa at his side. I have his name on both lists now: those who went, and those I sent the young to set free. In Huginfel that word means one thing. I wrote it in his column myself. The haxa, I am told, sings to him at night.",
+      "To the south-west are the svartalfar, at their fires on the hills, and a man on the ridge who watches them for me and is called the Piercer for reasons he will not explain. The svartalfar send assassins for Saydyn, who tends our sick. They pay our sons, too: Thrand of Mularn's brother is in their service, and he is not the only one. To the north are the sveawolves and the sprites, the skogsfru at the river fork and the phantom wolves late at night. To the middle south is the rat. I do not send anyone to the rat at night.",
+      "Here is what I tell the young. The war is in the north, up at Vindsaul Faste and beyond, where the keeps are. Everyone wants to go there. But Midgard's worst enemies have not always come from Albion, and the blodfelag were ours before they were anyone's. Take the work I give you. Come back. I would like the second list to be longer than the first, one day. It has never been. Write your name at the top of the page, and I will write it again at the bottom when I see you."
+    ]
+  },
+  "bosses": []
+}

@@ -1,0 +1,130 @@
+{
+  "id": "queen-qunilaria",
+  "name": "Queen Qunilaria",
+  "catalogKey": "tur-suil/queenqunilaria",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 72 in the script (75 on Allakhazam), an animal type. When struck she has a 25% chance to call three minions (up to four alive), and when she dies 15-22 minions pour out.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Tur Suil also holds burrowing monstrosities and tunneling horrors.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    },
+    {
+      "text": "She cannot be hurt outside her tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Balor's tower stands on a crag, and the Fomorians never stopped digging under it. The diggers are not Fomorian. They are the brood of Qunilaria, a queen of burrowing things the Fomorians found in the deep rock of Hy Brasil and bound with a promise: dig toward the roots of the isle, and the king will feed you. She has dug faithfully. Her nest lies far below the tower now, a hollow full of clicking, and her young come at every blow struck against her. When she dies the nest empties all at once, every egg and grub still in her body bursting out to avenge her.\n\nWhat is Balor looking for, under his tower? Qunilaria does not know and does not care. The Fomorians found her deep in the black rock of Hy Brasil, a queen of burrowing things with a nest that went down further than any Fomorian had ever dug, and they made her a bargain: dig toward the roots of the isle, and the king will feed you. She has dug, and she has been fed.\n\nHer brood is everything that tunnels in Tur Suil: the burrowing monstrosities, the tunneling horrors, the small clicking things in the walls. When she is struck a few of them come up through the floor to defend her, a handful at a time, never more than four about her; when she dies, every grub and egg still in her bursts out at once. The Sylvan say her tunnels have reached something soft and old far below, and that the queen's brood came back up from it smelling of sap. If that is so, Balor's diggers are very close to the Root of Galladoria, and nobody on Hy Brasil knows what happens when the two meet.\n\nQueen Qunilaria is a burrowing queen of the deep rock the Fomorians bargained with to dig under Tur Suil; the warden Taise found her brood's tunnels reaching roots that smell of Galladoria's sap. Neasa of Ardee learned her death flood.",
+  "legend": "She calls minions when she is hit, a few at a time, and dumps a crowd of them when she dies. Kill the small waves as they come, then stack AoE on her corpse for the last one. Do not chase her out of the nest. Kill the small waves steadily so they never stack past four. Before her last tenth, AoE casters stand behind the tank, healers ready; the death flood is the real fight. Nicknames: 'the bug queen', 'the digger'. Superstition: stamp three times on the floor of her nest before you leave, so the brood knows the ground above is taken.",
+  "yells": {
+    "aggro": [
+      "The nest clicks and stirs all at once.",
+      "Click. Click. The whole nest answers.",
+      "The floor opens. Many legs."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Her brood claws up out of the floor."
+      }
+    ],
+    "death": [
+      "The queen splits. Her brood boils out!",
+      "The nest empties all at once!"
+    ],
+    "slay": [
+      "The brood will eat.",
+      "Down the tunnel with this one.",
+      "Food for the brood.",
+      "The brood is fed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is hollow. Something is digging.",
+      "Tunnels lead down toward the roots of the isle."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "Qunilaria's nest empties in a flood!"
+      }
+    ],
+    "realmFirstKill": "Queen Qunilaria is dead. The digging stops."
+  },
+  "botLines": {
+    "briefing": [
+      "qunilaria calls bugs when hit and [dumps twenty|a flood pops] when she dies. aoe on her corpse",
+      "kill her small waves as they come, [never let them stack|four max]",
+      "aoe behind the tank before her last tenth, [death flood|the brood pops]",
+      "dont chase her out of the nest. [immune outside|fight at home]"
+    ],
+    "aftermathWin": [
+      "queen down, brood down. [nice aoe|cleaned up]",
+      "death flood handled, [nobody died|clean]",
+      "the clicking stopped. [finally|silence]",
+      "queen down, the digging stops for a while. [good|for now]"
+    ],
+    "aftermathLoss": [
+      "killed the queen then [the brood killed us|wiped to the bugs]. every time",
+      "the flood got us [again|after she died]",
+      "small waves stacked while we hit her. [kill the adds|focus]",
+      "chased her out of the nest. [immune|bad idea]"
+    ],
+    "rumour": [
+      "[heard|someone said] qunilaria's brood is digging toward the roots of hy brasil for balor",
+      "[heard|someone said] qunilaria's tunnels reached something soft that smells of sap",
+      "[word is|heard] balor's diggers are getting close to galladoria's roots",
+      "the brood in tur suil came back up [smelling of sap|covered in roots], they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Qunilaria",
+    "text": "A queen of burrowing things, bound by the Fomorians to dig beneath Tur Suil. Her brood answers every blow, and floods out when she dies."
+  },
+  "bookPage": "From Muirgen's notes on Hy Brasil: the Sylvan do not fear the Fomorian soldiers as they fear Qunilaria's diggers. Soldiers march; diggers go where nobody can follow. The queen was found in the black rock beneath the crag, and the Fomorians bargained with her, food for tunnels. Her brood digs downward without rest. A Sylvan warden told me her tunnels have broken into something soft and very old, and that the burrowers came back up smelling of sap. I asked what that meant. He said: it means the eye and the Root are going to meet. Nobody, he said, has ever thought about what happens then, and nobody wants to start.",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Queen Qunilaria and her brood in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Queen Qunilaria's brood after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "balor",
+      "relation": "the king they serve"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "the Root her tunnels may be digging toward"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Black Rock",
+      "text": "When the Fomorians began to build Tur Suil on the crag above the burned valley, their masons struck something in the foundations they had not expected: tunnels, smooth and round, running down into the black rock of the crag further than any Fomorian lamp could light. The tunnels were warm. Something lived in them. The Fomorians, who do not fear what lives under the ground because they live there themselves, sent a party down to find it, and the party came back with one survivor and a bargain.\n\nThe thing in the tunnels was a queen of burrowing creatures, a great armoured animal of the deep rock who had been digging under Hy Brasil since before the Sylvan woke, with a nest so deep that no Fomorian has ever reached the bottom of it. The realm calls her Qunilaria, the name the Balorians use, which may be Fomorian or may be the sound her brood makes; Muirgen, who wrote 'The Tower of the Eye', thought the second. Her brood is everything that tunnels in Tur Suil now: the burrowing monstrosities, the tunneling horrors, and the small clicking things in the walls.\n\nThe bargain was simple, and the Fomorian survivor carried it back to the tower's builders. Dig where the king's people tell you, the queen was told, and the king will feed you. She has dug where she was told ever since, and she has been fed. What she was told to dig toward, she has never asked. The survivor's name, the Balorians say, was carved on the tower's first stone."
+    },
+    {
+      "title": "Digging for the Eye",
+      "text": "The brood digs downward without rest, toward the roots of the isle. The Sylvan of the western coast hear it: on still nights the ground below the Vale of Balor hums, and the wells of the coastal villages taste of stone dust. What Balor wants at the bottom of the tunnels, nobody outside the tower knows. The Sylvan believe the eye wants to see everything, and that what lies under the isle is the one thing it cannot see from its window.\n\nIn recent seasons the brood broke into something. The Sylvan learned of it from a warden of the coast named Taise, who found a burrowing monstrosity dead at the mouth of a new tunnel below the crag, its armour wrapped in pale roots and its body smelling of sap. She carried a root back to Domnann, and Lisín the fire-keeper took one look at it and put it in the fire. It came from Galladoria, she said. The queen's brood had dug far enough to reach the Root's.\n\nThe druids of Tir na Nog doubt it. The hollow of Galladoria lies under the middle of the isle and the crag on its western edge, they say, and no tunnel could cross that distance. The Sylvan answer that the Root's roots run under the whole isle, which is what the Sylvan have always said, and that the queen does not need to reach the hollow. She only needs to reach a root. Taise keeps a second root in a sealed jar."
+    },
+    {
+      "title": "The Nest",
+      "text": "Her nest lies in the deep southern part of the tower, below the soul-trapper's cells, a hollow full of clicking where the floor is hollow underfoot. She fights from it and will not leave it; beyond its edge no blow reaches her, as the tower protects all its household at their posts. When she is struck, her brood answers: a few minions claw up out of the floor at a time, never more than four about her at once. The nest never stops answering her: there are always a few more coming. Neasa said the floor of the nest was soft and warm, like turned earth in spring, and that every blow she struck the queen seemed to bring something up out of it.\n\nWhen she dies, the nest empties all at once. Every grub and egg still in her body bursts out of her in a flood, half-formed and furious. The first band of the realm to kill her, a party of the second company to climb Tur Suil, under a warden of Ardee named Neasa, did not know this, and only Neasa and two others reached the stair. Neasa came home saying what Pádraigín of Howth had said at Galladoria's brood chamber before her: do not cheer until the floor is still. The barracks of Ardee say mothers are the same everywhere.\n\nHibernians leaving the nest stamp three times on its floor before they go, so that the brood will know the ground above it is taken. Neasa started it. Nobody remembers why she said it worked."
+    },
+    {
+      "title": "When the Eye and the Root Meet",
+      "text": "Nobody on Hy Brasil has ever thought about what happens when the eye in the tower and the Root in the hollow meet, and Qunilaria is the reason everyone is thinking about it now. There are three accounts.\n\nThe Sylvan of Domnann believe the two will fight. The Root has never shared the isle with anything, they say, and the eye has never been refused anything, and when the queen's brood breaks into the Root's roots the isle will shake as it has not shaken since the Long Pushing. Lisín thought this might even be a mercy, if it ended with one of them gone. The druids of Tir na Nog believe the two will join: that the eye wants to see and the Root wants to drink, and that an eye with roots under the whole isle would see everything at last, and that this is exactly what Balor has been digging for. The Fomorians of Fomor, the Sylvan report, believe nothing about it at all; they say the queen digs because the king told her to, and that the king knows what he is doing.\n\nThe realm kills her when it can, and her brood is quieter for a season, and the hum under the Vale stops for a while. Then she returns, and it starts again. Taise of the coast keeps watch at the mouth of the new tunnel, and she has asked the realm to tell her if any of its people, in the nest, ever hear something answer the digging from below. So far nobody has. Taise says she will keep watching anyway."
+    }
+  ]
+}

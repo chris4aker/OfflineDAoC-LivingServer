@@ -1,0 +1,107 @@
+{
+  "id": "lobigan",
+  "name": "Lobigan",
+  "npcNames": [
+    "Lobigan"
+  ],
+  "locationId": "coruscating-mine",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Lobigan: level 51, model 462 (the werewolf body the fenrir use in Midgard), at about 32,500/24,600 at the far end of the deep gallery of the Coruscating Mine; silver-maddened werewolves (52) live in the same depths; respawn 180 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob table, region 220 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Lobigan as the first miner the silver turned wolf, who keeps the far end of the vein for the court.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Some of the miners of the Glitter have gone mad from the silver, the Howth men say, and some have gone wolf, and Lobigan was the first who went wolf. He was a hewer of the court's first shift, a mainland man taken from the Ardagh road with the first collared hands, and he worked the deepest face of the mine for a year without speaking. Then one night the collar on his neck stopped humming, and in the morning there was a wolf at the face with the collar on, and the face had been cut further in the night than a whole shift could have cut it.\n\nThe court did not put him down. It kept him. The Unseelie, the Howth miners say, were delighted: a wolf made by the silver itself, who could smell the vein through rock, was worth a hundred hewers, and they gave him the far end of the deep gallery, past Atur's breach, where the vein ends or begins. He keeps it. The silver-maddened wolves that prowl the lower workings came after him, every one of them a hewer who stopped working one night, and they keep the depths as his pack. The miners call it the old irony of the Silvermine and say it under their breath: the one metal a wolf is meant to fear, and it made them.\n\nThe court's servants say Lobigan is the only one of the mine's creatures who has seen what lies at the vein's end and come back to his post afterwards. The overseer of the Silver Hand goes down to look and comes back up smiling. Lobigan goes down to look and comes back and lies across the gallery again with his head on his paws, and the miners who have glimpsed him from the breach say that he looks, for a wolf, very tired.",
+  "legend": "Lobigan is a level 51 werewolf at the far end of the Coruscating Mine's deep gallery (about 32.5k/24.6k), past Atur (52). Plain mob, no script, 3-minute respawn. The silver-maddened werewolves (52) of the depths are around, so clear first. The deep end runs to the mid-50s, so a full 50s group. He shares his body with the Midgard fenrir, which Hibernians find very funny. Silver jokes are mandatory. Atur stands in the breach on the way to him, so you will fight the ghost first; rest between the two, because the pack around Lobigan comes quickly if you pull loose. A strong group of 50-52s is the comfortable size for both.",
+  "yells": {
+    "aggro": [
+      "(a wolf with a collar on rises across the gallery)",
+      "(Lobigan smells the silver on you)",
+      "(a tired growl)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Lobigan howls, and the deep workings answer)"
+      }
+    ],
+    "death": [
+      "(the collar on the wolf's neck hums, once, and stops)",
+      "(Lobigan lies down across the gallery, for the last time)"
+    ],
+    "slay": [
+      "(the wolf lies across the gallery again)",
+      "(the far end is kept)",
+      "(Lobigan puts his head back on his paws)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A collared wolf lies across the far gallery.",
+      "The far end of the vein. It ends, or begins."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Lobigan howls for the silver-maddened pack!"
+      }
+    ],
+    "realmFirstKill": "Lobigan, the first wolf of the silver, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "lobigan is a 51 werewolf at the far end of coruscating's deep gallery. [past atur|plain mob]",
+      "silver maddened werewolves around him. [clear first|52]",
+      "full 50s group for the deep end",
+      "3 min respawn"
+    ],
+    "aftermathWin": [
+      "lobigan down. [silver bullet joke|grats]",
+      "cleared the pack first. [clean|nice]",
+      "the far end of the vein is ours",
+      "now what is down there"
+    ],
+    "aftermathLoss": [
+      "the werewolf pack came. [too many|oops]",
+      "weeweres on the way. [ouch|56]",
+      "group too low",
+      "he hits like a fenrir lol"
+    ],
+    "rumour": [
+      "[heard|someone said] lobigan was the first miner the silver turned wolf",
+      "the silver made the werewolves in coruscating. [the irony|of all metals]",
+      "[word is|heard] lobigan has seen the end of the vein and came back tired",
+      "lobigan uses the fenrir model. [midgard would be proud|lol]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Lobigan",
+    "text": "The first miner of the Coruscating Mine the silver turned wolf, a hewer from the Ardagh road. The court kept him and gave him the far end of the vein, past Atur. The silver-maddened wolves are his pack."
+  },
+  "bookPage": "From the scratchings on a collar found in the Coruscating Mine, with the Howth miner's notes below: Lobigan was a hewer of the first shift, taken off the Ardagh road. He worked the deepest face a year without a word. One night his collar stopped humming, and in the morning there was a wolf at the face with the collar still on, and the face cut further than a shift could cut. The court kept him and gave him the far end of the vein. The silver-mad wolves came after him. The one metal a wolf should fear, and it made them. The overseer comes back from the end smiling. Lobigan comes back tired.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Lobigan in the Coruscating Mine in {minutes} minutes.",
+    "loss": "Lobigan turned back {realm}'s band under {raidLeader} in the Coruscating Mine after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "unseelie-court"
+  ],
+  "related": [
+    {
+      "id": "atur",
+      "relation": "the foreman in the breach before him"
+    },
+    {
+      "id": "overseer-of-the-silver-hand",
+      "relation": "the court's officer he serves"
+    }
+  ]
+}

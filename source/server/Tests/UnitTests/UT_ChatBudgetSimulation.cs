@@ -10,8 +10,9 @@ using Budget = DOL.GS.AutonomousChatBudget;
 namespace DOL.GS.Tests;
 
 /// <summary>
-/// Beta 1.1.2: an evening hour of one realm's ambient chat, before (Beta 1.1.1's gaps, capped at 1.8) and after (the
-/// ambient budget), through the real corpus picker, the real gap and budget rules and the real reply counts. An approximate
+/// Beta 1.1.2: an evening hour of one realm's ambient chat, before (Beta 1.1.1's gaps, capped at 1.8), with the 1.1.2 ambient
+/// budget (one count of every line over two minutes), and with 1.2's two budgets (ambient lines and replies counted apart, each
+/// over the window its target needs), through the real corpus picker, the real gap and budget rules and the real reply counts. An approximate
 /// model, not a world: each bot checks whether to talk every 15-35 s as BotBrain does, is free (not fighting or riding)
 /// 55% of the time, and passes AutonomousBotChat.ShouldSpeak with its personality's rate; the player stands in their
 /// capital with 3% of the realm's bots within /say range and 8% in its broadcast area; one guild has 2% of the realm online;
@@ -47,6 +48,9 @@ public class UT_ChatBudgetSimulation
         public double PerMinute(string channel) => ((Lines.TryGetValue(channel, out var list) ? list.Count : 0) +
             (channel == "broadcast" && Lines.TryGetValue("macro", out var macros) ? macros.Count : 0)) / (double)Minutes;
         public double Total => Lines.Values.Sum(list => list.Count) / (double)Minutes;
+        /// <summary>1.2: replies said per channel (lines counted against the reply budget), and exchanges the reply budget held.</summary>
+        public readonly Dictionary<string, int> RepliesSaid = new(), RepliesHeld = new();
+        public double RepliesPerMinute(string channel) => RepliesSaid.GetValueOrDefault(channel) / (double)Minutes;
         /// <summary>Who said each channel's lines, for the share of the busiest speaker.</summary>
         public readonly Dictionary<string, List<long>> Speakers = new();
 
@@ -242,16 +246,34 @@ public class UT_ChatBudgetSimulation
             Answers = answers, Filter = filter, LocalHour = 20, RelaxTo = VC.RecentLines.Relaxed,
         }, out picked);
 
+    /// <summary>
+    /// The 1.1.2 side's budget: chat-budget.json as Beta 1.1.2 shipped it (/faction 2 / 4 / 10, no reply budgets), so the
+    /// comparison is with what players had, not with today's numbers run through yesterday's gate.
+    /// </summary>
+    public static Budget.Settings Shipped112(Budget.Settings current)
+    {
+        var channels = current.Channels.ToDictionary(pair => pair.Key, pair => pair.Value with { ReplyTarget = 0, ReplyCeiling = 0 });
+        channels[Budget.Channel.Faction] = channels[Budget.Channel.Faction] with { Floor = 2.0, Target = 4.0, Ceiling = 10.0 };
+        channels[Budget.Channel.Say] = channels[Budget.Channel.Say] with { Floor = 0.5, Target = 2.0, Ceiling = 5.0 };
+        channels[Budget.Channel.Guild] = channels[Budget.Channel.Guild] with { Floor = 0.5 };
+        channels[Budget.Channel.Lfg] = channels[Budget.Channel.Lfg] with { Floor = 0.6, Target = 1.6, Ceiling = 4.0 };
+        channels[Budget.Channel.Trade] = channels[Budget.Channel.Trade] with { Floor = 0.5, Target = 1.3, Ceiling = 3.5 };
+        return current with { Channels = channels };
+    }
+
     /// <summary>One realm's evening hour (after a ten-minute warm-up) with <paramref name="bots"/> online.</summary>
-    public static Result Evening(int bots, bool budget, int seed, int minutes = 60)
+    public static Result Evening(int bots, bool budget, int seed, int minutes = 60, bool repliesBudgeted = true, double rate = 1.0,
+        bool scaledScenes = true)
     {
         var random = new Random(seed);
         var recent = new VC.RecentLines();
-        var meter = new Budget.ChannelMeter();
+        // 1.1.2 counted every line over two minutes; 1.2 counts ambient lines and replies apart (AutonomousChatBudget.ChannelMeter).
+        var meter = new Budget.ChannelMeter { CountsEveryLineOverTwoMinutes = budget && !repliesBudgeted };
+        bool replyBudget = budget && repliesBudgeted;
+        Budget.Settings settings = budget && !repliesBudgeted ? Shipped112(Budget.Current) : Budget.Current;
         var fresh = new AutonomousChatFiller.RecentTexts();
         var field = new AutonomousChatFieldTalk.Memory();
         var guildField = new AutonomousChatFieldTalk.Memory();
-        Budget.Settings settings = Budget.Current;
         var result = new Result { Minutes = minutes };
         var all = new List<Bot>(bots);
         int guildSize = Math.Max(4, bots / 50);
@@ -265,12 +287,12 @@ public class UT_ChatBudgetSimulation
             });
         long lastFaction = -1, factionGap = 0, lastLocal = -1, localGap = 0, lastGuild = -1, nextGroup = 90_000;
         long start = 10 * 60_000, end = start + minutes * 60_000L;
-        var dueReplies = new List<(long At, string Channel, string Text, long Who)>();
+        var dueReplies = new List<(long At, string Channel, string Text, long Who, bool Reply)>();
         var macros = new List<(long At, string Text, long Who)>();
         long lastFactionLine = long.MinValue / 2;
         var deferred = new HashSet<long>();
         var waits = new Dictionary<string, int>(StringComparer.Ordinal);
-        void Say(long now, string channel, string text, long who)
+        void Say(long now, string channel, string text, long who, bool reply = false)
         {
             if (channel == "faction")
                 lastFactionLine = now;
@@ -282,7 +304,20 @@ public class UT_ChatBudgetSimulation
                 "broadcast" or "macro" => Budget.Channel.Capital, "guild" => Budget.Channel.Guild, "group" => Budget.Channel.Group, _ => null,
             };
             if (metered is { } c)
-                meter.Count(c, 1, now);
+                meter.Count(c, 1, now, reply ? Budget.LineKind.Reply : Budget.LineKind.Ambient);
+            if (reply && now >= start && now < end)
+                result.RepliesSaid[channel] = result.RepliesSaid.GetValueOrDefault(channel) + 1;
+        }
+        // 1.2: the reply budget (AutonomousChatBudget.DecideReply), for bots answering bots.
+        bool ReplyGate(string channel, long now)
+        {
+            if (!replyBudget)
+                return true;
+            Budget.Channel c = channel == "say" ? Budget.Channel.Say : Budget.Channel.Faction;
+            bool says = Budget.Says(meter.TryReply(c, 1, now, Budget.ReplyBand(settings, c, bots, 20, false, rate), Budget.ReplyKind.BotThread, random));
+            if (!says && now >= start && now < end)
+                result.RepliesHeld[channel] = result.RepliesHeld.GetValueOrDefault(channel) + 1;
+            return says;
         }
         bool Regular(Bot bot, long now) => budget && (AutonomousChatRegulars.IsRegular(bot.Id, bot.Type, now, bots) ||
             bot.InGuild && AutonomousChatRegulars.IsGuildRegular(bot.Id, bot.Type, now, guildSize));
@@ -322,9 +357,14 @@ public class UT_ChatBudgetSimulation
         }
         void Play(long now, string channel, List<AutonomousChatFieldTalk.Step> steps, Bot[] speakers, bool invited)
         {
+            // AutonomousBotChatCoordinator.ScheduleFieldThread: a /faction or /say thread is said whole or not at all (guild threads
+            // have no reply budget of their own).
+            if (steps.Count > 0 && channel is "faction" or "say" && !ReplyGate(channel, now))
+                steps = [];
             foreach (AutonomousChatFieldTalk.Step step in steps)
                 if (speakers[step.Who] is { } who)
-                    dueReplies.Add((now + Math.Max(500, step.AtMs), channel, AutonomousChatIdiolect.Apply(step.Text, who.Id, false, random, terse: true), who.Id));
+                    dueReplies.Add((now + Math.Max(500, step.AtMs), channel, AutonomousChatIdiolect.Apply(step.Text, who.Id, false, random, terse: true), who.Id,
+                        channel is "faction" or "say"));
             if (now < start || now >= end || !invited)
                 return;
             result.Threads.TryAdd(channel, new List<int>());
@@ -347,14 +387,16 @@ public class UT_ChatBudgetSimulation
             // Round 5: a written musing draws no canned agreement, at most one fitting reaction.
             if (budget && opener.Line?.Kind is "ambient" or "rvr" or "camp" or "group")
             {
-                if (AutonomousBotChatCoordinator.WrittenReaction(opener.Line, random) is { } reaction)
+                if (AutonomousBotChatCoordinator.WrittenReaction(opener.Line, random) is { } reaction && ReplyGate(channel, now))
                 {
                     Bot mate = all[random.Next(all.Count)];
-                    dueReplies.Add((now + AutonomousBotChatCoordinator.ReplyDelayMs(reaction, 0, random), channel, reaction, mate.Id));
+                    dueReplies.Add((now + AutonomousBotChatCoordinator.ReplyDelayMs(reaction, 0, random), channel, reaction, mate.Id, true));
                 }
                 return;
             }
             int count = AutonomousBotChatCoordinator.BotReplyCount(opener.Line?.Invites, 20, random);
+            if (count > 0 && !ReplyGate(channel, now))
+                return;
             int due = 0;
             for (int r = 0; r < count; r++)
             {
@@ -364,18 +406,80 @@ public class UT_ChatBudgetSimulation
                             filter: line => AutonomousChatShortTalk.ReplyFits(opener.Text, line.Text)))
                     {
                         due = AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, due, random);
-                        dueReplies.Add((now + due, channel, reply.Text, mate.Id));
+                        dueReplies.Add((now + due, channel, reply.Text, mate.Id, true));
                         break;
                     }
+            }
+        }
+        // The realm's /faction scenes (AutonomousBotDebates, AutonomousGoldSpammers), modelled by their timing: a debate is six
+        // beats 5-8 s apart, the first 5-10 minutes into the session and the next 30-45 minutes after one ends; a gold spammer's
+        // wave is 5-10 ads 18-48 s apart, 12-30 minutes in and then every 60-150 minutes, with a reaction or two to its first
+        // three ads and one to three at its ban (replies). 1.2: both wait longer and a wave is shorter on a small roster
+        // (AutonomousChatBudget.SceneScale) when scaledScenes is set.
+        int sceneBots = scaledScenes ? bots : Budget.SceneFullRoster;
+        long debatePlanned = 0, debateDue = 5 * 60_000 + random.Next(5 * 60_000), wavePlanned = 0,
+            waveDue = AutonomousGoldSpammers.FirstWaveMinMs + random.Next((int)AutonomousGoldSpammers.FirstWaveSpreadMs);
+        int debates = 0, beat = -1, adsLeft = -1, adsSaid = 0;
+        long nextBeat = 0, nextAd = 0;
+        // A made-up word, so modelled scene lines never read as near-copies of each other (digits don't count).
+        string Word() => new(Enumerable.Range(0, 7).Select(_ => (char)('a' + random.Next(26))).ToArray());
+        void React(long now, int count, long firstDelay)
+        {
+            long due = now + firstDelay;
+            for (int r = 0; r < count; r++)
+            {
+                due += 2_500 + random.Next(8_000);
+                if (!ReplyGate("faction", now))
+                    continue;
+                dueReplies.Add((due, "faction", $"lol look at {Word()} {Word()} again", all[random.Next(all.Count)].Id, true));
             }
         }
         for (long now = 0; now < end; now += 1_000)
         {
             DateTime clock = new DateTime(2026, 11, 3, 20, 0, 0, DateTimeKind.Utc).AddMilliseconds(now);
+            if (beat < 0 && adsLeft < 0 && Budget.SceneDue(debatePlanned, debateDue, now, sceneBots))
+            {
+                beat = 0;
+                nextBeat = now;
+                debates++;
+            }
+            if (beat >= 0 && now >= nextBeat)
+            {
+                Say(now, "faction", $"{Word()} {Word()} {Word()} {Word()}", all[random.Next(all.Count)].Id);
+                nextBeat = now + 5_000 + random.Next(3_000);
+                if (++beat == 6)
+                {
+                    beat = -1;
+                    (debatePlanned, debateDue) = (now, now + AutonomousBotDebates.NextGapMs(random));
+                }
+            }
+            if (adsLeft < 0 && beat < 0 && Budget.SceneDue(wavePlanned, waveDue, now, sceneBots))
+            {
+                adsLeft = Budget.SceneLines(AutonomousGoldSpammers.AdsMin + random.Next(AutonomousGoldSpammers.AdsSpread), sceneBots);
+                adsSaid = 0;
+                nextAd = now;
+            }
+            if (adsLeft >= 0 && now >= nextAd)
+            {
+                if (adsLeft > 0)
+                {
+                    adsLeft--;
+                    Say(now, "faction", $"CHEAP GOLD {Word()} {Word()} AT G0LDSHOP", -1);
+                    if (++adsSaid <= 3 && random.NextDouble() < 0.8)
+                        React(now, 1 + random.Next(2), 4_000);
+                    nextAd = now + 18_000 + random.Next(30_000);
+                }
+                else
+                {
+                    React(now, 1 + random.Next(3), 30_000 + random.Next(60_000));
+                    adsLeft = -1;
+                    (wavePlanned, waveDue) = (now, now + AutonomousGoldSpammers.WaveMinMs + random.Next((int)AutonomousGoldSpammers.WaveSpreadMs));
+                }
+            }
             for (int i = macros.Count - 1; i >= 0; i--)
                 if (macros[i].At <= now)
                 {
-                    var capital = Budget.Band(settings, Budget.Channel.Capital, bots, 20, false, 1.0);
+                    var capital = Budget.Band(settings, Budget.Channel.Capital, bots, 20, false, rate);
                     if (meter.PerMinute(Budget.Channel.Capital, 1, now) < capital.Ceiling)
                         Say(now, "macro", macros[i].Text, macros[i].Who);
                     macros.RemoveAt(i);
@@ -388,9 +492,13 @@ public class UT_ChatBudgetSimulation
                 Bot mate = Near(now, teller, _ => true), third = Near(now, teller, other => other != mate);
                 double roll = random.NextDouble();
                 string story = roll < 0.6 ? "death" : roll < 0.95 ? "wipe" : "ding50";
+                // AutonomousBotChatCoordinator.TellStory: the riffs are replies; over the reply budget the teller tells it alone.
+                bool riffs = ReplyGate("faction", now);
                 foreach (AutonomousChatFieldTalk.Step step in AutonomousChatFieldTalk.Story(story, FactsOf(teller, now, random), FactsOf(mate, now, random),
                              third == null ? null : FactsOf(third, now, random), random, field))
-                    dueReplies.Add((now + 2_000 + step.AtMs, "faction", step.Text, (step.Who switch { 0 => teller, 1 => mate, _ => third ?? mate }).Id));
+                    if (step.Who == 0 || riffs)
+                        dueReplies.Add((now + 2_000 + step.AtMs, "faction", step.Text, (step.Who switch { 0 => teller, 1 => mate, _ => third ?? mate }).Id,
+                            step.Who != 0));
             }
             for (int i = dueReplies.Count - 1; i >= 0; i--)
                 if (dueReplies[i].At <= now)
@@ -403,14 +511,23 @@ public class UT_ChatBudgetSimulation
                         dueReplies[i] = dueReplies[i] with { At = now + 2_000 + random.Next(2_000) };
                         continue;
                     }
-                    Say(now, dueReplies[i].Channel, dueReplies[i].Text, dueReplies[i].Who);
+                    Say(now, dueReplies[i].Channel, dueReplies[i].Text, dueReplies[i].Who, dueReplies[i].Reply && replyBudget);
                     dueReplies.RemoveAt(i);
                 }
             // AutonomousChatBudget.LivePressure: the realm's /faction, and the bot's own /say, capital and guild channels.
-            double Pressure(Budget.Channel channel, int count) => budget
-                ? Budget.Pressure(meter.PerMinute(channel, 1, now), Budget.Band(settings, channel, count, 20, false, 1.0).Target)
-                : 1.0;
-            double factionPressure = Pressure(Budget.Channel.Faction, bots), sayPressure = Pressure(Budget.Channel.Say, bots),
+            double Pressure(Budget.Channel channel, int count)
+            {
+                if (!budget)
+                    return 1.0;
+                double target = Budget.Band(settings, channel, count, 20, false, rate).Target;
+                // 1.2 (AutonomousChatBudget.LivePressure): the ambient lines against their target, over the window it needs.
+                return Budget.Pressure(replyBudget ? meter.AmbientPerMinute(channel, 1, now, target) : meter.PerMinute(channel, 1, now), target);
+            }
+            // 1.2: the realm's /lfg and /trade under their targets also draw lines (AutonomousChatBudget.LivePressure).
+            double factionPressure = replyBudget
+                    ? Math.Max(Pressure(Budget.Channel.Faction, bots), Math.Max(Pressure(Budget.Channel.Lfg, bots), Pressure(Budget.Channel.Trade, bots)))
+                    : Pressure(Budget.Channel.Faction, bots),
+                sayPressure = Pressure(Budget.Channel.Say, bots),
                 capitalPressure = Pressure(Budget.Channel.Capital, bots), guildPressure = Pressure(Budget.Channel.Guild, guildSize);
             foreach (Bot bot in all)
             {
@@ -424,7 +541,7 @@ public class UT_ChatBudgetSimulation
                     // In the player's group: /group banter only.
                     bool turn;
                     if (budget)
-                        turn = meter.TryStart(Budget.Channel.Group, 1, now, Budget.Band(settings, Budget.Channel.Group, 0, 20, false, 1.0), random)
+                        turn = meter.TryStart(Budget.Channel.Group, 1, now, Budget.Band(settings, Budget.Channel.Group, 0, 20, false, rate), random)
                             is Budget.Verdict.Speak or Budget.Verdict.SpeakUnderFloor;
                     else if (turn = now >= nextGroup)
                         nextGroup = now + AutonomousBotGroupChatter.NextGapMs(false, random);
@@ -439,11 +556,11 @@ public class UT_ChatBudgetSimulation
                     continue;
                 // The guild first, as AutonomousBotGuildSocial.TryIdle runs before the ambient line.
                 if (bot.InGuild && (!budget || regular || random.NextDouble() < AutonomousChatRegulars.OthersShare ||
-                                    meter.PerMinute(Budget.Channel.Guild, 1, now) < Budget.Band(settings, Budget.Channel.Guild, guildSize, 20, false, 1.0).Floor))
+                                    meter.PerMinute(Budget.Channel.Guild, 1, now) < Budget.Band(settings, Budget.Channel.Guild, guildSize, 20, false, rate).Floor))
                 {
                     bool turn;
                     if (budget)
-                        turn = meter.TryStart(Budget.Channel.Guild, 1, now, Budget.Band(settings, Budget.Channel.Guild, guildSize, 20, false, 1.0), random)
+                        turn = meter.TryStart(Budget.Channel.Guild, 1, now, Budget.Band(settings, Budget.Channel.Guild, guildSize, 20, false, rate), random)
                             is Budget.Verdict.Speak or Budget.Verdict.SpeakUnderFloor;
                     else if (turn = lastGuild < 0 || now - lastGuild >= AutonomousBotGuildSocial.IdleIntervalMs(BotGuildCharter.Social, guildSize))
                         lastGuild = now;
@@ -517,12 +634,13 @@ public class UT_ChatBudgetSimulation
             var options = new List<(Budget.Channel Channel, string Name, (double, double, double) Band, double Measured)>();
             void Add(Budget.Channel channel, string name, int count)
             {
-                var band = Budget.Band(settings, channel, count, 20, false, 1.0);
-                options.Add((channel, name, band, meter.PerMinute(channel, 1, now)));
+                var band = Budget.Band(settings, channel, count, 20, false, rate);
+                // 1.2 (AutonomousBotChatCoordinator.TryStartBudgeted): the channel's ambient lines over the window its target needs.
+                options.Add((channel, name, band, replyBudget ? meter.AmbientPerMinute(channel, 1, now, band.Target) : meter.PerMinute(channel, 1, now)));
             }
             // Round 5: /faction is mostly the regulars; anyone else now and then, or when it runs under its floor.
             if (Regular(bot, now) || random.NextDouble() < AutonomousChatRegulars.OthersShare ||
-                meter.PerMinute(Budget.Channel.Faction, 1, now) < AutonomousChatRegulars.OthersBelow * Budget.Band(settings, Budget.Channel.Faction, bots, 20, false, 1.0).Target)
+                meter.PerMinute(Budget.Channel.Faction, 1, now) < AutonomousChatRegulars.OthersBelow * Budget.Band(settings, Budget.Channel.Faction, bots, 20, false, rate).Target)
                 Add(Budget.Channel.Faction, "faction", bots);
             Add(Budget.Channel.Lfg, "lfg", bots);
             Add(Budget.Channel.Trade, "trade", bots);
@@ -636,36 +754,41 @@ public class UT_ChatBudgetSimulation
     private static readonly string[] DistinctChannels = ["faction", "lfg", "trade", "broadcast", "guild"];
 
     /// <summary>/faction threads: the share of inviting lines answered, the mean length of answered threads, the share of 4+ lines.</summary>
-    public static readonly Dictionary<(int, bool), (double Rate, double Mean, double Long)> threadShape = new();
+    public static readonly Dictionary<(int, int), (double Rate, double Mean, double Long)> threadShape = new();
 
     /// <summary>The share of /faction gaps of 2 s or less.</summary>
-    public static readonly Dictionary<(int, bool), double> fastShape = new();
+    public static readonly Dictionary<(int, int), double> fastShape = new();
 
     /// <summary>The most life lines (weather, school, work, pets...) one evening's guild heard.</summary>
-    public static readonly Dictionary<(int, bool), int> lifeShape = new();
+    public static readonly Dictionary<(int, int), int> lifeShape = new();
 
     /// <summary>Speakers per 30 lines and the top tenth's share, for /faction and guild (averaged over the evenings).</summary>
-    public static readonly Dictionary<(int, bool), (double Per30Faction, double TopFaction, double Per30Guild, double TopGuild)> speakerShape = new();
+    public static readonly Dictionary<(int, int), (double Per30Faction, double TopFaction, double Per30Guild, double TopGuild)> speakerShape = new();
 
     /// <summary>The worst evening's distinct share per channel, lines of three words or more (macros left out).</summary>
-    public static readonly Dictionary<(int, bool), Dictionary<string, double>> distinctShares = new();
+    public static readonly Dictionary<(int, int), Dictionary<string, double>> distinctShares = new();
 
     /// <summary>The near-repeat share of each run's spoken lines (within an evening, macros left out).</summary>
-    public static readonly Dictionary<(int, bool), double> nearRepeats = new();
+    public static readonly Dictionary<(int, int), double> nearRepeats = new();
 
-    public static string Report(int[] populations, out Dictionary<(int, bool), Result> results)
+    /// <summary>The sides a report compares: Beta 1.1.1's gaps, the 1.1.2 ambient budget, and 1.2's two budgets.</summary>
+    public const int Beta111 = 0, Beta112 = 1, Pr82 = 2, Replies12 = 3;
+
+    private static readonly string[] SideNames = ["1.1.1", "1.1.2", "1.2 first cut (scenes at a full pace)", "1.2"];
+
+    public static string Report(int[] populations, out Dictionary<(int, int), Result> results, double rate = 1.0)
     {
-        results = new Dictionary<(int, bool), Result>();
+        results = new Dictionary<(int, int), Result>();
         var text = new StringBuilder();
-        text.AppendLine("An evening hour (20:00, three evenings averaged) of one realm's ambient chat, lines a minute as the player hears each channel (UT_ChatBudgetSimulation).");
-        text.AppendLine("Before = Beta 1.1.1 gaps (population factor capped at 1.8); after = the Beta 1.1.2 ambient budget (chat-budget.json).");
+        text.AppendLine($"An evening hour (20:00, three evenings averaged) of one realm's ambient chat at bot_voices_chat_rate {rate}, lines a minute as the player hears each channel (UT_ChatBudgetSimulation).");
+        text.AppendLine("1.1.1 = Beta 1.1.1 gaps (population factor capped at 1.8); 1.1.2 = the ambient budget counting every line over two minutes; 1.2 = ambient lines and replies counted apart, each over the window its target needs, replies under their own budget (chat-budget.json), and debates and gold spammer waves scaled to the roster (the first cut of PR #82 kept them at a full server's pace). Every side has the scenes.");
         text.AppendLine();
         text.AppendLine("Broadcast includes sellers' macros (the same WTS line every 3-8 min, by design); repeats are counted without them.");
         text.AppendLine();
-        text.AppendLine("| bots/realm | side | " + string.Join(" | ", Channels) + " | total | macro repeats | exact repeats | near repeats | busiest bot (faction / lfg / trade / say / broadcast) | distinct, 3+ words (faction / lfg / trade / broadcast / guild, worst hour) | speakers per 30 lines (faction / guild) | top 10% of speakers' share (faction / guild) | threads: answered / mean lines / 4+ lines (faction) | /faction gaps of 2 s or less |");
-        text.AppendLine("|---|---|" + string.Concat(Channels.Select(_ => "---|")) + "---|---|---|---|---|---|---|---|---|---|");
+        text.AppendLine("| bots/realm | side | " + string.Join(" | ", Channels) + " | total | faction replies (budget: target / ceiling) | exchanges held by the reply budget (faction / say) | macro repeats | exact repeats | near repeats | busiest bot (faction / lfg / trade / say / broadcast) | distinct, 3+ words (faction / lfg / trade / broadcast / guild, worst hour) | speakers per 30 lines (faction / guild) | top 10% of speakers' share (faction / guild) | threads: answered / mean lines / 4+ lines (faction) | /faction gaps of 2 s or less |");
+        text.AppendLine("|---|---|" + string.Concat(Channels.Select(_ => "---|")) + "---|---|---|---|---|---|---|---|---|---|---|---|");
         foreach (int bots in populations)
-            foreach (bool budget in new[] { false, true })
+            foreach (int budget in new[] { Beta111, Beta112, Pr82, Replies12 })
             {
                 // Three evenings, so the averages don't hang on one draw.
                 Result result = new() { Minutes = 0 };
@@ -673,11 +796,16 @@ public class UT_ChatBudgetSimulation
                 var distinct = DistinctChannels.ToDictionary(c => c, _ => 1.0);
                 int lifeLines = 0;
                 double per30Faction = 0, per30Guild = 0, topFaction = 0, topGuild = 0, threadRate = 0, threadMean = 0, threadLong = 0, fastGaps = 0;
-                int[] seeds = [1103, 2207, 3301];
+                int[] seeds = [1103, 2207, 3301, 4409, 5501];
                 foreach (int seed in seeds)
                 {
-                    Result evening = Evening(bots, budget, seed + bots);
+                    Result evening = Evening(bots, budget > Beta111, seed + bots, repliesBudgeted: budget >= Pr82, rate: rate,
+                        scaledScenes: budget == Replies12);
                     result.Minutes += evening.Minutes;
+                    foreach (var pair in evening.RepliesSaid)
+                        result.RepliesSaid[pair.Key] = result.RepliesSaid.GetValueOrDefault(pair.Key) + pair.Value;
+                    foreach (var pair in evening.RepliesHeld)
+                        result.RepliesHeld[pair.Key] = result.RepliesHeld.GetValueOrDefault(pair.Key) + pair.Value;
                     foreach (var pair in evening.Lines)
                         for (int k = 0; k < pair.Value.Count; k++)
                             result.Add(pair.Key, pair.Value[k], evening.Speakers.TryGetValue(pair.Key, out var who) && k < who.Count
@@ -701,8 +829,11 @@ public class UT_ChatBudgetSimulation
                     lifeLines = Math.Max(lifeLines, evening.Lines.TryGetValue("guild", out var guildLines) ? guildLines.Count(AutonomousChatFiller.IsLife) : 0);
                 }
                 results[(bots, budget)] = result;
-                text.AppendLine($"| {bots} | {(budget ? "after" : "before")} | " + string.Join(" | ", Channels.Select(c => result.PerMinute(c).ToString("0.00"))) +
-                                $" | {result.Total:0.00} | {(result.Lines.TryGetValue("macro", out var m) ? m.Count / (double)result.Minutes : 0):0.00}/min | {exact:P1} | {near:P1} | " +
+                var replyBand = Budget.ReplyBand(Budget.Current, Budget.Channel.Faction, bots, 20, false, rate);
+                text.AppendLine($"| {bots} | {SideNames[budget]} | " + string.Join(" | ", Channels.Select(c => result.PerMinute(c).ToString("0.00"))) +
+                                $" | {result.Total:0.00} | " + (budget >= Pr82 ? $"{result.RepliesPerMinute("faction"):0.00} ({replyBand.Target:0.00} / {replyBand.Ceiling:0.00})" : "-") +
+                                $" | {(budget >= Pr82 ? $"{result.RepliesHeld.GetValueOrDefault("faction") / (double)result.Minutes:0.00} / {result.RepliesHeld.GetValueOrDefault("say") / (double)result.Minutes:0.00} a minute" : "-")}" +
+                                $" | {(result.Lines.TryGetValue("macro", out var m) ? m.Count / (double)result.Minutes : 0):0.00}/min | {exact:P1} | {near:P1} | " +
                                 string.Join(" / ", new[] { "faction", "lfg", "trade", "say", "broadcast" }.Select(c => result.TopSpeakerShare(c).ToString("P0"))) + " | " +
                                 string.Join(" / ", DistinctChannels.Select(c => distinct[c].ToString("P0"))) +
                                 $" | {per30Faction:0.0} / {per30Guild:0.0} | {topFaction:P0} / {topGuild:P0} | {threadRate:P0} / {threadMean:0.0} / {threadLong:P0} | {fastGaps:P0} |");
@@ -725,7 +856,7 @@ public class UT_ChatBudgetSimulation
             File.WriteAllText(path, report);
         else
             TestContext.Out.WriteLine(report);
-        Result before = results[(1_000, false)], after = results[(1_000, true)];
+        Result before = results[(1_000, Beta111)], shipped = results[(1_000, Beta112)], after = results[(1_000, Replies12)];
         // The owner's standing rule: never quiet. /faction meets its busy-peak target of 4 a minute at 1,000 bots.
         Assert.That(after.PerMinute("faction"), Is.GreaterThanOrEqualTo(4.0), "/faction at its target at 1,000 bots");
         // TALK_BUDGET_SAMPLE: the first lines of each channel at 1,000 bots, to read.
@@ -734,16 +865,16 @@ public class UT_ChatBudgetSimulation
             File.WriteAllLines(sample, Channels.Where(after.Lines.ContainsKey).SelectMany(c => after.Lines[c].Take(80).Select(line => $"[{c}] {line}")));
         Assert.That(after.Total, Is.GreaterThan(before.Total * 1.5), "the ambient world at 1,000 bots a realm is clearly busier");
         Assert.That(after.PerMinute("faction"), Is.GreaterThan(before.PerMinute("faction")), "/faction is busier");
-        Assert.That(results[(300, true)].Total, Is.GreaterThanOrEqualTo(results[(300, false)].Total), "and never quieter at 300");
-        Assert.That(after.Total, Is.GreaterThan(results[(300, true)].Total), "more bots, more chat");
+        Assert.That(results[(300, Replies12)].Total, Is.GreaterThanOrEqualTo(results[(300, Beta111)].Total), "and never quieter at 300");
+        Assert.That(after.Total, Is.GreaterThan(results[(300, Replies12)].Total), "more bots, more chat");
         // Busy, not spam (owner, 2026-11-03): few near-repeats, and no one bot carries a realm channel.
         foreach (int bots in new[] { 300, 1_000 })
         {
-            Assert.That(nearRepeats[(bots, true)], Is.LessThan(0.02), $"near-repeats at {bots}");
+            Assert.That(nearRepeats[(bots, Replies12)], Is.LessThan(0.02), $"near-repeats at {bots}");
             foreach (string channel in new[] { "faction", "lfg", "trade" })
-                Assert.That(results[(bots, true)].TopSpeakerShare(channel), Is.LessThan(0.15), $"busiest bot in {channel} at {bots}");
+                Assert.That(results[(bots, Replies12)].TopSpeakerShare(channel), Is.LessThan(0.15), $"busiest bot in {channel} at {bots}");
             // Round 5: regulars. /faction has fewer speakers than lines, and its top tenth of speakers carry 40-65% of the lines.
-            var shape = speakerShape[(bots, true)];
+            var shape = speakerShape[(bots, Replies12)];
             // Round 6: 45-55% at a busy peak (research: about 60%); a small server's few regulars may carry a little more.
             // 1.1.3 after RC6 (owner's call, 2026-11-09): up to 58%, so "what class?" can be answered only with a class
             // (fewer bots fit that answer, so the regulars carry a little more of /faction; about 0.557 in the simulation).
@@ -752,28 +883,53 @@ public class UT_ChatBudgetSimulation
             // Round 7: a line that invites a reply usually gets one, and some threads run on; a guild hears one life line an evening at most.
             // 1.1.3, after RC5 (owner's PC: most bot questions unanswered): a question is always answered when a bot can answer it,
             // the other inviting lines about seven in ten.
-            var threads = threadShape[(bots, true)];
+            var threads = threadShape[(bots, Replies12)];
             Assert.That(threads.Rate, Is.InRange(0.75, 0.97), $"inviting /faction lines answered at {bots}");
             // 1.1.3, after RC5: a bot's lines now fit its state (no "lfg" or "lf duo" from a bot in a group, no trainer question
             // from a 50, ...), which shifts the mix of openers; at 1,000 bots 11.1% of answered threads ran to four lines.
             Assert.That(threads.Long, Is.InRange(0.10, 0.35), $"threads of 4+ lines at {bots}");
-            Assert.That(lifeShape[(bots, true)], Is.LessThanOrEqualTo(1), $"life lines in one guild evening at {bots}");
+            Assert.That(lifeShape[(bots, Replies12)], Is.LessThanOrEqualTo(1), $"life lines in one guild evening at {bots}");
             // Round 8: answers take a person's time, and no line starts within 2-3 s of the last. Fewer /faction gaps are 2 s or less
             // than chance would give at this rate (about 15% for 5 lines a minute); the stream judge had seen 19 of 41.
-            Assert.That(fastShape[(bots, true)], Is.LessThan(0.15), $"/faction gaps of 2 s or less at {bots}");
+            Assert.That(fastShape[(bots, Replies12)], Is.LessThan(0.15), $"/faction gaps of 2 s or less at {bots}");
             // Round 4: at least 80% of an hour's lines of three words or more are distinct, in every channel.
-            foreach ((string channel, double share) in distinctShares[(bots, true)])
+            foreach ((string channel, double share) in distinctShares[(bots, Replies12)])
                 Assert.That(share, Is.GreaterThanOrEqualTo(0.8), $"distinct lines in {channel} at {bots}");
         }
         // The owner's rule (2026-11-03): the amount of chatting must not go down, in any channel the player hears.
         foreach (int bots in new[] { 300, 1_000 })
             foreach (string channel in Channels)
-                Assert.That(results[(bots, true)].PerMinute(channel), Is.GreaterThanOrEqualTo(results[(bots, false)].PerMinute(channel)),
+                Assert.That(results[(bots, Replies12)].PerMinute(channel), Is.GreaterThanOrEqualTo(results[(bots, Beta111)].PerMinute(channel)),
                     $"{channel} at {bots} bots a realm");
+        // 1.2: replies have a budget of their own and the ambient lines get back the turns replies took from them, so the world
+        // is no quieter than 1.1.2 overall, and /faction no quieter (owner's rule: re-balance, don't cut). The realm's /lfg and
+        // /trade, whose 1.1.2 levels came partly from turns /faction's replies pushed to them, have targets raised to match.
+        // The small local channels (/say near the player, one guild) carry a few dozen lines in five hours here, so the draw
+        // alone moves them by a fifth; they are held to three quarters of 1.1.2. (1.1.2's fixed two-minute window had kept a slow
+        // guild or /say alive by accident: every silent two minutes read as "under the floor". 1.2 raises their floors instead.)
+        foreach (int bots in new[] { 300, 1_000 })
+        {
+            Result was = results[(bots, Beta112)], now = results[(bots, Replies12)];
+            // Five evenings of an approximate model: 2% is the draw's own spread here.
+            Assert.That(now.Total, Is.GreaterThanOrEqualTo(was.Total * 0.98), $"no quieter overall than 1.1.2 at {bots}");
+            Assert.That(now.PerMinute("faction"), Is.GreaterThanOrEqualTo(was.PerMinute("faction")), $"/faction no quieter than 1.1.2 at {bots}");
+            foreach (string channel in Channels)
+                Assert.That(now.PerMinute(channel), Is.GreaterThanOrEqualTo(was.PerMinute(channel) * (channel is "lfg" or "trade" or "broadcast" ? 0.9 : 0.75)),
+                    $"{channel} at {bots}, against 1.1.2");
+        }
+        // 1.2, scenes: from 300 bots a realm up debates and spammer waves keep their pace, so the evening is the same draw for draw.
+        foreach (int bots in new[] { 300, 1_000 })
+            Assert.That(results[(bots, Replies12)].Total, Is.EqualTo(results[(bots, Pr82)].Total), $"scenes at their full pace at {bots}");
         Budget.Settings settings = Budget.Current;
+        // The replies stay within their own budget over the hour.
+        foreach (int bots in new[] { 300, 1_000 })
+            Assert.That(results[(bots, Replies12)].RepliesPerMinute("faction"),
+                Is.LessThanOrEqualTo(Budget.ReplyBand(settings, Budget.Channel.Faction, bots, 20, false, 1.0).Ceiling), $"/faction replies at {bots}");
+        Assert.That(shipped.Total, Is.GreaterThan(0));
         foreach ((string name, Budget.Channel channel) in new[] { ("faction", Budget.Channel.Faction), ("lfg", Budget.Channel.Lfg),
                      ("trade", Budget.Channel.Trade), ("broadcast", Budget.Channel.Capital) })
-            Assert.That(after.PerMinute(name), Is.LessThanOrEqualTo(Budget.Band(settings, channel, 1_000, 20, false, 1.0).Ceiling),
+            Assert.That(after.PerMinute(name), Is.LessThanOrEqualTo(Budget.Band(settings, channel, 1_000, 20, false, 1.0).Ceiling +
+                (channel == Budget.Channel.Faction ? Budget.ReplyBand(settings, channel, 1_000, 20, false, 1.0).Ceiling : 0)),
                 name + " stays under its ceiling over the hour");
     }
 
@@ -808,6 +964,38 @@ public class UT_ChatBudgetSimulation
         Assert.That(evening.SpeakersPer30("faction"), Is.LessThanOrEqualTo(22));
         List<string> faction = evening.Lines["faction"];
         Assert.That(faction.GroupBy(t => t).Max(g => g.Count()) / (double)faction.Count, Is.LessThan(0.02), "no one short reply carries /faction");
+    }
+
+    /// <summary>
+    /// 1.2, the playtester's faction-rate finding (PR #72): with 10 gamebots a realm, /faction ran at about four times the
+    /// server's own budget. The 1.1.2 gate measured every line over a fixed two minutes, so a floor of 0.18 a minute could not be
+    /// seen (one line in two minutes reads as 0.5): every silent two minutes let a bot speak at once, and the answers came on top.
+    /// With the ambient lines counted over the window their target needs and the replies under a budget of their own, a small
+    /// realm's /faction stays near its ambient target plus its reply target, while a full server keeps its pace. At the
+    /// server's default bot_voices_chat_rate 2. TALK_BUDGET_SMALL keeps the report.
+    /// </summary>
+    [Test]
+    public void ASmallRealmStaysNearItsBudget()
+    {
+        string report = Report([10, 30], out var results, rate: 2.0);
+        string path = Environment.GetEnvironmentVariable("TALK_BUDGET_SMALL");
+        if (!string.IsNullOrEmpty(path))
+            File.WriteAllText(path, report);
+        else
+            TestContext.Out.WriteLine(report);
+        Budget.Settings settings = Budget.Current;
+        foreach (int bots in new[] { 10, 30 })
+        {
+            var band = Budget.Band(settings, Budget.Channel.Faction, bots, 20, false, 2.0);
+            var replies = Budget.ReplyBand(settings, Budget.Channel.Faction, bots, 20, false, 2.0);
+            Result now = results[(bots, Replies12)];
+            Assert.That(now.PerMinute("faction"), Is.LessThanOrEqualTo((band.Target + replies.Target) * 1.35),
+                $"/faction at {bots} bots: near its ambient target {band.Target:0.00} plus its reply target {replies.Target:0.00}");
+            Assert.That(now.PerMinute("faction"), Is.GreaterThanOrEqualTo(band.Target * 0.7), $"and not quiet at {bots}");
+            Assert.That(now.RepliesPerMinute("faction"), Is.LessThanOrEqualTo(replies.Ceiling), $"replies under their ceiling at {bots}");
+            // 1.2, scenes scaled to the roster: a small realm's /faction is no longer mostly debates and gold spam.
+            Assert.That(now.PerMinute("faction"), Is.LessThan(results[(bots, Pr82)].PerMinute("faction")), $"scenes scaled at {bots}");
+        }
     }
 
     [Test]

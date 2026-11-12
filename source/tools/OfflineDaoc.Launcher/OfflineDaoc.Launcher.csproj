@@ -30,6 +30,11 @@
     <!-- Living Server: 2003-style bot names, the same mix as the server's own bots. -->
     <Compile Include="../../server/GameServer/bots/autonomous/EraBotNames.cs" Link="SocialExpansion/EraBotNames.cs" />
     <Compile Include="../../server/GameServer/bots/autonomous/EraBotNameWords.cs" Link="SocialExpansion/EraBotNameWords.cs" />
+    <!-- Living Server 1.2: the lore bible's channels shared with the server (the Herald's chronicle and bestiary), and the
+         lore files themselves, the same ones the server embeds (LauncherLore). -->
+    <Compile Include="../../server/GameServer/lorechannels/LoreChannelData.cs" Link="Lore/LoreChannelData.cs" />
+    <Compile Include="../../server/GameServer/lorechannels/LoreHerald.cs" Link="Lore/LoreHerald.cs" />
+    <EmbeddedResource Include="../../server/GameServer/bots/autonomous/data/lore/**/*.json" LogicalName="OfflineDaoc/lore/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\offline-daoc-header.png"

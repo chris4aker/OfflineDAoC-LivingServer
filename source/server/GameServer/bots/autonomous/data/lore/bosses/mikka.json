@@ -1,0 +1,112 @@
+{
+  "id": "mikka",
+  "name": "Mikka",
+  "npcNames": [
+    "Mikka"
+  ],
+  "locationId": "valley-of-bri-leith",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Mikka: level 50, model 317, size 61, at about 412,100/538,000 near Caille in the Valley of Bri Leith, beside the Old Hermit and the Blademaster; respawn 80 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Secret of Nuada's Silver A (Bran the Giant): sap for the Enchantress, ale for Bran, the enchanted map to Dera in Mag Mell and Eli in Connla, 'Return to Bran; he attacks you. Take the other half of the map', 'Give the map piece to Mikka near Caille', then tell Chief Proinnsias in Howth 'I know where Nuada's Silver Wrist is'.",
+      "provenance": "game",
+      "source": "DataQuest \"Secret of Nuada's Silver A\" (world data)"
+    },
+    {
+      "text": "Living Server lore: Mikka as the map-reader of Caille who holds the other half of every secret map in Bri Leith.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Caille is a small place on the Bri Leith road, a hermit's hut and a training yard where a blademaster teaches the young, and a stone bench under an elm where Mikka sits. The valley folk call Mikka the map-reader. Every secret map in the Valley of Bri Leith ends up in Caille sooner or later, because a map in two halves needs both halves read together, and Mikka is the one person in the valley who can read a half and say what the other half must say.\n\nNobody remembers when Mikka came to Caille. The Old Hermit in the hut says Mikka was on the bench when he arrived, and he arrived before the blademaster's grandfather. The valley children think Mikka is one of the Good Folk who forgot to go home. The druids of Bri Leith think Mikka is a lurikeen of the old mapmakers' families who drew the valley for the High Kings, when there were High Kings in Bri Leith, and who still remembers every road the valley had before the Veil wore thin and some of the roads went elsewhere.\n\nThe most famous map Mikka has read is the one Bran the Giant guards in the Cliffs of Moher, which Bran's Enchantress enchanted and which shows, the bards of Howth say, where Nuada's silver wrist was hidden when the king's hand was made. Young Hibernians bring Bran's half to Caille, having fought Bran for it, and Mikka reads it on the bench, and tells them what Chief Proinnsias of Howth needs to hear. The druids of Howth think the silver lies under the Silvermine, in the Unseelie's mine. Mikka has never said where. Mikka tells only Proinnsias, through the young who carry the word.\n\nThe valley folk also say that Mikka does not like to be interrupted, and that a stranger who comes to the bench without a map is a stranger who has come to Caille for the wrong reason.",
+  "legend": "Mikka is a level 50 named at Caille in the Valley of Bri Leith (about 412k/538k), next to the Old Hermit and the Blademaster trainers. In the quest Secret of Nuada's Silver you give Bran the Giant's map piece to Mikka, but in this world's data Mikka is a plain spawn set aggressive (200), so how the hand-in works with that is untested here. As a fight: plain level 50, no script, 80-second respawn, easy for a 45-50 group. Mind the trainers next to the bench: the Blademaster and the Old Hermit stand within a few hundred units, so do not use area spells there. Fee lions and rage wolves wander the Caille road.",
+  "yells": {
+    "aggro": [
+      "You have no map. Then why are you here?",
+      "Half a map is half a road. You have neither.",
+      "Interrupted. Again."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Every road in this valley went somewhere once."
+      }
+    ],
+    "death": [
+      "The other half... ask Proinnsias...",
+      "Read it... together..."
+    ],
+    "slay": [
+      "No map, no road.",
+      "Back to the bench.",
+      "Wrong reason."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A stone bench under an elm at Caille.",
+      "Half a map, weighted with a stone."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Mikka folds a map and stands up."
+      }
+    ],
+    "realmFirstKill": "Mikka the map-reader of Caille has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "mikka is 50 at caille in bri leith. [plain mob|no script]",
+      "nuada's silver quest hands in to mikka. [shes set aggro here|untested]",
+      "easy for 45-50",
+      "trainers right next to her. [dont aoe|careful]"
+    ],
+    "aftermathWin": [
+      "mikka down. [easy|got her]",
+      "didnt hit the trainers. [good|phew]",
+      "now who reads the map lol",
+      "proinnsias wont be happy"
+    ],
+    "aftermathLoss": [
+      "aoed near the trainers. [oops|bad]",
+      "group too low",
+      "she was harder than she looks",
+      "pulled a fee lion too"
+    ],
+    "rumour": [
+      "[heard|someone said] mikka can read half a map and tell you the other half",
+      "the old hermit at caille says mikka was on the bench before he came",
+      "[word is|heard] nuada's silver wrist is under silvermine, in the unseelie mine",
+      "the bri leith kids think mikka is one of the good folk who forgot to go home"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Mikka",
+    "text": "The map-reader of Caille in the Valley of Bri Leith, on a stone bench under an elm, who reads half a map and says what the other half must say. Mikka read Bran the Giant's map of Nuada's silver wrist."
+  },
+  "bookPage": "From Derbáil of Ardee's list: Caille on the Bri Leith road, without a map. Mikka sits on the stone bench under the elm and reads the valley's secret maps, half at a time, and says what the other half must say. The Old Hermit says Mikka was on the bench before he came, and he came before the blademaster's grandfather. The young bring Bran the Giant's half of the Nuada map, and Mikka reads it and sends word to Chief Proinnsias of Howth. A stranger with no map has come to Caille for the wrong reason, my grandmother said.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Mikka in the Valley of Bri Leith in {minutes} minutes.",
+    "loss": "Mikka turned back {realm}'s band under {raidLeader} in the Valley of Bri Leith after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "outlaws"
+  ],
+  "related": [
+    {
+      "id": "coruscating-mine",
+      "relation": "where the silver wrist is said to lie"
+    },
+    {
+      "id": "faerie-queen",
+      "relation": "another keeper of a half-thing"
+    }
+  ]
+}

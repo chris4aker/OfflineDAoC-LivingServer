@@ -87,14 +87,18 @@ namespace DOL.GS
             }
             foreach (var notice in screen)
                 if (GameWideAnnouncements.Enabled(notice.Value.Kind))
+                {
+                    LoreAtmosphere.NoteNews(notice.Key.Item2);   // realm news always wins over atmosphere lines (Living Server 1.2)
                     foreach (GamePlayer player in ClientService.Instance.GetPlayersOfRealm(notice.Key.Item2))
-                    player.Out.SendMessage(notice.Value.Text, PacketHandler.eChatType.CT_ScreenCenter, PacketHandler.eChatLoc.CL_SystemWindow);
+                        player.Out.SendMessage(notice.Value.Text, PacketHandler.eChatType.CT_ScreenCenter, PacketHandler.eChatLoc.CL_SystemWindow);
+                }
         }
 
         public static void Pulse(long now)
         {
             FlushScreen();
             GameWideAnnouncements.Flush();
+            LoreAtmosphere.Pulse(now);
             AutonomousChatNews.Pulse(now);
             bool voices = AutonomousBotVoices.Enabled;
             List<(string EventId, eRealm Realm, string Text, string Topic, IReadOnlyDictionary<string, string> Slots)> outgoing = new();

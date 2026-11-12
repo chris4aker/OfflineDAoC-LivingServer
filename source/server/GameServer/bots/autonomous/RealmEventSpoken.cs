@@ -76,6 +76,7 @@ namespace DOL.GS
                 // Relics on the road (AutonomousRvrEventLayer)
                 ($@"^The relic has left {K}!", "relic_road"),
                 ($@"^Our time in the struggle for {L} has run out", "relic_timeout"),
+                ($@"^{L} has gone back to its shrine", "relic_returned"),
                 ($@"^{L} has been secured at a shrine", "relic_shrined"),
                 ($@"^{L} is safe in our shrine!", "relic_ours"),
                 ($@"^{W} has secured {L} at a shrine", "relic_theirs"),
@@ -208,6 +209,7 @@ namespace DOL.GS
                 "siege_ended" => [$"{keep} over? who won", $"{keep} done i think", $"fight at {keep} is over"],
                 "relic_road" => [$"relic out of {keep}!", $"they took the relic from {keep}", $"relic on the road from {keep}", $"relic moving, near {keep}"],
                 "relic_timeout" => [$"{relic} chase is over", $"done chasing {relic}", $"lost track of {relic}, calling it"],
+                "relic_returned" => [$"{relic} went back to its shrine", $"{relic} is back home", $"{relic} returned, its over"],
                 "relic_shrined" => [$"{relic} is in a shrine now", $"{relic} got shrined", $"{relic} is home somewhere"],
                 "relic_ours" => [$"{relic} is ours!!", $"{relic} in our shrine, gg", $"got {relic} home, nice"],
                 "relic_theirs" => [$"{winner} got {relic}", $"{relic} went to {winner}, ugh", $"{winner} shrined {relic}"],

@@ -1,0 +1,177 @@
+{
+  "id": "vendo-caverns",
+  "name": "Vendo Caverns",
+  "realm": "Midgard",
+  "regions": [
+    126
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "vendo"
+  ],
+  "summary": "The caves north of Mularn where the vendo and their goblins live, and where you must never whistle.",
+  "facts": [
+    {
+      "text": "Allakhazam's bestiary lists the vendo (guards, reavers, savagers, yowlers, a snake charmer, the svendo), goblin guards and advisors, cave maulers and bears, a cave ogre and Grjotgard, for levels of about 16-37.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=57"
+    },
+    {
+      "text": "Period comments place the caves on the mountain above two vendo camps north of Mularn, past Haggerfel and Fort Veldon, and call them the best experience in Midgard for levels 13-28.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=57"
+    },
+    {
+      "text": "Bot chat says the goblins run for help every time, and that you should never whistle in the caves or Grjotgard answers.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/dungeons.lines"
+    },
+    {
+      "text": "Grjotgard may be read as Old Norse grjot, stone, and gardr, enclosure (to verify).",
+      "provenance": "original",
+      "source": "Old Norse glossary, to verify"
+    },
+    {
+      "text": "The caverns' entrance is in the Vale of Mularn. Goblin guards and an advisor hold the upper passage; cave crawlers, cave maulers and bears, small maulers and Grjotgard the bear cave; spiders a western gallery; vendo guards and the vendo snake charmer the middle; svendo, a savager, yowlers and cave ogres the deep rooms.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 126, Vendo Caverns; 0.37b world data)"
+    },
+    {
+      "text": "Grjotgard (level 23) is a target of the quest 'Protecting Myrkwood'.",
+      "provenance": "game",
+      "source": "scratchpad/gap/named.json (audit of the 0.37b DataQuest table)"
+    },
+    {
+      "text": "Ragnvald the Grey, the trainers' custom of the walk north, the whistling and the stone-yard are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Every young warrior of Mularn is walked up the road north: past Haggerfel, past Fort Veldon, west a little to the two vendo camps, and up the mountain to the cave mouth above them. The vendo live in the caves, a hairy, howling people who were in these hills before Mularn was a village. The first settlers of the vale found them already there, and the two peoples have been fighting over the hillside ever since without either of them winning or wanting very much to stop. The trainers of Mularn would be sorry to see it end. The caves are the best teacher the vale has.\n\nThe vendo keep goblins the way some farmers keep geese, loud and quarrelsome and posted at the door. The goblin guards and their advisor hold the upper passage, and the one thing a goblin will always do, faster than it will fight, is shout. Behind the goblins the cave opens into the bear cave, where the cave bears and the albino maulers den among the crawlers, and the vendo leave them alone because they are good guards that do not need feeding. Westward a gallery belongs to spiders. In the middle halls the vendo guards keep their people's own rooms, and there the snake charmer sits with his baskets and plays, and the young warriors of Mularn come for him in their leather and go home in his.\n\nThe deep rooms belong to the svendo, the old vendo, larger and quieter than the ones above, with the yowlers who howl the hours and a savager who leads them, and cave ogres who came in from somewhere in the mountain and were allowed to stay. The svendo are the vendo's elders and their priests, if they have priests. They do not come up. What they do down there nobody in Mularn knows, except that the yowling comes from there, and that it stops sometimes, all at once, and the vendo above go still when it does.\n\nIt stops for Grjotgard. The old women of Mularn say the name means the stone-yard, and that it belongs to something in the rock of the bear cave that is not big and not strong and that nobody has properly seen. It answers whistling. Half the young of Mularn have a story of the night someone whistled in Vendo, and something whistled back from inside the wall, the same tune, a little slower, and the yowlers below all fell silent together. The vendo will not whistle. Neither will the cave bears, the trainers say, which is a joke, and also true.\n\nGrjotgard can be found, and fought, and the Myrkwood folk want it gone; they say it has begun to come out of the stone at night and walk the roads of the forest's edge. The vendo, asked through a goblin, said that the stone-yard was there before them, as they were there before Mularn, and that they would not help anyone dig it out. The goblin added, on his own account, that it was a bad idea. Goblins are seldom right. The trainers of Mularn still tell their young ones to listen to that one.",
+  "legend": "Vendo Caverns is where Midgard learns to group: the entrance in the Vale of Mularn, north past Fort Veldon, up the hill above the two vendo camps. Goblins at the door in the high twenties: they run and shout for help, so kill them fast or pull them back. The bear cave is next, low twenties, maulers and bears and crawlers, and Grjotgard lives there (a quest target for Protecting Myrkwood). Spiders in the western gallery hit harder than you'd think. The vendo guards and the snake charmer are the middle; leather wearers camp him for his armour, people swear by it. The deep rooms are mid thirties: svendo, the savager, yowlers and cave ogres, so only go down with a full group. Superstitions: don't whistle; if the yowling stops, stop too; and if a tune comes back to you out of the wall, don't finish it. Every Mularn trainer says that last one, and none of them will say why.",
+  "atmosphere": {
+    "firstEntry": [
+      "Vendo Caverns. Somewhere in the rock, something listens.",
+      "Howls echo from the deep caves. Do not whistle.",
+      "Goblins chatter at the door like geese.",
+      "The rock is damp and very old. It hums faintly."
+    ],
+    "areas": [
+      {
+        "name": "the goblins' door",
+        "x": 30646,
+        "y": 33368,
+        "z": 16504,
+        "radius": 1500,
+        "lines": [
+          "Goblin guards at the door. One is already shouting.",
+          "The goblin advisor counts you on his fingers."
+        ]
+      },
+      {
+        "name": "the bear cave",
+        "x": 32319,
+        "y": 30265,
+        "z": 16317,
+        "radius": 1600,
+        "lines": [
+          "Bears and maulers den among the crawlers.",
+          "Grjotgard's stone-yard. Do not whistle here.",
+          "Something in the wall is breathing, very slowly."
+        ]
+      },
+      {
+        "name": "the spider gallery",
+        "x": 27511,
+        "y": 31225,
+        "z": 16115,
+        "radius": 1500,
+        "lines": [
+          "Webs fill the western gallery.",
+          "The spiders here are bigger than the vendo like."
+        ]
+      },
+      {
+        "name": "the charmer's hall",
+        "x": 31829,
+        "y": 29272,
+        "z": 16015,
+        "radius": 1200,
+        "lines": [
+          "A pipe plays. Baskets shift. The snake charmer.",
+          "Vendo guards keep their people's rooms."
+        ]
+      },
+      {
+        "name": "the deep rooms",
+        "x": 29183,
+        "y": 34224,
+        "z": 15744,
+        "radius": 1800,
+        "lines": [
+          "The svendo, the old vendo, do not come up.",
+          "The yowlers howl the hours down here.",
+          "Cave ogres sit among the vendo like old dogs."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the vendo were in those hills before mularn was a village",
+      "the goblins in vendo run for help every single time",
+      "mularn and the vendo have been fighting over that hill forever. neither side wants it to end",
+      "the vendo leave the cave bears alone. good guards that dont need feeding",
+      "the svendo are the old vendo. they live in the deep rooms and never come up",
+      "the yowlers in vendo howl the hours. when they stop, something is listening",
+      "grjotgard means stone yard, the old women in mularn say",
+      "the vendo say grjotgard was in the rock before them, like they were here before mularn",
+      "the cave ogres in vendo came in from the mountain. the vendo let them stay",
+      "the trainers in mularn send everyone to vendo. best teacher in the vale, they say",
+      "the myrkwood folk want grjotgard dug out. they say it walks the forest edge at night",
+      "even the cave bears dont whistle in vendo, the trainers say"
+    ],
+    "rumour": [
+      "[dont|never] whistle in vendo caverns. [something|grjotgard] [hears|answers], [my old group swore|everyone knows that]",
+      "camp the vendo snake charmer if you wear leather, [they say he drops armour|people swear by his armour drops]",
+      "if a tune comes back to you out of the wall, dont finish it",
+      "a goblin told someone it was a bad idea to dig out grjotgard. goblins are never right. except that once",
+      "skeggi who whistled in vendo still wakes up whistling, they say",
+      "the svendo have priests, maybe. nobody has seen what they do down there",
+      "the spider gallery in vendo is worse than the bear cave, [trust me|ask anyone]",
+      "if the yowling stops, stop too. [old mularn saying|my trainer said]"
+    ],
+    "tell": [
+      "vendo caverns, north of mularn past fort veldon, up above the two vendo camps. teens and twenties",
+      "vendo? vendo, goblins, cave bears. great first group dungeon. dont whistle",
+      "is vendo hard? the door and the bear cave are fine, the deep rooms are mid thirties",
+      "grjotgard is in the bear cave",
+      "the snake charmer is in the middle halls past the vendo guards",
+      "the deep rooms are svendo and cave ogres. full group only"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Vendo Caverns. Every young Midgardian goes there. The [vendo] are old in those hills, and there is something in the stone called [Grjotgard].\"",
+    "topics": {
+      "vendo": "A hairy, howling people who keep [goblins] like geese. They were there before Mularn, and the [svendo] are their elders.",
+      "Grjotgard": "The stone-yard. It lives in the rock of the [bear cave] and answers [whistling]. The vendo will not whistle, and they are wiser than they look. Myrkwood wants it gone; the vendo will not help.",
+      "goblins": "The [vendo] keep them at the door like geese. A goblin will always shout before it fights.",
+      "bear cave": "Where the cave bears and albino maulers den among the crawlers, guarding the [vendo] for nothing. [Grjotgard]'s stone-yard is in its walls.",
+      "svendo": "The old [vendo] of the deep rooms, larger and quieter, with the yowlers who howl the hours. They do not come up. When the howling stops, [Grjotgard] is listening.",
+      "whistling": "Never whistle in Vendo. Something whistles back from inside the wall, the same tune, slower. Skeggi of Mularn did, and still wakes up whistling. Ask [Ragnvald].",
+      "snake charmer": "A vendo who sits with his baskets in the middle halls and plays. The young of Mularn come for him in leather and go home in his.",
+      "Ragnvald": "Ragnvald the Grey, a trainer of Mularn who has walked the young ones north to Vendo for thirty years and written down what he tells them."
+    }
+  },
+  "book": {
+    "title": "The Walk North",
+    "pages": [
+      "I am Ragnvald the Grey, and I have trained the young of Mularn for thirty years, and every spring I walk the new ones north: past Haggerfel, past Fort Veldon, west to the vendo camps and up the hill to the caves. My trainer walked me. I am writing down what I tell them on the way, because my voice is going, and because they never listen to the important part, and perhaps a book will make them. The important part is at the end. Read the rest first anyway; it will keep you alive long enough to need it. My own trainer walked me north in my fourteenth spring and told me everything in this book except the end, which I found out for myself.",
+      "The goblins first. The vendo keep them at the door as a farmer keeps geese, and like geese they are not dangerous, only loud, and the loudness is the danger. A goblin will always shout before it fights. Kill the shouting before it brings the rest. I tell them this every year. Every year one of them stops to argue with a goblin, and every year the whole door comes running, and every year I walk home with one fewer than I came with, or one more limping. The goblin advisor stands behind the guards and counts us on his fingers. He has never got further than six.",
+      "Then the bear cave. The vendo leave the bears alone and so should you, unless you came for them. The bears are good guards. Mind the walls there, and mind your mouth. Then the middle halls, where the snake charmer plays. The leather-wearers will go for him whatever I say. Let them. Below that are the deep rooms, where the old vendo live, and I do not take the young ones down. When they are older, they will go on their own, and they will understand why I did not. The yowling comes up from there, at all hours, and the old vendo who make it are not the kind a trainer wants to explain to a mother.",
+      "Here is the important part. We were six, all of us young, hunting the bear cave, and Skeggi was bored and started whistling a drinking song. Halfway through the second verse the vendo yowlers in the deep stopped. All of them, at once. Then from inside the wall, not from any cave, the second verse came back, whistled, perfectly, a little slower than Skeggi had done it. We ran. Skeggi says he does not remember the song any more. He says sometimes he wakes up whistling it. He is a grown man now, with children, and his wife says he does it in his sleep, very slowly.",
+      "The old women of Mularn say the thing in the wall is called Grjotgard, the stone-yard, and that it was there before the vendo as the vendo were there before us. The Myrkwood folk want it dug out. They say it has begun to walk at night. Perhaps it has. A goblin once told me, through a vendo, that digging it out was a bad idea. A goblin has never been right about anything in my hearing. I believed that one. Do not whistle. Do not finish the tune. That is the important part. That is the whole of it. You will forget everything else in this book, and you will be right to."
+    ]
+  },
+  "bosses": []
+}

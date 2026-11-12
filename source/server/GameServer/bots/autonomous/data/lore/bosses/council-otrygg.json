@@ -1,0 +1,171 @@
+{
+  "id": "council-otrygg",
+  "name": "Council Otrygg",
+  "catalogKey": "tuscaran-glacier/otrygg",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "council-hord",
+      "relation": "fellow councillor of the outer seats"
+    },
+    {
+      "id": "council-ozur",
+      "relation": "fellow councillor of the outer seats"
+    },
+    {
+      "id": "elder-icelord-hjalmar",
+      "relation": "who lost a wager in his kennels"
+    },
+    {
+      "id": "tuscaran-glacier",
+      "relation": "called the vote that cast out the sculptor"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Otrygg is a level-77 member of the hrimthursa Council with 100,000 health who summons eight pets when the fight begins and more as it goes on.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Old Norse otryggr means untrustworthy, unfaithful (to verify).",
+      "provenance": "original",
+      "source": "Old Norse glossary, to verify (Cleasby-Vigfusson)"
+    },
+    {
+      "text": "Killing Council members lowers faction with the Hrimthursa and Glacier Harskaren and raises it with Klippa Vaktaren and Vind Ryttaren.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6030"
+    },
+    {
+      "text": "When first attacked Otrygg summons eight 'summoned pets' (level 62, 10,000 health, 20% resists, weak hits, aggro range 1,600) at his spawn point, and while he is in combat he summons another whenever fewer than eight are alive, so the pack refills at once. All of them die when he dies or resets. 100,000 health, 40% melee / 70% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilOtrygg.cs"
+    },
+    {
+      "text": "Otrygg is from Old Norse otryggr, 'untrustworthy, faithless' (to verify). Hjalmar's wager in the kennels and the saying 'the pack is always full' are Living Server lore.",
+      "provenance": "original",
+      "source": "Old Norse, to verify"
+    }
+  ],
+  "story": "Otrygg's name means faithless, and the Council gave it to him as a joke he never forgave. In the first years, when everyone believed in the peace, he was the one councillor who would not. He voted with Birghir because the queen wanted it, but he said aloud that he did not trust peace to keep the door, and so the others called him faithless and the name stuck. He answered them by keeping something else to keep the door: a pack of beasts he called up out of the cold, eight of them, never more and never fewer.\n\nThe pack is always full. The young icelords tested it once, at midwinter, when Hjalmar wagered the Council he could empty Otrygg's kennels in a night. He fought there till dawn and killed beast after beast, and every time one fell another came up out of the dark at the back of the kennel, and at dawn there were eight. Otrygg came down in the morning and laughed and told him the beasts were not in the kennels; they were in him. The Ice Lords' houses never forgot the wager, and the side tunnels still say it: the pack is always full while the faithless one stands.\n\nIt was Otrygg who called the vote to cast out the sculptor who carved the sleeper's waking face, the only vote in a century Birghir did not call himself, and every rib rang once. The cast-out sculptors at Dellingstad say he did it because the carving frightened him more than anything else on the ribs had in a hundred years. When strangers come to the outer seats now, his pack comes off the floor round his seat all together, and refills as fast as it falls; and when Otrygg falls, every beast in the hall lies down at once, as if a hand had let go of a leash.",
+  "chapters": [
+    {
+      "title": "The Faithless One",
+      "text": "When Queen Kula gave the Council its ribs, she gave the outer seats, the low bones at the edge of the ribcage, to the youngest councillors, and Otrygg was the youngest of all. He was a seer's son who had not become a seer, a giant with a narrow face and a quick tongue, and he had one belief that set him apart from the rest of the Council in its first winter: he did not believe in the peace.\n\nHe voted for it. Every winter for a century he struck his rib once for yes when Birghir called for peace, because the queen wanted peace and Otrygg was not a fool. But he said aloud, every winter, that he did not trust it to keep the door, and that the giants were safe because nobody had come yet, not because the ice was enough. The councillors called him faithless for it, otryggr in the old tongue, a man who cannot be trusted, and laughed. The name stuck. He never forgave the joke, and he never stopped saying what he said.\n\nThe cast-out sculptors at Dellingstad say Otrygg was the only councillor who ever went down the crater road. He went once, at night, in the century's thirtieth winter, and stood at the edge of Dellingstad and looked at the town for a long time, and went back up. The fishwife Jorunn saw him and thought he was a cloud. The sculptors say he went to see what was on the other side of the door he did not trust, and that what he saw was a town of men who would one day climb the road.\n\nHe came back and made himself something to keep the door with."
+    },
+    {
+      "title": "Eight, and Always Eight",
+      "text": "Otrygg was a seer's son, and he had his mother's way with the cold, though he did not read it. He called it. In the side tunnels beyond the outer seats he called beasts up out of the deep ice, hounds and boars and long low things the giants have no names for, shaped out of the cold and given his will to hold them together. The sculptors say there were always eight. He called them his pack, and they lay round his seat in the outer hall, and when he walked through the citadel they walked with him, and the giants of the old houses stepped aside.\n\nThe young icelords did not believe the pack was as strong as it looked. At the midwinter feast of the fiftieth winter, Hjalmar of the elders' hall wagered the whole Council that he could empty Otrygg's kennels in a single night, and Otrygg took the wager and went to bed. Hjalmar went down into the kennels with his blade.\n\nHe fought till dawn. The rooks who carried him out in the morning said he had killed beast after beast, more than the kennels could have held, and every time one fell another came up out of the dark at the back of the kennel, shaped out of the cold while he watched, and at dawn there were eight. Otrygg came down in the morning, rested, and stood at the kennel door and laughed, and told the elder that he had been fighting in the wrong place. The beasts are not in the kennels, he said. They are in me.\n\nHjalmar paid the wager. The Ice Lords' houses never forgot it, and the side tunnels still have the saying from that morning, which the cast-out sculptors carried down to Dellingstad and Midgard's companies carried home: the pack is always full while the faithless one stands."
+    },
+    {
+      "title": "The Vote Birghir Did Not Call",
+      "text": "In a century the Council took one vote that Birghir did not call. The sculptor who went into the north hall alone and carved the sleeper's waking face brought his carving to the ribs to show the Council, and set it down on the floor in the middle of the chamber, and the councillors looked at it. Nobody spoke for a long time. Then Otrygg stood up on the outer seat and called for the sculptor to be cast out.\n\nEvery rib rang once. The sculptor was sent down the crater road with his tools and nothing else, and threw the carving into the crevasse outside Dellingstad, and sat by the town's fires for the rest of his life telling anyone who would listen what was in the north wall. The cast-out sculptors who came after him are the reason Midgard knows most of what it knows about Tuscaran.\n\nThe cast-out sculptors do not hate Otrygg for it, which surprises the companies who ask them. They say the faithless one called the vote because the carving frightened him more than anything else he had seen on the ribs in a hundred years, and that he was the only councillor honest enough to show it. The others, they say, would have voted the same way and let Birghir call it, and pretended afterwards it had been his idea.\n\nOtrygg never spoke of it. The sculptors say that on the night of the vote he went to the side tunnels and called up his pack and sat with them until morning, eight of them, round him in the dark, and that he did not sleep."
+    },
+    {
+      "title": "The Leash",
+      "text": "The door Otrygg did not trust was opened the winter Midgard climbed the crater road. He was not surprised. The sculptors say he was the only councillor who struck his rib twice for no in that last vote alongside Birghir and Guthlac, not because he wanted peace, but because by then, he said, it was too far gone for a march to mend.\n\nWhen strangers come to the outer seats now his pack comes up off the floor round his seat all together at the first blow, eight beasts of the cold at once, and the companies who have stood there say what Hjalmar found in the kennels: that they do not thin. Every beast that falls is replaced from the cold before it has finished falling, and the pack is full again, and the faithless one sits behind it and watches.\n\nThe beasts themselves are not much. The companies say a single one of them is a hound with a giant's shadow and very little bite, and that what makes the pack dangerous is that there are always eight and they never tire. The companies say the other thing too, which is the end of the saying: when Otrygg falls, every beast in the hall lies down at once, as if a hand had let go of a leash, and goes back into the cold it was shaped from.\n\nThe cast-out sculptors have a last word on him. They say the faithless one was right about the door, and that being right did him no more good than it did Birghir, who was right about the lid. On the ribs of Tuscaran, they say, being right has never once been enough."
+    }
+  ],
+  "legend": "Otrygg is a pet fight with a twist. The moment he's hit he summons eight pets, 10,000 health each, and while he's in combat he refills the pack straight back to eight every time one dies. So killing pets gains you nothing: they come back instantly. They hit weakly, though, and every one of them dies the moment Otrygg dies. The answer is to hold the pets off the healers (stuns, mez and area damage all work on them, and a couple of tanks can soak them) and put the whole raid's damage into Otrygg: 100,000 health, 40% melee and 70% magic resists, CC-immune. If he resets, the pets go with him. Good boots and a jewel drop off him.",
+  "yells": {
+    "aggro": [
+      "Faithless, they called me. Faithful hounds, I answer. Go!",
+      "A century I waited for this. Up, all of you!",
+      "The door needs keeping. My hounds keep it.",
+      "The pack is always full."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "More! There are always more of you, and more of mine."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Where is your peace now, Birghir?"
+      }
+    ],
+    "death": [
+      "Never... trusted... peace...",
+      "I was right... I was right...",
+      "Let go... the leash..."
+    ],
+    "slay": [
+      "Feed it to the pack.",
+      "Good dogs.",
+      "That is what a door is for.",
+      "Eight, and always eight."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Gnawed bones are heaped by a council seat.",
+      "The smell of a kennel hangs over a council seat.",
+      "Eight shapes of cold lie round a low seat."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Otrygg's beasts pour out of the side tunnels!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Otrygg's pack is full again. It is always full."
+      }
+    ],
+    "realmFirstKill": "The faithless one falls. His pack lies down."
+  },
+  "botLines": {
+    "briefing": [
+      "otrygg spawns 8 pets right away. [pbae team|aoe] on the pets, tanks hold otrygg",
+      "otrygg: dont chase him, let the pets come to the aoe",
+      "keep somebody on otrygg or he resets",
+      "aoe group stands between the pets and the healers on otrygg",
+      "otrygg refills his pets to 8 instantly, dont bother killing them",
+      "hold the pets, burn otrygg, they all die with him",
+      "pets hit weak but never stop, keep them off the heals",
+      "pets arent cc immune, mez or stun them"
+    ],
+    "aftermathWin": [
+      "otrygg's pets got [melted|aoed] nice job",
+      "otrygg and the whole pack down. nice aoe",
+      "the faithless one is dead",
+      "otrygg's jewel dropped",
+      "otrygg died and every pet just dropped",
+      "the pack is always full. until it isnt",
+      "otrygg's jewel!"
+    ],
+    "aftermathLoss": [
+      "the pets ran over the healers",
+      "we chased otrygg into the pets",
+      "aoe group was too slow on the second wave",
+      "the second wave of pets caught us mid-aoe",
+      "we killed pets for ten minutes and there were still eight",
+      "pets got to the healers"
+    ],
+    "rumour": [
+      "heard otrygg means faithless in the old tongue. [fits|figures]",
+      "otrygg kept a pack of beasts because he never trusted the council's peace. [he was right|smart giant]",
+      "otrygg breeds his pets in the side tunnels on kitchen scraps",
+      "otrygg's name means faithless. the council thought it was funny. he didnt",
+      "hjalmar once bet he could empty otryggs kennels in one go. there were still eight left after",
+      "otrygg called the vote that threw the sculptor out of tuscaran",
+      "saying: the pack is always full while the faithless one stands"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Otrygg",
+    "text": "The faithless councillor of the outer seats, who never trusted the peace to keep the door. He keeps a pack of eight beasts called out of the cold, and the pack is always full while he stands: Hjalmar fought in his kennels all night and found eight at dawn. He called the vote that cast out the sculptor. When he falls, the pack lies down."
+  },
+  "bookPage": "From the sculptor's account. You want to know about the faithless one. I will tell you what he did the night they cast me out. He called the vote; everyone knows that. What nobody knows is that he came down to the tunnel mouth after Hord had gone, alone, with his eight beasts round him, and stood there while I walked away down the crater road. He did not speak. When I looked back from the rim he was still there, and the beasts were sitting at his feet like hounds at a gate. I think he was keeping the door. I think he was keeping it against what I had carved, and against me, and that he was sorry.",
+  "chronicle": {
+    "win": "Council Otrygg and his pack fell to {raidLeader} of {realm} in {minutes} minutes.",
+    "loss": "Council Otrygg's pack ran down {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

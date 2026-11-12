@@ -1,0 +1,132 @@
+{
+  "id": "kierac-the-destroyer",
+  "name": "Kierac the Destroyer",
+  "catalogKey": "tur-suil/kieracdestroyer",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 69, 30,000 health. He shields himself with Shield of Pain (a bladeturn) and takes 20% less from melee; when he dies the Master of Pain appears.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He cannot be hurt beyond his tether of 1,800.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Kierac was a prisoner of Tur Suil once, a Fomorian deserter or a captured champion of some other race; nobody remembers which, least of all Kierac. The Master of Pain made him into a weapon. He gave him a skin of pain that turns a blow aside and grows back as soon as it is broken, and he gave him a rage that has outlasted his memory. And then, the Sylvan say, the Master of Pain climbed inside him to rest, as a worm rests in an apple. Kierac guards the torturer's hall, and he does not know what he is carrying. Those who kill him find out.\n\nNobody remembers who Kierac was, least of all Kierac. A Fomorian deserter, some say; a champion of some other people, captured in a foray on the coast, say others. What is certain is what the Master of Pain did with him. The torturer took him apart and put him back together as a weapon: a rage that has outlasted his memory, and a skin of pain that turns a blow aside and grows back almost as soon as it is broken, as if his body had learned to expect being struck.\n\nAnd then, the Sylvan say, the torturer climbed inside him to rest, as a worm rests in an apple. Kierac guards the torturer's hall without knowing what he carries. He fights in the hall's centre, hard-skinned and furious, and he cannot be hurt beyond its edge. When he finally falls, the Master of Pain is loose in his own room below, by the cells, fresh, unhurried, already humming. The Sylvan who pity Kierac, and some do, say his death is the only kindness anyone has done him since he came to the tower, and that it is spoiled at once by what comes after.\n\nNobody remembers who Kierac was: a Fomorian deserter, a captured champion, or, by one Sylvan account, one of the Sylvan who tried to burn the tower. The Master of Pain made him a weapon and lives in him; Bréanainn of Howth's band learned it, and the warden Fainche started saying his name before the killing blow.",
+  "legend": "He keeps a blade-turning shield up and recasts it the moment it breaks, so lead with fast cheap hits, not your biggest. He is only the first half: when he dies the Master of Pain appears in his own room down by the cells, at full health, and waits there. Save mana and cooldowns for the second fight, and rest and rebuff before you walk in on him. Open with something cheap for the shield. Save every cooldown, potion and big heal for the second half: Kierac is only the door, and the Master of Pain walks through it at full strength. Nicknames: 'the apple', for what lives in him, and 'phase one'. Superstition: say his name, Kierac, before the killing blow, so that something of the man is remembered before the worm comes out.",
+  "yells": {
+    "aggro": [
+      "Destroy. Destroy. I remember that word.",
+      "Destroy. I remember destroy.",
+      "Who are you? Who am I?"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "Something inside me is laughing."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Something inside me is laughing."
+      }
+    ],
+    "death": [
+      "Out... it is coming out...",
+      "Out... it is getting out..."
+    ],
+    "slay": [
+      "Destroyed. Like me.",
+      "Destroyed.",
+      "Like me."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Racks, spikes, and someone humming.",
+      "Someone humming, and the humming is inside him."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "Something crawls out of Kierac's body!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Kierac's body shakes. Something stirs within."
+      }
+    ],
+    "realmFirstKill": "Kierac is at peace. Something else is not."
+  },
+  "botLines": {
+    "briefing": [
+      "kierac is phase one. when he dies the master of pain [spawns in his room|shows up by the cells]. [save cooldowns|dont blow it all on kierac]",
+      "kierac keeps a bladeturn up, [open with something cheap|small fast hits strip it]",
+      "kierac is half the fight. [save cooldowns|dont blow it all]",
+      "master of pain shows up in his own room at full health. [rest up first|rebuff before we go in]"
+    ],
+    "aftermathWin": [
+      "kierac and his passenger both down. [gross|nice]",
+      "kierac at peace, master of pain dead. [both|two for one]",
+      "saved cooldowns for the second half like we said. [worked|grats]",
+      "poor kierac. [he never knew|sad one]"
+    ],
+    "aftermathLoss": [
+      "blew everything on kierac and then the master of pain [ate us|walked over us]",
+      "blew everything on kierac. [master of pain ate us|empty]",
+      "nobody was on the master when he popped. [tank|ready next time]",
+      "dragged kierac out and he [went immune|reset]"
+    ],
+    "rumour": [
+      "[heard|someone said] the master of pain lives inside kierac. like a worm in an apple",
+      "[heard|someone said] kierac was a captured champion from the coast before the torturer got him",
+      "[word is|heard] the master of pain lives in kierac like a worm in an apple",
+      "some sylvan pity kierac. [cant blame them|i do too]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kierac",
+    "text": "A prisoner made into a weapon by the Master of Pain, who now rides inside him. Kill Kierac, and the torturer climbs out."
+  },
+  "bookPage": "Muirgen writes: the Sylvan of Domnann have a word for a thing that has been used up by another, a husk, and they use it for Kierac. He was somebody once. The torturer of Tur Suil took him apart and made him into a guard and a weapon and a house, all at once, and climbed inside to live. Kierac does not know. He fights in the torturer's hall with all the rage of a man who has forgotten his own name, and when he is cut down at last, the thing inside him goes home to its own room, humming. I asked whether anyone mourns Kierac. A young Sylvan said she did. I believe she meant it.",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Kierac the Destroyer in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Kierac the Destroyer after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "balor",
+      "relation": "the king they serve"
+    },
+    {
+      "id": "master-of-pain",
+      "relation": "the torturer who made him and rides inside him"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Nobody Remembers",
+      "text": "Nobody remembers who Kierac was, least of all Kierac. The Balorians say he was a Fomorian deserter, caught on the shore stair of Fomor running for the sea. The Sylvan say he was a champion of some other people entirely, taken in a Fomorian foray on the coast of the land beyond the sea and carried west as a trophy for Sargan's wall. Muirgen, who wrote 'The Tower of the Eye', found a third account among the Sylvan of the western coast: that he was Sylvan, one of those who tried to burn the tower in its first years, and that he is the only one of them whose spirit Abomos did not get, because the Master of Pain got his body first. Muirgen did not believe it. She wrote it down anyway.\n\nWhat is certain is what the Master of Pain did with him. The torturer took him apart in the rack of his hall and put him back together as a weapon: a rage that has outlasted his memory, and a skin of pain that turns a blow aside and grows back almost as soon as it is broken, as if his body had learned to expect being struck. Beneath it his hide turns part of every blow, like the rest of the household's, and spells worse than steel. The Balorians call him by a Fomorian word that means only the one in the hall. Muirgen tried to find the Sylvan's name in the lists of the Burning That Failed, and found three who were never accounted for."
+    },
+    {
+      "title": "A Worm in an Apple",
+      "text": "And then, the Sylvan say, the Master of Pain climbed inside him to rest, as a worm rests in an apple. Nobody knows how. The torturer had died long before, and had gone on working anyway; perhaps a thing that has stopped noticing it is dead can live anywhere it likes. Kierac guards the torturer's hall without knowing what he carries. He fights in the middle of it, among the rack and the spikes in the walls, hard-skinned and furious, and beyond the hall's edge nothing reaches him.\n\nThe first Hibernian band to kill him, a party of the first company to climb Tur Suil, under a warrior of Howth named Bréanainn, found out what he carried the hard way. They spent everything they had on Kierac, cheered his fall, and heard, far below by the cells, a humming begin: the worm had left the cut apple and gone home, and the Master of Pain was loose in his own room, fresh and unhurried. Bréanainn's survivors said that as he died Kierac said something about something getting out, and that for the first time that night he sounded afraid.\n\nBréanainn said fighting Kierac was like cutting a hedge: every blow turned on the skin of pain, and the skin grew back before the next. Kierac, he said, was only the door; the torturer walked through it at full strength, while the band was still binding its cuts. Bréanainn's band were twelve; four came out. Bréanainn named the halt between Kierac and the torturer the breath, and the barracks of Howth still use the word for any rest taken too soon. Of the four, none ever sat down on a stair in Tur Suil again."
+    },
+    {
+      "title": "The Pity of the Sylvan",
+      "text": "Some of the Sylvan pity Kierac, and Muirgen recorded it with surprise, because the Sylvan pity almost nothing in Tur Suil. A young Sylvan warden named Fainche, who had gone up the tower with a Hibernian company, told her that she mourned him. He was somebody once, Fainche said. The torturer used him up and made him into a guard and a weapon and a house all at once, and he does not even know it. The Sylvan word for such a thing is the word for a husk.\n\nThe realm has a custom that Fainche started. Before the killing blow, somebody says his name, Kierac, aloud, so that something of the man is remembered before the worm comes out. The old soldiers of Howth say it changes nothing. They say it anyway.\n\nThe Balorians do not pity him. They call him the torturer's coat, and they avoid the hall. The druids of Tir na Nog think the Balorians know more about what lives in the hall than they say, and that the soldiers named for dead heroes are afraid of ending as Kierac did: names on a body that someone else is wearing. Fainche went up the tower with three Hibernian companies before she was allowed to say it, because the first two captains thought it bad luck to speak to a foe. The third, a warrior of Ardee, let her, and that night the company did not lose a single one of its people to the torturer. The captains of the realm have stopped calling it bad luck."
+    },
+    {
+      "title": "Two in One Body",
+      "text": "There are two readings of what the torturer wants with him, and they divide the Sylvan from the druids. The Sylvan believe the Master of Pain simply likes a house: that a dead thing that goes on working needs somewhere to rest between subjects, and Kierac is comfortable. The druids of Tir na Nog believe Kierac is a trial. The torturer made the best thing he ever made, they say, and climbed inside it to see whether it would hold him, and every time the realm breaks it, he goes home to his room and makes it again, a little better, to see whether it holds the next time.\n\nEither way, Kierac returns whole whenever the household returns, with his skin of pain and his rage and no memory, and the torturer inside. Bréanainn of Howth, who killed him first, said late in life that the worst thing he saw in Tur Suil was not the eyes in Balor's chamber or the spikes in the walls. It was Kierac's face in the moment before the torturer came out, when for a breath the man seemed to understand what he was, and looked at Bréanainn as if to ask for help.\n\nFainche keeps a small stone from his hall on her windowsill in Domnann, beside the stones the fire-keepers lay for Tine. She says it is the only grave he has. She dusts it every spring when the household returns. Nobody else in Domnann keeps one for him. Bréanainn never went back up the tower after that night, and he never said whether he regretted it."
+    }
+  ]
+}

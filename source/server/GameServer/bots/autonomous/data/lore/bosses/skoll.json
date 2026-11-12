@@ -1,0 +1,167 @@
+{
+  "id": "skoll",
+  "name": "Skoll",
+  "catalogKey": "iarnvidiur-s-lair/skoll",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "aliases": [
+    "the sun-chaser"
+  ],
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur",
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "hati",
+      "relation": "his brother at the door"
+    },
+    {
+      "id": "iarnvidiur",
+      "relation": "his mother"
+    },
+    {
+      "id": "raumarik-revenant",
+      "relation": "keeps the other stolen piece of the sun"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Skoll is a level-69 named with 30,000 health beside Hati at Iarnvidiur's door.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "His bite carries a debuff, and he slows his enemies' attacks and poisons them.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists Skoll as an animal, level 60; he drops Skoll's Sunstone Collar and a flaming-sphere greave.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4671"
+    },
+    {
+      "text": "On 35% of his hits Skoll casts Skoll Bite (250 damage with a 20 s debuff) on his target; with a 15% chance each he casts Skoll's Poison (80 every tick, 20 s, only if the target has no damage-over-time) and Skoll's Debuff Haste (38% attack speed, 45 s, range 1,500) on his target. His SkollBaf pack has no members in the world database. 30,000 health, 20% melee / 30% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Skoll.cs"
+    },
+    {
+      "text": "Bafur's burnt hand and the saying 'Skoll's heat is in the arm' are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Skoll.cs"
+    }
+  ],
+  "story": "Skoll is the sun-chaser of the old songs, the hot-tempered one, who runs after the sun every day across the sky and will catch it at the end. The Skoll of the lair runs at everything as if it were the sun and he were finally catching it. He is a beast on four legs, all temper and teeth, and where his brother Hati lulls his prey to sleep, Skoll simply arrives.\n\nHis heat is in his bite, the Remnants of Faraheim say. It burns the one he bites, and weakens him, and a slower fire follows it into the blood and burns there a while; it does not burn twice at once, but it comes back as soon as it has gone out. And the heat goes into the arm. The dwarf Bafur, who fought him at the door the day he went back for Brokk, said that after Skoll had looked at him his axe-arm felt like an old man's, and swung like one, for most of an hour. The Remnants' saying is: Skoll's heat is in the arm.\n\nHe lies at the old one's door with his brother, a long stride apart. The two of them have never been seen to fight side by side; the dwarves say Skoll is always already running by the time Hati wakes. He wears a collar the Remnants call the sunstone, a ring of dull red stone round his neck that no dwarf put there, and the skalds of Jordheim say it is a piece of the sun he caught once, long ago, and has been chasing the rest of ever since. The Remnants carry a drink against his slow fire that they say tastes worse than the bite. Ragnheid Grimsdottir, who led the first Midgard company to kill the old one, wrote that the moon-chaser only put you to sleep, and Skoll made you old.",
+  "chapters": [
+    {
+      "title": "The Sun-Chaser",
+      "text": "Skoll is the brother in the song who runs after the sun. The skalds of Jordheim say he is the more dangerous of the two, because the sun is nearer and he is faster, and that when the end of the world comes it will be Skoll who catches his quarry first, and the cold that follows will be the first sign. The skalds sing his part of the song quickly, to sound like running.\n\nThe iarn dwarves say the pup who was given the name in the old one's first litter was born running. He went at everything: at his brothers, at the syver, at the black water under the bridge, at the old one herself, who cuffed him into the stream for it and watched him come out and go at her again. She put him at her door with Hati, the dwarves say, because a door needs a hound that will run at whatever comes through it, and Skoll had never in his life done anything else.\n\nHe did not grow into two legs as his brother did. He is a beast on four, all temper and teeth, larger than any of the brood but the oldest, with a coat the colour of a dying fire. Where Hati lulls his prey to sleep, the Remnants say, Skoll simply arrives. There is no warning. There is the sound of claws on the iron of the bridge, and then there is Skoll. The Remnants' war-parties posted a listener on the bridge for that sound, a young dwarf with good ears, and the slates record more than one listener who heard it and had no time to say so."
+    },
+    {
+      "title": "The Heat in the Bite",
+      "text": "His heat is in his bite, the Remnants of Faraheim say. It burns the one he bites, as a coal burns, and leaves a weakness in the wound that lasts a while after the burn. Behind the bite comes a slower fire, a poison that goes into the blood and burns there for a while and then goes out.\n\nThe dwarves who have been bitten and lived say the slow fire does not burn twice at once. While it is in you, the next bite brings only the bite. But it comes back as soon as it has gone out, they say, the way a fire comes back in a hearth that has not been properly raked, and a dwarf who fights Skoll for long carries it nearly the whole time. The Remnants' wise-women keep a drink for it, which the war-parties carry to the door, and the dwarves say it is the only thing on Aegir that tastes worse than the bite.\n\nBafur, who kicked Brokk awake, had his hand burnt to the wrist by Skoll's bite on the same day, as he dragged his friend away from the door. The burn healed. The hand never quite did. Bafur wore a glove on it for the rest of his life and would take it off for children, to show them what the sun-chaser's teeth do, and the children of Faraheim say the scar was warm to the touch. He said, when they asked, that it never hurt. It only ever felt like standing too near a forge, he said, and he had stood near worse."
+    },
+    {
+      "title": "Skoll's Heat Is in the Arm",
+      "text": "The worst of the sun-chaser, Bafur said, was not the bite. It was the look. Skoll looked at him across the bridge, the dwarf said, from further off than any wolf should be able to reach a man, and after the look his axe-arm felt like an old man's.\n\nIt swung like one, too, for most of an hour. Bafur said he could lift the axe and bring it down as well as ever, but slowly, as if the air had turned to water round his arm, and that every blow he struck took twice as long to land as it should have. The other dwarves of the war-party said the same. Skoll's look found the one he was running at, near or far, and that one's arm went slow.\n\nThe Remnants made a saying of it, which they use for anyone who is tired before the work is done: Skoll's heat is in the arm. The war-parties that went to the door after Bafur's day sent their strongest arms in first, the dwarves say, because a strong arm slowed by half is still an arm, and a weak one slowed by half is a dwarf standing still.\n\nRagnheid Grimsdottir, who led the first Midgard company to kill the old one, wrote in her own account that the sun-chaser was the hound she was most glad to be past. She said the moon-chaser only put you to sleep. Skoll made you old. Her account is kept in the hall at Bjarken, beside the bark-draughts she brewed in Faraheim, and the first line of it is about Skoll."
+    },
+    {
+      "title": "The Sunstone",
+      "text": "He wears a collar. It is a ring of dull red stone round his neck, set into the fur so deeply that it looks as if he grew it, and no dwarf of the Remnants put it there. The dwarves call it the sunstone. When he is angry, which is always, it glows like a coal blown on.\n\nThe skalds of Jordheim say it is a piece of the sun. They say Skoll caught the sun once, long ago, in the age before the gods fixed the sky, and bit a piece out of it before it got away, and has been chasing the rest of it ever since. The iarn dwarves say the skalds will say anything that rhymes. They think the collar came from the hall under the frontiers, as Hurjavelen's shields did, and that the thief-wolf brought it home for his brother.\n\nThe companies who come home from the old one's door bring it sometimes, and the jewellers of Jordheim say it is not any stone they know, and that it is warm on the coldest day. They make it into collars for those who want a story to wear.\n\nHe and Hati lie at the door a long stride apart, and they have never been seen to fight side by side. The Remnants say Skoll is always already running by the time Hati wakes, and that the two brothers who were named for the sky have never once been in it together. The skalds of Jordheim say that is the saddest line in their song, and sing it slowly."
+    }
+  ],
+  "legend": "Skoll lies at Iarnvidiur's door about 1,600 from Hati, so you can take them separately. He's a debuff fight. On a third of his hits his bite does 250 and leaves a 20-second debuff; he also throws a poison (80 a tick for 20 seconds, never stacked) and a 38% attack-speed debuff (45 seconds, reaches 1,500) on whoever he's on. Keep cure poison and a cleanse on the tank, and a strong tank opens hard, because the haste debuff slows his swings and his threat. 30,000 health, 20% melee and 30% magic resists, CC-immune. Fight him at the door, never with the old one's room open. The sunstone collar is a nice drop for anyone who wants a story to wear.",
+  "yells": {
+    "aggro": [
+      "(Skoll snarls and lunges, eyes burning.)",
+      "(The sunstone on his collar flares.)",
+      "(Skoll's teeth snap at the air.)",
+      "(Claws on the iron of the bridge, and then Skoll.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Skoll's collar blazes like a small sun.)"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "(Skoll's collar blazes like a small sun.)"
+      }
+    ],
+    "death": [
+      "(Skoll falls, the sunstone guttering.)",
+      "(The light in the hall dims by a shade.)",
+      "(The sunstone at Skoll's throat dims like a coal.)"
+    ],
+    "slay": [
+      "(Skoll howls at the roof, where the sky should be.)",
+      "(He tears at the fallen.)",
+      "(Skoll paces, burning.)",
+      "(Skoll is already running at the next one.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A sunstone gleams on a wolf's collar in the dark.",
+      "The air near the door is warmer than it should be.",
+      "Claws ring on the iron bridge. Something is running."
+    ],
+    "realmFirstKill": "The sun-chaser has fallen at the old one's door.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Skoll's sunstone collar blazes!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "skoll slows attacks and poisons, cleanse tanks",
+      "skoll first, then hati",
+      "tank opens hard on skoll, the haste debuff kills threat",
+      "cleanse the tank on skoll every bite",
+      "skoll: haste debuff 38% on the tank, poison, bite debuff. cleanse and cure poison",
+      "skoll's poison doesnt stack, cure it when it lands",
+      "tank opens hard, the haste debuff kills threat",
+      "skoll is apart from hati, one at a time"
+    ],
+    "aftermathWin": [
+      "skoll dead! [who got the collar|collar dropped?]",
+      "skoll's sunstone collar dropped!",
+      "the hall got darker when skoll died. [weird|did you see that]",
+      "sun chaser down",
+      "sunstone collar!",
+      "skolls heat is in the arm. my arm agrees",
+      "skoll down, the sun is safe"
+    ],
+    "aftermathLoss": [
+      "skoll's poison stacked on the mt",
+      "poison and debuff stacked on the mt",
+      "skoll and hati both alive and the healers asleep",
+      "no cleanse, mt dead",
+      "tank swung like an old man and lost threat",
+      "no cure poison on the tank"
+    ],
+    "rumour": [
+      "the iarn dwarves joke that skoll stole a piece of the sun. thats his collar",
+      "fenrir bit the sun once and skoll bit it again, the dwarves say. its been bitten twice",
+      "skoll is the sun-chaser of the old songs",
+      "skoll's collar sunstone came from the sky, the dwarves joke",
+      "remnant saying: skolls heat is in the arm",
+      "a dwarf called bafur wore a glove over skolls bite the rest of his life",
+      "the skalds say skolls collar is a piece of the sun"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Skoll",
+    "text": "The sun-chaser, Hati's brother at the old one's door, all temper and teeth. His bite burns and weakens, a slow fire follows it into the blood, and his look slows the arm of the one he runs at: the Remnants say Skoll's heat is in the arm. He wears a collar of warm red stone the skalds call a piece of the sun."
+  },
+  "bookPage": "From the account of Bafur of the Remnants, as the slate-keepers of Faraheim copied it. I went back for Brokk, and the sun-chaser was waiting on the bridge. He did not come at me at once. He looked at me first, from the far end of the iron, and my arm went old. I swung at him like my grandfather swinging at a fly. Then he bit me, and the bite burned, and after the bite a slower fire went up my arm and stayed there. I got Brokk out. I do not know how. My hand is still warm where his teeth went in. Children like to touch it.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Skoll the sun-chaser in {minutes} minutes.",
+    "loss": "Skoll ran {raidLeader}'s party from {realm} down after {minutes} minutes."
+  }
+}

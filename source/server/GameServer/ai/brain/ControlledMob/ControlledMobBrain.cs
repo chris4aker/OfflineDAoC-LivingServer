@@ -256,7 +256,7 @@ namespace DOL.AI.Brain
 
 			AttackMostWanted();
 			if (Owner is GamePlayer player && Body == player.ControlledBrain?.Body)
-				PlayerLedPullCoordinator.LeaderEngaged(player, target as GameLiving);
+				PlayerLedPullCoordinator.LeaderEngaged(player, target as GameLiving, fromPet: true);
 		}
 
 		/// <summary>
@@ -822,6 +822,7 @@ namespace DOL.AI.Brain
 			GameNPC body = Body;
 			if (body == null || body.ObjectState is not GameObject.eObjectState.Active ||
 				!CompanionEngagementMode.Allows(body, target) ||
+				EpicEncounterTactics.PetMustNotHit(body, target) ||
 				!target.IsAlive ||
 				target.ObjectState is not GameObject.eObjectState.Active ||
 				!GameServer.ServerRules.IsAllowedToAttack(body, target, true))
@@ -857,6 +858,16 @@ namespace DOL.AI.Brain
                     Body.TargetObject = null;
                 }
             }
+			// Epic wave 3 (1.2): a bot's pet never takes a target no pet may hit (Funus, whom a pet's hit heals to full).
+			foreach (GameLiving enemy in AggroList.Keys)
+				if (EpicEncounterTactics.PetMustNotHit(Body, enemy)) RemoveFromAggroList(enemy);
+			if (Body.TargetObject is GameLiving forbidden && EpicEncounterTactics.PetMustNotHit(Body, forbidden))
+			{
+				Body.StopAttack();
+				Body.StopFollowing();
+				if (Body.castingComponent?.SpellHandler?.Spell?.IsHarmful == true) Body.StopCurrentSpellcast();
+				Body.TargetObject = null;
+			}
 			if (!IsActive)
 				return;
 
@@ -868,6 +879,7 @@ namespace DOL.AI.Brain
 					owner_npc.TargetObject != null &&
 					owner_npc.TargetObject is GameLiving &&
 					CompanionEngagementMode.Allows(Body, owner_npc.TargetObject as GameLiving) &&
+					!EpicEncounterTactics.PetMustNotHit(Body, owner_npc.TargetObject as GameLiving) &&
 					GameServer.ServerRules.IsAllowedToAttack(owner_npc, owner_npc.TargetObject as GameLiving, false))
 				{
 					if (!CheckSpells(eCheckSpellType.Offensive))
@@ -953,6 +965,9 @@ namespace DOL.AI.Brain
 				}
 			};
 			if (ownerClass.HasValue && !PetMayDefendOwner(ownerClass.Value))
+				return;
+			// A bot's pet doesn't defend its owner against a monster no pet may hit (Funus heals to full from a pet's hit).
+			if (ad?.Attacker is GameLiving attacker && EpicEncounterTactics.PetMustNotHit(Body, attacker))
 				return;
 
 			switch (ad.AttackResult)

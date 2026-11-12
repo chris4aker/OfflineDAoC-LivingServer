@@ -8,6 +8,7 @@ extends Node3D
 # con colours from the client's own name-font palette (fonts/14font.bmp rows); purple isn't in it
 const CON_COLORS := {-3: Color8(130, 129, 128), -2: Color8(135, 225, 113), -1: Color8(85, 93, 214),
 		0: Color8(197, 193, 0), 1: Color8(254, 131, 49), 2: Color8(245, 0, 0), 3: Color(0.78, 0.35, 1.0)}
+const StealthLook := preload("res://game/stealth_look.gd")   # the dark green ghost of a hidden figure
 const FLAG_GHOST := 0x01
 const FLAG_DONTSHOWNAME := 0x04
 const FLAG_CANTTARGET := 0x08
@@ -90,10 +91,17 @@ func sync_pick() -> void:
 		var vis := (state.alive or state.corpse_left > 0.0) and not state.stealthed
 		if visible != vis:
 			visible = vis
+		_sync_stealth_look()
 	if _pick and state:
 		var pm := Node.PROCESS_MODE_INHERIT if state.alive and not state.stealthed else Node.PROCESS_MODE_DISABLED
 		if _pick.process_mode != pm:
 			_pick.process_mode = pm
+
+
+## The server's game: hidden but shown to you (a realm-mate, your group's gamebot) - the dark green ghost.
+func _sync_stealth_look() -> void:
+	if model and is_instance_valid(model) and model.has_node(StealthLook.NAME) != state.stealth_look:
+		StealthLook.set_on(model, state.stealth_look)
 
 
 static var prof_build := {}                   # debug timing of view building, microseconds (tests/crowd_probe.gd)
@@ -373,7 +381,7 @@ func _dress(f: Fig3Figure) -> void:
 		_weapon_colors[slot] = int(e.get("color", 0))
 		_weapon_emblems[slot] = int(e.get("emblem", 0))
 		if slot in [22, 23, 25, 27, 28]:
-			var p := Fig3Figure.armor_parts(int(e.model), female)
+			var p := Fig3Figure.item_armor(int(e.model), int(e.get("extension", 0)), female)   # (its mesh: the extension)
 			parts.merge(p, true)
 			for k in p:                                             # the server's colour for it (EquipmentUpdate)
 				tints[k] = Fig3Figure.dye(int(e.get("color", 0)))
@@ -502,7 +510,11 @@ static func _ghost_shader(src: Shader) -> Array:
 		var code := String(src.code)
 
 		var mode := RegEx.create_from_string("render_mode [^;]*;")
-		var d := mode.sub(code, "render_mode blend_mix, depth_draw_always, cull_back, shadows_disabled;")
+		# hair stays double-sided (the cutout shader is hair's only): fig3parts.csv marks nearly every hair style Double
+		# Sided, and culled its back half went - a ghostly dwarf's braided head looked bald from the front (owner
+		# 2026-10-19, a spirit champion). The depth pass still keeps only the nearest layer, so nothing shows through
+		var cull := "cull_disabled" if code.contains("ALPHA_SCISSOR_THRESHOLD") else "cull_back"
+		var d := mode.sub(code, "render_mode blend_mix, depth_draw_always, %s, shadows_disabled;" % cull)
 		# its depth a hair behind the surface (reverse Z: smaller is farther; x 0.9993): the two passes are different
 		# shaders, so their depths for the same face differ by rounding, and the colour pass flickered in and out as the
 		# camera turned (owner 2026-10-15). 0.3 % let what lies a few cm behind the skin - the eyes, the inside of the
@@ -517,7 +529,7 @@ static func _ghost_shader(src: Shader) -> Array:
 		# hair takes its texture alpha (its coverage); on faces the alpha is gloss and on clothes the tint mask, and as
 		# opacity it left skin and dyed armour the most see-through - no skin or armour colour under the ghost (owner
 		# 2026-10-16, after the 2026-10-15 texture-alpha pass)
-		var l := mode.sub(code, "render_mode blend_mix, depth_draw_never, cull_back, shadows_disabled;
+		var l := mode.sub(code, ("render_mode blend_mix, depth_draw_never, %s, shadows_disabled;" % cull) + "
 uniform float ghost_alpha = 0.9;
 uniform float ghost_white = 0.0;")
 		l = l.replace("ALPHA = c.a;
@@ -753,6 +765,7 @@ func _process_view(delta: float, cam: Camera3D) -> void:
 		var vis := (state.alive or state.corpse_left > 0.0) and not state.stealthed
 		if visible != vis:
 			visible = vis
+		_sync_stealth_look()
 	_animate_lod(delta, cam)
 	if _swim_fit > 0:
 		_swim_fit -= 1
@@ -785,6 +798,13 @@ func _process_view(delta: float, cam: Camera3D) -> void:
 			anim.play(state.ride_clip, 0.2)
 			_shown_mode = -1
 		return
+	if seated:                                       # resting (0xF0): the sit held - never moving in the sit pose
+		if state.alive and not state.fighting and state.mode != NpcState.Mode.WALK:
+			if anim.current_animation != "sit_idle" and anim.has_animation("sit_idle"):
+				anim.play("sit_idle", 0.2)
+				_shown_mode = -1
+			return
+		seated = false                                 # (moving / fighting without the stand: up at once)
 	var run_now: bool = state.fighting or state.running
 	var swim: bool = state.swimming and state.mode != NpcState.Mode.DEAD and anim.has_animation("swim")
 	if int(state.mode) != _shown_mode or (_shown_mode == int(NpcState.Mode.FIGHT) and anim.current_animation == "") 			or (_shown_mode == int(NpcState.Mode.WALK) and run_now != _shown_running) or swim != _shown_swim:
@@ -961,7 +981,29 @@ var _cast_clips := ["cast_start", "cast_mid", "cast_end"]
 
 
 ## An emote clip (emotes.csv id) when its figure has one (player-race NPCs: build_races.py 'emote_<id>').
+## 0xF0 / 0xF1 are no emotes but a held state - a gamebot or companion sitting to rest (the server chat's signal,
+## 2026-10-30): sit_down once, sit_idle held until 0xF1, then stand_up. The server sends 0xF0 again right after the bot
+## comes into view seated, and 0xF1 before a seated bot moves or fights.
+const EMOTE_SIT := 0xF0
+const EMOTE_STAND := 0xF1
+var seated := false
+
+
 func play_emote(id: int) -> void:
+	if id == EMOTE_SIT:
+		if not seated:
+			seated = true
+			_action_left = 0.0
+			if anim and anim.has_animation("sit_down"):
+				_one_shot("sit_down")
+		return
+	if id == EMOTE_STAND:
+		if seated:
+			seated = false
+			_action_left = 0.0
+			if anim and anim.has_animation("stand_up"):
+				_one_shot("stand_up")
+		return
 	if anim and anim.has_animation("emote_%d" % id) and _action_left <= 0.0:
 		_one_shot("emote_%d" % id)
 
@@ -1004,6 +1046,13 @@ func play_death(vocal := false) -> void:
 		tw.tween_property(_hover_node, "position:y", _hover_node.position.y - _hover, clampf(_hover * 0.35, 0.25, 0.8)) 				.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 
 
+## A dead character you may still target - to resurrect it (owner 2026-10-30: "if I want to rez a companion bot ... is
+## that working?"): a player-race figure (gamebots, companions; the server's ResurrectSpellHandler revives a dead
+## GameBot on the spot), as the original client lets you target a dead player. Monster bodies stay untargetable.
+func rez_target() -> bool:
+	return state != null and not state.alive and not corpse and (model is Fig3Figure or info.has("race"))
+
+
 ## A body the server let go (RemoveObject type 0: the server deletes a monster the moment it dies; the old client
 ## kept the body - owner 2026-10-13: "monster bodies just disappear when they die instead of having a death animation
 ## and falling thru the ground after awhile"): it dies here if it hadn't yet, lies there CORPSE_S, sinks into the
@@ -1041,6 +1090,10 @@ func _sink(depth: float) -> void:
 
 
 func _one_shot(clip: String) -> float:
+	# a dead body moves no more: no swing, style, flinch or parry over its death (owner 2026-10-19: an NPC that died
+	# kept attacking a second or two - a blow / hit packet a moment after the death replayed a swing over it)
+	if state and not state.alive:
+		return 0.0
 	clip = clip_for(clip)                                  # (a casting style: this model's own clip for it)
 	if anim == null or not anim.has_animation(clip):
 		return 0.6

@@ -1,0 +1,71 @@
+{
+  "id": "high-lord-tarnkappe",
+  "name": "High Lord Tarnkappe",
+  "npcNames": [
+    "High Lord Tarnkappe"
+  ],
+  "locationId": "varulvhamn",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "werewolves"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "High Lord Tarnkappe is a level-44 werewolf lord (faction Varulv) in his wing of Varulvhamn (26,107/22,954) among eleven werewolf advisors; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Tarnkappe is the cloak of invisibility of the Nibelungenlied.",
+      "provenance": "myth",
+      "source": "Nibelungenlied (public domain)"
+    },
+    {
+      "text": "Tarnkappe's empty seat at the lords' table is Living Server lore (Hallkel Thorvaldsson's minutes).",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Tarnkappe has a seat at the lords' table and is never in it. Hallkel Thorvaldsson of Skona, who wrote the minutes of the court's arguments as the varulv let him, put an empty chair in every one of his drawings of the table, and wrote the high lord's name beside it. Tarnkappe is the cloak that hides, in the southern tongue, after the cloak the hero of the southern songs stole from a dwarf, and the court says the name was given, not chosen.\n\nHe keeps his wing with advisors and nothing else: no wargs, no moon-watchers, no guards to speak of, eleven werewolves who tell him things. What he does with what they tell him nobody knows. The wolfaur say Tarnkappe is the one high lord who has never argued with the king, and that this frightens them more than Athulf's war or Modolfr's night. The gothi send the young to his wing for the third essence, and the young come back saying it was the easiest of the three, and the wolfaur say that is what he wanted them to think.",
+  "legend": "High Lord Tarnkappe is a level 44 Varulv high lord in the quietest wing of Varulvhamn, with eleven werewolf advisors and nothing else. One of the three Werewolf Bane essences. Varulv faction, with the advisors packed round him. Eleven advisors is a lot of bodies for one pull, so split them if you can. His wing is the quietest of the three, which is why people pick him first.",
+  "yells": {
+    "aggro": [
+      "You saw me? Then you were meant to.",
+      "(The advisors fall silent and look at you.)"
+    ],
+    "death": [
+      "You will never know... what I knew..."
+    ],
+    "slay": [
+      "Nobody saw that."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A quiet wing. Advisors whisper. The high lord listens."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "tarnkappe is the 44 high lord with eleven advisors, werewolf bane essence",
+      "eleven advisors in the room, varulv faction"
+    ],
+    "aftermathWin": [
+      "tarnkappe down, essence three",
+      "easiest of the three, suspiciously"
+    ],
+    "rumour": [
+      "tarnkappe is never in his seat at the lords table",
+      "tarnkappe never argues with the king, and that frightens the wolfaur"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "High Lord Tarnkappe",
+    "text": "The high lord of the empty seat, named for the cloak that hides, who keeps a wing of advisors and has never argued with the king. See [lords' table]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took High Lord Tarnkappe's essence in Varulvhamn in {minutes} minutes."
+  }
+}

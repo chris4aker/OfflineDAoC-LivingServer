@@ -1,0 +1,112 @@
+{
+  "id": "luso",
+  "name": "Luso",
+  "npcNames": [
+    "Luso"
+  ],
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "valmak",
+      "relation": "the terror bird whose flock Luso hunts beside"
+    },
+    {
+      "id": "wulok",
+      "relation": "the cut-off tradklan who lives on the same ground"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Luso is a level-50 great cat on the scimitar cat model in the middle of Faraheim (384367, 343378), with two terror birds (54) beside it and a doe nearby, about 5,600 units from Valmak.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its template gives it no faction: it never brings friends.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60163505, FactionID 0)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Scimitar cats are not native to the middle country of Faraheim. They are the great cats of Aegir's west, of the landing and the mountains, long in the tooth and short in the temper, and the dwarves of Hagall were surprised, the first winter after the landing, to find one living among the terror birds of the grazing. They were more surprised to find that the birds did not mind.\n\nIts name is Luso, and it was the Valkyn who named it, from a word of their own for a guest who stays. The Valkyn say it came east as a cub behind a hunting party from Aegirhamn, lost its mother on the road, and was found by the terror birds, which do not raise anything. They did not raise it. They let it stand among them, as they let the deer stand among them, and it grew up standing still for hours among things that stand still for hours, and took up waiting. Now it waits with them. When the terror birds of the middle country stop waiting, the dwarves say, Luso stops with them, and the deer are fewer by more than a bird can eat.\n\nIt is the smallest of the great hunters of the middle country and the newest, and the skogsra, who know every creature in Faraheim by its walk, say it walks like a bird now and not like a cat. It does not belong to Valmak's flock, which stands further west and waits on Valmak; it stands with two birds of its own, a little apart, as if it had formed a flock of its own out of the ones the great bird did not want.\n\nIt calls no one. A cat does not, even a cat that has grown up among birds. But the two birds beside it are always beside it, and the dwarves say that a hunter who goes after the scimitar cat of the grazing is going after three animals, not one, and that the two that look like birds are the dangerous ones.",
+  "legend": "Luso is a level 50 scimitar cat living among the terror birds in the middle of Faraheim, with two terror birds (54) standing right beside it, about 5,600 from Valmak. Luso has no faction and calls no one, but the two terror birds are aggressive and will join anyway; they hit harder than Luso does. Kill or mez the birds first, then the cat. No abilities, not CC-immune, no quest. A good group at 50 handles all three; a duo should pull the birds one at a time. Valmak is far enough off that he won't join unless you run west.",
+  "yells": {
+    "aggro": [
+      "(The great cat rises from among the birds.)",
+      "(Luso's tail lashes once.)",
+      "(The cat and the birds turn their heads together.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Luso crouches low, like a bird about to strike.)"
+      }
+    ],
+    "death": [
+      "(The cat sinks among the birds.)",
+      "(Luso is still at last.)"
+    ],
+    "slay": [
+      "(Luso settles to wait again.)",
+      "(The birds do not look up.)",
+      "(The deer are fewer.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A great cat stands among terror birds, waiting.",
+      "Three hunters here. Two look like birds."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Luso and the birds move as one."
+      }
+    ],
+    "realmFirstKill": "Luso the guest who stayed falls among the birds."
+  },
+  "botLines": {
+    "briefing": [
+      "luso is a 50 scimitar cat with two 54 terror birds",
+      "birds first, theyre the dangerous part",
+      "luso has no faction, birds join anyway",
+      "dont run west into valmak"
+    ],
+    "aftermathWin": [
+      "luso and both birds down",
+      "birds first worked",
+      "easy for a group",
+      "the cat that thinks its a bird"
+    ],
+    "aftermathLoss": [
+      "the birds hit like trucks",
+      "ran west and valmak came",
+      "tried to pull luso alone, birds came",
+      "duo couldnt handle three"
+    ],
+    "rumour": [
+      "luso is a scimitar cat raised among the terror birds",
+      "luso walks like a bird now, the skogsra say",
+      "the valkyn named luso, a guest who stays",
+      "hunting luso is hunting three animals, the birds are worse"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Luso",
+    "text": "A scimitar cat lost as a cub on the road from Aegirhamn, grown up among the [terror birds] of the middle country; it walks like a bird now, and two birds stand with it. Not of [Valmak]'s flock."
+  },
+  "bookPage": "From the trap-lines of Solvi of Hagall: I set a cat trap once in the middle country, the kind we use for scimitar cats in the west, heavy jaws and a lure of fresh liver. Luso walked up to it with the two birds behind, looked at it, and stood beside it for the rest of the day without moving. At dusk one of the birds stepped on the trap and broke it with its foot, and then the three of them walked away together. I took the trap home. I do not set cat traps in the middle country now.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down Luso and its birds in Faraheim in {minutes} minutes.",
+    "loss": "Luso and its two birds outwaited {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

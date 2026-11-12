@@ -295,7 +295,7 @@ internal sealed class WorldUpdate(string database, string updateFile, string ver
                 Exec(c, $"ALTER TABLE {Q(table)} ADD COLUMN {Q(name)} {col.GetProperty("Decl").GetString()}", tx);
         }
         var ignored = root.GetProperty("IgnoreColumns").EnumerateArray().Select(e => e.GetString()!).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        long added = 0, changed = 0, removed = 0, kept = 0;
+        long added = 0, changed = 0, removed = 0, kept = 0, already = 0;
         var notes = new List<string>();
         foreach (var t in root.GetProperty("Tables").EnumerateArray())
         {
@@ -307,21 +307,51 @@ internal sealed class WorldUpdate(string database, string updateFile, string ver
             int[] cmpIdx = Enumerable.Range(0, cols.Length).Where(i => !ignored.Contains(cols[i]) && !tableIgnore.Contains(cols[i])).ToArray();
             string where(int[] idx, string prefix) => string.Join(" AND ", idx.Select(i => $"{Q(cols[i])} IS @{prefix}{i}"));
             long tableKept = 0;
+            // a row that already has this version's values (an earlier build of the same update ran here) is up to date
+            bool has(int[] idx, JsonElement row)
+            {
+                using var q = Cmd(c, tx, $"SELECT count(*) FROM {Q(table)} WHERE {where(idx, "h")}");
+                Bind(q, "h", row, idx);
+                return Convert.ToInt64(q.ExecuteScalar()) > 0;
+            }
 
             foreach (var row in t.GetProperty("Insert").EnumerateArray())
             {
                 using var cmd = Cmd(c, tx, $"INSERT OR IGNORE INTO {Q(table)} ({string.Join(",", cols.Select(Q))}) VALUES ({string.Join(",", cols.Select((_, i) => "@n" + i))})");
                 Bind(cmd, "n", row);
-                if (cmd.ExecuteNonQuery() == 1) added++; else tableKept++;
+                if (cmd.ExecuteNonQuery() == 1) added++;
+                else if (keyIdx.Length > 0 && keyIdx.All(i => i >= 0) && has(keyIdx, row)) already++;
+                else tableKept++;
             }
             foreach (var row in t.GetProperty("Update").EnumerateArray())
             {
                 var oldRow = row.GetProperty("Old");
                 var newRow = row.GetProperty("New");
-                using var cmd = Cmd(c, tx, $"UPDATE {Q(table)} SET {string.Join(",", cols.Select((n, i) => $"{Q(n)}=@n{i}"))} WHERE {where(cmpIdx, "o")}");
-                Bind(cmd, "n", newRow);
-                Bind(cmd, "o", oldRow, cmpIdx);
-                if (cmd.ExecuteNonQuery() > 0) changed++; else tableKept++;
+                SQLiteCommand cmd;
+                if (row.TryGetProperty("Set", out var set))
+                {
+                    // field update: only the fields this version changes, where they still have their released values
+                    // (the running server rewrites other fields itself, e.g. monster size, level and stats)
+                    int[] setIdx = set.EnumerateArray().Select(e => Array.IndexOf(cols, e.GetString()!)).ToArray();
+                    if (setIdx.Length == 0) continue;
+                    int[] matchIdx = keyIdx.Concat(setIdx).Distinct().ToArray();
+                    cmd = Cmd(c, tx, $"UPDATE {Q(table)} SET {string.Join(",", setIdx.Select(i => $"{Q(cols[i])}=@n{i}"))} WHERE {where(matchIdx, "o")}");
+                    Bind(cmd, "n", newRow, setIdx);
+                    Bind(cmd, "o", oldRow, matchIdx);
+                }
+                else
+                {
+                    cmd = Cmd(c, tx, $"UPDATE {Q(table)} SET {string.Join(",", cols.Select((n, i) => $"{Q(n)}=@n{i}"))} WHERE {where(cmpIdx, "o")}");
+                    Bind(cmd, "n", newRow);
+                    Bind(cmd, "o", oldRow, cmpIdx);
+                }
+                using (cmd)
+                {
+                    if (cmd.ExecuteNonQuery() > 0) changed++;
+                    else if (row.TryGetProperty("Set", out var done) &&
+                             has(keyIdx.Concat(done.EnumerateArray().Select(e => Array.IndexOf(cols, e.GetString()!))).Distinct().ToArray(), newRow)) already++;
+                    else tableKept++;
+                }
             }
             foreach (var row in t.GetProperty("Delete").EnumerateArray())
             {
@@ -340,7 +370,8 @@ internal sealed class WorldUpdate(string database, string updateFile, string ver
             log.ExecuteNonQuery();
         }
         tx.Commit();
-        say($"World data updated to {version}: {added} added, {changed} changed, {removed} removed, {kept} left as the game had them.");
+        say($"World data updated to {version}: {added} added, {changed} changed, {removed} removed, {already} already up to date, " +
+            $"{kept} left as the game had them.");
         foreach (string note in notes) say("  " + note);
     }
 

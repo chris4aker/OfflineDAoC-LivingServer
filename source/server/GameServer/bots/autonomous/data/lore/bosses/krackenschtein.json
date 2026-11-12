@@ -1,0 +1,149 @@
+{
+  "id": "krackenschtein",
+  "name": "Krackenschtein",
+  "catalogKey": "fomor-city/krackenschtein",
+  "locationId": "fomor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 70, 30,000 health. He takes no damage from attackers further than 300 from him: only those close to him can hurt him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat jokes that his name proves someone in Fomor has a sense of humour.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Thunder Stomp: 3 s cast, recast 4-8 s, 250 energy to everyone within 1,000 of him. Bolt of Doom: 2 s cast, 250 cold bolt at a random real player within 2,500, every 15-20 s. Every 25-35 s a random real player within 2,000 is moved to one of four fixed spots in the workshop. Pulling him brings every NPC with PackageID KrackenschteinBaf within 2,500 (seven fomorian gentarns and a wolfentry).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs (integration/1.2)"
+    },
+    {
+      "text": "Living Server lore: the makers of Fomor's workshop and the room with the hooks; the copper-lined shaft and the first autumn storm; Scoth, the Domnann warden who named 'the throw'; Lochlann of Connacht's company; the Connacht saying 'he has been to the hooks'.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Krackenschtein is the stitched champion of Fomor's workshop, a long room under the eastern quarter of the city hung with hooks around a table larger than any table has reason to be. The old songs call the Fomorians misshapen; the Fomorians of Hy Brasil made it a craft. Their makers kept the strongest parts of the strongest dead and, over a long winter, stitched them together into a champion meant to hold the top of the shore stair against anything the realm sent down. No two makers agreed which parts were strongest, so the thing on the table is everyone's choice at once. The Sylvan laugh at its name and will not say why.\n\nThe makers woke it with lightning brought down a copper-lined shaft from the cliffs in the first autumn storm, and the storm never went out of it. Arrows from across the workshop break against it and words thrown from the doorway die before they reach it; only those close enough to smell the stitches have ever drawn its blood. It calls its birth-bolt down on whoever catches its eye, one and then another, and it stamps without stopping, and every stamp goes up through the feet of everyone in the room, near and far.\n\nIts household, the gentarns and the wolfentry set to guard the door, come when it does. And it throws: it takes hold of someone, anyone, and flings them across the room above the hooks, and after a little does it to someone else. Scoth, the warden of Domnann who first watched it, named it the throw. The companies that came out whole were the ones whose thrown went straight back to the giant's side, and the Connacht barracks say of a soldier knocked out of line: he has been to the hooks. It means go back.\n\nLochlann of Connacht brought it down with every close-handed fighter he could find, shouting each thrown name until they came back, and the stitches gave way from the head down. It returns when lightning goes down the shaft again. It has never left its workshop or done one thing the city wanted, and the Sylvan have a word for that: they call it a Fomorian.",
+  "legend": "He takes no damage at all from anyone further than 300 from him, so this is a melee fight: tanks, melee, pets and any caster willing to stand in close. Everything he does hurts the whole room anyway. Thunder Stomp is a 3-second cast every 4-8 seconds, 250 energy to everyone within 1,000 of him (basically the workshop), so healers heal the room. Every 15-20 seconds he picks a real player at random for Bolt of Doom (2-second cast, 250 cold; a shield can block a bolt). Every 25-35 seconds he grabs a random real player and throws them to one of four spots around the workshop: get straight back in. Pulling him brings his household, seven gentarns and a wolfentry, so clear them first. No tether trick: he resets to full if everyone drops off him. Superstition: never say his name three times in the workshop. The Sylvan laugh at it, and he can hear laughter. Nicknames: 'stitches', 'the table', 'the champion nobody ordered'.",
+  "yells": {
+    "aggro": [
+      "The stitched giant lurches off its table.",
+      "Thunder in the walls. It is awake.",
+      "It does not know your face. It hates it anyway."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Thunder rolls inside Krackenschtein."
+      },
+      {
+        "trigger": "teleport",
+        "text": "Krackenschtein grabs you and throws you across the workshop!"
+      }
+    ],
+    "death": [
+      "The stitches give way, one by one.",
+      "The thunder goes out of the walls."
+    ],
+    "slay": [
+      "Spare parts.",
+      "Back on the table with you.",
+      "Stitched, unstitched."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Stitches, hooks, and something huge on a table.",
+      "Hooks hang empty. Something huge is missing.",
+      "The floor shakes. The hooks swing. It is awake."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Someone flies across the workshop above the hooks!"
+      }
+    ],
+    "realmFirstKill": "Krackenschtein comes apart at the seams."
+  },
+  "botLines": {
+    "briefing": [
+      "krackenschtein only takes damage from inside 300. [melee and pets only|casters get in close or heal]",
+      "his stomp hits the whole room every few seconds. [heal the room|everyone takes it]",
+      "if he throws you, [run straight back|get back in], dont stand around in the corner",
+      "clear the gentarns and the wolfentry first or they come with him",
+      "bolt of doom on a random person, shields can block it. [tanks dont worry|watch your hp]"
+    ],
+    "aftermathWin": [
+      "stitches came apart from the head down. [gross|grats]",
+      "everyone who got thrown came right back. [discipline|nice]",
+      "melee only and it went fine. [told you|close in]",
+      "somewhere a sylvan is laughing. [let them|fair]"
+    ],
+    "aftermathLoss": [
+      "half the group stood back casting and did [zero damage|nothing]. inside 300 or heal",
+      "got thrown and stood in the corner looking lost. [go back|run back in]",
+      "stomp wore the healers down. [heal the room|too much stomp]",
+      "forgot the gentarns. [his household came|eight extra]"
+    ],
+    "rumour": [
+      "[heard|someone said] the fomorians stitched krackenschtein from their own best dead",
+      "[heard|someone said] they woke him with lightning down a shaft from the cliffs",
+      "the sylvans laugh at his name. [nobody knows why|weird]",
+      "[word is|heard] the western coast sylvans count the lightning on the cliff to know when hes back",
+      "connacht guys say you've been to the hooks when you get knocked out of line. [lol|true]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Krackenschtein",
+    "text": "A champion the Fomorian makers stitched from their own best dead and woke with lightning down a shaft from the cliffs. The storm in it turns aside anything sent from a distance; only those close enough to smell the stitches hurt it. It stamps, it calls down its bolt, and it throws people across the room. If it throws you, go back."
+  },
+  "bookPage": "Fiachra of Howth writes: I said I would not describe the room with the hooks, and I will keep that promise, mostly. I will say the table was large and the hooks were empty, and that a shaft ran up from the ceiling toward the shore with a smell of storms in it. The Sylvan told me later what lived there, a champion the Fomorians stitched from their own dead and woke with lightning. Nothing thrown from a distance had ever hurt it, they said; the ones who wounded it had all been close enough to smell the stitches. I asked who would do such a thing. They said: Hibernians, every season, and laughed.",
+  "chronicle": {
+    "win": "{realm} went down the shore stair into Fomor under {raidLeader} and slew Krackenschtein in {minutes} minutes.",
+    "loss": "{realm}'s fighters under {raidLeader} were driven back up the Fomor stair by Krackenschtein after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "anurigunda",
+      "relation": "an elder of the city"
+    },
+    {
+      "id": "nogoribando",
+      "relation": "the city's war-leader"
+    },
+    {
+      "id": "myrddraxis",
+      "relation": "the hydra of the cistern"
+    },
+    {
+      "id": "balor",
+      "relation": "the king in the tower on the crag"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Room with the Hooks",
+      "text": "Fomor has workshops as well as halls, and the one under the city's eastern quarter was dug for a purpose the Sylvan took a long time to believe. The old songs of Hibernia say the Fomorians were misshapen, a people of odd limbs and wrong numbers of eyes, and the bards have always told that as an insult. The Fomorians of Hy Brasil tell it as a craft. Their makers believed that a body is a set of parts, and that the strongest parts of the strongest dead need not go into the cisterns with the rest.\n\nSo they kept them. The workshop is a long room hung with hooks, and the hooks were full once, the Sylvan say, with what the makers kept: an arm from a gentarn who had held the shore stair alone, the legs of a feralidin bred for running, a chest from one of the old war-leaders, a head nobody will name. In the middle stands the table, larger than any table has reason to be, scored and stained and fitted with iron rings. Fiachra of Howth saw the room from its doorway as a young man and promised in his account never to describe it, and kept the promise almost entirely.\n\nThe makers stitched the parts together on the table over a long winter with sinew and wire, and the thing they made was meant to be a champion: the one Fomorian that could stand at the top of the stair against anything the realm sent down, and never fall. The Sylvan say the makers argued over it the whole winter, because no two of them agreed which parts were strongest, and that what lies on the table is everyone's choice at once.\n\nThey named it Krackenschtein. The Sylvan laugh at the name, which they almost never do at anything that comes out of Fomor, and will not say why. The druids of Tir na Nog suspect the name means nothing at all, and that the makers simply liked the sound of it. The hydrars, who keep apart from every quarrel in the city, are said to think the whole workshop an obscenity, and to have told the makers so."
+    },
+    {
+      "title": "The Bolt from the Shore",
+      "text": "A stitched thing does not get up on its own. The makers cut a shaft from the ceiling of the workshop straight up through the rock to the cliffs above the shore, and lined it with copper, and waited for the autumn storms. When the first great storm of that autumn came in off the western sea, the lightning went down the shaft, and the thing on the table opened its eyes.\n\nThe storm never went out of it. It clings round the stitched giant still, the Sylvan who have seen it say, a crackle in the air and a smell like the shore before rain, and it turns aside anything sent at it from any distance. Arrows from across the workshop break against it. Words of fire and frost thrown from the doorway die before they reach it. Only those close enough to smell the stitches have ever drawn its blood, and those are the ones it can reach in turn; the makers meant it to be a champion who could not be shot down from a hill, and in that at least they succeeded.\n\nAnd it gives back what it was given. It calls the bolt it was born from down on whoever catches its eye, one and then another, a cold white stroke out of the air of the workshop. It stamps, as a thing stamps that has new legs and is not sure of them, and every stamp sends the storm out through the floor and up through the feet of everyone in the room, near and far alike, so that the hooks swing and the table rattles on its rings. The stamping does not stop. The Sylvan say it is the sound the workshop makes whenever its champion is awake, and that they can hear it from the shore stair.\n\nThe makers had not meant it to have a temper. It has one. The druids of Lough Gur think the lightning put it there: a storm, they say, does not choose where it strikes, and neither does the stitched giant."
+    },
+    {
+      "title": "The Throw",
+      "text": "Its household is the workshop's guard, gentarns and a wolfentry the makers set to watch the door, and they come when it does, every one, as all Fomorian households do. The Sylvan scout who first watched the workshop from the doorway, a young warden of Domnann named Scoth, said the guards did not seem to like it. They stood with it anyway.\n\nScoth saw the other thing it does, and the realm's word for it is hers. When the stitched giant tires of whoever is in front of it, or perhaps for no reason at all, it reaches out and takes hold of someone, anyone in the workshop, near or far, and throws them. Not at the wall: across the room, through the air above the hooks, to some other part of the workshop entirely, where they land hard and have to find their feet and their friends again. Then, after a little, it does it again to someone else. Scoth called it the throw. She said it threw the way a child throws a doll it has finished playing with, without looking where.\n\nThe first companies that went into the workshop came out in pieces, the bards of Connacht say: half of each company scattered across the room, picking themselves up among the hooks, while the other half stood close to the giant and were stamped on. The companies that came out whole were the ones whose people, when they were thrown, went straight back to the giant's side without stopping to wonder where they were.\n\nThe Connacht barracks have a saying from it, which they use of any soldier knocked out of his place in a line: he has been to the hooks. It is not unkind. It means: go back."
+    },
+    {
+      "title": "The Champion Nobody Ordered",
+      "text": "The first company to bring it down was led by a blademaster of Connacht named Lochlann, who went down the shore stair with every short blade and every close-handed fighter he could find and left his archers at the top to keep the stair. The bards say he lost his temper with the giant, which is the only way anyone has ever beaten it: he stood in front of it shouting while it stamped, and every time it threw one of his company across the room he shouted their name until they came back. When it came apart at last, the stitches gave way one at a time, the Sylvan say, from the head down, and the storm went out of the walls and up the shaft with a sound like a wave going back down a beach.\n\nIt returns. The makers stitch it again, or the storms do. The shaft is still open to the cliffs, and the Sylvan of the western coast watch the autumn storms come in off the sea and count the lightning strokes on the cliff above the workshop, and when one goes down the shaft they send word to Domnann that the champion is awake again.\n\nIt does not seem to know it is the city's champion. It has never gone up the stair. It has never stood against anything the realm sent down except in its own workshop, and it has never left it, and the makers' great plan for a Fomorian who could hold the top of the stair alone has come to nothing, because the thing they made does not want to hold anything. It seems only to know that it is awake, and that it was not asked.\n\nThat is why the Sylvan laugh, Scoth told the bards, when she was old: not at the name. At the makers. They built the strongest thing in Fomor out of the city's own best dead, and it would rather stamp on the floor of a room full of hooks than do one thing the city wants. The Sylvan have a word for that, she said. They call it a Fomorian."
+    }
+  ]
+}

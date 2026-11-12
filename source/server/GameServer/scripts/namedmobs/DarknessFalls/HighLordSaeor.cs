@@ -78,7 +78,7 @@ namespace DOL.GS
         }
         private static void PlayerKilledBySaeor(DOLEvent e, object sender, EventArgs args)
         {
-            GamePlayer player = sender as GamePlayer;
+            GameLiving player = EncounterTargets.AsRaider(sender as GameObject);
 
             if (player == null)
                 return;
@@ -91,6 +91,8 @@ namespace DOL.GS
             foreach (GameNPC mob in player.GetNPCsInRadius(1000))
             {
                 if (mob is not HighLordSaeor) continue;
+                // Flood guard (1.2): at most the period raid's count of these heals in 5 minutes (EncounterFloodGuard).
+                if (!EncounterFloodGuard.TryRecent(mob, "HighLordSaeor.KillHeal", GameLoop.GameLoopTime)) continue;
                 mob.Health += player.MaxHealth;
                 mob.UpdateHealthManaEndu();
             }

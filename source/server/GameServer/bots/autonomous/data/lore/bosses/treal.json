@@ -1,0 +1,121 @@
+{
+  "id": "treal",
+  "name": "Treal",
+  "npcNames": [
+    "Treal"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Treal: level 52, model 946 (the treant body), size 101, at about 335,000/314,900 on the western ledge of Altan Garran; respawn 80 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Writhing Death (Dolph): 'The Outland residents are attacked by a writhing, swarming mass.' Speak to Fedail (or Hedierna) in the outlander town of Altan Garran in Cothrom Gorge; kill Cronwort, Fuilwort and Tachtwort; return their remains to Fedail; kill Marfoirwort, 'the source of the worts'; bring the root to Treal.",
+      "provenance": "game",
+      "source": "DataQuest 'Writhing Death' (world data)"
+    },
+    {
+      "text": "Altan Garran (about 336,000/315,500 in Cothrom Gorge) is a walled outlander town of faction Outland Residents: Outland garda (49-53), conaitheoir (48-51), bardach (48-53) and asarlai (49-57), merchants (Egomas the smith, Halwyn, Paili, Noirin the enchanter, Forsa, Gearoidin the healer, Alastair and Luiseach Erea) and garran treants; its named are Fedail, Elnara Erea, Ulicia, Aodhnait, Ansol, Fachtna, Zinsya and Declan, all set aggressive (200) in the world data.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Treal as the old treant the outlanders asked to build around; the root of Marfoirwort given to him to bury.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Before there was a town on the eastern ledges of Cothrom Gorge there was a tree. Treal was old when the Long Pushing split the gorge, the outlanders of Altan Garran say, one of the forest's trees that leaned on the Root and felt the earth break under it, and he did not fall into the split: he walked back from the edge, the only tree that did, and stood on the ledge, and has stood there since. When the first outlanders came down from Domnann, an Erea asked him if they might build around him. He said yes. The town is a garran, a grove, because of him.\n\nHe speaks, rarely, and slowly, and only to the Ereas and to those who bring him something. The outlanders say the worts are the one thing he fears. He felt them begin, in the split below him, as a sickness in the soil, and he has felt them climb toward the town every summer since. He gave Elnara a cutting in the first bad year. He gave the town his windfalls for its walls. And he gave Fedail, long ago, the one instruction the outlanders have ever had from him: bring me the root of the thing at the head of the gorge.\n\nSo the strangers who go up the gorge to Marfoirwort and come back with its root bring it to Treal. Noirin the enchanter has watched him take it. He puts it down among his own roots, she says, and the ground closes over it, and for a while, a season or so, the worts nearest the town are slower, and the tendrils in the south wall come fewer. The outlanders think he is eating it. The Domnann wardens think he is holding it, as Elro holds the edge, and that one day he will not be able to. Treal has not said which.\n\nHe does not like strangers, any more than the town does. The ones who come to him without the root find out why the outlanders asked his leave before they built.",
+  "legend": "Treal is a level 52 treant on the western ledge of Altan Garran and the hand-in for Writhing Death: bring him Marfoirwort's root and choose your reward. In the world data he is set aggressive like the rest of the town (Outland Residents), so whether a Hibernian can walk up and hand in is untested here. As a fight he is a plain 52 treant with an 80-second respawn, standing near the garran treants and Cuinn (65). Do not pull Cuinn with him by accident: Cuinn is the harder of the two. The outlanders say he buries what you bring him; be polite about it.",
+  "yells": {
+    "aggro": [
+      "(the old treant turns, slowly)",
+      "Root... of the thing... at the head...? No.",
+      "(Treal's bark creaks like a door)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Treal's roots tighten around something buried)"
+      }
+    ],
+    "death": [
+      "(the old tree leans, and the ledge holds)",
+      "Hold... it... someone..."
+    ],
+    "slay": [
+      "(Treal stands still again)",
+      "(the ground closes)",
+      "(slowly, the old tree turns away)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An old treant at the heart of the garran.",
+      "The ground among his roots is freshly closed."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Treal's roots tighten around what he holds."
+      }
+    ],
+    "realmFirstKill": "Treal, the old tree of Altan Garran, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "treal is the writhing death hand in. [bring marfoirwort's root|choose a reward]",
+      "hes set aggro in the data. [hand in untested|careful]",
+      "as a fight, plain 52 treant. [80 sec respawn|easy]",
+      "dont pull cuinn with him. [65|harder]"
+    ],
+    "aftermathWin": [
+      "treal down. [poor old tree|the outlanders will hate us]",
+      "didnt pull cuinn. [good|clean]",
+      "the ground closed over something when he fell",
+      "hope we didnt need to hand in lol"
+    ],
+    "aftermathLoss": [
+      "pulled cuinn too. [65 treant|no]",
+      "garran treants joined. [too many|ouch]",
+      "walked in to hand in and he attacked. [aggro|lol]",
+      "the town came for us"
+    ],
+    "rumour": [
+      "[heard|someone said] treal was the only tree that walked back from the edge when the gorge split",
+      "altan garran was built around treal. [an erea asked him|he said yes]",
+      "[word is|heard] treal buries marfoirwort's root among his own and the worts slow down for a season",
+      "the wardens think treal is holding something, like elro holds the edge"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Treal",
+    "text": "The old treant at the heart of Altan Garran in [Cothrom Gorge], who walked back from the edge when the gorge split. The outlanders built around him. Bring him [Marfoirwort]'s root, and he buries it."
+  },
+  "bookPage": "Noirin the enchanter of Altan Garran: Treal walked back from the edge when the gorge split, the only tree that did, and an Erea asked him if we might build around him. He gave the town one instruction, long ago: bring me the root of the thing at the head of the gorge. The strangers who kill Marfoirwort bring it to him. I have watched him take it. He puts it among his roots and the ground closes over it, and for a season the worts nearest us are slower. We think he is eating it. The wardens think he is holding it.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Treal in Altan Garran in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Treal turned back {realm}'s band under {raidLeader} in Altan Garran in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "outland-residents"
+  ],
+  "related": [
+    {
+      "id": "elnaras-pet",
+      "relation": "grown from his cutting"
+    },
+    {
+      "id": "cuinn",
+      "relation": "the garran's young guardian"
+    },
+    {
+      "id": "marfoirwort",
+      "relation": "whose root is brought to him"
+    }
+  ]
+}

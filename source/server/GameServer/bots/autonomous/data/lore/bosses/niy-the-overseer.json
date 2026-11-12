@@ -1,0 +1,81 @@
+{
+  "id": "niy-the-overseer",
+  "name": "Niy the Overseer",
+  "npcNames": [
+    "Niy the Overseer"
+  ],
+  "locationId": "valley-of-bri-leith",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Niy the Overseer: level 40, model 2110, at about 445,200/499,100 high on the northern empyrean heights of Bri Leith among empyrean overseers and elders (37-44); respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Niy as the empyrean who keeps the mound's tally of its servants.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "If Guardian Hru keeps the mound's door, Niy keeps its servants. The overseer stands on the northern heights of the valley with the empyrean elders around it, and the Old Hermit says it counts: every guardian and watcher and wisp of the heights, every morning, and the count is always one less than it should be, and Niy has been looking for the missing one since the lord went in.\n\nThe Caille folk think the missing one is the lord himself, and that Niy counts him among his own servants because it was never told otherwise. The hermit thinks it is one of the empyrean orbs that drifted down into the lake country and never came back, and that Niy will keep counting until it does. When the realm's young come up onto the northern heights, Niy counts them too, and does not like the number. The hermit says that if the count ever comes out right, the mound's door will open.",
+  "legend": "Niy the Overseer (40) is a named empyrean on the northern heights of Bri Leith (about 445k/499k), among empyrean overseers (37-41) and elders (40-44). The elders are higher than Niy, so pull carefully. A group of 40ish. Plain spawn, 80-second respawn. Guardian Hru (40) is further south on the same heights. The northern heights are a good place to finish the empyrean camps for 40s.",
+  "yells": {
+    "aggro": [
+      "One more than there should be.",
+      "(the overseer counts you, and frowns)"
+    ],
+    "phases": [],
+    "death": [
+      "The count... is short again..."
+    ],
+    "slay": [
+      "One less. The count is closer."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An overseer counting the mound's servants."
+    ],
+    "phases": [],
+    "realmFirstKill": "Niy the Overseer's count has ended."
+  },
+  "botLines": {
+    "briefing": [
+      "niy the overseer is 40 on the north empyrean heights",
+      "elders around are 40-44, pull carefully"
+    ],
+    "aftermathWin": [
+      "niy down. [count's off now|lol]",
+      "dodged the elders. [nice|grats]"
+    ],
+    "aftermathLoss": [
+      "elders joined. [rip|44s]",
+      "pulled the whole height. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] niy counts the empyreans every morning and is always one short",
+      "the caille folk think the missing one niy counts is the lord of the mound himself"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Niy",
+    "text": "The empyrean overseer of Bri Leith's northern heights, who counts the mound's servants every morning and is always one short."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Niy the Overseer in the Valley of Bri Leith in {minutes} minutes.",
+    "loss": "Niy the Overseer turned back {realm}'s band under {raidLeader} in the Valley of Bri Leith after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "guardian-hru",
+      "relation": "the doorward below"
+    }
+  ]
+}

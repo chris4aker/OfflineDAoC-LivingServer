@@ -1,0 +1,160 @@
+{
+  "id": "droom",
+  "name": "Droom",
+  "catalogKey": "iarnvidiur-s-lair/droom",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur"
+  ],
+  "related": [
+    {
+      "id": "iarnvidiur",
+      "relation": "grows in her lair"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Droom is a 30,000-health named; ten narfi come with it.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It casts Droom's Poison and Droom's Acid over time, debuffs strength-constitution and attack speed in an area, and spreads Black Plague.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls Droom a named mushroom (plant); a group of 14 with four healers and two shamans struggled with the poison and disease (2003).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4669"
+    },
+    {
+      "text": "Dutch droom means dream (to verify; the name's intended language is unknown).",
+      "provenance": "original",
+      "source": "glossary, to verify"
+    },
+    {
+      "text": "Each tick, with a 15% chance each, Droom casts on its target Droom's Poison and Droom's Acid (damage over time, 20 s each), Droom's Debuff S/C and Droom's Debuff Haste (radius 450 round its target, 60 s), and Black Plague (disease, 120 s). Ten narfi (DroomBaf) join when it is engaged. 30,000 health, 20% melee / 30% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Droom.cs"
+    },
+    {
+      "text": "Droom is Dutch for 'dream' (to verify). Hrefna's sleep under the cap comes from the iarnvidiurs-lair file; the dwarf Hanar who tried to burn it and the Remnants' word 'dream-sick' are Living Server lore.",
+      "provenance": "original",
+      "source": "Dutch, to verify"
+    }
+  ],
+  "story": "Droom is a fungus that dreams. It grows in a wet hollow off the herd's hall, a great pale cap on a stalk as thick as a tree, breathing slow clouds of spores into the dark, and the narfi tend it: small grey things of the deep places, older than the dwarves and quieter, who sit round it in a ring and chant. They believe the dreams of the Iron Wood rise through Droom's stalk from the roots of the trees, and that anyone who lies under the cap sees the wood as it was, silver and full of birds, and the old one young. Hrefna slept under it for three springs, and walked out unaged with her hair full of spores.\n\nThe waking pay for the dream. The spores settle on the one the cap breathes toward and on everyone close beside that one, and a settled spore is a small weight in the arms and a slowness in the hands; and beneath the spores come two slow poisons, one that burns and one that eats, and a sickness that dulls every remedy. The Remnants call a dwarf who has stood too long in the hollow dream-sick, and say it takes a day to stop seeing birds.\n\nThe dwarf Hanar of the Remnants tried to burn it, in the winter after Hrefna came home, with a war-party and a cask of seal oil. The narfi rose from their ring and came at the fire, all ten of them, and Hanar's war-party came home without the oil and without Hanar, and a season later the cap had grown back in the same hollow. The narfi sat back down. The dwarves have never tried again. Hanar's axe hangs in the slate-house at Faraheim with its edge eaten away, beside the lullaby-stone.",
+  "chapters": [
+    {
+      "title": "The Cap in the Hollow",
+      "text": "Off the herd's hall a side passage dips into a wet hollow, where the water that runs down the walls of the house gathers in a shallow pool and goes no further. In the middle of the pool grows Droom. It is a great pale cap on a stalk as thick as a tree, gilled underneath like a field mushroom the size of a hall roof, and it breathes. The dwarves who have been in the hollow say it breathes in and out, slowly, like a sleeper, and that every breath out is a cloud of spores that hangs in the dark and settles.\n\nIts name is not a dwarf word or a word of the north. The scholars of Jordheim say it is a word of the far south-west, from beyond the sea, and means a dream; how it came to Aegir nobody knows. The narfi call it nothing that the dwarves can say.\n\nThe narfi tend it. They are small grey things of the deep places, older than the dwarves and quieter, and the dwarves say there have been narfi in the Iarnwood since the wood was silver. Ten of them at a time sit round Droom in a ring at the edge of the pool and chant, the way monks sit round a shrine, and when one of them goes another comes and takes its place. They believe the dreams of the Iron Wood itself rise through Droom's stalk from the roots of the trees, and that the cap is where the wood dreams aloud."
+    },
+    {
+      "title": "The Silver Wood",
+      "text": "Anyone who lies under the cap, the narfi believe, sees the wood as it was: silver, singing, full of birds, in a summer that never ended, with the old one young and running in it. The iarn dwarves did not believe them until Hrefna.\n\nShe was one of the nine children of the camps the Servants took in nine nights, a girl of seven, and three springs after the Remnants' war-party came home with only Torvald, she walked out of the hollow at the edge of the Iarnwood at dawn with a narfi holding her hand. She was no older than the night she was taken. Her hair was full of spores. She said she had been asleep under the cap the whole time, in the silver wood, and that it had been summer there.\n\nShe told Thorgrim of Faraheim, when she was old, what the silver wood had been like. She said there were birds she had no names for, and that the iron trees were white and rang when the wind went through them like a hall full of small bells, and that she had been happy, and that she had never been happy since. She said the old one had run past her once, young and grey and fast, and had not seen her. She kept a lamp lit by her bed in daylight for the rest of her life.\n\nThe narfi say Droom does not choose who dreams. The dwarves say it chose Hrefna, and that it let her go so that someone would tell the waking what the wood had been."
+    },
+    {
+      "title": "Dream-Sick",
+      "text": "The waking pay for the dream. The Remnants' war-parties who have gone into the hollow say the spores do not put anyone to sleep. They settle. They settle on the one the cap is breathing toward and on everyone standing close beside that one, and a settled spore is a small weight in the arms and a slowness in the hands, as if the dwarf were already half in the dream and his body had not caught up.\n\nUnder the spores come two slow poisons. One burns, the dwarves say, and one eats, like the acid the smiths of Faraheim use to etch their slates, and both of them go on for a while after the breath that brought them. And under the poisons there is a sickness, the grey kind that is in every bite in the old one's house, which dulls every remedy given while it lasts. The cap does all of it slowly, in no order, as a sleeper turns over.\n\nThe Remnants call a dwarf who has stood too long in the hollow dream-sick. They say it takes a day to stop seeing birds. The war-parties that went to the hollow took to going in and out of the near side of the pool in turns, so that no dwarf stood under the breath for long, and they carried two flasks each, one for the burning and one for the sickness, and the wise-women of Faraheim say the hollow empties their shelves faster than anywhere else in the house."
+    },
+    {
+      "title": "Hanar's Fire",
+      "text": "In the winter after Hrefna came home, a dwarf of the Remnants named Hanar decided that nothing which had taken a child of the camps for three springs should be let grow. He took a war-party and a cask of seal oil down past the herd's hall into the hollow, and poured the oil round the foot of the stalk, and struck a light.\n\nThe narfi rose. They had never been seen to stand up from their ring, the dwarves say; they rose all ten at once, small and grey and silent, and came at the fire, and through it. Hanar's war-party came home without the oil and without Hanar. The ones who came home said the narfi had not seemed angry. They had seemed like monks putting out a candle someone had knocked over.\n\nThe ones who came home brought Hanar's axe, which they found in the pool with its edge eaten as if by acid, and it hangs in the slate-house at Faraheim beside the lullaby-stone. A season later Droom had grown back in the same hollow, pale and whole, and the narfi had sat back down. It does that whenever it falls, the dwarves say: it dies and grows again in the same pool a season apart, and the ring is waiting for it. The dwarves have never tried to burn it again.\n\nThorgrim of Faraheim asked the one narfi who would speak to him whether the silver wood was real. It asked him the same about Aegir. Thorgrim wrote that he has thought about the question every day since, and that he has not found an answer that satisfies a narfi."
+    }
+  ],
+  "legend": "Droom is a cure fight. It throws five things at whoever it's on, each at random: a poison and an acid DoT (20 seconds each), a strength/constitution debuff and a haste debuff that hit everyone within 450 of its target for a minute, and a two-minute disease that halves heals. So shamans or anyone with cures chain cure poison and disease on the tank, cleanse the debuffs, and keep the other melee spread or rotating so the debuffs don't catch the whole line. The ten narfi come with it the moment it's engaged: kill them first. 30,000 health, 20% melee and 30% magic resists, CC-immune. A group of fourteen struggled in 2003 and a six-person kill was claimed, so it's a skill fight, not a numbers fight. The cap drops for every armour type. Bring cure items as backup.",
+  "yells": {
+    "aggro": [
+      "(The narfi chant. The great cap breathes out.)",
+      "(Spores drift down like snow.)",
+      "(The narfi fall silent and stare.)",
+      "(Droom breathes out, slowly, like a sleeper.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Spores thicken. The edges of the world go soft.)"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "(The narfi chant faster. The dreams deepen.)"
+      }
+    ],
+    "death": [
+      "(Droom collapses. The narfi wail.)",
+      "(The last spores drift down and settle.)",
+      "(The great cap folds. The narfi stop chanting.)"
+    ],
+    "slay": [
+      "(The fallen dream under the cap.)",
+      "(The narfi gather round the dreamer.)",
+      "(Spores settle on the body.)",
+      "(The spores settle on the fallen. They are dreaming now.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A great cap breathes. The air tastes of dreams.",
+      "Spores drift like snow. The edges of the world go soft.",
+      "Ten small grey shapes sit in a ring, chanting."
+    ],
+    "realmFirstKill": "Droom has stopped dreaming. For a season.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Droom's spores thicken into a dream-fog!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "droom = poison + disease nonstop. shamans chain cure, kill the 10 narfi first",
+      "two shamans on cure only for droom",
+      "melee rotate out of the debuff ring",
+      "narfi first, all ten",
+      "droom: poison, acid, disease, s/c and haste debuffs. chain cures",
+      "debuffs hit 450 round the tank, melee rotate",
+      "kill the 10 narfi first",
+      "two people on cure only"
+    ],
+    "aftermathWin": [
+      "got the mushroom cap! [lol|grats]",
+      "shimmering mushroom cap for the cloth wearer!",
+      "droom down, and i saw silver trees. [anyone else?|weird]",
+      "cures held the whole fight, gg shamans",
+      "cures held, droom down",
+      "nobody went dream sick lol",
+      "the cap dropped for my armour"
+    ],
+    "aftermathLoss": [
+      "we couldnt cure fast enough on droom",
+      "cures were too slow, again",
+      "the narfi chanted and we died",
+      "shamans ran dry at 30%",
+      "ran out of cures",
+      "whole melee line debuffed at once"
+    ],
+    "rumour": [
+      "the narfi think you see the forest's dreams when droom kills you. [i saw a wall|i saw my bind point]",
+      "the narfi think the iron wood dreams through droom",
+      "a new droom grows in the same hollow every season, the dwarves say",
+      "the narfi chant around droom like monks around a shrine",
+      "a dwarf girl slept under droom for three springs and came out the same age",
+      "a dwarf called hanar tried to burn droom. the narfi came out",
+      "dream sick is what the dwarves call it. takes a day to stop seeing birds"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Droom",
+    "text": "A fungus that dreams, tended by the narfi in a wet hollow off the herd's hall. Whoever lies under it sees the Iron Wood silver and singing, as Hrefna did for three springs. The waking pay for it: spores that weigh the arms, two slow poisons and a sickness. Hanar tried to burn it, and the narfi rose. It grows back a season later."
+  },
+  "bookPage": "From Thorgrim of Faraheim's notes. The narfi do not speak to dwarves, but one of them spoke to me, once, at the edge of the wood, in a voice like a dry leaf. It said the iron trees were silver once, and sang, and that the old one was young, and that the rot came after something happened that it would not name. It said Droom remembers the silver, and that when you die under Droom you remember it too, and that this is a mercy. I asked whether it had died under Droom. It said: many times. Then it went back into the dark.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut down the dreaming fungus Droom in {minutes} minutes.",
+    "loss": "Droom's spores put {raidLeader}'s party from {realm} to sleep after {minutes} minutes."
+  }
+}

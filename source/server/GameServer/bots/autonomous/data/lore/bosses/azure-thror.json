@@ -1,0 +1,111 @@
+{
+  "id": "azure-thror",
+  "name": "Azure Thror",
+  "npcNames": [
+    "Azure Thror"
+  ],
+  "locationId": "sheeroe-hills",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "The Order of the Azure on Sheeroe's northern slopes (world data): azure cleansers (45-54), banishers (48-56), avengers (51-56) and idolaters (24-27), with Tailtiu guards (55) and a Voice of the Azure (27); its named are Azure Dsaldor (57, 382,500/666,200), Azure Coseal (55, 400,100/666,900) and Azure Thror (52, 395,300/667,400), plain spawns with an 80-second respawn, model 354 at size 76-77.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore (Cuuldurach ch.4): Thror as the Order's arm, who leads the burnings of the Glimmer's lesser lights.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The Order of the Azure is the realm's strangest ally against the Glimmer King, and the realm is not sure it is an ally at all. They are firbolg kin who paint themselves blue and pray to the open sky, and they came up onto Sheeroe's northern slopes the summer after the sky tore, to make war on the light. They burn the Glimmer. They burn anything that glows. Their guards are named for Tailtiu, the foster-mother who made the first games for Lugh of the long arm, and the Azure say the open sky is Lugh's, and the Glimmer's light is stolen from it.\n\nThror is their arm. Where Dsaldor keeps the highest camp and Coseal the preaching-ground, Thror keeps the war-camp between them, and the banishers and avengers of the Order go out from it at dusk to burn whatever lights they can reach on the slopes: the lesser glimmers of the lower camps, the geists, the dust Xaquira leaves on the grey grass. The Cullen watch's tally book has a column for the Azure burnings, kept since the first summer, and Thror's name is at the head of it.\n\nHe does not preach, and he does not explain. The shepherds say he was a smith of the firbolg kin before the sky tore, and that when the Glimmer came he walked up the hill with his hammer and a pot of blue paint and has not walked down since. His followers are the Order's young, the ones who joined for the burning rather than the song, and the realm's captains who have dealt with him say he is the only one of the Azure leaders who would, if Dsaldor let him, ride straight up to the lair and try the king himself.\n\nDsaldor does not let him. Thror keeps the law about the prince, as all the Order does, and the Cullen watch has seen him stand aside on the southern road while Maldahar rode past within a spear's cast, his hammer in his hand and his face turned up to the sky. The watch wrote it down. It is the only entry in the burnings column that is not a burning.",
+  "legend": "Azure Thror (52) holds the Order's war-camp on Sheeroe's northern slopes (about 395k/667k), between Dsaldor's camp and Coseal's. Hostile Azure camp: avengers and banishers (48-56) around him, so clear first. Plain mob, no script, 80-second respawn; the easiest of the three Azure named, fine for a group of 50s. Coseal (55) is close to the east; do not chain them. The Azure burn glimmers but will not help you against the Glimmer court. The war-camp is the most crowded of the three: pull from the edges, kill the avengers singly, then take Thror. He hits like the smith he is said to have been, so keep the heals on the tank.",
+  "yells": {
+    "aggro": [
+      "Up the hill with a hammer. Like me.",
+      "Burn the light. All of it.",
+      "You glow. I can see it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Dsaldor holds me back from the king. Not from you."
+      }
+    ],
+    "death": [
+      "Burn... the rest...",
+      "The hammer... to the sky..."
+    ],
+    "slay": [
+      "Burned.",
+      "One for the column.",
+      "Next light."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The Order's war-camp, smelling of pitch.",
+      "A smith's hammer, painted blue."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Thror's avengers rally to the war-camp!"
+      }
+    ],
+    "realmFirstKill": "Azure Thror, the Order's arm, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "thror is 52 in the azure war camp, between dsaldor and coseal. [easiest of the three|clear first]",
+      "avengers and banishers around. [48-56|careful]",
+      "coseal is close east. [dont chain|separate pulls]",
+      "plain mob, 50s group"
+    ],
+    "aftermathWin": [
+      "thror down. [the arm|got him]",
+      "clean pull, no coseal. [nice|grats]",
+      "the burnings column has a new entry lol",
+      "two to go. [dsaldor, coseal|keep going]"
+    ],
+    "aftermathLoss": [
+      "pulled coseal too. [oops|two]",
+      "avengers. [so many|wipe]",
+      "group too low",
+      "his hammer hurts. [tank down|ouch]"
+    ],
+    "rumour": [
+      "[heard|someone said] thror was a firbolg smith who walked up sheeroe with a hammer and blue paint",
+      "the cullen watch keeps a column for azure burnings and thror's name heads it",
+      "[word is|heard] thror would ride at the king himself if dsaldor let him",
+      "thror stood aside for maldahar on the south road, the watch says"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Thror",
+    "text": "The arm of the Order of the [Azure], who keeps the war-camp on Sheeroe's northern slopes and leads the burnings of the Glimmer's lesser lights. He stood aside for the prince, once, with his hammer in his hand."
+  },
+  "bookPage": "From Eoghan's account of Sheeroe: the watch keeps a column in its tally book for the blue folk's burnings, and Thror heads it. He was a smith of the firbolg kin, they say, and walked up the hill with his hammer and a pot of blue paint the summer the glimmers came, and has not walked down. His people are the young who joined for the burning, not the song. The watch saw him stand aside on the south road while the prince rode past within a spear's cast. It is the only entry in the column that is not a burning.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Azure Thror in Sheeroe Hills in {minutes} minutes.",
+    "loss": "Azure Thror turned back {realm}'s band under {raidLeader} in Sheeroe Hills after {minutes} minutes."
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "order-of-the-azure"
+  ],
+  "related": [
+    {
+      "id": "azure-dsaldor",
+      "relation": "his leader"
+    },
+    {
+      "id": "azure-coseal",
+      "relation": "the Order's preacher"
+    },
+    {
+      "id": "glimmer-lords",
+      "relation": "the lights he burns"
+    }
+  ]
+}

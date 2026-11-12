@@ -14,7 +14,7 @@ namespace DOL.GS.Spells
         public override bool StartSpell(GameLiving target)
         {
             LastSummonedRam = null;
-            if (!Caster.CurrentZone.IsOF || Caster.CurrentRegion.IsDungeon)
+            if (!(Caster.CurrentZone.IsOF || Caster.CurrentZone.IsBG) || Caster.CurrentRegion.IsDungeon)
             {
                 MessageToCaster("You cannot use siege weapons here!", eChatType.CT_SpellResisted);
                 return false;

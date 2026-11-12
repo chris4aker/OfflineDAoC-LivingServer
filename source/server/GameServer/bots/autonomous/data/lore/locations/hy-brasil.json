@@ -1,0 +1,256 @@
+{
+  "id": "hy-brasil",
+  "name": "Hy Brasil",
+  "realm": "Hibernia",
+  "regions": [
+    181
+  ],
+  "summary": "The lost isle of the Sylvan, where World's End, Cothrom Gorge and Allta Fearann keep their own old terrors.",
+  "facts": [
+    {
+      "text": "Shrouded Isles (2002) brought Hy Brasil, the long-lost home of the Sylvan, who sought Hibernia's aid against the Fomorians.",
+      "provenance": "mythic",
+      "source": "https://archive.rpgamer.com/news/Q3-2002/080502g.html"
+    },
+    {
+      "text": "Region 181's zones are Domnann, Caillte Garran, the Vale of Balor, Cothrom Gorge, World's End, Vigilant Rock and Allta Fearann.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Its named epics: in World's End Balere, Mollunero and Zytka (octonoid mothers), Kontar the Corrupt, Archilus and Elro the Ancient; in Cothrom Gorge Cronwort, Dremcis Fuiloltair with Beomarbhan, Gneiss and Marfoirwort; in Allta Fearann Curengkur.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Hy-Brasil is a phantom island of Irish tradition, said to appear west of Ireland and vanish again in mist.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Brasil_(mythical_island)"
+    },
+    {
+      "text": "Bot chat: corrupt sylvan on the isle; Curengkur stalks Allta Fearann and the mantids whisper his name; Elro the Ancient waits at World's End.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Olcasgean's banishment to World's End is bot-chat lore, kept as Living Server canon.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Region 181 zones and towns in the world data: Domnann (181, the Grove of Domnann), Caillte Garran (182, Droighaid), Vale of Balor (183, Aalid Feie), Cothrom Gorge (184), World's End (185), Vigilant Rock (186, Necht) and Allta Fearann (187).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml; GAPS-hibernia.md (world data)"
+    },
+    {
+      "text": "Monster factions of the isle in the world data include the Olcasgean faction (409 spawns), the Watcher, the Tree Dervishes, the Ixthiar Swarm, Z'zozicck Zhxizzckrrk, the Predators of Hy Brasil, the Outland Residents, Grazer and Krrzck.",
+      "provenance": "game",
+      "source": "GAPS-hibernia.md section 3 (world data Faction counts)"
+    },
+    {
+      "text": "Living Server lore: the seven countries in a guide's order; the Underneath under all of them; three accounts of why the isle hid (Domnann, Tir na Nog, Tir Urphost); Coll of the Domnann guides and the places the guides refuse.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Sailors of the west coast told of an island that rose out of the mist one day in seven years and was gone again before a boat could reach it. The Sylvan laugh at that. Hy Brasil was never lost, they say. It was hiding. When the Fomorians came, it stopped being able to hide, and the Sylvan came out of the mist to ask Hibernia for swords.\n\nWhat the Hibernians found was an old country with old troubles of its own. World's End lies on the far edge of the isle, the place the forests drove the titan Olcasgean before the first songs, and the land there still remembers him: treants as old as hills, shrouds of the dead that shake themselves apart into more shrouds, a Sylvan chieftain gone corrupt who keeps a guard of menders, and on its shores three great octonoid mothers, each with her brood. Cothrom Gorge is a wound in the earth where rot grows in flower-shapes, where a blood-drinker rides out on a stag that should be dead, where stone gets up and walks, and where the worst weed on the isle feeds on the living. Allta Fearann, the wild land, belongs to the mantids, and the mantids will not say aloud the name of the thing that hunts them.\n\nNone of these troubles came with the Fomorians. They were here first. The Sylvan only ask the realm's fighters to remember that, when they ride out from Domnann thinking they know what an enemy looks like.\n\nThe isle has seven countries, and the Sylvan name them in the order a guide walks them. Domnann first, the forest and its grove, where the Sylvan keep their springs and their seed-house and the wardens' stone; it is the only part of Hy Brasil that is, as the Sylvan put it, still entirely itself. West of it lies Caillte Garran, the lost grove, where Droighaid stands and where the Sylvan say a seed was lost that should not have been. Further west lies the Vale of Balor, which was Gleann Glas before the eye looked at it once from the tower of Tur Suil on its crag; Aalid Feie keeps the vale's edge, and the Fomorians' city of Fomor lies under the shore below. North of Domnann are Vigilant Rock and the village of Necht, where the Watchers keep their old post and the Sylvan who took the Root's side stand in his trees; and beyond it the wild land, Allta Fearann, the mantids' country, where great birds nest on the crags.\n\nThe last two are the oldest troubles. Cothrom Gorge splits the isle from Domnann to the northern coast, the crack the Long Pushing left, and its rot grows in flower-shapes. World's End is the far edge, the warm sour coast where the forests drove the Root, where the clans of the edge stayed too long and the shrouds of their dead walk the headland. Under all seven, the Sylvan say, lies the Underneath, the deep dark that the falls of Galladoria drink from and the octonoid mothers crawled out of; the Fomorians' cisterns, Fiachra of Howth thought, are a corner of the same dark.\n\nThe accounts of why the isle hid differ, and each is told by someone who wants something. The Sylvan of Domnann say Hy Brasil hid itself on purpose when the Fomorians came west after Mag Tuired, drew the mist round it like a cloak, and came out only when hiding stopped working. The druids of Tir na Nog say the mist was the Root's: the titan's breath, which thinned as the realm's first companies went down into the hollow, so that the isle came out because Galladoria had been opened, not the other way round. The fishers of Tir Urphost, who saw the isle rise, say only that the sea ran cold that summer and the koalinth came ashore.\n\nWhat the realm found was an old country with old troubles, and an ally that keeps careful count. The Sylvan guides of Domnann walk Hibernian companies out to every one of the seven countries and tell them what lives there before they let them go on. Some places they refuse to guide: Mollunero's pool, Elro's grove at the edge, the bare ring of Marfoirwort. The Sylvan say the realm's swords are welcome on the isle as long as they remember that most of what is dangerous on Hy Brasil was here before the Fomorians, and will be here after them.",
+  "legend": "Hy Brasil's open field is twelve scripted epics plus a lot of high-50s named. World's End: three octonoid mothers (Balere easy, Zytka hot, Mollunero strong; kill the mother and her whole brood vanishes), Kontar the Corrupt (kill his 8-10 bodyguards first, they heal only him), Archilus (below 90% every real-player hit spawns a shroud: let pets and bots hit him) and Elro the Ancient (treants per real player at 95-90% and 60-55%). Cothrom Gorge: Cronwort (burn it, the six breanworts die with it), Dremcis Fuiloltair (kill him, the stag Beomarbhan dies with him), Gneiss (six hardened granidons, one piece at a time) and Marfoirwort (80; never stack within 350 of its target). Allta Fearann: Curengkur (pull it off its nest first). Most have a 2,600 tether and reset to full if dragged. The Sylvan guides in Domnann will warn you; listen.",
+  "atmosphere": {
+    "firstEntry": [
+      "Hy Brasil. The isle that was never lost, only hiding.",
+      "The mist lifts. An old country looks back at you.",
+      "The isle remembers what it hid from.",
+      "Seven countries, and the oldest troubles last.",
+      "A Sylvan guide is already watching you."
+    ],
+    "areas": [
+      {
+        "name": "World's End",
+        "x": 375000,
+        "y": 262000,
+        "z": 4000,
+        "radius": 22000,
+        "lines": [
+          "The edge of the world. Something was banished here.",
+          "Warm, sour ground. The edge has not moved.",
+          "Shrouds walk the headland on no wind."
+        ]
+      },
+      {
+        "name": "Cothrom Gorge",
+        "x": 315000,
+        "y": 295000,
+        "z": 2600,
+        "radius": 20000,
+        "lines": [
+          "The gorge smells of rot and flowers.",
+          "The crack the Long Pushing left.",
+          "Weed the mother, not the children."
+        ]
+      },
+      {
+        "name": "Allta Fearann",
+        "x": 376086,
+        "y": 172803,
+        "z": 3452,
+        "radius": 6000,
+        "lines": [
+          "The mantids have gone quiet. Something hunts here.",
+          "If the mantids go quiet, turn round.",
+          "The air over a hollow shimmers."
+        ]
+      },
+      {
+        "name": "the octonoid shore",
+        "x": 385000,
+        "y": 255000,
+        "z": 4200,
+        "radius": 9000,
+        "lines": [
+          "The shallows are full of soft, curling shapes.",
+          "Three mothers. Never seen together.",
+          "Cross her water once, and quickly."
+        ]
+      },
+      {
+        "name": "Domnann",
+        "x": 335000,
+        "y": 360000,
+        "z": 3600,
+        "radius": 18000,
+        "lines": [
+          "The grove of Domnann. Still entirely itself.",
+          "Springs, a seed-house, the wardens' stone."
+        ]
+      },
+      {
+        "name": "Vigilant Rock",
+        "x": 410000,
+        "y": 320000,
+        "z": 3400,
+        "radius": 20000,
+        "lines": [
+          "Necht, and the Watchers' old post.",
+          "Sylvan stand in the Root's trees here."
+        ]
+      },
+      {
+        "name": "the Vale of Balor",
+        "x": 300000,
+        "y": 360000,
+        "z": 3500,
+        "radius": 22000,
+        "lines": [
+          "Gleann Glas, before the eye looked once.",
+          "A tower on the crag. One window."
+        ]
+      },
+      {
+        "name": "Caillte Garran",
+        "x": 260000,
+        "y": 300000,
+        "z": 3000,
+        "radius": 18000,
+        "lines": [
+          "The lost grove. Droighaid keeps its edge.",
+          "A seed was lost here that should not have been."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the sylvan say hy brasil was never lost, [only hiding|it just hid in the mist]",
+      "world's end is where the forests drove olcasgean. [the land still remembers him|you can feel it]",
+      "three octonoid mothers on the world's end shore. balere, mollunero, zytka. [each with a brood|bring aoe]",
+      "the mantids in allta fearann wont say curengkur out loud. [i dont blame them|smart bugs]",
+      "the sylvan name the seven countries of hy brasil in the order a guide walks them. domnann first",
+      "cothrom gorge is the crack the long pushing left. [rot flowers|bad place]",
+      "the sylvan burn their dead because of world's end. [archilus|the shrouds walk]",
+      "kill an octonoid mother and her whole brood vanishes. [all three|dont bother with the young]",
+      "kontar's guards heal only kontar. [kill them first|aoe the guards]",
+      "dremcis's stag dies when dremcis dies. [dont fight the stag|ignore beomarbhan]",
+      "never stack on marfoirwort. it drinks from everyone near its target",
+      "pull curengkur off its nest or it heals forever. [800 out|down the slope]",
+      "the domnann guides wont take you to mollunero's pool, elro or marfoirwort. [they say why|listen to them]"
+    ],
+    "rumour": [
+      "[heard|someone said] kontar the corrupt has [more guards|a bigger guard] than last week",
+      "[word is|someone swore] marfoirwort in cothrom gorge [ate|drained] a whole group",
+      "[heard|someone said] the underneath runs under all of hy brasil. [the falls drink from it|fomor's cisterns too]",
+      "[word is|heard] the isle came out of the mist because galladoria was opened",
+      "[heard|someone said] the sea ran cold the summer hy brasil came out. [koalinth came ashore too|tir urphost says]",
+      "the sylvan say most of what is dangerous on hy brasil was here before the fomorians",
+      "[heard|someone said] elro is what keeps the sour ground at world's end from spreading",
+      "[word is|heard] cronwort's patch creeps nearer the gorge road every summer"
+    ],
+    "tell": [
+      "hy brasil open field: octonoid mothers and kontar in world's end, the gorge has cronwort, gneiss, dremcis and marfoirwort",
+      "curengkur in allta fearann, elro and archilus at world's end. most of them bring friends",
+      "what's on hy brasil? seven zones: domnann, caillte garran, vale of balor, cothrom gorge, world's end, vigilant rock, allta fearann",
+      "where are the hy brasil epics? world's end and cothrom gorge mostly, curengkur in allta fearann",
+      "is hy brasil hard? the open field epics are 58-80. bring a group for most, a raid for marfoirwort",
+      "where is tur suil? on its crag in the vale of balor. fomor is under the shore"
+    ]
+  },
+  "loremaster": {
+    "intro": "Hy Brasil was never lost, the Sylvan say. It was hiding. It has seven countries, [Domnann] first, and its own old troubles: [World's End], [Cothrom Gorge] and [Allta Fearann], none of which came with the Fomorians.",
+    "topics": {
+      "World's End": "The far edge, where the forests drove the titan. Treants as old as hills, shrouds of the dead, three [octonoid mothers] and a Sylvan chieftain gone corrupt.",
+      "octonoid mothers": "Balere, Mollunero and Zytka, each with her brood in the shallows. The young come first.",
+      "Cothrom Gorge": "A wound in the earth where rot flowers. A blood-drinker rides a dead stag there, stone walks, and Marfoirwort feeds on the living.",
+      "Allta Fearann": "The wild land of the mantids, and of Curengkur, whose name they will not say aloud.",
+      "Domnann": "The Sylvan forest and its grove: the springs, the seed-house, the wardens' stone. The only country of the isle still entirely itself. The guides who walk you out start here, and so should you.",
+      "Vigilant Rock": "North of Domnann: Necht, the Watchers' old post, and the trees where the Sylvan who took the Root's side stand. Beyond it lies [Allta Fearann].",
+      "Vale of Balor": "Gleann Glas, until the eye in Tur Suil looked at it once. Aalid Feie keeps its edge; the Fomorians' city lies under the shore below.",
+      "Caillte Garran": "The lost grove west of [Domnann], where Droighaid stands and where a seed was lost.",
+      "Underneath": "The deep dark under all seven countries, the Sylvan say: the falls of Galladoria drink from it and the [octonoid mothers] crawled out of it."
+    }
+  },
+  "book": {
+    "title": "A Sylvan Guide to the Old Troubles, by Coll of the Domnann guides",
+    "pages": [
+      "You came for the Fomorians. Everyone does. Before you go looking for them, let a guide of Domnann tell you what else lives on this isle, because it was here before them and will be here after. My name is Coll. I have walked Hibernian companies out to all seven countries since the second summer of the isles, and I have buried some of them, and the ones I buried did not listen. Listen. I will tell you the old troubles in the order I walk them, the worst first, and I will tell you which of them I will not walk you to.",
+      "World's End first, because it is the worst. The land is warm and sour where the forests drove the Root. Three octonoid mothers keep its shore, Balere, Zytka and Mollunero, and their young go back into the sea with them. Kontar's clan stayed on that coast too long, and his menders mend only him now. The shrouds of their unburned dead walk the headland; Archilus is the eldest. Elro the keeper-tree stands at the very edge, and I will not take you to him. He is holding something, and I would rather he went on holding it than learn what it is.",
+      "Cothrom Gorge, the crack the Long Pushing left. Its rot grows in flower-shapes. Cronwort stands with its breanworts round it, and the gorge folk say weed the mother, not the children. Dremcis rides out of the deep gorge on a dead stag that falls when he falls. Gneiss is a hill that walked, and breaks a piece at a time. And at the head of the gorge is the bare ring of Marfoirwort, which drinks from everyone who stands near its meal. The gorge folk cross near it one at a time. Fionn Óg of Connla did not, and there is a rowan on the rim for his company.",
+      "Allta Fearann, the wild land, the mantids' country north of Vigilant Rock. They are not friendly and they are not enemies; they are busy, and great birds nest on the crags above them. There is one thing they fear, and they do not say its name above a whisper. We write it here so that you need not say it: Curengkur. Its nest burns the air and mends it, and the mantids never fight it at home; their old hunters sting it and run, and draw it down the slope first. If the mantids go quiet, turn round.",
+      "The rest you will find with your own swords: the tower on the crag in the Vale of Balor, the city under the shore, the hollow under Galladoria. Those are the Fomorians' and the Root's, and you came for them, and other books than mine will tell you of them. I ask only that you remember the old troubles when you ride out of Domnann thinking you know what an enemy looks like. And when a guide says no, it is not because she is afraid. It is because she counted. The Sylvan keep a tally of everything: springs, seeds, friends, dead. Hibernia is on every page of it."
+    ]
+  },
+  "bosses": [],
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "sylvan",
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "domnann",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "caillte-garran",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "vale-of-balor",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "cothrom-gorge",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "worlds-end",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "vigilant-rock",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "allta-fearann",
+      "relation": "a zone of the region, with its own file"
+    }
+  ]
+}

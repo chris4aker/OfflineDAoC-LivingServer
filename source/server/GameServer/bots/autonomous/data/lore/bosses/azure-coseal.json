@@ -1,0 +1,111 @@
+{
+  "id": "azure-coseal",
+  "name": "Azure Coseal",
+  "npcNames": [
+    "Azure Coseal"
+  ],
+  "locationId": "sheeroe-hills",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "The Order of the Azure on Sheeroe's northern slopes (world data): azure cleansers (45-54), banishers (48-56), avengers (51-56) and idolaters (24-27), with Tailtiu guards (55) and a Voice of the Azure (27); its named are Azure Dsaldor (57, 382,500/666,200), Azure Coseal (55, 400,100/666,900) and Azure Thror (52, 395,300/667,400), plain spawns with an 80-second respawn, model 354 at size 76-77.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore (Cuuldurach ch.4, Maldahar, Sheeroe place): Coseal as the Order's preacher, who sends the Voices of the Azure down into Connacht and says of the prince only that the son is not the father.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The Order of the Azure is the realm's strangest ally against the Glimmer King, and the realm is not sure it is an ally at all. They are firbolg kin who paint themselves blue and pray to the open sky, and they came up onto Sheeroe's northern slopes the summer after the sky tore, to make war on the light. They burn the Glimmer. They burn anything that glows. Their guards are named for Tailtiu, the foster-mother who made the first games for Lugh of the long arm, and the Azure say the open sky is Lugh's, and the Glimmer's light is stolen from it.\n\nCoseal is their preacher. His camp is the Order's preaching-ground, on the eastern side of the northern slopes, a flat of grey turf where the blue folk gather at dawn and dusk and turn their faces up and sing to the open sky while he speaks. The Cullen shepherds who have heard him from a distance say he speaks well, too well, and that the song the Order sings after him is the most beautiful thing on Sheeroe, which is a hard thing to say of a hill that has a court of lights on it.\n\nHe trains the Voices of the Azure, the little companies of blue-painted preachers who go down off the hill into Connacht, to the market at Basar and the road below Druim Ligen, and preach the light that does not burn to anyone who will stop. The farmers' sons who listened to the Voices are the young Azure of the farms now, Bas and Windaille and the others, who burn lamps and marsh-lights in the Order's name. Coseal did not tell them to. When the realm's captains have asked him to tell them to stop, he has said that he preaches the sky, and that what the farms hear in it is the farms' affair.\n\nHe is the only one of the Order who has ever explained, a little, Dsaldor's law. Asked why the Azure will not touch the Glimmer Prince, Coseal says the son is not the father, and that the Order's quarrel is with the king and the light he stole, and he will say nothing more however he is asked. The druids of Lough Gur have written it down in their book of Sheeroe as the only sentence the Order has ever spoken about the prince.",
+  "legend": "Azure Coseal (55) holds the Order's preaching camp on the eastern side of Sheeroe's northern slopes (about 400k/667k), with Thror (52) not far west. Hostile Azure camp: cleansers, banishers and avengers (45-56) around him, so clear first. Plain mob, no script, 80-second respawn; a full 50s group. The Voices of the Azure who preach in Connacht (Basar, Druim Ligen) are low-level and his; the young Azure of the farms (Bas, Windaille) are quest targets in Connacht (Destructive Forces). Expect the preaching camp to be busy: several cleansers stand in the open on the grey turf, so a puller who can bring them one at a time saves the group. He resets to full if everyone drops off him, like every named here.",
+  "yells": {
+    "aggro": [
+      "Sing, and listen. No? Then fight.",
+      "The light that does not burn. You carry the other kind.",
+      "The sky hears everything."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The son is not the father. Remember that much."
+      }
+    ],
+    "death": [
+      "The song... someone finish the song...",
+      "Up... to the open sky..."
+    ],
+    "slay": [
+      "Hear it now?",
+      "The sky keeps you.",
+      "Another lantern out."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A flat of grey turf where the blue folk sing.",
+      "The most beautiful song on Sheeroe."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Order's song rises around Coseal!"
+      }
+    ],
+    "realmFirstKill": "Azure Coseal, the Order's preacher, has fallen silent."
+  },
+  "botLines": {
+    "briefing": [
+      "coseal is 55 in the azure preaching camp. [clear the camp|cleansers and avengers]",
+      "thror is close, west. [dont chain them|careful]",
+      "plain mob, full 50s group",
+      "his voices preach in basar and druim ligen"
+    ],
+    "aftermathWin": [
+      "coseal silenced. [the song stopped|got him]",
+      "camp cleared first. [nice|clean]",
+      "dsaldor next? [highest camp|sure]",
+      "thror too"
+    ],
+    "aftermathLoss": [
+      "pulled thror's camp as well. [oops|two named]",
+      "avengers everywhere. [too many|wipe]",
+      "group too low",
+      "stood and listened to the song lol"
+    ],
+    "rumour": [
+      "[heard|someone said] coseal trains the voices of the azure who preach in basar",
+      "coseal says the son is not the father. [about maldahar|thats all he says]",
+      "[word is|heard] the azure song at coseal's camp is the most beautiful thing on sheeroe",
+      "the young azure burning lamps in connacht listened to coseal's voices"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Coseal",
+    "text": "The preacher of the Order of the [Azure], on the preaching-ground of Sheeroe's northern slopes. He trains the Voices who preach in Connacht and says of the prince only that the son is not the father."
+  },
+  "bookPage": "From Eoghan's account of Sheeroe: Coseal preaches on the flat of grey turf on the eastern side of the blue folk's ground, at dawn and at dusk, and they sing after him with their faces turned up, and it is the most beautiful sound on Sheeroe. I have heard it from the bog. He trains the Voices who go down to Basar, and the farm boys who listened are burning lamps now. He says he preaches the sky and what the farms hear in it is their affair. Of the prince he says only that the son is not the father.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Azure Coseal in Sheeroe Hills in {minutes} minutes.",
+    "loss": "Azure Coseal turned back {realm}'s band under {raidLeader} in Sheeroe Hills after {minutes} minutes."
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "order-of-the-azure"
+  ],
+  "related": [
+    {
+      "id": "azure-dsaldor",
+      "relation": "his leader"
+    },
+    {
+      "id": "azure-thror",
+      "relation": "the Order's arm"
+    },
+    {
+      "id": "maldahar-the-glimmer-prince",
+      "relation": "'the son is not the father'"
+    }
+  ]
+}

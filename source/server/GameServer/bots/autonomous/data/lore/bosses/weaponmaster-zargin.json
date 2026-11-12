@@ -1,0 +1,108 @@
+{
+  "id": "weaponmaster-zargin",
+  "name": "Weaponmaster Zargin",
+  "npcNames": [
+    "Weaponmaster Zargin"
+  ],
+  "locationId": "delling-crater",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "dellingstad"
+  ],
+  "related": [
+    {
+      "id": "vorkald",
+      "relation": "the keeper of Dellingstad's account with the herd, across the town"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Weaponmaster Zargin is a level-54 man of Dellingstad (the town's soothsayer and crossbowman model) in a yard at the town's edge (363385, 322586), with five Zargin's students (45-49, People of Dellingstad) and five dummy golems (36) around him.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60167833)"
+    },
+    {
+      "text": "Template: aggressive (200 at range 500) with no faction, so he brings no friends himself; his students are People of Dellingstad and aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Every child of Dellingstad is taught the crossbow, Kolfinna the miner wrote to her daughter, and every child is taught it in Zargin's yard. The weaponmaster keeps it at the edge of the town, a square of trodden ash with golems of straw and clay standing in it for the young ones to strike, and he has kept it for longer than most of the town's fortifiers have been alive.\n\nHe is not of the town by birth, the soothsayers say, which is why he has no place in its councils and wants none. He came over the rim as a young man, from somewhere the town does not discuss, with a blade and a crossbow and no people, and asked to be let in. Dellingstad lets no stranger in until he has proved a friend, and Zargin proved it, the story goes, by standing in front of the gate for a season and shooting every morvalt that came over the south-western wall, until the fortifiers grew tired of watching him do their work and opened the gate. They never made him one of the town's own. They gave him the children instead.\n\nHe teaches them the way the town fights: from the wall, at range, without hurry, and never by letting a stranger close. The students in his yard are the town's young, and they are quick to come at anyone who walks in among them, because that is the first thing he teaches. Zargin himself comes at strangers the same way he came at the morvalt, alone, because he has never had anyone of his own to call and has never asked the town for help. The students come anyway. The soothsayers say that is the only proof the weaponmaster has ever needed that the town took him in after all.\n\nThe golems of straw and clay in his yard are struck so often that the miners of the south-west wall make him new ones every month. Kolfinna wrote that her daughter's first golem is still standing in the yard, with one bolt in the middle of its chest, because Zargin will not let it be replaced. He says a teacher should remember what a good shot looks like.",
+  "legend": "Weaponmaster Zargin is a level 54 Dellingstad NPC in his training yard at the edge of town, with five Zargin's students (45-49) and five dummy golems around him. Like the rest of Dellingstad he's aggressive to you until your People of Dellingstad faction is good. Zargin has no faction himself (no bring-a-friend), but his students do and they're aggressive and right there, and the town's crossbowmen and fortifiers aren't far. No abilities, not CC-immune. Killing Dellingstad folk shifts your faction the usual way, so if you want the town's quests (Mammoth Hunt's whisker goes to Vorkald here), leave the yard alone.",
+  "yells": {
+    "aggro": [
+      "Stranger in the yard! Students, show me!",
+      "Close? You let a stranger get close? Again!",
+      "A good shot. Watch it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Never let them close. I am breaking my own lesson."
+      }
+    ],
+    "death": [
+      "Remember... what a good shot... looks like...",
+      "The yard... is theirs now..."
+    ],
+    "slay": [
+      "One bolt. Centre of the chest.",
+      "That is how it is done.",
+      "Students, note the range."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A yard of trodden ash. Golems of straw and clay.",
+      "Students shoot. The weaponmaster corrects."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Zargin's students close in around their teacher."
+      }
+    ],
+    "realmFirstKill": "Weaponmaster Zargin falls in his own yard."
+  },
+  "botLines": {
+    "briefing": [
+      "zargin is 54 in dellingstads training yard",
+      "students are aggro and dellingstad faction, they come",
+      "killing town folk hurts your dellingstad faction",
+      "no tricks on zargin"
+    ],
+    "aftermathWin": [
+      "zargin down, the students too",
+      "faction hit for sure",
+      "easy-ish",
+      "fortifiers didnt notice"
+    ],
+    "aftermathLoss": [
+      "the crossbowmen joined from the wall",
+      "students swarmed",
+      "too close to town",
+      "pulled the fortifiers"
+    ],
+    "rumour": [
+      "zargin stood a season at dellingstads gate shooting morvalt before they let him in",
+      "every dellingstad child learns the crossbow in zargins yard",
+      "zargin isnt from dellingstad and has no seat in its councils",
+      "zargin keeps one golem with a bolt in its chest, he wont replace it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Weaponmaster Zargin",
+    "text": "The stranger who stood a season at [Dellingstad]'s gate shooting morvalt until the town let him in, and was given its children to teach instead of a seat in its councils."
+  },
+  "bookPage": "From The Bowl and the Rim, by Kolfinna of Dellingstad: when you were small, daughter, Zargin put a crossbow in your hands that was taller than you, and stood behind you, and did not touch it. You shot the golem in the chest on your first bolt. He looked at it a long time and then said to me, not to you, that the town should be glad it let him in, because otherwise you would have had to find out how good you were by shooting at him. I did not know whether he was joking. I still do not.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} beat Weaponmaster Zargin in Dellingstad's yard in {minutes} minutes.",
+    "loss": "Weaponmaster Zargin's students drove {raidLeader}'s party from {realm} out of the yard after {minutes} minutes."
+  }
+}

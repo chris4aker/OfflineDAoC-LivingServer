@@ -1,0 +1,127 @@
+{
+  "id": "skeletal-sacristan",
+  "name": "Skeletal Sacristan",
+  "catalogKey": "caer-sidi/skeletalsacristan",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 77, 100,000 health. He walks a fixed round of the high walk; Offline DAoC makes him stand while he is fought, because a raid could not keep up with his round.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/SkeletalSacristan.cs"
+    },
+    {
+      "text": "A sacristan keeps a church's sacred vessels and vestments.",
+      "provenance": "original",
+      "source": "common usage"
+    },
+    {
+      "text": "Skeletal Sacristan: level 77, 100,000 health, GetResist 40 melee / 55 other (70 only with AllowSacristanPatrol, off); stops his round while in combat; 60 s without combat heals him to full.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/SkeletalSacristan.cs"
+    },
+    {
+      "text": "The treasury keeper of the old province, the hour-long chase, the narrow stretch past the chapel door, Cadoc's key, Brother Huw and the clay cups are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The Skeletal Sacristan kept the vessels of the chapel of Caer Sidi on its high walk: the cups, the lamps, the vestments and the rim of the cauldron that nine maidens kept warm, lent by Arawn to feed his prisoners. The Inconnu say he was a keeper of the treasury of a great church of the old province who came to Annwn with his keys on his belt. His work was a round from the sacristy to the chapel and back, checking each vessel against his list, fast and never stopping; the prisoners in the yard set their hours by him. When the gaol rose the vessels were broken or carried off and the rim went down to the larders, and he went on with his round, checking for things that are no longer there.\n\nIn the first seasons Albion's companies chased him round the walk for an hour and came down too tired to climb, while the yard laughed; the galleries' sorcerers had long known their spells did little to him. Something went out of his round when the end of the world first fell. Now, struck, he stops and stands as a sacristan stands when someone reaches for the plate, and if the trouble leaves him alone long enough he goes back to his round untouched, because a sacristan does not leave a list half checked.\n\nDame Ysolde did not chase him. She set her shields across the narrow stretch of the walk past the chapel door and let him come to her; her company's swords did the work, because his bones turned spells as a good lock turns a wrong key. When he fell, his keys fitted nothing on the walk. Brother Cadoc kept one; it hangs in the sacristy at Caer Gothwaite and fits no lock there.\n\nThe Church calls him the one honest worker in Caer Sidi; the Inconnu, the last keeper who keeps his task exactly. His list grows with what companies leave on his walk. Caer Gothwaite's companies leave an unfired clay cup on his shelf.",
+  "legend": "The Skeletal Sacristan is level 77 with 100,000 health and walks a fixed loop of the high walk. In the original he never stopped and outran whole raids; here he stops and fights as soon as he is hit, and stays put while the fight keeps going. Melee kill: 40% less from slash, crush and thrust, 55% less from everything else. Set the tanks across the narrow stretch of the walk past the chapel door, let him walk into you, and burn him with steel. Commit when you engage: if the fight goes quiet for a minute he heals to full and goes back to his round. No adds of his own. The old raids that ran after him for an hour still talk about it, and none of them fondly. Caer Gothwaite raids leave a clay cup on his shelf after.",
+  "yells": {
+    "aggro": [
+      "The vessels. Where are the vessels?",
+      "Stand aside from the walk.",
+      "The round is not finished."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Out of the way! The round must be kept!"
+      }
+    ],
+    "death": [
+      "The round... is not... finished...",
+      "Who will keep the vessels?"
+    ],
+    "slay": [
+      "Stand aside from the walk.",
+      "Out of the sacristy.",
+      "Not a vessel. Discard."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Footsteps on the walk above. Always the same round.",
+      "The walk is worn smooth by one pair of feet."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Sacristan's round is ended. The walk is quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "sacristan walks a loop, he stops once hit. dont chase him, let him walk into us",
+      "tanks across the narrow bit past the chapel door",
+      "melee kill, spells do about half",
+      "a minute quiet and he heals full and walks off, commit"
+    ],
+    "aftermathWin": [
+      "sacristan down. his round is over",
+      "he stood still for once",
+      "caught him first try",
+      "the walk is quiet"
+    ],
+    "aftermathLoss": [
+      "nobody blocked his path",
+      "pulled him and then everyone stopped",
+      "his magic resist ate our casters, should have been steel",
+      "nobody stood in his way and he walked off before anyone had him"
+    ],
+    "rumour": [
+      "heard the sacristan still checks for vessels that are long gone",
+      "[someone said|heard] the sacristan used to outrun whole raids",
+      "heard the cauldron's rim is still down in the larders",
+      "the inconnu say the cauldron was kept warm by nine maidens",
+      "heard caer gothwaite groups leave a clay cup on the sacristan's shelf",
+      "[heard|someone said] the old raids chased the sacristan for an hour"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sacristan",
+    "text": "The keeper of the chapel's vessels in [Caer Sidi], who still walks his round of the high walk checking for cups that are gone. Once he never stopped; now, struck, he stands. [Dame Ysolde] waited for him on the narrow walk. See [Spectral Provisioner]."
+  },
+  "bookPage": "On the high walk we heard footsteps going round and round, always the same pace, always the same round, and Ennyn, our guide, said that the companies before ours had chased the Sacristan for an hour and never caught him. So we did not chase him. We stood across the walk in a wall and waited, and he came round to us, still looking for the vessels that are not there, and found us in his way instead. He seemed more puzzled than angry. When he fell he asked who would keep the vessels now. Nobody had an answer that would have comforted him.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} stood in the Sacristan's way and ended his round in {minutes} minutes.",
+    "loss": "The Skeletal Sacristan walked on past {realm}'s raid; {raidLeader} could not stop him."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "spectral-provisioner",
+      "relation": "fellow keeper; the cauldron in his care fed the provisioner's charges"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Keeper of the Vessels",
+      "text": "Arawn's gaol had a chapel of its own, and the chapel had a sacristan to keep its vessels.\n\nThe Inconnu say the chapel of Caer Sidi was the first thing in the fortress that was beautiful. It stood on the high walk, above the yard and below the galleries, with a sacristy at one end of the walk and the chapel at the other, and in it were the gaol's cups and lamps, its vestments, and the rim of the cauldron that nine maidens once kept warm with their breath, lent by Arawn so that his prisoners might be fed. The sacristan kept all of it. He was a careful man in his life, the Inconnu say, a keeper of the treasury of some great church of the old province, and he came to Annwn with his keys still on his belt.\n\nHis work was a round. Every hour of the gaol's long night he walked from the sacristy to the chapel along the high walk, and checked each vessel against his list, and walked back, and began again. He walked fast, the prisoners in the yard below said, faster than a living man can walk for long, and he never once stopped, and they set their count of the hours by his passing. The priests of Caer Gothwaite, who have a sacristan of their own, say that is exactly what a good sacristan is like.\n\nWhen the gaol rose, the vessels were broken or carried off. The cups went into the galleries, the lamps into the crypts, and the cauldron's rim down to the larders, where it lies cold and the provisioner guards it. The sacristan did not join the rising and did not oppose it. He went on with his round. He walks the high walk as he always has, from the sacristy to the chapel and back, checking for things that are no longer there, and the Inconnu say he has not yet noticed that they are gone."
+    },
+    {
+      "title": "The Hour-Long Chase",
+      "text": "In the first seasons after the rising, the companies of Albion chased the sacristan round his walk, and the realm has never let them forget it.\n\nHe did not stop for them then. He did not stop for anything. A company that came up onto the high walk and struck him found him already gone past, walking his round at a pace no armoured knight could match for long, and it had to run after him, and strike him again, and run again, the length of the walk and back, while he checked his empty shelves. The galleries' sorcerers above him had worked out long before that their spells did little to him, which made the chase longer. Brother Cadoc of Caer Gothwaite wrote that Ennyn of the Inconnu told him of companies before Ysolde's that had chased the sacristan for an hour and come down the stair too tired to climb any further, and that the prisoners in the yard below had laughed.\n\nThat is no longer so. The Inconnu say that something went out of the sacristan's round when the end of the world first fell, as something went out of all Arawn's old keepers. He walks his round still, but when he is struck now, he stops. He turns and stands, as a sacristan stands when someone reaches for the plate, and he does not go on until the trouble is over. If the trouble lets him alone long enough, the Inconnu add, he goes back to his round untouched, as if he had never been interrupted, because a sacristan does not leave a list half checked.\n\nThe prisoners in the yard no longer set their hours by him. They say the gaol's clock has been wrong since the sacristan learned to stand still."
+    },
+    {
+      "title": "Ysolde on the High Walk",
+      "text": "Dame Ysolde's company came up onto the high walk at the hour the Inconnu said the sacristan would pass the chapel door, and Ysolde did not chase him. She waited for him.\n\nShe had Ennyn's account of the companies before her, and she had studied the walk. Past the chapel door it narrows, between the chapel wall and the sheer fall to the yard, so that two knights abreast fill it from side to side. She set her shields across that narrow stretch and her priests behind them and let him come to her along his round. Cadoc wrote that he came round the corner of the sacristy checking a list that was not in his hands, and saw the shields, and stopped, and looked at them as a sacristan looks at a stranger in the vestry.\n\nIt was a long fight, though not a chase. The knights held the narrow stretch and struck, and the company's swords did the work, because the sacristan's bones turned the sorcerers' spells as a good lock turns a wrong key. He did not fight well; he had never been a fighter. He fought the way a careful man defends a treasury, without stopping, until it was over. When he fell, his keys fell with him, and Cadoc picked them up, and found that they fitted nothing on the high walk at all.\n\nCadoc kept one key. It hangs on a nail in the sacristy of the chapel at Caer Gothwaite, and the garrison's own sacristan, Brother Huw, has tried it in every lock in the castle and found it fits none. He has asked to be allowed to try it in the cathedral at Camelot. The Constable's office has not answered."
+    },
+    {
+      "title": "The List of Things That Are Not There",
+      "text": "The sacristan stands again on the high walk when the next company climbs, with his keys at his belt, and Brother Cadoc's key still hangs at Caer Gothwaite. The Inconnu say a sacristan always has a spare.\n\nThe realm's readings of him are kinder than of any keeper in Caer Sidi. The Church of Camelot, which has nothing kind to say of Arawn's gaol, says the sacristan is the one soul in it doing honest work, and that if he were a Christian sacristan he would be a saint. The Inconnu say he is the last of Arawn's household who still keeps his task exactly as it was given him, and that their lord, when he walks to the foot of the riders' stair each winter, stops on the high walk to watch him pass. The bards say he is a fool, and that the bards of Caer Sidi will be singing about him long after they have forgotten the riders.\n\nWhat he wants is the vessels back. He does not know they are gone, the Inconnu say, but some part of him must, because he checks harder than he used to. The list he carries in his head is longer every age: the cups and the lamps and the vestments and the rim, and the things the companies of Albion have left on his walk, a glove, a spur, a prayer-book with the name of a knight of the Isle of Glass in it, all of which he has added to his list and checks for on every round.\n\nCaer Gothwaite keeps a custom for him that Brother Huw began. Every company that climbs the turning gaol carries a small clay cup from the garrison's kiln, unfired, and leaves it on the shelf in the sacristy on the high walk after the sacristan has fallen. The cups are gone by the next climb. Huw says he would like to think they are on the list."
+    }
+  ]
+}

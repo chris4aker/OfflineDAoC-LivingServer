@@ -29,7 +29,7 @@ namespace DOL.GS
             if (EpicEncounterActors.IsCombatant(source))
             {
                 Point3D spawn = new Point3D(SpawnPoint.X, SpawnPoint.Y, SpawnPoint.Z);
-                if (EpicEncounterMechanics.AllowPositionPuzzle && !source.IsWithinRadius(spawn, TetherRange))//dont take any dmg 
+                if (EpicEncounterMechanics.AllowPositionPuzzleFor(this) && !source.IsWithinRadius(spawn, TetherRange))//dont take any dmg 
                 {
                     if (damageType == eDamageType.Body || damageType == eDamageType.Cold || damageType == eDamageType.Energy || damageType == eDamageType.Heat
                         || damageType == eDamageType.Matter || damageType == eDamageType.Spirit || damageType == eDamageType.Crush || damageType == eDamageType.Thrust
@@ -103,6 +103,7 @@ namespace DOL.GS
             Faction = FactionMgr.GetFactionByID(96);
             EasmarachBrain.restphase = false;
             EasmarachBrain.dontattack = false;
+            EasmarachBrain.FallsHeals = 0;
 
             EasmarachBrain sBrain = new EasmarachBrain();
             SetOwnBrain(sBrain);
@@ -134,6 +135,8 @@ namespace DOL.AI.Brain
             }
         }
         public static bool restphase = false;
+        /// <summary>Heals on the waterfall top this fight (1.2: once, unless epic_easmarach_endless_falls_heal is on).</summary>
+        public static int FallsHeals = 0;
         public static bool dontattack = false;
         public override void AttackMostWanted()
         {
@@ -161,13 +164,20 @@ namespace DOL.AI.Brain
         {
             restphase = false;
             healBoss = false;
+            // 1.2 play test (2026-11-07): his rest over, he comes back down to his spawn the way he went up (no walked path
+            // leads off the waterfall top, so he stayed up there for good). Off with the original endless heal.
+            if (!EpicEncounterMechanics.AllowEasmarachEndlessFallsHeal && Body.IsAlive && Body.Z > Body.SpawnPoint.Z + 600)
+            {
+                Body.Z = Body.SpawnPoint.Z;
+                Body.WalkTo(new Point3D(Body.SpawnPoint.X, Body.SpawnPoint.Y, Body.SpawnPoint.Z), 200);
+            }
             return 0;
         }
         private bool healBoss = false;
         public override void Think()
         {
             Point3D point1 = new Point3D(37811, 50342, 10958);
-            if (Body.HealthPercent <= 30 && !restphase)
+            if (Body.HealthPercent <= 30 && !restphase && (EpicEncounterMechanics.AllowEasmarachEndlessFallsHeal || FallsHeals == 0)) // EpicEncounterMechanics.EasmarachRetreats
             {
                 ClearAggroList();
                 new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(StartWalk), 100);
@@ -185,7 +195,10 @@ namespace DOL.AI.Brain
             if (Body.IsWithinRadius(point1, 50) && !healBoss && restphase)
             {
                 if(Body.HealthPercent <= 30)
+                {
                     Body.Health += Body.MaxHealth / 8;
+                    FallsHeals++;
+                }
 
                 new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(EndWalk), Util.Random(50000,80000));
                 dontattack = false;
@@ -195,16 +208,16 @@ namespace DOL.AI.Brain
             if (Body.IsAlive)
             {
                 Point3D nopass = new Point3D(37653, 52843, 10758);//you shall not pass!
-                foreach(GamePlayer player in Body.GetPlayersInRadius(10000))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 10000, bots: EncounterTargets.DisplacesBots(Body)))
                 {
                     if(player != null)
                     {
-                        if(player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if(player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (player.IsWithinRadius(nopass, 1000))
                             { 
-                                if (EpicEncounterMechanics.AllowDisplacement) player.MoveTo(Body.CurrentRegionID, 40067, 50494, 11708, 1066);
-                                player.Out.SendMessage("The strong current of the waterfall pushes you behind", eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
+                                if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(player, Body.CurrentRegionID, 40067, 50494, 11708, 1066, DisplacementKind.Barrier, Body);
+                                EncounterTargets.Tell(player, "The strong current of the waterfall pushes you behind", eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
                             }
                         }
                     }
@@ -216,6 +229,7 @@ namespace DOL.AI.Brain
                 restphase = false;
                 dontattack = false;
                 healBoss = false;
+                FallsHeals = 0;
                 INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(60160317);
                 Body.MaxSpeedBase = npcTemplate.MaxSpeed;
             }

@@ -1,0 +1,157 @@
+{
+  "id": "council-nokkvi",
+  "name": "Council Nokkvi",
+  "catalogKey": "tuscaran-glacier/nokkvi",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "council-vagn",
+      "relation": "his inseparable partner"
+    },
+    {
+      "id": "elder-council-guthlac",
+      "relation": "the other councillor who never spoke"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Nokkvi is a level-78 Council member with 100,000 health, linked to Council Vagn.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam players said he seemed to have a million hit points and resisted every spell (2005).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4690"
+    },
+    {
+      "text": "Nokkvi resists 90% of melee but only 20% of magic. He has no spells. He and Vagn bring each other in within 1,800. 100,000 health, CC-immune; resets past his tether or 30 s out of combat.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs"
+    },
+    {
+      "text": "Nokkvi is Old Norse nokkvi, 'boat' (to verify). The young seer Svanhild and her word are Living Server lore.",
+      "provenance": "original",
+      "source": "Old Norse, to verify"
+    }
+  ],
+  "story": "Nokkvi is the boat to Vagn's wagon, and like a good boat he does not sink. He sits beside Vagn in the outer council hall and says nothing, and when the Council quarrelled among itself he was the one nobody could move. The other councillors say he has the thickest hide in the glacier. The Ice Lords' houses tested it: their young icelords struck him with axes in the training hall as a dare, and the blades turned on his hide as they would on the citadel wall, and he sat and let them, and went back to the outer hall.\n\nWhat reached him was a word. In the Council's eightieth winter a young seer named Svanhild, who had been told that the boat could not be hurt, stood in front of him and spoke one word of the seers' craft, quietly, a word for cold that cuts, and Nokkvi bled for the first time in anyone's memory. He looked at the cut for a long time and then looked at her and nodded, as if she had finally said something worth hearing. He has never spoken to anyone else, but he spoke to Svanhild for the rest of her life.\n\nWhen anything rouses him now, Vagn is already talking. The companies of Midgard who reach the outer hall meet the pair together, and the outer seats still tell the joke from the years when the two carried the votes: you stop a wagon with a stick in its wheel, and you sink a boat with a word in its hull. Nokkvi is the boat. The cast-out sculptors say the old songs are wrong that the survivor of the pair grieves and fights the harder; the boat fights as he always has, silently, until the word comes. Svanhild's seat in the outer hall is empty now, and he looks at it.",
+  "chapters": [
+    {
+      "title": "The Boat Does Not Sink",
+      "text": "Nokkvi was the second of the two young councillors who carried the votes, and the quiet one. Vagn went from seat to seat and talked; Nokkvi went with him and carried what had to be carried, the queen's tokens and the tally-sticks and once, the sculptors say, a councillor too old to walk to the ribs. The giants called him the boat because he went on the water, which in the glacier's way of speaking meant he went where the ice was thin, and he never went through.\n\nHe does not sink. That was the second meaning of the name, and the one that stuck. When the Council quarrelled, which in a century of peace it did often, Nokkvi was the councillor nobody could move: not with argument, because he did not answer argument, and not with anything else. The other councillors said he had the thickest hide in the glacier. The sculptors who carved the ribs say they once watched a block of ice fall from the chamber's ceiling onto his shoulders while he sat, and that he brushed it off and went on listening to Birghir.\n\nHe and Guthlac were the two councillors who never spoke. The sculptors say they were friends in the way such giants are friends, which is to say they sat near each other at midwinter and did not talk, and both of them liked it.\n\nHe sat beside Vagn in the outer hall for a century and let Vagn talk, and the outer seats said that between the two of them they made one whole councillor."
+    },
+    {
+      "title": "Axes in the Training Hall",
+      "text": "The young icelords of the Ice Lords' houses did not like the outer seats, and they liked the boat least of all, because he was quiet and they could not tell what he thought of them. In the Council's fiftieth winter, the same winter Hjalmar lost his wager in Otrygg's kennels, a pair of young icelords dared each other to see whether Nokkvi's hide was as thick as the councillors said.\n\nThey asked him to the training hall, and he came, because nobody had told him not to. They told him it was a test of the Council's strength for the queen. He stood where they put him. And the young icelords took their axes, the great ice-steel axes of the old houses, and swung them at him with all their strength, one after another, and the blades turned on his hide as they would have turned on the citadel wall, and skidded off, and rang.\n\nHe stood and let them until their arms were tired. Then he went back to the outer hall and sat down beside Vagn and said nothing about it, ever. Vagn said a great deal about it, to everyone, for a year. The Ice Lords' houses were so embarrassed that the two young icelords were sent to the outer watch for a decade, and one of them was Agmundr, who came back from the decade a different giant and never mocked anyone again.\n\nThe axes of that day are still in the training hall, the sculptors say, with their edges turned like spoons. Nobody has sharpened them. The old houses keep them as a reminder of the day steel would not go into the boat."
+    },
+    {
+      "title": "Svanhild's Word",
+      "text": "What went into him was a word. The seers of Tuscaran have a craft of words as well as runes: words of the old tongue that do things when they are spoken, words for cold that cuts and frost that burns and ice that holds. Most seers keep them for the outer ice and the beasts of the island. A young seer named Svanhild, in the Council's eightieth winter, had been told all her life that the boat of the outer seats could not be hurt, and did not believe it.\n\nShe went to the outer hall and stood in front of him, the sculptors say, quite close, because she was very young and very sure, and spoke one word of her craft to him, quietly, a word for cold that cuts. And Nokkvi bled. It was a small cut across the back of his hand, and it was the first time anyone in the citadel had ever seen him hurt.\n\nHe looked at the cut for a long time. Then he looked at Svanhild, and nodded, as if she had finally said something worth hearing. The cast-out sculptors say he spoke to her then, the only time he is known to have spoken to anyone, and that he went on speaking to her, quietly, for the rest of her life. She never said what about. She became the oldest seer of the outer seats, and the councillors called her the boat's word.\n\nThe giants made the old joke about the pair longer after that. You stop a wagon with a stick in its wheel, they say, and you sink a boat with a word in its hull."
+    },
+    {
+      "title": "Silently, Until the Word Comes",
+      "text": "Svanhild is long dead. Her seat in the outer hall is empty, and the sculptors say Nokkvi looks at it sometimes. He sits beside Vagn still, in the outer council hall, and when anything rouses either of them the other is already rising, and the companies of Midgard who reach the outer hall meet the wagon and the boat together.\n\nThey find what the young icelords found in the training hall. Blades turn on him. The companies say a melee of Midgard's best can stand round the boat for a long time and do little more than the young icelords did, and come home with their own edges turned. And they find what Svanhild found: that the craft of words gets in. The spoken and the cast reach him where steel does not, as if a century of sitting quietly beside the giant who never stopped talking had left him with no defence at all against anything said.\n\nThe old songs of the companies say the survivor of the pair grieves for the other and fights the harder for it. The cast-out sculptors say it is not so; the boat fights as he always has, silently, steadily, and does not change when the wagon stops. They say the companies made the story up because they could not believe the two did not love each other. The sculptors say they did, in the way of the outer seats, and that neither of them would have shown it.\n\nWhen Nokkvi dies he looks at his hand, the companies say, as if there were a cut on it."
+    }
+  ],
+  "legend": "Nokkvi is the wall of the pair, but only against weapons: he resists 90% of melee and only 20% of magic. So the old advice to 'debuff and melee, don't waste nukes' is exactly backwards: put your casters on Nokkvi and your melee on Vagn (who is the reverse, 90% magic, 20% melee). Nokkvi has no spells at all, 100,000 health and CC immunity; he and Vagn always come together and reset if dragged past their tether or left 30 seconds out of combat. A 2005 thane wrote that his styles were hitting Nokkvi for one, which fits. There is no grief mechanic when one of them dies, so kill them in whatever order your raid's mix suits. His mauler is a good drop.",
+  "yells": {
+    "aggro": [
+      "...",
+      "(Nokkvi rises without a word.)",
+      "(He looks at Vagn, then at you.)",
+      "(Nokkvi rises, silent.)"
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "Vagn. Then I will carry it alone."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "(Nokkvi shrugs off the blows as if they were snow.)"
+      }
+    ],
+    "death": [
+      "...sinking...",
+      "(A long creak, and then nothing.)",
+      "(Nokkvi looks at his hand.)"
+    ],
+    "slay": [
+      "...",
+      "(Nokkvi steps over the fallen.)",
+      "(He glances at Vagn, who says it for him.)",
+      "(Nokkvi sits back down beside Vagn.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The silent one sits beside the talker.",
+      "His hide is thick as a hull.",
+      "An empty seat beside the two worn ones."
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "Nokkvi rises, silent, to avenge Vagn."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Steel slides off Nokkvi like rain off a keel."
+      }
+    ],
+    "realmFirstKill": "The boat of the outer seats has sunk."
+  },
+  "botLines": {
+    "briefing": [
+      "nokkvi turns 90% of melee but only 20% of magic. casters nuke him",
+      "nokkvi: nukes, not melee. his hide turns blades",
+      "every tank on nokkvi, the kiter holds vagn",
+      "nokkvi first, everything on him, vagn's kiter holds",
+      "nokkvi: 90% melee resist, 20% magic. casters on nokkvi",
+      "melee on nokkvi does nothing, the old guides got it backwards",
+      "no spells on nokkvi, just a wall vs weapons"
+    ],
+    "aftermathWin": [
+      "nokkvi finally down. that took forever",
+      "nokkvi sank lol",
+      "boat down. finally",
+      "nokkvi's maul dropped",
+      "sank the boat with words lol",
+      "casters on nokkvi, way faster",
+      "nokkvi's maul!"
+    ],
+    "aftermathLoss": [
+      "we meleed nokkvi for five minutes and did 10%. [should have nuked|casters on nokkvi]",
+      "our melee hit nokkvi for 10 minutes for nothing",
+      "the kite on vagn broke and both were on the raid",
+      "vagn died first by accident and nokkvi wrecked us",
+      "melee hit nokkvi for ten minutes, he barely moved",
+      "everyone did the old debuff and melee thing"
+    ],
+    "rumour": [
+      "nokkvi never says a word, they say. just stands there and doesnt die",
+      "nokkvi only raises his hand after vagn does. a hundred years of that",
+      "nokkvi has the thickest hide in the glacier, the giants say",
+      "nokkvi said one word at a feast once. vagn's name. so he wouldnt choke",
+      "a young seer once hurt nokkvi with one word. he talked to her for the rest of her life",
+      "the axes the young icelords hit nokkvi with are still in the training hall, edges turned",
+      "you sink a boat with a word in its hull, the giants say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Nokkvi",
+    "text": "The boat to [Vagn]'s wagon, who never spoke and could not be moved. The young icelords swung their axes at him for a dare and the blades turned on his hide. The young seer Svanhild spoke one word of her craft to him and he bled, and he spoke to her for the rest of her life. The giants say you sink a boat with a word in its hull."
+  },
+  "bookPage": "A saying of the hrimthursa, which the sculptor taught me: as silent as Nokkvi. It is said of a giant who will not be argued with, and of the ice in deep winter, and of a door that will not open. It is also, the sculptor said, said of a friend who will stand beside you and never say why. I asked whether Nokkvi had ever said anything at all. The sculptor thought for a long time and then said yes, once, at a feast, when Vagn was choking on a bone: he said Vagn's name. Then he hit him on the back, and Vagn lived, and Nokkvi went back to saying nothing.",
+  "chronicle": {
+    "win": "Silent Nokkvi sank before {raidLeader} of {realm} after {minutes} minutes.",
+    "loss": "Council Nokkvi did not sink; {raidLeader}'s raid from {realm} did, after {minutes} minutes."
+  }
+}

@@ -252,16 +252,16 @@ namespace DOL.GS
             {
                 if(FamesBrain.StartedFames==true || BellumBrain.StartedBellum==true || MorbusBrain.StartedMorbus==true || FunusBrain.StartedFunus==true || ApocalypseBrain.StartedApoc==true)
                 {
-                    foreach (GamePlayer player in GetPlayersInRadius(1500))
+                    foreach (GameLiving player in EncounterTargets.InRadius(this, 1500, bots: EncounterTargets.DisplacesBots(this)))
                     {
                         if(player != null)
                         {
                             if(player.IsAlive)
                             {
-                                if(player.IsWithinRadius(point1,150) && player.Client.Account.PrivLevel == 1)//only players will be ported back
+                                if(player.IsWithinRadius(point1,150) && EncounterTargets.NotGm(player))//only players will be ported back
                                 {
-                                    if (EpicEncounterMechanics.AllowDisplacement) player.MoveTo(60, 29469, 25244, 19490, 2014);
-                                    player.Out.SendMessage("Magic energy moves you to the center of room!", eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
+                                    if (EpicEncounterMechanics.AllowDisplacementFor(this)) EncounterDisplacement.Move(player, 60, 29469, 25244, 19490, 2014, DisplacementKind.Barrier, this);
+                                    EncounterTargets.Tell(player, "Magic energy moves you to the center of room!", eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
                                 }
                             }
                         }
@@ -1368,7 +1368,9 @@ namespace DOL.GS
         {
             if (EpicEncounterActors.IsCombatant(source))
             {
-                if (EpicEncounterMechanics.AllowAddShield && Morbus_Swarm_count > 0)
+                // 1.2: the shield counts the swarm alive near him, not the static count, which a swarm removed without dying
+                // (a reset elsewhere, a despawn) left above zero and kept him immune for good.
+                if (EpicEncounterMechanics.AllowAddShieldFor(this) && SwarmAlive())
                 {
                     if (damageType == eDamageType.Body || damageType == eDamageType.Cold || damageType == eDamageType.Energy || damageType == eDamageType.Heat
                         || damageType == eDamageType.Matter || damageType == eDamageType.Spirit || damageType == eDamageType.Crush || damageType == eDamageType.Thrust
@@ -1446,6 +1448,24 @@ namespace DOL.GS
         }
         public static bool spawn_fate3 = false;
         public static int Morbus_Swarm_count = 0;
+        private long _swarmCheckedTick;
+        private bool _swarmChecked, _swarmAlive;
+        /// <summary>A swarm of his lives near him (looked up at most once a second).</summary>
+        public bool SwarmAlive()
+        {
+            long now = GameLoop.GameLoopTime;
+            if (!_swarmChecked || now - _swarmCheckedTick >= 1000)
+            {
+                _swarmChecked = true;
+                _swarmCheckedTick = now;
+                _swarmAlive = false;
+                foreach (GameNPC npc in GetNPCsInRadius(4000))
+                {
+                    if (npc is MorbusSwarm && npc.IsAlive) { _swarmAlive = true; break; }
+                }
+            }
+            return _swarmAlive;
+        }
         public void SpawnFateBearer()
         {
             INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(60160741);
@@ -1907,13 +1927,29 @@ namespace DOL.GS
             if (EpicEncounterMechanics.AllowFunusWeaponPuzzle &&
                 !EpicEncounterRestores.FunusAccepts(EpicEncounterRestores.ClassId(source), EpicEncounterRestores.WeaponType(source)))
             {
+                EpicEncounterRestores.NoteFunusHeal(source, this);
                 EpicEncounterRestores.TellImmune(source, Name + " absorbs all your damage to heal iself!");
                 BroadcastMessage("Funus takes damage from " + source.Name + " and restoring it's whole health.");
+                EncounterSignals.Note(this, EncounterSignals.Healed);//Living Server 1.2: the lore's "healed" lines (LoreBossWatch)
                 Health += MaxHealth;
                 base.TakeDamage(source, damageType, 0, 0);
                 return;
             }
             base.TakeDamage(source, damageType, damageAmount, criticalAmount);
+        }
+
+        /// <summary>
+        /// 1.2 (epic wave 3): the sting of a damage shield on a bot Funus hits is not an attack the bot chose and can't be
+        /// taken off; with the puzzle on, from a bot of a class he takes no damage from, it neither heals nor hurts him
+        /// (EpicEncounterMechanics.FunusShieldStingIgnored, server property epic_funus_bot_shield_guard). A real player's
+        /// shield and every other hit go on as the original.
+        /// </summary>
+        public override void TakeDamage(AttackData ad)
+        {
+            if (ad != null && EpicEncounterMechanics.FunusShieldStingIgnored(ad.Attacker, ad.SpellHandler,
+                    EpicEncounterRestores.FunusAccepts(EpicEncounterRestores.ClassId(ad.Attacker), EpicEncounterRestores.WeaponType(ad.Attacker))))
+                return;
+            base.TakeDamage(ad);
         }
 
         public override int MeleeAttackRange => 350;
@@ -2198,6 +2234,7 @@ namespace DOL.GS
             ApocalypseBrain.pop_harbringers = false;
             ApocalypseBrain.StartedApoc = false;
             HarbringerOfFate.HarbringersCount = 0;
+            ApocalypseBrain.first_harbingers_done = false;
             ApocUP = true;
 
 
@@ -2214,7 +2251,7 @@ namespace DOL.GS
         public static int KilledEnemys = 0;
         public override void EnemyKilled(GameLiving enemy)
         {
-            if(enemy is GamePlayer)
+            if(EncounterTargets.IsRaider(enemy))
             {
                 ++KilledEnemys;
             }
@@ -2269,6 +2306,7 @@ namespace DOL.AI.Brain
                 StartedApoc = false;
                 Apocalypse.KilledEnemys = 0;
                 HarbringerOfFate.HarbringersCount = 0;
+                first_harbingers_done = false;
 
                 if (!RemoveAdds)
                 {
@@ -2412,10 +2450,20 @@ namespace DOL.AI.Brain
 
         #region Spawn Harbringers
         public static bool spawn_harbringers = false;
+        /// <summary>The first pair of harbingers has come this fight.</summary>
+        public static bool first_harbingers_done = false;
+        public const int FirstHarbingersKills = 4;
+        /// <summary>
+        /// The first pair comes once, after he (or his Rain of Fire) has killed four raiders. The original asked "kills == 4"
+        /// on a 2-second check, so a raid losing two at once (4 -> 5, his rain hits 800 around) never got them, and one
+        /// that stayed at 4 got a new pair each time the last pair died (1.2, wave 2).
+        /// </summary>
+        public static bool FirstHarbingersDue(int kills, bool done) => !done && kills >= FirstHarbingersKills;
         public int SpawnHarbringers(ECSGameTimer timer)
         {
-            if (Apocalypse.KilledEnemys == 4)//he doint it only once, spawning 2 harbringers is killed 4 players
+            if (FirstHarbingersDue(Apocalypse.KilledEnemys, first_harbingers_done))//he doint it only once, spawning 2 harbringers is killed 4 players
             {
+                first_harbingers_done = true;
                 foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
                 {
                     if (player != null)
@@ -2537,6 +2585,9 @@ namespace DOL.GS
         }
         public override void Die(GameObject killer)
         {
+            // 1.2: the count of live harbingers falls when one dies. It never did, so once the first pair had come the
+            // 50% pair ("they will need to be replaced") never could: Apocalypse spawns a pair only while none is left.
+            if (HarbringersCount > 0) --HarbringersCount;
             base.Die(killer);
         }
 
@@ -2634,7 +2685,7 @@ namespace DOL.GS
         }
         public override void EnemyKilled(GameLiving enemy)
         {
-            if (enemy is GamePlayer)
+            if (EncounterTargets.IsRaider(enemy))
             {
                 ++Apocalypse.KilledEnemys;
             }
@@ -2708,9 +2759,9 @@ namespace DOL.AI.Brain
             }
             base.Think();
         }
-        List<GamePlayer> ApocPlayerList = new List<GamePlayer>();
-        public GamePlayer dd_Target = null;
-        public GamePlayer DD_Target
+        List<GameLiving> ApocPlayerList = new List<GameLiving>();
+        public GameLiving dd_Target = null;
+        public GameLiving DD_Target
         {
             get { return dd_Target; }
             set { dd_Target = value; }
@@ -2719,7 +2770,7 @@ namespace DOL.AI.Brain
         public static bool reset_cast = false;
         public void PickTarget()
         {
-            foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
             {
                 if (player != null)
                 {
@@ -2736,7 +2787,7 @@ namespace DOL.AI.Brain
             {
                 if (cast_dd == false)
                 {
-                    GamePlayer ptarget = ((GamePlayer)(ApocPlayerList[Util.Random(1, ApocPlayerList.Count) - 1]));
+                    GameLiving ptarget = ApocPlayerList[Util.Random(1, ApocPlayerList.Count) - 1];
                     DD_Target = ptarget;
                     new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastDD), 6000);
                     cast_dd = true;

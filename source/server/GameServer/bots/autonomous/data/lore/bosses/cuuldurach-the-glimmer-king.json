@@ -1,0 +1,224 @@
+{
+  "id": "cuuldurach-the-glimmer-king",
+  "name": "Cuuldurach the Glimmer King",
+  "catalogKey": "cuuldurach-s-lair-sheeroe-hills/hibcuuldurach",
+  "locationId": "sheeroe-hills",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "A level-80 dragon in the Sheeroe Hills; patch 1.61b gave him a weakness to heat.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmob=3606"
+    },
+    {
+      "text": "Post-period campaign text: he terrorised Hibernia for decades, darkened Sheeroe's skies and ruled the Glimmer; his eggs and a rift in the Veil follow his death.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/article/dark-destiny"
+    },
+    {
+      "text": "He bellows a warning from the skies to all who intrude, cannot be hurt outside his lair, and breathes at 90, 80 ... 10% health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Adds come to him at 85/70/55/40/25/10% health, at most six in a fight; his glare picks real players.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "He is 'he' in every script line ('glares at all of the creatures attacking him'). This bible keeps him male.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs"
+    },
+    {
+      "text": "Players called him the only male of the three dragons (Allakhazam comment, May 2003); raiders held four entrances against his adds.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmob=3606"
+    },
+    {
+      "text": "When he dies the server says 'The hills seem to weep for the loss of their king'; his kills are announced as a force of N warriors.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs"
+    },
+    {
+      "text": "He wears a Spirit-resist debuff spell in his kit ('Decreases a target's given resistance to Spirit magic by 50%').",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs"
+    },
+    {
+      "text": "The Order of the Azure and the Glimmer Spirits are world-data factions on Sheeroe; the named Azure Dsaldor, Coseal and Thror and the named glimmers Saumer, Venlar, Kelegur, Zeit, Arios and Zanllvi are spawns of zone 216.",
+      "provenance": "game",
+      "source": "scratchpad/lore/GAPS-hibernia.md (world database, zone 216)"
+    },
+    {
+      "text": "May 2003: 'about 30 people attack at any one time' and '5fg attacking the dragon', the rest holding the four entrances.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/how-to-kill-cuuldurach.124821/ (via docs/RAID-SIZES.md)"
+    },
+    {
+      "text": "Fiadh, Conaing, Brónach, Ethne, Dubthach of Ardee and the chronology in his chapters are Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Mythic's 1.45 notes: the ancient elven sage Tyldifyl named the Sheeroe Hills a hidden kingdom of the Otherworld whose absolute master is Cuuldurach the Glimmer King, an ancient and powerful being, lord of the creatures men call the Glimmers.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    },
+    {
+      "text": "The rangers who found the pass first took his glimmers for a siabra trick; the Azure, firbolg kin devoted to the Great Azure, hold the glimmers to be wicked things tainted with death.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    }
+  ],
+  "story": "The hills above the Bog of Cullen were the shepherds' high summering, and they were also, unseen, one of the realms of the Otherworld, with its own law and its own king. The summer the sky tore over the ridge, that hidden kingdom showed itself: a pass appeared that had not been there, and through the tear came Cuuldurach, the Glimmer King, an ancient being who had ruled the hills absolutely for longer than the shepherds had grazed them, with his court of cold light, and the grass went grey. The elven sage Tyldifyl told the rangers so: Sheeroe was always his, and only the door was new. Why the door opened that summer nobody agrees. The rangers say a door that appears overnight can vanish the same way; the druids of Lough Gur say the Veil wore thin there after the court bargain broke in the Cursed Forest, and a king who had kept himself unseen could no longer.\n\nHe is the only he among the three realm dragons, and the only one who came as a king: he warns once from the sky, keeps a court of Glimmer Spirits under named lords such as Saumer the chamberlain, and sends his heir Maldahar to ride the borders. The Order of the Azure, firbolg kin who pray to the open sky, crusade against the court from the northern slopes and teach that the Glimmer are the stolen light of the dead.\n\nConaing of Howth's forty, the first company to reach his lair, found that no blade bit him once he left it, and the druids of Lough Gur named it the King's Law: a king may not be wounded on ground not his. Inside his court he answered his wounds with fire, drawing a breath that flattened the grass; his stare named one man; the druids' wards guttered near him; and the eldritch Ethne saw him flinch from a torch as from nothing else. In the third spring of the isles Dubthach of Ardee's hosting of a hundred and twenty met him in the ring and his court at the four doors, and the hills wept when he fell. Brónach says the few courtiers who stood armed beside him were a king's oldest right, and that the warm grey stones on his mound, the unlearning stones, are pieces of the green hills.\n\nHe returns, as kings in the old stories do. Whether he means his kingdom to stay seen, or is only a king defending ground that was his before Hibernia had a name, Hibernia keeps going up the pass.",
+  "legend": "Hold the four doors and he is only a dragon. Tanks on him inside the lair, never out of it; once he is past the edge of his court he is untouchable and you are only feeding him. Heal through the breath at every tenth. Heat hurts him, so the eldritch and the mana mentalists earn their keep. And when he glares at you, you are the one he means: spread out and do not stand where your friends stand. His breath is announced: when he inhales, everyone braces. Spirit resists suffer under his debuff, so the healers watch the spirit-weak. Superstition says the respec stones he drops are pieces of the old green hills, and should be used, never sold.",
+  "yells": {
+    "aggro": [
+      "Let all who intrude into my domain pay heed.",
+      "You stand in my court uninvited. I will remember your face.",
+      "I will seek you out and cast you into the arms of Death."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=70",
+        "text": "Come, my court. Your king has need of you."
+      },
+      {
+        "trigger": "health<=40",
+        "text": "The hills will not let you leave. Nor will I."
+      },
+      {
+        "trigger": "health<=10",
+        "text": "Light does not die. It only waits."
+      },
+      {
+        "trigger": "breath",
+        "text": "Cuuldurach inhales deeply. Brace yourselves!"
+      },
+      {
+        "trigger": "glare",
+        "text": "Cuuldurach stares and prepares a massive attack."
+      }
+    ],
+    "death": [
+      "The hills seem to weep for the loss of their king.",
+      "My court... remember me... beyond the Veil..."
+    ],
+    "slay": [
+      "Your body will rest at my lair, little one.",
+      "One more light for my court.",
+      "Your end is near, little one. I will taste your flesh."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air hums. A king is near.",
+      "Four doors. The court is coming.",
+      "The ground here is warm, and the air hums."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=55",
+        "text": "The Glimmer pour through the four doors!"
+      },
+      {
+        "trigger": "health<=20",
+        "text": "The sky over Sheeroe burns."
+      },
+      {
+        "trigger": "health<=85",
+        "text": "The first of the court answers its king."
+      }
+    ],
+    "realmFirstKill": "The Glimmer King has fallen. Sheeroe will heal.",
+    "wake": "Cuuldurach rises. The sky over Sheeroe darkens."
+  },
+  "botLines": {
+    "briefing": [
+      "ok listen up. four doors, one party on each. nobody leaves a door [for anything|even if i die]",
+      "fight him in the lair. if he drifts out stop hitting, hes immune out there. [let him come back|wait]",
+      "every tenth of his health he breathes. healers spread out, [no stacking|dont clump]",
+      "he takes heat badly. casters [go heat|on heat] if you have it",
+      "when he inhales, [brace|healers ready], the breath comes right after"
+    ],
+    "aftermathWin": [
+      "the glimmer king is down. did anyone else hear the hills [weep|cry] or was that just me",
+      "four doors held all night. [proud of every one of you|best raid ive led]",
+      "seventy hibs, four doors, one king. [proud of this realm|grats everyone]",
+      "respec stones for everyone who held a door. [fair|well earned]"
+    ],
+    "aftermathLoss": [
+      "we lost the [north|east|west|south] door and that was the fight. [next time|again tomorrow]",
+      "someone chased him out of the lair again. [hes immune out there|i said this]. reform at the bog",
+      "the glare picked a healer and she stood in the middle of us. [step away when glared|move]",
+      "ran out of time on the last tenth. [so close|again]",
+      "spirit debuff and nobody watched the casters. [watch the debuff|heal them]"
+    ],
+    "rumour": [
+      "[heard|word is] the clouds over sheeroe stopped moving. hes awake",
+      "somebody counted the glimmers out loud on the ridge. [now maldahar is out|guess who came down]",
+      "[heard|someone said] the sages think sheeroe is a beachhead for the otherworld",
+      "[word is|heard] glimmer eggs were found [after he fell|on the ridge] once",
+      "the druids of lough gur say the glimmer king wont go back to hiding. [scary thought|great]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Glimmer King",
+    "text": "Cuuldurach, king of the otherworld court that leaned into Sheeroe. Outside his lair the land itself shields him; inside it he breathes fire at every tenth wound and his court comes through four doors. Tell your raid leader about the doors before you go, not after."
+  },
+  "bookPage": "Of the King's Law, as the druids of Lough Gur teach it: a king may not be wounded on ground that is not his. So it is with Cuuldurach. Beyond the edge of his court the hills cover him like a cloak, and steel turns aside. Within it he is as mortal as any king, and like any king he calls his household about him when he is pressed, and they come by the doors of his hall. A wounded king spends fire as an old king spends silver, the druids say, the more freely the nearer he comes to the end of his treasury; and a king draws breath before he speaks his judgement, as every petitioner at Tara knew. The druids add, more quietly, that heat is a sickness to light that came from the cold side of the Veil, and that this is the one mercy the old law allows.",
+  "chronicle": {
+    "win": "{realm} held the four doors of Sheeroe, and {raidLeader}'s raid brought down the Glimmer King in {minutes} minutes. The hills wept.",
+    "loss": "{realm} went up to Sheeroe under {raidLeader}; after {minutes} minutes a door fell, and the Glimmer King's court did the rest."
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "glimmer-court"
+  ],
+  "related": [
+    {
+      "id": "maldahar-the-glimmer-prince",
+      "relation": "his son and the rider of his borders"
+    },
+    {
+      "id": "golestandt",
+      "relation": "the stone dragon of Albion"
+    },
+    {
+      "id": "gjalpinulva",
+      "relation": "the wolf-headed dragon of Midgard"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Summer the Sky Tore",
+      "text": "Before the Glimmer King showed himself the hills above the Bog of Cullen had no name worth writing down. The shepherds of the Cullen country called them the high summering, and drove their flocks up the long grass slopes in the month the bog flies came, and down again at the first frost. Eoghan's grandmother, whose account the scribes of Tir na Nog copied out years later, had summered there forty years. The highest sheepfold, she said, stood where the grass ended at a bare grey ridge that nobody ever climbed, because there was nothing on the other side.\n\nIn the summer the pass opened there was something on the other side. A ranger of Ardee called Fiadh came down through the Cullen mist and told the shepherds there was a road over the ridge that had not been there the week before: a cut through the rock, grassed and old, as if it had always been. Three of the shepherds went to look. Two came back. They said the grass beyond the ridge was grey, the clouds over it did not move, and the third man had sat down in the grey grass and would not get up. That night Eoghan's grandmother watched the sky above the ridge come apart. It did not thunder. It tore, quietly, the way old linen tears, and through the tear came wings wider than the valley, and after the wings, small cold lights in no hurry.\n\nWhat the hills were, Hibernia learned from the ancient elven sage Tyldifyl, who told the rangers of Ardee that the Otherworld is divided into realms, each with its own rulers and laws, and that some of them wish to stay unseen. The Sheeroe Hills were one. Cuuldurach had ruled them absolutely, an old and powerful king behind the grey ridge, all the years the Cullen flocks summered on the near side; the sages of Tir na Nog point out that the old sheepfold on the ridge is built on the near side of the cut, as if its builders had known not to cross. The tear did not bring him. It showed him. Why his door opened that summer is the part Hibernia has never settled. The rangers say a door that appears overnight can disappear the same way. The druids of Lough Gur say the Veil wore thin above the bog because of what was spilled in the court wood long before, when the bright court and the dark court broke their bargain, and that the thinness spread like damp along a wall until a king who had kept his realm hidden could hide it no longer."
+    },
+    {
+      "title": "A King Before a Dragon",
+      "text": "Every realm has its dragon, and every realm's scholars have argued about what the three are. Albion's lies in the granite of Dartmoor, Midgard's in the ruins of Malmohus, and Hibernia's in the hills above Cullen. When the three first came to the realms' notice they were named by their kinds: the stone, the wolf-headed and the glimmer. The Hibernian bards have always pointed out what they think the other realms miss. A stone is a thing. A wolf is a beast. Glimmer is a court. Only Hibernia's came with a household, and only Hibernia's came as a king. The soldiers of the Cullen watch said it in plainer words in the third spring of the isles, and the saying spread to every realm: he is the only he of the three, and he acts like it.\n\nWhat sort of king, the realm cannot agree. The druids of Lough Gur hold that he is a lord of the far side of the Veil who wears the dragon as a chieftain wears his war-gear: real, terrible, and not the whole of him. The Order of the Azure, who have spent longer staring at him than anyone, say there is no king inside the dragon at all, only death that has learned manners. And the oldest of the Lough Gur druids, a woman named Brónach who lost two brothers on the ridge, says both are wrong and that he is exactly what he seems: a king, and a dragon, and very far from home.\n\nHis manners are where the realm first learned to fear him. A king of the old kind does not attack unannounced. When Cuuldurach rises, his voice rolls over the whole of Sheeroe from the sky, and the words have never changed in living memory: let all who intrude into his domain pay heed, for he will seek them out and cast them into the arms of Death if they remain. The shepherds call it the warning, and say he gives it once. No Hibernian has ever been able to say the Glimmer King took them by surprise, and none has ever heard him say it twice. He laughs, too, when a Hibernian falls before him. The bards say he laughs at the craft, not the person: at the warrior, the druid, the bard, as if each kind of Hibernian were a new joke he had been told."
+    },
+    {
+      "title": "The Court of Light",
+      "text": "The Glimmer came through the tear behind him and spread out over the slopes as a court comes out into a hall long kept shut. They do not build, or farm, or trade. They attend. The sages of Tir na Nog call them the Glimmer Spirits, and think the word spirit is for once exactly right. A glimmer struck will often let the blow pass, as a courtier lets an insult pass in the king's hall; but the Cullen folk still tell of the Connacht trappers who harried too many of them in a single evening for their dust, and of the whole slope turning on the trappers at once, and of the one boy who got down to the bog to say so.\n\nThe court has ranks, and the realm has learned some of its names. Saumer is the eldest, a glimmer stronger than many dragons' kin, who keeps the high ground nearest the lair and whom the shepherds call the chamberlain, because nothing reaches the king without passing him. Venlar and Kelegur keep the eastern and western slopes. Zeit and Arios watch the lower camps, and Zanllvi, the least of the named, keeps the edge of the prince's road. Whether these are their true names or only what the Azure overheard them called, nobody knows; the Azure say the Glimmer speak in light, and that the names are the sounds the light makes.\n\nGlimmer dust, shaken from the court's lesser members, makes a dye that glows in the dark. Dyers in Ardee sold it for a season before the old women said it brought bad luck, and the trade died. The warm grey stones the king keeps on his mound are another matter, and come later in this story.\n\nAbove the court rides the heir. Maldahar the Glimmer Prince rides the borders of his father's land on a horse of the same cold light, unhurried, impossible to hold, and the Glimmer part for him as he passes. The shepherds' saying was simple: never count the glimmers aloud on the ridge, because the prince hears his father's household being counted and comes to see who is taking stock."
+    },
+    {
+      "title": "The Order of the Azure",
+      "text": "The spring after the pass opened, the Azure came up from the Bog of Cullen. They are firbolg kin, blue-painted, who pray to the open sky, and to them a grey country under a sky that does not move is blasphemy given ground. They call themselves the Order of the Azure, and the realm has learned three of their leaders' names: Dsaldor, who leads the crusade from the highest camp; Coseal, its preacher; and Thror, its arm. Their camps lie on the northern slopes, below the glimmer camps, close enough that the two sides can see each other every hour of every day.\n\nThe Azure burn what they can. The light does not burn. Eoghan the shepherd watched one of their priests stand in front of a single glimmer and pray at it for an hour; at the end of the hour the priest wept, and Eoghan never knew whether it was rage. The Azure teach that the Glimmer are the light of the dead, stolen through the tear, and that every glimmer on the slopes is a soul that should have gone on. The druids of Lough Gur think this is wrong and dangerous. The firbolg elders of Lough Derg, who are kin to the Azure, say less in public than they do in private, and what they say in private is that the Azure went up the pass and never fully came back down.\n\nTo the soldiers of the Cullen watch the Azure are one more armed camp on a hill full of them, and not a friendly one. To the bards they are the saddest thing on Sheeroe: a people who saw the light of another world and could think of nothing to do but fight it. The Glimmer King has never once spoken to them. The Azure take this as contempt. Brónach of Lough Gur takes it as the clearest sign that he does not consider them his subjects, and therefore not worth a king's warning."
+    },
+    {
+      "title": "The King's Law",
+      "text": "The first company of the realm to go up to the lair, in the first autumn, was forty strong and led by a champion of Howth named Conaing. They found the king lying among the stones and struck him, and he rose, and they did what any war-band of the old families would have done on that slope: they gave ground toward the pass, where there was room to stand, and he followed them. Their blades stopped biting the moment he left the ring of his lair. Not slowed: stopped, as if they struck the hillside. Seven of the forty came home. The druids of Lough Gur gave what they told a name, the King's Law: a king may not be wounded on ground that is not his. The druids say Sheeroe itself covers him beyond his court like a cloak. The Azure say there is no law, only the rift in the Veil at the heart of his lair, and that he draws his strength from it and cannot bleed away from it. Conaing never went to war again. He kept the gate of the Howth barracks until he died, and would not let a Sheeroe song be sung inside it.\n\nInside his court the king could bleed, and he answered his wounds. The seven described the sound first: a rush of air past them as he drew a breath so deep the grass flattened, and then fire rolling out from him across the ring, fiercest where men stood closest to him. The harder they pressed him the more often it came, and the bards of Howth, who made the first song of the forty, sang that a king pays his debts in full and pays the last of them fastest. All seven who came home had been standing at the edge of the ring when the fire came. The shepherds of the Cullen country say that on a still night the breath can be heard from the bog, and that when it is, the dogs run wide of the flock and will not come back until it has passed.\n\nOne of the seven, a Howth spearman, was the man the king looked at. The dragon turned his whole head and held him in his stare, and what came after the stare fell on him alone. The druids say a king's stare is a sentence, and a sentence names one man; Howth spearmen still step away from a comrade who goes quiet and pale on Sheeroe, and call it giving a man room for his sentence. The two druids who went with Conaing said, too, that their spirit-wards thinned to nothing near him, as a candle gutters in the draught from an open door; Brónach says the draught is the far side of the Veil.\n\nHeat was Ethne's discovery, in the second winter. She was an eldritch of Tir na Nog who went up the pass behind a company of Connacht spears to watch rather than to fight, and from a rock above the ring she saw the king flinch from a torch as he flinched from nothing else. She argued for a season in the halls of Tir na Nog that light from the cold side of the Veil must sicken in heat, as frost does. The sages wrote her argument down, and the fire-priests of Lough Gur have kept a brazier burning on the Cullen road every winter since, on the strength of it."
+    },
+    {
+      "title": "The Four Doors",
+      "text": "The lair has four ways in, north, east, west and south, and the court comes by all of them. It was the third spring of the isles before anyone lived to say so. That spring the chieftains of Connacht, Howth and Ardee sent up a hosting of a hundred and twenty, the largest the realm had put on one hill since the old families fought each other, under a captain of Ardee named Dubthach. They met the king in the ring and his court at the four doors, and the doors held, and the king fell. Every Sheeroe song since has begun with the four doors, and Dubthach's hosting is the one the bards name.\n\nThe court did not come all at once. Dubthach's survivors said it grew round him as he tired, a courtier through one door and then another, but never a crowd. Brónach of Lough Gur says that is the oldest law of a king's household, older than Tara: only a few may stand armed in the presence, and the rest wait at the door until one of them is carried out. Dubthach's people had a plainer way of putting it, which the Connacht barracks still use of any siege: a door held is a courtier kept waiting.\n\nWhen he died the first time the hills wept. That is the plainest way the survivors could describe it: a sound out of the ground itself, low and long, that the shepherds in the Cullen country heard in their houses. And on the mound where he had lain, Dubthach's people found grey stones that were warm. A spearman who held one felt the habits of his training loosen in his hands, so that he could unlearn his craft and learn it again another way. The realm calls them the unlearning stones. Brónach says they are pieces of the green hills, kept by the king, and that a Hibernian who sells one instead of using it is selling Sheeroe.\n\nA herb-woman of Bri Leith is remembered from a later hosting for a different reason. She went up carrying a sack of mushrooms, and the company that ate them at the foot of the pass brought the king down, the song says, in the time it takes to boil a pot. She would never say where the mushrooms grew, and the herb-wives of Bri Leith still will not."
+    },
+    {
+      "title": "What the King Wants",
+      "text": "He came back. Kings in the old stories do, and Cuuldurach does: the clouds over Sheeroe stop moving, the warning rolls down from the sky, and the chieftains send to Tir na Nog for spears. Each time he has fallen since Dubthach's spring the Cullen country has had a quiet season, and the shepherds a few more summers of looking up the pass without fear. None of it has made the grass green.\n\nWhat he wants is the question the realm has never answered. The sages of Tir na Nog hold that the open door is a beachhead: that a hidden realm, once opened, leans outward, and that if the Glimmer King is left alone the grey will spread, down the slopes, across the Bog of Cullen, toward Lough Gur, until the Veil is not thin in one place but in many. The Azure believe this too, and preach it, and burn. The druids of Lough Gur say a king who has been seen will not go back to hiding, and that a king defending what was his before anyone else came is the most dangerous kind, because he will make the near slopes part of it too. Brónach, who went up the pass behind Dubthach's hosting, was asked directly by a bard of Tir na Nog what the king had said as he fell. She said only that she had heard him, and that whatever he said was not addressed to anyone on this side.\n\nThe sages of Tir na Nog keep one more telling among the things not yet come to pass: of a war against all three dragons at once, of eggs found where the Glimmer King had fallen that held the same cold light as his court, and of a rift in the Veil in the hills where he ruled. Whether it is prophecy or only fear, it answers the question the shepherds have always asked about the king who keeps coming back. A king who is killed and returns has an heir, and a court, and a door behind him. As long as all three remain, Hibernia will keep going up the pass."
+    }
+  ]
+}

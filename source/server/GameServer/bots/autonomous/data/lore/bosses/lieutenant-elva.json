@@ -1,0 +1,135 @@
+{
+  "id": "lieutenant-elva",
+  "name": "Lieutenant Elva",
+  "catalogKey": "hall-of-the-corrupt/lieutenantelva",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Lieutenant Elva, 5,000 health, tether 1,500; her attacks poison.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantElva.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Elva's level 50, 5,000 health, ghost flag, 50% evade, evade and taunt styles, 35% melee and 25% magic damage reduction, tether 1,500, and her Poison (55 body every 3 s for 30 s on 35% of hits, only on a target with no damage-over-time effect) are in her script.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantElva.cs"
+    },
+    {
+      "text": "Gwenllian the armourer of Castle Sauvage and her book, 'one dose to a wound', Elva's father the fletcher and the book's last entry are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Lieutenant Elva was the granddaughter of Gwenllian, armourer of Castle Sauvage in the old frontier wars, and she carried Gwenllian's calfskin book of the black paste and the grey oil north under her pillow for nineteen years. The book's margins say what each poison was used against in one word each: walked on, sat down, and, underlined beside the black paste, stopped. She asked to go north at sixteen and came in Lord Gildas's first year, the youngest officer of the watch, to keep its armoury, and she let no one else touch it, not Heathyr and not the wizard.\n\nShe fought with two short blades in leather, as Sauvage's armourers fought, slipping aside from a swing and answering the miss, and she would not let a man look away from her. She sat by Meade's card table with a whetstone, listening for the note that was wrong. Gwenllian's rule for the paste, one dose to a wound, became a Long Dale saying.\n\nShe was the first to say that Atwell's cut was not natural. She dressed every blade in the armoury, began the inventory she never finished (its last item, a blade by the door, is entered as half dressed), and wrote to Castle Sauvage for more grey oil and a fletcher. The fletcher was her own father; Hob would not carry him on from Long Dale, so he went up in the spring with Sir Hamon's riders, came down, gave back the oil unopened, and never made another arrow.\n\nShe keeps her armoury still, the lightest of the officers to bring down and the hardest to hit, and what her blades open burns long afterwards, one dose at a time, until the bitter cup of Caer Ulfwych takes it out. Gwenllian's book is at Castle Sauvage now. Its last entry is Elva's, under her grandmother's underlined word: no.",
+  "legend": "Elva is a ghost lieutenant, level 50, only 5,000 health, with two light blades. She evades about half of all melee swings and answers with evade styles, and she takes a third less from melee and a quarter less from magic, so nukes still do the most. About one hit in three poisons the target, 55 body every three seconds for thirty seconds, but only when the target has no poison on already: one cure poison after each dose is all it needs. Her taunt styles keep her on the tank. Tether 1,500: drawn further she takes no damage and resets to full. The lieutenants and sergeants stand close in the middle of the hall (Meade about 800 from her, Saxe about 880), so fight her by her armoury and do not back into the corridor. Old hands leave the half-dressed blade by the door alone. It does nothing. Nobody touches it anyway.",
+  "yells": {
+    "aggro": [
+      "Who touches the watch's stores?",
+      "The blades are dressed. Come and taste them.",
+      "Out of my armoury!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The poisons of the old wars. Taste them."
+      }
+    ],
+    "death": [
+      "Poisoned... by my own blade...",
+      "The blade... for my lord... unfinished..."
+    ],
+    "slay": [
+      "Back to your post. Forever.",
+      "The poison works.",
+      "Dressed for the old wars.",
+      "Sleep."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Racks of dressed blades. One by the door, half done.",
+      "A whetstone, still warm, beside an empty stool."
+    ],
+    "phases": [],
+    "realmFirstKill": "Lieutenant Elva is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "elva poisons, 55 every 3 sec. one cure poison per dose, it doesnt stack",
+      "she evades half the melee, casters burn her. only 5k hp",
+      "tether 1500, fight her at the armoury, off it shes immune",
+      "meade and saxe are close, dont back into the corridor"
+    ],
+    "aftermathWin": [
+      "lieutenant elva down, one less on the watch",
+      "elva down, the armoury is ours",
+      "she went down in seconds",
+      "nobody touched the blade on the bench, good",
+      "poison cured, clean"
+    ],
+    "aftermathLoss": [
+      "someone dragged her off her post again. immune out there",
+      "nobody had cure poison",
+      "backed into meade's corridor and got two",
+      "the melee whiffed and she ate the tank"
+    ],
+    "rumour": [
+      "heard elva in the hall of the corrupt poisons her blades",
+      "[someone said|heard] elva's grandma was the armourer at castle sauvage",
+      "heard there's a half finished blade on elva's rack for lord gildas",
+      "one dose to a wound, the long dale grannies say. [it's from elva|elva's saying]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "elva",
+    "text": "Lieutenant Elva kept the armoury of the Pennine watch with her grandmother [Gwenllian]'s book of the black paste from [Castle Sauvage]. She was the first to say [Atwell]'s cut was not natural, and the half-dressed blade by her door was meant for [Lord Gildas]."
+  },
+  "bookPage": "To the Constable. Lieutenant Elva has had the armoury poisons brought out and the blades dressed, as for the old wars, because Captain Atwell's cut will not close and she does not trust whatever made it. She says the things that came up the road in her grandmother's day were not alive enough to bleed, and that a poison finds what a blade cannot. She is dressing a sword for Lord Gildas now, by lamplight, and says it will be the finest blade in the hall. I do not know what she thinks it is for. I have not asked her. I think she does not know either.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Lieutenant Elva from the Pennine watch in {minutes} minutes.",
+    "loss": "Lieutenant Elva held the post against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "captain-atwell",
+      "relation": "she said his cut was not natural"
+    },
+    {
+      "id": "lieutenant-meade",
+      "relation": "sat by his card table with a whetstone"
+    },
+    {
+      "id": "lord-gildas",
+      "relation": "the half-dressed blade was for him"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Gwenllian's Book",
+      "text": "Lieutenant Elva's grandmother was Gwenllian, armourer of Castle Sauvage in the years when the things that came up the Summoners' road came up it often, and Elva carried Gwenllian's book north in her pack and kept it under her pillow for nineteen years.\n\nThe book is a small thing, calfskin over boards, written in three hands: Gwenllian's, her master's before her, and at the end Elva's own. It holds the recipes of the old frontier wars, the black paste for blades and the grey oil for arrowheads, with the herbs and the minerals and the hours of boiling, and in the margins Gwenllian's notes on what each had been used against. Most of the notes are a single word. One says: walked on. Another says: sat down. A third, beside the black paste, says: stopped, and has been underlined.\n\nCastle Sauvage had needed its armourer's poisons because the old frontier was not only a border between realms. In Gwenllian's day the Pennine road had no watch, and what came up it reached the forest, and Castle Sauvage's knights learned that an honest cut would not stop it, and that a dressed one sometimes would. When the Constable built the hall at the head of the road and the road went quiet, Sauvage's armoury had no more use for the paste, and Gwenllian's son became a fletcher. His daughter did not. Elva read the book at twelve, the Sauvage rolls say, and asked her grandmother what the word stopped meant, and was told; and at sixteen she asked the castellan to send her north.\n\nShe went to the Pennines in Lord Gildas's first year, the youngest of the officers Camelot sent, and the castellan's note with her says only that she was Gwenllian's granddaughter and would want the armoury. She did. She kept it until the end and let no one else touch it, not Captain Heathyr, who wanted to rehang its door, nor the wizard Aidon, who once asked to see her book and was told, the clerk recorded, that it was not that kind of book."
+    },
+    {
+      "title": "The Lightest Officer",
+      "text": "Elva was the smallest officer of the Pennine watch and the lightest armed, and the dalesmen who served under her said she was the hardest to catch.\n\nShe fought with two short blades, as the armourers of Castle Sauvage fought, because an armourer's work was to test an edge and two edges tested twice as fast. She wore leather, not mail. At Captain Atwell's practice yard she was the officer who came away with the fewest of his kisses after Bardalph, and the sergeants said that it was because she was never quite in front of a man; she slipped aside from a swing and came back on the follow, and when she was struck at and missed, she answered the miss with the second blade before the striker had his weight back. She would not be ignored, either. A man who looked away from her at the yard to see how Bardalph was faring found Elva's point at his ribs and her voice in his ear.\n\nShe kept to her armoury, along the lieutenants' corridor, with Lieutenant Meade's card table at one end of it and Lieutenant Saxe's empty stretch at the other, and she was the only officer who never played at the table and never kept away from it either. She sat by it with her book and a whetstone. The clerk Tobias, who also did not play, said she listened to the sergeants as an armourer listens to a blade on the stone, for the note that is wrong.\n\nGwenllian had a rule for the paste, and Elva wrote it on the first page of the book in her own hand under her grandmother's name: one dose to a wound. The paste takes once; a second dressing on a wound that is already burning is wasted paste and wasted time, and the armourer who does it is a fool. The dalesmen of the watch learned it from her, and Long Dale's grandmothers still say it of any medicine or any quarrel: one dose to a wound."
+    },
+    {
+      "title": "The Note That Was Wrong",
+      "text": "In the last winter Elva was the first officer of the watch to say aloud that Captain Atwell's cut was not a natural wound, and the only one who said what she thought had made it.\n\nShe said it at the card table, in front of the sergeants, on the third night after the cut. Tobias set it down. She said that her grandmother's book had a word for things that came up the road and would not stop for an honest cut, and that the word was in the margin beside the black paste, and that she would be dressing the blades in the morning. Lieutenant Meade asked her, very quietly, whether she thought it would help. Elva said that it had helped Gwenllian. It is the only time in the clerk's reports that anyone at the table is recorded as having laughed in the last winter: a sergeant at Saxe's end, Tobias wrote, who said that the lieutenant's grandmother had been a frightening woman, and Elva said yes.\n\nShe dressed every blade in the armoury that week. She began the inventory that the realm still has, in her own hand, and the entries grow shorter as the winter goes on. In the middle of it she wrote a letter to the castellan of Castle Sauvage, which reached him, asking for more of the grey oil than the Pennine armoury had, and for a fletcher to make arrows for it. The fletcher who went north was her own father. He reached Long Dale in the deep of the winter, and Hob the carrier would not take him on to the hall, because Hob's wife had read Lady Darra's last letter and would not let him. Elva's father waited in Long Dale until the spring and went up with Sir Hamon Brede's riders. He came down with them.\n\nHe never told Castle Sauvage what he saw. He gave the castellan back the grey oil, unopened, and asked to be let go from the castle's service, and went home to the forest and did not make another arrow."
+    },
+    {
+      "title": "Still Dressing the Blade",
+      "text": "Lieutenant Elva is in her armoury along the lieutenants' corridor, among racks of blades still carrying their dressing, and the half-dressed sword she was finishing for Lord Gildas is on the rack by the door where she left it.\n\nThe companies who have gone down say she fights as she fought at the yard, two light blades, quick aside from the swing and quick back on the follow, and that she will not let the man in front of her look anywhere else. Her blades are dressed with the paste that stopped things in Gwenllian's day, and what they open burns for a long while afterwards, though the companies say a man burns with only one dose of it at a time, as Gwenllian said, until the bitter cup of Caer Ulfwych takes it out of him. She is the lightest of the officers to bring down, and the hardest to hit while she stands.\n\nWhat she believes she is doing is the oldest argument about her. The Camelot loremasters say she believes the visitors are still coming up the road, and is still dressing blades for them. The Church says she knows they came, and that the paste failed, and is dressing them because it is the only thing she was ever taught to do about it. The Academy, which once sent a company for the half-dressed sword and was refused it, says nothing, and keeps the report.\n\nGwenllian's book did not stay in the hall. It was found by Sir Hamon's riders under the lieutenant's pillow in her cot beside the armoury, and Elva's father carried it home to the forest, and Castle Sauvage has it now, in a box in the armoury that the castle no longer uses. The last entry is Elva's, under the black paste, beside her grandmother's underlined word. It is in the same small hand as the inventory, and it is one word, like her grandmother's notes. It says: no."
+    }
+  ]
+}

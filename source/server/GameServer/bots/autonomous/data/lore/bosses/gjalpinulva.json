@@ -1,0 +1,252 @@
+{
+  "id": "gjalpinulva",
+  "name": "Gjalpinulva",
+  "catalogKey": "MidGjalpinulva",
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "aliases": [
+    "the wolf",
+    "the wolf's daughter",
+    "gjalp"
+  ],
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "yar",
+      "relation": "her firstborn"
+    },
+    {
+      "id": "iarnvidiur",
+      "relation": "her mother, by one grandmother's tale (hearsay)"
+    },
+    {
+      "id": "glacier-giant",
+      "relation": "said by superstition to share her fire"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Gjalpinulva is Midgard's level-80 dragon with 300,000 health. Her lair is in Malmohus (region 100 at 708811, 1021459, which lies in the Malmohus zone); the encounter catalog's label 'Myrkwood' is wrong.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Allakhazam lists Gjalpinulva in Malmohus at level 80; one player wrote that she looks like a dragon with a wolf's head, others that she calls her 'babies' to help her and still talks to those she kills (2006).",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/3223"
+    },
+    {
+      "text": "She cannot be hurt outside her lair. At every tenth of her health she breathes (Gjalpinulva's Breath) and lowers cold resistance; she glares at one target before a massive attack, stuns everyone near for 30 seconds and throws players.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Waking, her voice booms through the canyons that she is restless and will freeze the flesh and grind the bones of whoever entered her domain.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs"
+    },
+    {
+      "text": "Her taunts: Odin will do without your aid at Ragnarok; no valkyries will bear you; may your corpse rot on Nastrand; her aunt has a place for you in Niflheim. Over the dead she says their soul now belongs to her.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs"
+    },
+    {
+      "text": "The script calls her 'she' throughout; bounty text and the 2010s Camelot Herald do too. Allakhazam's patch summary says 'him'. Living Server follows the scripts: she.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs"
+    },
+    {
+      "text": "Post-period Camelot Herald text says her frozen gaze was sung of in mead halls and that Midgard condemned her; a later chapter says the Varulv were once her allies.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/article/bonds-ice"
+    },
+    {
+      "text": "A Dec 2002 Allakhazam comment says fight her inside the lair, and that killing Yar lowers the chance of her exhale (unverified).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/3223"
+    },
+    {
+      "text": "Period comments put kills at anywhere from 27 to over 100 players, and a Nov 2003 thread had about 32; Living Server sizes the raid at 70.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/lubricador%C2%B4s-3-fg-dragon-raid.159276/page-2"
+    },
+    {
+      "text": "Bot chat calls her a daughter of the Fenris wolf (as Mythic's 1.45 notes also do). In Norse myth Gjalp is a giantess, Geirrod's daughter, whom Thor drove off with a stone; Swedish ulv means wolf (the -ulva ending to verify).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "In February 2002 a resist bug let Gjalpinulva be killed in about 30 seconds on the Gawaine server.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/story.html?story=762"
+    },
+    {
+      "text": "Patch 1.100 (2009) let players force her respawn every half hour with Gerrik's Sword; post-period.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/3223"
+    },
+    {
+      "text": "In Norse myth the fetter Gleipnir was made of the sound of a cat's footfall, a woman's beard, a mountain's roots, a bear's sinews, a fish's breath and a bird's spittle; Tyr lost his hand to Fenrir as its pledge.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning (public domain)"
+    },
+    {
+      "text": "Nastrand, the shore of corpses, is where oath-breakers and murderers suffer after death in Norse myth.",
+      "provenance": "myth",
+      "source": "Voluspa 38-39 (Poetic Edda, public domain)"
+    },
+    {
+      "text": "A young svartalf scout caught by Midgard's hunters said Malmohus belonged to Gjalpinulva, a daughter of Fenris Wolf, the great beast, by 'some huge unknown creature'.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    },
+    {
+      "text": "The same scout said that she, herself a gigantic abomination, made in her loneliness a brood loyal to her, clever scaled wolves that go upright, and that the svartalfar had come to learn about her and her brood and perhaps destroy them. When the notes were written she had not yet been seen.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    }
+  ],
+  "story": "Midgard's dragon is the Fenris wolf's daughter, the skalds say, born before the gods finished the fetter of six things that do not exist. The accounts of her mother differ: Jordheim names the giantess Gjalp, the grandmothers of Aegir name Iarnvidiur of the Iron Wood, and the svartalfar of Svarhamr say only that she was some vast creature whose name nobody knows. She flew south over Raumarik and Skona and came down in the nameless ruins of Malmohus, and the cold went out from her like water from a spring. There she drew the frost around her like a cloak, so that outside her court no blow lands, and spread it over the ground of the court itself, so that only there can she bleed.\n\nShe bred the drakulv, Yar the firstborn first of all, and ranked them as a court. She called the varulv of Skona to serve her and roared their envoys still for as long as a man can hold his breath while she named her terms; King Hresvelgr of Varulvhamn refused her, and no werewolf has crossed into Malmohus since. The svartalfar who came to the ruins, for the grey stone by their own account and to learn whether her brood could be destroyed by the word of a young scout Midgard's hunters caught, met her gaze, and the first of them froze where they stood; the survivors founded the dragonbane of Svarhamr and have watched her ever since.\n\nMidgard's first warband against her, eighty under Hallbjorn of Fort Atla, found her frost-cloaked over the ruins and bare only in her hollow; there she answered every deepening wound with a breath of the old winter, and afterwards spoke to the dead on the frost and claimed their souls. Its skald Ragnhild lived to sing it. Every company that went south after Hallbjorn's is carved on the svartalfar's beam, and she has always come back, rising again out of the frost of the court, because the chain is not finished. When she dies, a howl crosses Midgard, for her father; the svartalfar say the chain shivers then, and that the day it breaks she will be the first to know.",
+  "chapters": [
+    {
+      "title": "The Chain of Things That Are Not",
+      "text": "Between the second chain the Fenris wolf broke and the third, the fetter the dwarves were slow to make out of six things that do not exist, the wolf had a daughter. The gods' version leaves her out. The skalds of Jordheim put her back.\n\nWho her mother was is the oldest argument in Midgard's dragon lore, and three peoples tell it three ways. The skalds of Jordheim say the giantess Gjalp, daughter of Geirrod, the one who stood astride the river Vimur and made it rise against Thor until he stopped her with a stone; the dragon carries her name, Gjalp, and a she-wolf's ending for her father's line. The grandmothers of Aegir, who live beside the Iarnwood, say the old one Iarnvidiur, who breeds Fenrir's kin in the Iron Wood, and they point to the two-headed wolves of her lair, which have the dragon's look. The svartalfar of Svarhamr, who have watched the dragon longer than anyone, give the plainest answer and the least comfortable: her mother was some vast creature whose name nobody now living knows, and they have asked everything old enough to remember. It was a young svartalf, caught by Midgard's hunters at the edge of Malmohus, who first told the realm even that much.\n\nAll three agree on what she was when she flew. She had her father's head, long and grey, and wings of ice-blue skin, and eyes that froze what they looked at. And she flew south, away from Asgard, while the gods were still praising Tyr for the hand he gave to seal the fetter, and none of them looked up."
+    },
+    {
+      "title": "The Flight South and the Cold Spring",
+      "text": "She flew over Raumarik first. The Galplen folk tell that the wolf, in his youth, had snapped at the sun over that country and spat a splinter of it into the snow, and that his daughter came down there to look at it, and found the dead already gathering around it for warmth, and left them to it; the splinter the Raumarik Revenant keeps is, in their telling, the one thing of her father's she would not take. She crossed Myrkwood and came to Skona Ravine, where the varulv lived, the werewolves who answer to the pack and never to a master, and she rested among them, and they called her kin, because she had a wolf's head.\n\nThen she went on south, past the last farm and the last cairn, to the white broken country at the edge of the world. There were ruins there already: walls and fallen towers of a people nobody in Midgard remembers, older than Jordheim, cut from a grey stone that is not found anywhere else in the realm. The svartalfar say the builders were the first people to see the frost come south, and that they left. The dragon lay down in their ruins, in a hollow among the broken walls on the south-eastern edge, and the cold went out from her like water from a spring. It has not stopped. Malmohus has had no summer since.\n\nHere her court was made. She drew the frost of the ruins around her like a cloak, the svartalfar say, so close and thick that no blade or spell has ever passed it, and she wears it whenever she goes abroad over her land. But in the hollow where she lay down she spread the cloak out on the ground beneath her, as a dog spreads its bedding, and on her own bedding she wears nothing. Only there has she ever bled. The svartalfar of Svarhamr have a saying for anything that is safe everywhere but at home: it is bare in its bed, like the wolf's daughter. The grandmothers of Gotar have the same saying the other way round, for a child who is brave only in his own house."
+    },
+    {
+      "title": "The Brood",
+      "text": "She was alone in the ruins for a long time, and then she was not. The first of her children was a pup with scales on its back and a wolf's grin, and she licked the frost off it and named it Yar. The svartalfar call him the firstborn, the oldest and strongest of the drakulv and the most powerful of all the werewolves, and he still hunts the south-west of Malmohus with his kin. Whether she bore him or made him out of frost, no one can say; the drakulv do not discuss it.\n\nAfter Yar came the rest of the drakulv, the dragon-wolves, two-legged and scaled and grinning, and she ranked them as a court is ranked. The missionaries go out to the edges of her land to preach her to whatever will listen. The sacrificers serve her altars, and the soultrappers catch what the sacrificers free. Armguards and axehands and guardians keep her camps; executioners do her justice; disciples study her; protectors stand nearest her court. Above them all are three orders that carry her own magic, whom the svartalfar call by their own names, the klok, the prast and the riddare: the wise ones, the priests and the knights.\n\nHer younger children are dragons. The adolescents of Malmohus, Jarkkonith and Ljoridkorith among them, sun themselves on the ridges and burn anything that comes close; the svartalfar say they are not yet grown, and that it is not known what they will be when they are. The scaled vargs, pups with scales, run in packs through the ruins as hunting dogs.\n\nHer brood answers her. As she weakens she calls her babies, and they come out of the ruins to her one by one, the nearest of them, whatever they are, the way pups come to a she-wolf's whine; the deeper her wound, the more of them have come. The svartalf mothers say she never calls them all, because a mother keeps some back. In the first winters of her court the camps came too: Svarhamr's beam records a winter when a single armguard ran from the hollow and came back before the hour was out with the whole western camp behind him, and Gunnolf of the drakulv at its head. The camps have not come since. Gunnolf told her, the svartalfar say, that his people would come to her hollow when she called them herself, and not when a runner did, and she has never once called them herself."
+    },
+    {
+      "title": "The Werewolves' Refusal",
+      "text": "The varulv of Skona had called her kin. She took them at their word. In the third winter of her court she sent to Skona and to the werewolf haven of Varulvhamn beneath it, where the werewolf nobles gather to talk politics, and summoned their lords to the ruins. They came: the high lords and an old wolfaur of the philosophical kind, and the envoy of King Hresvelgr, who rules the werewolves of Varulvhamn and had taken the name of the eagle-giant whose wings make the wind.\n\nShe received them in her court and named her terms. The varulv would serve her as the drakulv served her. They would hunt where she sent them and kill whom she named, and in return they would share in what came when the chain broke. The wolfaur began to answer, and she roared. It was the first time anyone outside her brood had heard it: a roar that held every werewolf in the court motionless, unable to lift a paw, for as long as a man can hold his breath, while she repeated her terms slowly into their faces. The werewolves of Varulvhamn still tell how their lords came out of it one at a time, the old wolfaur last, and that none of them could say afterwards how long they had stood there with her breath on their faces. Only Hresvelgr's envoy was never held. He had not trusted her, and had stopped at the outer wall of the ruins to listen from there, and he heard the roar as a man hears thunder over the next valley. The varulv have a saying from him, for a quarrel best heard from a distance: stand at the outer wall.\n\nThe envoy carried her terms home. King Hresvelgr heard them in his hall and gave his answer in the werewolves' one law: a wolf answers to the pack and never to a master, and a pack that kills because it is told to has a master. The varulv withdrew from Malmohus. None of them has set foot in it since, and Skona's werewolves stand at the edge of the ravine and look south and do not go further. The chroniclers of Jordheim wrote, an age later, that the varulv were once her allies. The werewolves do not deny it. They say they were allies, once, and then they were asked to be servants, and that is a different thing."
+    },
+    {
+      "title": "The Frozen Svartalfar",
+      "text": "The svartalfar came to Malmohus for the grey stone. A clan of dark elves from under Myrkwood heard that the ruins at the edge of the world were cut from a stone found nowhere else, and that it rang like a bell when struck and held enchantments better than iron, and they came south with picks to mine the fallen towers. They knew there was a dragon. They thought the ruins were large enough to share.\n\nTheir foreman, a svartalf the clan remembers as Sviga, went to look at her, because a foreman should know what he is working beside. He came to the edge of the hollow and she looked at him. The clan found him there the next morning, still standing, still looking, frozen through, with frost on his open eyes. Others went to bring him back, and she looked at them too. The frozen svartalfar still stand in the ruins of Malmohus, and the bestiaries of Midgard list them with the living, because they have never fallen down.\n\nThat is the gaze the mead halls sang of in a later age. The svartalfar call it her glare, and they say she gives it to one at a time: whatever she fixes with her stare, she means to kill next, and nothing has yet talked her out of it. The children of Svarhamr play a game in which one of them is the dragon and stares, and the one stared at must run out of the ring before the dragon has finished a short count, and the others must not run with him, because in the game, as at the hollow, whoever stands beside the one she stares at freezes with him. The svartalf mothers do not like the game, and every child plays it.\n\nThe clan did not go home. They built the town of Svarhamr at the edge of her land, at a distance they measured by the frozen ones, and they swore that they would see her dead. They are the dragonbane svartalfar, and they have watched her ever since, the way fishermen watch weather. They count her wakings and her sleeps. They pay any friend of theirs to kill her firstborn, because a line that loses its eldest has begun to end. Kiaja keeps their trust, and Raxnathor their rewards. Every child of Svarhamr is taken once to see the frozen foreman, and told his name."
+    },
+    {
+      "title": "Hallbjorn's Warband",
+      "text": "In the years of the war between the realms, when Midgard's frontier was keeps and banners, the realm sent its first warband south to kill her. It mustered at Fort Atla in Gotar under Hallbjorn Ulfsson, a thane who had held Glenlock against Albion, and it was eighty strong, and it had a skald with it, Ragnhild of Galplen, to sing the victory. Ragnhild lived. Most of the eighty did not. Her song of the warband is the oldest account of the dragon's court, and the skalds of the south still sing it whole, though it takes most of a night.\n\nHallbjorn found her abroad over the ruins and attacked her there, and the warband's blows slid off the frost-cloak like rain off a roof, and she laughed and went back to her hollow. They followed her in. In the court their blades bit, and the warband cheered, and then she paid them back. Each time they wounded her deeper, she drew breath and let out some of the old winter she carries, and it washed over the whole court, wall to wall. Ragnhild gave every breath its own verse, and the song grows colder verse by verse, because each breath found the warband with less on it against the cold than the last. The svartalf furriers of Svarhamr, who sew the warmest furs in Midgard, sew them double for anyone going south, and say that a man the dragon has breathed on once is a man with one fur fewer. Hallbjorn himself reached her flank near the end and died there, standing, with his axe in her scales, and the warband did not hear the last verse.\n\nThe skald lay among the dead at the end, unhurt but frozen to the ground, and heard the dragon speak to them. Your soul belongs to me now, she told each one, by craft, as if she knew them: the thane, the shaman, the runemaster. She told them Odin would do without them at Ragnarok and that no valkyries would carry them, and that her aunt kept a place for them in Niflheim. Ragnhild understood that the aunt was Hel. When the dragon flew, the skald crawled out of the court and walked home to Fort Atla, and sang. Every warband that has come home from the south since has brought back the same report: she talks to the dead, and the dead she has talked to are slow to forget it."
+    },
+    {
+      "title": "The Restless Wakings",
+      "text": "She does not die and stay dead. When she is killed, a howl crosses all of Midgard, from Malmohus to Odin's Gate, a soul-piercing sound that every farmer in Gotar has heard at least once and then all is quiet. In a season, or less, she is in her court again. The svartalfar say she rises out of the frost of the hollow, because the cloak she spread there remembers her shape; the skalds say a daughter of the wolf cannot finish dying while her father's chain is not finished either.\n\nBetween her deaths she sleeps, and when she wakes she is restless. Her voice booms through the canyons of Malmohus, asking who has dared to enter her domain and promising to freeze their flesh and grind their bones to dust, and the drakulv in every camp lift their heads. Svarhamr keeps a tally of her wakings carved on a beam of the meeting hall. The dragonbane learned long ago to wake her when it suited them; in a later age a blade was made, Gerrik's Sword, that could call her up out of the frost on purpose, and the svartalfar say there were other ways before that one, which they do not share.\n\nOnce, the chroniclers of Jordheim record, her breath failed her. It was the winter after the realm's first warbands went south, and a company on one of the far shores of the realm found her weak, her winter not answering, and killed her in the time it takes to say a prayer. The skalds made a drinking song of it. The svartalfar made a note on their beam. The next winter her breath was back, and the skalds stopped singing the song.\n\nThe beam in Svarhamr records every warband that came after Hallbjorn's. A hundred came from Jordheim in one restless year and died inside the hollow before she had begun to breathe in earnest. Another warband, from the keeps of Uppland, lasted as long as a skald takes to sing one verse. A small company of twenty-seven out of Galplen, who had read Ragnhild's song until they knew it by heart, killed her twice in one day and went home with two scales. The dragonbane carved their names deepest. The men of Odin's Gate tell a story of their own: that the Glacier Giant of the frontier is her kin by the cold, sharing one fire between them, so that when he falls her breath is short for a season. The svartalfar have never seen any sign of it on their beam, and the men of Odin's Gate do not care what the svartalfar have seen."
+    },
+    {
+      "title": "What She Waits For",
+      "text": "The old songs say that at the end the wolf will break free. Gleipnir will part, Fenrir will run with his jaws so wide that the lower one scrapes the earth and the upper one the sky, and he will swallow Odin. The ship of nails will sail from the north. The dead of Nastrand, the shore of corpses where oath-breakers lie, will rise. And Hel will come with her host out of Niflheim.\n\nGjalpinulva knows all this. She is the only one of the three realms' dragons who speaks of the end, and she speaks of it as a promise. When she tells a warrior that Odin will have to do without his aid at Ragnarok, she means it as a fact about the coming battle: the warrior will be in Niflheim with her aunt, and the gods will be one spear short. Every soul she claims in her court is one fewer for the valkyries to carry to Valhalla, and one more for the host that comes out of the north at the end.\n\nThe svartalfar of Svarhamr believe she is waiting for the chain to break, and that while she lives Gleipnir is not finished, because she was born in the time before the last of its six things was found. That is why some of them hope for her death, and why some of them, quietly, fear it: if her death finishes the chain, it may also start the end. The skalds of Jordheim believe she is waiting for her father, and that the day he runs she will fly north to meet him with her brood behind her, Yar at the front and her adolescent dragons grown at last. The grandmothers of Aegir believe nothing so grand. They say she is a daughter waiting for her father to come home, and that there is no creature more dangerous.\n\nSome in Midgard look at the dead dragon under Tuscaran Glacier, the one the rime giants built on, and wonder whether the end was tried once before and failed. Gjalpinulva has never said. When she dies, she howls for her father, and the svartalfar say that somewhere under the earth the chain shivers. When it breaks, they say, she will be the first to know, and Svarhamr means to be the second."
+    }
+  ],
+  "legend": "Fight her in the lair, never outside: out there she can't be hurt and she knows it, and a Dec 2002 comment warned that attacks from outside trigger her area breath anyway. Cold resists up and keep them up, because every breath at each 10% strips them; healers re-buff after each one. When she stares at someone (the warning comes about six seconds early), that someone runs away from the group: the glare hits everyone within about 1000 of them. Stun breaks for the long roar, which lasts thirty seconds. Her babies come one at a time as she drops, about every 15% from 85% on, six at most; kill each before the next. In Living Server they no longer run off to fetch the camps. Period kills ran from 27 people to over 100; a 74-strong raid once lasted three minutes. Old raiders swore that killing Yar first made her breathe less; the heralds never said so, but people still do it. Never say her name inside the ruins.",
+  "yells": {
+    "aggro": [
+      "You walk into my hall with your little gods' names in your mouths. Spit them out.",
+      "Odin will have to do without you at the end of the world.",
+      "I grow restless. Who dares my domain? I will grind your bones to dust!"
+    ],
+    "phases": [
+      {
+        "trigger": "breath",
+        "text": "Breathe in, little ones. It is the last cold air you will taste."
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "My children! Come and feed!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "My father broke a god's hand. What do you think I will break?"
+      },
+      {
+        "trigger": "wake",
+        "text": "I grow restless. Who has dared to enter my domain?"
+      },
+      {
+        "trigger": "health<=10",
+        "text": "Father! The chain! Do you feel it shiver?"
+      }
+    ],
+    "death": [
+      "Father... the chain... still holds...",
+      "A howl... for my father... and then quiet..."
+    ],
+    "slay": [
+      "No valkyries for you. Your soul is mine.",
+      "My aunt in Niflheim will keep you warm. She keeps nothing warm.",
+      "May your corpse rot on Nastrand!"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ruins of Malmohus. A wolf's head lies on its paws.",
+      "Frost forms on your lashes. She is looking at you.",
+      "Old raids' bones lie frozen where she killed them."
+    ],
+    "phases": [
+      {
+        "trigger": "breath",
+        "text": "Gjalpinulva breathes, and winter fills the ruins!"
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "Gjalpinulva calls her brood to her side!"
+      },
+      {
+        "trigger": "glare",
+        "text": "Gjalpinulva fixes someone with her frozen gaze!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Gjalpinulva howls. Her brood answers from the ruins!"
+      }
+    ],
+    "realmFirstKill": "A howl crosses Midgard, then silence. She is dead.",
+    "wake": "Gjalpinulva wakes. Frost runs down the canyons."
+  },
+  "botLines": {
+    "briefing": [
+      "gjalpinulva: fight in the lair, out of it she cant be hurt",
+      "cold resist up, she debuffs it every breath, every 10%",
+      "when she stares at you, run. stun break ready for the roar",
+      "kill her babies before they get to the healers",
+      "her babies come one at a time as she drops, kill each before the next one",
+      "healers rebuff cold resist after every breath"
+    ],
+    "aftermathWin": [
+      "the wolf is dead!! [gg midgard|gratz everyone]",
+      "did you hear that howl when she died? [chills|whole zone heard it]",
+      "dragon scales! [roll|who needs them]",
+      "she said odin would do without me. jokes on her",
+      "gg midgard. the wolf is dead"
+    ],
+    "aftermathLoss": [
+      "she breathed twice in a row and we were done",
+      "somebody pulled her out of the lair. [never again|stop doing that]",
+      "the glare one-shot our main tank",
+      "thirty second stun and a breath right after. nothing we could do"
+    ],
+    "rumour": [
+      "[heard|they say] gjalpinulva talks to your corpse after she kills you. [never stuck around to listen|i always release too fast to hear]",
+      "kill yar first and she breathes less. [old raid leaders swear by it|probably a myth]",
+      "her aunt in niflheim is hel, if shes really fenris's daughter",
+      "the svartalfar say when she dies the chain on fenris shivers"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Gjalpinulva",
+    "text": "Fenris's daughter, the skalds say, with a wolf's head, wings and a frozen gaze. She calls Niflheim's keeper her aunt and promises the dead no valkyries. Out of her lair she cannot be wounded. In it she breathes winter at every tenth of her strength and calls her brood, the drakulv, to her side."
+  },
+  "bookPage": "Sung at the hall of Svarhamr, as the dragonbane svartalfar sing it, which is not how Jordheim sings it. The wolf was bound with a chain of things that are not. Before the last link closed he had a daughter, and she flew south while the gods were busy congratulating themselves. She came down in Malmohus among the ruins of a people nobody remembers, and she lay down there, and the frost went out from her like water from a spring. The svartalfar have watched her ever since. They say she is waiting for the chain to break. They say when it does, she will be the first to know. They say that is why they watch.",
+  "chronicle": {
+    "win": "A howl crossed Midgard and then silence: {raidLeader} led {realm} against Gjalpinulva in Malmohus and slew her in {minutes} minutes.",
+    "loss": "Gjalpinulva's winter broke {raidLeader}'s raid from {realm} in the ruins of Malmohus after {minutes} minutes."
+  }
+}

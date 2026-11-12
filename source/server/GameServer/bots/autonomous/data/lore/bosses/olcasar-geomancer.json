@@ -1,0 +1,134 @@
+{
+  "id": "olcasar-geomancer",
+  "name": "Olcasar Geomancer",
+  "catalogKey": "galladoria/olcasargeomancer",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 77, 100,000 health. He 'tears off a chunk of himself and tosses it to the ground' to make a minion, raises slain minions, stuns for 9 seconds, and snares the area from 80%.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He carries a damage shield and a self-heal (Olcasar Tear).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The Olcasar of Galladoria include stonemelders, tainters, deepstalkers, trackers, a spikelord, a mystic and a belladonna.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "The Olcasar are stone that drank the Root's sap and learned to hate, and the Geomancer is the oldest of them, the one who first understood that a body of stone is only a quarry. When he needs a servant he breaks one off himself and throws it down, and it gets up. When a servant is broken he speaks over the rubble, and it gets up again. His own wounds he closes with the slow tear of a weeping rock. He is not fast and he is not proud. He simply does not run out of himself as quickly as his enemies run out of patience.\n\nThe Olcasar were the hollow's stone before they were anything else: the rock of the deep galleries, cool and patient and indifferent. The sap that seeps down the walls taught them to want things, and the first thing they wanted was to stop being patient. The Geomancer is the oldest of them, and the one who first understood the great secret of a body made of stone: it is only a quarry, and a quarry can be dug.\n\nWhen he needs a servant he tears a piece off himself and throws it down, and it gets up. When a servant is broken he speaks strange words over the rubble and it gets up again. He knows the ground: from the moment he is first hurt the floor around him grips the feet of his enemies, and he can strike a warrior so still that the warrior forgets how to move for a long moment. His wounds he closes with the slow tear of a weeping rock, and his skin bites back. The stonemelders, tainters, deepstalkers and trackers of the galleries are his kin; the spikelord and the belladonna are his captains.\n\nThe Olcasar are the deep stone under the isle, woken by the Root's sap from patience into hatred; the Geomancer was the first to wake. Tadhg Rua of Connacht learned to clear the floor so the rubble cannot rise.",
+  "legend": "He makes adds out of himself on a timer and raises the ones you kill, so AoE them down where they stand and keep pressure on him. From eighty he snares the room and he stuns, so purge and keep the healers moving. Reflected damage on melee: heal through it. The Geomancer fight is a test of AoE and patience: kill his chips where they stand, cure the snare, break the stun on whoever he picks, and never let the pile of rubble grow, because every piece of it can get back up. Superstition says crush weapons insult the Olcasar, and they hit the crush wielders first. Nobody has proved it. Everybody brings a hammer anyway.",
+  "yells": {
+    "aggro": [
+      "Stone remembers every blow.",
+      "The gallery walls lean in to listen.",
+      "Another quarry walks in on its own legs."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Olcasar tears off a chunk of himself and tosses it to the ground."
+      },
+      {
+        "trigger": "addsDead",
+        "text": "Rise. The quarry is not empty."
+      }
+    ],
+    "death": [
+      "Gravel... only gravel...",
+      "Only stone... only patient stone again..."
+    ],
+    "slay": [
+      "You break as easily as anything.",
+      "Rubble, like the rest.",
+      "Rise. Serve. You are mine now.",
+      "Stone forgets nothing."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Rubble that was once something, waiting.",
+      "Statues that have not decided to be statues."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=80",
+        "text": "The stone floor grips your feet."
+      }
+    ],
+    "realmFirstKill": "The Olcasar Geomancer is broken to gravel."
+  },
+  "botLines": {
+    "briefing": [
+      "geomancer makes adds out of his own body and raises the dead ones. [aoe them|kill them flat] and stay on him",
+      "geomancer stuns for nine seconds. [purge|cure stun] whoever he picks",
+      "the floor snares from eighty. [speed buffs|purge ready]",
+      "he heals himself with a stone tear, [interrupt|stop the heal] if you can"
+    ],
+    "aftermathWin": [
+      "geomancer is gravel. [good aoe|nice work casters]",
+      "no rubble left to get up. [great aoe|well done casters]",
+      "geomancer is gravel. [onwards|next]",
+      "stun broken every time, good clerics. [grats|nice]"
+    ],
+    "aftermathLoss": [
+      "the adds kept getting back up and we [ran out of mana|lost the healers]",
+      "the rubble kept getting up. [aoe the pieces|kill them flat]",
+      "stunned the tank and [nobody picked it up|it walked through us]",
+      "snared in place and his adds [ate the casters|got us]"
+    ],
+    "rumour": [
+      "[heard|word is] the olcasar are rocks that drank olcasgean's sap. makes sense when you see them",
+      "[heard|someone said] the olcasar were just rock before the root's sap got into them",
+      "[word is|heard] the geomancer tears pieces off himself to make servants",
+      "the olcasar spikelord and belladonna are the geomancer's captains, they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Olcasar",
+    "text": "Stone that drank the Root's sap. The Geomancer breaks servants off his own body and raises them when they fall. He runs out of himself slowly."
+  },
+  "bookPage": "A Sylvan stone-song, with Aodhan's apology for the translation: Be patient, stone; you were patient when the world was water. The Sylvan sang it to the rocks of the hollow in the good years, and the rocks were patient. Then the Root's sap ran down the walls, and the rocks of the deep galleries woke impatient. The Olcasar, the Sylvan call them now. Their eldest, the Geomancer, makes servants from his own body and raises them when they fall. The fire-keeper said: he has forgotten the song. I asked whether the realm's warriors should sing it to him. She said they should hit him harder.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Olcasar Geomancer; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Olcasar Geomancer after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the Root whose sap woke the stone"
+    },
+    {
+      "id": "aroon-the-urlamhai",
+      "relation": "a fellow servant of the hollow"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Patient Stone",
+      "text": "Before the hollow, the deep galleries under Hy Brasil were only rock: cool, slow and indifferent, the old stone the isle stands on. The Sylvan sang to it anyway. They have a stone-song, older than most of their songs, that begins 'be patient, stone; you were patient when the world was water', and the earth-tenders sang it to every slope they mended. The rock under the isle did not answer, but the Sylvan believed it listened.\n\nWhen the Root's roots hollowed Galladoria, the sap that seeps down its walls ran over that rock for an age. The Sylvan say the sap taught the stone to want things, and that the first thing it wanted was to stop being patient. The stone of the deep galleries woke. It stood up off the walls in the shapes of the things it had seen in the dark, and it remembered every blow that had ever been struck on it, every pick and every falling rock, and it hated all of them. The realm's scholars named the waking stone the Olcasar, after the first syllable of the Root's own name, olc, evil, and the Sylvan let the name stand.\n\nThe Olcasar are many now: stonemelders who fuse the walls shut behind intruders, tainters who seep poison from their joints, deepstalkers and trackers who hunt the galleries, a spikelord and a belladonna who command them, and a mystic who sings the stone-song backwards. Above all of them stands the eldest. The Sylvan sang it at every new house too, to the foundation stone, and some still do."
+    },
+    {
+      "title": "The Eldest and the Quarry",
+      "text": "The Geomancer was the first of the stone to wake, the Sylvan say, and the first to understand the great secret of a body made of rock: it is only a quarry, and a quarry can be dug. When he needs a servant he tears a piece off himself and throws it on the ground, and it gets up. When a servant is broken he mutters strange words over the rubble, and the slain minion rises from the dead. He makes them as steadily as a mason cuts blocks, the wardens say, and he does not run out of himself as quickly as his enemies run out of patience.\n\nHe knows the ground. From the moment he is first wounded the floor around him grips the feet of his enemies and will not let them go. He can strike a warrior so still that the warrior forgets how to move for the space of nine heartbeats. His wounds he closes with the slow tear of a weeping rock, and his skin bites the hands that strike it. None of this is cruelty, the Sylvan insist. It is what stone does when it stops being patient: it holds, it binds, it hurts what hurts it, and it waits.\n\nThe first band of the realm to fight him was sent into the Olcasar galleries by Orlaith to clear the way, under a warrior of Connacht named Tadhg Rua. They killed the Geomancer's minions, and the minions got up, and they killed them again, and Tadhg Rua said afterward that it was like fighting a landslide one stone at a time."
+    },
+    {
+      "title": "Tadhg Rua's Answer",
+      "text": "Tadhg Rua found the answer in the rubble itself. Every broken minion left a pile of stone, and every pile of stone could get up. He told Orlaith afterward that he had stopped the Geomancer by leaving him nothing to raise: his band broke the servants where they stood and broke the pieces too, with spells that strike many stones at once, until the rubble stopped growing. The Connacht men called it clearing the floor, and the phrase passed into the speech of the barracks as a word for finishing any job properly.\n\nTadhg Rua also started the superstition the barracks of Connacht still repeat: that hammers insult the Olcasar, and that those who bring crushing weapons are struck first. He carried a hammer himself and was struck first, and swore it was the hammer. His band said it was his red beard. Nobody has proved it either way; every Connacht man who goes down carries a hammer anyway, because hammers break stone.\n\nThe Sylvan have their own answer, which is older. The stone-song, sung the right way round, reaches the Olcasar, they believe; the mystic of the galleries sings it backwards to keep the others from hearing it. The Sylvan who go down with the realm's companies sing the stone-song under their breath in the Olcasar galleries. The Connacht men think it is a charm for luck. The Sylvan say it is a reminder. Tadhg Rua's hammer hangs in the barracks of Connacht now, chipped from end to end. He never told anyone what the Sylvan singing meant to him."
+    },
+    {
+      "title": "Be Patient, Stone",
+      "text": "What the Olcasar want, the Sylvan say, is to never be still again. The Geomancer leads them in it. Every season they reach a little further along the galleries, fusing new passages, waking new stone, and the earth-tenders of Domnann, the few left who still mend slopes, report that the rock under the hills above the hollow has begun to move in ways rock should not: slips that run uphill, cracks that close themselves at night. The Sylvan believe the Olcasar are waking the isle's foundations from below.\n\nThe druids of Tir na Nog doubt it, and say the slips are only the young rock of the isle doing what young rock does. The Sylvan point to the slip above Cluain Dara, which broke through into the hollow in the year the stone guardian was taken, and has never closed, and whose edges, they say, are warm.\n\nThe Geomancer is the only one of the Olcasar the realm has ever heard speak. He says little, those who have heard him report: that stone remembers every blow, and that stone forgets nothing. When he is finally broken he says something else, which the Sylvan have taken as a kind of hope. He says he is only stone again, only patient stone. The fire-keepers of Domnann sing the stone-song the night he falls, all the way through, the right way round, and they say that is the night the slips above the hollow are still. The druids have started measuring that too. The druids have not yet said whether the Sylvan are right."
+    }
+  ]
+}

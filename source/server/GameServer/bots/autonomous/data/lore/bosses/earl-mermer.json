@@ -1,0 +1,153 @@
+{
+ "id": "earl-mermer",
+ "name": "Earl Mermer",
+ "npcNames": [
+  "Earl Mermer"
+ ],
+ "aliases": [
+  "mermer",
+  "the whisperer"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "inquisition-below",
+  "chthonic-chapter"
+ ],
+ "related": [
+  {
+   "id": "prince-baalorien",
+   "relation": "his prince, who kept him"
+  },
+  {
+   "id": "prince-abdin",
+   "relation": "sent him north as a knight"
+  },
+  {
+   "id": "lieutenants",
+   "relation": "Lieutenant Persun asked him about his oath"
+  },
+  {
+   "id": "malroch-the-cook",
+   "relation": "his neighbour in the north"
+  },
+  {
+   "id": "inquisitors",
+   "relation": "his order now"
+  },
+  {
+   "id": "chthonic-knights",
+   "relation": "his order once"
+  },
+  {
+   "id": "gatekeeper-dommel",
+   "relation": "ended the feud he was caught in"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Earl Mermer is a level 71 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands in Prince Ba'alorien's cloister in the north, beside Inquisitors Zazinol and Haap.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's map key lists Earl Mermer with an Inquisitor, Umbrood Warriors and Pale Guardians, beside Prince Baalorien.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "Earl Mermer is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Earl Mermer uses model 653, the model of the Chthonic Knights, with no body type set.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "In the Ars Goetia, Murmur (54) is a duke and earl who teaches philosophy and makes the souls of the dead appear and answer; Mermer may read as that name, to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Earl Mermer wears a Chthonic Knight's shape and speaks for the Inquisition, and both orders would rather he did neither. In the Fourth Roll, when the feud of the Blade and the Hook was at its worst, Prince Abdin sent a knight of his chapter house north to Prince Ba'alorien's cloister to demand that the Inquisition examine the Mutilators of the west and find them false to the Roll. The knight's name in the chapter was Mermer. He carried the demand, and Ba'alorien received it, and then the prince observed that a demand so grave required a witness, and that the witness must be examined first.\n\nThe Inquisition examined Mermer for a whole Roll. Nobody outside the cloister knows what was asked. When Dommel closed the crossing and the feud ended, Abdin sent for his knight, and Ba'alorien sent back a demon in a knight's shape who had forgotten which order he was sworn to, and who answered every question in a murmur so low that the questioner had to lean close to hear it. The chapter house would not take him back. The Inquisition kept him. Grand Chancellor Adremal, asked to rule on a knight who was no longer a knight, cut him a new line as Earl of the Cloister, under Ba'alorien, and the knights have not forgiven the Chancellor either.\n\nMermer turned out to be the Inquisition's best questioner. A demon who must lean close to hear him lowers its own voice to answer, and a demon whispering will tell what it would never shout. He takes the hardest examinations of the north cloister, and the Inquisitors say he has never once raised his voice or failed to get an answer. He stands among them in the prince's cloister, beside Inquisitors Zazinol and Haap, a short walk from Malroch the Cook's kitchen.\n\nThe Chthonic Knights do not say his name at all, which in their house is worse than saying it. Lieutenant Persun, the Marshal's officer in the chapter house, once went north and asked Mermer whether he still remembered his oath to the deep earth. Mermer leaned close and murmured something. Persun has not repeated it to anyone, the Marshal included, and the knights have stopped asking him.",
+ "legend": "Mermer stands in Prince Ba'alorien's cloister in the north, practically shoulder to shoulder with Inquisitors Zazinol and Haap, with the prince about fifteen hundred units off. Level 71, no script, and he uses the Chthonic Knight model even though he stands with the Inquisitors, so do not let the look of him fool your assist. Clear the two Inquisitors before you pull him or expect all three, and keep the fight away from Ba'alorien's room. Malroch the Cook's kitchen is close, so Albion groups on the plague quest sometimes walk into him by accident. Players call him the whisperer and say his voice makes you lean in. Knight players of every realm swear he was a Chthonic Knight once, and that the other knights pretend he does not exist.",
+ "yells": {
+  "aggro": [
+   "Come closer. I speak softly.",
+   "Lean in. Everyone does.",
+   "Tell me quietly. It is easier quietly."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Whisper it. You will feel better."
+   }
+  ],
+  "death": [
+   "Which oath... which order...",
+   "Say it softly... over me..."
+  ],
+  "slay": [
+   "Hush. Examined.",
+   "Quietly done.",
+   "You told me everything."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "A murmur, too low to make out, comes from the cloister.",
+   "A knight's shape stands among the questioners."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The whisperer leans close. You want to answer him."
+   }
+  ],
+  "realmFirstKill": "Earl Mermer has fallen. The cloister is silent."
+ },
+ "botLines": {
+  "briefing": [
+   "mermer is with zazinol and haap. [clear them first|three at once if you dont]",
+   "he looks like a chthonic knight but hes an earl. [check your target|dont trust the model]",
+   "keep mermer away from baalorien's room. [pull him south|pull back]",
+   "71 no tricks. [single pull|one at a time]"
+  ],
+  "aftermathWin": [
+   "mermer down. [cloister's quiet|no more whispering]",
+   "earl mermer dead. [baalorien next|on to the prince]",
+   "mermer done, [good split|clean]",
+   "the whisperer is dead. [rebuff for the prince|mana check]"
+  ],
+  "aftermathLoss": [
+   "pulled zazinol haap and mermer. [wipe|three at once]",
+   "mermer brought baalorien. [gg|mess]",
+   "mermer got us. [regroup|rez]",
+   "lost the pull in the cloister. [slower|one at a time]"
+  ],
+  "rumour": [
+   "[heard|word is] earl mermer was a chthonic knight before the inquisitors got him",
+   "mermer talks so quiet you lean in to hear. [creepy|thats how he gets you]",
+   "[someone said|my guildie says] the knights in df wont say mermer's name",
+   "mermer and the cook are neighbours. [plague quest goes right past him|watch it on the plague quest]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "mermer",
+  "text": "Earl of the Cloister under Prince [Ba'alorien]: a Chthonic Knight sent north in the feud of the Blade and the Hook, examined for a whole Roll, and kept. He questions in a murmur, and the knights of the chapter house do not say his name."
+ },
+ "bookPage": "From a Hibernian bard's account of the northern cloister, made for the College at Tir na Nog: Among the grey questioners stood one shaped like the black knights of the west, but he did not stand like them. They stand as if the floor might be taken from under them. He stood as if he had forgotten there was a floor. He spoke to our captain as we came in, and she leaned toward him to hear, and so did I, and so did every one of us, and I do not know what he said. Our captain does. She left the company that winter and went to the druids, and has not spoken above a whisper since.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} silenced Earl Mermer in the northern cloister in {minutes} minutes.",
+  "loss": "Earl Mermer murmured to {realm}'s raid under {raidLeader}, and they leaned in."
+ }
+}

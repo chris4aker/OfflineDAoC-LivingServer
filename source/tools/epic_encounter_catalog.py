@@ -466,7 +466,9 @@ def int_or_none(value: str | None):
 # Rule detectors
 # ---------------------------------------------------------------------------------------------------------------------
 
-SWITCH_RE = re.compile(r"EpicEncounterMechanics\.(Allow\w+|PetDevourIntervalMilliseconds|FightIsOver)")
+# A switch is read as EpicEncounterMechanics.AllowX or, since 1.2 (per-encounter values), AllowXFor(encounter).
+SWITCH_RE = re.compile(r"EpicEncounterMechanics\.(Allow\w+?(?=For\s*\()|Allow\w+|PetDevourIntervalMilliseconds|FightIsOver)")
+SWITCH_CALL = r"(?:For\s*\([^()]*\))?"
 ALL_DAMAGE = {"Body", "Cold", "Energy", "Heat", "Matter", "Spirit", "Crush", "Thrust", "Slash"}
 
 
@@ -493,11 +495,11 @@ def switches_for(member: Member, pos: int, world_ctx) -> list[str]:
     found = []
     texts = [src.masked[src.line_starts[src.line_of(pos) - 1]:pos + 200].split("\n")[0]] + member.conditions_at(pos)
     body = member.body
-    early = re.search(r"if\s*\(\s*!\s*(?:DOL\.GS\.)?EpicEncounterMechanics\.(Allow\w+)\s*\)\s*return", body)
+    early = re.search(r"if\s*\(\s*!\s*(?:DOL\.GS\.)?EpicEncounterMechanics\.(Allow\w+?)" + SWITCH_CALL + r"\s*\)\s*return", body)
     if early and member.open_pos + early.start() < pos:
         found.append(early.group(1))
     # if (!Allow...) { ...; return; } before pos: the code after it runs only with the switch on.
-    for blk in re.finditer(r"if\s*\(\s*!\s*(?:DOL\.GS\.)?EpicEncounterMechanics\.(Allow\w+)\s*\)\s*\{[^{}]*\breturn\b[^{}]*\}",
+    for blk in re.finditer(r"if\s*\(\s*!\s*(?:DOL\.GS\.)?EpicEncounterMechanics\.(Allow\w+?)" + SWITCH_CALL + r"\s*\)\s*\{[^{}]*\breturn\b[^{}]*\}",
                            member.mbody):
         if member.open_pos + blk.end() < pos:
             found.append(blk.group(1))
@@ -523,7 +525,19 @@ def picks_from_player_list(member: Member) -> bool:
     cls_m = member.cls.src.masked[member.cls.open_pos:member.cls.end]
     lists = re.findall(r"List\s*<\s*GamePlayer\s*>\s+(\w+)", cls_m)
     return any(re.search(r"\b" + re.escape(l) + r"\s*\[", member.mbody) for l in lists) and \
-        not re.search(r"GameBot|EpicEncounterActors", member.mbody)
+        not re.search(r"GameBot|EpicEncounterActors|EncounterTargets", member.mbody)
+
+
+_SHIPPED_BOT_DISPLACEMENT: set[str] | None = None
+
+
+def shipped_bot_displacement() -> set[str]:
+    """The encounters whose AllowBotDisplacement ships on (EpicEncounterMechanics.ShippedPerEncounter)."""
+    global _SHIPPED_BOT_DISPLACEMENT
+    if _SHIPPED_BOT_DISPLACEMENT is None:
+        text = Source(SWITCH_FILE).text
+        _SHIPPED_BOT_DISPLACEMENT = set(re.findall(r'Ship\(nameof\(AllowBotDisplacement\),\s*"(\w+)",\s*true\)', text))
+    return _SHIPPED_BOT_DISPLACEMENT
 
 
 def player_only(member: Member, receiver: str | None, pos: int | None = None) -> bool:
@@ -537,14 +551,22 @@ def player_only(member: Member, receiver: str | None, pos: int | None = None) ->
         return True
     if pos is not None:
         conds = " ".join(member.conditions_at(pos))
-        if re.search(r"\bis\s+GamePlayer\b|PrivLevel", conds) and not re.search(r"GameBot|EpicEncounterActors", conds):
+        if re.search(r"\bis\s+GamePlayer\b|PrivLevel", conds) and not re.search(r"GameBot|EpicEncounterActors|EncounterTargets", conds):
             return True
     cls_masked = member.cls.src.masked[member.cls.open_pos:member.cls.end]
+    # A move whose victim is picked with EncounterTargets.DisplacesBots (in this method or elsewhere in the class)
+    # includes bots exactly where the encounter's AllowBotDisplacement is on (1.2: DisplacesBots asks the move's own
+    # switch); the global value is off, so players only everywhere else. The encounter is the boss class (its brain's
+    # name without "Brain").
+    if receiver and re.search(r"EncounterTargets\.(ForDisplacement|DisplacesBots)\b", cls_masked):
+        name = member.cls.name
+        encounter = name[:-len("Brain")] if name.endswith("Brain") else name
+        return not ({name, encounter} & shipped_bot_displacement())
     if receiver:
         r = re.escape(receiver.split(".")[-1])
         if re.search(r"\bGamePlayer\s+" + r + r"\b", body) or re.search(r"\bGamePlayer\s+" + r + r"\b", cls_masked) or \
            re.search(r"foreach\s*\(\s*GamePlayer\s+" + r + r"\b", body):
-            if not re.search(r"\bGameBot\b|EpicEncounterActors", body):
+            if not re.search(r"\bGameBot\b|EpicEncounterActors|EncounterTargets", body):
                 return True
             return False
         if re.search(r"\b(GameLiving|GameObject)\s+" + r + r"\b", body + cls_masked):
@@ -630,7 +652,7 @@ def detect_take_damage(world: World, cls: CsClass, ctx) -> list[Rule]:
 
 def classify_immunity(world: World, cond: str, cls: CsClass) -> tuple[str, str]:
     # A switch in the condition is reported as the rule's switch; classify what is left.
-    cond = re.sub(r"!?\s*(?:DOL\.GS\.)?EpicEncounterMechanics\.Allow\w+\s*&&\s*", "", cond or "")
+    cond = re.sub(r"!?\s*(?:DOL\.GS\.)?EpicEncounterMechanics\.Allow\w+?" + SWITCH_CALL + r"\s*&&\s*", "", cond or "")
     stripped = re.sub(r"^(else if|if)\s*\((.*)\)$", r"\2", cond.strip())
     if stripped and re.fullmatch(r"[\s(]*damageType\s*==\s*eDamageType\.\w+(\s*\|\|\s*damageType\s*==\s*eDamageType\.\w+)*[\s)]*", stripped):
         types = re.findall(r"eDamageType\.(\w+)", stripped)
@@ -856,7 +878,8 @@ def summarize_actions(world: World, code: str) -> str:
         if world.is_npc(name) and not world.is_brain(name):
             parts.append(f"spawns {name}")
     for name in CALL_RE.findall(code):
-        if name in NOT_ACTIONS or name.startswith("Get") or name in ("CastSpell", "StartAttack", "TurnTo"):
+        if name in NOT_ACTIONS or name.startswith("Get") or name in ("CastSpell", "StartAttack", "TurnTo") or \
+                re.fullmatch(r"Allow\w+For", name):
             continue
         if name[0].isupper() and name not in ("AddToWorld",) and not world.is_npc(name):
             parts.append(f"calls {name}")
@@ -912,13 +935,34 @@ def detect_teleports(world: World, cls: CsClass, ctx) -> list[Rule]:
     rules = []
     src = cls.src
     for mb in cls.members:
-        for mm in re.finditer(r"([\w\.\[\]]+)\s*\.\s*MoveTo\s*\(([^;]*)\)\s*;", mb.mbody):
-            receiver = mm.group(1)
-            args = " ".join(src.text[mb.open_pos + mm.start(2):mb.open_pos + mm.end(2)].split())
-            pos = mb.open_pos + mm.start()
+        # receiver.MoveTo(region, x, y, z, heading), or DragonCombatGeometry.ThrowPlayer(receiver, region, x, y, z,
+        # heading): the same move to a fixed spot that leaves the player's companions where they are (Legion's throw to
+        # his platform, 1.2 base: shadowofze's final code).
+        moves = [(mm.group(1), mm.start(2), mm.end(2), mm.start(), False)
+                 for mm in re.finditer(r"([\w\.\[\]]+)\s*\.\s*MoveTo\s*\(([^;]*)\)\s*;", mb.mbody)]
+        moves += [(mm.group(1), mm.start(2), mm.end(2), mm.start(), True)
+                  for mm in re.finditer(r"DragonCombatGeometry\s*\.\s*ThrowPlayer\s*\(\s*([\w\.\[\]]+)\s*,([^;]*)\)\s*;", mb.mbody)]
+        # 1.2: EncounterDisplacement.Move(receiver, region, x, y, z, heading, DisplacementKind.K, source): the scripts' moves go
+        # through the displacement API (players as before, bots behind AllowBotDisplacement). The five move values are read
+        # as before; the kind is kept on the rule.
+        for mm in re.finditer(r"EncounterDisplacement\s*\.\s*Move\s*\(\s*([\w\.\[\]]+)\s*,(.*?),\s*DisplacementKind\.(\w+)\s*,\s*\w+\s*\)\s*;",
+                              mb.mbody, re.S):
+            moves.append((mm.group(1), mm.start(2), mm.end(2), mm.start(), "Move:" + mm.group(3)))
+        for receiver, args_start, args_end, start, fixed_throw in sorted(moves, key=lambda m: m[3]):
+            args = " ".join(src.text[mb.open_pos + args_start:mb.open_pos + args_end].split())
+            pos = mb.open_pos + start
             line = src.line_of(pos)
             near = src.text[max(mb.open_pos, pos - 500):pos + 300].lower()
-            if receiver in ("Body", "this") or receiver.startswith("Body.") and receiver.count(".") == 0:
+            kind = fixed_throw[5:] if isinstance(fixed_throw, str) else None
+            if fixed_throw is True:
+                sub, what = "fixed_spot", f"Teleports {receiver} to a fixed spot"
+            elif kind == "Throw":
+                sub, what = "air_toss", f"Throws {receiver} into the air or across the room"
+            elif kind == "Jail":
+                sub, what = "jail", f"Jails {receiver}"
+            elif kind in ("Teleport", "Barrier", "Pull"):
+                sub, what = "fixed_spot", f"Teleports {receiver} to a fixed spot"
+            elif receiver in ("Body", "this") or receiver.startswith("Body.") and receiver.count(".") == 0:
                 sub, what = "self", "Teleports itself"
             elif receiver.lower().startswith(("add", "npc", "boss", "mob")) and not re.search(r"player|target", receiver.lower()):
                 sub, what = "moves_npc", f"Moves the NPC {receiver}"
@@ -933,7 +977,7 @@ def detect_teleports(world: World, cls: CsClass, ctx) -> list[Rule]:
             sw = switches_for(mb, pos, ctx)
             players = player_only(mb, receiver, pos)
             rules.append(make_rule("teleport", src, line, line, f"{what} (MoveTo {args})", "inferred" if sub != "self" else "read",
-                                   cls, mb, subtype=sub, switch=sw or None,
+                                   cls, mb, subtype=sub, switch=sw or None, displacement=kind,
                                    affects="real players only (bots are never picked)" if players else None))
     return rules
 
@@ -1025,16 +1069,20 @@ def detect_misc(world: World, cls: CsClass, ctx) -> list[Rule]:
                                    (f" when {condition_summary(mb.conditions_at(pos))}" if condition_summary(mb.conditions_at(pos)) else ""),
                                    "inferred", cls, mb, affects="real players only (bots are never picked)" if pl else None))
         # Linked packs.
-        if not re.search(r"AddAggroListTo\s*\(|AddToAggroList\s*\(", mbody):
+        # EncounterPacks.LinkInRadius(brain, "Package", radius) (1.2) is the same link, within a radius of the boss.
+        if not re.search(r"AddAggroListTo\s*\(|AddToAggroList\s*\(|EncounterPacks\.LinkInRadius\s*\(", mbody):
             pack_iter = []
         else:
-            pack_iter = re.finditer(r"AddAggroListTo\s*\(|AddToAggroList\s*\(|PackageID\s*[!=]=\s*\"([^\"]*)\"", body)
+            pack_iter = re.finditer(r"AddAggroListTo\s*\(|AddToAggroList\s*\(|EncounterPacks\.LinkInRadius\s*\(|"
+                                    r"PackageID\s*[!=]=\s*\"([^\"]*)\"", body)
         for mm in pack_iter:
             pos = mb.open_pos + mm.start()
-            pk = re.search(r"PackageID\s*[!=]=\s*\"([^\"]*)\"", body)
+            linked = re.search(r"EncounterPacks\.LinkInRadius\s*\(\s*\w+\s*,\s*\"([^\"]*)\"\s*,\s*(\d+)", body)
+            pk = linked or re.search(r"PackageID\s*[!=]=\s*\"([^\"]*)\"", body)
+            within = f" within {int(linked.group(2)):,} of it" if linked else ""
             brains = re.findall(r"Brain\s+is\s+(\w+)", body[max(0, mm.start() - 400):mm.start() + 50])
             rules.append(make_rule("linked_pack", src, src.line_of(pos), src.line_of(pos),
-                                   "Brings others into the fight" + (f": every NPC with PackageID \"{pk.group(1)}\"" if pk else "") +
+                                   "Brings others into the fight" + (f": every NPC with PackageID \"{pk.group(1)}\"{within}" if pk else "") +
                                    (f": {', '.join(sorted(set(brains)))}" if brains and not pk else ""), "read" if pk else "inferred",
                                    cls, mb))
             break
@@ -1194,7 +1242,7 @@ def detect_offline_changes(world: World, cls: CsClass, ctx) -> list[Rule]:
             j += 1
         member = next((m for m in cls.members if m.first_line <= i <= m.last_line), None)
         near = "\n".join(src.line(k) for k in range(max(1, i - 8), min(len(src.lines), j + 8) + 1))
-        sw = sorted(set(re.findall(r"EpicEncounterMechanics\.(Allow\w+)", near)))
+        sw = sorted(set(m for m in SWITCH_RE.findall(near) if m.startswith("Allow")))
         rules.append(make_rule("offline_change", src, i, j - 1, " ".join(text)[:400], "read", cls, member,
                                switch=sw or None, restored=bool(sw) or None))
     return rules
@@ -1233,19 +1281,71 @@ def read_raids() -> tuple[list[dict], dict]:
     return raids, objectives
 
 
+SERVER_PROPERTIES = Path("source/server/GameServer/serverproperty/ServerProperties.cs")
+
+
+def _server_property(field: str):
+    text = (REPO / SERVER_PROPERTIES).read_text(encoding="utf-8-sig")
+    m = re.search(r'\[ServerProperty\("(\w+)",\s*"(\w+)",[^\n]*\)\]\s*\n\s*public static bool ' + re.escape(field) + r"\s*=\s*(true|false)\s*;", text)
+    if not m:
+        raise SystemExit(f"{SERVER_PROPERTIES}: no bool server property {field}")
+    return m.group(1), m.group(2), m.group(3)
+
+
+def server_property_default(field: str) -> str:
+    """The default ("true"/"false") of a bool server property field (ServerProperties.cs)."""
+    return _server_property(field)[2]
+
+
+def server_property_key(field: str) -> str:
+    """The "section / key" of a server property field, as /serverproperty names it."""
+    section, key, _ = _server_property(field)
+    return f"{section} / {key}"
+
+
 def read_switches() -> list[dict]:
     src = Source(SWITCH_FILE)
     out = []
+    # 1.2: which settable switches are restores (RestoreSwitches) and which are per-encounter switches (EncounterSwitches),
+    # and the per-encounter values that ship (ShippedPerEncounter: Ship(nameof(X), "Encounter", true)).
+    def names_in(array):
+        m = re.search(array + r"\s*=\s*\[(.*?)\];", src.text, re.S)
+        return set(re.findall(r"nameof\((\w+)\)", m.group(1))) if m else set()
+    restores, per_encounter = names_in("RestoreSwitches"), names_in("EncounterSwitches")
+    shipped = {}
+    for mm in re.finditer(r'Ship\(nameof\((\w+)\),\s*"(\w+)",\s*(true|false)\)', src.text):
+        shipped.setdefault(mm.group(1), []).append(f"{mm.group(2)}={mm.group(3)}")
     for i, line in enumerate(src.lines, 1):
         mm = re.search(r"public static bool (Allow\w+)\s*=>\s*(\w+);", line)
         if mm:
             out.append({"name": mm.group(1), "value": mm.group(2), "file": rel(src), "line": i})
-        mm = re.search(r"public static bool (Allow\w+)\s*\{\s*get;\s*set;\s*\}", line)
-        if mm:
-            doc = src.line(i - 1).strip()
-            doc = re.sub(r"^///\s*<summary>|</summary>$", "", doc).strip()
-            out.append({"name": mm.group(1), "value": "false", "file": rel(src), "line": i, "restores": True,
-                        "about": doc if not doc.startswith("//") or doc.startswith("///") else ""})
+        mm = re.search(r"public static bool (Allow\w+)\s*\{\s*get;\s*set;\s*\}(?:\s*=\s*(true|false)\s*;)?", line)
+        # 1.2: a restore switch backed by its own server property ({ get => ServerProperties.Properties.X; set => ... }):
+        # its value is the property's default in ServerProperties.cs.
+        mp = None if mm else re.search(r"public static bool (Allow\w+)\s*\{\s*get\s*=>\s*ServerProperties\.Properties\.(\w+);", line)
+        if mm or mp:
+            # The whole <summary> above it (one or more /// lines).
+            j, parts = i - 1, []
+            while j >= 1 and src.line(j).strip().startswith("///"):
+                parts.insert(0, src.line(j).strip()[3:].strip())
+                j -= 1
+            doc = " ".join(parts) if parts else src.line(i - 1).strip()
+            doc = re.sub(r"^<summary>|</summary>$", "", doc).strip()
+            if mp:
+                name, value = mp.group(1), server_property_default(mp.group(2))
+            else:
+                name, value = mm.group(1), mm.group(2) or "false"
+            entry = {"name": name, "value": value, "file": rel(src), "line": i}
+            if mp:
+                entry["serverProperty"] = server_property_key(mp.group(2))
+            if name in restores or not per_encounter and not restores:
+                entry["restores"] = True
+            if name in per_encounter:
+                entry["perEncounter"] = True
+                if name in shipped:
+                    entry["shippedFor"] = shipped[name]
+            entry["about"] = doc if not doc.startswith("//") or doc.startswith("///") else ""
+            out.append(entry)
         mm = re.search(r"public const int (\w+)\s*=\s*([\d_]+);", line)
         if mm:
             out.append({"name": mm.group(1), "value": mm.group(2).replace("_", ""), "file": rel(src), "line": i})
@@ -1267,12 +1367,13 @@ def dungeon_of(rel_path: Path, class_name: str, src: Source):
         if parts.startswith(folder + "/"):
             if folder == "Dragons":
                 region = DRAGON_REGIONS.get(rel_path.stem)
-                name = {1: "Golestandt's lair (Dartmoor)", 100: "Gjalpinulva's lair (Myrkwood)", 200: "Cuuldurach's lair (Sheeroe Hills)"}.get(region, name)
+                name = {1: "Golestandt's lair (Dartmoor)", 100: "Gjalpinulva's lair (Malmohus)", 200: "Cuuldurach's lair (Sheeroe Hills)"}.get(region, name)
             return name, region, "read" if region else None
     segs = parts.split("/")
     name = " / ".join(segs[:-1]) if len(segs) > 1 else "Open world"
-    found = re.findall(r"CurrentRegionID\s*(?:==|=)\s*(\d+)|MoveTo\s*\(\s*(\d+)\s*,", src.masked)
-    nums = [int(a or b) for a, b in found]
+    found = re.findall(r"CurrentRegionID\s*(?:==|=)\s*(\d+)|MoveTo\s*\(\s*(\d+)\s*,|"
+                       r"EncounterDisplacement\s*\.\s*Move\s*\(\s*[\w\.\[\]]+\s*,\s*(\d+)\s*,", src.masked)
+    nums = [int(a or b or c) for a, b, c in found]
     if nums:
         best = max(set(nums), key=nums.count)
         return name, best, "inferred"
@@ -1513,6 +1614,7 @@ def write_world_snapshot(world: World, db_path: str) -> None:
     for src in world.sources.values():
         template_ids |= {int(t) for t in re.findall(r"GetTemplate\s*\(\s*(\d+)\s*\)", src.masked)}
         packages |= set(re.findall(r'PackageID\s*[!=]=\s*"([^"]+)"', src.text))
+        packages |= set(re.findall(r'EncounterPacks\.LinkInRadius\s*\(\s*\w+\s*,\s*"([^"]+)"', src.text))
     template_ids |= {m["npcTemplate"] for rows in mobs.values() for m in rows if m["npcTemplate"]}
     templates = {}
     for tid in sorted(template_ids):
@@ -1646,10 +1748,25 @@ def rule_key(rule: dict) -> str:
     return f"{rule['kind']}|{rule['sourceClass']}|{rule.get('method')}|{extra}|{' '.join(rule['anchor'].split())[:80]}"
 
 
+_SWITCHES_ON = None
+
+
+def switches_on() -> set[str]:
+    """The EpicEncounterMechanics switches that are on today (a restored mechanic the raid AI now plays)."""
+    global _SWITCHES_ON
+    if _SWITCHES_ON is None:
+        _SWITCHES_ON = {s["name"] for s in read_switches() if s["value"] == "true"}
+    return _SWITCHES_ON
+
+
 def default_tactic(enc: dict, rule: dict) -> tuple[str, str]:
     kind, sub = rule["kind"], rule.get("subtype")
     sw = rule.get("switch") or []
-    allow = [s for s in sw if s.startswith("Allow")]
+    if kind == "offline_change" and sw and all(s in switches_on() for s in sw if s.startswith("Allow")) and \
+            any(s.startswith("Allow") for s in sw):
+        return ("On: the original is back (" + ", ".join(s for s in sw if s.startswith("Allow")) + " is true) and the raid "
+                "AI plays it (see Encounters with raid tactics).", "easy for the current raid AI")
+    allow = [s for s in sw if s.startswith("Allow") and s not in switches_on()]
     if allow and kind != "immune_while" or allow and sub in ("attacker_position", "add_shield"):
         return ("Off today (" + ", ".join(allow) + " is false). To play it: " + switched_tactic(kind, sub),
                 "off today")
@@ -1892,7 +2009,49 @@ def render_tactics_cs(data: dict) -> str:
             vulnerable = f'"{t["hazardDamageType"]}"' if t.get("hazardDamageType") else "null"
             extra += (f", Hazards: [{hazards}], HazardRadius: {int(t.get('hazardRadius', 0))}, "
                       f"HazardDamageType: {vulnerable}")
-        rows.append(f'            new("{e["class"]}", "{e["id"]}", [{adds}], {int(t.get("fightAtHomeRadius", 0))}, {dies}{extra}),')
+        init = []
+
+        def names(key):
+            return "[" + ", ".join(f'"{a}"' for a in t[key]) + "]"
+        if t.get("spreadRadius"):
+            init.append(f"SpreadRadius = {int(t['spreadRadius'])}")
+            if t.get("spreadWhileModel"):
+                init.append(f"SpreadWhileModel = {int(t['spreadWhileModel'])}")
+            if t.get("stepOutOfCast"):
+                init.append('StepOutOfCast = "' + t["stepOutOfCast"].replace('\\', '\\\\').replace('"', '\\"') + '"')
+            if t.get("meleeBehind"):
+                init.append("MeleeBehind = true")
+            if t.get("meleeRing"):
+                init.append(f"MeleeRing = {int(t['meleeRing'])}")
+            if t.get("tanksTaunt"):
+                init.append("TanksTaunt = true")
+            if t.get("healersHoldInSpread"):
+                init.append("HealersHoldInSpread = true")
+        if t.get("rangedAdds"):
+            init.append(f"RangedAdds = {names('rangedAdds')}")
+        if t.get("after"):
+            init.append(f'After = "{t["after"]}"')
+        if t.get("classRules"):
+            rules = ", ".join(f'new("{add}", [' + ", ".join(f"eCharacterClass.{c}" for c in classes) + "])"
+                              for add, classes in t["classRules"].items())
+            init.append(f"ClassRules = [{rules}]")
+            if t.get("classRuleSwitch"):
+                init.append(f'ClassRuleSwitch = "{t["classRuleSwitch"]}"')
+        if t.get("clearFirst"):
+            init.append(f"ClearFirst = {names('clearFirst')}")
+            init.append(f"ClearFirstRadius = {int(t['clearFirstRadius'])}")
+        if t.get("deathAdds"):
+            init.append(f"DeathAdds = {names('deathAdds')}")
+        if t.get("addsInOrder"):
+            init.append("AddsInOrder = true")
+        if t.get("focusRangedAdds"):
+            init.append("FocusRangedAdds = true")
+        if t.get("addParties"):
+            init.append(f"AddParties = {int(t['addParties'])}")
+        if t.get("areaOnClump"):
+            init.append("AreaOnClump = true")
+        body = (" { " + ", ".join(init) + " }") if init else ""
+        rows.append(f'            new("{e["class"]}", "{e["id"]}", [{adds}], {int(t.get("fightAtHomeRadius", 0))}, {dies}{extra}){body},')
     leashes = []
     for e in data["encounters"]:
         if not e.get("raids") or e.get("hand"):
@@ -1914,7 +2073,7 @@ def render_tactics_cs(data: dict) -> str:
         "    public static partial class EpicEncounterTactics",
         "    {",
         "        /// <summary>One row per encounter with a raid tactic (boss class, catalog id, required adds, fight-at-home",
-        "        /// radius, dies with).</summary>",
+        "        /// radius, dies with; then keep-alive and blasts, and the named rules after them).</summary>",
         "        public static readonly Tactic[] Catalog =",
         "        [",
         *rows,
@@ -1973,32 +2132,56 @@ def render_md(data: dict) -> str:
         "|---|---|---|",
     ]
     for s in data["switches"]:
-        lines.append(f"| `{s['name']}` | {s['value']} | `{s['file']}:{s['line']}` |")
+        value = s["value"]
+        if s.get("shippedFor"):
+            value += " (per encounter: " + ", ".join(s["shippedFor"]) + ")"
+        elif s.get("perEncounter"):
+            value += " (settable per encounter)"
+        lines.append(f"| `{s['name']}` | {value} | `{s['file']}:{s['line']}` |")
     tact = [e for e in data["encounters"] if e.get("aiTactics")]
     if tact:
         lines += ["", "## Encounters with raid tactics", "",
                   "The raid AI (`EpicEncounterTactics`, autonomous gamebots only) plays these tactics, read from the hand "
-                  "notes' `aiTactics` into `EpicEncounterTactics.Catalog.cs`. Tested by unit and harness tests only; not "
-                  "yet seen in an overnight run (its log lines: `REALM_EXPEDITION_TACTIC`, `EPIC_TACTIC_BOT`).", "",
-                  "| Encounter | Tactic |", "|---|---|"]
-        for e in tact:
-            lines.append(f"| {e['boss']} ({e['dungeon']}) | {md_escape(e['aiTactics'].get('summary', ''))} |")
+                  "notes' `aiTactics` into `EpicEncounterTactics.Catalog.cs`. The ones new in 1.2 are tested by unit and "
+                  "harness tests only and have not been seen in a run yet (log lines: `REALM_EXPEDITION_TACTIC`, `EPIC_TACTIC_BOT`).", "",
+                  "| Encounter | Since | Tactic |", "|---|---|---|"]
+        for e in sorted(tact, key=lambda e: (e["aiTactics"].get("since", "1.1.2") != "1.2", 0)):
+            since = e["aiTactics"].get("since", "1.1.2")
+            mark = f"**{since} (new)**" if since == "1.2" else since
+            lines.append(f"| {e['boss']} ({e['dungeon']}) | {mark} | {md_escape(e['aiTactics'].get('summary', ''))} |")
     up = data.get("upstream")
     if up:
+        sw = {x["name"]: x for x in data.get("switches", [])}
+
+        def setting(names: str) -> str:
+            # "On" / "off" by default and the server property that changes it, for each switch the row names.
+            out = []
+            for n in re.findall(r"Allow\w+", names):
+                x = sw.get(n)
+                if not x:
+                    continue
+                state = "on" if x.get("value") == "true" else "off"
+                out.append(f"{state} (`{x['serverProperty']}`)" if x.get("serverProperty") else state)
+            return ", ".join(out)
+
         lines += ["", "## Restored behind switches", "", "Where the fork had changed a mechanic for bots with no switch, the "
-                  "original is back behind an `EpicEncounterMechanics` switch, off by default (the game plays as before). "
+                  "original is back behind an `EpicEncounterMechanics` switch. Each was off (the game played as before) "
+                  "until the raid AI could play it; the ones it plays are on since 1.2. Each restore switch is its own "
+                  "server property (`/serverproperty`), read live, so it can be changed without a rebuild. "
                   "Originals read from " + up["source"], "",
-                  "| Encounter | Places | Original | Fork today | Switch |", "|---|---|---|---|---|"]
+                  "| Encounter | Places | Original | Fork today | Switch | Default (setting) |", "|---|---|---|---|---|---|"]
         for c in up["changes"]:
             lines.append(f"| {', '.join(c['encounters'])} | {c['places']} | {md_escape(c['original'])} | "
-                         f"{md_escape(c['ours'])} | `{c['switch']}` |")
+                         f"{md_escape(c['ours'])} | `{c['switch']}` | {setting(c['switch'])} |")
         lines += ["", "**Scurceol's orbs upstream:** " + up["scurceolOrbs"], "",
                   "**Helper packs upstream:** " + up["helperPacks"]]
     po = [(e, r) for e in data["encounters"] for r in e["rules"] if r.get("affects") and r["kind"] != "offline_change"]
     if po:
         lines += ["", "## Player-only mechanics (candidates to target bots later)", "",
-                  "These pick real players only (`GetPlayersInRadius`, `is GamePlayer`), so bots are never chosen. They stay "
-                  "player-only for now.", ""]
+                  "These still pick real players only, so bots are never chosen. Since 1.2 the scripts pick through "
+                  "`EncounterTargets` (real players and bots); what is left here are the moves (throws, teleports, jails), "
+                  "whose picks include bots only once `EncounterTargets.BotsCanBeDisplaced` is on, and anything still on "
+                  "`GetPlayersInRadius` / `is GamePlayer`.", ""]
         for e, r in po:
             lines.append(f"- {e['boss']} ({e['dungeon']}): {r['kind']} `{Path(r['file']).name}:{r['line']}`: {md_escape(r['summary'][:160])}")
     lines += ["", "## Priority: encounters that block raids today", ""]

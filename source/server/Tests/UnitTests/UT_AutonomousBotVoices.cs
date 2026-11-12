@@ -122,7 +122,10 @@ namespace DOL.GS.Tests
         public void Runtime_LoadsTheSameCorpus()
         {
             Assert.That(AutonomousBotVoices.Corpus, Is.Not.Null, "The server finds the embedded corpus.");
-            Assert.That(AutonomousBotVoices.Corpus.Lines.Length, Is.EqualTo(Corpus.Lines.Length));
+            // Living Server 1.2: the server adds the lore bible's lore and rumour lines (LoreChat.CorpusLines) to the built corpus.
+            int lore = LoreChat.CorpusLines(LoreBible.Current).Count(line => Corpus.LineById(line.Id) == null);
+            Assert.That(AutonomousBotVoices.Corpus.Lines.Length, Is.EqualTo(Corpus.Lines.Length + lore));
+            Assert.That(AutonomousBotVoices.Corpus.Lines.Take(Corpus.Lines.Length).Select(line => line.Id), Is.EqualTo(Corpus.Lines.Select(line => line.Id)));
         }
 
         [Test]
@@ -192,7 +195,8 @@ namespace DOL.GS.Tests
             Dictionary<string, string> slots = FullSlots();
             // A storyline episode also gets its two protagonists' names and, for an ending, the player who took a side.
             var story = new Dictionary<string, string>(slots) { ["name_a"] = "Aelwyn", ["name_b"] = "Brannoc", ["player"] = "Kaelith" };
-            Assert.That(Corpus.Scenes.Where(scene => !Debates.Playable(scene, _ => AutonomousBotStorylines.IsStory(scene) ? story : slots))
+            // A tale gets its storyteller's name ({name_b}) and the asker's (AutonomousTales).
+            Assert.That(Corpus.Scenes.Where(scene => !Debates.Playable(scene, _ => AutonomousBotStorylines.IsStory(scene) || AutonomousTales.IsTaleScene(scene) ? story : slots))
                 .Select(scene => scene.Id), Is.Empty);
         }
 

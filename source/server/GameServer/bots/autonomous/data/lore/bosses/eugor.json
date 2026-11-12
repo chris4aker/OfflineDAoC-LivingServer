@@ -1,0 +1,81 @@
+{
+  "id": "eugor",
+  "name": "Eugor",
+  "npcNames": [
+    "Eugor"
+  ],
+  "locationId": "mount-collory",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Eugor: level 36, a ghost (flag 1), at about 443,200/426,400 in the hills of Mount Collory; respawn 300 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Magic's Scar (Tavie of Tir na mBeo): 'Kill Eugor, a rare named evanescer in Mount Collory at night', then return to Meagane in Druim Cain with the second ruby.",
+      "provenance": "game",
+      "source": "DataQuest 'Magic's Scar' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "The mentalists of Caille call Eugor an evanescer, a thing that is only partly there: it appears in the hills of Mount Collory at night, and only rarely, and when it is struck it fades a little more each time, as if each blow took some of its being away with it. Meagane of Druim Cain, who studies such things, says it was a caster of the realm who tried to work a craft beyond her on the frontier during the war, and the craft went wrong, and left a scar in the world the shape of her.\n\nThat is the magic's scar the mentalists talk about. Meagane wants the ruby that Eugor carries, because she thinks the ruby is the last solid thing about it, the stone the caster's working was cut into. When the young bring it back, Meagane holds it to the light and says the same thing every time: not yet. The frontier soldiers say she is trying to put the caster back together.",
+  "legend": "Eugor (36) is a rare night spawn in the hills of Mount Collory (about 443k/426k): a ghost the quest calls an evanescer. It is the last kill of Magic's Scar (Tavie, then Ariana in Caille and Meagane in Druim Cain). Come at night and be patient; when it is down it takes 5 minutes to come back. A group of high 30s handles it. Mount Collory is frontier, so watch for enemy realms.",
+  "yells": {
+    "aggro": [
+      "(a shape half there in the dark)",
+      "(something fades in, and reaches)"
+    ],
+    "phases": [],
+    "death": [
+      "(Eugor fades out, leaving a red stone)"
+    ],
+    "slay": [
+      "(the shape flickers over you, and is gone)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Something only partly there, in the night hills."
+    ],
+    "phases": [],
+    "realmFirstKill": "Eugor, the evanescer, has faded from Mount Collory."
+  },
+  "botLines": {
+    "briefing": [
+      "eugor is a 36 night spawn ghost in mount collory",
+      "magic's scar last step. be patient, its rare"
+    ],
+    "aftermathWin": [
+      "eugor down. [ruby|magic's scar done]",
+      "found it at night. [lucky|grats]"
+    ],
+    "aftermathLoss": [
+      "enemy realm showed up. [frontier|rip]",
+      "waited all night. [no spawn|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] eugor was a caster whose working went wrong on the frontier",
+      "meagane in druim cain is trying to put eugor back together with the rubies, soldiers say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Eugor",
+    "text": "An evanescer of Mount Collory, seen only at night and rarely: the scar a caster's failed working left in the world, the mentalists say. Meagane of Druim Cain collects its rubies."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Eugor in Mount Collory in {minutes} minutes.",
+    "loss": "Eugor turned back {realm}'s band under {raidLeader} in Mount Collory after {minutes} minutes."
+  },
+  "era": "hib-the-realm-war",
+  "factions": [
+    "restless-dead"
+  ],
+  "related": [
+    {
+      "id": "mount-collory",
+      "relation": "its hills"
+    }
+  ]
+}

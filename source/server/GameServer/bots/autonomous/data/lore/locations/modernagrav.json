@@ -1,0 +1,257 @@
+{
+  "id": "modernagrav",
+  "name": "Modernagrav",
+  "realm": "Midgard",
+  "regions": [
+    151
+  ],
+  "zones": [
+    158
+  ],
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt",
+    "iarn-dwarves",
+    "wild-beasts"
+  ],
+  "summary": "The new island east of Faraheim where the morvalt dig for their Mother among ancient bones and a mammoth walks the dig.",
+  "facts": [
+    {
+      "text": "The morvalt destroyed Faraheim's eastern rockwall following rumours that the Mother lies on the island beyond; they found a huge half-buried ancient skeleton guarded by a large undead presence, and set up a camp to contact its spirit.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=116; Mythic's own words: http://www.camelotherald.com/more/1019.shtml (Camelot Herald, 2003-08-21, 1.65A notes; Wayback capture 2005-12-28)"
+    },
+    {
+      "text": "The iarn dwarves sent explorers too; Minerva in the iarn dwarf settlement in Faraheim flies their friends to Modernagrav.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=116; Mythic's own words: http://www.camelotherald.com/more/1019.shtml (Camelot Herald, 2003-08-21, 1.65A notes; Wayback capture 2005-12-28)"
+    },
+    {
+      "text": "Its bestiary lists Basilius, Hoden, Mortufoghus, decaying mammoths, howlers, morvalt of many titles, sjoalf waverunners and spectral beasts.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=116"
+    },
+    {
+      "text": "Modernagrav is a zone of region 151 (Aegir) in the zone table.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Bot chat: the crazed morvalt believe that when the Mother wakes, Trollheim will not be the only thing that falls.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Five further named stand on Modernagrav: Hoden (BasiliusBaf) beside Basilius, Grul Mgnuk over the morvalt dig, the Remnants dwarves Alivor and Asutri (aggressive, The Remnants faction) at the post, and Rolf, a living howler.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The morvalt of the dig in the north-west are framkalla, utforska, andakuva, vaktare and blandare; Basilius's household in the north-east is Hoden, a befara, three dodlig, a gravmaniska, an avliden and Rolf.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 151, Modernagrav zone 158; 0.37b world data)"
+    },
+    {
+      "text": "The middle of the island holds the undead vigil: decaying mammoths, reanimated and corrupted howlers, spectral felines and snakes, skadedjur and a thawing corpse; spectral sjoalf waverunners walk the north shore.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 151, Modernagrav zone 158; 0.37b world data)"
+    },
+    {
+      "text": "An iarn dwarf post on the south-west with trackers, a griffin and Hermione; sjoalf breakers, waverunners and beachcombers on the west shore; redcap bestigar and vandrare in the south-east; fengarus in the east; Vendo bone-eaters under a warleader on the east edge.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 151, Modernagrav zone 158; 0.37b world data)"
+    },
+    {
+      "text": "Modernagrav reads as Swedish moder + grav, 'mother' + 'grave'; the morvalt titles read as Swedish too: framkalla 'call forth', utforska 'explore', vaktare 'watcher', blandare 'mixer', dodlig 'mortal, deadly', avliden 'deceased', befara 'to fear', skadedjur 'vermin' (to verify; andakuva unexplained).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "Orri of Hagall, the pacing of the ribs, the vigil's custom and the dwarves' warning about the gap are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "For as long as Hagall has stood, the eastern rockwall was the end of Faraheim, and the iarn dwarves of the Remnants kept it that way. They knew there was land beyond. Their oldest slates call it by a word that means the place one does not dig, and the clans that crossed to Aegir in the first boats agreed among themselves, before they had agreed on anything else, that nobody would.\n\nThe morvalt agreed to nothing. Their shamans began to say, in the seasons after the Troll Father walked into Jordheim, that the Mother was not lost but buried, and that she lay beyond the wall in the east. One night they danced and wailed along the rockwall, and the warriors went at it with picks and fire, and in the morning there was a gap, and through the gap an island no map in Midgard showed. The dwarves named it at once and in Midgard's tongue, so that everyone would understand: Modernagrav, the Mother's grave. They meant it as a warning. The morvalt took it as a promise.\n\nWhat the morvalt found was bones. A skeleton lies half-buried in the middle of the island, its ribs standing out of the earth like the beams of a longhouse with the roof burnt off, older than the morvalt, older than the trolls, older than the Troll Fathers' first hall. And round it stand the dead. They are not morvalt dead. They are beasts: mammoths decaying on their feet, howlers that should have rotted long ago, great cats and serpents with the light showing through them, all facing inward, all keeping a vigil that began before anyone came to watch it. The morvalt call it the Mother's household. The dwarves call it the reason nobody dug.\n\nThe morvalt dig anyway. Their camp in the north-west is a company of callers and searchers and watchers and the ones who mix the summoning-pastes, and they clear the earth from the bones by day and call into them by night. Basilius, who rules them, keeps his own hall at the far north-east corner, with his deadly ones and his grave-worker and the one the others fear, and comes to the dig only when the calling goes badly. Between the dig and the bones walks Mortufoghus, a mammoth of the old ice as tall as a hall, round and round, as if the bones were her calf and every digger a wolf.\n\nOthers have come since the wall fell. The sjoalf work the west shore. Redcaps climb the broken ground of the south-east, and the bone-eaters of the Vendo, who will go anywhere there is something dead to eat, have crept onto the east edge and wait. The Remnants keep a post on the south-west with a griffon, and Minerva at Faraheim flies their friends across, because the dwarves would rather watch the dig than be surprised by it.\n\nMidgard's scholars say the oldest tale of all begins with a cow in the ice and a giant licked out of it, and that whatever lies under Modernagrav is older than giants. The morvalt say that when the Mother wakes, Trollheim will not be the only thing that falls. They say it smiling. The dwarves at the post do not smile at all; they have begun, quietly, to pile cut stone by the gap in the wall.",
+  "legend": "New island, old bones. Get the iarn dwarves to like you and Minerva will fly you over, or walk through the gap in Faraheim's eastern rockwall. The morvalt dig is in the north-west: framkalla and andakuva are the casters, so pick them off first. Basilius and his crew are in the far north-east and come six at a time. The middle of the island is the undead vigil around the bones: decaying mammoths, spectral cats and snakes, reanimated and corrupted howlers, and lots of skadedjur. Good hunting, but it's all linked up close together, so go as a group. Mortufoghus walks between the dig and the bones: if you aren't there for her, give her plenty of room; she throws people. Redcaps in the south-east, sjoalf on the west shore, and Vendo bone-eaters on the east edge for some reason. Some call the bones the Mother. Some call them a cow. Somebody always says he'll pace the ribs; Orri of Hagall did, the dwarves say, and never told anyone the count.",
+  "atmosphere": {
+    "firstEntry": [
+      "An island that was not on the maps. A grave that was.",
+      "The morvalt are digging. The dead are watching them dig.",
+      "The ground hums underfoot, very low.",
+      "Through the gap behind you, Faraheim. Ahead, the grave."
+    ],
+    "areas": [
+      {
+        "name": "the dig",
+        "x": 449613,
+        "y": 340762,
+        "z": 7384,
+        "radius": 2500,
+        "lines": [
+          "Spades, summoning-poles and spoil heaps. The dig.",
+          "The callers chant into the earth. The earth is listening.",
+          "A morvalt watcher counts every step you take."
+        ]
+      },
+      {
+        "name": "the morvalt camp",
+        "x": 483761,
+        "y": 335331,
+        "z": 7304,
+        "radius": 1500,
+        "lines": [
+          "Spades and summoning-poles. The camp is listening.",
+          "The kingly one's hall. His deadly ones stand close."
+        ]
+      },
+      {
+        "name": "the bones",
+        "x": 460500,
+        "y": 358500,
+        "z": 6950,
+        "radius": 3500,
+        "lines": [
+          "Ribs like a longhouse rise out of the earth.",
+          "The dead beasts face inward. They keep a vigil.",
+          "Light shows through the cats that stalk here."
+        ]
+      },
+      {
+        "name": "the mammoth's round",
+        "x": 451102,
+        "y": 350788,
+        "z": 7022,
+        "radius": 2500,
+        "lines": [
+          "Huge tracks circle the dig, worn deep.",
+          "Something vast walks round and round here."
+        ]
+      },
+      {
+        "name": "the dwarves' post",
+        "x": 437300,
+        "y": 382400,
+        "z": 6976,
+        "radius": 1500,
+        "lines": [
+          "Iarn dwarves and a griffon. They are watching the dig.",
+          "Stacked stone. Someone means to close a gap."
+        ]
+      },
+      {
+        "name": "the sjoalf shore",
+        "x": 433000,
+        "y": 365000,
+        "z": 6500,
+        "radius": 3000,
+        "lines": [
+          "The sjoalf comb the west shore for what the sea gives.",
+          "Breakers and waverunners. The sea-elves work here."
+        ]
+      },
+      {
+        "name": "the redcap climb",
+        "x": 476000,
+        "y": 383400,
+        "z": 6980,
+        "radius": 3000,
+        "lines": [
+          "Red caps on the broken ground. Climbers and wanderers.",
+          "The redcaps go up the rocks like goats."
+        ]
+      },
+      {
+        "name": "the bone-eaters' edge",
+        "x": 486500,
+        "y": 362000,
+        "z": 7350,
+        "radius": 1500,
+        "lines": [
+          "Vendo bone-eaters, far from home, waiting.",
+          "They have come a long way for something dead."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the morvalt broke the faraheim rockwall to reach modernagrav. they think the mother is buried there",
+      "theres a skeleton on modernagrav bigger than a longhouse, and undead standing round it",
+      "mortufoghus is a mammoth that walks round the dig like its her calf",
+      "the dwarves oldest slates call modernagrav the place one does not dig",
+      "modernagrav means mothers grave. the dwarves named it as a warning, the morvalt took it as a promise",
+      "the dead round the bones are beasts not morvalt. mammoths, cats, snakes. all facing in",
+      "the vigil round the bones started before anyone came to watch it",
+      "framkalla means call forth. the morvalt callers chant into the bones at night",
+      "basilius keeps his own hall in the far north east and only comes to the dig when it goes badly",
+      "mortufoghus walks between the dig and the bones like the bones are her calf",
+      "the vendo bone eaters came all the way to modernagrav. they go where something dead is",
+      "the remnants keep a post on modernagrav with a griffon. they want to watch the dig, not be surprised by it",
+      "the dwarves at the post are stacking stone at the gap in the wall. quietly",
+      "whatever is under modernagrav is older than giants, the scholars say",
+      "the morvalt broke the faraheim rockwall in one night with picks and fire"
+    ],
+    "rumour": [
+      "the crazed morvalt believe that when the mother wakes, trollheim wont be the only thing that falls",
+      "[i'm going out to|someone should] pace the ribs on modernagrav. more than a longhouse and you owe me an ale",
+      "the remnants dwarves at the modernagrav post are hostile if your faction is low",
+      "theres a pack of living howlers in the far northeast of modernagrav, the grey one is rolf",
+      "[heard|someone said] orri of hagall paced the ribs and never told anyone the count",
+      "the morvalt say when the mother wakes trollheim wont be the only thing that falls",
+      "the ground on modernagrav hums if you lie down on it. [dont try it near the vigil|tried it once]",
+      "the redcaps on modernagrav climbed the rockwall before the morvalt broke it, my guildie says",
+      "skadedjur means vermin. the morvalt named them, not the dwarves",
+      "the dead cats near the bones see you before you see them",
+      "they say the befara is the one the other morvalt are scared of",
+      "if the dwarves ever close the gap, the morvalt on modernagrav are stuck there. [good|ha]"
+    ],
+    "tell": [
+      "modernagrav is the new island east of faraheim. morvalt dig, undead, and mortufoghus the mammoth",
+      "get iarn dwarf faction and minerva flies you over to modernagrav",
+      "modernagrav? bones, morvalt and a giant mammoth. bring a group for mortufoghus",
+      "modernagrav nameds: basilius and hoden northeast, grul mgnuk at the dig, alivor and asutri at the dwarf post, rolf the howler",
+      "is modernagrav hard? the vigil in the middle is all linked. go as a group",
+      "the morvalt dig is north west, basilius is far north east",
+      "you can walk in through the gap in faraheims eastern rockwall too"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Modernagrav. The [morvalt] broke a [rockwall] to find their Mother and found [bones]. A mammoth walks around them, and the [vigil] of the dead stands round them both.\"",
+    "topics": {
+      "morvalt": "The untamed savages of Aegir. Their shamans say the Mother lies on the island and will wake. [Basilius] runs the [dig].",
+      "bones": "A skeleton longer than a longhouse, older than the Troll Fathers. The [vigil] of dead beasts stands round it. The oldest tale begins with a cow in the ice; [Mortufoghus] walks round the bones as if they were her calf.",
+      "the watch": "The Remnants' [post] keeps a watch that lets nobody toward the [bones] who has not earned the dwarves' trust: [Alivor] on the road, [Asutri] at the post itself with her chart of the mammoth's round. The griffon flies only friends.",
+      "rockwall": "Faraheim's eastern rockwall, which the dwarves' oldest slates call the end of the place one may dig. The [morvalt] broke it in one night. The Remnants are stacking stone at the gap.",
+      "vigil": "The dead round the [bones] are beasts: mammoths, howlers, great cats and serpents, all facing inward. The morvalt call them the Mother's household. The dwarves call them the reason nobody dug.",
+      "dig": "The [morvalt] camp in the north-west: callers, searchers, watchers and paste-mixers. They clear the [bones] by day and call into them by night.",
+      "post": "The Remnants' post on the south-west, with a griffon and a few trackers. Minerva at Faraheim flies friends across. The dwarves watch the [dig] and stack stone at the [rockwall].",
+      "bone-eaters": "Vendo bone-eaters under a warleader on the east edge, far from their caves. They go where something dead is, and Modernagrav has the [bones].",
+      "Orri": "Orri of Hagall, the Remnants' slate-writer, who crossed with the first explorers and paced the [bones] from skull to tail. He wrote the count on a slate and broke it.",
+      "Mother": "The morvalt's Mother, whom their shamans say lies under Modernagrav. Whether she is the [bones], or something under the bones, they argue at their fires."
+    }
+  },
+  "book": {
+    "title": "Slates from beyond the Rockwall",
+    "pages": [
+      "I am Orri of Hagall, slate-writer of the Remnants, and I crossed through the gap on the third morning with nine others, because the Chief said someone of ours must see it before the morvalt told us what it was. For as long as Hagall has stood the eastern rockwall was the end of Faraheim. Our oldest slates call the land beyond the place one does not dig. The morvalt shamans danced along the wall one night and the warriors went at it with picks and fire, and in the morning there was a gap. We came behind them carefully.",
+      "The bones lie in the middle of the island. I will not write what they look like, because every dwarf who reads this will think he knows what they are, and I do not. I will write this: the dead stand round them. Mammoths with their hides hanging off. Hounds. Great cats you can see the far hills through. They face inward, all of them, and they do not turn their heads to look at you until you are close, and then all of them do. We did not go close twice. Two of the ten would not go near them at all after the first day.",
+      "The morvalt dig on the north side of the bones, as near as the vigil will let them, which is not very near. They have callers who chant into the earth at night, and searchers who go out by day, and watchers on the spoil heaps, and some who do nothing but mix pastes in bowls and paint them on the poles. Their king keeps away, in a hall at the far corner of the island, with a few who are very large. The diggers seem afraid of him. They seem more afraid of one of his companions, whom they will not look at.",
+      "Between the dig and the bones there is a mammoth. She is the size of the Chief's hall and she walks round and round, on a path she has worn knee-deep, and when a morvalt digger comes too near the bones she lowers her head. When anything at all comes at her she flings it. I saw her take a morvalt from the edge of a crowd, not the one in front of her, and throw him over two spoil heaps, and he got up, limping, and went back to digging. They seem to think it is an honour.",
+      "On the fifth day I paced the ribs. I went at noon, when the vigil was stillest, from the skull to as far as the tail went, along the edge where the dead did not quite reach. I wrote the count on a slate. Then I read it, and broke the slate, and I will not give the count to anyone. I will say only that I did not reach the end before the ground began to hum under my boots, and that I turned round, and that the dead had all turned with me.",
+      "We have set up a post on the south-west shore with a griffon, and Minerva flies over any friend the Chief trusts, and nobody else. I have asked that we begin to pile cut stone by the gap. Not to close it; the morvalt would only break it again. Only to have the stone there, cut and ready, on the day it is needed. The Chief asked what day that would be. I said the day the bones stand up. She did not laugh. She signed the order for the stone, and sent the first sledge herself."
+    ]
+  },
+  "bosses": [
+    "mortufoghus",
+    "basilius",
+    "hoden",
+    "grul-mgnuk",
+    "alivor",
+    "asutri",
+    "rolf",
+    "pirmin",
+    "shiake",
+    "fisk"
+  ]
+}

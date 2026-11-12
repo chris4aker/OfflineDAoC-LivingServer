@@ -1,0 +1,85 @@
+{
+  "id": "enan",
+  "name": "Enan",
+  "npcNames": [
+    "Enan"
+  ],
+  "locationId": "bog-of-cullen",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Enan: level 43, a siabra body (model 337), faction Siabras, at about 382,000/723,600 in the north of the bog among the siabra war-bands; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Enan as the captain of Madawg's war-bands in the north bog.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Enan is the captain of the siabra war-bands in the north of the Bog of Cullen, toward the irewoods, and he is Madawg's sword as Kunsgnos is Madawg's student. The Alainn Bin folk say the two of them hate each other the way a sword hates a pen. Enan was with the magus the day Ysberin the path-keeper was killed for her staff, and the bog folk say it was his blade that did it, and the magus's craft that took the staff, and that Enan has never forgiven Madawg for taking the credit.\n\nHe keeps the northern edge of the bog against anyone coming down off the Cullen road, and the realm's young who come that way to reach the bog meet his war-bands first. He fights like the siabra fight, from cover, in the reeds, and the bog folk say he has never lost a quarrel he chose.",
+  "legend": "Enan (43) is a named siabra in the north of the Bog of Cullen (about 382k/724k), among siabra war-bands (37-47: raiders, wayguards). Social; clear his edges first. Group of low to mid 40s. Plain spawn, 80-second respawn. Madawg (55) is further east. His war-bands fight from the reeds: pull them onto the open mud of the Cullen road edge where casters can see them. The north bog is the lowest siabra country here, so it is the usual way in.",
+  "yells": {
+    "aggro": [
+      "My blade killed the path-keeper. Remember that.",
+      "Siabra! To me!"
+    ],
+    "phases": [],
+    "death": [
+      "The magus... will take this too..."
+    ],
+    "slay": [
+      "In the reeds."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Siabra fires in the north reeds, and a captain."
+    ],
+    "phases": [],
+    "realmFirstKill": "Enan, captain of the north bog's siabra, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "enan is a 43 siabra captain in the north bog",
+      "war-bands around are social, clear first"
+    ],
+    "aftermathWin": [
+      "enan down. [the captain|grats]",
+      "cleared his edges. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "war-band piled in. [rip|ouch]",
+      "fought in the reeds. [bad idea|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] enan's blade killed ysberin and madawg took the credit",
+      "enan and kunsgnos hate each other like a sword hates a pen"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Enan",
+    "text": "The captain of the siabra war-bands in the north bog, Madawg's sword, whose blade the bog folk say killed Ysberin. He has never forgiven the magus for taking the credit."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Enan in the Bog of Cullen in {minutes} minutes.",
+    "loss": "Enan turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "siabra"
+  ],
+  "related": [
+    {
+      "id": "madawg",
+      "relation": "the magus he serves"
+    },
+    {
+      "id": "kunsgnos",
+      "relation": "the apprentice he resents"
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "id": "oscar",
+  "name": "Oscar",
+  "npcNames": [
+    "Oscar"
+  ],
+  "locationId": "vale-of-balor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Oscar: level 55, model 768 (a Fomorian body), no faction, at about 283,100/372,300 in the far west of the Vale of Balor, about 4,000 units from Milo; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "In the Fenian Cycle Oscar is the son of Oisín and grandson of Fionn mac Cumhaill, the greatest young warrior of the Fianna, killed at the battle of Gabhra.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Oscar_(Irish_mythology)"
+    },
+    {
+      "text": "Living Server lore: Oscar as a Fomorian champion who took the Fianna hero's name and left Milo's household.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "If Milo took the name of the father, Oscar took the name of the grandson. He was the champion of Milo's household on the western slopes of the Vale of Balor, the vale's Fomorians say, and he went down to Aalid Feie with his chief in the first summer of the isles and heard the mainland fishers' songs. Milo listened for the oldest name. Oscar listened for the best fighter, and the fishers of Tir Urphost, who sing the Fenian songs at their nets, gave him Oscar, Oisín's son, Fionn's grandson, the young champion of the Fianna who fell at Gabhra.\n\nThe Fianna's Oscar was a man who belonged to no king's house. He fought for the Fianna and for Fionn, and when the High King turned on the Fianna it was Oscar who met the king's son in the battle and killed him, and died of it. The vale's Oscar seems to have taken the whole song to heart. Some seasons after he took the name he left Milo's household and went further west, to the edge of the vale where the slope runs out above the sea, and stands there now alone. He wears no household's mark. The Fomorians of the western slope do not count him as theirs, and he does not come when they are troubled, and they do not come for him.\n\nThe traders of Aalid Feie say he is waiting for a king's son. The Domnann wardens think that is a trader's story, and that Oscar quarrelled with his chief over a share, as Fomorian champions do. The fishers of Tir Urphost, when they heard what had become of the name they gave away, made a new verse for the end of the lay of Gabhra, in which Oscar's ghost walks west over the sea to see who is wearing him, and finds a Fomorian on a cliff, and salutes him, champion to champion, because the man is alone and fights alone and has no king, and that is the Fianna's way.",
+  "legend": "Oscar is a level 55 Fomorian at the far western edge of the Vale of Balor (about 283k/372k), roughly 4,000 units west of Milo. Unlike Milo he carries no faction and stands alone at the cliff edge, so he is usually a clean single pull for a group of 50s. No script, plain melee. A good warm-up before Milo, or a quick kill for a 50 group out of Aalid Feie. Tir Urphost fishers sing a verse about him at the end of the lay of Gabhra. He respawns quickly for a named, so a group can take him and Milo in one trip west.",
+  "yells": {
+    "aggro": [
+      "Champion to champion. Come.",
+      "I wear the best name your fishers had.",
+      "No king sends me. I came."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Gabhra again. Every time, Gabhra."
+      }
+    ],
+    "death": [
+      "The Fianna's way... alone...",
+      "Tell the fishers... I wore it well..."
+    ],
+    "slay": [
+      "Champion to champion.",
+      "Alone, as it should be.",
+      "Next."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A lone Fomorian on the cliff above the sea.",
+      "No household mark. No banner. One champion."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Oscar fights on, alone, as the song says."
+      }
+    ],
+    "realmFirstKill": "Oscar, the lone champion of the vale, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "oscar is 55, far west edge of the vale. [no faction|nobody helps him]",
+      "plain melee, no script. [clean pull|easy single]",
+      "milo is 4k east. [separate|not linked]",
+      "good warm up before milo. [50s group fine|go]"
+    ],
+    "aftermathWin": [
+      "oscar down. [clean single|easy]",
+      "nobody came to help him. [lonely|the fianna way]",
+      "tir urphost will sing about this",
+      "milo next. [east|lets go]"
+    ],
+    "aftermathLoss": [
+      "he hits harder than he looks. [tank down|oops]",
+      "pulled milo's condlers on the way. [our fault|bad path]",
+      "group too low. [55 is 55|need 50s]",
+      "healer drew him. [hold aggro|sorry]"
+    ],
+    "rumour": [
+      "[heard|someone said] oscar took his name from the fianna songs the tir urphost fishers sing",
+      "the aalid feie traders say oscar is waiting for a king's son",
+      "[word is|heard] oscar left milo's household over a share",
+      "theres a new verse at the end of the lay of gabhra about the vale's oscar"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Oscar",
+    "text": "A Fomorian champion of the far western [Vale of Balor] who took the name of Oscar of the Fianna from the Tir Urphost fishers' songs, left Milo's household and stands alone above the sea."
+  },
+  "bookPage": "Tieru of Aalid Feie again: the champion took the name second, and took the better one. The Tir Urphost fishers sing the Fenian lays at their nets, and he heard Oscar, Fionn's grandson, who served no king and killed a king's son at Gabhra and died of it. A few seasons later he left Milo's household and went west to the edge of the vale, and stands there alone, with no household's mark. The others do not come for him and he does not come for them. When the fishers heard, they made a verse in which Oscar's ghost walks west to see who wears him, and salutes him.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Oscar in the far western Vale of Balor in {minutes} minutes.",
+    "loss": "Oscar turned back {realm}'s band under {raidLeader} in the far western Vale of Balor after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "milo",
+      "relation": "the chieftain whose household he will not join"
+    },
+    {
+      "id": "sargan-the-conqueror",
+      "relation": "whose custom of borrowed names he follows"
+    }
+  ]
+}

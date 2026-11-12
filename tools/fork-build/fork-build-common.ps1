@@ -135,7 +135,10 @@ function Get-BackupName([string]$Folder) { return ($Folder -replace '[\\/]', '_'
 # released file, so no game file ships whole. A file is changed only when it has the released fingerprint, and the
 # result must have the fixed one. Beta 1.0: Hall of the Corrupt's navmesh and eight new-client gate models; Beta 1.1:
 # the game's loading screen (pregame/splash.mpk, shipped whole under content/); Beta 1.1.1: the new client's quest
-# marker script (godot/game/quests/quest_markers.gd), a text file patched the same way.
+# marker script (godot/game/quests/quest_markers.gd), a text file patched the same way; 1.2: 14 more new-client scripts
+# from shadowofze's final code (game/net/server.gd, character_state, nif_particles, pregame, sky_system, npcs/name_plates,
+# npcs/npc_state, ui/chat_window, item_db, merchant_window, panel_sheets, player_data, quickbar, trainer_window; the ones
+# held back and why: docs/CLIENT-SCRIPTS-1.2.md).
 function Read-ContentPatches([string]$BuildDir) {
     $path = Join-Path $BuildDir 'content-patches.json'
     if (!(Test-Path -LiteralPath $path)) { return @() }
@@ -148,6 +151,49 @@ function Get-ContentPatchFile($Patch, [string]$BuildDir) {
     $relative = [string]$Patch.File
     if ([IO.Path]::IsPathRooted($relative) -or $relative -match '(^|[\\/])\.\.([\\/]|$)') { throw "Bad content file path: $relative" }
     return (Join-Path $BuildDir ($relative.Replace('/', [IO.Path]::DirectorySeparatorChar)))
+}
+
+# An entry with "File" may also name earlier Living Server versions of its file it replaces ("Replaces": SHA-256 list;
+# Living Server 1.2: the 1.1 loading screen, which every 1.1 player has instead of the released one, owner 2026-11-07).
+# Such a file is backed up and replaced like the released one. Only whole-file entries: byte ops need the released bytes.
+# A file that is neither the released one nor one of these is never touched.
+function Get-ContentPatchReplaces($Patch) {
+    if (!$Patch.File -or $null -eq $Patch.Replaces) { return @() }
+    return @($Patch.Replaces | ForEach-Object { ([string]$_).ToLowerInvariant() } | Where-Object { $_ })
+}
+
+# An entry with "File" and "Keep": true is a file of Living Server's own that stays when Living Server is rolled back
+# (Living Server 1.2: the loading screen; owner 2026-11-07, "I don't want the original splash screens, I want mine").
+# ROLLBACK.cmd puts back only an earlier Living Server version of it, never the released file: after a first install it
+# leaves the file as it is. PREPARE-FOR-UPDATE.cmd (-ToRelease) leaves it too: the Offline DAoC patcher
+# (source/tools/OfflineDaoc.Patcher) checks only the files an update replaces or removes, and pregame/splash.mpk is the
+# same in 0.36, 0.36b and 0.37b (release-baselines), so the 0.37 update doesn't list it. Should an update ever list it,
+# the patcher stops and names it (UPDATE-<version>-CHANGED-FILES.txt) before changing anything.
+# Keyed by Path: the content patches of the build folder a script runs from.
+function Get-ContentPatchMap([string]$BuildDir) {
+    $map = @{}
+    # Assigned first: Windows PowerShell 5.1's ConvertFrom-Json writes the whole list as one object, and a foreach over
+    # the call itself would see that one object (CI 2026-11-07); the assignment unrolls it, as the installer's does.
+    $patches = Read-ContentPatches $BuildDir
+    foreach ($patch in $patches) { if ($patch.Path) { $map[[string]$patch.Path] = $patch } }
+    return $map
+}
+
+# Whether an install record's content entry is a kept file: its own Keep (1.2 records on), or this build's entry for the
+# path (records of 1.1 and earlier have no Keep).
+function Test-ContentKeep($Entry, $BuildPatches) {
+    if ($Entry.Keep) { return $true }
+    $patch = $BuildPatches[[string]$Entry.Path]
+    return [bool]($patch -and $patch.File -and $patch.Keep)
+}
+
+# The released file's SHA-256 for an install record's content entry: its own Released (1.2 records on), else this
+# build's entry for the path, else $null.
+function Get-ContentReleased($Entry, $BuildPatches) {
+    if ($Entry.Released) { return ([string]$Entry.Released).ToLowerInvariant() }
+    $patch = $BuildPatches[[string]$Entry.Path]
+    if ($patch -and $patch.Released) { return ([string]$patch.Released).ToLowerInvariant() }
+    return $null
 }
 
 function Expand-ContentPatch($Patch, [byte[]]$Released, [string]$BuildDir) {

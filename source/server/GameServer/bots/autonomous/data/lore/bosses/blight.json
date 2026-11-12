@@ -1,0 +1,115 @@
+{
+  "id": "blight",
+  "name": "Blight",
+  "catalogKey": "hibernia-named-mobs-classic-zones/blight",
+  "locationId": "cursed-forest",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "A Blight Controller in the Cursed Forest brings out eight Fire Blights, then four Late Blights, then two Flesh Blights, and only then Blight itself.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Blight is level 70, 30,000 health: 'Bloody bones fly from all directions... forming a single giant skeleton', then 'Blight has taken it's true form! It turns its deadful stare upon you!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Blight.cs"
+    },
+    {
+      "text": "The four-stage blight as a sickness of the wood's earth is Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "When the court bargain broke in the Cursed Forest, the earth there sickened, and the sickness has a will. It comes up out of the ground in stages, the way a crop disease does. First it burns, as fire blight, a scatter of smouldering things. Then it rots, as late blight. Then it comes as flesh, and that is when the wise go home. And if a band is foolish enough to destroy all three, the blight gathers the bones of everything it has ever killed out of the soil in a whirling cloud and stands up as a single giant skeleton, and turns its stare on them. The Sylvan say that is its true form. Nobody has asked them how they know.\n\nA crop disease does not arrive all at once. It comes in stages, and the farmers of Hibernia know the names: the fire blight that scorches the leaves, the late blight that rots the root, and the blight in the flesh that the old women do not name at all. The earth of the Cursed Forest learned all three when the court bargain broke there, and something in that earth learned to be them.\n\nIt comes up out of the ground in the same order, as a controller in the soil sends it: eight fire blights first, smouldering things; then four late blights; then two of flesh. And when all of those are dead, the blight gathers the bones of everything it has ever killed out of the soil in a whirling cloud of gore and stands up as a single giant skeleton, and turns its dreadful stare on whoever is left. The Sylvan call that its true form. The farmers of Ardee burn their fields when they see the first sign of fire blight, and pray it never reaches the third.",
+  "legend": "It is a gauntlet, not a fight: eight fire blights, four late blights, two flesh blights, then Blight itself. Pace the healers and the mana across all four waves. Its true form has a dreadful stare; stay spread and do not pull other things in the forest meanwhile. Pace the healers and mana across all four stages; the skeleton is the hardest and comes last. Superstition: burn a pinch of salt before you start, as the Ardee farmers do before harvest. Nicknames: 'the four', 'the rot'. Ardee farmers burn a pinch of salt before the realm's bands go in, and the bands have taken up the habit.",
+  "yells": {
+    "aggro": [
+      "The earth splits and something smoulders out.",
+      "The earth splits and something smoulders out.",
+      "Fire. Rot. Flesh. Bone."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "Blight has taken its true form!"
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "The blight rises out of the ground in a new shape."
+      }
+    ],
+    "death": [
+      "The bones fall apart. The earth is clean, for now.",
+      "The bones fall apart. The earth is clean, for now.",
+      "The soil breathes again."
+    ],
+    "slay": [
+      "Into the soil with you.",
+      "Into the soil with you.",
+      "Another bone for my true form."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ground is sick here, and it is spreading.",
+      "Fire, rot, flesh, then bone. In that order."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "Bones fly together into a giant skeleton!"
+      }
+    ],
+    "realmFirstKill": "Blight is broken. The Cursed Forest earth is clean."
+  },
+  "botLines": {
+    "briefing": [
+      "blight comes in waves: fire, late, flesh, then the big one. [pace your mana|dont blow everything on wave one]",
+      "four stages, the skeleton is the hardest. [save for it|pace mana]",
+      "dont pull anything else while the waves come. [focus|stay put]",
+      "each stage comes faster than the last, [heal ahead|stay topped]"
+    ],
+    "aftermathWin": [
+      "blight down, all four stages. [long night|good stamina everyone]",
+      "all four stages and the skeleton. [long night|worth it]",
+      "the earth smelled clean after. [weird|nice]",
+      "paced it perfectly. [grats healers|proud]"
+    ],
+    "aftermathLoss": [
+      "we had nothing left for the skeleton. [pace it|save mana]",
+      "empty for the skeleton. [pace it|again]",
+      "flesh blights got the casters. [tanks|peel]",
+      "pulled walking trees during the waves. [ugh|focus]"
+    ],
+    "rumour": [
+      "[heard|someone said] the blight in the cursed forest gathers the bones of everything it ever killed",
+      "[heard|someone said] the blight gathers the bones of everything it ever killed",
+      "ardee farmers burn their fields at the first fire blight",
+      "[word is|heard] the blight reached the road again"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Blight",
+    "text": "The sickness of the Cursed Forest's earth. It comes as fire, rot and flesh, and then as a skeleton of every bone it ever took."
+  },
+  "bookPage": "From Derbáil of Ardee's list: grandmother said there are three blights and every farmer knows two. The fire blight that scorches, the late blight that rots, and the third, which she would not name but called the blight in the flesh. The Cursed Forest has all three in its earth, she said, and a fourth thing that comes after them, built out of the bones of everything the first three killed. I asked how she knew. She said her own grandmother saw it stand up once, from the edge of the wood, and went home and burned every field she had.",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Blight in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Blight's head after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "cursed-wood"
+  ],
+  "related": [
+    {
+      "id": "cailean",
+      "relation": "the gardener of the same wood"
+    },
+    {
+      "id": "juggernaut",
+      "relation": "the debt that walks the same wood"
+    }
+  ]
+}

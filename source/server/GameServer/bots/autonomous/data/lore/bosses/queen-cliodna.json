@@ -1,0 +1,106 @@
+{
+  "id": "queen-cliodna",
+  "name": "Queen Cliodna",
+  "catalogKey": "hibernia-named-mobs-classic-zones/queencliodna",
+  "locationId": "bog-of-cullen",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 70, 30,000 health, in the Bog of Cullen. She casts Dark Blast (400 cold) and a stun, and stays within a tether of 2,600.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/QueenCliodna.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Clíodhna is a queen of the sídhe whose three birds sing the sick to healing sleep.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Cl%C3%ADodhna"
+    },
+    {
+      "text": "Bot chat: her birds sing people to sleep; keep your distance.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "The old songs remember Cliodna as a queen of the sídhe whose three bright birds sang the sick to sleep and woke them well. The Cliodna of the Bog of Cullen remembers the songs too, and keeps the half she liked. Her voice still brings sleep: those who come too close stand stunned in the reeds, unable to lift a hand, while the cold of her court settles over them. She keeps a court of sorts among the pools, though no courtier has been seen there in an age. The Cullen folk leave a little milk on the bog path on her feast night. They do not say for whom.\n\nThe old songs remember Cliodna as a queen of the Tuatha, the most beautiful woman ever seen in Ireland, with three bright birds whose singing healed the sick and sent them to sleep. The Cliodna of the Bog of Cullen remembers the songs and keeps the half she liked. Her court among the pools is empty; no courtier has been seen there in an age. But she holds court anyway, with her own voice for company.\n\nThose who come too close stand stunned in the reeds, unable to lift a hand, while a Dark Blast of cold falls on whoever she favours. She does not stray beyond the pools. The Cullen folk leave a little milk on the bog path on her feast night and do not say for whom. Badb shares the bog with her, and the two are not friends; the old women of Cullen say the crow and the queen have been at odds since Mag Tuired, over which of them the bog belongs to.",
+  "legend": "She stuns, so bring purges and keep a second tank ready to pick her up. Her dark blast is cold over whoever she targets: heal through it. Fight her near her pools; she walks home if drawn too far. Bring friends: her court may be empty, but she is not alone in the bog. Superstition: never let a song in the Bog of Cullen finish; walk faster and hum something of your own. Leave milk on the path on her feast night. Nobody remembers which night that is, so the Cullen folk leave it every night. Nickname: 'the reed queen'.",
+  "yells": {
+    "aggro": [
+      "You come to my court without a gift?",
+      "Sing, my birds. We have a guest.",
+      "Kneel in my reeds, mortal."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Sleep, mortal. My birds will sing for you."
+      }
+    ],
+    "death": [
+      "My birds... are silent... at last...",
+      "Who will sing... the sick to sleep..."
+    ],
+    "slay": [
+      "Sleep well.",
+      "Hush.",
+      "Asleep, at last."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Bright birds sing somewhere you cannot see.",
+      "Reeds whisper with a queen's voice."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Queen Cliodna's song drags at your limbs."
+      }
+    ],
+    "realmFirstKill": "Queen Cliodna's song is ended. The bog is quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "cliodna stuns. [purges ready|second tank ready] and heal through the cold blast",
+      "clerics, purge stuns on whoever she sings at. [fast|right away]",
+      "fight her by her pools, she walks home if dragged",
+      "second tank ready for when the first is stunned. [always|have one]"
+    ],
+    "aftermathWin": [
+      "cliodna down. [i swear i heard birds when she died|somebody leave milk on the path tonight]",
+      "the bog went silent. [even the frogs|no birds]",
+      "stuns purged, queen down. [proud|grats]",
+      "leave milk on the path tonight. [old cullen custom|do it]"
+    ],
+    "aftermathLoss": [
+      "stunned the main tank and [nobody picked her up|she ran through the healers]",
+      "main tank stunned, nobody picked her up. [second tank|ugh]",
+      "dragged her out of the pools and [she reset|went home]",
+      "her song finished. [walk faster|bad sign]"
+    ],
+    "rumour": [
+      "[heard|someone said] the cullen folk leave milk out for queen cliodna on her feast night",
+      "[heard|someone said] cliodna's three birds healed the sick once. now they sing people to death",
+      "badb and cliodna have been at odds since mag tuired, the cullen folk say",
+      "[word is|heard] the cullen folk leave milk out every night because they forgot which night"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Cliodna",
+    "text": "A queen of the sídhe in the Bog of Cullen. Her song brings sleep, but not the healing kind any more. Bring purges."
+  },
+  "bookPage": "From Derbáil of Ardee's list: walk faster on the Cullen road and hum something of your own. Grandmother said the queen of the bog was the most beautiful woman ever seen in this country, once, and that her three bright birds sang the sick to sleep and woke them well. She sings still, among the reeds, to a court that is not there. If you let her song finish, grandmother said, you sleep, and you do not wake well. The realm's clerics say she stuns. Grandmother said that is a cleric's word for it, and that clerics never listen to the end of anything.",
+  "chronicle": {
+    "win": "{realm} went into the Bog of Cullen under {raidLeader} and put down Queen Cliodna in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Bog of Cullen without Queen Cliodna's head after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "badb",
+      "relation": "her rival for the bog"
+    }
+  ]
+}

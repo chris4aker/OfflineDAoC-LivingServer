@@ -1,0 +1,351 @@
+{
+  "id": "caldey",
+  "name": "Caldey",
+  "realm": "Albion",
+  "regions": [
+    51
+  ],
+  "zones": [
+    54
+  ],
+  "aliases": [
+    "little haven",
+    "the burying isle"
+  ],
+  "summary": "Avalon's burying isle, which stood up when Morgana called: the strand before Caer Sidi, the haunted rowans and the burial lights, three of the witch's named, and Little Haven, the one corner the living hold.",
+  "facts": [
+    {
+      "text": "Caldey is zone 54 of region 51, with about 770 monsters, nearly all Undead Servants of Morgana (white lights, phantom magi, haunted rowans, headless footmen, corpse delvers, grasping ghouls, dread and blood liches, ancient zombies, skeletons, fell geists, gangrenous masses), plus guagaran, yales, water elementals and the Caldey Outpost.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob/ZonePoint tables, region 51 zone 54 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The Caer Sidi entrance zone point is on Caldey's western strand at 318175, 368845.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob/ZonePoint tables, region 51 zone 54 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Malignant Creatures: Mordwywr, 'the enchanter in the largest building in Little Haven', asks for one of each of seven undead (phantom magi, defiled skeleton, headless footman, grasping ghoul, ebon skeleton, corpse delver, haunted rowan).",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lost Treasure: free the soul of the young sorceress Eralyne, a zombie at the graveyard near Caer Sidi.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The Caldey Outpost faction: Clan Matron, Clan Maidens (instrument, shield and armour merchants), Clan Tailor, Tradesman, Fletcher, Smith, Healer, Enchanter and barbarian defenders; the Clan Bard is peaceful. Rose, Tristram Adamson, Huidelon Cariston and Waleron Douglas take turn-ins of undead parts.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob/ZonePoint tables, region 51 zone 54 (0.37b runtime database, world tables only); world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Telsar is a peaceful level 45 spawn on the jelly model among the undead; Devmer and Gorvos each have two spawns.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob/ZonePoint tables, region 51 zone 54 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Amphiptere, Durval and Vortanos are scripted bosses on Caldey.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Mythic: Morgana raised the undead remains of Roman soldiers for her army in the Shrouded Isles.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    },
+    {
+      "text": "Folklore, not game canon: rowan (mountain ash) was planted in British and Irish churchyards and by doors as a charm against witches and the restless dead.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Sorbus_aucuparia"
+    },
+    {
+      "text": "Caldey as Avalon's burying isle, the rowans that walk, the clan that came in the second summer, the payments of Little Haven, Mordwywr's ledger, the two Devmers and two Gorvoses and the harmless Telsar are Living Server writing; Hedd the ferryman and the counted lamps come from the Caer Sidi files.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The burying isle. Caldey was where Avalon buried its dead. The colleges had their gardens on Avalon and their farms in the dales, and they sent their dead west over the water to the last isle before the open sea, where the priests of the dead kept the barrows and the graveyards and planted rowans round them, as the old custom is, to keep the dead lying down. Readers, fishermen, tenants and lords of the isles were carried there for longer than the colleges had kept count, and older dead were there before them: the barrows on the heights belonged to nobody the colleges could name. Out beyond the western strand, where no rock is, the turning gaol of Caer Sidi stood on the water, and the priests said the dead of Caldey had the shortest walk in the world.\n\nWhat went wrong. When Morgana raised the dead of the isles, Caldey had more of them than all the other isles together. The garrison on the Isle of Glass says she did not need to work hard here. The isle stood up. The rowans that were planted to hold the dead down are haunted now and walk the south-western heights with the rest. The white lights that the priests carried at burials burn over the graves by the hundred with nobody carrying them. Phantom magi, the colleges' own dead readers, drift with the headless footmen and the grasping ghouls along the old burial road in the south, and dread liches and blood liches hold the northern ground towards the strand. In the marsh the dead have rotted into gangrenous masses. Not every priest of the dead resisted. Durval, who kept a barrow in the west, took Morgana's coming as the answer to his prayers.\n\nThe named of the isle. The oldest thing on Caldey is not dead at all: a winged serpent, the amphiptere, that roosts in the north of the isle and sheds its teeth when it is hurt, and where its teeth fall the ancient dead come up out of the ground. In the north-east Vortanos keeps a prison of the dead that only he can wake, and walks only by day. By the graveyard nearest Caer Sidi's door a crypt guardian keeps watch over a young sorceress of the colleges, Eralyne, who died on Caldey and was raised there and whose soul someone at Fort Gwyntell wants freed. Two dead men called Devmer walk the western slopes and two called Gorvos the eastern, and nobody has worked out whether they are four men or two. A guagaran called Palifan rules the stagnant pools in the middle of the isle. And among the dead of the south lives a thing called Telsar, a quiet jelly of the pools, which the fishermen say is the only creature on Caldey that has never harmed anybody.\n\nLittle Haven. The living hold one corner of the isle, on the north-eastern coast: the fishing village of Little Haven, whose people have always seen Caer Sidi from their doors and count its lamps, and beside it the outpost of a highland clan that came over the water after the war began to fight the dead where there were most of them. The clan keeps its own: a matron over all of them, maidens who sell shields and armour and instruments, a smith, a fletcher, a tailor, a leech, an enchanter, a bard who harms nobody, and barbarian defenders on the walls. The villagers pay for proof of the dead destroyed: Rose for shrouds, Tristram Adamson for skeletons' shin-bones, Huidelon Cariston for the hands of the pitch-dark dead, Waleron Douglas for the water-orbs of the drowned. Mordwywr, an enchanter of Albion, keeps the largest building in the village and asks for proof of seven kinds of dead at once.\n\nWhy it matters to Albion. Caldey is the door to Caer Sidi, and every company that goes into Arawn's gaol crosses this isle of the dead to reach the strand. It is also where most of Morgana's army came from. The clan says that while Caldey stands up, the witch will never run short of soldiers, and that every grave on the isle put back to sleep is one fewer at the Isle of Glass wall.",
+  "legend": "Caldey is the high SI isle in the far west, levels 45 to 65, and the way to Caer Sidi: the entrance is in the north-west on the strand. It is almost all undead (Undead Servants of Morgana): white lights, phantom magi, headless footmen, grasping ghouls, liches, ancient zombies and haunted rowans, so bring cure disease and anything that is good against undead. Little Haven on the north-east coast is the only safe spot: Mordwywr there gives Malignant Creatures (kill seven kinds of undead), and the clan outpost next door has merchants, a smith and a healer, but your standing with the Caldey Outpost decides how friendly they are. The villagers Rose, Tristram Adamson, Huidelon Cariston and Waleron Douglas take undead turn-ins. Eralyne and the Crypt Guardian (59) are at the graveyard near the Caer Sidi door (Lost Treasure). Three catalog nameds: the Amphiptere (71) in the north near Little Haven, Durval (65) in his barrow in the west, Vortanos (61) in the north-east, who is untargetable at night. Each respawns about an hour after death.",
+  "atmosphere": {
+    "firstEntry": [
+      "Caldey. Avalon's burying isle, standing up.",
+      "Burial lights with nobody to carry them.",
+      "The rowans that held the dead down are walking.",
+      "Out to the west, a fortress on the water.",
+      "Somewhere a bard is playing for the living."
+    ],
+    "areas": [
+      {
+        "name": "Little Haven",
+        "x": 357300,
+        "y": 379400,
+        "z": 3146,
+        "radius": 1200,
+        "lines": [
+          "Little Haven. The living hold one corner of Caldey.",
+          "Lamps in every window but the ninth.",
+          "They pay here for proof of the dead destroyed."
+        ]
+      },
+      {
+        "name": "the clan outpost",
+        "x": 354800,
+        "y": 377300,
+        "z": 3116,
+        "radius": 1200,
+        "lines": [
+          "A highland clan's outpost. Defenders on the wall.",
+          "The matron watches who comes in.",
+          "The bard plays for the living, for once."
+        ]
+      },
+      {
+        "name": "the western strand",
+        "x": 318175,
+        "y": 368845,
+        "z": 5242,
+        "radius": 1500,
+        "lines": [
+          "The western strand. Caer Sidi stands on the water.",
+          "The shortest walk in the world, the priests said."
+        ]
+      },
+      {
+        "name": "the graveyard by the door",
+        "x": 330800,
+        "y": 382300,
+        "z": 3143,
+        "radius": 1000,
+        "lines": [
+          "The graveyard nearest the gaol's door.",
+          "A young sorceress, dead and standing.",
+          "The crypt guardian does not sleep."
+        ]
+      },
+      {
+        "name": "Amphiptere's roost",
+        "x": 348958,
+        "y": 372378,
+        "z": 3856,
+        "radius": 1000,
+        "lines": [
+          "Teeth lie in the grass, long as daggers.",
+          "Feathers and scales. The oldest thing on Caldey."
+        ]
+      },
+      {
+        "name": "Durval's barrow",
+        "x": 319043,
+        "y": 406794,
+        "z": 3082,
+        "radius": 1000,
+        "lines": [
+          "White lights hover over fresh-dug earth.",
+          "A priest who prayed for this."
+        ]
+      },
+      {
+        "name": "Vortanos' prison",
+        "x": 366820,
+        "y": 369691,
+        "z": 3048,
+        "radius": 1000,
+        "lines": [
+          "Prisoners sleep in the ground. Their keeper wakes by day.",
+          "At night there is nobody here at all."
+        ]
+      },
+      {
+        "name": "the haunted rowans",
+        "x": 346055,
+        "y": 417570,
+        "z": 5656,
+        "radius": 2500,
+        "lines": [
+          "Rowans planted to keep the dead down. They walk.",
+          "The old custom failed here."
+        ]
+      },
+      {
+        "name": "the field of white lights",
+        "x": 339092,
+        "y": 385505,
+        "z": 3455,
+        "radius": 2000,
+        "lines": [
+          "Burial lights by the hundred. Nobody carries them.",
+          "The graves under them are open."
+        ]
+      },
+      {
+        "name": "the burial road",
+        "x": 354000,
+        "y": 403000,
+        "z": 4500,
+        "radius": 2500,
+        "lines": [
+          "The old burial road. The dead walk it back.",
+          "Phantom readers and headless footmen.",
+          "Grasping ghouls in the ditches."
+        ]
+      },
+      {
+        "name": "the stagnant pools",
+        "x": 357000,
+        "y": 397000,
+        "z": 3000,
+        "radius": 1500,
+        "lines": [
+          "Guagaran in the stagnant pools.",
+          "Telsar drifts here and harms nobody."
+        ]
+      },
+      {
+        "name": "the liches' ground",
+        "x": 335476,
+        "y": 371251,
+        "z": 3381,
+        "radius": 2000,
+        "lines": [
+          "Dread liches toward the strand.",
+          "Pitch-dark skeletons in the barrows."
+        ]
+      },
+      {
+        "name": "the rotting marsh",
+        "x": 327507,
+        "y": 390104,
+        "z": 2993,
+        "radius": 1500,
+        "lines": [
+          "The dead here have rotted into one mass.",
+          "Blood liches over the marsh."
+        ]
+      },
+      {
+        "name": "Devmer's slope",
+        "x": 339838,
+        "y": 410275,
+        "z": 5116,
+        "radius": 1200,
+        "lines": [
+          "Devmer walks the western slope. Twice.",
+          "Two dead men, or one walking two ways."
+        ]
+      },
+      {
+        "name": "Gorvos' slope",
+        "x": 370595,
+        "y": 411916,
+        "z": 3706,
+        "radius": 1200,
+        "lines": [
+          "Gorvos on the eastern slope, and again.",
+          "The fishermen do not count him."
+        ]
+      },
+      {
+        "name": "the yales' edge",
+        "x": 359497,
+        "y": 364205,
+        "z": 3930,
+        "radius": 1500,
+        "lines": [
+          "Yales graze the north edge, far from the dead.",
+          "The only green on Caldey."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "caldey was where avalon buried its dead. thats why its all undead",
+      "the haunted rowans on caldey were planted to keep the dead down. didnt work",
+      "little haven is the only safe spot on caldey. ne coast",
+      "the caer sidi door is on caldey's western strand",
+      "a highland clan came to caldey to fight the dead. their outpost is next to little haven",
+      "little haven pays for undead parts. rose wants shrouds, tristram wants shin bones",
+      "mordwywr in little haven wants seven kinds of undead. walk the whole isle",
+      "the white lights on caldey were burial lamps. nobody carries them now",
+      "durval the priest never even swings. he just talks you to death",
+      "vortanos isnt there at night. go by day",
+      "eralyne was a young sorceress buried by the caer sidi door. now shes up",
+      "telsar on caldey is a jelly that never hurt anyone. leave it alone"
+    ],
+    "rumour": [
+      "[heard|someone said] the amphiptere is older than any grave on caldey",
+      "heard there are two devmers and two gorvoses and nobody knows which is real",
+      "[heard|someone said] waleron douglas buys drowned orbs because his brother went into the water",
+      "heard little haven still leaves the ninth lamp dark facing caer sidi",
+      "[heard|someone said] the clan matron remembers everyone who crossed the clan",
+      "heard the clan bard on caldey has a song about devmer",
+      "[heard|someone said] telsar was on caldey before the graves",
+      "heard more of morgana's army came off caldey than all the other isles together"
+    ],
+    "tell": [
+      "caldey? the far west si isle. caer sidi door is on the nw strand",
+      "is it hard? 45 to 65, all undead. bring cure disease",
+      "whats there? little haven, the clan outpost, caer sidi door, amphiptere, durval, vortanos",
+      "where's little haven? ne coast of caldey. mordwywr is in the big building",
+      "where's eralyne? graveyard near the caer sidi door, crypt guardian next to her",
+      "good xp? the burial road in the south for groups, white lights field in the middle"
+    ]
+  },
+  "loremaster": {
+    "intro": "Caldey, the [burying isle]. Ask of [little haven] and its people, [mordwywr], [rose], [tristram adamson], [huidelon cariston] and [waleron douglas]; of the [clan outpost] and its [clan matron]; of [eralyne] and the [crypt guardian]; of the [amphiptere], [durval] and [vortanos]; of [devmer] and [gorvos], [palifan], [telsar], or the [haunted rowans].",
+    "topics": {
+      "little haven": "The fishing village on Caldey's north-eastern coast, the one corner the living hold. Its people count the lamps of Caer Sidi from their doors and pay for proof of the dead destroyed: [rose], [tristram adamson], [huidelon cariston], [waleron douglas] and [mordwywr].",
+      "mordwywr": "An enchanter of Albion in the largest building of [little haven], who keeps the village's ledger of payments and asks for proof of seven kinds of the isle's dead at once.",
+      "rose": "A woman of [little haven] who sewed half the shrouds on Caldey and now pays for the ghostly ones brought back.",
+      "tristram adamson": "A man of [little haven] who pays for the shin-bones of the black skeletons, because a skeleton without a shin does not walk to the Isle of Glass wall.",
+      "huidelon cariston": "A man of [little haven] who pays for the hands of the pitch-dark dead.",
+      "waleron douglas": "A man of [little haven] who pays for the water-orbs of the drowned. His brother went into the water.",
+      "clan outpost": "A highland clan's outpost beside [little haven], built in the second summer of the war: the [clan matron], maidens selling shields, armour and instruments, a smith, fletcher, tailor, healer and enchanter, a bard who harms nobody, and barbarian defenders on the wall.",
+      "clan matron": "The head of the [clan outpost], who decides who comes in and remembers who gave the clan reason to keep them out.",
+      "burying isle": "Caldey was where Avalon buried its dead, with priests of the dead and rowans round the graves to keep them down. When Morgana raised the isles, Caldey had more dead than all the rest together.",
+      "eralyne": "A young sorceress of the colleges, buried at the graveyard nearest Caer Sidi's door and raised there, with a [crypt guardian] standing over her. Ariette at Fort Gwyntell wants her soul set free.",
+      "crypt guardian": "The dead guardian of the graveyard by the gaol's door, standing over [eralyne].",
+      "amphiptere": "The winged serpent of Caldey, older than the graves, roosting north of [little haven]. Where its teeth fall the ancient dead come up.",
+      "durval": "A priest of the dead who kept a barrow in the west of Caldey and took Morgana's coming as the answer to his prayers. He never raises his hand to anyone.",
+      "vortanos": "The keeper of a prison of the dead in the north-east, who is not there at night.",
+      "devmer": "A dead man who walks the western slopes of Caldey, twice. The clan's bard asks which is the real one.",
+      "gorvos": "A dead man who walks the eastern slopes, twice, like [devmer]. The fishermen do not count him.",
+      "palifan": "A great guagaran that rules the stagnant pools in the middle of the isle.",
+      "telsar": "A jelly of the pools that drifts among the dead of the burial road and has never harmed anyone. The fishermen say it was here before the graves.",
+      "haunted rowans": "The rowans the priests planted round the graves to keep the dead lying down. They are haunted now and walk the south-western heights with the rest."
+    }
+  },
+  "book": {
+    "title": "The Ledger of Little Haven",
+    "pages": [
+      "The Ledger of Little Haven, kept by Mordwywr, enchanter of Albion, in the largest building in the village, of what has been paid and to whom for proof of the dead put down. The villagers asked me to keep it because I can write and because, they said, an enchanter can tell a true bone from a false one. I can. Caldey was Avalon's burying isle. The colleges sent their dead here for longer than they kept count, and the priests planted rowans round the graves to keep them lying down. When the witch called, the isle stood up. The ledger is long.",
+      "Of the payments. Rose pays for shrouds, because she sewed half of them. Tristram Adamson pays for the shin-bones of the black skeletons; he says a skeleton without a shin does not walk to the wall, and he is right. Huidelon Cariston pays for the hands of the pitch-dark dead. Waleron Douglas pays for the water-orbs of the drowned, and will not say why, except that his brother went into the water. I pay for seven kinds at once, a kind from each of the isle's worst, so that the payer has walked the whole isle. The clan pays for nothing. The clan simply goes out.",
+      "Of the clan. A highland clan came over the water in the second summer of the war to fight the dead where there were most of them, and built its outpost by the village. Its matron decides who comes in. Its defenders keep the wall, its maidens sell shields and armour and instruments, and its bard plays in the evening for the living, which on Caldey is a rare audience. They are short with strangers who have given them reason. They have buried more of their own than the village has, in a corner of the outpost, and they did not plant rowans over them.",
+      "Of the strand. In the north-west the isle ends at the western strand, and Caer Sidi stands on the water beyond it where no rock is. The village counts its lamps, as the village always has; Hedd the ferryman keeps the count on his stick. Near the gaol's door is the graveyard where a young sorceress of the colleges, Eralyne, was buried and raised. A crypt guardian stands over her. A woman of Fort Gwyntell wants her soul set free, and I have entered that as a debt the isle owes, not a payment. It is the only debt in the book.",
+      "Of the named. North of the village the amphiptere roosts, the winged serpent that is older than the graves, and where its teeth fall the ancient dead come up. Durval the priest keeps his barrow in the west and never once raises his hand to anyone; he speaks, and that is enough. Vortanos keeps his prison of the dead in the north-east and is not there at night, so the clan goes by day. I have entered nothing against any of them yet. The ledger has a page kept for each, and the pages are blank.",
+      "Of the rest, and of Telsar. Devmer walks the western slopes and Gorvos the eastern, each of them twice, and the clan's bard has a song asking which of each is the real one. Palifan, a great guagaran, rules the stagnant pools. And among the dead of the burial road drifts Telsar, a jelly of the pools, which has never harmed anyone and which nobody on Caldey will touch. The fishermen say it was here before the graves and will be here after. I have given it a page in the ledger and written nothing on it either, out of respect."
+    ]
+  },
+  "bosses": [
+    "amphiptere",
+    "durval",
+    "vortanos",
+    "crypt-guardian",
+    "eralyne",
+    "palifan",
+    "clan-matron",
+    "rose",
+    "tristram-adamson",
+    "huidelon-cariston",
+    "waleron-douglas",
+    "devmer",
+    "gorvos"
+  ],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "arawn",
+    "realm-of-camelot"
+  ]
+}

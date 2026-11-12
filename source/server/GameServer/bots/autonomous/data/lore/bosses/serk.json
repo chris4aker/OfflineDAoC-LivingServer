@@ -1,0 +1,117 @@
+{
+  "id": "serk",
+  "name": "Serk",
+  "npcNames": [
+    "Serk"
+  ],
+  "locationId": "jamtland-mountains",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "albion-leader",
+      "relation": "the Albion man in the hills below Serk's ridge, who leaves the wyvern alone"
+    },
+    {
+      "id": "kelic",
+      "relation": "the curse whose clan's cure begins with Serk's poison"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Serk is a level-58 wyvern of great size (the wyvern model) alone on a ridge in the far north-west of Jamtland (669333, 618629), about 5,500 units from the Albion leader.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60165841)"
+    },
+    {
+      "text": "In the mystic epic 'Saving the Clan', Danica sends players to Arnfinn in Vasudheim, then to slay the wyvern Serk and take its poison sac to the healer Aud, whose cure is given to Arnfinn.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Template: aggressive (200 at range 500). Its template gives it no faction, so it never brings friends (bring-a-friend needs a faction).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "When Kelic's curse went through his clan and the elders could not break it, Danica sent the mystics of Midgard to find the ones the curse had touched, and one of them was Arnfinn of Vasudheim, who was dying of a poison nobody in the village could name. Aud, who tends the sick of Vasudheim, named it. She said it was a wyvern's, from the far west of Jamtland, and that there was one remedy for it, and the remedy was made of the same poison, taken fresh from the wyvern's own sac. The wyvern's name was Serk.\n\nThe road-wardens of Glenlock know Serk. He hunts the western ridge above the hills where the Albion men wait, alone, larger than any savage wyvern of the Jamtland ridges, and older; the wardens say the wyverns of the frontier are his get, every one, and that he drove them off the western ridge one by one as they grew, because a ridge only feeds one. The Albion men leave him alone. So do the Red Daggers, whose back roads go round his ridge in a long loop that costs them a day, and Halldor of Glenlock wrote that the loop is the only honest thing he has ever known the Daggers do.\n\nHow Arnfinn came to be bitten by a wyvern of the far west, in Vasudheim, is the part of the story the mystics argue over. The clan says Kelic's curse did it, that the curse finds the cruellest way to kill each of the clan's friends, and sent Serk's poison east into a well. Aud says Arnfinn was a trapper who went where he should not, and that curses are no excuse for carelessness. Danica says it does not matter which, because the remedy is the same.\n\nThe remedy is the poison, and the poison is in the sac, and the sac is in the wyvern. Serk comes off his ridge at anything that climbs it, alone, because there is nothing on the western ridge but Serk; he drove the rest away. Aud tells the mystics she sends that they are not the first to take a sac from him, and will not be the last, and that she has never once heard him described the same way twice by the ones who came back.",
+  "legend": "Serk is the mystic epic wyvern: Saving the Clan sends you from Danica to Arnfinn in Vasudheim, then to slay Serk in the far north-west of Jamtland for his poison sac, which you take to the healer Aud for Arnfinn's cure. He's a level 58 wyvern, big, alone on his ridge with no faction, so no adds and nothing to call. No special abilities in this world (no poison breath scripted), not CC-immune. A group at the epic level handles him; a small group with crowd control can too. The Albion leader is about 5,500 away in the hills, separate. Watch for frontier warbands crossing Jamtland on your way.",
+  "yells": {
+    "aggro": [
+      "(A great wyvern drops off the ridge toward you.)",
+      "(Serk's tail lashes; the ridge stone cracks.)",
+      "(The wyvern screams, and the hills go quiet.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Serk hisses, and something drips from his jaws onto the snow.)"
+      }
+    ],
+    "death": [
+      "(The great wyvern crashes down on his own ridge.)",
+      "(Serk's scream breaks off. The western ridge is empty.)"
+    ],
+    "slay": [
+      "(Serk returns to his ridge.)",
+      "(The ridge feeds one.)",
+      "(The wyvern settles, watching the hills.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The western ridge. One wyvern hunts here.",
+      "The Daggers' roads loop a day around this ridge."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Serk's poison steams on the snow."
+      }
+    ],
+    "realmFirstKill": "Serk the wyvern falls. Aud has her cure."
+  },
+  "botLines": {
+    "briefing": [
+      "serk is the 58 wyvern in far sw jamtland, mystic epic",
+      "alone, no faction, no adds",
+      "no tricks in this world",
+      "take the poison sac to aud"
+    ],
+    "aftermathWin": [
+      "got the poison sac",
+      "clean fight",
+      "back to aud and arnfinn",
+      "big wyvern, simple"
+    ],
+    "aftermathLoss": [
+      "a warband rolled past",
+      "too few for a 58",
+      "pulled a savage wyvern on the way",
+      "he hits hard"
+    ],
+    "rumour": [
+      "serks poison is the only cure for serks poison",
+      "the jamtland wyverns are all serks get, he drove them off the ridge",
+      "the red daggers loop a whole day around serks ridge",
+      "the clan says kelics curse sent serks poison to arnfinn"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Serk",
+    "text": "The great wyvern of Jamtland's western ridge, whose poison only its own sac can cure. The mystics take it for Aud the healer to save Arnfinn of Vasudheim. His ridge is the one place [the Daggers' roads] loop round."
+  },
+  "bookPage": "From The Four Roads, by Halldor, road-warden of Glenlock: I watched Serk hunt once from the far side of the valley, which is as close as I mean to come. He dropped off the ridge onto a lynx and was back on the ridge before the lynx had stopped moving, and then he sat and looked down at the hills where the Albion tents are, the whole afternoon, the way a dog looks at a door it is not allowed through. I do not know what he wants with Albion. I know the Albion men keep their fires low.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took Serk's poison sac on Jamtland's western ridge in {minutes} minutes.",
+    "loss": "Serk threw {raidLeader}'s party from {realm} off the western ridge after {minutes} minutes."
+  }
+}

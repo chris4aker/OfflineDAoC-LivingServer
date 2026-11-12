@@ -208,7 +208,7 @@ public sealed class LivingServerTable<TKey, TRow> where TRow : DataObject, ILivi
             }
             var failedDeletes = new List<TRow>();
             var failed = new List<(TKey Key, TRow Live, TRow Copy)>();
-            lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+            using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
             {
                 foreach (var chunk in writes.Where(write => !write.Copy.IsPersisted).Chunk(WriteBatch))
                     if (!TryWrite(() => _database().AddObject(chunk.Select(write => (DataObject)write.Copy))))

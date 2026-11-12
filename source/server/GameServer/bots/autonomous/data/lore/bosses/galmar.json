@@ -1,0 +1,81 @@
+{
+  "id": "galmar",
+  "name": "Galmar",
+  "npcNames": [
+    "Galmar"
+  ],
+  "locationId": "vigilant-rock",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Galmar: level 47, a beach shrouder body (model 817), at about 420,600/302,400 on the northern beaches of the rock near the wretched sanidons; respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Galmar as the eldest shrouder of the northern beach.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The beach shrouders of Vigilant Rock come out of the sea at dusk and lie on the shelf like wet cloth, and the Necht fishers have a name for the largest of them, the one on the northern beach among the wretched sanidons: Galmar. It is older than the others, the fishers say, and remembers the shore before the Watchers were set on it, when there was nothing on the rock to see it come out of the water.\n\nGalmar does not leave the northern beach. The fishers say it is waiting for the tide that brought it, and that it has been waiting since before the Sylvan woke. They do not fish the northern beach, and when a Necht child asks why, they say only that Galmar has the first claim to it. When the tide is very low the fishers say they can see the line on the rocks where the water stood the day Galmar came out of it, and that the line is higher than any tide since.",
+  "legend": "Galmar (47) is a big named beach shrouder on the northern beaches (about 421k/302k), among wretched sanidons (45-52). Watch for the sanidons; pull Galmar to open sand. A group of mid to high 40s. 80-second respawn. Plain spawn with no script. Beach anglators come out of the water when the sanidons are attacked, so leave the sanidons alone. A group of mid to high 40s handles Galmar easily on open sand.",
+  "yells": {
+    "aggro": [
+      "(the wet shape rises from the sand)",
+      "(Galmar's edges ripple like a sail)"
+    ],
+    "phases": [],
+    "death": [
+      "(Galmar sinks into the wet sand)"
+    ],
+    "slay": [
+      "(the shrouder settles over the fallen like a sheet)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A wet shape on the northern beach, waiting."
+    ],
+    "phases": [],
+    "realmFirstKill": "Galmar the shrouder is gone from the northern beach."
+  },
+  "botLines": {
+    "briefing": [
+      "galmar is a 47 shrouder on the north beach",
+      "wretched sanidons around, pull it to open sand"
+    ],
+    "aftermathWin": [
+      "galmar down. [the big shrouder|grats]",
+      "no sanidons joined. [nice|lucky]"
+    ],
+    "aftermathLoss": [
+      "sanidons. [45-52|rip]",
+      "too low for 47. [ouch|more people]"
+    ],
+    "rumour": [
+      "[heard|someone said] galmar remembers the shore before the watchers were set on it",
+      "necht fishers dont fish the north beach. galmar has the first claim"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Galmar",
+    "text": "The eldest beach shrouder of Vigilant Rock, on the northern beach. The Necht fishers say it remembers the shore before the Watchers and has the first claim to it."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Galmar in Vigilant Rock in {minutes} minutes.",
+    "loss": "Galmar turned back {realm}'s band under {raidLeader} in Vigilant Rock after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "screak",
+      "relation": "another named thing of the shelf"
+    }
+  ]
+}

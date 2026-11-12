@@ -1,0 +1,268 @@
+{
+  "id": "hibernia-housing",
+  "name": "The Nine Villages (Hibernia's housing)",
+  "realm": "Hibernia",
+  "regions": [
+    202
+  ],
+  "zones": [
+    213,
+    215,
+    217,
+    218,
+    219,
+    225,
+    272,
+    273,
+    274
+  ],
+  "summary": "The quiet country behind the Connacht hills where the realm's households hold their lots: nine villages, each with its market, reached by a gate west of the Tir na Nog road.",
+  "facts": [
+    {
+      "text": "Region 202 'Hibernia Housing' holds nine zones laid out three by three: Dunshire (215), Meath (213) and Kilcullen (218) in the north row, Saeranthal (219), Torrylin (217) and Aberillan (225) in the middle, Moycullen (273), Tullamore (272) and Broughshane (274) in the south.",
+      "provenance": "game",
+      "source": "world data Zones table, region 202 (read 2026-11-06)"
+    },
+    {
+      "text": "Zone point 'Housing Hib Entrance': from Connacht at 297,816/479,928 (west of the Tir na Nog road) to region 202 at 555,546/526,065, the north edge of Meath; the Teleport table's entrance, guild and hearth arrival points for Hibernian housing are all at 555,552/526,123, where Channeler Glasny (a LiveTeleporter) and the merchant Glibryn stand.",
+      "provenance": "game",
+      "source": "world data ZonePoint table (read 2026-11-06); world data Teleport table (read 2026-11-06); world data Mob table, region 202 (read 2026-11-06)"
+    },
+    {
+      "text": "Every village has a market square with vault bankers, merchants, an armoursmiths', weaponsmiths', tailors', fletchers', alchemists' and spellcrafters' master, a stable master in the square and one out among the lots, a Hibernia Decorator, two Apprentice Taxidermists, a Market Explorer and Lyrists; Meath's square also has two Consignment Bankers (Shyla, Kineth). Dunshire's and Moycullen's markets share one layout, as do Kilcullen's and Broughshane's.",
+      "provenance": "game",
+      "source": "world data Mob table, region 202 (read 2026-11-06)"
+    },
+    {
+      "text": "The Lyrists of region 202 (35 spawns) are GameHousingHastener NPCs: on interaction they cast Speed of the Realm.",
+      "provenance": "game",
+      "source": "source/server/GameServer/gameobjects/CustomNPC/HousingHastener.cs"
+    },
+    {
+      "text": "Region 202 holds no hostile monster: its spawns are market and craft NPCs, Lyrists and horses.",
+      "provenance": "game",
+      "source": "world data Mob table, region 202 (read 2026-11-06)"
+    },
+    {
+      "text": "Meath is Irish Mide, 'the middle', the old midland kingdom where the high kings sat at Tara.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Kingdom_of_Meath"
+    },
+    {
+      "text": "Tullamore is Irish Tulach Mhór, 'great mound'; Moycullen is Maigh Cuilinn, 'plain of holly'; Broughshane is Bruach Sheáin, 'Shane's bank'; Kilcullen is Cill Chuillinn (the second element, holly or a saint's name, to verify). Dunshire, Torrylin, Saeranthal and Aberillan carry no Irish gloss found.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Tullamore; https://en.wikipedia.org/wiki/Moycullen; https://en.wikipedia.org/wiki/Broughshane; https://en.wikipedia.org/wiki/Kilcullen"
+    },
+    {
+      "text": "Living Server lore: the quiet country as land behind the Connacht hills that the Druid Court granted in lots; the lot-stones; the hearth custom; Shaughnessy's ledger; the three accounts of how the country came to be there.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "West of the Tir na Nog road, where Connacht's hills fold in on themselves, there is a gate, and beyond the gate there is a country that the old maps of the realm leave blank. Hibernians call it the quiet country, or the Nine Villages, or simply going home, and it is the one part of the realm where nothing hunts.\n\nThere are three accounts of how it came to be there. The harpers of Tir na Nog say it was always there, a long green valley behind the hills that nobody had bothered to walk into, because the road went the other way. The druids say the Druid Court asked for it: that in the years after the isle in the west came out of the mist, when the realm's families were sending sons and daughters to Hy Brasil and wanted somewhere to keep what they brought back, the court sat a season among the Dream Trees and asked the land behind the hills to be quiet, and it was. The sages of the palace write a third account, as they always do: that the country was elven ground, cleared and fenced before the Veil went up, and that the realm only found the gate.\n\nHowever it came, the court gave it out. Lovernios the Druid Prince granted it in lots, a lot to a household and a larger lot to a company that wanted a hall, and the court's surveyors walked the valley and set a stone at the corner of every lot. The lot-stones are still there. A lot whose stone has no name cut on it is a lot nobody has taken, and the clerks of the villages will sell the right to cut a name on it to anyone with the coin, and keep the rent coming after. A household that stops paying finds, in time, that the stone has been cut smooth again.\n\nThe settlers named the villages for the places in the old stories and the home places of the first families. Meath, the middle, is by the gate; Dunshire and Kilcullen lie on either side of it; Saeranthal, Torrylin and Aberillan make the middle row of the valley; Moycullen, Tullamore and Broughshane the far end. The surveyors laid out every market square to one plan, which is why a carter who knows the square at Dunshire can find the smith at Moycullen in the dark, and why Kilcullen and Broughshane quarrel over which of them copied the other.\n\nEach village is a market first. The keepers of the strongrooms hold what households cannot keep in the house; the masters of the crafts, armour and weapons, cloth and bow, the alchemist's bench and the spellcrafter's, keep stalls for the households who work at home; the decorators sell furnishings and the taxidermists' apprentices sell what the young bring back stuffed and mounted. At Meath the consignment keepers hold the goods that households set out for sale, and in every square there is a market explorer who knows what every stall in every house of the valley is asking, and will tell you for nothing, because the households pay him to. The lyrists of the villages play for travellers, and a traveller who stops to listen walks on faster than he came. The stable masters keep horses in every square and out among the lots, so that nobody need walk the long way between villages.\n\nThe court's last gift was the hearth. A household that lights its hearth and binds itself to it, as the city's people bind themselves to the stone of Tir na Nog, can be sent home to it, and a company to its hall, and the channelers of the realm send travellers to the gate at Meath, where Channeler Glasny stands with a merchant beside him for anyone who forgot to buy bread. The druids say the hearth custom is older than the court and was only remembered in the valley.\n\nIt matters to the realm as a well matters to a village. The Hibernians who went to the isle and the frontier and down into the dark came back to Tir na Nog, because everyone comes back to Tir na Nog; but they came back to the quiet country to stay. The harpers say a realm that has somewhere to go home to fights better away from it.",
+  "legend": "Housing is through the gate west of the Tir na Nog road in Connacht (297k/480k): you come out at the north edge of Meath next to Channeler Glasny. Nothing in there attacks you; it is the safest place in the realm to park a character. Nine villages in a three by three grid: Dunshire, Meath, Kilcullen in the north, Saeranthal, Torrylin, Aberillan in the middle, Moycullen, Tullamore, Broughshane in the south. Every market has vault bankers, every crafting master (armour, weapons, tailoring, fletching, alchemy, spellcraft), merchants, a decorator, taxidermist apprentices, a market explorer that searches every consignment merchant in the valley, and lyrists that cast Speed of the Realm on you if you talk to them. Meath has the consignment bankers. Stable masters in each square and out in the lots save you the long walk. Lots are bought at the lot markers. House superstition: a hearth never left cold, or the house forgets you. The market squares are copies of each other: learn one, know three.",
+  "atmosphere": {
+    "firstEntry": [
+      "The quiet country. Nothing hunts here.",
+      "A gate behind the Connacht hills, and nine villages.",
+      "Lot-stones in the grass, some with names cut.",
+      "Hearths smoke all down the valley.",
+      "A lyrist plays. Your feet feel lighter."
+    ],
+    "areas": [
+      {
+        "name": "the gate at Meath",
+        "x": 555550,
+        "y": 526100,
+        "z": 3008,
+        "radius": 900,
+        "lines": [
+          "The gate. Channeler Glasny waits beside it.",
+          "Bread for anyone who forgot to buy it."
+        ]
+      },
+      {
+        "name": "Meath market",
+        "x": 563600,
+        "y": 559900,
+        "z": 3020,
+        "radius": 1800,
+        "lines": [
+          "Meath, the middle. The consignment keepers' square.",
+          "Every stall in the valley, asked after here."
+        ]
+      },
+      {
+        "name": "Dunshire market",
+        "x": 494400,
+        "y": 555400,
+        "z": 2970,
+        "radius": 1800,
+        "lines": [
+          "Dunshire, west of the gate.",
+          "A square laid out to the surveyors' plan."
+        ]
+      },
+      {
+        "name": "Kilcullen market",
+        "x": 619500,
+        "y": 561300,
+        "z": 3047,
+        "radius": 1800,
+        "lines": [
+          "Kilcullen, east of the gate.",
+          "Kilcullen says Broughshane copied it."
+        ]
+      },
+      {
+        "name": "Saeranthal market",
+        "x": 493900,
+        "y": 619300,
+        "z": 2965,
+        "radius": 1800,
+        "lines": [
+          "Saeranthal, in the middle of the valley.",
+          "Strongroom keepers in a row."
+        ]
+      },
+      {
+        "name": "Torrylin market",
+        "x": 566000,
+        "y": 619300,
+        "z": 3025,
+        "radius": 1800,
+        "lines": [
+          "Torrylin, the valley's heart.",
+          "Smiths' hammers, and a lyrist's tune."
+        ]
+      },
+      {
+        "name": "Aberillan market",
+        "x": 616100,
+        "y": 619400,
+        "z": 3025,
+        "radius": 1800,
+        "lines": [
+          "Aberillan, where the lyrists gather.",
+          "Music in every lane."
+        ]
+      },
+      {
+        "name": "Moycullen market",
+        "x": 494400,
+        "y": 686600,
+        "z": 2970,
+        "radius": 1800,
+        "lines": [
+          "Moycullen, the plain of holly.",
+          "Dunshire's square, at the far end."
+        ]
+      },
+      {
+        "name": "Tullamore market",
+        "x": 560000,
+        "y": 692400,
+        "z": 3047,
+        "radius": 1800,
+        "lines": [
+          "Tullamore, the great mound.",
+          "The far end of the quiet country."
+        ]
+      },
+      {
+        "name": "Broughshane market",
+        "x": 619400,
+        "y": 692300,
+        "z": 3047,
+        "radius": 1800,
+        "lines": [
+          "Broughshane, Shane's bank.",
+          "Broughshane says Kilcullen copied it."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "housing for hibs is through the gate west of the tir na nog road in connacht",
+      "the nine villages are a 3 by 3 grid. [meath is by the gate|you come in at meath]",
+      "nothing attacks you in housing. [safest place in the realm|good spot to afk]",
+      "every housing market has every crafting master. [armour weapons tailor fletch alch sc|all of them]",
+      "the lyrists in housing give you speed if you talk to them",
+      "meath has the consignment bankers. [sell stuff there|check the market explorer]",
+      "the market explorer searches every consignment merchant in the valley",
+      "the druid court gave the quiet country out in lots. [lovernios signed them|so the bards say]",
+      "a lot stone with no name cut on it is a lot nobody owns yet",
+      "the housing market squares are copies. learn one, know three",
+      "kilcullen and broughshane both say the other copied its square lol",
+      "stable masters in every housing square and out in the lots too. saves the walk",
+      "the decorators sell furniture and the taxidermist kids sell stuffed heads"
+    ],
+    "rumour": [
+      "[heard|someone said] the harpers think the quiet country was always there and nobody walked in",
+      "[word is|heard] a house that stops paying rent gets its lot stone cut smooth again",
+      "[heard|someone said] the druids asked the land behind connacht to be quiet and it listened",
+      "the sages say housing was elven ground before the veil. [figures|sounds like the sages]",
+      "[heard|someone said] never let your hearth go cold or the house forgets you",
+      "[heard|someone said] the tullamore clerk is saving a lot at the edge of town for somebody",
+      "[word is|heard] the market explorer gets paid by the houses, thats why he tells you for free",
+      "[heard|someone said] channeler glasny sells bread too. no wait, thats the merchant next to him"
+    ],
+    "tell": [
+      "where is housing? through the gate west of the tir na nog road in connacht",
+      "whats in housing? nine villages, markets, crafting masters, bankers, consignment in meath, no mobs",
+      "is housing dangerous? no, nothing attacks you there",
+      "how do i get a house? find a lot marker with no owner and buy it",
+      "which housing village is best? meath for consignment, the rest are the same square",
+      "how do i get around housing? stable masters in every square, or the lyrists for speed"
+    ]
+  },
+  "loremaster": {
+    "intro": "The quiet country behind the Connacht hills, granted in lots by the [Druid Court]. Nine villages: [Meath] by the gate, [Dunshire] and [Kilcullen] beside it, [Saeranthal], [Torrylin] and [Aberillan] in the middle, [Moycullen], [Tullamore] and [Broughshane] at the far end. Ask about the [lot-stones], the [hearth], the [lyrists] or the [markets].",
+    "topics": {
+      "Druid Court": "Lovernios the Druid Prince and the court granted the quiet country in lots, a lot to a household and a larger one to a company. The druids say the court asked the land to be quiet.",
+      "Meath": "Meath, the middle, by the gate where Channeler Glasny stands. Its square has the consignment keepers, Shyla and Kineth, who hold what households set out for sale; Shaughnessy keeps the lot-ledger there.",
+      "Dunshire": "Dunshire lies west of the gate. Its square was laid out to the same plan as Moycullen's at the far end of the valley, so that a carter who knows one can find his way in the other in the dark.",
+      "Kilcullen": "Kilcullen lies east of the gate, and quarrels with Broughshane over which of them copied the other's square. They are the same square. Both are proud of it.",
+      "Saeranthal": "Saeranthal is the western village of the middle row, and the quietest square in the valley; its strongroom keepers stand in a row like a jury.",
+      "Torrylin": "Torrylin sits in the middle of the valley, a crossroads of lots, with its smiths and keepers round one square. The surveyors began there, Shaughnessy says, and worked outwards.",
+      "Aberillan": "Aberillan, in the east of the middle row, is where the lyrists gather, Aberillan says; Broughshane says the same. Its households walk faster than anyone's.",
+      "Moycullen": "Moycullen, the plain of holly, is the western village of the far end, its square a twin of Dunshire's. Its households keep holly at the door in winter for the name.",
+      "Tullamore": "Tullamore, the great mound, is the middle village of the far end, as far from the gate as the valley goes. Its households say the quiet is quietest there.",
+      "Broughshane": "Broughshane, Shane's bank, is the eastern village of the far end, its square a twin of Kilcullen's. Nobody in Broughshane knows who Shane was, and they are all sure.",
+      "lot-stones": "The surveyors' stones at the corner of every lot. A name cut on one is a household's; a smooth one is free, and the village clerks sell the right to cut it. Stop paying rent and the stone is cut smooth again.",
+      "hearth": "A household that lights its hearth and binds to it can be sent home to it, as the city's people are sent to Tir na Nog's stone. A company is sent to its hall. Never let the hearth go cold, the valley says.",
+      "lyrists": "Harpers of the villages who play for travellers. Stop and listen, and you walk on faster than you came.",
+      "markets": "Every village is a market first: strongroom keepers, the six craft masters, decorators, taxidermists' apprentices, stable masters and a market explorer who knows every stall in the valley."
+    }
+  },
+  "book": {
+    "title": "The Lot-Ledger of the Quiet Country, kept by Shaughnessy of Meath",
+    "pages": [
+      "I am Shaughnessy, and I keep the ledger at Meath by the gate, which means I know who owns every stone in the valley and who has stopped paying for it. Strangers ask me first how a country can be hidden behind Connacht for a thousand years and then be found. I tell them what the harpers say, that nobody walked in because the road went the other way, and what the druids say, that the court asked the land to be quiet and it listened, and what the sages say, that the elves fenced it and forgot it. Then I ask them which lot they want, because that is the question that pays.",
+      "The court's surveyors set the stones. They began at Torrylin, in the middle, and worked outwards, nine villages three by three, and they laid out every market square to one plan, the strongroom keepers on one side and the craft masters on another, the stable master by the road and the lyrists wherever they please. Kilcullen says Broughshane copied its square. Broughshane says the same of Kilcullen. I have the surveyors' drawings. They are both right, which is to say both wrong, and I have stopped telling either of them so.",
+      "The first families named the villages. Meath is the middle, and stands by the gate, which the old men think is a joke about the high kings. Moycullen is the plain of holly, Tullamore the great mound, Broughshane somebody called Shane's bank, and nobody in Broughshane knows who Shane was. Dunshire, Torrylin, Saeranthal and Aberillan the families brought from songs I do not know. When a household asks me what its village's name means, I tell them it means they live there now. They seem to find that enough. The Moycullen households keep holly at the door in winter for the name, and Tullamore will tell anyone that its mound is the greatest, though nobody has found it.",
+      "The hearth is the court's last gift and the one people forget to thank it for. Light it and bind to it and the channelers can send you to it from anywhere in the realm, as the stone of Tir na Nog takes back its own. A company with a hall is sent to the hall. My grandmother said a hearth left cold forgets the house, and I have never once let mine go out, though I live alone and it is a great deal of turf. The households who come back from Hy Brasil come here before they go anywhere else. I watch them through the gate. They walk slower here.",
+      "Nothing hunts in the quiet country. I have kept the ledger for longer than I like to say and I have never once written down a death that was not old age. The young who come through the gate with their swords out put them away by the second village. The lyrists play, the stable masters keep the horses, the market explorer tells everyone what everyone else is asking, and the stones stand at the corners. For whoever wants a lot, there is a smooth stone at the edge of Tullamore that I have been saving. Do not tell the clerk at Tullamore. He thinks he is saving it too."
+    ]
+  },
+  "bosses": [],
+  "era": "hib-the-present",
+  "factions": [
+    "druid-court"
+  ],
+  "related": [
+    {
+      "id": "connacht",
+      "relation": "where the gate into the quiet country stands"
+    },
+    {
+      "id": "tir-na-nog",
+      "relation": "the Druid Court that granted the lots"
+    },
+    {
+      "id": "hibernia-wilds",
+      "relation": "the region overview"
+    }
+  ]
+}

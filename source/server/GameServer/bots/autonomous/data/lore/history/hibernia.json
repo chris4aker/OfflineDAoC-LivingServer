@@ -1,0 +1,866 @@
+{
+  "realm": "Hibernia",
+  "id": "hibernia",
+  "summary": "Hibernia's history as the Living Server tells it: Mythic's canon where it exists, Irish myth as inspiration, and original writing where both are silent. From the first earth and the Fomorians of Tory, through the old families of the hills and the thinning of the Veil, to the realm war, the Shrouded Isles and the Glimmer King, and the present, in which everything the realm brings down returns and the realm keeps going back.",
+  "eras": [
+    {
+      "id": "hib-before-the-names",
+      "order": 1,
+      "name": "Before the Names",
+      "summary": "The first earth of Hibernia and of the isle in the western mist, before any people named the hills: the old powers of the land, the Sidhe in their mounds, the Root already old under Hy Brasil.",
+      "events": [
+        {
+          "text": "In Irish myth the Sídhe are the people of the mounds, the otherworld folk of the hills, associated with the Tuatha Dé Danann after their retreat underground.",
+          "provenance": "myth",
+          "source": "https://en.wikipedia.org/wiki/Aos_s%C3%AD"
+        },
+        {
+          "text": "The Sylvan of Hy Brasil say the Root (Olcasgean) was already old when the first Sylvan woke, and that the forest drove him to World's End in the Long Pushing; his roots went down and hollowed Galladoria.",
+          "provenance": "original",
+          "source": "Living Server"
+        }
+      ],
+      "places": [
+        "allta-fearann",
+        "cothrom-gorge",
+        "shannon-estuary",
+        "spraggon-den",
+        "worlds-end"
+      ],
+      "bosses": [
+        "archilus",
+        "arracht",
+        "badb",
+        "balere",
+        "ceracor",
+        "coimirceoir",
+        "cronwort",
+        "curengkur",
+        "elro-the-ancient",
+        "eraliwyr",
+        "fanged-sinach",
+        "fuilwort",
+        "gneiss",
+        "goldenleaf",
+        "helminth",
+        "ixthiar-broodmother",
+        "marfoirwort",
+        "mollunero",
+        "monger",
+        "paud",
+        "queen-cliodna",
+        "razorbeak",
+        "regan",
+        "tachtwort",
+        "treal",
+        "tudeg",
+        "windskimmer",
+        "xcrzrk",
+        "zuraspa",
+        "zytka"
+      ]
+    },
+    {
+      "id": "hib-age-of-the-fomorians",
+      "order": 2,
+      "name": "The Age of the Fomorians",
+      "summary": "The Fomorians, the people from under the sea, hold the islands off the northern coast and take tribute from the mainland; at Mag Tuired Lugh's sling-stone puts out Balor's eye and the Fomorians are broken and go west.",
+      "events": [
+        {
+          "text": "In the Lebor Gabála the Fomorian Conand's tower on Tory Island exacted a Samhain tribute of two-thirds of the Nemedians' corn, milk and children.",
+          "provenance": "myth",
+          "source": "https://en.wikipedia.org/wiki/Fomorians"
+        },
+        {
+          "text": "At the second battle of Mag Tuired Lugh killed his grandfather Balor with a sling-stone through his eye, and the Fomorians were defeated by the Tuatha Dé Danann.",
+          "provenance": "myth",
+          "source": "https://en.wikipedia.org/wiki/Balor"
+        },
+        {
+          "text": "The Fomorian survivors wrapped the still-open eye in seven hides and carried it west walking backwards; on Hy Brasil it looked once at the valley of Gleann Glas, whose watch-fire had drawn their boat ashore, and burned it to the Vale of Balor. Anurigunda went down into the burning sea-floor rock after the battle and came up to meet the diggers of Fomor.",
+          "provenance": "original",
+          "source": "Living Server"
+        }
+      ],
+      "places": [
+        "fomor",
+        "tur-suil",
+        "vale-of-balor"
+      ],
+      "bosses": [
+        "anurigunda",
+        "balor",
+        "xrrxrax"
+      ]
+    },
+    {
+      "id": "hib-the-old-families",
+      "order": 3,
+      "name": "The Old Families",
+      "summary": "The age of the hill chieftains before there were keeps on the frontier: fosterage, hostages, single combat at the fords, the keen, and the burial customs of the caves under Breifine, where the three keeners looked back.",
+      "events": [
+        {
+          "text": "The Irish keen (caoineadh) was a vocal lament for the dead, traditionally performed by women at the wake and the graveside.",
+          "provenance": "myth",
+          "source": "https://en.wikipedia.org/wiki/Keening"
+        },
+        {
+          "text": "Single combat at the ford is a motif of the Ulster Cycle: in the Táin Bó Cúailnge Cú Chulainn holds a ford against Medb's army by fighting her champions one by one.",
+          "provenance": "myth",
+          "source": "https://en.wikipedia.org/wiki/T%C3%A1in_B%C3%B3_C%C3%BAailnge"
+        },
+        {
+          "text": "Caimheul of Breifine was keened by three keeners, the eldest his foster-mother; on the fourth night a voice from the Summoners' road below asked why they should ever stop, and they looked back. The champion Avartack, his foster-brother, had died standing in the grave-chamber the night before.",
+          "provenance": "original",
+          "source": "Living Server"
+        },
+        {
+          "text": "For a generation afterwards no family in Breifine hired a keener, until Nóra's great-grandmother sang for any family's dead without a fee, facing forward.",
+          "provenance": "original",
+          "source": "Living Server"
+        }
+      ],
+      "places": [
+        "cliffs-of-moher",
+        "connacht",
+        "marfach-caverns",
+        "muire-tomb",
+        "treibh-caillte"
+      ],
+      "bosses": [
+        "ancient-black-oak",
+        "avartack-the-champion",
+        "banghaisgidheach",
+        "black-lady",
+        "blue-lady",
+        "brarn",
+        "chieftain-caimheul",
+        "danderpaw",
+        "dreaded-ursine",
+        "driff-tinel",
+        "hursk-the-alchemist",
+        "king-vian",
+        "lair-overseer",
+        "pericolias-the-dreaded",
+        "red-lady",
+        "tawi-shon",
+        "thorg",
+        "tinka",
+        "webweaver"
+      ]
+    },
+    {
+      "id": "hib-age-of-the-veil",
+      "order": 4,
+      "name": "The Age of the Veil",
+      "summary": "The courts of the Seelie and the Unseelie bargain across the Veil in the Cursed Forest until a bargain breaks; the Veil wears thin over Hibernia's hills, and the fairy lords, the sidhe queens and the cursed wood's debts walk.",
+      "events": [
+        {
+          "text": "The druids of Lough Gur hold that the Veil wore thin over Hibernia after the old court bargain broke in the Cursed Forest, where the Seelie and Unseelie courts had kept their agreements; the Juggernaut is called the debt with legs.",
+          "provenance": "original",
+          "source": "Living Server"
+        },
+        {
+          "text": "Derbáil of Ardee's grandmother's list of places not to go after dark is the realm's best-known record of the wilds' superstitions (never let a song in the Bog of Cullen finish; if you hear trumpets on Lough Gur after dark, go home).",
+          "provenance": "original",
+          "source": "Living Server"
+        }
+      ],
+      "places": [
+        "bog-of-cullen",
+        "coruscating-mine",
+        "cursed-forest",
+        "hibernia-wilds",
+        "lough-derg",
+        "lough-gur",
+        "silvermine-mountains",
+        "valley-of-bri-leith"
+      ],
+      "bosses": [
+        "abbadona",
+        "ailbe",
+        "allyn",
+        "amadan",
+        "amadan-dubh",
+        "aoife",
+        "atur",
+        "blight",
+        "cailean",
+        "curmie",
+        "develin",
+        "duga",
+        "enan",
+        "evern",
+        "faerie-queen",
+        "flame",
+        "frat",
+        "geas-bound-protector",
+        "giant-caithor",
+        "green-maw",
+        "guardian-hru",
+        "juggernaut",
+        "kunsgnos",
+        "lhia",
+        "lobigan",
+        "luriquay",
+        "madawg",
+        "melancholic-fairy-queen",
+        "mikka",
+        "muroi",
+        "niy-the-overseer",
+        "orey-eyed-oghamist",
+        "overman-regnal",
+        "overseer-of-the-silver-hand",
+        "rioldna",
+        "sarsoureh",
+        "scratch",
+        "shadowgnash",
+        "skeaghshee",
+        "smidget",
+        "smirky",
+        "tiomoid",
+        "touched",
+        "uafas-capall",
+        "underviewer-treeal",
+        "viewer-etol",
+        "wyvernic-wraith"
+      ]
+    },
+    {
+      "id": "hib-the-realm-war",
+      "order": 5,
+      "name": "The Realm War",
+      "summary": "The three realms fight over the frontiers: Hibernia raises keeps in Emain Macha, Breifine, Cruachan Gorge and Mount Collory, guards its relics at Dun Dagda and Dun Lamfhota, and finds that its own dead under Breifine answer a keen.",
+      "events": [
+        {
+          "text": "Hibernia's frontier keeps in the world data include Dun Bolg, Dun Crimthain, Dun Da Behnn and Dun nGed in Breifine, Dun Ailinne and Dun Lamfhota in Cruachan Gorge, Dun Dagda and Dun Scathaig in Mount Collory, and Dun Crauchon in Emain Macha; Dun Dagda and Dun Lamfhota hold the realm's relics.",
+          "provenance": "game",
+          "source": "keep table (GAPS-hibernia.md, world data read 2026-11-06)"
+        },
+        {
+          "text": "The Breifine keeps stand on the stones of Caimheul's dún; the keen of Marfach comes up through their floors and is loudest when they change hands. The keeps asked for the first companies to go down under the hill.",
+          "provenance": "original",
+          "source": "Living Server"
+        },
+        {
+          "text": "Sinech ni Riain of Ardee's company ended the Black Lady's song and went on down the road to the Summoner's Hall, the first Hibernian company to reach it by Hibernia's own door; she set a stone from the road in the wall of the Ardee barracks.",
+          "provenance": "original",
+          "source": "Living Server"
+        }
+      ],
+      "places": [
+        "breifine",
+        "cruachan-gorge",
+        "emain-macha",
+        "marfach-caverns",
+        "mount-collory"
+      ],
+      "bosses": [
+        "eresidae",
+        "eugor",
+        "morven",
+        "raemon",
+        "ronat",
+        "uileog"
+      ]
+    },
+    {
+      "id": "hib-the-shrouded-isles",
+      "order": 6,
+      "name": "The Shrouded Isles",
+      "summary": "Hy Brasil comes out of the mist and the Sylvan ask Hibernia for swords against the Fomorians; the realm goes down into Galladoria to cut the Root, climbs Tur Suil, and takes Fomor hall by hall.",
+      "events": [
+        {
+          "text": "Shrouded Isles: Hy Brasil is being devastated by the Fomorians, and the Sylvan asked Hibernia for help against them.",
+          "provenance": "mythic",
+          "source": "https://www.gamebanshee.com/news/69207-new-shrouded-isles-information.html"
+        },
+        {
+          "text": "Hy-Brasil is a phantom island of Irish legend west of Ireland, said to be visible only rarely and otherwise hidden in mist.",
+          "provenance": "myth",
+          "source": "https://en.wikipedia.org/wiki/Hy-Brasil"
+        },
+        {
+          "text": "Spring of the year the isles came: three hundred and forty went down into Galladoria and came back fewer; a hundred and forty under Orlaith of Tir na Nog cut the Root. First winter: Eochaidh of Ardee's three bands reached Balor; next spring Fiachna of Howth's company brought him down and left a smooth stone on the window sill. Second year: Nuala of Bri Leith ended Nogoribando and Domnann had its first quiet season. Third year: Ríonach of Tir na Nog starved Myrddraxis.",
+          "provenance": "original",
+          "source": "Living Server"
+        }
+      ],
+      "places": [
+        "caillte-garran",
+        "domnann",
+        "fomor",
+        "galladoria",
+        "hy-brasil",
+        "koalinth-caverns",
+        "shrouded-isles",
+        "tur-suil",
+        "vigilant-rock"
+      ],
+      "bosses": [
+        "abomos-the-soultrapper",
+        "adar-llwch-gwin",
+        "adwyth",
+        "anhylaw",
+        "ansol",
+        "anurigunda",
+        "aodhnait",
+        "aroon-the-urlamhai",
+        "balor",
+        "beatha",
+        "beomarbhan",
+        "chlorosis",
+        "conservator",
+        "corrupt-primal-of-air",
+        "corrupt-primal-of-earth",
+        "corrupt-primal-of-fire",
+        "corrupt-primal-of-water",
+        "cuinn",
+        "declan",
+        "dremcis-fuiloltair",
+        "drygau",
+        "easmarach",
+        "eimear",
+        "elnara-erea",
+        "elnaras-pet",
+        "fachtna",
+        "fedail",
+        "galmar",
+        "giant-sporite-cluster",
+        "gnat",
+        "hurionthex",
+        "kierac-the-destroyer",
+        "kontar-the-corrupt",
+        "krackenschtein",
+        "laraida",
+        "luaire",
+        "lysanus",
+        "manus",
+        "master-of-pain",
+        "milo",
+        "myrddraxis",
+        "nogoribando",
+        "norsob-the-annihilator",
+        "olcasar-geomancer",
+        "olcasgean",
+        "organic-energy-mechanism",
+        "oscar",
+        "queen-qunilaria",
+        "rinne",
+        "sargan-the-conqueror",
+        "screak",
+        "spindler-broodmother",
+        "taiore",
+        "thuxra-the-cackler",
+        "tine",
+        "tuliros",
+        "twirl",
+        "uaimh-lairmaster",
+        "ulicia",
+        "xaga",
+        "zinsya"
+      ]
+    },
+    {
+      "id": "hib-the-glimmer-king",
+      "order": 7,
+      "name": "The Glimmer King",
+      "summary": "A pass opens over the bare ridge above the Bog of Cullen; the grass of Sheeroe goes grey, the Glimmer court settles on the slopes around its king, the Azure come up to preach at the light, and the Cullen watch is set at the foot of the pass.",
+      "events": [
+        {
+          "text": "Sheeroe was green before Cuuldurach darkened it; the Glimmer are his; a rift in the Veil lies in Sheeroe.",
+          "provenance": "mythic",
+          "source": "https://www.camelotherald.com/article/dark-destiny"
+        },
+        {
+          "text": "First autumn: Conaing of Howth's forty went up and seven came home (the King's Law). Second winter: Ethne found the king's flinch from heat, and the brazier on the Cullen road was lit. Third spring of the isles: Dubthach of Ardee's hosting of a hundred and twenty held the four doors and the hills wept.",
+          "provenance": "original",
+          "source": "Living Server"
+        },
+        {
+          "text": "Rangers scouting the Bog of Cullen's northern edge found a new pass out of the mist; the ancient elven sage Tyldifyl told them it led into the Sheeroe Hills, a hidden kingdom of the Otherworld whose king is Cuuldurach, the Glimmer King.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+        },
+        {
+          "text": "Followers of the Great Azure, an old kin of the firbolg who put their faith in a cloudless sky, hold strongholds in the Sheeroe Hills to cleanse them of the glimmers, whom they take for wicked things tainted with death.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+        }
+      ],
+      "places": [
+        "sheeroe-hills"
+      ],
+      "bosses": [
+        "azure-coseal",
+        "azure-dsaldor",
+        "azure-thror",
+        "cuuldurach-the-glimmer-king",
+        "deniela",
+        "donal",
+        "glimmer-lords",
+        "ide",
+        "jannet",
+        "maldahar-the-glimmer-prince",
+        "manius",
+        "saemus"
+      ]
+    },
+    {
+      "id": "hib-the-present",
+      "order": 8,
+      "name": "The Present",
+      "summary": "Everything the realm has brought down returns: the Root regrows, the king climbs back into the tower, the eldest comes up out of the rock, the Ladies sing again. The realm keeps going down, in turns, and the Sylvan and the hill country keep the customs of each return.",
+      "events": [
+        {
+          "text": "Customs of the present: a coin on the top step of the shore stair; a smooth stone in the pack up Tur Suil; a green leaf on the mouth-stones of Galladoria; a candle in the Breifine window when a Lady falls; the Cullen watch's single bell-stroke when the Glimmer King is down; blankets at the top of the Fomor stair at dawn.",
+          "provenance": "original",
+          "source": "Living Server"
+        },
+        {
+          "text": "The druids of Tir na Nog fear the meeting of the eye in the tower and the Root in the hollow: Queen Qunilaria's brood has broken into something under the Vale that smells of sap.",
+          "provenance": "original",
+          "source": "Living Server"
+        },
+        {
+          "text": "The Queen of the Shar offered her people to Hibernia against Albion and Midgard, meaning to turn on Hibernia once its enemies were beaten. The elves, who alone know the Shar, distrust them, but with the war going badly the Celts argued for the alliance and it was accepted, uneasily.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
+        },
+        {
+          "text": "In each realm the leaders and chosen others received the same vision of a strange land where heroes were tried against fantastic creatures, and a voice promising them power there. Some called it the gods' doing, some magic, some an enemy's trick, but each realm sent scholars and explorers far into the encircling seas; they found the island remnants of Atlantis and the Halls of Heroes, and learned that the other two realms had been invited too. Hibernia's ships sail from a river dock at the foot of the Grove of Domnann.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
+        }
+      ],
+      "places": [
+        "hibernia-housing",
+        "tir-na-nog"
+      ],
+      "bosses": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "the-root",
+      "name": "The Root",
+      "summary": "Olcasgean, the titan the Sylvan will not call a god, and everything he has bent in the hollow of Galladoria: the four elements of the isle, the keepers of the rings, the Olcasar and the Uaimh, and the Sylvan who took his side.",
+      "places": [
+        "galladoria",
+        "vigilant-rock",
+        "worlds-end"
+      ],
+      "bosses": [
+        "aroon-the-urlamhai",
+        "beatha",
+        "chlorosis",
+        "conservator",
+        "corrupt-primal-of-air",
+        "corrupt-primal-of-earth",
+        "corrupt-primal-of-fire",
+        "corrupt-primal-of-water",
+        "easmarach",
+        "giant-sporite-cluster",
+        "hurionthex",
+        "kontar-the-corrupt",
+        "laraida",
+        "luaire",
+        "lysanus",
+        "olcasar-geomancer",
+        "olcasgean",
+        "organic-energy-mechanism",
+        "rinne",
+        "spindler-broodmother",
+        "taiore",
+        "tine",
+        "tuliros",
+        "uaimh-lairmaster",
+        "xaga"
+      ]
+    },
+    {
+      "id": "sylvan",
+      "name": "The Sylvan",
+      "summary": "The tree-folk of Hy Brasil, keepers of Domnann and its springs, who asked Hibernia for swords and count the realm's friendship in quiet seasons and sweet springs. Some of their own went down into the hollow and did not come back.",
+      "places": [
+        "caillte-garran",
+        "domnann",
+        "fomor",
+        "galladoria",
+        "hy-brasil",
+        "shrouded-isles",
+        "tur-suil",
+        "vale-of-balor",
+        "vigilant-rock"
+      ],
+      "bosses": [
+        "abomos-the-soultrapper",
+        "dremcis-fuiloltair",
+        "elro-the-ancient",
+        "kontar-the-corrupt",
+        "laraida",
+        "luaire",
+        "manus",
+        "paud",
+        "regan",
+        "rinne",
+        "taiore",
+        "twirl",
+        "xaga"
+      ]
+    },
+    {
+      "id": "fomorians",
+      "name": "The Fomorians",
+      "summary": "The people from under the sea, broken at Mag Tuired, who went west to Hy Brasil: the city of Fomor under the shore, a people of trades and households, and the tower of Tur Suil on the crag, which holds the king and his eye.",
+      "places": [
+        "caillte-garran",
+        "cruachan-gorge",
+        "fomor",
+        "tur-suil",
+        "vale-of-balor"
+      ],
+      "bosses": [
+        "abomos-the-soultrapper",
+        "adwyth",
+        "anhylaw",
+        "anurigunda",
+        "balor",
+        "drygau",
+        "kierac-the-destroyer",
+        "krackenschtein",
+        "master-of-pain",
+        "milo",
+        "morven",
+        "myrddraxis",
+        "nogoribando",
+        "norsob-the-annihilator",
+        "oscar",
+        "queen-qunilaria",
+        "raemon",
+        "ronat",
+        "sargan-the-conqueror",
+        "uileog"
+      ]
+    },
+    {
+      "id": "summoners",
+      "name": "The Summoners",
+      "summary": "The Grand Summoner Govannon and his summoners, who call the dead of every realm from the hall under the frontiers (shared id with Albion and Midgard). In Hibernia their road came up under the graves of Breifine on the night three keeners were singing, and the keeners turned round.",
+      "places": [
+        "marfach-caverns"
+      ],
+      "bosses": [
+        "ancient-black-oak",
+        "avartack-the-champion",
+        "black-lady",
+        "blue-lady",
+        "chieftain-caimheul",
+        "red-lady"
+      ]
+    },
+    {
+      "id": "lords-of-the-undead",
+      "name": "The Lords of the Undead",
+      "summary": "The faction of the called dead (shared id). In Hibernia: Caimheul's household under Breifine, sung back by the three Ladies and keeping the road for the hall below, and the enthralled dead of the frontier who heard the keen.",
+      "places": [
+        "breifine",
+        "marfach-caverns"
+      ],
+      "bosses": [
+        "ancient-black-oak",
+        "avartack-the-champion",
+        "black-lady",
+        "blue-lady",
+        "chieftain-caimheul",
+        "red-lady",
+        "tinka"
+      ]
+    },
+    {
+      "id": "sidhe",
+      "name": "The Sidhe",
+      "summary": "The people of the mounds and the courts beyond the Veil: fairy queens and lords of the wilds, whose songs and bargains the hill country fears.",
+      "places": [
+        "bog-of-cullen",
+        "breifine",
+        "cursed-forest",
+        "emain-macha",
+        "hibernia-wilds",
+        "lough-derg",
+        "lough-gur",
+        "valley-of-bri-leith"
+      ],
+      "bosses": [
+        "ailbe",
+        "amadan",
+        "amadan-dubh",
+        "aoife",
+        "badb",
+        "evern",
+        "faerie-queen",
+        "guardian-hru",
+        "kunsgnos",
+        "lhia",
+        "madawg",
+        "melancholic-fairy-queen",
+        "muroi",
+        "niy-the-overseer",
+        "queen-cliodna",
+        "rioldna",
+        "saemus",
+        "sarsoureh",
+        "smidget",
+        "smirky",
+        "touched"
+      ]
+    },
+    {
+      "id": "cursed-wood",
+      "name": "The Cursed Wood",
+      "summary": "What walks in the Cursed Forest after the Seelie and Unseelie bargain broke: the court's debts and leavings, from the Juggernaut to the giants and the green things of the wood.",
+      "places": [
+        "cursed-forest",
+        "hibernia-wilds"
+      ],
+      "bosses": [
+        "blight",
+        "cailean",
+        "develin",
+        "flame",
+        "giant-caithor",
+        "green-maw",
+        "juggernaut",
+        "luriquay",
+        "orey-eyed-oghamist",
+        "shadowgnash",
+        "skeaghshee",
+        "uafas-capall",
+        "wyvernic-wraith"
+      ]
+    },
+    {
+      "id": "glimmer-court",
+      "name": "The Glimmer Court",
+      "summary": "The cold lights of Sheeroe, the court of the Glimmer King: the chamberlain and the lords of the slopes, the lesser court the bog can see, and the prince Maldahar who rides the hills.",
+      "places": [
+        "sheeroe-hills"
+      ],
+      "bosses": [
+        "cuuldurach-the-glimmer-king",
+        "glimmer-lords",
+        "maldahar-the-glimmer-prince"
+      ]
+    },
+    {
+      "id": "order-of-the-azure",
+      "name": "The Order of the Azure",
+      "summary": "Blue-painted firbolg kin who pray to the open sky and keep a crusade against the Glimmer on Sheeroe's northern slopes; their Voices preach in Connacht.",
+      "places": [
+        "connacht",
+        "sheeroe-hills"
+      ],
+      "bosses": [
+        "azure-coseal",
+        "azure-dsaldor",
+        "azure-thror"
+      ]
+    },
+    {
+      "id": "restless-dead",
+      "name": "The Restless Dead",
+      "summary": "The dead of Hibernia's older graves who do not lie still: the Muire family's tomb and the giants of the Cursed Forest who are owed a burial.",
+      "places": [
+        "cliffs-of-moher",
+        "connacht",
+        "muire-tomb"
+      ],
+      "bosses": [
+        "atur",
+        "banghaisgidheach",
+        "brarn",
+        "eugor",
+        "geas-bound-protector",
+        "giant-caithor",
+        "tawi-shon"
+      ]
+    },
+    {
+      "id": "sidhe-of-the-hall",
+      "name": "The Sidhe of the Hall",
+      "summary": "Sidhe of the Summoner's Hall who serve the summoners as if they had forgotten whose they are (shared id); the realm tells that they stood aside for Sinech ni Riain's company.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "unseelie-court",
+      "name": "The Unseelie Court",
+      "summary": "The dark court of the Veil, whose servants work the Coruscating Mine.",
+      "places": [
+        "coruscating-mine",
+        "silvermine-mountains"
+      ],
+      "bosses": [
+        "allyn",
+        "duga",
+        "frat",
+        "lobigan",
+        "overman-regnal",
+        "overseer-of-the-silver-hand",
+        "scratch",
+        "underviewer-treeal",
+        "viewer-etol"
+      ]
+    },
+    {
+      "id": "old-troubles",
+      "name": "The Old Troubles of the Isle",
+      "summary": "What was dangerous on Hy Brasil before the Fomorians came: the octonoid mothers of the World's End shore, the walking shrouds of the edge, the rot-flowers, walking stone and killer-plant of Cothrom Gorge, and the hunter of the mantids in Allta Fearann. The Sylvan guides of Domnann name them to every Hibernian company.",
+      "places": [
+        "allta-fearann",
+        "cothrom-gorge",
+        "hy-brasil",
+        "shrouded-isles",
+        "worlds-end"
+      ],
+      "bosses": [
+        "adar-llwch-gwin",
+        "archilus",
+        "arracht",
+        "balere",
+        "beomarbhan",
+        "coimirceoir",
+        "cronwort",
+        "curengkur",
+        "danderpaw",
+        "dremcis-fuiloltair",
+        "eimear",
+        "fanged-sinach",
+        "fuilwort",
+        "galmar",
+        "gnat",
+        "gneiss",
+        "goldenleaf",
+        "ixthiar-broodmother",
+        "marfoirwort",
+        "mollunero",
+        "monger",
+        "razorbeak",
+        "screak",
+        "tachtwort",
+        "thuxra-the-cackler",
+        "tudeg",
+        "windskimmer",
+        "xcrzrk",
+        "xrrxrax",
+        "zuraspa",
+        "zytka"
+      ]
+    },
+    {
+      "id": "outland-residents",
+      "name": "The Outlanders of Altan Garran",
+      "summary": "The people of Altan Garran in Cothrom Gorge, who live outside Domnann's law in a walled town of their own, with their garda, their bards and sorcerers, the Erea family and the treants of the garran; besieged by the writhing worts of the gorge and suspicious of every stranger, Hibernians included.",
+      "places": [
+        "cothrom-gorge"
+      ],
+      "bosses": [
+        "ansol",
+        "aodhnait",
+        "cuinn",
+        "declan",
+        "elnara-erea",
+        "elnaras-pet",
+        "fachtna",
+        "fedail",
+        "treal",
+        "ulicia",
+        "zinsya"
+      ]
+    },
+    {
+      "id": "outlaws",
+      "name": "The Outlaws of the Wilds",
+      "summary": "Men and women of the realm who went into the bogs and hills beyond its law and stayed: the Cullen outlaws on their island in the eastern bog, with their captain Donal and their wise-woman Ide, who keep a watch of their own.",
+      "places": [
+        "bog-of-cullen"
+      ],
+      "bosses": [
+        "deniela",
+        "donal",
+        "ide",
+        "jannet",
+        "manius",
+        "mikka",
+        "saemus"
+      ]
+    },
+    {
+      "id": "druid-court",
+      "name": "The Druid Court of Tir na Nog",
+      "summary": "The druids of the first families, who held court among the Dream Trees before there was a city, and the realm's own people who grew up round them: the palace, its sages and harpers, the halls of every path, and the druid prince Lovernios, who studies what the wilds send him.",
+      "places": [
+        "hibernia-housing",
+        "tir-na-nog"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "siabra",
+      "name": "The Siabra",
+      "summary": "The siabra, cousins of the elves who did not go behind the Veil, and who hold great stretches of the old country against the realm: the dergan furies and enchanters of Lough Derg, the magi of the Cullen bog, the camps of the Silvermine and the Shannon shore.",
+      "places": [
+        "bog-of-cullen",
+        "lough-derg",
+        "lough-gur",
+        "shannon-estuary",
+        "silvermine-mountains",
+        "valley-of-bri-leith"
+      ],
+      "bosses": [
+        "abbadona",
+        "curmie",
+        "enan",
+        "tiomoid"
+      ]
+    },
+    {
+      "id": "frontier-guard",
+      "name": "The Frontier Guard",
+      "summary": "The realm's keepers of the hills: the chieftains of the duns of Breifine, Cruachan Gorge, Mount Collory and Emain Macha, their champions and master rangers, the forts of Druim Ligen and Druim Cain, and the two relic keeps that hold the Cauldron of Dagda and Lug's Spear of Lightning.",
+      "places": [
+        "breifine",
+        "cruachan-gorge",
+        "emain-macha",
+        "mount-collory"
+      ],
+      "bosses": [
+        "eresidae"
+      ]
+    },
+    {
+      "id": "wild-tribes",
+      "name": "The Wild Tribes",
+      "summary": "The koalinth of the sea caves, the spraggons of their den and the ursine of Treibh Caillte: old peoples of Hibernia's wild places with their own chiefs and grudges.",
+      "places": [
+        "cliffs-of-moher",
+        "koalinth-caverns",
+        "spraggon-den",
+        "treibh-caillte"
+      ],
+      "bosses": [
+        "ceracor",
+        "dreaded-ursine",
+        "driff-tinel",
+        "eraliwyr",
+        "helminth",
+        "hursk-the-alchemist",
+        "king-vian",
+        "lair-overseer",
+        "pericolias-the-dreaded",
+        "thorg",
+        "webweaver"
+      ]
+    }
+  ]
+}

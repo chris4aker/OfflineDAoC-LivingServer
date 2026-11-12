@@ -1,0 +1,218 @@
+{
+  "id": "nosdoden",
+  "name": "Nosdoden",
+  "catalogKey": "trollheim/nosdoden",
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "aliases": [
+    "the worm",
+    "the beast of trollheim"
+  ],
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "troll-fathers"
+  ],
+  "related": [
+    {
+      "id": "trollkarl-bonchar",
+      "relation": "the sorcerer who sought the Fathers' road past him"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Nosdoden is the level-80 final of Trollheim with 100,000 health, lying in the deepest hall.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a 'Mutated Dragon'. When an attacker dies near him he makes a ghost of them that fights the living; the ghost goes when the dead one is resurrected.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4687"
+    },
+    {
+      "text": "In this build a real player who dies to him becomes a 'Spirit of <name>' with that player's race, armour and class behaviour; a ghost spiritmaster raises a spirit champion, a ghost bonedancer a bone commander and bonemender.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs"
+    },
+    {
+      "text": "At every tenth of his health (90% down to 10%) about 12-18 'essence of fallen' spill out around him: nine waves in all.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He casts Call of Void (1,100 damage in a 550 radius) at a chosen target, and Nosdoden's Venom over a wide area.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "When he dies the earth lurches, and a glowing light forms on the mound that served as his lair.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs"
+    },
+    {
+      "text": "His loot includes Ring of the Vaettir and a Tentacle Ring; he is one of the scale-bearers in the Dragon Myths & Legends quest. Players called him 'the worm'.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4687"
+    },
+    {
+      "text": "A Midgard raid of 42 killed him in October 2003; a May 2003 raid did under 10% before its dead outnumbered its living.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4687"
+    },
+    {
+      "text": "The Living Server raid beat him twice on 2026-11-04 with support 80 and 104.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Swedish doden means 'the death' and nos a muzzle or snout (the compound is to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "When a killed player is resurrected, the script returns the 'life essence' to them and the ghost is gone.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs"
+    },
+    {
+      "text": "Allakhazam's loot list for Nosdoden includes Ring of the Vaettir, Tentacle Ring, Slime Coated Ring and Nosdoden's Remains.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4687"
+    }
+  ],
+  "story": "Under the deepest of Trollheim's holy halls the Troll Fathers raised a mound where their dead were given back to the land, and the vaettir, the spirits of the land, gathered on it. The Nedat, the downward ones, kept it, and the Fathers' famous wisdom came from consulting the dead there. When the morvalt broke the city the Nedat fled with the Fathers, all but one keeper, Grimsa, and the mound lay unguarded. Something came to it. The accounts differ: Jordheim's scholars call it a dragon changed by what it ate, the trolls of Bjarken say a dragon of the old age seeking a lair, the Valkyn say the morvalt shamans called it, and the iarn dwarves say it came up from below rather than down. It lay on the mound and fed on the vaettir, and the feeding turned its scales to slime and its jaws to tentacles. The Valkyn named it Nosdoden, death's muzzle.\n\nThe first Valkyn war-band to reach it, under Ketil Grimsson, found its nature: every deeper cut let out a host of the swallowed dead, and every one of them who died near it was swallowed too and stood up again as a spirit with his own face and craft, fighting for it. Sigrid, who tended their wounded, found the one mercy in the place: a fallen warrior called back before the worm has finished with him takes back his own spirit, and the Valkyn say since that the worm takes only what is left lying. Its void magic, the call of the empty dark, comes from the same thin place in the dark that the sorcerer Bonchar opened in the halls above; its venom is the slime of the mound.\n\nMidgard's warbands came with the Valkyn, and when Thorvald Kettilsson's forty-two killed it the earth lurched and a light rose from the mound. Jordheim's dragon-lore counts its scale with the dragons'. It always returns, because the mound is never empty: every war-band that falls there feeds it. The Valkyn fear the day it is full.",
+  "chapters": [
+    {
+      "title": "The Mound of the Fathers",
+      "text": "The Troll Fathers did not burn or bury their dead. Below the bridge of Trollheim and the spiral stair, below the last of the holy halls where the Nedat kept order, they raised a mound of earth brought down from the surface of Aegir a basket at a time, and on it they laid their dead, and left them. The land took them back. The vaettir, the spirits of the land, gathered on the mound in the dark like birds on a roost, and with them the spirits of every Father who had ever been laid there.\n\nThe Nedat, the downward ones, were the mound's keepers. They carried the dead down and they carried questions down, because the Fathers consulted their ancestors as a jarl consults his council. A question taken to the mound came back with an answer, sometimes years later, and the answers were the source of the wisdom that trolls and kobolds still tell their children about. The Valkyn, whom the Fathers tamed, say their own first word was taken down to the mound to be blessed before it was given to them.\n\nTrolls who left Trollheim for the world above, the first trolls of Midgard, still sent their dead home to the mound for many generations. A troll of Bjarken told a Midgard scholar that his grandfather's grandfather was carried down past the bridge and laid there, and the vaettir took him in, and that every troll went that way until the morvalt came. The mound is why trolls tap their shields three times before they go into Trollheim: once for the Fathers, once for the dead on the mound, and once for themselves, so the city knows them for family."
+    },
+    {
+      "title": "The Last Keeper",
+      "text": "When the morvalt came through the gates, Trollheim held for a time, and then the Fathers went down by roads only they knew. The Nedat went with them, carrying what they could of the holy halls. One keeper stayed. The Valkyn remember her as Grimsa the Downward, an old Nedat who said the mound could not be left without a keeper and that she was too old to learn the new roads. She stayed below the last hall with a lamp and the dead.\n\nThe morvalt did not find her. They held the upper city and the middle halls, they drank in Olen's bar and drilled in the Fathers' galleries, but they did not go below the spiral stair; their shamans said the holy halls belonged to the Mother's enemies and would swallow them. For some years Grimsa kept the mound alone. The Valkyn say she sent word up once, by a kobold who escaped the city, that the vaettir were restless and that something was moving in the rock beneath the mound.\n\nThen nothing more came up. When the Valkyn, years later, fought their way back down the spiral stair for the first time, they found the last hall empty, Grimsa's lamp out and cold on the floor, and the mound occupied.\n\nThat is the Valkyn account. The morvalt tamed ones in Aegirhamn tell a different one, and only to each other: that their crazed shamans did go down, once, to the edge of the holy halls, and called something to the mound in the Mother's name, to punish the Fathers by eating their dead. The Valkyn elders say that is a morvalt boast. They also say they have never been able to prove it false."
+    },
+    {
+      "title": "What Came Down",
+      "text": "What lay on the mound had a dragon's shape. The scholars of Jordheim who wrote it into the realm's bestiaries called it a mutated dragon, and the realm's dragon-lore counts it among the dragons: Brohd of Jordheim, who makes the dragon mythirians from Atlantean glass, will take its scale as he takes Gjalpinulva's. How it came there is told four ways.\n\nThe scholars of Jordheim say it was an ordinary dragon of the old age, if any dragon is ordinary, that crawled down into the abandoned holy halls looking for a lair and found something better than gold. The trolls of Bjarken agree it was a dragon, but say it came for the dead dragon under Tuscaran first, found the rime giants sitting on the bones, and went on looking for another great death to lie on. The Valkyn hold to the morvalt shamans' calling. And the iarn dwarves, who distrust anything that comes from below, say it did not come down to the mound at all. It came up, through the rock beneath it, from the deep places where Grimsa heard something moving, and it was never a dragon; it only took a dragon's shape because that was the shape of the great dead under Delling, and the deep things copy what they see.\n\nAll four accounts agree on what it did. It lay down on the mound as a dragon lies down on its hoard. The vaettir and the Fathers' dead did not flee; the mound was theirs, and they would not leave it. So it fed on them. Grimsa's ring, a ring of the Nedat keepers that the Valkyn call the Ring of the Vaettir, has come out of its remains more than once, and the Valkyn say she is in it still."
+    },
+    {
+      "title": "Death's Muzzle",
+      "text": "The feeding changed it. Dragons are made to sleep on gold, which does not fight back; the dead do, slowly, from inside. By the time the Valkyn came down, its scales had gone soft and coated in slime, its jaws had sprouted tentacles that groped across the mound, and its eyes had gone pale as the faces of the drowned. It no longer flew. It had no need to. Everything it wanted was beneath it.\n\nThe Valkyn named it Nosdoden. They had taken their tongue from the Fathers and the Norse both, and in the words they use, nos is the muzzle of a beast and doden is the death: death's muzzle, the mouth the dead go into. The trolls of Midgard call it the worm, which is older and less polite.\n\nThe slime of the mound goes where it likes. It hangs in the air of the last hall like river fog and settles on everything that breathes there, and the Valkyn who came back from the mound came back with their skin eaten raw. The Slime Coated Ring and the Tentacle Ring, which Valkyn smiths made from what it shed, are worn now by thanes who have never been near Trollheim and do not ask what they are made of.\n\nIts other gift is darker. It reaches past the one it has chosen into the dark itself and calls the void out of it, the empty place behind the world, and the void falls on him and on everyone who stands with him. The Valkyn did not know where it had learned that until they went into the middle city and found the sorcerer Bonchar standing in his chamber with a rift behind his face. Bonchar had opened the dark where it is thin, looking for the Fathers' road. The worm below had found the same thinness from the other side, and learned to draw on it. The Valkyn say the two of them are listening to each other through it."
+    },
+    {
+      "title": "Ketil's War-Band",
+      "text": "The first Valkyn war-band to reach the mound went down in the years after the tamed morvalt came to Midgard, before the realm's own warbands sailed for Aegir. It was thirty strong, led by Ketil Grimsson, who believed he was the old keeper's grandson and wanted her lamp back. They fought their way down the spiral stair and through the holy halls and came to the mound, and Ketil struck the first blow, and the dead came out.\n\nSo the worm showed what it was. It is full of the swallowed dead, and a wound lets them out. Each time Ketil's war-band cut deeper into it, a host of them spilled out around it, the essence of the fallen: Fathers and vaettir and trolls of the first generations, gone wrong in the worm's belly, hating whatever was still alive. They kept coming for as long as there was worm left to cut, and Ketil's war-band did not live to see half of them.\n\nThen it took them as well. Each Valkyn who fell near the mound lay still for a moment, and then his life essence rose out of him as a spirit, with his own face and his own armour and his own craft, and turned on his friends. Ketil's spiritmaster stood up as a ghost and called a ghost champion to fight beside him. His bonedancer's spirit raised bone commanders. His thane's ghost called lightning. The war-band was fighting itself by the end.\n\nSigrid, who tended the war-band's wounded, saw the only mercy in the place. When she called a fallen warrior back to his body before the worm had finished with him, his spirit, half risen, went back into him and the ghost was gone; those she could not reach in time stood up against her. She came back up the stair alone. The Valkyn have a saying from her, that the worm takes only what is left lying, and they say it now of debts and of grief as well."
+    },
+    {
+      "title": "The Realm Goes Down",
+      "text": "When Midgard sailed for Aegir with the Valkyn to take the island back, the Troll Father who had come to Jordheim asked the realm for one thing above all others: to clear the mound. The realm's warbands came to Trollheim by the Stoneheart road, from Dyrfjall into the Gripklosa Mountains and up the undead morvalt valley, and fought their way down through the morvalt halls past Dagar's count and the Rift, past the spiral stair, into the holy halls.\n\nThe first Midgard warband to try it, sixty under Ase Halvardsdottir of Jordheim with Valkyn guides, went down knowing Sigrid's saying and the tale of the spillings, and still lost. Her guide said only that the worm opened twice at once, and that by the end there were more dead on the mound than living. Ase's ghost fought for the worm. Her guide brought the news back.\n\nThe second warband, forty-two under Thorvald Kettilsson, a nephew of the lost Ketil, went down in the dead of winter, and what they did below the stair Thorvald would never tell; he said the Fathers' dead had a right to keep their last battle in the family. His skald sang only that it lasted most of a night and that no one who fell was left lying. And they killed it. The earth lurched beneath their feet as it staggered and toppled off the mound, and then, for the first time since Grimsa's lamp went out, a glowing light began to form on the mound that had served as its lair.\n\nThorvald found the lamp. He carried it up to Bjarken and gave it to the oldest troll in the town, who wept, the Valkyn say, and then went out and stood in the snow and looked at the mountains for a long time. The light on the mound, the trolls say, is the Fathers' dead going home at last: the vaettir and the first trolls and Grimsa among them, let out of the worm's belly all at once."
+    },
+    {
+      "title": "The Mound Is Never Empty",
+      "text": "It came back. In a season, or less, the worm was on the mound again, and the Valkyn who went down found it as before, coiled and slimed and full. The Valkyn elders understood why. The mound is never empty. Ketil's thirty were swallowed there, and Ase's sixty, and every war-band that has fallen there since has left its dead on the mound for the worm to eat, and the vaettir of Aegir still gather there as they always have, because it is the land's own place for the dead. The worm does not need to be born again. It only needs something to lie down on.\n\nMidgard goes down anyway, because every death of the worm lets the dead out. The trolls of Bjarken watch the mountains on the nights a war-band is below the spiral stair, and when the light rises over the Gripklosa peaks they go inside and say the names of their grandfathers. Brohd in Jordheim takes the worm's scale for his mythirians. The Valkyn count the lights.\n\nWhat the worm wants, the Valkyn say, is to be full. It has eaten the dead of the Fathers' whole age and it is still empty, the way the void it calls on is empty. The elders fear the day it has eaten enough: they say it will get up off the mound then, and climb the spiral stair, and come up through the morvalt halls into the light, and that whatever it is under the dragon's shape will be all that is left. The iarn dwarves, who say it came up from below, say it will go back down instead, through the thin place, to wherever the Fathers went, and eat them too.\n\nThe trolls say neither. They say the Fathers will come back up the roads they went down by, one day, and find their mound, and that the worm will discover then what the dead can do when they have someone to come home to."
+    }
+  ],
+  "legend": "Rez fast or fight your friends: every death makes a ghost with that player's race and class until they are rezzed, and the ghosts keep their classes' tricks, so a dead spiritmaster becomes a ghost with a pet. Assign rezzers who do nothing else. Nine waves of essences come at 90, 80, 70 and on down: add groups clear each wave before the tanks push him to the next tenth, and don't push two tenths at once. Keep casters spread, because his void blast hits everyone near the target, and cure his venom. In 2003 a raid of 42 killed him with three deaths and a dedicated aggro group; another raid did under 10% before its dead outnumbered its living. The Living Server's raid needed 80 to 100. Nickname: the worm.",
+  "yells": {
+    "aggro": [
+      "Mmmmore. Bring them closer. I am so empty.",
+      "Living. So loud. So warm. Come down to the mound.",
+      "So many of you. I am so empty."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "They pour out of me. Catch them, if you can."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Half of everything I ever ate is loose. Feed me again."
+      },
+      {
+        "trigger": "playerDeath",
+        "text": "Yours now? No. Mine."
+      },
+      {
+        "trigger": "health<=10",
+        "text": "The last of them... no... they are mine..."
+      },
+      {
+        "trigger": "health<=90",
+        "text": "The first of them spill out. Catch them!"
+      }
+    ],
+    "death": [
+      "The mound... they are leaving... all of them...",
+      "Going... home... all of them... going home..."
+    ],
+    "slay": [
+      "Swallowed.",
+      "Another for the mound.",
+      "Your spirit tastes of iron and fear.",
+      "Rise. Fight for me now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The mound of the dead. Something lies coiled on it.",
+      "Cold faces drift in the dark. They are watching.",
+      "The earth here smells of old graves and slime."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "The essence of the fallen spills out of Nosdoden!"
+      },
+      {
+        "trigger": "playerDeath",
+        "text": "A spirit rises in a fallen fighter's shape!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Half the swallowed dead are loose in the dark!"
+      },
+      {
+        "trigger": "death",
+        "text": "The earth lurches. Nosdoden topples from the mound!"
+      }
+    ],
+    "realmFirstKill": "Nosdoden is dead. Light rises from the mound.",
+    "wake": "Something vast stirs on the mound below Trollheim."
+  },
+  "botLines": {
+    "briefing": [
+      "nosdoden: nine add waves, every 10%. add groups clear the wave before tanks push",
+      "if you die you come back as a ghost on his side. [rezzers|healers] rez fast, thats the whole fight",
+      "casters spread out, his void blast hits everyone near the target",
+      "rezzers do nothing but rez. if a ghost of someone shows up, rez that person",
+      "dont push two tenths at once on nosdoden, let the add groups breathe"
+    ],
+    "aftermathWin": [
+      "the worm is dead!! [did you see the light on the mound|that light after he died tho]",
+      "nosdoden down. nine waves. [gg raid|best rez work ive seen]",
+      "nosdoden scale dropped!! dragon myths here i come",
+      "best rez rotation ever, gg"
+    ],
+    "aftermathLoss": [
+      "my own ghost killed me. [never again|i hate this boss]",
+      "wave six got the healers and it all fell apart",
+      "the ghost spiritmaster's pet killed our rezzers",
+      "we pushed too fast, two waves at once"
+    ],
+    "rumour": [
+      "[they say|heard] nosdoden was a dragon before trollheim changed him",
+      "the troll fathers' dead are inside nosdoden, my troll friend says. [creepy|thats why the waves]",
+      "nosdoden has tentacles. [the tentacle ring drop|seen it], hes a dragon gone wrong",
+      "my ghost killed me after i got rezzed once. [shade timer|no joke]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Nosdoden",
+    "text": "Under the deepest hall of Trollheim the Troll Fathers raised a mound for the spirits of their dead. Something with a dragon's shape lay down on it and fed. Wound him and the swallowed dead spill out; fall near him and he swallows you too, until a friend raises you."
+  },
+  "bookPage": "A troll of Bjarken told me this, and would not drink while he told it. When his grandfather's grandfather died, he was carried down past the bridge and the spiral stair to the mound under the last hall, and laid there, and the vaettir took him in. Every troll went that way. Then the morvalt came, and the Fathers went deeper, and something else went down to the mound and did not come up. He said his grandfathers are in it. He said when the war-bands come back from Trollheim and talk about ghosts, he goes out and stands in the snow until he can stop listening. He said the last time it was killed, he saw a light from his door, far off over the mountains, and he went inside and wept.",
+  "chronicle": {
+    "win": "{raidLeader} led {realm} down to the mound of Trollheim and slew Nosdoden in {minutes} minutes; light rose behind them.",
+    "loss": "Nosdoden swallowed {raidLeader}'s raid from {realm} after {minutes} minutes on the mound."
+  }
+}

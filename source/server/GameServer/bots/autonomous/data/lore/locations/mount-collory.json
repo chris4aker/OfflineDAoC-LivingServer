@@ -1,0 +1,226 @@
+{
+  "id": "mount-collory",
+  "name": "Mount Collory",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "zones": [
+    210
+  ],
+  "summary": "The frontier hills behind Druim Cain: Dun Dagda, which keeps the Cauldron, Dun Scathaig, the badger setts, the changelings and the stair to Darkness Falls.",
+  "facts": [
+    {
+      "text": "Zone 210 (region 200, x 385,024-450,560, y 417,792-483,328): 155 monsters. Keeps: Dun Dagda (keep 110, level 10, 401,036/465,147) and Dun Scathaig (keep 105, level 5, 415,619/442,855). A Darkness Falls entrance stands beside Dun Dagda (400,771/465,841).",
+      "provenance": "game",
+      "source": "world data Keep table (read 2026-11-06); world data ZonePoint table (read 2026-11-06)"
+    },
+    {
+      "text": "Hibernia's relics are the Cauldron of Dagda (magic) and Lug's Spear of Lightning (strength).",
+      "provenance": "game",
+      "source": "source/server/GameServer/keeps/Relics/GameRelic.cs"
+    },
+    {
+      "text": "Monsters: hillock changelings (35-39), mad changelings, speghouls (40-44), grovewoods (Ancient Grove), sett protectors, matrons and dwellers, faerie badgers, irewoods, vanishers, aughisky; Eugor (36, 'a rare named evanescer ... at night', Magic's Scar) and a Morsmutare Witch (27, Necromancers; Season of Remorse); Aingeal (38) at about 422,400/451,800.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06); DataQuest 'Magic's Scar', 'Season of Remorse'"
+    },
+    {
+      "text": "The Dagda is a father-god of the Tuatha Dé Danann whose cauldron left no company unsatisfied; Dún Scáith is the fortress of Scáthach, who trained Cú Chulainn in arms.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/The_Dagda"
+    },
+    {
+      "text": "Season of Remorse: 'the empyrean guardian in the centre of the standing stone ring north of Druim Cain', two morsmutare witches in Mount Collory ('the last whispers a name as she dies'), two vanishers 'east of the mile gate mountain range'.",
+      "provenance": "game",
+      "source": "DataQuest 'Season of Remorse' (world data, read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Dun Dagda as the cauldron's house and the realm's luck; Dun Scathaig named for the teacher of champions; the setts; the changelings who came up from the valley; the witches' remorse; the stair; Aingeal's book.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawn of Mount Collory: Morsmutare Witch (27, faction Necromancers), the only spawn of the name; Season of Remorse asks for two morsmutare witch kills (respawn 300 seconds).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    }
+  ],
+  "story": "Mount Collory is the high frontier behind Druim Cain, a country of bare hills and badger setts that the realm would leave to the badgers if it could. It cannot, because Dun Dagda stands on it. The keep is the realm's house for the Cauldron of Dagda, the old god's cauldron that the bards say no company ever walked away from hungry, and the realm keeps it on the frontier because, the chieftains say, a relic kept safe in a capital is a relic nobody fights for. Every realm on the frontier knows where the Cauldron is. Every realm comes for it.\n\nThe keep was built on the oldest ground of the hill, and the Mount Collory folk say the ground was a feasting-place of the old gods before it was anyone's fortress: the hollow in the keep's yard is where the cauldron first stood. When the Cauldron is taken out of Dun Dagda, the cooks of the frontier say, every pot in Hibernia burns its bottom for a week. When it comes home, the realm's companies eat for a night as if the old god himself were serving, and nobody remembers the meal afterwards.\n\nDun Scathaig stands lower down, toward the Breifine side, named for the woman of the old hero-tales who kept a fort over the sea and taught the realm's greatest champion to fight. The chieftain of Scathaig keeps her custom: the young champions of the frontier are sent there to be beaten until they stop flinching. The hosting that took the four doors of Sheeroe mustered under its walls.\n\nThe hills between belong to the setts. The badgers of Mount Collory are not the badgers of Lough Derg: the sett matrons are as large as ponies, the protectors guard the sett mouths with the patience of sentries, and the faerie badgers among them were changed by something in the hill. The hillock changelings came up out of the valley of Bri Leith, the mad ones' cousins, and live in the hillocks they are named for. The speghouls walk the north-east at night. A thing called Eugor, which the mentalists of Caille call an evanescer, appears in the hills only after dark and only rarely, and fades when it is struck too often, and the mentalist Meagane of Druim Cain wants its ruby.\n\nTwo sorrows live here. The morsmutare witches were women of the realm who went into necromancy and came to the hills to do it where nobody would see; the last of them whispers a name as she dies, and the empyrean guardian of the stone ring north of Druim Cain wants to know whose. And beside Dun Dagda a stair goes down into the earth toward the place the three realms call Darkness Falls, and the keep's garrison keeps a watch on it, because what comes up that stair does not care which realm holds the keep.\n\nWhy does it matter? Because the realm's luck is kept here. When the Cauldron is home, Hibernia's casters say their craft comes easier; when it is gone, every druid on the frontier feels the lack. The chieftains of Mount Collory count the Cauldron's absences on a post in the keep's yard. The post is very notched.",
+  "legend": "Mount Collory is frontier (RvR) country behind Druim Cain. Dun Dagda (level 10 relic keep) holds the Cauldron of Dagda, Hibernia's magic relic; Dun Scathaig (level 5) is the other keep. The Darkness Falls entrance is right beside Dun Dagda. Bots path through here with the frontier warbands. PvE: hillock and mad changelings (27-39), badger setts (27-38), speghouls (40-44) in the north-east, grovewoods and irewoods. Eugor (36) is a rare night spawn for Magic's Scar; the Morsmutare Witch (27) is Season of Remorse. When an enemy realm takes the Cauldron, Hibernian magic is weaker until it comes home, so expect the big defence calls to be for Dun Dagda. Frontier custom: notch the post in Dun Dagda's yard when the Cauldron is lost, and never cook on the frontier the night it goes.",
+  "atmosphere": {
+    "firstEntry": [
+      "Mount Collory. Bare hills and badger setts.",
+      "Dun Dagda keeps the Cauldron.",
+      "Every realm knows where it is.",
+      "A stair goes down beside the keep.",
+      "The setts are watching the road."
+    ],
+    "areas": [
+      {
+        "name": "Dun Dagda",
+        "x": 401040,
+        "y": 465150,
+        "z": 2890,
+        "radius": 2500,
+        "lines": [
+          "Dun Dagda, house of the Cauldron.",
+          "A hollow in the yard where it first stood.",
+          "A notched post. Count the notches."
+        ]
+      },
+      {
+        "name": "the Darkness Falls stair",
+        "x": 400770,
+        "y": 465840,
+        "z": 3080,
+        "radius": 800,
+        "lines": [
+          "A stair down into the dark.",
+          "The garrison watches what comes up."
+        ]
+      },
+      {
+        "name": "Dun Scathaig",
+        "x": 415620,
+        "y": 442860,
+        "z": 2940,
+        "radius": 2500,
+        "lines": [
+          "Dun Scathaig, where champions stop flinching.",
+          "A hosting mustered under these walls."
+        ]
+      },
+      {
+        "name": "the setts",
+        "x": 402140,
+        "y": 432290,
+        "z": 2240,
+        "radius": 4500,
+        "lines": [
+          "Badger setts as big as cellars.",
+          "The matrons are as large as ponies."
+        ]
+      },
+      {
+        "name": "the hillocks",
+        "x": 391850,
+        "y": 474930,
+        "z": 2800,
+        "radius": 3500,
+        "lines": [
+          "Hillock changelings in their hillocks.",
+          "Cousins of the mad ones of Bri Leith."
+        ]
+      },
+      {
+        "name": "the witches' hollow",
+        "x": 424020,
+        "y": 446790,
+        "z": 1700,
+        "radius": 1500,
+        "lines": [
+          "A necromancer's hollow in the hills.",
+          "The last one whispers a name.",
+          "A Morsmutare Witch, the last, whispering."
+        ]
+      },
+      {
+        "name": "the north-east heights",
+        "x": 436340,
+        "y": 455810,
+        "z": 3210,
+        "radius": 3500,
+        "lines": [
+          "Speghouls walk the heights at night.",
+          "Something fades in and out of the dark."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "dun dagda keeps the cauldron of dagda. [hib magic relic|every realm comes for it]",
+      "the chieftains say a relic kept safe in tnn is a relic nobody fights for. thats why its on the frontier",
+      "when the cauldron leaves dun dagda every pot in hibernia burns its bottom for a week, frontier cooks say",
+      "theres a notched post in dun dagda's yard. one notch for every time the cauldron was taken",
+      "dun scathaig is named for the woman who taught the old champions to fight",
+      "the hosting that took sheeroe's four doors mustered at dun scathaig",
+      "the badgers of mount collory are as big as ponies. [sett matrons|not lough derg badgers]",
+      "hillock changelings came up from bri leith. cousins of the mad ones",
+      "eugor is an evanescer. only at night, only rarely. [magic's scar|meagane wants its ruby]",
+      "the morsmutare witches went into necromancy in the hills. the last one whispers a name",
+      "the darkness falls stair is right beside dun dagda. [the garrison watches it|three realms]",
+      "when the cauldron is gone hib casters feel it. [weaker|go get it back]",
+      "mount collory is behind druim cain. [frontier|keeps]"
+    ],
+    "rumour": [
+      "[heard|someone said] the cauldron is under attack at dun dagda. [defend|go go]",
+      "someone cooked on the frontier the night the cauldron went and [burned it|bad luck]",
+      "[word is|heard] eugor was up last night in the north east. [rare|magic's scar]",
+      "the sett matrons came out of the ground near dun scathaig [today|lol]",
+      "[heard|someone said] the df stair by dun dagda was open and things came up",
+      "the morsmutare witch whispered someone's name before she died. [creepy|season of remorse]",
+      "[word is|heard] the chieftain of scathaig beat a champion until he stopped flinching",
+      "theyre notching the post at dun dagda again. [cauldron gone|sigh]",
+      "[heard|someone said] the morsmutare witch only whispers the name the second time she dies"
+    ],
+    "tell": [
+      "mount collory is frontier behind druim cain. dun dagda and dun scathaig are there",
+      "where is dun dagda? mount collory, west side. relic keep with the cauldron of dagda",
+      "where is the darkness falls entrance? one is right beside dun dagda in mount collory",
+      "is mount collory dangerous? its frontier. enemy realms, plus 30s-40s setts and speghouls",
+      "whats in mount collory? dun dagda, dun scathaig, badger setts, changelings, speghouls, the df stair",
+      "what does the cauldron do? hib magic relic. lose it and hib casters are weaker",
+      "season of remorse wants two witch kills but theres only one morsmutare witch. wait for her to come back"
+    ]
+  },
+  "loremaster": {
+    "intro": "Mount Collory, the high frontier. [Dun Dagda] keeps the [Cauldron]; [Dun Scathaig] keeps the young champions; the [setts] keep the hills; the [stair] goes down. Ask about [Eugor] or the [witches] if you like a sad story.",
+    "topics": {
+      "Dun Dagda": "The relic keep of Mount Collory, built on an old feasting-place of the gods; the hollow in its yard is where the [Cauldron] first stood. A notched post in the yard counts its absences.",
+      "Cauldron": "The Cauldron of Dagda, Hibernia's relic of magic, the old god's cauldron that left no company hungry. When it is gone, the realm's casters feel the lack. Every realm comes for it.",
+      "Dun Scathaig": "The lower keep toward Breifine, named for the woman of the hero-tales who taught the greatest champion. Young champions are sent there to be beaten until they stop flinching.",
+      "setts": "The badger setts of the bare hills: matrons as large as ponies, protectors at the sett mouths, faerie badgers changed by something in the hill.",
+      "stair": "The stair beside [Dun Dagda] down toward Darkness Falls. The garrison watches it, because what comes up does not care which realm holds the keep.",
+      "Eugor": "An evanescer, the mentalists of Caille say: a thing that appears in the hills only at night and only rarely. Meagane of Druim Cain wants its ruby.",
+      "witches": "The morsmutare witches, women of the realm who went into necromancy in the hills. The last whispers a name as she dies; the empyrean guardian of the stone ring north of Druim Cain wants it.",
+      "Aingeal": "A woman who lives alone in the hills between the keeps and keeps the frontier's book, because the chieftains are too busy fighting to write anything down.",
+      "Morsmutare Witch": "The morsmutare witches were women of the realm who went into necromancy and came to the hills of Mount Collory to do it where nobody would watch, and the hill folk say there were many once and now there is one, who dies and comes back. The empyrean guardian at the stone ring north of Druim Cain wants to hear the name she whispers when she dies. She whispers it only the second time, the hill folk say, and the guardian is patient."
+    }
+  },
+  "book": {
+    "title": "The Frontier Post: Mount Collory, kept by Aingeal",
+    "pages": [
+      "The chieftains fight and do not write, so I write. I live between the two keeps in a house the setts have not found yet, and every time the Cauldron goes out of Dun Dagda I walk up and look at the post in the yard, and the garrison lets me cut the notch, because I am the only one who does it neatly. There are a great many notches. There are nearly as many marks beside them where it came home, and those I cut deeper, with the garrison watching, because a homecoming is a thing a keep likes to see done properly.",
+      "The Cauldron is the realm's luck. That is not a figure of speech up here. When it is in its hollow the druids of the frontier sleep well and their craft comes easily, and when it is gone they lie awake and their spells come thin, and the cooks burn the pots. The other realms know this, and come for it, and the hill is never quiet for long. The chieftains say a relic in a capital is a relic nobody fights for. They are the kind of men who would think that a recommendation.",
+      "Dun Scathaig is lower, and kinder, for those who count being beaten daily as kindness. Its chieftain keeps the old teacher's custom and puts the young champions through it until they stop flinching. The hosting that took the four doors of Sheeroe mustered under its walls, and the names of the ones who did not come back are on the inside of its gate. The badgers of the setts between the keeps are as big as ponies and do not care about any of it. They were here before the keeps and they dig under the walls when they please.",
+      "Beside Dun Dagda the stair goes down into the dark. The garrison watches it with more care than they watch the road, because what comes up the stair is not Albion or Midgard and does not care whose banner is on the wall. In the north-east something fades in and out of the night; the mentalists call it an evanescer. In the hollow below my house, a witch whispers a name when she dies. I have written all the names down. They are all the same name, and I will not write it here, because the empyrean guardian asked me not to."
+    ]
+  },
+  "bosses": [
+    "eugor"
+  ],
+  "era": "hib-the-realm-war",
+  "factions": [
+    "frontier-guard"
+  ],
+  "related": [
+    {
+      "id": "hibernia-wilds",
+      "relation": "the region overview"
+    },
+    {
+      "id": "valley-of-bri-leith",
+      "relation": "Druim Cain, the fort at its northern edge"
+    },
+    {
+      "id": "cruachan-gorge",
+      "relation": "the other relic keep's country"
+    },
+    {
+      "id": "breifine",
+      "relation": "the frontier to the south"
+    }
+  ]
+}

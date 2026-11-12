@@ -259,15 +259,15 @@ namespace DOL.AI.Brain
 				Body.SetGroundTarget(Body.X, Body.Y, Body.Z);
 				Body.CastSpell(Sphere_pbaoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
 
-				foreach(GamePlayer player in Body.GetPlayersInRadius(300))
+				foreach(GameLiving player in EncounterTargets.InRadius(Body, 300, bots: EncounterTargets.DisplacesBots(Body)))
                 {
 					if(player != null)
                     {
-						if(player.IsAlive && AggroList.ContainsKey(player) && player.Client.Account.PrivLevel == 1)
+						if(player.IsAlive && AggroList.ContainsKey(player) && EncounterTargets.NotGm(player))
                         {
 							if(!player.IsWithinRadius(Body,200))
                             {
-								player.MoveTo(Body.CurrentRegionID, Body.X, Body.Y, Body.Z, Body.Heading);
+								EncounterDisplacement.Move(player, Body.CurrentRegionID, Body.X, Body.Y, Body.Z, Body.Heading, DisplacementKind.Pull, Body);
                             }
                         }
                     }

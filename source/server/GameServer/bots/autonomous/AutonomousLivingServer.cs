@@ -210,8 +210,12 @@ public static partial class AutonomousLivingServer
             AutonomousBotSchedule.Pulse(now);
             if (MemoryOn)
                 MemoryPulse(now);
+            // Bot-led groups: a gamebot leader may invite the player (bot_group_invite_player; /lfg asks anyway).
+            BotLedGroups.Pulse(now);
             EngagePulse(now);
             AutonomousLivingWorld.Pulse(now);
+            // Tales: the realm's storyteller, the rumour after it, fireside tales in a resting group.
+            AutonomousTales.Pulse(now);
         }
         catch (Exception exception)
         {

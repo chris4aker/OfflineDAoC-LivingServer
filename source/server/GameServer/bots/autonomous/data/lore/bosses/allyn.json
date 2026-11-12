@@ -1,0 +1,85 @@
+{
+  "id": "allyn",
+  "name": "Allyn",
+  "npcNames": [
+    "Allyn"
+  ],
+  "locationId": "coruscating-mine",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Allyn: level 36, at about 31,950/30,650 near the mine mouth, about 560 from Frat, among enthralled silviers, a knocker and a rockbiter; his body (model 536) is the one a phantom miner of the deep workings wears, though Allyn himself is not of the undead kind; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 220 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore (the mine's collar book): 'Allyn is worse, because Allyn still says sorry.'",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Allyn is the third of the drivers of the upper workings, and the collar book says he is the worst of them, because he still says sorry. He says it to every hand he drives and every hand he strikes, quietly, as if it were a habit he had brought with him from somewhere kinder, and the captives say the court keeps him for that: an apology makes a whip lighter to carry.\n\nHe was a Howth lad, the Howth miners think, from the years after the court sealed their door, when the young of the village dared each other to listen at it. Allyn did more than listen. He went round the mountain to the court's door to find out whose picks those were, and found out.\n\nHe grows paler every season. The phantom miners who walk the deep workings, the dead of Howth's old shifts and of the court's, have the same look about them, the grey of a lamp-wick that has burned too long, and the hewers say Allyn will be one of them before long and that he knows it. When they say so he says sorry for that too. Below him, in the breach at the bottom of the mine, Atur the dead foreman still holds his lamp, and the Howth men say that one day Allyn will walk down and stand beside him, and that Atur will let him by.",
+  "legend": "Allyn (36) works the mouth end of the upper workings in Coruscating Mine (about 31.9k/30.7k), with Frat (38) about 560 away and enthralled silviers (37-41), a knocker and a rockbiter nearby. He wears the phantom miners' pale look but is not undead. The easiest named in the mine: a group of mid to high 30s, but take Frat with him. Plain spawn, no script, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "I'm sorry. I am. Back to work.",
+      "Sorry. I'm so sorry."
+    ],
+    "phases": [],
+    "death": [
+      "Sorry... tell them I..."
+    ],
+    "slay": [
+      "I'm sorry. I'm sorry."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A pale driver, apologising to the dark."
+    ],
+    "phases": [],
+    "realmFirstKill": "Allyn has fallen. He is not sorry any more."
+  },
+  "botLines": {
+    "briefing": [
+      "allyn is 36 by the mouth with frat",
+      "easy one, but frat comes too"
+    ],
+    "aftermathWin": [
+      "allyn down. [he said sorry lol|grats]",
+      "both drivers down. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "frat and the silviers joined. [rip|oops]",
+      "too many from the mouth. [ouch|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] allyn says sorry every time he hits you. creepy",
+      "allyn is going pale like the phantom miners. the hewers say hes gonna be one soon"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Allyn",
+    "text": "The pale driver of the Coruscating Mine who says sorry to every hand he drives. A Howth lad who went to see whose picks were digging below the sealed door, the miners think. He grows more like the phantom miners every season."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Allyn in the Coruscating Mine in {minutes} minutes.",
+    "loss": "Allyn turned back {realm}'s band under {raidLeader} in the Coruscating Mine after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "unseelie-court"
+  ],
+  "related": [
+    {
+      "id": "frat",
+      "relation": "the driver beside him"
+    },
+    {
+      "id": "atur",
+      "relation": "the dead foreman of the deep"
+    }
+  ]
+}

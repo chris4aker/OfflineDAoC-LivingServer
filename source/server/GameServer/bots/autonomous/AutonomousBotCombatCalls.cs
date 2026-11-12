@@ -117,7 +117,7 @@ public static class AutonomousBotCombatCalls
     /// when half the group has died in it, "kill" or "rest" when it ends (rest more likely when the group is worn). Updates the
     /// state; the caller checks the group gap.
     /// </summary>
-    public static string GroupEvent(GroupState state, GroupView view, long now, Random random)
+    public static string GroupEvent(GroupState state, GroupView view, long now, Random random, bool botsLead = false)
     {
         if (!state.WasFighting && view.Fighting)
         {
@@ -126,7 +126,7 @@ public static class AutonomousBotCombatCalls
             state.DeadAtStart = view.Members - view.Alive;
             state.WipeCalled = false;
             state.PlayerInFight = view.PlayerFighting;
-            return view.Enemies >= 1 && random.NextDouble() < 0.35 ? "pull" : null;
+            return view.Enemies >= 1 && random.NextDouble() < PullCallChance(botsLead) ? "pull" : null;
         }
         if (state.WasFighting && view.Fighting)
         {
@@ -208,6 +208,16 @@ public static class AutonomousBotCombatCalls
         eSpellType.Taunt => "taunt",
         _ => null
     };
+
+    /// <summary>
+    /// How often a pull is called. In a group the player leads, a groupmate says "inc" now and then (the player pulls). In a
+    /// party a gamebot leads (bot-led groups, B4) the leader calls its own party's pulls more often, with its own lines
+    /// ("pulling", "inc, on me"): that call is the pull's one line, never a second "inc" beside it.
+    /// </summary>
+    public static double PullCallChance(bool botsLead) => botsLead ? 0.6 : 0.35;
+
+    /// <summary>Who calls a pull: in a party a gamebot leads, its leader when it is alive and saw the fight; anyone otherwise.</summary>
+    public static bool LeaderCallsPull(bool botsLead, bool leaderAlive, bool leaderSawFight) => botsLead && leaderAlive && leaderSawFight;
 
     /// <summary>The calls that wait until the spell has landed on its target.</summary>
     public static bool NeedsLanding(string topic) => topic is "mez" or "root" or "stun";
@@ -291,9 +301,11 @@ public static class AutonomousBotCombatCalls
                     var view = new GroupView(members.Any(m => m.IsAlive && m.InCombat), enemies, members.Length,
                         members.Count(m => m.IsAlive), members.Any(m => m.IsAlive && (m.HealthPercent < 50 || m.MaxMana > 0 && m.ManaPercent < 40)),
                         members.Any(m => m is GamePlayer && !m.IsAlive), members.Any(m => m is GamePlayer && m.IsAlive && m.InCombat));
-                    string topic = GroupEvent(state, view, now, Random.Shared);
+                    // B4: in a party a gamebot leads (not a raid party), the leader calls the pull.
+                    bool botsLead = BotLedGroups.ViewOf(group) is { RaidGuest: false };
+                    string topic = GroupEvent(state, view, now, Random.Shared, botsLead);
                     if (topic != null)
-                        CallForGroup(members, state, topic, now, enemies);
+                        CallForGroup(members, state, topic, now, enemies, botsLead ? group.LivingLeader as GameBot : null);
                 }
             }
             if (!bot.IsAlive)
@@ -333,10 +345,22 @@ public static class AutonomousBotCombatCalls
         }
     }
 
-    private static void CallForGroup(GameLiving[] members, GroupState state, string topic, long now, int enemies)
+    private static void CallForGroup(GameLiving[] members, GroupState state, string topic, long now, int enemies, GameBot leader = null)
     {
         if (topic != "wipe" && now - state.LastCall < GroupGapMs)
             return;
+        // B4: the leader's own pull call is the pull's one line; it falls back to anyone's "inc" only when it has none.
+        if (topic == "pull" && leader != null && LeaderCallsPull(true, leader.IsAlive, SawTheFight(leader, members)))
+        {
+            BotState own = Bots.GetValue(leader, _ => new BotState());
+            if (Gate(state, own, topic, now))
+            {
+                if (SayLeaderPull(leader))
+                    return;
+                state.LastCall = long.MinValue / 2;
+                own.LastCall = long.MinValue / 2;
+            }
+        }
         GameBot[] bots = members.OfType<GameBot>()
             .Where(b => b.IsAlive && b.IsAutonomousWorldBot && !b.IsTemporaryGroupHelper && b.DatabaseID > 0 && SawTheFight(b, members))
             .OrderBy(_ => Random.Shared.Next()).ToArray();
@@ -379,6 +403,15 @@ public static class AutonomousBotCombatCalls
         "root" => target.effectListComponent?.ContainsEffectForEffectType(eEffect.MovementSpeedDebuff) == true,
         _ => false,
     };
+
+    /// <summary>The leader's pull line (topic lead_pull in the voice corpus), through the group channel's meter like every call.</summary>
+    private static bool SayLeaderPull(GameBot leader)
+    {
+        if (!AutonomousBotVoices.TryLine(leader, "group", out VC.Picked picked, topic: "lead_pull", flags: ["lead_call"]))
+            return false;
+        AutonomousBotGroupChatter.Send(leader, picked.Text, "none");
+        return true;
+    }
 
     private static bool Say(GameBot bot, string topic, int enemies)
     {

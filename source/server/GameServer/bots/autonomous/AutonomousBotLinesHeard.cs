@@ -59,7 +59,7 @@ public static class AutonomousBotLinesHeard
         {
             var stale = new List<DataObject>();
             int restored = 0;
-            lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+            using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
             {
                 foreach (OfflineBotLineHeardRecord row in GameServer.Database.SelectAllObjects<OfflineBotLineHeardRecord>())
                 {
@@ -129,7 +129,7 @@ public static class AutonomousBotLinesHeard
             if (adds.Count == 0 && saves.Count == 0)
                 return;
             var written = new List<(OfflineBotLineHeardRecord Row, DateTime When)>();
-            lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+            using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
             {
                 if (adds.Count > 0)
                 {

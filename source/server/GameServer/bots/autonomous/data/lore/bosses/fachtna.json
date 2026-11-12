@@ -1,0 +1,85 @@
+{
+  "id": "fachtna",
+  "name": "Fachtna",
+  "npcNames": [
+    "Fachtna"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Fachtna: level 44, an outlander body of the garda kind (model 737), faction Outland Residents, at about 336,900/315,600 by Treal's ledge in Altan Garran; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Altan Garran's people are faction Outland Residents (garda, conaitheoir, bardach, asarlai) in the walled town at about 336,600/315,500 in Cothrom Gorge.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    }
+  ],
+  "story": "Fachtna is a garda of Altan Garran, one of the town's guards, and he keeps the ground at the foot of Treal's ledge where the old treant buries what the realm brings him. He stands beside Cuinn, the small iron-grey treant, and the two of them have kept that ground together for so long that the town children say Fachtna has started to grow bark. He does not laugh at the joke.\n\nHe has a grudge, like everyone in Altan Garran. His brother went out of the town to cut the choker's tendrils from the south wall in the first summer of the worts and was taken by them, and the Sylvan guides on the high road saw it and did not come down. Fachtna stands at the ledge with his spear and watches every stranger who comes near the buried roots, and the realm's companies who come to give Treal what he wants are watched hardest of all.",
+  "legend": "Fachtna (44) is a named garda inside Altan Garran by Treal's ledge (about 337k/316k), close to Zinsya (43) and Declan (40) and next to Cuinn (65). Pulling him almost always brings the others, so either bring a group able to handle three outlanders and a treant or leave him alone. Plain spawn, 80-second respawn. The town is hostile to Hibernians throughout.",
+  "yells": {
+    "aggro": [
+      "Away from the roots.",
+      "My brother went over that wall. You did not."
+    ],
+    "phases": [],
+    "death": [
+      "The roots... keep them..."
+    ],
+    "slay": [
+      "Buried with the rest."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A garda by the buried roots, leaning on a spear."
+    ],
+    "phases": [],
+    "realmFirstKill": "Fachtna of the garda has fallen at Treal's ledge."
+  },
+  "botLines": {
+    "briefing": [
+      "fachtna is 44 at treal's ledge with zinsya, declan and cuinn close",
+      "pull him and the others come. [careful|big group]"
+    ],
+    "aftermathWin": [
+      "fachtna down. [ledge clear|grats]",
+      "didnt pull cuinn. [nice|lucky]"
+    ],
+    "aftermathLoss": [
+      "pulled cuinn. [65|rip]",
+      "three outlanders and a treant. [lol|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] fachtna's brother was taken by the choker in the first summer",
+      "the altan garran kids say fachtna is growing bark. he doesnt laugh"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Fachtna",
+    "text": "A garda of Altan Garran who keeps the ground at Treal's ledge beside Cuinn. His brother was taken by the choker in the first summer of the worts."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Fachtna in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Fachtna turned back {realm}'s band under {raidLeader} in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "outland-residents"
+  ],
+  "related": [
+    {
+      "id": "fedail",
+      "relation": "his chief"
+    },
+    {
+      "id": "cuinn",
+      "relation": "whose ground he also guards"
+    }
+  ]
+}

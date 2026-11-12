@@ -1,0 +1,102 @@
+{
+  "id": "flame",
+  "name": "Flame",
+  "catalogKey": "hibernia-named-mobs-classic-zones/flame",
+  "locationId": "cursed-forest",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 64, 7,000 health, a ghostly fire in the Cursed Forest that casts Flame Strike (300 heat).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Flame.cs"
+    },
+    {
+      "text": "A second Flame rises when Luriquay dies.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Fire burns on nothing in the Cursed Forest, and the oldest of those fires has a mind. Flame is what is left of a hearth that burned at the heart of the court wood the night the bargain broke. Nobody fed it, and it did not go out. It drifts between the trees as a ghost-fire now, and it strikes at anything warm enough to be worth burning. The Sylvan say it is lonely. It has found company in Luriquay, whose fire it shares.\n\nAt the heart of the court wood there was a hearth, the Sylvan say, where the bright folk and the dark folk sat on opposite sides of one fire and bargained across it. On the night the bargain broke, nobody put the fire out. Nobody fed it either. It did not go out.\n\nFlame is that hearth-fire, wandering. It drifts between the trees as a ghost-fire, burning on bare earth, feeding on nothing, and it strikes at anything warm enough to be worth burning. It is small, as such things go, and its strikes are sharp. It has found company in Luriquay, the lurikeen who drank from the court wood's fires; when Luriquay falls, a second flame rises from him, and the Sylvan think that one is a spark of this one, carried in him all these years. Two fires, one hearth.\n\nThe druids say that if both fires are ever put out on the same night, the court wood may start, very slowly, to heal. Nobody has yet managed it on purpose.",
+  "legend": "A small fight with a sharp bite: its strikes are heat, so heat resists help. It is weak to anything that puts out fire. Watch out when you kill Luriquay nearby, because another Flame rises from him, and two fires at once is how small groups die. Heat resists and quick damage. Superstition: never cook over a fire in the Cursed Forest. It might be this one. Nicknames: 'the hearth', 'the little fire'. Bands who do Flame and Luriquay on the same night say the forest feels lighter afterward. Superstition: never lay a torch on bare ground near the forest's heart, or Flame takes it as an invitation.",
+  "yells": {
+    "aggro": [
+      "The ghost-fire flares toward you.",
+      "The ghost-fire flares toward you.",
+      "Warm. Warm enough."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The flame burns higher, hungry."
+      }
+    ],
+    "death": [
+      "The fire goes out without smoke.",
+      "The fire goes out without smoke.",
+      "The old hearth is cold."
+    ],
+    "slay": [
+      "Ash.",
+      "Ash.",
+      "Burned on nothing."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A fire burns on bare earth, feeding on nothing.",
+      "A fire burns on bare earth, feeding on nothing."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Flame flares up among the trees!"
+      }
+    ],
+    "realmFirstKill": "The ghost-fire of the Cursed Forest is out."
+  },
+  "botLines": {
+    "briefing": [
+      "flame is quick but it hits with heat. [resists up|heat resist buffs] and its done",
+      "flame is heat, [resists up|heat buffs]",
+      "quick fight, dont pull luriquay at the same time. [two fires|one at a time]",
+      "watch the cloth classes, its strikes hurt. [heal them|watch]"
+    ],
+    "aftermathWin": [
+      "flame out. [easy|nice]",
+      "the old hearth is cold. [nice|done]",
+      "flame out, no casters lost. [good|grats]",
+      "did luriquay after, one fire at a time. [smart|clean]"
+    ],
+    "aftermathLoss": [
+      "flame got the cloth casters before anyone noticed. [watch the heat|resists]",
+      "pulled luriquay too and [two fires|burned]",
+      "cloth went down to the strikes. [heal|resists]",
+      "no heat resists. [buffs next time|ouch]"
+    ],
+    "rumour": [
+      "[heard|someone said] flame is the last fire of the court wood, burning on nothing",
+      "[heard|someone said] flame is the hearth the courts bargained across",
+      "never cook over a fire in the cursed forest. [might be flame|old saying]",
+      "[word is|heard] luriquay carries a spark of flame inside him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Flame",
+    "text": "The ghost of a hearth-fire from the night the court wood broke. It burns on nothing and strikes at anything warm."
+  },
+  "bookPage": "From Derbáil of Ardee's list: grandmother said there was a hearth at the heart of the court wood, with the bright folk on one side and the dark folk on the other, and that on the night the bargain broke nobody put the fire out. It has been burning on nothing ever since and walking about. Never cook over a fire in the Cursed Forest, she said, because you do not know whose fire it is. I have never cooked in any forest since. My husband thinks this is foolish. My husband has never seen a fire walk.",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Flame in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Flame's head after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "cursed-wood"
+  ],
+  "related": [
+    {
+      "id": "luriquay",
+      "relation": "the lurikeen who carries a spark of it"
+    }
+  ]
+}

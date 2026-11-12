@@ -1,0 +1,133 @@
+{
+  "id": "lurfos-the-herald",
+  "name": "Lurfos the Herald",
+  "catalogKey": "krondon/lurfosherald",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 75-78, 30,000 health, GetResist 20 melee / 30 other, CC immune, tether 3,800, two-handed slash. His weapon switches between cold and fire every 30-50 s; each hit adds Ice Strike (300 cold) or Fire Strike (300 heat) on his target in a 300 radius.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/LurfosHerald.cs"
+    },
+    {
+      "text": "He stands at 31414, 65541 in region 61, about 5,200 from Orylle; her throw lands in her own hall.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs"
+    },
+    {
+      "text": "Aelfnoth the crier, the staff with a red and a white end, the knotted cord, Lurfos as Orylle's mouth in the Undercroft, the blade quenched in fire and frost and Sir Cador's answer in the old form are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The hall-folk put criers on the long road to the high table, and the last crier, Aelfnoth, stood at the narrows before the queen's hall that was then the ealdor's. His staff, carved on the wall there, had a red end for the hearth and a white end for the frost; he turned the red toward a welcome guest and the white toward one who would be heard and sent away, and a wise guest came with a cloak for the cold and a cup for the fire. He kept his count on a cord, a knot for every guest he called. He was killed at his post on the night of the taking, and the cord was stolen.\n\nLurfos had been Orylle's mouth in the Undercroft, the ogre who said aloud what a clan-mother wished. On the night of the taking he shouted every title down the corridor after Wynflaed's ghost read it, and at Aelfnoth's post he asked what the man had been, and took the post. He calls to know who comes, cries the name down the road, then cries one word more: dead. He took the cord and ties a knot for every guest. The hall heard, he told Wenna of Caer Gothwaite; the hall had always been told.\n\nThe staff broke in his hands, so he made a blade that turns itself, thrusting it into the fire on the old hearthstone and plunging it into the cold seep of the wet passage every night for a season until it could not decide which it was made in. It burns, then goes white with frost, then burns again, and what runs off it falls on the man it strikes and on whoever stands at his shoulder.\n\nSir Cador of the Isle of Glass killed him on his second descent, after answering the call in the old form. Wenna watched the blade and called fire or frost so the priests could change their wards, and Cador kept the company a long stride from the shoulder of the knight who held the crier. Lurfos died saying announced, at last. Wenna took the cord; its last knot was Cador's.",
+  "legend": "Lurfos is level 75 to 78 with 30,000 health, CC immune, 20% melee / 30% other reduction and a 3,800 tether, swinging a two-handed slashing blade. The blade swaps between frost and fire every 30 to 50 seconds, and you can see which by its glow. While it is cold every hit adds 300 cold, while it burns every hit adds 300 heat, and that extra lands on everyone within 300 of whoever he is hitting. So one tank takes him, everyone else stays more than 300 from the tank or comes in from behind and spreads out, and the healers and buffers swap cold and heat resists with the glow. He stands at the narrows on the road, about 5,000 short of Orylle's hall; he is not linked to her and the queen's throw does not land near him, whatever the old guides said. Kill him anyway before the queen so nothing stands behind you on the road, and kill him clean, because she is next.",
+  "yells": {
+    "aggro": [
+      "Who comes before the queen? Name yourselves!",
+      "No one passes unannounced!",
+      "Hear me, hall: guests on the road!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fire or frost, guest? Choose your welcome!"
+      }
+    ],
+    "death": [
+      "The queen... is told...",
+      "Announced... at last..."
+    ],
+    "slay": [
+      "Announced: one more dead.",
+      "Named and finished.",
+      "The queen need not trouble with you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A crier waits on the road to the queen.",
+      "A staff is carved on the wall: one end red, one white."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The crier's blade burns, then goes white with frost."
+      }
+    ],
+    "realmFirstKill": "Lurfos the Herald is silent. The queen is unwarned."
+  },
+  "botLines": {
+    "briefing": [
+      "lurfos blade swaps fire and ice every 30-50 sec, watch the glow",
+      "each hit adds 300 of that element to everyone within 300 of the tank. stay off the tank",
+      "swap heat and cold resist buffs with the glow",
+      "kill him clean, orylle is next. the throw spot is in her hall, not here"
+    ],
+    "aftermathWin": [
+      "herald down, the queen is next",
+      "lurfos didnt get to announce us",
+      "clean, nobody died",
+      "the road to the queen is open"
+    ],
+    "aftermathLoss": [
+      "melee piled on the tank and the fire splash ate them",
+      "nobody swapped resists when the blade went cold",
+      "used everything on him and had nothing for orylle",
+      "pulled him past his tether and he walked home full"
+    ],
+    "rumour": [
+      "heard the herald in krondon announces everyone. mostly as dead",
+      "[heard|someone said] lurfos keeps a knotted cord of everyone he has announced",
+      "heard lurfos quenched his blade in fire and ice every night for a season",
+      "the ghosts say lurfos is the only ogre where his title says he should be"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "lurfos",
+    "text": "The crier of [Krondon]'s road, once [Orylle]'s mouth in the Undercroft. He took the post of Aelfnoth, whose staff had a red end for welcome and a white for the frost; his own blade burns and freezes by turns, and spills on whoever stands at the shoulder of the man it strikes. Wenna called fire or frost."
+  },
+  "bookPage": "From the notes of Wenna of Caer Gothwaite, the second descent. On the road to the queen a great voice called out to know who came, and Sir Cador answered as the old hall-folk answered, with his name and his father's and his hall and realm. The ogre cried it down the road, and then cried that we were dead. His blade burns and then goes white with frost and then burns again, as the old crier's staff was turned red end or white. I stood behind the knights and called fire or frost, and the priests changed their wards. When he fell I took the knotted cord from his belt. The last knot was new.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} silenced Lurfos the Herald on the road to Krondon's queen in {minutes} minutes.",
+    "loss": "Lurfos the Herald announced {realm}'s raid as dead; {raidLeader} never reached the queen."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "orylle",
+      "relation": "his queen"
+    },
+    {
+      "id": "orylle",
+      "relation": "her mouth since the Undercroft; he cries every guest down the road to her"
+    },
+    {
+      "id": "orshom-brong",
+      "relation": "his blade was heated in the fire that came out of Orshom"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Criers of the Road",
+      "text": "The hall-folk put a crier on the road to the high table, and the crier carried a staff with two ends.\n\nThe road from the hall's door to the ealdor's chair was long by design, the ghosts say, so that a guest had time to be looked at, and the criers stood along it with staves and lists and called each guest's name before him, from one post to the next, so that by the time a stranger reached the high table the whole hall knew who he was. The last crier of the road was a man the ghosts call Aelfnoth, and his post was the last one, where the road narrows before the queen's hall that was then the ealdor's.\n\nHis staff is carved on the wall of the narrows, and Wenna of Caer Gothwaite drew it. One end is bound in red, for the hearth, and one in white, for the frost on the sea. The crier turned it in his hands as he called a guest's name: the red end toward a man who was welcome at the fire, the white end toward a man who would be heard and sent away. Every guest who came up the road learned to watch the staff. The ghosts say a guest who could see which end was turned to him knew how to answer before he was asked, and that a wise one came up the road with a cloak for the cold and a cup for the fire, so as to be ready for either.\n\nAelfnoth kept his list in his head and his count on a cord: a knot for every guest he had ever called to the high table, tied as he called the name, so that the hall would have a record of everyone it had received. The ghosts say his cord was longer than the road. He was killed at his post on the night of the taking, still holding the staff, and the cord was gone from his belt in the morning. It was the first thing in Krondon that the ogres were ever known to steal on purpose."
+    },
+    {
+      "title": "The Queen's Mouth",
+      "text": "Lurfos was Orylle's voice before she had a hall to be heard in.\n\nIn the Undercroft the thrawn ogres did not speak to their elders directly. A clan-mother had a mouth, an ogre who stood beside her and said aloud what she wished, and answered for her when she did not care to answer, and Lurfos was Orylle's mouth from the time she was old enough to want one. He has a voice, the ogres say, like a rockfall in a shaft. When Orylle walked the hall on the night of the taking with Wynflaed's ghost beside her, Lurfos walked in front and shouted every title back down the corridor after the ghost had read it, so that the ogres behind could hear; and at the last post on the road, where Aelfnoth lay, he stopped, and asked the ghost what the man had been. Wynflaed told him: a crier. Lurfos took the post that night. Of all the ogres of Krondon, the ghosts say, he is the only one who sits under the title the hall-folk would have given him.\n\nHe does the duty as it was done. He calls out to know who comes, and when a guest answers he cries the name down the road to the queen's hall, and then he cries one word more, the one the ogres added: dead. He keeps the count as Aelfnoth kept it. It was he who took the cord, the ghosts say, and he ties a knot in it for every guest he announces, and he has never once untied one.\n\nWenna asked him, on her second descent, whom he announced to. The queen, he said. She asked whether the queen heard him from so far down the road. Lurfos said that it did not matter whether the queen heard; the hall heard, and the hall had always been told. Wenna wrote that it was the most hall-folk thing she had ever heard an ogre say."
+    },
+    {
+      "title": "A Blade Quenched Twice",
+      "text": "Lurfos could not carry Aelfnoth's staff. It broke in his hands the first time he turned it. So he had a blade made that would turn itself.\n\nThe ogres tell how it was done, and the ghosts of the road do not contradict them. Lurfos took the greatest two-handed blade in the hall's armoury and carried it down the road to the queen's hall, where the fire that had come out of Orshom burned on the old hearthstone, and he thrust it into the fire until it glowed. Then he carried it, still glowing, the whole length of the hall to the wet passage where the well-diggers' basin stands under the cold seep, and plunged it in. The ogres say he did that every night for a season, fire and frost, fire and frost, until the blade could not decide which it had been made in. It has never decided since.\n\nIt changes its mind as he fights. For a while it burns, and the fire runs down the edge and spills on whatever it strikes; then it goes cold and white, and frost runs down it instead; then it burns again. The ghosts of the road say that a guest who watches the blade can see which welcome he is being offered, as the hall-folk's guests once watched the staff, and that the fire or the frost falls not only on the man it strikes but on whoever stands at his shoulder. The crier's welcome was always for a guest and his companions together. Lurfos has kept that too.\n\nThe ogres of Krondon admire the blade more than anything else in the hall except the queen's chair. Beran says the fire in it is his, because Lurfos lit it from the pitch; Orshom says it is his, because it came from the hearthstone; the brothers called the Example say nothing, because Jehrog is afraid of it. Lurfos will not let anyone touch it."
+    },
+    {
+      "title": "Announced",
+      "text": "Sir Cador of the Isle of Glass killed Lurfos on his second descent, and he began by answering the question.\n\nCador had come up that road once before, with twenty, and been thrown out of the queen's hall, and he had come back with fifty and with Wenna's drawing of Aelfnoth's staff. When the great voice called out from the narrows to know who came, Cador stopped the company and called back in the old form, as Wenna had taught him from the carvings: his name, his father's name, his hall, and his realm. The ghosts of the road say it was the first time since the taking that anyone coming up the road had answered properly. Lurfos cried the name down to the queen. Then he cried the other word.\n\nWenna stood behind the knights and watched the blade. When it burned she called fire, and the company's priests laid their wards against fire on the men in front; when it went white she called frost, and they changed them. Cador kept the company apart from the knight who held the crier, a long stride from his shoulder, so that what spilled off the blade fell on one man and not on five. Wenna wrote that she had never had a more useful hour in her life, and that she spent it saying two words.\n\nLurfos died at Aelfnoth's post, and his last words were the ones the ghosts say every crier of the road hoped to say at the end of a long life: announced, at last. Wenna took the cord from his belt. It is in the readers' store at Caer Gothwaite now, coiled in a box, and the readers have never counted the knots. The last knot on it, Wenna wrote, is new, and tight, and she knows whose it is. The ogres say Lurfos was back at the narrows within the season, with a new cord, and that the first knot on it was Cador's again."
+    }
+  ]
+}

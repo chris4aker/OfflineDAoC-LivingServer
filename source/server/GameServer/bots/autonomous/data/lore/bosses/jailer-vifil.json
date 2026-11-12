@@ -1,0 +1,173 @@
+{
+  "id": "jailer-vifil",
+  "name": "Jailer Vifil",
+  "catalogKey": "tuscaran-glacier/jailer",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa",
+    "troll-fathers"
+  ],
+  "related": [
+    {
+      "id": "queen-kula",
+      "relation": "his queen, whose every named enemy he keeps"
+    },
+    {
+      "id": "council-ozur",
+      "relation": "a jailer's son of his cells"
+    },
+    {
+      "id": "tuscaran-glacier",
+      "relation": "the south tunnels and the cells"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Jailer Vifil is a level-82 hrimthursa with 100,000 health who calls two hrimathursa tormentors from his tunnels.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He sends a player to a fixed spot in the tunnels away from the fight, as if to a cell.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat has a rumour that he holds one of the Troll Fathers in a cell, and says he keeps a cell for every enemy the queen has named.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Vifil (Vifill) is an Old Norse personal name (to verify).",
+      "provenance": "original",
+      "source": "Old Norse name, to verify"
+    },
+    {
+      "text": "When first attacked Vifil places two hrimathursa tormentors (level 78, 20,000 health, 45% melee / 30% magic resists, tether 5,800) at the tunnel to the cells. Every 25-45 s he picks a random real player in his aggro list and removes that player from it; the original port of that player to the cells is OFF in Living Server (EpicEncounterMechanics.AllowDisplacement). 100,000 health, 40% melee / 70% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs"
+    },
+    {
+      "text": "Vifill is an Old Norse personal name (to verify). The filling of the last empty cell and the knocking at the tall door are Living Server lore; the Troll Father in the last cell is Midgard's rumour, not a fact.",
+      "provenance": "original",
+      "source": "Old Norse name, to verify"
+    }
+  ],
+  "story": "Vifil keeps the south tunnels of Tuscaran and the cells cut into them. He was given the keys the day the citadel was finished and has never put them down. There is a cell, they say, for every enemy Queen Kula has ever named: dwarves who came to spy, svartalfar who came to trade and stayed, morvalt by the dozen, a few men of Jordheim who came up the crater road too early. The hrimathursa tormentors walk the tunnel to the cells, and Vifil walks behind them, counting.\n\nFor a century he took his prisoners himself. A stranger who reached him would find a giant's hand on his collar and be carried down the tunnel and put in a cell, and the jailer would go back to his post. Then, in the season after Midgard came, Vifil filled the last empty cell, and he stopped. He has carried no one since. He still does what a jailer does with a prisoner already counted: he looks at one stranger, and then turns from him as if he were already locked away, and goes to the next. The strangers he turns from are not locked away at all, and they are very often standing behind him.\n\nWhen he is roused, two tormentors go to their posts at the mouth of the cell tunnel, as they always have, to stand between the cells and whatever is coming. At the end of the last row there is a door cut twice the height of the others. Vifil visits it every morning, and nobody else goes that far. Midgard's rumour, which has outlived all the companies that tried to check it, is that a Troll Father sits behind it. The companies who have stood at the door say that once in a long while something on the other side knocks.",
+  "chapters": [
+    {
+      "title": "The Keys",
+      "text": "The cells of Tuscaran were cut before the halls. The cast-out sculptors say it was the first thing Kula asked for when her giants came to Delling's Crater: not a throne room, not a council, but a row of cells in the south ice, deep and cold and far from the gates, with doors of ice-steel and one key for all of them.\n\nVifil was a tormentor then, one of the giants who keep the iceweavers' hatchlings and anything else that must be kept and not loved. He was given the key the day the last door was hung. Kula put it in his hand herself, the sculptors say, and told him that every enemy she named would come to him, and that he was to keep them until she named them again. He has never put the key down. He sleeps with it. He eats with it in his other hand.\n\nThe queen named a great many enemies over the century. The sculptors list some: a Faraheim dwarf who came to look at the dragon-bones, a svartalf of Svarhamr who came to sell ore and would not stop asking questions, the drakulv of the western rim, morvalt by the dozen after the hundredth winter, and a few men of Jordheim, early ones, who came up the crater road before the realm knew what was at the top of it. Each of them came to Vifil, and he put each of them in a cell, and he walks the row every morning and counts them.\n\nOzur of the Council was a jailer's son from these cells; his father was one of Vifil's tormentors. The sculptors say that is where Ozur took to measuring, though the companies who know the councillor's habits say a jailer counts and a measurer weighs, and that they are not the same thing."
+    },
+    {
+      "title": "A Hand on the Collar",
+      "text": "For a century he took his prisoners himself. He did not fight the strangers who reached his post in the south tunnels; he did not need to. He would look at one, and reach out, and a giant's hand would close on the stranger's collar, and the stranger would be carried down the long tunnel to the cells and put in one, and the door would shut, and Vifil would walk back up to his post and look at the next.\n\nThe svartalf of Svarhamr wrote an account of it afterwards, because he was one of the few prisoners Kula named again and let go. He said the jailer never hurried and never said a word, and that the worst of it was not the cell but the moment before the hand, when the giant looked at you and you could see him counting.\n\nThe tormentors walk the tunnel between the post and the cells. When anything rouses the jailer, two of them go to the mouth of the cell tunnel and stand there, one each side, as they have done from the first year; that was their task when Vifil carried a prisoner down, to stand between the cells and whatever came behind him. They still do it. They do not know he has stopped carrying anyone.\n\nThe first companies of Midgard to reach the south tunnels came home with fewer men than they took, and some of the missing came home a season later, thin and furious, having been let out by a later company that had got past the jailer. The realm called it being collared, and the skalds made jokes about it, until the season Vifil stopped."
+    },
+    {
+      "title": "The Last Empty Cell",
+      "text": "In the season after Midgard came up the crater road, Vifil filled the last empty cell in the row. The sculptors do not know who went into it. Some say a warrior of Jordheim; some say a morvalt war-chief; the Valkyn guides say a Valkyn, and will not say which one. The prisoner is not agreed on. The jailer put them in, and shut the door, and walked up the row counting, and there were no more empty cells, and he stopped.\n\nHe has carried no one down the tunnel since. The companies of the next season went up the south tunnels expecting to be collared, and nobody was. The jailer looked at them, one after another, as he always had. Then he did what a jailer does with a prisoner who has already been counted: he turned away from that one, as if they were already behind a door, and looked at the next.\n\nThe companies say it is the strangest thing in the glacier. Vifil will be fighting one of them, and then he will stop, and look at him, and turn his back on him as calmly as a man turns from a locked door, and go after someone else. The stranger he turned from is standing there, free, with a weapon in his hand. The jailer has counted him. To Vifil he is in a cell.\n\nThe cast-out sculptors say it is the only time in a century the jailer has been wrong about anything, and that he is wrong about it again and again, every few breaths, and does not notice."
+    },
+    {
+      "title": "The Tall Door",
+      "text": "At the end of the last row of cells there is one set apart, with a door cut twice the height of the others and wider than any giant needs. It was there before the row was finished. Vifil visits it every morning, before he counts the rest, and stands in front of it for a while, and goes away. Nobody else is allowed down that far, and since Vifil stopped carrying prisoners nobody has been.\n\nNo sound comes from it. Midgard's rumour, which has outlived all the companies that tried to check it, is that the jailer keeps a Troll Father in it: one of the ancient ones who went deeper when Trollheim fell, caught in the glacier on the way. The Valkyn guides do not say yes and do not say no, which the companies take for yes. The cast-out sculptors say it is the last cell of all, the one the row was cut to reach, and that whatever is in it was in the ice before Kula was.\n\nThe companies who have got past the jailer and walked down to the tall door say the same thing, all of them. Once in a long while, to those who stand there long enough, something on the other side knocks. Three times, the Valkyn say when they are asked; the companies say they did not count.\n\nNobody has opened it. Vifil has the only key and has never put it down, and when he falls the companies find that the key is not on him. The sculptors say he has never once carried it to the tall door. He goes there every morning, they say, only to make sure it is still shut."
+    }
+  ],
+  "legend": "Old guides say Vifil ports you into his tunnels. Not here: that's switched off. What he still does, every 25 to 45 seconds, is drop a random REAL player off his aggro list (if you're the only human, that's you), so if you're tanking he'll suddenly turn and go for someone else. Keep a second tank ready to taunt him back. When you pull him, two hrimathursa tormentors (20,000 health each, 45% melee resist) appear at the mouth of the cell tunnel; tank them or kill them, they have a long tether. Vifil himself has 100,000 health, 40% melee and 70% magic resists and is CC-immune. Don't drag him past his tether or he resets. And no, nobody has found the Troll Father. Some swear they heard knocking from the last door. His bloodforged legs drop.",
+  "yells": {
+    "aggro": [
+      "Another for the cells. There is always room.",
+      "Names. I need your names, for the ledger.",
+      "Tormentors! Fresh stock.",
+      "Counted. And you. And you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "You. I am done with you. For now."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Row three has room. Row three, then."
+      }
+    ],
+    "death": [
+      "The keys... someone take the keys...",
+      "The last door... stays shut...",
+      "The key... is not... where you think..."
+    ],
+    "slay": [
+      "Cell's empty again. Pity.",
+      "Struck from the ledger.",
+      "That one will not need a cell.",
+      "Room in row three."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Barred cells are cut into the ice. Some are occupied.",
+      "Keys clink somewhere in the dark ahead.",
+      "A row of ice-steel doors. One at the end is very tall."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "Jailer Vifil turns his back on one of you."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The tormentors take their posts at the cell tunnel."
+      }
+    ],
+    "realmFirstKill": "The jailer of Tuscaran falls. The tall door stays shut."
+  },
+  "botLines": {
+    "briefing": [
+      "vifil doesnt port any more, he just drops someone off his aggro every 25-45s. tanks taunt him back",
+      "two tormentors come out, [cc|kill] them",
+      "two tormentors spawn at the cell tunnel when you pull vifil",
+      "tanks keep taunting vifil, he forgets people",
+      "vifil drops a real player off his aggro every 25-45s. second tank ready to taunt",
+      "he doesnt port any more",
+      "two tormentors at the cell tunnel when you pull, 20k each",
+      "fight him in place, he resets if dragged"
+    ],
+    "aftermathWin": [
+      "vifil down. anyone check the cells for the troll father? [no?|lol]",
+      "vifil dropped the bloodforged legs",
+      "jailer down, cells open. except the last one",
+      "anybody try the last door after? [no?|still shut]",
+      "vifil counted me and walked off lol",
+      "jailer down, tall door still shut",
+      "bloodforged legs!"
+    ],
+    "aftermathLoss": [
+      "he dropped the mt and went for the healers",
+      "vifil kept forgetting the tank and walked into the healers",
+      "the tormentors got the rezzer",
+      "vifil dropped the mt twice and went for the healers",
+      "vifil forgot the tank and ate the healers",
+      "nobody picked up vifil when he dropped the tank"
+    ],
+    "rumour": [
+      "the jailer up there has a troll father locked away, my [guild|gran] swears",
+      "[i heard|heard] vifil keeps a cell for every enemy kula ever named",
+      "somebody heard knocking from the last door in vifil's tunnels. nobody opened it",
+      "the last cell's door is cut wider than a giant. [what's in there|troll father?]",
+      "vifil used to carry people to his cells. stopped when the last one filled",
+      "people say theres a troll father behind the tall door in vifils cells",
+      "something knocks behind the last door, they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Vifil",
+    "text": "The queen's jailer, with a cell for every enemy she named. For a century he carried strangers to the cells himself; when the last empty cell was filled he stopped, and now he only turns from a stranger as if he were already locked away. Some say a Troll Father sits behind the tall door at the end of the row. Something knocks."
+  },
+  "bookPage": "Inventory of the south cells, as I was told it by a kobold who escaped them, which I do not believe and write down anyway. Twelve cells of the first row: dwarves. Nine of the second: Svartalfar who came to trade and stayed. Three of the third: men of Jordheim. One at the end, set apart, with a door twice the height of the others, which the jailer visits every morning and from which no sound ever comes. The kobold swore the door was cut for something wider than a giant. Then he asked for more ale.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took the keys from Jailer Vifil in {minutes} minutes.",
+    "loss": "Jailer Vifil found cells for {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

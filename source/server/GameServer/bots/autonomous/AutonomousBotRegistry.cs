@@ -135,6 +135,7 @@ public static class AutonomousBotRegistry
     public static void Unregister(GameBot bot)
     {
         AutonomousBeggars.Forget(bot);
+        BotDutyLeases.OnLoggedOut(bot); // a bot that leaves the world gives up whatever had its time
         if (bot?.DatabaseID > 0 && bot.IsEpicSpecialForce)
         {
             SpecialForces.TryRemove(bot.DatabaseID, out _);

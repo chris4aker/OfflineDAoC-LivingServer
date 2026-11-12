@@ -30,8 +30,19 @@ the large new systems each get their own release:
 - **1.3:** live events, the guild social package with guild tiers, a crowded prime time, a server with a past, and
   era builds from the Wayback research.
 
+Changed 2026-11-07 (owner): **1.3 and a "bots as people" stop become 2.0** ("I think 1.3 and 1.4 become 2.0"). After
+1.2 (and the 1.2.x friends stop) the next release is 2.0; its section below lists everything 1.3 held, the bots as
+people work and the complete realm.
+
 This replaces "1.2 is one comprehensive update" (2026-11-01) and the 1.3 written on 2026-11-03; both are kept below,
 marked superseded.
+
+Changed 2026-11-10 (owner): **the epic encounters and the lore are part of 1.2, not a 1.2.1.** Asked whether 1.2 should
+ship as its headline alone with the epic encounters and lore as a 1.2.1, the owner chose one release: "I want 1.2.1 in
+1.2. I feel like the lore and epic encounters is a huge massive part and main selling point." So 1.2 is bots that play
+with you, the epic encounters (the restored boss mechanics, the raid tactics and the raid skill layer) and the lore.
+Play with friends stays the stop right after it (1.2.x); the Linux build stays parked. Beta 1.1.3 (published
+2026-11-09) is merged into the 1.2 line.
 
 ## Rules for every stop
 
@@ -170,8 +181,22 @@ Everything below is built on branches with green automated tests; nothing is mer
       EA client files removed (#59)
 - [ ] Not placed by the split, for the owner to place: his world scripts as Setup steps; the new-client scripts
       (#54); era build weights (#55) go with 1.3's era builds
+- [ ] The epic encounters (owner 2026-11-10: part of 1.2): boss throws, teleports and jails that take bots too, the
+      restored mechanics of the dragons, Xanxicar, Galladoria, Tuscaran Glacier, Summoner's Hall, Caer Sidi, Krondon,
+      Avalon City and the Darkness Falls princes, each a setting; raid tactics round 3; the raid skill layer (the leader
+      calls, bots react in their own time, the realm learns a boss). Not in it: a Darkness Falls raid AI, a Legion raid
+      plan, and the hardest level 70+ encounters
+- [ ] The lore (owner 2026-11-10: part of 1.2): the lore engine, atmosphere lines, boss yells and mechanic lines,
+      loremasters, books, the Herald chronicle and bestiary, the new client's codex
+- [x] Beta 1.1.3 merged into the 1.2 line (its chat, raid and siege fixes; #174, 2026-11-10)
+- [ ] Tales (owner 2026-11-10: "I love the fuller version", "it needs to be in 1.2"; [TALES.md](TALES.md)): the realm's
+      storyteller asked for a boss's story in /faction, hushed and told, the quiet after it, a rumour that is sometimes a
+      raid really forming, a player's own request and questions, fireside tales in a resting group. Played: one tale
+      heard to its end, one asked for, one that led to a raid, one fireside tale
 - [ ] Soaks one system at a time; played: invited into a group and a raid, following a bot leader, a battleground
-      session
+      session; for the epic encounters and the lore, one realm's raids at a time in overnight runs on the test copy,
+      each fight counted as working only once it is seen in a PC log, and the release notes say plainly which fights
+      the raids still lose
 
 ### 1.2 as planned on 2026-11-01 — the comprehensive update (superseded 2026-11-06 by the split)
 
@@ -241,7 +266,7 @@ Unchanged by the split of 2026-11-06. Owner 2026-11-03: private co-op for about 
 - [ ] The bot population scaled to the extra players' load; the original client first, the new client after
 - [ ] Played: a weekend session with two or three friends
 
-### 1.3 — a living realm (owner 2026-11-06)
+### 1.3 — a living realm (owner 2026-11-06; superseded 2026-11-07: folded into 2.0, see there)
 
 Headline: the realm moves and has a past. Design: [LIVE-EVENTS-1.2.md](LIVE-EVENTS-1.2.md),
 [LIVE-EVENTS-ENGINE.md](LIVE-EVENTS-ENGINE.md), the guild tiers entry in the [backlog](LIVING-SERVER-BACKLOG.md), and the
@@ -272,12 +297,52 @@ crafting M0-M2, role playbooks and warband lanes, personas, co-op made first-cla
       events that wait for the player, bots inviting the player, quest credit in bot groups) work for each of up to
       four players
 
-### 2.0 — the complete realm
+### 2.0 — the complete realm (owner 2026-11-07: 1.3 and bots as people fold in)
 
+Headline: the realm moves, has a past, and its bots read as the people behind them. One release, built in parts that
+are each soaked and played on their own first (the rules above).
+
+**A living realm (what 1.3 held).** Design: [LIVE-EVENTS-1.2.md](LIVE-EVENTS-1.2.md),
+[LIVE-EVENTS-ENGINE.md](LIVE-EVENTS-ENGINE.md), the guild tiers entry in the [backlog](LIVING-SERVER-BACKLOG.md).
+- [ ] Live events: the engine on a scripted dragon fight first (M1), with the timeline report
+- [ ] The guild social package with guild tiers (policies, standing, tier benefits and costs)
+- [ ] A crowded prime time: the era's channels with reach, a "2003 server" population preset, crowd targets, the
+      chat benchmark's second blind round
+- [ ] A server with a past: the shared world-history record, the Herald as dated stories, "since you last played"
+- [ ] Era builds from the Wayback research (#76's fetcher; #55's build weights and class shares, provisional until
+      checked against the period pages)
+
+**Bots as people (owner 2026-11-07: "I like options 1-6").** Each item is a 2003 player habit, never random noise:
+"more human" must not mean "worse". Items 1 and 3 share one data model (a bot player who owns characters and has
+friends) and go with the guild social package.
+- [ ] **1. Bot players own characters (the alt roster, designed 2026-10-12, never built).** Up to 3 characters per bot
+      player; alts are added, never rerolled; mains, guilds and gold persist; occasional retirement and new players.
+      A bot player picks which character to log in each session and shares a personality, schedule and friends across
+      them, so its "on my alt" chat becomes true. Unblocks crafter alts (CRAFTING-AND-ECONOMY.md, row Q). Check
+      low-level combat first (LOG-ERROR-BACKLOG.md: new characters can barely fight).
+- [ ] **2. Skill that varies and improves.** A lasting skill profile per bot player (reactions, positioning, pulls,
+      standing in fire, buffs, power use) that gets better with play. Raids learn a boss's mechanic after enough of
+      their people have seen it (the "secrets had to be learned" idea, owner 2026-11-07). Mistakes fall mostly on
+      strangers, not the player's own group, with a switch.
+- [ ] **3. Friends, regulars and grudges.** A relationship graph that drives who groups with whom: bots seek people
+      they grouped with before, form static groups, hold a grudge after a gank, leave a guild after a bad night, argue
+      over loot. Builds on "bots remember you", the rage-quit records and mod-pbc's relationship scoring.
+- [ ] **4. Knowing only what a player would know, in PvE too.** A per-bot memory of places visited; a bot that has never
+      been somewhere asks the way, follows someone and can get lost (extends 1.2's RvR perception).
+- [ ] **5. Movement that doesn't look scripted.** Strafing, sitting to regen, /stick, overshooting, idling at the bank
+      and crowding town spots, sitting on keep walls. Touches pathing: no navmesh changes without evidence (AGENTS.md).
+- [ ] **6. Personal milestones that get talked about.** A goal arc per bot player (epic armour, realm rank 5, an
+      artifact, the ding to 50) that chat and the Herald pick up; feeds "a server with a past".
+- [ ] **Measured by a played "who's real?" session:** the owner and a friend play an evening and tag every bot that gave
+      itself away, before and after. The blind chat read tests lines only.
+
+**The complete realm.**
 - [ ] Crafting M3–M6 (with no Exchange tax or new sink until the ledger shows a need); the war effort
 - [ ] Questing certified complete; the nightly scenarios gate every release
 - [ ] Overnight runs at 900 bots per realm; two weeks with the money supply flat
 - [ ] Release notes and the Reddit post for 2.0
+- [ ] Played: one session per realm; a live event watched; a guild tier earned; a returning session on the Herald; a bot
+      logging its alt and talking about its main; a static group forming on its own; the "who's real?" evening
 
 Cut: the per-bot JSON rule list. Kept out on purpose: Camlann full-PvP, roguelite modes, modern classes, free
 level-50 gear, teleports that skip stablemaster routes, grey monsters that drop nothing.
@@ -336,7 +401,16 @@ Open, each listed with its options in the design document named:
 
 ## Status
 
-On 2026-11-06:
+On 2026-11-07:
+
+| Stop | State |
+|---|---|
+| 1.1.2 | Released 2026-11-07 (`v1.1.2-beta`, "Raise the Banners", the latest release; Setup built and tested by CI) |
+| 1.2 | On `integration/1.2`: bots that play with you, the epic encounters at full strength (#102, #106, #110), the lore bible (#107, #108), the titled loading screen (#115); automated tests, container raids and one PC raid |
+| 1.2.x | Planned (play with friends) |
+| 2.0 | Planned: a living realm (was 1.3), bots as people, the complete realm |
+
+On 2026-11-06 (superseded):
 
 | Stop | State |
 |---|---|

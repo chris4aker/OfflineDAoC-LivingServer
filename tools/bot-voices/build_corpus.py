@@ -77,6 +77,8 @@ FLAGS = {'in_group', 'solo', 'in_town', 'in_dungeon', 'in_rvr', 'at_camp', 'trav
          'will_rez',   # will_rez: set only when answering a rez ask the bot will really come to
          'player_rezzed_me',   # gossip: the player really rezzed this bot (bot memory)
          'player_leveling',    # tells: the player is under the level cap (lines about levelling; in-game check 2026-10-27)
+         'bot_leads',          # bot-led groups: a gamebot leads the party the player is in (the player follows)
+         'lead_call',          # bot-led groups: the leader's own calls (BotLedGroups.Announce passes it; no bot has it alone)
          # The talking update: what is true in the world right now (AutonomousChatNews and the RvR event layer).
          'df_ours',            # the bot's realm holds Darkness Falls
          'defending',          # one of the realm's keeps is under siege now ({keep} is that keep)
@@ -538,6 +540,57 @@ def norm(text):
     return re.sub(r'[^a-z0-9{}]+', ' ', text.lower()).strip()
 
 
+LORE = ROOT / 'source/server/GameServer/bots/autonomous/data/lore'
+LORE_REALMS = {'Albion': 'alb', 'Midgard': 'mid', 'Hibernia': 'hib', 'Neutral': '*'}
+
+
+def check_lore(problems):
+    """Living Server 1.2: the lore bible's bot lines (data/lore, docs/LORE.md) go through the same era, slot and place
+    checks as the corpus. The server adds them at run time (LoreChat.CorpusLines), as ambient lore about a place, so they
+    are checked with those tags and the location's realm. The schema itself is UT_LoreBible's."""
+    if not LORE.exists():
+        return 0
+    realms = {}
+    files = sorted(LORE.glob('locations/*.json')) + sorted(LORE.glob('bosses/*.json'))
+    loaded = []
+    for path in files:
+        try:
+            data = json.loads(path.read_text(encoding='utf-8'))
+        except ValueError as error:
+            problems.append(f'{path.relative_to(ROOT)}: not valid JSON ({error})')
+            continue
+        loaded.append((path, data))
+        if path.parent.name == 'locations':
+            realms[data.get('id')] = data.get('realm')
+    count = 0
+    for path, data in loaded:
+        realm = realms.get(data.get('locationId'), data.get('realm')) if path.parent.name == 'bosses' else data.get('realm')
+        # The shared lines, then each realm's take (realmTakes: Summoner's Hall told the Albion way) as that realm's lines.
+        groups = [('botLines', realm, data.get('botLines') or {})]
+        for key, take in (data.get('realmTakes') or {}).items():
+            if isinstance(take, dict):
+                groups.append((f'realmTakes.{key}.botLines', key.capitalize(), take.get('botLines') or {}))
+        for prefix, group_realm, bot_lines in groups:
+            tags = fresh_tags()
+            tags.update(kind='ambient', topic='lore', realm=LORE_REALMS.get(group_realm, '*'), about=True)
+            for field, lines in bot_lines.items():
+                for i, template in enumerate(lines or []):
+                    where = f'{path.relative_to(ROOT)} {prefix}.{field}[{i}]'
+                    if not CHOICE_RE.search(template) and ('[' in template or ']' in template):
+                        problems.append(f'{where}: "[" without a "|" choice: {template}')
+                        continue
+                    for said in expand(template):
+                        found = []
+                        check_text(said, tags, where, found)
+                        # A Neutral place's lore is told in every realm, about every realm ("albion got avalon, midgard got
+                        # aegir"): naming another realm's place there is the point, not a slip (Hibernia writer, PR #91).
+                        if group_realm == 'Neutral' or realm == 'Neutral':
+                            found = [p for p in found if not re.search(r' in a line for realm [a-z*]+: ', p)]
+                        problems += found
+                        count += 1
+    return count
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--check', action='store_true')
@@ -606,6 +659,8 @@ def main():
                 if have < need:
                     problems.append(f'coverage: {kind} for {realm} {lo}-{hi} has {have}, needs {need}')
 
+    lore_lines = check_lore(problems)
+
     if problems:
         print(f'{len(problems)} problem(s):')
         for p in problems:
@@ -624,6 +679,7 @@ def main():
     print('by kind: ' + ', '.join(f'{k} {n}' for k, n in sorted(by_kind.items())))
     print('openers invite: ' + ', '.join(f'{k} {n}' for k, n in sorted(collections.Counter(
         x['invites'] for x in lines if 'invites' in x).items())))
+    print(f'lore bible bot lines checked: {lore_lines}')
     print('by realm: ' + ', '.join(f'{k} {n}' for k, n in sorted(collections.Counter(x["realm"] for x in lines).items())))
     print('by type (lines that name types): ' + ', '.join(
         f'{t} {sum(1 for x in lines if t in x["who"])}' for t in sorted(TYPES)))

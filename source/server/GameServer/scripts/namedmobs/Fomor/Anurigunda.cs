@@ -96,14 +96,15 @@ namespace DOL.AI.Brain
 		public void BlockEntrance()
         {
 			Point3D entrance = new Point3D(31234, 33215, 15842);
-			foreach(GamePlayer player in Body.GetPlayersInRadius(Body.CurrentRegionID))
+			// sic: the radius is the region number (180), as in the original; kept, flagged for the owner (1.2 epic targets).
+			foreach (GameLiving player in EncounterTargets.InRadius(Body, Body.CurrentRegionID, bots: EncounterTargets.DisplacesBots(Body)))
             {
 				if (player == null) continue;
-				if(player.IsAlive && player.Client.Account.PrivLevel == (uint)ePrivLevel.Player)
+				if(player.IsAlive && EncounterTargets.NotGm(player))
                 {
 					if(player.IsWithinRadius(entrance,400))
                     {
-						player.MoveTo(180, 30652, 33089, 16124, 3169);
+						EncounterDisplacement.Move(player, 180, 30652, 33089, 16124, 3169, DisplacementKind.Barrier, Body);
                     }
                 }
             }

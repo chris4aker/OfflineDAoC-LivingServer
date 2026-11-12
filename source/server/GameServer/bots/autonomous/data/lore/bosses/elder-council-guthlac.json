@@ -1,0 +1,177 @@
+{
+  "id": "elder-council-guthlac",
+  "name": "Elder Council Guthlac",
+  "catalogKey": "tuscaran-glacier/guthlac",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "elder-council-birghir",
+      "relation": "his partner, whose votes he always seconded"
+    },
+    {
+      "id": "issorden",
+      "relation": "the cold that came the winter of the western caves"
+    },
+    {
+      "id": "tuscaran-glacier",
+      "relation": "the glacier he listens to"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Guthlac is a level-80 Council elder with 100,000 health, linked to Birghir.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He raises Ice Spikes on a timer, on a player or nearby; their unstable form erupts in an Ice Bomb (2,500 damage across a 3,000 radius).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs"
+    },
+    {
+      "text": "He roots, curses dexterity and quickness, and casts Rune of Mazing, a damage-and-snare bolt.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Guthlac is an Old English name (the hermit saint Guthlac of Crowland); in Old English guth means battle and lac play or sacrifice (to verify).",
+      "provenance": "original",
+      "source": "Old English glossary, to verify (Bosworth-Toller)"
+    },
+    {
+      "text": "Guthlac casts Rune of Mazing (550 energy and a 35% snare for 30 s, recast 8-15 s, castable on the move) on his target whenever he is not casting. Every 35-45 s he roots (99%, 60 s) and casts Greater Curse of Blindness (80 dexterity/quickness, radius 350, 60 s) on a random real player within 2,000 who is not his target. Every 35-60 s an Ice Spike (5,000 health, 99% cold resist, 15% melee) appears on a random real player within 4,500, or beside Guthlac if there is none, and after 25 s casts Ice Bomb: 2,500 cold in a 3,000 radius. 100,000 health, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs"
+    },
+    {
+      "text": "Guthlac is an Old English name (a saint of the fens; guth 'battle' and lac 'play' or 'gift', to verify). The first spike, the cracked council floor and the saying 'frost does not break frost' are Living Server lore.",
+      "provenance": "original",
+      "source": "Old English name, to verify"
+    }
+  ],
+  "story": "Guthlac is the Council's craftsman of cold. While Birghir talked, Guthlac listened, not to the giants but to the glacier, with his ear against his rib for a hundred winters, hearing it shift and settle, learning where it was strong, where it was rotten and above all how it broke. The icesplitters went to him before every cutting and he told them, in a word, there or not there. He told the overseer of the western caves the ice was rotten, and was not listened to, and the west was never woven.\n\nHe agreed with Birghir for a quieter reason. Birghir believed the island would forget the giants; Guthlac knew what the glacier would do to the island if anyone hurried it, and once, in the fortieth winter, he showed the Council. He froze a pillar of ice on the council floor in an afternoon, cold packed into it faster than ice will hold, and told them to watch. The young icesplitter Hrimgrim laughed and put his hand on it, and as the cold began to sing in it he broke it with his fist and was frostbitten to the elbow. Guthlac froze another and let it sing, and when it burst, every giant in the chamber was thrown down and the council floor cracked from wall to wall. The crack is still there. The splitters keep the saying that came out of it: frost does not break frost. Hrimgrim broke the first one with his hand.\n\nNow someone has hurried the glacier. When strangers reach the ribs, Guthlac raises his spikes again, and the companies say the spikes grow at the feet of the living strangers among them, as if the ice knew a stranger's weight. Between spikes the glacier takes one stranger's feet and dims his eyes, never the one before Guthlac, and the old giant answers the one before him with a rune that wounds and drags. When Birghir falls, the giants say, Guthlac stops listening to the ice for the first time in a century and lets it break.",
+  "chapters": [
+    {
+      "title": "The Ear on the Bone",
+      "text": "Guthlac came south with Kula's people as a young giant, an icesplitter's son with an icesplitter's pick, and he was the worst splitter the hrimthursa had ever had. He would not cut. He would set his pick against a new face, and then put it down, and put his ear to the ice instead, and listen, and after a long while he would say: not there. The overseers beat him for it. Then a face he had refused came down on the splitters who cut it instead, and the overseers stopped beating him and started asking.\n\nWhen Kula gave the Council the ribs, she gave Guthlac the second rib, beside Birghir's, though he was much younger than any councillor before or since. She did not want his vote. She wanted his ear. He sat down on the rib and put his ear against the bone, and the cast-out sculptors say he did not take it off again, except to vote, for a hundred winters.\n\nThrough the bone he heard the whole glacier: the slow settling of the citadel's walls, the creak of the cells, the meltwater moving under the ice in summer, the tunnels the weavers had sealed and the ones they had not, and something under all of it that he would never describe. The splitters came to him before every cutting. He told them there, or not there, and once, in the thirtieth winter, nowhere, not ever, and they cut nowhere for ten years.\n\nHe told the overseer of the western caves that the ice there was rotten, layered with old meltwater, and would never hold. The overseer said there was no time to cut elsewhere, with the army of bone coming up the island. Guthlac said there would be time afterwards to regret it. The west was cut in a month and has never been woven, and the falling ice of the western caves is what he heard in it that winter."
+    },
+    {
+      "title": "The First Spike",
+      "text": "In the fortieth winter of the Council the Icelords wanted to widen the citadel quickly, cutting new halls in a season instead of a generation by freezing the walls as fast as the splitters opened them. They put it to the ribs. Birghir spoke against it for the usual reasons. Guthlac, for once, got up off his rib.\n\nHe went to the middle of the council floor and laid his hands on the ice there, and he froze a pillar out of it in an afternoon, a blue stele as tall as a giant, packed with more cold than ice can hold. It hummed. The councillors could hear it from their ribs. Guthlac told them this was what quick ice was, and asked them to watch it.\n\nThe young icesplitter Hrimgrim, who had come to the ribs to see the elders, laughed and walked up to the pillar and put his hand on it. The hum rose, and the pillar began to sing, a thin high note, and the boy did what an icesplitter does with ice that is about to go: he struck it with his fist, hard, before it could. It broke. Hrimgrim was frostbitten to the elbow and carried his arm across his chest for the rest of his life, and the chamber was whole.\n\nGuthlac froze another one. This time he asked them all to stay on their ribs and leave it be. It hummed, and sang, and the note rose until the councillors had their hands over their ears, and then it burst. The cold of it went into every corner of the chamber at once. Every giant in the room was thrown down, and the council floor cracked from wall to wall, and the ribs rang as if the dragon itself had moved.\n\nThe vote went against quick ice, every rib striking twice. The crack in the council floor is still there; the companies who reach the ribs step over it. The splitters kept a saying from that day, and they explain it to strangers by pointing at the crack: frost does not break frost. Hrimgrim broke the first one with his hand."
+    },
+    {
+      "title": "The Ice Knows a Stranger's Weight",
+      "text": "Guthlac seconded every one of Birghir's votes for a century, and the other councillors thought he had no opinions. He had one. Birghir believed the island would forget the giants if the giants kept quiet. Guthlac knew exactly what the glacier could do to the island if anyone hurried it, and he did not want anyone to.\n\nThen Midgard climbed the crater road, and the Icelords hurried everything, and the glacier, the splitters say, has been humming under the citadel ever since. When strangers come to the ribs now, Guthlac takes his ear off the bone and lays his hands on the ice, and the spikes come up again, one at a time: not in the middle of the floor this time, but at the feet of the living strangers who have come into the chamber, as if the ice knew a stranger's weight on it and rose to meet it. When there are no living strangers to rise under, the companies say, the spike comes up at Guthlac's own side.\n\nThe glacier does other things for him. It takes a stranger's feet and holds them where they are, and dims his eyes and drags at his hands, and the companies say it is never the one standing in front of the old giant but another, further off, who finds his boots frozen to the floor. The one in front of him he answers himself, with a rune of mazing that wounds and drags at the legs, over and over, without hurry.\n\nThrough all of it the spike hums, and then it sings. The companies who come home from the ribs bring back nothing of it but the splitters' saying, and when they are asked what it means, they do what the splitters do, and talk about Hrimgrim's fist."
+    },
+    {
+      "title": "When Birghir Falls",
+      "text": "He does not rise without Birghir and Birghir does not rise without him. The giants of the citadel say the two old councillors were the last two of the Council who never voted against each other, and that when the second crossed mark was cut on the eldest rib, it was Guthlac who struck twice for no beside Birghir, the only time anyone heard him strike hard enough to make the bone ring in the north halls.\n\nThe cast-out sculptors at Dellingstad have a story about the end of the Council that Midgard's companies have since carried home as true. They say that when Birghir falls, Guthlac stops listening to the ice for the first time in a hundred years. He takes his ear off the rib and stands up, and puts both hands flat on the cracked council floor, and lets the glacier do what it has been wanting to do since the fortieth winter. The sculptors say that is the closest anyone in Tuscaran has come to hearing what is under the ice, and that the companies who have heard it do not say what it sounded like.\n\nThe icesplitters, who owe him their lives a hundred times over, will not speak against him even now. They say the old one told the Council where the glacier would break, and when, and the Council did not listen, and then it broke. They say that if anyone in the citadel has the right to let it, it is Guthlac. Hrimgrim, an old giant with a ruined arm, still sits by the crack in the council floor, the sculptors say, and when strangers step over it he tells them to watch the ice."
+    }
+  ],
+  "legend": "Guthlac is the elder who kills raids. Every 35 to 60 seconds an Ice Spike appears on a random REAL player (if you're the only human, it's on you; with no humans near, it appears by Guthlac). It has 5,000 health, takes almost nothing from cold, and after 25 seconds it explodes for 2,500 cold across the whole room. So assign a melee kill team that breaks every spike with weapons the moment it appears, and if it's on you, run it away from the healers while they work. Every 35 to 45 seconds he also roots and blinds (dex/quick debuff) a random real player who isn't his target, so carry root-break and purge. His Rune of Mazing hits the tank for 550 energy and snares, over and over. 100,000 health, CC-immune, and he always comes with Birghir. Fight them on the ribs and don't let them reset.",
+  "yells": {
+    "aggro": [
+      "You should not have made me remember how ice breaks.",
+      "Listen. Can you hear it? No. You never listen.",
+      "Birghir spoke for peace. I listened for this.",
+      "Listen. The ice knows your weight."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Listen. The spike is learning to sing."
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Birghir! Then let the whole chamber break!"
+      },
+      {
+        "trigger": "addsDead",
+        "text": "You broke my lesson. There are others."
+      }
+    ],
+    "death": [
+      "The spikes will melt... in a thousand years...",
+      "Let it... stay frozen...",
+      "Now... listen to it break..."
+    ],
+    "slay": [
+      "Frozen through. It is quick, at least.",
+      "The ice was louder than you.",
+      "A lesson learned. Too late.",
+      "Frost does not break frost."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Spikes of blue ice stand in the chamber like stelae.",
+      "The floor hums under your feet. The ice is listening.",
+      "A crack runs across the council floor, wall to wall."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "An ice spike hums. It will not hold for long!"
+      },
+      {
+        "trigger": "death",
+        "text": "Guthlac falls. The spikes go quiet."
+      }
+    ],
+    "realmFirstKill": "Guthlac's ear is off the bone. The glacier hums."
+  },
+  "botLines": {
+    "briefing": [
+      "guthlac drops ice spikes. when one spawns [kill it|get away from it] now, it hits the whole room",
+      "dont group up under guthlac, his root and the spike combo is how raids die there",
+      "two people on spike duty for guthlac, nothing else",
+      "guthlac roots then spikes. purge ready",
+      "guthlacs ice spike lands on a real player, thats you. 25 sec then 2500 cold to the whole room",
+      "spike has 5k and takes almost no cold. melee break it, casters dont bother with frost",
+      "guthlac roots and blinds a real player who isnt his target every 35-45s. root break ready",
+      "rune of mazing on the tank every 8-15s, 550 and a snare"
+    ],
+    "aftermathWin": [
+      "nobody stood on a spike this time. [proud of you all|miracle]",
+      "guthlac down, the spike team was perfect",
+      "elders done and nobody stood on a spike",
+      "spike team, best team",
+      "frost does not break frost. iron does",
+      "spike team perfect again",
+      "stepped over the crack on the way out"
+    ],
+    "aftermathLoss": [
+      "spike went off and took 30 people. [ouch|gg]",
+      "the spike team got rooted",
+      "rooted next to a spike. gg",
+      "somebody stood next to the spike to loot. [why|every time]",
+      "someone nuked the spike with ice. it took nothing",
+      "the spike was on you and you ran into the healers",
+      "rooted next to the spike. gg"
+    ],
+    "rumour": [
+      "heard guthlac's spikes go off for like 2500. [no thanks|i'll stand at the back]",
+      "guthlac listened to the ice for a hundred years. thats how he knows where it breaks",
+      "[heard|they say] guthlac never said a word on the council. just voted with birghir",
+      "the giants ask guthlac where to cut tunnels. he listens to the ice and tells them",
+      "guthlac froze a pillar in the council room once to show them. it cracked the floor",
+      "giant saying: frost does not break frost",
+      "guthlac told them the western caves were rotten. they cut them anyway"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Guthlac",
+    "text": "The [Council]'s craftsman of cold, who listened to the glacier through his rib for a century. He warned against the western caves and was not heeded. In the fortieth winter he froze a spike on the council floor to show the Council what quick ice does; it cracked the floor wall to wall. The splitters say frost does not break frost. He never rises without [Birghir]."
+  },
+  "bookPage": "Told to me by an icesplitter of the glacier, a giant who had come down to Dellingstad to trade for salt, which surprised everyone. Before we cut a new tunnel, he said, we go to the elder Guthlac and ask where. He puts his ear to the rib he sits on and listens for a long time. Then he says: there. Or: not there. Once he said: nowhere, not ever, and we cut nowhere for ten years. I asked what he had heard. The icesplitter said Guthlac told him only one thing, and he did not understand it: that the ice under the citadel was not asleep, only holding its breath.",
+  "chronicle": {
+    "win": "Guthlac's spikes fell silent before {raidLeader} and {realm}, after {minutes} minutes on the ribs.",
+    "loss": "An ice spike broke {raidLeader}'s raid from {realm} in the council chamber after {minutes} minutes."
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "id": "nogoribando",
+  "name": "Nogoribando",
+  "catalogKey": "fomor-city/nogoribando",
+  "locationId": "fomor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 70, 30,000 health. Nogoribando's Haste: 'begins attacking faster', then 'attacks return to normal'; Vitality Dispersal saps strength and constitution.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs"
+    },
+    {
+      "text": "Pulling him brings ten of his band: five creln, three gentarns, a hicjer and a hofscorian.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "In combat he alternates every 30 s between a big form (size 200, strength 400, quickness 50) and his normal size with Nogoribando's Haste (+50% attack speed, 28 s). Vitality Dispersal (75 strength/constitution debuff, 60 s, radius 350 around his target) is recast whenever his target lacks it. Immune to crowd control; melee reach 350.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs (integration/1.2)"
+    },
+    {
+      "text": "Living Server lore: the bellers choose war-leaders by calling names through the halls; banners painted before a foray; the hydrars make him wait at the cistern; 'first the oak and then the hornet'; the Domnann strength-songs; Nuala of Bri Leith's company in the second year of the isles; the quiet season.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Nogoribando is Fomor's war-leader. The bellers, the city's callers, choose war-leaders by calling every name of fighting age through the halls until one comes back louder than it was called, and his came back from every door; Anurigunda said the bellers had grown deaf. His war-hall by the stair is hung with banners painted for forays that have not happened yet, and his household sits under them sharpening things: creln, gentarns, a hicjer and a hofscorian. Touch him and they all come. When he comes up from asking the beast's blessing with his face dark, the Sylvan call the children of Domnann in from the woods.\n\nThe old songs say the Fomorians were giants and also that they were small and crooked. Nogoribando is both, one after the other. When he fights he swells to twice a man's height and strikes slow and terrible, like an oak; then he shrinks back and his blows come quick and endless, like hornets; then he swells again, as long as he fights. The children of Domnann skip to it: first the oak and then the hornet, first the hornet then the oak. The menders fear the hornet, because the blows come faster than mending can, and hate the oak, because one blow is enough.\n\nThose who stand against him feel their strength go out of them, the one he faces first and whoever stands at that one's shoulder, and it is laid on again as soon as it fades. The wardens of Domnann sing the old strength-songs back into anyone who has stood before him, which the bards say is where the realm's custom began, and they stand at his sides and back, never at the shoulder of the one he is looking at.\n\nNuala of Bri Leith's company killed him in his war-hall in the second year of the isles: band first, door by door, one warden in front and the strength sung back into her each time it left. The bellers were silent for a season and the Sylvan children played in the woods. Then a name came back louder than it was called, and it was his. Each time he falls, Domnann is bought a summer.",
+  "legend": "He swaps forms every 30 seconds for as long as you fight him: big (giant size, huge strength, slow swings that hit like a truck) and small (normal size with a +50% attack-speed haste). The tank eats both; healers spike on the big swings and keep the heals rolling through the haste. He keeps Vitality Dispersal on his target (minus 75 strength and constitution for 60 seconds, recast the moment it drops) and it splashes everyone within 350 of the tank: nobody else stands on the tank, and rebuff the tank. No CC on him, long-ish reach (350). Pulling him brings his band of ten (five creln, three gentarns, a hicjer and a hofscorian) from anywhere within 2,500, so clear the band first. He resets to full if everyone drops off him. Superstition: when you hear the bellers from the shore, go down and kill him before he climbs. The Sylvan children of Domnann get a quiet season out of it.",
+  "yells": {
+    "aggro": [
+      "Sound the bellers! The fight comes to us for once!",
+      "Big or small? Choose. You cannot.",
+      "The realm is only ever one size. That is why it loses."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Nogoribando swells to twice the height of a man!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Faster! The drums! Faster!"
+      }
+    ],
+    "death": [
+      "The drums... stop...",
+      "The bellers... will find... another..."
+    ],
+    "slay": [
+      "Up the stair! There are more of them!",
+      "Next!",
+      "Paint another banner."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "New banners hang over the war-hall.",
+      "The bellers wait for his signal."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "The war-leader swells. Then shrinks. Then swells."
+      }
+    ],
+    "realmFirstKill": "Nogoribando's war-drum is silent."
+  },
+  "botLines": {
+    "briefing": [
+      "clear his band of ten first. [door by door|or they all come]",
+      "he goes big then small every 30 sec. [big hits hard|small hits fast], tank eats both",
+      "his str con drain hits everyone near the tank. [stay off the tank|melee on his back]",
+      "rebuff the tank every time the drain lands. [buffbots ready|keep str con up]",
+      "no cc on him. dont bother"
+    ],
+    "aftermathWin": [
+      "war leader down. [domnann gets a quiet season|sylvan kids get the woods back]",
+      "nobody stood on the tank, drain only hit him. [clean|nice]",
+      "tank lived through three big forms in a row. [heals were on point|grats druids]",
+      "his banners for the next raid can stay unpainted. [good|ha]"
+    ],
+    "aftermathLoss": [
+      "the band came with him. [clear first|ten extra]",
+      "healers fell behind on the fast form. [keep heals rolling|he hits like rain]",
+      "the big form two-shot the tank with no str con. [rebuff|drain]",
+      "everyone stacked on the tank and ate the drain. [spread|back and sides]"
+    ],
+    "rumour": [
+      "[heard|someone said] the bellers call every name in fomor and the one that comes back loudest leads",
+      "[word is|heard] he goes giant then tiny. the sylvan kids have a skipping rhyme about it",
+      "the sylvans say when he comes up from the cistern angry, the raids start that week",
+      "[heard|someone said] killing him buys domnann a quiet season. [worth it|for the kids]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Nogoribando",
+    "text": "Fomor's war-leader, whose name came back loudest when the bellers called. He fights first as the oak and then as the hornet, huge and slow, then small and quick, and the strength drains out of whoever stands before him and beside them. Every time he falls, Domnann gets a quiet season."
+  },
+  "bookPage": "From Fiachra of Howth's account: the war-leader's hall was hung with banners, new ones, painted for a foray that had not happened yet, and his band sat beneath them sharpening things. I was close enough to hear him, before we ran, and he was laughing. The Sylvan said he is young for a Fomorian, and fights first as an oak and then as a hornet, huge and slow and then small and quick, and their children skip to a rhyme about it. Every time the realm kills him, they said, there is a quiet season in Domnann, and the children are allowed in the woods. Then the bellers find a name, and the children come home.",
+  "chronicle": {
+    "win": "{realm} went down the shore stair into Fomor under {raidLeader} and slew Nogoribando the war-leader in {minutes} minutes.",
+    "loss": "{realm}'s fighters under {raidLeader} were driven back up the Fomor stair by Nogoribando's frenzy after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "anurigunda",
+      "relation": "an elder of the city"
+    },
+    {
+      "id": "krackenschtein",
+      "relation": "the workshop's champion"
+    },
+    {
+      "id": "myrddraxis",
+      "relation": "the hydra of the cistern"
+    },
+    {
+      "id": "balor",
+      "relation": "the king in the tower on the crag"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Bellers Find a Name",
+      "text": "Fomor does not choose its war-leaders the way the old families of Hibernia chose chieftains, at a stone with a white rod. The bellers choose them. The bellers are the city's callers, whose voices carry up the shore stair and out over the water, and when a war-leader dies they go through the halls calling every name of fighting age until one name, the Sylvan say, comes back louder than it was called. That one leads the forays.\n\nNogoribando's name came back louder than any in the city's memory. He was young for a Fomorian, which means old enough to remember the city being dug, and he had already led a foray of his own up the stair without leave and come back with Sylvan captives and no losses. The bellers called his name once through the halls and it came back from every door. Anurigunda, the eldest of the great ones, was heard to say that the bellers had grown deaf.\n\nHis hall is the city's war-hall, nearest the stair, and it is hung with banners. The Fomorians paint a banner before a foray, not after, and Nogoribando's hall is hung with banners for forays that have not happened yet, new paint on every one of them. His household sits under the banners sharpening things: creln and gentarns, a hicjer and a hofscorian, the old ranks of a Fomorian war-band. They go where he goes. Touch him and every one of them comes, as every Fomorian household does.\n\nBefore each foray he goes down to the cistern to ask the beast's blessing, and the hydrars make him wait at the edge of the water until he is angry. The Sylvan who watch the shore stair have learned to read it: when the war-leader comes up from the deep halls with his face dark, the forays will start within the week. They send word to the villages of Domnann, and the children are called in from the woods."
+    },
+    {
+      "title": "The Oak and the Hornet",
+      "text": "The old songs of Hibernia say the Fomorians were giants, and the old songs also say they were small and crooked, and the bards have never settled which. Nogoribando settles it. He is both, one after the other.\n\nWhen he fights he swells. The Sylvan wardens who first met him in the woods above the shore said he grew in front of them, between one breath and the next, to twice the height of a man and more, and that his blows became slow and terrible, as an oak would strike if an oak could: each one late, each one enough to break a shield. Then, after a while, he shrank back to the size of an ordinary Fomorian, and the slow blows stopped, and in their place came quick ones, a storm of them, faster than a man could count, light and endless as hornets. Then he swelled again. It goes on as long as he fights. The wardens' children of Domnann have a rhyme for it, a skipping-rhyme, that goes: first the oak and then the hornet, first the hornet then the oak.\n\nThe wardens who have stood before him say the rhyme is all there is to know of him. Against the oak a warden stands and takes each blow whole; against the hornet she stands and takes a great many. Neither one gives anyone a moment's rest, and the one who faces him does not get to choose which comes next, only to know that the other will follow. The menders of Domnann who stand behind the wardens say it is the hornet they fear, because the blows come faster than mending can, and it is the oak they hate, because one blow is enough.\n\nThe druids of Tir na Nog think it is a Fomorian gift of the old blood, the misshapenness the songs tell of, gone to war. Nogoribando thinks it is his own. He was heard once, through the war-hall doorway, telling his household that the realm's warriors are only ever one size, and that this is why they lose."
+    },
+    {
+      "title": "The Drinking of Strength",
+      "text": "Those who stand against him feel their strength go out of them. The wardens of Domnann who met him first said it was like being bled without a wound: the arm grew heavy, the shield grew heavy, the breath came short, and the body seemed to hold less life than it had held a moment before. It falls on the one he faces first, and on whoever stands close beside that one, and it does not lift while he is near; as soon as it begins to fade, it is laid on again.\n\nThe Fomorians say he drinks it. The Sylvan say that is a Fomorian boast and that the war-leader only spills it, as a flood spills a river: nothing of it goes into him that anyone can see, and he hits no harder for it. What is true is that the warden facing him fights weaker and dies sooner than she would against anything else his size, and that those who stand at her shoulder share it.\n\nThe Sylvan wardens answer it the old way, with the strength-songs their grandmothers sang over the wardens of Domnann before the forest wars, songs that put back into the arm what the night took out of it. They sing them again over anyone who has stood before the war-leader, as soon as they come back from him, and the bards of Tir na Nog, who learned the songs from them, say that is where the realm's custom of singing the strength back into a soldier after a hard fight began. The wardens keep one more custom from the woods: those who have to be near the war-leader stand at his sides and back, and never at the shoulder of the one he is looking at.\n\nHis band, meanwhile, fights as a Fomorian band fights, all at once and without discussion. The Sylvan who have met it in the woods say the band was always the lesser danger and always the first to be dealt with, because nobody could stand before the war-leader with a gentarn at their back."
+    },
+    {
+      "title": "A Quiet Season",
+      "text": "The first Hibernian company to kill him did it in his own war-hall, under the new banners, in the second year of the isles. It was a small company of Bri Leith under a warden named Nuala, who had grown up on the edge of the Cursed Forest and had no patience for banners. They cleared his band first, door by door, the way the Sylvan had told them, and then they fought him in the middle of his hall with one warden in front and the rest at his sides, and they sang the strength back into Nuala every time it left her, and they did not hurry. Fiachra of Howth, who had been down years before and only heard him laughing through a doorway, wrote that he wished he had seen it.\n\nWhen he fell, the bellers of Fomor were silent for a season. No foray came up the stair. The Sylvan of Domnann let their children into the woods, and the woods were quiet, and the wardens slept. Then, in the spring, the bellers began calling through the halls again, and a name came back louder than it was called, and the banners were painted, and the children came home.\n\nIt is always his name. The Sylvan have stopped being surprised by it. Whatever the bellers call through the halls, Nogoribando answers, and he comes up from the deep halls with his face dark, and the war-hall fills again with new paint and sharpening. The druids of Tir na Nog say the city has no other war-leader to choose because it has never wanted one.\n\nWhat he wants is the forays. He does not want the isle, as the hydrars do, or to outlive his enemies, as the eldest does. He wants to go up the stair at the head of his band and come back with captives and no losses and be called louder than anyone. The Sylvan count the realm's friendship by the quiet seasons. They say that each time he is brought down Domnann is bought a summer, and that the children of Domnann know the names of the companies that bought theirs."
+    }
+  ]
+}

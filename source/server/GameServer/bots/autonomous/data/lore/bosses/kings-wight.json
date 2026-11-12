@@ -1,0 +1,122 @@
+{
+  "id": "kings-wight",
+  "name": "King's Wight",
+  "npcNames": [
+    "King's Wight"
+  ],
+  "locationId": "stonehenge-barrows",
+  "realm": "Albion",
+  "aliases": [
+    "the nameless king",
+    "the king at the bottom"
+  ],
+  "facts": [
+    {
+      "text": "King's Wight: template 12780, level 50, a wight at size 150 to 200, at the bottom of the Stonehenge Barrows at 31506, 25401; aggro level 80 within only 200, no faction, slashing melee, no spells or styles, respawn 300 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Tomb wights stand from about 100 and ghoulic vipers from about 70; he shares no faction with them.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "Symbol of the Broken (Scholar Nenet of the Lethantis Association): after Cirfans's heart, slay the King's Wight at the bottom of the Barrows and bring the skull back; then a jeweled ritual dagger to Lidmann Halsey and Veteran Guardsman Esmond.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The king of the first barrow-builders, the crown that was the first to break, the Lethantis reading of heart and skull, Bened's entry and the barrow-builders' count are Living Server writing; that no chronicle names him is from the Stonehenge file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Every king the chroniclers name is buried in the upper halls of the barrows or the west. Below them, below the Saxons and the Celtic dead of the ossuary and the druids' grove that was buried standing and turned to stone, at the lowest point the barrow-builders dug, lies a king whom no chronicle names. He was laid there before there were chronicles. The minstrels call him the King's Wight because there is nothing else to call him.\n\nThe Lethantis Association, which keeps the oldest learning in Campacorentin and says it is older than the Academy, thinks he was the first. The first people to raise a ring on the Plains buried their priests under it and their warriors over those, and over all of them, at the deepest point, their king; and he was the first king of the island, the Lethantis say, and his was the first crown that ever broke, when the people who raised the first ring were gone and nobody remembered whose land it had been. That is why they want his skull. A heart that watched the land break and did not break, and the skull of the first king whose realm broke: the society has a working that needs the two, and sends the realm's young first to the Cornish cliffs for the old drake Cirfans's heart and then down to the bottom of the barrows, and afterwards makes something of both and sends it to Lidmann Halsey.\n\nHe is huge, as the barrow-builders made their kings, and he lies among the tomb wights of his household as he must have lain among his warriors, and he does not stir for the living until they are at his shoulder. Then he stands, and the wights of the tombs about him do not stand with him; they are his dead but not his men, and each of them keeps its own mound. He fights alone, with the blade they buried him with, and he fights like a king who has never once in his life been told to yield.\n\nThe barrow-keepers of the Plains say he is the reason the barrows have a bottom at all: that the first people dug down until they reached a place deep enough for a king, and stopped. When he is laid, he is up again in the time it takes to climb back to the stair.",
+  "legend": "The King's Wight is a level 50 wight, huge, at the very bottom of Stonehenge Barrows: the skull step of Symbol of the Broken (after Cirfans's heart, for Scholar Nenet of the Lethantis Association). He only notices you inside about 200 and has no faction, so the tomb wights and ghoulic vipers packed round him do not come to his call, but they stand very close (70 to 100) and will aggro on you themselves: clear them before you pull him. He hits with a slashing blade and has no spells or styles in the data, a melee fight for a group of fifties. Respawn about five minutes, so the next Symbol group will not wait long.",
+  "yells": {
+    "aggro": [
+      "Who comes to the bottom of the world?",
+      "Kneel. I was king before your kings.",
+      "Yield. No one has made me yield."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "My crown... was the first... it will not be the last..."
+      }
+    ],
+    "death": [
+      "The first crown... breaks again...",
+      "No name... no name for me..."
+    ],
+    "slay": [
+      "Kneel.",
+      "Laid at the bottom.",
+      "Under all your kings."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The lowest point of the barrows. A huge shape lies here.",
+      "Tomb wights keep their mounds round a king."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The tomb wights do not rise for their king."
+      }
+    ],
+    "realmFirstKill": "The King's Wight has fallen. The first crown breaks again."
+  },
+  "botLines": {
+    "briefing": [
+      "kings wight, 50, huge, very bottom of the barrows. symbol of the broken skull",
+      "200 aggro, no faction, but tomb wights and vipers are 70-100 off and aggro you anyway. clear them",
+      "slash melee, no spells. group of 50s",
+      "grab the skull, back to nenet. 5 min respawn"
+    ],
+    "aftermathWin": [
+      "skull's in the bag, nenet next",
+      "cleared the tomb wights first, easy",
+      "big for a 50",
+      "heart and skull, the dagger's next"
+    ],
+    "aftermathLoss": [
+      "pulled him with three tomb wights stuck to him",
+      "the vipers ate the casters",
+      "got lost on the way down and pulled half the ossuary",
+      "he was back before we climbed out"
+    ],
+    "rumour": [
+      "[heard|someone said] the kings wight is the first king of the island, older than any chronicle",
+      "heard the lethantis want his skull because his was the first crown to break",
+      "[heard|someone said] the tomb wights wont stand up for their king",
+      "heard the barrows have a bottom because the first people stopped digging where he lies"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "king's wight",
+    "text": "The nameless king at the very bottom of the [stonehenge barrows], laid before there were chronicles. The [lethantis association] says he was the first king of the island and his the first crown that broke; they want his skull, with the heart of [cirfans], for a working they send to Lidmann Halsey. The tomb wights round him are his dead but not his men, and do not stand with him."
+  },
+  "bookPage": "From the daybook of the Lethantis Association, in the hand of Bened, under-secretary. Received from the bottom of the Barrows, by a young cleric of Camelot, a skull, larger than a man's by a third, unwrapped, which I have asked her not to do again. Entered, beside the heart. She asked whose it was. I told her what I am told to tell them: a king's. She asked which king. I told her the society believes he was the first, and that his name was lost before names were written. She asked how we know he was a king. I said by the size of the hole he was buried in. She did not laugh. Note for the secretary: this is the ninth skull. It is always the same skull.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} took the King's Wight's skull at the bottom of the Barrows in {minutes} minutes.",
+    "loss": "The King's Wight made {raidLeader}'s company of {realm} kneel at the bottom of the Barrows."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "keltoi",
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "cirfans",
+      "relation": "the heart the Lethantis Association wants beside his skull"
+    },
+    {
+      "id": "stonehenge-barrows",
+      "relation": "the lowest point of the barrows, under all the named kings"
+    }
+  ]
+}

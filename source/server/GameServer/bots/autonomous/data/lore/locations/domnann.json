@@ -1,0 +1,376 @@
+{
+  "id": "domnann",
+  "name": "Domnann",
+  "realm": "Hibernia",
+  "regions": [
+    181
+  ],
+  "zones": [
+    181
+  ],
+  "summary": "The Sylvan forest of Hy Brasil and its Grove, the only country of the isle still entirely itself, with Bann-didein on its northern edge.",
+  "facts": [
+    {
+      "text": "In the Lebor Gabála Érenn the Fir Domnann are one of the three peoples of the Fir Bolg who came to Ireland before the Tuatha Dé Danann.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Fir_Bolg"
+    },
+    {
+      "text": "Zone 181 (region 181, x and y 393,216-458,752): 1,217 monsters, the most of any Hy Brasil zone. The Grove of Domnann area is at 423,149/444,401 (radius 4,000); Domnann and the Grove are teleport points, and Anola waits 'outside town near the portal back to Druim Ligen'.",
+      "provenance": "game",
+      "source": "world data Area and Teleport tables; DataQuest 'The Status of Information' (world data, read 2026-11-06)"
+    },
+    {
+      "text": "The Grove holds trainers of every path ('Serenda, the Hero trainer, in the first tree on the right in the Grove'; 'Aurnia ... in the tree behind Searlait'), the crafting masters, Niara, Priestess of the Grove, and Jack 'on the second floor of a tree'.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06); DataQuest 'Learn the Paths', 'Spiteful Sylvanshade Head -- Kill Task'"
+    },
+    {
+      "text": "A northern settlement (merchants, smiths, a stable, vault keeper, Ruairi and Fidelma, about 424,000-427,000/404,000-406,000) is the 'Bann-didein' of Crace's Desire ('Go to Fidelma in Bann-didein'); guard posts with lookouts stand between it and the Grove (about 421,800/424,000); the Priestess of the Watch stands at 413,900/394,300.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06); DataQuest 'Crace's Desire' (world data, read 2026-11-06)"
+    },
+    {
+      "text": "Monsters: sporites (157) and maundering sporites, botonids (seedlings, leaves, spiky), catty, lesser and stalking sylvanshades, the cniogcrag (infesters, troupers, blighters, parasites, herders and others, 7-22) in the north-east, shaders (16-21), tangle, tendril and writhing weeds, forest grazers, bantam and patient shrouders, lost and hungry shrillers, lake twinkles, lungers and sneezers.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Grove quests: tangleweeds 'eating the grove roots just outside the gates' (Magical Disturbances); forest grazer calves that took the seedlings (Protecting the Groves); lesser sylvanshades 'right and down the hill from the Grove gate' with lost seed pouches (Shade of a Grove); Seriea 'collecting plants for new cures'.",
+      "provenance": "game",
+      "source": "DataQuest 'Magical Disturbances', 'Protecting the Groves', 'Shade of a Grove', 'In the Interest of Plants' (world data)"
+    },
+    {
+      "text": "Living Server lore: the Grove as the Sylvan's living town in the trees; the springs, seed-house, wardens' stone and banners; the Grey Field of sporites; the cniogcrag as the forest's rot-eaters gone wrong; Bann-didein as the outlanders' market; Niara's book.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawns of Domnann: Insidious Samn (20) and Norag (18) with the cniogcrag body; Aileiss, Derbidich Angurich and Moioch Fhearian (16) with Sylvan bodies (Moioch Fhearian's is the one Niara, Priestess of the Grove, wears); Bloinigein (11, a tangleweed body; Magical Branches); Leptus (6, two botonid spawns); Celendir (4, a sylvanshade body, not aggressive).",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Hibernia's ships to the remnants of Atlantis sail from a river dock below the Grove of Domnann.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
+    }
+  ],
+  "story": "The Sylvan guides say Domnann is the only country of Hy Brasil that is still entirely itself, and they say it the way a family says a house is the only room the fire did not reach. It is the forest of the isle's heart, between the lost grove in the west and the wild lands to the north, and its Grove is the nearest thing the Sylvan have to a town. Nobody built it. The trees of the Grove grew the shape the Sylvan needed when the Sylvan asked, a room at a time, over longer than any Hibernian family has a name, and the Sylvan live and teach and sleep in them. The realm's companies, when they first came, were given the first tree on the right and the tree behind it, and have been given more trees every season since.\n\nThe mainland's bards, hearing the name, thought of the Fir Domnann of the old books, one of the peoples who came to Hibernia before the gods, and asked whether the Sylvan were their kin. The Sylvan said no, politely, and that the name was older than the mainland's books, and that it meant something like 'the deep place' in a speech nobody speaks any more, because the forest's roots go down further than its trees go up. The sages of Tir na Nog have not stopped arguing about it.\n\nEverything the Sylvan keep is in Domnann. The springs are here, the named ones, Tobar Lisín and Tobar na Craoibhe among them, dry now, because their water bent toward the hollow of Galladoria in the years the Root grew strong, and the water-tasters still go to them every morning with a twist of grey bark. Xaga's seed-house is here, its jars of every plant of the isle sealed and dated, no new seed-keeper chosen since she went down. The wardens' stone is here, with the names of the Domnann wardens who died at Tur Suil and in the hollow. The banners are here, the lost clans' banners brought down from the tower, Clann na Fuinseoige's hanging first. And Ultan of Tir na Nog keeps the rain records in a tree near the gate, because the rains of Domnann fall heavier in the seasons after a company has gone down into the hollow, and he wants to know why.\n\nThe forest outside the Grove is not what it was. North of the Grove there is a stretch the Sylvan call the Grey Field, where in the second summer after the Root's garden began to bloom the grass went grey overnight with spore-caps, and the sporites that walk it now came up out of that grey: small, pale, wandering things, and the maundering ones further north that drift and mutter and spread it. The botonids grow beside them, plants that have learned to walk and do not like it. The sylvanshades are worse: shadows of Sylvan, the guides say, that came loose from their owners in the hollow and came home without them, and the catty ones near the Grove gate bite the young and the stalking ones in the west follow travellers for days.\n\nIn the north-east the cniogcrag have the forest. The Sylvan say they were the forest's rot-eaters once, small useful things that cleaned the dead wood, and that the rot of the hollow got into them and taught them to want living wood instead; now they come in herds with herders, and infesters and blighters, and parasites that hang in the branches, and where they have been for a season the trees stand hollow. The wardens burn their trails. The shaders walk the northern woods, and the shrouders the lake shore, and the tangleweeds eat the Grove's own roots just outside its gates, so that every new Hibernian in Domnann is handed a necklace on the first morning and sent to cut them back.\n\nOn the forest's northern edge, at the end of the guarded road, is Bann-didein, where the outlanders and the Hibernian traders keep the market the Grove will not keep inside its trees: smiths, merchants, a stable, the smell of a forge. The Sylvan go there to buy what they need and leave before dark. The Priestess of the Watch keeps her post beyond it on a rise to the north-west, and she watches the Grey Field, and counts it.\n\nWhy does Domnann matter? Because it is what the realm came to Hy Brasil to keep. The Fomorians want it, the Root wants its water, the tower takes its paths, and the Sylvan who asked the realm for swords asked for them for this forest. Every company the Grove sends out is walked to the gate by a guide, and every one that comes back is counted at the wardens' stone, and the Grove grows another room for it.",
+  "legend": "Domnann is the Hibernian Shrouded Isles starting zone, levels 1-22, and the busiest SI zone. The Grove of Domnann (south) is the town: trainers live in the trees (hero in the first tree on the right, blademaster behind the guardian trainer), crafters, vault, registrars, Niara the Priestess, and the channeler/portal back to Druim Ligen. Bann-didein on the northern edge is the second town (merchants, smiths, stable, vault). Camps: tangle and tendril weeds and lungers at the Grove gates (1-8), catty sylvanshades west (5-9), sporites and botonids central and north (9-18), shaders north (16-21), shrouders and shrillers on the lake shore, and the cniogcrag in the north-east (7-22, social herds with herders; the infesters come in numbers). Stalking sylvanshades in the west follow you. Tier C named here: Insidious Samn (20), Norag, Aileiss, Bloinigein (Magical Branches). Sylvan custom: touch the bark of the Grove gate on the way out, or the forest forgets you are coming back.",
+  "atmosphere": {
+    "firstEntry": [
+      "Domnann. The forest is still itself here.",
+      "Rooms grown out of living trees.",
+      "The Grove counts who goes out.",
+      "Sylvan voices in the branches.",
+      "Somewhere north, the grass is grey."
+    ],
+    "areas": [
+      {
+        "name": "the Grove of Domnann",
+        "x": 423150,
+        "y": 444400,
+        "z": 6060,
+        "radius": 3000,
+        "lines": [
+          "The Grove. Nobody built it; it grew.",
+          "Trainers teach in the first tree on the right.",
+          "The wardens' stone, and the banners."
+        ]
+      },
+      {
+        "name": "the springs",
+        "x": 422000,
+        "y": 447000,
+        "z": 6000,
+        "radius": 1200,
+        "lines": [
+          "Tobar Lisín, dry. A twist of grey bark beside it.",
+          "The water-tasters come every morning."
+        ]
+      },
+      {
+        "name": "the Grove gate",
+        "x": 423900,
+        "y": 440300,
+        "z": 5965,
+        "radius": 1500,
+        "lines": [
+          "Tangleweeds eat at the Grove's roots.",
+          "Touch the gate's bark on the way out.",
+          "The channelers' fire, toward Druim Ligen."
+        ]
+      },
+      {
+        "name": "the Grey Field",
+        "x": 416300,
+        "y": 415000,
+        "z": 4360,
+        "radius": 5000,
+        "lines": [
+          "The Grey Field. Spore-caps where grass was.",
+          "Sporites wander, pale and patient."
+        ]
+      },
+      {
+        "name": "the shade woods",
+        "x": 408400,
+        "y": 435500,
+        "z": 4450,
+        "radius": 4000,
+        "lines": [
+          "Shadows without owners. Sylvanshades.",
+          "Something small and catty bites."
+        ]
+      },
+      {
+        "name": "the cniogcrag woods",
+        "x": 444000,
+        "y": 408000,
+        "z": 4480,
+        "radius": 5000,
+        "lines": [
+          "Hollow trees. The cniogcrag have been here.",
+          "A herd moves in the branches.",
+          "The wardens burn the trails here.",
+          "Insidious Samn was here. The rot is already in."
+        ]
+      },
+      {
+        "name": "the lake shore",
+        "x": 441000,
+        "y": 423500,
+        "z": 4200,
+        "radius": 3500,
+        "lines": [
+          "Lake twinkles over still water.",
+          "Shrouders wait on the shore."
+        ]
+      },
+      {
+        "name": "the guard posts",
+        "x": 421800,
+        "y": 424000,
+        "z": 5260,
+        "radius": 1500,
+        "lines": [
+          "Lookouts on the road north.",
+          "Halfway between the Grove and the market."
+        ]
+      },
+      {
+        "name": "Bann-didein",
+        "x": 425200,
+        "y": 404800,
+        "z": 4500,
+        "radius": 2500,
+        "lines": [
+          "Bann-didein. Forge smoke and outland coin.",
+          "The Sylvan buy here and leave by dark."
+        ]
+      },
+      {
+        "name": "the Watch",
+        "x": 413880,
+        "y": 394340,
+        "z": 6970,
+        "radius": 800,
+        "lines": [
+          "The Priestess of the Watch counts the grey.",
+          "A rise above the northern woods."
+        ]
+      },
+      {
+        "name": "the north road's edge",
+        "x": 437870,
+        "y": 406506,
+        "z": 4588,
+        "radius": 1000,
+        "lines": [
+          "Norag works the wood's edge, small and patient.",
+          "A cart wheel lies here, its spokes eaten."
+        ]
+      },
+      {
+        "name": "the shader woods",
+        "x": 420086,
+        "y": 398325,
+        "z": 4515,
+        "radius": 1000,
+        "lines": [
+          "Aileiss leads the shaders. She was a warden once.",
+          "Sylvan shapes in the shade, not Sylvan now."
+        ]
+      },
+      {
+        "name": "the market path",
+        "x": 421131,
+        "y": 400293,
+        "z": 4683,
+        "radius": 1000,
+        "lines": [
+          "Derbidich Angurich asks what you carry. Then strikes.",
+          "A honey-seller's path, gone to shade."
+        ]
+      },
+      {
+        "name": "the Grey Field's edge",
+        "x": 413087,
+        "y": 403335,
+        "z": 4666,
+        "radius": 1000,
+        "lines": [
+          "Moioch Fhearian walks robed among the sporites.",
+          "She wears the priestesses' shape. Look twice."
+        ]
+      },
+      {
+        "name": "Bloinigein's tangle",
+        "x": 419638,
+        "y": 409346,
+        "z": 4393,
+        "radius": 1000,
+        "lines": [
+          "Bloinigein, the eldest tangleweed. It gives nothing.",
+          "A second branch, cut from something that minds."
+        ]
+      },
+      {
+        "name": "the thin botonid's ground",
+        "x": 446353,
+        "y": 401095,
+        "z": 4572,
+        "radius": 1000,
+        "lines": [
+          "Leptus walks here. There is another Leptus.",
+          "A plant that learned to walk, and minds it."
+        ]
+      },
+      {
+        "name": "Celendir's waiting place",
+        "x": 434413,
+        "y": 430893,
+        "z": 4280,
+        "radius": 1000,
+        "lines": [
+          "Celendir waits here. A shade with a name.",
+          "He does not bite. He is waiting."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the grove of domnann wasnt built, it grew. the sylvan asked the trees for rooms",
+      "the trainers in domnann live in the trees. [first tree on the right|go up]",
+      "the springs of domnann went dry when the root got strong. [galladoria|the water bent toward the hollow]",
+      "xaga's seed house is in domnann. jars of every plant on the isle, sealed",
+      "the wardens' stone in domnann has the names of every warden who died at tur suil",
+      "the banners in the grove came down from tur suil. clann na fuinseoige hangs first",
+      "the grey field north of the grove went grey overnight with spores. [the sporites came from it|the root's garden]",
+      "sylvanshades are sylvan shadows that came home from the hollow without their owners. [creepy|sad]",
+      "the cniogcrag used to eat dead wood. now they eat live trees. [the rot got them|burn them]",
+      "bann-didein on the north edge is the market the sylvan wont keep in the grove",
+      "ultan of tir na nog keeps the rain records in domnann. rains are heavier after galladoria runs",
+      "every new hib in domnann gets a necklace and gets sent to cut the tangleweeds. [tradition|lol]",
+      "the priestess of the watch north west of bann-didein counts the grey field"
+    ],
+    "rumour": [
+      "[heard|someone said] the grey field got bigger this season. [the watch says|spores everywhere]",
+      "touch the bark of the grove gate on your way out or the forest forgets you. [sylvan custom|do it]",
+      "[word is|heard] a stalking sylvanshade followed someone all the way to droighaid",
+      "the cniogcrag herders have been moving north [lately|again]. the wardens are worried",
+      "[heard|someone said] one of the dry springs ran for an hour after the water primal fell",
+      "jack on the second floor of the tree wants a spiteful sylvanshade head. [47+|balor vale]",
+      "[word is|heard] the grove grew a new room overnight for a company that came back",
+      "insidious samn is out with the cniogcrag in the north east. [20|named]",
+      "[heard|someone said] insidious samn is the cniogcrag that taught the rest to eat live wood",
+      "[heard|someone said] norag eats cart spokes on the north road while the carters sleep",
+      "[heard|someone said] aileiss was a domnann warden before she went over to the shaders",
+      "[heard|someone said] derbidich angurich sold honey in bann-didein before the shade got him",
+      "[heard|someone said] moioch fhearian looks just like the priestess of the grove. dont say hi",
+      "[heard|someone said] the domnann druids cut their teaching branches off bloinigein. it fights back",
+      "[heard|someone said] there are two leptus in domnann and they both think theyre the real one",
+      "[heard|someone said] celendir is the only sylvanshade in domnann that remembers its name"
+    ],
+    "tell": [
+      "domnann is the hib si start zone. the grove of domnann is the town, 1 to 22",
+      "where is the grove of domnann? south part of domnann. channeler there, portal back to druim ligen",
+      "is domnann safe? near the grove yes. north east cniogcrag herds are social, careful",
+      "whats in domnann? weeds, sylvanshades, sporites, botonids, shaders, shrouders, cniogcrag",
+      "where is bann-didein? north edge of domnann down the guarded road. merchants, smith, stable",
+      "where do i go after domnann? west to caillte garran (droighaid) or north to vigilant rock (necht)",
+      "who is insidious samn? a 20 named cniogcrag in the north east woods of domnann, bigger than the infesters",
+      "norag? small named cniogcrag on the west edge of the cniogcrag woods in domnann, 18. easy",
+      "aileiss is a 16 named shader in the northern woods of domnann, with a few shaders round her",
+      "derbidich angurich? 16 named shader between the northern woods and bann-didein in domnann",
+      "moioch fhearian is a 16 named by the grey field in domnann, sporites round her",
+      "bloinigein is the named tangleweed for magical branches in domnann, 11. take the second branch from it",
+      "leptus? a 6 named botonid in domnann, there are two of them far apart",
+      "celendir is a 4 named sylvanshade east of the grove. it doesnt attack, leave it"
+    ]
+  },
+  "loremaster": {
+    "intro": "Domnann, the forest of the isle's heart, still itself. The [Grove] grew its rooms for the Sylvan; the [springs], the [seed-house] and the [wardens' stone] are kept there. Outside: the [Grey Field], the [sylvanshades], the [cniogcrag]. The market is at [Bann-didein].",
+    "topics": {
+      "Grove": "The Grove of Domnann, rooms grown out of living trees when the Sylvan asked. The realm's companies were given the first tree on the right and the one behind it. Niara, Priestess of the Grove, keeps it.",
+      "springs": "The named springs of Domnann, Tobar Lisín and Tobar na Craoibhe among them, dry since their water bent toward the hollow under Galladoria. The water-tasters visit them every morning with a twist of grey bark.",
+      "seed-house": "Xaga's seed-house, jars of every plant of the isle sealed and dated. No new seed-keeper has been chosen. A Bri Leith captain's shield hangs there.",
+      "wardens' stone": "The stone in the Grove with the names of the Domnann wardens who died at Tur Suil and in the hollow. The banners of the lost clans hang above it, brought down from the tower.",
+      "Grey Field": "The stretch north of the [Grove] that went grey overnight in the second summer of the Root's garden. The sporites came up out of it. The Priestess of the Watch counts it from her rise.",
+      "sylvanshades": "Shadows of Sylvan, the guides say, that came loose in the hollow and came home without their owners. The catty ones bite at the Grove gate; the stalking ones in the west follow travellers for days.",
+      "cniogcrag": "Once the forest's rot-eaters, cleaners of dead wood; the rot of the hollow taught them to want living wood. They come in herds with herders now, and the wardens burn their trails.",
+      "Bann-didein": "The market on Domnann's northern edge, where outlanders and Hibernian traders keep forge and stable. The Sylvan buy there and leave before dark.",
+      "Ultan": "A druid of Tir na Nog who keeps Domnann's rain records in a tree by the gate. The rains fall heavier after a company has gone down into the hollow; he wants to know why.",
+      "Insidious Samn": "The wardens of the Grove say the cniogcrag were rot-eaters once, small grey cleaners of a forest floor, until something in the north-east taught them to prefer the living wood. If anything taught them, it was Samn. He is larger than the infesters and cutters who follow him and slower to show himself, and the Grove's woodcutters call him insidious because nobody has ever seen him start a rot, only found one already going where he has been. Burn the stump, the wardens say. Never leave it standing.",
+      "Norag": "Norag is the smallest of the named cniogcrag and the one the traders of [Bann-didein] curse most, because it works the western edge of the cniogcrag woods where the northern market's carts come closest. It does not fight carts. It eats the wheel-spokes while the carters sleep, and the Bann-didein folk say a cart that loses a wheel on the north road has met Norag, even when it has only met a stone. The wardens think it is young, and that it will be worse when it is not.",
+      "Aileiss": "The shaders of the northern woods are Sylvan by their shape and by nothing else, the wardens say: Sylvan who stood too long in the shade of the hollow's mouth when the Root went careless, and came back with the shade still on them. Aileiss walks with them and is the one they follow. She was a warden of the northern paths once, Niara of the Grove says, and her name is still on the [wardens' stone]. Nobody has been willing to cut it off.",
+      "Derbidich Angurich": "Derbidich Angurich has a long name for a short temper, the Bann-didein traders say. He is one of the shaders of the northern woods, Sylvan in his shape, and he keeps the ground between Aileiss and the northern market as if it were his to keep. The traders say he was a seller of honey in [Bann-didein] before the shade came on him, and that he still stops travellers on the path to ask what they are carrying, and then forgets to wait for the answer.",
+      "Moioch Fhearian": "The priestesses of the Grove do not like to speak of Moioch Fhearian, because she wears their shape. She walks the edge of the [Grey Field] among the maundering sporites, robed and tall as Niara herself, and the young of the Grove who meet her on the path have been known to greet her before they see her eyes. The wardens think she was a priestess who went out to the Grey Field in its second summer to bless it, and that the field blessed her back.",
+      "Bloinigein": "Bloinigein is the eldest of the tangleweeds that eat the Grove's roots, older than the ones the young are sent to cut back on their first morning, and the druids of the Grove grow their teaching branches from it. That sounds like a kindness and is not: a druid's first branch is taken from a botonid leaf, and the second is cut from Bloinigein, which does not give it up gently. Ciarda the druid trainer says a branch that fought you is a branch that remembers you.",
+      "Leptus": "There are two of Leptus, which the wardens of the Grove find funnier than anyone else does. It is a botonid, one of the plants that learned to walk and did not like it, and it was named for being thin, by a scholar of Tir na Nog who saw one and wrote it down, and then saw the other a long way off and wrote it down again with the same name. Neither Leptus has forgiven the other for it.",
+      "Celendir": "Most of the sylvanshades of Domnann came home from the hollow without their owners and bite whoever they meet. Celendir does not bite. He is a shade that remembers his own name, the wardens say, the only one they know of, and he stands east of the Grove toward the lake as if he were waiting for the Sylvan he belongs to. The Grove leaves a lamp in the window that faces him. Nobody has said for whom."
+    }
+  },
+  "book": {
+    "title": "The Grove Book, by Niara, Priestess of the Grove",
+    "pages": [
+      "Every tree of the Grove was asked. That is the first thing a priestess of the Grove learns and the first thing I tell the mainlanders, who want to know who built it. Nobody built it. The Sylvan asked the trees for a room, and waited, and the trees grew one, and the next generation asked for another. It took longer than your realm has had kings. When your companies came, we asked for the first tree on the right, and the tree behind it, and the Grove grew them for you in a season, which is the fastest it has ever grown anything.",
+      "The springs are dry. The mainland calls this a sorrow; we call it a debt. Our water went toward the hollow under Galladoria in the years the Root grew strong, and it has not come back, except once, for an hour, the morning after your companies first freed the water guardian. The water-tasters go to the springs every morning with grey bark and taste the stone. One morning they will taste water. They do not expect to, but a priestess does not tell a water-taster what to expect, and the tasters do not tell me what the stone tasted of, only that it was dry.",
+      "North of the Grove the grass went grey in a night, in the second summer of the Root's garden, and the spore-things came up out of it walking. The shadows came home from the hollow without the people who cast them. The rot-eaters of the north-east forgot what dead wood tastes like and began on the living. Each of these the guides will name for you before they let you out of the gate. The Priestess of the Watch counts the grey from her rise in the north-west, and sends me the count, and I write it here.",
+      "This is what Domnann keeps: the springs, the seeds, the stone with the wardens' names, the banners from the tower, and the count. We asked your realm for swords for this, and only this. When a company goes out of the gate, a guide walks it to the edge of the forest and touches the gate's bark on the way, so that the forest remembers it is coming back. When it comes back, I count it at the stone, and the ones who do not come back I give to the stone-cutters. And the Grove grows another room."
+    ]
+  },
+  "bosses": [],
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "hy-brasil",
+      "relation": "the region overview"
+    },
+    {
+      "id": "galladoria",
+      "relation": "the hollow its springs drain toward"
+    },
+    {
+      "id": "giant-sporite-cluster",
+      "relation": "whose spores made the Grey Field"
+    },
+    {
+      "id": "xaga",
+      "relation": "keeper of its seed-house"
+    },
+    {
+      "id": "tur-suil",
+      "relation": "whose Master's tithe its wardens pay in paths"
+    },
+    {
+      "id": "caillte-garran",
+      "relation": "the lost grove to the west"
+    }
+  ]
+}

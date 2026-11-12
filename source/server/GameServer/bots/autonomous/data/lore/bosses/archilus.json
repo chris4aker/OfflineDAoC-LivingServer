@@ -1,0 +1,118 @@
+{
+  "id": "archilus",
+  "name": "Archilus",
+  "catalogKey": "open-world/archilus",
+  "locationId": "worlds-end",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "He shares a model with Galladoria's Conservator (817).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Archilus.cs; source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs"
+    },
+    {
+      "text": "Archilus: level 58 (a plain GameNPC, not an epic boss), tether 4,500. Once he is below 90% health, every hit from a GamePlayer (a real player; pets, companions and gamebots are not GamePlayers) spawns a young death shroud (level 40-45) next to him that attacks that player, with the broadcast that he 'will start to shake violently'; every young death shroud within 5,000 dies with him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Archilus.cs (integration/1.2)"
+    },
+    {
+      "text": "Living Server lore: the Sylvan burn their dead because of World's End; Kontar's clan stopped; Archilus was a chieftain's mother's shroud; the wardens send their hounds; the burning on the clan's own wood.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The Sylvan burn their dead. Every village on Hy Brasil does it, on a pyre of the dead one's own fallen wood, and the reason is World's End. Things that die at the edge do not always lie down; the sour ground the Root left behind keeps something in them, and the shrouds they were wrapped in sometimes walk on their own, long after the body inside has gone to dust. The Sylvan began burning when the first shrouds walked, in the generation after the Long Pushing, and have never stopped.\n\nKontar's clan stopped. When the springs of the edge soured and the chieftain drank, the clan stopped sending its dead to the pyre, and the Domnann wardens who went out to ask why were told that the edge keeps its own. It does. The headland east of Kontar's camp is a field of winding-sheets now, flapping on no wind, and the eldest of them is Archilus.\n\nArchilus was the shroud of someone, once; the Sylvan say a chieftain's mother, wrapped in the best linen the edge had, which is why he is larger than the rest. There is nobody left in him. He is a sheet with a will, and his will is to wrap. What makes him worse than any other walking shroud is what happens when he is torn. Wound him deep enough and every blow after that shakes him violently, like a sheet on a line in a gale, and a new young shroud rips free of him and flies straight at the one who struck, to wrap that one in turn. He comes apart into more of himself, and each piece knows exactly whose hand tore it.\n\nThe Domnann wardens learned how to clear the headland the hard way. A warden who strikes Archilus with her own hand pays for every blow; the old wardens send their hounds and their bound beasts at him instead, and let the teeth do the tearing, because the young shrouds go only for the hand that tore them and never for a hound. When the eldest shroud finally comes apart for good, all the young ones fall where they are, empty linen on the grass. The wardens burn the lot, every scrap, on Kontar's clan's own dead wood. It is the only burial the people of the edge have had in a generation.",
+  "legend": "Below 90% health, every single hit a real player lands on Archilus spawns a young death shroud (40-45) that goes for that player. Hits from pets, companion bots and gamebots do not spawn anything, because only GamePlayer damage counts. So: let the pets and your companions do the damage once he is under 90%, and the human player heals, buffs or holds the shrouds. A real-player nuker who keeps casting will be buried. When Archilus dies every young shroud dies with him, so do not bother killing them if he is nearly down. He is only 58 and not an epic boss; tether 4,500.",
+  "yells": {
+    "aggro": [
+      "Lie down. Lie still. Be wrapped.",
+      "Linen for you. Linen for all.",
+      "The edge keeps its own."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "Tear me, and I will wrap the hand that tore."
+      }
+    ],
+    "death": [
+      "Burn... the linen... at last...",
+      "Unwrapped..."
+    ],
+    "slay": [
+      "Wrapped.",
+      "Lie still now.",
+      "Another for the headland."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Empty winding-sheets flap on the wind. No wind blows.",
+      "A headland of linen. Nobody in it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=89",
+        "text": "Archilus shakes violently, and shrouds tear loose!"
+      },
+      {
+        "trigger": "death",
+        "text": "Every shroud on the headland drops, empty."
+      }
+    ],
+    "realmFirstKill": "Archilus, eldest of the death shrouds, is torn apart."
+  },
+  "botLines": {
+    "briefing": [
+      "under 90% every hit from a real player spawns a shroud on that player. [let the pets hit him|bots do the damage]",
+      "pets and companions dont make shrouds. [send the pets|let the bots tear him]",
+      "all the shrouds die with him. [burn him, ignore the shrouds|finish him fast]",
+      "hes only 58. tether 4500. [easy if you dont panic|small group ok]"
+    ],
+    "aftermathWin": [
+      "archilus torn apart. [all the shrouds dropped|empty linen everywhere]",
+      "the pets did it all. [like the wardens' hounds|good dogs]",
+      "nobody got buried in shrouds this time. [nice|learned]",
+      "burn the linen. [the sylvan would want it|ok]"
+    ],
+    "aftermathLoss": [
+      "i kept nuking him and got [buried in shrouds|eight shrouds on me]",
+      "everyone meleed under 90 and [shroud city|wiped]",
+      "should have let the pets do it. [only players spawn them|duh]",
+      "pulled him into kontar's camp. [bad|ouch]"
+    ],
+    "rumour": [
+      "[heard|someone said] archilus was a chieftain's mother's shroud",
+      "the sylvan burn their dead because of world's end. [archilus is why|creepy]",
+      "[word is|heard] the domnann wardens send their hounds at archilus, never their own hands",
+      "[heard|someone said] archilus looks like the conservator in galladoria. [same old shape|weird]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Archilus",
+    "text": "The eldest walking shroud of [World's End], on the headland of Kontar's unburned dead. Tear him and he tears into more of himself, each piece for the hand that struck. The wardens send hounds."
+  },
+  "bookPage": "From Coll of the Domnann guides: every Sylvan burns their dead, on their own fallen wood, because of the edge. Kontar's clan stopped, and the headland is full of their linen, and the eldest sheet is Archilus. Tear him deep and he tears into more of himself; each young shroud flies at the hand that tore it, and remembers that hand, and no other. The old wardens never touch him. They send their hounds and their bound beasts, and the shrouds do not go for teeth. When he comes apart for good the rest fall where they are. We burn it all on the clan's own wood. It is the only burial the edge has had in my lifetime.",
+  "chronicle": {
+    "win": "{realm} rode out to World's End under {raidLeader} and killed Archilus in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at World's End by Archilus after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "kontar-the-corrupt",
+      "relation": "his clan's unburned dead"
+    },
+    {
+      "id": "elro-the-ancient",
+      "relation": "neighbour at the edge"
+    },
+    {
+      "id": "conservator",
+      "relation": "same old shape as Galladoria's keeper of springs"
+    }
+  ]
+}

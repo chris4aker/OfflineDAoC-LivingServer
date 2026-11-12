@@ -82,6 +82,13 @@ public sealed class AutonomousBotVoiceCorpus
             _byId.TryAdd(line.Id, line);
     }
 
+    /// <summary>The corpus with more lines (the lore bible's, Living Server 1.2); a line whose id is already there is left out.</summary>
+    public AutonomousBotVoiceCorpus WithLines(IEnumerable<Line> extra)
+    {
+        Line[] added = (extra ?? []).Where(line => line != null && !_byId.ContainsKey(line.Id)).ToArray();
+        return added.Length == 0 ? this : new AutonomousBotVoiceCorpus(Lines.Concat(added).ToArray(), Scenes, Voices);
+    }
+
     /// <summary>The corpus line with this id, or null.</summary>
     public Line LineById(string id) => id != null && _byId.TryGetValue(id, out Line line) ? line : null;
 

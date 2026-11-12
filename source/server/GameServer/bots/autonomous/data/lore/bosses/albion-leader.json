@@ -1,0 +1,121 @@
+{
+  "id": "albion-leader",
+  "name": "Albion leader",
+  "npcNames": [
+    "Albion leader"
+  ],
+  "locationId": "jamtland-mountains",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "realm-enemies"
+  ],
+  "related": [
+    {
+      "id": "hagall-the-red-dagger",
+      "relation": "the Red Dagger who sells him Midgard's back roads"
+    },
+    {
+      "id": "red-hagen",
+      "relation": "the keeper of the map the roads are drawn on"
+    },
+    {
+      "id": "geyra",
+      "relation": "the fenrir runner who carries the Daggers' messages to him"
+    }
+  ],
+  "facts": [
+    {
+      "text": "The Albion leader is a level-64 human of Albion (an Albion model; his template raises the spawn's level 52 to 64) standing alone in the far north-west of Jamtland (663799, 619103).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60157690)"
+    },
+    {
+      "text": "In the viking epic 'An End to the Daggers', Lynnleigh sends players to find Hagall and the Red Dagger camp, to Audun in Jordheim, and then to remove the Albions waiting for the Red Daggers.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Template: aggressive (200 at range 500). Its template gives it no faction, so it never brings friends (bring-a-friend needs a faction).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Below Nottmoor Faste, in the far north-west of the Jamtland Mountains, there are hills where nobody of Midgard lives, and in them an Albion man has sat in a camp of tents for longer than the road-warden of Glenlock has been road-warden. He has a name, the Red Daggers say, but they do not use it, and he does not give it. Midgard calls him what the viking epic calls him, the Albion leader, and he seems to like that.\n\nHe buys roads. The war between the realms is fought for keeps, and the keeps hold the roads, and the roads between the keeps, the shepherds' paths and blind passes and goat-tracks over the cold shoulders of the mountains, are held by nobody. The Red Daggers know them. Hagall was a huscarl of this frontier once and walked them all, and Red Hagen keeps the band's map, marked with which watch-post watches which path on which nights. Geyra the fenrir runs the messages. The Albion leader buys what the map shows, in Albion silver, and sends it south over the passes to the men in Albion who plan the next thrust at the keeps.\n\nHe is not a spy, the road-wardens say; a spy hides. He is a merchant of a kind Midgard did not know it had to fear, who has understood that a frontier is a market, and he has been so long in the hills that the snowshoe bandits trade with him and the wyvern on the ridge above has stopped looking at him. The Albion men who were with him at first have gone home, or died, or been removed by the warriors of Midgard whom Lynnleigh sends at the end of her long chain; he stays. Halldor of Glenlock wrote that he is the only Albion man he has ever met who seemed to love Jamtland.\n\nHe fights like what he is, a hard veteran of Albion's frontier wars, larger in his skill than in his size, alone in his hills; there is nobody left in the tents to call. The viking captains of Midgard say that removing the Albions waiting for the Daggers closes the last door of the band's trade, and that it does not stay closed. Another always comes. This one, they admit, is the one who taught the others how.",
+  "legend": "The Albion leader is the last target of the viking epic An End to the Daggers: after Hagall's camp and Audun in Jordheim, Lynnleigh sends you to remove the Albions waiting for the Red Daggers, and this is their leader, in the far north-west hills of Jamtland below Nottmoor. His template makes him level 64 (the spawn says 52), so con him before you go: he's much tougher than the epic's other targets. He stands alone, no faction, no adds; no special abilities, not CC-immune. Bring a full group at the epic level, or a strong one above it. Serk the wyvern hunts about 5,500 away on the ridge; don't get both.",
+  "yells": {
+    "aggro": [
+      "Midgard's own warriors. Hagall said you would come eventually.",
+      "Every road has a price. Yours is high.",
+      "For Albion, and for the hills."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "You think I am the only buyer? There is always another."
+      }
+    ],
+    "death": [
+      "Another... will come... I taught them...",
+      "I did love... these hills..."
+    ],
+    "slay": [
+      "Paid in full.",
+      "Albion thanks you for the road.",
+      "One fewer to sell to."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An Albion man in Midgard's hills, waiting.",
+      "Old tents, low fires. A buyer of roads."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Albion leader steadies his blade, unhurried."
+      }
+    ],
+    "realmFirstKill": "The Albion leader falls. The Daggers' last door closes."
+  },
+  "botLines": {
+    "briefing": [
+      "albion leader is level 64 by template, not 52, con him",
+      "alone in far sw jamtland, no adds",
+      "full group at least",
+      "serk is 5500 off, dont get both"
+    ],
+    "aftermathWin": [
+      "albion leader down, daggers are done",
+      "64 was rough but fine",
+      "back to lynnleigh",
+      "albion can buy their own roads"
+    ],
+    "aftermathLoss": [
+      "he said 52 on the quest, hes 64",
+      "too few",
+      "serk came over",
+      "he hits like a 64 because he is one"
+    ],
+    "rumour": [
+      "the albion leader buys midgards back roads from the red daggers",
+      "hes been in the jamtland hills so long the bandits trade with him",
+      "halldor of glenlock says the albion leader loves jamtland",
+      "kill him and another albion comes, this one taught them how"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Albion leader",
+    "text": "The Albion man in the hills below Nottmoor who buys Midgard's back roads from the Red Daggers. The viking epic ends with him. See [the Daggers' roads] and [Halldor]."
+  },
+  "bookPage": "From The Four Roads, by Halldor, road-warden of Glenlock: I went down to the Albion tents once under a truce flag, to ask him to stop. He gave me hot wine and talked for an hour about the passes, which he knew better than I did, and about the light on the cold shoulders at dawn, and the lynx, and the old cockatrices. He said Albion has nothing like it. Then he said he would not stop, and that if I stopped him, another would come, and would not love the place, and I would like him less. He was right. I did.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} removed the Albion leader from Jamtland's hills in {minutes} minutes.",
+    "loss": "The Albion leader kept his tents in Jamtland against {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

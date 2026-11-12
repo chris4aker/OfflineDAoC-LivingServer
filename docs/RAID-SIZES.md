@@ -28,8 +28,15 @@ Trollheim and Tur Suil 160; the others 96-120) and recruited up to 300, and the 
     realm's 300.
 - **Recruit cap:** a quarter above what the raid must stage, in whole parties (RecruitCap of the full size, scaled by
   the same percentage).
-- **Short start and hub departure:** half of what the sized raid needs, at least three parties (24). The old minimum
-  of 40 was 57% of a 70-bot dragon raid and 82% of one trimmed to 49.
+- **Short start and hub departure** (owner, 2026-11-11: "go with who came"): after the hub's 30 minutes the raid leaves
+  with whoever gathered, and at its staging deadline it goes in with whoever is there, three parties (24) at least.
+  Until then it was half of what the sized raid needs: on the owner's PC (build e17a92b) Midgard's and Hibernia's epic
+  rallies, sized up to 134 and 142 after losses, gathered 55 and 69 in 90 minutes, never left their hubs and ended
+  "Failed rally" without a fight.
+- **A loss under strength is no result:** a raid that never had the bots it was sized for (the most it recruited is
+  under what it must stage) and is defeated or times out does not move the next raid's size or the Special Forces'
+  call-up (`REALM_RAID_ENDED ... mostRecruited= underStrength=True`; in the ledger its details end "Under strength: 55 of
+  134."). A win under strength is a win. The Herald still tells it as a defeat.
 - **Epic Special Forces** (owner, 2026-11-04): "keep 24 and if they are called in on the same raid type where 24 made
   the second run win, it's 16 now". They don't scale with the raid's size. Per encounter: 24 to start; a win they took
   part in makes the next call-up there a party (8) smaller, down to 8 (they always answer a wipe); a win without them
@@ -87,5 +94,15 @@ The period sizes are for 2003 players. Two things pull the other way, and win-ra
 - **Bots play worse:** confirmed on the first night (1 win in 7). Raids start at 125% and grow up to 200% when they
   keep losing. Overnight the defeated raids already had 86-104 bots with the Special Forces against period sizes of
   48-64 (Tuscaran Glacier 94, sized 58 by the restart), so the owner raised the ceiling from 150% to 200%.
+
+## Boss mechanics that count raiders (1.2)
+
+Since 1.2 the bosses count and pick bots too. A few mechanics make an add or a heal per raider, so a bot raid at up to
+200% of its period size would face far more than a full 2003 raid did. `EncounterFloodGuard` caps each such count at
+the period size in the table above (`SuggestedBots`): Legion's adds and kill heals, High Lord Saeor's kill heals and
+Beliathan's minions (Darkness Falls, 64), Nosdoden's spirits (Trollheim, 64), the Green Knight's trees and Oona's undead
+(on the dragon raids' way, 70), and Risnir Cruss's apparitions (no raid: 40, the smallest period size). Up to that size
+the mechanic is the original; each cap is its own setting (`EncounterFloodGuard.SetLimit`, 0 = none). The server log's
+`EPIC_FLOOD_GUARD` line shows a cap at work.
 
 None of this has been played in game yet. `REALM_RAID_SIZED` in the server log shows each raid's size and why.

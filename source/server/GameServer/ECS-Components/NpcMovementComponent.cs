@@ -986,7 +986,10 @@ namespace DOL.GS
             int arrived = formation && !leaderWalking ? AutonomousGroupFormationFollow.ArrivedTolerance : MinFollowDistance + 1;
             if (distanceSquared <= arrived * arrived)
             {
-                TurnTo(FollowTarget);
+                // An autonomous gamebot re-faces what it follows only when more than 30 degrees off, not on every follow
+                // check (Living Server 1.2: a party standing around its leader no longer turns with its every step).
+                if (!BotTurning.HoldsFollowHeading(Owner, FollowTarget))
+                    TurnTo(FollowTarget);
 
                 if (IsMoving)
                     UpdateMovement(0);

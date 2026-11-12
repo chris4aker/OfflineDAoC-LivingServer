@@ -1,0 +1,141 @@
+{
+  "id": "syssro-the-ruthless",
+  "name": "Sys'sro the Ruthless",
+  "catalogKey": "avalon-city/syssroruthless",
+  "locationId": "avalon-city",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health. Fifteen Sys'sro's Pit Monsters (5,000 health, take no damage at all, snare 60% on hit) live in the pit and die with him; every 10-15 s he throws a random real player near him, never a bot and never his target, into the pit (50: 41489, 40699, 8145). Pulling him brings six syhr'phint alblasters and two dragoons.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs"
+    },
+    {
+      "text": "The drakoran of the city come in five clans whose names echo their lords': drau'gyn (Dra'argus), dry'ak (Dura'ek), syhr'phint (Sys'sro), vyr'em (Vera'erius) and wi'voron (Weno'iak); the lords' linked packs are of their own clan. The clan reading is inferred from names and packs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Sys'sro's pit monsters (5,000 health each) take no damage, snare 60% and die with him; every 10-15 s he throws a random real player near him (never a bot, never his target) into the pit.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs"
+    },
+    {
+      "text": "The syhr'phint pit-wardens of the burnt coast and the blood-fed beasts, the cloister well, Ifor's cousin Tegwen, the catchpoles' law and the ledger of the pit are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Sys'sro the Ruthless is lord of the syhr'phint, the other drakoran clan that remembers where it came from: the prison-pits cut in the cooled lava of the burnt coast across the western sea, which the syhr'phint kept as taskers, catchpoles and pit-wardens. He was a pit-warden's son and fed his mother's beasts by hand. By the oldest syhr'phint custom a warden's beasts are fed on the warden's own blood from the day they are whelped, until they are bound to him like a limb: no blade bites them while he lives, and when he dies they lie down beside him. Elowen of Caer Gothwaite was told so under parley and did not believe it.\n\nWhen Dura'ek parted the burned city, Sys'sro got the scholars' cloister and dug his pit where Chancellor Rhydderch's blessed well had been, lined with the cloister's paving by conquered readers who were the first to go in. From the cloister his taskers run the city's work and his catchpoles its streets; his alblasters and dragoons stand at the edge so that no one climbs out alone. Ifor Netmender's cousin Tegwen, caught carrying a book under the drakoran's nets, spent nine days being run slow round the pit floor by beasts that would not kill her.\n\nHe is no duellist. He fights whoever stands in front of him and reaches past to seize one of the others and throw them in: never the one he is fighting, by the catchpoles' law that the pit is for whoever came with your enemy. The readers noted that the ones he throws are strangers who came across the water of their own will. The pit ends as it ended for Albion's first knight and for Tegwen: the companions above go for the lord, and the beasts lie down when he falls.\n\nHis ledger of everyone thrown in, copied by Elowen, shows the thrown one wins whenever the lord loses. The other lords despise and need him. He wants the city to keep order, as a pit keeps order.",
+  "legend": "Fifteen pit monsters live under him and nothing hurts them; they die when he does. If he throws you in, heal and hold on while the others burn him. Kill his alblasters and dragoons first, and keep the healers well back from the edge.\n\nEvery ten to fifteen seconds he throws someone into the pit, and in this world that someone is always you, never a bot. Fifteen pit monsters wait down there, they snare, and nothing hurts them; do not waste a swing. They die the moment Sys'sro does, so the answer is speed: kill the alblasters and dragoons of his faction who stand at the cloister edge and come in with him, then burn him while whoever is in the pit heals and holds on. Bots are never thrown; only you are. Keep a heal ready on yourself.",
+  "yells": {
+    "aggro": [
+      "Another for the pit!",
+      "Order! Order in my cloister!",
+      "Catchpoles! Take them!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Feed them! Feed my beasts!"
+      }
+    ],
+    "death": [
+      "The pit... is hungry still...",
+      "Who keeps order... now..."
+    ],
+    "slay": [
+      "Down you go.",
+      "Feed them.",
+      "Order is kept."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ground falls away into a pit. Something moves in it.",
+      "The cloister garden. The pit in the middle stinks."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Sys'sro hurls the living into his pit!"
+      }
+    ],
+    "realmFirstKill": "Sys'sro the Ruthless is dead. The pit goes hungry."
+  },
+  "botLines": {
+    "briefing": [
+      "syssro throws people in the pit with 15 monsters. if its you, shout, we come get you",
+      "his archers and dragoons are linked, kill them first",
+      "syssro throws you in the pit. the 15 pit monsters cant be hurt, they die when he does. burn him",
+      "healers stay back from the pit",
+      "if youre in the pit heal and hold on, we burn syssro"
+    ],
+    "aftermathWin": [
+      "nobody stayed in the pit. good rescue",
+      "ruthless is dead. pit's closed",
+      "he died and the pit monsters went with him",
+      "the catchpoles are out of a job",
+      "burned him fast, the pit never mattered"
+    ],
+    "aftermathLoss": [
+      "three people in the pit and nobody went down to help",
+      "got thrown in the pit and we were still on the alblasters",
+      "healers stood at the rim and got thrown",
+      "the alblasters shot us to bits",
+      "spent the fight hitting pit monsters. they cant be hurt"
+    ],
+    "rumour": [
+      "heard sys'sro feeds people to the things in his pit",
+      "[someone said|heard] sys'sro's own people call him ruthless like its a compliment",
+      "heard the pit is in the old cloister garden",
+      "the other drakoran lords hate sys'sro but need him, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sys'sro",
+    "text": "The Ruthless. Fifteen beasts live in his pit, and he throws men into it. Keep your back to the wall."
+  },
+  "bookPage": "The catchpoles took the cloister, where we used to walk between lectures, and their lord dug a pit in the middle of the garden where the old pear tree stood. My fishermen say he keeps beasts in it, fifteen at the least, and feeds them on thieves and shirkers and anyone he dislikes, including his own kind. One fisherman saw a knight of Albion thrown in. He says the knight's companions did not go down after him. They went for the lord instead, all of them at once, and when the drakoran lord fell the beasts in the pit lay down where they were, and the knight climbed out over them, bloodied and alive. The drakoran, it seems, do not go down after each other.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} climbed out of the pit and ended Sys'sro the Ruthless in {minutes} minutes.",
+    "loss": "Sys'sro fed {realm}'s raid to his pit one by one; {raidLeader} could not pull them out."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "duraek-the-empowered",
+      "relation": "the lord he serves, who gave him the cloister"
+    },
+    {
+      "id": "veraerius-the-brave",
+      "relation": "despises him aloud"
+    },
+    {
+      "id": "wenoiak-the-enlightened",
+      "relation": "buys his tallies of the city's stores"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Gaolers of the Burnt Coast",
+      "text": "The syhr'phint are the other drakoran clan that remembers where it came from, and what it remembers is a prison.\n\nOn the coast of burnt mountains across the western sea, the syhr'phint told Elowen of Caer Gothwaite, the drakoran kept their criminals and their captives in pits cut into the cooled lava, and the syhr'phint were the clan that kept the pits: taskers to set the kept to work, catchpoles to bring them in, and above all the pit-wardens, who lived beside the pits all their lives and were buried in their walls. The other clans despised them for it and could not do without them. The syhr'phint say that a people who burn as the drau'gyn burn and fight as the vyr'em fight needs someone to decide who goes in the pit, or it will put everyone in.\n\nSys'sro was a pit-warden's son. His mother kept the deepest pit on the coast, the syhr'phint say, and kept beasts in it, and he grew up feeding them by hand. That is the oldest syhr'phint custom and the strangest: a pit-warden's beasts are fed from the warden's own palm, on the warden's own blood mixed with their meat, from the day they are whelped, until they are bound to the warden as a limb is bound to the body. No blade bites a warden's beast while the warden lives. When the warden dies, the beasts lie down beside him and do not get up. Albion learned the second half of that custom from a knight of its own in Sys'sro's pit, as Caer Gothwaite tells it. The syhr'phint had told Elowen the first half, under parley, a year before, and she had not believed them.\n\nSys'sro crossed the western sea with his beasts in the hold of a syhr'phint ship, and the fishermen of the Avalon shore say that ship was the loudest of the fleet, because the beasts howled the whole way and the wardens sang to them."
+    },
+    {
+      "title": "The Cloister Garden",
+      "text": "When Dura'ek parted the burned city among the five clans, he gave the syhr'phint the scholars' cloister, and Sys'sro dug his pit where the cloister well had been.\n\nThe cloister was the quietest place in Avalon. It was a square garden enclosed by a walk of columns between the colleges, where the readers walked between lectures and argued under their breath, and it had a well in the middle that Chancellor Rhydderch of the law had blessed for the colleges' use in the year the charters were sealed. The syhr'phint widened the well into a pit, with taskers driving the conquered Avalonians to the digging, and they lined it with the cloister's own paving, and Sys'sro put his beasts in it on the night it was done. The readers who were made to dig it were the first to go in. The syhr'phint say they were not fed to the beasts, only kept there; the readers' families say there is no difference that a family can tell.\n\nThe taskers of the syhr'phint keep the city's work now from the cloister: the street-mending and the hauling, the carts of the tranters and the tallies on the readers' own slates, and the catchpoles walk the streets and bring back whoever shirks. Sys'sro's alblasters and dragoons stand at the cloister's edge with their crossbows and their pikes, to see that nobody who goes down climbs out by himself.\n\nIfor Netmender, whose boats carried the readers' books out of the city in the burning, lost a cousin to the pit in the second winter. The cousin, Tegwen, was a net-maker who had stayed in the city to mend the drakoran's nets for bread, and was caught carrying a book out under the nets. Ifor's account says she was in the pit for nine days. The beasts did not kill her. They ran her round and round the pit floor, slowing her, until she could not run, and then lay down beside her and waited for Sys'sro to decide."
+    },
+    {
+      "title": "The Ruthless",
+      "text": "Sys'sro's people call him the Ruthless, and it is a compliment among the drakoran. It means a lord who decides.\n\nHe is not a duellist. The vyr'em say a lord who needs a pit is no swordsman, and Sys'sro would agree with them and think it beside the point. A syhr'phint lord does not need to win; he needs to put the right one in the pit. He fights whoever is in front of him, and while he does, he watches the others who have come with that one into his cloister, and every little while he reaches past the man he is fighting and seizes one of them and throws them down among the beasts. He never throws the one he is fighting. The syhr'phint say that is the catchpoles' law from the burnt coast: the pit is not for your enemy, who will be dealt with; it is for whoever came with him, who might otherwise help.\n\nThe readers of Caer Gothwaite noticed something else, and wrote it down in a careful hand because they were not sure of it. The ones Sys'sro throws are strangers to the isles: those who came across the water to Avalon of their own will, as Albion's companies do. The readers could not say how he tells them from the others. Elowen wrote that the syhr'phint have kept captives for a thousand years and know a newcomer by the smell of the boat.\n\nThe pit is not the end, for the one who goes in, if the one who goes in can hold on. The beasts cannot be wounded and do not try to kill quickly; they run a man down and keep him slow. What ends it is what ended it for the first knight of Albion to go in, whom Caer Gothwaite remembers: the companions above going for the lord, all at once, and the beasts lying down when he fell. Ifor's cousin Tegwen came out that way too, in the end. A company of Caer Gothwaite came for the lord on the ninth day, not for her. She climbed out over the beasts."
+    },
+    {
+      "title": "The Ledger of the Pit",
+      "text": "Sys'sro the Ruthless keeps a ledger. It is the only drakoran book in Avalon that Albion has ever read whole, and it is a list of everyone who has gone into the pit.\n\nIt is written on the readers' own slates, in the syhr'phint taskers' marks, which the wi'voron reeves taught Elowen to read in exchange for the meaning of three words of the old tongues. Each entry is a mark for the one thrown in, a mark for the day, and a mark for how it ended: the beasts lay down, or the one thrown in did. Elowen copied a season of it before the slates were taken back, and her copy is at Caer Gothwaite with the nine chests of the colleges' books. The column of how it ended has more of the first mark in it than she expected. She wrote that the pit was a kind of trial, and that in a trial by the syhr'phint's law the thrown one wins whenever the lord loses.\n\nThe other drakoran lords despise Sys'sro and need him. Vera'erius says so aloud. Dura'ek does not say it, but the dry'ak bring their shirkers to the cloister and not to the chancellors' court. Weno'iak buys the syhr'phint's tallies of the city's stores and reads them at night in the observatory. The drau'gyn will not go near the cloister; they say a pit is a cold thing, and they are a people of fire.\n\nWhat Sys'sro wants is the simplest thing any of the five lords wants, and the fishermen say it is also the most frightening: he wants the city to keep order, as a pit keeps order, for as long as there is a city. The Church at Caer Gothwaite preaches on his ledger on the feast of the Holy Innocents, on the text that a king who keeps a list of whom he has judged is half-way to being judged himself. The syhr'phint, told this, asked whose list the king would be on."
+    }
+  ]
+}

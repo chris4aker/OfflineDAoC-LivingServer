@@ -1,0 +1,82 @@
+{
+  "id": "devmer",
+  "name": "Devmer",
+  "npcNames": [
+    "Devmer"
+  ],
+  "locationId": "caldey",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Devmer: NPC template 60159933, level 46, the skeleton model, aggro 200 (range 500), no spells; two spawns on the western slopes of Caldey: 337267, 411159 (no faction, respawn 80 s) and 342410, 409392 (Undead Servants of Morgana, respawn 780 s), with headless footmen and ebon skeletons near.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The double burial, the two graves and the clan bard's question are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Caldey was Avalon's burying isle, and its priests of the dead kept a custom for a man who died far from home: they buried him twice, once where his body lay and once, empty, in the ground he came from, so that he should not wander between them looking for his grave. When Morgana raised the isles the custom turned on itself. Devmer was a ferryman of the western strand who drowned off Caer Sidi's rock and was buried twice: his body where the sea gave it back on the west shore, and his empty grave higher up the western slope where his house had been. Both graves opened. Now there are two of him, walking the western slope, one from each grave, and neither will lie down in the other's.\n\nThe highland clan's bard, who harms nobody and asks everything, has asked the clan for three summers which Devmer is the real one, and no one in the outpost will answer. The fishermen of Little Haven say the question is the wrong one. Both are Devmer, they say. Neither is home. One of them belongs to Morgana's dead, and the other belongs to nobody at all, which on Caldey is worse.",
+  "legend": "Devmer, level 46 skeleton, is on the western slopes of Caldey twice: two spawns of the same named, one with no faction that comes back in about 80 seconds, one with the Undead Servants of Morgana that takes about 13 minutes. Headless footmen and ebon skeletons are close. Plain melee, no spells; crush for the bones. If you need him for anything, the fast one is the one to camp.",
+  "yells": {
+    "aggro": [
+      "My grave is up the hill.",
+      "Which of us do you want?"
+    ],
+    "phases": [],
+    "death": [
+      "Home... which one..."
+    ],
+    "slay": [
+      "Bury him twice.",
+      "Into the strand."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Devmer walks the western slope. Twice."
+    ],
+    "phases": [],
+    "realmFirstKill": "Devmer has fallen. One of him, at least."
+  },
+  "botLines": {
+    "briefing": [
+      "devmer is on the west slopes of caldey twice, two spawns, one comes back fast",
+      "crush on devmer, headless footmen nearby"
+    ],
+    "aftermathWin": [
+      "got a devmer. the other one's still walking",
+      "one devmer down"
+    ],
+    "aftermathLoss": [
+      "both devmers came at once"
+    ],
+    "rumour": [
+      "[heard|someone said] there are two devmers because the priests buried him twice",
+      "heard the clan bard asks everyone which devmer is the real one"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "devmer",
+    "text": "A drowned ferryman of [caldey] buried twice, by the old custom, and risen from both graves: two of him walk the western slope. The clan's bard asks which is the real one."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} laid one Devmer to rest on Caldey in {minutes} minutes.",
+    "loss": "Both Devmers walked on; {raidLeader} of {realm} left the western slope."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "gorvos",
+      "relation": "the same double burial, on the eastern slope"
+    }
+  ],
+  "tier": "minor"
+}

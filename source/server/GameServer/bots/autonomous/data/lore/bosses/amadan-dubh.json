@@ -1,0 +1,85 @@
+{
+  "id": "amadan-dubh",
+  "name": "Amadan Dubh",
+  "npcNames": [
+    "Amadan Dubh"
+  ],
+  "locationId": "connacht",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Amadan Dubh: level 42, at about 346,400/430,300 on the highest of the Amadan's hills in north-east Connacht, among amadan touched (29-35), pookhas and alp luachra; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "The Touch of Amadan Duhb (Harper Cadwr): Bria's son Davian, at the parthanan farm, 'can't move'; the cure needs 'a vial of blood from an Amadan Touched' and then 'Kill Amadan Dubh' for his blood.",
+      "provenance": "game",
+      "source": "DataQuest 'The Touch of Amadan Duhb' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "The hill-tales say the Amadán Dubh, the dark fool, goes about the country at the turn of the year with a bundle of grass in his hand, and whoever he touches with it is never right again: they laugh at nothing, or they cannot move, or they wander off into the hills and are found there years later, still laughing. Connacht's Amadan Dubh keeps the highest of the hills north-east of Basar, and the hills below him are full of the ones he has touched.\n\nBria of the parthanan farm west of Tir na Nog has a son, Davian, who went up into those hills and came down unable to move, and the mender Llyn of Ardee told her what the old cure is: the blood of one of the touched, and then the blood of the fool himself, given back to the one he touched. Harper Cadwr of Connla sends the realm's young to get both. The Ardee folk say the dark fool does not mind; he laughs as he bleeds, and he is back on his hill by dusk.",
+  "legend": "Amadan Dubh (42) stands on the highest Amadan hill in north-east Connacht (about 346k/430k). The hills around him are 29-35 amadan touched, pookhas (33-35) and alp luachra, all aggressive, so lowbies should stay south of Basar. He is the last kill of The Touch of Amadan Duhb (Harper Cadwr in Connla): first a vial of blood from an amadan touched, then his. A group of 40ish handles him. Plain spawn, 80-second respawn. Touched (39) and Amadan (39) are on the neighbouring hills; do not chain them.",
+  "yells": {
+    "aggro": [
+      "(the dark fool laughs and holds out his hand)",
+      "A touch, only a touch."
+    ],
+    "phases": [],
+    "death": [
+      "(he laughs as he falls, and keeps laughing)"
+    ],
+    "slay": [
+      "Now you are mine. Laugh."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A tall dark shape laughing on the highest hill."
+    ],
+    "phases": [],
+    "realmFirstKill": "The dark fool of Connacht has stopped laughing."
+  },
+  "botLines": {
+    "briefing": [
+      "amadan dubh is 42 on the high hill north east of basar",
+      "touch of amadan duhb: touched blood first, then his"
+    ],
+    "aftermathWin": [
+      "amadan dubh down. [davian's cure|grats]",
+      "didnt chain touched or amadan. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "pulled the whole hill of touched. [rip|lol]",
+      "chained amadan too. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] the dark fool's touch makes you laugh at nothing or never move again",
+      "bria's son davian cant move since he went up the amadan's hills"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Amadan Dubh",
+    "text": "The dark fool of the hill-tales on Connacht's highest north-eastern hill, whose touch brings madness or stillness. The cure for Bria's son needs his blood."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Amadan Dubh in Connacht in {minutes} minutes.",
+    "loss": "Amadan Dubh turned back {realm}'s band under {raidLeader} in Connacht after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "amadan",
+      "relation": "the fool's fool"
+    },
+    {
+      "id": "touched",
+      "relation": "the one he touched first"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "id": "larionne",
+  "name": "Larionne",
+  "npcNames": [
+    "Larionne"
+  ],
+  "locationId": "gwyddneau",
+  "realm": "Albion",
+  "aliases": [
+    "the keeper of the drowned orchard"
+  ],
+  "facts": [
+    {
+      "text": "Larionne: template 60163161, level 52, a lammia at the northern end of Clifton at 331187, 444144; faction Cryptos Mythicos, no spells or styles, respawn 80 seconds; a lammia sorceress stands about 1,100 off.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lost Treasure (Ariette): get apple tree sap from the lamia Larionne at the northern end of Clifton; talk if lamias are neutral, else kill her. A player on that talk step is left alone by her.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only); source/server/GameServer/quests/QuestsMgr/QuestTalkTruce.cs (an NPC a player must talk to for a quest step, or that gives a quest in his level range, leaves him alone)"
+    },
+    {
+      "text": "Cryptos Mythicos starts at base hostility 100 (aggressive): the lammia attack a stranger unless his standing with them has improved.",
+      "provenance": "game",
+      "source": "world data: Faction table (base hostility); source/server/GameServer/gameutils/Faction.cs (above 75 aggressive, above 25 neutral) and StandardMobBrain.CanAggroTarget (faction NPCs attack by standing)"
+    },
+    {
+      "text": "The drowned orchard under the bay, Larionne's diving, the sap of a tree that grows under water and the apple tree spirit as the orchard's are Living Server writing; that her sap comes from a tree no island grows is from the Gwyddneau file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "At the northern end of Clifton, where the lammia town gives out onto the cliffs, Larionne keeps a jar of sap from an apple tree that does not grow on any island. The lammia of the town will tell a stranger that much and no more. Larionne will tell him the rest, if Clifton has a good opinion of him, and if it has not she will not tell him anything, and he will be lucky to get off the cliff.\n\nThe tree grows under the sea. Before the drowning, the lowland between Gwyddneau's heights had orchards as good as Avalon's, and when the sea came in it came quietly, the lammia say, over a single night, and the trees did not have time to die; they stood in the water and went on. The orchard is there still, at the bottom of the bay below Clifton's north end, grey trees standing in green water with fish in their branches, and on the lowest bough of the oldest of them, every spring, there is sap. Larionne dives for it. She is the only one of the lammia who will, because the orchard is full of the drowned country's dead, and they do not like to be visited.\n\nShe trades the sap or gives it according to the town's reckoning of the one who asks. Ariette in the woods behind Fort Gwyntell sends the realm's young for it, because with the sap and a knife and an archiator's hide a spirit can be called that answers to apple trees, and that spirit knows where a lost statue lies. Larionne knows what the sap is for. She says the spirit that comes is the drowned orchard's own, and that it is glad to be asked something; nobody goes down to the orchard to ask it anything but her.\n\nTo a stranger who comes to her end of the town on the errand, she is courteous; that is the custom of the errand, and she keeps it whether the town likes him or not. To a stranger who comes without it, with Clifton against him, she is a lammia, and the cliffs at the north end are high.",
+  "legend": "Larionne is a level 52 lammia at the northern end of Clifton in Gwyddneau, the apple sap step of Lost Treasure (Ariette, behind Fort Gwyntell). If your standing with Cryptos Mythicos (the lammia) is good enough she talks and gives the sap; if not, the quest says kill her. While you are on that step she leaves you alone either way. Otherwise she is aggressive to anyone the lammia do not like. No spells or styles in the data: a melee kill for a duo or small group of fifties; a lammia sorceress stands about 1,100 off. Respawn about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "Clifton does not know you.",
+      "The cliffs are high at this end.",
+      "No sap for you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The orchard's dead will have you."
+      }
+    ],
+    "death": [
+      "The orchard... still stands...",
+      "Dive... for it... yourself..."
+    ],
+    "slay": [
+      "Over the cliff.",
+      "To the orchard with you.",
+      "The fish will have you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The north end of Clifton. High cliffs, green water.",
+      "Far below, grey trees stand in the sea."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Something stirs in the drowned orchard below."
+      }
+    ],
+    "realmFirstKill": "Larionne has fallen. The drowned orchard has no keeper."
+  },
+  "botLines": {
+    "briefing": [
+      "larionne, 52 lammia at the north end of clifton. lost treasure apple sap",
+      "good lammia faction = talk to her. bad faction = kill her, she wont aggro you while youre on the step",
+      "no spells, melee, duo of 50s is fine",
+      "80 sec respawn. sorceress about 1100 off"
+    ],
+    "aftermathWin": [
+      "got the sap, killed her the hard way",
+      "talked, no fight, standing paid off",
+      "sap's in the bag, slime next",
+      "80 sec, next person can have her"
+    ],
+    "aftermathLoss": [
+      "bad faction, wasnt on the step, she aggroed",
+      "pulled the sorceress too",
+      "fell off the cliff at the north end lol",
+      "52 lammia hits harder than you think"
+    ],
+    "rumour": [
+      "[heard|someone said] larionne's apple sap comes from an orchard under the sea",
+      "heard the drowned country's orchards are still standing at the bottom of the bay",
+      "[heard|someone said] larionne is the only lammia who dives into the drowned orchard",
+      "heard the apple tree spirit in lost treasure is the drowned orchard's own"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "larionne",
+    "text": "A lammia at the northern end of Clifton in [gwyddneau] who keeps sap from an apple tree no island grows: the drowned country's orchard, still standing at the bottom of the bay, which she alone of the lammia dives to. She gives or trades it by Clifton's reckoning of the one who asks. With it, Ariette's errand calls the orchard's spirit, which knows where [eralyne]'s statue lies."
+  },
+  "bookPage": "From the Road-Book of Brother Cynog of Caer Diogel. I asked Larionne whether I might see the orchard. She took me to the edge of the cliff at the north end of Clifton at low water and told me to look straight down and wait for the sun to come out. It came out. Under the green water there were trees, grey, in rows, their branches full of small fish. She said they did not die because the sea came too quietly for them to notice. She said once a year the oldest one bleeds, on the lowest bough, and she goes down for it. I asked whether the dead down there let her. She said no. She said they let her come back up, which is not the same.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} took the drowned orchard's sap from Larionne in {minutes} minutes.",
+    "loss": "Larionne sent {raidLeader}'s company of {realm} off the high cliffs at Clifton's north end."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "eralyne",
+      "relation": "the sap calls the spirit that knows where her statue lies"
+    },
+    {
+      "id": "arvida",
+      "relation": "another lammia of Clifton who keeps the drowned country's memory"
+    }
+  ]
+}

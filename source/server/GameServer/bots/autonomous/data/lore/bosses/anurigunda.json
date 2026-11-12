@@ -1,0 +1,155 @@
+{
+  "id": "anurigunda",
+  "name": "Anurigunda",
+  "catalogKey": "fomor-city/anurigunda",
+  "locationId": "fomor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 75, 30,000 health. Her Touch of Flames covers foes in lava (45 damage every 2 s for 60 s): 'The lava falls from Anurigunda's skin.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs"
+    },
+    {
+      "text": "At 40% health she calls four Fomorians and at 20% five more (5,000 health each). Touch of Flames: radius 350 around herself, recast 10-15 s, 45 heat every 2 s for 60 s. Pulling her brings every NPC with PackageID AnurigundaBaf within 2,500 (fourteen: four anteen, four batravian, three harrien, a bolach and a shawilet).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs (integration/1.2)"
+    },
+    {
+      "text": "While she lives, any real player within 180 of her (the script passes the region number as the radius) and within 400 of her doorway point (31234, 33215) is moved to a fixed spot by her seat (30652, 33089).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs (integration/1.2)"
+    },
+    {
+      "text": "Living Server lore: she came up out of the burning sea-floor rock; the Sylvan call her 'the hearth'; she remembers Mag Tuired by who lived; Bláthín of Domnann and 'the eldest's door'; Bébinn of Howth's company; the boots.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Anurigunda is older than Fomor. When the Fomorians went down under the shore of Hy Brasil after Mag Tuired, she did not come down the stair with them; she came up, out of the sea-floor rock that runs liquid, where she had lived in the fire under the water. Her skin has never cooled, her hall's walls have run like honey and set, and the Sylvan call her the hearth. She was at Mag Tuired and remembers it from the field; she does not remember who won, only who lived. The druids of Tir na Nog cannot find her in the accounts of the battle and do not take that for proof of anything.\n\nShe sits in her hall as a grandmother sits by the fire, among the largest household in the city, and touch her and every one of them comes. Every little while the rock of her skin rises off her in a ring of molten stone over everyone standing near her, and it sticks and burns a long while; Fomorian children are taught not to sit too close to the fire. When she is pressed she calls the city, and when she is pressed harder, at the last, she calls more. She settles the city's quarrels and has never thought her own with Nogoribando worth her time.\n\nShe will not have anyone stand between her and her own door. Bláthín, a warden of Domnann, stood in it holding a captive child's hand and found herself back by the hearth without feeling herself moved; the wardens still call any place easy to enter and hard to leave the eldest's door. Companies that fought her between her and her doorway were set back by the hearth among the burning ring; those who drew her into the body of her hall were never moved.\n\nBébinn of Howth's company cleared the passages first, drew her away from the door, kept only the spears at her knee and everyone else back from the fire, and were ready when she called and called again. The eldest gave Bébinn the look Fiachra of Howth had written of, the look of someone who expected to outlive her, and she did: she returns, still burning, and Bébinn died old in Howth. The Sylvan meet each returning company with blankets and ask whether everyone wiped their boots.",
+  "legend": "Clear her household before you touch her: pulling her brings every one of them within 2,500, fourteen in all (anteen, batravian, harrien, a bolach and a shawilet). Touch of Flames is a lava ring around her (radius 350) every 10-15 seconds: 45 heat every 2 seconds for a full minute, and it stacks up on whoever stays close, so only the tanks stand at her and everyone else stays out of 350. At 40% she calls four more Fomorians and at 20% five more (5,000 health each): tanks ready for both waves. Fight her in the middle of her hall, not by the doorway: any real player who ends up right next to her on the doorway side gets moved back by her hearth. She resets to full and her called Fomorians vanish if everyone drops off her. Nicknames: 'grandmother', 'the lava lady'. Superstition: wipe your boots before you enter her hall. Nobody knows why it started. Nobody stops.",
+  "yells": {
+    "aggro": [
+      "I stood at Mag Tuired. You are not Lugh.",
+      "Children, the strangers are here.",
+      "Come in, come in. Sit by the fire."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=40",
+        "text": "Children of Fomor! Your mother calls!"
+      },
+      {
+        "trigger": "health<=20",
+        "text": "All of you. Come. Now."
+      },
+      {
+        "trigger": "teleport",
+        "text": "Come here, child. Sit by your grandmother."
+      }
+    ],
+    "death": [
+      "The lava hardens and falls away.",
+      "So long... I was so long alive..."
+    ],
+    "slay": [
+      "Another stone for my hall.",
+      "You sat too close to the fire.",
+      "I will outlive your children too."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is warm. The walls are melting.",
+      "Stone flows like honey near her throne."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=40",
+        "text": "Anurigunda's household pours into the hall!"
+      },
+      {
+        "trigger": "health<=20",
+        "text": "The eldest calls again. More of the city comes."
+      }
+    ],
+    "realmFirstKill": "Anurigunda's fire is cold at last."
+  },
+  "botLines": {
+    "briefing": [
+      "clear all fourteen of her household first. [every one|they all come]",
+      "lava ring every 10-15 sec, 350 around her. [only tanks close|casters out of 350]",
+      "more fomorians at 40 and more again at 20. [tanks pick them up|ready for both waves]",
+      "drag her into the middle of the hall, [not by the door|away from the door], or she ports you back by her chair",
+      "wipe your boots. [i mean it|old custom]"
+    ],
+    "aftermathWin": [
+      "the eldest is down. [her fire is cold|for now]",
+      "nobody but the tanks stood in the lava. [clean|nice]",
+      "both waves picked up clean. [tanks were great|grats]",
+      "everyone wiped their boots. [and we lived|coincidence]"
+    ],
+    "aftermathLoss": [
+      "the household came with her. [clear first|fourteen extra]",
+      "casters stood in the lava ring. [out of 350|the fire stacks]",
+      "second wave at 20 overran the healers. [tanks ready for it|its five not four]",
+      "fought her by the door and kept getting [ported back|moved to her chair]. [middle of the hall|away from the door]"
+    ],
+    "rumour": [
+      "[heard|someone said] anurigunda came up out of the sea floor rock, not down the stair",
+      "[heard|someone said] she was at mag tuired. remembers who lived, not who won",
+      "sylvan wardens call any place easy in hard out the eldest's door. [now i get it|yep]",
+      "[word is|heard] the sylvans meet you at the stair with blankets and ask if you wiped your boots"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Anurigunda",
+    "text": "The eldest of Fomor, who came up out of the burning sea-floor rock rather than down the stair, and remembers Mag Tuired by who lived. Her skin runs out over the floor around her; do not sit too close to the fire. She calls the city when pressed, and more at the last, and nobody stands in the eldest's doorway: they are brought back in and sat down."
+  },
+  "bookPage": "From Fiachra of Howth's account: the woman with the lava skin sat in her hall exactly as my own grandmother sat by the fire in Howth, with the young ones around her, and she looked at me through the doorway as my grandmother looked at boys who came into the kitchen with mud on their boots. I have never been so frightened by a look. The Sylvan told me later she is the oldest of the Fomorians, and that she stood at Mag Tuired and remembers it. I asked whether she remembers who won. The Sylvan said that is not how she remembers it. She remembers who lived.",
+  "chronicle": {
+    "win": "{realm} went down the shore stair into Fomor under {raidLeader} and slew Anurigunda of the lava skin in {minutes} minutes.",
+    "loss": "{realm}'s fighters under {raidLeader} were driven back up the Fomor stair by Anurigunda and her household after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "nogoribando",
+      "relation": "the city's war-leader"
+    },
+    {
+      "id": "krackenschtein",
+      "relation": "the workshop's champion"
+    },
+    {
+      "id": "myrddraxis",
+      "relation": "the hydra of the cistern"
+    },
+    {
+      "id": "balor",
+      "relation": "the king in the tower on the crag"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Out of the Deep Rock",
+      "text": "She is older than the city. The Fomorians say so, and the Sylvan, who say very little in the Fomorians' favour, do not argue. When the Fomorians came west after Mag Tuired and went down under the shore of Hy Brasil, the city says, Anurigunda did not come down the stair with them. She came up. She had gone into the sea after the battle and down, past where the water is cold, to where the rock of the sea-floor runs liquid and glowing, and she had lived there in the fire under the water while the rest of her people were still finding the isle. When they began to dig, she came up through the rock of the lowest halls to meet them, still burning.\n\nHer skin has never cooled. It cracks and runs and hardens and runs again, rock that remembers being liquid, and the floor of her hall is warm to stand on and the walls near her throne have run like honey and set. The Fomorians call her the eldest and the grandmother, though nobody in the city is her grandchild that anyone knows of, and the Sylvan call her by a word that means the hearth.\n\nShe was at Mag Tuired. The city says she remembers it not from the songs but from the field, and that she is the only one left who does. The Sylvan who have heard Fomorian children's songs say the children sing of Mag Tuired as a defeat, the way the bards of Hibernia sing it as a victory, and that the eldest has forbidden them to. She does not remember it as a defeat or a victory. Fiachra of Howth asked a Sylvan once whether she remembers who won. The Sylvan said that is not how she remembers it. She remembers who lived.\n\nThe druids of Tir na Nog have looked for her in the old accounts of the battle and not found her name. They do not take that for proof of anything. The accounts of Mag Tuired name the kings and the champions, they say, and an old woman who stood at the back of the Fomorian line and watched would not be in them, and would remember everything."
+    },
+    {
+      "title": "The Grandmother's Hearth",
+      "text": "She sits in her hall as a grandmother sits by the fire, and her household sits around her: anteen and batravian, harrien, a bolach and a shawilet, more of them than in any other hall of the city, all close. The Sylvan say it is the largest household in Fomor because no one who comes into it ever leaves. Touch the eldest and every one of them comes at once, from every corner of the hall and the passages round it, as a family comes when a stranger lays a hand on its grandmother.\n\nThe rock of her skin does not keep to her. Every little while it rises off her in a ring of molten stone that runs out over the floor around where she sits and over whoever is standing in it, and it sticks, and burns, and goes on burning for a long while after it has stopped being bright. Then it rises again. The young Fomorians of the city are taught one thing about the eldest before anything else, the Sylvan say, which every child of every people learns about every hearth: do not sit too close to the fire. Those who stand at her knee are coated in it, again and again; those who stand back from her ring are not.\n\nWhen she is pressed, she calls. Fiachra of Howth heard it from the doorway: not a shout but a word said as a grandmother says a child's name across a house, and from the halls around, more of the city came. They came again, more of them, when she was pressed harder, at the last, as a family sends its strongest when it understands the grandmother is truly in danger. The Sylvan say she has never had to call a third time.\n\nThe Fomorians bring her the city's quarrels to settle, as the old families of Hibernia brought theirs to the eldest woman of the house, and she settles them, and nobody appeals. She settled one between the makers of the workshop and the hydrars, the Sylvan say, by telling the makers their stitched thing was an insult to the dead and letting them keep it anyway. She has never settled the one between herself and Nogoribando, because she has never thought it worth her time."
+    },
+    {
+      "title": "Her Door",
+      "text": "She will not have anyone stand between her and her own door. The Sylvan learned this before the realm did, from a warden of Domnann named Bláthín who went into the eldest's hall to bring out a captive the war-band had taken and left there. Bláthín went in along the wall, quietly, and found the captive by the door, and was standing at the door with the captive's hand in hers when she found herself somewhere else: back across the hall, by the hearth, with the warm floor under her feet and the eldest looking at her. She had not felt herself moved. She said it was exactly as a child who edges toward the kitchen door finds himself back on the settle, without quite knowing how, and with the grandmother's hand on his shoulder.\n\nThe captive was set back by the hearth as well. Bláthín got them both out in the end, the long way, through a passage the eldest did not seem to count as hers, and she told the wardens of Domnann that the door was not a way out while the eldest lived. The wardens have kept it as a saying for any place that is easy to walk into and hard to walk out of: it is the eldest's door.\n\nThe realm's companies found the same in their turn. Those who fought the eldest near her own doorway, between her and it, found themselves set back by the hearth in the thick of it, among the burning ring of her skin and away from their friends, and had to fight their way out again; those who drew her away from the door into the body of her hall were never moved at all. The druids of Lough Gur say it is not a spell but a habit, the habit of a very old woman who has kept a house a very long time: nobody stands in the eldest's doorway. They are brought back in and sat down.\n\nBláthín's captive was a Sylvan child of Domnann. She grew up to be a warden herself, and the wardens say she never once in her life stood in a doorway when she could stand beside one."
+    },
+    {
+      "title": "Who Lived",
+      "text": "The first company of the realm to end her was led by a champion of Howth named Bébinn, who was old herself, and who had been told by Fiachra of Howth when she was a girl that the most frightening thing in Fomor was a look. Bébinn's company cleared the passages round the hall before they touched the eldest, every one of her household they could find, so that when she was touched there were fewer to come; and they drew her out into the body of her hall, away from her door, and only the spears stood at her knee, inside the ring of her skin, while everyone else stood back from the fire. When she called the city, they were ready for it, and when she called it again at the last, more of them, they were ready for that too.\n\nShe looked at Bébinn before she fell, the bards of Howth say, the same look Fiachra had written of, a grandmother looking at a child who has come into the kitchen with mud on its boots. Bébinn said afterwards that she understood it then. It was not anger. It was the look of someone who had outlived everyone she had ever looked at that way, and expected to outlive Bébinn.\n\nShe was right. The eldest returns, out of the deep rock under the city, still burning, and sits by her hearth again, and Bébinn died in her bed in Howth an old woman. The Sylvan say that is the eldest's whole war. She does not want the isle, as the hydrars do, or the forays, as the war-leader does. She wants to outlive the Hibernians, every one of them, as she outlived the Tuatha Dé who stood against her at Mag Tuired, and she is very patient, and she has a great deal of practice.\n\nWhen a company of the realm comes up the shore stair having ended her, the Sylvan meet it with blankets and do not ask how it went. They ask whether everyone wiped their boots before they went in. It is a joke and it is not; Fiachra started it, and the eldest has never killed anyone who did."
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "id": "sargan-the-conqueror",
+  "name": "Sargan the Conqueror",
+  "catalogKey": "tur-suil/sarganconqueror",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 71, 30,000 health, a thrusting fighter. He takes 20% less from melee and cannot be hurt beyond his tether of 1,800.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/NorsobAndSargan.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He shares a script with Norsob the Annihilator.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/NorsobAndSargan.cs"
+    }
+  ],
+  "story": "Sargan is Balor's other warlord, and he thinks of himself as the civilised one. Norsob destroys; Sargan conquers. Conquered things can be kept, put to work, taxed. It was Sargan who thought of giving Balor's soldiers the names of the heroes they had killed, so that every Balorian on the stair would be a reminder. He fights with a spear, neatly, at reach, and he holds his hall on the tower's west side as he would hold a captured town. Beyond its walls he does not trouble himself. He has never needed to.\n\nSargan is the warlord Balor sends when something is to be kept. Conquered things can be put to work, taxed and displayed, and Sargan's hall is full of display: banners of clans the Fomorians have broken hang in neat rows, and the soldiers on the stair carry, by his order, the names of heroes the Fomorians killed long ago. He thinks it a refinement. Every Balorian is a trophy that walks.\n\nHe fights with a spear, neatly, at reach, and his hide turns part of every blow like the rest of the household, spells worse than steel. Beyond his hall he does not trouble himself; the tower will not let him bleed there anyway. He and Norsob have hated each other for an age, the destroyer and the conqueror, and only the king's will keeps them from settling it. When one falls the other is said to be delighted, as if it proved which of them the king should have trusted.\n\nSargan, a Fomorian taker of islands, hangs the banners of every clan the Fomorians broke and named the Balorians for dead heroes; since the bard Seanán brought down the banner of Clann na Fuinseoige, Domnann asks every company that brings him down for one, and the row in the Sylvan hall grows.",
+  "legend": "Like Norsob: hard-skinned, hits hard, cannot be hurt outside his hall. Fight him at home with one tank and steady heals, and never pull him together with Norsob's hall. Clear the named Balorians on the stair on the way up, so nothing wanders into the fight; they do not answer his call. Do not drag him onto the stair, or you wake the soldiers there too. Afterwards, one tank, steady heals, and nothing pulled from Norsob's hall. Superstition: take one banner off his wall for the Sylvan of Domnann every time he falls. They hang them in their own hall and sing the broken clans' names again.",
+  "yells": {
+    "aggro": [
+      "Kneel, and you may keep your name.",
+      "Another clan for my banners.",
+      "Kneel. I am told it is very restful."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Conquest is patience. I am very patient."
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Norsob, gone? Then the west is mine as well."
+      }
+    ],
+    "death": [
+      "Norsob... was right... about one thing...",
+      "Hang my banner... beside the others..."
+    ],
+    "slay": [
+      "Another name for a Balorian.",
+      "Kept.",
+      "Your name will march on the stair."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Banners of conquered clans hang in rows.",
+      "Sargan keeps his conquests tidy."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Sargan the Conqueror levels his spear."
+      }
+    ],
+    "realmFirstKill": "Sargan the Conqueror is conquered."
+  },
+  "botLines": {
+    "briefing": [
+      "sargan is like norsob with a spear. [fight him home|no dragging], one tank, steady heals",
+      "clear the balorians on the stair on the way up, [dont drag him into them|keep it in his hall]",
+      "sargan is immune outside his hall. [fight him there|stay home]",
+      "one tank, steady heals, [nothing from norsob's hall|no double pulls]"
+    ],
+    "aftermathWin": [
+      "sargan down. [the conqueror got conquered|grats]",
+      "sargan down. [the conqueror got conquered|ha]",
+      "took a banner down off his wall on the way out. [souvenir|for the sylvan]",
+      "clean pull, stair cleared first. [good leading|grats]"
+    ],
+    "aftermathLoss": [
+      "someone dragged sargan into the balorians on the stair. [messy|no]",
+      "someone pulled him onto the stair and [woke the lot|the balorians joined]",
+      "double pulled norsob's hall. [again|never]",
+      "dragged him and he [reset|was immune]"
+    ],
+    "rumour": [
+      "[heard|someone said] sargan named the balorians after the heroes they killed. sick",
+      "[heard|someone said] sargan's hall has banners of every clan the fomorians ever broke",
+      "[word is|heard] sargan named the balorians after dead heroes on purpose. trophies",
+      "the balorians say sargan fights with more spite when norsob is dead. [never noticed|balorians lie]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Sargan",
+    "text": "Balor's second warlord, who conquers rather than destroys. He gave the Balorians the names of dead heroes, so every soldier would be a trophy."
+  },
+  "bookPage": "From Muirgen's notes: I was shown one of Sargan's banners, taken down from his hall by a company of the realm and carried back to Domnann. It belonged to a Sylvan clan that no longer exists. The Sylvan wept over it, and then they did a strange thing. They hung it in their own hall, beside their own banners, and sang the clan's name, which nobody had sung in a lifetime. Sargan collects the names of the broken, a warden told me, so that they stay broken. We collect them back. When the realm brings down a banner from that tower, he said, bring it to us. We have a great deal of wall.",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Sargan the Conqueror in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Sargan the Conqueror after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "balor",
+      "relation": "the king they serve"
+    },
+    {
+      "id": "norsob-the-annihilator",
+      "relation": "his rival warlord"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "A Civilised Warlord",
+      "text": "Sargan thinks of himself as the civilised one, and by Fomorian measure he may be. He was a lord of the Fomorians in the age before Mag Tuired, the Sylvan say, a taker of islands, and when he crossed the sea with the eye's bearers he brought his habits with him. Conquered things can be kept, put to work, taxed and displayed. Destroyed things are only gone. When Balor gave him the far west hall of Tur Suil, he hung it with banners.\n\nThey hang there still, in neat rows: the banners of every clan the Fomorians have broken, on Hy Brasil and before it. Some are Sylvan. Some are older, from the coasts of the land beyond the sea, and the Hibernian scholars who have studied the ones carried back from the tower believe at least two belonged to clans of the Tuatha. He fights with a spear, neatly, at reach, and his hide turns part of every blow like the rest of the household, spells worse than steel; beyond his hall he does not trouble himself, because the tower will not let him bleed there anyway. Each banner has a small Fomorian mark sewn into its corner, which the scholars believe records the year and the place it was taken. Seanán of Tir na Nog, who studied the ones brought down from the tower, counted marks from more than forty places, most of them on coasts no Hibernian map shows, and three on the western shore of Hy Brasil itself, below the crag."
+    },
+    {
+      "title": "The Names on the Stair",
+      "text": "The Balorians on Tur Suil's stair carry the names of heroes: Conall, Ferdiad, Conlaoch, Aonghus, Huon, Maccus, Owin, Ewyn and many more, names out of the old songs of the land beyond the sea and of Hy Brasil. That was Sargan's idea, and he is proud of it. He thinks it a refinement: every soldier on the stair is a trophy that walks, and every Hibernian who climbs it must fight through the names of the dead.\n\nThe realm's soldiers try not to read the names aloud. There is a superstition, which the Sylvan say started with Sargan's own soldiers, that a Balorian whose name is spoken answers to it, and that a company which reads the stair aloud wakes the whole stair at once. Muirgen stopped counting the names at forty and would not write them in her book. Sargan, the Balorians say, knows every one, and the hero each was taken from, and the battle.\n\nThe Balorians answer to him. The Balorians on the stair keep their posts whatever happens in the hall above, because Sargan never trusted a soldier who left his post, even to save his lord; the Sylvan say it is the most Fomorian thing about him. Captains on the stair give orders by number, never by name, for that reason. The Balorian called Ferdiad, the Sylvan say, is the one Sargan keeps nearest his hall. The realm never learned why, and Sargan's soldiers will not say. The Sylvan say Ferdiad was a friend's name before it was a foe's."
+    },
+    {
+      "title": "Banners for Domnann",
+      "text": "The Sylvan of Domnann have a custom about Sargan's banners that began by accident. A Hibernian company under a bard of Tir na Nog named Seanán brought one down from the far west hall as a trophy, and on the way home through Domnann a Sylvan elder recognised it as the banner of a Sylvan clan, Clann na Fuinseoige, the people of the ash, that had not existed in her lifetime or her grandmother's. The Sylvan wept over it. Then they did something Seanán did not expect: they hung it in their own hall, beside their own banners, and sang the clan's name, which nobody had sung in an age.\n\nSince then every company that brings Sargan down is asked to carry one banner down for Domnann. The Sylvan hall now holds a row of them, broken clans whose names are sung again, and the Sylvan wardens tell the realm that Sargan collects the names of the broken so that they stay broken, and the Sylvan collect them back. We have a great deal of wall, a warden told Muirgen.\n\nSargan knows. The Balorians say he counts his banners every time he returns, and that the gaps in the rows make him a little more spiteful each time, though nobody in the realm has ever noticed it. When Norsob has fallen first, he fights with more still, as if to prove which of Balor's warlords the king should have trusted. The banner of Clann na Fuinseoige hangs first in the row. Seanán's thread is in the first one's hem."
+    },
+    {
+      "title": "What the Conqueror Wants",
+      "text": "Sargan wants Hy Brasil the way he wanted every island before it: taken, kept, and made to pay. The Sylvan as subjects, the forests as timber, the Sylvan clans' names as banners on his wall. He is the reason the Fomorian forays against Domnann take prisoners rather than only killing, and the reason some of the Sylvan taken on those forays are never found dead. Muirgen believed they are kept somewhere in the tower, put to work, and that Abomos the Soultrapper's cells hold only those who would not be.\n\nHis rivalry with Norsob is the oldest thing in the tower after the eye itself, and the Sylvan wardens think it is the realm's best ally in Tur Suil: as long as the two warlords hate each other more than they hate Hibernia, the household of the eye will never fight as one. The druids of Tir na Nog warn that this cuts both ways. If either warlord ever fell for good, they say, the other would have nothing to prove to anyone but the realm.\n\nWhen the realm kills him he returns, as the whole household returns, and the first thing he does, the Balorians say, is walk his rows of banners. Seanán, who started the custom, kept one thread from the banner of Clann na Fuinseoige tied round his wrist for the rest of his life, and asked to be buried in Domnann with it. He has never been seen to take one down himself. That is left to the Balorians."
+    }
+  ]
+}

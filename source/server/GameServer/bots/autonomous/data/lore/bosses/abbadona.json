@@ -1,0 +1,85 @@
+{
+  "id": "abbadona",
+  "name": "Abbadona",
+  "npcNames": [
+    "Abbadona"
+  ],
+  "locationId": "shannon-estuary",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Abbadona: level 45, faction Siabras in the world data, a humanoid body (model 342), at about 342,700/658,400 on the high ground of the Shannon Estuary; respawn 300 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "The Lost Relics (Lobais): the geas bound protectors in the Bog of Cullen, the master mentalist's vision of the Stone of Lia Fail, then 'At the four stone slabs northeast of the Ceannai fruit stand, use Dagda's Harp.', 'Kill the demon Abbadona.', 'Return to Lobais, tell him you were misled, and give him the harp.'",
+      "provenance": "game",
+      "source": "DataQuest 'The Lost Relics' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "The young of the realm who carry Lobais's errand for the Dagda's harp go first to the bog, where two geas-bound ghosts guard its hiding place, and then to the master mentalist in the palace's Chamber of Magic, who looks into the stone of destiny and has a vision of where the harp must be played. The vision sends them to four stone slabs on the high ground north-east of Ceannoi. They play the harp there. Abbadona answers.\n\nIt is a demon, the palace says, though the world names it with the siabra, and the master mentalist has never explained how his vision came to point at a demon's door. Lobais, when the young come back with the harp and the news, says only that he was misled, and takes the harp, and writes something in the account of the lost relics that he will not let anyone read. The Connla harpers say a vision is a door, and that whoever stands behind it chooses what comes through. The siabra of the estuary will not go near the slabs.",
+  "legend": "Abbadona (45) waits by the four stone slabs on the high ground north-east of Ceannoi, Shannon Estuary (about 343k/658k). It is the end of The Lost Relics (Lobais in the throne room): bog ghosts, the master mentalist, the mines, then play the Dagda's Harp at the slabs and kill 'the demon Abbadona', then tell Lobais you were misled. A group of mid 40s. 5-minute respawn.",
+  "yells": {
+    "aggro": [
+      "You played the harp. I heard.",
+      "The vision was mine. The door was mine."
+    ],
+    "phases": [],
+    "death": [
+      "Lobais... was so easy..."
+    ],
+    "slay": [
+      "Another seeker, misled."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four stone slabs, and something waiting by them."
+    ],
+    "phases": [],
+    "realmFirstKill": "Abbadona is cast down at the four slabs."
+  },
+  "botLines": {
+    "briefing": [
+      "abbadona is 45 at the four slabs north east of ceannoi",
+      "lost relics: play the harp, kill the demon, tell lobais you were misled"
+    ],
+    "aftermathWin": [
+      "abbadona down. [lost relics|grats]",
+      "lobais was misled lol"
+    ],
+    "aftermathLoss": [
+      "too low for 45. [ouch|bring more]",
+      "forgot the harp. [lol|go back]"
+    ],
+    "rumour": [
+      "[heard|someone said] the master mentalist's vision sent people to a demon instead of the harp's place",
+      "the estuary siabra wont go near the four slabs"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Abbadona",
+    "text": "A demon that answers when the Dagda's harp is played at four stone slabs north-east of Ceannoi, where the master mentalist's vision sent the seekers. Lobais says he was misled."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Abbadona in the Shannon Estuary in {minutes} minutes.",
+    "loss": "Abbadona turned back {realm}'s band under {raidLeader} in the Shannon Estuary after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "siabra"
+  ],
+  "related": [
+    {
+      "id": "geas-bound-protector",
+      "relation": "the harp's guardians"
+    },
+    {
+      "id": "tir-na-nog",
+      "relation": "Lobais, who was misled"
+    }
+  ]
+}

@@ -73,6 +73,7 @@ namespace DOL.GS
                     if (npc is KingTuscar && npc.IsAlive && npc.HealthPercent < 100)
                     {
                         npc.Health += damageAmount + criticalAmount;
+                        EncounterSignals.Note(npc, EncounterSignals.TwinHeal);//Living Server 1.2: the lore's "twinHeal" lines (LoreBossWatch)
                         EpicEncounterRestores.TellImmune(source, "Your damage is healing King Tuscar!");
                     }
                 }
@@ -169,7 +170,7 @@ namespace DOL.GS
 
         public override void OnAttackedByEnemy(AttackData ad)// on Boss actions
         {
-            if (ad != null && ad.Damage > 0 && ad.Attacker != null && ad.Attacker.IsAlive && ad.Attacker is GamePlayer)
+            if (ad != null && ad.Damage > 0 && ad.Attacker != null && ad.Attacker.IsAlive && EncounterTargets.IsRaider(ad.Attacker))
             {
                 if(KingTuscar.KingTuscarCount == 0 || HealthPercent <= 50)
                 {
@@ -234,23 +235,23 @@ namespace DOL.AI.Brain
             }
         }
         #region Teleport Player & PlayerInCenter()
-        public static GamePlayer randomtarget = null;
-        public static GamePlayer RandomTarget
+        public static GameLiving randomtarget = null;
+        public static GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
         public static bool IsTargetPicked = false;
-        List<GamePlayer> Port_Enemys = new List<GamePlayer>();
+        List<GameLiving> Port_Enemys = new List<GameLiving>();
         public int PickPlayer(ECSGameTimer timer)
         {
             if (Body.IsAlive)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.DisplacesBots(Body)))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!Port_Enemys.Contains(player))
                             {
@@ -273,11 +274,11 @@ namespace DOL.AI.Brain
                 {
                     if (Port_Enemys.Count > 0)
                     {
-                        GamePlayer Target = (GamePlayer)Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+                        GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
                         RandomTarget = Target;
                         if (RandomTarget.IsAlive && RandomTarget != null)
                         {
-                            if (EpicEncounterMechanics.AllowDisplacement) RandomTarget.MoveTo(160, 34128, 56095, 11898, 2124);
+                            if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(RandomTarget, 160, 34128, 56095, 11898, 2124, DisplacementKind.Teleport, Body);
                             Port_Enemys.Remove(RandomTarget);
                             RandomTarget = null;//reset random target to null
                             IsTargetPicked = false;
@@ -290,10 +291,10 @@ namespace DOL.AI.Brain
         public static bool message1 = false;
         public void PlayerInCenter()
         {
-            if (!EpicEncounterMechanics.AllowPositionPuzzle) return;
+            if (!EpicEncounterMechanics.AllowPositionPuzzleFor(Body)) return;
             Point3D FrostPoint = new Point3D();
             FrostPoint.X = 34128; FrostPoint.Y = 56095; FrostPoint.Z = 11989;
-            foreach(GamePlayer player in Body.GetPlayersInRadius(8000))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, 8000))
             {
                 if (player != null)
                 {
@@ -397,9 +398,9 @@ namespace DOL.AI.Brain
                 }
                 if(Body.TargetObject != null)
                 {
-                    if (Body.TargetObject is GamePlayer)
+                    if (EncounterTargets.IsRaider(Body.TargetObject))
                     {
-                        GamePlayer player = Body.TargetObject as GamePlayer;
+                        GameLiving player = EncounterTargets.AsRaider(Body.TargetObject);
                         if (player.effectListComponent.ContainsEffectForEffectType(eEffect.Mez))
                         {
                             RemoveFromAggroList(player);
@@ -537,6 +538,7 @@ namespace DOL.GS
                     if (npc is QueenKula && npc.IsAlive && npc.HealthPercent < 100)
                     {
                         npc.Health += damageAmount + criticalAmount;
+                        EncounterSignals.Note(npc, EncounterSignals.TwinHeal);//Living Server 1.2: the lore's "twinHeal" lines (LoreBossWatch)
                         EpicEncounterRestores.TellImmune(source, "Your damage is healing Queen Kula!");
                     }
                 }

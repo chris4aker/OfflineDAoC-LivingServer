@@ -127,7 +127,7 @@ namespace DOL.GS.Scripts
 								if (vendos == null) 
 									return;
 							
-								foreach (GamePlayer player in Body.GetPlayersInRadius(1000))
+								foreach (GameLiving player in EncounterTargets.InRadius(Body, 1000))
 								{
 									if (player == null)
 										return;

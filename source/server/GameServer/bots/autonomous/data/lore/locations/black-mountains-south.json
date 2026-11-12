@@ -1,0 +1,414 @@
+{
+  "id": "black-mountains-south",
+  "name": "Black Mtns. South",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    2
+  ],
+  "aliases": [
+    "black mountains south",
+    "bms",
+    "the black mountains"
+  ],
+  "summary": "The southern Black Mountains: Humberton and Ludlow on the north road, Vetusta Abbey's bell, the goblins of Tepok's Mine and their camps, the red dwarves' valley and the beasts of the forest edge.",
+  "facts": [
+    {
+      "text": "Black Mtns. South is zone 2 of region 1, with Ludlow Village, Humberton Village and Castle and Vetusta Abbey, about 1,040 monsters (snakes, ants, spiders, boars, wolves, Black Mountains goblins, thieves, red and Nain dwarves, filidh and skeletons) and the entrance to Tepok's Mine.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 2 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Throatripper is targetable only at night and once ten of his pack (black wolves with their own brain) have died since he spawned; when he fights, his pack within 1,000 joins him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/Throatripper.cs"
+    },
+    {
+      "text": "Jari's spawn point moves at random to one of two places each time he dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/Jari.cs"
+    },
+    {
+      "text": "The Vetusta Abbey Bell plays a bell sound to everyone within 2,000 on every game hour.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/VetustaAbbeyBell.cs"
+    },
+    {
+      "text": "Quests name Shaman Aslis (Legend of the Lake; her skeletons fall with her), the Great Gobzini (Tainted Magic, north of Tepok's Mine), Sacrificer Harish and his shade (Abolishment of Sacrifice), Frund and Agisthil, the runaway guards, and Brodic, near whom the Crediac glows (Entry Into Tomorrow), Grilk (Barbaric Tales), his ratmaker, footscratcher and bonescraper (Price of Courage), Grilo and Fusnup (Goblin Incursion), Gundron McCory of the Black Mountain Blades (Dunan's Bear Tooth), Bouditha Wynedd (Thinking Cap), Slith, who comes when displeased (Hunt for Slith), and Throatripper (Ripper); the red dwarf chief lives in the valley below the bull carved into the hill, east of the double bridge (Cloak of Shades).",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Brother Don of Vetusta Abbey takes wolf pelts so the children get over the harsh winter.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/BrotherDon.cs"
+    },
+    {
+      "text": "Mythic: savage Black Mountains goblins seized Tepok's Mine from the local townsfolk.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=26"
+    },
+    {
+      "text": "Real-world: Ludlow is a market town in Shropshire on the Welsh border; the Black Mountains are hills on the border of Wales and England; chalk hill figures such as the Uffington White Horse are cut into southern English hillsides; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Black_Mountains,_Wales"
+    },
+    {
+      "text": "Humberton's council and the levy's bills on pegs, the goblins coming down when the mine opened, Tudur's Ludlow tally, Jari's two wallows and the hunters' wager, the abbey bell that no one pulls, Brodic's legionary harness, Salizern the clerk who read the wrong book, and the Goblin Lord as Tepok's 'doorman' are Living Server writing; Atwell's Humberton bill is from the Pennine watch files.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The mountains and the two towns. North of the king's hills the land climbs into the Black Mountains, green below and dark above, cut by rivers that run east to the Severn, and in the valleys between them stand the two towns that have fed the north road since before Arthur: Humberton under its castle in the west and Ludlow in the east. Humberton is the older. Its castle was a hill-fort before it was a castle, and its council still meets on the second floor of the keep and still calls itself a council and not a court. Humberton sent a levy to every muster the kings ever called, and the levy's bills hang on pegs in the castle hall, one for every billman who did not come home, the oldest from Camlann. Ludlow is the busier. It is a market town with a tavern that never closes, a smith, Master Sceley, whose assistant works harder than he does, and an inn where strangers sit in the corner and ask questions. South of both, on the road down to Camelot, the monks of Vetusta Abbey keep their bell and their sick.\n\nWhat went wrong. The mountains had their own people before the towns had theirs. The goblins of the Black Mountains lived in the high valleys and fished the upper rivers and gave no trouble, the old shepherds say, until the silver mine under the north-western cliff was opened. Then they came down for it, and took it, and kept it working, and have been coming down ever since. Their camps now run from the mine's mouth almost to Humberton's walls, and every one has its chief: a shaman who calls the storm, a lord who sits by the mine, a conjurer who performs for his people at the mine's door, and a camp north of Humberton that killed Trini Piper's parents when she was small. The red dwarves, who dig in the far galleries of the mine by some bargain no one understands, keep a valley of their own in the north-east, below a great bull cut into the chalk of the hillside, and they have a seer of their own there who talks to the dead. And the druids of southern Albion keep their camps along the northern edge, beyond the twin towers by the double bridge, where a filidh called Harish has been drawing the sons and daughters of Humberton into his cult.\n\nThe thieves and the beasts. Between the camps the forest is full of the realm's own trouble: cutpurses, robbers and highwaymen in the woods west of the Camelot road, poachers in the high valleys, and a band calling itself the Black Mountain Blades under a man named Gundron McCory, who is rarely alone. The beasts are worse than the thieves. A great boar the hunters call Jari keeps two wallows in the south-western woods, and the hunters say no one knows which he will be lying in next. A black wolf they call Throatripper runs with the packs at the forest's edge and is never seen until his pack has been thinned and the sun is down; then he comes for whoever thinned it. A red snake called Slith lives among his broodlings north-west of the Camelot gates and comes out only when he is displeased.\n\nWhat lives there now. The realm holds the valleys and not much more. Captain Dillon keeps the guard tower south-east of Ludlow; Commander Jusen and General Vaul keep the tower east of the mine and count goblins; Lieutenant Jursen keeps the far south-west and asks every newcomer whether they have heard of Throatripper. Sir Lukas, the king's own emissary, sits at Vetusta Abbey with the monks and hears what the towns want from Camelot. The abbey's bell rings every hour of the day and the night, whether anyone lays a hand on the rope or not; the monks say it has rung on the hour since the first abbot hung it, and that the hour it does not ring, they will know the abbey is finished.\n\nWhy it matters to Albion. The Black Mountains are the realm's larder and its first frontier. The north road to Castle Sauvage and the war runs up the middle of them, and every levy that ever marched north marched through Humberton and drank in Ludlow on the way. Captain Atwell of the Pennine watch was a Humberton billman, and his pay still comes home there. If the goblins ever hold the valleys, the realm will feel it in its bread before it feels it in its walls.",
+  "legend": "Black Mountains South is the third newbie zone, north of Camelot Hills up the road from the city, levels 5 to 20 or so. Ludlow in the east is the hub: tavern quests from Maggie McClellan (Price of Courage, Goblin Incursion, Tainted Magic), the smith, trainers, merchants and the inn. Humberton in the west has the castle, the council and Guard Reed. Tepok's Mine is in the far north-west, and the goblin camps around it hold the Great Gobzini (north of the mine), Grilk and his three servants (south of it) and the Goblin Lord. Throatripper only shows up at night after ten of his black wolves have died; kill the pack at the forest edge west of the road, then wait for dark. Jari the boar moves between two spawn points in the south-west each time he dies, so check both. Slith needs his broodlings killed before he shows. Shaman Aslis at the red dwarf camp in the north-east is the Legend of the Lake target; her skeletons die when she does. Gundron McCory near Ludlow is never alone, bring a friend. The Vetusta Abbey bell rings every game hour, which is a handy clock for the timed spawns in the hills.",
+  "atmosphere": {
+    "firstEntry": [
+      "The Black Mountains. Dark above, green below.",
+      "Goblin smoke on the high slopes.",
+      "A bell rings the hour far off. No one rings it.",
+      "The north road. Every levy marched it.",
+      "Wolves at the forest edge, watching the road."
+    ],
+    "areas": [
+      {
+        "name": "Ludlow Village",
+        "x": 530970,
+        "y": 479121,
+        "z": 2200,
+        "radius": 2000,
+        "lines": [
+          "Ludlow. The tavern never closes.",
+          "Maggie McClellan knows a job for everyone.",
+          "A stranger in the inn corner asks questions."
+        ]
+      },
+      {
+        "name": "Humberton Village",
+        "x": 508440,
+        "y": 477188,
+        "z": 2372,
+        "radius": 2000,
+        "lines": [
+          "Humberton. The north road's oldest town.",
+          "Guard Reed watches the goblin road. And his son."
+        ]
+      },
+      {
+        "name": "Humberton Castle",
+        "x": 504281,
+        "y": 474493,
+        "z": 2788,
+        "radius": 1800,
+        "lines": [
+          "Bills on pegs in the hall. One for each lost man.",
+          "The council meets upstairs. It is not a court."
+        ]
+      },
+      {
+        "name": "Vetusta Abbey",
+        "x": 505096,
+        "y": 495673,
+        "z": 2432,
+        "radius": 2200,
+        "lines": [
+          "The abbey bell rings the hour. No one pulls it.",
+          "Sir Lukas hears what the towns want of the king.",
+          "Brother Don wants wolf pelts. For the children."
+        ]
+      },
+      {
+        "name": "the mine's mouth",
+        "x": 488303,
+        "y": 436764,
+        "z": 2000,
+        "radius": 1800,
+        "lines": [
+          "Tepok's Mine. A boulder, a cliff, a ruined house.",
+          "The Great Gobzini performs at the mine's door.",
+          "The Goblin Lord sits by the mine and counts."
+        ]
+      },
+      {
+        "name": "Grilk's house",
+        "x": 487553,
+        "y": 439768,
+        "z": 2000,
+        "radius": 1000,
+        "lines": [
+          "Grilk's abandoned house. Grilk's now.",
+          "The footscratcher, bonescraper and ratmaker serve."
+        ]
+      },
+      {
+        "name": "the goblin camp north of Humberton",
+        "x": 501900,
+        "y": 465000,
+        "z": 2300,
+        "radius": 1300,
+        "lines": [
+          "Goblin fires a mile from Humberton's walls.",
+          "Grilo and Fusnup lead this camp. Trini knows why."
+        ]
+      },
+      {
+        "name": "the storm shaman's crag",
+        "x": 508433,
+        "y": 454627,
+        "z": 2600,
+        "radius": 1000,
+        "lines": [
+          "Clouds gather over one crag. A goblin calls them.",
+          "The Goblin Storm Shaman sings up the weather."
+        ]
+      },
+      {
+        "name": "the bull valley",
+        "x": 537300,
+        "y": 451500,
+        "z": 2400,
+        "radius": 1800,
+        "lines": [
+          "A great bull cut in the chalk above the valley.",
+          "Red dwarves below it. Agisthil ran to them.",
+          "Shaman Aslis talks to the dead. They answer."
+        ]
+      },
+      {
+        "name": "the double bridge and the twin towers",
+        "x": 525000,
+        "y": 440000,
+        "z": 2400,
+        "radius": 2500,
+        "lines": [
+          "Twin towers north of the double bridge.",
+          "Beyond them, Sacrificer Harish keeps his cult."
+        ]
+      },
+      {
+        "name": "Brodic's road",
+        "x": 516437,
+        "y": 446860,
+        "z": 2400,
+        "radius": 1000,
+        "lines": [
+          "Brodic walks here in a legionary's harness.",
+          "A stone in your pack grows warm. Brodic is near."
+        ]
+      },
+      {
+        "name": "the Wynedds' hill",
+        "x": 533150,
+        "y": 466450,
+        "z": 2500,
+        "radius": 900,
+        "lines": [
+          "Bouditha Wynedd on the hill, in the family cap.",
+          "Aldous Wynedd and his cloak of shades nearby."
+        ]
+      },
+      {
+        "name": "the Blades' ground",
+        "x": 535280,
+        "y": 467796,
+        "z": 2400,
+        "radius": 1000,
+        "lines": [
+          "Gundron McCory's Black Mountain Blades.",
+          "Gundron is rarely alone. Look behind him."
+        ]
+      },
+      {
+        "name": "the forest edge",
+        "x": 489696,
+        "y": 482221,
+        "z": 2200,
+        "radius": 1600,
+        "lines": [
+          "Black wolves at the forest edge. A pack, waiting.",
+          "Throatripper runs at night, when the pack is thin.",
+          "Frund ran from his post to these woods."
+        ]
+      },
+      {
+        "name": "the dwarf camp in the west",
+        "x": 490800,
+        "y": 485700,
+        "z": 2200,
+        "radius": 1000,
+        "lines": [
+          "Nain dwarves camp in the western woods.",
+          "Dwarf brawlers. They brawl with everyone."
+        ]
+      },
+      {
+        "name": "Jari's deep wallow",
+        "x": 490767,
+        "y": 489129,
+        "z": 797,
+        "radius": 1000,
+        "lines": [
+          "Churned mud and tusk marks. Jari wallows here.",
+          "Two wallows. Jari is in one of them."
+        ]
+      },
+      {
+        "name": "Jari's road wallow",
+        "x": 504513,
+        "y": 489595,
+        "z": 2430,
+        "radius": 1000,
+        "lines": [
+          "Tusk marks by the abbey road. Jari's other wallow.",
+          "The hunters' wager: this one, or the other?"
+        ]
+      },
+      {
+        "name": "Slith's rocks",
+        "x": 525879,
+        "y": 490063,
+        "z": 2300,
+        "radius": 900,
+        "lines": [
+          "Red broodlings in the rocks. Their father watches.",
+          "Slith comes out when he is displeased."
+        ]
+      },
+      {
+        "name": "Salizern's circle",
+        "x": 495959,
+        "y": 475809,
+        "z": 2400,
+        "radius": 800,
+        "lines": [
+          "Summoner Salizern draws circles in the dirt.",
+          "Something small and wrong scratches in the circle."
+        ]
+      },
+      {
+        "name": "Captain Dillon's tower",
+        "x": 536186,
+        "y": 490780,
+        "z": 2300,
+        "radius": 900,
+        "lines": [
+          "Captain Dillon's guard tower south-east of Ludlow.",
+          "Sage Lissa reads runed metal by the window."
+        ]
+      },
+      {
+        "name": "the mine-watch tower",
+        "x": 504160,
+        "y": 435150,
+        "z": 2600,
+        "radius": 900,
+        "lines": [
+          "Commander Jusen counts goblins. He is losing.",
+          "General Vaul watches the mine road."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "ludlow is the hub in black mtns south. the tavern quests are great",
+      "humberton keeps a bill on a peg for every billman who didnt come home. oldest from camlann",
+      "the goblins only came down when the townsfolk opened tepoks mine, [heard|they say]",
+      "the vetusta abbey bell rings every hour and nobody pulls the rope",
+      "red dwarves have a valley under the big chalk bull in the ne",
+      "captain atwell of the pennine watch was a humberton billman",
+      "the goblin camp north of humberton killed trini piper's parents",
+      "the druids past the twin guard posts by the double bridge are taking humberton kids into a cult",
+      "black mountain blades are gundron mccory's lot. robbers near ludlow",
+      "sir lukas sits at vetusta abbey, the king's own emissary",
+      "lieutenant jursen asks everyone if theyve heard of throatripper",
+      "the red dwarves dig the back of tepoks mine. nobody knows the deal"
+    ],
+    "rumour": [
+      "[heard|someone said] throatripper only comes out at night once his pack is thinned",
+      "heard jari the boar has two wallows and nobody knows which one he'll be in",
+      "[heard|someone said] slith wont come out till you kill his broodlings",
+      "heard the great gobzini does magic tricks for goblins at the mine door",
+      "[heard|someone said] shaman aslis talks to the dead and her skeletons drop when she does",
+      "heard sacrificer harish gets up again as a shade when you kill him",
+      "[heard|someone said] frund and agisthil were our guards. they ran with stones",
+      "heard the crediac stone glows when brodic is near",
+      "[heard|someone said] grilk's three servants are named after their jobs",
+      "heard the goblin storm shaman is why ludlow has wet harvests",
+      "[heard|someone said] gundron mccory is never alone. bring a friend",
+      "heard bouditha wynedd stole the family cap and cranly wants it back",
+      "[heard|someone said] summoner salizern was a castle clerk who read the wrong book",
+      "heard grilo and fusnup's camp always comes back",
+      "[heard|someone said] the goblin lord never goes inside tepoks. tepok calls him the doorman",
+      "heard the nain dwarves in the west woods dont like the red dwarves either",
+      "[heard|someone said] aldous wynedd has a cloak of shades"
+    ],
+    "tell": [
+      "black mtns south? north of camelot hills up the road from the city. ludlow and humberton",
+      "is it hard? levels 5 to 20. goblins, wolves and thieves, nothing too bad",
+      "whats there? tepoks mine, ludlow's tavern quests, humberton castle, vetusta abbey",
+      "where's throatripper? forest edge in the west. kill ten of his wolves and wait for night",
+      "jari? south west woods, two spawn spots. check both",
+      "slith is ne of the camelot gates. kill the red broodlings till he comes",
+      "aslis is at the red dwarf camp under the chalk bull in the ne. agisthil's there too",
+      "gobzini is just north of tepoks mine. grilk and his servants just south of it",
+      "goblin lord sits by the mine mouth. storm shaman's on a crag in the middle hills",
+      "harish is north of the twin guard posts by the double bridge. kill him, then his shade",
+      "grilo and fusnup are at the goblin camp north of humberton",
+      "gundron mccory is on the hills north of ludlow, the wynedds are on the hill across from town",
+      "frund is in the west woods by the nain dwarf camp. brodic walks the northern road",
+      "summoner salizern is in the woods west of humberton"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Black Mountains, south. Ask of [ludlow] and [humberton], of [vetusta abbey] and the [abbey bell], of the [goblins] and [tepok's mine], the [red dwarves], the [druids] and the realm's [posts]. Or ask of the mountains' own: [shaman aslis], the [great gobzini], [sacrificer harish], the [runaway guards], [grilk] and [grilk's servants], the [goblin storm shaman], [brodic], the [goblin lord], [gundron mccory], [jari], [throatripper], the [wynedds], [summoner salizern], [grilo and fusnup], [slith], the [nain dwarves] and the [lurking stranger].",
+    "topics": {
+      "ludlow": "The market town of the east valley, with a tavern that never closes, Master Sceley the smith, an inn, trainers and the bar where Maggie McClellan hands out work. Graham Mal'toinia sits in the inn and tells stories to anyone who asks the right question. See [humberton].",
+      "humberton": "The older town of the west valley, under its castle. Its council meets on the castle's second floor, and the levy's bills hang in the hall, one for every billman who did not come home, the oldest from Camlann. Captain Atwell of the Pennine watch was a Humberton billman. See [vetusta abbey].",
+      "vetusta abbey": "The abbey on the road down to Camelot, where the monks keep their sick and Sir Lukas, Emissary of the King, hears the towns' petitions. Brother Don wants wolf pelts for the children in the hard winter. The [abbey bell] rings every hour.",
+      "abbey bell": "The bell of Vetusta Abbey rings on every hour of the day and the night, and nobody touches the rope. The monks say it has rung since the first abbot hung it, and that the hour it does not ring they will know the abbey is finished. The hunters use it as a clock for the hills.",
+      "goblins": "The goblins of the Black Mountains lived quietly in the high valleys until the silver mine under the north-western cliff was opened; then they came down and took it. See [tepok's mine], [grilk], the [great gobzini], [grilo and fusnup], the [goblin lord] and the [goblin storm shaman].",
+      "tepok's mine": "The townsfolk's silver mine under the north-western cliff, entered by a boulder beside a ruined house. The goblins took it and kept it working, and the red dwarves dig its far galleries by some bargain no one understands.",
+      "red dwarves": "Red dwarves dig the far galleries of Tepok's Mine and keep a valley of their own in the north-east, under the great bull cut into the hillside, with a chief, a matron and a seer, [shaman aslis].",
+      "druids": "The druids of southern Albion keep camps along the northern edge, beyond the twin towers north of the double bridge. See [sacrificer harish].",
+      "posts": "Captain Dillon keeps the guard tower south-east of Ludlow with Commander Buin and Sage Lissa; Commander Jusen and General Vaul keep the tower east of the mine; Commander Burcrif keeps the Camelot road; Lieutenant Jursen keeps the far south-west.",
+      "shaman aslis": "Shaman Aslis is the seer of the red dwarves in the valley under the chalk bull in the north-east. She talks to the dead, and the dead of the valley stand up to hear her and fall down again when she stops: the skeletons that guard her do not outlast her. Lady Nimue sends the young of Albion to ask Aslis something about Excalibur, and Aslis answers the way the dead answer, which is to say not at all, and then with everything at once.",
+      "great gobzini": "The Great Gobzini is a goblin conjurer who performs for his people at the door of Tepok's Mine, with a magical bag of tricks that he stole, or was given, or made; he tells it differently each night. His tricks are why Yasminea Dardin's pet Pebbles in Ludlow will not hold a spell. Keenar Woedin of the Ludlow tavern says the Gobzini is the only goblin in the mountains with an audience, and that he would sooner die than lose it.",
+      "sacrificer harish": "Sacrificer Harish is a filidh of the camps north of the twin towers who has been drawing the sons and daughters of Humberton into his cult, and the council of Humberton has sent to Camelot about it. The guards at the towers say Harish does not stay dead: when his body falls, his shade stands up where it fell and goes on preaching. The council wants both put down.",
+      "runaway guards": "Frund and Agisthil were guards of the realm in the Black Mountains who ran from their posts east of the bridge, Captain Dillon says, with stones that were not theirs. Agisthil went north-east to the red dwarves under the chalk bull and is one of them now; Frund went west into the woods by the Nain dwarves' camp. Omis wants the stones back. Captain Dillon wants the two of them back too, but he would settle for the stones.",
+      "grilk": "Grilk is the goblin who lives in the townsfolk's abandoned house on the mountain south-west of Tepok's Mine, with half of a book of knowledge that Sir Verin of Swanton Keep wants back; Mystic Ulfwag in the north has the other half. Grilk keeps three servants and names them by their work: the [grilk's servants]. He thinks the house is his because nobody came back for it, which is the goblins' whole law.",
+      "grilk's servants": "Grilk's footscratcher, Grilk's bonescraper and Grilk's ratmaker serve Grilk in his house south of Tepok's Mine and are named for what they do for him. Trini Piper's family were killed by the goblins when she was small, and Maggie McClellan sends those who will to take the three servants' heads to Commander Jusen in the tower east of the mine, for a token of the king that Trini keeps on a string.",
+      "goblin storm shaman": "The Goblin Storm Shaman keeps a crag in the middle hills and sings the weather down on the valleys when the goblins raid; the shepherds say a cloud that stops over one crag and stays there is his. He is stronger than the camp shamans and meaner, and he answers to no chief but the mine. The Ludlow tavern blames him for every wet harvest, and has done for years.",
+      "brodic": "Brodic walks the northern road in a Roman legionary's harness and has done since long before the goblins came. Captain Dillon gives those he trusts a stone called the Crediac that grows warm and glows when Brodic is near, because Brodic is hard to find in the dusk and easy to find too late. Nobody knows what Brodic was. The Academy says the harness is older than the castle at Humberton.",
+      "goblin lord": "The Goblin Lord sits by the mouth of Tepok's Mine among Grilk's people and counts what comes out of it. He is the nearest thing to a king the mountain goblins have outside the mine itself, and he is careful never to go inside, where Overseer Tepok keeps the real ledger. The goblins call him lord. Tepok calls him the doorman.",
+      "gundron mccory": "Gundron McCory leads the Black Mountain Blades, a band of robbers in the hills north of Ludlow who attacked Apprentice Dunan on the road and took an unfinished charm made from a rare bear tooth. Gundron is rarely alone. Dunan says he will finish the charm for whoever brings the tooth back, and the Blades say Gundron will finish whoever comes for it.",
+      "jari": "Jari is a boar the size of a cart who keeps two wallows in the south-western woods, one deep in the trees and one up by the road toward the abbey. The hunters of Ludlow have a wager on which one he will be in next and have never settled it, because each time he is killed he turns up in one or the other and nobody can say why. The hunters say he does not know either.",
+      "throatripper": "Throatripper is a black wolf of the packs at the forest edge in the west, between the cutpurses' camp and the dwarves'. He is never seen by day, and never on a night when the packs are whole: he comes after dark, once enough of his kin have been killed, for whoever killed them, and the pack comes with him. Lieutenant Jursen asks every newcomer whether they have heard of him, and Seamstress Marie in Ludlow pays for his pelt.",
+      "wynedds": "The Wynedds are a family of the hill north of Ludlow, across from the town. Bouditha Wynedd wears a family cap that her cousin Cranly of Snowdonia Station says she is abusing, and he wants it back. Aldous Wynedd keeps nearby with a cloak of shades. The Ludlow tavern says the Wynedds were respectable once, and that the cap is the reason they are not.",
+      "summoner salizern": "Summoner Salizern is a young conjurer who keeps a circle in the woods west of Humberton and draws small wrong things up out of it, a rat, a spirit, a skeleton, a centurion once, to see what comes. The council of Humberton says he was a clerk of the castle who read the wrong book in the wrong cellar. He says he is practising. The guards say he has been practising for years and has not got any better.",
+      "grilo and fusnup": "Grilo and Fusnup lead the goblin camp north of Humberton, close enough that the guards on the walls can hear them sing. That camp killed Trini Piper's parents when she was small. Guard Reed of Humberton sends the brave to kill the two of them before the camp can raid, and then sends someone to warn his son Guy in Ludlow that the goblins are coming anyway. They usually are.",
+      "slith": "Slith is a red snake who lives among his broodlings in the rocks north-west of the Camelot gates. He will not show himself for a stranger who comes to look at him; he comes out only when he is displeased, and nothing displeases him like the killing of his young. Commander Burcrif by the Camelot road wants his tail, and has written in the Ludlow tally: do not make him angry twice.",
+      "nain dwarves": "Nain dwarves keep a camp in the western woods near the forest edge, with brawlers, raiders and pillagers among them, and no love for the red dwarves of the mine. Nobody in Humberton knows where they came from or what they want, and the dwarves will not say. Frund went to live near them when he ran from his post, which the guards take as proof that Frund was never right in the head.",
+      "lurking stranger": "A stranger who keeps to the northern hills and lurks. He has never harmed anyone and never spoken to anyone, and the shepherds say he has been there as long as the mine."
+    }
+  },
+  "book": {
+    "title": "The Ludlow Tally",
+    "pages": [
+      "The Ludlow Tally, a slate-book kept behind the bar of the tavern at Ludlow by Tudur the pot-boy, who cannot keep a secret and was told to keep this instead. Mistress McClellan says every job in the Black Mountains starts at her bar and so it should end there, in chalk, so that the next one knows. This is the tally. Who went out, after what, and whether they came back for their ale. Most came back. I have marked the ones who did not with a ring, and the ones who came back changed with a ring and a line.",
+      "The goblins. The Pipers' girl Trini lost her mother and father to the camp north of Humberton when she was small, and Jezzy raised her, and every year somebody new at the bar says they will see to Grilo and Fusnup for her. Some do. The camp comes back. Up by the mine there is a goblin calling himself the Great Gobzini who does tricks at the mine's door for his own people, and his pouch of tricks is the reason Yasminea's little pet will not take a spell. Grilk lives south of the mine in the house the townsfolk left, with three servants he names by their jobs.",
+      "The wolves. Lieutenant Jursen comes in from the south-west twice a season and asks every stranger whether they have heard of Throatripper. Here is what the tally says about him. Nobody has ever seen him by day. Nobody has ever seen him on a night when the packs at the forest edge were whole. He comes when the wolves have been hunted, after dark, for whoever hunted them; the tally has four rings for men who hunted the pack all afternoon and stayed in the woods to see the stars. Seamstress Marie pays for his pelt. She has paid twice.",
+      "The beasts. Jari is a boar the size of a cart who keeps two wallows in the south-western woods, and the hunters have a wager running on which one he will be in next. They have never settled it; he does not seem to know either. Slith is a red snake among the rocks north-west of the Camelot gates who will not show himself until you have made him angry by killing his young. Commander Burcrif wants his tail. The tally has a note in the Commander's own hand: do not make him angry twice.",
+      "The north. Beyond the double bridge and the twin towers there are druids, and one of them, Harish, has taken Humberton's sons and daughters into his cult. The council sent to Camelot about it and Camelot sent squires. In the north-east the red dwarves keep a valley under the great bull cut in the hill, and Agisthil, who was a guard of ours and ran, has gone to them. His friend Frund ran west instead. Shaman Aslis is the red dwarves' seer. She talks to the dead, and the dead stand up to hear her. Lady Nimue sends people to ask Aslis something. They do not say what.",
+      "The bell. The monks of Vetusta Abbey ring their bell every hour, day and night, and Brother Don says nobody touches the rope. I walked down to see. Nobody touches the rope. The monks say the bell has rung the hours since the first abbot hung it, and that the hour it does not ring they will know the abbey is finished. Mistress McClellan says it is a good clock and that I should stop asking monks questions and wash the pots. This is the last page of the slate. Somebody else can buy the next one."
+    ]
+  },
+  "bosses": [],
+  "era": "alb-the-dark-age",
+  "factions": [
+    "goblins",
+    "realm-of-camelot",
+    "old-powers"
+  ]
+}

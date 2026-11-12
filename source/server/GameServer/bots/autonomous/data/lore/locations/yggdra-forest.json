@@ -1,0 +1,192 @@
+{
+  "id": "yggdra-forest",
+  "name": "Yggdra Forest",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "zones": [
+    112
+  ],
+  "era": "mid-era-realm-war",
+  "factions": [
+    "realm-enemies",
+    "werewolves",
+    "wild-beasts"
+  ],
+  "summary": "Midgard's frozen frontier forest: Arvakr Faste, Grallarhorn Faste where the horn relic is kept, and the fenrir pack in the west.",
+  "facts": [
+    {
+      "text": "Yggdra Forest is zone 112 of region 100, an Old Frontiers zone, with Arvakr Faste (keep 81, level 5) in its north-east and Grallarhorn Faste (keep 82, level 10, a relic keep) in its west.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Keep and Area tables (0.37b world data)"
+    },
+    {
+      "text": "The fenrir of the Fenrir Pack (shredders, prophets, trackers, soldiers) hold the far west of the forest; Fjall stands among them and Geyra, of the Fenrir Pack faction, alone nearby.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Yggdra's other folk: miserable zombies, frost hounds, ice scrags, white and winter wolves, northern lights and icy wisps, abominable snowmen, taiga cats, wyverns, ice giants, torpor worms, bone-eater slayers, shard golems, icemunchers and ice lizards.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The seer epic 'The Desire of a God' sends players to Jana in Vasudheim to ask about Fjall and the fenrir, then to search out Fjall and his fellows in Yggdra for a dancing flame.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "The viking epic 'An End to the Daggers' sends players to slay Geyra in Yggdra Forest before Red Hagen.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "The rogue epic 'The War Continues' sends players to slay a roaming undead patrol in Yggdra Forest and bring its skull to Gunnolf in Vindsaul Faste. The only spawn named Undead Patrol in the world data stands in Raumarik beside Oona (607,233/787,075), not in Yggdra.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob table"
+    },
+    {
+      "text": "Living Server sends frontier warbands of gamebots through the Old Frontiers zones; the keeps here are captured and held in the realm war.",
+      "provenance": "game",
+      "source": "docs/RELEASE-TRAIN.md (origin/plan/rvr-builds); source/server/GameServer/bots/autonomous"
+    },
+    {
+      "text": "In Norse myth Yggdrasil is the world-ash, Gjallarhorn is Heimdall's horn and Arvakr one of the horses that draw the sun.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning (public domain)"
+    }
+  ],
+  "story": "The skalds say the forest takes its name from the world-ash, and that the oldest trees in it grew from seeds the great tree let fall, which is why they are so tall and why they do not burn. The forest is frozen most of the year. Its trees stand in the snow like the pillars of a hall whose roof has blown away, and the wind goes through them with a sound the frontier huscarls call the horn, because it sounds like a horn blown very far off, and because of what is kept in the west.\n\nGrallarhorn Faste holds Midgard's horn relic, which the skalds say carries something of Heimdall's: the horn that will be blown when the end comes, to wake the gods. Midgard built its strongest keep around it, in the west of the forest, and a lesser one, Arvakr Faste, in the north-east, named for one of the sun's horses, where the companies coming down out of the frontier from Vindsaul rest. Hibernia comes at the horn from Odin's Gate; Albion comes at it from the hills. The keeps change hands, and the forest fills with the dead of it: zombies in the north, the undead patrol the rogues of Vindsaul are sent after, which the shadows say has been seen far to the south-west in Raumarik as often as here, and the rest of the frontier's cold dead.\n\nOlder than the keeps are the fenrir. They live in the far west of the forest, beyond Grallarhorn, a pack of wolf-folk who walk on two legs like Skona's werewolves and are not the same, and who take their name from the great wolf himself. Their prophets say they are his children in spirit if not in blood, and that they are waiting in the forest of the world-ash for the day the chain breaks, so that they can run beside him. Fjall leads them, and Jana of Vasudheim, who has studied them, says Fjall keeps a flame that dances without wood, which is a thing the bound god Loki gives to those he means to use. The seers go to take it. Geyra, who runs alone near the pack, carries messages for it, and lately, the viking captains say, for the Red Daggers too.\n\nThe rest of Yggdra is the frost's. Ice giants and ice scrags in the drifts, frost hounds and winter wolves in the trees, wyverns on the ridges, the bone-eaters of the Vendo creeping in from the south-east wherever the war leaves something dead, shard golems in the west that the iarn dwarves say were made of a frozen lake by someone who wanted to keep it. Yggdra matters because the horn is there, and because the fenrir are waiting beside it for the same end the horn is meant to announce. The huscarls of Grallarhorn, who stand closest to both, say that when the end comes they will not know whether to blow the horn or run, and that they hope it is not on their watch. The fenrir prophets, told that, laughed, and said every watch hopes so, and one of them is always wrong.",
+  "legend": "Yggdra Forest is Midgard's middle Old Frontiers zone, frozen trees, with Arvakr Faste in the north-east and Grallarhorn Faste, the relic keep with Midgard's power relic, in the west. Levels run mid 20s to high 40s: zombies, frost hounds and ice scrags in the north and middle in the 30s, winter wolves to 48 in the north, shard golems in the west in the low 40s. The fenrir pack is in the far west past Grallarhorn: shredders and prophets in the mid 40s, social. Two epic targets: Fjall (56) among the fenrir for the seer epic (the dancing flame), and Geyra (52), a Fenrir Pack werewolf standing alone nearby, for the viking epic An End to the Daggers. The rogue epic says the roaming undead patrol is here, but the named Undead Patrol actually stands in Raumarik next to Oona. Frontier warbands of gamebots pass through on their way to the relic keep, so keep an eye on the realm war messages.",
+  "atmosphere": {
+    "firstEntry": [
+      "Frozen trees stand like pillars of a roofless hall.",
+      "The wind goes through them like a far horn.",
+      "The world-ash let these seeds fall, the skalds say.",
+      "Somewhere west, the horn is kept."
+    ],
+    "areas": [
+      {
+        "name": "Grallarhorn Faste",
+        "x": 677480,
+        "y": 710406,
+        "z": 6200,
+        "radius": 3000,
+        "lines": [
+          "Grallarhorn Faste. The horn is kept here.",
+          "The strongest keep in the forest, and the most wanted."
+        ]
+      },
+      {
+        "name": "Arvakr Faste",
+        "x": 698841,
+        "y": 680279,
+        "z": 5600,
+        "radius": 2500,
+        "lines": [
+          "Arvakr Faste, named for a horse of the sun.",
+          "Companies down from the frontier rest here."
+        ]
+      },
+      {
+        "name": "the fenrir's wood",
+        "x": 663000,
+        "y": 726000,
+        "z": 6500,
+        "radius": 3500,
+        "lines": [
+          "Wolf-folk on two legs. Not Skona's werewolves.",
+          "The fenrir wait here for the chain to break.",
+          "A flame dances without wood among them."
+        ]
+      },
+      {
+        "name": "the shard golems' lake",
+        "x": 664380,
+        "y": 683390,
+        "z": 5600,
+        "radius": 2500,
+        "lines": [
+          "Ice that walks, cut from a frozen lake.",
+          "Someone wanted to keep this water. It kept itself."
+        ]
+      },
+      {
+        "name": "the zombie wood",
+        "x": 695885,
+        "y": 703828,
+        "z": 5800,
+        "radius": 4000,
+        "lines": [
+          "The war's dead stumble between the trees.",
+          "Miserable dead. They do not know whose they were."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "yggdra is named for the world ash, the oldest trees grew from its seeds and dont burn",
+      "grallarhorn faste holds the horn relic, heimdalls horn the skalds say",
+      "arvakr faste is named for one of the suns horses",
+      "the wind in yggdra sounds like a horn blown far off",
+      "the fenrir in west yggdra take their name from the great wolf",
+      "the fenrir prophets say they will run beside fenrir when the chain breaks",
+      "fjall keeps a flame that dances without wood, a gift loki gives those he means to use",
+      "jana of vasudheim has studied the fenrir",
+      "geyra carries messages for the fenrir pack and for the red daggers",
+      "the bone eaters of the vendo creep into yggdra wherever the war leaves dead",
+      "the shard golems were made of a frozen lake, the dwarves say",
+      "hibernia comes at the horn from odins gate, albion from the hills"
+    ],
+    "rumour": [
+      "the fenrir are waiting for the same end the horn announces",
+      "the rogue epic says the undead patrol is in yggdra but the one you can find is in raumarik next to oona",
+      "the fenrir and the skona werewolves are not the same and dont like being confused",
+      "the trees of yggdra wont burn, someone tried",
+      "geyra runs alone because the pack doesnt trust messengers",
+      "the dancing flame from fjall is lokis",
+      "vagn and his fellows are supposed to be in yggdra but nobody can find them",
+      "if the horn ever sounds the frontier stops mattering"
+    ],
+    "tell": [
+      "yggdra forest is the middle frontier zone, between jamtland and uppland",
+      "grallarhorn faste is the relic keep in west yggdra",
+      "fjall and the fenrir are far west yggdra, seer epic",
+      "geyra is alone near the fenrir, viking epic, 52",
+      "yggdra runs mid 20s to high 40s",
+      "arvakr faste is the keep in northeast yggdra"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Yggdra. The forest of the world-ash, frozen. The [horn] is kept at Grallarhorn, and beyond it in the west the [fenrir] wait. [Fjall] leads them; [Geyra] runs their messages.\"",
+    "topics": {
+      "horn": "Grallarhorn Faste in the west holds Midgard's horn relic, which the skalds say carries something of Heimdall's: the horn that will wake the gods at the end. See [Arvakr].",
+      "Arvakr": "Arvakr Faste in the north-east, named for one of the sun's horses, where companies coming down from Vindsaul rest. It has changed hands.",
+      "fenrir": "Wolf-folk of the far west of the forest who walk on two legs and take their name from the great wolf. Their prophets say they will run beside him when the chain breaks. They are not Skona's werewolves. [Fjall] leads them.",
+      "the world-ash": "The skalds say the oldest trees of Yggdra grew from seeds Yggdrasil let fall, which is why they are so tall and why they will not burn. See [the horn's wind].",
+      "the horn's wind": "The sound of the wind through the frozen trees, like a horn blown far off. The huscarls name it for the [horn] at Grallarhorn and say it gets louder when the keep changes hands.",
+      "shard golems": "Walking ice in the west, which the iarn dwarves say was cut from a frozen lake by someone who wanted to keep its water. Nobody knows who.",
+      "the undead patrol": "Dead of the war who walk in rank. The rogues' epic sends Midgard's shadows to Yggdra to take a skull from one for Gunnolf of Vindsaul Faste; the patrol they find stands in Raumarik, beside the Hibernian Oona.",
+      "Jana": "Jana of Vasudheim, who has studied the [fenrir] longer than anyone in Midgard and tells the seers what [Fjall] keeps.",
+      "Arnhild": "Arnhild of Grallarhorn, the horn-keeper's daughter who wrote 'The Wind Through the Ash' for the children of Vasudheim, about the [horn], the [fenrir] and the trees that will not burn."
+    }
+  },
+  "book": {
+    "title": "The Wind Through the Ash",
+    "pages": [
+      "Arnhild of Grallarhorn, whose father kept the horn's room in the keep for twenty winters, wrote this for the children of Vasudheim, who ask what the frontier is. Children, the frontier is a forest, and the forest is frozen, and in the middle of it is a horn in a room, and the room is in a keep, and the keep is in the way of everyone. My father kept the room. He never blew the horn. Nobody blows it. It is not for blowing yet. It is for keeping, until the day. That is the whole of the frontier, children: keeping things until the day.",
+      "The trees are the first thing you will notice. They are taller than any tree in Vasudheim, and grey, and the snow sits on them like flour on a baker's arm. The skalds say they grew from seeds the world-ash let fall. My father said they were only old. I tried once to burn a fallen branch to see, and it would not take, and my father took the branch away and put it back where I found it and did not speak to me until supper. At supper he said the trees are not ours to test, and that some things in Midgard are only old, and some are older.",
+      "In the far west, past the keep, live the fenrir. They are wolves who walk, like the werewolves of Skona, but they will bite anyone who says so. Their prophets say they are the great wolf's children in spirit, and that they are waiting here for the day his chain breaks, so they can run with him. Jana of Vasudheim says their leader, Fjall, keeps a flame that dances on nothing. My father said the fenrir and the horn are waiting for the same day, and that the horn is on our side, and that we should be glad of it.",
+      "When the wind goes through the forest it makes a sound like a horn blown very far away. The huscarls say it is the horn, dreaming. When Albion or Hibernia takes the keep, the sound gets louder, and when Midgard takes it back, the sound is very soft for a while, as if the horn were sleeping better. I do not know if that is true, children. I know my father slept better too. When he died they gave the room to a huscarl from Vasudheim who had never heard the forest before, and on his first night the wind came through the trees, and he got up and went to the horn's room with a lamp to see who was blowing it. Nobody was. He sat with it until morning anyway."
+    ]
+  },
+  "bosses": [
+    "fjall",
+    "geyra",
+    "ald-the-bruce",
+    "moira-the-quiet",
+    "soulsong"
+  ]
+}

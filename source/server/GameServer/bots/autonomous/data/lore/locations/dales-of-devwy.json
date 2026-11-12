@@ -1,0 +1,393 @@
+{
+  "id": "dales-of-devwy",
+  "name": "Dales of Devwy",
+  "realm": "Albion",
+  "regions": [
+    51
+  ],
+  "zones": [
+    53
+  ],
+  "aliases": [
+    "devwy",
+    "the dales",
+    "gwyntell"
+  ],
+  "summary": "The colleges' old farms: Fort Gwyntell on the winnowing hill, the ghost households who still keep house, the hall of making and its runaway servants, the drakoran camp, and Morgana's larder in the west.",
+  "facts": [
+    {
+      "text": "Dales of Devwy is zone 53 of region 51, with Fort Gwyntell and about 930 monsters: drakoran (116 guardsmen, archiators, condottieri, medics, mystics, necromancers), the Chaotic Constructs (300: sentries mark I-IV, forged servants, apple gatherers, contraptions, junk), named ghost households, Avalonian Apparitions and Morgana's undead in the west.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob tables, region 51 zone 53 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Seven named ghost families (ghost flag, level 36-55): Hoges and Lindon in the far west, Swett and Grym near the fort road, Dyer, Tinctor and Parmenter in the north-east.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob tables, region 51 zone 53 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Zombies, Ghosts, and Necromancers: Juliana Grym feels something has been wrong for some time; Avice Swett, the Priest of Arawn at Fort Gwyntell (a sword 'forged in the realm of the dead'), and the Drakoran necromancer's apprentice across the wooden bridge, whose rod of necromancy goes to Avice.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Restoring the Magic: Adelon on the hill right of the Fort Gwyntell gate; Meical's key from Pazia in his house below the tower, a metal sphere from Tyian on the second floor, the lifeless creation at the top; Cabalist Meical comes to defend his creation; the broken orb is cleansed with a pendant; Lady Lurlei at Caer Gothwaite.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Failing Magic: Lady Eilwen and Lady Lurlei's spells fail and drakoran magic cuts through their protections; metal spheres come from the forged servants outside Meical's Hall.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Uncle Thulin: Achae Smith's uncle was taken by a forged servant, one of 'the cabalist's former servants' that Gracien Adamson knows; Elyn Badam at Wearyall identifies the metal bits.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Cabalist Meical (level 58, a quest spawn) uses model 899, the drakoran elite model, with the drakoran race value; Beath shares the drakoran necromancer model 880.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob tables, region 51 zone 53 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Qan'ris Duros, Ris'nir Cruss and Valnir Mordeth are scripted bosses in this zone.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Welsh 'gwyntyll' is a winnowing fan, from 'gwynt', wind (to verify); 'Devwy' is not glossed here.",
+      "provenance": "myth",
+      "source": "https://en.wiktionary.org/wiki/gwynt"
+    },
+    {
+      "text": "The dales as the colleges' farms, the hall of making and the borrowed name of Meical, the households' trades (dyers, tailors, bees and geese), Gracien Adamson's second register, the dyers' stream and its colours, the Avalonians at the last open doors, Arel Birn and Ra'ris Delum's shared skeleton and the larder are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Syhtric, who had led a company of mercenaries into the Dales for profit and lost them there days before, staggered bloodied into Fort Gwyntell carrying a grim story; badly wounded and perhaps dying, he had warnings for anyone travelling the Dales.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/1082.shtml (Camelot Herald, 2003-09-29, 1.65G notes; Wayback capture 2004-12-25)"
+    }
+  ],
+  "story": "The colleges' dales. Before the war the Dales of Devwy were the farms of Avalon's colleges, the country that fed the readers and clothed them. Tenant households held the land from the colleges by the year: orchards in the east below the hill where the grain was winnowed in the wind, which is why the fort on that hill is called Gwyntell; a hamlet of dyers and tailors in the north-east on the stream, where the Dyers and the Tinctors coloured the colleges' gowns and the Parmenters cut them; the Swetts and the Gryms by the fort road, who kept the colleges' bees and their geese; and the Hoges and the Lindons in the far west, beside the old burying ground that was there before the colleges were. The households said Devwy was the name of the stream. The readers said it was a saint's. Nobody settled it, and nobody is left who would.\n\nThe hall of making. The school of making kept an outlying hall in the south of the dales, the hall of Master Meical, with servants of iron and oak that did the work nobody wanted: they carried, they guarded, they picked the high apples. When the colleges burned the master did not come out of the smoke. A drakoran came to the empty hall instead, read the master's books, set the servants going again, and answered to the name cut over the door. The households still call him Master Meical, as they always did. The fort's name registrar says the name is borrowed, and writes it in his book with a mark beside it. The servants obey the new master worse every year. The rejects of his workshop walk the dales, junk and rubbish and tattered product, rejected prototypes and frazzled assemblies, and the sentries he numbers by mark stand in a line west of the hall. The apple gatherers still gather. The forged servants on the eastern slopes take what they find, and one of the things they found was Thulin, uncle of Achae Smith the dye-seller, who went out among them and came home only as a bundle the fort's volunteers carried back. At the top of the hall the new Meical is making something that does not yet live. Below it an orb is broken, and since it broke the sorceresses of Caer Gothwaite, Lady Eilwen and Lady Lurlei, find that their wards part before drakoran craft like wet paper. His eyes watch the fort from the trees.\n\nThe households. The drakoran came over the dales from Avalon's side in the first summers of the war, and the households did not leave. They died in their houses, most of them in one season, and they did not stop keeping house. Juliana Grym asks travellers on the fort road whether something is wrong, because something has felt wrong for a long time, and she has not spoken to the Swetts next door in longer than she can account for. Her sister Lucia talks of going to the market. The Priest of Arawn at the fort, who says he knows a little of this world and more of the other, holds that the drakoran necromancers across the wooden bridge keep the households where they are with a rod they do not understand, practising on the dales the craft they learned at Morgana's side. The fort argues about the dyers' hamlet, which lies at the edge of the war-priest's field: some say he kept them, some say the necromancers did, and the dyers say nothing at all, except their names. The western houses are the worst, being nearest the old dead, and Avalon's own lost walk among the houses by the fort road as if those doors were still the last ones anybody opened.\n\nThe war. The drakoran hold more of the dales than Albion does. Their guardsmen stand by the hundred in the north, their archiators beyond the bridge, their condottieri and medics and mystics in the grounds of the hall of making as if they had paid for it. Qan'ris Duros commands from the high ground in the north-east with his guard at his shoulder, and Ris'nir Cruss the war-priest keeps the field above the dyers. Beath the necromancer has a bank across the wooden bridge with Bayn and an apprentice who carries the rod. In the far west Morgana's own dead hold the old burying ground: headless footmen and corpse delvers, liches, ancient dead in the north-western corner, and Valnir Mordeth in his pit, which the fort calls the larder.\n\nFort Gwyntell. Albion holds the dales from one fort on the winnowing hill, under Major Fenn, with trainers of every order, a hospitaller and a teleporter. Gracien Adamson keeps its register of names and is short with anyone who wastes his time. Achae Smith sells dyes there with her daughter and sometimes regrets coming out here. Ariette keeps to the woods behind the fort, and Adelon watches the hall of making from a small tree on the hill right of the gate.\n\nWhy it matters to Albion. The dales were the colleges' larder and wardrobe, and they are now the drakoran's workshop and Morgana's. Whatever the new Meical finishes at the top of his hall, the sorceresses at Caer Gothwaite will feel it first. And the households are still Albion's tenants, the Priest of Arawn says, and have not been told.",
+  "legend": "Dales of Devwy is the high SI zone east of Caldey and north of Aldland, levels 35 to 60. Fort Gwyntell on the east side is the town: trainers, healer, teleporter, Gracien Adamson (Uncle Thulin), the Priest of Arawn (Zombies, Ghosts, and Necromancers), Ariette in the woods behind it (Lost Treasure), Adelon on the hill right of the gate (Restoring the Magic). The ghost households are camps of named ghosts: Swett and Grym near the fort road (high 30s, with the Avalonian Apparitions round them), Dyer, Tinctor and Parmenter in the north-east (40s), Hoges and Lindon in the far west (50 to 55). Meical's Hall in the south is construct country: the sentries, the Tower Keeper, Tyian, Pazia, and the level 61 Tower Guardian, which is huge. Meical himself only shows for Restoring the Magic. The drakoran camp in the north has over a hundred guardsmen in the 50s. Three catalog nameds live here: Qan'ris Duros (68) on the north-east high ground, Ris'nir Cruss (71) beside the dyers' houses, and Valnir Mordeth (70) in his pit in the west. Each comes back about an hour after it dies. The constructs give the Failing Magic spheres and the forged servant bits for Thulin.",
+  "atmosphere": {
+    "firstEntry": [
+      "The Dales of Devwy. The colleges' old farms.",
+      "Doors stand open. Nobody comes out.",
+      "Iron servants at work with no master.",
+      "Drakoran banners on the northern hills.",
+      "Someone is giving their name to the wind."
+    ],
+    "areas": [
+      {
+        "name": "Fort Gwyntell",
+        "x": 426905,
+        "y": 416817,
+        "z": 5712,
+        "radius": 2500,
+        "lines": [
+          "Fort Gwyntell, on the winnowing hill.",
+          "The registrar's ink and the crier's voice.",
+          "The Priest of Arawn watches the road north."
+        ]
+      },
+      {
+        "name": "Adelon's tree",
+        "x": 416800,
+        "y": 418544,
+        "z": 4337,
+        "radius": 800,
+        "lines": [
+          "A small tree on the hill. Someone keeps watch here.",
+          "From here you can see the hall of making."
+        ]
+      },
+      {
+        "name": "the houses by the fort road",
+        "x": 420000,
+        "y": 408700,
+        "z": 4400,
+        "radius": 1500,
+        "lines": [
+          "The Swetts' door. The Gryms' door. Both open.",
+          "Juliana Grym asks if something is wrong.",
+          "Pale Avalonians drift between the houses."
+        ]
+      },
+      {
+        "name": "the dyers' hamlet",
+        "x": 431500,
+        "y": 392000,
+        "z": 4717,
+        "radius": 1500,
+        "lines": [
+          "The dyers' stream once ran three colours.",
+          "Dyer, Tinctor, Parmenter. The names still answer.",
+          "The war-priest's field is just above."
+        ]
+      },
+      {
+        "name": "the western houses",
+        "x": 383000,
+        "y": 426000,
+        "z": 4690,
+        "radius": 1500,
+        "lines": [
+          "The Hoges and the Lindons keep house still.",
+          "The oldest dead are their neighbours."
+        ]
+      },
+      {
+        "name": "the old burying ground",
+        "x": 382700,
+        "y": 421500,
+        "z": 4400,
+        "radius": 2000,
+        "lines": [
+          "Corpse delvers dig in ground older than Avalon.",
+          "Headless footmen. Morgana's mark.",
+          "The mould here grows on what it eats."
+        ]
+      },
+      {
+        "name": "Meical's Hall",
+        "x": 408400,
+        "y": 433500,
+        "z": 5500,
+        "radius": 2000,
+        "lines": [
+          "The hall of making. A name cut over the door.",
+          "Something at the top that does not yet live.",
+          "The great guardian turns its head."
+        ]
+      },
+      {
+        "name": "the workshop yards",
+        "x": 414200,
+        "y": 418500,
+        "z": 4200,
+        "radius": 2000,
+        "lines": [
+          "Contraptions and gyves, junk that walks.",
+          "Rejected prototypes, still trying.",
+          "Rusty chains drag themselves through the grass."
+        ]
+      },
+      {
+        "name": "the sentries' line",
+        "x": 400500,
+        "y": 428000,
+        "z": 5200,
+        "radius": 2000,
+        "lines": [
+          "Sentries in a line, numbered by mark.",
+          "Crafted bowmen on the slope."
+        ]
+      },
+      {
+        "name": "the orchard servants",
+        "x": 425238,
+        "y": 420069,
+        "z": 4654,
+        "radius": 1000,
+        "lines": [
+          "Apple gatherers of oak and iron, still at work.",
+          "Nobody has eaten these apples in years."
+        ]
+      },
+      {
+        "name": "the forged servants",
+        "x": 431210,
+        "y": 425083,
+        "z": 4340,
+        "radius": 1500,
+        "lines": [
+          "Forged servants. Thulin went among them.",
+          "Animate torches burn without anyone to hold them."
+        ]
+      },
+      {
+        "name": "the drakoran camp",
+        "x": 405800,
+        "y": 392800,
+        "z": 4559,
+        "radius": 3000,
+        "lines": [
+          "Drakoran guardsmen by the hundred.",
+          "The legion's camp. It does not sleep.",
+          "Banners of the dragon-men over the dales."
+        ]
+      },
+      {
+        "name": "across the wooden bridge",
+        "x": 402500,
+        "y": 401500,
+        "z": 3250,
+        "radius": 1500,
+        "lines": [
+          "Beath's bank. The necromancers practise here.",
+          "An apprentice carries a rod he does not understand."
+        ]
+      },
+      {
+        "name": "the middle ground",
+        "x": 407300,
+        "y": 416700,
+        "z": 3750,
+        "radius": 1200,
+        "lines": [
+          "Two drakoran and a skeleton they both claim.",
+          "Training dummies that strike back."
+        ]
+      },
+      {
+        "name": "Qan'ris Duros' high ground",
+        "x": 425043,
+        "y": 397100,
+        "z": 3056,
+        "radius": 1200,
+        "lines": [
+          "The commander's ground. His guard stands close.",
+          "From here you can see Gwyntell's fires."
+        ]
+      },
+      {
+        "name": "Ris'nir Cruss' field",
+        "x": 430763,
+        "y": 388496,
+        "z": 4870,
+        "radius": 1000,
+        "lines": [
+          "Something hangs in the air above this field.",
+          "The war-priest keeps what he takes."
+        ]
+      },
+      {
+        "name": "Valnir Mordeth's pit",
+        "x": 378390,
+        "y": 398849,
+        "z": 4354,
+        "radius": 1200,
+        "lines": [
+          "The larder. Ghouls crouch at its edge.",
+          "Something in the pit is eating well."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the dales were the avalon colleges' farms before the war",
+      "the ghost families in devwy dont know theyre dead. they still keep house",
+      "juliana grym asks if somethings wrong. [it is|yes, juliana]",
+      "the dyers and the tinctors are the same trade, they fought over the name for 3 generations",
+      "the parmenters were tailors, they cut the colleges' gowns",
+      "meical's hall in the south is full of constructs that dont obey him anymore",
+      "the meical in that hall is a drakoran wearing a dead master's name, [heard|the registrar says]",
+      "fort gwyntell is on the hill where they winnowed grain, gwyntell is the wind word",
+      "the priest of arawn in gwyntell says the drakoran necros keep the ghosts in their houses",
+      "the drakoran camp in devwy is bigger than the fort. over a hundred guardsmen",
+      "valnir's pit in the west, the fort calls it the larder",
+      "the apple gatherers near gwyntell still pick apples nobody eats"
+    ],
+    "rumour": [
+      "[heard|someone said] gracien keeps a second book with the ghost families' names",
+      "heard the forged servants took achae's uncle thulin",
+      "[heard|someone said] the broken orb in meical's hall is why the gothwaite sorceresses' wards fail",
+      "heard lucia grym is still going to the market. been going for years",
+      "[heard|someone said] there are two kedysons because two drakoran raised the same skeleton",
+      "heard ris'nir hangs in the air over his field when nobody's around",
+      "[heard|someone said] idonea hoges gives you every name in her house in order",
+      "heard the avalonian ghosts by the fort road came over when the colleges burned"
+    ],
+    "tell": [
+      "devwy? high si zone, 35 to 60. fort gwyntell is the town",
+      "is it hard? the west houses are 50-55 ghosts, the drakoran camp is 50s, three catalog nameds",
+      "whats there? ghost families, meical's hall full of constructs, a huge drakoran camp, valnir's pit",
+      "where's meical's hall? south middle of the dales. the big guardian is 61",
+      "where are the ghost houses? swett and grym by the fort road, dyers ne, hoges and lindon far west",
+      "good xp? constructs south of the fort in the 40s, guardsmen in the north for groups in the 50s"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Dales of Devwy, the colleges' old farms. Ask of [fort gwyntell] and [gracien adamson], the [priest of arawn], the [households], the hall of [meical] and his [servants] and the broken [orb], [thulin], the [drakoran] and their [necromancers], [qan'ris duros], [ris'nir cruss], [valnir mordeth], [arel birn] and [ra'ris delum], or the [avalonian apparitions].",
+    "topics": {
+      "fort gwyntell": "Albion's fort in the dales, on the hill where the colleges' grain was winnowed in the wind, under Major Fenn: trainers, a healer, Master Visur's teleporter, [gracien adamson] and his register, the [priest of arawn], [achae smith] the dye-seller, [ariette] in the woods behind it and [adelon] on the hill right of the gate.",
+      "gracien adamson": "The name registrar of Fort Gwyntell, short with anyone who wastes his time. He keeps a second book of the dales' [households], who still give their names, with a mark beside each he cannot prove is dead. He knows the cabalist's former servants better than he would like.",
+      "priest of arawn": "A priest of the lord of the dead who keeps a room at Fort Gwyntell and says he knows a little of this world and more of the other. He holds that the drakoran [necromancers] keep the [households] in their houses with a rod they do not understand, and he hands out swords from Arawn's forges to those who need them.",
+      "households": "The colleges' old tenants, who died in their houses in the first summers of the war and still keep house: the [swett] and [grym] families by the fort road, the [dyer], [tinctor] and [parmenter] families of the dyers' hamlet, and the [hoges] and [lindon] families in the far west.",
+      "swett": "The Swetts kept the colleges' bees by the fort road: Beneger, Hawis, Avice, Beatrix and Bartholomew. Avice sends travellers to the [priest of arawn] and wants a drakoran rod brought to her.",
+      "grym": "The Gryms kept the geese a field from the Swetts: Wydo, Juliana, Lucia, Eva, Everard and Warin. Juliana asks whether something is wrong. Lucia talks of the market.",
+      "dyer": "One of the two dyeing families of the north-east hamlet: Beonoc, Edyo, Celm, Cerdic and Earma. Their stretch of the stream ran blue. They quarrelled with the [tinctor] family over which name was older.",
+      "tinctor": "The other dyeing family: Botulf, Eanfled, Ealhhild, Cenfus and Cenwahl. Their stretch ran red. Tinctor is the readers' Latin for a dyer, which the [dyer] family never let them forget.",
+      "parmenter": "The tailors of the hamlet, who cut the colleges' gowns and kept the peace between the dyers, badly: Eabae, Anwynd, Ethel, Byrht and Burgraed.",
+      "hoges": "A western family beside the old burying ground: Idonea, Hamon, Eunice, Clarice and Sibyl. Idonea gives every name in the house, in order, as if to a tithe-reeve.",
+      "lindon": "The Hoges' neighbours in the far west: Toly, Rose, Cecilia and Lina. They are as hard to leave as they are to speak to.",
+      "meical": "The name cut over the door of the hall of making. The old master did not come out of the burning; a drakoran answers to the name now, reads his books and drives his [servants]. At the top of the hall he is making something that does not yet live, and below it the [orb] is broken.",
+      "servants": "The cabalist's former servants, the Chaotic Constructs: apple gatherers still gathering, forged servants that took [thulin], sentries numbered by mark, the Tower Keeper and the great Tower Guardian, Tyian and Pazia inside the hall, Throttler among the stranglers, and the Eyes of the Crafter watching the fort.",
+      "orb": "Something in the hall of making is broken, and since it broke the wards of Lady Eilwen and Lady Lurlei at Caer Gothwaite part before drakoran craft. Adelon on the hill outside the fort knows what it would take to cleanse it.",
+      "thulin": "Uncle of [achae smith]. He went out among the forged servants and did not come back. The alchemist Elyn Badam at Wearyall told what had him from the metal bits; the fort's volunteers brought his remains home.",
+      "achae smith": "A dye-seller at Fort Gwyntell, with her daughter Aelbfled and a hard-working husband. She sometimes regrets coming out here. Her uncle was [thulin].",
+      "ariette": "Ariette keeps to the woods behind Fort Gwyntell and wants three things for a statue: drakoran hide, slime from the Aldland algae and sap from a lamia in Gwyddneau.",
+      "adelon": "Adelon watches the hall of making from a small tree on the hill right of the fort gate, and sends word to Lady Lurlei at Caer Gothwaite of anyone fool enough to go against [meical].",
+      "drakoran": "The drakoran hold more of the dales than Albion: guardsmen by the hundred in the north, archiators beyond the bridge, condottieri and medics in the hall's grounds, [qan'ris duros] on the high ground, [ris'nir cruss] above the dyers and the [necromancers] across the wooden bridge.",
+      "necromancers": "Beath the necromancer keeps a bank across the wooden bridge with Bayn and an apprentice who carries a rod of necromancy. The [priest of arawn] says they practise on the [households].",
+      "qan'ris duros": "The drakoran commander on the north-eastern high ground, with his guard at his shoulder. He keeps the old custom of the sworn guard, and his stamp orders the line from a long way off.",
+      "ris'nir cruss": "The war-priest whose field lies above the dyers' hamlet. He hangs in the air over it when nothing comes, and keeps what he takes.",
+      "valnir mordeth": "Morgana's keeper of the larder, a pit in the west of the dales where his ghouls feed him. Once a reader of the college of healing, struck off its roll.",
+      "arel birn": "A young drakoran of the middle ground by the training dummies, one of two who both claim the same raised skeleton, Kedyson, and will not give him up to the other. The registrar says Arel Birn raised him first and has been raising him again ever since out of spite.",
+      "ra'ris delum": "Arel Birn's rival on the middle ground, a drakoran of the Legion who says he raised Kedyson properly and Arel Birn only raised him again. There are two of Kedyson now. Neither drakoran will say which is the right one.",
+      "avalonian apparitions": "Avalon's own lost, who came over the dales when the colleges burned and died on the way. They drift between the Swett and Grym houses because those were the last doors opened to them."
+    }
+  },
+  "book": {
+    "title": "The Register of Fort Gwyntell",
+    "pages": [
+      "The Register of Fort Gwyntell, kept by Gracien Adamson, name registrar, who has been asked to note that he did not ask for this. A registrar writes down the names people take, and at Gwyntell they take them at my table. I keep a second book besides, which nobody asked for either. It holds the names of the dales' households, the old tenants of the colleges, who died in their houses in the first summers of the war and still give their names to anyone who asks. They give them correctly. They give them every time. I write them down so that somebody has, and I put a mark beside the ones I cannot prove are dead, which is all of them.",
+      "Of the dyers. In the north-east, on the stream, stood the hamlet that coloured the colleges' gowns. Two families did the dyeing, the Dyers and the Tinctors, which is one craft with two names, and they quarrelled for three generations over which name was older. The Parmenters cut the cloth and kept the peace, badly. The stream ran blue below the Dyers and red below the Tinctors, and green where the colours met, which both said was the other's fault. The war-priest of the drakoran keeps his field just above the hamlet now. The fort argues whether he keeps the dyers as well. The dyers do not say. They give their names.",
+      "Of the fort road. The Swetts and the Gryms kept the colleges' bees and geese a field apart. Juliana Grym stops travellers and asks whether something is wrong, because something has been wrong for a long time and she has not talked to the Swetts in an age, though they are only next door. Her sister Lucia talks of the market. Avice Swett has sent more than one of my registrants to the Priest of Arawn. The pale Avalonians who drift between the two houses are not tenants of the dales and not in my book. The priest says they came here because these were the last doors anybody opened to them.",
+      "Of the western houses. The Hoges and the Lindons farmed in the far west beside the old burying ground, which was a burying ground before there were colleges to bury anyone. Morgana's dead dig in it now, delvers and moulds and headless footmen, and the larder of Valnir Mordeth lies a long way north of them, up the western edge of the dales. The western households are harder to speak to than the others and harder to leave. Idonea Hoges answered me across her own garden with her name and her husband's and her daughters', in order, as if I were the tithe-reeve. I wrote them down. I did not go into the garden.",
+      "Of the hall of making. Master Meical of the school of making had his hall in the south of the dales, with servants of iron and oak. He did not come out of the burning. The one who answers to his name now is a drakoran; I have seen him, and I have the old master's hand from a college lease in this fort, and the two do not match. The households still say Master Meical. The servants know better, and obey worse each year. The forged servants took Thulin, my dye-seller's uncle. I knew what had him from the bits she showed me. I did not tell her until the alchemist at Wearyall said so too.",
+      "Of the drakoran, last, because they are the reason for the rest. Their camp in the north is larger than this fort. Their commander keeps the high ground, their war-priest keeps the field, and across the wooden bridge their necromancers keep a bank where they practise the craft they learned at the witch's side. The Priest of Arawn says they hold the households with a rod they do not understand. He says Arawn does not care for amateurs. He gave one of my registrants a sword from the forges of the dead, and told him somebody needed it. I have entered the sword in neither book."
+    ]
+  },
+  "bosses": [
+    "qanris-duros",
+    "risnir-cruss",
+    "valnir-mordeth",
+    "tower-guardian",
+    "tower-keeper",
+    "tyian",
+    "pazia",
+    "heavy-metal-mark-i",
+    "throttler",
+    "cabalist-meical",
+    "adelon",
+    "beath",
+    "beonoc-dyer",
+    "the-hoges-household",
+    "the-lindon-household",
+    "bevvny",
+    "prototype-guard",
+    "eyes-of-the-crafter",
+    "necromantic-apprentice",
+    "bayn",
+    "srral-dulss",
+    "kedyson",
+    "the-parmenter-household",
+    "the-dyer-household",
+    "the-tinctor-household",
+    "the-swett-household",
+    "the-grym-household"
+  ],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "morgana",
+    "arawn",
+    "realm-of-camelot"
+  ]
+}

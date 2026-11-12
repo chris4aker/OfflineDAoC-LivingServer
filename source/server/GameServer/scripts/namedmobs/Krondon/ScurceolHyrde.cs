@@ -270,8 +270,8 @@ namespace DOL.AI.Brain
 			ThinkInterval = 1500;
 		}
 		private protected static bool IsTargetPicked = false;
-		private protected static GamePlayer randomtarget = null;
-		private protected static GamePlayer RandomTarget
+		private protected static GameLiving randomtarget = null;
+		private protected static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
@@ -288,22 +288,22 @@ namespace DOL.AI.Brain
 			{
 				switch (Util.Random(1, 4))
 				{
-					case 1: RandomTarget.MoveTo(61, 50986, 20031, 16964, 3091); break;
-					case 2: RandomTarget.MoveTo(61, 51936, 21012, 16964, 2093); break;
-					case 3: RandomTarget.MoveTo(61, 52784, 20019, 16964, 982); break;
-					case 4: RandomTarget.MoveTo(61, 51940, 18968, 16964, 26); break;
+					case 1: EncounterDisplacement.Move(RandomTarget, 61, 50986, 20031, 16964, 3091, DisplacementKind.Throw, Body); break;
+					case 2: EncounterDisplacement.Move(RandomTarget, 61, 51936, 21012, 16964, 2093, DisplacementKind.Throw, Body); break;
+					case 3: EncounterDisplacement.Move(RandomTarget, 61, 52784, 20019, 16964, 982, DisplacementKind.Throw, Body); break;
+					case 4: EncounterDisplacement.Move(RandomTarget, 61, 51940, 18968, 16964, 26, DisplacementKind.Throw, Body); break;
 				}
 				RandomTarget.TakeDamage(RandomTarget, eDamageType.Falling, RandomTarget.MaxHealth / 5, 0);
-				RandomTarget.Out.SendMessage("You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
+				EncounterTargets.Tell(RandomTarget, "You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 			}
 			new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetPort), 1500);
 			return 0;
 		}
 		public override void OnAttackedByEnemy(AttackData ad)
 		{
-			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && ad.Attacker is GamePlayer)
+			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && (ad.Attacker is GamePlayer || EncounterTargets.DisplacesBots(Body) && ad.Attacker is GameBot))
 			{
-				RandomTarget = ad.Attacker as GamePlayer;
+				RandomTarget = EncounterTargets.AsRaider(ad.Attacker);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(TeleportPlayer), Util.Random(8000, 15000));
 				IsTargetPicked = true;
 			}
@@ -401,8 +401,8 @@ namespace DOL.AI.Brain
 			ThinkInterval = 1500;
 		}
 		private protected static bool IsTargetPicked = false;
-		private protected static GamePlayer randomtarget = null;
-		private protected static GamePlayer RandomTarget
+		private protected static GameLiving randomtarget = null;
+		private protected static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
@@ -419,22 +419,22 @@ namespace DOL.AI.Brain
 			{
 				switch (Util.Random(1, 4))
 				{
-					case 1: RandomTarget.MoveTo(61, 50986, 20031, 16964, 3091); break;
-					case 2: RandomTarget.MoveTo(61, 51936, 21012, 16964, 2093); break;
-					case 3: RandomTarget.MoveTo(61, 52784, 20019, 16964, 982); break;
-					case 4: RandomTarget.MoveTo(61, 51940, 18968, 16964, 26); break;
+					case 1: EncounterDisplacement.Move(RandomTarget, 61, 50986, 20031, 16964, 3091, DisplacementKind.Throw, Body); break;
+					case 2: EncounterDisplacement.Move(RandomTarget, 61, 51936, 21012, 16964, 2093, DisplacementKind.Throw, Body); break;
+					case 3: EncounterDisplacement.Move(RandomTarget, 61, 52784, 20019, 16964, 982, DisplacementKind.Throw, Body); break;
+					case 4: EncounterDisplacement.Move(RandomTarget, 61, 51940, 18968, 16964, 26, DisplacementKind.Throw, Body); break;
 				}
 				RandomTarget.TakeDamage(RandomTarget, eDamageType.Falling, RandomTarget.MaxHealth / 5, 0);
-				RandomTarget.Out.SendMessage("You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
+				EncounterTargets.Tell(RandomTarget, "You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 			}
 			new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetPort), 1500);
 			return 0;
 		}
 		public override void OnAttackedByEnemy(AttackData ad)
 		{
-			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && ad.Attacker is GamePlayer)
+			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && (ad.Attacker is GamePlayer || EncounterTargets.DisplacesBots(Body) && ad.Attacker is GameBot))
 			{
-				RandomTarget = ad.Attacker as GamePlayer;
+				RandomTarget = EncounterTargets.AsRaider(ad.Attacker);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(TeleportPlayer), Util.Random(8000, 15000));
 				IsTargetPicked = true;
 			}
@@ -532,8 +532,8 @@ namespace DOL.AI.Brain
 			ThinkInterval = 1500;
 		}
 		private protected static bool IsTargetPicked = false;
-		private protected static GamePlayer randomtarget = null;
-		private protected static GamePlayer RandomTarget
+		private protected static GameLiving randomtarget = null;
+		private protected static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
@@ -550,22 +550,22 @@ namespace DOL.AI.Brain
 			{
 				switch (Util.Random(1, 4))
 				{
-					case 1: RandomTarget.MoveTo(61, 50986, 20031, 16964, 3091); break;
-					case 2: RandomTarget.MoveTo(61, 51936, 21012, 16964, 2093); break;
-					case 3: RandomTarget.MoveTo(61, 52784, 20019, 16964, 982); break;
-					case 4: RandomTarget.MoveTo(61, 51940, 18968, 16964, 26); break;
+					case 1: EncounterDisplacement.Move(RandomTarget, 61, 50986, 20031, 16964, 3091, DisplacementKind.Throw, Body); break;
+					case 2: EncounterDisplacement.Move(RandomTarget, 61, 51936, 21012, 16964, 2093, DisplacementKind.Throw, Body); break;
+					case 3: EncounterDisplacement.Move(RandomTarget, 61, 52784, 20019, 16964, 982, DisplacementKind.Throw, Body); break;
+					case 4: EncounterDisplacement.Move(RandomTarget, 61, 51940, 18968, 16964, 26, DisplacementKind.Throw, Body); break;
 				}
 				RandomTarget.TakeDamage(RandomTarget, eDamageType.Falling, RandomTarget.MaxHealth / 5, 0);
-				RandomTarget.Out.SendMessage("You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
+				EncounterTargets.Tell(RandomTarget, "You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 			}
 			new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetPort), 1500);
 			return 0;
 		}
 		public override void OnAttackedByEnemy(AttackData ad)
 		{
-			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && ad.Attacker is GamePlayer)
+			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && (ad.Attacker is GamePlayer || EncounterTargets.DisplacesBots(Body) && ad.Attacker is GameBot))
 			{
-				RandomTarget = ad.Attacker as GamePlayer;
+				RandomTarget = EncounterTargets.AsRaider(ad.Attacker);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(TeleportPlayer), Util.Random(8000, 15000));
 				IsTargetPicked = true;
 			}
@@ -663,8 +663,8 @@ namespace DOL.AI.Brain
 			ThinkInterval = 1500;
 		}
 		private protected static bool IsTargetPicked = false;
-		private protected static GamePlayer randomtarget = null;
-		private protected static GamePlayer RandomTarget
+		private protected static GameLiving randomtarget = null;
+		private protected static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
@@ -681,22 +681,22 @@ namespace DOL.AI.Brain
 			{
 				switch (Util.Random(1, 4))
 				{
-					case 1: RandomTarget.MoveTo(61, 50986, 20031, 16964, 3091); break;
-					case 2: RandomTarget.MoveTo(61, 51936, 21012, 16964, 2093); break;
-					case 3: RandomTarget.MoveTo(61, 52784, 20019, 16964, 982); break;
-					case 4: RandomTarget.MoveTo(61, 51940, 18968, 16964, 26); break;
+					case 1: EncounterDisplacement.Move(RandomTarget, 61, 50986, 20031, 16964, 3091, DisplacementKind.Throw, Body); break;
+					case 2: EncounterDisplacement.Move(RandomTarget, 61, 51936, 21012, 16964, 2093, DisplacementKind.Throw, Body); break;
+					case 3: EncounterDisplacement.Move(RandomTarget, 61, 52784, 20019, 16964, 982, DisplacementKind.Throw, Body); break;
+					case 4: EncounterDisplacement.Move(RandomTarget, 61, 51940, 18968, 16964, 26, DisplacementKind.Throw, Body); break;
 				}
 				RandomTarget.TakeDamage(RandomTarget, eDamageType.Falling, RandomTarget.MaxHealth / 5, 0);
-				RandomTarget.Out.SendMessage("You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
+				EncounterTargets.Tell(RandomTarget, "You take falling damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 			}
 			new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetPort), 1500);
 			return 0;
 		}
 		public override void OnAttackedByEnemy(AttackData ad)
 		{
-			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && ad.Attacker is GamePlayer)
+			if (ad != null && Util.Chance(25) && IsTargetPicked == false && ad.Attacker.IsAlive && ad.Attacker != null && (ad.Attacker is GamePlayer || EncounterTargets.DisplacesBots(Body) && ad.Attacker is GameBot))
 			{
-				RandomTarget = ad.Attacker as GamePlayer;
+				RandomTarget = EncounterTargets.AsRaider(ad.Attacker);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(TeleportPlayer), Util.Random(8000, 15000));
 				IsTargetPicked = true;
 			}

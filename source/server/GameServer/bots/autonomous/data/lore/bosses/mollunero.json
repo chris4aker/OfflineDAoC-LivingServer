@@ -1,0 +1,114 @@
+{
+  "id": "mollunero",
+  "name": "Mollunero",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/mollunero",
+  "locationId": "worlds-end",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "World's End holds three octonoid mothers on its shore, each spawning young octonoids: Balere, Mollunero and Zytka.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Mollunero: level 75, 30,000 health, CC immune, resists 20% melee and 30% other, reach 350; 7-8 young octonoids (level 50-55, 2,000 health) appear when she is engaged and are removed when she dies or resets; on a quarter of her hits she casts Cold Blast (450 cold, range 500) at her target.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Mollunero.cs (integration/1.2)"
+    },
+    {
+      "text": "Mollunero lies at about 381,800/268,500 on the southern World's End shore.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    }
+  ],
+  "story": "Mollunero is the strongest of the three mothers, the one the Sylvan fishers do not name when they are on the water. She lies in the deep pool below the World's End cliffs on the southern shore, where the sea comes in through a gap in the rock and stays cold even in high summer. The fishers say the cold is hers. Lines that touch her come up stiff with frost; a Sylvan boy who put his hand in the pool on a dare kept the hand and lost the feeling in it, and is an old man in Domnann now, and still wears a glove in summer.\n\nThere is a fishers' story that she lets her brood fight for her and comes out of the water only when every child is dead, and every Sylvan grandmother on the edge tells it. Coll of the Domnann guides, who has seen her come up, says it is a story for grandchildren. Mollunero comes up with her young, not after them, and her young are not small: they are grown things, near as heavy as a man, the strongest brood on the shore, and they come off her in a body the moment she rises. The grandmothers' story has one true thing in it. The children never outlive her. When the mother sinks, the brood sinks with her.\n\nHer arms are the worst of her. Whoever she holds is caught in the cold of the deep pool, and the cold goes into the one she is holding as if it were poured, again and again, until that one is grey. The fishers who have dragged a man away from her say the only cure is to warm him faster than she cools him. Like her sisters she cannot be sung to sleep or held by any charm; a mother with her young round her listens to nothing.\n\nThe Fomorians, Fiachra of Howth wrote, called her the cold one and left her twice the share of the catch they left Balere, and never fished the southern pool at all. The Sylvan do not fish it either. When the realm's companies first came out to World's End in the second summer of the isles, it was Mollunero's pool that the Domnann guides would not lead them to, and the first Hibernians who found it without a guide are the reason the edge has a cairn on the cliff above it.",
+  "legend": "The strongest mother: 75, with 7-8 young at 50-55 who appear with her the moment she is engaged (not after, whatever the old posts say). Every young octonoid vanishes when Mollunero dies or resets, so either AoE the brood down or hold it and kill her. On about a quarter of her hits she adds Cold Blast, 450 cold, on her target: the main tank takes melee plus big cold spikes, so heal the tank first and bring cold resist buffs. CC immune; resists 20% melee, 30% magic. Tether 2,600. Do not fight her with Zytka's or Balere's brood loose; they are down the same shore.",
+  "yells": {
+    "aggro": [
+      "Cold. Come and be cold.",
+      "The pool remembers every hand.",
+      "Rise, children. Rise with me."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Up, children. The deep comes up with me."
+      }
+    ],
+    "death": [
+      "The pool... closes...",
+      "Cold... and quiet..."
+    ],
+    "slay": [
+      "Grey now. Grey and still.",
+      "The deep keeps you.",
+      "Feed, children."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A deep pool under the cliff. Arms move in it.",
+      "The air over the pool is winter in summer."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Mollunero rises with her brood!"
+      },
+      {
+        "trigger": "death",
+        "text": "The cold pool closes over the brood."
+      }
+    ],
+    "realmFirstKill": "Mollunero, strongest of the mothers, is slain."
+  },
+  "botLines": {
+    "briefing": [
+      "mollunero is 75 and her young are 50-55. [bring a full group|not a duo]",
+      "the brood comes with her right away. kill her and they [vanish|all go]",
+      "she cold blasts her target for 450 on some hits. [heal the tank|cold resist on the tank]",
+      "no cc, she resets if dragged past 2600. [fight her by the pool|stay put]"
+    ],
+    "aftermathWin": [
+      "mollunero down. [the cold one|strongest mother] is dead",
+      "tank survived the cold blasts. [nice heals|grats]",
+      "brood vanished with her. [didnt need to kill them|saved time]",
+      "all three mothers done? [check zytka|yep]"
+    ],
+    "aftermathLoss": [
+      "tank got cold blasted twice in a row and [dropped|died]",
+      "brood ate us before she was halfway",
+      "dragged her too far and she [reset|went home full with a new brood]",
+      "woke zytka too. [never again|ugh]"
+    ],
+    "rumour": [
+      "[heard|someone said] a sylvan boy put his hand in mollunero's pool and [never felt it again|wears a glove]",
+      "the fishers say mollunero only comes out when her young are dead. [not true|she comes up with them]",
+      "[word is|heard] the fomorians never fished the southern pool",
+      "theres a cairn above mollunero's pool for the first hib group that found it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Mollunero",
+    "text": "The strongest of the [octonoid mothers], in the cold pool under the southern cliffs. She comes up with her young, not after them, and the one she holds goes grey with the cold of the deep."
+  },
+  "bookPage": "From Coll of the Domnann guides: I will not take a company to Mollunero's pool, and I tell them why. The grandmothers say she waits until her children are dead. She does not. She comes up with them, a brood near as heavy as men, and they sink when she sinks and not before. Her arms are cold the way the pool is cold, and the cold goes into the one she holds, and keeps going. The fishers who have dragged a man off her say the only cure is to warm him faster than she cools him. There is a cairn on the cliff above the pool. Every stone on it is a Hibernian who found the place without me.",
+  "chronicle": {
+    "win": "{realm} rode out to World's End under {raidLeader} and killed Mollunero in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at World's End by Mollunero after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "balere",
+      "relation": "sister mother of the shore"
+    },
+    {
+      "id": "zytka",
+      "relation": "sister mother of the shore"
+    }
+  ]
+}

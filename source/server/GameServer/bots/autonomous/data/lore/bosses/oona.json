@@ -1,0 +1,115 @@
+{
+  "id": "oona",
+  "name": "Oona",
+  "catalogKey": "midgard-named-mobs-classic-zones/oona",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "hibernian-invaders"
+  ],
+  "facts": [
+    {
+      "text": "Oona is a level-65 named with 10,000 health in southwest Raumarik, where the rivers divide; undead soldiers stand with her.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "When she kills someone she raises an undead add, and taunts: 'Perhaps your pathetic gods will grant you another life... Hibernia shall defeat Midgard, and your spirit shall help!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs"
+    },
+    {
+      "text": "She casts Aurora Blast and Bolt of Uncreation, and takes no damage from attackers far from her spawn.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "She is the target of the Hunter and Shadowblade epic 'War Concluded', from Masrim in Fort Atla; the reward is Oona's head.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/653"
+    },
+    {
+      "text": "Oona (Una) is the queen of the fairies in Irish folklore (to verify).",
+      "provenance": "myth",
+      "source": "Irish folklore, to verify"
+    },
+    {
+      "text": "Oona takes no damage from attackers standing outside her tether range from her spawn. She casts Bolt of Uncreation (200 cold bolt, range 1,800, recast 15-20 s) and otherwise Aurora Blast (330 heat, range 1,650), both uninterruptible, and keeps to casting range. Her undead soldiers within 2,500 join her. When she kills a REAL player she raises an 'undead <race>' in their likeness; a bot she kills is not raised. Her raised dead and soldiers die with her. 10,000 health, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs"
+    }
+  ],
+  "story": "Oona is Hibernia's, and she came a long way to be in Raumarik. The bards of Tir na Nog name her for a queen of the fairy hills of the west, and the Midgard skalds say she was a druid of the Hibernian host who came north in the early years of the war and stayed when the host went home, because she had found a place she liked: the fork in Raumarik's southern river, where the waters divide around a point of land and the mist lies green at night.\n\nShe carries something of the Otherworld with her. The light she throws is the aurora of the western sky, green and hot as a forge, and the bolt she looses when she is roused unmakes what it touches with a cold like the grave. She does not come to her enemies. She stands on the point of land and lets them come to her across the water, and casts at them as they come, and nothing they do breaks her casting.\n\nLike Loken, she is hard to reach from afar, and the skalds give the same reason in a different shape: the point of land at the fork is hers, sworn to her by some rite of the western druids, and anything that would harm her must come onto the point to do it. Blows and spells from the far bank fall short, as if the river carried them away.\n\nHer guard is the Norse dead. Every Northman she kills, she raises, there on the point, in his own likeness, and tells him as he falls that his gods are deaf and his spirit will help Hibernia win the war, and he stands up in her ring and serves. Her undead soldiers stand there already, many of them, and come the moment she is threatened. The Galplen folk say one of them wears a Galplen brooch. When she dies, they all lie down.\n\nMasrim at Fort Atla sends the realm's hunters and shadowblades to end her war for her, and Morlin Caan in Jordheim receives what they bring back, which is her head. The bards of Hibernia, it is said, have a song for each time, and the songs say she will come back. So far, she has.",
+  "legend": "Oona is the hunter and shadowblade epic target at the river fork in southern Raumarik: go west to the river and follow it south to where it divides. Level 65, 10,000 health, CC-immune. Like Loken she takes no damage from anyone standing too far from her spawn, so everyone has to fight on the point of land. She casts nonstop and keeps her distance: Bolt of Uncreation 200 cold every 15-20 seconds (a bolt, so it can be blocked) and Aurora Blast 330 heat otherwise, uninterruptible. Her undead soldiers all join when you touch her, so clear or pull them first. If she kills a real player she raises an undead copy of them that fights for her; bots aren't raised. Don't die near her. Everything she raised dies with her.",
+  "yells": {
+    "aggro": [
+      "Northmen. Come closer, so I can see which of you I'll keep.",
+      "The point is mine. Come onto it, if you dare.",
+      "My soldiers remember you. They were yours once."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Your gods are deaf here. Mine are listening."
+      }
+    ],
+    "death": [
+      "Tir na Nog... I see the green...",
+      "The songs... will bring me back..."
+    ],
+    "slay": [
+      "Perhaps your gods will grant you another life. Until then, you are mine.",
+      "Stand up, Northman. You have a new queen.",
+      "Hibernia thanks you for your service."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Where the rivers divide, a green light flickers.",
+      "A ring of Norse dead on the point of land."
+    ],
+    "realmFirstKill": "Oona of Hibernia is slain where the rivers meet.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The green light over the fork flares like a forge."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "oona at the river fork, kill her undead first, fight her up close",
+      "everyone on the point, she takes nothing from range",
+      "if a real player dies she raises a copy of him. dont die near her",
+      "bolt of uncreation can be blocked, aurora cant"
+    ],
+    "aftermathWin": [
+      "got oona's head! [war concluded|epic done]",
+      "all her dead lay down when she died",
+      "stood on the point, easy enough",
+      "nobody died so nobody got raised"
+    ],
+    "aftermathLoss": [
+      "she raised my healer and he killed me. [thanks|lovely]",
+      "we fought from the bank and did nothing",
+      "her soldiers came all at once",
+      "i died and she raised me. watched myself fight my group"
+    ],
+    "rumour": [
+      "theres a hib champion in raumarik who turns dead norsemen into her soldiers",
+      "the hib bards say she always comes back",
+      "one of her dead wears a galplen brooch",
+      "the point of land at the fork is sworn to her"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Oona",
+    "text": "A champion of Hibernia, named for a fairy queen, who holds the river fork in Raumarik with a guard of the Norse dead she has raised."
+  },
+  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: my uncle went to the fork once to see the green light, and came back, and would not say what he saw for years. When he was old he told me: a woman on the point of land, singing, and a ring of dead men round her facing outward, and one of them, near enough to the bank that he could see the face, was Hallvard the cooper's son from our own street, who had gone south with the hunters the winter before. He still wore his mother's brooch. My uncle did not tell her.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took Oona's head at the river fork in {minutes} minutes.",
+    "loss": "Oona added {raidLeader}'s party from {realm} to her guard after {minutes} minutes."
+  }
+}

@@ -37,6 +37,9 @@ namespace DOL.GS
 
         public GamePlayer Owner { get; private set; }
         public GamePlayer PlayerGroupLeader { get; private set; }
+
+        /// <summary>Set by the brain only around the pet focus shield's own cast (BotBrain.TryStartPetFocusShield).</summary>
+        internal bool PetFocusShieldApproved { get; set; }
         public bool IsPlayerLedGroup => PlayerGroupLeader != null;
         public string ClassName { get; private set; }
         public new string InternalID { get; set; }
@@ -45,6 +48,12 @@ namespace DOL.GS
         public byte GenderId { get; set; }
         public long DatabaseID { get; set; }
         public bool IsAutonomousWorldBot { get; private set; }
+        /// <summary>
+        /// The NPC Size that draws like a player of that height (1 Short, 2 Average, 3 Tall): 48 / 50 / 52, the new client's
+        /// player scale. No bot is drawn bigger than a Tall player (owner 2026-10-31).
+        /// </summary>
+        public static byte SizeForHeight(int height) => height switch { 1 => 48, 3 => 52, _ => 50 };
+
         public bool IsTemporaryGroupHelper { get; private set; }
         /// <summary>
         /// A member of a realm's Epic Special Forces (AutonomousEpicSpecialForces): a level-50 gamebot made for one raid
@@ -55,6 +64,12 @@ namespace DOL.GS
         public bool IsEndgameCompanion => TemporaryCompanionBalance.IsEndgame(IsTemporaryGroupHelper || IsEpicSpecialForce, Level);
         /// <summary>Equipment is generated from the companion endgame kit (temporary helpers and the Special Forces).</summary>
         public bool UsesCompanionKit => IsTemporaryGroupHelper || IsEpicSpecialForce;
+
+        /// <summary>
+        /// A player's own companion (a /spawn helper, never a world bot with goals): the companion follow, buff, song,
+        /// stealth and PvP rules apply to it.
+        /// </summary>
+        public bool IsPlayerCompanion => IsTemporaryGroupHelper && !IsAutonomousWorldBot;
         private bool _endgameCompanionEquipped;
         public bool SuppressLootAndProgress => IsTemporaryGroupHelper;
         internal int EquipmentLevelFloor { get; private set; }
@@ -147,6 +162,11 @@ namespace DOL.GS
         public GameClient Client => _dummyClient;
 
         #endregion
+
+        /// <summary>A tactic's melee position order (EncounterMeleeStations: Govannon's demon) sets how close the bot follows
+        /// the target it fights; otherwise the NPC default.</summary>
+        public override int StickMinimumRange =>
+            EncounterMeleeStations.MinimumFollowFor(this, TargetObject, GameLoop.GameLoopTime) ?? base.StickMinimumRange;
 
         #region IGamePlayer — CharacterClass
 
@@ -289,6 +309,30 @@ namespace DOL.GS
                 if (oldPercent != EndurancePercent)
                     Group?.UpdateMember(this, false, false);
             }
+        }
+
+        #endregion
+
+        #region Resting seated (visual)
+
+        // Bots sit down to rest, visibly (owner 2026-10-31). The NPC packets carry no sit state, so a seated bot is shown by
+        // emote 0xF0 (sit down, then sit-idle) and stood up by 0xF1, sent on each change to the players who see it and
+        // again by SendNPCCreate to a player who first sees it seated. Visual only: recovery and its timing are unchanged.
+        internal const eEmote SitEmote = (eEmote)0xF0;
+        internal const eEmote StandEmote = (eEmote)0xF1;
+        private bool _seatedForClients;
+
+        public bool IsSeatedForClients => _seatedForClients;
+
+        private void SetSeatedForClients(bool seated)
+        {
+            if (_seatedForClients == seated)
+                return;
+            _seatedForClients = seated;
+            if (ObjectState != eObjectState.Active)
+                return;
+            foreach (GamePlayer player in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+                player.Out.SendEmoteAnimation(this, seated ? SitEmote : StandEmote);
         }
 
         #endregion
@@ -969,6 +1013,7 @@ namespace DOL.GS
 
         public override void ProcessDeath(GameObject killer)
         {
+            SetSeatedForClients(false);
             AutonomousPetSupport.CancelPendingCharm(this);
             _deathTick = GameLoop.GameLoopTime;
             _deathRegionId = CurrentRegionID;
@@ -976,6 +1021,7 @@ namespace DOL.GS
             IsReturningAfterRelease = false;
             _stableReturnPlan = null;
             CompleteStableMasterRoute();
+            BotDutyLeases.OnDied(this); // a battleground rally drops its dead (BotDutyLeaseRules.EndsOnDeath)
             // 1.1.3, after RC6: how many were on it, read before the death clears the tracker, for how the death is told.
             int attackers = IsAutonomousWorldBot ? AutonomousDeathDiagnostics.Attackers(this) : 0;
 
@@ -1115,7 +1161,7 @@ namespace DOL.GS
                 StopCurrentSpellcast();
                 (Brain as BotBrain)?.PrepareForTankPull();
                 StopMoving();
-                if (!MoveTo(Owner.CurrentRegionID, (int)Math.Round(destination.X),
+                if (!MoveCorpseForRelease(Owner.CurrentRegionID, (int)Math.Round(destination.X),
                     (int)Math.Round(destination.Y), (int)Math.Round(destination.Z), Owner.Heading))
                     return;
 
@@ -1127,6 +1173,7 @@ namespace DOL.GS
                 EnterPlayerLedGroup(Owner);
                 Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
                 Brain?.Start();
+                ShowStandingToViewers();
                 return;
             }
 
@@ -1163,17 +1210,7 @@ namespace DOL.GS
             bool toldGroup = IsAutonomousWorldBot && AutonomousLivingServer.OnBotReleasing(this);
             // Transfer the corpse first: a failed MoveTo must not revive the bot
             // at its killer or cause HandleDeathRecovery to discard its timer.
-            bool moved;
-            _releasingCorpse = true;
-            try
-            {
-                moved = MoveTo(releaseRegion, release.X, release.Y, release.Z, Heading);
-            }
-            finally
-            {
-                _releasingCorpse = false;
-            }
-            if (!moved)
+            if (!MoveCorpseForRelease(releaseRegion, release.X, release.Y, release.Z, Heading))
                 return;
             BotGroupRelease.NoteRelease(this, releaseRegion, release, returnToParty); // Fork: a release in a player's group shows in the log
             Health = Math.Max(1, MaxHealth / 3);
@@ -1184,6 +1221,7 @@ namespace DOL.GS
             _nextReturnRoleplayTick = GameLoop.GameLoopTime + Util.Random(45_000, 90_000);
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
+            ShowStandingToViewers();
             if (returnToParty && !toldGroup)
                 TellOwnGroup(ReturnDialogue("release"));
 
@@ -1199,6 +1237,24 @@ namespace DOL.GS
 
         /// <summary>How far from a repeat-death spot a release bind must be when there is a choice.</summary>
         public const float ReleaseClearanceFromDeathSpot = 6_000;
+        /// <summary>
+        /// A release moves the corpse first and raises it after: the move re-created the bot for every viewer while it
+        /// was still dead, and a client keeps an NPC created dead lying down whatever its health says later, so it showed
+        /// as a second dead body (owner 2026-10-30). Re-send it standing.
+        /// </summary>
+        private void ShowStandingToViewers()
+        {
+            if (!IsAlive || ObjectState != eObjectState.Active)
+                return;
+            foreach (GamePlayer viewer in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+            {
+                if (viewer.Client?.ClientState is not GameClient.eClientState.Playing || !viewer.CanDetect(this))
+                    continue;
+                viewer.Out.SendObjectRemove(this);
+                ClientService.CreateObjectForPlayer(viewer, this);
+                viewer.Out.SendLivingEquipmentUpdate(this);
+            }
+        }
 
         private Point3D? FindNearestBindPoint()
         {
@@ -1588,15 +1644,59 @@ namespace DOL.GS
 
         #region IGamePlayer — Equipment / Armor
 
+        // Bot armor works exactly like a player's (owner 2026-10-31, major): the piece that is hit is chosen with the
+        // player's odds (or the style's fixed location), its AF is capped by level and armor type, quality and condition
+        // count, and its absorb comes from the armor type. Before this a bot defended like a monster of its level and
+        // its worn armor did nothing. Copies of GamePlayer.CalculateArmorHitLocation / GetArmorFactorCap / GetArmorAF /
+        // GetArmorAbsorb.
         public virtual eArmorSlot CalculateArmorHitLocation(AttackData ad)
         {
-            int random = Util.Random(99);
-            if (random < 35) return eArmorSlot.TORSO;
-            if (random < 55) return eArmorSlot.LEGS;
-            if (random < 70) return eArmorSlot.ARMS;
-            if (random < 82) return eArmorSlot.HEAD;
-            if (random < 91) return eArmorSlot.HAND;
+            if (ad?.Style != null && ad.Style.ArmorHitLocation != eArmorSlot.NOTSET)
+                return ad.Style.ArmorHitLocation;
+            int chance = Util.Random(1, 100);
+            if (chance <= 40) return eArmorSlot.TORSO;
+            if (chance <= 65) return eArmorSlot.LEGS;
+            if (chance <= 80) return eArmorSlot.ARMS;
+            if (chance <= 90) return eArmorSlot.HEAD;
+            if (chance <= 95) return eArmorSlot.HAND;
             return eArmorSlot.FEET;
+        }
+
+        public int GetArmorFactorCap(eObjectType type, out int itemArmorFactorCap)
+        {
+            int modifiedCharacterLevel = Level;
+            if (RealmLevel > 39)
+                modifiedCharacterLevel++;
+            int playerArmorFactorCap = modifiedCharacterLevel * 2;
+            itemArmorFactorCap = type is eObjectType.Cloth ? modifiedCharacterLevel : playerArmorFactorCap;
+            return playerArmorFactorCap;
+        }
+
+        public override double GetArmorAF(eArmorSlot slot)
+        {
+            if (slot is eArmorSlot.NOTSET)
+                return 0;
+            DbInventoryItem item = Inventory?.GetItem((eInventorySlot)slot);
+            if (item == null || !GlobalConstants.IsArmor(item.Object_Type))
+                return 0;
+            int armorFactorCap = GetArmorFactorCap((eObjectType)item.Object_Type, out int itemArmorFactorCap);
+            double armorFactor = Math.Min(item.DPS_AF, itemArmorFactorCap);
+            armorFactor += BaseBuffBonusCategory[eProperty.ArmorFactor] / 5.0;
+            armorFactor *= item.Quality * 0.01 * item.ConditionPercent * 0.01;
+            armorFactor = Math.Min(armorFactor, armorFactorCap);
+            armorFactor += GetModified(eProperty.ArmorFactor) / 5.0;
+            return Math.Max(0, armorFactor);
+        }
+
+        public override double GetArmorAbsorb(eArmorSlot slot)
+        {
+            if (slot is eArmorSlot.NOTSET)
+                return 0;
+            DbInventoryItem item = Inventory?.GetItem((eInventorySlot)slot);
+            if (item == null)
+                return 0;
+            double absorb = item.SPD_ABS * 0.01 * (1 + GetModified(eProperty.ArmorAbsorption) * 0.01);
+            return Math.Clamp(absorb, 0, 1);
         }
 
         public double WeaponDamageWithoutQualityAndCondition(DbInventoryItem weapon)
@@ -1903,6 +2003,10 @@ namespace DOL.GS
 
             if (goStealth)
             {
+                // A relic carrier cannot hide: the relic would fall at once (2026-10-30 livestream).
+                if (GameRelic.IsPlayerCarryingRelic(this))
+                    return;
+
                 // Songs and pulsing spells are mutually exclusive with stealth.
                 // Keep the same legality rule without using GamePlayer-only effects.
                 if (effectListComponent.ContainsEffectForEffectType(eEffect.Pulse))
@@ -2455,7 +2559,8 @@ namespace DOL.GS
             byte genderId = 0,
             bool temporaryGroupHelper = false,
             byte equipmentLevel = 0,
-            byte botLevel = 0)
+            byte botLevel = 0,
+            BotSpec chosenSpec = null)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             IsTemporaryGroupHelper = temporaryGroupHelper;
@@ -2480,11 +2585,12 @@ namespace DOL.GS
             // Stat and spec initialization — order matters
             InitializeBotStats();
             eCharacterClass temporaryClass = (eCharacterClass)ClassId;
-            BotSpec = temporaryClass == eCharacterClass.Bonedancer
+            // /spawn <class> <spec> picks one of the class's existing builds (TemporaryGroupSpecCatalog); otherwise random.
+            BotSpec = chosenSpec ?? (temporaryClass == eCharacterClass.Bonedancer
                 ? new BonedancerBotSpec(BotSpec.ChooseRandomSpecialization(temporaryClass), 0, false)
                 : temporaryClass == eCharacterClass.Sluaghbinder
                     ? new SluaghbinderBotSpec(BotSpec.ChooseRandomSpecialization(temporaryClass), 0, false)
-                : BotSpec.GetSpec(temporaryClass, BotSpec.ChooseRandomSpecialization(temporaryClass));
+                : BotSpec.GetSpec(temporaryClass, BotSpec.ChooseRandomSpecialization(temporaryClass)));
             LoadClassSpecializations(false);
             SpendSpecPoints(Level, 0);
             RefreshSpecDependantSkills(false);
@@ -2597,6 +2703,21 @@ namespace DOL.GS
             }
             m_leftOverSpecPoints = Math.Max(0, record.UnspentSpecPoints);
             _lastAutonomousTrainedLevel = IsEpicSpecialForce ? Level : ParseLastTrainedLevel(record.SerializedAbilities, Level, record.SerializedSpecs);
+            // A bot the launcher made at level 50 ("+ Lv.50") has its lifetime build but has never stood at a trainer: it
+            // arrives trained in that build, as a player who leveled there would be. PC 2026-11-11 (build e90bf21): 900 such
+            // bots a realm loaded with every line at 1, 792 of 2,700 had found a trainer after 80 minutes, and raids staged
+            // 20 minutes in were fought by level 50s with level-1 skills (9 of the 72 sent to Golestandt had trained).
+            bool arrivedTrained = !IsEpicSpecialForce && ArrivesTrained(Level, _lastAutonomousTrainedLevel);
+            if (arrivedTrained)
+            {
+                SpendSpecPoints(Level, _lastAutonomousTrainedLevel);
+                _lastAutonomousTrainedLevel = Level;
+                MarkAutonomousStateDirty();
+                if (AutonomousDiagnosticsProperties.Training)
+                    log.Info($"AUTONOMOUS_TRAINING bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" level={Level} " +
+                             $"trainer=\"(arrived trained)\" trainedFrom=1 trainedThrough={Level} " +
+                             $"specializations=\"{string.Join(",", GetSpecList().Where(spec => spec.Trainable && spec.Level > 1).Select(spec => $"{spec.KeyName}:1->{spec.Level}"))}\" unspent={m_leftOverSpecPoints}");
+            }
             RefreshSpecDependantSkills(false);
             SetBotSpells();
             SortStyles();
@@ -2615,8 +2736,8 @@ namespace DOL.GS
                 starterWeaponAdded |= BotRangedCombat.EnsureStarter(this);
                 starterWeaponAdded |= BotStarterInstruments.Ensure(this);
                 RefreshItemBonuses();
-                if (starterWeaponAdded || !buildLocked)
-                    AutonomousBotStatusPersistence.Queue(this, starterWeaponAdded);
+                if (starterWeaponAdded || !buildLocked || arrivedTrained)
+                    AutonomousBotStatusPersistence.Queue(this, starterWeaponAdded || arrivedTrained);
             }
             Experience = Math.Max(0, record.Experience);
             AutonomousRealmPoints = Math.Max(0, record.RealmPoints);
@@ -2667,6 +2788,8 @@ namespace DOL.GS
                 return false;
 
             PlayerGroupLeader = leader;
+            // The player now has this gamebot's time: no raid, siege, RvR event or rally takes it (docs/DUTY-LEASE.md).
+            BotDutyLeases.Claim(this, eDutyLeaseKind.PlayerGroup, leader.Name, DutyLeaseReason.PlayerGroup, leader.Name);
             if (Brain is BotBrain brain)
             {
                 brain.RebindAssistedPlayer();
@@ -2680,6 +2803,7 @@ namespace DOL.GS
             if (IsTemporaryGroupHelper)
                 CompleteStableMasterRoute();
             PlayerGroupLeader = null;
+            BotDutyLeases.Release(this, eDutyLeaseKind.PlayerGroup);
             if (Brain is BotBrain brain)
                 brain.RebindAssistedPlayer();
         }
@@ -2703,7 +2827,12 @@ namespace DOL.GS
                 return false;
 
             if (_recoveryRestLocked)
+            {
+                // stood up for a song while resting: sits back down once it's done
+                if (!_seatedForClients && !IsCasting && !IsMoving && !InCombat)
+                    SetSeatedForClients(true);
                 return true;
+            }
 
             // Harmless mobile songs are allowed to continue during logical
             // recovery. Ordinary casts are cancelled so recovery still owns
@@ -2717,8 +2846,7 @@ namespace DOL.GS
             StopMovingOnPath();
             StopMoving();
             _recoveryRestLocked = true;
-            // GameBots remain standing NPC actors. Recovery has no IsSitting,
-            // emote, player packet, model swap, or client-facing stance state.
+            SetSeatedForClients(true);      // sits down for the rest, visibly (0xF0)
             UpdateHealthManaEndu();
             StartEnhancedRecoveryTimers();
             return true;
@@ -2738,6 +2866,7 @@ namespace DOL.GS
         public void WakeRecoveryRest()
         {
             _recoveryRestLocked = false;
+            SetSeatedForClients(false);     // stands up before it moves, casts or fights (0xF1)
         }
 
         /// <summary>
@@ -2760,10 +2889,14 @@ namespace DOL.GS
         public override bool CastSpell(Spell spell, SpellLine line, ISpellCastingAbilityHandler spellCastingAbilityHandler = null, bool checkLos = true)
         {
             if (CompanionFollowPolicy.DeferBuff(this, spell)) return false;
+            // A cast reveals the caster: a companion hidden with its player casts only heals until a fight starts.
+            if (spell?.IsHealing != true && CompanionStealth.SuppressesCasting(this)) return false;
             if (AutonomousGroupFormationFollow.DeferBuff(this, spell)) return false;
             // Final boundary as well as selection filtering: no rank of the
             // disabled shield can keep a Cabalist/Enchanter bot channeling.
-            if (AutonomousPetSupport.IsDisabledBotDamageShield(this, spell) ||
+            // The pet focus shield is cast only by its own decision (BotBrain.TryStartPetFocusShield), never by upkeep.
+            bool approvedPetShield = PetFocusShieldApproved && BotPetFocusShieldPolicy.IsPetFocusShield(spell);
+            if (AutonomousPetSupport.IsDisabledBotDamageShield(this, spell) && !approvedPetShield ||
                 BotSpellPower.BlocksAttackerRotation(this, spell) ||
                 !AnimistSingleTargetPolicy.AllowsAutomatedSpell(this, spell) ||
                 !BotAnimistPolicy.MayPlant(this, spell))
@@ -2774,7 +2907,7 @@ namespace DOL.GS
 
             if (spell == null || !CanAffordConcentration(spell) || Mana < BotSpellPower.Cost(this, spell, line) ||
                 castingComponent.HasPendingSkillRequests ||
-                BotSpellPower.IsOffensiveCaster(this) && castingComponent.IsCasting)
+                BotSpellPower.IsOffensiveCaster(this) && castingComponent.IsCasting && !castingComponent.IsFocusChanneling)
             {
                 CabalistRestDiagnostics.Attempt(this, spell, false);
                 return false;
@@ -2801,6 +2934,9 @@ namespace DOL.GS
             if (IsRecoveryResting && !IsTemporaryGroupHelper &&
                 !BotSongTwistPolicy.IsMobileSong(this, spell))
                 WakeRecoveryRest();
+            // a seated bot stands to cast, as a player does (a song keeps the rest; it sits again after)
+            if (_seatedForClients)
+                SetSeatedForClients(false);
             bool started = base.CastSpell(spell, line, spellCastingAbilityHandler, checkLos);
             CabalistRestDiagnostics.Attempt(this, spell, started);
             if (started && CharacterClass?.ID == (int)eCharacterClass.Animist)
@@ -2821,6 +2957,17 @@ namespace DOL.GS
             if (target != null && IsRecoveryResting)
                 return;
 
+            // 1.2 epic rule (Funus with his weapon puzzle): a bot never starts an attack on a boss it must not hit (its hits
+            // heal him to full), and an archer that may fight him with its distance weapon only starts with that weapon.
+            // Play test duo14: reavers he turned on fought back in melee (40 of his 110 heals).
+            if (target is GameLiving living && EpicEncounterTactics.MustNotHit(this, living))
+            {
+                if (RefusesAttackOn(this, living))
+                    return;
+                if (ActiveWeaponSlot != eActiveWeaponSlot.Distance)
+                    SwitchWeapon(eActiveWeaponSlot.Distance);
+            }
+
             // A ranged shot owns its aim/release animation.  Reissuing the
             // same target every think pulse used to reset that state, producing
             // repeated bow preparation with no completed shot.  Suppress only
@@ -2834,6 +2981,11 @@ namespace DOL.GS
 
             base.StartAttack(target);
         }
+
+        /// <summary>The bot must not hit <paramref name="target"/> at all and has no distance weapon it may fight it with (an
+        /// epic rule: Funus while his puzzle is on, for a class he takes no damage from), so it starts no attack on it.</summary>
+        public static bool RefusesAttackOn(GameBot bot, GameLiving target) =>
+            EpicEncounterTactics.MustNotHit(bot, target) && !EpicEncounterTactics.FightsAtRange(bot, target);
 
         public override bool AddToWorld()
         {
@@ -2864,46 +3016,43 @@ namespace DOL.GS
         /// The ordinary RemoveFromWorld pet release is retained, allowing the
         /// pet manager to re-summon a legal pet in the destination region.
         /// </summary>
-        private long _deadMoveLoggedForDeath = -1;
+        private int _corpseReleaseMove;
+
+        /// <summary>The release's own corpse move (the bot is raised right after): the one move a dead bot may make.</summary>
+        private bool MoveCorpseForRelease(ushort regionID, int x, int y, int z, ushort heading)
+        {
+            _corpseReleaseMove++;
+            try { return MoveTo(regionID, x, y, z, heading); }
+            finally { _corpseReleaseMove--; }
+        }
+
+        /// <summary>
+        /// A body stays where it fell until it is raised or released (owner 2026-10-30: a companion killed outside an inn
+        /// showed up dead beside the innkeeper 6 seconds later, by an in-region teleport). Any other move of a dead bot is
+        /// refused and logged with its caller.
+        /// </summary>
+        private bool RefuseCorpseMove(string kind, ushort regionID, int x, int y, int z)
+        {
+            if (Health > 0 || ObjectState != eObjectState.Active || _corpseReleaseMove > 0)
+                return false;
+            if (log.IsWarnEnabled)
+                log.Warn($"BOT_CORPSE_MOVE_REFUSED {kind} bot=\"{Name}\" id={DatabaseID} from={CurrentRegionID}:{X},{Y},{Z} " +
+                     $"to={regionID}:{x},{y},{z}{Environment.NewLine}{Environment.StackTrace}");
+            return true;
+        }
 
         public override bool MoveInRegion(ushort regionID, int x, int y, int z, ushort heading, bool forceMove)
         {
-            LogDeadMove(regionID, x, y, z, "MoveInRegion");
+            if (RefuseCorpseMove("MoveInRegion", regionID, x, y, z))
+                return false;
             return base.MoveInRegion(regionID, x, y, z, heading, forceMove);
-        }
-
-        // True only while this bot's own release (ReleaseToNearestBindAndReturn) moves its corpse to the bind.
-        private bool _releasingCorpse;
-
-        private void LogDeadMove(ushort regionID, int x, int y, int z, string how)
-        {
-            // Audit 2026-10-17: this ran on every gamebot death with every feature off and captured a stack trace
-            // each time. It now logs only with the Living Server death part on, and the normal release (the move
-            // expected on every death) is named instead of walking the stack.
-            // Playtest 2026-10-18: 2,951 lines in three hours, almost all the normal release. That one is expected on
-            // every death, so it is Debug now; any other move of a dead gamebot (the bug this line is for) stays Info.
-            if (!AutonomousLivingServer.DeathOn || !IsAutonomousWorldBot || IsAlive || _deadMoveLoggedForDeath == _deathTick ||
-                !(_releasingCorpse ? log.IsDebugEnabled : log.IsInfoEnabled))
-                return;
-            _deadMoveLoggedForDeath = _deathTick;
-            string stack = _releasingCorpse
-                ? $"{nameof(GameBot)}.{nameof(ReleaseToNearestBindAndReturn)}"
-                : string.Join(" <- ", new System.Diagnostics.StackTrace(2, false).GetFrames()
-                    .Take(8).Select(frame => frame.GetMethod() is { } method ? $"{method.DeclaringType?.Name}.{method.Name}" : "?"));
-            string line = $"LIVING_SERVER_DEAD_MOVE bot=\"{Name}\" id={DatabaseID} how={how} deadMs={GameLoop.GameLoopTime - _deathTick} " +
-                          $"from={CurrentRegionID}:{X},{Y},{Z} to={regionID}:{x},{y},{z} by={stack}";
-            if (_releasingCorpse)
-                log.Debug(line);
-            else
-                log.Info(line);
         }
 
         public override bool MoveTo(ushort regionID, int x, int y, int z, ushort heading)
         {
-            // In game 2026-10-17 dead gamebots were found near their bind within seconds of dying, still dead, so
-            // nobody could rez them. LogDeadMove says once per death who moves a dead gamebot (a normal release
-            // moves the corpse before reviving it, so it shows up here too, about 20 s or 90 s after the death).
-            LogDeadMove(regionID, x, y, z, "MoveTo");
+            if (RefuseCorpseMove("MoveTo", regionID, x, y, z))
+                return false;
+            SetSeatedForClients(false);     // never arrives seated
             // Owner 2026-10-07: travelling the old frontiers, the pets of the player's /spawn and /raid companions died
             // on every move (the move removes the bot from the world, which released its pet) and their pet classes kept
             // re-summoning. Within a region a companion's pet now comes along and is placed behind it, as a player's pet
@@ -3023,7 +3172,7 @@ namespace DOL.GS
             // this removal is classified after it has begun.
             bool intentionalWorldMove = IsIntentionalWorldMove;
             if (!intentionalWorldMove)
-                TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK)?.DropFromCarrier(this);
+                TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK)?.DropFromCarrier(this, "bot-removed");
             if (IsAutonomousWorldBot && !intentionalWorldMove)
                 SaveAutonomousState(true);
             // A charm cast can have created its tagged candidate before the
@@ -3127,7 +3276,9 @@ namespace DOL.GS
                 }
             }
 
-            Size = (byte)Util.Random(45, 60);
+            // A player's height, Short / Average / Tall, never bigger than a real player model (owner 2026-10-31: a
+            // companion Bard stood far above its player; it was a random 45-60).
+            Size = SizeForHeight(Util.Random(1, 3));
         }
 
         #endregion
@@ -3290,6 +3441,10 @@ namespace DOL.GS
             return string.IsNullOrWhiteSpace(serializedSpecs) ? (byte)1 : currentLevel;
         }
 
+        /// <summary>The launcher makes bots at level 1 or at level 50 only, and a bot that leveled up trains on its way: a
+        /// level-50 bot that never trained was made at 50, and arrives trained in its lifetime build (pure).</summary>
+        public static bool ArrivesTrained(int level, int trainedLevel) => level >= 50 && trainedLevel <= 1;
+
         /// <summary>"trained-level|N|realm-points|M": realm ability points already spent at a trainer (0 when absent).</summary>
         public static int ParseTrainedRealmPoints(string serialized)
         {
@@ -3388,11 +3543,11 @@ namespace DOL.GS
                 return false;
 
             bool saved;
-            lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+            using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 saved = record.IsPersisted ? GameServer.Database.SaveObject(record) : GameServer.Database.AddObject(record);
             if (includeInventory && Inventory is BotInventory persistentInventory)
             {
-                lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+                using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                     saved &= persistentInventory.SaveIntoDatabase(InternalID);
             }
             if (saved)
@@ -3927,6 +4082,12 @@ namespace DOL.GS
                 SetSluaghbinderSpells();
                 return;
             }
+
+            // The usable-skill lists are cached: rebuild them from the current specs and level first. Read from the cache,
+            // a bot trained or levelled in the field kept its old spells until it was created again (owner 2026-10-30:
+            // a level 5 Hunter trained to Beastcraft 5 used none of the new buffs until dismissed and summoned at the inn).
+            GetAllUsableSkills(true);
+            GetAllUsableListSpells(true);
 
             // Casters use list spells (highest level per type), hybrids use all usable skills
             if (CharacterClass.ClassType == eClassType.ListCaster)
@@ -4736,6 +4897,11 @@ namespace DOL.GS
 
         private void SetRanged()
         {
+            // The class's own kind first when it trains more than one (a mercenary's short bow, an armsman's crossbow):
+            // SetRangedWeapon fills only an empty slot, so the ability order below no longer decides it.
+            if (CharacterClass != null && BotRangedCombat.PreferredRangedType((eCharacterClass)CharacterClass.ID) is eObjectType own &&
+                HasAbility(BotRangedCombat.AbilityFor(own)))
+                BotEquipment.SetRangedWeapon(this, own);
             foreach (Ability ability in GetAllAbilities())
             {
                 switch (ability.KeyName)
@@ -4851,6 +5017,11 @@ namespace DOL.GS
 
         public override void SwitchWeapon(eActiveWeaponSlot slot)
         {
+            // Play test diagnostic (Funus): who puts the melee weapon in hand of a bot that may fight its target only
+            // with its distance weapon. Once per bot every ten minutes, the call path.
+            if (slot != eActiveWeaponSlot.Distance && ActiveWeaponSlot == eActiveWeaponSlot.Distance &&
+                TargetObject is GameLiving rangedOnly && EpicEncounterTactics.FightsAtRange(this, rangedOnly))
+                EpicEncounterRestores.NoteMeleeSwitch(this, rangedOnly);
             // GameNPC.SwitchWeapon intentionally stops and restarts an active
             // attack, even when the requested slot is already selected. That
             // is useful for scripted NPCs, but inventory/equipment refreshes
@@ -4957,7 +5128,23 @@ namespace DOL.GS
         {
             if (target != null && IsRecoveryResting)
                 return;
-            base.Follow(target, minDistance, maxDistance);
+            base.Follow(target, MeleeStandOff(target, minDistance), maxDistance);
+        }
+
+        /// <summary>
+        /// Living Server 1.2, "arrive slightly short": an autonomous gamebot's melee approach to a monster stops 0-20 units
+        /// short of the stick distance, the same for the same bot every fight (BotCombatMovement.StandOff), so bots don't all
+        /// stand on one exact ring. Not for companions, player-led groups, dragons, epic encounters or raid dungeons.
+        /// </summary>
+        private int MeleeStandOff(GameObject target, int minDistance)
+        {
+            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsEpicSpecialForce || IsPlayerLedGroup ||
+                target == null || target != TargetObject || target is not GameNPC monster || monster is GameBot ||
+                minDistance != StickMinimumRange || ActiveWeaponSlot == eActiveWeaponSlot.Distance ||
+                DragonCombatGeometry.TargetReach(monster) > 0 || EpicEncounterTactics.For(monster) != null ||
+                EpicEncounterTactics.IsTacticPart(monster) || AutonomousRealmRaid.IsRaidDungeon(CurrentRegionID))
+                return minDistance;
+            return BotCombatMovement.StandOff(minDistance, DatabaseID > 0 ? DatabaseID : ObjectID);
         }
 
         public new void StopFollowing()

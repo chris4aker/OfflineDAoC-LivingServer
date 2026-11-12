@@ -1,0 +1,340 @@
+{
+  "id": "dartmoor",
+  "name": "Dartmoor",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    4
+  ],
+  "aliases": [
+    "golestandts lair"
+  ],
+  "summary": "Albion's granite moor of the dragon: tors that are giants, Stonecrush ogres who eat them, the ogres' trading hill of Grimspound, and the stone dragon Golestandt asleep beyond the burnt line at its southern end.",
+  "facts": [
+    {
+      "text": "Dartmoor is a level 35-50 Albion zone meant for large groups, bordering Cornwall and the Labyrinth; it holds granite giants and the dragon's lair, whose fire hits hard and wide.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=59"
+    },
+    {
+      "text": "Players gathered about 350 strong for a dragon hunt in June 2002 and crashed the zone; later that month 150-200 were wiped in about twenty minutes by fire of roughly 5,000 a breath.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=59"
+    },
+    {
+      "text": "A February 2003 Albion guide counted 125-160 players at its author's four kills; by August 2003 groups of 17-24 were killing her in two to three hours.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Golestandt's lair is in region 1 at 391326, 755351; Moran the Mighty stands in Dartmoor too, at 408341, 756300.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "The bounty quest says the dragon has cast a shadow over Dartmoor and villages burn.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Bounty/BountyQuest.cs"
+    },
+    {
+      "text": "Albion bot chat already tells of Sir Arward's thirty knights and a scorched journal bearing one word, a Roman lord who vanished on the moor in Uther's day, and a minstrel verse of the 'stone mother of Dartmoor'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/gen_alb_threads.lines"
+    },
+    {
+      "text": "Dartmoor's spawns: about 170 granite giants of the faction Granite Giants of Dartmoor (pounders, stonecallers, stonelords, outlookers, gatherers, stoneshapers, herdsmen, reinforcers, stonemenders, oracles, elders), granite knockers, Stonecrush excavators, rockgrinders and demolishers, Barfog Renegade brigands (39-44) and Dartmoor ponies.",
+      "provenance": "game",
+      "source": "world data: Mob table, region 1, zone 4 (Dartmoor)"
+    },
+    {
+      "text": "Named giants: Tegbuk (47), Trahern (51), Borimo (53) and Agidad (55), whose templates (faction Granite Giants of Dartmoor, aggro 200) make them aggressive on sight, and Brannoc, whose spawn (level 49) takes the granite giant gatherer template (42-46, the same faction, aggro 80), so he attacks on sight too; Kez of the Stonecrush Clan (53, neutral to a newcomer); Golestandt (80) and Moran the Mighty (73).",
+      "provenance": "game",
+      "source": "world data: Mob table, region 1, zone 4 (Dartmoor)"
+    },
+    {
+      "text": "Grimspound, on top of a hill in the north-west, holds friendly Stonecrush-model NPCs (Kel and Kuz the merchants, Kan smith, Kek enchanter, Kon recharger, Kyl channeler, Kyr healer, Kaz hastener) with the humans Dannen and Lamont (Stonecrush Apprentice); Los Ortiz, Dragonslayer Journeyman, stands on the slope below.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousServiceReachability.cs"
+    },
+    {
+      "text": "The granite giant elders and oracles spawn on Moran's high ground, not around the lair; the herdsmen spawn near the pony pastures in the north.",
+      "provenance": "game",
+      "source": "world data: Mob table, region 1, zone 4 (Dartmoor)"
+    },
+    {
+      "text": "Albion bot chat says the Stonecrush ogres eat granite and chew the granite giants, and that the scorched journal told of them.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "The real Grimspound is a Late Bronze Age enclosure on Dartmoor: a granite wall around some two dozen hut circles; the name's 'Grim' has been read as a name of Woden or the devil.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Grimspound"
+    },
+    {
+      "text": "Knockers are the mine spirits of Cornish and Devon folklore, who knock to show lodes or warn of falls; miners left them the crust of their pasty.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Knocker_(folklore)"
+    },
+    {
+      "text": "Dartmoor's tinners held their Stannary Parliament in the open air on Crockern Tor.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Crockern_Tor"
+    },
+    {
+      "text": "The hut-builders, Brother Aelred of Lostwithiel, the Hext drovers and Old Jory Hext, the tinners' three laws and last sitting, the Stonecrush naming custom, the granite forge, Los Ortiz's journeyman's trade and the roles of the named giants are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "In Uther's time Articus, whose father was a man of rank in Rome, left that city and its politics and settled with his family on Dartmoor, in the Cornwall country; they built a castle there and kept to themselves for about ten years.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    },
+    {
+      "text": "Duke Marcus of Cornwall sent two messengers in turn to invite Articus to a celebration, and neither came back. His son then rode in with a company of knights and returned alone two weeks later, wounded, his armour singed, saying only that Articus and everyone of his house, kin and servants, were dead.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    },
+    {
+      "text": "For long afterwards the Britons were warned away from Dartmoor, but the warnings faded. Sir Arward and thirty of his best fighters went deep into the moor shortly before the 1.45 notes; his scribe's journal, singed and bloodstained, dropped out of the sky at the feet of Prydwen Keep's guards.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    },
+    {
+      "text": "The journal told of wild ponies, of a scout killed when the granite tor he climbed turned out to be a giant of granite carrying a huge shepherd's staff, and of many more such giants that had passed for rocks.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    },
+    {
+      "text": "In a granite quarry the company met ogre-like creatures who called themselves the Stonecrush Clan: they spoke a little broken Briton, mined and ate granite to the giants' fury, and took the giant-killing knights for friends. The journal's last page was half burnt; one word could be read: Golestandt.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    }
+  ],
+  "story": "Dartmoor is a high granite country between the Cornish road and the sea, and it is not the shape it looks. Its tors are not the same number at dawn as at dusk, because some of them are granite giants, and at its southern end the heather stops at a burnt black line beyond which sleeps the stone dragon Golestandt in the hollow the drovers call the Bed. The burnt line stands a little further north on each new map that Prydwen Keep draws, and the Church in Cornwall says the moor is spreading.\n\nThe first people of the moor, whom the loremasters call the hut-builders, left stone rows and round houses whose doors all face away from the Bed. Their walled ring on the north-western hill, Grimspound, now belongs to a band of Stonecrush ogres who left their clan's digging to trade with Albion: Kan the smith, who works steel at a granite forge, Kuz and Kel at the stalls, and their fellows, with the Albion men Dannen and Lamont, the first human apprentice of the granite forge. The rest of the Stonecrush, led by Kez, dig the western slopes, eat the granite and the giants alike, and creep south toward the Bed.\n\nThe giants have trades: herdsmen among the moor's ponies, gatherers and stoneshapers, stonemenders who mend the broken, and elders and oracles who stand not with Golestandt but on Moran's windy hill. Five have names the drovers know, and all five come at a man on sight: Tegbuk, Trahern, Borimo, Agidad and Brannoc. The granite knockers that the old tinners fed with crusts keep time, the drovers say, with something under the Bed.\n\nAlong the northern hem runs the Cornish road of the Hext family of drovers, robbed now by renegades out of Llyn Barfog. The castle of Articus, the Roman who died there with all his house in Uther's day, still stands with its table laid. Below Grimspound camps Los Ortiz, a stranger from across the southern sea who came to learn the dragon before he faces her, and Kan works Golestandt's shed scales into shields. Camelot, the Church, the ogres, the giants and the wind each claim the moor; the drovers claim nothing, and keep moving.",
+  "legend": "When the dragons first woke, the whole realm stood on Dartmoor just to look at her, and the zone fell over under them. Never say her name inside the moor; old raid leaders swear she listens. Fight her in her lair, never out of it, because outside it nothing harms her. Bring heat resist, and bring it twice: her breath eats it.\n\nGrimspound's merchants and the healer are on top of the hill in the north-west; the path up is steep and easy to miss. All five named giants aggro on sight: Tegbuk in the north by the road, Trahern and Borimo in the middle, Agidad between the lair and Moran's hill, Brannoc in the west. Kez and his Stonecrush start neutral. Watch the brigands on the north road around level 40, and give the Stonecrush terraces in the west a wide berth if you are soloing. Some raid leaders swear the knockers north-east of the lair go quiet just before she wakes.",
+  "atmosphere": {
+    "firstEntry": [
+      "The tors are watching. Some of them breathe.",
+      "Dartmoor. The grass to the south is burnt black.",
+      "Count the tors now. Count them again at dawn.",
+      "Heather, granite, wind. Far south, a black line.",
+      "Somewhere on this moor, stone is grinding."
+    ],
+    "areas": [
+      {
+        "name": "Golestandt's lair",
+        "region": 1,
+        "x": 391326,
+        "y": 755351,
+        "z": 391,
+        "radius": 3000,
+        "lines": [
+          "The ground is warm. Something under it is breathing.",
+          "The heather stops here. Nothing grows past the line.",
+          "Granite, warm as a hearthstone, under your feet."
+        ]
+      },
+      {
+        "name": "Moran's high ground",
+        "region": 1,
+        "x": 408341,
+        "y": 756300,
+        "z": 538,
+        "radius": 1500,
+        "lines": [
+          "The wind here blows one way: away from the giant.",
+          "Old grey giants stand here. None of them faces south."
+        ]
+      },
+      {
+        "name": "Grimspound",
+        "region": 1,
+        "x": 357500,
+        "y": 708800,
+        "z": 4600,
+        "radius": 1500,
+        "lines": [
+          "A ring of grey wall. Inside, an ogre's forge.",
+          "The giants below will not climb this wall."
+        ]
+      },
+      {
+        "name": "the Stonecrush terraces",
+        "region": 1,
+        "x": 362480,
+        "y": 723000,
+        "z": 340,
+        "radius": 2500,
+        "lines": [
+          "Grinding, close by. Like teeth on stone.",
+          "Terraces cut down the slope. The stone is bitten."
+        ]
+      },
+      {
+        "name": "the knockers' ground",
+        "region": 1,
+        "x": 400434,
+        "y": 744837,
+        "z": 291,
+        "radius": 2000,
+        "lines": [
+          "Something knocks under the rock. Steady, slow.",
+          "A crust of bread on a stone. The stone is warm."
+        ]
+      },
+      {
+        "name": "the pony pastures",
+        "region": 1,
+        "x": 391000,
+        "y": 709600,
+        "z": 1000,
+        "radius": 3500,
+        "lines": [
+          "Shaggy ponies graze beside a giant. Unafraid.",
+          "A giant herdsman stands still among the ponies."
+        ]
+      },
+      {
+        "name": "the renegades' hollow",
+        "region": 1,
+        "x": 392209,
+        "y": 717308,
+        "z": 240,
+        "radius": 1500,
+        "lines": [
+          "Cold campfires. Someone has been robbing here.",
+          "A drover's pack, slit open and left in the bog."
+        ]
+      },
+      {
+        "name": "the stonemenders' ground",
+        "region": 1,
+        "x": 407522,
+        "y": 727199,
+        "z": 353,
+        "radius": 1800,
+        "lines": [
+          "Broken giants lie in rows, waiting to be mended.",
+          "Fresh stone set into old stone, like a mended wall."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "sir arward took thirty knights into dartmoor. [all that came back|the only thing that came home] was a [scorched|singed] journal",
+      "[those|the] boulders in dartmoor are not boulders. granite giants, and [they get up|some of them stand] when you [aren't looking|least expect it]",
+      "the minstrels call golestandt the stone mother of dartmoor. the granite giants come when she calls",
+      "there's a corner of dartmoor south of the ruins where the grass is all burnt. [i turned back|thats her front door]",
+      "moran the mighty keeps the high ground in dartmoor. [the wind does what he says|he throws people on the wind]",
+      "grimspound is an old stone ring on a hill, and the ogres in it trade with us. the rest of the stonecrush eat giants",
+      "the stonecrush name their young for the sound a stone makes breaking. kel, kan, kuz. a stone only breaks once",
+      "the giant elders stand on moran's hill, not with the dragon. [makes you wonder|think about that]",
+      "the old tinners left the knockers a crust of bread. the knockers got meaner when the tinners left",
+      "the hut circles near the dragon's bed all have their doors facing away from it",
+      "kan up at grimspound works steel at a granite forge. edges hold like stone",
+      "the old hext drovers say keep moving on dartmoor and the giants let you pass. go south and nothing does"
+    ],
+    "rumour": [
+      "never say the dragon's name inside dartmoor. old raid leaders swear she listens",
+      "[heard|someone said] the first time the dragon woke, the whole realm went to dartmoor to look and the zone crashed",
+      "[heard|word is] two dozen good people can kill golestandt now. takes hours though",
+      "[heard|someone said] kez is digging toward the dragon's bed. what does an ogre want with that",
+      "[heard|word is] the burnt line in dartmoor moves north a bit every year",
+      "heard the knockers go quiet right before golestandt wakes",
+      "someone said the dartmoor ponies are the giants' flock. never seen a giant hurt one",
+      "[heard|someone said] the roman's house on dartmoor still has the table laid. nobody goes in"
+    ],
+    "tell": [
+      "dartmoor? raid zone past cornwall. granite giants everywhere, moran on the high ground, golestandt in her lair at the south end",
+      "albion's dragon lives at the bottom of dartmoor. bring heat resist and a raid",
+      "big moor full of giants that look like rocks. dont go south alone",
+      "grimspound is the friendly ogre camp up the hill in north-west dartmoor. merchants, smith, healer",
+      "all five named giants on dartmoor attack on sight, tegbuk trahern borimo agidad and brannoc. kez and the stonecrush dont",
+      "the brigands on the north road of dartmoor are barfog renegades, about level 40"
+    ]
+  },
+  "loremaster": {
+    "intro": "Dartmoor is a giant's floor, the old Britons said, and the [granite giants] are still on it. Ogres of the [Stonecrush] eat them, and some of those ogres keep the hill of [Grimspound]. At its southern end sleeps the stone dragon, [Golestandt]. Her name came to Camelot only once, in [Sir Arward]'s journal.",
+    "topics": {
+      "granite giants": "They lie on the moor with the heather over them and stand up when you are not looking. They come to the dragon when she calls, as children to a mother. That is why the minstrels call her the [stone mother].",
+      "golestandt": "The stone dragon of Dartmoor, as old as the moor. Outside her lair nothing harms her; inside it she answers every tenth part of her strength with fire, and her breath eats the heat-ward off your armour. Fight her in her lair.",
+      "sir arward": "In Uther's day the Roman lord Articus and all his household died on the moor, and the Duke of Cornwall's son, sent after them, came home alone, burnt, and would not say what he had seen. Generations later Sir Arward took thirty of his best and a scribe south. The scribe's journal fell scorched out of a clear sky at Prydwen Keep. One word was legible on its last page.",
+      "stone mother": "The minstrels' name for Golestandt. Some of the old raid tales call the dragon he; the minstrels never have, and the minstrels have sung her longest. In this hall we say she.",
+      "moran": "Moran the Mighty, a giant taller than the tors, who keeps the high ground east of the lair. When he is hurt he calls the wind and throws men off his hill like chaff.",
+      "stonecrush": "Ogres that came out of the Cornish tin workings and eat granite, and the granite giants with it. Their diggers in the west follow Kez, who keeps closer to the Bed than any other ogre dares. A few left the digging for [Grimspound].",
+      "grimspound": "A ring of granite wall on the north-western hill, built by the hut-builders out of stones the giants had shed. No giant will climb it. Stonecrush ogres who would rather trade than dig keep it now: Kan the smith, Kuz and Kel at the stalls, and the man Lamont learning their granite forge.",
+      "knockers": "Small grey things in the ground north-east of the Bed. The old tinners said they knocked to show the tin and warn of falls, and left them crusts. The drovers say the knocking keeps time with something under the Bed, and stops when she wakes.",
+      "hext": "The Hext family have driven cattle down the Cornish road since Uther's day. Old Jory Hext says the giants let you pass if you keep moving and nothing lets you pass if you go south."
+    }
+  },
+  "book": {
+    "title": "The Scorched Journal of Sir Arward's Scribe",
+    "pages": [
+      "First day on the moor. Sir Arward has thirty knights and me, and I am to write everything, by his order. The castle of the Roman, Articus, stands empty two days south of the Cornish road, as the Duke of Cornwall's son left it. The table was laid for a meal. The meal was eaten. The doors were shut from the inside. By the door hung an old Roman helmet with a ward worked into its brow, and Sir Brychan took it down and means to wear it south, saying a Roman ward is better than none. Sir Arward says the duke's son lied and the Roman fled. The knights do not believe him, and nor, I think, does he. We ride south tomorrow.",
+      "Second day. A drover we met on the road, a Hext of the Cornish border, would not ride with us but told us three things for a silver penny: count the tors at dusk and again at dawn; do not dig where the ground is warm; and at the sound of knocking, stop. His family, he said, had driven that road since before the Roman came, and in all that time no Hext had gone south of the black line and come back to say so. Sir Arward paid him a second penny to say what the knocking was. The drover gave it back and rode north. After him there was nothing on the moor all afternoon but its wild ponies, small and tough and unafraid, and we laughed at ourselves. Then Sir Arward sent a scout up a granite tor to see further, and the tor turned round. It was a giant of granite with a shepherd's staff as long as a mast. We killed it, too late for him.",
+      "Third day. The boulders on this moor move. I do not say this as a poet would. I watched one stand up in the evening and walk away from the fire, and Sir Brychan rode after it and did not come back until dawn, and would not say where he had been. That night I counted nine tors around our camp. At dawn there were seven. The grass to the south is black in a long smear, as though something had dragged a burning coal across the moor. Sir Arward says we follow the black, and the drover's three things are written now inside the cover of this book.",
+      "Fourth day. We passed the western pits, where ogres were eating the rock. I set this down plainly so that no one at Camelot may call it a figure of speech: they were eating it, and one of them had a giant's arm in his hands and was chewing it like bread while the giant tried to stand. Their pits run down the western slope in terraces, like the steps of a theatre, and the stone is scored with the marks of teeth. Sir Arward would not fight them. He said we had not come for ogres. Nor did they want to fight us: one spoke a little of our tongue, badly, and said they were the Stonecrush Clan, and because we had killed a giant they called us friends.",
+      "Fourth day, at night. The ground north-east of our camp knocks. It is a slow, steady sound, like a man tapping a wall to find the hollow, and it does not stop. Sir Brychan left the end of his bread on a stone, as the drover said the old miners did. In the morning it was gone, and the stone where it had lain was warm. Sir Arward laughed at him. I did not, and nor, at breakfast, did anyone else. The knocking was still there when we rode out, and I found I was riding in step with it, and so was every horse.",
+      "Fifth day. The ground lurched under us at noon and every horse screamed. A voice came out of the south that was not a voice so much as weather, and it said that it would grind our bones. Sir Arward laughed and drew his sword. Sir Brychan has the Roman's helmet on, and says it is cool against his brow though the air is like an oven's. I am writing this on my knee. The giants are standing up all around us now, dozens of them, and they are not looking at us. They are looking south, as dogs look at a door when their mistress comes home.",
+      "Fifth day, later. The knocking has stopped. I had not noticed I could still hear it until it stopped. On the eastern hill a giant taller than the tors has not stood up with the others, and a few of the oldest-looking giants, grey and cracked like the stones of a ruined wall, stand beside him and do not move either. Sir Brychan says the tall one is looking at us. I think he is looking past us, at the black line, and waiting. Sir Arward has told us to mount. I am to stay at the back and keep writing, whatever happens.",
+      "The rest of the pages are burnt through. On the last, in a hand that is not the scribe's and may not be any man's, one word is pressed into the vellum as if with a hot iron: Golestandt. The journal fell out of a clear sky onto the walk of Prydwen Keep in the autumn of that year, still warm, and the clerk who picked it up burnt his hands. No knight of Sir Arward's company was ever seen again. The castle of Articus is still standing. Its table is still laid. Its door has a bare nail where a helmet used to hang.",
+      "Gloss in the margin, in a clerk's hand of Prydwen Keep, some generations later: Brother Aelred of Lostwithiel, counting the hut circles of the moor for the Church, reports that every circle within sight of the black line has its door turned away from the south, and every circle out of sight of it faces any way it likes. He reports also that three circles marked outside the line on the old map now stand inside it. The Church takes this as proof that the moor is spreading. Beneath it the clerk has written, in smaller letters: the map was drawn by a different man.",
+      "Second gloss, in a newer hand: a Stonecrush ogre who keeps a forge on the hill of Grimspound, and gives his name as Kan, asked to hear this journal read aloud. He listened to the fourth day twice. He said that the ogre with the giant's arm was his grandfather's grandfather, and that it was a poor arm and not worth the chewing. He said the knocking always stops before she wakes, and that the giants beside the tall one on the eastern hill are the oldest on the moor. He said the clerks should have asked an ogre sooner. The clerk has written beneath: we did not know they would answer."
+    ]
+  },
+  "bosses": [
+    "golestandt",
+    "moran-the-mighty",
+    "agidad",
+    "borimo",
+    "trahern",
+    "kez",
+    "brannoc",
+    "tegbuk"
+  ],
+  "era": "alb-first-stones",
+  "factions": [
+    "old-powers",
+    "stonecrush"
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Lie of the Moor",
+      "text": "Dartmoor is a high granite country between the Cornish road and the sea, and every account of it begins with the same warning: the moor is not the shape it looks.\n\nFrom the north it rises in long brown shoulders, cut with peat and bog, and the drovers who bring cattle down the Cornish road keep to its northern hem and never climb. On the first high ground in the north-west stands Grimspound, a ring of grey wall on a hilltop with the stumps of old round houses inside it, and below it to the east lie the upland pastures where the moor's ponies graze. In the middle of the moor the ground breaks into tors, and the tors are the first lie: a careful traveller counts them at dusk and counts them again at dawn and does not get the same number. On the western side, toward Cornwall, the granite has been dug into pits and terraces by something with very large hands. The eastern side climbs to a high round hill where the wind always blows outward. And at the southern end, past the last ruined farm, the heather stops at a burnt black line, and beyond the line is the Bed.\n\nThe people who first lived here left the stone rows and the hut circles that still stand on the northern slopes, and they left no names. The Camelot loremasters call them the hut-builders. The Cornish drovers call them the giants' neighbours, because they built their houses out of stones that the giants had not yet stood up from, and the drovers think that was either very brave or very stupid. Brother Aelred of Lostwithiel, who walked the moor in the years after Arthur to count its hut circles for the Church, found that every circle within sight of the Bed had its door turned away from the south. Every circle out of sight of it faced any way it liked.\n\nThe second lie is the heather. On the maps that Prydwen Keep has kept since Uther's day, the burnt line at the southern end stands a little further north on each new copy. The Church in Cornwall says the moor is spreading. The keep's clerks say only that each new map is drawn by a different man. Brother Aelred's own count of the circles has a note in the margin, in a later hand: three of them are now inside the line."
+    },
+    {
+      "title": "Grimspound",
+      "text": "Grimspound is the only place on Dartmoor where the realm keeps a fire burning, and it is not Albion's fire.\n\nThe hut-builders raised its wall: a broad ring of granite blocks around two dozen round houses, on a hilltop high enough that a man on the wall can see the tors to the south and, on a clear day, the black line beyond them. Nobody knows what it was for. The Camelot loremasters say a cattle pound, from the name. The drovers say Grim was a name of the devil, and that the old people penned something worse than cattle there. Its present keepers say neither, and they are the only ones who have lived in it.\n\nThey are Stonecrush ogres, and they are not like the rest of their clan. The Stonecrush of the western pits dig granite and eat it and kill anyone who comes near. The ogres of Grimspound came up the hill a long time ago, they say, because they were tired of the digging and had found that men would trade for what their hands could do. Kan is a smith, and he works steel at a forge fed with granite dust until the edges hold like stone. Kek enchants. Kon recharges what Kek has enchanted. Kyl channels. Kyr heals, and Kaz makes men fast on the road. Kel and Kuz keep the merchant stalls, and Kuz calls himself the Grimspound Merchant, as though there could be any other. Their names are short because the Stonecrush name a child for the sound of a stone breaking, and a stone only breaks once.\n\nTwo Albion men live among them. Dannen came up to trade and stayed. Lamont calls himself the Stonecrush apprentice and is learning to work the granite forge, which no man had done before him; Kan says his arms are too thin and lets him keep trying. Below the hill, on the slope toward the pastures, a stranger from across the southern sea, Los Ortiz, keeps his own camp.\n\nWhy the ogres of Grimspound keep peace with Albion is a question they answer differently each time it is asked. Kuz says trade. Kan says the wall: the hut-builders laid it out of stones the giants had shed, and no granite giant will climb over its own kin, so the hilltop is the one safe height on the moor and the ogres want men's swords between them and the rest of their clan. Lamont, who has heard them talk at night, says the real reason is simpler. They are afraid of Kez."
+    },
+    {
+      "title": "The Stonecrush",
+      "text": "The Stonecrush clan eats granite. Every witness agrees on that, and every witness who has seen it says the sound is the worst part.\n\nThey came onto Dartmoor from the west, out of the deep tin workings on the Cornish side, in a time the drovers date to their grandfathers' grandfathers and the ogres do not date at all. They found a country made of the thing they eat, and they stayed. Their excavators cut the terraces on the western slopes and their rockgrinders reduce what the excavators cut; their demolishers work further south, on the faces of the ridges nearest the Bed, where the stone is warm and, the ogres of Grimspound say, tastes of smoke.\n\nWhat makes them dangerous to the moor is what else they eat. A granite giant lying in the heather is granite, and the Stonecrush do not always wait for it to be dead. Hywel of Caerwent wrote in Sir Arward's journal of ogres chewing a giant's arm like bread while the giant was still trying to stand, and the moor has kept the feud ever since. Wherever the Stonecrush dig, the giants of the Bed come to stop them, and the terraces on the western side are littered with shards that were once a giant and are now only stone.\n\nKez leads the diggers. He is the largest of them and the only one of the western clan whose name men know, because the Grimspound ogres say it as a warning. He keeps to the south-west, near the demolishers, closer to the Bed than any other ogre dares, and Lamont says the Grimspound ogres believe he means to dig all the way to it. What Kez would do with the warm stone of the Bed, if he reached it, no ogre on the hill will say. Kan says only that a Stonecrush who ate a dragon's bed would not need to eat anything else for a thousand years, and that the clan would follow whoever fed them that well.\n\nThe Prydwen roll counts the Stonecrush among the moor's dangers and not its powers, and the Church in Cornwall counts them as a blessing, because every giant they eat is one fewer to walk north across the burnt line. The drovers, who have had cattle eaten by both, count them as weather."
+    },
+    {
+      "title": "The Get, Named",
+      "text": "The granite giants have trades as men do, and the moor is laid out by them.\n\nThe herdsmen keep the north. They walk the upland pastures below Grimspound among the moor's ponies, which are small, shaggy and afraid of nothing, and the drovers say the ponies are the herdsmen's flock in the way that sheep are a shepherd's. Nobody has ever seen a giant harm a pony. Nobody has ever seen a pony run from a giant. The gatherers range further and bring back the stone the Stonecrush leave behind, and the stoneshapers work it, and the reinforcers set it into the bodies of giants who have been broken. On the eastern side, north of the high hill, the stonemenders keep a ground of their own where shattered giants are carried to be made whole, and from which some of them never get up again. The granite knockers are not giants at all but something smaller, and belong to another story.\n\nAbove all of them are the elders and the oracles, and they do not stand with the stonelords around the Bed. They stand on the high hill in the east with Moran. This is the strongest evidence the frontier riders of Castle Sauvage have for their reading of him: that the oldest of the giants keep his council and not hers, and that whatever the moor's elders are waiting for, they are waiting for it beside the giant of the wind.\n\nFive of the giants have names, and the drovers of the Cornish road have told them to the clerks of Prydwen Keep. Tegbuk stands in the north, nearest the drove road, and is the giant the drovers see most often. Trahern and Borimo keep the middle of the moor, a short walk apart, and the drovers say they have quarrelled since before Rome over which of them stands nearer the Bed. Agidad stands between the Bed and Moran's hill, on the one stretch of ground both sides claim, and goes from one to the other. Brannoc keeps the west, facing the Stonecrush terraces. None of the five will let a man come near: each of them comes at him on sight, and the drovers, who keep to the road, give every one a wide berth. Brannoc they fear most; they say the Stonecrush have eaten too many of his kin.\n\nThe minstrels call the giants her get. The oracles, if they speak at all, have never said whose they are."
+    },
+    {
+      "title": "The Knockers and the Tinners",
+      "text": "Before Albion went south on Dartmoor with swords, it went with picks. There were tinners, and the tinners knew the knockers.\n\nTin was the moor's first wealth. The hut-builders streamed it from the valleys; the Romans taxed it; the Britons of the old kingdoms worked it under a law of their own, which the tinners made and kept at a parliament held in the open air on a tor in the middle of the moor, with the granite for their benches. Their law said three things that every drover still repeats. A tinner may dig where he likes, except where the ground is warm. A tinner who hears knocking stops. And a tinner leaves the last crust of his dinner on the stone for whoever is knocking.\n\nThe knockers are small, grey, and granite. They live in the ground north-east of the Bed, between the burnt line and Moran's hill, and the tinners said they knocked in the rock to show where the tin ran and to warn of a fall. The Cornish miners on the far side of the Tamar tell the same of their own knockers, and leave the same crusts. What the tinners of Dartmoor knew, and the Cornish did not, is that the knocking on the moor follows a rhythm. Old Jory Hext, the drover whose family has brought cattle down the Cornish road since Uther's day, says his grandfather learned from the last of the tinners that the knockers keep time with something under the Bed, and that when the knocking stops all at once, the dragon is awake.\n\nThe tinners' parliament ended in the dark years after Arthur, when the frontier wars drew the young men away and the Stonecrush came up out of the western workings and made digging on the moor a matter of being eaten. The Prydwen Keep rolls record its last sitting: eleven tinners on the tor, who voted to leave the moor to the giants and walked north and did not come back. They left their law cut into the granite of the tor, and the drovers say the knockers come up to read it on the longest night.\n\nThe knockers grew fiercer when the tinners left. The ogres of Grimspound say it is because nobody leaves them crusts any more. Lamont has started leaving them the end of his bread on the wall of the pound. He says the knocking near the hill has changed. He will not say how."
+    },
+    {
+      "title": "The Cornish Road",
+      "text": "The drovers' road runs along the northern hem of the moor from the Cornish border toward Camelot, and it is the only way that most of Albion ever sees Dartmoor.\n\nThe Hext family have driven cattle on it for longer than the keep has kept rolls. They do not climb the moor. They camp in the same hollows their grandfathers camped in, they count the tors at dusk and at dawn, and when the count is wrong they move on before breakfast. Jory Hext says that a drover's whole knowledge of Dartmoor fits in one sentence: the giants let a man pass who keeps moving, and the ogres let a man pass who is not worth stopping for, and nothing lets a man pass who goes south.\n\nThe road has worse than giants on it now. North of the moor's middle, in the broken ground below the herdsmen's pastures, camp the renegades of Barfog, who came south out of the lake country around Llyn Barfog, where the old lake-powers and the King of the Barfog Hills made honest robbery too dangerous to practise. On Dartmoor they rob the drovers' camps, the pilgrims bound for Kyr's healing hands at Grimspound, and the dead. The Hexts say the renegades went south as far as the burnt line the week after Sir Bedwyr Alder's muster broke, to pick over what it had left lying, and that it is the only time any of them has been brave. The Grimspound ogres will not trade with them. Kan says a man who robs a dragon's dead will rob anyone.\n\nTwo days south of the road, on the last good ground before the bog, stands the castle of Articus, the Roman who died there with all his house in Uther's day, where Sir Arward's company stopped on their first night. Nobody has ever knocked it down. The drovers do not shelter in it, the renegades do not rob it, and the Church in Cornwall sends a priest every few years to look through the window and write down what he sees. The record is the same in every hand: the table laid, the meal eaten, the doors shut from the inside.\n\nThe frontier riders of Castle Sauvage use the road too, going west to the Cornish border and back, and it is from them that Camelot gets most of what it knows of the moor. They report what the drovers tell them. Jory Hext says that is why Camelot knows so little."
+    },
+    {
+      "title": "The Stranger Below the Hill",
+      "text": "The winter after the summer of the gathering, a man came up the Cornish road who had crossed the southern sea to look at the dragon, and he has not gone home.\n\nHis name is Los Ortiz, and he calls himself a journeyman of dragons, which in his own country is a trade. He comes from a coast of dry hills where, he says, the old people also told of a stone serpent that slept under a mountain, and where a man who means to face such a thing goes first from one old serpent's country to the next, as a journeyman goes from master to master, and learns each before he is fit for any. He came to Albion because he had heard that Albion's serpent was awake. Kan says the trade ends in a killing in Ortiz's country, and that it is the part of it Ortiz talks about least.\n\nHe camps below the pound rather than in it, because the ogres' fire is too warm for his liking and too like the ground he is studying, and the ogres send his meals down to him. He keeps a book, as Hywel did, and he has copied the surviving leaves of the scorched journal at Prydwen Keep into it in his own hand; he reads them aloud to anyone on the hill who will listen, in an accent the ogres find very funny. He has learned the giants' trades from the Hexts, the Stonecrush from the ogres, the knocking from the ground, and the burnt line by walking it from end to end without once crossing it, which took him eleven days.\n\nThe hill trades in what the Bed gives up. The scales that Golestandt sheds into the granite come up the hill from the south, and Kan works them into shields at the granite forge, which is the only fire on the moor hot enough to soften them; he will not say who brings them, and Prydwen Keep lists his shields among the king's armour without asking. The ancient granite stones that the shattered giants leave behind go north too, to the inn where a buyer named Eugen Aldar pays for them and will not say who pays him. The Church in Cornwall says the stones should be left where they fall, because the stonemenders come looking for them. Ortiz says a stone that walked once can walk again, and that the further north it is carried, the further it has to walk.\n\nHe has written one sentence on the first page of his book, in his own tongue and then in Albion's: the dragon is the moor, and the moor is the dragon, and a man who learns one has learned the other. Kan says he will go south in the spring. Lamont says he has been saying so for three springs."
+    },
+    {
+      "title": "Whose Moor",
+      "text": "Every power on Dartmoor claims the moor, and no two of them mean the same thing by it.\n\nCamelot claims it by roll and map. Prydwen Keep has listed Dartmoor among the king's lands since Uther's day, when Duke Marcus of Cornwall sent his son south to learn why his Roman neighbour had stopped answering, and its roll counts the moor's dangers as if they were a garrison it had failed to pay. The Church in Cornwall claims it by measurement. Its priests walk the burnt line every spring and mark how far north it has come, and they say that if the line ever reaches the Cornish road, the moor will be the dragon's and Albion's south-west will follow.\n\nThe Stonecrush claim it by appetite. To Kez and his diggers the moor is a meal, and its giants are the best part. The ogres of Grimspound claim only their hill, and hold it by the wall the hut-builders left and the swords of the men who come to trade. The drovers claim nothing. They pass, and they count the tors, and they move on before breakfast.\n\nThe giants have two answers, and the moor's whole quarrel lies between them. The stonelords stand in the Bed with Golestandt and come to her when she bleeds, and the minstrels say that is the whole truth: the moor is the Bed, and the Bed is hers. But the elders and the oracles stand on Moran's hill, and Agidad walks between the two, and the frontier riders say the oldest giants are waiting for the stone of the Bed to crack so that the moor will belong to the wind. Hywel of Caerwent saw a giant on the eastern hill who did not stand when the voice came out of the south. The drovers say he still has not.\n\nThe hut-builders had a claim too, and it is cut in their circles. Brother Aelred of Lostwithiel found that every door within sight of the Bed was turned away from it. The Camelot loremasters read that as fear. Old Jory Hext reads it as courtesy: the first people of the moor knew whose house they were living beside, and did not look in through her door. He says Albion would do well to learn the same. He said it to Sir Bedwyr Alder's muster as it rode past his camp, and to the first company after it, and was thanked neither time."
+    }
+  ]
+}

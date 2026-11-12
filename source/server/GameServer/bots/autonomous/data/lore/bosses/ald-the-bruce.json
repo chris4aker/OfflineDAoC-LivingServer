@@ -1,0 +1,76 @@
+{
+  "id": "ald-the-bruce",
+  "name": "Ald the Bruce",
+  "npcNames": [
+    "Ald the Bruce"
+  ],
+  "locationId": "yggdra-forest",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "realm-enemies"
+  ],
+  "related": [
+    {
+      "id": "moira-the-quiet",
+      "relation": "the Hibernian who killed him, his ally in death"
+    },
+    {
+      "id": "soulsong",
+      "relation": "the third dead of that night"
+    }
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Ald the Bruce is a level-44 ghost (ghost flag) of an Albion invader (the ghastly Albion invaders' model) in Yggdra Forest (667,953/679,748) among ghastly Albion invaders, near Moira the Quiet, Soulsong and the Hibernian informer Fionnuala (668,060/680,544); no faction.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Ald, Moira and Soulsong as the dead of one night at Arvakr's road are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Three dead stand together in the north of Yggdra, a little way from where Hibernia's informer Fionnuala waits for Midgard's rogues, and the huscarls of Arvakr say they died on the same night. Ald the Bruce was a captain of Albion's, a hard man in a hard helm, who brought a company up the frontier road toward the horn and met a Hibernian company coming the other way, and the two of them fought in the dark before either knew what the other was. By morning there were only Midgard's crows.\n\nHe walks there still with his ghastly invaders, at the head of his rank, and he has not noticed that the war moved on. The Arvakr huscarls say he challenges everyone who comes down the road, Albion, Hibernia or Midgard, and that he takes Moira the Quiet, the Hibernian who killed him, for an ally now. They are both dead; it is the only peace the frontier has ever made.",
+  "legend": "Ald the Bruce is a level 44 Albion ghost in north Yggdra, standing with ghastly Albion invaders (43-44); Moira the Quiet and Soulsong are close by, and so is Fionnuala, the Hibernian informer from the rogue epic. No faction on Ald, but his invaders are right there. A 40s group can clear the three ghosts one by one. Frontier warbands pass nearby.",
+  "yells": {
+    "aggro": [
+      "Albion holds this road! Stand!",
+      "(The dead captain raises his blade.)"
+    ],
+    "death": [
+      "Hold... the road..."
+    ],
+    "slay": [
+      "The road is Albion's."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Albion's dead in rank. Their captain still commands."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "ald the bruce is a 44 albion ghost in north yggdra with his invaders",
+      "moira and soulsong are next to him, take them one at a time"
+    ],
+    "aftermathWin": [
+      "ald down",
+      "his invaders were the annoying part"
+    ],
+    "rumour": [
+      "ald the bruce and moira the quiet killed each other in the dark, now theyre allies",
+      "ald hasnt noticed the war moved on"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ald the Bruce",
+    "text": "The ghost of an Albion captain who met a Hibernian company in the dark on the frontier road and died with it. He still holds the road. See [Arvakr]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} laid Ald the Bruce to rest on Yggdra's road in {minutes} minutes."
+  }
+}

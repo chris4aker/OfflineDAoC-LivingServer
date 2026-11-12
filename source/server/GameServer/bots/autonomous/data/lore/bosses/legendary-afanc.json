@@ -1,0 +1,124 @@
+{
+  "id": "legendary-afanc",
+  "name": "Legendary Afanc",
+  "catalogKey": "albion-named-mobs-classic-zones/legendaryafanc",
+  "locationId": "llyn-barfog",
+  "realm": "Albion",
+  "aliases": [
+    "the afanc"
+  ],
+  "facts": [
+    {
+      "text": "Level 70, 30,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 20% of melee and 30% of everything else; faction Denizens of Llyn Barfog.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs"
+    },
+    {
+      "text": "Every 25-45 s while it fights, one random real player within 2,500 is moved to 451486, 393503 on the shore and takes a fifth of their maximum health as falling damage (Disciple classes take none). Bots are not thrown.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs"
+    },
+    {
+      "text": "Every 15-35 s it calls two to five 'Legendary Afanc's minion' (level 38-45, small, aggro range 1,000); they die with it or when it resets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs"
+    },
+    {
+      "text": "It walks home at full health when nobody is left on its aggro list; respawn is the epic-encounter interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/serverproperty/ServerProperties.cs (set_epic_game_encounter_respawninterval, default 60)"
+    },
+    {
+      "text": "Welsh folklore, not game canon: Arthur chained the afanc of Llyn Barfog and his horse dragged it from the lake.",
+      "provenance": "myth",
+      "source": "https://folklorethursday.com/legends/folklore-legends-welsh-lakes-llyn-barfog/"
+    },
+    {
+      "text": "Mythic's 1.45 notes: some claimed the Legendary Afanc, a demon of the water from King Arthur's day, had returned to Llyn Barfog to tend her young.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    }
+  ],
+  "story": "The afanc Arthur dragged out of Llyn Barfog was not the last. She is as old as Arthur's day: its mate, or its mother, or its elder, the old men cannot agree, who went down into the deep places under the lake when Arthur's mare hauled her kin ashore, and who has come back up now to tend her young. The old men of Barfog call her the Legendary Afanc to tell her from the one in the song. She is bigger than the one Arthur took.\n\nShe remembers the chain. The old men are sure of that, because of what she does. When anyone comes into her water to fight her, she does to them what was done to her kin: she takes one of them, not always the one who struck her, and hauls him out and flings him up onto the shore, and he comes down hard by the hoofprint stone where Arthur's mare dug in to drag the first afanc ashore. The fall breaks what it breaks. She does it again and again, as long as anyone stands in her water, and she picks a new man as often as not. Siemus the tracker says she is showing them the stone. Twr ap Alsig says she is only throwing them as far as she can, and the stone happens to be there.\n\nHer young come with her. They swim up out of the reeds, small and quick and many, a few at a time and then a few more, all the while she fights, and they go back into the reeds when she is still again. The children of Barfog are told not to swim at dusk, when the young are about. The children of Barfog swim at dusk anyway, and the afanc, who has never once taken a child of the village, lets them.\n\nShe does not want to leave the lake. She wants everyone else to. The lady who called her cattle home left the door open, the old men say, and since the afanc came back she has been the one thing on the lake guarding it; the trouble is that she cannot tell a man come to shut the door from a man come to go through it, and does not try.",
+  "legend": "The Legendary Afanc, level 70, 30k, in the lake at Llyn Barfog. Every 25 to 45 seconds it picks a random player within 2,500 (anyone, not only its target) and throws them to the shore by the hoofprint stone, for a fifth of their max health in falling damage. The thrown player gets healed and walks back. Bots are not thrown today, but the engineers may change that, so keep everyone topped. Every 15 to 35 seconds it calls 2 to 5 small minions (38-45) that come in fast: area damage or a pet tank handles them, and they die with the afanc. It cannot be mezzed or stunned. Healers on dry land. A wipe resets it to full and clears the minions; it respawns about an hour after death.",
+  "yells": {
+    "aggro": [
+      "The water heaves. Something rises.",
+      "The lake boils around a broad, dark back.",
+      "A slap of a great tail on the water."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The afanc seizes a foe and flings it to the shore!"
+      }
+    ],
+    "death": [
+      "The great beast sinks into the reeds.",
+      "The lake is still. For once."
+    ],
+    "slay": [
+      "The water closes over the fallen.",
+      "Flung to the shore, and not getting up.",
+      "The afanc's young swarm the body."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Something under the water is as long as a ship.",
+      "Small wakes in the reeds. Many of them."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Afanc heaves its foes out of the lake!"
+      }
+    ],
+    "realmFirstKill": "The Legendary Afanc is dead. Llyn Barfog is still."
+  },
+  "botLines": {
+    "briefing": [
+      "afanc, 70, 30k. every 25-45 sec it throws a random player to the shore for 20% of their hp",
+      "thrown people get healed and walk back. dont panic, dont run off",
+      "2-5 small minions every 15-35 sec, aoe or pets on them. they die with it",
+      "healers on dry land, everyone topped, it cant be mezzed or stunned"
+    ],
+    "aftermathWin": [
+      "the afanc is dead. arthur would be proud",
+      "someone skin it, i want afanc hide",
+      "nobody died to the throws, nice heals",
+      "the young went back into the reeds. done"
+    ],
+    "aftermathLoss": [
+      "got thrown at 20% health and the fall finished me",
+      "minions piled on the healers",
+      "everyone got thrown at once it felt like",
+      "tried to fight it from the water, bad idea"
+    ],
+    "rumour": [
+      "the legendary afanc hasn't left the lake since arthur's day. can you blame it",
+      "[the|those] afanc hatchlings mean [there's a mother|the big one is still breeding]",
+      "[heard|someone said] the afanc never takes the barfog kids",
+      "heard it throws you right onto arthur's hoofprint stone"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "afanc",
+    "text": "The Legendary Afanc has not left Llyn Barfog since Arthur dragged out its kin. It remembers the chain: it flings those who fight it in its water up onto the shore by the hoofprint stone, again and again, and its small young swim up out of the reeds to help it."
+  },
+  "bookPage": "From the Barfog Book of Twr ap Alsig. Of the afanc. Arthur dragged one out. The one in the deep water now is bigger and older and has young. I watched a company of Camelot fight it from the shore the summer before last. Every so often it took a man, not always the one with the spear in it, and threw him up onto the bank by the hoofprint stone, and he came down hard and lay there, and the priests ran to him, and he walked back down. The young came out of the reeds all the while, small and quick. When it was over the young went back into the reeds. The children were swimming again by dusk. It has never taken one of ours.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} dragged the Legendary Afanc from Llyn Barfog in {minutes} minutes.",
+    "loss": "The Legendary Afanc kept Llyn Barfog; {raidLeader}'s company of {realm} was flung onto the shore."
+  },
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "king-of-the-barfog-hills",
+      "relation": "the king of the hills above her water, who leaves the lake alone"
+    }
+  ]
+}

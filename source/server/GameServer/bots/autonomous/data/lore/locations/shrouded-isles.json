@@ -1,0 +1,156 @@
+{
+  "id": "shrouded-isles",
+  "name": "The Shrouded Isles",
+  "realm": "Neutral",
+  "regions": [],
+  "summary": "The three isles each realm found in the mists in the same year: Avalon, Aegir and Hy Brasil, and the small strange things they share.",
+  "facts": [
+    {
+      "text": "Shrouded Isles (2002) gave each realm a new land: Avalon for Albion, Aegir for Midgard, Hy Brasil for Hibernia.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/news/69207-new-shrouded-isles-information.html"
+    },
+    {
+      "text": "Albion's Avalon was overrun by Morgana's forces; Midgard's Aegir is the land of the Troll Fathers; Hibernia's Hy Brasil is the Sylvan home beset by Fomorians.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/news/68904-new-shrouded-isles-info.html"
+    },
+    {
+      "text": "That all three isles rose from the mist together, and share their small wanderers, is Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Gnat (level 35) spawns in region 181, Hy Brasil, in the Vale of Balor at about 315,400/347,300, beside the camp of Aalid Feie; bugbear gnats (level 31-33) live in the same vale. The encounter catalog alone lists it with no region.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06); docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Hy Brasil (region 181) holds the Sylvan's seven countries; Albion's isles are Avalon, Caldey, the Dales of Devwy, Gwyddneau and Inishail; Midgard's is Aegir.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml; origin/feature/lore-alb albion-shrouded-isles"
+    },
+    {
+      "text": "Living Server lore: the three isles rose in the same summer; each realm's reason; the shore-bird, the salt-weed and the wanderers the isles share; Gnat's three origin stories.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "In the same year, the three realms each found a new land in the mist. Albion's sailors came upon Avalon, the isle of the old songs, smoking from Morgana's war. Midgard's longships found Aegir, the land the Troll Fathers had lost. Hibernia's fishers watched Hy Brasil rise out of the western sea, as the old stories had always promised it would, and the Sylvan came down to the shore to ask for help. Each realm thinks its isle is the one that matters. Each realm is, in its own way, right.\n\nThe scholars who compare such things, and there are a few in every capital, have noticed something the warriors have not. The three isles share small things: a weed that grows on all three shores, a bird whose call is the same in three accents, and a few wanderers who turn up on one isle one season and another the next, as though the mists between them were only a fence with a gap in it. The Albion scholars say it proves the isles were once one land, sunk and raised again. The Norse say it proves nothing except that small things travel. The Hibernians say the mist is a door, and doors open both ways.\n\nGnat is the most famous of the wanderers, though famous is a big word for a small menace. Every realm has a story about it, and the stories do not agree on anything except the whistle and the ants.\n\nThe scholars of the three capitals have never agreed on the year, because each realm counts years its own way, but they agree on the season: the isles came out of the mist in the same summer, within weeks of each other, and each realm's sailors thought for a while that they were the only ones. Albion's ships found Avalon's shore smoking. Midgard's longships found Aegir with the Morvalt on it. Hibernia's fishers at Tir Urphost watched Hy Brasil rise in the west, and the Sylvan came down to the shore to ask for swords against the Fomorians.\n\nEach realm has a reason the isles rose, and each reason is about itself. The Albions say Morgana's war broke the spell that had hidden Avalon, and that the other isles came up with it the way the far shore of a lake rises when a stone is dropped in the near side. The Norse say the Troll Fathers called their lost land back and everything else in the mist came up because it was standing too close. The Sylvan say Hy Brasil hid on purpose and came out when hiding stopped working, and the druids of Tir na Nog say the mist round it was the Root's breath, thinning as the realm opened Galladoria. Nobody in any capital has suggested the isles might have risen for a reason that was not theirs.\n\nWhat the scholars have noticed, the few who read each other's letters, is what the three isles share. A grey shore-bird nests on all three coasts and calls in what three realms swear are three accents. A salt-weed grows on all three tide-lines. And certain small wanderers are reported on one isle one season and on another the next, as though the mist were a fence with a gap in it. The Albions take it as proof that the isles were one land once, sunk and raised again; the Norse, that small things travel; the Hibernians, that the mist is a door, and that doors open both ways.\n\nThe best known of the wanderers is Gnat, and here the Hibernians have the advantage of the others, because Gnat is where anyone can find it: on the north road of the Vale of Balor, a short walk from the camp of Aalid Feie, whistling in the heather among its smaller cousins, the bugbear gnats of the vale. The Albions and the Norse do not dispute that it is there. They dispute that it was always there, and each realm's scholars have a story of how it came over the mist from their own isle, and each story is told with the same certainty and the same whistle in it.",
+  "legend": "The Shrouded Isles file is the neutral overview of the three isles; each realm's dungeons and epics live in its own files (Hy Brasil, Fomor, Galladoria and Tur Suil for us). The one neutral named is Gnat, and despite three realms' arguments it spawns in Hibernia: Hy Brasil, Vale of Balor, on the north road near Aalid Feie. It is level 35. The moment it drops below 95% health it whistles and seven fiery ants (30-34) burst out of the ground and join it; they give no experience. Small groups should burst Gnat or AoE the ants; a solo 35 will not enjoy it. Albions say Gnat came from an Avalon marsh, Norsemen from Aegir. Never count the whistles aloud, the Aalid Feie folk say.",
+  "atmosphere": {
+    "firstEntry": [
+      "The mists part. Three isles, one sea.",
+      "Three isles out of the mist in one summer.",
+      "A grey shore-bird calls in three accents.",
+      "The mist is a door, the Hibernians say."
+    ],
+    "areas": []
+  },
+  "botLines": {
+    "lore": [
+      "albion got avalon, midgard got aegir, we got hy brasil. [same year|all at once]. nobody thinks thats odd?",
+      "[some scholar|a sage in the capital] says the three shrouded isles share the same birds. [the mist is a door|make of that what you will]",
+      "every realm has a gnat story and [none of them agree|they all swear its theirs]",
+      "the shrouded isles all came out of the mist the same summer. [weeks apart|nobody thinks thats odd]",
+      "albs think the isles were one land once. norse think small things travel. we think the mist is a door",
+      "the same grey shore bird nests on avalon, aegir and hy brasil. [three accents|same call]",
+      "gnat lives in the vale of balor near aalid feie. [its ours|the albs disagree]",
+      "the albs say morgana's war broke the spell that hid avalon. [the rest came up with it|their story]",
+      "the norse say the troll fathers called aegir back. [we came up because we stood too close|lol]",
+      "the druids say hy brasil's mist was the root's breath. [it thinned when we opened galladoria|maybe]",
+      "bugbear gnats in the vale of balor are [gnat's cousins|smaller gnats]. thirties",
+      "gnat's fire ants give no xp. [dont farm them|waste of time]"
+    ],
+    "rumour": [
+      "[heard|someone said] gnat turned up on [avalon|aegir|hy brasil] this season. whistling",
+      "[heard|someone said] gnat was seen on avalon this season. [an alb said|i dont believe it]",
+      "[word is|heard] the salt weed on the tide line is the same on all three isles",
+      "[heard|someone said] a scholar in tir na nog writes to camelot and jordheim about the isles. [nobody writes back|ha]",
+      "[heard|someone said] the isles rose for a reason nobody has thought of yet",
+      "[word is|heard] the norse have their own gnat story. [troll child's pet|weird]",
+      "someone followed a shore bird through the mist and [never came back|came back an alb] lol",
+      "[heard|someone said] the mist off tir urphost is thinner every year"
+    ],
+    "tell": [
+      "the shrouded isles: avalon, aegir, hy brasil. three new lands in one year, and a few odd things they share",
+      "what are the shrouded isles? avalon for albion, aegir for midgard, hy brasil for us. same summer",
+      "where is gnat? hy brasil, vale of balor, near aalid feie. level 35",
+      "is gnat hard? for a duo, yes. it whistles up fire ants when you hit it",
+      "how do i get to hy brasil? the boats and the portal out of the capital, then domnann",
+      "what do the three isles share? a shore bird, a salt weed and a few wanderers like gnat"
+    ]
+  },
+  "loremaster": {
+    "intro": "Three realms, three isles out of the mist in one year. Each realm tells it its own way: ask me about [Avalon], [Aegir] or [Hy Brasil]. And then there are the [wanderers].",
+    "topics": {
+      "Avalon": "Albion's isle of the old songs, found smoking from Morgana's war. The Albions say the three isles were one land once.",
+      "Aegir": "The land the Troll Fathers lost, which Midgard sailed to free. The Norse say small things travel and that is all.",
+      "Hy Brasil": "Our own isle, rising out of the western sea as the stories promised. We say the mist is a door.",
+      "wanderers": "Small things seen on all three isles in turn. The best known is [Gnat], who whistles and brings ants.",
+      "Gnat": "Every realm claims it and none agree where it lives. Kill it before the ants arrive, they all say that much.",
+      "shore-bird": "A grey bird that nests on all three isles' coasts. Albion, Midgard and Hibernia each swear it calls in their own accent. The scholars count it the plainest sign that the isles are kin.",
+      "salt-weed": "A salt-weed that grows on all three tide-lines, and on no other shore in the realms.",
+      "Aalid Feie": "The camp on the edge of the Vale of Balor, a short walk from where [Gnat] whistles in the heather. Its people have heard the whistle every day for years and stopped turning round."
+    }
+  },
+  "book": {
+    "title": "On the Things the Three Isles Share",
+    "pages": [
+      "I have read the reports of three realms' scholars on the Shrouded Isles, which is more than most scholars of any realm will admit to. I am Ultan of Tir na Nog, who keeps the rain records for Domnann when I am on the isle, and writes letters when I am not. The reports agree on almost nothing. They agree that the isles came out of the mist in one summer, and that the same small things are found on all three. I have spent four summers on Hy Brasil and two on the Albion shore, by leave of a captain who did not ask questions, and I will set down what I saw.",
+      "Each realm has a reason the isles rose, and each reason is about itself. Camelot's scholars say Morgana's war broke the spell on Avalon and the rest came up with it. Jordheim's say the Troll Fathers called Aegir back. Our own say Hy Brasil hid on purpose, or that the mist was the Root's breath. I have yet to read one that allows the isles might have risen for a reason that was not ours. I include my own. The Sylvan, when I asked them, said the mist does not belong to anyone, and changed the subject.",
+      "The shared things, then. A grey shore-bird, nesting on all three coasts, whose call the scholars of each realm swear is in their accent; I have heard it on our shore and on Albion's, and I could not tell the difference, which I do not say in Tir na Nog. A salt-weed on all three tide-lines and no other shore. And certain wanderers, reported on one isle one season and on another the next. The Albions call it proof of a sunken country; the Norse call it rats on longships; we call it a door. All three explanations fit the bird.",
+      "The best known wanderer is called Gnat. It is not large and not especially fierce. It whistles, high and thin, and when it is hurt the ground answers with ants that burn. The Albion reports place it in an Avalon marsh, the Norse on a burned slope of Aegir. I place it on the north road of the Vale of Balor, a short walk from Aalid Feie, because that is where I have watched it every summer for six years. The people of Aalid Feie have stopped turning round when it whistles, and they will not count the whistles aloud, and they will not say why.",
+      "I have written this to both capitals. Camelot answers that Gnat came over the mist from Avalon and stayed. Jordheim answers that it is a troll-child's pet from Aegir, lost in the Morvalt's war. Neither disputes that it is in our vale now. They dispute that it was always there. I am inclined to believe all three of us, which is why the scholars of two realms no longer answer my letters, and the third does not read them. If the mist is a door, as we say, then something small walked through it before any of us did, and has been whistling at all three realms ever since."
+    ]
+  },
+  "bosses": [
+    "gnat"
+  ],
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "sylvan",
+    "old-troubles"
+  ],
+  "realmTakes": {
+    "albion": {
+      "story": "Albion's scholars of the Isle of Glass say the isles rose because Morgana's war on Avalon broke the oldest hiding-spell in the west, the one the colleges of Avalon wove round their country when the Romans came, and that Aegir and Hy Brasil came up with it the way the far shore of a lake rises when a stone is dropped on the near side. They point to the shared salt-weed as proof that the three isles were one country under the mist, sunk together and raised together. Gnat, to an Albion, is a marsh-sprite of Avalon's drowned orchards, burned out by the drakoran and fled over the mist; the whistle is the orchard's frost-warning that the old Avalon gardeners kept, and the ants are the fire that came after.",
+      "legend": "Albion players say Gnat 'visits' Hy Brasil and will be back in an Avalon marsh one of these seasons, and that the Hibernians are only borrowing it.",
+      "botLines": {
+        "lore": [
+          "the hibs think gnat is theirs. its an avalon marsh sprite, [burned out by the drakoran|fled over the mist]",
+          "the three isles were one land once. [same salt weed|sunk and raised together]"
+        ],
+        "rumour": [
+          "[heard|someone said] gnat will be back in an avalon marsh next season"
+        ]
+      }
+    },
+    "midgard": {
+      "story": "Midgard's skalds say the Troll Fathers called Aegir back out of the mist when the Morvalt drove them from it, and everything else in the mist rose because it stood too close to the call. The Norse do not think the isles are kin. They think small things travel, the way rats travel on longships, and that the grey shore-bird is a gull with a good sense of direction. Gnat, to a Norseman, is a troll-child's pet from the burned slopes of Aegir, lost when the Morvalt came, whistling for a master who will not come for it; the skalds say it has only gone where the whistling is answered, and that in Hy Brasil the ants answer.",
+      "legend": "Midgard players say Gnat is a lost pet and that the polite thing is to kill it quickly. They also say the Hibernians are welcome to it.",
+      "botLines": {
+        "lore": [
+          "gnat is a troll kids pet from aegir. [lost in the morvalt war|whistling for its master]",
+          "small things travel. [rats on longships|thats all the shrouded isles share]"
+        ],
+        "rumour": [
+          "[heard|someone said] the skalds think gnat went where the whistling gets answered"
+        ]
+      }
+    },
+    "hibernia": {
+      "story": "Hibernia says the mist is a door, and doors open both ways. The druids of Tir na Nog think the mist round Hy Brasil was the Root's breath and thinned as the realm went down into Galladoria; the Sylvan say the isle hid on purpose from the Fomorians; either way, the isle is Hibernia's, and so, to a Hibernian, is everything on it. Gnat whistles on the north road of the Vale of Balor and has done so for as long as there has been a camp at Aalid Feie, and Ultan of Tir na Nog, who keeps Domnann's rain records, has watched it there every summer. The Hibernians do not claim Gnat was always in the vale. They claim it chose the vale, which is better.",
+      "legend": "Hibernian players say Gnat is ours because it lives here, which is the one argument nobody else can make. The Aalid Feie folk never count the whistles aloud.",
+      "botLines": {
+        "lore": [
+          "gnat lives in the vale of balor. [ours|the albs and norse can argue all they like]",
+          "the mist is a door and [doors open both ways|gnat came through it]"
+        ],
+        "rumour": [
+          "[heard|someone said] the aalid feie folk never count gnat's whistles out loud"
+        ]
+      }
+    }
+  }
+}

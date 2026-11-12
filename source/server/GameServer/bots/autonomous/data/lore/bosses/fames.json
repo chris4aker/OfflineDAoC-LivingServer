@@ -1,0 +1,160 @@
+{
+  "id": "fames",
+  "name": "Fames",
+  "catalogKey": "caer-sidi/fames",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "aliases": [
+    "the horsemen",
+    "the four riders"
+  ],
+  "facts": [
+    {
+      "text": "Level 83, 100,000 health; the first Horseman. He speaks first, asks a raider whether they challenge fate, and on 'yes' grants two minutes to prepare.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "The Horsemen come in order: Fames, then Bellum, Morbus and Funus, each a minute after the last falls; Funus calls Apocalypse. Each brings a fate's bearer.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Fames is Latin for 'hunger, famine'; Bellum 'war', Morbus 'disease', Funus 'funeral, death'.",
+      "provenance": "original",
+      "source": "Latin (standard dictionary glosses)"
+    },
+    {
+      "text": "Fames picks one actor at random among those near the initializer (players or bots); only that one may answer for 60 s, then anyone may; 'yes' grants 120 s. GetResist: 40 slash/crush/thrust, 70 everything else; body-damage melee; 30 s without combat heals him to full; out of tether he only clears aggro (AllowHorsemenTetherHeal off).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "The hunger-bearer of the hut-builders, Titus Senecio's granary daybook at Caerwent, the saying 'hunger is not prayed away', Ennyn's three counsels, the water-girl of Gothwaite Harbor and the harbor's fast are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Real-world myth, not game canon: the third horseman of Revelation 6 rides a black horse and carries a balance, with a voice calling out the price of wheat and barley.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Four_Horsemen_of_the_Apocalypse"
+    }
+  ],
+  "story": "Fames is Hunger, the eldest of the four riders who stand before the first cell of Caer Sidi, because men starved before they ever fought. Arawn made him from the thing that walked longest at the back of the columns of the dead, the hunger of the hut-builders' wet summers, and gave him a pale horse, a courtesy and the question of the four-roads law. He is not gaunt: Brother Cadoc found a figure as broad as a granary door, with a patience long and fine as a famine, whose blows empty a body rather than cut it. At his side walks his bearer, said by the Inconnu to be a woman of the hut-builders who died with her share untouched, carrying a bundle no one has unwrapped.\n\nHe learned his manners on the road past the Roman granaries. The daybook of Titus Senecio, prefect of the granary at Caerwent in the year the legions sailed, records that the town's prayers did not bring the deaths down and its bakers did, and that a famine left for a week comes back to the door whole. Out of it came Albion's saying: hunger is not prayed away; it is fed, or it is fought.\n\nEnnyn told Dame Ysolde that Fames chooses any face in his hall, not the captain's; that he waits for it, but will at last take an answer from any mouth; and that hunger forgives everything but rest. He chose Ysolde, who said yes, the first captain he had chosen since a king. Ysolde's wizards' fire went into him like rain into a dry field; the knights' swords, struck without a breath between, brought him down.\n\nThe Church calls him the black horse of the last book; the Inconnu, the only rider who chose his own question; the bards say he chose Arthur because hunger always knows a king. Gothwaite Harbor fasts the night before every climb so that Hunger finds nothing in the company that is his.",
+  "legend": "Fames is level 83 with 100,000 health and opens the riders. Before he wakes he picks one person at random from everyone near him, bot or player, and asks that one whether they challenge fate; if a bot is picked it answers by itself. If you are picked, walk up and say yes. Nobody else can answer for the first minute, then anyone can. A yes gives you two minutes: buff, rest, set groups and targets. It is a melee fight: he takes 40% less from slash, crush and thrust but 70% less from everything else, so casters mostly heal and buff while the melee carry him. His hits are body damage, so body resists help the tank. A fate's bearer (level 77) wakes at his side; kill it first. He is crowd-control immune. Do not stall: thirty seconds without anyone fighting him and he is back to full. Dragged off his spot he only drops his targets and walks home. Bellum comes a minute after he dies, so rest in that minute. Gothwaite Harbor folk say do not eat before the climb.",
+  "yells": {
+    "aggro": [
+      "I sense the presence of many, the presence of power and ambition.",
+      "Do you come to challenge fate?",
+      "You chose. Now bear it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fate is patient. My brothers are more patient still."
+      }
+    ],
+    "death": [
+      "Fate is not hunger. Fate is patient. Bellum...",
+      "My brothers will be more patient still."
+    ],
+    "slay": [
+      "Fate cannot be changed.",
+      "Hunger always wins in the end.",
+      "One fewer at the table."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four riders wait. They will ask you a question.",
+      "The first rider watches one face among you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fames falters. Behind him, Bellum waits."
+      }
+    ],
+    "realmFirstKill": "Fames has fallen. Hunger rides no more in Caer Sidi."
+  },
+  "botLines": {
+    "briefing": [
+      "fames picks one of us at random. if its you, walk up and say yes. after a minute anyone can",
+      "after the yes we get two minutes. buffs, groups, targets",
+      "fames is a melee fight, spells do almost nothing. casters heal and buff",
+      "kill the fate's bearer first, then everyone on fames and dont stop",
+      "dont let it go quiet, he heals full if nobody hits him for half a minute",
+      "bellum is a minute after fames. rest in the gap"
+    ],
+    "aftermathWin": [
+      "fames down, one rider out of four",
+      "the two minutes were enough. told you",
+      "hunger is dead. lol",
+      "nice, nobody died on fames"
+    ],
+    "aftermathLoss": [
+      "we said yes and werent ready. two minutes is two minutes",
+      "the fate's bearer got the healers",
+      "we chased him and he reset",
+      "too slow on fames, no mana for the rest"
+    ],
+    "rumour": [
+      "heard fames asks you if you challenge fate. you have to say yes",
+      "[someone said|heard] if you say no to fames he just lets you leave",
+      "fames means hunger in the old roman tongue, [heard|apparently]",
+      "heard fames picks one face in the raid to ask",
+      "heard the harbor at gothwaite doesnt eat the night before a caer sidi run"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "fames",
+    "text": "Hunger, eldest of the [four riders], in the Roman tongue. He chooses one face in his hall and asks whether it comes to challenge fate. Albion's saying about him came from the Roman granary at [Caerwent]: hunger is not prayed away; it is fed, or it is fought. See [Apocalypse] and [Bellum]."
+  },
+  "bookPage": "Fames looked along our ranks the way a farmer looks along a fence, and stopped at Dame Ysolde, and asked her whether she had come to challenge fate. He asked it gently. He waited. When she said yes, he inclined his head as if she had passed a test he had not expected her to pass, and told us that we were brave, or foolish, and that while our actions would most likely change nothing, we were granted a few grains of time to prepare. Enough for two long prayers, in our terms. He seemed to think that generous. It was.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} told Fames yes and unhorsed him in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} challenged fate at Caer Sidi; Fames answered."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "caer-sidi-prisoners",
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "bellum",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "morbus",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "funus",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "apocalypse",
+      "relation": "the master they ride before"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Eldest of the Four",
+      "text": "Men starved before they ever fought, the Inconnu say, and so the eldest of the four riders is Hunger.\n\nWhen Arawn made heralds for the first cell, he made Fames first, out of the thing that had walked longest at the back of the columns of the dead. In the oldest columns more came to Annwn thin than came wounded: whole villages of the hut-builders of the moor after a wet summer, children before their parents, old men who had passed their share across the fire and said they were not hungry. Hunger came with them every winter and went away every spring and was never once thanked. Arawn gave it a shape, a pale horse and a courtesy, and set it at the foot of the end's door to ask the question that the four-roads law requires.\n\nFames is not gaunt. Brother Cadoc of Caer Gothwaite expected bones and found a figure as broad as a granary door, robed and still, who looked along Dame Ysolde's company the way a farmer looks along a fence. What is thin in him is his patience, which is long and fine, like a famine. He speaks slowly. He knows that climbers are coming before they reach his hall and names what he senses in them: many, and power, and ambition. Men he strikes say the blow does not cut. It empties, as the last week of a hungry winter empties a body, from the inside.\n\nAt his side walks his bearer. The Inconnu teach that each rider is attended by the first soul who ever walked his road, and that Hunger's is a woman of the hut-builders who died in a wet year with her share untouched beside her, because she had meant it for her sons. She carries a bundle wrapped in cloth. Cadoc thought it might be the share. No one in Ysolde's company was willing to find out, because the bearer keeps at the rider's side and fights for him as a mother fights for a child.\n\nThe moor-folk of Dartmoor still leave a crust on the hearthstone on the last night of winter, for the one who went without. Brother Aelred of Lostwithiel called it a heathen custom when he counted the hut circles. The Inconnu, told of it at Caer Gothwaite, said only that she would know."
+    },
+    {
+      "title": "The Granaries of the Old Province",
+      "text": "In the centuries of Rome the road of hunger ran past the granaries, and the Inconnu say Fames learned his manners there.\n\nThe legions built their granaries on stone feet, with louvred walls and floors raised against the rats, and they built them in every fort of the old province from the Severn to the Wall. While the grain ships came, Albion did not starve. In the year the legions sailed, the ships stopped coming. The prefect of the granary at Caerwent, Titus Senecio, kept a daybook through that winter, and a page of it survives in the chapter-house there, copied and recopied by the Church because of what it says about prayer.\n\nSenecio wrote that the town's priests prayed for the ships every day and the town's bishop led a procession to the harbour every week, and the people went on dying in the same numbers whether the bishop walked or not. What brought the deaths down was not prayer but work: the salt fish the fishermen brought in, the bread the bakers made from acorn meal, the hands that broke the frozen ground for turnips. He wrote one more thing, the line the Church copies most. A famine is not ended by a single harvest, he wrote, but by a harvest carried in without a pause; leave the field for a week and the hunger is back at the door, whole, as if no one had ever begun.\n\nThe Inconnu say Fames heard every prayer of that winter, because every one of them was said on his road, and was moved by none. He was not cruel to the priests. He received them as courteously as any of the dead, and asked nothing of them. But it was the bakers he bowed to.\n\nThe saying that came out of Caerwent is still said in Albion's poor years, by priests and laymen alike, and it is older than the Church's quarrel with the Inconnu: hunger is not prayed away; it is fed, or it is fought. The knights of Caer Gothwaite cut it on the sword-rack in their hall the winter after Dame Ysolde's company came home, and they cut Senecio's line about the harvest under it."
+    },
+    {
+      "title": "The Face He Chose",
+      "text": "Ennyn of the Inconnu told Dame Ysolde three things about Fames on the walk up through the crypts, and Brother Cadoc wrote all three down.\n\nThe first was that Fames might not choose the captain. He chooses one face among all who stand in his hall, and the Inconnu have never seen a pattern in it: a knight, a squire, a priest at the back, once a cook. So Ysolde's company swore an oath at the foot of the riders' stair, the eighty of them together, that whoever was chosen would answer for all, and that no one would climb who would not answer yes. The knights of Caer Gothwaite still swear it on the third step, where Ennyn sat.\n\nThe second was that Fames is patient, but not without end. He waits for the face he chose. If that face says nothing, he waits a while longer, and then he will take his answer from any mouth in the hall. Ennyn said the dead of the lich's company learned that: their lich would not speak, and a lesser dead man said yes for him.\n\nThe third Ennyn said almost at the stair, and Cadoc thought it the strangest. Do not stop, he said. Hunger forgives everything but rest.\n\nFames chose Ysolde. Ennyn said afterwards that he had seen the rider choose a captain only once before, and that the captain had been a king. Ysolde said yes. In the grace that followed, the longest of the four, the company prayed and armed and placed itself, and Cadoc had time to hear the confession of the girl from Gothwaite Harbor who carried the company's water, twice. Then the robed figure moved.\n\nThe company's wizards spent their fire on him first, and Cadoc wrote that it went into him like rain into a dry field, leaving no mark. It was the swords that told: the knights of Caer Gothwaite, who had Senecio's line cut on their rack, set on him in turns and did not let a breath go by between strokes, and the bearer with her bundle went down under the squires. Cadoc counted no one dead on Fames. He did count the minutes after, while Bellum came, and thought them the longest of his life."
+    },
+    {
+      "title": "One Fewer at the Table",
+      "text": "The realms have three readings of Hunger, and Albion's people keep a fourth.\n\nThe Church of Camelot says Fames is the black horse of the last book, whose rider carries a balance and calls out the price of wheat, and that Arawn has dressed him in Roman words to hide what he is. The priests point out that Fames asks nobody to pay; he only weighs. The Inconnu say he is the eldest of their lord's servants, older than the riders who came after him, and the only one who chose his own question. A choice made with open eyes, he told Arawn, is the only kind worth answering, and so Arawn let him ask it. The bards of Camelot say he chose Arthur's face because hunger always knows a king, since a king is the last man in a famine to go without.\n\nWhat the people of Gothwaite Harbor keep is a custom. On the night before a company climbs the turning gaol, the harbor does not eat. The fishermen leave their catch in the boats until morning and the bakers do not light their ovens, and the company fasts with the town, so that, the harbor says, Hunger finds nothing in them that is his. The girl who carried Ysolde's water is an old woman now, and she keeps the fast still, and on the morning after it she carries the first loaf from the ovens up to the chapel at Caer Gothwaite and leaves it on the sill where the names of the dead of Caer Sidi are cut.\n\nFames, the Inconnu say, wants nothing for himself. He wants the question answered truly. They say he has never once taken a man who said no, though Arawn's law would let him take a man who lied, and that in all the ages of the gaol only the lich's company and the companies of Albion have ever told him yes. When he falls he says that fate is patient, and that his brothers are more patient still. Ennyn, asked whether that was a threat, said no. It was the eldest of four handing on his watch."
+    }
+  ]
+}

@@ -145,49 +145,49 @@ namespace DOL.AI.Brain
         }
 		private void YdeniaPort(GameLiving target)
         {
-			if(target != null && target.IsAlive && target is GamePlayer player)
+			if(target != null && target.IsAlive && EncounterTargets.AsRaider(target) is GameLiving player && (player is GamePlayer || EncounterTargets.DisplacesBots(Body)))
             {
 				switch(Util.Random(1,4))
                 {
 					case 1: 
-						player.MoveTo(100, 664713, 896689, 1553, 2373);
+						EncounterDisplacement.Move(player, 100, 664713, 896689, 1553, 2373, DisplacementKind.Throw, Body);
 						player.TakeDamage(player, eDamageType.Cold, player.MaxHealth / 7, 0);
 						foreach (GamePlayer players in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
 						{
 							if (players != null)
-								player.Out.SendSpellEffectAnimation(player, player, 4074, 0, false, 1);
+								(player as GamePlayer)?.Out.SendSpellEffectAnimation(player, player, 4074, 0, false, 1);
 						}
-						player.Out.SendMessage("Ydenia of the Seithkona throws you into water and you take damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
+						EncounterTargets.Tell(player, "Ydenia of the Seithkona throws you into water and you take damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 						break;
 					case 2:
-						player.MoveTo(100, 667220, 894261, 1543, 692);
+						EncounterDisplacement.Move(player, 100, 667220, 894261, 1543, 692, DisplacementKind.Throw, Body);
 						player.TakeDamage(player, eDamageType.Cold, player.MaxHealth / 7, 0);
 						foreach (GamePlayer players in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
 						{
 							if (players != null)
-								player.Out.SendSpellEffectAnimation(player, player, 4074, 0, false, 1);
+								(player as GamePlayer)?.Out.SendSpellEffectAnimation(player, player, 4074, 0, false, 1);
 						}
-						player.Out.SendMessage("Ydenia of the Seithkona throws you into water and you take damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
+						EncounterTargets.Tell(player, "Ydenia of the Seithkona throws you into water and you take damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 						break;
 					case 3:
-						player.MoveTo(100, 665968, 892792, 1561, 235);
+						EncounterDisplacement.Move(player, 100, 665968, 892792, 1561, 235, DisplacementKind.Throw, Body);
 						player.TakeDamage(player, eDamageType.Cold, player.MaxHealth / 7, 0);
 						foreach (GamePlayer players in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
 						{
 							if (players != null)
-								player.Out.SendSpellEffectAnimation(player, player, 4074, 0, false, 1);
+								(player as GamePlayer)?.Out.SendSpellEffectAnimation(player, player, 4074, 0, false, 1);
 						}
-						player.Out.SendMessage("Ydenia of the Seithkona throws you into water and you take damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
+						EncounterTargets.Tell(player, "Ydenia of the Seithkona throws you into water and you take damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 						break;
 					case 4:
-						player.MoveTo(100, 663895, 893446, 1554, 3482);
+						EncounterDisplacement.Move(player, 100, 663895, 893446, 1554, 3482, DisplacementKind.Throw, Body);
 						player.TakeDamage(player, eDamageType.Cold, player.MaxHealth / 7, 0);
 						foreach (GamePlayer players in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
 						{
 							if (players != null)
-								player.Out.SendSpellEffectAnimation(player, player, 4074, 0, false, 1);
+								(player as GamePlayer)?.Out.SendSpellEffectAnimation(player, player, 4074, 0, false, 1);
 						}
-						player.Out.SendMessage("Ydenia of the Seithkona throws you into water and you take damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
+						EncounterTargets.Tell(player, "Ydenia of the Seithkona throws you into water and you take damage!", eChatType.CT_Important, eChatLoc.CL_ChatWindow);
 						break;
 				}
             }

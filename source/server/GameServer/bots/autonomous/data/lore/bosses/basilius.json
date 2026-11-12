@@ -1,0 +1,118 @@
+{
+  "id": "basilius",
+  "name": "Basilius",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/basilius",
+  "locationId": "modernagrav",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "mortufoghus",
+      "relation": "the guardian of the bones his diggers must get past"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Basilius is a level-66 named with 30,000 health on Modernagrav; six come with him (Hoden, a morvalt befara, three morvalt dodlig and a morvalt gravmaniska).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He stuns and causes bleeding.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists Basilius at 60-62 in Modernagrav; the island's bestiary lists morvalt andakuva, avliden, befara, dodlig, framkalla, gravmaniska and utforska.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=116"
+    },
+    {
+      "text": "Basilius is a Latin form of the Greek for 'kingly' (to verify); the morvalt titles look Swedish: dodlig deadly, framkalla summon, gravmaniska grave-person (to verify).",
+      "provenance": "original",
+      "source": "glossaries, to verify"
+    },
+    {
+      "text": "When he is fought, Hoden, a morvalt befara, three morvalt dodlig and a morvalt gravmaniska (BasiliusBaf, within 2,500) join him. Each of his hits has a 35% chance to stun his target (6 s) and a 35% chance to make it bleed (100 every 3 s for 30 s). 30,000 health, CC-immune, reach 350, 20% melee / 30% magic resist; resets at full health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Basilius.cs"
+    }
+  ],
+  "story": "Basilius is not a morvalt name. The morvalt say he took it from a book, which is unlikely, since the morvalt do not keep books; the dwarves say a Jordheim prisoner gave it to him, which is more likely, and that it means kingly in some southern tongue. Either way he wears it, and he is the nearest thing to a king the morvalt of Modernagrav have.\n\nHe was a war-chief in Faraheim before the wall came down, and not a believer. It was the shamans who heard that the Mother lay beyond the rockwall. It was Basilius who saw what their belief could be used for: a whole people willing to go through stone with picks and fire for one word. He gave them the picks. When the wall fell, he went through first, and when the shamans began to dig at the bones, he built his own hall at the far end of the island, as far from the bones as the island goes.\n\nThe dwarves at the post think that is the whole of Basilius. He rules the dig and keeps away from it. He comes only when the calling goes badly, to beat the callers into calling again. His household in the hall are the ones the diggers fear: three of the deadly ones, a grave-worker who knows where every dead digger is buried, the one the morvalt name with their word for dread, and Hoden, who has been at his shoulder since Faraheim and hits harder than all of them. They do not wait to be called. Lay a hand on the king and the whole hall is on its feet.\n\nHe fights like a chief of the old morvalt, close and hard. His blows leave a man reeling and bleeding at once, and a man who is reeling cannot bind his wound, and the morvalt of his hall stand round and watch him bleed. No charm has held him; the shamans say the Mother keeps him, and Basilius lets them say it.\n\nWhat he wants, the dwarves think, is for the Mother never to be found. A Mother found is a Mother who might give orders. A Mother being looked for is a people who will do whatever their king says to keep looking. Orri of Hagall wrote that he saw Basilius once at the edge of the dig, at night, watching the callers chant into the bones, and that when the ground began to hum the king turned and walked back to his hall without a word, very fast.",
+  "legend": "Basilius is in the far north-east corner of Modernagrav with his hall: Hoden (level 60, the hard hitter), a befara, three dodlig and a gravmaniska, six in all, and they all come the moment you touch him. One group can't do it; bring two, or a strong one with good CC for the crew. Mez what you can, kill the gravmaniska and the befara first, and keep someone on Hoden. Basilius himself stuns his target (35% a swing, 6 seconds) and gives a nasty bleed (100 every 3 seconds for 30 seconds); stun immunity timers and cure-bleed help, and trading tanks keeps the stun off. He's CC-immune, 30,000 health, 20% melee and 30% magic resist, resets full if you leave. He's nowhere near Mortufoghus, so she won't wander in, but the dig crew to the west might if you chase anything that way.",
+  "yells": {
+    "aggro": [
+      "Guard the dig! Nobody touches the Mother!",
+      "Guard the hall! Nobody touches the king!",
+      "Hoden! Strangers from the gap!",
+      "You came through my wall. Now go under it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Dodlig! Gravmaniska! To me!"
+      }
+    ],
+    "death": [
+      "Let her... sleep... a little longer...",
+      "Keep them... looking..."
+    ],
+    "slay": [
+      "Bury that one with the others.",
+      "Gravmaniska. Another for your count.",
+      "Bleed for the Mother. She likes it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A morvalt camp around a dig. Spades and bones.",
+      "The kingly one's hall. Six stand round the fire."
+    ],
+    "realmFirstKill": "Basilius of the dig is slain.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Basilius's hall closes round its king."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "basilius has 6 adds, mez the casters",
+      "his whole hall comes, hoden hits hardest, keep someone on him",
+      "he stuns and bleeds whoever hes hitting. trade tanks, cure the bleed",
+      "kill the gravmaniska and befara first"
+    ],
+    "aftermathWin": [
+      "basilius down. the dig's leaderless",
+      "hoden died last. what a brute",
+      "bleed cures saved the tank",
+      "the hall's empty. the diggers wont miss him"
+    ],
+    "aftermathLoss": [
+      "six adds was too many for one group",
+      "tank got stunned and bled out",
+      "hoden ate the casters",
+      "someone chased a dodlig west into the dig"
+    ],
+    "rumour": [
+      "the morvalt boss on modernagrav has a name from old books. basilius, kingly. [who named him|weird]",
+      "basilius never goes near the bones, the dwarves say",
+      "a jordheim prisoner gave him his name. means kingly",
+      "he wants the mother never found, my guildie thinks",
+      "hoden has been with him since faraheim"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Basilius",
+    "text": "The kingly one, who runs the morvalt dig on Modernagrav. His summoners try to speak with the spirit in the bones. He is not sure he wants it to answer."
+  },
+  "bookPage": "From the slates of Orri of Hagall: I saw the king at the dig once, at night. He stood at the edge of the spoil, well back, with his big one, Hoden, beside him. The callers were chanting into the ribs. The king watched them as a man watches a fire he has lit in someone else's barn. Then the ground began to hum under us all, very low, the way it does near the bones, and the callers chanted louder, and the king turned and walked back toward his hall without a word. He did not hurry until he was out of the light. Then he hurried.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Basilius's camp on Modernagrav in {minutes} minutes.",
+    "loss": "Basilius's dig crew buried {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

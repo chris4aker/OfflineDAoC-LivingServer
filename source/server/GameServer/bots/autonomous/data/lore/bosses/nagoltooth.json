@@ -1,0 +1,71 @@
+{
+  "id": "nagoltooth",
+  "name": "Nagoltooth",
+  "npcNames": [
+    "Nagoltooth"
+  ],
+  "locationId": "skona-ravine",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "wild-beasts"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Nagoltooth is a level-41 bear (the cave and fishing bears' model) alone in the west of Skona Ravine (703,812/914,289). No faction; aggressive (200).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Nagoltooth's broken fang and the Circle's custom are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Nagoltooth is a bear of the western ravine, small for her kind and old beyond it, who has lived alone on the same stretch of the river since before the Seithkona Circle cut its first stone. Her name is the werewolves' word, the Circle says, and it means the bitten-nail tooth: one of her fangs is broken off short, and the varulv say she broke it on one of their own, a young wolfaur who tried to take her fishing place and did not come back to the pack. The werewolves leave her the river. So does everyone else.\n\nGudny of the Circle says the old bear is the ravine's memory of what it was before the varulv came and before the seeresses, when there were only the water and the trees and the things that ate fish. She will not let the young seeresses kill her. Others are less patient, and the bear has outlived all of them. She does not run, and she does not wait to be struck.",
+  "legend": "Nagoltooth is a level 41 bear alone in the west of Skona near the river. No faction, no adds, no tricks; just a big hitter for her level. A group in the high 30s handles her. The werewolves avoid her stretch of the river, so it's a quiet spot to fight. She respawns alone on the same river bend. Old Skona hands say the werewolves cheer when someone takes her down, then complain the river is too quiet.",
+  "yells": {
+    "aggro": [
+      "(A deep growl from the river.)",
+      "(The old bear rises, the broken fang bared.)"
+    ],
+    "death": [
+      "(A long, tired breath.)"
+    ],
+    "slay": [
+      "(She goes back to the water.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The river bend. An old bear fishes here, alone."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "nagoltooth is a 41 bear by the river in west skona, solo spawn",
+      "no adds, just hits hard"
+    ],
+    "aftermathWin": [
+      "old bear down",
+      "the werewolves will be pleased"
+    ],
+    "rumour": [
+      "nagoltooth broke a fang on a young wolfaur who tried to take her fishing spot",
+      "the seithkona wont let their young kill the old bear"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Nagoltooth",
+    "text": "An old bear of the western river with a broken fang, who broke it on a young wolfaur. The [Seithkona Circle] calls her the ravine's memory of itself."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down old Nagoltooth by Skona's river in {minutes} minutes."
+  }
+}

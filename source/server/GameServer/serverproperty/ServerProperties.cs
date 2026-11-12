@@ -762,6 +762,13 @@ namespace DOL.GS.ServerProperties
 		public static bool QUEST_XP_BY_LEVEL;
 
 		/// <summary>
+		/// The epic chains, linked by quest ID as the server reads the quest rows (Living Server 1.2, EpicChainLinks):
+		/// epic_chains.py's changes, made in memory, never written to the world.
+		/// </summary>
+		[ServerProperty("quest", "epic_chains_linked", "The epic chains are linked by quest ID as the server reads the quest rows (Living Server 1.2): the Guild of Shadows steps 7 to 48 in order with their period dialogue, and every other guild's epic steps pinned in order (tools/claude-version/epic_chains.py's changes). They are made in memory each time the rows are read and never written to the world database, so removing Living Server leaves the released quests as they were. False is a kill switch: the rows are read as they are.", true)]
+		public static bool EPIC_CHAINS_LINKED = true;
+
+		/// <summary>
 		/// The CL Experience Rate
 		/// </summary>
 		[ServerProperty("rates", "cl_xp_rate", "The Champion Level Experience Points Rate Modifier - Edit this to change the rate at which you gain CL experience points e.g 1.5 is 50% more 2.0 is twice the amount (100%) 0.5 is half the amount (50%)", 1.0)]
@@ -1229,6 +1236,102 @@ namespace DOL.GS.ServerProperties
 		/// </summary>
 		[ServerProperty("npc", "set_epic_encounter_weapon_damage_cap", "Maximum damage cap multipler for epic encounters that use melee weapons", 1.5)]
 		public static double SET_EPIC_ENCOUNTER_WEAPON_DAMAGE_CAP;
+
+		/// <summary>
+		/// Epic encounters (1.2): a boss's throw, teleport or jail does not take your companions and pet along
+		/// (EncounterDisplacement.MovePlayer). Owner default 2026-11-06, to confirm.
+		/// </summary>
+		[ServerProperty("npc", "epic_companions_stay_when_thrown", "Epic encounters: when a boss throws, teleports or jails you, your /spawn companions and your pet stay at the fight and keep fighting (True, the 1.2 default) or are moved along with you as by a portal (False, as most throws did before 1.2; Legion's throw kept them at the fight before too). Bots the boss throws themselves find their way back either way.", true)]
+		public static bool EPIC_COMPANIONS_STAY_WHEN_THROWN = true;
+
+		/// <summary>
+		/// The dragons' wing-gust throw (1.2, DragonEncounterThrow): how high above the thrown raider each dragon may hurl.
+		/// 0 keeps the original lair spots (OpenDAoC-Core 3513bad: up to about 1,400 units, about 60% of a raider's health
+		/// without Safe Fall). Owner default 2026-11-06, to confirm.
+		/// </summary>
+		[ServerProperty("npc", "epic_dragon_throw_height_golestandt", "Golestandt's wing-gust throw: the highest a raider is hurled above where they stood, in units. 0 = the original lair spots (up to about 1,400 units: about 60% of a raider's health from the fall). 712 is the fork's old half throw (about 34%); lower is gentler.", 0)]
+		public static int EPIC_DRAGON_THROW_HEIGHT_GOLESTANDT = 0;
+
+		[ServerProperty("npc", "epic_dragon_throw_height_gjalpinulva", "Gjalpinulva's wing-gust throw: the highest a raider is hurled above where they stood, in units. 0 = the original lair spots (about 60% of a raider's health from the fall). 712 is about 34%; lower is gentler.", 0)]
+		public static int EPIC_DRAGON_THROW_HEIGHT_GJALPINULVA = 0;
+
+		[ServerProperty("npc", "epic_dragon_throw_height_cuuldurach", "Cuuldurach's wing-gust throw: the highest a raider is hurled above where they stood, in units. 0 = the original lair spots (about 60% of a raider's health from the fall). 712 is about 34%; lower is gentler.", 0)]
+		public static int EPIC_DRAGON_THROW_HEIGHT_CUULDURACH = 0;
+
+		/// <summary>
+		/// Epic encounters (1.2, epic wave 2): the restored original mechanics, each its own setting so the owner can turn one
+		/// off or on without a rebuild (EpicEncounterMechanics reads them live; a boss's health and a spell take the value
+		/// when they are next read or built). Owner defaults 2026-11-07, to confirm.
+		/// </summary>
+		[ServerProperty("npc", "epic_horsemen_tether_heal", "Caer Sidi: Fames, Morbus and Funus heal to full when drawn past their tether, as in the original (True, 1.2). The raid fights each horseman near his room and leads him back.", true)]
+		public static bool EPIC_HORSEMEN_TETHER_HEAL = true;
+
+		[ServerProperty("npc", "epic_funus_weapon_puzzle", "Caer Sidi: Funus takes damage only from clerics, and from mercenaries, armsmen, infiltrators and scouts with their listed weapon; any other hit (pets too) heals him to full (True). Off by default in 1.2 (owner 2026-11-08: off until the bots clear it with no heals). When on, the raid sends clerics, and scouts, mercenaries, armsmen and infiltrators who own their longbow, short bow or crossbow, which they draw and fight with; the rest stand clear and no bot's pet touches him. False (default): everyone hurts him, as in 1.1. Test first.", false)]
+		public static bool EPIC_FUNUS_WEAPON_PUZZLE = false;
+
+		[ServerProperty("npc", "epic_funus_bot_shield_guard", "Caer Sidi: while Funus's weapon puzzle is on, the sting of a damage shield on a bot he hits neither heals nor hurts him (True, 1.2): a bot can't take a shield off, and its sting would heal him to full. False: as the original, the sting of a bot of a class he doesn't take damage from heals him to full. Real players keep the original either way.", true)]
+		public static bool EPIC_FUNUS_BOT_SHIELD_GUARD = true;
+
+		[ServerProperty("npc", "epic_sacristan_patrol", "Caer Sidi: the Skeletal Sacristan walks his loop at full speed and never stops, with 70% magic resists (True, 1.2). The raid waits along his loop and hits him as he passes.", true)]
+		public static bool EPIC_SACRISTAN_PATROL = true;
+
+		[ServerProperty("npc", "epic_soul_reckoner_full_shield", "Caer Sidi: Soul Reckoner takes no damage at all while a reckoned soul lives (True, 1.2; False: a quarter).", true)]
+		public static bool EPIC_SOUL_RECKONER_FULL_SHIELD = true;
+
+		[ServerProperty("npc", "epic_soul_reckoner_small_room", "Caer Sidi: Soul Reckoner takes damage only within 900 of his room's middle (True, 1.2; False: 1,500, the 1.1 change).", true)]
+		public static bool EPIC_SOUL_RECKONER_SMALL_ROOM = true;
+
+		[ServerProperty("npc", "epic_aroon_damage_order", "Galladoria: Aroon's Scaiths die in order, each immune until the one before is dead, and Aroon takes only the damage types whose Scaith is dead (True, 1.2).", true)]
+		public static bool EPIC_AROON_DAMAGE_ORDER = true;
+
+		[ServerProperty("npc", "epic_galladoria_bridge_spot", "Galladoria: the primals come when a raider (bots too) stands on the waterfall bridge spot (True, 1.2); a bot raid that waited on the bridge three minutes starts it anyway.", true)]
+		public static bool EPIC_GALLADORIA_BRIDGE_SPOT = true;
+
+		[ServerProperty("npc", "epic_full_fire_patches", "Galladoria: the Fire primal's trail of fire hits 220 in a 450 radius, as in the original (True), or 120 in 300 (False: the owner's 2026-10-19 nerf, kept as the 1.2 default until a played check).", false)]
+		public static bool EPIC_FULL_FIRE_PATCHES = false;
+
+		[ServerProperty("npc", "epic_earthmender_class_puzzle", "Galladoria: each Earthmender takes damage only from its own class group (True, 1.2). The raid sends each raider to one its class hurts.", true)]
+		public static bool EPIC_EARTHMENDER_CLASS_PUZZLE = true;
+
+		[ServerProperty("npc", "epic_earthmenders_passive", "Galladoria: Earthmenders never attack, they only heal (True, 1.2, as in the original).", true)]
+		public static bool EPIC_EARTHMENDERS_PASSIVE = true;
+
+		[ServerProperty("npc", "epic_earthmender_quick_reset", "Galladoria: an Earthmender heals to full 30 s after its last fight even with raiders in the room (True, 1.2, as in the original).", true)]
+		public static bool EPIC_EARTHMENDER_QUICK_RESET = true;
+
+		[ServerProperty("npc", "epic_earthmender_mutual_heal", "Galladoria: Earthmenders heal each other as well as the Earth primal (True, 1.2, as in the original).", true)]
+		public static bool EPIC_EARTHMENDER_MUTUAL_HEAL = true;
+
+		[ServerProperty("npc", "epic_beatha_heals_xaga", "Galladoria: damage to Beatha heals Xaga by twice the amount (True, 1.2). The raid kills Beatha, then Tine, then Xaga.", true)]
+		public static bool EPIC_BEATHA_HEALS_XAGA = true;
+
+		[ServerProperty("npc", "epic_fairy_flight", "Galladoria: Beatha and Tine circle the room even while they are fought (True, 1.2, as in the original).", true)]
+		public static bool EPIC_FAIRY_FLIGHT = true;
+
+		[ServerProperty("npc", "epic_govannon_full_health", "Summoner's Hall: Grand Summoner Govannon has 300,000 health, as in the original (True), or 200,000 (False, the 1.2 default until a played check: a 60-bot raid took him about 1% a minute).", false)]
+		public static bool EPIC_GOVANNON_FULL_HEALTH = false;
+
+		[ServerProperty("npc", "epic_govannon_full_heal", "Summoner's Hall: when Grand Summoner Govannon turns into his demon at 50% health he heals to full, as in the original (True), or to 75% (False, the 1.2 default: owner 2026-11-11, after bot raids that stepped out of his Shroud still lost with the demon at 29% to 42%).", false)]
+		public static bool EPIC_GOVANNON_FULL_HEAL = false;
+
+		[ServerProperty("npc", "epic_easmarach_endless_falls_heal", "Galladoria: Easmarach heals an eighth on the waterfall top every time he falls to 30% and stays up there, as in the original (True), or heals there once a fight and then comes back down to fight on (False, the 1.2 default: a bot raid can only shoot him up there, about 1% a minute, and never finished him; play test 2026-11-07).", false)]
+		public static bool EPIC_EASMARACH_ENDLESS_FALLS_HEAL = false;
+
+		[ServerProperty("npc", "epic_kvasir_cold_heal", "Tuscaran Glacier: cold damage heals Icelord Kvasir by a fifth of his health and does no damage (True, 1.2). No bot casts cold at him.", true)]
+		public static bool EPIC_KVASIR_COLD_HEAL = true;
+
+		[ServerProperty("npc", "epic_tuscar_twin_heal", "Tuscaran Glacier: damage to King Tuscar heals Queen Kula and damage to her heals him while the other is hurt (True, 1.2). The raid kills Kula first; only the King's own tank fights him. Test first.", true)]
+		public static bool EPIC_TUSCAR_TWIN_HEAL = true;
+
+		[ServerProperty("npc", "epic_dragon_messengers", "The dragons: from half health every 80-90 s four to six messengers run out of the lair and each calls four to six adds (True, 1.2). The raid's casters and archers run them down. False: no messengers at any dragon.", true)]
+		public static bool EPIC_DRAGON_MESSENGERS = true;
+
+		/// <summary>
+		/// Epic encounters (1.2): per-encounter switch values that replace the shipped ones (EpicEncounterMechanics.
+		/// ShippedPerEncounter), for any boss and any of its switches, without a rebuild.
+		/// </summary>
+		[ServerProperty("npc", "epic_encounter_switches", "Epic encounters: per-boss switch values that replace what ships, as Switch@Boss=True or False, separated by commas or semicolons. Example: AllowBotDisplacement@Orylle=False; AllowPositionPuzzle@Olcasgean=False. Switches: AllowDisplacement, AllowPositionPuzzle, AllowInvulnerableHazards, AllowAddShield, AllowGlacierGriffonPatrol, AllowBotDisplacement, AllowDragonThrow, AllowDragonMessengers. Boss = the script's class name (the catalog docs/encounters/EPIC-ENCOUNTERS.md lists them). Empty: what ships.", "")]
+		public static string EPIC_ENCOUNTER_SWITCHES = "";
 
 		/// <summary>
 		/// Allow Roam
@@ -2432,6 +2535,30 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_INCOMING_FIRE_REACTION;
 
 		/// <summary>
+		/// RvR perception (owner 2026-11-01): autonomous gamebots notice enemy players in RvR by chance, react after a moment and call it to their group.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_perception", "In the frontier, battlegrounds and Darkness Falls, an autonomous gamebot notices an enemy player (or a player's companion or pet) by chance: always within 1,000 units, never beyond 3,500; one bot looking on its own takes about 1.5 s at 1,500 units, 6 s at 2,500 and 20 s at 3,400 (the median), less when the enemy is fighting, casting, in a group of 3 or more or in front of the bot, more when it stands still. At most 3 bots of a realm look for the same enemy each second; the others learn of it from their call. It engages 0.5-2 s later (faster at higher level and for bold personalities). Enemy gamebots, siege, guards, doors and monsters are unchanged, and a bot or group under attack fights back at once. False keeps the old instant sighting up to 5,000 units.", true)]
+		public static bool RVR_BOT_PERCEPTION;
+
+		/// <summary>
+		/// How sharp autonomous gamebots are at spotting enemy players in RvR: easy, normal or veteran.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_awareness", "When rvr_bot_perception is on: easy (sure sighting within 700, never beyond 2,500, twice the normal time to notice, slower reactions, 2 lookers per enemy each second), normal (like players in 2003: 1,000 / 3,500, 0.5-2 s, 3 lookers) or veteran (1,300 / 4,500, half the normal time to notice, faster reactions, a wider call radius, 5 lookers).", "normal")]
+		public static string RVR_BOT_AWARENESS;
+
+		/// <summary>
+		/// A gamebot that notices an enemy player tells its group and warband, who react after their own moment.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_spotters", "When rvr_bot_perception is on: the gamebot that notices an enemy player tells its group mates within 2,500 units, who engage after their own reaction delay; each other group of its warband hears it relayed half the time, 4 s later. A bot on a realm raid, in a battleground assault or in a player's group doesn't leave it to answer. With bot voices on it calls it in /group (\"inc 3 north\") when you are in that group. False: every bot has to notice for itself.", true)]
+		public static bool RVR_BOT_SPOTTERS;
+
+		/// <summary>
+		/// Pet caps (North Star audit 2026-11-03): how many pet classes may join one RvR group that gamebots form.
+		/// </summary>
+		[ServerProperty("bots", "rvr_group_pet_cap", "When gamebots form an RvR group (a roaming warband or a siege party), at most this many pet classes (Cabalist, Theurgist, Necromancer, Spiritmaster, Bonedancer, Enchanter, Animist, Sluaghbinder) join a group of five or more, and half as many (at least 1) a group of four or fewer. The others wait for the next group. Groups you lead or join are never changed. 0 turns the cap off.", 2)]
+		public static int RVR_GROUP_PET_CAP;
+
+		/// <summary>
 		/// Autonomous gamebots speak lines from the bot-voices corpus in their own writing style.
 		/// </summary>
 		[ServerProperty("bots", "bot_voices_enabled", "Autonomous gamebots say pre-written, period lines (docs/bot-voices/DESIGN.md) chosen by personality, level, realm, class and situation, each in its own writing style, without repeating a line in a realm within 6 hours. On by default since Beta 1.1 (the talking update). False keeps the old lines.", true)]
@@ -2512,6 +2639,22 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_group_bonds", "Server life: gamebots remember the bots they grouped with. Good runs make friends who look for each other when forming a party; bots who never showed up or wiped the group too often are kept apart until a long wait makes them take anyone.", true)]
 		public static bool BOT_GROUP_BONDS;
 
+		/// <summary>Bot-led groups (docs/BOT-LED-GROUPS.md): the leader of a gamebot party may invite you, and you can just follow.</summary>
+		[ServerProperty("bots", "bot_group_invite_player", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn companions out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one.", true)]
+		public static bool BOT_GROUP_INVITE_PLAYER;
+
+		/// <summary>How many members the real player counts as in the loot of a group with gamebots (owner 2026-11-04).</summary>
+		[ServerProperty("bots", "bot_group_player_loot_weight", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8.", 2)]
+		public static int BOT_GROUP_PLAYER_LOOT_WEIGHT;
+
+		/// <summary>Bot-led groups, B2: what saying yes to a gamebot leader's invite does (follow or lead).</summary>
+		[ServerProperty("bots", "bot_led_group_join_mode", "Bot-led groups: when you say yes to a gamebot leader's invite. follow = the leader runs the group and you follow (/lead takes over at any time); lead = you become the leader at once and the bots follow you, as bots you /invite do (/lead bot hands it back).", "follow")]
+		public static string BOT_LED_GROUP_JOIN_MODE;
+
+		/// <summary>Bot-led groups, B3: a realm raid's leader may invite a level-50 player.</summary>
+		[ServerProperty("bots", "bot_raid_invite_player", "Raid leaders: when a dragon or epic dungeon raid forms in your realm and you are level 50, its raid leader (an officer of a raiding guild) may send you a tell and a box, once per raid. Yes puts you in a party that needs your class (one gamebot of your role steps out); you travel to the muster town yourself. A no is final for that raid. /invites off stops these too.", true)]
+		public static bool BOT_RAID_INVITE_PLAYER;
+
 		/// <summary>Multi-day dramas between pairs of bots, played as /faction episodes (AutonomousBotStorylines).</summary>
 		[ServerProperty("bots", "bot_living_storylines", "Server life: pairs of bots live out dramas in /faction over days: a kill steal, a guild split, a romance, a ninja-loot trial. The same two bots play every episode; take a side in faction and the ending follows you.", true)]
 		public static bool BOT_LIVING_STORYLINES;
@@ -2519,6 +2662,14 @@ namespace DOL.GS.ServerProperties
 		/// <summary>Gold spammers and roleplayers (AutonomousGoldSpammers, AutonomousRoleplayers).</summary>
 		[ServerProperty("bots", "bot_living_characters", "Server life: now and then a gold spammer floods /faction until it is banned, and a few bots roleplay in thee-and-thou speech while the realm mocks them.", true)]
 		public static bool BOT_LIVING_CHARACTERS;
+
+		/// <summary>Tales: the realm's storyteller in /faction, fireside tales in a group (AutonomousTales).</summary>
+		[ServerProperty("bots", "bot_living_tales", "Server life: now and then a bot asks the realm's storyteller for the tale of a dragon or a boss in /faction, others hush the channel, and it is told in a dozen lines; you can ask for one too (\"tell the one about legion\"). Resting in a boss's place with a gamebot in your group, a groupmate tells the short version. Needs bot voices and debates.", true)]
+		public static bool BOT_LIVING_TALES;
+
+		/// <summary>The rumour after a tale may be true: the realm's raid on that boss forms a few minutes later.</summary>
+		[ServerProperty("bots", "bot_living_tale_raids", "Server life: about half the time, the rumour that follows a tale is true: the realm's own automatic raid on that boss forms a few minutes later (only when one could form anyway). Off: the rumour is always just lore.", true)]
+		public static bool BOT_LIVING_TALE_RAIDS;
 
 		/// <summary>True rumours: real rare spawns and undefended enemy keeps (AutonomousRumours).</summary>
 		[ServerProperty("bots", "bot_living_rumours", "Server life: bots pass on rumours that are true: a rare named monster that just spawned, or an enemy keep whose guards are down. Go and see.", true)]
@@ -2531,6 +2682,10 @@ namespace DOL.GS.ServerProperties
 		/// <summary>Now and then a raider charges the final boss early (AutonomousRaidLeeroy).</summary>
 		[ServerProperty("bots", "bot_living_leeroy", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in.", true)]
 		public static bool BOT_LIVING_LEEROY;
+
+		/// <summary>The lore's screen-centre atmosphere lines (Living Server 1.2, LoreAtmosphere, docs/LORE.md).</summary>
+		[ServerProperty("bots", "living_atmosphere_lines", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first.", true)]
+		public static bool LIVING_ATMOSPHERE_LINES;
 
 
 

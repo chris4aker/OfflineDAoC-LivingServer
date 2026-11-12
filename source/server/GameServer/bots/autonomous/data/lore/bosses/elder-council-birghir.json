@@ -1,0 +1,184 @@
+{
+  "id": "elder-council-birghir",
+  "name": "Elder Council Birghir",
+  "catalogKey": "tuscaran-glacier/birghir",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "elder-council-guthlac",
+      "relation": "his partner on the ribs"
+    },
+    {
+      "id": "elder-icelord-hjalmar",
+      "relation": "the icelord who mocked his peace"
+    },
+    {
+      "id": "queen-kula",
+      "relation": "his queen, who let him win every vote"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Birghir is a level-80 elder of the hrimthursa Council with 100,000 health, linked to Elder Council Guthlac: pull one and both come.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "On first aggro he is shocked an outsider is inside and calls on Guthlac to defend their King and Queen.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs"
+    },
+    {
+      "text": "He admits the Ice Lords were right and that the Council should have wiped out every dangerous creature on the island.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs"
+    },
+    {
+      "text": "He casts Frost Sphere bolts, Frost Strike, a strength-constitution debuff and a haste debuff.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat says the elder council sits on the dragon's ribs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Every 15-20 s Birghir adds every real player within 2,500 to his aggro list and casts Frost Sphere (400 cold bolt, 2 s) or Frost Strike (650 cold, 3 s), both uninterruptible, at a random real player on his list, then returns to his target; bots are never chosen. On his target he casts a strength/constitution debuff (80, radius 450, 60 s) and a 19% haste debuff (60 s), each only if the target does not already have it. 100,000 health, 40% melee and 70% magic resists, CC-immune; he and Guthlac bring each other in, and he resets when drawn past his tether or 30 s out of combat.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs"
+    },
+    {
+      "text": "Birghir's ice (the spring block at the crater road), Jorunn of Dellingstad and the saying 'Birghir speaks past you' are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs"
+    }
+  ],
+  "story": "Birghir is the oldest voice of the Council of Tuscaran and its gentlest. He was old already when Queen Kula raised the citadel, and he took the eldest rib as a favour to her, because she needed a giant the others would listen to. For a hundred winters he argued that the hrimthursa had their ice and needed nothing else, and the eldest rib is scored from end to end with the straight lines of his peace. Kula let him win every vote, because a quiet council costs a queen nothing; the cast-out sculptors say he was keeping the lid still.\n\nHe kept the peace with more than words. Every spring he had the icesplitters cut a block of clear ice from the crater wall and set it at the foot of the crater road for the people of Dellingstad, who packed their fish in it, and the town called it Birghir's ice. Jorunn, a Dellingstad fishwife, went up the road one spring to thank him and was the first human to stand before the ribs. She said he spoke to her kindly, and that the Icelord Hjalmar, arguing with him across the chamber, came away from the argument grey and slow, as if Birghir's patience had drained him. Birghir never raised his voice at the one in front of him. When he lost his temper, which was seldom, the frost went past the giant he was arguing with and found someone at the back of the hall.\n\nThe two crossed marks on his rib are the votes he lost: the march against the morvalt, and the march against Midgard. Since the second he has sat on his rib with Guthlac beside him and waited, and the two have never been seen to rise apart. When strangers reach him now he says what he refused to say for a century, that the Ice Lords were right, and his frost goes over the heads of those who face him and falls on the living newcomers at the back, one after another. Nobody has drawn him from his rib for long; carried off it, he goes back and sits until he is himself again. Birghir's ice stopped coming down the road the spring Midgard climbed it. Jorunn's granddaughters still go to the place.",
+  "chapters": [
+    {
+      "title": "The Eldest Rib",
+      "text": "Birghir was old when the hrimthursa came to Delling's Crater. The cast-out sculptors at Dellingstad's fires say he had already outlived two halls of his people in the north, under ice no man of Midgard has seen, and that he came south with Kula's people because he was too old to argue with a queen about where to go. He did not want a seat on anything. He wanted, he said, a cold place to sit and a long time to sit in it.\n\nKula gave him the eldest rib. When the giants cut down to the bones under the glacier and found the dragon's ribcage standing in the dark, she chose the longest rib for the eldest councillor and asked Birghir to take it, because the young Icelords would shout down anyone else and would not shout down him. He took it as a favour. He sat down on it, the sculptors say, and the bone rang under him, deep and long, and he said it had a good voice and he would try not to waste it.\n\nFor a hundred winters he did not. He spoke for peace at every council, in the same slow way: the ice was enough; every war-party sent out across the island taught some other people where the giants lived; leave the dwarves their iron wood and the morvalt their savagery and the trolls their empty city, and the island would forget there was anyone in the crater at all. He won every vote, and the sculptors cut a straight line on his rib for each one, until the rib was scored from end to end.\n\nKula let him win. The Icelords said she was weak for it; the cast-out sculptors say she was not, and that she and the old giant understood each other very well. A quiet council costs a queen nothing, and a still glacier is a glacier whose lid stays on. The sculptors say Birghir was never keeping the giants safe from the island. He was keeping what is under the ice asleep."
+    },
+    {
+      "title": "Birghir's Ice",
+      "text": "He kept the peace with more than votes. In the tenth spring of the citadel, Birghir asked the icesplitters to cut a block of clear ice from the face of the crater wall, the clearest they could find, as tall as a giant, and the rooks carried it down the crater road to its foot and left it there. Nobody in the citadel knew why. In Dellingstad they found out soon enough. The town packed its spring catch in it and sold good fish to Galplen all summer, and the next spring there was another block.\n\nDellingstad called it Birghir's ice, though for years nobody in the town knew who Birghir was. It came every spring for the rest of the century. The giants took nothing for it. The traders of Dellingstad, who are not used to gifts, left salt at the foot of the road in return, a sack or two, and the salt was always gone in the morning; the icesplitter who came down to trade for salt in the elder Guthlac's day, to everyone's surprise, was the first giant the town had seen do it in daylight.\n\nThe fishwife Jorunn was the first human to go up the road and thank him. She walked to the ribs in the twentieth spring, with a dried fish under each arm, because nobody had told her not to, and the giants were so astonished that they let her through. She stood before the Council and thanked the eldest councillor for the ice. The sculptors say Birghir laughed, which nobody had heard him do, and asked her about the fish.\n\nThe ice stopped coming the spring Midgard climbed the crater road. The block of that spring was found half cut in the crater wall, with the splitters' picks still in it. Jorunn's granddaughters still go up to the foot of the road every spring, though there is nothing there, and leave a sack of salt. It was Birghir's salt that Turid, Orm Kolbeinsson's wife, was keeping up when she went to the outer ice every spring for her husband; the town had been leaving it for the old giant for a century before it left it for Orm. The sacks are gone in the morning. Nobody in Dellingstad knows who takes them."
+    },
+    {
+      "title": "Speaking Past the Speaker",
+      "text": "Jorunn stayed at the ribs for most of a day, because the Council was sitting and nobody thought to send her away, and what she told the town afterwards is still the best account Dellingstad has of how the eldest councillor argued. It was the spring the Icelord Hjalmar first spoke for war on the ribs, and Birghir answered him.\n\nHe did not shout. Hjalmar stood in front of him and shouted, and Birghir sat on his rib and answered him slowly and kindly, point by point, for a whole afternoon. Jorunn said that what she noticed was Hjalmar. The Icelord came to the ribs young and furious and strong, and as the afternoon went on he grew slower and greyer and heavier on his feet, as if the old giant's patience were a cold that got into the bones, and by evening he could barely lift his arm to strike his rib. The sculptors say every giant who ever argued with Birghir face to face came away like that: weakened, slow, and in need of a long warm sleep.\n\nShe noticed one other thing. Only once, near the end, Birghir lost his temper, when Suttung on the far side of the chamber called him a coward. He did not turn on Suttung or on Hjalmar. He looked past them both, over the heads of the whole Council, and a frost came off him and fell on a young giant at the back of the hall who had said nothing at all, and laid him on the ice. The Council was silent after that. Jorunn asked the sculptor who walked her down the road why the old one had struck the boy. The sculptor said that Birghir had never in his life struck the one he was speaking to. It was the newcomers at the back he could not abide, the ones who came to watch.\n\nDellingstad made a saying of it, which the companies who go up to the ribs have carried back to Midgard: Birghir speaks past you."
+    },
+    {
+      "title": "The Ice Lords Were Right",
+      "text": "The two crossed marks near the end of his rib are the two votes he lost. The first was the march against the morvalt, after Kvasir screamed. The second was the march against Midgard, after the warbands came up the crater road with the Valkyn; Birghir struck twice for no and was outvoted, and by the time the bone stopped ringing the strangers were already in the tunnels. The sculptors have not cut a mark since.\n\nHe has sat on his rib since then with Guthlac beside him, and the two old councillors have never once been seen apart; when anyone comes to one of them, the other is already rising. Midgard's companies who have reached the ribs say that the first thing Birghir says to them is that it should not have been possible, an outsider here, in the heart of the ice. The second thing is the thing he would not say for a century: the Ice Lords were right, and the giants should have cleared every dangerous thing from the island, and they will begin today.\n\nHe speaks past them still. The companies say his frost goes over the heads of those who stand before him and falls on the living strangers further back, one and then another, while the ones in front of him grow slow and weak in his patience. They say too that he will not be moved from the ribs. Drawn away, he goes back and sits on his rib until he is himself again, and the bone rings when he sits.\n\nJorunn's granddaughters do not believe the Ice Lords were right. They say an old giant who sent ice down a road for a hundred springs was right the first time, and only said the other thing because nobody listened. They leave the salt anyway."
+    }
+  ],
+  "legend": "The elders are a pair: Birghir and Guthlac always come together, so plan for both. Birghir has 100,000 health, 40% melee and 70% magic resists and is CC-immune. Every 15 to 20 seconds he throws a Frost Sphere (400 cold) or Frost Strike (650 cold) at a random REAL player within 2,500, never at a bot, so if you're the only human in the raid it's always you: bring cold resist and stay topped up. On his current target he lays a strength/constitution debuff and a haste debuff (a minute each, and he won't stack them), so cleanse the tank. He resets to full if you drag him past his tether or leave him out of combat for 30 seconds, so fight on the ribs and commit. When he gives his speech about the Ice Lords, the old raiders say, the council is finished and he knows it.",
+  "yells": {
+    "aggro": [
+      "Outsiders, here? On the ribs? Guthlac! To the King and Queen!",
+      "Impossible. An outsider, here, on the ribs?",
+      "Guthlac, we must defend our Queen and King!",
+      "Not you. The one behind you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "A hundred winters I spoke for peace. Hear what I say now!"
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Guthlac... the Ice Lords were right. We were fools."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "We should have cleansed this island. We will begin with you."
+      }
+    ],
+    "death": [
+      "Tell Hjalmar... he was right...",
+      "Peace... was never ours to keep...",
+      "Tell Jorunn... the ice..."
+    ],
+    "slay": [
+      "Peace was never offered to you. I see that now.",
+      "I would have let you live, once.",
+      "The Council votes. You lose.",
+      "You came to watch. Now you have seen."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The council chamber. The seats are carved from ribs.",
+      "Old bone under old ice. The elders are waiting.",
+      "An old giant sits on a rib as if on a throne of patience.",
+      "The eldest rib is scored end to end with straight lines.",
+      "Two crossed marks, close together, near its end."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Birghir renounces a century of peace!"
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Birghir rises alone. The council's peace is ended."
+      }
+    ],
+    "realmFirstKill": "Birghir's rib is silent. His peace is ended."
+  },
+  "botLines": {
+    "briefing": [
+      "elders next. birghir and guthlac come together, [cure|clear] the str debuff on tanks fast",
+      "casters stay out of birghir's line, his frost sphere hurts",
+      "dont drag the elders off the ribs, they reset",
+      "birghir also haste debuffs, cleanse the tanks",
+      "birghirs frost only targets real players, so thats you. cold resist and stay topped",
+      "birghir debuffs str/con and haste on the tank, cleanse it",
+      "elders come as a pair, both 100k, cc immune",
+      "fight them on the ribs, drag them off and they reset"
+    ],
+    "aftermathWin": [
+      "council down. birghir said the icelords were right right before he died lol",
+      "elders done, on to the throne",
+      "elder council broken. on to the thrones",
+      "birghir said the icelords were right right before he died. [poor guy|lol]",
+      "birghir speaks past you. [he wasnt wrong|lol]",
+      "elder down. he said the icelords were right again",
+      "council's done"
+    ],
+    "aftermathLoss": [
+      "the elders wiped us. guthlac's spike went off in the middle",
+      "str debuff on both tanks and nobody cleansed",
+      "we pulled the elders off the ribs and they reset at 20%. [ugh|again]",
+      "birghir's frost sphere one-shot our caster group lead",
+      "birghir frost struck you three times in a row",
+      "tank sat debuffed the whole fight",
+      "we dragged him off the rib and he reset"
+    ],
+    "rumour": [
+      "[heard|they say] the council up there were peace lovers once. didnt look peaceful to me",
+      "old birghir argued against war for a hundred years and lost the argument in one night",
+      "birghir's last words are for hjalmar. [they hated each other|figures]",
+      "birghir sat on that rib a hundred years arguing for peace. [then we showed up|bad timing]",
+      "birghir used to send a block of ice down to dellingstad every spring for their fish",
+      "dellingstad saying: birghir speaks past you",
+      "a fishwife walked up to the council once to thank birghir. they let her"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Birghir",
+    "text": "The eldest of the [Council] of Tuscaran, who sat on the eldest rib for a century and spoke for peace. Every spring he sent a block of clear ice down the crater road for Dellingstad's fish. Dellingstad says Birghir speaks past you: his frost was never for the one in front of him. The two crossed marks on his rib are the votes he lost."
+  },
+  "bookPage": "Minutes of the Council, the hundredth winter, as a cast-out sculptor remembered them for me. Hjalmar spoke for war: the morvalt are rising, the dwarves are watching, strike first. Suttung spoke for war: what is stolen once is stolen twice. Birghir spoke for peace: the ice is enough, and every war-band that comes up the ice teaches the island the way to our door. Guthlac said nothing. The vote was taken. Peace, by two. The queen yawned and went back to her throne. The sculptor said that was the last vote the Council ever won, and that he carved Birghir that night as he sat on his rib, very old and very sure, and that the carving was why they cast him out.",
+  "chronicle": {
+    "win": "On the dragon's ribs {raidLeader} of {realm} silenced Elder Birghir in {minutes} minutes.",
+    "loss": "Elder Birghir held the ribs against {raidLeader}'s raid from {realm} for {minutes} minutes."
+  }
+}

@@ -1,0 +1,311 @@
+{
+  "id": "cursed-forest",
+  "name": "Cursed Forest",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "zones": [
+    208
+  ],
+  "summary": "The court wood of the Seelie and the Unseelie, gone bad when a bargain broke there: walking trees, fires on nothing, the courts' unpaid debts.",
+  "facts": [
+    {
+      "text": "Zone 208 (region 200, x 450,560-516,096, y 483,328-548,864): 329 monsters and fourteen of the realm's named powers, the densest gathering of bosses in the wilds; no realm NPCs at all.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Bosses here: Juggernaut (75), Wyvernic Wraith (74), Orey-eyed Oghamist (73), Uafas Capall (72), Skeaghshee (71), Cailean, Luriquay and Green Maw (65), Flame (64), Giant Caithor (62), Develin (60, faction Unseelie Court), Shadowgnash (58), Faerie Queen (57) with five Queen's Maids; a Blight Controller helper ('DO NOT REMOVE') at about 475,900/503,000.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Monsters: unearthed cave bears, pookas, levian-al, mindworms (57-64), black wraiths, forest poachers (Grey Hunters), leprechauns and cursed leprechauns (63), far dorocha (Siabras), gan ceanach (Banshees), finliath, savage fishing bears, spectral manslayers (Seelie Court), goborchend wounders, gashers and piercers (Children of Cernunnos), diseased parthelonian pets, a giant lusus, a banshee and a faerie court jester.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Epic roads that run through the forest: The Horn Twin (Cailean), The Moonstone Twin (the Faerie Queen, Giant Caithor) and Unnatural Powers (Green Maw).",
+      "provenance": "game",
+      "source": "GAPS-hibernia.md section 3 (scripts/quests/Hibernia/epic)"
+    },
+    {
+      "text": "In Irish folklore the fear dorcha ('dark man') is a malevolent fairy, and the gancanagh ('love-talker') a male fairy who seduces women.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Gancanagh"
+    },
+    {
+      "text": "In the Lebor Gabála Partholón's people, an early settlement of Ireland, all died of a plague in a single week.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Partholón"
+    },
+    {
+      "text": "Some medieval texts describe Fomorians with the heads of goats.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Fomorians"
+    },
+    {
+      "text": "Living Server lore: the court wood and the bargaining stones, the three accounts of who broke the bargain, the sharing-out, the debts that walk, and the jester who stayed to keep the joke.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Named group: five Queen's Maids (56) round the Faerie Queen (57) in the eastern glade of the Cursed Forest, at about 502,000-504,300/507,500-511,100; plain spawns.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Rangers reported the Cursed Forest stirring with more creatures than before: poachers drawn by the richer hunting, dangerous forest scorpions in places, Fomorians invading its southern region and undead appearing in its northern reaches.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/128.php (Camelot Herald, 2002-01-11, 1.42 Pendragon notes; Wayback capture 2004-11-01)"
+    }
+  ],
+  "story": "The Cursed Forest was a court wood. Before the bargain broke it was the one place on the mainland where the bright court and the dark court met on purpose, the Seelie and the Unseelie, to settle what lay between them, and the wood was kept for it as a hall is kept for a feast: gardened, guarded, its fires lit and its paths swept. The bargaining stones stood in the middle of it. Neither court came in person; each sent a lesser court to sit at the stones and speak for it, with a queen to bargain and a jester to keep the mood, and a gardener to keep the wood, and hounds and horses and a wyvern for the dignity of the thing.\n\nThen a bargain broke at the stones, and nobody agrees how. The Seelie, when they will speak of it at all, say the dark court cheated: it pledged something it did not own. The Unseelie say a mortal broke it, a man of the wood's edge who had made a private bargain of his own with the court's pookas and spoke out of turn at the stones. The druids of Lough Gur say both courts had been cheating for an age and the wood simply stopped being able to hold the difference. Whatever the cause, something was spilled at the stones that neither court would take back, and the wood went bad around it.\n\nWhat came after the druids call the sharing-out. The great courts called their lesser courts home and divided what could be divided: the Unseelie named the Glitter under the Silvermine as theirs, the Seelie went quiet and watched. What could not be divided stayed in the wood, and walks there now as the courts' debts. The Juggernaut is the largest, the debt with legs, which no court commands and both give the road. The blight that climbs out of the wood's earth in shape after shape is the spilled thing itself, the druids think, still trying to become something. Cailean the gardener stayed with the wood and went bad with it, and its trees walk when it calls. Flame is a hearth-fire of the court's last night, burning on nothing; Luriquay drank from it. The horror horse grazes under the moon; the shadow-biting stallion grazes on shadows; the wyvern's ghost circles the place it was fed. The fairy thorn of the stones grew into a man and lets no fairy craft touch him. A cutter of ogham read a court stone he should not have and has been cutting words of power in the air since. A green mouth grew in a pool.\n\nSome of the lesser court never went home. The Faerie Queen of the eastern glade kept half a moonstone as her share and could not carry it back across the Veil, and her five maids stayed with her. Develin, the man of the pookas, stayed with his bargain. The court's jester stayed too, the only one of the court who seems to find any of it funny, and tells the same riddles to anyone who will stand still.\n\nAnd the dead came. The giant Caithor lies in the west of the wood, bound in death by the far dorocha, the dark men of the wood's edge, who keep his ghost as a servant. The gan ceanach, the love-talkers of the banshees' kin, walk the northern paths. The bright court's dead, spectral manslayers, guard nothing in the north-west with the black wraiths. Goat-headed goborchend have pushed in from the south, and the druids say the old books give such heads to the Fomorians' kin. On the western ridges the diseased beasts of a people the old books say died of a plague in a week still wander, sick, and nobody knows how they got into the wood. Poachers of the Grey Hunters camp among the cave bears in the west and take what they can.\n\nWhy does it matter? Because the courts never paid. The druids say the Veil wore thin over the realm the night the bargain broke, and every grandmother's list of places not to go after dark is a list of where it is thinnest, and the Cursed Forest heads every list. The palace sends its young into the wood after horns and halves of moonstones and the crystal-craft of the green mouth, and the druids think that if every debt in the wood were ever brought to account, the forest would be only a forest. Nobody in Tir na Nog expects to live to see it.",
+  "legend": "The Cursed Forest is the 50-75 end of the old country, east of Bri Leith, with no realm NPCs and fourteen named. The trash is all 50s: unearthed cave bears in the west, pookas, levian-al, far dorocha (siabra), gan ceanach, black wraiths, spectral manslayers, mindworms (57-64) and cursed leprechauns (63). Everything has friends here, so pull one at a time. The big ones: Juggernaut (75) in the middle by the stones, Wyvernic Wraith (74), the Oghamist (73), Uafas Capall (72), Skeaghshee (71: steel not spells), Cailean (65, cannot be hurt away from its grove), Green Maw (65, splits), Luriquay (65, a Flame comes out when he dies), Flame (64), Giant Caithor (62: kill the dark men first), Develin (60, appears after his pookas die), Shadowgnash (58) and the Faerie Queen (57) with five maids. Epic roads: Horn Twin (Cailean), Moonstone Twin (Queen, Caithor), Unnatural Powers (Green Maw). Old saying: the forest is owed, so never take anything out of it you did not bring in.",
+  "atmosphere": {
+    "firstEntry": [
+      "The Cursed Forest. The courts never paid.",
+      "The trees here are listening.",
+      "A fire burns somewhere on nothing.",
+      "Every grandmother's list starts here.",
+      "Something large walks the paths as if they were its own."
+    ],
+    "areas": [
+      {
+        "name": "the bargaining stones",
+        "x": 494200,
+        "y": 515100,
+        "z": 5440,
+        "radius": 3000,
+        "lines": [
+          "The bargaining stones, cracked.",
+          "Something was spilled here. The ground remembers.",
+          "The Juggernaut has the road."
+        ]
+      },
+      {
+        "name": "the gardener's grove",
+        "x": 479040,
+        "y": 508130,
+        "z": 4570,
+        "radius": 2000,
+        "lines": [
+          "The gardener's grove. The trees turn to look.",
+          "Cailean is strong at home."
+        ]
+      },
+      {
+        "name": "the giant's grave",
+        "x": 470550,
+        "y": 531500,
+        "z": 4980,
+        "radius": 2500,
+        "lines": [
+          "A giant's grave, kept by dark men.",
+          "Caithor's ghost serves the far dorocha."
+        ]
+      },
+      {
+        "name": "the eastern glade",
+        "x": 503470,
+        "y": 509190,
+        "z": 4760,
+        "radius": 1500,
+        "lines": [
+          "A pale court in the eastern glade.",
+          "The queen keeps half a moonstone.",
+          "A Queen's Maid turns to receive you."
+        ]
+      },
+      {
+        "name": "the pooka runs",
+        "x": 483900,
+        "y": 522800,
+        "z": 5200,
+        "radius": 4000,
+        "lines": [
+          "Pookas run the paths at dusk.",
+          "Their master shows when enough of them die."
+        ]
+      },
+      {
+        "name": "the green pool",
+        "x": 488300,
+        "y": 521440,
+        "z": 6330,
+        "radius": 1200,
+        "lines": [
+          "A mouth grew in this pool.",
+          "Green, and hungry, and many."
+        ]
+      },
+      {
+        "name": "the ogham stone",
+        "x": 501730,
+        "y": 506790,
+        "z": 5190,
+        "radius": 1200,
+        "lines": [
+          "Words cut in the air, burning.",
+          "He read a stone he should not have."
+        ]
+      },
+      {
+        "name": "the moon meadow",
+        "x": 502770,
+        "y": 522920,
+        "z": 5780,
+        "radius": 2000,
+        "lines": [
+          "The horror horse grazes under the moon.",
+          "Its hooves strike cold."
+        ]
+      },
+      {
+        "name": "the wyvern's circle",
+        "x": 500840,
+        "y": 533840,
+        "z": 5340,
+        "radius": 2000,
+        "lines": [
+          "A wyvern's ghost circles its old feeding place.",
+          "The jester laughs nearby."
+        ]
+      },
+      {
+        "name": "the wraith paths",
+        "x": 472500,
+        "y": 496000,
+        "z": 5300,
+        "radius": 4000,
+        "lines": [
+          "The bright court's dead, standing guard.",
+          "Love-talkers on the northern paths."
+        ]
+      },
+      {
+        "name": "the poachers' ridge",
+        "x": 463400,
+        "y": 510000,
+        "z": 6330,
+        "radius": 4000,
+        "lines": [
+          "Poachers' fires among the cave bears.",
+          "Sick beasts of a plague-dead people."
+        ]
+      },
+      {
+        "name": "the mindworm hollows",
+        "x": 500000,
+        "y": 524200,
+        "z": 5150,
+        "radius": 3000,
+        "lines": [
+          "Mindworms. Do not let them near your thoughts.",
+          "Cursed leprechauns, no longer funny."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the cursed forest was a court wood. seelie and unseelie bargained at the stones there",
+      "nobody agrees who broke the bargain. [seelie blame unseelie|unseelie blame a mortal|druids blame both]",
+      "the juggernaut is the debt with legs. [no court commands it|both give it the road]",
+      "the blight is the thing that got spilled at the stones, still trying to become something",
+      "cailean was the court wood's gardener. [went bad with it|its trees walk]",
+      "the unseelie got the coruscating mine in the sharing out after the bargain broke",
+      "the faerie queen kept half a moonstone and couldnt take it back across the veil",
+      "the far dorocha are the dark men. they keep giant caithor's ghost as a servant",
+      "gan ceanach are love talkers. [banshee kin|dont listen]",
+      "the goborchend are goat headed. druids say the old books give the fomorians' kin goat heads",
+      "the court's jester stayed in the cursed forest. [only one who thinks its funny|riddles]",
+      "the sick beasts on the west ridges belonged to a people who died of plague in a week, the old books say",
+      "the palace sends you into the cursed forest for horns and moonstones and green maw stuff. [epics|all of them]"
+    ],
+    "rumour": [
+      "[heard|someone said] the bargaining stones cracked a little more this season",
+      "never take anything out of the cursed forest you didnt bring in. [the forest is owed|old saying]",
+      "[word is|heard] the jester asked someone a riddle and they still cant stop thinking about it",
+      "the poachers in the west are grey hunters. [they hate everyone|watch them]",
+      "[heard|someone said] the juggernaut stopped at the stones and stood there all night",
+      "cursed leprechauns are 63. [not funny|ouch]",
+      "[word is|heard] the mindworms followed someone out to bri leith",
+      "someone pulled uafas capall and the oghamist together. [rip|lol]",
+      "[heard|someone said] the queen's maids were village girls taken to serve at the bargaining stones"
+    ],
+    "tell": [
+      "the cursed forest is east of bri leith. 50 to 75, no town, fourteen named. go in a group",
+      "is the cursed forest hard? yes. all 50s trash, everything social, and big named everywhere",
+      "whats in the cursed forest? juggernaut, the blight, cailean, caithor, develin, the faerie queen and more",
+      "where is the juggernaut? middle of the cursed forest by the stones. 75",
+      "why go to the cursed forest? hib epics: horn twin, moonstone twin, unnatural powers",
+      "where is the faerie queen? the eastern glade of the cursed forest, with five maids",
+      "five queen's maids, 56 each, stand round the faerie queen in the eastern glade. its a court not a boss"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Cursed Forest, the court wood that went bad. The [stones] cracked; the [sharing-out] followed; what could not be shared walks there as the courts' [debts]. Some of the [lesser court] stayed. The [dead] came after. And there is a [jester].",
+    "topics": {
+      "stones": "The bargaining stones in the middle of the wood, where the lesser courts sat for the Seelie and the Unseelie. A bargain broke there and something was spilled. The Juggernaut stands by them at night.",
+      "sharing-out": "What the great courts did after the bargain broke: called their lesser courts home and divided what could be divided. The Unseelie took the Glitter under the Silvermine; the Seelie went quiet.",
+      "debts": "What could not be divided: the Juggernaut, the blight, the gardener Cailean, Flame and Luriquay, the horror horse, the shadow-biter, the wyvern's ghost, the fairy thorn, the Oghamist, the green mouth in the pool.",
+      "lesser court": "The court that sat at the [stones] for the great ones. Its Faerie Queen stayed with her half-moonstone and five maids; Develin stayed with his pookas; the [jester] stayed with the joke.",
+      "dead": "The far dorocha, the dark men who keep Giant Caithor's ghost; the gan ceanach, love-talkers of the banshees' kin; the bright court's spectral manslayers; the black wraiths. And the sick beasts of a plague-dead people.",
+      "jester": "The faerie court's jester, the only one of the [lesser court] who finds any of it funny. Brónach of Lough Gur wrote down his riddles. She says the answers are all the same answer.",
+      "goborchend": "Goat-headed things pushing into the south of the wood, the Children of Cernunnos. The druids say the old books give such heads to the Fomorians' kin, and do not know what they are doing so far from the sea.",
+      "poachers": "Grey Hunters camped among the unearthed cave bears on the western ridges, who take what they can from the wood. The forest is owed; the druids think the poachers will find out what that means.",
+      "epics": "The palace sends the realm's young into the wood: Cailean for the Horn Twin, the Faerie Queen and Caithor for the Moonstone Twin, the Green Maw for Unnatural Powers. Every one is a debt brought partly to account.",
+      "Queen's Maid": "The Faerie Queen of the eastern glade did not go home when the bargain broke, and neither did her maids. There are five of them, as tall and pale as she is, and they stand about her as a court stands about a queen: strangers are received, and judged, and sent away or kept. The edge villagers say the maids were mortal girls once, taken from the villages round the wood to serve at the bargaining, and that they have forgotten the villages and the villages have not forgotten them."
+    }
+  },
+  "book": {
+    "title": "The Jester's Riddles, written down by Brónach of Lough Gur",
+    "pages": [
+      "I am old, and I have buried two brothers on the Sheeroe ridge, and I went into the Cursed Forest in my seventieth summer because I wanted to hear the jester before I died. The court's jester is still there. He stayed when the court went home, and he sits near the wyvern's circle in the south-east and tells riddles to anyone who will stand still. I stood still. I wrote them down. I do not think he cared whether I did, but he waited for the ink, and once he corrected my spelling of the wyvern's name.",
+      "The first riddle: what did the bright court pledge that it owned, and the dark court pledge that it did not, and the mortal pledge that he had already sold? He would not give the answer. He said every child of the wood's edge knew it. I asked the far dorocha's servants on the way out, and they did not know, and I asked the gardener's walking trees, and they did not answer, and I have come to think the answer is the same for all three: something none of them had a right to, which is how most bargains end.",
+      "The second riddle: what is the largest thing in the wood that nobody owns? I said the Juggernaut. He laughed until he cried and said no, the Juggernaut is owned by everyone, it is the debt; the largest thing nobody owns is the silence at the stones after the bargain broke, and everything else in the wood is trying to fill it. The blight is trying hardest, he said. That is why it keeps changing shape. It has not found the right one yet, and the wood is running out of shapes.",
+      "The third riddle he said was for the realm: what must be taken out of the wood that was not brought in, and what must never be? Halves and horns, he said, and the green mouth's craft, and the giant's rest: those may go out, because the palace has a right to them. Everything else stays. Take a twig you did not bring and the wood will send for it. I came out with nothing but this book. I had brought the book in with me. He checked, and then he told me the riddle again, from the beginning, as if I had not heard it."
+    ]
+  },
+  "bosses": [
+    "juggernaut",
+    "blight",
+    "cailean",
+    "giant-caithor",
+    "develin",
+    "flame",
+    "luriquay",
+    "green-maw",
+    "orey-eyed-oghamist",
+    "skeaghshee",
+    "uafas-capall",
+    "wyvernic-wraith",
+    "shadowgnash",
+    "faerie-queen"
+  ],
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "cursed-wood",
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "hibernia-wilds",
+      "relation": "the region overview"
+    },
+    {
+      "id": "valley-of-bri-leith",
+      "relation": "the valley to the west"
+    },
+    {
+      "id": "tir-na-nog",
+      "relation": "whose palace sends the young after the forest's halves and horns"
+    },
+    {
+      "id": "coruscating-mine",
+      "relation": "the Unseelie's share of the sharing-out"
+    }
+  ]
+}

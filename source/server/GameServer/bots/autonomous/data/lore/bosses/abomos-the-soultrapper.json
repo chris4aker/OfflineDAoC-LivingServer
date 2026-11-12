@@ -1,0 +1,126 @@
+{
+  "id": "abomos-the-soultrapper",
+  "name": "Abomos the Soultrapper",
+  "catalogKey": "tur-suil/abomossoultrapper",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health, slashing blows and a Lifedrain. At 50% health he calls two Abomos Servants (up to three alive).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/AbomosSoultrapper.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Tur Suil holds spectral Sylvan and tortured Sylvan spirits.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    }
+  ],
+  "story": "When the Sylvan first understood what was being raised on the crag above the burned valley, they went to burn it down. Most of them died on the stair. Abomos caught what was left. He is a trapper of souls, Balor's gaoler for the things that cannot be chained, and the spirits of the Sylvan of the Burning That Failed hang in his cells still, spectral and tortured, crying in voices too faint to make out. He feeds on them, and on those who come to free them, drinking life out of every wound he gives. When he is hard pressed he calls his servants, made from the last of what he has eaten.\n\nWhen the Sylvan understood what was rising on the crag above the burned valley, they sent their bravest to burn it down. Most of them died on the stair. Abomos caught what was left of them. He is a trapper of souls, Balor's gaoler for the things that cannot be chained, and he keeps them in cells along the tower's lower halls, spectral and tortured, where they cry in voices too faint to make out.\n\nHe feeds on them. He feeds on those who come to free them too, drinking life from whoever stands before him, and when he has been bled enough to be afraid he calls his servants out of the cells. When he is hard pressed, at the half, he opens two of the cells and calls out his servants, made from the last of what he has eaten, never more than three at a time. He cannot be harmed outside his own halls. The Sylvan say that every spirit freed from his cells goes home to Domnann on the wind, and that on the nights after he falls the forests there are full of whispers.\n\nAbomos caught the spirits of the Sylvan of the Burning That Failed, led by the fire-keeper Áine, and keeps them in his cells; Ciarán of Bri Leith's band freed them and the forest of Domnann whispered all night.",
+  "legend": "He drains life, so keep heals rolling on whoever he targets. At half health two servants join: tanks pick them up, AoE or kill them, then finish him. Free the Sylvan spirits, the old hibs say, and the Vale grows a little greener. His lifedrain is steady, not sudden: the healers on his target keep it topped and the rest kill. At half, two servants come; tanks pick them up and AoE helps. Clear the spectral Sylvan in his halls before the pull. Superstition: Sylvan raiders whisper the names of their dead into his cells before the pull, so the spirits know help has come. The rest of the raid waits for them to finish.",
+  "yells": {
+    "aggro": [
+      "Another soul for the cells. A strong one.",
+      "The cells are not full yet.",
+      "A strong one. You will last a long time."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Servants! I have fed you. Now feed me."
+      }
+    ],
+    "death": [
+      "The cells... are opening...",
+      "The cells are opening... they are going home..."
+    ],
+    "slay": [
+      "Your soul will hang beside theirs.",
+      "Hang beside them.",
+      "Another voice for the walls.",
+      "Drink, and keep."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Sylvan voices, very faint, behind the walls.",
+      "The cells are full, and someone is still collecting."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Abomos calls his servants from the cells!"
+      }
+    ],
+    "realmFirstKill": "Abomos is dead. The Sylvan spirits are free."
+  },
+  "botLines": {
+    "briefing": [
+      "abomos lifedrains, keep heals on his target. at half [two servants|adds] come, tanks grab them",
+      "clear the spectral sylvan in his halls first, [no adds|clean room]",
+      "healers on his drain target, [steady not sudden|keep them topped]",
+      "at half two servants come, [tanks grab|pick them up]"
+    ],
+    "aftermathWin": [
+      "abomos down. [the sylvan spirits went quiet|you could hear them sigh]. good",
+      "the forests of domnann will be full of whispers tonight. [the spirits are free|good]",
+      "abomos down, the cells are empty. [finally|grats]",
+      "kept his drain target topped the whole fight. [nice healing|well done]"
+    ],
+    "aftermathLoss": [
+      "the servants got loose on the casters at half. [tanks|grab the adds]",
+      "the servants got loose at half. [tanks|grab them]",
+      "left the spectral sylvan up and [they joined|messy]",
+      "his drain outlasted the healers. [rotate|more heals]"
+    ],
+    "rumour": [
+      "[heard|someone said] the tortured sylvan in tur suil are the raiders who tried to burn it",
+      "[heard|someone said] every spirit freed from abomos goes home to domnann on the wind",
+      "[word is|heard] the forests of domnann whisper after abomos dies",
+      "the sylvan raiders who tried to burn tur suil are still in his cells, they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Abomos",
+    "text": "Balor's soul-trapper. He keeps the spirits of the Sylvan who tried to burn Tur Suil, and feeds on them, and on whoever comes to free them."
+  },
+  "bookPage": "Muirgen writes: I was in Domnann the night after the realm's company killed the soul-trapper, and I will set down only what I heard. The forest whispered. Not the wind; there was no wind. It whispered in a hundred voices, faint and glad, and the Sylvan came out of their houses and stood under the trees with their faces turned up, and some of them called names into the dark, and some of the names were answered. In the morning they said the dead had come home, the ones who went to burn the tower. They thanked the realm for it. I have never been thanked for anything so gravely.",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Abomos the Soultrapper in {minutes} minutes. The Sylvan spirits went free.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Abomos the Soultrapper after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians",
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "balor",
+      "relation": "the king they serve"
+    },
+    {
+      "id": "master-of-pain",
+      "relation": "the torturer who empties his cells"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Burning That Failed",
+      "text": "In the first years after the tower rose on the crag above the Vale, the Sylvan did the only thing that seemed possible. They gathered the bravest of every clan of the western coast, wardens and fire-keepers and shape-walkers, nearly a hundred, under a fire-keeper named Áine whose village had been the nearest to Gleann Glas, and they went up the crag at night with fire to burn Tur Suil down. The Sylvan fear fire above all things; that they carried it at all tells how desperate they were.\n\nMost of them died on the stair. The Balorians had not yet been given their heroes' names, the Sylvan say, but they fought as well without them, and the burning never reached the tower's walls. Áine was among the last to fall, at the foot of the inner door. The Sylvan sing the night as the Burning That Failed, and it is the reason the Sylvan of the western coast went to Hibernia for swords instead of trying again on their own.\n\nWhat happened to the dead is the part the Sylvan do not sing. Their spirits did not go home. Something in the tower caught them as they left their bodies, the way a fowler catches birds in a net, and carried them down into the lower halls. That something was Abomos. Áine carried the first torch herself, the Sylvan say, so that no one else would have to. Her torch was never found. The Sylvan believe Abomos keeps it, unlit, as he keeps her people."
+    },
+    {
+      "title": "The Cells",
+      "text": "Abomos is a trapper of souls, Balor's gaoler for the things that cannot be chained, and he keeps his catch in cells along the tower's southern halls. The spectral Sylvan and the tortured Sylvan spirits who drift in Tur Suil are the dead of the Burning That Failed. They cry in voices too faint to make out; those who have heard it say it sounds like wind behind the walls. Some of them drift loose in the halls, looking for a way out, and fight whoever they meet because they have forgotten how to do anything else.\n\nHe feeds on them. He feeds on those who come to free them too: when he strikes he drinks, and the one who stands before him feels the life go out of the wound and into him. When he is hard pressed he opens his cells and calls out servants made from the last of what he has eaten, a few at a time and never a crowd. He cannot be harmed beyond his own halls.\n\nThe Sylvan who go up with the realm's companies do something first: they whisper the names of their own dead into the cells, so that the spirits will know help has come. The rest of the company waits for them to finish. Ciarán of Bri Leith, who began it, said a name whispered into a cell is the one thing in Tur Suil the soul-trapper cannot eat. The Sylvan carry the names in their mouths up the stair, and do not speak otherwise until the cells are reached."
+    },
+    {
+      "title": "The Night the Forest Whispered",
+      "text": "The first Hibernian band to kill Abomos was a party of the second company to climb Tur Suil, under a druid of the Valley of Bri Leith named Ciarán, who had gone up meaning to free the spirits rather than to kill anything. His band did both. When Abomos fell, Ciarán said, the cells opened by themselves, and the spirits went out past the living like a cold wind, through the stair, out of the one window of the king's chamber high above, and west across the isle.\n\nMuirgen was in Domnann that night, and set down only what she heard. The forest whispered. Not the wind; there was no wind. It whispered in a hundred voices, faint and glad, and the Sylvan came out of their houses and stood under the trees with their faces turned up, and some of them called names into the dark, and some of the names were answered. In the morning they said the dead had come home, the ones who went to burn the tower. Áine's name was among those answered. Her granddaughter, a fire-keeper of Domnann, still keeps the night's date in the Sylvan reckoning and lights a fire for it every year. The Sylvan of the western coast keep the same night in their own way. They climb to the edge of the Vale of Balor at dusk, as close to the crag as they dare, and stand in a line facing the tower with their backs to their villages, and wait for the cold wind of the freed spirits to pass over them on its way west. They say it always does, on the nights the realm kills him."
+    },
+    {
+      "title": "The Cells Fill Again",
+      "text": "Abomos returns, as the whole household returns, and his cells are never empty for long. The Sylvan believe he takes the spirits of every Sylvan who dies in a Fomorian foray against Domnann, and of everyone of any realm who dies in Tur Suil and is not carried out, and that the cells the realm empties fill again over a few seasons with new voices. Sylvan families who lose someone to the Fomorians now wait for the news that the realm has gone up the tower, and listen in the forest that night for a voice they know.\n\nThe druids of Tir na Nog have a fear about him that the Sylvan share. Abomos gives what he catches to someone, they think. A trapper traps for a buyer. The Sylvan believe the buyer is the king, that the body Balor wears was grown from such spirits, fed to the eye over long years, and that every Sylvan soul Abomos keeps is a little more of the king. If that is so, then every company that empties the cells takes something back from Balor as well. The Sylvan think it is the only thing the realm takes from him that he notices.\n\nThe realm's soldiers call the soul-trapper's halls the quiet halls, because the crying stops when he dies. Ciarán of Bri Leith, who freed the first spirits, went back up the tower every season for the rest of his life, and never fought anything there but Abomos. He said he had promised Áine's granddaughter. She has never asked him to stop. Neither has the trapper."
+    }
+  ]
+}

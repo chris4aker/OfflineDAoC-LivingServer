@@ -68,14 +68,23 @@ namespace DOL.GS
         // Epic encounters, and scripted named monsters with their own short tether: ordinary monsters also carry a
         // 4,500 tether but simply walk home when they leave it (run 18 led a small hill cat home). Overnight 2026-10-19
         // bots stood "Fighting Lieutenant Saxe" (Hall of the Corrupt, a scripted GameNPC with a 1,500 tether and the
-        // same out-of-tether immunity) until the 15-minute watchdog moved them, 88 times, and he killed 43 more.
+        // same out-of-tether immunity) until the 15-minute watchdog moved them, 88 times, and he killed 43 more. Base
+        // run of 2026-10-29: Lieutenant Meade (Hall of the Corrupt, on Albion's way to Summoner's Hall) is a scripted
+        // GameNPC, not an epic NPC, immune out of his tether; the Albion raid fought him there until its four hours ran
+        // out. Merge of 2026-11-01: both rules count (Living Server's short-tether rule and the base's named-monster rule).
         public const int ScriptedTetherBelow = 4_500;
 
         public static bool HasEncounterTether(GameNPC npc) =>
             npc is IGameEpicNpc || npc != null && npc.GetType() != typeof(GameNPC) && npc.TetherRange is > 0 and < ScriptedTetherBelow;
 
+        /// <summary>An epic NPC, or a scripted named monster (its own class, a capitalised name).</summary>
+        public static bool IsTetheredEncounter(GameNPC npc) =>
+            npc is IGameEpicNpc || npc != null && npc.GetType() != typeof(GameNPC) && npc is not GameBot &&
+            !string.IsNullOrEmpty(npc.Name) && char.IsUpper(npc.Name[0]);
+
         public static bool IsOutOfTether(GameNPC npc) =>
-            HasEncounterTether(npc) && npc is { IsAlive: true, TetherRange: > 0 } && npc.Brain is not IControlledBrain && npc.IsOutOfTetherRange ||
+            (HasEncounterTether(npc) || IsTetheredEncounter(npc)) && npc is { IsAlive: true, TetherRange: > 0 } &&
+            npc.Brain is not IControlledBrain && npc.IsOutOfTetherRange ||
             DragonLairPlacement.IsOutOfLair(npc);
 
         /// <summary>

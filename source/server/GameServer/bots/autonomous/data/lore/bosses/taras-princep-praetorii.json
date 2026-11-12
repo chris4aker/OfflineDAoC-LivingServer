@@ -1,0 +1,90 @@
+{
+  "id": "taras-princep-praetorii",
+  "name": "Taras Princep Praetorii",
+  "npcNames": [
+    "Taras Princep Praetorii"
+  ],
+  "locationId": "catacombs-of-cardova",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Taras Princep Praetorii: level 36, model 108, Spirits of Rome, aggro 200 (range 150), no template or spells, respawn 300 s, at 33317, 34877 at the side of Emperor Seleucus's chair.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 23 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Fall of an Emperor: kill Taras and offer his focus in the chamber of cleansing.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Taras's charge at the chair and his habit of watching the Forgotten Emperor are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Taras was the third of the four generals to swear the oath, and the deeds give him the plainest charge: to stand at the chair's side. He stands there still, close enough to Seleucus to touch the chair, in a praetorian's harness with the purple gone grey.\n\nThe Cornish say Taras does not watch the doors, as a guard should. He watches the Forgotten Emperor, the crowned dead man a few paces away who carries a staff of office and is slow to rise, and he has watched him since the legion went underground. Iohannes Aldar thinks Taras was set at the chair to keep Seleucus in it; Grindan Halig thinks he was set there to keep the other one out of it. Brother Teilo, who read the deeds, says the deeds do not say which, and that Taras was the one general Seleucus called friend.\n\nHe does not wander. He does not notice anyone who keeps a little way off from the chair, and he notices at once anyone who comes close to it. Fall of an Emperor asks for his focus, offered in the emperor's hall, where he can see it done.",
+  "legend": "Taras Princep Praetorii, level 36, stands beside Emperor Seleucus in the emperor's hall. Short aggro range (150), so you can work around him, but praetorian guards and the emperors are right there and they all help each other. Pull him off the chair to the doorway. For Fall of an Emperor, kill him second (after Olivarius) and offer his focus in the same hall.",
+  "yells": {
+    "aggro": [
+      "Away from the chair!",
+      "The chair is not yours."
+    ],
+    "phases": [],
+    "death": [
+      "Seleucus... I stood..."
+    ],
+    "slay": [
+      "The chair is kept.",
+      "Too close."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A general at the chair's side, watching the other one."
+    ],
+    "phases": [],
+    "realmFirstKill": "Taras Princep Praetorii has fallen. The chair is unguarded."
+  },
+  "botLines": {
+    "briefing": [
+      "taras stands right by seleucus, short aggro range, pull him to the doorway",
+      "taras is second for fall of an emperor, offer his focus in the same room"
+    ],
+    "aftermathWin": [
+      "taras down, focus offered",
+      "two generals down, two to go"
+    ],
+    "aftermathLoss": [
+      "pulled taras and got the whole hall"
+    ],
+    "rumour": [
+      "[heard|someone said] taras watches the forgotten emperor, not the door",
+      "heard taras was the only general seleucus called friend"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "taras",
+    "text": "Taras Princep Praetorii of [cardova], the general charged to stand at Seleucus's chair. He watches the [forgotten emperor] more than the doors."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} took the chair-side from Taras Princep Praetorii in Cardova in {minutes} minutes.",
+    "loss": "Taras kept the chair of Cardova; {raidLeader} of {realm} stood too close and paid for it."
+  },
+  "era": "alb-the-province",
+  "factions": [
+    "dead-legions"
+  ],
+  "related": [
+    {
+      "id": "emperor-seleucus",
+      "relation": "the emperor at whose side he stands"
+    },
+    {
+      "id": "forgotten-emperor",
+      "relation": "the one he watches"
+    }
+  ],
+  "tier": "minor"
+}

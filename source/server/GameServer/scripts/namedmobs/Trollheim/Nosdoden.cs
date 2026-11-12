@@ -148,10 +148,19 @@ namespace DOL.GS
 			base.AddToWorld();
 			return true;
 		}
+		/// <summary>The live "Spirit of ..." ghosts near him (flood guard, 1.2: at most the period raid's count).</summary>
+		private int LiveSpirits()
+		{
+			int alive = 0;
+			foreach (GameNPC npc in GetNPCsInRadius(5000))
+				if (npc is NosdodenGhostAdd && npc.IsAlive)
+					alive++;
+			return alive;
+		}
 		public override void EnemyKilled(GameLiving enemy)
         {
-			GamePlayer player = enemy as GamePlayer;
-			if (enemy is GamePlayer)
+			GameLiving player = EncounterTargets.AsRaider(enemy);
+			if (player != null && EncounterFloodGuard.MayAdd("Nosdoden.Spirits", LiveSpirits()))
 			{
 				if (player != null)
 				{
@@ -160,7 +169,7 @@ namespace DOL.GS
 					add.X = player.X;
 					add.Y = player.Y;
 					add.Z = player.Z;
-					add.Size = (byte)player.Size;
+					add.Size = EncounterTargets.SizeOf(player);
 					add.Flags = eFlags.GHOST;
                     #region Set mob model
                     if (player.Race == (short)eRace.Norseman && player.Gender == eGender.Male)//norse male
@@ -239,7 +248,7 @@ namespace DOL.GS
 						{
 							template.AddNPCEquipment(eInventorySlot.RightHandWeapon, righthand.Model, righthand.Color, righthand.Effect);
 							#region Styles for Warrior and Thane
-							if (player.CharacterClass.ID == (int)eCharacterClass.Warrior || player.CharacterClass.ID == (int)eCharacterClass.Thane)
+							if (EncounterTargets.ClassId(player) == (int)eCharacterClass.Warrior || EncounterTargets.ClassId(player) == (int)eCharacterClass.Thane)
 							{
 								if (righthand.Object_Type == (int)eObjectType.Axe)
 								{
@@ -259,7 +268,7 @@ namespace DOL.GS
 							}
 							#endregion
 							#region Styles for Savage
-							if (player.CharacterClass.ID == (int)eCharacterClass.Savage)
+							if (EncounterTargets.ClassId(player) == (int)eCharacterClass.Savage)
 							{
 								if (righthand.Object_Type == (int)eObjectType.HandToHand || lefthand.Object_Type == (int)eObjectType.HandToHand)
 								{
@@ -286,14 +295,14 @@ namespace DOL.GS
 						{
 							template.AddNPCEquipment(eInventorySlot.TwoHandWeapon, twohand.Model, twohand.Color, twohand.Effect);
 							#region Styles for Savage 2h
-							if (player.CharacterClass.ID == (int)eCharacterClass.Savage && righthand == null)
+							if (EncounterTargets.ClassId(player) == (int)eCharacterClass.Savage && righthand == null)
 							{
 								if (!add.Styles.Contains(NosdodenGhostAddBrain.Taunt2h))
 									add.Styles.Add(NosdodenGhostAddBrain.Taunt2h);
 							}
 							#endregion
 							#region Styles for Hunter Spear 2h
-							if (player.CharacterClass.ID == (int)eCharacterClass.Hunter && twohand.Object_Type == (int)eObjectType.Spear)
+							if (EncounterTargets.ClassId(player) == (int)eCharacterClass.Hunter && twohand.Object_Type == (int)eObjectType.Spear)
 							{
 								if (!add.Styles.Contains(NosdodenGhostAddBrain.TauntSpearHunt))
 									add.Styles.Add(NosdodenGhostAddBrain.TauntSpearHunt);
@@ -346,7 +355,7 @@ namespace DOL.GS
 						add.VisibleActiveWeaponSlots = 51;
 					}
 					#endregion
-					add.PackageID = "NosdodenGhost" + player.CharacterClass.Name;
+					add.PackageID = "NosdodenGhost" + EncounterTargets.ClassOf(player)?.Name;
 					add.AddToWorld();
 					BroadcastMessage(String.Format("Life essense of " + enemy.Name + " has turned into spirit."));
 				}
@@ -386,22 +395,22 @@ namespace DOL.AI.Brain
 		#region Worm Dot
 		public static bool CanCast2 = false;
 		public static bool StartCastDOT = false;
-		public static GamePlayer randomtarget2 = null;
-		public static GamePlayer RandomTarget2
+		public static GameLiving randomtarget2 = null;
+		public static GameLiving RandomTarget2
 		{
 			get { return randomtarget2; }
 			set { randomtarget2 = value; }
 		}
-		List<GamePlayer> Enemys_To_DOT = new List<GamePlayer>();
+		List<GameLiving> Enemys_To_DOT = new List<GameLiving>();
 		public int PickRandomTarget2(ECSGameTimer timer)
 		{
 			if (HasAggro)
 			{
-				foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000))
 				{
 					if (player != null)
 					{
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+						if (player.IsAlive && EncounterTargets.NotGm(player))
 						{
 							if (!Enemys_To_DOT.Contains(player))
 							{
@@ -414,7 +423,7 @@ namespace DOL.AI.Brain
 				{
 					if (CanCast2 == false)
 					{
-						GamePlayer Target = (GamePlayer)Enemys_To_DOT[Util.Random(0, Enemys_To_DOT.Count - 1)];//pick random target from list
+						GameLiving Target = Enemys_To_DOT[Util.Random(0, Enemys_To_DOT.Count - 1)];//pick random target from list
 						RandomTarget2 = Target;//set random target to static RandomTarget
 						new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastDOT), 2000);
 						CanCast2 = true;
@@ -451,22 +460,22 @@ namespace DOL.AI.Brain
 		#region Worm DD
 		public static bool CanCast = false;
 		public static bool StartCastDD = false;
-		public static GamePlayer randomtarget = null;
-		public static GamePlayer RandomTarget
+		public static GameLiving randomtarget = null;
+		public static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
 		}
-		List<GamePlayer> Enemys_To_DD = new List<GamePlayer>();
+		List<GameLiving> Enemys_To_DD = new List<GameLiving>();
 		public int PickRandomTarget(ECSGameTimer timer)
 		{
 			if (HasAggro)
 			{
-				foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000))
 				{
 					if (player != null)
 					{
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+						if (player.IsAlive && EncounterTargets.NotGm(player))
 						{
 							if (!Enemys_To_DD.Contains(player))
 							{
@@ -479,7 +488,7 @@ namespace DOL.AI.Brain
 				{
 					if (CanCast == false)
 					{
-						GamePlayer Target = (GamePlayer)Enemys_To_DD[Util.Random(0, Enemys_To_DD.Count - 1)];//pick random target from list
+						GameLiving Target = Enemys_To_DD[Util.Random(0, Enemys_To_DD.Count - 1)];//pick random target from list
 						RandomTarget = Target;//set random target to static RandomTarget
 						new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastDD), 5000);
 						BroadcastMessage(String.Format(Body.Name + " starts casting void magic at " + RandomTarget.Name + "."));
@@ -520,8 +529,8 @@ namespace DOL.AI.Brain
 			get { return spiritmob; }
 			set { spiritmob = value; }
 		}
-		public static GamePlayer playerrezzed = null;
-		public static GamePlayer PlayerRezzed
+		public static GameLiving playerrezzed = null;
+		public static GameLiving PlayerRezzed
 		{
 			get { return playerrezzed; }
 			set { playerrezzed = value; }
@@ -631,7 +640,7 @@ namespace DOL.AI.Brain
 					StartCastDD = true;
 				}
 
-				foreach (GamePlayer player in Body.GetPlayersInRadius(5000))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 5000))
 				{
 					if (player != null && player.IsAlive)
 					{
@@ -1561,22 +1570,22 @@ namespace DOL.AI.Brain
 		}
 		#endregion
 		#region Mob Class Healer
-		private protected GamePlayer randomhealertarget = null;
-		private protected GamePlayer RandomHealerTarget
+		private protected GameLiving randomhealertarget = null;
+		private protected GameLiving RandomHealerTarget
 		{
 			get { return randomhealertarget; }
 			set { randomhealertarget = value; }
 		}
-		private protected List<GamePlayer> HealerEnemys_To_Mezz = new List<GamePlayer>();
+		private protected List<GameLiving> HealerEnemys_To_Mezz = new List<GameLiving>();
 		private protected void PickTargetToMezz()
         {
 			if(HasAggro)
             {
-				foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
 				{
 					if (player != null)
 					{
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+						if (player.IsAlive && EncounterTargets.NotGm(player))
 						{
 							if (!HealerEnemys_To_Mezz.Contains(player) && (!player.effectListComponent.ContainsEffectForEffectType(eEffect.MezImmunity) || !player.effectListComponent.ContainsEffectForEffectType(eEffect.Mez)))
 								HealerEnemys_To_Mezz.Add(player);
@@ -1587,7 +1596,7 @@ namespace DOL.AI.Brain
 				{
 					if (Body.GetSkillDisabledDuration(Healer_Mezz) == 0)
 					{
-						GamePlayer Target = HealerEnemys_To_Mezz[Util.Random(0, HealerEnemys_To_Mezz.Count - 1)];//pick random target from list
+						GameLiving Target = HealerEnemys_To_Mezz[Util.Random(0, HealerEnemys_To_Mezz.Count - 1)];//pick random target from list
 						RandomHealerTarget = Target;
 						if (RandomHealerTarget != null && RandomHealerTarget.IsAlive
 							&& (!RandomHealerTarget.effectListComponent.ContainsEffectForEffectType(eEffect.Mez) || !RandomHealerTarget.effectListComponent.ContainsEffectForEffectType(eEffect.MezImmunity)))
@@ -1672,7 +1681,7 @@ namespace DOL.AI.Brain
 														}
 														if (npc.HealthPercent == 100)
 														{
-															if (oldtarget != null && oldtarget != Body && !HealerEnemys_To_Mezz.Contains(Body.TargetObject as GamePlayer))
+															if (oldtarget != null && oldtarget != Body && !HealerEnemys_To_Mezz.Contains(Body.TargetObject as GameLiving))
 															{
 																Body.TargetObject = CalculateNextAttackTarget();
 																Body.TurnTo(Body.TargetObject);

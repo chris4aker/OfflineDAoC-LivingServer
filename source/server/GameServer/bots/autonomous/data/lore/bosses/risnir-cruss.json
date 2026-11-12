@@ -1,0 +1,132 @@
+{
+  "id": "risnir-cruss",
+  "name": "Ris'nir Cruss",
+  "catalogKey": "albion-named-mobs-shrouded-isles/risnircruss",
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "risnir"
+  ],
+  "facts": [
+    {
+      "text": "Level 71, 30,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 20% of melee and 30% of everything else; melee reach 350; flagged FLYING while out of combat.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs"
+    },
+    {
+      "text": "Thunder Stomp: 650 energy in a radius of 1,000 around himself, 3 s uninterruptible cast, recast 20-25 s. Mesmerize: radius 450 around its target, range 1,500, 60 s, 3 s cast, recast 40 s.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs"
+    },
+    {
+      "text": "When he kills a GamePlayer an 'Apparition of <name>' (level 55-59) rises where that player fell and attacks; every apparition dies when he dies or resets. Bots (GameNPC) do not raise one today.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs"
+    },
+    {
+      "text": "His field is beside the Dyer, Tinctor and Parmenter ghost houses; a drakoran necromancer and elder mystic stand about 700 from him.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob tables, region 51 zone 53 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The kite over the field, his learning at the larder's edge, the dispute over the dyers' hamlet and the torches in the commander's camp are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Ris'nir Cruss is the war-priest of the drakoran in the Dales of Devwy, and the only one of his order who went to Morgana's dead to learn. The drakoran have priests for their battles, who bless the line and bury the fallen in the dragon-men's way, and they have necromancers, whom the priests despise. Ris'nir went to the larder in the west of the dales, where Valnir Mordeth keeps Morgana's stores, and sat at its edge for a season, and came back knowing how to keep the ones he kills.\n\nHis field lies above the dyers' hamlet in the north-east. When nothing comes, he does not stand in it: he hangs in the air over it, turning slowly, and the dyers' children called him the kite before they stopped calling anything. When something comes he comes down to the ground to meet it. Whoever falls to him may not stay down. A pale shape stands up where they fell, wearing their face and their name, and turns on the friends they came with. The drakoran call these the kept. Albion's companies call them by the names of the people they were, which is worse. The kept do not outlast their keeper; when he falls, or turns from the field and goes back to the air, they fall with him, and the Priest of Arawn at Gwyntell says that is the only courtesy in the whole craft.\n\nHe brings sleep the way a priest brings a blessing, over a little knot of people standing together, and they wake among the kept. His stamp is heavier than his commander's and slower to come again, and it carries just as far. He has never been seen to sleep himself.\n\nThe fort argues about the dyers. The hamlet's households died in their houses in the first summers of the war and still give their names, and the field of the war-priest is just above them. Some at Gwyntell say he kept them, practising. Some say the necromancers across the wooden bridge did it, and the war-priest only chose the field because the dead there were already quiet. The Priest of Arawn says the dyers are not kept the way the war-priest keeps, because the kept wear a face and the dyers wear their own.\n\nQan'ris Duros will not have the kept in his camp. He drove them out with torches once, and the war-priest has kept his field apart ever since, above the hamlet, waiting for something to come up the slope.",
+  "legend": "Ris'nir Cruss, level 71, 30k health, beside the dyers' ghost houses in the north-east of the Dales. Out of combat he hovers; he comes down when you engage. Do not die to him: when he kills a player an Apparition of that player (55-59) stands up on the spot and attacks the group. Today only players raise one, not bots, but the engineers may change that, so treat every death as an add. Kill apparitions fast; they all die when he does. His Thunder Stomp is 650 energy to everyone within 1,000, 3 second cast, every 20 to 25 seconds: casters and healers stand past 1,000, melee stay topped. His mez hits everyone within 450 of its target for up to a minute, so the back line spreads a little and someone keeps a cure ready. No mez or stun on him. He resets to full if everyone drops off him, and the apparitions vanish when he does.",
+  "yells": {
+    "aggro": [
+      "Come down to me. I will keep you.",
+      "Another for the field.",
+      "You have a good face. I will wear it well."
+    ],
+    "phases": [
+      {
+        "trigger": "playerDeath",
+        "text": "Stand up. You are mine now."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Sleep, all of you. Wake among friends."
+      }
+    ],
+    "death": [
+      "Let them... go...",
+      "The field... is empty..."
+    ],
+    "slay": [
+      "Stand up. You are mine now.",
+      "Kept.",
+      "Go and greet your friends."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Something hangs in the air above this field.",
+      "Below, the dyers' doors stand open."
+    ],
+    "phases": [
+      {
+        "trigger": "playerDeath",
+        "text": "A pale shape stands up, wearing a friend's face."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Ris'nir Cruss sings sleep over the field."
+      }
+    ],
+    "realmFirstKill": "Ris'nir Cruss has fallen. The kept are let go."
+  },
+  "botLines": {
+    "briefing": [
+      "ris'nir, 71, 30k. if he kills you an apparition of you spawns and attacks us. dont die",
+      "his stomp is 650 to everyone within 1000, 3 sec cast. back line stays past 1000",
+      "his mez hits everyone within 450 of the target for up to a minute. spread the back line, cure ready",
+      "apparitions die when he dies. kill them if they spawn, then back on him"
+    ],
+    "aftermathWin": [
+      "ris'nir down, the kept went with him",
+      "nobody died, nobody got kept. thats the whole trick",
+      "the dyers are still there. guess it wasnt him",
+      "kite's down. gg"
+    ],
+    "aftermathLoss": [
+      "one death became two, then four. classic ris'nir",
+      "the whole back line got mezzed in one cast",
+      "healers were inside the stomp. never again",
+      "got killed by my own apparition. great"
+    ],
+    "rumour": [
+      "[heard|someone said] ris'nir hangs in the air over his field when nobody's around",
+      "heard ris'nir learned the keeping at valnir's pit",
+      "[heard|someone said] the dyers' kids called ris'nir the kite",
+      "heard qanris drove ris'nir's ghosts out of the camp with torches"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "ris'nir cruss",
+    "text": "The drakoran war-priest of the [dales of devwy], whose field lies above the dyers' hamlet. He learned at the edge of [valnir mordeth]'s larder how to keep the ones he kills: they stand up wearing their own faces and turn on their friends, and fall again only when he does. He hangs over his field when nothing comes. [qan'ris duros] will not have the kept in his camp."
+  },
+  "bookPage": "Entered in the Register of Fort Gwyntell by Gracien Adamson, at the request of the Priest of Arawn, who would not write it himself. The war-priest over the dyers' field keeps those he kills. A company of ours went up the slope in the autumn and lost a man called Ifan the Short near the top. Ifan stood up again, pale, with his own face, and came down the slope at the rest of them, and they had to put him down with their own hands, because he had been their friend and still looked it. When the war-priest fell, the thing with Ifan's face fell with him. The priest says that is the only courtesy in the whole craft. I have entered Ifan the Short in the first book. I will not enter him in the second.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} brought down Ris'nir Cruss above the dyers' hamlet in {minutes} minutes.",
+    "loss": "Ris'nir Cruss kept the field, and some of {raidLeader}'s company of {realm}, a little longer."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "qanris-duros",
+      "relation": "his commander, who drove his kept dead out of the camp with torches"
+    },
+    {
+      "id": "valnir-mordeth",
+      "relation": "Morgana's keeper of the larder, from whose craft he learned the keeping"
+    }
+  ]
+}

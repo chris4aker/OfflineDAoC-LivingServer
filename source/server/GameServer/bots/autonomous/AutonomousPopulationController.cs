@@ -61,7 +61,7 @@ public static class AutonomousPopulationController
         }
         if (previouslyOnline.Length > 0)
         {
-            lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+            using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 GameServer.Database.SaveObject(previouslyOnline.Cast<DataObject>());
         }
         RefreshControlPlane(force: true);
@@ -549,6 +549,7 @@ public static class AutonomousPopulationController
         OfflineWorldBotRecord record = DOLDB<OfflineWorldBotRecord>.SelectObject(DB.Column("BotId").IsEqualTo(botId));
         if (AutonomousBotRegistry.TryGet(botId, out GameBot liveBot))
             liveBot.Delete();
+        AutonomousBotStatusPersistence.Forget(botId);
 
         string ownerId = AutonomousBotEconomy.GetOwnerId(botId);
         DbInventoryItem[] items = DOLDB<DbInventoryItem>.SelectObjects(DB.Column("OwnerID").IsEqualTo(ownerId)).ToArray();

@@ -1,0 +1,243 @@
+{
+  "id": "camelot",
+  "name": "City of Camelot",
+  "realm": "Albion",
+  "regions": [
+    10
+  ],
+  "zones": [
+    26
+  ],
+  "aliases": [
+    "the capital",
+    "the city"
+  ],
+  "summary": "Albion's capital, built round Arthur's hall and now a city of offices that sends the realm out and counts who comes back.",
+  "facts": [
+    {
+      "text": "The City of Camelot is region 10 (zone 26), Albion's capital: about 245 spawns, among them every class trainer in pairs, merchants, smiths and craft masters, vault keepers, hasteners, a healer, a teleporter, a guild registrar and emblemer, librarians, Bishop Burhoff and the Sisters Elaydith and Rhigwyn.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob tables, region 10 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Adalyn, the Realm Exchange broker, stands with two Royal Exchange Guards; the Exchange has no NPC stock and no fee, and a bot's unsold listing is deleted after 24 hours.",
+      "provenance": "game",
+      "source": "docs/CRAFTING-AND-ECONOMY.md"
+    },
+    {
+      "text": "Quests started in Camelot include Legend of the Lake ('We must find Excalibur, and the Lady of the Lake may know where it lies'), Lord Aryon's Box (papers by King Arthur, key stolen from his grave), Black Plague and Strange Bedfellows (Sister Elaydith), Bishop Burhoff's Curse (Brother Lensar), Master Vismer's series on who raises the dead, and Impossible Mission (the disappearance of Lyonesse).",
+      "provenance": "game",
+      "source": "world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "In Black Plague a guard's back burns and the trail leads to Malroch the Cook in Darkness Falls; in Strange Bedfellows the trail leads to the imp Mystemas and Ambassador Mannam.",
+      "provenance": "game",
+      "source": "world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Albion bot chat sets arguments, minstrels' songs and merchants' gossip in Camelot.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "Real-world legend, not game canon: Camelot is King Arthur's castle and court in the romances, first named in Chretien de Troyes' Lancelot.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Camelot"
+    },
+    {
+      "text": "The city of offices, the Constable's drawers and Eluned's inventory, the drawer for word of the king, the under-streets' schools and the unanswered letter about the safe-conduct are Living Server writing; the Constable, Brother Odran, Sir Cador and the Pennine watch are from the other Albion files.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The king's seat. Camelot was built for one man and has outlived him by a whole age of war. Arthur raised his hall on the height above the hills that still carry the city's name, and the city grew down the slope around it as a household grows round a hearth: the Church first, with its great house on the eastern side where the bishop still sits, then the smiths and the market, then the houses of the men who served the king and the men who sold to them. The minstrels say Arthur wanted a city where every road in Albion ended. He got one. They also say he wanted a city with nothing in it that he did not understand, and that he did not get.\n\nThe city of offices. When Arthur fell at Camlann the realm did not fall with him, but it changed, and Camelot changed first. The three realms went to war on the frontier, and a city that had been built round a king became a city built round the business of sending people away and counting who came back. The Constable keeps his office here, and every report from every post in Albion comes to his door: the letters of the Pennine watch, Sir Cador's account of Krondon, Brother Odran's copies of the Door-Book from the castle ruins in the hills. The Prydwen rolls are copied here for the king. The Church sends its priests out to every company and its sisters to the hospices. The Academy sends its magi to the places the old ages left behind and argues afterwards about what they saw. The masters of arms train the realm's young and send them north. Every one of those offices keeps a drawer, and the Constable's under-clerks say that the city has more drawers than citizens.\n\nWhat lives there now. Camelot is crowded, loud and mostly honest. The market rows run down the middle of the slope, with the armourers and weapon-sellers shouting over one another, and above them the smiths' court where the masters of the crafts keep their benches and their apprentices. The Church holds the east, with the bishop's house, Brother Michel's sickrooms and the halls of the paladins and clerics. The library and the Academy's rooms share the south-west, where the librarians keep the realm's books and the wizards keep the realm's arguments. The armsmen drill in a yard by the south wall. Under the streets, in rooms that do not appear on the Constable's maps, the realm's quieter trades keep their schools, the infiltrators and the necromancers among them, and the guards do not go down after dark. Near the trainers' hall stands the realm's exchange, where anything a citizen of Albion has carried home may be offered to any other citizen through the king's own broker, under the eyes of two of the king's guards, for no fee at all, which the merchants of the market rows have never forgiven. Stephon the Crier stands by the south gate and cries the news, and his news is mostly bad.\n\nWhy it matters. Everything in Albion begins and ends in Camelot. The masters of arms send their best after Excalibur, because the Lady of the Lake may know where it lies. The sisters of the Church send the realm's brave after a plague that burns a guard's back from the inside, and find that it was sent up from the court below Camelot Hills; they send others after the court's ambassador, who stood in the king's hall in a borrowed face. A scholar of the city, Master Vismer, has spent his life asking who raises the dead within the realm, and sends the brave out to find him an answer one corpse at a time. And Sister Elaydith speaks of a box of papers written by Arthur himself, warded, whose key was stolen from a grave. The Church bells are rung harder on feast days, the priests say, so that the court below can hear them. The city has never once asked whether it would rather not be heard.",
+  "legend": "Camelot is home: bind here, bank here, train here. Every class trainer stands in pairs somewhere in the city, the Church classes in the east by the bishop, the wizards near the library, the armsmen by the south wall, and the infiltrators and necromancers downstairs where the guards will not follow. Your epic quests start with them. The Realm Exchange broker, Adalyn, stands by the trainers' hall with two Royal Exchange Guards: every lot on it is a real item somebody carried home, there is no fee, and the bots put one thing each on it that vanishes after a day if nobody buys it. Master Visur teleports, the minstrels haste, Brother Michel heals. Lord Christopher registers guilds and Lord Oachley paints emblems. Sister Elaydith has two of the best quest chains in the realm, and both of them end in Darkness Falls. Do not go into the under-streets looking for a fight; the mysterious lurkers are only the ones you can see. Old hands say Stephon the Crier has never once cried good news.",
+  "atmosphere": {
+    "firstEntry": [
+      "Camelot. Every road in Albion ends here.",
+      "Bells, hammers and a crier, all at once.",
+      "The king's city. The king is not in it.",
+      "Guards at every corner. Rats under every stall.",
+      "Somewhere a clerk is opening a drawer."
+    ],
+    "areas": [
+      {
+        "name": "the bishop's house",
+        "x": 38900,
+        "y": 27600,
+        "z": 8350,
+        "radius": 1200,
+        "lines": [
+          "Bells, incense, and a queue for the healer.",
+          "The bishop's house is older than the walls."
+        ]
+      },
+      {
+        "name": "the Realm Exchange",
+        "x": 36621,
+        "y": 30701,
+        "z": 8002,
+        "radius": 600,
+        "lines": [
+          "The king's broker. No fee. The market hates her.",
+          "Two of the king's guards watch every lot."
+        ]
+      },
+      {
+        "name": "the market rows",
+        "x": 34400,
+        "y": 29600,
+        "z": 8050,
+        "radius": 1200,
+        "lines": [
+          "Every armourer in Albion, all shouting at once.",
+          "Mind your purse in the market rows."
+        ]
+      },
+      {
+        "name": "the smiths' court",
+        "x": 35300,
+        "y": 26900,
+        "z": 8300,
+        "radius": 1000,
+        "lines": [
+          "Hammers from dawn to dusk. Then they light lamps.",
+          "Apprentices run with buckets. Something is hot."
+        ]
+      },
+      {
+        "name": "the library and the Academy's rooms",
+        "x": 33700,
+        "y": 30700,
+        "z": 8200,
+        "radius": 900,
+        "lines": [
+          "Books, dust and arguing wizards.",
+          "The librarians shush the magi. It never works."
+        ]
+      },
+      {
+        "name": "the armsmen's yard",
+        "x": 31000,
+        "y": 31300,
+        "z": 8007,
+        "radius": 900,
+        "lines": [
+          "Steel on steel. The young are being taught.",
+          "The captains shout. The yard obeys."
+        ]
+      },
+      {
+        "name": "the guild hall",
+        "x": 33300,
+        "y": 22700,
+        "z": 8480,
+        "radius": 800,
+        "lines": [
+          "Names written, emblems painted, oaths sworn.",
+          "A lord with a ledger of every company."
+        ]
+      },
+      {
+        "name": "the under-streets",
+        "x": 31800,
+        "y": 26900,
+        "z": 7700,
+        "radius": 1000,
+        "lines": [
+          "Below the streets. The guards do not come here.",
+          "Someone is watching from the dark. Several someones."
+        ]
+      },
+      {
+        "name": "the stables",
+        "x": 33420,
+        "y": 28000,
+        "z": 7999,
+        "radius": 500,
+        "lines": [
+          "Horses for every road in Albion.",
+          "The stablemaster knows every route by heart."
+        ]
+      },
+      {
+        "name": "the crier's corner",
+        "x": 33114,
+        "y": 31257,
+        "z": 8000,
+        "radius": 400,
+        "lines": [
+          "Stephon cries the news. The news is bad.",
+          "A crowd gathers for the crier. It always does."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "camelot was built round arthur's hall. now it's mostly offices",
+      "every report in albion ends up in a drawer at the constable's in camelot",
+      "the trainers in camelot stand in pairs. church classes by the bishop, wizards by the library",
+      "the infiltrators and necros train under the streets in camelot. guards dont go down there",
+      "the realm exchange in camelot has no fee. the merchants hate it",
+      "stephon the crier has never cried good news, [heard|they say]",
+      "sister elaydith's quests all end up in darkness falls somehow",
+      "the masters of arms in camelot are still sending people after excalibur",
+      "master vismer in camelot wants to know who raises the dead. dont ask how he finds out",
+      "sister elaydith knows about a box with papers arthur wrote himself, [heard|they say]",
+      "the church rings the camelot bells harder on feast days so df can hear them",
+      "the constable still sends candles to the pennine watch. nobody told him to stop"
+    ],
+    "rumour": [
+      "[heard|someone said] the court's ambassador stood in the king's hall in camelot with a borrowed face",
+      "heard the plague that burns your back came up from darkness falls",
+      "[heard|someone said] there's an empty drawer at the constable's labelled for word of the king",
+      "heard the lurkers under camelot are only the ones who want to be seen",
+      "[heard|someone said] the market rows in camelot cheat everyone but the guards",
+      "heard lord aryon's box is warded and the key got stolen from his grave",
+      "[heard|someone said] the lady of the lake knows where excalibur is and wont say",
+      "heard theres a clean space in the dust of a drawer at the constable's and nobody will say why"
+    ],
+    "tell": [
+      "camelot? our capital. bind, bank, trainers, the realm exchange, everything",
+      "where is it? up the road from camelot hills, you cant miss it, every road goes there",
+      "is it dangerous? only the under-streets. and the prices in the market rows",
+      "whats there? trainers for every class, crafters, the realm exchange, the church, the library",
+      "where do i train? trainers stand in pairs all over camelot. church ones in the east",
+      "realm exchange is by the trainers' hall. real stuff only, no fee"
+    ]
+  },
+  "loremaster": {
+    "intro": "Camelot. Arthur's city, and the realm's. Ask of the [constable] and his [drawers], of the [king] and [excalibur], of the [church] and the [plague], of the [academy] and the [library], of the [under-streets], the [exchange] and the [crier], or of the [box] Sister Elaydith speaks of.",
+    "topics": {
+      "constable": "The Constable at Camelot receives every report from every post in Albion, and keeps a drawer for each. His under-clerks say the city has more drawers than citizens. See [drawers].",
+      "drawers": "The Constable's drawers: the Pennine watch's, still filling; the isles'; the castle ruins'; and one at the bottom, empty, labelled for word of the king. See [king].",
+      "king": "Arthur raised the city on the height above the hills and fell at Camlann. The realm did not fall with him, but the city changed, and the masters of arms still send the brave after [excalibur].",
+      "excalibur": "The masters of arms send their best to find Excalibur, because the Lady of the Lake may know where it lies. Nobody who has gone has said she did not.",
+      "church": "The bishop's house holds the east of the city: Bishop Burhoff, the healer Brother Michel, Sisters Elaydith and Rhigwyn and Brother Lensar, and the halls of the paladins and clerics. See [plague].",
+      "plague": "A city guard woke with her back on fire, and Sister Elaydith followed the sickness down to the court below Camelot Hills. She sends the brave after the court's ambassador too, who stood in the king's hall in a borrowed face.",
+      "academy": "The Academy keeps rooms by the library, and its wizards, sorcerers and minstrels teach there. It sends its magi to the places the old ages left behind and argues afterwards about what they saw.",
+      "library": "Librarians Ophus and Pelan keep the realm's books, Scribe Veral copies them, and Loremaster Alain tells them. Librarian Pelan will tell anyone who asks about the druids of the Salisbury ley lines. See [vismer].",
+      "vismer": "Master Vismer, a scholar of the city, has spent his life asking who raises the dead within the realm, and sends the brave out to answer him one corpse at a time. The Church does not ask how.",
+      "under-streets": "Rooms below the streets where the realm's quieter trades keep their schools. The guards do not go down after dark, and the lurkers you can see are only the ones who want to be seen.",
+      "exchange": "The king's broker, Adalyn, stands near the trainers' hall with two of the king's guards. Anything a citizen has carried home can be offered there to any other citizen, for no fee, which the market rows have never forgiven.",
+      "crier": "Stephon the Crier stands by the south gate and cries the realm's news. The old hands say he has never once cried good news, and that this is not his fault.",
+      "box": "Sister Elaydith speaks of Lord Aryon's box, which holds papers written by King Arthur himself; it is warded, and its key was stolen from its owner's grave by robbers."
+    }
+  },
+  "book": {
+    "title": "An Inventory of the Constable's Drawers",
+    "pages": [
+      "An Inventory of the Constable's Drawers, taken by Eluned, under-clerk of the Constable's office at Camelot, in the year the old clerk's eyes failed. The Constable keeps a drawer for every post in Albion that has ever written to him, and a drawer for every post that has stopped. I was told to count them. I have counted three hundred and eleven, and I have stopped counting, because the old clerk says the number is not the point. The point, he says, is that every drawer is answered, sooner or later, by somebody, and that I am now the somebody.",
+      "The drawer of the Pennine watch. It is the fullest in the office and the most orderly, because the watch wrote every report in the same hand for longer than any of us has been alive, and the reports are still coming. There is a bundle of letters from an archwizard of the Academy, calm and courteous, each saying that all is well. There is the watch's pay roll, never closed, with a box of candles sent every quarter. The old clerk says we go on sending the candles because nobody has ever sent us word to stop.",
+      "The drawer of the isles. A letter from Sir Cador of the Isle of Glass reporting that the ogre hall of Krondon is in good order, with a request from a reader of Caer Gothwaite that the hall's names be read aloud. Nobody has decided whom to forward it to. A copy of a book of weather from the college of stars, with drawn boats in the margins. A note from the harbor-master at Gothwaite asking whether the realm will pay for the grain-boat the squall took. The Constable has written on it: when the storm-keeper pays.",
+      "The drawer of the castle ruins in the hills. Copies of Brother Odran's Door-Book, every opening and shutting of the door under the chapel by the hour. A letter from Odran, the last he sent, reporting that a company had found in the coat of the court's ambassador a safe-conduct sealed with the arms of a lord of Camelot. The office says the letter was never answered. But beside it in the dust of the drawer there is a clean space the size of a folded sheet, and the old clerk, the week before his eyes failed, told me not to ask about it.",
+      "The drawer that has no post. It is at the bottom of the last cabinet and it is empty, and it has a label in a hand much older than the old clerk's: for word of the king. I asked which king. The old clerk said there had only ever been one king in this office who mattered, and that the drawer had been kept since Camlann in case he wrote. I asked whether anyone expected him to. The old clerk said that was not an under-clerk's question. Then he said: the Lady of the Lake might know. Then he told me to go home."
+    ]
+  },
+  "bosses": [],
+  "era": "alb-the-present",
+  "factions": [
+    "realm-of-camelot"
+  ]
+}

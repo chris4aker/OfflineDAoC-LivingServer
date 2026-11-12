@@ -176,7 +176,8 @@ meetup fix drop two no-shows (in the server log).
   else. On 2026-10-31 shadowofze put Offline DAoC on hold ("will not receive any more updates"; the 0.37 downloads
   stay up), so there is no 0.38 to wait for: 0.37 stays the game, and the later fixes from his unreleased work
   come to you through Living Server releases instead. If an update of his ever does appear, run
-  `PREPARE-FOR-UPDATE.cmd` before applying it (it also puts the released game files back) and wait for a Living
+  `PREPARE-FOR-UPDATE.cmd` before applying it (it also puts the released game files back, all but the Living Server
+  loading screen) and wait for a Living
   Server build for that version before installing one again.
 - **The new client's own fixes in Living Server's source weren't shipped (Beta 1.0 and 1.1).** `/target <name>`
   filling the target window, the FACE/FOLLOW/STICK buttons, the stick toggle, `/lfg` and `/trade` shown as realm

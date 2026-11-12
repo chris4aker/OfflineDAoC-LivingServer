@@ -1,0 +1,71 @@
+{
+  "id": "leildolf",
+  "name": "Leildolf",
+  "npcNames": [
+    "Leildolf"
+  ],
+  "locationId": "skona-ravine",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Leildolf is a level-35 creature of the Pack Drakulv faction on the Skona beach (697,212/920,724), in a man's shape (the marooned vikings' model); aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "'Mimir's Protection' (Rana and Grimma of Jordheim): after Miri's yeti eye, 'Seek out Leildolf on the Skona beach. Return the eye to Miri; wear the eye she gives you.'",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Leildolf as the drakulv's watcher on the northern shore is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Leildolf is the dragon's furthest eye. The drakulv of Malmohus belong to Gjalpinulva's hollow and seldom leave it, but one of them stands on the beach of Skona, far north of the ruins, in the shape of a man who came ashore from a wreck: a drakulv who took a drowned sailor's form, the Seithkona Circle says, so that the werewolves would let him walk their ravine. He watches the road the companies take south and the sea they come by, and the svartalfar of Svarhamr think he sends word home the old way, which the drakulv no longer use.\n\nMiri of Jordheim, who has visions, sends the young of Eir's and Ymir's houses to him with an eye she has made, and he looks at it and gives it back changed: an eye that sees what Mimir saw at the well, the seers say, and what the dragon's eye sees in the dark. He fights afterwards, as all the drakulv do, as if he had only been waiting to be asked.",
+  "legend": "Leildolf is a level 35 drakulv in a viking's shape on the Skona beach in the west, part of Mimir's Protection (Rana or Grimma's quest via Miri in Jordheim). He's Pack Drakulv faction but alone here, with nothing else of his faction nearby. No spells. Easy for the quest level. He stands on the open beach in the west near the green orm, so pull him away from it. Bring the yeti eye from Miri before you go or the trip is wasted.",
+  "yells": {
+    "aggro": [
+      "The eye. You carry the eye. Give it here, and then we will see.",
+      "Mimir's well is deep, little seer."
+    ],
+    "death": [
+      "The hollow... will hear..."
+    ],
+    "slay": [
+      "One fewer on the road south."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A drowned sailor stands on the beach. His eyes are a wolf's."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "leildolf is the 35 drakulv on the skona beach for mimirs protection",
+      "alone, no friends of his faction nearby"
+    ],
+    "aftermathWin": [
+      "eye done, back to miri",
+      "easy"
+    ],
+    "rumour": [
+      "leildolf is a drakulv in a drowned sailors shape, the dragons furthest eye",
+      "leildolf watches the road south for gjalpinulva's hollow"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Leildolf",
+    "text": "A drakulv of Malmohus in a drowned sailor's shape on the Skona beach, the dragon's furthest eye on the road south. Miri's seers bring him her eye. See [the road south]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} closed the dragon's furthest eye on Skona's beach in {minutes} minutes."
+  }
+}

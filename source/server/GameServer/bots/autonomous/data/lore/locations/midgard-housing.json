@@ -1,0 +1,244 @@
+{
+  "id": "midgard-housing",
+  "name": "The Housing Villages of Midgard",
+  "realm": "Midgard",
+  "regions": [
+    102
+  ],
+  "zones": [
+    114,
+    117,
+    118,
+    119,
+    121,
+    122,
+    266,
+    267,
+    268
+  ],
+  "aliases": [
+    "Erikstaad",
+    "Arothi",
+    "Carlingford",
+    "Wyndham",
+    "Frisia",
+    "Kaupang",
+    "Holmestrand",
+    "Nittedal",
+    "Stavgaard"
+  ],
+  "era": "mid-era-present",
+  "factions": [
+    "houses-of-midgard"
+  ],
+  "summary": "Midgard's own country of homes beyond the Mularn road: nine villages, Erikstaad, Arothi, Carlingford, Wyndham, Frisia, Kaupang, Holmestrand, Nittedal and Stavgaard, each with its market, its vault bankers and its masters of the crafts.",
+  "facts": [
+    {
+      "text": "Midgard's housing is region 102: nine zones, Erikstaad (114), Arothi (117), Carlingford (118), Wyndham (119), Frisia (121), Kaupang (122), Holmestrand (266), Nittedal (267) and Stavgaard (268). It has no monsters.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob, Zones and ZonePoint tables, region 102 (0.37b world data)"
+    },
+    {
+      "text": "The way in is the zone point 'Housing Mid Entrance' east of Mularn in the Vale (814,641/722,026), which arrives in Erikstaad (526,393/561,724); 'Housing Mid Exit' returns to the Vale.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob, Zones and ZonePoint tables, region 102 (0.37b world data)"
+    },
+    {
+      "text": "Each village has a market: vault bankers (seven or eight), merchants, an apprentice taxidermist, stable masters, hasteners (Intoners) and masters of the crafts (weaponsmithing, armoursmithing, fletching, tailoring, alchemy, spellcrafting) in varying sets.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob, Zones and ZonePoint tables, region 102 (0.37b world data)"
+    },
+    {
+      "text": "Market Explorers stand in Erikstaad, Kaupang, Holmestrand, Carlingford, Frisia and Nittedal; Midgard Decorators in Wyndham, Holmestrand, Nittedal and Kaupang; Consignment Bankers in Erikstaad.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob, Zones and ZonePoint tables, region 102 (0.37b world data)"
+    },
+    {
+      "text": "Teleporters among the villages: Stor Gothi Goreg (Erikstaad), Magra (Arothi and Nittedal), Agreg (Carlingford), Grentor (Wyndham), Leidar (Kaupang), Gorrendr (Stavgaard), and Stor Gothi Annark in Erikstaad.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob, Zones and ZonePoint tables, region 102 (0.37b world data)"
+    },
+    {
+      "text": "Old Norse kaupangr means 'market town'; stav is the stave of a stave-built house and gard a yard or farm; holm a small island and strand a shore; dal a valley.",
+      "provenance": "myth",
+      "source": "Old Norse/Norwegian lexicon (to verify)"
+    },
+    {
+      "text": "The villages' founding, the raising custom, the lantern custom and Ragnfrid's book are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "When the war of the realms had gone on long enough that the men and women of Midgard who fought it began to want somewhere to come home to that was not a tavern in Jordheim, the jarls gave them a country. It lies beyond the road east of Mularn, past the gate that the skalds call the last gate in Midgard that nobody guards, and it is the only country in the realm where nothing lives that wants to kill anyone. There are no wolves in it, no huldu, no dead. The gothi say the gods agreed to that, as a favour; the jarls say they paid for it.\n\nNine villages grew there, and each grew its own way. Erikstaad was first, at the end of the road from the Vale, and it is still the busiest, with its market and its consignment bankers and its gothi who can send a traveller home. Arothi lies north of it, quiet and smoky, with old names cut over doors that nobody in the village can now explain. Carlingford was named by a jarl who married a woman from the south and gave her a ford to remember home by; Wyndham, too, has a southern name, and a wind off the south hills that bangs its shutters, so that the decorators sell better there than anywhere. The skalds say the realm's war brought home more than wounds.\n\nFrisia is the traders' village, every stable full, named for the cloth-traders of the far coast who came to Midgard's markets in the old days and taught the realm to bargain. Kaupang is the market-place, and its name means only that, and everything in it has a price, including the gossip. Holmestrand stands on an islet-shore with water on two sides and the smell of drying racks; Nittedal lies deepest, in its valley, where the custom is a lantern at every roof at dusk so that a neighbour coming home late can count the houses. Stavgaard is the stave-yard, the carpenters' village, where every house was raised by the hands of the houses round it.\n\nThat is the oldest custom of the nine villages, and Stavgaard keeps it best: a house is raised by its neighbours. A new householder builds nothing alone. The village comes on the first fair morning, every house sends someone, and the frame is up by dusk; the householder feeds them, and owes each house a day's work in return, to be paid when that house needs it. The gothi say this is how Midgard keeps its houses of the gods, too. Every calling is a house, and no house stands alone.\n\nEvery village has its market: vault bankers who keep what the householders bring home from the war, masters of the crafts who will teach and sell, merchants of every kind, and the decorators who sell the things that make a house a home, banners and rugs and trophies from the realm's dark places stuffed by the apprentice taxidermists. A householder of Holmestrand once hung the head of a drakulv over her door, the villages say, and the svartalfar of Svarhamr sent her a letter about it. She kept the letter beside the head.\n\nThe housing villages matter because the realm's war needs somewhere to end. The warbands that go south to the dragon and east to the frontier and over the sea to Aegir come home, at last, to a roof here, and the villages keep their names the way Jordheim's high hall keeps the realm's: on the doors, cut deep, so that a good name will outlast the hands that cut it.",
+  "legend": "Midgard housing is region 102, reached through the housing zone point just east of Mularn in the Vale; you arrive in Erikstaad. Nine villages: Erikstaad, Arothi, Carlingford, Wyndham, Frisia, Kaupang, Holmestrand, Nittedal and Stavgaard. No monsters anywhere. Each village has a market with seven or eight vault bankers, merchants, crafting masters (which ones varies by village), stable masters and hasteners. Market Explorers (for searching consignment merchants) are in Erikstaad, Kaupang, Holmestrand, Carlingford, Frisia and Nittedal; the Midgard Decorator is in Wyndham, Holmestrand, Nittedal and Kaupang; Erikstaad has the consignment bankers. Stor Gothi teleporters link the villages (Goreg in Erikstaad, Magra in Arothi and Nittedal, Agreg in Carlingford, Grentor in Wyndham, Leidar in Kaupang, Gorrendr in Stavgaard). Old custom: your neighbours raise your house, and you owe each of them a day's work.",
+  "atmosphere": {
+    "firstEntry": [
+      "The housing villages. Nothing here wants to kill you.",
+      "Roofs, hearth-smoke and markets. Midgard comes home here.",
+      "Names cut deep over every door.",
+      "The last gate in Midgard that nobody guards."
+    ],
+    "areas": [
+      {
+        "name": "Erikstaad",
+        "x": 553292,
+        "y": 566065,
+        "z": 3636,
+        "radius": 4000,
+        "lines": [
+          "Erikstaad, first village. The road from Mularn ends here.",
+          "Hearth-smoke from a hundred roofs, and a market."
+        ]
+      },
+      {
+        "name": "Arothi",
+        "x": 556259,
+        "y": 484771,
+        "z": 3503,
+        "radius": 4000,
+        "lines": [
+          "Arothi, the northern village. Smoke and quiet.",
+          "Old names cut over doors. Nobody remembers whose."
+        ]
+      },
+      {
+        "name": "Carlingford",
+        "x": 623308,
+        "y": 557115,
+        "z": 3711,
+        "radius": 4000,
+        "lines": [
+          "Carlingford, named by a jarl who married south.",
+          "A ford, a market, and gossip about the ford."
+        ]
+      },
+      {
+        "name": "Wyndham",
+        "x": 554998,
+        "y": 623212,
+        "z": 3759,
+        "radius": 4000,
+        "lines": [
+          "Wyndham, where the wind comes off the south hills.",
+          "Shutters bang. The decorators sell well here."
+        ]
+      },
+      {
+        "name": "Frisia",
+        "x": 621205,
+        "y": 616615,
+        "z": 3719,
+        "radius": 4000,
+        "lines": [
+          "Frisia, the traders' village. Every stable full.",
+          "Horses from four villages, and their owners' quarrels."
+        ]
+      },
+      {
+        "name": "Kaupang",
+        "x": 626892,
+        "y": 482222,
+        "z": 3623,
+        "radius": 4000,
+        "lines": [
+          "Kaupang, the market-place. Everything has a price.",
+          "Stor Gothi Leidar sends travellers on from here."
+        ]
+      },
+      {
+        "name": "Holmestrand",
+        "x": 686438,
+        "y": 557430,
+        "z": 3770,
+        "radius": 4000,
+        "lines": [
+          "Holmestrand, the islet-shore. Water on two sides.",
+          "Fishers' houses, and the smell of the drying racks."
+        ]
+      },
+      {
+        "name": "Nittedal",
+        "x": 687331,
+        "y": 615843,
+        "z": 3503,
+        "radius": 4000,
+        "lines": [
+          "Nittedal, the valley village, deepest of them.",
+          "Lanterns in the valley at dusk, one per roof."
+        ]
+      },
+      {
+        "name": "Stavgaard",
+        "x": 686070,
+        "y": 492140,
+        "z": 3759,
+        "radius": 4000,
+        "lines": [
+          "Stavgaard, the stave-yard. Carpenters' village.",
+          "Every house here was raised by its neighbours."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the jarls gave the realms fighters a country to come home to, past the gate east of mularn",
+      "nothing lives in the housing villages that wants to kill anyone, the gods agreed as a favour, the gothi say",
+      "erikstaad was the first village, at the end of the road from the vale",
+      "arothi has old names cut over doors nobody there can explain",
+      "carlingford was named by a jarl who married south and gave his wife a ford",
+      "wyndham has a south wind that bangs the shutters, the decorators sell best there",
+      "frisia is named for the cloth traders who taught midgard to bargain",
+      "kaupang means market place, everything there has a price, even the gossip",
+      "holmestrand is on an islet shore with water on two sides",
+      "nittedal puts a lantern at every roof at dusk so neighbours can count the houses",
+      "stavgaard is the stave yard, every house there was raised by its neighbours",
+      "a house in the villages is raised by its neighbours and you owe each of them a days work"
+    ],
+    "rumour": [
+      "a holmestrand householder hung a drakulv head over her door and svarhamr wrote her a letter",
+      "the skalds say the realms war brought home more than wounds, look at the village names",
+      "the gate to the villages is the last gate in midgard nobody guards",
+      "the apprentice taxidermists will stuff anything you bring back from the south",
+      "nittedals lanterns go out one by one at night, the last one is always the same house",
+      "the stavgaard carpenters say a house raised alone falls down in the first winter",
+      "the bankers in the villages keep more than the bank in jordheim",
+      "kaupang gossip is cheaper than kaupang bread, and travels faster"
+    ],
+    "tell": [
+      "housing is through the zone point just east of mularn, you land in erikstaad",
+      "nine villages, no monsters, each has a market and bankers",
+      "market explorers are in erikstaad, kaupang, holmestrand, carlingford, frisia and nittedal",
+      "the midgard decorator is in wyndham, holmestrand, nittedal and kaupang",
+      "stor gothi teleporters link the villages, goreg in erikstaad",
+      "erikstaad has the consignment bankers"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"The housing villages, beyond the gate east of Mularn. Nine of them: [Erikstaad], [Arothi], [Carlingford], [Wyndham], [Frisia], [Kaupang], [Holmestrand], [Nittedal] and [Stavgaard]. Nothing there wants to kill you, which is the point. Ask about [raising] a house.\"",
+    "topics": {
+      "Erikstaad": "The first of the villages, where the road from the Vale ends and the busiest: its market, its consignment bankers and Market Explorers, and the gothi Goreg and Annark who send travellers on. Named for the first jarl who built there, the villagers say, though they cannot agree which Erik.",
+      "Arothi": "The northern village, quiet and smoky, where old names are cut over doors that nobody in the village can now explain, and Stor Gothi Magra keeps the gods' word and the road to the others.",
+      "Carlingford": "Named by a jarl who married a woman from the south and gave her a ford to remember home by. It has a market, a Market Explorer and Stor Gothi Agreg, and more gossip about the ford than the ford deserves.",
+      "Wyndham": "The village where the wind comes off the south hills and bangs the shutters, so the Midgard Decorator sells better there than anywhere. Another southern name: the skalds say the war brought home more than wounds. Stor Gothi Grentor keeps it.",
+      "Frisia": "The traders' village, every stable full, named for the cloth-traders of the far coast who came to Midgard's markets in the old days and taught the realm to bargain.",
+      "Kaupang": "The market-place: its name means only that, in the old tongue. Everything in Kaupang has a price, including the gossip. Stor Gothi Leidar keeps it, with a Market Explorer and the Midgard Decorator.",
+      "Holmestrand": "The islet-shore village, water on two sides and the smell of the drying racks. A householder of Holmestrand once hung a drakulv's head over her door, and the svartalfar of Svarhamr sent her a letter about it.",
+      "Nittedal": "The valley village, deepest of the nine, where every roof puts out a lantern at dusk so that a neighbour coming home late can count the houses. Stor Gothi Magra keeps it too.",
+      "Stavgaard": "The stave-yard, the carpenters' village, where every house was raised by the hands of the houses round it. Stor Gothi Gorrendr keeps it. It keeps the [raising] custom best.",
+      "raising": "A house in the villages is raised by its neighbours. Every house sends someone on the first fair morning, the frame is up by dusk, and the householder feeds them and owes each house a day's work. The gothi say Midgard keeps its houses of the gods the same way: no house stands alone.",
+      "Ragnfrid": "Ragnfrid the lot-reeve of Erikstaad, who marks out the house-plots and wrote The Nine Villages for the young who come home from the war wanting a roof."
+    }
+  },
+  "book": {
+    "title": "The Nine Villages",
+    "pages": [
+      "Ragnfrid, lot-reeve of Erikstaad, who marks out the plots, wrote this for the young who come back from the war wanting a roof. You have earned one. The jarls gave this country to the realm's warriors when the war had gone on long enough that you began to want somewhere to come home to that was not a tavern bench in Jordheim. It lies past the gate east of Mularn. Nobody guards that gate. Nothing in this country wants to kill you. The gothi say the gods agreed to it as a favour, and the jarls say they paid for it. Both are true.",
+      "There are nine villages. Erikstaad is the first, where you will arrive, and the busiest, with the consignment bankers and the gothi who send you on. Arothi is north, quiet, with old names over its doors that nobody can explain. Carlingford and Wyndham have southern names, given by jarls who married south; Wyndham's wind bangs every shutter, so buy good hinges. Frisia is the traders' village and every stable is full. Kaupang is the market-place, and means it. Holmestrand is on the water. Nittedal is in its valley. Stavgaard is where the carpenters live, and every new householder ends up there.",
+      "Here is the custom. You do not raise your house alone. On the first fair morning after you take your plot, every house in your village sends someone, and the frame is up by dusk, and you feed them all, and you owe each house a day's work, to be paid when they ask. The carpenters of Stavgaard say a house raised alone falls in its first winter. I have seen one that did. The man who raised it said it was the wind. It was not the wind. The gothi say this is how Midgard keeps its houses of the gods: no house stands alone.",
+      "Every village has a market. The vault bankers keep what you bring home, and you will bring home more than you think. The masters of the crafts teach and sell. The decorators sell banners and rugs, and the apprentice taxidermists will stuff anything you carry back from the south, and they mean anything. A woman of Holmestrand hung a drakulv's head over her door once, and the svartalfar of Svarhamr wrote her a letter. She kept the letter and hung it beside the head. I do not recommend this. Buy a rug instead; the Wyndham decorators have good ones, and rugs do not write letters.",
+      "In Nittedal they put a lantern at every roof at dusk, so that a neighbour coming home late can count the houses and know who is in. It is a good custom. I have taken it to Erikstaad, and some have followed it. Cut your name over your door, deep. The high hall in Jordheim keeps the realm's names because a good name does not die, and the villages keep them the same way, on the wood. Come home. Light the lantern. Owe your neighbours a day. Pay it when they ask, even in a bad season. That is what a house is."
+    ]
+  },
+  "bosses": []
+}

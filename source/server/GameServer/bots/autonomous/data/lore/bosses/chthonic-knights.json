@@ -1,0 +1,842 @@
+{
+ "id": "chthonic-knights",
+ "name": "The Chthonic Knights",
+ "tier": "order",
+ "npcNames": [
+  "Chthonic Knight Fonath",
+  "Chthonic Knight Carabia",
+  "Chthonic Knight Olov",
+  "Chthonic Knight Tamuel",
+  "Chthonic Knight Gaapoler",
+  "Chthonic Knight Haag",
+  "Chthonic Knight Vosoes",
+  "Chthonic Knight Absax",
+  "Chthonic Knight Azea",
+  "Chthonic Knight Zagal",
+  "Chthonic Knight Ronoro",
+  "Chthonic Knight Ukobat",
+  "Chthonic Knight Ezpeth",
+  "Chthonic Knight Marbos",
+  "Chthonic Knight Zaeber",
+  "Chthonic Knight Exal",
+  "Chthonic Knight Aciel",
+  "Chthonic Knight Ain",
+  "Chthonic Knight Babyzu",
+  "Chthonic Knight Carnivon",
+  "Chthonic Knight Prosel",
+  "Chthonic Knight Zafan",
+  "Chthonic Knight Exte",
+  "Chthonic Knight Ibeko",
+  "Chthonic Knight Obarus"
+ ],
+ "aliases": [
+  "the black knights",
+  "the blade"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-first-roll",
+ "factions": [
+  "dark-ones",
+  "chthonic-chapter"
+ ],
+ "related": [
+  {
+   "id": "prince-abdin",
+   "relation": "their prince; they are his Blade"
+  },
+  {
+   "id": "mutilators",
+   "relation": "their enemy of the feud"
+  },
+  {
+   "id": "duke-zepor",
+   "relation": "the Oathbreaker of their chapter roll"
+  },
+  {
+   "id": "gatekeeper-dommel",
+   "relation": "ended their feud at the crossing"
+  },
+  {
+   "id": "earl-glassalab",
+   "relation": "their house stands on its tunnels"
+  },
+  {
+   "id": "lieutenants",
+   "relation": "Persun lives in their house"
+  },
+  {
+   "id": "earl-mermer",
+   "relation": "the brother they do not name"
+  },
+  {
+   "id": "duke-eligar",
+   "relation": "beat the first Gaapoler"
+  }
+ ],
+ "facts": [
+  {
+   "text": "The Chthonic Knights are 25 named GameEpicNPCs of levels 60 to 74 in Darkness Falls, all using model 653, slashing melee, with no scripts, paths or template spells.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Most respawn in 180 seconds; Fonath, Gaapoler, Haag, Absax, Azea and Zagal in 1,800; Carabia in 780.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's map key places Chthonic Knights with Prince Abdin, in the chapter house with Lieutenant Persun, with the Gate and with Legion's Own on the approach.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "Allakhazam's bestiary lists the Chthonic Knights of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Several names echo the Ars Goetia: Marbas (5) for Marbos, Gaap (33) for Gaapoler, Haagenti (48) for Haag, Zagan (61) for Zagal, Ronove (27) for Ronoro, Orobas (55) for Obarus; to verify for each.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Ukobat may read as Ukobach, the stoker of hell's fires in de Plancy, and Tamuel as Tamiel, a Watcher of Enoch; to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/Classification_of_demons"
+  },
+  {
+   "text": "The oath, the posts and the chapter roll are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "The Chthonic Knights are Prince Abdin's order, the Blade, and the court's oldest soldiery. Abdin founded them in the First Roll in his quarter of the hollow, the north-west, where the rock is hardest and the warm air from the deep fires least reaches. The first knights knelt on the floor of the chapter house and took an oath to the deep earth itself: to hold what is taken whole, and to go down rather than give ground. They wear one shape, plated and black, made for standing, and they have stood in it since. Every knight of the order keeps a post, and a knight is known by where it stands; the realms that have walked the hollow say they have never yet found a knight anywhere but where the last one stood.\n\nThe order's history is a history of quarrels. Abdin and Prince Asmoien both claimed to have knelt second at the Feast of Thrones, and Grand Chancellor Adremal wrote them on one line. From that line came the order's great enemy, Asmoien's Mutilators, the Hook, and the feud of the Blade and the Hook, which broke out in the Fourth Roll and ended at the central crossing when Gatekeeper Dommel closed every road out of it and let the two orders kill each other until neither mattered. Since then knights stand at the Gate beside Mutilators and Inquisitors, sworn to draw no blade there, and the chapter counts the Gate oath the hardest it asks of anyone.\n\nThe chapter has given knights away and lost them. It lent knights to the Field Marshal after the feud, and they stand at the east arch of High Lord Baln's hall to this day, unsure whose they are. It gave four of its best to the Master, who keeps them on the approach as Legion's Own. It sent a garrison to Duke Bimure's East Ward between the eastern halls, and from that garrison High Lord Saeor took the knight Zepor, who is a duke now and the Oathbreaker of the chapter roll. The chapter sends a champion east against him each Roll; none has made him yield. It lost a knight called Mermer to the Inquisition in the feud, and does not say his name. It keeps the Marshal's officer, Lieutenant Persun, in its house, and has never decided whether he is a guest.\n\nThe chapter house stands on Earl Glassalab's tunnels, and the knights know it. Their prince's plans run through those tunnels now, toward Director Kobil's chambers above the Gate and the Army of Shadows. The knights do not like the Army. A shadow cannot hold ground, they say, because it does not know where the ground is.\n\nThe realms have their own names for them. Albion's knights call them the Black Order and argue about whether a demon can keep an oath; Midgard's huscarls respect them more than anything else below the world, because they stand; Hibernia's champions say they are the oldest kind of geis-bound warrior, sworn to the earth instead of to a king, and that the earth keeps them.",
+ "legend": "The Chthonic Knights are spread across the whole dungeon, always in the same posts: three with Prince Abdin in the north-west (Gaapoler, Haag, Vosoes), six in the chapter house (Absax, Azea, Zagal, Ronoro, Ukobat, Ezpeth), four of Legion's Own on the approach (Fonath, Carabia, Olov, Tamuel), three at the east arch of Baln's hall (Marbos, Zaeber, Exal), six in the East Ward camps (Aciel, Ain, Babyzu, Carnivon, Prosel, Zafan) and three at the Gate (Exte, Ibeko, Obarus). Levels run 60 to 74, all slashing melee, no scripts. They do not wander; every knight is exactly where the last one was, so you can plan a route. Most come back in about three minutes, but the guard, the chapter house elders and Fonath take half an hour. Players call them the black knights and pull them one camp at a time.",
+ "yells": {
+  "aggro": [
+   "For the deep earth.",
+   "Hold. Hold what is taken.",
+   "Down rather than give ground."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The earth is under me. I do not move."
+   }
+  ],
+  "death": [
+   "Into the earth... where I belong...",
+   "The chapter will say my name."
+  ],
+  "slay": [
+   "Held.",
+   "Under the stone with you.",
+   "The ground keeps what falls on it."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Black-plated knights stand at their posts, unmoving.",
+   "The floor here is worn where armoured feet have stood."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The knight sets his feet and does not give ground."
+   }
+  ],
+  "realmFirstKill": "The Chthonic Knights have lost their ground to the realms."
+ },
+ "botLines": {
+  "briefing": [
+   "knights are slash melee, no tricks. [one camp at a time|single camps]",
+   "the knights never move off their spot. [plan the route|you know where they are]",
+   "abdin's three are 72 and 68, the chapter house elders 70. [rest between|mana between camps]",
+   "legions own knights on the approach, fonath is 74. [last before the door|careful near the chamberlain]"
+  ],
+  "aftermathWin": [
+   "knight camp down. [next|on to the next one]",
+   "fonath down. [strongest knight in df|big one done]",
+   "chapter house cleared. [persun next|lieutenant next]",
+   "gate knights done. [crossing clear|on through]"
+  ],
+  "aftermathLoss": [
+   "pulled two knight camps. [wipe|told you one at a time]",
+   "the knights held. [we didnt|regroup]",
+   "fonath got us at the bottom of the slope. [too close to the door|rez]",
+   "knights respawned on us. [three minutes goes fast|move faster]"
+  ],
+  "rumour": [
+   "[heard|word is] the chthonic knights swore an oath to the ground itself",
+   "the knights and the mutilators had a civil war. [the gate ended it|the gatekeeper ended it]",
+   "[someone said|my guildie says] the knights send a champion to kill duke zepor every time",
+   "the chapter house is built over tunnels. [the bug earl dug them|glassalab]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "chthonic knights",
+  "text": "Prince [Abdin]'s order, the Blade, sworn to the deep earth to hold what is taken and go down rather than give ground. They fought the [Mutilators] in the feud of the Blade and the Hook; they stand at the Gate, in the East Ward, in Baln's hall and on the Master's approach, and they keep the chapter roll of the champions sent against Duke [Zepor]."
+ },
+ "bookPage": "From a Midgard huscarl's account, told in the longhouse at Jordheim: I have stood in a shield-wall. I know what it is to set your feet. The black knights below set theirs as if the floor had grown up around them. We came on them in the north-west, at the door of their prince, and they did not step forward to meet us and they did not step back. We broke on them like a wave on a skerry. One of them had worn two hollows into the floor in front of the door, and when he fell at last he fell into them, standing, and his feet are there still.",
+ "bookPages": [
+  "From a Midgard huscarl's account, told in the longhouse at Jordheim: I have stood in a shield-wall. I know what it is to set your feet. The black knights below set theirs as if the floor had grown up around them. We came on them in the north-west, at the door of their prince, and they did not step forward to meet us and they did not step back. We broke on them like a wave on a skerry. One of them had worn two hollows into the floor in front of the door, and when he fell at last he fell into them, standing, and his feet are there still.",
+  "The huscarl went on: Their house is further in, and there is a knight inside who says names. We heard him through the door before we went in, a long list, each name followed by the same words, and then one name with nothing after it. Our skald said he had heard of an oath that is sworn to the earth instead of to a jarl. I asked him what happens to a man who breaks it. He said the earth does not forget, and that the knight with no words after his name was somewhere in the east, standing on ground that would not have him."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} broke the Chthonic Knights' ground in {minutes} minutes.",
+  "loss": "The Chthonic Knights held their ground against {realm}'s raid under {raidLeader}."
+ },
+ "members": [
+  {
+   "name": "Chthonic Knight Fonath",
+   "level": 74,
+   "post": "Legion's Own, the approach",
+   "story": "Fonath is the eldest knight of Legion's Own and the strongest knight on the Roll. When the Master asked Prince Abdin for knights to stand on the approach, Abdin sent the best he had, reasoning that a knight given to the Master would still remember the chapter house. Fonath remembers it, and has never once gone back. He stands nearest the door of the four, below the Chamberlain.",
+   "yells": {
+    "aggro": [
+     "The Master's knight. Kneel, or fall."
+    ],
+    "death": [
+     "The ground... held..."
+    ],
+    "slay": [
+     "Held."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A knight stands at the foot of the slope as if rooted."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "fonath",
+    "text": "Fonath is the eldest knight of Legion's Own and the strongest knight on the Roll. When the Master asked Prince Abdin for knights to stand on the approach, Abdin sent the best he had, reasoning that a knight given to the Master would still remember the chapter house."
+   }
+  },
+  {
+   "name": "Chthonic Knight Carabia",
+   "level": 65,
+   "post": "Legion's Own, the approach",
+   "story": "Carabia stands beside Fonath at the bottom of the approach and carries the knights' banner of the deep earth, a strip of black stone hung on a chain. The imps say the banner was cut from the floor of the chapter house on the day the four were given to the Master, so that the floor of the north-west would always be where they stood.",
+   "yells": {
+    "aggro": [
+     "The deep earth is under you. It is not on your side."
+    ],
+    "death": [
+     "Carry the stone... back..."
+    ],
+    "slay": [
+     "Under the stone."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A banner of black stone hangs on a chain, unmoving."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "carabia",
+    "text": "Carabia stands beside Fonath at the bottom of the approach and carries the knights' banner of the deep earth, a strip of black stone hung on a chain. The imps say the banner was cut from the floor of the chapter house on the day the four were given to the Master, so that the floor of the north-west would always be where they stood."
+   }
+  },
+  {
+   "name": "Chthonic Knight Olov",
+   "level": 64,
+   "post": "Legion's Own, the approach",
+   "story": "Olov was the youngest of the four given to the Master, and the court remembers him for one thing: on his first day on the slope he asked the Chamberlain whom he was guarding the door from. The Chamberlain told him. Olov has stood on the approach since without asking anything else, a little up the slope from Fonath and Carabia.",
+   "yells": {
+    "aggro": [
+     "I asked once whom I guard against. Now I know."
+    ],
+    "death": [
+     "Tell the chapter... I asked nothing more..."
+    ],
+    "slay": [
+     "Answered."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A young knight's shape stands very straight on the slope."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "olov",
+    "text": "Olov was the youngest of the four given to the Master, and the court remembers him for one thing: on his first day on the slope he asked the Chamberlain whom he was guarding the door from. The Chamberlain told him."
+   }
+  },
+  {
+   "name": "Chthonic Knight Tamuel",
+   "level": 64,
+   "post": "Legion's Own, the approach",
+   "story": "Tamuel keeps the upper end of Legion's Own, nearest the Chancellor's table and Earl Vone. He is the only knight who can read the walls of the approach, having been taught by the Archivist before he took his oath, and the Chancellor dislikes him for it. Tamuel says nothing about what he reads. He reads the newest wall every Roll, and then stands a little straighter.",
+   "yells": {
+    "aggro": [
+     "Your realm is on the wall. I have read it."
+    ],
+    "death": [
+     "Read my line... to the chapter..."
+    ],
+    "slay": [
+     "One more line for the wall."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A knight is reading the walls of the approach."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "tamuel",
+    "text": "Tamuel keeps the upper end of Legion's Own, nearest the Chancellor's table and Earl Vone. He is the only knight who can read the walls of the approach, having been taught by the Archivist before he took his oath, and the Chancellor dislikes him for it."
+   }
+  },
+  {
+   "name": "Chthonic Knight Gaapoler",
+   "level": 72,
+   "post": "Prince Abdin's guard, the north-west",
+   "story": "Gaapoler is the second knight to bear the name. The first was Prince Abdin's champion, who fought Duke Eligar to the yield over precedence on the stair and knelt; the present Gaapoler took the name and the post at Abdin's door, and has asked Eligar for the return fight every Roll since. Eligar has said he will fight the next one, and Gaapoler intends there to be no next one.",
+   "yells": {
+    "aggro": [
+     "I am Gaapoler. The second. Not the last."
+    ],
+    "death": [
+     "Tell Eligar... the rematch stands..."
+    ],
+    "slay": [
+     "Knelt, and not by choice."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Before the prince's hall a champion waits for someone else."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "gaapoler",
+    "text": "Gaapoler is the second knight to bear the name. The first was Prince Abdin's champion, who fought Duke Eligar to the yield over precedence on the stair and knelt; the present Gaapoler took the name and the post at Abdin's door, and has asked Eligar for the return fight every Roll since."
+   }
+  },
+  {
+   "name": "Chthonic Knight Haag",
+   "level": 72,
+   "post": "Prince Abdin's guard, the north-west",
+   "story": "Haag is the prince's shield-knight and the one knight of the guard who stands nearest Earl Glassalab, which the others consider a kind of courage. He keeps the prince's hall the old way, by never moving from it. The chapter house says Haag's feet have worn two hollows in the floor before Abdin's door, and that the earl has dug carefully around them.",
+   "yells": {
+    "aggro": [
+     "The prince's door. I have not moved from it in ten Rolls."
+    ],
+    "death": [
+     "Two hollows... in the floor... keep them..."
+    ],
+    "slay": [
+     "You moved. I did not."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Two hollows are worn into the floor before the door."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "knight haag",
+    "text": "Haag is the prince's shield-knight and the one knight of the guard who stands nearest Earl Glassalab, which the others consider a kind of courage. He keeps the prince's hall the old way, by never moving from it."
+   }
+  },
+  {
+   "name": "Chthonic Knight Vosoes",
+   "level": 68,
+   "post": "Prince Abdin's guard, the north-west",
+   "story": "Vosoes is the youngest of Abdin's guard and its messenger, the only one of the three allowed to leave the door. He carries the prince's word to the chapter house and to the Director's chambers above the Gate. The imps say he has walked Earl Glassalab's tunnel to the Director and back, and that he will not say how long it is.",
+   "yells": {
+    "aggro": [
+     "The prince sent me. He sends me everywhere."
+    ],
+    "death": [
+     "The tunnel... do not tell the Gatekeeper..."
+    ],
+    "slay": [
+     "Message delivered."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A knight waits by the prince's hall, ready to be sent."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "vosoes",
+    "text": "Vosoes is the youngest of Abdin's guard and its messenger, the only one of the three allowed to leave the door. He carries the prince's word to the chapter house and to the Director's chambers above the Gate."
+   }
+  },
+  {
+   "name": "Chthonic Knight Absax",
+   "level": 70,
+   "post": "the chapter house, the north-west",
+   "story": "Absax is the master of the chapter house, the knight who says the chapter roll aloud: the champions who went east against the Oathbreaker, one after another, and then the Oathbreaker's own name, and then nothing. He stands with Knight Ronoro at the inner door. It is Absax who chooses each Roll's champion, and the chapter notes that he has never chosen himself.",
+   "yells": {
+    "aggro": [
+     "Kneel to the deep earth or go into it."
+    ],
+    "death": [
+     "Say my name... after the others..."
+    ],
+    "slay": [
+     "Into the earth."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A voice inside the chapter house is reciting names."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "absax",
+    "text": "Absax is the master of the chapter house, the knight who says the chapter roll aloud: the champions who went east against the Oathbreaker, one after another, and then the Oathbreaker's own name, and then nothing. He stands with Knight Ronoro at the inner door."
+   }
+  },
+  {
+   "name": "Chthonic Knight Azea",
+   "level": 70,
+   "post": "the chapter house, the north-west",
+   "story": "Azea keeps the chapter house's outer approach, toward Princess Nahemah's bower, and is the knight the bower has tried hardest to turn. The bower sent her a face she had loved in the Uncounted Age, and then another, and then a third. Azea has looked at each and told it to go home. The chapter considers her the proof that the oath holds.",
+   "yells": {
+    "aggro": [
+     "Show me another face. I will not look at it either."
+    ],
+    "death": [
+     "The oath... held... to the end..."
+    ],
+    "slay": [
+     "Go home."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Faint perfume hangs here. The knight ignores it."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "azea",
+    "text": "Azea keeps the chapter house's outer approach, toward Princess Nahemah's bower, and is the knight the bower has tried hardest to turn. The bower sent her a face she had loved in the Uncounted Age, and then another, and then a third."
+   }
+  },
+  {
+   "name": "Chthonic Knight Zagal",
+   "level": 70,
+   "post": "the chapter house, the north-west",
+   "story": "Zagal is the chapter's keeper of oaths, who hears each new knight swear to the deep earth and keeps the words. He stands among the newest knights of the house, a little apart, and he is said to be the quietest demon in the north-west: Zagal does not challenge, does not call, and does not wake for small things.",
+   "yells": {
+    "aggro": [
+     "You woke me. That was unwise."
+    ],
+    "death": [
+     "The oath... is kept... without me..."
+    ],
+    "slay": [
+     "Sworn down."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A knight stands in the chapter house as if asleep."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "zagal",
+    "text": "Zagal is the chapter's keeper of oaths, who hears each new knight swear to the deep earth and keeps the words. He stands among the newest knights of the house, a little apart, and he is said to be the quietest demon in the north-west: Zagal does not challenge, does not call, and does not wake for small things."
+   }
+  },
+  {
+   "name": "Chthonic Knight Ronoro",
+   "level": 66,
+   "post": "the chapter house, the north-west",
+   "story": "Ronoro stands at the inner door of the chapter house with Absax and teaches the newest knights to stand. That is all he teaches: where to put their feet, and how not to move them. The young knights call him the Mason, after Marquis Sabonach, and say Ronoro builds knights the way the marquis builds arches.",
+   "yells": {
+    "aggro": [
+     "Feet. Watch my feet. They do not move."
+    ],
+    "death": [
+     "Stand... someone stand in my place..."
+    ],
+    "slay": [
+     "Badly stood."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Bootmarks are cut into the stone of the chapter floor."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "ronoro",
+    "text": "Ronoro stands at the inner door of the chapter house with Absax and teaches the newest knights to stand. That is all he teaches: where to put their feet, and how not to move them."
+   }
+  },
+  {
+   "name": "Chthonic Knight Ukobat",
+   "level": 66,
+   "post": "the chapter house, the north-west",
+   "story": "Ukobat keeps the chapter house's fires, the braziers by which the knights take their oath, and he is the only knight of the house who is never cold. The chapter says he was a stoker in the Uncounted Age, feeding the deep fires under Baelerdoth's hall, and that he came west to the knights when Duke Harboris first started taking the fire for himself.",
+   "yells": {
+    "aggro": [
+     "Closer to the fire. It is the last warm thing you will feel."
+    ],
+    "death": [
+     "Let the braziers... go out..."
+    ],
+    "slay": [
+     "Ash."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Braziers burn hot in the chapter house. Someone tends them."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "ukobat",
+    "text": "Ukobat keeps the chapter house's fires, the braziers by which the knights take their oath, and he is the only knight of the house who is never cold. The chapter says he was a stoker in the Uncounted Age, feeding the deep fires under Baelerdoth's hall, and that he came west to the knights when Duke Harboris first started taking the fire for himself."
+   }
+  },
+  {
+   "name": "Chthonic Knight Ezpeth",
+   "level": 66,
+   "post": "the chapter house, the north-west",
+   "story": "Ezpeth keeps the high end of the chapter house, the climb toward Princess Nahemah's bower, and watches the bower for the chapter. She sees Ambassador Mannam go up the Albion stair and come back, and counts his journeys on a cord. The chapter has asked her to stop counting; the cord is now longer than she is tall.",
+   "yells": {
+    "aggro": [
+     "Another visitor from the stair. I will count you."
+    ],
+    "death": [
+     "My cord... finish it..."
+    ],
+    "slay": [
+     "Counted, and knotted."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A knotted cord hangs from a peg, very long."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "ezpeth",
+    "text": "Ezpeth keeps the high end of the chapter house, the climb toward Princess Nahemah's bower, and watches the bower for the chapter. She sees Ambassador Mannam go up the Albion stair and come back, and counts his journeys on a cord."
+   }
+  },
+  {
+   "name": "Chthonic Knight Marbos",
+   "level": 68,
+   "post": "the Field Marshal's knights, Baln's hall",
+   "story": "Marbos commands the knights the Field Marshal keeps in Baln's hall, at the east arch near the war table. The chapter lent them to Nebir after the feud of the Blade and the Hook, and Marbos has never quite decided whether he serves the prince or the Marshal. He settles it each day by standing exactly halfway between the arch and the table.",
+   "yells": {
+    "aggro": [
+     "Prince or Marshal? Neither will save you."
+    ],
+    "death": [
+     "Halfway... I stood halfway..."
+    ],
+    "slay": [
+     "Counted for the Marshal."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A knight stands precisely halfway between arch and table."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "marbos",
+    "text": "Marbos commands the knights the Field Marshal keeps in Baln's hall, at the east arch near the war table. The chapter lent them to Nebir after the feud of the Blade and the Hook, and Marbos has never quite decided whether he serves the prince or the Marshal."
+   }
+  },
+  {
+   "name": "Chthonic Knight Zaeber",
+   "level": 68,
+   "post": "the Field Marshal's knights, Baln's hall",
+   "story": "Zaeber stands with Marbos at the east arch of Baln's hall. He is the Marshal's favourite among the lent knights, because he is the only one who can stand perfectly still while Nebir counts him, and the Marshal has written to the chapter twice asking to keep him. The chapter has twice said no, and Zaeber has not been asked what he thinks.",
+   "yells": {
+    "aggro": [
+     "Count me, then. I will not move."
+    ],
+    "death": [
+     "The Marshal... will want the number..."
+    ],
+    "slay": [
+     "Still."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Two knights guard the east arch. One does not even breathe."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "zaeber",
+    "text": "Zaeber stands with Marbos at the east arch of Baln's hall. He is the Marshal's favourite among the lent knights, because he is the only one who can stand perfectly still while Nebir counts him, and the Marshal has written to the chapter twice asking to keep him."
+   }
+  },
+  {
+   "name": "Chthonic Knight Exal",
+   "level": 68,
+   "post": "the Field Marshal's knights, Baln's hall",
+   "story": "Exal keeps the far side of the Marshal's knights, toward the East Ward, and is the one who carries word between Nebir's table and Duke Bimure's garrison. The Ward knights call him the Marshal's knight and the Marshal calls him the Ward's, and Exal has given up correcting either.",
+   "yells": {
+    "aggro": [
+     "The Marshal sends his regards. So does the Ward."
+    ],
+    "death": [
+     "Tell the Ward... tell the Marshal..."
+    ],
+    "slay": [
+     "Sent on."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A knight waits on the road from the war table to the Ward."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "knight exal",
+    "text": "Exal keeps the far side of the Marshal's knights, toward the East Ward, and is the one who carries word between Nebir's table and Duke Bimure's garrison. The Ward knights call him the Marshal's knight and the Marshal calls him the Ward's, and Exal has given up correcting either."
+   }
+  },
+  {
+   "name": "Chthonic Knight Aciel",
+   "level": 62,
+   "post": "the East Ward",
+   "story": "Aciel is the youngest knight of the East Ward and keeps its northern edge near High Lord Oro's hall. He is the only knight in the Ward who has spoken to Duke Sallis, who asked him, the first night, which of the three Oros he thought was real. Aciel said he was a knight and would guard all three. Sallis has been fond of him since.",
+   "yells": {
+    "aggro": [
+     "I guard all three. You will not reach any of them."
+    ],
+    "death": [
+     "All three... I guarded all three..."
+    ],
+    "slay": [
+     "Kept from the hall."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A young knight at the Ward's edge faces three doors."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "aciel",
+    "text": "Aciel is the youngest knight of the East Ward and keeps its northern edge near High Lord Oro's hall. He is the only knight in the Ward who has spoken to Duke Sallis, who asked him, the first night, which of the three Oros he thought was real."
+   }
+  },
+  {
+   "name": "Chthonic Knight Ain",
+   "level": 62,
+   "post": "the East Ward",
+   "story": "Ain stands with the Ward's middle camp. In the Sixth Roll he stood beside Zepor on the last watch before Zepor went east to High Lord Saeor, and Earl Oraxus touched Zepor's shoulder over Ain's. Ain has never forgiven the earl for choosing the other knight, which the chapter considers the wrong grudge to hold.",
+   "yells": {
+    "aggro": [
+     "Saeor's taster passed me over. You will not."
+    ],
+    "death": [
+     "He chose Zepor... he should have chosen..."
+    ],
+    "slay": [
+     "Not passed over."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A knight of the Ward glares east, toward Saeor's hall."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "knight ain",
+    "text": "Ain stands with the Ward's middle camp. In the Sixth Roll he stood beside Zepor on the last watch before Zepor went east to High Lord Saeor, and Earl Oraxus touched Zepor's shoulder over Ain's."
+   }
+  },
+  {
+   "name": "Chthonic Knight Babyzu",
+   "level": 65,
+   "post": "the East Ward",
+   "story": "Babyzu keeps the Ward's north-western corner, where its ground meets the road from the Gate. He is the Ward's oldest knight and the only one who has served there since the First Roll, and Duke Bimure trusts him with the worst of the duty: standing between the high lords' followers when they come out of their halls to quarrel.",
+   "yells": {
+    "aggro": [
+     "Between. Always between."
+    ],
+    "death": [
+     "Who stands between now..."
+    ],
+    "slay": [
+     "Kept apart."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "An old knight stands where the Gate road meets the Ward."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "babyzu",
+    "text": "Babyzu keeps the Ward's north-western corner, where its ground meets the road from the Gate. He is the Ward's oldest knight and the only one who has served there since the First Roll, and Duke Bimure trusts him with the worst of the duty: standing between the high lords' followers when they come out of their halls to quarrel."
+   }
+  },
+  {
+   "name": "Chthonic Knight Carnivon",
+   "level": 64,
+   "post": "the East Ward",
+   "story": "Carnivon stands near Duke Bimure's end of the Ward, close to High Lord Baelerdoth's door, and is the knight the Ward sends to stand nearest the high lord's thirst. He has no ward left to lose, the others say, and so he goes where wards are drunk. He is said to have laughed once, in the Fifth Roll, and nobody knows at what.",
+   "yells": {
+    "aggro": [
+     "Nothing left to drink. Come and see."
+    ],
+    "death": [
+     "Dry... at last..."
+    ],
+    "slay": [
+     "Drunk to the bottom."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "One knight stands closest of all to Baelerdoth's door."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "carnivon",
+    "text": "Carnivon stands near Duke Bimure's end of the Ward, close to High Lord Baelerdoth's door, and is the knight the Ward sends to stand nearest the high lord's thirst. He has no ward left to lose, the others say, and so he goes where wards are drunk."
+   }
+  },
+  {
+   "name": "Chthonic Knight Prosel",
+   "level": 64,
+   "post": "the East Ward",
+   "story": "Prosel keeps the Ward's middle ground with Zafan and Ain, and keeps the Ward's dead: when a knight of the Ward falls in a quarrel between the halls, Prosel carries it to the Mutilators, and then stands watch until the Mutilators have finished. The Ward says he is the only knight who can bear to watch the Hook at work.",
+   "yells": {
+    "aggro": [
+     "I carry the fallen. I will carry you."
+    ],
+    "death": [
+     "Carry me... to the knights, not the Hook..."
+    ],
+    "slay": [
+     "Carried."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A knight stands guard over an empty patch of stained floor."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "prosel",
+    "text": "Prosel keeps the Ward's middle ground with Zafan and Ain, and keeps the Ward's dead: when a knight of the Ward falls in a quarrel between the halls, Prosel carries it to the Mutilators, and then stands watch until the Mutilators have finished. The Ward says he is the only knight who can bear to watch the Hook at work."
+   }
+  },
+  {
+   "name": "Chthonic Knight Zafan",
+   "level": 67,
+   "post": "the East Ward",
+   "story": "Zafan is the senior knight of the Ward and its oldest rival of Duke Zepor. He served beside Zepor in the first garrison and has been chosen as the chapter's champion against him once already; he came back, which no other champion has done, and will not say how. The chapter has not chosen him again.",
+   "yells": {
+    "aggro": [
+     "I came back from the Oathbreaker. I will come back from you."
+    ],
+    "death": [
+     "Tell Absax... I came back once..."
+    ],
+    "slay": [
+     "Not this time."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A scarred knight of the Ward faces east and does not turn."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "zafan",
+    "text": "Zafan is the senior knight of the Ward and its oldest rival of Duke Zepor. He served beside Zepor in the first garrison and has been chosen as the chapter's champion against him once already; he came back, which no other champion has done, and will not say how."
+   }
+  },
+  {
+   "name": "Chthonic Knight Exte",
+   "level": 60,
+   "post": "the Gate watch",
+   "story": "Exte keeps the Gate's western road with the Mutilator Okabi, and is the knight who takes the oath of the Gate each Roll: to keep the crossing with the other two orders and to draw no blade against them there. He finds the oath harder than any he swore in the chapter house, and says so to Okabi every day.",
+   "yells": {
+    "aggro": [
+     "The Gatekeeper's toll. Pay it to me."
+    ],
+    "death": [
+     "The watch... is short a knight..."
+    ],
+    "slay": [
+     "Toll taken."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A knight and a flayer stand side by side, not looking."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "exte",
+    "text": "Exte keeps the Gate's western road with the Mutilator Okabi, and is the knight who takes the oath of the Gate each Roll: to keep the crossing with the other two orders and to draw no blade against them there. He finds the oath harder than any he swore in the chapter house, and says so to Okabi every day."
+   }
+  },
+  {
+   "name": "Chthonic Knight Ibeko",
+   "level": 60,
+   "post": "the Gate watch",
+   "story": "Ibeko keeps the Gate's northern side and is the watch's memory: he was a knight of the first Gate watch, after the Blade and the Hook, and remembers the crossing when it was full of the dead of both orders. He alone of the watch still looks at the Mutilators with open hatred, and Gatekeeper Dommel is said to like him for it.",
+   "yells": {
+    "aggro": [
+     "I saw the crossing full. I remember."
+    ],
+    "death": [
+     "Full again..."
+    ],
+    "slay": [
+     "One more for the floor."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "An old knight of the watch stares at the flayers beside him."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "ibeko",
+    "text": "Ibeko keeps the Gate's northern side and is the watch's memory: he was a knight of the first Gate watch, after the Blade and the Hook, and remembers the crossing when it was full of the dead of both orders. He alone of the watch still looks at the Mutilators with open hatred, and Gatekeeper Dommel is said to like him for it."
+   }
+  },
+  {
+   "name": "Chthonic Knight Obarus",
+   "level": 60,
+   "post": "the Gate watch",
+   "story": "Obarus keeps the Gate's southern road toward Baln's hall and the Field Marshal. He is the Marshal's choice among the watch, the one who brings word up to the war table of what the Albion stair has sent down, and the Gatekeeper suspects him, correctly, of counting for Nebir as well as for the toll.",
+   "yells": {
+    "aggro": [
+     "Counted for the toll. Counted for the Marshal."
+    ],
+    "death": [
+     "Tell the Marshal... the number..."
+    ],
+    "slay": [
+     "Two counts. One body."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A knight at the Gate counts under his breath."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "obarus",
+    "text": "Obarus keeps the Gate's southern road toward Baln's hall and the Field Marshal. He is the Marshal's choice among the watch, the one who brings word up to the war table of what the Albion stair has sent down, and the Gatekeeper suspects him, correctly, of counting for Nebir as well as for the toll."
+   }
+  }
+ ]
+}

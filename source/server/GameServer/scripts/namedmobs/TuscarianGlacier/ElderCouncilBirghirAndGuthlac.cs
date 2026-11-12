@@ -93,8 +93,8 @@ namespace DOL.AI.Brain
                 player.Out.SendMessage(message, eChatType.CT_Broadcast, eChatLoc.CL_SystemWindow);
             }
         }
-        public static GamePlayer randomtarget = null;
-        public static GamePlayer RandomTarget
+        public static GameLiving randomtarget = null;
+        public static GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
@@ -104,11 +104,11 @@ namespace DOL.AI.Brain
             if (Body.IsAlive)
             {
                 List<GameLiving> enemies = AggroList.Keys.ToList();
-                foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                             AggroList.TryAdd(player, new());
                     }
                 }
@@ -127,14 +127,14 @@ namespace DOL.AI.Brain
                             continue;
                         GameLiving living = null;
                         living = enemies[i] as GameLiving;
-                        if (living.IsVisibleTo(Body) && Body.TargetInView && living is GamePlayer)
+                        if (living.IsVisibleTo(Body) && Body.TargetInView && EncounterTargets.IsRaider(living))
                         {
                             damage_enemies.Add(enemies[i] as GameLiving);
                         }
                     }
                     if (damage_enemies.Count > 0)
                     {
-                        GamePlayer Target = (GamePlayer)damage_enemies[Util.Random(0, damage_enemies.Count - 1)];
+                        GameLiving Target = damage_enemies[Util.Random(0, damage_enemies.Count - 1)];
                         RandomTarget = Target; //randomly picked target is now RandomTarget
                         if (RandomTarget.IsVisibleTo(Body) && Body.TargetInView && RandomTarget != null && RandomTarget.IsAlive)
                         {
@@ -209,12 +209,12 @@ namespace DOL.AI.Brain
             {
                 if (message1 == false)
                 {
-                    if (Body.TargetObject is GamePlayer && Body.TargetObject != null)
+                    if (EncounterTargets.IsRaider(Body.TargetObject) && Body.TargetObject != null)
                     {
-                        GamePlayer player = Body.TargetObject as GamePlayer;
+                        GameLiving player = EncounterTargets.AsRaider(Body.TargetObject);
                         if (player != null && player.IsAlive)
                         {
-                            BroadcastMessage(String.Format(Body.Name + " Impossible! An ugly " + player.CharacterClass.Name + " there? How could this be? Guthlac, we must defend our Queen and King!"));
+                            BroadcastMessage(String.Format(Body.Name + " Impossible! An ugly " + EncounterTargets.ClassOf(player)?.Name + " there? How could this be? Guthlac, we must defend our Queen and King!"));
                             message1 = true;
                         }
                     }
@@ -469,7 +469,7 @@ namespace DOL.AI.Brain
             get { return randomtarget; }
             set { randomtarget = value; }
         }
-        List<GamePlayer> PlayersToDD = new List<GamePlayer>();
+        List<GameLiving> PlayersToDD = new List<GameLiving>();
 
         #region Root && debuff
         public static bool CanCast = false;
@@ -480,15 +480,15 @@ namespace DOL.AI.Brain
             get { return randomtarget2; }
             set { randomtarget2 = value; }
         }
-        List<GamePlayer> Enemys_To_Root = new List<GamePlayer>();
+        List<GameLiving> Enemys_To_Root = new List<GameLiving>();
 
         public int PickRandomTarget(ECSGameTimer timer)
         {
             if (HasAggro)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000))
                 {
-                    if (player != null && player.IsAlive && player.Client.Account.PrivLevel == 1)
+                    if (player != null && player.IsAlive && EncounterTargets.NotGm(player))
                     {
                         if (!Enemys_To_Root.Contains(player) && player != Body.TargetObject)
                             Enemys_To_Root.Add(player);
@@ -498,7 +498,7 @@ namespace DOL.AI.Brain
                 {
                     if (CanCast == false)
                     {
-                        GamePlayer Target = (GamePlayer)Enemys_To_Root[Util.Random(0, Enemys_To_Root.Count - 1)];//pick random target from list
+                        GameLiving Target = Enemys_To_Root[Util.Random(0, Enemys_To_Root.Count - 1)];//pick random target from list
                         RandomTarget2 = Target;//set random target to static RandomTarget
                         new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastRoot), 1000);
                         CanCast = true;
@@ -599,7 +599,7 @@ namespace DOL.AI.Brain
                     new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(PickRandomTarget), Util.Random(35000, 45000));
                     StartCastRoot = true;
                 }
-                foreach (GamePlayer player in Body.GetPlayersInRadius(4500))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 4500))
                 {
                     if (player == null) break;
                     if (player.IsAlive)
@@ -612,7 +612,7 @@ namespace DOL.AI.Brain
                 {
                     if (PlayersToDD.Count > 0)
                     {
-                        GamePlayer ptarget = PlayersToDD[Util.Random(0, PlayersToDD.Count - 1)];
+                        GameLiving ptarget = PlayersToDD[Util.Random(0, PlayersToDD.Count - 1)];
                         RandomTarget = ptarget;
                     }
                     new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(SpawnBombTimer), Util.Random(35000, 60000)); //spawn frozen bomb every 35s-60s
@@ -916,11 +916,11 @@ namespace DOL.AI.Brain
             if (Body.IsAlive)
             {
                 //FSM.SetCurrentState(eFSMStateType.AGGRO);
-                foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                             AggroList.TryAdd(player, new(100));
                     }
                 }

@@ -1,0 +1,81 @@
+{
+  "id": "torvarg",
+  "name": "Torvarg",
+  "npcNames": [
+    "Torvarg"
+  ],
+  "locationId": "avalon-isle",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Torvarg: NPC template 60167189, level 35, a drakoran model (as Lieutenant Grrar), no faction, aggro 200 (range 500), no spells, respawn 80 s, on high ground in the middle of the isle at 453430, 461769 with drakoran thaumaturges.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Torvarg's hill, his fires and his quarrel with Kovos are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The middle of Avalon Isle rises to a long low hill, and from the top of it a drakoran can see both shores, the dead orchards, the looters' roads and the lights of Wearyall. Torvarg keeps that hill. He keeps it with the thaumaturges, the legion's makers of fire, and between them they keep a fire on its crown that the legion's camps can all see: lit, the shores are watched; doused, something is coming.\n\nThe garrison of Wearyall has never seen it doused, and Gwilym the cider-man says that is the most worrying thing about it. A watch-fire that is never put out, he says, is not a warning. It is a promise.\n\nTorvarg and Kovos below him do not agree on much. Kovos wants the hill for his carts, because it is the only dry road across the middle of the isle; Torvarg will not have carts on it, because carts make dust and dust hides what the fire is meant to show. The two of them have quarrelled over that road since the burning. The road stays shut. The looters go round.",
+  "legend": "Torvarg, level 35 drakoran, on the high ground in the middle of Avalon Isle with a couple of drakoran thaumaturges and a sawbone or looter close by. No faction of his own, but the thaumaturges are aggressive casters: kill or interrupt them first. Plain melee, no spells, fast respawn (80 seconds). Mid thirties group handles him. The fire on the hilltop is scenery: nothing comes when you put him down.",
+  "yells": {
+    "aggro": [
+      "The hill is watched.",
+      "Feed the fire. We have guests."
+    ],
+    "phases": [],
+    "death": [
+      "Keep... the fire..."
+    ],
+    "slay": [
+      "Burn that.",
+      "The fire sees."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A drakoran watch-fire on the hill. Never doused."
+    ],
+    "phases": [],
+    "realmFirstKill": "Torvarg has fallen. The watch-fire is unattended."
+  },
+  "botLines": {
+    "briefing": [
+      "torvarg on the hill in mid avalon isle, kill the thaumaturges first",
+      "plain melee, fast respawn on torvarg"
+    ],
+    "aftermathWin": [
+      "torvarg down. the fire's still burning though",
+      "got torvarg off his hill"
+    ],
+    "aftermathLoss": [
+      "the thaumaturges burned us down at torvarg"
+    ],
+    "rumour": [
+      "[heard|someone said] torvarg's watch-fire has never once gone out",
+      "heard torvarg and kovos fight over who gets the hill road"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "torvarg",
+    "text": "The drakoran who keeps the watch-fire on the long hill in the middle of [avalon isle] with the thaumaturges. It has never been doused. He and Kovos quarrel over the hill road."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} put out Torvarg's watch on Avalon Isle in {minutes} minutes.",
+    "loss": "Torvarg's fire saw {raidLeader}'s company of {realm} coming, and the hill held."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "kovos",
+      "relation": "quarrels with him over the hill road"
+    }
+  ],
+  "tier": "minor"
+}

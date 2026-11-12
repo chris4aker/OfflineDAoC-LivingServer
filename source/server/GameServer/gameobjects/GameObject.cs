@@ -737,7 +737,8 @@ namespace DOL.GS
 			Dictionary<ushort, List<DbDataQuest>> newCache = new();
 			int count = 0;
 
-			foreach (DbDataQuest quest in GameServer.Database.SelectAllObjects<DbDataQuest>())
+			// The epic chains are linked as the rows are read (EpicChainLinks, Living Server 1.2); the database keeps its rows.
+			foreach (DbDataQuest quest in Quests.EpicChainLinks.Link(GameServer.Database.SelectAllObjects<DbDataQuest>()))
 			{
 				if (!newCache.TryGetValue(quest.StartRegionID, out List<DbDataQuest> list))
 				{

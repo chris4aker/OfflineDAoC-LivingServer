@@ -1,0 +1,157 @@
+{
+  "id": "mahattava",
+  "name": "Mahattava",
+  "catalogKey": "iarnvidiur-s-lair/mahattava",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "era": "mid-era-ice",
+  "factions": [
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "iarnvidiur",
+      "relation": "the neighbour it never bowed to"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Mahattava is a level-66 named with 30,000 health; 28 fjarskafinn come with it.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It casts Mahattava's Infection over time and a 300-damage strike.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls it a named fjarskafinn in the room with the single waterfall and lake, hitting for 300-400; players thought it was over level 70 (2003).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4666"
+    },
+    {
+      "text": "Finnish mahtava means mighty (to verify).",
+      "provenance": "original",
+      "source": "Finnish glossary, to verify"
+    },
+    {
+      "text": "When engaged Mahattava brings in every MahattavaBaf NPC in the region (28 fjarskafinn in the world database). Each tick, if its target already has a damage-over-time on it, Mahattava casts Mahattava's Strike (300, range 1,500, recast 10-15 s); otherwise it casts Mahattava's Infection (80 every tick, 20 s). 30,000 health, 20% melee / 30% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Mahattava.cs"
+    },
+    {
+      "text": "Finnish mahtava means 'mighty' (to verify). The lake treaty and Thorgerd Netmaker's scale and saying come from the iarnvidiurs-lair file; the marked catch and Thorgerd's grandson Eyvar are Living Server lore.",
+      "provenance": "original",
+      "source": "Finnish, to verify"
+    }
+  ],
+  "story": "In the lake under the single fall live the fjarskafinn, finned and muck-scaled, slow and old and very many. They are not the old one's brood. They were in the lake before her, the narfi say, when the iron trees above were still silver, and the dwarves say the lake has no bottom, or that its bottom goes out under Aegir to the sea, and that the fish came up from there long before any wolf came down. Mahattava is the mightiest of them, as its name in an old eastern tongue says: a thing as big as a boat, with a fin on its back like a sail.\n\nIt is the only thing in the house the old one never bent. A pup of her first litter went down the wet steps to drink, and the water stood up and took it, and she stood on the shore from one meal to the next looking at the fin, and then went back up the steps; no wolf of hers has drunk from the lake since. The lake is one body. Thorgerd Netmaker of Chief Tarek's encampment, who drew the first scale out of it on a line, left the saying the dwarves still use of a quarrel with a big family: throw a stone at the fin, and the whole lake throws back.\n\nThe fin marks its prey before it strikes. The fishers of the encampment say a slow venom comes into the one it means to have, a burning that runs a while; and while that venom is in him, the fin strikes, and strikes again, and does not trouble to mark him a second time until the first is gone. A man clean of its venom is a man it has not chosen yet. Thorgerd's grandson Eyvar, who fished the lake after her, said that is the whole of the lake's patience, and that he lived to be old by keeping himself clean.",
+  "chapters": [
+    {
+      "title": "The Lake That Was There First",
+      "text": "Past the waterfall room the floor of the old one's house goes down in wet steps to a lake under a single fall, a long black water with a far shore no lantern reaches. The fjarskafinn live in it, finned and scaled with the muck of the bottom, slow and old and very many, and the dwarves have never counted them, because there is no seeing to the bottom of the water and the dwarves say there is no bottom to see.\n\nThey are not the old one's brood. The narfi say the lake was there before her, and the fish in it, when the iron trees above were silver and the water was clear. The iarn dwarves say the lake goes down, and down, and out under Aegir to the sea, and that the fish came up from there long before any wolf came down, the way eels come up a river. The skalds of Jordheim say they are the first fish, from before the world was made, and that the lake is the last of the water the world was made in. The dwarves say the skalds have not been to the lake.\n\nMahattava is the mightiest of them. Its name is a word of an old tongue from the east of the island, the dwarves say, and means mighty, and nothing else in the lake has a name. It is as big as a boat, with a fin on its back like a sail, and the scales caked on it are the size of doors. When it moves the whole lake moves with it, slowly, the way a field of barley moves with the wind."
+    },
+    {
+      "title": "The Treaty",
+      "text": "It is the only thing in the house the old one never bent. The dwarves date the treaty to a single night in the second winter of her first litter, and the slate that records it is the oldest in Faraheim after the warning stone's copy.\n\nA pup of that litter went down the wet steps to drink, and the water stood up and took it. The old one came to the shore. She stood there, the slate says, from one meal to the next, and the lake stood there too, black and still, with nothing showing on it but the fin. Then she turned and went back up the steps, and since that night no wolf of hers has drunk from the lake. Her plague does not touch the fish, or if it does they do not care.\n\nThe lake does not end at the lake. It runs out at its lower end through a cleft in the rock as a slow black stream, and the stream is the black water under Delegalt's bridge at the far end of the house, and the things in it that went downstream out of the lake and lost their eyes in the dark are the lake's lost children. The dwarves say that on the night of the treaty the old one found a use for them.\n\nThe lake is one body. Thorgerd Netmaker of Chief Tarek's encampment, who drew the first scale out of it on a line, left a saying with the scale that the dwarves of the encampment still use of a quarrel with a big family: throw a stone at the fin, and the whole lake throws back."
+    },
+    {
+      "title": "Thorgerd's Line",
+      "text": "Thorgerd Netmaker went down to the wet steps in the winter of a famine, when the encampment had eaten its dogs, and let down a line with a whole salted syver on the hook, and sat the night out with her back to the wall. At dawn the line came up without the syver and with a scale on the hook the size of a door. She carried it home on her back.\n\nIt hangs over the door of her house in the encampment still, and in the fire that burned half the encampment in her grandson's time it was the only thing on that wall that did not char. Every shield made of Mahattava's scale since is said to have the lake's cold in it.\n\nHer grandson Eyvar fished the lake after her, the only dwarf of the encampment who ever did it more than once, and he lived to be old. He said the lake had one patience, and he had it from his grandmother. The fin marks its prey before it strikes, he said. A slow venom comes into the one it means to have, a burning that runs a while, and then goes. While that venom is in a man, the fin strikes at him, out of the water, again and again, and does not trouble to mark him a second time until the first marking has gone. A man clean of its venom is a man it has not chosen yet.\n\nEyvar said he lived to be old by keeping himself clean. He took the wise-women's drink against the venom every time he felt the burn, he said, and so the fin was always choosing him and never striking him, and the lake never quite made up its mind."
+    },
+    {
+      "title": "The Whole Lake Throws Back",
+      "text": "The companies of Midgard who come down the wet steps to the lake find Thorgerd's saying is not a figure of speech. When anything lays a hand on the fin, the whole school comes out of the black water at once, all of the fjarskafinn that lie near the shore, finned and muck-scaled and slow and very many, up the wet steps together like the tide coming in. The companies say the first sight of it is the moment most of them decide whether the scale is worth it.\n\nSome of them decide it is not. The skalds of Jordheim tell of two warriors of the realm who took a tenth of the fin's strength off it, alone, and looked at the lake behind it, and went home. The skalds tell it as a joke on the warriors. The dwarves of the encampment tell it as the wisest thing anyone from Midgard has done in the old one's house.\n\nWhen the fin falls it sinks back into the black water, the companies say, and the school goes down with it, and the sound of the waterfall comes back into the cave. In a season the fin is moving on the lake again. The dwarves say it does not die at all. They say it goes down, the way the lake goes down, to wherever the bottom is, and comes up again when it has a mind to.\n\nThe old one has never once gone down the wet steps since the night of the treaty. The narfi say she is afraid of the lake. The dwarves say she is the only creature in her house with sense."
+    }
+  ],
+  "legend": "Mahattava brings twenty-eight fjarskafinn. That is not a typo: the whole school in the area comes the moment you touch it. Area damage, a wall of tanks at the lake edge, and patience; pull it to the shore so the fish come up the steps in a line. Mahattava itself has a simple rule: if its target has no DoT on it, it casts its Infection (80 a tick for 20 seconds); if its target already has a DoT, it hits for 300 every 10 to 15 seconds instead. So curing the infection on the tank as soon as it lands means it spends its casts re-infecting rather than striking. 30,000 health, 20% melee and 30% magic resists, CC-immune. Two players took ten percent off it in 2003 and decided against the rest. Its fish-scale shield is a fine drop, with a charged cold blast.",
+  "yells": {
+    "aggro": [
+      "(The lake boils with fins.)",
+      "(A fin like a sail breaks the water.)",
+      "(The whole lake rises at once.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=95",
+        "text": "(The whole school comes at once.)"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "(Mahattava strikes at the one its venom is in.)"
+      }
+    ],
+    "death": [
+      "(Mahattava sinks into the lake.)",
+      "(The waterfall's sound returns.)",
+      "(The fin sinks. The waterfall's sound returns.)"
+    ],
+    "slay": [
+      "(The school closes over the fallen.)",
+      "(Something drags the body under.)",
+      "(The lake goes still.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A single waterfall feeds a black lake. Fins move.",
+      "The lake has taken the shape of something.",
+      "A fin like a sail moves on the black water."
+    ],
+    "realmFirstKill": "Mahattava, the mighty one of the lake, is slain.",
+    "phases": [
+      {
+        "trigger": "health<=95",
+        "text": "The lake empties at you. Twenty-eight fins!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "mahattava pulls 28 fish. yes 28. aoe ready, tanks on the shore",
+      "pull mahattava to the shore so the fish come out in a line",
+      "aoe groups ready, 28 adds",
+      "cure the infection on tanks",
+      "mahattava: 28 fish come at once, aoe ready, tanks on the shore",
+      "cure its infection fast, it only strikes for 300 while the infection is on",
+      "pull to the shore so the school comes in a line"
+    ],
+    "aftermathWin": [
+      "28 fish and a boss. [what a pull|gg]",
+      "muck-covered fish scale shield!!",
+      "fish fry tonight lol",
+      "dorsal fin dropped. trophy",
+      "throw a stone at the fin and the whole lake throws back. we threw back harder",
+      "scale shield!",
+      "28 fish down lol"
+    ],
+    "aftermathLoss": [
+      "the lake emptied at us",
+      "aoe group ran out of power at fish 20",
+      "the fish turned on the aoe group",
+      "mahattava hit our main tank for 400 a swing and he folded",
+      "nobody cured the infection and it struck the tank every 10 sec",
+      "the fish got the aoe group"
+    ],
+    "rumour": [
+      "mahattava was in that lake before iarnvidiur came, the dwarves say",
+      "mahattava never bowed to iarnvidiur. they stay out of each other's water",
+      "a mahattava scale shield never burns through, the dwarves say",
+      "mahattava was in that lake before the old one came",
+      "dwarf saying: throw a stone at the fin and the whole lake throws back",
+      "a dwarf woman pulled the first mahattava scale out on a fishing line",
+      "iarnvidiur herself wont go near mahattavas lake"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Mahattava",
+    "text": "The mighty one of the lake that was there before [Iarnvidiur]: a fish as big as a boat, with a fin like a sail. The old one made a treaty with it the night it took a pup of her first litter. The whole lake throws back, Thorgerd Netmaker said. Her grandson Eyvar said the fin marks its prey with venom and strikes what is marked."
+  },
+  "bookPage": "From Thorgrim of Faraheim's notes. The dwarves told me the lake under the single waterfall has no bottom, or rather that its bottom is very far down and very old, and that the fish came up from there long ago. They say the mighty one is the oldest living thing on Aegir that is not a tree. I asked whether it was older than the old one. They said yes, and that she knows it, and that this is why her wolves do not drink from the lake. They said even the old one has someone she is careful of.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} emptied Mahattava's lake in {minutes} minutes.",
+    "loss": "Mahattava's school dragged {raidLeader}'s party from {realm} under after {minutes} minutes."
+  }
+}

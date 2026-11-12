@@ -1,0 +1,363 @@
+{
+  "id": "isle-of-glass",
+  "name": "Isle of Glass",
+  "realm": "Albion",
+  "regions": [
+    51
+  ],
+  "zones": [
+    51
+  ],
+  "aliases": [
+    "the isle of glass",
+    "iog",
+    "gothwaite"
+  ],
+  "summary": "The part of Avalon's country Albion kept: Caer Gothwaite and its harbor, the earth wall and its three forts, the drakoran camps beyond, and an isle whose drowned land is coming back up.",
+  "facts": [
+    {
+      "text": "The Isle of Glass is zone 51 of region 51, the Shrouded Isles' starting zone, with Caer Gothwaite and Gothwaite Harbor (where the ship from Camelot Hills lands) and about 1,065 monsters: pixie urchins, corpse lights, dragonflies, sodden and headless dead, drakoran, buggane, grindylows and water elementals.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 51 zone 51 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Mythic: three ring-shaped fortresses on an earthen border at the Isle of Glass hold Albion's side; Morgan's influence shows even there, in headless undead, corpse lights and ghosts.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=77"
+    },
+    {
+      "text": "Under Attack: Commander Slor'vid sits at the campfire in the central of the three camps in the north-west from midnight to 3 A.M. and shows when his lieutenants are attacked; Drakoran Watchers: the scout east of Anniogel and west of Caifelle, and the leader Ariach.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Soul of the Academy: slay the grindylow Caldech twice; Soul Hunt: Jocias, an undead hiding from Arawn, flees into a damp skeleton; Shades and Shadows: Martley at the single-tent camp.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Alluvian, in the water by Caifelle, spawns alluvian globules, at most twelve, that walk away from it.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/Alluvian.cs"
+    },
+    {
+      "text": "Ariach is called the drakoran leader in the quest text but wears a human model in the world data.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 51 zone 51 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Real-world: Ynys Witrin, the isle of glass, is an old Welsh name for Glastonbury, which medieval writers took for Avalon; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Glastonbury"
+    },
+    {
+      "text": "Elin Saer the harbor-reeve and her book, the drowned fields seen through flat water, the west fort with no agreed name, Ewart Haralder digging the wall, Ariach as no drakoran, the risen waters as the drowned land coming back, Martley the college student and Sogrot the squires' practice are Living Server writing; the chapel's lamp, door and names, the nine chests and the harbor's fast come from the other Albion files.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Albion's ships to the remnants of Atlantis sail from the Caer Gothwaite dock.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
+    }
+  ],
+  "story": "The last firm ground. The Isle of Glass is the part of Avalon's country that Albion kept. When Morgana came over the water with the drakoran and the dead, the colleges burned and the isles fell one after another, and the readers and the fishermen and whoever else could reach a boat came here, to the southernmost isle, where the ground was firm and the old fort of Caer Gothwaite stood above the harbor. They threw up an earth wall across the north of the isle and built three ring-forts on it, and Albion has held the line of that wall ever since. Beyond it lie Avalon and the isles that were lost. The garrison says the isle is called the Isle of Glass because on a still morning the water round it is so flat that you can see the drowned fields under it. The readers of the colleges, the few who are left, say the name is older than the war and means something else, and will not say what.\n\nCaer Gothwaite and the harbor. Caer Gothwaite is the realm's house in the isles: a castle, a chapel, a market and the trainers of every order, and it keeps the memory of the war in the way soldiers keep it, in objects. Nine chests of Avalon's books are stored in its cellars, saved from the burning. The chapel keeps a lamp on the sill and its door open while a company is out beyond the wall, and the names of those who did not come home are cut over the door, under the seven of Arthur's ship. Notched swords hang inside it. Gothwaite Harbor below the castle is where the ship from the king's hills comes in, and its people keep a fast the night before a company climbs into the dead places of the isles, and an alehouse whose cups are named for the dead.\n\nThe wall and the war. The three ring-forts on the earth wall face the lost isles. Anniogel stands in the middle of the wall and Caifelle to the east, and the third, which the fishermen call only the west fort, watches the drowned land. The drakoran harry the wall from three camps in the north-west under a commander, Slor'vid, who shows himself only in the small hours when his lieutenants are hard pressed, and their scouts walk close enough to the forts to be seen. A leader called Ariach directs the watchers from a camp in the far west, and the garrison of Caifelle swears that Ariach is no drakoran at all. And the dead of the isle are not quiet: the drowned of the war walk out of the water as sodden warriors and waterlogged corpses, the corpse-lights burn on the marsh at night, and headless dead walk the fields, which the readers say is Morgana's mark even here, inside the wall.\n\nWhat lives there now. The isle is wet, loud and mostly small. Pixie urchins run riot in the fields and rob anyone they can, buggane and grindylows lurk in the pools, and the water itself has risen in places and walks: a flood in the west that the fishermen call Flood, a torrent in the east, and by Caifelle a water that sheds little globes of itself that wander away across the grass. Dragonflies as big as gulls hum over the marsh, and the greatest of them, Svarm, nests in the west with its brood. A grindylow called Caldech has a soul the Academy wants whole. An undead called Jocias has hidden from Arawn in the damp places by the castle for longer than anyone knew, and the Inconnu have come for him.\n\nWhy it matters to Albion. The Isle of Glass is the realm's foothold in the isles and its door to Avalon. Every company that goes against Morgana's dead, the dragons of Avalon, the turning gaol of Caer Sidi or the ogre hall of Krondon goes from Caer Gothwaite, and comes back to its chapel, or does not. The Inconnu say Avalon will be taken back from the causeway. The garrison says that before anyone walks the causeway, someone has to hold the wall.",
+  "legend": "The Isle of Glass is the Shrouded Isles starting zone, levels 1 to 30, reached by the ship from the dock in Camelot Hills to Gothwaite Harbor. Caer Gothwaite is the SI capital: every trainer, the vault, registrar and emblemer, teleporter, the chapel. The three forts on the northern earth wall (Anniogel in the middle, Caifelle in the east) have quests and merchants. Urchins, corpse lights and dragonflies near town, sodden warriors and drakoran further north. Commander Slor'vid only shows at the central of the three drakoran camps in the north-west between midnight and 3 game time, after you attack his lieutenants (Grrar is at the same fire; Yal'ris and Zudd at the other camps). Caldech the grindylow has to be killed twice for Soul of the Academy, Jocias flees into a damp skeleton when he dies, and the Alluvian by Caifelle keeps spawning little globules (up to twelve) that wander off. Ariach is at the single-tent camp in the far west with Martley and Araich. Every SI raid dungeon is reached from here or the isles beyond.",
+  "atmosphere": {
+    "firstEntry": [
+      "The Isle of Glass. The last firm ground.",
+      "Flat water. Drowned fields under it.",
+      "An earth wall in the north. Beyond it, Avalon.",
+      "Corpse-lights on the marsh. Urchins laughing.",
+      "The chapel bell at Caer Gothwaite. A company is out."
+    ],
+    "areas": [
+      {
+        "name": "Caer Gothwaite",
+        "x": 534958,
+        "y": 548813,
+        "z": 4755,
+        "radius": 2500,
+        "lines": [
+          "Caer Gothwaite. The realm's house in the isles.",
+          "A lamp on the chapel sill. Someone is still out.",
+          "Names over the chapel door, under the seven."
+        ]
+      },
+      {
+        "name": "Gothwaite Harbor",
+        "x": 525023,
+        "y": 542126,
+        "z": 3168,
+        "radius": 2500,
+        "lines": [
+          "Gothwaite Harbor. The ship from the king's hills.",
+          "Gulls, nets and an alehouse with named cups.",
+          "Frederik Rolby has news of the wall. It is bad."
+        ]
+      },
+      {
+        "name": "Anniogel",
+        "x": 528500,
+        "y": 511000,
+        "z": 4500,
+        "radius": 1800,
+        "lines": [
+          "Anniogel, the middle fort on the earth wall.",
+          "Across the wall, what was Avalon."
+        ]
+      },
+      {
+        "name": "Caifelle",
+        "x": 544500,
+        "y": 512000,
+        "z": 4500,
+        "radius": 1800,
+        "lines": [
+          "Caifelle, the eastern fort. Captain Hemrick's.",
+          "The water by the fort sheds little globes."
+        ]
+      },
+      {
+        "name": "the west fort",
+        "x": 522000,
+        "y": 510000,
+        "z": 4500,
+        "radius": 1300,
+        "lines": [
+          "The west fort watches the drowned land.",
+          "Flat water. Fields under it, if you look."
+        ]
+      },
+      {
+        "name": "the drakoran camps",
+        "x": 515892,
+        "y": 516212,
+        "z": 4500,
+        "radius": 2200,
+        "lines": [
+          "Three drakoran fires in the north-west.",
+          "Lieutenant Grrar keeps the central fire.",
+          "Commander Slor'vid comes in the small hours."
+        ]
+      },
+      {
+        "name": "Yal'ris's camp",
+        "x": 526363,
+        "y": 505186,
+        "z": 4500,
+        "radius": 1000,
+        "lines": [
+          "Lieutenant Yal'ris's fire, close under the wall.",
+          "Drakoran ravagers, waiting for an order."
+        ]
+      },
+      {
+        "name": "Zudd's camp",
+        "x": 505272,
+        "y": 526957,
+        "z": 4500,
+        "radius": 1000,
+        "lines": [
+          "Lieutenant Zudd's fire in the west.",
+          "Pillagers and plunderers back from the fields."
+        ]
+      },
+      {
+        "name": "the single-tent camp",
+        "x": 496500,
+        "y": 522500,
+        "z": 4500,
+        "radius": 1200,
+        "lines": [
+          "One tent, far west. Ariach directs the watchers.",
+          "Martley and Araich keep the tent's fire."
+        ]
+      },
+      {
+        "name": "the scout's path",
+        "x": 538844,
+        "y": 513037,
+        "z": 4500,
+        "radius": 1200,
+        "lines": [
+          "A Wandering Drakoran Scout, too near the forts.",
+          "He carries a sealed letter. For whom?"
+        ]
+      },
+      {
+        "name": "Haralder's field",
+        "x": 524260,
+        "y": 512717,
+        "z": 4500,
+        "radius": 900,
+        "lines": [
+          "Ewart Haralder's ghost walks below the wall.",
+          "He was on the wall the night it was raised."
+        ]
+      },
+      {
+        "name": "the western flood",
+        "x": 503315,
+        "y": 537764,
+        "z": 3500,
+        "radius": 1500,
+        "lines": [
+          "Flood walks the western fields, and its waters.",
+          "The water has risen here, and kept walking.",
+          "The Flood Waters keep close, like a stream to its bed."
+        ]
+      },
+      {
+        "name": "Alluvian's water",
+        "x": 546304,
+        "y": 516471,
+        "z": 3100,
+        "radius": 1200,
+        "lines": [
+          "Alluvian, in the water by Caifelle.",
+          "Little globules wander off across the grass."
+        ]
+      },
+      {
+        "name": "the eastern torrent",
+        "x": 545133,
+        "y": 524931,
+        "z": 3500,
+        "radius": 1000,
+        "lines": [
+          "Torrent rushes over the eastern fields.",
+          "Water where no stream runs."
+        ]
+      },
+      {
+        "name": "Svarm's marsh",
+        "x": 504894,
+        "y": 546156,
+        "z": 3500,
+        "radius": 1200,
+        "lines": [
+          "Svarm hums over the western marsh, and its spawn.",
+          "Dragonflies as big as gulls.",
+          "Svarm Spawn hum round the nest in the reeds."
+        ]
+      },
+      {
+        "name": "Caldech's pool",
+        "x": 538540,
+        "y": 524337,
+        "z": 3500,
+        "radius": 900,
+        "lines": [
+          "Caldech the grindylow lurks in the pool.",
+          "His soul is in two pieces. The Academy wants both."
+        ]
+      },
+      {
+        "name": "the damp places",
+        "x": 537500,
+        "y": 537000,
+        "z": 4000,
+        "radius": 1800,
+        "lines": [
+          "Damp skeletons by the castle. Jocias hides among them.",
+          "Sogrot rattles in the wet grass."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the isle of glass is the bit of avalon we kept. caer gothwaite is our capital in si",
+      "the earth wall across the north has three forts. anniogel, caifelle and the west one",
+      "caer gothwaite's chapel keeps a lamp on the sill while a company is out",
+      "nine chests of avalon's books are in the cellars at caer gothwaite, [heard|they say]",
+      "the drowned walk out of the water at dusk on the isle of glass",
+      "headless dead even inside the wall. morgana's mark, the readers say",
+      "gothwaite harbor fasts the night before a company climbs",
+      "the water's rising and walking on the isle of glass. flood, torrent, alluvian",
+      "on a still morning you can see drowned fields under the water off the isle",
+      "every si raid goes out from caer gothwaite and comes back to its chapel",
+      "the inconnu fight for us in the isles because morgana takes arawn's dead",
+      "the alehouse at gothwaite harbor names its cups for the dead"
+    ],
+    "rumour": [
+      "[heard|someone said] slor'vid only shows if you hit his lieutenants first",
+      "heard grrar sits at the same fire as slor'vid. yal'ris and zudd are at the other camps",
+      "[heard|someone said] ariach isnt a drakoran at all. ely at caifelle saw her close",
+      "heard the wandering drakoran scout is counting the forts' sentries",
+      "[heard|someone said] ewart haralder's ghost is still digging the wall",
+      "heard flood came up out of the drowned land and kept walking",
+      "[heard|someone said] alluvian makes little globules until theres a dozen of them",
+      "heard caldech's soul comes out in two pieces. kill him twice",
+      "[heard|someone said] jocias hops into a damp skeleton when you kill him",
+      "heard svarm came out of the burning isles with the war",
+      "[heard|someone said] martley went to the colleges before the war",
+      "heard araich bows to ariach. drakoran dont bow",
+      "[heard|someone said] torrent runs where theres no stream",
+      "heard the squires knock sogrot down for practice and he gets back up",
+      "[heard|someone said] the flood waters are the drowned farms' ditches walking",
+      "heard the svarm spawn get bigger every year. somebody burn those reeds"
+    ],
+    "tell": [
+      "isle of glass? the si starter zone. take the ship from the dock in camelot hills",
+      "is it hard? levels 1 to 30. drakoran near the wall in the north are the dangerous bit",
+      "whats there? caer gothwaite, gothwaite harbor, the three wall forts, drakoran camps",
+      "slor'vid and grrar are at the central camp of three in the nw, yal'ris north by the wall, zudd west",
+      "ariach, martley and araich are at the single-tent camp in the far west",
+      "the drakoran scout wanders east of anniogel, nw of caifelle",
+      "flood is in the western fields, svarm in the western marsh, torrent and alluvian in the east",
+      "caldech is in the pools east of the castle. jocias and sogrot in the damp bit south of it",
+      "ewart haralder walks the field below the wall near anniogel",
+      "flood waters? the little water elementals round flood in the west of the isle of glass",
+      "svarm spawn? the young dragonflies round svarm's nest in the west marsh. lowbie stuff"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Isle of Glass, the last firm ground. Ask of [caer gothwaite] and [gothwaite harbor], of the [wall], [anniogel] and [caifelle], of the [drakoran] and the [inconnu], or of the isle's own: [commander slor'vid] and [slor'vid's lieutenants], [ariach], [araich], [martley], the [wandering drakoran scout], [ewart haralder], [flood], [torrent], [alluvian], [svarm], [caldech], [jocias] and [sogrot].",
+    "topics": {
+      "caer gothwaite": "The realm's house in the isles: castle, chapel, market and the trainers of every order. Nine chests of Avalon's books lie in its cellars. Its chapel keeps a lamp on the sill and its door open while a company is out, and the names of the dead are cut over the door under the seven of Arthur's ship.",
+      "gothwaite harbor": "The harbor below Caer Gothwaite where the ship from the king's hills lands. Its people fast the night before a company climbs, and its alehouse names cups for the dead.",
+      "wall": "The earth wall thrown up across the north of the isle when the isles fell, with three ring-forts on it: [anniogel], [caifelle] and the west fort. Albion has held its line ever since.",
+      "anniogel": "The middle fort on the earth wall, where Kimmy Glaze pays for drakoran heads and the crier cries the war.",
+      "caifelle": "The eastern fort on the earth wall, under Captain Hemrick, with Ely, who has seen [ariach], and Nia Loaman of the Academy. By it lies [alluvian]'s water.",
+      "drakoran": "The dragon-men who came with Morgana raid the wall from three camps in the north-west under [commander slor'vid].",
+      "inconnu": "Arawn's people, who fight for Albion in the isles because Morgana takes Arawn's dead; they are hunting [jocias].",
+      "commander slor'vid": "Commander Slor'vid leads the drakoran raids on the earth wall from the central of the three camps in the north-west of the isle. He sits at the fire and does not show himself in the day; he comes in the small hours, between midnight and the third hour, and only when his lieutenants are hard pressed, as a drakoran commander comes to a line that is breaking. Frederik Rolby of Gothwaite Harbor wants his head. Kimmy Glaze of Anniogel pays for his lieutenants'.",
+      "slor'vid's lieutenants": "Lieutenant Grrar keeps the central drakoran fire beside his commander; Lieutenant Yal'ris keeps a fire close under the wall in the north, and Lieutenant Zudd a fire in the west among the pillagers. The drakoran say a lieutenant's work is to be struck first, so that the commander knows where the enemy is. Kimmy Glaze of Anniogel pays for each head separately, and asks for them before the commander's.",
+      "ewart haralder": "Ewart Haralder was a fisherman of Avalon who reached the Isle of Glass in a boat in the first year of the war and was digging on the earth wall the night it was raised. He died there, and he is still there, a ghost walking the field below the wall with a spade on his shoulder, angry at anyone who stands where the next bank should go. He does not seem to know the wall is finished.",
+      "flood": "Flood is the risen water of the western fields, a water elemental the fishermen named for what it did: it came up out of the drowned land one spring and kept walking, and its lesser waters walk round it. The readers say the drowned land is trying to come back. The farmers of the western fields say it has, and has taken their fields first, and that the readers do not farm.",
+      "alluvian": "Alluvian is the water by Caifelle that sheds little globes of itself, one after another, until there are a dozen of them wandering the grass round the fort, a nuisance to the horses and a danger to the young. Captain Hemrick's men kill the globes and Alluvian makes more. The readers of the college of the old tongues say the water is remembering being rain.",
+      "ariach": "Ariach directs the drakoran watchers from a single tent in the far west of the isle, with a sealed letter of plans that Frederik Rolby wants. Ely of Caifelle, who has seen Ariach close, swears Ariach is no drakoran at all, and will not say what Ariach is instead. The drakoran obey Ariach without question, which is not how drakoran usually treat anything that is not drakoran.",
+      "wandering drakoran scout": "A wandering drakoran scout of Clan Dry'ak walks too close to the forts, east of Anniogel and west of Caifelle, with a sealed letter in his harness. Ely of Caifelle wants it read. The garrison says the scout wanders because he is lost; Ely says he wanders because he is counting the forts' sentries, and that he has counted them correctly every time.",
+      "svarm": "Svarm is the greatest of the dragonflies of the western marsh, as big as a gull and as quick as one, and it nests among the reeds with its brood of spawn about it. The fishermen say it came with the war, out of the burning isles, and that before the war the dragonflies of the Isle of Glass were the size of a thumb. Svarm's brood are bigger every year.",
+      "araich": "Araich is a drakoran warrior who keeps the fire of Ariach's single tent in the far west, beside Martley. He is the tent's guard and Ariach's shield, and the scouts who report to Ariach report through him first. The garrison of the west fort says Araich has been seen bowing to Ariach, which no drakoran of the camps does to anyone below a commander.",
+      "martley": "Martley is a drakoran mage of the single-tent camp in the far west, Ariach's reader of letters. Carys of Caer Gothwaite wants Martley's body brought to Adam Glaze, for reasons she calls the castle's and Adam calls his own, and both of them send it on to Tage. Martley is said to have been a student of the colleges before the war, which would make him the only drakoran who ever was.",
+      "caldech": "Caldech is a grindylow of the pools east of the castle, and the Academy wants his soul. Magess Daphnea of Caer Gothwaite says it comes out of him in two pieces, one each time he dies, and that both pieces are needed in the gem before Nia Loaman of Caifelle can make anything of it. The grindylows say Caldech has been killed for his soul so often that he no longer minds.",
+      "torrent": "Torrent is the water that runs over the eastern fields where no stream runs, a small fast elemental that the farmers of the east call by its noise. It came up in the same spring as Flood in the west and the globule-shedding water by Caifelle, and the readers count the three of them as one sign: the drowned land of the isles coming back up through the last firm ground.",
+      "jocias": "Jocias is an undead who hid from Arawn in the damp places by Caer Gothwaite for years, among the damp skeletons, until the Inconnu fell sick and only the Inconnu, and Tage traced the sickness to the swamp goo in a cellar. When Jocias is caught he flees out of his body into the nearest damp skeleton, and must be caught again there. Master Reginald sends the young after his soul for the Inconnu, who are patient.",
+      "sogrot": "Sogrot is a washed-up skeleton of the damp places north of Caer Gothwaite, one of the war's drowned, who came up out of the water and lay down on the grass and never got up properly. He rattles at anyone who comes near and is weaker than a child. The castle's squires knock him down for practice. He gets up again.",
+      "flood waters": "The Flood Waters are the lesser waters that walk the western fields round [flood], four of them that keep close to it as a stream keeps to its bed. The fishermen of Gothwaite Harbor say they are the old ditches and field drains of the drowned farms, risen with the great water and unable to find their way back down, and that is why they never stray from it. Kill Flood and its waters still walk; kill its waters and Flood runs on alone.",
+      "svarm spawn": "The Svarm Spawn are the brood of [svarm], the great dragonfly of the western marsh: half a dozen young as big as hawks that hum round their parent's nest in the reeds. The harbor children are told the spawn are what the marsh makes of a summer's midges when nobody drains it. Elin Saer writes that they are bigger every year, and that every year the harbor-reeve's men say they will burn the reeds, and do not."
+    }
+  },
+  "book": {
+    "title": "The Harbor-Reeve's Book of Gothwaite",
+    "pages": [
+      "The Harbor-Reeve's Book of Gothwaite, kept by Elin Saer, reeve of the harbor, who sees every soul who comes to the isles and most of those who leave. The ship from the king's hills lands at my quay. I write the names. In the first years of the war I wrote the names of those who came off the burning isles in boats, readers and fishermen and children, and the book of those years is in the castle with the nine chests of Avalon's books. My book is shorter. It has two columns, as the Snowdonia roll has. I am told the captains there read the second one first. So do I.",
+      "Of the wall. When the isles fell the people who reached this island threw up an earth wall across its north and built three forts on it, and the realm has held that line ever since. Anniogel is the middle fort and Caifelle the eastern, and the west fort has never had a name that anyone agrees on; the fishermen call it the west fort and the garrison calls it worse. A ghost walks below the wall, Ewart Haralder, who was digging on the night it was raised. He does not seem to know the wall is finished.",
+      "Of the drakoran. They harry the wall from three camps in the north-west, and their commander Slor'vid sits at the central fire and does not show himself until the small hours, and then only when his lieutenants are hard pressed. Kimmy Glaze at Anniogel pays for their heads. A leader called Ariach directs their watchers from one tent in the far west, and Ely of Caifelle, who has seen Ariach, says Ariach is no drakoran. Ely will not say what Ariach is. Ely drinks at the alehouse when down from the fort, and always sits with a back to the wall that faces west.",
+      "Of the waters. The water has risen in places on this isle and does not lie down. In the west a flood walks the fields with its waters round it, and the fishermen call it Flood. In the east a torrent runs where no stream runs. By Caifelle there is a water that sheds little globes of itself, one after another, and the globes wander off across the grass and are a nuisance to the fort's horses. The readers say the drowned land is trying to come back. The garrison says the readers say that about everything.",
+      "Of the dead. The war's drowned walk out of the water at dusk as sodden warriors, and the corpse-lights burn on the marsh, and headless dead walk the fields, which the readers say is Morgana's mark even here. By the castle, among the damp skeletons, an undead called Jocias hid from Arawn for years, and nobody knew until the Inconnu fell sick and only the Inconnu, and Tage in the castle traced the sickness to the swamp goo in a cellar. Jocias runs from one body to the next when he is caught. The Inconnu are patient.",
+      "Of the small things. Pixie urchins rob the fields and the quay and my own pockets. Buggane and grindylows lurk in the pools; one grindylow, Caldech, has a soul the Academy wants, and Magess Daphnea says it comes out in two pieces and both are needed. Dragonflies as big as gulls hum over the marsh, and the greatest of them, Svarm, nests in the west with its brood. The fishermen say the isle was the quietest in Avalon's country once. I believe them. I came here as a girl, in a boat, at night, and it was quiet then."
+    ]
+  },
+  "bosses": [],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "drakoran",
+    "arawn",
+    "realm-of-camelot"
+  ]
+}

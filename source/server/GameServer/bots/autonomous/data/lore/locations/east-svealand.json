@@ -1,0 +1,357 @@
+{
+  "id": "east-svealand",
+  "name": "East Svealand",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "zones": [
+    101
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "tomte",
+    "dark-pack",
+    "houses-of-midgard"
+  ],
+  "summary": "Midgard's eastern farm country beside Jordheim: Vasudheim by the city gates, Audliten in the west, Dvalin in the south, the tomte on their hill, the thralls who broke their chains, and the door to Nisse's Lair.",
+  "facts": [
+    {
+      "text": "East Svealand is zone 101 of region 100. Its towns (Areas): Vasudheim in the east (774,405/755,429), Audliten in the west (727,221/760,595) and Dvalin in the south-west (725,166/789,948). Jordheim's two eastern gates open beside Vasudheim; Nisse's Lair opens in the south (756,189/791,086).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Area and ZonePoint tables (0.37b world data)"
+    },
+    {
+      "text": "Its folk: rock crabs, army ants, smiera-gatto, nordic and roaming dirges, sveawolf mothers and sveawolves (Dark Pack), lupine snarlers and gnawers, green serpents, black mauler juveniles, fragile and dwarf bone skeletons, roaming and escaped thralls, wildlings, tomte pillagers, thugs, skirmishers and aggressors (Tomte), envy drakelings, silverscale drakelings and rugged dwarven ponies.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 101 (0.37b world data)"
+    },
+    {
+      "text": "Queen Major (level 15, class QueenMajor) stands among the army ants untargetable and unseen until twenty of her army ant soldiers have died; Snarls (level 7, class Snarls) is hidden the same way until three of his lupine snarlers have died.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/MidgardMobs/QueenMajor.cs; source/server/GameServer/scripts/mobs/MidgardMobs/Snarls.cs"
+    },
+    {
+      "text": "The thrall keeper on the road north-west of Vasudheim: 'The thralls revolted and escaped on our way to Mularn. I would not ask you to return them alive, but bring me their chains.'",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Epic and story voices: Lynnleigh on Striders' Isle near Vasudheim at night ('An End to the Daggers', 'The Red Dagger'); Jana in Vasudheim on Fjall and the fenrir ('The Desire of a God'); Arnfinn the smith and Aud the healer in Vasudheim and Cnute in Audliten ('Saving the Clan'); Scholar Kjell of Vasudheim and Gorne of Audliten ('The Rod and the Scholars').",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Silvertone of Vasudheim gives 'The Legend of Fenrir's Folly', described in its own text as the winning tale of the 2002 Herald quest contest.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Thorgil of Audliten's quests: his daughter Thorhalla vanished at dusk (Nisse's Lair), his house was taken by tomte scavengers, and Hulda the shield merchant's cousins 'watched them and learned everything about them' after their sister was attacked as a child.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Frimeth of Vasudheim's 'Hole of the Dead': slay a dwarf bone skeleton 'while wielding your House gift, in the depression west of the crossroads to Mularn and Audliten after nightfall'.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "In Swedish svart moln is 'black cloud' (Svartmoln, a bear by the Vasudheim bridge); Svealand is the old heartland of the Svear.",
+      "provenance": "myth",
+      "source": "Swedish (to verify for the designers' intent)"
+    },
+    {
+      "text": "The broken chains, the tomte hill's grudge, the Averrsons' watch and the Hole's nightfall custom are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "East Svealand is the realm's oldest farmland, the country the jarls fed on when Jordheim was still a village over its dead. The skalds say the Svear came into it from the east with their cattle and their gods and called it after themselves, and that the dwarves were already in its hills, breeding the shaggy ponies that still run wild there. Three towns grew on it. Vasudheim stands by Jordheim's eastern gates, a market town with a bridge, a house of healing and more smiths than it needs. Audliten lies west, at the crossing of the roads to Mularn and to the coast, with a dwarven guard at its gate and a fort across the water where an old warrior named Sveck keeps his watch. Dvalin is south, a fort town of drengs, named, the dwarves say, for one of their own who went into the rock and did not come out.\n\nThe farms of East Svealand were worked by thralls, as farms were everywhere in the jarls' days, and that is where its trouble began. A thrall keeper was driving a string of them up the road to Mularn when they turned on him, broke their chains and ran. Some of them are still on the road. The others went into the fields and the hills, and their children were born free and wild, and nobody in Vasudheim will say which of the roaming men in the eastern fields are thralls' sons and which are bandits. The thrall keeper still stands on the road north of the town and pays for chains. He has never asked for a thrall back alive.\n\nThe tomte were the farms' own. They are the house-folk of the old stories, small and bearded, who keep a steading's luck if they are given their bowl at midwinter and turn on it if they are not, and East Svealand's farms forgot their bowls. The tomte left the houses, took the hill south of the middle road and made it theirs, and they have been taking things back from the farms ever since: tools and cattle, then houses, then children. Thorgil of Audliten lost his house to them and then his daughter, who walked out to the merchants one evening and did not come home. The door they went down through is in the south of the land: Nisse's Lair, where the tomte keep their chief and their ledger. Hulda the shield merchant's cousins, the Averrsons, have watched the tomte ever since they took a swing at their sister when she was small, and know more about them than the tomte would like.\n\nOlder things walk the land too. In a hollow west of the crossroads to Mularn and Audliten, the dwarves' dead lie badly: bone skeletons of the old hill-dwarves who rise after nightfall, and the people of Vasudheim send the young there with their first gift from their house in their hands, because the dead in the Hole are said to know a house's gift and to lie down for it. The dirges walk the north, the shapes of old songs that were never finished, and on Striders' Isle in the lake, where the water striders skate, a woman named Lynnleigh waits at night for anyone who brings her a red dagger.\n\nIn the wild places the sveawolves of the Dark Pack raise their young in the open fields and their mothers run the coast; the army ants keep a camp in the south-west under a queen nobody sees until her soldiers have fallen; the envy drakes nest by the tomte hill. The wildlings watch the road west of Vasudheim and take ears for trophies, the farmers say, as the farmers take theirs.\n\nEast Svealand matters because it is where the realm's stories go to be asked about. Jana of Vasudheim knows the fenrir; Silvertone tells the tale of Fenrir's Folly to anyone who will stand still; Scholar Kjell and Gorne of Audliten lost the book of the Rod of Mimir to the vendo; Cnute of Audliten lost his son to the jotun Valthjof; Arnfinn the smith and Aud of the healing house brew the remedy that Danica's mystics carry from the wyvern's poison. The vale's young come east to Svealand when they have chosen their gods, and the farms of the Svear, which forgot their bowls, teach them what forgetting costs.",
+  "legend": "East Svealand is the 5-15 zone just east of Jordheim (the city's east gates come out by Vasudheim). Vasudheim is the main town (seer, viking, mystic and rogue trainers, healer, smith), Audliten is west (Cnute, Thorgil, Gorne, the dwarven guard), Dvalin is the fort town in the south-west. Rock crabs and army ants for easy xp; the ant camp in the south-west has Queen Major, who only appears after you've killed twenty of her soldiers; Snarls west of Vasudheim works the same way with three snarlers. The tomte hill south of the middle road is Thorgil's quest line (Tomte Problems, Tomte Plot, Thorgil's Daughter) and leads into Nisse's Lair, whose door is in the south. Lynnleigh on Striders' Isle only shows at night for the viking epic and The Red Dagger. The Hole of the Dead west of the Mularn crossroads needs your house gift equipped after dark. Bring a lock of hair to Lilib from Darksong. Folk say the dwarf bones in the Hole lie down for a house's gift because they remember being given one.",
+  "atmosphere": {
+    "firstEntry": [
+      "East Svealand. The jarls' farmland, and its debts.",
+      "Fields, ponies, and a broken chain in the ditch.",
+      "The tomte are watching from their hill.",
+      "Every farm here forgot a bowl once."
+    ],
+    "areas": [
+      {
+        "name": "Vasudheim",
+        "x": 774405,
+        "y": 755429,
+        "z": 4600,
+        "radius": 3000,
+        "lines": [
+          "Vasudheim. A bridge, a market, too many smiths.",
+          "Silvertone is telling Fenrir's Folly again.",
+          "Jana watches the north for word of the fenrir."
+        ]
+      },
+      {
+        "name": "the Vasudheim bridge",
+        "x": 776724,
+        "y": 753563,
+        "z": 4601,
+        "radius": 900,
+        "lines": [
+          "Svartmoln, the black cloud, prowls by the bridge.",
+          "Kyba's village wants the bear's hide."
+        ]
+      },
+      {
+        "name": "Audliten",
+        "x": 727221,
+        "y": 760595,
+        "z": 4500,
+        "radius": 4500,
+        "lines": [
+          "Audliten. Cnute mourns a son; Thorgil, a daughter.",
+          "Old Sveck keeps watch in the fort across the water."
+        ]
+      },
+      {
+        "name": "Dvalin",
+        "x": 725166,
+        "y": 789948,
+        "z": 4550,
+        "radius": 1500,
+        "lines": [
+          "Dvalin. Drengs on the wall, named for a lost dwarf.",
+          "Olag comes round the camp at night."
+        ]
+      },
+      {
+        "name": "Darksong's ground",
+        "x": 732279,
+        "y": 786509,
+        "z": 4638,
+        "radius": 1200,
+        "lines": [
+          "Darksong walks with the dirges, unfinished.",
+          "A lock of hair, and a song that will not end."
+        ]
+      },
+      {
+        "name": "Striders' Isle",
+        "x": 758500,
+        "y": 757800,
+        "z": 4500,
+        "radius": 1500,
+        "lines": [
+          "Striders' Isle. Water striders skate the shallows.",
+          "At night a woman waits here for a red dagger."
+        ]
+      },
+      {
+        "name": "the thrall keeper's road",
+        "x": 763249,
+        "y": 745128,
+        "z": 4500,
+        "radius": 1800,
+        "lines": [
+          "The thrall keeper still pays for chains.",
+          "The thralls broke free here and never went back."
+        ]
+      },
+      {
+        "name": "Gib's hill",
+        "x": 757000,
+        "y": 746820,
+        "z": 4770,
+        "radius": 900,
+        "lines": [
+          "Gib's hill. Tric's list is here somewhere.",
+          "Scrip guards Gib's followers like a dog."
+        ]
+      },
+      {
+        "name": "the snarlers' den",
+        "x": 761574,
+        "y": 749737,
+        "z": 4481,
+        "radius": 1000,
+        "lines": [
+          "Snarlers circle something you cannot see.",
+          "Snarls waits until his snarlers are gone."
+        ]
+      },
+      {
+        "name": "the Hole of the Dead",
+        "x": 749269,
+        "y": 745796,
+        "z": 4500,
+        "radius": 2000,
+        "lines": [
+          "The Hole. Old dwarf bones rise after dark.",
+          "The dead here know a house's gift."
+        ]
+      },
+      {
+        "name": "the middle fields",
+        "x": 751311,
+        "y": 762093,
+        "z": 4744,
+        "radius": 3000,
+        "lines": [
+          "Ick crawls the middle fields, small and biting.",
+          "Edigo of the tomte watches the farms he left."
+        ]
+      },
+      {
+        "name": "tomte hill",
+        "x": 752900,
+        "y": 784000,
+        "z": 4800,
+        "radius": 3500,
+        "lines": [
+          "Tomte hill. The house-folk keep what they took.",
+          "Envy Drake Dorga nests by the hill.",
+          "Smack waits to the east of the hill."
+        ]
+      },
+      {
+        "name": "the tomte aggressors",
+        "x": 766000,
+        "y": 770000,
+        "z": 4800,
+        "radius": 3500,
+        "lines": [
+          "Bonk leads the tomte aggressors.",
+          "Morra runs here with the sveawolf mothers."
+        ]
+      },
+      {
+        "name": "the south coast",
+        "x": 746582,
+        "y": 800107,
+        "z": 5263,
+        "radius": 2500,
+        "lines": [
+          "The tomte camp on the coast. Ocug leads it.",
+          "Salt wind, and a wreck down on the shore."
+        ]
+      },
+      {
+        "name": "the ant camp",
+        "x": 739600,
+        "y": 787500,
+        "z": 4704,
+        "radius": 2500,
+        "lines": [
+          "The army ants march for a queen nobody sees.",
+          "When the soldiers thin, Queen Major comes.",
+          "Riv the crab guards the ant camp road."
+        ]
+      },
+      {
+        "name": "Nisse's door",
+        "x": 756189,
+        "y": 791086,
+        "z": 4800,
+        "radius": 1200,
+        "lines": [
+          "The door to Nisse's Lair. The tomte went down here.",
+          "Thorhalla walked this way at dusk."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "east svealand is the old farmland, the jarls fed on it when jordheim was a village",
+      "the svear came in from the east with their cattle and named the land for themselves",
+      "the thralls broke their chains on the road to mularn. some are still out there",
+      "the thrall keeper never asks for a thrall back alive, only the chains",
+      "the tomte were the farms own house folk. the farms forgot the midwinter bowl",
+      "the tomte took the hill south of the middle road and they take things back from the farms",
+      "thorgil of audliten lost his house to the tomte, then his daughter",
+      "nisses lair door is in the south of east svealand, the tomte keep their chief down there",
+      "the averrsons have watched the tomte since one swung at their sister when she was small",
+      "the dwarf dead in the hole of the dead lie down for a houses gift",
+      "dvalin is named for a dwarf who went into the rock and didnt come out",
+      "aud and arnfinn in vasudheim make the cure danicas mystics carry"
+    ],
+    "rumour": [
+      "the dirges are old songs nobody finished, walking",
+      "lynnleigh on striders isle only comes out at night",
+      "queen major never comes out while her army ant soldiers are many",
+      "envy drake dorga watches every cart on the middle road",
+      "ick is just a nasty little biter in the middle fields, not the spraggon one the hibs talk about",
+      "the ant queen only shows herself when her soldiers are thin on the ground",
+      "olag comes round the dvalin camp at night. aesirdia wants him gone",
+      "ocug is the redcap looking one at the tomte camp up the south coast",
+      "riv is a crab that thinks its a lot bigger than it is",
+      "bonk leads the tomte aggressors north-east of tomte hill, he hits like his name",
+      "dorga the envy drake is a she, hauk wants her eye",
+      "darksong is a ghost by dvalin. rana sends her healers to put him to rest",
+      "edigo and smack are the tomte that went after thorgil",
+      "scrip runs with gib on the hill past the thrall keeper",
+      "gib stole trics list. a goblin with a book, figures",
+      "snarls wont show himself till his snarlers are dead",
+      "svartmoln means black cloud. its a bear by the vasudheim bridge",
+      "morra runs the coast by the shipwreck with the sveawolf mothers",
+      "the thralls broke their chains on the mularn road and never went back"
+    ],
+    "tell": [
+      "east svealand is 5 to 15, vasudheim is right outside jordheims east gates",
+      "audliten is west, dvalin is the fort town south west",
+      "envy drake dorga is south by tomte hill among the envy drakelings",
+      "ick is a mite in the fields between audliten and vasudheim, about 8",
+      "queen major is in the ant camp south west, kill her soldiers and she comes out",
+      "olag is near dvalin at night, covet wiley from aesirdia",
+      "ocug is at the tomte camp on the south coast, 12",
+      "riv is a rock crab by the ant camp road, 12",
+      "bonk is with the tomte aggressors east of the middle road, 11",
+      "dorga is south among the envy drakelings, hunt for dorga from hauk",
+      "darksong is a ghost by dvalin with the dirges, darksongs dirge from rana",
+      "edigo and smack are tomte for thorgils tomte plot, edigo middle, smack south east",
+      "scrip and gib are on the hill by the left fork past the thrall keeper",
+      "snarls is west of vasudheim, kill his three snarlers first",
+      "svartmoln is the bear near the bridge by vasudheim, kyba wants the hide",
+      "morra is up the coast near the shipwreck past the tomte camp, a deed of old"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"East Svealand, the old farmland of the jarls, by Jordheim's eastern gates. [Vasudheim], [Audliten] and [Dvalin]. The [thralls] broke their chains on its road, the [tomte] took a hill from its farms, and the dead of the [Hole] still rise after dark.\"",
+    "topics": {
+      "Vasudheim": "The market town by Jordheim's eastern gates, with its bridge. Jana knows the fenrir, Silvertone tells [Fenrir's Folly], Scholar Kjell lost a book, and Arnfinn and Aud brew the wyvern cure. [Svartmoln] prowls the bridge.",
+      "Audliten": "The town at the crossing of the Mularn and coast roads, with a dwarven guard. Cnute lost his son to the jotun Valthjof; Thorgil lost his house and his daughter to the [tomte]. Old Sveck keeps the fort across the water.",
+      "Dvalin": "A fort town of drengs in the south-west, named for a dwarf who went into the rock. Aesirdia wants [Olag] gone; Lilib takes [Darksong]'s lock of hair.",
+      "thralls": "Thralls who turned on their keeper on the road to Mularn, broke their chains and ran. Their children were born free in the fields. The keeper still pays for chains and never asks for a thrall alive.",
+      "tomte": "The house-folk of the old farms, who keep a steading's luck for a bowl at midwinter. The farms forgot. The tomte took the hill south of the middle road and the door to [Nisse's Lair], and take things back. See [Averrsons].",
+      "Nisse's Lair": "The door in the south of the land where the [tomte] went down, and where Thorgil's daughter Thorhalla walked at dusk. The tomte keep their chief and their ledger below.",
+      "Averrsons": "Edvard and Emmerick Averrson, Hulda the shield merchant's cousins, who have watched the [tomte] since one swung at their sister when she was small. Edvard keeps the top of the guard tower; Emmerick is at Dvalin. Edvard wrote the watch down.",
+      "Hole": "A hollow west of the crossroads to Mularn and Audliten where the bones of old hill-dwarves rise after nightfall. The young go with their house's first gift in hand, because the dead are said to lie down for it.",
+      "Fenrir's Folly": "Silvertone's tale: the sun-splinter of the great wolf's folly, the fire giants of Muspelheim, Londar's tower, and the Revenant of Raumarik at the end of it.",
+      "Dark Pack": "The sveawolves of the Svealands, who raise their young in the open fields while the mothers run the coast. [Morra] runs with them; [Snarls] is a different kind.",
+      "Ick": "A small biting thing of the mite kind in the middle fields between Audliten and Vasudheim. Yver of Haggerfel, who studies the Ickerius spider and the plague rats that eat its young on the isle near Audliten, says Ick is no relation, only a pest that took a scholar's word for a name. The farmers say it bites like a scholar, too. It comes at anyone in its field.",
+      "Queen Major": "The queen of the army ants' camp in the south-west, whom nobody sees. The ants march for her and die for her, and the Dvalin drengs say she shows herself only when her soldiers are thin on the ground, the way a jarl comes out of his hall when the shield-wall is gone. Then she comes herself, and whatever soldiers are left come with her.",
+      "Olag": "A tomte-shaped thing seen round the camp at Dvalin at night, by the light of the drengs' fires. Aesirdia the shield merchant pays to have him gone. The drengs say he is a tomte who would not go down to Nisse with the others, and wants something of theirs; nobody has found out what, because he does not come by day.",
+      "Ocug": "The leader of the tomte camp on the south coast, a broad red-capped one among the skirmishers, pillagers and thugs. The Averrsons say the coast camp was the first the tomte made after they left the farms, and that Ocug was a tomte of a fisherman's house, which is why he chose the shore. He keeps it like a steading, against everyone.",
+      "Riv": "A rock crab on the road by the ant camp that is larger and angrier than any crab has a right to be. The children of Dvalin say it has eaten an army ant soldier whole, shell and all. Nobody has ever seen it do so, but nobody has ever seen it do anything else, either. It does not back away.",
+      "Bonk": "The big tomte who leads the aggressors east of the middle road. The Averrsons say tomte take their names from the first thing they did to a farmer, and that Bonk's farmer had a hard head and is still telling the story in Vasudheim. He fights with his aggressors round him. The farmer, asked, says it was a fair blow and he would like another go.",
+      "Envy Drake Dorga": "A she-drake of the envy drakes who nest by the tomte hill, and the oldest of them. Trapper Jora of Audliten wants her eye for Hauk of Jordheim's hunters. The envy drakes are named for the way they look at what others have; Dorga looks longest. The trappers say she never leaves the nest by the hill, and that she watches every cart on the middle road as if she were adding it up. Her eye is wanted because it never closes.",
+      "Darksong": "A ghost among the nordic dirges near Dvalin: a skald, the drengs say, who began a song for the dead and died before the last verse. Rana of Jordheim sends her young to put him to rest and bring a lock of his hair to Lilib in the fort before Dvalin. He is never at rest long. The drengs who have heard him say the song is a good one.",
+      "Edigo": "A tomte of the middle fields, the one who kept Thorgil of Audliten's house before the house forgot him. Thorgil's 'Tomte Plot' runs through the Averrsons to Edigo and to Smack. The Averrsons say Edigo still goes past the house at night to see whether the bowl has come back. It has not. Thorgil sets the bowl out now, every night. Edigo has not come in.",
+      "Smack": "A tomte east of the hill among the skirmishers, Edigo's partner in the plot against Thorgil. Named, the Averrsons say, for what he did to Thorgil's grandfather; the family has never said it was undeserved. He fights for the hill. Smack keeps the east side of the hill for the others and is the first of the tomte to come down on anyone who climbs it. Thorgil's children are told never to answer him back.",
+      "Scrip": "A grey wolf of the wolf-nipper kind that runs with Gib's goblins on the hill by the left fork past the thrall keeper, like a dog that chose bad company. Tric of Vasudheim says Scrip bit him when Gib took his list, and that he would like the bite back too. Vasudheim's children call him the goblins' dog, and he answers to it.",
+      "Gib": "A little goblin who leads his followers on the hill by the left fork of the main road, past the thrall keeper. He stole Tric's list, a book of what Tric owes and is owed, and Vasudheim is uneasy about what a goblin might do with it. [Scrip] runs with him. Tric says the list holds half of Vasudheim's debts.",
+      "Snarls": "A great wolf of the lupine snarlers west of Vasudheim, whom nobody sees while his snarlers live. The hunters of Vasudheim say he lets his young do the snarling and comes only when they are gone, and that every one of them who dies brings him closer. When the last of them falls, he is there. His den is west of Vasudheim among the snarlers.",
+      "Svartmoln": "A black bear, the black cloud, who roams near the Vasudheim bridge and comes down on the cattle like weather. Kyba, who lives next to the healer, wants his hide for the village. The bridge-keepers say he has a den under the far bank and has never once crossed the bridge. The cattle know his smell and will not graze the far bank.",
+      "Morra": "A great wolf of the [Dark Pack] who runs the coast near the shipwreck past the tomte camp with the sveawolf mothers. Aleaniver of Audliten pays for his hide and calls the hunt 'a deed of old', because Audliten's grandfathers hunted Morra's grandfathers on the same shore. The old men of Audliten say the wolf they hunted was called Morra too, and the one before that."
+    }
+  },
+  "book": {
+    "title": "The Averrson Watch",
+    "pages": [
+      "Edvard Averrson, of the top of the guard tower, set down what he and his brother Emmerick have watched since the tomte struck at our sister when she was four. She is grown now and laughs about it. We do not. A tomte struck a child of our house in our own yard, and that was the summer we understood that the house-folk had stopped being ours. My grandmother said it was the bowl. Every steading in Svealand set a bowl of porridge out for its tomte at midwinter, with butter on it, and every steading that forgot one had a bad year. Then a year came when most of them forgot. The tomte did not have a bad year. They left.",
+      "They took the hill south of the middle road first. Emmerick counted them going, from the tower, a long line of small bearded shapes with tools on their backs, and every tool was a farm's. They took the south coast next, under a broad one in a red cap who had kept a fisherman's house, and then the fields east of the road. They do not plunder like hobgoblins. They take back. A plough, a cow, a door. Thorgil of Audliten lost his whole house to them, and then his daughter Thorhalla walked out to the merchants one evening and did not come back, and the tracks went south, to the door in the hill they call Nisse's Lair.",
+      "We have names for the ones we know. Edigo, who kept Thorgil's house, and goes past it at night still. Smack, who did what his name says to Thorgil's grandfather. Bonk, who leads the ones east of the road. The tomte take their names from the first thing they did to a farmer, Emmerick thinks; I think the farmers gave them the names, and the tomte kept them out of spite. Either way they answer to them. Emmerick went down Nisse's door once, a little way, and came back up with a page of a ledger in a hand he could not read, every line ending in a bowl.",
+      "The tomte are not the land's only trouble, only its most patient. The thralls broke their chains on the Mularn road before I was born, and their children run the eastern fields. The dwarf dead rise in the Hole west of the crossroads after dark, and lie down again for a house's gift, because, Frimeth says, the old hill-dwarves gave each child a gift at its naming, and the bones remember. The army ants march in the south-west for a queen nobody has seen. The drengs at Dvalin say she comes out only when there are few enough soldiers left that she must. I have not been there to see. I believe them; it is what a queen does.",
+      "My brother says we should write this for the young who come over from the vale with their gods new on them, and I agree, so here is the end of it. The farms of Svealand forgot a bowl, and everything on this page followed. When you have a house of your own, set out the bowl. It costs porridge. The other thing costs a daughter. Thorgil would tell you so, if he would talk about it, and he will not. He sits at his window in Audliten and looks south, and sets a bowl out every night, all year round, for any of them who will come."
+    ]
+  },
+  "bosses": []
+}

@@ -1,0 +1,136 @@
+{
+  "id": "lich-lord-ilron",
+  "name": "Lich Lord Ilron",
+  "catalogKey": "caer-sidi/lichlordilron",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "aliases": [
+    "ilron"
+  ],
+  "facts": [
+    {
+      "text": "Level 79, 100,000 health. Raises four images of himself (level 70) that fight linked with him; tether 2,000.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/LichLordIlron.cs"
+    },
+    {
+      "text": "Existing bot chat says most Caer Sidi stories end at him.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "Lich Lord Ilron: real one level 79, 100,000 health, tether 2,000; four images level 70, about 10,000 health, mesmerize within 300, die with him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/LichLordIlron.cs"
+    },
+    {
+      "text": "Ilron's hill god and the pin-spring above Ludlow, the images as his younger selves, Cadoc asleep in Sir Tegid's company, and the Black Mountains squire are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Lich Lord Ilron was the priest of a small hill god of the old province, a god of one spring and three stones, and he had served it so long he learned its one secret, how to wait. When he died he would not go down the road to Annwn, and the keepers had to come up it for him; he was the first of the priests of the galleries, those who found their way back from death. The Camelot loremasters think his spring is above Ludlow in the Black Mountains, where shepherds still let a pin fall into the water. On the night of the rising he took a gallery and filled it with himself: images of the priest as he was in the years of his waiting.\n\nOnly one Ilron has aged a day. The images are his younger selves, the print of his waiting, and they do not age; the real priest is older, heavier in the hand, harder in the eye, and the dead of the galleries say whoever asks which priest has lived longest is looking at the right one. Men who stand too close to the young ones fall still as sleepers. The images go out like breath on glass when he falls; a company that strikes them spends itself on shadows he can make again.\n\nSir Tegid of Caer Gothwaite's company, the first to climb, broke there when its wizards burned the three nearest priests and the next; Brother Cadoc fell asleep among the young ones and woke to find Tegid dead and half the company with him. Tegid's is the first name on the chapel sill, and Cadoc reads it standing.\n\nDame Ysolde set her company along the wall out of the young priests' reach and studied them, and a squire of the Black Mountains found the one who stood like his grandfather at the pin-spring. Two died before that. Caer Gothwaite now tells every company: look for the one who has been there longest.",
+  "legend": "Ilron comes with four images of himself and they are real enough to hurt. The real Ilron is level 79 with 100,000 health; the images are level 70 with about 10,000 each, so the one that cons highest is him. Target him, not them: when he dies they all go. The images mesmerize anyone standing within about 300 of them, so the healers and casters keep well clear of the young-looking ones and the off-tanks hold the images away from the raid. Do not spread your damage over all five. He walks home if you drag him more than about 2,000, so fight him in his gallery. This is where most Caer Sidi raids stopped in 2003; take a few seconds to pick the right target before anyone casts. Caer Gothwaite says: look for the one who has been there longest.",
+  "yells": {
+    "aggro": [
+      "Which of me will you strike first? Choose well.",
+      "We are all Ilron. Only one of us matters.",
+      "Look closely. Closer."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Behold me. And me. And me."
+      }
+    ],
+    "death": [
+      "One of me... was enough...",
+      "You chose rightly. How tiresome."
+    ],
+    "slay": [
+      "You chose wrongly.",
+      "That was not me.",
+      "The shadow fooled you too."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four of him. Only one casts a shadow.",
+      "Five figures in the gallery. One shadow is true."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Lich Lord Ilron divides into images of himself!"
+      }
+    ],
+    "realmFirstKill": "Lich Lord Ilron is dust. The tales go further now."
+  },
+  "botLines": {
+    "briefing": [
+      "ilron: real one is 79, images are 70. target the one that cons highest",
+      "images mez anyone within 300, casters and healers stay clear of them",
+      "off-tanks hold the images away, everyone else on the real ilron",
+      "when he dies the images go too, dont waste damage on them",
+      "fight him in his gallery, he walks home past 2000"
+    ],
+    "aftermathWin": [
+      "ilron down. now we get to see what's past him",
+      "the real one died first. good targeting",
+      "five ilrons and we picked right",
+      "the story doesnt end at ilron tonight"
+    ],
+    "aftermathLoss": [
+      "we spread damage over five ilrons",
+      "classic. caer sidi stories end at ilron",
+      "dragged him and he went home",
+      "nuked an image for two minutes"
+    ],
+    "rumour": [
+      "lich lord ilron is where most of the caer sidi stories i hear end. nobody tells what's past him",
+      "[heard|someone said] ilron makes copies of himself",
+      "heard only one ilron casts a real shadow",
+      "ilron was a priest once, [they say|heard]. nobody knows of what",
+      "heard caer gothwaite tells every group look for the one whos been there longest",
+      "[heard|someone said] black mountains shepherds drop a pin in a spring for ilron"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "lich lord ilron",
+    "text": "A priest of a forgotten hill god who learned to wait and would not stay dead. In his gallery of [Caer Sidi] walk images of his younger selves; only the real one has aged. [Sir Tegid]'s company broke there. The squire who found him for [Dame Ysolde] said: look for the one who has been there longest."
+  },
+  "bookPage": "In the gallery Ilron showed us four of himself, and they moved as he moved and cast as he cast, and our wizards spent their fire on the wrong three. That is where the company I went up with the summer before had broken. This time Dame Ysolde waited until each figure stepped into the lamplight, and watched for the one whose face had aged. It took the length of three heartbeats. Then she called his name and every spell in the company went to the same place, and the other four stopped, and stood, and were nothing at all.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} found the true Ilron among his images and ended him in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} struck the wrong Ilron; another Caer Sidi tale ends at the lich."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "caer-sidi-prisoners"
+  ],
+  "related": [
+    {
+      "id": "lord-sanguis",
+      "relation": "fellow prisoner of the galleries"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Priest of a God Nobody Remembers",
+      "text": "Ilron was a priest once, of which god nobody now remembers, and he came to Caer Sidi because he would not stay dead and would not say why.\n\nThe Inconnu say his god was one of the small gods of the old province's hill shrines, the kind with one spring and one priest and an altar of three stones, and that when the god was forgotten, Ilron was not. He had served it so long that he had learned its one secret, which was how to wait: how to sit by a spring through a hundred winters for a worshipper who never came. When he died, he waited, and did not go down the road to Annwn, and the keepers had to come up the road for him. He was the first of the priests of the galleries, the ones who found their way back from death, and the keepers put him in the galleries with the rest.\n\nThe Church of Camelot says his god was a devil and his waiting a pact. The Camelot loremasters, who have looked for his shrine, think it was in the Black Mountains, at a spring above Ludlow where the shepherds still leave a pin in the water and do not know why. The Inconnu say the god's name was the last thing Ilron forgot, long after he had forgotten his own, and that he spent his waiting in the gaol trying to remember it.\n\nWhat he learned instead was to be in several places at once. A man who waits long enough, the Inconnu say, leaves something of himself in every place he has waited in. Ilron waited in the galleries for ages, and on the night of the rising he took a gallery of his own and filled it with himself: images of the priest as he had been in the years of his waiting, younger, each as solid as the next, walking his gallery beside him."
+    },
+    {
+      "title": "The Ones Who Did Not Age",
+      "text": "Only one of the Ilrons in his gallery has aged a day since he was locked in, and the Inconnu say that is the only thing that has ever told them apart.\n\nThe images are the priest's younger selves, the Ilron of the first winters by the spring, the Ilron of the middle years, left behind in the gallery as a man leaves the print of his body in a bed he has slept in long. They do not age, because they are only the waiting, and waiting does not age. The real Ilron does. He is older than his images, heavier in the hand and harder in the eye, and the dead of the galleries, who have watched him longest, say that anyone who looks at all of them at once and asks which of the priests has lived the longest is looking at the right one.\n\nThe images are not harmless for being young. They carry the stillness of the waiting with them, and men who stand too close to them fall still as sleepers, standing, their eyes open, as a man falls still on a long watch and does not know he has slept. The prisoners of the galleries learned to walk wide of the young priests, and the Inconnu who guide companies past Ilron's gallery tell them to do the same.\n\nThe images do not outlast him. They are his waiting, and when the one who waits is gone, there is nothing for them to wait for; they go out like breath on a cold glass. The Inconnu say that is the mercy and the trap of Ilron's gallery together. A company that strikes the right priest ends all of them. A company that strikes the young ones spends itself on shadows that the real one can make again, and the old priest watches it do so with the patience of a man who once sat by a spring for a hundred winters."
+    },
+    {
+      "title": "Sir Tegid's Summer",
+      "text": "Most of the tales of Caer Sidi end at Ilron, and the first of them is Sir Tegid's.\n\nTegid of Caer Gothwaite led the first company of Albion into the turning gaol, in the first summer after the rising was known in Camelot, with eighty men and women and Brother Cadoc among its priests. They came through the crypts with fewer losses than anyone had feared and up into the galleries, and found the priest's gallery full of priests. Tegid's wizards were the best the Isle of Glass had sent anywhere, and they did what wizards do with a crowd: they chose the three nearest and burned them. The three were images. The company spent its fire on them, and on the next ones, and the old priest stood at the back of his gallery and waited.\n\nCadoc's account of what happened next is short, because he was asleep for most of it. He had gone forward to a fallen squire and found himself among the young priests, and he fell still where he stood, and woke when it was over to find Sir Tegid dead and half the company with him. The survivors carried Tegid down through the crypts and out to the shore, and Hedd the ferryman took them over to Caldey in the dark, and Cadoc wrote that it was the only time he ever saw Hedd refuse payment.\n\nTegid's name is the first on the sill of the chapel at Caer Gothwaite, where the dead of Caer Sidi are cut. Cadoc reads the sill aloud on the night of the autumn's first frost, beginning with Tegid. He has said that he reads it standing, because he once fell asleep in Ilron's gallery while his captain died, and he has not sat down in that chapel since."
+    },
+    {
+      "title": "The Eldest Priest",
+      "text": "Dame Ysolde's company came to the gallery knowing Tegid's story, and Ennyn's counsel at its door was a single question: which of them has lived longest?\n\nYsolde set her company along the gallery wall, out of reach of the young priests, and had her best eyes study the crowd before anyone loosed a spell. Cadoc wrote that it took a long time, and that in the end it was not the eyes that found him but a squire who had grown up in the Black Mountains, who said that one of the priests stood the way his grandfather stood at the pin-spring above Ludlow, with his weight on his heels and his hands folded, as if he had been there before any of them. That one the company struck, with everything, and when he fell the young priests went out like breath on glass. Two of the company died in the gallery anyway, fighting shadows that were not Ilron, before Ysolde found him; Cadoc names them on the sill after Tegid.\n\nThe realm's readings of the priest are all readings of his waiting. The Church says a soul that will not go to its judgement is damned by its own choice. The Inconnu say Ilron is still waiting for a worshipper and has mistaken every company that climbs for one. The shepherds of the Black Mountains say nothing, and leave their pins in the spring.\n\nThe garrison of Caer Gothwaite keeps the squire's words. Every company that goes up to the galleries is told them at the foot of the crypt stair: look for the one who has been there longest. And the Black Mountains shepherds have had a visitor every spring since Ysolde's company came home: a knight of Caer Gothwaite, alone, who walks up to the spring above Ludlow, lets a pin fall into the water, and stands a while with his weight on his heels before he goes down."
+    }
+  ]
+}

@@ -19,6 +19,12 @@ ALWAYS ON (the bots' own game, nothing to switch):
     keep and hall gates whose portcullis never rose in the new client and the new client's quest
     marker script (the NPC of your current quest step was coloured as if the quest were in
     progress elsewhere) (see INSTALL)
+  - on 0.37c, 14 more new-client scripts from shadowofze's final code: abilities (Sprint,
+    Stealth ...) drag onto the quickbar; a Stealth row in the Abilities window, /stealth and
+    /hide; SELL in the merchant window (APPRAISE stays hidden: it needs the 1.2
+    MMOEngine.dll); one PLAY click enters the world once; names hide behind walls; fog per
+    region; flickering casting hands; arrow / bolt / poison info. Untested in game so far.
+    What is held back and why: docs\CLIENT-SCRIPTS-1.2.md
 
 OFF UNTIL YOU SWITCH THEM ON (launcher -> Living Server tab):
   - Bot guilds .................... docs\BOT-GUILDS.md
@@ -58,6 +64,12 @@ It also fixes a few game files in place (listed in content-patches.json). It cha
 if it is exactly the released one, checks the result, and backs the original up first; a file
 that was changed by something else is left alone and named in the output. ROLLBACK.cmd and
 PREPARE-FOR-UPDATE.cmd put the originals back.
+
+The loading screen is Living Server's own and is the exception. The installer puts the Living
+Server loading screen over shadowofze's or over an earlier Living Server one (1.1); any other
+loading screen is left alone. ROLLBACK.cmd puts back the earlier Living Server loading screen
+when that is what it replaced, but never shadowofze's: after a first install the Living Server
+one stays. PREPARE-FOR-UPDATE.cmd leaves it too (the Offline DAoC update doesn't touch it).
 
 Check: start the game as usual. The server log shows a line like
   FORK_BUILD name=1.1.2-beta commit=... bot_guilds=off ... bot_voices=off living=off
@@ -111,7 +123,8 @@ The first shows what it would change; the second does it, after backing up the d
 Your characters in a bot guild go back to their realm's starting guild; your own guilds stay.
 
 Uninstalling: close everything and double-click ROLLBACK.cmd. It puts back exactly the files the
-install replaced or fixed (server, launcher, game files). If you installed more than one build,
+install replaced or fixed (server, launcher, game files), except that the Living Server loading
+screen stays (see above). If you installed more than one build,
 run it once per build. The new database tables and settings stay; the original server ignores them.
 
 BACKUPS
@@ -128,7 +141,8 @@ The log line DB_INTEGRITY ... result=ok confirms it.
 BEFORE THE NEXT OFFLINE DAOC UPDATE
 -----------------------------------
 Double-click PREPARE-FOR-UPDATE.cmd first. It puts the released server, launcher and game files
-back so the update can apply, then install the Living Server build for that version.
+back so the update can apply (the Living Server loading screen stays), then install the Living
+Server build for that version.
 
 DON'T install this build on any other release (0.36 or older, or 0.38 or later): it would
 change that release's server. The installer refuses it.

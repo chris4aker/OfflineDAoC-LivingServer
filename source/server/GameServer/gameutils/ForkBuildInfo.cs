@@ -68,6 +68,10 @@ public static class ForkBuildInfo
                $"bot_guilds={On(Properties.BOT_GUILDS_ENABLED)}" +
                (Properties.BOT_GUILDS_ENABLED ? $" bot_guild_parts={(guildParts.Length == 0 ? "none" : guildParts)}" : string.Empty) +
                $" bot_player_guild_economy={On(Properties.BOT_PLAYER_GUILD_ECONOMY)}" +
+               $" bot_group_invite_player={On(Properties.BOT_GROUP_INVITE_PLAYER)}" +
+               $" bot_group_player_loot_weight={BotLedGroups.LootWeight}" +
+               $" bot_raid_invite_player={On(Properties.BOT_RAID_INVITE_PLAYER)}" +
+               $" bot_led_group_join_mode={(BotLedGroups.CurrentJoinMode == BotLedGroups.JoinMode.Lead ? BotLedGroups.JoinModeLead : BotLedGroups.JoinModeFollow)}" +
                $" mana_regen={Properties.MANA_REGEN_AMOUNT_MODIFIER.ToString(System.Globalization.CultureInfo.InvariantCulture)}" +
                $" mana_halved_below_50={On(Properties.MANA_REGEN_AMOUNT_HALVED_BELOW_50_PERCENT)}" +
                $" xp_rate_by_level={Range(Properties.XP_RATE_BY_LEVEL)} bot_xp_rate_by_level={Range(Properties.BOT_XP_RATE_BY_LEVEL)}" +

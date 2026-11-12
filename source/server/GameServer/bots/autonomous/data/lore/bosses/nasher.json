@@ -1,0 +1,81 @@
+{
+  "id": "nasher",
+  "name": "Nasher",
+  "npcNames": [
+    "Nasher"
+  ],
+  "locationId": "snowdonia",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Nasher: NPC template 60164382, level 39, the skeletal legionnaire model, ghost, no faction, aggro 200 (range 500), no spells, respawn 600 s, on Snowdonia's southern pass at 547712, 365104.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Nasher as one of the two dead keepers of the southern passes, and the toll he takes, are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Two passes cross the south of Snowdonia, one toward the southern valleys and one toward the Pennines, and both are older than the roads Rome laid over them. The shepherds say the soldiers who keep them are older than the roads too: dead men in harness of a pattern no armourer of Camelot can name, from a war before the last legion came, who were set to hold the passes by someone who never came back to relieve them.\n\nNasher keeps the southern pass, and he keeps it as a toll-man keeps a bridge. He stands in the middle of the way and asks every traveller something in a tongue nobody speaks, and when they do not answer, as nobody can, he takes his toll, which is everything. The drovers of the fortress say his name is what the old shepherds made of the sound he makes when he asks. The Church sends no errands by the southern pass. Neither do the drovers, if they can help it; they go the long way round, by the Pennine road, and meet the other one.",
+  "legend": "Nasher, level 39 ghost legionnaire, on the southern pass of Snowdonia. Alone, plain melee, no spells. He is in the road, so anyone riding the pass meets him: kill him or go round. Undead, so crush works best on the bones. A group in the high thirties handles him. Respawn ten minutes. Ride the long way round by the Pennine road if you are low.",
+  "yells": {
+    "aggro": [
+      "Halt. Answer.",
+      "The toll is owed."
+    ],
+    "phases": [],
+    "death": [
+      "Relieved... at last..."
+    ],
+    "slay": [
+      "Toll taken.",
+      "No answer. Nothing more owed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dead toll-man in the southern pass."
+    ],
+    "phases": [],
+    "realmFirstKill": "Nasher has fallen. The southern pass is open."
+  },
+  "botLines": {
+    "briefing": [
+      "nasher, 39 ghost legionnaire, standing in the southern pass road",
+      "crush on nasher, hes all bones"
+    ],
+    "aftermathWin": [
+      "nasher down. pass is open for ten minutes",
+      "got nasher. toll paid the other way"
+    ],
+    "aftermathLoss": [
+      "rode into the pass without looking and nasher was right there"
+    ],
+    "rumour": [
+      "[heard|someone said] nasher asks you something in an old language before he attacks",
+      "heard the dead in the snowdonia passes are older than rome"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "nasher",
+    "text": "The dead toll-man of the southern pass of [snowdonia], a soldier of a war before Rome's last legion, who asks every traveller something no one can answer."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} relieved Nasher of the southern pass in {minutes} minutes.",
+    "loss": "Nasher took his toll of {raidLeader}'s company of {realm} in the southern pass."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "dead-legions"
+  ],
+  "related": [
+    {
+      "id": "snowdon-grim",
+      "relation": "keeps the other pass"
+    }
+  ],
+  "tier": "minor"
+}

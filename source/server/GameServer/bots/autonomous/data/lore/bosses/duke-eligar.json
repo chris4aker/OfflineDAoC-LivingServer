@@ -1,0 +1,177 @@
+{
+ "id": "duke-eligar",
+ "name": "Duke Eligar",
+ "tier": "epic",
+ "npcNames": [
+  "Duke Eligar"
+ ],
+ "aliases": [
+  "eligar",
+  "the champion"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "host-of-the-marshal"
+ ],
+ "related": [
+  {
+   "id": "high-lord-baln",
+   "relation": "his lord; was his champion"
+  },
+  {
+   "id": "high-lord-oro",
+   "relation": "argued his three bodies were a fall"
+  },
+  {
+   "id": "high-lord-saeor",
+   "relation": "argued his healing was a fall"
+  },
+  {
+   "id": "chthonic-knights",
+   "relation": "beat the first Gaapoler"
+  },
+  {
+   "id": "duke-sallis",
+   "relation": "will not speak to him"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "gave him the custom of the yield"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Duke Eligar is a level 75 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands in the north-east of High Lord Baln's hall.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Duke Eligar among the dukes of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Duke Eligar is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "In the Ars Goetia, Eligos (15) is a duke of hell; Duke Eligar reads as that name.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "He uses model 2078, the same as High Lords Oro and Saeor, and is larger (size 175) than Dukes Alloc and Aypol (150).",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "High Lord Oro spawns as one demon and two clones; High Lord Saeor heals by a player's maximum health when he kills that player.",
+   "provenance": "game",
+   "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs, HighLordSaeor.cs"
+  },
+  {
+   "text": "His seat, master, feuds and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "chapters": [
+  {
+   "title": "Baln's lance",
+   "text": "Duke Eligar is built like a high lord. He stands taller than the other dukes of Baln's hall and wears the same horned, heavy shape that High Lords Oro and Saeor wear, and in the Uncounted Age he was nearly one. He was Baln's lance: when two lords of that age met and neither wished to risk itself, each sent a champion, and Baln always sent Eligar. He fought thirty-one such fights in the dark before the Feast and never lost one. The lords he fought for Baln are all gone now, eaten at the Feast or before it, and Eligar says that is the only reason he has not been made a high lord himself: there is nobody left who saw him fight at his best and would admit it.\n\nHe went to the Feast of Thrones at Baln's side as his champion and stood ready to fight for him. Nobody asked. The Master did not fight; the Master ate. Eligar watched nineteen lords go down the Master's throat without one of them being offered a champion's fight first, and he has called it ever since the most discourteous night in the history of the hollow. When Baln knelt, Eligar did not kneel with Aypol and Alloc. He stood behind his lord with his lance grounded. The Master did not seem to notice. The Chancellor did, and wrote Eligar's line on the First Roll a little lower than his fame deserved. Eligar has kept his lance from that night. Its point is the tooth of the first lord he ever killed, and he says it is the only lord of the Uncounted Age the Master did not get."
+  },
+  {
+   "title": "The law of the yield",
+   "text": "The bargain of the Feast made fighting between peers a dangerous thing. A demon who kills a peer has done something the Roll does not allow, and may be struck off and eaten for it; a demon who is beaten has perhaps fallen from its place. Either way the Master eats. In the Second Roll the court found it could not settle its quarrels at all without losing the quarrellers, and Eligar went to the Chancellor's table and asked for a custom.\n\nAdremal gave him one. A quarrel between peers may be settled at the yield. A demon who yields has not fallen. It has only knelt, and kneeling, since the Feast, is what keeps a demon on the Roll. Eligar became the court's champion of the yield within a Roll. Any peer with a quarrel could hire him, and he fought for whoever paid, to the yield, and never once yielded himself. The yield has a form. The beaten demon kneels, touches the floor with one hand and says its own line on the Roll aloud, so that everyone present hears it is still on it. The court calls this saying one's line, and Eligar has heard more demons say theirs than any other peer. His most famous fight was against the first Chthonic Knight to bear the name Gaapoler, champion of Prince Abdin, over a question of precedence on the stair to the north-west. It lasted until the knight, on one knee, yielded. The present Gaapoler guards Abdin's hall and has asked Eligar for a rematch every Roll since. Eligar says he will fight the next one."
+  },
+  {
+   "title": "The fifth seat",
+   "text": "The Roll has four lines for High Lords and they have been full since the first cutting. Eligar's whole ambition rests on one of them coming empty. When a High Lord falls, the Chancellor must fill its line, and the custom of the court is that he raises the strongest duke. Eligar has been the strongest duke for ten Rolls. None of the four has fallen.\n\nHe has tried to argue one into falling. When High Lord Oro first appeared in his eastern hall as three bodies instead of one, Eligar went to the approach and put it to the Chancellor that two of those bodies were not on the Roll, and that a High Lord who was three demons at once had surely fallen from the one place he had been given. Adremal ruled that the line reads Oro, and that all three answer to the name, and that the Roll counts names. Duke Sallis, who serves Oro, has not spoken to Eligar since. When the plague went up into the realms, Eligar argued that High Lord Saeor, who heals himself on the strength of those he kills, had become something the Roll had not written; the Chancellor answered that the Roll had never said what a High Lord eats. Eligar waits. He has kept his lance sharp for the fifth seat for so long that the court has begun to call it that, as if there were five. In the Ninth Roll somebody asked him whether he would take the Queen's empty chair instead. He said he would rather have a seat than a chair, and the Chamberlain has been courteous to him ever since."
+  },
+  {
+   "title": "The lance and the visitors",
+   "text": "Since the doors opened, Eligar has found a new grievance in the mortals. They come down in companies of fifty and a hundred, and in the whole history of the visitors no captain of theirs has ever accepted his challenge on behalf of the rest. He stands at the north-east of Baln's hall with his lance grounded and calls for the leader to come forward alone. The first to refuse him, by the court's count, was a Hibernian captain called Ruadh of the grey cloak, in the first winter after the doors opened. She answered, in a tongue he had not heard before, that a captain's life belongs to her company and is not hers to wager, and her company came on together. Eligar regards it as the second most discourteous thing he has ever seen. He has never told anyone the first.\n\nHe fights mortals to the death, since they are not on the Roll and so cannot yield, which the duke thinks a great waste. Gatekeeper Dommel counts the mortal dead he leaves as toll. The Field Marshal counts them as strength. Eligar counts them as quarrels he was never offered.\n\nThe realms each have a view. Albion's knights respect him more than any other demon of the court, and some of their old champions have gone down to the hall on purpose to accept his challenge alone; Sir Leodan of Adribard's Retreat was the first, and his line is higher than the others on the Chancellor's Roll of the Visitors. Midgard's huscarls say a challenge is a challenge, and that a huscarl who refused one in a jarl's hall would be laughed out of it. Hibernia's champions keep Ruadh's answer, and say a demon who offers single combat is a demon counting how many stand behind the one who answers. The duke has never explained which is true. He has only ever offered."
+  }
+ ],
+ "story": "Duke Eligar is the champion of High Lord Baln's hall and looks like a high lord himself. In the Uncounted Age, when lords settled quarrels by champions, Baln always sent Eligar, and he won thirty-one fights. At the Feast of Thrones he stood ready to fight for Baln and nobody asked: the Master ate nineteen lords without offering any of them a champion. Eligar did not kneel when Baln knelt; the Chancellor noticed and wrote his line lower than his fame deserved.\n\nIn the Second Roll the court found it could not settle quarrels without losing the quarrellers, since a peer who kills or is beaten may be struck off. Eligar asked Adremal for a custom, and got the yield: a demon who yields has only knelt, and kneeling keeps it on the Roll. Eligar became the court's hired champion of the yield and never yielded. His great fight was against the first Chthonic Knight Gaapoler, Prince Abdin's champion, who yielded on one knee; the present Gaapoler wants a rematch.\n\nHis ambition is the fifth seat: a High Lord's line come empty, which by custom goes to the strongest duke. None of the four has fallen. He argued that High Lord Oro, appearing as three bodies, had fallen from his place; the Chancellor ruled the Roll counts names, and all three answer to Oro. He argued that High Lord Saeor, who heals on what he kills, was no longer what the Roll had written; the Chancellor said the Roll never said what a High Lord eats.\n\nSince the doors opened he has offered single combat to the captains of the realms, and no captain has ever accepted it on behalf of a company. Albion's old champions have gone down to accept, alone; Midgard's huscarls say they would; Hibernia's champions call it a trap for counting. He still carries the lance he grounded at the Feast.",
+ "legend": "Eligar stands in the north-east of Baln's hall, toward the Field Marshal's end, and he is the biggest of the three dukes there (level 75, a high lord's model). No script. He yells a challenge for your leader to come forward alone; ignore it, nobody has ever soloed him. Pull him north-east, away from Baln and from Marquis Dortaleon on the east road, and keep the Marshal's group out of it. Some Albion players go down alone on purpose to answer his challenge and die, and call it the champion's walk. If your raid leader starts talking about the champion's walk, find a new raid leader.",
+ "yells": {
+  "aggro": [
+   "Your leader. Forward. Alone.",
+   "Again you come all together. Again.",
+   "I offered. Remember that I offered."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Yield? You cannot yield. You are not on the Roll."
+   }
+  ],
+  "death": [
+   "No champion... in all your realm.",
+   "I did not yield. Write that."
+  ],
+  "slay": [
+   "Fight won. Not given. Won.",
+   "Next. One at a time would be courteous.",
+   "Down, and no one to yield for you."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "A demon with a lance stands as if waiting for a challenger.",
+   "A voice calls for your leader to come forward alone.",
+   "This one is built like a high lord."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The champion grounds his lance and fights on."
+   }
+  ],
+  "realmFirstKill": "Duke Eligar has fallen. No champion answered him."
+ },
+ "botLines": {
+  "briefing": [
+   "eligar is north east of balns hall, high lord model, 75. [pull him ne|north east], away from dortaleon",
+   "he yells for the raid leader to come solo. [ignore it|nobody solos him]",
+   "keep the marshal's group out of the eligar fight. [watch the pull|careful]",
+   "last duke in the hall. [then the marshal|then nebir and the lieutenants]"
+  ],
+  "aftermathWin": [
+   "eligar down. [all three dukes of balns hall|the three of the south are done]",
+   "champion's dead. [we came all together lol|so much for single combat]",
+   "eligar done, [nebir next|marshal next]",
+   "duke eligar dead. [nobody did the champion's walk|good, no solo heroes]"
+  ],
+  "aftermathLoss": [
+   "eligar wiped us. [hits like a high lord|hes basically a high lord]",
+   "someone ran in alone for the challenge. [that went well|rip]",
+   "pulled dortaleon on eligar. [mess|never again]",
+   "eligar 1 us 0. [regroup|rez]"
+  ],
+  "rumour": [
+   "[heard|word is] eligar challenges every raid leader to single combat. [nobody takes it|nobody's that dumb]",
+   "eligar wants a high lord's seat. [waits for one to die|none ever has]",
+   "the demons settle fights by yielding, [eligar never yielded|they say eligar invented it]",
+   "[someone said|my guildie says] albion knights go down alone to answer eligar. [they die|on purpose]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "eligar",
+  "text": "The champion of High Lord [Baln]'s hall, who invented the court's custom of the yield and has never yielded. He waits for a High Lord's seat to come empty and offers single combat to every raid leader who reaches him. The Chthonic Knight [Gaapoler] wants a rematch."
+ },
+ "bookPage": "From The Champion's Walk, a page kept by the Defenders' chapter in Camelot: Sir Leodan of Adribard's Retreat went down alone, in the second season after the door opened, to answer the demon duke's challenge, because a challenge offered is a challenge owed. We followed as far as the crossing and no further. He walked into the southern hall with his shield up and the duke saw him and grounded his lance and called out, in our own tongue, that here at last was courtesy. They fought from one bell to the next. We heard it the whole time.",
+ "bookPages": [
+  "From The Champion's Walk, a page kept by the Defenders' chapter in Camelot: Sir Leodan of Adribard's Retreat went down alone, in the second season after the door opened, to answer the demon duke's challenge, because a challenge offered is a challenge owed. We followed as far as the crossing and no further. He walked into the southern hall with his shield up and the duke saw him and grounded his lance and called out, in our own tongue, that here at last was courtesy. They fought from one bell to the next. We heard it the whole time.",
+  "The page goes on: We did not hear the end of it. A company of Hibernians came down the eastern stair in the middle of the second bell and through the hall, and when they had gone the duke was standing alone, and Sir Leodan was not standing. Later a captured imp told us that the duke had stopped fighting when the Hibernians came, and had stood over Sir Leodan's body to keep them off it, and had let them hit him. The imp did not know why. Sir Leodan's name is cut, they say, on the Chancellor's wall of the visitors, a little higher than the others."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} refused Duke Eligar's challenge and killed him all together in {minutes} minutes.",
+  "loss": "Duke Eligar offered {realm}'s raid under {raidLeader} a champion's fight, and when they came all together, he won anyway."
+ }
+}

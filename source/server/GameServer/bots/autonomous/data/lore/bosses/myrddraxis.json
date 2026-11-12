@@ -1,0 +1,190 @@
+{
+  "id": "myrddraxis",
+  "name": "Myrddraxis",
+  "catalogKey": "fomor-city/myrddraxis",
+  "locationId": "fomor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 80, 100,000 health, a hydra with four further heads (second to fifth) that rise with it.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Each head's bite heals the body by half the damage it deals and the other heads by a tenth.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs"
+    },
+    {
+      "text": "Stunning breath at 80/60/40/20% health; a Breath of Annihilation over the area at 75/50/25%.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "On death: 'The earth lurches beneath your feet as Myrddraxis staggers and topples to the ground.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs"
+    },
+    {
+      "text": "It cannot move (MaxSpeedBase 0), is immune to crowd control, resists 40% melee and 70% other damage and has a 550 melee reach; if its target is out of reach it ground-casts Breath of Flame (450 heat, radius 200) on it.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs (integration/1.2)"
+    },
+    {
+      "text": "Every 35-45 s it picks a random real player within 2,000 for Breath of Flame after a 5 s warning (1,100 heat, radius 450 around them), and another for Myrddraxis Poison (90 body per tick for 40 s, radius 800). Stun breath (30 s stun, radius 1,800) at 80/60/40/20% after a 5 s warning; Breath of Annihilation (2,000 heat, radius 1,800 around itself) at 75/50/25% after a 6 s warning. A quarter of its melee hits cast Disease or a 24% attack-speed debuff on everyone within 800.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs (integration/1.2)"
+    },
+    {
+      "text": "Its death counts as a dragon kill (dragon kill points and the dragon-kill news line).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs (integration/1.2)"
+    },
+    {
+      "text": "In Irish folklore an ollphéist is a great water-serpent; the Caoránach of Lough Derg is a monstrous serpent whose blood was said to redden the lake (to verify the details).",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Caor%C3%A1nach"
+    },
+    {
+      "text": "Living Server lore: the egg in the black sand and its three accounts (gift, theft, ollphéist); the hydrars as water-keepers turned beast-keepers; Cróine's saying 'a scale is a closed door; bring a key, not a song'; the verse 'the beast draws in; the wise go out'; the wardens' custom of walking away when looked at; Ríonach of Tir na Nog's company starved it in the third year of the isles; the tally-keepers count it among the dragons.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Myrddraxis was an egg once, grey-green and warm, found by a hydrar digging the lowest cistern of Fomor in the black sand under Hy Brasil. The Fomorians call it a gift of the sea; the Sylvan call it a theft from the deep places below the Root's hollow; the druids of Tir na Nog say it is an ollphéist, a great water-worm of the kind the tales of Lough Derg remember in the Caoránach, driven from Hibernia's loughs into the sea as the Fomorians were. It hatched with one head and grew five, and its one hunger has five mouths: whatever any mouth tears from a living thing mends the great body under the water and the other mouths a little. The hydrars sing it in three lines: eat, and be whole; eat, and be many; eat, and be ours.\n\nIt never leaves its mound and never chases; whatever it is fighting that steps out of its reach it burns where it stands. The shrillers on the walls keep it from ever sleeping, and no sleep-song or binding has held it. Words of fire and frost run off its scales like rain off slate; iron does better, and the wardens say a scale is a closed door: bring a key, not a song.\n\nWhen it is hurt deep enough it bellows, and the cistern is left standing still and staring; the deeper the wound, the more often. Before the unmaking it draws in until the water sinks, then breathes fire across the cistern; the hydrars' verse is: the beast draws in; the wise go out. Between breaths one head looks at one person, anyone, and gathers fire slowly enough for all to see, and another spits a poison cloud; the wardens' custom is that the one looked at walks away from the others. Those near its body come away with a fever that slows the hands and keeps wounds from closing, and the herb-wives draw it out with smoke.\n\nRíonach of Tir na Nog's company starved it in the third year of the isles: they cut the mouths one at a time, and when the lesser heads hung in the water the body could not mend. The earth lurched, a light glowed on the mound as where dragons fall, and the hydrars went down into the sand with their spades. It returns, and remembers. On the day the eye in the tower opens fully, the hydrars say, they will break the cistern to the sea and let it swim east.",
+  "legend": "Five heads, one body, and the heads are the problem: every hit a head lands heals the body by half the damage and the other heads by a tenth. Kill the four lesser heads one at a time, whole raid on one neck, then the body. The body never moves and can't be CC'd; it shrugs off 70% of magic and 40% of melee, so melee carries it. Whoever it is fighting has to stay in its reach (550) or it ground-burns them. Stun breath at 80/60/40/20% (5-second warning, 30-second stun on everyone within 1,800): get out or purge fast. Breath of Annihilation at 75/50/25% (6-second warning, 2,000 heat on everyone within 1,800): run out (speed songs) or be full and resisted. Every 35-45 seconds it picks one real player at random for a 5-second fire breath (1,100 heat, 450 radius around them) and another for a poison cloud (800 radius): the chosen one walks away from everyone. Its bites can drop disease and an attack-speed debuff on everyone within 800 of the body: cure disease before you heal. Superstition: shout no insult at the hydra from the ledge. It never sleeps, and it never forgets.",
+  "yells": {
+    "aggro": [
+      "Five heads rise from the cistern, all screaming.",
+      "The shrillers scream louder. The water heaves.",
+      "Eat, and be whole. Eat, and be many."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=80",
+        "text": "Myrddraxis prepares a stunning breath."
+      },
+      {
+        "trigger": "health<=75",
+        "text": "Myrddraxis takes a massive breath of flames!"
+      },
+      {
+        "trigger": "addsDead",
+        "text": "The last head falls. The body thrashes, starving."
+      }
+    ],
+    "death": [
+      "The earth lurches as Myrddraxis topples to the ground.",
+      "A glowing light forms on the mound where it lay."
+    ],
+    "slay": [
+      "The heads squabble over the remains.",
+      "Eat, and be ours.",
+      "One more for the cistern."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Five heads rise from the dark water.",
+      "The shrillers scream. The hydra is hungry."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=80",
+        "text": "All five heads rise together. A bellow is coming."
+      },
+      {
+        "trigger": "health<=75",
+        "text": "The water sinks. The beast draws in. Run."
+      },
+      {
+        "trigger": "addsDead",
+        "text": "The heads are cut. The body starves."
+      }
+    ],
+    "realmFirstKill": "Myrddraxis is dead. The shrillers fall silent."
+  },
+  "botLines": {
+    "briefing": [
+      "heads first, one at a time, everyone on the same neck. [every head hit heals the body|starve it]",
+      "stun breath at 80 60 40 20 and the big breath at 75 50 25. [when you see the warning get out|run out of 1800]",
+      "if it looks at you for the fire breath, [walk away from the group|get away from us]. same for the poison",
+      "melee does the work on the body, it eats spells. [casters on heads|melee on body]",
+      "its target stays in its reach or it burns them. [tank stay on it|dont back off the tank]",
+      "cure disease before healing anyone who was near the body. [disease halves heals|cure first]"
+    ],
+    "aftermathWin": [
+      "myrddraxis down. [earth lurched|felt that]. the light on the mound is the good part",
+      "four heads down before the body, [textbook|thats how you starve it]",
+      "everyone ran on the big breath. [nobody at the waters edge|clean]",
+      "the tally keepers count it with the dragons. [grats|dragon kill]"
+    ],
+    "aftermathLoss": [
+      "stood in the annihilation. [run on the warning|out of 1800]",
+      "nobody walked away when it looked at them and the fire breath [took the whole group|hit five of us]",
+      "heads kept biting and the body kept healing. [kill the heads|starve it first]",
+      "stun breath caught everyone and the heads [ate us|chewed the clerics]. [purge|get out]"
+    ],
+    "rumour": [
+      "[heard|someone said] the hydrars found it as an egg in the black sand under the city",
+      "[heard|someone said] the druids think its an ollpheist, like the one in the lough derg story",
+      "[word is|heard] the shrillers scream at it so it never sleeps. [never forgets either|creepy]",
+      "the hydrars say when balors eye opens all the way they'll let it out to sea. [no thanks|yikes]",
+      "domnann wardens say if a head looks at you, walk away from your friends. [good advice|they mean it]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Myrddraxis",
+    "text": "The hydra of Fomor, raised from an egg in the black sand by the hydrars; the druids call it an ollphéist. Five mouths, one hunger: whatever a head bites mends the body, so Ríonach's company starved it, cutting the mouths first. When it draws in until the water sinks, the hydrars sing: the wise go out. When a head looks at you, walk away from your friends."
+  },
+  "bookPage": "The hydrars of Fomor sing to their beast. Fiachra of Howth heard the song from a ledge and a Sylvan put words to it for him afterwards: eat, and be whole; eat, and be many; eat, and be ours. The heads bit, and the body grew whole. He asked the Sylvan how one kills such a thing. She said you starve it. Cut the mouths and the belly follows. He asked how long that takes. She said it depends how many friends you bring, and how much they mind being bitten, and whether they know when to run. When the water sinks round its body, she said, the hydrars sing that the wise go out, and the wise do.",
+  "chronicle": {
+    "win": "{realm} went down the shore stair into Fomor under {raidLeader} and slew the hydra Myrddraxis in {minutes} minutes.",
+    "loss": "{realm}'s fighters under {raidLeader} were driven back up the Fomor stair by the heads of Myrddraxis after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "anurigunda",
+      "relation": "an elder of the city"
+    },
+    {
+      "id": "nogoribando",
+      "relation": "the city's war-leader"
+    },
+    {
+      "id": "krackenschtein",
+      "relation": "the workshop's champion"
+    },
+    {
+      "id": "balor",
+      "relation": "the king in the tower on the crag"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Egg in the Black Sand",
+      "text": "The Fomorians tell it as a gift. In the years after they came west and went down under the shore of Hy Brasil, when the city was still a few halls cut into the wet rock, a hydrar digging the lowest cistern struck an egg in the black sand at the bottom of it. It was the size of a child curled up, grey-green, and warm when nothing else down there was warm. The hydrars were the city's water-keepers then, the ones who kept the cisterns sweet; they had no beast. They took the egg for a sign that the sea had forgiven them Mag Tuired, and they let the cistern fill around it, and waited.\n\nThe Sylvan tell it as a theft. The egg was never the sea's, they say. It came from the deep places under the isle, where the Root's hollow runs down past Galladoria into the Underneath, and something laid it there that the Sylvan do not name, and something is still looking for it. The druids of Tir na Nog, who have heard both, tell a third account, from home. They say the beast is an ollphéist, one of the great water-worms of the old stories, of the kind the tales of Lough Derg remember in the Caoránach, the mother of serpents whose blood turned the lake red; and that the great worms were driven out of the loughs of Hibernia into the sea long ago, and went west, as the Fomorians did, and for the same reason.\n\nWhat hatched had one head. The hydrars fed it on fish, then on the beasts of the shore, then on what the war-bands brought down the stair from the Sylvan woods, and it grew a second head the first winter and another the next, until it had five. Then they found out what the beast was. It has one hunger and five mouths, and whatever any of the mouths tears from a living thing goes down into the great body under the water and mends it, and a little goes to each of the other mouths. A head that bites is a body that heals.\n\nThe hydrars made a song of it, three lines long, and they have sung it at the cistern's edge from the day the fifth head rose: eat, and be whole; eat, and be many; eat, and be ours. Fiachra of Howth heard it from a ledge as a young man and wrote it down. He said it was the most honest song he ever heard, because it said exactly what the beast does."
+    },
+    {
+      "title": "The Keepers of the Cistern",
+      "text": "The hydrars became the beast's keepers, and the city let them. They are a craft apart in Fomor, as the Sylvan describe them: they keep to the deep halls, they do not go up the stair with the war-bands, and they take no side in the quarrels of the great ones above. Anurigunda calls them nursemaids. Nogoribando calls them nothing at all, because he goes down to the cistern before every foray to ask the beast's blessing, and the hydrars make him wait.\n\nThe beast does not leave its mound. The hydrars built the lowest cistern around it as it grew, and it has never crawled out; its body lies in the black water over the mound of its nest, and the five heads rise on necks long enough to reach across most of the cistern without the body moving at all. It does not chase. The keepers say it has never needed to. Whatever it has chosen to fight that steps back out of reach of its jaws, it burns where it stands, with a mouthful of the fire it keeps in its throat, and then it turns back to whatever is in reach.\n\nThe keepers' second charge is that it must never sleep. They brought shrillers down to the cistern walls, the screaming things of the Fomorian coast, and trained them to scream at the beast day and night, because a sleeping ollphéist, the hydrars believe, dreams of the sea and wakes swimming. Whatever the reason, nothing has ever made it sleep. The druids of Lough Gur tried their sleep-songs on it once, from the ledge, and it did not even turn its heads, and no binding or charm of the Sylvan has ever held one of the five any more than the body.\n\nIts scales are its own kind of keeper. The wardens of Domnann who went down after Fiachra said that their words of fire and frost ran off it as rain runs off slate, and that iron did better, though not by much. A warden named Cróine put it in a saying the wardens still use of any hard thing: a scale is a closed door; bring a key, not a song."
+    },
+    {
+      "title": "The Two Breaths",
+      "text": "The beast keeps two great breaths besides the fire it spits at whatever steps out of its reach, and the hydrars have a warning verse for each, which is the only time anyone in Fomor has heard a keeper raise a voice.\n\nThe first is the bellow. When the beast has been hurt deep enough to feel it, it draws up all five heads together and roars, and the roar fills the cistern from the water to the walls, and whoever is standing in it when it lands stands there afterwards for a long while, unable to lift a hand, staring at nothing. Fiachra saw it from the ledge. He said the worst of it was not the bellow but the quiet after, when the heads came down again among the people who could not move. It comes again as the beast weakens, and again; the deeper the wound, the more often the cistern hears it.\n\nThe second is the long breath, which the hydrars call by a word the Sylvan put into the realm's tongue as the unmaking. Before it the beast draws in, and keeps drawing in, for longer than anyone in the cistern can believe; the water round its body sinks and the shrillers on the walls fall silent. Then the breath comes out, and it is fire across the cistern, and nothing standing near the beast lives through it unless it was very strong or very lucky. The first Hibernian band to see it lost everyone who was still at the water's edge when the water stopped sinking.\n\nThe hydrars' warning verse for the long breath is a single line: the beast draws in; the wise go out. The Sylvan understood it at once. Those of the first band who lived through the unmaking were the ones who ran when the water began to sink, back the way they had come, as far as their legs would carry them before the fire came, and walked back afterwards over the hot stones. The bellow, Fiachra noted, had never reached them out there either. The beast breathes the unmaking more than once before the end and the bellow more often than that, and neither waits for its enemies to be ready."
+    },
+    {
+      "title": "The Look",
+      "text": "Between its great breaths the beast chooses. Every so often one head turns away from the fighting and looks at one person in the cistern, any person, one who has done nothing to it as likely as one who has, and gathers fire in its throat, slowly, for long enough that everyone can see whom it is looking at. Then it spits, and the fire lands on that one and on everyone standing close by. The wardens of Domnann brought a custom up out of Fomor for it, and now use it in the woods for any danger that picks one: the one who is looked at walks away from the others. Nobody tells them to. Nobody stops them. A friend who stays beside you when the head turns, the wardens say, is a friend who wants to die with you, which is very kind and very stupid.\n\nAnother of the heads chooses in the same way, and what it spits is not fire but the green poison of its gullet, a mist that settles on the one it chose and spreads round them in a wide cloud and eats at everyone inside it for a long time after. The wardens' custom covers that too.\n\nAnd the mouths have sicknesses in them. Those who stand close enough to the body to be struck, or near enough to breathe the air it breathes out between blows, come away with a fever in the blood that slows the hands and keeps wounds from closing, so that a mender's work on them goes only part of the way. The herb-wives of Domnann draw it out with smoke before they mend anyone who has been down to the cistern, as the herb-wives of Breifine do for the coughing sickness of Marfach; neither knew the other did it until a Sylvan herb-wife and a Breifine one met in Tir na Nog and compared their smoke.\n\nFiachra was looked at once. He was on the ledge, a long way off, and a head turned and looked at him anyway, and his Sylvan companion pushed him off the ledge into the cistern water below before the fire came. He said it was the second-worst thing that happened to him in Fomor, and the reason he lived to write down the first."
+    },
+    {
+      "title": "The City's Luck",
+      "text": "The first company of the realm to kill it went down the shore stair in the third year of the isles under a druid of Tir na Nog named Ríonach, who had read Fiachra's account and taken one thing from it: the song. Eat, and be whole. She told her company that a thing that heals by biting must be starved, and they starved it. They cut the mouths one at a time, all of them together on one neck while the rest of the beast bit at whoever it could reach, and each head that fell was a mouth that no longer fed the body. When the last of the four lesser heads hung in the water, the great body thrashed and could not mend, and they brought it down.\n\nThe earth lurched when it died, so that the ledges cracked and the shrillers fell silent and did not start again. On the mound where it had lain a light began to glow, as it glows where dragons fall, and the tally-keepers of Tir na Nog have counted the beast among the dragons from that day, on the strength of Ríonach's account. The hydrars did not fight her company. They stood at the cistern's edge and watched, and when the light had faded they went down into the black sand with their spades.\n\nIt returns. The hydrars do not say whether they find another egg each time or the same one. The beast that rises from the cistern after each death is grown, five-headed and hungry, and it remembers, the Sylvan say, because a thing that is never allowed to sleep never forgets.\n\nThe Fomorians call it the city's luck, and they mean something more than a beast by it. The Sylvan of the western coast say there is a Fomorian story that belongs to the hydrars alone: that on the day the eye in the tower on the crag opens fully, the keepers will break the wall of the lowest cistern to the sea, and the beast will go out into the water for the first time, and swim east, toward the loughs its kind were driven from. What it wants is to eat. What the hydrars want is for it to eat somewhere else."
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "id": "trahern",
+  "name": "Trahern",
+  "npcNames": [
+    "Trahern"
+  ],
+  "locationId": "dartmoor",
+  "realm": "Albion",
+  "aliases": [
+    "the farther giant"
+  ],
+  "facts": [
+    {
+      "text": "Trahern: template 770041 (it replaces the spawn's values), level 51, a granite giant elder's model at size 150, in the middle of the moor at 381796, 734834; aggro level 200 within 500, faction Granite Giants of Dartmoor, respawn 80 seconds; nothing of his faction within 1,200.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Trahern stands about 22,600 from Golestandt and 7,100 from Borimo, who stands about 16,400 from her.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Aggressive NPCs attack anyone in their aggro range, but pass over riders on a steed.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (CheckPlayerAggro: any aggro level above 0 attacks within the aggro range; riders on a steed are skipped)"
+    },
+    {
+      "text": "Trahern is a Welsh given name (Trahaearn). Trahern's turned back, the broken measuring stone, his own reckoning and Hywel's entry are Living Server writing; the quarrel itself is in the Dartmoor file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Trahern is the younger of the two giants of the old suit, and the farther from the Bed, and he has never once admitted it. The drovers say that is the whole of him. Borimo holds that standing nearest the dragon is a giant's worth; Trahern holds that Borimo is a liar, that the Roman who measured them was a fool, and that the warm ground is nearer him by a way of reckoning that only granite understands.\n\nHis reckoning, as the Hext drovers tell it, goes like this. The Bed is not a place but a warmth, and the warmth moves in the ground the way water moves under ice; on some nights it runs south and west under the moor, toward Trahern, and on those nights he is the nearer, and Borimo is only rock. The drovers have stood on the moor on such nights and say the ground under Trahern is no warmer than anywhere else. They do not tell him so.\n\nWhen the Roman surveyor of the old province cut the measure on a boundary stone, the stone was found broken the next spring and the pieces lay nearer Trahern. Since then Trahern has stood with his back half turned to his rival, facing the drove road, and the drovers think he watches it to see whether anyone else will come to measure. Anyone who walks close enough to be taken for a surveyor finds out. He comes at a traveller on foot as fast as a giant can come, and the drovers who have seen it say he swings as if he meant to break the measure off the man.\n\nHe fights alone. Borimo has never crossed to help him and he has never asked; the drovers say each of them would rather be broken than owe the other a step. He is broken often enough, and stands again before a drover could finish a pipe, and the Hexts say that is the one point on which the two giants agree: whichever of them is broken, the moor sets him up again, so that the suit can go on.",
+  "legend": "Trahern is a level 51 named granite giant in the middle of Dartmoor, about 7,000 north of Borimo. Despite the old Dartmoor notes, he is aggressive (aggro 200 from the template, range 500), so do not walk up to him; riding past is fine. Nothing of his faction stands within 1,200 and Borimo never joins, so it is one giant: no spells or styles in the data, a melee fight a strong duo or a small group of fifties wins. He is the weakest of the named giants, a good first one. Keep clear of the Bed to the south-east and of the Stonecrush terraces to the west on the way. He respawns in about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "Another surveyor.",
+      "Nearer. I am nearer. Tonight I am nearer.",
+      "Measure me and I break the measure."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Borimo! Do not dare come! I want nothing of yours!"
+      }
+    ],
+    "death": [
+      "Tonight... I was nearer...",
+      "Do not... tell... Borimo..."
+    ],
+    "slay": [
+      "Measure broken.",
+      "No surveyor stands on my ground.",
+      "Nearer than you will ever be."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A giant faces the drove road, its back half turned.",
+      "The ground here is no warmer than anywhere."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Trahern bellows. Borimo does not answer."
+      }
+    ],
+    "realmFirstKill": "Trahern has fallen. The old suit is still undecided."
+  },
+  "botLines": {
+    "briefing": [
+      "trahern, 51 named giant mid-moor dartmoor, 7k north of borimo. he aggros, ignore the old notes",
+      "alone, borimo never comes. no spells, melee giant",
+      "easiest named giant on the moor. duo of 50s or a small group",
+      "stay clear of the bed se and the stonecrush west. 80 sec respawn"
+    ],
+    "aftermathWin": [
+      "trahern down. borimo didnt even look",
+      "easiest giant on the moor, told you",
+      "nobody walked into the stonecrush, nice",
+      "80 sec, move it"
+    ],
+    "aftermathLoss": [
+      "walked up to say hi. he aggros",
+      "wandered west into the stonecrush terraces after",
+      "solo at 47, he's 51",
+      "back up before we'd sat down"
+    ],
+    "rumour": [
+      "[heard|someone said] trahern thinks the dragon's warmth moves under the moor toward him at night",
+      "heard trahern broke the roman's measuring stone",
+      "[heard|someone said] trahern stands with his back half turned to borimo",
+      "heard borimo and trahern would rather be broken than help each other"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "trahern",
+    "text": "The younger of the two quarrelling giants in the middle of [dartmoor], the farther from the Bed, who will not admit it: he says the dragon's warmth moves under the moor and on some nights runs toward him. He broke the Roman's measuring stone, stands with his back half turned to [borimo], and comes at any walker who might be a surveyor. Neither giant will help the other."
+  },
+  "bookPage": "From the scorched journal of Hywel of Caerwent, scribe to Sir Arward, a leaf that survived. Second day. We passed two giants in the middle of the moor, a mile apart, one looking toward the warm ground in the south and the other looking at us. The drover with us said the second one was Trahern and that we should keep to the horses, and Sir Brychan laughed and got down to look at him, and Trahern came at him across the heather faster than I have seen a stone move. Sir Brychan was back in the saddle before I could write it. The other giant never turned its head. The drover said it never does, for that one.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} broke Trahern in the middle of the moor in {minutes} minutes.",
+    "loss": "Trahern broke the measure, and {raidLeader}'s company of {realm} with it."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "borimo",
+      "relation": "the old suit: which of them stands nearer the Bed; he never accepted the Roman measure"
+    },
+    {
+      "id": "golestandt",
+      "relation": "the warmth he says runs toward him on some nights"
+    }
+  ]
+}

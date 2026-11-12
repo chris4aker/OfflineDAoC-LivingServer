@@ -1,0 +1,135 @@
+{
+  "id": "odins-gate",
+  "name": "Odin's Gate",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "era": "mid-era-realm-war",
+  "factions": [
+    "frontier-giants"
+  ],
+  "summary": "Midgard's old frontier under the glaciers, where a giant of ice stands guard over a gate nobody can find.",
+  "facts": [
+    {
+      "text": "Odin's Gate is a Midgard frontier zone; after New Frontiers it held Nottmoor and Bledmeer Faste.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=38"
+    },
+    {
+      "text": "The Glacier Giant stands in Odin's Gate (region 100 at 651972, 626960); Allakhazam also lists it in Jamtland Mountains.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "Bot chat says each frontier has an old giant that belongs to no realm: a green knight, a glacier giant and Evern.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_shared.lines"
+    },
+    {
+      "text": "Bot chat tells of a hidden road to Asgard, Odin's Gate with no gate, and a door behind the giant.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "The Glacier Giant's throw is live in Living Server (no EpicEncounterMechanics switch): while above 15% health it may pick a random real player who is not its target and move them to one of six spots up to a few thousand units away and several hundred units up; a thrown player is not picked again for 45 s.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs"
+    },
+    {
+      "text": "Odin's Gate borders Jamtland Mountains and Uppland; Midgard's frontier keeps of the old frontier stood along its passes.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=38"
+    },
+    {
+      "text": "The Svarhamr beam, the Glenlock post and the warders' tales of the folded road are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Odin's Gate is the name on the map, and every new warrior who walks there asks the same question: where is the gate? There is a glacier, white and blue and breaking slowly into the valleys. There are the keeps of the frontier, which change hands with the seasons of the war. There is a giant of ice standing at the foot of the glacier like a man waiting at a door. There is no gate.\n\nThe skalds say there was one. When the gods built the road up out of Midgard to their own hall, they began it here, at the top of the world, where the ice is oldest, and set a giant at its foot to keep it. When the road was finished they folded it into the ice like a letter, so that no giant of the wrong sort could climb it, and the warders of the frontier keeps say the giant will unfold it for the right traveller and nobody else. Nobody has ever been the right traveller. The warders say so with a certain satisfaction.\n\nThe war came later. When Albion and Hibernia pushed north and the realms fortified their frontiers, Midgard built its keeps along the passes of Odin's Gate, below the glacier and well away from the giant, and the war has gone back and forth across the valleys ever since. The keeps change banners. The giant does not care. It throws Albion knights and Hibernian rangers and Midgard runemasters with exactly the same indifference, and the realms' captains have long since stopped trying to lure each other's war-bands onto its ground, because it never stays on anyone's side long enough to be useful. The warders of the keep nearest the glacier keep a book of every stranger the giant throws over their wall and where he lands. It goes back further than the war, and it is written in three hands, because the keep has been held by all three realms in turn and every garrison kept the book. The warders say the book is not any realm's. It is the giant's.\n\nEach frontier of the three realms has such a giant, the old soldiers say, belonging to no realm: Albion has a green knight, Hibernia an ancient tree, and Midgard the Glacier Giant. The skalds of Jordheim say the three are older than the realms and were set where they stand by older powers than the realms' gods, to mark where the world was once divided. The runemasters say the three are only very old, and very large, and found good places to stand.\n\nExplorers still come, between the battles. They climb the ledges above the keeps that look cut by a mason, and walk the glacier's edge with lanterns looking for a crack shaped like a door, and sit on the ridges at night waiting for the northern lights to show them the road. Some of them go too close to the giant and fly. A runemaster of Jordheim once swore that as she flew, for one breath, she saw a straight white line running up the glacier where no line should be. Nobody has found the gate. Everyone believes in it, a little.",
+  "legend": "Everybody's guild has a story about someone the Glacier Giant threw. People used to bet on where the thrown would land; the record is said to be near Uppland, which is an exaggeration, but not by as much as you'd think. Some say killing the giant takes the fire out of the dragon in Malmohus. It doesn't, and the two are a realm apart. Some say the giant is guarding a door, and that one people half believe. The frontier wisdom about the giant itself: it never throws the one standing right in front of it, only the ones round about, and it stops throwing when it's nearly dead. A group and a half can kill it if they come back fast after each throw. Keep your realm war away from it; it throws everyone the same. When you're new to the frontier, the veterans will tell you the gate is behind the giant and dare you to go and knock. Don't.",
+  "atmosphere": {
+    "firstEntry": [
+      "Odin's Gate. A glacier, a giant, and no gate.",
+      "The frontier under the ice. Banners change; the giant stays.",
+      "The ice here is older than the keeps below it.",
+      "Somewhere in the glacier, they say, a road is folded up."
+    ],
+    "areas": [
+      {
+        "name": "the giant's ground",
+        "x": 651972,
+        "y": 626960,
+        "z": 5468,
+        "radius": 2500,
+        "lines": [
+          "The giant of ice stands watch. Do not go closer.",
+          "A hill of blue ice with a face, waiting at no door.",
+          "Scuffed snow far off marks where the thrown came down."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "odin's gate has a giant, a glacier and no gate",
+      "the old skalds say the road to asgard starts behind the glacier giant, folded up in the ice",
+      "each frontier has an old giant that belongs to no realm. ours is the glacier giant",
+      "the warders say the gods folded the road to asgard into the ice like a letter",
+      "the glacier giant will unfold the road for the right traveller, they say. nobody has been the right traveller",
+      "odin's gate keeps change banners every season. the giant doesnt care",
+      "albion has the green knight, hibernia has the old tree, we have the glacier giant",
+      "the skalds say the three frontier giants mark where the world was divided",
+      "a runemaster swore she saw a white line up the glacier while she was flying",
+      "the ledges above the keeps look cut by a mason. theres nothing up there but wind",
+      "people sit on the ridge at night waiting for the northern lights to show the road",
+      "nobody has found the gate. everyone half believes in it"
+    ],
+    "rumour": [
+      "heard killing the glacier giant takes the fire out of the dragon. [i think whoever said that was drunk|nobody checked]",
+      "[dare|i dare] [anyone|someone] to stand still next to the glacier giant for ten seconds. [nobody has|no one ever has]",
+      "the giant never throws whoever is right in front of it, only the people round about",
+      "the glacier giant stops throwing people when its nearly dead, they say",
+      "someone landed near uppland once. [probably|maybe]",
+      "albs tried to lure our warband onto the giants ground once. it threw them first",
+      "theres a crack in the glacier shaped like a door, my guildie swears. nobody else has found it",
+      "the warders at the keeps bet on where the thrown land"
+    ],
+    "tell": [
+      "odin's gate is the frontier up north. keeps, a glacier, and the glacier giant. stay away from the giant",
+      "its frontier, so watch for albs and hibs. and the giant throws everyone",
+      "odin's gate? the giant and the keeps. no gate, i looked",
+      "odin's gate is the frontier past jamtland. glacier, keeps, giant",
+      "is odins gate dangerous? the realm war is. the giant only if you go close",
+      "where's the gate? nobody knows. thats the joke"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Odin's Gate. The gods built a [road] there once, they say, and set a [giant] at its foot.\"",
+    "topics": {
+      "road": "The road up out of Midgard to the gods' hall. When it was finished they folded it into the ice. Nobody has found it since. Everyone looks.",
+      "giant": "The Glacier Giant. It belongs to no realm and throws all three with the same indifference. Stand back.",
+      "folded road": "The skalds say the gods began their road to Asgard at Odin's Gate and folded it into the ice when it was finished, like a letter. The [giant] will unfold it for the right traveller. Nobody has been the right traveller.",
+      "frontier keeps": "Midgard built its keeps along the passes below the glacier when the realms fortified their frontiers. They change banners with the seasons of the war. The [giant] never takes a side.",
+      "three giants": "Each frontier has an old giant that belongs to no realm: Albion's green knight, Hibernia's ancient tree, and our [giant] of ice. The skalds say the three mark where the world was divided.",
+      "white line": "A runemaster of Jordheim swore that as the [giant] threw her, she saw for one breath a straight white line running up the glacier. Some think it was the [folded road]. Nobody has seen it since.",
+      "ledges": "Above the keeps are ledges that look cut by a mason. Explorers climb them looking for the [folded road] and find only wind.",
+      "northern lights": "Grandmothers of Jamtland say the northern lights will one night show the [folded road] up the glacier. People still sit on the ridges waiting."
+    }
+  },
+  "book": {
+    "title": "Looking for the Gate",
+    "pages": [
+      "Three summers I looked for the gate. I climbed the ledges above the keeps that look cut by a mason, and found only wind. I walked the edge of the glacier from end to end with a lantern, looking for a crack the shape of a door, and found a great many cracks and no doors. I sat a night on the ridge waiting for the northern lights to show me the road, as my grandmother promised. They did not. In the morning I went a little too close to the giant, and it threw me, and as I flew I looked down and I swear for one breath I saw a straight white line running up the glacier where no line should be. Then I landed, and it was gone.",
+      "I asked the old warder at the keep below the glacier what the giant was guarding. He said: the road. I asked which road. He pointed at the glacier behind it, where there is no road. He said his grandfather told him that when the gods built the road up out of Midgard they set a giant at its foot, and that the road is still there, only folded up in the ice like a letter, and the giant will unfold it for the right traveller. I asked who the right traveller was. He said: not you. Then a runemaster went flying over the wall, and he said: nor him.",
+      "The warders keep a book of their own, I found, in the guardroom of the keep, in which they write down every stranger the giant throws over their wall and where he lands. It goes back further than the war. The oldest pages are in runes I could not read, and the newest are in three hands, because the keep has been Midgard's and Albion's and Hibernia's in turn, and each garrison kept the book. I asked why the Albion and Hibernian garrisons had kept a Midgard book. The warder said the book was not Midgard's. It was the giant's. Every garrison knows that.",
+      "I watched the giant for a whole day from the ridge, which no one does, because there is nothing to watch. It does not move. Twice a war-band came close to it, and twice it threw one of them, and both times, I noticed, it was not the one standing in front of it. It reached past that one for someone further back. In the evening a company of our own came and fought it, and when it was nearly broken it stopped throwing altogether and only stood and took their blows. I wrote that down. The warder said every garrison knew that too, and nobody had ever thought to write it.",
+      "My grandmother said the gate opens once in a lifetime, on the longest night, and that you would know it by the giant kneeling. I have now asked every warder on the frontier whether the giant has ever knelt, and every one of them has laughed, and the oldest has stopped laughing in the middle and looked at the glacier for a while. I am going home. I have not found the gate. I believe in it rather more than I did, which I did not expect, and I have written down where I landed each time, for the warders' book."
+    ]
+  },
+  "bosses": [
+    "glacier-giant",
+    "melechan"
+  ]
+}

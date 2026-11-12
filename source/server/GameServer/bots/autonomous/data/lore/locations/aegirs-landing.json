@@ -1,0 +1,296 @@
+{
+  "id": "aegirs-landing",
+  "name": "Aegir's Landing",
+  "realm": "Midgard",
+  "regions": [
+    151
+  ],
+  "zones": [
+    151
+  ],
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt",
+    "aegir-clans",
+    "valkyn",
+    "houses-of-midgard"
+  ],
+  "summary": "Where Midgard came ashore on the island of Aegir: the haven of Aegirhamn with its Valkyn and dwarven guards, old Dyrfjall in the north, the mussel-clan on the western shore, the mammoths and the scimitar cats, and the morvalt on every edge.",
+  "facts": [
+    {
+      "text": "Aegir's Landing is zone 151 of region 151, the first zone of Midgard's Shrouded Isles. Aegirhamn (Area, 291,043/354,886, radius 5,000) is its town; a second settlement stands in the north-west, which the quests name Dyrfjell (and once Dyrfjall). The ship road from Aegirhamn lands at Nalliten in Gotar (zone point 'MID SI EXIT'); the Mularn ship road lands here.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Area and ZonePoint tables (0.37b world data); runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Aegirhamn has trainers of every calling, the crafting masters, a name registrar, guild registrar and emblemer, two vault keepers, Valkyn, Troll and Dwarven guards, Chieftain and Chieftess Guards, and a Shale Golem Emissary.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 151 (0.37b world data)"
+    },
+    {
+      "text": "Its folk: myggor (mygga) in great numbers, morvalt krigsmen, jakthast, jagare, ungdom, spjutmen, spotters and fast-walkers (Morvalt Samhalle), mammoth calves and young mammoths (Mammoth Migration), scimitar cats, kits and cubs (Cats of Aegir), boobries, the musslaklan (diggers, sifters, sounders, carvers, crafters, hunters), sand jellies, biting insects, pyslings, skeletts and tendrils.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 151 (0.37b world data)"
+    },
+    {
+      "text": "Mythic: a lone Troll Father came to Jordheim to say the morvalt had swept Aegir; the Valkyn tamed by the Troll Fathers joined Midgard to cleanse the island.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=65"
+    },
+    {
+      "text": "Catla Gardasdottir of Aegirhamn seeks 'the magic that flows through this land from the great mother of Morvaltar' (Kyllikki's Scrolls); Medana comes 'to help stop Catla Gardasdottir's mad plans', and Catla's spirit sits on 'the westernmost of three large boulders outside Dyrfjell' (Catla's Downfall).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "The Ancestral Secrets chain begins with Ota Yrling, Longbeard and Styr in Aegirhamn; Karle Alfevson's 'Ibicus' lets the carcass go to him, Ota Yrling or Longbeard, or to a Musslaklan trader for tokens that Gazsi takes.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); source/server/GameServer/scripts/quests/Midgard/shrouded isles/AncestralSecrets.cs"
+    },
+    {
+      "text": "The musslaklan kill-task givers Rith and Torlieva speak to newcomers 'new to our tribe'; Torlieva's task says she 'stands in a skalklan camp'.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "In Swedish mussla is a mussel and klan a clan; mygga is a mosquito; pysling a little boy; in Scottish folklore the boobrie is a great water-bird that preys on cattle.",
+      "provenance": "myth",
+      "source": "Swedish lexicon; Scottish folklore (J. F. Campbell), to verify"
+    },
+    {
+      "text": "The landing's founding custom, the mussel-clan's tokens, Catla's spirit and Hjordis's book are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Midgard's ships to the remnants of Atlantis sail from the Aegirhamn dock.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
+    }
+  ],
+  "story": "Aegir's Landing is where Midgard came ashore. The skalds tell it short: a Troll Father walked into Jordheim, older than any troll in the city and stranger, and said that the morvalt had swept the island of Aegir and that Trollheim, the first city of trolls and kobolds, could not hold out for long. Midgard sailed. It came in on the island's south-east shore with the Valkyn beside it, the morvalt the Troll Fathers had tamed long ago, and built a haven where the ships could lie: Aegirhamn, Aegir's harbour, named for the old sea-giant who brews the gods' ale under the waves.\n\nAegirhamn grew quickly, because it had to. The realm put masters of every house into it, so that the young who came over the sea need not go home to be taught, and vaults and registrars and craftsmasters, and guards of every people who came: Valkyn on the gates, trolls and dwarves, the island's own chieftain guards and chieftess guards, who say that on Aegir a woman's guard is as good as a man's and twice as rude. There is a golem on the quay, an emissary of the shale golems of the island's hills, who came down to the haven to see what the newcomers were and has not gone back. The harbour-reeves say he is still deciding.\n\nThe island was not empty. In the north-west there was already a town when the ships came, Dyrfjall, the island folk's own, older than the haven and proud of it; its people had held out against the morvalt with no help from anyone, and they let Midgard know. On the western shore the musslaklan live, the mussel-clan, small clan-folk who dig the flats for shellfish and sift the sand and sound the tides, and who trade with anyone who has been taken into the clan and fight anyone who has not. They are cousins, they say, of the mountain-clan and the tree-clan further in, and they do not like either.\n\nThe morvalt are everywhere else. Their krigsmen and hunters and spearmen hold the north and the east, their young run the middle, their fast-walkers watch the roads, and two of their chiefs keep the far north-western edge, each with a fire the other will not sit at. They came over the island long before Midgard did and drove the trolls and the kobolds out of their own city, and they do not see why they should stop for a haven. The young of Aegirhamn go out against them first, the way the vale's young go out against the hobgoblins.\n\nBetween the morvalt and the shore the island is wild. Mammoths migrate across it with their calves; scimitar cats hunt them, and their kits hunt everything smaller; boobries stalk the marshes, great birds that eat cattle in the old stories and eat whatever they can get here. The mygga rise from every pool in clouds. And the island's dead are strange: skeletts on the beaches, washed up from ships nobody remembers, and the pyslings, little lost spirits that the island folk say are the children the morvalt took when they came, still looking for the way home.\n\nAegir's Landing matters because the whole of Midgard's war on the Shrouded Isles begins here. The warbands for Trollheim and Tuscaran and the old one's lair all came ashore at Aegirhamn first. And the island's own trouble begins here too: Catla Gardasdottir of the haven wants the power that flows through Aegir from the morvalt's great Mother, and has wanted it so long that her spirit has wandered out of her and sits on a boulder outside Dyrfjall, waiting for her to notice. Medana has come to stop her. The harbour-reeves say she is not the first in the haven to want that power, only the first to say so.",
+  "legend": "Aegir's Landing is the Shrouded Isles starter zone for Midgard. You arrive at Aegirhamn (the boat from the Vale of Mularn lands here, the Aegirhamn boat goes back to Nalliten in Gotar). Aegirhamn has everything: every trainer, crafting masters, vault, registrars, a Shale Golem Emissary. Dyrfjall in the north-west is the older island town (Juuso, Jago's Stoneheart quest, Tjasse Vindrson's stable, Catla's spirit on the westernmost boulder outside it). Morvalt everywhere north and east, ungdom 7-10 near town, krigsmen and jagare high teens to 22. Mammoth calves, scimitar cats, boobries, sand jellies and endless mygga. The musslaklan camps on the west shore are a reputation faction: Rith and Torlieva give kill tasks once the clan takes you in, and the Musslaklan Trader takes Ibicus's carcass for Gazsi's tokens. Island saying: the shale golem on the quay is still deciding about you.",
+  "atmosphere": {
+    "firstEntry": [
+      "Aegir's Landing. Midgard came ashore here.",
+      "Salt, mud and a cloud of mygga.",
+      "The island was not empty when the ships came.",
+      "Somewhere north, a morvalt horn."
+    ],
+    "areas": [
+      {
+        "name": "Aegirhamn",
+        "x": 291043,
+        "y": 354886,
+        "z": 3700,
+        "radius": 5000,
+        "lines": [
+          "Aegirhamn, Aegir's harbour. The haven of the realm.",
+          "Valkyn on the gates, a golem on the quay.",
+          "Catla wants the Mother's power. Medana watches her."
+        ]
+      },
+      {
+        "name": "the Aegirhamn shore",
+        "x": 282324,
+        "y": 354456,
+        "z": 3644,
+        "radius": 2000,
+        "lines": [
+          "Lost pyslings drift by the water, looking for home.",
+          "Soxulfr lies washed up and harmless on the sand."
+        ]
+      },
+      {
+        "name": "Dyrfjall",
+        "x": 277000,
+        "y": 325000,
+        "z": 3900,
+        "radius": 3000,
+        "lines": [
+          "Dyrfjall, older than the haven and proud of it.",
+          "Three boulders outside. Catla's spirit sits on one."
+        ]
+      },
+      {
+        "name": "the north-west camps",
+        "x": 258600,
+        "y": 326900,
+        "z": 3752,
+        "radius": 2500,
+        "lines": [
+          "The mussel-clan's north camp. Torg the Hunter tracks.",
+          "Rith and Torlieva set tasks for the clan's own.",
+          "Uger is the big quiet one by the fire."
+        ]
+      },
+      {
+        "name": "the south-west camp",
+        "x": 258300,
+        "y": 359000,
+        "z": 3752,
+        "radius": 2500,
+        "lines": [
+          "Krum keeps the mussel-clan's south camp like a hall.",
+          "Durl and Gohl at the sifting beds.",
+          "The Musslaklan Trader counts tokens."
+        ]
+      },
+      {
+        "name": "the morvalt edge",
+        "x": 259500,
+        "y": 315800,
+        "z": 4048,
+        "radius": 5000,
+        "lines": [
+          "Shreg's fire. Talvor's fire. They do not share.",
+          "Morvalt spotters watch the haven from the ridge."
+        ]
+      },
+      {
+        "name": "the stone bridge",
+        "x": 283762,
+        "y": 349200,
+        "z": 3085,
+        "radius": 1500,
+        "lines": [
+          "The stone bridge north of the haven.",
+          "Ibicus the drake waits behind the boobrie hatchlings."
+        ]
+      },
+      {
+        "name": "the tendril marsh",
+        "x": 273600,
+        "y": 350600,
+        "z": 4464,
+        "radius": 1500,
+        "lines": [
+          "Tendrils in the reeds, and a shade among them.",
+          "The Shambling Shade cannot be seen until it moves.",
+          "Pyserlian drifts nearby, the saddest pysling."
+        ]
+      },
+      {
+        "name": "the mygga pools",
+        "x": 277183,
+        "y": 358216,
+        "z": 5642,
+        "radius": 2500,
+        "lines": [
+          "Mygga rise in clouds from every pool.",
+          "Ixich flies above them, screaming."
+        ]
+      },
+      {
+        "name": "the mammoth road",
+        "x": 274000,
+        "y": 332000,
+        "z": 4000,
+        "radius": 6000,
+        "lines": [
+          "Mammoths and their calves on the migration road.",
+          "Scimitar cats follow the herd."
+        ]
+      },
+      {
+        "name": "the far south-west",
+        "x": 261524,
+        "y": 372861,
+        "z": 5525,
+        "radius": 2000,
+        "lines": [
+          "Scimitar kits in the rocks.",
+          "The Enraged Scimitar Kit has not forgiven anyone."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "a troll father walked into jordheim and said the morvalt had aegir, so midgard sailed",
+      "aegirhamn is aegirs harbour, named for the sea giant who brews the gods ale",
+      "the valkyn came ashore with us at aegirhamn, the morvalt the troll fathers tamed",
+      "aegirhamn has masters of every house so the young need not sail home to train",
+      "the chieftess guards say a womans guard on aegir is as good as a mans and twice as rude",
+      "the shale golem emissary came down to the haven to see what we were. hes still deciding",
+      "dyrfjall was there before the haven and held out against the morvalt alone",
+      "the musslaklan are the mussel clan of the west shore, cousins of the berg and trad clans",
+      "the mussel clan trades with anyone it has taken in and fights everyone else",
+      "the morvalt drove the trolls and kobolds out of their own city before we came",
+      "the pyslings are the children the morvalt took, still looking for home, the island folk say",
+      "every warband for trollheim and tuscaran came ashore at aegirhamn first"
+    ],
+    "rumour": [
+      "catla gardasdottir is not the first in aegirhamn to want the mothers power, only the first to say so",
+      "the boobries ate cattle in the old stories. here they eat whatever they get",
+      "shreg and talvor lead the morvalt at the north west edge, two chiefs who wont share a fire",
+      "torg the hunter is the best tracker the mussel clan has. he tracks you too",
+      "krum keeps the mussel clans south camp like a jarl keeps a hall",
+      "the musslaklan trader will take ibicus off your hands for tokens, gazsi pays for them",
+      "rith and torlieva only give tasks to folk the mussel clan has taken in",
+      "the shambling shade walks among the tendrils and you cant see either till too late",
+      "torlieva says she stands in a skalklan camp. the musslaklan say she stands in theirs",
+      "uger is the big quiet one at the north mussel camp",
+      "ibicus is a drake by the stone bridge north of aegirhamn. karle alfevson wants him",
+      "durl and gohl are krums sons, or so they say",
+      "ixich is a cicada that flies higher than the rest and screams louder",
+      "pyserlian is a pysling, one of the little lost spirits, dalea wants its essence",
+      "the enraged scimitar kit is what happens when you step on a kit's tail",
+      "soxulfr is a washed up skeleton on the shore who never hurt anyone",
+      "the mygga are everywhere on aegir. the locals stopped slapping years ago",
+      "catla gardasdottir wants the mother of morvaltars magic. her spirit is already sitting on a boulder outside dyrfjall"
+    ],
+    "tell": [
+      "aegirs landing is the shrouded isles start, the boat from mularn lands at aegirhamn",
+      "dyrfjall is the old town north west, the mussel clan camps are on the west shore",
+      "shreg and talvor are 22 morvalt chiefs at the far north west",
+      "torg the hunter, rith, torlieva and uger are at the north west mussel camp",
+      "krum, durl, gohl and the musslaklan trader are at the south west mussel camp",
+      "the shambling shade is middle west with the tendrils, 15, stealthed",
+      "ibicus is north of aegirhamn by the stone bridge behind the boobrie hatchlings",
+      "ixich is south of the middle among the mygga, it flies",
+      "pyserlian is a 12 pysling ghost in the middle, dark essence quest",
+      "enraged scimitar kit is far south west, soxulfr is on the shore by aegirhamn, level 2 and harmless"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Aegir's Landing, where the realm came ashore. [Aegirhamn] is our haven; [Dyrfjall] was there first. The [musslaklan] dig the west shore, the [morvalt] hold every other edge, and [Catla] wants something nobody should.\"",
+    "topics": {
+      "Aegirhamn": "Aegir's harbour, built where the ships came in, with masters of every house, vaults, registrars, Valkyn, troll and dwarven guards and the island's chieftain and chieftess guards. The [shale golem] stands on the quay.",
+      "shale golem": "An emissary of the shale golems of the island's hills, who came down to the haven to see what the newcomers were and has not gone back. The harbour-reeves say he is still deciding.",
+      "Dyrfjall": "The island folk's own town in the north-west, older than the haven, which held out against the [morvalt] alone. Juuso brews there, Jago tells of the Stoneheart, and [Catla]'s spirit sits on a boulder outside it. Ottkel of Dyrfjall walked into Trollheim's dark first.",
+      "musslaklan": "The mussel-clan of the west shore, small clan-folk who dig, sift and sound the flats, cousins of the mountain-clan and tree-clan who do not like either. They trade with anyone the clan has taken in. See [Krum], [Torg the Hunter].",
+      "morvalt": "The savages who swept Aegir and drove the trolls and kobolds out of Trollheim, and hold the north and east of the landing. Two chiefs keep the north-western edge: [Shreg] and [Talvor].",
+      "Catla": "Catla Gardasdottir of Aegirhamn, who wants the power that flows through Aegir from the morvalt's great Mother, and has wanted it so long her spirit wandered out of her and sits on a boulder outside [Dyrfjall]. Medana has come to stop her.",
+      "pyslings": "Little lost spirits of the island, the children the morvalt took when they came, the island folk say, still looking for the way home. Dalea Gronholm captures their essence for Elizabeth of Mularn. See [Pyserlian].",
+      "Hjordis": "Hjordis, harbour-reeve of Aegirhamn, who keeps the quay and wrote The Landing Book for the jarl's clerks in Jordheim, who wanted to know what they were paying for.",
+      "Shreg": "A morvalt chief of the gruppchef kind at the far north-western edge of the landing, among krigsmen, spotters and jakthast. He and [Talvor] each keep a fire, and neither will sit at the other's. The Dyrfjall folk say they are brothers who fell out over which of them the Mother loves best, and the morvalt round each fire would sooner fight each other than either chief. They fight strangers first.",
+      "Talvor": "The other morvalt chief of the north-west edge, a little west of [Shreg], with spotters and spearmen round him. Talvor's fire is the smaller one and his spotters watch the haven, not Shreg. The island folk say that is why he will outlast his brother: he is watching the right enemy. His spearmen are fewer and better. Shreg's do not mind.",
+      "Torg the Hunter": "The best tracker of the [musslaklan], a big clan-man at the north camp, who hunts the island for the clan. He follows strangers' tracks too, and if they lead to the camp he is waiting at the end of them. The clan's children learn the island from him. He carries a spear of mammoth bone and has never been seen to throw it, because he has never needed to. The haven's hunters ask his price for a guide and he names it in tokens.",
+      "Krum": "The head of the [musslaklan]'s south camp, who keeps it like a jarl keeps a hall: the sifting beds in rows, the trader at his side, nobody at the fire without his word. Strangers the clan has not taken in he treats as raiders, and fights with the camp behind him. The south camp has never been taken. Krum means it never will be.",
+      "Musslaklan Trader": "The trader of the [musslaklan]'s south camp beside [Krum], who takes carcasses and goods from those the clan has taken in and pays in clan tokens. Gazsi of Aegirhamn takes the tokens, and Karle Alfevson's hunters bring Ibicus's carcass here when they would rather have tokens than thanks. To strangers he is only another clan-man with a knife. Nobody knows his name.",
+      "Rith": "A clan-woman of the [musslaklan]'s north camp who sets tasks for newcomers to the tribe: a cave lioness's sinew, and others. She speaks quickly and repeats herself, as the clan does with strangers it has decided to keep. To those it has not, she is as dangerous as the rest. Her tasks are always hunts, and always far from the camp.",
+      "Torlieva": "A clan-woman at the north camp of the [musslaklan] who sets newcomers to hunting woolly mammoth for its hide. She says she stands in a skalklan camp, and the musslaklan say she stands in theirs; the two clans have argued over that stretch of shore for longer than the haven has stood. She takes the side of whoever is asking.",
+      "Uger": "The big quiet clan-man of the [musslaklan]'s north camp, larger than the rest, who stands by the fire and says nothing while [Rith] and [Torlieva] talk. The Dyrfjall folk say he was a chief once and gave it up because chiefs have to talk. He is the first to stand when strangers come. He fights with his fists. Nobody has made him talk.",
+      "Ibicus": "A great silverscale drake by the stone bridge north of Aegirhamn, behind the boobrie hatchlings. Karle Alfevson pays for his carcass, as do Ota Yrling and Longbeard, and the [musslaklan] trade tokens for it. The harbour-reeves say he came ashore the same season as the ships, and has resented them since. He does not let anyone cross his side of the bridge.",
+      "Durl": "A clan-man of [Krum]'s south camp who works the sifting beds and fights for them. He and [Gohl] are Krum's sons, the camp says, though Krum does not say so; Durl is the elder and minds it. He shouts the camp awake when strangers come. He keeps the beds in better order than Krum does, and Krum knows it and says nothing. The sifters work faster when Durl is watching.",
+      "Gohl": "The younger of the clan-men called [Krum]'s sons at the south camp, smaller than [Durl] and quicker. The Dyrfjall folk say Gohl would rather trade than fight, and fights anyway, because Krum is watching. He haggles with the trader for the clan when Krum is not looking, and the trader lets him win small. Gohl thinks he is good at it. The camp lets him think so; it is cheaper.",
+      "Ixich": "A giant cicada of the mygga pools south of the middle, which flies above the swarms where the others crawl and screams louder than all of them together. The island folk say the mygga follow its scream. It comes down on anyone below it. The children of Aegirhamn say that when Ixich stops screaming, the mygga stop biting, and that nobody has ever heard it stop.",
+      "Pyserlian": "A [pyslings] spirit of the marsh, alone and sadder than the rest, which the island folk say was the first child the morvalt took. Dalea Gronholm's vessel catches the pyslings' essence; Pyserlian's is the one she wants most, and it fights to keep it. It drifts alone by the marsh edge, away from the other pyslings, and does not go near the shore where they keep Soxulfr company.",
+      "Shambling Shade": "A shadow among the tendrils of the middle-western marsh, which cannot be seen until it moves. The tendrils hold, the shade strikes, and the island folk walk round that marsh. They say the shade was a traveller the tendrils held too long, who learned their stillness. Its tendrils are its watch, and it never leaves them. The harbour-reeves have put a post at the marsh edge to warn the young.",
+      "Enraged Scimitar Kit": "A scimitar kit of the far south-west that is angrier than any kit ought to be. The island children say someone stepped on its tail once, and it has been looking for him since. It attacks everyone in case it is them. The grown scimitar cats keep away from it. So should everyone else. It has never yet found the man, and has not calmed down.",
+      "Soxulfr": "A washed-up skeleton on the shore by Aegirhamn among the lost pyslings, from a ship nobody remembers. It never strikes anyone. The harbour-reeves say Soxulfr was the name on the ship's board it came ashore on, and that it is waiting for the rest of the crew. The pyslings keep it company. Nobody has ever found the board. The pyslings sit with it at dusk."
+    }
+  },
+  "book": {
+    "title": "The Landing Book",
+    "pages": [
+      "Hjordis, harbour-reeve of Aegirhamn, wrote this for the jarl's clerks in Jordheim, who send me letters asking what they are paying for. You are paying for a haven on an island at the edge of the world. When the Troll Father came to the city and said the morvalt had Aegir, the jarls sent ships, and the ships came in here because this was the only beach on the south-east where a keel would not break. We built the quay first, then the wall, then everything else. The Valkyn came ashore with us. They have the gates. They will not say what they think of this island, which was theirs before it was the morvalt's, and I have stopped asking.",
+      "The haven has masters of every house now, so that the young who come over the sea need not sail home to be taught, and vaults, and registrars for names and companies, and crafts-masters, and more merchants than I can count. The guards are of every people who came: Valkyn, trolls, dwarves, and the island's own chieftain guards and chieftess guards. The chieftesses are the best of them and will tell you so. There is a golem on the quay. He came down out of the shale hills to see what we were, and he stands there still. I put a bench beside him. He has not sat on it. He is still deciding.",
+      "Dyrfjall was here first. It stands in the north-west, an island town that held against the morvalt alone, and its people let us know it every market day. The mussel-clan were here first too, on the west shore, small clan-folk who dig the flats and sift the sand and trade with any stranger they have decided to adopt and fight the rest. Their trader takes carcasses and pays in tokens, and Gazsi in the haven takes the tokens. I have never understood the rate. Nobody has. The clan says that is the point of tokens.",
+      "The morvalt are everywhere else. They hold the north and the east and send their young against our young in the fields outside the wall. Two of their chiefs keep fires at the far north-west edge and will not sit at each other's; the Dyrfjall folk say they are brothers. Mammoths cross the island on their migration and the scimitar cats follow them. The mygga rise from every pool, and the clerks who visit from Jordheim spend their first night slapping and their second night resigned. The pyslings drift on the shore at dusk, small and lost. The island folk say they are the children the morvalt took. We do not slap at them.",
+      "One more thing the clerks should know. There is a woman in the haven, Catla Gardasdottir, who has decided that the power the morvalt's great Mother pours through this island can be had by someone who wants it enough. She wants it enough. She has wanted it so long that her spirit has wandered out of her, and sits on the westernmost of three boulders outside Dyrfjall, and the Dyrfjall folk leave it bread. Medana has come over the sea to stop her. I hope she does. Catla is not the first in this haven to want that power. She is only the first to say it out loud."
+    ]
+  },
+  "bosses": []
+}

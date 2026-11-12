@@ -1,0 +1,132 @@
+{
+  "id": "spectral-provisioner",
+  "name": "Spectral Provisioner",
+  "catalogKey": "caer-sidi/spectralprovisioner",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 77, 100,000 health. Immune to Heat, Spirit and Cold damage; strikes back at attackers with Spectral Strike, slowing them by 70%.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs"
+    },
+    {
+      "text": "Welsh myth, not game canon: the cauldron of Annwn in Preiddeu Annwfn will not boil a coward's food.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Caer_Sidi"
+    },
+    {
+      "text": "Spectral Provisioner: spawned only when a real player comes within 500 of his spawner; no damage from heat, spirit or cold; GetResist 40 melee / 70 other; Spectral Strike (350 spirit, 70% snare 30 s) on 40% of attacks by real players only (GamePlayer); 60 s without combat heals him to full.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs"
+    },
+    {
+      "text": "The villa steward, the ladle, the hungriest mouth, the freed kitchen hands, the three readings of his last words and the heel of bread on the shelves are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Welsh myth, not game canon: Preiddeu Annwfn tells of the cauldron of the Head of Annwn, warmed by the breath of nine maidens, which would not boil the food of a coward; its refrain says only seven came back.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Preiddeu_Annwfn"
+    }
+  ],
+  "story": "The Spectral Provisioner kept the stores of Caer Sidi and served the prisoners from the cauldron of the head of Annwn, the one the oldest poem says would not boil a coward's food; every coward in the gaol knew before he reached the head of the line that his bowl would come back cold. The Inconnu say he was the steward of a Roman villa of the west in life, who knew the price of everything and the appetite of everyone, and that he struck any hand that reached past another with a ladle of pale iron, long as a spear, after which the hand was slow for a long while.\n\nHis tools were fire for the cauldron, frost for the stores and prayer for the meal, and when the gaol rose and the cauldron's rim was carried down to the larders, he went after it and took all three into himself: fire, frost and workings of the spirit go into him and are gone, the galleries' other workings reach him only faintly, and a blade he feels. He answers the striking hand with his ladle. The Inconnu say he wakes for one mouth only in any company, the hungriest, and that it is that one his ladle finds.\n\nHe walks a steward's round through the empty larders; his freed kitchen hands will not lift a hand for him. Dame Ysolde's wizards threw fire and frost at him to no effect, and her knights did the work, each stepping out when the ladle found him and another stepping in, so that there was always a quick sword before him. Sir Geraint of Caerwent said being struck was like being told off by his grandmother.\n\nAs he falls he says that someone must feed them: the prisoners, say the Inconnu; the sacrament, says the Church; the cold cauldron, say the bards. Caer Gothwaite's companies carry a heel of bread each and leave it on his empty shelves on the way down.",
+  "legend": "The Spectral Provisioner is level 77, 100,000 health. He only appears when a real player walks within 500 of his spot in the larders, so a bot group alone will never find him. Heat, cold and spirit do nothing at all to him. Everything else works, but he takes 40% less from melee and 70% less from other spells, so this is a melee kill; casters with matter, body or energy help a little, fire and ice wizards should heal or stay home. When a real player hits him there is a 40% chance he answers with Spectral Strike: 350 spirit damage and a 70% snare for 30 seconds. It never fires at bots, so the human player is the one who gets slowed; if that is you, step out and let the bot melee carry it. His larder skeletons and manifestations do not join on their own. Do not stall: a minute with nobody fighting him and he is full again. Old hands leave a heel of bread on a shelf.",
+  "yells": {
+    "aggro": [
+      "No portion for thieves.",
+      "The larders are closed.",
+      "Who reaches for the stores?"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "No portion! No portion for any of you!"
+      }
+    ],
+    "death": [
+      "The stores... are open...",
+      "Feed them... someone must feed them..."
+    ],
+    "slay": [
+      "One fewer mouth.",
+      "No portion for you.",
+      "Back of the line."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Empty larders. Something still guards them.",
+      "A cauldron's rim, cold, and nothing in it."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Spectral Provisioner is gone. The larders are bare."
+  },
+  "botLines": {
+    "briefing": [
+      "provisioner only shows when a real player gets close to his spot",
+      "fire ice and spirit do nothing. melee kill, other spells do little",
+      "his slow only hits real players, whoever gets it step out and let melee carry",
+      "a minute quiet and he heals full, keep at him"
+    ],
+    "aftermathWin": [
+      "provisioner down, nobody's going hungry now",
+      "matter and body casters carried that one",
+      "the larders are ours",
+      "good melee rotation"
+    ],
+    "aftermathLoss": [
+      "we brought fire wizards to the provisioner. dont",
+      "the slow had our real tank crawling the whole fight",
+      "we stopped for a break and he was full again",
+      "not enough melee, spells barely touch him"
+    ],
+    "rumour": [
+      "heard the provisioner in caer sidi ignores fire and frost",
+      "[someone said|heard] the old cauldron wont cook a coward's food. the provisioner made sure of it",
+      "heard the provisioner fed the prisoners from arawn's cauldron",
+      "bring steel to the provisioner, [heard|they say]",
+      "heard caer gothwaite groups leave bread on the provisioner's shelves",
+      "[heard|someone said] the provisioner only comes out for real people, not bots"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "provisioner",
+    "text": "The steward of the stores of [Caer Sidi], who served the prisoners from the cauldron of Annwn that would not boil a coward's food. Fire, frost and prayer were his tools, and none of them touch him now; a blade does. As he falls he says that someone must feed them. See [Skeletal Sacristan]."
+  },
+  "bookPage": "In the larders of Caer Sidi there is nothing to eat and something guarding it. The Provisioner turned on us the moment we stepped among the empty shelves, and our wizards threw fire at him, and frost, and he did not so much as notice, and his blows made our swordsmen move as if through deep water. Dame Ysolde called for the other spells, the crushing and the withering and the lightning, and those he felt. When he fell he said that someone must feed them. I do not know who he meant. I hope it is not us.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} emptied the larders of Caer Sidi and ended the Spectral Provisioner in {minutes} minutes.",
+    "loss": "The Spectral Provisioner turned {realm}'s raid away from the stores; {raidLeader} brought the wrong fire."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "skeletal-sacristan",
+      "relation": "fellow keeper of the chapel's vessels"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Cauldron of the Head of Annwn",
+      "text": "Even the dead must be fed, in their fashion, and Arawn set a provisioner over the stores of Caer Sidi.\n\nWhat the dead eat, the Inconnu do not say. What they were fed from, every bard in the west knows. The oldest poem in Albion's keeping about the fortress, the one the bards call the spoils of Annwn, tells of the cauldron of the head of Annwn, rimmed with pearls and kept warm by the breath of nine maidens, which would not boil the food of a coward. Arawn lent it to his gaol. The sacristan kept its rim and the provisioner kept what went into it, and he served every prisoner from it with his own hands, and every coward in Caer Sidi knew before he reached the head of the line that his bowl would come back cold.\n\nThe Inconnu say the provisioner was a steward of a great house in his life, and that the house was one of the Roman villas of the west, the kind that kept a hundred mouths in winter and counted every one. He knew the price of everything and the appetite of everyone. In the gaol he knew which prisoner had eaten and which had not, and which had come back for a second bowl, and he had a ladle of pale iron, long as a spear, with which he struck the hand of anyone who reached past another man at the line. A hand that he struck, the prisoners said, would not be quick again for a long while.\n\nThe bards of Camelot sing the poem with its refrain, that save seven none came back from the fortress, and they say that Arthur went to Caer Sidi for the cauldron. The Inconnu answer that Arthur did not get it, because the cauldron's rim still lies cold in the larders of the fortress, and the provisioner still guards it, and the provisioner has never yet served a king."
+    },
+    {
+      "title": "Fire, Frost and Prayer",
+      "text": "The provisioner had three tools, the Inconnu say, and when the gaol rose he took all three into himself.\n\nFire heated the cauldron. Frost kept the stores, in the long cold rooms behind the kitchens where the gaol's food was laid down. Prayer blessed the meal: the provisioner said the dead's grace over every bowl, and the Inconnu say it was the only prayer ever said aloud in Caer Sidi before the Church's priests came. On the night of the rising the prisoners broke the sacristan's vessels and carried the cauldron's rim down to the larders, and the provisioner went down after it, and stood among the empty shelves, and has stood there since.\n\nWhat he used, he no longer feels. That is the Inconnu's reading, and the galleries' sorcerers who have tried him say it is true to the letter: the fire that heated the cauldron does not warm him, the frost that kept the stores does not chill him, and the prayers over the bowl, or any working of the spirit, go into him and are gone. The other workings of the galleries reach him, but faintly, as a voice reaches a man across a busy kitchen. It is the hand that tells. He was struck, in his life, by many hands reaching for bread, and he knows what a hand is. A blade he feels.\n\nHe answers the hand that strikes him as he answered the hand that reached past another at the line: with the ladle. Not every blow, but often, and the hand he strikes is slow afterwards for a long while, as if moving through deep water. The Inconnu add something stranger, which the Church dismisses. They say the provisioner wakes for one mouth only in any company that comes to his larders, the hungriest, and that it is that one his ladle finds. The others he does not seem to see at all."
+    },
+    {
+      "title": "The Empty Shelves",
+      "text": "In the larders of Caer Sidi there is nothing to eat, and something guarding it.\n\nThe larders lie off the lower kitchens, a run of long rooms with shelves to the ceiling and hooks in the beams, and nothing on any of them. The provisioner walks among them on a round, from room to room and back, as a steward walks his stores at night to see that nothing has been taken. His round is always the same. Brother Cadoc counted its turnings and lost count. He does not always walk it. The Inconnu say the larders stand empty and silent for long stretches, and that the provisioner is not there, and then a company comes down the kitchen stair with the hungry one among it, and he is.\n\nHis larders hold servants of their own, manifestations and pale bones that were once kitchen hands, but they do not come when he is fighting. The Inconnu say that is the one kindness of the rising: the kitchen hands were freed, and they will not lift a hand for him now.\n\nDame Ysolde's company came down among the shelves and the provisioner turned on it at once. The wizards of the company threw fire at him, and frost, and he did not so much as notice; his ladle made the swordsmen move as if through deep water. Ysolde called for the other spells, the crushing and the withering and the lightning, and those he felt, a little. But it was her knights who did the work, Cadoc wrote, each in turn, stepping out when the ladle found him and another stepping in, so that there was always a quick sword before the steward and never a slow one. Sir Geraint of Caerwent was struck three times and said afterwards that it was like being told off by his grandmother. When the provisioner fell, he said that someone must feed them."
+    },
+    {
+      "title": "Someone Must Feed Them",
+      "text": "The provisioner's last words are the same every time he falls, and Albion has argued about them since Dame Ysolde's company first heard them.\n\nSomeone must feed them, he says. The Inconnu say he means the prisoners: that a steward does not stop worrying about the house because the house has risen against him, and that he is still trying, in the empty larders, to find something to put in the bowls. The Church of Camelot says he means the Church: that the dead of Caer Sidi starve for the sacrament, and that the provisioner is asking the priests who climb to do what the gaol cannot. Brother Cadoc, who is one of those priests, said the office for the dead in the larders after the provisioner fell, and wrote that he did not know whether it fed anyone. The bards say he means the cauldron, which is cold, and which no one has breathed on since the nine maidens left.\n\nWhat he wants, all three agree, is a full shelf. That is the only thing the rising took from him that he notices. He does not want his gaol back or his lord back or his tools back. He wants the larders stocked, the cauldron warm and the line in order, and he will strike any hand that reaches for what is not there.\n\nThe garrison of Caer Gothwaite keeps a custom for him, which the quartermasters began. When a company goes up to the turning gaol, each man in it carries a heel of bread in his pack that he does not eat. When the company comes down through the larders, after the provisioner has fallen, every man puts his heel of bread on an empty shelf, and the company goes on. Cadoc says the bread is always gone when the next company comes. He does not say who he thinks takes it, but he has noticed that the provisioner's bowl, on the shelf above the cauldron's rim, is never dusty."
+    }
+  ]
+}

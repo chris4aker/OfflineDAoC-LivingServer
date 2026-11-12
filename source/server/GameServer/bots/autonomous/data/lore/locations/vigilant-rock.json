@@ -1,0 +1,298 @@
+{
+  "id": "vigilant-rock",
+  "name": "Vigilant Rock",
+  "realm": "Hibernia",
+  "regions": [
+    181
+  ],
+  "zones": [
+    186
+  ],
+  "summary": "The watching coast north of Domnann: Necht on the shore, the Watchers in their trees, the tree dervishes, and the high valley where the Root's Sylvan stand.",
+  "facts": [
+    {
+      "text": "Zone 186 (region 181, x 376,832-442,368, y 294,912-360,448): 928 monsters. Necht (area at 429,890/317,886, radius 4,000) is the zone's village and a teleport point, with trainers of every path, a vault keeper, a channeler and a mantid stable master, Zrrazk (faction Krrzck).",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06); world data Area and Teleport tables"
+    },
+    {
+      "text": "Monsters: cutthroat vines (37-42), vigilant ones (36-42), watchful and young tree dervishes, slinking and corrupt sylvanshades, treants (38-43), twisted treecutters and barkstrippers, corrupt and twisted sylvan, soaring and flying mantas, beach shrouders, marine and ravaging marine shrillers, sanidons and wretched sanidons (to 52), stilters (43-51), mantid defenders and protectors, bugbear foragers, cniogcrag vexers, ixthiar clippers.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Named: Laraida, Luaire, Rinne and Taiore (faction Olcasgean, 35-38) together in the high valley (about 389,000/306,000); Paud and Regan (faction The Watcher); Manus, Twirl and Mel (The Tree Dervishes); Whirl; Galmar, Screak, Chlorosis, Lysanus, Tuliros; Xrrxrax (Ixthiar Swarm).",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06); GAPS-hibernia.md"
+    },
+    {
+      "text": "Twisted Evil (Jyrlan, Necht): 'Southwest of Necht, kill two cutthroat vines and cut their roots with the knife', 'Kill Luaire and his three named friends'. Corruptors, Botonids, and Trade: 'corrupt sylvan in the sylvan valley southwest of Necht'. Face the Twisted (Vikta): 'Find the twisted creatures in the sylvan valley'.",
+      "provenance": "game",
+      "source": "DataQuest 'Twisted Evil', 'Corruptors, Botonids, and Trade', 'Face the Twisted' (world data)"
+    },
+    {
+      "text": "Vigilant One Leaves -- Kill Task: 'Mel is a named tree dervish ... vigilant one kills cost faction.'",
+      "provenance": "game",
+      "source": "DataQuest 'Vigilant One Leaves -- Kill Task' (world data, read 2026-11-06)"
+    },
+    {
+      "text": "A Necht NPC named Orlaith (40) gives the Block of Sanidon Sand item quest; Fainche (50) is Necht's champion trainer.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: the Watchers as the rock's oldest sentinels, the tree dervishes' dance, the high valley of the Root's Sylvan, Necht's mantid friends, the Necht custom of naming the great ones before going north, and Orlaith's book.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawns of Vigilant Rock: Whirl (31), a tree dervish in the dervish clearings; Mel (29, faction The Tree Dervishes), who gives 'Vigilant One Leaves -- Kill Task' (vigilant one kills cost faction).",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    }
+  ],
+  "story": "Vigilant Rock is named for what stands on it, not for the rock. The coast north of Domnann rises from the sea in a long shelf of grey stone, and on the shelf, in rows, as if someone had planted them to look at the water, stand the Watchers: old trees with eyes in their bark, the vigilant ones, who were set there, the Sylvan say, before there were Sylvan, to watch the sea for whatever might come out of it. Something did come out of it, in the end. The Fomorians came ashore further west, in the Vale, and the Watchers saw them and could do nothing, because watching is all they were made for. They are still watching. Two of them, Paud and Regan, stand a little apart from the rows, and the Necht folk say they are the eldest, and that they are the only ones who still remember what they were told to watch for.\n\nNecht stands on the shore below the Watchers, a village of fishers and outlanders and Sylvan who chose the sea over the forest, and of the realm's people who came after. It is the furthest north the realm keeps a hall, and every path the capital teaches has a teacher there. Its stables are kept by a mantid, Zrrazk of the Krrzck, the same people of the edge who let in the outlander girl Eimear, and Necht is the only village on the isle where a mantid and a Sylvan will drink at one table. Before any Necht company goes north into Allta Fearann, they stand in the square and name the four great ones of the wild land aloud, the skimmer, the gold tree, the wyvern-mother and the strider, so that none of them can say they were not warned.\n\nInland the dervishes dance. The tree dervishes of Vigilant Rock are young trees that took to spinning, the guides say, the way a child spins to make itself dizzy, and never stopped: they go round in the clearings in slow whirls with their branches out, the watchful ones and the young ones, and their eldest, Manus, keeps the highest clearing to the north-east, with Twirl and Whirl below him and Mel, who trades with the realm for the Watchers' leaves, which the Watchers do not forgive. The dervishes will not go into Cothrom Gorge. The Necht singers say it is because of the laughter there, which sounds like a spinning tree that has gone wrong.\n\nThe vines are worse. The cutthroat vines came up the coast from somewhere south, and they strangle what they touch and root where they kill, and the Necht folk cut their roots with a knife blessed for the purpose, because a cutthroat vine killed without its root cut grows back by the next tide. The treants stand among them, slow and old, and the twisted things, treecutters and barkstrippers, work at the edges of the woods, felling whatever the vines have left.\n\nWest of Necht a high valley climbs into the hills, and the valley is the Root's. When the Sylvan of the isle were divided over the titan in the hollow, a household of them went up into that valley and stood with him: Laraida, Luaire, Rinne and Taiore, and their kin. They are corrupt sylvan now and twisted sylvan, bark gone black and voices gone slow, and they stand together in the high valley among the stilters and the corrupted shades, and when the Root is cut in the hollow they feel it, the Necht folk say, and stand stiller than ever for days. Jyrlan of Necht sends the young up to kill Luaire and his three, and they come back, and Luaire is there again the next season, because a root does not go away; it goes down.\n\nOn the beaches the sea brings its own: beach shrouders, marine shrillers and their ravaging elders, mantas that soar over the shelf at dusk, sanidons out of the sand, the wretched ones to the north of the rock. The Watchers watch them all, and do nothing, and the realm's companies do what the Watchers cannot.\n\nThis is why Vigilant Rock matters: it is the place on Hy Brasil where the island's watch has been kept longest, and lost. The Watchers saw the Fomorians come and could not stop them. The realm came because the Sylvan asked. The old woman of Necht who led the hundred and forty into the hollow under Galladoria lives on the shore now, within sight of the Root's valley, and she says she came to keep the watch the trees could not. She has not missed a morning yet.",
+  "legend": "Vigilant Rock, north of Domnann, levels 29-50. Necht on the east coast is the town: trainers of every path, channeler, vault, and a mantid stable master. Camps: tree dervishes (29-39) and cutthroat vines (37-42) inland, vigilant ones (36-42, killing them costs faction with the dervishes' trade), treants (38-43), twisted treecutters and barkstrippers, the sylvan valley west of Necht (corrupt and twisted sylvan 32-42; Luaire, Laraida, Rinne and Taiore stand together, Twisted Evil), stilters (43-51) up there too, beach shrouders, marine shrillers, mantas and sanidons on the coast (40-52). Mantid defenders (29-34) on the western heights. Lots of tier B named: Manus (48), Galmar (47), Screak (42), Paud and Regan (the eldest Watchers), Xrrxrax. Necht custom: name the four great ones of Allta Fearann in the square before going north (Windskimmer, Goldenleaf, Razorbeak, Adar Llwch Gwin). Cut a cutthroat vine's root or it grows back, the Necht folk say.",
+  "atmosphere": {
+    "firstEntry": [
+      "Vigilant Rock. The trees here have eyes.",
+      "Rows of Watchers stare at the sea.",
+      "Necht's fires on the grey shore.",
+      "Somewhere inland, trees are dancing.",
+      "The Root's valley climbs to the north-west."
+    ],
+    "areas": [
+      {
+        "name": "Necht",
+        "x": 429890,
+        "y": 317890,
+        "z": 3470,
+        "radius": 4000,
+        "lines": [
+          "Necht, the furthest hall the realm keeps.",
+          "A mantid keeps the stables.",
+          "Name the great ones before you go north."
+        ]
+      },
+      {
+        "name": "the Watchers",
+        "x": 416140,
+        "y": 322500,
+        "z": 4100,
+        "radius": 4500,
+        "lines": [
+          "The Watchers. They see you. They do nothing.",
+          "Eyes in the bark, turned to the sea."
+        ]
+      },
+      {
+        "name": "the eldest Watchers",
+        "x": 411900,
+        "y": 319700,
+        "z": 2970,
+        "radius": 1200,
+        "lines": [
+          "Paud and Regan, apart from the rows.",
+          "They remember what they were told."
+        ]
+      },
+      {
+        "name": "the dervish clearings",
+        "x": 413770,
+        "y": 340460,
+        "z": 3800,
+        "radius": 4500,
+        "lines": [
+          "Trees spinning in slow whirls.",
+          "The dervishes never stop dancing.",
+          "Whirl spins faster than the rest. Mind her."
+        ]
+      },
+      {
+        "name": "Manus's clearing",
+        "x": 427100,
+        "y": 335330,
+        "z": 3440,
+        "radius": 1200,
+        "lines": [
+          "The eldest dervish, turning slowest.",
+          "Manus keeps the high clearing."
+        ]
+      },
+      {
+        "name": "the vine woods",
+        "x": 420400,
+        "y": 336350,
+        "z": 3940,
+        "radius": 4000,
+        "lines": [
+          "Cutthroat vines. Cut the root.",
+          "They grow back by the next tide."
+        ]
+      },
+      {
+        "name": "the Root's valley",
+        "x": 391000,
+        "y": 310000,
+        "z": 6500,
+        "radius": 5000,
+        "lines": [
+          "The Root's Sylvan, bark gone black.",
+          "Luaire and his three stand together.",
+          "They stand stiller when the Root is cut."
+        ]
+      },
+      {
+        "name": "the shelf",
+        "x": 424300,
+        "y": 319400,
+        "z": 3380,
+        "radius": 3500,
+        "lines": [
+          "Shrouders and shrillers on the shelf.",
+          "Mantas soar over the water at dusk."
+        ]
+      },
+      {
+        "name": "the sanidon sands",
+        "x": 410300,
+        "y": 306200,
+        "z": 3260,
+        "radius": 4000,
+        "lines": [
+          "Wretched sanidons out of the sand.",
+          "The rock's northern beaches."
+        ]
+      },
+      {
+        "name": "the mantid heights",
+        "x": 386840,
+        "y": 332550,
+        "z": 7580,
+        "radius": 3500,
+        "lines": [
+          "Mantid defenders on the western heights.",
+          "They watch the road to the wild land."
+        ]
+      },
+      {
+        "name": "Mel's stand",
+        "x": 398772,
+        "y": 308779,
+        "z": 6285,
+        "radius": 1200,
+        "lines": [
+          "Mel the dervish counts leaves, still for once.",
+          "Watcher leaves change hands here. Necht knows."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "vigilant rock is named for the watchers, the trees with eyes. [they just watch|creepy]",
+      "the watchers saw the fomorians come ashore and couldnt do anything. [watching is all they do|sad]",
+      "paud and regan are the eldest watchers. they remember what they were told to watch for",
+      "necht's stable master is a mantid. [zrrazk|krrzck]",
+      "necht folk name the four great ones of allta fearann in the square before they go north",
+      "tree dervishes are young trees that started spinning and never stopped. [lol|dizzy]",
+      "the dervishes wont go into cothrom gorge because of thuxra's laugh",
+      "cut a cutthroat vine's root or it grows back by the next tide. [necht says|twisted evil quest]",
+      "the sylvan valley west of necht is the root's. luaire and his three took olcasgean's side",
+      "when the root is cut in galladoria the valley sylvan stand still for days, necht folk say",
+      "orlaith in necht led the hundred and forty against olcasgean. [the first kill|legend]",
+      "mel the dervish trades for watcher leaves. the watchers dont forgive it",
+      "manus is the eldest dervish, up in the high clearing north east"
+    ],
+    "rumour": [
+      "[heard|someone said] the watchers turned to look inland last night. [never happens|uh oh]",
+      "luaire is back in the valley [already|again]. [roots go down|told you]",
+      "[word is|heard] killing vigilant ones makes the dervishes stop trading with you",
+      "the wretched sanidons north of the rock go up to 52. [ouch|careful]",
+      "[heard|someone said] orlaith walks to the shore every morning to watch the root's valley",
+      "someone forgot to name the great ones and razorbeak found them [first|lol]",
+      "[word is|heard] manus has been spinning slower this season",
+      "the mantas over the shelf at dusk are [pretty|44+]. dont stop to look",
+      "[heard|someone said] the necht mantids say a thing that cant stop has gone whirl",
+      "[heard|someone said] mel the dervish buys watcher leaves. the watchers remember who sold them"
+    ],
+    "tell": [
+      "vigilant rock is north of domnann. necht is the town on the east coast. 29 to 50",
+      "where is necht? east coast of vigilant rock. channeler, trainers, mantid stable master",
+      "is vigilant rock hard? 30s inland, 40s on the coast, stilters and sanidons to 50+",
+      "whats in vigilant rock? watchers, tree dervishes, cutthroat vines, treants, the root's sylvan valley",
+      "where is the sylvan valley? west of necht, up high. luaire and his three",
+      "where do i go after vigilant rock? north to allta fearann, or west to cothrom gorge",
+      "whirl is a 31 named tree dervish in the dervish clearings of vigilant rock, below manus and twirl",
+      "mel is a 29 named dervish near the root's valley. vigilant one leaves kill task, but it costs you watcher faction"
+    ]
+  },
+  "loremaster": {
+    "intro": "Vigilant Rock, the watching coast. [Necht] keeps the shore; the [Watchers] keep the shelf; the [dervishes] dance inland; the [vines] strangle; and the [Root's valley] climbs into the north-west hills. Ask after [Orlaith] if you want the long version.",
+    "topics": {
+      "Necht": "The furthest hall the realm keeps on the isle, a village of fishers, outlanders and Sylvan who chose the sea. Zrrazk of the Krrzck keeps its stables. Companies name the four great ones of Allta Fearann in its square before going north.",
+      "Watchers": "The vigilant ones, old trees with eyes in their bark, set on the shelf before there were Sylvan to watch the sea. They saw the Fomorians come and could do nothing. Paud and Regan are the eldest.",
+      "dervishes": "The tree dervishes, young trees that took to spinning and never stopped. Manus is their eldest, Twirl and Whirl dance below him, and Mel trades the Watchers' leaves. They will not go into Cothrom Gorge.",
+      "vines": "The cutthroat vines, which strangle what they touch and root where they kill. Necht cuts their roots with a blessed knife, because a vine killed whole grows back by the next tide.",
+      "Root's valley": "The high valley west of [Necht], where a household of Sylvan went up to stand with the Root: Laraida, Luaire, Rinne and Taiore and their kin, corrupt now. Jyrlan of Necht sends the young after Luaire. He comes back.",
+      "Orlaith": "Of Tir na Nog, who led the hundred and forty into the hollow and first brought the Root down. She lives in [Necht] now, within sight of the [Root's valley], and walks to the shore every morning to keep the watch the trees could not.",
+      "shelf": "The grey stone shelf of the coast, where the [Watchers] stand, and where the sea sends shrouders, shrillers, mantas and sanidons ashore.",
+      "mantids": "The mantids of Vigilant Rock's western heights are defenders of the road north. The Krrzck of the edge are friends of [Necht]; Zrrazk keeps its stables.",
+      "Fainche": "Necht's champion trainer. The Domnann wardens say she was the young warden who mourned Kierac in the tower and began the custom of saying his name before the end. She teaches the realm's champions now, at the edge of the sea.",
+      "Whirl": "Whirl is the youngest of the named dervishes of Vigilant Rock, and the dizziest. Manus is their eldest and dances slowest; Twirl dances below him; Whirl spins so fast that the Necht children say she has forgotten which way she started. The Krrzck mantids of Necht keep a saying about her for a thing that cannot stop: it has gone Whirl. The dervishes will not go into Cothrom Gorge, and Whirl, the Necht scouts say, has never been out of her clearing at all.",
+      "Mel": "Mel is the dervish who trades. The Watchers of Vigilant Rock shed their leaves as any tree does, and a leaf of a vigilant one has uses the druids of Necht will not name, and Mel buys them from anyone who brings them. The Necht wardens do not forgive the bringing: a Watcher felled for its leaves is remembered at Necht, and the wardens' faces say so. Mel does not care. She stands near the Root's valley, still for a dervish, and counts the leaves twice."
+    }
+  },
+  "book": {
+    "title": "What the Rock Watches, by Orlaith of Necht",
+    "pages": [
+      "I led a hundred and forty into the hollow under Galladoria when I was young, and came out with fewer, and the realm wrote my name down in Tir na Nog. That was the first time. The Root came back. When I was too old to go down again I came here, to Necht, to the shore below the Watchers, because I wanted to live somewhere the island had tried to keep watch and failed, and see whether an old woman could do better than a row of trees. So far it is about even.",
+      "The Watchers stand on the shelf in rows and look at the sea. The Sylvan say they were set there before the Sylvan woke. They saw the Fomorians come ashore in the Vale and could not move, because they were made to see and not to do. Paud and Regan stand apart, the eldest, and when I asked them once what they were told to watch for, they turned their eyes on me, slowly, and then back to the water, and the fishers say that is the most anyone has ever got out of them.",
+      "Up the valley to the west, where I can see it from my door, the Root's own Sylvan stand: a household that went up into the hills when the isle divided over the titan, and took his side. Laraida, Luaire, Rinne, Taiore. Their bark is black now and their voices are slow. When a company of the realm cuts the Root in the hollow, the valley goes still for days, as if the four of them were listening for something. Jyrlan sends the young to kill Luaire. Luaire comes back. A root does not go away. It goes down.",
+      "Inland the young trees dance, and the vines strangle, and the mantid who keeps the stables brings me fish on feast days, which I did not expect when I came. Before every company leaves Necht for the wild land, I stand in the square with them and we name the four great ones aloud, the skimmer, the gold tree, the wyvern-mother and the strider, so that none of them can say we did not warn them. Then I walk to the shore and watch the valley. Somebody has to, and the trees, it turns out, cannot."
+    ]
+  },
+  "bosses": [
+    "laraida",
+    "luaire",
+    "rinne",
+    "taiore",
+    "paud",
+    "regan",
+    "manus",
+    "twirl",
+    "chlorosis",
+    "tuliros",
+    "lysanus",
+    "galmar",
+    "screak",
+    "xrrxrax"
+  ],
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "sylvan",
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "hy-brasil",
+      "relation": "the region overview"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "whose side the valley's Sylvan took"
+    },
+    {
+      "id": "domnann",
+      "relation": "the forest to the south"
+    },
+    {
+      "id": "allta-fearann",
+      "relation": "the wild land to the north"
+    },
+    {
+      "id": "cothrom-gorge",
+      "relation": "where the dervishes will not go"
+    }
+  ]
+}

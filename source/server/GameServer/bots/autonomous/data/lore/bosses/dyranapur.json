@@ -1,0 +1,161 @@
+{
+  "id": "dyranapur",
+  "name": "Dyranapur",
+  "catalogKey": "iarnvidiur-s-lair/dyranapur",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur",
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "lydsyg",
+      "relation": "the singing thing of the same swarm"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Dyranapur is a level-59 named with 10,000 health; seven skuggande come with it.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It drains life and spreads a Black Plague that lasts nearly an hour.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls it a named skuggande that looks like a huge cicada, in the waterfall room; killing it lowers Svartalfar faction and raises Arachite, Svartalfar Outcasts and Varulv.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4665"
+    },
+    {
+      "text": "Swedish skuggande means shadowing (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "Dyranapur casts Drain Life (250, range 1,500, recast 10-15 s) on her target whenever it is ready, and on 45% of her hits Black Plague (disease, radius 450 round her target, 3,000 s, about 50 minutes). Seven skuggande (DyranapurBaf) join when she is engaged. 10,000 health, 20% melee / 30% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Dyranapur.cs"
+    },
+    {
+      "text": "The dark-moon cup and her hunting of arachites, outcasts and varulv come from the iarnvidiurs-lair file (faction lore fixed in 7257a1de); the svartalf cup-bearer Ulla and the saying 'the queen drinks first' are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Dyranapur.cs"
+    }
+  ],
+  "story": "The skuggande are the shadowing things of the old one's house, insects with wings like smoke and bodies of polished horn, big as dogs, and they are thickest in the waterfall room, where the spray throws back the light and the noise of the water covers the hum. Their queen is Dyranapur. The dwarves say she was the first of the swarm to drink from the fall, and that the water has been warm ever since because something of her is in it. She is like a cicada as large as a horse, and her mouth is a hollow spike.\n\nShe drinks everything. What she touches with the spike grows weaker while she grows stronger, a long draught at a time, and the sickness she leaves in the blood spreads to everyone close round the one she drank from and stays there a very long time, long after the hum has faded behind; the Remnants say a dwarf who has been in the waterfall room is sick for the rest of the day and half the night. Seven of the swarm hang round her at all times and come down off the walls when she is roused.\n\nThe svartalfar of Aegir keep a bargain with her. At every dark of the moon they set a cup of blood at the hollow above the house, and her swarm hunts their enemies for it, the arachites and the outcasts and the varulv. Ulla, the svartalf who carried the cup for longest, said the queen always drinks first and the swarm after, and the svartalfar say the same of anything that is shared with them: the queen drinks first. They do not love the companies of Midgard who come down to the waterfall room. When she falls the hum stops all over the room at once, and the water of the fall runs on warm.",
+  "chapters": [
+    {
+      "title": "The First to Drink",
+      "text": "Below the hollow the passage goes down through two turns of iron root and opens into the first great room of the old one's house, where a fall of water comes down out of the rock and breaks on the floor in a white noise that fills the whole hall. The dwarves call it the waterfall room. It is the warmest place under the Iarnwood, and the swarm lives there because of it.\n\nThe skuggande are the shadowing things, insects with wings like smoke and bodies of polished horn, as big as hunting dogs, and they hang in the corners of the room where the spray does not reach, folded up like dry leaves, and hum. Under the noise of the fall the hum is barely there. The dwarves say that is why they chose the room: the water covers the sound of them, and the spray throws a lantern's light back in so many pieces that nothing on the walls can be seen until it moves.\n\nTheir queen is Dyranapur. She is like a cicada as large as a horse, the colour of old horn, with a mouth that is a hollow spike as long as a dwarf's arm. The Remnants say she was the first of the swarm to drink from the fall, long before the clan came, and that the water has been warm ever since because something of her is in it. The dwarves will not drink from the waterfall room. Neither will the old one's wolves, who will drink from anything."
+    },
+    {
+      "title": "The Hollow Spike",
+      "text": "She drinks everything. Water, blood, the sap of the iron roots that come down through the ceiling of the room, the strength of anything she can reach. What she touches with the spike grows weaker while she grows stronger, the Remnants say, a long draught at a time, again and again for as long as it stands in front of her; and a dwarf she has drunk from feels it as cold in the belly and a heaviness in the legs, as if he had given blood and stood up too fast.\n\nThe sickness is worse. She leaves it in the blood of the one she drinks from, and it spreads from that one to everyone standing close by, the way a fever goes round a crowded hall, and it stays a very long time. The Remnants say a dwarf who has been in the waterfall room is sick for the rest of the day and half the night, and that every draught and charm works at half its strength on him until it lifts. The wise-women of Faraheim make their sick-drink by the cask for that room, and say the queen's sickness is the one they would most like to understand and least like to catch.\n\nSeven of the swarm hang round her at all times, closer than the rest, and when she is roused they come down off the walls together with a sound like a dry wind. The dwarves say they are her daughters. They say it the way they say everything about the swarm: as if they would rather not have known."
+    },
+    {
+      "title": "The Dark-Moon Cup",
+      "text": "The svartalfar of Aegir keep a bargain with her, and have for longer than the Remnants' slates record. At every dark of the moon a svartalf comes to the hollow above the old one's house, alone, and sets down a cup of blood on the warning stone, and goes away. In the morning the cup is empty. For a month after, the swarm hunts the svartalfar's enemies under the Iarnwood: the arachites, the outcasts, the varulv. The dwarves are not on the list. They do not know why, and do not ask.\n\nUlla of the svartalfar carried the cup for longer than anyone, the Remnants say, forty winters, and she spoke to the dwarves of Faraheim once, near the end of her life, because she wanted someone outside her own people to know. She said the queen came up for the cup herself, every time, up through the roots to the hollow, and drank first, and the swarm after. She said it was always the same. The queen drinks first.\n\nThe svartalfar say it of anything that is shared with them, now, a feast or a profit or a trade: the queen drinks first. They mean it as a warning about the one doing the sharing.\n\nThey do not love the companies of Midgard who go down to the waterfall room and kill her. The dark-moon cup is set on the warning stone every month regardless, the dwarves say, and some months it is still full in the morning, and those are the months the arachites come out of the deep places further than they should."
+    },
+    {
+      "title": "The Warm Water",
+      "text": "The companies of Midgard who come down the passage from the hollow reach the waterfall room first of all the old one's halls, and the Remnants who guide them stop at the mouth and tell them two things. Look at the walls before you look at the floor. And do not drink the water, whatever happens, because it is warm.\n\nWhen the queen falls, the companies say, the hum stops all over the room at once, and the noise of the fall comes back, louder, as if it had been holding its breath. Her daughters fall off the walls. The water of the fall goes on running warm, which the dwarves say proves something of her really is in it, and in a season there is a queen in the room again, drinking.\n\nThe svartalfar have their own account of where the next queen comes from. They say Dyranapur does not die. They say she goes down into the warm water of the fall and comes up again, as the water does, and that the cup they set on the warning stone in the months between is what brings her back. They say that is the real bargain, and that the arachites have always known it.\n\nThe Remnants say the svartalfar would say that. They also say they have never once seen the dark-moon cup full in the morning of the month the new queen comes back, and that they have stopped going up to the warning stone to look."
+    }
+  ],
+  "legend": "Dyranapur is a small-raid named in the waterfall room: a group of seven took her in 2003. She comes with seven skuggande the moment she's engaged, and the spray hides the bugs on the walls, so look before you pull. She drains her target for 250 every 10 to 15 seconds, so the tank needs steady heals, and almost half her hits leave Black Plague on everyone within 450 of her target: a disease that halves heals and lasts about FIFTY minutes. Cure it before you move on, especially if Iarnvidiur is next. 10,000 health, 20% melee and 30% magic resists, CC-immune. The Slender Skuggande Leg staff drops for spiritmasters, runemasters and bonedancers. Killing her costs you Svartalfar faction and buys you Arachite and Varulv faction.",
+  "yells": {
+    "aggro": [
+      "(The hum under the waterfall rises to a shriek.)",
+      "(Smoke-wings unfold from the spray.)",
+      "(The swarm lifts all at once.)",
+      "(The walls unfold, and the hum rises over the water.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Dyranapur drinks deep.)"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "(Dyranapur drinks deep, and swells.)"
+      }
+    ],
+    "death": [
+      "(The humming stops.)",
+      "(Only the waterfall is left.)",
+      "(The hum stops all at once.)"
+    ],
+    "slay": [
+      "(The swarm settles on the fallen.)",
+      "(Dyranapur drinks.)",
+      "(The hum rises in triumph.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A hum rises under the waterfall. Wings like smoke.",
+      "The spray of the fall hides a swarm.",
+      "Dry shapes hang folded on the walls, humming.",
+      "The water of the fall is warm."
+    ],
+    "realmFirstKill": "The queen of the swarm has fallen. The fall runs on, warm.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Dyranapur drinks deep from the fallen!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "dyranapur in the waterfall room, 7 skuggande, cure plague",
+      "dyranapur drains her target, keep the tank topped",
+      "kill the skuggande first, then her",
+      "cure plague after, it lasts an hour",
+      "dyranapur: 7 skuggande, look at the walls first",
+      "she drains her target, keep the tank topped",
+      "plague is 450 round her target and lasts 50 min, cure it before moving on",
+      "killing her costs svartalfar faction"
+    ],
+    "aftermathWin": [
+      "big bug down",
+      "slender skuggande leg dropped, staff for the casters",
+      "multi-faceted eye!",
+      "seven of us did it. not bad",
+      "skuggande leg staff!",
+      "cured the plague after, good",
+      "the queen drinks first. not today"
+    ],
+    "aftermathLoss": [
+      "plague lasted longer than we did",
+      "she drained the healer",
+      "the swarm was too thick",
+      "the spray hid half the swarm",
+      "pulled the walls by accident",
+      "went to iarnvidiur with the plague still on"
+    ],
+    "rumour": [
+      "theres a bug the size of a horse under the waterfall in the lair",
+      "the dwarves of faraheim hear dyranapur's hum in their sleep when the wind is east",
+      "the arachites pay for dyranapur's death. the svartalfar would rather she lived",
+      "dyranapur's song is the same as the svartalf priests' song, the dwarves say",
+      "the svartalfar leave a cup of blood for dyranapur every dark moon",
+      "svartalf saying: the queen drinks first",
+      "dont drink the waterfall rooms water, its warm"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Dyranapur",
+    "text": "Queen of the skuggande swarm of the waterfall room, the first of them to drink from the fall. Her hollow spike drinks strength, and her sickness spreads round the one she drinks from and stays most of a day. The svartalfar set a cup of blood for her at every dark of the moon, and her swarm hunts their enemies. They say the queen drinks first."
+  },
+  "bookPage": "From Thorgrim of Faraheim's notes. I asked the dwarves why the spider-folk want the waterfall bug dead and the svartalfar want it kept. A dwarf laughed and said the spider-folk hate anything that drinks from their egg-sacs, and the svartalfar love anything the spider-folk hate. Then he said, more seriously, that the bug's hum is a song, and that the svartalf priests sing the same song on the night of the dark moon, when they set a cup of blood at the edge of the hollow for the queen of the spray. He said nobody knows which of them took it from the other.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} silenced Dyranapur under the waterfall in {minutes} minutes.",
+    "loss": "Dyranapur drank {raidLeader}'s party from {realm} dry after {minutes} minutes."
+  }
+}

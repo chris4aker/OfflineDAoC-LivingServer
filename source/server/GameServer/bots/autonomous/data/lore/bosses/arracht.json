@@ -1,0 +1,81 @@
+{
+  "id": "arracht",
+  "name": "Arracht",
+  "npcNames": [
+    "Arracht"
+  ],
+  "locationId": "shannon-estuary",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Arracht: level 38, a great lizard body (model 105, size 175), at about 302,800/666,700 on the hill above the ollipheist at the river mouth; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Arracht is Irish for a monster, spectre or apparition.",
+      "provenance": "myth",
+      "source": "https://en.wiktionary.org/wiki/arracht"
+    }
+  ],
+  "story": "The fishers of Connla call it Arracht, which is only their word for a monster, because they never found a better one. It is a lizard, or something like a lizard, longer than the ollipheist that breed in the shallows below its hill, and it lies on the hill above the river mouth in the sun and watches the young serpents come and go. The fishers say it eats the ones that come up too far.\n\nHarper Cadwr sings that Arracht was there before Connla, before Sinann reached the sea, and that the river bent around its hill rather than go over it. The fishers do not believe the song. They also do not take boats up the river mouth past the hill, and when a Connla child asks why, they say: Arracht. It is the only answer the word has ever needed. When a young ollipheist is found dead on the river bank with the marks of great jaws on it, Connla says Arracht has been fed, and the fishers go out that week without fear.",
+  "legend": "Arracht (38) is a huge named lizard on the hill above the river mouth in the south-west of the Shannon Estuary (about 303k/667k), right above the ollipheist (34-38). Pull it uphill so the serpents stay out of it. A group of high 30s. Plain spawn, 80-second respawn. Not part of any quest. Watch the far liath fog on the same shore; it can hide the serpents until they are on you.",
+  "yells": {
+    "aggro": [
+      "(the great lizard lifts its head from the sun)",
+      "(Arracht hisses down the hill)"
+    ],
+    "phases": [],
+    "death": [
+      "(Arracht slides down its hill and is still)"
+    ],
+    "slay": [
+      "(the lizard returns to the sun)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A lizard longer than the serpents, sunning on a hill."
+    ],
+    "phases": [],
+    "realmFirstKill": "Arracht, the monster of the river mouth, is down."
+  },
+  "botLines": {
+    "briefing": [
+      "arracht is a 38 giant lizard on the hill above the ollipheist",
+      "pull it uphill away from the serpents"
+    ],
+    "aftermathWin": [
+      "arracht down. [big lizard|grats]",
+      "no ollipheist joined. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "serpents joined. [rip|ouch]",
+      "it hits like a drake. [lol|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] arracht eats the young ollipheist that come too far up the river",
+      "arracht just means monster. connla never found a better word"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Arracht",
+    "text": "The great lizard on the hill above the Shannon's river mouth, named with the Connla word for a monster. The harpers sing that the river bent round its hill."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Arracht in the Shannon Estuary in {minutes} minutes.",
+    "loss": "Arracht turned back {realm}'s band under {raidLeader} in the Shannon Estuary after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "shannon-estuary",
+      "relation": "the river mouth below its hill"
+    }
+  ]
+}

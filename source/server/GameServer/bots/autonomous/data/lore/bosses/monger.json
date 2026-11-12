@@ -1,0 +1,103 @@
+{
+  "id": "monger",
+  "name": "Monger",
+  "npcNames": [
+    "Monger"
+  ],
+  "locationId": "vale-of-balor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Monger: level 54, model 686 (the ixthiar body), size 59, faction Ixthiar Swarm, at about 274,700/351,700 in the western Vale of Balor; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Monger as the swarm's forager and dealer in the dead, who feeds the broodmother.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Every swarm has to eat, and the ixthiar of the Vale of Balor eat what the vale gives them, which since the burning of Gleann Glas has mostly been the dead. Monger is the one who finds it. The Sylvan of Aalid Feie named him from the mainland word the Hibernian traders used for a dealer, a fish-monger, a rag-monger, because that is what he does: he goes out across the western vale and comes back with whatever has died there, a stag, a bugbear, a Fomorian of Milo's household, a careless traveller, and he carries it to the nests and deals it out.\n\nHe is bigger than any reaper and nearly as big as the broodmother, and the swarm treats him as something between a servant and a lord. The reapers give way to him. The callers fall silent when he passes. The armorers of Aalid Feie, who know the swarm better than anyone, say that he alone of the ixthiar wears the swarm's mark on his shell, a ridge of pale scars where the doomcallers have touched him, and that the swarm follows the mark. Kill a reaper and the nest is angry. Kill Monger and the nests go hungry, and a hungry swarm is a quiet one.\n\nThe Sylvan have a grimmer use for him. A Sylvan who dies in the western vale and is not found by her own people within the day is found by Monger, and the wardens of Domnann keep a custom because of it: they walk the western slopes every evening, in pairs, looking for anyone who did not come home, so that Monger will not have them. They call the walk the monger's round. In the worst summers, when Fomorian forays come down off the crag, the round is long and the wardens are tired, and the swarm eats well.\n\nHe has never come near Aalid Feie itself. The camp's people say it is because the camp burns its dead, as the Sylvan do, and there is never anything for him there.",
+  "legend": "Monger is a level 54 ixthiar on the western side of the Vale of Balor (about 275k/352k), of the Ixthiar Swarm faction. No script; plain heavy melee, and he hits harder than the reapers around him. Clear the reapers, decimaters and callers near his path first, because callers bring more of the swarm. A level 50 group with a healer is enough. Domnann wardens walk 'the monger's round' every evening to find the dead before he does; if a guildie dies out west, run back for the body. He respawns fast for a named (about 80 seconds in the world data), so do not rest on his spot afterwards.",
+  "yells": {
+    "aggro": [
+      "(Monger's mandibles open wide)",
+      "(a dry clicking, like coins counted)",
+      "(the pale-scarred shell turns toward you)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Monger clicks, and somewhere a caller answers)"
+      }
+    ],
+    "death": [
+      "(the scarred shell cracks)",
+      "(the swarm goes hungry tonight)"
+    ],
+    "slay": [
+      "(Monger drags the body toward the nests)",
+      "(another for the round)",
+      "(the dealer takes his share)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Drag-marks toward the nests. Something carries the dead.",
+      "The western vale. The monger's round."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Monger clicks for the swarm to come."
+      }
+    ],
+    "realmFirstKill": "Monger is dead. The nests of the vale go hungry."
+  },
+  "botLines": {
+    "briefing": [
+      "monger is 54, western vale. [plain melee|no script] but he hits hard",
+      "clear the callers near him first. [they bring the swarm|kill callers]",
+      "level 50 group with a healer is fine",
+      "dont fight him next to a nest. [reapers join|pull him out]"
+    ],
+    "aftermathWin": [
+      "monger down. the swarm goes hungry",
+      "killed the callers first and it was clean",
+      "the wardens can skip the monger's round tonight",
+      "broodmother next? [nests west of the camp|sure]"
+    ],
+    "aftermathLoss": [
+      "a caller screamed and [the swarm came|half the vale showed up]",
+      "he hits like a cart. [tank went down|ouch]",
+      "fought him by a nest. [reapers everywhere|bad idea]",
+      "healer ran and he [followed her|ate her]"
+    ],
+    "rumour": [
+      "[heard|someone said] monger carries the dead back to the ixthiar nests",
+      "the domnann wardens walk the monger's round every evening looking for the dead",
+      "[word is|heard] monger is the only ixthiar with the swarm's mark on his shell",
+      "[heard|someone said] monger never goes near aalid feie because they burn their dead"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Monger",
+    "text": "The forager of the ixthiar swarm in the western [Vale of Balor], who carries the vale's dead to the nests and deals them out. The Domnann wardens walk 'the monger's round' each evening to find their dead first."
+  },
+  "bookPage": "Tieru of Aalid Feie: the Sylvan named him from our word, a dealer, because that is what he does. He walks the western vale and brings back whatever has died there and deals it out to the nests. He alone of the swarm wears the doomcallers' pale scars on his shell, and the swarm follows the scars. The wardens of Domnann walk the western slopes every evening, in pairs, looking for anyone who did not come home, so that Monger will not have them. They call it the monger's round. He has never come to the camp. We burn our dead. There is nothing here for him.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Monger in the western Vale of Balor in {minutes} minutes.",
+    "loss": "Monger turned back {realm}'s band under {raidLeader} in the western Vale of Balor after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "ixthiar-broodmother",
+      "relation": "the mother he feeds"
+    }
+  ]
+}

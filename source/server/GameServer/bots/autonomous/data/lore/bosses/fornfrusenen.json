@@ -1,0 +1,193 @@
+{
+  "id": "fornfrusenen",
+  "name": "Fornfrusenen",
+  "catalogKey": "tuscaran-glacier/fornfrusenen",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "aliases": [
+    "the long-frozen one",
+    "the sleeper in the wall",
+    "the wall"
+  ],
+  "era": "mid-era-ice",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "queen-kula",
+      "relation": "older than her citadel; the giants cut around him"
+    },
+    {
+      "id": "council-otrygg",
+      "relation": "who called the vote on the sculptor who carved him"
+    },
+    {
+      "id": "tuscaran-glacier",
+      "relation": "the north hall, the sleeper in the wall"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Fornfrusenen is a level-75 being with 100,000 health that wakes from the ice walls; he takes no damage from attackers further than 200 from him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He hisses that he knows the name of the one who woke him, and that they will be entombed in the ice for eternity.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs"
+    },
+    {
+      "text": "He raises two or three Fornfrusenen Shards, which only take damage from close range too; when he dies the shards evaporate.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs"
+    },
+    {
+      "text": "The Midgard epic raid wiped at Fornfrusenen in the 2026-11-04 overnight runs: casters and archers do nothing to him.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Swedish forn means ancient and frusen frozen: roughly 'the long-frozen one' (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "Bot chat guesses something has been frozen in that glacier since before the queen came.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Fornfrusenen takes no damage at all from players, bots or pets more than 200 from it. When engaged it raises 2-3 Fornfrusenen Shards (50,000 health, 40% melee / 70% magic resists), which take no damage from attackers more than 400 from a fixed spot in the hall; each shard that dies while Fornfrusenen is above 35% takes a quarter of its maximum health from it. Shards cast Frost Shock (300 cold, radius 300 round their target) on 20% of their hits. 100,000 health, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs"
+    },
+    {
+      "text": "Swedish forn 'ancient' + frusen 'frozen' (to verify). The overseer Ufeig and the saying 'only the close ones matter' are Living Server lore.",
+      "provenance": "original",
+      "source": "Swedish, to verify"
+    }
+  ],
+  "story": "Fornfrusenen is older than the citadel. When Kula's giants cut their first tunnels through the north side of the glacier they found it already in the wall, a long shape asleep in clear ice, with a face that was not a giant's and not a dragon's and not a man's. The cutters would not work near it. Their overseer, Ufeig, laughed at them and threw a pick at the wall from across the hall to show them it was only ice; the pick bounced off as if it had struck the crater rim. Then he walked up and laid his hand on the ice, and the shape opened its eyes, and Ufeig did not laugh again. So they cut around it, a great hollow, and left it there.\n\nIts name only means the ancient frozen one. It has forgotten its own. It has not forgotten anyone else's: it knows the name of every giant and stranger who has walked past its wall, and when it wakes it says the name of the one who woke it. The children of the glacier are told not to shout in its hall. The sculptor who carved its waking face, and was cast out for it, said that what wakes is not all of it; that pieces of it lie in the ice of the hollow round its heart, and come away from the walls when it moves, and that each piece broken there takes a great part of the sleeper with it, until so little is left that the pieces no longer matter.\n\nThe giants say nothing thrown at it from across the hollow has ever touched it, and the companies of Midgard say the same: arrow and spell and the runemasters' ice fall away from it like snow from a wall, and only those who come close enough to feel its breath can wound it. The Valkyn have a saying from Ufeig's day that Midgard's companies now use for anything that cannot be fought from a distance: only the close ones matter.",
+  "chapters": [
+    {
+      "title": "The Shape in the North Wall",
+      "text": "When Kula's giants came to Delling's Crater they cut from the south, and they reached the north side of the glacier last, in the fourth winter, where the ice was oldest and clearest and the cold coming off it was wrong. The splitters who went in first came out within the day. They told their overseer that something in the north wall was watching them.\n\nThe overseer was a big loud icesplitter named Ufeig, and he laughed at them. He walked into the north hall, which was not a hall yet but a face of clear ice with the cutting stopped half-way, and stood at the far side of it and took a pick from his belt and threw it at the wall, to show his splitters it was only ice. The pick struck the wall and bounced off as if it had struck the crater rim, and lay on the floor with its point turned.\n\nUfeig stopped laughing then, the sculptors say, but he was a stubborn giant. He walked up to the wall and laid his bare hand flat on the ice. Behind it, a long way in, there was a shape: long and folded, asleep, with a face that was not a giant's face and not a dragon's and not a man's. Under Ufeig's hand the shape opened its eyes.\n\nHe did not laugh again for the rest of his life. The splitters cut around the shape instead, a great hollow in the ice with the wall left standing at its heart, and they did not cut any closer. Even hrimthursa have sense, the Valkyn say. Kula came to see it, and looked at it for a long time, and said it was older than her citadel and would be there after, and told them to leave it."
+    },
+    {
+      "title": "Only the Close Ones Matter",
+      "text": "The Valkyn have a saying from Ufeig's day, which came to them by way of the cast-out sculptors and which Midgard's companies now use for anything that cannot be fought from a distance: only the close ones matter.\n\nThe giants found it out over the years without wanting to. A splitter who threw ice at the sleeper's wall from the far side of the hollow, in a quarrel, saw it slide off like snow off a roof. A seer who tried to read it from the hollow's mouth found the runes would not fall on the ice at all. Nothing that came at the sleeper from across the hollow ever touched it, in a century. Only the hand that Ufeig laid on the wall, close enough to feel the cold breath coming off it, had ever reached it.\n\nThe companies of Midgard who reached the hollow found the same, the hard way. The first of them came with their runemasters and their hunters at the back, as they had come to every other hall in the glacier, and their arrows and spells and the runemasters' ice fell away from the sleeper as Ufeig's pick had, and the ones at the front did all the work. The skalds of Jordheim made a song about it that the hunters of Midgard do not like.\n\nThe cast-out sculptors at Dellingstad say it is not that the sleeper cannot be hurt. It is that it is too far away, inside itself, for anything to reach it that does not come close; and that a hand on the ice is the only kind of knock it has ever answered."
+    },
+    {
+      "title": "What Breaks Off",
+      "text": "The sculptor who carved its waking face, and was cast out of the glacier for it, said something about the sleeper that nobody in Tuscaran had wanted to hear. He said what wakes is not all of it.\n\nHe had sat a whole winter in the hollow, carving, and he said that the sleeper's body runs further into the ice than the shape in the wall: that pieces of it lie in the ice round its heart, shards of whatever it is, frozen into the walls of the hollow as a broken jar lies in the straw it was packed in. When the sleeper moves, he said, the pieces come away from the walls and move with it, and stand round it, and fight for it, because they are it.\n\nHe said one more thing, which the sculptors at Dellingstad repeat to Midgard's companies with great care. A shard broken near the heart of the hollow, where it belongs, takes a great part of the sleeper with it, as if a piece of its own body had been struck off. Broken further away, it is only ice. And when the sleeper is nearly gone, when there is so little of it left awake that it has stopped caring what it loses, breaking the pieces takes nothing from it at all.\n\nThe Council cast him out for the carving and not for this, the sculptors say, but he always believed it was for this. Otrygg called the vote. The sculptor said the faithless one was the only councillor who understood what he had told them."
+    },
+    {
+      "title": "I Know Your Name",
+      "text": "It has forgotten its own name. The giants call it Fornfrusenen, the ancient frozen one, which is not a name but a description, and the cast-out sculptors say the sleeper does not mind. It has not forgotten anyone else's. It knows the name of every giant who has walked past its wall in all the time it has been asleep, and every stranger, and when it wakes it says the name of the one who woke it, and tells them to look well at the ice round them, because that is where they will lie.\n\nThe children of the glacier are told never to shout in its hall. They are told that if they do, it will know their names, and the children who have been in the hollow say that it already does, shout or no.\n\nMidgard's companies come to the hollow on the way to the thrones, and the sleeper wakes for them, and the shards come away from the walls and stand round it. The companies who have put it down say that when it falls the frosty glow in its eyes goes out all at once, and its shape fades back into the ice of the wall, and the shards evaporate where they stand, leaving nothing behind. In a season the shape is in the wall again, asleep, and the hollow is quiet.\n\nThe sculptors say that one day it will not fade back. They say the companies who wake it are teaching it to wake, and that each time it stays awake a little longer, and that the sleeper in the north wall was the first thing the giants found in Delling's ice and will be the last thing the glacier gives up."
+    }
+  ],
+  "legend": "Fornfrusenen is a melee fight, full stop: it takes NO damage from anyone (players, bots or pets) more than 200 from it, so casters and archers can only heal, buff and rez. Bring every tank and melee you have. When it wakes it raises 2 or 3 shards (50,000 health each, they cast a 300 cold Frost Shock round their target sometimes). Here's the trick the old guides miss: every shard you kill while Fornfrusenen is above 35% takes a QUARTER of its health off it. So killing the shards is the fastest way to bring it down, as long as you do it before it drops to 35%. The shards only take damage from people standing within 400 of their spot in the middle of the hollow, so fight them there. 100,000 health, CC-immune. Don't drag it out of its hollow or it resets. More Midgard raids die here than anywhere else in the glacier. Never shout in its hall, the old hands say.",
+  "yells": {
+    "aggro": [
+      "I know your name. Look around you. This is where you will lie, forever.",
+      "Look around you. Within this ice you will lie forever.",
+      "Ahh. So many names. I will keep them all.",
+      "I know your name. Look well at the ice around you."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Shards of me, hold them close."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Closer. Only the close ones matter."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "The dark of the ice is calling me. I will take you with me."
+      }
+    ],
+    "death": [
+      "Back... into the dark... of the ice...",
+      "The ice... remembers... your names...",
+      "The dark of the ice... calls me back..."
+    ],
+    "slay": [
+      "Into the wall with you. I will keep your name.",
+      "Another name for the wall.",
+      "Sleep. I will wake you, some day.",
+      "Here you will lie."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A long shape sleeps in the clear ice of this wall.",
+      "Something in the ice knows your name.",
+      "A long shape sleeps deep in the clear north wall.",
+      "A pick lies on the floor, its point turned."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Shards of living ice break from the walls!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "The glow in Fornfrusenen's eyes flickers."
+      }
+    ],
+    "realmFirstKill": "The ancient frozen one fades into the wall."
+  },
+  "botLines": {
+    "briefing": [
+      "fornfrusenen only takes melee from up close. casters on heals and buffs, [archers|hunters] go melee or sit",
+      "kill fornfrusenens shards, each one takes a quarter of his health. stand near their spot",
+      "dont drag fornfrusenen out of the hollow, he resets",
+      "casters: buffs, heals, rez. dont even try to nuke him",
+      "fornfrusenen only takes damage from within 200. casters heal, melee everything",
+      "each shard killed above 35% takes 25% of fornfrusenens health. kill the shards",
+      "shards only take damage near their spot in the middle",
+      "dont drag it out of the hollow"
+    ],
+    "aftermathWin": [
+      "fornfrusenen down, that's the one that keeps wiping us. [huge|gg]",
+      "did you see his shape stay in the wall after? [creepy|chills]",
+      "fornfrusenen down, the rest is downhill",
+      "the wall is down!! [best melee in midgard|gg melee]",
+      "killed two shards and it was at half already",
+      "only the close ones matter [lol|true]",
+      "the wall is down!!"
+    ],
+    "aftermathLoss": [
+      "wiped at fornfrusenen again, not enough melee",
+      "the frozen thing in the wall said my name. creepy",
+      "not enough melee, again",
+      "the shards killed the healers while the tanks were on him",
+      "ignored the shards and ground it from 100",
+      "killed the shards too late, below 35% they do nothing",
+      "casters nuked it from range for nothing"
+    ],
+    "rumour": [
+      "fornfrusenen was in the ice before kula came, they say",
+      "fornfrusenen knows your name when you wake him. [i'm not waking him|no thanks]",
+      "the giants cut around fornfrusenen because the tunnel cutters were too scared",
+      "[an old icesplitter said|they say] fornfrusenen is older than the dragon under the glacier",
+      "the giants found fornfrusenen in the wall before they built anything",
+      "saying: only the close ones matter",
+      "the cast out sculptor says what wakes in the north wall isnt all of it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Fornfrusenen",
+    "text": "The ancient frozen one, found in the north wall before the citadel was cut. Ufeig threw a pick at it from across the hollow and the pick bounced off; only a hand on the ice woke it. The Valkyn say only the close ones matter. The cast-out sculptor said pieces of it lie in the ice round its heart, and each one broken there takes a great part of it."
+  },
+  "bookPage": "From the sculptor's account. I sat in front of it for a winter. I carved it as it will look when it wakes, which is the thing they cast me out for. But I will tell you what I did not carve, because I could not. It is not all in the wall. There are pieces of it in the ice round the hollow, like shards of a broken jar, and when it wakes they wake. Break one by its heart and it feels it. Break one far off and it is only ice. And when it is nearly gone it stops feeling anything at all. I told the Council. Otrygg called the vote.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put Fornfrusenen back into the ice for good in {minutes} minutes.",
+    "loss": "Fornfrusenen learned the names of {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

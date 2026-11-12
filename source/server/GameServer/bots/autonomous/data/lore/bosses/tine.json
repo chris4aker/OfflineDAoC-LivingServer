@@ -1,0 +1,134 @@
+{
+  "id": "tine",
+  "name": "Tine",
+  "catalogKey": "galladoria/tine",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 67, 50,000 health, spawned by Xaga; a flying spirit whose spell Tine's Fire deals 450 heat over a 450 radius.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "For Living Server raids she holds low over the floor while fought so melee can reach her; otherwise she circles the room.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Irish tine means 'fire'.",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Tine is the fire Xaga bound to her staff, a spirit of flame that circles the seed-keeper's room on the air. She was a hearth-fire once, the Sylvan say, the small fire a wanderer lights in a wet wood to stay alive, and Xaga kept her because nothing grows in the dark without a little warmth. Now she warms nothing. When her mistress is touched she falls from the air and bursts in a ring of heat, and she calls her sister Beatha to do the same. She will come down to fight; she will not come down to be caught.\n\nEvery Sylvan knows the small fire a wanderer lights in a wet wood to stay alive through the night. Tine was one of those once, the spirit of a hearth-fire on a cold hillside, and Xaga kept her because nothing grows in the dark without a little warmth. Xaga bound her to the staff with the old words and named her plainly: Tine, fire.\n\nBound, Tine warms nothing. She circles her mistress's room on the air with her sister Beatha, and when Xaga is touched she falls from the ceiling and bursts in a ring of heat that fills the room around her, and calls Beatha to do the same, and calls Xaga too. She will come down low enough for a warrior's blade; she will not be caught. The Bri Leith company that reached Xaga's room in a later season died at Tine, not at Xaga. Its two survivors say she burned brighter every time one of them fell, as if the deaths fed her the way kindling feeds a fire. When she dies the Sylvan say a hillside somewhere on the isle gets a little colder, as a wanderer's fire goes out.\n\nTine was a wanderer's fire Xaga lit in a storm above World's End and carried down in a clay pot; the warden Ruadhán, who survived that storm, said the fire spared him at Xaga's door.",
+  "legend": "Fire spirit with a big heat burst: spread out and keep heat resists up. She calls Beatha and Xaga, so be ready for all three. Melee can reach her while she is fought. The realm raid wiped on her not long ago; take her seriously. If the raid kills her first, everyone in heat resists and the healers keep a step back from her burst; if Beatha goes first, Tine's tank keeps her pinned in a corner away from the casters. Superstition: never light a pipe in Xaga's room. Tine notices. The raiders who laugh at that one usually laugh from the floor.",
+  "yells": {
+    "aggro": [
+      "The spirit of fire flares and dives.",
+      "The little fire flares and dives.",
+      "Warmth! Here is warmth for you!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Tine burns brighter, calling her sister."
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Sister! Sister, burn with me!"
+      }
+    ],
+    "death": [
+      "The hearth-fire gutters and goes out.",
+      "A hillside somewhere grows a little colder."
+    ],
+    "slay": [
+      "Ash, and then nothing.",
+      "Kindling.",
+      "Burned bright, burned out.",
+      "Ash, and then nothing."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A small fire circles overhead, hungry.",
+      "A small fire circles overhead, hungry."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Tine's fire fills the room!"
+      }
+    ],
+    "realmFirstKill": "Tine, Xaga's fire, is put out at last."
+  },
+  "botLines": {
+    "briefing": [
+      "tine is the fire one. [spread out|no stacking], the burst hits everyone near",
+      "tine is fire, heat resists up. [spread for the burst|no stacking]",
+      "if we do beatha first, tine's tank [corners her|keeps her away]",
+      "melee can reach tine while shes fought, [she comes down|she holds low]"
+    ],
+    "aftermathWin": [
+      "tine down. [one spirit to go|beatha next]",
+      "tine down, revenge for last time. [finally|got her]",
+      "nobody died to the burst. [spread works|amazing]",
+      "the fire one is out. [beatha next|go]"
+    ],
+    "aftermathLoss": [
+      "wiped on tine [again|like last time]. everyone was stacked",
+      "tine wiped us [again|like before]",
+      "she got brighter with every death. [dont die|thats the trick]",
+      "stacked under her and [burned|cooked]"
+    ],
+    "rumour": [
+      "[heard|someone said] the realm raid wiped on tine. the little fire one",
+      "[heard|someone said] tine was a wanderer's campfire before xaga bound her",
+      "[word is|heard] tine burns brighter when people die",
+      "the realm raid wiped on tine, not on xaga. [embarrassing|happens]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Tine",
+    "text": "Xaga's fire, a hearth-flame turned to a weapon. She bursts in a ring of heat and calls her sister Beatha."
+  },
+  "bookPage": "From Aodhan's notes: the Sylvan have a word for the fire a lost traveller makes in a wet wood, and it is the same word as Tine. Such a fire, they say, is the bravest thing on the isle, a small light holding off a whole night. Xaga found one and bound it to her staff, and now it is a weapon, circling her room on the air and bursting in heat on those who come to free it. The fire-keeper said the realm's warriors should not hate Tine. She was brave once. Put her out gently, she said, if such a thing can be done gently. It cannot, I said. She said: then quickly.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to Tine, Xaga's fire; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on Tine, Xaga's fire after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "xaga",
+      "relation": "her mistress"
+    },
+    {
+      "id": "beatha",
+      "relation": "her sister spirit"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Wanderer's Fire",
+      "text": "The Sylvan have a word for the small fire a lost traveller lights in a wet wood to keep alive through the night, and it is the same word as fire itself: tine. They hold such fires in a reverence they give no other kind. A forest fire is death to a Sylvan; a hearth they do not keep indoors; but the wanderer's fire, one small light holding off a whole night of rain, is in their songs the bravest thing on the isle. Sylvan travellers who light one leave a stone beside the ashes when they go, to thank it.\n\nTine was one of those, the Sylvan say: the spirit of a wanderer's fire on a cold hillside above World's End, lit by Xaga herself on one of her journeys to fill the seed jars. Xaga sat beside it through a storm that killed two travellers on the same hillside, and she said afterward that the fire had wanted to live as much as she did. When she went down into the hollow, she carried its embers with her in a clay pot, because, she told the elders, nothing grows in the dark without a little warmth. The hillside has a name now, Ard na Stoirme, the storm height, and Sylvan travellers who cross it still light a small fire there, whatever the weather, and leave a stone beside the ashes when they go. They say it is for the fire that went down. The realm's scouts who have crossed the height say the stones there are piled as high as a child."
+    },
+    {
+      "title": "Bound to the Staff",
+      "text": "In the hollow Xaga bound the fire to her staff with the old words, and named it as she had always named it, plainly: Tine. Bound, it warms nothing. It circles her room in the western galleries on the air beside its sister Beatha, a small hungry light, and when Xaga is touched it falls from the ceiling and bursts in a ring of heat that fills the room around it. It calls Beatha when it comes, and it calls Xaga. It will come down low enough for a warrior's blade while it fights; it will not be caught. Ruadhán, the only warden to come back from meeting Xaga, said the fire spirit struck his friend Conn first, and that it burned brighter as he fell.\n\nThe Bri Leith company that died in Xaga's room in a later season said the same. It died at Tine, not at Xaga, and its two survivors swore the spirit grew brighter with every one of them who fell, as kindling feeds a fire. The druids of Tir na Nog think that is fear talking. The Sylvan think it is the oldest truth about fire: it eats, and it grows on what it eats, and binding does not change that.\n\nRuadhán himself lived because he stood a step back from the burst, at the door, where Xaga had left him to watch; he never forgave himself the step. The fire-keepers of Domnann, who keep a clean fire in every village ring, will not light one from a spark struck in the western galleries, and they put out any torch carried up out of the hollow before it reaches the grove. Conn's name is on the Domnann list."
+    },
+    {
+      "title": "The Stone by the Ashes",
+      "text": "The Sylvan believe that when the realm puts Tine out, a hillside above World's End grows a little colder: the one where Xaga lit her, in the storm. Sylvan travellers who cross that hillside report that the ground there is warm in winter for a few nights each time she falls, and then cold again, as if a fire had gone out somewhere very far below.\n\nThe Sylvan custom for those nights is the wanderer's custom. The fire-keepers of Domnann lay a single stone beside the ashes of their own rings, to thank the fire, and leave it until morning. Lisín asked Aodhan to tell the realm not to hate Tine. She was brave once, Lisín said, the bravest thing on the hillside, and it is not her fault what she was carried down to. Put her out quickly, she said; there is no gentle way.\n\nRuadhán's account keeps one detail that the Sylvan treasure. When he fled Xaga's room, he said, the fire spirit followed him to the door and stopped there, and for a moment it was only a small fire in the dark, the size of a wanderer's, and it did not burn him. He always said it had remembered him from the hillside, because he had been one of the two travellers Xaga sat with through the storm, and the only one who lived. The Sylvan have no reason to doubt him, and every reason to want it to be true. He told it only once, to Lisín."
+    },
+    {
+      "title": "Two Sisters",
+      "text": "Tine and Beatha are called sisters by the Sylvan, though nothing in their making makes them kin: one was a wanderer's fire and the other the green force in a seed. They became sisters, the Sylvan say, by being bound to the same staff and circling the same room for an age. When one falls the other burns or chills the harder; the wardens have heard the fire cry out for her sister when Beatha dies.\n\nThe druids of Tir na Nog have a theory about the pair that the Sylvan dislike. They say the two spirits are not Xaga's weapons but her proof: fire that does not warm and life that empties, the hollow's lesson about what it does to every good thing, made into a pair and set to circle the seed-keeper as a warning to herself. The Sylvan say the druids are making things too clever. Xaga was cold and curious and lonely, they say, and she kept the two things she loved best near her in the dark. That they became terrible is the hollow's doing.\n\nThey have been cut down together many times, and they return every time with their mistress. The fire-keepers leave the stone by the ashes every time. The Sylvan pile them on Ard na Stoirme, a stone for each time the sisters fall, and the pile grows every season the realm goes down into Galladoria. The fire-keepers say that when it is as high as a grown Sylvan, they will light a fire on top of it, the largest wanderer's fire the isle has ever seen, and call Tine home to it. Nobody has said what they will do if she comes."
+    }
+  ]
+}

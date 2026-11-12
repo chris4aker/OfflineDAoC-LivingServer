@@ -1,0 +1,117 @@
+{
+  "id": "ulicia",
+  "name": "Ulicia",
+  "npcNames": [
+    "Ulicia"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Altan Garran (about 336,000/315,500 in Cothrom Gorge) is a walled outlander town of faction Outland Residents: Outland garda (49-53), conaitheoir (48-51), bardach (48-53) and asarlai (49-57), merchants (Egomas the smith, Halwyn, Paili, Noirin the enchanter, Forsa, Gearoidin the healer, Alastair and Luiseach Erea) and garran treants; its named are Fedail, Elnara Erea, Ulicia, Aodhnait, Ansol, Fachtna, Zinsya and Declan, all set aggressive (200) in the world data.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Irish garda 'guard', cónaitheoir 'resident', asarlaí 'sorcerer'; 'Altan Garran' read as altán 'ravine' + garrán 'grove' (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Ulicia: level 52, model 743 (the model of the town's asarlai and bardach), faction Outland Residents, aggressive, at about 336,500/318,000 on the south side of Altan Garran beside Luiseach Erea's stall.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Ulicia as the asarlai who keeps the south watch against Tachtwort.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Altan Garran is the only town in Cothrom Gorge, and it is not a Sylvan town. Its people are outlanders: Sylvan and half-Sylvan families who left Domnann over the generations, for quarrels, for debts, for love, for the wardens' law, and went down into the gorge where the wardens do not walk, and built a walled grove of their own on the gorge's eastern ledges. They keep their own garda on the walls, their own bards and sorcerers, their own markets, and their own opinion of strangers, which is low. The Domnann wardens call them the outlanders and trade with them when they must. Hibernians who walk up to the gate unannounced are generally met at it.\n\nThe outlanders' sorcerers are the asarlai, and the town has a handful of them, trained in no grove the Domnann wardens would recognise. Ulicia is the eldest. She keeps the south side of Altan Garran, the side Tachtwort has been eating for a generation, and she keeps it alone, because the families who lived there have all moved north across the square. Her house is the last one lit on the south side. Luiseach Erea's instrument stall stands beside it, and the town says that is because the Ereas will not let the south side be empty while one of them is still selling harps.\n\nEvery night Ulicia walks the south wall with the garda and burns the tendrils that have come through the stones during the day, and every morning there are more. She has done it so long that her hands are scarred to the wrist with the wort's sap. The outlanders' bards make songs about her that she will not listen to. The garda say she is the reason the south side still has a wall at all, and that the worst thing that could happen to the town would be for her to die on a night when the tendrils are thick.\n\nShe does not like Hibernians any better than Elnara does. She has a different reason. The young swords who come to the gate cut Tachtwort down, she says, and take its remains to Fedail and feel they have done something, and in the morning it is standing under the wall again and she is still on the south side with her burning-sticks. Noirin the enchanter says that if anyone in the town will be glad on the day Marfoirwort dies, it will be Ulicia, and that she will not say so.",
+  "legend": "Ulicia (52) is an Outland Residents sorceress-type named on the south side of Altan Garran, near Luiseach Erea's stall and close to Tachtwort's wall. The town is set aggressive in the world data, so she and the nearby garda can attack Hibernians. No script; at 52 with the asarlai model expect a caster-style fight, so interrupt and burn. Do not fight her with Tachtwort (76) right outside the wall. A 50s group with a puller; pull from the south edge away from the square. The outlanders' bards sing about her; the garda say the south wall stands because of her.",
+  "yells": {
+    "aggro": [
+      "The south side has enough trouble.",
+      "Another cutter of runners.",
+      "Garda, to the wall!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Who will burn the tendrils tonight?"
+      }
+    ],
+    "death": [
+      "The wall... tonight... who...",
+      "Burn them... at the stones..."
+    ],
+    "slay": [
+      "Back to the wall.",
+      "One more for the south side.",
+      "Garda, hold."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The last lit house on the south side.",
+      "Burnt tendrils in the wall stones."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ulicia's burning-sticks flare on the south wall."
+      }
+    ],
+    "realmFirstKill": "Ulicia of the south wall has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "ulicia is 52, south side of altan garran. [caster type|interrupt her]",
+      "town is aggro, garda join. [pull from the edge|careful]",
+      "tachtwort is right outside that wall. [dont pull both|76]",
+      "50s group with a puller"
+    ],
+    "aftermathWin": [
+      "ulicia down. [the south side is dark now|got her]",
+      "interrupted her every cast. [nice|clean]",
+      "didnt touch tachtwort. [good path|phew]",
+      "the outlanders wont forgive this"
+    ],
+    "aftermathLoss": [
+      "pulled tachtwort too. [76 plus a caster|no]",
+      "garda came from the square. [ugh|wipe]",
+      "she nuked the healer. [interrupt|oops]",
+      "walked in the gate. [aggro town|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] ulicia burns the wort tendrils out of the south wall every night",
+      "ulicia's hands are scarred to the wrist with wort sap, they say",
+      "[word is|heard] ulicia's is the last lit house on altan garran's south side",
+      "the outlander bards sing about ulicia. [she wont listen|she hates it]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ulicia",
+    "text": "The eldest asarlai of Altan Garran in [Cothrom Gorge], who keeps the south side alone against [Tachtwort], burning its tendrils out of the wall every night."
+  },
+  "bookPage": "Noirin the enchanter of Altan Garran: Ulicia's is the last lit house on the south side. Everyone else moved across the square when Tachtwort's tendrils came up through the floors. She walks the south wall with the garda every night and burns the tendrils out of the stones, and every morning there are more, and her hands are scarred to the wrist with the sap. She dislikes Hibernians for cutting Tachtwort and feeling they have done something. If anyone in the town is glad the day Marfoirwort dies, it will be Ulicia. She will not say so, not to me and not to anyone.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Ulicia in Altan Garran in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Ulicia turned back {realm}'s band under {raidLeader} in Altan Garran in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "outland-residents"
+  ],
+  "related": [
+    {
+      "id": "elnara-erea",
+      "relation": "the Erea family she serves"
+    },
+    {
+      "id": "fedail",
+      "relation": "who speaks for the town"
+    }
+  ]
+}

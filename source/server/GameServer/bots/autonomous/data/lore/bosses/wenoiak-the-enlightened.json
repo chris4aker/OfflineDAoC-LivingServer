@@ -1,0 +1,140 @@
+{
+  "id": "wenoiak-the-enlightened",
+  "name": "Weno'iak the Enlightened",
+  "catalogKey": "avalon-city/wenoiakenlightened",
+  "locationId": "avalon-city",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health. Wi'voron cuirassiers, warsteeds and reeves of his faction (13) stand near him in the world data. Casts Weno'iak's Lights (350 Spirit) and Weno'iak's Annihilate (450 Spirit, radius 500).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/WenoiakEnlightened.cs"
+    },
+    {
+      "text": "The drakoran of the city come in five clans whose names echo their lords': drau'gyn (Dra'argus), dry'ak (Dura'ek), syhr'phint (Sys'sro), vyr'em (Vera'erius) and wi'voron (Weno'iak); the lords' linked packs are of their own clan. The clan reading is inferred from names and packs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Weno'iak's Lights are 350 spirit on one target at range 1,500 (3 s cast, every 10-15 s); his Annihilate is 450 spirit in a 500 radius around himself (instant, every 20-25 s).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/WenoiakEnlightened.cs"
+    },
+    {
+      "text": "Weno'iak as the grain-reeve of the crossing, the list of libraries, the saved books in the observatory, the light of the college of stars turned round and the swum warsteeds are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Weno'iak the Enlightened is lord of the wi'voron, the drakoran clan whose work is the joins between the others' work (reeves, acaters, sicklemen, lorimers, and the only drakoran cavalry), and from whom Albion learned most of what it knows of the drakoran. He was a young tally-reeve of the host's grain on the crossing who kept every hold's count in his head, and it was he who told Dura'ek how many days the host could last before it must take Avalon; Dura'ek burned the city on the night he named. He became lord of the wi'voron by being the one the other lords sent for when they could not agree.\n\nThe drau'gyn burned the libraries in the order of a list, and the wi'voron have never denied that their lord made it: Elowen's own list has the same order, the fishermen remember a young drakoran with a reeve's slate selling fish on the cloister steps that season, and Sefin of the Inconnu says whoever made it had read in every library. If so, he also kept back what was on it. Chancellor Rhydderch's commentaries, the star tables and a book of the old tongues are on the observatory shelves, and he reads them by lamplight and says the drakoran burned the wrong things.\n\nHis light is a working of the college of stars turned round: thin, cold Lights that strike one spirit at a time from further than a bow carries, and, when he is pressed, a burst every way that breaks the spirits of all who stand near him. The fishermen say 'stand off from the reeve-lord'; the readers add that a man who stands off had better not stand alone in plain view. Magus Hedydd thought he had learned only half the working.\n\nHis cuirassiers and warsteeds keep the yards. Once he wanted the city fed, then counted; now he reads the charters to learn who first laid stone on the Heart, and why.",
+  "legend": "His yards are full: about six cuirassiers, eight warsteeds and six reeves of his faction stand near him and come in with him, so plan it as one big pull. Spread out against his Annihilate, which hits everyone within 500 of him, and bring spirit resist. Off-tanks on the cavalry, and kill the warsteeds before their riders tire of walking.\n\nThe readers of Caer Gothwaite would pay a great deal for whatever books he has; Albion raiders have looked, and found only ash and a few torn pages in his observatory. The warsteeds die faster than their riders; kill them first and the cuirassiers walk. His Lights land on one target at a time; his Annihilate bursts around himself, so the casters stand well back from him.",
+  "yells": {
+    "aggro": [
+      "Riders! Let them see the light!",
+      "I have read your books. All of them.",
+      "Warsteeds! To me!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Behold enlightenment!"
+      }
+    ],
+    "death": [
+      "I read... your books... they were... right...",
+      "The light... goes out..."
+    ],
+    "slay": [
+      "Enlightened at last.",
+      "A lesson from your own books.",
+      "Read that."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Warsteeds stamp in the yards of the colleges.",
+      "The readers' observatory. Torn pages on the floor."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Weno'iak's light breaks men from within!"
+      }
+    ],
+    "realmFirstKill": "Weno'iak the Enlightened is dead. His light is out."
+  },
+  "botLines": {
+    "briefing": [
+      "wenoiak has cuirassiers, warsteeds and reeves all round him. off tanks on cavalry",
+      "spread for his annihilate, spirit resist up",
+      "annihilate hits everyone within 500 of him. casters stay back, spirit resist up",
+      "kill warsteeds first",
+      "the whole yard comes, plan it"
+    ],
+    "aftermathWin": [
+      "whole yard in one pull. gg",
+      "the enlightened one wasnt that bright",
+      "the cavalry is unhorsed",
+      "casters stayed out of annihilate the whole time"
+    ],
+    "aftermathLoss": [
+      "we stacked for annihilate. 450 to everyone",
+      "casters stood next to him for annihilate. 450 each",
+      "the warsteeds trampled the casters",
+      "not enough off tanks",
+      "no spirit resist"
+    ],
+    "rumour": [
+      "heard weno'iak reads the books the other drakoran burned",
+      "[someone said|heard] weno'iak rides with a whole cavalry",
+      "heard the loremasters think wenoiak is the most dangerous of the five",
+      "the readers want wenoiak's books, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "weno'iak",
+    "text": "The Enlightened. His clan rides warsteeds, and he burns men with a light that is not fire."
+  },
+  "bookPage": "The riders took the stable-yards of the colleges and our observatory with them, and their lord, my fishermen say, sits in the observatory at night with a lamp. One of them swears he saw books on the table: our books, the ones we thought had burned. If that is so, he saved them on purpose. I do not know whether to be grateful or afraid. The fishermen say his light is not fire, that it breaks men from inside, and that he has learned it somewhere. I fear I know where. We taught one pupil too well already. I would not have us teach another.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} unhorsed Weno'iak's cavalry and put out his light in {minutes} minutes.",
+    "loss": "Weno'iak the Enlightened rode down {realm}'s raid in the colleges' yards; {raidLeader} lost them to the light."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "duraek-the-empowered",
+      "relation": "the lord he advises, who burned the city on the night he named"
+    },
+    {
+      "id": "draargus-the-mighty",
+      "relation": "knows what he is reading for"
+    },
+    {
+      "id": "syssro-the-ruthless",
+      "relation": "buys his tallies of the city's stores"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Reeve Who Counted",
+      "text": "The wi'voron are the clan that explains the drakoran to everyone else, and Weno'iak the Enlightened began his life as one of their reeves, counting the host's stores.\n\nEvery drakoran clan has its work. The wi'voron have several, and the readers of Caer Gothwaite, who learned more from them than from any other clan, came to think that the wi'voron's real work was the joins between the others' work: reeves to keep the tallies of what the host ate and burned, acaters to buy it in, sicklemen to cut the forage, lorimers to keep the harness, and the only cavalry the drakoran have, cuirassiers on warsteeds, to carry word between clans that would not speak to each other. It is from the wi'voron that Albion knows that the drau'gyn and the syhr'phint remember where they came from, and that the vyr'em do not. The wi'voron say they themselves do not care where they came from. They care where everyone is going.\n\nWeno'iak was a tally-reeve of the host's grain on the crossing of the western sea, Elowen of Caer Gothwaite was told, a young one, and the only reeve who could keep the count of every ship's hold in his head without a slate. When the fleet came to the Avalon shore it was Weno'iak who knew how many days the host could last before it must take the city or starve, and it was Weno'iak who told Dura'ek the number. The wi'voron say Dura'ek burned the city on the night Weno'iak said, to the night. The wi'voron say it as praise of their lord. Elowen, who lost her college on that night, wrote it down without comment.\n\nHe rose from reeve to lord of the wi'voron in the first year of the occupation, not by challenge, as the vyr'em rise, but by being the one the other lords sent for when they could not agree. Dura'ek sends for him still."
+    },
+    {
+      "title": "The Books That Were Not Burned",
+      "text": "On the first night of the burning the drau'gyn went to the libraries of the colleges in the order of a list, without a guide, as though they had been given it. The readers have spent a generation asking who gave it to them, and the wi'voron have never said it was not their lord.\n\nElowen's own list of the libraries of Avalon, made after the burning from memory, has the same order as the drau'gyn's. She thought for years that only a reader of Avalon could have known it. The fishermen of the shore say a reeve could, if he had sat on the cloister steps for a season watching which doors the readers went in and out of most, and they say a young drakoran with a reeve's slate was seen on the steps that season, selling fish he did not seem to know how to clean. Sefin of the Inconnu said that the order of the list was the order of the libraries' worth, and that whoever made it knew what each was worth, and so had read in all of them.\n\nIf Weno'iak made the list, he also kept back what was on it. When the drau'gyn had done, the wi'voron took the readers' observatory and the colleges' stable-yards together, so that their lord could study by night and ride by day, and the readers who have since seen the observatory say there are books on its shelves that were on the drau'gyn's list and should be ash. Chancellor Rhydderch's commentaries on the charters are there, and the star tables of the college of stars, and a book of the old tongues that Elowen had thought the last copy of was in her own nine chests at Caer Gothwaite. Weno'iak sits with them at night, by a lamp, and the fishermen say he has begun to say aloud that the drakoran have burned the wrong things.\n\nThe Albion companies who reach the observatory find ash and a few torn pages. The readers think he moves the books before anyone comes."
+    },
+    {
+      "title": "The Light from the Observatory",
+      "text": "His clan calls him the Enlightened, and his light is not the drau'gyn's fire. It is something he found in the readers' books.\n\nThe college of stars taught, among the things it did not teach to everyone, a working of light that its masters used to see by when they read the sky: a thin, cold light that touches one point at a great distance and shows what is there. The readers' books say it shows the spirit of a thing as well as its shape. Weno'iak learned it from the star tables in the observatory, the readers believe, and turned it round. His Lights come from across a room, from further than a bow carries, one at a time, cold and unhurried, and they strike at the spirit of whoever they touch and break it from inside. The Inconnu, who keep the spirit-speakers of the isles, say they have never been afraid of any drakoran working but this one.\n\nThe second working is worse, and closer. When Weno'iak is pressed, the light goes out of him all at once, every way, a burst that breaks the spirits of everyone who stands near him. The fishermen's saying, stand off from the reeve-lord, is about the burst; they say it about any powerful man, meaning that his anger falls on those at his elbow. The readers add the other half, which the fishermen leave out because it is not about anger: that the reeve-lord's light finds one man at a time at any distance, so a man who stands off had better not stand alone in plain view.\n\nMagus Hedydd of the Academy, who went to the readers to learn the dusk-reading after his own school failed him, thought Weno'iak had not finished learning the working. He wrote that the lord was teaching himself from books meant for three masters reading together, and that what he could do was half of what was written. The Camelot loremasters say that is why he is the most dangerous of the five. Not because he is the strongest. Because he is the one who is learning."
+    },
+    {
+      "title": "The Riders of the Yards",
+      "text": "Weno'iak the Enlightened keeps the observatory and the colleges' stable-yards below it, and when he rides out, his cavalry rides with him, and his reeves keep their tallies in the yard as they did on the crossing.\n\nThe warsteeds of the wi'voron are the only beasts the drakoran brought across the sea for riding, and the fishermen say they were swum ashore behind the ships on the night before the burning, roped together, and that the cuirassiers walked into the city on foot beside them in the morning because the beasts were too tired to carry anyone. The wi'voron are proud of them. They say a cuirassier unhorsed is only a drakoran in heavy armour, and that a warsteed unridden is only a beast, and that together they are a clan. The companies of Albion who have fought in the yards say the warsteeds go down faster than the men who ride them, and that a cuirassier who has lost his warsteed fights on, slower.\n\nWhat Weno'iak wants is the question the readers of Caer Gothwaite ask about him most, because he is the only drakoran lord whose answer seems to change. In the first year of the occupation he wanted the city fed. Later he wanted its stores counted, and its books. Now, the fishermen say, he wants to know what is under it, and has been reading the charters of the colleges to learn who first laid stone on the warm ground of the Heart and why. Dura'ek does not know this, the wi'voron say. Dra'argus, who watches the stair to the Crystal Cave, does.\n\nSefin of the Inconnu told Elowen once that the drakoran lord to fear is not the one who burns books but the one who reads them. Elowen, whose college burned, said that she would settle for either one, so long as the books were safe. Sefin said that was the difference between a reader and a reeve."
+    }
+  ]
+}

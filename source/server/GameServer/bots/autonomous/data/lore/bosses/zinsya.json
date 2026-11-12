@@ -1,0 +1,85 @@
+{
+  "id": "zinsya",
+  "name": "Zinsya",
+  "npcNames": [
+    "Zinsya"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Zinsya: level 43, an outlander body of the asarlai kind (model 743), faction Outland Residents, at about 337,000/316,000 in Altan Garran; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Altan Garran's people are faction Outland Residents (garda, conaitheoir, bardach, asarlai) in the walled town at about 336,600/315,500 in Cothrom Gorge.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    }
+  ],
+  "story": "Zinsya is an asarlai of Altan Garran, one of the town's sorcerers, and the pupil of Ulicia, the eldest, who keeps the south side alone against the choker. Ulicia burns Tachtwort's tendrils out of the wall every night. Zinsya carries the fire for her: a pot of embers she keeps alight from dusk to dawn, walking it from the sorcerers' house to the south wall and back, so that the old woman never has to make her own flame.\n\nThe outlanders say Zinsya will be eldest one day, and that she will be worse than Ulicia, because Ulicia remembers when the Sylvan were friends and Zinsya does not. She has never been to Domnann. When she looks at a Hibernian company she sees people who come to the gorge for the worts and leave the town to burn its own walls, and her fire-pot is always lit. When the realm's companies leave Altan Garran's gate she spits on the road behind them, which the outlanders say is a sorcerer's way of closing a door.",
+  "legend": "Zinsya (43) is an outlander sorcerer inside Altan Garran (about 337k/316k), near Fachtna (44) and Declan (40). Caster: interrupt her and keep the group tight on her. The garda (49-53) come if you fight in the open town, so pull carefully. Plain spawn, 80-second respawn. Plain spawn with no script; the garda (49-53) who answer her are the real danger, so keep a mezzer ready for them.",
+  "yells": {
+    "aggro": [
+      "The fire-pot is lit. It is always lit.",
+      "You leave us to burn our own walls."
+    ],
+    "phases": [],
+    "death": [
+      "Keep... the embers..."
+    ],
+    "slay": [
+      "Burned out, like a tendril."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A young sorcerer carrying a pot of embers."
+    ],
+    "phases": [],
+    "realmFirstKill": "Zinsya the asarlai's fire-pot has gone out."
+  },
+  "botLines": {
+    "briefing": [
+      "zinsya is a 43 caster in altan garran near fachtna and declan",
+      "interrupt her, watch the garda"
+    ],
+    "aftermathWin": [
+      "zinsya down. [fire's out|grats]",
+      "interrupted her every cast. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "she nuked the healer. [ouch|rip]",
+      "garda joined. [lol|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] zinsya carries ulicia's fire to the south wall every night",
+      "the outlanders say zinsya will be worse than ulicia because she never knew the sylvan as friends"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Zinsya",
+    "text": "An asarlai of Altan Garran, Ulicia's pupil, who carries the old sorcerer's embers to the south wall each night. She has never been to Domnann."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Zinsya in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Zinsya turned back {realm}'s band under {raidLeader} in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "outland-residents"
+  ],
+  "related": [
+    {
+      "id": "ulicia",
+      "relation": "the eldest asarlai, her teacher"
+    },
+    {
+      "id": "tachtwort",
+      "relation": "whose tendrils she burns"
+    }
+  ]
+}

@@ -90,6 +90,8 @@ namespace DOL.GS
             }
             else if (AttackComponent.AttackState && !_hasLos)
             {
+                // A bot that may fight its target only with its distance weapon (Funus) walks into sight instead (the default).
+                if (!MaySwitchToMelee(_npcOwner.ActiveWeaponSlot, KeepsDistanceWeapon)) return false;
                 SwitchToMeleeAndTick();
                 return true;
             }
@@ -215,7 +217,9 @@ namespace DOL.GS
                 {
                     _interval = TICK_INTERVAL_FOR_NON_ATTACK;
                     bot.StopAttack();
-                    SwitchToMeleeAndTick();
+                    // A target fought with the distance weapon only (Funus): wait for endurance, never swing at it.
+                    if (!EpicEncounterTactics.FightsAtRange(bot, _target as GameLiving))
+                        SwitchToMeleeAndTick();
                     return false;
                 }
                 bot.rangeAttackComponent.UpdateAmmo(_weapon);
@@ -275,11 +279,30 @@ namespace DOL.GS
 
         private void SwitchToMeleeAndTick()
         {
-            if (_npcOwner.ActiveWeaponSlot is not eActiveWeaponSlot.Distance)
+            if (!MaySwitchToMelee(_npcOwner.ActiveWeaponSlot, KeepsDistanceWeapon))
                 return;
 
             _npcOwner.StartAttackWithMeleeWeapon(_target);
         }
+
+        /// <summary>A bot that may fight its target only with its distance weapon (an epic rule: Funus, whom a melee swing heals
+        /// to full) keeps it.</summary>
+        // CheckInterruptTimer stops the attack (CleanUp forgets _target) before OnAimInterrupt asks this, so the bot's own
+        // target counts too. Play test duo14: with only _target asked, every interrupted draw on Funus still went to melee.
+        private bool KeepsDistanceWeapon => _npcOwner is GameBot bot && KeepsDistanceWeaponFor(bot, _target, _npcOwner.TargetObject);
+
+        /// <summary>The bot keeps its distance weapon when either the attack's target or its own current target may be fought
+        /// only at range (pure apart from the rule lookup).</summary>
+        public static bool KeepsDistanceWeaponFor(GameBot bot, GameObject attackTarget, GameObject ownTarget) =>
+            EpicEncounterTactics.FightsAtRange(bot, attackTarget as GameLiving) ||
+            EpicEncounterTactics.FightsAtRange(bot, ownTarget as GameLiving);
+
+        /// <summary>The NPC drops its distance weapon for its melee one (pure): only from the distance weapon, and never when it
+        /// may fight its target with the distance weapon only. Play test duo4, 2026-11-07: the scout Funus fought had every
+        /// draw interrupted by his hits, switched to her sword on each interrupt (OnAimInterrupt) and healed him to full 128
+        /// times in seven minutes; the raid could not take him below 89%.</summary>
+        public static bool MaySwitchToMelee(eActiveWeaponSlot slot, bool fightsAtRangeOnly) =>
+            slot is eActiveWeaponSlot.Distance && !fightsAtRangeOnly;
 
         private void SwitchToRangedAndTick()
         {

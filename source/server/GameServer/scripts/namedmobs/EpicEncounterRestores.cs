@@ -76,8 +76,56 @@ namespace DOL.GS
         /// <summary>The n-th Scaith (0 = Corp, the slash one) can be hurt once every Scaith before it is dead.</summary>
         public static bool ScaithAccepts(int index, bool[] deadInOrder) => AroonOpened(deadInOrder) >= index;
 
+        /// <summary>With AllowGalladoriaBridgeSpot a raider must stand within 350 of the bridge spot to start the last room; a
+        /// raid bot that has stood within 1,500 of it this long starts it all the same (the raid is never held there).</summary>
+        public const long BridgeFallbackMilliseconds = 180_000;
+
+        /// <summary>The bridge fallback is due (pure): a raid bot has been on the bridge since <paramref name="since"/> (0: none is).</summary>
+        public static bool BridgeFallbackDue(long since, long now) => since > 0 && now - since >= BridgeFallbackMilliseconds;
+
         /// <summary>Kvasir: cold heals him a fifth of his health.</summary>
         public static bool KvasirHealedBy(eDamageType type) => type == eDamageType.Cold;
+
+        private static readonly Logging.Logger Log = Logging.LoggerManager.Create(typeof(EpicEncounterRestores));
+
+        /// <summary>1.2 play test: a hit that healed Funus to full is in the server log (who, what kind, class, weapon).</summary>
+        public static void NoteFunusHeal(GameObject source, GameLiving funus)
+        {
+            if (!Log.IsInfoEnabled) return;
+            string kind = source switch { GamePlayer => "player", GameBot => "bot", GameSummonedPet => "pet", _ => source?.GetType().Name };
+            GameLiving living = source as GameLiving;
+            Log.Info($"EPIC_FUNUS_HEALED source=\"{source?.Name}\" kind={kind} class={(eCharacterClass)ClassId(source)} weapon={WeaponType(source)} " +
+                     $"healthBefore={funus?.HealthPercent}% slot={living?.ActiveWeaponSlot} target=\"{(living?.TargetObject as GameObject)?.Name}\"");
+            // Play test duo5: scouts with a longbow still healed him with their melee weapon after the bow-keep fix. Once per
+            // raider every ten minutes: the call path that hit him, to find the switch that put the melee weapon in hand.
+            if (source != null && Log.IsInfoEnabled)
+            {
+                long now = GameLoop.GameLoopTime;
+                lock (HealTraces)
+                {
+                    if (HealTraces.TryGetValue(source.ObjectID, out long last) && now - last < 600_000) return;
+                    if (HealTraces.Count > 512) HealTraces.Clear();
+                    HealTraces[source.ObjectID] = now;
+                }
+                Log.Info($"EPIC_FUNUS_HEALED_TRACE source=\"{source.Name}\" stack={System.Environment.StackTrace.Replace(System.Environment.NewLine, " | ")}");
+            }
+        }
+
+        private static readonly System.Collections.Generic.Dictionary<int, long> HealTraces = new();
+
+        /// <summary>Play test diagnostic: a bot that may fight <paramref name="target"/> only at range was switched to melee.</summary>
+        public static void NoteMeleeSwitch(GameObject bot, GameLiving target)
+        {
+            if (bot == null || !Log.IsInfoEnabled) return;
+            long now = GameLoop.GameLoopTime;
+            lock (HealTraces)
+            {
+                int key = -bot.ObjectID;
+                if (HealTraces.TryGetValue(key, out long last) && now - last < 600_000) return;
+                HealTraces[key] = now;
+            }
+            Log.Info($"EPIC_MELEE_SWITCH_TRACE bot=\"{bot.Name}\" target=\"{target.Name}\" stack={System.Environment.StackTrace.Replace(System.Environment.NewLine, " | ")}");
+        }
 
         public static void TellImmune(GameObject source, string text)
         {

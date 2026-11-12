@@ -1,0 +1,257 @@
+{
+  "id": "cruachan-gorge",
+  "name": "Cruachan Gorge",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "zones": [
+    211
+  ],
+  "summary": "The frontier gorge north of Druim Ligen: Dun Lamfhota, which keeps the Spear, Dun Ailinne, the rainbow sprites, the curmudgeon puggards and Morven's heirs.",
+  "facts": [
+    {
+      "text": "Zone 211 (region 200, x 319,488-385,024, y 352,256-417,792): 206 monsters. Keeps: Dun Lamfhota (keep 111, level 10, 348,555/373,402) and Dun Ailinne (keep 106, level 4, 369,509/396,114; Chieftain Ailinne, 63). A Darkness Falls entrance stands beside Dun Lamfhota (348,776/373,379).",
+      "provenance": "game",
+      "source": "world data Keep table (read 2026-11-06); world data ZonePoint table (read 2026-11-06); world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Hibernia's relics are the Cauldron of Dagda (magic) and Lug's Spear of Lightning (strength).",
+      "provenance": "game",
+      "source": "source/server/GameServer/keeps/Relics/GameRelic.cs"
+    },
+    {
+      "text": "Monsters: hillock changelings, rainbow sprites (32-40), deamhan aeir, gray spectres, curmudgeon puggards (39-43), white boars (40-43), mist wraiths, irewood greenbarks, gorge rats, bird-eating frogs, sett protectors and younglings, cruach imps, squabblers, spectral Briton invaders (43), roan steppers, graugach; Ronat (47, Fomorian) and Uileog (40, Fomorian), Spifnar (33) and Little Star (29).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Morven's Return: 'Slay Ronat, the first heir, east of Dun Lamfhota', 'Slay Uileog, the second heir', 'Slay Raemon, the third heir, at the cyclops tower'.",
+      "provenance": "game",
+      "source": "DataQuest 'Morven's Return' (world data, read 2026-11-06)"
+    },
+    {
+      "text": "Lugh is called Lámhfhada, 'of the long arm', for his spear and sling; Cruachan (Rathcroghan) was the royal seat of Connacht and of Queen Medb, and its cave was held to be a door to the Otherworld.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Rathcroghan"
+    },
+    {
+      "text": "Dún Ailinne is a royal site of the kings of Leinster in Irish tradition.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/D%C3%BAn_Ailinne"
+    },
+    {
+      "text": "Living Server lore: Dun Lamfhota as the Spear's house; the Spear's thunder; the rainbow sprites as the gorge's weather; Morven's heirs; the Briton dead; Chieftain Ailinne's book.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawns of Cruachan Gorge: Spifnar (33, the cruach imps' body and size, only half aggressive), Little Star (29, a pony, not aggressive); both respawn 600 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    }
+  ],
+  "story": "Cruachan Gorge runs north from Druim Ligen into the frontier, a deep green cleft with the old royal hill at its head that the songs say was a queen's seat and a door to the Otherworld at once. The realm keeps two keeps in it. Dun Ailinne stands on the eastern height, under Chieftain Ailinne, named for an old royal hill of the eastern kings. Dun Lamfhota stands in the gorge's heart, and Dun Lamfhota keeps the Spear.\n\nLug's Spear of Lightning is Hibernia's relic of strength, the spear of the god of the long arm, which the bards say could not be held still: it struck on its own if it was not kept wrapped. The keep is named for its owner. When the Spear is home in Dun Lamfhota the frontier's fighters say their arms are heavier and their blows land harder, and when it is taken they feel it in their shoulders the next morning. On storm nights the gorge folk say the Spear answers the thunder, and the keep's garrison wraps the relic-house in wet hides.\n\nEvery realm knows where the Spear is, as every realm knows where the Cauldron is, and the gorge has seen more fighting than any valley in Hibernia. The dead of it are still there: spectral Briton invaders walk the southern slopes in their old armour, and the gray spectres of the high ground are the realm's own. Beside the keep a stair goes down toward Darkness Falls, and the garrison watches it as Dun Dagda's does.\n\nThe gorge's weather is its sprites. Rainbow sprites fill the western slopes after rain, bright and quarrelsome, and the gorge folk say a rainbow over Cruachan is only a crowd of them in a good mood. The curmudgeon puggards keep the middle slopes, the thick-nosed curmudgeons whose noses the townsfolk of Culraid want for a remedy, and white boars root in the south. Cruach imps and squabblers live up in the crags, and Spifnar and Little Star, whose names the gorge folk gave them as jokes, live higher still.\n\nMorven's heirs are here. Morven was a Fomorian of the frontier, a lord of the hills before the keeps, whose house in Breifine still stands; his three heirs keep his claim, the first, Ronat, east of Dun Lamfhota, the second, Uileog, in the gorge's floor, the third at the cyclops tower in Breifine. Cathbad of Howth sends the realm's young after all three, by way of a soul gem and a cluricaun enchantress, so that Morven's claim to the hills dies with his line.\n\nWhy does it matter? Because the realm's strength is kept here, in a gorge it has bled into for as long as there have been keeps. Chieftain Ailinne keeps the gorge's book, and the first line of it, she says, was written by the first chieftain of Dun Lamfhota: the Spear is not ours because we hold it; we hold it because it is ours. Every chieftain since has copied it on the first page, and every one has added a line of their own, and the lines do not agree.",
+  "legend": "Cruachan Gorge is frontier (RvR) north of Druim Ligen. Dun Lamfhota (level 10 relic keep) holds Lug's Spear of Lightning, Hibernia's strength relic; Dun Ailinne (level 4) is on the eastern height under Chieftain Ailinne. The Darkness Falls entrance is right beside Dun Lamfhota. PvE: rainbow sprites (32-40) on the west slopes, curmudgeon puggards (39-43, Lost Townfolk noses), white boars (40-43), spectral Briton invaders (43, Vial of Glowing Gasses), deamhans, gray spectres, bird-eating frogs (Sea Shell Sleeves). Morven's Return: Ronat (47) east of Dun Lamfhota and Uileog (40) in the gorge. When the Spear is taken, Hibernian melee is weaker until it is back. Gorge custom: wrap something wet round your weapon on a storm night so the Spear does not take a fancy to it.",
+  "atmosphere": {
+    "firstEntry": [
+      "Cruachan Gorge. A green cleft in the frontier.",
+      "Dun Lamfhota keeps the Spear.",
+      "The dead of every realm walk here.",
+      "A rainbow is only sprites in a good mood.",
+      "The queen's hill stands at the gorge's head."
+    ],
+    "areas": [
+      {
+        "name": "Dun Lamfhota",
+        "x": 348560,
+        "y": 373400,
+        "z": 6030,
+        "radius": 2500,
+        "lines": [
+          "Dun Lamfhota, house of the Spear.",
+          "The relic-house is wrapped in wet hides.",
+          "It struck on its own, if not kept wrapped."
+        ]
+      },
+      {
+        "name": "the gorge stair",
+        "x": 348780,
+        "y": 373380,
+        "z": 5070,
+        "radius": 800,
+        "lines": [
+          "A stair down toward Darkness Falls.",
+          "The Spear's garrison watches it."
+        ]
+      },
+      {
+        "name": "Dun Ailinne",
+        "x": 369510,
+        "y": 396110,
+        "z": 4670,
+        "radius": 2500,
+        "lines": [
+          "Dun Ailinne on the eastern height.",
+          "Chieftain Ailinne keeps the gorge's book."
+        ]
+      },
+      {
+        "name": "the sprite slopes",
+        "x": 336500,
+        "y": 376900,
+        "z": 3180,
+        "radius": 4000,
+        "lines": [
+          "Rainbow sprites after the rain.",
+          "Bright, quarrelsome, everywhere."
+        ]
+      },
+      {
+        "name": "the puggard slopes",
+        "x": 348530,
+        "y": 390310,
+        "z": 3700,
+        "radius": 3500,
+        "lines": [
+          "Curmudgeon puggards with thick noses.",
+          "Culraid wants those noses."
+        ]
+      },
+      {
+        "name": "the Briton dead",
+        "x": 351540,
+        "y": 406100,
+        "z": 3650,
+        "radius": 3000,
+        "lines": [
+          "Spectral Britons in old armour.",
+          "They never went home."
+        ]
+      },
+      {
+        "name": "the first heir's ground",
+        "x": 375490,
+        "y": 369260,
+        "z": 3000,
+        "radius": 1500,
+        "lines": [
+          "Morven's first heir keeps his claim.",
+          "A Fomorian of the old hills."
+        ]
+      },
+      {
+        "name": "Spifnar's crag",
+        "x": 349188,
+        "y": 358056,
+        "z": 7475,
+        "radius": 1200,
+        "lines": [
+          "Spifnar, eldest of the imps, in a mood.",
+          "Crags above the imps. Fine weather helps."
+        ]
+      },
+      {
+        "name": "the pony's crag",
+        "x": 324488,
+        "y": 357256,
+        "z": 8713,
+        "radius": 1200,
+        "lines": [
+          "Little Star, a roan pony, far too high up.",
+          "How did it get here? It knows."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "dun lamfhota keeps lug's spear of lightning. [hib strength relic|every realm wants it]",
+      "lamfhota means long arm. lugh's spear, the bards say it struck on its own if not wrapped",
+      "on storm nights the spear answers the thunder and the garrison wraps the relic house in wet hides",
+      "when the spear is taken hib fighters feel it in their shoulders the next morning",
+      "dun ailinne is on the east height of cruachan gorge. chieftain ailinne keeps the gorge book",
+      "the cruachan hill at the head of the gorge was a queen's seat and a door to the otherworld in the songs",
+      "spectral briton invaders still walk the south slopes. [old armour|the war's dead]",
+      "a rainbow over cruachan is just a crowd of rainbow sprites in a good mood",
+      "culraid wants curmudgeon puggard noses. [lost townfolk|dont ask]",
+      "morven's three heirs keep his claim to the hills. ronat, uileog and raemon",
+      "the darkness falls stair is right beside dun lamfhota",
+      "the spear is not ours because we hold it, we hold it because its ours. [first chieftain of lamfhota|old line]",
+      "cruachan gorge is north of druim ligen"
+    ],
+    "rumour": [
+      "[heard|someone said] the spear is under attack at dun lamfhota. [defend|go go]",
+      "wrap something wet round your weapon on a storm night in cruachan. [gorge custom|lol]",
+      "[word is|heard] ronat is up east of lamfhota. [morven's return|47]",
+      "the rainbow sprites are in a bad mood today. [no rainbow|careful]",
+      "[heard|someone said] the briton invaders were marching toward ailinne last night",
+      "spifnar and little star are up in the crags. [silly names|33 and 29]",
+      "[word is|heard] chieftain ailinne wrote another page in the gorge book",
+      "the white boars in the south are 40-43. [tough pigs|lol]",
+      "[heard|someone said] spifnar is named for a sneeze. the gorge folk think thats funny",
+      "[heard|someone said] little star the pony knows a way down from the crags nobody else does"
+    ],
+    "tell": [
+      "cruachan gorge is frontier north of druim ligen. dun lamfhota and dun ailinne are there",
+      "where is dun lamfhota? middle of cruachan gorge. relic keep with lug's spear",
+      "where is the darkness falls entrance? one is beside dun lamfhota in cruachan gorge",
+      "is cruachan gorge dangerous? frontier, so enemy realms. pve is 30s-40s",
+      "whats in cruachan gorge? the two keeps, rainbow sprites, puggards, white boars, briton spectres",
+      "what does the spear do? hib strength relic. lose it and hib melee is weaker",
+      "spifnar is a 33 cruach imp high in the crags north of dun lamfhota. sometimes he ignores you",
+      "little star is a 29 pony way up in the crags of cruachan gorge. doesnt attack"
+    ]
+  },
+  "loremaster": {
+    "intro": "Cruachan Gorge, the frontier's green cleft. [Dun Lamfhota] keeps the [Spear]; [Dun Ailinne] keeps the east; the [sprites] are its weather; the war's [dead] still walk; and [Morven]'s heirs keep a claim.",
+    "topics": {
+      "Dun Lamfhota": "The relic keep in the gorge's heart, named for the god of the long arm. Its relic-house is wrapped in wet hides on storm nights. A stair beside it goes down toward Darkness Falls.",
+      "Spear": "Lug's Spear of Lightning, Hibernia's relic of strength, which the bards say struck on its own if not kept wrapped. When it is home, the frontier's blows land harder; when it is gone, every shoulder feels it.",
+      "Dun Ailinne": "The keep on the eastern height under Chieftain Ailinne, named for an old royal hill of the eastern kings. Ailinne keeps the gorge's book.",
+      "sprites": "The rainbow sprites of the western slopes, bright and quarrelsome after rain. The gorge folk say a rainbow over Cruachan is only a crowd of them in a good mood.",
+      "dead": "The spectral Briton invaders of the southern slopes, still in their old armour, and the gray spectres of the realm's own dead on the high ground.",
+      "Morven": "A Fomorian lord of the hills before the keeps, whose house still stands in Breifine. His heirs Ronat, Uileog and Raemon keep his claim. Cathbad of Howth wants the line ended.",
+      "Ailinne": "Chieftain Ailinne of Dun Ailinne, who keeps the gorge's book and copies its first line every spring: the Spear is not ours because we hold it; we hold it because it is ours.",
+      "puggards": "The thick-nosed curmudgeons of the middle slopes. The townsfolk of Culraid want their noses for a remedy and will not say for what.",
+      "Spifnar": "Up in the crags north of [Dun Lamfhota], higher than the cruach imps and the squabblers, lives Spifnar, the eldest of the cruach imps, and the gorge folk named him for a sneeze, as a joke, because he is not funny. He does not always attack. The gorge folk say it depends on his temper, which depends on the weather, which in the crags is bad. Walk past him on a fine day if you must walk past him.",
+      "Little Star": "Little Star is a pony, a little roan one, and it lives higher in the crags of Cruachan Gorge than any pony has any business living. The gorge folk named it for the white mark on its brow and for the joke of a star found so high. Nobody knows how it got up there. It harms nobody and runs from everyone, and the rangers of Dun Ailinne say a pony that has found a way up that high knows a way down that nobody else does."
+    }
+  },
+  "book": {
+    "title": "The Gorge Book of Cruachan, kept by Chieftain Ailinne",
+    "pages": [
+      "The first chieftain of Dun Lamfhota wrote the first line of this book with a burnt stick on the inside of the relic-house door, and it is still there: the Spear is not ours because we hold it; we hold it because it is ours. Every chieftain of the gorge has copied the line since, into a book like this one. I keep Dun Ailinne, on the eastern height, and I copy it every spring, and then I write down what the year did: who came for the Spear, who held it, who did not come home.",
+      "The Spear strikes on its own if it is not kept wrapped. That is the old saying, and on storm nights we believe it, because the relic-house hums with the thunder and the garrison soaks hides in the river and hangs them on the walls. When it is home, our fighters' arms are heavy and sure. When it is taken, and it is taken, they wake with stiff shoulders and swear, and the other realms' fighters wake in the morning with ours. The garrison calls those mornings the stiff days, and counts them on the relic-house door.",
+      "The gorge has more dead in it than any valley in the realm. The Britons who came for the Spear in the early years still walk the southern slopes in their old armour, and the gray spectres on the high ground are ours. Beside Lamfhota the stair goes down into the dark, and the garrison watches it. The sprites do not care about any of it. When it rains they come out on the western slopes in their hundreds, and we get a rainbow. The young of the keep are told it is a good omen. It is only sprites.",
+      "Morven's heirs are still about. He was a lord of the hills before there were keeps, a Fomorian, and his house in Breifine still stands, and his three heirs keep his claim: one east of Lamfhota, one in the gorge floor, one at the cyclops tower. Cathbad of Howth sends the young after them, so the claim dies with the line. It has died many times. Fomorian claims are like the Spear. They strike on their own if not kept wrapped, and we keep wrapping them, season after season, the way the garrison wraps the relic-house before a storm."
+    ]
+  },
+  "bosses": [
+    "ronat",
+    "uileog"
+  ],
+  "era": "hib-the-realm-war",
+  "factions": [
+    "frontier-guard",
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "hibernia-wilds",
+      "relation": "the region overview"
+    },
+    {
+      "id": "connacht",
+      "relation": "Druim Ligen, the fort at its southern edge"
+    },
+    {
+      "id": "mount-collory",
+      "relation": "the other relic keep's country"
+    },
+    {
+      "id": "breifine",
+      "relation": "Morven's country, to the east"
+    }
+  ]
+}

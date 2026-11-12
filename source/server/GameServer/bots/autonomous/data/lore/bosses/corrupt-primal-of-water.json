@@ -1,0 +1,141 @@
+{
+  "id": "corrupt-primal-of-water",
+  "name": "Corrupt Primal of Water",
+  "catalogKey": "galladoria/waterprimal",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "The four Corrupt Primals rise at the waterfall bridge after the voices; Olcasgean wakes only when all four are dead. Their shared line is 'We shall protect.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs"
+    },
+    {
+      "text": "Level 83, 125,000 health. Below 30% it walks to its pool once, cannot be hurt while it retreats, heals a sixth of its health and comes back.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "It sends a target to one of two fixed spots by the falls.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "The rivers of Hy Brasil run toward the hollow now, and the water that reaches it stays. The Primal of Water is what the Root made of it: a guardian that remembers it was a spring. Hurt it badly and it does what water does when it is wounded. It goes home. It slides back into its pool, where nothing can reach it, and drinks, and comes back stronger. It does this once. The Sylvan say a spring can only forgive itself so many times. It also has a current's habit of carrying people where they did not mean to go.\n\nEvery spring of Hy Brasil once ran to the sea. Now the rivers bend toward the hollow, and the water that reaches it stays. The Root made a guardian of it, and the guardian remembers it was a spring: it fights like a flood, it once carried people where they did not mean to go, and when it is badly hurt it does what water does.\n\nIt goes home. It slides back to its pool at the foot of the bridge, and while it is going nothing can hurt it, any more than a sword can hurt a river. In the pool it drinks, and comes back stronger, and fights again. It does this once. The Sylvan say a spring can forgive itself only so many times. When it dies the waters of the hollow run clear for a moment, and the Conservator's pool, far off in the galleries, dims, as if something had been taken from its hoard.\n\nThe Sylvan named the isle's springs like children; when the rivers bent, the Root gathered what was left into this guardian. Cass of the Domnann wardens worked out its one forgiveness for Orlaith's company, and each time it is freed one of Domnann's dry springs runs for an hour.",
+  "legend": "Burn it to thirty, then stop: it runs to its pool and nothing hurts it there. Wait at the edge, let it heal, and kill it when it comes back. It only does it once. Watch for being swept to the far side of the falls. The trap is mana. A raid that keeps casting while it walks to the pool spends everything on nothing, and has nothing left when it comes back. Call the pause loudly, hold, and burst it on its return. The old hands' word for it is simple: patience. Water forgives itself once; a raid gets no second chance if it wastes its mana.",
+  "yells": {
+    "aggro": [
+      "The water remembers. The water returns.",
+      "The spring remembers the sea. It does not want to go.",
+      "Water rises over the bridge stones: we shall protect."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "The spring goes home to drink."
+      }
+    ],
+    "death": [
+      "The water... runs out to sea.",
+      "The waters of the hollow run clear for a moment."
+    ],
+    "slay": [
+      "We shall protect.",
+      "Carried off, like all the rest.",
+      "Down to the pool with you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four voices speak as one: we shall protect.",
+      "A pool at the bridge's foot, dark and still."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "The Water Primal sinks into its pool!"
+      },
+      {
+        "trigger": "death",
+        "text": "The waters of Galladoria run clear."
+      }
+    ],
+    "realmFirstKill": "The waters of Galladoria run clear for the first time."
+  },
+  "botLines": {
+    "briefing": [
+      "water primal runs to its pool at thirty. [stop hitting|hold dps] till it comes back, its immune in there",
+      "water primal: when it walks to its pool call hold. [nobody casts|stop everything] till it comes back",
+      "dont chase the water primal to its pool, it cant be hurt while it walks. [let it go|wait at the edge]",
+      "burst it the moment it comes out of the pool. [everything|all in]"
+    ],
+    "aftermathWin": [
+      "water down, [and nobody wasted their mana on the pool|good discipline]",
+      "held at thirty like pros, burst it on the way back. [clean|lovely]",
+      "the conservator's pool dimmed when the water died, someone saw it from the gallery. [creepy|cool]",
+      "water down, nobody wasted a spell on the pool. [discipline|nice]"
+    ],
+    "aftermathLoss": [
+      "half the raid burned mana into the pool while it was immune. [again|every time]",
+      "kept casting into the pool and [had no mana when it came back|went oom]",
+      "half the casters nuked it on the walk to the pool and [were empty when it came back|had nothing left]",
+      "it came back healed and we [had nothing|were empty]"
+    ],
+    "rumour": [
+      "[heard|word is] the water primal [heals in its pool|goes back to the pool]. you have to wait it out",
+      "[heard|someone said] every river on hy brasil bends toward galladoria now",
+      "[word is|heard] the conservator's pool goes dark when the water primal dies",
+      "someone says the water primal [only heals once|cant go home twice]. sylvan say a spring forgives itself once"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Primal of Water",
+    "text": "The springs of the isle, turned to his use. Wounded, it slips back into its pool where nothing can follow, heals, and returns, but only once."
+  },
+  "bookPage": "A Sylvan water-song, as Aodhan heard it in Domnann: Spring, little spring, run to the sea; the sea is your mother, she waits for thee. They sang it to me with long faces and explained that the springs no longer run to the sea but down, into the hollow, and that the guardian at the bridge is all of them together, turned. I asked how Orlaith's company had freed it. A Sylvan warden said: they wounded it, and it went home to the pool to forgive itself, and they waited at the edge with their swords down, and when it came back they finished it. Water is patient, he said, and so must anyone be who stands against it. That is the whole of the song.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Corrupt Primal of Water; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Water after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the sleeper it guards"
+    },
+    {
+      "id": "corrupt-primal-of-air",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-fire",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-earth",
+      "relation": "a fellow guardian"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Springs That Ran to the Sea",
+      "text": "Hy Brasil was a country of springs, the Sylvan say, every hill with a spring at its foot and every spring running west to the sea. The Sylvan named them as they name children, and the springs of Domnann still have names: Tobar Lisín, which the fire-keeper's family has kept for generations, Tobar na Craoibhe under the great ash, and a dozen others. The springs were the isle's memory, Lisín told Aodhan: water that fell as rain on World's End came out at the foot of a Domnann hill years later, and the Sylvan believed it carried what it had seen on the way.\n\nThe rivers began to bend after the Root's roots hollowed Galladoria. Slowly at first, a stream that ran a little further east each year, then whole rivers turning from the sea toward the hills. The water that reached the hollow stayed there. The Sylvan count the springs that went dry in those years the way other people count battle dead, and the count is long. What was left of the isle's water, the Root gathered at the foot of the bridge into a pool, and made a guardian of it, and the guardian remembers that it was once every spring at once.\n\nThe Sylvan kept a reckoning of the bending: which river turned in which year, and how far. Lisín's grandmother learned it as a child, and could recite it, river by river, from the Abhainn Mhór, which turned first, to the little Sruthán Glas that turned last and ran dry under the fire-keeper's own window. She said the reckoning ended there because there was nothing left to bend."
+    },
+    {
+      "title": "The Way Water Forgives",
+      "text": "It fights like a flood. In the first years it carried the living where they did not mean to go, always to the same two places beside the falls, as a river leaves its drift on the same sandbanks; the Sylvan say it has stopped, and that it only drowns now. And when it is badly hurt it goes home: it walks back to its pool at the bridge's foot, and while it walks nothing can harm it, any more than a sword can harm a river, and in the pool it drinks and comes back stronger than it left.\n\nThe three hundred and forty did not understand this and paid for it. They poured everything they had into the retreating water and had nothing left when it returned. A Sylvan warden who had gone down with them, Cass of the Domnann wardens, thought it through on the long walk home and went to Orlaith before the second going-down. It forgives itself once, he told her; a spring can only forgive itself so many times. Orlaith's company stood at the edge of the pool with their swords down until the water came back to them, and the Sylvan's water-song has a new verse for that night.\n\nCass was one of the wardens who guard the forest paths of Domnann, and he went down with the three hundred and forty as their guide. He is the reason the Sylvan's water-song has a verse about patience, and the reason the children of Domnann, playing at the bridge in the stream below the grove, shout the words he used: sword down, wait for the river."
+    },
+    {
+      "title": "The Pool and the Hoard",
+      "text": "The water guardian's pool is not the only gathering of the isle's water in Galladoria. Far back in the galleries the Conservator sits at its own glowing pool, hoarding what the mechanism pumps through the halls, and the two are connected: when the water guardian dies, the Conservator's pool dims, as if something had been taken from the hoard. Wardens posted in the galleries have seen it happen. The Sylvan explain it simply. The guardian at the bridge is the isle's springs, turned; the Conservator is the miser who keeps what the springs have lost. When one is freed the other loses a little of what it holds.\n\nAnd the falls of Easmarach, the will of the great waterfall that guards the way to the bridge, are the guardian's kin: two parts of the same river, the Sylvan say, one that throws strangers back and one that carries them off. Those who have stood against both say they feel alike, cold and patient and with no anger in them at all, only the river's indifference to whatever stands in its way.\n\nThe connection between the pools was first seen by Brannagh, a scout of Tir na Nog who was posted in the galleries during Orlaith's going-down to watch the way back. She saw the Conservator's pool dim at the same moment the cheer went up from the bridge, and she wrote it down before she knew what it meant. The Conservator, she said, looked round, as a miser looks round when he hears a coin fall in another room."
+    },
+    {
+      "title": "Tobar Lisín",
+      "text": "Lisín's family spring, Tobar Lisín at the foot of the hill below the fire-keeper's house, ran dry in her grandmother's time, in the years when the rivers bent. It had not run since. Aodhan was in Domnann the winter after Orlaith's company first freed the water guardian, and he wrote down what happened the morning after the news came: the spring ran for an hour, clear and cold, and then stopped.\n\nThe Sylvan have kept count since, as they keep count of the rain. Each time the realm frees the water guardian, one of the old dry springs of Domnann runs for a little while. Never the same one twice in a row, never for long. The Sylvan take it as the springs saying their names, one at a time, to show they are still there. The fire-keepers of Domnann have begun leaving a cup at each dry spring on the nights the realm goes down into Galladoria, so that whichever runs will have something to fill.\n\nThe cups are left at the dry springs by the children of each fire-keeper's family, and they are expected to sit up beside them until the realm's company comes home. Most fall asleep. The ones who stay awake, the Sylvan say, are the ones who will be fire-keepers after their parents. Lisín stayed awake every time as a girl, and she told Aodhan that she once saw Tobar na Craoibhe run, for the length of a single song, before she was old enough to understand what it meant."
+    }
+  ]
+}

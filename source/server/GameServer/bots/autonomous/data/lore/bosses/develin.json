@@ -1,0 +1,106 @@
+{
+  "id": "develin",
+  "name": "Develin",
+  "catalogKey": "hibernia-named-mobs-classic-zones/develin",
+  "locationId": "cursed-forest",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 60. Develin appears only at night, and only after 20 to 40 pookas have been slain in the Cursed Forest; until then he cannot be seen.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Develin.cs"
+    },
+    {
+      "text": "His pookas come to his aid when he is fought.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The púca is a shape-changing spirit.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/P%C3%BAca"
+    }
+  ],
+  "story": "Develin is the master of the pookas of the Cursed Forest, and like any master he does not show himself until his servants have been badly treated. Kill one pooka and nothing happens. Kill twenty, thirty, forty, and some night there is a new figure among the trees, watching. He has a name like a Hibernian's, which the Ardee folk find worse than if he had none: they say he was a man once who made a bargain with the pookas and got the better of it, and has regretted it ever since. His pookas still come when he calls.\n\nThe Ardee folk tell it as a warning. There was a man called Develin, a good Hibernian name, who went into the court wood to bargain with the pookas, the shape-changers who serve neither court and both. He got the better of the bargain. That was his mistake. A man who beats the pookas at their own game becomes theirs, and Develin has been their master ever since, and has regretted it every night.\n\nHe does not show himself until his servants have been badly treated. Kill one pooka and nothing happens; kill twenty, thirty, forty, and some night there is a new figure among the trees, watching. Only at night: by day he is not there at all. When he is fought his pookas come to his side and fight for him, as servants do for a master they resent. A small band can do it if it is patient enough to earn him, and the Ardee folk say he looks almost grateful when he falls.",
+  "legend": "You have to earn him: kill pookas at night until he appears, somewhere between twenty and forty. Then his pookas come to his side, so clear them as they come. A small band can do it if they are patient. Farm pookas at night until he comes, somewhere between twenty and forty. Then clear his pookas as they arrive. Superstition: never make a bargain in the Cursed Forest, even a joking one, even a bet. Nicknames: 'the master', 'pooka-man'. Superstition: if you hear laughter between the trees in the Cursed Forest, do not laugh back; that is how bargains start.",
+  "yells": {
+    "aggro": [
+      "You have been killing my little ones.",
+      "You have been killing my little ones.",
+      "A bargain, stranger? No? Then a fight."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Pookas! Your master calls!"
+      }
+    ],
+    "death": [
+      "The bargain... is over...",
+      "The bargain... is over..."
+    ],
+    "slay": [
+      "My pookas will play with your bones.",
+      "My pookas will play with your bones.",
+      "Should have bargained."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Small shapes run between the trees, laughing.",
+      "Small shapes run between the trees, laughing."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Develin's pookas swarm to his side!"
+      }
+    ],
+    "realmFirstKill": "Develin's bargain is broken. The pookas scatter."
+  },
+  "botLines": {
+    "briefing": [
+      "develin only shows at night after [twenty to forty pookas|a lot of pookas] die. farm pookas, then he comes",
+      "develin only at night, after enough pookas die. [farm pookas|be patient]",
+      "clear his pookas as they come, [then him|kill adds]",
+      "pookas change shape, [dont lose track|watch the adds]"
+    ],
+    "aftermathWin": [
+      "develin down. [finally|took forty pookas]. worth it",
+      "develin down. [looked almost grateful|sad]",
+      "took thirty eight pookas. [worth it|finally]",
+      "small group, patient group. [grats|nice]"
+    ],
+    "aftermathLoss": [
+      "killed thirty pookas and the sun came up. [no develin|night only]",
+      "sun came up before he showed. [night only|tomorrow]",
+      "pookas swarmed the healer. [peel|kill adds]",
+      "made a bet in the cursed forest and [look what happened|cursed]"
+    ],
+    "rumour": [
+      "[heard|someone said] develin was a man once who bargained with the pookas",
+      "[heard|someone said] develin was a man who beat the pookas at a bargain and became theirs",
+      "never bet in the cursed forest. [old ardee rule|seriously]",
+      "[word is|heard] develin needs twenty to forty pookas dead first"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Develin",
+    "text": "Master of the Cursed Forest's pookas, said to be a man who made a bargain with them. He shows himself only at night, after enough of them die."
+  },
+  "bookPage": "From Derbáil of Ardee's list, a story grandmother told every child: Develin went into the court wood to make a bargain with the pookas, and won. Never win a bargain with the pookas, she said. If you lose, you lose a cow. If you win, they keep you, because you have proved yourself one of them. Develin has been their master ever since and has hated every night of it. He only comes out when his servants are hurt, and only in the dark. The realm's warriors who kill him say he seems relieved. Grandmother said that was the moral, and sent us to bed.",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Develin in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Develin's head after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "cursed-wood"
+  ],
+  "related": [
+    {
+      "id": "giant-caithor",
+      "relation": "a neighbour in the same wood"
+    }
+  ]
+}

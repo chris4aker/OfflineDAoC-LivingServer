@@ -318,7 +318,7 @@ public static class AutonomousStuckWatchdog
 
         Observation current = CurrentFor(bot, now, out Observation previous);
 
-        bool withHuman = bot.IsPlayerLedGroup || bot.Group?.GetPlayersInTheGroup().Count > 0;
+        bool withHuman = HasHumanCompany(bot);
         if (!GoalObservations.TryGetValue(bot.DatabaseID, out GoalObservation goalObservation))
             goalObservation = GoalObservations.GetOrAdd(bot.DatabaseID, new GoalObservation
             {
@@ -395,6 +395,13 @@ public static class AutonomousStuckWatchdog
             "AUTONOMOUS_STUCK_15M_RECOVERY");
     }
 
+    /// <summary>
+    /// A gamebot with a real player (in the player's group, or in a group a player is in) is never relocated by the
+    /// 15- or 45-minute clocks: the player decides where it goes.
+    /// </summary>
+    public static bool HasHumanCompany(GameBot bot) =>
+        BotDutyLeaseRules.ExemptsFromWatchdog(BotDutyLeases.KindOf(bot)) || bot.Group?.GetPlayersInTheGroup().Count > 0;
+
     // The group check takes the coordinator's global lock, which every grouped
     // actor's Pulse also holds. These clocks are 15 and 45 minutes long, so a
     // two-second-old answer is equivalent; the session samples its own shared
@@ -461,7 +468,7 @@ public static class AutonomousStuckWatchdog
             // operation, with an explicit cause, rather than silently removing
             // one actor and leaving seven stale group assignments behind.
             if (expedition == null) AutonomousBotGroupCoordinator.EndPvePartyBeforeIndividualRecovery(bot, reason);
-            bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK)?.DropFromCarrier(bot);
+            bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK)?.DropFromCarrier(bot, "stuck-watchdog:" + reason);
             if (expedition == null) bot.Group?.RemoveMember(bot);
             bot.CompleteStableMasterRoute();
             bot.StopAttack();

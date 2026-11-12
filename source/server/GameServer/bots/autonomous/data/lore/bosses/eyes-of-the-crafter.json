@@ -1,0 +1,82 @@
+{
+  "id": "eyes-of-the-crafter",
+  "name": "Eyes of the Crafter",
+  "npcNames": [
+    "Eyes of the Crafter"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Eyes of the Crafter: NPC template 60160655, level 48, model 909, faction Meical, aggro 200 (range 500), no spells, respawn 80 s, beside the hall of making at 407726, 430423 with sentries mark I to IV, heavy metal and Cabalist Meical (58) close by.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The Eyes as the hall's lenses turned on the fort, and the cabalist's habit of looking through them, are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The school of making kept a pair of great lenses on the roof of its hall, the gift of the college of stars, so that the makers could study their work by the light of noon in every corner of the workshop. The drakoran cabalist who answers to Meical's name took the lenses down, set them in a body of iron and crystal, and taught the thing to walk. He calls it the Eyes of the Crafter, and it watches the fort.\n\nIt stands beside the hall among the numbered sentries, faced toward Fort Gwyntell on its winnowing hill, and the cabalist looks through it when he wants to know who is coming. The garrison say they can feel it on the back of the neck. Adelon on the hill right of the fort gate, who watches the hall, says the Eyes watch Adelon back, and that it is a long time since anybody in the dales was alone.\n\nThe sentries round it are the cabalist's, and so is the Eyes, by the same allegiance; strike one and the hall's servants all turn their heads. The cabalist himself is never far.",
+  "legend": "Eyes of the Crafter, level 48, faction Meical, right beside the hall of making with numbered sentries, heavy metal and Cabalist Meical (58) close. Pull it out to the slope: anything of Meical's faction nearby comes too, and you do not want the cabalist. Plain melee, no spells. Respawn 80 seconds. The fort's garrison say it watches them; it does nothing about it.",
+  "yells": {
+    "aggro": [
+      "The Crafter sees you.",
+      "Sentries. The Crafter is watching."
+    ],
+    "phases": [],
+    "death": [
+      "The lenses... dark..."
+    ],
+    "slay": [
+      "Seen and removed.",
+      "The Crafter has looked."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Great lenses on legs, turned toward the fort."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Eyes of the Crafter have fallen. The hall is blind."
+  },
+  "botLines": {
+    "briefing": [
+      "eyes of the crafter next to meical's hall, pull it away or you get meical too",
+      "same faction as the sentries, they come with it"
+    ],
+    "aftermathWin": [
+      "eyes down. meical is blind for 80 seconds",
+      "got the eyes. the fort will sleep better"
+    ],
+    "aftermathLoss": [
+      "pulled the eyes and meical came out of the hall"
+    ],
+    "rumour": [
+      "[heard|someone said] the eyes of the crafter are the college of stars' old lenses",
+      "heard meical looks through the eyes to watch the fort"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "eyes of the crafter",
+    "text": "The great lenses of the school of making, set in iron by the drakoran cabalist and taught to walk; they stand by the hall in the [dales of devwy] facing Fort Gwyntell."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} put out the Eyes of the Crafter beside the hall of making in {minutes} minutes.",
+    "loss": "The Eyes of the Crafter saw {raidLeader}'s company of {realm} coming."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "cabalist-meical",
+      "relation": "looks through it"
+    }
+  ],
+  "tier": "minor"
+}

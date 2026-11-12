@@ -1,0 +1,222 @@
+{
+ "id": "caledon",
+ "name": "Caledon",
+ "realm": "Neutral",
+ "regions": [
+  250
+ ],
+ "era": "neu-the-proving-fields",
+ "factions": [
+  "renegades",
+  "arawn"
+ ],
+ "summary": "The last and hardest of the proving fields, an old wild country of grovewood and ghouls around Caer Caledon, where Arawn's worshippers keep the hills (30-35).",
+ "facts": [
+  {
+   "text": "Caledon is the battleground for levels 30 to 35 (region 250); level is the only limit in Offline DAoC.",
+   "provenance": "game",
+   "source": "source/server/GameServer/world/BattlegroundBrackets.cs"
+  },
+  {
+   "text": "Its central keep is Caer Caledon; an Albion, a Midgard and a Hibernia portal keep stand at the same three places as in the other battlegrounds.",
+   "provenance": "game",
+   "source": "world data: Keep table, regions 250-253"
+  },
+  {
+   "text": "Caer Caledon starts neutral in the release world.",
+   "provenance": "game",
+   "source": "source/tools/release-world-defaults.json"
+  },
+  {
+   "text": "Thidranki, Murdaigean and Caledonia were the classic battlegrounds; Abermenai came with patch 1.62 (June 2003).",
+   "provenance": "legend",
+   "source": "docs/bot-voices/PERIOD-CHAT-RESEARCH.md"
+  },
+  {
+   "text": "Its monsters are grovewood, skulking ghouls and timber cats (levels 30-35), and Arawnite warriors, shamanesses and headhunters (31-33) in the hills of the west and north.",
+   "provenance": "game",
+   "source": "world data: Mob table, regions 250-253 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Caer Caledon is held by renegades of every realm's training (armswomen and armsmen, huscarls, a hunter, a ranger, wizards, a runemaster, a guardian, all 38) under Renegade Chieftess Caledon (45), the strongest of the renegade lords; its wizards, runemaster and archers reach a long way from the walls.",
+   "provenance": "game",
+   "source": "world data: Mob table, regions 250-253 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Caledonia was the Roman name for the land north of their province in Britain; 'caer' is Welsh for a fort.",
+   "provenance": "myth",
+   "source": "https://en.wikipedia.org/wiki/Caledonia"
+  },
+  {
+   "text": "Arawn is the king of Annwn, the Welsh otherworld, in the First Branch of the Mabinogi.",
+   "provenance": "myth",
+   "source": "https://en.wikipedia.org/wiki/Arawn"
+  },
+  {
+   "text": "A Void Merchant trades realm points at the Albion portal keep; Siege Masters (50) stand at all three.",
+   "provenance": "game",
+   "source": "world data: Mob table, regions 250-253 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "The Arawnites' hills, the Headhunters' Autumn and the Chieftess's truce are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Caledon is the last field, and the realms send their young there when they are nearly ready for the frontier and need one more lesson.\n\nThe old wild. The country of Caledon is older than the realms' names for it. Albion's scholars give it the old Roman name for the wild north, the bards say it is older than the Romans, and the skalds say it is all one to them. It is a country of grey hills and old woods where the trees walk: the grovewood, slow and rooted and angry, that the foresters of every realm say are the woods' own guardians grown tired of guarding. The timber cats hunt between them. In the low places the skulking ghouls dig at the old barrows, and the barrows are the reason for everything else in Caledon.\n\nArawn's people. The hills of the west and north are held by the Arawnites, who worship the lord of the dead. Albion's Church knows them as a cult of its own land, the faithful of Arawn, who keeps the otherworld under the hills, and preaches against them by name. In Caledon they are older than the cult in Albion and nearer their god. Their warriors keep a line along the western hills; their shamanesses read the barrows; their headhunters keep the far north and take what they take there for Arawn. The Arawnites say the ghouls are their god's dogs and leave them be.\n\nCaer Caledon. The fort in the middle is of old stone, built, the bards say, by a people who are now only a word, and held now by the strongest of the renegades. Deserters of every realm's training stand on its walls: armswomen and armsmen out of Albion, huscarls and a runemaster out of Midgard, a ranger out of Hibernia, wizards and a hunter, all hardened, all of an age with the young who come to take the keep from them, or a little older. Their chieftess keeps the keep's name, and she is the strongest renegade lord of the four fields. Her casters and archers see a long way from the walls, and the realms' captains say a company that has reached the foot of Caer Caledon has already paid for the climb.\n\nThe Headhunters' Autumn. In the fifth autumn of the fields the Arawnite headhunters came south out of the northern hills and took the heads of recruits of all three realms, and set them on stakes along the road to the caer, facing the barrows. The renegades of the caer, who had lost men of their own, went out and fought the headhunters back into the north. It is the only time the renegades of any field have fought for the realms' dead. The Chieftess afterwards sent each realm's portal keep the names of its recruits who were taken, written in a fair hand, and asked nothing in return. Each realm keeps the list. None has ever answered it.\n\nWhy it matters. Caledon is where the realms' young see, for the last time before the frontier, that the enemy across the field is a soldier like themselves. The renegades of Caer Caledon are what a soldier becomes who stops choosing a side; the Arawnites are what a soldier becomes who chooses the dead. The realms send their young to Caledon to see both, and then they send them on.",
+ "legend": "Caledon (Caledonia) is the 30-35 battleground, the last before the frontier. Caer Caledon in the middle is the hardest renegade keep of the four: armsmen, armswomen, huscarls, wizards, a runemaster, a hunter and a ranger, all level 38, under Renegade Chieftess Caledon at 45, and the casters and archers have long aggro range, so you get shot well before you reach the walls. Bring a full group, siege gear from the Siege Masters at your portal keep and healers who can keep up. The Arawnite warriors line the western hills and their headhunters sit in the far north; grovewood, timber cats and skulking ghouls are everywhere and aggro. There is a Void Merchant at the Albion portal keep. Players call it Cale, say the renegades there are tougher than real players, and tell new players about the Arawnite heads on stakes, which is a story, not something you will see.",
+ "atmosphere": {
+  "firstEntry": [
+   "Grey hills and old woods. Some of the trees are walking.",
+   "The last field. The frontier is not far now.",
+   "Barrows in the low ground. Something is digging at them.",
+   "A caer of old stone stands in the middle, well kept.",
+   "Far to the west, a line of painted warriors on the hills."
+  ],
+  "areas": [
+   {
+    "name": "Caer Caledon",
+    "x": 33089,
+    "y": 38271,
+    "z": 3720,
+    "radius": 1800,
+    "lines": [
+     "Renegades of every realm stand on these walls.",
+     "The Chieftess keeps the caer and its name.",
+     "Her casters see you long before you see them."
+    ]
+   },
+   {
+    "name": "Albion portal keep",
+    "x": 37301,
+    "y": 52362,
+    "z": 3944,
+    "radius": 1200,
+    "lines": [
+     "Albion's portal keep. A Void Merchant trades here.",
+     "The Arawnites' hills are visible from the walls."
+    ]
+   },
+   {
+    "name": "Midgard portal keep",
+    "x": 54053,
+    "y": 24680,
+    "z": 4320,
+    "radius": 1200,
+    "lines": [
+     "Midgard's portal keep, among the grey hills.",
+     "The skalds say the grovewood remember every axe."
+    ]
+   },
+   {
+    "name": "Hibernia portal keep",
+    "x": 18362,
+    "y": 18257,
+    "z": 4320,
+    "radius": 1200,
+    "lines": [
+     "Hibernia's portal keep, near the old barrows.",
+     "The ghouls are digging again in the low ground."
+    ]
+   },
+   {
+    "name": "the Arawnite hills",
+    "x": 27870,
+    "y": 33855,
+    "z": 3530,
+    "radius": 8000,
+    "lines": [
+     "Painted warriors keep the western hills for Arawn.",
+     "A shamaness kneels at a barrow, listening.",
+     "Stakes stand along an old road. They are empty now."
+    ]
+   }
+  ]
+ },
+ "botLines": {
+  "lore": [
+   "caledon is older than the realms' names for it. [roman name|the albs use the roman word]",
+   "the grovewood in cale are [the woods' guardians gone tired|old tree guardians]. [slow and angry|they walk]",
+   "the arawnites in cale worship arawn, [lord of the dead|the king under the hills]. the church preaches against them",
+   "the arawnites say the skulking ghouls are [arawn's dogs|their god's dogs]. they leave them alone",
+   "caer caledon was built by [a people who are just a word now|people nobody remembers]. renegades have it",
+   "the chieftess caledon is the strongest renegade lord of the four fields. [her casters see far|long range on the walls]",
+   "the renegades in caer caledon are from every realm. [armsmen, huscarls, a ranger|alb, mid and hib deserters]",
+   "the headhunters' autumn: [arawnite headhunters put recruits' heads on stakes|heads on stakes on the caer road]",
+   "the renegades of caledon fought the headhunters back north. [only time renegades fought for our dead|for all three realms]",
+   "the chieftess sent every realm a list of its dead after the headhunters' autumn. [nobody answered|still no answer]",
+   "cale is where you see the enemy is a soldier like you. [last lesson before the frontier|then the frontier]",
+   "the renegades are what a soldier becomes [who stops choosing a side|with no side]. the arawnites chose the dead"
+  ],
+  "rumour": [
+   "[heard|someone said] the chieftess in caer caledon was an alb armswoman once",
+   "the arawnite headhunters in the far north [still take heads|keep the old stakes], [supposedly|so they say]",
+   "[word is|i heard] the grovewood in cale move when nobody is looking. [they do move|lol]",
+   "[someone told me|heard] the chieftess's list of the dead is kept in camelot. [and jordheim and tir na nog|every capital has one]",
+   "the shamanesses in cale [listen at the barrows|talk to the dead], [old story|creepy]",
+   "[heard|word is] caer caledon is older than any keep in the frontier",
+   "cale renegade chieftess is 45. [ten on us easy|bring a real group]",
+   "[someone said|my guildie says] the renegade wizards in cale outrange our casters. [they do reach far|long range]"
+  ],
+  "tell": [
+   "caledon? the 30-35 battleground, [last one before the frontier|the last bg]. caer caledon in the middle",
+   "is cale hard? the keep is. renegades at 38, the chieftess at 45, and their casters [hit from far off|have long range]",
+   "where is caledon? [bg portal at 30|portal from your frontier] at 30, you can stay till 35",
+   "whats in caledon? grovewood, timber cats, skulking ghouls, and arawnites in the west and north hills",
+   "who holds caer caledon? [renegades|the renegade chieftess caledon], deserters from all three realms",
+   "taking caer caledon? [full group, ram, healers|bring siege and a real group], expect to get shot early"
+  ]
+ },
+ "loremaster": {
+  "intro": "Caledon? The last of the [proving fields], and the oldest wild. Its trees walk, the [grovewood]; its hills belong to the [Arawnites]; and [Caer Caledon] is held by the strongest renegade lord of the four, the [Chieftess]. Ask me about the [Headhunters' Autumn] if you have a strong stomach, or about the [barrows], which are the reason for everything else.",
+  "topics": {
+   "proving fields": "The four contested fields away from the great frontier: Abermenai, Thidranki, Murdaigean and [Caledon]. Caledon is the last, for soldiers of 30 to 35, before the frontier itself.",
+   "caledon": "A country of grey hills, old woods and [barrows], older than the realms' names for it; Albion's scholars give it the old Roman name for the wild north. Its keep is [Caer Caledon].",
+   "grovewood": "The walking trees of Caledon, slow, rooted and angry, which the foresters of every realm say are the woods' own guardians grown tired of guarding.",
+   "barrows": "The old graves in Caledon's low ground. The skulking ghouls dig at them, the [Arawnites]' shamanesses listen at them, and the headhunters of the [Headhunters' Autumn] set their stakes facing them.",
+   "arawnites": "The worshippers of Arawn, lord of the dead, who keep Caledon's western and northern hills: warriors in a line on the west, shamanesses at the [barrows], headhunters in the far north. Albion's Church knows them as a cult of its own land; in Caledon they are older and nearer their god.",
+   "caer caledon": "A fort of old stone built by a people who are now only a word, held by renegades of every realm's training under the [Chieftess]. Its casters and archers see a long way from the walls.",
+   "chieftess": "Renegade Chieftess Caledon, the strongest renegade lord of the four fields, who keeps the caer and its name. After the [Headhunters' Autumn] she sent each realm the names of its taken recruits, and asked nothing.",
+   "headhunters' autumn": "The fifth autumn of the fields, when the Arawnite headhunters came south and set the heads of recruits of all three realms on stakes along the caer road, facing the [barrows]. The renegades of [Caer Caledon] fought them back north: the only time renegades have fought for the realms' dead."
+  }
+ },
+ "book": {
+  "title": "The Chieftess's Roll, kept by a renegade scribe of Caer Caledon",
+  "pages": [
+   "I keep the roll for the Chieftess, and since no realm will keep ours I set down here what this keep is. We are deserters. I was a scribe of the Albion muster at Castle Sauvage and I walked away from it, and the woman on the wall beside me was a huscarl of Midgard who walked away from hers, and the ranger who keeps the north gate was a Hibernian of the Path. We hold Caer Caledon because it was empty and old and nobody's, and because a soldier who has stopped choosing a side has to stand somewhere. The Chieftess chose the walls.",
+   "The country around us is older than all of us. The trees walk, slowly, and do not like axes; we cut nothing green. The ghouls dig at the barrows in the low ground, and the painted people in the western hills, who pray to the king under the hills, say the ghouls are his dogs and leave them be. So do we. The painted people do not trouble the caer. They trouble the young who come from the portal keeps, and the young trouble us, and that is the order of things in Caledon, and it was a fair order until the fifth autumn.",
+   "In the fifth autumn the headhunters came down from the far north, where the painted people keep their sharpest, and took the heads of the young of all three realms and set them on stakes along the road to our gate, facing the barrows. We had lost three of our own on that road. The Chieftess said that a keep that lets that be done at its gate is not a keep. We went out, all of us, and fought the headhunters back into the north. I wrote that day in the roll that the renegades of Caledon had chosen a side for once, and the Chieftess struck it out.",
+   "Afterward she had me write out the names of the young we had taken down from the stakes, every one we could learn, in a fair hand, three lists, one for each realm, and she sent them to the portal keeps under a white cloth. We asked nothing. None of the three has answered. I keep the copies here, in this roll, and I read them aloud on the night of that autumn every year, from the wall, toward the portal keeps. The young who come to take our keep the next morning have usually heard me. They come anyway. I would think less of them if they did not."
+  ]
+ },
+ "bosses": [],
+ "realmTakes": {
+  "albion": {
+   "story": "Albion tells Caledon as the field of its own heresy. Albion's Church knows the Arawnites as a cult of Albion's own hills and preaches that the Arawnites of Caledon are its root; Albion's recruits are taught to name Arawn as an enemy before they ride out. Albion's captains say the Chieftess was an Albion armswoman once, and are not proud of it. Albion's squires call the field the Barrow Country.",
+   "legend": "Albion players say the Arawnites in Cale are the same cult as at home and kill them first, on the priests' orders. They also swear the Chieftess was one of theirs, and are oddly proud of it in private.",
+   "botLines": {
+    "lore": [
+     "the church says the arawnites of caledon are the root of the cult at home. [kill them first|the priests want them dead]"
+    ]
+   }
+  },
+  "midgard": {
+   "story": "Midgard's skalds call Caledon the grey country and sing that the grovewood remember every axe that was ever swung in a wood. Midgard's recruits are told never to cut green wood in Caledon, and never do. The skalds count the renegades of Caer Caledon as warriors who chose their own jarl, and say the huscarl on its wall is the bravest deserter in any field. Midgard keeps the Chieftess's list in the hall at Jordheim and has argued about answering it for years.",
+   "legend": "Midgard players say never cut wood in Cale, the grovewood remember, and that the renegade huscarls on the walls are the best fighters in the battlegrounds. Some of them say it with envy.",
+   "botLines": {
+    "lore": [
+     "skalds say the grovewood in caledon remember every axe. [dont cut green wood|never chop there]"
+    ]
+   }
+  },
+  "hibernia": {
+   "story": "Hibernia's druids say Caledon is the oldest of the fields and that Arawn is not a lord of the dead at all but a lord of the otherworld under the hills, a cousin of the Sidhe gone grim; the Arawnites' shamanesses at the barrows are listening to the other side, as Hibernia's own druids do. Hibernia remembers the Headhunters' Autumn by the names of its young on the Chieftess's list, which the bards of Tir na Nog sing at Samhain.",
+   "legend": "Hibernians say the Arawnite shamanesses are listening to the otherworld at the barrows, and that you should not interrupt them. Then they interrupt them, because they are in the way.",
+   "botLines": {
+    "lore": [
+     "the druids say arawn is lord of the otherworld under the hills, not of the dead. [cousin of the sidhe|gone grim]"
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,81 @@
+{
+  "id": "lysanus",
+  "name": "Lysanus",
+  "npcNames": [
+    "Lysanus"
+  ],
+  "locationId": "vigilant-rock",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Lysanus: level 40, a sylvanshade body (model 889), at about 423,200/343,500 in the south of the vine woods; respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Lysanus as a sylvanshade that remembers its owner's name.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The sylvanshades of Hy Brasil are shadows of Sylvan that came loose in the hollow under Galladoria and came home without their owners, the guides of Domnann say. Most of them have forgotten whose they were. Lysanus has not. It walks the south of the vine woods above Necht, slinking with the others, and says one name over and over, and the Necht Sylvan know the name: a warden of the coast who went down with the first companies and did not come up.\n\nThe warden's family still lives in Necht. They will not go into the vine woods, and they will not let anyone else say the name aloud near them, because they are afraid of what would answer. The guides call Lysanus by the shade's own name instead, which it took from somewhere, and which nobody in Necht has ever heard anywhere else. The guides of Domnann say a shade that remembers is more dangerous than one that has forgotten, because it is still looking.",
+  "legend": "Lysanus (40) is a named sylvanshade in the south of the vine woods (about 423k/344k), with slinking sylvanshades (38-44) around it and cutthroat vines nearby. Clear the area and pull. 80-second respawn. Plain spawn with no script. The cutthroat vines (37-42) are thick on the north side of its patch and root where they kill, so come in from the south. It hits like the slinking shades around it, only harder; a group of 40s is plenty.",
+  "yells": {
+    "aggro": [
+      "(the shade says a name, and it is not yours)",
+      "Are you him? You are not him."
+    ],
+    "phases": [],
+    "death": [
+      "(the shade says the name once more, softly, and is gone)"
+    ],
+    "slay": [
+      "Not him."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A shadow repeating one name in the vine woods."
+    ],
+    "phases": [],
+    "realmFirstKill": "Lysanus the shade is gone from the vine woods."
+  },
+  "botLines": {
+    "briefing": [
+      "lysanus is a 40 sylvanshade in the south vine woods",
+      "slinking shades and vines around, clear first"
+    ],
+    "aftermathWin": [
+      "lysanus gone. [creepy one|grats]",
+      "cleared the shades. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "vines grabbed us. [rip|cutthroat]",
+      "too many shades. [ouch|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] lysanus says the name of a necht warden who never came up from galladoria",
+      "the warden's family in necht wont let anyone say the name near them"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Lysanus",
+    "text": "A sylvanshade of the south vine woods that remembers whose shadow it was, and says his name over and over: a Necht warden who went down into the hollow and did not come up."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Lysanus in Vigilant Rock in {minutes} minutes.",
+    "loss": "Lysanus turned back {realm}'s band under {raidLeader} in Vigilant Rock after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "galladoria",
+      "relation": "where the shadows came loose"
+    }
+  ]
+}

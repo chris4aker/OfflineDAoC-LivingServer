@@ -1,0 +1,171 @@
+{
+ "id": "duke-alloc",
+ "name": "Duke Alloc",
+ "tier": "epic",
+ "npcNames": [
+  "Duke Alloc"
+ ],
+ "aliases": [
+  "alloc"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "host-of-the-marshal"
+ ],
+ "related": [
+  {
+   "id": "high-lord-baln",
+   "relation": "his lord; carries his standard"
+  },
+  {
+   "id": "field-marshal-nebir",
+   "relation": "rival for the host"
+  },
+  {
+   "id": "duke-aypol",
+   "relation": "shares the hall"
+  },
+  {
+   "id": "duke-eligar",
+   "relation": "shares the hall"
+  },
+  {
+   "id": "prince-abdin",
+   "relation": "owes him an old debt"
+  },
+  {
+   "id": "chamberlain",
+   "relation": "announces his parade"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Duke Alloc is a level 75 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands in High Lord Baln's hall in the south, near Earl Zh'alzhak and the first Marquis Chaosmar.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Duke Alloc among the dukes of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Duke Alloc is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "In the Ars Goetia, Alloces (52) is a duke of hell; Duke Alloc reads as that name.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "He uses model 2177; Field Marshal Nebir in the same hall uses model 2176.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "His seat, master, feuds and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "chapters": [
+  {
+   "title": "The standard of the south",
+   "text": "In the Uncounted Age High Lord Baln's hall in the south of the hollow was already the loudest place in the dark, because it was the most crowded. Baln breeds followers the way a marsh breeds flies, and his fanatics have always come out of the walls of his hall faster than he can find work for them. Somebody had to make them face the same way, and in those days that was Alloc. He was the biggest of Baln's three great followers and the loudest, and he carried Baln's standard: the hide of a lord Baln had killed in the first ages, stretched on a frame of the lord's own bones. When Baln went to the Feast of Thrones, Alloc walked in front of him with the standard raised and bellowed his master's name at every turn of the tunnel, so that the whole hollow knew who was coming. He has had a ruined voice ever since. The court says Alloc does not speak but grinds.\n\nBaln was one of the eleven who knelt to the Master. Alloc knelt behind him with the standard lowered, and has always said that the moment he lowered it was the worst of his life. A standard is meant to go forward. He had carried it into thirty fights in the Uncounted Age and never once let it touch the ground, and now he held it a hand's breadth off the floor of the deep chamber while his master promised to stay in his place forever. When the Feast was over Alloc raised it again and carried it back to the south, and he has been looking for somewhere to carry it forward ever since."
+  },
+  {
+   "title": "The seat he was not given",
+   "text": "When Adremal cut the First Roll, Alloc expected to be Field Marshal. He had led Baln's followers for longer than anyone could remember, he was the largest duke in the hall, and the host was going to muster there. The Chancellor gave the office to Nebir, a counter of hosts who had never carried a standard and had not even been at the Feast. Alloc's line on the Roll reads Duke, of High Lord Baln's household, in Baln's hall, and nothing more.\n\nThe hall has had two voices since. Alloc leads the host on parade, and the fanatics, who obey whatever is loudest, form up when he bellows. Nebir commands it, and when the Marshal's lieutenants give an order the fanatics form up again, the other way. The Roll gives the Marshal the right of it. The fanatics have never read the Roll. Dukes Aypol and Eligar, who share the hall, have learned to stand well back on the days the two voices disagree. In the Third Roll Alloc took his complaint to the Chancellor's table on the approach and asked for the Marshal's line to be moved below his own. Adremal heard him out and said that a duke is not a marshal, a marshal is not a duke, and both of them are below a High Lord, which is the only line in that hall that matters. Alloc took the standard home and has not been back to the approach since, except once each Roll, on parade. The standard has a socket of its own cut into the floor by the north arch, and Alloc is the only demon who may touch it; when a fanatic did, in the Fifth Roll, the duke gave its hide to the frame."
+  },
+  {
+   "title": "The muster of the Fourth Roll",
+   "text": "When the feud of the Blade and the Hook broke into war, Alloc saw his chance at last. Prince Abdin's Chthonic Knights were marching on the crossing from the north-west, and the Mutilators of Prince Asmoien were coming up from the western pit, and both princes were sending to the peers of the court for help. Alloc owed Abdin an old debt from the Uncounted Age, which he has never explained, and he decided to pay it. He bellowed Baln's host into column and marched it to the northern arch of the hall with the standard at its head.\n\nField Marshal Nebir was standing in the arch. He did not draw anything. He looked down the column for exactly as long as it took to count it and told the duke the number: two hundred and nine. Then he told him the number of Mutilators in the pit. It was more than twice that. Alloc stood in the arch with the standard raised for a long time and then turned the column round and marched it back. He has never forgiven the Marshal for being right. Gatekeeper Dommel closed the crossing on both orders the same night, and the duke has said that the host of the south would have been inside it when the roads shut, and that he would rather it had been. The fanatics of Baln's hall still form up for him and still face the north arch when they do. The debt to Abdin is the one thing in the duke's history the court has never learned. The knights say their prince once spared Alloc in the Uncounted Age; the Mutilators say Alloc once sold Abdin a road that did not exist."
+  },
+  {
+   "title": "The parade of the Roll",
+   "text": "Once in every Roll the host of the south parades. Alloc leads it out of Baln's hall with the standard in front of him, up past the Marshal's war table, through the crossing at the Gate, where Dommel charges every rank of it, and down the length of the approach past the Chancellor's walls to the Master's door. The Chamberlain announces it. The Chancellor makes a note. The host stands at the door for as long as it takes Legion to notice it, which has never yet taken less than a day, and then Alloc turns it round and marches it home. The court considers the parade its finest spectacle, and the only time in each Roll when the whole host moves.\n\nWhen the doors opened and the realms began coming down, Alloc was the first of the peers to ask the Marshal for leave to take the host up a stair. He asked again every time a door changed hands. Nebir told him what he tells everyone, that the doors answer to the frontier and the court holds none of it. On this one point the duke and the Marshal agree completely. They want the same thing, a door that opens for the court, and they have hated each other for ten Rolls over who will walk through it first.\n\nThe realms each name him their own way. Albion's knights call him the standard-bearer and say his standard is a knight's hide. Midgard's huscarls call him the hoarse one and listen for him. Hibernia's bards say only that he is the loudest thing under the world, and that whoever hears him has already been seen."
+  }
+ ],
+ "story": "Duke Alloc is the standard-bearer of High Lord Baln's southern hall, where the court's host musters. In the Uncounted Age he led Baln's endless fanatics and carried Baln's standard, the hide of a lord Baln had killed, on a frame of that lord's bones. He bellowed his master's name all the way to the Feast of Thrones and ruined his voice doing it. When Baln knelt to the Master, Alloc lowered the standard behind him, and has been looking for somewhere to carry it forward since.\n\nHe expected to be Field Marshal on the First Roll. Adremal gave the office to Nebir, a counter of hosts who had never carried a standard. The hall has had two voices since: Alloc leads the host on parade, the Marshal commands it, and the fanatics obey whichever is louder. When Alloc asked the Chancellor to move Nebir's line below his, Adremal told him only the High Lord's line in that hall mattered.\n\nIn the Fourth Roll, during the feud of the Blade and the Hook, he marched Baln's host north to pay an old debt to Prince Abdin. Nebir met him in the arch, counted the column at two hundred and nine and the Mutilators at twice that, and Alloc turned back. Dommel closed the crossing that night. The duke has never forgiven the Marshal for being right.\n\nOnce each Roll he leads the parade of the host through the Gate and down the approach to the Master's door, the court's great spectacle. Since the doors opened he has asked to take the host up a stair every time a door changes hands, and been refused. He and Nebir want the same door, and hate each other over who will go through it first. Albion's knights call him the standard-bearer; Midgard's huscarls, the hoarse one.",
+ "legend": "Alloc stands on the west side of Baln's hall in the south of Darkness Falls, with Earl Zh'alzhak and the first Marquis Chaosmar close by and Dukes Aypol and Eligar further east. He is level 75 with no script. The danger is the hall, not the duke: once High Lord Baln is fighting he brings out minions every half minute or so, and the Field Marshal's group is in the same space. Pull Alloc toward the west wall, away from Baln, and kill him before you touch anything else in the hall. Players call him the hoarse one and say you can hear him from the Gate when the hall is busy. His standard is a prop, nobody has ever looted it, and asking for it in raid chat is a good way to get kicked.",
+ "yells": {
+  "aggro": [
+   "BALN! Form up! Face me!",
+   "The host of the south! Forward!",
+   "I carried this standard before your realm had a name."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The standard does not fall. Neither do I."
+   }
+  ],
+  "death": [
+   "The standard... does not touch the ground.",
+   "Forward. Someone. Forward."
+  ],
+  "slay": [
+   "Down. The host goes on.",
+   "One for the standard.",
+   "Face the north arch. Always the north arch."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Someone in this hall is shouting. The voice is ruined.",
+   "A standard of hide on a frame of bones.",
+   "Baln's hall. It is very crowded."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The Duke's ruined voice fills the hall."
+   }
+  ],
+  "realmFirstKill": "Duke Alloc has fallen. The standard of the south is down."
+ },
+ "botLines": {
+  "briefing": [
+   "alloc is west side of balns hall. [pull him to the west wall|pull him west], away from baln",
+   "75, no tricks. tanks hold him, [dps go|nuke away], dont touch baln",
+   "zhalzhak and chaosmar are close. [watch the pull|careful on the pull]",
+   "dont ask for the standard, it doesnt drop. [lol|seriously]"
+  ],
+  "aftermathWin": [
+   "alloc down. [the hoarse one is quiet|finally quiet]",
+   "duke alloc dead, west side of the hall clear",
+   "standard is down. [nice|gg]",
+   "alloc done. [aypol next|on to aypol]"
+  ],
+  "aftermathLoss": [
+   "alloc pulled baln's fanatics in. [we were too close|wrong side of the hall]",
+   "wiped on alloc. [the whole hall woke up|too much at once]",
+   "alloc and the marshal at once, [never again|oops]",
+   "lost the pull on alloc. [regroup at the gate|rez and rebuff]"
+  ],
+  "rumour": [
+   "[heard|word is] alloc wanted to be the field marshal and never got it",
+   "alloc's standard is the hide of a demon lord [baln killed|from before the court]",
+   "[someone said|my guildie says] alloc and nebir want the same thing, to march the demon army up a door",
+   "you can hear alloc shouting from the gate [when balns hall is busy|on a bad night]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "alloc",
+  "text": "The standard-bearer of High Lord [Baln]'s hall, who wanted the Marshal's office and did not get it. He leads the host on parade every Roll and wants to lead it up a door. He and Field Marshal [Nebir] want the same thing and hate each other over it."
+ },
+ "bookPage": "From The Parade of the Roll, as a Midgard prisoner saw it from a cage on the approach: First came the noise. It was one voice, but a voice the size of a hall, and it was not saying anything, only a name, over and over: Baln, Baln. Then came the standard, a great dark hide on a frame of white bones, and under it a duke with horns like a stag's who was the voice. Behind him came the host. I stopped counting at three hundred. They marched past my cage down the slope to a door at the bottom and stood there, and did nothing, all of that day and all of the next.",
+ "bookPages": [
+  "From The Parade of the Roll, as a Midgard prisoner saw it from a cage on the approach: First came the noise. It was one voice, but a voice the size of a hall, and it was not saying anything, only a name, over and over: Baln, Baln. Then came the standard, a great dark hide on a frame of white bones, and under it a duke with horns like a stag's who was the voice. Behind him came the host. I stopped counting at three hundred. They marched past my cage down the slope to a door at the bottom and stood there, and did nothing, all of that day and all of the next.",
+  "The prisoner went on: On the second night a man came out of the door. He was a man, I am sure of it, though he was taller than a troll and darker than the stone, and he looked at the host and said something I could not hear, and the duke turned the standard round and the whole host marched back up the slope past my cage. The duke was weeping, if a demon weeps. I asked the imp who fed me what the man had said. The imp said he had said what he always says: that the Master is not receiving."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} cut down Duke Alloc's standard in {minutes} minutes.",
+  "loss": "Duke Alloc rallied the host of the south and drove {realm}'s raid under {raidLeader} out of Baln's hall."
+ }
+}

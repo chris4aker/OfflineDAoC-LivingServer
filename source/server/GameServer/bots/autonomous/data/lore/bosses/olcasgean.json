@@ -1,0 +1,223 @@
+{
+  "id": "olcasgean",
+  "name": "Olcasgean",
+  "catalogKey": "galladoria/olcasgean",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 87, 250,000 health, Galladoria's final. He sleeps until all four Corrupt Primals are dead, then wakes 25 seconds later.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "His voices: 'Intruders have entered inner sanctum', a deep 'P...R...O...T...E...C...T..', 'I am tired, and yet, there is much left for me to take care of this day', 'We shall protect', and on waking 'I am eternal. You and your kind will die.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs"
+    },
+    {
+      "text": "When he wakes a second body (Olcasgean2) with its own 250,000 health rises with him; at 50% each casts a heavy spell.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "His original split-position puzzle (two safe points, roots, throws, the waterfall wall) is switched off for bot raids.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Killed by 140 Hibernians in May 2003 after 340 failed.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/olcasgean-has-been-defeated.125921/ (via docs/RAID-SIZES.md)"
+    },
+    {
+      "text": "Titan, child of the earth, banished to World's End: bot-chat lore, kept as Living Server canon.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "He wakes 25 seconds after the fourth primal dies (OIBrain.DeadPrimalsCount >= 4) and resets after 60 seconds out of combat.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "The safe points of his original puzzle are 40170, 62600 and 39237, 62644; whoever stood elsewhere drew his damage spells.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "The world data lists Laraida, Luaire, Rinne and Taiore on Vigilant Rock under the faction 'Olcasgean'; Luaire is a target of the quest 'Twisted Evil'.",
+      "provenance": "game",
+      "source": "scratchpad/lore/GAPS-hibernia.md (world database, zone 186)"
+    },
+    {
+      "text": "Run 12 (2026-10-15): the bot raid held near the bridge for 40 minutes and none of its 250 raiders stood on the 350-unit spot; now a raid bot anywhere on the bridge starts the room.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Lisín, Orlaith and the chapter chronology are Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Olcasgean, the Root, was old and angry before the first forest of Hy Brasil woke; the Sylvan will not call him a god, the Tir na Nog scholars call him a titan, and the Fomorians took his anger for a good omen. In the Long Pushing the forest grew against him for an age and drove him to World's End, and set keeper-trees to watch: Elro at the edge, who held, and Aroon in the hollow below, who rotted. Roots do not go away; they go down.\n\nWhere his roots ended they made Galladoria, a hollow like a mouth that bends the isle's rivers toward it. Everything that drank its water changed: the Olcasar, the Uaimh, the Broodmother, the mechanism that pumps the sap and the Conservator that hoards it, Aroon, Hurionthex. Xaga the seed-keeper went down willingly, and four Sylvan on Vigilant Rock took his side outright. Last he took the isle's four elements, wind, water, fire and stone with its four Earthmenders, and set them at the waterfall bridge with one voice to guard his sleep.\n\nHibernia's first three hundred and forty broke against his first law: he suffered no one near him who did not stand where he allowed. Orlaith of Tir na Nog's hundred and forty stood in his two places, cut down the four, and found that when he woke he rose as two trunks, each with a full life; they cut both. Since then, the wardens of Domnann say, he has grown careless or hungrier: the bridge wakes him at any step, his menders strike back, and he no longer cares where anyone stands, though each trunk still answers with a great spell when it is half cut through.\n\nWhat he wants, the isle above or only sleep, the Sylvan still argue. Meanwhile the rot climbs into World's End and Domnann, Balor's diggers in Tur Suil may be close to his roots, and Elro still groans at the edge whenever he is cut.",
+  "legend": "Nothing touches him until the four primals are dead, so do not waste a single spell on the sleeping titan. When he wakes there are two of him, each with a full life: split the raid or burn one and then the other, but never half-hit both. Expect a big hit at half health from each. A hundred is enough if they know the bridge. Raid leaders split it two ways: kill the first trunk, then the second, with the whole raid; or put the best half on each. Both work if nobody wavers between them. Save cooldowns for each body's half-health spell. The old guides spoke of standing on two safe spots and of being thrown about; those rules are off today, but veterans still keep the healers near the falls out of habit.",
+  "yells": {
+    "aggro": [
+      "I am eternal. You and your kind will die.",
+      "The roots tighten. Something enormous turns over in its sleep.",
+      "Why do you always come? The forest sent you, as it sent me."
+    ],
+    "phases": [
+      {
+        "trigger": "wake",
+        "text": "P...R...O...T...E...C...T.."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Cut one root and the tree grows two."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "I was old when your songs were young."
+      }
+    ],
+    "death": [
+      "The forest... was always... afraid of me.",
+      "Cut... and the tree... grows on..."
+    ],
+    "slay": [
+      "Return to the soil. I will drink you there.",
+      "Drink, little root. Drink of him.",
+      "Another for the hollow."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Beyond the falls, something vast is tired.",
+      "The water here runs uphill, toward him.",
+      "Two trunks of stone and root, one will."
+    ],
+    "phases": [
+      {
+        "trigger": "wake",
+        "text": "The Root wakes. The whole isle shudders."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The titan's second trunk tears free!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "The sanctum groans. The Root is failing."
+      }
+    ],
+    "realmFirstKill": "Olcasgean is cut down. Hy Brasil breathes.",
+    "wake": "Olcasgean wakes. The roots of Hy Brasil tighten."
+  },
+  "botLines": {
+    "briefing": [
+      "dont touch the titan till all four primals are dead. hes asleep and [immune anyway|we just waste mana]",
+      "when he wakes theres two of him, full health each. [main assist on the first|we kill one then the other]",
+      "both bodies hit hard at half. healers [save something|keep a big heal] for that",
+      "fight starts when the last primal dies, he wakes twenty five seconds later. [be in place|get ready]",
+      "nobody touches the vortices at the bridge. [theyre just in the way|ignore them]"
+    ],
+    "aftermathWin": [
+      "olcasgean down. the sylvan in domnann are going to [cry|sing all night]",
+      "two titans, one raid. [best night this realm has had|grats all]",
+      "the sylvan in domnann are going to sing our names. [no joke|they do that]",
+      "[cut the root|two-trunk down]. hy brasil breathes for a while",
+      "first time i ever heard the sanctum go quiet. [eerie|beautiful honestly]"
+    ],
+    "aftermathLoss": [
+      "we split damage on both bodies and neither died. [one at a time next time|focus]",
+      "lost it on the second trunk. [so close|half a bar]",
+      "he woke and half the raid was still looting the primals. [focus|eyes up next time]",
+      "wavered between the two trunks and neither went down. [pick one|one at a time]",
+      "the big spell at half caught everyone stacked. [spread|save cooldowns]"
+    ],
+    "rumour": [
+      "[heard|someone swears] they heard olcasgean talking at the bridge with nobody there. [i am tired|protect] or something",
+      "the trees in world's end look [sicker|worse] this week. maybe the root is waking",
+      "[heard|someone said] elro the ancient at world's end [groans|shakes] whenever olcasgean is cut",
+      "[word is|heard] olcasgean was the forest's oldest enemy before the fomorians ever came",
+      "someone swears the second trunk [is the real one|is the angry one]. cant both be right"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Olcasgean",
+    "text": "The Root of Hy Brasil, driven to World's End before the first songs. His roots end in Galladoria, and his four guardians keep him asleep. When they fall he wakes as two, and both must be cut down."
+  },
+  "bookPage": "From the songbook of the Sylvan of Domnann, put into our tongue by Aodhan of Tir na Nog. The Root was old, and the forest young; the forest pushed, and the Root went down. He went down to the end of the world, and the end of the world was not far enough, for roots do not go away, they go deep. Four of our own he took to guard him, wind and water, fire and stone. A hundred and forty of the mortal realm went down to him and cut him through, and he rose as two, and they cut him again. Sing the hundred and forty. Sing the four. Sing the Root, that he may hear it and be ashamed.",
+  "chronicle": {
+    "win": "{realm} woke the Root and cut him down: {raidLeader}'s raid felled both trunks of Olcasgean in {minutes} minutes.",
+    "loss": "Olcasgean woke and drank {realm}'s raid under {raidLeader}; it lasted {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "corrupt-primal-of-air",
+      "relation": "guardian of his sleep"
+    },
+    {
+      "id": "corrupt-primal-of-water",
+      "relation": "guardian of his sleep"
+    },
+    {
+      "id": "corrupt-primal-of-fire",
+      "relation": "guardian of his sleep"
+    },
+    {
+      "id": "corrupt-primal-of-earth",
+      "relation": "guardian of his sleep"
+    },
+    {
+      "id": "aroon-the-urlamhai",
+      "relation": "a keeper-tree he rotted"
+    },
+    {
+      "id": "xaga",
+      "relation": "a Sylvan who came to him willingly"
+    },
+    {
+      "id": "elro-the-ancient",
+      "relation": "one of the trees that drove him to World's End"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Older Than the Forest",
+      "text": "The Sylvan of Domnann date everything from the waking of the first forest, and they are clear that Olcasgean was old before it. Lisín, the fire-keeper whose tellings the bard Aodhan wrote down in his winter at Domnann, put it in the plainest words she had: when the first Sylvan opened her eyes among the first trees, the Root was already under her feet, and already angry. Nobody on the isle knows what he was angry about. Lisín thought it was simply the forest itself, a living thing growing on a body that had been bare and his alone.\n\nWhat he is, the accounts disagree. The Sylvan call him the Root and will not use any larger word; to call him a god, Lisín said, would be to give him something he wants. Scholars of Tir na Nog who came to the isle with the realm's first swords preferred the old word titan, a child of the first earth, and the taverns of Tir na Nog have carried that word ever since. The Fomorians, by the Sylvan's report, say he was already there when they first came to the isle in the days before Mag Tuired, and that they took his anger as a good omen. Every account agrees on three things: that he is very old, that he is made of root and stone, and that the isle above him is his in a way the Sylvan have never been able to undo.\n\nHis name is the one thing nobody can gloss. The first syllable is the old Hibernian word olc, evil, and the Sylvan say the realm's ancestors chose it on purpose when they first heard of him. What the rest of it means, if anything, nobody living can say."
+    },
+    {
+      "title": "The Long Pushing",
+      "text": "The Sylvan remember the driving-out as the Long Pushing, and they tell it as a slow thing, measured in generations of trees. The forest did not fight the Root as warriors fight. It grew against him: every tree that put down roots pressed on his, every spring that ran clear sweetened a little of the ground he had soured, and over an age the living wood pushed him west across the isle, toward the edge of the world. The place he came to rest is the zone the realm still calls World's End, at the isle's far rim, and the land there remembers him: its trees are sour, its dead do not lie still, and its shores hold creatures no other coast of Hy Brasil has.\n\nThe forest set guardians to keep him there. These were the keeper-trees, great old ones each set to keep one thing until it fell. Elro was set at the edge itself, to watch over the exile, and the wardens who walk the edge meet him there still, too old for any charm to move and no longer able to tell friend from foe. Aroon was set to keep the hollow beneath the isle, where the Sylvan already feared the Root's reach might go. One of the two held. The Sylvan teach their children both names together, Elro and Aroon, the one who held and the one who rotted, so that the children learn early that a guardian is only as strong as his heartwood.\n\nThe Sylvan do not pretend the Long Pushing was a victory. It moved him; it did not end him. Lisín told Aodhan that every Sylvan child learns one saying before any other about the Root, and the saying is this: roots do not go away. They go down."
+    },
+    {
+      "title": "The Hollow at the End of the Roots",
+      "text": "Pushed to the edge, the Root sent his roots under the isle instead, and where they ended, far below the forests that had driven him out, they hollowed a place for themselves. The Sylvan call it Galladoria, and they spit after saying it, which the Sylvan do for nothing else. It is a hollow like a mouth, wet and warm and breathing, and the water of the isle bends toward it. Rivers that once ran to the sea now run down, and the water that reaches the hollow does not come out clean.\n\nEverything that drank of it changed, and Galladoria's halls are the record of the changing. The deep rock woke impatient and became the Olcasar, stone that hates, under its eldest, the Geomancer. The cave-folk called the Uaimh began to dig toward the roots and could not stop. A great spinner of the caves became the Broodmother. Something in the deepest chamber grew into a heart that pumps the isle's sap through the halls, the realm's first visitors could find no better word for it than mechanism, and downstream of it a keeper of springs became a miser called the Conservator. Aroon, set to keep the hollow, rotted from the heart and began to keep only himself. Hurionthex, a shape-walker who went down to spy, forgot his own face.\n\nNot all who came to him were taken. Xaga the seed-keeper went down of her own will to learn what grew there, and learned. And above ground, on the high places of Vigilant Rock, a handful of Sylvan took the Root's side outright. The world's records list them under his name, Olcasgean, and the realm has met four of them: Laraida, Luaire, Rinne and Taiore. The Sylvan of Domnann will not speak of them at all."
+    },
+    {
+      "title": "The Four Who Were Taken",
+      "text": "The Root's last servants were the hardest won. The Sylvan count four elements of the isle: wind, water, fire and stone. They were the land's own, and the Sylvan grieve for them as kin. The Root took them one at a time over an age. Wind went first, because wind goes everywhere, down every crack, and one summer it went down into the hollow and did not come up, and the forests had a dry year after, and a dying one. Water followed when the rivers bent. Fire, the slow fire of rot that wakes in a wet haystack, he made out of himself. Stone fell last, and did not fall alone: the four kinds of Sylvan earth-tender who mended landslips went down with it, guardian, magical, natural and shadowy, and became the Earthmenders who still close its wounds.\n\nHe set the four at the waterfall bridge, at the door of his sanctum, and he gave them one voice. That is the first voice anyone has heard at the bridge, the one that comes from everywhere and announces that intruders have entered the inner sanctum. The second voice is his: deep, slow, broken, answering from under the falls and spelling out a word he seems to have forgotten, P-R-O-T-E-C-T, before admitting he is tired and that there is much left for him to take care of this day. Then the four promise, together, that they shall protect. Then they rise.\n\nAround the bridge the spray of the falls took will as well, eleven watery vortices that turn in the air above the stones. In the first years no blade or spell could touch them, and the Sylvan said it was no use cutting at the falls' breath. The Sylvan say they are only the falls' breath, and that the Root breathes harder when strangers are near."
+    },
+    {
+      "title": "The Three Hundred and Forty",
+      "text": "Hibernia went down for the first time in the spring after the isles came out of the mist, and it went down with three hundred and forty. It was not enough. The survivors brought back what the Sylvan call the Root's first law: he would not suffer anyone near him who did not stand where he allowed. Two places by the falls he tolerated, and no others. Those who stood elsewhere drew his fury. Roots burst from the floor beneath them, the unlucky were flung across the sanctum, a wall of falling water shut the bridge behind them, and his spells fell on anyone out of place. The druids of Tir na Nog explained it afterward the way the Sylvan explained it to them: a tree cannot bear to be girdled, and a company standing round him is a ring of axes.\n\nThe second attempt went down that same spring, a hundred and forty strong, led by Orlaith of Tir na Nog with Sylvan songs in her company's ears and a party standing on each of the two places. The four guardians fell. The Root woke a little after the last of them fell, and told the realm he was eternal and that it and its kind would die. Then he did a thing nobody had foreseen. As he rose, a second body rose with him, a full trunk of root and stone with its own life, and both of them were him. The Sylvan were not surprised. Cut a root, Lisín said, and the tree grows another trunk.\n\nOrlaith's hundred and forty cut both. When each was half cut through it struck back with a great spell, and that is where most of the dead fell. The Sylvan of Domnann sing the hundred and forty's names still, and the springs there ran sweet for a month afterward."
+    },
+    {
+      "title": "The Root Grows Careless",
+      "text": "The Root has changed in the seasons since Orlaith, and the wardens of Domnann, who keep a tally of every company that goes down, have written the changes down. In the first years the four woke only when a stranger set foot on one exact stone at the head of the bridge, which the Sylvan called the doorstep; a Connacht company of two hundred and fifty once waited at the bridge for most of an evening in the fourth spring without any of them touching it, and the voices never spoke. Now the voices speak the moment anyone sets foot on the bridge at all. The wardens say the Root has grown less particular. Lisín says he has grown hungrier.\n\nHis servants have changed with him. The Earthmenders once mended one another as well as the stone, so that a mender cut down stood whole again a breath later; now they mend only the guardian of stone, and since the companies of the realm walked past them once too often to strike at the stone, they have begun to strike back. The fire guardian's trail burns lower than it did. The vortices over the falls, which nothing could touch in the first years, now take a blade like any other spray. And the Root himself no longer cares where anyone stands beneath him: the two places by the falls, the girdling, the roots that flung men across the sanctum and the wall of water have all gone out of him. What remains is plainer and no kinder: two trunks with a full life each, and a great spell from each when it is half cut through.\n\nThe Sylvan argue why, as they argue everything about him. The wardens say the Root is weaker, worn by every company that has cut him since Orlaith. Lisín says he has learned that strangers who stand where they please die just as surely as strangers who stand where he allows. The oldest Sylvan say only that a tree which stops caring who stands under it has decided to fall on somebody."
+    },
+    {
+      "title": "What the Root Wants",
+      "text": "The Sylvan have argued it for an age. Some say he wants the isle back, every forest that pushed him out turned to his sour wood. Some say he wants only to sleep, and that his halls full of servants are the dreams of a sleeper who does not want to be woken; the eyes that open in the walls of Galladoria over a stranger's head, look, and close, are the proof they offer, since an eye that only looks is an eye that is not yet awake. The oldest say both, and that the anger keeps him from rest.\n\nWhat happens if he wins is easier to say, because it is already happening slowly. Every season the rot climbs a little higher: trees sicken in World's End, springs in Domnann go sour, and Sylvan who drink from them begin to change, as Xaga changed, as the four on Vigilant Rock changed. The Sylvan measure the realm's friendship by whether it keeps going down. And there is a new fear on the isle. Under Balor's tower in the Vale, Queen Qunilaria's brood has dug far enough to break into something soft and old that smells of sap. The Sylvan believe the Fomorians' diggers are close to the Root's own roots. Nobody on Hy Brasil has ever thought about what happens when the eye in the tower and the Root in the hollow meet, and nobody wants to be the first.\n\nAt World's End, Elro still keeps the edge. The Sylvan say he groans whenever the Root is cut, as an old tree groans in a high wind, and that when he finally falls the Long Pushing will be over, one way or the other."
+    }
+  ]
+}

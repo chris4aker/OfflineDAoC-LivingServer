@@ -1,0 +1,128 @@
+{
+  "id": "hamar",
+  "name": "Hamar",
+  "catalogKey": "dodens-gruva/hamar",
+  "locationId": "dodens-gruva",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "dodens-gruva-bound"
+  ],
+  "related": [
+    {
+      "id": "aros-the-spiritmaster",
+      "relation": "who read his name first on the last tally"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Hamar is a level-61 named with 30,000 health in Dodens Gruva. When he is first fought, the snow vendo within 1,000 of him join in against a nearby real player (GameBots are not set on); otherwise he has no scripted mechanic.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/Hamar.cs"
+    },
+    {
+      "text": "Old Norse hamarr means hammer, and also a crag or rock face (to verify).",
+      "provenance": "original",
+      "source": "Old Norse glossary, to verify"
+    },
+    {
+      "text": "The sample tally slate of the lore inventory names Hamar among the shift that went down to the cold seam.",
+      "provenance": "original",
+      "source": "LORE-INVENTORY sample 3 (Living Server writing)"
+    }
+  ],
+  "story": "Hamar was the foreman of the face in Jarl Ormarr's mine, and his name is the first on the last tally. Hammer, the name means in the old tongue, or the crag a hammer is for, and he was both: a big quiet man who had worked the Jamtland mines since he was a boy, never argued with a jarl or a runecarver, and dug where he was told. In the hard winters he fed the snow vendo who came down off the high passes, setting out the shift's crusts at the face where the cold came in, and they took him for one of their own and would let no one near him.\n\nWhen the picks broke through the cold seam and the voices called, the shift dropped its picks and walked toward them, and Hamar did not, because nobody had told him the shift was over. He died swinging, and Aros bound him at the face with his pick in his hands. He is still there. The snow vendo are still there too, the grandchildren of the ones he fed, sleeping in the side-caves by the face, and they have not changed their minds about the foreman: anyone who lays a hand on Hamar finds them at his side.\n\nHe has no craft but work and does not need one. He hits like a man who has swung a pick ten thousand days, and he wants only for the living to get out of the way of the rock. The other dead step aside for him. The steadings sing that if anyone ever tells him the shift is over, the mine will fall quiet at last, because he is the one the others are waiting for; and the companies that have killed him have all heard his last words, which are a question.",
+  "chapters": [
+    {
+      "title": "The Boy at the Face",
+      "text": "Hamar went into the Jamtland mines at nine, the steadings say, which was the age a miner's son went down in those days, carrying the lamp for his father on the old copper diggings below Hlidskialf. He was big for nine and bigger at twenty, and by thirty he had worked every mine on the frontier and been foreman of three, and he had never once been heard to argue with anyone. Foremen do not argue, he said, when asked. They dig where they are told.\n\nHis name is the old word hamarr, which means a hammer and also a crag, a face of standing rock, the thing a hammer is for. The steadings say his mother named him for the hammer and the mines renamed him for the rock. He was both, they say. He could not be moved and he could not stop.\n\nOrmarr hired him in the mine's first summer, because Dyggve's lightning could split a hillside but could not follow a seam, and a jarl's mine needs a foreman who can. Hamar followed the Mistress's marks into Jarnhaug for every year the mine was worked. The galleries of Dodens Gruva are hers by the runes and his by the cutting, and the old miners' saying was that the Mistress told the mountain where to open and Hamar made it. He kept a slate of his own, the steadings say, with a mark for every fathom of rock his shift cut, and it was found at the face long after, full on both sides, with the last mark only half made."
+    },
+    {
+      "title": "The Foreman's Second Shift",
+      "text": "In the hard winters the snow vendo came down off the high passes, the hairy white cousins of the vendo of the caverns north of Mularn, starving and howling at the mouth of the mine, and the miners threw stones at them. Hamar did not. He set out the crusts of the shift's bread at the face where the cold came in, and the vendo came into the mine to eat them, one at first and then a family, and by the end of the winter they slept in the side-caves by the face, and would let no one near the foreman.\n\nThe miners called them Hamar's second shift, the one that worked for crusts. They stopped calling it that the day a hauler struck Hamar in a quarrel over a basket, and three vendo had the man down on the gallery floor before anyone else had moved. Hamar hauled them off him and sent the hauler up the ladder and never mentioned it again, and nobody struck the foreman after that. Ormarr heard of it and laughed, and said a foreman who could keep a pack of vendo in a mine could keep anything.\n\nThe snow vendo of Dodens Gruva are the grandchildren of that family. They still sleep in the side-caves by the face, and they still come down off the heights to it in winter, and they have not changed their minds about the foreman. The steadings say a vendo never forgets who fed it. The companies who have gone down to the face say the same thing in their own words: nobody lays a hand on Hamar alone."
+    },
+    {
+      "title": "Nobody Said the Shift Was Over",
+      "text": "He was at the face when the picks went through the cold seam. The hewers who lived long enough to cut their names on a slate say the voices came up through the hole in three tongues, and that the men around Hamar put down their picks one by one and walked toward the dark, as if their names had been called at the end of a day. Hamar did not. Nobody had told him the shift was over. He kept swinging.\n\nHe died swinging, in the cold that came up through the seam, and when Aros came down the ladder with his slate and bound the shift, he found Hamar at the face with his pick in his hands and bound him there. The others he had to turn back from the stair. Hamar he only had to leave where he was. The gothar of Jordheim say he is the one soul in the mine Aros did not have to take from the calling, because the calling never had him, and that this is why the other dead step aside for him in the galleries: he is the only one of them who never answered.\n\nThe vendo stayed with him. They were in the side-caves when the seam broke, the steadings say, and the cold that drove the wolves half-dead and froze the moribund into the walls did nothing to them, because they were born to it. They came out when the picks started again and found the foreman back at the face, and settled down beside him as if nothing had changed. For them, the steadings say, nothing had."
+    },
+    {
+      "title": "The Question",
+      "text": "He is still at the face. He has no craft but work, and he does not need one; he hits like a man who has swung a pick for ten thousand days, and he has a great deal of strength left, and what he wants is for the living to get out of the way of the rock. Companies who have gone down to him say he does not seem to know they are there until they are in his way, and then he clears them as he would clear a fall of stone.\n\nThe steadings have a song about him that they still sing at the end of a long day, though there are no mines on the old frontier any more: Hamar at the face, the hill fell in and Hamar stayed in place. At the end of it one of the singers says, quietly, shift's over, Hamar, and they all go home. The miners say the mine is quiet for a breath when they sing it, and that if anyone ever says it to him at the face and he hears it, the mine will fall quiet for good, because he is the one the others are waiting for.\n\nNobody has managed it. The companies who have killed him say he goes down asking, and that his last words are always the same, and always a question: shift's over? The skalds say it is the only question Hamar has ever asked anyone, and that nobody has yet been able to answer him yes and mean it, because in a season he is back at the face, swinging, and the vendo are asleep beside him."
+    }
+  ],
+  "legend": "Hamar is a plain fight with one catch: the snow vendo who sleep by the face all come when you hit him, so clear them first or be ready for a crowd. After that it's lots of health and hard hits, and a good group grinds him down. Some people call him the warm-up for the rest of the mine. Some people call him the only honest thing in it. Fight him at the face; he doesn't wander. There's a superstition that telling him the shift is over before you pull makes the fight easier. It doesn't, but people say it anyway. He's the first of the mine's named most groups reach, and a good test: if your group can't hold Hamar, it can't hold the jarl.",
+  "yells": {
+    "aggro": [
+      "Out of the way. The face needs cutting.",
+      "Nobody said the shift was over.",
+      "Pick up a pick or get out."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Shift's not done. Shift's never done."
+      }
+    ],
+    "death": [
+      "End... of shift...",
+      "Shift's... over?"
+    ],
+    "slay": [
+      "Clear the rubble.",
+      "Back to work.",
+      "Rubble."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A pick rings against the rock face. Steady. Endless.",
+      "A big dead man swings a pick at the rock face.",
+      "White vendo sleep in the side-caves by the face."
+    ],
+    "realmFirstKill": "Hamar the foreman's shift is over at last.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hamar keeps working. The shift is not over."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "clear the snow vendo around hamar first or they all come with him",
+      "hamar: he doesnt move from the face, but the snow vendo near him all come when you hit him",
+      "tell him the shift's over before you pull, for luck",
+      "one group is fine"
+    ],
+    "aftermathWin": [
+      "hamar down. shift over [lol|rip]",
+      "shift over, hamar",
+      "the foreman's done. finally",
+      "hamar's done his last shift"
+    ],
+    "aftermathLoss": [
+      "he hits harder than he looks",
+      "he hits like he's been swinging for ten thousand days",
+      "someone pulled a phantom with him",
+      "the shift added and we wiped",
+      "the snow vendo came in with hamar and we werent ready"
+    ],
+    "rumour": [
+      "the foreman of the dead shift is still swinging at the rock face down there",
+      "if someone ever tells hamar the shift is over the mine goes quiet, the miners say",
+      "hamar didnt walk to the voices. nobody told him the shift was over",
+      "hamar was the foreman. the others still step aside for him",
+      "hamar fed the snow vendo when he was alive. they still guard him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hamar",
+    "text": "First name on the last tally of the mine: the foreman of the shift that went down to the cold seam. He did not walk to the voices, because nobody told him the shift was over. He is still at the face."
+  },
+  "bookPage": "From a song the Jamtland miners still sing, though there are no mines on the old frontier any more. Hamar the foreman, Hamar at the face, the hill fell in and Hamar stayed in place. The voices called and the shift went down, Hamar kept swinging and never turned round. Who fed the vendo when the winter was cold? Hamar the foreman, and the vendo are old. Who will tell him the shift is done? Not the jarl, not the thane, not anyone. The miners sing it at the end of a long day, and then one of them says, quietly, shift's over, Hamar, and they all go home. The mine is quiet for a breath.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} ended Hamar's last shift in {minutes} minutes.",
+    "loss": "Hamar kept working; {raidLeader}'s party from {realm} did not, after {minutes} minutes."
+  }
+}

@@ -25,6 +25,8 @@ namespace DOL.GS
 
         private bool ExecuteBattleground(BotBrain brain, GameBot bot)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerBattleground); // AI_PROFILE: measures only
+            _battlegroundRallyHold = null;
             BattlegroundBrackets.Bracket bracket = BattlegroundBrackets.ForLevel(bot.Level);
             if (bracket == null)
             {
@@ -82,6 +84,24 @@ namespace DOL.GS
                     SetBattlegroundStatus(bot, bracket, "Gathering for the assault", $"{central.Name}: {gathered}");
                     return true;
                 }
+                GameKeepGuard lord = central?.Guards.Values.FirstOrDefault(guard => guard is GuardLord && guard.IsAlive);
+                bool nearLord = lord != null && lord.CurrentRegionID == bot.CurrentRegionID && bot.IsWithinRadius(lord, BattlegroundLordReach);
+                // Away from the lord (a new life after a release, or chased out) the bot comes in through a gate again. The
+                // old reset sat inside the near-lord branch where it could never be true, so a bot that once passed the gate
+                // walked straight at the lord ever after (playtest 2026-11-04: 12 of the 14 "lord" storm samples stood
+                // 1,100-2,900 from the gate, outside the walls).
+                _battlegroundGatePassed = KeepsGatePassed(_battlegroundGatePassed, nearLord, _battlegroundGateKeep == central.KeepID);
+                _battlegroundGateKeep = central.KeepID;
+                // The lord is exposed: the realm rallies inside the breach and goes up together (AutonomousBattlegroundKeepRally).
+                AutonomousBattlegroundKeepRally.Order rally = nearLord && lord is GuardLord { ShieldedFromBots: false }
+                    ? AutonomousBattlegroundKeepRally.Decide(bot, bracket, central, lord)
+                    : default;
+                _battlegroundRallyHold = rally.Hold ? rally.Point : null;
+                // Going up from the rally (inside the breach): straight for the lord, not back out to the nearest gate.
+                if (rally.Step == AutonomousBattlegroundKeepRally.Step.Storm &&
+                    Vector3.DistanceSquared(new(bot.X, bot.Y, bot.Z), rally.Point) <=
+                    AutonomousBattlegroundKeepRally.RallyRadius * AutonomousBattlegroundKeepRally.RallyRadius)
+                    _battlegroundGatePassed = true;
                 GameLiving target = FindRvrTarget(bot) ?? FindReachableEnemyDoor(bot, central);
                 if (target != null)
                 {
@@ -98,10 +118,9 @@ namespace DOL.GS
                 // guards died for four hours while every lord stayed at 100% with no bot beside him; the assault walked to the
                 // keep's centre and only took targets in reach there, and the lord stands upstairs. A closed gate on the way
                 // is battered above (FindReachableEnemyDoor) as soon as the bot stands at it.
-                GameKeepGuard lord = central.Guards.Values.FirstOrDefault(guard => guard is GuardLord && guard.IsAlive);
-                if (lord != null && lord.CurrentRegionID == bot.CurrentRegionID && bot.IsWithinRadius(lord, BattlegroundLordReach))
+                if (nearLord)
                 {
-                    if (bot.IsWithinRadius(lord, BattlegroundLordStrike) && GameServer.ServerRules.IsAllowedToAttack(bot, lord, true))
+                    if (!rally.Hold && bot.IsWithinRadius(lord, BattlegroundLordStrike) && GameServer.ServerRules.IsAllowedToAttack(bot, lord, true))
                     {
                         bot.StopMovingOnPath();
                         bot.StopMoving();
@@ -113,12 +132,6 @@ namespace DOL.GS
                     }
                     // In through a broken main gate, as players went: run 19 (2026-10-17) showed the stormers standing at a
                     // closed postern (never batterable) because the shortest path to the lord runs through it.
-                    Vector3 here = new(bot.X, bot.Y, bot.Z);
-                    if (_battlegroundGateKeep != central.KeepID || !bot.IsWithinRadius(lord, BattlegroundLordReach))
-                    {
-                        _battlegroundGateKeep = central.KeepID;
-                        _battlegroundGatePassed = false;
-                    }
                     GameKeepDoor gate = central.Doors.Values
                         .Where(door => door.IsAttackableDoor && !door.IsPostern && (!door.IsAlive || door.State == eDoorState.Open))
                         .OrderBy(door => bot.GetDistanceTo(door)).FirstOrDefault();
@@ -135,6 +148,8 @@ namespace DOL.GS
                             return true;
                         }
                     }
+                    if (rally.Hold && HoldBattlegroundRally(bot, bracket, central, lord, gate, rally))
+                        return true;
                     if (gate != null && !_battlegroundGatePassed)
                     {
                         if (bot.IsWithinRadius(gate, BattlegroundGateReached))
@@ -188,6 +203,55 @@ namespace DOL.GS
             return RoamBattleground(bot, bracket, central);
         }
 
+        /// <summary>
+        /// Walks to the realm's rally inside the breach and holds there (fighting what comes, through the normal combat turn)
+        /// until the rally goes up. False only when neither the rally point nor the gate can be walked to.
+        /// </summary>
+        private bool HoldBattlegroundRally(GameBot bot, BattlegroundBrackets.Bracket bracket, AbstractGameKeep central,
+            GameKeepGuard lord, GameKeepDoor gate, AutonomousBattlegroundKeepRally.Order rally)
+        {
+            string detail = $"{central.Name}: {rally.Progress}";
+            if (Vector3.DistanceSquared(new(bot.X, bot.Y, bot.Z), rally.Point) <=
+                AutonomousBattlegroundKeepRally.RallyHoldRadius * AutonomousBattlegroundKeepRally.RallyHoldRadius)
+            {
+                // The rally stands inside the breach: whoever reached it has passed the gate.
+                _battlegroundGatePassed = true;
+                bot.StopMovingOnPath();
+                bot.StopMoving();
+                SetBattlegroundStatus(bot, bracket, "Rallying for the keep lord", detail, lord.Name);
+                return true;
+            }
+            if (gate != null && bot.IsWithinRadius(gate, BattlegroundGateReached))
+                _battlegroundGatePassed = true;
+            if (IssuePath(bot, rally.Point, retargetWhileMoving: true))
+            {
+                TraceStorm(this, bot, central, lord, gate, "rally");
+                SetBattlegroundStatus(bot, bracket, "Rallying for the keep lord", detail, lord.Name);
+                return true;
+            }
+            if (gate != null && !_battlegroundGatePassed && IssuePath(bot, new Vector3(gate.X, gate.Y, gate.Z), retargetWhileMoving: true))
+            {
+                TraceStorm(this, bot, central, lord, gate, "rally-via-gate");
+                SetBattlegroundStatus(bot, bracket, "Rallying for the keep lord", detail, lord.Name);
+                return true;
+            }
+            TraceStorm(this, bot, central, lord, gate, "rally-path-refused");
+            return false;
+        }
+
+        /// <summary>Roam points near an enemy keep stay this far (less the 900 random spread) from its centre.</summary>
+        public const float BattlegroundRoamKeepDistance = 2_500f;
+
+        /// <summary>The roam anchor by an enemy-held keep: outside its walls, on the side of the bot's own arrival. Pure.</summary>
+        public static Vector3 BattlegroundRoamAnchorOutside(Vector3 keep, Vector3 home)
+        {
+            Vector2 toward = new(home.X - keep.X, home.Y - keep.Y);
+            float length = toward.Length();
+            Vector2 direction = length < 1 ? Vector2.UnitX : toward / length;
+            float distance = length < 1 ? BattlegroundRoamKeepDistance : Math.Min(BattlegroundRoamKeepDistance, length);
+            return new Vector3(keep.X + direction.X * distance, keep.Y + direction.Y * distance, keep.Z);
+        }
+
         private bool RoamBattleground(GameBot bot, BattlegroundBrackets.Bracket bracket, AbstractGameKeep central)
         {
             long now = GameLoop.GameLoopTime;
@@ -197,11 +261,19 @@ namespace DOL.GS
             {
                 // Roam between the field's landmarks: the central keep and the other realms' portal approaches.
                 eRealm[] others = [eRealm.Albion, eRealm.Midgard, eRealm.Hibernia];
+                // An enemy-held keep is roamed around, outside its walls. Playtest 2026-11-04: every
+                // AUTONOMOUS_ROUTE_RECOVERY of the Thidranki fight was a roamer sent to a random point within 1,050 of
+                // the shut keep's centre (courtyard and wall tops), which has no path while the gates stand.
+                GameLocation home = BattlegroundBrackets.BotArrival(bracket, bot.Realm);
+                Vector3 keepAnchor = central == null ? current
+                    : central.Realm != bot.Realm && home != null
+                        ? BattlegroundRoamAnchorOutside(new(central.X, central.Y, central.Z), new(home.X, home.Y, home.Z))
+                        : new Vector3(central.X, central.Y, central.Z);
                 Vector3[] anchors = others.Where(realm => realm != bot.Realm)
                     .Select(realm => BattlegroundBrackets.BotArrival(bracket, realm))
                     .Select(entry => Vector3.Lerp(new(entry.X, entry.Y, entry.Z),
                         central != null ? new(central.X, central.Y, central.Z) : new(entry.X, entry.Y, entry.Z), 0.6f))
-                    .Append(central != null ? new Vector3(central.X, central.Y, central.Z) : current)
+                    .Append(keepAnchor)
                     .ToArray();
                 Vector3 anchor = anchors[Random.Shared.Next(anchors.Length)];
                 Zone zone = bot.CurrentRegion?.GetZone((int)anchor.X, (int)anchor.Y) ?? bot.CurrentZone;
@@ -248,7 +320,14 @@ namespace DOL.GS
         public const int BattlegroundGateReached = 250;
         private int _battlegroundGateKeep;
         private bool _battlegroundGatePassed;
+        // Set while this bot holds at its realm's rally (AutonomousBattlegroundKeepRally): it fights what comes to the rally,
+        // not the lord and not guards elsewhere on the walls.
+        private Vector3? _battlegroundRallyHold;
+        public const int BattlegroundRallyEngageRadius = 1_500;
         public const int BattlegroundLordStrike = 900;
+
+        /// <summary>A stormer keeps "through the gate" only while it stays by the same keep's lord. Pure.</summary>
+        public static bool KeepsGatePassed(bool passed, bool nearLord, bool sameKeep) => passed && nearLord && sameKeep;
 
         private static string Holder(AbstractGameKeep keep) =>
             keep.Realm == eRealm.None ? "its neutral guards" : GlobalConstants.RealmToName(keep.Realm);
@@ -363,8 +442,20 @@ namespace DOL.GS
         {
             if (bot.PersistentRecord != null)
                 bot.PersistentRecord.ObjectivePhase = activity;
-            SetStatus(bot, activity, $"Battleground: {bracket.Name} (levels {bracket.MinLevel}-{bracket.MaxLevel})", detail,
-                target, bracket.Name);
+            SetStatus(bot, activity, BattlegroundGoal(bracket), detail, target, bracket.Name);
         }
+
+        public static string BattlegroundGoal(BattlegroundBrackets.Bracket bracket) =>
+            $"Battleground: {bracket.Name} (levels {bracket.MinLevel}-{bracket.MaxLevel})";
+
+        /// <summary>
+        /// The goal a fight is reported under. A battleground bot's fights kept the PvE "Find a reachable level-appropriate
+        /// XP camp" (GoalText with no camp): 647 of the 654 Thidranki deaths of 2026-11-04 were logged under it.
+        /// </summary>
+        private string CombatGoalText(GameBot bot) =>
+            _groupDirective?.IsDynamic != true && AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground) &&
+            BattlegroundBrackets.ForLevel(bot.Level) is { } bracket
+                ? BattlegroundGoal(bracket)
+                : GoalText();
     }
 }

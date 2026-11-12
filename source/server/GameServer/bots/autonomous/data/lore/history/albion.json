@@ -1,0 +1,870 @@
+{
+  "realm": "Albion",
+  "id": "albion",
+  "summary": "Albion's ages from the first stones to the living present, and the powers whose works are its dungeons.",
+  "eras": [
+    {
+      "id": "alb-first-stones",
+      "order": 1,
+      "name": "The First Stones (before Rome)",
+      "summary": "Before any king, the land that would be Albion belonged to older things and older peoples. The Keltoi kept their thresholds under the forests and raised stones over their dead; the hall-folk of the isles kept Krondon under its hill and wrote their words in an old tongue. The great powers of the land were already asleep in it: the stone dragon under Dartmoor, the two-headed dragon under the heart of Avalon, the afanc in the Bearded Lake, the hag of winter in the west. Arawn already ruled the dead beyond the water, and his turning gaol already stood on the road to Annwn.",
+      "events": [
+        {
+          "text": "Caer Sidi is Arawn's gaol on the road to Annwn; in the Welsh poem Preiddeu Annwfn it is an otherworld fortress.",
+          "provenance": "myth",
+          "source": "https://en.wikipedia.org/wiki/Caer_Sidi"
+        },
+        {
+          "text": "The Keltoi use their fogou for initiation and rites, as a threshold between worlds.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/zones.html?czone=24"
+        },
+        {
+          "text": "The stone circle and its barrows predate every named king in Living Server lore.",
+          "provenance": "original",
+          "source": "LORE"
+        }
+      ],
+      "places": [
+        "keltoi-fogou",
+        "stonehenge-barrows",
+        "krondon",
+        "dartmoor",
+        "crystal-cave",
+        "llyn-barfog",
+        "caer-sidi",
+        "salisbury-plains",
+        "campacorentin-forest"
+      ],
+      "bosses": [
+        "golestandt",
+        "xanxicar",
+        "legendary-afanc",
+        "cailleach-uragaig",
+        "scurceol-hyrde",
+        "marsh-lord",
+        "kalnraw",
+        "tusker",
+        "agidad",
+        "apocalypse",
+        "bane-of-hope",
+        "bellum",
+        "borimo",
+        "brannoc",
+        "crypt-lord",
+        "fames",
+        "fates-chosen",
+        "funus",
+        "host",
+        "kez",
+        "kings-wight",
+        "lich-lord-ilron",
+        "lich-lord-sanguis",
+        "lord-sanguis",
+        "moran-the-mighty",
+        "morbus",
+        "silencer",
+        "skeletal-sacristan",
+        "soul-reckoner",
+        "spectral-provisioner",
+        "tegbuk",
+        "trahern",
+        "warlord-dorinakka"
+      ]
+    },
+    {
+      "id": "alb-the-province",
+      "order": 2,
+      "name": "The Roman Province (the centuries of Rome)",
+      "summary": "Rome came, and built forts and roads and temples under the forts. Its soldiers worshipped Mithras underground and were buried near him to keep their oaths. A legion marched into Cornwall with an emperor no chronicle records, and is still there. Rome buried its dead in every isle of Avalon, which is why, centuries later, Morgana had an army waiting in the soil. The Cailleach of Lyonesse learned to call Mithras' torches in this age.",
+      "events": [
+        {
+          "text": "Mithras was worshipped by soldiers in sunken cave-temples, in seven grades of initiation.",
+          "provenance": "myth",
+          "source": "https://solarspell-dls.sfis.asu.edu/mea/wikipedia/wp/m/Mithraic_mysteries.htm"
+        },
+        {
+          "text": "A Roman legion and an emperor no one can name lie in the catacombs of Cardova; Mythic's quest names him Seleucus.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/quests.html?cquest=508"
+        },
+        {
+          "text": "Morgana raised the undead remains of Roman soldiers to serve in her army.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+        }
+      ],
+      "places": [
+        "tomb-of-mithra",
+        "catacombs-of-cardova",
+        "lyonesse",
+        "albion-shrouded-isles",
+        "cornwall",
+        "hadrians-wall"
+      ],
+      "bosses": [
+        "cailleach-uragaig",
+        "lord-sanguis",
+        "lich-lord-sanguis",
+        "amminus-pilus",
+        "emperor-seleucus",
+        "forgotten-emperor",
+        "priestess-of-purity",
+        "taras-princep-praetorii"
+      ]
+    },
+    {
+      "id": "alb-the-old-kingdoms",
+      "order": 3,
+      "name": "The Old Kingdoms (Uther and Arthur)",
+      "summary": "Rome left, and kings rose. Uther took the throne and was buried, the chronicles say, inside the ring of stones; in his day the Roman lord Articus died on Dartmoor with all his house, and the Duke of Cornwall's son came back alone and would not say what he had seen. Arthur was king in Camelot. He chained the afanc of Llyn Barfog, sailed Prydwen to Caer Sidi and came home with seven, and fell at Camlann to Mordred. Merlin taught in the colleges of Avalon, and so did his pupil Morgana, who wanted her brother's throne.",
+      "events": [
+        {
+          "text": "Arthur's horse dragged the afanc from Llyn Barfog (Welsh folklore).",
+          "provenance": "myth",
+          "source": "https://folklorethursday.com/legends/folklore-legends-welsh-lakes-llyn-barfog/"
+        },
+        {
+          "text": "Morgana was Merlin's honoured apprentice before her corruption.",
+          "provenance": "mythic",
+          "source": "https://www.camelotherald.com/node/464"
+        },
+        {
+          "text": "Albion bot chat tells of a Roman lord whose household vanished on Dartmoor in Uther's day, and of Sir Arward's thirty knights.",
+          "provenance": "original",
+          "source": "source/server/GameServer/bots/autonomous/data/chat/gen_alb_threads.lines"
+        },
+        {
+          "text": "In Uther's time Articus, whose father was a man of rank in Rome, settled on Dartmoor to escape Rome's politics; about ten years later the Duke of Cornwall's son found him and all his household dead, and came home alone.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+        }
+      ],
+      "places": [
+        "dartmoor",
+        "llyn-barfog",
+        "stonehenge-barrows",
+        "avalon-city",
+        "forest-sauvage",
+        "caer-sidi",
+        "camelot-hills",
+        "avalon-marsh"
+      ],
+      "bosses": [
+        "wrath-of-mordred",
+        "green-knight",
+        "golestandt",
+        "morgana",
+        "rob-ria",
+        "legendary-afanc",
+        "king-of-the-barfog-hills",
+        "teazanodwc",
+        "mouth",
+        "fester",
+        "cauld-lad",
+        "llyn-cythraul",
+        "shade-of-ambrosius-aurelianus",
+        "shade-of-uther-pendragon",
+        "wizard-lichas"
+      ]
+    },
+    {
+      "id": "alb-the-dark-age",
+      "order": 4,
+      "name": "The Dark Age (after Arthur: the realm wars)",
+      "summary": "After Camlann the three realms went to war. Albion's frontier ran through Forest Sauvage and the Pennine hills, and under the Pennines a road ran down to the Summoner's Hall, the one place where all three realms met; Albion kept a watch at its end, and the watch was corrupted. Under all three realms the demon court of Darkness Falls opened its doors to whichever realm held the frontier. Goblins took the mines, the Church fought heresy in Lyonesse, and the old powers stirred.",
+      "events": [
+        {
+          "text": "Passage of Conflict replaced three old dungeons that led to the Summoner's Hall from the old frontier.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/zones.html?czone=156"
+        },
+        {
+          "text": "Darkness Falls opened in patch 1.49 (April 2002); its door opens for the realm holding the most keeps.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/zones.html?czone=62"
+        },
+        {
+          "text": "Goblins of the Black Mountains seized Tepok's Mine from the townsfolk.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/zones.html?czone=26"
+        },
+        {
+          "text": "Friars belong to an order called the Brotherhood, founded by churchmen who thought their skills better used on the battlefield; it serves Camelot's army rather than the Church of Albion; that is why friars count among the Defenders of Albion. They follow the king's orders, though their final loyalty is to the Church.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1309.shtml (Camelot Herald, 2004-01-23, Grab Bag; Wayback capture 2005-11-28)"
+        }
+      ],
+      "places": [
+        "hall-of-the-corrupt",
+        "darkness-falls",
+        "tepoks-mine",
+        "lyonesse",
+        "forest-sauvage",
+        "pennine-mountains",
+        "black-mountains-south",
+        "black-mountains-north",
+        "snowdonia"
+      ],
+      "bosses": [
+        "aidon-the-archwizard",
+        "lord-gildas",
+        "legion",
+        "sister-blythe",
+        "draco-magnificens",
+        "celain-elrich",
+        "angau",
+        "belgrik",
+        "blacktooth",
+        "cailleach-uragaig",
+        "captain-atwell",
+        "captain-bardalph",
+        "captain-heathyr",
+        "cirfans",
+        "dathmul",
+        "delfina",
+        "director-botok",
+        "ellyll-seer",
+        "eye-of-arawn",
+        "grunge",
+        "isolationist-courier",
+        "lady-darra",
+        "leorcelis-grant",
+        "lieutenant-elva",
+        "lieutenant-meade",
+        "lieutenant-saxe",
+        "morgana",
+        "morvel-glyne",
+        "nasher",
+        "nogud-the-smasher",
+        "overseer-tepok",
+        "saffron",
+        "sergeant-darryn",
+        "sergeant-eddison",
+        "sergeant-reede",
+        "shaman-saelonna",
+        "snowdon-grim",
+        "soulfear",
+        "treefall",
+        "tuder-glyne",
+        "tylwyth-teg-ranger"
+      ]
+    },
+    {
+      "id": "alb-the-shrouded-isles",
+      "order": 5,
+      "name": "Morgana's War (the coming of the Shrouded Isles)",
+      "summary": "Morgana trapped Merlin in a crystal where the ley lines meet, drank his power, and came back to Avalon at the head of the drakoran. The colleges burned; the dragon-men occupied the city in five clans; under it Xanxicar woke. She raised the Roman dead of the isles and stole souls from Annwn, and Arawn sent his Inconnu to fight beside Albion. The prisoners of Caer Sidi learned that the door of the underworld could open from the wrong side, and rose. The thrawn ogres took Krondon. Albion held the Isle of Glass behind three ring-forts and an earthen wall.",
+      "events": [
+        {
+          "text": "Morgana and the drakoran overran Avalon; Arawn sent the Inconnu to help Albion because she takes his dead.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+        },
+        {
+          "text": "Morgana trapped Merlin in a crystal in the cave now called the Dark Spire.",
+          "provenance": "mythic",
+          "source": "https://www.camelotherald.com/node/464"
+        },
+        {
+          "text": "Three ring-forts on an earthen border guard the Isle of Glass.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/zones.html?czone=77"
+        },
+        {
+          "text": "The thrawn ogres of Krondon have counted Albion an enemy since misunderstandings from the days of the drakoran invasion; they were once allies, and the half ogres come of Avalonian and ogre marriages from those days.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
+        }
+      ],
+      "places": [
+        "avalon-city",
+        "crystal-cave",
+        "caer-sidi",
+        "krondon",
+        "albion-shrouded-isles",
+        "isle-of-glass",
+        "avalon-isle",
+        "aldland",
+        "dales-of-devwy",
+        "gwyddneau",
+        "caldey",
+        "inishail-island"
+      ],
+      "bosses": [
+        "duraek-the-empowered",
+        "xanxicar",
+        "apocalypse",
+        "orylle",
+        "morgana",
+        "adelon",
+        "amphiptere",
+        "arvida",
+        "bayn",
+        "beath",
+        "beonoc-dyer",
+        "beran-the-supply-master",
+        "bevvny",
+        "cabalist-meical",
+        "chieftain-toca",
+        "clan-matron",
+        "cnieda",
+        "coliath",
+        "crypt-guardian",
+        "deben-se-gecynde",
+        "devmer",
+        "draargus-the-mighty",
+        "drihten-elreden",
+        "durval",
+        "eralyne",
+        "eyes-of-the-crafter",
+        "fuladl",
+        "fulafeallan",
+        "gorvos",
+        "heavy-metal-mark-i",
+        "huidelon-cariston",
+        "jehrog-se-bysen",
+        "kedyson",
+        "kelsanor",
+        "kovos",
+        "krevo-ricik",
+        "larionne",
+        "lord-caddug",
+        "lurfos-the-herald",
+        "malefact",
+        "morgus-urgalorg",
+        "nalsor",
+        "necromantic-apprentice",
+        "nyaegha",
+        "orshom-brong",
+        "palifan",
+        "pazia",
+        "pester",
+        "prototype-guard",
+        "qanris-duros",
+        "risnir-cruss",
+        "rose",
+        "sarcondina",
+        "scurceol-hyrde",
+        "spirit-of-lord-emthoro",
+        "srral-dulss",
+        "syssro-the-ruthless",
+        "the-dyer-household",
+        "the-grym-household",
+        "the-hoges-household",
+        "the-lindon-household",
+        "the-parmenter-household",
+        "the-swett-household",
+        "the-tinctor-household",
+        "thousandeyes",
+        "throttler",
+        "torvarg",
+        "tower-guardian",
+        "tower-keeper",
+        "tristram-adamson",
+        "tyian",
+        "ulor-se-bysen",
+        "valnir-mordeth",
+        "veena",
+        "veraerius-the-brave",
+        "vortanos",
+        "waleron-douglas",
+        "wenoiak-the-enlightened"
+      ]
+    },
+    {
+      "id": "alb-the-present",
+      "order": 6,
+      "name": "The Living Present (now)",
+      "summary": "Now Albion's guilds raid the places the old ages left behind: the turning gaol, the ogre hall, the burned city and its dragon, the stone dragon's moor, the demon court below. The Herald records each realm's first kill. The war on the isles is not won; Morgana has sworn to return; the door below changes hands with the keeps.",
+      "events": [
+        {
+          "text": "Raids, first kills and the Herald's records are Living Server features.",
+          "provenance": "game",
+          "source": "source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs"
+        },
+        {
+          "text": "Sir Arward and thirty of his best fighters went deep into Dartmoor; only his scribe's singed journal came back, falling from the sky before Prydwen Keep with one legible word, Golestandt.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+        },
+        {
+          "text": "A heretic begins as an acolyte of the Church of Albion and renounces that faith to worship Arawn, which is what makes him a heretic in the Church's eyes.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1717.shtml (Camelot Herald, 2004-10-04; Wayback capture 2005-02-08)"
+        },
+        {
+          "text": "In each realm the leaders and chosen others received the same vision of a strange land where heroes were tried against fantastic creatures, and a voice promising them power there. Some called it the gods' doing, some magic, some an enemy's trick, but each realm sent scholars and explorers far into the encircling seas; they found the island remnants of Atlantis and the Halls of Heroes, and learned that the other two realms had been invited too. Albion's ships sail from Caer Gothwaite, and the half ogres joined Albion in the same years.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
+        }
+      ],
+      "places": [
+        "camelot",
+        "albion-housing"
+      ],
+      "bosses": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "morgana",
+      "name": "Morgana and her dead",
+      "summary": "Arthur's sister and Merlin's pupil, who steals the dead to fill her armies: the Roman legions of the isles, the drakoran alliance, the demons Bechard and Silcharde.",
+      "places": [
+        "lyonesse",
+        "albion-shrouded-isles",
+        "avalon-city",
+        "campacorentin-forest",
+        "black-mountains-north",
+        "isle-of-glass",
+        "avalon-isle",
+        "dales-of-devwy",
+        "gwyddneau",
+        "caldey",
+        "inishail-island",
+        "caer-sidi",
+        "crystal-cave",
+        "krondon"
+      ],
+      "bosses": [
+        "morgana",
+        "vortanos",
+        "durval",
+        "coliath",
+        "amphiptere",
+        "valnir-mordeth",
+        "sarcondina",
+        "beath",
+        "beonoc-dyer",
+        "cabalist-meical",
+        "cnieda",
+        "crypt-guardian",
+        "devmer",
+        "eralyne",
+        "eyes-of-the-crafter",
+        "gorvos",
+        "kelsanor",
+        "leorcelis-grant",
+        "prototype-guard",
+        "risnir-cruss",
+        "spirit-of-lord-emthoro",
+        "the-hoges-household",
+        "the-lindon-household",
+        "thousandeyes",
+        "tower-guardian",
+        "treefall",
+        "wizard-lichas"
+      ]
+    },
+    {
+      "id": "drakoran",
+      "name": "The drakoran",
+      "summary": "Dragon-men allied with Morgana, said to follow a huge dragon. Five clans (drau'gyn, dry'ak, syhr'phint, vyr'em, wi'voron) occupy Avalon City under five lords; Xanxicar sleeps beneath it.",
+      "places": [
+        "avalon-city",
+        "crystal-cave",
+        "albion-shrouded-isles",
+        "isle-of-glass",
+        "avalon-isle",
+        "aldland",
+        "dales-of-devwy"
+      ],
+      "bosses": [
+        "duraek-the-empowered",
+        "draargus-the-mighty",
+        "syssro-the-ruthless",
+        "veraerius-the-brave",
+        "wenoiak-the-enlightened",
+        "xanxicar",
+        "qanris-duros",
+        "risnir-cruss",
+        "bayn",
+        "beath",
+        "bevvny",
+        "cabalist-meical",
+        "eyes-of-the-crafter",
+        "heavy-metal-mark-i",
+        "kedyson",
+        "kovos",
+        "lord-caddug",
+        "nalsor",
+        "necromantic-apprentice",
+        "pazia",
+        "prototype-guard",
+        "srral-dulss",
+        "the-dyer-household",
+        "the-grym-household",
+        "the-parmenter-household",
+        "the-swett-household",
+        "the-tinctor-household",
+        "throttler",
+        "torvarg",
+        "tower-guardian",
+        "tower-keeper",
+        "tyian"
+      ]
+    },
+    {
+      "id": "arawn",
+      "name": "Arawn, the Inconnu and the keepers of the dead",
+      "summary": "The lord of Annwn, Albion's uneasy ally against Morgana. His gaol Caer Sidi has risen against him; his cult in Lyonesse is heresy to Camelot's Church.",
+      "places": [
+        "caer-sidi",
+        "lyonesse",
+        "llyn-barfog",
+        "black-mountains-north",
+        "snowdonia",
+        "isle-of-glass",
+        "avalon-isle",
+        "dales-of-devwy",
+        "gwyddneau",
+        "caldey",
+        "avalon-city"
+      ],
+      "bosses": [
+        "soul-reckoner",
+        "crypt-lord",
+        "skeletal-sacristan",
+        "spectral-provisioner",
+        "sister-blythe",
+        "celain-elrich",
+        "angau",
+        "apocalypse",
+        "bane-of-hope",
+        "bayn",
+        "bellum",
+        "crypt-guardian",
+        "dathmul",
+        "devmer",
+        "eye-of-arawn",
+        "fames",
+        "fates-chosen",
+        "funus",
+        "gorvos",
+        "kedyson",
+        "kelsanor",
+        "leorcelis-grant",
+        "llyn-cythraul",
+        "lord-caddug",
+        "morbus",
+        "nalsor",
+        "necromantic-apprentice",
+        "nyaegha",
+        "shaman-saelonna",
+        "silencer",
+        "soulfear",
+        "the-dyer-household",
+        "the-grym-household",
+        "the-parmenter-household",
+        "the-swett-household",
+        "the-tinctor-household",
+        "vortanos"
+      ],
+      "text": "Camelot's Church calls a heretic any acolyte of its own who renounces the faith and turns to Arawn."
+    },
+    {
+      "id": "caer-sidi-prisoners",
+      "name": "The prisoners of Caer Sidi",
+      "summary": "The oath-breakers, warlords and undying priests Arawn locked away, who made themselves masters of their own gaol; and above them the four riders and the end of all things.",
+      "places": [
+        "caer-sidi"
+      ],
+      "bosses": [
+        "apocalypse",
+        "fames",
+        "bellum",
+        "morbus",
+        "funus",
+        "lich-lord-ilron",
+        "lord-sanguis",
+        "lich-lord-sanguis",
+        "warlord-dorinakka",
+        "host",
+        "silencer",
+        "bane-of-hope",
+        "fates-chosen",
+        "crypt-lord"
+      ]
+    },
+    {
+      "id": "thrawn-ogres",
+      "name": "The thrawn ogres of Krondon",
+      "summary": "Stubborn, crooked ogres from the deep seams who took the hall of Krondon without burning it and wear its Old English titles; their queen is Orylle.",
+      "places": [
+        "krondon",
+        "aldland"
+      ],
+      "bosses": [
+        "orylle",
+        "orshom-brong",
+        "beran-the-supply-master",
+        "deben-se-gecynde",
+        "drihten-elreden",
+        "krevo-ricik",
+        "lurfos-the-herald",
+        "morgus-urgalorg",
+        "ulor-se-bysen",
+        "jehrog-se-bysen",
+        "malefact"
+      ],
+      "text": "They were Avalon's allies once, before the drakoran came, and the half ogres who fight for Albion are the children of Avalonian and ogre marriages from those years; since the confusion of the drakoran invasion the ogres of Krondon have counted Albion an enemy."
+    },
+    {
+      "id": "krondon-hall-folk",
+      "name": "The hall-folk of Krondon",
+      "summary": "The people of the isles' oldest hall, whose ghosts still drift there sad of mind; their storm-keeper bargained with the ogres; the rot in their drains learned to walk.",
+      "places": [
+        "krondon",
+        "aldland"
+      ],
+      "bosses": [
+        "scurceol-hyrde",
+        "fuladl",
+        "fulafeallan"
+      ]
+    },
+    {
+      "id": "summoners",
+      "name": "The Summoners",
+      "summary": "The Grand Summoner and his summoners, who call the dead of every realm in the hall under the three frontiers (shared id with Midgard and Hibernia). In Albion they reached up the Pennine road and bought Aidon the Archwizard.",
+      "places": [
+        "hall-of-the-corrupt"
+      ],
+      "bosses": [
+        "aidon-the-archwizard"
+      ]
+    },
+    {
+      "id": "pennine-watch",
+      "name": "The Pennine watch",
+      "summary": "Lord Gildas, Lady Darra and the captains, lieutenants and sergeants of Albion's watch on the Summoners' road, dead at their posts and bound to them facing the other way.",
+      "places": [
+        "hall-of-the-corrupt",
+        "pennine-mountains"
+      ],
+      "bosses": [
+        "lord-gildas",
+        "lady-darra",
+        "captain-atwell",
+        "captain-bardalph",
+        "captain-heathyr",
+        "lieutenant-elva",
+        "lieutenant-meade",
+        "lieutenant-saxe",
+        "sergeant-darryn",
+        "sergeant-eddison",
+        "sergeant-reede"
+      ]
+    },
+    {
+      "id": "dark-ones",
+      "name": "The Dark Ones, the court below Darkness Falls",
+      "summary": "The demon kingdom under all three realms, ruled by Legion, ordered by rank from princes to thieving imps; the Behemoth kept on its ledge.",
+      "places": [
+        "darkness-falls",
+        "camelot-hills"
+      ],
+      "bosses": [
+        "legion",
+        "behemoth",
+        "beliathan",
+        "prince-abdin",
+        "prince-asmoien",
+        "prince-baalorien",
+        "princess-nahemah",
+        "high-lord-baelerdoth",
+        "high-lord-baln",
+        "high-lord-oro",
+        "high-lord-saeor"
+      ]
+    },
+    {
+      "id": "realm-of-camelot",
+      "name": "The realm of Camelot",
+      "summary": "The king's city and its offices: the Constable and his drawers of reports, the Prydwen Keep rolls, the Church and its hospices, the Academy, the masters of arms and the quieter trades under the streets. Since Camlann it sends the realm out and counts who comes back.",
+      "places": [
+        "camelot",
+        "forest-sauvage",
+        "camelot-hills",
+        "black-mountains-south",
+        "avalon-marsh",
+        "hadrians-wall",
+        "snowdonia",
+        "isle-of-glass",
+        "dales-of-devwy",
+        "caldey",
+        "albion-housing",
+        "tepoks-mine"
+      ],
+      "bosses": [
+        "adelon",
+        "clan-matron",
+        "huidelon-cariston",
+        "isolationist-courier",
+        "rose",
+        "shade-of-ambrosius-aurelianus",
+        "shade-of-uther-pendragon",
+        "tristram-adamson",
+        "waleron-douglas"
+      ],
+      "text": "The friars are the Brotherhood, churchmen who chose the battlefield: they march with Camelot's army among the Defenders of Albion and follow the king's orders, though their last loyalty is the Church's."
+    },
+    {
+      "id": "old-powers",
+      "name": "The old powers of the land",
+      "summary": "Things older than Albion: the stone dragon and her granite giants, Moran on his hill, the afanc and the lake's door, the hag of winter, the Green Knight and his forest, the beasts of the Barfog hills.",
+      "places": [
+        "dartmoor",
+        "llyn-barfog",
+        "forest-sauvage",
+        "lyonesse",
+        "pennine-mountains",
+        "camelot-hills",
+        "salisbury-plains",
+        "black-mountains-south",
+        "campacorentin-forest",
+        "avalon-marsh",
+        "black-mountains-north",
+        "cornwall",
+        "hadrians-wall",
+        "snowdonia",
+        "inishail-island",
+        "crystal-cave",
+        "stonehenge-barrows"
+      ],
+      "bosses": [
+        "golestandt",
+        "draco-magnificens",
+        "moran-the-mighty",
+        "legendary-afanc",
+        "king-of-the-barfog-hills",
+        "teazanodwc",
+        "mouth",
+        "fester",
+        "cailleach-uragaig",
+        "green-knight",
+        "marsh-lord",
+        "kalnraw",
+        "tusker",
+        "rob-ria",
+        "agidad",
+        "amphiptere",
+        "arvida",
+        "belgrik",
+        "blacktooth",
+        "borimo",
+        "brannoc",
+        "cauld-lad",
+        "chieftain-toca",
+        "cirfans",
+        "cnieda",
+        "dathmul",
+        "delfina",
+        "ellyll-seer",
+        "grunge",
+        "isolationist-courier",
+        "kez",
+        "kings-wight",
+        "larionne",
+        "llyn-cythraul",
+        "morvel-glyne",
+        "nogud-the-smasher",
+        "nyaegha",
+        "palifan",
+        "pester",
+        "priestess-of-purity",
+        "saffron",
+        "sarcondina",
+        "shade-of-ambrosius-aurelianus",
+        "shade-of-uther-pendragon",
+        "soulfear",
+        "tegbuk",
+        "thousandeyes",
+        "trahern",
+        "treefall",
+        "tuder-glyne",
+        "tylwyth-teg-ranger",
+        "veena",
+        "wizard-lichas",
+        "xanxicar"
+      ]
+    },
+    {
+      "id": "stonecrush",
+      "name": "The Stonecrush ogres of Dartmoor",
+      "summary": "Granite-eating ogres out of the Cornish tin workings who dig Dartmoor's western slopes and eat the granite giants; Kez leads the diggers toward the Bed, and a few who would rather trade keep the hill of Grimspound for Albion.",
+      "places": [
+        "dartmoor"
+      ],
+      "bosses": [
+        "brannoc",
+        "kez"
+      ]
+    },
+    {
+      "id": "dead-legions",
+      "name": "The dead legions of Rome",
+      "summary": "The Roman dead who never stood down: Mithras' soldiers keeping their oaths, the legion of Cardova and its emperor, the magistrate Sanguis.",
+      "places": [
+        "tomb-of-mithra",
+        "catacombs-of-cardova",
+        "cornwall",
+        "hadrians-wall"
+      ],
+      "bosses": [
+        "lord-sanguis",
+        "lich-lord-sanguis",
+        "amminus-pilus",
+        "angau",
+        "emperor-seleucus",
+        "forgotten-emperor",
+        "nasher",
+        "snowdon-grim",
+        "taras-princep-praetorii"
+      ]
+    },
+    {
+      "id": "keltoi",
+      "name": "The Keltoi and the barrow-dead",
+      "summary": "The peoples before Rome: the Keltoi priests still chanting in their fogou, the druid dead under the stones, the muryans dwindling.",
+      "places": [
+        "keltoi-fogou",
+        "stonehenge-barrows",
+        "salisbury-plains",
+        "campacorentin-forest"
+      ],
+      "bosses": [
+        "kings-wight"
+      ]
+    },
+    {
+      "id": "goblins",
+      "name": "The Black Mountain goblins",
+      "summary": "Goblins who took a silver mine and kept it working under Overseer Tepok.",
+      "places": [
+        "tepoks-mine",
+        "black-mountains-south",
+        "black-mountains-north"
+      ],
+      "bosses": [
+        "delfina",
+        "director-botok",
+        "morvel-glyne",
+        "overseer-tepok",
+        "tuder-glyne"
+      ]
+    },
+    {
+      "id": "mordred",
+      "name": "Mordred's wrath",
+      "summary": "Arthur's betrayer, dead at Camlann; his anger outlived him.",
+      "places": [
+        "llyn-barfog"
+      ],
+      "bosses": [
+        "wrath-of-mordred"
+      ]
+    }
+  ]
+}

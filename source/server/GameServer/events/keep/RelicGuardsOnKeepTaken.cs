@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using DOL.Events;
 using DOL.GS.Keeps;
@@ -30,6 +31,7 @@ namespace DOL.GS.GameEvents
             GameEventMgr.AddHandler(KeepEvent.KeepTaken, new DOLEventHandler(Notify));
             GameEventMgr.AddHandler(RelicPadEvent.RelicMounted, new DOLEventHandler(NotifyRelic));
             GameEventMgr.AddHandler(RelicPadEvent.RelicStolen, new DOLEventHandler(NotifyRelic));
+            GameEventMgr.AddHandler(RelicPadEvent.RelicReturned, new DOLEventHandler(NotifyRelic));
             log.Info("Relic Guards System initialized");
         }
 
@@ -109,6 +111,34 @@ namespace DOL.GS.GameEvents
             }
         }
 
+        /// <summary>
+        /// The frontier keeps whose sentinel stands at this relic keep and that its realm still holds: each one is a 3x-health
+        /// sentinel at the relic temple (owner 2026-10-30: bots take these keeps first, as players did, before a relic siege).
+        /// Relic audit 2026-10-31 (L8): only a sentinel that actually stands counts (alive and in the world). The guard
+        /// objects exist for every pair whether spawned or not, so a held keep whose sentinel was never placed (the cap
+        /// shrinks as a realm holds more relics), is dead or is respawning counted too.
+        /// </summary>
+        public static int[] SentinelKeepsAt(eRealm realm, ushort region, int x, int y, int radius = 5000)
+        {
+            if (!_guards.TryGetValue(realm, out List<GuardPair> pairs))
+                return [];
+            lock (_lock)
+                return pairs.Where(pair => new[] { pair.Guard1, pair.Guard2 }.Any(g => g != null && g.CurrentRegionID == region &&
+                                                   Math.Abs(g.X - x) <= radius && Math.Abs(g.Y - y) <= radius && IsStanding(g)) &&
+                                           GameServer.KeepManager.GetKeepByID(pair.KeepId) is { } keep && keep.Realm == realm)
+                    .Select(pair => pair.KeepId).ToArray();
+        }
+
+        private static bool IsStanding(GuardFighterRK guard) => guard.IsAlive && guard.ObjectState == GameObject.eObjectState.Active;
+
+        /// <summary>
+        /// Sentinels of one realm in the world or respawning: what the added-guard counter is meant to hold. A sentinel that
+        /// died with no respawn was deleted without the counter going down, so the cap drifted (relic audit 2026-10-31, L8).
+        /// </summary>
+        private static int PlacedSentinels(eRealm realm) =>
+            _guards[realm].SelectMany(pair => new[] { pair.Guard1, pair.Guard2 })
+                .Count(guard => guard != null && (IsStanding(guard) || guard.IsRespawning));
+
         public static void Init()
         {
             int albRelicCount = 0;
@@ -174,6 +204,13 @@ namespace DOL.GS.GameEvents
                     if (log.IsErrorEnabled)
                         log.Error(e);
                 }
+            }
+
+            if (!_firstRun)
+            {
+                _albAddedGuardsCount = PlacedSentinels(eRealm.Albion);
+                _midAddedGuardsCount = PlacedSentinels(eRealm.Midgard);
+                _hibAddedGuardsCount = PlacedSentinels(eRealm.Hibernia);
             }
 
             foreach (GuardPair guardPair in _guards[eRealm.Albion])
@@ -286,7 +323,7 @@ namespace DOL.GS.GameEvents
 
         public static void NotifyRelic(DOLEvent e, object sender, EventArgs args)
         {
-            if (e != RelicPadEvent.RelicStolen && e != RelicPadEvent.RelicMounted)
+            if (e != RelicPadEvent.RelicStolen && e != RelicPadEvent.RelicMounted && e != RelicPadEvent.RelicReturned)
                 return;
 
             Init();
