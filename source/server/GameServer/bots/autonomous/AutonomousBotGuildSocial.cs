@@ -306,7 +306,6 @@ public static class AutonomousBotGuildSocial
         AutonomousBeggars.OnPlayerAsked(player, message, "guild");
         if (!Enabled || player?.Guild == null || string.IsNullOrWhiteSpace(message))
             return;
-        BotChatTranscript.Player("guild", player, message, player.Guild.Name);
         Guild guild = player.Guild;
         // Beta 1.1.2, second pass: spam draws nothing.
         if (AutonomousBotChatCoordinator.Screened(player, message, "guild"))
@@ -620,19 +619,27 @@ public static class AutonomousBotGuildSocial
                 AutonomousBotGuildAlliances.SendLine(alliance, bot.Name, field.Text);
             else
             {
-                SendGuildLine(guild, bot.Name, field.Text);
-                // Round 7: the line's thread, from guildmates (an answer, and now and then a few more lines).
-                GameBot[] mates = Speakers(guild).Where(candidate => candidate != bot).Take(2).ToArray();
+                long exchange = AutonomousChatExchange.NewId();
+                using (AutonomousChatExchange.Tag("guild_field", exchange, 0, "asker", bot))
+                    SendGuildLine(guild, bot.Name, field.Text);
+                // Round 7: the line's thread, from guildmates (an answer, and now and then a few more lines). 1.1.3: from guildmates who
+                // can answer it (the role and levels it asks for), said in order, each line after the one before it.
+                GameBot[] mates = Speakers(guild).Where(candidate => candidate != bot)
+                    .OrderByDescending(candidate => AutonomousChatFieldTalk.CanAnswer(field, candidate.CharacterClass?.Name ?? candidate.ClassName, candidate.Level))
+                    .Take(2).ToArray();
                 GameBot mate = mates.FirstOrDefault(), third = mates.Skip(1).FirstOrDefault();
                 var speakers = new[] { bot, mate, third };
-                foreach (AutonomousChatFieldTalk.Step step in AutonomousChatFieldTalk.Thread(field, GuildFacts(bot, guild),
-                             mate == null ? null : AutonomousChatFieldTalk.Of(mate, Random.Shared), third == null ? null : AutonomousChatFieldTalk.Of(third, Random.Shared),
-                             AutonomousChatFieldTalk.MemoryOfGuild(guild.GuildID), Random.Shared, GameLoop.GameLoopTime))
-                    if (speakers[step.Who] is { } speaker)
+                List<AutonomousChatFieldTalk.Step> steps = AutonomousChatFieldTalk.Thread(field, GuildFacts(bot, guild),
+                    mate == null ? null : AutonomousChatFieldTalk.Of(mate, Random.Shared), third == null ? null : AutonomousChatFieldTalk.Of(third, Random.Shared),
+                    AutonomousChatFieldTalk.MemoryOfGuild(guild.GuildID), Random.Shared, GameLoop.GameLoopTime);
+                AutonomousChatExchange.Play("guild_thread", exchange, AutonomousChatExchange.GuildKey(guild.GuildID),
+                    AutonomousChatExchange.FromSteps(steps.Select(step => step with { AtMs = Math.Max(800, step.AtMs) }), ["asker", "answerer", "third"],
+                        step => step.Who == 2),
+                    speakers, speaker => speaker.Guild == guild && Eligible(speaker) && HasListener(guild), (speaker, line) =>
                     {
-                        string text = AutonomousChatIdiolect.Apply(step.Text, speaker.DatabaseID, false, Random.Shared, terse: true);
-                        ScheduleGuildLine(speaker, guild, Math.Max(800, step.AtMs), () => text, styled: true);
-                    }
+                        SendGuildLine(guild, speaker.Name, AutonomousChatIdiolect.Apply(line.Text, speaker.DatabaseID, false, Random.Shared, terse: true));
+                        return true;
+                    }, AutonomousChatExchange.Rules.Say);
             }
             return true;
         }
@@ -923,13 +930,15 @@ public static class AutonomousBotGuildSocial
 
     public static void SendGuildLine(Guild guild, string speaker, string text)
     {
-        string safe = (text ?? string.Empty).Trim();
+        // 1.1.3, after RC6: "anyone heading to the frontier tonight?" at 11:08 AM (AutonomousBotVoiceCorpus.ForNow).
+        string safe = AutonomousBotVoiceCorpus.ForNow((text ?? string.Empty).Trim());
         if (safe.Length == 0)
             return;
         if (safe.Length > Lines.MaxLength)
             safe = safe[..Lines.MaxLength];
         guild.SendMessageToGuildMembers($"[Guild] {speaker}: \"{safe}\"", eChatType.CT_Guild, eChatLoc.CL_ChatWindow);
         NoteHeard(guild.GuildID, safe, GameLoop.GameLoopTime);
+        AutonomousChatExchange.NoteLine(AutonomousChatExchange.GuildKey(guild.GuildID), speaker, GameLoop.GameLoopTime);
         AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Guild, KeyOf(guild), GameLoop.GameLoopTime);
         BotChatTranscript.Bot("guild", speaker, (eRealm)guild.Realm, safe, guild.Name);
     }

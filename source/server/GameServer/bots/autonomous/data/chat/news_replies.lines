@@ -55,6 +55,19 @@ good, they wasted their whole raid
 they always break on the inner door
 @who Socialite
 yay, way to go all
+@who *
+@needs
+held!
+nice hold
+walls held, gj
+ty for coming out
+lol they gave up
+ha, go home
+good defense all
+that was close
+nice work on the doors
+they'll try again later
+doors held up
 
 # ---- siege_failed ----
 @kind reply
@@ -70,6 +83,18 @@ rough, how long did it go?
 should have waited for more people
 @who Leveler
 told you, xp is safer
+@who *
+@needs
+oh well
+we'll get it next time
+too many of them
+should've brought more
+eh, worth a try
+back to the keep i guess
+they had too many
+close one
+bah, out of time
+they held up good
 
 # ---- keep_won ----
 @kind reply
@@ -85,6 +110,23 @@ how long till they want it back lol
 yay! go us
 @who NoLifer
 about time we took that one
+@who *
+@needs
+gj gj
+ours again
+nice, who was on it?
+sweet, more keeps
+took long enough lol
+that was quick
+gj, now hold it
+ty all
+go realm
+lets keep this one a while
+gz realm
+free rp tonight lol
+that one is always fun to take
+nice push
+they will want that back
 
 # ---- keep_lost ----
 @kind reply
@@ -103,6 +145,26 @@ anyone forming to take it back?
 lets take it back tonight
 @who Leveler
 oh well, not my keep
+@who *
+@needs
+seriously?
+where was everyone
+ugh, again
+figures, again
+bah
+who was home?
+well that sucks
+they just walked in huh
+that keep never stays ours
+no defenders again i bet
+lol rip keep
+wonderful
+and nobody called it?
+back to square one
+great, there goes the rp bonus
+next time someone shout please
+they waited till we logged lol
+every night
 
 # ---- keep_other ----
 @kind reply
@@ -118,6 +180,18 @@ lol, they really do not like each other
 they will be tired, good time to hit them
 @who NoLifer
 free keep for us later then
+@who *
+@needs
+good, let them bleed
+heh, good for us
+more for us later
+busy night for them
+keep killing each other pls
+fine by me lol
+they can have it lol
+wonder who's next
+they always fight over that one
+good, less of them for us
 
 # ---- relic_lost ----
 @kind reply
@@ -134,6 +208,18 @@ ugh, my spells already feel weaker
 told everyone to watch the relic keep
 @who Leveler
 there goes my damage
+@who *
+@needs
+oh no
+nooo the relic
+that's bad
+great, now what
+gotta get that back
+unreal
+who let that happen
+relic gone, wonderful
+we need a relic raid asap
+my dmg lol
 
 # ---- relic_won ----
 @kind reply
@@ -148,6 +234,18 @@ free bonus, love it
 gz realm, big one
 @who Daredevil
 now we hold it
+@who *
+@needs
+woo relic!
+relic!!
+nice carry
+gg, huge
+they'll be mad lol
+big night
+great work all
+keep it safe this time
+ty carriers
+love relic nights
 
 # ---- relic_back ----
 @kind reply
@@ -163,6 +261,16 @@ best news all week
 good, kills go faster now
 @who NoLifer
 lets not lose it again please
+@who *
+@needs
+finally home
+yay
+back where it belongs
+good, it's home
+about time it came back
+ty all who went
+phew, finally
+gj all, huge
 
 # ---- df_won ----
 @kind reply
@@ -180,6 +288,17 @@ time to buy seals cheap
 df xp is so good, cant wait
 @who Explorer
 been meaning to see the deeper parts of df
+@who *
+@needs
+df time!
+df open, nice
+woot df
+seal farming tonight
+df groups forming?
+nice, df
+gj realm, df is ours
+love having df
+time to farm
 
 # ---- df_lost ----
 @kind reply
@@ -195,6 +314,16 @@ that did not last long
 we need more people in the frontier
 @who Crafter
 seal prices going up then
+@who *
+@needs
+no more df
+bye df
+ugh, lost df
+there go my seals
+df gone already?
+we need keeps back
+back to the frontier then
+df was nice while it lasted
 
 # ---- raid_forming ----
 @kind reply
@@ -228,6 +357,19 @@ jealous, i never get raid spots
 woo! gz gz
 @needs veteran
 good, that one used to wipe us every week
+@who *
+@needs
+gz!! what dropped
+nice kill
+gg raid
+grats all
+big one, gz
+who looted?
+about time we got that one
+nice, what dropped?
+gz all, well done
+quick kill, nice
+woot, gz raid
 
 # ---- raid_wiped ----
 @kind reply
@@ -243,6 +385,19 @@ lol, every time
 try again, im sure it was close
 @needs veteran
 need more healers for that one
+@who *
+@needs
+ouch, rip
+rip raid
+that's a long run back
+maybe next time
+gl next pull
+ugh, wipes
+that boss hits hard
+who died first lol
+rez and go again?
+happens to everyone
+bring more heals next time
 
 # ---- enemy_seen ----
 @kind reply

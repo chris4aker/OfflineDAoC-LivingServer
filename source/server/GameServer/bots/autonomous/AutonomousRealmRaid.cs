@@ -106,6 +106,8 @@ namespace DOL.GS
             public readonly RealmRaidLootOwner.Ledger LootLedger = new();
             public readonly Dictionary<Group, Party> Parties = new();
             public GameLiving[] Support = [];
+            /// <summary>The most bots the raid had recruited at any time (RealmRaidRecruitmentPolicy.UnderStrength).</summary>
+            public int MostRecruited;
             /// <summary>Members released from this raid (no route to the hub); never recruited back.</summary>
             public readonly HashSet<long> Released = new();
             public long NextRefill;
@@ -235,6 +237,20 @@ namespace DOL.GS
             if (group == null) return false;
             using (AiProfile.Lock(Sync, AiSystem.LockRaid)) return Membership.TryGetValue(group, out Raid raid) && !raid.Started && raid.Parties.ContainsKey(group);
         }
+        /// <summary>The raid a party belongs to: its event id and its parties in the raid's order (the first party's leader is
+        /// the raid leader, as in its briefing and its ledger row). Null when the group is in no raid.</summary>
+        public static (string Id, Group[] Parties)? RaidOf(Group group)
+        {
+            if (group == null) return null;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+                return Membership.TryGetValue(group, out Raid raid) && raid.Parties.ContainsKey(group)
+                    ? (raid.Definition.Id, raid.Parties.Keys.ToArray()) : null;
+        }
+
+        /// <summary>The raid event whose encounters include this boss class (its final or named boss), or null.</summary>
+        public static string RaidIdForBoss(string bossType) => string.IsNullOrEmpty(bossType) ? null :
+            Definitions.FirstOrDefault(d => d.BossType == bossType || d.FinalTypes.Contains(bossType))?.Id;
+
         public static bool IsReservedFor(GameBot bot, string id) =>
             id != null && BotDutyLeases.HoldsWithReason(bot, eDutyLeaseKind.RealmRaid, DutyLeaseReason.RaidReserved, id);
         public static bool IsForcedExpedition(string id)
@@ -248,12 +264,12 @@ namespace DOL.GS
         /// An automatic raid recruits level 50s waiting for a group and level 50s grinding solo (who earn no
         /// experience there); RvR bots are left to the frontier.
         /// </summary>
-        public static bool MayAnswerAutomaticRaid(GameBot bot) => bot != null &&
+        public static bool MayAnswerAutomaticRaid(GameBot bot) => bot != null && !AutonomousBotSchedule.LeavingSoon(bot) &&
             (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.GroupPve) ||
              bot.Level >= 50 && AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.SoloPve));
 
         private static int OnlineLevelFifty(eRealm realm) =>
-            AutonomousBotRegistry.Snapshot().Count(b => IsEligible(b) && b.Realm == realm);
+            AutonomousBotRegistry.Snapshot().Count(b => IsEligible(b) && b.Realm == realm && !AutonomousBotSchedule.LeavingSoon(b));
 
         private static readonly eRealm[] ScheduledRealms = [eRealm.Albion, eRealm.Midgard, eRealm.Hibernia];
         private static readonly Dictionary<eRealm, long> NextScheduled = new();
@@ -290,6 +306,48 @@ namespace DOL.GS
                     Log.Warn($"REALM_RAID_SCHEDULE_FAILED event={chosen.Id} realm={GlobalConstants.RealmToName(realm)} online={online} reason=\"{reason}\"");
             }
         }
+        /// <summary>
+        /// Whether the realm's automatic raid on this encounter could open now (AutonomousTales, before a bot says a raid is
+        /// forming): automatic raids are on, the server is past its startup ramp, the realm has no raid, the encounter is up
+        /// and off cooldown, and twice the smallest raid's worth of level 50s are free, as for a scheduled raid.
+        /// </summary>
+        public static bool CouldStartForTale(string id, eRealm realm, out string reason)
+        {
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
+                int online = OnlineLevelFifty(realm);
+                reason = RealmRaidRecruitmentPolicy.ScheduleMinutes <= 0 ? "automatic raids are off"
+                    : !AutonomousPopulationController.StartupRampFinished ? "the realm's gamebots are still logging in"
+                    : !Definitions.Any(d => d.Id == id && d.Realm == realm) ? "no such raid for that realm"
+                    : Raids.Values.Any(r => r.Definition.Realm == realm) ? "the realm already has a raid"
+                    : !Available(id) ? "the encounter is not up, or on cooldown"
+                    : online < RealmRaidRecruitmentPolicy.MinimumScaledBots * 2 ? $"only {online} level 50s of the realm are free"
+                    : null;
+                return reason == null;
+            }
+        }
+
+        /// <summary>
+        /// A tale's raid (AutonomousTales: the rumour after a tale was true): the realm's automatic raid on this encounter
+        /// opens now, sized, recruited and announced like a scheduled one, and the realm's next scheduled raid moves on a
+        /// full slot so the two don't follow each other. False with the reason.
+        /// </summary>
+        public static bool StartForTale(string id, eRealm realm, out string reason)
+        {
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
+                if (!CouldStartForTale(id, realm, out reason) || !Start(id, realm, out reason))
+                    return false;
+                Raid opened = Raids[id];
+                long now = GameLoop.GameLoopTime;
+                NextScheduled[realm] = now + RealmRaidRecruitmentPolicy.NextScheduleMilliseconds(RealmRaidRecruitmentPolicy.ScheduleMinutes, Random.Shared.NextDouble());
+                reason = $"{opened.Definition.Name}: {opened.Required} must gather, up to {opened.RecruitCap} recruited";
+                Log.Info($"REALM_RAID_SCHEDULED event={id} realm={GlobalConstants.RealmToName(realm)} online={OnlineLevelFifty(realm)} required={opened.Required} " +
+                         $"recruitCap={opened.RecruitCap} {SizeField(opened)} forced=tale");
+                return true;
+            }
+        }
+
         /// <summary>
         /// GM test (/lstest raid): the realm's automatic raid opens now, sized to its online level 50s like a scheduled one
         /// (forced raids from the launcher need 300). <paramref name="dragon"/> picks the realm's dragon, else a random
@@ -383,13 +441,18 @@ namespace DOL.GS
                             RemoveParty(group);
                     }
                     raid.Support = raid.Parties.Values.SelectMany(p => p.Members).Cast<GameLiving>().ToArray();
+                    raid.MostRecruited = Math.Max(raid.MostRecruited, raid.Support.Length);
                     int presentAtHub = raid.Parties.Values.Sum(p => PresentAtHub(raid, p));
                     bool departing = !raid.HubDeparted && RealmRaidRecruitmentPolicy.DepartHub(false, presentAtHub,
-                        !raid.Clocked ? 0 : GameLoop.GameLoopTime - raid.Created, raid.Required);
+                        GameLoop.GameLoopTime - raid.Created, raid.Required, !raid.Clocked);
                     raid.HubDeparted |= departing;
                     if (departing) raid.HubDepartedTick = GameLoop.GameLoopTime;
                     // Living Server 1.2: the raid leader briefs the realm on the boss as the raid leaves the muster (docs/LORE.md).
                     if (departing) LoreChat.Briefing(raid.Parties.Keys.Select(g => g.LivingLeader).OfType<GameBot>().FirstOrDefault(), raid.Definition.BossType);
+                    if (departing && raid.Forced && presentAtHub < raid.Required)
+                        Log.Info($"REALM_RAID_FORCED_PATIENCE event={raid.Definition.Id} step=hub present={presentAtHub} required={raid.Required} " +
+                                 $"recruited={raid.Support.Length} minutes={(GameLoop.GameLoopTime - raid.Created) / 60_000} " +
+                                 $"reason=\"the rest follow as late members\"");
                     if (departing) RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm,
                         $"{presentAtHub} adventurers present at {raid.Hub.Name}; departing together for {raid.Definition.Name}. Late arrivals will join the expedition directly.",
                         "raid_forming", RaidSlots(raid.Definition.Name, null));
@@ -424,7 +487,12 @@ namespace DOL.GS
                             raid.StagingBest = present;
                             raid.StagingArrivalTick = now;
                         }
-                        bool ready = RealmRaidRecruitmentPolicy.Ready(!raid.Clocked, now - raid.Created, present, DragonLanded(raid), raid.Required);
+                        // A forced raid's staging patience counts from when it left the hub (it has no staging before that).
+                        long waited = !raid.Clocked ? raid.HubDeparted ? now - raid.HubDepartedTick : 0 : now - raid.Created;
+                        bool ready = RealmRaidRecruitmentPolicy.Ready(!raid.Clocked, waited, present, DragonLanded(raid), raid.Required);
+                        if (ready && !raid.Clocked && present < raid.Required)
+                            Log.Info($"REALM_RAID_FORCED_PATIENCE event={raid.Definition.Id} step=staging present={present} required={raid.Required} " +
+                                     $"recruited={raid.Support.Length} minutes={waited / 60_000} reason=\"the rest follow as late members\"");
                         bool expired = !ready && RealmRaidRecruitmentPolicy.StagingExpired(!raid.Clocked, now, raid.Created, raid.HubDepartedTick,
                             present, DragonLanded(raid), raid.Required, raid.StagingArrivalTick);
                         // Out of time with at least half the raid there: it goes in short, and the rest follow it in.
@@ -693,7 +761,7 @@ namespace DOL.GS
                     ? $"{definition.Name}: {recruits.Sum(p => p.Length)} level-50 adventurers reserved; gather at {raid.Hub.Name}. {startCondition}"
                     : $"{definition.Name}: recruiting up to {raid.RecruitCap} level-50 adventurers via {raid.Hub.Name}; at least {raid.Required} must arrive before assault.",
                     "raid_forming", RaidSlots(definition.Name, null));
-                reason = forced ? $"Reserved {recruits.Sum(p => p.Length)} level-50 bots, closest to {raid.Hub.Name} first. The raid starts as soon as {raid.Required} are staged and runs until the encounter is defeated or you press Stop event. {startCondition}" :
+                reason = forced ? $"Reserved {recruits.Sum(p => p.Length)} level-50 bots, closest to {raid.Hub.Name} first. The raid runs until the encounter is defeated or you press Stop event. {startCondition}" :
                     $"Recruiting up to {raid.RecruitCap} level-50 bots via {raid.Hub.Name}. At least {raid.Required} must arrive before assault; staging can last up to {RealmRaidRecruitmentPolicy.AutonomousStagingLimitMilliseconds / 60_000} minutes.";
                 return true;
             }
@@ -740,12 +808,45 @@ namespace DOL.GS
                 }
                 else
                 {
+                    // A dragon raid gathers on its staging ring, never on the lair's home (play test duo4: a gather to the
+                    // home put 15 bots on Gjalpinulva before the raid started).
                     region = raid.Definition.Region;
-                    Point3D home = DragonLairPlacement.Home(raid.Definition.Realm);
-                    point = new(home.X, home.Y, home.Z);
+                    if (!TryDragonGatherPoint(raid.StagingPosts.OrderBy(p => p.Key).Select(p => p.Value), out point)) return [];
                 }
                 return members.Where(b => !IsStaged(raid, b)).ToArray();
             }
+        }
+
+        /// <summary>Play test only: the raid's living members inside its dungeon that are not within 1,000 of the route's front
+        /// (its next target's approach, or the final encounter's trigger), and that front. It lets a test skip the climb to
+        /// the final room (Caer Sidi's lower floor wiped every raid of the 2026-11-07 play test before the horsemen).</summary>
+        public static GameBot[] MembersToFront(string id, out ushort region, out Vector3 point)
+        {
+            region = 0;
+            point = default;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
+                if (!Raids.TryGetValue(id, out Raid raid) || !raid.Started || raid.DungeonRoute == null) return [];
+                region = raid.DungeonRoute.Region;
+                point = raid.DungeonRoute.Front;
+                var front = new Point3D((int)point.X, (int)point.Y, (int)point.Z);
+                ushort inside = region;
+                return raid.Parties.Values.SelectMany(p => p.Members)
+                    .Where(b => b.IsAlive && b.CurrentRegionID == inside && !b.IsWithinRadius(front, 1_000)).ToArray();
+            }
+        }
+
+        /// <summary>Where the play test gathers a departed dragon raid's stragglers: its first staging post (the ring around
+        /// the lair), or nowhere while it has none.</summary>
+        public static bool TryDragonGatherPoint(IEnumerable<Vector3> stagingPosts, out Vector3 point)
+        {
+            point = default;
+            foreach (Vector3 post in stagingPosts)
+            {
+                point = post;
+                return true;
+            }
+            return false;
         }
 
         /// <summary>The running raid's muster hub (region and centre), for the play test.</summary>
@@ -760,8 +861,13 @@ namespace DOL.GS
 
         // Epic dungeons have no landing to wait for; only dragon rallies mention it.
         public static string ForcedStartCondition(bool isDungeon) => isDungeon
-            ? "At least 200 must arrive before the dungeon assault."
-            : "At least 200 must arrive and the dragon must land.";
+            ? $"At least 200 must arrive before the dungeon assault{ForcedPatienceNote}."
+            : $"At least 200 must arrive and the dragon must land{ForcedPatienceNote}.";
+
+        /// <summary>How a forced raid's wait ends (RealmRaidRecruitmentPolicy.ForcedGoesNow).</summary>
+        private static string ForcedPatienceNote =>
+            $" (after {RealmRaidRecruitmentPolicy.ForcedPatienceMilliseconds / 60_000} minutes of waiting 90% will do, " +
+            $"after {RealmRaidRecruitmentPolicy.ForcedLastCallMilliseconds / 60_000} half; the rest follow)";
 
         // A grounded dragon that is fighting counts as landed wherever the fight
         // dragged it. Requiring the 2,000-unit lair circle parked most of a raid
@@ -1056,6 +1162,12 @@ namespace DOL.GS
                 if (!TryFreeSlot(raid, out int slot, out _, out var staging, specialForces))
                 {
                     refusal = $"no free formation slot with a staging and hub post (parties={raid.Parties.Count} unusableSlots={raid.UnusableSlots.Count})";
+                    // Every realm slot is taken or unusable: the forced raid is as large as its hub can hold.
+                    if (raid.Forced && !specialForces && raid.ForcedParties.Count > 0)
+                    {
+                        TrimForcedToPosts(raid);
+                        return false;
+                    }
                     if (GameLoop.GameLoopTime >= raid.NextPostWarning)
                     {
                         raid.NextPostWarning = GameLoop.GameLoopTime + 60_000;
@@ -1069,6 +1181,23 @@ namespace DOL.GS
                     (int)staging.X, (int)staging.Y, (int)staging.Z, false, false, 50);
                 return true;
             }
+        }
+
+        /// <summary>
+        /// A forced raid whose hub has no formation post left (RealmRaidRecruitmentPolicy.ForcedRequiredForPosts): its other
+        /// reserved bots go back to their own play, and it stages what its posts hold. Called under the raid lock.
+        /// </summary>
+        private static void TrimForcedToPosts(Raid raid)
+        {
+            GameBot[] reserved = raid.ForcedParties.SelectMany(p => p).Distinct().ToArray();
+            raid.ForcedParties.Clear();
+            foreach (GameBot bot in reserved)
+                EndReservation(bot, raid.Definition.Id);
+            int was = raid.Required;
+            raid.Required = RealmRaidRecruitmentPolicy.ForcedRequiredForPosts(raid.Required, RealmBots(raid));
+            Log.Warn($"REALM_RAID_FORCED_TRIMMED event={raid.Definition.Id} hub=\"{raid.Hub.Name}\" parties={RealmParties(raid)} " +
+                     $"posted={RealmBots(raid)} unusableSlots={raid.UnusableSlots.Count} required={raid.Required} was={was} " +
+                     $"released={reserved.Length} reason=\"every formation post at the hub is taken; the other reserved bots go back to their own play\"");
         }
 
         public static bool CommitForcedParty(string id, Group group, out string refusal)
@@ -1604,13 +1733,20 @@ namespace DOL.GS
             // And how many wipes it took: a time-out without one stays out of the record (owner, 2026-11-05).
             // And who led it, for the Herald's chronicle sentence (Living Server 1.2, LoreChronicle): the first party's leader.
             string raidLeader = raid.Parties.Keys.Select(g => g?.LivingLeader?.Name).FirstOrDefault(n => !string.IsNullOrWhiteSpace(n));
+            // And whether it ever had the bots it was sized for: a loss under strength is no result (owner, 2026-11-11).
+            raid.MostRecruited = Math.Max(raid.MostRecruited, raid.Support.Length);
+            bool underStrength = !raid.Forced && raid.Sizing != null &&
+                RealmRaidRecruitmentPolicy.UnderStrength(raid.MostRecruited, raid.Required);
+            string details = RealmEventRecordStore.WithWipes(raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason, raid.Wipes);
+            if (underStrength) details = RealmEventRecordStore.WithUnderStrength(details, raid.MostRecruited, raid.Required);
             RealmEventRecords.Finish(raid.Definition.Id, outcome, LoreChannels.LoreChronicle.WithRaidLeader(RealmEventRecordStore.WithRaidSize(RealmEventRecordStore.WithSpecialForces(
-                RealmEventRecordStore.WithWipes(raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason, raid.Wipes),
-                specialForcesJoined), sizePercent), raidLeader), raid.Support.Length);
+                details, specialForcesJoined), sizePercent), raidLeader), raid.Support.Length);
             if (outcome == "Boss defeated") LastSuccessful[raid.Definition.Realm] = raid.Definition.Id;
-            AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id, AutonomousEpicSpecialForces.RecordOutcome(outcome, raid.Wipes),
+            AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id,
+                RealmEventRecordStore.RecordOutcome(AutonomousEpicSpecialForces.RecordOutcome(outcome, raid.Wipes), underStrength),
                 raid.Forced, sizePercent);
             Log.Info($"REALM_RAID_ENDED event={raid.Definition.Id} outcome=\"{outcome}\" support={raid.Support.Length} required={raid.Required} " +
+                     $"mostRecruited={raid.MostRecruited} underStrength={underStrength} " +
                      $"forced={raid.Forced} minutes={(now - raid.Created) / 60_000} named={named.Length} " +
                      $"specialForces={AutonomousEpicSpecialForces.Count(raid.Definition.Id)} specialForcesJoined={specialForcesJoined} wipes={raid.Wipes} reason=\"{reason}\"");
             if (outcome == "Defeated")
@@ -1718,7 +1854,7 @@ namespace DOL.GS
                 if (Raids.TryGetValue(d.Id, out var r)) return new Summary(d.Id, d.Name, GlobalConstants.RealmToName(d.Realm),
                     r.Started ? "RAID — " + (r.DungeonRoute?.Status ?? r.DragonFight?.Status ?? (DragonLanded(r) ? "underway" : "waiting for dragon landing")) :
                     $"Raid rally — {(r.Forced ? "forced" : "automatic")} — {(r.HubDeparted ? "travel/final staging" : r.Hub.Name)}" +
-                        (r.Forced ? $" — starts when {r.Required} are staged" + (!DragonLanded(r) ? " and the dragon lands" : "") :
+                        (r.Forced ? $" — starts when {r.Required} are staged (fewer after {RealmRaidRecruitmentPolicy.ForcedPatienceMilliseconds / 60_000} minutes)" + (!DragonLanded(r) ? " and the dragon lands" : "") :
                         GameLoop.GameLoopTime >= r.Deadline ? !DragonLanded(r) ? " — waiting for dragon landing" : " — waiting for arrivals" : ""),
                     r.Support.Length + r.ForcedParties.Sum(p => p.Count(IsEligible)),
                     !r.HubDeparted ? r.Parties.Values.Sum(p => PresentAtHub(r,p)) : !r.Started ? PresentAtStaging(r) :

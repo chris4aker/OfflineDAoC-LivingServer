@@ -159,4 +159,4 @@ there you are {player}, we were just talking about you
 @mood friendly
 @who *
 {player} is the kind of {player_class} you hope shows up when things go wrong
-anyone know if {player} is on tonight? want to group again
+{player}, [u around?|free?] want to group again

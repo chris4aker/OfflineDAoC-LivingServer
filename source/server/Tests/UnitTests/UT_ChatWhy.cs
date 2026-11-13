@@ -81,6 +81,16 @@ public class UT_ChatWhy
     [TestCase(null, AutonomousChatReplyFit.None)]
     public void ARouteHasAFitScore(string route, int fit) => Assert.That(AutonomousChatReplyFit.Of(route), Is.EqualTo(fit));
 
+    /// <summary>RC6 on the owner's PC: a friend's answer to "hey! what u up to?" was swapped for "not sure, try /advice".</summary>
+    [TestCase("friend chat")]
+    [TestCase("friend chat invite")]
+    public void AFriendsSmallTalkAnswerPassesTheReplyBudget(string route)
+    {
+        Assert.That(AutonomousChatReplyFit.Of(route, "hey! what u up to?"), Is.EqualTo(AutonomousChatReplyFit.Known));
+        Assert.That(AutonomousChatReplyBudget.Decide(AutonomousChatReplyFit.Of(route, "hey! what u up to?"), true, AutonomousChatBudget.MinReplyFit),
+            Is.EqualTo(AutonomousChatReplyBudget.Outcome.Answer));
+    }
+
     [Test]
     public void AGroupRequestFitsOnlyWhenAGroupIsForming()
     {

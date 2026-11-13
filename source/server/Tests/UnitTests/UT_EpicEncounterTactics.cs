@@ -41,7 +41,9 @@ namespace DOL.UnitTests
         public sealed class TacticGiant : GameEpicBoss
         {
             public byte Hp = 100;
+            public bool Fighting = true;
             public override bool IsAlive => true;
+            public override bool InCombat => Fighting;
             public override byte HealthPercent => Hp;
         }
         public sealed class TacticIllusion : GameNPC
@@ -184,6 +186,15 @@ namespace DOL.UnitTests
             var standSpot = new Vector3(50500, 19500, 17000);
             EpicEncounterTactics.SetStand(boss, standSpot);
             Assert.That(EpicEncounterTactics.Decide(melee, boss, live, 1, canShootFlyers: false).StandAt, Is.EqualTo(standSpot));
+            // Each orb has its own stand too: a shooter out of reach of its orb (1,667 from orb B) walks there first, then shoots.
+            var standB = new Vector3(50600, 19300, 17000);
+            EpicEncounterTactics.SetStand(orbB, standB);
+            var walk = EpicEncounterTactics.Decide(caster, boss, live, 1, canShootFlyers: true);
+            Assert.That((walk.Action, walk.Target, walk.StandAt), Is.EqualTo((EpicEncounterTactics.BotAction.StandOff, (GameNPC)orbB, (Vector3?)standB)));
+            var atStand = Npc<Raider>(50650, 19350, 17000);
+            var shoot = EpicEncounterTactics.Decide(atStand, boss, live, 1, canShootFlyers: true);
+            Assert.That((shoot.Action, shoot.Target), Is.EqualTo((EpicEncounterTactics.BotAction.Retarget, (GameNPC)orbB)), "778 from it: in reach");
+            Assert.That(EpicEncounterTactics.Decide(melee, boss, live, 1, canShootFlyers: false).StandAt, Is.EqualTo(standSpot), "melee wait at the route's stand");
             Assert.That(EpicEncounterTactics.Decide(caster, tree, live, 0, true).Target, Is.SameAs(boss), "the tree dies with the boss");
 
             // Orb A dies: everyone left goes to orb B.
@@ -277,66 +288,7 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterTactics.BreakOffShakesOff(false, 1000, 1400), Is.False, "one that never resets chases");
         }
 
-        // ---- ranged stands for floating required adds ---------------------------------------------------------------
-
-        /// <summary>A floor at one height inside a radius of its centre (none outside: a chasm), with an optional wall.</summary>
-        private sealed class Floor : PathfindingMgrBase
-        {
-            public float Z, Radius = float.MaxValue;
-            public Vector2 Centre;
-            public bool Wall;
-            public override bool IsAvailable => true;
-            public override bool HasNavmesh(Zone zone) => true;
-            public override Vector3? GetClosestPoint(Zone zone, Vector3 p, float x, float y, float z, EDtPolyFlags[] filters) =>
-                Math.Abs(p.Z - Z) <= z && Vector2.Distance(new(p.X, p.Y), Centre) <= Radius ? new Vector3(p.X, p.Y, Z) : null;
-            public override bool HasLineOfSight(Zone zone, Vector3 from, Vector3 to, EDtPolyFlags[] filters) =>
-                !Wall && Vector2.Distance(new(to.X, to.Y), Centre) <= Radius;
-        }
-
-        // Krondon, 2026-11-06: Scurceol Hyrde where he stood and the four Lyft Miht orbs 234-577 above him (the test floor is at his height).
-        private static readonly Vector3 Scurceol = new(51941, 20068, 17174);
-        private static readonly Vector3[] Orbs = [new(51236, 20849, 17669), new(51316, 19228, 17408), new(52702, 19214, 17751), new(52713, 20841, 17511)];
-
-        [Test]
-        public void FloatingOrbsAreShotFromTheFloorNotWalkedTo()
-        {
-            var nav = new Floor { Z = 17174 };
-            Zone zone = UT_RealmRaidFormation.Zone();
-            foreach (Vector3 orb in Orbs)
-            {
-                Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, zone, orb, Scurceol, floor => floor, out Vector3 stand, out string why), Is.True, why);
-                Assert.That(stand, Is.EqualTo(new Vector3(orb.X, orb.Y, 17174)), "the floor under it");
-                Assert.That(Vector3.Distance(stand, orb), Is.LessThanOrEqualTo(RealmRaidDungeonRoute.RequiredAddRangedReach));
-            }
-        }
-
-        [Test]
-        public void AnOrbOverAChasmIsShotFromBesideItsBoss()
-        {
-            // No floor under the orb (only within 700 of Scurceol): the boss's floor is 1,163 from orb 1, within reach.
-            var nav = new Floor { Z = 17174, Centre = new(Scurceol.X, Scurceol.Y), Radius = 700 };
-            Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), Orbs[0], Scurceol, f => f, out Vector3 stand, out string why),
-                Is.False, "the mesh ray to a spot over the chasm leaves the floor: no sight is proven");
-            Assert.That(why, Does.Contain("line of sight"));
-            nav.Radius = 1100; // the floor reaches under the orb's edge
-            Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), Orbs[0], Scurceol, f => f, out stand, out why), Is.True, why);
-            Assert.That(Vector3.Distance(stand, Orbs[0]), Is.LessThanOrEqualTo(RealmRaidDungeonRoute.RequiredAddRangedReach));
-        }
-
-        [TestCase("wall", "line of sight")]
-        [TestCase("unreachable", "reachable from the raid")]
-        [TestCase("too far", "within 1400")]
-        [TestCase("no floor", "no floor")]
-        public void AnOrbNobodyCanShootSetsTheTacticAsideAndSaysWhy(string trouble, string reason)
-        {
-            var nav = new Floor { Z = trouble == "no floor" ? 10_000 : 17174, Wall = trouble == "wall" };
-            Vector3 orb = trouble == "too far" ? Orbs[0] + new Vector3(0, 0, 1_600) : Orbs[0];
-            // The proven approach lands beside the floor point (within the resolver's 220), so sight is checked.
-            Func<Vector3, Vector3?> reach = trouble == "unreachable" ? _ => null : f => f + new Vector3(150, 0, 0);
-            if (trouble == "too far") nav.Centre = new(Scurceol.X, Scurceol.Y);
-            Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), orb, Scurceol, reach, out _, out string why), Is.False);
-            Assert.That(why, Does.Contain(reason));
-        }
+        // Ranged stands for floating required adds (Scurceol's orbs): UT_ScurceolOrbStands, on the real Krondon mesh.
 
         [Test]
         public void ABreakOffSendsRaidersToTheMusterFromTheBossAndItsAdds()
@@ -396,8 +348,9 @@ namespace DOL.UnitTests
         [Test]
         public void TheRaidWithdrawsFromABlastButThePartyItFightsHoldsIt()
         {
-            Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 83, -1), Is.True, "within 3% above 80");
-            Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 84, -1), Is.False);
+            // 1.2 (PC 2026-11-07, 110 raiders in one stomp): at least 6% above, more when the raid takes him down faster.
+            Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 86, -1), Is.True, "within 6% above 80");
+            Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 87, -1), Is.False);
             Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 78, 2_000), Is.True, "just crossed");
             Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 78, 10_000), Is.False, "over");
             Assert.That(EpicEncounterTactics.NextBlastBelow([80, 40], 78), Is.EqualTo(40));
@@ -408,6 +361,8 @@ namespace DOL.UnitTests
             var far = Npc<Raider>(35000, 35305, 14551);
             giant.TargetObject = tank;
             var live = new List<GameNPC> { giant };
+            EpicEncounterTactics.ResetBlastForTests();
+            giant.Fighting = true;
             giant.Hp = 90;
             Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 1_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None));
             giant.Hp = 82;
@@ -422,6 +377,51 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 3_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff));
             Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 13_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
                 "the stomp is over: back in");
+        }
+
+        [Test]
+        public void ACalledBlastWaitsForTheRaidsCallNotForHisHealth()
+        {
+            // 1.2 raid discipline: the window opens as before, but nobody moves until the caller has called it, a lead
+            // before it lands (Xanxicar's stomp; a test giant here).
+            EpicEncounterTactics.CallBlastForTests("TacticGiant");
+            RaidDiscipline.FamiliarityOverride = 1;
+            try
+            {
+                var giant = Npc<TacticGiant>(31577, 35305, 14551);
+                var tank = Npc<Raider>(31600, 35305, 14551);
+                var caster = Npc<Raider>(32577, 35305, 14551);
+                giant.TargetObject = tank;
+                var live = new List<GameNPC> { giant };
+                EpicEncounterTactics.ResetBlastForTests();
+                giant.Fighting = true;
+                giant.Hp = 82; // in the window, but he is not losing health: no call yet
+                Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 1_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None));
+                Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 2_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
+                    "the window is open but nobody has called it");
+                giant.Hp = 79; // crossed at 3,000: it lands BlastLandsAfterCrossSeconds later
+                var call = RaidDiscipline.CallFor(0, "TacticGiant/blast", 80, 0, 1);
+                long callAt = 3_000 + (long)Math.Ceiling((EpicEncounterTactics.BlastLandsAfterCrossSeconds - call.LeadSeconds) * 1000);
+                if (callAt > 3_000)
+                    Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 3_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
+                        $"called {call.LeadSeconds:0.0} s before it lands");
+                var w = EpicEncounterTactics.Decide(caster, giant, live, 0, true, Math.Max(callAt, 3_000) + 250);
+                Assert.That(w.Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff), "out on the call");
+                Assert.That(EpicEncounterTactics.Decide(tank, giant, live, 0, false, Math.Max(callAt, 3_000) + 500).Action,
+                    Is.EqualTo(EpicEncounterTactics.BotAction.None), "the party it fights stays in");
+                Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 13_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
+                    "the stomp is over: back in");
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(85, 80, 0.5, -1), Is.EqualTo(16.8).Within(1e-9));
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(85, 80, 0, -1), Is.EqualTo(double.PositiveInfinity));
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(79, 80, 0.5, 2_000), Is.EqualTo(4.8).Within(1e-9));
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(79, 80, 0.5, 2_000, 4_000), Is.EqualTo(4).Within(1e-9), "the cast says when");
+            }
+            finally
+            {
+                EpicEncounterTactics.UncallBlastForTests("TacticGiant");
+                RaidDiscipline.FamiliarityOverride = null;
+                EpicEncounterTactics.ResetBlastForTests();
+            }
         }
 
         [Test]
@@ -459,7 +459,8 @@ namespace DOL.UnitTests
         [Test]
         public void EveryRestoredMechanicIsOffByDefaultUntilTheRaidPlaysIt()
         {
-            Assert.That(EpicEncounterMechanics.RestoreSwitches, Has.Length.EqualTo(18), "1.2 play test: + AllowEasmarachEndlessFallsHeal (off)");
+            Assert.That(EpicEncounterMechanics.RestoreSwitches, Has.Length.EqualTo(19),
+                "1.2 play tests: + AllowEasmarachEndlessFallsHeal (off), + AllowGovannonFullHeal (off, owner 2026-11-11)");
             foreach (string name in EpicEncounterMechanics.RestoreSwitches)
             {
                 PropertyInfo p = typeof(EpicEncounterMechanics).GetProperty(name, BindingFlags.Public | BindingFlags.Static);

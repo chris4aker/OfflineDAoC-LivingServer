@@ -2003,6 +2003,12 @@ def render_tactics_cs(data: dict) -> str:
             blast = ", ".join(str(int(x)) for x in t.get("blastThresholds", []))
             extra = (f", {int(t.get('keepAlive', 0))}, " + (f"[{blast}]" if blast else "null") +
                      f", {int(t.get('blastRadius', 0))}")
+        if t.get("hazards"):
+            # Ground hazards (Orshom's Fire): named arguments, so the rows above keep their shape.
+            hazards = ", ".join(f'"{h}"' for h in t["hazards"])
+            vulnerable = f'"{t["hazardDamageType"]}"' if t.get("hazardDamageType") else "null"
+            extra += (f", Hazards: [{hazards}], HazardRadius: {int(t.get('hazardRadius', 0))}, "
+                      f"HazardDamageType: {vulnerable}")
         init = []
 
         def names(key):
@@ -2011,11 +2017,18 @@ def render_tactics_cs(data: dict) -> str:
             init.append(f"SpreadRadius = {int(t['spreadRadius'])}")
             if t.get("spreadWhileModel"):
                 init.append(f"SpreadWhileModel = {int(t['spreadWhileModel'])}")
+            if t.get("stepOutOfCast"):
+                init.append('StepOutOfCast = "' + t["stepOutOfCast"].replace('\\', '\\\\').replace('"', '\\"') + '"')
+            if t.get("meleeBehind"):
+                init.append("MeleeBehind = true")
+            if t.get("meleeRing"):
+                init.append(f"MeleeRing = {int(t['meleeRing'])}")
+            if t.get("tanksTaunt"):
+                init.append("TanksTaunt = true")
+            if t.get("healersHoldInSpread"):
+                init.append("HealersHoldInSpread = true")
         if t.get("rangedAdds"):
             init.append(f"RangedAdds = {names('rangedAdds')}")
-        if t.get("hazards"):
-            init.append(f"Hazards = {names('hazards')}")
-            init.append(f"HazardRadius = {int(t['hazardRadius'])}")
         if t.get("after"):
             init.append(f'After = "{t["after"]}"')
         if t.get("classRules"):
@@ -2024,10 +2037,19 @@ def render_tactics_cs(data: dict) -> str:
             init.append(f"ClassRules = [{rules}]")
             if t.get("classRuleSwitch"):
                 init.append(f'ClassRuleSwitch = "{t["classRuleSwitch"]}"')
+        if t.get("clearFirst"):
+            init.append(f"ClearFirst = {names('clearFirst')}")
+            init.append(f"ClearFirstRadius = {int(t['clearFirstRadius'])}")
         if t.get("deathAdds"):
             init.append(f"DeathAdds = {names('deathAdds')}")
         if t.get("addsInOrder"):
             init.append("AddsInOrder = true")
+        if t.get("focusRangedAdds"):
+            init.append("FocusRangedAdds = true")
+        if t.get("addParties"):
+            init.append(f"AddParties = {int(t['addParties'])}")
+        if t.get("areaOnClump"):
+            init.append("AreaOnClump = true")
         body = (" { " + ", ".join(init) + " }") if init else ""
         rows.append(f'            new("{e["class"]}", "{e["id"]}", [{adds}], {int(t.get("fightAtHomeRadius", 0))}, {dies}{extra}){body},')
     leashes = []

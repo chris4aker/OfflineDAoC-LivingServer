@@ -73,6 +73,7 @@ public static partial class AutonomousLivingServer
         GameEventMgr.AddHandler(GamePlayerEvent.LevelUp, new DOLEventHandler(OnPlayerLevelUp));
         GameEventMgr.AddHandler(GamePlayerEvent.RRLevelUp, new DOLEventHandler(OnPlayerRealmRankUp));
         GameEventMgr.AddHandler(GameLivingEvent.Dying, new DOLEventHandler(OnLivingDying));
+        GameEventMgr.AddHandler(GamePlayerEvent.GameEntered, new DOLEventHandler(OnPlayerEnteredEngage));
         _nextNemesisPrune = Environment.TickCount64 + NemesisPruneIntervalMs;
         _flushTimer = new Timer(_ =>
         {
@@ -91,6 +92,18 @@ public static partial class AutonomousLivingServer
         // Deeds (bot_living_deeds): a named kill, an enemy kill or the player's own death a bot may have seen.
         if (sender is GameLiving dead)
             AutonomousPlayerDeeds.OnDeath(dead, (args as DyingEventArgs)?.Killer);
+        // 1.1.3: a solo player's death is seen by the bots standing by (AutonomousLivingServer.Engage.cs).
+        if (sender is GamePlayer { Group: null } solo)
+        {
+            try
+            {
+                EngagePlayerDeath(solo);
+            }
+            catch (Exception exception)
+            {
+                Log.Warn("Living Server: a bystander's reaction to a death", exception);
+            }
+        }
         if (sender is not GamePlayer { Group: not null } player)
             return;
         try
@@ -109,6 +122,7 @@ public static partial class AutonomousLivingServer
         GameEventMgr.RemoveHandler(GamePlayerEvent.LevelUp, new DOLEventHandler(OnPlayerLevelUp));
         GameEventMgr.RemoveHandler(GamePlayerEvent.RRLevelUp, new DOLEventHandler(OnPlayerRealmRankUp));
         GameEventMgr.RemoveHandler(GameLivingEvent.Dying, new DOLEventHandler(OnLivingDying));
+        GameEventMgr.RemoveHandler(GamePlayerEvent.GameEntered, new DOLEventHandler(OnPlayerEnteredEngage));
         _flushTimer?.Dispose();
         _flushTimer = null;
         FlushAll(wait: true);
@@ -198,7 +212,10 @@ public static partial class AutonomousLivingServer
                 MemoryPulse(now);
             // Bot-led groups: a gamebot leader may invite the player (bot_group_invite_player; /lfg asks anyway).
             BotLedGroups.Pulse(now);
+            EngagePulse(now);
             AutonomousLivingWorld.Pulse(now);
+            // Tales: the realm's storyteller, the rumour after it, fireside tales in a resting group.
+            AutonomousTales.Pulse(now);
         }
         catch (Exception exception)
         {
@@ -226,10 +243,11 @@ public static partial class AutonomousLivingServer
 
     internal enum Channel { Say, Group, Faction, Guild }
 
-    internal static void Speak(GameBot bot, Channel channel, string text)
+    /// <summary>Says a line in a channel; false when it wasn't said (1.1.3: /faction may hold it at the realm's ceiling).</summary>
+    internal static bool Speak(GameBot bot, Channel channel, string text)
     {
         if (string.IsNullOrWhiteSpace(text) || !IsSpeaker(bot))
-            return;
+            return false;
         if (channel is Channel.Group or Channel.Guild)
             text = AutonomousRoleplayers.Voice(bot, text);   // /say goes through GameBot.Say, /faction through BroadcastFaction
         switch (channel)
@@ -246,14 +264,13 @@ public static partial class AutonomousLivingServer
                 }
                 break;
             case Channel.Faction:
-                if (RealmHasPlayer(bot.Realm))
-                    AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, bot.Realm, text);
-                break;
+                return RealmHasPlayer(bot.Realm) && AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, bot.Realm, text);
             case Channel.Guild:
                 if (bot.Guild != null && AutonomousBotGuildSocial.HasListener(bot.Guild))
                     AutonomousBotGuildSocial.SendGuildLine(bot.Guild, bot.Name, text);
                 break;
         }
+        return true;
     }
 
     /// <summary>Runs an action on the bot's (or player's) timer after a delay, if it is still in the game and the condition still holds then.</summary>
@@ -367,7 +384,7 @@ public static partial class AutonomousLivingServer
     {
         if (string.IsNullOrWhiteSpace(text) || !IsSpeaker(bot) || player?.Client == null)
             return;
-        text = AutonomousRoleplayers.Voice(bot, text);
+        text = AutonomousBotVoiceCorpus.ForNow(AutonomousRoleplayers.Voice(bot, text));
         ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", bot.Name, text);
         BotChatTranscript.Bot("tell", bot.Name, bot.Realm, text, player.Name);
         // The talking update: the player's next tell to this bot continues this exchange.

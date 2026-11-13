@@ -52,7 +52,7 @@ A: good talk everyone :)
 @role C type=NoLifer
 @role D type=Daredevil
 @role E type=Socialite
-A: third time tonight a stealther got me on the road to {keep}
+A: third time tonight a stealther got me on the road
 B: same. you cannot even see them before the stun lands
 C: you are walking alone through the frontier at night, what did you expect
 B: i expected to reach the keep
@@ -85,15 +85,15 @@ A: deal, leaving in five
 @role D type=Leveler
 @role E type=Daredevil
 @role F type=*
-A: we lost the relic. how did we lose the relic
-B: they hit the keep with forty people while we were split across the map
-C: i was there, we had maybe twelve defenders
-D: i was leveling, sorry
+A: {q} every time we lose a relic it is the same story. how do we keep losing relics
+B: they hit the keep with forty people while we are split across the map
+C: last time i was there, we had maybe twelve defenders
+D: i was leveling that night, sorry
 B: half the realm was leveling, that is the problem
 D: i am allowed to level
 ~ 30
-E: we should take it back tonight
-B: with what army? look at the frontier, it is empty
+E: we should go take one of theirs tonight
+B: with what army? half the realm is leveling
 C: post a time and people will come
 F: i can bring my guild, maybe eight of us
 E: that is a start
@@ -112,7 +112,7 @@ F: do not jinx it
 ~ 60
 C: how many are we so far?
 E: i count fourteen and two rams
-B: they have twenty around the keep, it is doable if we hit the door fast
+B: if they have twenty at their relic keep, it is doable if we hit the door fast
 A: lets go
 
 @topic best_class

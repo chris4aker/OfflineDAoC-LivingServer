@@ -156,6 +156,49 @@ namespace DOL.GS
             IsSharedCombatDungeon(attackerRegion) && attackerRegion == targetRegion &&
             attacker != eRealm.None && target != eRealm.None && attacker != target && alive && allowed;
 
+        /// <summary>A hold before a corridor threat is one hold while the bot keeps holding in one place. With no hold scan
+        /// for longer than this a new hold begins. It was 5 s, on the belief that scans come every 0.75-1 s; a held raid
+        /// party's scans were measured 6.5 s or more apart (play test duo32, 2026-11-11, AUTONOMOUS_DUNGEON_HOLD_LONG:
+        /// median longest gap 13 s, 25-27 restarts in three minutes), so every scan began a new hold and the 90-second limit never ended one:
+        /// 80 raiders stood before a Summoned Guardian in Dodens Gruva for up to 18 minutes (duo30: 60 until the watchdog
+        /// took them to town; duo31: 39 while the other 41 fought Govannon and wiped).</summary>
+        public const long ThreatHoldGapMilliseconds = 60_000;
+        /// <summary>Further than this from where the hold began, the bot has walked on and the next hold is a new one.</summary>
+        public const float ThreatHoldSamePlace = 400f;
+
+        /// <summary>
+        /// When the current hold before a corridor threat began (pure). PC test 2026-11-09 (build b72716e): Ferken, a member of
+        /// a forced Krondon raid party, stood in Avalon City on "Holding before dungeon threat" for over 30 minutes (01:16 to
+        /// 01:55) while his party and its puller were at Caer Diogel in another region, and the raid waited for him. The
+        /// 90-second limit was kept per blocker: the clock started again whenever the first threat along his corridor
+        /// changed (roaming monsters take turns at the front of the list). It now runs from the first scan of an unbroken
+        /// hold, whichever monster is in the way, and (2026-11-11) however far apart the scans come: a hold is unbroken
+        /// while the bot stays within <see cref="ThreatHoldSamePlace"/> of where it began and scans again within
+        /// <see cref="ThreatHoldGapMilliseconds"/>.
+        /// </summary>
+        public static long ThreatHoldStart(long holdSince, long lastHeld, long now, float movedSinceHoldBegan = 0) =>
+            holdSince <= 0 || lastHeld <= 0 || now - lastHeld > ThreatHoldGapMilliseconds ||
+            movedSinceHoldBegan > ThreatHoldSamePlace ? now : holdSince;
+
+        /// <summary>
+        /// Whether a party member holds before a corridor threat for its puller (pure): only while some other living member
+        /// of its party is in the same region (a puller in another region never comes) and for at most
+        /// <paramref name="limitMilliseconds"/> of one hold.
+        /// </summary>
+        public static bool HoldsForPuller(bool partyMemberInRegion, long heldMilliseconds, long limitMilliseconds) =>
+            partyMemberInRegion && heldMilliseconds < limitMilliseconds;
+
+        /// <summary>
+        /// Whether a raid party may clear a corridor monster while its raid holds (pure): at a crossing (as before), or a
+        /// monster that is not an epic encounter, inside the raid's own dungeon. PC test 2026-11-09 (forced Krondon): the raid
+        /// holds while it musters for a named encounter, and a held raid let nobody pull, so every party stopped 90 s before
+        /// each monster on its walk to the muster and then fought it anyway (Ulor se Bysen's muster took 19 minutes, with 174
+        /// coin drops from monsters killed in Krondon meanwhile, REALM_RAID_LOOT_MONEY). The puller now pulls it at once, with the party's usual
+        /// gates (resources, roster, cohesion); an epic encounter in the way still waits for the raid's order.
+        /// </summary>
+        public static bool ExpeditionMayClearCorridor(bool hold, bool crossing, bool corridorBlocker, bool ownRaidDungeonTrash) =>
+            !hold || corridorBlocker && (crossing || ownRaidDungeonTrash);
+
         // A follower that was already separated by a death, reconnect, or old
         // transient-leader handoff must be able to clear a legal blocker while
         // walking back to its leader. Normal outbound dungeon pulls remain

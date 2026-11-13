@@ -1,0 +1,143 @@
+# Publishes a Living Server release from a build-and-test push run on main, for when it can't be done by hand
+# (tools/release/publish_release.py): takes that run's package artifact, zips it as OfflineDAoC-LivingServer-<build>.zip,
+# fills the zip's SHA-256 into docs/RELEASE-NOTES-<version>.md's notes, then creates the tag and the release on the
+# run's commit, attaches the zip and publishes it as Latest. A dry run (the default) does every check, prints the notes
+# and keeps the zip as a workflow artifact, with a read-only token.
+#
+# A release published with this workflow's token doesn't start the release workflow: run "release" by hand afterwards
+# (tag, dry run off) to build, test and attach Setup.
+name: publish-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag, e.g. v1.1.2-beta"
+        required: true
+      run_id:
+        description: "The build-and-test push run on main whose package is published"
+        required: true
+      title:
+        description: "Release title"
+        required: true
+      dry_run:
+        description: "Dry run: check and show, publish nothing"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-release-${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      commit: ${{ steps.run.outputs.commit }}
+    steps:
+      - name: The run to publish from
+        id: run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run_id }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          run=$(gh api "repos/${{ github.repository }}/actions/runs/$RUN_ID")
+          name=$(jq -r .name <<<"$run"); event=$(jq -r .event <<<"$run"); branch=$(jq -r .head_branch <<<"$run")
+          conclusion=$(jq -r .conclusion <<<"$run"); commit=$(jq -r .head_sha <<<"$run")
+          main=$(gh api "repos/${{ github.repository }}/commits/main" --jq .sha)
+          echo "run $RUN_ID: $name, $event on $branch, $conclusion, commit $commit; main is at $main"
+          [ "$name" = build-and-test ] || { echo "::error::run $RUN_ID is $name, not build-and-test"; exit 1; }
+          [ "$event" = push ] && [ "$branch" = main ] || { echo "::error::run $RUN_ID is a $event run on $branch, not a push run on main"; exit 1; }
+          [ "$conclusion" = success ] || { echo "::error::run $RUN_ID ended $conclusion"; exit 1; }
+          [ "$commit" = "$main" ] || { echo "::error::main has moved on ($main) since run $RUN_ID ($commit)"; exit 1; }
+          echo "commit=$commit" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.run.outputs.commit }}
+      - name: Versions agree
+        run: python3 tools/release/check_versions.py
+      - name: Download the run's package
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run_id }}
+          TAG: ${{ inputs.tag }}
+          COMMIT: ${{ steps.run.outputs.commit }}
+        run: |
+          set -euo pipefail
+          build="${TAG#v}"
+          want="OfflineDAoC-LivingServer-$build-${COMMIT:0:7}"
+          id=$(gh api "repos/${{ github.repository }}/actions/runs/$RUN_ID/artifacts" --jq ".artifacts[] | select(.name == \"$want\" and .expired == false) | .id")
+          [ -n "$id" ] || { echo "::error::run $RUN_ID has no artifact $want"; exit 1; }
+          gh api "repos/${{ github.repository }}/actions/artifacts/$id/zip" > "$RUNNER_TEMP/artifact.zip"
+          mkdir -p "$RUNNER_TEMP/artifact"
+          unzip -q "$RUNNER_TEMP/artifact.zip" -d "$RUNNER_TEMP/artifact"
+      - name: Zip the package and write the notes
+        env:
+          TAG: ${{ inputs.tag }}
+          COMMIT: ${{ steps.run.outputs.commit }}
+        run: |
+          set -euo pipefail
+          version="${TAG#v}"; version="${version%-beta}"
+          python3 tools/release/publish_release.py package --artifact "$RUNNER_TEMP/artifact" --tag "$TAG" --commit "$COMMIT" --out out
+          python3 tools/release/publish_release.py notes --notes "docs/RELEASE-NOTES-$version.md" --tag "$TAG" --zip "out/OfflineDAoC-LivingServer-${TAG#v}.zip" --out out/release-notes.md
+          sha256sum out/*.zip
+          echo "--- release notes ---"; cat out/release-notes.md; echo "--- end ---"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ inputs.tag }}
+          path: out/
+          retention-days: 30
+
+  # Everything publish does, with a read-only token and --dry-run.
+  dry-run:
+    needs: prepare
+    if: inputs.dry_run
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.commit }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-${{ inputs.tag }}
+          path: out
+      - name: What a real run would do
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+          TITLE: ${{ inputs.title }}
+          COMMIT: ${{ needs.prepare.outputs.commit }}
+        run: python3 tools/release/publish_release.py publish --tag "$TAG" --commit "$COMMIT" --title "$TITLE" --body out/release-notes.md --zip "out/OfflineDAoC-LivingServer-${TAG#v}.zip" --dry-run
+
+  publish:
+    needs: prepare
+    if: ${{ !inputs.dry_run }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.commit }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-${{ inputs.tag }}
+          path: out
+      - name: Create the tag and the release, attach the zip, publish as Latest
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+          TITLE: ${{ inputs.title }}
+          COMMIT: ${{ needs.prepare.outputs.commit }}
+        run: python3 tools/release/publish_release.py publish --tag "$TAG" --commit "$COMMIT" --title "$TITLE" --body out/release-notes.md --zip "out/OfflineDAoC-LivingServer-${TAG#v}.zip"
