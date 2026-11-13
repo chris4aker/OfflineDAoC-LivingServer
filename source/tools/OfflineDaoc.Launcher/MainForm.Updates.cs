@@ -236,6 +236,13 @@ internal sealed partial class MainForm
     private async Task ApplyUpdateAsync(ReleaseInfo release)
     {
         string name = release.Version!.DisplayName;
+        // Linux (under Wine): there is no Windows PowerShell for apply-update.ps1; the Linux script installs the update.
+        if (WineHost.IsWine)
+        {
+            Updater.Log.Write("Under Wine: the update is installed by the Linux script, not the launcher.");
+            MessageBox.Show(this, WineHost.UpdateNote(Updater.GameFolder), "Living Server update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
         List<string> running = RunningGameParts();
         if (running.Count > 0)
         {

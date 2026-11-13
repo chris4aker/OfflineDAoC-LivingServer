@@ -287,7 +287,7 @@ only".
 
 ### Coming next
 
-- **1.2.2:** a Linux build of the server, a launcher and the new client.
+- **Linux:** the 0.37 game with Living Server on Linux, played with the original client under Wine.
 - **2.0, the complete realm:** live events, the guild package, bots with alts, friends and grudges, crafting and a
   server with a past.
 

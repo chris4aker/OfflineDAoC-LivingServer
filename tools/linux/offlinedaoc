@@ -1,0 +1,208 @@
+#!/usr/bin/env bash
+# Living Server on Linux: the Windows game, its launcher and its server run under Wine (docs/LINUX.md §0, the route Ryan
+# plays). This script lives in <game>/linux/ and does the few things Windows does with tools Wine doesn't have:
+#
+#   offlinedaoc play                   opens the launcher under Wine (it starts the server and the game as on Windows),
+#                                      and keeps the game window fullscreen on GNOME (daoc_fullscreen.py)
+#   offlinedaoc install <package>      installs a Living Server package (.zip or its unpacked folder) with the package's
+#                                      own install-server-build.ps1 under PowerShell for Linux: the same checks,
+#                                      backups and install record as INSTALL.cmd
+#   offlinedaoc update [--check]       the newest Living Server release from GitHub, checked against GitHub's SHA-256
+#                                      digest, then installed as above (what the launcher's GET UPDATE does on Windows)
+#   offlinedaoc rollback [--to-release]  ROLLBACK.cmd (or PREPARE-FOR-UPDATE.cmd with --to-release)
+#   offlinedaoc status                 what runs, which build is installed, which tools are found
+#
+# Nothing here uses sudo. Missing tools are named with the command that installs them.
+# Environment: OFFLINEDAOC_GAME (the game folder; default the folder above this script), WINEPREFIX (default
+# <game>/linux/wine), OFFLINEDAOC_PWSH (PowerShell 7; default pwsh on PATH, then <game>/linux/pwsh/pwsh).
+set -euo pipefail
+
+HERE="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+GAME=${OFFLINEDAOC_GAME:-$(cd "$HERE/.." && pwd)}
+RUNTIME="$GAME/runtime"
+LOGS="$GAME/linux/logs"
+REPO="chris4aker/OfflineDAoC-LivingServer"
+export WINEPREFIX=${WINEPREFIX:-$GAME/linux/wine}
+
+die() { echo "offlinedaoc: $*" >&2; exit 1; }
+say() { echo "offlinedaoc: $*"; }
+have() { command -v "$1" > /dev/null 2>&1; }
+
+game_ok() { [ -f "$RUNTIME/server/GameServer.dll" ] && [ -f "$RUNTIME/OfflineDAoC.exe" ]; }
+
+# The game's parts as Wine runs them. Under Wine a process's name is its .exe (comm keeps 15 characters).
+running() {
+  local found=() pid comm name
+  for pid in /proc/[0-9]*; do
+    comm=$(cat "$pid/comm" 2> /dev/null) || continue
+    name=${comm%.exe}
+    case "$name" in
+      CoreServer|DOLServer|OfflineDAoC|game.dll|camelot|connect) found+=("$name") ;;
+    esac
+  done
+  [ ${#found[@]} -gt 0 ] && printf '%s\n' "${found[@]}" | sort -u | paste -sd, -
+}
+
+port() {
+  local p
+  p=$(sed -n 's:.*<Port>\([0-9]*\)</Port>.*:\1:p' "$RUNTIME/server/config/serverconfig.xml" 2> /dev/null | head -n 1)
+  echo "${p:-10300}"
+}
+listening() { (exec 3<> "/dev/tcp/127.0.0.1/$1") 2> /dev/null; }
+
+assert_closed() {
+  local r; r=$(running || true)
+  [ -z "$r" ] || die "close the server, launcher and game first (running: $r). Nothing was changed."
+  ! listening "$(port)" || die "something is still listening on the game's port $(port). Close the server first. Nothing was changed."
+}
+
+pwsh_cmd() {
+  if [ -n "${OFFLINEDAOC_PWSH:-}" ]; then echo "$OFFLINEDAOC_PWSH"
+  elif have pwsh; then command -v pwsh
+  elif [ -x "$GAME/linux/pwsh/pwsh" ]; then echo "$GAME/linux/pwsh/pwsh"
+  else
+    die "PowerShell 7 is needed to install Living Server packages (the same scripts as on Windows). Install it with
+  Ubuntu:  sudo snap install powershell --classic
+  Fedora:  sudo dnf install powershell   (after adding Microsoft's repository)
+  Arch:    yay -S powershell-bin
+or put Microsoft's linux-x64 tarball in $GAME/linux/pwsh/ (github.com/PowerShell/PowerShell/releases)."
+  fi
+}
+
+# A package folder: the zip's one top folder LivingServer-<build>, with BUILD-INFO.txt (as the launcher checks it).
+unpack() {
+  local pkg=$1 dest
+  if [ -d "$pkg" ]; then
+    [ -f "$pkg/BUILD-INFO.txt" ] && [ -f "$pkg/install-server-build.ps1" ] || die "$pkg is not a Living Server package folder"
+    echo "$(cd "$pkg" && pwd)"; return
+  fi
+  [ -f "$pkg" ] || die "no package at $pkg"
+  have unzip || die "unzip is missing (sudo apt install unzip)"
+  local tops; tops=$(unzip -Z1 "$pkg" | cut -d/ -f1 | sort -u)
+  [ "$(echo "$tops" | wc -l)" -eq 1 ] && [[ $tops == LivingServer-* ]] || die "$pkg is not a Living Server package (one LivingServer-<build> folder expected)"
+  if unzip -Z1 "$pkg" | grep -Eq '(^/|(^|/)\.\.(/|$))'; then die "$pkg holds a path outside its folder; refused"; fi
+  dest="$RUNTIME/updates/$tops"
+  rm -rf "$dest" && mkdir -p "$RUNTIME/updates"
+  unzip -q "$pkg" -d "$RUNTIME/updates" || die "could not unpack $pkg"
+  [ -f "$dest/BUILD-INFO.txt" ] || die "$pkg has no BUILD-INFO.txt"
+  echo "$dest"
+}
+
+linux_files() { # the package's linux/ folder (this script and its helper) replaces this one's, when it has one
+  local pkg=$1
+  [ -d "$pkg/linux" ] || return 0
+  mkdir -p "$GAME/linux"
+  for f in offlinedaoc daoc_fullscreen.py; do
+    [ -f "$pkg/linux/$f" ] && install -m 0755 "$pkg/linux/$f" "$GAME/linux/$f.new" && mv -f "$GAME/linux/$f.new" "$GAME/linux/$f"
+  done
+}
+
+cmd_install() {
+  [ $# -ge 1 ] || die "usage: offlinedaoc install <OfflineDAoC-LivingServer-<build>.zip | unpacked folder>"
+  game_ok || die "no Offline DAoC game in $GAME (runtime/server/GameServer.dll or runtime/OfflineDAoC.exe is missing)"
+  assert_closed
+  local pwsh pkg
+  pwsh=$(pwsh_cmd)
+  pkg=$(unpack "$1")
+  mkdir -p "$LOGS"
+  say "installing $(basename "$pkg") into $GAME"
+  "$pwsh" -NoProfile -File "$pkg/install-server-build.ps1" -GameFolder "$GAME" "${@:2}" 2>&1 | tee "$LOGS/install-$(date +%Y%m%d-%H%M%S).log"
+  local code=${PIPESTATUS[0]}
+  [ "$code" -eq 0 ] || die "the install stopped (exit $code); the messages above say why"
+  linux_files "$pkg"
+}
+
+cmd_rollback() {
+  game_ok || die "no Offline DAoC game in $GAME"
+  assert_closed
+  local pwsh script
+  pwsh=$(pwsh_cmd)
+  # The newest installed build's own rollback script (each install copies none; the package folder in runtime/updates
+  # or the folder it was installed from has it). Fall back to the newest unpacked package.
+  script=$(ls -1d "$RUNTIME"/updates/LivingServer-*/rollback-server-build.ps1 2> /dev/null | sort -V | tail -n 1)
+  [ -n "$script" ] || die "no Living Server package in $RUNTIME/updates to roll back with. Unpack the installed build's zip there first."
+  local args=(-GameFolder "$GAME")
+  [ "${1:-}" = "--to-release" ] && args+=(-ToRelease)
+  mkdir -p "$LOGS"
+  "$pwsh" -NoProfile -File "$script" "${args[@]}" 2>&1 | tee "$LOGS/rollback-$(date +%Y%m%d-%H%M%S).log"
+  [ "${PIPESTATUS[0]}" -eq 0 ] || die "the rollback stopped; the messages above say why"
+}
+
+# The newest install record that wasn't rolled back (runtime/server/deployment-backups, as ROLLBACK.cmd reads them).
+installed_build() {
+  local d
+  for d in $(ls -1d "$RUNTIME"/server/deployment-backups/fork-build-* 2> /dev/null | sort -r); do
+    [ -f "$d/install-record.json" ] && [ ! -f "$d/rolled-back.txt" ] || continue
+    python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8-sig"))["BuildName"])' "$d/install-record.json" 2> /dev/null && return 0
+  done
+  return 1
+}
+
+cmd_update() {
+  have curl || die "curl is missing (sudo apt install curl)"
+  have python3 || die "python3 is missing"
+  local meta tag name url digest
+  meta=$(curl -fsSL --retry 3 -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$REPO/releases/latest") ||
+    die "GitHub didn't answer (offline, or its rate limit). Try again later."
+  IFS=$'\t' read -r tag name url digest < <(python3 -I -c '
+import json, sys
+r = json.load(sys.stdin)
+tag = r.get("tag_name", "")
+build = tag[1:] if tag.startswith("v") else tag
+want = "OfflineDAoC-LivingServer-%s.zip" % build
+a = [a for a in r.get("assets", []) if a.get("name") == want]
+a = a[0] if a else {}
+print("\t".join([tag, want, a.get("browser_download_url", "-"), a.get("digest") or "-"]))' <<< "$meta")
+  say "newest release: $tag (installed: $(installed_build || true))"
+  [ "${1:-}" = "--check" ] && return 0
+  [ "$url" != "-" ] || die "the $tag release has no $name"
+  [[ $url == "https://github.com/$REPO/releases/download/"* ]] || die "the package's address isn't one of this project's release files: $url"
+  [[ $digest == sha256:* ]] || die "GitHub gave no SHA-256 digest for $name, so it can't be checked. Nothing was downloaded."
+  game_ok || die "no Offline DAoC game in $GAME"
+  assert_closed
+  mkdir -p "$RUNTIME/updates"
+  local zip="$RUNTIME/updates/$name"
+  if [ ! -f "$zip" ] || ! echo "${digest#sha256:}  $zip" | sha256sum -c --status -; then
+    say "downloading $name"
+    curl -fL --retry 5 --progress-bar -o "$zip.part" "$url" || die "the download failed"
+    echo "${digest#sha256:}  $zip.part" | sha256sum -c --status - || { rm -f "$zip.part"; die "the download doesn't match GitHub's SHA-256 and was deleted"; }
+    mv -f "$zip.part" "$zip"
+  fi
+  cmd_install "$zip"
+}
+
+cmd_play() {
+  game_ok || die "no Offline DAoC game in $GAME"
+  have wine || die "Wine is missing. Install it from your distribution (Ubuntu: sudo apt install wine64 wine32:i386) and try again."
+  [ -d "$WINEPREFIX/drive_c" ] || die "the game's Wine folder ($WINEPREFIX) isn't set up yet; run the Linux setup first"
+  mkdir -p "$LOGS"
+  local g; g=$(winepath -w "$GAME" 2> /dev/null || echo "Z:${GAME//\//\\}")
+  # Server memory (Ryan's DOTNET_GCHeapCount=4, DOTNET_GCConserveMemory=5) is the launcher's "Lean server memory" option
+  # in the Options tab from Living Server 1.2 (#208): the launcher sets or clears both at START SERVER, on Linux as on Windows.
+  ( cd "$GAME" && WINEDEBUG=${WINEDEBUG:--all,err+module,err+seh} DOTNET_ROOT="$g\\tools\\dotnet" DOTNET_ROOT_X64="$g\\tools\\dotnet" \
+      DOTNET_MULTILEVEL_LOOKUP=0 exec wine runtime/OfflineDAoC.exe ) > "$LOGS/launcher.log" 2>&1 &
+  local launcher=$!
+  if have python3 && [ -f "$HERE/daoc_fullscreen.py" ] && [ -n "${DISPLAY:-}" ]; then
+    python3 -I "$HERE/daoc_fullscreen.py" --watch --while-pid "$launcher" >> "$LOGS/fullscreen.log" 2>&1 &
+  fi
+  say "the launcher is open (log: $LOGS/launcher.log)"
+  wait "$launcher"
+}
+
+cmd_status() {
+  echo "game:      $GAME"
+  echo "running:   $(running || echo nothing)"
+  echo "port:      $(port) $(listening "$(port)" && echo '(listening)' || echo '(free)')"
+  echo "installed: $(installed_build || echo unknown)"
+  echo "wine:      $(wine --version 2> /dev/null || echo missing)   prefix: $WINEPREFIX $([ -d "$WINEPREFIX/drive_c" ] && echo '(ready)' || echo '(not set up)')"
+  echo "pwsh:      $( (pwsh_cmd 2> /dev/null && true) || echo missing)"
+}
+
+case "${1:-}" in
+  play) shift; cmd_play "$@" ;;
+  install) shift; cmd_install "$@" ;;
+  update) shift; cmd_update "$@" ;;
+  rollback) shift; cmd_rollback "$@" ;;
+  status) shift; cmd_status "$@" ;;
+  *) sed -n '2,20p' "$0" | sed 's/^# \{0,1\}//'; exit 2 ;;
+esac
