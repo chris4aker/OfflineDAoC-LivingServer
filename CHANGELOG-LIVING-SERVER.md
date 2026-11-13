@@ -31,6 +31,48 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
 
 ## 1.2 (in development)
 
+**Audit fixes (2026-11-13).** A review of everything the fork added since its last upstream sync, on the 1.2 candidate.
+- **A passport carries only character tables.** Its checksum proves the file is whole, not who wrote it, and arrival
+  inserted every table the file named; a hand-made passport could have planted an account (a GM one) or server settings
+  through the Passport Desk. Anything but the travelling tables now refuses the whole passport, with nothing changed.
+- **The Passport Desk's port (login port + 10) is opened** with the game's ports while hosting, and on the router with
+  internet hosting. It was left closed, so a passport could not reach it through Windows Firewall.
+- **Wrong passwords from another PC lock that address out** (five in ten minutes), for game logins to existing accounts
+  and for the Passport Desk, as for the host password. Upstream had no limit. A new friend's own password is 6 or more.
+- **Logs:** server.log and warn.log keep 3 days, routine bot travel and goal lines go to detail.log (2 days), and every
+  log has a limit; an install's older log settings are replaced at start (kept as `logconfig.xml.before-2`). A full
+  server wrote about 300 MB a day and kept 7 days.
+- A raid forced from the launcher ends after three hours without progress; the patcher refuses paths outside the game
+  folder; MySqlConnector 2.6.2 and OpenTelemetry 1.20.1 (no advisories left); a small leak of player groups fixed.
+
+**Bots dress up, at the game's own prices** (owner, 2026-11-12/13). A gamebot spends part of the coin above its reserve
+(5 gold a level) on the world's own dye items at a merchant: cloth dye, leather dye or enamel for its armor, and a weapon
+luster for the ones that like to show off (about 196 gold, as the game prices it). Each bot has a fixed style: about a
+fifth never bother, others wear one tidy everyday colour, a few are peacocks in the dearest shades; colours lean on the
+realm, and a guild often wears one. Bots never buy glows: glowing weapons come from epic and dragon drops and the
+Darkness Falls merchants, and the Effect Master stays a player's choice. Settings: `bot_cosmetics`,
+`bot_cosmetics_price_percent`. Log: `BOT_COSMETIC`. Seen on the owner's PC: build 6 loaded 207 dyes and bought them at
+their real prices; tidy bots paid up to 19 gold a piece there, so they now keep to shades of a gold or less.
+
+**A raid has no time limit; it ends when it is beaten, blocked or stalled** (owner, 2026-11-13: "if that's what it takes
+to get through the dungeon, we shouldn't have time outs"). Caer Sidi was cut off by the four-hour window with 12 named
+down and still moving. A raid in battle now ends when it wins, runs out of attempts, or goes an hour with no named or
+boss down, no wipe and no new low on its target (`REALM_RAID_STALLED`; three hours for a raid forced from the launcher).
+
+**The boss's tale, then the call with a horn; a realm's raids every four hours** (owner, 2026-11-12). The realm's
+storyteller tells the raid boss's tale in /faction first; about fifteen seconds after its last line the realm is called
+with a line across the screen and a horn, and only then are bots recruited. A raid is never lost to its tale. Each realm
+opens its own raid every four hours (240 minutes; a world on the old 150 default moves once). Seen on the owner's PC,
+builds 3 and 4.
+
+**Smaller raid fixes from the play tests.** A raid invite box whose raid already left says so instead of "no spot left"
+(seen expiring on build 5). A player in a disbanded group is told, so the old raid party leaves the group window. A
+storyteller says nothing else mid-tale, and a player's tale request is always answered. Return waves hold only raiders
+who have been inside. A bot-led group's let-go logs its real reason.
+
+**A bot the launcher makes at level 50 arrives trained in its build** (owner's PC, 2026-11-11: of 2,700 new level-50
+bots, 792 had trained after 80 minutes). A level-50 gamebot that never trained spends its build's points when it loads.
+
 **Character passport: take your character to a friend's world and back** (built by rambodolphin13 for DividedRealms,
 `da78651` and `da92848`, cherry-picked with his authorship; thank you, rambodolphin13). In the launcher, **CHARACTER
 PASSPORT…** takes one of your characters to a friend's hosted world with its gear, quests and the coin you choose, and
