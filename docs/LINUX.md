@@ -9,8 +9,47 @@ Owner decisions, 2026-11-13 12:01:
 - **Where it is tried:** WSL2 on the owner's PC for the server, the launcher and the installer. The game client under
   Wine is only proven on a real Linux desktop (the friend's), because WSL's graphics can't stand in for one.
 
-Nothing here has been run on a real Linux desktop yet. Earlier prototypes (2026-11-07, in a container and in GitHub's
-Linux CI) are in §9.
+## 0. Route change: everything under Wine first (2026-11-13)
+
+The owner's friend, Ryan, has been playing Offline DAoC 0.37b with Living Server 1.1-beta on Ubuntu (GNOME). He runs
+the **whole Windows package under Wine**: the launcher, the server it starts, and the client. His scripts are at
+[ryan-grafana/offline-daoc-linux](https://github.com/ryan-grafana/offline-daoc-linux), commit 80dc67b, and the
+owner has asked that we take from them.
+
+That is evidence from real play, which this plan didn't have. It changes the order of work:
+
+1. **First, the Wine route (Linux 1.0).** The same Windows files, run under Wine. There is no new launcher and no
+   Linux server build. What has to be built:
+   - a player setup script, from Ryan's `setup-offline-daoc.sh` cut down to what a player needs: Wine check, prefix,
+     shadowofze's 0.36b plus 0.37b with hash checks and his patcher, Living Server;
+   - Living Server's install and rollback that work on Linux for **1.2**;
+   - a start script with the server memory settings and the fullscreen fix (Ryan's `start-daoc.sh` and
+     `daoc_fullscreen.py`);
+   - launcher guards for what Wine lacks (the Windows firewall in Host for Friends, the PowerShell update hand-off);
+   - a friend's checklist.
+2. **Later, only if Wine falls short:** the native route in §1–§10 (Linux .NET server with `Detour.so`, command-line
+   launcher). Triggers would be server speed or memory under Wine, or players without a desktop (a headless host).
+
+Ryan's pieces, as of 80dc67b:
+
+| Piece | Use |
+|---|---|
+| `setup-offline-daoc.sh` + `odaoc_helper.py`: mirrors shadowofze's releases with size and SHA-256 checks (GitHub digests and his `download-manifest.json`), checks the 0.36b archive hash, unpacks it, applies 0.37b with shadowofze's own patcher on Linux .NET, builds the Wine prefix, never runs sudo | **Take**, cut down for players. The source mirrors, NuGet and SDK steps are for building, not playing. |
+| `install_living_server.py`: a Python port of `install-server-build.ps1`, same backups and `install-record.json` | **Take the approach, not the file.** It ports the **1.1-beta** script. 1.2's install also copies the server's own libraries, the loading screen and the rollback guards (`git diff v1.1-beta..integration/1.2 -- tools/fork-build/`), so it must not install 1.2 as it is. |
+| `start-daoc.sh`: the launcher under Wine; `DOTNET_GCHeapCount=4`, `DOTNET_GCConserveMemory=5` | **Take.** The memory finding may apply on Windows too (below). |
+| `daoc_fullscreen.py`: makes the client window fullscreen under GNOME/XWayland so the top bar doesn't push the bottom buttons off-screen | **Take** as is (X11 via ctypes, no dependencies). |
+| Prefix verbs `corefonts vcrun2019 d3dx9 dotnet35 dxvk` | **Check each.** DXVK is the player's own choice in their own prefix and is never shipped (AGENTS.md); the default is Wine's own Direct3D. Find out why `dotnet35` is needed: it takes 10+ minutes. |
+
+**Server memory.** Ryan saw the server grow to about 6 GB in a 48-minute session on a 16-core CPU. Server GC keeps
+one heap per logical CPU. The owner's PC has 16 logical CPUs too, so the same may happen on Windows. Check the
+server's memory on Windows before changing anything there.
+
+**Licence.** Ryan's repository has no licence file. Before any of his code is copied in, he adds GPL-3.0 (this
+repository's licence) or says in writing that we may use it under GPL-3.0. He is credited in the commits
+(`Co-authored-by`) and in THIRD_PARTY.md.
+
+Nothing in the plan below has run on a real Linux desktop. Ryan's own setup (1.1-beta) has. Earlier prototypes
+(2026-11-07, in a container and in GitHub's Linux CI) are in §9.
 
 ## 1. The idea
 
@@ -143,7 +182,7 @@ tools/linux/assemble-server.sh --server-build source/server/Release --detour /tm
 tools/linux/smoke-server.sh --game /tmp/OfflineDAoC --playtester <OfflineDaoc.Playtester.dll> --out /tmp/smoke
 ```
 
-## 10. Order of work and effort
+## 10. Order of work and effort (the native route; see §0 for the Wine route that comes first)
 
 | Part | Effort (working days, the plan's own estimate) |
 |---|---|
