@@ -53,6 +53,24 @@ class CheckVersions(unittest.TestCase):
         self.write(fork=FORK.replace("1.1.1-beta", "1.1.2-beta"))
         self.assertEqual(self.problems(), [], "the build may already be named for the release in development")
 
+    def test_the_1_2_lines_headings_without_beta_are_in_development(self):
+        # integration/1.2: "## 1.2.1 (in development)" and "## 1.2 (in development)" above a 1.1.2 still in development.
+        self.write(changelog=CHANGELOG.replace("## Beta 1.1.1", "## 1.2.1 (in development)\n\n- a line\n\n"
+                                               "## 1.2 (in development)\n\n- a line\n\n"
+                                               "## Beta 1.1.2 (in development)\n\n- a line\n\n## Beta 1.1.1"))
+        for build in ("1.2-beta", "1.2.1-beta", "1.1.2-beta", "1.1.1-beta"):
+            self.write(fork=FORK.replace("1.1.1-beta", build))
+            self.assertEqual(self.problems(), [], build)
+        self.write(fork=FORK.replace("1.1.1-beta", "1.3-beta"))
+        self.assertTrue(any("BuildName is 1.3-beta" in p for p in self.problems()))
+
+    def test_a_heading_without_beta_is_never_a_release(self):
+        # "## 1.2 — <date>" without "Beta" isn't read as released, and neither are the old "## 0.37-se.1 — ..." ones.
+        self.write(changelog=CHANGELOG.replace("## Beta 1.1.1", "## 1.2 — 2026-11-09\n\n- a line\n\n## Beta 1.1.1"))
+        self.assertEqual(self.problems(), [], "the newest release is still Beta 1.1.1")
+        self.write(fork=FORK.replace("1.1.1-beta", "1.2-beta"))
+        self.assertTrue(any("BuildName is 1.2-beta" in p for p in self.problems()))
+
     def test_build_name_ahead_without_a_heading_fails(self):
         self.write(fork=FORK.replace("1.1.1-beta", "1.1.2-beta"))
         self.assertTrue(any("BuildName is 1.1.2-beta" in p for p in self.problems()))

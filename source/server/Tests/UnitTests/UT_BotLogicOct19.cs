@@ -168,7 +168,7 @@ namespace DOL.UnitTests
                 Assert.That(RealmRaidRecruitmentPolicy.ScheduledRaidDue(1_000, 1_000, false, 110, 0), Is.False, "schedule switched off");
                 Assert.That(RealmRaidRecruitmentPolicy.FirstScheduledDelayMilliseconds(0), Is.EqualTo(20 * 60_000L));
                 Assert.That(RealmRaidRecruitmentPolicy.FirstScheduledDelayMilliseconds(2), Is.EqualTo(40 * 60_000L));
-                Assert.That(RealmRaidRecruitmentPolicy.ScheduleMinutes, Is.EqualTo(150));
+                Assert.That(RealmRaidRecruitmentPolicy.ScheduleMinutes, Is.EqualTo(240), "four hours since 1.2 (the tale, then the call); 150 before");
                 Assert.That(RealmRaidRecruitmentPolicy.MinimumBotsSetting, Is.Zero);
             });
         }

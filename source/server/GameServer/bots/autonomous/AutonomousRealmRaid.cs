@@ -302,6 +302,9 @@ namespace DOL.GS
                     Log.Info($"REALM_RAID_SCHEDULE_SKIPPED realm={GlobalConstants.RealmToName(realm)} online={online} reason=\"no encounter available (respawning or on cooldown)\"");
                     continue;
                 }
+                // 1.2: the boss's tale first, then the call (AutonomousRealmRaid.Call.cs); the raid forms when the tale ends.
+                if (BeginCall(chosen, realm, now, false))
+                    continue;
                 if (Start(chosen.Id, realm, out string reason))
                 {
                     Log.Info($"REALM_RAID_SCHEDULED event={chosen.Id} realm={GlobalConstants.RealmToName(realm)} online={online} required={Raids[chosen.Id].Required} " +
@@ -325,6 +328,7 @@ namespace DOL.GS
                     : !AutonomousPopulationController.StartupRampFinished ? "the realm's gamebots are still logging in"
                     : !Definitions.Any(d => d.Id == id && d.Realm == realm) ? "no such raid for that realm"
                     : Raids.Values.Any(r => r.Definition.Realm == realm) ? "the realm already has a raid"
+                    : PendingCalls.ContainsKey(realm) ? "the realm's next raid is waiting for its tale"
                     : !Available(id) ? "the encounter is not up, or on cooldown"
                     : online < RealmRaidRecruitmentPolicy.MinimumScaledBots * 2 ? $"only {online} level 50s of the realm are free"
                     : null;
@@ -436,6 +440,7 @@ namespace DOL.GS
                     }
                 }
                 PulseSchedule(now);
+                PulseCalls(now);
                 foreach (var raid in Raids.Values.ToArray())
                 {
                     foreach (Group group in raid.Parties.Keys.ToArray())
@@ -759,7 +764,13 @@ namespace DOL.GS
                     : ForcedStartCondition(definition.IsDungeon);
                 // One quiet top-of-screen line for the realm's players (automatic and launcher-forced alike),
                 // so a player can join the bots at the rally point.
-                RealmEventNotices.QueueScreen(id, realm, $"A {definition.Name} raid is forming at {raid.Hub.Name}.", AnnouncementKind.PveRealmEvent);
+                // 1.2: a raid of the game or the launcher is called with the large line and a horn (the owner, 2026-11-12);
+                // a play test's raid keeps the plain line.
+                if (playtestSize > 0)
+                    RealmEventNotices.QueueScreen(id, realm, $"A {definition.Name} raid is forming at {raid.Hub.Name}.", AnnouncementKind.PveRealmEvent);
+                else
+                    RealmEventNotices.QueueScreen(id, realm, RealmRaidRecruitmentPolicy.CallLine(GlobalConstants.RealmToName(realm), definition.Name, raid.Hub.Name),
+                        AnnouncementKind.PveRealmEvent, RealmRaidRecruitmentPolicy.CallHornSound);
                 // Living Server 1.2: the place's own line for the realm, after the forming notice (docs/LORE.md).
                 if (GameWideAnnouncements.Enabled(AnnouncementKind.PveRealmEvent))
                     LoreAtmosphere.RaidForming(realm, definition.Region, definition.Name);
@@ -1885,9 +1896,14 @@ namespace DOL.GS
         private static void SupersedeAutomatic(eRealm realm, string forcedId)
         {
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
                 foreach (Raid automatic in Raids.Values.Where(r => r.Definition.Realm == realm && !r.Forced && !r.Started &&
                              r.Definition.Id != forcedId).ToArray())
                     End(automatic, GameLoop.GameLoopTime, $"{StoppedByPlayer}: superseded by the forced {forcedId} expedition.");
+                // 1.2: so is the realm's own raid that still waits for its tale.
+                if (PendingCalls.TryGetValue(realm, out PendingCall waiting) && !waiting.Forced && waiting.Id != forcedId)
+                    CancelCall(waiting.Id, $"superseded by the forced {forcedId} expedition");
+            }
         }
 
         /// <summary>Launcher "Stop event": ends an active dragon or epic dungeon expedition now.</summary>
@@ -1896,7 +1912,11 @@ namespace DOL.GS
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Raids.TryGetValue(id, out Raid raid))
-                { reason = "This expedition is not running."; return false; }
+                {
+                    bool waiting = CancelCall(id, "stopped from the launcher");
+                    reason = waiting ? "The raid was waiting for its tale and will not be called." : "This expedition is not running.";
+                    return waiting;
+                }
                 End(raid, GameLoop.GameLoopTime, StoppedByPlayer + " from the launcher.");
                 reason = $"{raid.Definition.Name} stopped. The bots return to their own goals; no cooldown was set.";
                 return true;
