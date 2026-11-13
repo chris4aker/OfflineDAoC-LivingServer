@@ -83,6 +83,7 @@ namespace DOL.GS
         CombatSpells,
         CombatHeals,
         CombatStyle,
+        CombatMovement,
 
         // Pets.
         PetsMaintain,
@@ -104,6 +105,7 @@ namespace DOL.GS
         EconomyValuation,
         TownIdle,
         TownService,
+        TownHangout,
 
         // Housekeeping.
         SweepDepartedReferences,
@@ -234,6 +236,7 @@ namespace DOL.GS
             AiSystem.CombatSpells => "combat.spells",
             AiSystem.CombatHeals => "combat.heals",
             AiSystem.CombatStyle => "combat.style",
+            AiSystem.CombatMovement => "combat.movement",
             AiSystem.PetsMaintain => "pets.maintain",
             AiSystem.PetsSync => "pets.sync",
             AiSystem.DbStatusBatch => "db.status_batch",
@@ -247,6 +250,7 @@ namespace DOL.GS
             AiSystem.EconomyValuation => "economy.valuation",
             AiSystem.TownIdle => "town.idle",
             AiSystem.TownService => "town.service",
+            AiSystem.TownHangout => "town.hangout",
             AiSystem.SweepDepartedReferences => "sweep.departed_refs",
             AiSystem.LockCoordinator => "lock.coordinator",
             AiSystem.LockRaid => "lock.raid",

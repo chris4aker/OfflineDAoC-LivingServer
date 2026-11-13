@@ -106,7 +106,8 @@ namespace DOL.GS
                     !AutonomousDarknessFallsNavigation.MayQueueRuntimePath(pathfindingResult,
                         rentedNodeBuffer, position, target) &&
                     !AutonomousDarknessFallsNavigation.MayQueueOwnExitGroundPath(Owner.Realm,
-                        pathfindingResult, rentedNodeBuffer, position, target))
+                        pathfindingResult, rentedNodeBuffer, position, target) &&
+                    !TryStrictDarknessFallsPrefix(zone, position, target, filters, rentedNodeBuffer, ref pathfindingResult))
                 {
                     // DF navigation is only safe as a complete certified 3D
                     // corridor. Do not advance along a partial route or an
@@ -151,6 +152,26 @@ namespace DOL.GS
             {
                 ArrayPool<WrappedPathfindingNode>.Shared.Return(rentedNodeBuffer);
             }
+        }
+
+        /// <summary>
+        /// A long Darkness Falls walk whose corridor Detour cut at its 256-polygon search limit (a partial path) walks
+        /// the cut corridor's own end first, when that end is itself a complete strict DF segment (re-queried and
+        /// re-validated; partial again from there, and the usual continuation replots). 1.1.2 test, 2026-11-07: after
+        /// Prince Ba'alorien the Hibernian raid's path to Princess Nahemah's muster was cut at 25380,25567,18128; every
+        /// raider got NoPathFound, 37 gave up their goal and the event camp was quarantined. Both halves are strict.
+        /// </summary>
+        private static bool TryStrictDarknessFallsPrefix(Zone zone, Vector3 position, Vector3 target, EDtPolyFlags[] filters,
+            WrappedPathfindingNode[] nodes, ref PathfindingResult result)
+        {
+            if (!AutonomousDarknessFallsNavigation.IsTruncatedCorridor(result, nodes, position, target))
+                return false;
+            Vector3 end = nodes[result.NodeCount - 1].Position;
+            PathfindingResult prefix = PathfindingProvider.Instance.GetPathStraight(zone, position, end, filters, nodes);
+            if (!AutonomousDarknessFallsNavigation.MayQueueRuntimePath(prefix, nodes, position, end))
+                return false;
+            result = new(PathfindingStatus.PartialPathFound, prefix.NodeCount);
+            return true;
         }
 
         /// <summary>

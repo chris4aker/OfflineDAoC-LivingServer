@@ -163,6 +163,11 @@ namespace DOL.GS
 
         #endregion
 
+        /// <summary>A tactic's melee position order (EncounterMeleeStations: Govannon's demon) sets how close the bot follows
+        /// the target it fights; otherwise the NPC default.</summary>
+        public override int StickMinimumRange =>
+            EncounterMeleeStations.MinimumFollowFor(this, TargetObject, GameLoop.GameLoopTime) ?? base.StickMinimumRange;
+
         #region IGamePlayer — CharacterClass
 
         protected ICharacterClass m_characterClass;
@@ -1017,6 +1022,8 @@ namespace DOL.GS
             _stableReturnPlan = null;
             CompleteStableMasterRoute();
             BotDutyLeases.OnDied(this); // a battleground rally drops its dead (BotDutyLeaseRules.EndsOnDeath)
+            // 1.1.3, after RC6: how many were on it, read before the death clears the tracker, for how the death is told.
+            int attackers = IsAutonomousWorldBot ? AutonomousDeathDiagnostics.Attackers(this) : 0;
 
             if (IsAutonomousWorldBot && PersistentRecord != null)
             {
@@ -1034,7 +1041,7 @@ namespace DOL.GS
             {
                 AutonomousBotStatusPersistence.Queue(this);
                 AutonomousBotGuildSocial.OnBotDeath(this);
-                AutonomousBotVoices.OnBotDeath(this);
+                AutonomousBotVoices.OnBotDeath(this, killer, attackers);
                 AutonomousLivingServer.OnBotDied(this, killer);
             }
             StartDeathRecoveryTimer();
@@ -1199,8 +1206,8 @@ namespace DOL.GS
                 release = new Point3D(capital.X, capital.Y, capital.Z);
             }
             release ??= _deathLocation;
-            if (IsAutonomousWorldBot)
-                AutonomousLivingServer.OnBotReleasing(this);
+            // RC6 on the owner's PC: "long run back to Pennine Mountains" and "released, running back" in the same second.
+            bool toldGroup = IsAutonomousWorldBot && AutonomousLivingServer.OnBotReleasing(this);
             // Transfer the corpse first: a failed MoveTo must not revive the bot
             // at its killer or cause HandleDeathRecovery to discard its timer.
             if (!MoveCorpseForRelease(releaseRegion, release.X, release.Y, release.Z, Heading))
@@ -1215,8 +1222,8 @@ namespace DOL.GS
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
             ShowStandingToViewers();
-            if (returnToParty)
-                Say(ReturnDialogue("release"));
+            if (returnToParty && !toldGroup)
+                TellOwnGroup(ReturnDialogue("release"));
 
             if (PersistentRecord != null)
             {
@@ -1402,7 +1409,8 @@ namespace DOL.GS
                 IsReturningAfterRelease = false;
                 _stableReturnPlan = null;
                 CompleteStableMasterRoute();
-                Say(ReturnDialogue("arrive"));
+                // 1.1.3 (RC5 on the owner's PC): "back" only after a death; a bot that walked to the player after an invite is "here".
+                TellOwnGroup(ReturnDialogue(_deathTick > 0 && GameLoop.GameLoopTime - _deathTick < 20 * 60_000 ? "arrive" : "arrive_walk"));
                 Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
                 BotGroupRelease.FinishReturn(this); // Fork: as an invitation does
                 return false;
@@ -1416,7 +1424,7 @@ namespace DOL.GS
                 if (!TryCompleteStableMasterRouteAfterArrival())
                     return true;
                 _stableReturnPlan = null;
-                Say(ReturnDialogue("dismount"));
+                TellOwnGroup(ReturnDialogue("dismount"));
             }
 
             _stableReturnPlan ??= FindFasterStableRoute(destination);
@@ -1450,7 +1458,7 @@ namespace DOL.GS
                     return true;
                 }
                 _stableReturnPlan = null;
-                Say(ReturnDialogue("mount"));
+                TellOwnGroup(ReturnDialogue("mount"));
                 return true;
             }
 
@@ -1487,7 +1495,23 @@ namespace DOL.GS
             if (GameLoop.GameLoopTime < _nextReturnRoleplayTick || IsCasting || InCombat)
                 return;
             _nextReturnRoleplayTick = GameLoop.GameLoopTime + Util.Random(60_000, 120_000);
-            Say(ReturnDialogue(stage));
+            TellOwnGroup(ReturnDialogue(stage));
+        }
+
+        /// <summary>
+        /// Where a line about the way back after a release goes: the bot's own group, and only when a player is in it (1.1.3 RC1,
+        /// live check 2026-11-08 at Camelot's bind: about 25 "released, running back" lines in 45 s in /say, from bots of other
+        /// groups, to everyone standing there). "group", or null when nobody needs to hear it. Pure.
+        /// </summary>
+        public static string ReturnLineChannel(bool inGroup, bool groupHasPlayer) => inGroup && groupHasPlayer ? "group" : null;
+
+        private void TellOwnGroup(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text) || ReturnLineChannel(Group != null, AutonomousLivingServer.GroupHasPlayer(Group)) == null)
+                return;
+            text = AutonomousRoleplayers.Voice(this, text);
+            Group.SendMessageToGroupMembers(this, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
+            BotChatTranscript.Bot("group", Name, Realm, text);
         }
 
         // Play test 2026-10-27: an autonomous gamebot in the player's group said "I have caught up. Returning to formation." —
@@ -1508,6 +1532,12 @@ namespace DOL.GS
             "stable" => "grabbing a horse, faster",
             "mount" => string.IsNullOrEmpty(stableDestination) ? "on a horse, be there soon" : $"horse to {stableDestination}, be there soon",
             "dismount" => "off the horse, almost there",
+            "arrive_walk" => random.Next(3) switch
+            {
+                0 => "here",
+                1 => "made it, ready",
+                _ => "ok here, whats the plan",
+            },
             "arrive" => random.Next(3) switch
             {
                 0 => "back",
@@ -2673,6 +2703,21 @@ namespace DOL.GS
             }
             m_leftOverSpecPoints = Math.Max(0, record.UnspentSpecPoints);
             _lastAutonomousTrainedLevel = IsEpicSpecialForce ? Level : ParseLastTrainedLevel(record.SerializedAbilities, Level, record.SerializedSpecs);
+            // A bot the launcher made at level 50 ("+ Lv.50") has its lifetime build but has never stood at a trainer: it
+            // arrives trained in that build, as a player who leveled there would be. PC 2026-11-11 (build e90bf21): 900 such
+            // bots a realm loaded with every line at 1, 792 of 2,700 had found a trainer after 80 minutes, and raids staged
+            // 20 minutes in were fought by level 50s with level-1 skills (9 of the 72 sent to Golestandt had trained).
+            bool arrivedTrained = !IsEpicSpecialForce && ArrivesTrained(Level, _lastAutonomousTrainedLevel);
+            if (arrivedTrained)
+            {
+                SpendSpecPoints(Level, _lastAutonomousTrainedLevel);
+                _lastAutonomousTrainedLevel = Level;
+                MarkAutonomousStateDirty();
+                if (AutonomousDiagnosticsProperties.Training)
+                    log.Info($"AUTONOMOUS_TRAINING bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" level={Level} " +
+                             $"trainer=\"(arrived trained)\" trainedFrom=1 trainedThrough={Level} " +
+                             $"specializations=\"{string.Join(",", GetSpecList().Where(spec => spec.Trainable && spec.Level > 1).Select(spec => $"{spec.KeyName}:1->{spec.Level}"))}\" unspent={m_leftOverSpecPoints}");
+            }
             RefreshSpecDependantSkills(false);
             SetBotSpells();
             SortStyles();
@@ -2691,8 +2736,8 @@ namespace DOL.GS
                 starterWeaponAdded |= BotRangedCombat.EnsureStarter(this);
                 starterWeaponAdded |= BotStarterInstruments.Ensure(this);
                 RefreshItemBonuses();
-                if (starterWeaponAdded || !buildLocked)
-                    AutonomousBotStatusPersistence.Queue(this, starterWeaponAdded);
+                if (starterWeaponAdded || !buildLocked || arrivedTrained)
+                    AutonomousBotStatusPersistence.Queue(this, starterWeaponAdded || arrivedTrained);
             }
             Experience = Math.Max(0, record.Experience);
             AutonomousRealmPoints = Math.Max(0, record.RealmPoints);
@@ -2916,6 +2961,17 @@ namespace DOL.GS
             if (target != null && IsRecoveryResting)
                 return;
 
+            // 1.2 epic rule (Funus with his weapon puzzle): a bot never starts an attack on a boss it must not hit (its hits
+            // heal him to full), and an archer that may fight him with its distance weapon only starts with that weapon.
+            // Play test duo14: reavers he turned on fought back in melee (40 of his 110 heals).
+            if (target is GameLiving living && EpicEncounterTactics.MustNotHit(this, living))
+            {
+                if (RefusesAttackOn(this, living))
+                    return;
+                if (ActiveWeaponSlot != eActiveWeaponSlot.Distance)
+                    SwitchWeapon(eActiveWeaponSlot.Distance);
+            }
+
             // A ranged shot owns its aim/release animation.  Reissuing the
             // same target every think pulse used to reset that state, producing
             // repeated bow preparation with no completed shot.  Suppress only
@@ -2929,6 +2985,11 @@ namespace DOL.GS
 
             base.StartAttack(target);
         }
+
+        /// <summary>The bot must not hit <paramref name="target"/> at all and has no distance weapon it may fight it with (an
+        /// epic rule: Funus while his puzzle is on, for a class he takes no damage from), so it starts no attack on it.</summary>
+        public static bool RefusesAttackOn(GameBot bot, GameLiving target) =>
+            EpicEncounterTactics.MustNotHit(bot, target) && !EpicEncounterTactics.FightsAtRange(bot, target);
 
         public override bool AddToWorld()
         {
@@ -3383,6 +3444,10 @@ namespace DOL.GS
             // Treat those as current so the migration never double-spends points.
             return string.IsNullOrWhiteSpace(serializedSpecs) ? (byte)1 : currentLevel;
         }
+
+        /// <summary>The launcher makes bots at level 1 or at level 50 only, and a bot that leveled up trains on its way: a
+        /// level-50 bot that never trained was made at 50, and arrives trained in its lifetime build (pure).</summary>
+        public static bool ArrivesTrained(int level, int trainedLevel) => level >= 50 && trainedLevel <= 1;
 
         /// <summary>"trained-level|N|realm-points|M": realm ability points already spent at a trainer (0 when absent).</summary>
         public static int ParseTrainedRealmPoints(string serialized)
@@ -4956,6 +5021,11 @@ namespace DOL.GS
 
         public override void SwitchWeapon(eActiveWeaponSlot slot)
         {
+            // Play test diagnostic (Funus): who puts the melee weapon in hand of a bot that may fight its target only
+            // with its distance weapon. Once per bot every ten minutes, the call path.
+            if (slot != eActiveWeaponSlot.Distance && ActiveWeaponSlot == eActiveWeaponSlot.Distance &&
+                TargetObject is GameLiving rangedOnly && EpicEncounterTactics.FightsAtRange(this, rangedOnly))
+                EpicEncounterRestores.NoteMeleeSwitch(this, rangedOnly);
             // GameNPC.SwitchWeapon intentionally stops and restarts an active
             // attack, even when the requested slot is already selected. That
             // is useful for scripted NPCs, but inventory/equipment refreshes
@@ -5062,7 +5132,23 @@ namespace DOL.GS
         {
             if (target != null && IsRecoveryResting)
                 return;
-            base.Follow(target, minDistance, maxDistance);
+            base.Follow(target, MeleeStandOff(target, minDistance), maxDistance);
+        }
+
+        /// <summary>
+        /// Living Server 1.2, "arrive slightly short": an autonomous gamebot's melee approach to a monster stops 0-20 units
+        /// short of the stick distance, the same for the same bot every fight (BotCombatMovement.StandOff), so bots don't all
+        /// stand on one exact ring. Not for companions, player-led groups, dragons, epic encounters or raid dungeons.
+        /// </summary>
+        private int MeleeStandOff(GameObject target, int minDistance)
+        {
+            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsEpicSpecialForce || IsPlayerLedGroup ||
+                target == null || target != TargetObject || target is not GameNPC monster || monster is GameBot ||
+                minDistance != StickMinimumRange || ActiveWeaponSlot == eActiveWeaponSlot.Distance ||
+                DragonCombatGeometry.TargetReach(monster) > 0 || EpicEncounterTactics.For(monster) != null ||
+                EpicEncounterTactics.IsTacticPart(monster) || AutonomousRealmRaid.IsRaidDungeon(CurrentRegionID))
+                return minDistance;
+            return BotCombatMovement.StandOff(minDistance, DatabaseID > 0 ? DatabaseID : ObjectID);
         }
 
         public new void StopFollowing()

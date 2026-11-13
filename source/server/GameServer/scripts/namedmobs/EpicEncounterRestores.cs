@@ -93,8 +93,38 @@ namespace DOL.GS
         {
             if (!Log.IsInfoEnabled) return;
             string kind = source switch { GamePlayer => "player", GameBot => "bot", GameSummonedPet => "pet", _ => source?.GetType().Name };
+            GameLiving living = source as GameLiving;
             Log.Info($"EPIC_FUNUS_HEALED source=\"{source?.Name}\" kind={kind} class={(eCharacterClass)ClassId(source)} weapon={WeaponType(source)} " +
-                     $"healthBefore={funus?.HealthPercent}%");
+                     $"healthBefore={funus?.HealthPercent}% slot={living?.ActiveWeaponSlot} target=\"{(living?.TargetObject as GameObject)?.Name}\"");
+            // Play test duo5: scouts with a longbow still healed him with their melee weapon after the bow-keep fix. Once per
+            // raider every ten minutes: the call path that hit him, to find the switch that put the melee weapon in hand.
+            if (source != null && Log.IsInfoEnabled)
+            {
+                long now = GameLoop.GameLoopTime;
+                lock (HealTraces)
+                {
+                    if (HealTraces.TryGetValue(source.ObjectID, out long last) && now - last < 600_000) return;
+                    if (HealTraces.Count > 512) HealTraces.Clear();
+                    HealTraces[source.ObjectID] = now;
+                }
+                Log.Info($"EPIC_FUNUS_HEALED_TRACE source=\"{source.Name}\" stack={System.Environment.StackTrace.Replace(System.Environment.NewLine, " | ")}");
+            }
+        }
+
+        private static readonly System.Collections.Generic.Dictionary<int, long> HealTraces = new();
+
+        /// <summary>Play test diagnostic: a bot that may fight <paramref name="target"/> only at range was switched to melee.</summary>
+        public static void NoteMeleeSwitch(GameObject bot, GameLiving target)
+        {
+            if (bot == null || !Log.IsInfoEnabled) return;
+            long now = GameLoop.GameLoopTime;
+            lock (HealTraces)
+            {
+                int key = -bot.ObjectID;
+                if (HealTraces.TryGetValue(key, out long last) && now - last < 600_000) return;
+                HealTraces[key] = now;
+            }
+            Log.Info($"EPIC_MELEE_SWITCH_TRACE bot=\"{bot.Name}\" target=\"{target.Name}\" stack={System.Environment.StackTrace.Replace(System.Environment.NewLine, " | ")}");
         }
 
         public static void TellImmune(GameObject source, string text)

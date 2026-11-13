@@ -49,6 +49,7 @@ namespace DOL.GS
         private readonly Dictionary<string, GameNPC> _finals = new();
         private GameNPC _target;
         private int _probeCursor;
+        private long _nextClearFirstLog;
         private static readonly Logging.Logger log = Logging.LoggerManager.Create(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private long _targetProgressTick, _targetStartTick, _holdSince, _nextHoldLog;
         // Lowest health points seen (not percent: a percent of Galladoria's 125,000-health Corrupt Primal of Fire is 1,250
@@ -59,9 +60,12 @@ namespace DOL.GS
         // "no damage for five minutes" with the raid hitting him (play test, 2026-11-07).
         private int _targetLastHealth;
 
-        /// <summary>The named a raid with no target turns on (pure): the one attacking it, if any (while it has a target, the
-        /// old rule switches to an attacker only when the target itself is out of combat).</summary>
-        public static GameNPC TurnsOnAttacker(GameNPC target, GameNPC attacker) => target == null ? attacker : null;
+        /// <summary>The named a raid turns on (pure): with no target, the one attacking it, if any; while it fights a lesser
+        /// named on its way (an epic NPC, not a boss), an epic boss attacking it. Otherwise the old rule decides (it switches to
+        /// an attacker only when the target itself is out of combat). Play test duo4, 2026-11-07: Caer Sidi's raid fought
+        /// cursed lacula, black revenant and the archlich on the lower floor while the Host killed 52 of it, and wiped.</summary>
+        public static GameNPC TurnsOnAttacker(GameNPC target, GameNPC attacker) =>
+            target == null ? attacker : attacker is GameEpicBoss && target is not GameEpicBoss && attacker != target ? attacker : null;
 
         /// <summary>The target took damage since the last look (pure): below its lowest yet, or below the last look's health
         /// (a boss that healed itself being worn down again: Easmarach's eighth on the waterfall top, Grand Summoner Govannon's
@@ -194,11 +198,17 @@ namespace DOL.GS
 
         /// <summary>
         /// An attempt on a named encounter failed when at least eight raiders were in it and half of them fell (dead,
-        /// released or gone from the dungeon), or when the encounter healed back to 95% after being taken to 85% or
-        /// lower (it reset: nobody was left fighting it).
+        /// released or gone from the dungeon), or when the encounter healed back to 95% after being taken to
+        /// <see cref="ResetWipeLowestPercent"/> or lower (it reset: nobody was left fighting it).
         /// </summary>
         public static bool IsWipe(int engaged, int fallen, int healthPercent, int lowestPercent) =>
-            engaged >= MinimumRaidersAtTarget && (fallen * 2 >= engaged || healthPercent >= 95 && lowestPercent <= 85);
+            engaged >= MinimumRaidersAtTarget && (fallen * 2 >= engaged || healthPercent >= 95 && lowestPercent <= ResetWipeLowestPercent);
+
+        /// <summary>How low a reset encounter must have been for the reset to count as the raid's wipe: 70% (play test
+        /// 2026-11-07: a calcified manes, a named trash monster on Caer Sidi's way, taken to 84% and left by 91 of 95 living
+        /// raiders, was counted as the raid's first wipe; the next such brush would have defeated a raid that had lost nobody).
+        /// A boss the raid wore down and then lost (Spindler Broodmother from 42%) still counts.</summary>
+        public const int ResetWipeLowestPercent = 70;
 
         /// <summary>
         /// A failed attempt counts against the raid (a wipe: one of its two tries, Special Forces called) only when it was the
@@ -233,16 +243,22 @@ namespace DOL.GS
             // minute for over an hour, so the raid never turned to the orbs.
             // An encounter whose tactic sends the raid to the current target is no switch (Scurceol Hyrde attacks the raid
             // while it shoots his orbs; EpicEncounterTactics).
-            // A hazard that burns the raid (Orshom's Fire) is no encounter to turn on either.
-            return live.FirstOrDefault(n => n != _target && n is IGameEpicNpc && n.IsAlive && n.InCombat &&
-                                            !EpicEncounterTactics.Covers(n, _target, live) && !EpicEncounterTactics.IsHazard(n) &&
-                                            _routeRetry.GetValueOrDefault(n) <= now &&
-                                            n.ObjectState == GameObject.eObjectState.Active && !_clearedNames.Contains(n.Name) &&
-                                            n.TargetObject is GameLiving victim && raiders.Contains(victim));
+            // Never a ground hazard or a boss's required add: PC 2026-11-09 (forced Krondon), the raid turned on Orshom's Fire
+            // (a fire pit only Cold hurts) and 100 raiders burned in it; and 11 s after the tactic sent it to a floor stand for
+            // one of Scurceol Hyrde's orbs it switched to another orb "fighting the raid", with its raw spot in the air as the
+            // front (111 route recoveries aimed into the air). Both are fought through their tactic, not as an encounter.
+            // A boss comes before a lesser named (the Host before the trash around him, play test duo4).
+            return live.Where(n => n != _target && n is IGameEpicNpc && n.IsAlive && n.InCombat &&
+                                   !EpicEncounterTactics.Covers(n, _target, live) &&
+                                   !IsEncounterHazard(n) && !EpicEncounterTactics.IsRequiredAddOfLiveBoss(n, live) &&
+                                   _routeRetry.GetValueOrDefault(n) <= now &&
+                                   n.ObjectState == GameObject.eObjectState.Active && !_clearedNames.Contains(n.Name) &&
+                                   n.TargetObject is GameLiving victim && raiders.Contains(victim))
+                       .OrderByDescending(n => n is GameEpicBoss).FirstOrDefault();
         }
 
         private bool IsMusteredEncounter(GameNPC npc) =>
-            (npc is IGameEpicNpc || _finalTypes.Contains(npc.GetType().Name)) &&
+            (npc is IGameEpicNpc || _finalTypes.Contains(npc.GetType().Name)) && !IsEncounterHazard(npc) &&
             // A boss's required adds are fought as part of its fight, without a muster of their own (EpicEncounterTactics).
             !EpicEncounterTactics.IsRequiredAddOfLiveBoss(npc, _live);
         // The region's NPCs as of this turn (AdvanceCore), for the tactic checks.
@@ -350,6 +366,8 @@ namespace DOL.GS
         }
         public DbZonePoint Entrance { get; }
         public Vector3 Front { get; private set; }
+        /// <summary>The dungeon region the route runs in.</summary>
+        public ushort Region => _region;
         public Vector3 Destination { get; private set; }
         public string TargetName { get; private set; } = "Encounter staging";
         public int TargetLevel { get; private set; } = 50;
@@ -369,54 +387,138 @@ namespace DOL.GS
 
         /// <summary>How far from a required add its ranged raiders stand at most: inside the usual 1,500 spell range, with room to spare.</summary>
         public const int RequiredAddRangedReach = 1_400;
+        /// <summary>A ranged stand is never closer than this to the boss (Scurceol's melee reach is 350)...</summary>
+        public const int RequiredAddStandMinimumBossDistance = 400;
+        /// <summary>...and is looked for first beyond this (his aggro range is 600), so the casters don't stand in his fight.</summary>
+        public const int RequiredAddStandBossClearance = 700;
+        /// <summary>A stand is on the raid's floor around the boss: within this of his floor's height. On the real Krondon mesh the
+        /// platform is 17,050-17,250 (his floor 17,178) and the orbs' perch slopes start at 17,307: those slopes see their orb
+        /// but nobody can walk onto them, and every walk tried on one costs a corridor search.</summary>
+        public const int RequiredAddStandFloorBand = 112;
+        /// <summary>The sight line runs from a raider's eyes, this far over the stand, to this far over the add's own spot.</summary>
+        public const int SightEyeHeight = 60, SightAimHeight = 20;
+        /// <summary>Walkable mesh within this band over the sight line means solid ground there (a ledge, a perch, a rock top).</summary>
+        public const int SightSolidBand = 400;
+        /// <summary>The mesh's own height error: a surface less than this over the line does not block it.</summary>
+        public const int SightTolerance = 8;
+        /// <summary>The sight line is sampled this often (world units across).</summary>
+        public const int SightSampleStep = 32;
+        /// <summary>Where the floor ray toward the add ends, the floor beyond must fall away by more than this (a drop, not a wall).</summary>
+        public const int SightDropStep = 64;
+        /// <summary>How far below a drop's edge the ground under it is looked for.</summary>
+        public const int SightDropDepth = 3_000;
+        /// <summary>At most this many stands with sight are tried against the raid's walk (each try is a corridor search).</summary>
+        public const int RequiredAddStandReachTries = 8;
 
         /// <summary>
         /// Krondon, 2026-11-06 (01:49 and 02:16): Scurceol Hyrde's tactic sent the raid to his four Lyft Miht orbs, which float
-        /// 230-580 above him (450-790 above the room floor). The ground-route gate (an approach within 256 of the target's height) failed
-        /// for every orb, they were set aside a minute at a time, and the raid walked off to Fuladl; no orb was attacked
-        /// and Scurceol was never fought. A required add is not walked to: its ranged raiders stand on a floor spot the raid
-        /// can reach, within <see cref="RequiredAddRangedReach"/> of it and with sight to the floor under it. Tried: the
-        /// floor under the add, the boss's floor, and two points between them. False, with why, when none works.
+        /// 230-580 above him. The ground-route gate failed for every orb, and the raid walked off to Fuladl. 1.1.2 fought them from a
+        /// floor spot instead, but tested sight with the mesh's floor ray to the floor under the orb. The real mesh (probe
+        /// UT_ScurceolOrbStandProbe, 2026-11-08) shows why that never worked: each orb hangs 48-55 over the top of its own rock
+        /// perch, 400-530 across a pit (floor 900 lower) from the platform the raid stands on. A floor ray can't cross a pit, so
+        /// 0 of the 277-321 reachable floor spots within 1,400 of each orb passed (PC soak: "no reachable floor spot within 1400
+        /// has line of sight to it", three times; one orb of four died). The probe's 3-D line from the platform found 53, 254,
+        /// 1-35 and 154 clear spots for the four orbs.
+        /// Now: floor spots on rings around the add (every 50 out to 1,400, every 10 degrees) and the old four, within reach
+        /// of it, on the boss's floor (<see cref="RequiredAddStandFloorBand"/>) and not on the boss, are tried nearest the add first (those beyond <see cref="RequiredAddStandBossClearance"/>
+        /// of the boss before the rest); a spot needs <see cref="HasSightToAirborne"/>, then a walk from the raid.
+        /// False, with why, when none works.
         /// </summary>
-        /// <param name="reach">The approach the raid can walk to for a floor point, or null when none is proven.</param>
-        public static bool TryRangedStand(IPathfindingMgr nav, Zone zone, Vector3 add, Vector3 boss, Func<Vector3, Vector3?> reach,
-            out Vector3 stand, out string why)
+        /// <param name="reach">The approach the raid can walk to for a floor point (only approaches the filter accepts), or null
+        /// when none is proven.</param>
+        public static bool TryRangedStand(IPathfindingMgr nav, Zone zone, Vector3 add, Vector3 boss,
+            Func<Vector3, Func<Vector3, bool>, Vector3?> reach, out Vector3 stand, out string why)
         {
             stand = default;
             if (nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
             { why = "no navigation mesh here"; return false; }
-            Vector3? under = nav.GetClosestPoint(zone, add, 128, 128, RangedFlyerReach, nav.DefaultFilters);
             var floors = new List<Vector3>();
             void Add(Vector3? p)
             {
                 if (p is Vector3 v && !floors.Any(f => Vector3.DistanceSquared(f, v) < 48 * 48)) floors.Add(v);
             }
-            Add(under);
-            Add(nav.GetClosestPoint(zone, boss, 64, 64, 256, nav.DefaultFilters));
+            Add(nav.GetClosestPoint(zone, add, 128, 128, RangedFlyerReach, nav.DefaultFilters));
+            Vector3? bossFloor = nav.GetClosestPoint(zone, boss, 64, 64, 256, nav.DefaultFilters);
+            Add(bossFloor);
             var level = new Vector3(add.X, add.Y, boss.Z);
             foreach (float t in new[] { 0.67f, 0.33f })
                 Add(nav.GetClosestPoint(zone, Vector3.Lerp(boss, level, t), 96, 96, 256, nav.DefaultFilters));
+            // The raid's floor around the add: the boss's own height, where the raid fights.
+            float floorZ = bossFloor?.Z ?? boss.Z;
+            // Every 50 out and every 10 degrees: on the real mesh orb 3's clear spots are a few patches of the platform's far edge,
+            // and a sparser ring (every 100, every 15 degrees) found one.
+            for (int radius = 200; radius <= RequiredAddRangedReach; radius += 50)
+            for (int degrees = 0; degrees < 360; degrees += 10)
+            {
+                float a = degrees * MathF.PI / 180f;
+                Add(nav.GetClosestPoint(zone, new Vector3(add.X + MathF.Cos(a) * radius, add.Y + MathF.Sin(a) * radius, floorZ),
+                    48, 48, 320, nav.DefaultFilters));
+            }
             if (floors.Count == 0)
             { why = "no floor under it or near its boss"; return false; }
-            int reached = 0, inRange = 0;
-            foreach (Vector3 floor in floors)
+            bool Allowed(Vector3 p) => Vector3.Distance(p, add) <= RequiredAddRangedReach &&
+                                       Vector3.Distance(p, boss) >= RequiredAddStandMinimumBossDistance &&
+                                       MathF.Abs(p.Z - floorZ) <= RequiredAddStandFloorBand;
+            Vector3[] ordered = floors.Where(Allowed)
+                .OrderBy(p => Vector3.Distance(p, boss) < RequiredAddStandBossClearance ? 1 : 0)
+                .ThenBy(p => Vector3.DistanceSquared(p, add)).ToArray();
+            if (ordered.Length == 0)
+            { why = $"none of {floors.Count} floor spots is within {RequiredAddRangedReach} of it, off its boss and on his floor"; return false; }
+            bool Accept(Vector3 p) => Allowed(p) && HasSightToAirborne(nav, zone, p, add);
+            int sighted = 0, tried = 0;
+            foreach (Vector3 floor in ordered)
             {
-                if (reach(floor) is not Vector3 approach) continue;
-                reached++;
-                if (Vector3.Distance(approach, add) > RequiredAddRangedReach) continue;
-                inRange++;
-                // The mesh ray runs along the floor: sight to the floor under the add (or to the spot below it at the
-                // stand's height when it hovers over nothing).
-                Vector3 sight = under ?? new Vector3(add.X, add.Y, approach.Z);
-                if (Vector3.DistanceSquared(approach, sight) > 1 && !nav.HasLineOfSight(zone, approach, sight, nav.DefaultFilters)) continue;
-                stand = approach;
-                why = $"ranged from the floor {(int)Vector3.Distance(approach, add)} away";
-                return true;
+                if (!HasSightToAirborne(nav, zone, floor, add)) continue;
+                sighted++;
+                if (reach(floor, Accept) is Vector3 approach)
+                {
+                    stand = approach;
+                    why = $"ranged from the floor {(int)Vector3.Distance(approach, add)} away, {(int)Vector3.Distance(approach, boss)} from its boss";
+                    return true;
+                }
+                if (++tried >= RequiredAddStandReachTries) break;
             }
-            why = reached == 0 ? $"none of {floors.Count} floor spots under or near it is reachable from the raid"
-                : inRange == 0 ? $"no reachable floor spot within {RequiredAddRangedReach} of it"
-                : $"no reachable floor spot within {RequiredAddRangedReach} has line of sight to it";
+            why = sighted == 0 ? $"none of {ordered.Length} floor spots within {RequiredAddRangedReach} has a clear line to it"
+                : $"none of the {tried} nearest floor spots with a clear line to it is reachable from the raid";
             return false;
+        }
+
+        /// <summary>
+        /// Whether a raider on <paramref name="floor"/> sees <paramref name="add"/> in the air, judged from the mesh (the server has
+        /// no other geometry). The mesh holds only walkable surfaces, so two checks:
+        /// 1. The 3-D line from the eyes to the add passes under no walkable surface (within <see cref="SightSolidBand"/> over it):
+        ///    the top of a ledge, a wall or the add's own perch in the way.
+        /// 2. A wall up to the ceiling has no top: the floor ray toward the spot under the add either gets there, or the floor ends
+        ///    at a drop, where the ground beyond lies more than <see cref="SightDropStep"/> lower (the pit, not a wall).
+        /// </summary>
+        public static bool HasSightToAirborne(IPathfindingMgr nav, Zone zone, Vector3 floor, Vector3 add)
+        {
+            Vector3 eye = floor + new Vector3(0, 0, SightEyeHeight), aim = add + new Vector3(0, 0, SightAimHeight);
+            float across = Vector2.Distance(new(eye.X, eye.Y), new(aim.X, aim.Y));
+            int samples = Math.Max(1, (int)(across / SightSampleStep));
+            // From the add's end first: its perch blocks most lines, so a blocked line is found in a few queries.
+            for (int k = samples - 1; k >= 1; k--)
+            {
+                Vector3 at = Vector3.Lerp(eye, aim, k / (float)samples);
+                if (nav.GetClosestPointInBounds(zone, at, new Vector3(-4, -4, SightTolerance), new Vector3(4, 4, SightSolidBand),
+                        nav.DefaultFilters) != null)
+                    return false;
+            }
+            var under = new Vector3(add.X, add.Y, floor.Z);
+            if (across < 1 || nav.HasLineOfSight(zone, floor, under, nav.DefaultFilters)) return true;
+            // Where the floor ray stops (to a 64th of the way, 5-20 units)...
+            float reached = 0, stopped = 1;
+            for (int i = 0; i < 6; i++)
+            {
+                float mid = (reached + stopped) / 2;
+                if (nav.HasLineOfSight(zone, floor, Vector3.Lerp(floor, under, mid), nav.DefaultFilters)) reached = mid; else stopped = mid;
+            }
+            // ...and just past it, the highest ground from the floor's height down.
+            Vector3 dir = Vector3.Normalize(under - floor);
+            Vector3 past = Vector3.Lerp(floor, under, stopped) + dir * 32;
+            Vector3? beyond = nav.GetClosestPointInBounds(zone, past, new Vector3(-8, -8, -SightDropDepth), new Vector3(8, 8, SightDropStep),
+                nav.DefaultFilters);
+            return beyond is Vector3 ground && ground.Z < floor.Z - SightDropStep;
         }
 
         private RealmRaidDungeonRoute(ushort region, DbZonePoint entrance, Vector3 entry, Vector3 trigger, string[] finals,
@@ -954,6 +1056,24 @@ namespace DOL.GS
         private float _frontClosest = float.MaxValue;
         private Vector3 _frontClosestFor;
 
+        /// <summary>Height within which a monster counts as on the raid's floor (the approach search's own band).</summary>
+        public const float SameFloorBand = 256f;
+        /// <summary>Units across a unit of height beyond <see cref="SameFloorBand"/> is weighed as (see <see cref="WalkEstimate"/>).</summary>
+        public const float FloorChangeWeight = 8f;
+
+        /// <summary>
+        /// How far the raid's next target is, as the raid walks (pure): the distance across, plus <see cref="FloorChangeWeight"/>
+        /// per unit of height past <see cref="SameFloorBand"/>. The route took the nearest target in a straight line, and in
+        /// Krondon a monster on the floor 1,500 below is "near" but a long walk round (PC test 2026-11-09, build b72716e): the
+        /// raid went from the thrawn ogres at Z 14,600 to an atelic ooze 600 across and 1,500 down (02:30), back up to a
+        /// foreman (02:34) and down to another ooze (02:38), with nobody within 1,000 of the target for 3-4 minutes each time,
+        /// while packs on its own floor were reached in under a minute. With a weight of 8, a monster a floor away
+        /// (1,250 past the band: 10,000) comes after everything within 10,000 on the raid's floor, so the raid clears the
+        /// floor it stands on before it changes floors.
+        /// </summary>
+        public static float WalkEstimate(Vector3 from, Vector3 to) =>
+            Vector2.Distance(new(from.X, from.Y), new(to.X, to.Y)) + FloorChangeWeight * Math.Max(0f, MathF.Abs(to.Z - from.Z) - SameFloorBand);
+
         /// <summary>The living raider with the most living raiders within 1,000 units (the raid's main body).</summary>
         private static bool TryRegroupFront(GameLiving[] inside, out Vector3 front)
         {
@@ -1019,6 +1139,7 @@ namespace DOL.GS
         /// are out of reach, come back every six minutes and hit hard. Taken as the primal's adds, they were the raid's
         /// target over and over; three were skipped for no damage and the raid fell from 230 inside to 28 (run 22).
         /// </summary>
+        // The ground hazards of the tactics (Orshom's Fire) are hazards too (EpicEncounterTactics).
         private static bool IsEncounterHazard(GameNPC npc) =>
             npc.Brain?.GetType().Name is "VortexBrain" or "WaterfallAntipassBrain" ||
             // A catalog hazard (Orshom's Fire: immune but to cold, 500 every 3 s within 300 of it; EpicEncounterTactics).
@@ -1098,10 +1219,37 @@ namespace DOL.GS
         // fared. Once a minute: the current target's health, whether it is in combat, and the raiders around it.
         private long _nextTargetStatusLog;
 
+        /// <summary>How many raiders could not act (mesmerized, stunned) over the samples of one report (diagnostics;
+        /// pure). Play test duo29, 2026-11-10: in the second minute at Spindler Broodmother 25 of about 110 living raiders
+        /// hit her and 11 hit a newborn, with 87 targeting her; she mesmerizes everyone within 300 of a random raider for
+        /// 60 seconds every half minute, and nothing in the log counted it.</summary>
+        public struct ControlTally
+        {
+            public int Samples, MezzedPeak, MezzedSum, StunnedPeak;
+            public void Add(int mezzed, int stunned)
+            {
+                Samples++;
+                MezzedSum += mezzed;
+                if (mezzed > MezzedPeak) MezzedPeak = mezzed;
+                if (stunned > StunnedPeak) StunnedPeak = stunned;
+            }
+            public readonly int MezzedAverage => Samples == 0 ? 0 : (int)Math.Round(MezzedSum / (double)Samples);
+        }
+        /// <summary>The raid's mesmerized and stunned are counted this often while its target fights.</summary>
+        public const long ControlSampleMilliseconds = 5_000;
+        private ControlTally _control;
+        private long _nextControlSample;
+
         public void Advance(GameLiving[] participants, long now)
         {
             AdvanceCore(participants, now);
             GameNPC target = _target;
+            if (target != null && target.IsAlive && target.InCombat && now >= _nextControlSample)
+            {
+                _nextControlSample = now + ControlSampleMilliseconds;
+                _control.Add(participants.Count(p => p.IsAlive && p.CurrentRegionID == target.CurrentRegionID && p.IsMezzed),
+                    participants.Count(p => p.IsAlive && p.CurrentRegionID == target.CurrentRegionID && p.IsStunned));
+            }
             if (target != null && target.IsAlive && now >= _nextTargetStatusLog)
             {
                 _nextTargetStatusLog = now + 60_000;
@@ -1113,7 +1261,11 @@ namespace DOL.GS
                     .GroupBy(p => p.TargetObject.Name).OrderByDescending(g => g.Count()).Take(4).Select(g => $"{g.Key}:{g.Count()}"));
                 log.Info($"REALM_EXPEDITION_TARGET_STATUS region={_region} target=\"{target.Name}\" level={target.Level} " +
                          $"health={target.HealthPercent}% inCombat={target.InCombat} raidersWithin1000={near} targeting={onIt} " +
-                         $"at={target.X},{target.Y},{target.Z} spawnDistance={(int)target.GetDistanceTo(target.SpawnPoint)} busyWith=\"{busyWith}\"");
+                         $"at={target.X},{target.Y},{target.Z} spawnDistance={(int)target.GetDistanceTo(target.SpawnPoint)} busyWith=\"{busyWith}\" " +
+                         $"mezzedAvg={_control.MezzedAverage} mezzedPeak={_control.MezzedPeak} stunnedPeak={_control.StunnedPeak} samples={_control.Samples}");
+                _control = default;
+                // Where the raid's damage went in that minute, and what hurt it (diagnostics).
+                EpicFightLedger.Report(_region, target.Name, 60);
             }
             if (!Hold || Complete) { _holdSince = 0; return; }
             if (_holdSince == 0) { _holdSince = now; return; }
@@ -1187,6 +1339,19 @@ namespace DOL.GS
 
         /// <summary>The current target's tactic sends the raid to another encounter (EpicEncounterTactics): a required add
         /// of the boss, or the boss an encounter dies with. Logged as REALM_EXPEDITION_TACTIC for the run reports.</summary>
+        private void TurnOn(GameNPC attacking, GameLiving[] participants, long now, string reason)
+        {
+            bool resolved = TryEncounterApproach(attacking, participants, out Vector3 approach);
+            log.Warn($"REALM_EXPEDITION_TARGET_SWITCH region={_region} from=\"{TargetName}\" to=\"{attacking.Name}\" level={attacking.Level} " +
+                     $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
+                     $"reason=\"{reason}\"");
+            _target = attacking; TargetName = attacking.Name; TargetLevel = attacking.Level;
+            Front = Destination = approach;
+            _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = attacking.Health;
+            _targetClosest = float.MaxValue; _targetApproachTick = now;
+            Hold = false; Status = "Clearing " + attacking.Name;
+        }
+
         private void SwitchByTactic(GameNPC to, string reason, GameLiving[] participants, long now, Vector3? stand = null)
         {
             Vector3 approach;
@@ -1234,32 +1399,36 @@ namespace DOL.GS
             Vector3[] anchors = DistinctAnchors(Front, participants
                 .Where(p => p.IsAlive && p.CurrentRegionID == _region && (p.Group == null || p.Group.LivingLeader == p))
                 .Select(At), 6);
-            Vector3? Reach(Vector3 floor)
+            Vector3? Reach(Vector3 floor, Func<Vector3, bool> accept)
             {
                 foreach (Vector3 anchor in anchors)
                 {
                     Zone anchorZone = WorldMgr.GetRegion(_region)?.GetZone((int)anchor.X, (int)anchor.Y);
                     if (anchorZone != null && nav.HasNavmesh(anchorZone) &&
-                        AutonomousZonePointApproach.TryResolve(nav, anchorZone, anchor, floor, 220, out Vector3 approach))
+                        AutonomousZonePointApproach.TryResolve(nav, anchorZone, anchor, floor, 220, out Vector3 approach, accept))
                         return approach;
                 }
                 return null;
             }
+            // Every add gets its own stand: its party's shooters fight it from there (EpicEncounterTactics.Decide). In 1.1.2 only the
+            // route's add had one, and on the 2026-11-08 container run the shooters given the other three orbs walked under them.
             var reasons = new List<string>();
             foreach (GameNPC a in adds)
             {
                 Zone zone = WorldMgr.GetRegion(_region)?.GetZone(a.X, a.Y);
-                if (TryRangedStand(nav, zone, At(a), At(boss), Reach, out stand, out string found))
+                if (TryRangedStand(nav, zone, At(a), At(boss), Reach, out Vector3 own, out string found))
                 {
-                    add = a; why = found;
-                    EpicEncounterTactics.SetStand(boss, stand);
-                    return true;
+                    EpicEncounterTactics.SetStand(a, own);
+                    if (add == null) { add = a; stand = own; reasons.Insert(0, found); }
+                    continue;
                 }
                 reasons.Add($"{a.Name}@{a.X},{a.Y},{a.Z}: {found}");
                 _routeRetry[a] = now + 60_000;
             }
             why = string.Join("; ", reasons);
-            return false;
+            if (add == null) return false;
+            EpicEncounterTactics.SetStand(boss, stand);
+            return true;
         }
 
         /// <summary>No required add of <paramref name="boss"/> can be fought (no ranged raider sees one from the floor):
@@ -1280,6 +1449,9 @@ namespace DOL.GS
             if (_routeStartTick == 0) _routeStartTick = now;
             GameNPC[] live = WorldMgr.GetRegion(_region)?.Objects.OfType<GameNPC>().ToArray() ?? [];
             _live = live;
+            EpicFightLedger.Watch(_region, now);
+            // Raiders step out of a ground hazard and no battle post goes in one (EpicEncounterTactics.ObserveHazards).
+            EpicEncounterTactics.ObserveHazards(live);
             foreach (GameNPC stale in _routeRetry.Keys.Where(n => !n.IsAlive || n.ObjectState != GameObject.eObjectState.Active).ToArray())
                 _routeRetry.Remove(stale);
             foreach (GameNPC npc in live.Where(n => _finalTypes.Contains(n.GetType().Name)))
@@ -1307,8 +1479,18 @@ namespace DOL.GS
                 }
                 else SwitchByTactic(tacticTarget, tacticReason, participants, now);
             }
+            // A boss attacking the raid while it fights a lesser named on its way is fought first (play test duo4).
+            if (_target?.IsAlive == true && _target is not GameEpicBoss &&
+                TurnsOnAttacker(_target, HostileEncounter(live, participants)) is { } boss)
+            {
+                TurnOn(boss, participants, now, "a boss is fighting the raid while it clears a lesser named");
+                return;
+            }
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active)
             {
+                // A boss that blasts the room (Xanxicar): its withdraw spots on the floor towards the way in.
+                EpicEncounterTactics.EnsureBlastPath(_target,
+                    Entrance is { } way && way.TargetRegion == _region ? new Vector3(way.TargetX, way.TargetY, way.TargetZ) : null);
                 if (TargetTookDamage(_target.Health, _targetLowestHealth, _targetLastHealth)) _targetProgressTick = now;
                 _targetLowestHealth = Math.Min(_targetLowestHealth, _target.Health);
                 _targetLastHealth = _target.Health;
@@ -1393,15 +1575,8 @@ namespace DOL.GS
             // horsemen's room past the Host, who killed 40 of it with nobody turning on him.
             if (TurnsOnAttacker(_target, HostileEncounter(live, participants)) is { } attacking)
             {
-                bool resolved = TryEncounterApproach(attacking, participants, out Vector3 approach);
-                log.Warn($"REALM_EXPEDITION_TARGET_SWITCH region={_region} from=\"{TargetName}\" to=\"{attacking.Name}\" level={attacking.Level} " +
-                         $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
-                         $"reason=\"it is fighting the raid on its way\"");
-                _target = attacking; TargetName = attacking.Name; TargetLevel = attacking.Level;
-                Front = Destination = approach;
-                _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = attacking.Health;
-                _targetClosest = float.MaxValue; _targetApproachTick = now;
-                Hold = false; Status = "Clearing " + attacking.Name; return;
+                TurnOn(attacking, participants, now, "it is fighting the raid on its way");
+                return;
             }
             GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
             if (AdvanceChain(inside, now)) return;
@@ -1442,6 +1617,11 @@ namespace DOL.GS
             if (zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
             { Hold = true; Status = "Blocked: dungeon navigation unavailable"; return; }
             GameNPC[] encounters = live.Where(n => n is IGameEpicNpc && n.IsAlive && n.ObjectState == GameObject.eObjectState.Active).ToArray();
+            // Monsters that would join a boss's fight (EpicEncounterTactics.ClearFirst: Spindler Broodmother's adult spindlers)
+            // are killed before that boss: each is a target although another of its name is already dead, and although a play
+            // test's focus names only the boss.
+            Dictionary<GameNPC, GameNPC> clearFirst = live.Select(n => (Add: n, Boss: EpicEncounterTactics.ClearFirstOwner(n, live)))
+                .Where(pair => pair.Boss != null).ToDictionary(pair => pair.Add, pair => pair.Boss);
             GameNPC[] candidates = live.Where(n => n.IsAlive && n.ObjectState == GameObject.eObjectState.Active && n.Realm == eRealm.None &&
                 n.Level > 0 && n is not GameBot && n is not GameSummonedPet && n.Brain is not IControlledBrain &&
                 n is not GameMerchant && n is not GameTrainer && n is not GameTeleporter && n is not GameTaxi &&
@@ -1451,7 +1631,7 @@ namespace DOL.GS
                 // Hibernian raid stood four minutes by a "grogan" in Galladoria that none of it could attack (run 22).
                 n.TempProperties.GetProperty<bool>(AutonomousPetSupport.SyntheticCharmPetProperty) != true &&
                 !IsEncounterHazard(n) &&
-                !(n is IGameEpicNpc && _clearedNames.Contains(n.Name) && !_finalTypes.Contains(n.GetType().Name)) &&
+                !(n is IGameEpicNpc && _clearedNames.Contains(n.Name) && !_finalTypes.Contains(n.GetType().Name) && !clearFirst.ContainsKey(n)) &&
                 // A neutral expedition goes for its named encounters only; monsters on the way are
                 // fought when they attack (Darkness Falls holds 2,465 spawns).
                 // A play test's focus leaves out the other named encounters (and the final, unless named) while they are out of
@@ -1459,13 +1639,14 @@ namespace DOL.GS
                 // fighting the entrance's monsters and never reaching the horsemen's room), and a named that fights the raid is
                 // fought (the Host killed 159 raiders on the way up while the focus left him out, 2026-11-07).
                 !(Focus != null && (n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name)) && !n.InCombat &&
-                  !InFocus(Focus, n.Name, n.GetType().Name)) &&
+                  !InFocus(Focus, n.Name, n.GetType().Name) &&
+                  !(clearFirst.TryGetValue(n, out GameNPC focusBoss) && InFocus(Focus, focusBoss.Name, focusBoss.GetType().Name))) &&
                 (_objectives == null ? now - _routeStartTick < EpicTrashPhaseMilliseconds || n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name) ||
-                        IsEncounterAdd(n, Front, encounters)
+                        IsEncounterAdd(n, Front, encounters) || clearFirst.ContainsKey(n)
                     : RealmRaidNeutralEvents.IsObjective(_objectives, n.Name)))
                 .OrderBy(n => _finalTypes.Contains(n.GetType().Name) ? 1 : 0)
-                .ThenBy(n => IsEncounterAdd(n, Front, encounters) ? 0 : 1)
-                .ThenBy(n => Vector3.DistanceSquared(Front, new(n.X, n.Y, n.Z))).ToArray();
+                .ThenBy(n => IsEncounterAdd(n, Front, encounters) || clearFirst.ContainsKey(n) ? 0 : 1)
+                .ThenBy(n => WalkEstimate(Front, new(n.X, n.Y, n.Z))).ToArray();
             // Probe from the front and from where the parties actually stand, near or far:
             // Tuscaran's front once sat on a pad under the floor its parties stood on.
             Vector3[] anchors = DistinctAnchors(Front, inside
@@ -1480,6 +1661,17 @@ namespace DOL.GS
                 GameNPC npc = candidates[_probeCursor % candidates.Length];
                 _probeCursor = (_probeCursor + 1) % candidates.Length;
                 if (_routeRetry.GetValueOrDefault(npc) > now) continue;
+                // A boss waits while a monster that would join its fight can still be killed first (unless it is fighting already).
+                if (!npc.InCombat && clearFirst.Any(pair => pair.Value == npc && _routeRetry.GetValueOrDefault(pair.Key) <= now))
+                {
+                    if (now >= _nextClearFirstLog)
+                    {
+                        _nextClearFirstLog = now + 60_000;
+                        log.Info($"REALM_EXPEDITION_CLEAR_FIRST region={_region} boss=\"{npc.Name}\" left={clearFirst.Count(pair => pair.Value == npc)} " +
+                                 $"names=\"{string.Join(",", clearFirst.Where(pair => pair.Value == npc).Select(pair => pair.Key.Name).Distinct())}\"");
+                    }
+                    continue;
+                }
                 // A boss shielded by its adds, or one that dies with another, is fought through its tactic (EpicEncounterTactics).
                 if (EpicEncounterTactics.RouteTarget(npc, live, Front, out string candidateTactic) is { } tactical && tactical != npc)
                 {

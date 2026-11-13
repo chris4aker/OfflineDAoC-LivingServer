@@ -1383,6 +1383,8 @@ namespace DOL.GS
 		/// <param name="criticalAmount">the amount of critical damage</param>
 		public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
 		{
+			// 1.2 diagnostics: where a raid's damage goes (EpicFightLedger; a no-op unless a raid route watches the region).
+			EpicFightLedger.Note(this, source, damageAmount + criticalAmount);
 			base.TakeDamage(source, damageType, damageAmount, criticalAmount);
 
 			double damageDealt = damageAmount + criticalAmount;

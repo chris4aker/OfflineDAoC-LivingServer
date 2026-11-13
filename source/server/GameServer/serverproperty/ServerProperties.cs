@@ -1311,6 +1311,9 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("npc", "epic_govannon_full_health", "Summoner's Hall: Grand Summoner Govannon has 300,000 health, as in the original (True), or 200,000 (False, the 1.2 default until a played check: a 60-bot raid took him about 1% a minute).", false)]
 		public static bool EPIC_GOVANNON_FULL_HEALTH = false;
 
+		[ServerProperty("npc", "epic_govannon_full_heal", "Summoner's Hall: when Grand Summoner Govannon turns into his demon at 50% health he heals to full, as in the original (True), or to 75% (False, the 1.2 default: owner 2026-11-11, after bot raids that stepped out of his Shroud still lost with the demon at 29% to 42%).", false)]
+		public static bool EPIC_GOVANNON_FULL_HEAL = false;
+
 		[ServerProperty("npc", "epic_easmarach_endless_falls_heal", "Galladoria: Easmarach heals an eighth on the waterfall top every time he falls to 30% and stays up there, as in the original (True), or heals there once a fight and then comes back down to fight on (False, the 1.2 default: a bot raid can only shoot him up there, about 1% a minute, and never finished him; play test 2026-11-07).", false)]
 		public static bool EPIC_EASMARACH_ENDLESS_FALLS_HEAL = false;
 
@@ -2667,6 +2670,14 @@ namespace DOL.GS.ServerProperties
 		/// <summary>Gold spammers and roleplayers (AutonomousGoldSpammers, AutonomousRoleplayers).</summary>
 		[ServerProperty("bots", "bot_living_characters", "Server life: now and then a gold spammer floods /faction until it is banned, and a few bots roleplay in thee-and-thou speech while the realm mocks them.", true)]
 		public static bool BOT_LIVING_CHARACTERS;
+
+		/// <summary>Tales: the realm's storyteller in /faction, fireside tales in a group (AutonomousTales).</summary>
+		[ServerProperty("bots", "bot_living_tales", "Server life: now and then a bot asks the realm's storyteller for the tale of a dragon or a boss in /faction, others hush the channel, and it is told in a dozen lines; you can ask for one too (\"tell the one about legion\"). Resting in a boss's place with a gamebot in your group, a groupmate tells the short version. Needs bot voices and debates.", true)]
+		public static bool BOT_LIVING_TALES;
+
+		/// <summary>The rumour after a tale may be true: the realm's raid on that boss forms a few minutes later.</summary>
+		[ServerProperty("bots", "bot_living_tale_raids", "Server life: about half the time, the rumour that follows a tale is true: the realm's own automatic raid on that boss forms a few minutes later (only when one could form anyway). Off: the rumour is always just lore.", true)]
+		public static bool BOT_LIVING_TALE_RAIDS;
 
 		/// <summary>True rumours: real rare spawns and undefended enemy keeps (AutonomousRumours).</summary>
 		[ServerProperty("bots", "bot_living_rumours", "Server life: bots pass on rumours that are true: a rare named monster that just spawned, or an enemy keep whose guards are down. Go and see.", true)]

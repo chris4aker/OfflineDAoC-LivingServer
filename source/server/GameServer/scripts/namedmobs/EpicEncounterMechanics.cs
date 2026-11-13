@@ -117,6 +117,17 @@ namespace DOL.GS
         /// played check: the raid's tactics for him (sacrifice and demon at range, spread in demon form) play either way; a
         /// 60-bot raid took 300,000 about 1% a minute (run 18).</summary>
         public static bool AllowGovannonFullHealth { get => ServerProperties.Properties.EPIC_GOVANNON_FULL_HEALTH; set => ServerProperties.Properties.EPIC_GOVANNON_FULL_HEALTH = value; }
+        /// <summary>Grand Summoner Govannon heals to full when he turns into his demon at 50% (the original). Off by default
+        /// (epic_govannon_full_heal; owner 2026-11-11): he heals to <see cref="GovannonDemonHealPercent"/>%. Play tests duo30b
+        /// to duo35 (80 Midgard bots, 200,000 health): with the raid stepping out of his Shroud of Agony it took the demon
+        /// from full to 48%, 53%, 29% (stopped) and 42% before it wiped, 104,000 to 142,000 damage; at 75% he has 150,000.</summary>
+        public static bool AllowGovannonFullHeal { get => ServerProperties.Properties.EPIC_GOVANNON_FULL_HEAL; set => ServerProperties.Properties.EPIC_GOVANNON_FULL_HEAL = value; }
+        /// <summary>What Govannon heals to at his change while <see cref="AllowGovannonFullHeal"/> is off.</summary>
+        public const int GovannonDemonHealPercent = 75;
+        /// <summary>Govannon's health as he turns into his demon (pure): full with the original on, else 75% of it; never
+        /// less than he has (the change is at 50%).</summary>
+        public static int GovannonDemonHealth(int maxHealth, int health, bool fullHeal) =>
+            fullHeal ? maxHealth : Math.Max(health, (int)((long)maxHealth * GovannonDemonHealPercent / 100));
         /// <summary>Easmarach heals an eighth on the waterfall top every time he falls to 30%, and stays up there (the original).
         /// Off by default (1.2 play test, 2026-11-07: epic_easmarach_endless_falls_heal): he heals there once a fight, rests,
         /// and comes back down to fight on. A bot raid can only shoot him on the top (spells take 70% resists): 42% to 34% in
@@ -155,7 +166,7 @@ namespace DOL.GS
             nameof(AllowGalladoriaBridgeSpot), nameof(AllowFullFirePatches), nameof(AllowEarthmenderClassPuzzle),
             nameof(AllowEarthmendersPassive), nameof(AllowEarthmenderQuickReset), nameof(AllowEarthmenderMutualHeal),
             nameof(AllowBeathaHealsXaga), nameof(AllowFairyFlight), nameof(AllowGovannonFullHealth), nameof(AllowKvasirColdHeal),
-            nameof(AllowTuscarTwinHeal), nameof(AllowEasmarachEndlessFallsHeal),
+            nameof(AllowTuscarTwinHeal), nameof(AllowEasmarachEndlessFallsHeal), nameof(AllowGovannonFullHeal),
         ];
 
         // ---- Per-encounter values ---------------------------------------------------------------------------------------
