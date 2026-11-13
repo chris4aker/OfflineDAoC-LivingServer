@@ -596,6 +596,9 @@ namespace DOL.GS
                 if (!found && !AutonomousBotVoices.TryLine(speaker, "combat", out picked, topic: topic, slots: slots, relax: true))
                     return;
                 LastCall[group] = now;
+                // Audit 2026-11-13: forget groups whose gap has passed, so disbanded groups aren't kept for the server's life.
+                foreach (KeyValuePair<Group, long> old in LastCall)
+                    if (now - old.Value >= CallGapMilliseconds) LastCall.TryRemove(old);
                 AutonomousBotGroupChatter.Send(speaker, picked.Text, "none");
             }
             catch (Exception ex)

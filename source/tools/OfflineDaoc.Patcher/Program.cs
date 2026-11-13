@@ -82,6 +82,10 @@ internal sealed class PatchRun(string game, string patchDir, bool checkOnly, boo
     {
         _patch = JsonSerializer.Deserialize<PatchManifest>(File.ReadAllText(Path.Combine(patchDir, "patch.json")),
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? throw new PatchStop(4, "The patch has no patch.json.");
+        // Audit 2026-11-13: every path in the manifest stays inside the game folder (and the patch's own files folder).
+        foreach (string rel in _patch.Files.Select(f => f.Path).Concat(_patch.Remove.Select(r => r.Path)).Append(_patch.Identity.Path))
+            if (!IsSafeRelative(rel))
+                throw new PatchStop(4, $"This patch is damaged: it names a file outside the game folder ({rel}). Nothing was changed.");
         if (!File.Exists(Path.Combine(game, "runtime", "OfflineDAoC.exe")))
             throw new PatchStop(4, $"No Offline DAoC game was found in {game}. Choose the folder that holds START OFFLINE DAOC.cmd.");
         string edition = File.Exists(Path.Combine(game, "EDITION.txt")) ? "plain" : "b";
@@ -204,6 +208,11 @@ internal sealed class PatchRun(string game, string patchDir, bool checkOnly, boo
     }
 
     string Full(string rel) => Path.Combine(game, rel.Replace('/', Path.DirectorySeparatorChar));
+
+    /// <summary>A manifest path is relative, with no "..", drive or root (audit 2026-11-13).</summary>
+    internal static bool IsSafeRelative(string? rel) =>
+        !string.IsNullOrWhiteSpace(rel) && !Path.IsPathRooted(rel) && !rel.Contains(':') && !rel.StartsWith('/') && !rel.StartsWith('\\') &&
+        !rel.Split('/', '\\').Any(part => part is ".." or "");
 
     void Say(string line)
     {

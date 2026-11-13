@@ -491,7 +491,7 @@ namespace DOL.GS
                     {
                         Log.Info($"REALM_RAID_STALLED event={raid.Definition.Id} minutes={(now - raid.LastProgressTick) / 60_000} " +
                                  $"named={raid.ProgressNamed} wipes={raid.ProgressWipes} target=\"{raid.ProgressTarget}\" lowest={raid.ProgressLowest}");
-                        End(raid, now, $"Stalled: no named or boss kill, no new low on its target and no wipe for {RealmRaidRecruitmentPolicy.StalledMilliseconds / 60_000} minutes.");
+                        End(raid, now, $"Stalled: no named or boss kill, no new low on its target and no wipe for {(raid.Clocked ? RealmRaidRecruitmentPolicy.StalledMilliseconds : RealmRaidRecruitmentPolicy.ForcedStalledMilliseconds) / 60_000} minutes.");
                         continue;
                     }
                     if (!raid.Started)

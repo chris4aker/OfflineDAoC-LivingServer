@@ -18,7 +18,8 @@ namespace DOL.UnitTests
         {
             Assert.That(Stalled(false, 10 * Hour, 9 * Hour), Is.True);
             Assert.That(Stalled(false, 10 * Hour - 1, 9 * Hour), Is.False);
-            Assert.That(Stalled(true, 50 * Hour, 0), Is.False, "a raid forced from the launcher runs until it ends");
+            Assert.That(Stalled(true, 3 * Hour - 1, 0), Is.False, "a raid forced from the launcher waits three hours");
+            Assert.That(Stalled(true, 3 * Hour, 0), Is.True, "but not forever");
         }
 
         [Test]

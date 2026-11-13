@@ -404,7 +404,14 @@ public static class RealmRaidRecruitmentPolicy
     /// </summary>
     public const long StalledMilliseconds = 60 * 60_000L;
 
-    public static bool Stalled(bool forced, long now, long lastProgress) => !forced && now - lastProgress >= StalledMilliseconds;
+    /// <summary>
+    /// A raid forced from the launcher waits longer, but not forever (audit 2026-11-13): a raid truly stuck in one room held
+    /// its 100+ bots until /epictest stop or a restart.
+    /// </summary>
+    public const long ForcedStalledMilliseconds = 3 * 60 * 60_000L;
+
+    public static bool Stalled(bool forced, long now, long lastProgress) =>
+        now - lastProgress >= (forced ? ForcedStalledMilliseconds : StalledMilliseconds);
 
     /// <summary>Whether the raid moved forward since the last look: a named or boss down, a wipe (the fight goes on), or the
     /// named or boss it fights lower than it has been in this raid. Pure.</summary>
