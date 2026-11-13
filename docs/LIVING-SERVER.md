@@ -39,7 +39,7 @@ stopped; they are used at the next start. The server keys (category `bots`) are:
 | Holiday chatter | `bot_living_holidays` | True (Beta 1.1) |
 | Leeroy in raids | `bot_living_leeroy` | True (Beta 1.1) |
 | Bots remember each other | `bot_group_bonds` | True (server key only; not in the launcher tab yet) |
-| Bots dress up | `bot_cosmetics`, `bot_cosmetics_price_percent` | True, 100 (1.2; server keys only, not in the launcher tab yet) |
+| Bots dress up | `bot_cosmetics`, `bot_cosmetics_price_percent` | True, 100 = the game's prices (1.2; server keys only, not in the launcher tab yet) |
 
 **ALL OFF** in the tab switches every part off, along with the other Living Server features.
 
@@ -233,15 +233,18 @@ companion bots and real players are not.
 
 ### Bots dress up (`bot_cosmetics`)
 Gamebots spend their coin on how they look, not only on gear. Each bot has its own style, the same every time you
-see it: about a fifth never bother, most dye what they wear in one colour, some wear two colours and pay for a
-glowing weapon, and a few show-offs make every weapon glow. Their colours lean on their realm's (Albion reds and blues,
-Midgard blues and greys, Hibernia greens and purples), and guild members often wear their guild's colour.
+see it: about a fifth never bother, most dye what they wear in one colour, some wear two colours, colour their weapon
+with a weapon luster and pay for a glow, and a few show-offs do every weapon. Their colours lean on their realm's
+(Albion reds and blues, Midgard blues and greys, Hibernia greens and purples), and guild members often wear their
+guild's colour.
 
 They buy at a merchant during the town visit they already make between tasks, after selling and buying upgrades,
-and only from coin above what they keep for gear and repairs. The dye fits the material (cloth, leather or metal
-enamel). New gear comes in its plain colour, so they pay to dye it again. Guild emblems on cloaks and shields stay.
-Prices at level 50: cloth dye 50 silver, leather dye 1 gold, enamel 2 gold, weapon glow 50 gold, less at lower levels;
-`bot_cosmetics_price_percent` scales them. Your own gear and your companions are never touched.
+and only from coin above what they keep for gear and repairs. They buy the game's own dyes at the game's own prices:
+cloth dye, leather dye or enamel to fit the piece, from 50 copper for a light shade to over 16 gold for royal and black
+ones, and about 196 gold for a weapon luster. Tidy bots take the cheap shades, show-offs the dear ones. A weapon glow
+was not something you could buy in 1.65; it costs what a weapon luster does. New gear comes in its plain colour, so
+they pay to dye it again. Guild emblems on cloaks and shields stay. `bot_cosmetics_price_percent` scales the prices.
+Your own gear and your companions are never touched.
 
 ### Deeds, storylines, spammers, roleplayers and rumours
 - **Deeds and reputation** (`bot_living_deeds`): bots that see you solo a named monster, go on a kill streak, get zerged

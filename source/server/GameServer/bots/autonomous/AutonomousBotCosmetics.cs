@@ -12,10 +12,14 @@ namespace DOL.GS;
 /// Bot cosmetics (owner 2026-11-12): gamebots spend the coin they earn on how they look, not only on gear. Each bot has
 /// its own style, fixed by who it is: how much it cares (plain, tidy, flashy, peacock) and two colours leaning on its
 /// realm's colours (guild members often wear their guild's colour). At a merchant, at the natural task break where it
-/// already sells and buys upgrades, a bot with coin above its reserve dyes what it wears in its colours and has a
-/// weapon made to glow. A new piece of gear comes in its plain colour, so it pays to dye it again: coin keeps leaving the
-/// economy. Guild emblems on cloaks and shields, companions and players' gear are never touched.
-/// The style and the prices are pure (tests); <see cref="TryRestyle"/> is the game glue.
+/// already sells and buys upgrades, a bot with coin above its reserve dyes what it wears in its colours and colours its
+/// weapon with a weapon luster; the show-offs also have a weapon made to glow.
+/// <para>Prices are the game's own (owner 2026-11-13: period-accurate, no invented economy): every dye, enamel and weapon
+/// luster is a real item template in the world database, and a bot pays that item's price and uses only the colours a
+/// real dye of that kind exists in. Light shades cost copper, royal and black ones over 16 gold, a weapon luster about
+/// 196 gold. Weapon glows are not a 1.65 purchase (the owner asked for them); they cost what a weapon luster costs.</para>
+/// New gear comes in its plain colour, so the bot pays to dye it again. Guild emblems on cloaks and shields, companions
+/// and players' gear are never touched. The style and the choices are pure (tests); <see cref="TryRestyle"/> is the glue.
 /// </summary>
 public static class AutonomousBotCosmetics
 {
@@ -25,55 +29,60 @@ public static class AutonomousBotCosmetics
 
     public enum Hue { White, Red, Blue, Green, Yellow, Purple, Violet, Orange, Turquoise, Black, Brown, Gray }
 
-    /// <summary>What a dye can colour: cloth (and cloaks), leather (leather, studded, reinforced), metal (chain, plate, scale).</summary>
-    public enum Material { Cloth, Leather, Metal }
+    /// <summary>What a dye colours: cloth dye (cloth, cloaks), leather dye (leather, studded, reinforced), enamel (chain,
+    /// plate, scale), and weapon luster (weapons).</summary>
+    public enum Material { Cloth, Leather, Metal, Weapon }
 
     /// <summary>A bot's look: how much it cares, its two colours, and a seed that picks the exact shade and glow.</summary>
     public readonly record struct Style(Vanity Vanity, Hue Primary, Hue Secondary, int Seed);
 
-    #region The dye colours (the client's colour ids, as the game's own Effect Master lists them)
-    // Ids 0-7 and 51-87 are general dyes for any material; 27-44 cloth only; 8-15 leather only; 16-26 and 45-50 metal
-    // only. The crafter-only and ship colours are left out.
-    private static readonly (int Id, Hue Hue)[] Colours =
-    [
-        (0, Hue.White), (1, Hue.Red), (2, Hue.Green), (3, Hue.Blue), (4, Hue.Yellow), (5, Hue.Purple), (6, Hue.Gray),
-        (7, Hue.Turquoise),
-        (8, Hue.Yellow), (9, Hue.Red), (10, Hue.Green), (11, Hue.Orange), (12, Hue.Violet), (13, Hue.Green), (14, Hue.Blue),
-        (15, Hue.Purple),
-        (16, Hue.Brown), (17, Hue.Gray), (18, Hue.Gray), (19, Hue.Gray), (20, Hue.Gray), (21, Hue.White), (22, Hue.Gray),
-        (23, Hue.Black), (24, Hue.Gray), (25, Hue.Black), (26, Hue.Gray),
-        (27, Hue.Red), (28, Hue.Orange), (29, Hue.Orange), (30, Hue.Yellow), (31, Hue.Green), (32, Hue.Green),
-        (33, Hue.Turquoise), (34, Hue.Turquoise), (35, Hue.Blue), (36, Hue.Blue), (37, Hue.Violet), (38, Hue.Violet),
-        (39, Hue.Violet), (40, Hue.Purple), (41, Hue.Purple), (42, Hue.Red), (43, Hue.Black), (44, Hue.Brown),
-        (45, Hue.Blue), (46, Hue.Green), (47, Hue.Yellow), (48, Hue.Yellow), (49, Hue.Red), (50, Hue.Purple),
-        (51, Hue.Blue), (52, Hue.Blue), (53, Hue.Blue), (54, Hue.Blue), (55, Hue.Turquoise), (56, Hue.Turquoise),
-        (57, Hue.Turquoise), (58, Hue.Turquoise), (59, Hue.Turquoise), (60, Hue.Turquoise), (61, Hue.Brown),
-        (62, Hue.Brown), (63, Hue.Brown), (64, Hue.Red), (65, Hue.Red), (66, Hue.Red), (67, Hue.Red), (68, Hue.Green),
-        (69, Hue.Green), (70, Hue.Green), (71, Hue.Green), (72, Hue.Gray), (73, Hue.Gray), (74, Hue.Gray),
-        (75, Hue.Orange), (76, Hue.Orange), (77, Hue.Orange), (78, Hue.Purple), (79, Hue.Purple), (80, Hue.Purple),
-        (81, Hue.Yellow), (82, Hue.Yellow), (83, Hue.Yellow), (84, Hue.Violet), (85, Hue.Violet), (86, Hue.Blue),
-        (87, Hue.Purple),
-    ];
+    #region The dyes (the world database's own dye items)
+    /// <summary>A dye a bot can buy: its material, the client colour it gives and the item's price in copper.</summary>
+    public readonly record struct Dye(Material Material, int Colour, long Price, string Name);
 
-    public static bool IsGeneral(int id) => id is >= 0 and <= 7 or >= 51 and <= 87;
-
-    public static bool Fits(int id, Material material) => IsGeneral(id) || material switch
+    /// <summary>The dye item models: cloth dye 229, leather dye 494, enamel 495, weapon luster 538.</summary>
+    public static Material? MaterialOfDyeModel(int model) => model switch
     {
-        Material.Cloth => id is >= 27 and <= 44,
-        Material.Leather => id is >= 8 and <= 15,
-        _ => id is >= 16 and <= 26 or >= 45 and <= 50,
+        229 => Material.Cloth, 494 => Material.Leather, 495 => Material.Metal, 538 => Material.Weapon, _ => null,
     };
 
-    /// <summary>The dye colours of one hue a material takes (never empty for a hue the general dyes cover).</summary>
-    public static int[] ColoursOf(Hue hue, Material material) =>
-        Colours.Where(c => c.Hue == hue && Fits(c.Id, material)).Select(c => c.Id).ToArray();
+    /// <summary>
+    /// The dyes from the world's item templates: one per material and colour, the cheapest. Ship paints, bleaches and
+    /// removers, the odd colourless ones and the custom "Weapon Enamel" items are left out.
+    /// </summary>
+    public static Dye[] BuildCatalog(IEnumerable<(int Model, int Colour, long Price, string Name)> templates) =>
+        templates
+            .Where(t => t.Colour > 0 && t.Price > 0 && t.Name != null && MaterialOfDyeModel(t.Model) is not null &&
+                        !t.Name.Contains("paint", StringComparison.OrdinalIgnoreCase) &&
+                        !t.Name.Contains("bleach", StringComparison.OrdinalIgnoreCase) &&
+                        !t.Name.Contains("remover", StringComparison.OrdinalIgnoreCase) &&
+                        (t.Model != 538 || t.Name.Contains("luster", StringComparison.OrdinalIgnoreCase)) &&
+                        HueOf(t.Colour) is not null)
+            .GroupBy(t => (Material: MaterialOfDyeModel(t.Model)!.Value, t.Colour))
+            .Select(g => g.OrderBy(t => t.Price).First() is var cheapest
+                ? new Dye(g.Key.Material, g.Key.Colour, cheapest.Price, cheapest.Name) : default)
+            .OrderBy(d => d.Material).ThenBy(d => d.Colour)
+            .ToArray();
 
-    public static Hue? HueOf(int colour)
+    // The hue of each client colour a dye gives (the Effect Master's colour names, and the dye items' own names).
+    private static readonly Dictionary<int, Hue> Hues = new()
     {
-        foreach ((int id, Hue hue) in Colours)
-            if (id == colour) return hue;
-        return null;
-    }
+        [34] = Hue.Turquoise, [43] = Hue.Black, [49] = Hue.Orange,
+        [51] = Hue.Blue, [52] = Hue.Blue, [53] = Hue.Blue, [54] = Hue.Blue, [55] = Hue.Turquoise, [56] = Hue.Turquoise,
+        [57] = Hue.Turquoise, [58] = Hue.Turquoise, [59] = Hue.Turquoise, [60] = Hue.Turquoise, [61] = Hue.Brown,
+        [62] = Hue.Brown, [63] = Hue.Brown, [64] = Hue.Red, [65] = Hue.Red, [66] = Hue.Red, [67] = Hue.Red,
+        [68] = Hue.Green, [69] = Hue.Green, [70] = Hue.Green, [71] = Hue.Green, [72] = Hue.Gray, [73] = Hue.Gray,
+        [74] = Hue.Black, [75] = Hue.Orange, [76] = Hue.Orange, [77] = Hue.Orange, [78] = Hue.Purple, [79] = Hue.Purple,
+        [80] = Hue.Purple, [81] = Hue.Yellow, [82] = Hue.Yellow, [83] = Hue.Yellow, [84] = Hue.Violet, [85] = Hue.Violet,
+        [86] = Hue.Blue, [87] = Hue.Purple, [48] = Hue.Yellow,
+        [119] = Hue.Gray, [120] = Hue.Red, [121] = Hue.Purple, [122] = Hue.Violet, [123] = Hue.Violet, [124] = Hue.Violet,
+        [125] = Hue.Yellow, [126] = Hue.Yellow, [127] = Hue.Orange, [128] = Hue.Brown, [129] = Hue.Brown, [130] = Hue.Green,
+        [131] = Hue.Green, [132] = Hue.Blue, [133] = Hue.Gray, [134] = Hue.Red, [135] = Hue.Red, [136] = Hue.Green,
+        [137] = Hue.Green, [138] = Hue.Turquoise, [139] = Hue.Blue, [140] = Hue.Gray, [141] = Hue.Blue, [142] = Hue.Green,
+        [143] = Hue.Red,
+    };
+
+    public static Hue? HueOf(int colour) => Hues.TryGetValue(colour, out Hue hue) ? hue : null;
     #endregion
 
     #region The style (pure)
@@ -103,7 +112,7 @@ public static class AutonomousBotCosmetics
         Hue secondary = PickHue(ref state, realm);
         for (int i = 0; i < 4 && secondary == primary; i++)
             secondary = PickHue(ref state, realm);
-        return new Style(vanity, primary, secondary, (int)(Next(ref state, int.MaxValue)));
+        return new Style(vanity, primary, secondary, Next(ref state, int.MaxValue));
     }
 
     private static Hue PickHue(ref ulong state, eRealm realm)
@@ -131,10 +140,13 @@ public static class AutonomousBotCosmetics
         return (int)(z % (ulong)Math.Max(1, bound));
     }
 
-    /// <summary>The material of a piece a dye can colour, or null (jewellery, weapons, shields, instruments).</summary>
+    /// <summary>The dye a piece takes, or null (jewellery, shields, instruments).</summary>
     public static Material? MaterialOf(int objectType, int slot)
     {
         if (slot == (int)eInventorySlot.Cloak) return Material.Cloth;
+        if (slot is (int)eInventorySlot.RightHandWeapon or (int)eInventorySlot.LeftHandWeapon or
+            (int)eInventorySlot.TwoHandWeapon or (int)eInventorySlot.DistanceWeapon)
+            return objectType is (int)eObjectType.Shield or (int)eObjectType.Instrument ? null : Material.Weapon;
         return (eObjectType)objectType switch
         {
             eObjectType.Cloth => Material.Cloth,
@@ -144,26 +156,42 @@ public static class AutonomousBotCosmetics
         };
     }
 
-    public static readonly eInventorySlot[] DyedSlots =
+    public static readonly eInventorySlot[] ArmourSlots =
     [
         eInventorySlot.TorsoArmor, eInventorySlot.LegsArmor, eInventorySlot.Cloak, eInventorySlot.ArmsArmor,
         eInventorySlot.HandsArmor, eInventorySlot.FeetArmor, eInventorySlot.HeadArmor,
     ];
 
+    public static readonly eInventorySlot[] WeaponSlots =
+        [eInventorySlot.RightHandWeapon, eInventorySlot.TwoHandWeapon, eInventorySlot.LeftHandWeapon, eInventorySlot.DistanceWeapon];
+
     /// <summary>
-    /// The colour a bot wants on a piece: its main colour on the chest, legs and cloak; its second colour on the arms,
-    /// hands, feet and helm when it is flashy or a peacock (a tidy bot wears one colour). Null: it doesn't dye.
+    /// The dye a bot wants for a piece, from the dyes that exist: its main colour on the chest, legs, cloak and weapons;
+    /// its second colour on the arms, hands, feet and helm when it is flashy or a peacock (a tidy bot wears one colour).
+    /// A tidy bot takes the cheaper shades of its colour, a peacock the dearer (royal, dark, black), a flashy bot any;
+    /// one shade per bot and colour, so its pieces match. Weapon lusters only for flashy bots and peacocks. Null: none.
     /// </summary>
-    public static int? WantedColour(Style style, eInventorySlot slot, Material material)
+    public static Dye? WantedDye(Style style, eInventorySlot slot, Material material, IReadOnlyList<Dye> catalog)
     {
-        if (style.Vanity == Vanity.Plain) return null;
-        bool main = slot is eInventorySlot.TorsoArmor or eInventorySlot.LegsArmor or eInventorySlot.Cloak;
+        if (style.Vanity == Vanity.Plain || catalog == null) return null;
+        if (material == Material.Weapon && style.Vanity == Vanity.Tidy) return null;
+        bool main = material == Material.Weapon || slot is eInventorySlot.TorsoArmor or eInventorySlot.LegsArmor or eInventorySlot.Cloak;
         Hue hue = main || style.Vanity == Vanity.Tidy ? style.Primary : style.Secondary;
-        int[] shades = ColoursOf(hue, material);
-        if (shades.Length == 0) shades = ColoursOf(Hue.Gray, material);
-        // One shade per bot and hue, so its pieces match.
-        return shades[(int)((uint)(style.Seed ^ (int)hue * 7919) % (uint)shades.Length)];
+        Dye[] shades = Shades(catalog, material, hue);
+        if (shades.Length == 0) shades = Shades(catalog, material, Hue.Gray);
+        if (shades.Length == 0) return null;
+        int half = (shades.Length + 1) / 2;
+        Dye[] range = style.Vanity switch
+        {
+            Vanity.Tidy => shades[..half],
+            Vanity.Peacock => shades[(shades.Length - half)..],
+            _ => shades,
+        };
+        return range[(int)((uint)(style.Seed ^ (int)hue * 7919 ^ (int)material * 104729) % (uint)range.Length)];
     }
+
+    private static Dye[] Shades(IReadOnlyList<Dye> catalog, Material material, Hue hue) =>
+        catalog.Where(d => d.Material == material && HueOf(d.Colour) == hue).OrderBy(d => d.Price).ThenBy(d => d.Colour).ToArray();
 
     /// <summary>The weapon glows a weapon type takes (the game's own Effect Master list), or empty.</summary>
     public static int[] GlowsFor(int objectType) => (eObjectType)objectType switch
@@ -192,16 +220,16 @@ public static class AutonomousBotCosmetics
     #endregion
 
     #region The prices and the budget (pure)
-    /// <summary>A dye for one piece, in copper: cloth 50 silver, leather 1 gold, metal (enamel) 2 gold at level 50, less
-    /// for lower levels (never under a tenth).</summary>
-    public static long DyePrice(Material material, int level, int pricePercent = 100) =>
-        Scale(material switch { Material.Cloth => 5_000, Material.Leather => 10_000, _ => 20_000 }, level, pricePercent);
+    /// <summary>What a bot pays for a dye: the item's own price (bot_cosmetics_price_percent scales it, 100 = as the game).</summary>
+    public static long PriceOf(Dye dye, int pricePercent = 100) =>
+        Math.Max(1, dye.Price * Math.Clamp(pricePercent, 1, 1000) / 100);
 
-    /// <summary>A weapon glow, in copper: 50 gold at level 50.</summary>
-    public static long GlowPrice(int level, int pricePercent = 100) => Scale(500_000, level, pricePercent);
-
-    private static long Scale(long levelFifty, int level, int pricePercent) =>
-        Math.Max(1, levelFifty * Math.Max(10, Math.Clamp(level, 1, 50) * 2) / 100 * Math.Clamp(pricePercent, 1, 1000) / 100);
+    /// <summary>A weapon glow (not a 1.65 purchase): what the dearest weapon luster costs.</summary>
+    public static long GlowPrice(IReadOnlyList<Dye> catalog, int pricePercent = 100)
+    {
+        long luster = catalog?.Where(d => d.Material == Material.Weapon).Select(d => d.Price).DefaultIfEmpty(0).Max() ?? 0;
+        return luster <= 0 ? 0 : Math.Max(1, luster * Math.Clamp(pricePercent, 1, 1000) / 100);
+    }
 
     /// <summary>The coin a bot keeps for its gear and repairs and never spends on looks: 5 gold a level.</summary>
     public static long Reserve(int level) => Math.Clamp(level, 1, 50) * 50_000L;
@@ -215,12 +243,43 @@ public static class AutonomousBotCosmetics
         return vanity switch { Vanity.Tidy => surplus / 10, Vanity.Flashy => surplus / 4, Vanity.Peacock => surplus / 2, _ => 0 };
     }
 
-    /// <summary>How many pieces a bot has done at one visit.</summary>
+    /// <summary>How many things a bot has done at one visit.</summary>
     public static int PiecesPerVisit(Vanity vanity) => vanity switch { Vanity.Peacock => 5, Vanity.Flashy => 3, Vanity.Tidy => 2, _ => 0 };
     #endregion
 
     #region The game glue
     public static bool On => Properties.BOT_COSMETICS;
+
+    private static Dye[] _catalog;
+    private static readonly object CatalogLock = new();
+
+    /// <summary>The dyes in this world's database, read once.</summary>
+    public static IReadOnlyList<Dye> Catalog
+    {
+        get
+        {
+            if (_catalog != null) return _catalog;
+            lock (CatalogLock)
+            {
+                if (_catalog != null) return _catalog;
+                try
+                {
+                    _catalog = BuildCatalog(GameServer.Database.SelectObjects<DbItemTemplate>(DB.Column("Model").IsIn(new[] { 229, 494, 495, 538 }))
+                        .Select(t => (t.Model, t.Color, t.Price, t.Name)));
+                }
+                catch (Exception exception)
+                {
+                    Log.Warn("BOT_COSMETIC could not read the dye items; bots won't buy dyes", exception);
+                    _catalog = [];
+                }
+                if (Log.IsInfoEnabled)
+                    Log.Info($"BOT_COSMETIC_CATALOG dyes={_catalog.Length} cloth={_catalog.Count(d => d.Material == Material.Cloth)} " +
+                             $"leather={_catalog.Count(d => d.Material == Material.Leather)} enamel={_catalog.Count(d => d.Material == Material.Metal)} " +
+                             $"lusters={_catalog.Count(d => d.Material == Material.Weapon)}");
+                return _catalog;
+            }
+        }
+    }
 
     public static Style StyleOf(GameBot bot) =>
         StyleOf(bot.DatabaseID, bot.Realm, AutonomousBotGuilds.GuildOf(bot.DatabaseID) is { } guild ? StableGuildKey(guild) : 0);
@@ -235,8 +294,8 @@ public static class AutonomousBotCosmetics
     }
 
     /// <summary>
-    /// At a merchant, between tasks: dyes and glows what the bot wears in its style, as far as its budget goes. True when
-    /// it bought something (<paramref name="done"/> says what).
+    /// At a merchant, between tasks: dyes what the bot wears and colours and glows its weapons in its style, as far as its
+    /// budget goes. True when it bought something (<paramref name="done"/> says what).
     /// </summary>
     public static bool TryRestyle(GameBot bot, GameMerchant merchant, out string done, out long spent)
     {
@@ -246,42 +305,49 @@ public static class AutonomousBotCosmetics
             !merchant.IsWithinRadius(bot, Properties.WORLD_PICKUP_DISTANCE))
             return false;
         Style style = StyleOf(bot);
-        if (style.Vanity == Vanity.Plain) return false;
+        IReadOnlyList<Dye> catalog = Catalog;
+        if (style.Vanity == Vanity.Plain || catalog.Count == 0) return false;
         int pricePercent = Properties.BOT_COSMETICS_PRICE_PERCENT;
         long budget = Budget(style.Vanity, AutonomousBotEconomy.GetMoney(bot.DatabaseID), bot.Level);
         int pieces = PiecesPerVisit(style.Vanity);
         var bought = new List<string>();
-        // Weapons first for a show-off (the glow is what it saves for), then the armour, chest first.
-        IEnumerable<eInventorySlot> order = style.Vanity == Vanity.Tidy ? DyedSlots :
-            new[] { eInventorySlot.RightHandWeapon, eInventorySlot.TwoHandWeapon, eInventorySlot.LeftHandWeapon }.Concat(DyedSlots);
+        // Weapons first for a show-off, then the armour, chest first.
+        IEnumerable<eInventorySlot> order = style.Vanity == Vanity.Tidy ? ArmourSlots : WeaponSlots.Concat(ArmourSlots);
         foreach (eInventorySlot slot in order)
         {
             if (bought.Count >= pieces) break;
             DbInventoryItem item = bot.Inventory.GetItem(slot);
             if (item?.Template == null || item.IsStackable) continue;
-            if (slot is eInventorySlot.RightHandWeapon or eInventorySlot.TwoHandWeapon or eInventorySlot.LeftHandWeapon)
-            {
-                if (item.Effect != 0 || WantedGlow(style, slot, item.Object_Type, bot.Level) is not int glow) continue;
-                long price = GlowPrice(bot.Level, pricePercent);
-                if (price > budget || !TryGlow(bot, item, slot, glow, price)) continue;
-                budget -= price;
-                spent += price;
-                bought.Add($"{item.Name}: glow {glow}");
-                LogRestyle(bot, style, slot, item.Name, "glow", glow, price);
-                continue;
-            }
             // A guild emblem stays: the cloak and shield show it (AutonomousBotGuilds).
             if (AutonomousBotGuilds.CarriesEmblem(item) && AutonomousBotGuilds.ShownGuild(bot)?.Emblem is > 0) continue;
-            if (item.Emblem != 0 || MaterialOf(item.Object_Type, (int)slot) is not Material material) continue;
-            if (Quests.Hibernia.SluaghbinderEpicArmor.IsSetItem(item)) continue;
-            if (WantedColour(style, slot, material) is not int colour || item.Color == colour) continue;
-            long dye = DyePrice(material, bot.Level, pricePercent);
-            if (dye > budget || !AutonomousBotEconomy.TrySpend(bot.DatabaseID, dye)) continue;
-            item.Color = colour;
-            budget -= dye;
-            spent += dye;
-            bought.Add($"{item.Name}: dye {colour}");
-            LogRestyle(bot, style, slot, item.Name, "dye", colour, dye);
+            if (item.Emblem != 0 || Quests.Hibernia.SluaghbinderEpicArmor.IsSetItem(item)) continue;
+            if (MaterialOf(item.Object_Type, (int)slot) is not Material material) continue;
+
+            if (WantedDye(style, slot, material, catalog) is Dye dye && item.Color != dye.Colour)
+            {
+                long price = PriceOf(dye, pricePercent);
+                if (price <= budget && AutonomousBotEconomy.TrySpend(bot.DatabaseID, price))
+                {
+                    item.Color = dye.Colour;
+                    budget -= price;
+                    spent += price;
+                    bought.Add($"{item.Name}: {dye.Name}");
+                    LogRestyle(bot, style, slot, item.Name, material == Material.Weapon ? "luster" : "dye", dye.Colour, dye.Name, price);
+                    if (bought.Count >= pieces) break;
+                }
+            }
+            if (material == Material.Weapon && item.Effect == 0 &&
+                WantedGlow(style, slot, item.Object_Type, bot.Level) is int glow)
+            {
+                long price = GlowPrice(catalog, pricePercent);
+                if (price > 0 && price <= budget && TryGlow(bot, item, slot, glow, price))
+                {
+                    budget -= price;
+                    spent += price;
+                    bought.Add($"{item.Name}: glow {glow}");
+                    LogRestyle(bot, style, slot, item.Name, "glow", glow, "weapon glow", price);
+                }
+            }
         }
         if (bought.Count == 0) return false;
         AutonomousBotEconomy.MarkInventoryChanged(bot);
@@ -333,12 +399,12 @@ public static class AutonomousBotCosmetics
         return true;
     }
 
-    private static void LogRestyle(GameBot bot, Style style, eInventorySlot slot, string item, string kind, int value, long copper)
+    private static void LogRestyle(GameBot bot, Style style, eInventorySlot slot, string item, string kind, int value, string what, long copper)
     {
         if (!Log.IsInfoEnabled) return;
-        Log.Info($"BOT_COSMETIC bot=\"{bot.Name}\" id={bot.DatabaseID} level={bot.Level} realm={bot.Realm} vanity={style.Vanity} " +
-                 $"colours={style.Primary}/{style.Secondary} slot={slot} item=\"{item}\" kind={kind} value={value} copper={copper} " +
-                 $"moneyLeft={AutonomousBotEconomy.GetMoney(bot.DatabaseID)}");
+        Log.Info($"BOT_COSMETIC bot=\"{bot.Name}\" id={bot.DatabaseID} level={bot.Level} realm={GlobalConstants.RealmToName(bot.Realm)} " +
+                 $"vanity={style.Vanity} colours={style.Primary}/{style.Secondary} slot={(int)slot} item=\"{item}\" kind={kind} " +
+                 $"value={value} bought=\"{what}\" copper={copper} moneyLeft={AutonomousBotEconomy.GetMoney(bot.DatabaseID)}");
     }
     #endregion
 }

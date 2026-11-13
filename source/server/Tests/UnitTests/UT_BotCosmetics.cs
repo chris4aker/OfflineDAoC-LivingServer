@@ -5,10 +5,37 @@ using static DOL.GS.AutonomousBotCosmetics;
 
 namespace DOL.UnitTests
 {
-    /// <summary>Bot cosmetics (owner 2026-11-12): each gamebot has its own look and pays coin for dyes and glows.</summary>
+    /// <summary>Bot cosmetics (owner 2026-11-12/13): each gamebot has its own look and pays the game's own dye prices.</summary>
     [TestFixture]
     public class UT_BotCosmetics
     {
+        // A slice of the world database's dye items (model, colour, price in copper, name), as read on 2026-11-13.
+        private static readonly (int, int, long, string)[] Templates =
+        [
+            (229, 64, 50, "light red cloth dye"), (229, 65, 100, "red cloth dye"), (229, 66, 165000, "royal red cloth dye"),
+            (229, 67, 165000, "crimson cloth dye"), (229, 52, 100, "blue cloth dye"), (229, 53, 165000, "royal blue cloth dye"),
+            (229, 52, 100, "blue hull paint"), (229, 0, 100, "cloth bleach"), (229, 74, 165000, "black cloth dye"),
+            (229, 73, 6875, "dark gray cloth dye"),
+            (494, 64, 50, "light red leather dye"), (494, 65, 1375, "red leather dye"), (494, 66, 165000, "royal red leather dye"),
+            (494, 52, 1375, "blue leather dye"), (494, 73, 6875, "dark gray leather dye"),
+            (495, 65, 1375, "red enamel"), (495, 67, 165000, "crimson enamel"), (495, 52, 1375, "blue enamel"),
+            (495, 73, 6875, "dark gray enamel"), (495, 0, 100, "mild acid enamel remover"),
+            (538, 120, 1958110, "red weapon luster"), (538, 52, 1958110, "blue weapon luster"),
+            (538, 43, 975, "Black Weapon Enamel"), (538, 0, 100, "rose weapon luster"),
+        ];
+
+        private static readonly Dye[] Catalog = BuildCatalog(Templates);
+
+        [Test]
+        public void TheCatalogIsTheGamesOwnDyes()
+        {
+            Assert.That(Catalog.Any(d => d.Name.Contains("paint") || d.Name.Contains("bleach") || d.Name.Contains("remover")), Is.False);
+            Assert.That(Catalog.Any(d => d.Name == "Black Weapon Enamel"), Is.False, "custom weapon enamels are not lusters");
+            Assert.That(Catalog.Single(d => d.Material == Material.Cloth && d.Colour == 52).Price, Is.EqualTo(100), "cheapest kept");
+            Assert.That(Catalog.Count(d => d.Material == Material.Weapon), Is.EqualTo(2));
+            Assert.That(Catalog.All(d => d.Colour > 0));
+        }
+
         [Test]
         public void ABotsStyleIsTheSameEveryTime()
         {
@@ -20,9 +47,8 @@ namespace DOL.UnitTests
         public void BotsLookDifferentAndSomeDoNotCare()
         {
             var styles = Enumerable.Range(1, 2000).Select(id => StyleOf(id, eRealm.Hibernia)).ToArray();
-            int plain = styles.Count(s => s.Vanity == Vanity.Plain), peacock = styles.Count(s => s.Vanity == Vanity.Peacock);
-            Assert.That(plain, Is.InRange(300, 500), "about a fifth never bother");
-            Assert.That(peacock, Is.InRange(120, 280), "about a tenth are peacocks");
+            Assert.That(styles.Count(s => s.Vanity == Vanity.Plain), Is.InRange(300, 500), "about a fifth never bother");
+            Assert.That(styles.Count(s => s.Vanity == Vanity.Peacock), Is.InRange(120, 280), "about a tenth are peacocks");
             Assert.That(styles.Select(s => (s.Primary, s.Secondary)).Distinct().Count(), Is.GreaterThan(30), "many colour pairs");
             Assert.That(styles.Count(s => s.Primary == s.Secondary), Is.LessThan(40), "two colours, rarely the same");
         }
@@ -45,50 +71,60 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void ADyeFitsTheMaterial()
+        public void TheDyeFitsTheMaterialAndExists()
         {
-            foreach (Material material in new[] { Material.Cloth, Material.Leather, Material.Metal })
-            foreach (Hue hue in System.Enum.GetValues<Hue>())
-            foreach (int id in ColoursOf(hue, material))
-                Assert.That(Fits(id, material), $"{hue} {id} on {material}");
-            Assert.That(Fits(30, Material.Cloth) && !Fits(30, Material.Metal), "a cloth dye is not an enamel");
-            Assert.That(Fits(48, Material.Metal) && !Fits(48, Material.Leather), "gold metal is an enamel");
-            Assert.That(Fits(9, Material.Leather) && !Fits(9, Material.Cloth), "leather red is a leather dye");
-            Assert.That(Fits(64, Material.Cloth) && Fits(64, Material.Leather) && Fits(64, Material.Metal), "a general dye");
-        }
-
-        [Test]
-        public void EveryHueHasADyeForEveryMaterialOrFallsBackToGray()
-        {
-            var style = new Style(Vanity.Flashy, Hue.Black, Hue.Orange, 17);
+            var style = new Style(Vanity.Flashy, Hue.Red, Hue.Blue, 17);
             foreach (Material material in new[] { Material.Cloth, Material.Leather, Material.Metal })
             {
-                int? chest = WantedColour(style, eInventorySlot.TorsoArmor, material);
-                int? arms = WantedColour(style, eInventorySlot.ArmsArmor, material);
-                Assert.That(chest.HasValue && Fits(chest.Value, material), $"chest on {material}");
-                Assert.That(arms.HasValue && Fits(arms.Value, material), $"arms on {material}");
+                Dye? chest = WantedDye(style, eInventorySlot.TorsoArmor, material, Catalog);
+                Assert.That(chest, Is.Not.Null);
+                Assert.That(chest!.Value.Material, Is.EqualTo(material));
+                Assert.That(HueOf(chest.Value.Colour), Is.EqualTo(Hue.Red));
+                Assert.That(Catalog, Does.Contain(chest.Value));
             }
         }
 
         [Test]
-        public void TidyWearsOneColourFlashyTwoPlainNone()
+        public void AColourWithNoDyeFallsBackToGray()
         {
-            var tidy = new Style(Vanity.Tidy, Hue.Red, Hue.Blue, 5);
-            Assert.That(HueOf(WantedColour(tidy, eInventorySlot.ArmsArmor, Material.Cloth)!.Value), Is.EqualTo(Hue.Red));
-            var flashy = tidy with { Vanity = Vanity.Flashy };
-            Assert.That(HueOf(WantedColour(flashy, eInventorySlot.TorsoArmor, Material.Cloth)!.Value), Is.EqualTo(Hue.Red));
-            Assert.That(HueOf(WantedColour(flashy, eInventorySlot.ArmsArmor, Material.Cloth)!.Value), Is.EqualTo(Hue.Blue));
-            Assert.That(WantedColour(tidy with { Vanity = Vanity.Plain }, eInventorySlot.TorsoArmor, Material.Cloth), Is.Null);
-            Assert.That(WantedColour(flashy, eInventorySlot.TorsoArmor, Material.Metal),
-                Is.EqualTo(WantedColour(flashy, eInventorySlot.LegsArmor, Material.Metal)), "matching pieces");
+            var style = new Style(Vanity.Flashy, Hue.Orange, Hue.Orange, 3);
+            Dye? dye = WantedDye(style, eInventorySlot.TorsoArmor, Material.Metal, Catalog);
+            Assert.That(dye?.Colour, Is.EqualTo(73), "no orange enamel in this slice: dark gray");
         }
 
         [Test]
-        public void JewelleryAndWeaponsAreNotDyedButCloaksAre()
+        public void TidyWearsCheapShadesAndPeacocksDearOnes()
+        {
+            var tidy = new Style(Vanity.Tidy, Hue.Red, Hue.Blue, 5);
+            var peacock = tidy with { Vanity = Vanity.Peacock };
+            Assert.That(WantedDye(tidy, eInventorySlot.TorsoArmor, Material.Cloth, Catalog)!.Value.Price, Is.LessThanOrEqualTo(100));
+            Assert.That(WantedDye(peacock, eInventorySlot.TorsoArmor, Material.Cloth, Catalog)!.Value.Price, Is.EqualTo(165000));
+            Assert.That(HueOf(WantedDye(tidy, eInventorySlot.ArmsArmor, Material.Cloth, Catalog)!.Value.Colour), Is.EqualTo(Hue.Red),
+                "tidy: one colour");
+            Assert.That(HueOf(WantedDye(peacock, eInventorySlot.ArmsArmor, Material.Cloth, Catalog)!.Value.Colour), Is.EqualTo(Hue.Blue),
+                "peacock: second colour on the arms");
+            Assert.That(WantedDye(tidy with { Vanity = Vanity.Plain }, eInventorySlot.TorsoArmor, Material.Cloth, Catalog), Is.Null);
+            Assert.That(WantedDye(peacock, eInventorySlot.TorsoArmor, Material.Metal, Catalog),
+                Is.EqualTo(WantedDye(peacock, eInventorySlot.LegsArmor, Material.Metal, Catalog)), "matching pieces");
+        }
+
+        [Test]
+        public void WeaponsGetALusterFromShowOffsOnly()
+        {
+            var flashy = new Style(Vanity.Flashy, Hue.Red, Hue.Blue, 9);
+            Dye? luster = WantedDye(flashy, eInventorySlot.RightHandWeapon, Material.Weapon, Catalog);
+            Assert.That(luster?.Name, Is.EqualTo("red weapon luster"));
+            Assert.That(luster!.Value.Price, Is.EqualTo(1958110), "about 196 gold, as the game prices it");
+            Assert.That(WantedDye(flashy with { Vanity = Vanity.Tidy }, eInventorySlot.RightHandWeapon, Material.Weapon, Catalog), Is.Null);
+        }
+
+        [Test]
+        public void WhatGetsDyed()
         {
             Assert.That(MaterialOf((int)eObjectType.Magical, (int)eInventorySlot.Cloak), Is.EqualTo(Material.Cloth));
             Assert.That(MaterialOf((int)eObjectType.Magical, (int)eInventorySlot.Neck), Is.Null);
-            Assert.That(MaterialOf((int)eObjectType.Sword, (int)eInventorySlot.RightHandWeapon), Is.Null);
+            Assert.That(MaterialOf((int)eObjectType.Sword, (int)eInventorySlot.RightHandWeapon), Is.EqualTo(Material.Weapon));
+            Assert.That(MaterialOf((int)eObjectType.Shield, (int)eInventorySlot.LeftHandWeapon), Is.Null);
             Assert.That(MaterialOf((int)eObjectType.Studded, (int)eInventorySlot.TorsoArmor), Is.EqualTo(Material.Leather));
             Assert.That(MaterialOf((int)eObjectType.Scale, (int)eInventorySlot.LegsArmor), Is.EqualTo(Material.Metal));
         }
@@ -98,40 +134,28 @@ namespace DOL.UnitTests
         {
             var flashy = new Style(Vanity.Flashy, Hue.Red, Hue.Blue, 99);
             int? sword = WantedGlow(flashy, eInventorySlot.RightHandWeapon, (int)eObjectType.SlashingWeapon, 50);
-            Assert.That(sword, Is.Not.Null);
             Assert.That(GlowsFor((int)eObjectType.SlashingWeapon), Does.Contain(sword!.Value));
-            Assert.That(WantedGlow(flashy, eInventorySlot.LeftHandWeapon, (int)eObjectType.SlashingWeapon, 50), Is.Null,
-                "a flashy bot glows its main weapon only");
+            Assert.That(WantedGlow(flashy, eInventorySlot.LeftHandWeapon, (int)eObjectType.SlashingWeapon, 50), Is.Null);
             Assert.That(WantedGlow(flashy with { Vanity = Vanity.Peacock }, eInventorySlot.LeftHandWeapon,
-                (int)eObjectType.SlashingWeapon, 50), Is.Not.Null, "a peacock glows both");
+                (int)eObjectType.SlashingWeapon, 50), Is.Not.Null);
             Assert.That(WantedGlow(flashy with { Vanity = Vanity.Tidy }, eInventorySlot.RightHandWeapon,
-                (int)eObjectType.SlashingWeapon, 50), Is.Null, "tidy bots don't buy glows");
-            Assert.That(WantedGlow(flashy, eInventorySlot.RightHandWeapon, (int)eObjectType.SlashingWeapon, 10), Is.Null, "too young");
-            Assert.That(WantedGlow(flashy, eInventorySlot.DistanceWeapon, (int)eObjectType.Longbow, 50), Is.Null, "no bow glows");
-            Assert.That(GlowsFor((int)eObjectType.Staff), Does.Contain(90));
-            Assert.That(GlowsFor((int)eObjectType.Axe).All(g => g is >= 56 and <= 66));
+                (int)eObjectType.SlashingWeapon, 50), Is.Null);
+            Assert.That(WantedGlow(flashy, eInventorySlot.RightHandWeapon, (int)eObjectType.SlashingWeapon, 10), Is.Null);
+            Assert.That(WantedGlow(flashy, eInventorySlot.DistanceWeapon, (int)eObjectType.Longbow, 50), Is.Null);
+            Assert.That(GlowPrice(Catalog), Is.EqualTo(1958110), "a glow costs what a weapon luster costs");
         }
 
         [Test]
-        public void TheyOnlySpendWhatTheyCanSpare()
+        public void TheyPayTheGamesPriceAndOnlyWhatTheyCanSpare()
         {
+            Dye royal = Catalog.First(d => d.Name == "royal red cloth dye");
+            Assert.That(PriceOf(royal), Is.EqualTo(165000));
+            Assert.That(PriceOf(royal, 200), Is.EqualTo(330000));
             long reserve = Reserve(50);
             Assert.That(Budget(Vanity.Peacock, reserve, 50), Is.Zero, "nothing above the reserve");
             Assert.That(Budget(Vanity.Plain, reserve * 10, 50), Is.Zero);
             Assert.That(Budget(Vanity.Tidy, reserve + 1_000_000, 50), Is.EqualTo(100_000));
-            Assert.That(Budget(Vanity.Flashy, reserve + 1_000_000, 50), Is.EqualTo(250_000));
             Assert.That(Budget(Vanity.Peacock, reserve + 1_000_000, 50), Is.EqualTo(500_000));
-        }
-
-        [Test]
-        public void PricesScaleWithLevelAndTheSetting()
-        {
-            Assert.That(DyePrice(Material.Cloth, 50), Is.EqualTo(5_000));
-            Assert.That(DyePrice(Material.Metal, 50), Is.EqualTo(20_000));
-            Assert.That(GlowPrice(50), Is.EqualTo(500_000));
-            Assert.That(DyePrice(Material.Metal, 25), Is.EqualTo(10_000));
-            Assert.That(DyePrice(Material.Cloth, 1), Is.EqualTo(500), "never under a tenth");
-            Assert.That(GlowPrice(50, 200), Is.EqualTo(1_000_000));
         }
     }
 }
