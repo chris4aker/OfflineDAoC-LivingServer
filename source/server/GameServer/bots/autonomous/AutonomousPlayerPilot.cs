@@ -382,8 +382,11 @@ public static class AutonomousPlayerPilot
 
         // Only reassert leadership for members still in the protected group.
         // A manual kick remains authoritative and temporary helpers still vanish.
+        // Play with friends (1.2): only the bots this player owns or leads (BotHumanBinding); another human's companions
+        // and, when someone else leads, the group's gamebots stay with their own human.
         foreach (GameBot bot in protectedGroup.GetMembersInTheGroup().OfType<GameBot>())
-            bot.EnterPlayerLedGroup(player);
+            if (BotHumanBinding.Commands(player, bot, protectedGroup))
+                bot.EnterPlayerLedGroup(player);
     }
 
     private static bool Recovered(GamePlayer player) =>

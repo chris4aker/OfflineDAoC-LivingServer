@@ -31,6 +31,29 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
 
 ## 1.2 (in development)
 
+**Play with friends: bots, pulls, credit and caps with more than one player** (owner's call, 2026-11-08; the co-op
+audit of 2026-11-03). With one player online nothing changes. With friends online:
+- **A companion follows its owner, always.** Another player's `/pull`, attack, `/bot pilot`, invite or `/makeleader` no
+  longer takes your `/spawn` or `/raid` companions, and when you leave a group a friend stays in, your companions leave
+  with you.
+- **Invited gamebots follow the group's leader.** `/makeleader` hands them to the new leader, and when the leader leaves
+  they follow the new leader instead of whichever player came first in the group.
+- **`/pull` orders only your bots:** your companions, plus the gamebots when you lead. The leader's tank-gated pull holds
+  only the leader's bots, and a friend's attack sends the friend's companions in without breaking it.
+- **`/travel` and `/bot pilot` are host only.** They press keys in, and read files from, the PC that runs the server; a
+  friend on another PC is told so and nothing starts.
+- **A server-wide companion budget:** while more than one player is online, new companions need room in the server's
+  total (`companion_budget_total`, 160) and the player's own share (`companion_budget_per_player`, 79 = one full
+  `/raid 80`). 0 turns either off.
+- **Bots answer each of you.** The reply cooldowns in `/faction` and `/say` are per player, so one player's line no longer
+  silences the replies to another.
+- **Quest credit for everyone:** a gamebot's kill credits every player of the group in range once; when the leader is
+  dead or away, another player of the group in range is credited instead of nobody.
+- **One invite at a time:** a gamebot leader whose invite box waits for one player's answer invites nobody else meanwhile.
+
+Covered by automated two-player tests (`UT_PlayWithFriends`); nobody has played it with two people yet. Joining a
+friend's server (networking, accounts, the launcher) is a separate change. Details: [docs/LIVING-SERVER.md](docs/LIVING-SERVER.md).
+
 **Tales: the realm's storyteller, and stories by the fire** (the owner's idea, 2026-11-10: "a bot in faction asks another
 famous bot to tell the story about X..."; how it works: [docs/TALES.md](docs/TALES.md)). Built and covered by automated
 tests; nobody has heard one in game yet.
