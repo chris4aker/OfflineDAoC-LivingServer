@@ -256,6 +256,36 @@ namespace DOL.GS
 		/// Creates the gameserver instance
 		/// </summary>
 		/// <param name="config"></param>
+		/// <summary>The line in the shipped logconfig.xml that marks the current version (audit 2026-11-13).</summary>
+		public const string LogConfigMarker = "living-server-logconfig 2";
+
+		/// <summary>
+		/// The log settings are written once, so an install kept the old ones forever. An older copy (without
+		/// <see cref="LogConfigMarker"/>) is kept as logconfig.xml.before-2 and replaced with the shipped one: three days of
+		/// logs, routine bot lines in their own two-day file, and a limit on every file (audit 2026-11-13: 2-3 GB).
+		/// The logger isn't up yet, so the result goes to the console.
+		/// </summary>
+		public static bool UpgradeLogConfig(FileInfo logConfig)
+		{
+			try
+			{
+				if (File.ReadAllText(logConfig.FullName).Contains(LogConfigMarker, StringComparison.Ordinal))
+					return false;
+
+				string backup = logConfig.FullName + ".before-2";
+				if (!File.Exists(backup))
+					File.Copy(logConfig.FullName, backup);
+				ResourceUtil.ExtractResource("logconfig.xml", logConfig.FullName);
+				Console.WriteLine($"LOG_CONFIG upgraded to {LogConfigMarker}; the old settings are in {backup}");
+				return true;
+			}
+			catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+			{
+				Console.WriteLine($"LOG_CONFIG could not be upgraded ({e.Message}); the old settings stay");
+				return false;
+			}
+		}
+
 		public static void CreateInstance(GameServerConfiguration config)
 		{
 			//Only one intance
@@ -266,6 +296,8 @@ namespace DOL.GS
 
 			if (!logConfig.Exists)
 				ResourceUtil.ExtractResource("logconfig.xml", logConfig.FullName);
+			else
+				UpgradeLogConfig(logConfig);
 
 			if (!LoggerManager.Initialize(logConfig.FullName))
 				return;
