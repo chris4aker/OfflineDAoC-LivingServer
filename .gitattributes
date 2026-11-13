@@ -1,0 +1,3 @@
+# Scripts run on Linux keep LF line endings, also when a Windows runner checks them out (they ship in the package).
+tools/linux/** text eol=lf
+*.sh text eol=lf

@@ -57,6 +57,9 @@ jobs:
   server:
     runs-on: windows-latest
     timeout-minutes: 45
+    outputs:
+      artifact: ${{ steps.package.outputs.artifact }}
+      folder: ${{ steps.package.outputs.folder }}
     steps:
       - uses: actions/checkout@v4
 
@@ -198,6 +201,9 @@ jobs:
           Copy-Item tools/fork-build/INSTALL.cmd, tools/fork-build/ROLLBACK.cmd, tools/fork-build/PREPARE-FOR-UPDATE.cmd, tools/fork-build/install-server-build.ps1, tools/fork-build/rollback-server-build.ps1, tools/fork-build/fork-build-common.ps1, tools/fork-build/README.txt, tools/fork-build/content-patches.json $dir
           # Whole files the content patches ship (content-patches.json "File" entries): Living Server's loading screen.
           Copy-Item tools/fork-build/content "$dir/content" -Recurse
+          # Linux (docs/LINUX.md §0): the script a Linux game runs from <game>/linux/, and Ryan's fullscreen helper.
+          New-Item -ItemType Directory -Path "$dir/linux" -Force | Out-Null
+          Copy-Item tools/linux/offlinedaoc, tools/linux/wine/scripts/daoc_fullscreen.py "$dir/linux"
           Copy-Item tools/claude-version/set_bot_guilds.py, tools/claude-version/set_bot_social.py, tools/claude-version/set_xp_by_level.py, tools/claude-version/carry_social_tables.py, tools/claude-version/epic_chains.py, tools/claude-version/epic_chains_data.json, tools/claude-version/lore_books.py "$dir/tools/claude-version"
           Copy-Item docs/BOT-GUILDS.md, docs/BOT-PERSONALITIES.md, docs/XP-BY-LEVEL-RANGE.md, docs/LIVING-SERVER.md, docs/KNOWN-ISSUES.md, docs/PLAY-WITH-FRIENDS.md "$dir/docs"
           $launcher = "source/tools/OfflineDaoc.Launcher/bin/Release/net10.0-windows"
@@ -227,6 +233,7 @@ jobs:
             "Built=$((Get-Date).ToUniversalTime().ToString('o'))", "GameServer.dll=$dll", "GameServer.pdb=$pdb",
             "content-patches.json=$content") + $coreInfo + $launcherInfo)
           "dir=$dir" >> $env:GITHUB_OUTPUT
+          "folder=LivingServer-$name" >> $env:GITHUB_OUTPUT
           "artifact=OfflineDAoC-LivingServer-$name-$short" >> $env:GITHUB_OUTPUT
           Write-Host "::notice title=Server build package::$name commit $short GameServer.dll sha256 $dll"
 
@@ -242,6 +249,29 @@ jobs:
           name: ${{ steps.package.outputs.artifact }}
           path: package/
           retention-days: 90
+
+  # Linux (docs/LINUX.md §0): the same install scripts under PowerShell 7 for Linux, and the Linux script, on the
+  # package the server job built. Fake game folders only; no Wine and no game files.
+  linux-install:
+    needs: server
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.server.outputs.artifact }}
+          path: package
+      - name: The Windows installer's own tests, under PowerShell 7 on Linux
+        shell: bash
+        run: |
+          pwsh --version
+          FORK_BUILD_TEST_SHELL=pwsh NO_COLOR=1 pwsh -NoProfile -File tools/fork-build/test-install-scripts.ps1 -BuildDir "package/${{ needs.server.outputs.folder }}"
+      - name: The Linux script (install, reinstall, refusal while the game runs, rollback)
+        shell: bash
+        run: |
+          chmod +x tools/linux/offlinedaoc tools/linux/test-offlinedaoc.sh
+          NO_COLOR=1 tools/linux/test-offlinedaoc.sh "package/${{ needs.server.outputs.folder }}"
 
   launcher:
     runs-on: windows-latest

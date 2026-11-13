@@ -40,6 +40,36 @@ Ryan's pieces, as of 80dc67b:
 | `daoc_fullscreen.py`: makes the client window fullscreen under GNOME/XWayland so the top bar doesn't push the bottom buttons off-screen | **Take** as is (X11 via ctypes, no dependencies). |
 | Prefix verbs `corefonts vcrun2019 d3dx9 dotnet35 dxvk` | **Check each.** DXVK is the player's own choice in their own prefix and is never shipped (AGENTS.md); the default is Wine's own Direct3D. Find out why `dotnet35` is needed: it takes 10+ minutes. |
 
+**Built so far on `feature/linux` (2026-11-13; tests only, nothing run on a Linux desktop yet):**
+- **Install and rollback are the Windows scripts themselves.** `install-server-build.ps1` and
+  `rollback-server-build.ps1` run unchanged under PowerShell 7 for Linux. All 109 checks of
+  `test-install-scripts.ps1` pass there (pwsh 7.6.9, container, the 1.2-beta package of 30a24e7). So there is no
+  Linux port to keep in step, and Ryan's Python port isn't needed.
+- **`tools/linux/offlinedaoc`** (shipped in every package's `linux/` folder) has these commands:
+  - `play`: the launcher under Wine, with Ryan's memory settings and fullscreen helper;
+  - `install <package>`: runs the package's own install script with PowerShell 7;
+  - `update [--check]`: the newest release, checked against GitHub's SHA-256 digest, as the launcher does;
+  - `rollback [--to-release]`;
+  - `status`.
+
+  It checks for running game parts by their Wine process names (`CoreServer.exe` and so on) and the game's port
+  itself, because PowerShell's own process check on Linux doesn't see Wine's names. `tools/linux/test-offlinedaoc.sh`
+  tests it on a fake game folder (install, reinstall, refusal while `CoreServer.exe` runs, rollback, bad packages).
+- **CI:** a `linux-install` job in build-and-test runs both test scripts on Ubuntu against the package the server job
+  built. `.gitattributes` keeps the Linux scripts LF when the Windows runner packs them.
+- **The launcher under Wine** (`WineHost`, detected by Wine's own registry key):
+  - Host for Friends skips the Windows Firewall step and shows the ufw and firewalld commands for the game's ports;
+  - an update the launcher finds is installed with `linux/offlinedaoc update` instead of `apply-update.ps1`.
+- The native prototypes moved to `tools/linux/native/`.
+
+Still to do for the Wine route:
+- a player setup script from Ryan's: Wine and PowerShell checks, prefix, the 0.36b + 0.37b download with shadowofze's
+  patcher, then `offlinedaoc install`;
+- check which prefix verbs are needed;
+- a desktop entry;
+- the friend's checklist;
+- the first run on Ryan's desktop.
+
 **Server memory.** Ryan saw the server grow to about 6 GB in a 48-minute session on a 16-core CPU. Server GC keeps
 one heap per logical CPU. The owner's PC has 16 logical CPUs too, so the same may happen on Windows. Check the
 server's memory on Windows before changing anything there.
@@ -115,7 +145,7 @@ systems run the same logic. Most of it is already UI-free (`PortableCredentials`
 `SocialExpansionSettings`, `BotCharacterGenerator`, `RollingServerLog`, `HostForFriends`, `JoinFriend`, `InviteCode`,
 `Updates/*`). The bot batches and the XP and GM saves move out of `MainForm.cs` into shared classes first; WinForms
 links the same files, so Windows doesn't change and its tests keep passing. A window (Avalonia) can follow if players
-ask for one. The bash `tools/linux/offlinedaoc` is the prototype of start, stop, status and account, not the product.
+ask for one. The bash `tools/linux/native/offlinedaoc` is the prototype of start, stop, status and account, not the product.
 
 ## 5. Updates
 
@@ -177,9 +207,9 @@ Reproduce the server spike:
 cmake -S source/server/Pathing/Detour -B /tmp/detour -DCMAKE_BUILD_TYPE=Release -DSOVERSION=1 -DLIB_VERSION=1.0 && cmake --build /tmp/detour
 dotnet build source/server/CoreServer/CoreServer.csproj -c Release
 python3 source/tools/make_test_world.py from-release --world <clean 0.37b world> --out /tmp/test-world.db
-tools/linux/assemble-server.sh --server-build source/server/Release --detour /tmp/detour/libDetour.so.1.0 \
+tools/linux/native/assemble-server.sh --server-build source/server/Release --detour /tmp/detour/libDetour.so.1.0 \
     --world /tmp/test-world.db --dotnet <aspnetcore runtime folder> --navmesh <navmesh folder> --out /tmp/OfflineDAoC
-tools/linux/smoke-server.sh --game /tmp/OfflineDAoC --playtester <OfflineDaoc.Playtester.dll> --out /tmp/smoke
+tools/linux/native/smoke-server.sh --game /tmp/OfflineDAoC --playtester <OfflineDaoc.Playtester.dll> --out /tmp/smoke
 ```
 
 ## 10. Order of work and effort (the native route; see §0 for the Wine route that comes first)

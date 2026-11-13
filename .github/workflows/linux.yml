@@ -59,13 +59,13 @@ jobs:
       - name: Assemble a Linux game folder (minimal test world, no game files)
         run: |
           python3 source/tools/make_test_world.py minimal --out "$RUNNER_TEMP/minimal.db"
-          tools/linux/assemble-server.sh --server-build source/server/Release --detour "$DETOUR" \
+          tools/linux/native/assemble-server.sh --server-build source/server/Release --detour "$DETOUR" \
             --world "$RUNNER_TEMP/minimal.db" --dotnet "$RUNNER_TEMP/dotnet" --out "$RUNNER_TEMP/OfflineDAoC"
 
       - name: Smoke - start, log in (scripted players), stop, start, stop
         run: |
           dotnet build source/tools/OfflineDaoc.Playtester -c Release
-          tools/linux/smoke-server.sh --game "$RUNNER_TEMP/OfflineDAoC" \
+          tools/linux/native/smoke-server.sh --game "$RUNNER_TEMP/OfflineDAoC" \
             --playtester source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll \
             --out "$RUNNER_TEMP/smoke"
 

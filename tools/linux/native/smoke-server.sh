@@ -4,7 +4,7 @@
 # navmeshes). Then two scripted players log in (source/tools/OfflineDaoc.Playtester, --attach), the server stops
 # with "exit", and it starts and stops once more.
 #
-#   tools/linux/smoke-server.sh --game <folder> --playtester <OfflineDaoc.Playtester.dll> --out <report folder>
+#   tools/linux/native/smoke-server.sh --game <folder> --playtester <OfflineDaoc.Playtester.dll> --out <report folder>
 #       [--scenarios chat-players,group-players]
 #
 # The folder's world must be a test world (make_test_world.py): the playtester refuses any other. Exit 0 = all passed.

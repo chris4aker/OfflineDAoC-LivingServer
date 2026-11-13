@@ -233,6 +233,14 @@ internal sealed class HostForFriendsForm : Form
             return;
         }
 
+        // Linux (under Wine): START HOSTING made no firewall rules, so there are none to remove.
+        if (WineHost.IsWine)
+        {
+            SetStatus("Hosting stopped: the server listens on this computer only and the password is gone.", DaocTheme.Success);
+            await OfferRestartAsync("Restart the server now so it stops listening for friends?");
+            return;
+        }
+
         // Remove exactly the rules START HOSTING made, by name (owner, 2026-11-08).
         IReadOnlyList<string> rules = HostForFriends.RulesToRemove(_current, _settings);
         string remove = Path.Combine(_runtime, HostForFriends.FirewallRemoveScriptName);
@@ -384,6 +392,12 @@ internal sealed class HostForFriendsForm : Form
 
     private async Task<bool> EnsureFirewallAsync(bool internet)
     {
+        // Linux (the launcher under Wine): no Windows Firewall to change; say which ports a Linux firewall would need.
+        if (WineHost.IsWine)
+        {
+            SetStatus(WineHost.FirewallNote(HostForFriends.FirewallPorts(_current)), DaocTheme.GoldLight);
+            return true;
+        }
         if (await RulesPresentAsync() && _settings.FirewallOpenToInternet == internet)
             return true;
 

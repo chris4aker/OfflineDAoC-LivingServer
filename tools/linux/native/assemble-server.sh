@@ -2,7 +2,7 @@
 # Living Server 1.2.2 Linux prototype (docs/LINUX.md): assembles a clean Linux game folder around a server build,
 # in the layout a Linux player's folder would have. For tests and CI only; it never touches an installed game.
 #
-#   tools/linux/assemble-server.sh --server-build source/server/Release --detour libDetour.so --world test-world.db \
+#   tools/linux/native/assemble-server.sh --server-build source/server/Release --detour libDetour.so --world test-world.db \
 #       --out /tmp/OfflineDAoC [--dotnet <aspnetcore runtime folder>] [--navmesh <folder>] [--port 10300]
 #
 # The result:
