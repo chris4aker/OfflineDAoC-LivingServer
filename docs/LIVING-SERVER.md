@@ -39,6 +39,7 @@ stopped; they are used at the next start. The server keys (category `bots`) are:
 | Holiday chatter | `bot_living_holidays` | True (Beta 1.1) |
 | Leeroy in raids | `bot_living_leeroy` | True (Beta 1.1) |
 | Bots remember each other | `bot_group_bonds` | True (server key only; not in the launcher tab yet) |
+| Bots dress up | `bot_cosmetics`, `bot_cosmetics_price_percent` | True, 100 = the game's prices (1.2; server keys only, not in the launcher tab yet) |
 
 **ALL OFF** in the tab switches every part off, along with the other Living Server features.
 
@@ -230,6 +231,22 @@ companion bots and real players are not.
   then when a new party has an old friend in it (40%), and grumbles about a no-show (50%). One line per topic per realm
   every 10 minutes, with up to two reactions. Logs `BOND_TALK`. The Herald doesn't show bonds yet.
 
+### Bots dress up (`bot_cosmetics`)
+Gamebots spend their coin on how they look, not only on gear. Each bot has its own style, the same every time you
+see it: about a fifth never bother, most dye what they wear in one colour, some wear two colours and colour their weapon
+with a weapon luster, and a few show-offs do every weapon. Their colours lean on their realm's
+(Albion reds and blues, Midgard blues and greys, Hibernia greens and purples), and guild members often wear their
+guild's colour.
+
+They buy at a merchant during the town visit they already make between tasks, after selling and buying upgrades,
+and only from coin above what they keep for gear and repairs. They buy the game's own dyes at the game's own prices:
+cloth dye, leather dye or enamel to fit the piece, from 50 copper for a light shade to over 16 gold for royal and black
+ones, and about 196 gold for a weapon luster. Tidy bots take the cheap shades, show-offs the dear ones. Bots buy no
+weapon glows: as in 1.65, a glowing weapon comes from an epic boss, a dragon or a Darkness Falls seal merchant, so a
+bot with one earned it. The Effect Master in the capital is still there for you. New gear comes in its plain colour, so
+they pay to dye it again. Guild emblems on cloaks and shields stay. `bot_cosmetics_price_percent` scales the prices.
+Your own gear and your companions are never touched.
+
 ### Deeds, storylines, spammers, roleplayers and rumours
 - **Deeds and reputation** (`bot_living_deeds`): bots that see you solo a named monster, go on a kill streak, get zerged
   or die to something silly tell /faction and others react. It builds a reputation the realm brings up, and a nickname.
@@ -369,6 +386,35 @@ did in 2003. The observer cap, the calibration, duty and the pet caps follow the
   cap of 2; a median of 0.75 s just outside 1,000 units (normal).
 - **Checked:** automated tests only (`UT_RvrPerception`, `UT_RvrPerceptionCalibration`, `UT_RvrPerceptionDuty`,
   `UT_RvrPetCap`). It has not been played yet.
+
+### Playing with friends: bots and companions (`companion_budget_total`, `companion_budget_per_player`)
+
+Added for 1.2 (owner Chris, 2026-11-08: 1-4 friends in your bot world). How bots behave with more than one real player
+online; joining a friend's server is the hosting half. With one player online nothing here changes.
+- **Who a bot follows (`BotHumanBinding`):** a companion (`/spawn`, `/raid`, a saved `/bot` companion) follows its owner,
+  always: no other player's `/pull`, attack, `/bot pilot` or invite takes it. A gamebot invited into a player's group
+  follows the group's leader: `/makeleader` hands the gamebots to the new leader, and when the leader leaves they follow
+  the new leader (another player only when no player leads). A player who leaves a group another player stays in takes
+  their companions along (a `/spawn` companion vanishes, as it does whenever it leaves its group).
+- **`/pull` and attacks:** a player's `/pull` orders their own companions, plus the gamebots when they lead the group.
+  The leader's tank-gated pull holds only the leader's bots; a friend's attack or `/pull` meanwhile sends the friend's own
+  companions in and leaves the leader's tank gate alone. A friend with no companions near is told who the gamebots follow.
+- **Host-PC only:** `/travel` (it holds the run key in the game window) and `/bot pilot` (it reads the quickbars the game
+  saved in `%APPDATA%`) work only for the game on the PC that runs the server. A friend on another PC is told so and
+  nothing starts.
+- **Companion budget:** while more than one player is online, a new companion needs room in the server's total
+  (`companion_budget_total`, 160) and in the player's own share (`companion_budget_per_player`, 79, a full `/raid 80`).
+  0 turns either off. Companions already out stay out; only new ones are refused, with the numbers. Each companion is a
+  bot thinking at the player-led cadence (a `/raid 80` is about 260 decisions a second), so four full raids would cost
+  more than the rest of the world.
+- **Chat:** the bots' reply cooldowns in `/faction` and `/say` are per player, so one player's line no longer stops the
+  bots answering another for 10-12 seconds. The pause in unprompted `/faction` lines after anyone speaks stays realm-wide
+  (everyone of the realm hears that channel).
+- **Quest credit:** a gamebot's kill credits every player of its group within range once, as a player's kill does; when
+  the leader is dead or away, another player of the group in range is credited instead of nobody.
+- **Bot leaders' invites:** each player has at most one invite box waiting, and a gamebot leader whose box waits for one
+  player's answer invites nobody else meanwhile.
+- **Checked:** automated tests only (`UT_PlayWithFriends`). It has not been played with two people yet.
 
 ## New client (0.36c)
 
