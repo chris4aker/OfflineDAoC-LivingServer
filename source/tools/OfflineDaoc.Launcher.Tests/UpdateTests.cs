@@ -13,6 +13,12 @@ public class UpdateVersionTests
     [TestCase("1.1.1-beta", "1.1.2-beta")]
     [TestCase("1.1.2-beta", "1.2-beta")]
     [TestCase("1.1.1-beta", "1.2-beta")]
+    // 1.2-beta is newer than every 1.1.x: the base 1.1, its numbered test builds, a hotfix and any later patch.
+    [TestCase("1.1-beta", "1.2-beta")]
+    [TestCase("1.1-beta.2", "1.2-beta")]
+    [TestCase("1.1.3-beta", "1.2-beta")]
+    [TestCase("1.1.10-beta", "1.2-beta")]
+    [TestCase("1.1.2-beta.3", "1.2-beta")]
     [TestCase("1.1-beta", "1.1.1-beta")]
     [TestCase("1.9-beta", "1.10-beta")]
     [TestCase("1.2-beta", "1.2")]
@@ -220,6 +226,32 @@ public class UpdatePolicyTests
         Assert.That(UpdatePolicy.ShouldOffer(Release("v1.1-beta"), installed, new UpdateSettings(), asked: true), Is.False, "an older build");
         Assert.That(UpdatePolicy.ShouldOffer(null, installed, new UpdateSettings(), asked: true), Is.False);
         Assert.That(UpdatePolicy.ShouldOffer(Release("v1.1.2-beta"), null, new UpdateSettings(), asked: true), Is.False, "a launcher that doesn't know its build");
+    }
+
+    [Test]
+    public void Version12BetaIsOfferedToEvery11xLauncher()
+    {
+        // The rule for every 1.1.x build (only launchers from 1.1.2 on run the check; each knows its build from
+        // ForkBuildInfo.BuildName).
+        foreach (string build in new[] { "1.1-beta", "1.1.1-beta", "1.1.2-beta", "1.1.3-beta" })
+            Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2-beta"), BuildVersion.Parse(build), new UpdateSettings(), asked: false),
+                Is.True, build);
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2-beta"), BuildVersion.Parse("1.2-beta"), new UpdateSettings(), asked: true),
+            Is.False, "a 1.2-beta launcher isn't offered its own build");
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.1.2-beta"), BuildVersion.Parse("1.2-beta"), new UpdateSettings(), asked: true),
+            Is.False, "nor an older one");
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2-beta"), BuildVersion.Parse("1.1.2-beta"),
+            new UpdateSettings { SkippedVersion = "1.1.3-beta" }, asked: false), Is.True, "skipping 1.1.3 doesn't skip 1.2");
+    }
+
+    [Test]
+    public void APrereleaseOf12BetaIsNotOffered()
+    {
+        // GitHub's /releases/latest leaves pre-releases out, and a pre-release is never offered: v1.2-beta must be
+        // published as a final release (Latest) for 1.1.x launchers to see it.
+        ReleaseInfo release = ReleaseInfo.Parse(UpdateFixtures.ReleaseJson("v1.2-beta", [1], prerelease: true))!;
+        Assert.That(release.Prerelease, Is.True, "the fixture is a pre-release");
+        Assert.That(UpdatePolicy.ShouldOffer(release, BuildVersion.Parse("1.1.2-beta"), new UpdateSettings(), asked: true), Is.False);
     }
 
     [Test]

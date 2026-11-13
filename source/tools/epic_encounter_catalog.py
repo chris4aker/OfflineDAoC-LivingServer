@@ -2050,6 +2050,8 @@ def render_tactics_cs(data: dict) -> str:
             init.append(f"AddParties = {int(t['addParties'])}")
         if t.get("areaOnClump"):
             init.append("AreaOnClump = true")
+        if t.get("curerPostSpacing"):
+            init.append(f"CurerPostSpacing = {int(t['curerPostSpacing'])}")
         body = (" { " + ", ".join(init) + " }") if init else ""
         rows.append(f'            new("{e["class"]}", "{e["id"]}", [{adds}], {int(t.get("fightAtHomeRadius", 0))}, {dies}{extra}){body},')
     leashes = []

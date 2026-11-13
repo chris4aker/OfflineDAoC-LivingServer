@@ -362,6 +362,9 @@ public static class AutonomousBotChatCoordinator
         var random = Random.Shared;
         if (!AutonomousBotVoices.Enabled || random.NextDouble() >= AutonomousChatFieldTalk.Share(channel))
             return false;
+        // A bot telling a tale says nothing else until it ends.
+        if (AutonomousTales.IsTelling(starter.DatabaseID))
+            return false;
         AutonomousChatFieldTalk.Said said = AutonomousChatFieldTalk.Line(channel, AutonomousChatFieldTalk.Of(starter, random),
             AutonomousChatFieldTalk.MemoryOf(starter.Realm), random, GameLoop.GameLoopTime, AutonomousChatStance.Shared);
         if (said == null)

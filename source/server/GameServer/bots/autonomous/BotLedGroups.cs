@@ -808,7 +808,9 @@ public static partial class BotLedGroups
         bool asked = memory.IsAsking(now);
         if (!AutonomousBotGroupCoordinator.TryPickHostingLeader(player, memory, now, askedBot, out GameBot leader, out Candidate party))
         {
-            if (asked && askedBot != null)
+            // Owner's PC, 2026-11-12: /lfg in Krondon got no invite and nothing in the log said why. Every asked invite
+            // that finds no party is logged now.
+            if (asked)
                 LogInvite("not_sent", askedBot, player, "no_party_fits", asked);
             return false;
         }

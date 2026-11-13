@@ -24,8 +24,33 @@ public static class RealmRaidRecruitmentPolicy
     public static int MinimumBotsSetting = 0;
 
     [ServerProperty("autonomous", "realm_raid_schedule_minutes",
-        "Each realm opens an automatic realm raid on this schedule, rotating dragon, epic dungeon and neutral raid (0 = no schedule: raids only start when an eight-bot party happens to choose one).", 150)]
-    public static int ScheduleMinutes = 150;
+        "Each realm opens an automatic realm raid on this schedule, rotating dragon, epic dungeon and neutral raid (0 = no schedule: raids only start when an eight-bot party happens to choose one). 240 since 1.2 (it was 150): every raid now has its tale and its call, and four hours leaves the realm quiet time between them.", 240)]
+    public static int ScheduleMinutes = 240;
+
+    // The tale, then the call (the owner's idea, 2026-11-12; AutonomousRealmRaid.Call.cs).
+    [ServerProperty("autonomous", "realm_raid_tale_first",
+        "Before a realm's raid forms, the realm's storyteller tells that boss's tale in /faction; when the tale ends the realm is called (the large line across the screen and a horn) and only then are bots recruited. The realm's own raids and raids forced from the launcher, while a player of that realm is in the game. False: raids form at once.", true)]
+    public static bool TaleFirst = true;
+
+    [ServerProperty("autonomous", "realm_raid_call_horn_sound",
+        "Client sound id played to the realm's players when a raid is called (0 = none). 219 is the horn of a keep's defence.", 219)]
+    public static int CallHornSound = 219;
+
+    /// <summary>A raid's tale that has not started this long after the raid came due is given up: the call goes out without it.</summary>
+    public const long TaleStartPatienceMs = 6 * 60_000L;
+    /// <summary>A raid's tale still running this long after it started does not hold the raid any longer.</summary>
+    public const long TaleMaxMs = 12 * 60_000L;
+
+    public enum RaidCallStep { Wait, CallWithoutTale, CallTaleRanLong }
+
+    /// <summary>What a raid waiting for its tale does now: wait for the tale to start and end, or call the realm anyway.</summary>
+    public static RaidCallStep CallStep(long now, long asked, bool taleStarted, long taleStartedAt) =>
+        !taleStarted ? now - asked >= TaleStartPatienceMs ? RaidCallStep.CallWithoutTale : RaidCallStep.Wait
+        : now - taleStartedAt >= TaleMaxMs ? RaidCallStep.CallTaleRanLong : RaidCallStep.Wait;
+
+    /// <summary>The call across the screen of the realm's players when its raid forms.</summary>
+    public static string CallLine(string realmName, string raidName, string hubName) =>
+        $"The horn sounds: {realmName} marches on {raidName}! Gather at {hubName}.";
 
     public const int MinimumScaledBots = 40;
     /// <summary>
@@ -371,6 +396,21 @@ public static class RealmRaidRecruitmentPolicy
         !(present >= required && !landed);
 
     public static bool BattleExpired(bool forced, long now, long deadline) => !forced && now >= deadline;
+
+    /// <summary>
+    /// A raid in battle has no time limit (owner 2026-11-13: "if that's what it takes to get through the dungeon, we
+    /// shouldn't have time outs"); it ends when it is beaten, blocked, or stalled: this long with no named or boss kill, no
+    /// new low on the named or boss it fights and no wipe. Before, every automatic raid ended four hours after it went in.
+    /// </summary>
+    public const long StalledMilliseconds = 60 * 60_000L;
+
+    public static bool Stalled(bool forced, long now, long lastProgress) => !forced && now - lastProgress >= StalledMilliseconds;
+
+    /// <summary>Whether the raid moved forward since the last look: a named or boss down, a wipe (the fight goes on), or the
+    /// named or boss it fights lower than it has been in this raid. Pure.</summary>
+    public static bool MadeProgress(int namedBefore, int named, int wipesBefore, int wipes, string targetBefore, string target,
+        int lowestBefore, int healthPercent) =>
+        named > namedBefore || wipes > wipesBefore || target != null && target == targetBefore && healthPercent < lowestBefore;
 
     /// <summary>A raid party that lost members (but still exists) takes replacements up to its size when it joined.</summary>
     public static bool NeedsReplacement(int target, int members) => members > 0 && members < target;

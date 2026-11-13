@@ -487,9 +487,11 @@ namespace DOL.GS
             Mission?.ExpireMission();
 
             List<GameBot> temporaryHelpers;
+            List<GamePlayer> players;
 
             lock (_groupMembersLock)
             {
+                players = _groupMembers.OfType<GamePlayer>().ToList();
                 temporaryHelpers = _groupMembers.OfType<GameBot>()
                     .Where(bot => bot.IsTemporaryGroupHelper)
                     .ToList();
@@ -506,6 +508,15 @@ namespace DOL.GS
                 }
                 LivingLeader = null;
                 _groupMembers.Clear();
+            }
+
+            // A group disbanded with a player still in it (a bot-led or raid party ending, 2026-11-12) left the player's
+            // group window showing the old party: tell each player, as RemoveMember does.
+            foreach (GamePlayer player in players)
+            {
+                player.Out.SendMessage("Your group has disbanded.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                player.Out.SendGroupWindowUpdate();
+                player.Out.SendQuestListUpdate();
             }
 
             foreach (GameBot helper in temporaryHelpers)
