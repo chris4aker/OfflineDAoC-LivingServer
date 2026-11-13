@@ -165,8 +165,20 @@ namespace DOL.AI.Brain
         }
         public static bool IsPulled = false;
         public static bool spawn_copies = false;
+        /// <summary>
+        /// Living Server 1.2 (owner 2026-11-12: "hall of corrupt needs fixing"). His illusions leave when he resets, after
+        /// EVERY fight (pure). Before, they left only after the first one: the flag below was never cleared, while every
+        /// reset still zeroed the four illusion counters, so each new pull called four more beside the old ones. On the
+        /// owner's PC a raid met 134 of them and died there for three hours (about 120 deaths every ten minutes).
+        /// </summary>
+        public static bool IllusionsLeaveNow(bool hasAggro, bool leftSinceLastFight) => !hasAggro && !leftSinceLastFight;
+
+        /// <summary>One of his four illusions.</summary>
+        public static bool IsIllusion(GameNPC npc) => npc?.Brain is AidonCopyFireBrain or AidonCopyAirBrain or AidonCopyIceBrain or AidonCopyEarthBrain;
+
         public override void OnAttackedByEnemy(AttackData ad)
         {
+            RemoveAdds = false; // a new fight: its illusions leave again when he resets
             if (spawn_copies == false)
             {
                 SpawnCopies();
@@ -215,17 +227,21 @@ namespace DOL.AI.Brain
                 AidonCopyIce.CopyCountIce = 0;
                 AidonCopyAir.CopyCountAir = 0;
                 AidonCopyEarth.CopyCountEarth = 0;
-                if (!RemoveAdds)
+                if (IllusionsLeaveNow(false, RemoveAdds))
                 {
-                    foreach (GameNPC npc in Body.GetNPCsInRadius(2500))
+                    // The whole dungeon, not 2,500 around him: an illusion that chased a raider out of that circle stayed,
+                    // and the zeroed counters let the next pull call its twin.
+                    int left = 0;
+                    foreach (GameNPC npc in WorldMgr.GetNPCsFromRegion(Body.CurrentRegionID))
                     {
-                        if (npc != null)
+                        if (npc != null && npc.IsAlive && IsIllusion(npc))
                         {
-                            if (npc.IsAlive && (npc.Brain is AidonCopyFireBrain || npc.Brain is AidonCopyAirBrain || npc.Brain is AidonCopyIceBrain || npc.Brain is AidonCopyEarthBrain))
-                                npc.RemoveFromWorld();
+                            npc.RemoveFromWorld();
+                            left++;
                         }
                     }
                     RemoveAdds = true;
+                    if (left > 0) log.Info($"AIDON_ILLUSIONS_LEFT count={left} reason=reset");
                 }
             }
             if (Body.IsOutOfTetherRange)

@@ -1,3 +1,6 @@
+// Also compiled into the launcher (Host for Friends router check), which has nullable annotations on.
+#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,6 +32,31 @@ public class UpnpNat
 	}
 
 	private string _serviceUrl;
+	private string _serviceType = "urn:schemas-upnp-org:service:WANIPConnection:1";
+	private IPAddress _gateway;
+
+	// Routers offer port mapping through one of these services (WANPPPConnection on PPPoE connections).
+	private static readonly string[] ServiceTypes =
+	{
+		"urn:schemas-upnp-org:service:WANIPConnection:1",
+		"urn:schemas-upnp-org:service:WANPPPConnection:1",
+	};
+
+	/// <summary>
+	/// This PC's address on the network the gateway is on (the route Windows would use to reach it).
+	/// Null before Discover().
+	/// </summary>
+	public IPAddress LocalAddress
+	{
+		get
+		{
+			if (_gateway == null)
+				return null;
+			using Socket probe = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+			probe.Connect(_gateway, 1900);
+			return ((IPEndPoint) probe.LocalEndPoint).Address;
+		}
+	}
 
 	private static string _CombineUrls(string resp, string p)
 	{
@@ -37,29 +65,32 @@ public class UpnpNat
 		return resp.Substring(0, n) + p;
 	}
 
-	private static string _GetServiceUrl(string resp)
+	private static string _GetServiceUrl(string resp, out string serviceType)
 	{
+		serviceType = null;
 		XmlDocument desc = new XmlDocument();
 		desc.Load(WebRequest.Create(resp).GetResponse().GetResponseStream());
 		XmlNamespaceManager nsMgr = new XmlNamespaceManager(desc.NameTable);
 		nsMgr.AddNamespace("tns", "urn:schemas-upnp-org:device-1-0");
 		XmlNode typen = desc.SelectSingleNode("//tns:device/tns:deviceType/text()", nsMgr);
-		if (!typen.Value.Contains("InternetGatewayDevice"))
+		if (typen == null || !typen.Value.Contains("InternetGatewayDevice"))
 			return null;
-		XmlNode node = desc.SelectSingleNode(
-			"//tns:service[tns:serviceType=\"urn:schemas-upnp-org:service:WANIPConnection:1\"]/tns:controlURL/text()",
-			nsMgr);
-		if (node == null)
-			return null;
-		XmlNode eventnode = desc.SelectSingleNode(
-			"//tns:service[tns:serviceType=\"urn:schemas-upnp-org:service:WANIPConnection:1\"]/tns:eventSubURL/text()",
-			nsMgr);
-		_CombineUrls(resp, eventnode.Value);
-		return _CombineUrls(resp, node.Value);
+		foreach (string type in ServiceTypes)
+		{
+			XmlNode node = desc.SelectSingleNode(
+				"//tns:service[tns:serviceType=\"" + type + "\"]/tns:controlURL/text()",
+				nsMgr);
+			if (node == null)
+				continue;
+			serviceType = type;
+			return _CombineUrls(resp, node.Value);
+		}
+		return null;
 	}
 
-	private static XmlDocument _GetSOAPRequest(string url, string soap, string function)
+	private XmlDocument _GetSOAPRequest(string url, string soap, string function)
 	{
+		soap = soap.Replace("urn:schemas-upnp-org:service:WANIPConnection:1", _serviceType);
 		string req = "<?xml version=\"1.0\"?>" +
 			"<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">" +
 			"<s:Body>" +
@@ -69,7 +100,7 @@ public class UpnpNat
 		WebRequest r = WebRequest.Create(url);
 		r.Method = "POST";
 		byte[] b = Encoding.UTF8.GetBytes(req);
-		r.Headers.Add("SOAPACTION", "\"urn:schemas-upnp-org:service:WANIPConnection:1#" + function + "\"");
+		r.Headers.Add("SOAPACTION", "\"" + _serviceType + "#" + function + "\"");
 		r.ContentType = "text/xml; charset=\"utf-8\"";
 		r.ContentLength = b.Length;
 		r.GetRequestStream().Write(b, 0, b.Length);
@@ -90,7 +121,7 @@ public class UpnpNat
 	/// <returns>True if an UPnP Gateway is available</returns>
 	public bool Discover()
 	{
-		Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+		using Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 		s.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, 1);
 		const string req = "M-SEARCH * HTTP/1.1\r\n" +
 			"HOST: 239.255.255.250:1900\r\n" +
@@ -118,8 +149,12 @@ public class UpnpNat
 			{
 				resp = resp.Substring(resp.ToLower().IndexOf("location:") + 9);
 				resp = resp.Substring(0, resp.IndexOf("\r")).Trim();
-				if (!string.IsNullOrEmpty(_serviceUrl = _GetServiceUrl(resp)))
+				if (!string.IsNullOrEmpty(_serviceUrl = _GetServiceUrl(resp, out string serviceType)))
 				{
+					_serviceType = serviceType;
+					_gateway = Uri.TryCreate(resp, UriKind.Absolute, out Uri location) && IPAddress.TryParse(location.Host, out IPAddress gateway)
+						? gateway
+						: null;
 					return true;
 				}
 			}
@@ -205,6 +240,8 @@ public class UpnpNat
 			throw new Exception("No UPnP service available or Discover() has not been called");
 
 		if (internalIp == null || internalIp.ToString() == IPAddress.Any.ToString())
+			internalIp = LocalAddress;
+		if (internalIp == null)
 		{
 			foreach (var ip in Dns.GetHostAddresses(Dns.GetHostName()))
 				if (ip.GetAddressBytes().Length == 4)

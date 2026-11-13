@@ -19,13 +19,14 @@ namespace DOL.GS.ServerProperties
 	/// - Beta 1.1.2, raid sizing revision (PR #75, 2026-11-05): the win-rate sizing defaults changed between test builds
 	///   (step 5 -> 10, largest 100 or 150 -> 200, smallest 60 -> 70), and a test copy kept the old step from its first
 	///   build. "1.1.2.1" because worlds that ran any 1.1.2 build have already recorded "1.1.2".
+	/// - 1.2 (owner 2026-11-12): a realm's automatic raids every 240 minutes instead of 150 (the tale, then the call).
 	/// </summary>
 	public static class LivingServerSettingsUpgrade
 	{
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
 		/// <summary>The newest build with a changed default (the highest <see cref="Change.Since"/>).</summary>
-		public const string Version = "1.1.2.1";
+		public const string Version = "1.2";
 
 		/// <summary>One changed default: since which build, the setting, and its old and new default as the server stores them.</summary>
 		public sealed record Change(string Since, string Key, string OldDefault, string NewDefault);
@@ -47,6 +48,8 @@ namespace DOL.GS.ServerProperties
 			new("1.1.2.1", "realm_raid_largest_size_percent", "100", "200"),
 			new("1.1.2.1", "realm_raid_largest_size_percent", "150", "200"),
 			new("1.1.2.1", "realm_raid_smallest_size_percent", "60", "70"),
+			// 1.2 (owner 2026-11-12): every raid has its tale and its call, so a realm's raids come every four hours, not 2.5.
+			new("1.2", "realm_raid_schedule_minutes", "150", "240"),
 		];
 
 		/// <summary>The 1.1 keys (switched on), kept for callers of the first version.</summary>

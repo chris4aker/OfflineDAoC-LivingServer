@@ -48,6 +48,12 @@ namespace DOL.GS
 		protected bool m_autoAccountCreation;
 
 		/// <summary>
+		/// The hash of the host password a new account from another PC must use; empty for none (see HostPassword).
+		/// Written by the launcher's Host for Friends. From rambodolphin13/DividedRealms af1fcf8, Living Server 1.2.
+		/// </summary>
+		protected string m_hostPasswordHash = string.Empty;
+
+		/// <summary>
 		/// The game server type
 		/// </summary>
 		protected EGameServerType m_serverType;
@@ -152,6 +158,7 @@ namespace DOL.GS
             m_scriptAssemblies = root["Server"]["ScriptAssemblies"].GetString(m_scriptAssemblies);
             m_enableCompilation = root["Server"]["EnableCompilation"].GetBoolean(true);
             m_autoAccountCreation = root["Server"]["AutoAccountCreation"].GetBoolean(m_autoAccountCreation);
+            m_hostPasswordHash = root["Server"]["HostPasswordHash"].GetString(m_hostPasswordHash) ?? string.Empty;
 
             string serverType = root["Server"]["GameType"].GetString("Normal");
             switch (serverType.ToLower())
@@ -281,6 +288,7 @@ namespace DOL.GS
 			root["Server"]["ScriptAssemblies"].Set(m_scriptAssemblies);
 			root["Server"]["EnableCompilation"].Set(m_enableCompilation);
 			root["Server"]["AutoAccountCreation"].Set(m_autoAccountCreation);
+			root["Server"]["HostPasswordHash"].Set(m_hostPasswordHash);
 
 			string serverType = "Normal";
 
@@ -462,6 +470,15 @@ namespace DOL.GS
 		{
 			get { return m_autoAccountCreation; }
 			set { m_autoAccountCreation = value; }
+		}
+
+		/// <summary>
+		/// The hash of the host password a new account from another PC must use (see HostPassword); empty for none
+		/// </summary>
+		public string HostPasswordHash
+		{
+			get { return m_hostPasswordHash; }
+			set { m_hostPasswordHash = value ?? string.Empty; }
 		}
 
 		/// <summary>
