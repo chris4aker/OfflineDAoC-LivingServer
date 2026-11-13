@@ -61,7 +61,9 @@ out=$("$OD" install "$zip_dir/OfflineDAoC-LivingServer-test.zip" 2>&1)
 check 'grep -q "Already installed" <<< "$out"' "reinstall is a no-op" "$out"
 
 # A game part running (Wine names a process after its .exe): refused, nothing changed.
-cp "$(command -v sleep)" "$WORK/CoreServer.exe"; "$WORK/CoreServer.exe" 60 & FAKE_PID=$!
+# A copy of bash (not sleep: Ubuntu's coreutils refuse to run under another name); "; true" keeps bash from exec'ing sleep.
+cp "$(command -v bash)" "$WORK/CoreServer.exe"; "$WORK/CoreServer.exe" -c 'sleep 60; true' & FAKE_PID=$!
+sleep 1
 before=$(sha "$GAME/runtime/server/GameServer.dll")
 out=$("$OD" rollback 2>&1); code=$?
 check '[ $code -ne 0 ] && grep -q "running: CoreServer" <<< "$out" && [ "$(sha "$GAME/runtime/server/GameServer.dll")" = "$before" ]' \
