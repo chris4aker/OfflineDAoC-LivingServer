@@ -2647,6 +2647,14 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_group_player_loot_weight", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8.", 2)]
 		public static int BOT_GROUP_PLAYER_LOOT_WEIGHT;
 
+		/// <summary>Bot cosmetics (owner 2026-11-12): gamebots spend coin on dyes and weapon glows (AutonomousBotCosmetics).</summary>
+		[ServerProperty("bots", "bot_cosmetics", "Gamebots spend their coin on their looks as well as their gear: at a merchant between tasks, a bot with coin above its reserve dyes what it wears in its own colours (each bot has its own, leaning on its realm's colours; guild members often wear the guild's) and the show-offs pay for a weapon glow. New gear comes in its plain colour, so they pay again. Some bots never bother. False: no bot buys dyes or glows.", true)]
+		public static bool BOT_COSMETICS;
+
+		/// <summary>Bot cosmetics: what dyes and glows cost bots, in percent (AutonomousBotCosmetics).</summary>
+		[ServerProperty("bots", "bot_cosmetics_price_percent", "What dyes and weapon glows cost gamebots, in percent of the base price (at level 50 a cloth dye 50 silver, a leather dye 1 gold, a metal enamel 2 gold, a weapon glow 50 gold; less at lower levels). 1 to 1000.", 100)]
+		public static int BOT_COSMETICS_PRICE_PERCENT;
+
 		/// <summary>Bot-led groups, B2: what saying yes to a gamebot leader's invite does (follow or lead).</summary>
 		[ServerProperty("bots", "bot_led_group_join_mode", "Bot-led groups: when you say yes to a gamebot leader's invite. follow = the leader runs the group and you follow (/lead takes over at any time); lead = you become the leader at once and the bots follow you, as bots you /invite do (/lead bot hands it back).", "follow")]
 		public static string BOT_LED_GROUP_JOIN_MODE;
