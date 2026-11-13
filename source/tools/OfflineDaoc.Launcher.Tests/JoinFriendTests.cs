@@ -269,6 +269,9 @@ public sealed class JoinFriendTests
     }
 
     [TestCase("swordfish", "", false)]
+    [TestCase("swordfish", "12345", false)] // a new account's own password is 6 or more (audit 2026-11-13)
+    [TestCase("swordfish", "123456", true)]
+    [TestCase("", "12345", true)] // an existing account keeps the password it has
     [TestCase("swordfish", "1234567890123", true)]
     [TestCase("swordfish", "12345678901234", false)] // 14: no room beside the host password
     [TestCase("", "12345678901234567890", true)]
