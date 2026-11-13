@@ -290,7 +290,8 @@ public sealed class HostForFriendsTests
         };
 
         IReadOnlyList<string> rules = HostForFriends.RulesToRemove(state, settings);
-        Assert.That(rules, Is.EquivalentTo(new[] { "Offline DAoC friends TCP 10301", "Offline DAoC friends UDP 10400", "Offline DAoC friends TCP 10300" }));
+        Assert.That(rules, Is.EquivalentTo(new[] { "Offline DAoC friends TCP 10301", "Offline DAoC friends UDP 10400", "Offline DAoC friends TCP 10300",
+            "Offline DAoC friends TCP 10310" }));
 
         string script = HostForFriends.FirewallRemoveScript(rules.Append("Someone else's rule").Append("Offline DAoC friends \" & del"));
         Assert.That(script, Does.Not.Contain("Someone else"));

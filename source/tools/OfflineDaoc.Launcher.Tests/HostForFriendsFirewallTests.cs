@@ -95,7 +95,7 @@ public sealed class HostForFriendsFirewallTests
 
         // STOP HOSTING's script.
         IReadOnlyList<string> rules = HostForFriends.RulesToRemove(state, settings);
-        Assert.That(rules, Is.EquivalentTo(new[] { "Offline DAoC friends TCP 10300", "Offline DAoC friends UDP 10400" }));
+        Assert.That(rules, Is.EquivalentTo(new[] { "Offline DAoC friends TCP 10300", "Offline DAoC friends UDP 10400", "Offline DAoC friends TCP 10310" }));
         Assert.That(RunScript(HostForFriends.FirewallRemoveScript(rules), "stop"), Is.EqualTo(0));
 
         foreach (string name in rules)
