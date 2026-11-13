@@ -51,6 +51,26 @@ namespace DOL.GS.Quests
         }
 
         /// <summary>
+        /// Play with friends (1.2, co-op audit rule 5: every eligible human, once per kill): when an invited gamebot's leader
+        /// can't be credited (dead, too far, in another region), another real player of the bot's player-led group who is
+        /// alive, in the kill's region and within <see cref="Range"/> is, and through them the group in range as for any
+        /// player (PlayersCredited). Null with no such player, so with one human in the group nothing changes.
+        /// </summary>
+        public static GamePlayer GroupmateFor(GameBot bot, GameObject killed)
+        {
+            if (bot?.PlayerGroupLeader == null || bot.Owner != null || bot.Group == null || killed == null)
+                return null;
+            foreach (GamePlayer other in bot.Group.GetPlayersInTheGroup())
+            {
+                if (other == bot.PlayerGroupLeader || other is not { IsAlive: true, ObjectState: GameObject.eObjectState.Active })
+                    continue;
+                if (LeaderIsCredited(false, other.Group == bot.Group, other.CurrentRegionID == killed.CurrentRegionID, other.GetDistanceTo(killed)))
+                    return other;
+            }
+            return null;
+        }
+
+        /// <summary>
         /// A kill counts for a quest once. GamePlayer.EnemyKilled tells the killer's quests about the kill once more
         /// for each groupmate in range who didn't attack (with that groupmate as the sender), so a data quest with
         /// consecutive kill steps advanced several steps on one kill. Owner 2026-10-31: the kill is told apart by the
@@ -99,7 +119,8 @@ namespace DOL.GS.Quests
                     }
                 }
 
-                if (player == null && livingAttacker is GameBot gamebot && GroupLeaderFor(gamebot, killed) is GamePlayer leader)
+                if (player == null && livingAttacker is GameBot gamebot &&
+                    (GroupLeaderFor(gamebot, killed) ?? GroupmateFor(gamebot, killed)) is GamePlayer leader)
                 {
                     player = leader;
                     notified.Add(livingAttacker);

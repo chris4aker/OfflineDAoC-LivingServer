@@ -762,8 +762,9 @@ namespace DOL.GS
             // Offline DAoC is intentionally a local, single-player server. The legacy
             // client can stop sending its normal TCP ping while the player is idle in
             // /grind; do not turn that into a link-death on a loopback connection.
+            // Living Server 1.2: the same for a friend on the home network or Tailscale; a public address keeps it.
             // GameBots do not use this client path and retain their own AI/watchdog rules.
-            if (IsLocalServerClient(client))
+            if (ClientTimeoutPolicy.SkipsConnectionTimeouts(client))
                 return;
 
             if (GameServiceUtils.ShouldTick(client.PingTime + HARD_TIMEOUT))
@@ -775,15 +776,13 @@ namespace DOL.GS
             }
         }
 
-        private static bool IsLocalServerClient(GameClient client) =>
-            client?.IsLoopbackConnection == true;
-
         private static void CheckInGameActivityTimeout(GameClient client)
         {
             // Offline loopback play has no remote population to protect from
             // AFK occupancy. Keep the legacy policy available to non-local
             // clients without ever kicking the owner's local /grind session.
-            if (IsLocalServerClient(client))
+            // Living Server 1.2: friends on the home network or Tailscale are treated like this PC.
+            if (ClientTimeoutPolicy.SkipsIdleKick(client))
                 return;
 
             if (Properties.KICK_IDLE_PLAYER_STATUS &&

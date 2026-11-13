@@ -114,6 +114,12 @@ namespace DOL.GS
             /// adds stand within the spell's radius (owner 2026-11-08, Spindler Broodmother: "AoE on her spot"; her newborns
             /// appear within 50-80 of her). Gated to this tactic: the shared caster AI then picks the area spell itself.</summary>
             public bool AreaOnClump { get; init; }
+            /// <summary>The boss's area hit lands around a raider picked at random and the raid fights in one place (Spindler
+            /// Broodmother's mesmerize: 300 around one of the raiders within 1,500 of her, for 60 s, about every 30 s): every
+            /// second curer of the raid stands at a post beside the fight, this far clear of the spots around it and further
+            /// than that from the melee, so a hit on the raid leaves those curers awake and a hit on them leaves the raid's
+            /// (owner 2026-11-11: "Tactics only for now"; EpicEncounterTactics.PartyPosts.cs). 0: off.</summary>
+            public int CurerPostSpacing { get; init; }
 
             public bool HasHazards => Hazards is { Length: > 0 } && HazardRadius > 0;
         }
@@ -733,6 +739,8 @@ namespace DOL.GS
             if (raider == null || !Present(target)) return default;
             if (classId < 0) classId = EpicEncounterRestores.ClassId(raider);
             Vector3 at = new(raider.X, raider.Y, raider.Z);
+            // The curers' post (Spindler Broodmother): while somebody fights her, every second curer keeps it (ThinkPartyPost).
+            WatchPartyPosts(target, now);
             // A raid breaking off from the fight (the boss, or the boss of this add or of this hazard) goes to the muster first.
             GameNPC fightOwner = (IsHazard(target) ? HazardOwner(target, live) : RequiredAddOwner(target, live)) ?? target;
             if (BrokenOff(fightOwner, now) is Vector3 rally)
@@ -1338,6 +1346,8 @@ namespace DOL.GS
             if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || !bot.IsAlive) return false;
             long now = GameLoop.GameLoopTime;
             if (!CastWatch.IsEmpty && ThinkAreaCast(bot)) return true;
+            // A boss with a curers' post is fought (Spindler Broodmother): every second curer walks to it.
+            if (!PostWatch.IsEmpty && ThinkPartyPost(bot, now)) return true;
             if (System.Threading.Volatile.Read(ref _blastBosses) == 0 && System.Threading.Volatile.Read(ref _standOffHoldCount) == 0 &&
                 System.Threading.Volatile.Read(ref _liveHazardCount) == 0)
                 return false;
@@ -1395,6 +1405,7 @@ namespace DOL.GS
             ResetBlastCalls();
             lock (StandOffHolds) { StandOffHolds.Clear(); System.Threading.Volatile.Write(ref _standOffHoldCount, 0); }
             lock (SeenHazards) { SeenHazards.Clear(); System.Threading.Volatile.Write(ref _liveHazardCount, 0); }
+            ResetPartyPostsForTests();
         }
 
         public static bool CanShootFlyers(GameBot bot)

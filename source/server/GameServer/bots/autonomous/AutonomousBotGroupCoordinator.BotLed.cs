@@ -84,7 +84,8 @@ public static partial class AutonomousBotGroupCoordinator
                 candidates.Add(candidate);
             }
         }
-        if (BotLedGroups.PickInvitingLeader(candidates, player.Realm, player.Level, healer, memory, now) is not { } picked ||
+        if (BotLedGroups.PickInvitingLeader(candidates, player.Realm, player.Level, healer, memory, now,
+                BotLedGroups.LeadersInvitingOthers(player)) is not { } picked ||
             !leaders.TryGetValue(picked.LeaderId, out leader))
             return false;
         party = picked;

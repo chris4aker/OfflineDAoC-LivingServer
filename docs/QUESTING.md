@@ -105,7 +105,7 @@ the harness, the audit and the linked chains in 1.2, dialogue for the other line
 1. Decided 2026-10-30: the train (see RELEASE-TRAIN.md).
 2. Quest XP follows XP-by-level-range (proposed), or stays flat.
 3. Hand-ins allowed above a quest's maximum level (proposed), or the classic refusal.
-4. Gamebot kills credit the group's player for quest steps (proposed), as companion bots already do.
+4. Gamebot kills credit the players of the group for quest steps, as companion bots already do: every player of the group within range, once per kill (1.2, play with friends; the leader, or another player of the group in range when the leader is dead or away).
 5. The tracker and book journal on the new client, sent upstream (proposed); a custom skin for the old client as
    a smaller follow-up.
 6. Which three quests to A/B first, and your two or three examples of what felt broken.

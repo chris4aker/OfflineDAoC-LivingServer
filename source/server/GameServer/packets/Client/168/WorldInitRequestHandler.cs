@@ -191,6 +191,15 @@ namespace DOL.GS.PacketHandler.Client.v168
                 {
                     if (client.Account.Characters[i] != null && client.Account.Characters[i].AccountSlot == charSlot)
                     {
+                        if (PassportLock.IsAway(client.Account.Characters[i], out string where))
+                        {
+                            log.Warn($"Character entry refused: {client.Account.Characters[i].Name} is visiting {where}. (Account {client.Account.Name})");
+                            client.ActiveCharIndex = -1;
+                            client.Out.SendPlayerQuit(true);
+                            client.Disconnect();
+                            return;
+                        }
+
                         charFound = true;
                         selectedChar = client.Account.Characters[i].Name;
                         await client.LoadPlayer(i);
