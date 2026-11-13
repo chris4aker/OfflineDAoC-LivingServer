@@ -113,8 +113,20 @@ public static class PassportFile
                 ItemUnique = DecodeRows(entries[UniqueEntry]),
                 ItemTemplate = DecodeRows(entries[TemplateEntry]),
             };
+            // Only the travelling tables are read. The checksum proves the file is whole, not who wrote it, and the
+            // engine inserts every table it is given: a hand-made passport with rows for Account or ServerProperty
+            // planted them in the receiving world (audit 2026-11-13). Anything else in the file refuses the whole passport.
+            var travelling = new HashSet<string>(PassportTables.Travelling.Select(t => t.Table), StringComparer.OrdinalIgnoreCase);
+            foreach (string name in entries.Keys)
+            {
+                bool expected = name is UniqueEntry or TemplateEntry ||
+                                name.StartsWith("rows/", StringComparison.Ordinal) && name.EndsWith(".json", StringComparison.Ordinal) &&
+                                travelling.Contains(name["rows/".Length..^".json".Length]);
+                if (!expected)
+                    throw new PassportException("unexpected_entry", $"This passport holds something a passport never carries ({name}). Nothing was changed.");
+            }
             foreach ((string name, byte[] data) in entries.Where(e => e.Key.StartsWith("rows/", StringComparison.Ordinal)))
-                passport.Tables[Path.GetFileNameWithoutExtension(name)] = DecodeRows(data);
+                passport.Tables[name["rows/".Length..^".json".Length]] = DecodeRows(data);
             return passport;
         }
         catch (Exception e) when (e is InvalidDataException or JsonException or KeyNotFoundException or IOException)

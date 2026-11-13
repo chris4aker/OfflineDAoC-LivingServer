@@ -239,8 +239,13 @@ public static class HostForFriends
 
     public static string FirewallRuleName(string protocol, int port) => $"Offline DAoC friends {protocol} {port}";
 
+    /// <summary>
+    /// The game's two ports, and the Passport Desk's (login port + <see cref="OfflineDaoc.Passport.PassportDeskClient.PortOffset"/>),
+    /// which listens only while hosting. Before the audit of 2026-11-13 the Desk's port was left closed, so a friend's
+    /// passport could not reach it through Windows Firewall.
+    /// </summary>
     private static (string Protocol, int Port)[] FirewallPorts(State state) =>
-        [("TCP", state.LoginPort), ("UDP", state.UdpPort)];
+        [("TCP", state.LoginPort), ("UDP", state.UdpPort), ("TCP", state.LoginPort + OfflineDaoc.Passport.PassportDeskClient.PortOffset)];
 
     public static IReadOnlyList<string> FirewallRuleNames(State state) =>
         FirewallPorts(state).Select(port => FirewallRuleName(port.Protocol, port.Port)).ToList();

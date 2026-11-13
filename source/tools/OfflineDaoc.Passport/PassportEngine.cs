@@ -652,6 +652,9 @@ public static class PassportEngine
 
         foreach ((string table, List<Row> rows) in passport.Tables)
         {
+            // PassportFile.Read already refuses other tables; this keeps any other caller to the travelling ones too.
+            if (!PassportTables.Travelling.Any(t => t.Table.Equals(table, StringComparison.OrdinalIgnoreCase)))
+                throw new PassportException("unexpected_entry", $"A passport never carries {table}. Nothing was changed.");
             if (rows.Count == 0)
                 continue;
             if (!db.HasTable(table))

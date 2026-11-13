@@ -73,6 +73,51 @@ public partial class PassportRoundTripTests
         Assert.That(values.OfType<string>(), Has.None.EqualTo("me").IgnoreCase.And.None.EqualTo("me_2").IgnoreCase.And.None.EqualTo("guid-me"));
     }
 
+    // ---- A passport carries only the travelling tables (audit 2026-11-13) ----
+
+    [TestCase("Account")]
+    [TestCase("ServerProperty")]
+    [TestCase("offline_world_bots")]
+    public void HandMadePassport_WithAnotherTable_IsRefusedAndChangesNothing(string table)
+    {
+        PassportData data = PassportFile.Read(Leave());
+        data.Tables[table] = [table switch
+        {
+            "Account" => new Row { ["Name"] = "intruder", ["Realm"] = 0L },
+            "ServerProperty" => new Row { ["ServerProperty_ID"] = "x", ["Category"] = "a", ["Key"] = "planted", ["Value"] = "1" },
+            _ => new Row { ["Name"] = "Planted", ["Realm"] = 1L },
+        }];
+        string crafted = Path.Combine(_out, "hand-made.odpassport");
+        PassportFile.Write(data, crafted);
+        long accounts = (long)Value(_host, "SELECT count(*) FROM Account")!;
+        long properties = (long)Value(_host, "SELECT count(*) FROM ServerProperty")!;
+        long bots = (long)Value(_host, "SELECT count(*) FROM offline_world_bots")!;
+
+        PassportException refused = Assert.Throws<PassportException>(() => PassportEngine.Arrive(_host, crafted, "friend"))!;
+
+        Assert.That(refused.Code, Is.EqualTo("unexpected_entry"));
+        Assert.That(Value(_host, "SELECT count(*) FROM Account"), Is.EqualTo(accounts));
+        Assert.That(Value(_host, "SELECT count(*) FROM ServerProperty"), Is.EqualTo(properties));
+        Assert.That(Value(_host, "SELECT count(*) FROM offline_world_bots"), Is.EqualTo(bots));
+        Assert.That(Value(_host, $"SELECT count(*) FROM DOLCharacters WHERE DOLCharacters_ID='{Id}'"), Is.EqualTo(0L), "the traveller didn't arrive either");
+    }
+
+    [Test]
+    public void HandMadeReturnPassport_WithAnotherTable_IsRefusedAtHome()
+    {
+        PassportEngine.Arrive(_host, Leave(), "friend");
+        string back = PassportEngine.Depart(_host, "Traveller", null, _out);
+        PassportData data = PassportFile.Read(back);
+        data.Tables["Account"] = [new Row { ["Name"] = "intruder", ["Realm"] = 0L }];
+        string crafted = Path.Combine(_out, "hand-made-return.odpassport");
+        PassportFile.Write(data, crafted);
+
+        PassportException refused = Assert.Throws<PassportException>(() => PassportEngine.ComeHome(_home, crafted))!;
+
+        Assert.That(refused.Code, Is.EqualTo("unexpected_entry"));
+        Assert.That(Value(_home, "SELECT count(*) FROM Account WHERE Name='intruder'"), Is.EqualTo(0L));
+    }
+
     // ---- One world at a time; one use per travel file ----
 
     long PlayableCopies(string world, string item) =>

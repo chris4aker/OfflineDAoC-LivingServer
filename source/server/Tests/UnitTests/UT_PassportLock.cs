@@ -90,5 +90,11 @@ namespace DOL.UnitTests
         {
             Assert.That(PassportDesk.TryReadBasicAuthorization(header, out _, out _), Is.False);
         }
+
+        [Test]
+        public void TheRouterOpensTheDesksPort()
+        {
+            Assert.That(DOL.Network.UpnpPortMappings.PassportDeskPortOffset, Is.EqualTo(PassportDesk.PortOffset));
+        }
     }
 }
