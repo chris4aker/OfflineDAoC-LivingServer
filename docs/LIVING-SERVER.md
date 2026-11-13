@@ -233,16 +233,17 @@ companion bots and real players are not.
 
 ### Bots dress up (`bot_cosmetics`)
 Gamebots spend their coin on how they look, not only on gear. Each bot has its own style, the same every time you
-see it: about a fifth never bother, most dye what they wear in one colour, some wear two colours, colour their weapon
-with a weapon luster and pay for a glow, and a few show-offs do every weapon. Their colours lean on their realm's
+see it: about a fifth never bother, most dye what they wear in one colour, some wear two colours and colour their weapon
+with a weapon luster, and a few show-offs do every weapon. Their colours lean on their realm's
 (Albion reds and blues, Midgard blues and greys, Hibernia greens and purples), and guild members often wear their
 guild's colour.
 
 They buy at a merchant during the town visit they already make between tasks, after selling and buying upgrades,
 and only from coin above what they keep for gear and repairs. They buy the game's own dyes at the game's own prices:
 cloth dye, leather dye or enamel to fit the piece, from 50 copper for a light shade to over 16 gold for royal and black
-ones, and about 196 gold for a weapon luster. Tidy bots take the cheap shades, show-offs the dear ones. A weapon glow
-was not something you could buy in 1.65; it costs what a weapon luster does. New gear comes in its plain colour, so
+ones, and about 196 gold for a weapon luster. Tidy bots take the cheap shades, show-offs the dear ones. Bots buy no
+weapon glows: as in 1.65, a glowing weapon comes from an epic boss, a dragon or a Darkness Falls seal merchant, so a
+bot with one earned it. The Effect Master in the capital is still there for you. New gear comes in its plain colour, so
 they pay to dye it again. Guild emblems on cloaks and shields stay. `bot_cosmetics_price_percent` scales the prices.
 Your own gear and your companions are never touched.
 

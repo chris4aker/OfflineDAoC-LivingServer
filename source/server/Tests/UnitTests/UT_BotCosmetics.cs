@@ -130,22 +130,6 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void GlowsSuitTheWeaponAndTheShowOff()
-        {
-            var flashy = new Style(Vanity.Flashy, Hue.Red, Hue.Blue, 99);
-            int? sword = WantedGlow(flashy, eInventorySlot.RightHandWeapon, (int)eObjectType.SlashingWeapon, 50);
-            Assert.That(GlowsFor((int)eObjectType.SlashingWeapon), Does.Contain(sword!.Value));
-            Assert.That(WantedGlow(flashy, eInventorySlot.LeftHandWeapon, (int)eObjectType.SlashingWeapon, 50), Is.Null);
-            Assert.That(WantedGlow(flashy with { Vanity = Vanity.Peacock }, eInventorySlot.LeftHandWeapon,
-                (int)eObjectType.SlashingWeapon, 50), Is.Not.Null);
-            Assert.That(WantedGlow(flashy with { Vanity = Vanity.Tidy }, eInventorySlot.RightHandWeapon,
-                (int)eObjectType.SlashingWeapon, 50), Is.Null);
-            Assert.That(WantedGlow(flashy, eInventorySlot.RightHandWeapon, (int)eObjectType.SlashingWeapon, 10), Is.Null);
-            Assert.That(WantedGlow(flashy, eInventorySlot.DistanceWeapon, (int)eObjectType.Longbow, 50), Is.Null);
-            Assert.That(GlowPrice(Catalog), Is.EqualTo(1958110), "a glow costs what a weapon luster costs");
-        }
-
-        [Test]
         public void TheyPayTheGamesPriceAndOnlyWhatTheyCanSpare()
         {
             Dye royal = Catalog.First(d => d.Name == "royal red cloth dye");
