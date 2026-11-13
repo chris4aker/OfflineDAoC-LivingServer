@@ -6,7 +6,9 @@ namespace OfflineDaoc.Launcher;
 
 /// <summary>
 /// The host's side of playing together: one button that opens this server to friends, a password, and the invite
-/// code to send them. Starting asks Windows once for the firewall rules and starts the server if it is stopped.
+/// code to send them. Starting asks Windows once for the firewall rules and starts the server if it is stopped, or offers
+/// to restart it when it runs (a running server keeps listening on this PC only until it restarts; owner's playtest
+/// 2026-11-13: the dialog said "You are hosting" while friends could not join yet).
 /// Hand port from rambodolphin13/DividedRealms af1fcf8 and b0744a2, Living Server 1.2: the password is always needed
 /// (the owner's decision, 2026-11-08), internet mode is off unless the host ticks it, and there is no friend list.
 /// </summary>
@@ -15,6 +17,8 @@ internal sealed class HostForFriendsForm : Form
     private readonly string _runtime;
     private readonly Func<bool> _serverRunning;
     private readonly Action _startServer;
+    private readonly Func<Task> _stopServer;
+    private bool _restartNeeded;
     private readonly Label _state = Line(13f, FontStyle.Bold, DaocTheme.GoldLight);
     private readonly TextBox _password = new()
     {
@@ -55,15 +59,16 @@ internal sealed class HostForFriendsForm : Form
     private HostForFriends.Settings _settings = new();
     private bool _busy;
 
-    public HostForFriendsForm(string runtime, Func<bool> serverRunning, Action startServer)
+    public HostForFriendsForm(string runtime, Func<bool> serverRunning, Action startServer, Func<Task> stopServer)
     {
         _runtime = runtime;
         _serverRunning = serverRunning;
         _startServer = startServer;
+        _stopServer = stopServer;
 
         Text = "Host for Friends — Offline DAoC Living Server";
-        ClientSize = new Size(660, 490);
-        MinimumSize = new Size(600, 450);
+        ClientSize = new Size(700, 540);
+        MinimumSize = new Size(640, 500);
         StartPosition = FormStartPosition.CenterParent;
         BackColor = DaocTheme.Void;
         ForeColor = DaocTheme.Text;
@@ -74,7 +79,7 @@ internal sealed class HostForFriendsForm : Form
         Controls.Add(frame);
         var layout = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 10, BackColor = Color.Transparent, Padding = new Padding(4) };
         layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-        foreach (float height in new[] { 38f, 28f, 44f, 56f, 26f, 44f, 22f, 36f })
+        foreach (float height in new[] { 38f, 28f, 62f, 56f, 26f, 58f, 22f, 36f })
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, height));
         layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 43));
@@ -147,10 +152,15 @@ internal sealed class HostForFriendsForm : Form
             _toggle.Enabled = false;
             return;
         }
-        _state.Text = _current.Hosting ? "You are hosting: friends can join while your server runs." : "Not hosting: only this PC can join your server.";
-        _state.ForeColor = _current.Hosting ? DaocTheme.Success : DaocTheme.GoldLight;
+        _state.Text = !_current.Hosting ? "Not hosting: only this PC can join your server."
+            : _restartNeeded ? "Hosting is set: restart the server before friends can join."
+            : "You are hosting: friends can join while your server runs.";
+        _state.ForeColor = _current.Hosting && !_restartNeeded ? DaocTheme.Success : DaocTheme.GoldLight;
         _toggle.Text = _current.Hosting ? "STOP HOSTING" : "START HOSTING";
         _password.Enabled = _internet.Enabled = !_current.Hosting;
+        _password.PlaceholderText = _current.Hosting && _current.PasswordSet
+            ? "A password is set (hidden). Stop hosting to change it."
+            : string.Empty;
         if (_current.Hosting)
             _internet.Checked = _current.Internet;
         _code.Text = string.Empty;
@@ -259,8 +269,9 @@ internal sealed class HostForFriendsForm : Form
         {
             // The rules are gone; the next start just makes them again.
         }
-        SetStatus("Hosting stopped: the server listens on this PC only, the password is gone and the firewall rules are removed." +
-                  RestartNote(), DaocTheme.Success);
+        SetStatus("Hosting stopped: the server listens on this PC only, the password is gone and the firewall rules are removed.",
+                  DaocTheme.Success);
+        await OfferRestartAsync("Restart the server now so it stops listening for friends?");
     }
 
     /// <summary>Runs a script as administrator. Null when it ran; otherwise why not.</summary>
@@ -337,14 +348,39 @@ internal sealed class HostForFriendsForm : Form
 
         if (_serverRunning())
         {
-            SetStatus("Stop and start the server for hosting to take effect.", DaocTheme.GoldLight);
+            await OfferRestartAsync("Hosting is set. Restart the server now so friends can join?");
             return;
         }
         _startServer();
         SetStatus("Hosting is on and your server is starting. Friends can join once it has finished loading.", DaocTheme.Success);
     }
 
-    private string RestartNote() => _serverRunning() ? " Stop and start the server for it to take effect." : string.Empty;
+    private string RestartNote() => _serverRunning() ? " Restart the server for it to take effect." : string.Empty;
+
+    /// <summary>A running server reads the network settings only when it starts, so offer to restart it.</summary>
+    private async Task OfferRestartAsync(string question)
+    {
+        if (!_serverRunning())
+            return;
+        if (MessageBox.Show(this, question + "\n\nAnyone in the world is logged out while it restarts.", "Restart the server",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+        {
+            _restartNeeded = true;
+            SetStatus("Not yet: stop and start the server for this to take effect.", DaocTheme.GoldLight);
+            return;
+        }
+        SetStatus("Restarting the server…", DaocTheme.GoldLight);
+        await _stopServer();
+        if (_serverRunning())
+        {
+            _restartNeeded = true;
+            SetStatus("The server has not stopped yet. Start it again from the launcher once it has.", DaocTheme.Danger);
+            return;
+        }
+        _startServer();
+        _restartNeeded = false;
+        SetStatus("The server is restarting. Friends can join once it has finished loading.", DaocTheme.Success);
+    }
 
     private async Task<bool> EnsureFirewallAsync(bool internet)
     {
