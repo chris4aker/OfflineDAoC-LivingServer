@@ -266,11 +266,13 @@ public static partial class AutonomousBotGroupCoordinator
                 break;
             case BotLedGroups.Say.AfkLetGo:
                 BotLedGroups.Announce(leader, BotLedGroups.Lead.AfkLetGo, player, place, camp);
+                session.LetGoReason = "afk_30_minutes";
                 session.Group.RemoveMember(player);
                 EndHosting(session, player, "afk_30_minutes");
                 return false;
             case BotLedGroups.Say.LinkdeadLeft:
                 BotLedGroups.Announce(leader, BotLedGroups.Lead.PlayerLeft, player, place, camp);
+                session.LetGoReason = "linkdead_5_minutes";
                 session.Group.RemoveMember(player);
                 EndHosting(session, player, "linkdead_5_minutes");
                 return false;
@@ -303,7 +305,8 @@ public static partial class AutonomousBotGroupCoordinator
             {
                 bool raidGuest = BotLedGroups.ViewOf(group)?.RaidGuest == true;
                 BotPveGroupRole role = session.PlayerRole;
-                EndHosting(session, player, "left_group");
+                EndHosting(session, player, session.LetGoReason ?? "left_group");
+                session.LetGoReason = null;
                 // B4: the party carries on without the player and looks for a replacement of the player's role (it waits
                 // for one, no pulls, when the player was its only healer, tank or damage dealer).
                 GameBot[] stayed = BotMembers(group);
