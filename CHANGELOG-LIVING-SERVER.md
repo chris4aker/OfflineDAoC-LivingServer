@@ -31,6 +31,23 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
 
 ## 1.2 (in development)
 
+**Character passport: take your character to a friend's world and back** (built by rambodolphin13 for DividedRealms,
+`da78651` and `da92848`, cherry-picked with his authorship; thank you, rambodolphin13). In the launcher, **CHARACTER
+PASSPORT…** takes one of your characters to a friend's hosted world with its gear, quests and the coin you choose, and
+**COME HOME** brings it back with everything it earned. While it is away it is locked at home: it can't enter the world,
+be deleted or be moved. See [docs/CHARACTER-PASSPORT.md](docs/CHARACTER-PASSPORT.md).
+- A character is playable in one world at a time. A travel file works once (its trip id): home takes back only the trip
+  it is away on, and the host takes an outbound passport only once. Coin moves as a purse and is never copied.
+- Every step backs the world up first (`runtime\passport-backups`, the newest 6) and is all or nothing: a step that
+  fails leaves the world exactly as it was.
+- Living Server's own changes: every saved-progress table has a passport decision, and a test fails when a new one has
+  none; Living Server's social tables (gamebot memories, deeds, lore memory, companions) stay in their world; the passport
+  carries no account name or password; a name taken in the friend's world is refused and you pick a visiting name; a
+  Sluaghbinder visits only a world with the class on; the host's desk never creates accounts; and the host can turn new
+  visitors off (`passport` / `passport_visitors`) while visitors already there can still go home. Recall brings a
+  character back as it left if the friend's world is gone.
+- Automated tests only so far; nobody has made the trip between two real PCs yet.
+
 **Play with friends (experimental).** About one to four friends can play in your bot world: HOST FOR FRIENDS and JOIN
 FRIEND in the launcher, an invite code, and a password. Home network and Tailscale by default; internet hosting is a box
 you tick. See [docs/PLAY-WITH-FRIENDS.md](docs/PLAY-WITH-FRIENDS.md). Hand port from rambodolphin13's DividedRealms

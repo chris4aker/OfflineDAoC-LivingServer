@@ -907,6 +907,14 @@ namespace DOL.GS.PacketHandler.Client.v168
                     return false;
                 }
 
+                if (PassportLock.IsAway(character, out string where))
+                {
+                    if (log.IsWarnEnabled)
+                        log.Warn($"Character deletion prevented because the character is visiting {where}. (Account {client.Account.Name}) (Character: {character.Name}) (Slot position: {character.AccountSlot}) (Client slot {slot})");
+
+                    return false;
+                }
+
                 if (log.IsInfoEnabled)
                     log.Info($"Character deletion. (Account {client.Account.Name}) (Character: {character.Name}) (Slot position: {character.AccountSlot}) (Client slot {slot})");
 

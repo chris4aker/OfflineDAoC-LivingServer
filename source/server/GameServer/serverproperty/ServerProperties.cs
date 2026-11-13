@@ -2269,6 +2269,13 @@ namespace DOL.GS.ServerProperties
 		public static bool ENABLE_SLUAGHBINDER = true;
 
 		/// <summary>
+		/// Character passport (docs/CHARACTER-PASSPORT.md): while this world is hosted, friends may bring their own characters
+		/// through the Passport Desk. False refuses new visitors; visitors already here can still go home.
+		/// </summary>
+		[ServerProperty("passport", "passport_visitors", "While hosting, let friends bring their own characters to this world (Character passport). False refuses new visitors; visitors already here can still go home.", true)]
+		public static bool PASSPORT_VISITORS = true;
+
+		/// <summary>
 		/// Disable some races from being created
 		/// </summary>
 		[ServerProperty("classes", "disabled_races", "Serialized list of disabled races, separated by semi-colon or a range with a dash (ie 1-5;7;9)", "")]
