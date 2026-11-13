@@ -562,6 +562,8 @@ namespace DOL.GS
 						log.Info("Game WebAPI open for connections.");
 				}
 
+				// Character passport (docs/CHARACTER-PASSPORT.md): opens only while this world is hosted for friends.
+				PassportDesk.Start(Configuration);
 				GetPatchNotes();
 
 				if (log.IsInfoEnabled)
@@ -1010,6 +1012,7 @@ namespace DOL.GS
 
 			// Stop new clients from logging in.
 			m_status = EGameServerStatus.GSS_Closed;
+			PassportDesk.Stop();
 
 			if (log.IsInfoEnabled)
 				log.Info("No longer accepting incoming connections");

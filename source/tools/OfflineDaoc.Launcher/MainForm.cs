@@ -132,6 +132,9 @@ internal sealed partial class MainForm : Form
     private readonly Button _startButton;
     private readonly Button _stopButton;
     private readonly Button _playButton;
+    // Living Server 1.2, play with friends (from rambodolphin13/DividedRealms 3c6cc9d).
+    private readonly Button _joinFriendButton;
+    private readonly Button _hostFriendsButton;
     private Process? _serverProcess;
     private RollingServerLog? _serverLog;
     private bool _stoppingServer;
@@ -203,6 +206,10 @@ internal sealed partial class MainForm : Form
         _startButton.Click += (_, _) => OnStartButton();
         _stopButton.Click += async (_, _) => await StopServerAsync();
         _playButton.Click += (_, _) => LaunchClient();
+        _joinFriendButton = ActionButton("JOIN FRIEND", Color.FromArgb(104, 111, 77));
+        _hostFriendsButton = ActionButton("HOST FOR FRIENDS", Color.FromArgb(150, 112, 52));
+        _joinFriendButton.Click += (_, _) => OpenJoinFriend();
+        _hostFriendsButton.Click += (_, _) => OpenHostForFriends();
 
         rootLayout.Controls.Add(BuildHeader(), 0, 0);
         rootLayout.Controls.Add(BuildCards(), 0, 1);
@@ -343,7 +350,8 @@ internal sealed partial class MainForm : Form
         var banner = new FantasyBanner { Dock = DockStyle.Fill, Margin = new Padding(2, 2, 2, 3) };
         var header = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, BackColor = Color.Transparent, Padding = new Padding(12, 7, 10, 6) };
         header.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-        header.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 145));
+        // Two button columns: the server on the left, playing with friends on the right.
+        header.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 284));
 
         var titlePanel = new Panel { Dock = DockStyle.Fill, BackColor = Color.Transparent };
         titlePanel.Controls.Add(new RealmShieldPicture
@@ -380,8 +388,8 @@ internal sealed partial class MainForm : Form
         AddUpdateStrip(titlePanel, versionLabel);
         header.Controls.Add(titlePanel, 0, 0);
 
-        var actions = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = false, Padding = new Padding(3, 5, 0, 0), BackColor = Color.Transparent };
-        foreach (var button in new[] { _startButton, _stopButton, _playButton })
+        var actions = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = true, Padding = new Padding(3, 5, 0, 0), BackColor = Color.Transparent };
+        foreach (var button in new[] { _startButton, _stopButton, _playButton, _joinFriendButton, _hostFriendsButton })
         {
             button.Width = 132;
             button.Height = 26;
@@ -390,9 +398,34 @@ internal sealed partial class MainForm : Form
         actions.Controls.Add(_startButton);
         actions.Controls.Add(_stopButton);
         actions.Controls.Add(_playButton);
+        // A new column: the three server buttons fill the first one.
+        actions.SetFlowBreak(_playButton, true);
+        actions.Controls.Add(_joinFriendButton);
+        actions.Controls.Add(_hostFriendsButton);
+        if (_newClient)
+        {
+            // Join Friend starts the original client; the new client is not supported yet.
+            _joinFriendButton.Enabled = false;
+            SetToolTip(_joinFriendButton, "Join Friend is not available for the new client yet. Use the original game's launcher.");
+        }
+        else
+            SetToolTip(_joinFriendButton, "Play in a friend's world over your home network, Tailscale or the internet. Your own server and save are not touched.");
+        SetToolTip(_hostFriendsButton, "Let friends join this game's server over your home network or Tailscale, with a password, and set up the firewall for it.");
         header.Controls.Add(actions, 1, 0);
         banner.Controls.Add(header);
         return banner;
+    }
+
+    private void OpenJoinFriend()
+    {
+        using var form = new JoinFriendForm(_root);
+        form.ShowDialog(this);
+    }
+
+    private void OpenHostForFriends()
+    {
+        using var form = new HostForFriendsForm(_root, IsServerRunning, StartServer);
+        form.ShowDialog(this);
     }
 
     private Control BuildCards()
@@ -1044,7 +1077,7 @@ internal sealed partial class MainForm : Form
         {
             Dock = DockStyle.Fill,
             BackColor = DaocTheme.StoneDark,
-            ColumnCount = 4,
+            ColumnCount = 5,
             RowCount = 1,
             Margin = new Padding(0),
             Padding = new Padding(0),
@@ -1053,6 +1086,7 @@ internal sealed partial class MainForm : Form
         panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 112));
         panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 48));
         panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 168));
+        panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 196)); // Character passport (MainForm.Passport.cs)
         panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         panel.Controls.Add(_footer, 0, 0);
         panel.Controls.Add(_autoRefreshCountdownCaption, 1, 0);
@@ -1063,6 +1097,7 @@ internal sealed partial class MainForm : Form
         _deleteAllBotsButton.Enabled = false;
         _deleteAllBotsButton.Click += async (_, _) => await DeleteAllBotsAsync();
         panel.Controls.Add(_deleteAllBotsButton, 3, 0);
+        panel.Controls.Add(PassportButton(), 4, 0);
         return panel;
     }
 
@@ -1640,23 +1675,9 @@ internal sealed partial class MainForm : Form
         PersistGmSetting(connection, account, enabled);
     }
 
-    private static void PersistGmSetting(SQLiteConnection connection, string account, bool enabled)
-    {
-        using var transaction = connection.BeginTransaction();
-        using var command = connection.CreateCommand();
-        command.Transaction = transaction;
-        command.CommandText = "CREATE TABLE IF NOT EXISTS offline_local_options (Key TEXT PRIMARY KEY,Value TEXT NOT NULL)";
-        command.ExecuteNonQuery();
-        command.CommandText = "INSERT INTO offline_local_options VALUES ('MakeMeGM',@value) ON CONFLICT(Key) DO UPDATE SET Value=excluded.Value";
-        command.Parameters.AddWithValue("@value", enabled ? "true" : "false");
-        command.ExecuteNonQuery();
-        command.CommandText = "UPDATE Account SET PrivLevel=@privilege WHERE Name=@account";
-        command.Parameters.AddWithValue("@privilege", enabled ? 2 : 1);
-        command.Parameters.AddWithValue("@account", account);
-        if (command.ExecuteNonQuery() != 1)
-            throw new InvalidOperationException("Your local account must exist before changing GM access. Enter the game once, then stop the server and retry.");
-        transaction.Commit();
-    }
+    // Only the account in account.txt (this PC's player) ever gets GM; friends' accounts never do (GmAccess, Living Server 1.2).
+    private static void PersistGmSetting(SQLiteConnection connection, string account, bool enabled) =>
+        GmAccess.Persist(connection, account, enabled);
 
     private void ShowXpRateApplying(string label, bool playerRate)
     {
@@ -3009,51 +3030,8 @@ internal sealed partial class MainForm : Form
             _serverReadinessPoll.Stop();
     }
 
-    private void EnsureBorderlessFullscreen()
-    {
-        // Use this installation's own client profile (paths.dat settings=), never another copy's preferences.
-        string profile = "OfflineDAoC036";
-        string pathsFile = Path.Combine(_clientDirectory, "paths.dat");
-        if (File.Exists(pathsFile))
-        {
-            string? value = File.ReadLines(pathsFile).FirstOrDefault(line => line.TrimStart().StartsWith("settings=", StringComparison.OrdinalIgnoreCase));
-            if (value != null)
-            {
-                string candidate = value[(value.IndexOf('=') + 1)..].Trim();
-                if (candidate.Length > 0 && candidate.All(c => char.IsLetterOrDigit(c) || c == '_' || c == '-')) profile = candidate;
-            }
-        }
-        var profileDirectory = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "Electronic Arts", "Dark Age of Camelot", profile);
-        Directory.CreateDirectory(profileDirectory);
-        var path = Path.Combine(profileDirectory, "user.dat");
-        var lines = File.Exists(path) ? File.ReadAllLines(path).ToList() : new List<string>();
-        var mainIndex = lines.FindIndex(line => line.Trim().Equals("[main]", StringComparison.OrdinalIgnoreCase));
-        if (mainIndex < 0)
-        {
-            if (lines.Count > 0 && lines[^1].Length != 0) lines.Add(string.Empty);
-            lines.Add("[main]");
-            lines.Add("fullscreen_windowed=1");
-        }
-        else
-        {
-            var sectionEnd = lines.FindIndex(mainIndex + 1, line => line.TrimStart().StartsWith('['));
-            if (sectionEnd < 0) sectionEnd = lines.Count;
-            var settingIndex = -1;
-            for (var index = mainIndex + 1; index < sectionEnd; index++)
-            {
-                if (lines[index].TrimStart().StartsWith("fullscreen_windowed=", StringComparison.OrdinalIgnoreCase))
-                {
-                    settingIndex = index;
-                    break;
-                }
-            }
-            if (settingIndex >= 0) lines[settingIndex] = "fullscreen_windowed=1";
-            else lines.Insert(sectionEnd, "fullscreen_windowed=1");
-        }
-        File.WriteAllLines(path, lines);
-    }
+    // Shared with Join Friend (ClientDisplayPreferences, from rambodolphin13/DividedRealms 3c6cc9d).
+    private void EnsureBorderlessFullscreen() => ClientDisplayPreferences.EnsureBorderlessFullscreen(_clientDirectory);
 
     private Process? FindExactServerProcess()
     {

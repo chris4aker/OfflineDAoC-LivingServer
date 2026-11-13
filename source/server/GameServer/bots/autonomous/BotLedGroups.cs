@@ -171,6 +171,8 @@ public static partial class BotLedGroups
         public int SessionDeclines { get; set; }
         public long AskedAt { get; set; } = long.MinValue / 2;
         public bool Pending { get; set; }
+        /// <summary>The leader whose box is waiting for this player's answer (while <see cref="Pending"/>).</summary>
+        public long PendingLeaderId { get; set; }
         /// <summary>The player typed /invites off (B2): no unasked invite, from a party or a raid. Asking still works.</summary>
         public bool PlayerInvitesOff { get; set; }
         public Dictionary<long, long> DeclinedByLeader { get; } = new();
@@ -231,13 +233,16 @@ public static partial class BotLedGroups
     /// no to in the last 6 hours. Null when none fits.
     /// </summary>
     public static Candidate? PickInvitingLeader(IEnumerable<Candidate> candidates, eRealm playerRealm, int playerLevel, bool playerIsHealer,
-        InviteMemory memory, long now)
+        InviteMemory memory, long now, IReadOnlySet<long> invitingOthers = null)
     {
         Candidate? best = null;
         double bestScore = double.MinValue;
         foreach (Candidate candidate in candidates)
         {
             if (CandidateBlocks(candidate, playerRealm, playerLevel) != null || memory != null && memory.LeaderDeclined(candidate.LeaderId, now))
+                continue;
+            // Play with friends (1.2): a leader whose box is waiting for another human's answer invites nobody else meanwhile.
+            if (invitingOthers != null && invitingOthers.Contains(candidate.LeaderId))
                 continue;
             double score = CandidateScore(candidate, playerLevel, playerIsHealer);
             if (score > bestScore || score == bestScore && best is { } held && candidate.LeaderId < held.LeaderId)
@@ -702,6 +707,21 @@ public static partial class BotLedGroups
     public const int PulseIntervalMs = 5_000;
     private static long _nextPulse;
 
+    /// <summary>
+    /// Play with friends (1.2): the leaders whose invite box is waiting for a human other than <paramref name="playerName"/>.
+    /// Each human has at most one box waiting (their own memory's Pending), and a party invites one human at a time.
+    /// </summary>
+    public static HashSet<long> LeadersInvitingOthers(IEnumerable<KeyValuePair<string, InviteMemory>> memories, string playerName)
+    {
+        var leaders = new HashSet<long>();
+        foreach ((string name, InviteMemory memory) in memories)
+            if (memory is { Pending: true, PendingLeaderId: not 0 } && !string.Equals(name, playerName, StringComparison.OrdinalIgnoreCase))
+                leaders.Add(memory.PendingLeaderId);
+        return leaders;
+    }
+
+    internal static HashSet<long> LeadersInvitingOthers(GamePlayer player) => LeadersInvitingOthers(Memories, player?.Name);
+
     internal static InviteMemory MemoryOf(GamePlayer player, long now) =>
         Memories.GetOrAdd(player.Name, _ => new InviteMemory(now) { PlayerInvitesOff = StoredInvitesOff(player) });
 
@@ -795,6 +815,7 @@ public static partial class BotLedGroups
             return false;
         }
         memory.Pending = true;
+        memory.PendingLeaderId = leader.DatabaseID;
         if (!asked)
         {
             memory.LastUnaskedAt = now;
