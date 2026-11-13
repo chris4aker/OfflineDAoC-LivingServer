@@ -8,8 +8,11 @@
 # forum.html?mid=, VN Boards message.asp?topic=), keeps the threads whose TITLE matches the preset (raid: raid
 # talk; builds: specs, templates, realm abilities; talk: LFG, trade, guild recruitment, RvR calls), and writes one
 # exact target per thread (the link as the listing had it). Run it again after a fetch run: threads whose exact
-# lookup found nothing (their archived URLs carry another session id, for example) move into a few id-filter
-# targets per forum instead.
+# lookup found nothing are looked up by thread number instead. Where the thread number comes first in the archive's
+# sorted address (Allakhazam: forum.html?forum=N&mid=ID) that is one narrow prefix lookup per thread, which the
+# archive answers at once. Where a session id sorts before it (vBulletin: s=...&t=ID) it is a few id-filter targets
+# per forum. Never an id filter over forum.html: that makes the archive read every capture of the whole forum, and
+# it answers HTTP 503/504 (seen 2026-11-11 and 11-12: three such lookups in a row stopped the run).
 #
 # Parameter names differ from wayback-fetch.ps1's on purpose: dot-sourcing it binds its own parameters here.
 param(
@@ -33,7 +36,7 @@ if (-not $opts.Folder) { $opts.Folder = $here }
 # Forum software of the era: where its thread links live and which parameter is the thread id.
 $script:ThreadSites = @(
     [pscustomobject]@{ Name = 'vBulletin'; PathRx = '/showthread\.php$'; IdParams = @('t', 'threadid') },
-    [pscustomobject]@{ Name = 'Allakhazam'; PathRx = '/forum\.html$'; IdParams = @('mid') },
+    [pscustomobject]@{ Name = 'Allakhazam'; PathRx = '/forum\.html$'; IdParams = @('mid'); PrefixLookup = $true },
     [pscustomobject]@{ Name = 'VN Boards'; PathRx = '/message\.asp$'; IdParams = @('topic') }
 )
 
@@ -144,6 +147,41 @@ function New-ExactTarget($thread) {
     }
 }
 
+# The thread's own address up to its number (camelot.allakhazam.com/forum.html?forum=10&mid=123), or '' when a
+# prefix lookup cannot find it: the archive sorts an address's parameters by name, so the prefix only holds when the
+# parameters up to the thread number are already in that order, and only on sites marked PrefixLookup.
+function Get-ThreadPrefix($thread) {
+    $site = $script:ThreadSites | Where-Object { $_.Name -eq $thread.Site } | Select-Object -First 1
+    if (-not $site -or -not [bool](Get-Prop $site 'PrefixLookup' $false)) { return '' }
+    $u = Get-UrlWithoutScheme $thread.Url
+    $q = $u.IndexOf('?')
+    if ($q -lt 0) { return '' }
+    $kept = New-Object System.Collections.Generic.List[string]
+    $last = ''
+    foreach ($pair in $u.Substring($q + 1).Split('&')) {
+        $name = ($pair -split '=', 2)[0].ToLowerInvariant()
+        if ([string]::CompareOrdinal($last, $name) -gt 0) { return '' }
+        $last = $name
+        $kept.Add($pair)
+        if ($name -eq $thread.IdParam.ToLowerInvariant()) { return $u.Substring(0, $q + 1) + ($kept -join '&') }
+    }
+    return ''
+}
+
+# One narrow prefix target per thread: the captures of that one thread, whatever follows its number (&num=N changes
+# with every reply). The filter keeps a longer number that starts the same out, and page 2+.
+function New-PrefixTarget($thread, [string]$prefix) {
+    $title = $thread.Title
+    if ($title.Length -gt 120) { $title = $title.Substring(0, 117) + '...' }
+    return [ordered]@{
+        url = $prefix; matchType = 'prefix'; guess = $false
+        note = ('{0} thread {1}: "{2}" (exact link found no capture; looked up by thread number)' -f $thread.Site, $thread.Id, $title)
+        cdxFilters = @(('urlkey:.*[?&]' + [regex]::Escape($thread.IdParam) + '=' + $thread.Id + '(&.*)?'), '!urlkey:.*[?&](page|pagenumber)=([2-9]|[0-9][0-9]+).*')
+        exclude = @('(?i)[?&](goto|p)=')
+        cdxPageSize = 20; cdxMaxPages = 1; maxCaptures = 1
+    }
+}
+
 # One id-filter target per forum and batch: the archive's index is scanned once for many threads.
 function New-FilterTargets($threads, [int]$batch) {
     $out = New-Object System.Collections.Generic.List[object]
@@ -215,13 +253,20 @@ function Invoke-MakeThreadJob {
     $jobDir = Join-Path $outRoot $opts.JobName
     $targets = New-Object System.Collections.Generic.List[object]
     $fallback = New-Object System.Collections.Generic.List[object]
+    $byPrefix = New-Object System.Collections.Generic.List[object]
     $list = New-Object System.Collections.Generic.List[object]
     foreach ($t in $raid) {
         $et = New-ExactTarget $t
-        $isFallback = Test-ExactFoundNothing $jobDir $jd $et
-        if ($isFallback) { $fallback.Add($t) } else { $targets.Add($et) }
-        $list.Add([ordered]@{ site = $t.Site; id = $t.Id; title = $t.Title; url = $t.Url; listing = $t.Listing; listingTimestamp = $t.ListingTimestamp; lookup = $(if ($isFallback) { 'id-filter' } else { 'exact' }) })
+        $lookup = 'exact'
+        if (Test-ExactFoundNothing $jobDir $jd $et) {
+            $prefix = Get-ThreadPrefix $t
+            if ($prefix) { $lookup = 'id-prefix'; $byPrefix.Add((New-PrefixTarget $t $prefix)) } else { $lookup = 'id-filter'; $fallback.Add($t) }
+        }
+        else { $targets.Add($et) }
+        $list.Add([ordered]@{ site = $t.Site; id = $t.Id; title = $t.Title; url = $t.Url; listing = $t.Listing; listingTimestamp = $t.ListingTimestamp; lookup = $lookup })
     }
+    $exactCount = $targets.Count
+    foreach ($pt in $byPrefix) { $targets.Add($pt) }
     foreach ($ft in (New-FilterTargets $fallback $opts.BatchSize)) { $targets.Add($ft) }
     $jd.targets = $targets
     $jd.threads = $list
@@ -237,8 +282,8 @@ function Invoke-MakeThreadJob {
     }
     $json = ConvertTo-Json -InputObject $jd -Depth 8
     [IO.File]::WriteAllText($jobPath, $json, (New-Object System.Text.UTF8Encoding($false)))
-    Write-Host ("make-thread-job " + $opts.Preset + ": {0} listing pages, {1} threads, {2} matching threads ({3} exact lookups, {4} by id filter in {5} targets{6}). Wrote {7}" -f `
-        $pages, $all.Count, $raid.Count, ($raid.Count - $fallback.Count), $fallback.Count, ($targets.Count - ($raid.Count - $fallback.Count)), $(if ($dropped) { ", $dropped over -MaxThreads left out" } else { '' }), $jobPath)
+    Write-Host ("make-thread-job " + $opts.Preset + ": {0} listing pages, {1} threads, {2} matching threads ({3} exact lookups, {4} by thread number, {5} by id filter in {6} targets{7}). Wrote {8}" -f `
+        $pages, $all.Count, $raid.Count, $exactCount, $byPrefix.Count, $fallback.Count, ($targets.Count - $exactCount - $byPrefix.Count), $(if ($dropped) { ", $dropped over -MaxThreads left out" } else { '' }), $jobPath)
     return 0
 }
 

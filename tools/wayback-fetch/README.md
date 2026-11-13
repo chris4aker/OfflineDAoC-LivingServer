@@ -169,10 +169,14 @@ cap and the next run continues.
    Capitalised abbreviations only count in capitals. Each job's `threads` list shows the titles, where each was
    listed, and how it is looked up. At most 150 threads per job (`-MaxThreads`).
 3. Double-click `RUN-WAYBACK-FETCH.cmd` to fetch them.
-4. Double-click `MAKE-THREAD-JOBS.cmd` again. vBulletin links carry a session id (`s=...`) that changes per visit,
-   so a thread may be archived under another one. Threads whose exact lookup found nothing move into id-filter
-   targets (25 threads per lookup, page 2+ and last-post links left out, one capture per thread). Then run the
-   fetcher again.
+4. Double-click `MAKE-THREAD-JOBS.cmd` again. Threads whose exact lookup found nothing are then looked up by thread
+   number (page 2+ and last-post links left out, one capture per thread):
+   - Allakhazam: one narrow lookup per thread (`forum.html?forum=N&mid=ID`, whatever follows the number).
+   - vBulletin: links carry a session id (`s=...`) that changes per visit and sorts before the thread number, so
+     these move into id-filter targets, 25 threads per lookup.
+
+   Then run the fetcher again. An id filter over all of Allakhazam's `forum.html` is never used: the archive has to
+   read every capture of the forum for it and answers HTTP 503/504, which stops the run.
 
 The generated jobs hold third-party thread titles: they are in `.gitignore` and never committed.
 
