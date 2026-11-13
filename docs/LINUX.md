@@ -1,0 +1,162 @@
+# Living Server on Linux: the plan
+
+Owner decisions, 2026-11-13 12:01:
+- **What:** the 0.37 base game plus Living Server, on Linux. The Godot new client (0.36c/0.37c) is **not** carried
+  to Linux. The game is played with the **original client under Wine**.
+- **For whom:** the owner's friend, and any DAoC fan on Linux. All three uses: a friend on Linux joining a host's
+  world, hosting a world on a Linux machine, and playing solo on Linux.
+- **When:** after 1.2. Windows 1.2 ships first; Linux follows as its own release.
+- **Where it is tried:** WSL2 on the owner's PC for the server, the launcher and the installer. The game client under
+  Wine is only proven on a real Linux desktop (the friend's), because WSL's graphics can't stand in for one.
+
+Nothing here has been run on a real Linux desktop yet. Earlier prototypes (2026-11-07, in a container and in GitHub's
+Linux CI) are in §9.
+
+## 1. The idea
+
+A Linux game folder is **the same folder as on Windows** (shadowofze's 0.37 or 0.37b game with Living Server installed
+over it) plus one new folder, `linux/`, for what Windows provides differently: a Linux .NET runtime, the Detour pathing
+library built for Linux, the launcher, and the game's own Wine folder. Every shipped Windows file stays where it is and
+unchanged, so shadowofze's file fingerprints and patcher, the progress importer, and Living Server's install checks and
+backups work as on Windows. The server is .NET, so it is **the same files on both systems**; only the Detour library
+needs a Linux twin. The original client is Windows code and runs under Wine, started the way the Windows launcher
+starts it.
+
+## 2. The folder a player ends up with
+
+```
+~/Games/OfflineDAoC/                      the game folder (the Windows layout, unchanged)
+  runtime/server/                         the server + Living Server (same files as Windows)
+  runtime/server/lib/Detour.so            NEW: Linux twin of lib/Detour.dll, built by Living Server's CI from source
+  runtime/data/opendaoc.sqlite3.db        the world and your saves
+  runtime/account.txt                     the local account (made on first play)
+  runtime/client-opendaoc/app/            the original game client (game.dll, connect.exe, ...), run under Wine
+  linux/                                  NEW, Linux only:
+    offlinedaoc                           the launcher (command line, §4)
+    dotnet/                               .NET 10 runtime with ASP.NET Core (Microsoft's linux-x64 tarball)
+    wine/                                 the game's own Wine folder (WINEPREFIX); Wine itself comes from the system
+    run/                                  the server's pid and console pipe while it runs
+  ~/.local/share/applications/            desktop entries: "Offline DAoC" (play) and "Offline DAoC server"
+```
+
+What Living Server publishes for Linux is small: one asset per release,
+`OfflineDAoC-LivingServer-<build>-linux-x64.tar.gz`: the same files as the Windows package, plus `lib/Detour.so`, the
+launcher, `install.sh` and the pinned download hashes for .NET. No EA file, no shadowofze file, no copy of .NET or Wine.
+
+## 3. A Linux player's day
+
+| Step | What they do | What happens |
+|---|---|---|
+| Install | `tar xf …-linux-x64.tar.gz && ./install.sh` (asks for a folder, default `~/Games/OfflineDAoC`) | Checks disk space, glibc 2.28 or newer, and Wine (`wine --version`, 9 or newer; it says how to install it on Ubuntu, Debian, Fedora, Arch and SteamOS if missing). Downloads the pinned .NET runtime (checked against Microsoft's hash), then shadowofze's 0.36 base and the 0.37 game patch from **his** GitHub releases, part by part, checked against his manifests, and applies the patch with his own patcher on the Linux .NET. Never the new-client parts. Installs Living Server (backups, verified copies, the content patches), turns on the suggested settings as Setup does, makes the Wine folder, adds the desktop entries. Stops and resumes like the Windows downloader. A 0.37 or 0.37b folder copied from Windows works too: `install.sh --game <folder>`. |
+| Play | Click **Offline DAoC**, or `offlinedaoc play` | Starts the server if it isn't running (a plain reason if it can't: port taken, already running, low memory), waits until it takes logins, then runs `wine connect.exe game.dll 127.0.0.1 <account> <password>` in the client folder, as ENTER REALM does. |
+| Join a friend | `offlinedaoc join <invite code>` | Join Friend's rules: your own account and password, the host password the first time. Starts the client against the host's address under Wine. No server runs here. |
+| Host friends | `offlinedaoc host start` / `stop` | Host for Friends without Windows' firewall: the server listens on the home network and Tailscale, the same password rules. Opening a Linux firewall (ufw, firewalld) is shown, not done. |
+| Bots | `offlinedaoc bots add 20 --level 50`, `offlinedaoc settings living --recommended` | The launcher's +Lv.1 and +Lv.50 buttons and its Living Server tab, the same code. |
+| Stop | quit the game, then `offlinedaoc stop` | Types `exit` at the server console (a clean save); never force-kills. |
+| Update | `offlinedaoc update` (and a quiet check on `play`) | The newest release's Linux asset, GitHub's SHA-256 digest and the package checks, installed with the same backups (§5). |
+| Roll back | `offlinedaoc rollback` | The last install's files back from `runtime/server/deployment-backups`, as `ROLLBACK.cmd`. Never the database. |
+
+## 4. What is reused, ported or replaced
+
+| Part | Windows | Linux | How |
+|---|---|---|---|
+| Server (`GameServer.dll`, CoreBase, CoreDatabase, CoreServer.dll) | .NET 10, `CoreServer.exe` | **reused**: `linux/dotnet/dotnet CoreServer.dll` | same files; the package already carries the linux-x64 SQLite library |
+| Detour (navmesh pathing) | `lib/Detour.dll` | **ported**: `lib/Detour.so` beside it | built with cmake from `source/server/Pathing/Detour` in CI. The name must be `lib/Detour.so` (§9) |
+| `serverconfig.xml` | relative paths with `/` | **reused** | no change |
+| .NET runtime | `tools/dotnet` | **replaced**: `linux/dotnet` | Microsoft's tarball, SHA-512 from its release metadata |
+| The original client | `connect.exe game.dll …` | **under Wine**: `wine connect.exe game.dll …` | the system's Wine; the game's own prefix in `linux/wine`; the client's ini written as on Windows (borderless window) |
+| Launcher (WinForms) | `runtime/OfflineDAoC.exe` | **replaced**: a command-line launcher | the launcher's UI-free code, shared with Windows (below) |
+| Setup (`LivingServer-Setup.exe`) | Windows exe | **ported**: `install.sh` + `offlinedaoc setup` | same manifests, same checks, same order |
+| shadowofze's patcher | on `tools/dotnet` | **reused** on `linux/dotnet` | it uses `/` paths; on Linux only its port check sees a running game, so the launcher refuses updates while its own server runs |
+| Living Server install and rollback (`install-server-build.ps1`) | `INSTALL.cmd`, `ROLLBACK.cmd` | **ported** to C# in the shared launcher code | the ps1 stays the Windows path; CI runs both on the same fake game folders and compares |
+| Settings helpers (`tools/claude-version/*.py`) | Python 3 | **reused** | already portable |
+
+**The launcher.** A .NET console program, `offlinedaoc`, over the Windows launcher's own non-UI code, so both
+systems run the same logic. Most of it is already UI-free (`PortableCredentials`, `ServerPortProbe`,
+`SocialExpansionSettings`, `BotCharacterGenerator`, `RollingServerLog`, `HostForFriends`, `JoinFriend`, `InviteCode`,
+`Updates/*`). The bot batches and the XP and GM saves move out of `MainForm.cs` into shared classes first; WinForms
+links the same files, so Windows doesn't change and its tests keep passing. A window (Avalonia) can follow if players
+ask for one. The bash `tools/linux/offlinedaoc` is the prototype of start, stop, status and account, not the product.
+
+## 5. Updates
+
+- **Same feed, same rules.** `ReleaseFeed`, `PackageDigest` (fail closed without GitHub's digest) and `PackageCheck`
+  are reused. Only the asset name differs (`…-linux-x64.tar.gz`); a release without it is "no Linux update yet".
+- **Applying.** The launcher stops the server (asking first), unpacks the package into `runtime/updates/<build>`, runs
+  the C# install and replaces its own files by rename. Refused while the server or the game runs.
+- **The base game** doesn't change again; shadowofze's patcher runs once, at install.
+
+## 6. Where the game comes from
+
+- **Exactly as on Windows.** Every EA-derived file (the client, the world data) comes from **shadowofze's own GitHub
+  releases**, downloaded by the player's machine and checked against his manifests. Living Server hosts none of it.
+  If a part fails its check the installer stops; there is no other source.
+- **.NET** (MIT) is downloaded from Microsoft with a pinned hash. **Wine** (LGPL) comes from the player's system.
+- **Not shipped:** DXVK or any other graphics layer (AGENTS.md). Wine's own Direct3D runs the client.
+- The Linux Detour library is built from the repository's own source (recastnavigation, zlib licence) and credited in
+  THIRD_PARTY.md like the Windows DLL.
+
+## 7. CI that proves it
+
+| Job | What it proves | State |
+|---|---|---|
+| `linux / server` | the server, `lib/Detour.so` and Microsoft's runtime in the package layout; `offlinedaoc start`; two scripted players log in; `stop`, start, stop | prototype green (§9); to rebuild on the C# launcher |
+| `linux / launcher` | `dotnet test` of the shared launcher code on Linux | to build |
+| `linux / install-parity` | the C# install and rollback against the ps1's fake game folders; the trees must match | to build |
+| `linux / real-download` | `install.sh` with real downloads: the 0.36 base, the 0.37 patch with his patcher, Living Server, the server takes a scripted login | to build (about 15 GB without the new client) |
+| `linux / wine-client` | the client under Wine on a virtual display (Xvfb): connect.exe starts game.dll, it reaches the server and logs in | to build; a login is the most CI can show, not a played screen |
+| `linux / release` | builds the Linux asset from the release's own package | to build |
+
+None of these is a played session.
+
+## 8. Risks
+
+1. **The client under Wine.** DAoC's client is commonly played under Wine, but this exact client (1.127 with
+   Living Server's hash-guarded patches) hasn't been tried. Unknowns: rendering on Mesa and NVIDIA drivers, Wayland vs
+   X11, sound, mouse capture for right-button steering, full screen. The friend's first evening is the real test,
+   with a checklist.
+2. **WSL2 can't prove the client.** It runs Linux, but its graphics go through Windows; a client that draws in WSL
+   proves little about a Linux desktop, and one that doesn't proves nothing.
+3. **Case-sensitive files.** Checked for the 0.36/0.37 file lists: no two paths differ only in case. Names built at run
+   time can't be checked without playing.
+4. **Process checks written for Windows.** shadowofze's patcher looks for running games by Windows process names; on
+   Linux only its port check applies, so the launcher refuses updates while its own server runs.
+5. **System libraries.** The server needs libicu; glibc 2.28 or newer. Very old or musl (Alpine) distributions aren't
+   supported.
+
+## 9. The prototypes (2026-11-07, container and CI)
+
+| Spike | Result |
+|---|---|
+| **Linux server in the package layout** | **Worked.** Listening in 22–26 s; `lib/Detour.so` mapped; all 32 `.nav` files of a navmesh subset loaded; two scripted players (`chat-players`, `group-players`) passed; stop via `exit`, then a clean second start and stop. Found: the file must be `lib/Detour.so`, not `libDetour.so` (.NET looks for `lib/Detour.so` and `lib/Detour` only). |
+| **CI sketch** | **Worked on GitHub** (ubuntu-22.04, minimal world): run 42434529818. The first run found a start race in the prototype launcher, fixed. |
+| shadowofze's patcher on Linux .NET | **Started only**: it refused an empty folder with exit 4, as designed. |
+| The Godot client on Linux | Tried then; **dropped** by the owner's decision (2026-11-13). |
+
+Reproduce the server spike:
+```
+cmake -S source/server/Pathing/Detour -B /tmp/detour -DCMAKE_BUILD_TYPE=Release -DSOVERSION=1 -DLIB_VERSION=1.0 && cmake --build /tmp/detour
+dotnet build source/server/CoreServer/CoreServer.csproj -c Release
+python3 source/tools/make_test_world.py from-release --world <clean 0.37b world> --out /tmp/test-world.db
+tools/linux/assemble-server.sh --server-build source/server/Release --detour /tmp/detour/libDetour.so.1.0 \
+    --world /tmp/test-world.db --dotnet <aspnetcore runtime folder> --navmesh <navmesh folder> --out /tmp/OfflineDAoC
+tools/linux/smoke-server.sh --game /tmp/OfflineDAoC --playtester <OfflineDaoc.Playtester.dll> --out /tmp/smoke
+```
+
+## 10. Order of work and effort
+
+| Part | Effort (working days, the plan's own estimate) |
+|---|---|
+| Server on Linux: Detour in CI, runtime, layout, start and stop (prototype done) | 2–3 |
+| Shared launcher core (out of `MainForm`; Windows unchanged) | 2–3 |
+| The command-line launcher: start, stop, status, play, join, host, account, bots, settings, update, rollback | 5–7 |
+| The client under Wine: prefix, ini, start and stop, the Xvfb login check | 3–5 |
+| Living Server install and rollback in C#, with parity tests against the ps1 | 4–6 |
+| `install.sh` (shadowofze's manifests and patcher, resume, disk and Wine checks) | 4–6 |
+| The updater on Linux | 2–3 |
+| CI jobs and the release asset | 3–5 |
+| Docs (PLAY, KNOWN-ISSUES, a friend's checklist) and release notes | 1–2 |
+| **Total** | **about 26–40 days**, plus the friend's first evening and its fixes |
+
+Checks on a real machine: the server, the launcher and the installer on WSL2 on the owner's PC; the client under
+Wine on the friend's Linux desktop. Nothing is called working on Linux before it has run on one of those.
