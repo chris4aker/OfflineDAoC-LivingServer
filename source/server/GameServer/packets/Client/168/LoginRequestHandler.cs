@@ -322,6 +322,15 @@ namespace DOL.GS.PacketHandler.Client.v168
 								success = false;
 								return;
 							}
+							case HostPassword.NewAccount.ShortOwnPassword:
+							{
+								if (Log.IsInfoEnabled)
+									Log.Info($"HOST_PASSWORD new account refused, own password shorter than {HostPassword.MinOwnPasswordLength} - {username}:{ipAddress}");
+
+								client.Out.SendLoginDenied(eLoginError.IncorrectPassword);
+								success = false;
+								return;
+							}
 						}
 
 						if (string.IsNullOrEmpty(accountPassword))
@@ -412,10 +421,26 @@ namespace DOL.GS.PacketHandler.Client.v168
 							playerAccount.Password = CryptPassword(playerAccount.Password);
 						}
 
+						// Audit 2026-11-13: wrong passwords from another PC lock that address out for a while, as the host
+						// password does, so a friend's password can't be guessed while the world is hosted. This PC never is.
+						bool otherPc = !HostPassword.IsThisPc(ipAddress);
+						if (otherPc && HostPasswordAttempts.AccountLogins.IsLockedOut(ipAddress, DateTime.UtcNow))
+						{
+							if (Log.IsWarnEnabled)
+								Log.Warn($"ACCOUNT_LOGIN refused, too many wrong passwords from this address lately - {username}:{ipAddress}");
+
+							client.Out.SendLoginDenied(eLoginError.ServiceNotAvailable);
+							success = false;
+							return;
+						}
+
 						// Living Server 1.2: also the own-password part of a Join Friend first-login password; the host password
 						// part never opens an account (HostPassword.MatchesAccount).
 						if (!HostPassword.MatchesAccount(playerAccount.Password, password, CryptPassword))
 						{
+							if (otherPc)
+								HostPasswordAttempts.AccountLogins.RecordFailure(ipAddress, DateTime.UtcNow);
+
 							if (Log.IsInfoEnabled)
 								Log.Info("(" + client.TcpEndpointAddress + ") Wrong password!");
 

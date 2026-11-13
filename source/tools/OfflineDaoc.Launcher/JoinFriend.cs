@@ -163,6 +163,12 @@ public static class JoinFriend
                 : "Your password is 1-20 printable ASCII characters.";
             return false;
         }
+        int ownMin = DOL.GS.PacketHandler.Client.v168.HostPassword.MinOwnPasswordLength;
+        if (hostPassword.Length > 0 && ownPassword.Length < ownMin)
+        {
+            error = $"Choose your own password: at least {ownMin} characters, so nobody else can guess their way into your account.";
+            return false;
+        }
         if (hostPassword.Length > 0 && string.Equals(hostPassword, ownPassword, StringComparison.Ordinal))
         {
             error = "Choose your own password, not the host's: anyone with the host password could use your account.";

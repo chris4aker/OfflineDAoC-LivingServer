@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<!-- living-server-logconfig 2 (audit 2026-11-13): the server replaces an older copy of this file at start, keeping a backup. -->
 <nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" throwConfigExceptions="true" throwExceptions="true">
 	<variable name="logDirectory" value="./logs" />
 
@@ -24,7 +25,17 @@
 			archiveSuffixFormat=".{1:yyyy-MM-dd}.{0:0}"
 			archiveAboveSize="104857600"
 			archiveEvery="Day"
-			maxArchiveDays="7" />
+			maxArchiveDays="3" />
+		<!-- Routine bot travel and goal lines (about 60% of the old server.log): kept 2 days for bug hunts. -->
+		<target name="detailFile" xsi:type="File"
+			layout="${date:format=MM/dd HH\:mm\:ss} | ${level:uppercase=true:format=TriLetter} | ${logger} | ${message}${onexception:${newline}${exception:format=tostring}}"
+			fileName="${logDirectory}/detail.log"
+			keepFileOpen="true"
+			archiveFileName="${logDirectory}/detail.log"
+			archiveSuffixFormat=".{1:yyyy-MM-dd}.{0:0}"
+			archiveAboveSize="104857600"
+			archiveEvery="Day"
+			maxArchiveDays="2" />
 		<target name="warnFile" xsi:type="File"
 			layout="${date:format=MM/dd HH\:mm\:ss} | ${logger} | ${message}${onexception:${newline}${exception:format=tostring}}"
 			fileName="${logDirectory}/warn.log"
@@ -33,7 +44,7 @@
 			archiveSuffixFormat=".{1:yyyy-MM-dd}.{0:0}"
 			archiveAboveSize="104857600"
 			archiveEvery="Day"
-			maxArchiveDays="7" />
+			maxArchiveDays="3" />
 		<target name="errorFile" xsi:type="File"
 			layout="${date:format=MM/dd HH\:mm\:ss} | ${logger} | ${message}${onexception:${newline}${exception:format=tostring}}"
 			fileName="${logDirectory}/error.log"
@@ -50,7 +61,8 @@
 			archiveFileName="${logDirectory}/gm-action.log"
 			archiveSuffixFormat=".{1:yyyy-MM-dd}.{0:0}"
 			archiveAboveSize="104857600"
-			archiveEvery="Day" />
+			archiveEvery="Day"
+			maxArchiveDays="30" />
 		<target name="cheatFile" xsi:type="File"
 			layout="${date:format=MM/dd HH\:mm\:ss} | ${message}"
 			fileName="${logDirectory}/cheat.log"
@@ -58,7 +70,8 @@
 			archiveFileName="${logDirectory}/cheat.log"
 			archiveSuffixFormat=".{1:yyyy-MM-dd}.{0:0}"
 			archiveAboveSize="104857600"
-			archiveEvery="Day" />
+			archiveEvery="Day"
+			maxArchiveDays="30" />
 		<target name="dualIpFile" xsi:type="File"
 			layout="${date:format=MM/dd HH\:mm\:ss} | ${message}"
 			fileName="${logDirectory}/dual-ip.log"
@@ -66,7 +79,8 @@
 			archiveFileName="${logDirectory}/dual-ip.log"
 			archiveSuffixFormat=".{1:yyyy-MM-dd}.{0:0}"
 			archiveAboveSize="104857600"
-			archiveEvery="Day" />
+			archiveEvery="Day"
+			maxArchiveDays="30" />
 		<target name="inventoryFile" xsi:type="File"
 			layout="${date:format=MM/dd HH\:mm\:ss} | ${message}"
 			fileName="${logDirectory}/inventory.log"
@@ -74,7 +88,8 @@
 			archiveFileName="${logDirectory}/inventory.log"
 			archiveSuffixFormat=".{1:yyyy-MM-dd}.{0:0}"
 			archiveAboveSize="104857600"
-			archiveEvery="Day" />
+			archiveEvery="Day"
+			maxArchiveDays="30" />
 	</targets>
 
 	<rules>
@@ -112,6 +127,13 @@
 		<logger name="DOL.GS.GameTimer"
 			maxlevel="Debug"
 			final="true" />
+
+		<!-- Routine bot lines go to detail.log only (they never reach server.log, warn.log or error.log at Info). -->
+		<logger name="*" minLevel="Debug" maxLevel="Info" writeTo="detailFile">
+			<filters defaultAction="Ignore">
+				<when condition="starts-with('${message}','AUTONOMOUS_GOAL_ATTEMPT') or starts-with('${message}','AUTONOMOUS_ROUTE_THREAT') or starts-with('${message}','AUTONOMOUS_TOWN_TELEPORT') or starts-with('${message}','AUTONOMOUS_STABLE_ROUTE_') or starts-with('${message}','BOT_INCOMING_FIRE') or starts-with('${message}','DUTY_LEASE') or starts-with('${message}','LIVING_SERVER_REZ_ASK') or starts-with('${message}','BOT_AREA_SPELL') or starts-with('${message}','AUTONOMOUS_DEATH_ROUTE_REPLAN') or starts-with('${message}','RVR_FRONTIER_DEPARTURE')" action="LogFinal" />
+			</filters>
+		</logger>
 
 		<!-- Global Loggers -->
 		<logger name="*"

@@ -225,7 +225,7 @@ public static class AutonomousPetSupport
     {
         candidate = null;
         permanentCharm = null;
-        if (owner == null || owner is GameBot || selectedTemplate == null || learnedCharm?.SpellType != eSpellType.Charm ||
+        if (owner == null || selectedTemplate == null || learnedCharm?.SpellType != eSpellType.Charm ||
             owner.ControlledBrain != null || owner.CurrentRegion?.IsCapitalCity == true ||
             !CanCreateSyntheticCharmInRegion(owner.CurrentRegion?.IsCapitalCity == true))
             return false;

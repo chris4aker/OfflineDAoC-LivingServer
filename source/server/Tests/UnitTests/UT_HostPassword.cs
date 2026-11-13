@@ -71,8 +71,39 @@ namespace DOL.UnitTests
         {
             Assert.That(HostPassword.AllowsNewAccount(Stored, HostPassword.Combine("wrong", "pw"), "192.168.1.20"), Is.False);
             Assert.That(HostPassword.AllowsNewAccount(Stored, HostPassword.Combine("wrong", "pw"), "100.90.1.2"), Is.False);
-            Assert.That(HostPassword.AllowsNewAccount(Stored, HostPassword.Combine("swordfish", "pw"), "192.168.1.20"), Is.True);
-            Assert.That(HostPassword.AllowsNewAccount(Stored, HostPassword.Combine("swordfish", "pw"), "100.90.1.2"), Is.True);
+            Assert.That(HostPassword.AllowsNewAccount(Stored, HostPassword.Combine("swordfish", "pw-123"), "192.168.1.20"), Is.True);
+            Assert.That(HostPassword.AllowsNewAccount(Stored, HostPassword.Combine("swordfish", "pw-123"), "100.90.1.2"), Is.True);
+        }
+
+        [Test]
+        public void ANewAccountFromAnotherPcNeedsAnOwnPasswordOfSixOrMore()
+        {
+            // Audit 2026-11-13: a short own password could be guessed while the world is hosted.
+            Assert.That(HostPassword.CheckNewAccount(Stored, HostPassword.Combine("swordfish", "pw"), "192.168.1.20", out string kept),
+                Is.EqualTo(HostPassword.NewAccount.ShortOwnPassword));
+            Assert.That(kept, Is.Null);
+            Assert.That(HostPassword.CheckNewAccount(Stored, HostPassword.Combine("swordfish", "12345"), "192.168.1.20", out _),
+                Is.EqualTo(HostPassword.NewAccount.ShortOwnPassword));
+            Assert.That(HostPassword.CheckNewAccount(Stored, HostPassword.Combine("swordfish", "123456"), "192.168.1.20", out _),
+                Is.EqualTo(HostPassword.NewAccount.Allowed));
+            Assert.That(HostPassword.CheckNewAccount(Stored, "pw", "127.0.0.1", out _), Is.EqualTo(HostPassword.NewAccount.Allowed), "this PC is never asked");
+        }
+
+        [TestCase("127.0.0.1", true)]
+        [TestCase("::1", true)]
+        [TestCase("::ffff:127.0.0.1", true)]
+        [TestCase("192.168.86.216", false)]
+        [TestCase("100.90.1.2", false)]
+        [TestCase("", false)]
+        [TestCase(null, false)]
+        public void ThisPcIsOnlyALoopbackAddress(string address, bool thisPc) =>
+            Assert.That(HostPassword.IsThisPc(address), Is.EqualTo(thisPc));
+
+        [Test]
+        public void WrongAccountPasswordsHaveTheirOwnLockout()
+        {
+            Assert.That(HostPasswordAttempts.AccountLogins, Is.Not.SameAs(HostPasswordAttempts.Shared),
+                "a friend's typos on their own password don't use up the host password's tries");
         }
 
         [Test]
@@ -154,7 +185,7 @@ namespace DOL.UnitTests
         [Test]
         public void APublicAddressWithoutTheHostPasswordKeepsTheWait()
         {
-            Assert.That(HostPassword.SkipsSameAddressWait(Stored, HostPassword.Combine("wrong", "pw"), "203.0.113.25"), Is.False);
+            Assert.That(HostPassword.SkipsSameAddressWait(Stored, HostPassword.Combine("wrong", "pw-123"), "203.0.113.25"), Is.False);
             Assert.That(HostPassword.SkipsSameAddressWait(Stored, "swordfish", "203.0.113.25"), Is.False);
             Assert.That(HostPassword.SkipsSameAddressWait("", "anything", "203.0.113.25"), Is.False);
         }

@@ -131,27 +131,40 @@ namespace DOL.GS
 
         private static async Task Guarded(HttpContext context, Func<HttpContext, DbAccount, Task> call)
         {
+            // The sign-in is checked before the one-call-at-a-time gate, so wrong passwords never hold up anyone else, and
+            // the game login's lockout applies here too (audit 2026-11-13).
+            string address = context.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? string.Empty;
+            bool otherPc = !HostPassword.IsThisPc(address);
+
+            if (otherPc && HostPasswordAttempts.AccountLogins.IsLockedOut(address, DateTime.UtcNow))
+            {
+                await Refuse(context, StatusCodes.Status429TooManyRequests, "locked",
+                    "Too many wrong passwords from your PC lately. Wait ten minutes and try again.");
+                return;
+            }
+
+            DbAccount account = TryReadBasicAuthorization(context.Request.Headers.Authorization, out string name, out string password)
+                ? Authenticate(name, password)
+                : null;
+
+            if (account == null)
+            {
+                if (otherPc)
+                    HostPasswordAttempts.AccountLogins.RecordFailure(address, DateTime.UtcNow);
+
+                if (log.IsInfoEnabled)
+                    log.Info($"Passport Desk refused a login from {address}");
+
+                await Task.Delay(WrongLoginDelay);
+                await Refuse(context, StatusCodes.Status401Unauthorized, "login",
+                    "Your account name or password is wrong for this world. If you have never played there, join it once first.");
+                return;
+            }
+
             await Gate.WaitAsync();
 
             try
             {
-                string address = context.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? string.Empty;
-                DbAccount account = TryReadBasicAuthorization(context.Request.Headers.Authorization, out string name, out string password)
-                    ? Authenticate(name, password)
-                    : null;
-
-                if (account == null)
-                {
-                    if (log.IsInfoEnabled)
-                        log.Info($"Passport Desk refused a login from {address}");
-
-                    // One call at a time, so this slows guessing at the whole Desk.
-                    await Task.Delay(WrongLoginDelay);
-                    await Refuse(context, StatusCodes.Status401Unauthorized, "login",
-                        "Your account name or password is wrong for this world. If you have never played there, join it once first.");
-                    return;
-                }
-
                 await call(context, account);
             }
             catch (PassportException refusal)

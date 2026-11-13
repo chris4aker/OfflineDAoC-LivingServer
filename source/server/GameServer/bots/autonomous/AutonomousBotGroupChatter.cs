@@ -22,7 +22,6 @@ public static class AutonomousBotGroupChatter
 
     private sealed class Next
     {
-        public long At;
         public long LastPlayerReply;
     }
 

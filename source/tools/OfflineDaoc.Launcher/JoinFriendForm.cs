@@ -106,7 +106,7 @@ internal sealed class JoinFriendForm : Form
         layout.Controls.Add(Field("Invite code from your friend (or their address)", _hostAddress), 0, 2);
         layout.Controls.Add(Field("Your own account name on the host (made on your first login there; not \"offline\")", _guestAccount), 0, 3);
         layout.Controls.Add(Field("Host password from your friend (first time only; it makes your account)", _hostPassword), 0, 4);
-        layout.Controls.Add(Field($"Your own password (1-{DOL.GS.PacketHandler.Client.v168.HostPassword.MaxOwnPasswordLength} characters; only you know it)", _password), 0, 5);
+        layout.Controls.Add(Field($"Your own password ({DOL.GS.PacketHandler.Client.v168.HostPassword.MinOwnPasswordLength}-{DOL.GS.PacketHandler.Client.v168.HostPassword.MaxOwnPasswordLength} characters; only you know it)", _password), 0, 5);
         layout.Controls.Add(_rememberPassword, 0, 6);
 
         var connectionNote = new TableLayoutPanel

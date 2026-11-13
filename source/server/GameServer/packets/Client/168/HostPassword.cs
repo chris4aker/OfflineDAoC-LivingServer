@@ -37,6 +37,8 @@ namespace DOL.GS.PacketHandler.Client.v168
         /// <summary>The legacy client's password field.</summary>
         public const int MaxSentLength = 20;
         public const int MaxOwnPasswordLength = MaxSentLength - 1 - TokenLength;
+        /// <summary>A new account from another PC needs an own password at least this long (audit 2026-11-13).</summary>
+        public const int MinOwnPasswordLength = 6;
 
         public enum NewAccount
         {
@@ -46,6 +48,8 @@ namespace DOL.GS.PacketHandler.Client.v168
             NoHostPassword,
             /// <summary>Another PC with a password that is not the host's.</summary>
             WrongPassword,
+            /// <summary>Another PC with the right host password, but an own password shorter than <see cref="MinOwnPasswordLength"/>.</summary>
+            ShortOwnPassword,
         }
 
         public static string Hash(string password)
@@ -116,10 +120,16 @@ namespace DOL.GS.PacketHandler.Client.v168
 
             if (!TrySplit(sent, out string token, out string own) || !TokenMatches(storedHash, token))
                 return NewAccount.WrongPassword;
+            if (own.Length < MinOwnPasswordLength)
+                return NewAccount.ShortOwnPassword;
 
             accountPassword = own;
             return NewAccount.Allowed;
         }
+
+        /// <summary>This PC (a loopback address). It never needs the host password and is never locked out.</summary>
+        public static bool IsThisPc(string clientAddress) =>
+            IPAddress.TryParse(clientAddress, out IPAddress address) && IPAddress.IsLoopback(NetworkTrust.Normalize(address));
 
         public static NewAccount CheckNewAccount(string storedHash, string sent, string clientAddress) =>
             CheckNewAccount(storedHash, sent, clientAddress, out _);
@@ -175,6 +185,12 @@ namespace DOL.GS.PacketHandler.Client.v168
         public const int MaxFailures = 5;
         public static readonly TimeSpan Window = TimeSpan.FromMinutes(10);
         public static readonly HostPasswordAttempts Shared = new();
+
+        /// <summary>
+        /// Wrong passwords for accounts that already exist, from other PCs (audit 2026-11-13: upstream had no limit, so a
+        /// friend's password could be guessed while the world was hosted). Same rule: five in ten minutes locks the address.
+        /// </summary>
+        public static readonly HostPasswordAttempts AccountLogins = new();
 
         private readonly object _sync = new();
         private readonly Dictionary<string, List<DateTime>> _failures = new(StringComparer.Ordinal);
