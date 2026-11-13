@@ -82,10 +82,17 @@ namespace DOL.GS
             /// <summary>Raiders walking back to the dungeon gather at the way in and go in together (RealmRaidReturnWave).</summary>
             public bool ReturnGathering;
             public long ReturnOpenUntil, ReturnWaitingSince;
+            /// <summary>Raiders seen inside the dungeon since the raid began. Only they are "on their way back"; a raider who
+            /// has never been in is still on the way in and is never held at the way in.</summary>
+            public readonly HashSet<long> BeenInside = new();
             public bool PreparationNoticeSent;
+            /// <summary>The stall rule (RealmRaidRecruitmentPolicy.Stalled): when the raid last moved forward, and what it had then.</summary>
+            public long LastProgressTick;
+            public int ProgressNamed, ProgressWipes, ProgressLowest = 101;
+            public string ProgressTarget;
             public bool Forced;
             /// <summary>A play test's raid (/epictest): forced recruiting, but the automatic raid's clocks (late and short
-            /// starts at the staging deadline, the four-hour battle window), so it ends the way a real raid does.</summary>
+            /// starts at the staging deadline, the stall rule in battle), so it ends the way a real raid does.</summary>
             public bool Playtest;
             /// <summary>The raid's staging and battle run on the automatic raid's clocks.</summary>
             public bool Clocked => !Forced || Playtest;
@@ -480,8 +487,13 @@ namespace DOL.GS
                     raid.DungeonRoute?.ObserveCompletion();
                     if (raid.DungeonRoute?.Complete == true)
                     { End(raid, now, CompletionReason(raid, "The final dungeon encounter has been defeated.")); continue; }
-                    if (raid.Started && RealmRaidRecruitmentPolicy.BattleExpired(!raid.Clocked, now, raid.Deadline))
-                    { End(raid, now, "The four-hour expedition window ended."); continue; }
+                    if (raid.Started && WatchProgress(raid, now))
+                    {
+                        Log.Info($"REALM_RAID_STALLED event={raid.Definition.Id} minutes={(now - raid.LastProgressTick) / 60_000} " +
+                                 $"named={raid.ProgressNamed} wipes={raid.ProgressWipes} target=\"{raid.ProgressTarget}\" lowest={raid.ProgressLowest}");
+                        End(raid, now, $"Stalled: no named or boss kill, no new low on its target and no wipe for {RealmRaidRecruitmentPolicy.StalledMilliseconds / 60_000} minutes.");
+                        continue;
+                    }
                     if (!raid.Started)
                     {
                         long noticeDeadline = RealmRaidRecruitmentPolicy.StagingDeadline(raid.Created, raid.HubDepartedTick);
@@ -531,7 +543,9 @@ namespace DOL.GS
                         if (ready)
                         {
                             raid.Started = true;
-                            raid.Deadline = !raid.Clocked ? long.MaxValue : now + RealmRaidRecruitmentPolicy.BattleMilliseconds;
+                            // No battle window: a raid in battle ends when beaten, blocked or stalled (WatchProgress).
+                            raid.Deadline = long.MaxValue;
+                            raid.LastProgressTick = now;
                             RealmEventRecords.Progress(raid.Definition.Id, "Battle", "Expedition began advancing to the encounter.", raid.Support.Length, present);
                             Log.Info($"REALM_RAID_STARTED event={raid.Definition.Id} present={present} required={raid.Required} " +
                                      $"support={raid.Support.Length} minutes={(now - raid.Created) / 60_000} forced={raid.Forced} playtest={raid.Playtest}");
@@ -893,6 +907,26 @@ namespace DOL.GS
         private static bool DragonLanded(Raid raid) => raid.Definition.IsDungeon ||
             RealmRaidStaging.DragonCountsAsLanded((raid.Boss.Flags & GameNPC.eFlags.FLYING) != 0,
                 raid.Boss.IsWithinRadius(DragonLairPlacement.Home(raid.Definition.Realm), 2000), raid.Boss.InCombat);
+
+        /// <summary>True when a raid in battle has stalled. Notes any progress first: a named or boss down, a wipe, or the
+        /// named, boss or dragon it fights at a new low.</summary>
+        private static bool WatchProgress(Raid raid, long now)
+        {
+            int named = raid.DungeonRoute?.NamedDefeatedCount ?? 0;
+            int wipes = raid.DungeonRoute?.WipesSoFar ?? raid.DragonFight?.FailedAttempts ?? 0;
+            GameNPC target = raid.DungeonRoute != null ? raid.DungeonRoute.NamedTarget : raid.Boss?.IsAlive == true ? raid.Boss : null;
+            string name = target?.Name;
+            int health = target?.HealthPercent ?? 101;
+            if (RealmRaidRecruitmentPolicy.MadeProgress(raid.ProgressNamed, named, raid.ProgressWipes, wipes, raid.ProgressTarget, name,
+                    raid.ProgressLowest, health))
+                raid.LastProgressTick = now;
+            if (name != raid.ProgressTarget) raid.ProgressLowest = health;
+            else raid.ProgressLowest = Math.Min(raid.ProgressLowest, health);
+            raid.ProgressNamed = named;
+            raid.ProgressWipes = wipes;
+            raid.ProgressTarget = name;
+            return RealmRaidRecruitmentPolicy.Stalled(!raid.Clocked, now, raid.LastProgressTick);
+        }
 
         /// <summary>The dragon as its raid's fight tracker sees it this pulse (RealmRaidDragonFight).</summary>
         private static RealmRaidDragonFight.Dragon DragonState(Raid raid) =>
@@ -1439,7 +1473,8 @@ namespace DOL.GS
                 if (!Membership.TryGetValue(group, out var raid) || !raid.Parties.TryGetValue(group, out var party)) return null;
                 // Walking back after a release while the raid gathers a return wave: it waits at its party's staging by the
                 // way in, as it did before the raid went in, and enters with the others (RealmRaidReturnWave).
-                if (raid.ReturnGathering && party.RallyView != null && bot.CurrentRegionID != raid.Definition.Region)
+                if (raid.ReturnGathering && party.RallyView != null && bot.CurrentRegionID != raid.Definition.Region &&
+                    raid.BeenInside.Contains(bot.DatabaseID))
                     return party.RallyView;
                 return raid.HubDeparted && party.CatchingUp.Contains(bot.DatabaseID)
                     ? party.DestinationView ?? party.View : party.View;
@@ -1462,10 +1497,18 @@ namespace DOL.GS
                 return;
             }
             int outside = 0, waiting = 0, fallen = 0;
+            // Owner's PC, 2026-11-12 (build ff5a8bc): Summoner's Hall's raid started from its staging town, and two minutes
+            // later every raider still walking to the far entrance was counted as "on the way back" and sent back to the town:
+            // nobody had reached the dungeon 7 minutes in. Only raiders who have been inside count now.
             foreach (GameBot b in raid.Support.OfType<GameBot>())
             {
+                if (b.IsAlive && b.CurrentRegionID == raid.Definition.Region)
+                {
+                    raid.BeenInside.Add(b.DatabaseID);
+                    continue;
+                }
+                if (!raid.BeenInside.Contains(b.DatabaseID)) continue;
                 if (!b.IsAlive) { fallen++; continue; }
-                if (b.CurrentRegionID == raid.Definition.Region) continue;
                 outside++;
                 if (IsStaged(raid, b)) waiting++;
             }
@@ -1788,7 +1831,7 @@ namespace DOL.GS
             bool stoppedByPlayer = reason.StartsWith(StoppedByPlayer);
             string outcome = stoppedByPlayer ? "Stopped by player" :
                 reason.StartsWith("Route blocked") ? "Route blocked" :
-                reason.StartsWith("Staging failed") ? "Failed rally" : reason.Contains("four-hour") ? "Timed out" :
+                reason.StartsWith("Staging failed") ? "Failed rally" : reason.Contains("four-hour") || reason.StartsWith("Stalled") ? "Timed out" :
                 reason.StartsWith("Defeated at") ? "Defeated" : reason.StartsWith(BeatenPrefix) ? BeatenPrefix :
                 raid.Definition.IsDungeon ? raid.DungeonRoute?.Complete == true ? "Boss defeated" : "Ended (unconfirmed)" :
                 !raid.Boss.IsAlive ? "Boss defeated" : "Encounter unavailable";
