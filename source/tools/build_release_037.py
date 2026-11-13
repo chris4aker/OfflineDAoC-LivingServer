@@ -62,7 +62,9 @@ EXCLUDED_NAMES = {"account.txt", "rvr-world.json", "bot-goals.json", "bot-world.
                   # DXVK stays in the developer's own install only (owner 2026-10-14)
                   "d3d9.dll", "dxvk.conf", "game.dll_d3d9.log",
                   # diagnostics switches (their code paths stay off without these files)
-                  "memory-census.on", "gc-snapshots.on", "gc-diagnostics.off"}
+                  "memory-census.on", "gc-snapshots.on", "gc-diagnostics.off",
+                  # Host for Friends' run state on the host's PC (Living Server 1.2): firewall scripts with local paths
+                  "host-for-friends.json", "host-for-friends-firewall.cmd", "host-for-friends-firewall-remove.cmd"}
 EXCLUDED_SUFFIXES = (".log", ".dmp", ".gcdump", ".bak", ".sqlite3.db", ".sqlite3.db-wal", ".sqlite3.db-shm",
                      ".sqlite3.db-journal")
 # Must never be anywhere in the runtime that ships (checked after the copy).
@@ -287,6 +289,7 @@ def set_network_defaults(config: Path):
         if count == 0:
             indent = re.search(r"([ \t]*)<Port>", text)
             text = text.replace("</Server>", f"{indent.group(1) if indent else '  '}<{tag}>{value}</{tag}>{newline}</Server>", 1)
+    text = clear_hosting(text)
     config.write_bytes((b"\xef\xbb\xbf" if bom else b"") + text.encode("utf-8"))
     check_network_defaults(config)
 
@@ -300,7 +303,29 @@ def check_network_defaults(config: Path):
     assert values["UdpIP"] in LOOPBACK, f"{config}: <UdpIP> is {values['UdpIP']!r}; the release must listen on 127.0.0.1 only"
     assert values["EnableUPnP"].lower() == "false", f"{config}: <EnableUPnP> is {values['EnableUPnP']!r}; it must be False"
     assert values["DetectRegionIP"].lower() == "false", f"{config}: <DetectRegionIP> is {values['DetectRegionIP']!r}; it must be False"
+    check_not_hosting(config, server)
     return values
+
+
+# Living Server 1.2 (Host for Friends): a release never ships a host password or a router address of the developer's.
+HOSTING_EMPTY = {"HostPasswordHash": "", "PublicIP": "auto"}
+
+
+def check_not_hosting(config: Path, server=None):
+    """No host password and no PublicIP but "auto" (or none) in a shipped config."""
+    if server is None:
+        server = ET.parse(config).getroot().find("Server")
+    password = (server.findtext("HostPasswordHash") or "").strip()
+    public = (server.findtext("PublicIP") or "").strip()
+    assert password == "", f"{config}: <HostPasswordHash> is set; a release must not ship a host password"
+    assert public.lower() in ("", "auto"), f"{config}: <PublicIP> is {public!r}; a release must not ship one"
+
+
+def clear_hosting(text: str) -> str:
+    """Empties a HostPasswordHash and resets a PublicIP to auto, where the file has them."""
+    for tag, value in HOSTING_EMPTY.items():
+        text = re.sub(rf"<{tag}>[^<]*</{tag}>", f"<{tag}>{value}</{tag}>", text)
+    return text
 
 
 def shipped_configs(runtime: Path) -> list[Path]:

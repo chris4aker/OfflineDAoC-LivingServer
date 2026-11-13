@@ -101,7 +101,7 @@
   "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93",
   "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "12c06112f7f057486c362e7b5faec6604e7739fb03319f9a9c68ad21ab2c9b07",
   "source/server/GameServer/scripts/namedmobs/Gnat.cs": "0cc35e556f8aff83f999e735bd6f9664d686fd701955c5884951198730c22f82",
-  "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "c683203d719045871e96965b960220e2abc41ea07a64d0ea5297211d8a3e543a",
+  "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "eb4a19af9943f41fb676d0fee677eb24025e6215becb5ebf5af8aa3c12a9e372",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainAtwell.cs": "2660a077543835d7cdbac811627b37b7ab380474eb9bf81db7d63c065274f684",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainBardalph.cs": "1e6344c750ac65fbc54d13a04c41d884fc95af67e452582f6341344f77667b96",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainHeathyr.cs": "04866264482b4c82fc0ae6684bd2968cb0c20d584ba707d1e65de5bb540184c8",
@@ -691,7 +691,7 @@
    "finals": [
     "AlbGolestandt"
    ],
-   "line": 399
+   "line": 403
   },
   {
    "id": "dragon-midgard",
@@ -703,7 +703,7 @@
    "finals": [
     "MidGjalpinulva"
    ],
-   "line": 400
+   "line": 404
   },
   {
    "id": "dragon-hibernia",
@@ -715,7 +715,7 @@
    "finals": [
     "HibCuuldurach"
    ],
-   "line": 401
+   "line": 405
   },
   {
    "id": "epic-albion",
@@ -727,7 +727,7 @@
    "finals": [
     "Apocalypse"
    ],
-   "line": 402
+   "line": 406
   },
   {
    "id": "epic-midgard",
@@ -740,7 +740,7 @@
     "KingTuscar",
     "QueenKula"
    ],
-   "line": 403
+   "line": 407
   },
   {
    "id": "epic-hibernia",
@@ -752,7 +752,7 @@
    "finals": [
     "Olcasgean"
    ],
-   "line": 404
+   "line": 408
   },
   {
    "id": "summoners-albion",
@@ -764,7 +764,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 405
+   "line": 409
   },
   {
    "id": "summoners-midgard",
@@ -776,7 +776,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 406
+   "line": 410
   },
   {
    "id": "summoners-hibernia",
@@ -788,7 +788,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 407
+   "line": 411
   },
   {
    "id": "darkness-albion",
@@ -800,7 +800,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 408
+   "line": 412
   },
   {
    "id": "darkness-midgard",
@@ -812,7 +812,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 409
+   "line": 413
   },
   {
    "id": "darkness-hibernia",
@@ -824,7 +824,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 410
+   "line": 414
   }
  ],
  "neutralObjectives": {
@@ -13728,7 +13728,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "100,000 health, 40/70% resists. 1-2 Newly-born spindlers every 15-35 s in the fight; 20-25 underdeveloped spindlers burst out when she dies. A mezz on a random target every 20-30 s. 1.2 wave 2: her teleport (a raider within 2,500 to 21,115,53,483) is on for bots: they walk back.",
+   "notes": "100,000 health, 40/70% resists. 1-2 Newly-born spindlers every 15-35 s in the fight; 20-25 underdeveloped spindlers burst out when she dies. A mesmerize (300 radius, 60 s) around a random raider within 1,500 of her every 20-30 s. 1.2 wave 2: her teleport (a raider within 2,500 to 21,115,53,483) is on for bots: they walk back.",
    "currentRaidAi": "2026-11-05 07:19 (owner's notes): the Hibernian epic raid wiped at her (46 fell, 146 living), Special Forces arrived; that log is on the owner's PC. 2026-11-06 (build 86eddd8): killed in 11.0 minutes with 96 mustered, no raider death credited to her; a newborn and an underdeveloped spindler were route targets after her death.",
    "aiTactics": {
     "rangedAdds": [
@@ -13739,12 +13739,13 @@
     ],
     "addParties": 3,
     "areaOnClump": true,
+    "curerPostSpacing": 380,
     "clearFirst": [
      "spindler"
     ],
     "clearFirstRadius": 2600,
     "since": "1.2",
-    "summary": "Adult spindlers first (play test duo28's damage ledger, 2026-11-10: the level-75 spindlers standing 1,466 to 2,532 from her spawn came into her fight, dealt about 100,000 of the 340,000 damage the raid took, at about 470 a hit, and one was killed in the whole fight; the route had counted every spindler as cleared once the first one died): the route kills each spindler within 2,600 of her spawn, as a target of the whole raid, before it goes for her. Newborn-only parties and area spells on her spot (owner 2026-11-08): the newly-born spindlers (8,000 health, 1-2 every 25-45 s, born within 50-80 of her; they go for bards, druids, mentalists and wardens) are worked by 2-3 whole parties with their healers (2 up to 14 parties, 3 above), which take the newborns on the raid's healers and casters first, the one with the least health among those; every raider with an area damage spell (Eldritch, Mentalist, Enchanter, Animist shrooms and others) aims it at her or a newborn, wherever the most of them stand within its radius; everyone else stays on her. Before (play test duo6-duo10): all casters and archers on one newborn plus a melee peel held newborns at 2-8 for 9 minutes but she was never killed (wipes at 38-57%). Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on."
+    "summary": "Adult spindlers first (play test duo28's damage ledger, 2026-11-10: the level-75 spindlers standing 1,466 to 2,532 from her spawn came into her fight, dealt about 100,000 of the 340,000 damage the raid took, at about 470 a hit, and one was killed in the whole fight; the route had counted every spindler as cleared once the first one died): the route kills each spindler within 2,600 of her spawn, as a target of the whole raid, before it goes for her. Newborn-only parties and area spells on her spot (owner 2026-11-08): the newly-born spindlers (8,000 health, 1-2 every 25-45 s, born within 50-80 of her; they go for bards, druids, mentalists and wardens) are worked by 2-3 whole parties with their healers (2 up to 14 parties, 3 above), which take the newborns on the raid's healers and casters first, the one with the least health among those; every raider with an area damage spell (Eldritch, Mentalist, Enchanter, Animist shrooms and others) aims it at her or a newborn, wherever the most of them stand within its radius; everyone else stays on her. Before (play test duo6-duo10): all casters and archers on one newborn plus a melee peel held newborns at 2-8 for 9 minutes but she was never killed (wipes at 38-57%). Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on. The curers' post (owner 2026-11-11: tactics only): her mesmerize lands 300 around one raider picked at random within 1,500 of her, for 60 s, about every 30 s. The raid fights her as one pile under her (seen on the owner's PC, build e90bf21), so a cast catches nearly everyone, the curers included, and the few it missed (about five at a time) lift it more slowly than she casts it: the played world's staged raids wiped at 22% and 52% (118 and 72 raiders, 34 of them mesmerized on average, up to 96). First try, play test posts1 (PC played-world copy, 88 + 24): every party's whole back line at its own post halved the mesmerized, but her newborns followed the back line to nine posts and no longer bunched for the area spells (42 alive at once, wipe at 21%). Now every second curer of the raid (by its id) stands at one post beside the fight, 660 from her on floor in her sight, and everyone else fights as before in one place. A cast on the pile leaves the post's curers awake: they cure the pile's curers first, and those the rest. Tests only until a PC log shows it."
    },
    "verified": true
   },
@@ -14839,7 +14840,7 @@
      "maxHealth": 5000,
      "level": "75",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 669
+     "line": 685
     },
     {
      "class": "AidonCopyEarth",
@@ -14852,7 +14853,7 @@
      "maxHealth": 5000,
      "level": "75",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 790
+     "line": 806
     },
     {
      "class": "AidonCopyFire",
@@ -14865,7 +14866,7 @@
      "maxHealth": 5000,
      "level": "75",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 424
+     "line": 440
     },
     {
      "class": "AidonCopyIce",
@@ -14878,7 +14879,7 @@
      "maxHealth": 5000,
      "level": "75",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 547
+     "line": 563
     }
    ],
    "rules": [
@@ -14904,8 +14905,8 @@
      "kind": "reflect",
      "summary": "Has a damage shield / reflect spell: Aidon's Damage Shield (DamageShield, damage 100, target SELF)",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 398,
-     "lineEnd": 398,
+     "line": 414,
+     "lineEnd": 414,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -14914,14 +14915,14 @@
      "tactic": "Check who it punishes; switch damage type or attacker if it reflects.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "reflect@398"
+     "key": "reflect@414"
     },
     {
      "kind": "adds",
      "summary": "Spawns 4 kinds of add (Illusion of Aidon the Archwizard (AidonCopyAir), Illusion of Aidon the Archwizard (AidonCopyFire), Illusion of Aidon the Archwizard (AidonCopyEarth), Illusion of Aidon the Archwizard (AidonCopyIce)): on a timer (Util.Random(30000, 45000) ms)",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 279,
-     "lineEnd": 306,
+     "line": 295,
+     "lineEnd": 322,
      "anchor": "AidonCopyAir Add3 = new AidonCopyAir();",
      "confidence": "inferred",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -14940,14 +14941,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@279"
+     "key": "adds@295"
     },
     {
      "kind": "adds",
      "summary": "Spawns 4 kinds of add (Illusion of Aidon the Archwizard (AidonCopyFire), Illusion of Aidon the Archwizard (AidonCopyIce), Illusion of Aidon the Archwizard (AidonCopyAir), Illusion of Aidon the Archwizard (AidonCopyEarth)): from SpawnCopies",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 323,
-     "lineEnd": 353,
+     "line": 339,
+     "lineEnd": 369,
      "anchor": "AidonCopyFire Add1 = new AidonCopyFire();",
      "confidence": "inferred",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -14966,14 +14967,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@323"
+     "key": "adds@339"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health, adds cleared",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 205,
-     "lineEnd": 230,
+     "line": 217,
+     "lineEnd": 246,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -14982,14 +14983,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@205"
+     "key": "reset@217"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 232,
-     "lineEnd": 232,
+     "line": 248,
+     "lineEnd": 248,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -14999,14 +15000,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@232"
+     "key": "reset@248"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 235,
-     "lineEnd": 235,
+     "line": 251,
+     "lineEnd": 251,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -15016,14 +15017,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@235"
+     "key": "reset@251"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: AidonCopyAirBrain",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 184,
-     "lineEnd": 184,
+     "line": 196,
+     "lineEnd": 196,
      "anchor": "AddAggroListTo(npc.Brain as AidonCopyAirBrain);",
      "confidence": "inferred",
      "sourceClass": "AidonTheArchwizardBrain",
@@ -15032,7 +15033,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@184"
+     "key": "linked_pack@196"
     }
    ],
    "spells": [
@@ -15047,7 +15048,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 369,
+     "line": 385,
      "sourceClass": "AidonTheArchwizardBrain"
     },
     {
@@ -15061,7 +15062,7 @@
      "value": null,
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 398,
+     "line": 414,
      "sourceClass": "AidonTheArchwizardBrain"
     },
     {
@@ -15075,7 +15076,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 763,
+     "line": 779,
      "sourceClass": "AidonCopyAirBrain"
     },
     {
@@ -15089,7 +15090,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 883,
+     "line": 899,
      "sourceClass": "AidonCopyEarthBrain"
     },
     {
@@ -15103,7 +15104,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 518,
+     "line": 534,
      "sourceClass": "AidonCopyFireBrain"
     },
     {
@@ -15117,7 +15118,7 @@
      "value": "45",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs",
-     "line": 640,
+     "line": 656,
      "sourceClass": "AidonCopyIceBrain"
     }
    ],

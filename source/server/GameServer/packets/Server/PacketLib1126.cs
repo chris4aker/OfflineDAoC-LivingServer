@@ -337,8 +337,7 @@ namespace DOL.GS.PacketHandler
 			using (var pak = PooledObjectFactory.GetForTick<GSTCPPacketOut>().Init(GetPacketCode(eServerPackets.ClientRegion)))
 			{
 				var ip = region.ServerIP;
-				if (ip == "any" || ip == "0.0.0.0" || ip == "127.0.0.1" || ip.StartsWith("10.") || ip.StartsWith("192.168."))
-					ip = ((IPEndPoint)m_gameClient.Socket.LocalEndPoint).Address.ToString();
+				ip = RegionAddress.ForClient(m_gameClient, ip);
 				pak.WritePascalStringIntLE(ip);
 				pak.WriteIntLowEndian(region.ServerPort);
 				pak.WriteIntLowEndian(region.ServerPort);

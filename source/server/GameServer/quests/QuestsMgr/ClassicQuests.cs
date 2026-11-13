@@ -371,7 +371,8 @@ namespace DOL.GS.Quests
             if (slain.PlayerKillers != null) killers.UnionWith(slain.PlayerKillers);
             if (slain.Killer is GamePlayer direct) killers.Add(direct);
             else if (slain.Killer is GameNPC pet && pet.Brain is IControlledBrain controlled && controlled.GetPlayerOwner() is GamePlayer owner) killers.Add(owner);
-            else if (slain.Killer is GameBot gamebot && QuestKillCredit.GroupLeaderFor(gamebot, mob) is GamePlayer leader) killers.Add(leader);
+            else if (slain.Killer is GameBot gamebot &&
+                     (QuestKillCredit.GroupLeaderFor(gamebot, mob) ?? QuestKillCredit.GroupmateFor(gamebot, mob)) is GamePlayer leader) killers.Add(leader);
             foreach (GamePlayer player in killers)
             {
                 if (!player.IsWithinRadius(mob, WorldMgr.VISIBILITY_DISTANCE)) continue;
