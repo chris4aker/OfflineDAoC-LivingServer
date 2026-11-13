@@ -13,11 +13,13 @@ namespace DOL.GS;
 /// its own style, fixed by who it is: how much it cares (plain, tidy, flashy, peacock) and two colours leaning on its
 /// realm's colours (guild members often wear their guild's colour). At a merchant, at the natural task break where it
 /// already sells and buys upgrades, a bot with coin above its reserve dyes what it wears in its colours and colours its
-/// weapon with a weapon luster; the show-offs also have a weapon made to glow.
+/// weapon with a weapon luster.
 /// <para>Prices are the game's own (owner 2026-11-13: period-accurate, no invented economy): every dye, enamel and weapon
 /// luster is a real item template in the world database, and a bot pays that item's price and uses only the colours a
 /// real dye of that kind exists in. Light shades cost copper, royal and black ones over 16 gold, a weapon luster about
-/// 196 gold. Weapon glows are not a 1.65 purchase (the owner asked for them); they cost what a weapon luster costs.</para>
+/// 196 gold.</para>
+/// <para>Bots buy no weapon glows (owner 2026-11-13): a glow is what an epic boss, a dragon or a Darkness Falls seal
+/// merchant gives, as in 1.65, so a glowing weapon means the bot earned it. The Effect Master stays for players.</para>
 /// New gear comes in its plain colour, so the bot pays to dye it again. Guild emblems on cloaks and shields, companions
 /// and players' gear are never touched. The style and the choices are pure (tests); <see cref="TryRestyle"/> is the glue.
 /// </summary>
@@ -33,7 +35,7 @@ public static class AutonomousBotCosmetics
     /// plate, scale), and weapon luster (weapons).</summary>
     public enum Material { Cloth, Leather, Metal, Weapon }
 
-    /// <summary>A bot's look: how much it cares, its two colours, and a seed that picks the exact shade and glow.</summary>
+    /// <summary>A bot's look: how much it cares, its two colours, and a seed that picks the exact shade.</summary>
     public readonly record struct Style(Vanity Vanity, Hue Primary, Hue Secondary, int Seed);
 
     #region The dyes (the world database's own dye items)
@@ -193,43 +195,12 @@ public static class AutonomousBotCosmetics
     private static Dye[] Shades(IReadOnlyList<Dye> catalog, Material material, Hue hue) =>
         catalog.Where(d => d.Material == material && HueOf(d.Colour) == hue).OrderBy(d => d.Price).ThenBy(d => d.Colour).ToArray();
 
-    /// <summary>The weapon glows a weapon type takes (the game's own Effect Master list), or empty.</summary>
-    public static int[] GlowsFor(int objectType) => (eObjectType)objectType switch
-    {
-        eObjectType.SlashingWeapon or eObjectType.Sword or eObjectType.Blades or eObjectType.ThrustWeapon or
-            eObjectType.Piercing or eObjectType.LeftAxe => [.. Enumerable.Range(1, 20), .. Enumerable.Range(67, 7)],
-        eObjectType.TwoHandedWeapon or eObjectType.LargeWeapons => [.. Enumerable.Range(21, 11), 33],
-        eObjectType.CrushingWeapon or eObjectType.Blunt or eObjectType.Hammer => [.. Enumerable.Range(34, 22)],
-        eObjectType.Axe => [.. Enumerable.Range(56, 11)],
-        eObjectType.Spear or eObjectType.CelticSpear or eObjectType.PolearmWeapon => [.. Enumerable.Range(74, 16)],
-        eObjectType.Staff => [.. Enumerable.Range(90, 5), .. Enumerable.Range(44, 12)],
-        _ => [],
-    };
-
-    /// <summary>The glow a bot wants on a weapon, or null: a flashy bot glows its main weapon, a peacock every weapon.</summary>
-    public static int? WantedGlow(Style style, eInventorySlot slot, int objectType, int level)
-    {
-        if (level < MinimumGlowLevel || style.Vanity is Vanity.Plain or Vanity.Tidy) return null;
-        bool main = slot is eInventorySlot.RightHandWeapon or eInventorySlot.TwoHandWeapon;
-        if (!main && style.Vanity != Vanity.Peacock) return null;
-        int[] glows = GlowsFor(objectType);
-        return glows.Length == 0 ? null : glows[(int)((uint)(style.Seed * 31 + objectType) % (uint)glows.Length)];
-    }
-
-    public const int MinimumGlowLevel = 20;
     #endregion
 
     #region The prices and the budget (pure)
     /// <summary>What a bot pays for a dye: the item's own price (bot_cosmetics_price_percent scales it, 100 = as the game).</summary>
     public static long PriceOf(Dye dye, int pricePercent = 100) =>
         Math.Max(1, dye.Price * Math.Clamp(pricePercent, 1, 1000) / 100);
-
-    /// <summary>A weapon glow (not a 1.65 purchase): what the dearest weapon luster costs.</summary>
-    public static long GlowPrice(IReadOnlyList<Dye> catalog, int pricePercent = 100)
-    {
-        long luster = catalog?.Where(d => d.Material == Material.Weapon).Select(d => d.Price).DefaultIfEmpty(0).Max() ?? 0;
-        return luster <= 0 ? 0 : Math.Max(1, luster * Math.Clamp(pricePercent, 1, 1000) / 100);
-    }
 
     /// <summary>The coin a bot keeps for its gear and repairs and never spends on looks: 5 gold a level.</summary>
     public static long Reserve(int level) => Math.Clamp(level, 1, 50) * 50_000L;
@@ -294,7 +265,7 @@ public static class AutonomousBotCosmetics
     }
 
     /// <summary>
-    /// At a merchant, between tasks: dyes what the bot wears and colours and glows its weapons in its style, as far as its
+    /// At a merchant, between tasks: dyes what the bot wears and colours its weapons in its style, as far as its
     /// budget goes. True when it bought something (<paramref name="done"/> says what).
     /// </summary>
     public static bool TryRestyle(GameBot bot, GameMerchant merchant, out string done, out long spent)
@@ -336,18 +307,6 @@ public static class AutonomousBotCosmetics
                     if (bought.Count >= pieces) break;
                 }
             }
-            if (material == Material.Weapon && item.Effect == 0 &&
-                WantedGlow(style, slot, item.Object_Type, bot.Level) is int glow)
-            {
-                long price = GlowPrice(catalog, pricePercent);
-                if (price > 0 && price <= budget && TryGlow(bot, item, slot, glow, price))
-                {
-                    budget -= price;
-                    spent += price;
-                    bought.Add($"{item.Name}: glow {glow}");
-                    LogRestyle(bot, style, slot, item.Name, "glow", glow, "weapon glow", price);
-                }
-            }
         }
         if (bought.Count == 0) return false;
         AutonomousBotEconomy.MarkInventoryChanged(bot);
@@ -355,47 +314,6 @@ public static class AutonomousBotCosmetics
         AutonomousBotStatusPersistence.Queue(bot, true);
         bot.BroadcastLivingEquipmentUpdate();
         done = string.Join(", ", bought);
-        return true;
-    }
-
-    /// <summary>A glow is on the item's template, shared by every copy: the bot's piece becomes its own unique item
-    /// (as the Effect Master does for players) and goes back on in the same slot.</summary>
-    private static bool TryGlow(GameBot bot, DbInventoryItem item, eInventorySlot slot, int glow, long price)
-    {
-        DbItemUnique unique;
-        try
-        {
-            unique = new DbItemUnique(item.Template) { Effect = glow };
-        }
-        catch (ArgumentException)
-        {
-            return false;
-        }
-        DbInventoryItem glowing = GameInventoryItem.Create(unique);
-        if (glowing == null) return false;
-        glowing.Color = item.Color;
-        glowing.Emblem = item.Emblem;
-        glowing.Extension = item.Extension;
-        glowing.Condition = item.Condition;
-        glowing.Durability = item.Durability;
-        glowing.Creator = item.Creator;
-        glowing.IsCrafted = item.IsCrafted;
-        glowing.Charges = item.Charges;
-        glowing.Count = 1;
-        if (!AutonomousBotEconomy.TrySpend(bot.DatabaseID, price)) return false;
-        if (!bot.Inventory.RemoveItem(item))
-        {
-            AutonomousBotEconomy.AddMoney(bot.DatabaseID, price);
-            return false;
-        }
-        if (!bot.Inventory.AddItem(slot, glowing))
-        {
-            // Put the old one back; the coin goes back too.
-            bot.Inventory.AddItem(slot, item);
-            AutonomousBotEconomy.AddMoney(bot.DatabaseID, price);
-            return false;
-        }
-        bot.RefreshItemBonuses();
         return true;
     }
 
