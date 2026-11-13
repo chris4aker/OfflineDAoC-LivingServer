@@ -98,6 +98,8 @@ namespace DOL.UnitTests
             var tidy = new Style(Vanity.Tidy, Hue.Red, Hue.Blue, 5);
             var peacock = tidy with { Vanity = Vanity.Peacock };
             Assert.That(WantedDye(tidy, eInventorySlot.TorsoArmor, Material.Cloth, Catalog)!.Value.Price, Is.LessThanOrEqualTo(100));
+            Assert.That(WantedDye(tidy with { Primary = Hue.Gray }, eInventorySlot.TorsoArmor, Material.Leather, Catalog)!.Value.Price,
+                Is.LessThanOrEqualTo(TidyMostPerPiece), "tidy never pays for the dear shades");
             Assert.That(WantedDye(peacock, eInventorySlot.TorsoArmor, Material.Cloth, Catalog)!.Value.Price, Is.EqualTo(165000));
             Assert.That(HueOf(WantedDye(tidy, eInventorySlot.ArmsArmor, Material.Cloth, Catalog)!.Value.Colour), Is.EqualTo(Hue.Red),
                 "tidy: one colour");

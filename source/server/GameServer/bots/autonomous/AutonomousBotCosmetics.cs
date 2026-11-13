@@ -167,6 +167,10 @@ public static class AutonomousBotCosmetics
     public static readonly eInventorySlot[] WeaponSlots =
         [eInventorySlot.RightHandWeapon, eInventorySlot.TwoHandWeapon, eInventorySlot.LeftHandWeapon, eInventorySlot.DistanceWeapon];
 
+    /// <summary>The most a tidy bot pays for one piece: the everyday shades, never the royal, dark or black ones (seen on the
+    /// owner's PC, build 6: tidy bots bought royal red at 16.5 gold because red has few shades).</summary>
+    public const long TidyMostPerPiece = 10_000;
+
     /// <summary>
     /// The dye a bot wants for a piece, from the dyes that exist: its main colour on the chest, legs, cloak and weapons;
     /// its second colour on the arms, hands, feet and helm when it is flashy or a peacock (a tidy bot wears one colour).
@@ -185,7 +189,7 @@ public static class AutonomousBotCosmetics
         int half = (shades.Length + 1) / 2;
         Dye[] range = style.Vanity switch
         {
-            Vanity.Tidy => shades[..half],
+            Vanity.Tidy => shades.Where(d => d.Price <= TidyMostPerPiece).DefaultIfEmpty(shades[0]).ToArray(),
             Vanity.Peacock => shades[(shades.Length - half)..],
             _ => shades,
         };
