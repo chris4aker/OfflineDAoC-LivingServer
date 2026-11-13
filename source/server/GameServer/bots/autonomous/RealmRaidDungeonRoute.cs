@@ -196,6 +196,11 @@ namespace DOL.GS
         public IReadOnlyCollection<string> NamedDefeated => _clearedNames;
         public int FailedAttempts(string name) => _failedAttempts.GetValueOrDefault(name);
 
+        /// <summary>Named and bosses down, wipes so far, and the named or boss the raid fights now (the raid's stall rule).</summary>
+        public int NamedDefeatedCount => _clearedNames.Count;
+        public int WipesSoFar => _failedAttempts.Values.Sum();
+        public GameNPC NamedTarget => _target is IGameEpicNpc && _target.IsAlive ? _target : null;
+
         /// <summary>
         /// An attempt on a named encounter failed when at least eight raiders were in it and half of them fell (dead,
         /// released or gone from the dungeon), or when the encounter healed back to 95% after being taken to

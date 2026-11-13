@@ -397,6 +397,21 @@ public static class RealmRaidRecruitmentPolicy
 
     public static bool BattleExpired(bool forced, long now, long deadline) => !forced && now >= deadline;
 
+    /// <summary>
+    /// A raid in battle has no time limit (owner 2026-11-13: "if that's what it takes to get through the dungeon, we
+    /// shouldn't have time outs"); it ends when it is beaten, blocked, or stalled: this long with no named or boss kill, no
+    /// new low on the named or boss it fights and no wipe. Before, every automatic raid ended four hours after it went in.
+    /// </summary>
+    public const long StalledMilliseconds = 60 * 60_000L;
+
+    public static bool Stalled(bool forced, long now, long lastProgress) => !forced && now - lastProgress >= StalledMilliseconds;
+
+    /// <summary>Whether the raid moved forward since the last look: a named or boss down, a wipe (the fight goes on), or the
+    /// named or boss it fights lower than it has been in this raid. Pure.</summary>
+    public static bool MadeProgress(int namedBefore, int named, int wipesBefore, int wipes, string targetBefore, string target,
+        int lowestBefore, int healthPercent) =>
+        named > namedBefore || wipes > wipesBefore || target != null && target == targetBefore && healthPercent < lowestBefore;
+
     /// <summary>A raid party that lost members (but still exists) takes replacements up to its size when it joined.</summary>
     public static bool NeedsReplacement(int target, int members) => members > 0 && members < target;
 
