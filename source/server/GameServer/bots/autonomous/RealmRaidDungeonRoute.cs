@@ -229,6 +229,20 @@ namespace DOL.GS
         /// </summary>
         public static int AttemptRaidSize(int livingInside, int livingAnywhere) => Math.Max(livingInside, livingAnywhere);
 
+        /// <summary>
+        /// The encounter reset while the raid still stood: it healed back to 95% after being taken to
+        /// <see cref="ResetWipeLowestPercent"/> or lower, and fewer than a quarter of the raiders in the attempt fell.
+        /// Darkness Falls, 2026-11-12 (owner's PC, Midgard, 80 raiders): High Lord Oro was taken to 59% while the raid
+        /// fought the inquisitors and knights around him, nobody stayed on him and he reset; three raiders had fallen and
+        /// it was scored as the raid's first wipe of two. The first <see cref="FreeEncounterResets"/> such resets of an
+        /// encounter use no attempt: the raid musters again and goes in together. After that they count, so an encounter
+        /// the raid can never hold still ends the raid.
+        /// </summary>
+        public static bool IsResetWithRaidStanding(int engaged, int fallen, int healthPercent, int lowestPercent) =>
+            engaged >= MinimumRaidersAtTarget && fallen * 4 < engaged && healthPercent >= 95 && lowestPercent <= ResetWipeLowestPercent;
+        public const int FreeEncounterResets = 2;
+        private readonly Dictionary<string, int> _freeResets = new(StringComparer.Ordinal);
+
         /// <summary>Raiders a regroup waits for: 70% of the raid's roster (40% after 20 minutes), 8 to 150.</summary>
         public static int RegroupNeeded(int roster, long regroupMilliseconds) =>
             Math.Max(MinimumRaidersAtTarget, Math.Min(FinalMusterMaximum, (int)Math.Ceiling(roster *
@@ -305,6 +319,18 @@ namespace DOL.GS
             _engaged.Clear();
             if (!IsWipe(engaged, fallen, _target.HealthPercent, _attemptLowestPercent))
                 return false;
+            if (IsResetWithRaidStanding(engaged, fallen, _target.HealthPercent, _attemptLowestPercent) &&
+                _freeResets.GetValueOrDefault(_target.Name) < FreeEncounterResets)
+            {
+                int resets = _freeResets[_target.Name] = _freeResets.GetValueOrDefault(_target.Name) + 1;
+                log.Warn($"REALM_EXPEDITION_ENCOUNTER_RESET region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
+                         $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" resets={resets} of={FreeEncounterResets} " +
+                         $"reason=\"the encounter reset while the raid still stood; the raid musters again and no attempt is used\"");
+                _regrouping = true;
+                _regroupSince = _musterSince = now;
+                _targetProgressTick = now;
+                return false;
+            }
             if (!IsWipe(engaged, fallen, _target.HealthPercent, _attemptLowestPercent, _attemptRaidSize))
             {
                 // Lost skirmish: rest and muster again, but it was not the raid's attempt.
@@ -382,6 +408,9 @@ namespace DOL.GS
         public string TargetName { get; private set; } = "Encounter staging";
         public int TargetLevel { get; private set; } = 50;
         public bool Hold { get; private set; } = true;
+        /// <summary>Set by the raid each pulse: raiders stand at the way in, waiting to come back in together
+        /// (RealmRaidReturnWave). The muster's "nobody reached it" clock waits for them.</summary>
+        public bool ReturnGathering { get; set; }
         public bool Complete { get; private set; }
         public string Status { get; private set; } = "Entering dungeon";
         public GameNPC[] FinalBosses => _finals.Values.ToArray();
@@ -724,12 +753,15 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// Raiders a final encounter waits for before it is pulled: half of the living raid, at least
-        /// <see cref="MinimumRaidersAtTarget"/> and at most 150; after 20 minutes of mustering a third will do.
+        /// Raiders a final encounter waits for before it is pulled: 70% of the living raid, at least
+        /// <see cref="MinimumRaidersAtTarget"/> and at most 150; after 20 minutes of mustering half will do.
+        /// It was half, and a third after 20 minutes, until 1.2 build 2. Owner's PC, 2026-11-12: raids sized at 125% of
+        /// the period's went in with half of themselves and the rest arrived during the fight (Summoner Roesia 35 of 80,
+        /// Torst 30, Norsob the Annihilator 20, High Lord Baln 40): each attempt was a smaller raid than the one sent.
         /// </summary>
         public static int FinalMusterNeeded(int livingRaiders, long musterMilliseconds) =>
             Math.Max(MinimumRaidersAtTarget, Math.Min(FinalMusterMaximum,
-                (int)(livingRaiders * (musterMilliseconds >= FinalMusterPatienceMilliseconds ? 0.33 : 0.5))));
+                musterMilliseconds >= FinalMusterPatienceMilliseconds ? livingRaiders / 2 : livingRaiders * 7 / 10));
         public const int FinalMusterMaximum = 150;
         public const long FinalMusterPatienceMilliseconds = 20 * 60_000;
         public const int FinalMusterRadius = 1_500;
@@ -894,7 +926,8 @@ namespace DOL.GS
             GameLiving[] musteredRaiders = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region &&
                                                    (p.IsWithinRadius(point, FinalMusterRadius) || p.IsWithinRadius(_target, TargetPresenceRadius))).ToArray();
             int mustered = musteredRaiders.Length;
-            if (mustered > 0) _musterEmptySince = 0;
+            // Raiders waiting at the way in for their return wave are on their way: the muster is not unreachable.
+            if (mustered > 0 || ReturnGathering) _musterEmptySince = 0;
             else if (_musterEmptySince == 0) _musterEmptySince = now;
             else if (MusterUnreachable(_musterEmptySince, now))
             {
