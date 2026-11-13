@@ -2648,11 +2648,11 @@ namespace DOL.GS.ServerProperties
 		public static int BOT_GROUP_PLAYER_LOOT_WEIGHT;
 
 		/// <summary>Bot cosmetics (owner 2026-11-12): gamebots spend coin on dyes and weapon glows (AutonomousBotCosmetics).</summary>
-		[ServerProperty("bots", "bot_cosmetics", "Gamebots spend their coin on their looks as well as their gear: at a merchant between tasks, a bot with coin above its reserve dyes what it wears in its own colours (each bot has its own, leaning on its realm's colours; guild members often wear the guild's) and the show-offs pay for a weapon glow. New gear comes in its plain colour, so they pay again. Some bots never bother. False: no bot buys dyes or glows.", true)]
+		[ServerProperty("bots", "bot_cosmetics", "Gamebots spend their coin on their looks as well as their gear: at a merchant between tasks, a bot with coin above its reserve buys the game's own dyes, enamels and weapon lusters, at their own prices, in its own colours (each bot has its own, leaning on its realm's; guild members often wear the guild's), and the show-offs pay for a weapon glow. New gear comes in its plain colour, so they pay again. Some bots never bother. False: no bot buys dyes or glows.", true)]
 		public static bool BOT_COSMETICS;
 
 		/// <summary>Bot cosmetics: what dyes and glows cost bots, in percent (AutonomousBotCosmetics).</summary>
-		[ServerProperty("bots", "bot_cosmetics_price_percent", "What dyes and weapon glows cost gamebots, in percent of the base price (at level 50 a cloth dye 50 silver, a leather dye 1 gold, a metal enamel 2 gold, a weapon glow 50 gold; less at lower levels). 1 to 1000.", 100)]
+		[ServerProperty("bots", "bot_cosmetics_price_percent", "What dyes and weapon glows cost gamebots, in percent of the game's own price (100: as the dye items cost, from 50 copper for a light shade to over 16 gold for royal and black ones and about 196 gold for a weapon luster; a glow costs what a weapon luster does). 1 to 1000.", 100)]
 		public static int BOT_COSMETICS_PRICE_PERCENT;
 
 		/// <summary>Bot-led groups, B2: what saying yes to a gamebot leader's invite does (follow or lead).</summary>
