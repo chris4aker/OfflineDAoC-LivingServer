@@ -48,6 +48,63 @@ be deleted or be moved. See [docs/CHARACTER-PASSPORT.md](docs/CHARACTER-PASSPORT
   character back as it left if the friend's world is gone.
 - Automated tests only so far; nobody has made the trip between two real PCs yet.
 
+**Play with friends (experimental).** About one to four friends can play in your bot world: HOST FOR FRIENDS and JOIN
+FRIEND in the launcher, an invite code, and a password. Home network and Tailscale by default; internet hosting is a box
+you tick. See [docs/PLAY-WITH-FRIENDS.md](docs/PLAY-WITH-FRIENDS.md). Hand port from rambodolphin13's DividedRealms
+(3c6cc9d, 6f22a7a, ec0e456, af1fcf8, b0744a2; Join Friend first came from stefanrows/OfflineDAoC), GPL-3.0. Thank you,
+rambodolphin13. The Character passport (da78651f) is not part of it. It passes automated tests; nobody has played it
+between two real PCs yet.
+- **The host password is the gate** (owner's decision, 2026-11-08). While you host, a new account from another PC needs
+  your password, and without one set no other PC can make an account. Your own PC never needs it, so single-player
+  automatic account creation is unchanged. Five wrong host passwords from one address lock it out for 10 minutes. No
+  friend list.
+- **Every friend has their own password** (owner, 2026-11-08). Join Friend asks for the host password (first time only)
+  and your own password. The account keeps only your own password, so one friend can't log in as another, and later
+  logins never need the host password. The host password itself is never sent: the first login sends a short join token
+  made from it (see the developer notes in the guide).
+- **One region address per client.** Each client is told the address it connected on (this PC, the home network or
+  Tailscale), or the router's internet address for a friend from the internet. Before, a friend on Tailscale or on a
+  172.16 network was told an address it could not use.
+- **Firewall rules for this game only:** `CoreServer.exe`, TCP 10300 and UDP 10400, from the home network and Tailscale
+  (any address only with internet hosting). Made with Windows' permission. STOP HOSTING removes exactly those rules, by
+  name, and says so in red if it can't.
+- **Internet hosting (opt-in):** the router opens the two ports over UPnP while the server runs and closes them when it
+  stops. The router mapping now points at this PC's address on the router's network, each port is asked for on its own,
+  and the router's internet address is kept as `PublicIP`.
+- **Friends on the home network or Tailscale get this PC's idle time-out exemptions** (ping, position, idle kick), so
+  they aren't dropped while standing in `/grind`. A public address keeps the normal time-outs.
+- **Two friends behind one router** can each make an account at once: the 15-minute same-address rule is skipped for
+  this PC, the home network, Tailscale and the host password. The total per address still applies.
+- **Join Friend refuses `offline`** (the host's own account) and suggests a name.
+- **Friends never get GM.** Make Me GM changes only your own account; a test with two friends' accounts checks it.
+- **Release builds** check that no host password or `PublicIP` ships, and leave out Host for Friends' own files. The
+  network defaults (this PC only, UPnP off, mappings removed at stop) came in 1.1.2 and are unchanged.
+- Not yet: the new (Godot) client can't use Join Friend, and a friend from a public address in `/grind` can still be
+  dropped by the ping time-out.
+
+**Play with friends: bots, pulls, credit and caps with more than one player** (owner's call, 2026-11-08; the co-op
+audit of 2026-11-03). With one player online nothing changes. With friends online:
+- **A companion follows its owner, always.** Another player's `/pull`, attack, `/bot pilot`, invite or `/makeleader` no
+  longer takes your `/spawn` or `/raid` companions, and when you leave a group a friend stays in, your companions leave
+  with you.
+- **Invited gamebots follow the group's leader.** `/makeleader` hands them to the new leader, and when the leader leaves
+  they follow the new leader instead of whichever player came first in the group.
+- **`/pull` orders only your bots:** your companions, plus the gamebots when you lead. The leader's tank-gated pull holds
+  only the leader's bots, and a friend's attack sends the friend's companions in without breaking it.
+- **`/travel` and `/bot pilot` are host only.** They press keys in, and read files from, the PC that runs the server; a
+  friend on another PC is told so and nothing starts.
+- **A server-wide companion budget:** while more than one player is online, new companions need room in the server's
+  total (`companion_budget_total`, 160) and the player's own share (`companion_budget_per_player`, 79 = one full
+  `/raid 80`). 0 turns either off.
+- **Bots answer each of you.** The reply cooldowns in `/faction` and `/say` are per player, so one player's line no longer
+  silences the replies to another.
+- **Quest credit for everyone:** a gamebot's kill credits every player of the group in range once; when the leader is
+  dead or away, another player of the group in range is credited instead of nobody.
+- **One invite at a time:** a gamebot leader whose invite box waits for one player's answer invites nobody else meanwhile.
+
+Covered by automated two-player tests (`UT_PlayWithFriends`); nobody has played it with two people yet. Joining a
+friend's server (networking, accounts, the launcher) is a separate change. Details: [docs/LIVING-SERVER.md](docs/LIVING-SERVER.md).
+
 **Tales: the realm's storyteller, and stories by the fire** (the owner's idea, 2026-11-10: "a bot in faction asks another
 famous bot to tell the story about X..."; how it works: [docs/TALES.md](docs/TALES.md)). Built and covered by automated
 tests; nobody has heard one in game yet.

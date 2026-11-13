@@ -191,4 +191,5 @@ CI runs on every push to main as well, so a direct push or a merge is still test
   and economy history. Also keep `account.txt`, logs, dumps and backups out of commits.
 - **Review before pushing.** Run `git diff --cached` before every push; `.gitignore` is a safety
   net only.
-- **Local only:** the default setup is for one PC. Don't expose it to the internet as-is.
+- **Local only:** the default setup is for one PC. Don't expose it to the internet as-is. To play with friends, use
+  Host for Friends ([PLAY-WITH-FRIENDS.md](PLAY-WITH-FRIENDS.md)): it adds a password and firewall rules for this game only.

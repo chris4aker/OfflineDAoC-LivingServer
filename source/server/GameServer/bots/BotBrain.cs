@@ -2066,6 +2066,16 @@ namespace DOL.AI.Brain
                 return true;
             }
 
+            // Bot cosmetics (owner 2026-11-12): with the selling and the upgrades done, coin above the reserve buys its looks.
+            if (AutonomousBotCosmetics.TryRestyle(bot, merchant, out string restyled, out long styleCopper))
+            {
+                SetMerchantStatus(bot, $"Had gear dyed and styled at {merchant.Name}", $"Spent {styleCopper} saved copper: {restyled}");
+                AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Money);
+                AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
+                _nextMerchantServiceTick = now + 30_000 + Random.Shared.Next(30_001);
+                return true;
+            }
+
             _nextMerchantServiceTick = now + 20_000 + Random.Shared.Next(20_001);
             AutonomousBotEconomy.MarkEconomyChanged(bot.DatabaseID);
             return false;
