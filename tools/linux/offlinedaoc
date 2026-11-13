@@ -177,9 +177,8 @@ cmd_play() {
   [ -d "$WINEPREFIX/drive_c" ] || die "the game's Wine folder ($WINEPREFIX) isn't set up yet; run the Linux setup first"
   mkdir -p "$LOGS"
   local g; g=$(winepath -w "$GAME" 2> /dev/null || echo "Z:${GAME//\//\\}")
-  # Server GC keeps one heap per logical CPU; Ryan's 16-thread desktop grew to about 6 GB in 48 minutes. Fewer heaps and
-  # "conserve memory" keep a one-player server far smaller. The launcher passes its environment to the server.
-  export DOTNET_GCHeapCount=${DOTNET_GCHeapCount:-4} DOTNET_GCConserveMemory=${DOTNET_GCConserveMemory:-5}
+  # Server memory (Ryan's DOTNET_GCHeapCount=4, DOTNET_GCConserveMemory=5) is the launcher's "Lean server memory" option
+  # in the Options tab from Living Server 1.2 (#208): the launcher sets or clears both at START SERVER, on Linux as on Windows.
   ( cd "$GAME" && WINEDEBUG=${WINEDEBUG:--all,err+module,err+seh} DOTNET_ROOT="$g\\tools\\dotnet" DOTNET_ROOT_X64="$g\\tools\\dotnet" \
       DOTNET_MULTILEVEL_LOOKUP=0 exec wine runtime/OfflineDAoC.exe ) > "$LOGS/launcher.log" 2>&1 &
   local launcher=$!

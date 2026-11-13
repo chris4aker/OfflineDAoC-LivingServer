@@ -41,7 +41,8 @@ export WINEPREFIX=~/OfflineDAoC/wineprefix
 - [ ] The launcher opens and its title shows 1.2. START SERVER reaches online, and ENTER REALM gets you into the game.
 - [ ] The game window is fullscreen and the bottom buttons are visible.
 - [ ] The loading screen says LIVING SERVER.
-- [ ] Play about 30 minutes, then note the server's memory: `ps -C CoreServer.exe -o rss=` (in KB).
+- [ ] Play about 30 minutes, then note the server's memory: `ps -C CoreServer.exe -o rss=` (in KB). If this build has
+      the Options tab's **Lean server memory** switch, do one session with it off and one with it on.
 - [ ] Quit the game, stop the server in the launcher, and close it.
 
 ## 4. Host for Friends (with Chris)
