@@ -79,10 +79,20 @@ namespace DOL.GS
             public GameNPC Boss;
             public long Deadline;
             public bool Started;
+            /// <summary>Raiders walking back to the dungeon gather at the way in and go in together (RealmRaidReturnWave).</summary>
+            public bool ReturnGathering;
+            public long ReturnOpenUntil, ReturnWaitingSince;
+            /// <summary>Raiders seen inside the dungeon since the raid began. Only they are "on their way back"; a raider who
+            /// has never been in is still on the way in and is never held at the way in.</summary>
+            public readonly HashSet<long> BeenInside = new();
             public bool PreparationNoticeSent;
+            /// <summary>The stall rule (RealmRaidRecruitmentPolicy.Stalled): when the raid last moved forward, and what it had then.</summary>
+            public long LastProgressTick;
+            public int ProgressNamed, ProgressWipes, ProgressLowest = 101;
+            public string ProgressTarget;
             public bool Forced;
             /// <summary>A play test's raid (/epictest): forced recruiting, but the automatic raid's clocks (late and short
-            /// starts at the staging deadline, the four-hour battle window), so it ends the way a real raid does.</summary>
+            /// starts at the staging deadline, the stall rule in battle), so it ends the way a real raid does.</summary>
             public bool Playtest;
             /// <summary>The raid's staging and battle run on the automatic raid's clocks.</summary>
             public bool Clocked => !Forced || Playtest;
@@ -144,6 +154,8 @@ namespace DOL.GS
             public long FailedPostUntil;
             public View View;
             public View DestinationView;
+            /// <summary>A dungeon raid's party staging outside the way in, as before the raid went in (return waves).</summary>
+            public View RallyView;
             public readonly HashSet<long> CatchingUp = new();
             public readonly Dictionary<long, long> CorpseSince = new();
             /// <summary>The party size when it joined; released members are replaced up to it.</summary>
@@ -297,6 +309,9 @@ namespace DOL.GS
                     Log.Info($"REALM_RAID_SCHEDULE_SKIPPED realm={GlobalConstants.RealmToName(realm)} online={online} reason=\"no encounter available (respawning or on cooldown)\"");
                     continue;
                 }
+                // 1.2: the boss's tale first, then the call (AutonomousRealmRaid.Call.cs); the raid forms when the tale ends.
+                if (BeginCall(chosen, realm, now, false))
+                    continue;
                 if (Start(chosen.Id, realm, out string reason))
                 {
                     Log.Info($"REALM_RAID_SCHEDULED event={chosen.Id} realm={GlobalConstants.RealmToName(realm)} online={online} required={Raids[chosen.Id].Required} " +
@@ -320,6 +335,7 @@ namespace DOL.GS
                     : !AutonomousPopulationController.StartupRampFinished ? "the realm's gamebots are still logging in"
                     : !Definitions.Any(d => d.Id == id && d.Realm == realm) ? "no such raid for that realm"
                     : Raids.Values.Any(r => r.Definition.Realm == realm) ? "the realm already has a raid"
+                    : PendingCalls.ContainsKey(realm) ? "the realm's next raid is waiting for its tale"
                     : !Available(id) ? "the encounter is not up, or on cooldown"
                     : online < RealmRaidRecruitmentPolicy.MinimumScaledBots * 2 ? $"only {online} level 50s of the realm are free"
                     : null;
@@ -431,6 +447,7 @@ namespace DOL.GS
                     }
                 }
                 PulseSchedule(now);
+                PulseCalls(now);
                 foreach (var raid in Raids.Values.ToArray())
                 {
                     foreach (Group group in raid.Parties.Keys.ToArray())
@@ -470,8 +487,13 @@ namespace DOL.GS
                     raid.DungeonRoute?.ObserveCompletion();
                     if (raid.DungeonRoute?.Complete == true)
                     { End(raid, now, CompletionReason(raid, "The final dungeon encounter has been defeated.")); continue; }
-                    if (raid.Started && RealmRaidRecruitmentPolicy.BattleExpired(!raid.Clocked, now, raid.Deadline))
-                    { End(raid, now, "The four-hour expedition window ended."); continue; }
+                    if (raid.Started && WatchProgress(raid, now))
+                    {
+                        Log.Info($"REALM_RAID_STALLED event={raid.Definition.Id} minutes={(now - raid.LastProgressTick) / 60_000} " +
+                                 $"named={raid.ProgressNamed} wipes={raid.ProgressWipes} target=\"{raid.ProgressTarget}\" lowest={raid.ProgressLowest}");
+                        End(raid, now, $"Stalled: no named or boss kill, no new low on its target and no wipe for {RealmRaidRecruitmentPolicy.StalledMilliseconds / 60_000} minutes.");
+                        continue;
+                    }
                     if (!raid.Started)
                     {
                         long noticeDeadline = RealmRaidRecruitmentPolicy.StagingDeadline(raid.Created, raid.HubDepartedTick);
@@ -521,7 +543,9 @@ namespace DOL.GS
                         if (ready)
                         {
                             raid.Started = true;
-                            raid.Deadline = !raid.Clocked ? long.MaxValue : now + RealmRaidRecruitmentPolicy.BattleMilliseconds;
+                            // No battle window: a raid in battle ends when beaten, blocked or stalled (WatchProgress).
+                            raid.Deadline = long.MaxValue;
+                            raid.LastProgressTick = now;
                             RealmEventRecords.Progress(raid.Definition.Id, "Battle", "Expedition began advancing to the encounter.", raid.Support.Length, present);
                             Log.Info($"REALM_RAID_STARTED event={raid.Definition.Id} present={present} required={raid.Required} " +
                                      $"support={raid.Support.Length} minutes={(now - raid.Created) / 60_000} forced={raid.Forced} playtest={raid.Playtest}");
@@ -543,6 +567,7 @@ namespace DOL.GS
                     if (raid.Started && raid.DungeonRoute != null)
                     {
                         raid.DungeonRoute.Advance(raid.Support, now);
+                        PulseReturnWave(raid, now);
                         while (raid.DungeonRoute.TryTakeWipe(out string wipedBy, out int failures))
                             OnWipe(raid, wipedBy, failures, now);
                         if (raid.DungeonRoute.Defeated)
@@ -753,7 +778,13 @@ namespace DOL.GS
                     : ForcedStartCondition(definition.IsDungeon);
                 // One quiet top-of-screen line for the realm's players (automatic and launcher-forced alike),
                 // so a player can join the bots at the rally point.
-                RealmEventNotices.QueueScreen(id, realm, $"A {definition.Name} raid is forming at {raid.Hub.Name}.", AnnouncementKind.PveRealmEvent);
+                // 1.2: a raid of the game or the launcher is called with the large line and a horn (the owner, 2026-11-12);
+                // a play test's raid keeps the plain line.
+                if (playtestSize > 0)
+                    RealmEventNotices.QueueScreen(id, realm, $"A {definition.Name} raid is forming at {raid.Hub.Name}.", AnnouncementKind.PveRealmEvent);
+                else
+                    RealmEventNotices.QueueScreen(id, realm, RealmRaidRecruitmentPolicy.CallLine(GlobalConstants.RealmToName(realm), definition.Name, raid.Hub.Name),
+                        AnnouncementKind.PveRealmEvent, RealmRaidRecruitmentPolicy.CallHornSound);
                 // Living Server 1.2: the place's own line for the realm, after the forming notice (docs/LORE.md).
                 if (GameWideAnnouncements.Enabled(AnnouncementKind.PveRealmEvent))
                     LoreAtmosphere.RaidForming(realm, definition.Region, definition.Name);
@@ -876,6 +907,26 @@ namespace DOL.GS
         private static bool DragonLanded(Raid raid) => raid.Definition.IsDungeon ||
             RealmRaidStaging.DragonCountsAsLanded((raid.Boss.Flags & GameNPC.eFlags.FLYING) != 0,
                 raid.Boss.IsWithinRadius(DragonLairPlacement.Home(raid.Definition.Realm), 2000), raid.Boss.InCombat);
+
+        /// <summary>True when a raid in battle has stalled. Notes any progress first: a named or boss down, a wipe, or the
+        /// named, boss or dragon it fights at a new low.</summary>
+        private static bool WatchProgress(Raid raid, long now)
+        {
+            int named = raid.DungeonRoute?.NamedDefeatedCount ?? 0;
+            int wipes = raid.DungeonRoute?.WipesSoFar ?? raid.DragonFight?.FailedAttempts ?? 0;
+            GameNPC target = raid.DungeonRoute != null ? raid.DungeonRoute.NamedTarget : raid.Boss?.IsAlive == true ? raid.Boss : null;
+            string name = target?.Name;
+            int health = target?.HealthPercent ?? 101;
+            if (RealmRaidRecruitmentPolicy.MadeProgress(raid.ProgressNamed, named, raid.ProgressWipes, wipes, raid.ProgressTarget, name,
+                    raid.ProgressLowest, health))
+                raid.LastProgressTick = now;
+            if (name != raid.ProgressTarget) raid.ProgressLowest = health;
+            else raid.ProgressLowest = Math.Min(raid.ProgressLowest, health);
+            raid.ProgressNamed = named;
+            raid.ProgressWipes = wipes;
+            raid.ProgressTarget = name;
+            return RealmRaidRecruitmentPolicy.Stalled(!raid.Clocked, now, raid.LastProgressTick);
+        }
 
         /// <summary>The dragon as its raid's fight tracker sees it this pulse (RealmRaidDragonFight).</summary>
         private static RealmRaidDragonFight.Dragon DragonState(Raid raid) =>
@@ -1333,6 +1384,9 @@ namespace DOL.GS
         {
             if (raid.DungeonRoute is { } route)
             {
+                party.RallyView = route.Entrance == null ? null : new(raid.Definition.Id, "RAID — gathering at the way in to go back in together",
+                    new($"realm-event-{raid.Definition.Id}", raid.Definition.Name, raid.Definition.Name, route.Entrance.SourceRegion,
+                        (int)party.Staging.X, (int)party.Staging.Y, (int)party.Staging.Z, false, false, 50), true);
                 Vector3 destination = raid.Started ? route.Destination : party.Staging;
                 ushort region = raid.Started ? raid.Definition.Region : route.Entrance.SourceRegion;
                 string target = raid.Started ? route.TargetName : raid.Definition.Name;
@@ -1417,9 +1471,70 @@ namespace DOL.GS
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Membership.TryGetValue(group, out var raid) || !raid.Parties.TryGetValue(group, out var party)) return null;
+                // Walking back after a release while the raid gathers a return wave: it waits at its party's staging by the
+                // way in, as it did before the raid went in, and enters with the others (RealmRaidReturnWave).
+                if (raid.ReturnGathering && party.RallyView != null && bot.CurrentRegionID != raid.Definition.Region &&
+                    raid.BeenInside.Contains(bot.DatabaseID))
+                    return party.RallyView;
                 return raid.HubDeparted && party.CatchingUp.Contains(bot.DatabaseID)
                     ? party.DestinationView ?? party.View : party.View;
             }
+        }
+
+        /// <summary>
+        /// Under the raid lock, each pulse of a started dungeon raid: whether the raiders outside the dungeon gather at the
+        /// way in or go in (RealmRaidReturnWave). Owner's PC, 2026-11-12: after a wipe the released raiders walked back in
+        /// ones and twos through monsters that had come back, died or stalled on the way, and nobody reached the muster
+        /// for 20 minutes (Nosdoden three times, Trollkarl Bonchar, High Lord Oro, Icelord Agmundr, Hurika, Lydsyg).
+        /// </summary>
+        private static void PulseReturnWave(Raid raid, long now)
+        {
+            RealmRaidDungeonRoute route = raid.DungeonRoute;
+            if (!RealmRaidReturnWave.On || route.Entrance == null)
+            {
+                raid.ReturnGathering = false;
+                route.ReturnGathering = false;
+                return;
+            }
+            int outside = 0, waiting = 0, fallen = 0;
+            // Owner's PC, 2026-11-12 (build ff5a8bc): Summoner's Hall's raid started from its staging town, and two minutes
+            // later every raider still walking to the far entrance was counted as "on the way back" and sent back to the town:
+            // nobody had reached the dungeon 7 minutes in. Only raiders who have been inside count now.
+            foreach (GameBot b in raid.Support.OfType<GameBot>())
+            {
+                if (b.IsAlive && b.CurrentRegionID == raid.Definition.Region)
+                {
+                    raid.BeenInside.Add(b.DatabaseID);
+                    continue;
+                }
+                if (!raid.BeenInside.Contains(b.DatabaseID)) continue;
+                if (!b.IsAlive) { fallen++; continue; }
+                outside++;
+                if (IsStaged(raid, b)) waiting++;
+            }
+            if (waiting == 0) raid.ReturnWaitingSince = 0;
+            else if (raid.ReturnWaitingSince == 0) raid.ReturnWaitingSince = now;
+            long waited = raid.ReturnWaitingSince == 0 ? 0 : now - raid.ReturnWaitingSince;
+            string name = raid.Definition.Id;
+            switch (RealmRaidReturnWave.Next(outside, fallen, waiting, waited, now < raid.ReturnOpenUntil))
+            {
+                case RealmRaidReturnWave.Step.Gather:
+                    if (!raid.ReturnGathering)
+                        Log.Info($"REALM_RAID_RETURN_GATHER event={name} outside={outside} fallen={fallen} waiting={waiting}");
+                    raid.ReturnGathering = true;
+                    break;
+                case RealmRaidReturnWave.Step.Go:
+                    raid.ReturnGathering = false;
+                    raid.ReturnOpenUntil = now + RealmRaidReturnWave.OpenMilliseconds;
+                    raid.ReturnWaitingSince = 0;
+                    Log.Info($"REALM_RAID_RETURN_WAVE event={name} waiting={waiting} outside={outside} fallen={fallen} waited_s={waited / 1000}");
+                    break;
+                default:
+                    raid.ReturnGathering = false;
+                    break;
+            }
+            // While raiders stand at the way in waiting for their wave, the muster inside is not "unreachable".
+            route.ReturnGathering = raid.ReturnGathering && waiting > 0;
         }
 
         // Late/released members skip muster attendance, not the connected exterior route.
@@ -1716,7 +1831,7 @@ namespace DOL.GS
             bool stoppedByPlayer = reason.StartsWith(StoppedByPlayer);
             string outcome = stoppedByPlayer ? "Stopped by player" :
                 reason.StartsWith("Route blocked") ? "Route blocked" :
-                reason.StartsWith("Staging failed") ? "Failed rally" : reason.Contains("four-hour") ? "Timed out" :
+                reason.StartsWith("Staging failed") ? "Failed rally" : reason.Contains("four-hour") || reason.StartsWith("Stalled") ? "Timed out" :
                 reason.StartsWith("Defeated at") ? "Defeated" : reason.StartsWith(BeatenPrefix) ? BeatenPrefix :
                 raid.Definition.IsDungeon ? raid.DungeonRoute?.Complete == true ? "Boss defeated" : "Ended (unconfirmed)" :
                 !raid.Boss.IsAlive ? "Boss defeated" : "Encounter unavailable";
@@ -1824,9 +1939,14 @@ namespace DOL.GS
         private static void SupersedeAutomatic(eRealm realm, string forcedId)
         {
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
                 foreach (Raid automatic in Raids.Values.Where(r => r.Definition.Realm == realm && !r.Forced && !r.Started &&
                              r.Definition.Id != forcedId).ToArray())
                     End(automatic, GameLoop.GameLoopTime, $"{StoppedByPlayer}: superseded by the forced {forcedId} expedition.");
+                // 1.2: so is the realm's own raid that still waits for its tale.
+                if (PendingCalls.TryGetValue(realm, out PendingCall waiting) && !waiting.Forced && waiting.Id != forcedId)
+                    CancelCall(waiting.Id, $"superseded by the forced {forcedId} expedition");
+            }
         }
 
         /// <summary>Launcher "Stop event": ends an active dragon or epic dungeon expedition now.</summary>
@@ -1835,7 +1955,11 @@ namespace DOL.GS
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Raids.TryGetValue(id, out Raid raid))
-                { reason = "This expedition is not running."; return false; }
+                {
+                    bool waiting = CancelCall(id, "stopped from the launcher");
+                    reason = waiting ? "The raid was waiting for its tale and will not be called." : "This expedition is not running.";
+                    return waiting;
+                }
                 End(raid, GameLoop.GameLoopTime, StoppedByPlayer + " from the launcher.");
                 reason = $"{raid.Definition.Name} stopped. The bots return to their own goals; no cooldown was set.";
                 return true;

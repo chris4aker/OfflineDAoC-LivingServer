@@ -179,7 +179,7 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
                     spot = center;
                 if (bot.MoveTo(regionId, (int)spot.X, (int)spot.Y, (int)spot.Z, bot.Heading)) moved++;
             }
-            Log.Info($"EPIC_PLAYTEST_HUB event={eventId} to=\"{where}\" moved={moved} of={bots.Length}");
+            Log.Info($"EPIC_PLAYTEST_HUB event={eventId} to=\"{where}\" moved={moved} of={bots.Length} region={regionId} at={(int)center.X},{(int)center.Y},{(int)center.Z}");
         }, recruits);
     }
 

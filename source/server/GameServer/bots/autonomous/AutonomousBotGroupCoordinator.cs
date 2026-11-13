@@ -178,6 +178,9 @@ public static partial class AutonomousBotGroupCoordinator
         // Bot-led groups (AutonomousBotGroupCoordinator.BotLed.cs): the real player this party hosts, never its leader.
         public GamePlayer HostedPlayer { get; set; }
         public BotPveGroupRole PlayerRole { get; set; }
+        // Why the party is letting the hosted player go (an AFK or linkdead let-go), read by the removal handler; null for a
+        // player who left on their own.
+        public string LetGoReason { get; set; }
         public BotLedGroups.FollowState Follow { get; set; }
         public Vector3 PlayerLastPosition { get; set; }
         // When the hosted player was first seen out of the world (a zone or region change, a /jump), or 0.

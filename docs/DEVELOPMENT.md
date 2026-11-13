@@ -10,6 +10,7 @@ This guide is for people (and AI assistants) who change the code. Players only n
 | `source/server` | OpenDAoC-based server (`Dawn of Light.sln`): game logic, companion bots, autonomous gamebots, tests |
 | `source/tools/OfflineDaoc.Launcher` | Windows launcher (server control, bot creation, dashboards) with tests in `OfflineDaoc.Launcher.Tests`. The same program is the new client's launcher in 0.36c. |
 | `source/tools/OfflineDaoc.ProgressImport` | Progress transfer tool |
+| `source/tools/OfflineDaoc.Passport`, `.Cli`, `.Tests` | Character passport (1.2): take a character to a friend's world and back. See [CHARACTER-PASSPORT.md](CHARACTER-PASSPORT.md). |
 | `source/tools/build_release_036.py`, `assemble_release_036.py`, `seal_release_036.py`, `smoke_release_036.py`, `test_release_import_036.py` | Build, assemble, seal and test the public 0.36 / 0.36b package |
 | `source/tools/build_newclient_036.py`, `seal_newclient_036.py` | Build and seal the 0.36c new-client package |
 | `source/tools/build_release_037.py`, `assemble_release_037.py`, `build_newclient_037.py` | Build the 0.37 reference packages (what a fresh install of 0.37 is; never uploaded) |
@@ -190,4 +191,5 @@ CI runs on every push to main as well, so a direct push or a merge is still test
   and economy history. Also keep `account.txt`, logs, dumps and backups out of commits.
 - **Review before pushing.** Run `git diff --cached` before every push; `.gitignore` is a safety
   net only.
-- **Local only:** the default setup is for one PC. Don't expose it to the internet as-is.
+- **Local only:** the default setup is for one PC. Don't expose it to the internet as-is. To play with friends, use
+  Host for Friends ([PLAY-WITH-FRIENDS.md](PLAY-WITH-FRIENDS.md)): it adds a password and firewall rules for this game only.
