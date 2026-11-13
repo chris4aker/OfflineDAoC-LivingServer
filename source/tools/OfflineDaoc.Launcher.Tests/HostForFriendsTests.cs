@@ -298,7 +298,7 @@ public sealed class HostForFriendsTests
         Assert.That(script, Does.Not.Contain("& del"));
         Assert.That(script, Does.Not.Contain("add rule"));
         Assert.That(script, Does.Contain("delete rule name=\"Offline DAoC friends TCP 10300\""));
-        Assert.That(script.Split('\n').Count(line => line.Contains("delete rule")), Is.EqualTo(3));
+        Assert.That(script.Split('\n').Count(line => line.Contains("delete rule")), Is.EqualTo(4), "the three rules this launcher makes, plus the older 10301 one");
         Assert.That(script, Does.Contain("exit /b %failed%"));
     }
 
