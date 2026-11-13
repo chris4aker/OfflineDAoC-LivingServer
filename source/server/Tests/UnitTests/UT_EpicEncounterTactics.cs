@@ -311,6 +311,21 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void RaidersWalkingBackAfterAWipeStillCountAsTheRaid()
+        {
+            // Caer Sidi, 2026-11-12 (owner's PC): 152 raiders, 141 alive after the first wipe at Host but only a handful back
+            // inside; eight pulled Host early and six fell. Measured against the few inside that was the raid's last attempt.
+            Assert.That(RealmRaidDungeonRoute.IsWipe(8, 6, 100, 99, 12), Is.True, "against the 12 inside it was half the raid");
+            int raid = RealmRaidDungeonRoute.AttemptRaidSize(livingInside: 12, livingAnywhere: 141);
+            Assert.That(raid, Is.EqualTo(141));
+            Assert.That(RealmRaidDungeonRoute.IsWipe(8, 6, 100, 99, raid), Is.False, "against the living raid it is a lost skirmish: no attempt used");
+            // A real second attempt still counts: most of the raid in it and half of them down.
+            Assert.That(RealmRaidDungeonRoute.IsWipe(97, 61, 19, 19, RealmRaidDungeonRoute.AttemptRaidSize(100, 104)), Is.True);
+            // Everybody inside: nothing changes.
+            Assert.That(RealmRaidDungeonRoute.AttemptRaidSize(80, 80), Is.EqualTo(80));
+        }
+
+        [Test]
         public void AWipeIsTheRaidsOnlyWhenHalfOfItWasThereOrFell()
         {
             Assert.That(RealmRaidDungeonRoute.IsWipe(31, 31, 100, 99, 87), Is.False, "Aidon 2026-11-05: a lost skirmish");
