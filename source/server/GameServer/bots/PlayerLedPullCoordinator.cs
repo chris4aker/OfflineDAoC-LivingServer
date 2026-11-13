@@ -41,10 +41,24 @@ namespace DOL.GS
             if (BotLedGroups.HostedPlayerOf(group) == player)
                 return BotLedGroups.BotLeadsMessage(group.LivingLeader?.Name);
             GroupState state = States.GetOrCreateValue(group);
-            Cancel(state.Pending, false);
+            // Play with friends (1.2): another human's tank-gated pull still waiting is theirs; this /pull doesn't cancel
+            // it, and engages this player's own bots at once instead.
+            Order pending = Volatile.Read(ref state.Pending);
+            bool anotherHumansPull = pending != null && Volatile.Read(ref pending.Finished) == 0 && pending.Leader != player &&
+                                     pending.Leader.Group == group && group.IsInTheGroup(pending.Leader);
+            if (!anotherHumansPull) Cancel(pending, false);
+            // Only the bots this player commands: their own companions, and the gamebots when they lead the group (or are
+            // its only human). Never another human's companions (BotHumanBinding, co-op audit rule 4).
             GameBot[] helpers = group.GetMembersInTheGroup().OfType<GameBot>()
                 .Where(bot => Available(bot, player) && bot.IsWithinRadius(target, BotBrain.GROUP_DEFENSE_ASSIST_RADIUS) &&
-                    bot.Brain is BotBrain).ToArray();
+                    bot.Brain is BotBrain && BotHumanBinding.Commands(player, bot, group)).ToArray();
+            if (helpers.Length == 0 && BotHumanBinding.HasOtherHuman(group, player))
+            {
+                player.ControlledBrain?.Attack(target);
+                return group.Leader is GamePlayer leader && leader != player
+                    ? $"Only your own companions answer your /pull; the gamebots follow {leader.Name}, the group leader."
+                    : "You have no companions near enough to pull with.";
+            }
             foreach (GameBot bot in helpers) bot.EnterPlayerLedGroup(player);
             if (CompanionPvpEngagement.Enemy(player, target) && helpers.Any(bot => CompanionPvpEngagement.Leader(bot) == player))
             {
@@ -68,7 +82,7 @@ namespace DOL.GS
             GameBot tank = helpers.Where(BotPartyRoles.IsTank)
                 .Where(bot => !bot.IsCrowdControlled)
                 .OrderBy(bot => bot.GetDistanceTo(target)).ThenBy(bot => bot.ObjectID).FirstOrDefault();
-            if (tank == null || helpers.Any(bot => bot.InCombat || bot.IsAttacking) || FindLeaderTarget(player) != null)
+            if (anotherHumansPull || tank == null || helpers.Any(bot => bot.InCombat || bot.IsAttacking) || FindLeaderTarget(player) != null)
             {
                 Engage(player, target, true);
                 return "Pull ordered: attackers engage; healers and buffers support the party.";
@@ -106,7 +120,8 @@ namespace DOL.GS
                 LeaderEngaged(order.Leader, humanTarget);
                 return false;
             }
-            return bot != order.Tank;
+            // Only the bots the pull's leader commands wait for its tank; another human's companions keep to their own.
+            return bot != order.Tank && BotHumanBinding.Commands(order.Leader, bot, order.Group);
         }
 
         /// <param name="fromPet">
@@ -122,7 +137,13 @@ namespace DOL.GS
             if (States.TryGetValue(player.Group, out GroupState state))
             {
                 Order order = Volatile.Read(ref state.Pending);
-                if (order != null && Volatile.Read(ref order.Finished) == 0 && order.Leader != player) return;
+                // Another human's attack never breaks this pull's tank gate; it engages only the bots that human leads
+                // (their own companions: Engage picks the bots following them). With one human there is no other.
+                if (order != null && Volatile.Read(ref order.Finished) == 0 && order.Leader != player)
+                {
+                    Engage(player, target, false, fromPet);
+                    return;
+                }
                 if (order != null && Interlocked.CompareExchange(ref order.Finished, 1, 0) == 0 && order.Target != target)
                     (order.Tank.Brain as BotBrain)?.CancelOrderedPull(order.Target);
             }

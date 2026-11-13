@@ -294,6 +294,13 @@ namespace DOL.GS.Commands
                 return;
             }
 
+            // Play with friends (1.2): a server-wide companion budget while more than one player is online.
+            if (CompanionBudget.BlocksSpawn(player, ClientService.Instance.GetPlayers(), out string budget) != null)
+            {
+                client.Out.SendMessage(budget, eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                return;
+            }
+
             eGender gender = Random.Shared.Next(2) == 0 ? eGender.Male : eGender.Female;
             AutonomousBotIdentityGenerator.Identity identity =
                 AutonomousBotIdentityGenerator.GenerateForClass(player.Realm, gender, characterClass);
