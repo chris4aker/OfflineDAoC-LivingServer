@@ -84,8 +84,8 @@ namespace DOL.UnitTests
             mappings.Open(config);
 
             Assert.That(gateway.Targets.Distinct(), Is.EqualTo(new[] { IPAddress.Parse("192.168.1.20") }));
-            Assert.That(mappings.Close(), Is.EqualTo(2));
-            Assert.That(gateway.Open, Is.Empty, "both ports are closed again at stop");
+            Assert.That(mappings.Close(), Is.EqualTo(3), "the game's two ports and the Passport Desk's");
+            Assert.That(gateway.Open, Is.Empty, "every port is closed again at stop");
 
             Assert.That(UpnpPortMappings.MappingAddress(IPAddress.Parse("10.0.0.5"), IPAddress.Parse("192.168.1.20")), Is.EqualTo(IPAddress.Parse("10.0.0.5")));
             Assert.That(UpnpPortMappings.MappingAddress(IPAddress.Any, null), Is.EqualTo(IPAddress.Any));
@@ -99,8 +99,8 @@ namespace DOL.UnitTests
             var mappings = new UpnpPortMappings(gateway);
             mappings.Open(new GameServerConfiguration { EnableUPnP = true });
 
-            Assert.That(mappings.Added, Is.EqualTo(new[] { (10300, ProtocolType.Tcp) }));
-            Assert.That(mappings.Close(), Is.EqualTo(1));
+            Assert.That(mappings.Added, Is.EqualTo(new[] { (10300, ProtocolType.Tcp), (10310, ProtocolType.Tcp) }));
+            Assert.That(mappings.Close(), Is.EqualTo(2));
         }
 
         [Test]

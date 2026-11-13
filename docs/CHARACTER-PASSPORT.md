@@ -64,8 +64,8 @@ Use Recall only when you can't reach your friend's world any more.
 
 - Visitors are welcome while you host. To stop new visitors, untick **Friends may bring their characters to my world**
   in the passport window (your server must be stopped). Visitors who are already there can still go home.
-- The passport desk listens on your login port + 10 (10310), only while you host. Your firewall and router need that
-  port open too, like the game port.
+- The passport desk listens on your login port + 10 (10310), only while you host. HOST FOR FRIENDS opens it in Windows
+  Firewall with the game's ports (home network and Tailscale), and on the router when you host over the internet.
 - A visitor is a normal character in your world. You can group, trade and guild with it.
 - Your world makes no new accounts through the passport. A friend must join your world once first.
 - Friends are trusted. A friend who edits a passport file could give a character anything, like a GM could.

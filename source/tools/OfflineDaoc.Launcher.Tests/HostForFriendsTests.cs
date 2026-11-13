@@ -125,13 +125,16 @@ public sealed class HostForFriendsTests
         Assert.That(add, Does.Contain("protocol=TCP localport=10300 remoteip=LocalSubnet,100.64.0.0/10"));
         Assert.That(add, Does.Contain("protocol=UDP localport=10400 remoteip=LocalSubnet,100.64.0.0/10"));
         Assert.That(add, Does.Contain($"program=\"{program}\""));
-        Assert.That(add.Split('\n').Count(line => line.Contains("add rule")), Is.EqualTo(2), "the game's two ports only");
-        Assert.That(HostForFriends.FirewallRuleNames(state), Is.EqualTo(new[] { "Offline DAoC friends TCP 10300", "Offline DAoC friends UDP 10400" }));
+        Assert.That(add, Does.Contain("protocol=TCP localport=10310 remoteip=LocalSubnet,100.64.0.0/10"), "the Passport Desk");
+        Assert.That(add.Split('\n').Count(line => line.Contains("add rule")), Is.EqualTo(3), "the game's two ports and the Passport Desk only");
+        Assert.That(HostForFriends.FirewallRuleNames(state),
+            Is.EqualTo(new[] { "Offline DAoC friends TCP 10300", "Offline DAoC friends UDP 10400", "Offline DAoC friends TCP 10310" }));
 
         string remove = HostForFriends.FirewallScript(_runtime, state, add: false);
         Assert.That(remove, Does.Not.Contain("add rule"));
         Assert.That(remove, Does.Contain("delete rule name=\"Offline DAoC friends TCP 10300\""));
         Assert.That(remove, Does.Contain("delete rule name=\"Offline DAoC friends UDP 10400\""));
+        Assert.That(remove, Does.Contain("delete rule name=\"Offline DAoC friends TCP 10310\""));
     }
 
     [Test]

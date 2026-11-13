@@ -82,6 +82,9 @@ namespace DOL.Network
         }
 
         /// <summary>Asks the router for the UDP and TCP ports (and the external address with DetectRegionIP). Never throws.</summary>
+        /// <summary>GameServer's PassportDesk.PortOffset (CoreBase can't see GameServer; UT_PassportLock keeps them equal).</summary>
+        public const int PassportDeskPortOffset = 10;
+
         public void Open(BaseServerConfig configuration)
         {
             try
@@ -103,6 +106,9 @@ namespace DOL.Network
                 IPAddress localAddress = MappingAddress(configuration.IP, _gateway.LocalAddress);
                 TryForward(configuration.UDPPort, ProtocolType.Udp, $"Offline DAoC UDP {configuration.UDPPort}", localAddress);
                 TryForward(configuration.Port, ProtocolType.Tcp, $"Offline DAoC TCP {configuration.Port}", localAddress);
+                // The Passport Desk listens on the login port + 10 while hosting (PassportDesk.PortOffset).
+                TryForward(configuration.Port + PassportDeskPortOffset, ProtocolType.Tcp,
+                    $"Offline DAoC passport TCP {configuration.Port + PassportDeskPortOffset}", localAddress);
 
                 if (configuration.DetectRegionIP)
                 {
