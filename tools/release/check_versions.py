@@ -4,10 +4,11 @@
 
 What has to agree (audit 2026-11-03, section 8.6: main said Beta 1.1 after Beta 1.1.1 was out):
 - the newest released CHANGELOG-LIVING-SERVER.md heading ("## Beta 1.1.1 — 2026-10-31"). A heading marked
-  "(in development)" is not released yet;
+  "(in development)" is not released yet; the 1.2 line writes those without "Beta" ("## 1.2 (in development)"),
+  and there can be more than one above the newest release (1.2.1's and 1.2's on integration/1.2);
 - README.md's "**Beta X is out.**" sentence, every link to one of this repository's release tags, the release file
   names it quotes (LivingServer-Setup-<build>.exe, OfflineDAoC-LivingServer-<build>.zip) and its FORK_BUILD name;
-- ForkBuildInfo.BuildName: the released build, or the "(in development)" one while the next release is being built;
+- ForkBuildInfo.BuildName: the released build, or one of the "(in development)" ones while the next release is being built;
 - MainForm.DisplayVersion: the launcher shows Offline DAoC's version there ("0.37"), so it must be one of
   ForkBuildInfo.BaseRelease's releases; if it ever holds a Living Server version, it follows BuildName's rule.
 
@@ -28,7 +29,7 @@ FORK_BUILD_INFO = "source/server/GameServer/gameutils/ForkBuildInfo.cs"
 MAIN_FORM = "source/tools/OfflineDaoc.Launcher/MainForm.cs"
 
 VERSION = r"\d+(?:\.\d+)+"
-HEADING = re.compile(rf"^## Beta ({VERSION})\b(.*)$", re.MULTILINE)
+HEADING = re.compile(rf"^## (Beta )?({VERSION})\b(.*)$", re.MULTILINE)
 IS_OUT = re.compile(rf"\*\*Beta ({VERSION}) is out\.\*\*")
 RELEASE_LINK = re.compile(rf"github\.com/{re.escape(REPO)}/releases/(?:tag|download)/v({VERSION})-beta\b", re.IGNORECASE)
 FILE_NAME = re.compile(rf"\b(?:LivingServer-Setup|OfflineDAoC-LivingServer)-({VERSION})-beta\.(?:exe|zip)\b")
@@ -42,14 +43,20 @@ def read(root, relative):
     return (root / relative).read_text(encoding="utf-8-sig")
 
 
-def changelog_versions(text):
-    """(newest released version, version in development or None) from the changelog's '## Beta' headings."""
-    released = development = None
+def changelog_headings(text):
+    """(newest released version, [versions in development above it, newest first]) from the changelog's headings.
+
+    A released heading is "## Beta X — <date>". A heading in development is "## Beta X (in development)" or, as the
+    1.2 line writes them, "## X (in development)". Other "## X..." headings (0.37-se.1 and the like) are not releases.
+    """
+    released, development = None, []
     for match in HEADING.finditer(text):
-        version, rest = match.group(1), match.group(2)
+        beta, version, rest = match.group(1), match.group(2), match.group(3)
         if "in development" in rest.lower():
-            if released is None and development is None:
-                development = version
+            if version not in development:
+                development.append(version)
+            continue
+        if not beta:
             continue
         released = version
         break
@@ -68,7 +75,7 @@ def check(root=ROOT):
     fork = read(root, FORK_BUILD_INFO)
     form = read(root, MAIN_FORM)
 
-    released, development = changelog_versions(changelog)
+    released, development = changelog_headings(changelog)
     if released is None:
         return [f"{CHANGELOG}: no released '## Beta X' heading"]
     build = f"{released}-beta"
@@ -87,7 +94,7 @@ def check(root=ROOT):
                 problems.append(f"{README}:{line_of(readme, match.start())}: {what} {match.group(1)}-beta "
                                 f"({match.group(0)}), not the newest release {build}")
 
-    allowed = [build] + ([f"{development}-beta"] if development else [])
+    allowed = [build] + [f"{version}-beta" for version in development]
     name = BUILD_NAME.search(fork)
     if not name:
         problems.append(f"{FORK_BUILD_INFO}: no BuildName")
@@ -115,14 +122,14 @@ def main(argv=None):
     a = ap.parse_args(argv)
     root = Path(a.root)
     problems = check(root)
-    released, development = changelog_versions(read(root, CHANGELOG))
+    released, development = changelog_headings(read(root, CHANGELOG))
     if problems:
         for p in problems:
             print(f"::error title=Release versions disagree::{p}" if "GITHUB_ACTIONS" in os.environ else p)
         print(f"{len(problems)} problem(s). Update README.md and the build name together with the changelog.")
         return 1
     print(f"Release versions agree: Beta {released} released"
-          + (f", Beta {development} in development" if development else "") + ".")
+          + (f", {' and '.join(development)} in development" if development else "") + ".")
     return 0
 
 

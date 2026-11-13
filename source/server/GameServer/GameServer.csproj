@@ -3,6 +3,12 @@
         <BaseIntermediateOutputPath>..\build\GameServer\$(Configuration)\</BaseIntermediateOutputPath>
     </PropertyGroup>
     <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+    <ItemGroup>
+        <!-- Character passport (from rambodolphin13/DividedRealms): the Passport Desk moves characters by the same rules as the launcher. -->
+        <Compile Include="..\..\tools\OfflineDaoc.Passport\PassportDatabase.cs" Link="gameutils\Passport\PassportDatabase.cs" />
+        <Compile Include="..\..\tools\OfflineDaoc.Passport\PassportEngine.cs" Link="gameutils\Passport\PassportEngine.cs" />
+        <Compile Include="..\..\tools\OfflineDaoc.Passport\PassportFile.cs" Link="gameutils\Passport\PassportFile.cs" />
+    </ItemGroup>
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>

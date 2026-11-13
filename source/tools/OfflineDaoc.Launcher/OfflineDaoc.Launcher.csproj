@@ -34,7 +34,18 @@
          lore files themselves, the same ones the server embeds (LauncherLore). -->
     <Compile Include="../../server/GameServer/lorechannels/LoreChannelData.cs" Link="Lore/LoreChannelData.cs" />
     <Compile Include="../../server/GameServer/lorechannels/LoreHerald.cs" Link="Lore/LoreHerald.cs" />
+    <!-- Living Server 1.2, play with friends: the server's own address rules, host password hash and router client, so
+         Host for Friends and the server agree (from rambodolphin13/DividedRealms). -->
+    <Compile Include="../../server/CoreBase/Network/NetworkTrust.cs" Link="Friends/NetworkTrust.cs" />
+    <Compile Include="../../server/CoreBase/Network/UpnpNat.cs" Link="Friends/UpnpNat.cs" />
+    <Compile Include="../../server/GameServer/packets/Client/168/HostPassword.cs" Link="Friends/HostPassword.cs" />
     <EmbeddedResource Include="../../server/GameServer/bots/autonomous/data/lore/**/*.json" LogicalName="OfflineDaoc/lore/%(RecursiveDir)%(Filename)%(Extension)" />
+    <!-- Character passport (from rambodolphin13/DividedRealms): taking a character to a friend's world, by the same rules as
+         the server's Passport Desk. -->
+    <Compile Include="../OfflineDaoc.Passport/PassportDatabase.cs" Link="Passport/PassportDatabase.cs" />
+    <Compile Include="../OfflineDaoc.Passport/PassportEngine.cs" Link="Passport/PassportEngine.cs" />
+    <Compile Include="../OfflineDaoc.Passport/PassportFile.cs" Link="Passport/PassportFile.cs" />
+    <Compile Include="../OfflineDaoc.Passport/PassportTravel.cs" Link="Passport/PassportTravel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\offline-daoc-header.png"

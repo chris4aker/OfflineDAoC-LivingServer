@@ -173,6 +173,7 @@ namespace DOL.GS
                 if (!MarkInvited(raid.Id, raid.Created, player.Name))
                     continue;
                 memory.Pending = true;
+                memory.PendingLeaderId = 0; // a raid's box, not a party leader's (BotLedGroups.LeadersInvitingOthers)
                 // The invite is that period's bot tell, as a group leader's is.
                 AutonomousLivingServer.CountInviteAsTell(player, now);
                 LogPlayerInvite("sent", raid, player, "unasked");
