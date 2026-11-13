@@ -45,11 +45,11 @@ systems are timed:
 | Routes | `route.stable_find_best`, `route.stable_portal`, `route.raid_dungeon`, `route.df_chain`, `route.zone_step` (outermost step only), `route.corridor`, `route.road`, `route.rvr_rally_check` | the route planners |
 | Navmesh queries | `nav.path`, `nav.closest_point`, `nav.other` | the native Detour calls `NavQueryProfile` counts |
 | Frontier | `frontier.threat_scan` | the RvR threat scan, not its cheap skip checks |
-| Combat AI | `combat.spells`, `combat.heals`, `combat.style` | `BotBrain.CheckSpells`, `CheckHeals`, the melee style choice |
+| Combat AI | `combat.spells`, `combat.heals`, `combat.style`, `combat.movement` | `BotBrain.CheckSpells`, `CheckHeals`, the melee style choice, a melee bot's circle and a caster's step (`BotBrain.CombatMovement`, only when one is due) |
 | Pets | `pets.maintain`, `pets.sync` | `AutonomousPetSupport` |
 | Persistence | `db.status_batch`, `db.inventory_batch` | the bot status and inventory batch writes |
 | Chat | `chat.bot_turn`, `chat.ambient`, `chat.player_reply`, `chat.news` | the bot's chat turn and the chat coordinator |
-| Economy and town | `economy.merchant`, `economy.exchange`, `economy.valuation`, `town.idle`, `town.service` | merchant and Exchange visits, item valuation, town idling, training and service trips |
+| Economy and town | `economy.merchant`, `economy.exchange`, `economy.valuation`, `town.idle`, `town.service`, `town.hangout` | merchant and Exchange visits, item valuation, town idling, training and service trips, the search for a hangout (bank, merchant, trainer, crowd) on a town break |
 | Housekeeping | `sweep.departed_refs` | the deleted-object holder sweep |
 | Lock waits | `lock.coordinator`, `lock.raid`, `lock.rvr_events`, `lock.db_write` | the time spent *waiting* for the group coordinator's, the realm raid's, the RvR event layer's and the database write lock. An uncontended lock adds nothing; `calls` counts waits. |
 

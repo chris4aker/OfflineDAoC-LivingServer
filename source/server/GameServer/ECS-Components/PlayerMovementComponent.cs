@@ -55,7 +55,8 @@ namespace DOL.GS
                 // packets while stationary in /grind, or while a busy local
                 // server catches up. This soft-link-death rule is meaningful for
                 // network clients, not the owner's loopback session.
-                if (!Owner.Client.IsLoopbackConnection &&
+                // Living Server 1.2: friends on the home network or Tailscale are treated like this PC.
+                if (!ClientTimeoutPolicy.SkipsConnectionTimeouts(Owner.Client) &&
                     GameServiceUtils.ShouldTick(LastPositionUpdatePacketReceivedTime + SOFT_LINK_DEATH_THRESHOLD))
                 {
                     if (log.IsInfoEnabled)

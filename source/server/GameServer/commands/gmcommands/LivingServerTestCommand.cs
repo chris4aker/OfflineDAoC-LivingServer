@@ -15,6 +15,7 @@ namespace DOL.GS.Commands;
     "/lstest list - every part, on or off",
     "/lstest storyline | debate | dunce - the next /faction scene starts now (a storyline episode, any debate, a dunce rage quit)",
     "/lstest spammer | roleplayer | rumour - a gold spammer, a roleplayer's line, a rumour about a rare named in this region",
+    "/lstest tale [boss] [raid] | fireside - the realm's storyteller tells a tale in /faction now (of that boss: legion, golestandt, ...; with raid: the rumour after it is the raid, when it can form); fireside: sit down in a boss's place with a gamebot in your group and a groupmate tells the short one",
     "/lstest tell - a bot starts a tell to you",
     "/lstest memory - what bots remember about you",
     "/lstest remember - your target (or the nearest gamebot) remembers a good group with you; walk away and back to be greeted",
@@ -53,12 +54,43 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                 return;
             case "spammer":
                 Say(client, Off(Properties.BOT_LIVING_CHARACTERS, "bot_living_characters") ??
-                    (AutonomousGoldSpammers.StartSoon(realm) ? "A gold spammer starts in /faction within a second." : "A spammer is already at it in your realm."));
+                    (AutonomousGoldSpammers.StartSoon(realm) ? $"A gold spammer starts in /faction {WhenFaction(realm)}." : "A spammer is already at it in your realm."));
                 return;
             case "roleplayer":
                 int roleplayers = AutonomousRoleplayers.SpeakSoon(realm);
                 Say(client, Off(Properties.BOT_LIVING_CHARACTERS, "bot_living_characters") ??
-                    (roleplayers > 0 ? $"One of {roleplayers} roleplayer(s) online speaks in /faction within a second (and may be mocked)." : "No roleplayer of your realm is online and free to talk."));
+                    (roleplayers > 0 ? $"One of {roleplayers} roleplayer(s) online speaks in /faction {WhenFaction(realm)} (and may be mocked)." : "No roleplayer of your realm is online and free to talk."));
+                return;
+            case "tale":
+                if (Off(Properties.BOT_LIVING_TALES, "bot_living_tales") is string talesOff)
+                    Say(client, talesOff);
+                else
+                {
+                    // "/lstest tale golestandt raid": the rumour after it is the raid, without the roll, when the raid can form.
+                    bool raid = args.Length > 3 && args[^1].Equals("raid", StringComparison.OrdinalIgnoreCase);
+                    string[] words = args.Skip(2).Take(args.Length - 2 - (raid ? 1 : 0)).ToArray();
+                    string about = words.Length > 0 ? string.Join(' ', words) : null;
+                    string loreId = about == null ? null : AutonomousTales.RequestedLore(about,
+                        LoreBible.Current.Bosses.Select(boss => (boss.Id, LoreBible.NamesOf(boss.Name, boss.Id, boss.Aliases))));
+                    if (!AutonomousTales.TryStart(realm, loreId, null, out string noTale))
+                        Say(client, $"No tale: {noTale}.");
+                    else
+                    {
+                        string noRaid = raid ? AutonomousTales.AskRaidRumour(realm, loreId) : null;
+                        Say(client, $"The realm's storyteller is asked for a tale in /faction{(loreId != null ? " (" + loreId + ")" : "")}; it starts within a few seconds." +
+                            (!raid ? "" : noRaid == null ? " The rumour after it will be the raid, if the raid can still form then."
+                                : $" The rumour after it will be the raid if it can form then; right now it cannot: {noRaid}."));
+                    }
+                }
+                return;
+            case "fireside":
+                if (Off(Properties.BOT_LIVING_TALES, "bot_living_tales") is string firesideOff)
+                    Say(client, firesideOff);
+                else
+                {
+                    AutonomousTales.ForgetFiresides(gm);
+                    Say(client, "Fireside tales forgotten for today. Sit down out of combat, in a group with a gamebot, in a place that has a tale (a dragon's zone, an epic dungeon, Darkness Falls, Summoner's Hall): a groupmate tells it within ten seconds.");
+                }
                 return;
             case "rumour":
             case "rumor":
@@ -228,6 +260,12 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
     private static string OnOff(bool on) => on ? "on" : "OFF";
 
     private static string Off(bool on, string setting) => on ? null : $"That part is off ({setting}); turn it on in the launcher's Living Server tab.";
+
+    /// <summary>When a line asked for now really reaches /faction (live test 2026-11-08: "within a second" came 4.5 minutes later).</summary>
+    private static string WhenFaction(eRealm realm) =>
+        AutonomousBotDebates.IsRunning(realm) ? "once the scene playing in /faction now is over"
+        : !AutonomousBotChatCoordinator.FactionRoom(realm) ? "as soon as /faction has room under its ceiling (it waits up to three minutes; LIVING_FEATURE_DROPPED in the log if it gave up)"
+        : "within a few seconds";
 
     private static void Say(GameClient client, string text) =>
         client.Out.SendMessage(text, eChatType.CT_System, eChatLoc.CL_SystemWindow);

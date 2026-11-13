@@ -61,7 +61,7 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterMechanics.AllowDragonThrow, Is.False);
             Assert.That(EpicEncounterMechanics.AllowDragonMessengers, Is.False);
             // The 17 restore switches are unchanged.
-            Assert.That(EpicEncounterMechanics.RestoreSwitches, Has.Length.EqualTo(18));
+            Assert.That(EpicEncounterMechanics.RestoreSwitches, Has.Length.EqualTo(19));
         }
 
         [Test]

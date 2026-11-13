@@ -1346,6 +1346,9 @@ namespace DOL.AI.Brain
             // 1.2: a raid party sent on an encounter errand (Jailer Vifil's tunnel guards) walks there, clears it and comes back.
             if (EpicEncounterTactics.ThinkErrand(BotBody))
                 return;
+            // Out of a boss's blast before anything else (Xanxicar's stomp), whatever the bot is doing.
+            if (EpicEncounterTactics.ThinkBlast(BotBody))
+                return;
             bool nativeSpeedTravelStarted;
             if (CompanionFollowPolicy.ObserveAndCancelBuffs(BotBody, out nativeSpeedTravelStarted))
             {
@@ -2057,6 +2060,16 @@ namespace DOL.AI.Brain
             {
                 _lastBetweenTaskPurchaseAssignment = bot.PersistentRecord.ObjectiveAssignmentId;
                 SetMerchantStatus(bot, $"Bought {purchased.Name} from {merchant.Name}", $"Spent {spent} saved copper on a legal equipment upgrade");
+                AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Money);
+                AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
+                _nextMerchantServiceTick = now + 30_000 + Random.Shared.Next(30_001);
+                return true;
+            }
+
+            // Bot cosmetics (owner 2026-11-12): with the selling and the upgrades done, coin above the reserve buys its looks.
+            if (AutonomousBotCosmetics.TryRestyle(bot, merchant, out string restyled, out long styleCopper))
+            {
+                SetMerchantStatus(bot, $"Had gear dyed and styled at {merchant.Name}", $"Spent {styleCopper} saved copper: {restyled}");
                 AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Money);
                 AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
                 _nextMerchantServiceTick = now + 30_000 + Random.Shared.Next(30_001);
@@ -3166,6 +3179,7 @@ namespace DOL.AI.Brain
         {
             if (!IsActive)
                 return;
+            NoteCastForStep();
 
             if (AutonomousDefensivePull.Hold(BotBody))
             {
@@ -3284,6 +3298,10 @@ namespace DOL.AI.Brain
                 // side styles (BotBrain.Flank, hand port from True165). Epic tactics above keep raids to themselves.
                 if (Body.TargetObject is GameLiving flankTarget && TryFlank(flankTarget))
                     return;
+                // Then, standing there and swinging, it circles a little now and then instead of standing like a post
+                // (BotBrain.CombatMovement). A tank holding aggro stays put; raids and player-led groups as before.
+                if (Body.TargetObject is GameLiving circleTarget && TryCircle(circleTarget))
+                    return;
                 if (Body.IsStealthed)
                     Body.Stealth(false);
 
@@ -3332,6 +3350,11 @@ namespace DOL.AI.Brain
                     Body.StopAttack();
                     return;
                 }
+
+                // A caster steps aside now and then right after a cast ended, never during one (BotBrain.CombatMovement).
+                if (rangedCaster && !outOfPowerMelee && Body.TargetObject is GameLiving casterStepTarget &&
+                    TryCasterStep(casterStepTarget))
+                    return;
 
                 bool bowCycleOwnsAction = Body.attackComponent != null &&
                     Body.rangeAttackComponent != null &&
@@ -3577,9 +3600,21 @@ namespace DOL.AI.Brain
             return true;
         }
 
+        /// <summary>
+        /// A bot may fall back to its melee weapon on <paramref name="target"/> (pressed in melee, or out of power) unless an
+        /// epic rule says it fights this target with its distance weapon only (Funus: a scout's, mercenary's, armsman's or
+        /// infiltrator's melee hit heals him to full). Play test duo13: every melee switch traced on Funus came from the
+        /// melee-pressure fallback, and 50 of his 51 heals were scouts swinging their swords while he stood on them.
+        /// </summary>
+        public static bool MayFallBackToMelee(GameBot bot, GameLiving target) =>
+            !EpicEncounterTactics.FightsAtRange(bot, target);
+
         private bool TryEngageUnderMeleePressure(GameLiving target)
         {
             if (target?.IsAlive != true || !Body.IsWithinRadius(target, Body.MeleeAttackRange + 35))
+                return false;
+            // The ranged branch of AttackMostWanted keeps the distance weapon; the rule's step-back opens the range.
+            if (!MayFallBackToMelee(BotBody, target))
                 return false;
 
             // Being close to an enemy is not itself an interruption. A caster
@@ -3686,6 +3721,7 @@ namespace DOL.AI.Brain
             if (target?.IsAlive != true || Body.IsCasting ||
                 BotBody?.CharacterClass?.ID == (int)eCharacterClass.Necromancer ||
                 !GameServer.ServerRules.IsAllowedToAttack(Body, target, true) ||
+                !MayFallBackToMelee(BotBody, target) ||
                 !OutOfPowerForOffense())
                 return false;
 
@@ -3925,6 +3961,18 @@ namespace DOL.AI.Brain
                 !Body.IsWithinRadius(victim, GROUP_DEFENSE_ASSIST_RADIUS))
                 return false;
 
+            return TauntNow(target, false);
+        }
+
+        /// <summary>
+        /// An encounter tactic's taunt (EpicEncounterTactics.TauntDue: Govannon's demon, when his target is not a tank): the
+        /// class's taunt spell when one is ready (Paladin chants, Sluaghbinder), and a taunt style that fits the weapon in
+        /// hand as the next style (every tank class has them). True when a taunt spell was cast.
+        /// </summary>
+        public bool TauntForEncounter(GameLiving target) => IsTankClass && target != null && TauntNow(target, true);
+
+        private bool TauntNow(GameLiving target, bool usableStyleOnly)
+        {
             if (GameLoop.GameLoopTime >= _nextPriorityTauntTick)
             {
                 // Instant taunts (no cast time, like the Sluaghbinder's) are
@@ -3946,6 +3994,8 @@ namespace DOL.AI.Brain
 
             Style tauntStyle = BotBody.StylesTaunt?
                 .Where(style => style.Level <= Body.Level)
+                .Where(style => !usableStyleOnly || Body.ActiveWeapon != null &&
+                    StyleProcessor.CanUseStyle(Body.attackComponent?.attackAction?.LastAttackData, Body, style, Body.ActiveWeapon))
                 .OrderByDescending(style => style.Level)
                 .FirstOrDefault();
             if (tauntStyle != null)
@@ -4486,7 +4536,9 @@ namespace DOL.AI.Brain
             if (spell == null || IsOutclassedDamageSpell(spell) || Body.Mana < BotBody.PowerCost(spell) ||
                 !BardBotCrowdControlPolicy.AllowsOrdinaryOffense((eCharacterClass)BotBody.CharacterClass.ID, spell.SpellType) ||
                 spell.HasRecastDelay && Body.GetSkillDisabledDuration(spell) > 0 ||
-                EpicEncounterTactics.ForbidsSpell(BotBody, Body.TargetObject as GameLiving, spell))
+                EpicEncounterTactics.ForbidsSpell(BotBody, Body.TargetObject as GameLiving, spell) ||
+                // As CanCastOffensiveSpell: nothing on a boss this bot must not hit (duo14: reavers' instant DoTs healed Funus).
+                EpicEncounterTactics.MustNotHit(BotBody, Body.TargetObject as GameLiving))
                 return false;
 
             bool castSpell = false;
@@ -5151,6 +5203,8 @@ namespace DOL.AI.Brain
                 }
                 _rezTarget = corpse;
                 _rezTargetSince = now;
+                // 1.1.3: the healer says it is coming ("need a rez? omw"), once per death (AutonomousLivingServer.Engage.cs).
+                AutonomousLivingServer.OnRezClaimed(bot, corpse);
             }
             if (!CheckHealSpell(resurrection))
                 return false;
@@ -5207,6 +5261,45 @@ namespace DOL.AI.Brain
         /// A group member a heal or buff may be aimed at: this bot, or a member within
         /// 2,500 units in the same region that is not being skipped after a failed approach.
         /// </summary>
+        private long _nextRaidCureScan;
+        private long _nextRaidCureLog;
+
+        /// <summary>
+        /// A mesmerized member of this bot's raid, of any party, that it can cure from where it stands, or null: autonomous
+        /// raiders with the cure only, scanned twice a second (<see cref="RaidCureMezz"/>).
+        /// </summary>
+        private GameLiving RaidMezzedToCure()
+        {
+            if (!BotBody.IsAutonomousWorldBot || BotBody.CureMezz == null || BotBody.Group == null) return null;
+            long now = GameLoop.GameLoopTime;
+            if (now < _nextRaidCureScan) return null;
+            _nextRaidCureScan = now + 500;
+            if (AutonomousRealmRaid.GetView(BotBody.Group) == null || !CheckHealSpell(BotBody.CureMezz)) return null;
+            int range = BotBody.castingComponent.CalculateSpellRange(BotBody.CureMezz);
+            var living = new List<GameLiving>();
+            var mezzed = new List<RaidCureMezz.Mezzed>();
+            foreach (GameLiving member in AutonomousRealmRaid.SupportMembers(BotBody))
+            {
+                if (member == null || member == Body || !member.IsAlive || !member.IsMezzed ||
+                    member.CurrentRegion != Body.CurrentRegion || !Body.IsWithinRadius(member, range))
+                    continue;
+                GameBot bot = member as GameBot;
+                living.Add(member);
+                mezzed.Add(new(member.ObjectID, bot?.CureMezz != null,
+                    bot?.CharacterClass != null && BotPartyRoles.IsHealingClass((eCharacterClass)bot.CharacterClass.ID),
+                    BotPartyRoles.IsTank(bot)));
+            }
+            int pick = RaidCureMezz.Choose(mezzed, Body.ObjectID);
+            if (pick < 0) return null;
+            if (now >= _nextRaidCureLog && log.IsInfoEnabled)
+            {
+                _nextRaidCureLog = now + 15_000;
+                log.Info($"RAID_CURE_MEZZ bot={Body.Name} class=\"{BotBody.CharacterClass?.Name}\" target=\"{living[pick].Name}\" " +
+                         $"rank={RaidCureMezz.Rank(mezzed[pick])} mezzedInReach={mezzed.Count} spell=\"{BotBody.CureMezz.Name}\"");
+            }
+            return living[pick];
+        }
+
         private bool InSupportReach(GameLiving member) =>
             member == Body || member != null && member.CurrentRegion == Body.CurrentRegion &&
             Body.IsWithinRadius(member, BotSupportReach.SupportRadius) &&
@@ -5584,6 +5677,13 @@ namespace DOL.AI.Brain
                     else if (CheckHealSpell(BotBody.HealGroup))
                         spellToCast = BotBody.HealGroup;
                 }
+            }
+
+            // The raid's mesmerized, across its parties, before ordinary healing (RaidCureMezz).
+            if (RaidCureMezz.ComesBeforeHealing(numEmergency) && RaidMezzedToCure() is GameLiving raidMezzed)
+            {
+                spellToCast = BotBody.CureMezz;
+                spellTarget = raidMezzed;
             }
 
             // Cast the selected spell

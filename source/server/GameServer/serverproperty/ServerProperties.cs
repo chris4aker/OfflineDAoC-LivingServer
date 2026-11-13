@@ -1311,6 +1311,9 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("npc", "epic_govannon_full_health", "Summoner's Hall: Grand Summoner Govannon has 300,000 health, as in the original (True), or 200,000 (False, the 1.2 default until a played check: a 60-bot raid took him about 1% a minute).", false)]
 		public static bool EPIC_GOVANNON_FULL_HEALTH = false;
 
+		[ServerProperty("npc", "epic_govannon_full_heal", "Summoner's Hall: when Grand Summoner Govannon turns into his demon at 50% health he heals to full, as in the original (True), or to 75% (False, the 1.2 default: owner 2026-11-11, after bot raids that stepped out of his Shroud still lost with the demon at 29% to 42%).", false)]
+		public static bool EPIC_GOVANNON_FULL_HEAL = false;
+
 		[ServerProperty("npc", "epic_easmarach_endless_falls_heal", "Galladoria: Easmarach heals an eighth on the waterfall top every time he falls to 30% and stays up there, as in the original (True), or heals there once a fight and then comes back down to fight on (False, the 1.2 default: a bot raid can only shoot him up there, about 1% a minute, and never finished him; play test 2026-11-07).", false)]
 		public static bool EPIC_EASMARACH_ENDLESS_FALLS_HEAL = false;
 
@@ -2266,6 +2269,13 @@ namespace DOL.GS.ServerProperties
 		public static bool ENABLE_SLUAGHBINDER = true;
 
 		/// <summary>
+		/// Character passport (docs/CHARACTER-PASSPORT.md): while this world is hosted, friends may bring their own characters
+		/// through the Passport Desk. False refuses new visitors; visitors already here can still go home.
+		/// </summary>
+		[ServerProperty("passport", "passport_visitors", "While hosting, let friends bring their own characters to this world (Character passport). False refuses new visitors; visitors already here can still go home.", true)]
+		public static bool PASSPORT_VISITORS = true;
+
+		/// <summary>
 		/// Disable some races from being created
 		/// </summary>
 		[ServerProperty("classes", "disabled_races", "Serialized list of disabled races, separated by semi-colon or a range with a dash (ie 1-5;7;9)", "")]
@@ -2644,9 +2654,25 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_group_player_loot_weight", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8.", 2)]
 		public static int BOT_GROUP_PLAYER_LOOT_WEIGHT;
 
+		/// <summary>Bot cosmetics (owner 2026-11-12): gamebots spend coin on dyes and weapon lusters (AutonomousBotCosmetics).</summary>
+		[ServerProperty("bots", "bot_cosmetics", "Gamebots spend their coin on their looks as well as their gear: at a merchant between tasks, a bot with coin above its reserve buys the game's own dyes, enamels and weapon lusters, at their own prices, in its own colours (each bot has its own, leaning on its realm's; guild members often wear the guild's). Glowing weapons come only from epic bosses, dragons and Darkness Falls seal merchants, as in 1.65. New gear comes in its plain colour, so they pay again. Some bots never bother. False: no bot buys dyes.", true)]
+		public static bool BOT_COSMETICS;
+
+		/// <summary>Bot cosmetics: what dyes and lusters cost bots, in percent (AutonomousBotCosmetics).</summary>
+		[ServerProperty("bots", "bot_cosmetics_price_percent", "What dyes and weapon lusters cost gamebots, in percent of the game's own price (100: as the dye items cost, from 50 copper for a light shade to over 16 gold for royal and black ones and about 196 gold for a weapon luster). 1 to 1000.", 100)]
+		public static int BOT_COSMETICS_PRICE_PERCENT;
+
 		/// <summary>Bot-led groups, B2: what saying yes to a gamebot leader's invite does (follow or lead).</summary>
 		[ServerProperty("bots", "bot_led_group_join_mode", "Bot-led groups: when you say yes to a gamebot leader's invite. follow = the leader runs the group and you follow (/lead takes over at any time); lead = you become the leader at once and the bots follow you, as bots you /invite do (/lead bot hands it back).", "follow")]
 		public static string BOT_LED_GROUP_JOIN_MODE;
+
+		/// <summary>Play with friends (1.2, CompanionBudget): /spawn and /raid companions on the whole server while more than one real player is online.</summary>
+		[ServerProperty("bots", "companion_budget_total", "Play with friends: while more than one real player is online, the most /spawn and /raid companions the whole server may have out together (each player also has companion_budget_per_player). With one player online neither applies, so a /raid 80 (79 companions) works as always. 0 turns the server total off.", 160)]
+		public static int COMPANION_BUDGET_TOTAL;
+
+		/// <summary>Play with friends (1.2, CompanionBudget): one player's share of the companions while more than one real player is online.</summary>
+		[ServerProperty("bots", "companion_budget_per_player", "Play with friends: while more than one real player is online, the most /spawn and /raid companions one player may have out (79 = a full /raid 80). The server total, companion_budget_total, still applies. With one player online this doesn't apply. 0 turns the per-player share off.", 79)]
+		public static int COMPANION_BUDGET_PER_PLAYER;
 
 		/// <summary>Bot-led groups, B3: a realm raid's leader may invite a level-50 player.</summary>
 		[ServerProperty("bots", "bot_raid_invite_player", "Raid leaders: when a dragon or epic dungeon raid forms in your realm and you are level 50, its raid leader (an officer of a raiding guild) may send you a tell and a box, once per raid. Yes puts you in a party that needs your class (one gamebot of your role steps out); you travel to the muster town yourself. A no is final for that raid. /invites off stops these too.", true)]
@@ -2659,6 +2685,14 @@ namespace DOL.GS.ServerProperties
 		/// <summary>Gold spammers and roleplayers (AutonomousGoldSpammers, AutonomousRoleplayers).</summary>
 		[ServerProperty("bots", "bot_living_characters", "Server life: now and then a gold spammer floods /faction until it is banned, and a few bots roleplay in thee-and-thou speech while the realm mocks them.", true)]
 		public static bool BOT_LIVING_CHARACTERS;
+
+		/// <summary>Tales: the realm's storyteller in /faction, fireside tales in a group (AutonomousTales).</summary>
+		[ServerProperty("bots", "bot_living_tales", "Server life: now and then a bot asks the realm's storyteller for the tale of a dragon or a boss in /faction, others hush the channel, and it is told in a dozen lines; you can ask for one too (\"tell the one about legion\"). Resting in a boss's place with a gamebot in your group, a groupmate tells the short version. Needs bot voices and debates.", true)]
+		public static bool BOT_LIVING_TALES;
+
+		/// <summary>The rumour after a tale may be true: the realm's raid on that boss forms a few minutes later.</summary>
+		[ServerProperty("bots", "bot_living_tale_raids", "Server life: about half the time, the rumour that follows a tale is true: the realm's own automatic raid on that boss forms a few minutes later (only when one could form anyway). Off: the rumour is always just lore.", true)]
+		public static bool BOT_LIVING_TALE_RAIDS;
 
 		/// <summary>True rumours: real rare spawns and undefended enemy keeps (AutonomousRumours).</summary>
 		[ServerProperty("bots", "bot_living_rumours", "Server life: bots pass on rumours that are true: a rare named monster that just spawned, or an enemy keep whose guards are down. Go and see.", true)]

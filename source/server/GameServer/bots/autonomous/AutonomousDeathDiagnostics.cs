@@ -24,6 +24,46 @@ namespace DOL.GS
             _ => killer.GetType().Name,
         };
 
+        /// <summary>
+        /// The killer as a death is told in chat (1.1.3, after RC6): "guard" for a keep or town guard, "pet" for the pet of a
+        /// player or a bot, "monster" for a monster or a pet that is no one's (a charmed or summoned creature without a player or
+        /// bot owner), else <see cref="KillerKind"/> ("bot", "player", "none").
+        /// </summary>
+        public static string ChatKillerKind(GameObject killer) => killer switch
+        {
+            // RC7 on the owner's PC: a gamebot's brain is a controlled brain with no owner, so an enemy bot read as a monster
+            // ("adds in murdaigean hate me" after one enemy friar). A bot is a bot before anything else.
+            GameBot => "bot",
+            DOL.GS.Keeps.GameKeepGuard or GameGuard => "guard",
+            GameNPC { Brain: DOL.AI.Brain.IControlledBrain brain } => brain.GetLivingOwner() is GamePlayer or GameBot ? "pet" : "monster",
+            _ => KillerKind(killer),
+        };
+
+        /// <summary>The class of the enemy behind a kill (the player or bot, or a pet's owner), or null.</summary>
+        public static string KillerClassName(GameObject killer)
+        {
+            GameLiving who = killer is not GameBot && killer is GameNPC { Brain: DOL.AI.Brain.IControlledBrain brain } ? brain.GetLivingOwner() : killer as GameLiving;
+            return who switch
+            {
+                GamePlayer player => player.CharacterClass?.Name,
+                GameBot bot => bot.CharacterClass?.Name ?? bot.ClassName,
+                _ => null,
+            };
+        }
+
+        /// <summary>How many were on the bot (its attacker tracker), read before the death clears it.</summary>
+        public static int Attackers(GameBot bot)
+        {
+            try
+            {
+                return bot?.attackComponent?.AttackerTracker?.Attackers?.Count() ?? 0;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         public static void Record(GameBot bot, GameObject killer, string activityBefore)
         {
             if (bot?.IsAutonomousWorldBot != true)
@@ -37,7 +77,7 @@ namespace DOL.GS
             try
             {
                 GameLiving living = killer as GameLiving;
-                int attackers = bot.attackComponent?.AttackerTracker?.Attackers?.Count() ?? 0;
+                int attackers = Attackers(bot);
                 string con = living != null ? ConLevels.GetConColor(bot.GetConLevel(living)).ToString() : "-";
                 bool arrived = bot.GoalDiagnosticAttempt?.ArrivedUtc != null;
                 int armor = bot.Inventory?.EquippedItems?.Count(item => item != null && item.Object_Type >= (int)eObjectType._FirstArmor &&

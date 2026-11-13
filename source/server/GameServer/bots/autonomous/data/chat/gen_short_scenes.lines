@@ -144,24 +144,24 @@ A: tell on its way | pst incoming | sent you a tell
 @scene sh_inc_keep_ram
 @role B type=NoLifer
 @role C type=Daredevil
-A: INC {keep}, {enemy} with a ram! | {enemy} at {keep}, they have a ram up | {keep} under attack, need bodies now
-B: how many | numbers? | how big is the group
-A: two groups at least, maybe more | a full zerg, cant even count them | looks like one group and some stragglers
-C: omw from {frontier} | coming, riding in now | on my way, save me a few
-?D: anyone on the walls or just you | who is defending right now | how many of us are inside
-A: just me and the guards lol | the guards are doing their best | its me and a lot of hope
-B: hold on, help coming | hang in there, we are close | stall them, we are almost there
+A: {q} what do you do when a keep call comes and nobody is home | {q} ever been the only one at a keep when the rams show up | {q} how many of us actually answer a keep call
+B: numbers decide it | depends on the group size | how big a group, usually
+A: last time it was two groups, maybe more | once it was a full zerg, couldnt even count them | usually one group and some stragglers
+C: i always ride in from {frontier} | i come every time, riding hard | i go, and i always ask them to save me a few
+?D: and how many of us are ever on the walls | who even defends at that hour | how many of us end up inside
+A: last time it was just me and the guards lol | the guards do their best | its usually me and a lot of hope
+B: next time, call it in faction and hold on | hang in there, someone always comes | stall them, help shows up eventually
 
 @topic stealther_warning
 @levels 30-50
 @scene sh_stealther_on_road
 @role B type=*
-A: stealther near {keep}, watch yourselves | careful in {frontier}, a stealther just jumped me | {enemy} stealther camping the road to {keep}
-B: what class | which kind | did you see who it was
-A: no idea, i was dead before i saw anything | couldnt tell, two hits and gone | something with daggers, that narrows it down lol
-?C: they always pick the lone healer | and this is why nobody rides out alone | they love that road
-B: group up before you ride out | ride in pairs, they wont jump two | heading there now, will sweep it
-A: ty, waiting at the door | ok, released, will wait for a group | thx, staying put for now
+A: {q} why do stealthers always camp the roads to the keeps | stealthers love the frontier roads, watch yourselves | {enemy} stealthers camp the keep roads every night
+B: what class usually | which kind gets you | do you ever see who it is
+A: no idea, i am dead before i see anything | couldnt tell you, two hits and gone | something with daggers, that narrows it down lol
+?C: they always pick the lone healer | and this is why nobody rides out alone | they love those roads
+B: group up before you ride out | ride in pairs, they wont jump two | sweep the road with a friend first
+A: ty, i will wait at the door next time | ok, next time i wait for a group | thx, staying put from now on
 
 @topic afk_jokes
 @levels 5-50
@@ -228,11 +228,11 @@ A: ty, binding now | cool, wont make that mistake again | got it
 @scene sh_enemy_cant_hold
 @role B type=NoLifer
 @role C type=Socialite
-A: {enemy} took {keep} again, give it a day | {enemy} sitting in {keep} like they own it | watching {enemy} take {keep} was like watching paint dry
+A: {q} {enemy} take one keep and act like they own the frontier | {enemy} sit in our keeps like they own them | watching {enemy} take a keep is like watching paint dry
 B: they win on numbers, not skill | they have more people online, thats all | numbers, always numbers
 C: be nice, somebody has to give us realm points | we need them, who else would feed us rps | without them we would just be fighting guards
 ?A: lol fair | true, keep them happy | ok they can stay
-B: we will have it back by morning | we take it back tonight | give it until tonight
+B: we always get them back by morning | we take them back at night | give it a night
 
 @topic crafting_brag
 @levels 20-50
@@ -392,11 +392,11 @@ A: next time | ok, ill wait for the repop | figures
 @role B type=*
 @role C type=*
 A: is df open for us? | do we have df right now | can we get into darkness falls
-B: yes, we have it | yeah, we took it back earlier | yep, open, go go
-?C: get in while it lasts | go while its ours | hurry before {enemy} take keeps back
+B: only if we hold enough keeps, check the entrance | it changes with the keeps, go look | if it lets you in, go go
+?C: if it is open, get in while it lasts | when its ours, go while it lasts | if it is open, hurry before {enemy} take keeps back
 A: where should i hunt in there | whats good for my level inside
 B: start near the entrance and work in | ask in there, plenty of groups | depends on your level, start shallow
-A: ty | heading in | ok, see you inside
+A: ty | ok, will check the door | ok, see you inside if it is open
 
 @topic death_penalty
 @levels 10-50
@@ -532,8 +532,8 @@ B: anytime | np, happens | no problem
 @role B type=*
 @role C type=NoLifer
 A: is {frontier} quiet tonight? | anything happening in {frontier} | any action out there
-B: dead quiet | {enemy} are all asleep | nothing, just guards standing around
-C: they were at {keep} an hour ago, gone now | saw a small group near {keep} | quiet before the storm
+B: usually dead at this hour | {enemy} are probably all asleep | most nights its just guards standing around
+C: they come and go, never in the same spot twice | small groups roam it all night | quiet before the storm, usually
 ?A: boring | maybe i will level instead | i will wait a bit
 B: try later, they come out late | the late crowd will show up | wait for the late shift
 
@@ -607,13 +607,13 @@ B: welcome to the bone side | have fun with the crew | dont forget your pets
 @scene sh_mid_inc_bledmeer
 @role B type=NoLifer
 @role C type=Daredevil
-A: INC bledmeer faste, albs at the door | albs hitting bledmeer, need help | bledmeer faste under siege, anyone in the frontier
-B: how many | alb or hib | big zerg or a group
-A: albs, a full group plus | albion, at least a group | lots, cant tell, they have a ram
-C: omw from jordheim | coming, give me a minute | riding out now
+A: {q} why do the albs always ram the same door first | {q} anyone else think the albs only know one keep | {q} is it just me or do albs always hit the closest keep first
+B: alb or hib, they all do it | big zerg or a group, same door every time | its the closest one, thats all
+A: albs bring a full group plus every time | albion, always at least a group | and always with a ram
+C: i always ride out from jordheim when it happens | i come every time, give me a minute | i ride out, every time
 ?D: watch for their scouts on the hill | albs always bring archers, careful | their minstrels will mez anyone near the door
-B: hold the inner door | we are coming, keep the lord up | dont die before we get there
-A: trying | hurry | the door is not going to last
+B: hold the inner door and we always make it | keep the lord up and help comes | dont die before we get there, thats the rule
+A: trying | lol | the door never lasts though
 
 @topic jordheim
 @levels 5-20
@@ -680,12 +680,12 @@ A: ty healer | owe you | thanks a lot
 @scene sh_mid_hunt_the_stealther
 @role B class=Shadowblade
 @role C type=Socialite
-A: infiltrator in uppland, careful | hib nightshade near the road in jamtland | someone keeps getting stabbed near the keep
-B: i will go hunt it | stealth vs stealth, my favorite | omw, give me a minute
+A: {q} infiltrators love the roads near our keeps, careful out there | hib nightshades camp our frontier roads every night | someone always gets stabbed near the keeps
+B: i like hunting them myself | stealth vs stealth, my favorite | i always go hunt them
 C: shadowblade on the job lol | go get them, shadow | let the blade handle it
-?A: be careful, it might have friends | it hit hard, watch out | it was fast, real fast
-B: got it | it ran off | lost it in the trees
-A: nice | ty for trying | heh, next time
+?A: be careful, they come with friends | they hit hard, watch out | they are fast, real fast
+B: i get some | most of them run off | i lose most of them in the trees
+A: nice | ty for trying anyway | heh, next time
 
 @topic selling_drop
 @levels 40-50
@@ -718,9 +718,9 @@ C: zerk | zerker, always
 @scene sh_mid_relics_home
 @role B type=NoLifer
 @role C type=*
-A: we still have both relics? | mjollner faste still ours? | anyone know where our relics are
-B: both home | grallarhorn faste is fine, the relics are home | still safe, the albs tried last night
-C: midgard holds, as always | of course, we have the numbers | relics stay home
+A: {q} how long have our relics stayed home, anyone counting | {q} do our relics ever leave home | anyone know when we last lost a relic
+B: no idea, i stopped counting | grallarhorn faste gets tested every week | the albs try every few nights
+C: midgard holds, mostly | we have the numbers, usually | relics stay home if we show up
 ?A: heh, good | proud of us | love to hear it
 B: until the hibs get organized | dont jinx it | for now
 A: lol | knocking on wood
@@ -793,13 +793,13 @@ A: ok | yep | got it
 @scene sh_alb_inc_benowyc
 @role B type=NoLifer
 @role C type=Daredevil
-A: INC caer benowyc, mids at the gate | caer benowyc under attack | mids at benowyc, need help
-B: numbers? | how many mids | zerg or small group
-A: big, they brought a ram | two groups, maybe three | a lot of them, and a lot of healers
-C: coming | omw, riding | on my way, save some for me
+A: {q} why do the mids always hit the gate first | {q} anyone else think the mids only ever ram the closest keep | {q} the mids love a gate, have you noticed
+B: they always bring numbers | its always a crowd, never a small group | zerg or small group, always the gate
+A: big, and they always bring a ram | two groups, three on a good night | a lot of them, and a lot of healers
+C: i always come | i ride every time | i come, and i always ask them to save me some
 ?D: watch their healers, they mez everything | pac healers will lock down the doorway | target their healers first
-B: hold the door | we are coming | dont let the lord die
-A: hurry | ok | will try
+B: hold the door and we make it | we always come eventually | just dont let the lord die
+A: lol | ok | true
 
 @topic camp_check
 @levels 20-35
@@ -816,6 +816,7 @@ B: empty beats crowded | avalon isle is more fun | to each their own
 @topic necromancer
 @levels 5-25
 @scene sh_alb_necro_shade
+@role A class=Necromancer
 @role B class=Necromancer
 @role C type=*
 A: necro question, why did i turn into a shadow | i cast my pet and became a shade?? | what is shade form, am i bugged
@@ -866,11 +867,11 @@ C: one day they nerf it | enjoy it while it lasts | wait for the next patch
 @scene sh_alb_infil_watch
 @role B class=Infiltrator
 @role C type=*
-A: shadowblade near caer erasleigh, careful | mid stealther in pennine mountains | nightshade by the keep, just died to it
-B: i will sweep the road | omw, stealthed | let me look for it
-C: and here i was riding alone | thanks, staying in the keep | waiting for a group before i ride out
-?A: it hits hard, careful | it went toward the hills | it was fast
-B: nothing here now | its gone, or its good | cant find it, stay sharp
+A: {q} mid shadowblades love the roads near our keeps, careful | their stealthers camp our frontier every night | nightshades by the keeps, i die to one every week
+B: i sweep the roads when i can | i go out stealthed and look | i always look for them
+C: and here i am riding alone every night | thanks, i stay near the keeps now | i wait for a group before i ride out now
+?A: they hit hard, careful | they always run for the hills | they are fast
+B: most nights i find nothing | they are gone, or they are good | cant always find them, stay sharp
 A: thanks for looking | ok, stay safe | ty
 
 @topic class_question
@@ -903,11 +904,11 @@ A: i will try both | ok, thanks | fair, ill see
 @scene sh_alb_lost_relic
 @role B type=NoLifer
 @role C type=*
-A: did we just lose the relic at castle myrddin? | castle myrddin relic is gone?? | anyone know what happened at castle myrddin
-B: yeah, the mids came in the middle of the night | gone, nobody was online to defend | they hit it at a time when we were all asleep
-C: we take it back this weekend | we need a raid, who is in | we will get it back
+A: {q} how do we keep losing relics to night raids | {q} why is it always a night raid when a relic goes | {q} anyone know how relics usually get taken
+B: the mids come in the middle of the night | nobody is online to defend | they hit it when we are all asleep
+C: and we take it back on the weekend | we need a standing raid for that | we always get them back
 ?A: of course they waited until we logged | classic night raid | sneaky mids
-B: castle excalibur still holds at least | at least the other one is home | one relic left, guard it
+B: and they always leave the other one alone | the second relic is the one to guard | one relic is all they ever manage
 A: sigh | ok | we should organize
 
 # ======================= Hibernia =======================
@@ -978,13 +979,13 @@ B: thanks | heh | ty
 @scene sh_hib_inc_crauchon
 @role B type=NoLifer
 @role C type=Daredevil
-A: INC dun crauchon, albs at the door | albs hitting dun crauchon | dun crauchon under attack, need help
-B: how many | numbers? | is it a zerg
-A: a full group, maybe more | lots, they brought a ram | two groups and their scouts
-C: omw | riding out | coming, hold
+A: {q} albs always hit the door first, never the walls | {q} anyone else think the albs only know one way into a keep | {q} the albs love a door, have you noticed
+B: always | they never try anything else | its a zerg every time
+A: a full group, sometimes more | lots, and they always bring a ram | two groups and their scouts, usually
+C: i ride out for every door call | i always show up for those | i come, and i hold
 ?D: bring a mentalist for mez | watch the scouts on the walls | their minstrels will mez the door
-B: on our way, keep the door up | riding hard, hang on | almost there, hold them
-A: ok | hurry | holding
+B: keep the door up and we always make it | ride hard and hang on | we are almost always in time to hold them
+A: true | lol | mostly
 
 @topic class_question
 @levels 10-45
@@ -1078,8 +1079,8 @@ A: gz | grats | gz druid
 @scene sh_hib_relic_check
 @role B type=NoLifer
 @role C type=*
-A: are our relics home? | dun lamfhota still has our relic? | relics safe?
-B: both home | yes, dun dagda is safe too | safe, for now
+A: {q} how often do our relics actually leave home | {q} anyone know when we last lost a relic | relics, do we ever lose them?
+B: not often | not as often as the mids think | rarely, for now
 C: hibernia holds | mids tried last week | the albs keep trying
 ?A: good | heh | nice
 B: someone guard them | keep an eye on it | night raids are the risk

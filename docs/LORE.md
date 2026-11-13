@@ -307,6 +307,9 @@ No script reads the lore files, so a file never replaces a script's own text.
 Every bot line goes through the /faction chat budget: above the channel's ceiling it is not said. Bot lines need bot
 voices on.
 
+- **Tales:** the realm's storyteller tells a boss's story in /faction when asked, and a groupmate tells the short version
+  in /group while the party rests in the boss's place ([TALES.md](TALES.md)).
+
 ### GM check
 
 `/lstest lore` says which lore place you are in and forgets your marks there, so its first-entry, area and lair lines

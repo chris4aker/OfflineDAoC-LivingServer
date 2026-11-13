@@ -62,7 +62,7 @@ public static class LoreChronicle
     /// <summary>"win", "loss" or null: a win is "Boss defeated"; a loss is a defeat, or a time-out after a wipe.</summary>
     public static string Kind(string outcome, string details)
     {
-        string record = RealmEventRecordStore.RecordOutcome(outcome, details);
+        string record = RealmEventRecordStore.FoughtOutcome(outcome, details);
         return record == "Boss defeated" ? "win" : record is "Defeated" or "Timed out" ? "loss" : null;
     }
 

@@ -72,6 +72,13 @@ public static class BotGroupInvite
             return false;
         }
 
+        // Play with friends (1.2): another player's companion follows only its owner (BotHumanBinding).
+        if (bot.Owner != null && bot.Owner != player)
+        {
+            ChatUtil.SendSystemMessage(player, $"{bot.Name} is {bot.Owner.Name}'s companion and follows only them.");
+            return false;
+        }
+
         if (player.Group != null && player.Group.Leader != player)
         {
             ChatUtil.SendSystemMessage(player, BotLedGroups.BotLeadsMessageFor(player) ?? "You are not the leader of your group.");
@@ -84,10 +91,14 @@ public static class BotGroupInvite
             return false;
         }
 
-        string busy = BusyMessage(bot.Name, DutyOf(bot));
+        Duty duty = DutyOf(bot);
+        string busy = BusyMessage(bot.Name, duty);
         if (busy != null)
         {
             ChatUtil.SendSystemMessage(player, busy);
+            // 1.1.3: the bot answers too, as a player would (RC5 on the owner's PC: a friend on a raid gave no word).
+            if (bot.IsAutonomousWorldBot)
+                AutonomousLivingServer.OnInviteDeclined(player, bot, duty, false);
             return false;
         }
 
@@ -97,6 +108,8 @@ public static class BotGroupInvite
             if (!autonomousGroup)
             {
                 ChatUtil.SendSystemMessage(player, $"{bot.Name} is already following another player-led group.");
+                if (bot.IsAutonomousWorldBot && bot.PlayerGroupLeader != player)
+                    AutonomousLivingServer.OnInviteDeclined(player, bot, Duty.None, true);
                 return false;
             }
 
@@ -112,10 +125,18 @@ public static class BotGroupInvite
         }
 
         if (!player.Group.AddMember(bot) || !bot.EnterPlayerLedGroup(player))
+        {
+            // 1.1.3: this failure was silent; the player hears of it and the log says so (BOT_INVITE_RESULT).
+            ChatUtil.SendSystemMessage(player, $"{bot.Name} could not join your group.");
+            if (bot.IsAutonomousWorldBot)
+                AutonomousLivingServer.LogInviteResult(player, bot, "failed reason=add_member");
             return false;
+        }
 
         bot.PathTo(player, bot.MaxSpeed);
         ChatUtil.SendSystemMessage(player, $"{bot.Name} joins your group and starts moving to you.");
+        if (bot.IsAutonomousWorldBot)
+            AutonomousLivingServer.LogInviteResult(player, bot, "grouped");
         AutonomousBotGroupChatter.OnJoinedPlayerGroup(bot);
         return true;
     }

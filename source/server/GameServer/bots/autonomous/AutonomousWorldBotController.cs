@@ -74,6 +74,9 @@ namespace DOL.GS
         private readonly Dictionary<ushort, SavageBotCombatPolicy.FailedSoloPullRoute> _failedSoloPullRoutes = new();
         private long _nextFailedSavageMeleePullPruneTick;
         private readonly Dictionary<ushort, long> _failedSavageMeleePullTargets = new();
+        // Camp targets whose route proof failed (every class), skipped until the tick (AutonomousCampTargetProof).
+        private readonly Dictionary<ushort, long> _unprovenCampTargets = new();
+        private long _nextUnprovenCampTargetPruneTick;
         private GameNPC _savageMeleePullTarget;
         private string _savageMeleePullCampId = string.Empty;
         private string _savageMeleePullAssignmentId = string.Empty;
@@ -701,10 +704,12 @@ namespace DOL.GS
                             "The party is assembled while its leader chooses one shared target");
                         return true;
                     }
+                    ResetStaleCampSearch(bot, nowTick);
                     SetStatus(bot, "Searching for a valid XP camp", "Find a reachable level-appropriate XP camp",
                         "No reachable non-grey camp is currently available; retrying shortly");
                     return true;
                 }
+                _campSearchSinceTick = 0;
 
                 if (bot.CurrentRegionID != _camp.RegionId)
                 {
@@ -2273,6 +2278,18 @@ namespace DOL.GS
             if (bot.CurrentRegionID != destination.RegionId &&
                 FindNextCrossing(bot, destination.RegionId, destination.X, destination.Y) == null)
             {
+                // Owner's PC, 1.1.3 RC nights: 779 times a gamebot stood 15 minutes "Waiting for a frontier teleporter" in its
+                // capital (Tir na Nog 404, Camelot 227, Jordheim 148), on its bind after a release, sent to a keep in another
+                // realm's frontier. Only its own frontier's porter goes there (TryFrontierTransport), and it never set out for
+                // its own frontier first, so it waited where no porter stands. It now goes to its realm's border keep, where
+                // the medallion merchant and the porter are.
+                if (HomeFrontierLeg(bot, destination) is { } leg)
+                {
+                    CampDestination previous = _camp;
+                    _camp = leg;
+                    try { return TravelAcrossRegions(bot); }
+                    finally { _camp = previous; }
+                }
                 // Only a porter reaches that frontier and it is not available yet (search cooling down, or no
                 // ticket). Wait here and let the next review choose again rather than abandoning a PvE camp.
                 _rvrFrontierCommittedUntil = 0;
@@ -3229,6 +3246,15 @@ namespace DOL.GS
                     _failedSoloPullRoutes.Remove(id);
                 _nextFailedSoloPullRoutePruneTick = nowTick + 10_000;
             }
+            if (nowTick >= _nextUnprovenCampTargetPruneTick)
+            {
+                foreach (ushort id in _unprovenCampTargets.Where(pair => pair.Value <= nowTick).Select(pair => pair.Key).ToArray())
+                    _unprovenCampTargets.Remove(id);
+                _nextUnprovenCampTargetPruneTick = nowTick + 10_000;
+            }
+            // One search proves at most a few routes and casts a bounded number of sight lines (AutonomousCampTargetProof):
+            // the rest wait for the next search, 0.9-1.4 s later, and a target whose route failed waits a minute.
+            int routeProofs = 0, sightChecks = 0;
             eCharacterClass searchClass = (eCharacterClass)(bot.CharacterClass?.ID ?? 0);
             bool canPullFromRange = BotSpellPower.IsOffensiveCaster(bot) ||
                 searchClass is eCharacterClass.Scout or eCharacterClass.Hunter or eCharacterClass.Ranger;
@@ -3252,6 +3278,7 @@ namespace DOL.GS
                     AutonomousSoloCampFloor.Allows(bot.Level, npc.EffectiveLevel))
                 .Where(npc => !_failedSavageMeleePullTargets.TryGetValue(npc.ObjectID,
                     out long retryTick) || retryTick <= nowTick)
+                .Where(npc => !_unprovenCampTargets.TryGetValue(npc.ObjectID, out long unprovenUntil) || unprovenUntil <= nowTick)
                 // Ordinary outdoor Savages use the same live-target search as
                 // other melee classes. Only dungeons and audited risky camps
                 // require the extra reversible approach proof below.
@@ -3266,10 +3293,18 @@ namespace DOL.GS
                     // Dungeon line of sight is a pure navmesh raycast; testing
                     // it here (in sorted order) picks the same first target as
                     // filtering every candidate before the sort, with fewer casts.
-                    if (bot.CurrentZone?.IsDungeon == true &&
-                        !PathfindingProvider.Instance.HasLineOfSight(bot.CurrentZone, new(bot.X, bot.Y, bot.Z),
-                            new(npc.X, npc.Y, npc.Z), PathfindingProvider.Instance.DefaultFilters))
-                        return false;
+                    if (bot.CurrentZone?.IsDungeon == true)
+                    {
+                        if (!AutonomousCampTargetProof.MayCheckSight(sightChecks)) return false;
+                        sightChecks++;
+                        if (!PathfindingProvider.Instance.HasLineOfSight(bot.CurrentZone, new(bot.X, bot.Y, bot.Z),
+                                new(npc.X, npc.Y, npc.Z), PathfindingProvider.Instance.DefaultFilters))
+                        {
+                            // Out of sight now: the next searches look past it, and it is looked at again soon.
+                            _unprovenCampTargets[npc.ObjectID] = nowTick + AutonomousCampTargetProof.SightRetryMilliseconds;
+                            return false;
+                        }
+                    }
 
                     bool verifyRoute = soloSavage || bot.CurrentZone?.IsDungeon == true ||
                         AutonomousPveTargetPolicy.MustProveFlyerApproach(npc.Flags, canPullFromRange) ||
@@ -3288,11 +3323,15 @@ namespace DOL.GS
                             nowTick, bot.CurrentRegionID, originZoneId, targetZoneId, origin, target))
                         return false;
 
+                    if (!AutonomousCampTargetProof.MayProveRoute(routeProofs)) return false;
+                    routeProofs++;
                     bool reachable = AutonomousDungeonTargetRoute.CanReach(
                         PathfindingProvider.Instance, bot.CurrentZone, origin, target);
                     if (!reachable && (npc.Flags & GameNPC.eFlags.FLYING) != 0 &&
                         AutonomousDefensivePull.CanAttemptFlyingHandoff(bot, npc))
                         reachable = true;
+                    if (!reachable && !soloSavage)
+                        _unprovenCampTargets[npc.ObjectID] = nowTick + AutonomousCampTargetProof.RetryMilliseconds;
                     if (soloSavage)
                     {
                         if (reachable)
@@ -3344,6 +3383,40 @@ namespace DOL.GS
                 _nextMoveOrderTick = 0;
             }
             IssuePath(bot, _patrolDestination.Value);
+        }
+
+        private long _campSearchSinceTick;
+
+        /// <summary>
+        /// Owner's PC, 1.1.3 RC nights: 464 times a gamebot stood 15 minutes "Searching for a valid XP camp", nearly all level 50s
+        /// on their capital bind after a release (Tir na Nog 192+, Camelot 25). In the 11/09 log 72 of the 91 went on to a camp only
+        /// after their next login, from the same spot, so what held them lived in this controller, not in the world. After
+        /// <see cref="StaleCampSearchMilliseconds"/> of failed searches the bot drops its own death caution and failed-camp
+        /// memories, as a fresh login does, and logs what it held (AUTONOMOUS_CAMP_SEARCH_RESET), so the next night shows which.
+        /// </summary>
+        public const long StaleCampSearchMilliseconds = 3 * 60_000;
+
+        public static bool CampSearchIsStale(long searchingSinceTick, long nowTick) =>
+            searchingSinceTick > 0 && nowTick - searchingSinceTick >= StaleCampSearchMilliseconds;
+
+        private void ResetStaleCampSearch(GameBot bot, long nowTick)
+        {
+            if (_campSearchSinceTick == 0 || nowTick < _campSearchSinceTick) { _campSearchSinceTick = nowTick; return; }
+            if (!CampSearchIsStale(_campSearchSinceTick, nowTick)) return;
+            Log.Warn($"AUTONOMOUS_CAMP_SEARCH_RESET bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
+                     $"realm={GlobalConstants.RealmToName(bot.Realm)} region={bot.CurrentRegionID} group={(int)(bot.Group?.MemberCount ?? 0)} " +
+                     $"objective={AutonomousObjectiveAssignments.KindFor(bot)} deathSteps={_deathDifficultySteps} " +
+                     $"failedCamps={_recentFailedSoloCamps.Count} failedTargets={_recentFailedSoloTargets.Count} " +
+                     $"rejectedDungeons={_rejectedDungeonCamps.Count} giveUps={HasRecentGiveUps(bot)} minutes={(nowTick - _campSearchSinceTick) / 60_000}");
+            _deathDifficultySteps = 0;
+            _recentSoloDeathsWithoutExperience = 0;
+            _recentFailedSoloCamps.Clear();
+            _recentFailedSoloTargets.Clear();
+            _rejectedDungeonCamps.Clear();
+            _lastFailedCampId = string.Empty;
+            _lastFailedTargetName = string.Empty;
+            _campSearchSinceTick = nowTick;
+            _nextPlanTick = 0;
         }
 
         private void SelectCamp(GameBot bot)

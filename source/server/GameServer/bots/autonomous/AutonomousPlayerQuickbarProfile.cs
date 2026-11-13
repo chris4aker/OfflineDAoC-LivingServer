@@ -43,6 +43,13 @@ public sealed class AutonomousPlayerQuickbarProfile
             return false;
         }
 
+        // The quickbars are read from this PC's %APPDATA%: a friend's are on their own PC (HostPcFeatures).
+        if (!HostPcFeatures.IsOnHostPc(player))
+        {
+            error = HostPcFeatures.PilotHostOnly;
+            return false;
+        }
+
         string root = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "Electronic Arts",

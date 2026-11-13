@@ -81,6 +81,11 @@ In a playable folder:
 - **Navigation:** don't rebuild or replace navmeshes globally to fix one route without evidence.
 - **Be honest in reports.** Report automated tests separately from real in-game checks. Don't
   describe Darkness Falls raid AI, Legion or the hardest level 70+ encounters as implemented.
+  - A feature counts as working only once it has been seen working in one of the owner's PC logs
+    (owner, 2026-11-08). Until then the notes say "tests only". Unit tests, CI, simulations and test-world
+    bot runs are all tests.
+  - Never give an earlier build's result as the result of the build being shipped. Say which build each
+    result came from.
 - **Keep the old releases.** v0.3–v0.36c stay available as legacy releases, and their branches
   and tags are not rewritten.
 

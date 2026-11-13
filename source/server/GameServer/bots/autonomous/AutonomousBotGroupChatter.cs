@@ -112,8 +112,15 @@ public static class AutonomousBotGroupChatter
             return false;
         }
         bool hunted = AutonomousBotCombatCalls.FoughtRecently(group, GameLoop.GameLoopTime);
+        // 1.1.3: a line that fits the group's real size and the bot's state ("who is main assist?" not in a duo).
+        int size = members.Length;
+        bool away = AutonomousChatEngagement.WasAway(bot.DatabaseID, now, bot.IsReturningAfterRelease);
+        // RC6 on the owner's PC: "oom, give me a minute" and "need a quick med" from a wizard at full power. A line about the bot's
+        // own power or a rest fits only when it is low.
+        bool low = bot.MaxMana > 0 && bot.ManaPercent < 40 || bot.EndurancePercent < 30 || bot.HealthPercent < 50;
         if (!AutonomousBotVoices.TryLine(bot, "group", out VC.Picked picked,
-                filter: hunted ? null : line => !AutonomousBotCombatCalls.IsHuntTalk(line.Text)))
+                filter: line => (hunted || !AutonomousBotCombatCalls.IsHuntTalk(line.Text)) && (low || !AutonomousBotCombatCalls.ClaimsLow(line.Text)) &&
+                                AutonomousChatEngagement.FitsGroup(line.Text, size, away)))
             return false;
         Send(bot, picked.Text, picked.Line?.Invites ?? "");
         AutonomousChatWhy.Record(bot, "group", "ambient", "said", AutonomousBotChatCoordinator.RuleOf(picked.Line, "group"), VC.Specificity(picked.Line),
@@ -168,7 +175,10 @@ public static class AutonomousBotGroupChatter
         Group group = bot.Group;
         AutonomousLivingServer.Later(bot, 2_500 + Random.Shared.Next(3_500), () => bot.Group == group && bot.IsAlive && !bot.InCombat, () =>
         {
-            if (AutonomousBotVoices.TryLine(bot, "lfg", out VC.Picked picked, topic: "join", relax: true))
+            // 1.1.3: "where are you all?" only to a group of three or more.
+            int size = bot.Group?.MemberCount ?? 0;
+            if (AutonomousBotVoices.TryLine(bot, "lfg", out VC.Picked picked, topic: "join", relax: true,
+                    filter: line => AutonomousChatEngagement.FitsGroup(line.Text, size, false)))
                 Send(bot, picked.Text, "none");
         });
     }
@@ -188,8 +198,10 @@ public static class AutonomousBotGroupChatter
         var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = speaker.Name };
         foreach (string answers in chain)
         {
+            int size = group.MemberCount;
+            bool away = AutonomousChatEngagement.WasAway(mate.DatabaseID, GameLoop.GameLoopTime, mate.IsReturningAfterRelease);
             if (!AutonomousBotVoices.TryLine(mate, "reply", out VC.Picked reply, answers: answers, slots: slots,
-                    filter: line => AutonomousChatShortTalk.ReplyFits(opener.Text, line.Text)))
+                    filter: line => AutonomousChatShortTalk.ReplyFits(opener.Text, line.Text) && AutonomousChatEngagement.FitsGroup(line.Text, size, away)))
                 continue;
             int delay = AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, 0, Random.Shared);
             AutonomousLivingServer.Later(mate, delay, () => mate.Group == group && mate.IsAlive && !mate.InCombat, () => Send(mate, reply.Text));
@@ -316,10 +328,13 @@ public static class AutonomousBotGroupChatter
     /// player it answered), so "why?", "ty" and answers to its questions follow on as in /faction.</summary>
     internal static void Send(GameBot bot, string text, string invites = "", string to = null, bool remember = true)
     {
+        // 1.1.3, after RC6: the time-of-day pass every bot line takes (AutonomousBotVoiceCorpus.ForNow).
+        text = AutonomousBotVoiceCorpus.ForNow(text);
         if (bot.Group != null && AutonomousLivingServer.GroupHasPlayer(bot.Group))
         {
             bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
             BotChatTranscript.Bot("group", bot.Name, bot.Realm, text);
+            AutonomousChatEngagement.NoteGroupLine(bot.DatabaseID, text, GameLoop.GameLoopTime);
             AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Group, KeyOf(bot.Group), GameLoop.GameLoopTime);
             if (remember)
                 AutonomousChatThreads.Log.Record(AutonomousChatThreads.GroupChannel(bot.Group), bot.DatabaseID, bot.Name, text, invites,

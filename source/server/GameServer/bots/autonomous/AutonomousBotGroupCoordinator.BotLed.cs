@@ -84,7 +84,8 @@ public static partial class AutonomousBotGroupCoordinator
                 candidates.Add(candidate);
             }
         }
-        if (BotLedGroups.PickInvitingLeader(candidates, player.Realm, player.Level, healer, memory, now) is not { } picked ||
+        if (BotLedGroups.PickInvitingLeader(candidates, player.Realm, player.Level, healer, memory, now,
+                BotLedGroups.LeadersInvitingOthers(player)) is not { } picked ||
             !leaders.TryGetValue(picked.LeaderId, out leader))
             return false;
         party = picked;
@@ -199,13 +200,20 @@ public static partial class AutonomousBotGroupCoordinator
         GamePlayer player = session.HostedPlayer;
         if (player == null)
             return false;
-        if (player.Group != session.Group || player.ObjectState != GameObject.eObjectState.Active && player.Client?.ClientState !=
-                GameClient.eClientState.Linkdead)
+        long now = GameLoop.GameLoopTime;
+        // A zone or region change (or a GM /jump) takes the player out of the world for the seconds the client loads; the
+        // player is still in the group and has not left it (PC test 2026-11-07: let go 80 s after accepting, with only a
+        // /jump to the leader and a /follow in between).
+        bool away = player.ObjectState != GameObject.eObjectState.Active && player.Client?.ClientState != GameClient.eClientState.Linkdead;
+        if (!away) session.PlayerAwaySince = 0;
+        else if (session.PlayerAwaySince == 0) session.PlayerAwaySince = now;
+        if (BotLedGroups.HostedPlayerLeft(player.Group == session.Group, away, session.PlayerAwaySince, now))
         {
             EndHosting(session, player, "left");
             return false;
         }
-        long now = GameLoop.GameLoopTime;
+        if (away)
+            return true;
         var position = new Vector3(player.X, player.Y, player.Z);
         // Each member's pulse runs this, many times a second: "moved" is measured from the last spot the player was seen
         // to leave, not from the last pass.

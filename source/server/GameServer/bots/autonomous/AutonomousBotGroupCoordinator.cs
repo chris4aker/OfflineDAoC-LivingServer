@@ -180,6 +180,8 @@ public static partial class AutonomousBotGroupCoordinator
         public BotPveGroupRole PlayerRole { get; set; }
         public BotLedGroups.FollowState Follow { get; set; }
         public Vector3 PlayerLastPosition { get; set; }
+        // When the hosted player was first seen out of the world (a zone or region change, a /jump), or 0.
+        public long PlayerAwaySince { get; set; }
         public ushort PlayerLastRegion { get; set; }
         /// <summary>Started from the player's own group by /lead bot (B2): its gamebots' own goals may differ.</summary>
         public bool FromPlayersGroup { get; init; }
@@ -1106,7 +1108,7 @@ public static partial class AutonomousBotGroupCoordinator
     /// forever with the tank following a stationary leader.  Combat, damage,
     /// aggro, death and loot continue through the normal BotBrain.
     /// </summary>
-    public static bool TryHandoffDungeonBlocker(GameBot reporter, GameNPC blocker, out GameBot puller)
+    public static bool TryHandoffDungeonBlocker(GameBot reporter, GameNPC blocker, out GameBot puller, bool raidDungeonTrash = false)
     {
         puller = null;
         if (reporter?.Group == null || blocker?.IsAlive != true ||
@@ -1136,7 +1138,7 @@ public static partial class AutonomousBotGroupCoordinator
 
         // This retains every normal between-pull gate: the current locked
         // roster, no casualty, full resources, tight formation, and tank puller.
-        if (!CanInitiateNewPull(puller, corridorBlocker: true) || puller.Brain is not BotBrain brain)
+        if (!CanInitiateNewPull(puller, corridorBlocker: true, raidDungeonTrash) || puller.Brain is not BotBrain brain)
         {
             puller = null;
             return false;
@@ -1221,7 +1223,9 @@ public static partial class AutonomousBotGroupCoordinator
     /// Proactive pulls use 90/80/80 readiness, but an active post-combat
     /// recovery episode still runs to full. Attacked-by-enemy responses are
     /// never gated here.</summary>
-    public static bool CanInitiateNewPull(GameBot bot, bool corridorBlocker = false)
+    /// <param name="raidDungeonTrash">The corridor blocker is an ordinary monster inside the bot's own raid dungeon
+    /// (AutonomousDungeonPolicy.ExpeditionMayClearCorridor).</param>
+    public static bool CanInitiateNewPull(GameBot bot, bool corridorBlocker = false, bool raidDungeonTrash = false)
     {
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup || bot.Group == null)
             return true;
@@ -1234,7 +1238,8 @@ public static partial class AutonomousBotGroupCoordinator
             // initiate a fresh pull ahead of the staging/landing order.
             if (AutonomousRealmRaid.GetTravelView(bot) is { } expedition)
             {
-                if (expedition.Hold && !(corridorBlocker && expedition.Crossing)) return false;
+                if (!AutonomousDungeonPolicy.ExpeditionMayClearCorridor(expedition.Hold, expedition.Crossing, corridorBlocker,
+                        raidDungeonTrash)) return false;
                 // Only locally present living members take part in puller
                 // selection. A casualty or reinforcement across the world is
                 // not a veto on every surviving party's combat.
@@ -1681,6 +1686,13 @@ public static partial class AutonomousBotGroupCoordinator
         }
     }
 
+    /// <summary>The time one group formation pass may spend once it has tried a leader.</summary>
+    public const long FormationPassBudgetMilliseconds = 150;
+
+    /// <summary>Whether a formation pass has spent its budget: at least one leader tried and the budget used. Pure.</summary>
+    public static bool FormationPassSpent(int leadersTried, long elapsedMilliseconds) =>
+        leadersTried > 0 && elapsedMilliseconds >= FormationPassBudgetMilliseconds;
+
     private static void TryFormGroups()
     {
         TryFormGroups(eAutonomousObjectiveKind.GroupPve);
@@ -1727,6 +1739,8 @@ public static partial class AutonomousBotGroupCoordinator
         GameBot[] available = activeRoster
             .Where(bot => bot.IsAlive && !bot.IsTemporaryGroupHelper && !BotDutyLeases.IsSpokenForByPlayer(bot) && bot.Group == null && bot.CurrentRegion != null &&
                           !AutonomousRealmRaid.IsReserved(bot) &&
+                          // A bot the schedule is sending home finishes and logs off; it starts no new party (1.1.3).
+                          !AutonomousBotSchedule.LeavingSoon(bot) &&
                           // siege recruits are merged into full parties by FormSiegeParties, not random warbands
                           !(objectiveKind == eAutonomousObjectiveKind.RvR &&
                             AutonomousRvrEventLayer.IsForceCommitted($"rvr-{bot.DatabaseID}", GameLoop.GameLoopTime)) &&
@@ -1740,6 +1754,8 @@ public static partial class AutonomousBotGroupCoordinator
         var claimed = new HashSet<GameBot>();
         var recruitCrossings = new Dictionary<(eRealm Realm, ushort Region), DbZonePoint>();
         int rendezvousChecks = 0;
+        var passClock = System.Diagnostics.Stopwatch.StartNew();
+        int leadersTried = 0;
         // RvR stages at the realm's fixed border keep, so the leader is the
         // bot closest to it. PvE meets around its leader and keeps the
         // shuffled draw below.
@@ -1774,8 +1790,13 @@ public static partial class AutonomousBotGroupCoordinator
             // (Raised from 4 checks / 35% leader draw: only 248 groups formed in
             // an eight-hour run while 3,640 bots timed out waiting.)
             if (rendezvousChecks >= 6) break;
+            // The pass runs under the coordinator's lock, which every grouped bot's turn waits on. Owner's PC (AI profile,
+            // 2026-11-07/08): one pass took 0.3-1.3 s 46 times, nearly all of it the rendezvous route searches (route.zone_step
+            // up to 390 ms each). Once it has spent its time budget it stops; the next pass, 15 s later, goes on.
+            if (FormationPassSpent(leadersTried, passClock.ElapsedMilliseconds)) break;
             if (claimed.Contains(leader))
                 continue;
+            leadersTried++;
             // (PvE used to skip 40% of leaders at random; with the longest waits first, a cap on tries keeps the cost.)
             if (objectiveKind == eAutonomousObjectiveKind.GroupPve && ++leaderAttempts > MaximumPveLeaderAttemptsPerPass)
                 break;

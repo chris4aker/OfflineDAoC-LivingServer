@@ -188,7 +188,7 @@ namespace DOL.UnitTests
                     Assert.That(sizing.RecruitCap, Is.GreaterThanOrEqualTo(sizing.Required).And.LessThanOrEqualTo(300));
                     Assert.That(sizing.RecruitCap % 8 == 0 || sizing.RecruitCap == 300, Is.True, $"{full} after {losses} losses and {wins} wins");
                     Assert.That(sizing.Required, Is.InRange((int)Math.Round(full * 0.7), Math.Min(300, full * 2)));
-                    // The short start stays half of what the sized raid needs, never under three parties.
+                    // The short start is whoever came, never under three parties (2026-11-11: it was half of the sized raid).
                     Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, (sizing.Required + 1) / 2, sizing.Required),
                         Is.EqualTo((sizing.Required + 1) / 2 >= RealmRaidRecruitmentPolicy.MinimumRaidBots));
                 }
@@ -196,22 +196,55 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void ASmallRaidGoesInShortWithHalfAndAtLeastThreeParties()
+        public void ALossUnderStrengthIsNoResultForTheNextRaidsSize()
+        {
+            string details = RealmEventRecordStore.WithRaidSize(RealmEventRecordStore.WithUnderStrength(
+                RealmEventRecordStore.WithWipes("Defeated at King Tuscar.", 2), 55, 134), 145.6);
+            Assert.Multiple(() =>
+            {
+                Assert.That(RealmEventRecordStore.UnderStrengthIn(details), Is.True);
+                Assert.That(RealmEventRecordStore.WipesIn(details), Is.EqualTo(2), "the other markers still read");
+                Assert.That(RealmEventRecordStore.RaidSizeIn(details), Is.EqualTo(145.6));
+                Assert.That(RealmEventRecordStore.RecordOutcome("Defeated", details), Is.EqualTo(RealmEventRecordStore.LostUnderStrength));
+                Assert.That(RealmEventRecordStore.RecordOutcome("Timed out", details), Is.EqualTo(RealmEventRecordStore.LostUnderStrength));
+                Assert.That(RealmEventRecordStore.RecordOutcome("Boss defeated", details), Is.EqualTo("Boss defeated"), "a win is a win");
+                Assert.That(RealmEventRecordStore.RecordOutcome("Failed rally", details), Is.EqualTo("Failed rally"));
+                Assert.That(RealmEventRecordStore.FoughtOutcome("Defeated", details), Is.EqualTo("Defeated"), "the chronicle tells it as a defeat");
+                Assert.That(RealmRaidRecord.Counted(RealmEventRecordStore.LostUnderStrength), Is.False);
+                Assert.That(RealmEventRecordStore.WithUnderStrength("x", 134, 134), Is.EqualTo("x"), "a full raid's details carry no marker");
+                Assert.That(RealmEventRecordStore.RecordOutcome("Defeated", RealmEventRecordStore.WithWipes("Defeated at King Tuscar.", 2)),
+                    Is.EqualTo("Defeated"), "at full strength a defeat is a loss");
+                // The next raid's size: a loss under strength adds nothing.
+                Assert.That(RealmRaidRecruitmentPolicy.Size(92, R([Loss, RealmEventRecordStore.LostUnderStrength]), Rules).Percent,
+                    Is.EqualTo(RealmRaidRecruitmentPolicy.Size(92, R([Loss]), Rules).Percent));
+                Assert.That(RealmRaidRecruitmentPolicy.Size(92, R([Loss, Loss]), Rules).Percent,
+                    Is.GreaterThan(RealmRaidRecruitmentPolicy.Size(92, R([Loss]), Rules).Percent));
+            });
+        }
+
+        [Test]
+        public void ARaidGoesWithWhoCameAndAtLeastThreeParties()
         {
             const long patience = RealmRaidRecruitmentPolicy.HubPatienceMilliseconds;
             Assert.Multiple(() =>
             {
                 Assert.That(RealmRaidRecruitmentPolicy.MinimumRaidBots, Is.EqualTo(24));
                 Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 35, 70), Is.True, "a dragon raid: half of 70");
-                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 34, 70), Is.False);
-                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 25, 49), Is.True, "trimmed to 49: half, not 40");
-                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 24, 49), Is.False);
+                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 24, 70), Is.True, "three parties go (2026-11-11)");
+                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 23, 70), Is.False, "under three parties");
                 Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 24, 34), Is.True, "three parties at least");
                 Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 23, 34), Is.False);
-                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 50, 100), Is.True);
+                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 16, 16), Is.True, "a raid that needs fewer than three parties");
                 Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(true, 60, 60), Is.False, "forced raids never go in short");
-                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 30, patience, 60), Is.True, "the hub leaves with half too");
-                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 29, patience, 60), Is.False);
+                // The owner's PC, 2026-11-11 (build e17a92b): Midgard's epic rally needed 134 and gathered 55, Hibernia's
+                // needed 142 and gathered 69. Neither left its hub (half was 67 and 71) and both ended "Failed rally".
+                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 55, patience, 134), Is.True, "Midgard goes with who came");
+                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 69, patience, 142), Is.True, "Hibernia too");
+                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 55, patience - 1, 134), Is.False, "after the hub's patience only");
+                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 23, patience, 134), Is.False, "three parties at least");
+                Assert.That(RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(false, 55, 134), Is.True);
+                Assert.That(RealmRaidRecruitmentPolicy.UnderStrength(55, 134), Is.True);
+                Assert.That(RealmRaidRecruitmentPolicy.UnderStrength(135, 113), Is.False, "Albion that morning: 135 recruited for 113");
                 Assert.That(RealmRaidRecruitmentPolicy.LateStartMinimum(60), Is.EqualTo(42), "the late start keeps its 70%");
             });
         }
@@ -527,6 +560,92 @@ namespace DOL.UnitTests
             });
         }
 
+        // ---- With raid discipline (2026-11-08): the realm learns the boss ----
+
+        /// <summary>
+        /// The size learner with the realm learning the boss (RaidDiscipline.Familiarity from the same record): an unlearned
+        /// raid needs <paramref name="unlearnedExtra"/> more points of its period size for the same chance (more of it dies
+        /// to the stomps), shrinking as familiarity grows. A model, not a measurement.
+        /// </summary>
+        private static (List<double> Sizes, List<bool> Wins, List<double> Familiarity) SimulateLearning(int raids, int seed,
+            double learnedHalf, double unlearnedExtra, double interruptedShare = 0)
+        {
+            var random = new Random(seed);
+            var ledger = new List<RaidResult>();
+            var sizes = new List<double>();
+            var wins = new List<bool>();
+            var familiarity = new List<double>();
+            for (int raid = 0; raid < raids; raid++)
+            {
+                List<RaidResult> record = RealmRaidRecord.CountedResults(ledger);
+                var sizing = RealmRaidRecruitmentPolicy.Size(100, record, Rules);
+                double f = RaidDiscipline.Familiarity(record);
+                if (random.NextDouble() < interruptedShare) { ledger.Add("Interrupted"); continue; }
+                bool win = random.NextDouble() < WinChance(sizing.Percent, learnedHalf + unlearnedExtra * (1 - f));
+                ledger.Add(new RaidResult(win ? Win : Loss, false, sizing.RecordedPercent));
+                sizes.Add(sizing.Percent);
+                wins.Add(win);
+                familiarity.Add(f);
+            }
+            return (sizes, wins, familiarity);
+        }
+
+        // the size it wins 2 in 3 at once learned, and how much more an unlearned raid needs
+        [TestCase(1, 105, 30)]
+        [TestCase(2, 105, 60)]
+        [TestCase(3, 120, 45)]
+        [TestCase(4, 85, 45)]
+        public void WithTheRealmLearningTheBossItStillSettlesNearTwoInThreeWithoutSwinging(int seed, double learnedHalf, double unlearnedExtra)
+        {
+            var (sizes, wins, familiarity) = SimulateLearning(2000, seed, learnedHalf, unlearnedExtra, interruptedShare: 0.3);
+            int settled = sizes.Count / 4;
+            double rate = wins.Skip(settled).Count(w => w) / (double)(wins.Count - settled);
+            double mean = sizes.Skip(settled).Average();
+            double spread = Math.Sqrt(sizes.Skip(settled).Average(s => (s - mean) * (s - mean)));
+            var (plainSizes, plainWins) = (SimulateLearning(2000, seed, learnedHalf, 0, 0.3).Sizes, SimulateLearning(2000, seed, learnedHalf, 0, 0.3).Wins);
+            double plainMean = plainSizes.Skip(settled).Average();
+            double plainSpread = Math.Sqrt(plainSizes.Skip(settled).Average(s => (s - plainMean) * (s - plainMean)));
+            TestContext.WriteLine($"seed {seed}: won {rate:P1} at {mean:0.#}% (spread {spread:0.#}) once settled; without learning " +
+                                  $"{plainWins.Skip(settled).Count(w => w) / (double)(plainWins.Count - settled):P1} at {plainMean:0.#}% (spread {plainSpread:0.#}); " +
+                                  $"familiarity {familiarity[0]:0.00} -> {familiarity[4]:0.00} after 4 -> {familiarity[19]:0.00} after 20");
+            Assert.Multiple(() =>
+            {
+                Assert.That(rate, Is.InRange(0.62, 0.72), "about two in three");
+                Assert.That(mean, Is.EqualTo(plainMean).Within(5), "learned, it settles where the plain learner does");
+                Assert.That(spread, Is.LessThan(plainSpread + 3), "and swings no more than it");
+                double[] moves = sizes.Zip(sizes.Skip(1), (a, b) => Math.Abs(a - b)).ToArray();
+                Assert.That(moves.Max(), Is.LessThanOrEqualTo(Rules.LossAddPercent + 1e-9), "one step at most between raids");
+                Assert.That(familiarity[0], Is.EqualTo(0), "a fresh world is unlearned");
+                Assert.That(familiarity.Zip(familiarity.Skip(1), (a, b) => b >= a).All(x => x), Is.True, "it never unlearns");
+            });
+        }
+
+        [Test]
+        public void EarlyRaidsLoseAndGrowAndLaterOnesWinWithFewerBots()
+        {
+            // The owner's arc, over 300 fresh worlds: the first raids at a boss lose more and grow the raid, the later ones
+            // win more with fewer bots. Learned, it wins 2 in 3 at 115%; unlearned it needs 45 points more.
+            const int worlds = 300, raids = 30;
+            var size = new double[raids];
+            var won = new double[raids];
+            for (int world = 0; world < worlds; world++)
+            {
+                var (sizes, wins, _) = SimulateLearning(raids, 1000 + world, 105, 45);
+                for (int i = 0; i < raids; i++) { size[i] += sizes[i] / worlds; won[i] += (wins[i] ? 1.0 : 0) / worlds; }
+            }
+            double firstWins = won.Take(3).Average(), laterWins = won.Skip(15).Average();
+            double peak = size.Take(10).Max(), later = size.Skip(20).Average();
+            TestContext.WriteLine($"won {firstWins:P0} of the first three, {laterWins:P0} from the 16th; size {size[0]:0}% -> peak " +
+                                  $"{peak:0}% (raid {Array.IndexOf(size, peak) + 1}) -> {later:0}% from the 21st");
+            Assert.Multiple(() =>
+            {
+                Assert.That(firstWins, Is.LessThan(0.5), "early raids lose more");
+                Assert.That(peak, Is.GreaterThan(size[0] + 5), "and grow");
+                Assert.That(laterWins, Is.InRange(0.6, 0.75), "later raids win about two in three");
+                Assert.That(later, Is.LessThan(peak - 10), "with fewer bots");
+            });
+        }
+
         [Test]
         public void TheFirstWinsTrimAtOnceAndTheSizeComesDownWithinTwentyRaids()
         {
@@ -663,10 +782,10 @@ namespace DOL.UnitTests
             Assert.Multiple(() =>
             {
                 Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.ShiftAfter(sixOfSeven)));
-                Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.MaximumShift + SiegeDefenseBalance.Step),
-                    "6 of 7 captured: defenders at +0.25, and the attackers trimmed one step (2026-11-06)");
+                Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.MaximumShift + SiegeDefenseBalance.MaximumAttackerTrim),
+                    "6 of 7 captured: defenders at +0.25, and the attackers trimmed both steps (four or more of six captured adds defenders)");
                 Assert.That(SiegeDefenseBalance.Ratio(0.75), Is.EqualTo(1.0));
-                Assert.That(SiegeDefenseBalance.AttackerCap(128), Is.EqualTo(112));
+                Assert.That(SiegeDefenseBalance.AttackerCap(128), Is.EqualTo(96));
             });
         }
 

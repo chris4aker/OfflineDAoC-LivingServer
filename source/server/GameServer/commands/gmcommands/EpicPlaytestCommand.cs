@@ -18,8 +18,11 @@ namespace DOL.GS.Commands;
     "/epictest list - every raid, its realm, period size and hub",
     "/epictest start <event> [size|era|start] [focus=Name,Name] [nohub] [atstaging] - a forced raid of <size> bots (era = the period size, start = 125%); the reserved bots are moved to its hub unless nohub; atstaging musters it at its own staging post instead of the realm's hub",
     "/epictest gather <event> - move the raid's party members still away from its hub to it (before it leaves), or those not yet on its staging ring to the entrance (before it goes in)",
+    "/epictest front <event> - move the raid's living members inside its dungeon to the route's front (its next target, or the final encounter's trigger): skips the climb, for testing a final room",
     "/epictest reset <event> - clear an event's cooldown after a raid ended (the launcher's reset)",
     "/epictest status - the running raids",
+    "/epictest familiarity <0..1|off> - test only: how well the realm knows every encounter for the raid discipline (calls, reactions, lapses; off = from the raid record). Also familiarity=<0..1> on start",
+    "/epictest latecall <threshold|all|off> - test only: the raid's call of that blast threshold (Xanxicar 80/60/40/20) always comes late. Also latecall=<threshold|all> on start",
     "/epictest stop <event> - end a running raid")]
 public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, ICommandHandler
 {
@@ -55,6 +58,14 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
                     ? $"{args[2]}: the event cooldown is cleared (the encounter itself must be alive)."
                     : $"{args[2]} is running: stop it first.");
                 return;
+            case "familiarity":
+                if (args.Length < 3) { Say(client, $"Raid familiarity: {(RaidDiscipline.FamiliarityOverride is double f ? f.ToString("0.00") : "from the raid record")}"); return; }
+                Say(client, SetFamiliarity(args[2]));
+                return;
+            case "latecall":
+                if (args.Length < 3) { Say(client, $"Forced late call: {LateCallWord(RaidDiscipline.ForceLateCallAt)}"); return; }
+                Say(client, SetLateCall(args[2]));
+                return;
             case "gather":
                 if (args.Length < 3) { DisplaySyntaxOf(client); return; }
                 if (!AutonomousRealmRaid.TryGetHub(args[2], out var gatherHub)) { Say(client, $"{args[2]} is not running."); return; }
@@ -63,18 +74,57 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
                 MoveTo(args[2], where, gatherRegion, gatherPoint, away);
                 Say(client, $"Moving {away.Length} party members to {where} (the hub before the raid leaves it, then the staging post until it goes in).");
                 return;
+            case "front":
+                if (args.Length < 3) { DisplaySyntaxOf(client); return; }
+                GameBot[] behind = AutonomousRealmRaid.MembersToFront(args[2], out ushort frontRegion, out Vector3 frontPoint);
+                if (frontRegion == 0) { Say(client, $"{args[2]} is not inside its dungeon."); return; }
+                MoveTo(args[2], "the route's front", frontRegion, frontPoint, behind);
+                Say(client, $"Moving {behind.Length} raiders to the route's front {(int)frontPoint.X},{(int)frontPoint.Y},{(int)frontPoint.Z}.");
+                return;
             default:
-                Say(client, "/epictest list | start <event> [size|era|start] [focus=Name,Name] [nohub] | status | stop <event>");
+                Say(client, "/epictest list | start <event> [size|era|start] [focus=Name,Name] [nohub] [familiarity=0..1] [latecall=N|all] | status | stop <event> | familiarity <0..1|off> | latecall <N|all|off>");
                 return;
         }
     }
 
-    /// <summary>The roster size a start asks for (pure): a number, "era" (the period size) or "start" (125% of it).</summary>
+    private static string LateCallWord(int at) => at == -1 ? "every threshold" : at > 0 ? $"the {at}% call" : "off (the usual roll)";
+
+    /// <summary>The play test's late-call override (pure but for setting it): a threshold, all, or off.</summary>
+    public static string SetLateCall(string word)
+    {
+        int at;
+        if (string.Equals(word, "off", StringComparison.OrdinalIgnoreCase)) at = 0;
+        else if (string.Equals(word, "all", StringComparison.OrdinalIgnoreCase)) at = -1;
+        else if (!int.TryParse(word, out at) || at <= 0 || at >= 100) return $"Late call \"{word}\" is not a threshold (1-99), all, or off.";
+        RaidDiscipline.ForceLateCallAt = at;
+        return $"Forced late call: {LateCallWord(at)} (test only; /epictest latecall off to undo).";
+    }
+
+    /// <summary>The play test's familiarity override (pure but for setting it): a number 0-1, or off.</summary>
+    public static string SetFamiliarity(string word)
+    {
+        if (string.Equals(word, "off", StringComparison.OrdinalIgnoreCase))
+        {
+            RaidDiscipline.FamiliarityOverride = null;
+            return "Raid familiarity: from the raid record again.";
+        }
+        if (!double.TryParse(word, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double f) ||
+            f < 0 || f > 1)
+            return $"Familiarity \"{word}\" is not a number from 0 to 1, or off.";
+        RaidDiscipline.FamiliarityOverride = f;
+        return $"Raid familiarity forced to {f:0.00} (test only; /epictest familiarity off to undo).";
+    }
+
+    /// <summary>The roster size a start asks for (pure): a number, "era" (the period size) or "start" (125% of it), made
+    /// whole parties (eights, and a final four): the forced roster is built that way, so a dragon's 70 is 72.</summary>
     public static int SizeFor(string word, int periodSize)
     {
-        if (string.IsNullOrEmpty(word) || word == "era") return periodSize;
-        if (word == "start") return (periodSize * 125 + 99) / 100;
-        return int.TryParse(word, out int n) && n >= 8 ? Math.Min(n, RealmRaidRecruitmentPolicy.MaximumBots) : 0;
+        int size;
+        if (string.IsNullOrEmpty(word) || word == "era") size = periodSize;
+        else if (word == "start") size = (periodSize * 125 + 99) / 100;
+        else if (!int.TryParse(word, out size) || size < 8) return 0;
+        size = Math.Min(size, RealmRaidRecruitmentPolicy.MaximumBots);
+        return size % 8 is 0 or 4 ? size : (size + 7) / 8 * 8;
     }
 
     private static void Start(GameClient client, string[] args)
@@ -82,7 +132,13 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
         if (args.Length < 3) { DisplaySyntaxOf(client); return; }
         var definition = AutonomousRealmRaid.Definitions.FirstOrDefault(d => d.Id == args[2]);
         if (definition == null) { Say(client, $"No raid {args[2]}; /epictest list shows them."); return; }
-        string sizeWord = args.Skip(3).FirstOrDefault(a => !a.StartsWith("focus=", StringComparison.OrdinalIgnoreCase) && a != "nohub" && a != "atstaging");
+        string sizeWord = args.Skip(3).FirstOrDefault(a => !a.StartsWith("focus=", StringComparison.OrdinalIgnoreCase) &&
+            !a.StartsWith("familiarity=", StringComparison.OrdinalIgnoreCase) &&
+            !a.StartsWith("latecall=", StringComparison.OrdinalIgnoreCase) && a != "nohub" && a != "atstaging");
+        if (args.Skip(3).FirstOrDefault(a => a.StartsWith("familiarity=", StringComparison.OrdinalIgnoreCase)) is string fam)
+            Say(client, SetFamiliarity(fam["familiarity=".Length..]));
+        if (args.Skip(3).FirstOrDefault(a => a.StartsWith("latecall=", StringComparison.OrdinalIgnoreCase)) is string late)
+            Say(client, SetLateCall(late["latecall=".Length..]));
         int size = SizeFor(sizeWord?.ToLowerInvariant(), definition.SuggestedBots);
         if (size <= 0) { Say(client, $"Size \"{sizeWord}\" is not a number of 8 or more, era or start."); return; }
         string[] focus = args.Skip(3).Where(a => a.StartsWith("focus=", StringComparison.OrdinalIgnoreCase))
