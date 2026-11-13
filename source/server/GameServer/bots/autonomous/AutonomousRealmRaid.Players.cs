@@ -132,6 +132,59 @@ namespace DOL.GS
         private static long _nextPlayerInvitePulse;
 
         /// <summary>
+        /// Raid invite boxes on a player's screen, not answered yet. The client has no way to take a box away, so when the
+        /// raid leaves (its battle starts) or ends while the box waits, the leader says so by tell, and a late yes gets a
+        /// plain "it left" instead of "no spot left". Owner's PC, 2026-11-12 (build af3fe271): the Golestandt box from 16:48
+        /// was still up at 17:50, 38 minutes after the raid went in, and a yes then got "sorry, no spot left for you after all".
+        /// </summary>
+        private sealed class OpenRaidBox
+        {
+            public string RaidId;
+            public long RaidCreated;
+            public string RaidName;
+            public GameBot Leader;
+            public GamePlayer Player;
+            public bool Told;
+        }
+
+        private static readonly Dictionary<string, OpenRaidBox> OpenRaidBoxes = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Why an open box's raid can no longer take the player: "raid_started", "raid_ended", or null.</summary>
+        public static string RaidBoxGone(bool running, bool started) => !running ? "raid_ended" : started ? "raid_started" : null;
+
+        /// <summary>The leader's tell when the raid leaves (or ends) while the player's box still waits.</summary>
+        public static string RaidBoxGoneTell(string why) =>
+            why == "raid_ended" ? "nvm, raid's off. next time" : "we're heading in now, catch the next one";
+
+        /// <summary>Each pulse: the boxes whose raid left or ended get their tell, once.</summary>
+        private static void PulseOpenRaidBoxes()
+        {
+            OpenRaidBox[] boxes;
+            lock (Sync) boxes = OpenRaidBoxes.Values.Where(b => !b.Told).ToArray();
+            foreach (OpenRaidBox box in boxes)
+            {
+                bool running, started;
+                lock (Sync)
+                {
+                    running = Raids.TryGetValue(box.RaidId, out Raid r) && r.Created == box.RaidCreated;
+                    started = running && r.Started;
+                }
+                string why = RaidBoxGone(running, started);
+                if (why == null) continue;
+                box.Told = true;
+                if (box.Player?.Client == null || box.Player.ObjectState != GameObject.eObjectState.Active)
+                {
+                    lock (Sync) OpenRaidBoxes.Remove(box.Player?.Name ?? "");
+                    continue;
+                }
+                if (box.Leader?.ObjectState == GameObject.eObjectState.Active)
+                    AutonomousLivingServer.Tell(box.Leader, box.Player, RaidBoxGoneTell(why));
+                if (Log.IsInfoEnabled)
+                    Log.Info($"RAID_PLAYER_INVITE outcome=box_expired event={box.RaidId} player=\"{box.Player.Name}\" leader=\"{box.Leader?.Name}\" reason={why}");
+            }
+        }
+
+        /// <summary>
         /// Every few seconds (BotLedGroups.Pulse): each level-50 player of a realm with a forming raid may get the raid
         /// leader's one invite.
         /// </summary>
@@ -139,6 +192,7 @@ namespace DOL.GS
         {
             if (now < _nextPlayerInvitePulse) return;
             _nextPlayerInvitePulse = now + BotLedGroups.PulseIntervalMs;
+            PulseOpenRaidBoxes();
             bool any;
             lock (Sync) any = Raids.Count > 0;
             if (!any) return;
@@ -214,9 +268,17 @@ namespace DOL.GS
                 LogPlayerInvite("not_sent", raid, player, blocked);
                 return;
             }
+            lock (Sync)
+                OpenRaidBoxes[player.Name] = new OpenRaidBox { RaidId = raid.Id, RaidCreated = raid.Created, RaidName = raid.Name, Leader = raid.Leader, Player = player };
             player.Out.SendCustomDialog(RealmRaidPlayerInvite.BoxText(raid.Leader.Name, raid.Name), (answering, response) =>
             {
                 BotLedGroups.MemoryOf(answering, GameLoop.GameLoopTime).Pending = false;
+                bool toldGone;
+                lock (Sync)
+                {
+                    toldGone = OpenRaidBoxes.TryGetValue(answering.Name, out OpenRaidBox open) && open.Told;
+                    OpenRaidBoxes.Remove(answering.Name);
+                }
                 if (response != 0x01)
                 {
                     // A no is final for this raid (it invited once and remembers it).
@@ -232,6 +294,15 @@ namespace DOL.GS
                     return;
                 }
                 LogPlayerInvite("not_joined", raid, answering, why);
+                if (why is "raid_started" or "raid_ended")
+                {
+                    // The raid left while the box waited: say that, not "no spot" (the leader already told them, if online).
+                    answering.Out.SendMessage(why == "raid_ended" ? $"The {raid.Name} raid is over." : $"The {raid.Name} raid has already gone in without you.",
+                        eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                    if (!toldGone && raid.Leader?.ObjectState == GameObject.eObjectState.Active)
+                        AutonomousLivingServer.Tell(raid.Leader, answering, RaidBoxGoneTell(why));
+                    return;
+                }
                 AutonomousLivingServer.Tell(raid.Leader, answering, "sorry, no spot left for you after all");
             });
         }
