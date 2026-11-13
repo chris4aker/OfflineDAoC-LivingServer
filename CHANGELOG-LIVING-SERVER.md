@@ -88,6 +88,23 @@ between two real PCs yet.
 - Not yet: the new (Godot) client can't use Join Friend, and a friend from a public address in `/grind` can still be
   dropped by the ping time-out.
 
+**Character passport: take your character to a friend's world and back** (built by rambodolphin13 for DividedRealms,
+`da78651` and `da92848`, cherry-picked with his authorship; thank you, rambodolphin13). In the launcher, **CHARACTER
+PASSPORT…** takes one of your characters to a friend's hosted world with its gear, quests and the coin you choose, and
+**COME HOME** brings it back with everything it earned. While it is away it is locked at home: it can't enter the world,
+be deleted or be moved. See [docs/CHARACTER-PASSPORT.md](docs/CHARACTER-PASSPORT.md).
+- A character is playable in one world at a time. A travel file works once (its trip id): home takes back only the trip
+  it is away on, and the host takes an outbound passport only once. Coin moves as a purse and is never copied.
+- Every step backs the world up first (`runtime\passport-backups`, the newest 6) and is all or nothing: a step that
+  fails leaves the world exactly as it was.
+- Living Server's own changes: every saved-progress table has a passport decision, and a test fails when a new one has
+  none; Living Server's social tables (gamebot memories, deeds, lore memory, companions) stay in their world; the passport
+  carries no account name or password; a name taken in the friend's world is refused and you pick a visiting name; a
+  Sluaghbinder visits only a world with the class on; the host's desk never creates accounts; and the host can turn new
+  visitors off (`passport` / `passport_visitors`) while visitors already there can still go home. Recall brings a
+  character back as it left if the friend's world is gone.
+- Automated tests only so far; nobody has made the trip between two real PCs yet.
+
 **Tales: the realm's storyteller, and stories by the fire** (the owner's idea, 2026-11-10: "a bot in faction asks another
 famous bot to tell the story about X..."; how it works: [docs/TALES.md](docs/TALES.md)). Built and covered by automated
 tests; nobody has heard one in game yet.

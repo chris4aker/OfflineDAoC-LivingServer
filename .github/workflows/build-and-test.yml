@@ -168,6 +168,19 @@ jobs:
             **/ui-preview/*.html
           if-no-files-found: warn
 
+      # Character passport (1.2, docs/CHARACTER-PASSPORT.md): the shared library the server and the launcher compile, its
+      # command line tool, and its tests on synthetic saves (round trip, no duplication, rollback, backups, and a decision
+      # for every table of progress-policy.json).
+      - name: Test the character passport
+        shell: bash
+        run: |
+          dotnet build source/tools/OfflineDaoc.Passport.Cli/OfflineDaoc.Passport.Cli.csproj -c Release
+          out=$(dotnet test source/tools/OfflineDaoc.Passport.Tests/OfflineDaoc.Passport.Tests.csproj -c Release 2>&1) || { echo "$out"; echo "::error title=Character passport tests::failed"; exit 1; }
+          summary=$(echo "$out" | grep -E "(Passed|Failed)!" | tail -n 1 || true)
+          echo "::notice title=Character passport tests::${summary:-no summary line found}"
+          server=$(dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "FullyQualifiedName~UT_PassportLock" 2>&1 || true)
+          echo "::notice title=Passport lock and desk tests (server)::$(echo "$server" | grep -E "(Passed|Failed)!" | tail -n 1 || true)"
+
       # Only after every server test passed: the installable server build (docs/RELEASE-PLAN.md).
       - name: Package the server build
         id: package
