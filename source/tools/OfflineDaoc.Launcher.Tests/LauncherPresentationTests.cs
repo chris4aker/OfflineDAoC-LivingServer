@@ -200,8 +200,8 @@ public sealed class LauncherPresentationTests
 
         Type snapshotType = mainFormType.GetNestedType("DashboardSnapshot", BindingFlags.NonPublic)!;
         object runningSnapshot = snapshotType.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-            .Single(constructor => constructor.GetParameters().Length == 12)
-            .Invoke(new object[] { "Running", null!, null!, 0, 0d, null!, 1d, 1d, false, null!, true, true });
+            .Single(constructor => constructor.GetParameters().Length == 13)
+            .Invoke(new object[] { "Running", null!, null!, 0, 0d, null!, 1d, 1d, false, null!, true, true, false });
         mainFormType.GetField("_stoppingServer", HiddenInstance)!.SetValue(form, false);
         mainFormType.GetMethod("UpdateXpRateControls", HiddenInstance)!.Invoke(form, new[] { runningSnapshot });
         var playerRate = (ComboBox)mainFormType.GetField("_playerXpRate", HiddenInstance)!.GetValue(form)!;
@@ -210,6 +210,8 @@ public sealed class LauncherPresentationTests
         Assert.That(playerRate.Enabled || botRate.Enabled, Is.False);
         var gm = (CheckBox)mainFormType.GetField("_makeMeGm", HiddenInstance)!.GetValue(form)!;
         Assert.That(gm.Enabled, Is.False);
+        var lean = (CheckBox)mainFormType.GetField("_leanMemory", HiddenInstance)!.GetValue(form)!;
+        Assert.That(lean.Enabled, Is.False, "Lean server memory is locked while the server runs, like the other options.");
         Assert.That(xpStatus.Text, Does.Contain("OPTIONS LOCKED"));
 
         mainFormType.GetMethod("ShowXpRateApplying", HiddenInstance)!.Invoke(form, new object[] { "3×", true });

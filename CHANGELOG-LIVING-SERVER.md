@@ -31,6 +31,12 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
 
 ## 1.2 (in development)
 
+**Lean server memory (a test option, off by default).** A new Options-tab switch starts the server with .NET's
+memory-saving garbage collection (4 heaps and "conserve memory", from the owner's friend Ryan's Linux setup). On a
+16-thread PC the server reached 7 GB after three hours of build 8, of which 1.9 GB was in use. The option changes
+nothing in play and takes effect at START SERVER. The server log's `SERVER_MEMORY_DIAGNOSTICS` line names the settings in
+force, so a session with it on can be compared with one without. Tests only so far.
+
 **Audit fixes (2026-11-13).** A review of everything the fork added since its last upstream sync, on the 1.2 candidate.
 - **A passport carries only character tables.** Its checksum proves the file is whole, not who wrote it, and arrival
   inserted every table the file named; a hand-made passport could have planted an account (a GM one) or server settings
