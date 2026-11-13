@@ -146,7 +146,9 @@ namespace DOL.UnitTests
                 Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 55, 0, 55), Is.True);
                 Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 33, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds, 55), Is.True,
                     "early departure at 60% after the hub's patience");
-                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 99, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds), Is.False);
+                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 99, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds), Is.True,
+                    "who came goes, three parties at least (2026-11-11; it was half)");
+                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 23, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds), Is.False);
                 Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 100, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds), Is.True,
                     "half of a full raid leaves after the hub's patience (2026-10-21)");
                 Assert.That(RealmRaidRecruitmentPolicy.RecruitCap(55), Is.EqualTo(72));
@@ -260,9 +262,14 @@ namespace DOL.UnitTests
                 Assert.That(SiegeDefenseBalance.NextShift(0, [true, true]), Is.Zero, "too few results");
                 Assert.That(SiegeDefenseBalance.NextShift(0, [true, true, true]), Is.EqualTo(SiegeDefenseBalance.Step),
                     "attackers took every keep: more defenders");
+                Assert.That(SiegeDefenseBalance.NextShift(0, [true, false, false, false, false, false]), Is.EqualTo(-SiegeDefenseBalance.Step),
+                    "attackers lost nearly every siege: fewer defenders");
+                // Owner 2026-11-09: about half. Three captures in six hold; two take defenders away, four (or two in three) add them.
                 Assert.That(SiegeDefenseBalance.NextShift(0, [true, false, true, false, false, false]), Is.EqualTo(-SiegeDefenseBalance.Step),
-                    "attackers lost most: fewer defenders");
-                Assert.That(SiegeDefenseBalance.NextShift(0, [true, true, false]), Is.Zero, "two in three: unchanged");
+                    "two in six: fewer defenders");
+                Assert.That(SiegeDefenseBalance.NextShift(0, [true, false, true, false, true, false]), Is.Zero, "half: unchanged");
+                Assert.That(SiegeDefenseBalance.NextShift(0, [true, true, false]), Is.EqualTo(SiegeDefenseBalance.Step),
+                    "two in three: more defenders");
                 Assert.That(SiegeDefenseBalance.NextShift(0.25, [true, true, true]), Is.EqualTo(0.375),
                     "past the share's limit the attackers' cap is trimmed (2026-11-06)");
                 Assert.That(SiegeDefenseBalance.RatioAt(0.75, 0.375), Is.EqualTo(1.0), "the share never more than 0.25 off the setting");

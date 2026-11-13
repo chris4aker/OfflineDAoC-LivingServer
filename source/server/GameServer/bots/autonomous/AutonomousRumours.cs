@@ -38,6 +38,21 @@ public static class AutonomousRumours
     private static readonly ConcurrentDictionary<string, long> LastAbout = new(StringComparer.OrdinalIgnoreCase);
     private static long _nextKeepCheck;
 
+    /// <summary>
+    /// A rumour /faction held (a scene, the ceiling, the spacing after a scene): it keeps its turn, tried again every few
+    /// seconds for up to three minutes while it is still so (1.1.3 RC1: a held rumour was lost, and /lstest said no bot had a
+    /// line for it).
+    /// </summary>
+    private sealed class Waiting
+    {
+        public string Topic, Key, Said;
+        public Dictionary<string, string> Slots;
+        public Func<bool> StillSo;
+        public long Exchange, Since, NextAt;
+    }
+
+    private static readonly ConcurrentDictionary<eRealm, Waiting> Due = new();
+
     #region Pure rules (unit tested)
 
     /// <summary>A spawn worth a rumour: a named monster of no realm, rare (20+ minute respawn), level 20 or more. Pure.</summary>
@@ -89,11 +104,8 @@ public static class AutonomousRumours
                     !RealmMayHear(realm, now) || !AboutIsFresh(key, NamedRest, now))
                     return 0;
                 var slots = new Dictionary<string, string> { ["target"] = monster.Name, ["place"] = zone.Description };
-                if (Say(realm, "named_up", slots, now))
-                {
-                    LastAbout[key] = now;
-                    Log.Info($"RUMOUR_NAMED realm={GlobalConstants.RealmToName(realm)} target=\"{monster.Name}\" zone=\"{zone.Description}\"");
-                }
+                Tell(realm, "named_up", slots, now, key, $"RUMOUR_NAMED realm={GlobalConstants.RealmToName(realm)} target=\"{monster.Name}\" zone=\"{zone.Description}\"",
+                    () => monster.IsAlive && monster.ObjectState == GameObject.eObjectState.Active && monster.SpawnTick == spawned);
                 return 0;
             }, 60_000 + Random.Shared.Next(180_000));
         }
@@ -123,26 +135,47 @@ public static class AutonomousRumours
         }
         var slots = new Dictionary<string, string> { ["target"] = named.Name, ["place"] = named.CurrentZone.Description };
         LastRumourAt.TryRemove(player.Realm, out _);
+        Due.TryRemove(player.Realm, out _);
         about = $"{named.Name} (level {named.Level}) in {named.CurrentZone.Description}";
-        // Say's reasons, told apart (in-game check 2026-10-28: "no bot had a line" was shown while a scene was playing).
-        if (AutonomousBotDebates.IsRunning(player.Realm))
+        GameNPC monster = named;
+        string outcome = Tell(player.Realm, "named_up", slots, GameLoop.GameLoopTime, null,
+            $"RUMOUR_NAMED realm={GlobalConstants.RealmToName(player.Realm)} target=\"{named.Name}\" zone=\"{named.CurrentZone.Description}\" forced=lstest",
+            () => monster.IsAlive && monster.ObjectState == GameObject.eObjectState.Active);
+        // The reasons, told apart (in-game checks 2026-10-28 and 2026-11-08: "no bot had a line" was shown for a held line).
+        switch (outcome)
         {
-            about += ": a /faction scene is playing; try again when it ends";
-            return false;
+            case null:
+                return true;
+            case "scene":
+                about += ", once the scene playing in /faction now is over";
+                return true;
+            case "ceiling":
+                about += ", as soon as /faction has room under its ceiling (it waits up to three minutes)";
+                return true;
+            case "spacing" or "duplicate" or "held":
+                about += ", in a few seconds (/faction just had a line)";
+                return true;
+            case "no_bot":
+                about += ": no bot of your realm is free to talk (all fighting, casting or offline)";
+                return false;
+            case "no_line":
+                about += ": no free bot of your realm had a line for it";
+                return false;
+            default:
+                about += $": {outcome.Replace('_', ' ')}";
+                return false;
         }
-        if (!Say(player.Realm, "named_up", slots, GameLoop.GameLoopTime))
-        {
-            about += ": no free bot of your realm had a line for it";
-            return false;
-        }
-        Log.Info($"RUMOUR_NAMED realm={GlobalConstants.RealmToName(player.Realm)} target=\"{named.Name}\" zone=\"{named.CurrentZone.Description}\" forced=lstest");
-        return true;
     }
 
     /// <summary>Every five minutes: an undefended enemy keep (AutonomousLivingWorld.Pulse).</summary>
     public static void Pulse(long now)
     {
-        if (!On || !AutonomousBotVoices.Enabled || now < _nextKeepCheck)
+        if (!On || !AutonomousBotVoices.Enabled)
+            return;
+        foreach (var (waitingRealm, waiting) in Due)
+            if (now >= waiting.NextAt)
+                Retry(waitingRealm, waiting, now);
+        if (now < _nextKeepCheck)
             return;
         _nextKeepCheck = now + 5 * 60_000;
         AbstractGameKeep[] keeps;
@@ -177,40 +210,114 @@ public static class AutonomousRumours
                     ["place"] = keep.CurrentZone?.Description ?? "the frontier",
                     ["enemy"] = AutonomousLivingServer.RealmPlural(keep.Realm),
                 };
-                if (Say(realm, "keep_thin", slots, now))
-                {
-                    LastAbout[key] = now;
-                    Log.Info($"RUMOUR_KEEP realm={GlobalConstants.RealmToName(realm)} keep=\"{keep.Name}\" guards={alive}/{guards.Length}");
-                }
+                AbstractGameKeep thin = keep;
+                Tell(realm, "keep_thin", slots, now, key, $"RUMOUR_KEEP realm={GlobalConstants.RealmToName(realm)} keep=\"{keep.Name}\" guards={alive}/{guards.Length}",
+                    () => thin.Realm != realm);
                 break;
             }
         }
     }
 
-    /// <summary>A bot of the realm passes the rumour on in /faction, and one or two react.</summary>
-    private static bool Say(eRealm realm, string topic, Dictionary<string, string> slots, long now)
+    /// <summary>
+    /// A rumour the realm should hear: said now, or (held by a scene, the ceiling or the spacing after a scene) waiting for its
+    /// turn (<see cref="Retry"/>). Null when said; else why not ("scene", "ceiling", "spacing" when it now waits; "no_bot",
+    /// "no_line", "no_audience", "waiting" when nothing waits: another rumour already does).
+    /// </summary>
+    private static string Tell(eRealm realm, string topic, Dictionary<string, string> slots, long now, string key, string said, Func<bool> stillSo)
     {
-        if (!AutonomousBotChatCoordinator.HasFactionAudience(realm) || AutonomousBotDebates.IsRunning(realm))
-            return false;
+        if (Due.ContainsKey(realm))
+            return "waiting";
+        long exchange = AutonomousChatExchange.NewId();
+        string why = Say(realm, topic, slots, now, exchange);
+        if (why == null)
+        {
+            if (key != null)
+                LastAbout[key] = now;
+            Log.Info(said);
+            return null;
+        }
+        if (why is "no_bot" or "no_line" or "no_audience")
+            return why;
+        // Held: it keeps its turn. Its rest and its subject's start now, so nothing else crowds in behind it.
+        if (key != null)
+            LastAbout[key] = now;
+        Due[realm] = new Waiting
+        {
+            Topic = topic, Slots = slots, Key = key, Said = said, StillSo = stillSo, Exchange = exchange, Since = now,
+            NextAt = now + AutonomousChatExchange.DueRetryMs,
+        };
+        Log.Info(AutonomousChatExchange.DueLog("rumour", realm, exchange, $" topic={topic} held={why}"));
+        return why;
+    }
+
+    /// <summary>A waiting rumour's next try: said, tried again in a few seconds, or given up (logged) after three minutes.</summary>
+    private static void Retry(eRealm realm, Waiting waiting, long now)
+    {
+        string why = waiting.StillSo != null && !waiting.StillSo() ? "no_longer_so" : Say(realm, waiting.Topic, waiting.Slots, now, waiting.Exchange);
+        if (why == null)
+        {
+            Due.TryRemove(realm, out _);
+            Log.Info($"{waiting.Said} waited_s={(now - waiting.Since) / 1_000}");
+            return;
+        }
+        if (why is "no_audience" or "no_longer_so" ||
+            AutonomousChatExchange.AfterTry(false, why, waiting.Since, AutonomousBotDebates.LastSceneEnd(realm), now) == AutonomousChatExchange.DueStep.GiveUp)
+        {
+            Due.TryRemove(realm, out _);
+            Log.Info(AutonomousChatExchange.DroppedLog("rumour", realm, waiting.Exchange, now - waiting.Since, why));
+            return;
+        }
+        waiting.NextAt = now + AutonomousChatExchange.DueRetryMs;
+    }
+
+    /// <summary>
+    /// A bot of the realm passes the rumour on in /faction, and one or two react (the replies share its exchange). Null when
+    /// it was said; else why not.
+    /// </summary>
+    private static string Say(eRealm realm, string topic, Dictionary<string, string> slots, long now, long exchange)
+    {
+        if (!AutonomousBotChatCoordinator.HasFactionAudience(realm))
+            return "no_audience";
+        if (AutonomousBotDebates.IsRunning(realm))
+            return "scene";
         GameBot[] bots = AutonomousBotRegistry.Snapshot()
             .Where(bot => bot.Realm == realm && AutonomousLivingServer.CanTalk(bot) && !AutonomousBeggars.Is(bot))
-            .OrderBy(_ => Random.Shared.Next()).Take(3).ToArray();
-        if (bots.Length == 0 || !AutonomousBotVoices.TryEventLine(bots[0], "rumour", out string line, topic, slots))
-            return false;
+            .OrderBy(_ => Random.Shared.Next()).Take(4).ToArray();
+        if (bots.Length == 0)
+            return "no_bot";
+        // The first of them with a line for it tells it (only the first was asked before).
+        GameBot teller = null;
+        string line = null;
+        foreach (GameBot bot in bots)
+            if (AutonomousBotVoices.TryEventLine(bot, "rumour", out line, topic, slots))
+            {
+                teller = bot;
+                break;
+            }
+        if (teller == null)
+            return "no_line";
+        // The rumour's rest starts even when /faction holds it (1.1.3): a held rumour waits its turn (Tell), not every tick.
         LastRumourAt[realm] = now;
-        AutonomousBotChatCoordinator.BroadcastFaction(bots[0].Name, realm, line);
-        AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), bots[0], line, "chat");
-        int due = 0;
-        foreach (GameBot bot in bots.Skip(1).Take(1 + Random.Shared.Next(2)))
+        bool said;
+        using (AutonomousChatExchange.Tag("rumour", exchange, 0, "teller", teller))
+            said = AutonomousBotChatCoordinator.BroadcastFaction(teller.Name, realm, line);
+        if (!said)
+            return AutonomousBotChatCoordinator.LastHeld ?? "held";
+        AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), teller, line, "chat");
+        int due = 0, index = 0;
+        foreach (GameBot bot in bots.Where(bot => bot != teller).Take(1 + Random.Shared.Next(2)))
         {
             due += 4_000 + Random.Shared.Next(9_000);
             GameBot speaker = bot;
+            int reply = ++index;
             AutonomousLivingServer.Later(speaker, due, () => AutonomousLivingServer.CanTalk(speaker), () =>
             {
-                if (AutonomousBotVoices.TryEventLine(speaker, "rumour_reply", out string reply, topic, slots))
-                    AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, reply);
+                if (!AutonomousBotVoices.TryEventLine(speaker, "rumour_reply", out string text, topic, slots))
+                    return;
+                using var tag = AutonomousChatExchange.Tag("rumour", exchange, reply, "reactor", speaker);
+                AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, text);
             });
         }
-        return true;
+        return null;
     }
 }

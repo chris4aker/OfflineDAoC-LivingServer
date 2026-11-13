@@ -290,7 +290,8 @@ public static class AutonomousBotBonds
                 return;
             if (!AutonomousBotVoices.TryEventLine(speaker, "bond", out string line, topic, slots))
                 return;
-            AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
+            if (!AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line))
+                return;
             AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), speaker, line, "chat");
             Log.Info($"BOND_TALK topic={topic} bot=\"{speaker.Name}\" other=\"{otherName}\" realm={GlobalConstants.RealmToName(realm)}");
             React(realm, speaker, other, topic, slots);

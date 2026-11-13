@@ -15,6 +15,24 @@ public static partial class AutonomousLivingServer
     public const long GroupedNoteIntervalMs = 30 * 60_000;
     public const long GreetPairCooldownMs = 45 * 60_000;
     public const long GreetPlayerCooldownMs = 3 * 60_000;
+    /// <summary>
+    /// One greeting per bot per meeting: a bot that greeted a player (or is about to) doesn't greet them again for this long,
+    /// whatever cleared the cooldowns (1.1.3 RC1, live check 2026-11-08: Cabowyn said "hey Manawatch! good to see you again"
+    /// and a second later "hey hey Manawatch, City of Camelot treat you well after i left?", the GM test having cleared the
+    /// cooldowns while the first greeting was on its way).
+    /// </summary>
+    public const long MeetingMs = 10 * 60_000;
+
+    /// <summary>Whether a bot may greet a player now: no greeting of its on the way, none said in this meeting. Pure.</summary>
+    public static bool MayGreet(long lastSaidAt, long pendingUntil, long now) => now >= pendingUntil && now - lastSaidAt >= MeetingMs;
+
+    // When each bot last greeted each player, and until when a greeting of its is on the way (not cleared by the GM tests).
+    private static readonly Dictionary<(long BotId, string Player), long> GreetSaidAt = new();
+    private static readonly Dictionary<(long BotId, string Player), long> GreetPendingUntil = new();
+
+    private static bool MayGreetNow((long, string) key, long now) =>
+        MayGreet(GreetSaidAt.TryGetValue(key, out long said) ? said : long.MinValue / 2,
+            GreetPendingUntil.TryGetValue(key, out long pending) ? pending : 0, now);
     public const long GossipRealmCooldownMinMs = 30 * 60_000;
     /// <summary>
     /// A bot greets a player it remembers within this range, well inside the 512 a /say carries, so a bot walking past is
@@ -138,7 +156,14 @@ public static partial class AutonomousLivingServer
         }
         GameBot greeter = TryGreet(player, GameLoop.GameLoopTime);
         if (greeter == null)
-            why = $"{known[0].Name} remembers you but is busy (fighting, casting, dead or in your group)";
+        {
+            bool met;
+            lock (LastGreeted)
+                met = !MayGreetNow((known[0].DatabaseID, player.Name), GameLoop.GameLoopTime);
+            why = met
+                ? $"{known[0].Name} already greeted you in this meeting (once per {MeetingMs / 60_000} minutes)"
+                : $"{known[0].Name} remembers you but is busy (fighting, casting, dead or in your group)";
+        }
         return greeter;
     }
 
@@ -237,18 +262,28 @@ public static partial class AutonomousLivingServer
                 row.Grouped + row.Rezzed + row.Abused == 0)
                 continue;
             var key = (bot.DatabaseID, player.Name);
+            int delay = 600 + Random.Shared.Next(1_200);
             lock (LastGreeted)
             {
-                if (LastGreeted.TryGetValue(key, out long greeted) && now - greeted < GreetPairCooldownMs)
+                if (LastGreeted.TryGetValue(key, out long greeted) && now - greeted < GreetPairCooldownMs || !MayGreetNow(key, now))
                     continue;
                 LastGreeted[key] = now;
                 LastGreetOfPlayer[player.Name] = now;
+                GreetPendingUntil[key] = now + delay + 1_000;
             }
             Dictionary<string, string> slots = MemorySlots(row, player);
             string mood = MoodOf(row);
             bool thanks = mood == "friendly" && row.LastTopic is "rez" or "group" && Random.Shared.NextDouble() < 0.3;
-            Later(bot, 600 + Random.Shared.Next(1_200), () => CanTalk(bot) && bot.IsWithinRadius(player, WorldMgr.SAY_DISTANCE), () =>
+            Later(bot, delay, () => CanTalk(bot) && bot.IsWithinRadius(player, WorldMgr.SAY_DISTANCE), () =>
             {
+                // The last word on it: one greeting per meeting, said or not.
+                lock (LastGreeted)
+                {
+                    GreetPendingUntil.Remove(key);
+                    if (!MayGreetNow(key, GameLoop.GameLoopTime))
+                        return;
+                    GreetSaidAt[key] = GameLoop.GameLoopTime;
+                }
                 string line = null;
                 if (thanks)
                     AutonomousBotVoices.TryEventLine(bot, "thanks", out line, row.LastTopic, slots, ["knows_player", "player_nearby"]);
@@ -283,7 +318,10 @@ public static partial class AutonomousLivingServer
             }
             if (AutonomousBotDebates.IsRunning(realm))
                 continue;
-            GossipAbout(players[Random.Shared.Next(players.Count)], out _);
+            // 1.1.3: gossip naming the player takes one of their turns (AutonomousChatEngagement), so it never piles on.
+            GamePlayer subject = players[Random.Shared.Next(players.Count)];
+            if (EngageTurn(subject, now))
+                GossipAbout(subject, out _);
         }
     }
 
@@ -313,7 +351,9 @@ public static partial class AutonomousLivingServer
             if (AutonomousBotVoices.TryEventLine(bot, "gossip", out string line, slots: MemorySlots(row, subject),
                     flags: flags.ToArray(), mood: "friendly"))
             {
-                Speak(bot, Channel.Faction, line);
+                // About the real player (1.1.3: a line about you is not held by the ceiling).
+                using (AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 0, "gossip", bot))
+                    Speak(bot, Channel.Faction, line);
                 return bot;
             }
             why = $"{bot.Name} had no gossip line that fits";

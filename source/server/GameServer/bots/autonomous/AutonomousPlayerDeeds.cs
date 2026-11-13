@@ -287,7 +287,7 @@ public static class AutonomousPlayerDeeds
         Log.Info($"PLAYER_DEED player=\"{player.Name}\" kind={TopicOf(kind)} target=\"{target}\" witness=\"{witness.Name}\"");
 
         var slots = SlotsOf(player, row);
-        slots["place"] = AutonomousLivingServer.PlaceOf(player);
+        slots["place"] = PlaceOfDeed(where, player);
         if (target != null) slots["target"] = target;
         if (count != null) slots["count"] = count;
         if (enemy != null) slots["enemy"] = enemy;
@@ -323,13 +323,109 @@ public static class AutonomousPlayerDeeds
         }
         Reputations.TryGet(KeyOf(player.Realm, player.Name), out OfflinePlayerReputationRecord row);
         var slots = SlotsOf(player, row);
-        slots["target"] = target ?? "a named monster";
+        // Where it could have happened: here, unless here is a capital (or, for a fight with the enemy, not the frontier).
+        Zone zone = player.CurrentZone;
+        string place = TestPlace(kind, zone?.Description,
+            PlausiblePlace(kind, AutonomousBotVoices.IsCapitalRegion(player.CurrentRegionID), IsFrontier(zone)), WorldZones(player.Realm), Random.Shared);
+        if (place == null)
+        {
+            why = "you are somewhere it couldn't have happened and no fitting zone was found; try in a hunting zone (the frontier for streak or ganked)";
+            return false;
+        }
+        // The real monster: the one targeted, else the nearest named one (1.1.3, after RC5: "kill a named monster").
+        target ??= kind is Kind.NamedSolo or Kind.NamedGroup ? NearestNamed(player) : null;
+        if (target == null && kind is Kind.NamedSolo or Kind.NamedGroup)
+        {
+            why = "no named monster is targeted or near you to have been killed; target one first";
+            return false;
+        }
+        slots["place"] = place;
+        if (target != null)
+            slots["target"] = target;
         slots["count"] = "5";
         slots["enemy"] = AutonomousLivingServer.RealmPlural(player.Realm == eRealm.Albion ? eRealm.Midgard : eRealm.Albion);
         Log.Info($"PLAYER_DEED player=\"{player.Name}\" kind={TopicOf(kind)} target=\"{target}\" witness=\"{witness.Name}\" forced=lstest");
         Tell(witness, player, TopicOf(kind), slots, 5_000, TellTries);
         why = witness.Name;
         return true;
+    }
+
+    /// <summary>How often a witnessed deed is told without its place (1.1.3, after RC5): now and then.</summary>
+    public const double NoPlaceShare = 0.15;
+
+    /// <summary>
+    /// Whether a deed's line must name its place: a deed a bot saw (not a reputation repeated, nor a nickname) with a known
+    /// place, but for one in <see cref="NoPlaceShare"/>. <paramref name="roll"/> is a draw in [0, 1). Pure.
+    /// </summary>
+    public static bool NamesPlace(string topic, bool hasPlace, double roll) =>
+        hasPlace && topic is "named_solo" or "named_group" or "rvr_streak" or "ganked" or "silly_death" or "fell" && roll >= NoPlaceShare;
+
+    /// <summary>A deed's slots as chat wrote them: the zone short ("black mtns", no "the"), the rest as they are. Pure but for the draw.</summary>
+    public static Dictionary<string, string> ChatSlots(IReadOnlyDictionary<string, string> slots, Random random = null)
+    {
+        var said = new Dictionary<string, string>(StringComparer.Ordinal);
+        if (slots == null)
+            return said;
+        foreach ((string key, string value) in slots)
+            said[key] = key == "place" && !string.IsNullOrWhiteSpace(value) ? AutonomousChatFieldTalk.ShortZone(value, random ?? Random.Shared) : value;
+        return said;
+    }
+
+    /// <summary>The nearest living named monster within 4,000 units of the player, or null.</summary>
+    private static string NearestNamed(GamePlayer player)
+    {
+        GameNPC best = null;
+        foreach (GameNPC npc in player.GetNPCsInRadius(4_000))
+            if (npc.IsAlive && IsNamed(npc.Name, npc.Realm == eRealm.None, npc is GameBot or GameKeepGuard || (npc.Flags & GameNPC.eFlags.PEACE) != 0) &&
+                (best == null || player.GetDistanceTo(npc) < player.GetDistanceTo(best)))
+                best = npc;
+        return best?.Name;
+    }
+
+    /// <summary>The zone a deed is told for: where it happened (the monster's or the player's body), else the player's.</summary>
+    private static string PlaceOfDeed(GameObject where, GamePlayer player) =>
+        where?.CurrentZone?.Description is { Length: > 0 } zone ? zone : AutonomousLivingServer.PlaceOf(player);
+
+    /// <summary>
+    /// Whether a deed of this kind could happen where the player stands: none in a capital (no named monster or deadly fall
+    /// there), and a kill streak or a gank only in the frontier (1.1.3 RC1, live check 2026-11-08: a forced deed read "saw
+    /// Manawatch's group take a named monster in City of Camelot"). Pure.
+    /// </summary>
+    public static bool PlausiblePlace(Kind kind, bool capital, bool frontier) =>
+        !capital && (kind is not (Kind.RvrStreak or Kind.Ganked) || frontier);
+
+    /// <summary>
+    /// The place a GM-forced deed names: where the player stands when it could happen there, else a zone where it could
+    /// (a frontier zone for a streak or a gank, a hunting zone of the player's realm for the rest), or null. Pure for a given random.
+    /// </summary>
+    public static string TestPlace(Kind kind, string here, bool herePlausible, IReadOnlyList<(string Name, bool Frontier, bool Home)> zones, Random random)
+    {
+        if (herePlausible && !string.IsNullOrEmpty(here))
+            return here;
+        bool rvr = kind is Kind.RvrStreak or Kind.Ganked;
+        var fits = zones.Where(z => !string.IsNullOrEmpty(z.Name) && (rvr ? z.Frontier : z.Home && !z.Frontier)).Select(z => z.Name).Distinct().ToArray();
+        return fits.Length == 0 ? null : fits[random.Next(fits.Length)];
+    }
+
+    private static bool IsFrontier(Zone zone) => zone != null && (zone.IsRvR || zone.ZoneRegion?.IsRvR == true);
+
+    /// <summary>The world's outdoor zones: frontier ones, and the realm's own hunting lands (no capital, no dungeon).</summary>
+    private static List<(string Name, bool Frontier, bool Home)> WorldZones(eRealm realm)
+    {
+        var zones = new List<(string Name, bool Frontier, bool Home)>();
+        foreach (Region region in WorldMgr.GetAllRegions())
+        {
+            if (region == null || AutonomousBotVoices.IsCapitalRegion(region.ID) || region.IsDungeon)
+                continue;
+            foreach (Zone zone in region.Zones)
+            {
+                if (zone == null || zone.IsDungeon || string.IsNullOrEmpty(zone.Description))
+                    continue;
+                bool frontier = IsFrontier(zone);
+                zones.Add((zone.Description, frontier, !frontier && AutonomousWorldBotController.ProtectedRealm(region.ID, zone.ID) == realm));
+            }
+        }
+        return zones;
     }
 
     private static Dictionary<string, string> SlotsOf(GamePlayer player, OfflinePlayerReputationRecord row)
@@ -395,8 +491,16 @@ public static class AutonomousPlayerDeeds
                     Tell(witness, player, topic, slots, RetryDelayMs(scene), tries - 1);
                 return;
             }
-            if (!AutonomousBotVoices.TryEventLine(witness, "deed", out string line, topic, slots))
+            // 1.1.3, after RC5: a witness names where it happened, as chat wrote the zone ("not lying, i just saw Manawatch kill a
+            // named monster, no help at all" named neither); a line without the place is the odd one out.
+            Dictionary<string, string> said = ChatSlots(slots);
+            string line = null;
+            if (!(NamesPlace(topic, said.ContainsKey("place"), Random.Shared.NextDouble()) &&
+                  AutonomousBotVoices.TryEventLine(witness, "deed", out line, topic, said, filter: l => l.Text.Contains("{place}", StringComparison.Ordinal))) &&
+                !AutonomousBotVoices.TryEventLine(witness, "deed", out line, topic, said))
                 return;
+            // About the real player's deed (1.1.3: not held by the ceiling).
+            using var playerTag = AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 0, "witness", witness);
             AutonomousBotChatCoordinator.BroadcastFaction(witness.Name, realm, line);
             AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), witness, line, "chat");
             React(realm, witness, player, topic, slots);
@@ -409,13 +513,17 @@ public static class AutonomousPlayerDeeds
             .Where(bot => bot != teller && bot.Realm == realm && AutonomousLivingServer.CanTalk(bot) && !AutonomousBeggars.Is(bot) &&
                           !(bot.CurrentRegion == player.CurrentRegion && bot.IsWithinRadius(player, WorldMgr.SAY_DISTANCE)))
             .OrderBy(_ => Random.Shared.Next()).Take(1 + Random.Shared.Next(3)).ToArray();
-        int due = 0;
+        int due = 0, index = 0;
+        // The reactions are lines of the deed's own exchange (its witness's line is line 0).
+        long deedExchange = AutonomousChatExchange.Current?.Exchange ?? AutonomousChatExchange.NewId();
         foreach (GameBot bot in reactors)
         {
             due += 3_000 + Random.Shared.Next(9_000);
             GameBot speaker = bot;
+            int reactionIndex = ++index;
             AutonomousLivingServer.Later(speaker, due, () => AutonomousLivingServer.CanTalk(speaker), () =>
             {
+                using var playerTag = AutonomousChatExchange.Tag("player", deedExchange, reactionIndex, "reactor", speaker);
                 if (AutonomousBotVoices.TryEventLine(speaker, "deed_reply", out string line, topic, slots))
                     AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
             });
@@ -477,6 +585,7 @@ public static class AutonomousPlayerDeeds
                 if (count != null) slots["count"] = count;
                 if (AutonomousBotVoices.TryEventLine(speaker, "deed", out string line, topic, slots))
                 {
+                    using var playerTag = AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 0, "witness", speaker);
                     AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
                     AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), speaker, line, "chat");
                     React(realm, speaker, player, topic, slots);

@@ -12,7 +12,62 @@ namespace DOL.GS
         private bool _dungeonTravelHeld;
         private GameNPC _dungeonThreatHoldBlocker;
         private long _dungeonThreatHoldSince;
+        // The last scan that held (AutonomousDungeonPolicy.ThreatHoldStart: one hold while the bot keeps holding).
+        private long _dungeonThreatHoldLast;
+        // Where the current hold began (AutonomousDungeonPolicy.ThreatHoldSamePlace).
+        private Vector3 _dungeonThreatHoldAt;
+        // A corridor threat this bot is walking around because its party is elsewhere (see SeparatedFromParty).
+        private GameNPC _dungeonThreatDetour;
         public const long DungeonThreatHoldLimitMilliseconds = 90_000;
+        // Diagnostics only (AUTONOMOUS_DUNGEON_HOLD_LONG): how long this bot has held in one place, counting every restart
+        // of the 90-second clock, and why the clock started again.
+        private long _dungeonHoldFirst;
+        private Vector3 _dungeonHoldFirstAt;
+        private int _dungeonHoldRestarts;
+        private long _dungeonHoldLongestGap;
+        private long _nextDungeonHoldLog;
+        /// <summary>A hold in one place this long is reported, and again at this interval while it lasts.</summary>
+        public const long DungeonHoldLongMilliseconds = 3 * 60_000;
+        /// <summary>Further than this from where the hold began, it is another hold.</summary>
+        public const float DungeonHoldSamePlace = 400f;
+
+        /// <summary>Whether a hold in one place is long enough to report now (pure): it has lasted
+        /// <see cref="DungeonHoldLongMilliseconds"/> and the last report is that old too.</summary>
+        public static bool HoldIsLong(long first, long now, long nextLog) =>
+            first > 0 && now - first >= DungeonHoldLongMilliseconds && now >= nextLog;
+
+        /// <summary>Counts one held scan and reports a bot that has held in one place for minutes although each hold is
+        /// limited to 90 seconds (duo30 and duo31, 2026-11-11: 60 and 39 raiders stood at the Summoner's Hall staging post
+        /// in Dodens Gruva on "Holding before dungeon threat" until the raid had wiped without them). Measures only.</summary>
+        private void NoteDungeonHold(GameBot bot, GameNPC blocker, long now, long gap, bool restarted, bool separated, bool raidTrash)
+        {
+            Vector3 at = new(bot.X, bot.Y, bot.Z);
+            // A new hold (the bot walked on, or came back to this spot after a death or a fight) is counted from now.
+            if (_dungeonHoldFirst <= 0 || Vector3.Distance(at, _dungeonHoldFirstAt) > DungeonHoldSamePlace ||
+                gap > AutonomousDungeonPolicy.ThreatHoldGapMilliseconds)
+            {
+                _dungeonHoldFirst = now;
+                _dungeonHoldFirstAt = at;
+                _dungeonHoldRestarts = 0;
+                _dungeonHoldLongestGap = 0;
+                _nextDungeonHoldLog = 0;
+                return;
+            }
+            if (restarted) _dungeonHoldRestarts++;
+            if (gap > _dungeonHoldLongestGap) _dungeonHoldLongestGap = gap;
+            if (!HoldIsLong(_dungeonHoldFirst, now, _nextDungeonHoldLog) || !Log.IsInfoEnabled) return;
+            _nextDungeonHoldLog = now + DungeonHoldLongMilliseconds;
+            AutonomousRealmRaid.View raid = AutonomousRealmRaid.GetTravelView(bot);
+            GameBot puller = AutonomousBotGroupCoordinator.PartyPuller(bot);
+            Log.Info($"AUTONOMOUS_DUNGEON_HOLD_LONG bot={bot.Name} id={bot.DatabaseID} class=\"{bot.CharacterClass?.Name}\" region={bot.CurrentRegionID} " +
+                     $"at={bot.X},{bot.Y},{bot.Z} total_s={(now - _dungeonHoldFirst) / 1000} unbroken_s={(now - _dungeonThreatHoldSince) / 1000} " +
+                     $"restarts={_dungeonHoldRestarts} longest_gap_ms={_dungeonHoldLongestGap} blocker=\"{blocker.Name}\" blockerLevel={blocker.Level} " +
+                     $"distance={bot.GetDistanceTo(blocker)} separated={separated} puller=\"{puller?.Name}\" isPuller={puller == bot} " +
+                     $"pullerRegion={puller?.CurrentRegionID ?? 0} pullerHealth={puller?.HealthPercent ?? 0} " +
+                     $"raid=\"{raid?.EventId}\" raidState=\"{raid?.State}\" raidHold={raid?.Hold} raidMuster={raid?.Muster} raidCrossing={raid?.Crossing} " +
+                     $"raidTrash={raidTrash} mayPull={AutonomousBotGroupCoordinator.CanInitiateNewPull(bot, corridorBlocker: true, raidTrash)} " +
+                     $"resting={_dungeonRouteResting}");
+        }
         private Vector3[] _dungeonProbeNodes;
         private Vector3 _dungeonProbeOrigin;
         private Vector3 _dungeonProbeDestination;
@@ -56,6 +111,47 @@ namespace DOL.GS
                 detour.HasValue ? "Taking a way around an epic monster instead of pulling it"
                     : "Walking past an epic monster without pulling it; the party defends itself if it comes",
                 epic.Name, _camp?.ZoneName ?? string.Empty);
+        }
+
+        /// <summary>The bot is in a group none of whose other living members is in its region.</summary>
+        private static bool SeparatedFromParty(GameBot bot)
+        {
+            Group group = bot?.Group;
+            if (group == null) return false;
+            bool others = false;
+            foreach (GameLiving member in group.GetMembersInTheGroup())
+            {
+                if (member == bot) continue;
+                others = true;
+                if (member.IsAlive && member.CurrentRegionID == bot.CurrentRegionID) return false;
+            }
+            return others;
+        }
+
+        /// <summary>A bot whose party is elsewhere walks around a corridor threat when the mesh has a way outside its aggro
+        /// (as around an epic monster); false when there is none, and it clears the threat instead.</summary>
+        private bool TryDetourSeparatedBlocker(GameBot bot, IPathfindingMgr nav, ReadOnlySpan<Vector3> corridor, GameNPC blocker,
+            Vector3 destination, GameNPC[] threats)
+        {
+            int aggro = (blocker.Brain as StandardMobBrain)?.AggroRange ?? 0;
+            Vector3? detour = FindRouteThreatDetour(nav, bot.CurrentZone, corridor, blocker, aggro,
+                AutonomousRouteThreatPolicy.MeleeMargin, destination, threats);
+            if (!detour.HasValue) return false;
+            _dungeonThreatDetour = blocker;
+            _dungeonThreatHoldLast = 0;
+            _routeRecoveryWaypoint = detour.Value;
+            _routeRecoveryArrivalRadius = 60;
+            _nextMoveOrderTick = 0;
+            _dungeonTravelHeld = false;
+            bot.ForcePathReplot();
+            if (Log.IsInfoEnabled)
+                Log.Info($"AUTONOMOUS_DUNGEON_SEPARATED_DETOUR bot={bot.Name} id={bot.DatabaseID} target=\"{blocker.Name}\" " +
+                         $"targetLevel={blocker.Level} aggro={aggro} region={bot.CurrentRegionID} at={blocker.X},{blocker.Y},{blocker.Z} " +
+                         $"reason=\"no party member in this region; going around instead of waiting for a puller\"");
+            SetStatus(bot, $"Going around {blocker.Name}", GoalText(),
+                "No party member is in this region to pull it; taking a way around on the way to the party",
+                blocker.Name, _camp?.ZoneName ?? string.Empty);
+            return true;
         }
 
         private void RejectDungeonRoute(GameBot bot, string reason)
@@ -131,6 +227,7 @@ namespace DOL.GS
             float epicAlong = float.MaxValue;
             if (_dungeonEpicsAvoided.Count > 0 && now >= _dungeonEpicsAvoidedUntil) _dungeonEpicsAvoided.Clear();
             if (_dungeonEpicDetour != null && !_routeRecoveryWaypoint.HasValue) _dungeonEpicDetour = null;
+            if (_dungeonThreatDetour != null && !_routeRecoveryWaypoint.HasValue) _dungeonThreatDetour = null;
             AutonomousRealmRaid.View raidView = AutonomousRealmRaid.GetTravelView(bot);
             bool inOwnRaidDungeon = raidView?.Camp != null && raidView.Camp.RegionId == bot.CurrentRegionID;
             bool botFloorResolved = AutonomousNavigationSurface.TryFloor(
@@ -155,7 +252,7 @@ namespace DOL.GS
                     AutonomousZoneItinerary.HasCompleteCorridor(
                         nav, bot.CurrentZone, botFloor, blockerFloor);
                 if (!AutonomousDungeonPolicy.CanSelectRouteBlocker(
-                        botFloorResolved, blockerFloorResolved, completeCorridor))
+                        botFloorResolved, blockerFloorResolved, completeCorridor) || npc == _dungeonThreatDetour)
                     continue;
                 if (!AutonomousDungeonPolicy.PullsOnRoute(npc is IGameEpicNpc,
                         string.Equals(_camp?.MonsterName, npc.Name, StringComparison.OrdinalIgnoreCase), inOwnRaidDungeon))
@@ -180,6 +277,11 @@ namespace DOL.GS
 
             int size = Math.Max(1, _groupDirective?.BotMemberCount ?? 1);
             ConColor con = ConLevels.GetConColor(bot.GetConLevel(blocker));
+            // Nobody of its party is in this region (a raid member left behind in another dungeon, PC 2026-11-09): no puller
+            // comes, so it does not wait for one, goes around the monster when the mesh has a way, and otherwise clears it.
+            bool separated = SeparatedFromParty(bot);
+            // An ordinary monster in the raid's own dungeon may be pulled while the raid holds (its muster walk).
+            bool raidTrash = inOwnRaidDungeon && blocker is not IGameEpicNpc;
             GameBot leader = _groupDirective?.Leader;
             bool rejoiningLeader = AutonomousDungeonPolicy.IsFollowerRejoinDestination(
                 _groupDirective?.IsDynamic == true,
@@ -200,8 +302,9 @@ namespace DOL.GS
                 _dungeonRouteResting = true;
                 return true;
             }
-            if (_groupDirective?.IsDynamic == true && _groupDirective.Puller != bot &&
-                AutonomousBotGroupCoordinator.TryHandoffDungeonBlocker(bot, blocker, out GameBot puller))
+            if (separated && TryDetourSeparatedBlocker(bot, nav, route[..count], blocker, destination, threats)) return false;
+            if (!separated && _groupDirective?.IsDynamic == true && _groupDirective.Puller != bot &&
+                AutonomousBotGroupCoordinator.TryHandoffDungeonBlocker(bot, blocker, out GameBot puller, raidTrash))
             {
                 _routeInterruptedByCombat = true;
                 SetStatus(bot, $"Clearing dungeon route: {blocker.Name}", GoalText(),
@@ -215,21 +318,39 @@ namespace DOL.GS
             // an enter/leave loop. Stop and clear it with the normal combat and
             // group-defense systems; death handling remains authoritative if
             // the encounter really is too difficult.
-            if (!rejoiningLeader && (!AutonomousBotGroupCoordinator.CanInitiateNewPull(bot, corridorBlocker: true) ||
+            if (!rejoiningLeader && (!AutonomousBotGroupCoordinator.CanInitiateNewPull(bot, corridorBlocker: true, raidTrash) ||
                 (_groupDirective?.IsDynamic == true && _groupDirective.Puller != bot)))
             {
                 // Bounded: a puller that is dead or elsewhere never comes. After DungeonThreatHoldLimit
-                // on the same blocker the member clears it; ordinary group defense joins the fight
-                // (109 Summoner's Hall raid members held in Marfach Caverns, 2026-10-06).
+                // of one unbroken hold the member clears it; ordinary group defense joins the fight
+                // (109 Summoner's Hall raid members held in Marfach Caverns, 2026-10-06). The clock no longer
+                // starts again when another monster becomes the first in the way (Ferken, PC 2026-11-09).
                 long holdNow = GameLoop.GameLoopTime;
-                if (_dungeonThreatHoldBlocker != blocker) { _dungeonThreatHoldBlocker = blocker; _dungeonThreatHoldSince = holdNow; }
-                if (holdNow - _dungeonThreatHoldSince < DungeonThreatHoldLimitMilliseconds)
+                long holdGap = _dungeonThreatHoldLast > 0 ? holdNow - _dungeonThreatHoldLast : 0;
+                long holdBefore = _dungeonThreatHoldSince;
+                _dungeonThreatHoldBlocker = blocker;
+                Vector3 holdAt = new(bot.X, bot.Y, bot.Z);
+                _dungeonThreatHoldSince = AutonomousDungeonPolicy.ThreatHoldStart(_dungeonThreatHoldSince, _dungeonThreatHoldLast, holdNow,
+                    Vector3.Distance(holdAt, _dungeonThreatHoldAt));
+                if (_dungeonThreatHoldSince != holdBefore) _dungeonThreatHoldAt = holdAt;
+                _dungeonThreatHoldLast = holdNow;
+                NoteDungeonHold(bot, blocker, holdNow, holdGap, _dungeonThreatHoldSince != holdBefore, separated, raidTrash);
+                if (AutonomousDungeonPolicy.HoldsForPuller(!separated, holdNow - _dungeonThreatHoldSince, DungeonThreatHoldLimitMilliseconds))
                 {
                     SetStatus(bot, "Holding before dungeon threat", GoalText(),
                         "Waiting for the intact group and its designated tank/leader puller before another fight");
                     return true;
                 }
+                // Past the limit the hold stays expired while the bot keeps meeting threats (the clock is not reset here),
+                // so it clears them instead of waiting another 90 s at the next scan.
             }
+            else _dungeonThreatHoldLast = 0;
+            // The status says what the bot does now, also when a ranged pull below takes the turn (it kept saying
+            // "Holding before dungeon threat" after the hold had ended).
+            SetStatus(bot, $"Clearing dungeon route: {blocker.Name}", GoalText(),
+                separated ? "No party member is in this region to pull it; clearing it on the way to the party"
+                    : "Stopped the live route to clear one visible threat before advancing",
+                blocker.Name, _camp?.ZoneName ?? string.Empty);
             // Count the visible aggro pack for diagnostics. A formerly-safe
             // blocker must still be engaged: rejecting the unrelated world
             // destination here made a bot stranded inside a dungeon select and
@@ -253,8 +374,9 @@ namespace DOL.GS
                         new(blocker.X, blocker.Y, blocker.Z),
                         new(other.X, other.Y, other.Z), nav.DefaultFilters);
             });
-            if (AutonomousDefensivePull.TryBeginFlyingHandoff(bot, blocker, corridorBlocker: true)) return true;
-            if (!SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
+            // A party pull (ranged pull, flying handoff) needs the party: a member alone in another region fights it itself.
+            if (!separated && AutonomousDefensivePull.TryBeginFlyingHandoff(bot, blocker, corridorBlocker: true)) return true;
+            if (!separated && !SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
                 AutonomousDefensivePull.TryBegin(bot, blocker)) return true;
             bot.TargetObject = blocker;
             _lastEngagedCon = con;

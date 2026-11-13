@@ -300,7 +300,7 @@ namespace DOL.AI.Brain
 		}
 		public void MorphIntoDemon()
         {
-			Body.Health = Body.MaxHealth;//heal to max hp
+			Body.Health = EpicEncounterMechanics.GovannonDemonHealth(Body.MaxHealth, Body.Health, EpicEncounterMechanics.AllowGovannonFullHeal);//heal to max hp (the original), or to 75% (1.2 default)
 			Body.Model = 636;//demon model
 			Body.Size = 170;//bigger size
 			Body.Strength = 800;//more dmg

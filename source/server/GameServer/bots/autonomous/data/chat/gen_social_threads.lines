@@ -78,7 +78,7 @@ A: on the boat again. this ride is so long | {q} anyone else on the boat right n
 B: boat rides are the best time to make a sandwich | perfect time to grab a snack
 C: or to read faction chat lol | thats when faction gets the most chatter
 A: where is everyone headed
-D: the shrouded isles, finally old enough for it | heading to the islands for the first time
+D: the shrouded isles, first trip out | heading to the islands for the first time
 ?B: enjoy, the first trip out there feels huge
 ~ 30
 E: long walks are worse. at least the boat drives itself | walking across a whole zone with no speed buff, now that is pain
@@ -169,7 +169,7 @@ C: pst me if nobody bites
 A: lf healer, anyone, its late and we are stuck | any healer awake? we have a full camp and nobody to keep us up
 B: every healer in the realm went to bed an hour ago
 A: at this point i will take anything with a heal spell
-B: i can heal a bit, but i am a hybrid with a tiny heal | i have a small heal. it is a small heal. a very small one
+B: best i can do is a hybrid friend with a tiny heal | i know a guy with a small heal. it is a small heal. a very small one
 A: a small heal is more than we have now | we will take it, any heal helps
 ~ 30
 B: night groups are always like this, everyone rolls damage | and then everyone wonders why there are no healers at night
@@ -186,7 +186,7 @@ A: and every rez you need, promise | rezzes too, guaranteed
 B: buying healers with loot, the oldest trade in the game
 E: fine, swapping chars, give me a few | logging over. if i fall asleep at the keyboard dont be mad
 A: you are a hero | best person in the realm
-?B: nobody tell my guild i was the backup healer
+?B: nobody tell my guild i recruited the backup healer
 @needs
 
 @topic failed_crafts
@@ -439,13 +439,14 @@ B: you will be fine. you care, that is most of the job | you will do fine, the w
 @role B type=Socialite
 @role C type=Leveler
 @role D type=Explorer
+@role A levels=10-19
 A: made another alt. that makes six | rolled another alt tonight. i have a problem
 B: alt-itis is a real disease | there is no cure for alt-itis, sorry
 C: what level is your main | how high is your main
 A: main is stuck in the 30s, the alts are all under 20 | main is mid 30s. everything else is a baby
 D: same story. every time i get bored at a camp i roll something | my main has not moved in weeks, but my alts are thriving lol
 ~ 25
-D: alts are how you learn other classes though | playing a healer alt made me a better tank
+D: alts are how you learn other classes though | my healer alt taught me more about groups than my main ever did
 ?B: and a better tipper
 C: but nobody levels anything to 50 that way | and then you never see 50
 A: thats the problem, the low levels are the fun part | the first twenty levels are just so fun
@@ -467,6 +468,7 @@ A: maybe | no promises
 @role C type=Socialite
 @role D type=NoLifer
 @role E type=Explorer
+@role A levels=1-9
 A: new player here, i died and lost xp? what do i do | {q} brand new, how do i get stuff back after dying
 B: go back to where you died and pray at your gravestone | find your grave and /pray at it, you get some xp back
 A: i have a grave?? | wait, i get a gravestone? that is creepy
@@ -475,7 +477,7 @@ D: dont worry about it much at your level, the penalty is tiny early | at low le
 ~ 25
 A: also how do i get a group, nobody answers
 E: say your level and class, like lfg {level} {class} | post lfg plus your level and class. people respond to that
-A: lfg, level eight, i hit things | ok. lfg ... whatever i am
+A: lfg, low level, i do stuff | ok. lfg ... whatever i am
 ?C: we have all typed that
 B: honestly at your level just solo the blues and yellows, groups come later | solo blue cons for now. you will find people in your teens
 A: whats a blue con
@@ -487,7 +489,7 @@ E: it gets better. also train your skills every level at your trainer | dont for
 A: oh. oh no. i never trained | wait what trainer
 C: go now, before you get killed by a rabbit | go. right now. we will wait
 A: ok i went. i am so much stronger lol | wow, i have like four new things now
-D: welcome to {realm} :) | there you go, a real {class} now
+D: welcome to {realm} :) | there you go, a real adventurer now
 E: pst me if you get stuck, i am around | send a tell anytime, happy to help
 
 @topic named_camp
@@ -561,6 +563,7 @@ A: perfect, still no agreement. see you saturday | nothing decided. like every r
 @role B type=Socialite
 @role C type=Explorer
 @role D type=Crafter
+@role A levels=48-50
 A: finally finished my epic quest | {q} done with the epic, armor is on
 B: gz! how does it look | gz!! describe it
 A: honestly? kinda silly | i look like a lamp
@@ -591,7 +594,7 @@ A: lol. lamp to the frontier | they will see me from across the map
 @role B type=Socialite
 @role C type=Leveler
 @role D type=NoLifer
-@role E type=*
+@role E class=Cleric,Friar,Healer,Shaman,Druid,Bard,Warden
 @role F type=Daredevil
 A: died at the bottom of {dungeon}, my bind is in {capital} | {q} died deep in {dungeon}. the run back is going to take forever
 B: oof, that run | the longest run in the game
@@ -628,7 +631,7 @@ C: first time i fought an orange and won | killing an orange solo with nothing l
 D: getting my first real weapon off a drop | the first time something dropped that i could actually use
 ~ 25
 A: and the worst?
-B: leveling through my 40s alone. so slow | the long empty stretch in the 40s. nobody around
+B: the long empty stretch where you solo for weeks | the long empty stretch where nobody is around
 E: a train through our camp. three deaths in a row, half a level gone. still bitter | the night i died so much my xp bar went backwards for an hour
 C: oh the backwards xp bar. the worst feeling | ouch, watching the bar shrink is brutal
 ?D: at least the next ding felt amazing lol
@@ -718,7 +721,8 @@ B: no, that is how it starts | that is how it gets to sunrise
 @role D type=Explorer
 @role E type=Leveler
 @role F type=Daredevil
-A: my friend is already 50 and i am 31. we started the same day | how is my buddy 50 when we started together
+@role A levels=20-39
+A: my friend is already 50 and i am not even 40. we started the same day | how is my buddy 50 when we started together
 B: does your friend sleep | they no-lifed it, clearly
 C: some people treat it like a race | the game starts at 50, some people believe that
 A: they say the real game starts at 50
@@ -737,7 +741,7 @@ F: well, realm ranks keep score | realm points are a scoreboard, just saying
 ?D: ok one finish line
 B: catch up in your own time, your friend will still be there | your friend will be in the frontier waiting either way
 A: true. maybe i will drag them to my camp for a night | think i will ask them to come hang out at my camp
-E: thats the best use of a 50 friend | lol, a 50 sitting at a camp of 30s
+E: thats the best use of a 50 friend | lol, a 50 sitting at a camp of lowbies
 
 @topic lost_explorer
 @levels 15-45
