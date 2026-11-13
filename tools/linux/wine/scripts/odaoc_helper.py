@@ -8,6 +8,7 @@ Commands
   manifest-parts <download-manifest.json> [key]  TSV: release name bytes sha256 (key = Parts|GamePatch|ClientPatch)
   manifest-field <download-manifest.json> <dotted.path>
   dotnet-sdk <releases.json> <rid>               TSV: version url sha512
+  dotnet-runtime <releases.json> <rid>           TSV: version url sha512 of the newest .NET runtime (Living Server)
   extract-split <dest> <rootfolder> <part>...    extract one zip split into raw parts (.zip.001 ...)
   extract-zips <dest> <rootfolder> <zip>...      extract independent zips, stripping rootfolder/
   sha256-concat <file>...                        sha256 of the files joined end to end
@@ -90,6 +91,21 @@ def cmd_dotnet_sdk(path, rid):
                     print("\t".join([s["version"], f["url"], f["hash"].lower()]))
                     return
     die("no .NET SDK %s download for %s in %s" % (want, rid, path))
+
+
+def cmd_dotnet_runtime(path, rid):
+    # Added by Living Server (2026-11-13): a player needs only the runtime, for shadowofze's patcher.
+    d = load(path)
+    want = d.get("latest-runtime")
+    for r in d["releases"]:
+        rt = r.get("runtime") or {}
+        if rt.get("version") != want:
+            continue
+        for f in rt.get("files", []):
+            if f.get("rid") == rid and f["name"].startswith("dotnet-runtime-") and f["name"].endswith(".tar.gz"):
+                print("\t".join([rt["version"], f["url"], f["hash"].lower()]))
+                return
+    die("no .NET runtime %s download for %s in %s" % (want, rid, path))
 
 
 class SplitReader(io.RawIOBase):
@@ -207,6 +223,7 @@ COMMANDS = {
     "manifest-parts": cmd_manifest_parts,
     "manifest-field": cmd_manifest_field,
     "dotnet-sdk": cmd_dotnet_sdk,
+    "dotnet-runtime": cmd_dotnet_runtime,
     "extract-split": cmd_extract_split,
     "extract-zips": cmd_extract_zips,
     "sha256-concat": cmd_sha256_concat,

@@ -62,13 +62,23 @@ Ryan's pieces, as of 80dc67b:
   - an update the launcher finds is installed with `linux/offlinedaoc update` instead of `apply-update.ps1`.
 - The native prototypes moved to `tools/linux/native/`.
 
+- **`tools/linux/setup.sh`**, the player's setup, cut down from Ryan's. It asks before each step and never uses sudo:
+  1. `check`: the tools, with the install commands for Ubuntu, Fedora and Arch;
+  2. `dotnet`: Microsoft's Linux .NET runtime, SHA-512 checked;
+  3. `game`: shadowofze's 0.36b plus the 0.37b update, checked against his manifests and applied with his own patcher.
+     `EDITION=0.37` takes 0.36 plus 0.37 instead;
+  4. `prefix`: the Wine folder with `corefonts vcrun2019 d3dx9`;
+  5. `living`: the newest Living Server release, checked against GitHub's digest, installed with `offlinedaoc install`;
+  6. `desktop`: an "Offline DAoC" menu entry.
+
+  So far only `list` and `dotnet` have run (container). The `game` step is Ryan's own logic, which he used on his
+  desktop. `EDITION=0.37` is untried.
+
 Still to do for the Wine route:
-- a player setup script from Ryan's: Wine and PowerShell checks, prefix, the 0.36b + 0.37b download with shadowofze's
-  patcher, then `offlinedaoc install`;
-- check which prefix verbs are needed;
-- a desktop entry;
+- check which prefix verbs the game needs: Ryan's desktop also has `dotnet35` and `dxvk`;
 - the friend's checklist;
-- the first run on Ryan's desktop.
+- the first run of `setup.sh` and `offlinedaoc` on Ryan's desktop;
+- a release asset that packs `tools/linux/` for players who don't use git.
 
 **Server memory.** Ryan saw the server grow to about 6 GB in a 48-minute session on a 16-core CPU. Server GC keeps
 one heap per logical CPU. The owner's PC has 16 logical CPUs too, so the same may happen on Windows. Check the
