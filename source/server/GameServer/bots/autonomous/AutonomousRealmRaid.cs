@@ -82,6 +82,9 @@ namespace DOL.GS
             /// <summary>Raiders walking back to the dungeon gather at the way in and go in together (RealmRaidReturnWave).</summary>
             public bool ReturnGathering;
             public long ReturnOpenUntil, ReturnWaitingSince;
+            /// <summary>Raiders seen inside the dungeon since the raid began. Only they are "on their way back"; a raider who
+            /// has never been in is still on the way in and is never held at the way in.</summary>
+            public readonly HashSet<long> BeenInside = new();
             public bool PreparationNoticeSent;
             public bool Forced;
             /// <summary>A play test's raid (/epictest): forced recruiting, but the automatic raid's clocks (late and short
@@ -1439,7 +1442,8 @@ namespace DOL.GS
                 if (!Membership.TryGetValue(group, out var raid) || !raid.Parties.TryGetValue(group, out var party)) return null;
                 // Walking back after a release while the raid gathers a return wave: it waits at its party's staging by the
                 // way in, as it did before the raid went in, and enters with the others (RealmRaidReturnWave).
-                if (raid.ReturnGathering && party.RallyView != null && bot.CurrentRegionID != raid.Definition.Region)
+                if (raid.ReturnGathering && party.RallyView != null && bot.CurrentRegionID != raid.Definition.Region &&
+                    raid.BeenInside.Contains(bot.DatabaseID))
                     return party.RallyView;
                 return raid.HubDeparted && party.CatchingUp.Contains(bot.DatabaseID)
                     ? party.DestinationView ?? party.View : party.View;
@@ -1462,10 +1466,18 @@ namespace DOL.GS
                 return;
             }
             int outside = 0, waiting = 0, fallen = 0;
+            // Owner's PC, 2026-11-12 (build ff5a8bc): Summoner's Hall's raid started from its staging town, and two minutes
+            // later every raider still walking to the far entrance was counted as "on the way back" and sent back to the town:
+            // nobody had reached the dungeon 7 minutes in. Only raiders who have been inside count now.
             foreach (GameBot b in raid.Support.OfType<GameBot>())
             {
+                if (b.IsAlive && b.CurrentRegionID == raid.Definition.Region)
+                {
+                    raid.BeenInside.Add(b.DatabaseID);
+                    continue;
+                }
+                if (!raid.BeenInside.Contains(b.DatabaseID)) continue;
                 if (!b.IsAlive) { fallen++; continue; }
-                if (b.CurrentRegionID == raid.Definition.Region) continue;
                 outside++;
                 if (IsStaged(raid, b)) waiting++;
             }
