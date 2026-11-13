@@ -88,6 +88,7 @@ internal sealed partial class MainForm : Form
     private readonly ComboBox _botXpRate = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 108 };
     private readonly CheckBox _makeMeGm = new() { Text = "Make Me a GM", AutoSize = true, ForeColor = DaocTheme.Parchment, Font = new Font("Georgia", 9f, FontStyle.Bold) };
     private readonly CheckBox _rvrAnnouncements = new() { Text = "RvR and battleground announcements", AutoSize = true, Checked = true, ForeColor = DaocTheme.Parchment, Font = new Font("Georgia", 9f, FontStyle.Bold) };
+    private readonly CheckBox _leanMemory = new() { Text = "Lean server memory", AutoSize = true, ForeColor = DaocTheme.Parchment, Font = new Font("Georgia", 9f, FontStyle.Bold) };
     private readonly CheckBox _pveAnnouncements = new() { Text = "PvE realm event announcements", AutoSize = true, Checked = true, ForeColor = DaocTheme.Parchment, Font = new Font("Georgia", 9f, FontStyle.Bold) };
     private readonly Label _xpSettingsStatus = new()
     {
@@ -605,7 +606,7 @@ internal sealed partial class MainForm : Form
         {
             Dock = DockStyle.Fill,
             ColumnCount = 3,
-            RowCount = 7,
+            RowCount = 8,
             BackColor = Color.Transparent,
         };
         layout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 210));
@@ -614,6 +615,7 @@ internal sealed partial class MainForm : Form
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
+        layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
@@ -651,7 +653,11 @@ internal sealed partial class MainForm : Form
         layout.SetColumnSpan(_pveAnnouncements, 2);
         layout.Controls.Add(XpRateDescription("Screen announcements when realm raids form, and to every realm when a final boss (epic dungeons, Summoner's Hall, Darkness Falls) is defeated."), 2, 5);
         _pveAnnouncements.CheckedChanged += async (_, _) => await SaveAnnouncementSettingAsync();
-        layout.Controls.Add(_xpSettingsStatus, 0, 6);
+        layout.Controls.Add(_leanMemory, 0, 6);
+        layout.SetColumnSpan(_leanMemory, 2);
+        layout.Controls.Add(XpRateDescription("Test option, off by default: the server keeps less memory in reserve. Gameplay is the same; it takes effect at START SERVER."), 2, 6);
+        _leanMemory.CheckedChanged += async (_, _) => await SaveLeanMemorySettingAsync();
+        layout.Controls.Add(_xpSettingsStatus, 0, 7);
         layout.SetColumnSpan(_xpSettingsStatus, 3);
         surface.Controls.Add(layout);
         return surface;
@@ -1526,6 +1532,8 @@ internal sealed partial class MainForm : Form
             _rvrAnnouncements.Enabled = editable;
             _pveAnnouncements.Checked = snapshot.PveAnnouncements;
             _pveAnnouncements.Enabled = editable;
+            _leanMemory.Checked = snapshot.LeanMemory;
+            _leanMemory.Enabled = editable;
             if (_savingXpRates)
             {
                 _xpSettingsStatus.ForeColor = DaocTheme.Success;
@@ -1644,6 +1652,32 @@ internal sealed partial class MainForm : Form
         retire.CommandText = "DELETE FROM ServerProperty WHERE `Key`='game_wide_announcements'";
         retire.ExecuteNonQuery();
         transaction.Commit();
+    }
+
+    private async Task SaveLeanMemorySettingAsync()
+    {
+        if (_loadingXpRates || _savingXpRates) return;
+        bool enabled = _leanMemory.Checked;
+        if (IsServerRunning() || FindExactServerProcess() is not null)
+        {
+            MessageBox.Show(this, "Stop the server before changing this option.", "Server is running");
+            await RefreshDashboardAsync();
+            return;
+        }
+        _savingXpRates = true;
+        _leanMemory.Enabled = _startButton.Enabled = false;
+        try
+        {
+            await Task.Run(() =>
+            {
+                using var connection = new SQLiteConnection($"Data Source={_database};Version=3;Pooling=False;Default Timeout=10");
+                connection.Open();
+                LeanServerMemory.Persist(connection, enabled);
+            });
+            _xpSettingsStatus.Text = enabled ? "Lean server memory is on from the next START SERVER." : "Lean server memory is off from the next START SERVER.";
+        }
+        catch (Exception ex) { MessageBox.Show(this, ex.Message, "Unable to save the memory option"); }
+        finally { _savingXpRates = false; await RefreshDashboardAsync(); }
     }
 
     private async Task SaveGmSettingAsync()
@@ -1925,7 +1959,7 @@ internal sealed partial class MainForm : Form
         bool rvrAnnouncements = ReadSwitch(connection, "rvr_battleground_announcements");
         bool pveAnnouncements = ReadSwitch(connection, "pve_realm_event_announcements");
         return new DashboardSnapshot(serverState, bots, groups, active, memoryMb, botAiDelay, playerXpRate, botXpRate, makeMeGm, ReadRvrWorld(),
-            rvrAnnouncements, pveAnnouncements);
+            rvrAnnouncements, pveAnnouncements, LeanServerMemory.Read(connection));
     }
 
     // Anything but an explicit "false" (including a missing row) reads as on.
@@ -2742,6 +2776,10 @@ internal sealed partial class MainForm : Form
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
             };
+            bool lean = false;
+            try { lean = LeanServerMemory.Read(_database); }
+            catch (Exception exception) when (exception is SQLiteException or IOException) { }
+            LeanServerMemory.Apply(startInfo.Environment, lean);
             _serverProcess = new Process { StartInfo = startInfo, EnableRaisingEvents = true };
             _serverProcess.OutputDataReceived += (_, args) => { if (args.Data is not null) _serverLog?.WriteLine(args.Data); };
             _serverProcess.ErrorDataReceived += (_, args) => { if (args.Data is not null) _serverLog?.WriteLine("ERROR: " + args.Data); };
@@ -3341,7 +3379,7 @@ internal sealed partial class MainForm : Form
     }
     private sealed record DashboardSnapshot(string ServerState, List<BotRow> Bots, List<GroupRow> Groups,
         int Active, double ServerMemoryMb, BotAiDelayReport? BotAiDelay, double PlayerXpRate, double BotXpRate, bool MakeMeGm = false, RvrWorldSnapshot? RvrWorld = null,
-        bool RvrAnnouncements = true, bool PveAnnouncements = true);
+        bool RvrAnnouncements = true, bool PveAnnouncements = true, bool LeanMemory = false);
 
     private sealed record LiveBotStatus(long BotId, int Level, string ZoneName, string Activity,
         string CurrentGoal, string TargetName, string TravelDestination, string ObjectiveProgress,
