@@ -1,3 +1,9 @@
+> **In Living Server:** Ryan's scripts from [ryan-grafana/offline-daoc-linux](https://github.com/ryan-grafana/offline-daoc-linux)
+> (commit 80dc67b, GPL-3.0, with his permission). They were written for Living Server **1.1-beta** on 0.37b and are
+> kept here as he published them. The one change: `install_living_server.py` refuses Living Server 1.1.2 and later
+> builds, because it doesn't install their server libraries or world backup. The Linux route built from them is in
+> [docs/LINUX.md](../../../docs/LINUX.md) §0.
+
 # Offline DAoC on Linux
 
 Scripts to install and run [Offline DAoC](https://github.com/shadowofze/OfflineDAoC) with the

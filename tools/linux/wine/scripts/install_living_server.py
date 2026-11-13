@@ -135,6 +135,18 @@ def main():
             stop("BUILD-INFO.txt has no %s." % k)
     print("Fork server build %s (commit %s) for Offline DAoC %s" % (info["BuildName"], info["Commit"], info["BaseRelease"]))
 
+    # Living Server 1.1.2 and later also install the server's own libraries (core/), back up the world first, and
+    # update or keep Living Server's own files (the loading screen). This port follows the 1.1-beta script and does
+    # none of that, so a newer build would be left half installed: refuse it (Living Server, 2026-11-13).
+    newer = [k for k in info if k.startswith("core/")]
+    cp_check = os.path.join(build, "content-patches.json")
+    if os.path.isfile(cp_check):
+        newer += [e.get("Path", "?") for e in as_list(json.load(open(cp_check, encoding="utf-8-sig")))
+                  if isinstance(e, dict) and (e.get("Replaces") or e.get("Keep"))]
+    if newer:
+        stop("This build is newer than this Linux install script knows (it ships %s). "
+             "It needs Living Server's own Linux install; see docs/LINUX.md." % ", ".join(sorted(newer)[:3]))
+
     # 1. this build's own files
     for name in ("GameServer.dll", "GameServer.pdb"):
         f = os.path.join(build, name)

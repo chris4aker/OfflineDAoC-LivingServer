@@ -24,6 +24,8 @@ The project's AI-developed additions do not remove upstream attribution.
 - The new client's converted zones, models, textures, sounds and interface art are derived from the
   original DAoC client's files, like the original client itself; they are not authored by this
   project.
+- Linux scripts in tools/linux/wine/: written by Ryan (github.com/ryan-grafana/offline-daoc-linux, commit
+  80dc67b), used under GPL-3.0 with his permission (2026-11-13).
 - Additional launcher/portal snapshots and bundled SDK/native/Python packages:
   retain their own licenses and notices; inclusion is not a blanket relicense.
 
