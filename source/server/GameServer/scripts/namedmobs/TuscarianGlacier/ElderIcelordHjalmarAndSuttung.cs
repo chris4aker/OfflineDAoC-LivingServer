@@ -147,11 +147,18 @@ namespace DOL.AI.Brain
             }
         }
 
-        public static bool IsBerserker = false;
+        // Per brain, and cleared whenever the stance cannot start or ends: as a static it stayed true when a fight ended
+        // (or Suttung died) before or during the stance, and no later Suttung ever went berserk until a restart
+        // (epic-bosses M6 kind).
+        private bool IsBerserker = false;
 
         public int BerserkerPhase(ECSGameTimer timer)
         {
-            if (Body.IsAlive && IsBerserker == true && Body.InCombat && HasAggro)
+            if (!(Body.IsAlive && IsBerserker == true && Body.InCombat && HasAggro))
+            {
+                IsBerserker = false;
+                return 0;
+            }
             {
                 BroadcastMessage(String.Format(Body.Name + " goes into berserker stance!"));
                 EncounterSignals.Note(Body, EncounterSignals.Berserk);//Living Server 1.2: the lore's "berserk" lines (LoreBossWatch)
@@ -172,8 +179,8 @@ namespace DOL.AI.Brain
                 Body.Strength = Body.NPCTemplate.Strength;
                 Body.Size = Convert.ToByte(Body.NPCTemplate.Size);
                 Body.MaxSpeedBase = Body.NPCTemplate.MaxSpeed;
-                IsBerserker = false;
             }
+            IsBerserker = false;
 
             return 0;
         }

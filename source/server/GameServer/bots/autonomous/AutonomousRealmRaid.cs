@@ -445,6 +445,17 @@ namespace DOL.GS
                             .FirstOrDefault(n => n.GetType().Name == definition.BossType && n.IsAlive);
                         if (boss != null) Bosses[definition.Id] = boss;
                     }
+                    // finals that stand from the start beside the event's boss (Queen Kula beside King Tuscar)
+                    foreach (string type in StandingFinals(definition).Where(t => t != definition.BossType))
+                    {
+                        string key = definition.Id + "/" + type;
+                        if (!Bosses.TryGetValue(key, out var standing) || standing.ObjectState != GameObject.eObjectState.Active)
+                        {
+                            var final = WorldMgr.GetRegion(definition.Region)?.Objects.OfType<GameNPC>()
+                                .FirstOrDefault(n => n.GetType().Name == type && n.IsAlive);
+                            if (final != null) Bosses[key] = final;
+                        }
+                    }
                 }
                 PulseSchedule(now);
                 PulseCalls(now);
@@ -1312,9 +1323,38 @@ namespace DOL.GS
         }
 
         private static bool Available(string id) => !Raids.ContainsKey(id) &&
-            Cooldowns.GetValueOrDefault(id) <= GameLoop.GameLoopTime && Bosses.TryGetValue(id, out var boss) &&
-            boss.IsAlive && !boss.IsRespawning && boss.ObjectState == GameObject.eObjectState.Active &&
-            (id != "epic-albion" || !ApocInitializator.PickedTarget);
+            Cooldowns.GetValueOrDefault(id) <= GameLoop.GameLoopTime && Up(Bosses.GetValueOrDefault(id)) &&
+            StandingFinalsUp(id) &&
+            (id != "epic-albion" || CaerSidiEncounterOpen(ApocInitializator.PickedTarget,
+                (Bosses[id] as ApocInitializator)?.EncounterRespawnRemainingMilliseconds ?? 0,
+                Fames.FamesIsUp || Bellum.BellumUP || Morbus.MorbusUP || Funus.FunusUp || Apocalypse.ApocUP));
+
+        private static bool Up(GameNPC npc) => npc != null && npc.IsAlive && !npc.IsRespawning && npc.ObjectState == GameObject.eObjectState.Active;
+
+        /// <summary>The finals in the world from the start (Tuscaran's King and Queen; Caer Sidi's Apocalypse and Galladoria's
+        /// Olcasgean appear or wake only during the fight, so only the event's boss object is watched there).
+        /// From Offline DAoC True 1.65 (shadowofze).</summary>
+        public static string[] StandingFinals(Definition definition) => definition.Region == 160 ? definition.FinalTypes : [definition.BossType];
+
+        // Tuscaran opened when the King was up although the Queen was respawning; the raid then killed him and waited for
+        // her (True 1.65 epic-bosses T5). Every standing final must be up.
+        private static bool StandingFinalsUp(string id)
+        {
+            Definition definition = Definitions.FirstOrDefault(d => d.Id == id);
+            if (definition == null) return false;
+            foreach (string type in StandingFinals(definition))
+                if (type != definition.BossType && !Up(Bosses.GetValueOrDefault(id + "/" + type))) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Caer Sidi (True 1.65 epic-bosses B2): the event was refused while the encounter had picked its challenger, which
+        /// stays set until 60 minutes after Apocalypse dies, so a raid that failed after waking the horsemen locked the event
+        /// until a restart. A waiting or wounded horseman, or Apocalypse, is an ordinary target for the next raid; only the
+        /// encounter's own respawn after Apocalypse died keeps it closed.
+        /// </summary>
+        public static bool CaerSidiEncounterOpen(bool challengerPicked, long encounterRespawnRemaining, bool anyEncounterUp) =>
+            encounterRespawnRemaining <= 0 && (!challengerPicked || anyEncounterUp);
 
         private static bool TryStaging(Raid raid, int slot, out Vector3 staging)
         {
@@ -2000,6 +2040,8 @@ namespace DOL.GS
                         GameLoop.GameLoopTime >= r.Deadline ? "Waiting" : !r.HubDeparted ? "Muster" : "Staging");
                 GameNPC boss = Bosses.GetValueOrDefault(d.Id);
                 long respawn = boss is ApocInitializator initializer ? initializer.EncounterRespawnRemainingMilliseconds : boss?.RespawnRemainingMilliseconds ?? 0;
+                foreach (string type in StandingFinals(d).Where(t => t != d.BossType))
+                    respawn = Math.Max(respawn, Bosses.GetValueOrDefault(d.Id + "/" + type)?.RespawnRemainingMilliseconds ?? 0);
                 long cooldown = Math.Max(0, Cooldowns.GetValueOrDefault(d.Id) - GameLoop.GameLoopTime);
                 string state = Available(d.Id) ? "Available" : respawn > 0 ? "Respawning" : cooldown > 0 ? "Event cooldown" : "Encounter unavailable";
                 return new Summary(d.Id, d.Name, GlobalConstants.RealmToName(d.Realm), state, 0, 0,

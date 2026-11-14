@@ -285,11 +285,33 @@ public static class AutonomousBotRealmAbilities
         }
     }
 
+    /// <summary>A crowd control lasting at least this long more is worth a healer's Purge in a PvE fight.</summary>
+    public const long HealerPurgeControlMilliseconds = 10_000;
+
+    /// <summary>
+    /// Pure: Purge on a stunned or mesmerized bot. As before in a fight against other realms or under 60% health. And
+    /// (dragon-fight L3) a healer in any fight held by a crowd control with 10 s or more left: the dragons stun everything
+    /// within 2,000 for about 40 s every two to three minutes, and the raid's healers stood stunned with Purge ready while
+    /// its fighters died (healers first, from heal threat). A veteran healer purges that.
+    /// </summary>
+    public static bool PurgeWanted(bool inCombat, int health, bool battleground, bool healer, long controlRemainingMs) =>
+        (inCombat || health < 90) && (battleground || health < 60) ||
+        inCombat && healer && controlRemainingMs >= HealerPurgeControlMilliseconds;
+
+    /// <summary>The longer of the bot's stun and mez, in milliseconds left (0 when neither).</summary>
+    private static long ControlRemaining(GameBot bot)
+    {
+        long stun = bot.IsStunned ? EffectListService.GetEffectOnTarget(bot, eEffect.Stun)?.GetRemainingTimeForClient() ?? 0 : 0;
+        long mez = bot.IsMezzed ? EffectListService.GetEffectOnTarget(bot, eEffect.Mez)?.GetRemainingTimeForClient() ?? 0 : 0;
+        return Math.Max(stun, mez);
+    }
+
     private static bool Wanted(GameBot bot, string key) => key switch
     {
-        // Crowd control in a fight against other realms (or when it is going badly).
-        Purge or PurgeReduced => (bot.IsMezzed || bot.IsStunned) && (bot.InCombat || bot.HealthPercent < 90) &&
-            (AutonomousWorldBotController.IsBattleground(bot) || bot.HealthPercent < 60),
+        // Crowd control in a fight against other realms (or when it is going badly), or a healer held by a long stun or
+        // mez in any fight (dragon-fight L3).
+        Purge or PurgeReduced => (bot.IsMezzed || bot.IsStunned) && PurgeWanted(bot.InCombat, bot.HealthPercent,
+            AutonomousWorldBotController.IsBattleground(bot), bot.CanCastHealSpells, ControlRemaining(bot)),
         IgnorePain or IgnorePainTank => bot.InCombat && bot.HealthPercent < 30 && !bot.IsMezzed && !bot.IsStunned,
         SecondWind => bot.InCombat && bot.EndurancePercent < 10 && !bot.IsMezzed && !bot.IsStunned,
         FirstAid => !bot.InCombat && bot.HealthPercent < 50 && !bot.IsSitting,

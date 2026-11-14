@@ -1033,6 +1033,19 @@ namespace DOL.GS.ServerRules
 
         private static GameStaticItemOwnerDamageComparer _gameStaticItemOwnerDamageComparer = new();
 
+        /// <summary>Once per gamebot party that took part in the kill (AutonomousBotGroupCoordinator.NoteCampBonus).</summary>
+        private static void NoteGamebotPartyCampBonus(GameNPC killedNpc, IEnumerable<GameBot> bots)
+        {
+            HashSet<Group> noted = null;
+            foreach (GameBot bot in bots)
+            {
+                if (bot is not { IsAutonomousWorldBot: true, IsPlayerLedGroup: false, Group: { } group } ||
+                    !(noted ??= new()).Add(group))
+                    continue;
+                AutonomousBotGroupCoordinator.NoteCampBonus(group, killedNpc.Name, killedNpc.CampBonus);
+            }
+        }
+
         public virtual void OnNpcKilled(GameNPC killedNpc, GameObject killer)
         {
             // Persistent autonomous bots represent real realm opponents in RvR.
@@ -1112,6 +1125,9 @@ namespace DOL.GS.ServerRules
                     AutonomousObjectiveAssignments.RecordPveKill(bot);
                     AutonomousGoalDiagnostics.Reward(bot, killedNpc, 0);
                 }
+
+            // A gamebot party moves on once its camp bonus runs dry (from True 1.65): the fraction this kill paid.
+            NoteGamebotPartyCampBonus(killedNpc, botCountAndDamage.Keys);
 
             // Camp bonus drops by 2% per kill.
             if (killedNpc.CampBonus > 0)

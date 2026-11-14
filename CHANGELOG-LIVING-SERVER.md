@@ -29,6 +29,60 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
   tactics place the raiders). Hand port from shadowofze's OfflineDAoC-True165 (`BotBrain.Flank.cs`, d2187a498), GPL-3.0,
   without its 1.65-mode switch and its companion "Positioning" option.
 
+**Boss fixes and raid play from True 1.65.** Ported from shadowofze's OfflineDAoC-True165 (v0.7, `f68cc75`; GPL-3.0),
+each commit credited to him. They pass automated tests; nobody has played them in game yet.
+
+- Boss scripts: Suttung's berserker stance can't be lost for good; Legion's blast lock-out can't stick; Govannon summons a
+  Shade of Aelfgar every time his adds reach the centre, his reset restores his strength, size and model, and the
+  database Shade beside him no longer spawns; Vifil's tunnel guardians and Lossren's infected ghoul come back after a
+  reset; a dragon lands with an empty aggro list, resets after 8 s out of combat, and Cuuldurach's take-off has the
+  other dragons' route guard; boss kill news counts the gamebots; High Lord Baln and Moran the Mighty call only their
+  own kind; Olcasgean and the Giant Sporite Cluster pay out once, from one body.
+- Raids: Caer Sidi no longer locks after a failed horseman fight (the raid schedule skipped it until a restart), and
+  Tuscaran opens only with King Tuscar and Queen Kula both up.
+- Raid play: healers purge a long stun or mez (10 s or more left) in any fight; raid healers heal a realm player fighting beside the raid without
+  joining a party; casters and archers stand inside Legion's 1,400 damage range; pets leave Summoner Lossren (5 damage
+  from pets) for an add, or come back; outside raids, damage dealers step behind a monster that parries or evades 40% or
+  more.
+- Camps: a chosen camp counts at once; a solo bot leaves a crowded, emptied camp after 15 s; a party counts as all its
+  members; camps of the same monster within 5,000 share their bots and monsters; the camp draw favours empty and near
+  camps; a party's puller takes the monster standing apart first (Prima); a party moves on after five kills in a row
+  with under a quarter of the camp bonus left; spots that keep coming up empty draw less and then rest (capnbry source-empty camps stay on: True 1.65 replaces them
+  with a live-camp pass 1.2 doesn't have yet); overlapping camps
+  of one monster merge, and a monster with many camps no longer takes most draws; a camp among aggressive monsters 10+
+  levels above it is skipped by bots they would outlevel; a solo bot with no ranged attack skips flyer camps; a solo bot
+  that left a crowded camp skips its copies for 10 minutes, and one held to easier camps after a death may take an
+  uncrowded camp one con harder when all of its own are crowded (never the con that killed it).
+- Camp knowledge (Prima): the camp builder works out each camp's pack density, casters, creature type and weaknesses.
+  Parties without crowd control draw dense camps less, pure melee classes draw caster camps less, Hunters,
+  Spiritmasters and Nightshades draw their favourite prey more, and a solo bot draws camps weak to its damage more.
+- Parties stand by role once they have a camp: tanks in front toward it, melee on the flanks, healers and casters
+  behind.
+- Knowing when to leave (switch `bot_veteran_retreat`, on): a gamebot party calls RUN while everyone is still alive,
+  when more monsters are loose than its tanks can hold with no mez ready and the fight already going wrong, or its
+  healers are out of power, or dead. It runs to a friendly bindstone within 4,000, else the camp's safe spot (worked out
+  ahead on the side with the fewest monsters), else back the way it came, and its next camp is easier. A solo gamebot
+  losing badly with no heal or crowd control ready bails out the same way, once per fight; a solo caster steps back
+  from a monster it rooted or snared; a healer in a player's group (a hired one, or a gamebot with a resurrection spell) whose player died in a lost
+  fight runs and comes back to raise. A party hosting a real player never calls RUN.
+  The party reads one shared picture of its fight (the fight board), rebuilt at most once a second.
+- Darkness Falls: every keep capture recounts all three realms. The realm with the most keeps holds the door; on a tie
+  for most, a holder among the tied keeps it, otherwise nobody does (a capture with no holder used to hand it to the
+  taker).
+
+- Prima content (prepared, not in a world yet): the scripts of True 1.65's 16 Prima scripted encounters (Cuinn,
+  Talvor's Spirit, Brungar, Zargin, the Unseelie Envoy's convoy, Thergus's ogre war and more) are in the server; they
+  start only on world rows that name them, which only a base-game world update can add. `source/tools/
+  true165_prima_content.py` adds those rows, and the Prima monsters, items, quests and drops a world lacks, to a
+  release's reference world; see docs/TRUE165-CONTENT.md. True 1.65's keep-guard restore is not needed in 1.2's world.
+
+Not taken, because 1.2 already does it its own way: the route-proof cap, Sanguis's last 5%, Govannon's raid calls and
+area spells, the dragon lair circle, the Spectral Provisioner (raid bots already wake it) and the Cunovinda and Shade
+teleports (already behind 1.2's displacement switch). Not taken: the party-pull camp turn (it fixes a
+stall 1.2's pull code doesn't have), level-1 blue-only targeting, the full-backpack fallback (built for True 1.65's
+brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and its keep-guard restore (not needed in
+1.2's world).
+
 ## 1.2 (in development)
 
 **The play test's sweep (GM only).** `/epictest sweep start [all|event,event] [guest]` runs every raid once, one after

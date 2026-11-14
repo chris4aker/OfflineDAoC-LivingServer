@@ -79,7 +79,7 @@ namespace DOL.GS
                 var mobs = GetNPCsInRadius(3000);
                 foreach (GameNPC mob in mobs)
                 {
-                    if (!mob.InCombat)
+                    if (!mob.InCombat && EpicEncounterMechanics.IsOwnKind(this, mob))
                     {
                         mob.StartAttack(ad.Attacker);
                     }

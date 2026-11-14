@@ -11,7 +11,7 @@ using DOL.GS.ServerProperties;
 
 namespace DOL.GS.Scripts
 {
-    public class Legion : GameEpicBoss
+    public class Legion : GameEpicBoss, IRaidBossTraits
     {
         private static new readonly Logging.Logger log = Logging.LoggerManager.Create(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -262,9 +262,10 @@ namespace DOL.GS.Scripts
         }
         private void ReportNews(GameObject killer)
         {
-            int numPlayers = AwardLegionKillPoint();
-            String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, EpicKillForce.Count(this, numPlayers));
-            NewsMgr.CreateNews(message, killer.Realm, eNewsType.PvE, true);
+            AwardLegionKillPoint();
+            int numPlayers = EpicEncounterMechanics.ForceSize(this);
+            String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, numPlayers);
+            NewsMgr.CreateNews(message, killer?.Realm ?? eRealm.None, eNewsType.PvE, true);
 
             if (Properties.GUILD_MERIT_ON_LEGION_KILL <= 0) return;
             foreach (GamePlayer player in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
@@ -291,6 +292,8 @@ namespace DOL.GS.Scripts
                 Health += ad.Damage / 4;
             base.DealDamage(ad);
         }
+        // Raid-boss traits for the bots (bots/RaidBossTraits.cs, from True 1.65): the 1,400 of TakeDamage above.
+        public int RaidMaxDamageRange => 1400;
     }
 }
 
@@ -309,7 +312,10 @@ namespace DOL.AI.Brain
         public static bool RemoveAdds = false;
         public static bool IsCreatingSouls = false;
         public static bool CanThrow = false;
-        public static bool CanPbaoe = false;
+        // The blast lock-out belongs to this brain, not to the class: as a static it outlived a reset or a death that
+        // stopped its 10 s timer, and the blast never fired again until a restart (df-bosses M3). It is cleared
+        // wherever that timer is stopped, and a respawned Legion gets a new brain.
+        private bool CanPbaoe = false;
         #region Health check bools
         public static bool adds1 = false;
         public static bool adds2 = false;
@@ -377,6 +383,8 @@ namespace DOL.AI.Brain
                     castaoe.Stop();
                     Body.TempProperties.RemoveProperty("legion_castaoe");
                 }
+                CanPbaoe = false;
+                bladeturnConsumed = 0;
             }
             if (Body.InCombatInLast(60 * 1000) == false && Body.InCombatInLast(65 * 1000))
             {

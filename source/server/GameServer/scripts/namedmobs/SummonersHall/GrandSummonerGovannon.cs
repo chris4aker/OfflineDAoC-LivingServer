@@ -240,6 +240,9 @@ namespace DOL.AI.Brain
 				Body.Health = Body.MaxHealth;
 				if (!RemoveAdds)
 				{
+					// A reset also undoes his phases (sh-bosses M5): before, Strength, size and model were restored only by
+					// the 30-35 s window below, so a raid back inside 30 s met Strength 800 and the demon at full health.
+					RestoreTemplateForm();
 					foreach (GameNPC npc in WorldMgr.GetNPCsFromRegion(Body.CurrentRegionID))
 					{
 						if (npc != null)
@@ -290,13 +293,19 @@ namespace DOL.AI.Brain
 			}
 			if (Body.InCombatInLast(30 * 1000) == false && this.Body.InCombatInLast(35 * 1000) && !HasAggro)
 			{
-				INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(18801);
 				Body.Health = Body.MaxHealth;
-				Body.Model = Convert.ToUInt16(npcTemplate.Model);
-				Body.Size = Convert.ToByte(npcTemplate.Size);
-				Body.Strength = Convert.ToInt16(npcTemplate.Strength);
+				RestoreTemplateForm();
 			}
 			base.Think();
+		}
+		private void RestoreTemplateForm()
+		{
+			INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(18801);
+			if (npcTemplate == null)
+				return;
+			Body.Model = Convert.ToUInt16(npcTemplate.Model);
+			Body.Size = Convert.ToByte(npcTemplate.Size);
+			Body.Strength = Convert.ToInt16(npcTemplate.Strength);
 		}
 		public void MorphIntoDemon()
         {
@@ -332,7 +341,10 @@ namespace DOL.AI.Brain
         {
 			if (SummonedSacrifice.SacrificeKilledCount == 1 && SummonedDemon.SummonedDemonCount == 1)//both summoned demon and sacrifice must be killed
 			{
-				if (ShadeOfAelfgar.ShadeOfAelfgarCount == 0)//make sure there is only 1 always
+				// Only one Shade at a time. The old gate read ShadeOfAelfgarCount, which counts Shade deaths and is reset
+				// only by a new Shade, so after the first Shade was killed none ever came again until a restart (epic-bosses
+				// M6 kind). The scan runs only once both adds have reached the centre, until the Shade appears.
+				if (!ShadeOfAelfgarAlive())
 				{
 					ShadeOfAelfgar Add1 = new ShadeOfAelfgar();
 					Add1.X = 32128;
@@ -347,6 +359,13 @@ namespace DOL.AI.Brain
 					SummonedSacrifice.SacrificeKilledCount = 0;
 				}
 			}
+		}
+		private bool ShadeOfAelfgarAlive()
+		{
+			foreach (GameNPC npc in Body.GetNPCsInRadius(5000))
+				if (npc is ShadeOfAelfgar && npc.IsAlive)
+					return true;
+			return false;
 		}
 		private Spell m_GovannonDot;
 		public Spell GovannonDot
@@ -594,6 +613,11 @@ namespace DOL.GS
 		}
 		public override bool AddToWorld()
 		{
+			// The Shade is Govannon's summon. A database row (from the 2022 world) also stood one 137 units from him, so
+			// a raid could pull it with him before his 80% phase, and its death then blocked that phase's own Shade. Only
+			// the script's Shade comes into the world.
+			if (!LoadedFromScript)
+				return false;
 			INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(18803);
 			LoadTemplate(npcTemplate);
 

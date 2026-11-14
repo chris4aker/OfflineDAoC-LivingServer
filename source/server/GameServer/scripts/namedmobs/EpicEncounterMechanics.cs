@@ -398,6 +398,60 @@ namespace DOL.GS
             return pet;
         }
 
+        /// <summary>
+        /// The size of the force a boss kill notice reports: the real players and the gamebots around the body. The notices
+        /// counted real players only, so a bot raid's kill read "slain by a force of 0 warriors" (dragon-fight M4).
+        /// </summary>
+        public static int ForceSize(GameNPC boss)
+        {
+            if (boss == null)
+                return 0;
+            int count = boss.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE).Count;
+            foreach (GameNPC npc in boss.GetNPCsInRadius(WorldMgr.VISIBILITY_DISTANCE))
+                if (npc is GameBot)
+                    count++;
+            return count;
+        }
+
+        /// <summary>
+        /// Who a boss's call for help reaches: its own kind, a living monster of its realm that is nobody's pet. High Lord
+        /// Baln's first hit ordered every idle NPC within 3,000 to attack, so a raid's own gamebots and pets were told to
+        /// turn on the raider who struck him (Darkness Falls audit M1, 2026-11-11).
+        /// </summary>
+        public static bool IsOwnKind(GameNPC boss, GameNPC mob) =>
+            boss != null && mob != null && mob != boss &&
+            IsOwnKind(mob.Realm == boss.Realm, mob is GameBot, mob.Brain is DOL.AI.Brain.IControlledBrain, mob.IsAlive,
+                (mob.Flags & GameNPC.eFlags.PEACE) != 0);
+
+        public static bool IsOwnKind(bool sameRealm, bool isGameBot, bool hasControlledBrain, bool isAlive, bool isPeaceful) =>
+            sameRealm && isAlive && !isGameBot && !hasControlledBrain && !isPeaceful;
+
+        /// <summary>
+        /// Encounters of several bodies that share one health pool (Olcasgean and his second body, the Giant Sporite
+        /// Cluster and its copies) die together, but each body paid out its own loot and experience to whoever had hit
+        /// that body, so a raid that hit two bodies was paid twice (epic-bosses M5). The body that pays takes over the
+        /// others' attackers with this before it dies; the others are left with none and pay nothing.
+        /// </summary>
+        public static void TransferDamageCredit(GameLiving from, GameLiving into)
+        {
+            if (from == null || into == null || from == into)
+                return;
+            System.Collections.Generic.Dictionary<GameLiving, double> taken = new();
+            lock (from.XpGainersLock)
+            {
+                MergeDamageCredit(from.XPGainers, taken);
+                from.XPGainers.Clear();
+            }
+            lock (into.XpGainersLock)
+                MergeDamageCredit(taken, into.XPGainers);
+        }
+
+        public static void MergeDamageCredit<T>(System.Collections.Generic.IDictionary<T, double> from, System.Collections.Generic.IDictionary<T, double> into)
+        {
+            foreach (var pair in from)
+                into[pair.Key] = into.TryGetValue(pair.Key, out double already) ? already + pair.Value : pair.Value;
+        }
+
         public static bool FightIsOver(GameNPC boss) => boss == null || !boss.IsAlive || !boss.InCombatInLast(ResetQuietMilliseconds);
     }
 }

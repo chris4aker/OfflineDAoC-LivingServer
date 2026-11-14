@@ -333,6 +333,8 @@ public static partial class AutonomousBotGroupCoordinator
             if (!UpdateSession(session, members))
                 return null;
             members = BotMembers(session.Group);
+            // True 1.65 (veteran review M11): the role-aware layout follows camp, member and role changes
+            RefreshRoleFormation(session, members);
             if (bot.Group != session.Group || members.Length == 0)
                 return null;
             return BuildDirective(session, members);
@@ -1392,6 +1394,9 @@ public static partial class AutonomousBotGroupCoordinator
 
     private static Vector3 DesiredFormationPoint(GameBot bot, Vector3 center, bool tight)
     {
+        // True 1.65 (veteran review M11): tanks in front toward the camp, healers and casters behind (RoleFormation)
+        if (TryRoleFormationPoint(bot, center, tight, out Vector3 rolePoint))
+            return rolePoint;
         GameBot[] members = BotMembers(bot?.Group)
             .OrderBy(member => member.DatabaseID > 0 ? member.DatabaseID : member.ObjectID)
             .ToArray();
@@ -2029,6 +2034,11 @@ public static partial class AutonomousBotGroupCoordinator
         // Bot-led groups: the hosted player is observed once per pass (meetup, pace, pull gate, AFK, linkdead).
         if (session.HostedPlayer != null && raidView == null && leader != null)
             StepHostedPlayer(session, members, leader);
+        // True 1.65 (veteran review M6): a fighting party calls RUN before a wipe (AutonomousBotGroupCoordinator.GroupRun)
+        // Not while the party hosts a real player: the bots would run and leave the player with the pack.
+        if (raidView == null && leader != null && session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve &&
+            session.HostedPlayer == null)
+            CheckGroupRun(session, members, leader);
         // B4: the natural break ("last pull then town") and the search for a replacement.
         if (raidView == null && leader != null && StepNaturalBreak(session, members, leader))
             return false;
@@ -2676,6 +2686,7 @@ public static partial class AutonomousBotGroupCoordinator
         if (TryOfferLeadToLastBot(session, reason))
             return;
         session.Ending = true;
+        BotGroupRetreat.Clear(session.Group);
         GameBot[] members = AllBotMembers(session.Group);
         if (session.ObjectiveKind == eAutonomousObjectiveKind.RvR)
             AutonomousRvrEventLayer.RemoveForce(session.Id);

@@ -92,9 +92,9 @@ namespace DOL.GS
 		/// <param name="killer">The living that got the killing blow.</param>
 		protected void ReportNews(GameObject killer)
 		{
-			int numPlayers = GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE).Count;
-			String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, EpicKillForce.Count(this, numPlayers));
-			NewsMgr.CreateNews(message, killer.Realm, eNewsType.PvE, true);
+			int numPlayers = EpicEncounterMechanics.ForceSize(this);
+			String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, numPlayers);
+			NewsMgr.CreateNews(message, killer?.Realm ?? eRealm.None, eNewsType.PvE, true);
 
 			if (Properties.GUILD_MERIT_ON_DRAGON_KILL > 0)
 			{
@@ -335,7 +335,11 @@ namespace DOL.AI.Brain
             bool encounterAggro = CheckProximityAggro();
             EncounterAdds.Tick(Body, AggroList.Select(static entry => entry.Key), encounterAggro, IsRestless);
             if (encounterAggro) DragonDiagnostics.Fighting(Body, AggroList.Count);
-			if (!encounterAggro)
+			// The reset waits until the dragon has been out of combat for EpicEncounterMechanics.ResetQuietMilliseconds, as
+			// every other scripted boss's does: in a 200-bot fight the list can be empty for a moment (a tether leash
+			// clears it, and the proximity check is skipped during the 6 s breath cast) and the dragon healed to full on
+			// that think (dragon-fight T2). A wiped or departed raid still resets it.
+			if (!encounterAggro && EpicEncounterMechanics.FightIsOver(Body))
 			{
 				DragonDiagnostics.BeforeReset(Body);
 				Body.Health = Body.MaxHealth;
@@ -411,7 +415,7 @@ namespace DOL.AI.Brain
 			}
 
 			#region Dragon IsRestless fly route activation
-			if (Body.CurrentRegion.IsPM && Body.CurrentRegion.IsNightTime == false && !LockIsRestless && !HasAggro && !Body.InCombatInLast(30000))//Dragon will start roam
+			if (Body.CurrentRegion.IsPM && Body.CurrentRegion.IsNightTime == false && !LockIsRestless && !HasAggro && !Body.InCombatInLast(30000) && _lastRoamIndex < _roamingPathPoints.Count)//Dragon will start roam
 			{
 				if (Glare_Enemys.Count > 0)
 					Glare_Enemys.Clear();
@@ -455,6 +459,10 @@ namespace DOL.AI.Brain
 				_lastRoamIndex = 0;
 				ResetChecks = true;//do it only once
 				_flightWatch.End();
+				// The flight glare puts real players on the aggro list and only clears it while still flying; one glared in
+				// the last seconds before touchdown stayed there, so the dragon never healed on a reset and never flew again
+				// (dragon-fight M2). It lands with no foes: anyone within its aggro range is picked up again as usual.
+				ClearAggroList();
 			}
 			if (Body.CurrentRegion.IsNightTime == true && !LockEndRoute)//reset bools to dragon can roam again
 			{

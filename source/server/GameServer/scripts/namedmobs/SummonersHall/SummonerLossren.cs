@@ -178,6 +178,9 @@ namespace DOL.AI.Brain
 							}
 						}
 					}
+					// The ghoul counter falls only when a ghoul dies; one removed here left it at 1 and no ghoul ever came
+					// again until a restart (epic-bosses M6 kind).
+					ExplodeUndead.ExplodeZombieCount = 0;
 					RemoveAdds = true;
 				}
 			}
