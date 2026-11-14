@@ -82,6 +82,14 @@ namespace DOL.GS
                 return InvitedPlayers.TryGetValue((id, created), out var names) && names.Contains(player);
         }
 
+        /// <summary>Forgets this raid's invite to the player (its box was never shown).</summary>
+        internal static void UnmarkInvited(string id, long created, string player)
+        {
+            lock (Sync)
+                if (InvitedPlayers.TryGetValue((id, created), out var names))
+                    names.Remove(player);
+        }
+
         /// <summary>Remembers that this raid invited the player (once per raid). False when it already had.</summary>
         internal static bool MarkInvited(string id, long created, string player)
         {
@@ -265,6 +273,8 @@ namespace DOL.GS
             if (blocked != null)
             {
                 memory.Pending = false;
+                if (player != null && !RealmRaidPlayerInvite.CountsAsInvited(blocked))
+                    UnmarkInvited(raid.Id, raid.Created, player.Name);
                 LogPlayerInvite("not_sent", raid, player, blocked);
                 return;
             }

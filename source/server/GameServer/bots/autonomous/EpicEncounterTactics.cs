@@ -942,16 +942,47 @@ namespace DOL.GS
             }
         }
 
-        public enum EarlyPull { Commit, Disengage }
+        /// <summary>How the raid answers a boss that started fighting it before its muster: everyone inside goes in
+        /// (<see cref="Commit"/>), everyone pulls back to the muster and the boss is left to reset (<see cref="Disengage"/>), or
+        /// the raiders it caught fight it while the rest hold at the muster and gather, and it is no attempt of the raid's
+        /// (<see cref="Hold"/>).</summary>
+        public enum EarlyPull { Commit, Disengage, Hold }
 
         /// <summary>
         /// A boss that starts fighting the raid before its muster (Aidon the Archwizard, 2026-11-05: 31 raiders fought him,
         /// all fell, the other 56 were elsewhere). With half the raid already near, everyone commits at once; otherwise, a
         /// boss that walks home and resets when left can be left (the raid pulls back to its muster); one that doesn't
         /// would chase the raid down, so everyone commits.
+        /// The rule as it was until 1.2 build 3, with <paramref name="living"/> standing for both the raiders inside and the
+        /// raid (the overload below with both).
         /// </summary>
         public static EarlyPull ChooseEarlyPull(int near, int living, bool resetsWhenLeft) =>
-            near * 2 >= living || !resetsWhenLeft ? EarlyPull.Commit : EarlyPull.Disengage;
+            ChooseEarlyPull(near, living, living, resetsWhenLeft, false, 0);
+
+        /// <summary>
+        /// The early-pull answer measured against the whole living raid (raiders walking back after a wipe included), not
+        /// against the raiders who happen to be inside the dungeon. Owner's PC, 2026-11-14 (build e3b8238): the half-rule was
+        /// taken of the raiders inside, so after a wipe a handful inside was "half the raid" and everyone inside committed:
+        /// an ater skeleton with 16 of 18 inside (raid 118), Council Nokkvi 26 of 35 (raid 82), the Host 24 of 32 (raid 103);
+        /// five such fights were lost and about 150 raiders died.
+        /// <list type="bullet">
+        /// <item>Half the living raid (<paramref name="livingRaid"/>) is already near: it is the raid's fight, everyone commits.</item>
+        /// <item>Otherwise a boss that a pull-back shakes off (<paramref name="shakesOff"/>) is left and the raid musters
+        /// again, unless it was pulled back from a moment ago and is still on the raid (<paramref name="pulledBackRecently"/>).</item>
+        /// <item>One that chases commits the raiders inside only when they are a muster's worth (<paramref name="musterNeeded"/>:
+        /// the 70% the raid would wait for at the muster, RealmRaidDungeonRoute.FinalMusterNeeded).</item>
+        /// <item>Otherwise the raid holds: the raiders it caught fight it, nobody else is sent in piecemeal, and the rest
+        /// gather at the muster until they are enough to commit.</item>
+        /// </list>
+        /// </summary>
+        public static EarlyPull ChooseEarlyPull(int near, int inside, int livingRaid, bool shakesOff, bool pulledBackRecently,
+            int musterNeeded)
+        {
+            int raid = Math.Max(livingRaid, inside);
+            if (near * 2 >= raid) return EarlyPull.Commit;
+            if (shakesOff && !pulledBackRecently) return EarlyPull.Disengage;
+            return inside >= musterNeeded ? EarlyPull.Commit : EarlyPull.Hold;
+        }
 
         /// <summary>An early pull of the same encounter is logged again only after this long.</summary>
         public const long EarlyPullLogRepeatMilliseconds = 10 * 60_000;

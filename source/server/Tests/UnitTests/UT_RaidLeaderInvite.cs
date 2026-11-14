@@ -73,6 +73,15 @@ namespace DOL.UnitTests
         public void EveryRealmIsInvitedTheSameWay(eRealm realm) =>
             Assert.That(R.InviteBlocks(Open with { PlayerRealm = realm, RaidRealm = realm }), Is.Null);
 
+        [TestCase("dialog_open", false)]
+        [TestCase("in_combat", false)]
+        [TestCase("grouped", false)]
+        [TestCase("dead", false)]
+        [TestCase("raid_ended", true)]
+        [TestCase("offline", true)]
+        public void ABoxNeverShownDoesNotUseUpTheRaidsOneInvite(string why, bool counts) =>
+            Assert.That(R.CountsAsInvited(why), Is.EqualTo(counts));
+
         [Test]
         public void TheRaidLeaderIsARaidingGuildsLevelFiftyOfficerElseTheFirstPartysLeader()
         {
