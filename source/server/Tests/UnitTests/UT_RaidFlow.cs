@@ -66,5 +66,34 @@ namespace DOL.UnitTests
             Assert.That(RealmRaidDungeonRoute.IsWipe(24, 24, 100, 90), Is.True);
             Assert.That(RealmRaidDungeonRoute.IsWipe(24, 24, 100, 90, 103), Is.False);
         }
+
+        // ---- 2. a wipe is recovered at the way in, not in the town ----------------------------------------------------
+
+        [Test]
+        public void ARaiderReleasesAtItsStagingByTheWayIn()
+        {
+            Assert.That(RealmRaidReturnWave.ReleaseAtStaging, Is.True, "on by default");
+            Assert.That(RealmRaidReturnWave.ReleasesAtStaging(true, true, true), Is.True);
+            Assert.That(RealmRaidReturnWave.ReleasesAtStaging(false, true, true), Is.False, "switched off: the hub, as before");
+            Assert.That(RealmRaidReturnWave.ReleasesAtStaging(true, true, false), Is.False, "a party without a staging post: the hub");
+            Assert.That(RealmRaidReturnWave.ReleasesAtStaging(true, false, true), Is.False, "a dragon raid has its own release");
+        }
+
+        [Test]
+        public void ACorpseNobodyCanReachReleasesSoon()
+        {
+            Assert.That(RealmRaidReturnWave.CorpseWait(true), Is.EqualTo(90_000), "a raider near may still raise it");
+            Assert.That(RealmRaidReturnWave.CorpseWait(false), Is.EqualTo(20_000), "a wipe: nobody is left to raise it");
+        }
+
+        [Test]
+        public void AWipedRaidReleasedAtTheWayInGoesBackAsOneWave()
+        {
+            // Tuscaran Glacier after Icelord Agmundr (81 of 81 fell): released in the town, the first 7 reached the way in after
+            // eight minutes and went alone. Released at the way in, nearly all of them stand there at once.
+            Assert.That(RealmRaidReturnWave.Next(81, 0, 75, 0, false), Is.EqualTo(RealmRaidReturnWave.Step.Go));
+            Assert.That(RealmRaidReturnWave.Next(40, 41, 40, Minute, false), Is.EqualTo(RealmRaidReturnWave.Step.Gather),
+                "half of them still lying inside: the first ones wait for them");
+        }
     }
 }

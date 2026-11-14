@@ -1513,7 +1513,7 @@ namespace DOL.GS
                 if (!Membership.TryGetValue(group, out var raid) || !raid.Parties.TryGetValue(group, out var party)) return null;
                 // Walking back after a release while the raid gathers a return wave: it waits at its party's staging by the
                 // way in, as it did before the raid went in, and enters with the others (RealmRaidReturnWave).
-                if (raid.ReturnGathering && party.RallyView != null && bot.CurrentRegionID != raid.Definition.Region &&
+                if (raid.ReturnGathering && party.RallyView != null && !InRaidDungeon(raid, bot.CurrentRegionID) &&
                     raid.BeenInside.Contains(bot.DatabaseID))
                     return party.RallyView;
                 return raid.HubDeparted && party.CatchingUp.Contains(bot.DatabaseID)
@@ -1542,7 +1542,9 @@ namespace DOL.GS
             // nobody had reached the dungeon 7 minutes in. Only raiders who have been inside count now.
             foreach (GameBot b in raid.Support.OfType<GameBot>())
             {
-                if (b.IsAlive && b.CurrentRegionID == raid.Definition.Region)
+                // The dungeon walked through on the way (Hall of the Corrupt for Summoner's Hall) is inside too: a raider
+                // crossing it is on its way in, never sent back to the way in to wait.
+                if (b.IsAlive && InRaidDungeon(raid, b.CurrentRegionID))
                 {
                     raid.BeenInside.Add(b.DatabaseID);
                     continue;
@@ -1577,6 +1579,11 @@ namespace DOL.GS
             route.ReturnGathering = raid.ReturnGathering && waiting > 0;
         }
 
+        /// <summary>The raid's dungeon, or the dungeon its way in leads through (Summoner's Hall's Hall of the Corrupt, Dodens
+        /// Gruva or Marfach Caverns; Crystal Cave's Avalon City).</summary>
+        private static bool InRaidDungeon(Raid raid, ushort region) => region == raid.Definition.Region ||
+            raid.DungeonRoute?.Entrance is { } edge && edge.TargetRegion == region;
+
         // Late/released members skip muster attendance, not the connected exterior route.
         // Navigation is performed by their controller outside the expedition lock.
         public static bool TryIndependentApproach(GameBot bot, out Vector3 destination, out Vector3? via)
@@ -1609,6 +1616,14 @@ namespace DOL.GS
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Membership.TryGetValue(group, out var raid) || raid.DungeonRoute == null || raid.Hub == null) return false;
+                // At the party's staging post by the way in, where the return wave gathers (RealmRaidReturnWave).
+                if (raid.Parties.TryGetValue(group, out Party party) && raid.DungeonRoute.Entrance is { } edge &&
+                    RealmRaidReturnWave.ReleasesAtStaging(RealmRaidReturnWave.ReleaseAtStaging, true, party.Staging != default))
+                {
+                    region = edge.SourceRegion;
+                    point = new Point3D((int)party.Staging.X, (int)party.Staging.Y, (int)party.Staging.Z);
+                    return true;
+                }
                 region = raid.Hub.Region;
                 point = new Point3D((int)raid.Hub.Center.X, (int)raid.Hub.Center.Y, (int)raid.Hub.Center.Z);
                 return true;
@@ -1649,7 +1664,10 @@ namespace DOL.GS
                     party.CorpseSince[bot.DatabaseID] = since = now;
                 // Bounded per-corpse wait, even during an endless nearby fight.
                 // Shared resurrection claims still select one safe caster.
-                long deadline = since + 90_000;
+                // After a wipe nobody is left near to raise it: it releases soon and goes back with the return wave.
+                bool raiderNear = raid.Support.Any(b => b != bot && b.IsAlive && b.CurrentRegionID == bot.CurrentRegionID &&
+                    b.IsWithinRadius(bot, RealmRaidReturnWave.RescuerRadius));
+                long deadline = since + RealmRaidReturnWave.CorpseWait(raiderNear);
                 bool casting = raid.Support.OfType<GameBot>().Any(b => b.IsAlive && b.IsCasting &&
                     b.castingComponent.SpellHandler is { } cast && cast.Target == bot &&
                     cast.Spell.SpellType == eSpellType.Resurrect &&
