@@ -24,7 +24,7 @@ namespace DOL.GS
             new("SoulReckoner", "caer-sidi/soulreckoner", ["ReckonedSoul"], 0, null),
             new("Xanxicar", "crystal-cave/xanxicar", [], 0, null, 0, [80, 60, 40, 20], 2500),
             new("HibCuuldurach", "cuuldurach-s-lair-sheeroe-hills/hibcuuldurach", [], 0, null) { RangedAdds = ["CuuldurachMessenger"] },
-            new("Legion", "darkness-falls/legion", [], 0, null) { RangedAdds = ["LegionAdd"] },
+            new("Legion", "darkness-falls/legion", [], 0, null) { RangedAdds = ["LegionAdd"], ClearFirst = ["Chamberlain", "Inquisitor Famuel", "Earl Amagin"], ClearFirstRadius = 2300 },
             new("PrinceAsmoien", "darkness-falls/princeasmoien", [], 0, null),
             new("PrinceBaalorien", "darkness-falls/princebaalorien", [], 0, null),
             new("Krackenschtein", "fomor-city/krackenschtein", [], 0, null),
