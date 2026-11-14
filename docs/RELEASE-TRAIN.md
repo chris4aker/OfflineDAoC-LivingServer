@@ -48,6 +48,9 @@ Changed 2026-11-12 (owner): **1.2 is held until it works properly** ("I don't wa
 it is [PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md). The same day the owner took over the classic (old-client) Offline DAoC
 line, hosted from his own downloads, and shipped the downloader fix as Beta 1.1.4.
 
+Changed 2026-11-14, evening (owner): **the Darkness Falls raid AI and Legion are back in 1.2** (they had been left out).
+Behemoth and the hardest level 70+ encounters stay out.
+
 Changed 2026-11-13 (owner): **play with friends and the character passport ship in 1.2**, not a 1.2.x. Linux is its own
 release after 1.2: the 0.37 base plus Living Server, no Godot client carried forward.
 
@@ -187,9 +190,11 @@ each row counts only when seen on the owner's PC on the release-candidate line.
 | Bots that play with you: bot-led groups B1-B4, raid invites, RvR perception, replies that don't give bots away, cosmetics | Merged | Bot-led groups, a raid invite and dyes seen on builds 3 to 6; RvR perception has no played record |
 | Play with friends and the character passport (experimental) | Merged | A second client joined and made its account (build 7); no session played together, no passport trip between PCs |
 | Movement, flanking and style choice; ports from other forks and True 1.65 | Merged | Tests only |
+| Darkness Falls raid AI and Legion (back in 1.2, 2026-11-14) | Being built: Legion's platform, the way down and add waves; the princes, high lords and Beliathan; the Darkness Falls route | Before this work, on `e3b8238`: Midgard's raid killed Legion in one attempt; Hibernia's lost to him twice |
 | Install: 1.1.4 updated through Setup; a new install | Built | Not done |
 
-Not in 1.2 at all: a Darkness Falls raid AI, a Legion raid plan and the hardest level 70+ encounters.
+Back in 1.2 (owner, 2026-11-14, evening: "Put Darkness Falls raid AI and Legion back in"): the Darkness Falls raid AI and
+Legion. Still out: Behemoth and the hardest level 70+ encounters.
 
 Left, in order:
 1. The sweep on test build `16b3054` (installed on the test copy 2026-11-14, server running): `/epictest sweep start all`.

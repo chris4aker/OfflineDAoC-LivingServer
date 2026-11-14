@@ -80,7 +80,8 @@ In a playable folder:
     new catalog rows.
 - **Navigation:** don't rebuild or replace navmeshes globally to fix one route without evidence.
 - **Be honest in reports.** Report automated tests separately from real in-game checks. Don't
-  describe Darkness Falls raid AI, Legion or the hardest level 70+ encounters as implemented.
+  describe the hardest level 70+ encounters (Behemoth) as implemented. The Darkness Falls raid AI and Legion are
+  back in 1.2's scope (owner, 2026-11-14); describe them as working only once seen on the owner's PC.
   - A feature counts as working only once it has been seen working in one of the owner's PC logs
     (owner, 2026-11-08). Until then the notes say "tests only". Unit tests, CI, simulations and test-world
     bot runs are all tests.
