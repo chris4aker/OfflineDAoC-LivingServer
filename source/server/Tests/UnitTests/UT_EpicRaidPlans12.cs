@@ -27,6 +27,7 @@ namespace DOL.UnitTests
         private ushort _nextId = 2000;
         private EpicTestServerScope _server;
         private Func<int> _lordNext, _hostNext;
+        private Func<GameNPC, bool> _agmundrCasting;
 
         public sealed class TestCryptLord : CryptLord
         {
@@ -105,6 +106,7 @@ namespace DOL.UnitTests
             EpicEncounterMechanics.ResetPerEncounter();
             _lordNext = T.CryptLordNextPoint;
             _hostNext = T.HostNextPoint;
+            _agmundrCasting = T.AgmundrCasting;
             T.ResetAddPartiesForTests();
         }
 
@@ -113,6 +115,7 @@ namespace DOL.UnitTests
         {
             T.CryptLordNextPoint = _lordNext;
             T.HostNextPoint = _hostNext;
+            T.AgmundrCasting = _agmundrCasting;
             EpicEncounterMechanics.ResetPerEncounter();
             _server.Dispose();
         }
@@ -368,7 +371,68 @@ namespace DOL.UnitTests
             Assert.That(T.DungeonAdvice(new(dps, ilron, live, 0, false, 1_000, Hero)), Is.Null, "nothing left: everyone on him");
         }
 
-        // ---- Spindler Broodmother ------------------------------------------------------------------------------------
+        // ---- Icelord Agmundr -------------------------------------------------------------------------------------------
+
+        [Test]
+        public void AgmundrsLinkedMonstersDieFirstAndNothingInHisAggroIsPulled()
+        {
+            UseRegion(160);
+            var agmundr = Npc<TestAgmundr>(15037, 50114, 12408);
+            var depredator = Npc<Mob>(16418, 49908, 12059); depredator.PackageID = T.AgmundrLinkedPackage;
+            var harrower = Npc<Mob>(15025, 50300, 12400); harrower.Name = "hrimthursa harrower";
+            var faraway = Npc<Mob>(19801, 34348, 13679);
+            var live = new List<GameNPC> { agmundr, depredator, harrower, faraway };
+            Assert.That(T.ClearFirstOwner(depredator, live), Is.SameAs(agmundr));
+            Assert.That(T.ClearFirstOwner(harrower, live), Is.Null);
+            Assert.That(T.PullWait(harrower, live, 1_000), Does.Contain("Agmundr"), "PC log e3b8238: its muster went 76 from him");
+            Assert.That(T.PullWait(faraway, live, 1_000), Is.Null);
+            Assert.That(T.PullWait(depredator, live, 1_000), Is.Null, "1,395 from him: pulled alone");
+            agmundr.Fighting = true;
+            Assert.That(T.PullWait(harrower, live, 1_000), Is.Null, "he fights already");
+        }
+
+        [Test]
+        public void AgmundrsColdBlastFindsOnlyHisTargetsParty()
+        {
+            var boss = Npc<TestAgmundr>(15000, 50000, 12400);
+            Vector3 b = new(15000, 50000, 12400), tank = new(15300, 50000, 12400);
+            // Casters and healers: 750 off his target.
+            var spread = T.AgmundrAdvice(new(15200, 50100, 12400), b, tank, boss, "tank", true, false, 1);
+            Assert.That(spread?.Action, Is.EqualTo(T.BotAction.Reposition));
+            Assert.That(Flat(spread.Value.StandAt.Value, tank), Is.GreaterThan(T.AgmundrBlastRadius));
+            Assert.That(T.AgmundrAdvice(new(14200, 50000, 12400), b, tank, boss, "tank", true, false, 1), Is.Null, "already clear");
+            // Melee: behind him on the line from his target, as far as their reach allows (his target 300 off: 195 behind).
+            var behind = T.AgmundrAdvice(new(15150, 50150, 12400), b, tank, boss, "tank", false, false, 1);
+            Assert.That(behind?.Action, Is.EqualTo(T.BotAction.Reposition));
+            Assert.That(behind.Value.StandAt.Value.X, Is.EqualTo(15000 - T.BehindReach).Within(1));
+            Assert.That(Flat(behind.Value.StandAt.Value, tank), Is.EqualTo(495).Within(1));
+            Assert.That(T.AgmundrAdvice(new(14810, 50005, 12400), b, tank, boss, "tank", false, false, 1), Is.Null, "at the spot: fight");
+            // While he casts it, everyone within 500 of his target steps out, the melee too, and waits out there.
+            var cast = T.AgmundrAdvice(new(14810, 50005, 12400), b, tank, boss, "tank", false, true, 7);
+            Assert.That(cast?.Action, Is.EqualTo(T.BotAction.Reposition));
+            Assert.That(Flat(cast.Value.StandAt.Value, tank), Is.GreaterThan(T.AgmundrBlastRadius + T.CastMargin));
+            var hold = T.AgmundrAdvice(new(14700, 50000, 12400), b, tank, boss, "tank", false, true, 7);
+            Assert.That(hold?.StandAt, Is.EqualTo(new Vector3(14700, 50000, 12400)), "just out: hold until it lands");
+        }
+
+        [Test]
+        public void HisTargetsPartyFightsAsUsualAndTheRuleSeesHisCast()
+        {
+            UseRegion(160);
+            var agmundr = Npc<TestAgmundr>(15000, 50000, 12400);
+            agmundr.Fighting = true;
+            var tank = Npc<Raider>(15300, 50000, 12400);
+            var caster = Npc<Raider>(15200, 50100, 12400);
+            agmundr.TargetObject = tank;
+            var live = new List<GameNPC> { agmundr, tank, caster };
+            T.AgmundrCasting = _ => false;
+            Assert.That(T.DungeonAdvice(new(tank, agmundr, live, 0, false, 1_000, Warrior)), Is.Null, "his target fights on");
+            Assert.That(T.DungeonAdvice(new(caster, agmundr, live, 0, true, 1_000, Wizard))?.Action, Is.EqualTo(T.BotAction.Reposition));
+            agmundr.Fighting = false;
+            Assert.That(T.DungeonAdvice(new(caster, agmundr, live, 0, true, 1_000, Wizard)), Is.Null, "no fight: no spread");
+            var blast = new Spell(new DOL.Database.DbSpell { SpellID = T.AgmundrBlastSpellId, Damage = 650, Radius = 500, Type = "DirectDamageNoVariance", Target = "Enemy" }, 70);
+            Assert.That(blast.ID, Is.EqualTo(T.AgmundrBlastSpellId), "his blast is known by its spell id");
+        }
 
         // ---- the griffon icewings perched on the glacier's cliffs ----------------------------------------------------
     }
