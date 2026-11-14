@@ -102,8 +102,9 @@ namespace DOL.UnitTests
             foreach (T.DungeonRule rule in T.AllDungeonRules)
             {
                 Assert.That(rule.Targets, Is.Not.Null, rule.Encounter);
-                Assert.That(rule.Targets.Length > 0 || rule.Route != null, Is.True, rule.Encounter + ": a rule with no target routes");
-                Assert.That(rule.Decide != null || rule.Act != null || rule.Route != null || rule.Forbids.Length > 0 || rule.MustNotHit != null,
+                bool global = rule.Route != null || rule.ClearFirstOf != null || rule.PullWait != null || rule.MusterAnchor != null;
+                Assert.That(rule.Targets.Length > 0 || global, Is.True, rule.Encounter + ": a rule with no target routes, clears or holds");
+                Assert.That(rule.Decide != null || rule.Act != null || global || rule.Forbids.Length > 0 || rule.MustNotHit != null,
                     Is.True, rule.Encounter + ": does something");
                 Assert.That(rule.Summary, Is.Not.Empty, rule.Encounter);
             }

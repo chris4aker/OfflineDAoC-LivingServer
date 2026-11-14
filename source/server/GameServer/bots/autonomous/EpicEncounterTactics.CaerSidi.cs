@@ -49,6 +49,7 @@ namespace DOL.GS
                 Summary = "While a horseman or Apocalypse fights and the room's barrier is on, the raid stays in the room: its " +
                           "muster and every stand-off are inside, 800 from the middle, and the route fights the one in combat.",
                 Route = HorsemenRoomHolds,
+                RoutesInCombat = true,
             },
         ];
 

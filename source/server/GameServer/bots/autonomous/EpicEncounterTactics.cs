@@ -358,8 +358,11 @@ namespace DOL.GS
         /// <summary>The living boss whose fight <paramref name="npc"/> would join (it is killed before that boss), or null.</summary>
         public static GameNPC ClearFirstOwner(GameNPC npc, IReadOnlyList<GameNPC> live)
         {
+            if (!Present(npc)) return null;
+            // A dungeon rule's linked monsters (the Crypt Lord's court, the Host's, Agmundr's; Ilron's lights and eyes).
+            if (RuleClearFirstOwner(npc, live) is { } ruleBoss) return ruleBoss;
             var names = _clearFirstNames ??= ByType.Values.SelectMany(t => t.ClearFirst ?? []).ToHashSet(StringComparer.Ordinal);
-            if (names.Count == 0 || !Present(npc) || !names.Contains(npc.Name)) return null;
+            if (names.Count == 0 || !names.Contains(npc.Name)) return null;
             return live.FirstOrDefault(b => Present(b) && b != npc && b.CurrentRegionID == npc.CurrentRegionID &&
                 IsClearFirst(For(b), npc.Name, npc.GetDistanceTo(b.SpawnPoint)));
         }

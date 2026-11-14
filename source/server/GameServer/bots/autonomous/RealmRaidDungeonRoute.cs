@@ -956,6 +956,19 @@ namespace DOL.GS
             // Leeroy (bot_living_leeroy): part of the raid is here, not all of it, and he can't wait. The boss is in the fight,
             // so the whole muster goes in after him now, as an attempt like any other. A raid that arrives all at once gets
             // him too: he jumps its pull.
+            // The tactic holds the pull (EpicEncounterTactics.PullWait): the raid waits at the muster; waiting is no stall.
+            if (EpicEncounterTactics.PullWait(_target, _live, now) is string pullWait)
+            {
+                Destination = _musterPoint; Hold = true; _targetProgressTick = now;
+                Status = $"Waiting to pull {_target.Name}: {pullWait} ({mustered}/{needed})";
+                if (now >= _nextMusterLog)
+                {
+                    _nextMusterLog = now + 2 * 60_000;
+                    log.Info($"REALM_EXPEDITION_PULL_WAIT region={_region} target=\"{_target.Name}\" mustered={mustered} needed={needed} " +
+                             $"at={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} reason=\"{pullWait}\"");
+                }
+                return true;
+            }
             if (LeeroyRolled && !_leeroyDone &&
                 AutonomousRaidLeeroy.GoesNow(AutonomousRaidLeeroy.ShouldCharge(mustered, needed, now - _musterSince, FailedAttempts(_target.Name), _regrouping) ||
                                              rested && AutonomousRaidLeeroy.JumpsThePull(mustered, needed, FailedAttempts(_target.Name), _regrouping), mustered))
@@ -1052,7 +1065,7 @@ namespace DOL.GS
             resets && tetherRange > 0 && Vector3.Distance(position, spawn) > Math.Min(tetherRange / 2f, MusterFollowDistance)
                 ? spawn : position;
 
-        private static Vector3 MusterReference(GameNPC npc) => MusterReference(new(npc.X, npc.Y, npc.Z),
+        private static Vector3 MusterReference(GameNPC npc) => EpicEncounterTactics.MusterAnchor(npc) ?? MusterReference(new(npc.X, npc.Y, npc.Z),
             new(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z),
             EpicEncounterTactics.LeashOf(npc)?.TetherRange is int t && t > 0 ? t : npc.TetherRange, EpicEncounterTactics.ResetsWhenLeft(npc));
 
@@ -1567,6 +1580,9 @@ namespace DOL.GS
                 if (!_target.InCombat && HostileEncounter(live, participants) is { } hostile)
                 {
                     GameNPC attacker = EpicEncounterTactics.RouteTarget(hostile, live, Front, out string hostileTactic);
+                    // Never a switch to the target itself: the monster fighting the raid is answered (PC log e3b8238: "Crypt
+                    // Lord -> Crypt Lord" every 10 s while his dark lights killed the raid).
+                    if (attacker == _target) attacker = hostile;
                     if (attacker != hostile)
                         log.Info($"REALM_EXPEDITION_TACTIC region={_region} encounter=\"{hostile.Name}\" fights=\"{attacker.Name}\" " +
                                  $"reason=\"{hostileTactic}\" tactic={EpicEncounterTactics.For(hostile)?.Encounter}");
@@ -1709,6 +1725,9 @@ namespace DOL.GS
                 GameNPC npc = candidates[_probeCursor % candidates.Length];
                 _probeCursor = (_probeCursor + 1) % candidates.Length;
                 if (_routeRetry.GetValueOrDefault(npc) > now) continue;
+                // Not now by its tactic (the Crypt Lord's patrol near this court monster, the Host off his ambush, a perched
+                // flyer): another target is taken meanwhile (EpicEncounterTactics.PullWait).
+                if (EpicEncounterTactics.PullWait(npc, live, now) != null) continue;
                 // A boss waits while a monster that would join its fight can still be killed first (unless it is fighting already).
                 if (!npc.InCombat && clearFirst.Any(pair => pair.Value == npc && _routeRetry.GetValueOrDefault(pair.Key) <= now))
                 {
