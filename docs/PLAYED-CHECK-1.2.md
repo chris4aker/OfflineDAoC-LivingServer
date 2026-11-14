@@ -35,15 +35,15 @@ below the game's size; run 3 at it.
 | Midgard | Iarnvidiur's Lair | Won once (run 2) | Not run |
 | Midgard | Dodens Gruva | Won twice | Not run |
 | Midgard | Summoner's Hall | Won once (run 2) | Not run |
-| Midgard | Darkness Falls | No finished run | Not run |
+| Midgard | Darkness Falls | No finished run | Won on `e3b8238` (a raid the game opened itself, 2026-11-14): 41 named and Legion in one attempt (9 minutes), 132 minutes, no wipe. Before the Darkness Falls raid AI work |
 | Hibernia | Cuuldurach (dragon) | Lost run 1, won run 2 (second attempt) | Not run |
 | Hibernia | Galladoria | Lost three times at Spindler Broodmother (curers' post in #190, tests only) | Lost on `e3b8238` (sweep, 2026-11-14): two wipes at the Broodmother (15% and 22%), mesmerize caught 23 to 78 of about 104, up to 44 newborns. Reworked in #214 (tests only) |
 | Hibernia | Tur Suil | Won twice (runs 1 and 3) | Not run |
 | Hibernia | Marfach Caverns | Won twice | Not run |
 | Hibernia | Summoner's Hall | Lost three times at Summoner Roesia | Not run |
-| Hibernia | Darkness Falls | No finished run | Not run |
+| Hibernia | Darkness Falls | No finished run | Lost on `e3b8238` (a raid the game opened itself, 2026-11-14): 59 named, then Legion twice (lowest 92% and 60%), 382 minutes |
 
-Not claimed by 1.2 at all: a Darkness Falls raid AI, a Legion raid plan, and the hardest level 70+ encounters.
+Back in 1.2 (owner, 2026-11-14: "ALL big bosses are in"): the Darkness Falls raid AI, Legion, Behemoth and every other big boss, the open-world ones included; their rows count like the others.
 
 Known causes with no fix yet: Krondon's Lyft Miht room; raids leaving a boss for the monsters around it (High Lord Oro,
 Gatekeeper Dommel, High Lord Baln); Golestandt's second attempts; Summoner Roesia.
