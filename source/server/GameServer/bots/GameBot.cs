@@ -2893,6 +2893,8 @@ namespace DOL.GS
         public override bool CastSpell(Spell spell, SpellLine line, ISpellCastingAbilityHandler spellCastingAbilityHandler = null, bool checkLos = true)
         {
             if (CompanionFollowPolicy.DeferBuff(this, spell)) return false;
+            // Darkness Falls (1.2): no pet or turret near a fighting prince who eats it (autonomous gamebots only).
+            if (EpicEncounterTactics.SummonFeedsPrince(this, spell)) return false;
             // A cast reveals the caster: a companion hidden with its player casts only heals until a fight starts.
             if (spell?.IsHealing != true && CompanionStealth.SuppressesCasting(this)) return false;
             if (AutonomousGroupFormationFollow.DeferBuff(this, spell)) return false;

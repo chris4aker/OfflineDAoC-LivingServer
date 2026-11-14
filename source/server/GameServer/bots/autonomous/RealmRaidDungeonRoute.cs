@@ -73,6 +73,10 @@ namespace DOL.GS
         private GameNPC _target;
         private int _probeCursor;
         private long _nextClearFirstLog;
+        /// <summary>When the raid began mustering for its final encounter (0: not yet; Darkness Falls' late objectives).</summary>
+        private long _finalMusterSince;
+        private long _nextReclearCheck;
+        private readonly HashSet<GameNPC> _lateObjectivesLogged = new();
         private static readonly Logging.Logger log = Logging.LoggerManager.Create(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private long _targetProgressTick, _targetStartTick, _holdSince, _nextHoldLog;
         // Lowest health points seen (not percent: a percent of Galladoria's 125,000-health Corrupt Primal of Fire is 1,250
@@ -841,7 +845,10 @@ namespace DOL.GS
                     Route: proof.Routes.FirstOrDefault(route => route.Realm == _realm && route.InWaypoints is { Length: >= 2 })))
                 .Where(item => item.Route != null && Vector3.DistanceSquared(item.Approach, encounter) <=
                     DarknessFallsChainReach * DarknessFallsChainReach)
-                .OrderBy(item => Vector3.DistanceSquared(item.Approach, encounter))
+                // Floors first (1.2 DF raid wave): a proof on the post's own floor before a nearer one on the floor above. By
+                // plain distance Prince Asmoien's nearest proofs (2,418) stood 2,353 above him and High Lord Baln's (4,856)
+                // 4,838 above; a proof on Asmoien's own floor (an umbral aegis 3,014 away, 197 up) came last.
+                .OrderBy(item => WalkEstimate(encounter, item.Approach))
                 .Take(8);
             foreach (var (_, approach, route) in nearest)
             {
@@ -929,6 +936,7 @@ namespace DOL.GS
             {
                 _musterTarget = _target;
                 _musterSince = now;
+                if (_finalMusterSince == 0 && _finalTypes.Contains(_target.GetType().Name)) _finalMusterSince = now;
                 _musterEngaged = false;
                 _skirmishHeld = false;
                 _regrouping = false;
@@ -1122,6 +1130,16 @@ namespace DOL.GS
                     log.Info($"REALM_EXPEDITION_PULL_WAIT region={_region} target=\"{_target.Name}\" mustered={mustered} needed={needed} " +
                              $"at={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} reason=\"{pullWait}\"");
                 }
+                return true;
+            }
+            // Darkness Falls (1.2 DF raid wave): a monster that would join this fight came back while the raid mustered
+            // (Legion's antechamber respawns in 20-30 minutes; Hibernia's muster for him took 100): it is cleared before the pull.
+            if (_region == AutonomousDarknessFallsPolicy.RegionId && !_target.InCombat && now >= _nextReclearCheck &&
+                (_nextReclearCheck = now + 10_000) > 0 &&
+                (_live ?? []).FirstOrDefault(n => n != _target && _routeRetry.GetValueOrDefault(n) <= now &&
+                                                  EpicEncounterTactics.ClearFirstOwner(n, _live) == _target) is { } back)
+            {
+                SwitchByTactic(back, $"clear-first of \"{_target.Name}\" is up again: cleared before the pull", participants, now);
                 return true;
             }
             if (LeeroyRolled && !_leeroyDone &&
@@ -1559,6 +1577,9 @@ namespace DOL.GS
         public void Advance(GameLiving[] participants, long now)
         {
             AdvanceCore(participants, now);
+            // Darkness Falls (1.2): the way the raid walked, for late members with no certified chain to their post.
+            if (_region == AutonomousDarknessFallsPolicy.RegionId && _objectives != null && !Complete && !Defeated)
+                AutonomousDarknessFallsRaidTrail.Observe(this, _realm, participants, Front, now);
             if (!Complete && !Defeated) ObserveRouteDeaths(participants, now);
             GameNPC target = _target;
             if (target != null && target.IsAlive && target.InCombat && now >= _nextControlSample)
@@ -1829,6 +1850,24 @@ namespace DOL.GS
             if (_target == boss || EpicEncounterTactics.RequiredAddOwner(_target, _live ?? []) == boss) _target = null;
         }
 
+        /// <summary>
+        /// Darkness Falls (1.2): once the raid musters for its final encounter, an objective out of combat that is far from
+        /// the front (one that respawned or came up since) is left (AutonomousDarknessFallsRaidRoute.LeavesForFinal).
+        /// Hibernia's raid, 2026-11-14: Prince Asmoien came up while it mustered for Legion and High Lord Oro's copy respawned;
+        /// it walked to both and back (10:39-11:30) and was then still mustering at 13:09.
+        /// </summary>
+        private bool LeftForTheFinal(GameNPC n, long now)
+        {
+            if (_region != AutonomousDarknessFallsPolicy.RegionId || _objectives == null || _finalTypes.Contains(n.GetType().Name) ||
+                !RealmRaidNeutralEvents.IsObjective(_objectives, n.Name)) return false;
+            if (!AutonomousDarknessFallsRaidRoute.LeavesForFinal(_finalMusterSince > 0, n.InCombat,
+                    WalkEstimate(Front, new Vector3(n.X, n.Y, n.Z)))) return false;
+            if (_lateObjectivesLogged.Add(n))
+                log.Info($"REALM_EXPEDITION_LATE_OBJECTIVE_LEFT region={_region} target=\"{n.Name}\" at={n.X},{n.Y},{n.Z} " +
+                         $"front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} reason=\"the raid musters for its final; it came up since\"");
+            return true;
+        }
+
         private void AdvanceCore(GameLiving[] participants, long now)
         {
             if (Complete || Defeated) return;
@@ -2051,7 +2090,12 @@ namespace DOL.GS
                 // Hibernian raid stood four minutes by a "grogan" in Galladoria that none of it could attack (run 22).
                 n.TempProperties.GetProperty<bool>(AutonomousPetSupport.SyntheticCharmPetProperty) != true &&
                 !IsEncounterHazard(n) &&
-                !(n is IGameEpicNpc && _clearedNames.Contains(n.Name) && !_finalTypes.Contains(n.GetType().Name) && !clearFirst.ContainsKey(n)) &&
+                // An objective raid's cleared objective is done by name, whatever its class: High Lord Oro's copies share his
+                // name and are no epic NPCs, so a respawned copy was taken for the objective again (Hibernia's Darkness Falls
+                // raid, 2026-11-14: "High Lord Oro" three times, each a walk of the whole raid back down).
+                !((n is IGameEpicNpc || _objectives != null && RealmRaidNeutralEvents.IsObjective(_objectives, n.Name)) &&
+                  _clearedNames.Contains(n.Name) && !_finalTypes.Contains(n.GetType().Name) && !clearFirst.ContainsKey(n)) &&
+                !LeftForTheFinal(n, now) &&
                 // A neutral expedition goes for its named encounters only; monsters on the way are
                 // fought when they attack (Darkness Falls holds 2,465 spawns).
                 // A play test's focus leaves out the other named encounters (and the final, unless named) while they are out of
@@ -2063,9 +2107,13 @@ namespace DOL.GS
                   !(clearFirst.TryGetValue(n, out GameNPC focusBoss) && InFocus(Focus, focusBoss.Name, focusBoss.GetType().Name))) &&
                 (_objectives == null ? now - _routeStartTick < EpicTrashPhaseMilliseconds || n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name) ||
                         IsEncounterAdd(n, Front, encounters) || clearFirst.ContainsKey(n)
-                    : RealmRaidNeutralEvents.IsObjective(_objectives, n.Name)))
+                    // A monster that would join an objective's fight (High Lord Baln's wing) is killed first in an objective
+                    // raid too: without it among the targets the objective waited for it for ever.
+                    : RealmRaidNeutralEvents.IsObjective(_objectives, n.Name) || clearFirst.ContainsKey(n)))
                 .OrderBy(n => _finalTypes.Contains(n.GetType().Name) ? 1 : 0)
-                .ThenBy(n => IsEncounterAdd(n, Front, encounters) || clearFirst.ContainsKey(n) ? 0 : 1)
+                // An objective raid takes a boss's clear-first monsters in its walk order (they stand by the boss), not before
+                // everything else: High Lord Baln's Dukes would have drawn the Darkness Falls raid straight to his wing.
+                .ThenBy(n => IsEncounterAdd(n, Front, encounters) || _objectives == null && clearFirst.ContainsKey(n) ? 0 : 1)
                 .ThenBy(n => WalkEstimate(Front, new(n.X, n.Y, n.Z))).ToArray();
             // A gate whose bosses can't be taken as targets (gone, or no longer attackable) has nothing left to fight: the
             // raid goes on to its own dungeon instead of waiting at the way out.
