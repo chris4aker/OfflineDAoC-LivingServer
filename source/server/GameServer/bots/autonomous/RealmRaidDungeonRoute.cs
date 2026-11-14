@@ -46,6 +46,29 @@ namespace DOL.GS
              // A boss's death burst (Spindler Broodmother's brood) is cleared at its body although the boss is dead.
              EpicEncounterTactics.IsDeathAdd(npc));
         private readonly Dictionary<GameNPC, long> _routeRetry = new();
+        // When a tactic first held each monster's pull (EpicEncounterTactics.PullWait). A hold that lasts longer than
+        // PullWaitLimitMilliseconds is dropped, so an add the raid can never reach can't keep a boss waiting for ever.
+        private readonly Dictionary<GameNPC, long> _pullWaitSince = new();
+        public const long PullWaitLimitMilliseconds = 20 * 60_000;
+
+        /// <summary>The tactic's reason to hold <paramref name="npc"/>'s pull (EpicEncounterTactics.PullWait), or null once
+        /// it has held for <see cref="PullWaitLimitMilliseconds"/>: the raid then pulls as it would without the tactic.</summary>
+        private string HeldByTactic(GameNPC npc, IReadOnlyList<GameNPC> live, long now)
+        {
+            string why = EpicEncounterTactics.PullWait(npc, live, now);
+            if (why == null) { _pullWaitSince.Remove(npc); return null; }
+            if (!_pullWaitSince.TryGetValue(npc, out long since)) { _pullWaitSince[npc] = now; return why; }
+            if (!PullWaitExpired(since, now)) return why;
+            if (since != long.MinValue)
+            {
+                _pullWaitSince[npc] = long.MinValue;
+                log.Info($"REALM_EXPEDITION_PULL_WAIT_EXPIRED region={_region} target=\"{npc.Name}\" minutes={(now - since) / 60_000} reason=\"{why}\"");
+            }
+            return null;
+        }
+
+        /// <summary>A tactic's hold that began at <paramref name="since"/> no longer holds (pure; long.MinValue = already expired).</summary>
+        public static bool PullWaitExpired(long since, long now) => since == long.MinValue || now - since >= PullWaitLimitMilliseconds;
         private readonly Dictionary<string, GameNPC> _finals = new();
         private GameNPC _target;
         private int _probeCursor;
@@ -957,7 +980,7 @@ namespace DOL.GS
             // so the whole muster goes in after him now, as an attempt like any other. A raid that arrives all at once gets
             // him too: he jumps its pull.
             // The tactic holds the pull (EpicEncounterTactics.PullWait): the raid waits at the muster; waiting is no stall.
-            if (EpicEncounterTactics.PullWait(_target, _live, now) is string pullWait)
+            if (HeldByTactic(_target, _live, now) is string pullWait)
             {
                 Destination = _musterPoint; Hold = true; _targetProgressTick = now;
                 Status = $"Waiting to pull {_target.Name}: {pullWait} ({mustered}/{needed})";
@@ -1727,7 +1750,7 @@ namespace DOL.GS
                 if (_routeRetry.GetValueOrDefault(npc) > now) continue;
                 // Not now by its tactic (the Crypt Lord's patrol near this court monster, the Host off his ambush, a perched
                 // flyer): another target is taken meanwhile (EpicEncounterTactics.PullWait).
-                if (EpicEncounterTactics.PullWait(npc, live, now) != null) continue;
+                if (HeldByTactic(npc, live, now) != null) continue;
                 // A boss waits while a monster that would join its fight can still be killed first (unless it is fighting already).
                 if (!npc.InCombat && clearFirst.Any(pair => pair.Value == npc && _routeRetry.GetValueOrDefault(pair.Key) <= now))
                 {

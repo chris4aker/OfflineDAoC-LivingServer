@@ -527,5 +527,15 @@ namespace DOL.UnitTests
             T.FloorUnder = _ => 10000;
             Assert.That(T.PullWait(boss, [boss], 1_000), Is.Null.Or.Not.Contain("perched"), "a boss is never deferred as a perched flyer");
         }
+
+        [Test]
+        public void ATacticsPullHoldEndsAfterTwentyMinutes()
+        {
+            long start = 1_000_000;
+            Assert.That(RealmRaidDungeonRoute.PullWaitExpired(start, start + 19 * 60_000), Is.False, "a hold under 20 minutes stands");
+            Assert.That(RealmRaidDungeonRoute.PullWaitExpired(start, start + RealmRaidDungeonRoute.PullWaitLimitMilliseconds), Is.True,
+                "an add the raid can never reach does not keep the boss waiting for ever");
+            Assert.That(RealmRaidDungeonRoute.PullWaitExpired(long.MinValue, start), Is.True, "an expired hold stays expired");
+        }
     }
 }
