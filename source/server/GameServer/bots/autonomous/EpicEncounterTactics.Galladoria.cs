@@ -27,7 +27,251 @@ namespace DOL.GS
                           "the falls is on, the route kills him before Galladoria's last room.",
                 Route = EasmarachBeforeTheLastRoom,
             },
+            // ---- Living Server 1.2: every big boss in (owner 2026-11-14) ----------------------------------------------
+            new("PrimalOrder", ["AirPrimal", "WaterPrimal"], PrimalsInTheRoom)
+            {
+                Summary = "The primals in the period's order (Water, Fire, the Earthmenders and Earth, Air last): the route " +
+                          "takes the next one alive. Below 30% the Water primal is immune while it walks to its pool and " +
+                          "heals: nobody hits it until it fights again. The Air primal flies its ring 690 up: casters and " +
+                          "archers shoot it from the room's middle, melee fight another primal; pets do 5 to it, so they don't.",
+                Route = PrimalOrderRoute,
+                NoPets = npc => IsOfType(npc, "AirPrimal"),
+            },
+            new(nameof(Olcasgean2), [nameof(Olcasgean2)], OneBodyOfOlcasgean)
+            {
+                Summary = "The two bodies share one health pool and each answers its own attackers with Olcasgean's Root (450, " +
+                          "at most once a second): only the party holding the copy's safe spot fights the copy, everyone " +
+                          "else fights Olcasgean himself.",
+            },
+            new(nameof(Hurionthex), [nameof(Hurionthex)], HurionthexForms)
+            {
+                Summary = "In his Granidon form (damage shield, 120 back per hit) the melee outside his target's party step " +
+                          "back and the pets leave him until the form changes; casters fight on. His monkey form's Black " +
+                          "Plague (350 around his target) is the catalog's spread.",
+                NoPets = HurionthexShielded,
+            },
+            new(nameof(OrganicEnergyMechanism), [nameof(OrganicEnergyMechanism)], MechanismFromRange)
+            {
+                Summary = "The Mechanism never attacks; its Shield of World Soul hits back 150 per swing: casters and " +
+                          "archers kill it from range, melee and pets kill its bottom feeders (3-5 every 25-35 s) and never " +
+                          "swing at it (the period's tactic: \"never target the middle mechanism ... RANGE attack and GTAoE\").",
+                NoPets = _ => true,
+            },
+            new(nameof(GiantSporiteCluster), [nameof(GiantSporiteCluster), "GSCAdds"], SporiteCircle)
+            {
+                Summary = "Eight bodies, one health pool: the raid fights inside one small circle around the cluster (casters " +
+                          "and healers within 450 of it), area spells on the clump, any body is the boss.",
+                Route = SporiteCopyRoute,
+            },
+            new(nameof(OlcasarGeomancer), [nameof(OlcasarGeomancer), "OGAdds"], OlcasarMinions)
+            {
+                Summary = "A slain minion rises again at its killer's feet: the party a minion fights holds it, everyone else " +
+                          "kills the Geomancer (his death removes them all).",
+                Route = OlcasarMinionRoute,
+                RoutesInCombat = true,
+            },
         ];
+
+        // ---- Galladoria's last room: the primals ---------------------------------------------------------------------
+
+        /// <summary>
+        /// The order the period's raids took them in. Thredh's guide (Guinevere, May 2003): Water, Fire, Air, the Earthmenders
+        /// (Magical first), Earth; the earlier US plan (VN Boards "Galladoria Notes", Jan 2003): Water first, then the menders
+        /// one at a time and Earth. The first live kill (VN Boards, 7 May 2003, about 150 raiders) held Water and Earth in the
+        /// safe spots while everyone else killed Fire, then the menders, Earth and Water, Air last. Here: Water, Fire, the
+        /// Earthmenders and Earth (the Earth primal's own tactic sends the raid to its menders first), Air last; meanwhile the
+        /// Fire primal's melee hold the Water and Earth primals (FirePrimalTrail). The route takes the first one alive.
+        /// </summary>
+        public static readonly string[] PrimalKillOrder = ["WaterPrimal", "FirePrimal", "EarthPrimal", "AirPrimal"];
+
+        /// <summary>The middle of the Air primal's ring (AirPrimalBrain.Think: eleven points 1,050-1,230 around it, 690 up; the
+        /// middle of their extent), where a shooter has it within 1,440 at every point of the ring.</summary>
+        public static readonly Vector3 AirPrimalRingCentre = new(39589, 62547, 11685);
+        /// <summary>A shooter this close (3D) to the Air primal shoots it.</summary>
+        public const int AirPrimalShootReach = 1_450;
+
+        /// <summary>The Water primal is walking to its pool or healing there (WaterPrimalBrain.dontattack: it takes no damage).
+        /// Settable for tests.</summary>
+        public static Func<GameNPC, bool> WaterPrimalRetreating = _ => DOL.AI.Brain.WaterPrimalBrain.dontattack;
+
+        private static int PrimalRank(GameNPC npc) => npc == null ? -1 : Array.FindIndex(PrimalKillOrder, t => IsOfType(npc, t));
+
+        /// <summary>The primal the route takes instead of <paramref name="chosen"/> (pure but for the lookup): the first of
+        /// <see cref="PrimalKillOrder"/> alive in the room before it; null when it is the next.</summary>
+        private static GameNPC PrimalOrderRoute(GameNPC chosen, IReadOnlyList<GameNPC> live, out string reason)
+        {
+            reason = null;
+            int rank = PrimalRank(chosen);
+            if (rank <= 0 || chosen.CurrentRegionID != GalladoriaRegion || live == null) return null;
+            GameNPC first = live.Where(n => Present(n) && PrimalRank(n) >= 0 && PrimalRank(n) < rank &&
+                                            n.CurrentRegionID == chosen.CurrentRegionID && n.IsWithinRadius(chosen, AddSearchRadius))
+                .OrderBy(PrimalRank).FirstOrDefault();
+            if (first != null) reason = $"the primals in the period's order: \"{first.Name}\" before \"{chosen.Name}\"";
+            return first;
+        }
+
+        private static Advice? PrimalsInTheRoom(RuleContext c)
+        {
+            if (IsOfType(c.Target, "WaterPrimal"))
+                return WaterPrimalAdvice(c.Target, WaterPrimalRetreating(c.Target));
+            if (!IsOfType(c.Target, "AirPrimal")) return null;
+            GameNPC other = c.CanShootFlyers ? null : (c.Live ?? []).Where(n => Present(n) && n != c.Target && PrimalRank(n) >= 0 &&
+                    !IsOfType(n, "AirPrimal") && n.CurrentRegionID == c.Target.CurrentRegionID && c.Target.IsWithinRadius(n, AddSearchRadius))
+                .OrderBy(PrimalRank).FirstOrDefault();
+            return AirPrimalAdvice(c.At, PosOf(c.Target), c.Target, c.CanShootFlyers, other);
+        }
+
+        /// <summary>The Water primal's retreat (pure): while it is immune nobody hits it (the raid waits where it stands).</summary>
+        public static Advice? WaterPrimalAdvice(GameNPC water, bool retreating) => retreating
+            ? new(BotAction.StandOff, water, null, "water primal: immune while it walks to its pool and heals; wait for it")
+            : null;
+
+        /// <summary>
+        /// The Air primal (pure but for the advice's target): 900 health, it flies its ring 690 above the floor, never comes
+        /// down and never melees; from the ring's middle a shooter has it within 1,450 at every point of the ring. Shooters in
+        /// reach shoot; the others walk to the middle. Melee can't reach it: they fight <paramref name="other"/>, the next
+        /// primal alive, or wait in the middle.
+        /// </summary>
+        public static Advice? AirPrimalAdvice(Vector3 at, Vector3 air, GameNPC boss, bool canShoot, GameNPC other)
+        {
+            if (canShoot)
+                return Vector3.Distance(at, air) <= AirPrimalShootReach
+                    ? new(BotAction.None, boss, null, "air primal: shoot it as it flies its ring")
+                    : new(BotAction.Reposition, boss, AirPrimalRingCentre, "air primal: to the room's middle, it passes within reach");
+            if (other != null)
+                return new(BotAction.Retarget, other, null, $"air primal flies out of melee reach: melee on \"{other.Name}\"");
+            return new(BotAction.StandOff, boss, Flat(at, AirPrimalRingCentre) > EasmarachStandArrive ? AirPrimalRingCentre : null,
+                "air primal flies out of melee reach: melee wait in the room's middle");
+        }
+
+        // ---- Olcasgean's second body ---------------------------------------------------------------------------------
+
+        /// <summary>A raider on the copy fights Olcasgean himself, unless its party holds the copy's safe spot (Signals.cs,
+        /// SafeSpotAdvice, which sends it there and onto the copy).</summary>
+        private static Advice? OneBodyOfOlcasgean(RuleContext c)
+        {
+            if (NearestOfType(c.Target, c.Live, nameof(Olcasgean)) is not { } main) return null;
+            if (SafeSpotsFor(c.Target) is { } rule)
+            {
+                IEnumerable<int> parties = RaidersNear(c.Target, c.Live ?? []).Where(r => r != c.Raider).Select(PartyIndex);
+                int spot = SpotOf(c.PartyIndex, c.Raider.ObjectID, parties);
+                if (spot >= 0 && spot < rule.Bodies.Length && rule.Bodies[spot] == nameof(Olcasgean2)) return null;
+            }
+            return OneBodyAdvice(main);
+        }
+
+        /// <summary>The copy's attackers go to the main body (pure).</summary>
+        public static Advice OneBodyAdvice(GameNPC main) =>
+            new(BotAction.Retarget, main, null, "one body: the copy shares his health and roots whoever hits it; fight Olcasgean");
+
+        // ---- Hurionthex ---------------------------------------------------------------------------------------------
+
+        /// <summary>His Granidon form's model (HurionthexBrain.FormGranidon) and the gap the melee keep from him in it.</summary>
+        public const int GranidonModel = 925, GranidonStepBack = 450;
+
+        /// <summary>The boss has a damage shield up (DamageShield spells are FocusShield effects, EffectHelper). Settable for tests.</summary>
+        public static Func<GameNPC, bool> HasDamageShield = npc =>
+            npc?.effectListComponent?.ContainsEffectForEffectType(eEffect.FocusShield) == true;
+
+        private static bool HurionthexShielded(GameNPC boss) => boss != null && (boss.Model == GranidonModel || HasDamageShield(boss));
+
+        private static Advice? HurionthexForms(RuleContext c) =>
+            HurionthexAdvice(c.At, PosOf(c.Target), c.Target, HurionthexShielded(c.Target), c.AtRange, c.Holds);
+
+        /// <summary>Hurionthex (pure but for the advice's target): shielded, a melee raider outside his target's party steps
+        /// back out of reach and waits; otherwise no opinion.</summary>
+        public static Advice? HurionthexAdvice(Vector3 at, Vector3 boss, GameNPC hurionthex, bool shielded, bool atRange, bool holds)
+        {
+            if (!shielded || atRange || holds) return null;
+            return new(BotAction.StandOff, hurionthex, Flat(at, boss) < GranidonStepBack ? PointAway(at, boss, GranidonStepBack + 50) : null,
+                "hurionthex: Granidon form's damage shield; melee step back until the form changes");
+        }
+
+        // ---- the Organic-Energy Mechanism ------------------------------------------------------------------------------
+
+        private static Advice? MechanismFromRange(RuleContext c)
+        {
+            GameNPC[] feeders = LiveOfType(c.Live, "OEMAdd").Where(f => f.CurrentRegionID == c.Target.CurrentRegionID && c.Target.IsWithinRadius(f, AddSearchRadius))
+                .OrderBy(f => c.Raider.GetDistanceTo(f)).ThenBy(f => f.ObjectID).ToArray();
+            return MechanismAdvice(c.At, PosOf(c.Target), c.Target, c.AtRange, feeders,
+                f => f.TargetObject is GameLiving v && IsSoftTarget(v));
+        }
+
+        /// <summary>The Mechanism stands still and never attacks; the melee keep this far from it when no feeder is left.</summary>
+        public const int MechanismStandOff = 500;
+
+        /// <summary>
+        /// The Mechanism (pure but for the advice's target): casters, archers and healers fight it as usual. Melee take a
+        /// bottom feeder (one on a caster or healer first, else the nearest: <paramref name="feeders"/> come nearest first)
+        /// and with none alive stand back out of its reach, never swinging at its shield.
+        /// </summary>
+        public static Advice? MechanismAdvice(Vector3 at, Vector3 mech, GameNPC mechanism, bool atRange, GameNPC[] feeders,
+            Func<GameNPC, bool> onSoftTarget)
+        {
+            if (atRange) return null;
+            GameNPC feeder = feeders.FirstOrDefault(onSoftTarget) ?? feeders.FirstOrDefault();
+            if (feeder != null)
+                return new(BotAction.Retarget, feeder, null, "mechanism: melee on its bottom feeders, never on its shield");
+            return new(BotAction.StandOff, mechanism, Flat(at, mech) < MechanismStandOff ? PointAway(at, mech, MechanismStandOff + 50) : null,
+                "mechanism: melee keep off its Shield of World Soul; casters and archers kill it");
+        }
+
+        // ---- the Giant Sporite Cluster ---------------------------------------------------------------------------------
+
+        /// <summary>Casters and healers fight from within this of the cluster (the period: "a small radius 300 circle ... no
+        /// one leaves circle"; "if we split up the sporites just pick off the casters"), and step in to this when further.</summary>
+        public const int SporiteCircleRadius = 450, SporiteCircleStepIn = 300;
+
+        private static Advice? SporiteCircle(RuleContext c)
+        {
+            GameNPC cluster = NearestOfType(c.Target, c.Live, nameof(GiantSporiteCluster));
+            if (cluster == null || !cluster.InCombat) return null;
+            return SporiteCircleAdvice(c.At, PosOf(cluster), c.Target, c.AtRange);
+        }
+
+        /// <summary>The circle (pure but for the advice's target): a raider at range further than
+        /// <see cref="SporiteCircleRadius"/> from the cluster steps in.</summary>
+        public static Advice? SporiteCircleAdvice(Vector3 at, Vector3 cluster, GameNPC target, bool atRange)
+        {
+            if (!atRange || Flat(at, cluster) <= SporiteCircleRadius) return null;
+            return new(BotAction.Reposition, target, PointAway(at, cluster, SporiteCircleStepIn),
+                $"sporite cluster: everyone in one circle within {SporiteCircleRadius} of the cluster");
+        }
+
+        /// <summary>A copy chosen by the route is the cluster's fight (one health pool).</summary>
+        private static GameNPC SporiteCopyRoute(GameNPC chosen, IReadOnlyList<GameNPC> live, out string reason)
+        {
+            reason = null;
+            if (chosen == null || !IsOfType(chosen, "GSCAdds")) return null;
+            GameNPC cluster = live?.OfType<GiantSporiteCluster>().FirstOrDefault(n => Present(n) && n.CurrentRegionID == chosen.CurrentRegionID &&
+                                                                                   n.IsWithinRadius(chosen, AddSearchRadius));
+            if (cluster != null) reason = "one health pool: the copy is the cluster's fight";
+            return cluster;
+        }
+
+        // ---- Olcasar Geomancer ---------------------------------------------------------------------------------------
+
+        private static Advice? OlcasarMinions(RuleContext c)
+        {
+            if (!IsOfType(c.Target, "OGAdds") || NearestOfType(c.Target, c.Live, nameof(OlcasarGeomancer)) is not { } olcasar) return null;
+            return OlcasarMinionAdvice(c.Target, olcasar, c.Target.TargetObject is GameLiving victim && SameParty(c.Raider, victim));
+        }
+
+        /// <summary>A minion (pure): the party it fights holds it (the period: "just kept one group on his pets"), everyone else
+        /// fights the Geomancer.</summary>
+        public static Advice OlcasarMinionAdvice(GameNPC minion, GameNPC olcasar, bool itFightsMyParty) => itFightsMyParty
+            ? new(BotAction.None, minion, null, "olcasar: this party holds the minion that fights it")
+            : new(BotAction.Retarget, olcasar, null, "olcasar: a slain minion rises again; kill the Geomancer");
+
+        private static GameNPC OlcasarMinionRoute(GameNPC chosen, IReadOnlyList<GameNPC> live, out string reason)
+        {
+            reason = null;
+            if (chosen == null || !IsOfType(chosen, "OGAdds")) return null;
+            GameNPC olcasar = live?.OfType<OlcasarGeomancer>().FirstOrDefault(n => Present(n) && n.CurrentRegionID == chosen.CurrentRegionID &&
+                                                                                 n.IsWithinRadius(chosen, AddSearchRadius));
+            if (olcasar != null) reason = "a slain minion rises again at its killer: fight the Geomancer";
+            return olcasar;
+        }
 
         // ---- Spindler Broodmother: the burn, the add parties' size and make-up, the mesmerize spread -------------------
 
