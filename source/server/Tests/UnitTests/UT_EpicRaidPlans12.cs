@@ -28,6 +28,7 @@ namespace DOL.UnitTests
         private EpicTestServerScope _server;
         private Func<int> _lordNext, _hostNext;
         private Func<GameNPC, bool> _agmundrCasting;
+        private Func<GameNPC, int?> _floorUnder;
 
         public sealed class TestCryptLord : CryptLord
         {
@@ -107,6 +108,8 @@ namespace DOL.UnitTests
             _lordNext = T.CryptLordNextPoint;
             _hostNext = T.HostNextPoint;
             _agmundrCasting = T.AgmundrCasting;
+            _floorUnder = T.FloorUnder;
+            T.ForgetPerchFloors();
             T.ResetAddPartiesForTests();
         }
 
@@ -116,6 +119,8 @@ namespace DOL.UnitTests
             T.CryptLordNextPoint = _lordNext;
             T.HostNextPoint = _hostNext;
             T.AgmundrCasting = _agmundrCasting;
+            T.FloorUnder = _floorUnder;
+            T.ForgetPerchFloors();
             EpicEncounterMechanics.ResetPerEncounter();
             _server.Dispose();
         }
@@ -499,5 +504,28 @@ namespace DOL.UnitTests
         }
 
         // ---- the griffon icewings perched on the glacier's cliffs ----------------------------------------------------
+
+        [Test]
+        public void APerchedFlyerIsDeferredUntilItComesDown()
+        {
+            UseRegion(160);
+            var griffon = Npc<GameEpicNPC>(52937, 34168, 15508);
+            typeof(GameNPC).GetField("m_flags", Hidden)!.SetValue(griffon, GameNPC.eFlags.FLYING);
+            var live = new List<GameNPC> { griffon };
+            T.FloorUnder = _ => 14379;
+            Assert.That(T.PullWait(griffon, live, 1_000), Does.Contain("perched 1129"), "PC log e3b8238: 0/68 for 15.5 minutes");
+            T.ForgetPerchFloors();
+            T.FloorUnder = _ => 15100;
+            Assert.That(T.PullWait(griffon, live, 1_000), Is.Null, "408 up: shot down as before");
+            T.ForgetPerchFloors();
+            T.FloorUnder = _ => null;
+            Assert.That(T.PullWait(griffon, live, 1_000), Is.Null, "no navmesh: no opinion");
+            Assert.That(T.PerchedOutOfReach(true, true, 16000, 14000), Is.False, "it fights: it is fought");
+            Assert.That(T.PerchedOutOfReach(false, false, 16000, 14000), Is.False, "it walks");
+            var boss = Npc<TestHost>(52937, 34168, 15508);
+            typeof(GameNPC).GetField("m_flags", Hidden)!.SetValue(boss, GameNPC.eFlags.FLYING);
+            T.FloorUnder = _ => 10000;
+            Assert.That(T.PullWait(boss, [boss], 1_000), Is.Null.Or.Not.Contain("perched"), "a boss is never deferred as a perched flyer");
+        }
     }
 }

@@ -8,7 +8,9 @@ namespace DOL.GS
     /// <summary>
     /// Shared pieces of the 1.2 raid plans for bosses that patrol or bring linked monsters (EpicEncounterTactics.CaerSidi.cs:
     /// the Crypt Lord, the Host, Lich Lord Ilron; .Tuscaran.cs: Icelord Agmundr): where a patrolling boss will walk in the
-    /// next seconds (from his script's points and its walk speed), and the living bosses of a region looked up once per list. Tests only until seen on the owner's PC.
+    /// next seconds (from his script's points and its walk speed), the living bosses of a region looked up once per list,
+    /// and the generic rule that defers a monster perched out of reach above its floor (Tuscaran Glacier's griffon
+    /// icewings). Tests only until seen on the owner's PC.
     /// </summary>
     public static partial class EpicEncounterTactics
     {
@@ -111,5 +113,77 @@ namespace DOL.GS
             near == null ? null : LiveOfType(live, type)
                 .Where(b => b != near && b.CurrentRegionID == near.CurrentRegionID && b.IsWithinRadius(near, radius))
                 .OrderBy(b => b.GetDistanceTo(near)).FirstOrDefault();
+
+        // ---- a monster perched out of reach (Tuscaran Glacier's griffon icewings) -------------------------------
+
+        /// <summary>A flying monster further than this above the floor under it is deferred (spells and bows reach 1,500
+        /// from a floor spot beside it at best; the raid's muster stands 1,400 off).</summary>
+        public const int PerchedFlyerHeight = 900;
+        /// <summary>The floor is looked for this far below it.</summary>
+        public const int PerchedFloorSearch = 2_500;
+
+        /// <summary>The monster stands this far above its floor that the raid neither reaches it nor shoots it from where it
+        /// musters (pure): a flyer, more than <see cref="PerchedFlyerHeight"/> above the floor found under it, and not
+        /// fighting.</summary>
+        public static bool PerchedOutOfReach(bool flying, bool inCombat, int monsterZ, int? floorZ) =>
+            flying && !inCombat && floorZ is int floor && monsterZ - floor > PerchedFlyerHeight;
+
+        private static readonly Dictionary<GameNPC, (long Tick, int? Floor)> PerchFloors = new();
+
+        /// <summary>The floor's height under <paramref name="npc"/> (navmesh), looked up once a minute per monster; null
+        /// without a navmesh. Settable for tests.</summary>
+        public static Func<GameNPC, int?> FloorUnder = npc =>
+        {
+            var nav = PathfindingProvider.Instance;
+            Zone zone = npc?.CurrentZone;
+            if (zone == null || nav is not { IsAvailable: true } || !nav.HasNavmesh(zone)) return null;
+            return nav.GetClosestPoint(zone, new Vector3(npc.X, npc.Y, npc.Z), 128, 128, PerchedFloorSearch, nav.DefaultFilters) is Vector3 f
+                ? (int)f.Z : null;
+        };
+
+        private static int? CachedFloorUnder(GameNPC npc, long now)
+        {
+            lock (PerchFloors)
+                if (PerchFloors.TryGetValue(npc, out var hit) && now - hit.Tick < 60_000) return hit.Floor;
+            int? floor = FloorUnder(npc);
+            lock (PerchFloors)
+            {
+                if (PerchFloors.Count > 512) PerchFloors.Clear();
+                PerchFloors[npc] = (now, floor);
+            }
+            return floor;
+        }
+
+        public static void ForgetPerchFloors()
+        {
+            lock (PerchFloors) PerchFloors.Clear();
+        }
+
+        /// <summary>
+        /// PC log e3b8238 (Tuscaran Glacier, 06:17-06:33): a griffon icewing perched 1,129 above its floor was the raid's
+        /// target; its muster sat 0/68 for 15.5 minutes while the raid walked recovery loops under it, and once there it was
+        /// killed in 30 s. Its 24 kin sit 1,100-2,000 above the floor too. Such epic trash (a plain GameEpicNPC that flies)
+        /// is deferred while it sits up there: the route takes another target, and fights it when it comes down or attacks.
+        /// Bosses that fly (Torst, Hurika) have their own rules and are never deferred here.
+        /// </summary>
+        private static string PerchedFlyerWait(GameNPC target, IReadOnlyList<GameNPC> live, long now)
+        {
+            if (target?.GetType() != typeof(GameEpicNPC) || (target.Flags & GameNPC.eFlags.FLYING) == 0 || target.InCombat) return null;
+            int? floor = CachedFloorUnder(target, now);
+            return PerchedOutOfReach(true, false, target.Z, floor)
+                ? $"perched {target.Z - floor} above its floor: out of reach until it comes down"
+                : null;
+        }
+
+        [DungeonRules]
+        private static IEnumerable<DungeonRule> PatrolRules() =>
+        [
+            new("perched-flyer", [], null)
+            {
+                Summary = "Epic trash that flies and perches more than 900 above its floor (the glacier's griffon icewings) is " +
+                          "deferred while it sits there: the route takes another target and fights it when it comes down.",
+                PullWait = PerchedFlyerWait,
+            },
+        ];
     }
 }
