@@ -1397,6 +1397,11 @@ namespace DOL.AI.Brain
             if (TemporaryGroupStableTravel.SyncStowWithLeaderRide(BotBody) || Body.StowedForRide)
                 return;
 
+            // True 1.65 (veteran review M6): a party that called RUN, a solo bot bailing out, a hired healer surviving
+            // to raise its player: run, fight nothing (BotBrain.Retreat)
+            if (BotBody?.IsOnStableMasterRoute == false && TryHoldRetreat())
+                return;
+
             AutonomousBotRealmAbilities.UseActives(BotBody);
 
             // Once a stable ticket has boarded, its waypoint chain exclusively
@@ -3186,6 +3191,10 @@ namespace DOL.AI.Brain
             if (!IsActive)
                 return;
             NoteCastForStep();
+
+            // True 1.65 (veteran review M6): a solo caster steps straight back from a rooted or snared monster (once per 20 s)
+            if (TryCasterStepBack())
+                return;
 
             if (AutonomousDefensivePull.Hold(BotBody))
             {
