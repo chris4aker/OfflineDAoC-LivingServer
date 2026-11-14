@@ -343,7 +343,8 @@ namespace DOL.UnitTests
         [Test]
         public void TheRouteWiresTheDarknessFallsRules()
         {
-            string route = Source("bots", "autonomous", "RealmRaidDungeonRoute.cs");
+            // CI checks the source out with Windows line endings; compare it with Unix ones.
+            string route = Source("bots", "autonomous", "RealmRaidDungeonRoute.cs").Replace("\r\n", "\n");
             Assert.That(route, Does.Contain("AutonomousDarknessFallsRaidTrail.Observe(this, _realm, participants, Front, now)"));
             Assert.That(route, Does.Contain("_objectives != null && RealmRaidNeutralEvents.IsObjective(_objectives, n.Name)) &&\n" +
                                             "                  _clearedNames.Contains(n.Name)"),
