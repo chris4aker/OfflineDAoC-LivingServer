@@ -175,7 +175,9 @@ namespace DOL.GS
                 if (boss.CurrentRegionID != bot.CurrentRegionID || For(boss) is not { CurerPostSpacing: > 0 } tactic ||
                     !bot.IsWithinRadius(boss, PartyPostReach))
                     continue;
-                if (!StandsAtCurerPost(bot.CureMezz != null, bot.ObjectID) || AutonomousRealmRaid.RaidOf(bot.Group) == null) return false;
+                if (AutonomousRealmRaid.RaidOf(bot.Group) == null) return false;
+                if (!StandsAtCurerPost(bot.CureMezz != null, bot.ObjectID))
+                    return MezSpreadOf(boss) is { } spread && ThinkSpreadPost(bot, boss, tactic, spread.Spacing, spread.Rings, now);
                 Vector3[] posts = PartyPosts(boss, tactic.CurerPostSpacing, now);
                 if (posts.Length == 0) return false;
                 Vector3 post = posts[0];
@@ -191,10 +193,116 @@ namespace DOL.GS
             return false;
         }
 
+        // ---- the mesmerize spread (Spindler Broodmother, 1.2 epic tactics) ----------------------------------------------
+
+        /// <summary>
+        /// The spread's candidate posts around <paramref name="center"/> (pure): one ring per radius of
+        /// <paramref name="rings"/>, as many spots on each as lie <paramref name="spacing"/> apart, every second ring turned
+        /// half a step.
+        /// </summary>
+        public static Vector3[] SpreadRing(Vector3 center, int spacing, IReadOnlyList<int> rings)
+        {
+            var spots = new List<Vector3>();
+            if (spacing <= 0 || rings == null) return [];
+            for (int ring = 0; ring < rings.Count; ring++)
+            {
+                float radius = rings[ring];
+                int count = Math.Max(1, (int)Math.Floor(2 * Math.PI * radius / spacing));
+                while (count > 1 && 2 * radius * Math.Sin(Math.PI / count) < spacing) count--;
+                double turn = ring % 2 == 0 ? 0 : Math.PI / count;
+                for (int i = 0; i < count; i++)
+                {
+                    double a = turn + 2 * Math.PI * i / count;
+                    spots.Add(new Vector3(center.X + radius * (float)Math.Cos(a), center.Y + radius * (float)Math.Sin(a), center.Z));
+                }
+            }
+            return spots.ToArray();
+        }
+
+        /// <summary>The spread posts (pure): the candidates <paramref name="spacing"/> apart (<see cref="PickPosts"/>) that also
+        /// lie <paramref name="spacing"/> from the curers' post (whose curers have their own place).</summary>
+        public static Vector3[] PickSpreadPosts(IReadOnlyList<Vector3> candidates, int spacing, Vector3? curerPost) =>
+            PickPosts((candidates ?? []).Where(c => curerPost is not Vector3 p ||
+                                                    Vector2.Distance(new(p.X, p.Y), new(c.X, c.Y)) >= spacing).ToArray(), spacing);
+
+        /// <summary>The spread post a party takes (pure): its place in the raid's order over the posts.</summary>
+        public static int SpreadPostIndex(int partyOrder, int posts) => posts <= 0 ? -1 : (int)((uint)Math.Max(0, partyOrder) % (uint)posts);
+
+        /// <summary>A raider of the mesmerize spread (pure): it fights from range or heals, it is no add party's and it is not
+        /// in the party she fights (that party stands with its tank).</summary>
+        public static bool TakesSpreadPost(bool atRange, bool inAddParty, bool holdsBoss) => atRange && !inAddParty && !holdsBoss;
+
+        private static readonly Dictionary<GameNPC, (Vector3 Anchor, Vector3[] Posts, long Tick)> SpreadRings = new();
+
+        /// <summary>The spread's floor posts for <paramref name="boss"/>'s fight now (built once per anchor, like the curers' post).</summary>
+        private static Vector3[] SpreadPosts(GameNPC boss, Tactic tactic, int spacing, int[] rings, long now)
+        {
+            Vector3 at = At(boss);
+            lock (SpreadRings)
+                if (SpreadRings.TryGetValue(boss, out var ring) && !PostsNeedAnchor(ring.Anchor, at, now - ring.Tick)) return ring.Posts;
+            Vector3? curer = tactic.CurerPostSpacing > 0 && PartyPosts(boss, tactic.CurerPostSpacing, now) is { Length: > 0 } c ? c[0] : null;
+            Vector3[] floor = FloorSpots(boss, at, SpreadRing(at, spacing, rings), rings.Min() - PartyPostFloorSnap);
+            Vector3[] posts = PickSpreadPosts(floor, spacing, curer);
+            lock (SpreadRings)
+            {
+                if (SpreadRings.Count > 64) SpreadRings.Clear();
+                SpreadRings[boss] = (at, posts, now);
+            }
+            Log.Info($"EPIC_SPREAD_POSTS boss=\"{boss.Name}\" region={boss.CurrentRegionID} anchor={(int)at.X},{(int)at.Y},{(int)at.Z} " +
+                     $"spacing={spacing} posts={posts.Length}");
+            return posts;
+        }
+
+        /// <summary>The candidates that have floor, lie at least <paramref name="minFromCenter"/> from her and stand in her
+        /// sight along the floor (or, with fewer than <see cref="PartyPostMinimum"/> of those, have a walked corridor to her).</summary>
+        private static Vector3[] FloorSpots(GameNPC boss, Vector3 center, Vector3[] candidates, float minFromCenter)
+        {
+            var nav = PathfindingProvider.Instance;
+            Zone zone = boss.CurrentZone;
+            if (zone == null || nav is not { IsAvailable: true } || !nav.HasNavmesh(zone) ||
+                nav.GetClosestPoint(zone, center, 128, 128, 256, nav.DefaultFilters) is not Vector3 floor)
+                return [];
+            var inSight = new List<Vector3>();
+            var reachable = new List<Vector3>();
+            foreach (Vector3 probe in candidates)
+            {
+                if (nav.GetClosestPoint(zone, probe, PartyPostFloorSnap, PartyPostFloorSnap, 400, nav.DefaultFilters) is not Vector3 at ||
+                    Flat(at, center) < minFromCenter)
+                    continue;
+                if (nav.HasLineOfSight(zone, at, floor, nav.DefaultFilters)) inSight.Add(at);
+                else if (AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, floor, at)) reachable.Add(at);
+            }
+            return inSight.Count >= PartyPostMinimum ? inSight.ToArray() : inSight.Concat(reachable).ToArray();
+        }
+
+        /// <summary>
+        /// The mesmerize spread (PC log e3b8238, Spindler Broodmother: 23-78 of about 104 raiders mesmerized at each sample,
+        /// one 300 cast catching the pile under her): a caster, archer or healer of a party that is neither an add party nor
+        /// the one she fights walks to its party's post, between casts, and fights from there. A party's back line shares a
+        /// post; posts lie 700 apart, so one cast reaches one post. The melee stay with her.
+        /// </summary>
+        private static bool ThinkSpreadPost(GameBot bot, GameNPC boss, Tactic tactic, int spacing, int[] rings, long now)
+        {
+            bool atRange = CanShootFlyers(bot) || IsHealer(bot);
+            if (!TakesSpreadPost(atRange, tactic.AddParties > 0 && IsAddParty(bot, tactic.AddParties, now, boss), Holds(bot, boss)))
+                return false;
+            Vector3[] posts = SpreadPosts(boss, tactic, spacing, rings, now);
+            int index = SpreadPostIndex(EncounterMeleeStations.PartyOrder(bot.Group, now), posts.Length);
+            if (index < 0) return false;
+            Vector3 post = posts[index];
+            if (StepToPost(Flat(At(bot), post), bot.IsCasting, bot.IsMezzed || bot.IsStunned) == PostStep.CarryOn) return false;
+            if (bot.FollowTarget != null) bot.StopFollowing();
+            if (!bot.IsMovingOnPath) bot.PathTo(new Point3D((int)post.X, (int)post.Y, (int)post.Z), bot.MaxSpeed);
+            LogDecision(bot, boss, new(BotAction.Reposition, boss, post,
+                $"mesmerize spread of \"{boss.Name}\": the party's back line at its post, {spacing} from the others"));
+            return true;
+        }
+
         public static void ResetPartyPostsForTests()
         {
             PostWatch.Clear();
             lock (PostRings) PostRings.Clear();
+            lock (SpreadRings) SpreadRings.Clear();
         }
     }
 }

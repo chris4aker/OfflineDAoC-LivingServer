@@ -108,7 +108,8 @@ namespace DOL.GS
             public bool FocusRangedAdds { get; init; }
             /// <summary>Up to this many whole parties of the raid, with their healers, work only the ranged adds, taking the
             /// ones on the raid's healers and casters first; everyone else stays on the boss (owner 2026-11-08, Spindler
-            /// Broodmother: "2-3 newborn-only parties"). 0: off. Replaces <see cref="FocusRangedAdds"/> where set.</summary>
+            /// Broodmother: "2-3 newborn-only parties"). 0: off. Replaces <see cref="FocusRangedAdds"/> where set. Spindler's
+            /// own count follows her spawn rate (EpicEncounterTactics.Galladoria.cs, 1.2 epic tactics).</summary>
             public int AddParties { get; init; }
             /// <summary>Area casters aim their area spells at the boss or a ranged add where the most of the boss and its ranged
             /// adds stand within the spell's radius (owner 2026-11-08, Spindler Broodmother: "AoE on her spot"; her newborns
@@ -830,7 +831,7 @@ namespace DOL.GS
                 {
                     // Newborn-only parties take the adds (healers keep their party up); the rest stay on the boss.
                     if (!(classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId)) &&
-                        IsAddParty(raider, rt.AddParties, now) && AddPartyTarget(rangedAdds) is { } newborn)
+                        IsAddParty(raider, rt.AddParties, now, target) && AddPartyTarget(rangedAdds) is { } newborn)
                         return new(BotAction.Retarget, newborn, null,
                             $"add party: ranged-add {Array.IndexOf(rangedAdds, newborn) + 1}/{rangedAdds.Length} of \"{target.Name}\"" +
                             (newborn.TargetObject is GameLiving on ? $" (on {on.Name})" : ""));

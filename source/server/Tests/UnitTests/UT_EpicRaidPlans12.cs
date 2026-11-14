@@ -434,6 +434,70 @@ namespace DOL.UnitTests
             Assert.That(blast.ID, Is.EqualTo(T.AgmundrBlastSpellId), "his blast is known by its spell id");
         }
 
+        // ---- Spindler Broodmother ------------------------------------------------------------------------------------
+
+        [Test]
+        public void HerAddPartiesFollowHerSpawnRateAndKeepHerDruidsAndWardensOut()
+        {
+            Assert.That(T.SpindlerAddPartyCount(14), Is.EqualTo(6), "PC log e3b8238's raid: 8 wanted, 45% of 14 at most");
+            Assert.That(T.SpindlerAddPartyCount(20), Is.EqualTo(8));
+            Assert.That(T.SpindlerAddPartyCount(4), Is.EqualTo(1));
+            Assert.That(T.SpindlerAddPartyCount(1), Is.EqualTo(0));
+            Assert.That(T.SpindlerAddPartyCount(14), Is.GreaterThan(T.AddPartyCount(14, 3)), "more than the 1.2 rule's two");
+            bool[] healers = [true, true, true, true, true];
+            int[] druids = [1, 0, 2, 1, 1];
+            Assert.That(T.AddPartyPicks(healers, druids, 2), Is.EqualTo(new[] { 1, 4 }), "none of them first, then the fewest, from the end");
+            Assert.That(T.AddPartyPicks([false, true, false], [0, 0, 0], 2), Is.EqualTo(new[] { 1, 2 }), "a healer first among the clean");
+            Assert.That(T.KeptOutOfSpindlerAddParties(Druid), Is.True);
+            Assert.That(T.KeptOutOfSpindlerAddParties((int)eCharacterClass.Warden), Is.True);
+            Assert.That(T.KeptOutOfSpindlerAddParties((int)eCharacterClass.Bard), Is.False);
+        }
+
+        [Test]
+        public void BelowAQuarterTheRaidBurnsHer()
+        {
+            UseRegion(T.GalladoriaRegion);
+            var boss = Npc<TestSpindler>(21283, 51707, 10876);
+            var newborn = Npc<Newborn>(21300, 51750, 10876);
+            var wizard = Npc<Raider>(21000, 51700, 10876);
+            var live = new List<GameNPC> { boss, newborn, wizard };
+            Assert.That(T.SpindlerBurning(true, 25), Is.True);
+            Assert.That(T.SpindlerBurning(true, 26), Is.False);
+            Assert.That(T.SpindlerBurning(false, 10), Is.False);
+            boss.Hurt = 40;
+            Assert.That(T.DungeonAdvice(new(wizard, boss, live, 0, true, 1_000, Wizard)), Is.Null, "above it the catalog's rules speak");
+            boss.Hurt = 76;
+            var a = T.DungeonAdvice(new(wizard, boss, live, 0, true, 1_000, Wizard));
+            Assert.That((a?.Action, a?.Target), Is.EqualTo(((T.BotAction?)T.BotAction.None, (GameNPC)boss)), "on her, not on the clump");
+            Assert.That(T.Decide(wizard, boss, live, 0, true, 1_000, Wizard).Action, Is.EqualTo(T.BotAction.None));
+        }
+
+        [Test]
+        public void TheMesmerizeSpreadPutsEachPartysBackLineAtItsOwnPost()
+        {
+            Vector3 her = new(21283, 51707, 10876);
+            Vector3[] ring = T.SpreadRing(her, T.SpindlerSpreadSpacing, T.SpindlerSpreadRings);
+            Assert.That(ring.Length, Is.GreaterThanOrEqualTo(14));
+            Vector3[] posts = T.PickSpreadPosts(ring, T.SpindlerSpreadSpacing, her + new Vector3(660, 0, 0));
+            Assert.That(posts.Length, Is.GreaterThanOrEqualTo(8));
+            foreach (Vector3 p in posts)
+            {
+                Assert.That(Flat(p, her), Is.InRange(740f, 1410f), "within the raid's 1,500 of her");
+                Assert.That(Flat(p, her + new Vector3(660, 0, 0)), Is.GreaterThanOrEqualTo(T.SpindlerSpreadSpacing), "clear of the curers' post");
+                foreach (Vector3 q in posts.Where(q => q != p))
+                    Assert.That(Flat(p, q), Is.GreaterThanOrEqualTo(T.SpindlerSpreadSpacing), "one 300 mesmerize reaches one post");
+            }
+            Assert.That(T.SpreadPostIndex(13, posts.Length), Is.EqualTo(13 % posts.Length));
+            Assert.That(T.SpreadPostIndex(-1, posts.Length), Is.EqualTo(0));
+            Assert.That(T.SpreadPostIndex(3, 0), Is.EqualTo(-1));
+            Assert.That(T.TakesSpreadPost(true, false, false), Is.True);
+            Assert.That(T.TakesSpreadPost(false, false, false), Is.False, "melee stay with her");
+            Assert.That(T.TakesSpreadPost(true, true, false), Is.False, "add parties chase her newborns");
+            Assert.That(T.TakesSpreadPost(true, false, true), Is.False, "the party she fights stands with its tank");
+            Assert.That(T.MezSpreadOf(Npc<TestSpindler>(0, 0, 0)), Is.Not.Null);
+            Assert.That(T.MezSpreadOf(Npc<Mob>(0, 0, 0)), Is.Null);
+        }
+
         // ---- the griffon icewings perched on the glacier's cliffs ----------------------------------------------------
     }
 }

@@ -16,7 +16,10 @@ namespace DOL.GS
     /// two or more in reach and casts the area spell; point blank casters walk in as they already do.</item>
     /// <item><see cref="Tactic.AddParties"/>: 2-3 whole parties of the raid (2 up to 14 parties, 3 above), the last ones in
     /// the raid's order that have a healer, work only the ranged adds: the ones on the raid's healers and casters first,
-    /// the one with the least health among those. Their healers keep them up. Everyone else stays on the boss.</item>
+    /// the one with the least health among those. Their healers keep them up. Everyone else stays on the boss. For Spindler
+    /// Broodmother (1.2 epic tactics, PC log e3b8238) their number follows her spawn rate instead
+    /// (<see cref="SpindlerAddPartyCount"/>, EpicEncounterTactics.Galladoria.cs) and her druids and wardens are kept out of
+    /// them where the raid allows.</item>
     /// </list>
     /// Autonomous gamebots only, through <see cref="Decide"/>.
     /// </summary>
@@ -43,10 +46,23 @@ namespace DOL.GS
             return picks.ToArray();
         }
 
+        /// <summary>
+        /// Which parties go on the adds when some classes are kept out of them (pure; Spindler Broodmother's druids and
+        /// wardens): parties with a healer and none of those classes first, then those without them, then those with the
+        /// fewest; within each, from the end of the raid's order as <see cref="AddPartyPicks(IReadOnlyList{bool}, int)"/>.
+        /// </summary>
+        public static int[] AddPartyPicks(IReadOnlyList<bool> hasHealer, IReadOnlyList<int> keptOut, int count) =>
+            Enumerable.Range(0, hasHealer.Count)
+                .OrderBy(i => keptOut[i] > 0 ? 1 : 0).ThenBy(i => keptOut[i] > 0 ? keptOut[i] : (hasHealer[i] ? 0 : 1))
+                .ThenByDescending(i => i)
+                .Take(Math.Max(0, count)).ToArray();
+
         private static readonly Dictionary<Group, (bool AddParty, long Tick)> AddPartyCache = new();
 
-        /// <summary>The raider's party is one of its raid's add parties (cached for 10 s a party).</summary>
-        public static bool IsAddParty(GameLiving raider, int max, long now)
+        /// <summary>The raider's party is one of its raid's add parties (cached for 10 s a party). For Spindler Broodmother
+        /// (<paramref name="boss"/>) their number follows her spawn rate (<see cref="SpindlerAddPartyCount"/>) and her druids
+        /// and wardens are kept out of them where the raid allows.</summary>
+        public static bool IsAddParty(GameLiving raider, int max, long now, GameNPC boss = null)
         {
             Group group = raider?.Group;
             if (group == null) return false;
@@ -56,7 +72,14 @@ namespace DOL.GS
             if (AutonomousRealmRaid.RaidOf(group) is { } raid)
             {
                 bool[] healers = raid.Parties.Select(p => p.GetMembersInTheGroup().Any(m => m.IsAlive && IsHealer(m))).ToArray();
-                int[] picks = AddPartyPicks(healers, AddPartyCount(raid.Parties.Length, max));
+                int[] picks;
+                if (boss is SpindlerBroodmother)
+                {
+                    int[] keptOut = raid.Parties.Select(p => p.GetMembersInTheGroup()
+                        .Count(m => m.IsAlive && KeptOutOfSpindlerAddParties(EncounterTargets.ClassId(m)))).ToArray();
+                    picks = AddPartyPicks(healers, keptOut, SpindlerAddPartyCount(raid.Parties.Length));
+                }
+                else picks = AddPartyPicks(healers, AddPartyCount(raid.Parties.Length, max));
                 mine = Array.IndexOf(picks, Array.IndexOf(raid.Parties, group)) >= 0;
             }
             lock (AddPartyCache)
