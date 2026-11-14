@@ -75,7 +75,95 @@ namespace DOL.GS
             {
                 Summary = "Casters on Nokkvi (90% melee resist), everyone else on Vagn (90% magic resist).",
             },
+            new(nameof(Agmundr), [nameof(Agmundr)], AgmundrSpread)
+            {
+                Summary = "His linked hrimthursa (AgmundrBaf) die first, and nothing standing in his aggro is pulled while he " +
+                          "lives; in his fight everyone but his target's party keeps 500 off his target (his cold blast), melee " +
+                          "from behind him, and steps out while he casts it.",
+                ClearFirstOf = AgmundrBafClearsFirst,
+                PullWait = AgmundrNeighbourWaits,
+            },
         ];
+
+        // ---- Icelord Agmundr -----------------------------------------------------------------------------------------
+
+        /// <summary>His linked monsters (AgmundrBrain.Think: every one in the region joins once he fights, tether 0, speed 300).</summary>
+        public const string AgmundrLinkedPackage = "AgmundrBaf";
+        /// <summary>His cold blast (AgmundrBrain.AgmundrDD: spell 11744, 650 cold to everyone within 500 of his target, a
+        /// 3 s cast he walks with and nobody interrupts; 15% of his attack turns, every 10-15 s at most).</summary>
+        public const int AgmundrBlastSpellId = 11744, AgmundrBlastRadius = 500;
+        /// <summary>His aggro range (AgmundrBrain: 600); a monster within this plus <see cref="AgmundrNeighbourMargin"/> of
+        /// him is not pulled while he lives.</summary>
+        public const int AgmundrAggro = 600, AgmundrNeighbourMargin = 400;
+        /// <summary>Melee stand behind him so the line from his target puts them this far past his blast's radius.</summary>
+        public const int AgmundrBehindMargin = 50;
+        /// <summary>A melee raider this close to its spot behind him is there.</summary>
+        public const int AgmundrBehindTolerance = 90;
+
+        /// <summary>He is casting his cold blast. Settable for tests.</summary>
+        public static Func<GameNPC, bool> AgmundrCasting = boss =>
+            boss?.castingComponent?.SpellHandler?.Spell is { } s && (s.ID == AgmundrBlastSpellId || s.Radius == AgmundrBlastRadius && s.Damage == 650);
+
+        /// <summary>
+        /// PC log e3b8238 (08:03-08:06): 81 of 81 raiders died in 2.7 minutes and he never went under 58%; the raid took
+        /// 119,000 damage from him in its first minute, nearly all of it his cold blast landing on a raid stacked around his
+        /// target. His six linked hrimthursa (AgmundrBaf, 1,395-2,275 from his spawn; nothing in his script brings him when
+        /// one of them is pulled, and a gamebot raid triggers no Bring-a-Friend) die before him.
+        /// </summary>
+        private static GameNPC AgmundrBafClearsFirst(GameNPC npc, IReadOnlyList<GameNPC> live)
+        {
+            if (npc == null || npc is Agmundr || npc.PackageID != AgmundrLinkedPackage) return null;
+            return LiveOfType(live, nameof(Agmundr)).FirstOrDefault(b => b.CurrentRegionID == npc.CurrentRegionID);
+        }
+
+        /// <summary>A monster standing within his aggro (plus a margin) is not pulled while he lives and rests (PC log
+        /// e3b8238, 08:34: the hrimthursa harrower's muster went 76 from his spawn; 80 raiders died to him, none of it
+        /// counted as an attempt).</summary>
+        private static string AgmundrNeighbourWaits(GameNPC target, IReadOnlyList<GameNPC> live, long now)
+        {
+            if (target is Agmundr || target.CurrentRegionID != 160) return null;
+            GameNPC agmundr = LiveOfType(live, nameof(Agmundr)).FirstOrDefault(b => b.CurrentRegionID == target.CurrentRegionID);
+            if (agmundr == null || agmundr.InCombat || !agmundr.IsWithinRadius(target, AgmundrAggro + AgmundrNeighbourMargin)) return null;
+            return $"it stands {(int)agmundr.GetDistanceTo(target)} from Icelord Agmundr (aggro {AgmundrAggro}): after him";
+        }
+
+        /// <summary>
+        /// His fight. His target's party fights as usual (and takes the blast, healed). Everyone else: while he casts the
+        /// blast, out of 500 around his target and held out until it lands (it is a 3 s cast); otherwise casters, archers and
+        /// healers keep 750 off his target, and melee fight him from behind, on the line from his target, as far as their
+        /// reach allows (he hits from 350, so his target often stands far enough for them to clear it).
+        /// </summary>
+        private static Advice? AgmundrSpread(RuleContext c)
+        {
+            GameNPC boss = c.Target;
+            if (!boss.InCombat || boss.TargetObject is not GameLiving anchor || SameParty(c.Raider, anchor)) return null;
+            return AgmundrAdvice(c.At, PosOf(boss), PosOf(anchor), boss, anchor.Name, c.AtRange, AgmundrCasting(boss), c.Raider.ObjectID);
+        }
+
+        /// <summary>The Agmundr rule for a raider outside his target's party (pure but for the advice's target).</summary>
+        public static Advice? AgmundrAdvice(Vector3 at, Vector3 bossAt, Vector3 anchorAt, GameNPC boss, string anchorName, bool atRange,
+            bool casting, long fan)
+        {
+            if (casting)
+            {
+                if (StepOutOfArea(at, anchorAt, AgmundrBlastRadius, fan) is Vector3 outOfIt)
+                    return new(BotAction.Reposition, boss, outOfIt, $"agmundr: out of his cold blast ({AgmundrBlastRadius} around \"{anchorName}\")");
+                // Melee just outside would walk straight back in to swing: they hold until it has landed.
+                if (!atRange && Flat(at, anchorAt) <= AgmundrBlastRadius + BehindReach)
+                    return new(BotAction.Reposition, boss, at, "agmundr: hold out of his cold blast until it lands");
+                return null;
+            }
+            if (atRange)
+                return SpreadSpot(at, bossAt, anchorAt, AgmundrBlastRadius, true) is Vector3 clear
+                    ? new(BotAction.Reposition, boss, clear, $"agmundr: casters and healers clear of {AgmundrBlastRadius} around \"{anchorName}\"")
+                    : null;
+            if (Flat(at, anchorAt) > AgmundrBlastRadius + AgmundrBehindMargin / 2) return null;
+            float anchorToBoss = Flat(anchorAt, bossAt);
+            float behind = Math.Clamp(AgmundrBlastRadius + AgmundrBehindMargin - anchorToBoss, BehindDistance, BehindReach);
+            Vector3 spot = EncounterMeleeStations.BehindSpot(bossAt, anchorAt, behind, at.Z);
+            return Flat(at, spot) <= AgmundrBehindTolerance ? null
+                : new(BotAction.Reposition, boss, spot, $"agmundr: melee behind him, away from \"{anchorName}\"");
+        }
 
         // ---- King Tuscar and Queen Kula ---------------------------------------------------------------------------------
 

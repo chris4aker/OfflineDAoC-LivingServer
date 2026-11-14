@@ -84,9 +84,31 @@ namespace DOL.GS
             /// <summary>While true, no bot's pet attacks the target, defends its owner against it or takes it from its owner's
             /// orders (Funus: a pet's hit heals him to full). ControlledMobBrain asks <see cref="PetMustNotHit"/>.</summary>
             public Func<GameNPC, bool> NoPets { get; init; }
+            /// <summary>The <see cref="Route"/> also redirects a monster that is in combat (the horsemen's barred room). By
+            /// default a route rule leaves a fighting monster alone: a monster fighting the raid is answered, never mapped onto
+            /// the raid's current target (PC log e3b8238: "Crypt Lord -&gt; Crypt Lord" 22 times and "Easmarach -&gt;
+            /// Easmarach" 208 times, while a dark light and the Earth primal it was mapped from killed the raid).</summary>
+            public bool RoutesInCombat { get; init; }
+            /// <summary>The living boss whose fight this monster would join, which waits until it is dead (the Crypt Lord's
+            /// court, the Host's and Icelord Agmundr's linked monsters, Lich Lord Ilron's dark lights and eyes): the route kills
+            /// it first, like a catalog <see cref="Tactic.ClearFirst"/> name. Asked for every monster whatever
+            /// <see cref="Targets"/> says; null: not one.</summary>
+            public Func<GameNPC, IReadOnlyList<GameNPC>, GameNPC> ClearFirstOf { get; init; }
+            /// <summary>Why the raid must not pull this monster now (null: it may): the Crypt Lord's patrol would pass its
+            /// fight, the Host is not at his ambush yet. Asked for every monster whatever <see cref="Targets"/> says; the route
+            /// asks before it picks a target and before a muster goes in (<see cref="PullWait"/>).</summary>
+            public Func<GameNPC, IReadOnlyList<GameNPC>, long, string> PullWait { get; init; }
+            /// <summary>A fixed point the raid musters for this encounter at instead of where it stands (the Host's ambush on
+            /// his patrol: the muster chased him every 10 s); null: none.</summary>
+            public Func<GameNPC, Vector3?> MusterAnchor { get; init; }
         }
 
-        private sealed record RuleSet(DungeonRule[] All, Dictionary<string, DungeonRule[]> ByTarget, DungeonRule[] Routes);
+        private sealed record RuleSet(DungeonRule[] All, Dictionary<string, DungeonRule[]> ByTarget, DungeonRule[] Routes)
+        {
+            public DungeonRule[] ClearFirsts { get; } = All.Where(r => r.ClearFirstOf != null).ToArray();
+            public DungeonRule[] PullWaits { get; } = All.Where(r => r.PullWait != null).ToArray();
+            public DungeonRule[] Anchors { get; } = All.Where(r => r.MusterAnchor != null).ToArray();
+        }
 
         private static readonly object DungeonRuleLock = new();
         private static readonly List<DungeonRule> ExtraDungeonRules = new();
@@ -183,6 +205,8 @@ namespace DOL.GS
             if (chosen == null || live == null) return null;
             foreach (DungeonRule rule in DungeonRuleSet.Routes)
             {
+                // A monster fighting the raid is fought (RoutesInCombat: unless the rule says otherwise).
+                if (chosen.InCombat && !rule.RoutesInCombat) continue;
                 try
                 {
                     if (rule.Route(chosen, live, out reason) is { } other && other != chosen) return other;
@@ -193,6 +217,57 @@ namespace DOL.GS
                 }
             }
             reason = null;
+            return null;
+        }
+
+        /// <summary>The living boss a dungeon rule says <paramref name="npc"/> is killed before (null: none).</summary>
+        public static GameNPC RuleClearFirstOwner(GameNPC npc, IReadOnlyList<GameNPC> live)
+        {
+            if (npc == null || live == null) return null;
+            foreach (DungeonRule rule in DungeonRuleSet.ClearFirsts)
+            {
+                try
+                {
+                    if (rule.ClearFirstOf(npc, live) is { } boss && boss != npc && Present(boss)) return boss;
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon clear-first {rule.Encounter} failed: {ex.Message}"); }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Why the raid must not pull <paramref name="target"/> now, or null when it may (a dungeon rule's
+        /// <see cref="DungeonRule.PullWait"/>; the first that objects). The raid route asks before it takes a target out of
+        /// combat and before a mustered raid goes in, and waits (holding at the muster) while one objects. A monster in combat
+        /// is never held: the fight is on.
+        /// </summary>
+        public static string PullWait(GameNPC target, IReadOnlyList<GameNPC> live, long now)
+        {
+            if (target == null || target.InCombat || live == null) return null;
+            foreach (DungeonRule rule in DungeonRuleSet.PullWaits)
+            {
+                try
+                {
+                    if (rule.PullWait(target, live, now) is string why) return why;
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon pull-wait {rule.Encounter} failed: {ex.Message}"); }
+            }
+            return null;
+        }
+
+        /// <summary>The fixed point the raid musters for <paramref name="npc"/> at (a dungeon rule's
+        /// <see cref="DungeonRule.MusterAnchor"/>), or null: where it stands, as before.</summary>
+        public static Vector3? MusterAnchor(GameNPC npc)
+        {
+            if (npc == null) return null;
+            foreach (DungeonRule rule in DungeonRuleSet.Anchors)
+            {
+                try
+                {
+                    if (rule.MusterAnchor(npc) is Vector3 at) return at;
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon muster anchor {rule.Encounter} failed: {ex.Message}"); }
+            }
             return null;
         }
 

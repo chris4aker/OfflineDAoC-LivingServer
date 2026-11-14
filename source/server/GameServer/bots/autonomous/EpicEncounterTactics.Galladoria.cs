@@ -14,6 +14,12 @@ namespace DOL.GS
             {
                 Summary = "Melee fight the Water or Earth primal while casters and archers kill the Fire primal; the last one, melee fight it in the fire.",
             },
+            new(nameof(SpindlerBroodmother), [nameof(SpindlerBroodmother)], SpindlerBurn)
+            {
+                Summary = "Below 25% the raid burns her: the add parties stay on her newborns, everyone else fights her. The add " +
+                          "parties are sized to her spawn rate and keep her druids and wardens out; the casters, archers and " +
+                          "healers of the other parties fight from posts 700 apart around her, so a mesmerize catches one post.",
+            },
             new(nameof(Easmarach), [nameof(Easmarach)], EasmarachOnTheFalls)
             {
                 Summary = "Below 30% he retreats to the waterfall top and heals: casters, archers and healers shoot him from the " +
@@ -22,6 +28,73 @@ namespace DOL.GS
                 Route = EasmarachBeforeTheLastRoom,
             },
         ];
+
+        // ---- Spindler Broodmother: the burn, the add parties' size and make-up, the mesmerize spread -------------------
+
+        /// <summary>Below this the raid burns her (PC log e3b8238: both wipes came from about 25%, at 15% and 22%; in their
+        /// last minutes the raid dealt 8,000-12,000 a minute to her newborns and 400-1,400 to her).</summary>
+        public const int SpindlerBurnBelow = 25;
+        /// <summary>Her newborns (SpindlerBroodmotherBrain.SpawnSplinder): 1 or 2 (1.5 on average: the loop draws its bound
+        /// again each pass) every 25-35 s (a 10 s timer, then a 15-25 s reset), so about 3 a minute, 8,000 health each.</summary>
+        public const double SpindlerNewbornsPerMinute = 3.0;
+        public const int SpindlerNewbornHealth = 8_000;
+        /// <summary>What one raider dealt a newborn in a minute (PC log e3b8238's EPIC_FIGHT_LEDGER: 350-700 per attacker,
+        /// mesmerizes included), and how many of an add party's eight fight (its healers keep it up).</summary>
+        public const int SpindlerRaiderDamagePerMinute = 500, SpindlerFightersPerParty = 6;
+        /// <summary>The add parties never take more than this share of the raid's parties.</summary>
+        public const int SpindlerAddPartyShareMax = 45;
+        /// <summary>Her newborns hunt these first (SBAddsBrain: bard, druid, mentalist, warden at 400 aggro); the druids and
+        /// wardens are the raid's main healers and curers (PC log e3b8238, deaths in attempt 1: druid 17, warden 14), so the
+        /// add parties are picked without them where the raid allows.</summary>
+        public static readonly eCharacterClass[] SpindlerKeepOutOfAddParties = [eCharacterClass.Druid, eCharacterClass.Warden];
+        /// <summary>Her mesmerize lands on everyone within 300 of a raider (SpindlerBroodmotherBrain.BossMezz): the spread
+        /// posts stand this far apart (twice that, and room for the raiders around a post)...</summary>
+        public const int SpindlerSpreadSpacing = 700;
+        /// <summary>...on two rings this far from her, 650 apart so a post of one lies 700 from its neighbours on the other
+        /// (inside the 1,500 the raid's spells reach her from, and the 2,000 its heals reach her melee from).</summary>
+        public static readonly int[] SpindlerSpreadRings = [750, 1_400];
+
+        /// <summary>
+        /// How many add parties (pure): enough that their kill rate matches her spawn rate
+        /// (<see cref="SpindlerNewbornsPerMinute"/> x <see cref="SpindlerNewbornHealth"/> over
+        /// <see cref="SpindlerRaiderDamagePerMinute"/> x <see cref="SpindlerFightersPerParty"/>: 24,000 / 3,000 = 8), at most
+        /// <see cref="SpindlerAddPartyShareMax"/>% of the parties and at least one (two from four parties). The 1.2 rule sent
+        /// 2 of the 14 parties PC log e3b8238 had, a kill rate of about a third of her spawn rate.
+        /// </summary>
+        public static int SpindlerAddPartyCount(int parties)
+        {
+            if (parties <= 1) return 0;
+            int wanted = (int)Math.Ceiling(SpindlerNewbornsPerMinute * SpindlerNewbornHealth /
+                                           (SpindlerRaiderDamagePerMinute * (double)SpindlerFightersPerParty));
+            int cap = Math.Max(1, parties * SpindlerAddPartyShareMax / 100);
+            return Math.Clamp(wanted, Math.Min(parties >= 4 ? 2 : 1, cap), cap);
+        }
+
+        /// <summary>The raider is of a class kept out of her add parties.</summary>
+        public static bool KeptOutOfSpindlerAddParties(int classId) =>
+            Array.IndexOf(SpindlerKeepOutOfAddParties, (eCharacterClass)classId) >= 0;
+
+        /// <summary>The burn is on (pure): she fights at or below <see cref="SpindlerBurnBelow"/>%.</summary>
+        public static bool SpindlerBurning(bool inCombat, int healthPercent) => inCombat && healthPercent <= SpindlerBurnBelow;
+
+        /// <summary>
+        /// Below <see cref="SpindlerBurnBelow"/>% the add parties keep to her newborns and everyone else fights her (the
+        /// catalog's area-on-the-clump and peel rules would send casters and melee to the newborns, which killed the burn in
+        /// both PC wipes). Above it, no opinion: the catalog's rules as before.
+        /// </summary>
+        private static Advice? SpindlerBurn(RuleContext c)
+        {
+            if (c.Target is not SpindlerBroodmother boss || !SpindlerBurning(boss.InCombat, boss.HealthPercent)) return null;
+            bool healer = c.ClassId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)c.ClassId);
+            if (!healer && For(boss) is { AddParties: > 0 } t && IsAddParty(c.Raider, t.AddParties, c.Now, boss) &&
+                AddPartyTarget(LiveRangedAdds(boss, c.Live ?? [])) is { } newborn)
+                return new Advice(BotAction.Retarget, newborn, null, $"burn below {SpindlerBurnBelow}%: the add party keeps her newborns off");
+            return new Advice(BotAction.None, boss, null, $"burn below {SpindlerBurnBelow}%: everyone on her");
+        }
+
+        /// <summary>The mesmerize spread of a boss's fight: its posts' spacing and rings, or null (only Spindler Broodmother).</summary>
+        public static (int Spacing, int[] Rings)? MezSpreadOf(GameNPC boss) =>
+            boss is SpindlerBroodmother ? (SpindlerSpreadSpacing, SpindlerSpreadRings) : null;
 
         // ---- Easmarach: the waterfall top, and the falls before the last room ------------------------------------------
 

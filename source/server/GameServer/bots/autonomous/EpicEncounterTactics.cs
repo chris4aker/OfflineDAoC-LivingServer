@@ -108,7 +108,8 @@ namespace DOL.GS
             public bool FocusRangedAdds { get; init; }
             /// <summary>Up to this many whole parties of the raid, with their healers, work only the ranged adds, taking the
             /// ones on the raid's healers and casters first; everyone else stays on the boss (owner 2026-11-08, Spindler
-            /// Broodmother: "2-3 newborn-only parties"). 0: off. Replaces <see cref="FocusRangedAdds"/> where set.</summary>
+            /// Broodmother: "2-3 newborn-only parties"). 0: off. Replaces <see cref="FocusRangedAdds"/> where set. Spindler's
+            /// own count follows her spawn rate (EpicEncounterTactics.Galladoria.cs, 1.2 epic tactics).</summary>
             public int AddParties { get; init; }
             /// <summary>Area casters aim their area spells at the boss or a ranged add where the most of the boss and its ranged
             /// adds stand within the spell's radius (owner 2026-11-08, Spindler Broodmother: "AoE on her spot"; her newborns
@@ -358,8 +359,11 @@ namespace DOL.GS
         /// <summary>The living boss whose fight <paramref name="npc"/> would join (it is killed before that boss), or null.</summary>
         public static GameNPC ClearFirstOwner(GameNPC npc, IReadOnlyList<GameNPC> live)
         {
+            if (!Present(npc)) return null;
+            // A dungeon rule's linked monsters (the Crypt Lord's court, the Host's, Agmundr's; Ilron's lights and eyes).
+            if (RuleClearFirstOwner(npc, live) is { } ruleBoss) return ruleBoss;
             var names = _clearFirstNames ??= ByType.Values.SelectMany(t => t.ClearFirst ?? []).ToHashSet(StringComparer.Ordinal);
-            if (names.Count == 0 || !Present(npc) || !names.Contains(npc.Name)) return null;
+            if (names.Count == 0 || !names.Contains(npc.Name)) return null;
             return live.FirstOrDefault(b => Present(b) && b != npc && b.CurrentRegionID == npc.CurrentRegionID &&
                 IsClearFirst(For(b), npc.Name, npc.GetDistanceTo(b.SpawnPoint)));
         }
@@ -827,7 +831,7 @@ namespace DOL.GS
                 {
                     // Newborn-only parties take the adds (healers keep their party up); the rest stay on the boss.
                     if (!(classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId)) &&
-                        IsAddParty(raider, rt.AddParties, now) && AddPartyTarget(rangedAdds) is { } newborn)
+                        IsAddParty(raider, rt.AddParties, now, target) && AddPartyTarget(rangedAdds) is { } newborn)
                         return new(BotAction.Retarget, newborn, null,
                             $"add party: ranged-add {Array.IndexOf(rangedAdds, newborn) + 1}/{rangedAdds.Length} of \"{target.Name}\"" +
                             (newborn.TargetObject is GameLiving on ? $" (on {on.Name})" : ""));

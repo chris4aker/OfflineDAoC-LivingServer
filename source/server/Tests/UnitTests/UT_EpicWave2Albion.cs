@@ -377,19 +377,21 @@ namespace DOL.UnitTests
         // ---- the Crypt Lord ------------------------------------------------------------------------------------------
 
         [Test]
-        public void ACourtMonsterIsPulledAsTheCryptLordsFight()
+        public void ACourtMonsterIsClearedBeforeTheCryptLord()
         {
+            // 1.2 epic tactics (PC log e3b8238): the court is no longer pulled as his fight but cleared first, each monster at
+            // a time his patrol keeps clear of it (UT_EpicRaidPlans12 plays the timing).
             var lord = Npc<TestCryptLord>(26567, 40143, 15372);
             var court = Npc<Court>(27500, 41000, 15372);
             court.PackageID = EpicEncounterTactics.CryptLordCourt;
             var stranger = Npc<Court>(27500, 41100, 15372);
             var live = new List<GameNPC> { lord, court, stranger };
-            Assert.That(EpicEncounterTactics.RouteTarget(court, live, default, out string why), Is.SameAs(lord));
-            Assert.That(why, Does.StartWith("court of"));
-            Assert.That(EpicEncounterTactics.RouteTarget(stranger, live, default, out _), Is.SameAs(stranger));
+            Assert.That(EpicEncounterTactics.RouteTarget(court, live, default, out _), Is.SameAs(court));
+            Assert.That(EpicEncounterTactics.ClearFirstOwner(court, live), Is.SameAs(lord));
+            Assert.That(EpicEncounterTactics.ClearFirstOwner(stranger, live), Is.Null);
             Assert.That(EpicEncounterTactics.RouteTarget(lord, live, default, out _), Is.SameAs(lord));
             lord.Dead = true;
-            Assert.That(EpicEncounterTactics.RouteTarget(court, live, default, out _), Is.SameAs(court), "he is dead: the court is trash");
+            Assert.That(EpicEncounterTactics.ClearFirstOwner(court, live), Is.Null, "he is dead: the court is trash");
         }
 
         // ---- Orshom's Fire and Orylle's throw -------------------------------------------------------------------------
