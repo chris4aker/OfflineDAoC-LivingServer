@@ -1175,8 +1175,21 @@ namespace DOL.GS
         public static float WalkEstimate(Vector3 from, Vector3 to) =>
             Vector2.Distance(new(from.X, from.Y), new(to.X, to.Y)) + FloorChangeWeight * Math.Max(0f, MathF.Abs(to.Z - from.Z) - SameFloorBand);
 
+        /// <summary>How long the route waits for formed parties at its front before it goes on from the raid's main body.</summary>
+        public const long FormedPartiesWaitMilliseconds = 6 * 60_000;
+        /// <summary>After that wait a main body of this many will do (a party), instead of <see cref="MinimumRaidersAtTarget"/>.</summary>
+        public const int FormedWaitMinimumBody = 4;
+        private long _formedWaitSince, _formedWaitLast, _nextFormedWaitLog;
+        public const long FormedWaitGapMilliseconds = 30_000;
+
+        public static bool FormedWaitTooLong(long waitingSince, long now) =>
+            waitingSince > 0 && now - waitingSince >= FormedPartiesWaitMilliseconds;
+
         /// <summary>The living raider with the most living raiders within 1,000 units (the raid's main body).</summary>
-        private static bool TryRegroupFront(GameLiving[] inside, out Vector3 front)
+        private static bool TryRegroupFront(GameLiving[] inside, out Vector3 front) =>
+            TryRegroupFront(inside, out front, MinimumRaidersAtTarget);
+
+        private static bool TryRegroupFront(GameLiving[] inside, out Vector3 front, int minimum)
         {
             front = default;
             GameLiving best = null;
@@ -1186,7 +1199,7 @@ namespace DOL.GS
                 int count = inside.Count(p => p.IsWithinRadius(candidate, 1000));
                 if (count > bestCount) { best = candidate; bestCount = count; }
             }
-            if (best == null || bestCount < MinimumRaidersAtTarget) return false;
+            if (best == null || bestCount < minimum) return false;
             front = new(best.X, best.Y, best.Z);
             return true;
         }
@@ -1712,7 +1725,39 @@ namespace DOL.GS
             }
             else _frontAbsentSince = 0;
             if (inside.Length < 8 || !atFront)
-            { Hold = true; Destination = Front; Status = "Waiting for formed parties inside"; return; }
+            {
+                // One unbroken wait: a pulse that went elsewhere in between (a target, a fight) starts it again.
+                if (_formedWaitSince == 0 || now - _formedWaitLast > FormedWaitGapMilliseconds) _formedWaitSince = now;
+                _formedWaitLast = now;
+                // Bounded (owner's PC, 2026-11-14, build e3b8238): Tuscaran Glacier held "Waiting for formed parties inside"
+                // from 07:45 to 07:57 with 83 raiders inside and none at the front, because the three-minute regroup above
+                // starts again whenever someone gets a little closer. After the limit the front moves to the raid's main body
+                // (any party's worth there), and the route goes on from where the raid stands.
+                if (FormedWaitTooLong(_formedWaitSince, now) && inside.Length >= MinimumRaidersAtTarget &&
+                    TryRegroupFront(inside, out Vector3 body, FormedWaitMinimumBody))
+                {
+                    log.Warn($"REALM_EXPEDITION_FRONT_REGROUP region={_region} from={(int)Front.X},{(int)Front.Y},{(int)Front.Z} " +
+                             $"to={(int)body.X},{(int)body.Y},{(int)body.Z} inside={inside.Length} " +
+                             $"reason=\"waited {(now - _formedWaitSince) / 60_000} minutes for formed parties at the front; the route goes on from the main body\"");
+                    Front = Destination = body;
+                    _frontAbsentSince = 0;
+                    _formedWaitSince = 0;
+                }
+                else
+                {
+                    if (FormedWaitTooLong(_formedWaitSince, now) && now >= _nextFormedWaitLog)
+                    {
+                        _nextFormedWaitLog = now + FormedPartiesWaitMilliseconds;
+                        int living = participants.Count(p => p.IsAlive);
+                        log.Warn($"REALM_EXPEDITION_FORMED_WAIT region={_region} minutes={(now - _formedWaitSince) / 60_000} inside={inside.Length} " +
+                                 $"living={living} outside={participants.Count(p => p.IsAlive && p.CurrentRegionID != _region)} " +
+                                 $"front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} " +
+                                 $"reason=\"too few raiders inside to go on; the rest are outside or on their way back\"");
+                    }
+                    Hold = true; Destination = Front; Status = "Waiting for formed parties inside"; return;
+                }
+            }
+            _formedWaitSince = 0;
             var nav = PathfindingProvider.Instance;
             Zone zone = WorldMgr.GetRegion(_region)?.GetZone((int)Front.X, (int)Front.Y);
             if (zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))

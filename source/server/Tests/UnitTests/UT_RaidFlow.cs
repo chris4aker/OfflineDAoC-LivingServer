@@ -95,5 +95,19 @@ namespace DOL.UnitTests
             Assert.That(RealmRaidReturnWave.Next(40, 41, 40, Minute, false), Is.EqualTo(RealmRaidReturnWave.Step.Gather),
                 "half of them still lying inside: the first ones wait for them");
         }
+    
+
+        // ---- 3. the wait for formed parties is bounded --------------------------------------------------------------
+
+        [Test]
+        public void TheWaitForFormedPartiesHasALimit()
+        {
+            Assert.That(RealmRaidDungeonRoute.FormedWaitTooLong(0, 60 * Minute), Is.False, "not waiting");
+            Assert.That(RealmRaidDungeonRoute.FormedWaitTooLong(Minute, 6 * Minute), Is.False);
+            Assert.That(RealmRaidDungeonRoute.FormedWaitTooLong(Minute, 7 * Minute), Is.True,
+                "Tuscaran Glacier waited 12 minutes with 83 inside; six is the limit");
+            Assert.That(RealmRaidDungeonRoute.FormedWaitMinimumBody, Is.LessThan(RealmRaidDungeonRoute.MinimumRaidersAtTarget),
+                "after the limit a party's worth is a main body");
+        }
     }
 }
