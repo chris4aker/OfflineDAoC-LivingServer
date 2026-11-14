@@ -58,6 +58,14 @@ namespace DOL.UnitTests
         public void GuestAction(bool alive, bool inGroup, bool sameRegion, float distance, long away, long dead, string expected) =>
             Assert.That(EpicPlaytestSweep.GuestAction(alive, inGroup, sameRegion, distance, away, dead), Is.EqualTo(expected));
 
+        [TestCase("no_party", true)]
+        [TestCase("no_seat", true)]
+        [TestCase("raid_started", false)]
+        [TestCase("raid_ended", false)]
+        [TestCase("grouped", false)]
+        public void ASeatIsTriedAgainOnlyWhileItMayStillComeFree(string why, bool expected) =>
+            Assert.That(EpicPlaytestSweep.SeatWorthRetrying(why), Is.EqualTo(expected));
+
         [Test]
         public void AGuestNearTheBossStaysWhereItIsThoughItsPartyStandsBack() =>
             Assert.Multiple(() =>

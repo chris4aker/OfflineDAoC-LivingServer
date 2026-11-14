@@ -45,7 +45,12 @@ namespace DOL.GS
         private static readonly List<Step> Queue = [];
         private static readonly List<string> Results = [];
         private static Step _current;
-        private static long _currentStarted, _nextStartAt, _nextPulse, _guestAwaySince, _guestDeadSince;
+        private static long _currentStarted, _nextStartAt, _nextPulse, _guestAwaySince, _guestDeadSince, _nextSeatTry;
+        // A seat the guest did not get yet (the raid had no party with room when it started): tried again every
+        // SeatRetryMs until the raid goes in (2026-11-13, Gjalpinulva: "no_party" at the start, and the guest was left).
+        private static AutonomousRealmRaid.Definition _seatPendingFor;
+        private static RealmRaidMuster.Hub _seatPendingHub;
+        public const long SeatRetryMs = 10_000;
         private static GamePlayer _guest;
         private static eRealm _guestHomeRealm;
         /// <summary>The guest's account level before the sweep (0: not lowered).</summary>
@@ -222,6 +227,7 @@ namespace DOL.GS
                 }
                 if (running)
                 {
+                    RetrySeat(now);
                     TagAlong(now);
                     return;
                 }
@@ -281,6 +287,8 @@ namespace DOL.GS
                 _current = step;
                 _currentStarted = now;
                 _guestAwaySince = _guestDeadSince = 0;
+                _seatPendingFor = null;
+                _nextSeatTry = now + SeatRetryMs;
             }
             int moved = 0;
             if (AutonomousRealmRaid.TryGetHub(definition.Id, out var hub))
@@ -318,18 +326,49 @@ namespace DOL.GS
                 (GamePlayer guest, AutonomousRealmRaid.Definition definition, RealmRaidMuster.Hub hub) = state;
                 guest.Group?.RemoveMember(guest);
                 if (!guest.IsAlive) Raise(guest);
-                if (guest.Realm != definition.Realm)
-                {
-                    guest.Realm = definition.Realm;
-                    guest.Out.SendMessage($"Play test: your realm is {GlobalConstants.RealmToName(definition.Realm)} for this raid.",
-                        eChatType.CT_System, eChatLoc.CL_SystemWindow);
-                }
+                // The raid's realm only while the guest has a seat in it: a guest left with another realm where it stands
+                // is killed by that land's guards (2026-11-13: Manawatch, made Midgard at Yarley's farm, died to a Royal
+                // Minstrel 8 seconds after the seat failed).
+                eRealm before = guest.Realm;
+                guest.Realm = definition.Realm;
                 bool seated = AutonomousBotGroupCoordinator.TrySeatRaidGuest(definition.Id, guest, out string why);
-                if (seated && hub != null)
-                    guest.MoveTo(hub.Region, (int)hub.Center.X, (int)hub.Center.Y, (int)hub.Center.Z, guest.Heading);
+                if (!seated) guest.Realm = before;
+                else
+                {
+                    if (before != definition.Realm)
+                        guest.Out.SendMessage($"Play test: your realm is {GlobalConstants.RealmToName(definition.Realm)} for this raid.",
+                            eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                    if (hub != null)
+                        guest.MoveTo(hub.Region, (int)hub.Center.X, (int)hub.Center.Y, (int)hub.Center.Z, guest.Heading);
+                }
+                lock (Sync)
+                {
+                    bool retry = !seated && SeatWorthRetrying(why);
+                    _seatPendingFor = retry ? definition : null;
+                    _seatPendingHub = retry ? hub : null;
+                }
                 Log.Info($"EPIC_SWEEP_GUEST event={definition.Id} step=seat player=\"{guest.Name}\" seated={seated} why={why ?? "-"} " +
                          $"realm={guest.Realm} level={guest.Level} hub=\"{hub?.Name}\"");
             }, (guest, definition, hub));
+        }
+
+        /// <summary>Whether a failed seat may come free later in the same raid (pure): parties still forming or refilling.</summary>
+        public static bool SeatWorthRetrying(string why) => why is "no_party" or "no_seat";
+
+        private static void RetrySeat(long now)
+        {
+            AutonomousRealmRaid.Definition definition;
+            RealmRaidMuster.Hub hub;
+            lock (Sync)
+            {
+                // A guest who joined a party meanwhile (the raid leader's own invite, say) keeps it.
+                if (_guest?.Group != null) _seatPendingFor = null;
+                definition = _seatPendingFor;
+                hub = _seatPendingHub;
+                if (definition == null || _current?.Id != definition.Id || now < _nextSeatTry) return;
+                _nextSeatTry = now + SeatRetryMs;
+            }
+            SeatGuest(definition, hub);
         }
 
         private static void TagAlong(long now)
@@ -402,6 +441,7 @@ namespace DOL.GS
                 homePrivLevel = _guestHomePrivLevel;
                 _guest = null;
                 _guestHomePrivLevel = 0;
+                _seatPendingFor = null;
                 results = Results.ToArray();
             }
             // The account level comes back even if the guest logged off (the account object outlives the session).
