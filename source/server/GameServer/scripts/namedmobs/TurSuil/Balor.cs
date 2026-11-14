@@ -241,6 +241,8 @@ namespace DOL.AI.Brain
 			{
 				GameLiving Target = Enemys_To_DD[Util.Random(0, Enemys_To_DD.Count - 1)];//pick random target from list
 				RandomTarget = Target;//set random target to static RandomTarget
+				// Living Server 1.2: the raid hears the pick (EncounterSignals, radius 0: only the healers react, it first).
+				EncounterSignals.Raise(Body, EncounterSignals.Glare, Target, 0, true, 3000, 15_200);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(StartCast), 3000);
 			}
 		}

@@ -72,13 +72,22 @@ The raid AI (`EpicEncounterTactics`, autonomous gamebots only) plays these tacti
 | Aroon the Urlamhai (Galladoria) | **1.2 (new)** | Damage order (AllowAroonDamageOrder, on since 1.2): each Scaith is immune until the one before it is dead (slash, thrust, crush, body, cold, energy, heat, matter, spirit), and Aroon takes only the damage types whose Scaith has died. The whole raid kills the Scaiths one at a time in that order (a Scaith that is not next is held by the party it fights), then Aroon. |
 | Conservator (Galladoria) | **1.2 (new)** | Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within 800 of his spawn. A raider farther out steps in to 500; fight him at home: drawn past 600 from his spawn the raid stops hitting him and whoever he chases leads him back. |
 | Easmarach (Galladoria) | **1.2 (new)** | Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within his 2,500 tether of his spawn; a raider farther out steps in. The waterfall top (wave 3, 1.2): below 30% he clears his aggro, walks up to 37,811,50,342 (about 1,100 above his spawn, no walked path) and heals an eighth of his health; casters, archers and healers go to their party's spot on the floor below (six spots the raid reached on 2026-11-06, each within 1,250 of the top and 2,500 of his spawn) and shoot him from there, melee wait at his spawn (EpicEncounterTactics.Galladoria). He heals there once a fight, rests 50-80 s and walks back down to his spawn (1.2 play test 2026-11-07: up there for good, healing at every fall to 30%, a bot raid wore him from 42% to 34% in ten minutes and could never finish him); the original endless heal is the owner setting epic_easmarach_endless_falls_heal (off). His push behind the falls (raiders within 1,000 of 37,653,52,843 are moved to 40,067,50,494) is on since wave 3, for bots too: while he lives the route never sends the raid to the last room (the bridge, the primals, Olcasgean), it fights him first; a bot pushed back stays where the push put it and a repeated push is logged (EPIC_DISPLACEMENT_BOUNCED). Container play test 2026-11-07: the close range and the falls stands played as written (all six stands on the navmesh, walked both ways); sight to the top is not checked by the mesh. |
+| Giant Sporite Cluster (Galladoria) | **1.2 (new)** | One health pool for eight bodies: the raid stays in one small circle (casters and healers within 450 of the cluster), area casters on the clump, any body is the cluster (the period: "get entire raiding party real close together and whack at any target (same hp pool) and pbae"). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only) |
+| Hurionthex (Galladoria) | **1.2 (new)** | Granidon form (damage shield 120): melee outside his target's party step back 450 and pets leave him until the form changes. Monkey form: Black Plague (350 around his target) is the spread for casters and healers. (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only) |
+| Olcasar Geomancer (Galladoria) | **1.2 (new)** | A slain minion rises again at its killer's feet: the party a minion fights holds it, everyone else kills the Geomancer, whose death removes them (the period: "just kept one group on his pets and he went down fast"). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only) |
 | Olcasgean (Galladoria) | **1.2 (new)** | Safe spots (AllowPositionPuzzle, on since 1.2): unless a raider stands within 200 of 40,170,62,600 (his copy) and one within 200 of 39,237,62,644 (him) he casts his Root DD without pause; the raid's two lowest-numbered parties hold one spot each the whole fight and fight the body that stands there (they share health), everyone else fights where it likes. Below half he throws one raider every 12-20 s who was not thrown before (bots too since 1.2): it walks back (EncounterDisplacementRecovery). The Waterfall Antipass pushes anyone who tries to leave back into the room until he dies. The party calls an empty spot in /group. |
+| Olcasgean (Galladoria) | **1.2 (new)** | The copy shares his 250,000 and answers each attacker with Olcasgean's Root (450, at most once a second per body): only the party holding the copy's safe spot fights it, everyone else fights Olcasgean, so one body roots the raid instead of two. (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only) |
+| Corrupt Primal of Air (Galladoria) | **1.2 (new)** | 900 health, flies a ring 690 up around the room's middle and never lands: casters and archers shoot it from the middle (within 1,450 at every point of the ring), melee fight another primal, pets leave it (they do 5). Killed last, after Water, Fire, the Earthmenders and Earth (the period's order). The period's Air primal took only ground-targeted area spells and Annihilation; this script's takes any damage. (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only) |
+| Corrupt Primal of Water (Galladoria) | **1.2 (new)** | Below 30% it walks to its pool by the bridge, is immune there and heals a sixth: nobody hits it until it fights again. First in the period's order (Thredh, May 2003; the US plan, Jan 2003); the period's water primal also sank into the lake and healed (FreddysHouse, Apr 2003). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only) |
 | Corrupt Primal of Fire (Galladoria) | **1.2 (new)** | Trail of fire (AllowFullFirePatches, off by default, server property epic_full_fire_patches: 120 every 2 s in 300; on, the original 220 in 450): the primal walks its loop and leaves a patch where it stands. Casters and archers shoot it and step out of the patches; melee fight the Water or Earth primal while one lives, and fight the Fire primal in the fire only when it is the last. |
 | Corrupt Primal of Earth (Galladoria) | **1.2 (new)** | Required adds by class: once the fight is on the raid kills the four Earthmenders (they heal the primal 2,000 each) before the primal. With the original class rule on (AllowEarthmenderClassPuzzle, on since 1.2) each raider takes an Earthmender its class hurts: Guardian: blademasters, heroes, champions; Magical: eldritchs, enchanters, mentalists; Natural: bards, druids, wardens; Shadowy: nightshades, rangers; animists and valewalkers any (spread by party); pets hurt all four. A class none of them takes damage from (bainshee, vampiir, mauler) fights the primal and keeps it busy. |
+| Organic-Energy Mechanism (Galladoria) | **1.2 (new)** | It never attacks; its Shield of World Soul hits back 150 per swing: casters and archers kill it, melee and pets kill its bottom feeders and never swing at it (the period: "never target the middle mechanism ... RANGE attack and GTAoE attack it", VN Boards "Galladoria Notes", Dec 2002). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only) |
 | Spindler Broodmother (Galladoria) | **1.2 (new)** | Adult spindlers first (play test duo28's damage ledger, 2026-11-10: the level-75 spindlers standing 1,466 to 2,532 from her spawn came into her fight, dealt about 100,000 of the 340,000 damage the raid took, at about 470 a hit, and one was killed in the whole fight; the route had counted every spindler as cleared once the first one died): the route kills each spindler within 2,600 of her spawn, as a target of the whole raid, before it goes for her. Newborn-only parties and area spells on her spot (owner 2026-11-08): the newly-born spindlers (8,000 health, 1-2 every 25-45 s, born within 50-80 of her; they go for bards, druids, mentalists and wardens) are worked by 2-3 whole parties with their healers (2 up to 14 parties, 3 above), which take the newborns on the raid's healers and casters first, the one with the least health among those; every raider with an area damage spell (Eldritch, Mentalist, Enchanter, Animist shrooms and others) aims it at her or a newborn, wherever the most of them stand within its radius; everyone else stays on her. Before (play test duo6-duo10): all casters and archers on one newborn plus a melee peel held newborns at 2-8 for 9 minutes but she was never killed (wipes at 38-57%). Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on. The curers' post (owner 2026-11-11: tactics only): her mesmerize lands 300 around one raider picked at random within 1,500 of her, for 60 s, about every 30 s. The raid fights her as one pile under her (seen on the owner's PC, build e90bf21), so a cast catches nearly everyone, the curers included, and the few it missed (about five at a time) lift it more slowly than she casts it: the played world's staged raids wiped at 22% and 52% (118 and 72 raiders, 34 of them mesmerized on average, up to 96). First try, play test posts1 (PC played-world copy, 88 + 24): every party's whole back line at its own post halved the mesmerized, but her newborns followed the back line to nine posts and no longer bunched for the area spells (42 alive at once, wipe at 21%). Now every second curer of the raid (by its id) stands at one post beside the fight, 660 from her on floor in her sight, and everyone else fights as before in one place. A cast on the pile leaves the post's curers awake: they cure the pile's curers first, and those the rest. Tests only until a PC log shows it. Since the sweep of 2026-11-14 (tests only): add parties are sized to her spawn rate (8 wanted, at most 45% of the parties) and keep druids and wardens out where the raid allows; casters, archers and healers stand at party posts 700 apart so one mesmerize (300) catches one post; below 25% everyone not in an add party burns her. |
+| Uaimh Lairmaster (Galladoria) | **1.2 (new)** | No rule: at 60% he runs home once at full speed and comes back (the period's fled at about 5% and came back at about 75%; this script does not heal him); the raid fights him where he stands (the period: "we zerged the Lairmaster with our 70-80 people"). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only) |
 | Xaga (Galladoria) | **1.2 (new)** | Fairies first (AllowBeathaHealsXaga and AllowFairyFlight, on since 1.2): Beatha's damage heals Xaga by twice the amount and both fairies circle the room while fought. The raid kills Beatha, then Tine, then Xaga. |
 | Gjalpinulva (Gjalpinulva's lair (Malmohus)) | **1.2 (new)** | Messengers (on since 1.2, AllowDragonMessengers): from 50% every 80-90 s four to six messengers (GjalpinulvaMessenger, 1,500 health, they never fight) run out of the lair and each calls four to six adds where its path ends; the raid's casters and archers run each one down (ranged adds) while melee and healers stay on the dragon. Stare (glare, 1,000 around the raider it picks, 6 s warning): everyone within it but the picked raider and the tank steps out, away from him, and healers heal him first. Look-around stun and breath (2,000 around the dragon, 6 s warning): casters, archers and healers step out past 2,250 until it lands; melee can't make it and take it. Each one is called in /group (EncounterSignals, EncounterCalls). |
 | Golestandt (Golestandt's lair (Dartmoor)) | **1.2 (new)** | Messengers (on since 1.2, AllowDragonMessengers): from 50% every 80-90 s four to six messengers (GolestandtMessenger, 1,500 health, they never fight) run out of the lair and each calls four to six adds where its path ends; the raid's casters and archers run each one down (ranged adds) while melee and healers stay on the dragon. Stare (glare, 1,000 around the raider it picks, 6 s warning): everyone within it but the picked raider and the tank steps out, away from him, and healers heal him first. Look-around stun and breath (2,000 around the dragon, 6 s warning): casters, archers and healers step out past 2,250 until it lands; melee can't make it and take it. Each one is called in /group (EncounterSignals, EncounterCalls). |
+| Iarnvidiur (Iarnvidiur's Lair) | **1.2 (new)** | Black Plague (disease, 850 around his target, every 2 minutes): casters, archers and healers stand clear of his target. Below half he ports a raider (not his target) every 25-45 s: it walks back (EncounterDisplacementRecovery). The period's port dropped raiders in the water under the bridge (Eden, 2023); this script's four spots are not checked against the water. (EpicEncounterTactics.catalog, Living Server 1.2; tests only) |
 | Krevo Ricik (Krondon) | **1.2 (new)** | Ranged add (1.2): his forgotten ghost (4,000 health, one at a time) explodes 30 s after it appears for 800 matter damage in 700 around it, so the casters and archers kill it as it comes while melee stay on him. His toss (one hit in ten throws its striker 400 straight up) is on for bots too: they land by him and fight on. |
 | Orylle (Krondon) | **1.2 (new)** | After Orshom Brong: while Orshom lives the party Orylle fights holds her and everyone else kills Orshom (30,000 health, lower resists) first; the route goes for Orshom before her. Hazard: stay out of Orshom's Fire, as for him. Cold casters (1.2): raiders with a cold damage spell put the fire out from outside its radius (it takes only cold, 10,000 health), casting only their cold spells at it; with the fire out Orylle has nothing to throw raiders into (EpicEncounterTactics.Krondon). |
 | Orshom Brong (Krondon) | **1.2 (new)** | Hazard: Orshom's Fire is never a target (the route skips it and never switches to it; a raider aiming at it fights Orshom or Orylle instead), and a raider within 450 of it steps out to 600 before fighting on. Cold casters (1.2): raiders with a cold damage spell put the fire out from outside its radius (it takes only cold, 10,000 health), casting only their cold spells at it; with the fire out Orylle has nothing to throw raiders into (EpicEncounterTactics.Krondon). From 1.1.3 (after the owner's PC raid of 2026-11-09 burned in it): a raider standing in the fire steps out of it first whatever it is fighting, raid posts are never placed inside it, and the route never turns on it as 'fighting the raid'. |
@@ -86,18 +95,32 @@ The raid AI (`EpicEncounterTactics`, autonomous gamebots only) plays these tacti
 | Black Lady (Marfach Caverns) | **1.2 (new)** | Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed. Spread (1.2, epic wave 2): her Void Strike (cold 400, every 6-12 s) lands 350 around her target, so casters and healers outside her target's party stand 600 from that target. |
 | Grand Summoner Govannon (Summoner's Hall) | **1.2 (new)** | Step out of the Shroud (1.2, after play test duo28's damage ledger: 122,123 damage to the raid in the minute after his change, 53 raiders in it): while he casts Govannon's Shroud of Agony, four seconds, every raider within 350 of his target but that target steps out to 420 from it, and comes back when it has landed. Spread in demon form: while he is the demon (model 636), his target keeps 150 from him and the other melee fight him from three ring spots 120 degrees apart, 190 from him, each party at its own spot (owner 2026-11-08: a Shroud of Agony, radius 300 around his target, on one melee raider then reaches about a third of the melee; before that, 2026-11-07, the melee fought from one spot behind him: duo9 still lost 6-12 a minute); while his target is not a tank, the raid tank nearest to him taunts him (taunt style, and the Paladin or Sluaghbinder taunt spell; owner 2026-11-08: duo9 tactic lines named casters, healers and pets as his target about half the time); casters, archers and healers outside his target's party keep 550 from that target (a hold for healers inside it was tried and dropped: duo7, 15 healers died within 200 of him). Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him. Shade (1.2, epic wave 2): if the sacrifice and the demon both reach his altar the Shade of Aelfgar comes (10,000 health) and sends a raider within 2,000 up to the gallery every 10-20 s (bots too since 1.2; they walk back down or recall): the whole raid kills it first, then him. His full 300,000 health is on (AllowGovannonFullHealth). |
 | Summoner Lossren (Summoner's Hall) | **1.2 (new)** | Infected ghoul: casters and archers kill the ghoul (4,000 health, walks at 110) as it crawls toward its raider, and that raider walks away from it (it bursts for 1,000 in 500 when it reaches its target); the rest stay on Lossren and her tortured souls. |
+| Nosdoden (Trollheim) | **1.2 (new)** | Waves as required adds: when a wave of essences spawns (every 10% from 90%), the raid stops hitting him and kills the wave, then goes back to him. Call of Void (announced, 1,100 within 550 of a raider 5 s later) is raised as a glare: everyone near the raider but his tank steps out, healers heal it first; casters, archers and healers fight from beyond 950 of him (EpicEncounterTactics.Trollheim, Living Server 1.2; tests only). |
+| Balor (Tur Suil) | **1.2 (new)** | Eye of Balor (each 10% he loses): it picks a raider within 2,500 and casts Balor's Eye Light (1,000 heat, 4 s, no interrupt, through walls) on it for 18 s. That raider, unless Balor fights it, runs out of the eye's 1,800 and waits; the healers heal it first (the script raises the pick). The period's two door guards and the throw (later reports) are not in this script. (EpicEncounterTactics.TurSuil, Living Server 1.2; tests only) |
+| Council Otrygg (Tuscaran Glacier) | **1.2 (new)** | His eight pets (10,000 each) come back as fast as they die while he fights and die with him: everyone fights Otrygg, the route never sends the raid to a pet. The period fought him at the T junction, away from his spawn, where his pets stayed home (CARNE-TG); not played here (no junction point recorded). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only) |
 | Council Vagn (Tuscaran Glacier) | **1.2 (new)** | Damage split with Council Nokkvi: Vagn resists 90% of magic, so casters fight Nokkvi and everyone else (melee, archers, hybrids, pets) fights Vagn while both live. |
 | Council Nokkvi (Tuscaran Glacier) | **1.2 (new)** | Damage split with Council Vagn: Nokkvi resists 90% of melee, so the casters fight him while both live (see Vagn). |
+| Elder Council Birghir (Tuscaran Glacier) | **1.2 (new)** | With Guthlac (pulling one brings the other): Guthlac first (his Ice Spike), the party Birghir fights holds him. An Ice Spike is a ranged add of both: every caster and archer of the raid takes it. (EpicEncounterTactics.Tuscaran (catalog), Living Server 1.2; tests only) |
+| Elder Council Guthlac (Tuscaran Glacier) | **1.2 (new)** | Ice Spike: every 35-60 s a 5,000-health spike appears on a raider within 4,500 and erupts 25 s later for 2,500 cold within 3,000 (the whole room): every caster and archer of the raid kills it before then; he dies before Birghir, and his death removes it. (EpicEncounterTactics.Tuscaran (catalog), Living Server 1.2; tests only) |
+| Elder Icelord Suttung (Tuscaran Glacier) | **1.2 (new)** | Hjalmar's Ice Blast (450 cold to everyone within 440 of him, every 15 s): casters, archers and healers outside his target's party fight from beyond 540; melee take it and his berserker stance (Strength 850 for 10-20 s), healers on his target. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only) |
+| Elder Icelord Hjalmar (Tuscaran Glacier) | **1.2 (new)** | The raider he fights faces him (his back style: Strength 740 on a turned back, 600 otherwise); his Morkimmas (1,000 health, heal themselves, 20% a hit near his target) are ranged adds the casters and archers kill together. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only) |
 | Fornfrusenen (Tuscaran Glacier) | **1.2 (new)** | Shards first: while he is above 35% the raid kills his 2-3 shards (each party takes one), each one taking a quarter of his health; at 35% or less the shards no longer hurt him and the raid kills him (his death removes them). Close in: he takes damage only from within 200 of him and the shards only from within 400 of his spot, so every raider, casters too, fights from within 120-180 of him or 320 of his spot. |
+| Council Hord (Tuscaran Glacier) | **1.2 (new)** | Aggro 1,500 and Council Ozur stands 750 from him: nothing within 1,900 of him is pulled while he rests, so the council falls Hord, Ozur, Otrygg (the period's route, FreddysHouse "TG raids again", 31 Jul 2003). His own fight: a 250 self-heal on 3% of hits taken, fought as usual (the period's Hord healed to full at random). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only) |
 | Icelord Agmundr (Tuscaran Glacier) | **1.2 (new)** | His six hrimthursa are cleared first (pulling one does not bring him), and nothing within 1,000 of him is pulled while he stands out of combat. In his fight his target's party fights as usual, casters and healers keep 750 from his target, melee stand behind him, and everyone near his target steps out of the 500 around it during his 3 s cold blast (EpicEncounterTactics.Tuscaran, sweep 2026-11-14; tests only). |
+| Icelord Hakr (Tuscaran Glacier) | **1.2 (new)** | Four Royal Iceweavers (20,000 each): the two in the far room (30,008,56,329; nothing links them) die before the pull; in his fight the two at his side (HakrBaf, brought in) are his required adds and die first, since his toss only comes while an iceweaver lives (the period's "Magic barrier fades away" message; this script gives him no immunity). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only) |
 | Icelord Kvasir (Tuscaran Glacier) | **1.2 (new)** | Cold heal (AllowKvasirColdHeal, on since 1.2): no bot casts a cold spell at him (EpicEncounterTactics.ForbidsSpell; casters use their other lines). Scream: from 3 s before his primal scream is due until 4.5 s after his mesmerize (800 around his target, 2 s after the scream), everyone but his target's party stands 1,050 from his target; melee wait there, casters and healers keep casting. |
+| Icelord Steinvor (Tuscaran Glacier) | **1.2 (new)** | With Skuf (pulling one brings the other) he dies first: his Pillar of Frost (750 cold, 350 around the spot of a raider he names, 3.5 s later) is a ground hazard everyone steps out of; Skuf's party holds Skuf meanwhile. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only) |
+| Icelord Skuf (Tuscaran Glacier) | **1.2 (new)** | After Steinvor: the party Skuf fights holds him, everyone else kills Steinvor first; Steinvor's pillars are stepped out of in Skuf's fight too. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only) |
+| Issorden (Tuscaran Glacier) | **1.2 (new)** | His seven icebound skeletons (IssordenBaf) join him from anywhere in the glacier when he fights: they die first. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only) |
 | Jailer Vifil (Tuscaran Glacier) | **1.2 (new)** | Jail rescue (AllowDisplacement, bots too since 1.2): the jail opens when his two tunnel guardians (20,000 health each, at the jail) are dead. Once the fight is on, one bot party (two in a raid of eight parties or more; never the party he fights or the real player's) goes down the tunnel, kills both and comes back (an errand: no path, no progress or past its budget and it rejoins the fight). Every raider jailed after that walks free at once; one jailed before fights the guards with the team, and the recovery frees it when they die (or recalls it after 3 minutes). |
 | Queen Kula (Tuscaran Glacier) | **1.2 (new)** | Killed first (see King Tuscar). Her drag to the throne (AllowDisplacement, bots too since 1.2) puts a raider in her frost circle, where it is mesmerized or rooted: a bot waits it out like a player (the recovery's walk does not count crowd control as a stall; at most 5 minutes) and walks back. Frost circle (AllowPositionPuzzle, on): no raider fights within 450 of 34128,56095; one that gets there steps out to 600. |
 | King Tuscar (Tuscaran Glacier) | **1.2 (new)** | Twin heal (AllowTuscarTwinHeal, on since 1.2): damage to one twin heals the other while it is hurt, so the raid kills Queen Kula first (the route musters for her) and only the King's own target fights him; the rest of his party turns on her too. Casters and healers on Kula keep clear of his hammers and Thor's Might (500 around his target). Nobody stands in Kula's frost circle. |
+| Council Ozur (Tuscaran Glacier) | **1.2 (new)** | Ozur's Disease (400 around his target, every 60 s): casters, archers and healers clear of his target. His strength rises with the raid's size (50+: Strength 200; 100+: 350 and -20 resists); nothing to play. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only) |
+| Torst (Tuscaran Glacier) | **1.2 (new)** | He roots his target and then jumps to a random raider within 1,500; his five untargetable eddies circle within 200 of him (Cold Snap 300). Casters, archers and healers keep 650 from him; his Torst DD (550, 400 around his target) is the spread: casters clear of his target, melee behind him, and the nearest tank taunts him back when he jumps to a non-tank. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only) |
+| Hurika (Tuscaran Glacier) | **1.2 (new)** | Her gust throws a raider within 1,000 of her 500-700 up every 15-20 s: casters, archers and healers outside her target's party keep 1,100-1,350 from her (in spell range); a thrown raider walks back (EncounterDisplacementRecovery). With the flying patrol on, the griffon pull first (Griffons.cs). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only) |
 | Aidon the Archwizard (Hall of the Corrupt) | 1.1.2 | Required adds, keep one: once the fight is on the raid kills three of his four illusions (each party takes one) and leaves the last alive, because he summons a new set only when all four are dead; then everyone fights him. Fight at home: past 1,100 from his spawn (tether 1,500) the raid stops hitting him and leads him back. |
 | Scurceol Hyrde (Krondon) | 1.1.2 | Required adds: the four Lyft Miht orbs are the raid's targets while any lives (each party takes one; fought from a floor spot within 1,400 that the raid can reach and that sees the orb; melee that can't reach a flying orb waits at that spot); nobody hits him until the last orb is dead. Fight at home: past 1,500 from his spawn the raid stops hitting him and the raider he chases leads him back. |
 | Ancient Black Oak (Marfach Caverns) | 1.1.2 | Dies with Black Lady: while she lives the raid fights her instead of the Oak. |
-| Nosdoden (Trollheim) | 1.1.2 | Waves as required adds: when a wave of essences spawns (every 10% from 90%), the raid stops hitting him and kills the wave, then goes back to him; so his health falls one step at a time and waves don't stack. |
 
 ## Restored behind switches
 
@@ -183,19 +206,19 @@ Rules of Black Lady (`source/server/GameServer/scripts/namedmobs/MarfachCaverns/
 Rules of Nosdoden (`source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs`):
 
 - **adds** (verified): EnemyKilled: when he kills a raider (a real player, or a bot since 1.2) he makes a 'Spirit of <name>' ghost with that raider's race, size, armour and class behaviour. Flood guard (1.2): no new spirit while 64 are up (Trollheim's period raid; EncounterFloodGuard 'Nosdoden.Spirits'). `Nosdoden.cs:167`. *needs new raid AI*: A dead raider's ghost fights the raid: kill it, or res the raider (the ghost dies when its owner lives again).
-- **adds** (verified): SpawnEssences: about 12-18 essence of fallen (NosdodenSummonedAdds, StandardMobBrain-based, aggro range 1,500) around him at each of nine thresholds (90, 80, ... 10%). `Nosdoden.cs:683`. *needs new raid AI*: Push him one 10% step at a time: stop damage on him at each threshold, AoE classes and two parties burn the wave down at his feet, healers keep the tank up, then the next step. Don't let three waves stack.
-- **adds** (verified): Spawns spirit champion (GhostSpiritChampion): from SummonSpiritChampion; count 1 spawn call in SummonSpiritChampion `Nosdoden.cs:2145`. *easy for the current raid AI*: Kill the adds as they spawn (the route already puts script-spawned adds near the front first).
-- **adds** (verified): Spawns bone commander (GhostSkeletalCommander): from SummonSkeletalCommander; count 1 spawn call in SummonSkeletalCommander `Nosdoden.cs:2231`. *easy for the current raid AI*: Kill the adds as they spawn (the route already puts script-spawned adds near the front first).
-- **adds** (verified): Spawns bonemender (SkeletalCommanderHealer): from SummonBonemender; count 1 spawn call in SummonBonemender `Nosdoden.cs:2934`. *easy for the current raid AI*: Kill the adds as they spawn (the route already puts script-spawned adds near the front first).
-- **phase** (verified): At 90/80/70/60/50/40/30/20/10% health: one essence wave each (SpawnEssences). `Nosdoden.cs:586`. *needs new raid AI*: Damage pacing: a raid that blows through two thresholds at once doubles the wave.
-- **reset** (verified): Resets when its aggro list is empty: walks home at full health, adds cleared `Nosdoden.cs:541`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
-- **linked_pack** (verified): Brings others into the fight: every NPC with PackageID "NosdodenGhostSpiritmaster" (none in the world database) `Nosdoden.cs:1447`. *easy for the current raid AI*: Pull its linked pack with it on purpose: clear them first or fight them at the muster.
-- **linked_pack** (verified): Brings others into the fight: every NPC with PackageID "NosdodenGhostBonedancer" (none in the world database) `Nosdoden.cs:1511`. *easy for the current raid AI*: Pull its linked pack with it on purpose: clear them first or fight them at the muster.
-- **linked_pack** (verified): Brings others into the fight: every NPC with PackageID "NosdodenGhostHunter" (none in the world database) `Nosdoden.cs:1990`. *easy for the current raid AI*: Pull its linked pack with it on purpose: clear them first or fight them at the muster.
-- **linked_pack** (verified): Brings others into the fight: every NPC with PackageID "NosdodenGhostSpiritmaster" (none in the world database) `Nosdoden.cs:2787`. *easy for the current raid AI*: Pull its linked pack with it on purpose: clear them first or fight them at the muster.
-- **linked_pack** (verified): Brings others into the fight: every NPC with PackageID "NosdodenGhostBonedancer" (none in the world database) `Nosdoden.cs:2899`. *easy for the current raid AI*: Pull its linked pack with it on purpose: clear them first or fight them at the muster.
-- **heal** (verified): Has a heal spell: Heal (Heal, value 400, target REALM) `Nosdoden.cs:2257`. *needs new raid AI*: Kill or interrupt whatever heals it first.
-- **heal** (verified): Has a heal spell: Heal (Heal, value 250, target REALM) `Nosdoden.cs:3086`. *needs new raid AI*: Kill or interrupt whatever heals it first.
+- **adds** (verified): SpawnEssences: about 12-18 essence of fallen (NosdodenSummonedAdds, StandardMobBrain-based, aggro range 1,500) around him at each of nine thresholds (90, 80, ... 10%). `Nosdoden.cs:685`. *needs new raid AI*: Push him one 10% step at a time: stop damage on him at each threshold, AoE classes and two parties burn the wave down at his feet, healers keep the tank up, then the next step. Don't let three waves stack.
+- **adds** (verified): Spawns spirit champion (GhostSpiritChampion): from SummonSpiritChampion; count 1 spawn call in SummonSpiritChampion `Nosdoden.cs:2147`. *easy for the current raid AI*: Kill the adds as they spawn (the route already puts script-spawned adds near the front first).
+- **adds** (verified): Spawns bone commander (GhostSkeletalCommander): from SummonSkeletalCommander; count 1 spawn call in SummonSkeletalCommander `Nosdoden.cs:2233`. *easy for the current raid AI*: Kill the adds as they spawn (the route already puts script-spawned adds near the front first).
+- **adds** (verified): Spawns bonemender (SkeletalCommanderHealer): from SummonBonemender; count 1 spawn call in SummonBonemender `Nosdoden.cs:2936`. *easy for the current raid AI*: Kill the adds as they spawn (the route already puts script-spawned adds near the front first).
+- **phase** (verified): At 90/80/70/60/50/40/30/20/10% health: one essence wave each (SpawnEssences). `Nosdoden.cs:588`. *needs new raid AI*: Damage pacing: a raid that blows through two thresholds at once doubles the wave.
+- **reset** (verified): Resets when its aggro list is empty: walks home at full health, adds cleared `Nosdoden.cs:543`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
+- **linked_pack** (verified): Brings others into the fight: every NPC with PackageID "NosdodenGhostSpiritmaster" (none in the world database) `Nosdoden.cs:1449`. *easy for the current raid AI*: Pull its linked pack with it on purpose: clear them first or fight them at the muster.
+- **linked_pack** (verified): Brings others into the fight: every NPC with PackageID "NosdodenGhostBonedancer" (none in the world database) `Nosdoden.cs:1513`. *easy for the current raid AI*: Pull its linked pack with it on purpose: clear them first or fight them at the muster.
+- **linked_pack** (verified): Brings others into the fight: every NPC with PackageID "NosdodenGhostHunter" (none in the world database) `Nosdoden.cs:1992`. *easy for the current raid AI*: Pull its linked pack with it on purpose: clear them first or fight them at the muster.
+- **linked_pack** (verified): Brings others into the fight: every NPC with PackageID "NosdodenGhostSpiritmaster" (none in the world database) `Nosdoden.cs:2789`. *easy for the current raid AI*: Pull its linked pack with it on purpose: clear them first or fight them at the muster.
+- **linked_pack** (verified): Brings others into the fight: every NPC with PackageID "NosdodenGhostBonedancer" (none in the world database) `Nosdoden.cs:2901`. *easy for the current raid AI*: Pull its linked pack with it on purpose: clear them first or fight them at the muster.
+- **heal** (verified): Has a heal spell: Heal (Heal, value 400, target REALM) `Nosdoden.cs:2259`. *needs new raid AI*: Kill or interrupt whatever heals it first.
+- **heal** (verified): Has a heal spell: Heal (Heal, value 250, target REALM) `Nosdoden.cs:3088`. *needs new raid AI*: Kill or interrupt whatever heals it first.
 
 ### 4. Xanxicar (Crystal Cave): stomps and champions
 
@@ -1309,7 +1332,7 @@ Written by hand: the generator finds no boss here (an initializator and an effec
 
 #### Giant Sporite Cluster (`GiantSporiteCluster`)
 
-`source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs` lines 7-112. level 79; 100,000 health; npc template 60161336; raids: epic-hibernia (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs` lines 7-112. level 79; 100,000 health; npc template 60161336; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 Eight bodies, the cluster and the seven copies it spawns (GSCAdds), share one 100,000-health pool (damage to any body sets the others' health) and die together: killing any body kills the cluster with the same killer and removes the copies. 1.2 (True 1.65 port): the cluster alone pays out, for the attackers of every body; before, a copy that had been hit paid out too and the cluster died by its own hand.
 
@@ -1321,7 +1344,7 @@ Eight bodies, the cluster and the seven copies it spawns (GSCAdds), share one 10
 
 #### Hurionthex (`Hurionthex`)
 
-`source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs` lines 20-152. level 81; 100,000 health; npc template 60162285; raids: epic-hibernia (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs` lines 20-152. level 81; 100,000 health; npc template 60162285; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 Changes form every 18 s: base, Treant (casts a damage add on itself), Saiyan (monkey: Black Plague disease) and Granidon (damage shield 120). 2026-10-14 he reset from 31% again and again; the 8 s quiet rule fixed it.
 
@@ -1340,7 +1363,7 @@ Area spells: Black Plague (Disease, damage None, radius 350).
 
 #### Olcasar Geomancer (`OlcasarGeomancer`)
 
-`source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs` lines 11-173. level 77; 100,000 health; npc template 60164613; raids: epic-hibernia (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs` lines 11-173. level 77; 100,000 health; npc template 60164613; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -1358,7 +1381,7 @@ Area spells: Olcasar Snare (SpeedDecrease, damage None, radius 2500).
 
 `source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs` lines 17-49. level 50; 10,000 health; raids: epic-hibernia (monster on the way (not an epic NPC)); raid AI: generic dungeon route.
 
-Not a monster but the event controller for Galladoria's last room. A raid bot within 1,500 of the waterfall bridge (39652,60831,11893) starts it (a real player must stand within 350); 20 s of messages later it spawns the four Corrupt Primals, the four Earthmenders and eleven Watery Vortices. Olcasgean wakes 25 s after all four primals are dead (OIBrain.DeadPrimalsCount >= 4). 1.2 wave 2: AllowGalladoriaBridgeSpot is on: a raider must stand within 350 of the spot (the route stages its first party there); a raid bot that has stood within 1,500 for 3 minutes still starts it.
+Not a monster but the event controller for Galladoria's last room. A raid bot within 1,500 of the waterfall bridge (39652,60831,11893) starts it (a real player must stand within 350); 20 s of messages later it spawns the four Corrupt Primals, the four Earthmenders and eleven Watery Vortices. Olcasgean wakes 25 s after all four primals are dead (OIBrain.DeadPrimalsCount >= 4). 1.2 wave 2: AllowGalladoriaBridgeSpot is on: a raider must stand within 350 of the spot (the route stages its first party there); a raid bot that has stood within 1,500 for 3 minutes still starts it. Living Server 1.2 (tests only): the route takes the primals in the period's order, Water, Fire, the Earthmenders and Earth, Air (Thredh's guide, May 2003, and the US plan of Jan 2003; the first live kill, VN Boards 7 May 2003, held Water and Earth in the safe spots while the rest killed Fire, then the menders, Earth and Water, Air last); the Fire primal's melee hold Water and Earth meanwhile (EpicEncounterTactics.Galladoria). The period's Fire and Air primals took only ground-targeted area spells; this script's take any damage.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -1400,7 +1423,7 @@ Area spells: Olcasgean's Root (DirectDamageNoVariance, damage 500, radius 350).
 
 #### Olcasgean (`Olcasgean2`)
 
-`source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs` lines 875-1074. level 87; 250,000 health; npc template 60164624; raids: epic-hibernia (named); raid AI: generic dungeon route; spawned by Olcasgean.
+`source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs` lines 875-1074. level 87; 250,000 health; npc template 60164624; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by Olcasgean.
 
 Olcasgean's second body: it shares his 250,000-health pool. Killed, it kills Olcasgean with the same killer and passes him its attackers, so Olcasgean pays out for both and this body pays nothing (1.2, True 1.65 port).
 
@@ -1412,7 +1435,7 @@ Olcasgean's second body: it shares his 250,000-health pool. Killed, it kills Olc
 
 #### Corrupt Primal of Air (`AirPrimal`)
 
-`source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs` lines 1129-1217. level 83; 900 health; npc template 60159435; raids: epic-hibernia (named); raid AI: generic dungeon route; spawned by OlcasgeanInitializator.
+`source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs` lines 1129-1217. level 83; 900 health; npc template 60159435; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by OlcasgeanInitializator.
 
 900 health (by design: one strong nuke kills it), flies (FLYING), never melees (StartAttack empty), never walks home (ReturnToSpawnPoint does nothing while alive). Pets and turrets deal a fixed 5 per hit.
 
@@ -1425,7 +1448,7 @@ Area spells: Mesmerized (Mesmerize, damage None, radius 350).
 
 #### Corrupt Primal of Water (`WaterPrimal`)
 
-`source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs` lines 1528-1628. level 83; 125,000 health; npc template 60159438; raids: epic-hibernia (named); raid AI: generic dungeon route; spawned by OlcasgeanInitializator.
+`source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs` lines 1528-1628. level 83; 125,000 health; npc template 60159438; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by OlcasgeanInitializator.
 
 1.2 wave 2: its teleport (a raider within 2,500, to either side of the bridge) is on for bots: they walk back.
 
@@ -1469,7 +1492,7 @@ The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and he
 
 #### Organic-Energy Mechanism (`OrganicEnergyMechanism`)
 
-`source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs` lines 11-96. level 79; 100,000 health; npc template 60164704; raids: epic-hibernia (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs` lines 11-96. level 79; 100,000 health; npc template 60164704; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -1498,7 +1521,7 @@ Area spells: Mesmerized (Mesmerize, damage None, radius 300).
 
 #### Uaimh Lairmaster (`UaimhLairmaster`)
 
-`source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs` lines 10-168. level 81; 100,000 health; npc template 60167362; raids: epic-hibernia (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs` lines 10-168. level 81; 100,000 health; npc template 60167362; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2085,7 +2108,7 @@ Area spells: Hurjavelen's Bite (DamageSpeedDecrease, damage 200, radius 350); Bl
 
 #### Iarnvidiur (`Iarnvidiur`)
 
-`source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs` lines 11-72. level 75; 40,000 health; npc template 83028; raids: dungeon-midgard-iarnvidiur (final); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs` lines 11-72. level 75; 40,000 health; npc template 83028; raids: dungeon-midgard-iarnvidiur (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2854,19 +2877,19 @@ Level 80, 100,000 health. Every 10% from 90% down to 10% he spawns a wave of abo
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | adds | EnemyKilled: when he kills a raider (a real player, or a bot since 1.2) he makes a 'Spirit of <name>' ghost with that raider's race, size, armour and class behaviour. Flood guard (1.2): no new spirit while 64 are up (Trollheim's period raid; EncounterFloodGuard 'Nosdoden.Spirits'). | `Nosdoden.cs:167` | inferred, verified |  | needs new raid AI | A dead raider's ghost fights the raid: kill it, or res the raider (the ghost dies when its owner lives again). |
-| adds | SpawnEssences: about 12-18 essence of fallen (NosdodenSummonedAdds, StandardMobBrain-based, aggro range 1,500) around him at each of nine thresholds (90, 80, ... 10%). | `Nosdoden.cs:683` | inferred, verified |  | needs new raid AI | Push him one 10% step at a time: stop damage on him at each threshold, AoE classes and two parties burn the wave down at his feet, healers keep the tank up, then the next step. Don't let three waves stack. |
-| adds | Spawns spirit champion (GhostSpiritChampion): from SummonSpiritChampion; count 1 spawn call in SummonSpiritChampion | `Nosdoden.cs:2145` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| adds | Spawns bone commander (GhostSkeletalCommander): from SummonSkeletalCommander; count 1 spawn call in SummonSkeletalCommander | `Nosdoden.cs:2231` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| adds | Spawns bonemender (SkeletalCommanderHealer): from SummonBonemender; count 1 spawn call in SummonBonemender | `Nosdoden.cs:2934` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| phase | At 90/80/70/60/50/40/30/20/10% health: one essence wave each (SpawnEssences). | `Nosdoden.cs:586` | inferred, verified |  | needs new raid AI | Damage pacing: a raid that blows through two thresholds at once doubles the wave. |
-| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `Nosdoden.cs:541` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| linked_pack | Brings others into the fight: every NPC with PackageID "NosdodenGhostSpiritmaster" (none in the world database) | `Nosdoden.cs:1447` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
-| linked_pack | Brings others into the fight: every NPC with PackageID "NosdodenGhostBonedancer" (none in the world database) | `Nosdoden.cs:1511` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
-| linked_pack | Brings others into the fight: every NPC with PackageID "NosdodenGhostHunter" (none in the world database) | `Nosdoden.cs:1990` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
-| linked_pack | Brings others into the fight: every NPC with PackageID "NosdodenGhostSpiritmaster" (none in the world database) | `Nosdoden.cs:2787` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
-| linked_pack | Brings others into the fight: every NPC with PackageID "NosdodenGhostBonedancer" (none in the world database) | `Nosdoden.cs:2899` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
-| heal | Has a heal spell: Heal (Heal, value 400, target REALM) | `Nosdoden.cs:2257` | read, verified |  | needs new raid AI | Kill or interrupt whatever heals it first. |
-| heal | Has a heal spell: Heal (Heal, value 250, target REALM) | `Nosdoden.cs:3086` | read, verified |  | needs new raid AI | Kill or interrupt whatever heals it first. |
+| adds | SpawnEssences: about 12-18 essence of fallen (NosdodenSummonedAdds, StandardMobBrain-based, aggro range 1,500) around him at each of nine thresholds (90, 80, ... 10%). | `Nosdoden.cs:685` | inferred, verified |  | needs new raid AI | Push him one 10% step at a time: stop damage on him at each threshold, AoE classes and two parties burn the wave down at his feet, healers keep the tank up, then the next step. Don't let three waves stack. |
+| adds | Spawns spirit champion (GhostSpiritChampion): from SummonSpiritChampion; count 1 spawn call in SummonSpiritChampion | `Nosdoden.cs:2147` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| adds | Spawns bone commander (GhostSkeletalCommander): from SummonSkeletalCommander; count 1 spawn call in SummonSkeletalCommander | `Nosdoden.cs:2233` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| adds | Spawns bonemender (SkeletalCommanderHealer): from SummonBonemender; count 1 spawn call in SummonBonemender | `Nosdoden.cs:2936` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| phase | At 90/80/70/60/50/40/30/20/10% health: one essence wave each (SpawnEssences). | `Nosdoden.cs:588` | inferred, verified |  | needs new raid AI | Damage pacing: a raid that blows through two thresholds at once doubles the wave. |
+| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `Nosdoden.cs:543` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| linked_pack | Brings others into the fight: every NPC with PackageID "NosdodenGhostSpiritmaster" (none in the world database) | `Nosdoden.cs:1449` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| linked_pack | Brings others into the fight: every NPC with PackageID "NosdodenGhostBonedancer" (none in the world database) | `Nosdoden.cs:1513` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| linked_pack | Brings others into the fight: every NPC with PackageID "NosdodenGhostHunter" (none in the world database) | `Nosdoden.cs:1992` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| linked_pack | Brings others into the fight: every NPC with PackageID "NosdodenGhostSpiritmaster" (none in the world database) | `Nosdoden.cs:2789` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| linked_pack | Brings others into the fight: every NPC with PackageID "NosdodenGhostBonedancer" (none in the world database) | `Nosdoden.cs:2901` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| heal | Has a heal spell: Heal (Heal, value 400, target REALM) | `Nosdoden.cs:2259` | read, verified |  | needs new raid AI | Kill or interrupt whatever heals it first. |
+| heal | Has a heal spell: Heal (Heal, value 250, target REALM) | `Nosdoden.cs:3088` | read, verified |  | needs new raid AI | Kill or interrupt whatever heals it first. |
 
 Area spells: Nosdoden's Venom (DamageOverTime, damage 150, radius 500); Call of Void (DirectDamageNoVariance, damage 1100, radius 550); Greater Thunder Roar (DirectDamageNoVariance, damage 120, radius 350); Umbral Shroud (Mesmerize, damage None, radius 450); Tranquilize Area (Mesmerize, damage None, radius 400); Wake Oblivious (Amnesia, damage None, radius 350); Plague Spores (Disease, damage None, radius 400); Fungal Spine (DamageOverTime, damage 83, radius 350).
 
@@ -2908,7 +2931,7 @@ Area spells: Nosdoden's Venom (DamageOverTime, damage 150, radius 500); Call of 
 
 #### Balor (`Balor`)
 
-`source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs` lines 10-95. level 81; 40,000 health; npc template 60158225; raids: dungeon-hibernia-tursuil (final); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs` lines 10-95. level 81; 40,000 health; npc template 60158225; raids: dungeon-hibernia-tursuil (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2975,7 +2998,7 @@ Area spells: Vitality Dispersal (StrengthConstitutionDebuff, damage None, radius
 
 #### Council Otrygg (`Otrygg`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilOtrygg.cs` lines 9-73. level 77; 100,000 health; npc template 60159451; raids: epic-midgard (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilOtrygg.cs` lines 9-73. level 77; 100,000 health; npc template 60159451; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3008,7 +3031,7 @@ Area spells: Vitality Dispersal (StrengthConstitutionDebuff, damage None, radius
 
 #### Elder Council Birghir (`Birghir`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs` lines 11-73. level 80; 100,000 health; npc template 60160391; raids: epic-midgard (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs` lines 11-73. level 80; 100,000 health; npc template 60160391; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3021,7 +3044,7 @@ Area spells: Debuff S/C (StrengthConstitutionDebuff, damage None, radius 450).
 
 #### Elder Council Guthlac (`Guthlac`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs` lines 365-442. level 80; 100,000 health; npc template 60160392; raids: epic-midgard (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs` lines 365-442. level 80; 100,000 health; npc template 60160392; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3035,7 +3058,7 @@ Area spells: Greater Curse of Blindness (DexterityQuicknessDebuff, damage None, 
 
 #### Elder Icelord Suttung (`Suttung`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs` lines 11-125. level 81; 100,000 health; npc template 60160395; raids: epic-midgard (named); raid AI: generic dungeon route; spawned by HjalmarSuttungController.
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs` lines 11-125. level 81; 100,000 health; npc template 60160395; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by HjalmarSuttungController.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3048,7 +3071,7 @@ Area spells: Hjalmar's Ice Blast (DirectDamageNoVariance, damage 450, radius 440
 
 #### Elder Icelord Hjalmar (`Hjalmar`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs` lines 289-406. level 81; 100,000 health; npc template 60160394; raids: epic-midgard (named); raid AI: generic dungeon route; spawned by HjalmarSuttungController.
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs` lines 289-406. level 81; 100,000 health; npc template 60160394; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by HjalmarSuttungController.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3096,7 +3119,7 @@ Area spells: Frost Shock (DirectDamageNoVariance, damage 300, radius 300).
 
 #### Council Hord (`Hord`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Hord.cs` lines 10-80. level 77; 100,000 health; npc template 60159449; raids: epic-midgard (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Hord.cs` lines 10-80. level 77; 100,000 health; npc template 60159449; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3118,7 +3141,7 @@ Area spells: None (DirectDamageNoVariance, damage 650, radius 500).
 
 #### Icelord Hakr (`Hakr`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs` lines 12-136. level 82; 100,000 health; npc template 60162347; raids: epic-midgard (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs` lines 12-136. level 82; 100,000 health; npc template 60162347; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3148,7 +3171,7 @@ Area spells: Mesmerize (Mesmerize, damage None, radius 800); Kvasir's Root (Spee
 
 #### Icelord Steinvor (`Steinvor`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs` lines 12-129. level 80; 100,000 health; npc template 60162350; raids: epic-midgard (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs` lines 12-129. level 80; 100,000 health; npc template 60162350; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3164,7 +3187,7 @@ Area spells: Pillar of Frost (DirectDamageNoVariance, damage 750, radius 350).
 
 #### Icelord Skuf (`Skuf`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs` lines 327-425. level 80; 100,000 health; npc template 60162349; raids: epic-midgard (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs` lines 327-425. level 80; 100,000 health; npc template 60162349; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3175,7 +3198,7 @@ Area spells: Pillar of Frost (DirectDamageNoVariance, damage 750, radius 350).
 
 #### Issorden (`Issorden`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs` lines 10-65. level 78; 100,000 health; npc template 60162545; raids: epic-midgard (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs` lines 10-65. level 78; 100,000 health; npc template 60162545; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3240,7 +3263,7 @@ Area spells: Mjolnir's Fury (DirectDamageNoVariance, damage 600, radius 500); Th
 
 #### Council Ozur (`Ozur`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs` lines 11-90. level 77; 100,000 health; npc template 60159452; raids: epic-midgard (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs` lines 11-90. level 77; 100,000 health; npc template 60159452; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3252,7 +3275,7 @@ Area spells: Ozur's Disease (Disease, damage None, radius 400).
 
 #### Torst (`Torst`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs` lines 11-126. level 80; 100,000 health; raids: epic-midgard (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs` lines 11-126. level 80; 100,000 health; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3269,7 +3292,7 @@ Area spells: None (DirectDamageNoVariance, damage 550, radius 400); Cold Snap (D
 
 #### Hurika (`Hurika`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs` lines 409-480. level 85; 100,000 health; npc template 60162284; raids: epic-midgard (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs` lines 409-480. level 85; 100,000 health; npc template 60162284; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|

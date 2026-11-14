@@ -79,8 +79,9 @@ In a playable folder:
   - `tools/pet-art` shows the pattern: byte copies of NIFs with same-length texture renames, and
     new catalog rows.
 - **Navigation:** don't rebuild or replace navmeshes globally to fix one route without evidence.
-- **Be honest in reports.** Report automated tests separately from real in-game checks. Don't
-  describe Darkness Falls raid AI, Legion or the hardest level 70+ encounters as implemented.
+- **Be honest in reports.** Report automated tests separately from real in-game checks. Every big
+  boss is in 1.2's scope (owner, 2026-11-14: the Darkness Falls raid AI, Legion, Behemoth and the other level 70+
+  encounters included); describe a raid plan as working only once seen on the owner's PC.
   - A feature counts as working only once it has been seen working in one of the owner's PC logs
     (owner, 2026-11-08). Until then the notes say "tests only". Unit tests, CI, simulations and test-world
     bot runs are all tests.

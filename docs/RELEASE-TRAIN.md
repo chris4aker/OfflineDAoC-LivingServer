@@ -44,6 +44,24 @@ with you, the epic encounters (the restored boss mechanics, the raid tactics and
 Play with friends stays the stop right after it (1.2.x); the Linux build stays parked. Beta 1.1.3 (published
 2026-11-09) is merged into the 1.2 line.
 
+Changed 2026-11-12 (owner): **1.2 is held until it works properly** ("I don't want it to be slop"); the list that decides
+it is [PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md). The same day the owner took over the classic (old-client) Offline DAoC
+line, hosted from his own downloads, and shipped the downloader fix as Beta 1.1.4.
+
+Changed 2026-11-14, evening (owner): **every big boss is in 1.2**: the Darkness Falls raid AI and Legion (they had been
+left out), Behemoth, the other level 70+ encounters, and the big bosses that have only the generic dungeon route today
+(Apocalypse, Hurika, the Glacier's icelords, Galladoria's primals, Balor and others) or no raid at all (Morgana, the
+Glacier Giant and the other open-world bosses).
+
+Changed 2026-11-13 (owner): **play with friends and the character passport ship in 1.2**, not a 1.2.x. Linux is its own
+release after 1.2: the 0.37 base plus Living Server, no Godot client carried forward.
+
+Changed 2026-11-14 (owner): **shadowofze's True 1.65 boss and raid fixes are taken into 1.2**, cleanly consolidated with
+Living Server's own (merged as `feature/1.2-from-true165`), and True 1.65's Prima encounters and corrections go into the
+next world update, inert until then. Separately, Living Server gets **its own edition of True 1.65**
+(`chris4aker/OfflineDAoC-True165-LivingServ`): 1.1.4 is carried over now (`living-server/1.1.4`, features that clash with
+1.65 rules off by default), 1.2 after it ships. That edition is its own track and does not hold 1.2.
+
 ## Rules for every stop
 
 - A stop ships only after its in-game check on the owner's PC, reported separately from automated tests
@@ -157,7 +175,37 @@ The checklist as written on 2026-11-03 (its items are now in the candidate above
       `--no-update` (both kept), and Setup builds; the copy repository it needs doesn't exist yet
 - [ ] Played: the three-quest A/B, a battleground death in a bot group, a guild of bots on the Herald
 
-### 1.2 — bots that play with you (owner 2026-11-06)
+### 1.2 — Where Legends Wake (state on 2026-11-14)
+
+Headline (draft release notes, [RELEASE-NOTES-1.2.md](RELEASE-NOTES-1.2.md)): the epic encounters at full strength with
+bots that have to survive them, a story for every dungeon, dragon and boss, and bots that play with you. Everything
+below is built and merged on `integration/1.2`. What decides the release is [PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md):
+each row counts only when seen on the owner's PC on the release-candidate line.
+
+| Part | Built | Seen on the owner's PC |
+|---|---|---|
+| Epic encounters: the bosses' own rules back on (15 of 18 settings on), throws and jails that take bots, add caps | Merged | Partly: raids fought with them since test build 2 |
+| Raid tactics (about 40 encounters new or reworked), the raid skill layer, the raid flow after a wipe | Merged; the sweep fixes of 2026-11-14 (#211-#214) are tests only | Dragons and the smaller dungeons won on earlier builds; **Caer Sidi, Tuscaran Glacier, Galladoria, Trollheim, Krondon and Summoner's Hall (Albion, Hibernia) not won by bots on the PC yet**; Grand Summoner Govannon never beaten by bots anywhere |
+| A raid is a realm event: the boss's tale, then the call and the horn; one raid every four hours | Merged | Seen on test builds 3 and 4 |
+| The lore: 107 places, 578 bosses, 4 realm histories; loremasters, books, the Herald, the Bestiary, `/lore`, boss lines, atmosphere lines | Merged | Tales and boss lines seen on earlier 1.2 builds; loremasters, books, Herald and Bestiary have no played record |
+| Tales: the storyteller, asked-for tales, fireside tales | Merged | Seen on earlier builds; a tale that starts by itself not seen |
+| Bots that play with you: bot-led groups B1-B4, raid invites, RvR perception, replies that don't give bots away, cosmetics | Merged | Bot-led groups, a raid invite and dyes seen on builds 3 to 6; RvR perception has no played record |
+| Play with friends and the character passport (experimental) | Merged | A second client joined and made its account (build 7); no session played together, no passport trip between PCs |
+| Movement, flanking and style choice; ports from other forks and True 1.65 | Merged | Tests only |
+| Every big boss (in 1.2 since 2026-11-14): the Darkness Falls raid AI, Legion, Behemoth, the level 70+ bosses with no plan yet, the open-world bosses | Being built: Legion; the rest of Darkness Falls; then the epic dungeons' remaining bosses and the open-world bosses | Before this work, on `e3b8238`: Midgard's raid killed Legion in one attempt; Hibernia's lost to him twice |
+| Install: 1.1.4 updated through Setup; a new install | Built | Not done |
+
+Back in 1.2 (owner, 2026-11-14, evening: "Put Darkness Falls raid AI and Legion back in", then "No ALL big bosses are
+in"): the Darkness Falls raid AI, Legion, Behemoth and every other big boss, the open-world ones included.
+
+Left, in order:
+1. The sweep on test build `16b3054` (installed on the test copy 2026-11-14, server running): `/epictest sweep start all`.
+2. Fix what the sweep shows; repeat for the raids that still lose.
+3. The short hands-on checks with the owner (bot-led group, raid invite, a tale starting by itself).
+4. Install checks: Setup over 1.1.4, and a new install.
+5. Release notes finished from what was seen; merge to `main`; publish (the owner's step).
+
+### 1.2 — bots that play with you (owner 2026-11-06; checklist as of 2026-11-07, superseded 2026-11-14 by the section above)
 
 Headline: the world's gamebots play *with* you: they invite you, lead groups you can simply follow, see you in RvR
 the way a 2003 player would, and answer without giving themselves away.
@@ -254,7 +302,7 @@ Must-haves ship 1.2; anything from a phase that doesn't fit ships as a 1.2.x pat
       a dragon raid; a returning session read on the Herald
 - [ ] Release notes to the rules above
 
-### 1.2.x — play with friends (experimental, right after 1.2)
+### 1.2.x — play with friends (experimental, right after 1.2; superseded 2026-11-13: folded into 1.2)
 
 Unchanged by the split of 2026-11-06. Owner 2026-11-03: private co-op for about 1–4 players in a thriving bot world; no public server.
 - [ ] The must-fixes from the co-op audit: one region address per client, idle time-outs for remote players, account
@@ -400,6 +448,16 @@ Open, each listed with its options in the design document named:
   button; the classic rules; bots' gear wearing.
 
 ## Status
+
+On 2026-11-14:
+
+| Stop | State |
+|---|---|
+| 1.1.4 | Released 2026-11-12 (the latest release) |
+| 1.2 | All of it merged on `integration/1.2`; test build `16b3054` on the owner's test copy; held until [PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md) is met |
+| Linux | After 1.2 (PR #206) |
+| 2.0 | Planned: a living realm (was 1.3), bots as people, the complete realm |
+| True 1.65 edition | Separate track: 1.1.4 carried over on `living-server/1.1.4`, waiting for its PR into the edition's `main` |
 
 On 2026-11-07:
 

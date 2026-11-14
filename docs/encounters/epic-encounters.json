@@ -193,11 +193,11 @@
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs": "a11dc500e720562928b31c3f1079bbac635db52cb9899978742fff9105c99d58",
   "source/server/GameServer/scripts/namedmobs/Trollheim/Dagar.cs": "9c54b8e58b90b96c8d0cc2e20a20b5a50eb5a2f1f156172b47e89e7c3cada7b8",
   "source/server/GameServer/scripts/namedmobs/Trollheim/FostraOrm.cs": "cb7e0a66cc479ba78f436d6db514b7f4d15f48dc6cb16b7244728e76b9ce134f",
-  "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "b926d2c7fffd45084db25b5e66ff1fd495a744f85f1f98fe5058b77fa36c71b4",
+  "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "675a30a5962118f157aa1b003ef35b6d00acb6d9788afaad274f779a5407761d",
   "source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs": "8d11894906325de83614eed8ce5bdf22f368f0ce2d4dd8bf50d6006b8eed813a",
   "source/server/GameServer/scripts/namedmobs/Trollheim/Rotoddjur.cs": "9c7eb27994026aa4ed0168158089af2f5acc1abc71efd255079ccc00f7e0e24c",
   "source/server/GameServer/scripts/namedmobs/TurSuil/AbomosSoultrapper.cs": "c41910c457057f8bb67f3ce8925a29a01d1367d02476e0a71ef5d63f242b576d",
-  "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs": "45e3e0d9512d66fc91e2c678e469f6099dffc708a083fced658cb9d7f702b43f",
+  "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs": "bd35c490f7ce0f6597679dd76bf6ca5243b9fc27025f816dba1d10664275146b",
   "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs": "667bf9aa6176cfa63fd7f48a97255f08977135bd7f232c1020e49eab79509feb",
   "source/server/GameServer/scripts/namedmobs/TurSuil/NorsobAndSargan.cs": "5766d2efe3a988e2f903d78369ea74c84b6c3d49353be25bd65d808e5fb328ac",
   "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs": "906a572c53b279f424e39f79e057ea1ddd7c53ae56e836d7b347bb2a9eb33362",
@@ -11216,8 +11216,16 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "notes": "Eight bodies, the cluster and the seven copies it spawns (GSCAdds), share one 100,000-health pool (damage to any body sets the others' health) and die together: killing any body kills the cluster with the same killer and removes the copies. 1.2 (True 1.65 port): the cluster alone pays out, for the attackers of every body; before, a copy that had been hit paid out too and the cluster died by its own hand.",
+   "aiTactics": {
+    "rangedAdds": [
+     "GSCAdds"
+    ],
+    "areaOnClump": true,
+    "summary": "One health pool for eight bodies: the raid stays in one small circle (casters and healers within 450 of the cluster), area casters on the clump, any body is the cluster (the period: \"get entire raiding party real close together and whack at any target (same hp pool) and pbae\"). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -11438,8 +11446,14 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "notes": "Changes form every 18 s: base, Treant (casts a damage add on itself), Saiyan (monkey: Black Plague disease) and Granidon (damage shield 120). 2026-10-14 he reset from 31% again and again; the 8 s quiet rule fixed it.",
+   "aiTactics": {
+    "spreadRadius": 350,
+    "spreadWhileModel": 844,
+    "summary": "Granidon form (damage shield 120): melee outside his target's party step back 450 and pets leave him until the form changes. Monkey form: Black Plague (350 around his target) is the spread for casters and healers. (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -11703,7 +11717,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "A slain minion rises again at its killer's feet: the party a minion fights holds it, everyone else kills the Geomancer, whose death removes them (the period: \"just kept one group on his pets and he went down fast\"). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -12036,7 +12054,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
-   "notes": "Not a monster but the event controller for Galladoria's last room. A raid bot within 1,500 of the waterfall bridge (39652,60831,11893) starts it (a real player must stand within 350); 20 s of messages later it spawns the four Corrupt Primals, the four Earthmenders and eleven Watery Vortices. Olcasgean wakes 25 s after all four primals are dead (OIBrain.DeadPrimalsCount >= 4). 1.2 wave 2: AllowGalladoriaBridgeSpot is on: a raider must stand within 350 of the spot (the route stages its first party there); a raid bot that has stood within 1,500 for 3 minutes still starts it.",
+   "notes": "Not a monster but the event controller for Galladoria's last room. A raid bot within 1,500 of the waterfall bridge (39652,60831,11893) starts it (a real player must stand within 350); 20 s of messages later it spawns the four Corrupt Primals, the four Earthmenders and eleven Watery Vortices. Olcasgean wakes 25 s after all four primals are dead (OIBrain.DeadPrimalsCount >= 4). 1.2 wave 2: AllowGalladoriaBridgeSpot is on: a raider must stand within 350 of the spot (the route stages its first party there); a raid bot that has stood within 1,500 for 3 minutes still starts it. Living Server 1.2 (tests only): the route takes the primals in the period's order, Water, Fire, the Earthmenders and Earth, Air (Thredh's guide, May 2003, and the US plan of Jan 2003; the first live kill, VN Boards 7 May 2003, held Water and Earth in the safe spots while the rest killed Fire, then the menders, Earth and Water, Air last); the Fire primal's melee hold Water and Earth meanwhile (EpicEncounterTactics.Galladoria). The period's Fire and Air primals took only ground-targeted area spells; this script's take any damage.",
    "verified": true
   },
   {
@@ -12498,8 +12516,12 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "notes": "Olcasgean's second body: it shares his 250,000-health pool. Killed, it kills Olcasgean with the same killer and passes him its attackers, so Olcasgean pays out for both and this body pays nothing (1.2, True 1.65 port).",
+   "aiTactics": {
+    "summary": "The copy shares his 250,000 and answers each attacker with Olcasgean's Root (450, at most once a second per body): only the party holding the copy's safe spot fights it, everyone else fights Olcasgean, so one body roots the raid instead of two. (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -12605,9 +12627,13 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "notes": "900 health (by design: one strong nuke kills it), flies (FLYING), never melees (StartAttack empty), never walks home (ReturnToSpawnPoint does nothing while alive). Pets and turrets deal a fixed 5 per hit.",
    "currentRaidAi": "2026-10-16: it circled 690 above the floor and was skipped; route now shoots flyers within 1,200 from below (RealmRaidDungeonRoute.IsOutOfRangedReach).",
+   "aiTactics": {
+    "summary": "900 health, flies a ring 690 up around the room's middle and never lands: casters and archers shoot it from the middle (within 1,450 at every point of the ring), melee fight another primal, pets leave it (they do 5). Killed last, after Water, Fire, the Earthmenders and Earth (the period's order). The period's Air primal took only ground-targeted area spells and Annihilation; this script's takes any damage. (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -12769,8 +12795,12 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "notes": "1.2 wave 2: its teleport (a raider within 2,500, to either side of the bridge) is on for bots: they walk back.",
+   "aiTactics": {
+    "summary": "Below 30% it walks to its pool by the bridge, is immune there and heals a sixth: nobody hits it until it fights again. First in the period's order (Thredh, May 2003; the US plan, Jan 2003); the period's water primal also sank into the lake and healed (FreddysHouse, Apr 2003). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -13577,7 +13607,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "It never attacks; its Shield of World Soul hits back 150 per swing: casters and archers kill it, melee and pets kill its bottom feeders and never swing at it (the period: \"never target the middle mechanism ... RANGE attack and GTAoE attack it\", VN Boards \"Galladoria Notes\", Dec 2002). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -13840,7 +13874,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "No rule: at 60% he runs home once at full speed and comes back (the period's fled at about 5% and came back at about 75%; this script does not heal him); the raid fights him where he stands (the period: \"we zerged the Lairmaster with our 70-80 people\"). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -20592,7 +20630,12 @@
      "role": "final"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "spreadRadius": 850,
+    "summary": "Black Plague (disease, 850 around his target, every 2 minutes): casters, archers and healers stand clear of his target. Below half he ports a raider (not his target) every 25-45 s: it walks back (EncounterDisplacementRecovery). The period's port dropped raiders in the water under the bridge (Eden, 2023); this script's four spots are not checked against the water. (EpicEncounterTactics.catalog, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -28640,7 +28683,7 @@
      "maxHealth": 8000,
      "level": "(byte)Util.Random(62, 66)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2463
+     "line": 2465
     },
     {
      "class": "NosdodenSummonedAdds",
@@ -28653,7 +28696,7 @@
      "maxHealth": 2500,
      "level": "(byte)Util.Random(60,62)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 3111
+     "line": 3113
     },
     {
      "class": "GhostSkeletalCommander",
@@ -28666,7 +28709,7 @@
      "maxHealth": 2500,
      "level": "50",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2819
+     "line": 2821
     },
     {
      "class": "GhostSpiritChampion",
@@ -28679,7 +28722,7 @@
      "maxHealth": 2500,
      "level": "50",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2665
+     "line": 2667
     },
     {
      "class": "SkeletalCommanderHealer",
@@ -28692,7 +28735,7 @@
      "maxHealth": 1500,
      "level": "44",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2951
+     "line": 2953
     }
    ],
    "rules": [
@@ -28720,8 +28763,8 @@
      "kind": "adds",
      "summary": "SpawnEssences: about 12-18 essence of fallen (NosdodenSummonedAdds, StandardMobBrain-based, aggro range 1,500) around him at each of nine thresholds (90, 80, ... 10%).",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 683,
-     "lineEnd": 683,
+     "line": 685,
+     "lineEnd": 685,
      "anchor": "NosdodenSummonedAdds add = new NosdodenSummonedAdds();",
      "confidence": "inferred",
      "sourceClass": "NosdodenBrain",
@@ -28735,14 +28778,14 @@
      "tactic": "Push him one 10% step at a time: stop damage on him at each threshold, AoE classes and two parties burn the wave down at his feet, healers keep the tank up, then the next step. Don't let three waves stack.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "adds@683"
+     "key": "adds@685"
     },
     {
      "kind": "adds",
      "summary": "Spawns spirit champion (GhostSpiritChampion): from SummonSpiritChampion; count 1 spawn call in SummonSpiritChampion",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2145,
-     "lineEnd": 2145,
+     "line": 2147,
+     "lineEnd": 2147,
      "anchor": "GhostSpiritChampion pet = new GhostSpiritChampion();",
      "confidence": "inferred",
      "sourceClass": "NosdodenGhostAddBrain",
@@ -28757,14 +28800,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@2145"
+     "key": "adds@2147"
     },
     {
      "kind": "adds",
      "summary": "Spawns bone commander (GhostSkeletalCommander): from SummonSkeletalCommander; count 1 spawn call in SummonSkeletalCommander",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2231,
-     "lineEnd": 2231,
+     "line": 2233,
+     "lineEnd": 2233,
      "anchor": "GhostSkeletalCommander pet = new GhostSkeletalCommander();",
      "confidence": "inferred",
      "sourceClass": "NosdodenGhostAddBrain",
@@ -28779,14 +28822,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@2231"
+     "key": "adds@2233"
     },
     {
      "kind": "adds",
      "summary": "Spawns bonemender (SkeletalCommanderHealer): from SummonBonemender; count 1 spawn call in SummonBonemender",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2934,
-     "lineEnd": 2934,
+     "line": 2936,
+     "lineEnd": 2936,
      "anchor": "SkeletalCommanderHealer pet = new SkeletalCommanderHealer();",
      "confidence": "inferred",
      "sourceClass": "GhostSkeletalCommanderBrain",
@@ -28801,14 +28844,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@2934"
+     "key": "adds@2936"
     },
     {
      "kind": "phase",
      "summary": "At 90/80/70/60/50/40/30/20/10% health: one essence wave each (SpawnEssences).",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 586,
-     "lineEnd": 630,
+     "line": 588,
+     "lineEnd": 632,
      "anchor": "if (Body.HealthPercent <= 90 && SpawnAdds1==false)",
      "confidence": "inferred",
      "sourceClass": "NosdodenBrain",
@@ -28828,14 +28871,14 @@
      "tactic": "Damage pacing: a raid that blows through two thresholds at once doubles the wave.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "phase@586"
+     "key": "phase@588"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health, adds cleared",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 541,
-     "lineEnd": 581,
+     "line": 543,
+     "lineEnd": 583,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "NosdodenBrain",
@@ -28844,14 +28887,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@541"
+     "key": "reset@543"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"NosdodenGhostSpiritmaster\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1447,
-     "lineEnd": 1447,
+     "line": 1449,
+     "lineEnd": 1449,
      "anchor": "if (Body.PackageID == \"NosdodenGhostSpiritmaster\")",
      "confidence": "read",
      "sourceClass": "NosdodenGhostAddBrain",
@@ -28862,14 +28905,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@1447"
+     "key": "linked_pack@1449"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"NosdodenGhostBonedancer\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1511,
-     "lineEnd": 1511,
+     "line": 1513,
+     "lineEnd": 1513,
      "anchor": "if (Body.PackageID == \"NosdodenGhostBonedancer\")",
      "confidence": "read",
      "sourceClass": "NosdodenGhostAddBrain",
@@ -28880,14 +28923,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@1511"
+     "key": "linked_pack@1513"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"NosdodenGhostHunter\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1990,
-     "lineEnd": 1990,
+     "line": 1992,
+     "lineEnd": 1992,
      "anchor": "if(CanCreateHunterPet==false && Body.PackageID == \"NosdodenGhostHunter\")",
      "confidence": "read",
      "sourceClass": "NosdodenGhostAddBrain",
@@ -28898,14 +28941,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@1990"
+     "key": "linked_pack@1992"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"NosdodenGhostSpiritmaster\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2787,
-     "lineEnd": 2787,
+     "line": 2789,
+     "lineEnd": 2789,
      "anchor": "if (bone.IsAlive && bone.Brain is NosdodenGhostAddBrain && bone.PackageID == \"NosdodenGhostSpiritmaster\" && Body.PackageID == Convert.ToString(bone.ObjectID))",
      "confidence": "read",
      "sourceClass": "GhostSpiritChampionBrain",
@@ -28916,14 +28959,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@2787"
+     "key": "linked_pack@2789"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"NosdodenGhostBonedancer\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2899,
-     "lineEnd": 2899,
+     "line": 2901,
+     "lineEnd": 2901,
      "anchor": "if (bone.IsAlive && bone.Brain is NosdodenGhostAddBrain && bone.PackageID == \"NosdodenGhostBonedancer\" && Body.PackageID == Convert.ToString(bone.ObjectID))",
      "confidence": "read",
      "sourceClass": "GhostSkeletalCommanderBrain",
@@ -28934,14 +28977,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@2899"
+     "key": "linked_pack@2901"
     },
     {
      "kind": "heal",
      "summary": "Has a heal spell: Heal (Heal, value 400, target REALM)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2257,
-     "lineEnd": 2257,
+     "line": 2259,
+     "lineEnd": 2259,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "NosdodenGhostAddBrain",
@@ -28951,14 +28994,14 @@
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "heal@2257"
+     "key": "heal@2259"
     },
     {
      "kind": "heal",
      "summary": "Has a heal spell: Heal (Heal, value 250, target REALM)",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 3086,
-     "lineEnd": 3086,
+     "line": 3088,
+     "lineEnd": 3088,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "SkeletalCommanderHealerBrain",
@@ -28968,7 +29011,7 @@
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "heal@3086"
+     "key": "heal@3088"
     }
    ],
    "spells": [
@@ -28983,7 +29026,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 700,
+     "line": 702,
      "sourceClass": "NosdodenBrain"
     },
     {
@@ -28997,7 +29040,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 736,
+     "line": 738,
      "sourceClass": "NosdodenBrain"
     },
     {
@@ -29011,7 +29054,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2631,
+     "line": 2633,
      "sourceClass": "NosdodenGhostAdd"
     },
     {
@@ -29025,7 +29068,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1804,
+     "line": 1806,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29039,7 +29082,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1829,
+     "line": 1831,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29053,7 +29096,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1855,
+     "line": 1857,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29067,7 +29110,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1882,
+     "line": 1884,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29081,7 +29124,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1907,
+     "line": 1909,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29095,7 +29138,7 @@
      "value": null,
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1932,
+     "line": 1934,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29109,7 +29152,7 @@
      "value": "25",
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 1962,
+     "line": 1964,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29123,7 +29166,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2031,
+     "line": 2033,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29137,7 +29180,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2058,
+     "line": 2060,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29151,7 +29194,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2087,
+     "line": 2089,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29165,7 +29208,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2114,
+     "line": 2116,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29179,7 +29222,7 @@
      "value": "35",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2171,
+     "line": 2173,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29193,7 +29236,7 @@
      "value": "-90",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2201,
+     "line": 2203,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29207,7 +29250,7 @@
      "value": "400",
      "target": "REALM",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2257,
+     "line": 2259,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29221,7 +29264,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2283,
+     "line": 2285,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29235,7 +29278,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2312,
+     "line": 2314,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29249,7 +29292,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2342,
+     "line": 2344,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29263,7 +29306,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2369,
+     "line": 2371,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29277,7 +29320,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2396,
+     "line": 2398,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29291,7 +29334,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2429,
+     "line": 2431,
      "sourceClass": "NosdodenGhostAddBrain"
     },
     {
@@ -29305,7 +29348,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 2747,
+     "line": 2749,
      "sourceClass": "GhostSpiritChampion"
     },
     {
@@ -29319,7 +29362,7 @@
      "value": "250",
      "target": "REALM",
      "file": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs",
-     "line": 3086,
+     "line": 3088,
      "sourceClass": "SkeletalCommanderHealerBrain"
     }
    ],
@@ -29347,7 +29390,8 @@
     "requiredAdds": [
      "NosdodenSummonedAdds"
     ],
-    "summary": "Waves as required adds: when a wave of essences spawns (every 10% from 90%), the raid stops hitting him and kills the wave, then goes back to him; so his health falls one step at a time and waves don't stack."
+    "summary": "Waves as required adds: when a wave of essences spawns (every 10% from 90%), the raid stops hitting him and kills the wave, then goes back to him. Call of Void (announced, 1,100 within 550 of a raider 5 s later) is raised as a glare: everyone near the raider but his tank steps out, healers heal it first; casters, archers and healers fight from beyond 950 of him (EpicEncounterTactics.Trollheim, Living Server 1.2; tests only).",
+    "since": "1.2"
    },
    "verified": true
   },
@@ -29818,7 +29862,7 @@
      "maxHealth": 5000,
      "level": "(byte)Util.Random(65, 70)",
      "file": "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs",
-     "line": 284
+     "line": 286
     }
    ],
    "rules": [
@@ -29907,7 +29951,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs",
-     "line": 259,
+     "line": 261,
      "sourceClass": "BalorEyeBrain"
     }
    ],
@@ -29928,7 +29972,11 @@
      "role": "final"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Eye of Balor (each 10% he loses): it picks a raider within 2,500 and casts Balor's Eye Light (1,000 heat, 4 s, no interrupt, through walls) on it for 18 s. That raider, unless Balor fights it, runs out of the eye's 1,800 and waits; the healers heal it first (the script raises the pick). The period's two door guards and the throw (later reports) are not in this script. (EpicEncounterTactics.TurSuil, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -30628,7 +30676,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "His eight pets (10,000 each) come back as fast as they die while he fights and die with him: everyone fights Otrygg, the route never sends the raid to a pet. The period fought him at the T junction, away from his spawn, where his pets stayed home (CARNE-TG); not played here (no junction point recorded). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -31047,7 +31099,16 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "after": "Guthlac",
+    "rangedAdds": [
+     "FrozenBomb"
+    ],
+    "focusRangedAdds": true,
+    "summary": "With Guthlac (pulling one brings the other): Guthlac first (his Ice Spike), the party Birghir fights holds him. An Ice Spike is a ranged add of both: every caster and archer of the raid takes it. (EpicEncounterTactics.Tuscaran (catalog), Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -31252,7 +31313,15 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "rangedAdds": [
+     "FrozenBomb"
+    ],
+    "focusRangedAdds": true,
+    "summary": "Ice Spike: every 35-60 s a 5,000-health spike appears on a raider within 4,500 and erupts 25 s later for 2,500 cold within 3,000 (the whole room): every caster and archer of the raid kills it before then; he dies before Birghir, and his death removes it. (EpicEncounterTactics.Tuscaran (catalog), Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -31388,7 +31457,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Hjalmar's Ice Blast (450 cold to everyone within 440 of him, every 15 s): casters, archers and healers outside his target's party fight from beyond 540; melee take it and his berserker stance (Strength 850 for 10-20 s), healers on his target. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -31546,7 +31619,15 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "rangedAdds": [
+     "Morkimma"
+    ],
+    "focusRangedAdds": true,
+    "summary": "The raider he fights faces him (his back style: Strength 740 on a turned back, 600 otherwise); his Morkimmas (1,000 health, heal themselves, 20% a hit near his target) are ranged adds the casters and archers kill together. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -32048,7 +32129,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Aggro 1,500 and Council Ozur stands 750 from him: nothing within 1,900 of him is pulled while he rests, so the council falls Hord, Ozur, Otrygg (the period's route, FreddysHouse \"TG raids again\", 31 Jul 2003). His own fight: a 250 self-heal on 3% of hits taken, fought as usual (the period's Hord healed to full at random). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -32366,7 +32451,14 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "requiredAdds": [
+     "HakrAdd"
+    ],
+    "summary": "Four Royal Iceweavers (20,000 each): the two in the far room (30,008,56,329; nothing links them) die before the pull; in his fight the two at his side (HakrBaf, brought in) are his required adds and die first, since his toss only comes while an iceweaver lives (the period's \"Magic barrier fades away\" message; this script gives him no immunity). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -32819,7 +32911,15 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "hazards": [
+     "EffectMob"
+    ],
+    "hazardRadius": 350,
+    "summary": "With Skuf (pulling one brings the other) he dies first: his Pillar of Frost (750 cold, 350 around the spot of a raider he names, 3.5 s later) is a ground hazard everyone steps out of; Skuf's party holds Skuf meanwhile. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -32932,7 +33032,16 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "after": "Steinvor",
+    "hazards": [
+     "EffectMob"
+    ],
+    "hazardRadius": 350,
+    "summary": "After Steinvor: the party Skuf fights holds him, everyone else kills Steinvor first; Steinvor's pillars are stepped out of in Skuf's fight too. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -33039,7 +33148,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "His seven icebound skeletons (IssordenBaf) join him from anywhere in the glacier when he fights: they die first. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -33965,7 +34078,12 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "spreadRadius": 400,
+    "summary": "Ozur's Disease (400 around his target, every 60 s): casters, archers and healers clear of his target. His strength rises with the raid's size (50+: Strength 200; 100+: 350 and -20 resists); nothing to play. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -34211,7 +34329,14 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "spreadRadius": 400,
+    "meleeBehind": true,
+    "tanksTaunt": true,
+    "summary": "He roots his target and then jumps to a random raider within 1,500; his five untargetable eddies circle within 200 of him (Cold Snap 300). Casters, archers and healers keep 650 from him; his Torst DD (550, 400 around his target) is the spread: casters clear of his target, melee behind him, and the nearest tank taunts him back when he jumps to a non-tank. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -34383,7 +34508,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Her gust throws a raider within 1,000 of her 500-700 up every 15-20 s: casters, archers and healers outside her target's party keep 1,100-1,350 from her (in spell range); a thrown raider walks back (EncounterDisplacementRecovery). With the flying patrol on, the griffon pull first (Griffons.cs). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
+   },
    "verified": true
   }
  ]
