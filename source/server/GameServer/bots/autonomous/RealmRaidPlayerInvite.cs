@@ -44,6 +44,14 @@ public static class RealmRaidPlayerInvite
         : check.BoxWaiting ? "box_waiting"
         : check.StateBlocks ?? (check.JustLoggedIn ? "just_logged_in" : null);
 
+    /// <summary>
+    /// Whether an invite that could not be shown (the player's state changed in the seconds between the leader's tell and
+    /// the box) still counts as this raid's one invite (pure). It does not, unless the raid ended or the player left: the
+    /// player never saw a box to say no to (2026-11-13, Gjalpinulva: a gamebot's group invite was open when the raid box
+    /// came, "dialog_open", and the raid never asked again).
+    /// </summary>
+    public static bool CountsAsInvited(string notShownBecause) => notShownBecause is "raid_ended" or "offline";
+
     /// <summary>A gamebot of the raid as the pick of its leader sees it. Pure data.</summary>
     public readonly record struct LeaderCandidate(long BotId, int Level, bool RaidingGuild, int GuildRank, int PartyOrder, bool LeadsItsParty);
 

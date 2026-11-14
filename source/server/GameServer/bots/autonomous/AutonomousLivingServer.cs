@@ -216,6 +216,8 @@ public static partial class AutonomousLivingServer
             AutonomousLivingWorld.Pulse(now);
             // Tales: the realm's storyteller, the rumour after it, fireside tales in a resting group.
             AutonomousTales.Pulse(now);
+            // The play test's sweep (/epictest sweep): nothing unless a GM started one.
+            EpicPlaytestSweep.Pulse(now);
         }
         catch (Exception exception)
         {
