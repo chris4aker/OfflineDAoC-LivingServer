@@ -43,7 +43,7 @@ below the game's size; run 3 at it.
 | Hibernia | Summoner's Hall | Lost three times at Summoner Roesia | Not run |
 | Hibernia | Darkness Falls | No finished run | Lost on `e3b8238` (a raid the game opened itself, 2026-11-14): 59 named, then Legion twice (lowest 92% and 60%), 382 minutes |
 
-Back in 1.2 (owner, 2026-11-14): the Darkness Falls raid AI and Legion; their rows above count like the others. Still not claimed: Behemoth and the hardest level 70+ encounters.
+Back in 1.2 (owner, 2026-11-14: "ALL big bosses are in"): the Darkness Falls raid AI, Legion, Behemoth and every other big boss, the open-world ones included; their rows count like the others.
 
 Known causes with no fix yet: Krondon's Lyft Miht room; raids leaving a boss for the monsters around it (High Lord Oro,
 Gatekeeper Dommel, High Lord Baln); Golestandt's second attempts; Summoner Roesia.
