@@ -217,6 +217,9 @@ namespace DOL.GS
                     foreach (GameLiving m in healer.Group.GetMembersInTheGroup())
                         if (s.Boss.IsWithinRadius(m, s.Radius)) Consider(m, 100);
             }
+            // Legion's target, whatever party it is in: his tank healers keep it up first (EpicEncounterTactics.Legion.cs).
+            if (healer.CurrentRegionID == AutonomousDarknessFallsPolicy.RegionId)
+                Consider(LegionTankPatient(healer, now), LegionTankHealBelow);
             // Legion and High Lord Saeor are in Darkness Falls: only there is the look-up worth a healer's turn.
             if (healer.Group != null && healer.CurrentRegionID == AutonomousDarknessFallsPolicy.RegionId)
                 foreach (GameNPC boss in healer.GetNPCsInRadius(3_000).Where(n => n.IsAlive && n.InCombat && KillHealBosses.Contains(n.GetType().Name)))

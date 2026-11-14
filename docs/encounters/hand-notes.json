@@ -737,8 +737,9 @@
   "darkness-falls/behemoth": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "83c38f75c44bf2a22ca5a9fa0e166af348b70db5a767d6ed95be0f276c23e86e"
-   }
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "25c0a15069026cb34413ec58471992669c09142b5a2f636783158390ce5915bc"
+   },
+   "notes": "Level 99, 600,000 health, any hit kills (OnAttackEnemy). Reached only by Legion's throw into his hall (period: 'the only way to get to him is to be randomly teleported by the Legion mob', Grab Bag, Jan 2008). 1.2 Legion plan (tests only): no bot hits him or sends its pet (a dungeon rule's MustNotHit and NoPets), a bot that targets him stands 1,000 off, and a thrown bot's way down keeps out of his aggro range (recalled if it comes within it and 20)."
   },
   "darkness-falls/beliathan": {
    "verified": true,
@@ -819,28 +820,34 @@
    }
   },
   "darkness-falls/legion": {
-   "notes": "Level 83, 300,000 health. No Darkness Falls raid AI: listed for completeness. 1.2: companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics). 1.2 wave 3: his throw takes bots too (AllowBotDisplacement for Legion); the wounded step out of his reach; no bot bubbles near him. 1.2 (True 1.65 port): his soul blast lock-out (10 s after each blast) and his count of ended bladeturns belong to his brain and clear on a reset; before, the lock-out was shared and a reset or death during it stopped the blast for good until a restart. Not played.",
+   "notes": "Level 83, 300,000 health. No Darkness Falls raid AI: listed for completeness. 1.2: companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics). 1.2 wave 3: his throw takes bots too (AllowBotDisplacement for Legion); the wounded step out of his reach; no bot bubbles near him. 1.2 (True 1.65 port): his soul blast lock-out (10 s after each blast) and his count of ended bladeturns belong to his brain and clear on a reset; before, the lock-out was shared and a reset or death during it stopped the blast for good until a restart. 1.2 Legion raid plan (EpicEncounterTactics.Legion.cs; tests only, not seen in game): his tank holds him on his lair (walks him back to his spawn when he is drawn more than 1,200 off it) and the raid's tanks taunt him back onto a tank (a tank under 35% hands him to one over 80%); the six raid healers nearest his target heal it first under 85%, whatever party it is in; casters, archers and healers stand 1,200 from him on the raid's side, spread across the corridor; a soul wave of more than four takes one melee party per four souls more (at most a third of the raid, never the tank's party); a thrown bot walks across Behemoth's hall on its north side to the zone point DF LEGION PURGATORY and is put where it puts players, recalled only when it can't (no path, no progress, over about 63 s, or within Behemoth's aggro range and 20). Period sources (Albion Encounters Guide, VN Boards, Feb 2003; Allakhazam comments 2003-2005; Herald, Apr 2002): aggro on the main tank because he heals by kills, kill the lesser monsters first, a ported group runs across Behemoth's chamber to the portal. The script differs from the period fight: it ends bladeturns and blasts after five (the guide used pulsing bladeturns), and a raider far from him does no damage (the period hearsay: he must be fought on his platform). Not played.",
    "rules": {
     "immune_while@243": {
      "summary": "Takes no damage from attackers more than 1,400 from him.",
-     "tactic": "Everyone fights within 1,400 of him (casters too). Ranged gamebots cap their stand-off at 1,300 against him (he declares the 1,400 as RaidMaxDamageRange, IRaidBossTraits, 1.2 True 1.65 port), and the raid AI steps a raider farther out in to 1,100.",
+     "tactic": "Everyone fights within 1,400 of him (casters too). Ranged gamebots cap their stand-off at 1,300 against him (he declares the 1,400 as RaidMaxDamageRange, IRaidBossTraits, 1.2 True 1.65 port), the raid AI steps a raider farther out in to 1,100, and since the 1.2 Legion plan casters, archers and healers stand 1,200 from him on the raid's side.",
      "difficulty": "needs new raid AI"
     },
     "teleport@696": {
-     "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for Legion): a thrown bot lands on the platform, finds no path back and is recalled to its party after 5 s (EncounterDisplacementRecovery); companions of a thrown player stay down. Real players use the zone point as before.",
+     "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for Legion): a thrown bot lands in Behemoth's hall; since the 1.2 Legion plan it walks across the hall on its north side, past Behemoth out of his aggro, to the zone point DF LEGION PURGATORY and is put where it puts players (EncounterDisplacementRecovery's way out, EpicEncounterTactics.LegionWayDown); with no path, no progress, over its time bound or with Behemoth about to notice it, it is recalled to its party. Companions of a thrown player stay down. Real players use the zone point as before. Tests only.",
      "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "83c38f75c44bf2a22ca5a9fa0e166af348b70db5a767d6ed95be0f276c23e86e"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "25c0a15069026cb34413ec58471992669c09142b5a2f636783158390ce5915bc"
    },
    "aiTactics": {
     "rangedAdds": [
      "LegionAdd"
     ],
+    "clearFirst": [
+     "Chamberlain",
+     "Inquisitor Famuel",
+     "Earl Amagin"
+    ],
+    "clearFirstRadius": 2300,
     "since": "1.2",
-    "summary": "Tactic rules only (Darkness Falls raid AI as a whole is not implemented: no platform positions, no walked way down from the platform, no add-wave assignments). Graspering souls (one per four raiders within 2,000 at each 5% step, at most 16 a step): casters and archers kill them while melee stay on Legion. Close range: he takes no damage from attackers more than 1,400 from him, so a raider farther out steps in to 1,100. Kill heals (2.5% per raider he kills): healers near him heal anyone under half first, and since wave 3 a raider under 35% who is not his target steps out to 1,700 until healed. Bubbles (wave 3): he ends the bladeturn on his target every turn and after five casts his soul blast (1,000 body damage within 1,000 of his target, a quarter healing him), so no bot casts a bladeturn (buff, group bubble, pulsing chant, self bubble) within 2,500 of him while he fights. His throw (wave 3): 8-16 raiders below his top five on his aggro list go to his platform every 40-65 s, bots too; a bot has no walked way down, so its recovery recalls it to its party after 5 s."
+    "summary": "Raid plan (1.2 Legion, tests only; Darkness Falls raid AI as a whole is not implemented). His room first: the route kills the Chamberlain (level 79, 792 from his spawn), Inquisitor Famuel and Earl Amagin (about 2,150-2,200 off, in the corridor) before it pulls him (period: clear the room, then pull before a respawn; PC log e3b8238: the Chamberlain joined Midgard's kill and killed two raiders, and he and Famuel joined Hibernia's second try). Main tank: the raid's tanks taunt him back onto a tank and a tank under 35% hands him to a fresh one; his tank walks him back onto his lair when he is drawn more than 1,200 off his spawn. Tank healers: the six raid healers nearest his target heal it first under 85%. Ranged line: casters, archers and healers 1,200 from him on the raid's side. Graspering souls (one per four raiders within 2,000 at each 5% step, at most 16 a step): casters and archers kill them while melee stay on Legion; a wave of more than four takes one melee party per four souls more, never the tank's party. Close range: he takes no damage from attackers more than 1,400 from him, so a raider farther out steps in to 1,100. Kill heals (2.5% per raider he kills): healers near him heal anyone under half first, and a raider under 35% who is not his target steps out to 1,700 until healed. Bubbles: no bot casts a bladeturn within 2,500 of him while he fights (he ends his target's and blasts after five). His throw: 8-16 raiders below his top five go to Behemoth's hall every 40-65 s, bots too; a bot walks across the hall to the zone point and is recalled only when it can't. Behemoth is never fought."
    }
   },
   "darkness-falls/princeabdin": {
@@ -1026,6 +1033,10 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "5c815a5f55796c3fa138ee39600954e1d7bd5bbd9edd83fcaf476c2049fdd2da"
+   },
+   "aiTactics": {
+    "summary": "900 health, flies a ring 690 up around the room's middle and never lands: casters and archers shoot it from the middle (within 1,450 at every point of the ring), melee fight another primal, pets leave it (they do 5). Killed last, after Water, Fire, the Earthmenders and Earth (the period's order). The period's Air primal took only ground-targeted area spells and Annihilation; this script's takes any damage. (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "galladoria/aroon": {
@@ -1166,7 +1177,15 @@
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs": "fdd068e56e398088bb1b6e0007b5bc39fc5ee5cb8ad3b81c959fcf51ba6b42c2"
    },
-   "notes": "Eight bodies, the cluster and the seven copies it spawns (GSCAdds), share one 100,000-health pool (damage to any body sets the others' health) and die together: killing any body kills the cluster with the same killer and removes the copies. 1.2 (True 1.65 port): the cluster alone pays out, for the attackers of every body; before, a copy that had been hit paid out too and the cluster died by its own hand."
+   "notes": "Eight bodies, the cluster and the seven copies it spawns (GSCAdds), share one 100,000-health pool (damage to any body sets the others' health) and die together: killing any body kills the cluster with the same killer and removes the copies. 1.2 (True 1.65 port): the cluster alone pays out, for the attackers of every body; before, a copy that had been hit paid out too and the cluster died by its own hand.",
+   "aiTactics": {
+    "rangedAdds": [
+     "GSCAdds"
+    ],
+    "areaOnClump": true,
+    "summary": "One health pool for eight bodies: the raid stays in one small circle (casters and healers within 450 of the cluster), area casters on the clump, any body is the cluster (the period: \"get entire raiding party real close together and whack at any target (same hp pool) and pbae\"). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
+   }
   },
   "galladoria/hurionthex": {
    "notes": "Changes form every 18 s: base, Treant (casts a damage add on itself), Saiyan (monkey: Black Plague disease) and Granidon (damage shield 120). 2026-10-14 he reset from 31% again and again; the 8 s quiet rule fixed it.",
@@ -1180,12 +1199,22 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs": "803467b4edadf2428fd2ef50dba29d129204e09353cfd8e8536d9afa4a13e13a"
+   },
+   "aiTactics": {
+    "spreadRadius": 350,
+    "spreadWhileModel": 844,
+    "summary": "Granidon form (damage shield 120): melee outside his target's party step back 450 and pets leave him until the form changes. Monkey form: Black Plague (350 around his target) is the spread for casters and healers. (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "galladoria/olcasargeomancer": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "6e8c9d0a8fd5b5a27046747f0e7ec0665d34926546865bea95978cc8d816ea89"
+   },
+   "aiTactics": {
+    "summary": "A slain minion rises again at its killer's feet: the party a minion fights holds it, everyone else kills the Geomancer, whose death removes them (the period: \"just kept one group on his pets and he went down fast\"). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "galladoria/olcasgean": {
@@ -1216,10 +1245,14 @@
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "5c815a5f55796c3fa138ee39600954e1d7bd5bbd9edd83fcaf476c2049fdd2da"
    },
-   "notes": "Olcasgean's second body: it shares his 250,000-health pool. Killed, it kills Olcasgean with the same killer and passes him its attackers, so Olcasgean pays out for both and this body pays nothing (1.2, True 1.65 port)."
+   "notes": "Olcasgean's second body: it shares his 250,000-health pool. Killed, it kills Olcasgean with the same killer and passes him its attackers, so Olcasgean pays out for both and this body pays nothing (1.2, True 1.65 port).",
+   "aiTactics": {
+    "summary": "The copy shares his 250,000 and answers each attacker with Olcasgean's Root (450, at most once a second per body): only the party holding the copy's safe spot fights it, everyone else fights Olcasgean, so one body roots the raid instead of two. (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
+   }
   },
   "galladoria/olcasgeaninitializator": {
-   "notes": "Not a monster but the event controller for Galladoria's last room. A raid bot within 1,500 of the waterfall bridge (39652,60831,11893) starts it (a real player must stand within 350); 20 s of messages later it spawns the four Corrupt Primals, the four Earthmenders and eleven Watery Vortices. Olcasgean wakes 25 s after all four primals are dead (OIBrain.DeadPrimalsCount >= 4). 1.2 wave 2: AllowGalladoriaBridgeSpot is on: a raider must stand within 350 of the spot (the route stages its first party there); a raid bot that has stood within 1,500 for 3 minutes still starts it.",
+   "notes": "Not a monster but the event controller for Galladoria's last room. A raid bot within 1,500 of the waterfall bridge (39652,60831,11893) starts it (a real player must stand within 350); 20 s of messages later it spawns the four Corrupt Primals, the four Earthmenders and eleven Watery Vortices. Olcasgean wakes 25 s after all four primals are dead (OIBrain.DeadPrimalsCount >= 4). 1.2 wave 2: AllowGalladoriaBridgeSpot is on: a raider must stand within 350 of the spot (the route stages its first party there); a raid bot that has stood within 1,500 for 3 minutes still starts it. Living Server 1.2 (tests only): the route takes the primals in the period's order, Water, Fire, the Earthmenders and Earth, Air (Thredh's guide, May 2003, and the US plan of Jan 2003; the first live kill, VN Boards 7 May 2003, held Water and Earth in the safe spots while the rest killed Fire, then the menders, Earth and Water, Air last); the Fire primal's melee hold Water and Earth meanwhile (EpicEncounterTactics.Galladoria). The period's Fire and Air primals took only ground-targeted area spells; this script's take any damage.",
    "rules": {
     "adds@223": {
      "summary": "Spawns eleven Watery Vortices at fixed spots around the waterfall room with the primals.",
@@ -1242,6 +1275,10 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "9d610a662e6d40d389558bc46f7d111775f6de4060424ed6bf224267cde8e52c"
+   },
+   "aiTactics": {
+    "summary": "It never attacks; its Shield of World Soul hits back 150 per swing: casters and archers kill it, melee and pets kill its bottom feeders and never swing at it (the period: \"never target the middle mechanism ... RANGE attack and GTAoE attack it\", VN Boards \"Galladoria Notes\", Dec 2002). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "galladoria/spindlerbroodmother": {
@@ -1291,6 +1328,10 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs": "b378898bd7a8665b766bf4412fc6cf3b31bdb4fc7f76d0994cb1751edb863f0c"
+   },
+   "aiTactics": {
+    "summary": "No rule: at 60% he runs home once at full speed and comes back (the period's fled at about 5% and came back at about 75%; this script does not heal him); the raid fights him where he stands (the period: \"we zerged the Lairmaster with our 70-80 people\"). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "galladoria/waterprimal": {
@@ -1310,7 +1351,11 @@
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "5c815a5f55796c3fa138ee39600954e1d7bd5bbd9edd83fcaf476c2049fdd2da"
    },
-   "notes": "1.2 wave 2: its teleport (a raider within 2,500, to either side of the bridge) is on for bots: they walk back."
+   "notes": "1.2 wave 2: its teleport (a raider within 2,500, to either side of the bridge) is on for bots: they walk back.",
+   "aiTactics": {
+    "summary": "Below 30% it walks to its pool by the bridge, is immune there and heals a sixth: nobody hits it until it fights again. First in the period's order (Thredh, May 2003; the US plan, Jan 2003); the period's water primal also sank into the lake and healed (FreddysHouse, Apr 2003). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
+    "since": "1.2"
+   }
   },
   "galladoria/xaga": {
    "notes": "Xaga spawns Tine and Beatha (two 50,000-health fairies) and calls them in when she is attacked; each calls the others. Beatha's damage heals Xaga twice over again since 1.2 wave 2 (AllowBeathaHealsXaga).",
@@ -1712,6 +1757,11 @@
      "tactic": "Teleport: on since 1.2 for bots too (AllowBotDisplacement for Iarnvidiur). A moved bot lands at one of four spots about 2,000 from him and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
      "difficulty": "easy for the current raid AI"
     }
+   },
+   "aiTactics": {
+    "spreadRadius": 850,
+    "summary": "Black Plague (disease, 850 around his target, every 2 minutes): casters, archers and healers stand clear of his target. Below half he ports a raider (not his target) every 25-45 s: it walks back (EncounterDisplacementRecovery). The period's port dropped raiders in the water under the bridge (Eden, 2023); this script's four spots are not checked against the water. (EpicEncounterTactics.catalog, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "iarnvidiur-s-lair/lydsyg": {
@@ -2322,31 +2372,32 @@
    "notes": "Level 80, 100,000 health. Every 10% from 90% down to 10% he spawns a wave of about 12-18 'essence of fallen' (level 60-62, 2,500 health, aggro 1,500) at his feet: nine waves, roughly 110-160 adds in one fight. His Acidic cloud (Body DoT 150 for 60 s, radius 500) and Call of Void (Cold 1,100, radius 550) go on a random raider within 2,000 (real players and bots since 1.2, EncounterTargets). Spirits of the fallen are made from dead raiders, bots included (since 1.2). A bot raid larger than Trollheim's period raid (64) gets at most 64 live spirits.",
    "currentRaidAi": "2026-11-05: lost twice at full size (support 80 and 132, Special Forces joined both times). The essence waves are script-spawned, not epic, so the route does put them first; the raid still died.",
    "rules": {
-    "adds@683": {
+    "adds@167": {
+     "summary": "EnemyKilled: when he kills a raider (a real player, or a bot since 1.2) he makes a 'Spirit of <name>' ghost with that raider's race, size, armour and class behaviour. Flood guard (1.2): no new spirit while 64 are up (Trollheim's period raid; EncounterFloodGuard 'Nosdoden.Spirits').",
+     "tactic": "A dead raider's ghost fights the raid: kill it, or res the raider (the ghost dies when its owner lives again).",
+     "difficulty": "needs new raid AI"
+    },
+    "adds@685": {
      "summary": "SpawnEssences: about 12-18 essence of fallen (NosdodenSummonedAdds, StandardMobBrain-based, aggro range 1,500) around him at each of nine thresholds (90, 80, ... 10%).",
      "tactic": "Push him one 10% step at a time: stop damage on him at each threshold, AoE classes and two parties burn the wave down at his feet, healers keep the tank up, then the next step. Don't let three waves stack.",
      "difficulty": "needs new raid AI"
     },
-    "phase@586": {
+    "phase@588": {
      "summary": "At 90/80/70/60/50/40/30/20/10% health: one essence wave each (SpawnEssences).",
      "tactic": "Damage pacing: a raid that blows through two thresholds at once doubles the wave.",
-     "difficulty": "needs new raid AI"
-    },
-    "adds@167": {
-     "summary": "EnemyKilled: when he kills a raider (a real player, or a bot since 1.2) he makes a 'Spirit of <name>' ghost with that raider's race, size, armour and class behaviour. Flood guard (1.2): no new spirit while 64 are up (Trollheim's period raid; EncounterFloodGuard 'Nosdoden.Spirits').",
-     "tactic": "A dead raider's ghost fights the raid: kill it, or res the raider (the ghost dies when its owner lives again).",
      "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "b926d2c7fffd45084db25b5e66ff1fd495a744f85f1f98fe5058b77fa36c71b4"
+    "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "675a30a5962118f157aa1b003ef35b6d00acb6d9788afaad274f779a5407761d"
    },
    "aiTactics": {
     "requiredAdds": [
      "NosdodenSummonedAdds"
     ],
-    "summary": "Waves as required adds: when a wave of essences spawns (every 10% from 90%), the raid stops hitting him and kills the wave, then goes back to him; so his health falls one step at a time and waves don't stack."
+    "summary": "Waves as required adds: when a wave of essences spawns (every 10% from 90%), the raid stops hitting him and kills the wave, then goes back to him. Call of Void (announced, 1,100 within 550 of a raider 5 s later) is raised as a glare: everyone near the raider but his tank steps out, healers heal it first; casters, archers and healers fight from beyond 950 of him (EpicEncounterTactics.Trollheim, Living Server 1.2; tests only).",
+    "since": "1.2"
    }
   },
   "trollheim/rift": {
@@ -2370,7 +2421,11 @@
   "tur-suil/balor": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs": "45e3e0d9512d66fc91e2c678e469f6099dffc708a083fced658cb9d7f702b43f"
+    "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs": "bd35c490f7ce0f6597679dd76bf6ca5243b9fc27025f816dba1d10664275146b"
+   },
+   "aiTactics": {
+    "summary": "Eye of Balor (each 10% he loses): it picks a raider within 2,500 and casts Balor's Eye Light (1,000 heat, 4 s, no interrupt, through walls) on it for 18 s. That raider, unless Balor fights it, runs out of the eye's 1,800 and waits; the healers heal it first (the script raises the pick). The period's two door guards and the throw (later reports) are not in this script. (EpicEncounterTactics.TurSuil, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "tur-suil/kieracdestroyer": {
@@ -2417,6 +2472,15 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "c9bad5dfb31d1e1c4e6d7077b3f516d5a8b5735d5c9dff17f87b89fa71a120fc"
+   },
+   "aiTactics": {
+    "after": "Guthlac",
+    "rangedAdds": [
+     "FrozenBomb"
+    ],
+    "focusRangedAdds": true,
+    "summary": "With Guthlac (pulling one brings the other): Guthlac first (his Ice Spike), the party Birghir fights holds him. An Ice Spike is a ranged add of both: every caster and archer of the raid takes it. (EpicEncounterTactics.Tuscaran (catalog), Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/fallingice": {
@@ -2457,6 +2521,14 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "c9bad5dfb31d1e1c4e6d7077b3f516d5a8b5735d5c9dff17f87b89fa71a120fc"
+   },
+   "aiTactics": {
+    "rangedAdds": [
+     "FrozenBomb"
+    ],
+    "focusRangedAdds": true,
+    "summary": "Ice Spike: every 35-60 s a 5,000-health spike appears on a raider within 4,500 and erupts 25 s later for 2,500 cold within 3,000 (the whole room): every caster and archer of the raid kills it before then; he dies before Birghir, and his death removes it. (EpicEncounterTactics.Tuscaran (catalog), Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/hakr": {
@@ -2469,12 +2541,27 @@
      "tactic": "Toss: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for Hakr). A moved bot falls 220 by him (about 4% fall damage) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
      "difficulty": "easy for the current raid AI"
     }
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "HakrAdd"
+    ],
+    "summary": "Four Royal Iceweavers (20,000 each): the two in the far room (30,008,56,329; nothing links them) die before the pull; in his fight the two at his side (HakrBaf, brought in) are his required adds and die first, since his toss only comes while an iceweaver lives (the period's \"Magic barrier fades away\" message; this script gives him no immunity). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/hjalmar": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "3c7724d289bf39019698a1ddcd88250c0dbfa600592149d5002aa71923701d09"
+   },
+   "aiTactics": {
+    "rangedAdds": [
+     "Morkimma"
+    ],
+    "focusRangedAdds": true,
+    "summary": "The raider he fights faces him (his back style: Strength 740 on a turned back, 600 otherwise); his Morkimmas (1,000 health, heal themselves, 20% a hit near his target) are ranged adds the casters and archers kill together. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/hjalmarsuttungcontroller": {
@@ -2487,6 +2574,10 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Hord.cs": "f21c3e552ea4280627e1dbb87c762a4a5309d9cbec086d099d6231442327abc3"
+   },
+   "aiTactics": {
+    "summary": "Aggro 1,500 and Council Ozur stands 750 from him: nothing within 1,900 of him is pulled while he rests, so the council falls Hord, Ozur, Otrygg (the period's route, FreddysHouse \"TG raids again\", 31 Jul 2003). His own fight: a 250 self-heal on 3% of hits taken, fought as usual (the period's Hord healed to full at random). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/hurika": {
@@ -2515,12 +2606,20 @@
      "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
      "difficulty": "needs new raid AI"
     }
+   },
+   "aiTactics": {
+    "summary": "Her gust throws a raider within 1,000 of her 500-700 up every 15-20 s: casters, archers and healers outside her target's party keep 1,100-1,350 from her (in spell range); a thrown raider walks back (EncounterDisplacementRecovery). With the flying patrol on, the griffon pull first (Griffons.cs). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/issorden": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs": "047313701e409de109730137f1f89fb90f7596bd0247952ad7d929ce0b9ee055"
+   },
+   "aiTactics": {
+    "summary": "His seven icebound skeletons (IssordenBaf) join him from anywhere in the glacier when he fights: they die first. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/jailer": {
@@ -2591,12 +2690,21 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilOtrygg.cs": "2b25c53806a59264da80fa2bc3fd0116213e688d2cb49e57989b263298c18b3f"
+   },
+   "aiTactics": {
+    "summary": "His eight pets (10,000 each) come back as fast as they die while he fights and die with him: everyone fights Otrygg, the route never sends the raid to a pet. The period fought him at the T junction, away from his spawn, where his pets stayed home (CARNE-TG); not played here (no junction point recorded). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/ozur": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs": "79b05c5cd0d0a976643381cb00c4f121d424a538bf470a481db3dad9f0b4e7ac"
+   },
+   "aiTactics": {
+    "spreadRadius": 400,
+    "summary": "Ozur's Disease (400 around his target, every 60 s): casters, archers and healers clear of his target. His strength rises with the raid's size (50+: Strength 200; 100+: 350 and -20 resists); nothing to play. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/queenkula": {
@@ -2627,12 +2735,29 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "4d889113864409dfe983eab5c48fe7da4ece538a406d74d4e51a06e720fddd9e"
+   },
+   "aiTactics": {
+    "after": "Steinvor",
+    "hazards": [
+     "EffectMob"
+    ],
+    "hazardRadius": 350,
+    "summary": "After Steinvor: the party Skuf fights holds him, everyone else kills Steinvor first; Steinvor's pillars are stepped out of in Skuf's fight too. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/steinvor": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "4d889113864409dfe983eab5c48fe7da4ece538a406d74d4e51a06e720fddd9e"
+   },
+   "aiTactics": {
+    "hazards": [
+     "EffectMob"
+    ],
+    "hazardRadius": 350,
+    "summary": "With Skuf (pulling one brings the other) he dies first: his Pillar of Frost (750 cold, 350 around the spot of a raider he names, 3.5 s later) is a ground hazard everyone steps out of; Skuf's party holds Skuf meanwhile. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/suttung": {
@@ -2654,7 +2779,11 @@
      "tactic": "Tanks use their defensive abilities and healers focus the tank during berserk; off-tanks ready to take over. He is slower in the stance, so a tank can step back while it lasts. Expect one every 30-55 s of a long fight.",
      "difficulty": "needs new raid AI"
     }
-   ]
+   ],
+   "aiTactics": {
+    "summary": "Hjalmar's Ice Blast (450 cold to everyone within 440 of him, every 15 s): casters, archers and healers outside his target's party fight from beyond 540; melee take it and his berserker stance (Strength 850 for 10-20 s), healers on his target. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
+   }
   },
   "tuscaran-glacier/torst": {
    "verified": true,
@@ -2678,6 +2807,13 @@
      "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
      "difficulty": "needs new raid AI"
     }
+   },
+   "aiTactics": {
+    "spreadRadius": 400,
+    "meleeBehind": true,
+    "tanksTaunt": true,
+    "summary": "He roots his target and then jumps to a random raider within 1,500; his five untargetable eddies circle within 200 of him (Cold Snap 300). Casters, archers and healers keep 650 from him; his Torst DD (550, 400 around his target) is the spread: casters clear of his target, melee behind him, and the nearest tank taunts him back when he jumps to a non-tank. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
+    "since": "1.2"
    }
   },
   "tuscaran-glacier/vagn": {
