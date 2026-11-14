@@ -31,6 +31,14 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
 
 ## 1.2 (in development)
 
+**The play test's sweep (GM only).** `/epictest sweep start [all|event,event] [guest]` runs every raid once, one after
+another, on the server alone: the 21 raid targets in the game's order, Darkness Falls last. Each raid runs at its period
+size and ends on its own clocks, and the sweep stops one after 4 hours. A raid that can't start (its boss respawning, no
+bots free) is tried again after the rest, up to three times. With `guest`, the GM takes a seat in every raid. Their realm
+is set to the raid's realm until the sweep ends, and the server keeps them with their party: away for 20 seconds, they
+are moved back; dead for 30 seconds, they are raised there. Every step is logged as `EPIC_SWEEP_*`. `status`, `skip` and
+`stop` follow it. Nothing runs unless a GM starts it.
+
 **Lean server memory (a test option, off by default).** A new Options-tab switch starts the server with .NET's
 memory-saving garbage collection (4 heaps and "conserve memory", from the owner's friend Ryan's Linux setup). On a
 16-thread PC the server reached 7 GB after three hours of build 8, of which 1.9 GB was in use. The option changes
