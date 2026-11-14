@@ -89,14 +89,24 @@ namespace DOL.GS
             return best;
         }
 
-        /// <summary>What tag-along does with the guest now (pure): nothing, "move" to the party leader, or "raise" there.</summary>
-        public static string GuestAction(bool alive, bool inGroup, bool sameRegion, float distance, long awayFor, long deadFor)
+        /// <summary>
+        /// What tag-along does with the guest now (pure): nothing, "move" to the party, or "raise" there. A guest within
+        /// <see cref="GuestAwayRange"/> of the boss (<paramref name="nearFight"/>) is with the raid even when its party
+        /// stands farther back (2026-11-13, Golestandt: the guest was pulled out of spell range every 20 seconds to a
+        /// healer standing 3,000 units from the dragon).
+        /// </summary>
+        public static string GuestAction(bool alive, bool inGroup, bool sameRegion, float distance, long awayFor, long deadFor,
+            bool nearFight = false)
         {
             if (!inGroup) return null;
             if (!alive) return deadFor >= GuestDeadMs ? "raise" : null;
-            if ((!sameRegion || distance > GuestAwayRange) && awayFor >= GuestAwayMs) return "move";
+            if (IsAway(sameRegion, distance, nearFight) && awayFor >= GuestAwayMs) return "move";
             return null;
         }
+
+        /// <summary>Whether the guest counts as away from its raid (pure).</summary>
+        public static bool IsAway(bool sameRegion, float distance, bool nearFight) =>
+            !nearFight && (!sameRegion || distance > GuestAwayRange);
 
         /// <summary>
         /// The level a client's commands are checked at (ScriptMgr.HandleCommand): the sweep's guest keeps the GM commands
@@ -334,13 +344,16 @@ namespace DOL.GS
             if (anchor == null) return;
             bool sameRegion = anchor.CurrentRegionID == guest.CurrentRegionID;
             float distance = sameRegion ? guest.GetDistanceTo(anchor) : float.MaxValue;
-            bool away = !sameRegion || distance > GuestAwayRange;
+            GameNPC boss = AutonomousRealmRaid.BossOf(_current?.Id);
+            bool nearFight = guest.IsAlive && boss != null && boss.IsAlive && boss.ObjectState == GameObject.eObjectState.Active &&
+                boss.CurrentRegionID == guest.CurrentRegionID && guest.IsWithinRadius(boss, (int)GuestAwayRange);
+            bool away = IsAway(sameRegion, distance, nearFight);
             if (!guest.IsAlive) { if (_guestDeadSince == 0) _guestDeadSince = now; }
             else _guestDeadSince = 0;
             if (guest.IsAlive && away) { if (_guestAwaySince == 0) _guestAwaySince = now; }
             else _guestAwaySince = 0;
             string action = GuestAction(guest.IsAlive, true, sameRegion, distance,
-                _guestAwaySince == 0 ? 0 : now - _guestAwaySince, _guestDeadSince == 0 ? 0 : now - _guestDeadSince);
+                _guestAwaySince == 0 ? 0 : now - _guestAwaySince, _guestDeadSince == 0 ? 0 : now - _guestDeadSince, nearFight);
             if (action == null) return;
             string eventId = _current?.Id;
             _guestAwaySince = _guestDeadSince = 0;

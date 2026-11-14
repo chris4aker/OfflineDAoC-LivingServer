@@ -57,5 +57,15 @@ namespace DOL.UnitTests
         [TestCase(true, false, false, float.MaxValue, 99_000L, 0L, null, TestName = "not in a party: never moved")]
         public void GuestAction(bool alive, bool inGroup, bool sameRegion, float distance, long away, long dead, string expected) =>
             Assert.That(EpicPlaytestSweep.GuestAction(alive, inGroup, sameRegion, distance, away, dead), Is.EqualTo(expected));
+
+        [Test]
+        public void AGuestNearTheBossStaysWhereItIsThoughItsPartyStandsBack() =>
+            Assert.Multiple(() =>
+            {
+                Assert.That(EpicPlaytestSweep.GuestAction(true, true, true, 4_800f, 60_000L, 0L, nearFight: true), Is.Null);
+                Assert.That(EpicPlaytestSweep.GuestAction(true, true, true, 4_800f, 60_000L, 0L, nearFight: false), Is.EqualTo("move"));
+                Assert.That(EpicPlaytestSweep.GuestAction(false, true, true, 4_800f, 0L, 30_000L, nearFight: true), Is.EqualTo("raise"));
+                Assert.That(EpicPlaytestSweep.IsAway(false, float.MaxValue, true), Is.False);
+            });
     }
 }
