@@ -23,7 +23,9 @@ namespace DOL.GS.Commands;
     "/epictest status - the running raids",
     "/epictest familiarity <0..1|off> - test only: how well the realm knows every encounter for the raid discipline (calls, reactions, lapses; off = from the raid record). Also familiarity=<0..1> on start",
     "/epictest latecall <threshold|all|off> - test only: the raid's call of that blast threshold (Xanxicar 80/60/40/20) always comes late. Also latecall=<threshold|all> on start",
-    "/epictest stop <event> - end a running raid")]
+    "/epictest stop <event> - end a running raid",
+    "/epictest sweep start [all|event,event] [guest] - every raid once, one after another (Darkness Falls last); guest: you take a seat in each, your realm set to its realm until the sweep ends",
+    "/epictest sweep status | skip | stop - the sweep's progress, end the raid running now, or end the sweep")]
 public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, ICommandHandler
 {
     private static readonly Logging.Logger Log = Logging.LoggerManager.Create(typeof(EpicPlaytestCommandHandler));
@@ -80,6 +82,9 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
                 if (frontRegion == 0) { Say(client, $"{args[2]} is not inside its dungeon."); return; }
                 MoveTo(args[2], "the route's front", frontRegion, frontPoint, behind);
                 Say(client, $"Moving {behind.Length} raiders to the route's front {(int)frontPoint.X},{(int)frontPoint.Y},{(int)frontPoint.Z}.");
+                return;
+            case "sweep":
+                Sweep(client, args);
                 return;
             default:
                 Say(client, "/epictest list | start <event> [size|era|start] [focus=Name,Name] [nohub] [familiarity=0..1] [latecall=N|all] | status | stop <event> | familiarity <0..1|off> | latecall <N|all|off>");
@@ -157,7 +162,30 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
         Say(client, $"Moving {recruits.Length} reserved bots to {hub.Name} (EPIC_PLAYTEST_HUB in the log).");
     }
 
-    private static void MoveTo(string eventId, string where, ushort regionId, Vector3 point, GameBot[] recruits)
+    private static void Sweep(GameClient client, string[] args)
+    {
+        string verb = args.Length > 2 ? args[2].ToLowerInvariant() : "status";
+        switch (verb)
+        {
+            case "start":
+                string word = args.Skip(3).FirstOrDefault(a => !a.Equals("guest", StringComparison.OrdinalIgnoreCase)) ?? "all";
+                bool guest = args.Skip(3).Any(a => a.Equals("guest", StringComparison.OrdinalIgnoreCase));
+                if (guest && client?.Player == null) { Say(client, "A guest is the GM who starts the sweep in game; from the console it runs bots only."); return; }
+                Say(client, EpicPlaytestSweep.Start(word, guest ? client.Player : null));
+                return;
+            case "stop":
+                Say(client, EpicPlaytestSweep.Stop("stopped by a GM"));
+                return;
+            case "skip":
+                Say(client, EpicPlaytestSweep.Skip());
+                return;
+            default:
+                foreach (string line in EpicPlaytestSweep.Status()) Say(client, line);
+                return;
+        }
+    }
+
+    internal static void MoveTo(string eventId, string where, ushort regionId, Vector3 point, GameBot[] recruits)
     {
         if (regionId == 0 || recruits.Length == 0) return;
         NpcService.Instance.Post(bots =>

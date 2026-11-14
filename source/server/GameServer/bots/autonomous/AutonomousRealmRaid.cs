@@ -1966,6 +1966,15 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>The encounter's boss for <paramref name="id"/> (null when it is not known): the play-test sweep keeps its
+        /// guest where it is while it stands near the fight (EpicPlaytestSweep.TagAlong).</summary>
+        public static GameNPC BossOf(string id)
+        {
+            if (id == null) return null;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+                return Raids.TryGetValue(id, out var raid) && raid.Boss != null ? raid.Boss : Bosses.GetValueOrDefault(id);
+        }
+
         public static bool ResetCooldown(string id)
         {
             using (AiProfile.Lock(Sync, AiSystem.LockRaid)) { if (Raids.ContainsKey(id)) return false; Cooldowns.Remove(id); return true; }

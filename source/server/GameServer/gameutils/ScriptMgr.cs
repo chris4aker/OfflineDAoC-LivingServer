@@ -257,12 +257,14 @@ namespace DOL.GS
             try
             {
                 string[] pars = ParseCmdLine(cmdLine);
-                GameCommand myCommand = GuessCommand(pars[0], (ePrivLevel) client.Account.PrivLevel);
+                // The play test sweep's guest plays as a player but keeps its GM commands (EpicPlaytestSweep).
+                uint privLevel = EpicPlaytestSweep.CommandPrivLevel(client);
+                GameCommand myCommand = GuessCommand(pars[0], (ePrivLevel) privLevel);
 
                 if (myCommand == null)
                     return false;
 
-                if (client.Account.PrivLevel < myCommand.m_lvl && !SinglePermission.HasPermission(client.Player, pars[0].Substring(1, pars[0].Length - 1)))
+                if (privLevel < myCommand.m_lvl && !SinglePermission.HasPermission(client.Player, pars[0].Substring(1, pars[0].Length - 1)))
                     return false;
 
                 ExecuteCommand(client, myCommand, pars);

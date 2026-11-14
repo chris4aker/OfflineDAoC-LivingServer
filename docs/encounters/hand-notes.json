@@ -661,7 +661,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "9bd5026d711d4939e70e7af4da92fe95dc5f09fcffe8e874c17fa1ef44b34ae6"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "e513d09f063375713ed7de543bb871e97da24a435f60d87d1d185586f0048217"
    },
    "aiTactics": {
     "blastThresholds": [
@@ -691,7 +691,7 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1",
-    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "54537d702ab747d0cf235143161fb02b6fa2f7512d87c0b9284d7f39c2e78cbd"
+    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "0f82916714bddc73c069312df79813b179c521e09d01a0795fd795378cab994f"
    },
    "extraRules": [
     {
@@ -724,7 +724,7 @@
   "darkness-falls/behemoth": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "63fb56e730c0bbc2d4bfdde5c26fbb9e3838de977f6d3ee78f2415a9dd1b3026"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "a4f9ca6304d31e1445907d89618ffac8567a24da9c2f298ee1a1b4a7dcd9c3b4"
    }
   },
   "darkness-falls/beliathan": {
@@ -788,7 +788,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "63fb56e730c0bbc2d4bfdde5c26fbb9e3838de977f6d3ee78f2415a9dd1b3026"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "a4f9ca6304d31e1445907d89618ffac8567a24da9c2f298ee1a1b4a7dcd9c3b4"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -938,7 +938,7 @@
   "fomor-city/myrddraxis": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "5d8d41065ab6bcaaf3c7f24ebfa22abd8d32c62b18b7d967075c2c691b9ab17c"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "477079ab306520884b9c929bfd43cfafd8ccbc7058b41605d17b548838b8e55b"
    },
    "aiTactics": {
     "blastThresholds": [
@@ -973,7 +973,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "772c609a424bb399fb0df098c08cd9f4317b03fc5791498aefece3120f389011"
    }
   },
   "galladoria/aroon": {
@@ -1036,7 +1036,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "772c609a424bb399fb0df098c08cd9f4317b03fc5791498aefece3120f389011"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -1098,7 +1098,7 @@
   "galladoria/fireprimal": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "772c609a424bb399fb0df098c08cd9f4317b03fc5791498aefece3120f389011"
    },
    "aiTactics": {
     "hazards": [
@@ -1151,7 +1151,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "772c609a424bb399fb0df098c08cd9f4317b03fc5791498aefece3120f389011"
    },
    "aiTactics": {
     "since": "1.2",
@@ -1161,7 +1161,7 @@
   "galladoria/olcasgean2": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "772c609a424bb399fb0df098c08cd9f4317b03fc5791498aefece3120f389011"
    }
   },
   "galladoria/olcasgeaninitializator": {
@@ -1181,7 +1181,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "772c609a424bb399fb0df098c08cd9f4317b03fc5791498aefece3120f389011"
    }
   },
   "galladoria/organicenergymechanism": {
@@ -1254,7 +1254,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "772c609a424bb399fb0df098c08cd9f4317b03fc5791498aefece3120f389011"
    },
    "notes": "1.2 wave 2: its teleport (a raider within 2,500, to either side of the bridge) is on for bots: they walk back."
   },
@@ -1291,7 +1291,7 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1",
-    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "0d5dc2b23246ed958880000129cf6e0d9bd4013893ac297fd41f8fa91362592c"
+    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "ae262779446f9b26ea56255b31397efe8be1337c07b0ac8e8f642cb0d428df3c"
    },
    "extraRules": [
     {
@@ -1336,7 +1336,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "a6914efe43f8dfa49237f14d781fe48d797610b6941a0b797a15c3e68728b58f",
+    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "d621c1cf52683a1a37b1d15983d8c18220dc39c587d77ed52e9dd8299b40b591",
     "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1"
    },
    "extraRules": [
@@ -2261,7 +2261,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "a86a7ccee708d250944290b7982db60b6774f0eace754622d9274d9e59be6a19"
+    "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "ae5a2102a01e2f1c4865fdfb29ed399b9a90e3b489c076f7e0c3f1b2f8a02a19"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -2459,7 +2459,7 @@
   "tuscaran-glacier/kingtuscar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "e2800f794468fc0e8c8f9dfbaaa6a0367a0598dbcc446a7c6bb3fec5c12e8685"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "d29f294f70a6ab971389bc807f3fd58f2d3fdebcac24b8fea297a94d15e1c282"
    },
    "aiTactics": {
     "after": "QueenKula",
@@ -2514,7 +2514,7 @@
   "tuscaran-glacier/queenkula": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "e2800f794468fc0e8c8f9dfbaaa6a0367a0598dbcc446a7c6bb3fec5c12e8685"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "d29f294f70a6ab971389bc807f3fd58f2d3fdebcac24b8fea297a94d15e1c282"
    },
    "aiTactics": {
     "summary": "Killed first (see King Tuscar). Her drag to the throne (AllowDisplacement, bots too since 1.2) puts a raider in her frost circle, where it is mesmerized or rooted: a bot waits it out like a player (the recovery's walk does not count crowd control as a stall; at most 5 minutes) and walks back. Frost circle (AllowPositionPuzzle, on): no raider fights within 450 of 34128,56095; one that gets there steps out to 600.",
