@@ -24,6 +24,10 @@ The project's AI-developed additions do not remove upstream attribution.
 - The new client's converted zones, models, textures, sounds and interface art are derived from the
   original DAoC client's files, like the original client itself; they are not authored by this
   project.
+- Boss script fixes, raid play, camp rules and the Darkness Falls door recount listed under 1.2.1 in
+  CHANGELOG-LIVING-SERVER.md: ported from shadowofze's
+  [OfflineDAoC-True165](https://github.com/zomboden/OfflineDAoC-True165) (v0.7, GPL-3.0). Each commit keeps him as
+  its author and names the commit it came from.
 - Additional launcher/portal snapshots and bundled SDK/native/Python packages:
   retain their own licenses and notices; inclusion is not a blanket relicense.
 

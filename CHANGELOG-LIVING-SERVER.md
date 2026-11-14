@@ -29,6 +29,34 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
   tactics place the raiders). Hand port from shadowofze's OfflineDAoC-True165 (`BotBrain.Flank.cs`, d2187a498), GPL-3.0,
   without its 1.65-mode switch and its companion "Positioning" option.
 
+**Boss fixes and raid play from True 1.65.** Ported from shadowofze's OfflineDAoC-True165 (v0.7, `f68cc75`; GPL-3.0),
+each commit credited to him. They pass automated tests; nobody has played them in game yet.
+
+- Boss scripts: Suttung's berserker stance can't be lost for good; Legion's blast lock-out can't stick; Govannon summons a
+  Shade of Aelfgar every time his adds reach the centre, his reset restores his strength, size and model, and the
+  database Shade beside him no longer spawns; Vifil's tunnel guardians and Lossren's infected ghoul come back after a
+  reset; a dragon lands with an empty aggro list, resets after 8 s out of combat, and Cuuldurach's take-off has the
+  other dragons' route guard; boss kill news counts the gamebots; High Lord Baln and Moran the Mighty call only their
+  own kind; Olcasgean and the Giant Sporite Cluster pay out once, from one body.
+- Raids: Caer Sidi no longer locks after a failed horseman fight (the raid schedule skipped it until a restart), and
+  Tuscaran opens only with King Tuscar and Queen Kula both up.
+- Raid play: healers purge a long stun in any fight; raid healers heal a realm player fighting beside the raid without
+  joining a party; casters and archers stand inside Legion's 1,400 damage range; pets leave Summoner Lossren (5 damage
+  from pets) for an add, or come back; outside raids, damage dealers step behind a monster that parries or evades 40% or
+  more.
+- Camps: a chosen camp counts at once; a solo bot leaves a crowded, emptied camp after 15 s; a party counts as all its
+  members; camps of the same monster within 5,000 share their bots and monsters; the camp draw favours empty and near
+  camps; a party's puller takes the monster standing apart first (Prima); a party moves on after five kills in a row
+  with under a quarter of the camp bonus left.
+- Darkness Falls: every keep capture recounts all three realms, so only the realm with strictly the most keeps holds
+  the door (a capture with no holder used to hand it to the taker).
+
+Not taken, because 1.2 already does it its own way: the route-proof cap, Sanguis's last 5%, Govannon's raid calls and
+area spells, the dragon lair circle, the Spectral Provisioner (raid bots already wake it) and the Cunovinda and Shade
+teleports (already behind 1.2's displacement switch). Not taken yet: True 1.65's later camp rework (empty-camp memory,
+camp merging, camp knowledge, party pulls), which would replace 1.2's camp planner, and its content (Prima encounters,
+keep lords), which is True 1.65 world data.
+
 ## 1.2 (in development)
 
 **Lean server memory (a test option, off by default).** A new Options-tab switch starts the server with .NET's
