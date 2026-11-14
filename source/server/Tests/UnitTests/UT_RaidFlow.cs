@@ -109,5 +109,46 @@ namespace DOL.UnitTests
             Assert.That(RealmRaidDungeonRoute.FormedWaitMinimumBody, Is.LessThan(RealmRaidDungeonRoute.MinimumRaidersAtTarget),
                 "after the limit a party's worth is a main body");
         }
+    
+
+        // ---- 5. a muster is never placed in a living boss's aggro ---------------------------------------------------
+
+        private static readonly System.Numerics.Vector3 AgmundrSpawn = new(15037, 50114, 12408);
+        private static readonly RealmRaidDungeonRoute.BossDanger Agmundr =
+            new("Icelord Agmundr", AgmundrSpawn, 600 + RealmRaidDungeonRoute.UntargetedBossMargin);
+
+        [Test]
+        public void TheGlacierHarrowerMusterWasInAgmundrsAggro()
+        {
+            var muster = new System.Numerics.Vector3(15025, 50189, 12400);
+            Assert.That(RealmRaidDungeonRoute.InBossDanger(muster, [Agmundr]), Is.True, "76 units from his spawn");
+            Assert.That(RealmRaidDungeonRoute.InBossDanger(new(15350, 48754, 12524), [Agmundr]), Is.False,
+                "his own muster, 1,400 out, is clear");
+        }
+
+        [Test]
+        public void AMusterInABossesAggroMovesBackAlongTheWalk()
+        {
+            var harrower = new System.Numerics.Vector3(14989, 51581, 12250);
+            System.Numerics.Vector3[] walk =
+                [new(14989, 51381, 12273), new(15025, 50189, 12400), new(15350, 48754, 12524), new(16000, 47000, 12600)];
+            var safe = RealmRaidDungeonRoute.SafeMusterAlong(walk, harrower, RealmRaidDungeonRoute.FinalMusterStandOff, [Agmundr], null);
+            Assert.That(safe.HasValue, Is.True);
+            Assert.That(RealmRaidDungeonRoute.InBossDanger(safe.Value, [Agmundr]), Is.False);
+            Assert.That(System.Numerics.Vector3.Distance(safe.Value, harrower), Is.GreaterThanOrEqualTo(RealmRaidDungeonRoute.FinalMusterStandOff));
+            Assert.That(System.Numerics.Vector3.Distance(safe.Value, AgmundrSpawn), Is.LessThan(1_100f),
+                "the first clear point of the walk, not the far end of it");
+        }
+
+        [Test]
+        public void NoClearPointMeansNoMove()
+        {
+            var boss = new System.Numerics.Vector3(0, 0, 0);
+            var everywhere = new RealmRaidDungeonRoute.BossDanger("big", new(2000, 0, 0), 5_000);
+            System.Numerics.Vector3[] walk = [new(0, 0, 0), new(3000, 0, 0)];
+            Assert.That(RealmRaidDungeonRoute.SafeMusterAlong(walk, boss, 1400, [everywhere], new(3000, 0, 0)), Is.Null);
+            Assert.That(RealmRaidDungeonRoute.SafeMusterAlong([], boss, 1400, [], new(3000, 0, 0)), Is.EqualTo(new System.Numerics.Vector3(3000, 0, 0)),
+                "the main body, when it is clear");
+        }
     }
 }

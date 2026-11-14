@@ -1121,19 +1121,23 @@ namespace DOL.GS
             GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
             Zone zone = WorldMgr.GetRegion(_region)?.GetZone((int)Front.X, (int)Front.Y);
             if (!TryRegroupFront(inside, out Vector3 body) || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
-                return Front;
-            if (Vector3.Distance(body, boss) <= FinalMusterStandOff + 200)
-                return body;
+                return GuardMuster(Front, null, boss);
             // Searched from the encounter's approach toward the raid, so the path always starts at the encounter even
             // when it is too long to finish. From the raid's side a partial path ended wherever the search gave up:
             // Legion's muster in Darkness Falls was placed 19,000 units from him and nobody ever reached it (run 9).
             Span<WrappedPathfindingNode> nodes = stackalloc WrappedPathfindingNode[256];
             PathfindingResult path = nav.GetPathStraight(zone, Front, body, nav.DefaultFilters, nodes);
-            if (path.Status == PathfindingStatus.PathFound || path.Status == PathfindingStatus.PartialPathFound)
+            bool found = path.Status == PathfindingStatus.PathFound || path.Status == PathfindingStatus.PartialPathFound;
+            Vector3[] walk = found ? new Vector3[Math.Min(path.NodeCount, nodes.Length)] : [];
+            for (int i = 0; i < walk.Length; i++) walk[i] = nodes[i].Position;
+            Vector3? Floor(Vector3 p) => nav.GetClosestPoint(zone, p, 64, 64, 128, nav.DefaultFilters);
+            if (Vector3.Distance(body, boss) <= FinalMusterStandOff + 200)
+                return GuardMuster(body, walk, boss, Floor);
+            if (found)
             {
-                for (int i = 1; i < path.NodeCount; i++)
+                for (int i = 1; i < walk.Length; i++)
                 {
-                    Vector3 a = nodes[i - 1].Position, b = nodes[i].Position;
+                    Vector3 a = walk[i - 1], b = walk[i];
                     if (Vector3.Distance(b, boss) < FinalMusterStandOff) continue;
                     // a inside the stand-off circle, b outside: the crossing point on a-b.
                     float lo = 0, hi = 1;
@@ -1142,12 +1146,95 @@ namespace DOL.GS
                         float mid = (lo + hi) / 2;
                         if (Vector3.Distance(Vector3.Lerp(a, b, mid), boss) >= FinalMusterStandOff) hi = mid; else lo = mid;
                     }
-                    Vector3? floor = nav.GetClosestPoint(zone, Vector3.Lerp(a, b, hi), 64, 64, 128, nav.DefaultFilters);
-                    return floor ?? b;
+                    return GuardMuster(Floor(Vector3.Lerp(a, b, hi)) ?? b, walk, boss, Floor);
                 }
-                if (path.NodeCount > 0) return nodes[path.NodeCount - 1].Position;
+                if (walk.Length > 0) return GuardMuster(walk[^1], walk, boss, Floor);
             }
-            return Front;
+            return GuardMuster(Front, walk, boss, Floor);
+        }
+
+        /// <summary>How far outside a living boss's aggro range (other than the encounter mustered for) a muster must lie.</summary>
+        public const float UntargetedBossMargin = 300f;
+        /// <summary>The walk from the encounter towards the raid is sampled this often for a safe muster.</summary>
+        public const float MusterSafeStep = 150f;
+
+        /// <summary>A living boss's aggro sphere (<see cref="UntargetedBossMargin"/> included) a muster must stay out of.</summary>
+        public readonly record struct BossDanger(string Name, Vector3 At, float Radius);
+
+        public static bool InBossDanger(Vector3 point, IEnumerable<BossDanger> dangers) =>
+            dangers.Any(d => Vector3.DistanceSquared(point, d.At) <= d.Radius * d.Radius);
+
+        /// <summary>
+        /// The first point along <paramref name="walk"/> (the path from the encounter's approach towards the raid's main body),
+        /// at least <paramref name="standOff"/> from the encounter and every <see cref="MusterSafeStep"/>, that lies outside
+        /// every danger; then <paramref name="fallback"/> (the main body) when that is safe; else null.
+        /// </summary>
+        public static Vector3? SafeMusterAlong(IReadOnlyList<Vector3> walk, Vector3 encounter, float standOff,
+            IReadOnlyList<BossDanger> dangers, Vector3? fallback, Func<Vector3, Vector3?> floor = null)
+        {
+            if (walk != null)
+                for (int i = 1; i < walk.Count; i++)
+                {
+                    Vector3 a = walk[i - 1], b = walk[i];
+                    float length = Vector3.Distance(a, b);
+                    int steps = Math.Max(1, (int)MathF.Ceiling(length / MusterSafeStep));
+                    for (int k = 0; k <= steps; k++)
+                    {
+                        Vector3 raw = Vector3.Lerp(a, b, k / (float)steps);
+                        if (Vector3.Distance(raw, encounter) < standOff) continue;
+                        Vector3 p = floor?.Invoke(raw) ?? raw;
+                        if (!InBossDanger(p, dangers)) return p;
+                    }
+                }
+            return fallback is Vector3 f && !InBossDanger(f, dangers) ? f : null;
+        }
+
+        /// <summary>
+        /// Every living boss in the dungeon other than the encounter mustered for (its own adds, the encounters it is linked
+        /// with and ground hazards are part of its fight) and its aggro sphere: at its spawn, and where it stands if elsewhere.
+        /// </summary>
+        private List<BossDanger> UntargetedBossDangers()
+        {
+            var dangers = new List<BossDanger>();
+            foreach (GameNPC npc in _live)
+            {
+                if (npc is not GameEpicBoss || npc == _target || !npc.IsAlive || npc.ObjectState != GameObject.eObjectState.Active ||
+                    npc.Realm != eRealm.None || (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 ||
+                    npc.Brain is not DOL.AI.Brain.StandardMobBrain { AggroRange: > 0 } brain || IsEncounterHazard(npc) ||
+                    EpicEncounterTactics.Covers(npc, _target, _live) || EpicEncounterTactics.IsRequiredAddOfLiveBoss(npc, _live))
+                    continue;
+                float radius = brain.AggroRange + UntargetedBossMargin;
+                var spawn = new Vector3(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z);
+                dangers.Add(new(npc.Name, spawn, radius));
+                var at = new Vector3(npc.X, npc.Y, npc.Z);
+                if (Vector3.DistanceSquared(at, spawn) > 64 * 64) dangers.Add(new(npc.Name, at, radius));
+            }
+            return dangers;
+        }
+
+        /// <summary>
+        /// A muster is never placed in a living boss's aggro range (plus <see cref="UntargetedBossMargin"/>) unless it is the
+        /// encounter the raid musters for. Owner's PC, 2026-11-14 (build e3b8238): Tuscaran Glacier's muster for a hrimthursa
+        /// harrower went to 15025,50189, 76 units from Icelord Agmundr's spawn (aggro 600), after he had been set aside; 69
+        /// raiders gathered there and 80 died to him and 29 to his adds. Moved further back along the walk to the raid when
+        /// it lands in one; kept (with a warning) only when no point of the walk is safe.
+        /// </summary>
+        private Vector3 GuardMuster(Vector3 chosen, IReadOnlyList<Vector3> walk, Vector3 encounter, Func<Vector3, Vector3?> floor = null)
+        {
+            List<BossDanger> dangers = UntargetedBossDangers();
+            if (!InBossDanger(chosen, dangers)) return chosen;
+            string by = string.Join(",", dangers.Where(d => InBossDanger(chosen, [d])).Select(d => d.Name).Distinct());
+            Vector3? safe = SafeMusterAlong(walk, encounter, FinalMusterStandOff, dangers, null, floor);
+            if (safe is Vector3 moved)
+            {
+                log.Warn($"REALM_EXPEDITION_MUSTER_GUARDED region={_region} target=\"{_target?.Name}\" " +
+                         $"from={(int)chosen.X},{(int)chosen.Y},{(int)chosen.Z} to={(int)moved.X},{(int)moved.Y},{(int)moved.Z} " +
+                         $"reason=\"the muster was in the aggro range of {by}; moved back along the walk to the raid\"");
+                return moved;
+            }
+            log.Warn($"REALM_EXPEDITION_MUSTER_UNSAFE region={_region} target=\"{_target?.Name}\" at={(int)chosen.X},{(int)chosen.Y},{(int)chosen.Z} " +
+                     $"reason=\"in the aggro range of {by} and no point of the walk to the raid is clear of it\"");
+            return chosen;
         }
 
         public const long CallTargetAfterMilliseconds = 90_000;
