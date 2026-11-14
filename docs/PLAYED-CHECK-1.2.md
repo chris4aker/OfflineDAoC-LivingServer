@@ -22,22 +22,22 @@ below the game's size; run 3 at it.
 | Realm | Raid | History on 3e64140 | On the candidate line |
 |---|---|---|---|
 | Albion | Golestandt (dragon) | Lost three times (best 9%) | Not run |
-| Albion | Caer Sidi | Lost twice; run 3 ended on a wrongly counted second wipe (fixed in #193, tests only) | Not run |
+| Albion | Caer Sidi | Lost twice; run 3 ended on a wrongly counted second wipe (fixed in #193, tests only) | Lost on `e3b8238` (sweep, 2026-11-14): 18 named down, the 4-hour sweep cap ended it before the archlich; Crypt Lord 85 of 87 dead, Host walked into the archlich. Reworked in #213/#214 (tests only) |
 | Albion | Krondon | Stalled three times at Scurceol Hyrde's room | Not run |
 | Albion | Avalon City | Won once (run 2) | Not run |
 | Albion | Crystal Cave (Xanxicar) | Won once (run 2, second attempt) | Not run |
 | Albion | Hall of the Corrupt | Stopped twice: Aidon's illusions (fixed in #191, tests only) | Not run |
-| Albion | Summoner's Hall | No finished run | Not run |
+| Albion | Summoner's Hall | No finished run | Never reached on `e3b8238` (sweep, 2026-11-14): the route through Hall of the Corrupt walked into a respawned Aidon, 182 deaths in 50 minutes; skipped by the GM. Route bosses are fought as objectives since #213 (tests only) |
 | Albion | Darkness Falls | No finished run (24 named in run 3) | Not run |
 | Midgard | Gjalpinulva (dragon) | Won twice (runs 1 and 2, second attempt both times) | Not run |
-| Midgard | Tuscaran Glacier | Lost three times (run 3: four of the Council down, Icelord Agmundr at 38%) | Not run |
+| Midgard | Tuscaran Glacier | Lost three times (run 3: four of the Council down, Icelord Agmundr at 38%) | Lost on `e3b8238` (sweep, 2026-11-14): 22 named down, stalled after 219 minutes; Agmundr wiped the raid twice (81 of 81 in 2.7 minutes; then a muster placed 76 from him). Reworked in #213/#214 (tests only) |
 | Midgard | Trollheim | Lost (run 3 reached Nosdoden; nobody regrouped) | Not run |
 | Midgard | Iarnvidiur's Lair | Won once (run 2) | Not run |
 | Midgard | Dodens Gruva | Won twice | Not run |
 | Midgard | Summoner's Hall | Won once (run 2) | Not run |
 | Midgard | Darkness Falls | No finished run | Not run |
 | Hibernia | Cuuldurach (dragon) | Lost run 1, won run 2 (second attempt) | Not run |
-| Hibernia | Galladoria | Lost three times at Spindler Broodmother (curers' post in #190, tests only) | Not run |
+| Hibernia | Galladoria | Lost three times at Spindler Broodmother (curers' post in #190, tests only) | Lost on `e3b8238` (sweep, 2026-11-14): two wipes at the Broodmother (15% and 22%), mesmerize caught 23 to 78 of about 104, up to 44 newborns. Reworked in #214 (tests only) |
 | Hibernia | Tur Suil | Won twice (runs 1 and 3) | Not run |
 | Hibernia | Marfach Caverns | Won twice | Not run |
 | Hibernia | Summoner's Hall | Lost three times at Summoner Roesia | Not run |
@@ -54,12 +54,16 @@ Gatekeeper Dommel, High Lord Baln); Golestandt's second attempts; Summoner Roesi
 |---|---|---|
 | A raid the game opens itself: the boss's tale first, then the call across the screen with the horn (#192) | must | Tests only |
 | Raids every four hours per realm (#192) | must | Setting seen in the PC log (150 to 240 on 2026-11-12 16:21); no raid opened yet |
-| After a wipe the raiders gather at the way in and go back in together (#195) | must | Tests only |
-| A pull waits for 70% of the living raid (#195) | must | Tests only |
+| After a wipe the raiders gather at the way in and go back in together (#195) | must | Not working on `e3b8238`: waves fired, but raiders were released to town and reached the way in over 20 to 30 minutes. Since #213 they release at their staging post outside the dungeon (tests only) |
+| A pull waits for 70% of the living raid (#195) | must | Not working on `e3b8238`: the early-pull rule counted only raiders already inside (16 of 18 in a raid of 118). Fixed in #213 (tests only) |
 | A boss that resets while the raid still stands costs no attempt (#195) | must | Tests only |
 | Raiders walking back still count as the raid when an attempt is scored (#193) | must | Tests only |
 | Aidon's illusions leave after every fight (#191) | must | Tests only (one container run) |
-| The curers' post at Spindler Broodmother (#190) | must | Tests only (container: 2 of 2 first-try kills with it, 0 of 2 without) |
+| The curers' post at Spindler Broodmother (#190) | must | Used on `e3b8238` and the raid still lost twice; replaced by party posts 700 apart, add parties sized to her spawns and a burn below 25% (#214, tests only) |
+| A living boss on a raid's way in is fought as an objective, not walked into (#213) | must | Tests only |
+| A raid dungeon's epics don't respawn while its raid is inside (#213) | must | Tests only |
+| No muster inside another living boss's aggro (#213) | must | Tests only |
+| Agmundr, the Crypt Lord's court, the real Host, Ilron's adds and a perched griffon (#214) |  | Tests only |
 
 ## Bots that play with you
 

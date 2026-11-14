@@ -85,6 +85,37 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+**Raids after the sweep of 2026-11-14** (owner's PC, build `e3b8238`: Caer Sidi, Tuscaran Glacier and Galladoria all
+lost, and Albion's Summoner's Hall never reached). They pass automated tests; nobody has played them in game yet.
+
+- **A pull counts the whole living raid.** The early-pull rule counted only the raiders already inside, so a handful
+  after a wipe passed for half the raid (16 of 18 in a raid of 118). Raiders walking back count now; a boss that chases
+  is fought by everyone inside only when they are 70% of the raid, otherwise those it caught fight and the rest gather.
+- **After a wipe the raid regroups outside, not in town.** Raiders release at their party's staging post outside the
+  dungeon (`realm_raid_release_at_staging`), and a corpse with no living raider within 3,000 releases after 20 seconds.
+  The dungeon a raid walks through counts as inside. A "waiting for formed parties" hold moves its front to the main
+  body after 6 minutes.
+- **A living boss on the way in is a raid objective.** The three Summoner's Hall routes and Crystal Cave walk through
+  another dungeon. A boss whose aggro covers that walk (Aidon, who killed 182 raiders on the Albion route) is mustered
+  for and fought with its own tactic, attempts and wipes counted, before the raid goes on (`realm_raid_route_gates`).
+- **A raid dungeon's epics wait while its raid is inside** (`realm_raid_hold_epic_respawn`): an epic with a respawn of
+  10 minutes or more comes back after the raid ends, so a cleared room stays cleared (Easmarach came back mid-raid and
+  closed Galladoria's last room).
+- **No muster in a boss's aggro.** A muster point is kept 300 outside every other living boss's aggro (one was placed
+  76 from Icelord Agmundr). Raid-wide deaths outside an attempt now count as a wipe.
+- **Boss plans.** Icelord Agmundr: his hrimthursa first, casters and healers 750 from his target, everyone out of the 500
+  around it during his cold blast. The Crypt Lord: his court cleared first while his patrol is far, melee on him. The
+  Host: his linked monsters first, an ambush on his patrol, every raider on the real one. Lich Lord Ilron: his dark
+  lights and eyes first. Spindler Broodmother: party posts 700 apart against her mesmerize, add parties sized to her
+  spawns without the druids and wardens, a burn below 25%. A perched griffon is left until it lands. A tactic's hold on
+  a pull lapses after 20 minutes.
+- **A raid fights the monster attacking it.** A route rule could turn a monster attacking the raid into a "switch" to the
+  raid's own idle target every 10 seconds (Easmarach 208 times); in-combat monsters are now left alone.
+- **Summoner Lossren's exploding ghoul** came only at exactly 20 killed souls at a 5-8 s check, so a quick raid never saw
+  it again that fight; now at 20 or more.
+- **The sweep's guest** follows a living raider at the raid's front, never a dead or released one, and lands on that
+  raider's floor (the GM fell into the void five times).
+
 **The play test's sweep (GM only).** `/epictest sweep start [all|event,event] [guest]` runs every raid once, one after
 another, on the server alone: the 21 raid targets in the game's order, Darkness Falls last. Each raid runs at its period
 size and ends on its own clocks, and the sweep stops one after 4 hours. A raid that can't start (its boss respawning, no
