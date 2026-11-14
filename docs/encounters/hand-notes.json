@@ -2238,7 +2238,7 @@
   "summoner-s-hall/summonerlossren": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "cdbebe789ae5e0980c6869546fa6d92a7887e1353513e1696595c986aeeb69a0"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "44fa7d6315c047a70b7095c2bd5c40c2e400d0251f751a56cd261e94868c6d4c"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -2249,7 +2249,7 @@
    },
    "rules": {
     "adds@280": {
-     "summary": "Spawns the infected ghoul (4,000 health, walks at 110 to a random raider and bursts for 1,000 in 500 there) when exactly 20 tortured souls have died since the last ghoul at a 5-8 s check, one ghoul at a time. A reset removes the ghoul and clears its count, so it comes again on the next pull (1.2, True 1.65 port: before, a ghoul removed by a reset blocked every later ghoul until a restart).",
+     "summary": "Spawns the infected ghoul (4,000 health, walks at 110 to a random raider and bursts for 1,000 in 500 there) once 20 or more tortured souls have died since the last ghoul (checked every 5-8 s), one ghoul at a time (1.2: before, it needed exactly 20 at the check, so a raid that killed two souls between checks never saw the ghoul again that fight). A reset removes the ghoul and clears its count, so it comes again on the next pull (1.2, True 1.65 port: before, a ghoul removed by a reset blocked every later ghoul until a restart).",
      "tactic": "Casters and archers kill the ghoul as it crawls; its raider walks away from it (see his tactic).",
      "difficulty": "needs new raid AI"
     },

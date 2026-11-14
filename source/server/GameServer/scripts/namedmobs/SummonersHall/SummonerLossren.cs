@@ -275,7 +275,7 @@ namespace DOL.AI.Brain
 			Point3D point2 = new Point3D(38505, 41211, 16001);
 			Point3D point3 = new Point3D(39180, 40583, 16000);
 			Point3D point4 = new Point3D(39745, 41176, 16001);
-			if (TorturedSouls.TorturedSoulKilled == 20 && ExplodeUndead.ExplodeZombieCount==0)//spawn explode zombie
+			if (TorturedSouls.TorturedSoulKilled >= 20 && ExplodeUndead.ExplodeZombieCount==0)//spawn explode zombie
 			{
 				ExplodeUndead add2 = new ExplodeUndead();
 				switch (Util.Random(1, 4))
