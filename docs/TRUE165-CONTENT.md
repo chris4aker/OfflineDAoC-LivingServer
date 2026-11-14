@@ -22,7 +22,7 @@ does not), and adding one would mean hand-applying rows to the player's own data
 | Prima drop items and quest rewards (period Allakhazam and Uthgard item pages) | 1,533 items | **Yes.** None carries a Trials of Atlantis or later bonus (the tool refuses any that would). |
 | Prima quests | 10 | **Yes, if 1.2 lacks them** (skipped on a taken id or name). |
 | Period drops for those monsters (drops165.json) | for each new monster | **Only for monsters the update adds**, and only when the world has no loot for that name. True 1.65's drop table for monsters 1.2 already has would replace 1.2's loot, which the owner's "real loot" rule keeps; not taken. |
-| Prima corrections to existing spawns (levels, aggression, speed) | about 1,090 updates | **Owner's decision.** They change monster difficulty in the existing world. The tool applies them only with `--with-corrections`. |
+| Prima corrections to existing spawns (levels, aggression, speed) | about 1,090 updates | **Yes (owner, 2026-11-14).** They change monster difficulty in the existing world. The tool applies them with `--with-corrections`, which the release run uses. |
 | Keep lords and guards at the 13 frontier keeps (0.7) | 516 | **No.** They put back guards that True 1.65's own placeholder cleanup had removed (2026-10-30). 1.2's world never ran that cleanup. |
 | Darkness Falls door by keep count | code | Taken separately (`fa7c366`). |
 | Camp bonus caps | none found | Nothing in True 1.65 to take. |
@@ -41,9 +41,12 @@ hasn't been made, because the reference world isn't in this repository.
 
 ## To ship it (not done)
 
+The owner decided on 2026-11-14 that this content and the Prima corrections go into the next base-game world update,
+and will run a play-test sweep himself.
+
 1. On the owner's PC, build the next release's reference package as usual (`build_release_037.py`, then
    `assemble_release_037.py`).
 2. Run the tool on a copy of that package's world: first without `--apply`, read the report, then with `--apply`
-   (and `--with-corrections` only if the owner wants True 1.65's monster levels).
+   `--with-corrections` (the owner's decision: True 1.65's Prima monster levels, aggression and speed).
 3. `make_patch.py` as usual; the world update then carries the rows.
 4. A play check of a few encounters (Talvor's Spirit, Cuinn's seedlings, the Unseelie Envoy's convoy) before release.
