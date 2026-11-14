@@ -296,8 +296,22 @@ namespace DOL.GS
         private int _attemptRaidSize;
         private GameLiving[] _attemptParticipants;
 
+        /// <summary>The boss is fighting the few raiders it caught before the muster (EpicEncounterTactics.EarlyPull.Hold):
+        /// they fight it, the rest of the raid gathers at the muster and nobody else is sent in until enough are there.</summary>
+        private bool _skirmishHeld;
+
+        private void HoldForSkirmish(long now)
+        {
+            Destination = _musterPoint; Hold = true;
+            Status = $"Holding at the muster while {_target.Name} fights the raiders it caught";
+            // It is in a fight: the pull reached it. Waiting for the raid is not a stalled fight.
+            _pulls.SawCombat();
+            _targetProgressTick = now;
+        }
+
         private void BeginAttempt(GameLiving[] raiders, long now)
         {
+            _skirmishHeld = false;
             _musterEngaged = true;
             _musterEngagedTick = now;
             _engaged.Clear();
@@ -319,6 +333,7 @@ namespace DOL.GS
         private bool EndAttempt(long now, string how)
         {
             _musterEngaged = false;
+            _skirmishHeld = false;
             int engaged = _engaged.Count;
             int fallen = _engaged.Count(p => !p.IsAlive || p.CurrentRegionID != _region || p is GameBot { IsReturningAfterRelease: true });
             _engaged.Clear();
@@ -813,6 +828,7 @@ namespace DOL.GS
                 _musterTarget = _target;
                 _musterSince = now;
                 _musterEngaged = false;
+                _skirmishHeld = false;
                 _regrouping = false;
                 _engaged.Clear();
                 _musterEmptySince = 0;
@@ -848,7 +864,7 @@ namespace DOL.GS
                 // or everyone back to the muster, never piecemeal (Aidon the Archwizard, 2026-11-05).
                 GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
                 GameLiving[] fighting = inside.Where(p => p.IsWithinRadius(_target, TargetPresenceRadius)).ToArray();
-                if (!_musterEngaged)
+                if (!_musterEngaged || _skirmishHeld)
                 {
                     bool resets = EpicEncounterTactics.ResetsWhenLeft(_target);
                     // Pulling back only shakes it off when the muster lies past its tether (Fuladl, Krondon 2026-11-06: tether
@@ -856,20 +872,47 @@ namespace DOL.GS
                     int tether = EpicEncounterTactics.LeashOf(_target)?.TetherRange is int t && t > 0 ? t : _target.TetherRange;
                     float musterFromSpawn = Vector3.Distance(_musterPoint, new Vector3(_target.SpawnPoint.X, _target.SpawnPoint.Y, _target.SpawnPoint.Z));
                     bool shakesOff = EpicEncounterTactics.BreakOffShakesOff(resets, tether, musterFromSpawn);
-                    var choice = EpicEncounterTactics.ChooseEarlyPull(fighting.Length, inside.Length, shakesOff);
-                    // Pulled back from it a moment ago and it is still on the raid: it chases, so everyone commits now.
-                    if (choice == EpicEncounterTactics.EarlyPull.Disengage && _lastBreakOff.TryGetValue(_target, out long last) &&
-                        now - last < BreakOffRepeatMilliseconds)
-                        choice = EpicEncounterTactics.EarlyPull.Commit;
+                    // Pulled back from it a moment ago and it is still on the raid: it chases.
+                    bool pulledBack = _lastBreakOff.TryGetValue(_target, out long last) && now - last < BreakOffRepeatMilliseconds;
+                    // The whole living raid, raiders walking back after a wipe included (AttemptRaidSize), and the muster it
+                    // would wait for (70%; half after 20 minutes): a handful inside is never "the raid".
+                    int livingRaid = participants.Count(p => p.IsAlive);
+                    int musterNeeded = FinalMusterNeeded(livingRaid, now - _musterSince);
+                    var choice = EpicEncounterTactics.ChooseEarlyPull(fighting.Length, inside.Length, livingRaid, shakesOff, pulledBack,
+                        musterNeeded);
+                    if (_skirmishHeld)
+                    {
+                        _attemptLowestPercent = Math.Min(_attemptLowestPercent, _target.HealthPercent);
+                        if (choice != EpicEncounterTactics.EarlyPull.Commit)
+                        {
+                            // Still too few: whoever it reaches fights it, the rest keep gathering at the muster.
+                            _engaged.UnionWith(fighting);
+                            HoldForSkirmish(now);
+                            return true;
+                        }
+                        // Enough of the raid has gathered while it fought the few it caught: everyone goes in now.
+                        _skirmishHeld = false;
+                        _engaged.UnionWith(inside);
+                        _attemptRaidSize = Math.Max(_attemptRaidSize, livingRaid);
+                        Destination = Front; Hold = false;
+                        _nextTargetCall = 0;
+                        log.Warn($"REALM_EXPEDITION_EARLY_PULL region={_region} target=\"{_target.Name}\" near={fighting.Length} " +
+                                 $"inside={inside.Length} raid={livingRaid} needed={musterNeeded} decision=Commit health={_target.HealthPercent} " +
+                                 $"reason=\"the raid gathered while the few it caught held it; everyone goes in\"");
+                        _pulls.SawCombat();
+                        return false;
+                    }
                     // Logged for a raid's final or a catalogued boss (at most every ten minutes each), and for every pull-back;
                     // a Darkness Falls named or an epic trash pack that is simply fought goes to the debug log (2026-11-06: 53
                     // lines in four hours, one per named).
                     bool isFinal = _finalTypes.Contains(_target.GetType().Name);
                     long since = _earlyPullLogged.TryGetValue(_target.Name, out long logged) ? now - logged : -1;
                     string line = $"REALM_EXPEDITION_EARLY_PULL region={_region} target=\"{_target.Name}\" near={fighting.Length} " +
-                                  $"inside={inside.Length} resets={resets} tether={tether} musterFromSpawn={(int)musterFromSpawn} decision={choice} health={_target.HealthPercent} " +
+                                  $"inside={inside.Length} raid={livingRaid} needed={musterNeeded} resets={resets} tether={tether} " +
+                                  $"musterFromSpawn={(int)musterFromSpawn} decision={choice} health={_target.HealthPercent} " +
                                   $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z}";
-                    if (EpicEncounterTactics.EarlyPullWorthLogging(choice, isFinal, EpicEncounterTactics.LeashOf(_target) != null, since))
+                    if (choice == EpicEncounterTactics.EarlyPull.Hold ||
+                        EpicEncounterTactics.EarlyPullWorthLogging(choice, isFinal, EpicEncounterTactics.LeashOf(_target) != null, since))
                     {
                         _earlyPullLogged[_target.Name] = now;
                         log.Warn(line + $" final={isFinal} quietSinceLast={_quietEarlyPulls}");
@@ -889,6 +932,15 @@ namespace DOL.GS
                         _targetProgressTick = now;
                         return true;
                     }
+                    if (choice == EpicEncounterTactics.EarlyPull.Hold)
+                    {
+                        // The raiders it caught are in this fight (scored as a skirmish unless half the raid falls in it); the rest
+                        // are not fed in by twos and threes, they gather at the muster.
+                        BeginAttempt(fighting, now);
+                        _skirmishHeld = true;
+                        HoldForSkirmish(now);
+                        return true;
+                    }
                     // Commit: the whole raid is in this attempt, and goes to the fight now.
                     BeginAttempt(inside, now);
                     Destination = Front; Hold = false;
@@ -902,7 +954,8 @@ namespace DOL.GS
             }
             // The raid needs time to cross from the muster point to the boss (run 5: the engage repeated every ten
             // seconds while Govannon was still out of combat); only after that is "out of combat" a wipe.
-            if (_musterEngaged && now - _musterEngagedTick < FinalEngageGraceMilliseconds)
+            // A held skirmish sent nobody across: its end is judged at once.
+            if (_musterEngaged && !_skirmishHeld && now - _musterEngagedTick < FinalEngageGraceMilliseconds)
                 return false;
             if (_musterEngaged)
             {
