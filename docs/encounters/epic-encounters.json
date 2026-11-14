@@ -47,7 +47,7 @@
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs": "b13ba341e71eaa6aabd5c6370b26b9c18582686ee007ce661a28eda0a5617e22",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "67f1a42567b5bfe6c1c7b940928a22e9b30698eb6c0e4ab621038c3a23f4008b",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "cd2cfb4f2cdd265bf3061f3a33af97ef034bae88712e1f0ed3a40396e2878691",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "83c38f75c44bf2a22ca5a9fa0e166af348b70db5a767d6ed95be0f276c23e86e",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "25c0a15069026cb34413ec58471992669c09142b5a2f636783158390ce5915bc",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs": "fa9b3318a8cfa33957552bfde7a2659f6438cb4a3c53f4dbbf7b829f6d42db09",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "53d2bd1b0496e80129543cca4e017ac6e5504d5410e629011ce357e6e573cadc",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "ec7005401968848e5295ecddf0d94ed26c02da0068e3de07559036cb3d65c0f4",
@@ -8046,7 +8046,7 @@
      "method": "TakeDamage",
      "subtype": "attacker_position",
      "condition": "if (!source.IsWithinRadius(this, distance))",
-     "tactic": "Everyone fights within 1,400 of him (casters too). Ranged gamebots cap their stand-off at 1,300 against him (he declares the 1,400 as RaidMaxDamageRange, IRaidBossTraits, 1.2 True 1.65 port), and the raid AI steps a raider farther out in to 1,100.",
+     "tactic": "Everyone fights within 1,400 of him (casters too). Ranged gamebots cap their stand-off at 1,300 against him (he declares the 1,400 as RaidMaxDamageRange, IRaidBossTraits, 1.2 True 1.65 port), the raid AI steps a raider farther out in to 1,100, and since the 1.2 Legion plan casters, archers and healers stand 1,200 from him on the raid's side.",
      "difficulty": "needs new raid AI",
      "verified": true,
      "key": "immune_while@243"
@@ -8140,7 +8140,7 @@
      "method": "ThrowPlayer",
      "subtype": "fixed_spot",
      "displacement": "Teleport",
-     "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for Legion): a thrown bot lands on the platform, finds no path back and is recalled to its party after 5 s (EncounterDisplacementRecovery); companions of a thrown player stay down. Real players use the zone point as before.",
+     "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for Legion): a thrown bot lands in Behemoth's hall; since the 1.2 Legion plan it walks across the hall on its north side, past Behemoth out of his aggro, to the zone point DF LEGION PURGATORY and is put where it puts players (EncounterDisplacementRecovery's way out, EpicEncounterTactics.LegionWayDown); with no path, no progress, over its time bound or with Behemoth about to notice it, it is recalled to its party. Companions of a thrown player stay down. Real players use the zone point as before. Tests only.",
      "difficulty": "needs new raid AI",
      "verified": true,
      "key": "teleport@696"
@@ -8188,13 +8188,19 @@
     }
    ],
    "raidAi": "no raid AI",
-   "notes": "Level 83, 300,000 health. No Darkness Falls raid AI: listed for completeness. 1.2: companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics). 1.2 wave 3: his throw takes bots too (AllowBotDisplacement for Legion); the wounded step out of his reach; no bot bubbles near him. 1.2 (True 1.65 port): his soul blast lock-out (10 s after each blast) and his count of ended bladeturns belong to his brain and clear on a reset; before, the lock-out was shared and a reset or death during it stopped the blast for good until a restart. Not played.",
+   "notes": "Level 83, 300,000 health. No Darkness Falls raid AI: listed for completeness. 1.2: companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics). 1.2 wave 3: his throw takes bots too (AllowBotDisplacement for Legion); the wounded step out of his reach; no bot bubbles near him. 1.2 (True 1.65 port): his soul blast lock-out (10 s after each blast) and his count of ended bladeturns belong to his brain and clear on a reset; before, the lock-out was shared and a reset or death during it stopped the blast for good until a restart. 1.2 Legion raid plan (EpicEncounterTactics.Legion.cs; tests only, not seen in game): his tank holds him on his lair (walks him back to his spawn when he is drawn more than 1,200 off it) and the raid's tanks taunt him back onto a tank (a tank under 35% hands him to one over 80%); the six raid healers nearest his target heal it first under 85%, whatever party it is in; casters, archers and healers stand 1,200 from him on the raid's side, spread across the corridor; a soul wave of more than four takes one melee party per four souls more (at most a third of the raid, never the tank's party); a thrown bot walks across Behemoth's hall on its north side to the zone point DF LEGION PURGATORY and is put where it puts players, recalled only when it can't (no path, no progress, over about 63 s, or within Behemoth's aggro range and 20). Period sources (Albion Encounters Guide, VN Boards, Feb 2003; Allakhazam comments 2003-2005; Herald, Apr 2002): aggro on the main tank because he heals by kills, kill the lesser monsters first, a ported group runs across Behemoth's chamber to the portal. The script differs from the period fight: it ends bladeturns and blasts after five (the guide used pulsing bladeturns), and a raider far from him does no damage (the period hearsay: he must be fought on his platform). Not played.",
    "aiTactics": {
     "rangedAdds": [
      "LegionAdd"
     ],
+    "clearFirst": [
+     "Chamberlain",
+     "Inquisitor Famuel",
+     "Earl Amagin"
+    ],
+    "clearFirstRadius": 2300,
     "since": "1.2",
-    "summary": "Tactic rules only (Darkness Falls raid AI as a whole is not implemented: no platform positions, no walked way down from the platform, no add-wave assignments). Graspering souls (one per four raiders within 2,000 at each 5% step, at most 16 a step): casters and archers kill them while melee stay on Legion. Close range: he takes no damage from attackers more than 1,400 from him, so a raider farther out steps in to 1,100. Kill heals (2.5% per raider he kills): healers near him heal anyone under half first, and since wave 3 a raider under 35% who is not his target steps out to 1,700 until healed. Bubbles (wave 3): he ends the bladeturn on his target every turn and after five casts his soul blast (1,000 body damage within 1,000 of his target, a quarter healing him), so no bot casts a bladeturn (buff, group bubble, pulsing chant, self bubble) within 2,500 of him while he fights. His throw (wave 3): 8-16 raiders below his top five on his aggro list go to his platform every 40-65 s, bots too; a bot has no walked way down, so its recovery recalls it to its party after 5 s."
+    "summary": "Raid plan (1.2 Legion, tests only; Darkness Falls raid AI as a whole is not implemented). His room first: the route kills the Chamberlain (level 79, 792 from his spawn), Inquisitor Famuel and Earl Amagin (about 2,150-2,200 off, in the corridor) before it pulls him (period: clear the room, then pull before a respawn; PC log e3b8238: the Chamberlain joined Midgard's kill and killed two raiders, and he and Famuel joined Hibernia's second try). Main tank: the raid's tanks taunt him back onto a tank and a tank under 35% hands him to a fresh one; his tank walks him back onto his lair when he is drawn more than 1,200 off his spawn. Tank healers: the six raid healers nearest his target heal it first under 85%. Ranged line: casters, archers and healers 1,200 from him on the raid's side. Graspering souls (one per four raiders within 2,000 at each 5% step, at most 16 a step): casters and archers kill them while melee stay on Legion; a wave of more than four takes one melee party per four souls more, never the tank's party. Close range: he takes no damage from attackers more than 1,400 from him, so a raider farther out steps in to 1,100. Kill heals (2.5% per raider he kills): healers near him heal anyone under half first, and a raider under 35% who is not his target steps out to 1,700 until healed. Bubbles: no bot casts a bladeturn within 2,500 of him while he fights (he ends his target's and blasts after five). His throw: 8-16 raiders below his top five go to Behemoth's hall every 40-65 s, bots too; a bot walks across the hall to the zone point and is recalled only when it can't. Behemoth is never fought."
    },
    "verified": true
   },
@@ -8267,6 +8273,7 @@
     }
    ],
    "raidAi": "no raid AI",
+   "notes": "Level 99, 600,000 health, any hit kills (OnAttackEnemy). Reached only by Legion's throw into his hall (period: 'the only way to get to him is to be randomly teleported by the Legion mob', Grab Bag, Jan 2008). 1.2 Legion plan (tests only): no bot hits him or sends its pet (a dungeon rule's MustNotHit and NoPets), a bot that targets him stands 1,000 off, and a thrown bot's way down keeps out of his aggro range (recalled if it comes within it and 20).",
    "verified": true
   },
   {
