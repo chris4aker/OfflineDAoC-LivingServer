@@ -20,7 +20,7 @@ namespace DOL.GS
         protected void ReportNews(GameObject killer)
         {
             int numPlayers = AwardEpicEncounterKillPoint();
-            String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, numPlayers);
+            String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, EpicKillForce.Count(this, numPlayers));
             NewsMgr.CreateNews(message, killer.Realm, eNewsType.PvE, true);
 
             if (Properties.GUILD_MERIT_ON_DRAGON_KILL > 0)
