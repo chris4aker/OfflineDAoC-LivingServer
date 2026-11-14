@@ -47,15 +47,25 @@ each commit credited to him. They pass automated tests; nobody has played them i
 - Camps: a chosen camp counts at once; a solo bot leaves a crowded, emptied camp after 15 s; a party counts as all its
   members; camps of the same monster within 5,000 share their bots and monsters; the camp draw favours empty and near
   camps; a party's puller takes the monster standing apart first (Prima); a party moves on after five kills in a row
-  with under a quarter of the camp bonus left.
+  with under a quarter of the camp bonus left; spots that keep coming up empty draw less and then rest; overlapping camps
+  of one monster merge, and a monster with many camps no longer takes most draws; a camp among aggressive monsters 10+
+  levels above it is skipped by bots they would outlevel; a solo bot with no ranged attack skips flyer camps; a solo bot
+  that left a crowded camp skips its copies for 10 minutes, and one held to easier camps after a death may take an
+  uncrowded camp one con harder when all of its own are crowded (never the con that killed it).
+- Camp knowledge (Prima): the camp builder works out each camp's pack density, casters, creature type and weaknesses.
+  Parties without crowd control draw dense camps less, pure melee classes draw caster camps less, Hunters,
+  Spiritmasters and Nightshades draw their favourite prey more, and a solo bot draws camps weak to its damage more.
+- Parties stand by role once they have a camp: tanks in front toward it, melee on the flanks, healers and casters
+  behind.
 - Darkness Falls: every keep capture recounts all three realms, so only the realm with strictly the most keeps holds
   the door (a capture with no holder used to hand it to the taker).
 
 Not taken, because 1.2 already does it its own way: the route-proof cap, Sanguis's last 5%, Govannon's raid calls and
 area spells, the dragon lair circle, the Spectral Provisioner (raid bots already wake it) and the Cunovinda and Shade
-teleports (already behind 1.2's displacement switch). Not taken yet: True 1.65's later camp rework (empty-camp memory,
-camp merging, camp knowledge, party pulls), which would replace 1.2's camp planner, and its content (Prima encounters,
-keep lords), which is True 1.65 world data.
+teleports (already behind 1.2's displacement switch). Not taken: the party-pull camp turn (it fixes a
+stall 1.2's pull code doesn't have), the run to a bindstone or safe spot (it needs True 1.65's fight board), level-1
+blue-only targeting, the full-backpack fallback (built for True 1.65's brokers at inns) and True 1.65's content (Prima
+encounters, keep lords), which is its own world data.
 
 ## 1.2 (in development)
 
