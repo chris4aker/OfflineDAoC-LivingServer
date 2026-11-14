@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Numerics;
 using DOL.GS;
 using NUnit.Framework;
 
@@ -74,6 +75,68 @@ namespace DOL.UnitTests
                 Assert.That(EpicPlaytestSweep.GuestAction(true, true, true, 4_800f, 60_000L, 0L, nearFight: false), Is.EqualTo("move"));
                 Assert.That(EpicPlaytestSweep.GuestAction(false, true, true, 4_800f, 0L, 30_000L, nearFight: true), Is.EqualTo("raise"));
                 Assert.That(EpicPlaytestSweep.IsAway(false, float.MaxValue, true), Is.False);
+            });
+
+        // (Region, X, Y, Alive, RaidLeader, OwnParty); the front is inside the dungeon (region 248) at 30,000 / 30,000.
+        private static int GuestAnchor(params (ushort, int, int, bool, bool, bool)[] raiders) =>
+            EpicPlaytestSweep.GuestAnchor(raiders, 248, 30_000, 30_000);
+
+        [Test]
+        public void TheGuestNeverFollowsARaiderReleasedToTheHub() =>
+            Assert.Multiple(() =>
+            {
+                // summoners-albion, 2026-11-14: Ravooooora (own party) died, released to the hub in region 1; the GM followed.
+                Assert.That(GuestAnchor(
+                    (1, 560_000, 510_000, true, false, true),
+                    (248, 30_400, 29_800, true, false, false),
+                    (248, 31_000, 30_500, true, false, false)), Is.EqualTo(1));
+                Assert.That(GuestAnchor((1, 560_000, 510_000, true, true, true)), Is.EqualTo(-1),
+                    "only a raider at the hub, even the raid leader: the guest stays where it is");
+            });
+
+        [Test]
+        public void TheGuestNeverFollowsADeadRaider() =>
+            Assert.Multiple(() =>
+            {
+                Assert.That(GuestAnchor(
+                    (248, 30_000, 30_000, false, true, true),
+                    (248, 31_500, 30_200, true, false, false)), Is.EqualTo(1));
+                Assert.That(GuestAnchor((248, 30_000, 30_000, false, true, true)), Is.EqualTo(-1));
+            });
+
+        [Test]
+        public void AtTheFront_TheRaidLeaderFirst_ThenTheGuestsOwnParty() =>
+            Assert.Multiple(() =>
+            {
+                Assert.That(GuestAnchor(
+                    (248, 30_100, 30_100, true, false, true),
+                    (248, 31_000, 31_000, true, true, false),
+                    (248, 30_200, 30_000, true, false, false)), Is.EqualTo(1), "the raid leader at the front");
+                Assert.That(GuestAnchor(
+                    (248, 30_100, 30_100, true, false, false),
+                    (248, 31_000, 31_000, true, false, true),
+                    (248, 40_000, 40_000, true, true, false)), Is.EqualTo(1), "a raid leader away from the front is passed over");
+            });
+
+        [Test]
+        public void NobodyAtTheFront_TheHeadOfTheMarch() =>
+            Assert.That(GuestAnchor(
+                (248, 50_000, 50_000, true, true, true),
+                (248, 38_000, 36_000, true, false, false),
+                (1, 30_000, 30_000, true, false, false)), Is.EqualTo(1));
+
+        [Test]
+        public void TheGuestLandsOnTheFloorBesideItsAnchor_OrOnTheAnchor() =>
+            Assert.Multiple(() =>
+            {
+                var anchor = new Vector3(30_000, 30_000, 1_200);
+                var beside = new Vector3(30_038, 30_041, 1_188);
+                Assert.That(EpicPlaytestSweep.Landing(anchor, true, beside, true), Is.EqualTo(beside), "snapped to the anchor's floor");
+                Assert.That(EpicPlaytestSweep.Landing(anchor, false, new Vector3(30_040, 30_040, 1_200), false), Is.EqualTo(anchor),
+                    "no mesh under the point beside it: the anchor's exact spot, not the void");
+                Assert.That(EpicPlaytestSweep.Landing(anchor, true, beside, false), Is.EqualTo(anchor), "floor the anchor can't walk to");
+                Assert.That(EpicPlaytestSweep.Landing(anchor, true, new Vector3(30_040, 30_040, 1_080), true), Is.EqualTo(anchor),
+                    "the floor below is another level");
             });
     }
 }

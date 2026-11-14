@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using DOL.Events;
 using DOL.GS.Commands;
 using DOL.GS.PacketHandler;
@@ -93,6 +94,48 @@ namespace DOL.GS
             }
             return best;
         }
+
+        /// <summary>How far from the raid's front a raider still counts as at it.</summary>
+        public const float GuestFrontRange = 3_000;
+
+        /// <summary>
+        /// The raider the guest is moved to while its raid runs (pure): a living one in the region of the raid's front
+        /// (2026-11-14, summoners-albion: the guest was moved to Ravooooora, who had died and released to the hub in
+        /// region 1, while the raid fought in the dungeon). Among the raiders within <see cref="GuestFrontRange"/> of the
+        /// front: the raid leader, else the guest's own party first, then the one with the most such raiders near it, then
+        /// the nearest to the front. With nobody at the front, the raider in its region nearest to it (the head of the
+        /// march). -1 when no living raider is in the front's region: the guest then stays where it is.
+        /// </summary>
+        public static int GuestAnchor((ushort Region, int X, int Y, bool Alive, bool RaidLeader, bool OwnParty)[] raiders,
+            ushort frontRegion, int frontX, int frontY)
+        {
+            static long Dist2(int x1, int y1, int x2, int y2) => (long)(x1 - x2) * (x1 - x2) + (long)(y1 - y2) * (y1 - y2);
+            long frontRange2 = (long)GuestFrontRange * (long)GuestFrontRange;
+            int[] inRegion = Enumerable.Range(0, raiders.Length)
+                .Where(i => raiders[i].Alive && raiders[i].Region == frontRegion).ToArray();
+            if (inRegion.Length == 0) return -1;
+            int[] atFront = inRegion.Where(i => Dist2(raiders[i].X, raiders[i].Y, frontX, frontY) <= frontRange2).ToArray();
+            if (atFront.Length == 0)
+                return inRegion.OrderBy(i => Dist2(raiders[i].X, raiders[i].Y, frontX, frontY)).First();
+            foreach (int i in atFront)
+                if (raiders[i].RaidLeader) return i;
+            return atFront
+                .OrderByDescending(i => raiders[i].OwnParty)
+                .ThenByDescending(i => atFront.Count(j => Dist2(raiders[i].X, raiders[i].Y, raiders[j].X, raiders[j].Y) <= 2_000L * 2_000L))
+                .ThenBy(i => Dist2(raiders[i].X, raiders[i].Y, frontX, frontY))
+                .First();
+        }
+
+        /// <summary>How far above or below the anchor a snapped landing may be: more is another floor.</summary>
+        public const float LandingMaxRise = 64;
+
+        /// <summary>
+        /// Where the guest lands beside its anchor (pure): the point 40 units off it snapped to the navmesh, when the snap
+        /// found floor on the anchor's level that connects to the anchor; otherwise the anchor's own position. An unsnapped
+        /// point beside the anchor dropped the guest through the world in dungeons (2026-11-14, five times and more).
+        /// </summary>
+        public static Vector3 Landing(Vector3 anchor, bool snapped, Vector3 snappedBeside, bool connected) =>
+            snapped && connected && Math.Abs(snappedBeside.Z - anchor.Z) <= LandingMaxRise ? snappedBeside : anchor;
 
         /// <summary>
         /// What tag-along does with the guest now (pure): nothing, "move" to the party, or "raise" there. A guest within
@@ -376,10 +419,7 @@ namespace DOL.GS
             GamePlayer guest;
             lock (Sync) guest = _guest;
             if (guest?.Client == null || guest.ObjectState != GameObject.eObjectState.Active || guest.Group == null) return;
-            GameBot[] alive = guest.Group.GetMembersInTheGroup().OfType<GameBot>().Where(b => b.IsAlive && b.ObjectState == GameObject.eObjectState.Active).ToArray();
-            // The party's cluster, not its leader alone: a leader who died and released stands at its bind point while the
-            // rest fight on (2026-11-13, Golestandt: the guest was moved 55,000 units away to a released leader).
-            GameLiving anchor = alive.Length == 0 ? null : alive[Anchor(alive.Select(b => (b.CurrentRegionID, b.X, b.Y, b == guest.Group.LivingLeader)).ToArray())];
+            GameLiving anchor = AnchorFor(guest, _current?.Id);
             if (anchor == null) return;
             bool sameRegion = anchor.CurrentRegionID == guest.CurrentRegionID;
             float distance = sameRegion ? guest.GetDistanceTo(anchor) : float.MaxValue;
@@ -399,11 +439,50 @@ namespace DOL.GS
             ClientService.Instance.Post(static state =>
             {
                 (GamePlayer guest, GameLiving anchor, string action, string eventId, float distance) = state;
+                // The anchor may have died or left since the pulse picked it: nobody to land beside, so wait for the next.
+                if (!anchor.IsAlive || anchor.ObjectState != GameObject.eObjectState.Active) return;
                 if (action == "raise") Raise(guest);
-                guest.MoveTo(anchor.CurrentRegionID, anchor.X + 40, anchor.Y + 40, anchor.Z, anchor.Heading);
+                Vector3 landing = LandingBeside(anchor, out bool snapped);
+                guest.MoveTo(anchor.CurrentRegionID, (int)landing.X, (int)landing.Y, (int)landing.Z, anchor.Heading);
                 Log.Info($"EPIC_SWEEP_GUEST event={eventId} step={action} player=\"{guest.Name}\" to=\"{anchor.Name}\" " +
-                         $"region={anchor.CurrentRegionID} distance={(distance == float.MaxValue ? "other_region" : ((int)distance).ToString())}");
+                         $"region={anchor.CurrentRegionID} distance={(distance == float.MaxValue ? "other_region" : ((int)distance).ToString())} " +
+                         $"at={(int)landing.X},{(int)landing.Y},{(int)landing.Z} landing={(snapped ? "mesh" : "anchor")}");
             }, (guest, anchor, action, eventId, distance));
+        }
+
+        /// <summary>
+        /// The raider the guest follows: while its raid runs, a living raider with the raid's front (<see cref="GuestAnchor"/>),
+        /// never a dead one or one released to the hub; with no raid to ask, the cluster of its own party's living members.
+        /// </summary>
+        private static GameLiving AnchorFor(GamePlayer guest, string raidId)
+        {
+            Group group = guest.Group;
+            if (group == null) return null;
+            if (AutonomousRealmRaid.TryGuestFront(raidId, out bool hasFront, out ushort region, out Vector3 front, out var raiders) && hasFront)
+            {
+                var own = new HashSet<GameLiving>(group.GetMembersInTheGroup());
+                int i = GuestAnchor(raiders.Select(r => (r.Bot.CurrentRegionID, r.Bot.X, r.Bot.Y, r.Bot.IsAlive, r.RaidLeader, own.Contains(r.Bot))).ToArray(),
+                    region, (int)front.X, (int)front.Y);
+                return i < 0 ? null : raiders[i].Bot;
+            }
+            GameBot[] alive = group.GetMembersInTheGroup().OfType<GameBot>().Where(b => b.IsAlive && b.ObjectState == GameObject.eObjectState.Active).ToArray();
+            // The party's cluster, not its leader alone: a leader who died and released stands at its bind point while the
+            // rest fight on (2026-11-13, Golestandt: the guest was moved 55,000 units away to a released leader).
+            return alive.Length == 0 ? null : alive[Anchor(alive.Select(b => (b.CurrentRegionID, b.X, b.Y, b == group.LivingLeader)).ToArray())];
+        }
+
+        /// <summary>The guest's landing beside its anchor, on the navmesh's floor (<see cref="Landing"/>).</summary>
+        private static Vector3 LandingBeside(GameLiving anchor, out bool snapped)
+        {
+            var exact = new Vector3(anchor.X, anchor.Y, anchor.Z);
+            var beside = new Vector3(anchor.X + 40, anchor.Y + 40, anchor.Z);
+            Zone zone = anchor.CurrentRegion?.GetZone(anchor.X, anchor.Y);
+            IPathfindingMgr nav = PathfindingProvider.Instance;
+            snapped = zone != null && nav.IsAvailable && nav.HasNavmesh(zone) && nav.TrySnapToMesh(zone, ref beside, 128f);
+            bool connected = snapped && AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, beside, exact);
+            Vector3 landing = Landing(exact, snapped, beside, connected);
+            snapped = landing != exact;
+            return landing;
         }
 
         /// <summary>As /player rez does it.</summary>
