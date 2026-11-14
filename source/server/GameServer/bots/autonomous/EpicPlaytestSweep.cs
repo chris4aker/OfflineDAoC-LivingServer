@@ -48,6 +48,8 @@ namespace DOL.GS
         private static long _currentStarted, _nextStartAt, _nextPulse, _guestAwaySince, _guestDeadSince;
         private static GamePlayer _guest;
         private static eRealm _guestHomeRealm;
+        /// <summary>The guest's account level before the sweep (0: not lowered).</summary>
+        private static uint _guestHomePrivLevel;
         private static bool _running;
 
         /// <summary>The order (pure): the definitions' own order, Darkness Falls last (it has no raid AI; owner 2026-11-13).</summary>
@@ -96,6 +98,17 @@ namespace DOL.GS
             return null;
         }
 
+        /// <summary>
+        /// The level a client's commands are checked at (ScriptMgr.HandleCommand): the sweep's guest keeps the GM commands
+        /// of the level it had, while it plays as a player.
+        /// </summary>
+        public static uint CommandPrivLevel(GameClient client)
+        {
+            uint level = client?.Account?.PrivLevel ?? 0;
+            lock (Sync)
+                return _running && _guestHomePrivLevel > level && client?.Player != null && client.Player == _guest ? _guestHomePrivLevel : level;
+        }
+
         public static bool Running
         {
             get { lock (Sync) return _running; }
@@ -116,9 +129,20 @@ namespace DOL.GS
                 _nextStartAt = GameLoop.GameLoopTime;
                 _guest = guest;
                 _guestHomeRealm = guest?.Realm ?? eRealm.None;
+                _guestHomePrivLevel = 0;
+                // A GM can't be attacked, takes no fall damage and is left out of every boss mechanic that picks players
+                // (AbstractServerRules.IsAllowedToAttack, CanTakeFallDamage, the scripts' PrivLevel == Player checks): the
+                // guest plays as a player for the sweep (2026-11-13: Manawatch stood in Golestandt's breath at full health).
+                // Their GM commands stay (CommandPrivLevel); the level comes back when the sweep ends.
+                if (guest?.Client?.Account is { PrivLevel: > (uint)ePrivLevel.Player } account)
+                {
+                    _guestHomePrivLevel = account.PrivLevel;
+                    account.PrivLevel = (uint)ePrivLevel.Player;
+                    if (guest.IsStealthed) guest.Stealth(false);
+                }
                 _running = true;
                 Log.Info($"EPIC_SWEEP_START raids={ids.Length} order={string.Join(",", ids)} guest=\"{guest?.Name}\" guestRealm={_guestHomeRealm} " +
-                         $"guestLevel={guest?.Level}");
+                         $"guestLevel={guest?.Level} guestPlaysAsPlayer={_guestHomePrivLevel > 0} guestHomePrivLevel={_guestHomePrivLevel}");
                 return $"Sweep started: {ids.Length} raids, one after another ({string.Join(", ", ids)})" +
                        (guest != null ? $"; {guest.Name} takes a seat in each." : "; bots only.");
             }
@@ -355,15 +379,21 @@ namespace DOL.GS
         {
             GamePlayer guest;
             eRealm home;
+            uint homePrivLevel;
             string[] results;
             lock (Sync)
             {
                 _running = false;
                 guest = _guest;
                 home = _guestHomeRealm;
+                homePrivLevel = _guestHomePrivLevel;
                 _guest = null;
+                _guestHomePrivLevel = 0;
                 results = Results.ToArray();
             }
+            // The account level comes back even if the guest logged off (the account object outlives the session).
+            if (homePrivLevel > 0 && guest?.Client?.Account is { } account && account.PrivLevel < homePrivLevel)
+                account.PrivLevel = homePrivLevel;
             if (guest?.Client != null && guest.ObjectState == GameObject.eObjectState.Active)
             {
                 ClientService.Instance.Post(static state =>
@@ -379,7 +409,7 @@ namespace DOL.GS
                     }
                 }, (guest, home));
             }
-            Log.Info($"EPIC_SWEEP_END why=\"{why}\" results={results.Length} guest=\"{guest?.Name}\" guestRealm={home} | {string.Join(" | ", results)}");
+            Log.Info($"EPIC_SWEEP_END why=\"{why}\" results={results.Length} guest=\"{guest?.Name}\" guestRealm={home} guestPrivLevel={homePrivLevel} | {string.Join(" | ", results)}");
         }
     }
 }
