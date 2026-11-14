@@ -33,6 +33,21 @@ namespace DOL.UnitTests
             Assert.That(unknown, Is.EqualTo(new[] { "nope" }));
         }
 
+        [Test]
+        public void Anchor_IsTheParty_NotALeaderReleasedAtItsBind()
+        {
+            var members = new (ushort, int, int, bool)[]
+            {
+                (1, 450_000, 700_000, true),   // the leader, released at its bind point
+                (1, 391_000, 756_000, false),
+                (1, 391_500, 755_500, false),
+                (1, 392_000, 756_200, false),
+            };
+            Assert.That(EpicPlaytestSweep.Anchor(members), Is.Not.EqualTo(0));
+            members[0] = (1, 391_200, 756_100, true);
+            Assert.That(EpicPlaytestSweep.Anchor(members), Is.EqualTo(0), "together, the leader comes first");
+        }
+
         [TestCase(true, true, true, 500f, 60_000L, 0L, null, TestName = "near the party: nothing")]
         [TestCase(true, true, true, 5_000f, 10_000L, 0L, null, TestName = "thrown, not yet 20 s: the mechanic plays out")]
         [TestCase(true, true, true, 5_000f, 20_000L, 0L, "move", TestName = "away 20 s: back to the party")]

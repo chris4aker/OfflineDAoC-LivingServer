@@ -67,6 +67,26 @@ namespace DOL.GS
             return Order(asked.Where(known.Contains).Distinct());
         }
 
+        /// <summary>
+        /// The party member the guest is moved to (pure): the one with the most party members within 2,000 units in its
+        /// region, the leader first on a tie.
+        /// </summary>
+        public static int Anchor((ushort Region, int X, int Y, bool Leader)[] members)
+        {
+            int best = 0, bestNear = -1;
+            for (int i = 0; i < members.Length; i++)
+            {
+                int near = members.Count(m => m.Region == members[i].Region &&
+                    (long)(m.X - members[i].X) * (m.X - members[i].X) + (long)(m.Y - members[i].Y) * (m.Y - members[i].Y) <= 2_000L * 2_000L);
+                if (near > bestNear || near == bestNear && members[i].Leader)
+                {
+                    best = i;
+                    bestNear = near;
+                }
+            }
+            return best;
+        }
+
         /// <summary>What tag-along does with the guest now (pure): nothing, "move" to the party leader, or "raise" there.</summary>
         public static string GuestAction(bool alive, bool inGroup, bool sameRegion, float distance, long awayFor, long deadFor)
         {
@@ -283,8 +303,10 @@ namespace DOL.GS
             GamePlayer guest;
             lock (Sync) guest = _guest;
             if (guest?.Client == null || guest.ObjectState != GameObject.eObjectState.Active || guest.Group == null) return;
-            GameLiving anchor = guest.Group.GetMembersInTheGroup().OfType<GameBot>().Where(b => b.IsAlive && b.ObjectState == GameObject.eObjectState.Active)
-                .OrderByDescending(b => b == guest.Group.LivingLeader).FirstOrDefault();
+            GameBot[] alive = guest.Group.GetMembersInTheGroup().OfType<GameBot>().Where(b => b.IsAlive && b.ObjectState == GameObject.eObjectState.Active).ToArray();
+            // The party's cluster, not its leader alone: a leader who died and released stands at its bind point while the
+            // rest fight on (2026-11-13, Golestandt: the guest was moved 55,000 units away to a released leader).
+            GameLiving anchor = alive.Length == 0 ? null : alive[Anchor(alive.Select(b => (b.CurrentRegionID, b.X, b.Y, b == guest.Group.LivingLeader)).ToArray())];
             if (anchor == null) return;
             bool sameRegion = anchor.CurrentRegionID == guest.CurrentRegionID;
             float distance = sameRegion ? guest.GetDistanceTo(anchor) : float.MaxValue;
