@@ -150,5 +150,25 @@ namespace DOL.UnitTests
             Assert.That(RealmRaidDungeonRoute.SafeMusterAlong([], boss, 1400, [], new(3000, 0, 0)), Is.EqualTo(new System.Numerics.Vector3(3000, 0, 0)),
                 "the main body, when it is clear");
         }
+    
+
+        // ---- 6. raid-wide deaths outside an attempt count ------------------------------------------------------------
+
+        [Test]
+        public void TheAgmundrMassacreAtTheMusterIsAWipe()
+        {
+            // 08:35-08:37: 69 at the harrower's muster, then 56 fell in two minutes with about 13 left standing inside and 58
+            // alive in all. No attempt was open, so before this it was not scored (the raid's end line said wipes=1).
+            Assert.That(RealmRaidDungeonRoute.IsRouteWipe(56, 13, 58), Is.True);
+        }
+
+        [Test]
+        public void AFewLossesOnTheWayAreNoWipe()
+        {
+            Assert.That(RealmRaidDungeonRoute.IsRouteWipe(7, 0, 100), Is.False, "fewer than a party's worth");
+            Assert.That(RealmRaidDungeonRoute.IsRouteWipe(10, 100, 200), Is.False, "most of those inside still stand");
+            Assert.That(RealmRaidDungeonRoute.IsRouteWipe(20, 10, 300), Is.False,
+                "a lost skirmish: a tenth of the raid was there");
+        }
     }
 }

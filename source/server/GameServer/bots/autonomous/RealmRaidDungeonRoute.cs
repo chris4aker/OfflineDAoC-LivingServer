@@ -1444,6 +1444,7 @@ namespace DOL.GS
         public void Advance(GameLiving[] participants, long now)
         {
             AdvanceCore(participants, now);
+            if (!Complete && !Defeated) ObserveRouteDeaths(participants, now);
             GameNPC target = _target;
             if (target != null && target.IsAlive && target.InCombat && now >= _nextControlSample)
             {
@@ -1479,6 +1480,75 @@ namespace DOL.GS
                      // Every raid dungeon (Krondon 2026-11-05: were Scurceol Hyrde's orbs alive, and why weren't they targets?).
                      (_region == 191 ? $" galladoria={DescribeLiveEncounters()}" : $" encounters={DescribeLiveEncounters()}") +
                      $" pinnedBy=\"{PinnedBy(participants)}\"");
+        }
+
+        /// <summary>Raid-wide deaths outside an attempt are judged over this window.</summary>
+        public const long RouteDeathWindowMilliseconds = 4 * 60_000;
+        /// <summary>A boss this close to where the raiders fell (their centre) is the one that killed them.</summary>
+        public const float RouteKillerRadius = 2_500f;
+        private readonly HashSet<GameLiving> _standingInside = new();
+        private readonly Queue<(long At, Vector3 Where)> _routeDeaths = new();
+
+        /// <summary>
+        /// Raiders falling outside an attempt (at a muster, on the walk) are the raid's wipe when, within
+        /// <see cref="RouteDeathWindowMilliseconds"/>, half of those inside fell and it was the raid's fight by PR #193's rule
+        /// (half the living raid was there, or half of it fell). <paramref name="standingInside"/>: raiders alive inside now;
+        /// <paramref name="livingRaid"/>: alive anywhere now.
+        /// </summary>
+        public static bool IsRouteWipe(int fallen, int standingInside, int livingRaid) =>
+            IsWipe(standingInside + fallen, fallen, 100, 100, livingRaid + fallen);
+
+        /// <summary>
+        /// Owner's PC, 2026-11-14 (build e3b8238): Icelord Agmundr, set aside after a stalled muster, killed 80 raiders at the
+        /// harrower's muster beside his spawn in two minutes, and nothing scored it: no attempt was open, so the raid ended on
+        /// the stall clock with "wipes=1". Deaths of raiders inside while no attempt is open are now counted; a raid-wide
+        /// loss to a boss (the living boss in combat nearest to where they fell) is a wipe at that boss, with its regroup and
+        /// Special Forces call, and a second one defeats the raid as any second wipe does.
+        /// </summary>
+        private void ObserveRouteDeaths(GameLiving[] participants, long now)
+        {
+            foreach (GameLiving p in _standingInside)
+                if (!p.IsAlive && !_musterEngaged) _routeDeaths.Enqueue((now, new Vector3(p.X, p.Y, p.Z)));
+            _standingInside.Clear();
+            foreach (GameLiving p in participants)
+                if (p.IsAlive && p.CurrentRegionID == _region) _standingInside.Add(p);
+            while (_routeDeaths.Count > 0 && now - _routeDeaths.Peek().At > RouteDeathWindowMilliseconds) _routeDeaths.Dequeue();
+            if (_musterEngaged) { _routeDeaths.Clear(); return; }
+            int fallen = _routeDeaths.Count;
+            if (fallen < MinimumRaidersAtTarget) return;
+            int livingRaid = participants.Count(p => p.IsAlive);
+            if (!IsRouteWipe(fallen, _standingInside.Count, livingRaid)) return;
+            Vector3 centre = default;
+            foreach (var d in _routeDeaths) centre += d.Where;
+            centre /= fallen;
+            GameNPC killer = _live.OfType<GameEpicBoss>()
+                .Where(n => n.IsAlive && n.InCombat && n.Realm == eRealm.None && n.CurrentRegionID == _region &&
+                            Vector3.Distance(new Vector3(n.X, n.Y, n.Z), centre) <= RouteKillerRadius)
+                .OrderBy(n => Vector3.DistanceSquared(new Vector3(n.X, n.Y, n.Z), centre)).FirstOrDefault();
+            _routeDeaths.Clear();
+            if (killer == null)
+            {
+                log.Warn($"REALM_EXPEDITION_ROUTE_LOSSES region={_region} fallen={fallen} inside={_standingInside.Count} raid={livingRaid} " +
+                         $"at={(int)centre.X},{(int)centre.Y},{(int)centre.Z} target=\"{TargetName}\" " +
+                         $"reason=\"half the raid inside fell outside an attempt and no boss was fighting there; no attempt used\"");
+                return;
+            }
+            int failures = _failedAttempts[killer.Name] = FailedAttempts(killer.Name) + 1;
+            _wipes.Enqueue((killer.Name, failures));
+            log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{killer.Name}\" level={killer.Level} failures={failures} " +
+                     $"of={MaximumFailedAttempts} engaged={_standingInside.Count + fallen} fallen={fallen} health={killer.HealthPercent} " +
+                     $"lowest={killer.HealthPercent} how=\"raid-wide deaths outside an attempt\" raidTarget=\"{TargetName}\" " +
+                     $"at={(int)centre.X},{(int)centre.Y},{(int)centre.Z}");
+            if (failures >= MaximumFailedAttempts)
+            {
+                DefeatedAt = killer.Name;
+                Hold = true;
+                Status = $"Defeated at {killer.Name}";
+                return;
+            }
+            _regrouping = true;
+            _regroupSince = _musterSince = now;
+            _targetProgressTick = now;
         }
 
         /// <summary>The raid's main body (the leader with most raiders within 1,000), or "-" when it has none.</summary>
