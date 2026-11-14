@@ -170,5 +170,48 @@ namespace DOL.UnitTests
             Assert.That(RealmRaidDungeonRoute.IsRouteWipe(20, 10, 300), Is.False,
                 "a lost skirmish: a tenth of the raid was there");
         }
+    
+
+        // ---- 4. a living boss on the way in is a route objective; epics don't respawn under a raid --------------------
+
+        [Test]
+        public void AidonOnTheWalkThroughHallOfTheCorruptIsAGate()
+        {
+            // Hall of the Corrupt: in from Snowdonia at 31870,31072, out to Summoner's Hall at 26191,37697; Aidon the Archwizard
+            // (aggro 600) at 31353,37634,14873, where the parties logged "pass" with no way round.
+            var aidon = new System.Numerics.Vector3(31353, 37634, 14873);
+            System.Numerics.Vector3[] throughHisRoom =
+                [new(31870, 31072, 15846), new(32242, 35521, 15369), new(31353, 37300, 14880), new(26191, 37697, 13476)];
+            Assert.That(RealmRaidRouteGate.Blocks(throughHisRoom, aidon, 600), Is.True);
+            System.Numerics.Vector3[] farOff = [new(31870, 31072, 15846), new(26191, 31072, 15846), new(26191, 37697, 13476)];
+            Assert.That(RealmRaidRouteGate.Blocks(farOff, aidon, 600), Is.False, "a walk 4,000 away");
+            System.Numerics.Vector3[] belowHim = [new(30000, 37634, 13000), new(33000, 37634, 13000)];
+            Assert.That(RealmRaidRouteGate.Blocks(belowHim, aidon, 600), Is.False, "a floor 1,900 below");
+            Assert.That(RealmRaidRouteGate.Blocks(throughHisRoom, aidon, 0), Is.False, "no aggro: he never pulls the walk");
+            Assert.That(RealmRaidRouteGate.Blocks([], aidon, 600), Is.False);
+        }
+
+        [Test]
+        public void AGateIsOnlyLookedForBeforeTheRaidIsThrough()
+        {
+            Assert.That(RealmRaidRouteGate.RaidStillBeforeIt(0, 64), Is.True, "Summoner's Hall, 10:42: nobody past him");
+            Assert.That(RealmRaidRouteGate.RaidStillBeforeIt(40, 64), Is.False, "most of the raid already in its own dungeon");
+            Assert.That(RealmRaidRouteGate.On, Is.True, "on by default");
+        }
+
+        [Test]
+        public void AnEpicWaitsToRespawnWhileTheRaidIsInItsDungeon()
+        {
+            int hour = 60 * 60_000;
+            Assert.That(RealmRaidRouteGate.HoldEpicRespawn, Is.True, "on by default");
+            // Galladoria, 01:57:59: Easmarach back an hour after his death while the raid was in the last room.
+            Assert.That(RealmRaidRouteGate.HoldsRespawn(true, true, true, hour, true), Is.True);
+            Assert.That(RealmRaidRouteGate.HoldsRespawn(true, true, true, hour, false), Is.False, "no raid there: its own timer");
+            Assert.That(RealmRaidRouteGate.HoldsRespawn(false, true, true, hour, true), Is.False, "switched off");
+            Assert.That(RealmRaidRouteGate.HoldsRespawn(true, false, true, hour, true), Is.False, "ordinary monsters keep theirs");
+            Assert.That(RealmRaidRouteGate.HoldsRespawn(true, true, false, hour, true), Is.False, "a realm's guard or pet");
+            Assert.That(RealmRaidRouteGate.HoldsRespawn(true, true, true, 80_000, true), Is.False,
+                "an encounter's quick adds (80 s) are part of its fight");
+        }
     }
 }

@@ -581,10 +581,89 @@ namespace DOL.GS
         }
 
         private RealmRaidDungeonRoute(ushort region, DbZonePoint entrance, Vector3 entry, Vector3 trigger, string[] finals,
-            string[] objectives = null, eRealm realm = eRealm.None)
+            string[] objectives = null, eRealm realm = eRealm.None) : this(region, entrance, entry, trigger, finals, objectives, realm, null, null)
+        {
+        }
+
+        private RealmRaidDungeonRoute(ushort region, DbZonePoint entrance, Vector3 entry, Vector3 trigger, string[] finals,
+            string[] objectives, eRealm realm, DbZonePoint inner, GameNPC[] gates)
         {
             _region = region; Entrance = entrance; Front = Destination = entry; _trigger = trigger; _finalTypes = finals;
-            _objectives = objectives; _realm = realm;
+            _objectives = objectives; _realm = realm; InnerEntrance = inner ?? entrance; _gates = gates;
+        }
+
+        /// <summary>The zone point into the raid's own dungeon: <see cref="Entrance"/> itself, or for a raid that walks
+        /// through another dungeon (Summoner's Hall, Crystal Cave) the way out of that one into its own.</summary>
+        public DbZonePoint InnerEntrance { get; }
+
+        // A route gate (RealmRaidRouteGate): the living bosses on the raid's walk through another dungeon. The route is then
+        // that dungeon's, its objectives are these bosses and it is complete once they are all dead.
+        private readonly GameNPC[] _gates;
+        public bool IsGate => _gates != null;
+        public IReadOnlyList<GameNPC> Gates => _gates ?? [];
+        private bool FinalsDown() => _gates != null
+            ? _gates.All(g => !g.IsAlive)
+            : _finalTypes.All(type => _finals.TryGetValue(type, out var boss) && !boss.IsAlive);
+
+        /// <summary>
+        /// The bosses on <paramref name="main"/>'s walk through the dungeon its way in leads through (RealmRaidRouteGate), as
+        /// a route of their own in that dungeon; false when the raid walks through no other dungeon or nothing living blocks
+        /// the walk. <paramref name="detail"/> says what was found (or why nothing was looked at).
+        /// </summary>
+        public static bool TryCreateGate(RealmRaidDungeonRoute main, out RealmRaidDungeonRoute gate, out string detail)
+        {
+            gate = null;
+            DbZonePoint outer = main?.Entrance, inner = main?.InnerEntrance;
+            if (outer == null || inner == null || outer.TargetRegion == main._region || inner.SourceRegion != outer.TargetRegion)
+            { detail = "no dungeon on the way in"; return false; }
+            ushort through = outer.TargetRegion;
+            Region region = WorldMgr.GetRegion(through);
+            var nav = PathfindingProvider.Instance;
+            Vector3 arrival = new(outer.TargetX, outer.TargetY, outer.TargetZ), exit = new(inner.SourceX, inner.SourceY, inner.SourceZ);
+            Zone zone = region?.GetZone((int)arrival.X, (int)arrival.Y), exitZone = region?.GetZone((int)exit.X, (int)exit.Y);
+            if (zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) { detail = "no navigation mesh on the way"; return false; }
+            Vector3 from = nav.GetClosestPoint(zone, arrival, 48, 48, 64, nav.DefaultFilters) ?? arrival;
+            Vector3 to = exitZone != null && nav.HasNavmesh(exitZone)
+                ? nav.GetClosestPoint(exitZone, exit, 128, 128, 256, nav.DefaultFilters) ?? exit : exit;
+            var walk = new List<Vector3> { from };
+            if (exitZone == zone)
+            {
+                Span<WrappedPathfindingNode> nodes = stackalloc WrappedPathfindingNode[256];
+                PathfindingResult path = nav.GetPathStraight(zone, from, to, nav.DefaultFilters, nodes);
+                if (path.Status is PathfindingStatus.PathFound or PathfindingStatus.PartialPathFound)
+                    for (int i = 0; i < Math.Min(path.NodeCount, nodes.Length); i++) walk.Add(nodes[i].Position);
+            }
+            if (Vector3.DistanceSquared(walk[^1], to) > 64 * 64) walk.Add(to);
+            var blocking = new List<GameNPC>();
+            foreach (GameNPC npc in region.Objects.OfType<GameNPC>())
+            {
+                if (npc is not GameEpicBoss || !npc.IsAlive || npc.ObjectState != GameObject.eObjectState.Active || npc.Realm != eRealm.None ||
+                    (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 ||
+                    npc.Brain is not StandardMobBrain { AggroRange: > 0 } brain)
+                    continue;
+                if (RealmRaidRouteGate.Blocks(walk, new(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z), brain.AggroRange) ||
+                    RealmRaidRouteGate.Blocks(walk, new(npc.X, npc.Y, npc.Z), brain.AggroRange))
+                    blocking.Add(npc);
+            }
+            detail = $"walk={walk.Count} points from {(int)from.X},{(int)from.Y},{(int)from.Z} to {(int)to.X},{(int)to.Y},{(int)to.Z}";
+            if (blocking.Count == 0) return false;
+            GameNPC[] gates = blocking.ToArray();
+            gate = new(through, outer, from, to, [], gates.Select(g => g.Name).Distinct(StringComparer.Ordinal).ToArray(), main._realm,
+                inner, gates) { Focus = null };
+            detail += $" bosses=\"{string.Join(",", gates.Select(g => $"{g.Name}@{g.X},{g.Y},{g.Z}"))}\"";
+            return true;
+        }
+
+        /// <summary>The raid comes back to this route after fighting a gate on its way (RealmRaidRouteGate): the clocks that
+        /// measure waiting and stalls start again, so the time spent at the gate is not counted against this route.</summary>
+        public void Resumed(long now)
+        {
+            _frontAbsentSince = 0; _musterEmptySince = 0; _formedWaitSince = 0; _holdSince = 0; _blockedSince = 0;
+            _targetProgressTick = _targetApproachTick = _musterSince = now;
+            if (_regrouping) _regroupSince = now;
+            _musterProgress.Clear();
+            _routeDeaths.Clear();
+            _standingInside.Clear();
         }
 
         /// <summary>
@@ -635,7 +714,7 @@ namespace DOL.GS
                 if ((homeRegion == 0 || !RealmRaidNeutralEvents.IsNeutralRegion(region)) &&
                     !AutonomousZonePointApproach.TryResolve(nav, inside, floor.Value, trigger, 220, out _))
                 { why.Add($"{id}: no approach to the encounter"); continue; }
-                route = new(region, outer, floor.Value, trigger, finals, objectives, realm);
+                route = new(region, outer, floor.Value, trigger, finals, objectives, realm, inner, null);
                 route.ObserveCompletion();
                 LastFailure = "";
                 return true;
@@ -1412,8 +1491,8 @@ namespace DOL.GS
             foreach (var npc in WorldMgr.GetRegion(_region)?.Objects.OfType<GameNPC>() ?? [])
                 if (_finalTypes.Contains(npc.GetType().Name) && (!_finals.TryGetValue(npc.GetType().Name, out var old) || old.IsAlive))
                     _finals[npc.GetType().Name] = npc;
-            if (_finalTypes.All(type => _finals.TryGetValue(type, out var boss) && !boss.IsAlive))
-            { Complete = true; Status = "Final encounter defeated"; }
+            if (FinalsDown())
+            { Complete = true; Status = IsGate ? "The way is clear" : "Final encounter defeated"; }
         }
 
         // Run 21 (2026-10-17): 70+ raiders fought Spindler Broodmother for over 30 minutes and nothing showed how she
@@ -1736,8 +1815,7 @@ namespace DOL.GS
                 if (_target is IGameEpicNpc) _clearedNames.Add(_target.Name);
                 _target = null;
             }
-            bool finalDeaths = _finalTypes.All(type => _finals.TryGetValue(type, out var boss) && !boss.IsAlive);
-            if (finalDeaths) { Complete = true; Status = "Final encounter defeated"; return; }
+            if (FinalsDown()) { Complete = true; Status = IsGate ? "The way is clear" : "Final encounter defeated"; return; }
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active &&
                 EpicEncounterTactics.RouteTarget(_target, live, Front, out string tacticReason) is { } tacticTarget && tacticTarget != _target)
             {
@@ -1950,6 +2028,15 @@ namespace DOL.GS
                 .OrderBy(n => _finalTypes.Contains(n.GetType().Name) ? 1 : 0)
                 .ThenBy(n => IsEncounterAdd(n, Front, encounters) || clearFirst.ContainsKey(n) ? 0 : 1)
                 .ThenBy(n => WalkEstimate(Front, new(n.X, n.Y, n.Z))).ToArray();
+            // A gate whose bosses can't be taken as targets (gone, or no longer attackable) has nothing left to fight: the
+            // raid goes on to its own dungeon instead of waiting at the way out.
+            if (IsGate && candidates.Length == 0 && !Blocked)
+            {
+                Blocked = true;
+                log.Warn($"REALM_EXPEDITION_ROUTE_GATE_EMPTY region={_region} gates=\"{string.Join(",", Gates.Select(g => g.Name))}\" " +
+                         $"reason=\"no boss of the gate is a target; the raid goes on\"");
+                return;
+            }
             // Probe from the front and from where the parties actually stand, near or far:
             // Tuscaran's front once sat on a pad under the floor its parties stood on.
             Vector3[] anchors = DistinctAnchors(Front, inside
