@@ -83,7 +83,154 @@ namespace DOL.GS
                 ClearFirstOf = AgmundrBafClearsFirst,
                 PullWait = AgmundrNeighbourWaits,
             },
+            // ---- Living Server 1.2: every big boss in (owner 2026-11-14) ----------------------------------------------
+            new(nameof(Hakr), [nameof(Hakr)], null)
+            {
+                Summary = "His two Royal Iceweavers in the far room die before the pull; in his fight the two at his side die " +
+                          "first (his toss only comes while an iceweaver lives), then he does.",
+                ClearFirstOf = HakrFarIceweaversFirst,
+            },
+            new("BossRings", ["Hurika", "Torst", "Suttung"], c => RingAdvice(c, GlacierRings))
+            {
+                Summary = "Casters, archers and healers outside the boss's target's party keep out of its reach: Hurika 1,100 " +
+                          "(her gust throws a raider within 1,000), Torst 650 (his eddies), Suttung 540 (his Ice Blast, 440).",
+            },
+            new(nameof(Hjalmar), [nameof(Hjalmar)], null)
+            {
+                Summary = "The raider he fights faces him (his back style hits a turned back with Strength 740, not 600).",
+                Act = (bot, boss, _) =>
+                {
+                    if (boss.TargetObject == bot && !bot.IsCasting && TurnedAway(bot.GetAngle(boss)))
+                    {
+                        bot.TurnTo(boss);
+                        MechanicCall(bot, "epic_face_him", boss, bot);
+                    }
+                },
+            },
+            new(nameof(Issorden), [nameof(Issorden)], null)
+            {
+                Summary = "His seven icebound skeletons (IssordenBaf) join him from anywhere in the glacier: they die first.",
+                ClearFirstOf = IssordenBafClearsFirst,
+            },
+            new("Hord", ["Hord"], null)
+            {
+                Summary = "His aggro is 1,500 and Council Ozur stands 750 from him: nothing within 1,900 of him is pulled while " +
+                          "he rests, so the council falls Hord, Ozur, Otrygg (the period's route).",
+                PullWait = HordNeighbourWaits,
+            },
+            new(nameof(Otrygg), [nameof(Otrygg), "OtryggAdd"], OtryggPets)
+            {
+                Summary = "His eight pets come back as fast as they die while he fights (SpawnPetsMore) and die with him: " +
+                          "everyone fights Otrygg, the route never sends the raid to a pet.",
+                Route = OtryggPetRoute,
+                RoutesInCombat = true,
+            },
         ];
+
+        // ---- rings: the raid's ranged keep out of a boss's own reach ---------------------------------------------------
+
+        /// <summary>A boss whose own hit (or throw) reaches <paramref name="Radius"/> around it: casters, archers and healers
+        /// outside its target's party stand further out (<see cref="SpreadStepOut"/> past it, still in spell range).</summary>
+        public sealed record BossRing(string Boss, int Radius, string Why);
+
+        /// <summary>Tuscaran Glacier's rings (TorstAndHurika.cs, ElderIcelordHjalmarAndSuttung.cs).</summary>
+        public static readonly BossRing[] GlacierRings =
+        [
+            // HurikaBrain.Think: a raider within 1,000 of her is thrown 500-700 up every 15-20 s.
+            new("Hurika", 1_100, "her gust throws a raider within 1,000 of her"),
+            // TorstEddiesBrain: five eddies wander within 200 of him and cast Cold Snap (110, radius 300) every 5-12 s.
+            new("Torst", 650, "his eddies freeze 300 around them, within 200 of him"),
+            // SuttungBrain.Think: Hjalmar's Ice Blast, 450 cold to everyone within 440 of him, every 15 s.
+            new("Suttung", 540, "his Ice Blast hits everyone within 440 of him"),
+        ];
+
+        /// <summary>The ring rule for one raider (pure): melee and the boss's target's party fight as usual; a caster, archer
+        /// or healer inside the ring steps out to <see cref="SpreadStepOut"/> past it, away from the boss.</summary>
+        public static Advice? RingAdvice(Vector3 at, Vector3 bossAt, GameNPC boss, BossRing ring, bool atRange, bool holds)
+        {
+            if (ring == null || !atRange || holds) return null;
+            return AwayFrom(at, bossAt, ring.Radius) is Vector3 outside
+                ? new(BotAction.Reposition, boss, outside, $"ring: casters and healers out of {ring.Radius} around \"{boss.Name}\" ({ring.Why})")
+                : null;
+        }
+
+        private static Advice? RingAdvice(RuleContext c, BossRing[] rings)
+        {
+            // While the catalog's required adds shield it (Nosdoden's essence waves) the raid is on them, not here.
+            if (!c.Target.InCombat || ShieldingAdds(c.Target, c.Live ?? []).Length > 0) return null;
+            BossRing ring = null;
+            for (Type t = c.Target.GetType(); ring == null && t != null && t != typeof(GameNPC); t = t.BaseType)
+                ring = Array.Find(rings, r => r.Boss == t.Name);
+            return RingAdvice(c.At, PosOf(c.Target), c.Target, ring, c.AtRange, c.Holds);
+        }
+
+        /// <summary>The living NPC of class <paramref name="type"/> (or a subclass) nearest <paramref name="near"/> within
+        /// <see cref="AddSearchRadius"/>, or null.</summary>
+        private static GameNPC NearestOfType(GameNPC near, IReadOnlyList<GameNPC> live, string type) =>
+            near == null ? null : LiveOfType(live, type).Where(n => n.CurrentRegionID == near.CurrentRegionID && near.IsWithinRadius(n, AddSearchRadius))
+                .OrderBy(n => near.GetDistanceTo(n)).FirstOrDefault();
+
+        // ---- Icelord Hakr ---------------------------------------------------------------------------------------------
+
+        /// <summary>His linked iceweavers (Hakr.SpawnSnakes: the two at his side carry this package and join his fight).</summary>
+        public const string HakrLinkedPackage = "HakrBaf";
+
+        /// <summary>
+        /// Hakr.SpawnSnakes puts four Royal Iceweavers (20,000 health each) in the glacier: two at his side (HakrBaf, brought
+        /// into his fight) and two in the room at 30,008,56,329, 4,700 from him, that nothing links. His toss
+        /// (HakrBrain.TeleportPlayer) and its timer run only while one of the four lives, and "Magic barrier fades away from
+        /// Icelord Hakr!" is said when the last dies. The far pair die before the pull; the near pair are his required adds.
+        /// </summary>
+        private static GameNPC HakrFarIceweaversFirst(GameNPC npc, IReadOnlyList<GameNPC> live)
+        {
+            if (npc == null || !IsOfType(npc, "HakrAdd") || npc.PackageID == HakrLinkedPackage) return null;
+            return LiveOfType(live, nameof(Hakr)).FirstOrDefault(b => b.CurrentRegionID == npc.CurrentRegionID && !b.InCombat);
+        }
+
+        // ---- Issorden -------------------------------------------------------------------------------------------------
+
+        /// <summary>His linked monsters (IssordenBrain.Think: every NPC of this package in the region joins once he fights).</summary>
+        public const string IssordenLinkedPackage = "IssordenBaf";
+
+        private static GameNPC IssordenBafClearsFirst(GameNPC npc, IReadOnlyList<GameNPC> live)
+        {
+            if (npc == null || npc is Issorden || npc.PackageID != IssordenLinkedPackage) return null;
+            return LiveOfType(live, nameof(Issorden)).FirstOrDefault(b => b.CurrentRegionID == npc.CurrentRegionID);
+        }
+
+        // ---- Council Hord ---------------------------------------------------------------------------------------------
+
+        /// <summary>His aggro range (HordBrain: 1,500, "so players cant just pass him"); a monster within it plus the margin
+        /// waits for him.</summary>
+        public const int HordAggro = 1_500, HordNeighbourMargin = 400;
+
+        private static string HordNeighbourWaits(GameNPC target, IReadOnlyList<GameNPC> live, long now)
+        {
+            if (IsOfType(target, "Hord") || target.CurrentRegionID != 160) return null;
+            GameNPC hord = LiveOfType(live, "Hord").FirstOrDefault(b => b.CurrentRegionID == target.CurrentRegionID);
+            if (hord == null || hord.InCombat || !hord.IsWithinRadius(target, HordAggro + HordNeighbourMargin)) return null;
+            return $"it stands {(int)hord.GetDistanceTo(target)} from Council Hord (aggro {HordAggro}): after him";
+        }
+
+        // ---- Council Otrygg -------------------------------------------------------------------------------------------
+
+        /// <summary>A raider aimed at one of his pets fights him instead (OtryggBrain.Think: SpawnPetsMore while fewer than
+        /// eight live, every 2 s; Otrygg.Die kills them all).</summary>
+        private static Advice? OtryggPets(RuleContext c)
+        {
+            if (!IsOfType(c.Target, "OtryggAdd") || NearestOfType(c.Target, c.Live, nameof(Otrygg)) is not { } otrygg) return null;
+            return new(BotAction.Retarget, otrygg, null, "otrygg: his pets come back as fast as they die; they die with him");
+        }
+
+        private static GameNPC OtryggPetRoute(GameNPC chosen, IReadOnlyList<GameNPC> live, out string reason)
+        {
+            reason = null;
+            if (chosen == null || !IsOfType(chosen, "OtryggAdd")) return null;
+            GameNPC otrygg = live?.OfType<Otrygg>().FirstOrDefault(o => Present(o) && o.CurrentRegionID == chosen.CurrentRegionID &&
+                                                                      o.IsWithinRadius(chosen, AddSearchRadius));
+            if (otrygg != null) reason = "his pets come back as fast as they die: fight Otrygg";
+            return otrygg;
+        }
 
         // ---- Icelord Agmundr -----------------------------------------------------------------------------------------
 

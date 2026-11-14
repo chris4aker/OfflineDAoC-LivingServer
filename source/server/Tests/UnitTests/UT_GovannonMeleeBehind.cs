@@ -1,5 +1,6 @@
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Linq;
 using DOL.GS;
 using NUnit.Framework;
 
@@ -63,7 +64,9 @@ namespace DOL.UnitTests
         [Test]
         public void OnlyGovannonHasTheOrder()
         {
-            Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.MeleeBehind));
+            // Living Server 1.2: Torst too (his DD lands 400 around his target; melee behind him, clear of it).
+            Assert.That(EpicEncounterTactics.Catalog.Where(t => t.MeleeBehind).Select(t => t.Boss),
+                Is.EquivalentTo(new[] { "GrandSummonerGovannon", "Torst" }));
             // The healer hold was dropped after duo7 (15 healers died within 200 of him, kept there): no boss has it.
             Assert.That(EpicEncounterTactics.Catalog, Has.None.Matches<EpicEncounterTactics.Tactic>(t => t.HealersHoldInSpread));
             EpicEncounterTactics.Tactic gov = null;
@@ -131,7 +134,9 @@ namespace DOL.UnitTests
         public void OnlyGovannonHasTheRingAndTheTaunt()
         {
             Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.MeleeRing > 0));
-            Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.TanksTaunt));
+            // Living Server 1.2: Torst too (he jumps to a random raider after rooting his target).
+            Assert.That(EpicEncounterTactics.Catalog.Where(t => t.TanksTaunt).Select(t => t.Boss),
+                Is.EquivalentTo(new[] { "GrandSummonerGovannon", "Torst" }));
             foreach (var t in EpicEncounterTactics.Catalog)
                 if (t.Boss == "GrandSummonerGovannon")
                 {

@@ -492,6 +492,8 @@ namespace DOL.AI.Brain
 						RandomTarget = Target;//set random target to static RandomTarget
 						new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastDD), 5000);
 						BroadcastMessage(String.Format(Body.Name + " starts casting void magic at " + RandomTarget.Name + "."));
+						// Living Server 1.2: the raid hears it too (EncounterSignals): 1,100 cold within 550 of the raider, in 5 s.
+						EncounterSignals.Raise(Body, EncounterSignals.Glare, RandomTarget, NosdodenDD.Radius, true, 5000);
 						CanCast = true;
 					}
 				}
