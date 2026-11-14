@@ -1,0 +1,488 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using DOL.GS;
+using NUnit.Framework;
+using T = DOL.GS.EpicEncounterTactics;
+
+namespace DOL.UnitTests
+{
+    /// <summary>
+    /// The 1.2 raid plans for Albion's big bosses that had only the generic dungeon route (owner 2026-11-14: every big boss
+    /// is in Living Server 1.2): Caer Sidi's Apocalypse, Warlord Dorinakka, the Silencer, Lord Sanguis, the Bane of Hope,
+    /// Fate's Chosen and the Spectral Provisioner; Krondon's Drihten Elreden, Deben se Gecynde, Beran, Fuladl, Fulafeallan,
+    /// Lurfos, Ulor and Jehrog and Scurceol's orbs; Summoner's Hall's tether; Lord Gildas. The tests stand bosses, adds and
+    /// raiders in a test region and play the rules; no world tick, combat, spell or pathing runs. Tests only.
+    /// </summary>
+    [TestFixture, NonParallelizable]
+    public sealed class UT_AlbionBossPlans12
+    {
+        private const BindingFlags Hidden = BindingFlags.Instance | BindingFlags.NonPublic;
+        private Region _region;
+        private ushort _nextId = 3000;
+        private EpicTestServerScope _server;
+        private Func<bool> _flying, _resisting;
+        private Func<GameObject, Vector3, Vector3?> _snap;
+
+        public class Mob : GameNPC
+        {
+            public bool Dead, Fighting;
+            public byte Hurt;
+            public override bool IsAlive => !Dead;
+            public override bool InCombat => Fighting;
+            public override byte HealthPercent => (byte)(100 - Hurt);
+        }
+        public sealed class Raider : GameNPC
+        {
+            public override bool IsAlive => true;
+        }
+        public sealed class TestApocalypse : Apocalypse
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+        public sealed class TestHarbinger : HarbringerOfFate
+        {
+            public bool Dead;
+            public byte Hurt;
+            public override bool IsAlive => !Dead;
+            public override bool InCombat => true;
+            public override byte HealthPercent => (byte)(100 - Hurt);
+        }
+        public sealed class TestDorinakka : DOL.GS.Scripts.WarlordDorinakka
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+        public sealed class TestSilencer : Silencer
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+        public sealed class TestBane : DOL.GS.Scripts.BaneOfHope
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+        public sealed class TestFate : FateChosen
+        {
+            public override bool IsAlive => true;
+        }
+        public sealed class TestProvisioner : DOL.GS.Scripts.SpectralProvisioner
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+        public sealed class TestLossren : SummonerLossren
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+        public sealed class TestSoul : TorturedSouls
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+        public sealed class TestGhoul : ExplodeUndead
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+        public sealed class TestDeben : DebenSeGecynde
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+        public sealed class TestMage : DebenMage
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+        public sealed class TestFighter : DebenFighter
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+        public sealed class TestBeran : BeranSupplyMaster
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+        public sealed class TestDrihten : DrihtenElreden
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+        public sealed class TestGildas : LordGildas
+        {
+            public override bool IsAlive => true;
+            public override bool InCombat => true;
+        }
+
+        private static readonly int Warrior = (int)eCharacterClass.Warrior, Wizard = (int)eCharacterClass.Wizard,
+            Cleric = (int)eCharacterClass.Cleric, Scout = (int)eCharacterClass.Scout;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _server = new EpicTestServerScope();
+            UseRegion(60);
+            EpicEncounterMechanics.ResetPerEncounter();
+            _flying = T.ApocalypseFlying;
+            _resisting = T.SilencerResisting;
+            _snap = T.AlbionFloorSnap;
+            T.ApocalypseFlying = () => false;
+            T.SilencerResisting = () => false;
+            T.AlbionFloorSnap = (_, _) => null;
+            T.ResetAttackerSlotsForTests();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            T.ApocalypseFlying = _flying;
+            T.SilencerResisting = _resisting;
+            T.AlbionFloorSnap = _snap;
+            T.ResetAttackerSlotsForTests();
+            EpicEncounterMechanics.ResetPerEncounter();
+            _server.Dispose();
+        }
+
+        private void UseRegion(ushort id)
+        {
+            _region = new Region(new RegionData { Id = id, Name = "Albion plans test", Description = "Albion plans test", Mobs = [] });
+            _region.Zones.Add(new Zone(_region, (ushort)(id * 10), "Albion plans test", 0, 0, 65536, 65536, (ushort)(id * 10 + 1),
+                false, 0, false, 0, 0, 0, 0, 0));
+        }
+
+        private TNpc Npc<TNpc>(int x, int y, int z) where TNpc : GameNPC
+        {
+            TNpc npc = (TNpc)RuntimeHelpers.GetUninitializedObject(typeof(TNpc));
+            typeof(GameObject).GetField("_objectInRadiusCachesLock", Hidden)?.SetValue(npc, Activator.CreateInstance(
+                typeof(GameObject).GetField("_objectInRadiusCachesLock", Hidden).FieldType));
+            var caches = typeof(GameObject).GetField("_objectsInRadiusCaches", Hidden)!;
+            caches.SetValue(npc, Activator.CreateInstance(caches.FieldType));
+            typeof(GameNPC).GetField("m_brains", Hidden)!.SetValue(npc, new ArrayList());
+            typeof(GameLiving).GetField("<TempProperties>k__BackingField", Hidden)!.SetValue(npc, new PropertyCollection());
+            npc.effectListComponent = EffectListComponent.Create(npc);
+            npc.CurrentRegion = _region;
+            npc.movementComponent = new NpcMovementComponent(npc);
+            ((GameLiving)npc).movementComponent = npc.movementComponent;
+            npc.X = x; npc.Y = y; npc.Z = z;
+            npc.movementComponent.ForceUpdatePosition();
+            npc.SpawnPoint = new Point3D(x, y, z);
+            npc.ObjectID = _nextId++;
+            npc.ObjectState = GameObject.eObjectState.Active;
+            npc.SubZoneObject = new SubZoneObject(npc);
+            Zone zone = _region.Zones[0];
+            Assert.That(zone.AddObject(npc), Is.True);
+            SubZoneObject sub = npc.SubZoneObject;
+            sub.DestinationSubZone.AddObject(sub.Node);
+            zone.OnObjectAddedToZone();
+            sub.OnSubZoneTransition();
+            return npc;
+        }
+
+        private static float Flat(Vector3 a, Vector3 b) => Vector2.Distance(new(a.X, a.Y), new(b.X, b.Y));
+        private static Vector3 At(GameObject o) => new(o.X, o.Y, o.Z);
+
+        private static T.Advice? Rule(GameNPC raider, GameNPC target, List<GameNPC> live, bool ranged, int classId, int party = 0) =>
+            T.DungeonAdvice(new(raider, target, live, party, ranged, 1_000, classId));
+
+        // ---- the shared pieces ----------------------------------------------------------------------------------------
+
+        [Test]
+        public void TheFrontArcAndTheRingSpotsArePure()
+        {
+            Vector3 boss = new(0, 0, 0), facing = new(100, 0, 0);
+            Assert.That(T.InFrontArc(boss, facing, new(100, 30, 0), T.FrontArcDegrees), Is.True, "beside his target");
+            Assert.That(T.InFrontArc(boss, facing, new(-100, 10, 0), T.FrontArcDegrees), Is.False, "behind him");
+            Assert.That(T.InFrontArc(boss, facing, new(0, 100, 0), T.FrontArcDegrees), Is.False, "at his side");
+            Vector3 a = T.PartyRingSpot(boss, 0, 8, 1_000, 0), b = T.PartyRingSpot(boss, 1, 8, 1_000, 0);
+            Assert.That(a.X, Is.EqualTo(1_000).Within(0.5));
+            Assert.That(Flat(a, b), Is.GreaterThan(700), "eight spots 1,000 out lie 765 apart: a 600 area hit takes one");
+            Assert.That(T.PartyRingSpot(boss, 9, 8, 1_000, 0), Is.EqualTo(T.PartyRingSpot(boss, 1, 8, 1_000, 0)));
+        }
+
+        [Test]
+        public void MeleeInFrontOfAParryingBossStepBehindHim()
+        {
+            var lord = Npc<TestDorinakka>(35625, 41676, 15631);
+            var tank = Npc<Raider>(35725, 41676, 15631);
+            var melee = Npc<Raider>(35700, 41700, 15631);
+            var back = Npc<Raider>(35520, 41680, 15631);
+            lord.TargetObject = tank;
+            var live = new List<GameNPC> { lord, tank, melee, back };
+            var step = Rule(melee, lord, live, false, Warrior);
+            Assert.That(step?.Action, Is.EqualTo(T.BotAction.Reposition));
+            Assert.That(step.Value.StandAt.Value.X, Is.LessThan(lord.X), "behind him, on the line from his target");
+            Assert.That(Flat(step.Value.StandAt.Value, At(lord)), Is.EqualTo(T.BehindStepDistance).Within(1));
+            Assert.That(Rule(back, lord, live, false, Warrior), Is.Null, "already behind: fight");
+            Assert.That(Rule(tank, lord, live, false, Warrior), Is.Null, "his target faces him");
+            Assert.That(Rule(melee, lord, live, true, Wizard), Is.Null, "casters are not moved");
+        }
+
+        // ---- Apocalypse -----------------------------------------------------------------------------------------------
+
+        [Test]
+        public void WhileApocalypseFliesTheRaidLeavesTheRainButNotThroughTheDoor()
+        {
+            var apoc = Npc<TestApocalypse>(29467, 25235, 19490);
+            var raider = Npc<Raider>(29500, 25400, 19490);
+            var live = new List<GameNPC> { apoc, raider };
+            T.ApocalypseFlying = () => true;
+            var a = Rule(raider, apoc, live, false, Warrior);
+            Assert.That(a?.Action, Is.EqualTo(T.BotAction.Reposition));
+            Vector3 spot = a.Value.StandAt.Value;
+            Assert.That(Flat(spot, T.ApocRainSpot), Is.EqualTo(T.ApocFlyRing).Within(1), "out of the 800 under him");
+            Assert.That(Flat(spot, T.HorsemenRoom.Door), Is.GreaterThan(T.ApocDoorClear), "the barrier would move it back under the rain");
+            // A raider straight on the line to the door is turned aside.
+            Vector3? doorward = T.ApocFlyStep(new(29462, 26000, 19490));
+            Assert.That(Flat(doorward.Value, T.HorsemenRoom.Door), Is.GreaterThan(T.ApocDoorClear));
+            Assert.That(T.ApocFlyStep(new(29467, 26600, 19490)), Is.Null, "already out of the rain");
+            var clear = Npc<Raider>(30600, 25335, 19490);
+            live.Add(clear);
+            Assert.That(Rule(clear, apoc, live, false, Warrior)?.Action, Is.EqualTo(T.BotAction.StandOff), "nobody keeps him while he flies");
+            if (T.BarrierMovesBots(T.HorsemenRoom))
+            {
+                Assert.That(T.KeepInsideFor(apoc, spot), Is.EqualTo(spot), "the room keeps the fly ring while he flies");
+                T.ApocalypseFlying = () => false;
+                Assert.That(Flat(T.KeepInsideFor(apoc, spot), T.HorsemenRoom.Middle), Is.LessThanOrEqualTo(T.HorsemenRoom.InsideRadius + 1),
+                    "on the ground the room's 800 again");
+            }
+        }
+
+        [Test]
+        public void OnTheGroundEveryoneButHisPartyKillsTheHarbingersFirst()
+        {
+            var apoc = Npc<TestApocalypse>(29467, 25235, 19490);
+            var tank = Npc<Raider>(29467, 25335, 19490);
+            var melee = Npc<Raider>(29400, 25300, 19490);
+            var h1 = Npc<TestHarbinger>(29700, 25235, 19490);
+            var h2 = Npc<TestHarbinger>(29300, 25200, 19490);
+            h2.Hurt = 40;
+            apoc.TargetObject = tank;
+            var live = new List<GameNPC> { apoc, tank, melee, h1, h2 };
+            Assert.That(Rule(tank, apoc, live, false, Warrior), Is.Null, "the party he fights holds him");
+            var a = Rule(melee, apoc, live, false, Warrior);
+            Assert.That((a?.Action, a?.Target), Is.EqualTo(((T.BotAction?)T.BotAction.Retarget, (GameNPC)h2)), "the most hurt Harbinger first");
+            h1.Dead = h2.Dead = true;
+            Assert.That(Rule(melee, apoc, live, false, Warrior), Is.Null, "none left: melee on him");
+            var wizard = Npc<Raider>(29467, 25235, 19490);
+            live.Add(wizard);
+            var ring = Rule(wizard, apoc, live, true, Wizard);
+            Assert.That(ring?.Action, Is.EqualTo(T.BotAction.Reposition), "the back line to its party's spot");
+            Assert.That(Flat(ring.Value.StandAt.Value, T.HorsemenRoom.Middle), Is.EqualTo(T.ApocPartyRing).Within(2));
+        }
+
+        // ---- Warlord Dorinakka ----------------------------------------------------------------------------------------
+
+        [Test]
+        public void DorinakkasFarKnightsDieFirstAndHisCastersTakeTheRest()
+        {
+            var lord = Npc<TestDorinakka>(35625, 41676, 15631);
+            var far = Npc<Mob>(35303, 40668, 15631); far.PackageID = T.DorinakkaKnights; far.Name = "crypt knight";
+            var near = Npc<Mob>(35303, 41627, 15631); near.PackageID = T.DorinakkaKnights; near.Name = "crypt knight";
+            var live = new List<GameNPC> { lord, far, near };
+            Assert.That(T.ClearFirstOwner(far, live), Is.SameAs(lord), "1,058 from him: cleared first");
+            Assert.That(T.ClearFirstOwner(near, live), Is.Null, "325 from him: in his fight");
+            var tank = Npc<Raider>(35725, 41676, 15631);
+            var wizard = Npc<Raider>(35300, 42200, 15631);
+            lord.TargetObject = tank;
+            live.AddRange([tank, wizard]);
+            near.Fighting = true;
+            Assert.That(Rule(wizard, lord, live, true, Wizard)?.Target, Is.SameAs(near), "casters on the knight beside him");
+            Assert.That(Rule(wizard, lord, live, true, Scout), Is.Null, "archers stay on him (his 70% magic is not theirs)");
+        }
+
+        // ---- the Silencer --------------------------------------------------------------------------------------------
+
+        [Test]
+        public void AtMostNineRaidersHitTheSilencer()
+        {
+            var silencer = Npc<TestSilencer>(31035, 36303, 15621);
+            var tank = Npc<Raider>(31100, 36303, 15621);
+            silencer.TargetObject = tank;
+            var live = new List<GameNPC> { silencer, tank };
+            var raiders = Enumerable.Range(0, T.SilencerAttackerCap + 2).Select(i => Npc<Raider>(31200 + i * 10, 36400, 15621)).ToList();
+            live.AddRange(raiders);
+            for (int i = 0; i < T.SilencerAttackerCap; i++)
+                Assert.That(Rule(raiders[i], silencer, live, false, Warrior), Is.Null, $"attacker {i + 1} fights");
+            var tenth = Rule(raiders[T.SilencerAttackerCap], silencer, live, false, Warrior);
+            Assert.That(tenth?.Action, Is.EqualTo(T.BotAction.StandOff), "a tenth makes his chance 1% a hit");
+            Assert.That(Flat(tenth.Value.StandAt.Value, At(silencer)), Is.EqualTo(T.SilencerStandOff).Within(1));
+            Assert.That(Rule(raiders[0], silencer, live, false, Warrior), Is.Null, "a raider keeps its place while it fights");
+            Assert.That(Rule(tank, silencer, live, false, Warrior), Is.Null, "the party he fights always does");
+            Assert.That(T.TakeAttackerSlot(silencer, raiders[0], T.SilencerAttackerCap, 1_000 + T.SilencerSlotMilliseconds + 1, ask: false),
+                Is.False, "a place nobody asked for in 8 s is freed");
+            T.SilencerResisting = () => true;
+            Assert.That(Rule(raiders[1], silencer, live, false, Warrior)?.Action, Is.EqualTo(T.BotAction.StandOff), "his 99%: hold");
+            Assert.That(Rule(tank, silencer, live, false, Warrior), Is.Null, "his target's party keeps him");
+            Assert.That(T.AllDungeonRules.Single(r => r.Encounter == nameof(Silencer)).NoPets(silencer), Is.True, "no pets on him");
+        }
+
+        // ---- the Bane of Hope, Fate's Chosen, Lord Sanguis ------------------------------------------------------------------
+
+        [Test]
+        public void FatesChosenDiesBeforeTheBaneAndTheBanesBackLineSpreads()
+        {
+            var bane = Npc<TestBane>(31265, 30833, 13954);
+            var fate = Npc<TestFate>(37500, 30162, 13969);
+            var live = new List<GameNPC> { bane, fate };
+            Assert.That(T.ClearFirstOwner(fate, live), Is.SameAs(bane), "it stands 123 from a spot the Bane throws raiders to");
+            var tank = Npc<Raider>(31300, 30833, 13954);
+            var healer = Npc<Raider>(31265, 30900, 13954);
+            bane.TargetObject = tank;
+            live.AddRange([tank, healer]);
+            var a = Rule(healer, bane, live, false, Cleric);
+            Assert.That(a?.Action, Is.EqualTo(T.BotAction.Reposition));
+            Assert.That(Flat(a.Value.StandAt.Value, At(bane)), Is.EqualTo(T.BaneRing).Within(2));
+        }
+
+        [Test]
+        public void SanguisBloodMagesAreTheCastersAndTheNewRowsAreInTheCatalog()
+        {
+            Assert.That(T.For(nameof(LordSanguis))?.RangedAdds, Does.Contain(nameof(BloodMage)));
+            Assert.That(T.For(nameof(LichLordSanguis))?.RangedAdds, Does.Contain(nameof(BloodMage)));
+            Assert.That(T.For(nameof(Fuladl))?.RequiredAdds, Is.EqualTo(new[] { nameof(FuladlAdd) }), "95% while a part lives");
+            Assert.That(T.For(nameof(Fulafeallan))?.RequiredAdds, Is.EqualTo(new[] { nameof(FulafeallanAdd) }));
+            Assert.That(T.For(nameof(JehrogBysen))?.After, Is.EqualTo(nameof(UlorBysen)), "Ulor first (period)");
+            Assert.That(T.For(nameof(LurfosHerald)) is { SpreadRadius: 300, MeleeBehind: true, TanksTaunt: true }, Is.True);
+            Assert.That(T.For(nameof(ScurceolHyrde))?.AddsInOrder, Is.True, "one orb at a time");
+            Assert.That(T.For(nameof(BeranSupplyMaster)) is { HasHazards: true, HazardRadius: 1000 }, Is.True);
+            foreach (string summoner in new[] { nameof(SummonerRoesia), nameof(SummonerCunovinda), nameof(SummonerLossren), nameof(GrandSummonerGovannon) })
+                Assert.That(T.For(summoner)?.FightAtHomeRadius, Is.EqualTo(1000), summoner);
+            Assert.That(T.For(nameof(SummonerLossren))?.RangedAdds, Is.EqualTo(new[] { nameof(ExplodeUndead), nameof(TorturedSouls) }));
+        }
+
+        // ---- the Spectral Provisioner ---------------------------------------------------------------------------------------
+
+        [Test]
+        public void TheProvisionerIsAmbushedOnHisLoopAndNoBotWastesHeatSpiritOrColdOnHim()
+        {
+            Assert.That(T.ProvisionerStations.Length, Is.EqualTo(7), "six points (his cross's middle twice, 171 apart; point2 and point8 89 apart) and one long leg");
+            for (int i = 0; i < T.ProvisionerStations.Length; i++)
+                for (int j = 0; j < i; j++)
+                    Assert.That(Flat(T.ProvisionerStations[i], T.ProvisionerStations[j]), Is.GreaterThan(300));
+            var provisioner = Npc<TestProvisioner>(30940, 39418, 17004);
+            var raider = Npc<Raider>(30050, 39425, 17004);
+            var live = new List<GameNPC> { provisioner, raider };
+            int party = Array.FindIndex(T.ProvisionerStations, s => Flat(s, new(30050, 39425, 17004)) < 1);
+            Assert.That(Rule(raider, provisioner, live, false, Warrior, party)?.Action, Is.EqualTo(T.BotAction.Reposition),
+                "890 off: the melee wait at the station");
+            Assert.That(Rule(raider, provisioner, live, true, Wizard, party)?.Action, Is.EqualTo(T.BotAction.None),
+                "within 1,400 of the station: the casters fire");
+            var rule = T.AllDungeonRules.Single(r => r.Encounter == nameof(DOL.GS.Scripts.SpectralProvisioner));
+            Assert.That(rule.Forbids, Is.EquivalentTo(new[] { eDamageType.Heat, eDamageType.Spirit, eDamageType.Cold }));
+            var manifestation = Npc<Mob>(29979, 39429, 17006); manifestation.PackageID = T.ProvisionerLevel;
+            live.Add(manifestation);
+            Assert.That(T.ClearFirstOwner(manifestation, live), Is.SameAs(provisioner), "his level dies first");
+        }
+
+        // ---- Summoner's Hall -----------------------------------------------------------------------------------------------
+
+        [Test]
+        public void TheRaidFightsASummonerInsideHerTether()
+        {
+            UseRegion(248);
+            var lossren = Npc<TestLossren>(39276, 41166, 16001);
+            // The Hibernia raid's muster, PC log e3b8238: 1,388 from her spawn.
+            var caster = Npc<Raider>(37889, 41358, 16001);
+            var chased = Npc<Raider>(38200, 41300, 16001);
+            lossren.TargetObject = chased;
+            var live = new List<GameNPC> { lossren, caster, chased };
+            var a = Rule(caster, lossren, live, true, Wizard);
+            Assert.That(a?.Action, Is.EqualTo(T.BotAction.Reposition));
+            Assert.That(Flat(a.Value.StandAt.Value, At(lossren)), Is.LessThan(T.SummonerInnerRadius), "in to fight within 900 of her home");
+            Assert.That(Rule(chased, lossren, live, true, Wizard), Is.Null, "the one she chases is the catalog's: it leads her home");
+            var near = Npc<Raider>(39000, 41166, 16001);
+            live.Add(near);
+            Assert.That(Rule(near, lossren, live, false, Warrior), Is.Null, "already inside");
+            // On one of her souls the soul's summoner counts.
+            var soul = Npc<TestSoul>(38505, 41211, 16001);
+            live.Add(soul);
+            Assert.That(Rule(caster, soul, live, false, Warrior)?.Action, Is.EqualTo(T.BotAction.Reposition));
+            Assert.That(T.SummonerStepIn(new(39276, 42500, 16001), new(39276, 41166, 16001)).Value.Y,
+                Is.EqualTo(41166 + T.SummonerInnerRadius - T.CloseInInset).Within(1));
+        }
+
+        [Test]
+        public void LossrensGhoulIsEveryCastersFirst()
+        {
+            UseRegion(248);
+            var lossren = Npc<TestLossren>(39276, 41166, 16001);
+            var wizard = Npc<Raider>(39000, 41166, 16001);
+            var warrior = Npc<Raider>(39200, 41166, 16001);
+            var soul = Npc<TestSoul>(39189, 41500, 16000);
+            var live = new List<GameNPC> { lossren, wizard, warrior, soul };
+            var ghoul = Npc<TestGhoul>(39745, 41176, 16001);
+            live.Add(ghoul);
+            Assert.That(Rule(wizard, lossren, live, true, Wizard)?.Target, Is.SameAs(ghoul));
+            Assert.That(Rule(wizard, soul, live, true, Wizard)?.Target, Is.SameAs(ghoul), "from a soul too");
+            Assert.That(Rule(warrior, lossren, live, false, Warrior), Is.Null, "melee stay on her");
+        }
+
+        // ---- Krondon -------------------------------------------------------------------------------------------------------
+
+        [Test]
+        public void DebensMagesAreTheCastersFirstAndHisFightersTheMelees()
+        {
+            UseRegion(61);
+            var deben = Npc<TestDeben>(21615, 54280, 14076);
+            var tank = Npc<Raider>(21700, 54280, 14076);
+            var wizard = Npc<Raider>(21400, 54300, 14076);
+            var hero = Npc<Raider>(21600, 54200, 14076);
+            var mage = Npc<TestMage>(21650, 54350, 14076);
+            var fighter = Npc<TestFighter>(21600, 54250, 14076);
+            deben.TargetObject = tank;
+            var live = new List<GameNPC> { deben, tank, wizard, hero, mage, fighter };
+            Assert.That(Rule(wizard, deben, live, true, Wizard)?.Target, Is.SameAs(mage));
+            Assert.That(Rule(hero, deben, live, false, Warrior)?.Target, Is.SameAs(fighter));
+            Assert.That(Rule(tank, deben, live, false, Warrior), Is.Null, "the party he fights holds him");
+        }
+
+        [Test]
+        public void BeransGuardsAndDrihtensStudents()
+        {
+            UseRegion(61);
+            var beran = Npc<TestBeran>(48907, 26990, 17163);
+            var tank = Npc<Raider>(48950, 26990, 17163);
+            var hero = Npc<Raider>(48800, 26900, 17163);
+            var guard = Npc<Mob>(48900, 27050, 17163); guard.Name = T.BeranGuards; guard.Fighting = true;
+            beran.TargetObject = tank;
+            var live = new List<GameNPC> { beran, tank, hero, guard };
+            Assert.That(Rule(hero, beran, live, false, Warrior)?.Target, Is.SameAs(guard));
+            // His room (37,323,68,217) lies past the test zone's edge: the same spots 10,000 south.
+            var drihten = Npc<TestDrihten>(37323, 58217, 15102);
+            var student = Npc<Mob>(36587, 58029, 15116); student.PackageID = T.DrihtenStudents;
+            var stranger = Npc<Mob>(31000, 50000, 15116); stranger.PackageID = T.DrihtenStudents;
+            live = [drihten, student, stranger];
+            Assert.That(T.ClearFirstOwner(student, live), Is.SameAs(drihten), "760 from him: dies first");
+            Assert.That(T.ClearFirstOwner(stranger, live), Is.Null, "out of his call");
+        }
+
+        // ---- Lord Gildas ---------------------------------------------------------------------------------------------------
+
+        [Test]
+        public void ATankOnItsFeetTakesGildasOffHisStunnedTarget()
+        {
+            var stunned = Npc<Raider>(0, 0, 0);
+            var near = Npc<Raider>(100, 0, 0);
+            var far = Npc<Raider>(300, 0, 0);
+            var alsoStunned = Npc<Raider>(50, 0, 0);
+            var tanks = new (GameLiving, float, bool)[] { (stunned, 10f, true), (near, 100f, false), (far, 300f, false), (alsoStunned, 50f, true) };
+            Assert.That(T.TakeOverFromStunned(stunned, true, tanks), Is.SameAs(near));
+            Assert.That(T.TakeOverFromStunned(stunned, false, tanks), Is.Null, "his target is on its feet: no taunt");
+            var gildas = Npc<TestGildas>(29015, 41910, 12933);
+            var tank = Npc<Raider>(29115, 41910, 12933);
+            var melee = Npc<Raider>(29100, 41930, 12933);
+            gildas.TargetObject = tank;
+            var live = new List<GameNPC> { gildas, tank, melee };
+            Assert.That(Rule(melee, gildas, live, false, Warrior)?.Action, Is.EqualTo(T.BotAction.Reposition), "behind him (he blocks in front)");
+        }
+    }
+}
