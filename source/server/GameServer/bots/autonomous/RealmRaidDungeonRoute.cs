@@ -296,8 +296,22 @@ namespace DOL.GS
         private int _attemptRaidSize;
         private GameLiving[] _attemptParticipants;
 
+        /// <summary>The boss is fighting the few raiders it caught before the muster (EpicEncounterTactics.EarlyPull.Hold):
+        /// they fight it, the rest of the raid gathers at the muster and nobody else is sent in until enough are there.</summary>
+        private bool _skirmishHeld;
+
+        private void HoldForSkirmish(long now)
+        {
+            Destination = _musterPoint; Hold = true;
+            Status = $"Holding at the muster while {_target.Name} fights the raiders it caught";
+            // It is in a fight: the pull reached it. Waiting for the raid is not a stalled fight.
+            _pulls.SawCombat();
+            _targetProgressTick = now;
+        }
+
         private void BeginAttempt(GameLiving[] raiders, long now)
         {
+            _skirmishHeld = false;
             _musterEngaged = true;
             _musterEngagedTick = now;
             _engaged.Clear();
@@ -319,6 +333,7 @@ namespace DOL.GS
         private bool EndAttempt(long now, string how)
         {
             _musterEngaged = false;
+            _skirmishHeld = false;
             int engaged = _engaged.Count;
             int fallen = _engaged.Count(p => !p.IsAlive || p.CurrentRegionID != _region || p is GameBot { IsReturningAfterRelease: true });
             _engaged.Clear();
@@ -566,10 +581,89 @@ namespace DOL.GS
         }
 
         private RealmRaidDungeonRoute(ushort region, DbZonePoint entrance, Vector3 entry, Vector3 trigger, string[] finals,
-            string[] objectives = null, eRealm realm = eRealm.None)
+            string[] objectives = null, eRealm realm = eRealm.None) : this(region, entrance, entry, trigger, finals, objectives, realm, null, null)
+        {
+        }
+
+        private RealmRaidDungeonRoute(ushort region, DbZonePoint entrance, Vector3 entry, Vector3 trigger, string[] finals,
+            string[] objectives, eRealm realm, DbZonePoint inner, GameNPC[] gates)
         {
             _region = region; Entrance = entrance; Front = Destination = entry; _trigger = trigger; _finalTypes = finals;
-            _objectives = objectives; _realm = realm;
+            _objectives = objectives; _realm = realm; InnerEntrance = inner ?? entrance; _gates = gates;
+        }
+
+        /// <summary>The zone point into the raid's own dungeon: <see cref="Entrance"/> itself, or for a raid that walks
+        /// through another dungeon (Summoner's Hall, Crystal Cave) the way out of that one into its own.</summary>
+        public DbZonePoint InnerEntrance { get; }
+
+        // A route gate (RealmRaidRouteGate): the living bosses on the raid's walk through another dungeon. The route is then
+        // that dungeon's, its objectives are these bosses and it is complete once they are all dead.
+        private readonly GameNPC[] _gates;
+        public bool IsGate => _gates != null;
+        public IReadOnlyList<GameNPC> Gates => _gates ?? [];
+        private bool FinalsDown() => _gates != null
+            ? _gates.All(g => !g.IsAlive)
+            : _finalTypes.All(type => _finals.TryGetValue(type, out var boss) && !boss.IsAlive);
+
+        /// <summary>
+        /// The bosses on <paramref name="main"/>'s walk through the dungeon its way in leads through (RealmRaidRouteGate), as
+        /// a route of their own in that dungeon; false when the raid walks through no other dungeon or nothing living blocks
+        /// the walk. <paramref name="detail"/> says what was found (or why nothing was looked at).
+        /// </summary>
+        public static bool TryCreateGate(RealmRaidDungeonRoute main, out RealmRaidDungeonRoute gate, out string detail)
+        {
+            gate = null;
+            DbZonePoint outer = main?.Entrance, inner = main?.InnerEntrance;
+            if (outer == null || inner == null || outer.TargetRegion == main._region || inner.SourceRegion != outer.TargetRegion)
+            { detail = "no dungeon on the way in"; return false; }
+            ushort through = outer.TargetRegion;
+            Region region = WorldMgr.GetRegion(through);
+            var nav = PathfindingProvider.Instance;
+            Vector3 arrival = new(outer.TargetX, outer.TargetY, outer.TargetZ), exit = new(inner.SourceX, inner.SourceY, inner.SourceZ);
+            Zone zone = region?.GetZone((int)arrival.X, (int)arrival.Y), exitZone = region?.GetZone((int)exit.X, (int)exit.Y);
+            if (zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) { detail = "no navigation mesh on the way"; return false; }
+            Vector3 from = nav.GetClosestPoint(zone, arrival, 48, 48, 64, nav.DefaultFilters) ?? arrival;
+            Vector3 to = exitZone != null && nav.HasNavmesh(exitZone)
+                ? nav.GetClosestPoint(exitZone, exit, 128, 128, 256, nav.DefaultFilters) ?? exit : exit;
+            var walk = new List<Vector3> { from };
+            if (exitZone == zone)
+            {
+                Span<WrappedPathfindingNode> nodes = stackalloc WrappedPathfindingNode[256];
+                PathfindingResult path = nav.GetPathStraight(zone, from, to, nav.DefaultFilters, nodes);
+                if (path.Status is PathfindingStatus.PathFound or PathfindingStatus.PartialPathFound)
+                    for (int i = 0; i < Math.Min(path.NodeCount, nodes.Length); i++) walk.Add(nodes[i].Position);
+            }
+            if (Vector3.DistanceSquared(walk[^1], to) > 64 * 64) walk.Add(to);
+            var blocking = new List<GameNPC>();
+            foreach (GameNPC npc in region.Objects.OfType<GameNPC>())
+            {
+                if (npc is not GameEpicBoss || !npc.IsAlive || npc.ObjectState != GameObject.eObjectState.Active || npc.Realm != eRealm.None ||
+                    (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 ||
+                    npc.Brain is not StandardMobBrain { AggroRange: > 0 } brain)
+                    continue;
+                if (RealmRaidRouteGate.Blocks(walk, new(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z), brain.AggroRange) ||
+                    RealmRaidRouteGate.Blocks(walk, new(npc.X, npc.Y, npc.Z), brain.AggroRange))
+                    blocking.Add(npc);
+            }
+            detail = $"walk={walk.Count} points from {(int)from.X},{(int)from.Y},{(int)from.Z} to {(int)to.X},{(int)to.Y},{(int)to.Z}";
+            if (blocking.Count == 0) return false;
+            GameNPC[] gates = blocking.ToArray();
+            gate = new(through, outer, from, to, [], gates.Select(g => g.Name).Distinct(StringComparer.Ordinal).ToArray(), main._realm,
+                inner, gates) { Focus = null };
+            detail += $" bosses=\"{string.Join(",", gates.Select(g => $"{g.Name}@{g.X},{g.Y},{g.Z}"))}\"";
+            return true;
+        }
+
+        /// <summary>The raid comes back to this route after fighting a gate on its way (RealmRaidRouteGate): the clocks that
+        /// measure waiting and stalls start again, so the time spent at the gate is not counted against this route.</summary>
+        public void Resumed(long now)
+        {
+            _frontAbsentSince = 0; _musterEmptySince = 0; _formedWaitSince = 0; _holdSince = 0; _blockedSince = 0;
+            _targetProgressTick = _targetApproachTick = _musterSince = now;
+            if (_regrouping) _regroupSince = now;
+            _musterProgress.Clear();
+            _routeDeaths.Clear();
+            _standingInside.Clear();
         }
 
         /// <summary>
@@ -620,7 +714,7 @@ namespace DOL.GS
                 if ((homeRegion == 0 || !RealmRaidNeutralEvents.IsNeutralRegion(region)) &&
                     !AutonomousZonePointApproach.TryResolve(nav, inside, floor.Value, trigger, 220, out _))
                 { why.Add($"{id}: no approach to the encounter"); continue; }
-                route = new(region, outer, floor.Value, trigger, finals, objectives, realm);
+                route = new(region, outer, floor.Value, trigger, finals, objectives, realm, inner, null);
                 route.ObserveCompletion();
                 LastFailure = "";
                 return true;
@@ -813,6 +907,7 @@ namespace DOL.GS
                 _musterTarget = _target;
                 _musterSince = now;
                 _musterEngaged = false;
+                _skirmishHeld = false;
                 _regrouping = false;
                 _engaged.Clear();
                 _musterEmptySince = 0;
@@ -848,7 +943,7 @@ namespace DOL.GS
                 // or everyone back to the muster, never piecemeal (Aidon the Archwizard, 2026-11-05).
                 GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
                 GameLiving[] fighting = inside.Where(p => p.IsWithinRadius(_target, TargetPresenceRadius)).ToArray();
-                if (!_musterEngaged)
+                if (!_musterEngaged || _skirmishHeld)
                 {
                     bool resets = EpicEncounterTactics.ResetsWhenLeft(_target);
                     // Pulling back only shakes it off when the muster lies past its tether (Fuladl, Krondon 2026-11-06: tether
@@ -856,20 +951,47 @@ namespace DOL.GS
                     int tether = EpicEncounterTactics.LeashOf(_target)?.TetherRange is int t && t > 0 ? t : _target.TetherRange;
                     float musterFromSpawn = Vector3.Distance(_musterPoint, new Vector3(_target.SpawnPoint.X, _target.SpawnPoint.Y, _target.SpawnPoint.Z));
                     bool shakesOff = EpicEncounterTactics.BreakOffShakesOff(resets, tether, musterFromSpawn);
-                    var choice = EpicEncounterTactics.ChooseEarlyPull(fighting.Length, inside.Length, shakesOff);
-                    // Pulled back from it a moment ago and it is still on the raid: it chases, so everyone commits now.
-                    if (choice == EpicEncounterTactics.EarlyPull.Disengage && _lastBreakOff.TryGetValue(_target, out long last) &&
-                        now - last < BreakOffRepeatMilliseconds)
-                        choice = EpicEncounterTactics.EarlyPull.Commit;
+                    // Pulled back from it a moment ago and it is still on the raid: it chases.
+                    bool pulledBack = _lastBreakOff.TryGetValue(_target, out long last) && now - last < BreakOffRepeatMilliseconds;
+                    // The whole living raid, raiders walking back after a wipe included (AttemptRaidSize), and the muster it
+                    // would wait for (70%; half after 20 minutes): a handful inside is never "the raid".
+                    int livingRaid = participants.Count(p => p.IsAlive);
+                    int musterNeeded = FinalMusterNeeded(livingRaid, now - _musterSince);
+                    var choice = EpicEncounterTactics.ChooseEarlyPull(fighting.Length, inside.Length, livingRaid, shakesOff, pulledBack,
+                        musterNeeded);
+                    if (_skirmishHeld)
+                    {
+                        _attemptLowestPercent = Math.Min(_attemptLowestPercent, _target.HealthPercent);
+                        if (choice != EpicEncounterTactics.EarlyPull.Commit)
+                        {
+                            // Still too few: whoever it reaches fights it, the rest keep gathering at the muster.
+                            _engaged.UnionWith(fighting);
+                            HoldForSkirmish(now);
+                            return true;
+                        }
+                        // Enough of the raid has gathered while it fought the few it caught: everyone goes in now.
+                        _skirmishHeld = false;
+                        _engaged.UnionWith(inside);
+                        _attemptRaidSize = Math.Max(_attemptRaidSize, livingRaid);
+                        Destination = Front; Hold = false;
+                        _nextTargetCall = 0;
+                        log.Warn($"REALM_EXPEDITION_EARLY_PULL region={_region} target=\"{_target.Name}\" near={fighting.Length} " +
+                                 $"inside={inside.Length} raid={livingRaid} needed={musterNeeded} decision=Commit health={_target.HealthPercent} " +
+                                 $"reason=\"the raid gathered while the few it caught held it; everyone goes in\"");
+                        _pulls.SawCombat();
+                        return false;
+                    }
                     // Logged for a raid's final or a catalogued boss (at most every ten minutes each), and for every pull-back;
                     // a Darkness Falls named or an epic trash pack that is simply fought goes to the debug log (2026-11-06: 53
                     // lines in four hours, one per named).
                     bool isFinal = _finalTypes.Contains(_target.GetType().Name);
                     long since = _earlyPullLogged.TryGetValue(_target.Name, out long logged) ? now - logged : -1;
                     string line = $"REALM_EXPEDITION_EARLY_PULL region={_region} target=\"{_target.Name}\" near={fighting.Length} " +
-                                  $"inside={inside.Length} resets={resets} tether={tether} musterFromSpawn={(int)musterFromSpawn} decision={choice} health={_target.HealthPercent} " +
+                                  $"inside={inside.Length} raid={livingRaid} needed={musterNeeded} resets={resets} tether={tether} " +
+                                  $"musterFromSpawn={(int)musterFromSpawn} decision={choice} health={_target.HealthPercent} " +
                                   $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z}";
-                    if (EpicEncounterTactics.EarlyPullWorthLogging(choice, isFinal, EpicEncounterTactics.LeashOf(_target) != null, since))
+                    if (choice == EpicEncounterTactics.EarlyPull.Hold ||
+                        EpicEncounterTactics.EarlyPullWorthLogging(choice, isFinal, EpicEncounterTactics.LeashOf(_target) != null, since))
                     {
                         _earlyPullLogged[_target.Name] = now;
                         log.Warn(line + $" final={isFinal} quietSinceLast={_quietEarlyPulls}");
@@ -889,6 +1011,15 @@ namespace DOL.GS
                         _targetProgressTick = now;
                         return true;
                     }
+                    if (choice == EpicEncounterTactics.EarlyPull.Hold)
+                    {
+                        // The raiders it caught are in this fight (scored as a skirmish unless half the raid falls in it); the rest
+                        // are not fed in by twos and threes, they gather at the muster.
+                        BeginAttempt(fighting, now);
+                        _skirmishHeld = true;
+                        HoldForSkirmish(now);
+                        return true;
+                    }
                     // Commit: the whole raid is in this attempt, and goes to the fight now.
                     BeginAttempt(inside, now);
                     Destination = Front; Hold = false;
@@ -902,7 +1033,8 @@ namespace DOL.GS
             }
             // The raid needs time to cross from the muster point to the boss (run 5: the engage repeated every ten
             // seconds while Govannon was still out of combat); only after that is "out of combat" a wipe.
-            if (_musterEngaged && now - _musterEngagedTick < FinalEngageGraceMilliseconds)
+            // A held skirmish sent nobody across: its end is judged at once.
+            if (_musterEngaged && !_skirmishHeld && now - _musterEngagedTick < FinalEngageGraceMilliseconds)
                 return false;
             if (_musterEngaged)
             {
@@ -1068,19 +1200,23 @@ namespace DOL.GS
             GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
             Zone zone = WorldMgr.GetRegion(_region)?.GetZone((int)Front.X, (int)Front.Y);
             if (!TryRegroupFront(inside, out Vector3 body) || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
-                return Front;
-            if (Vector3.Distance(body, boss) <= FinalMusterStandOff + 200)
-                return body;
+                return GuardMuster(Front, null, boss);
             // Searched from the encounter's approach toward the raid, so the path always starts at the encounter even
             // when it is too long to finish. From the raid's side a partial path ended wherever the search gave up:
             // Legion's muster in Darkness Falls was placed 19,000 units from him and nobody ever reached it (run 9).
             Span<WrappedPathfindingNode> nodes = stackalloc WrappedPathfindingNode[256];
             PathfindingResult path = nav.GetPathStraight(zone, Front, body, nav.DefaultFilters, nodes);
-            if (path.Status == PathfindingStatus.PathFound || path.Status == PathfindingStatus.PartialPathFound)
+            bool found = path.Status == PathfindingStatus.PathFound || path.Status == PathfindingStatus.PartialPathFound;
+            Vector3[] walk = found ? new Vector3[Math.Min(path.NodeCount, nodes.Length)] : [];
+            for (int i = 0; i < walk.Length; i++) walk[i] = nodes[i].Position;
+            Vector3? Floor(Vector3 p) => nav.GetClosestPoint(zone, p, 64, 64, 128, nav.DefaultFilters);
+            if (Vector3.Distance(body, boss) <= FinalMusterStandOff + 200)
+                return GuardMuster(body, walk, boss, Floor);
+            if (found)
             {
-                for (int i = 1; i < path.NodeCount; i++)
+                for (int i = 1; i < walk.Length; i++)
                 {
-                    Vector3 a = nodes[i - 1].Position, b = nodes[i].Position;
+                    Vector3 a = walk[i - 1], b = walk[i];
                     if (Vector3.Distance(b, boss) < FinalMusterStandOff) continue;
                     // a inside the stand-off circle, b outside: the crossing point on a-b.
                     float lo = 0, hi = 1;
@@ -1089,12 +1225,95 @@ namespace DOL.GS
                         float mid = (lo + hi) / 2;
                         if (Vector3.Distance(Vector3.Lerp(a, b, mid), boss) >= FinalMusterStandOff) hi = mid; else lo = mid;
                     }
-                    Vector3? floor = nav.GetClosestPoint(zone, Vector3.Lerp(a, b, hi), 64, 64, 128, nav.DefaultFilters);
-                    return floor ?? b;
+                    return GuardMuster(Floor(Vector3.Lerp(a, b, hi)) ?? b, walk, boss, Floor);
                 }
-                if (path.NodeCount > 0) return nodes[path.NodeCount - 1].Position;
+                if (walk.Length > 0) return GuardMuster(walk[^1], walk, boss, Floor);
             }
-            return Front;
+            return GuardMuster(Front, walk, boss, Floor);
+        }
+
+        /// <summary>How far outside a living boss's aggro range (other than the encounter mustered for) a muster must lie.</summary>
+        public const float UntargetedBossMargin = 300f;
+        /// <summary>The walk from the encounter towards the raid is sampled this often for a safe muster.</summary>
+        public const float MusterSafeStep = 150f;
+
+        /// <summary>A living boss's aggro sphere (<see cref="UntargetedBossMargin"/> included) a muster must stay out of.</summary>
+        public readonly record struct BossDanger(string Name, Vector3 At, float Radius);
+
+        public static bool InBossDanger(Vector3 point, IEnumerable<BossDanger> dangers) =>
+            dangers.Any(d => Vector3.DistanceSquared(point, d.At) <= d.Radius * d.Radius);
+
+        /// <summary>
+        /// The first point along <paramref name="walk"/> (the path from the encounter's approach towards the raid's main body),
+        /// at least <paramref name="standOff"/> from the encounter and every <see cref="MusterSafeStep"/>, that lies outside
+        /// every danger; then <paramref name="fallback"/> (the main body) when that is safe; else null.
+        /// </summary>
+        public static Vector3? SafeMusterAlong(IReadOnlyList<Vector3> walk, Vector3 encounter, float standOff,
+            IReadOnlyList<BossDanger> dangers, Vector3? fallback, Func<Vector3, Vector3?> floor = null)
+        {
+            if (walk != null)
+                for (int i = 1; i < walk.Count; i++)
+                {
+                    Vector3 a = walk[i - 1], b = walk[i];
+                    float length = Vector3.Distance(a, b);
+                    int steps = Math.Max(1, (int)MathF.Ceiling(length / MusterSafeStep));
+                    for (int k = 0; k <= steps; k++)
+                    {
+                        Vector3 raw = Vector3.Lerp(a, b, k / (float)steps);
+                        if (Vector3.Distance(raw, encounter) < standOff) continue;
+                        Vector3 p = floor?.Invoke(raw) ?? raw;
+                        if (!InBossDanger(p, dangers)) return p;
+                    }
+                }
+            return fallback is Vector3 f && !InBossDanger(f, dangers) ? f : null;
+        }
+
+        /// <summary>
+        /// Every living boss in the dungeon other than the encounter mustered for (its own adds, the encounters it is linked
+        /// with and ground hazards are part of its fight) and its aggro sphere: at its spawn, and where it stands if elsewhere.
+        /// </summary>
+        private List<BossDanger> UntargetedBossDangers()
+        {
+            var dangers = new List<BossDanger>();
+            foreach (GameNPC npc in _live)
+            {
+                if (npc is not GameEpicBoss || npc == _target || !npc.IsAlive || npc.ObjectState != GameObject.eObjectState.Active ||
+                    npc.Realm != eRealm.None || (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 ||
+                    npc.Brain is not DOL.AI.Brain.StandardMobBrain { AggroRange: > 0 } brain || IsEncounterHazard(npc) ||
+                    EpicEncounterTactics.Covers(npc, _target, _live) || EpicEncounterTactics.IsRequiredAddOfLiveBoss(npc, _live))
+                    continue;
+                float radius = brain.AggroRange + UntargetedBossMargin;
+                var spawn = new Vector3(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z);
+                dangers.Add(new(npc.Name, spawn, radius));
+                var at = new Vector3(npc.X, npc.Y, npc.Z);
+                if (Vector3.DistanceSquared(at, spawn) > 64 * 64) dangers.Add(new(npc.Name, at, radius));
+            }
+            return dangers;
+        }
+
+        /// <summary>
+        /// A muster is never placed in a living boss's aggro range (plus <see cref="UntargetedBossMargin"/>) unless it is the
+        /// encounter the raid musters for. Owner's PC, 2026-11-14 (build e3b8238): Tuscaran Glacier's muster for a hrimthursa
+        /// harrower went to 15025,50189, 76 units from Icelord Agmundr's spawn (aggro 600), after he had been set aside; 69
+        /// raiders gathered there and 80 died to him and 29 to his adds. Moved further back along the walk to the raid when
+        /// it lands in one; kept (with a warning) only when no point of the walk is safe.
+        /// </summary>
+        private Vector3 GuardMuster(Vector3 chosen, IReadOnlyList<Vector3> walk, Vector3 encounter, Func<Vector3, Vector3?> floor = null)
+        {
+            List<BossDanger> dangers = UntargetedBossDangers();
+            if (!InBossDanger(chosen, dangers)) return chosen;
+            string by = string.Join(",", dangers.Where(d => InBossDanger(chosen, [d])).Select(d => d.Name).Distinct());
+            Vector3? safe = SafeMusterAlong(walk, encounter, FinalMusterStandOff, dangers, null, floor);
+            if (safe is Vector3 moved)
+            {
+                log.Warn($"REALM_EXPEDITION_MUSTER_GUARDED region={_region} target=\"{_target?.Name}\" " +
+                         $"from={(int)chosen.X},{(int)chosen.Y},{(int)chosen.Z} to={(int)moved.X},{(int)moved.Y},{(int)moved.Z} " +
+                         $"reason=\"the muster was in the aggro range of {by}; moved back along the walk to the raid\"");
+                return moved;
+            }
+            log.Warn($"REALM_EXPEDITION_MUSTER_UNSAFE region={_region} target=\"{_target?.Name}\" at={(int)chosen.X},{(int)chosen.Y},{(int)chosen.Z} " +
+                     $"reason=\"in the aggro range of {by} and no point of the walk to the raid is clear of it\"");
+            return chosen;
         }
 
         public const long CallTargetAfterMilliseconds = 90_000;
@@ -1122,8 +1341,21 @@ namespace DOL.GS
         public static float WalkEstimate(Vector3 from, Vector3 to) =>
             Vector2.Distance(new(from.X, from.Y), new(to.X, to.Y)) + FloorChangeWeight * Math.Max(0f, MathF.Abs(to.Z - from.Z) - SameFloorBand);
 
+        /// <summary>How long the route waits for formed parties at its front before it goes on from the raid's main body.</summary>
+        public const long FormedPartiesWaitMilliseconds = 6 * 60_000;
+        /// <summary>After that wait a main body of this many will do (a party), instead of <see cref="MinimumRaidersAtTarget"/>.</summary>
+        public const int FormedWaitMinimumBody = 4;
+        private long _formedWaitSince, _formedWaitLast, _nextFormedWaitLog;
+        public const long FormedWaitGapMilliseconds = 30_000;
+
+        public static bool FormedWaitTooLong(long waitingSince, long now) =>
+            waitingSince > 0 && now - waitingSince >= FormedPartiesWaitMilliseconds;
+
         /// <summary>The living raider with the most living raiders within 1,000 units (the raid's main body).</summary>
-        private static bool TryRegroupFront(GameLiving[] inside, out Vector3 front)
+        private static bool TryRegroupFront(GameLiving[] inside, out Vector3 front) =>
+            TryRegroupFront(inside, out front, MinimumRaidersAtTarget);
+
+        private static bool TryRegroupFront(GameLiving[] inside, out Vector3 front, int minimum)
         {
             front = default;
             GameLiving best = null;
@@ -1133,7 +1365,7 @@ namespace DOL.GS
                 int count = inside.Count(p => p.IsWithinRadius(candidate, 1000));
                 if (count > bestCount) { best = candidate; bestCount = count; }
             }
-            if (best == null || bestCount < MinimumRaidersAtTarget) return false;
+            if (best == null || bestCount < minimum) return false;
             front = new(best.X, best.Y, best.Z);
             return true;
         }
@@ -1259,8 +1491,8 @@ namespace DOL.GS
             foreach (var npc in WorldMgr.GetRegion(_region)?.Objects.OfType<GameNPC>() ?? [])
                 if (_finalTypes.Contains(npc.GetType().Name) && (!_finals.TryGetValue(npc.GetType().Name, out var old) || old.IsAlive))
                     _finals[npc.GetType().Name] = npc;
-            if (_finalTypes.All(type => _finals.TryGetValue(type, out var boss) && !boss.IsAlive))
-            { Complete = true; Status = "Final encounter defeated"; }
+            if (FinalsDown())
+            { Complete = true; Status = IsGate ? "The way is clear" : "Final encounter defeated"; }
         }
 
         // Run 21 (2026-10-17): 70+ raiders fought Spindler Broodmother for over 30 minutes and nothing showed how she
@@ -1291,6 +1523,7 @@ namespace DOL.GS
         public void Advance(GameLiving[] participants, long now)
         {
             AdvanceCore(participants, now);
+            if (!Complete && !Defeated) ObserveRouteDeaths(participants, now);
             GameNPC target = _target;
             if (target != null && target.IsAlive && target.InCombat && now >= _nextControlSample)
             {
@@ -1326,6 +1559,75 @@ namespace DOL.GS
                      // Every raid dungeon (Krondon 2026-11-05: were Scurceol Hyrde's orbs alive, and why weren't they targets?).
                      (_region == 191 ? $" galladoria={DescribeLiveEncounters()}" : $" encounters={DescribeLiveEncounters()}") +
                      $" pinnedBy=\"{PinnedBy(participants)}\"");
+        }
+
+        /// <summary>Raid-wide deaths outside an attempt are judged over this window.</summary>
+        public const long RouteDeathWindowMilliseconds = 4 * 60_000;
+        /// <summary>A boss this close to where the raiders fell (their centre) is the one that killed them.</summary>
+        public const float RouteKillerRadius = 2_500f;
+        private readonly HashSet<GameLiving> _standingInside = new();
+        private readonly Queue<(long At, Vector3 Where)> _routeDeaths = new();
+
+        /// <summary>
+        /// Raiders falling outside an attempt (at a muster, on the walk) are the raid's wipe when, within
+        /// <see cref="RouteDeathWindowMilliseconds"/>, half of those inside fell and it was the raid's fight by PR #193's rule
+        /// (half the living raid was there, or half of it fell). <paramref name="standingInside"/>: raiders alive inside now;
+        /// <paramref name="livingRaid"/>: alive anywhere now.
+        /// </summary>
+        public static bool IsRouteWipe(int fallen, int standingInside, int livingRaid) =>
+            IsWipe(standingInside + fallen, fallen, 100, 100, livingRaid + fallen);
+
+        /// <summary>
+        /// Owner's PC, 2026-11-14 (build e3b8238): Icelord Agmundr, set aside after a stalled muster, killed 80 raiders at the
+        /// harrower's muster beside his spawn in two minutes, and nothing scored it: no attempt was open, so the raid ended on
+        /// the stall clock with "wipes=1". Deaths of raiders inside while no attempt is open are now counted; a raid-wide
+        /// loss to a boss (the living boss in combat nearest to where they fell) is a wipe at that boss, with its regroup and
+        /// Special Forces call, and a second one defeats the raid as any second wipe does.
+        /// </summary>
+        private void ObserveRouteDeaths(GameLiving[] participants, long now)
+        {
+            foreach (GameLiving p in _standingInside)
+                if (!p.IsAlive && !_musterEngaged) _routeDeaths.Enqueue((now, new Vector3(p.X, p.Y, p.Z)));
+            _standingInside.Clear();
+            foreach (GameLiving p in participants)
+                if (p.IsAlive && p.CurrentRegionID == _region) _standingInside.Add(p);
+            while (_routeDeaths.Count > 0 && now - _routeDeaths.Peek().At > RouteDeathWindowMilliseconds) _routeDeaths.Dequeue();
+            if (_musterEngaged) { _routeDeaths.Clear(); return; }
+            int fallen = _routeDeaths.Count;
+            if (fallen < MinimumRaidersAtTarget) return;
+            int livingRaid = participants.Count(p => p.IsAlive);
+            if (!IsRouteWipe(fallen, _standingInside.Count, livingRaid)) return;
+            Vector3 centre = default;
+            foreach (var d in _routeDeaths) centre += d.Where;
+            centre /= fallen;
+            GameNPC killer = _live.OfType<GameEpicBoss>()
+                .Where(n => n.IsAlive && n.InCombat && n.Realm == eRealm.None && n.CurrentRegionID == _region &&
+                            Vector3.Distance(new Vector3(n.X, n.Y, n.Z), centre) <= RouteKillerRadius)
+                .OrderBy(n => Vector3.DistanceSquared(new Vector3(n.X, n.Y, n.Z), centre)).FirstOrDefault();
+            _routeDeaths.Clear();
+            if (killer == null)
+            {
+                log.Warn($"REALM_EXPEDITION_ROUTE_LOSSES region={_region} fallen={fallen} inside={_standingInside.Count} raid={livingRaid} " +
+                         $"at={(int)centre.X},{(int)centre.Y},{(int)centre.Z} target=\"{TargetName}\" " +
+                         $"reason=\"half the raid inside fell outside an attempt and no boss was fighting there; no attempt used\"");
+                return;
+            }
+            int failures = _failedAttempts[killer.Name] = FailedAttempts(killer.Name) + 1;
+            _wipes.Enqueue((killer.Name, failures));
+            log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{killer.Name}\" level={killer.Level} failures={failures} " +
+                     $"of={MaximumFailedAttempts} engaged={_standingInside.Count + fallen} fallen={fallen} health={killer.HealthPercent} " +
+                     $"lowest={killer.HealthPercent} how=\"raid-wide deaths outside an attempt\" raidTarget=\"{TargetName}\" " +
+                     $"at={(int)centre.X},{(int)centre.Y},{(int)centre.Z}");
+            if (failures >= MaximumFailedAttempts)
+            {
+                DefeatedAt = killer.Name;
+                Hold = true;
+                Status = $"Defeated at {killer.Name}";
+                return;
+            }
+            _regrouping = true;
+            _regroupSince = _musterSince = now;
+            _targetProgressTick = now;
         }
 
         /// <summary>The raid's main body (the leader with most raiders within 1,000), or "-" when it has none.</summary>
@@ -1513,8 +1815,7 @@ namespace DOL.GS
                 if (_target is IGameEpicNpc) _clearedNames.Add(_target.Name);
                 _target = null;
             }
-            bool finalDeaths = _finalTypes.All(type => _finals.TryGetValue(type, out var boss) && !boss.IsAlive);
-            if (finalDeaths) { Complete = true; Status = "Final encounter defeated"; return; }
+            if (FinalsDown()) { Complete = true; Status = IsGate ? "The way is clear" : "Final encounter defeated"; return; }
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active &&
                 EpicEncounterTactics.RouteTarget(_target, live, Front, out string tacticReason) is { } tacticTarget && tacticTarget != _target)
             {
@@ -1659,7 +1960,39 @@ namespace DOL.GS
             }
             else _frontAbsentSince = 0;
             if (inside.Length < 8 || !atFront)
-            { Hold = true; Destination = Front; Status = "Waiting for formed parties inside"; return; }
+            {
+                // One unbroken wait: a pulse that went elsewhere in between (a target, a fight) starts it again.
+                if (_formedWaitSince == 0 || now - _formedWaitLast > FormedWaitGapMilliseconds) _formedWaitSince = now;
+                _formedWaitLast = now;
+                // Bounded (owner's PC, 2026-11-14, build e3b8238): Tuscaran Glacier held "Waiting for formed parties inside"
+                // from 07:45 to 07:57 with 83 raiders inside and none at the front, because the three-minute regroup above
+                // starts again whenever someone gets a little closer. After the limit the front moves to the raid's main body
+                // (any party's worth there), and the route goes on from where the raid stands.
+                if (FormedWaitTooLong(_formedWaitSince, now) && inside.Length >= MinimumRaidersAtTarget &&
+                    TryRegroupFront(inside, out Vector3 body, FormedWaitMinimumBody))
+                {
+                    log.Warn($"REALM_EXPEDITION_FRONT_REGROUP region={_region} from={(int)Front.X},{(int)Front.Y},{(int)Front.Z} " +
+                             $"to={(int)body.X},{(int)body.Y},{(int)body.Z} inside={inside.Length} " +
+                             $"reason=\"waited {(now - _formedWaitSince) / 60_000} minutes for formed parties at the front; the route goes on from the main body\"");
+                    Front = Destination = body;
+                    _frontAbsentSince = 0;
+                    _formedWaitSince = 0;
+                }
+                else
+                {
+                    if (FormedWaitTooLong(_formedWaitSince, now) && now >= _nextFormedWaitLog)
+                    {
+                        _nextFormedWaitLog = now + FormedPartiesWaitMilliseconds;
+                        int living = participants.Count(p => p.IsAlive);
+                        log.Warn($"REALM_EXPEDITION_FORMED_WAIT region={_region} minutes={(now - _formedWaitSince) / 60_000} inside={inside.Length} " +
+                                 $"living={living} outside={participants.Count(p => p.IsAlive && p.CurrentRegionID != _region)} " +
+                                 $"front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} " +
+                                 $"reason=\"too few raiders inside to go on; the rest are outside or on their way back\"");
+                    }
+                    Hold = true; Destination = Front; Status = "Waiting for formed parties inside"; return;
+                }
+            }
+            _formedWaitSince = 0;
             var nav = PathfindingProvider.Instance;
             Zone zone = WorldMgr.GetRegion(_region)?.GetZone((int)Front.X, (int)Front.Y);
             if (zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
@@ -1695,6 +2028,15 @@ namespace DOL.GS
                 .OrderBy(n => _finalTypes.Contains(n.GetType().Name) ? 1 : 0)
                 .ThenBy(n => IsEncounterAdd(n, Front, encounters) || clearFirst.ContainsKey(n) ? 0 : 1)
                 .ThenBy(n => WalkEstimate(Front, new(n.X, n.Y, n.Z))).ToArray();
+            // A gate whose bosses can't be taken as targets (gone, or no longer attackable) has nothing left to fight: the
+            // raid goes on to its own dungeon instead of waiting at the way out.
+            if (IsGate && candidates.Length == 0 && !Blocked)
+            {
+                Blocked = true;
+                log.Warn($"REALM_EXPEDITION_ROUTE_GATE_EMPTY region={_region} gates=\"{string.Join(",", Gates.Select(g => g.Name))}\" " +
+                         $"reason=\"no boss of the gate is a target; the raid goes on\"");
+                return;
+            }
             // Probe from the front and from where the parties actually stand, near or far:
             // Tuscaran's front once sat on a pad under the floor its parties stood on.
             Vector3[] anchors = DistinctAnchors(Front, inside

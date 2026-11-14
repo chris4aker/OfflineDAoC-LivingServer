@@ -3279,6 +3279,10 @@ namespace DOL.GS
 		/// <returns>the new interval</returns>
 		protected virtual int RespawnTimerCallback(ECSGameTimer respawnTimer)
 		{
+			// Fork: an epic monster waits while a realm raid is in its dungeon, and looks again every minute (RealmRaidRouteGate).
+			if (AutonomousRealmRaid.HoldsEpicRespawn(this))
+				return RealmRaidRouteGate.RespawnRecheckMilliseconds;
+
 			lock (_respawnTimerLock)
 			{
 				if (m_respawnTimer != null)

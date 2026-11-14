@@ -111,6 +111,12 @@ namespace DOL.GS
             /// <summary>Formation slots with no staging or hub post (tight ground by the entrance); skipped from then on.</summary>
             public readonly HashSet<int> UnusableSlots = new();
             public RealmRaidDungeonRoute DungeonRoute;
+            /// <summary>A living boss on the raid's walk through another dungeon, fought there before the raid goes on
+            /// (RealmRaidRouteGate); null when the way is clear.</summary>
+            public RealmRaidDungeonRoute Transit;
+            public long NextGateCheck;
+            /// <summary>Named killed and wipes taken at gates already passed (the stall rule's progress).</summary>
+            public int GateNamed, GateWipes;
             /// <summary>A dragon raid's attempts and regroups (2026-10-30); null for a dungeon raid.</summary>
             public RealmRaidDragonFight DragonFight;
             public readonly RealmRaidLootOwner.Ledger LootLedger = new();
@@ -194,6 +200,14 @@ namespace DOL.GS
                 return interval;
             return RaidTrashRespawnMilliseconds;
         }
+
+        private static volatile ushort[] _epicHoldRegions = [];
+
+        /// <summary>A dead epic monster whose respawn waits while a realm raid is in its dungeon (RealmRaidRouteGate): read
+        /// without the raid lock by the monster's respawn timer.</summary>
+        public static bool HoldsEpicRespawn(GameNPC npc) =>
+            npc != null && RealmRaidRouteGate.HoldsRespawn(RealmRaidRouteGate.HoldEpicRespawn, npc is IGameEpicNpc,
+                npc.Realm == eRealm.None, npc.RespawnInterval, Array.IndexOf(_epicHoldRegions, npc.CurrentRegionID) >= 0);
 
         public static bool IsActiveRaidDestination(ushort region, int x, int y)
         {
@@ -577,16 +591,18 @@ namespace DOL.GS
                     }
                     if (raid.Started && raid.DungeonRoute != null)
                     {
-                        raid.DungeonRoute.Advance(raid.Support, now);
+                        // A living boss on the walk through another dungeon is fought first (RealmRaidRouteGate).
+                        RealmRaidDungeonRoute route = PulseRouteGate(raid, now);
+                        route.Advance(raid.Support, now);
                         PulseReturnWave(raid, now);
-                        while (raid.DungeonRoute.TryTakeWipe(out string wipedBy, out int failures))
+                        while (route.TryTakeWipe(out string wipedBy, out int failures))
                             OnWipe(raid, wipedBy, failures, now);
-                        if (raid.DungeonRoute.Defeated)
+                        if (route.Defeated)
                         {
-                            End(raid, now, $"Defeated at {raid.DungeonRoute.DefeatedAt} after {RealmRaidDungeonRoute.MaximumFailedAttempts} failed attempts.");
+                            End(raid, now, $"Defeated at {route.DefeatedAt} after {RealmRaidDungeonRoute.MaximumFailedAttempts} failed attempts.");
                             continue;
                         }
-                        if (raid.DungeonRoute.Blocked)
+                        if (route == raid.DungeonRoute && raid.DungeonRoute.Blocked)
                         { End(raid, now, "Route blocked: no remaining encounter was reachable from the raid's positions for 20 minutes."); continue; }
                         if (raid.DungeonRoute.Complete)
                         { End(raid, now, CompletionReason(raid, $"The {raid.Definition.Name} expedition defeated the final encounter.")); continue; }
@@ -619,6 +635,10 @@ namespace DOL.GS
                              .Select(p => p.Key).ToArray())
                     RecentDestinations.Remove(key);
                 _raidDestinations = RecentDestinations.Keys.ToArray();
+                // The dungeons whose epic respawns wait while a raid is in them (RealmRaidRouteGate.HoldEpicRespawn).
+                _epicHoldRegions = Raids.Values.Where(r => r.Started && r.DungeonRoute != null)
+                    .SelectMany(r => new[] { r.Definition.Region, r.DungeonRoute.Entrance?.TargetRegion ?? r.Definition.Region })
+                    .Distinct().ToArray();
             }
         }
 
@@ -869,8 +889,8 @@ namespace DOL.GS
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Raids.TryGetValue(id, out Raid raid) || !raid.Started || raid.DungeonRoute == null) return [];
-                region = raid.DungeonRoute.Region;
-                point = raid.DungeonRoute.Front;
+                region = ActiveRoute(raid).Region;
+                point = ActiveRoute(raid).Front;
                 var front = new Point3D((int)point.X, (int)point.Y, (int)point.Z);
                 ushort inside = region;
                 return raid.Parties.Values.SelectMany(p => p.Members)
@@ -980,9 +1000,10 @@ namespace DOL.GS
         /// named, boss or dragon it fights at a new low.</summary>
         private static bool WatchProgress(Raid raid, long now)
         {
-            int named = raid.DungeonRoute?.NamedDefeatedCount ?? 0;
-            int wipes = raid.DungeonRoute?.WipesSoFar ?? raid.DragonFight?.FailedAttempts ?? 0;
-            GameNPC target = raid.DungeonRoute != null ? raid.DungeonRoute.NamedTarget : raid.Boss?.IsAlive == true ? raid.Boss : null;
+            int named = (raid.DungeonRoute?.NamedDefeatedCount ?? 0) + raid.GateNamed + (raid.Transit?.NamedDefeatedCount ?? 0);
+            int wipes = raid.DungeonRoute != null ? raid.DungeonRoute.WipesSoFar + raid.GateWipes + (raid.Transit?.WipesSoFar ?? 0)
+                : raid.DragonFight?.FailedAttempts ?? 0;
+            GameNPC target = raid.DungeonRoute != null ? ActiveRoute(raid).NamedTarget : raid.Boss?.IsAlive == true ? raid.Boss : null;
             string name = target?.Name;
             int health = target?.HealthPercent ?? 101;
             if (RealmRaidRecruitmentPolicy.MadeProgress(raid.ProgressNamed, named, raid.ProgressWipes, wipes, raid.ProgressTarget, name,
@@ -1479,13 +1500,15 @@ namespace DOL.GS
 
         private static void UpdateDestinationView(Raid raid, Party party)
         {
-            if (raid.DungeonRoute is { } route)
+            if (raid.DungeonRoute != null)
             {
+                // The gate on the way while one is fought (RealmRaidRouteGate), else the raid's own dungeon.
+                RealmRaidDungeonRoute route = ActiveRoute(raid);
                 party.RallyView = route.Entrance == null ? null : new(raid.Definition.Id, "RAID — gathering at the way in to go back in together",
                     new($"realm-event-{raid.Definition.Id}", raid.Definition.Name, raid.Definition.Name, route.Entrance.SourceRegion,
                         (int)party.Staging.X, (int)party.Staging.Y, (int)party.Staging.Z, false, false, 50), true);
                 Vector3 destination = raid.Started ? route.Destination : party.Staging;
-                ushort region = raid.Started ? raid.Definition.Region : route.Entrance.SourceRegion;
+                ushort region = raid.Started ? route.Region : route.Entrance.SourceRegion;
                 string target = raid.Started ? route.TargetName : raid.Definition.Name;
                 bool queued = false;
                 Vector3 front = destination;
@@ -1497,12 +1520,12 @@ namespace DOL.GS
                     // Far from the front, a party without a free post there walks to it anyway instead of waiting at its old
                     // post: at Caer Sidi's final staging no post was free, every party waited where it stood, nobody came
                     // near, and the front was moved back down after three minutes, twice (runs 22, 23).
-                    if (region == raid.Definition.Region && Vector3.DistanceSquared(destination, front) > QueuedApproachDistance * QueuedApproachDistance)
+                    if (region == route.Region && Vector3.DistanceSquared(destination, front) > QueuedApproachDistance * QueuedApproachDistance)
                         destination = front;
                 }
                 party.DestinationView = new(raid.Definition.Id, queued ? "RAID — waiting for a clear formation post" : raid.Started ? "RAID — " + route.Status : "Raid rally",
                     new($"realm-event-{raid.Definition.Id}", target, raid.Definition.Name, region,
-                        (int)destination.X, (int)destination.Y, (int)destination.Z, region == raid.Definition.Region, false,
+                        (int)destination.X, (int)destination.Y, (int)destination.Z, region == route.Region, false,
                         raid.Started ? route.TargetLevel : 50), !raid.Started || route.Hold || queued);
                 return;
             }
@@ -1570,7 +1593,7 @@ namespace DOL.GS
                 if (!Membership.TryGetValue(group, out var raid) || !raid.Parties.TryGetValue(group, out var party)) return null;
                 // Walking back after a release while the raid gathers a return wave: it waits at its party's staging by the
                 // way in, as it did before the raid went in, and enters with the others (RealmRaidReturnWave).
-                if (raid.ReturnGathering && party.RallyView != null && bot.CurrentRegionID != raid.Definition.Region &&
+                if (raid.ReturnGathering && party.RallyView != null && !InRaidDungeon(raid, bot.CurrentRegionID) &&
                     raid.BeenInside.Contains(bot.DatabaseID))
                     return party.RallyView;
                 return raid.HubDeparted && party.CatchingUp.Contains(bot.DatabaseID)
@@ -1599,7 +1622,9 @@ namespace DOL.GS
             // nobody had reached the dungeon 7 minutes in. Only raiders who have been inside count now.
             foreach (GameBot b in raid.Support.OfType<GameBot>())
             {
-                if (b.IsAlive && b.CurrentRegionID == raid.Definition.Region)
+                // The dungeon walked through on the way (Hall of the Corrupt for Summoner's Hall) is inside too: a raider
+                // crossing it is on its way in, never sent back to the way in to wait.
+                if (b.IsAlive && InRaidDungeon(raid, b.CurrentRegionID))
                 {
                     raid.BeenInside.Add(b.DatabaseID);
                     continue;
@@ -1632,7 +1657,51 @@ namespace DOL.GS
             }
             // While raiders stand at the way in waiting for their wave, the muster inside is not "unreachable".
             route.ReturnGathering = raid.ReturnGathering && waiting > 0;
+            if (raid.Transit != null) raid.Transit.ReturnGathering = route.ReturnGathering;
         }
+
+        private static RealmRaidDungeonRoute ActiveRoute(Raid raid) => raid.Transit ?? raid.DungeonRoute;
+
+        /// <summary>
+        /// Under the raid lock, each pulse of a started dungeon raid: the route the raid follows now. A gate (a living boss on
+        /// the walk through another dungeon, RealmRaidRouteGate) is looked for every minute while most of the raid has not
+        /// gone past it; while one stands, the raid fights it there, and once it is dead (or it can't be reached) the raid
+        /// goes on to its own dungeon.
+        /// </summary>
+        private static RealmRaidDungeonRoute PulseRouteGate(Raid raid, long now)
+        {
+            RealmRaidDungeonRoute main = raid.DungeonRoute;
+            if (raid.Transit is { } gate)
+            {
+                gate.ObserveCompletion();
+                if (RealmRaidRouteGate.On && !gate.Complete && !gate.Blocked) return gate;
+                raid.GateNamed += gate.NamedDefeatedCount;
+                raid.GateWipes += gate.WipesSoFar;
+                raid.Transit = null;
+                raid.NextGateCheck = now + (gate.Complete ? 0 : RealmRaidRouteGate.SetAsideMilliseconds);
+                main.Resumed(now);
+                Log.Warn($"REALM_EXPEDITION_ROUTE_GATE_{(gate.Complete ? "CLEARED" : "SET_ASIDE")} event={raid.Definition.Id} region={gate.Region} " +
+                         $"bosses=\"{string.Join(",", gate.Gates.Select(g => $"{g.Name}:{(g.IsAlive ? g.HealthPercent + "%" : "dead")}"))}\" " +
+                         $"wipes={gate.WipesSoFar} reason=\"{(gate.Complete ? "the way is clear; the raid goes on" : !RealmRaidRouteGate.On ? "route gates switched off" : "the gate could not be reached; the raid goes on and looks again later")}\"");
+            }
+            if (!RealmRaidRouteGate.On || now < raid.NextGateCheck) return main;
+            raid.NextGateCheck = now + RealmRaidRouteGate.CheckMilliseconds;
+            int living = raid.Support.Count(b => b.IsAlive);
+            int past = raid.Support.Count(b => b.IsAlive && b.CurrentRegionID == raid.Definition.Region);
+            if (!RealmRaidRouteGate.RaidStillBeforeIt(past, living) ||
+                !RealmRaidDungeonRoute.TryCreateGate(main, out RealmRaidDungeonRoute created, out string detail))
+                return main;
+            raid.Transit = created;
+            Log.Warn($"REALM_EXPEDITION_ROUTE_GATE event={raid.Definition.Id} region={created.Region} into={main.Region} living={living} " +
+                     $"past={past} {detail} reason=\"a living boss covers the walk to the way in and there is no way round; the raid " +
+                     $"musters for it and fights it there before it goes on\"");
+            return created;
+        }
+
+        /// <summary>The raid's dungeon, or the dungeon its way in leads through (Summoner's Hall's Hall of the Corrupt, Dodens
+        /// Gruva or Marfach Caverns; Crystal Cave's Avalon City).</summary>
+        private static bool InRaidDungeon(Raid raid, ushort region) => region == raid.Definition.Region ||
+            raid.DungeonRoute?.Entrance is { } edge && edge.TargetRegion == region;
 
         // Late/released members skip muster attendance, not the connected exterior route.
         // Navigation is performed by their controller outside the expedition lock.
@@ -1666,6 +1735,14 @@ namespace DOL.GS
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Membership.TryGetValue(group, out var raid) || raid.DungeonRoute == null || raid.Hub == null) return false;
+                // At the party's staging post by the way in, where the return wave gathers (RealmRaidReturnWave).
+                if (raid.Parties.TryGetValue(group, out Party party) && raid.DungeonRoute.Entrance is { } edge &&
+                    RealmRaidReturnWave.ReleasesAtStaging(RealmRaidReturnWave.ReleaseAtStaging, true, party.Staging != default))
+                {
+                    region = edge.SourceRegion;
+                    point = new Point3D((int)party.Staging.X, (int)party.Staging.Y, (int)party.Staging.Z);
+                    return true;
+                }
                 region = raid.Hub.Region;
                 point = new Point3D((int)raid.Hub.Center.X, (int)raid.Hub.Center.Y, (int)raid.Hub.Center.Z);
                 return true;
@@ -1706,7 +1783,10 @@ namespace DOL.GS
                     party.CorpseSince[bot.DatabaseID] = since = now;
                 // Bounded per-corpse wait, even during an endless nearby fight.
                 // Shared resurrection claims still select one safe caster.
-                long deadline = since + 90_000;
+                // After a wipe nobody is left near to raise it: it releases soon and goes back with the return wave.
+                bool raiderNear = raid.Support.Any(b => b != bot && b.IsAlive && b.CurrentRegionID == bot.CurrentRegionID &&
+                    b.IsWithinRadius(bot, RealmRaidReturnWave.RescuerRadius));
+                long deadline = since + RealmRaidReturnWave.CorpseWait(raiderNear);
                 bool casting = raid.Support.OfType<GameBot>().Any(b => b.IsAlive && b.IsCasting &&
                     b.castingComponent.SpellHandler is { } cast && cast.Target == bot &&
                     cast.Spell.SpellType == eSpellType.Resurrect &&
@@ -1755,7 +1835,7 @@ namespace DOL.GS
                 GameBot[] damaging = damageByBot.Keys.ToArray();
                 Raid raid = damageByBot.Where(p => p.Key?.Group != null)
                     .Select(p => (Raid: Membership.GetValueOrDefault(p.Key.Group), Damage: p.Value))
-                    .Where(p => p.Raid != null && p.Raid.Started && p.Raid.Definition.Region == victim.CurrentRegionID)
+                    .Where(p => p.Raid != null && p.Raid.Started && InRaidDungeon(p.Raid, victim.CurrentRegionID))
                     .GroupBy(p => p.Raid).OrderByDescending(g => g.Sum(p => p.Damage)).Select(g => g.Key).FirstOrDefault();
                 if (raid != null && raid.Definition.FinalTypes.Contains(victim.GetType().Name))
                     CreditFinalKill(raid, victim);
@@ -1839,7 +1919,7 @@ namespace DOL.GS
             // expedition's own dungeon is never a 15-minute "no movement" stall.
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
                 if (bot.InCombat && bot.Group != null && Membership.TryGetValue(bot.Group, out var raid) &&
-                    raid.Started && raid.DungeonRoute != null && bot.CurrentRegionID == raid.Definition.Region)
+                    raid.Started && raid.DungeonRoute != null && InRaidDungeon(raid, bot.CurrentRegionID))
                     return true;
             View view = GetTravelView(bot);
             return view != null && bot.CurrentRegionID == view.Camp.RegionId &&
@@ -1859,11 +1939,14 @@ namespace DOL.GS
             if (bot?.Group == null) return false;
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
-                if (!Membership.TryGetValue(bot.Group, out var raid) || raid.DungeonRoute == null || !raid.Started ||
-                    bot.CurrentRegionID != raid.Definition.Region)
+                if (!Membership.TryGetValue(bot.Group, out var raid) || raid.DungeonRoute == null || !raid.Started)
                     return false;
-                region = raid.Definition.Region;
-                point = raid.DungeonRoute.Front;
+                // In the dungeon of a gate being fought on the way, that route's front (RealmRaidRouteGate).
+                RealmRaidDungeonRoute route = raid.Transit is { } gate && bot.CurrentRegionID == gate.Region ? gate
+                    : bot.CurrentRegionID == raid.Definition.Region ? raid.DungeonRoute : null;
+                if (route == null) return false;
+                region = route.Region;
+                point = route.Front;
                 return true;
             }
         }
@@ -2082,7 +2165,7 @@ namespace DOL.GS
             using (AiProfile.Lock(Sync, AiSystem.LockRaid)) return Definitions.Select(d =>
             {
                 if (Raids.TryGetValue(d.Id, out var r)) return new Summary(d.Id, d.Name, GlobalConstants.RealmToName(d.Realm),
-                    r.Started ? "RAID — " + (r.DungeonRoute?.Status ?? r.DragonFight?.Status ?? (DragonLanded(r) ? "underway" : "waiting for dragon landing")) :
+                    r.Started ? "RAID — " + ((r.Transit ?? r.DungeonRoute)?.Status ?? r.DragonFight?.Status ?? (DragonLanded(r) ? "underway" : "waiting for dragon landing")) :
                     $"Raid rally — {(r.Forced ? "forced" : "automatic")} — {(r.HubDeparted ? "travel/final staging" : r.Hub.Name)}" +
                         (r.Forced ? $" — starts when {r.Required} are staged (fewer after {RealmRaidRecruitmentPolicy.ForcedPatienceMilliseconds / 60_000} minutes)" + (!DragonLanded(r) ? " and the dragon lands" : "") :
                         GameLoop.GameLoopTime >= r.Deadline ? !DragonLanded(r) ? " — waiting for dragon landing" : " — waiting for arrivals" : ""),
