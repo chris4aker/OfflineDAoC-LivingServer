@@ -934,6 +934,9 @@ namespace DOL.AI.Brain
             GameLiving current = petBrain.OrderedAttackTarget;
             if (current == null || current == candidate || candidate == ActiveOrderedPullTarget)
                 return candidate;
+            // ... and a pet already ordered onto such a boss leaves it for the new target
+            if (PetsDoNoDamageTo(current))
+                return candidate;
 
             if (!IsValidPetCombatTarget(petBrain.Body, current))
                 return candidate;
@@ -3880,6 +3883,13 @@ namespace DOL.AI.Brain
             // The Druid remains a support actor. Only its pet gets an attack
             // order, and an existing matching order is not restarted each tick.
             if (pet is ControlledMobBrain controlled && controlled.OrderedAttackTarget == target) return;
+            // sh-bosses M2 (True 1.65): never at a boss pets cannot hurt (Summoner Lossren); an add instead, or no order
+            if (PetsDoNoDamageTo(target))
+            {
+                if (pet is not ControlledMobBrain mob || (target = PetTargetInsteadOfBoss(target, mob)) == null ||
+                    mob.OrderedAttackTarget == target)
+                    return;
+            }
             pet.Attack(target);
         }
 

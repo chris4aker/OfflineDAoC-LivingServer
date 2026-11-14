@@ -40,14 +40,15 @@ each commit credited to him. They pass automated tests; nobody has played them i
   own kind; Olcasgean and the Giant Sporite Cluster pay out once, from one body.
 - Raids: Caer Sidi no longer locks after a failed horseman fight (the raid schedule skipped it until a restart), and
   Tuscaran opens only with King Tuscar and Queen Kula both up.
-- Raid play: healers purge a long stun in any fight; raid healers heal a realm player fighting beside the raid without
+- Raid play: healers purge a long stun or mez (10 s or more left) in any fight; raid healers heal a realm player fighting beside the raid without
   joining a party; casters and archers stand inside Legion's 1,400 damage range; pets leave Summoner Lossren (5 damage
   from pets) for an add, or come back; outside raids, damage dealers step behind a monster that parries or evades 40% or
   more.
 - Camps: a chosen camp counts at once; a solo bot leaves a crowded, emptied camp after 15 s; a party counts as all its
   members; camps of the same monster within 5,000 share their bots and monsters; the camp draw favours empty and near
   camps; a party's puller takes the monster standing apart first (Prima); a party moves on after five kills in a row
-  with under a quarter of the camp bonus left; spots that keep coming up empty draw less and then rest; overlapping camps
+  with under a quarter of the camp bonus left; spots that keep coming up empty draw less and then rest (capnbry source-empty camps stay on: True 1.65 replaces them
+  with a live-camp pass 1.2 doesn't have yet); overlapping camps
   of one monster merge, and a monster with many camps no longer takes most draws; a camp among aggressive monsters 10+
   levels above it is skipped by bots they would outlevel; a solo bot with no ranged attack skips flyer camps; a solo bot
   that left a crowded camp skips its copies for 10 minutes, and one held to easier camps after a death may take an
@@ -57,8 +58,9 @@ each commit credited to him. They pass automated tests; nobody has played them i
   Spiritmasters and Nightshades draw their favourite prey more, and a solo bot draws camps weak to its damage more.
 - Parties stand by role once they have a camp: tanks in front toward it, melee on the flanks, healers and casters
   behind.
-- Darkness Falls: every keep capture recounts all three realms, so only the realm with strictly the most keeps holds
-  the door (a capture with no holder used to hand it to the taker).
+- Darkness Falls: every keep capture recounts all three realms. The realm with the most keeps holds the door; on a tie
+  for most, a holder among the tied keeps it, otherwise nobody does (a capture with no holder used to hand it to the
+  taker).
 
 Not taken, because 1.2 already does it its own way: the route-proof cap, Sanguis's last 5%, Govannon's raid calls and
 area spells, the dragon lair circle, the Spectral Provisioner (raid bots already wake it) and the Cunovinda and Shade

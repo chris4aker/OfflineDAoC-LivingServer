@@ -4046,12 +4046,12 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// Owner 2026-11-08: no more capnbry-source-empty camps (one per name, level and 1,500-unit cell, often one or two
-        /// monsters: 5,922 hunts overnight, 30% empty). Their monsters are still camps: AddUncoveredLiveCamps covers the
-        /// clusters of three or more like everywhere else. A source-empty camp is still published when its realm and
-        /// level band would otherwise have no camp at all (FinishCatalogDraft).
+        /// True 1.65 (its owner 2026-11-08) stopped publishing capnbry-source-empty camps, because its AddUncoveredLiveCamps
+        /// turns their monsters into live camps instead. Living Server 1.2 has no such pass, so turning them off would leave
+        /// whole zones with few camps: they stay on here. With it off, a source-empty camp is still published when its
+        /// realm and level band would otherwise have no camp at all (FinishCatalogDraft).
         /// </summary>
-        private static readonly bool AssignSourceEmptyCamps = false;
+        private static readonly bool AssignSourceEmptyCamps = true;
 
         private static long _nextCatalogSummaryLog;
 
