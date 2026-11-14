@@ -65,6 +65,13 @@ namespace DOL.AI.Brain
                 _lastPeacePosition = new(bot.X, bot.Y, bot.Z);
                 _soloBailUsedThisFight = false;
             }
+            // The party RUN reads the group's fight board (AutonomousBotGroupCoordinator.CheckGroupRun only peeks at it,
+            // under the coordinator lock). In True 1.65 add control, roots and pets rebuild it every think; 1.2 keeps its
+            // own versions of those, so a fighting gamebot party member keeps it fresh here (one rebuild and one area
+            // search per group per second at most, outside any lock).
+            if (bot.Group != null && (bot.InCombat || bot.IsAttacking) && bot.IsAutonomousWorldBot &&
+                !bot.IsPlayerLedGroup && !bot.IsTemporaryGroupHelper)
+                FightBoard();
 
             long id;
             Vector3 point;

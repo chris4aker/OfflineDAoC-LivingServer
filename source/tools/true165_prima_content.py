@@ -17,8 +17,11 @@ What it adds, set by set (all by default except corrections):
   items       ItemTemplate rows of the Prima drops and quest rewards (period item pages; no ToA-or-later bonus)
   paths       the Unseelie Envoy's convoy route (Path, PathPoints)
   spawns      Mob rows of the Prima monsters the world lacks (not when the same monster stands within 500 in the region)
-  encounters  the encounter spawns, controllers and the Celain Eirich row, and the world updates that name an encounter
-              class or brain on an existing spawn (Talvor, Cuinn, Brungar, Zargin, the Unseelie Envoy and his stallions)
+  encounters  the encounter spawns, controllers and the Celain Eirich row, and the 12 world updates that name an
+              encounter class, brain or template on an existing spawn (Talvor, Cuinn, Brungar, Zargin, the Unseelie Envoy
+              and his stallions). Some of these also set the encounter's own level, speed, model and place (the Envoy
+              at level 55, speed 180; his stallions at 48), as True 1.65's encounters have them. Needs the templates
+              set (the updates name its TemplateIds).
   quests      DataQuest rows of the Prima quests (not when the quest id or name is taken)
   drops       drops165.json loot for the monsters this run added, when the world has no loot for that name
   corrections (only with --with-corrections) True 1.65's Prima changes to existing spawns' levels, aggression and speed.
@@ -49,8 +52,12 @@ FILES = {
 }
 # A monster of the same name this close in the same region is the world's own copy of a spawn True 1.65 restored.
 SAME_SPAWN_RADIUS = 500
-# eProperty: Acuity (156) and everything from ToABonus_First (188) on is Trials of Atlantis or later.
-TOA_BONUS_FIRST = 156
+# eProperty types that are Trials of Atlantis or later, as True 1.65 defines them
+# (tools/claude-version/true165/audit_fix_2026-10-31/stats/fix_stats.py): 99-119 (Catacombs class lines, unified
+# Archery, ...) and 145-256 (cap bonuses, PowerPool %, Acuity, All-skills, speed and ToA bonuses, mythical, ...).
+# True 1.65 keeps 156 and 163-165 only on items whose own period page lists them; its Prima files are those items.
+LATER_BONUS_TYPES = set(range(99, 120)) | set(range(145, 257))
+PERIOD_ATTESTED_BONUS_TYPES = {156, 163, 164, 165}
 
 
 class Refused(Exception):
@@ -87,7 +94,8 @@ def load(folder, name):
 
 def toa_bonus(item):
     for key, value in item.items():
-        if re.fullmatch(r"(Bonus\d*|Extra)?BonusType|Bonus\d+Type", key) and isinstance(value, int) and value >= TOA_BONUS_FIRST:
+        if re.fullmatch(r"(Bonus\d*|Extra)?BonusType|Bonus\d+Type", key) and isinstance(value, int) and \
+                value in LATER_BONUS_TYPES and value not in PERIOD_ATTESTED_BONUS_TYPES:
             return key, value
     return None
 
@@ -213,7 +221,12 @@ class Run:
 
 
 def run(true165, world, sets=SETS, corrections=False, apply=False):
-    db = sqlite3.connect(world)
+    if "encounters" in sets and "templates" not in sets:
+        raise Refused("the encounters set names the templates set's TemplateIds: run them together")
+    if not Path(world).is_file():
+        raise Refused(f"{world} is not a world database")
+    # read-write on an existing file only: a mistyped path never makes an empty database
+    db = sqlite3.connect(f"file:{Path(world).resolve().as_posix()}?mode=rw", uri=True)
     try:
         check_clean(db)
         r = Run(db, true165, apply)

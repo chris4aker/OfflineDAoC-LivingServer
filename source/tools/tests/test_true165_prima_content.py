@@ -57,7 +57,7 @@ class Fixture(unittest.TestCase):
         write(c, "add-primaenctemplates165.json", "NpcTemplate", "NpcTemplate_ID", [])
         write(c, "add-primaitems165.json", "ItemTemplate", "Id_nb",
               [{"Id_nb": "p165_a", "Name": "Period Ring", "Bonus1Type": 2, "Bonus1": 6},
-               {"Id_nb": "p165_toa", "Name": "Acuity Ring", "Bonus1Type": 156, "Bonus1": 6}])
+               {"Id_nb": "p165_toa", "Name": "Speed Ring", "Bonus1Type": 150, "Bonus1": 6}])
         write(c, "add-primaquestitems165.json", "ItemTemplate", "Id_nb", [])
         write(c, "add-primapaths165.json", "Path", "Path_ID", [{"Path_ID": "p1", "PathID": "convoy"}])
         write(c, "add-primapathpoints165.json", "PathPoints", "PathPoints_ID", [{"PathPoints_ID": "pp1", "PathID": "convoy", "X": 1}])

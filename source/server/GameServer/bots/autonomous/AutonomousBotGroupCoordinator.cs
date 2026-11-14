@@ -2035,7 +2035,9 @@ public static partial class AutonomousBotGroupCoordinator
         if (session.HostedPlayer != null && raidView == null && leader != null)
             StepHostedPlayer(session, members, leader);
         // True 1.65 (veteran review M6): a fighting party calls RUN before a wipe (AutonomousBotGroupCoordinator.GroupRun)
-        if (raidView == null && leader != null && session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve)
+        // Not while the party hosts a real player: the bots would run and leave the player with the pack.
+        if (raidView == null && leader != null && session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve &&
+            session.HostedPlayer == null)
             CheckGroupRun(session, members, leader);
         // B4: the natural break ("last pull then town") and the search for a replacement.
         if (raidView == null && leader != null && StepNaturalBreak(session, members, leader))
