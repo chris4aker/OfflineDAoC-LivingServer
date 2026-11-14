@@ -898,6 +898,63 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>
+        /// Play test only (the sweep's guest): the raid's living raiders, which one is the raid leader (the first party's
+        /// leader), and where the raid's front is now: its hub before it leaves, the way in while it marches to a dungeon,
+        /// the route's front inside it, a dragon raid's staging ring and then its dragon. False when the raid isn't running;
+        /// <paramref name="hasFront"/> is false when a dragon raid has no staging post yet.
+        /// </summary>
+        public static bool TryGuestFront(string id, out bool hasFront, out ushort region, out Vector3 point,
+            out (GameBot Bot, bool RaidLeader)[] raiders)
+        {
+            hasFront = false;
+            region = 0;
+            point = default;
+            raiders = [];
+            if (id == null) return false;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
+                if (!Raids.TryGetValue(id, out Raid raid)) return false;
+                GameLiving raidLeader = raid.Parties.Keys.FirstOrDefault()?.LivingLeader;
+                raiders = raid.Parties.Values.SelectMany(p => p.Members).Distinct()
+                    .Where(b => b != null && b.IsAlive && b.ObjectState == GameObject.eObjectState.Active)
+                    .Select(b => (b, b == raidLeader)).ToArray();
+                if (!raid.HubDeparted && raid.Hub != null)
+                {
+                    region = raid.Hub.Region;
+                    point = raid.Hub.Center;
+                    hasFront = true;
+                }
+                else if (raid.DungeonRoute != null)
+                {
+                    if (raid.Started)
+                    {
+                        region = raid.DungeonRoute.Region;
+                        point = raid.DungeonRoute.Front;
+                    }
+                    else
+                    {
+                        var edge = raid.DungeonRoute.Entrance;
+                        region = edge.SourceRegion;
+                        point = new(edge.SourceX, edge.SourceY, edge.SourceZ);
+                    }
+                    hasFront = true;
+                }
+                else
+                {
+                    region = raid.Definition.Region;
+                    if (raid.Started && raid.Boss is { IsAlive: true, ObjectState: GameObject.eObjectState.Active } boss &&
+                        boss.CurrentRegionID == region)
+                    {
+                        point = new(boss.X, boss.Y, boss.Z);
+                        hasFront = true;
+                    }
+                    else hasFront = TryDragonGatherPoint(raid.StagingPosts.OrderBy(p => p.Key).Select(p => p.Value), out point);
+                }
+                return true;
+            }
+        }
+
         /// <summary>Where the play test gathers a departed dragon raid's stragglers: its first staging post (the ring around
         /// the lair), or nowhere while it has none.</summary>
         public static bool TryDragonGatherPoint(IEnumerable<Vector3> stagingPosts, out Vector3 point)
@@ -2087,6 +2144,15 @@ namespace DOL.GS
                 reason = $"{raid.Definition.Name} stopped. The bots return to their own goals; no cooldown was set.";
                 return true;
             }
+        }
+
+        /// <summary>The encounter's boss for <paramref name="id"/> (null when it is not known): the play-test sweep keeps its
+        /// guest where it is while it stands near the fight (EpicPlaytestSweep.TagAlong).</summary>
+        public static GameNPC BossOf(string id)
+        {
+            if (id == null) return null;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+                return Raids.TryGetValue(id, out var raid) && raid.Boss != null ? raid.Boss : Bosses.GetValueOrDefault(id);
         }
 
         public static bool ResetCooldown(string id)

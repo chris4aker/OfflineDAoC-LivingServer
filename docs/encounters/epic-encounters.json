@@ -23,7 +23,7 @@
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/ValnirMordeth.cs": "8d54e7f51ce0d282a797d6b1c1d919fb1563794980759d2942a8757891a0aacd",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Vortanos.cs": "043ca32ac0443bb16ccadbd99ce2757fbfba911460bd6029dc3e14dbfbbe144d",
   "source/server/GameServer/scripts/namedmobs/Archilus.cs": "9a7b1f7df01cbf9c75612a458ee7147d813a5f071855e9cd509929dd96485834",
-  "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "9bd5026d711d4939e70e7af4da92fe95dc5f09fcffe8e874c17fa1ef44b34ae6",
+  "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "09379e00a5a4c86e25bcd76434f40bbf16c3ea155a230656b4ef284234511eb1",
   "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "9ff04bbae65b44517567d941c5a5c40efc9a9574a5d5ff3ddb332b87afbdb1fd",
   "source/server/GameServer/scripts/namedmobs/AvalonCity/DuraekEmpowered.cs": "1b4a503df6d398e60ec25599b729006779555528528b05f6f7087e154e73fa27",
   "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "28b464259e35602026380f6dbcdd54ced7ef89ca60d2e7fd7268ce7ff23fcb3b",
@@ -44,10 +44,10 @@
   "source/server/GameServer/scripts/namedmobs/CaerSidi/WarlordDorinakka.cs": "a81529c15a2e59963c705bf0c11b374ff8ed7708a4f81846e02a7a9c9dae58e1",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "5265ec39624ceb7e570ecda41a168e7edf51cf58114b03a565fafa7f4ec3cd4c",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaelerdoth.cs": "5c40dbe73a2338b51b225428ac91efb12f9918e3bef32f25a61908367a4a90cc",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs": "ea20ed907819ebba2dba2dde9703fee62d88d8ea945cf8b5a4edb084cdc2d7b9",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs": "b13ba341e71eaa6aabd5c6370b26b9c18582686ee007ce661a28eda0a5617e22",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "67f1a42567b5bfe6c1c7b940928a22e9b30698eb6c0e4ab621038c3a23f4008b",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "cd2cfb4f2cdd265bf3061f3a33af97ef034bae88712e1f0ed3a40396e2878691",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "63fb56e730c0bbc2d4bfdde5c26fbb9e3838de977f6d3ee78f2415a9dd1b3026",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "83c38f75c44bf2a22ca5a9fa0e166af348b70db5a767d6ed95be0f276c23e86e",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs": "fa9b3318a8cfa33957552bfde7a2659f6438cb4a3c53f4dbbf7b829f6d42db09",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "53d2bd1b0496e80129543cca4e017ac6e5504d5410e629011ce357e6e573cadc",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "ec7005401968848e5295ecddf0d94ed26c02da0068e3de07559036cb3d65c0f4",
@@ -63,15 +63,15 @@
   "source/server/GameServer/scripts/namedmobs/Dodens/MistressOfRunes.cs": "1be2111905ff677a08f5dbae65440e5d324ab6e8398fb165741f131da1d06a66",
   "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "9dc614ceda5750a5e1919ca934d50bd7dd599d5925a1d536a161d082827d3765",
   "source/server/GameServer/scripts/namedmobs/Dodens/ThaneDyggve.cs": "517f5c24ba6f17771c2a4b88fc4901ad0ebf1c39d4f8ec23d65e1d4e8560d4d7",
-  "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "a6914efe43f8dfa49237f14d781fe48d797610b6941a0b797a15c3e68728b58f",
+  "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "6185d3cbf0b543cd6c535f23b49a52b6294bb88aa1f7c065fbefbb440b4dc8e1",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonCombatGeometry.cs": "3908bdb98f00d2bf319c7e650eac46fed1472b7533a3ab977f31c527f7a59271",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonDiagnostics.cs": "b1a90e5c650db04f8973ce5015ff5a9175fdd6266a862c965fa39a1fabcb85b9",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterAdds.cs": "c1494caffb7ba37b042544eb45e3703bb35429fd543599ad05528ecb75f2f6cd",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonFlightLanding.cs": "c6dbfb4c0f5ec02c29d9e5a144d7e86d5a945dfbac7f78d8e297f03a3f6ebb8e",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonLairPlacement.cs": "574af55d780a64ce63e2f2de89b20044ce1c67cfeaa150e5125d230efcc23391",
-  "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "54537d702ab747d0cf235143161fb02b6fa2f7512d87c0b9284d7f39c2e78cbd",
-  "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "0d5dc2b23246ed958880000129cf6e0d9bd4013893ac297fd41f8fa91362592c",
+  "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "3e994a41816b51679515ee17b7bda71715e53ea8282bcccd4bffadb1bae0e294",
+  "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "fa5a6e9fd36bee5aff9133862fc482a453332b4eef44a419ba013731c21a0f8c",
   "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666",
   "source/server/GameServer/scripts/namedmobs/EncounterDisplacement.cs": "ebab87b045c8d05df4de0a23b7b05ae3d4678d8f2eda04153b47d799c2c0b111",
   "source/server/GameServer/scripts/namedmobs/EncounterFloodGuard.cs": "64a95af9f337614ccdfd78221efba27096c87725a2c3c8f3d204f9566412213d",
@@ -79,22 +79,22 @@
   "source/server/GameServer/scripts/namedmobs/EncounterSignals.cs": "28c34dec1840c590c674a26de40d6ac8321c182c004765f3cb553d76c0eca10c",
   "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "25da681fa8a3bd7e96d89b02f6d0622363d00ce77445f6c4c3e3444e9a47df39",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
-  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "9298146f9325d4dd090435939aa8f2837bb9eb0f1c4c20c8d9e526fa03f828ae",
+  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "1fbd38230ec9304e89e162efd0bbd017d5c59891d56eaa23ce7842e746380394",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "cdc59166c4aeb7f3946a436feab3e597d0384fb27d87438c856db55dc77fb758",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
   "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe",
   "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "ddbafcd28c0d85ab9a71d42b179edd8a4d705e1c1b8daf8c0c37f235702d65a2",
   "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "147e40217973555da2bb68a1e23c4f843b08c5dbd72950246678153b23ffd458",
-  "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "5d8d41065ab6bcaaf3c7f24ebfa22abd8d32c62b18b7d967075c2c691b9ab17c",
+  "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "311436168b56a011082fdb7896a2f1ce93ff2e48255a634cdb58bb814bd0e8a0",
   "source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs": "5d3b338eec35ec06bacef311189dc0066981669f761bf95d88deaf814d987712",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "9f7b96e78af9a1c70b23bd8e099c65f5b704906fec526087baea2d68f7878910",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs": "3d39abfd2a900d792a7f542914506fc4ff7a11790287e2a2547f082c5721ae0a",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "400d91fa752949ea0b928db0e9b9e1b6700f2d9a90cc57bb360e1ea64fb458cb",
   "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs": "96531836730ea2454b604c3f728ab63d265576412dc5263dc1b49d3f6a9099d6",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs": "63d9d69def059a8a1ba2c6182f0ee50d58b96ae7816fda602452f228012ccc79",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs": "fdd068e56e398088bb1b6e0007b5bc39fc5ee5cb8ad3b81c959fcf51ba6b42c2",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs": "803467b4edadf2428fd2ef50dba29d129204e09353cfd8e8536d9afa4a13e13a",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "6e8c9d0a8fd5b5a27046747f0e7ec0665d34926546865bea95978cc8d816ea89",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f02b828e6ad3f37858f503a08da2d3b223bea9b3add8912bbfce94e9548b3c1e",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "5c815a5f55796c3fa138ee39600954e1d7bd5bbd9edd83fcaf476c2049fdd2da",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "9d610a662e6d40d389558bc46f7d111775f6de4060424ed6bf224267cde8e52c",
   "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "d3364e86a4983e519019db10e311a4b299c6d4a38d325dc0c3e1b18815254bf7",
   "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs": "b378898bd7a8665b766bf4412fc6cf3b31bdb4fc7f76d0994cb1751edb863f0c",
@@ -185,15 +185,15 @@
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Shredclaw.cs": "b4a0cce03ac3565174173d7c34bd51e761aac14b911ddf941a9fff671339d447",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Valmak.cs": "459dd23c05add851e92b2f6fd78efd957c3af1a068a3377807552a6d9ab9a725",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Vasrem.cs": "5a6d0d84e1cea4cb4ccaf5c14e582941a6780b5083e5ba5ca17294d5f7430556",
-  "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "faf306406385799b4d8b9b2af801bdb6d7dd4f10ec3ac641a06cd9b038b24583",
+  "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "5989d82c04e6e18990d4a5463b394710ed1ec86101e68a4f0d1573be64b30f45",
   "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "d89b0e6d6adae7ee4a944ffcd0a31db5aad5c2152946ccd568d570d7095e386f",
-  "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "265f97adb0abe867c5c9b6eaa134aa76d8ab8925922e9c1c5b66aed6636cf46e",
+  "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "3d6872d043c4d51baaeb12e1372a7e6d21b1b0d8760322a8465d6f435c52b2b2",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "71371583d6bed9cab527981da675b0a7d501642eb66f584d00692147801cd770",
-  "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "889fa7d0b06549afa47c2d560e9754906e8d6b345901088efc12d4f24f3eab15",
+  "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "44fa7d6315c047a70b7095c2bd5c40c2e400d0251f751a56cd261e94868c6d4c",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs": "a11dc500e720562928b31c3f1079bbac635db52cb9899978742fff9105c99d58",
   "source/server/GameServer/scripts/namedmobs/Trollheim/Dagar.cs": "9c54b8e58b90b96c8d0cc2e20a20b5a50eb5a2f1f156172b47e89e7c3cada7b8",
   "source/server/GameServer/scripts/namedmobs/Trollheim/FostraOrm.cs": "cb7e0a66cc479ba78f436d6db514b7f4d15f48dc6cb16b7244728e76b9ce134f",
-  "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "a86a7ccee708d250944290b7982db60b6774f0eace754622d9274d9e59be6a19",
+  "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "b926d2c7fffd45084db25b5e66ff1fd495a744f85f1f98fe5058b77fa36c71b4",
   "source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs": "8d11894906325de83614eed8ce5bdf22f368f0ce2d4dd8bf50d6006b8eed813a",
   "source/server/GameServer/scripts/namedmobs/Trollheim/Rotoddjur.cs": "9c7eb27994026aa4ed0168158089af2f5acc1abc71efd255079ccc00f7e0e24c",
   "source/server/GameServer/scripts/namedmobs/TurSuil/AbomosSoultrapper.cs": "c41910c457057f8bb67f3ce8925a29a01d1367d02476e0a71ef5d63f242b576d",
@@ -204,7 +204,7 @@
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilOtrygg.cs": "2b25c53806a59264da80fa2bc3fd0116213e688d2cb49e57989b263298c18b3f",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs": "c0fd21b6b0420b60bfec2e291807a2494cd8d9686dfbb7a72fde8258831e18c2",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "c9bad5dfb31d1e1c4e6d7077b3f516d5a8b5735d5c9dff17f87b89fa71a120fc",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "fb52afca13704d44815be8fa80bdce52807e9b584defb18d831f5839e196b7e0",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "3c7724d289bf39019698a1ddcd88250c0dbfa600592149d5002aa71923701d09",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/FallingIce.cs": "c3dadde9c091ee2b698e8e18d2cb1be14a683c63e0c40ccbc2a921e7e7d71aa5",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "902b66c51eecf6e1743f713eae627d606f0ff2e553bf4a9621a0a8ca51faad94",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Hord.cs": "f21c3e552ea4280627e1dbb87c762a4a5309d9cbec086d099d6231442327abc3",
@@ -213,8 +213,8 @@
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "5b4998538d5f3ea491a9d937c1404735a346a20b0a0fd4ab1b4b647bd82a2b73",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "4d889113864409dfe983eab5c48fe7da4ece538a406d74d4e51a06e720fddd9e",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs": "047313701e409de109730137f1f89fb90f7596bd0247952ad7d929ce0b9ee055",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "27b31260d426329c3185bf9a481d6012b3df56789a32e46a4c68cdac1888001b",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "e2800f794468fc0e8c8f9dfbaaa6a0367a0598dbcc446a7c6bb3fec5c12e8685",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "10d55817536a858a70148ba2f2a5e1c5fe41d633697f74c2f0b0c6300347ec2b",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "6d12fadcc9bfd157b99a01e375341394f0d1b5a67d6ce5f852ffdfc250f06f61",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs": "79b05c5cd0d0a976643381cb00c4f121d424a538bf470a481db3dad9f0b4e7ac",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "724944d493d223a602c0c681ea4a1f3be317b427e958be09c17d14657cc52d35",
   "source/server/GameServer/scripts/namedmobs/Yar.cs": "9e919f2a641bc86fe7652fe8af16cc736f5f86468873a9b31b7f0eeedb72a058"
@@ -1099,10 +1099,10 @@
   "scripts": 214,
   "encounters": 238,
   "encountersWithRules": 228,
-  "rules": 862,
+  "rules": 865,
   "rulesByKind": {
    "adds": 155,
-   "aggro_wipe": 11,
+   "aggro_wipe": 14,
    "damage_reduced": 3,
    "empowered": 16,
    "hazard": 3,
@@ -1118,9 +1118,9 @@
    "teleport": 32,
    "tether": 54
   },
-  "rulesVerified": 862,
-  "rulesRead": 493,
-  "rulesInferred": 369,
+  "rulesVerified": 865,
+  "rulesRead": 494,
+  "rulesInferred": 371,
   "handEntries": 2
  },
  "scriptsWithoutEncounter": [],
@@ -7098,7 +7098,7 @@
      "maxHealth": 1500,
      "level": "(byte)Util.Random(50, 55)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 1025
+     "line": 1033
     },
     {
      "class": "CuuldurachSpawnedAdd",
@@ -7111,7 +7111,7 @@
      "maxHealth": 5000,
      "level": "(byte)Util.Random(60, 64)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 1353
+     "line": 1361
     }
    ],
    "rules": [
@@ -7136,8 +7136,8 @@
      "kind": "adds",
      "summary": "Spawns Cuuldurach's messenger (CuuldurachMessenger): on a timer (Util.Random(80000, 90000) ms); count 1 spawn call in SpawnMssengers",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 861,
-     "lineEnd": 861,
+     "line": 869,
+     "lineEnd": 869,
      "anchor": "CuuldurachMessenger messenger = new CuuldurachMessenger();",
      "confidence": "inferred",
      "sourceClass": "HibCuuldurachBrain",
@@ -7155,14 +7155,14 @@
      "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "adds@861"
+     "key": "adds@869"
     },
     {
      "kind": "adds",
      "summary": "Spawns CuuldurachSpawnedAdd: from SpawnGlimmers; count 1 spawn call in SpawnGlimmers",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 1327,
-     "lineEnd": 1327,
+     "line": 1335,
+     "lineEnd": 1335,
      "anchor": "CuuldurachSpawnedAdd add = new CuuldurachSpawnedAdd();",
      "confidence": "inferred",
      "sourceClass": "CuuldurachMessengerBrain",
@@ -7181,14 +7181,14 @@
      "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "adds@1327"
+     "key": "adds@1335"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (Think): starts timer SpawnMssengers; calls SetProperty",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 499,
-     "lineEnd": 504,
+     "line": 507,
+     "lineEnd": 512,
      "anchor": "if (Body.HealthPercent <= 50 && CanSpawnMessengers == false && !IsRestless && EpicEncounterMechanics.AllowDragonMessengersFor(Body))",
      "confidence": "inferred",
      "sourceClass": "HibCuuldurachBrain",
@@ -7201,14 +7201,14 @@
      "tactic": "Off today (AllowDragonMessengers is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "phase@499"
+     "key": "phase@507"
     },
     {
      "kind": "phase",
      "summary": "At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE; calls Raise",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 760,
-     "lineEnd": 831,
+     "line": 768,
+     "lineEnd": 839,
      "anchor": "if (Body.HealthPercent <= 90 && DragonKaboom1 == false && !Body.IsCasting && !IsRestless)",
      "confidence": "inferred",
      "sourceClass": "HibCuuldurachBrain",
@@ -7229,14 +7229,29 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@760"
+     "key": "phase@768"
+    },
+    {
+     "kind": "aggro_wipe",
+     "summary": "Lands with an empty aggro list: when it touches down at its spawn at the end of its daytime flight it clears the raiders its flight glare put on it; anyone within its aggro range is picked up again (1.2, True 1.65 port: before, a raider glared just before touchdown stayed on the list, so it never healed on a reset and never flew again).",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
+     "line": 465,
+     "lineEnd": 465,
+     "anchor": "ClearAggroList();",
+     "confidence": "inferred",
+     "sourceClass": "HibCuuldurachBrain",
+     "method": "Think",
+     "tactic": "Nothing to play: it only takes off with no foes and 30 s out of combat, so this is not a tank losing it in a fight; a raid already in the lair is picked up again at once.",
+     "difficulty": "easy for the current raid AI",
+     "verified": true,
+     "key": "aggro_wipe@465"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in ResetGlareRoam when if (IsRestless)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 709,
-     "lineEnd": 709,
+     "line": 717,
+     "lineEnd": 717,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "HibCuuldurachBrain",
@@ -7245,7 +7260,7 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@709"
+     "key": "aggro_wipe@717"
     },
     {
      "kind": "teleport",
@@ -7281,7 +7296,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 884,
+     "line": 892,
      "sourceClass": "HibCuuldurachBrain"
     },
     {
@@ -7295,7 +7310,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 912,
+     "line": 920,
      "sourceClass": "HibCuuldurachBrain"
     },
     {
@@ -7309,7 +7324,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 940,
+     "line": 948,
      "sourceClass": "HibCuuldurachBrain"
     },
     {
@@ -7323,7 +7338,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 968,
+     "line": 976,
      "sourceClass": "HibCuuldurachBrain"
     },
     {
@@ -7337,7 +7352,7 @@
      "value": "50",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 996,
+     "line": 1004,
      "sourceClass": "HibCuuldurachBrain"
     }
    ],
@@ -7359,7 +7374,7 @@
     }
    ],
    "raidAi": "dragon fight",
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full.",
    "aiTactics": {
     "rangedAdds": [
      "CuuldurachMessenger"
@@ -7706,6 +7721,7 @@
     }
    ],
    "raidAi": "no raid AI",
+   "notes": "When he is first hit out of combat, every idle monster of his own kind within 3,000 (same realm, alive, not a pet, a gamebot or a peaceful NPC: EpicEncounterMechanics.IsOwnKind) attacks the raider who hit him. 1.2 (True 1.65 port): before, every idle NPC was told to, so a raid's own gamebots and pets turned on that raider.",
    "verified": true
   },
   {
@@ -7981,7 +7997,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
    "lines": [
     14,
-    294
+    297
    ],
    "dungeon": "Darkness Falls",
    "region": 249,
@@ -8006,7 +8022,7 @@
      "maxHealth": 1200,
      "level": null,
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 735
+     "line": 743
     }
    ],
    "rules": [
@@ -8022,7 +8038,7 @@
      "method": "TakeDamage",
      "subtype": "attacker_position",
      "condition": "if (!source.IsWithinRadius(this, distance))",
-     "tactic": "Everyone fights within 1,400 of him (casters too).",
+     "tactic": "Everyone fights within 1,400 of him (casters too). Ranged gamebots cap their stand-off at 1,300 against him (he declares the 1,400 as RaidMaxDamageRange, IRaidBossTraits, 1.2 True 1.65 port), and the raid AI steps a raider farther out in to 1,100.",
      "difficulty": "needs new raid AI",
      "verified": true,
      "key": "immune_while@243"
@@ -8031,8 +8047,8 @@
      "kind": "adds",
      "summary": "Spawns graspering soul (LegionAdd): from Think when if (Body.HealthPercent <= 95 && Body.HealthPercent > 90 && !adds1); count 1 spawn call in SpawnAdds",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 627,
-     "lineEnd": 627,
+     "line": 635,
+     "lineEnd": 635,
      "anchor": "LegionAdd add = new LegionAdd();",
      "confidence": "inferred",
      "sourceClass": "LegionBrain",
@@ -8047,14 +8063,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@627"
+     "key": "adds@635"
     },
     {
      "kind": "phase",
      "summary": "At 95/90/85/80/75/70/65/60/55/50/45/40/35/30/25/20/15/10/5% health (Think): calls SpawnAdds",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 406,
-     "lineEnd": 538,
+     "line": 414,
+     "lineEnd": 546,
      "anchor": "if (Body.HealthPercent <= 95 && Body.HealthPercent > 90 && !adds1)",
      "confidence": "inferred",
      "sourceClass": "LegionBrain",
@@ -8085,14 +8101,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@406"
+     "key": "phase@414"
     },
     {
      "kind": "reset",
      "summary": "Resets after 60 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 383,
-     "lineEnd": 383,
+     "line": 391,
+     "lineEnd": 391,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "LegionBrain",
@@ -8102,14 +8118,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@383"
+     "key": "reset@391"
     },
     {
      "kind": "teleport",
      "summary": "Teleports player to a fixed spot (MoveTo 249, 48200, 49566, 20833, 1028)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 688,
-     "lineEnd": 688,
+     "line": 696,
+     "lineEnd": 696,
      "anchor": "EncounterDisplacement.Move(player, 249, 48200, 49566, 20833, 1028, DisplacementKind.Teleport, Body);",
      "confidence": "inferred",
      "sourceClass": "LegionBrain",
@@ -8119,7 +8135,7 @@
      "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for Legion): a thrown bot lands on the platform, finds no path back and is recalled to its party after 5 s (EncounterDisplacementRecovery); companions of a thrown player stay down. Real players use the zone point as before.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "teleport@688"
+     "key": "teleport@696"
     }
    ],
    "spells": [
@@ -8134,7 +8150,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 709,
+     "line": 717,
      "sourceClass": "LegionBrain"
     }
    ],
@@ -8164,7 +8180,7 @@
     }
    ],
    "raidAi": "no raid AI",
-   "notes": "Level 83, 300,000 health. No Darkness Falls raid AI: listed for completeness. 1.2: companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics). 1.2 wave 3: his throw takes bots too (AllowBotDisplacement for Legion); the wounded step out of his reach; no bot bubbles near him. Not played.",
+   "notes": "Level 83, 300,000 health. No Darkness Falls raid AI: listed for completeness. 1.2: companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics). 1.2 wave 3: his throw takes bots too (AllowBotDisplacement for Legion); the wounded step out of his reach; no bot bubbles near him. 1.2 (True 1.65 port): his soul blast lock-out (10 s after each blast) and his count of ended bladeturns belong to his brain and clear on a reset; before, the lock-out was shared and a reset or death during it stopped the blast for good until a restart. Not played.",
    "aiTactics": {
     "rangedAdds": [
      "LegionAdd"
@@ -8182,8 +8198,8 @@
    "brain": "BehemothBrain",
    "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
    "lines": [
-    819,
-    880
+    827,
+    888
    ],
    "dungeon": "Darkness Falls",
    "region": 249,
@@ -8202,8 +8218,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 897,
-     "lineEnd": 901,
+     "line": 905,
+     "lineEnd": 909,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "BehemothBrain",
@@ -8213,7 +8229,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@897"
+     "key": "reset@905"
     }
    ],
    "spells": [],
@@ -11063,7 +11079,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs",
    "lines": [
     7,
-    110
+    112
    ],
    "dungeon": "Galladoria",
    "region": 191,
@@ -11086,7 +11102,7 @@
      "maxHealth": 100000,
      "level": "79",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs",
-     "line": 194
+     "line": 196
     }
    ],
    "rules": [
@@ -11094,8 +11110,8 @@
      "kind": "adds",
      "summary": "Spawns Giant Sporite Cluster (GSCAdds): when it spawns (via Spawn); count 7 (loop)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs",
-     "line": 87,
-     "lineEnd": 87,
+     "line": 89,
+     "lineEnd": 89,
      "anchor": "GSCAdds Add = new GSCAdds();",
      "confidence": "inferred",
      "sourceClass": "GiantSporiteCluster",
@@ -11110,14 +11126,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@87"
+     "key": "adds@89"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs",
-     "line": 127,
-     "lineEnd": 132,
+     "line": 129,
+     "lineEnd": 134,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "GiantSporiteClusterBrain",
@@ -11130,14 +11146,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@127"
+     "key": "reset@129"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: GSCAddsBrain",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs",
-     "line": 147,
-     "lineEnd": 147,
+     "line": 149,
+     "lineEnd": 149,
      "anchor": "brain.AddToAggroList(target, 10);",
      "confidence": "inferred",
      "sourceClass": "GiantSporiteClusterBrain",
@@ -11149,7 +11165,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@147"
+     "key": "linked_pack@149"
     }
    ],
    "spells": [
@@ -11164,7 +11180,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs",
-     "line": 167,
+     "line": 169,
      "sourceClass": "GiantSporiteClusterBrain"
     }
    ],
@@ -11186,6 +11202,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "Eight bodies, the cluster and the seven copies it spawns (GSCAdds), share one 100,000-health pool (damage to any body sets the others' health) and die together: killing any body kills the cluster with the same killer and removes the copies. 1.2 (True 1.65 port): the cluster alone pays out, for the attackers of every body; before, a copy that had been hit paid out too and the cluster died by its own hand.",
    "verified": true
   },
   {
@@ -11719,7 +11736,7 @@
      "maxHealth": 5000,
      "level": "87",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3215
+     "line": 3229
     }
    ],
    "rules": [
@@ -11727,8 +11744,8 @@
      "kind": "hazard",
      "summary": "Watery Vortex: an invulnerable hazard when AllowInvulnerableHazards is on (no damage from anyone). Today the switch is false and a vortex takes normal damage.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3226,
-     "lineEnd": 3239,
+     "line": 3240,
+     "lineEnd": 3253,
      "anchor": "{",
      "confidence": "inferred",
      "sourceClass": "Vortex",
@@ -11741,14 +11758,14 @@
      "tactic": "Off today. With the switch on: stay out of the vortices and never target them.",
      "difficulty": "off today",
      "verified": true,
-     "key": "hazard@3226"
+     "key": "hazard@3240"
     },
     {
      "kind": "reflect",
      "summary": "Hits back when damaged: if (EpicEncounterActors.IsCombatant(source)) base.TakeDamage(source, damageType, damageAmount, criticalAmount);",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3222,
-     "lineEnd": 3222,
+     "line": 3236,
+     "lineEnd": 3236,
      "anchor": "if (EpicEncounterActors.IsCombatant(source)) base.TakeDamage(source, damageType, damageAmount, criticalAmount);",
      "confidence": "inferred",
      "sourceClass": "Vortex",
@@ -11761,7 +11778,7 @@
      "tactic": "Off today (AllowInvulnerableHazards is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "reflect@3222"
+     "key": "reflect@3236"
     },
     {
      "kind": "adds",
@@ -11984,7 +12001,7 @@
      "value": "50",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3312,
+     "line": 3326,
      "sourceClass": "VortexBrain"
     }
    ],
@@ -12016,7 +12033,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
    "lines": [
     329,
-    539
+    544
    ],
    "dungeon": "Galladoria",
    "region": 191,
@@ -12047,7 +12064,7 @@
      "maxHealth": null,
      "level": "50",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3401
+     "line": 3415
     },
     {
      "class": "WaterfallAntipass",
@@ -12060,7 +12077,7 @@
      "maxHealth": null,
      "level": "50",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3342
+     "line": 3356
     }
    ],
    "rules": [
@@ -12068,8 +12085,8 @@
      "kind": "adds",
      "summary": "Spawns Waterfall Antipass (WaterfallAntipass): from SpawnAntiPass; count 1 spawn call in SpawnAntiPass",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 578,
-     "lineEnd": 578,
+     "line": 583,
+     "lineEnd": 583,
      "anchor": "WaterfallAntipass Add = new WaterfallAntipass();",
      "confidence": "inferred",
      "sourceClass": "OlcasgeanBrain",
@@ -12083,14 +12100,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@578"
+     "key": "adds@583"
     },
     {
      "kind": "adds",
      "summary": "Spawns Root Effect (OlcasgeanEffect): on a timer (2000 ms); count about 8-15 (loop to a random bound)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 593,
-     "lineEnd": 593,
+     "line": 598,
+     "lineEnd": 598,
      "anchor": "OlcasgeanEffect Add = new OlcasgeanEffect();",
      "confidence": "inferred",
      "sourceClass": "OlcasgeanBrain",
@@ -12108,14 +12125,14 @@
      "tactic": "Off today (AllowPositionPuzzle is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "adds@593"
+     "key": "adds@598"
     },
     {
      "kind": "adds",
-     "summary": "Spawns Olcasgean2, a second body with its own 250,000 health, when he is placed.",
+     "summary": "Spawns Olcasgean2, a second body, when he is placed. The two share one 250,000-health pool (damage to either sets the other's health) and die together.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 775,
-     "lineEnd": 775,
+     "line": 780,
+     "lineEnd": 780,
      "anchor": "Olcasgean2 copy = new Olcasgean2();",
      "confidence": "inferred",
      "sourceClass": "OlcasgeanBrain",
@@ -12125,17 +12142,17 @@
      "addBrain": "OlcasgeanBrain2",
      "trigger": "from SpawnCopy",
      "addIsEpic": true,
-     "tactic": "Both bodies are final encounters for the route; split the raid or kill them one at a time.",
+     "tactic": "The raid can hit either body: the two safe-spot parties fight the body at their spot, everyone else where it likes; killing one ends both.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "adds@775"
+     "key": "adds@780"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (OnAttackedByEnemy): casts OlcasgeanDD",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 502,
-     "lineEnd": 506,
+     "line": 507,
+     "lineEnd": 511,
      "anchor": "if (HealthPercent <= 50)",
      "confidence": "inferred",
      "sourceClass": "Olcasgean",
@@ -12145,14 +12162,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@502"
+     "key": "phase@507"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (Think): starts timer DoPort",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 755,
-     "lineEnd": 763,
+     "line": 760,
+     "lineEnd": 768,
      "anchor": "if (player_to_port.Count > 0 && !teleport_player && Body.HealthPercent <= 50)",
      "confidence": "inferred",
      "sourceClass": "OlcasgeanBrain",
@@ -12165,14 +12182,14 @@
      "tactic": "Off today (AllowPositionPuzzle is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "phase@755"
+     "key": "phase@760"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (DoPort): calls Move; calls Tell",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 790,
-     "lineEnd": 829,
+     "line": 795,
+     "lineEnd": 834,
      "anchor": "if (Body.HealthPercent <= 50)",
      "confidence": "inferred",
      "sourceClass": "OlcasgeanBrain",
@@ -12185,14 +12202,14 @@
      "tactic": "Off today (AllowPositionPuzzle is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "phase@790"
+     "key": "phase@795"
     },
     {
      "kind": "reset",
      "summary": "Resets after 60 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 628,
-     "lineEnd": 628,
+     "line": 633,
+     "lineEnd": 633,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "OlcasgeanBrain",
@@ -12202,14 +12219,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@628"
+     "key": "reset@633"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 630,
-     "lineEnd": 653,
+     "line": 635,
+     "lineEnd": 658,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "OlcasgeanBrain",
@@ -12219,14 +12236,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@630"
+     "key": "reset@635"
     },
     {
      "kind": "teleport",
      "summary": "Throws TeleportTarget into the air or across the room: one of 3 spots (MoveTo Body.CurrentRegionID, 38399, 60893, 12242, 3548; Body.CurrentRegionID, 38564, 64161, 12242, 2382; Body.CurrentRegionID, 41580, 62325, 12242, 890)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 798,
-     "lineEnd": 821,
+     "line": 803,
+     "lineEnd": 826,
      "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 38399, 60893, 12242, 3548, DisplacementK",
      "confidence": "inferred",
      "sourceClass": "OlcasgeanBrain",
@@ -12241,14 +12258,14 @@
      "tactic": "Off today (AllowDisplacement, AllowPositionPuzzle is false). To play it: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "teleport@798"
+     "key": "teleport@803"
     },
     {
      "kind": "teleport",
      "summary": "Teleports player to a fixed spot (MoveTo Body.CurrentRegionID, 39664, 60792, 11542, 4078)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3388,
-     "lineEnd": 3388,
+     "line": 3402,
+     "lineEnd": 3402,
      "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(player, Body.CurrentRegionID, 39664, 60792, 11542, 4078, DisplacementKind.Barr",
      "confidence": "inferred",
      "sourceClass": "WaterfallAntipassBrain",
@@ -12263,14 +12280,14 @@
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "teleport@3388"
+     "key": "teleport@3402"
     },
     {
      "kind": "position_puzzle",
      "summary": "AllowPositionPuzzle (on for him since 1.2) gates his whole fight script: Root Effects, the throw, the DD spam at whoever is not at the two safe points (40170,62600 and 39237,62644), and the Waterfall Antipass.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 673,
-     "lineEnd": 764,
+     "line": 678,
+     "lineEnd": 769,
      "anchor": "if (EpicEncounterMechanics.AllowPositionPuzzleFor(Body) && HasAggro && Body.TargetObject != null)//Player-only split-position/throw puzzle disabled for offline ",
      "confidence": "read",
      "sourceClass": "OlcasgeanBrain",
@@ -12281,14 +12298,14 @@
      "tactic": "In the raid AI (EpicEncounterTactics.Signals.cs, safe spots): the raid's two lowest-numbered parties hold one spot each the whole fight and fight the body standing there; everyone else fights where it likes. A thrown raider walks back.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "position_puzzle@673"
+     "key": "position_puzzle@678"
     },
     {
      "kind": "offline_change",
      "summary": "Player-only split-position/throw puzzle disabled for offline raids.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 673,
-     "lineEnd": 673,
+     "line": 678,
+     "lineEnd": 678,
      "anchor": "if (EpicEncounterMechanics.AllowPositionPuzzleFor(Body) && HasAggro && Body.TargetObject != null)//Player-only split-position/throw puzzle disabled for offline ",
      "confidence": "read",
      "sourceClass": "OlcasgeanBrain",
@@ -12301,7 +12318,7 @@
      "tactic": "Off today (AllowPositionPuzzle is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "offline_change@673"
+     "key": "offline_change@678"
     }
    ],
    "spells": [
@@ -12316,7 +12333,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 520,
+     "line": 525,
      "sourceClass": "Olcasgean"
     },
     {
@@ -12330,7 +12347,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 843,
+     "line": 848,
      "sourceClass": "OlcasgeanBrain"
     }
    ],
@@ -12352,7 +12369,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Level 87, 250,000 health, the final boss. Asleep until all four primals are dead. Spawns a copy of himself (Olcasgean2, a second 250,000-health body) when he wakes. The split-position puzzle (raiders must stand at two points or he spams his DD) and his throws are on since 1.2 wave 2. 1.2 wave 2: the safe spots, the throw (fixed as OpenDAoC-Core 3513bad: the fork's copy never started and could pick index -1) and the antipass are on for bots.",
+   "notes": "Level 87, 250,000 health, the final boss. Asleep until all four primals are dead. Spawns a copy of himself (Olcasgean2, a second body sharing his 250,000 health) when he wakes. The split-position puzzle (raiders must stand at two points or he spams his DD) and his throws are on since 1.2 wave 2. 1.2 wave 2: the safe spots, the throw (fixed as OpenDAoC-Core 3513bad: the fork's copy never started and could pick index -1) and the antipass are on for bots. 1.2 (True 1.65 port): killing either body ends both, and he alone pays out, for both bodies' attackers; before, Olcasgean2's death made him die by his own hand and both bodies could drop loot.",
    "aiTactics": {
     "since": "1.2",
     "summary": "Safe spots (AllowPositionPuzzle, on since 1.2): unless a raider stands within 200 of 40,170,62,600 (his copy) and one within 200 of 39,237,62,644 (him) he casts his Root DD without pause; the raid's two lowest-numbered parties hold one spot each the whole fight and fight the body that stands there (they share health), everyone else fights where it likes. Below half he throws one raider every 12-20 s who was not thrown before (bots too since 1.2): it walks back (EncounterDisplacementRecovery). The Waterfall Antipass pushes anyone who tries to leave back into the room until he dies. The party calls an empty spot in /group."
@@ -12367,8 +12384,8 @@
    "brain": "OlcasgeanBrain2",
    "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
    "lines": [
-    870,
-    1060
+    875,
+    1074
    ],
    "dungeon": "Galladoria",
    "region": 191,
@@ -12393,8 +12410,8 @@
      "kind": "phase",
      "summary": "At 50% health (OnAttackedByEnemy): casts OlcasgeanDD2",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1023,
-     "lineEnd": 1027,
+     "line": 1037,
+     "lineEnd": 1041,
      "anchor": "if (HealthPercent <= 50)",
      "confidence": "inferred",
      "sourceClass": "Olcasgean2",
@@ -12404,14 +12421,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@1023"
+     "key": "phase@1037"
     },
     {
      "kind": "reset",
      "summary": "Resets after 60 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1082,
-     "lineEnd": 1082,
+     "line": 1096,
+     "lineEnd": 1096,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "OlcasgeanBrain2",
@@ -12421,14 +12438,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@1082"
+     "key": "reset@1096"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1084,
-     "lineEnd": 1088,
+     "line": 1098,
+     "lineEnd": 1102,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "OlcasgeanBrain2",
@@ -12438,7 +12455,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@1084"
+     "key": "reset@1098"
     }
    ],
    "spells": [
@@ -12453,7 +12470,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1041,
+     "line": 1055,
      "sourceClass": "Olcasgean2"
     }
    ],
@@ -12467,6 +12484,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "Olcasgean's second body: it shares his 250,000-health pool. Killed, it kills Olcasgean with the same killer and passes him its attackers, so Olcasgean pays out for both and this body pays nothing (1.2, True 1.65 port).",
    "verified": true
   },
   {
@@ -12477,8 +12495,8 @@
    "brain": "AirPrimalBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
    "lines": [
-    1115,
-    1203
+    1129,
+    1217
    ],
    "dungeon": "Galladoria",
    "region": 191,
@@ -12503,8 +12521,8 @@
      "kind": "damage_reduced",
      "summary": "Pets and turrets (GameSummonedPet, TurretPet) deal a fixed 5 per hit; everyone else deals normal damage.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1137,
-     "lineEnd": 1137,
+     "line": 1151,
+     "lineEnd": 1151,
      "anchor": "base.TakeDamage(source, damageType, 5, 5);//pets deal less dmg to this primal to avoid being killed to fast",
      "confidence": "read",
      "sourceClass": "AirPrimal",
@@ -12513,14 +12531,14 @@
      "tactic": "Casters and archers kill it from below with direct damage; pets attack the other primals.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "damage_reduced@1137"
+     "key": "damage_reduced@1151"
     },
     {
      "kind": "reset",
      "summary": "Resets after 20 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1334,
-     "lineEnd": 1334,
+     "line": 1348,
+     "lineEnd": 1348,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "AirPrimalBrain",
@@ -12530,7 +12548,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@1334"
+     "key": "reset@1348"
     }
    ],
    "spells": [
@@ -12545,7 +12563,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1455,
+     "line": 1469,
      "sourceClass": "AirPrimalBrain"
     },
     {
@@ -12559,7 +12577,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1482,
+     "line": 1496,
      "sourceClass": "AirPrimalBrain"
     }
    ],
@@ -12585,8 +12603,8 @@
    "brain": "WaterPrimalBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
    "lines": [
-    1514,
-    1614
+    1528,
+    1628
    ],
    "dungeon": "Galladoria",
    "region": 191,
@@ -12611,8 +12629,8 @@
      "kind": "immune_while",
      "summary": "Takes no damage while it is retreating to its pool (WaterPrimalBrain.dontattack).",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1567,
-     "lineEnd": 1581,
+     "line": 1581,
+     "lineEnd": 1595,
      "anchor": "{",
      "confidence": "inferred",
      "sourceClass": "WaterPrimal",
@@ -12622,14 +12640,14 @@
      "tactic": "Stop attacking while it is immune; the raid's no-damage clock should not set it aside.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "immune_while@1567"
+     "key": "immune_while@1581"
     },
     {
      "kind": "phase",
      "summary": "Below 30% (once) it walks to its pool, stops fighting (dontattack: immune), heals a sixth of its health and comes back.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1674,
-     "lineEnd": 1693,
+     "line": 1688,
+     "lineEnd": 1707,
      "anchor": "if (Body.HealthPercent < 30 && lowhealth1 == false)",
      "confidence": "inferred",
      "sourceClass": "WaterPrimalBrain",
@@ -12638,14 +12656,14 @@
      "tactic": "Stop attacking while it is in the pool; be ready when it comes back.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "phase@1674"
+     "key": "phase@1688"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1710,
-     "lineEnd": 1710,
+     "line": 1724,
+     "lineEnd": 1724,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "WaterPrimalBrain",
@@ -12655,14 +12673,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@1710"
+     "key": "reset@1724"
     },
     {
      "kind": "teleport",
      "summary": "Teleports TeleportTarget to a fixed spot: one of 2 spots (MoveTo Body.CurrentRegionID, 38626, 60891, 11771, 2881; Body.CurrentRegionID, 40606, 60868, 11721, 1095)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1776,
-     "lineEnd": 1777,
+     "line": 1790,
+     "lineEnd": 1791,
      "anchor": "case 1: if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 38626, 60891, 11771, 2881, Displ",
      "confidence": "inferred",
      "sourceClass": "WaterPrimalBrain",
@@ -12676,14 +12694,14 @@
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "teleport@1776"
+     "key": "teleport@1790"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in LowOnHealth when if (Body.HealthPercent < 30 && lowhealth1 == false) && else (not (Body.IsWithinRadius(point1, 80))) && if (message == false)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1687,
-     "lineEnd": 1687,
+     "line": 1701,
+     "lineEnd": 1701,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "WaterPrimalBrain",
@@ -12692,14 +12710,14 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@1687"
+     "key": "aggro_wipe@1701"
     },
     {
      "kind": "heal",
      "summary": "Heals: Body.Health += Body.MaxHealth / 6;",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1679,
-     "lineEnd": 1679,
+     "line": 1693,
+     "lineEnd": 1693,
      "anchor": "Body.Health += Body.MaxHealth / 6;",
      "confidence": "inferred",
      "sourceClass": "WaterPrimalBrain",
@@ -12708,7 +12726,7 @@
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "heal@1679"
+     "key": "heal@1693"
     }
    ],
    "spells": [
@@ -12723,7 +12741,7 @@
      "value": "1",
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1793,
+     "line": 1807,
      "sourceClass": "WaterPrimalBrain"
     }
    ],
@@ -12748,8 +12766,8 @@
    "brain": "FirePrimalBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
    "lines": [
-    1823,
-    1895
+    1837,
+    1909
    ],
    "dungeon": "Galladoria",
    "region": 191,
@@ -12780,7 +12798,7 @@
      "maxHealth": 10000,
      "level": "80",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2043
+     "line": 2057
     }
    ],
    "rules": [
@@ -12788,8 +12806,8 @@
      "kind": "reflect",
      "summary": "Has a damage shield / reflect spell: Fire Primal Damage Shield (DamageShield, damage 80, target SELF)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2017,
-     "lineEnd": 2017,
+     "line": 2031,
+     "lineEnd": 2031,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "FirePrimalBrain",
@@ -12798,14 +12816,14 @@
      "tactic": "Check who it punishes; switch damage type or attacker if it reflects.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "reflect@2017"
+     "key": "reflect@2031"
     },
     {
      "kind": "adds",
      "summary": "Spawns trail of fire (TrailOfFire): on a timer (1000 ms); count 1 spawn call in SpawnFire",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1993,
-     "lineEnd": 1993,
+     "line": 2007,
+     "lineEnd": 2007,
      "anchor": "TrailOfFire npc = new TrailOfFire();",
      "confidence": "inferred",
      "sourceClass": "FirePrimalBrain",
@@ -12819,14 +12837,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@1993"
+     "key": "adds@2007"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 1931,
-     "lineEnd": 1931,
+     "line": 1945,
+     "lineEnd": 1945,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "FirePrimalBrain",
@@ -12836,14 +12854,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@1931"
+     "key": "reset@1945"
     },
     {
      "kind": "offline_change",
      "summary": "Owner 2026-10-19: \"nerf the fire patches\" (was 220 in a 450 radius every 2 s, a new patch every 2.5 s). The original 220 in 450 is behind EpicEncounterMechanics.AllowFullFirePatches (read when the spell is built).",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2158,
-     "lineEnd": 2159,
+     "line": 2172,
+     "lineEnd": 2173,
      "anchor": "// Owner 2026-10-19: \"nerf the fire patches\" (was 220 in a 450 radius every 2 s, a new patch every 2.5 s).",
      "confidence": "read",
      "sourceClass": "TrailOfFire",
@@ -12857,7 +12875,7 @@
      "tactic": "Off today (AllowFullFirePatches is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "offline_change@2158"
+     "key": "offline_change@2172"
     }
    ],
    "spells": [
@@ -12872,7 +12890,7 @@
      "value": null,
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2017,
+     "line": 2031,
      "sourceClass": "FirePrimalBrain"
     },
     {
@@ -12886,7 +12904,7 @@
      "value": null,
      "target": "AREA",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2151,
+     "line": 2165,
      "sourceClass": "TrailOfFire"
     }
    ],
@@ -12918,8 +12936,8 @@
    "brain": "EarthPrimalBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
    "lines": [
-    2202,
-    2273
+    2216,
+    2287
    ],
    "dungeon": "Galladoria",
    "region": 191,
@@ -12950,7 +12968,7 @@
      "maxHealth": 60000,
      "level": "73",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2393
+     "line": 2407
     },
     {
      "class": "MagicalEarthmender",
@@ -12963,7 +12981,7 @@
      "maxHealth": 60000,
      "level": "73",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2598
+     "line": 2612
     },
     {
      "class": "NaturalEarthmender",
@@ -12976,7 +12994,7 @@
      "maxHealth": 60000,
      "level": "73",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2806
+     "line": 2820
     },
     {
      "class": "ShadowyEarthmender",
@@ -12989,7 +13007,7 @@
      "maxHealth": 60000,
      "level": "73",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3011
+     "line": 3025
     }
    ],
    "rules": [
@@ -12997,8 +13015,8 @@
      "kind": "immune_while",
      "summary": "Takes no damage while it is drawn past its tether.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2419,
-     "lineEnd": 2421,
+     "line": 2433,
+     "lineEnd": 2435,
      "anchor": "{",
      "confidence": "read",
      "sourceClass": "GuardianEarthmender",
@@ -13018,14 +13036,14 @@
      "tactic": "Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "immune_while@2419"
+     "key": "immune_while@2433"
     },
     {
      "kind": "tether",
      "summary": "Tether range 890: drawn further from its spawn it walks home.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2262,
-     "lineEnd": 2262,
+     "line": 2276,
+     "lineEnd": 2276,
      "anchor": "TetherRange = 890;",
      "confidence": "read",
      "sourceClass": "EarthPrimal",
@@ -13035,14 +13053,14 @@
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "tether@2262"
+     "key": "tether@2276"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2313,
-     "lineEnd": 2319,
+     "line": 2327,
+     "lineEnd": 2333,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "EarthPrimalBrain",
@@ -13052,14 +13070,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@2313"
+     "key": "reset@2327"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2529,
-     "lineEnd": 2529,
+     "line": 2543,
+     "lineEnd": 2543,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "GuardianEarthmenderBrain",
@@ -13075,14 +13093,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@2529"
+     "key": "reset@2543"
     },
     {
      "kind": "heal",
      "summary": "Each Earthmender casts a 2,000-point heal (target realm: the primal or another Earthmender).",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2570,
-     "lineEnd": 2570,
+     "line": 2584,
+     "lineEnd": 2584,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "GuardianEarthmenderBrain",
@@ -13096,14 +13114,14 @@
      "tactic": "Kill the four Earthmenders first (split one party per Earthmender), then the primal; interrupt their casts if a class can.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "heal@2570"
+     "key": "heal@2584"
     },
     {
      "kind": "offline_change",
      "summary": "Offline DAoC: no class puzzle for bot raids; the original (each Earthmender is hurt only by its own class group, pets always) is behind EpicEncounterMechanics.AllowEarthmenderClassPuzzle. Keep real damage, armor/resists, health, death phases, and the encounter tether.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2413,
-     "lineEnd": 2415,
+     "line": 2427,
+     "lineEnd": 2429,
      "anchor": "// Offline DAoC: no class puzzle for bot raids; the original (each Earthmender is hurt only by its own class group,",
      "confidence": "read",
      "sourceClass": "GuardianEarthmender",
@@ -13122,14 +13140,14 @@
      "tactic": "On: the original is back (AllowEarthmenderClassPuzzle is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "offline_change@2413"
+     "key": "offline_change@2427"
     },
     {
      "kind": "offline_change",
      "summary": "Run 18 (2026-10-17): the Earthmenders fight back now (they never attacked, so raiders busy with the primals never turned on them and all four were skipped, leaving the Earth primal healed and Olcasgean asleep).",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2432,
-     "lineEnd": 2433,
+     "line": 2446,
+     "lineEnd": 2447,
      "anchor": "// Run 18 (2026-10-17): the Earthmenders fight back now (they never attacked, so raiders busy with the primals",
      "confidence": "read",
      "sourceClass": "GuardianEarthmender",
@@ -13152,14 +13170,14 @@
      "tactic": "On: the original is back (AllowEarthmendersPassive is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "offline_change@2432"
+     "key": "offline_change@2446"
     },
     {
      "kind": "offline_change",
      "summary": "Run 17 (2026-10-17): the raid hit each Earthmender, the primals pulled the raiders off and the Earthmender healed to full 30 s later; all four were skipped in turn. It keeps its damage while raiders are in the room.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2525,
-     "lineEnd": 2526,
+     "line": 2539,
+     "lineEnd": 2540,
      "anchor": "// Run 17 (2026-10-17): the raid hit each Earthmender, the primals pulled the raiders off and the Earthmender",
      "confidence": "read",
      "sourceClass": "GuardianEarthmenderBrain",
@@ -13178,14 +13196,14 @@
      "tactic": "On: the original is back (AllowEarthmenderQuickReset is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "offline_change@2525"
+     "key": "offline_change@2539"
     },
     {
      "kind": "offline_change",
      "summary": "Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four kept every one of them at full health through the bot raid (2,000 every 3 s from each of three).",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2537,
-     "lineEnd": 2538,
+     "line": 2551,
+     "lineEnd": 2552,
      "anchor": "// Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four",
      "confidence": "read",
      "sourceClass": "GuardianEarthmenderBrain",
@@ -13204,7 +13222,7 @@
      "tactic": "On: the original is back (AllowEarthmenderMutualHeal is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "offline_change@2537"
+     "key": "offline_change@2551"
     }
    ],
    "spells": [
@@ -13219,7 +13237,7 @@
      "value": "99",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2359,
+     "line": 2373,
      "sourceClass": "EarthPrimalBrain"
     },
     {
@@ -13233,7 +13251,7 @@
      "value": "2000",
      "target": "REALM",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2570,
+     "line": 2584,
      "sourceClass": "GuardianEarthmenderBrain"
     },
     {
@@ -13247,7 +13265,7 @@
      "value": "2000",
      "target": "REALM",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2778,
+     "line": 2792,
      "sourceClass": "MagicalEarthmenderBrain"
     },
     {
@@ -13261,7 +13279,7 @@
      "value": "2000",
      "target": "REALM",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2983,
+     "line": 2997,
      "sourceClass": "NaturalEarthmenderBrain"
     },
     {
@@ -13275,7 +13293,7 @@
      "value": "2000",
      "target": "REALM",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3188,
+     "line": 3202,
      "sourceClass": "ShadowyEarthmenderBrain"
     }
    ],
@@ -14234,7 +14252,7 @@
      "maxHealth": 1500,
      "level": "(byte)Util.Random(50, 55)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 1027
+     "line": 1035
     },
     {
      "class": "GjalpinulvaSpawnedAdd",
@@ -14247,7 +14265,7 @@
      "maxHealth": 5000,
      "level": "(byte)Util.Random(60, 64)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 1344
+     "line": 1352
     }
    ],
    "rules": [
@@ -14272,8 +14290,8 @@
      "kind": "adds",
      "summary": "Spawns Gjalpinulva's messenger (GjalpinulvaMessenger): on a timer (Util.Random(80000, 90000) ms); count 1 spawn call in SpawnMssengers",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 860,
-     "lineEnd": 860,
+     "line": 868,
+     "lineEnd": 868,
      "anchor": "GjalpinulvaMessenger messenger = new GjalpinulvaMessenger();",
      "confidence": "inferred",
      "sourceClass": "MidGjalpinulvaBrain",
@@ -14291,14 +14309,14 @@
      "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "adds@860"
+     "key": "adds@868"
     },
     {
      "kind": "adds",
      "summary": "Spawns GjalpinulvaSpawnedAdd: from SpawnDrakulvs; count 1 spawn call in SpawnDrakulvs",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 1318,
-     "lineEnd": 1318,
+     "line": 1326,
+     "lineEnd": 1326,
      "anchor": "GjalpinulvaSpawnedAdd add = new GjalpinulvaSpawnedAdd();",
      "confidence": "inferred",
      "sourceClass": "GjalpinulvaMessengerBrain",
@@ -14317,14 +14335,14 @@
      "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "adds@1318"
+     "key": "adds@1326"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (Think): starts timer SpawnMssengers; calls SetProperty",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 496,
-     "lineEnd": 501,
+     "line": 504,
+     "lineEnd": 509,
      "anchor": "if (Body.HealthPercent <= 50 && CanSpawnMessengers == false && !IsRestless && EpicEncounterMechanics.AllowDragonMessengersFor(Body))",
      "confidence": "inferred",
      "sourceClass": "MidGjalpinulvaBrain",
@@ -14337,14 +14355,14 @@
      "tactic": "Off today (AllowDragonMessengers is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "phase@496"
+     "key": "phase@504"
     },
     {
      "kind": "phase",
      "summary": "At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE; calls Raise",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 759,
-     "lineEnd": 830,
+     "line": 767,
+     "lineEnd": 838,
      "anchor": "if (Body.HealthPercent <= 90 && DragonKaboom1 == false && !Body.IsCasting && !IsRestless)",
      "confidence": "inferred",
      "sourceClass": "MidGjalpinulvaBrain",
@@ -14365,14 +14383,29 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@759"
+     "key": "phase@767"
+    },
+    {
+     "kind": "aggro_wipe",
+     "summary": "Lands with an empty aggro list: when it touches down at its spawn at the end of its daytime flight it clears the raiders its flight glare put on it; anyone within its aggro range is picked up again (1.2, True 1.65 port: before, a raider glared just before touchdown stayed on the list, so it never healed on a reset and never flew again).",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
+     "line": 462,
+     "lineEnd": 462,
+     "anchor": "ClearAggroList();",
+     "confidence": "inferred",
+     "sourceClass": "MidGjalpinulvaBrain",
+     "method": "Think",
+     "tactic": "Nothing to play: it only takes off with no foes and 30 s out of combat, so this is not a tank losing it in a fight; a raid already in the lair is picked up again at once.",
+     "difficulty": "easy for the current raid AI",
+     "verified": true,
+     "key": "aggro_wipe@462"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in ResetGlareRoam when if (IsRestless)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 708,
-     "lineEnd": 708,
+     "line": 716,
+     "lineEnd": 716,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "MidGjalpinulvaBrain",
@@ -14381,7 +14414,7 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@708"
+     "key": "aggro_wipe@716"
     },
     {
      "kind": "teleport",
@@ -14417,7 +14450,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 883,
+     "line": 891,
      "sourceClass": "MidGjalpinulvaBrain"
     },
     {
@@ -14431,7 +14464,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 911,
+     "line": 919,
      "sourceClass": "MidGjalpinulvaBrain"
     },
     {
@@ -14445,7 +14478,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 939,
+     "line": 947,
      "sourceClass": "MidGjalpinulvaBrain"
     },
     {
@@ -14459,7 +14492,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 967,
+     "line": 975,
      "sourceClass": "MidGjalpinulvaBrain"
     },
     {
@@ -14473,7 +14506,7 @@
      "value": "50",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 995,
+     "line": 1003,
      "sourceClass": "MidGjalpinulvaBrain"
     }
    ],
@@ -14495,7 +14528,7 @@
     }
    ],
    "raidAi": "dragon fight",
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full.",
    "aiTactics": {
     "rangedAdds": [
      "GjalpinulvaMessenger"
@@ -14537,7 +14570,7 @@
      "maxHealth": 1500,
      "level": "(byte)Util.Random(50, 55)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 1021
+     "line": 1029
     },
     {
      "class": "GolestandtSpawnedAdd",
@@ -14550,7 +14583,7 @@
      "maxHealth": 5000,
      "level": "(byte)Util.Random(60, 64)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 1349
+     "line": 1357
     }
    ],
    "rules": [
@@ -14575,8 +14608,8 @@
      "kind": "adds",
      "summary": "Spawns Golestandt's messenger (GolestandtMessenger): on a timer (Util.Random(80000, 90000) ms); count 1 spawn call in SpawnMssengers",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 857,
-     "lineEnd": 857,
+     "line": 865,
+     "lineEnd": 865,
      "anchor": "GolestandtMessenger messenger = new GolestandtMessenger();",
      "confidence": "inferred",
      "sourceClass": "AlbGolestandtBrain",
@@ -14594,14 +14627,14 @@
      "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "adds@857"
+     "key": "adds@865"
     },
     {
      "kind": "adds",
      "summary": "Spawns GolestandtSpawnedAdd: from SpawnGraniteGiants; count 1 spawn call in SpawnGraniteGiants",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 1323,
-     "lineEnd": 1323,
+     "line": 1331,
+     "lineEnd": 1331,
      "anchor": "GolestandtSpawnedAdd add = new GolestandtSpawnedAdd();",
      "confidence": "inferred",
      "sourceClass": "GolestandtMessengerBrain",
@@ -14620,14 +14653,14 @@
      "tactic": "Off today (AllowDragonMessengers is false). To play it: kill the adds as they come.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "adds@1323"
+     "key": "adds@1331"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (Think): starts timer SpawnMssengers; calls SetProperty",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 497,
-     "lineEnd": 502,
+     "line": 505,
+     "lineEnd": 510,
      "anchor": "if (Body.HealthPercent <= 50 && CanSpawnMessengers == false && !IsRestless && EpicEncounterMechanics.AllowDragonMessengersFor(Body))",
      "confidence": "inferred",
      "sourceClass": "AlbGolestandtBrain",
@@ -14640,14 +14673,14 @@
      "tactic": "Off today (AllowDragonMessengers is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "phase@497"
+     "key": "phase@505"
     },
     {
      "kind": "phase",
      "summary": "At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE; calls Raise",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 756,
-     "lineEnd": 827,
+     "line": 764,
+     "lineEnd": 835,
      "anchor": "if (Body.HealthPercent <= 90 && DragonKaboom1 == false && !Body.IsCasting && !IsRestless)",
      "confidence": "inferred",
      "sourceClass": "AlbGolestandtBrain",
@@ -14668,14 +14701,29 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@756"
+     "key": "phase@764"
+    },
+    {
+     "kind": "aggro_wipe",
+     "summary": "Lands with an empty aggro list: when it touches down at its spawn at the end of its daytime flight it clears the raiders its flight glare put on it; anyone within its aggro range is picked up again (1.2, True 1.65 port: before, a raider glared just before touchdown stayed on the list, so it never healed on a reset and never flew again).",
+     "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
+     "line": 463,
+     "lineEnd": 463,
+     "anchor": "ClearAggroList();",
+     "confidence": "inferred",
+     "sourceClass": "AlbGolestandtBrain",
+     "method": "Think",
+     "tactic": "Nothing to play: it only takes off with no foes and 30 s out of combat, so this is not a tank losing it in a fight; a raid already in the lair is picked up again at once.",
+     "difficulty": "easy for the current raid AI",
+     "verified": true,
+     "key": "aggro_wipe@463"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in ResetGlareRoam when if (IsRestless)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 705,
-     "lineEnd": 705,
+     "line": 713,
+     "lineEnd": 713,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "AlbGolestandtBrain",
@@ -14684,7 +14732,7 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@705"
+     "key": "aggro_wipe@713"
     },
     {
      "kind": "teleport",
@@ -14720,7 +14768,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 880,
+     "line": 888,
      "sourceClass": "AlbGolestandtBrain"
     },
     {
@@ -14734,7 +14782,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 908,
+     "line": 916,
      "sourceClass": "AlbGolestandtBrain"
     },
     {
@@ -14748,7 +14796,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 936,
+     "line": 944,
      "sourceClass": "AlbGolestandtBrain"
     },
     {
@@ -14762,7 +14810,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 964,
+     "line": 972,
      "sourceClass": "AlbGolestandtBrain"
     },
     {
@@ -14776,7 +14824,7 @@
      "value": "50",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 992,
+     "line": 1000,
      "sourceClass": "AlbGolestandtBrain"
     }
    ],
@@ -14798,7 +14846,7 @@
     }
    ],
    "raidAi": "dragon fight",
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full.",
    "aiTactics": {
     "rangedAdds": [
      "GolestandtMessenger"
@@ -26984,8 +27032,8 @@
      "kind": "phase",
      "summary": "At 50% health (Think): starts timer TeleportPlayerAway",
      "file": "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs",
-     "line": 127,
-     "lineEnd": 130,
+     "line": 128,
+     "lineEnd": 131,
      "anchor": "if (Util.Chance(5) && Body.HealthPercent <= 50)",
      "confidence": "inferred",
      "sourceClass": "MoranBrain",
@@ -26995,7 +27043,7 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@127"
+     "key": "phase@128"
     },
     {
      "kind": "tether",
@@ -27035,8 +27083,8 @@
      "kind": "teleport",
      "summary": "Throws portPlayer[ranPlayer] into the air or across the room: one of 3 spots (MoveTo 1, 401943, 753091, 222, 3499; 1, 406787, 749150, 213, 3926; 1, 401061, 755882, 469, 3050)",
      "file": "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs",
-     "line": 179,
-     "lineEnd": 203,
+     "line": 180,
+     "lineEnd": 204,
      "anchor": "EncounterDisplacement.Move(portPlayer[ranPlayer], 1, 401943, 753091, 222, 3499, DisplacementKind.Throw, Body);",
      "confidence": "inferred",
      "sourceClass": "MoranBrain",
@@ -27048,7 +27096,7 @@
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "teleport@179"
+     "key": "teleport@180"
     }
    ],
    "spells": [],
@@ -27069,7 +27117,7 @@
     }
    ],
    "raidAi": "dragon fight",
-   "notes": "1.2 (wave 2): below 50% each brain turn has a 5% chance to start a gust, and a gust throws ONE random raider (WindVictims) to one of three camps, whose monsters then attack it. The loop used to throw every raider within 2,000 (a one-element list per raider), in the original too. Bots are thrown too (AllowBotDisplacement on); the camp's own monsters attack, never bots or Moran.",
+   "notes": "1.2 (wave 2): below 50% each brain turn has a 5% chance to start a gust, and a gust throws ONE random raider (WindVictims) to one of three camps, whose monsters then attack it. The loop used to throw every raider within 2,000 (a one-element list per raider), in the original too. Bots are thrown too (AllowBotDisplacement on); the camp's own monsters attack, never bots or Moran. On his first aggro every monster of his own kind within 1,500 (EpicEncounterMechanics.IsOwnKind: same realm, alive, not a pet, a gamebot or a peaceful NPC) is set on the raiders within 2,250 of him; 1.2 (True 1.65 port): before, every NPC there was, the raid's own bots and pets included.",
    "verified": true
   },
   {
@@ -27498,7 +27546,7 @@
      "maxHealth": 10000,
      "level": null,
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 564
+     "line": 583
     },
     {
      "class": "SummonedDemon",
@@ -27511,7 +27559,7 @@
      "maxHealth": 6000,
      "level": "(byte)Util.Random(62, 68)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 479
+     "line": 498
     },
     {
      "class": "SummonedSacrifice",
@@ -27524,7 +27572,7 @@
      "maxHealth": 6000,
      "level": "(byte)Util.Random(62, 68)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 394
+     "line": 413
     }
    ],
    "rules": [
@@ -27550,8 +27598,8 @@
      "kind": "adds",
      "summary": "Spawns 2 kinds of add (summoned sacrifice (SummonedSacrifice), summoned demon (SummonedDemon)): from Think when if (Body.HealthPercent <= 80 && SpawnSacrifices1 == false)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 311,
-     "lineEnd": 321,
+     "line": 320,
+     "lineEnd": 330,
      "anchor": "SummonedSacrifice Add1 = new SummonedSacrifice();",
      "confidence": "inferred",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -27567,14 +27615,14 @@
      "tactic": "In the raid AI (EpicEncounterTactics): ranged adds: casters and archers kill the sacrifice and the demon on their walk to the altar; the rest stay on him.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "adds@311"
+     "key": "adds@320"
     },
     {
      "kind": "adds",
-     "summary": "Spawns the Shade of Aelfgar (one at a time) once both the sacrifice and the demon have reached his altar (32063,40896) and died there; killed on the way, they never count.",
+     "summary": "Spawns the Shade of Aelfgar (one at a time) every time both the sacrifice and the demon of a pair have reached his altar (32063,40896) and died there; killed on the way, they never count. Two pairs a fight (at 80%, and again after he turns), so up to two Shades.",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 337,
-     "lineEnd": 337,
+     "line": 349,
+     "lineEnd": 349,
      "anchor": "ShadeOfAelfgar Add1 = new ShadeOfAelfgar();",
      "confidence": "inferred",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -27587,14 +27635,14 @@
      "tactic": "Kill the sacrifice and the demon before they reach the altar (ranged adds); a Shade that comes anyway attacks the raid and the route turns on it.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "adds@337"
+     "key": "adds@349"
     },
     {
      "kind": "phase",
      "summary": "At 80% health (Think): calls SendSpellEffectAnimation; calls SpawnDemonAndSacrifice; Strength = 650",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 269,
-     "lineEnd": 284,
+     "line": 272,
+     "lineEnd": 287,
      "anchor": "if (Body.HealthPercent <= 80 && SpawnSacrifices1 == false)",
      "confidence": "inferred",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -27604,14 +27652,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@269"
+     "key": "phase@272"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (Think): calls MorphIntoDemon",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 285,
-     "lineEnd": 289,
+     "line": 288,
+     "lineEnd": 292,
      "anchor": "if(Body.HealthPercent <= 50 && Stage2==false)",
      "confidence": "inferred",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -27620,14 +27668,14 @@
      "tactic": "In the raid AI (EpicEncounterTactics): at 50% he becomes the demon, healed to 75% (to full with AllowGovannonFullHeal on), and starts his Shroud of Agony (radius 300 around his target): the raid spreads, and steps out of the Shroud while he casts it (see his tactic).",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "phase@285"
+     "key": "phase@288"
     },
     {
      "kind": "phase",
      "summary": "Changes form in MorphIntoDemon (calls GovannonDemonHealth; Strength = 800)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 304,
-     "lineEnd": 304,
+     "line": 313,
+     "lineEnd": 313,
      "anchor": "Body.Model = 636;//demon model",
      "confidence": "inferred",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -27636,14 +27684,14 @@
      "tactic": "In the raid AI (EpicEncounterTactics): spread while he has the demon model (636).",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "phase@304"
+     "key": "phase@313"
     },
     {
      "kind": "reset",
-     "summary": "Resets when its aggro list is empty: walks home at full health, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
+     "summary": "Resets when its aggro list is empty (after 8 s out of combat: EpicEncounterMechanics.FightIsOver): walks home at full health in his own form (template model, size and Strength), his sacrifice, demon and Shade removed; before 1.2's True 1.65 port only the later 30-35 s window restored his form, so a raid back within 30 s met Strength 800 and the demon model.",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
      "line": 234,
-     "lineEnd": 253,
+     "lineEnd": 256,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -27659,8 +27707,8 @@
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 294,
-     "lineEnd": 294,
+     "line": 296,
+     "lineEnd": 296,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -27670,14 +27718,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@294"
+     "key": "reset@296"
     },
     {
      "kind": "teleport",
      "summary": "Teleports RandomTarget to a fixed spot (MoveTo Body.CurrentRegionID, 32091, 39684, 16302, 4094)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 689,
-     "lineEnd": 689,
+     "line": 713,
+     "lineEnd": 713,
      "anchor": "EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 32091, 39684, 16302, 4094, DisplacementKind.Teleport, Body);",
      "confidence": "inferred",
      "sourceClass": "ShadeOfAelfgarBrain",
@@ -27688,14 +27736,14 @@
      "tactic": "Shade of Aelfgar's gallery port: on since 1.2 for bots too (AllowBotDisplacement for ShadeOfAelfgar). A moved bot lands on the gallery 834 above his floor and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "teleport@689"
+     "key": "teleport@713"
     },
     {
      "kind": "empowered",
      "summary": "Strength becomes 650 while if (Body.InCombat && Body.IsAlive && HasAggro && Body.TargetObject != null) && if (Body.HealthPercent <= 80 && SpawnSacrifices1 == false) && if (Stage2 == false)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 274,
-     "lineEnd": 274,
+     "line": 277,
+     "lineEnd": 277,
      "anchor": "Body.Strength = 650;",
      "confidence": "inferred",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -27705,14 +27753,14 @@
      "tactic": "Remove what empowers it first, or burn it fast; healers ready for bigger hits.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "empowered@274"
+     "key": "empowered@277"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: ShadeOfAelfgarBrain",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 266,
-     "lineEnd": 266,
+     "line": 269,
+     "lineEnd": 269,
      "anchor": "AddAggroListTo(shade.Brain as ShadeOfAelfgarBrain);",
      "confidence": "inferred",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -27721,7 +27769,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@266"
+     "key": "linked_pack@269"
     },
     {
      "kind": "offline_change",
@@ -27770,7 +27818,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 358,
+     "line": 377,
      "sourceClass": "GrandSummonerGovannonBrain"
     },
     {
@@ -27784,7 +27832,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 623,
+     "line": 647,
      "sourceClass": "ShadeOfAelfgar"
     }
    ],
@@ -27814,7 +27862,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to 75% (AllowGovannonFullHeal, off by default, server property epic_govannon_full_heal; on, the original: healed to full), strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
+   "notes": "Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to 75% (AllowGovannonFullHeal, off by default, server property epic_govannon_full_heal; on, the original: healed to full), strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come a second time: at once as he turns (he is at 75%, under the 80% mark), or when the demon falls to 80% with AllowGovannonFullHeal on. Each pair that both reach the altar brings a Shade, one at a time (1.2, True 1.65 port: before, the first Shade's death stopped every later Shade until a restart). A reset puts him back in his own form (template model, size and Strength) at once. Only his summoned Shade comes into the world: the database Shade that stood 137 from him is no longer loaded (1.2, True 1.65 port).",
    "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known.",
    "aiTactics": {
     "spreadRadius": 300,
@@ -28003,7 +28051,7 @@
      "maxHealth": 4000,
      "level": "(byte)Util.Random(62, 65)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs",
-     "line": 497
+     "line": 500
     },
     {
      "class": "TorturedSouls",
@@ -28016,7 +28064,7 @@
      "maxHealth": 600,
      "level": "(byte)Util.Random(48, 53)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs",
-     "line": 343
+     "line": 346
     }
    ],
    "rules": [
@@ -28040,7 +28088,7 @@
     },
     {
      "kind": "damage_reduced",
-     "summary": "Takes a fixed 5 damage per hit while if (NamedMobDamage.CountsAsAttacker(source)) && else (not (IsOutOfTetherRange)) && if (source is GameSummonedPet)",
+     "summary": "A summoned pet does 10 a hit to him (5 plus 5 critical), whatever it would have done.",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs",
      "line": 62,
      "lineEnd": 62,
@@ -28049,18 +28097,17 @@
      "sourceClass": "SummonerLossren",
      "method": "TakeDamage",
      "condition": "if (NamedMobDamage.CountsAsAttacker(source)) && else (not (IsOutOfTetherRange)) && if (source is GameSummonedPet)",
-     "verified": true,
-     "tactic": "Expect a slower kill; meet the condition that lifts the reduction if there is one.",
+     "tactic": "Pets fight his souls and ghoul, not him: a gamebot's pet takes an add from its owner's aggro list instead, and one already on him is called off (BotBrain.PetTargetInsteadOfBoss, 1.2 True 1.65 port; tests only).",
      "difficulty": "easy for the current raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "damage_reduced@62"
     },
     {
      "kind": "adds",
      "summary": "Spawns TorturedSouls: on a timer (via DoSpawn); count about 18-25 (loop to a random bound)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs",
-     "line": 230,
-     "lineEnd": 230,
+     "line": 233,
+     "lineEnd": 233,
      "anchor": "TorturedSouls add = new TorturedSouls();",
      "confidence": "inferred",
      "sourceClass": "SummonerLossrenBrain",
@@ -28075,14 +28122,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@230"
+     "key": "adds@233"
     },
     {
      "kind": "adds",
-     "summary": "Spawns infected ghoul (ExplodeUndead): on a timer (via DoSpawn); count 1 spawn call in SpawnBigZombie",
+     "summary": "Spawns the infected ghoul (4,000 health, walks at 110 to a random raider and bursts for 1,000 in 500 there) once 20 or more tortured souls have died since the last ghoul (checked every 5-8 s), one ghoul at a time (1.2: before, it needed exactly 20 at the check, so a raid that killed two souls between checks never saw the ghoul again that fight). A reset removes the ghoul and clears its count, so it comes again on the next pull (1.2, True 1.65 port: before, a ghoul removed by a reset blocked every later ghoul until a restart).",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs",
-     "line": 277,
-     "lineEnd": 277,
+     "line": 280,
+     "lineEnd": 280,
      "anchor": "ExplodeUndead add2 = new ExplodeUndead();",
      "confidence": "inferred",
      "sourceClass": "SummonerLossrenBrain",
@@ -28092,18 +28139,17 @@
      "addBrain": "ExplodeUndeadBrain",
      "trigger": "on a timer (via DoSpawn)",
      "addIsEpic": false,
+     "tactic": "Casters and archers kill the ghoul as it crawls; its raider walks away from it (see his tactic).",
+     "difficulty": "needs new raid AI",
      "verified": true,
-     "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
-     "difficulty": "easy for the current raid AI",
-     "tacticSource": "default for its kind",
-     "key": "adds@277"
+     "key": "adds@280"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs",
      "line": 162,
-     "lineEnd": 183,
+     "lineEnd": 186,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "SummonerLossrenBrain",
@@ -28119,8 +28165,8 @@
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs",
-     "line": 205,
-     "lineEnd": 205,
+     "line": 208,
+     "lineEnd": 208,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "SummonerLossrenBrain",
@@ -28130,14 +28176,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@205"
+     "key": "reset@208"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs",
-     "line": 332,
-     "lineEnd": 335,
+     "line": 335,
+     "lineEnd": 338,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "TorturedSoulsBrain",
@@ -28148,14 +28194,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@332"
+     "key": "reset@335"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: TorturedSoulsBrain",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs",
-     "line": 198,
-     "lineEnd": 198,
+     "line": 201,
+     "lineEnd": 201,
      "anchor": "AddAggroListTo(souls.Brain as TorturedSoulsBrain);",
      "confidence": "inferred",
      "sourceClass": "SummonerLossrenBrain",
@@ -28164,14 +28210,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@198"
+     "key": "linked_pack@201"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs",
-     "line": 452,
-     "lineEnd": 452,
+     "line": 455,
+     "lineEnd": 455,
      "anchor": "AddToAggroList(ExplodeUndead.RandomTarget, 2000);",
      "confidence": "inferred",
      "sourceClass": "ExplodeUndeadBrain",
@@ -28181,7 +28227,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@452"
+     "key": "linked_pack@455"
     }
    ],
    "spells": [
@@ -28196,7 +28242,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs",
-     "line": 470,
+     "line": 473,
      "sourceClass": "ExplodeUndeadBrain"
     }
    ],
@@ -31224,8 +31270,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 201,
-     "lineEnd": 207,
+     "line": 208,
+     "lineEnd": 214,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "SuttungBrain",
@@ -31235,14 +31281,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@201"
+     "key": "reset@208"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 211,
-     "lineEnd": 212,
+     "line": 218,
+     "lineEnd": 219,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "SuttungBrain",
@@ -31252,14 +31298,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@211"
+     "key": "reset@218"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 216,
-     "lineEnd": 216,
+     "line": 223,
+     "lineEnd": 223,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "SuttungBrain",
@@ -31269,23 +31315,23 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@216"
+     "key": "reset@223"
     },
     {
      "kind": "empowered",
-     "summary": "Every 20-35 s in combat he goes berserk for 10-20 s: Strength 850 (hits much harder).",
+     "summary": "Berserker stance: while he has foes, a stance comes 20-35 s after the pull or after the last stance ended. For 10-20 s he has Strength 850 (hits much harder), is slower (speed 200, his template's 250) and larger (size 75), then his template Strength, speed and size come back. A stance that falls due while he is dead, out of combat or without foes is skipped and the wait starts again on his next fight (1.2, True 1.65 port: before, such a stance left the flag set and no Suttung went berserk again until a server restart).",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 159,
-     "lineEnd": 159,
-     "anchor": "Body.Strength = 850;",
-     "confidence": "inferred",
+     "line": 155,
+     "lineEnd": 186,
+     "anchor": "public int BerserkerPhase(ECSGameTimer timer)",
      "sourceClass": "SuttungBrain",
      "method": "BerserkerPhase",
-     "condition": "if (Body.IsAlive && IsBerserker == true && Body.InCombat && HasAggro)",
-     "tactic": "Tanks use their defensive abilities and healers focus the tank during berserk; off-tanks ready to take over.",
+     "confidence": "read",
+     "tactic": "Tanks use their defensive abilities and healers focus the tank during berserk; off-tanks ready to take over. He is slower in the stance, so a tank can step back while it lasts. Expect one every 30-55 s of a long fight.",
      "difficulty": "needs new raid AI",
+     "hand": true,
      "verified": true,
-     "key": "empowered@159"
+     "key": "empowered@155"
     }
    ],
    "spells": [
@@ -31314,7 +31360,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 253,
+     "line": 260,
      "sourceClass": "SuttungBrain"
     }
    ],
@@ -31338,8 +31384,8 @@
    "brain": "HjalmarBrain",
    "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
    "lines": [
-    282,
-    399
+    289,
+    406
    ],
    "dungeon": "Tuscaran Glacier",
    "region": 160,
@@ -31366,7 +31412,7 @@
      "maxHealth": 1000,
      "level": "(byte)Util.Random(50, 55)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 522
+     "line": 529
     }
    ],
    "rules": [
@@ -31374,8 +31420,8 @@
      "kind": "adds",
      "summary": "Spawns Morkimma (Morkimma): from OnAttackEnemy when if (Util.Chance(20)); count 1 spawn call in SpawnAdds",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 390,
-     "lineEnd": 390,
+     "line": 397,
+     "lineEnd": 397,
      "anchor": "Morkimma npc = new Morkimma();",
      "confidence": "inferred",
      "sourceClass": "Hjalmar",
@@ -31389,14 +31435,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@390"
+     "key": "adds@397"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 444,
-     "lineEnd": 467,
+     "line": 451,
+     "lineEnd": 474,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "HjalmarBrain",
@@ -31406,14 +31452,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@444"
+     "key": "reset@451"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 471,
-     "lineEnd": 472,
+     "line": 478,
+     "lineEnd": 479,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "HjalmarBrain",
@@ -31423,14 +31469,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@471"
+     "key": "reset@478"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 476,
-     "lineEnd": 476,
+     "line": 483,
+     "lineEnd": 483,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "HjalmarBrain",
@@ -31440,14 +31486,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@476"
+     "key": "reset@483"
     },
     {
      "kind": "heal",
      "summary": "Has a heal spell: Morkimma's Heal (Heal, value 200, target SELF)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 608,
-     "lineEnd": 608,
+     "line": 615,
+     "lineEnd": 615,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "Morkimma",
@@ -31457,7 +31503,7 @@
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "heal@608"
+     "key": "heal@615"
     }
    ],
    "spells": [
@@ -31472,7 +31518,7 @@
      "value": "200",
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 608,
+     "line": 615,
      "sourceClass": "Morkimma"
     }
    ],
@@ -31496,8 +31542,8 @@
    "brain": "HjalmarSuttungControllerBrain",
    "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
    "lines": [
-    654,
-    711
+    661,
+    718
    ],
    "dungeon": "Tuscaran Glacier",
    "region": 160,
@@ -31521,8 +31567,8 @@
      "kind": "adds",
      "summary": "Spawns Suttung: from SpawnSuttung; count 1 spawn call in SpawnSuttung",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 687,
-     "lineEnd": 687,
+     "line": 694,
+     "lineEnd": 694,
      "anchor": "Suttung boss = new Suttung();",
      "confidence": "inferred",
      "sourceClass": "HjalmarSuttungController",
@@ -31536,14 +31582,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@687"
+     "key": "adds@694"
     },
     {
      "kind": "adds",
      "summary": "Spawns Hjalmar: from SpawnHjalmar; count 1 spawn call in SpawnHjalmar",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 701,
-     "lineEnd": 701,
+     "line": 708,
+     "lineEnd": 708,
      "anchor": "Hjalmar boss = new Hjalmar();",
      "confidence": "inferred",
      "sourceClass": "HjalmarSuttungController",
@@ -31557,14 +31603,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@701"
+     "key": "adds@708"
     },
     {
      "kind": "adds",
      "summary": "Spawns Suttung: on a timer (via SpawnBoss); count 1 spawn call in SpawnSuttung",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 765,
-     "lineEnd": 765,
+     "line": 772,
+     "lineEnd": 772,
      "anchor": "Suttung boss = new Suttung();",
      "confidence": "inferred",
      "sourceClass": "HjalmarSuttungControllerBrain",
@@ -31578,14 +31624,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@765"
+     "key": "adds@772"
     },
     {
      "kind": "adds",
      "summary": "Spawns Hjalmar: on a timer (via SpawnBoss); count 1 spawn call in SpawnHjalmar",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 779,
-     "lineEnd": 779,
+     "line": 786,
+     "lineEnd": 786,
      "anchor": "Hjalmar boss = new Hjalmar();",
      "confidence": "inferred",
      "sourceClass": "HjalmarSuttungControllerBrain",
@@ -31599,7 +31645,7 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@779"
+     "key": "adds@786"
     }
    ],
    "spells": [],
@@ -33009,16 +33055,16 @@
      "maxHealth": 20000,
      "level": "78",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 258
+     "line": 261
     }
    ],
    "rules": [
     {
      "kind": "adds",
-     "summary": "Spawns hrimathursa tormentor (JailerAdd): from SpawnTunnelGuardians; count 2 spawn calls in SpawnTunnelGuardians",
+     "summary": "Spawns his two tunnel guardians (hrimathursa tormentor, JailerAdd, 20,000 health each) at the jail the first time he is hit in a pull; again after a fight he survives ends (the 30-35 s window) and on every respawn (1.2, True 1.65 port: before, once he was killed the guardians never came again until a fight ended without a kill).",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 236,
-     "lineEnd": 244,
+     "line": 239,
+     "lineEnd": 247,
      "anchor": "JailerAdd Add1 = new JailerAdd();",
      "confidence": "inferred",
      "sourceClass": "JailerBrain",
@@ -33028,18 +33074,17 @@
      "addBrain": "JailerAddBrain",
      "trigger": "from SpawnTunnelGuardians",
      "addIsEpic": false,
-     "verified": true,
-     "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
+     "tactic": "The jail-rescue errand party kills both (see his tactic); a jailed raider walks free once they are dead.",
      "difficulty": "easy for the current raid AI",
-     "tacticSource": "default for its kind",
-     "key": "adds@236"
+     "verified": true,
+     "key": "adds@239"
     },
     {
      "kind": "tether",
      "summary": "Tether range 5800 (hrimathursa tormentor (JailerAdd)): drawn further from its spawn it walks home.",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 301,
-     "lineEnd": 301,
+     "line": 304,
+     "lineEnd": 304,
      "anchor": "TetherRange = 5800;",
      "confidence": "read",
      "sourceClass": "JailerAdd",
@@ -33050,14 +33095,14 @@
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "tether@301"
+     "key": "tether@304"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 188,
-     "lineEnd": 193,
+     "line": 191,
+     "lineEnd": 196,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "JailerBrain",
@@ -33067,14 +33112,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@188"
+     "key": "reset@191"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 197,
-     "lineEnd": 198,
+     "line": 200,
+     "lineEnd": 201,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "JailerBrain",
@@ -33084,14 +33129,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@197"
+     "key": "reset@200"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 202,
-     "lineEnd": 202,
+     "line": 205,
+     "lineEnd": 205,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "JailerBrain",
@@ -33101,14 +33146,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@202"
+     "key": "reset@205"
     },
     {
      "kind": "teleport",
      "summary": "Jails PortTarget (MoveTo Body.CurrentRegionID, 16631, 58683, 10858, 2191)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 167,
-     "lineEnd": 167,
+     "line": 170,
+     "lineEnd": 170,
      "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(PortTarget, Body.CurrentRegionID, 16631, 58683, 10858, 2191, DisplacementKind.",
      "confidence": "inferred",
      "sourceClass": "JailerBrain",
@@ -33121,7 +33166,7 @@
      "tactic": "Jail: on since 1.2 for bots too (AllowDisplacement, AllowBotDisplacement for Jailer). In the raid AI (EpicEncounterTactics.Tuscaran, an errand): once the fight is on one bot party (two in a raid of eight or more) goes down the tunnel, kills the two guardians and comes back; a jailed bot fights the guards where it lands and walks free when they are dead (recovery jail rule), or recalls after 3 minutes.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "teleport@167"
+     "key": "teleport@170"
     }
    ],
    "spells": [],
@@ -33157,7 +33202,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
    "lines": [
     13,
-    216
+    217
    ],
    "dungeon": "Tuscaran Glacier",
    "region": 160,
@@ -33176,8 +33221,8 @@
      "kind": "immune_while",
      "summary": "Takes no damage while it is drawn past its tether.",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 65,
-     "lineEnd": 66,
+     "line": 66,
+     "lineEnd": 67,
      "anchor": "{",
      "confidence": "read",
      "sourceClass": "QueenKula",
@@ -33188,14 +33233,14 @@
      "tactic": "Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "immune_while@65"
+     "key": "immune_while@66"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (OnAttackedByEnemy): casts Cold_DD",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 175,
-     "lineEnd": 179,
+     "line": 176,
+     "lineEnd": 180,
      "anchor": "if(KingTuscar.KingTuscarCount == 0 || HealthPercent <= 50)",
      "confidence": "inferred",
      "sourceClass": "QueenKula",
@@ -33205,14 +33250,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@175"
+     "key": "phase@176"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (Think): Strength = 500",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 417,
-     "lineEnd": 420,
+     "line": 418,
+     "lineEnd": 421,
      "anchor": "if (KingTuscar.KingTuscarCount == 0 || Body.HealthPercent <= 50)",
      "confidence": "inferred",
      "sourceClass": "QueenKulaBrain",
@@ -33222,14 +33267,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@417"
+     "key": "phase@418"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 358,
-     "lineEnd": 367,
+     "line": 359,
+     "lineEnd": 368,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "QueenKulaBrain",
@@ -33239,14 +33284,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@358"
+     "key": "reset@359"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 370,
-     "lineEnd": 370,
+     "line": 371,
+     "lineEnd": 371,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "QueenKulaBrain",
@@ -33256,14 +33301,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@370"
+     "key": "reset@371"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 374,
-     "lineEnd": 374,
+     "line": 375,
+     "lineEnd": 375,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "QueenKulaBrain",
@@ -33273,14 +33318,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@374"
+     "key": "reset@375"
     },
     {
      "kind": "teleport",
      "summary": "Teleports RandomTarget to a fixed spot (MoveTo 160, 34128, 56095, 11898, 2124)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 281,
-     "lineEnd": 281,
+     "line": 282,
+     "lineEnd": 282,
      "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(RandomTarget, 160, 34128, 56095, 11898, 2124, DisplacementKind.Teleport, Body)",
      "confidence": "inferred",
      "sourceClass": "QueenKulaBrain",
@@ -33293,14 +33338,14 @@
      "tactic": "Drag to her throne: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for QueenKula). A moved bot lands in her frost circle, waits out the mesmerize or root there like a player (crowd control is no stall; at most 5 minutes) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "teleport@281"
+     "key": "teleport@282"
     },
     {
      "kind": "position_puzzle",
      "summary": "Switched by EpicEncounterMechanics.AllowPositionPuzzle in PlayerInCenter: see the code",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 294,
-     "lineEnd": 294,
+     "line": 295,
+     "lineEnd": 295,
      "anchor": "if (!EpicEncounterMechanics.AllowPositionPuzzleFor(Body)) return;",
      "confidence": "read",
      "sourceClass": "QueenKulaBrain",
@@ -33311,14 +33356,14 @@
      "tactic": "Frost circle: on since 1.2 (AllowPositionPuzzle for QueenKula). In the raid AI (EpicEncounterTactics.Tuscaran): no raider fights within 450 of 34128,56095; one that gets there steps out to 600. A raider she drags there is held by the circle until the crowd control ends, then walks out.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "position_puzzle@294"
+     "key": "position_puzzle@295"
     },
     {
      "kind": "empowered",
      "summary": "Strength becomes 350 while if (Body.TargetObject != null && HasAggro) && if(Body.TargetObject != null) && if (KingTuscar.KingTuscarCount == 1)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 415,
-     "lineEnd": 415,
+     "line": 416,
+     "lineEnd": 416,
      "anchor": "Body.Strength = 350;//if king is up it will deal less dmg",
      "confidence": "inferred",
      "sourceClass": "QueenKulaBrain",
@@ -33328,14 +33373,14 @@
      "tactic": "Remove what empowers it first, or burn it fast; healers ready for bigger hits.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "empowered@415"
+     "key": "empowered@416"
     },
     {
      "kind": "empowered",
      "summary": "Strength becomes 500 while if (Body.TargetObject != null && HasAggro) && if(Body.TargetObject != null) && if (KingTuscar.KingTuscarCount == 0 || Body.HealthPercent <= 50)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 419,
-     "lineEnd": 419,
+     "line": 420,
+     "lineEnd": 420,
      "anchor": "Body.Strength = 500;//king is dead so more dmg",
      "confidence": "inferred",
      "sourceClass": "QueenKulaBrain",
@@ -33345,14 +33390,14 @@
      "tactic": "Remove what empowers it first, or burn it fast; healers ready for bigger hits.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "empowered@419"
+     "key": "empowered@420"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: KingTuscarBrain",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 347,
-     "lineEnd": 347,
+     "line": 348,
+     "lineEnd": 348,
      "anchor": "brain.AddToAggroList(target, 10);",
      "confidence": "inferred",
      "sourceClass": "QueenKulaBrain",
@@ -33361,14 +33406,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@347"
+     "key": "linked_pack@348"
     },
     {
      "kind": "heal",
      "summary": "Heals: npc.Health += damageAmount + criticalAmount;",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 75,
-     "lineEnd": 75,
+     "line": 76,
+     "lineEnd": 76,
      "anchor": "npc.Health += damageAmount + criticalAmount;",
      "confidence": "inferred",
      "sourceClass": "QueenKula",
@@ -33376,14 +33421,14 @@
      "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "heal@75"
+     "key": "heal@76"
     },
     {
      "kind": "offline_change",
      "summary": "Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below full health) is behind EpicEncounterMechanics.AllowTuscarTwinHeal. Keep real damage, armor/resists, tether.",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 61,
-     "lineEnd": 62,
+     "line": 62,
+     "lineEnd": 63,
      "anchor": "// Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below",
      "confidence": "read",
      "sourceClass": "QueenKula",
@@ -33396,7 +33441,7 @@
      "tactic": "On: the original is back (AllowTuscarTwinHeal is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "offline_change@61"
+     "key": "offline_change@62"
     }
    ],
    "spells": [
@@ -33411,7 +33456,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 194,
+     "line": 195,
      "sourceClass": "QueenKula"
     },
     {
@@ -33425,7 +33470,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 435,
+     "line": 436,
      "sourceClass": "QueenKulaBrain"
     },
     {
@@ -33439,7 +33484,7 @@
      "value": "99",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 464,
+     "line": 465,
      "sourceClass": "QueenKulaBrain"
     }
    ],
@@ -33475,8 +33520,8 @@
    "brain": "KingTuscarBrain",
    "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
    "lines": [
-    493,
-    814
+    494,
+    815
    ],
    "dungeon": "Tuscaran Glacier",
    "region": 160,
@@ -33495,8 +33540,8 @@
      "kind": "immune_while",
      "summary": "Takes no damage while it is drawn past its tether.",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 530,
-     "lineEnd": 531,
+     "line": 531,
+     "lineEnd": 532,
      "anchor": "{",
      "confidence": "read",
      "sourceClass": "KingTuscar",
@@ -33507,14 +33552,14 @@
      "tactic": "Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "immune_while@530"
+     "key": "immune_while@531"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (OnAttackEnemy): casts Hammers_aoe; casts Thunder_aoe; casts Bleed",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 609,
-     "lineEnd": 623,
+     "line": 610,
+     "lineEnd": 624,
      "anchor": "if (QueenKula.QueenKulaCount == 0 || (HealthPercent <= 50 && KingTuscarBrain.TuscarRage==true))",
      "confidence": "inferred",
      "sourceClass": "KingTuscar",
@@ -33524,14 +33569,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@609"
+     "key": "phase@610"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (Think): see the block",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 889,
-     "lineEnd": 893,
+     "line": 890,
+     "lineEnd": 894,
      "anchor": "if(Body.HealthPercent<=50 && TuscarRage==false)",
      "confidence": "inferred",
      "sourceClass": "KingTuscarBrain",
@@ -33541,14 +33586,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@889"
+     "key": "phase@890"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (Think): Strength = 500",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 901,
-     "lineEnd": 904,
+     "line": 902,
+     "lineEnd": 905,
      "anchor": "if (QueenKula.QueenKulaCount == 0 || Body.HealthPercent <= 50)",
      "confidence": "inferred",
      "sourceClass": "KingTuscarBrain",
@@ -33558,14 +33603,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@901"
+     "key": "phase@902"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 862,
-     "lineEnd": 871,
+     "line": 863,
+     "lineEnd": 872,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "KingTuscarBrain",
@@ -33575,14 +33620,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@862"
+     "key": "reset@863"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 874,
-     "lineEnd": 874,
+     "line": 875,
+     "lineEnd": 875,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "KingTuscarBrain",
@@ -33592,14 +33637,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@874"
+     "key": "reset@875"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 878,
-     "lineEnd": 878,
+     "line": 879,
+     "lineEnd": 879,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "KingTuscarBrain",
@@ -33609,14 +33654,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@878"
+     "key": "reset@879"
     },
     {
      "kind": "empowered",
      "summary": "Strength becomes 350 while if (Body.InCombat && HasAggro) && if (Body.TargetObject != null) && if(QueenKula.QueenKulaCount == 1)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 899,
-     "lineEnd": 899,
+     "line": 900,
+     "lineEnd": 900,
      "anchor": "Body.Strength = 350;",
      "confidence": "inferred",
      "sourceClass": "KingTuscarBrain",
@@ -33626,14 +33671,14 @@
      "tactic": "Remove what empowers it first, or burn it fast; healers ready for bigger hits.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "empowered@899"
+     "key": "empowered@900"
     },
     {
      "kind": "empowered",
      "summary": "Strength becomes 500 while if (Body.InCombat && HasAggro) && if (Body.TargetObject != null) && if (QueenKula.QueenKulaCount == 0 || Body.HealthPercent <= 50)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 903,
-     "lineEnd": 903,
+     "line": 904,
+     "lineEnd": 904,
      "anchor": "Body.Strength = 500;",
      "confidence": "inferred",
      "sourceClass": "KingTuscarBrain",
@@ -33643,14 +33688,14 @@
      "tactic": "Remove what empowers it first, or burn it fast; healers ready for bigger hits.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "empowered@903"
+     "key": "empowered@904"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: QueenKulaBrain",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 851,
-     "lineEnd": 851,
+     "line": 852,
+     "lineEnd": 852,
      "anchor": "brain.AddToAggroList(target, 10);",
      "confidence": "inferred",
      "sourceClass": "KingTuscarBrain",
@@ -33659,14 +33704,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@851"
+     "key": "linked_pack@852"
     },
     {
      "kind": "heal",
      "summary": "Heals: npc.Health += damageAmount + criticalAmount;",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 540,
-     "lineEnd": 540,
+     "line": 541,
+     "lineEnd": 541,
      "anchor": "npc.Health += damageAmount + criticalAmount;",
      "confidence": "inferred",
      "sourceClass": "KingTuscar",
@@ -33674,14 +33719,14 @@
      "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "heal@540"
+     "key": "heal@541"
     },
     {
      "kind": "offline_change",
      "summary": "Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below full health) is behind EpicEncounterMechanics.AllowTuscarTwinHeal. Keep real damage, armor/resists, tether.",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 526,
-     "lineEnd": 527,
+     "line": 527,
+     "lineEnd": 528,
      "anchor": "// Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below",
      "confidence": "read",
      "sourceClass": "KingTuscar",
@@ -33694,7 +33739,7 @@
      "tactic": "On: the original is back (AllowTuscarTwinHeal is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "offline_change@526"
+     "key": "offline_change@527"
     }
    ],
    "spells": [
@@ -33709,7 +33754,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 671,
+     "line": 672,
      "sourceClass": "KingTuscar"
     },
     {
@@ -33723,7 +33768,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 700,
+     "line": 701,
      "sourceClass": "KingTuscar"
     },
     {
@@ -33737,7 +33782,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 729,
+     "line": 730,
      "sourceClass": "KingTuscar"
     },
     {
@@ -33751,7 +33796,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 758,
+     "line": 759,
      "sourceClass": "KingTuscar"
     },
     {
@@ -33765,7 +33810,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 787,
+     "line": 788,
      "sourceClass": "KingTuscar"
     }
    ],
