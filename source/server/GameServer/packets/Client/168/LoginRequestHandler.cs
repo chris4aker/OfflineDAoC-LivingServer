@@ -491,6 +491,10 @@ namespace DOL.GS.PacketHandler.Client.v168
 					}
 				}
 
+				// A play test sweep that never ended (the server stopped while it ran) left this account lowered or its
+				// character in another realm: put back before the account is used (EpicPlaytestSweepGuestRecord).
+				EpicPlaytestSweep.RestoreAtLogin(playerAccount);
+
 				//Save the account table
 				client.Account = playerAccount;
 
