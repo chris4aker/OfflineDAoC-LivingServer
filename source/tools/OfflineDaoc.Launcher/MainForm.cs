@@ -432,8 +432,9 @@ internal sealed partial class MainForm : Form
     private Control BuildCards()
     {
         var cards = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 6, RowCount = 1, Padding = new Padding(0, 4, 0, 5), BackColor = Color.Transparent };
-        // Realm cards need room for three generation actions (+ Lv.1, + Lv.20, + Lv.50); status cards do not.
-        foreach (float width in new[] { 15f, 12f, 20f, 20f, 20f, 13f })
+        // Realm cards need room for three generation actions (+ Lv.1, + Lv.20, + Lv.50); status cards do not. The server card
+        // keeps its 16: at 15 "NOT CONFIGURED" broke as "CONFIGURE / D" (CI preview, 2026-11-15).
+        foreach (float width in new[] { 16f, 12f, 20f, 20f, 20f, 12f })
             cards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, width));
         cards.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         cards.Controls.Add(Card("SERVER", _serverState, DaocTheme.Iron), 0, 0);
