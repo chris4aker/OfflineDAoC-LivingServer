@@ -95,6 +95,29 @@ namespace DOL.UnitTests
         // ---- the triggers ---------------------------------------------------------------------------------------------
 
         [Test]
+        public void ADeadBossStartsNoFightAndYellsNoAggroLine()
+        {
+            // Sweep of 2026-11-15 (build 1dc66b6): the killing blow's attack event came after Dying, so Aidon and Spindler
+            // Broodmother yelled their aggro line at their death. Suttung's script says its own aggro line, so no yell here.
+            Suttung dead = Npc<Suttung>(1000, 1000, 0);
+            dead.Dead = true;
+            Assert.That(LoreBossWatch.OpensFight(dead), Is.False, "a dead boss");
+            LoreBossWatch.HearAttacked(dead);
+            Assert.That(LoreBossWatch.IsWatching(dead), Is.False, "the attack after its death starts no fight");
+
+            Suttung alive = Npc<Suttung>(2000, 1000, 0);
+            Assert.That(LoreBossWatch.OpensFight(alive), Is.True, "a living boss not yet watched");
+            LoreBossWatch.HearAttacked(alive);
+            Assert.That(LoreBossWatch.IsWatching(alive), Is.True, "its fight starts");
+            Assert.That(LoreBossWatch.OpensFight(alive), Is.False, "once");
+
+            Suttung gone = Npc<Suttung>(3000, 1000, 0);
+            gone.ObjectState = GameObject.eObjectState.Deleted;
+            Assert.That(LoreBossWatch.OpensFight(gone), Is.False, "a boss no longer in the world");
+            Assert.That(LoreBossWatch.OpensFight(null), Is.False);
+        }
+
+        [Test]
         public void EveryMechanicTriggerIsKnownAndFiredByAScript()
         {
             foreach (string name in LoreFightRules.MechanicTriggers)
