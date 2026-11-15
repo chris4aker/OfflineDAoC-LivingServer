@@ -47,6 +47,23 @@ namespace DOL.GS;
 /// spot, the later one moves); with nothing apart, clear and walkable the rally stands where it did before
 /// (<see cref="PlanRally"/>). There is no truce: realms that meet still fight. BG_RALLY_STATUS logs the rally's bearing
 /// and its distance to the other realm's rally (apart=).
+///
+/// Owner's PC, builds 0026378 and ef76db3 (Thidranki 2026-11-15; ef76db3 has the separate rallies and the launcher's
+/// starter gear): 41 and 8 attempts, every one "half the stormers fell" after 0.5-2.6 minutes with the lord at 100% and
+/// onLordFloor=0. On ef76db3 the attacking realm lost 110 bots during its 8 attempts: 106 died "Fighting ..." and 4
+/// "Storming the keep"; 53 within 1,300 of the realm's own rally, 37 elsewhere in the field, 17 at the gate, 3 inside;
+/// to Albion's bots 43, the keep's guards 37 (most of the deaths at the gate to Wizards), the other attacking realm 26.
+/// At 16:07:26, both realms storming, BG_KEEP_STATUS read "Fighting:43" and the nearest bot "Storming" stood 3,562 from the
+/// lord. So the stormers did not fail at the lord or on his stairs: they never left their rally's skirmishes. A stormer took
+/// any enemy within 700 and any within 1,500 firing on a realm-mate within 1,000 (the gatherers' rule), and helped against
+/// any guard hitting a neighbour; and in its fight turn the controller stood it still for as long as its ten-second combat
+/// timer ran, even with nothing it would fight. Albion's holders (a third on the walls, the rest roaming the field around
+/// the keep) and the other realm's bots passing by kept every stormer in combat at the rally. Now the stormers keep a
+/// zerg's discipline (<see cref="StormerMayEngage"/>): on the way up they fight only what is on them, near and on their
+/// floor, and run past everything else (aggro from what they leave alone is not taken: the controller's IgnoresAggro), and
+/// a stormer with nothing it may fight goes on up at once; beside the lord they fight everything in his fight. BG_STORM_TRACE
+/// samples the stormers (step=storm, every 10 s per realm) and BG_RALLY_REGROUP says where the attempt's stormers fell, to
+/// what (<see cref="SummariseFallen"/>), how many got past the gate and how near the lord any came.
 /// </summary>
 public static class AutonomousBattlegroundKeepRally
 {
@@ -343,16 +360,96 @@ public static class AutonomousBattlegroundKeepRally
     /// </summary>
     public static bool DisciplinedKeepFight(bool gatesShut, Step step) => gatesShut || step != Step.None;
 
-    /// <summary>A bot fights the guard hitting one of its own nearby (the going wave's rule) while a door stands or while it storms. Pure.</summary>
-    public static bool AssistsAgainstGuards(bool gatesShut, Step step) => gatesShut || step == Step.Storm;
+    /// <summary>
+    /// A bot fights the guard hitting one of its own nearby (the going wave's rule) while a door stands, and a stormer once it
+    /// is in the lord's fight (<paramref name="inLordFight"/>: on his floor, beside him), where the guards with him are part of
+    /// the kill. On the way up a stormer no longer turns to help (ef76db3: see <see cref="StormerMayEngage"/>). Pure.
+    /// </summary>
+    public static bool AssistsAgainstGuards(bool gatesShut, Step step, bool inLordFight = false) =>
+        gatesShut || step == Step.Storm && inLordFight;
+
+    /// <summary>A stormer hits back at an enemy that is on it this close (a melee swing, or a caster or archer standing in
+    /// the bot's face)...</summary>
+    public const float StormerHitBackRadius = 500f;
+    /// <summary>...and on its floor: not an archer or wizard up on the wall or the tower above it.</summary>
+    public const float StormerHitBackHeight = 150f;
 
     /// <summary>
-    /// A stormer on its way up takes an enemy (not the keep's guards, which the storm itself decides on) only when it is
-    /// upon the bot or firing on the realm near it: the gatherers' rule (AutonomousBattlegroundWave.GathererMayEngage) with the
-    /// bot itself as the staging point. Pure.
+    /// The zerg's discipline: once a stormer has gone up it fights the lord, everything in the lord's fight once it stands
+    /// beside him (<paramref name="inLordFight"/>), and on the way only an enemy (guard, bot, player or pet) that is attacking
+    /// this very bot from within <see cref="StormerHitBackRadius"/> on its floor; everything else, a wall caster, a passing
+    /// enemy, a fight a realm-mate is in, is run past. Owner's PC, build ef76db3 (Thidranki 2026-11-15, 16:02-16:24): eight
+    /// attempts, every one over in 0.8-2.6 minutes with "half the stormers fell", lord 100%, nobody on his floor; of the
+    /// attacking realm's 110 deaths during them, 106 were "Fighting ..." and 4 "Storming the keep", 53 within 1,300 of the
+    /// realm's own rally, 37 elsewhere in the field, 17 at the gate and 3 inside, killed by Albion's bots (43), the keep's
+    /// guards (37) and the other attacking realm (26), mostly with one or two attackers on them. At 16:07:26, with both realms
+    /// storming, BG_KEEP_STATUS read "Fighting:43" and the nearest bot "Storming" was 3,562 from the lord. The old rule (the
+    /// gatherers' rule with the bot as the staging point: anything within 700, or anything within 1,500 firing on a
+    /// realm-mate within 1,000) held every stormer in the skirmishes at its own rally, and a stormer under fire it could not
+    /// answer stood still for the ten seconds its combat timer ran. Live servers' battleground lord rushes ran past the
+    /// courtyard to the lord and fought him. Pure.
     /// </summary>
-    public static bool StormerMayEngage(bool firingOnRealm, float targetToBot) =>
-        AutonomousBattlegroundWave.GathererMayEngage(firingOnRealm, targetToBot, targetToBot);
+    public static bool StormerMayEngage(bool isLord, bool inLordFight, bool onThisBot, float targetToBot, float heightGap) =>
+        isLord || inLordFight || onThisBot && targetToBot <= StormerHitBackRadius && heightGap <= StormerHitBackHeight;
+
+    /// <summary>Beside the lord and on his floor: in his fight (a rally right under his room is not). Pure.</summary>
+    public static bool InLordFight(float toLord, float heightToLord) =>
+        heightToLord <= LordFloorHeight && toLord <= InTheFightRadius;
+
+    /// <summary><see cref="InLordFight(float, float)"/> for a living and the lord.</summary>
+    public static bool InLordFight(GameLiving living, GameLiving lord) =>
+        living != null && lord != null && living.CurrentRegionID == lord.CurrentRegionID &&
+        InLordFight(living.GetDistanceTo(lord), Math.Abs(living.Z - lord.Z));
+
+    /// <summary>Within this of the breach a stormer counts as at the gate (BG_RALLY_REGROUP's fell=).</summary>
+    public const float GateZoneRadius = 700f;
+
+    /// <summary>
+    /// Where a stormer fell, for BG_RALLY_REGROUP: "lordFloor" (in his fight), "gate" (within <see cref="GateZoneRadius"/> of
+    /// the breach), "inside" (nearer the lord than the breach is: through the gate, in the courtyard or the keep) or
+    /// "outside" (the field and the rally). Pure.
+    /// </summary>
+    public static string DeathPlace(float toGate, float toLord, float gateToLord, float heightToLord) =>
+        InLordFight(toLord, heightToLord) ? "lordFloor"
+        : toGate <= GateZoneRadius ? "gate"
+        : toLord < gateToLord ? "inside"
+        : "outside";
+
+    /// <summary>What killed a stormer, for BG_RALLY_REGROUP.</summary>
+    public enum KillerKind { Guard, Lord, Holder, OtherAttacker, Other }
+
+    /// <summary>The kind of a stormer's killer: the keep's guards and lord, the holder's bots, players and pets, the other
+    /// attacking realm, or anything else (a monster). Pure.</summary>
+    public static KillerKind KillerOf(bool keepGuard, bool lord, eRealm killerRealm, eRealm holder, eRealm victim) =>
+        lord ? KillerKind.Lord
+        : keepGuard ? KillerKind.Guard
+        : killerRealm == eRealm.None || killerRealm == victim ? KillerKind.Other
+        : killerRealm == holder ? KillerKind.Holder
+        : KillerKind.OtherAttacker;
+
+    /// <summary>A stormer that fell during an attempt: where (<see cref="DeathPlace"/>), to what, and how far from the gate and the lord.</summary>
+    public readonly record struct FallenStormer(string Place, KillerKind Killer, float ToGate, float ToLord);
+
+    private static readonly string[] Places = { "outside", "gate", "inside", "lordFloor" };
+
+    /// <summary>
+    /// BG_RALLY_REGROUP's account of the attempt's fallen: "fell=outside:5,gate:2,inside:0,lordFloor:0
+    /// killers=guard:3,lord:0,holder:4,otherAttacker:1,other:0 fellMedianToGate=1500 fellMedianToLord=3400" (-1 with none). Pure.
+    /// </summary>
+    public static string SummariseFallen(IReadOnlyCollection<FallenStormer> fallen)
+    {
+        string places = string.Join(",", Places.Select(place => $"{place}:{fallen.Count(f => f.Place == place)}"));
+        string killers = string.Join(",", Enum.GetValues<KillerKind>().Select(kind =>
+            $"{char.ToLowerInvariant(kind.ToString()[0])}{kind.ToString()[1..]}:{fallen.Count(f => f.Killer == kind)}"));
+        return $"fell={places} killers={killers} fellMedianToGate={Median(fallen.Select(f => f.ToGate))} " +
+               $"fellMedianToLord={Median(fallen.Select(f => f.ToLord))}";
+
+        static int Median(IEnumerable<float> values)
+        {
+            float[] sorted = values.OrderBy(v => v).ToArray();
+            return sorted.Length == 0 ? -1 : (int)sorted[sorted.Length / 2];
+        }
+    }
 
     /// <summary>While an attempt runs, rallied bots go up in groups at least this big (never one at a time). Pure.</summary>
     public static int ReinforcementBatch(int needed) => Math.Max(4, (needed + 3) / 4);
@@ -397,6 +494,13 @@ public static class AutonomousBattlegroundKeepRally
         public Vector3[] Avoided = Array.Empty<Vector3>();
         // Since the last BG_RALLY_STATUS: the realm's deaths here, and the fights its holders and stormers left alone.
         public int DiedToGuards, DiedOther, Refused, Dropped;
+        /// <summary>The breach and the lord as last counted (for where the stormers fell and how far they got).</summary>
+        public Vector3? GatePoint, LordPoint;
+        /// <summary>This attempt: the stormers that fell and where, the ones that got nearer the lord than the breach is, and
+        /// the nearest any stormer came to him.</summary>
+        public readonly List<FallenStormer> Fallen = new();
+        public readonly HashSet<long> PassedGate = new();
+        public float BestToLord = float.MaxValue;
         /// <summary>The gamebots that went up. Each also holds a battleground-wave duty lease for this rally (docs/DUTY-LEASE.md).</summary>
         public readonly HashSet<long> Committed = new();
         public string LeaseOwner = string.Empty, KeepName = string.Empty;
@@ -462,16 +566,39 @@ public static class AutonomousBattlegroundKeepRally
             return rally.Storming && rally.Committed.Contains(botId) && !IsLapsed(rally.LastAsked, GameLoop.GameLoopTime);
     }
 
-    /// <summary>Counts a death of the realm's bot in a battleground with a rally, for BG_RALLY_STATUS.</summary>
-    public static void NoteDeath(ushort region, eRealm realm, bool killedByKeepGuard)
+    /// <summary>
+    /// Counts a death of the realm's bot in a battleground with a rally, for BG_RALLY_STATUS; a stormer's death during an
+    /// attempt is also kept with where it fell and to what, for BG_RALLY_REGROUP (<see cref="SummariseFallen"/>).
+    /// </summary>
+    public static void NoteDeath(GameBot bot, GameObject killer)
     {
-        if (!Rallies.TryGetValue((region, realm), out Rally rally)) return;
+        if (bot == null || !Rallies.TryGetValue((bot.CurrentRegionID, bot.Realm), out Rally rally)) return;
+        bool guard = killer is GameKeepGuard;
         lock (rally)
         {
             if (rally.Point == null || IsLapsed(rally.LastAsked, GameLoop.GameLoopTime)) return;
-            if (killedByKeepGuard) rally.DiedToGuards++;
+            if (guard) rally.DiedToGuards++;
             else rally.DiedOther++;
+            if (!rally.Storming || !rally.Committed.Contains(bot.DatabaseID) ||
+                rally.GatePoint is not { } gate || rally.LordPoint is not { } lord) return;
+            Vector2 at = new(bot.X, bot.Y);
+            float toGate = Vector2.Distance(at, new(gate.X, gate.Y)), toLord = Vector2.Distance(at, new(lord.X, lord.Y));
+            float gateToLord = Vector2.Distance(new(gate.X, gate.Y), new(lord.X, lord.Y));
+            // A pet's realm is its owner's.
+            eRealm killerRealm = (killer as GameLiving)?.Realm ?? eRealm.None;
+            rally.Fallen.Add(new FallenStormer(DeathPlace(toGate, toLord, gateToLord, Math.Abs(bot.Z - lord.Z)),
+                KillerOf(guard, killer is GuardLord, killerRealm, rally.KeepRealm, bot.Realm), toGate, toLord));
         }
+    }
+
+    /// <summary>The realm's attempt as BG_STORM_TRACE logs it: "engaged/standing/seconds/passedGate", or "-" with none.</summary>
+    public static string AttemptState(ushort region, eRealm realm)
+    {
+        if (!Rallies.TryGetValue((region, realm), out Rally rally)) return "-";
+        lock (rally)
+            return rally.Storming
+                ? $"{rally.Engaged}/{rally.Committed.Count}/{(GameLoop.GameLoopTime - rally.AttemptSince) / 1000}s/{rally.PassedGate.Count}"
+                : "-";
     }
 
     /// <summary>Counts a fight a rally holder or stormer left alone (or broke off), for BG_RALLY_STATUS.</summary>
@@ -512,6 +639,7 @@ public static class AutonomousBattlegroundKeepRally
             GameLocation arrival = BattlegroundBrackets.BotArrival(bracket, bot.Realm);
             GameKeepDoor gate = Breach(keep, arrival);
             if (gate == null) return default;
+            rally.GatePoint = new Vector3(gate.X, gate.Y, gate.Z);
             var others = OtherRallies(bracket.RegionId, bot.Realm, keep, now);
             bool place = rally.Point == null || rally.GateId != gate.DoorId;
             if (!place && !rally.Storming && rally.Point is { } placed)
@@ -574,6 +702,7 @@ public static class AutonomousBattlegroundKeepRally
                 rally.AttemptSince = rally.LastProgress = now;
                 rally.LowestPercent = lord.HealthPercent;
                 rally.Engaged = 0;
+                ClearAttemptRecord(rally);
                 int going = Commit(rally, bot.Realm, bracket.RegionId, point);
                 int players = rally.RalliedPlayers;
                 Log.Info($"BG_RALLY_STORM battleground={bracket.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{keep.Name}\" " +
@@ -611,6 +740,14 @@ public static class AutonomousBattlegroundKeepRally
         BotDutyLeases.ReleaseOwner(eDutyLeaseKind.BattlegroundWave, rally.LeaseOwner);
         rally.Engaged = 0;
         rally.NextCount = 0;
+        ClearAttemptRecord(rally);
+    }
+
+    private static void ClearAttemptRecord(Rally rally)
+    {
+        rally.Fallen.Clear();
+        rally.PassedGate.Clear();
+        rally.BestToLord = float.MaxValue;
     }
 
     /// <summary>A living gamebot of the realm on its own battleground tour here (a player's group follows the player).</summary>
@@ -647,8 +784,22 @@ public static class AutonomousBattlegroundKeepRally
     {
         GameBot[] realmBots = AutonomousBotRegistry.Snapshot()
             .Where(other => IsMember(other, realm, bracket.RegionId)).ToArray();
+        rally.LordPoint = new Vector3(lord.X, lord.Y, lord.Z);
         if (rally.Storming)
         {
+            // How far the attempt got: stormers nearer the lord than the breach is (through the gate), and the nearest.
+            if (rally.GatePoint is { } gatePoint)
+            {
+                float gateToLord = Vector2.Distance(new(gatePoint.X, gatePoint.Y), new(lord.X, lord.Y));
+                foreach (GameBot stormer in realmBots)
+                {
+                    if (!rally.Committed.Contains(stormer.DatabaseID)) continue;
+                    float toLord = stormer.GetDistanceTo(lord);
+                    rally.BestToLord = Math.Min(rally.BestToLord, toLord);
+                    if (Vector2.Distance(new(stormer.X, stormer.Y), new(lord.X, lord.Y)) < gateToLord)
+                        rally.PassedGate.Add(stormer.DatabaseID);
+                }
+            }
             // The dead (and the released, gone to their bind point) leave the attempt; they rejoin the rally when back.
             var alive = new HashSet<long>(realmBots.Select(other => other.DatabaseID));
             rally.Committed.RemoveWhere(id => !alive.Contains(id));
@@ -665,7 +816,12 @@ public static class AutonomousBattlegroundKeepRally
             {
                 Log.Info($"BG_RALLY_REGROUP battleground={bracket.Name} realm={GlobalConstants.RealmToName(realm)} keep=\"{keep.Name}\" " +
                          $"reason=\"{over}\" engaged={rally.Engaged} standing={rally.Committed.Count} lord={lord.HealthPercent}% " +
-                         $"lowest={rally.LowestPercent}% minutes={(now - rally.AttemptSince) / 60_000.0:0.0}");
+                         $"lowest={rally.LowestPercent}% minutes={(now - rally.AttemptSince) / 60_000.0:0.0} " +
+                         // Where the attempt's stormers fell and to what, and how far it got (ef76db3: 8 attempts, nothing
+                         // in the log to say whether a stormer ever got past the gate).
+                         $"{SummariseFallen(rally.Fallen)} passedGate={rally.PassedGate.Count} " +
+                         $"bestToLord={(rally.BestToLord >= float.MaxValue ? -1 : (int)rally.BestToLord)} " +
+                         $"onLordFloor={rally.OnLordFloor} atLord={rally.AtLord}");
                 Reset(rally, now);
             }
         }
@@ -701,6 +857,7 @@ public static class AutonomousBattlegroundKeepRally
                      $"waitedSeconds={(rally.Storming ? 0 : (now - rally.GatherSince) / 1000)} " +
                      $"otherStorming={OtherRealmStorming(bracket.RegionId, realm, keep.Realm, now)} " +
                      $"committed={rally.Committed.Count} engaged={rally.Engaged} onLordFloor={rally.OnLordFloor} atLord={rally.AtLord} " +
+                     $"passedGate={rally.PassedGate.Count} bestToLord={(rally.BestToLord >= float.MaxValue ? -1 : (int)rally.BestToLord)} " +
                      $"lord={lord.HealthPercent}% diedToGuards={rally.DiedToGuards} diedOther={rally.DiedOther} " +
                      $"fightsRefused={rally.Refused} chasesDropped={rally.Dropped}");
             rally.DiedToGuards = rally.DiedOther = rally.Refused = rally.Dropped = 0;

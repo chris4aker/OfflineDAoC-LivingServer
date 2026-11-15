@@ -893,16 +893,32 @@ namespace DOL.GS;
         return (int)Math.Clamp(price, 1, int.MaxValue);
     }
 
-    public static bool TryList(GameBot bot, DbInventoryItem item, int priceCopper)
+    public static bool TryList(GameBot bot, DbInventoryItem item, int priceCopper) =>
+        TryList(bot, item, priceCopper, out _);
+
+    /// <summary>
+    /// <paramref name="deferred"/> is true when nothing was changed because the database writer was busy for longer than
+    /// <see cref="AutonomousBotStatusPersistence.AiTurnWriteWaitMs"/>: the caller keeps the item and tries again later.
+    /// </summary>
+    public static bool TryList(GameBot bot, DbInventoryItem item, int priceCopper, out bool deferred)
     {
+        deferred = false;
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.DatabaseID <= 0 ||
             item == null || !item.IsTradable || priceCopper <= 0 || item.OwnerLot != 0 || BotSiegeRuntime.IsSupply(item.Id_nb) ||
             item.SlotPosition is < (int)eInventorySlot.FirstBackpack or > (int)eInventorySlot.LastBackpack)
             return false;
 
         lock (RealmExchangeBroker.TransactionLock)
-        using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
+        // 2026-11-15 02:38 (build 1dc66b6): Waffleironer's turn waited 5,582 ms here while the status flush held this
+        // lock through a 6,062 ms Inventory INSERT, and the whole game loop waited with it. A bot turn now waits briefly
+        // and lists on a later turn instead.
+        using (AutonomousBotStatusPersistence.TryEnterForAiTurn(bot, "list", out bool entered))
         {
+        if (!entered)
+        {
+            deferred = true;
+            return false;
+        }
         string ownerId = GetOwnerId(bot.DatabaseID);
         if (!bot.Inventory.AllItems.Contains(item))
             return false;
@@ -967,12 +983,21 @@ namespace DOL.GS;
 
     private static bool HasListingSpace(GameBot bot) => FindFreeListingSlot(GetOwnerId(bot.DatabaseID)) >= 0;
 
-    public static bool TryBuy(GameBot bot, DbInventoryItem item)
+    public static bool TryBuy(GameBot bot, DbInventoryItem item) => TryBuy(bot, item, out _);
+
+    /// <summary><paramref name="deferred"/>: as for <see cref="TryList(GameBot, DbInventoryItem, int, out bool)"/>.</summary>
+    public static bool TryBuy(GameBot bot, DbInventoryItem item, out bool deferred)
     {
+        deferred = false;
         lock (RealmExchangeBroker.TransactionLock)
         lock (typeof(AutonomousBotEconomy))
-        using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
+        using (AutonomousBotStatusPersistence.TryEnterForAiTurn(bot, "buy", out bool entered))
         {
+            if (!entered)
+            {
+                deferred = true;
+                return false;
+            }
             if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.PersistentRecord == null ||
                 bot.DatabaseID <= 0 || !RealmExchangeBroker.IsAvailableListing(item, bot.Realm) ||
                 item.OwnerID == GetOwnerId(bot.DatabaseID))

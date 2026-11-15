@@ -389,14 +389,14 @@
           "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
         },
         {
-          "text": "A heretic begins as an acolyte of the Church of Albion and renounces that faith to worship Arawn, which is what makes him a heretic in the Church's eyes.",
-          "provenance": "mythic",
-          "source": "http://www.camelotherald.com/more/1717.shtml (Camelot Herald, 2004-10-04; Wayback capture 2005-02-08)"
-        },
-        {
           "text": "The harbour talk says that in each realm the leaders and chosen others had the same dream of a strange land where heroes are tried against fantastic creatures, and a voice promising them power there. Some call it the gods' doing, some magic, some an enemy's trick. The sailors of Caer Gothwaite swear the island remnants of Atlantis lie somewhere in the encircling seas and that the other two realms dreamed it too; nobody has sailed there and come back to prove it. The half ogres joined Albion in the same years.",
           "provenance": "mythic",
           "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
+        },
+        {
+          "text": "Camelot's cellar watch keeps a darker whisper than the harbour's: that some of the Church's own acolytes have forsworn their vows and turned to Arawn in secret, and keep their rites somewhere below the city. The Church calls it slander and has named no one, and the watch says only that the door beneath the crypts is still shut.",
+          "provenance": "mythic",
+          "source": "http://www.camelotherald.com/more/1717.shtml (Camelot Herald, 2004-10-04; Wayback capture 2005-02-08); the Catacombs Heretic class recast as cellar rumour for the 2003 world (1.2)"
         }
       ],
       "places": [
@@ -561,7 +561,7 @@
         "the-tinctor-household",
         "vortanos"
       ],
-      "text": "Camelot's Church calls a heretic any acolyte of its own who renounces the faith and turns to Arawn."
+      "text": "To Camelot's Church the worship of Arawn is heresy, however well his Inconnu have served Albion. Whether any of the Church's own acolytes have gone over to him is cellar talk, and the Church does not answer it."
     },
     {
       "id": "caer-sidi-prisoners",

@@ -28,6 +28,7 @@ namespace DOL.GS
             using var aiProfile = AiProfile.Scope(AiSystem.ControllerBattleground); // AI_PROFILE: measures only
             _battlegroundRallyHold = null;
             _battlegroundStorming = false;
+            _battlegroundStormLord = null;
             _battlegroundGatherStaging = null;
             BattlegroundBrackets.Bracket bracket = BattlegroundBrackets.ForLevel(bot.Level);
             if (bracket == null)
@@ -104,6 +105,7 @@ namespace DOL.GS
                     : default;
                 _battlegroundRallyHold = rally.Hold ? rally.Point : null;
                 _battlegroundStorming = rally.Step == AutonomousBattlegroundKeepRally.Step.Storm;
+                _battlegroundStormLord = _battlegroundStorming ? lord : null;
                 bool nearLord = lordHere && (bot.IsWithinRadius(lord, BattlegroundLordReach) || rally.Step != AutonomousBattlegroundKeepRally.Step.None);
                 // Away from the lord (a new life after a release, or chased out) the bot comes in through a gate again. The
                 // old reset sat inside the near-lord branch where it could never be true, so a bot that once passed the gate
@@ -122,11 +124,17 @@ namespace DOL.GS
                 // (SelectDistributedRvrTarget) was not the guard hitting its neighbour, and was dropped above.
                 // The same once the doors are down, while the realm rallies and storms the lord: on 3b808b4 every bot took any
                 // guard in sight up to 5,000 away, alone (103 deaths "Fighting Armsman", 70 "Fighting Armswoman").
-                if (AutonomousBattlegroundKeepRally.AssistsAgainstGuards(gatesShut, rally.Step) && WaveAssistGuard(bot, central) is { } hitting)
+                // A stormer helps against the guards only once it stands in the lord's fight; on the way up it fights only
+                // what is on it (AutonomousBattlegroundKeepRally.StormerMayEngage, build ef76db3).
+                if (AutonomousBattlegroundKeepRally.AssistsAgainstGuards(gatesShut, rally.Step,
+                        _battlegroundStorming && AutonomousBattlegroundKeepRally.InLordFight(bot, lord)) &&
+                    WaveAssistGuard(bot, central) is { } hitting)
                     target = hitting;
-                else if (target is GameKeepGuard guard && !AutonomousBattlegroundWave.WaveTakesGuard(
-                        AutonomousBattlegroundKeepRally.DisciplinedKeepFight(gatesShut, rally.Step), guard is GuardLord,
-                        bot.GetDistanceTo(guard), FiringOnRealm(bot, guard)))
+                else if (target is GameKeepGuard guard && (_battlegroundStorming
+                        ? !StormerMayEngage(bot, guard)
+                        : !AutonomousBattlegroundWave.WaveTakesGuard(
+                            AutonomousBattlegroundKeepRally.DisciplinedKeepFight(gatesShut, rally.Step), guard is GuardLord,
+                            bot.GetDistanceTo(guard), FiringOnRealm(bot, guard))))
                     target = null;
                 target ??= FindReachableEnemyDoor(bot, central);
                 if (target != null)
@@ -138,6 +146,7 @@ namespace DOL.GS
                     brain.FSM.SetCurrentState(eFSMStateType.AGGRO);
                     SetBattlegroundStatus(bot, bracket, target is GameKeepDoor ? "Battering the keep gate" : "Assaulting the keep",
                         $"{central.Name} is held by {Holder(central)}", target.Name);
+                    if (_battlegroundStorming && lordHere) TraceStorm(this, bot, central, lord, BrokenMainGate(bot, central), "target");
                     return false;
                 }
                 // At the keep the assault goes for the lord. Run 17 (2026-10-17): in all four battlegrounds the gates fell and
@@ -154,13 +163,12 @@ namespace DOL.GS
                         brain.AddToAggroList(lord, Math.Max(100, lord.EffectiveLevel * 12));
                         brain.FSM.SetCurrentState(eFSMStateType.AGGRO);
                         SetBattlegroundStatus(bot, bracket, "Assaulting the keep lord", $"{central.Name} is held by {Holder(central)}", lord.Name);
+                        if (_battlegroundStorming) TraceStorm(this, bot, central, lord, BrokenMainGate(bot, central), "strike");
                         return false;
                     }
                     // In through a broken main gate, as players went: run 19 (2026-10-17) showed the stormers standing at a
                     // closed postern (never batterable) because the shortest path to the lord runs through it.
-                    GameKeepDoor gate = central.Doors.Values
-                        .Where(door => door.IsAttackableDoor && !door.IsPostern && (!door.IsAlive || door.State == eDoorState.Open))
-                        .OrderBy(door => bot.GetDistanceTo(door)).FirstOrDefault();
+                    GameKeepDoor gate = BrokenMainGate(bot, central);
                     // A main door still shut (the lord is shielded while one stands): march on the door that is the way
                     // in, in keep order, and batter it (FindReachableEnemyDoor above takes it once in reach). Pathing to the
                     // lord through the closed keep found no path: 90 stormers of Dun Abermenai gave up their route that way
@@ -323,19 +331,37 @@ namespace DOL.GS
         // Stormers stop 1,600-2,500 from the lord with the gates down (runs 18-21), though the mesh reaches him from the
         // gates (navmesh probe 2026-10-17). One line every 20 s for each realm says where a stormer stands and what it walks
         // to (was one line server-wide: build ea882e6 wrote four in two waves, all Hibernian).
-        private static readonly System.Collections.Concurrent.ConcurrentDictionary<eRealm, long> NextStormTraceTick = new();
+        // The committed stormers have their own sample every 10 s per realm (build ef76db3: all 145 of 146 samples were
+        // step=rally, so nothing said what a stormer did after BG_RALLY_STORM): step=storm, with phase= the storm step
+        // (gate, lord, target, strike, fight, march-under-fire...), its target and the target's kind, and the attempt.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<(eRealm Realm, bool Stormer), long> NextStormTraceTick = new();
+        public const long StormTraceMilliseconds = 20_000, StormerTraceMilliseconds = 10_000;
         private static void TraceStorm(AutonomousWorldBotController controller, GameBot bot, AbstractGameKeep keep, GameKeepGuard lord,
             GameKeepDoor gate, string step)
         {
+            if (keep == null || lord == null) return;
             long now = GameLoop.GameLoopTime;
-            long next = NextStormTraceTick.GetOrAdd(bot.Realm, 0);
-            if (now < next || !NextStormTraceTick.TryUpdate(bot.Realm, now + 20_000, next))
+            bool stormer = controller.BattlegroundStormHold(bot);
+            var key = (bot.Realm, stormer);
+            long next = NextStormTraceTick.GetOrAdd(key, 0);
+            if (now < next || !NextStormTraceTick.TryUpdate(key, now + (stormer ? StormerTraceMilliseconds : StormTraceMilliseconds), next))
                 return;
             var mover = bot.movementComponent;
             long waveMs = AutonomousBattlegroundWave.GoingMilliseconds(bot.CurrentRegionID, bot.Realm, now);
+            GameLiving target = bot.TargetObject as GameLiving;
+            string stormerPart = !stormer ? string.Empty :
+                $"phase={step} attempt={AutonomousBattlegroundKeepRally.AttemptState(bot.CurrentRegionID, bot.Realm)} " +
+                $"heightToLord={(int)(bot.Z - lord.Z)} inLordFight={AutonomousBattlegroundKeepRally.InLordFight(bot, lord)} " +
+                $"gatePassed={controller._battlegroundGatePassed} targetKind={StormTargetKind(target, keep, bot)} " +
+                $"toTarget={(target == null ? -1 : (int)bot.GetDistanceTo(target))} " +
+                $"targetHeight={(target == null ? 0 : (int)(target.Z - bot.Z))} " +
+                $"targetOnMe={target?.TargetObject == bot} " +
+                $"mayFight={(target == null || target.Realm == bot.Realm ? "-" : controller.StormerMayEngage(bot, target).ToString())} " +
+                $"hasAggro={(bot.Brain as BotBrain)?.HasAggro} attacking={bot.IsAttacking} casting={bot.IsCasting} health={bot.HealthPercent}% ";
             // pending=True: the order was given this turn and the mover has not taken it yet, so moving, path and dest are
             // still those of the previous order (build ea882e6: "dest" next to the bot was the staging hold, not the route).
-            Log.Info($"BG_STORM_TRACE bot={bot.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{keep.Name}\" step={step} " +
+            Log.Info($"BG_STORM_TRACE bot={bot.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{keep.Name}\" " +
+                     $"step={(stormer ? "storm" : step)} {stormerPart}" +
                      $"wave={(waveMs < 0 ? "-" : $"{waveMs / 1000}s")} pending={mover?.HasPendingMoveRequest} at={bot.X},{bot.Y},{bot.Z} " +
                      $"toLord={(int)bot.GetDistanceTo(lord)} lordAt={lord.X},{lord.Y},{lord.Z} " +
                      $"gate={(gate == null ? "none" : $"{gate.DoorId}@{gate.X},{gate.Y},{gate.Z} alive={gate.IsAlive} state={gate.State} toGate={(int)bot.GetDistanceTo(gate)}")} " +
@@ -347,6 +373,32 @@ namespace DOL.GS
 
             static string Format(Vector3? point) => point is { } p ? $"{p.X:0},{p.Y:0},{p.Z:0}" : "-";
         }
+
+        /// <summary>What a stormer has targeted, for BG_STORM_TRACE: lord, guard:&lt;type&gt;, door, holder- or attacker- bot,
+        /// player or pet (the holder's realm or the other attacking realm), friend, monster, or "-".</summary>
+        private static string StormTargetKind(GameLiving target, AbstractGameKeep keep, GameBot bot)
+        {
+            if (target == null) return "-";
+            if (target.Realm == bot.Realm) return "friend";
+            string side = target.Realm == keep.Realm ? "holder" : "attacker";
+            return target switch
+            {
+                GuardLord => "lord",
+                GameKeepGuard guard => $"guard:{guard.GetType().Name}",
+                GameKeepDoor => "door",
+                GamePlayer => $"{side}-player",
+                GameBot => $"{side}-bot",
+                GameNPC { Brain: IControlledBrain } => $"{side}-pet",
+                _ when target.Realm == eRealm.None => "monster",
+                _ => "other",
+            };
+        }
+
+        /// <summary>The keep's nearest broken (or open) main door, never a postern; null with none.</summary>
+        private static GameKeepDoor BrokenMainGate(GameBot bot, AbstractGameKeep keep) =>
+            keep?.Doors.Values
+                .Where(door => door.IsAttackableDoor && !door.IsPostern && (!door.IsAlive || door.State == eDoorState.Open))
+                .OrderBy(door => bot.GetDistanceTo(door)).FirstOrDefault();
 
         public const int BattlegroundLordReach = 4_000;
         public const int BattlegroundGateReached = 250;
@@ -382,10 +434,48 @@ namespace DOL.GS
             AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground) &&
             AutonomousBattlegroundKeepRally.IsStorming(bot.CurrentRegionID, bot.Realm, bot.DatabaseID);
 
-        /// <summary>Whether a stormer takes a fight with this enemy (AutonomousBattlegroundKeepRally.StormerMayEngage); the
-        /// keep's own guards are the storm's to decide.</summary>
-        private static bool StormerMayEngage(GameBot bot, GameLiving target) =>
-            target is GameKeepGuard || AutonomousBattlegroundKeepRally.StormerMayEngage(FiringOnRealm(bot, target), bot.GetDistanceTo(target));
+        /// <summary>Whether a stormer takes a fight with this enemy (AutonomousBattlegroundKeepRally.StormerMayEngage): the lord,
+        /// anything in the lord's fight once it stands beside him, and on the way only what is on it, near and on its floor.</summary>
+        private bool StormerMayEngage(GameBot bot, GameLiving target)
+        {
+            GameKeepGuard lord = _battlegroundStormLord;
+            return AutonomousBattlegroundKeepRally.StormerMayEngage(target is GuardLord,
+                lord != null && lord.IsAlive && AutonomousBattlegroundKeepRally.InLordFight(bot, lord),
+                target.TargetObject == bot, // it has this bot targeted (a caster's IsCasting drops between casts)
+                bot.GetDistanceTo(target), Math.Abs(target.Z - bot.Z));
+        }
+
+        /// <summary>
+        /// A stormer in its fight turn with nothing it may fight (only its ten-second combat timer, or the hits of a wall
+        /// caster or a passing enemy it leaves alone) goes on up instead of standing where it was hit: its aggro on enemies
+        /// it may not fight is dropped and the storm's own step runs (build ef76db3: 106 of the 110 attacking-realm deaths
+        /// during the attempts were "Fighting ..."). A bot casting finishes its cast.
+        /// </summary>
+        private bool StormerMarchesOn(BotBrain brain, GameBot bot)
+        {
+            if (!BattlegroundStormHold(bot) || bot.IsCasting) return false;
+            if (bot.TargetObject is GameLiving target && target.IsAlive && target.Realm != bot.Realm &&
+                (target is GameKeepDoor || StormerMayEngage(bot, target)))
+            {
+                TraceStorm(this, bot, StormKeep(), _battlegroundStormLord, BrokenMainGate(bot, StormKeep()), "fight");
+                return false;
+            }
+            int dropped = brain.RemoveFromAggroListWhere(enemy => enemy.Realm != bot.Realm && enemy is not GameKeepDoor && !StormerMayEngage(bot, enemy));
+            if (brain.HasAggro) return false; // something it may fight is on its list: the fight goes on with that
+            if (bot.TargetObject is GameLiving held && held.Realm != bot.Realm)
+            {
+                bot.StopAttack();
+                bot.TargetObject = null;
+            }
+            if (brain.FSM.GetCurrentState()?.StateType == eFSMStateType.AGGRO)
+                brain.FSM.SetCurrentState(eFSMStateType.IDLE);
+            if (dropped > 0) NoteBattlegroundHeldBack(bot, rally: true, dropped: true);
+            TraceStorm(this, bot, StormKeep(), _battlegroundStormLord, BrokenMainGate(bot, StormKeep()), "march-under-fire");
+            return true;
+        }
+
+        /// <summary>The keep this stormer storms (its lord's).</summary>
+        private AbstractGameKeep StormKeep() => _battlegroundStormLord?.Component?.Keep;
 
         /// <summary>Counts a fight a gatherer, rally holder or stormer left alone (dropped: broke off).</summary>
         private static void NoteBattlegroundHeldBack(GameBot bot, bool rally, bool dropped)
@@ -402,11 +492,12 @@ namespace DOL.GS
         /// <summary>
         /// A gatherer (or rally holder) in a fight drops a target that is no longer coming at it and has left the staging point
         /// (a fleeing enemy, or one it was pulled toward), and walks back instead of chasing it under the keep's walls. A
-        /// stormer drops an enemy (not a keep guard) that is neither upon it nor firing on the realm near it, and goes on up.
+        /// stormer drops an enemy it may not fight (StormerMayEngage: not the lord, not on it) and goes on up. A friend it
+        /// targets (a heal) is never dropped here.
         /// </summary>
         private bool DropBattlegroundGatherChase(BotBrain brain, GameBot bot)
         {
-            if (bot.TargetObject is not GameLiving target || target is GameKeepDoor || !target.IsAlive)
+            if (bot.TargetObject is not GameLiving target || target is GameKeepDoor || !target.IsAlive || target.Realm == bot.Realm)
                 return false;
             bool atRally;
             if (BattlegroundGatherHold(bot, out Vector3 staging, out atRally))
@@ -437,8 +528,9 @@ namespace DOL.GS
         // Set while this bot holds at its realm's rally (AutonomousBattlegroundKeepRally): it fights what comes to the rally
         // (GathererMayEngage), not the lord and not guards elsewhere on the walls.
         private Vector3? _battlegroundRallyHold;
-        // Set while this bot is one of its realm's stormers going up to the lord.
+        // Set while this bot is one of its realm's stormers going up to the lord, and that lord.
         private bool _battlegroundStorming;
+        private GameKeepGuard _battlegroundStormLord;
         public const int BattlegroundLordStrike = 900;
 
         /// <summary>A stormer keeps "through the gate" only while it stays by the same keep's lord. Pure.</summary>

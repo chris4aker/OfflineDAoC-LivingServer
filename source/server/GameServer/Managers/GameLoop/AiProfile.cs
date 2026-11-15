@@ -246,6 +246,30 @@ namespace DOL.GS
             return new HeldLock(gate);
         }
 
+        /// <summary>
+        /// <see cref="Lock(object, AiSystem)"/> with a bound: waits at most <paramref name="timeoutMs"/> for the monitor.
+        /// <paramref name="entered"/> says whether it is held; when it is not, disposing the result does nothing. The wait
+        /// is added to <paramref name="waitSystem"/> either way. For a bot's AI turn, which must not wait seconds on a
+        /// lock another thread holds through a slow database write (2026-11-15 02:38, a 5,582 ms turn).
+        /// </summary>
+        public static HeldLock TryLock(object gate, int timeoutMs, AiSystem waitSystem, out bool entered)
+        {
+            if (Monitor.TryEnter(gate))
+            {
+                entered = true;
+                return new HeldLock(gate);
+            }
+
+            long started = Stopwatch.GetTimestamp();
+            entered = Monitor.TryEnter(gate, Math.Max(0, timeoutMs));
+            if (Enabled)
+            {
+                try { AddLeaf(waitSystem, Stopwatch.GetTimestamp() - started); }
+                catch (Exception) { if (entered) { Monitor.Exit(gate); entered = false; } throw; }
+            }
+            return entered ? new HeldLock(gate) : default;
+        }
+
         // ---- The tick (game-loop thread only) --------------------------------------------------------------------------
 
         private static long _tickStart;

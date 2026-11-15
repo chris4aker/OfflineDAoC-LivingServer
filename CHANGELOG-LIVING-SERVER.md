@@ -85,6 +85,18 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+- **A bot listing on the Realm Exchange no longer stalls the server while the database writer is busy** (tests only;
+  owner's PC, build 1dc66b6, overnight 2026-11-14/15). At 02:38:03 the game loop stopped for 5.6 s: Waffleironer
+  (level 50 Midgard Spiritmaster, solo PvE, between tasks in a capital, full backpack) was listing Bodybender Cloth Pants,
+  and its AI turn (5,582 ms) waited for the shared database write lock while the once-a-second bot status save held it
+  through a 6,062 ms Inventory INSERT (`lock.db_write` 4 waits / 17.0 s, `db.inventory_batch` 7.95 s that minute against
+  about 1.3 s normally). Why that one INSERT took 6 s is not known (that minute also had a 682 ms gen-2 GC, a 2.1 GB heap
+  and 20,000 page faults a second). A bot's listing or purchase now waits at most 50 ms for the lock; if it is still
+  held, nothing changes and the bot keeps the item and tries again a second later (a purchase at its next exchange
+  check, a beggar at its next line). A status save that holds the lock over 500 ms now logs
+  `AUTONOMOUS_STATUS_BATCH_SLOW` (its time split, bots, items, GC and heap), and a deferral logs
+  `AUTONOMOUS_DB_WRITE_DEFERRED` at most once a minute, so the next slow write is named. The SQL itself still runs on
+  the bot's turn once it has the lock. `UT_RealmExchangeEconomy`.
 - **The battlegrounds' lore** (tests only; owner 2026-11-15, "We need full lore for the battlegrounds written"): one
   backstory for the four fields, why only the young may fight there, why the fallen wake at their own portal keep and who
   keeps the gates, told three ways by the three loremasters (a new neutral place, `proving-fields.json`, with no region
@@ -97,6 +109,14 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 - **Bots no longer talk about Cathal Valley** (owner 2026-11-15, "Yeah leave it out"). The 45-49 battleground came
   after this era, so its seven chat lines are gone and the voice guides no longer list it. The world database still has
   the zone; no bot goal sends anyone there (`BattlegroundBrackets` stops at Caledonia).
+- **Heretics are cellar talk, not a class** (tests only; owner 2026-11-15, era rules applied conservatively, "unsure"
+  on the item). The Heretic is a Catacombs class (2004), but Albion's history stated its origin as fact: an acolyte
+  who renounces the Church for Arawn. The Living Present now tells it as a whisper of Camelot's cellar watch, that some
+  of the Church's own acolytes have turned to Arawn in secret, which the Church calls slander; the Arawn power says his
+  worship is heresy and leaves the rest as cellar talk. The 2003 NPCs Heretic Elam and the Heretical Hermit, men of
+  "some wrong faith", are unchanged. `UT_EraRumours` checks that no realm history names a Heretic, Bainshee or Vampiir.
+  Pazz, the Atlas freeshard's daily-quest giver in the Thidranki and Caledonia portal keeps, is world content and stays;
+  no bot line or lore names it.
 - **Rumours of a sunken land, and of what lies under the capitals** (tests only; owner 2026-11-15, "Yes agreed on lore"):
   Trials of Atlantis and Catacombs exist only as hearsay. Now and then the realm hears of it: an old family legend,
   a /faction argument, a rare remark at the harbours and in the capitals, an answer when a player asks ("what is
@@ -279,6 +299,43 @@ that minute were to Hibernian bots at and around the shared point, one to a guar
   the holders' and stormers' fight rules. Not verified here: whether the rotated spots at Thidranki Faste are on the
   navmesh and clear of its guards (the Thidranki navmesh and guard posts aren't in the build container; the unit test
   models one guard post that reproduces `d64d005`'s `guardClear=1459`).
+
+**Battleground stormers run for the lord like a zerg** (tests only; owner's PC, build `ef76db3`, Thidranki 2026-11-15
+16:00-16:24, with the separate rallies and the launcher's starter gear: all six doors of Thidranki Faste down, Albion
+holding it, 100 level 20-24 gamebots per realm, 25-39 of each attacking realm inside. Eight attempts, every one over in
+0.8-2.6 minutes with "half the stormers fell", lord 100%, `onLordFloor=0`; builds `0026378` (41 attempts) and `d64d005`
+(11) ended the same way).
+
+- **Why they never got there.** The stormers did not fail at the lord or on his stairs: they never left their rally. Of
+  the attacking realm's 110 deaths during the eight attempts, 106 were "Fighting ..." and 4 "Storming the keep"; 53 within
+  1,300 of the realm's own rally, 37 elsewhere in the field, 17 at the gate (most of them to the Wizards) and 3 inside; to
+  Albion's bots 43, the keep's guards 37 and the other attacking realm 26, mostly with one or two attackers on them. At
+  16:07:26, with both realms storming, `BG_KEEP_STATUS` read "Fighting:43" and the nearest bot "Storming" stood 3,562 from
+  the lord. A stormer took any enemy within 700 of it and any within 1,500 firing on a realm-mate within 1,000, and helped
+  against any guard hitting a neighbour; and while its ten-second combat timer ran it stood where it was, even with nothing
+  it would fight. Albion's bots (a third hold the walls, the rest roam the field around the keep) and the other realm's
+  passing bots kept every stormer in a skirmish at its rally until half of them were dead. Two Hibernians did reach the
+  lord's tower at 16:11 (78 and 154 from him, killed by a Scout and the lord), so the way up exists.
+- **On the way up a stormer fights only what is on it.** Once its realm goes up, a stormer fights an enemy (guard, bot,
+  player or pet) that has it targeted from within 500 on its own floor, and runs past everything else: the Wizards and
+  archers on the walls, enemies fighting someone else, a realm-mate's fight. Hits from what it leaves alone no longer
+  turn it round (it takes no aggro from them), and a stormer with nothing it may fight goes on up at once instead of
+  waiting out its combat timer; a cast in progress is finished first. Beside the lord, on his floor, it fights the lord and
+  everything with him, and helps against the guard hitting one of its own there, as before. Battleground lord rushes on
+  live servers ran past the courtyard and fought at the lord.
+- **Logs.** `BG_STORM_TRACE` now samples the committed stormers too, every 10 s per realm (`step=storm`, with `phase=`:
+  gate, lord, target, strike, fight or march-under-fire, and the attempt as engaged/standing/seconds/passedGate, the
+  height to the lord, whether it is in his fight, its target, the target's kind (lord, guard and its type, holder- or
+  attacker- bot, player or pet, monster), distance and height, whether the target has it targeted and whether it may fight
+  it, its aggro, attack, cast and health). The rally samples keep their 20 s. `BG_RALLY_REGROUP` says where the attempt's
+  stormers fell (`fell=outside,gate,inside,lordFloor`), to what (`killers=guard,lord,holder,otherAttacker,other`), the
+  fallen's median distance to the gate and the lord, how many got nearer the lord than the gate is (`passedGate=`) and how
+  near any came (`bestToLord=`); `BG_RALLY_STATUS` adds `passedGate=` and `bestToLord=`.
+- Unchanged: the keep, its level, guards, lord, doors and respawns; the rallies and their holders' fight rule; when a rally
+  goes up (the strength model, patience, the other realm's cue) and when an attempt ends; reinforcements and leases;
+  rally holders, gatherers, defenders, companion bots and real players. No truce, nobody made unhittable, nobody moved.
+  Not verified here: whether the stormers now get through the gate and up the tower stairs in numbers (the Thidranki
+  navmesh isn't in the build container), and whether the class AIs pick fights of their own on the way.
 
 **Battleground and RvR kill quests count enemy gamebots** (tests only; owner's question 2026-11-15: "are there quests in the
 BG? Are those functioning correctly?").
