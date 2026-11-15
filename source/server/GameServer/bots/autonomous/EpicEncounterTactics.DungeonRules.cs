@@ -75,6 +75,10 @@ namespace DOL.GS
             /// <summary>Done for the bot on each of its tactic turns before the decision (face the boss, start a team's
             /// errand). Autonomous gamebots only, like the decision.</summary>
             public Action<GameBot, GameNPC, IReadOnlyList<GameNPC>> Act { get; init; }
+            /// <summary>Done for the bot on each of its tactic turns before the decision, as <see cref="Act"/>; true when the bot
+            /// spent the turn on it, and does nothing else this turn (Summoner Lossren's kept soul: the raid's one
+            /// crowd-control bot keeps it mesmerized). Autonomous gamebots only.</summary>
+            public Func<GameBot, GameNPC, IReadOnlyList<GameNPC>, bool> Control { get; init; }
             /// <summary>This bot must not hit the target at all, not even with an area spell aimed at another monster (Funus
             /// while his puzzle is on: the wrong class heals him to full). Every bot, companions too (BotBrain).</summary>
             public Func<GameBot, GameNPC, bool> MustNotHit { get; init; }
@@ -430,6 +434,21 @@ namespace DOL.GS
                 try { rule.Act(bot, target, live); }
                 catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon act {rule.Encounter} failed: {ex.Message}"); }
             }
+        }
+
+        /// <summary>The <see cref="DungeonRule.Control"/>s of <paramref name="target"/>'s rules: true when one used the bot's turn.</summary>
+        private static bool DungeonControls(GameBot bot, GameNPC target, IReadOnlyList<GameNPC> live)
+        {
+            foreach (DungeonRule rule in DungeonRulesFor(target))
+            {
+                if (rule.Control == null) continue;
+                try
+                {
+                    if (rule.Control(bot, target, live)) return true;
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon control {rule.Encounter} failed: {ex.Message}"); }
+            }
+            return false;
         }
 
         /// <summary>

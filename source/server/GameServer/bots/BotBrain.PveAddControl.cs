@@ -147,6 +147,37 @@ namespace DOL.AI.Brain
             return false;
         }
 
+        /// <summary>
+        /// An encounter tactic's hold (EpicEncounterTactics: Summoner Lossren's kept soul, which no bot may hit): casts
+        /// <paramref name="spell"/>, a single-target mesmerize, stun or unbreakable root with no damage
+        /// (<see cref="EpicEncounterTactics.HoldRank"/>), on <paramref name="target"/> past the must-not-hit rule that keeps
+        /// every damaging spell, damage over time included, off it. True when the cast started.
+        /// </summary>
+        public bool HoldForEncounter(GameNPC target, Spell spell)
+        {
+            GameBot bot = BotBody;
+            if (bot == null || target is not { IsAlive: true } || EpicEncounterTactics.HoldRank(spell) < 0 || spell.Level > bot.Level ||
+                bot.IsIncapacitated || bot.IsCasting || bot.castingComponent?.HasPendingSkillRequests == true ||
+                bot.GetSkillDisabledDuration(spell) > 0 || bot.Mana < bot.PowerCost(spell) ||
+                spell.CastTime > 0 && !spell.Uninterruptible && bot.IsBeingInterrupted)
+                return false;
+            GameObject previous = bot.TargetObject;
+            bot.TargetObject = target;
+            try
+            {
+                if (spell.CastTime > 0)
+                {
+                    bot.StopMovingOnPath();
+                    bot.StopMoving();
+                }
+                return bot.CastSpell(spell, m_mobSpellLine);
+            }
+            finally
+            {
+                bot.TargetObject = previous;
+            }
+        }
+
         private long _nextAddControlReport;
 
         private void ReportAddControl(Spell spell, GameNPC add, int adds)

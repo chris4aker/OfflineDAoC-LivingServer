@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using DOL.AI.Brain;
 
 namespace DOL.GS
 {
@@ -37,8 +38,11 @@ namespace DOL.GS
             {
                 Summary = "One of her tortured souls is left alive (she calls her next 18-25 only when none of hers lives, and " +
                           "every 20 that die bring an infected ghoul): no bot, pet or area spell hits it, the ranged-add and " +
-                          "clump lists skip it, and a raider on it goes back to Lossren.",
+                          "clump lists skip it, and a raider on it goes back to Lossren. One crowd-control bot of the raid " +
+                          "keeps it mesmerized (period, Eden: mesmerize her adds, no area damage), recast before it wakes; " +
+                          "failing a mesmerizer a stun, then a root damage doesn't break; with none it is only left alone.",
                 LeaveAlive = IsLossrensKeptSoul,
+                Control = LossrenKeptSoulHold,
             },
             new("SummonerLossrenGhoul", [nameof(SummonerLossren), nameof(TorturedSouls)], LossrenGhoulFirst)
             {
@@ -245,9 +249,12 @@ namespace DOL.GS
                 .OrderBy(n => n.GetDistanceTo(add)).FirstOrDefault();
         }
 
-        /// <summary>Which soul is kept (pure): the healthiest, ties the lowest object id (every soul of a new wave is whole).</summary>
+        /// <summary>Which soul is kept: one with no damage over time on it (a tick would wake it from its mesmerize), then the
+        /// healthiest (a monster under 75% resists a mesmerize), ties the lowest object id (every soul of a new wave is whole).</summary>
         public static GameNPC ChooseKeptSoul(IEnumerable<GameNPC> souls) =>
-            (souls ?? []).Where(s => s != null).OrderByDescending(s => s.HealthPercent).ThenBy(s => s.ObjectID).FirstOrDefault();
+            (souls ?? []).Where(s => s != null)
+                .OrderBy(s => s.effectListComponent?.ContainsEffectForEffectType(eEffect.DamageOverTime) == true ? 1 : 0)
+                .ThenByDescending(s => s.HealthPercent).ThenBy(s => s.ObjectID).FirstOrDefault();
 
         /// <summary>
         /// <paramref name="lossren"/>'s kept soul: the one chosen before while it lives, else one of her living souls in
@@ -294,6 +301,123 @@ namespace DOL.GS
         public static void ResetKeptSoulsForTests()
         {
             lock (KeptSouls) KeptSouls.Clear();
+            lock (KeptSoulHolders) KeptSoulHolders.Clear();
+        }
+
+        // ---- the kept soul held mesmerized (owner approved 2026-11-15) ---------------------------------------------------
+
+        /// <summary>The hold is cast again when it has at most the spell's cast time and this much left (it must land before
+        /// the soul wakes).</summary>
+        public const int KeptSoulRecastLeadMilliseconds = 2_000;
+        /// <summary>A holder whose tactic turn has not come for this long gives up its place.</summary>
+        public const long KeptSoulHolderStaleMilliseconds = 10_000;
+
+        private sealed class SoulHolder
+        {
+            public GameLiving Bot;
+            public int Rank;
+            public long Seen;
+        }
+
+        /// <summary>Each Lossren's one crowd-control raider, who keeps her kept soul held.</summary>
+        private static readonly Dictionary<GameNPC, SoulHolder> KeptSoulHolders = new();
+
+        /// <summary>
+        /// How well <paramref name="spell"/> holds the kept soul (pure; lower is better): 0 a single-target mesmerize (the
+        /// period's way, Eden: "mesmerize her adds, no area damage"), 1 a stun, 2 a root that damage doesn't break; -1 not a
+        /// hold (an area spell, one with damage or a sub spell, a root damage breaks, anything else).
+        /// </summary>
+        public static int HoldRank(Spell spell)
+        {
+            if (spell == null || spell.Target != eSpellTarget.ENEMY || spell.Radius > 0 || spell.Range <= 0 || spell.Damage > 0 ||
+                spell.SubSpellID > 0)
+                return -1;
+            return spell.SpellType switch
+            {
+                eSpellType.Mesmerize or eSpellType.Mez => 0,
+                eSpellType.Stun => 1,
+                eSpellType.UnbreakableSpeedDecrease when spell.Value >= 99 => 2,
+                _ => -1,
+            };
+        }
+
+        /// <summary>The bot's best hold up to its level (pure): the best <see cref="HoldRank"/>, then the longest, then the
+        /// highest level; null when it has none.</summary>
+        public static Spell BestHoldSpell(IEnumerable<Spell> spells, int level) =>
+            (spells ?? []).Where(s => s != null && s.Level <= level && HoldRank(s) >= 0)
+                .OrderBy(HoldRank).ThenByDescending(s => s.Duration).ThenByDescending(s => s.Level).FirstOrDefault();
+
+        /// <summary>The hold is to be cast now (pure): it has <paramref name="heldMilliseconds"/> left (0: not held).</summary>
+        public static bool HoldDue(long heldMilliseconds, int castTimeMilliseconds) =>
+            heldMilliseconds <= Math.Max(0, castTimeMilliseconds) + KeptSoulRecastLeadMilliseconds;
+
+        /// <summary>How long <paramref name="npc"/> stays held: its mesmerize or stun, and for a root holder its root.</summary>
+        private static long HeldMilliseconds(GameNPC npc, int rank)
+        {
+            long Left(eEffect type) => EffectListService.GetEffectOnTarget(npc, type)?.GetRemainingTimeForClient() ?? 0;
+            long held = Math.Max(npc.IsMezzed ? Left(eEffect.Mez) : 0, npc.IsStunned ? Left(eEffect.Stun) : 0);
+            return rank == 2 ? Math.Max(held, Left(eEffect.MovementSpeedDebuff)) : held;
+        }
+
+        /// <summary>
+        /// Whether <paramref name="raider"/>, whose best hold has <paramref name="rank"/>, is <paramref name="lossren"/>'s one
+        /// holder now: it already is (its turn keeps the place), there is none fit (none, gone, held itself, or not seen for
+        /// <see cref="KeptSoulHolderStaleMilliseconds"/>), or its hold is better (a mesmerizer takes over from a stunner).
+        /// Logs EPIC_LOSSREN_SOUL_HOLDER when the holder changes.
+        /// </summary>
+        public static bool HoldsKeptSoul(GameNPC lossren, GameLiving raider, int rank, long now)
+        {
+            if (lossren == null || raider == null || rank < 0) return false;
+            lock (KeptSoulHolders)
+            {
+                if (KeptSoulHolders.TryGetValue(lossren, out SoulHolder h) && h.Bot == raider)
+                {
+                    h.Seen = now;
+                    h.Rank = rank;
+                    return true;
+                }
+                bool fit = h != null && h.Bot.IsAlive && h.Bot.ObjectState == GameObject.eObjectState.Active &&
+                           h.Bot.CurrentRegionID == lossren.CurrentRegionID && !h.Bot.IsCrowdControlled &&
+                           now - h.Seen <= KeptSoulHolderStaleMilliseconds;
+                if (fit && h.Rank <= rank) return false;
+                if (KeptSoulHolders.Count > 16)
+                    foreach (GameNPC stale in KeptSoulHolders.Keys.Where(k => !Present(k)).ToArray())
+                        KeptSoulHolders.Remove(stale);
+                KeptSoulHolders[lossren] = new SoulHolder { Bot = raider, Rank = rank, Seen = now };
+            }
+            if (Log.IsInfoEnabled)
+                Log.Info($"EPIC_LOSSREN_SOUL_HOLDER boss=\"{lossren.Name}\" region={lossren.CurrentRegionID} bot=\"{raider.Name}\" " +
+                         $"rank={rank} ({(rank == 0 ? "mesmerize" : rank == 1 ? "stun" : "root")})");
+            return true;
+        }
+
+        /// <summary>
+        /// The rule's <see cref="DungeonRule.Control"/> (owner approved 2026-11-15): the raid's one crowd-control bot keeps
+        /// Lossren's kept soul held, the period way (Eden: "mesmerize her adds, no area damage"), and never damages it. A
+        /// mesmerizer is preferred, failing one a stun, then a root damage doesn't break (<see cref="HoldRank"/>); its hold is
+        /// cast again before it ends (<see cref="HoldDue"/>), the holder walking into range first. With no such bot in the
+        /// raid the soul is only left alone. True while the holder spends its turn on it (walking, casting).
+        /// </summary>
+        private static bool LossrenKeptSoulHold(GameBot bot, GameNPC target, IReadOnlyList<GameNPC> live)
+        {
+            if (bot == null || !bot.IsAlive) return false;
+            GameNPC lossren = target is SummonerLossren ? target : LossrenOf(target, live);
+            if (lossren == null || !Present(lossren)) return false;
+            GameNPC kept = KeepSoul(lossren, live);
+            if (kept == null) return false;
+            Spell spell = BestHoldSpell(bot.Spells, bot.Level);
+            int rank = HoldRank(spell);
+            if (rank < 0 || !HoldsKeptSoul(lossren, bot, rank, GameLoop.GameLoopTime)) return false;
+            // Casting its hold on the soul: the turn is the cast's (a swing or another spell would cut it).
+            if (bot.IsCasting)
+                return bot.castingComponent?.SpellHandler is { } cast && HoldRank(cast.Spell) >= 0 && cast.Target == kept;
+            if (!HoldDue(HeldMilliseconds(kept, rank), spell.CastTime)) return false;
+            if (!bot.IsWithinRadius(kept, Math.Max(1, spell.CalculateEffectiveRange(bot))))
+            {
+                bot.PathTo(new Point3D(kept.X, kept.Y, kept.Z), bot.MaxSpeed);
+                return true;
+            }
+            return (bot.Brain as BotBrain)?.HoldForEncounter(kept, spell) == true;
         }
     }
 }

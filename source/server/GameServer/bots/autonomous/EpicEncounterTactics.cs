@@ -1564,6 +1564,8 @@ namespace DOL.GS
             IReadOnlyList<GameNPC> live = Nearby(target);
             WatchHome(target, live, GameLoop.GameLoopTime);
             DungeonActs(bot, target, live);
+            // A rule's crowd control takes the whole turn (the raid's mesmerizer on Lossren's kept soul).
+            if (DungeonControls(bot, target, live)) return true;
             // Tanks taunt him back when his target is not a tank (Govannon's demon); the bot fights on as decided below.
             if (TauntDue(bot, target, live, GameLoop.GameLoopTime) && bot.Brain is BotBrain tankBrain)
                 LogTaunt(bot, target, tankBrain.TauntForEncounter(target));
