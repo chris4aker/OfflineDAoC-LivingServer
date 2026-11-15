@@ -2710,6 +2710,9 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "living_atmosphere_lines", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first.", true)]
 		public static bool LIVING_ATMOSPHERE_LINES;
 
+		[ServerProperty("bots", "epic_armor_counts_bots", "Gamebots (autonomous and companions) count as attackers when an epic boss's or epic NPC's armor drops with the number of players fighting it: -0.04 each, never below 0.4, the same as a real player. Bots stand in for players, so a 60-bot raid meets the armor 60 players would. Pets keep their own capped share. False is the stock rule: only real players count.", true)]
+		public static bool EPIC_ARMOR_COUNTS_BOTS = true;
+
 
 
 		#endregion
