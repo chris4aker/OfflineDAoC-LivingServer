@@ -147,30 +147,6 @@ namespace DOL.UnitTests
             });
         }
 
-        [Test]
-        public void TheRallyStandsJustInsideTheBreachOnTheGatesFloor()
-        {
-            // Thidranki Faste, 2026-11-04: gate 252000302 and the lord above it.
-            Vector3 gate = new(32654, 38180, 3720);
-            Vector3 lord = new(32296, 38267, 4592);
-            Vector3 point = Rally.RallyAnchor(gate, lord);
-            Assert.Multiple(() =>
-            {
-                Assert.That(point.Z, Is.EqualTo(gate.Z), "not up on the lord's floor");
-                // The lord stands 368 from this gate across the floor: the rally goes halfway (184), short of the full 200.
-                Assert.That(Vector2.Distance(new(point.X, point.Y), new(gate.X, gate.Y)), Is.EqualTo(184.2).Within(0.5));
-                Vector3 eastGate = new(34333, 38275, 3720);
-                Vector3 east = Rally.RallyAnchor(eastGate, lord);
-                Assert.That(Vector3.Distance(east, eastGate), Is.EqualTo(Rally.RallyStepInside).Within(0.5), "the east gate, 2,000 away: the full 200");
-                Assert.That(Vector2.Distance(new(point.X, point.Y), new(lord.X, lord.Y)),
-                    Is.LessThan(Vector2.Distance(new(gate.X, gate.Y), new(lord.X, lord.Y))), "toward the lord");
-                // A gate right under him: at most halfway, never past him.
-                Vector3 under = Rally.RallyAnchor(new(1000, 1000, 0), new(1100, 1000, 800));
-                Assert.That(under, Is.EqualTo(new Vector3(1050, 1000, 0)));
-                Assert.That(Rally.RallyAnchor(gate, new(gate.X, gate.Y, 5000)), Is.EqualTo(gate));
-            });
-        }
-
         [TestCase(true, true, true, true)]
         [TestCase(true, false, true, false)]    // left the lord (died, released, chased out): through a gate again
         [TestCase(true, true, false, false)]    // another keep

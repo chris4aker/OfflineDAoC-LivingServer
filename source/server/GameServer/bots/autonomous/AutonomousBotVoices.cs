@@ -133,7 +133,7 @@ public static class AutonomousBotVoices
         if (bot.CurrentZone?.IsRvR == true || bot.CurrentRegion?.IsRvR == true)
         {
             flags.Add("in_rvr");
-            // 0.36-se.4: a battleground (Abermenai, Thidranki, Murdaigean, Caledonia, Cathal Valley) or the frontier proper
+            // 0.36-se.4: a battleground (Abermenai, Thidranki, Murdaigean, Caledonia; Cathal Valley is in the table but bots don't talk about it) or the frontier proper
             flags.Add(IsBattlegroundRegion(bot.CurrentRegionID) ? "in_battleground" : "in_frontier");
         }
         if (TravelingTo(bot) != null) flags.Add("traveling");

@@ -250879,6 +250879,513 @@
    "id": "1cb8c01f7d38"
   },
   {
+   "kind": "ambient",
+   "topic": "rumour_abermenai",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    15,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "heard the masters at the abermenai portal keeps watch every muster go down the slope till its out of sight",
+   "about": true,
+   "family": "3aa5c9c0d3",
+   "id": "0e504b2b9f66"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_abermenai",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    15,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "someone said the masters at the abermenai portal keeps watch every muster go down the slope till its out of sight",
+   "about": true,
+   "family": "3aa5c9c0d3",
+   "id": "22e7f5a6bd2d"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_abermenai",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    15,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "heard the spectres on the abermenai flats are waiting on a ship that never came back",
+   "about": true,
+   "family": "de356b72fe",
+   "id": "87ee4a388948"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_abermenai",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    15,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "word is the spectres on the abermenai flats are waiting on a ship that never came back",
+   "about": true,
+   "family": "de356b72fe",
+   "id": "aeae86af1719"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_abermenai",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    15,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "my guildie says a kings daughter sailed from abermenai once with thirteen ships, and only seven men came home",
+   "about": true,
+   "id": "b29e0cdc73f4"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_thidranki",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    20,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "heard haluka never touches the cream people leave him in thid. not from the right house, apparently",
+   "about": true,
+   "family": "80d01a293e",
+   "id": "e66a2818041f"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_thidranki",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    20,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "someone said haluka never touches the cream people leave him in thid. not from the right house, apparently",
+   "about": true,
+   "family": "80d01a293e",
+   "id": "e5d572f40fb8"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_thidranki",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    20,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "heard all three realms showed up at thidranki faste the same week once, and the renegades just walked out the back",
+   "about": true,
+   "family": "21efc2415a",
+   "id": "a7223af3ed0b"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_thidranki",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    20,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "word is all three realms showed up at thidranki faste the same week once, and the renegades just walked out the back",
+   "about": true,
+   "family": "21efc2415a",
+   "id": "54844c262e51"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_murdaigean",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    25,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "heard the hibs braid their hair before they go into murdaigean and nobody knows who started it",
+   "about": true,
+   "family": "ac6966fe68",
+   "id": "abcb8aecfb1f"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_murdaigean",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    25,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "someone said the hibs braid their hair before they go into murdaigean and nobody knows who started it",
+   "about": true,
+   "family": "ac6966fe68",
+   "id": "5eab4bd5d472"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_murdaigean",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    25,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "heard the wolves in murdaigean were the fianna's hounds once, before they went wild",
+   "about": true,
+   "family": "779136c43b",
+   "id": "9e02769800b5"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_murdaigean",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    25,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "word is the wolves in murdaigean were the fianna's hounds once, before they went wild",
+   "about": true,
+   "family": "779136c43b",
+   "id": "d3f8dbf02902"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_caledon",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    30,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "heard the grovewood in caledonia all face the arawnite hills, like an army still lined up",
+   "about": true,
+   "family": "402d06871d",
+   "id": "e8410b4a5366"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_caledon",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    30,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "someone said the grovewood in caledonia all face the arawnite hills, like an army still lined up",
+   "about": true,
+   "family": "402d06871d",
+   "id": "9907de074bbf"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_caledon",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    30,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "heard mids never cut green wood in caledonia. not even for a fire",
+   "about": true,
+   "family": "4ec66414ac",
+   "id": "079cfb3b0081"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_caledon",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    30,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "word is mids never cut green wood in caledonia. not even for a fire",
+   "about": true,
+   "family": "4ec66414ac",
+   "id": "e7ba69e7d24f"
+  },
+  {
+   "kind": "rvr",
+   "topic": "battlegrounds",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    15,
+    19
+   ],
+   "needs": [
+    "in_battleground",
+    "at:abermenai"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "did anyone else notice the spectres on the flats always face the water",
+   "id": "85327e27ed6e"
+  },
+  {
+   "kind": "rvr",
+   "topic": "battlegrounds",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    15,
+    19
+   ],
+   "needs": [
+    "in_battleground",
+    "at:abermenai"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "the salt line on the keep walls here is higher than my head. how",
+   "id": "67a66fd93f3e"
+  },
+  {
+   "kind": "rvr",
+   "topic": "battlegrounds",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    20,
+    24
+   ],
+   "needs": [
+    "in_battleground",
+    "at:thidranki"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "joke",
+   "text": "a tomte just stared at me like i forgot to feed the cows",
+   "id": "dce4e53a4c12"
+  },
+  {
+   "kind": "rvr",
+   "topic": "battlegrounds",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    20,
+    24
+   ],
+   "needs": [
+    "in_battleground",
+    "at:thidranki"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "haluka is sitting in his corner again, still waiting on that cream",
+   "id": "7ce061a3f87f"
+  },
+  {
+   "kind": "rvr",
+   "topic": "battlegrounds",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    25,
+    29
+   ],
+   "needs": [
+    "in_battleground",
+    "at:murdaigean"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "found a knot in a web by the old oaks. no spider did that",
+   "id": "b215fddb13e4"
+  },
+  {
+   "kind": "rvr",
+   "topic": "battlegrounds",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    25,
+    29
+   ],
+   "needs": [
+    "in_battleground",
+    "at:murdaigean"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "braided my hair before coming in. everyone does, dont ask me why",
+   "id": "a3ca2e88ca36"
+  },
+  {
+   "kind": "rvr",
+   "topic": "battlegrounds",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    30,
+    35
+   ],
+   "needs": [
+    "in_battleground",
+    "at:caledonia"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "the grovewood are all facing the hills again, same as always",
+   "id": "76dacfd21dbf"
+  },
+  {
+   "kind": "rvr",
+   "topic": "battlegrounds",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    30,
+    35
+   ],
+   "needs": [
+    "in_battleground",
+    "at:caledonia"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "nobody cut any green wood in here. i mean it",
+   "id": "507756629b25"
+  },
+  {
    "kind": "rvr",
    "topic": "battlegrounds",
    "who": [],
@@ -251432,120 +251939,6 @@
    "text": "caledonia at 30, worth it or skip straight to leveling?",
    "about": true,
    "id": "e3edb84e96f2"
-  },
-  {
-   "kind": "rvr",
-   "topic": "battlegrounds",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    45,
-    49
-   ],
-   "needs": [
-    "in_battleground"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "chat",
-   "text": "cathal valley is a real fight, everyone here knows their class",
-   "id": "5d923679934a"
-  },
-  {
-   "kind": "rvr",
-   "topic": "battlegrounds",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    45,
-    49
-   ],
-   "needs": [
-    "in_battleground"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "chat",
-   "text": "{enemy} 8man in cathal, stay grouped",
-   "id": "c77e3b93c660"
-  },
-  {
-   "kind": "rvr",
-   "topic": "battlegrounds",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    45,
-    49
-   ],
-   "needs": [
-    "in_battleground"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "ask_anyone",
-   "text": "lost my group, anyone near the cathal keep?",
-   "id": "7da6d2ec59dd"
-  },
-  {
-   "kind": "rvr",
-   "topic": "battlegrounds",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    45,
-    49
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "lfg",
-   "text": "cathal valley tonight? last chance before 50",
-   "id": "cb9109954af1"
-  },
-  {
-   "kind": "rvr",
-   "topic": "battlegrounds",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    45,
-    49
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "chat",
-   "text": "cathal is the best rvr nobody talks about",
-   "id": "63bd1396c828"
-  },
-  {
-   "kind": "rvr",
-   "topic": "battlegrounds",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    45,
-    49
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "joke",
-   "text": "47 and still in cathal, i might never leave",
-   "id": "e6b68b1c5ddb"
   },
   {
    "kind": "ambient",
@@ -371912,6 +372305,324 @@
    "invites": "chat",
    "text": "the necyomancers in darkness falls are always casting at someone",
    "id": "92ced0536146"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "ask_atlantis"
+   ],
+   "text": "gothwaite harbour talk. a land past the isles that sank in a day and a night, and nobody has been",
+   "about": true,
+   "family": "fd28d1263f",
+   "id": "8c06d9e37d69"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "ask_atlantis"
+   ],
+   "text": "sailor talk from caer gothwaite. a land past the isles that sank in a day and a night, and nobody has been",
+   "about": true,
+   "family": "fd28d1263f",
+   "id": "49f3f643848b"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_atlantis"
+   ],
+   "text": "aegirhamn sailor talk, a drowned land out past the isles. buy one an ale and you hear it twice",
+   "about": true,
+   "id": "18807b7af69b"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "ask_atlantis"
+   ],
+   "text": "the boatmen at the domnann dock talk about it, a sunken land out west. none of them has rowed out to look",
+   "about": true,
+   "family": "96d9eda687",
+   "id": "8ebc7390fd54"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "ask_atlantis"
+   ],
+   "text": "the boatmen at the domnann dock swear by it, a sunken land out west. none of them has rowed out to look",
+   "about": true,
+   "family": "96d9eda687",
+   "id": "3b4a6224afa4"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_below"
+   ],
+   "text": "old crypts under camelot, bricked up. the cellar folk say the inconnu never had to ask the way down",
+   "about": true,
+   "id": "6079bd054ac5"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "ask_below"
+   ],
+   "text": "kobold miners swear theres a city under jordheim. they hear picks below their own",
+   "about": true,
+   "family": "4aa2931e60",
+   "id": "04ca328d24fe"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "ask_below"
+   ],
+   "text": "kobold miners swear theres a city under jordheim. they hear picks under their own",
+   "about": true,
+   "family": "4aa2931e60",
+   "id": "9879e130c603"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_below"
+   ],
+   "text": "the dream tree roots under tnn go down further than roots should, and the druids stopped following them",
+   "about": true,
+   "id": "efcd4ed5237e"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "at:isle of glass"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "the lights are back off gothwaite. under the water this time, not on it",
+   "about": true,
+   "id": "beabc8e5651c"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "at:aegir"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "fisherman in aegirhamn pulled up a carved stone with coral all over it. theres a face on it",
+   "about": true,
+   "id": "65f5692761fa"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "at:domnann"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "domnann boatmen came in early again, said the lights under the water are back",
+   "about": true,
+   "id": "b78ee239603e"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "at:camelot"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "something knocked under the bank floor in camelot, three times. i left",
+   "id": "720253de3632"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "at:jordheim"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "joke",
+   "text": "kobold in jordheim told me to stop stamping. said i was bothering the neighbours",
+   "id": "877f614e7fff"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "at:tir na nog"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "put my ear to a dream tree in tnn and its humming, from somewhere underneath",
+   "id": "cdd8ddc61dc4"
   },
   {
    "kind": "ambient",
@@ -680906,6 +681617,878 @@
  ],
  "scenes": [
   {
+   "id": "tale_abermenai",
+   "topic": "tale_abermenai",
+   "realm": "*",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} you on? tell the abermenai one, the mother at the teleporter",
+     "variants": [
+      "{name_b} you on? tell the abermenai one, the mother at the teleporter",
+      "{name_b}, do the one about the woman who waited"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "oh, the abermenai one. hush everyone",
+     "variants": [
+      "oh, the abermenai one. hush everyone",
+      "quiet in faction for a bit, {name_b} is telling abermenai"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "is this the sad one",
+     "variants": [
+      "is this the sad one",
+      "here we go, the mum story"
+     ],
+     "optional": true
+    },
+    {
+     "role": "D",
+     "text": "go on {name_b}, i never heard how it ends",
+     "variants": [
+      "go on {name_b}, i never heard how it ends",
+      "please {name_b}, the new ones need to hear this one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "In the summer they opened Abermenai there was a woman on the frontier with one son, and he had just turned fifteen.",
+     "variants": [
+      "In the summer they opened Abermenai there was a woman on the frontier with one son, and he had just turned fifteen."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "She had held a wall for twenty years, and she knew better than anyone what fifteen is worth when the other side comes over it.",
+     "variants": [
+      "She had held a wall for twenty years, and she knew better than anyone what fifteen is worth when the other side comes over it."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "On the night of his first muster she walked him to the teleporter, and when he was sent she asked to be sent after him.",
+     "variants": [
+      "On the night of his first muster she walked him to the teleporter, and when he was sent she asked to be sent after him."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "The teleporter would not. She had too much war in her for that field, and he told her so as politely as he tells everyone.",
+     "variants": [
+      "The teleporter would not. She had too much war in her for that field, and he told her so as politely as he tells everyone."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "She made him try three times. Then she stood by the teleporter all night in her mail, facing the way her son had gone.",
+     "variants": [
+      "She made him try three times. Then she stood by the teleporter all night in her mail, facing the way her son had gone."
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "so what happened to the kid?",
+     "variants": [
+      "so what happened to the kid?",
+      "did he make it?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "He went down onto the sand at dusk with eleven others his own age, and the renegades came out of the old fort to meet them.",
+     "variants": [
+      "He went down onto the sand at dusk with eleven others his own age, and the renegades came out of the old fort to meet them."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Somewhere on the flats below the walls he fell. He told her afterward that it was very cold, and then it was morning.",
+     "variants": [
+      "Somewhere on the flats below the walls he fell. He told her afterward that it was very cold, and then it was morning."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "He woke at our own portal keep, whole, with sand in his hair, and at dawn he came back out of the teleporter to her.",
+     "variants": [
+      "He woke at our own portal keep, whole, with sand in his hair, and at dawn he came back out of the teleporter to her."
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "what did she say?",
+     "variants": [
+      "what did she say?",
+      "did she yell at him?"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "Nothing. He had a renegade's belt he was very proud of, and she took it off him to carry, and she carried it all the way home.",
+     "variants": [
+      "Nothing. He had a renegade's belt he was very proud of, and she took it off him to carry, and she carried it all the way home."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "She never once asked him how it went. He went back the next night, and every night that summer, and she stood there every night.",
+     "variants": [
+      "She never once asked him how it went. He went back the next night, and every night that summer, and she stood there every night."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "The year after there were four of them standing there. By the third summer the teleporters had stopped asking them to go home.",
+     "variants": [
+      "The year after there were four of them standing there. By the third summer the teleporters had stopped asking them to go home."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Go and look on the first night of a muster. There are always a few grown soldiers by the teleporter with nowhere to be.",
+     "variants": [
+      "Go and look on the first night of a muster. There are always a few grown soldiers by the teleporter with nowhere to be."
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "...i always thought they were just afk",
+     "variants": [
+      "...i always thought they were just afk",
+      "...huh. i thought those were people afk"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "ty {name_b}. that one gets me every time",
+     "variants": [
+      "ty {name_b}. that one gets me every time",
+      "thanks {name_b}, i needed that one tonight"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "tale_thidranki",
+   "topic": "tale_thidranki",
+   "realm": "mid",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} you on? tell thidrand, the farm under the faste",
+     "variants": [
+      "{name_b} you on? tell thidrand, the farm under the faste",
+      "{name_b}, do the winter nights one for the new ones"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "hush in faction, {name_b} is telling thidrand",
+     "variants": [
+      "hush in faction, {name_b} is telling thidrand",
+      "everyone quiet, this one is old"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "the farm story again lol",
+     "variants": [
+      "the farm story again lol",
+      "here we go, nine ladies on horses"
+     ],
+     "optional": true
+    },
+    {
+     "role": "D",
+     "text": "go on {name_b}, i only know theres a farm under the keep",
+     "variants": [
+      "go on {name_b}, i only know theres a farm under the keep",
+      "please {name_b}, i never heard all of it"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "The hill where the Faste stands was a farm once, and the farmer's son was Thidrand. He was eighteen, and everyone liked him.",
+     "variants": [
+      "The hill where the Faste stands was a farm once, and the farmer's son was Thidrand. He was eighteen, and everyone liked him."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "At the winter nights feast there was a seer among the guests, and he said that nobody should go out that night, whoever knocked.",
+     "variants": [
+      "At the winter nights feast there was a seer among the guests, and he said that nobody should go out that night, whoever knocked."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Late, when the household was asleep on the benches, someone knocked at the door three times.",
+     "variants": [
+      "Late, when the household was asleep on the benches, someone knocked at the door three times."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Thidrand thought it shameful to leave a guest out in the cold, so he took his sword and went to the door.",
+     "variants": [
+      "Thidrand thought it shameful to leave a guest out in the cold, so he took his sword and went to the door."
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "who was it?",
+     "variants": [
+      "who was it?",
+      "so who was knocking?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "There was nobody at the door. But nine women in black were riding into the homefield from the north with their swords drawn.",
+     "variants": [
+      "There was nobody at the door. But nine women in black were riding into the homefield from the north with their swords drawn."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "And from the south came nine more, in white, on white horses, riding as hard as they could.",
+     "variants": [
+      "And from the south came nine more, in white, on white horses, riding as hard as they could."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "The ones in black reached him first. They found him at first light by the woodpile, and he lived long enough to say what he saw.",
+     "variants": [
+      "The ones in black reached him first. They found him at first light by the woodpile, and he lived long enough to say what he saw."
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "who were they?",
+     "variants": [
+      "who were they?",
+      "so what were the ones in white?"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "The seer said both were spirits of the house. The black knew a change was coming, and would have their due before it came.",
+     "variants": [
+      "The seer said both were spirits of the house. The black knew a change was coming, and would have their due before it came."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "The white belonged to what was coming. They had meant to save him, and they had been too late.",
+     "variants": [
+      "The white belonged to what was coming. They had meant to save him, and they had been too late."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "The family left the hill in the spring. The tomte and the bwca stayed, and they have quarrelled over that farm ever since.",
+     "variants": [
+      "The family left the hill in the spring. The tomte and the bwca stayed, and they have quarrelled over that farm ever since."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Nobody who has fallen on that hill since has stayed dead. The ones in white are never late there now.",
+     "variants": [
+      "Nobody who has fallen on that hill since has stayed dead. The ones in white are never late there now."
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "...going to leave porridge out for the tomte tonight",
+     "variants": [
+      "...going to leave porridge out for the tomte tonight",
+      "...never late there now. huh"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "ok, that one is good",
+     "variants": [
+      "ok, that one is good",
+      "fine. that one i like"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "tale_murdaigean",
+   "topic": "tale_murdaigean",
+   "realm": "hib",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} are you on? tell the murdaigean one, the knots",
+     "variants": [
+      "{name_b} are you on? tell the murdaigean one, the knots",
+      "{name_b}, do the run through murd for the new ones"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "whisht everyone, {name_b} is telling the wood",
+     "variants": [
+      "whisht everyone, {name_b} is telling the wood",
+      "quiet in faction please, the murdaigean one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "the knots story? go on then",
+     "variants": [
+      "the knots story? go on then",
+      "here we go, braid your hair everyone"
+     ],
+     "optional": true
+    },
+    {
+     "role": "D",
+     "text": "go on {name_b}, i keep seeing those cords on the trees",
+     "variants": [
+      "go on {name_b}, i keep seeing those cords on the trees",
+      "please {name_b}, i never knew what the knots were"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Long before the realm war the Fianna tried their young in that wood, and the dun at the heart of it was where the trial ended.",
+     "variants": [
+      "Long before the realm war the Fianna tried their young in that wood, and the dun at the heart of it was where the trial ended."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "They braided your hair and gave you the start of one tree, and then the whole company came after you through the wood.",
+     "variants": [
+      "They braided your hair and gave you the start of one tree, and then the whole company came after you through the wood."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "If they caught you, you had failed. If a braid came loose on a branch, or a dry stick cracked under your foot, you had failed.",
+     "variants": [
+      "If they caught you, you had failed. If a braid came loose on a branch, or a dry stick cracked under your foot, you had failed."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "You had to leap a branch as high as your brow, go under one as low as your knee, and pull a thorn from your foot at a run.",
+     "variants": [
+      "You had to leap a branch as high as your brow, go under one as low as your knee, and pull a thorn from your foot at a run."
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "did anyone ever reach the dun?",
+     "variants": [
+      "did anyone ever reach the dun?",
+      "so who made it to the fort?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Hardly anyone. So wherever they caught you they tied a knot in a cord on the nearest tree, to show how far you had come.",
+     "variants": [
+      "Hardly anyone. So wherever they caught you they tied a knot in a cord on the nearest tree, to show how far you had come."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "A boy who was caught halfway would come back as a grown man, and find his knot, and stand under it a while without a word.",
+     "variants": [
+      "A boy who was caught halfway would come back as a grown man, and find his knot, and stand under it a while without a word."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "The Fianna went away a long time ago. The cords stayed on the trees, and the spiders took them over, one knot at a time.",
+     "variants": [
+      "The Fianna went away a long time ago. The cords stayed on the trees, and the spiders took them over, one knot at a time."
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "wait, the webs are the cords?",
+     "variants": [
+      "wait, the webs are the cords?",
+      "so the webs in murd are the old knots?"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "Some of them. On the oldest trees, now and then, there is a knot in a web where no spider would ever tie one.",
+     "variants": [
+      "Some of them. On the oldest trees, now and then, there is a knot in a web where no spider would ever tie one."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "The name of the dun says fortress twice in the old tongue. The filidh say that was so a runner who reached it would believe it.",
+     "variants": [
+      "The name of the dun says fortress twice in the old tongue. The filidh say that was so a runner who reached it would believe it."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "It was never built to keep anyone out. It was the one place in that wood where nobody was chasing you.",
+     "variants": [
+      "It was never built to keep anyone out. It was the one place in that wood where nobody was chasing you."
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "...going to look for knots next time",
+     "variants": [
+      "...going to look for knots next time",
+      "...i always thought those were just webs"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "ty {name_b}, lovely telling",
+     "variants": [
+      "ty {name_b}, lovely telling",
+      "thanks {name_b}, i never knew that one"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "tale_caledon",
+   "topic": "tale_caledon",
+   "realm": "alb",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} you on? tell the battle of the trees for the new ones",
+     "variants": [
+      "{name_b} you on? tell the battle of the trees for the new ones",
+      "{name_b}, tell them why the trees in cale stand in ranks"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "hush in faction, {name_b} is telling the trees",
+     "variants": [
+      "hush in faction, {name_b} is telling the trees",
+      "quiet everyone, this one is very old"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "the walking trees again lol",
+     "variants": [
+      "the walking trees again lol",
+      "here we go, the grovewood"
+     ],
+     "optional": true
+    },
+    {
+     "role": "D",
+     "text": "go on {name_b}, those trees keep killing me",
+     "variants": [
+      "go on {name_b}, those trees keep killing me",
+      "please {name_b}, i want to know why they hate us"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Long before Arthur, a man of Gwynedd stole a white roebuck and a hound pup out of Annwn.",
+     "variants": [
+      "Long before Arthur, a man of Gwynedd stole a white roebuck and a hound pup out of Annwn."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Arawn came up out of the earth after them with a host, and the thief's brother was Gwydion, the best enchanter in the west.",
+     "variants": [
+      "Arawn came up out of the earth after them with a host, and the thief's brother was Gwydion, the best enchanter in the west."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Gwydion had no host to meet him with, so he went into the wood of Celidon and sang, and the trees pulled up their roots.",
+     "variants": [
+      "Gwydion had no host to meet him with, so he went into the wood of Celidon and sang, and the trees pulled up their roots."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "They came down the hill in ranks. The alders went in the front line, and the willow and the rowan were slow to form up.",
+     "variants": [
+      "They came down the hill in ranks. The alders went in the front line, and the willow and the rowan were slow to form up."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "The birch was too proud to hurry. The oak came last of all, and the ground shook under it the whole way down.",
+     "variants": [
+      "The birch was too proud to hurry. The oak came last of all, and the ground shook under it the whole way down."
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "so did the trees win?",
+     "variants": [
+      "so did the trees win?",
+      "who won?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Arawn had a champion who could not be beaten while his name was hidden, and the trees broke on him all day.",
+     "variants": [
+      "Arawn had a champion who could not be beaten while his name was hidden, and the trees broke on him all day."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Then Gwydion saw sprigs of alder on the man's shield, and guessed that his name was Bran, and called it out, and he fell.",
+     "variants": [
+      "Then Gwydion saw sprigs of alder on the man's shield, and guessed that his name was Bran, and called it out, and he fell."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Arawn went back under the earth. His people stayed in the hills above the wood, and they keep those hills for him still.",
+     "variants": [
+      "Arawn went back under the earth. His people stayed in the hills above the wood, and they keep those hills for him still."
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "and the trees?",
+     "variants": [
+      "and the trees?",
+      "so why are the trees still standing there?"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "Gwydion meant to sing them back to sleep once the day was done. Before he could, word came that he was wanted at home.",
+     "variants": [
+      "Gwydion meant to sing them back to sleep once the day was done. Before he could, word came that he was wanted at home."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "A boy of his house had no name and could not get one, and Gwydion walked him down the shore to Aber Menai to see to it.",
+     "variants": [
+      "A boy of his house had no name and could not get one, and Gwydion walked him down the shore to Aber Menai to see to it."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "He never went back to Celidon. The grovewood are standing in their ranks yet, facing the hills, waiting on the second song.",
+     "variants": [
+      "He never went back to Celidon. The grovewood are standing in their ranks yet, facing the hills, waiting on the second song."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "The boy got his name in the end.",
+     "variants": [
+      "The boy got his name in the end."
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "...aber menai. as in abermenai?",
+     "variants": [
+      "...aber menai. as in abermenai?",
+      "wait. aber menai, like the beach?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "ty {name_b}. i will be nicer to the trees",
+     "variants": [
+      "ty {name_b}. i will be nicer to the trees",
+      "thanks {name_b}, nobody does the old ones like you"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
    "id": "buffbots",
    "topic": "buffbots",
    "realm": "*",
@@ -689282,6 +690865,364 @@
    ],
    "needs": [],
    "exit": "A"
+  },
+  {
+   "id": "tale_atlantis",
+   "topic": "tale_atlantis",
+   "realm": "*",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} you on? tell the one about the glass that spoke",
+     "variants": [
+      "{name_b} you on? tell the one about the glass that spoke",
+      "{name_b}, do your gran's story, the glass ball one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "oh, this one. hush everyone",
+     "variants": [
+      "oh, this one. hush everyone",
+      "quiet in faction for a bit, {name_b} is telling the orb"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "the talking ball again lol",
+     "variants": [
+      "the talking ball again lol",
+      "here we go, the ball that talks"
+     ],
+     "optional": true
+    },
+    {
+     "role": "D",
+     "text": "go on {name_b}, the new ones have never heard it",
+     "variants": [
+      "go on {name_b}, the new ones have never heard it",
+      "please {name_b}, i never heard it all the way through"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "This one is my family's. My grandmother's grandmother saw it, when she was a girl in service at the council hall.",
+     "variants": [
+      "This one is my family's. My grandmother's grandmother saw it, when she was a girl in service at the council hall."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "One hard winter a fisherman came up from the coast with a sack over his shoulder, and the sack was still dripping.",
+     "variants": [
+      "One hard winter a fisherman came up from the coast with a sack over his shoulder, and the sack was still dripping."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "His nets had come up heavy off the point, and in them was a ball of green glass the size of a child's head.",
+     "variants": [
+      "His nets had come up heavy off the point, and in them was a ball of green glass the size of a child's head."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "Coral had grown over one side of it, and it was warm to the touch, though it had lain all night in the bilge.",
+     "variants": [
+      "Coral had grown over one side of it, and it was warm to the touch, though it had lain all night in the bilge."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "The council paid him two silver and set it on the high table between the candlesticks, and for seven nights it was a curiosity.",
+     "variants": [
+      "The council paid him two silver and set it on the high table between the candlesticks, and for seven nights it was a curiosity."
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "and then it talked?",
+     "variants": [
+      "and then it talked?",
+      "so when does it talk?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "On the eighth night, late, with the hall dark but for the high table, a light came up in the heart of the glass.",
+     "variants": [
+      "On the eighth night, late, with the hall dark but for the high table, a light came up in the heart of the glass."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "In the light stood a man no taller than her thumb, robed in a fashion no tailor in the realm had ever seen.",
+     "variants": [
+      "In the light stood a man no taller than her thumb, robed in a fashion no tailor in the realm had ever seen."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "He spoke in a stranger's voice, and he said that past the edge of the sea there lay a land where whole peoples were tried.",
+     "variants": [
+      "He spoke in a stranger's voice, and he said that past the edge of the sea there lay a land where whole peoples were tried."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "He asked the council to send its champions over the water, and he named the ten trials one after another.",
+     "variants": [
+      "He asked the council to send its champions over the water, and he named the ten trials one after another."
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "did they send anyone?",
+     "variants": [
+      "did they send anyone?",
+      "so who went?"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "Nobody went. They argued until the candles guttered, and then the light came up again and he said it all over, word for word.",
+     "variants": [
+      "Nobody went. They argued until the candles guttered, and then the light came up again and he said it all over, word for word."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "She was the one who saw that he never looked at the councillors. He looked down the hall, to where nobody sat.",
+     "variants": [
+      "She was the one who saw that he never looked at the councillors. He looked down the hall, to where nobody sat."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "He said it every night that winter. The council stopped coming, and in the end only she heard it, because the candles still wanted trimming.",
+     "variants": [
+      "He said it every night that winter. The council stopped coming, and in the end only she heard it, because the candles still wanted trimming."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "For years after, she dreamed of it: sand to the end of the world, a mountain on fire, a city standing on cloud.",
+     "variants": [
+      "For years after, she dreamed of it: sand to the end of the world, a mountain on fire, a city standing on cloud."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "And at the last the sky opened and the sea stood up, and all of it was gone in a day and a night.",
+     "variants": [
+      "And at the last the sky opened and the sea stood up, and all of it was gone in a day and a night."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "In spring they sewed it back into the fisherman's sack and rowed it out past the point on the ebb.",
+     "variants": [
+      "In spring they sewed it back into the fisherman's sack and rowed it out past the point on the ebb."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "She was in the boat, because someone had to hold the sack. She said it was still talking when it went under.",
+     "variants": [
+      "She was in the boat, because someone had to hold the sack. She said it was still talking when it went under."
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "...still talking",
+     "variants": [
+      "...still talking",
+      "wait. it was still talking?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "ty {name_b}. not going near the docks tonight",
+     "variants": [
+      "ty {name_b}. not going near the docks tonight",
+      "thanks {name_b}, nobody tells that one like you"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "rumour_atlantis_uncle",
+   "topic": "rumour_atlantis",
+   "realm": "*",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "B": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "C": {
+     "type": [],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{q} my uncle says theres a whole city at the bottom of the sea lol",
+     "variants": [
+      "{q} my uncle says theres a whole city at the bottom of the sea lol"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "your uncle also says he soloed the dragon",
+     "variants": [
+      "your uncle also says he soloed the dragon"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "ok he said that once. but the fishermen really do pull up carved stone with coral all over it",
+     "variants": [
+      "ok he said that once. but the fishermen really do pull up carved stone with coral all over it"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "the sailors have a name for it, atlantis",
+     "variants": [
+      "the sailors have a name for it, atlantis",
+      "harbour folk call it atlantis and then go quiet"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "so what are the lights out past the harbour at night?",
+     "variants": [
+      "so what are the lights out past the harbour at night?",
+      "then what are the lights under the water"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "fish that glow. or your uncle with a lantern",
+     "variants": [
+      "fish that glow. or your uncle with a lantern"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "laugh all you like. ask any fisherman if he will cast a net past the point after dark",
+     "variants": [
+      "laugh all you like. ask any fisherman if he will cast a net past the point after dark"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "your uncle would. right after the dragon",
+     "variants": [
+      "your uncle would. right after the dragon"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
   },
   {
    "id": "alb_cleric_three_ways",

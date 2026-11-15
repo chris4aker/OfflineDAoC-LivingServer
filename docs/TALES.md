@@ -82,6 +82,21 @@ Hall) with a gamebot in your group, and a groupmate tells the short version in /
   Dura'ek the Empowered (Albion); Aros the Spiritmaster, Iarnvidiur and Queen Kula (Midgard); Avartack the Champion,
   Chieftain Caimheul and Balor (Hibernia). The ten have passed the corpus check and the unit tests only; none has been
   heard in game yet. Each has its fireside version.
+- **One legend** (2026-11-15, the era rumours): the glass that spoke, a grandmother's tale of an orb a fisherman's net
+  brought up, which spoke to a council of a land past the sea (Trials of Atlantis as a rumour only, owner 2026-11-15). Every
+  realm's storyteller tells it in the rotation like any tale, and a player can ask for it ("tell the one about atlantis",
+  "the glass ball story"). A legend is about no boss (`AutonomousTales.Legends`): it has no lore file, no raid and no
+  fireside version, and the rumour after it is one of the corpus's rumour lines on it (`LoreLegends.RumoursAfter`, topic
+  `rumour_atlantis`), never a raid. It lives in `data/chat/era_rumours.lines`. Its teller writes whole sentences with
+  capitals and stops, which the chat pass keeps (it drops a line's last stop and sends a long line as two chat lines at a
+  sentence or comma); the listeners type as players do. Tests only: not heard in game yet.
+- **Four battleground legends** (2026-11-15, the owner's "full lore for the battlegrounds"), one per field, in
+  `data/chat/battleground_lore.lines`: the woman who waited at the teleporter (Abermenai, every realm), Thidrand and the
+  winter nights (Thidranki, Midgard), the run and the knots (Murdaigean, Hibernia) and the battle of the trees (Caledonia,
+  Albion). Each realm hears two. A legend's id is its field's lore file (`abermenai`, `thidranki`, `murdaigean`,
+  `caledon`), so a player of the realm standing in the field is told its legend first, six times in ten, as a boss's
+  place prefers its boss (`AutonomousTales.LocalTale`). The rumour after each is a corpus line tagged `rumour_<id>`.
+  Tests only (`UT_BattlegroundLore`): not heard in game yet.
 
 ## Settings
 

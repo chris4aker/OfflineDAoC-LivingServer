@@ -63,7 +63,7 @@ original rules, every big boss has a raid plan, and 578 bosses have a story. Fre
 > lords and princes, Legion, Apocalypse, the Glacier's icelords, Galladoria's primals, and 16 open-world giants that
 > now draw a realm raid of their own.
 >
-> **Every boss has a story.** 578 bosses and 107 places, checked against 832 Camelot Herald articles. Old stories kept
+> **Every boss has a story.** 578 bosses and 108 places, checked against 832 Camelot Herald articles. Old stories kept
 > in each capital, a Bestiary, bosses that speak, and the boss's tale told in /faction before the horn calls the raid.
 >
 > **The bots play with you.** Gamebot leaders invite you and run the group, raid leaders save you a seat, RvR bots

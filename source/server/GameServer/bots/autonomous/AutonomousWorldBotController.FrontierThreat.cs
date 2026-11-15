@@ -178,6 +178,32 @@ public sealed partial class AutonomousWorldBotController
         var visibleTargets=visible.ToArray();
         // RvR perception (owner 2026-11-01): enemy players, companions and pets only once noticed and after a reaction delay.
         visibleTargets = PerceiveRvrTargets(bot, visibleTargets, defending || siegeFighter);
+        // A bot gathering for its realm's battleground wave fights only what comes at it (owner's PC, build 3d67b6f: the
+        // gatherers saw the keep's Albion defenders and other realms within 5,000 and were pulled into the guards).
+        // The same for a bot holding at its realm's keep rally once the doors are down, and a stormer going up to the lord
+        // fights only what is upon it or firing on the realm near it (owner's PC, build 3b808b4, Thidranki 10:12-10:58: with
+        // the waves bypassed nothing held the realm back, and 33-57 of the battleground's bots were "Fighting" at every sample).
+        if (!defending && !siegeFighter && visibleTargets.Length > 0)
+        {
+            GameLiving[] allowed = null;
+            bool atRally;
+            if (BattlegroundGatherHold(bot, out Vector3 gatherStaging, out atRally))
+                allowed = visibleTargets.Where(target => GathererMayEngage(bot, target, gatherStaging)).ToArray();
+            else if (BattlegroundStormHold(bot))
+            {
+                atRally = true;
+                allowed = visibleTargets.Where(target => StormerMayEngage(bot, target)).ToArray();
+            }
+            if (allowed != null)
+            {
+                if (allowed.Length == 0)
+                {
+                    NoteBattlegroundHeldBack(bot, atRally, dropped: false);
+                    return false;
+                }
+                visibleTargets = allowed;
+            }
+        }
         var operatorThreats=visibleTargets.Where(target=>target.IsAttacking && target.TargetObject is GameBot friendly &&
             friendly.Realm==bot.Realm && bot.IsWithinRadius(friendly,1000) && BotSiegeRuntime.HoldingPosition(friendly)).ToArray();
         GameLiving enemy = SelectDistributedRvrTarget(bot, operatorThreats.Length>0 ? operatorThreats : visibleTargets);

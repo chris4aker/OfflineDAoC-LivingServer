@@ -16,6 +16,9 @@ The builds on the candidate line, as the repo records them:
 - `1dc66b6`: installed 2026-11-14 21:16. It ran the night of 2026-11-14/15 with a GM character, bots only in the sweep
   (no guest seat).
 - `3d67b6f` (the integration tip with the Lv.20 button, #242): the battleground test, 2026-11-15.
+- Battleground builds of 2026-11-15, each the CI package of an integration tip or PR: `ea882e6` (#247), `3b808b4`
+  (#248), `d64d005` (integration `0ae3590`: keep level 1, the lord rally #251, the battleground lore #253) and
+  `0026378` (integration `5ab82a2`: a separate rally spot per realm #255, Cathal Valley left out #254).
 
 ## Owner decisions 2026-11-15
 
@@ -193,9 +196,9 @@ is added here, with the build that carries it, before it is merged.
 | `/lead`, `/lead bot`, `/makeleader`, `/invites` and the join mode (B2) | must | **Seen** on `1dc66b6` (2026-11-14 22:45-22:50: `/lead`, `/lead bot`, `/makeleader` refused mid-fight and then done, `/invites`; the default join mode, follow). `/lead` and `/lead bot` also on test builds 3 to 5. The `lead` join mode was not tried |
 | A raid leader invites you into a raid (B3) | must | **Seen** on test build 5 (Golestandt) and on `1dc66b6`: Hall of the Corrupt (after /lfg), Caer Sidi and Krondon (sweep raids) and Coliath, each box accepted and a seat in a party |
 | Replacements ("lf 1 more"), the natural break and the pull call (B4) | must | Partly. The let-go after 30 minutes away and the replacement call: seen on test builds 3 to 5 and on `1dc66b6` (23:20). The natural break (bags): in the PC log only on `1dc66b6` (05:17), not watched. The pull call: **not working on `1dc66b6`**, bot-led parties called no pulls in /group (fixed in #234, tests only) |
-| RvR: bots notice you the way a 2003 player would, not from across the zone | must | **Not tested yet.** On `1dc66b6` the character stayed a GM all night (the sweep had no guest), and perception logs only players (#229), so the check needs a non-GM character in the frontier |
+| RvR: bots notice you the way a 2003 player would, not from across the zone | must | **Seen** on `3d67b6f` (2026-11-15 07:22, Manawatch with GM off, at Hadrian's Wall): Midgard bots noticed him at 516-1,575 (`RVR_NOTICE`: facing and still at 1,462 with chance 0.77 after 724 ms, in combat at 1,275, close at 660 and 516), then mezzed, rooted and killed him. Open question: no `RVR_SPOT` line was logged |
 | Replies that don't give bots away; `/lswhy me` |  | Partly on `1dc66b6`: bots answered tells and /lfg; a group question ("where we headed?") went unanswered and `/lswhy me` had nothing recorded for it |
-| A battleground session: the realm rallies in the breach and takes the keep lord |  | Not testable on `1dc66b6` (no bots of battleground level). To be tested on `3d67b6f` with the Lv.20 button (#242) |
+| A battleground session: the realm rallies in the breach and takes the keep lord |  | **Not seen: no keep has changed hands.** Thidranki, 2026-11-15, with 50-100 Lv.20 bots per realm. On `3d67b6f` the bots arrived trained and both realms laid siege (the siege notice on screen), but waves formed only after 22 minutes and died to the guards one by one. On `ea882e6` waves gathered in 1-4 minutes and cued each other, but died on the way. On `3b808b4` they marched on the door and all six doors fell by about 10:31; the lord was never reached (the rally point stood inside, 276 deaths to guards); the keep had gone to level 4 on capture (guards 33, lord 38). On `d64d005` the keep is level 1 again (guards 28, lord 33, seen in `BG_KEEP_STATUS`) and each realm rallies outside the breach: 12 attempts, none reached the lord's floor, because both realms used the same rally spot and killed each other's stormers. On `0026378` the rallies stand 2,546 apart (`BG_RALLY_PLACED`); 6 attempts by 14:00, none reached the gate, killed by guards, Albion bots and the third realm; 183 of 410 battleground deaths had no armor (the Lv.20 bots arrive without gear; owner 2026-11-15: they will arrive with starter gear) |
 | Repeatable quests, deliveries and an epic chain step |  | No record. The RvR and battleground kill quests count enemy gamebots since #243 (tests only). On `1dc66b6` the GM's character was a base class, which has no epic chain |
 
 ## Tales and lore

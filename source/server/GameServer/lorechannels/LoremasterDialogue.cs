@@ -193,7 +193,28 @@ namespace DOL.GS.LoreChannels
                 if (pick.Text == null) pick = entries[0];
                 return new(Clean(pick.Text), pick.LocationId);
             }
-            return null;
+            // A question asked in words, not as its keyword ("what is atlantis?", "is there anything under camelot?"): the
+            // keyword it asks about, once (1.2, the era rumours).
+            string asked = AskedKeyword(keyword);
+            return asked != null && LoreSourceExtensions.Key(asked) != key ? Resolve(asked, contextLocationId) : null;
+        }
+
+        private static readonly Regex QuestionWords = new(
+            @"^(?:(?:so|and|but|um|well|please|sorry|hey|loremaster|sage)[ ,]+)*" +
+            @"(?:what (?:is|are|was|were|lies|lives|sleeps)|whats|what s|who (?:is|are|was|were)|whos|who s|" +
+            @"tell me (?:of|about)|what do you know (?:of|about)|do you know (?:of|about)|have you heard of|ever heard of|" +
+            @"is there (?:anything|something|anyone|a city|a door)|are there (?:things|people|any)|is it true (?:about)?)\s+" +
+            @"(?:the |a |an )?(?<rest>.+)$", RegexOptions.Compiled);
+
+        /// <summary>The keyword a question in words asks about ("is there anything beneath camelot" is "under camelot"),
+        /// or null when it is no such question. Pure.</summary>
+        public static string AskedKeyword(string text)
+        {
+            string plain = Regex.Replace(Regex.Replace((text ?? "").ToLowerInvariant().Replace('\'', ' '), @"[^a-z0-9 ]+", " "), @"\s+", " ").Trim();
+            Match m = QuestionWords.Match(plain);
+            if (!m.Success) return null;
+            string rest = Regex.Replace(m.Groups["rest"].Value, @"^(?:beneath|below|underneath|down under)\b", "under").Trim();
+            return rest.Length > 0 ? rest : null;
         }
 
         /// <summary>Whether a keyword leads anywhere (in any place's context).</summary>

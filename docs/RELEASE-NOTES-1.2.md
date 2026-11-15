@@ -22,12 +22,17 @@ catalog's rules went from 862 to 871 (its plan counts and the settings are uncha
 2026-11-15 ([PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md), "Owner decisions 2026-11-15") apply: the storytellers,
 fireside tales, loremasters and the Epic Special Forces are hinted at, never explained (17); the new client is
 maintenance-only (16); Trials of Atlantis and Catacombs are only rumours (19); Behemoth, Fomor City and Morgana are
-signed off without a raid (3 to 5). In-game results name their build and come from PLAYED-CHECK-1.2.md. Lines marked
-"[owner: confirm ...]" are
-results from the owner's PC that the repository has no record of; confirm or drop them before publishing. Owner's
-decision (2026-11-14): credit lightly, by project and username in the Credits section only, never per feature or
-per piece of code; the licence notices stay in THIRD_PARTY.md and the changelog. The repository description, the
-tagline, the posts and the pitch are in [RELEASE-1.2-COPY.md](RELEASE-1.2-COPY.md).
+signed off without a raid (3 to 5). Brought up to date again on 2026-11-15 with integration/1.2 at c58ea66e1, which
+adds #247 to #257 (the battleground waves, storms, keep level, lord rally and per-realm rally spots, the Lv.20 bots'
+starter gear, the battleground lore, the Atlantis and Catacombs rumours, Cathal Valley left out of chat) and the
+played check's battleground and RvR rows (#256). Owner decisions applied: Cathal Valley is left out (not named below
+the line); Trials of Atlantis and Catacombs appear only as rumours; the post-2003 jokes are cut; defenders not
+answering a battleground siege is fine; Caledonia's quests follow 30-35. The place count is 108 (the battlegrounds'
+shared story is a place of its own). In-game results name their build and come from PLAYED-CHECK-1.2.md. Lines marked
+"[owner: confirm ...]" are results from the owner's PC that the repository has no record of; confirm or drop them
+before publishing. Owner's decision (2026-11-14): credit lightly, by project and username in the Credits section only,
+never per feature or per piece of code; the licence notices stay in THIRD_PARTY.md and the changelog. The repository
+description, the tagline, the posts and the pitch are in [RELEASE-1.2-COPY.md](RELEASE-1.2-COPY.md).
 
 ---
 
@@ -58,7 +63,7 @@ to 1.1.4. As in 1.1.4, a new install from Setup is **0.37**.
   Legion to the Glacier Giant.
 - **37 raids on the schedule.** 16 open-world giants now draw a realm raid of their own.
 - **Darkness Falls, with a battle plan.** High lords, princes, Legion, and the long walk out of Behemoth's hall.
-- **A story for every boss.** 578 bosses and 107 places, more than a million words, checked against 832 Camelot
+- **A story for every boss.** 578 bosses and 108 places, more than a million words, checked against 832 Camelot
   Herald articles.
 - **Bots that play with you.** They invite you, lead the group, and save you a raid spot.
 - **Bring your friends.** Host your bot world for a few friends, and take your character to theirs. Experimental.
@@ -188,8 +193,13 @@ What has been seen on a real install is under "How it was tested", and the fight
 
 Every dungeon, dragon and boss has a story, and you meet it everywhere.
 
-- **107 places, 578 bosses and 4 realm histories**, from the dragons down to the zones' named: more than a million
+- **108 places, 578 bosses and 4 realm histories**, from the dragons down to the zones' named: more than a million
   words written for Living Server, nearly 4,900 lines for the bosses to yell and about 5,200 atmosphere lines.
+- **The battlegrounds have a story too:** why only the young may fight there, why the fallen wake at their own portal
+  keep, and who keeps the gates. No two realms tell it alike, and each field has a legend of its own. Stand in one and
+  you may hear it.
+- **Rumours, and only rumours.** Sailors talk of a land under the sea, and some say there is something beneath the
+  capitals. Nobody has been, and nobody can go.
 - **Mythic's word comes first.** 832 Camelot Herald articles, November 2001 to February 2005, were read from the web
   archive and checked against the lore. Where ours disagreed, Mythic's won: Dartmoor's history, Gjalpinulva's mother,
   the Legendary Afanc's return, Krondon's ogres. Where Mythic told no story, Living Server wrote one. Every compass
@@ -279,14 +289,23 @@ Your bot world has always been yours alone. Now a few friends can join it, from 
   world, and no Python is needed.
 - **Repeatable quests are offered again**, deliveries in quests without a collect column can be handed in, and
   collection quests take their item whatever the case of its name.
-- **Battleground rallies:** once the gates fall, each realm rallies in the breach and goes up to the keep lord
-  together, with you counting double. It doesn't win yet: see Known issues.
+- **Battleground sieges, reworked.** An attacking realm gathers out of the guards' reach and goes in as one wave, sooner
+  when the population is small or the other realm is going in too. A wave marches on the outer gate first, then the keep
+  door, and fights the guard that is hitting one of its own. Once the gates fall, each realm rallies outside the breach
+  on a spot of its own, apart from the other attacking realm's, and storms up to the keep lord together, with you
+  counting double. No keep has changed hands in game yet: see Known issues.
+- **Battleground keeps stay at keep level 1**, as they did in the original game, where nobody could claim them. A
+  capture no longer raises one, and a keep a capture raised on your world goes back to level 1. In Thidranki that is
+  level-28 guards and a level-33 lord again, not 33 and 38.
 - **Bots for the battlegrounds.** Each realm card in the launcher has **+ Lv.20** beside + Lv.1 and + Lv.50: bots of
-  levels 20 to 24 for Thidranki, with that level's purse and no armor (they earn it). Like + Lv.50 bots, they arrive
-  trained. They go to Thidranki for the Battlegrounds share you set for levels 20 to 49 (0% by default).
+  levels 20 to 24 for Thidranki, with that level's purse. Like + Lv.50 bots, they arrive trained, and they arrive in
+  plain merchant gear for their level, as if they had levelled there: nothing magical, and it costs them nothing.
+  + Lv.1 bots still start with no armor and earn it. They go to Thidranki for the Battlegrounds share you set for
+  levels 20 to 49 (0% by default).
 - **RvR and battleground kill quests can be finished.** Pazz's battleground dailies and the realm's daily, weekly and
   monthly player-kill quests counted only real players, so in a world of bots none could be done. An enemy realm's
-  gamebot counts now. Caledonia's dailies ask for its own bracket, 30 to 35.
+  gamebot counts now. Caledonia's dailies ask for its own bracket, 30 to 35, and Midgard's kill quest there can be
+  taken at last.
 - **New client (0.37c) fixes:** skills on the quickbar, Stealth in the Abilities list, and a SELL button at merchants,
   installed only over the released scripts; ROLLBACK.cmd puts them back. The new client is in maintenance now: fixes
   only, no new features.
@@ -309,8 +328,8 @@ Social Expansion. Seven releases later, this is the whole of it: free, and each 
 
 **A server that talks like 2003.**
 - **About 35,000 lines and 418 /faction scenes**, written for the game from launch (9 October 2001) to patch 1.65
-  (8 October 2003). A validator turns away anything later: no master levels, no "toon", and Atlantis is only
-  harbour talk that nobody has come back to prove. Five writing styles, typo-prone "*fixes" and all.
+  (8 October 2003). A validator turns away anything later: no master levels, no "toon", no jokes from later years, and
+  Atlantis is only harbour talk that nobody has come back to prove. Five writing styles, typo-prone "*fixes" and all.
 - **The arguments never settle:** smite against rejuv, buffbots, zergs, relic panic, dragon raids, each realm in its own
   voice.
 - **Nothing made up.** "where are the mids?" names the zone they're really in. Keep, relic and raid news is real, and so
@@ -370,8 +389,8 @@ Social Expansion. Seven releases later, this is the whole of it: free, and each 
 - **To undo:** `ROLLBACK.cmd`. It puts every replaced file back; it never puts your database back, because that would
   undo your play since.
 
-Real loot, the Realm Exchange, stablemaster routes, selling at natural breaks, bots that earn their armor and Darkness
-Falls open to solo bots are untouched.
+Real loot, the Realm Exchange, stablemaster routes, selling at natural breaks, level-1 bots that earn their armor and
+Darkness Falls open to solo bots are untouched.
 
 ### How it was tested
 
@@ -427,12 +446,24 @@ only".
       05:21; its end is not recorded.
     - Each of those losses that a bug caused has a fix since (#229, #230, #235, #236, #237, #240; tests only), and each
       of those raids is to be run again on the final candidate.
-  - [owner: confirm; PLAYED-CHECK-1.2.md has no record of these yet.] The morning of 15 November (build 3d67b6f), a
-    non-GM Albion character on Hadrian's Wall: Midgard's bots noticed him at 1,275 to 1,575 units with reactions of 0.6
-    to 1.3 seconds, and at 516 to 660 up close, then mezzed, rooted and killed him. Bots made with the launcher's
-    + Lv.20 button arrived trained and went to Thidranki. Midgard and Hibernia laid siege to Albion's Thidranki Faste,
-    with the siege notice on screen. A Hibernian battleground wave went in after 22 minutes but never reached the
-    gate, and the keep has not changed hands.
+  - RvR perception, the morning of 15 November (build 3d67b6f), a non-GM Albion character at Hadrian's Wall: Midgard's
+    bots noticed him at 516 to 1,575 units (at 1,462 after about three quarters of a second, at 1,275 in a
+    fight, at 660 and 516 up close), then mezzed, rooted and killed him.
+  - The battlegrounds, 15 November, Thidranki with 50 to 100 bots a realm from the + Lv.20 button, on five builds in a
+    row. **No keep changed hands on any of them.**
+    - 3d67b6f: the + Lv.20 bots arrived trained and went to Thidranki, and Midgard and Hibernia laid siege to Albion's
+      Thidranki Faste, with the siege notice on screen. Waves took 22 minutes to form and died to the guards one by
+      one.
+    - ea882e6: waves gathered in 1 to 4 minutes and the two realms went in together, but died on the way to the gate.
+    - 3b808b4: the waves marched on the gates, and all six doors fell. The lord was never reached: the rally stood
+      inside, among the guards, and the keep had risen to keep level 4 when it was last taken (guards 33, lord 38).
+    - d64d005: the keep back at level 1 (guards 28, lord 33) and the realms rallying outside the breach. In 12 attempts
+      none reached the lord's floor: both realms rallied on the same spot and killed each other's stormers.
+    - 0026378: the two rallies 2,546 units apart. In 6 attempts none reached the gate; the guards, Albion's bots and
+      the other attacking realm killed them on the way. 183 of the 410 deaths there were bots with no armor, which is
+      why + Lv.20 bots now arrive in starter gear (tests only, not yet seen in game).
+    - [owner: the battleground result on the final candidate, with the starter gear, filled in before publishing: did a
+      realm take the keep lord and the keep? Until then this release does not claim a battleground capture.]
 - **On a real install** (an overnight run of development build 76600af7, bots only, 7.8 hours): Fornfrusenen, the
   Council Vagn and Nokkvi, Torst and Hurika were killed; Tuscaran Glacier was lost at Icelord Agmundr. Bot raids skipped
   Scurceol Hyrde: they could not shoot his orbs. In the battlegrounds, 168 of 169 storms on a keep lord failed and no
@@ -466,11 +497,11 @@ only".
   install. Of the open-world raids only Coliath's has been seen (1dc66b6); the others' hubs and routes have not been
   walked on a real install. The same goes for the epic armor rule and the boss script fixes.
 - **Parts of 1.2 have only been tested automatically.** The bot-led groups, the tales and several raids have been seen
-  on a real install (see above). Not yet seen there: most of the new boss tactics in a raid with a player in it, RvR
-  perception [owner: confirm the 3d67b6f result under How it was tested, then drop it from this list], the keepers of
-  the old stories and their books, the bots staying behind at another realm's border, the RvR and battleground kill
-  quests, a session played together with a friend, and a character passport trip between two PCs. Real play may still
-  find cases the tests miss.
+  on a real install (see above), and so has RvR perception (3d67b6f). Not yet seen there: most of the new boss tactics
+  in a raid with a player in it, the keepers of the old stories and their books, the battlegrounds' story and the
+  rumours, the bots staying behind at another realm's border, the RvR and battleground kill quests, the + Lv.20 bots'
+  starter gear, a session played together with a friend, and a character passport trip between two PCs. Real play may
+  still find cases the tests miss.
 - **Dragon fights can fall apart partway.** In the play tests [owner: confirm the builds] a raid on Cuuldurach
   collapsed at 69% and one on Golestandt at 46%, with most of the raid dying within a few minutes. Both dragons were
   beaten later.
@@ -485,10 +516,13 @@ only".
 - **Some gamebots wait a long time at frontier teleporters.** Before 1.1.3, in one night, 368 times a gamebot stood 15
   minutes waiting for one before the server moved it on. Since 1.1.3 they go to the border keep first; that has not
   been checked on a real install.
-- **Battlegrounds are an endless fight.** Bots storm the keep lord again and again and almost always fail, so the keeps
-  don't change hands and the same bots die over and over. [owner: confirm, not yet in PLAYED-CHECK-1.2.md: on build
-  3d67b6f a Hibernian wave in Thidranki never reached the gate and the keep did not change hands; the waves are being
-  fixed.]
+- **No battleground keep has changed hands yet.** On every build tested in game (five on 15 November, see How it was
+  tested) the attacking realms broke the gates at best and never took the keep lord: their waves and rallies died to
+  the guards and to each other. The waves, the keep level, the rallies and the starter gear are each a fix for what
+  those runs showed, and the starter gear has not been seen in game yet. Until a capture is seen, a battleground can
+  still be an endless fight. [owner: replace with the final candidate's result before publishing.]
+- **The realm holding a battleground keep doesn't ride out to answer a siege.** Its guards and the bots already on its
+  walls hold it. That is by design.
 - **Bot-led groups:** gamebots don't share your horse or boat; the leader takes its own and waits at the other end. The
   break at the end of a session ends the party: it doesn't walk to town and back with you.
 - **New client:** APPRAISE stays hidden, and you don't see yourself as see-through in Stealth yet. Both need a newer

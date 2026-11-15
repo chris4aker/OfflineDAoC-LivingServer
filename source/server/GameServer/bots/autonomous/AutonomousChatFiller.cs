@@ -219,6 +219,9 @@ public static class AutonomousChatFiller
             return false;
         if (line.Kind is "ambient" or "reply" && line.Topic == "lore")
             return true;
+        // 1.2: a rumour of a sunken land or of what lies under the capital is a musing too, so it is rare (owner, 2026-11-15).
+        if (LoreLegends.IsEraRumour(line))
+            return true;
         string text = line.Text.ToLowerInvariant();
         return MusingMarkers.Any(marker => text.Contains(marker, StringComparison.Ordinal));
     }

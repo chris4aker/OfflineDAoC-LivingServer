@@ -530,6 +530,9 @@ namespace DOL.GS
                         bot.ForcePathReplot();
                     }
                     ReportSiegeCombatAttendance(bot, nowTick);
+                    // A battleground gatherer does not chase a fight away from its realm's staging point.
+                    if (DropBattlegroundGatherChase(brain, bot))
+                        return true;
                     // Relic sentinels take no damage from beyond 800 (owner 2026-10-31: ranged bots step in to range).
                     if (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) && StepInOnSentinel(brain, bot, bot.TargetObject as GameLiving))
                         return true;
@@ -2183,10 +2186,10 @@ namespace DOL.GS
                 .Where(guard => guard.Component?.Keep != null && $"rvr-keep-{guard.Component.Keep.KeepID}" == _rvrDestination?.Id)
                 .Where(guard => !guard.IsPortalKeepGuard && AutonomousRvrKeepPolicy.IsSiegeObjective(guard.Component?.Keep))
                 .Where(guard => !closedDoor || guard is not GuardLord)
-                // Holding at a battleground rally: what comes at the rally, never the lord (the rally goes up together).
+                // Holding at a battleground rally: what comes at the rally (the gatherers' rule), never the lord (the rally goes
+                // up together). Was any guard within 1,500 of the rally point, which stood inside the keep on build 3b808b4.
                 .Where(guard => _battlegroundRallyHold is not { } rally || !BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ||
-                    guard is not GuardLord &&
-                    Vector3.DistanceSquared(rally, new(guard.X, guard.Y, guard.Z)) <= BattlegroundRallyEngageRadius * (float)BattlegroundRallyEngageRadius)
+                    guard is not GuardLord && GathererMayEngage(bot, guard, rally))
                 .Where(guard => GameServer.ServerRules.IsAllowedToAttack(bot, guard, true))
                 .Where(guard => PathfindingProvider.Instance.HasLineOfSight(bot.CurrentZone, new(bot.X, bot.Y, bot.Z),
                     new(guard.X, guard.Y, guard.Z), PathfindingProvider.Instance.BlockingDoorAvoidanceFilters))

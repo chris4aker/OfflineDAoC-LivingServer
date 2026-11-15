@@ -8,7 +8,8 @@ release; some still have level, target, party or state requirements.
 
 Click **+ Lv.1**, **+ Lv.20** or **+ Lv.50** under a faction to create bots for that faction.
 **+ Lv.20** makes bots at a random level from 20 to 24, the Thidranki battleground bracket; they go
-there for the **Battlegrounds %** share set for Levels 20–49 on the Bot Goals Setting tab.
+there for the **Battlegrounds %** share set for Levels 20–49 on the Bot Goals Setting tab. At their first
+login the server gives them plain merchant armour and weapons for their level, free; **+ Lv.1** bots still earn theirs.
 Hold **Ctrl** for **+100 bots** per click, or **Shift** for **+10**. Without a
 modifier, create one bot. Start small and increase population for your PC's capacity.
 

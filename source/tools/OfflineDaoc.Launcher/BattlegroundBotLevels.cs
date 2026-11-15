@@ -82,8 +82,9 @@ public static class BattlegroundBotLevels
 
     /// <summary>
     /// A modest purse: the level squared in silver (100 copper a silver), 4 gold at 20, 5 gold 76 at 24, 12 gold 25 at 35.
-    /// Bots spend coin on stable tickets and vendor upgrades only; this pays for travel and a piece or two from a merchant,
-    /// not a set of armour, which they still earn (owner's rule: gamebots start without armour).
+    /// Bots spend coin on stable tickets and vendor upgrades only; this pays for travel and a piece or two from a merchant.
+    /// Their first set of plain merchant gear is the server's, free (AutonomousStarterGear; owner 2026-11-15, "Arrive with
+    /// starter gear"), so the purse is left as it was.
     /// </summary>
     public static long PurseCopper(int level)
     {
@@ -98,7 +99,8 @@ public static class BattlegroundBotLevels
     /// <summary>The "+ Lv.20" buttons' tooltip.</summary>
     public static string ButtonTip(Bracket bracket) =>
         $"Make bots at levels {bracket.MinLevel}–{bracket.MaxLevel}, the {bracket.Name} battleground bracket: each gets a random level " +
-        "in it with that level's experience, a small purse (its level squared in silver) and no armour, and starts in its capital.\n" +
+        "in it with that level's experience and a small purse (its level squared in silver), and starts in its capital.\n" +
+        "At its first login the server gives it plain merchant armour and weapons for its level, free (\"+ Lv.1\" bots still earn theirs).\n" +
         "Shift-click makes 10, Ctrl-click 100.\n" +
         "They go to the battleground only for the share Bot Goals Setting gives Levels 20–49 as Battlegrounds % (0% by default).";
 }

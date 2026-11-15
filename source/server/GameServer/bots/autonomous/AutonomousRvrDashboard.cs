@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -115,6 +116,15 @@ public static class AutonomousRvrDashboard
     /// bots of each realm near it (run 2026-10-13: two hours of battleground fighting and no keep changed hands, with
     /// nothing in the log to say how far any assault got).
     /// </summary>
+    /// <summary>"28" or "28-30" for the guards' levels, "none" without guards.</summary>
+    public static string GuardLevelRange(IEnumerable<byte> guardLevels)
+    {
+        byte[] levels = guardLevels.ToArray();
+        if (levels.Length == 0) return "none";
+        byte low = levels.Min(), high = levels.Max();
+        return low == high ? low.ToString() : $"{low}-{high}";
+    }
+
     private static void LogBattlegroundKeep(BattlegroundBrackets.Bracket bracket, AbstractGameKeep central, GameBot[] bots)
     {
         GameKeepDoor[] doors = central.Doors.Values.ToArray();
@@ -128,6 +138,8 @@ public static class AutonomousRvrDashboard
             $"BG_KEEP_STATUS battleground={bracket.Name} keep=\"{central.Name}\" holder={(central.Realm == eRealm.None ? "Neutral" : GlobalConstants.RealmToName(central.Realm))} " +
             $"doors={doors.Count(door => door.IsAlive)}/{doors.Length} doorHealth={(doors.Length == 0 ? 0 : doors.Min(door => door.HealthPercent))} " +
             $"guards={guards.Count(guard => guard.IsAlive)}/{guards.Length} lord={(lord == null ? "none" : lord.IsAlive ? lord.HealthPercent + "%" : "dead")} " +
+            // The keep's level and the levels it gives (a capture used to raise Thidranki from 1 to 4: guards 28 to 33).
+            $"keepLevel={central.Level} guardLevel={GuardLevelRange(guards.Where(guard => guard is not GuardLord).Select(guard => guard.Level))} lordLevel={lord?.Level.ToString() ?? "none"} " +
             $"near={Near(eRealm.Albion)}/{Near(eRealm.Midgard)}/{Near(eRealm.Hibernia)} " +
             // How many bots stand by the lord and how many have him targeted (gates fell for hours, lord never hit).
             $"atLord={(lord == null ? 0 : inside.Count(bot => bot.IsWithinRadius(lord, 800)))} " +

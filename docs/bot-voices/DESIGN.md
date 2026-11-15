@@ -186,7 +186,7 @@ A line whose slot can't be filled is skipped, never sent half-empty.
 |---|---|
 | `outdoors` | not in a dungeon and not in a capital |
 | `in_capital` | in Camelot City, Jordheim or Tir na Nog |
-| `in_battleground`, `in_frontier` | in RvR: a battleground (Abermenai, Thidranki, Murdaigean, Caledonia, Cathal Valley), or the frontier |
+| `in_battleground`, `in_frontier` | in RvR: a battleground (Abermenai, Thidranki, Murdaigean, Caledonia), or the frontier |
 | `day`, `evening`, `night` | the PC's clock: 6-17, 17-23, 23-6 |
 | `in_player_group` | the bot is in the real player's group |
 | `can_rez` | the bot has a resurrection spell it can cast |

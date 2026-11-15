@@ -85,6 +85,27 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+- **The battlegrounds' lore** (tests only; owner 2026-11-15, "We need full lore for the battlegrounds written"): one
+  backstory for the four fields, why only the young may fight there, why the fallen wake at their own portal keep and who
+  keeps the gates, told three ways by the three loremasters (a new neutral place, `proving-fields.json`, with no region
+  of its own). Abermenai, Thidranki, Murdaigean and Caledonia are rewritten: each realm's claim on the field, a book in
+  one voice, and a storyteller's legend per field (Abermenai in every realm, the others in the realm whose tradition
+  names the keep), with the rumours that follow it and a few lines said in the field (`data/chat/battleground_lore.lines`).
+  A player standing in a field is told its legend first. The old battleground stories that no longer fit (the Ferryman's
+  Peace, the Spider Summer, the Headhunters' Autumn) are gone. Caledon's lore file is now named Caledonia, as the game
+  names the zone. `UT_BattlegroundLore`.
+- **Bots no longer talk about Cathal Valley** (owner 2026-11-15, "Yeah leave it out"). The 45-49 battleground came
+  after this era, so its seven chat lines are gone and the voice guides no longer list it. The world database still has
+  the zone; no bot goal sends anyone there (`BattlegroundBrackets` stops at Caledonia).
+- **Rumours of a sunken land, and of what lies under the capitals** (tests only; owner 2026-11-15, "Yes agreed on lore"):
+  Trials of Atlantis and Catacombs exist only as hearsay. Now and then the realm hears of it: an old family legend,
+  a /faction argument, a rare remark at the harbours and in the capitals, an answer when a player asks ("what is
+  atlantis?", "is there anything under camelot?"), and each capital's loremaster and book in that realm's voice. Nobody
+  has been, nobody can go, and no master level, artifact or Catacombs class is mentioned. The corpus builder allows the
+  words "atlantis" and "catacombs" only in lines tagged `rumour_atlantis` or `rumour_below`, and refuses any that claims a
+  trip there (`tools/bot-voices/tests/test_era_rumours.py`, `UT_EraRumours`). A loremaster now reads a question asked in
+  words for its keyword. The prose (the legend, the loremasters' topics, the book pages) was rewritten after the owner's read.
+
 **Era cuts and polish for the playful features** (tests only; owner's decisions 2026-11-15 07:10 after the Easter egg
 inventory: cut the jokes from after 2003, keep Leeroy; Trials of Atlantis and Catacombs "as rumors only from a lore
 perspective"; Caledonia's quests follow its bracket).
@@ -126,6 +147,138 @@ perspective"; Caledonia's quests follow its bracket).
   minutes later), and the "{keep} fell" tell says "good rp out there right now".
 - **The joker no longer owns a horse.** "my horse has better gear than me" is "the stablemaster's horse has better gear
   than me", which agrees with the dunce scene: horses are rented stable routes.
+**Battleground waves with a small population** (tests only; owner's PC, build `3d67b6f`, Thidranki 2026-11-15, 07:28-07:54:
+11-21 bots of each realm inside; Midgard and Hibernia "Gathering for the assault" for 16-22 minutes; 329 bot deaths in
+Thidranki, 104 of them Midgard and Hibernian bots killed one at a time by the keep's level-33 guards; the only wave,
+Hibernia's at 07:49:41 with 8 of 21, lost 19 bots in three minutes, 10 of them to guards, and was spent without reaching
+the gate; lord 100%, guards 19/19, both gates standing).
+
+- **A bot that has just fought keeps gathering.** For ten seconds after any hit, and while it recovered, a gatherer skipped
+  the gathering and went for the nearest keep guard up to 5,000 away on its own. Now the wave decides first, in a fight or
+  not.
+- **A gatherer fights only what comes at it.** It used to take any enemy it saw within 5,000, so it was pulled into the
+  holder's defenders and under the guards. Now it fights an enemy that walks into the gathered realm (700), or one firing
+  on the realm near the staging point (1,500) or near itself (1,000). It drops a target that broke off and left the
+  staging point instead of chasing it.
+- **The staging point is 3,500 out from the keep (was 2,500).** The guards killed 45 Midgard bots 1,512-3,109 from the keep
+  (median 2,230), 20 of them within 900 of Midgard's own staging point.
+- **After four minutes a wave goes with half of the realm inside** (at least 4), instead of a fixed 8. That is 7 of 13,
+  or 11 of 21. A realm also goes with half when another realm's wave is going in on the same keep. Most of the realm
+  (60%, at least 8) still goes at once.
+- **A going wave marches on the gate together.** While the gates stand, a bot fights a keep guard that is within 1,200 or
+  firing on the realm, and otherwise walks on with the wave. Each bot used to run at its own nearest guard.
+- **`BG_WAVE_STATUS`** once a minute for each attacking realm: inside, gathered (and how many are in a fight), needed,
+  patienceNeeded, waitedSeconds, staging x,y,z, nearKeep, holderNearKeep, going, and the fights its gatherers turned
+  down or broke off. `BG_WAVE_ASSAULT` now also logs patienceNeeded and withOtherRealm.
+- Unchanged: the keep, its guards, lord and gates; the holder's defence (a third hold the walls; at 07:49:54 Albion had 15
+  bots within 2,500 of its keep); siege crews; the rally inside the breach; and releases (a gamebot releases to its bind,
+  as a player does with `bg_release_to_portal_keep` off).
+
+**Battleground storms go in by the keep's own door order, and a wave fights the guard that hits one of its own** (tests
+only; owner's PC, build `ea882e6`, Thidranki 2026-11-15 08:39-09:02: the waves now gather and go (Hibernia 15 at 08:57:20,
+Midgard 9 five seconds later), walk round the walls toward the broken outer gate in 20-55 s, and are "spent" at 09:00:23/27
+because they died on the way: in those three minutes 16 Hibernian and 4 Midgard bots fell to the keep's level-33 guards
+800-2,400 from the keep's centre, most of them with one attacker on them; guards 19/19, lord 100%).
+
+- **The door a storm marches on is the way in, not the nearest door.** While a main door stands shut, the wave goes for the
+  outer gate first and then the keep door behind it (the order the siege crews already used). On build `3d67b6f`, with
+  both doors of Thidranki Faste shut, 18 of 19 storm samples marched on the keep door, which lies behind the outer wall,
+  from outside it and stood at the south wall with no path.
+- **Through a broken outer gate, on to the shut keep door.** With the outer gate broken and the keep door shut, a bot that
+  got through the gate walked at the lord, whose path the shut door refuses, and held just inside the gate, 1,700 from the
+  door it had to hit. Now it walks to the keep door's courtyard side and batters it.
+- **A storm's walk ends in front of the door** (230 out, on the attackers' side), not on the door's own floor.
+- **A going wave fights together.** While a door stands, a bot of a going wave fights a keep guard that is hitting one of
+  its realm within 1,500 of it, and keeps that guard until it is down. Each bot used to keep its own pick among the guards
+  near it, so the guard hitting its neighbour was ignored. A melee bot helps only against a guard beside its victim, not
+  an archer or caster on the wall.
+- **Logs.** `BG_STORM_TRACE` writes a sample every 20 s for each realm (was one server-wide; `ea882e6` wrote four, all
+  Hibernian), with the realm, how long its wave has been going, and `pending=` (the order was given that turn, so moving,
+  path and dest are still the previous order's: the "dest next to the bot" of `ea882e6` was the staging hold, not a short
+  path). `BG_WAVE_SPENT` and `BG_WAVE_STATUS` count the wave's deaths to the keep's guards and to anything else.
+- Unchanged: the navmesh (the bots' route round the walls was real: they reached 570 from the broken gate), door flags (a
+  broken door is open and passable), the keep, guards, lord and gates, the 3-minute spent check, and siege crews.
+
+**Battleground keeps stay at level 1, as they shipped** (tests only; owner's PC, build `3b808b4`, Thidranki 2026-11-15
+09:39-10:10: four two-realm waves of 9-12 bots each were spent, 8-15 of each killed by Thidranki Faste's guards, none
+closer than 1,425 to the door; guards 17-19/19, lord 100%; the guards were level 33 against levels 20-24).
+
+- **Why the guards were 33.** Every release world gives the battleground keeps level 1 (`release-world-defaults.json`), but
+  a capture reset any keep to `starting_keep_level` (4): DOL's 2009 value for frontier keeps ("only levels 4 and 5 are
+  supported correctly"; it was 0, then 1). Battleground keeps can't be claimed (`allow_bg_claim` off, and the bot guilds
+  check the same rule), so nothing else raised them: on the owner's world Thidranki Faste and Dun Murdaigean, the two that
+  had changed hands, were at level 4 with no claim, the other six battleground keeps at 1. At level 4 Thidranki's guards
+  are 26 + 1 + 4 x 1.6 = 33 (seen in the deaths) and its lord 38; its doors have four times their level-1 health.
+- **The original.** A keep rose above level 1 only through the claiming guild's upgrades (Herald, New Frontiers keep guide:
+  "Keeps and Towers start out at level 1"), and the battleground keeps were never claimed: the Herald's realm war page of
+  April 2003 lists a claiming guild for every frontier keep and only an owning realm for Abermenai, Thidranki, Murdaigean
+  and Caledonia. So a battleground keep now falls back to level 1 on a capture or a release, and a played world's
+  battleground keep that a capture raised is put back to 1 when the server loads (`BG_KEEP_LEVEL_RESTORED` in the log).
+  Thidranki's guards are 28 and its lord 33 again; frontier keeps, the guard formula and `keep_guard_level_multiplier`
+  (1.6, hard-coded in DOL before it became a property in 2009) are unchanged.
+- **`BG_KEEP_STATUS`** now logs the keep's level and its guards' and lord's levels (`keepLevel=`, `guardLevel=`,
+  `lordLevel=`).
+- Unchanged: guard respawn (15 minutes, ±10, the upstream default), claiming rules, the waves and their siege crews (the
+  2002-2004 Thidranki threads describe the same thing: rams, two or three groups, a keep that changed hands "twice a week").
+
+**Battleground lord rallies gather outside the breach and storm together** (tests only; owner's PC, build `3b808b4`,
+Thidranki 2026-11-15 10:12-10:58: all six doors of Thidranki Faste down, 30-46 bots of each attacking realm inside, and in
+all eleven `BG_KEEP_STATUS` samples both rallies read "rallying 0/31-34": no rally ever went up, the lord stayed at 100% with
+no attacker on his floor, and 276 Midgard and Hibernian bots died to the keep's guards).
+
+- **Why nobody rallied.** The rally point stood just inside the keep door (32475,38224,3728): under the lord's floor, 1,860
+  past the outer gate, with the courtyard's guards (Armsmen and Wizards, aggro 1,000) in between. Every bot crossed the
+  courtyard alone and was fought there or on the way, so none ever counted as rallied. Only bots within 4,000 of the lord
+  took the rally at all (17-33 others "marched" on the keep's centre), and with the waves bypassed once the doors are down
+  nothing held anyone out of fights: 33-57 bots were "Fighting" at every sample, 173 deaths were "Fighting Armsman" or
+  "Fighting Armswoman", guards picked up to 5,000 away. The `step=rally` samples with `dest` at the bot were orders given
+  that very turn (`pending=True`, 88 of 119 samples); the 31 others all walked a found path toward the outer gate.
+- **The rally stands outside the breach.** The breach is the outermost broken main gate (the outer gate before the keep
+  door, never a postern, the one on the realm's side when there are two); the rally stands 900-1,800 out from it, on the
+  navmesh with a complete walk to the gate, and as far as it can be from every guard's post (1,300: a guard's aggro of
+  1,000 and a few steps). Every assaulting bot of the realm goes there, wherever it is in the battleground.
+- **Holders fight only what comes at them,** as a wave's gatherers do (an enemy at the rally, or one firing on the realm
+  near it or near the bot); never the lord, and never a guard on the walls that isn't attacking them.
+- **Enough is at most a wave of the realm.** The strength model asked 31-34 of 30-46 bots dying about every four minutes.
+  A rally now waits for the model's number or 60% of the realm inside, whichever is smaller (at least 8); half of that
+  after three minutes, whoever is there (at least 8) after six, as before.
+- **The two attacking realms cue each other.** While the other realm storms the same lord, a rally goes with half of
+  what it needs, as #247's waves do.
+- **The storm keeps the wave's discipline.** From the rally the stormers go through the gate and up to the lord together.
+  On the way they fight the guard that is hitting one of their own nearby (a going wave's rule), a guard in their way or
+  firing on them, and an enemy that is upon them or firing on the realm near them; everything else is left alone.
+- **`BG_RALLY_STATUS`** once a minute for each attacking realm: state, rallying, needed (and the model's number), inside,
+  the rally point and its gate, its distance to the nearest guard post, onLordFloor, atLord, the deaths to guards and to
+  others, and the fights its holders and stormers turned down or broke off. `BG_RALLY_STORM` also logs inside, the model's
+  number, withOtherRealm and the gate. A wave still "going" when the doors fall now stands down (Hibernia's of `3b808b4`
+  went on counting deaths to guards as its own, 11 to 203 between 10:10 and 10:58).
+- Not verified here: the walk from the courtyard up to the lord's floor (the Thidranki navmesh isn't in the build
+  container). On `3b808b4` Albion's own defenders were killed on the tower stairs (z 4,012 and 4,209) and on the lord's floor
+  (z 4,592), so a way up exists for them; the 2026-10-17 navmesh probe found the lord reachable from the gates. Unchanged:
+  the keep, its guards, lord, doors and respawns, the strength model, attempt endings, reinforcement batches and leases.
+
+**Each attacking realm rallies on its own spot** (tests only; owner's PC, build `d64d005`, Thidranki 2026-11-15
+12:55-13:02: all six doors of Thidranki Faste down, Albion holding it, 33-43 bots of each attacking realm inside; every
+`BG_RALLY_STATUS` of Midgard and of Hibernia read `point=36133,38275,3368 gate=252000301`. Midgard went up with 15 at
+12:59:49 and regrouped a minute later, "half the stormers fell", lord 100%, nobody on his floor: seven of its ten deaths in
+that minute were to Hibernian bots at and around the shared point, one to a guard at the gate, two to Albion bots).
+
+- **Why they shared it.** The rally point depended only on the keep and its breach, and both realms take the same breach
+  (the outer gate), so the two realms that should each gather and storm met at one spot and fought each other there.
+- **The rallies now stand at least 2,250 apart** (twice the 1,000 rally radius, so no bot is at both, plus the 250 a holder
+  stands within: each realm's holders are 2,000 or more from the other realm's point, beyond the 1,500 at which holders
+  fight back at an enemy firing on them). A rally may stand straight out from the breach or 30° or 60° to either side, at
+  900-1,800 out as before; a realm prefers the spots toward its own arrival, still needs a complete walk to the gate and
+  still keeps 1,300 from every guard's post. The realm that placed its rally first keeps it; the later one moves off.
+  With no spot apart, clear and walkable the rally stands where it did before.
+- **No truce.** Realms that meet still fight; only their rallies no longer share a spot.
+- **Logs.** `BG_RALLY_STATUS` adds the rally's `bearing=` (degrees off straight out) and `apart=` (distance to the other
+  attacking realm's rally, `none` without one); a new `BG_RALLY_PLACED` line logs each placement with the other realms'
+  rallies it kept away from.
+- Unchanged: the breach each realm takes, the guards, the lord, keep levels, the storm thresholds, attempt endings and
+  the holders' and stormers' fight rules. Not verified here: whether the rotated spots at Thidranki Faste are on the
+  navmesh and clear of its guards (the Thidranki navmesh and guard posts aren't in the build container; the unit test
+  models one guard post that reproduces `d64d005`'s `guardClear=1459`).
 
 **Battleground and RvR kill quests count enemy gamebots** (tests only; owner's question 2026-11-15: "are there quests in the
 BG? Are those functioning correctly?").
@@ -159,15 +312,33 @@ test world was level 50, because the realm cards made only level 1 or 50, so eve
 
 - **Each realm card has "+ Lv.1", "+ Lv.20" and "+ Lv.50".** "+ Lv.20" makes bots for the Thidranki battleground: each
   gets a random level from 20 to 24 (the server's bracket; a Battleground table row overrides it, as on the server), that
-  level's experience from the server's own table, a purse of its level squared in silver (4 to 5.76 gold) and no armour
-  (gamebots earn it), and starts in its capital beside the realm teleporters. Shift-click makes 10, Ctrl-click 100, in
-  one protected batch, and the Sluaghbinder edition switch applies as on the other buttons. The server gives it its
-  usual level-matched starter weapon (and a bow or instrument where the class has one), as every gamebot gets.
+  level's experience from the server's own table and a purse of its level squared in silver (4 to 5.76 gold), and starts
+  in its capital beside the realm teleporters (its starter gear: see "They arrive with starter gear" below). Shift-click makes 10, Ctrl-click 100, in
+  one protected batch, and the Sluaghbinder edition switch applies as on the other buttons. Where no merchant weapon
+  fits, the server gives it its usual level-matched starter weapon; a bow or instrument where the class has one, as
+  every gamebot gets.
 - **They arrive trained, like "+ Lv.50" bots.** A never-saved bot above level 1 is trained in its lifetime build at its
   first login (`GameBot.ArrivesTrained`). Before, it would have fought with every line at 1 until a break between PvE
   tasks took it to a trainer. A bot that levelled by playing still visits its trainer.
 - **They go to Thidranki only for the Battlegrounds % share** the Bot Goals Setting tab gives Levels 20–49 (0% by
   default). The rest do solo/group PvE or RvR as usual.
+
+**They arrive with starter gear** (tests only; owner 2026-11-15, "Arrive with starter gear"; owner's PC, build `0026378`,
+Thidranki 13:45-14:00: 183 of 410 bot deaths there were bots wearing no armour, and storms of about 20 "+ Lv.20" bots all
+died before they reached the keep gate).
+
+- **A bot that arrives already trained gets plain merchant gear for its level, as if it had levelled normally.** At its
+  first login, each armour slot its class can wear, its weapon (and its shield, for a sword-and-board build, or its
+  offhand weapon, for a dual wielder) gets the best plain item its own realm's merchants sell at its level: real merchant
+  items, nothing magical, dropped or crafted, and only what its class may use. It is free: the bot keeps its purse. The
+  server log shows one `AUTONOMOUS_STARTER_GEAR` line per bot with every piece.
+- **Once, and never over gear it already has.** A bot that wears any armour is left as it is, nothing it carries is moved
+  or replaced, and a bot that had its starter gear never gets it again (it is saved with the bot). If no merchant item
+  fits, it tries again at its next login.
+- **"+ Lv.20" bots added before this version** that still wear no armour get it at their next login too (the launcher
+  binds such a bot in its capital; a "+ Lv.1" bot is bound in a starting area).
+- **Unchanged:** "+ Lv.1" bots still start without armour and earn it, "+ Lv.50" bots keep their level-50 set, and /spawn
+  companions and players are not affected. A Savage keeps its usual starter weapon (its armour comes from the merchants).
 
 **A bot-led party stuck in Caer Diogel** (tests only; owner's PC, build `1dc66b6`, 2026-11-15: party albion-f86e88-1370,
 on its way to griffins in Gwyddneau with the player hosted, stood in Caer Diogel from 00:55 to past 01:19 in phase

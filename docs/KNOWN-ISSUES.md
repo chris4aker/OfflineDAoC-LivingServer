@@ -35,6 +35,11 @@ haven't been watched on a real install yet, so treat them as likely, not certain
 - **A bot stuck searching for a camp for minutes** (464 times in one night, mostly level 50s at Tir na Nog's bind):
   the cause isn't found yet. The bot now clears its search memory after 3 minutes and the log records what it held,
   so the next report should show why.
+- **No battleground keep has changed hands in game yet** (1.2 test builds, Thidranki, 15 November): the attacking
+  realms broke the gates at best and never took the keep lord. 1.2's waves, keep level, rallies and the + Lv.20 bots'
+  starter gear each answer what one of those runs showed; the starter gear has not been seen in game yet. Until a
+  capture is seen, a battleground can still be an endless fight. The holding realm not riding out to answer a siege is
+  by design.
 - **Bot parties never take a new member once they set off**, so an "lfm" post from a bot party is only a last call
   while it forms.
 - **A bot that offers to group may walk on before you meet.** It doesn't wait where it was; if it's too far by the time

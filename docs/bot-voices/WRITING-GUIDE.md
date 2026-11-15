@@ -102,14 +102,22 @@ about a sunken land or what lies under the cities, the way a 2003 player heard o
 content.** No bot has been there, levels there, fights there, owns or wants an artifact, has master levels or champion
 levels, or plays a Catacombs class, and no line suggests the player can go. New Frontiers stays out entirely.
 
-The corpus builder (`tools/bot-voices/build_corpus.py`, `BANNED`) still refuses `atlantis`, `catacombs`, `artifact` and
-the rest, so a rumour line needs an exception there first (a code change, made with the line).
+The tag is `@topic rumour_atlantis` (the sunken land) or `@topic rumour_below` (what lies under the capitals), on any kind
+or on a debate scene. Only those lines may say `atlantis` or `catacombs` (`build_corpus.py`, `ERA_RUMOUR_TOPICS`); every
+other banned word stays banned in them (`artifact`, master levels, `ml`, the classes and races), and the builder refuses a
+rumour line that claims a trip there ("been to atlantis", "lets go"). They live in `data/chat/era_rumours.lines`, with the
+storyteller's legend (`tale_atlantis`). Keep them rare: a handful of lines, sceptical or curious, never a theme. Atlantis is
+sailors' and grandmothers' talk (coral-crusted stone in the nets, lights under the water, a dream the three realms shared);
+the desert, the volcano and the city in the sky appear only as dream images inside the legend, never as places. Under the
+capitals there is a shut door: Camelot's bricked-up crypts and the Inconnu who never asked the way down, the kobold miners
+who hear picks below Jordheim, the Dream Trees' roots that go too deep. Ambient rumour lines are musings (rare /faction
+openers, never /say) and need `@needs at:<place>`. Tests: `tools/bot-voices/tests/test_era_rumours.py`, `UT_EraRumours`.
 - Promises the server can't keep: a bot must not say it is inviting, trading or coming unless the line is
   written for a kind whose code does that (say "pst me", "inv me", "i might be free later" instead).
 
 ## World facts you can use
-- Battlegrounds in this world: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29, Caledonia 30-35,
-  Cathal Valley 45-49.
+- Battlegrounds in this world: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29, Caledonia 30-35.
+  Cathal Valley is in the world database but came after this era: don't write lines about it.
 - Capitals: Camelot (Albion), Jordheim (Midgard), Tir na Nog (Hibernia). Starter towns: Cotswold,
   Prydwen Keep, Humberton (alb); Mularn, Audliten, Huginfell (mid); Mag Mell, Tir na mBeo, Ardee (hib).
 - Dungeons by level (alb) Tomb of Mithra 7-17, Tepok's Mine 16-24, Keltoi Fogou 19-32, Stonehenge Barrows

@@ -312,6 +312,9 @@ namespace DOL.GS
             $"state={_movementState} speed={CurrentSpeed} dest={_destination.X:0},{_destination.Y:0},{_destination.Z:0} " +
             $"casting={Owner.IsCasting} combat={Owner.InCombat} {_pathfinder.DescribeRoute()}";
 
+        /// <summary>A movement order was given and the mover has not taken it yet (diagnostics).</summary>
+        public bool HasPendingMoveRequest => IsFlagSet(MovementState.Request);
+
         /// <summary>The pathfinder's last result (diagnostics).</summary>
         public PathfindingStatus LastPathfindingStatus => _pathfinder.PathfindingStatus;
 
