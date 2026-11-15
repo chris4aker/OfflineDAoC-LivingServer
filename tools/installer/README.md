@@ -5,12 +5,12 @@ Offline DAoC they already have.
 
 | The player has | Setup does |
 |---|---|
-| Nothing | Downloads Offline DAoC 0.37b (or 0.37, optionally with the 0.37c new client) with shadowofze's own downloader, then installs Living Server |
+| Nothing | Downloads Offline DAoC 0.37 (original classes, original client) from Living Server's own copy of shadowofze's release files (`chris4aker/OfflineDAoC-base-files`, checked against his SHA-256 lists), then installs Living Server. From 1.1.4 the 0.37b edition and the 0.37c new client are no longer offered (`Offers` in `src/Model.cs`) |
 | Offline DAoC 0.37 / 0.37b / 0.37c | Installs Living Server |
 | The Social Expansion or an earlier Living Server on 0.37 | Upgrades it to this build (the package's installer recognises its own earlier builds) |
 | Offline DAoC 0.36 / 0.36b / 0.36c (with or without the Social Expansion) | Puts the released server back if needed, updates to 0.37 with shadowofze's official updater (saves stay), installs Living Server |
 | Offline DAoC 0.35 or older | Offers a new install and brings the account, characters, items, houses and bots over with the game's own progress importer |
-| This Living Server build | Checks it (repairs anything missing), adds the new client, or removes Living Server |
+| This Living Server build | Checks it (repairs anything missing) or removes Living Server |
 
 It also turns on .NET Framework 3.5 (the original client needs it; Windows asks permission) and adds desktop and
 Start menu shortcuts, both optional.
@@ -70,15 +70,17 @@ Exit codes: 0 done, 1 failed, 2 stopped, 3 bad arguments or a game Setup can't h
 ## Tests
 
 `.github/workflows/installer.yml` builds the exe on a Windows runner, saves pictures of every page at 100 % and
-150 %, and runs `test-installer.ps1` on five more Windows machines with real downloads from shadowofze's releases:
+150 %, and runs `test-installer.ps1` on more Windows machines with real downloads from Living Server's copy of shadowofze's
+releases:
 
 - **install paths:** a new install, a second run (nothing to do), the refusal while the game runs, removal, reinstall,
   a hand-changed server (refused, then replaced with its backup kept), a 0.36b game with the 0.36 Social Expansion
   updated to 0.37 with Living Server
-- **new client:** a full 0.37c install (about 33 GB) with Living Server in both launchers
 - **stop and crashes:** Stop mid-download, Setup killed mid-download and mid-unpack, then a run that finishes (the
   half-unpacked folder is moved aside, not deleted)
-- **old games:** a 0.35b game's progress brought into a new install; a hand-changed 0.36b game moved to a fresh copy
+- **old games:** a hand-changed 0.36b game moved to a fresh copy. Not run since 1.1.4: the `client` scenario (a new
+  install with the 0.37c new client, no longer offered) and `import` (a 0.35b game's progress, whose release files
+  Living Server's copy does not hold)
 - **.NET 3.5** turned on from "Disabled with Payload Removed"
 - **the game runs:** the installed server starts with `FORK_BUILD name=<build>` in its log, and a login like ENTER
   REALM works

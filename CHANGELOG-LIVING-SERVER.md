@@ -1285,6 +1285,19 @@ Nobody else's fork has bot strafing (fork survey, 2026-11-08), so this is our ow
   facing its target either as a side step or as a slide, and only playing it shows which. A walk longer than a step still
   turns the bot to face where it goes in one update, and the client's own smoothing of a stop is the client's.
 
+## Beta 1.1.4 — 2026-11-12
+
+Setup only. The server and the launcher are the same as in 1.1.3.
+
+- **Setup downloads the game from Living Server's own copy.** shadowofze's Offline DAoC repository is no longer online,
+  so the 1.1.3 Setup could not download the game for a new player. Setup and the downloader now read the same release
+  files from `chris4aker/OfflineDAoC-base-files`, checked against his SHA-256 lists. The downloader is his 0.37 script
+  with only that address changed.
+- **New installs are Offline DAoC 0.37**: the original client and the Classic + Shrouded Isles classes. Setup no longer
+  offers the 0.37b edition (his Sluaghbinder class) or the 0.37c new client. Games that already have either keep working
+  with Living Server and keep getting updates.
+- README: dead links to his repository removed.
+
 ## Beta 1.1.3 — 2026-11-08
 
 Started as a hotfix (/faction chat that holds together, out of Xanxicar's stomp, Scurceol Hyrde's orbs shot down from the

@@ -18,7 +18,9 @@ have to survive them, and gives every dungeon, dragon and boss a story you can f
 with you now: they invite you, lead groups you can simply follow, and notice you in RvR the way a player would. A realm's
 raid begins with its boss's tale and a horn, and for the first time a few friends can join your world.
 
-It's for Offline DAoC **0.37 and 0.37b**, with or without the **0.37c** new client, like 1.1 to 1.1.2.
+It's for Offline DAoC **0.37 and 0.37b**, with or without the **0.37c** new client, like 1.1 to 1.1.4. As in 1.1.4, a new
+install from Setup is **0.37** (the original client and the Classic + Shrouded Isles classes), downloaded from Living
+Server's own copy of shadowofze's release files.
 
 ### The epic encounters, at full strength
 
@@ -212,11 +214,11 @@ Each is credited to its author.
 
 ### Install
 
-- **Have 1.1.2:** the launcher's **Check for updates** finds 1.2. START SERVER reads **GET UPDATE**: Install, Later or
-  Skip this version. This is the first release to come that way.
+- **Have 1.1.2, 1.1.3 or 1.1.4:** the launcher's **Check for updates** finds 1.2. START SERVER reads **GET UPDATE**:
+  Install, Later or Skip this version.
 - **New to Offline DAoC, or adding Living Server:** run `LivingServer-Setup-1.2-beta.exe`. Windows SmartScreen may say
   "Windows protected your PC" because the exe isn't code-signed: click More info, then Run anyway.
-- **Have 1.1, 1.1.1 or 1.1.2:** run the Setup, or unzip `OfflineDAoC-LivingServer-1.2-beta.zip` into your game folder and run
+- **Have 1.1 to 1.1.4:** run the Setup, or unzip `OfflineDAoC-LivingServer-1.2-beta.zip` into your game folder and run
   `INSTALL.cmd` with the game and server closed. Your characters, bots, guilds and settings stay.
 - **To undo:** `ROLLBACK.cmd`. It puts every replaced file back; it never puts your database back, because that would
   undo your play since.
@@ -300,7 +302,7 @@ only".
 
 ### Credits
 
-Built on [shadowofze's Offline DAoC](https://github.com/shadowofze/OfflineDAoC) and
+Built on shadowofze's Offline DAoC and
 [OpenDAoC](https://github.com/OpenDAoC/OpenDAoC-Core). Fixes ported from the forks of rambodolphin13 and Nikse77, and
 from shadowofze's OfflineDAoC-True165; the AI cost meter builds on lometur's HearthDAoC and stefanrows's bot profiler.
 Boss lore checked against Mythic's Camelot Herald. Reports from the community on GitHub and r/daoc. Directed and
