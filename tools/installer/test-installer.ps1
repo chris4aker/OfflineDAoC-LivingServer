@@ -120,7 +120,7 @@ function Newest-Release([string]$game) {
 }
 
 $base = $info['BaseRelease']
-$fresh = Join-Path $root "playable-v$($base)b"
+$fresh = Join-Path $root "playable-v$base"
 Get-PSDrive -PSProvider FileSystem | Format-Table Name, @{n='FreeGB';e={[math]::Round($_.Free/1GB,1)}}, @{n='UsedGB';e={[math]::Round($_.Used/1GB,1)}} | Out-String | Write-Host
 
 if ($Scenario -contains 'newest') {
@@ -190,7 +190,7 @@ if ($Scenario -contains 'fresh') {
     $r = Setup 'fresh-install' @('--new', '--dest', $fresh)
     Check ($r.Code -eq 0) 'fresh: Setup finished'
     Check ((Newest-Release $fresh) -eq $base) "fresh: the game is Offline DAoC $base"
-    Check (!(Test-Path (Join-Path $fresh 'EDITION.txt'))) 'fresh: the b edition (no EDITION.txt)'
+    Check (Test-Path (Join-Path $fresh 'EDITION.txt')) 'fresh: the original classes (EDITION.txt); the b edition is no longer offered'
     Assert-LivingServer $fresh 'fresh'
     $desk = [Environment]::GetFolderPath('DesktopDirectory')
     Check (Test-Path (Join-Path $desk 'Offline DAoC.lnk')) 'fresh: desktop shortcut'
@@ -208,7 +208,7 @@ if ($Scenario -contains 'fresh') {
     Check (($r.Log -match 'Recommended settings: exit 0') -or ($r.Log -match 'Recommended settings: this launcher has no settings mode')) 'fresh: every Living Server feature turned on at the suggested settings (or skipped for an older launcher)'
 
     $r = Setup 'scan' @('--scan', '--game', $fresh)
-    Check ($r.Log -match [regex]::Escape("GAME $fresh | $($base)b | LivingServer=ThisBuild")) 'scan: the game is found as this build'
+    Check ($r.Log -match [regex]::Escape("GAME $fresh | $base | LivingServer=ThisBuild")) 'scan: the game is found as this build'
 
     $r = Setup 'again' @('--game', $fresh, '--no-shortcuts')
     Check ($r.Code -eq 0 -and $r.Log -match 'Already installed') 'again: a second run changes nothing'
@@ -228,7 +228,7 @@ if ($Scenario -contains 'fresh') {
     Check ($r.Code -eq 0) 'remove: Setup finished'
     Check ((Sha (Join-Path $fresh 'runtime\server\GameServer.dll')) -eq $released) 'remove: the released server is back'
     $r = Setup 'scan-after-remove' @('--scan', '--game', $fresh)
-    Check ($r.Log -match [regex]::Escape("GAME $fresh | $($base)b | LivingServer=None")) 'remove: the game scans as plain Offline DAoC'
+    Check ($r.Log -match [regex]::Escape("GAME $fresh | $base | LivingServer=None")) 'remove: the game scans as plain Offline DAoC'
 
     $r = Setup 'reinstall' @('--game', $fresh, '--no-shortcuts')
     Check ($r.Code -eq 0) 'reinstall: Setup finished'

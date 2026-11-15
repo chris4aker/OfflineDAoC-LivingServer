@@ -62,7 +62,9 @@ function Move-FailedNewCopyAside([string]$path, [string]$parent, [string]$leaf) 
     }
 }
 
-$releaseBase = "https://github.com/shadowofze/OfflineDAoC/releases/download/v$ReleaseVersion"
+# Living Server keeps its own copy of the Offline DAoC release files (chris4aker/OfflineDAoC-base-files, checked against
+# the original SHA256SUMS): the original repository, shadowofze/OfflineDAoC, went offline in November 2026.
+$releaseBase = "https://github.com/chris4aker/OfflineDAoC-base-files/releases/download/v$ReleaseVersion"
 # Windows PowerShell's own download is several times slower while it draws its progress bar, so release files come down
 # with Windows' built-in curl.exe (fast, with a progress bar, retries, and resuming a part that was cut off midway);
 # PowerShell, without its progress bar, is only the fallback.
@@ -72,7 +74,7 @@ function Get-ReleaseAsset([string]$Name, [string]$OutFile, [int64]$Bytes = -1) {
 }
 # A file of any release (a patch's parts live on their own release page: the game patch on v<x>b, the client on v<x>c).
 function Get-AssetFrom([string]$Release, [string]$Name, [string]$OutFile, [int64]$Bytes = -1) {
-    $releaseBase = "https://github.com/shadowofze/OfflineDAoC/releases/download/v$Release"
+    $releaseBase = "https://github.com/chris4aker/OfflineDAoC-base-files/releases/download/v$Release"
     if ($LocalAssets) {
         Copy-Item -LiteralPath (Join-Path (Join-Path $LocalAssets "v$Release") $Name) -Destination $OutFile -Force
         return

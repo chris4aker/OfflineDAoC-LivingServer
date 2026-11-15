@@ -8,8 +8,8 @@ Writes tools/installer/dist/LivingServer-Setup-<build>.exe (needs the .NET SDK; 
 
 The exe carries two payloads:
 - the Living Server release package (its BUILD-INFO.txt names the build and the Offline DAoC release it fits);
-- shadowofze's official downloader, Get-OfflineDAoC.ps1, taken from this repository's root (the same file as upstream's
-  v0.37 / v0.37b / v0.37c releases) and pinned below by SHA-256, so a changed downloader can't slip in unnoticed.
+- shadowofze's downloader, Get-OfflineDAoC.ps1, taken from this repository's root (his v0.37 file, reading the release
+  files from Living Server's own copy) and pinned below by SHA-256, so a changed downloader can't slip in unnoticed.
 """
 import argparse
 import hashlib
@@ -26,8 +26,10 @@ PAYLOAD = HERE / "payload"
 DIST = HERE / "dist"
 REPO = "chris4aker/OfflineDAoC-LivingServer"
 
-# shadowofze/OfflineDAoC Get-OfflineDAoC.ps1 at tags v0.37, v0.37b and v0.37c (identical); checked 2026-10-27.
-DOWNLOADER_SHA256 = "8f000a12d11fa3d69d89a6bae0149adb2b345990b9f7eb33fbef1bf4592557b4"
+# shadowofze/OfflineDAoC Get-OfflineDAoC.ps1 as released with v0.37 (sha256 8f000a12d11f...57b4, checked 2026-10-27), with one
+# change: the release files come from Living Server's own copy, chris4aker/OfflineDAoC-base-files (2026-11-12, the
+# original repository went offline). Any other change to the file fails the build.
+DOWNLOADER_SHA256 = "dc9873a3426d4517a9c19c80c6f66d3d3a70903b48ab10d6969514b8f161f78c"
 # Packages known by hash. Any other package is accepted when it has a complete BUILD-INFO.txt (CI builds new ones).
 KNOWN_PACKAGES = {
     "OfflineDAoC-LivingServer-1.0-beta.zip": "ce31cf1721b3405ff0f8b971c5b58d237aaebfd1bbc737bb3a79acd8c3dd1d4b",
@@ -95,8 +97,8 @@ def main():
     data = (ROOT / "Get-OfflineDAoC.ps1").read_bytes().replace(b"\r\n", b"\n")
     got = hashlib.sha256(data).hexdigest()
     if got != DOWNLOADER_SHA256:
-        sys.exit(f"Get-OfflineDAoC.ps1 is not the pinned upstream downloader (sha256 {got}). "
-                 "If shadowofze released a new one, check it and update DOWNLOADER_SHA256.")
+        sys.exit(f"Get-OfflineDAoC.ps1 is not the pinned downloader (sha256 {got}). "
+                 "If it was changed on purpose, check the change and update DOWNLOADER_SHA256.")
     (PAYLOAD / "Get-OfflineDAoC.ps1").write_bytes(data)
     print(f"Downloader: Get-OfflineDAoC.ps1  sha256 {got} (pinned)")
     if a.no_build:
