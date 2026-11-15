@@ -185,6 +185,15 @@ namespace DOL.GS
         /// of its party is in the same region (a puller in another region never comes) and for at most
         /// <paramref name="limitMilliseconds"/> of one hold.
         /// </summary>
+        /// <summary>
+        /// Whether a raid party's designated puller is away (pure): there is none, it is dead, or it stands in another region
+        /// than this member (it went on into Summoner's Hall while this member walks through Dodens Gruva). Its members here
+        /// then choose their own puller instead of waiting for one that never comes (PC 2026-11-14, AUTONOMOUS_DUNGEON_HOLD_LONG
+        /// unbroken_s=908 puller="Dawnblade" pullerRegion=248).
+        /// </summary>
+        public static bool PullerAway(bool hasPuller, bool pullerAlive, ushort pullerRegion, ushort memberRegion) =>
+            !hasPuller || !pullerAlive || pullerRegion != memberRegion;
+
         public static bool HoldsForPuller(bool partyMemberInRegion, long heldMilliseconds, long limitMilliseconds) =>
             partyMemberInRegion && heldMilliseconds < limitMilliseconds;
 

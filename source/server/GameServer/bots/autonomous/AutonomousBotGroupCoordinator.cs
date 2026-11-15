@@ -1126,7 +1126,7 @@ public static partial class AutonomousBotGroupCoordinator
                 return false;
 
             GameBot[] members = BotMembers(session.Group);
-            puller = ChoosePuller(session, members);
+            puller = AutonomousRealmRaid.GetView(session.Group) != null ? RaidPullerFor(session, members, reporter) : ChoosePuller(session, members);
             if (puller == null || puller.Brain is not BotBrain ||
                 !AutonomousDungeonPolicy.CanHandoffRouteBlocker(
                     session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve,
@@ -1248,7 +1248,7 @@ public static partial class AutonomousBotGroupCoordinator
                 // Only locally present living members take part in puller
                 // selection. A casualty or reinforcement across the world is
                 // not a veto on every surviving party's combat.
-                var expeditionPuller = ChoosePuller(session, BotMembers(group));
+                var expeditionPuller = RaidPullerFor(session, BotMembers(group), bot);
                 return bot == expeditionPuller && bot.HealthPercent >= 70;
             }
             GameBot[] members = BotMembers(group);
@@ -3384,6 +3384,23 @@ public static partial class AutonomousBotGroupCoordinator
         if (session != null)
             session.Leader = replacement;
         return replacement;
+    }
+
+    /// <summary>
+    /// A raid party's puller for <paramref name="asking"/>: the party's own (ChoosePuller, among the members in the camp's
+    /// region) when it stands in the asker's region; otherwise one of the members here, ranged pullers first. Owner's PC,
+    /// 2026-11-14: the Midgard members walking back through Dodens Gruva after the Roesia wipe could never pull, because
+    /// their puller was chosen among those already in Summoner's Hall (AutonomousDungeonPolicy.PullerAway).
+    /// </summary>
+    private static GameBot RaidPullerFor(Session session, GameBot[] members, GameBot asking)
+    {
+        GameBot own = ChoosePuller(session, members);
+        if (asking == null || !AutonomousDungeonPolicy.PullerAway(own != null, own?.IsAlive == true,
+                own?.CurrentRegionID ?? 0, asking.CurrentRegionID))
+            return own;
+        return members.Where(b => b.IsAlive && !b.IsOnStableMasterRoute && b.CurrentRegionID == asking.CurrentRegionID &&
+                                  b.GetDistanceTo(asking) <= 1100)
+            .OrderBy(b => AutonomousDefensivePull.HasRangedPull(b) ? 0 : 1).ThenBy(MemberKey).FirstOrDefault();
     }
 
     private static GameBot ChoosePuller(Session session, GameBot[] members)

@@ -1719,6 +1719,23 @@ namespace DOL.GS
         private static bool InRaidDungeon(Raid raid, ushort region) => region == raid.Definition.Region ||
             raid.DungeonRoute?.Entrance is { } edge && edge.TargetRegion == region;
 
+        /// <summary>
+        /// Whether <paramref name="region"/> is the dungeon the bot's raid walks through on its way in (Dodens Gruva, Hall of
+        /// the Corrupt or Marfach Caverns for Summoner's Hall; Avalon City for Crystal Cave), not the raid's own dungeon.
+        /// Owner's PC, 2026-11-14 (build e3b8238): after the Roesia wipe the Midgard raiders walking back through Dodens Gruva
+        /// stood for up to 15 minutes before ordinary monsters there (cavernous yeti, decayed dire wolf, icebound moribund:
+        /// AUTONOMOUS_DUNGEON_HOLD_LONG mayPull=False raidHold=True), because only the raid's own dungeon let a held raid
+        /// clear its walk. Its ordinary monsters are now the raid's walk too (AutonomousDungeonTraversal); its epic monsters
+        /// are not (they are route gates, RealmRaidRouteGate).
+        /// </summary>
+        public static bool IsRaidApproachDungeon(GameBot bot, ushort region)
+        {
+            Group group = bot?.Group;
+            if (group == null) return false;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+                return Membership.TryGetValue(group, out var raid) && region != raid.Definition.Region && InRaidDungeon(raid, region);
+        }
+
         // Late/released members skip muster attendance, not the connected exterior route.
         // Navigation is performed by their controller outside the expedition lock.
         public static bool TryIndependentApproach(GameBot bot, out Vector3 destination, out Vector3? via)
