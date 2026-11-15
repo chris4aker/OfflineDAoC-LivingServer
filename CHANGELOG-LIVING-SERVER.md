@@ -121,6 +121,16 @@ lost, and Albion's Summoner's Hall never reached). They pass automated tests; no
   or login puts them back (`EPIC_SWEEP_GUEST_RESTORED` in the server log), and a normal stop ends the sweep first. Only a
   level the account had before the sweep is restored, so no account gets GM it did not have. A progress transfer does
   not carry the record (a transfer turns GM off), but it puts the guest's realm back. Tests only so far.
+- **A raid's defeat names the boss that beat it** (tests only). Albion's Summoner's Hall raid lost at Aidon in Hall of the
+  Corrupt (sweep of 2026-11-14, build `1dc66b6`) and every player read "driven out of Summoner's Hall by
+  GrandSummonerGovannon!". The defeat of a boss on the way in is read now, and with no defeat the final boss's display
+  name is used, never its class name. The raid news and chat say the same boss.
+- **The raid's wipe line says who was in the attempt** (tests only). `REALM_RAID_WIPE` adds `engaged=` and `fallen=`: its
+  `living=` counts the raiders who released and stand at the staging post outside, so Aidon's second wipe (65 of 65 in the
+  attempt fell) read as a wipe scored while the raid stood. The scoring itself was right.
+- **Whoever a fight-at-home boss chases out of its home leads it back** (tests only). Only a raider whose own target was
+  the boss did; Aidon (home 1,100, tether 1,500) went after the healers at the muster 1,400 out, past his tether, and
+  healed from 58% to 100% in combat. Now the raider he chases, a healer too, walks to his spawn. The boss is unchanged.
 
 **The play test's sweep (GM only).** `/epictest sweep start [all|event,event] [guest]` runs every raid once, one after
 another, on the server alone: the 21 raid targets in the game's order, Darkness Falls last. Each raid runs at its period

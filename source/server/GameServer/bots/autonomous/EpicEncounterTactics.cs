@@ -1383,6 +1383,8 @@ namespace DOL.GS
             if (!CastWatch.IsEmpty && ThinkAreaCast(bot)) return true;
             // A boss with a curers' post is fought (Spindler Broodmother): every second curer walks to it.
             if (!PostWatch.IsEmpty && ThinkPartyPost(bot, now)) return true;
+            // A boss fought at home chasing this raider out of it: the raider leads it back, whatever it was doing.
+            if (!HomeWatch.IsEmpty && ThinkLeadHome(bot, now)) return true;
             if (System.Threading.Volatile.Read(ref _blastBosses) == 0 && System.Threading.Volatile.Read(ref _standOffHoldCount) == 0 &&
                 System.Threading.Volatile.Read(ref _liveHazardCount) == 0)
                 return false;
@@ -1431,6 +1433,73 @@ namespace DOL.GS
             return true;
         }
 
+        // ---- fight at home: the raider it chases leads it back ---------------------------------------------------------
+
+        /// <summary>Bosses with a fight-at-home radius in a fight with a raid, and when a raider last fought them.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<GameNPC, long> HomeWatch = new();
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<GameBot, long> LeadHomeRepath = new();
+        /// <summary>A boss nobody has fought for this long leaves the watch.</summary>
+        public const long HomeWatchMilliseconds = 60_000;
+        /// <summary>A raider leading a boss home asks for a new path at most this often.</summary>
+        public const long LeadHomeRepathMilliseconds = 2_000;
+
+        /// <summary>
+        /// Whether a raider leads <paramref name="fightAtHomeRadius"/>'s boss home now (pure): the boss is after this raider, in
+        /// its region, not already walking home, and further than its fight-at-home radius from its spawn (inside its tether or
+        /// past it: out there it is immune and heals, and only a walk home ends that).
+        /// <para>
+        /// Owner's PC, 2026-11-14 (build 1dc66b6), Aidon the Archwizard (fight at home 1,100, tether 1,500): the raid took him to
+        /// 58%, then he went after the friars and clerics healing from the muster 1,400 from his spawn. "Lead home" was told only
+        /// to a raider whose own target was Aidon, and a healer's target is the raider it heals, so each healer he reached stood
+        /// and died (at 1,370, 1,880, 2,100 and up the ramp at 2,470 from his spawn). Past 1,500 he healed to 100% in combat
+        /// (REALM_EXPEDITION_TARGET_HEALED from=58 to=100 fromSpawn=1829) and that attempt was scored as the raid's first wipe.
+        /// Now whoever he chases out of his home leads him back, whatever it was doing; the boss and his tether are unchanged.
+        /// </para>
+        /// </summary>
+        public static bool LeadsHome(int fightAtHomeRadius, double bossFromSpawn, bool bossTargetsRaider, bool sameRegion, bool bossReturning) =>
+            sameRegion && bossTargetsRaider && !bossReturning && OutsideHome(fightAtHomeRadius, bossFromSpawn);
+
+        /// <summary>A raider fought <paramref name="target"/> (or one of its required adds): a boss with a fight-at-home
+        /// radius is watched for the raiders it chases out of its home (<see cref="ThinkLeadHome"/>).</summary>
+        private static void WatchHome(GameNPC target, IReadOnlyList<GameNPC> live, long now)
+        {
+            GameNPC boss = RequiredAddOwner(target, live) ?? target;
+            if (For(boss) is not { FightAtHomeRadius: > 0 } || !Present(boss) || !boss.InCombat) return;
+            if (HomeWatch.Count > 64) HomeWatch.Clear();
+            HomeWatch[boss] = now;
+        }
+
+        private static bool ThinkLeadHome(GameBot bot, long now)
+        {
+            foreach (var (boss, seen) in HomeWatch)
+            {
+                if (!Present(boss) || !boss.InCombat || now - seen > HomeWatchMilliseconds)
+                {
+                    HomeWatch.TryRemove(boss, out _);
+                    continue;
+                }
+                if (For(boss) is not { FightAtHomeRadius: > 0 } tactic ||
+                    !LeadsHome(tactic.FightAtHomeRadius, boss.GetDistanceTo(boss.SpawnPoint), boss.TargetObject == bot,
+                        boss.CurrentRegionID == bot.CurrentRegionID, boss.IsReturningToSpawnPoint))
+                    continue;
+                if (bot.IsCasting) bot.StopCurrentSpellcast();
+                bot.StopAttack();
+                if (bot.FollowTarget != null) bot.StopFollowing();
+                if (bot.TargetObject == boss) bot.TargetObject = null;
+                if (bot.ControlledBrain?.Body?.TargetObject == boss) bot.ControlledBrain.Disengage();
+                if (!bot.IsMovingOnPath || now >= LeadHomeRepath.GetValueOrDefault(bot))
+                {
+                    if (LeadHomeRepath.Count > 512) LeadHomeRepath.Clear();
+                    LeadHomeRepath[bot] = now + LeadHomeRepathMilliseconds;
+                    bot.PathTo(new Point3D(boss.SpawnPoint.X, boss.SpawnPoint.Y, boss.SpawnPoint.Z), bot.MaxSpeed);
+                }
+                LogDecision(bot, boss, new(BotAction.LeadHome, boss, null,
+                    $"fight-at-home {(int)boss.GetDistanceTo(boss.SpawnPoint)}>{tactic.FightAtHomeRadius}: chased, whatever it was doing"));
+                return true;
+            }
+            return false;
+        }
+
         public static void ResetBlastForTests()
         {
             lock (BlastRates) { BlastRates.Clear(); System.Threading.Volatile.Write(ref _blastBosses, 0); }
@@ -1439,6 +1508,8 @@ namespace DOL.GS
             lock (BlastSpotCache) BlastSpotCache.Clear();
             ResetBlastCalls();
             lock (StandOffHolds) { StandOffHolds.Clear(); System.Threading.Volatile.Write(ref _standOffHoldCount, 0); }
+            HomeWatch.Clear();
+            LeadHomeRepath.Clear();
             lock (SeenHazards) { SeenHazards.Clear(); System.Threading.Volatile.Write(ref _liveHazardCount, 0); }
             ResetPartyPostsForTests();
         }
@@ -1489,6 +1560,7 @@ namespace DOL.GS
                 For(target) == null && !IsTacticPart(target) && !HasWaveTwoRule(bot, target, GameLoop.GameLoopTime) && !HasDungeonRule(target))
                 return false;
             IReadOnlyList<GameNPC> live = Nearby(target);
+            WatchHome(target, live, GameLoop.GameLoopTime);
             DungeonActs(bot, target, live);
             // Tanks taunt him back when his target is not a tank (Govannon's demon); the bot fights on as decided below.
             if (TauntDue(bot, target, live, GameLoop.GameLoopTime) && bot.Brain is BotBrain tankBrain)

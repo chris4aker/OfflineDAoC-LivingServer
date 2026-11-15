@@ -231,7 +231,7 @@ namespace DOL.GS
         private int _attemptLowestPercent = 100;
         private bool _regrouping;
         private long _regroupSince;
-        private readonly Queue<(string Name, int Failures)> _wipes = new();
+        private readonly Queue<(string Name, int Failures, int Engaged, int Fallen)> _wipes = new();
         /// <summary>The encounter that defeated the raid (two failed attempts); null while it can still win.</summary>
         public string DefeatedAt { get; private set; }
         public bool Defeated => DefeatedAt != null;
@@ -297,10 +297,17 @@ namespace DOL.GS
                 (regroupMilliseconds >= FinalMusterPatienceMilliseconds ? RegroupPatientShare : RegroupShare))));
 
         /// <summary>The next wipe the raid has not reacted to yet (announcement, reinforcements).</summary>
-        public bool TryTakeWipe(out string name, out int failures)
+        public bool TryTakeWipe(out string name, out int failures) => TryTakeWipe(out name, out failures, out _, out _);
+
+        /// <summary>The next wipe, with the raiders who were in it and how many of them fell (the REALM_RAID_WIPE line).</summary>
+        public bool TryTakeWipe(out string name, out int failures, out int engaged, out int fallen)
         {
-            if (_wipes.TryDequeue(out var wipe)) { name = wipe.Name; failures = wipe.Failures; return true; }
-            name = null; failures = 0;
+            if (_wipes.TryDequeue(out var wipe))
+            {
+                name = wipe.Name; failures = wipe.Failures; engaged = wipe.Engaged; fallen = wipe.Fallen;
+                return true;
+            }
+            name = null; failures = 0; engaged = 0; fallen = 0;
             return false;
         }
 
@@ -406,7 +413,7 @@ namespace DOL.GS
                 return false;
             }
             int failures = _failedAttempts[_target.Name] = FailedAttempts(_target.Name) + 1;
-            _wipes.Enqueue((_target.Name, failures));
+            _wipes.Enqueue((_target.Name, failures, engaged, fallen));
             log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{_target.Name}\" level={_target.Level} failures={failures} " +
                      $"of={MaximumFailedAttempts} engaged={engaged} fallen={fallen} health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\"");
             if (failures >= MaximumFailedAttempts)
@@ -1727,7 +1734,7 @@ namespace DOL.GS
                 return;
             }
             int failures = _failedAttempts[killer.Name] = FailedAttempts(killer.Name) + 1;
-            _wipes.Enqueue((killer.Name, failures));
+            _wipes.Enqueue((killer.Name, failures, _standingInside.Count + fallen, fallen));
             log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{killer.Name}\" level={killer.Level} failures={failures} " +
                      $"of={MaximumFailedAttempts} engaged={_standingInside.Count + fallen} fallen={fallen} health={killer.HealthPercent} " +
                      $"lowest={killer.HealthPercent} how=\"raid-wide deaths outside an attempt\" raidTarget=\"{TargetName}\" " +
