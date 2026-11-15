@@ -116,8 +116,8 @@ openers, never /say) and need `@needs at:<place>`. Tests: `tools/bot-voices/test
   written for a kind whose code does that (say "pst me", "inv me", "i might be free later" instead).
 
 ## World facts you can use
-- Battlegrounds in this world: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29, Caledonia 30-35,
-  Cathal Valley 45-49.
+- Battlegrounds in this world: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29, Caledonia 30-35.
+  Cathal Valley is in the world database but came after this era: don't write lines about it.
 - Capitals: Camelot (Albion), Jordheim (Midgard), Tir na Nog (Hibernia). Starter towns: Cotswold,
   Prydwen Keep, Humberton (alb); Mularn, Audliten, Huginfell (mid); Mag Mell, Tir na mBeo, Ardee (hib).
 - Dungeons by level (alb) Tomb of Mithra 7-17, Tepok's Mine 16-24, Keltoi Fogou 19-32, Stonehenge Barrows

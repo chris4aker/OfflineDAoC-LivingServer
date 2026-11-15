@@ -94,6 +94,9 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
   A player standing in a field is told its legend first. The old battleground stories that no longer fit (the Ferryman's
   Peace, the Spider Summer, the Headhunters' Autumn) are gone. Caledon's lore file is now named Caledonia, as the game
   names the zone. `UT_BattlegroundLore`.
+- **Bots no longer talk about Cathal Valley** (owner 2026-11-15, "Yeah leave it out"). The 45-49 battleground came
+  after this era, so its seven chat lines are gone and the voice guides no longer list it. The world database still has
+  the zone; no bot goal sends anyone there (`BattlegroundBrackets` stops at Caledonia).
 - **Rumours of a sunken land, and of what lies under the capitals** (tests only; owner 2026-11-15, "Yes agreed on lore"):
   Trials of Atlantis and Catacombs exist only as hearsay. Now and then the realm hears of it: an old family legend,
   a /faction argument, a rare remark at the harbours and in the capitals, an answer when a player asks ("what is
