@@ -1746,6 +1746,51 @@ namespace DOL.GS
 
         /// <summary>The current target's tactic sends the raid to another encounter (EpicEncounterTactics): a required add
         /// of the boss, or the boss an encounter dies with. Logged as REALM_EXPEDITION_TACTIC for the run reports.</summary>
+        private long _nextTrailGateCheck;
+        public const long TrailGateCheckMilliseconds = 60_000;
+
+        /// <summary>
+        /// Darkness Falls (1.2, build 4): an epic monster the raid has killed that is alive again on the raid's own trail
+        /// (AutonomousDarknessFallsRaidTrail, the way every late member, return wave and Special Force walks) is the raid's
+        /// next target while it is not fighting,
+        /// so the raid clears it with a muster instead of its late members meeting it a few at a time. Owner's PC,
+        /// 2026-11-14 (build e3b8238): Gatekeeper Dommel (level 65, aggro 500, 40-minute respawn) at the central crossing
+        /// 39793,32004 killed 108 Hibernian raiders in seven batches (08:11, 10:04, 11:09, 11:18, 12:06, 12:47, 13:05),
+        /// each after he had come back behind the raid, all at his own spot while the raid's target was High Lord Oro or
+        /// Legion. The epic-respawn hold (RealmRaidRouteGate.HoldEpicRespawn) now keeps him down once the raid has killed
+        /// him; this covers one that came back anyway (a respawn under ten minutes, or the hold switched off). True when
+        /// the raid turned on one this turn.
+        /// </summary>
+        private bool TrailGate(GameNPC[] live, GameLiving[] participants, long now)
+        {
+            if (_region != AutonomousDarknessFallsPolicy.RegionId || _realm == eRealm.None || !RealmRaidRouteGate.On ||
+                now < _nextTrailGateCheck || _target?.InCombat == true) return false;
+            _nextTrailGateCheck = now + TrailGateCheckMilliseconds;
+            if (!AutonomousDarknessFallsRaidTrail.TryPoints(_realm, out Vector3[] trail)) return false;
+            GameNPC gate = null;
+            foreach (GameNPC npc in live)
+            {
+                // Only one the raid has already killed (it came back behind the raid): a monster alive since before the raid
+                // came stood where the lead raider walked and was answered then, or it is not on the walk.
+                if (npc == _target || npc is not IGameEpicNpc || !_clearedNames.Contains(npc.Name) || !npc.IsAlive || npc.InCombat ||
+                    npc.ObjectState != GameObject.eObjectState.Active || npc.Realm != eRealm.None ||
+                    (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 ||
+                    npc.Brain is not StandardMobBrain { AggroRange: > 0 } brain ||
+                    _finalTypes.Contains(npc.GetType().Name) || IsEncounterHazard(npc) ||
+                    EpicEncounterTactics.IsRequiredAddOfLiveBoss(npc, live) || _routeRetry.GetValueOrDefault(npc) > now)
+                    continue;
+                if (!RealmRaidRouteGate.Blocks(trail, new Vector3(npc.X, npc.Y, npc.Z), brain.AggroRange)) continue;
+                gate = npc;
+                break;
+            }
+            if (gate == null) return false;
+            log.Warn($"REALM_EXPEDITION_TRAIL_GATE region={_region} target=\"{gate.Name}\" level={gate.Level} at={gate.X},{gate.Y},{gate.Z} " +
+                     $"aggro={((StandardMobBrain)gate.Brain).AggroRange} trail={trail.Length} from=\"{TargetName}\" " +
+                     $"reason=\"a living epic stands on the raid's trail; the raid clears it before its late members walk past it\"");
+            TurnOn(gate, participants, now, "it stands on the raid's trail, where late members walk");
+            return true;
+        }
+
         private void TurnOn(GameNPC attacking, GameLiving[] participants, long now, string reason)
         {
             bool resolved = TryEncounterApproach(attacking, participants, out Vector3 approach);
@@ -1891,6 +1936,7 @@ namespace DOL.GS
                 _target = null;
             }
             if (FinalsDown()) { Complete = true; Status = IsGate ? "The way is clear" : "Final encounter defeated"; return; }
+            if (TrailGate(live, participants, now)) return;
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active &&
                 EpicEncounterTactics.RouteTarget(_target, live, Front, out string tacticReason) is { } tacticTarget && tacticTarget != _target)
             {

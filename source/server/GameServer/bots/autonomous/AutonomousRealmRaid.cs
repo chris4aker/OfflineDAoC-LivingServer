@@ -205,9 +205,25 @@ namespace DOL.GS
 
         /// <summary>A dead epic monster whose respawn waits while a realm raid is in its dungeon (RealmRaidRouteGate): read
         /// without the raid lock by the monster's respawn timer.</summary>
-        public static bool HoldsEpicRespawn(GameNPC npc) =>
-            npc != null && RealmRaidRouteGate.HoldsRespawn(RealmRaidRouteGate.HoldEpicRespawn, npc is IGameEpicNpc,
+        public static bool HoldsEpicRespawn(GameNPC npc)
+        {
+            bool holds = npc != null && RealmRaidRouteGate.HoldsRespawn(RealmRaidRouteGate.HoldEpicRespawn, npc is IGameEpicNpc,
                 npc.Realm == eRealm.None, npc.RespawnInterval, Array.IndexOf(_epicHoldRegions, npc.CurrentRegionID) >= 0);
+            // Once per wait, so the owner's log shows which epics a raid kept down (Gatekeeper Dommel, PC 2026-11-14).
+            if (npc == null) return false;
+            if (!holds) { HeldRespawns.TryRemove(npc, out _); return false; }
+            if (HeldRespawns.TryAdd(npc, 0))
+                Log.Info($"REALM_RAID_EPIC_RESPAWN_HELD npc=\"{npc.Name}\" region={npc.CurrentRegionID} respawn_s={npc.RespawnInterval / 1000} " +
+                         $"reason=\"a realm raid is in its dungeon; it comes back once the raid has ended\"");
+            return true;
+        }
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<GameNPC, byte> HeldRespawns = new();
+
+        /// <summary>The regions whose epic respawns a started dungeon raid holds (pure): its own dungeon and the one its way
+        /// in leads through (Hall of the Corrupt for Albion's Summoner's Hall raid, where Aidon stands).</summary>
+        public static ushort[] EpicHoldRegionsOf(ushort raidRegion, ushort? entranceTarget) =>
+            entranceTarget is ushort through && through != 0 && through != raidRegion ? [raidRegion, through] : [raidRegion];
 
         public static bool IsActiveRaidDestination(ushort region, int x, int y)
         {
@@ -637,7 +653,7 @@ namespace DOL.GS
                 _raidDestinations = RecentDestinations.Keys.ToArray();
                 // The dungeons whose epic respawns wait while a raid is in them (RealmRaidRouteGate.HoldEpicRespawn).
                 _epicHoldRegions = Raids.Values.Where(r => r.Started && r.DungeonRoute != null)
-                    .SelectMany(r => new[] { r.Definition.Region, r.DungeonRoute.Entrance?.TargetRegion ?? r.Definition.Region })
+                    .SelectMany(r => EpicHoldRegionsOf(r.Definition.Region, r.DungeonRoute.Entrance?.TargetRegion))
                     .Distinct().ToArray();
             }
         }

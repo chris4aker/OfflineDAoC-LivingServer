@@ -107,6 +107,15 @@ public sealed class AutonomousDarknessFallsRaidTrail
         return chain != null;
     }
 
+    /// <summary>The realm's raid trail so far (a copy), or false with fewer than two points.</summary>
+    public static bool TryPoints(eRealm realm, out Vector3[] points)
+    {
+        points = null;
+        if (!Trails.TryGetValue(realm, out var entry)) return false;
+        lock (entry.Trail._points) points = entry.Trail._points.Count < 2 ? null : entry.Trail._points.ToArray();
+        return points != null;
+    }
+
     /// <summary>The route ended: its trail goes.</summary>
     public static void Forget(object route, eRealm realm)
     {
