@@ -220,6 +220,26 @@ lost, and Albion's Summoner's Hall never reached). They pass automated tests; no
   respawn hold stays for the neutral raids only (Darkness Falls, Summoner's Hall). The code had listed Caer Sidi,
   Galladoria and the realm raid dungeons too, but the hold never applied in them, so that list now names only the two
   neutral dungeons. No respawn timer changes.
+- **The raid leaves one of Summoner Lossren's tortured souls alive** (tests only). Her script calls her next wave of
+  18-25 souls only when none of hers lives, and every 20 that die bring an infected ghoul. On the owner's PC (2026-11-15,
+  build `1dc66b6`) Hibernia's Summoner's Hall raid lost twice at her (64 bots, then 88 with the Epic Special Forces). It
+  cleared every wave, so she called 14 waves in five minutes and 18 in ten:
+  - Her souls killed 98 of the 170 raiders who fell (45 of 73, then 53 of 97), up to 21 of them on one raider; she
+    killed 65 and her ghouls 7. In one minute the ghouls' bursts hit 80 raiders and pets for 66,748.
+  - The melee fell first and the healers later. The healers trying to resurrect had 2-6% power from the third minute.
+  - Both attempts ended with nobody left on her ("left combat", lowest 63% and then 20%). No raider was pulled or
+    moved (no displacement in her room). At the first pull she chased a druid 2,290-3,825 from her spawn for two
+    minutes, out of her tether, until she was leashed home. The lead-home change above (after `1dc66b6`) covers that.
+
+  Now one soul of hers is left alive, the healthiest of her wave with no damage over time on it
+  (`EPIC_LOSSREN_KEPT_SOUL` when it is chosen). No bot, bot's pet or area spell hits it, the casters' add and clump lists
+  skip it, and a raider on it goes back to her (a caster to a living ghoul). After her first wave no new one comes, and at
+  most one ghoul. The owner approved this on 2026-11-15 with one change, now in: the kept soul is held mesmerized, the
+  period way. One crowd-control bot of the raid (`EPIC_LOSSREN_SOUL_HOLDER`) keeps it mesmerized with a single-target
+  mesmerize and casts it again before it wakes; failing a mesmerizer a stun, then a root damage doesn't break. It never
+  damages the soul. With no such bot in the raid the soul is only left alone. Lossren, her souls and her ghoul are
+  unchanged. Sources: in 2003 her adds were trivial; the 2006 walkthrough says casters clear the souls and all melee go
+  on Lossren; a later guide (Eden) says mesmerize the adds and use no area damage.
 
 **The play test's sweep (GM only).** `/epictest sweep start [all|event,event] [guest]` runs every raid once, one after
 another, on the server alone: the 21 raid targets in the game's order, Darkness Falls last. Each raid runs at its period

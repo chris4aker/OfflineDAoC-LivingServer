@@ -75,6 +75,10 @@ namespace DOL.GS
             /// <summary>Done for the bot on each of its tactic turns before the decision (face the boss, start a team's
             /// errand). Autonomous gamebots only, like the decision.</summary>
             public Action<GameBot, GameNPC, IReadOnlyList<GameNPC>> Act { get; init; }
+            /// <summary>Done for the bot on each of its tactic turns before the decision, as <see cref="Act"/>; true when the bot
+            /// spent the turn on it, and does nothing else this turn (Summoner Lossren's kept soul: the raid's one
+            /// crowd-control bot keeps it mesmerized). Autonomous gamebots only.</summary>
+            public Func<GameBot, GameNPC, IReadOnlyList<GameNPC>, bool> Control { get; init; }
             /// <summary>This bot must not hit the target at all, not even with an area spell aimed at another monster (Funus
             /// while his puzzle is on: the wrong class heals him to full). Every bot, companions too (BotBrain).</summary>
             public Func<GameBot, GameNPC, bool> MustNotHit { get; init; }
@@ -88,6 +92,11 @@ namespace DOL.GS
             /// <summary>While true, no bot's pet attacks the target, defends its owner against it or takes it from its owner's
             /// orders (Funus: a pet's hit heals him to full). ControlledMobBrain asks <see cref="PetMustNotHit"/>.</summary>
             public Func<GameNPC, bool> NoPets { get; init; }
+            /// <summary>While true the raid leaves this monster alive (Summoner Lossren's kept soul: her next wave of tortured
+            /// souls comes only once none of hers lives). No bot hits it, area spells included (as <see cref="MustNotHit"/>),
+            /// no bot's pet takes it (as <see cref="NoPets"/>), the catalog's ranged-add and clump lists skip it, and a bot
+            /// told to leave it drops it from its aggro list. Asked for the rule's targets; null: never (<see cref="LeftAlive"/>).</summary>
+            public Func<GameNPC, bool> LeaveAlive { get; init; }
             /// <summary>The <see cref="Route"/> also redirects a monster that is in combat (the horsemen's barred room). By
             /// default a route rule leaves a fighting monster alone: a monster fighting the raid is answered, never mapped onto
             /// the raid's current target (PC log e3b8238: "Crypt Lord -&gt; Crypt Lord" 22 times and "Easmarach -&gt;
@@ -315,6 +324,22 @@ namespace DOL.GS
             foreach (DungeonRule rule in DungeonRulesFor(npc))
                 if (rule.MustNotHit != null && rule.MustNotHit(bot, npc))
                     return true;
+            return LeftAlive(npc);
+        }
+
+        /// <summary>A dungeon rule of <paramref name="npc"/> says the raid leaves it alive now (<see cref="DungeonRule.LeaveAlive"/>).</summary>
+        public static bool LeftAlive(GameNPC npc)
+        {
+            if (npc == null) return false;
+            foreach (DungeonRule rule in DungeonRulesFor(npc))
+            {
+                if (rule.LeaveAlive == null) continue;
+                try
+                {
+                    if (rule.LeaveAlive(npc)) return true;
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon leave-alive rule {rule.Encounter} failed: {ex.Message}"); }
+            }
             return false;
         }
 
@@ -344,6 +369,7 @@ namespace DOL.GS
         {
             if (pet == null || pet is GameBot || living is not GameNPC npc) return false;
             if ((pet.Brain as IControlledBrain)?.GetLivingOwner() is not GameBot) return false;
+            if (LeftAlive(npc)) return true;
             foreach (DungeonRule rule in DungeonRulesFor(npc))
             {
                 if (rule.NoPets == null) continue;
@@ -408,6 +434,21 @@ namespace DOL.GS
                 try { rule.Act(bot, target, live); }
                 catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon act {rule.Encounter} failed: {ex.Message}"); }
             }
+        }
+
+        /// <summary>The <see cref="DungeonRule.Control"/>s of <paramref name="target"/>'s rules: true when one used the bot's turn.</summary>
+        private static bool DungeonControls(GameBot bot, GameNPC target, IReadOnlyList<GameNPC> live)
+        {
+            foreach (DungeonRule rule in DungeonRulesFor(target))
+            {
+                if (rule.Control == null) continue;
+                try
+                {
+                    if (rule.Control(bot, target, live)) return true;
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon control {rule.Encounter} failed: {ex.Message}"); }
+            }
+            return false;
         }
 
         /// <summary>
