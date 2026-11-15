@@ -2550,7 +2550,7 @@ namespace DOL.GS.ServerRules
             }
 
             int value = rpBase + (keep.BaseLevel - 50) * rpMultiplier;
-            value += (keep.Level - Properties.STARTING_KEEP_LEVEL) * Properties.UPGRADE_MULTIPLIER;
+            value += (keep.Level - keep.UnclaimedLevel) * Properties.UPGRADE_MULTIPLIER;
             return value;
         }
 

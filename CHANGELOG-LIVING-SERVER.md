@@ -178,6 +178,28 @@ because they died on the way: in those three minutes 16 Hibernian and 4 Midgard 
 - Unchanged: the navmesh (the bots' route round the walls was real: they reached 570 from the broken gate), door flags (a
   broken door is open and passable), the keep, guards, lord and gates, the 3-minute spent check, and siege crews.
 
+**Battleground keeps stay at level 1, as they shipped** (tests only; owner's PC, build `3b808b4`, Thidranki 2026-11-15
+09:39-10:10: four two-realm waves of 9-12 bots each were spent, 8-15 of each killed by Thidranki Faste's guards, none
+closer than 1,425 to the door; guards 17-19/19, lord 100%; the guards were level 33 against levels 20-24).
+
+- **Why the guards were 33.** Every release world gives the battleground keeps level 1 (`release-world-defaults.json`), but
+  a capture reset any keep to `starting_keep_level` (4): DOL's 2009 value for frontier keeps ("only levels 4 and 5 are
+  supported correctly"; it was 0, then 1). Battleground keeps can't be claimed (`allow_bg_claim` off, and the bot guilds
+  check the same rule), so nothing else raised them: on the owner's world Thidranki Faste and Dun Murdaigean, the two that
+  had changed hands, were at level 4 with no claim, the other six battleground keeps at 1. At level 4 Thidranki's guards
+  are 26 + 1 + 4 x 1.6 = 33 (seen in the deaths) and its lord 38; its doors have four times their level-1 health.
+- **The original.** A keep rose above level 1 only through the claiming guild's upgrades (Herald, New Frontiers keep guide:
+  "Keeps and Towers start out at level 1"), and the battleground keeps were never claimed: the Herald's realm war page of
+  April 2003 lists a claiming guild for every frontier keep and only an owning realm for Abermenai, Thidranki, Murdaigean
+  and Caledonia. So a battleground keep now falls back to level 1 on a capture or a release, and a played world's
+  battleground keep that a capture raised is put back to 1 when the server loads (`BG_KEEP_LEVEL_RESTORED` in the log).
+  Thidranki's guards are 28 and its lord 33 again; frontier keeps, the guard formula and `keep_guard_level_multiplier`
+  (1.6, hard-coded in DOL before it became a property in 2009) are unchanged.
+- **`BG_KEEP_STATUS`** now logs the keep's level and its guards' and lord's levels (`keepLevel=`, `guardLevel=`,
+  `lordLevel=`).
+- Unchanged: guard respawn (15 minutes, ±10, the upstream default), claiming rules, the waves and their siege crews (the
+  2002-2004 Thidranki threads describe the same thing: rams, two or three groups, a keep that changed hands "twice a week").
+
 **Battleground and RvR kill quests count enemy gamebots** (tests only; owner's question 2026-11-15: "are there quests in the
 BG? Are those functioning correctly?").
 
