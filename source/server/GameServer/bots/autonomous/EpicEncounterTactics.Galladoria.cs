@@ -406,17 +406,82 @@ namespace DOL.GS
         /// With his push behind the falls on (AllowDisplacement for Easmarach: anyone within 1,000 of 37,653,52,843 while he
         /// lives is moved to 40,067,50,494), the way to the last room is shut until he dies ("With the death of the Easmarach,
         /// the current of the falls reduces significantly"). So the route never sends the raid there while he lives: a
-        /// last-room encounter it chose gives way to him.
+        /// last-room encounter it chose, or any monster that stands or spawns behind the falls (<see cref="BarredByTheFalls"/>),
+        /// gives way to him.
+        /// <para>Owner's PC, 2026-11-15 (build 1dc66b6, /epictest sweep): the gate looked only at the last room's classes.
+        /// After Spindler Broodmother the route took a "deep shrouder" (an epic monster of the wing behind the falls, at
+        /// 37,016,56,449) and mustered for it at 37,086,55,050; the raid walked into the push 165 times in eight minutes
+        /// (78% fall damage each), mustered=0 needed=78, and never fought Easmarach.</para>
         /// </summary>
         private static GameNPC EasmarachBeforeTheLastRoom(GameNPC chosen, IReadOnlyList<GameNPC> live, out string reason)
         {
             reason = null;
-            if (chosen == null || chosen.CurrentRegionID != GalladoriaRegion || !InLastRoom(chosen)) return null;
-            if (live?.OfType<Easmarach>().FirstOrDefault(e => Present(e) && e.CurrentRegionID == chosen.CurrentRegionID &&
-                                                            EpicEncounterMechanics.AllowDisplacementFor(e)) is not { } easmarach)
+            if (chosen == null || chosen is Easmarach || chosen.CurrentRegionID != GalladoriaRegion) return null;
+            if (!InLastRoom(chosen) && !BarredByTheFalls(PosOf(chosen)) &&
+                !BarredByTheFalls(new Vector3(chosen.SpawnPoint.X, chosen.SpawnPoint.Y, chosen.SpawnPoint.Z)))
                 return null;
+            if (FallsBarrierOn(live, chosen.CurrentRegionID) is not { } easmarach) return null;
             reason = $"\"{easmarach.Name}\"'s current pushes the raid back from the falls while he lives";
             return easmarach;
+        }
+
+        // ---- The falls barrier: nothing behind it while he lives ------------------------------------------------------
+
+        /// <summary>The middle of his push (EasmarachBrain.Think, "you shall not pass!"): anyone within
+        /// <see cref="FallsPushRadius"/> of it while he lives is moved to <see cref="FallsPushLanding"/>.</summary>
+        public static readonly Vector3 FallsPushCentre = new(37653, 52843, 10758);
+        public const int FallsPushRadius = 1_000;
+        /// <summary>Where the push puts a raider: 40,067,50,494 (the script's 11,708 is in the air; the navmesh floor there is
+        /// 9,762, EPIC_DISPLACEMENT landing= on 2026-11-15). In front of the falls, 2,149 from his spawn.</summary>
+        public static readonly Vector3 FallsPushLanding = new(40067, 50494, 9762);
+        /// <summary>Where the 2026-11-15 raid walked into the push (EPIC_DISPLACEMENT from=) and the muster behind it that it
+        /// was walking to: the corridor through the falls runs from the first to the second.</summary>
+        public static readonly Vector3 FallsCorridorIn = new(38376, 52481, 10277), FallsCorridorOut = new(37086, 55050, 10925);
+        /// <summary>The wing behind the falls lies within these X (the deep shrouders, the bridge, the primals and Olcasgean:
+        /// 37,016 to 41,580). The Spindler hall (X about 21,000) and Xaga (27,482) share its Y but not its X.</summary>
+        public const int FallsWingMinX = 33_000, FallsWingMaxX = 45_000;
+
+        /// <summary>The point is in his push (flat, so a raider above or below the circle counts too: the route never sends
+        /// anyone near it).</summary>
+        public static bool InFallsPush(Vector3 p) => Flat(p, FallsPushCentre) <= FallsPushRadius;
+
+        /// <summary>The point lies in the wing behind the falls (pure): within <see cref="FallsWingMinX"/> and
+        /// <see cref="FallsWingMaxX"/>, past the line through the push's middle across the corridor.</summary>
+        public static bool BehindTheFalls(Vector3 p)
+        {
+            if (p.X < FallsWingMinX || p.X > FallsWingMaxX) return false;
+            Vector2 through = Vector2.Normalize(new(FallsCorridorOut.X - FallsCorridorIn.X, FallsCorridorOut.Y - FallsCorridorIn.Y));
+            return Vector2.Dot(new(p.X - FallsPushCentre.X, p.Y - FallsPushCentre.Y), through) > 0;
+        }
+
+        /// <summary>The point can't be reached while his push is on: in it, or behind it (pure).</summary>
+        public static bool BarredByTheFalls(Vector3 p) => InFallsPush(p) || BehindTheFalls(p);
+
+        /// <summary>The living Easmarach whose push is on in <paramref name="region"/>, or null (dead, gone, or the owner's
+        /// switch AllowDisplacement@Easmarach off).</summary>
+        public static GameNPC FallsBarrierOn(IReadOnlyList<GameNPC> live, ushort region) =>
+            region != GalladoriaRegion ? null
+                : live?.OfType<Easmarach>().FirstOrDefault(e => Present(e) && e.CurrentRegionID == region &&
+                                                               EpicEncounterMechanics.AllowDisplacementFor(e));
+
+        /// <summary>A point the raid route must not send anyone to: behind a live boss's barrier (Easmarach's falls).</summary>
+        public static bool BehindLiveBarrier(ushort region, Vector3 point, IReadOnlyList<GameNPC> live) =>
+            region == GalladoriaRegion && BarredByTheFalls(point) && FallsBarrierOn(live, region) != null;
+
+        /// <summary>Where the route sends the raid instead of <paramref name="point"/> (a muster, a staging): the point itself,
+        /// or, behind a live barrier, the floor in front of it where the barrier puts raiders.</summary>
+        public static Vector3 OutOfLiveBarrier(ushort region, Vector3 point, IReadOnlyList<GameNPC> live) =>
+            BehindLiveBarrier(region, point, live) ? FallsPushLanding : point;
+
+        /// <summary>The walk back from <paramref name="from"/> to <paramref name="to"/> goes into the falls (pure): the end is
+        /// in the push or behind it, or the straight way passes through the push.</summary>
+        public static bool WalksIntoTheFalls(Vector3 from, Vector3 to)
+        {
+            if (BarredByTheFalls(to)) return true;
+            Vector2 a = new(from.X, from.Y), b = new(to.X, to.Y), c = new(FallsPushCentre.X, FallsPushCentre.Y);
+            Vector2 ab = b - a;
+            float t = ab.LengthSquared() < 1 ? 0 : Math.Clamp(Vector2.Dot(c - a, ab) / ab.LengthSquared(), 0, 1);
+            return Vector2.Distance(a + ab * t, c) <= FallsPushRadius;
         }
 
         public const ushort GalladoriaRegion = 191;

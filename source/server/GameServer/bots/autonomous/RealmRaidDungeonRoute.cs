@@ -982,7 +982,7 @@ namespace DOL.GS
             {
                 Vector3 old = _musterPoint;
                 if (TryPointApproach(home, participants, out Vector3 approach)) Front = approach;
-                _musterPoint = EpicEncounterTactics.KeepInsideFor(_target, MusterPoint(participants));
+                _musterPoint = GuardedMuster(participants);
                 log.Info($"REALM_EXPEDITION_MUSTER_MOVED region={_region} target=\"{_target.Name}\" " +
                          $"from={(int)old.X},{(int)old.Y},{(int)old.Z} to={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
                          $"reason=\"the encounter is back at {(int)home.X},{(int)home.Y},{(int)home.Z}\"");
@@ -1014,7 +1014,7 @@ namespace DOL.GS
                 if (Vector3.Distance(reference, new Vector3(_target.X, _target.Y, _target.Z)) > 1 &&
                     TryPointApproach(reference, participants, out Vector3 homeApproach))
                     Front = homeApproach;
-                _musterPoint = EpicEncounterTactics.KeepInsideFor(_target, MusterPoint(participants));
+                _musterPoint = GuardedMuster(participants);
             }
             // While the raid regroups, the survivors may still be fighting: arrivals wait at the muster point rather than
             // going in by twos and threes, and the whole regroup goes in together.
@@ -1276,7 +1276,7 @@ namespace DOL.GS
             {
                 Front = approach;
                 if (_musterEngaged) Destination = Front;
-                else _musterPoint = EpicEncounterTactics.KeepInsideFor(_target, MusterPoint(participants));
+                else _musterPoint = GuardedMuster(participants);
             }
             else _nextFrontCheck = now + 5 * FrontRefreshMilliseconds;
             int unreached = _pulls.PullsWithoutContact;
@@ -1305,6 +1305,13 @@ namespace DOL.GS
         private static Vector3 MusterReference(GameNPC npc) => EpicEncounterTactics.MusterAnchor(npc) ?? MusterReference(new(npc.X, npc.Y, npc.Z),
             new(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z),
             EpicEncounterTactics.LeashOf(npc)?.TetherRange is int t && t > 0 ? t : npc.TetherRange, EpicEncounterTactics.ResetsWhenLeft(npc));
+
+        /// <summary>The muster for the current target: inside its barrier room (EpicEncounterTactics.KeepInsideFor), and
+        /// never behind a living boss's barrier (Easmarach's falls, owner's PC 2026-11-15: a muster at 37,086,55,050 behind
+        /// his push held the raid for eight minutes with nobody able to reach it): then in front of it, where the barrier
+        /// puts raiders (EpicEncounterTactics.OutOfLiveBarrier).</summary>
+        private Vector3 GuardedMuster(GameLiving[] participants) =>
+            EpicEncounterTactics.OutOfLiveBarrier(_region, EpicEncounterTactics.KeepInsideFor(_target, MusterPoint(participants)), _live);
 
         /// <summary>
         /// The point on the walked path from the raid's main body to the encounter's approach that lies
@@ -2357,6 +2364,16 @@ namespace DOL.GS
                 // fights; skipped, it never died, and Olcasgean wakes only when all four primals are dead).
                 if (IsOutOfRangedReach(npc.Flags, npc.Z, (int)approach.Z))
                 { _routeRetry[npc] = now + BlockedTargetRetryMilliseconds; continue; }
+                // Never a target behind a living boss's barrier (Easmarach's falls): the walk there ends in the barrier's push,
+                // again and again (owner's PC, 2026-11-15). One the dungeon rule did not turn into the boss (it fights already)
+                // waits until the barrier is down; the boss itself is a target in front of it.
+                if (EpicEncounterTactics.BehindLiveBarrier(_region, approach, live) || EpicEncounterTactics.BehindLiveBarrier(_region, raw, live))
+                {
+                    log.Info($"REALM_EXPEDITION_BARRED region={_region} target=\"{npc.Name}\" at={(int)raw.X},{(int)raw.Y},{(int)raw.Z} " +
+                             $"reason=\"behind a living boss's barrier; fought once it is down\"");
+                    _routeRetry[npc] = now + 60_000;
+                    continue;
+                }
                 _target = npc; Front = Destination = approach; TargetName = npc.Name; TargetLevel = npc.Level;
                 _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = npc.Health;
                 _targetClosest = float.MaxValue; _targetApproachTick = now;
@@ -2380,7 +2397,9 @@ namespace DOL.GS
             _blockedSince = 0;
             // The encounter controller must see a real party at its native trigger.
             // Waiting through dialogue/phase timers is not an empty-camp failure.
-            if (AutonomousZonePointApproach.TryResolve(nav, zone, Front, _trigger, 220, out Vector3 trigger))
+            // Not while the trigger lies behind a living boss's barrier (Galladoria's bridge, past Easmarach's falls).
+            if (!EpicEncounterTactics.BehindLiveBarrier(_region, _trigger, live) &&
+                AutonomousZonePointApproach.TryResolve(nav, zone, Front, _trigger, 220, out Vector3 trigger))
                 Front = Destination = trigger;
             TargetName = "Final encounter staging";
             Status = candidates.Length == 0 ? "Waiting for the next scripted encounter phase" :
