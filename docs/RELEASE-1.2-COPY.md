@@ -1,8 +1,8 @@
 # Living Server 1.2: repository description, tagline and Reddit post (draft)
 
 Copy for the owner to use when 1.2 is published. The same rules as the release notes apply: nothing here names the
-Easter eggs or the project's internal vocabulary, nothing tests-only is described as proven, and there are no credits
-to borrowed work (owner, 2026-11-14; the licence notices are in THIRD_PARTY.md and the changelog). "Every big boss"
+Easter eggs or the project's internal vocabulary, nothing tests-only is described as proven, and credit is light: one
+general thanks, never per feature (owner, 2026-11-14; the licence notices are in THIRD_PARTY.md and the changelog). "Every big boss"
 holds only once #220 and #222 are merged; without them, use "the big bosses of Darkness Falls, Midgard and Hibernia".
 
 ## Repository description (one line, under 350 characters)
@@ -42,6 +42,7 @@ And the bots play with you now: they invite you, lead groups you can just follow
 friends can join your world (experimental).
 
 It's a beta: the new raid plans pass their automated tests but are new to real nights, and the notes say plainly
-which fights bot raids still lose. Free, non-commercial, not affiliated with EA or Broadsword.
+which fights bot raids still lose. Built on shadowofze's Offline DAoC, with thanks to the forks and the emulator
+community. Free, non-commercial, not affiliated with EA or Broadsword.
 
 [link to the release]

@@ -11,8 +11,8 @@ internal vocabulary. Rewritten on 2026-11-14 in the release's own voice, coverin
 (the raid flow and boss tactics from the sweep, the Darkness Falls raid AI, Legion's plan, the Midgard and Hibernia big
 bosses, the period research); the Albion big bosses (#220) and the open-world bosses (#222) are marked "[if it lands]".
 "A raid plan for every big boss" holds only once #220 and #222 are in; without them, say "for the big bosses of
-Darkness Falls, Midgard and Hibernia". Owner's decision (2026-11-14): no credits to borrowed work in the notes; the
-licence notices stay in THIRD_PARTY.md and the changelog.
+Darkness Falls, Midgard and Hibernia". Owner's decision (2026-11-14): credit lightly, in the Credits section only, never
+per feature or per piece of code; the licence notices stay in THIRD_PARTY.md and the changelog.
 The repository description, the tagline and the Reddit post are in [RELEASE-1.2-COPY.md](RELEASE-1.2-COPY.md).
 
 ---
@@ -401,7 +401,8 @@ only".
   - A tale asked for in plain words, with the storyteller silent about anything else until it ended (build 4).
   - After a wipe, the raid regrouping and going back in waves; the next attempt waiting for 70% of the raid (build 3).
   - Raids won: Golestandt (build 5, second attempt), Cuuldurach (build 5, a raid the game opened itself), Marfach
-    Caverns (builds 2, 4 and 5) and Dodens Gruva (build 5). Bots beat Spindler Broodmother for the first time (build 5).
+    Caverns (builds 2, 4 and 5) and Dodens Gruva (build 5). Bots beat Spindler Broodmother for the first time (build 5),
+    and Midgard's raid won Summoner's Hall, Grand Summoner Govannon included (build 3e64140, 11 November).
   - Raids lost: Galladoria at the Organic-Energy Mechanism, Trollheim at Nosdoden, and Caer Sidi cut off by the old
     four-hour limit with 12 named down (build 5).
   - Bots buying dyes and lusters at the game's prices (build 6).
@@ -469,7 +470,9 @@ only".
 
 ### Credits
 
-Living Server is an add-on for Offline DAoC 0.37. Boss lore checked against Mythic's Camelot Herald, and raid plans
+Living Server is an add-on for Offline DAoC 0.37, built on shadowofze's Offline DAoC and the OpenDAoC project, with
+thanks to the other Offline DAoC forks and the DAoC emulator community whose work and ideas helped along the way. Boss
+lore checked against Mythic's Camelot Herald, and raid plans
 against the period's guides and forums. Reports from the community on GitHub and r/daoc. Directed and play-tested by
 [chris4aker](https://github.com/chris4aker), coded with Claude (Anthropic). GPL-3.0; licences and attributions are in
 [THIRD_PARTY.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/THIRD_PARTY.md) and the changelog.
