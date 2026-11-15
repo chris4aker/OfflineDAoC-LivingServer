@@ -105,6 +105,15 @@ namespace DOL.GS
             /// <summary>A fixed point the raid musters for this encounter at instead of where it stands (the Host's ambush on
             /// his patrol: the muster chased him every 10 s); null: none.</summary>
             public Func<GameNPC, Vector3?> MusterAnchor { get; init; }
+            /// <summary>Spots no muster of the raid goes near while this NPC is out of combat, each with its radius (the Crypt
+            /// Lord's patrol loop, where a fight near him pulls him and his court; his court monsters' aggro). Asked for every
+            /// living NPC of the dungeon, the encounter mustered for included; null or empty: none
+            /// (<see cref="MusterDangersOf"/>, RealmRaidDungeonRoute.GuardMuster).</summary>
+            public Func<GameNPC, IReadOnlyList<GameNPC>, IEnumerable<(Vector3 At, float Radius)>> MusterDangers { get; init; }
+            /// <summary>This boss is never pulled while a monster that would join its fight (<see cref="ClearFirstOf"/>) lives:
+            /// when the raid musters for it again (after a skirmish or a wipe) with one alive, the route clears it first, as it
+            /// does in Darkness Falls. Asked for the raid's target.</summary>
+            public bool ClearsAgainBeforePull { get; init; }
         }
 
         private sealed record RuleSet(DungeonRule[] All, Dictionary<string, DungeonRule[]> ByTarget, DungeonRule[] Routes)
@@ -112,6 +121,7 @@ namespace DOL.GS
             public DungeonRule[] ClearFirsts { get; } = All.Where(r => r.ClearFirstOf != null).ToArray();
             public DungeonRule[] PullWaits { get; } = All.Where(r => r.PullWait != null).ToArray();
             public DungeonRule[] Anchors { get; } = All.Where(r => r.MusterAnchor != null).ToArray();
+            public DungeonRule[] Dangers { get; } = All.Where(r => r.MusterDangers != null).ToArray();
         }
 
         private static readonly object DungeonRuleLock = new();
@@ -274,6 +284,27 @@ namespace DOL.GS
             }
             return null;
         }
+
+        /// <summary>The spots (and radii) no muster goes near because of <paramref name="npc"/> (a dungeon rule's
+        /// <see cref="DungeonRule.MusterDangers"/>), while it is out of combat; empty: none.</summary>
+        public static List<(Vector3 At, float Radius)> MusterDangersOf(GameNPC npc, IReadOnlyList<GameNPC> live)
+        {
+            var found = new List<(Vector3 At, float Radius)>();
+            if (!Present(npc) || npc.InCombat) return found;
+            foreach (DungeonRule rule in DungeonRuleSet.Dangers)
+            {
+                try
+                {
+                    if (rule.MusterDangers(npc, live) is { } spots) found.AddRange(spots);
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon muster danger {rule.Encounter} failed: {ex.Message}"); }
+            }
+            return found;
+        }
+
+        /// <summary>A dungeon rule of <paramref name="boss"/> says it is never pulled while a monster that would join its fight
+        /// lives (<see cref="DungeonRule.ClearsAgainBeforePull"/>).</summary>
+        public static bool ClearsAgainBeforePull(GameNPC boss) => DungeonRulesFor(boss).Any(r => r.ClearsAgainBeforePull);
 
         /// <summary>This bot must not hit <paramref name="living"/> at all, not even with an area spell aimed at another
         /// monster (BotBrain refuses the cast or the blast): a dungeon rule of it says so (Funus while his puzzle is on and

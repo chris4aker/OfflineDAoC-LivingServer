@@ -38,10 +38,13 @@ namespace DOL.GS
             new(nameof(CryptLord), [nameof(CryptLord)], CryptLordMeleeFirst)
             {
                 Summary = "His court is cleared first, each monster of it pulled only while his patrol keeps 1,200 from it for " +
-                          "35 s (one fighting within 800 of him pulls him and the whole court); in his fight melee take him " +
-                          "(70% magic resist) and the casters his court.",
+                          "35 s (one fighting within 800 of him pulls him and the whole court), and again after a skirmish or a " +
+                          "wipe before he is pulled; no muster lies within 1,100 of his patrol loop or 500 of a court monster; in " +
+                          "his fight melee take him (70% magic resist) and the casters his court.",
                 ClearFirstOf = CourtClearsFirst,
                 PullWait = CourtPullWindow,
+                MusterDangers = CryptLordMusterDangers,
+                ClearsAgainBeforePull = true,
             },
             new(nameof(Host), [nameof(Host)], HostFocusReal)
             {
@@ -81,10 +84,12 @@ namespace DOL.GS
             },
             new(nameof(DOL.GS.Scripts.WarlordDorinakka), [nameof(DOL.GS.Scripts.WarlordDorinakka)], DorinakkaPlan)
             {
-                Summary = "His crypt knights (DorinakkaBaf, every one in the region joins his fight) more than 700 from him are " +
-                          "cleared first; in his fight the casters take the knights fighting beside him and the melee fight him " +
-                          "from behind (he parries).",
-                ClearFirstOf = DorinakkaKnightClearsFirst,
+                Summary = "He and his 12 crypt knights (DorinakkaBaf, every one in the region joins his fight) are one encounter: " +
+                          "no knight is pulled on its own while he lives, the route musters the whole raid for him inside his " +
+                          "2,000 tether; in his fight the party he fights holds him (its melee from behind: he parries) and " +
+                          "everyone else but the healers kills the knights one at a time, the most hurt first and mesmerized " +
+                          "ones last.",
+                Route = DorinakkaPackRoute,
             },
             new(nameof(Silencer), [nameof(Silencer)], SilencerPlan)
             {
@@ -398,6 +403,51 @@ namespace DOL.GS
             return near >= CourtPullClearance ? null
                 : $"the Crypt Lord's patrol comes within {(int)near} of it in the next {CourtPullHorizonSeconds} s " +
                   $"(a court monster fighting within {CryptLordCourtLink} pulls him)";
+        }
+
+        /// <summary>No muster lies this close to his patrol loop while he walks it (a court monster fighting within
+        /// <see cref="CryptLordCourtLink"/> of him pulls him, and court monsters chase raiders to their muster; plus the route's
+        /// usual margin, RealmRaidDungeonRoute.UntargetedBossMargin).</summary>
+        public const int CryptLordMusterClearance = CryptLordCourtLink + 300;
+        /// <summary>Nor this close to a court monster out of combat (their aggro range, 200, plus the same margin).</summary>
+        public const int CourtMusterClearance = 500;
+        /// <summary>His loop is sampled this often for <see cref="CryptLordMusterClearance"/>.</summary>
+        public const int CryptLordPatrolSampleStep = 150;
+
+        /// <summary>Points every <see cref="CryptLordPatrolSampleStep"/> along his whole loop, the closing leg included.</summary>
+        public static readonly Vector3[] CryptLordPatrolSamples = SampleLoop(CryptLordPatrol, CryptLordPatrolSampleStep);
+
+        /// <summary>Points every <paramref name="step"/> along the closed loop <paramref name="loop"/> (pure).</summary>
+        public static Vector3[] SampleLoop(IReadOnlyList<Vector3> loop, float step)
+        {
+            var points = new List<Vector3>();
+            for (int i = 0; i < (loop?.Count ?? 0); i++)
+            {
+                Vector3 a = loop[i], b = loop[(i + 1) % loop.Count];
+                int steps = Math.Max(1, (int)MathF.Ceiling(Vector3.Distance(a, b) / step));
+                for (int k = 0; k < steps; k++) points.Add(Vector3.Lerp(a, b, k / (float)steps));
+            }
+            return points.ToArray();
+        }
+
+        /// <summary>
+        /// Owner's PC, build 1dc66b6, 2026-11-15 (Albion's sweep raid): after the skirmish of 02:56-02:57 the raid mustered for
+        /// him at 27,960,40,280 (1,400 from his spawn along its walk), 115 from his patrol's first leg and 194 from a court
+        /// reckoned soul; raiders there fought the forerunners and reckoned souls around it, he walked into it and both
+        /// attempts died to his court (03:00:10, 55 fell; 03:04:54, 66 fell; him at 99%). So while he walks his loop no muster,
+        /// his own included, lies within <see cref="CryptLordMusterClearance"/> of it, nor within
+        /// <see cref="CourtMusterClearance"/> of a court monster out of combat.
+        /// </summary>
+        private static IEnumerable<(Vector3 At, float Radius)> CryptLordMusterDangers(GameNPC npc, IReadOnlyList<GameNPC> live)
+        {
+            if (npc is CryptLord)
+                return CryptLordPatrolSamples.Select(p => (p, (float)CryptLordMusterClearance));
+            if (IsCryptLordCourt(npc) && BossNear(npc, live, nameof(CryptLord), CryptLordCourtRange) is { InCombat: false })
+            {
+                int aggro = (npc.Brain as StandardMobBrain)?.AggroRange ?? 0;
+                return [(At(npc), Math.Max(CourtMusterClearance, aggro + 300))];
+            }
+            return null;
         }
 
         /// <summary>The court monsters fighting beside him the casters take, within this of him.</summary>
@@ -841,31 +891,53 @@ namespace DOL.GS
                     HoldStandOff(raider, AlbionFloorSnap(raider, spot) ?? spot, now + 3_000);
         }
 
-        // ---- Warlord Dorinakka: his knights, from behind ----------------------------------------------------------------
+        // ---- Warlord Dorinakka: his knights are his fight -----------------------------------------------------------------
 
         /// <summary>His knights' PackageID: once he fights, every one of them in the region joins (WarlordDorinakkaBrain.Think;
-        /// the world database has 12 crypt knights, level 81, 325-1,050 from him).</summary>
+        /// the world database has 12 crypt knights, level 81, 20,125 health each, in two columns of six 190 apart up the
+        /// hall to him, 321-1,063 from him).</summary>
         public const string DorinakkaKnights = "DorinakkaBaf";
-        /// <summary>Knights further than this from his spawn are cleared first (nearer ones are inside the reach of a fight
-        /// beside him: his aggro is 500); the rest are fought in his fight.</summary>
-        public const int DorinakkaKnightClear = 700;
+        /// <summary>His knights fighting this close to him are his fight's (his tether, 2,000, and room for a knight chasing a
+        /// raider).</summary>
+        public const int DorinakkaKnightFightRadius = 2_500;
 
-        private static GameNPC DorinakkaKnightClearsFirst(GameNPC npc, IReadOnlyList<GameNPC> live)
+        /// <summary>The monster is one of Warlord Dorinakka's crypt knights (its PackageID; he himself has none).</summary>
+        public static bool IsDorinakkaKnight(GameNPC npc) =>
+            npc != null && npc is not DOL.GS.Scripts.WarlordDorinakka && npc.PackageID == DorinakkaKnights;
+
+        /// <summary>
+        /// Owner's PC, build 1dc66b6, 2026-11-15 (Albion's sweep raid): the 1.2 plan cleared the knights more than 700 from him
+        /// first, each as an encounter of its own mustered 1,400 from the knight, that is 2,250 from him and past his 2,000
+        /// tether. The first knight died alone; 16 s after the second was called he joined with the ten left (02:46:53), the
+        /// fight ran at that muster and at the hall's mouth at once, he spent much of it outside his tether (immune; nine
+        /// tether resets), the raid did him 3,300 damage and the knights 219,000 of the 278,000 it took, and it wiped
+        /// (88 of 108 deaths to knights). A knight's fight at its spawn reaches the next knight of its column (190 apart,
+        /// aggro 200), and the column ends 321-361 from him. So no knight is pulled on its own while he lives: a knight the
+        /// route picks is his fight (a knight already fighting the raid is still answered), the raid musters for him
+        /// (1,400 from his spawn, inside his tether) and goes in together.
+        /// </summary>
+        private static GameNPC DorinakkaPackRoute(GameNPC chosen, IReadOnlyList<GameNPC> live, out string reason)
         {
-            if (npc == null || npc.PackageID != DorinakkaKnights || npc is DOL.GS.Scripts.WarlordDorinakka) return null;
-            GameNPC lord = BossNear(npc, live, nameof(DOL.GS.Scripts.WarlordDorinakka), AddSearchRadius);
-            return lord != null && Flat(At(npc), new(lord.SpawnPoint.X, lord.SpawnPoint.Y, lord.SpawnPoint.Z)) > DorinakkaKnightClear ? lord : null;
+            reason = null;
+            if (!IsDorinakkaKnight(chosen) || BossNear(chosen, live, nameof(DOL.GS.Scripts.WarlordDorinakka), AddSearchRadius) is not { } lord)
+                return null;
+            reason = "dorinakka-pack: every knight joins his fight; the whole raid musters for him and the knights";
+            return lord;
         }
 
         /// <summary>
         /// Warlord Dorinakka (period: "a straight melee fight ... significant damage ... he also parries", VN 2003; "tanks
-        /// should stay behind him because he parries very often ... Guard on the aggro holder", Allakhazam 2003). The casters
-        /// of every party but his target's take the knights fighting beside him; the melee fight him from behind.
+        /// should stay behind him because he parries very often ... Guard on the aggro holder", Allakhazam 2003; "2 good
+        /// groups can kill him", Allakhazam 2003). His knights copy his aggro list every think, so they go for those he
+        /// hates. The party he fights holds him (its melee from behind him); every other raider but the healers, melee
+        /// included, kills the knights fighting near him one at a time: the most hurt first, so the raid's damage lands on
+        /// one knight, and a mesmerized knight last (a hit would wake it). With no knight left in the fight everyone fights
+        /// him from behind.
         /// </summary>
         private static Advice? DorinakkaPlan(RuleContext c)
         {
-            if (c.ClassId > 0 && IsMagicDealer(c.ClassId) &&
-                OthersTakeTheAdds(c, n => n.PackageID == DorinakkaKnights, 2_000, "dorinakka-knights", rangedOnly: true) is Advice knights)
+            if (OthersTakeTheAdds(c, IsDorinakkaKnight, DorinakkaKnightFightRadius, "dorinakka-knights",
+                    rank: n => n.IsMezzed ? 1 : 0) is Advice knights)
                 return knights;
             return MeleeFromBehind(c, "dorinakka-behind");
         }

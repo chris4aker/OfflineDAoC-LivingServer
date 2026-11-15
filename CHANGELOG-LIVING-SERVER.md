@@ -174,6 +174,30 @@ lost, and Albion's Summoner's Hall never reached). They pass automated tests; no
 - **Whoever a fight-at-home boss chases out of its home leads it back** (tests only). Only a raider whose own target was
   the boss did; Aidon (home 1,100, tether 1,500) went after the healers at the muster 1,400 out, past his tether, and
   healed from 58% to 100% in combat. Now the raider he chases, a healer too, walks to his spawn. The boss is unchanged.
+- **Warlord Dorinakka and his knights are one fight** (tests only). On the owner's PC (2026-11-15, build `1dc66b6`) the
+  Albion sweep raid (~123 raiders) cleared his crypt knights more than 700 from him one by one. It mustered for each one
+  1,400 from the knight, which is 2,250 from him and past his 2,000 tether. The first knight died alone. 16 s after the
+  second was called, he joined with the ten knights left (02:46:53). The fight then ran at two places at once, the
+  knights' muster and the hall's mouth. He spent much of it out of his tether, where he takes no damage, and was reset
+  nine times. The raid did him 3,334 damage and the knights about 206,000. It took 218,888 from the knights and 59,443
+  from him, and wiped at 02:50:41 (91 engaged, 91 fallen, him at 96% at the lowest; 88 of the 108 deaths were to
+  knights, 23 of them healers). Every knight joins him once he fights, and a knight's fight reaches the next knight in
+  its column (190 apart, aggro 200). So no knight is pulled on its own while he lives. A knight the route picks counts
+  as his fight, and the whole raid musters for him 1,400 from his spawn, inside his tether. In the fight, the party he
+  fights holds him (its melee from behind). Everyone else but the healers, melee included, kills the knights one at a
+  time: the most hurt first, a mesmerized one last. He and the knights are unchanged.
+- **The Crypt Lord's muster stays off his patrol, and his court is cleared again before he is pulled** (tests only).
+  The same raid (owner's PC, 2026-11-15, build `1dc66b6`) was lost at him with him at 99%:
+  - A forerunner's muster was moved off where he stood to a spot 700 from his patrol and 355 from a court fate's
+    bearer. That fate's bearer, 430 from his patrol, then fought the raid where it stood. He walked past and joined, and
+    his court ran to the raid. In the minute to 02:57:27 the raid took 204,613 damage and lost 99 raiders in two
+    minutes.
+  - The route then mustered for him at 27,960,40,280, 115 from his patrol and 194 from a court reckoned soul, with most
+    of his court alive. Deaths there counted as wipes at 03:00:10 and 03:04:54, and the raid ended (31 of the 296 deaths
+    from 02:55 to 03:05 were his; the rest were his court's).
+  - Now no muster, his own included, lies within 1,100 of his patrol loop while he walks it, or within 500 of a court
+    monster. When the raid musters for him again after a skirmish or a wipe, the route clears his living court first, as
+    in Darkness Falls. He and his court are unchanged.
 
 **The play test's sweep (GM only).** `/epictest sweep start [all|event,event] [guest]` runs every raid once, one after
 another, on the server alone: the 21 raid targets in the game's order, Darkness Falls last. Each raid runs at its period

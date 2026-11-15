@@ -305,6 +305,52 @@ namespace DOL.UnitTests
             Assert.That(T.DungeonAdvice(new(wizard, lord, live, 0, true, 1_000, Wizard)), Is.Null, "no court in his fight: everyone on him");
         }
 
+        [Test]
+        public void NoMusterLiesByTheCryptLordsPatrolOrHisCourt()
+        {
+            // Owner's PC, build 1dc66b6, 2026-11-15: his muster was 27,960,40,280, 115 from his patrol and 194 from a court
+            // reckoned soul at 28,112,40,159; he and his court walked into it twice.
+            var (lord, court, live) = CryptLordRoom(28112, 40159);
+            Vector3 oldMuster = new(27960, 40280, 15375);
+            var dangers = RealmRaidDungeonRoute.RuleMusterDangers(live).ToList();
+            Assert.That(RealmRaidDungeonRoute.InBossDanger(oldMuster, dangers), Is.True, "the 03:00 muster is in his patrol's reach");
+            Assert.That(dangers.Where(d => d.Name == lord.Name).Select(d => d.Radius).Distinct(), Is.EqualTo(new[] { (float)T.CryptLordMusterClearance }));
+            Assert.That(T.CryptLordMusterClearance, Is.GreaterThan(T.CryptLordCourtLink), "a court fight at the muster stays out of his link");
+            // Every point of his loop, the closing leg too, is covered.
+            foreach (Vector3 corner in T.CryptLordPatrol)
+                Assert.That(T.CryptLordPatrolSamples.Min(p => Vector3.Distance(p, corner)), Is.LessThan(1));
+            Vector3 closing = Vector3.Lerp(T.CryptLordPatrol[^1], T.CryptLordPatrol[0], 0.5f);
+            Assert.That(T.CryptLordPatrolSamples.Min(p => Vector3.Distance(p, closing)), Is.LessThanOrEqualTo(T.CryptLordPatrolSampleStep));
+            // East of his rectangle, where the raid came from, a muster is clear of him (and of the court monster).
+            Assert.That(RealmRaidDungeonRoute.InBossDanger(new(29700, 40700, 15375), dangers), Is.False);
+            // The court monster's own spot.
+            Assert.That(dangers.Any(d => d.Name == court.Name && d.Radius == T.CourtMusterClearance), Is.True);
+            // A muster walks back along the walk to the raid until it is clear (SafeMusterAlong).
+            Vector3[] walk = [new(28112, 40400, 15375), new(31000, 40700, 15375)];
+            Vector3? safe = RealmRaidDungeonRoute.SafeMusterAlong(walk, new(28112, 40159, 15375), RealmRaidDungeonRoute.FinalMusterStandOff, dangers, null);
+            Assert.That(safe, Is.Not.Null);
+            Assert.That(RealmRaidDungeonRoute.InBossDanger(safe.Value, dangers), Is.False);
+            Assert.That(T.CryptLordPatrolSamples.Min(p => Vector3.Distance(p, safe.Value)), Is.GreaterThan(T.CryptLordMusterClearance));
+            // In a fight he walks no loop; dead, his court is trash.
+            lord.Fighting = true;
+            Assert.That(RealmRaidDungeonRoute.RuleMusterDangers(live).Any(d => d.Name == lord.Name), Is.False);
+            Assert.That(RealmRaidDungeonRoute.RuleMusterDangers(live).Any(d => d.Name == court.Name), Is.False, "his fight is on");
+            lord.Fighting = false;
+            lord.Dead = true;
+            Assert.That(RealmRaidDungeonRoute.RuleMusterDangers(live), Is.Empty);
+        }
+
+        [Test]
+        public void TheCryptLordIsNotPulledAgainWhileHisCourtLives()
+        {
+            var (lord, court, live) = CryptLordRoom(29714, 41493);
+            Assert.That(T.ClearsAgainBeforePull(lord), Is.True, "after a skirmish or a wipe his court is cleared before he is pulled");
+            Assert.That(T.ClearFirstOwner(court, live), Is.SameAs(lord));
+            Assert.That(T.ClearsAgainBeforePull(court), Is.False);
+            var ilron = Npc<TestIlron>(0, 0, 0);
+            Assert.That(T.ClearsAgainBeforePull(ilron), Is.False, "only where a rule says so (and in Darkness Falls, as before)");
+        }
+
         // ---- a route rule never maps a fighting monster onto the raid's target ---------------------------------------
 
         [Test]
