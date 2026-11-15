@@ -1,9 +1,11 @@
-# Living Server 1.2: repository description, tagline and Reddit post (draft)
+# Living Server 1.2: launch copy (draft)
 
-Copy for the owner to use when 1.2 is published. The same rules as the release notes apply: nothing here names the
-Easter eggs or the project's internal vocabulary, nothing tests-only is described as proven, and credit is light: one
-general thanks, never per feature (owner, 2026-11-14; the licence notices are in THIRD_PARTY.md and the changelog). "Every big boss"
-holds only once #220 and #222 are merged; without them, use "the big bosses of Darkness Falls, Midgard and Hibernia".
+Copy for the owner to use when 1.2 is published: the repository description, the tagline, the elevator pitch, a store
+page blurb, a launch post for GitHub Discussions and the README banner, and the r/daoc post with three titles to choose
+from. The same rules as the release notes apply: nothing here names the Easter eggs or the project's internal
+vocabulary, nothing tests-only is described as proven, and credit is light: by username, in the credits of the notes
+and the Reddit post only, never per feature (owner, 2026-11-14; the licence notices are in THIRD_PARTY.md and the
+changelog). Every count is the release notes' own; if a count changes there, change it here too.
 
 ## Repository description (one line, under 350 characters)
 
@@ -13,36 +15,95 @@ epic bosses at full strength with a raid plan for each, a story for every dungeo
 
 (The line above is 336 characters, spaces included.)
 
-## Release tagline
+## Tagline
 
-**Where Legends Wake.** The realm's storyteller tells the dragon's tale in /faction, a horn sounds across the screen,
-and your realm's raid begins to gather, and this time the boss plays by its own rules. Living Server 1.2 brings the
-epic encounters back at full strength, with a raid plan for every big boss from Legion to the Glacier's icelords, gives
-107 places and 578 bosses a story checked against Mythic's own Camelot Herald, and sends the bots to play with you:
-they invite you, lead your group, offer you a raid spot, and a few friends can now join your world.
+**Where Legends Wake.** The bosses remember their rules. The realm remembers their stories. And the bots want you in
+the group.
 
-## Reddit post (r/daoc)
+Longer form, for the release's opening line or a card:
 
-**Title:** Living Server 1.2 "Where Legends Wake": the epic encounters at full strength, a story for every boss, and
-bots that invite you (free add-on for Offline DAoC)
+The epics are back at full strength, every big boss has a raid plan, and every one of 578 bosses has a story. A
+storyteller tells the dragon's tale in /faction, a horn sounds across your screen, and your realm's raid starts to
+gather. This time it saves you a seat.
 
-Living Server 1.2 is out. It's a free add-on for Offline DAoC 0.37 that makes the single-player game feel like a live
-2003 server.
+## Elevator pitch (2-3 sentences)
 
-The big one: the epic encounters are back at full strength. The dragons throw raiders over their lairs again, Kula
-and Tuscar heal each other, Kvasir drinks cold, and the bosses pick their targets from the whole raid, bots included.
-Every big boss has a raid plan, Darkness Falls and Legion among them, built from the boss scripts and from the
-raid guides people wrote in 2002-2003.
+Living Server turns single-player Offline DAoC into a live 2003 server: thousands of bots with personalities, guilds
+and memories who talk like the era, run their own keep sieges and raid their own dragons. Version 1.2 brings the epic
+encounters back at full strength, gives every big boss a raid plan and every boss a story, and lets the bots, and a
+few friends, play alongside you.
 
-Every dungeon, dragon and boss also has a story: 107 places and 578 bosses, checked against 832 Camelot Herald
-articles. Loremasters in each capital, books, a Bestiary, and a storyteller who tells the boss's tale in /faction
-before the horn calls the raid.
+## Store page blurb (60 words)
 
-And the bots play with you now: they invite you, lead groups you can just follow, offer you a raid spot, and a few
-friends can join your world (experimental).
+Dark Age of Camelot as it felt in 2003, played alone or with a few friends. Bots argue in /faction, recruit you into
+their guilds, take keeps and raid dragons on their own. In Living Server 1.2 the epic bosses fight by their original
+rules, every big boss has a raid plan, and 578 bosses have a story. Free, always.
 
-It's a beta: the new raid plans pass their automated tests but are new to real nights, and the notes say plainly
-which fights bot raids still lose. Built on shadowofze's Offline DAoC; thanks to rambodolphin13, stefanrows,
-lometur, Nikse77, Cancain, ryan-grafana and the emulator community. Free, non-commercial, not affiliated with EA or Broadsword.
+## Launch post (GitHub Discussions, and the README banner)
+
+**README banner (one line):**
+
+> **Living Server 1.2 "Where Legends Wake" is out:** the epics at full strength, a raid plan for every big boss, a story
+> for every boss, and bots that invite you. [Download](link to the release) · [What's new](link to the release notes)
+
+**Discussions post:**
+
+> **Living Server 1.2: Where Legends Wake**
+>
+> 1.2 is Living Server's biggest update yet.
+>
+> **The epics fight by their own rules again.** For a long time the hardest bosses ran softened so bot raids could win.
+> 15 of their original rules are back on: the dragons' wing gust, Kula and Tuscar's twin heal, Kvasir's cold heal,
+> Morbus's swarm, Aroon's Scaiths in order. Throws, jails and glares now pick bots as well as you.
+>
+> **The raids learned the fights.** 111 encounters have a raid plan, 108 of them new or reworked in 1.2, built from
+> every boss script in the game and from the raid guides of 2002 and 2003. Darkness Falls' high lords and princes,
+> Legion, Apocalypse, the Glacier's icelords, Galladoria's primals, and 16 open-world giants that now draw a realm raid
+> of their own.
+>
+> **Every boss has a story.** 578 bosses and 107 places, checked against 832 Camelot Herald articles. Loremasters in
+> each capital, lore books, a Bestiary, bosses that speak, and a storyteller who tells the boss's tale before the horn
+> calls the raid.
+>
+> **The bots play with you.** Gamebot leaders invite you and run the group, raid leaders save you a seat, RvR bots
+> notice you the way a player would, and a few friends can join your world (experimental).
+>
+> **Straight talk:** it's a beta. The new raid plans pass their automated tests but are new to real nights, and the
+> release notes say plainly what has been seen on a real install and which fights bot raids still lose. Tell us what
+> you find: reports with the `FORK_BUILD` line from `runtime\server\logs\server.log` help most.
+>
+> [Download 1.2](link to the release) · [Release notes](link to the release notes) ·
+> [Known issues](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/KNOWN-ISSUES.md)
+
+## r/daoc post
+
+**Title options:**
+
+1. Living Server 1.2: the epics fight by their own rules again, and the bots have a raid plan for every big boss
+2. Living Server 1.2 "Where Legends Wake": Kula and Tuscar heal each other again, Legion has a main tank, and 578 bosses
+   have a story
+3. Offline DAoC + Living Server 1.2: bots that raid Darkness Falls with a plan, tell the boss's tale, and save you a
+   seat
+
+**Post:**
+
+Living Server 1.2 is out: a free add-on that makes single-player Offline DAoC 0.37 feel like a live 2003 server.
+
+The big change: the epics fight by their own rules again. The hardest bosses used to run softened so bot raids could
+win. Now the dragons throw raiders over their lairs, Kula and Tuscar heal each other, Kvasir drinks cold, and the
+bosses pick targets from the whole raid, bots included.
+
+So the raids learned. Every big boss has a plan, built from the scripts and the raid guides of
+2002-03: Legion gets a main tank, Saeor's wounded step out, Agmundr's raid spreads for his cold blast.
+
+Every boss also has a story: 578 of them, checked against 832 Herald articles. The storyteller tells it in /faction
+before the horn sounds.
+
+The bots play with you too: they invite you, lead the group, save you a raid spot. A few friends can join your world
+(experimental).
+
+It's a beta: the new plans pass their tests but are new to real nights; the notes say which fights bots still lose.
+Built on shadowofze's Offline DAoC; thanks to rambodolphin13, stefanrows, lometur, Nikse77, Cancain and ryan-grafana.
+Free; not affiliated with EA or Broadsword.
 
 [link to the release]
