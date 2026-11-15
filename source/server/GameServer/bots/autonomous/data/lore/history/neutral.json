@@ -313,9 +313,9 @@
      "source": "source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs"
     },
     {
-     "text": "Darkness Falls has no raid AI in Offline DAoC; the court's named demons have no scripted mechanics.",
+     "text": "Darkness Falls' named demons and Legion have scripted mechanics of their own, and since Living Server 1.2 the realms' raids fight them with raid plans of their own.",
      "provenance": "game",
-     "source": "docs/encounters/epic-encounters.json"
+     "source": "docs/encounters/epic-encounters.json; source/server/GameServer/bots/autonomous/EpicEncounterTactics.DarknessFalls.cs"
     },
     {
      "text": "The court's present Roll is the Tenth.",
