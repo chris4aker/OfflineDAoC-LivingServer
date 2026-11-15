@@ -85,6 +85,21 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+**Battleground and RvR kill quests count enemy gamebots** (tests only; owner's question 2026-11-15: "are there quests in the
+BG? Are those functioning correctly?").
+
+- **Killing an enemy realm's gamebot counts as an enemy player kill.** Pazz's battleground dailies ("Fen's New Friends" in
+  Thidranki and Caledonia) and the Atlas realm quests (the realm's daily and weekly player kills, Every Little Bit Helps,
+  For the Realm, the Darkness Falls weekly, the old-frontiers monthly and the hardcore "kill a player") counted only a real
+  player victim, and in an offline world the enemy players are gamebots, so none of them could be finished. One rule
+  (`RvrQuestTargets.IsEnemyPlayer`) now counts a real player as before and a dying gamebot of another realm; every other
+  condition (realm, con, region, steps) is unchanged, and a kill is credited as before (your own, your pet's or
+  companion's, an invited gamebot's, or a groupmate's in range). A bot's pet doesn't count, as a player's pet never did,
+  and a gamebot that leaves the world mid-fight (a stable ride, a port, a despawn) is not a kill.
+- **Caledonia's Midgard kill quest can be taken.** It asked for levels 20-24 (copied from Thidranki upstream) and looked
+  for a giver named "Rey", so a second Pazz stood in Midgard's portal keep; it now asks for 34-39 like its Albion and
+  Hibernia twins and shares the one Pazz.
+
 **Bots no longer follow the player into another realm** (tests only; owner's decision 2026-11-15: "No, bots should not
 follow a teleport into another realm."; owner's PC, build `1dc66b6`, 2026-11-15 ~01:46: a GM `/jump` to a Midgard raider in
 Tuscaran Glacier carried all six Albion gamebots of a bot-led party into Midgard's Kvasir fight).
