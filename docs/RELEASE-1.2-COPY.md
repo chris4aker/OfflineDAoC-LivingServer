@@ -11,9 +11,9 @@ changelog). Every count is the release notes' own; if a count changes there, cha
 
 Living Server: a free add-on for Offline DAoC 0.37 that makes single-player Dark Age of Camelot feel like a live 2003
 server. Bots with personalities, voices and memories, guilds, keep sieges and realm raids they run themselves, the
-epic bosses at full strength with a raid plan for each, a story for every dungeon, and one-click Setup.
+epic bosses back on most of their rules with a raid plan for each, a story for every dungeon, and one-click Setup.
 
-(The line above is 336 characters, spaces included.)
+(The line above is 347 characters, spaces included.)
 
 ## Tagline
 
@@ -22,29 +22,30 @@ the group.
 
 Longer form, for the release's opening line or a card:
 
-The epics are back at full strength, every big boss has a raid plan, and every one of 578 bosses has a story. A
-storyteller tells the dragon's tale in /faction, a horn sounds across your screen, and your realm's raid starts to
-gather. This time it saves you a seat.
+The epics are back on most of their own rules, every big boss has a raid plan, and every one of 578 bosses has a
+story. A storyteller tells the dragon's tale in /faction, a horn sounds across your screen, and your realm's raid starts
+to gather. This time it saves you a seat.
 
 ## Elevator pitch (2-3 sentences)
 
 Living Server turns single-player Offline DAoC into a live 2003 server: thousands of bots with personalities, guilds
 and memories who talk like the era, run their own keep sieges and raid their own dragons. Version 1.2 brings the epic
-encounters back at full strength, gives every big boss a raid plan and every boss a story, and lets the bots, and a
-few friends, play alongside you.
+encounters back to most of their own rules, gives every big boss a raid plan and every boss a story, and lets the
+bots, and a few friends, play alongside you.
 
 ## Store page blurb (60 words)
 
-Dark Age of Camelot as it felt in 2003, played alone or with a few friends. Bots argue in /faction, recruit you into
-their guilds, take keeps and raid dragons on their own. In Living Server 1.2 the epic bosses fight by their original
-rules, every big boss has a raid plan, and 578 bosses have a story. Free, always.
+Dark Age of Camelot as it felt in 2003, alone or with a few friends. Bots argue in /faction, recruit you into
+their guilds, take keeps and raid dragons on their own. In Living Server 1.2 the epic bosses fight by most of their
+original rules, every big boss has a raid plan, and 578 bosses have a story. Free.
 
 ## Launch post (GitHub Discussions, and the README banner)
 
 **README banner (one line):**
 
-> **Living Server 1.2 "Where Legends Wake" is out:** the epics at full strength, a raid plan for every big boss, a story
-> for every boss, and bots that invite you. [Download](link to the release) · [What's new](link to the release notes)
+> **Living Server 1.2 "Where Legends Wake" is out:** the epics back on most of their own rules, a raid plan for every
+> big boss, a story for every boss, and bots that invite you. [Download](link to the release) · [What's new](link to
+> the release notes)
 
 **Discussions post:**
 
@@ -52,15 +53,15 @@ rules, every big boss has a raid plan, and 578 bosses have a story. Free, always
 >
 > 1.2 is Living Server's biggest update yet.
 >
-> **The epics fight by their own rules again.** For a long time the hardest bosses ran softened so bot raids could win.
-> 15 of their original rules are back on, among them Kula and Tuscar's twin heal, Kvasir's cold heal and Aroon's
-> Scaiths in order, and the dragons' wing gust and Morbus's swarm are back too. Throws, jails and glares now pick bots
-> as well as you.
+> **The epics fight by most of their own rules again.** For a long time the hardest bosses ran softened so bot raids
+> could win. 15 of 20 restored original rules are on by default, among them Kula and Tuscar's twin heal, Kvasir's cold
+> heal and Aroon's Scaiths in order, and the dragons' wing gust and Morbus's swarm are back too. Govannon has 200,000
+> health by default; the original 300,000 is one setting away. Throws, jails and glares now pick bots as well as you.
 >
-> **The raids learned the fights.** 111 encounters have a raid plan, 109 of them new or reworked in 1.2, built from
-> every boss script in the game and from the raid guides and forum threads of 2002 to 2006. Darkness Falls' high lords
-> and princes, Legion, Apocalypse, the Glacier's icelords, Galladoria's primals, and 16 open-world giants that now draw
-> a realm raid of their own.
+> **The raids learned the fights.** 111 encounters have a plan of their own, 109 of them new or reworked in 1.2, built
+> from every boss script in the game and from the raid guides and forum threads of 2002 to 2006. Darkness Falls' high
+> lords and princes, Legion, Apocalypse, the Glacier's icelords, Galladoria's primals, and 16 open-world giants that
+> now draw a realm raid of their own.
 >
 > **Every boss has a story.** 578 bosses and 107 places, checked against 832 Camelot Herald articles. Loremasters in
 > each capital, lore books, a Bestiary, bosses that speak, and a storyteller who tells the boss's tale before the horn
@@ -80,7 +81,7 @@ rules, every big boss has a raid plan, and 578 bosses have a story. Free, always
 
 **Title options:**
 
-1. Living Server 1.2: the epics fight by their own rules again, and the bots have a raid plan for every big boss
+1. Living Server 1.2: the epics fight by most of their own rules again, and the bots have a raid plan for every big boss
 2. Living Server 1.2 "Where Legends Wake": Kula and Tuscar heal each other again, Legion has a main tank, and 578 bosses
    have a story
 3. Offline DAoC + Living Server 1.2: bots that raid Darkness Falls with a plan, tell the boss's tale, and save you a
@@ -90,9 +91,9 @@ rules, every big boss has a raid plan, and 578 bosses have a story. Free, always
 
 Living Server 1.2 is out: a free add-on that makes single-player Offline DAoC 0.37 feel like a live 2003 server.
 
-The big change: the epics fight by their own rules again. The hardest bosses used to run softened so bot raids could
-win. Now the dragons throw raiders over their lairs, Kula and Tuscar heal each other, Kvasir drinks cold, and the
-bosses pick targets from the whole raid, bots included.
+The big change: the epics fight by most of their own rules again (15 of 20 restored rules are on). The hardest
+bosses used to run softened so bot raids could win. Now the dragons throw raiders over their lairs, Kula and Tuscar
+heal each other, Kvasir drinks cold, and the bosses pick targets from the whole raid, bots included.
 
 So the raids learned. Every big boss has a plan, built from the scripts and the raid guides of
 2002-06: Legion gets a main tank, Saeor's wounded step out, Agmundr's raid spreads for his cold blast.

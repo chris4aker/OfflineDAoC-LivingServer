@@ -7,12 +7,17 @@ exe's SHA-256. The zip's SHA-256 is filled in by hand when publishing. Publish i
 launcher's update check reads GitHub's latest release, which leaves pre-releases out. Lines marked "[if it lands: ...]"
 describe work still on its own branch: keep them only if it is merged before the tag, and drop the marker. Lines marked
 "[owner: ...]" are for the owner to fill in before publishing. Nothing here names the Easter eggs or the project's
-internal vocabulary. Polished on 2026-11-14 (evening) for the launch, covering everything merged into 1.2 through #225:
+internal vocabulary. Polished on 2026-11-14 (evening) for the launch, covering everything merged into 1.2 through #225
+(and since then #226, #228, #229 and #231; #230 is still open):
 the raid flow and boss tactics from the sweep, the Darkness Falls raid AI, Legion, the raid plans for every realm's big
 bosses and the open-world bosses, the route blockers, the period research, the upstream boss fixes and the epic armor
 rule. Every figure was checked on 2026-11-14 against integration/1.2 at 1dc66b6 (#225): the encounter counts against
 docs/encounters/EPIC-ENCOUNTERS.md and epic-encounters.json, the lore and tale counts against the lore and chat files,
-the settings against their defaults, and "new in 1.2" against Beta 1.1.3. Lines marked "[owner: confirm ...]" are
+the settings against their defaults, and "new in 1.2" against Beta 1.1.3. Rechecked on 2026-11-15 against
+integration/1.2 at b56f62ff7 (#231): the epic settings' defaults in ServerProperties.cs and EpicEncounterMechanics.cs
+(20 restored rules with a setting of their own, 15 on; Govannon 200,000 health unless `epic_govannon_full_health` is
+on) and the encounter counts (202 fought, 105 with tactics on the routes and open-world raids). In-game results name
+their build. Lines marked "[owner: confirm ...]" are
 results from the owner's PC that the repository has no record of; confirm or drop them before publishing. Owner's
 decision (2026-11-14): credit lightly, by project and username in the Credits section only, never per feature or
 per piece of code; the licence notices stay in THIRD_PARTY.md and the changelog. The repository description, the
@@ -41,9 +46,10 @@ to 1.1.4.
 
 ### What's new in 1.2
 
-- **Full-strength epics.** 15 of the bosses' original rules are back on. Throws, jails and glares now land on bots too.
-- **A raid plan for every big boss.** 111 encounters, 109 of them new or reworked in 1.2, from Legion to the Glacier
-  Giant.
+- **Most of the epics' own rules, back.** 15 of 20 restored original rules are on by default. Throws, jails and
+  glares now land on bots too.
+- **A raid plan for every big boss.** 111 encounters with a plan of their own, 109 of them new or reworked in 1.2, from
+  Legion to the Glacier Giant.
 - **37 raids on the schedule.** 16 open-world giants now draw a realm raid of their own.
 - **Darkness Falls, with a battle plan.** High lords, princes, Legion, and the long walk out of Behemoth's hall.
 - **A story for every boss.** 578 bosses and 107 places, more than a million words, checked against 832 Camelot
@@ -51,15 +57,17 @@ to 1.1.4.
 - **Bots that play with you.** They invite you, lead the group, and save you a raid spot.
 - **Bring your friends.** Host your bot world for a few friends, and take your character to theirs. Experimental.
 
-### The epics, at full strength
+### The epics, back on most of their own rules
 
-For years the hardest bosses ran softened so that bot raids could win. Not anymore.
+For years the hardest bosses ran softened so that bot raids could win. In 1.2 most of that softening is gone.
 
 - **The old rules are back.** The horsemen heal when dragged from their rooms. Morbus hides behind his swarm. The
   Skeletal Sacristan walks his round and never stops. Soul Reckoner shrugs off damage while a soul lives. Aroon's Scaiths
   die in order or not at all. Beatha heals Xaga. Kvasir drinks cold. King Tuscar and Queen Kula heal each other.
-- **15 of 20 restored rules are on**, each a server setting of its own. Funus's class and weapon puzzle, the original
-  fire patches, Govannon's full 300,000 health, his full heal at 50% and Easmarach's endless heal on the falls stay off.
+- **15 of 20 restored rules are on by default**, each a server setting of its own. Five stay off: Funus's class and
+  weapon puzzle, the Fire primal's original fire patches, Easmarach's endless heal on the falls, Govannon's full heal
+  at 50% (he heals to 75%), and Govannon's full health: he has 200,000 by default, and the original 300,000 is one
+  setting away (`epic_govannon_full_health`).
 - **Bosses pick from the whole raid.** Throws, glares, debuffs and "random target" spells used to pick real players
   only. Now they pick you, your companions and the gamebots alike. With bots around you are one target among many,
   never chosen more often than before.
@@ -81,9 +89,10 @@ You can't out-damage a puzzle. So the raids learned the fights, the way a 2003 r
 
 Every boss script in the game was read into one catalog: 214 scripts, 238 encounters, 862 rules, each checked by hand
 against its script. Bot raids now fight 202 of those 238 encounters (the other 36 are not raid content), and 111 have
-a plan of their own. The plans were set against what the period wrote down: the raid guides on the VN Boards,
-FreddysHouse and Allakhazam threads, the Prima guide's maps and the Herald itself, much of it recovered from the web
-archive. Where the period and the script disagree, the bots play the script.
+a plan of their own: 105 on the dungeon routes and in the open-world raids, the three dragons, and three Fomor City
+bosses whose plans wait for a raid there. The plans were set against what the period wrote down: the raid guides on
+the VN Boards, FreddysHouse and Allakhazam threads, the Prima guide's maps and the Herald itself, much of it recovered
+from the web archive. Where the period and the script disagree, the bots play the script.
 
 **Darkness Falls.** On the owner's PC (build e3b8238), before any of this existed, Midgard's bots killed 41 named and
 then Legion, in one attempt. Hibernia's lost to him twice. Now both realms go in with a plan.
@@ -268,7 +277,8 @@ Your bot world has always been yours alone. Now a few friends can join it, from 
   days, routine bot travel has its own two-day file, and every log has a limit.
 - **Commands typed in the server window work again**, the patcher refuses an update that names a file outside the game
   folder, and **Lean server memory** is a new test option in the launcher (off by default).
-- **For testers:** `/epictest sweep` (GM only) runs every raid once, back to back, with the GM seated as a guest.
+- **For testers:** `/epictest sweep` (GM only) runs every raid once, back to back, with the GM seated as a guest. If the
+  server stops mid-sweep, the guest's GM level and realm come back at the next start or login (tests only).
 
 ### Everything Living Server adds to Offline DAoC
 
@@ -354,14 +364,14 @@ only".
   - Bot-led groups: a gamebot leader's invite, following it, `/lead` and `/lead bot`, leaving and the replacement call,
     and the party letting you go after half an hour when you never come (builds 3 to 5).
   - A raid leader's invite to Golestandt, accepted, and a seat in the raid (build 5).
-  - The boss's tale, then the call with its horn, before a raid of the game's own (builds 3 and 4).
+  - The boss's tale, then the call with its horn, before a raid of the game's own (builds 3, 4 and 1dc66b6).
   - A tale asked for in plain words, with the storyteller silent about anything else until it ended (build 4).
   - After a wipe, the raid going back in waves (build 3). On build e3b8238 the waves still fired, but raiders released
     in town and took 20 to 30 minutes to get back, and the early pull counted only the raiders already inside (16 of
     18 in a raid of 118). Both are reworked since (#213, tests only).
   - [owner: confirm against the PC logs; PLAYED-CHECK-1.2.md lists these raids as "Not run" on the candidate line.]
     Raids won: Golestandt (build 5, second attempt), Cuuldurach (build 5, a raid the game opened itself), Marfach
-    Caverns (builds 2, 4 and 5) and Dodens Gruva (build 5). Bots beat Spindler Broodmother for the first time (build 5).
+    Caverns (builds 2, 4 and 5) and Dodens Gruva (build 5).
     Raids lost: Galladoria at the Organic-Energy Mechanism, Trollheim at Nosdoden, and Caer Sidi cut off by the old
     four-hour limit with 12 named down (build 5).
   - Midgard's raid won Summoner's Hall, Grand Summoner Govannon included (build 3e64140, 11 November).
@@ -372,6 +382,11 @@ only".
     and the sweep's raid fixes): Midgard's Darkness Falls raid, which the game opened itself, killed 41 named and Legion
     in one attempt, with no wipe. Hibernia's lost to Legion twice (lowest 92% and 60%). Caer Sidi, Tuscaran Glacier and
     Galladoria were lost, and Albion's Summoner's Hall was never reached.
+  - The night of 14 to 15 November (build 1dc66b6, bots only): Albion's automatic raid, a raid the game opened itself
+    with the storyteller's tale first and then the horn call, beat Aidon the Archwizard in Hall of the Corrupt in 71
+    minutes with no wipe. In the sweep, Galladoria's raid killed Spindler Broodmother, the first Broodmother kill on the
+    1.2 candidate line, and then stalled behind Easmarach's falls. Albion's Summoner's Hall raid lost at Aidon on its
+    way in (two wipes, 58 minutes).
 - **On a real install** (an overnight run of development build 76600af7, bots only, 7.8 hours): Fornfrusenen, the
   Council Vagn and Nokkvi, Torst and Hurika were killed; Tuscaran Glacier was lost at Icelord Agmundr. Bot raids skipped
   Scurceol Hyrde: they could not shoot his orbs. In the battlegrounds, 168 of 169 storms on a keep lord failed and no
@@ -382,15 +397,19 @@ only".
 
 ### Known issues (it's a beta)
 
-- **Fights the bot raids still lose.** [owner: the final list from the new sweep, filled in before publishing. On the
-  last sweep (build e3b8238, 2026-11-14) bot raids lost Caer Sidi, Tuscaran Glacier, Galladoria and Hibernia's
-  Darkness Falls (at Legion), and never reached Albion's Summoner's Hall. Known causes still open then: Krondon's Lyft
-  Miht room (a tests-only fix since), Golestandt's second attempts, Summoner Roesia.] If a fight is too hard on your world, each restored rule
-  is a server setting of its own and can be switched off alone.
-- **The new raid plans are tests only.** The Darkness Falls raid AI, Legion's plan, the plans for every realm's big
-  bosses and the open-world bosses, the 16 open-world raids, the route fixes and the raid fixes after the sweep of
-  14 November pass their automated tests but have not been seen on a real install. The open-world raids' hubs and
-  routes have not been walked on a real install either. The same goes for the epic armor rule and the
+- **Fights the bot raids still lose.** On build 1dc66b6 (14 to 15 November), Galladoria stalled behind Easmarach's
+  falls after Spindler Broodmother died [if it lands: a fix since (#230), tests only], and Albion's Summoner's Hall
+  raid lost at Aidon on its way in, two wipes in 58 minutes (since then whoever Aidon chases out of his room leads him
+  back: tests only). On build e3b8238 (14 November) Caer Sidi, Tuscaran Glacier and Hibernia's Darkness Falls (at
+  Legion) were lost. [owner: tonight's sweep, filled in before publishing: Tuscaran Glacier, Caer Sidi, Krondon,
+  Hibernia's Summoner's Hall, Trollheim and Hibernia's Darkness Falls. Each line names its build.] Known causes still
+  open: Krondon's Lyft Miht room (a tests-only fix since), raids leaving a boss for the monsters around it (High Lord
+  Oro, Gatekeeper Dommel, High Lord Baln), Golestandt's second attempts and Summoner Roesia. If a fight is too hard on
+  your world, each restored rule is a server setting of its own and can be switched off alone.
+- **The new raid plans are mostly tests only.** The Darkness Falls raid AI, Legion's plan, the plans for every realm's
+  big bosses and the open-world bosses, the 16 open-world raids, the route fixes and the raid fixes after the sweep of
+  14 November pass their automated tests; beyond the first raids on build 1dc66b6 (see How it was tested) they have
+  not been seen on a real install. The open-world raids' hubs and routes have not been walked on a real install either. The same goes for the epic armor rule and the
   boss script fixes. Behemoth is never fought, Morgana has no raid (she was never a raid boss), and Fomor City has no
   raid of its own.
 - **Parts of 1.2 have only been tested automatically.** The bot-led groups, the tales and several raids have been seen
