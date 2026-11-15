@@ -3,8 +3,8 @@
 For players. What to expect, what hasn't been checked in game, and known problems. The full list
 of changes is in [CHANGELOG-LIVING-SERVER.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/CHANGELOG-LIVING-SERVER.md).
 The Living Server was called the Social Expansion up to 0.37-se.2; Beta 1.0 was that build, and Beta 1.1
-(2026-10-29) added the talking update, the living world, 2003-style names, the one-click Setup and the fixes
-taken from other forks and from Offline DAoC 0.38.
+(2026-10-29) added bots that talk in chat like players, a busier world, 2003-style names, the one-click Setup and the
+fixes taken from other forks and from Offline DAoC 0.38.
 
 A feature here counts as working only once it has been seen working on a real install. Until then it says "tests
 only".
@@ -92,12 +92,11 @@ These apply even with every Living Server switch off:
 - **Sieges at a normal bot count.** Their timers really run from 1.1 on (they were off in every earlier build),
   so musters, marches, repels and the four-hour cap fire where they used to be skipped. Checked only on the test
   copy at about 1,000 bots.
-- **Three fixes to raid and storyline moments** came after the last play test: Leeroy jumping the pull, his
-  /faction shout and his after-raid comment; a storyline protagonist dying mid-episode.
+- **A few fixes to raid and chat moments** came after the last play test and are tests only.
 - **Smaller rosters:** automatic raids open only when a realm has 80 eligible level-50 bots online, so a small
   roster rarely gets them, and a roster filled only with the Lv.1 and Lv.50 buttons has no bots between levels 20
   and 49 until they level.
-- **The talking update's own in-game list** (combat calls in a real fight, a keep's news retold a minute later,
+- **Bot chat's own in-game list** (combat calls in a real fight, a keep's news retold a minute later,
   /lfg and /trade in the original client, chat volume at 900 bots a realm) is still being worked through.
 
 ## Beta 1.1.2 and 1.1.3: updates from the launcher and Setup
@@ -189,8 +188,8 @@ meetup fix drop two no-shows (in the server log).
   Windows memory a day; the server's own memory stays flat (about 1.7 GB live at 1,800 bots).
 - **Bots in your own guild (0.37):** inviting gamebots into your guild is now the base game's feature. Those
   bots don't count for your guild's merit, realm points, keep claims or buffs (the base game's choice); bots in
-  a bot-run guild still do for theirs. With bot voices on, bots in your guild talk from the voices corpus;
-  with them off, they use the base game's own lines. Not played in game yet.
+  a bot-run guild still do for theirs. With bot voices on, bots in your guild talk with Living Server's
+  own lines; with them off, they use the base game's own lines. Not played in game yet.
 - **Raids:** Darkness Falls, Legion and the other level 70+ encounters are won on numbers: their special
   mechanics aren't scripted for bots, and a raid can still lose. Raided in game so far: the three dragons,
   Galladoria, Summoner's Hall, Darkness Falls, Avalon City, Crystal Cave, Marfach Caverns and Hall of the

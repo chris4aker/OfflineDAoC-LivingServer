@@ -90,7 +90,17 @@ says "today").
 - Out-of-era content: Trials of Atlantis (Atlantis, artifacts, master levels, ML), New Frontiers (towers,
   Molvik, Leirvik, Proving Grounds, Lion's Den, Hills of Claret, Killaloe, Braemar, Wilton), Catacombs
   (champion levels, CL, catacombs classes), Mythic, real websites, EverQuest by name (the builder bans it),
-  World of Warcraft.
+  World of Warcraft. The one exception is the era rule below.
+
+## The era: Trials of Atlantis and Catacombs as rumours only (owner, 2026-11-15)
+
+Trials of Atlantis and Catacombs may appear **only as rumours, from a lore perspective**: something a bot has heard
+about a sunken land or what lies under the cities, the way a 2003 player heard of a coming expansion. **Never as played
+content.** No bot has been there, levels there, fights there, owns or wants an artifact, has master levels or champion
+levels, or plays a Catacombs class, and no line suggests the player can go. New Frontiers stays out entirely.
+
+The corpus builder (`tools/bot-voices/build_corpus.py`, `BANNED`) still refuses `atlantis`, `catacombs`, `artifact` and
+the rest, so a rumour line needs an exception there first (a code change, made with the line).
 - Promises the server can't keep: a bot must not say it is inviting, trading or coming unless the line is
   written for a kind whose code does that (say "pst me", "inv me", "i might be free later" instead).
 

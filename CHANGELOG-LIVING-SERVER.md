@@ -1374,11 +1374,11 @@ chat code) and passed both.
   bots says nothing. /say lines carry their ceiling (`cap=`), and `chat_audit.py` prints the /say lines a minute and fails a
   log with a minute of /say above its ceiling around the player. On the owner's PC with RC2 (6a83c038), at a busy
   bind: 1.3-2.6 /say lines a minute.
-- **One greeting per bot per meeting (after RC1).** Cabowyn said "hey Manawatch! good to see you again" and a second later
-  "hey hey Manawatch, City of Camelot treat you well after i left?": a GM test had cleared the greeting cooldowns while the
+- **One greeting per bot per meeting (after RC1).** Cabowyn said "hey {player}! good to see you again" and a second later
+  "hey hey {player}, City of Camelot treat you well after i left?": a GM test had cleared the greeting cooldowns while the
   first greeting was on its way. A bot that greeted a player, or is about to, doesn't greet them again for ten minutes,
   whatever cleared the cooldowns; `/lstest greet` says so. Tests only.
-- **A deed names a place it could happen (after RC1).** A forced deed read "saw Manawatch's group take a named monster in
+- **A deed names a place it could happen (after RC1).** A forced deed read "saw {player}'s group take a named monster in
   City of Camelot". A real deed names the zone where it happened (the monster's or the player's body); `/lstest deed` names
   where the GM stands only if it could happen there (no capital; a streak or a gank only in the frontier), else a hunting
   zone of the realm or a frontier zone. Tests only.
@@ -1418,7 +1418,7 @@ chat code) and passed both.
   died to a guard...), more answers to "where?", "by who?" and "how many?", and the teller's lines are kept for the
   evening however short. "same happened to me in ..." names a frontier zone, an enemy realm's only as "their frontier":
   RC5's "ganked in jamtland mtns" drew "same happened to me in dales of devwy", a hunting zone. Tests only.
-- **A deed names the monster and where (after RC5).** RC5's `/lstest deed solo` read "not lying, i just saw Manawatch kill
+- **A deed names the monster and where (after RC5).** RC5's `/lstest deed solo` read "not lying, i just saw {player} kill
   a named monster, no help at all". A witness now names where it happened in most of its lines, with the zone as chat
   wrote it ("black mtns"), and names the real monster; the forced test takes the targeted or nearest named monster and
   says so when there is none. Tests only.
@@ -1558,7 +1558,7 @@ player online in Albion, 5 bot lines named the player, no topic ever came back, 
   read from the logs (they end before it). Tests only.
 - **A friend answers your small talk (RC5 on the owner's PC).** "hey what are you up to tonight?" to Ilaan, who had
   grouped with the player twice at Avalon City, drew "might wander somewhere new". A friend now answers "hey", "wyd" or
-  "what are you up to" with your name and what it is really doing ("hey Manawatch! killing thrawn ogres in Gwyddneau, want
+  "what are you up to" with your name and what it is really doing ("hey {player}! killing thrawn ogres in Gwyddneau, want
   in?"), asks you along only when it is free to group and near your level ("sure" is answered with how to group), and
   otherwise names where you grouped ("Avalon City again sometime?"). Tests only.
 - **An evening that remembers itself.** Each realm keeps a short memory of what its /faction really carried tonight: who
@@ -1607,7 +1607,7 @@ as an Albion 50 and a new Hibernian with the Bot schedule on Real clock). The ch
 reading the lines showed what it couldn't see; it now checks for each of these, and fails RC6's log.
 - **A friend's answer to small talk is kept.** "hey! what u up to?" by tell to a friend drew "not sure, try /advice": the
   friend's real answer had no score in the reply budget, which swapped it for a stock line. On RC7 the same tell drew "hey
-  Manawatch! rvr in Odin's Gate, its busy, wanna duo?", true of the bot.
+  {player}! rvr in Odin's Gate, its busy, wanna duo?", true of the bot.
 - **Group banter only about a hunt you shared.** A wizard grouped with the player fought alone, died, ran back and said
   "clean pull, ty", "loot is yours", "xp is flying, good call on this camp", "oom, give me a minute" (at full power) and
   "pull?", every 20-40 seconds, while the player had not fought. Hunting talk now needs a fight the player took part in
@@ -1657,8 +1657,8 @@ as one fight; reading the lines showed the rest.
   now goes before it.
 - **No goal names as monsters or places.** "careful group rendezvouses link" in /say, and "which stable for master
   visur?" from a bot taking the porter: a goal name is no monster, and a porter or trainer is no place.
-- **Gossip about you while you're on asks you.** "anyone know if Manawatch is on today? want to group again" was said
-  while the player was online; it is now "Manawatch, u around? want to group again", heard on RC11.
+- **Gossip about you while you're on asks you.** "anyone know if {player} is on today? want to group again" was said
+  while the player was online; it is now "{player}, u around? want to group again", heard on RC11.
 - **A scene tells the frontier only through a bot that's there.** A 40 grinding in Avalon played the newcomer's "made
   it to Castle Excalibur", "first realm points", "dead now but worth it". That role now goes only to a bot out for rvr,
   and "first night in the frontier" reads "first time" by day.
