@@ -79,6 +79,75 @@ namespace DOL.UnitTests
             Assert.That(RealmRaidReturnWave.ReleasesAtStaging(true, false, true), Is.False, "a dragon raid has its own release");
         }
 
+        // ---- staging posts in the frontier (owner's PC, 2026-11-14/15, build 1dc66b6: Pennine Mountains) --------------------
+
+        private static RealmRaidReturnWave.ReleasePost Release(bool frontier, int enemies, bool atStaging = true, bool dungeon = true,
+            bool partyStaging = true, bool frontierOn = true, bool raidPost = true) =>
+            RealmRaidReturnWave.ChooseReleasePost(atStaging, dungeon, partyStaging, frontierOn, frontier, raidPost, enemies, out _);
+
+        [Test]
+        public void AFrontierWayInSendsEveryReleasedRaiderToOneRaidPost()
+        {
+            // Hall of the Corrupt's way in is in Pennine Mountains: all 59 deaths there came after the first Aidon fight, raiders
+            // released at per-party posts picked off by enemy-realm bots (Edor and Armois two and three times in a row).
+            Assert.That(RealmRaidReturnWave.FrontierRaidPost, Is.True, "on by default");
+            Assert.That(Release(frontier: true, enemies: 0), Is.EqualTo(RealmRaidReturnWave.ReleasePost.Raid));
+            RealmRaidReturnWave.ChooseReleasePost(true, true, true, true, true, true, 0, out string reason);
+            Assert.That(reason, Is.EqualTo("frontier_staging"));
+        }
+
+        [Test]
+        public void EnemiesHoldingTheRaidPostSendTheReleaseToTheHub()
+        {
+            Assert.That(Release(frontier: true, enemies: 1), Is.EqualTo(RealmRaidReturnWave.ReleasePost.Hub), "one enemy bot or pet holds it");
+            Assert.That(Release(frontier: true, enemies: 12), Is.EqualTo(RealmRaidReturnWave.ReleasePost.Hub));
+            RealmRaidReturnWave.ChooseReleasePost(true, true, true, true, true, true, 3, out string reason);
+            Assert.That(reason, Is.EqualTo("enemies_hold_raid_post"));
+        }
+
+        [Test]
+        public void AWayInOutsideTheFrontierKeepsThePartyPost()
+        {
+            Assert.That(Release(frontier: false, enemies: 0), Is.EqualTo(RealmRaidReturnWave.ReleasePost.Party));
+            Assert.That(Release(frontier: false, enemies: 5), Is.EqualTo(RealmRaidReturnWave.ReleasePost.Party),
+                "enemies are only looked for at a frontier raid post");
+            Assert.That(Release(frontier: true, enemies: 5, frontierOn: false), Is.EqualTo(RealmRaidReturnWave.ReleasePost.Party),
+                "switched off: per-party posts, as before");
+            Assert.That(Release(frontier: true, enemies: 0, raidPost: false), Is.EqualTo(RealmRaidReturnWave.ReleasePost.Party));
+        }
+
+        [Test]
+        public void WithoutAStagingReleaseItIsTheHubAsBefore()
+        {
+            Assert.That(Release(frontier: true, enemies: 0, atStaging: false), Is.EqualTo(RealmRaidReturnWave.ReleasePost.Hub));
+            Assert.That(Release(frontier: true, enemies: 0, dungeon: false), Is.EqualTo(RealmRaidReturnWave.ReleasePost.Hub));
+            Assert.That(Release(frontier: false, enemies: 0, partyStaging: false), Is.EqualTo(RealmRaidReturnWave.ReleasePost.Hub));
+        }
+
+        [Test]
+        public void TheRaidPostIsTheStagingPostNearestTheMiddle()
+        {
+            Assert.That(RealmRaidReturnWave.RaidPost([]), Is.EqualTo(-1));
+            Assert.That(RealmRaidReturnWave.RaidPost([new(5, 5, 0)]), Is.EqualTo(0));
+            System.Numerics.Vector3[] ring = [new(-400, 0, 0), new(0, 400, 0), new(40, 20, 0), new(400, 0, 0), new(0, -400, 0)];
+            Assert.That(RealmRaidReturnWave.RaidPost(ring), Is.EqualTo(2));
+            Assert.That(RealmRaidReturnWave.RaidPostHeldRadius, Is.EqualTo(2_300), "the threat scan radius");
+        }
+
+        [Test]
+        public void RaidersReleasedAtTheHubGoBackTogether()
+        {
+            var go = RealmRaidReturnWave.Step.Go;
+            var gather = RealmRaidReturnWave.Step.Gather;
+            Assert.That(RealmRaidReturnWave.HubGroup(0, 0, 0), Is.EqualTo(gather));
+            Assert.That(RealmRaidReturnWave.HubGroup(6, 6, 30_000), Is.EqualTo(gather), "falling together: wait out the grace");
+            Assert.That(RealmRaidReturnWave.HubGroup(6, 6, 90_000), Is.EqualTo(go), "all of them there");
+            Assert.That(RealmRaidReturnWave.HubGroup(9, 6, 3 * Minute), Is.EqualTo(gather), "three still on their way to the hub");
+            Assert.That(RealmRaidReturnWave.HubGroup(20, 8, 4 * Minute), Is.EqualTo(go), "a wave's worth that waited out the patience");
+            Assert.That(RealmRaidReturnWave.HubGroup(1, 1, 5 * Minute), Is.EqualTo(gather), "a lone raider waits for company");
+            Assert.That(RealmRaidReturnWave.HubGroup(1, 1, 8 * Minute), Is.EqualTo(go), "...until the last call");
+        }
+
         [Test]
         public void ACorpseNobodyCanReachReleasesSoon()
         {
