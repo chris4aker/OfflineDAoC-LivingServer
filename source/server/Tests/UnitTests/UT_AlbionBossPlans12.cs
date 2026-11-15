@@ -281,22 +281,94 @@ namespace DOL.UnitTests
 
         // ---- Warlord Dorinakka ----------------------------------------------------------------------------------------
 
+        /// <summary>The world database's twelve DorinakkaBaf crypt knights (two columns of six up the hall to him).</summary>
+        private static readonly (int X, int Y)[] DorinakkaKnightSpawns =
+        [
+            (35303, 40668), (35300, 40861), (35303, 41054), (35304, 41240), (35306, 41439), (35308, 41627),
+            (35978, 40673), (35977, 40869), (35981, 41062), (35983, 41251), (35980, 41444), (35983, 41632),
+        ];
+
+        private Mob Knight(int x, int y)
+        {
+            var knight = Npc<Mob>(x, y, 15631);
+            knight.PackageID = T.DorinakkaKnights;
+            knight.Name = "crypt knight";
+            return knight;
+        }
+
         [Test]
-        public void DorinakkasFarKnightsDieFirstAndHisCastersTakeTheRest()
+        public void NoDorinakkaKnightIsPulledOnItsOwnWhileHeLives()
+        {
+            // Owner's PC, build 1dc66b6, 2026-11-15: the second knight cleared "first" brought him and the ten left.
+            var lord = Npc<TestDorinakka>(35625, 41676, 15631);
+            var live = new List<GameNPC> { lord };
+            Mob[] knights = DorinakkaKnightSpawns.Select(s => Knight(s.X, s.Y)).ToArray();
+            live.AddRange(knights);
+            foreach (Mob knight in knights)
+            {
+                Assert.That(T.ClearFirstOwner(knight, live), Is.Null, $"{knight.X},{knight.Y}: no knight is a clear-first of its own");
+                Assert.That(T.DungeonRoute(knight, live, out string why), Is.SameAs(lord), $"{knight.X},{knight.Y}: the route musters for him");
+                Assert.That(why, Does.StartWith("dorinakka-pack"));
+                Assert.That(T.RouteTarget(knight, live, At(lord), out _), Is.SameAs(lord));
+            }
+            Assert.That(T.ClearFirstOwner(lord, live), Is.Null);
+            Assert.That(T.DungeonRoute(lord, live, out _), Is.Null, "he himself is fought");
+            knights[6].Fighting = true;
+            Assert.That(T.DungeonRoute(knights[6], live, out _), Is.Null, "a knight already fighting the raid is answered");
+            // The thirteenth crypt knight (no PackageID, a plain monster beside the hall) is not his.
+            var stray = Npc<Mob>(35073, 41287, 15631);
+            stray.Name = "crypt knight";
+            live.Add(stray);
+            Assert.That(T.DungeonRoute(stray, live, out _), Is.Null);
+            // Without him the knights are ordinary targets again.
+            var alone = new List<GameNPC>(knights);
+            Assert.That(T.DungeonRoute(knights[0], alone, out _), Is.Null);
+        }
+
+        [Test]
+        public void DorinakkasMusterLiesInsideHisTether()
+        {
+            // The knights' own musters lay 2,250 from him (02:44:03, 35,274,39,462): he chased the raid out of his 2,000
+            // tether, immune, nine times. His own muster is 1,400 from his spawn.
+            T.Leash leash = T.Leashes.Single(l => l.Boss == nameof(DOL.GS.Scripts.WarlordDorinakka));
+            Assert.That(leash.Resets, Is.True);
+            Assert.That(RealmRaidDungeonRoute.FinalMusterStandOff, Is.LessThan(leash.TetherRange));
+            Assert.That(RealmRaidDungeonRoute.MusterReference(new(35000, 39600, 15631), new(35625, 41676, 15631), leash.TetherRange, leash.Resets),
+                Is.EqualTo(new Vector3(35625, 41676, 15631)), "out chasing raiders, the raid musters for him at home");
+        }
+
+        [Test]
+        public void InDorinakkasFightEveryoneButHisPartyAndTheHealersKillsTheKnightsOneAtATime()
         {
             var lord = Npc<TestDorinakka>(35625, 41676, 15631);
-            var far = Npc<Mob>(35303, 40668, 15631); far.PackageID = T.DorinakkaKnights; far.Name = "crypt knight";
-            var near = Npc<Mob>(35303, 41627, 15631); near.PackageID = T.DorinakkaKnights; near.Name = "crypt knight";
-            var live = new List<GameNPC> { lord, far, near };
-            Assert.That(T.ClearFirstOwner(far, live), Is.SameAs(lord), "1,058 from him: cleared first");
-            Assert.That(T.ClearFirstOwner(near, live), Is.Null, "325 from him: in his fight");
             var tank = Npc<Raider>(35725, 41676, 15631);
             var wizard = Npc<Raider>(35300, 42200, 15631);
+            var warrior = Npc<Raider>(35640, 41300, 15631);
+            var scout = Npc<Raider>(35500, 41000, 15631);
+            var cleric = Npc<Raider>(35600, 41100, 15631);
             lord.TargetObject = tank;
-            live.AddRange([tank, wizard]);
-            near.Fighting = true;
-            Assert.That(Rule(wizard, lord, live, true, Wizard)?.Target, Is.SameAs(near), "casters on the knight beside him");
-            Assert.That(Rule(wizard, lord, live, true, Scout), Is.Null, "archers stay on him (his 70% magic is not theirs)");
+            Mob a = Knight(35308, 41627), b = Knight(35983, 41632), sleeping = Knight(35303, 40668), mezzed = Knight(35306, 41439);
+            a.Fighting = b.Fighting = mezzed.Fighting = true;
+            b.Hurt = 30;
+            mezzed.Hurt = 60;
+            mezzed.IsMezzed = true;
+            var live = new List<GameNPC> { lord, tank, wizard, warrior, scout, cleric, a, b, sleeping, mezzed };
+            Assert.That(Rule(tank, lord, live, false, Warrior), Is.Null, "the party he fights holds him");
+            foreach (var (raider, ranged, cls) in new[] { (wizard, true, Wizard), (warrior, false, Warrior), (scout, true, Scout) })
+            {
+                var advice = Rule(raider, lord, live, ranged, cls);
+                Assert.That((advice?.Action, advice?.Target), Is.EqualTo(((T.BotAction?)T.BotAction.Retarget, (GameNPC)b)),
+                    $"class {cls}: the most hurt knight awake, so the raid's damage lands on one; the mesmerized one waits");
+                Assert.That(advice.Value.Reason, Does.StartWith("dorinakka-knights"));
+            }
+            Assert.That(Rule(cleric, lord, live, true, Cleric), Is.Null, "healers heal");
+            b.Dead = a.Dead = true;
+            Assert.That(Rule(warrior, lord, live, false, Warrior)?.Target, Is.SameAs(mezzed), "the mesmerized knight once it is the last");
+            mezzed.Dead = true;
+            Assert.That(Rule(wizard, lord, live, true, Wizard), Is.Null, "a knight out of combat is not his fight's: everyone on him");
+            var front = Npc<Raider>(35700, 41700, 15631);
+            live.Add(front);
+            Assert.That(Rule(front, lord, live, false, Warrior)?.Action, Is.EqualTo(T.BotAction.Reposition), "his melee from behind him");
         }
 
         // ---- the Silencer --------------------------------------------------------------------------------------------

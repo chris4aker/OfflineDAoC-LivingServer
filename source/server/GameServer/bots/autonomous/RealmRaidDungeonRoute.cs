@@ -1228,10 +1228,15 @@ namespace DOL.GS
             }
             // Darkness Falls (1.2 DF raid wave): a monster that would join this fight came back while the raid mustered
             // (Legion's antechamber respawns in 20-30 minutes; Hibernia's muster for him took 100): it is cleared before the pull.
-            if (_region == AutonomousDarknessFallsPolicy.RegionId && !_target.InCombat && now >= _nextReclearCheck &&
+            // So for a boss whose rule says so anywhere (EpicEncounterTactics.ClearsAgainBeforePull): owner's PC, build 1dc66b6,
+            // 2026-11-15, the Crypt Lord joined a court fight at 02:56, and after that skirmish the raid mustered for him again
+            // with most of his court alive (every court monster joins him) until two wipes ended the raid (03:00, 03:04).
+            if ((_region == AutonomousDarknessFallsPolicy.RegionId || EpicEncounterTactics.ClearsAgainBeforePull(_target)) &&
+                !_target.InCombat && now >= _nextReclearCheck &&
                 (_nextReclearCheck = now + 10_000) > 0 &&
-                (_live ?? []).FirstOrDefault(n => n != _target && _routeRetry.GetValueOrDefault(n) <= now &&
-                                                  EpicEncounterTactics.ClearFirstOwner(n, _live) == _target) is { } back)
+                (_live ?? []).Where(n => n != _target && _routeRetry.GetValueOrDefault(n) <= now &&
+                                         EpicEncounterTactics.ClearFirstOwner(n, _live) == _target)
+                    .OrderBy(n => WalkEstimate(Front, new(n.X, n.Y, n.Z))).FirstOrDefault() is { } back)
             {
                 SwitchByTactic(back, $"clear-first of \"{_target.Name}\" is up again: cleared before the pull", participants, now);
                 return true;
@@ -1443,7 +1448,20 @@ namespace DOL.GS
                 var at = new Vector3(npc.X, npc.Y, npc.Z);
                 if (Vector3.DistanceSquared(at, spawn) > 64 * 64) dangers.Add(new(npc.Name, at, radius));
             }
+            dangers.AddRange(RuleMusterDangers(_live));
             return dangers;
+        }
+
+        /// <summary>
+        /// The spots a dungeon rule keeps musters from (EpicEncounterTactics.MusterDangersOf), the encounter mustered for
+        /// included: owner's PC, build 1dc66b6, 2026-11-15, the raid's muster for the Crypt Lord was 27,960,40,280, 115 from his
+        /// patrol and 194 from one of his court, and he and his court walked into it (wipes at 03:00 and 03:04).
+        /// </summary>
+        public static IEnumerable<BossDanger> RuleMusterDangers(IReadOnlyList<GameNPC> live)
+        {
+            foreach (GameNPC npc in live ?? [])
+                foreach ((Vector3 at, float radius) in EpicEncounterTactics.MusterDangersOf(npc, live))
+                    yield return new(npc.Name, at, radius);
         }
 
         /// <summary>
