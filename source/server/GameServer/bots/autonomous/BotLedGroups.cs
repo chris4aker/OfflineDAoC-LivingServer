@@ -918,7 +918,7 @@ public static partial class BotLedGroups
     /// <summary>What the leader says to the group it hosts the player in (topic lead_* in the voice corpus, with a plain fallback).</summary>
     public enum Lead
     {
-        Welcome, WelcomeOnTheWay, MeetupReminder, MeetupGoingOn, WhereAreYou, GoingOn, AfkHold, AfkLetGo, Move, Farewell, PlayerLeft,
+        Welcome, WelcomeOnTheWay, WelcomeHere, MeetupReminder, MeetupGoingOn, WhereAreYou, GoingOn, AfkHold, AfkLetGo, Move, Farewell, PlayerLeft,
         // B2: the handover. Handover: /lead ("all yours"); TakeBack: /lead bot or /makeleader; LastBot: before the box.
         Handover, TakeBack, LastBot,
         // B3: the raid party's leader welcomes the player the raid leader invited.
@@ -931,6 +931,7 @@ public static partial class BotLedGroups
     {
         Lead.Welcome => "lead_welcome",
         Lead.WelcomeOnTheWay => "lead_welcome_out",
+        Lead.WelcomeHere => "lead_welcome_here",
         Lead.MeetupReminder => "lead_wait",
         Lead.MeetupGoingOn => "lead_going_on",
         Lead.WhereAreYou => "lead_where",
@@ -952,6 +953,16 @@ public static partial class BotLedGroups
         _ => "lead",
     };
 
+    /// <summary>
+    /// The welcome when the player joins: "meet up at" while the party assembles, "stick with me" when the player already
+    /// stands near the leader, "come find us" otherwise. Owner's PC 2026-11-15 (build 1dc66b6): "hey, we are out at Aldland,
+    /// come find us heh" to a player 1,186 units from the leader in Caer Diogel. Pure.
+    /// </summary>
+    public static Lead WelcomeFor(bool assembling, bool sameRegion, double distanceToLeader) =>
+        assembling ? Lead.Welcome
+        : sameRegion && distanceToLeader >= 0 && distanceToLeader <= NearLeaderRadius ? Lead.WelcomeHere
+        : Lead.WelcomeOnTheWay;
+
     /// <summary>The flag only these calls carry (data/chat/bot_led_groups.lines), so ambient talk never says them.</summary>
     private static readonly string[] LeadCall = ["lead_call"];
 
@@ -960,6 +971,7 @@ public static partial class BotLedGroups
     {
         Lead.Welcome => "welcome! meet up at {place}",
         Lead.WelcomeOnTheWay => "welcome! we're at {place}, come find us. /follow me if you're close",
+        Lead.WelcomeHere => "welcome! stick with me, we head to {camp}",
         Lead.MeetupReminder => "still at {place}, waiting on you",
         Lead.MeetupGoingOn => "heading on to {camp}, catch up when you can, spot's saved",
         Lead.WhereAreYou => "where u at?",

@@ -1378,8 +1378,9 @@ namespace DOL.AI.Brain
             AutonomousSummonActivity.RecoverOwner(BotBody);
             BotAnimistPolicy.RestoreEncounterTarget(BotBody);
             ObserveLeaderActivity();
-            // The talking update: in the real player's group a gamebot calls the fight in /group (pull, adds, oom, wipe).
-            if (BotBody?.IsAutonomousWorldBot == true && BotBody.IsPlayerLedGroup)
+            // The talking update: in the real player's group a gamebot calls the fight in /group (pull, adds, oom, wipe);
+            // in a gamebot party that hosts the player too (B4: there the leader calls the pull).
+            if (AutonomousBotCombatCalls.ObservesFight(BotBody))
                 AutonomousBotCombatCalls.Observe(BotBody);
             CompanionStealth.Maintain(BotBody);
             WatchPetFocusShield();

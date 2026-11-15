@@ -247,8 +247,11 @@ public static class AutonomousBotChatCoordinator
                 // Beta 1.1.2, round 3: mostly a field line from the bot's real level, class, camp and bags.
                 if (TryField(starter, kind, choice, reason))
                     return true;
-                // A written lfg or trade line is never a crafted one (round 3).
-                if (!AutonomousBotVoices.TryLine(starter, kind, out VC.Picked picked, filter: KeepsStory(starter, kind, AmbientLineFits(false))) ||
+                // A written lfg or trade line is never a crafted one (round 3). The "join" greetings are the /group hello of a bot
+                // that joins the player's group (AutonomousBotGroupChatter), never an /lfg post (owner's PC 2026-11-15, build
+                // 1dc66b6: "hi all, healer here, try not to die" in /lfg from a paladin already in the player's full party).
+                Func<VC.Line, bool> story = KeepsStory(starter, kind, AmbientLineFits(false));
+                if (!AutonomousBotVoices.TryLine(starter, kind, out VC.Picked picked, filter: line => IsAmbientChannelLine(line) && story(line)) ||
                     !Fresh(choice, picked.Text))
                     return false;
                 SendRealmChannel(starter, kind, picked.Text);
@@ -302,6 +305,9 @@ public static class AutonomousBotChatCoordinator
             }
         }
     }
+
+    /// <summary>An unprompted /lfg or /trade line may be any of the kind's lines but the /group join greetings. Pure.</summary>
+    public static bool IsAmbientChannelLine(VC.Line line) => !string.Equals(line?.Topic, "join", StringComparison.Ordinal);
 
     /// <summary>
     /// A written line keeps the bot's story and state as a field line does (1.1.3, after RC5): no "lfg" from a bot in a group

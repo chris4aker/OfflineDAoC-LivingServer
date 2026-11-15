@@ -41,6 +41,10 @@ welcome aboard, meeting at {destination}, see you there
 @topic lead_welcome_out
 welcome! we are at {destination}, come find us
 [welcome|hey], we are out at {destination}, [follow me if you are close|come find us]
+@topic lead_welcome_here
+welcome! stick with me, we head to {camp}
+[welcome|hey], [stay close|stick with me], off to {camp}
+welcome aboard, [follow me|/follow me] and we go
 @topic lead_wait
 still at {destination}, waiting on you
 we are at {destination} [whenever you are ready|still]
