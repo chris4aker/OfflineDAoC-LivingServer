@@ -458,3 +458,29 @@ purchase rates are measured, but no log line records coin flows. Still unknown:
 - Whether the roster design (bot players with alts and a shared purse) is built; the crafter-as-alt rule depends
   on it.
 - Whether a crowd of crafters at a forge reads as a living city or as furniture: only play answers it.
+
+## 15. Build status
+
+The build plan is [CRAFTING-2.0-BUILD-PLAN.md](CRAFTING-2.0-BUILD-PLAN.md) (2026-11-15). It ports DividedRealms' bot
+crafting and craft orders and True165's ledger, valuation, wear and pace where they fit (its §1). Each package edits
+only its own row. "Tests only" means automated tests; nothing counts as working until seen in a log on the owner's PC.
+
+| Package | Status | Seen in game |
+|---|---|---|
+| WP0 Foundation (rules, contracts, seams, tables, settings, log format) | Built on `craft/wp0-foundation`, into `integration/2.0`. Changes no behaviour: every seam's default is today's code; no setting is read yet. Tests only | Nothing to see |
+| WP1 Crafting core and M0 fixes | Not started | — |
+| WP2 Economy ledger | Not started | — |
+| WP3 Player side (M1) | Not started | — |
+| WP4 Bot crafters (M2) | Not started | — |
+| WP5 Market | Not started | — |
+| WP6 Demand (M3) | Not started | — |
+| WP7 Sinks (M5) | Not started | — |
+| WP8 Commerce and social (M4, M6) | Not started | — |
+| WP9 Launcher | Not started | — |
+| WP10 Rehearsal | Not started | — |
+
+Corrections found while building WP0 (the sections above are left as written on 2026-10-30): a bot holds 3 Exchange
+listings, not 1; the `Repair.cs` division and the `Salvage` type mutation are already fixed in our tree; the "19%
+broken recipes" is a case-sensitive audit (2 broken ignoring case, survey 2026-11-15); the Exchange tax is built
+with a default of 0, 5% as the documented option (owner 2026-11-15, decision 7); `bot_upkeep`, `bot_luxury_spending`
+and `bot_siege_supply` default off; the player pace key is True165's `crafting_skill_rate`.

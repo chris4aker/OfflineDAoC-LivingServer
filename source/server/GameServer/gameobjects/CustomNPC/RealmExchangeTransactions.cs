@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using DOL.Database;
+using DOL.GS.CraftingEconomy;
 
 namespace DOL.GS;
 
@@ -18,6 +19,8 @@ public sealed partial class RealmExchangeBroker
         private readonly long _price;
         internal DataObject Row => (DataObject)_bot ?? _proceeds;
         internal string SellerName { get; }
+        /// <summary>What the sale's tax keeps from the seller (EconomySeams.SellerProceeds; 0 by default).</summary>
+        internal long TaxCopper { get; init; }
 
         internal SellerPayment(OfflineWorldBotRecord bot, long price)
         {
@@ -56,14 +59,20 @@ public sealed partial class RealmExchangeBroker
         }
     }
 
-    internal static SellerPayment PrepareSellerPayment(string sellerId, long price, eRealm realm)
+    /// <param name="price">The listing's price, which the buyer pays.</param>
+    /// <param name="buyerId">The buyer ("offlinebot:{id}" or the character id), for the proceeds seam.</param>
+    internal static SellerPayment PrepareSellerPayment(string sellerId, long price, eRealm realm, string buyerId = "")
     {
         if (price <= 0 || string.IsNullOrWhiteSpace(sellerId)) return null;
+        // A seam (Crafting 2.0 WP0): the seller receives the proceeds, the price less any Exchange tax. The default is
+        // the whole price, so nothing changes until WP5's tax (exchange_tax_percent, 0 by default) is registered.
+        long tax = price - EconomySeams.ProceedsOf(price, realm, sellerId, buyerId);
+        price -= tax;
         if (AutonomousBotEconomy.TryParseOwnerId(sellerId, out long botId))
         {
             OfflineWorldBotRecord bot = AutonomousBotEconomy.FindLiveOrStored(botId);
             return bot != null && bot.Realm == (int)realm && bot.MoneyCopper <= long.MaxValue - price
-                ? new SellerPayment(bot, price) : null;
+                ? new SellerPayment(bot, price) { TaxCopper = tax } : null;
         }
         DbCoreCharacter character = DOLDB<DbCoreCharacter>.SelectObject(DB.Column("DOLCharacters_ID").IsEqualTo(sellerId));
         if (character == null || character.Realm != (int)realm) return null;
@@ -74,7 +83,7 @@ public sealed partial class RealmExchangeBroker
             record = new DbCoreCharacterXCustomParam(character.ObjectId, GetProceedsKey(realm), state.Serialize());
             if (!GameServer.Database.AddObject(record)) return null;
         }
-        return new SellerPayment(record, price, character.Name);
+        return new SellerPayment(record, price, character.Name) { TaxCopper = tax };
     }
 
     internal static bool CommitExchangeRows(params DataObject[] rows) =>
