@@ -114,6 +114,12 @@ lost, and Albion's Summoner's Hall never reached). They pass automated tests; no
 - **A boss no longer yells its aggro line as it dies** (tests only). The killing blow's attack came after the boss's
   death had closed its fight, so it opened a new one: Spindler Broodmother and Aidon yelled their aggro line right after
   their death line (sweep of 2026-11-15, build `1dc66b6`). A dead boss starts no fight now.
+- **Nothing behind Easmarach's falls while he lives** (owner's PC, 2026-11-15, build `1dc66b6`). After Spindler
+  Broodmother the Galladoria raid mustered for a deep shrouder behind his push; it bounced off the falls 165 times in
+  eight minutes (78% fall damage each) and never fought him. The route's gate looked only at the last room's bosses; now
+  no target, muster or staging lies behind the falls while he lives, and the raid fights him first. A bot the push moves
+  waits where it lands while its way back goes into the falls (at most 3 minutes). The push and its fall damage are
+  unchanged. Tests only.
 - **Summoner Lossren's exploding ghoul** came only at exactly 20 killed souls at a 5-8 s check, so a quick raid never saw
   it again that fight; now at 20 or more.
 - **The sweep's guest** follows a living raider at the raid's front, never a dead or released one, and lands on that

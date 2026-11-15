@@ -66,6 +66,13 @@ namespace DOL.UnitTests
         public sealed class TestEasmarach : Easmarach { public override bool IsAlive => true; }
         public sealed class TestOlcasgean : Olcasgean { public override bool IsAlive => true; }
         public sealed class TestXaga : Xaga { public override bool IsAlive => true; }
+        /// <summary>A Galladoria "deep shrouder": an epic monster (the route musters for it), not a scripted boss.</summary>
+        public sealed class DeepShrouder : GameEpicNPC
+        {
+            public bool Fighting;
+            public override bool IsAlive => true;
+            public override bool InCombat => Fighting;
+        }
         public sealed class TestTorst : Torst { public override bool IsAlive => true; }
         public sealed class TestAfanc : LegendaryAfanc { public override bool IsAlive => true; }
         public sealed class TestQanris : QanrisDuros { public override bool IsAlive => true; }
@@ -479,6 +486,178 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterTactics.DungeonRoute(xaga, live, out _), Is.Null, "not past the falls");
             live.Remove(easmarach);
             Assert.That(EpicEncounterTactics.DungeonRoute(olcasgean, live, out _), Is.Null, "dead: the falls are open");
+        }
+
+        // ---- Easmarach's falls: nothing behind them while he lives (owner's PC 2026-11-15, build 1dc66b6) -------------
+        // The route took a deep shrouder at 37,016,56,449 behind his push and mustered for it at 37,086,55,050; the raid
+        // bounced off the falls 165 times in eight minutes (78% fall damage each) and never fought him.
+
+        [TestCase(37016, 56449, 10906, true, TestName = "Falls: the deep shrouder the route took (2026-11-15) is behind")]
+        [TestCase(37086, 55050, 10925, true, TestName = "Falls: its muster (2026-11-15) is behind")]
+        [TestCase(39798, 59743, 11955, true, TestName = "Falls: the last deep shrouder before the bridge is behind")]
+        [TestCase(39652, 60831, 11893, true, TestName = "Falls: the bridge spot is behind")]
+        [TestCase(39237, 62644, 11685, true, TestName = "Falls: Olcasgean is behind")]
+        [TestCase(41093, 64407, 12660, true, TestName = "Falls: the Olcasgean Initializator is behind")]
+        [TestCase(41580, 62325, 12242, true, TestName = "Falls: a primal spot is behind")]
+        [TestCase(38376, 52481, 10277, true, TestName = "Falls: where the raid walked into the push is in it")]
+        [TestCase(37918, 50523, 9865, false, TestName = "Falls: Easmarach's spawn is in front")]
+        [TestCase(37811, 50342, 10958, false, TestName = "Falls: the waterfall top is in front")]
+        [TestCase(37437, 50308, 9874, false, TestName = "Falls: a falls stand is in front")]
+        [TestCase(40067, 50494, 9762, false, TestName = "Falls: where the push puts raiders is in front")]
+        [TestCase(39624, 51900, 10546, false, TestName = "Falls: the lurker by his room is in front")]
+        [TestCase(45275, 51223, 10859, false, TestName = "Falls: the east deep shrouder is in front")]
+        [TestCase(21283, 51707, 10876, false, TestName = "Falls: Spindler Broodmother is not in the wing")]
+        [TestCase(27482, 54821, 12935, false, TestName = "Falls: Xaga is not in the wing")]
+        [TestCase(37527, 48247, 13781, false, TestName = "Falls: the Giant Sporite Cluster is in front")]
+        [TestCase(38123, 44719, 14468, false, TestName = "Falls: the Uaimh Lairmaster is in front")]
+        [TestCase(31246, 40938, 13433, false, TestName = "Falls: the Conservator is in front")]
+        [TestCase(55672, 43536, 12417, false, TestName = "Falls: Hurionthex is in front")]
+        public void ThePointsBehindTheFallsAreTheWingPastHisPush(int x, int y, int z, bool barred) =>
+            Assert.That(EpicEncounterTactics.BarredByTheFalls(new Vector3(x, y, z)), Is.EqualTo(barred));
+
+        [Test]
+        public void WhileEasmarachLivesTheRouteTakesHimForAMonsterBehindTheFalls()
+        {
+            UseRegion(191, (0, 0), (0, 65536));
+            var easmarach = Npc<TestEasmarach>(37918, 50523, 9865);
+            var shrouder = Npc<DeepShrouder>(37016, 56449, 10906);
+            var eastShrouder = Npc<DeepShrouder>(45275, 51223, 10859);
+            var live = new List<GameNPC> { easmarach, shrouder, eastShrouder };
+            ShipAs(nameof(TestEasmarach), "Easmarach", "AllowDisplacement");
+            Assert.That(EpicEncounterTactics.InLastRoom(shrouder), Is.False, "not one of the last room's encounters: the gate missed it");
+            // The target choice: the route's own call for a candidate, and the dungeon rule under it.
+            Assert.That(EpicEncounterTactics.RouteTarget(shrouder, live, new Vector3(21640, 52862, 10832), out string why), Is.SameAs(easmarach));
+            Assert.That(why, Does.Contain("current"));
+            Assert.That(EpicEncounterTactics.DungeonRoute(shrouder, live, out _), Is.SameAs(easmarach));
+            Assert.That(EpicEncounterTactics.DungeonRoute(eastShrouder, live, out _), Is.Null, "in front of the falls: fought as usual");
+            Assert.That(EpicEncounterTactics.DungeonRoute(easmarach, live, out _), Is.Null, "he himself is the target");
+            // A monster that spawned behind the falls counts wherever it stands.
+            Move(shrouder, 39000, 50000, 9800);
+            Assert.That(EpicEncounterTactics.DungeonRoute(shrouder, live, out _), Is.SameAs(easmarach), "its home is behind the falls");
+            Move(shrouder, 37016, 56449, 10906);
+            // The muster and the staging: never behind the falls while he lives.
+            Vector3 muster = new(37086, 55050, 10925), bridge = new(39652, 60831, 11893), front = new(38285, 50456, 9860);
+            Assert.That(EpicEncounterTactics.BehindLiveBarrier(191, muster, live), Is.True);
+            Assert.That(EpicEncounterTactics.BehindLiveBarrier(191, bridge, live), Is.True);
+            Assert.That(EpicEncounterTactics.OutOfLiveBarrier(191, muster, live), Is.EqualTo(EpicEncounterTactics.FallsPushLanding),
+                "in front of the falls, where the push puts raiders");
+            Assert.That(EpicEncounterTactics.BarredByTheFalls(EpicEncounterTactics.FallsPushLanding), Is.False);
+            Assert.That(EpicEncounterTactics.OutOfLiveBarrier(191, front, live), Is.EqualTo(front), "a muster in front stays");
+            Assert.That(EpicEncounterTactics.BehindLiveBarrier(60, muster, live), Is.False, "another region");
+            // His push off by the owner's switch: no gate.
+            EpicEncounterMechanics.SetFor("AllowDisplacement", nameof(TestEasmarach), false);
+            Assert.That(EpicEncounterTactics.DungeonRoute(shrouder, live, out _), Is.Null, "his push off: the falls are open");
+            Assert.That(EpicEncounterTactics.BehindLiveBarrier(191, muster, live), Is.False);
+            ShipAs(nameof(TestEasmarach), "Easmarach", "AllowDisplacement");
+            // A monster behind the falls that fights already is answered, not mapped (PC log e3b8238), but the route's
+            // approach check (BehindLiveBarrier) still keeps the raid from walking to it.
+            shrouder.Fighting = true;
+            Assert.That(EpicEncounterTactics.DungeonRoute(shrouder, live, out _), Is.Null);
+            Assert.That(EpicEncounterTactics.BehindLiveBarrier(191, At(shrouder), live), Is.True);
+            shrouder.Fighting = false;
+            // Dead: the falls are open, the wing is fought as usual.
+            live.Remove(easmarach);
+            Assert.That(EpicEncounterTactics.RouteTarget(shrouder, live, default, out _), Is.SameAs(shrouder));
+            Assert.That(EpicEncounterTactics.DungeonRoute(shrouder, live, out _), Is.Null);
+            Assert.That(EpicEncounterTactics.BehindLiveBarrier(191, muster, live), Is.False);
+            Assert.That(EpicEncounterTactics.OutOfLiveBarrier(191, muster, live), Is.EqualTo(muster));
+        }
+
+        [Test]
+        public void TheRouteGuardsItsMusterTargetsAndStagingAgainstTheFallsBarrier()
+        {
+            // The route's three guards are in place (the route itself needs a world and a navmesh; this reads its source).
+            string route = Source("bots", "autonomous", "RealmRaidDungeonRoute.cs");
+            Assert.That(route, Does.Contain("EpicEncounterTactics.OutOfLiveBarrier(_region, EpicEncounterTactics.KeepInsideFor(_target, MusterPoint(participants)), _live)"));
+            Assert.That(route, Does.Not.Contain("_musterPoint = EpicEncounterTactics.KeepInsideFor(_target, MusterPoint(participants))"),
+                "every muster goes through the guard");
+            Assert.That(route, Does.Contain("EpicEncounterTactics.BehindLiveBarrier(_region, approach, live)"));
+            Assert.That(route, Does.Contain("!EpicEncounterTactics.BehindLiveBarrier(_region, _trigger, live)"));
+        }
+
+        [TestCase(38376, 52481, 10277, true, TestName = "Falls way back: to where it was pushed goes into the push")]
+        [TestCase(37086, 55050, 10925, true, TestName = "Falls way back: to the muster behind goes into the push")]
+        [TestCase(38285, 50456, 9860, false, TestName = "Falls way back: to his floor stays in front")]
+        [TestCase(37918, 50523, 9865, false, TestName = "Falls way back: to his spawn stays in front")]
+        [TestCase(39624, 51900, 10546, false, TestName = "Falls way back: to the lurker by his room stays in front")]
+        public void TheWayBackFromWhereThePushPutsARaiderIsJudgedAgainstTheFalls(int x, int y, int z, bool intoTheFalls) =>
+            Assert.That(EpicEncounterTactics.WalksIntoTheFalls(EpicEncounterTactics.FallsPushLanding, new Vector3(x, y, z)),
+                Is.EqualTo(intoTheFalls));
+
+        [Test]
+        public void ABotThePushMovesWaitsWhereItLandsWhileItsWayBackGoesIntoTheFalls()
+        {
+            Assert.That(EncounterDisplacementRecovery.BarredWayFor("Easmarach"), Is.Not.Null, "registered for his push");
+            Assert.That(EncounterDisplacementRecovery.BarredWayFor("ApocInitializator"), Is.Null, "the horsemen's room keeps its rule");
+            Vector3 landing = EpicEncounterTactics.FallsPushLanding, pushedAt = new(38376, 52481, 10277), front = new(38285, 50456, 9860);
+            EncounterDisplacementRecovery.Observation See(long now, Vector3 back, bool attacked = false, bool released = false) =>
+                new(now, true, landing, back, attacked, released, false, null);
+            EncounterDisplacementRecovery.Plan Pushed()
+            {
+                // 2026-11-15: from=38376,52481,10277 to 40067,50494,11708, a fall of 1,945 (78%).
+                var p = EncounterDisplacementRecovery.Plan.For(DisplacementKind.Barrier, 1_000, landing, 1_945, 0, true);
+                p.BarredWay = EncounterDisplacementRecovery.BarredWayFor("Easmarach");
+                return p;
+            }
+
+            // It lands and takes the fall, as a player does (the push and the fall damage are the original mechanic).
+            var plan = Pushed();
+            var land = EncounterDisplacementRecovery.Step(plan, See(1_000, pushedAt));
+            Assert.That(land.Kind, Is.EqualTo(EncounterDisplacementRecovery.OrderKind.Hold), "in the air");
+            land = EncounterDisplacementRecovery.Step(plan, See(plan.LandAt, pushedAt));
+            Assert.That(land.Kind, Is.EqualTo(EncounterDisplacementRecovery.OrderKind.Land));
+            Assert.That(land.FallPercent, Is.EqualTo(78));
+            // Its party is still where it was pushed: no walk back into the falls; it waits where it landed.
+            long t = plan.LandAt + 100;
+            var held = EncounterDisplacementRecovery.Step(plan, See(t, pushedAt));
+            Assert.That(held.Kind, Is.EqualTo(EncounterDisplacementRecovery.OrderKind.Hold));
+            Assert.That(plan.Stage, Is.EqualTo(EncounterDisplacementRecovery.Stage.Barred));
+            Assert.That(EncounterDisplacementRecovery.Step(plan, See(t + 5_000, new Vector3(37086, 55050, 10925))).Kind,
+                Is.EqualTo(EncounterDisplacementRecovery.OrderKind.Hold), "nor to the muster behind the falls");
+            Assert.That(EncounterDisplacementRecovery.Step(plan, See(t + 10_000, pushedAt, attacked: true)).Kind,
+                Is.EqualTo(EncounterDisplacementRecovery.OrderKind.Fight), "what attacks it is fought");
+            // The raid comes back in front of the falls (the route fights Easmarach): it goes on.
+            var done = EncounterDisplacementRecovery.Step(plan, See(t + 20_000, front));
+            Assert.That(done.Kind, Is.EqualTo(EncounterDisplacementRecovery.OrderKind.Done));
+            Assert.That(done.Reason, Is.EqualTo("kept inside"));
+
+            // He dies: the falls are open, it goes on at once.
+            plan = Pushed();
+            EncounterDisplacementRecovery.Step(plan, See(plan.LandAt, pushedAt));
+            EncounterDisplacementRecovery.Step(plan, See(plan.LandAt + 100, pushedAt));
+            Assert.That(plan.Stage, Is.EqualTo(EncounterDisplacementRecovery.Stage.Barred));
+            done = EncounterDisplacementRecovery.Step(plan, See(plan.LandAt + 200, pushedAt, released: true));
+            Assert.That((done.Kind, done.Reason), Is.EqualTo((EncounterDisplacementRecovery.OrderKind.Done, "kept inside; the barrier is down")));
+
+            // Bounded: never left standing for ever.
+            plan = Pushed();
+            EncounterDisplacementRecovery.Step(plan, See(plan.LandAt, pushedAt));
+            EncounterDisplacementRecovery.Step(plan, See(plan.LandAt + 100, pushedAt));
+            done = EncounterDisplacementRecovery.Step(plan, See(plan.LandAt + 100 + EncounterDisplacementRecovery.BarrierHoldMilliseconds, pushedAt));
+            Assert.That((done.Kind, done.Reason), Is.EqualTo((EncounterDisplacementRecovery.OrderKind.Done, "kept inside; held at the barrier too long")));
+
+            // Its party already in front of the falls: it goes on at once, as before.
+            plan = Pushed();
+            EncounterDisplacementRecovery.Step(plan, See(plan.LandAt, front));
+            done = EncounterDisplacementRecovery.Step(plan, See(plan.LandAt + 100, front));
+            Assert.That((done.Kind, done.Reason), Is.EqualTo((EncounterDisplacementRecovery.OrderKind.Done, "kept inside")));
+        }
+
+        [Test]
+        public void ThePushedBotGetsTheFallsWayFromItsDisplacement()
+        {
+            UseRegion(191, (0, 0), (0, 65536));
+            var easmarach = Npc<TestEasmarach>(37918, 50523, 9865);
+            var bot = Npc<Bot>(38376, 52481, 10277);
+            var e = new DisplacementEvent(bot, easmarach, "Easmarach", DisplacementKind.Barrier, DisplacementRecovery.None, 191,
+                new Vector3(38376, 52481, 10277), new Vector3(40067, 50494, 11708), EpicEncounterTactics.FallsPushLanding, 1_945, true,
+                1_000, true);
+            typeof(EncounterDisplacementRecovery).GetMethod("Begin", BindingFlags.Static | BindingFlags.NonPublic)!.Invoke(null, [bot, e]);
+            Assert.That(EncounterDisplacementRecovery.StageOf(bot), Is.EqualTo(EncounterDisplacementRecovery.Stage.Airborne));
+            var record = ((System.Collections.IDictionary)typeof(EncounterDisplacementRecovery)
+                .GetField("Active", BindingFlags.Static | BindingFlags.NonPublic)!.GetValue(null))[bot];
+            var plan = (EncounterDisplacementRecovery.Plan)record!.GetType().GetField("Plan")!.GetValue(record);
+            Assert.That(plan.BarredWay, Is.Not.Null);
         }
 
         // ---- Torst and Hurika ----------------------------------------------------------------------------------------
