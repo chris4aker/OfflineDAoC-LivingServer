@@ -160,6 +160,31 @@ namespace DOL.GS.Tests
             }
         }
 
+        /// <summary>
+        /// The Heretic is a Catacombs class (2004): the realm histories never present one, or any other Catacombs class, as a
+        /// fact. Arawn's worship is heresy to the Church, and whether any acolyte has gone over to him is cellar talk (owner's
+        /// era rules, 2026-11-15). "Heretic Elam" and "the Heretical Hermit" are 2003 Albion NPCs in the location files, not the
+        /// class, so only the histories are read here. Valkyrie and warlock are older words (Midgard's dead are passed by the
+        /// valkyries), so only the coined class names are banned.
+        /// </summary>
+        [Test]
+        public void TheHistoriesNameNoCatacombsClass()
+        {
+            var catacombsClass = new Regex(@"\b(heretics?|bainshees?|vampiirs?)\b", RegexOptions.IgnoreCase);
+            LoreHistoryText[] histories = EmbeddedLoreSource.Load().Histories().ToArray();
+            Assert.That(histories, Is.Not.Empty);
+            foreach (LoreHistoryText history in histories)
+            {
+                var texts = history.Eras.SelectMany(e => new[] { e.Summary, e.Text }.Concat(e.Events.SelectMany(v => new[] { v.Name, v.Text })))
+                    .Concat(history.Factions.SelectMany(f => new[] { f.Name, f.Summary, f.Text }))
+                    .Append(history.Intro).Where(t => !string.IsNullOrEmpty(t));
+                foreach (string text in texts)
+                    Assert.That(catacombsClass.IsMatch(text), Is.False, $"{history.Id}: {text}");
+            }
+            string arawn = new LoremasterDialogue(EmbeddedLoreSource.Load(), LoreRealm.Albion, "Loremaster").Resolve("arawn").Text;
+            Assert.That(arawn, Does.Contain("cellar talk"), arawn);
+        }
+
         [TestCase("what is atlantis?", "atlantis")]
         [TestCase("Is there anything beneath Camelot?", "under camelot")]
         [TestCase("so, tell me about the Dream Trees", "dream trees")]
