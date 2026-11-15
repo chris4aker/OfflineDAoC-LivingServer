@@ -219,15 +219,7 @@ namespace DOL.GS;
         public static bool TryGetEquipmentUpgrade(GameBot bot, DbInventoryItem item, out eInventorySlot equipSlot)
         {
             equipSlot = eInventorySlot.Invalid;
-            if (bot?.Inventory == null || item?.Template == null ||
-                (eObjectType)item.Object_Type == eObjectType.GenericItem || item.LevelRequirement > bot.Level ||
-                !BotWeaponStats.HasFunctionalMeleeStats(item) ||
-                (BotWeaponStats.IsMeleeWeapon((eObjectType)item.Object_Type) &&
-                 (!BotWeaponStats.IsConfiguredMeleeWeapon(bot, item.Template) ||
-                  !BotWeaponStats.HasConfiguredWeaponProficiency(bot, item.Template))) ||
-                (BotRangedCombat.IsRangedWeaponType((eObjectType)item.Object_Type) && !BotRangedCombat.IsUsableWeapon(item)) ||
-                (!BotWeaponStats.IsMeleeWeapon((eObjectType)item.Object_Type) &&
-                 !GameServer.ServerRules.CheckAbilityToUseItem(bot, item.Template)))
+            if (bot?.Inventory == null || !CanUseEquipment(bot, item))
                 return false;
 
             equipSlot = ResolveEquipmentSlot(bot, item);
@@ -243,6 +235,23 @@ namespace DOL.GS;
             int improvement = EquipmentValue(item) - EquipmentValue(equipped);
             return equipped == null || improvement > MinimumEquipmentUpgrade;
         }
+
+        /// <summary>
+        /// Whether this bot may wear or wield the item at all: its level requirement, real weapon stats, the build's
+        /// configured weapon and proficiency, a usable ranged weapon, and the server's own class/realm/armour rules.
+        /// Shared by every upgrade path and by the starter gear (AutonomousStarterGear), so none can give a bot an item
+        /// the others would refuse.
+        /// </summary>
+        public static bool CanUseEquipment(GameBot bot, DbInventoryItem item) =>
+            bot != null && item?.Template != null &&
+            (eObjectType)item.Object_Type != eObjectType.GenericItem && item.LevelRequirement <= bot.Level &&
+            BotWeaponStats.HasFunctionalMeleeStats(item) &&
+            !(BotWeaponStats.IsMeleeWeapon((eObjectType)item.Object_Type) &&
+              (!BotWeaponStats.IsConfiguredMeleeWeapon(bot, item.Template) ||
+               !BotWeaponStats.HasConfiguredWeaponProficiency(bot, item.Template))) &&
+            !(BotRangedCombat.IsRangedWeaponType((eObjectType)item.Object_Type) && !BotRangedCombat.IsUsableWeapon(item)) &&
+            !(!BotWeaponStats.IsMeleeWeapon((eObjectType)item.Object_Type) &&
+              !GameServer.ServerRules.CheckAbilityToUseItem(bot, item.Template));
 
         /// <summary>
         /// Compares against what the move actually displaces (the idea behind the

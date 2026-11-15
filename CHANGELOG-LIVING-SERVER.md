@@ -312,15 +312,33 @@ test world was level 50, because the realm cards made only level 1 or 50, so eve
 
 - **Each realm card has "+ Lv.1", "+ Lv.20" and "+ Lv.50".** "+ Lv.20" makes bots for the Thidranki battleground: each
   gets a random level from 20 to 24 (the server's bracket; a Battleground table row overrides it, as on the server), that
-  level's experience from the server's own table, a purse of its level squared in silver (4 to 5.76 gold) and no armour
-  (gamebots earn it), and starts in its capital beside the realm teleporters. Shift-click makes 10, Ctrl-click 100, in
-  one protected batch, and the Sluaghbinder edition switch applies as on the other buttons. The server gives it its
-  usual level-matched starter weapon (and a bow or instrument where the class has one), as every gamebot gets.
+  level's experience from the server's own table and a purse of its level squared in silver (4 to 5.76 gold), and starts
+  in its capital beside the realm teleporters (its starter gear: see "They arrive with starter gear" below). Shift-click makes 10, Ctrl-click 100, in
+  one protected batch, and the Sluaghbinder edition switch applies as on the other buttons. Where no merchant weapon
+  fits, the server gives it its usual level-matched starter weapon; a bow or instrument where the class has one, as
+  every gamebot gets.
 - **They arrive trained, like "+ Lv.50" bots.** A never-saved bot above level 1 is trained in its lifetime build at its
   first login (`GameBot.ArrivesTrained`). Before, it would have fought with every line at 1 until a break between PvE
   tasks took it to a trainer. A bot that levelled by playing still visits its trainer.
 - **They go to Thidranki only for the Battlegrounds % share** the Bot Goals Setting tab gives Levels 20–49 (0% by
   default). The rest do solo/group PvE or RvR as usual.
+
+**They arrive with starter gear** (tests only; owner 2026-11-15, "Arrive with starter gear"; owner's PC, build `0026378`,
+Thidranki 13:45-14:00: 183 of 410 bot deaths there were bots wearing no armour, and storms of about 20 "+ Lv.20" bots all
+died before they reached the keep gate).
+
+- **A bot that arrives already trained gets plain merchant gear for its level, as if it had levelled normally.** At its
+  first login, each armour slot its class can wear, its weapon (and its shield, for a sword-and-board build, or its
+  offhand weapon, for a dual wielder) gets the best plain item its own realm's merchants sell at its level: real merchant
+  items, nothing magical, dropped or crafted, and only what its class may use. It is free: the bot keeps its purse. The
+  server log shows one `AUTONOMOUS_STARTER_GEAR` line per bot with every piece.
+- **Once, and never over gear it already has.** A bot that wears any armour is left as it is, nothing it carries is moved
+  or replaced, and a bot that had its starter gear never gets it again (it is saved with the bot). If no merchant item
+  fits, it tries again at its next login.
+- **"+ Lv.20" bots added before this version** that still wear no armour get it at their next login too (the launcher
+  binds such a bot in its capital; a "+ Lv.1" bot is bound in a starting area).
+- **Unchanged:** "+ Lv.1" bots still start without armour and earn it, "+ Lv.50" bots keep their level-50 set, and /spawn
+  companions and players are not affected. A Savage keeps its usual starter weapon (its armour comes from the merchants).
 
 **A bot-led party stuck in Caer Diogel** (tests only; owner's PC, build `1dc66b6`, 2026-11-15: party albion-f86e88-1370,
 on its way to griffins in Gwyddneau with the player hosted, stood in Caer Diogel from 00:55 to past 01:19 in phase

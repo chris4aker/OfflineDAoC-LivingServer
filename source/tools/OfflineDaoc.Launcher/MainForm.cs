@@ -2359,7 +2359,8 @@ internal sealed partial class MainForm : Form
             insert.Parameters.AddWithValue("@placement",
                 $"Launcher assigned a realm/race/class-valid random start in region {start.RegionId} before server startup");
             insert.ExecuteNonQuery();
-            // Only "+ Lv.50" gets a gear set. "+ Lv.20" bots start without armour and earn it (owner's rule).
+            // Only "+ Lv.50" gets its gear set here. A "+ Lv.20" bot gets plain merchant gear for its level from the server at
+            // its first login (AutonomousStarterGear; owner 2026-11-15, "Arrive with starter gear"); "+ Lv.1" bots earn theirs.
             if (battleground == null && botLevel == 50)
             {
                 long botId = connection.LastInsertRowId;
