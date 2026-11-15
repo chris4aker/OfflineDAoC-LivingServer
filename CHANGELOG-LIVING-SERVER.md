@@ -126,6 +126,32 @@ perspective"; Caledonia's quests follow its bracket).
   minutes later), and the "{keep} fell" tell says "good rp out there right now".
 - **The joker no longer owns a horse.** "my horse has better gear than me" is "the stablemaster's horse has better gear
   than me", which agrees with the dunce scene: horses are rented stable routes.
+**Battleground waves with a small population** (tests only; owner's PC, build `3d67b6f`, Thidranki 2026-11-15, 07:28-07:54:
+11-21 bots of each realm inside; Midgard and Hibernia "Gathering for the assault" for 16-22 minutes; 329 bot deaths in
+Thidranki, 104 of them Midgard and Hibernian bots killed one at a time by the keep's level-33 guards; the only wave,
+Hibernia's at 07:49:41 with 8 of 21, lost 19 bots in three minutes, 10 of them to guards, and was spent without reaching
+the gate; lord 100%, guards 19/19, both gates standing).
+
+- **A bot that has just fought keeps gathering.** For ten seconds after any hit, and while it recovered, a gatherer skipped
+  the gathering and went for the nearest keep guard up to 5,000 away on its own. Now the wave decides first, in a fight or
+  not.
+- **A gatherer fights only what comes at it.** It used to take any enemy it saw within 5,000, so it was pulled into the
+  holder's defenders and under the guards. Now it fights an enemy that walks into the gathered realm (700), or one firing
+  on the realm near the staging point (1,500) or near itself (1,000). It drops a target that broke off and left the
+  staging point instead of chasing it.
+- **The staging point is 3,500 out from the keep (was 2,500).** The guards killed 45 Midgard bots 1,512-3,109 from the keep
+  (median 2,230), 20 of them within 900 of Midgard's own staging point.
+- **After four minutes a wave goes with half of the realm inside** (at least 4), instead of a fixed 8. That is 7 of 13,
+  or 11 of 21. A realm also goes with half when another realm's wave is going in on the same keep. Most of the realm
+  (60%, at least 8) still goes at once.
+- **A going wave marches on the gate together.** While the gates stand, a bot fights a keep guard that is within 1,200 or
+  firing on the realm, and otherwise walks on with the wave. Each bot used to run at its own nearest guard.
+- **`BG_WAVE_STATUS`** once a minute for each attacking realm: inside, gathered (and how many are in a fight), needed,
+  patienceNeeded, waitedSeconds, staging x,y,z, nearKeep, holderNearKeep, going, and the fights its gatherers turned
+  down or broke off. `BG_WAVE_ASSAULT` now also logs patienceNeeded and withOtherRealm.
+- Unchanged: the keep, its guards, lord and gates; the holder's defence (a third hold the walls; at 07:49:54 Albion had 15
+  bots within 2,500 of its keep); siege crews; the rally inside the breach; and releases (a gamebot releases to its bind,
+  as a player does with `bg_release_to_portal_keep` off).
 
 **Battleground and RvR kill quests count enemy gamebots** (tests only; owner's question 2026-11-15: "are there quests in the
 BG? Are those functioning correctly?").

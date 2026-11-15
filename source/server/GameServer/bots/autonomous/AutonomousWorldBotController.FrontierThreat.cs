@@ -178,6 +178,18 @@ public sealed partial class AutonomousWorldBotController
         var visibleTargets=visible.ToArray();
         // RvR perception (owner 2026-11-01): enemy players, companions and pets only once noticed and after a reaction delay.
         visibleTargets = PerceiveRvrTargets(bot, visibleTargets, defending || siegeFighter);
+        // A bot gathering for its realm's battleground wave fights only what comes at it (owner's PC, build 3d67b6f: the
+        // gatherers saw the keep's Albion defenders and other realms within 5,000 and were pulled into the guards).
+        if (!defending && !siegeFighter && visibleTargets.Length > 0 && BattlegroundGatherHold(bot, out Vector3 gatherStaging))
+        {
+            GameLiving[] allowed = visibleTargets.Where(target => GathererMayEngage(bot, target, gatherStaging)).ToArray();
+            if (allowed.Length == 0)
+            {
+                AutonomousBattlegroundWave.NoteHeldBack(bot.CurrentRegionID, bot.Realm, dropped: false);
+                return false;
+            }
+            visibleTargets = allowed;
+        }
         var operatorThreats=visibleTargets.Where(target=>target.IsAttacking && target.TargetObject is GameBot friendly &&
             friendly.Realm==bot.Realm && bot.IsWithinRadius(friendly,1000) && BotSiegeRuntime.HoldingPosition(friendly)).ToArray();
         GameLiving enemy = SelectDistributedRvrTarget(bot, operatorThreats.Length>0 ? operatorThreats : visibleTargets);
