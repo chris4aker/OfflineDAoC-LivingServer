@@ -210,6 +210,8 @@ public static partial class AutonomousLivingServer
     /// </summary>
     public static void OnInviteDeclined(GamePlayer player, GameBot bot, BotGroupInvite.Duty duty, bool inAnotherPlayersGroup)
     {
+        if (NoLiferBuffBots.AnswerDeclinedInvite(player, bot))
+            return;
         if (player?.Client == null || !IsSpeaker(bot))
             return;
         Log.Info($"BOT_INVITE_RESULT bot=\"{bot.Name}\" player=\"{player.Name}\" from=player result=declined duty={duty} other_group={inAnotherPlayersGroup} " +

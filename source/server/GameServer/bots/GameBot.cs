@@ -61,6 +61,16 @@ namespace DOL.GS
         /// armor. It lives in memory only: nothing about it is ever saved, and it leaves when the raid ends.
         /// </summary>
         public bool IsEpicSpecialForce { get; private set; }
+        /// <summary>
+        /// A No Lifer's buffbot (NoLiferBuffBots, Living Server 1.2): a level-50 Cleric, Shaman or Druid "second account" that
+        /// follows its main or parks at the nearest bind and keeps it buffed. It lives in memory only (never saved, never in the
+        /// roster, the population count or any group), logs in and out with its main, and never fights or loots.
+        /// </summary>
+        public bool IsNoLiferBuffBot => BuffBotMainId > 0;
+        /// <summary>The main's roster id for a buffbot (0 for every other bot).</summary>
+        public long BuffBotMainId { get; private set; }
+        /// <summary>Kept in memory only: never written to the database (the Epic Special Forces and the No Lifers' buffbots).</summary>
+        public bool IsInMemoryOnly => IsEpicSpecialForce || IsNoLiferBuffBot;
         public bool IsEndgameCompanion => TemporaryCompanionBalance.IsEndgame(IsTemporaryGroupHelper || IsEpicSpecialForce, Level);
         /// <summary>Equipment is generated from the companion endgame kit (temporary helpers and the Special Forces).</summary>
         public bool UsesCompanionKit => IsTemporaryGroupHelper || IsEpicSpecialForce;
@@ -1027,7 +1037,10 @@ namespace DOL.GS
             // 1.1.3, after RC6: how many were on it, read before the death clears the tracker, for how the death is told.
             int attackers = IsAutonomousWorldBot ? AutonomousDeathDiagnostics.Attackers(this) : 0;
 
-            if (IsAutonomousWorldBot && PersistentRecord != null)
+            // A buffbot (NoLiferBuffBots) dies quietly: no record, no chat, no nemesis; it releases to a bind and goes back.
+            if (IsNoLiferBuffBot)
+                NoLiferBuffBots.OnDied(this, killer);
+            else if (IsAutonomousWorldBot && PersistentRecord != null)
             {
                 AutonomousDeathDiagnostics.Record(this, killer, PersistentRecord.Activity);
                 PersistentRecord.DeathCount++;
@@ -1039,7 +1052,7 @@ namespace DOL.GS
             }
 
             base.ProcessDeath(killer);
-            if (IsAutonomousWorldBot)
+            if (IsAutonomousWorldBot && !IsNoLiferBuffBot)
             {
                 AutonomousBotStatusPersistence.Queue(this);
                 AutonomousBotGuildSocial.OnBotDeath(this);
@@ -1782,7 +1795,7 @@ namespace DOL.GS
             long share = AutonomousBotGuildEconomy.ShareAfterDues(this, money.Value, out long dues, out Guild duesGuild);
             // The whole coin must fit in the purse before it is split, so returned dues can never be lost (audit 2026-10-16).
             // The Epic Special Forces take nothing: the realm's own raiders keep every coin and drop.
-            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsEpicSpecialForce || DatabaseID <= 0 ||
+            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsInMemoryOnly || DatabaseID <= 0 ||
                 PersistentRecord != null && PersistentRecord.MoneyCopper > long.MaxValue - money.Value ||
                 !AutonomousBotEconomy.AddMoney(DatabaseID, share))
                 return TryPickUpResult.DoesNotWant;
@@ -1801,7 +1814,7 @@ namespace DOL.GS
         public TryPickUpResult TryAutoPickUpItem(WorldInventoryItem item)
         {
             item.AssertLockAcquisition();
-            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsEpicSpecialForce)
+            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsInMemoryOnly)
                 return TryPickUpResult.DoesNotWant;
             if (Inventory == null)
             {
@@ -2634,14 +2647,20 @@ namespace DOL.GS
         /// <summary>An Epic Special Forces member from an in-memory record (never saved; see <see cref="IsEpicSpecialForce"/>).</summary>
         public static GameBot CreateEpicSpecialForce(OfflineWorldBotRecord record) => new(record, null, true);
 
+        /// <summary>A No Lifer's buffbot from an in-memory record (never saved; see <see cref="IsNoLiferBuffBot"/>).</summary>
+        public static GameBot CreateNoLiferBuffBot(OfflineWorldBotRecord record, long mainId) =>
+            mainId > 0 ? new(record, null, false, mainId) : throw new ArgumentOutOfRangeException(nameof(mainId));
+
         public GameBot(OfflineWorldBotRecord record, System.Collections.IList preparedInventory) : this(record, preparedInventory, false)
         {
         }
 
-        private GameBot(OfflineWorldBotRecord record, System.Collections.IList preparedInventory, bool epicSpecialForce)
+        private GameBot(OfflineWorldBotRecord record, System.Collections.IList preparedInventory, bool epicSpecialForce,
+            long buffBotMainId = 0)
         {
             PersistentRecord = record ?? throw new ArgumentNullException(nameof(record));
             IsEpicSpecialForce = epicSpecialForce;
+            BuffBotMainId = Math.Max(0, buffBotMainId);
             AutonomousBotGoalPolicy.ReconcileSavedAssignment(record);
             // Autonomous Group instances are process-local and are rebuilt
             // after every server start. Never expose a former process's leader,
@@ -2673,7 +2692,7 @@ namespace DOL.GS
 
             InitializeBotStats();
             eCharacterClass persistentClass = (eCharacterClass)ClassId;
-            BotSpec = persistentClass switch
+            BotSpec = IsNoLiferBuffBot ? NoLiferBuffBotSpec.For(persistentClass) : persistentClass switch
             {
                 eCharacterClass.Bonedancer => new BonedancerBotSpec(
                     BotSpec.ChoosePersistentSpecialization(persistentClass, record.BotId), record.BotId, true),
@@ -2686,17 +2705,17 @@ namespace DOL.GS
                     BotSpec.ChoosePersistentSpecialization(persistentClass, record.BotId)),
             };
             LoadClassSpecializations(false);
-            if (IsEpicSpecialForce)
-                SpendSpecPoints(Level, 0); // fully trained on arrival, like a level-50 /spawn companion
+            if (IsInMemoryOnly)
+                SpendSpecPoints(Level, 0); // fully trained on arrival, like a level-50 /spawn companion (a buffbot: its buff spec)
             else
                 LoadPersistedSpecs(record.SerializedSpecs);
-            bool buildLocked = IsEpicSpecialForce || BotLifetimeBuild.Restore(BotSpec, record.SerializedBuildPlan);
+            bool buildLocked = IsInMemoryOnly || BotLifetimeBuild.Restore(BotSpec, record.SerializedBuildPlan);
             if (!buildLocked)
                 BotLifetimeBuild.AlignWithInvestedWeapons(BotSpec, GetBaseSpecLevel);
             // A saved build can predate the Savage's trained weapon line. Its
             // old weapon field must not override the specialization restored
             // from the character record.
-            bool savagePlanCorrected = !IsEpicSpecialForce && persistentClass == eCharacterClass.Savage &&
+            bool savagePlanCorrected = !IsInMemoryOnly && persistentClass == eCharacterClass.Savage &&
                 SavageBotSpec.AlignWithPersistedSpecs(BotSpec, record.SerializedSpecs);
             if (!buildLocked || savagePlanCorrected)
             {
@@ -2704,14 +2723,14 @@ namespace DOL.GS
                 MarkAutonomousStateDirty();
             }
             m_leftOverSpecPoints = Math.Max(0, record.UnspentSpecPoints);
-            _lastAutonomousTrainedLevel = IsEpicSpecialForce ? Level : ParseLastTrainedLevel(record.SerializedAbilities, Level, record.SerializedSpecs);
+            _lastAutonomousTrainedLevel = IsInMemoryOnly ? Level : ParseLastTrainedLevel(record.SerializedAbilities, Level, record.SerializedSpecs);
             // A bot the launcher made at level 50 ("+ Lv.50") has its lifetime build but has never stood at a trainer: it
             // arrives trained in that build, as a player who leveled there would be. PC 2026-11-11 (build e90bf21): 900 such
             // bots a realm loaded with every line at 1, 792 of 2,700 had found a trainer after 80 minutes, and raids staged
             // 20 minutes in were fought by level 50s with level-1 skills (9 of the 72 sent to Golestandt had trained).
             // Living Server 1.2: so does one the launcher made for the Thidranki battleground ("+ Lv.20", levels 20-24), which would
             // otherwise fight its battleground with every line at 1 (it trains only at a break between PvE tasks).
-            bool arrivedTrained = !IsEpicSpecialForce &&
+            bool arrivedTrained = !IsInMemoryOnly &&
                 ArrivesTrained(Level, _lastAutonomousTrainedLevel, string.IsNullOrWhiteSpace(record.LastSavedUtc));
             if (arrivedTrained)
             {
@@ -2730,6 +2749,19 @@ namespace DOL.GS
 
             if (IsEpicSpecialForce)
                 EquipBot(50); // the endgame kit, in an inventory that is never saved
+            else if (IsNoLiferBuffBot)
+            {
+                // The launcher's level-50 rule (AutonomousStarterGear): it arrives trained, so it wears the best plain merchant
+                // item of its realm for its level in each slot, free, in an inventory that is never saved. No coin, no loot.
+                Inventory = new BotInventory(InternalID);
+                Inventory.LoadInventory(InternalID, new System.Collections.ArrayList());
+                AutonomousStarterGear.Result gear = PlanAndGiveStarterGear();
+                EnsureAutonomousStarterWeapon();
+                RefreshItemBonuses();
+                log.Info($"BUFFBOT_GEAR bot=\"{record.Name}\" main={buffBotMainId} class=\"{ClassName}\" level={Level} " +
+                         $"pieces={gear.Pieces.Count} items=\"{AutonomousStarterGear.Describe(gear.Pieces)}\"" +
+                         (gear.Given ? string.Empty : $" reason=\"{gear.Reason}\""));
+            }
             else
             {
                 Inventory = new BotInventory(InternalID);
@@ -2755,9 +2787,9 @@ namespace DOL.GS
             X = record.X;
             Y = record.Y;
             Z = record.Z;
-            Health = IsEpicSpecialForce ? MaxHealth : Math.Clamp(record.Health, 1, MaxHealth);
-            Mana = IsEpicSpecialForce ? MaxMana : Math.Clamp(record.Mana, 0, MaxMana);
-            Endurance = IsEpicSpecialForce ? MaxEndurance : Math.Clamp(record.Endurance, 0, MaxEndurance);
+            Health = IsInMemoryOnly ? MaxHealth : Math.Clamp(record.Health, 1, MaxHealth);
+            Mana = IsInMemoryOnly ? MaxMana : Math.Clamp(record.Mana, 0, MaxMana);
+            Endurance = IsInMemoryOnly ? MaxEndurance : Math.Clamp(record.Endurance, 0, MaxEndurance);
             RespawnInterval = -1;
 
             var brain = persistentClass == eCharacterClass.Sluaghbinder
@@ -2785,12 +2817,7 @@ namespace DOL.GS
             AutonomousStarterGear.Result result;
             try
             {
-                bool savage = CharacterClass?.ID == (int)eCharacterClass.Savage;
-                eInventorySlot primarySlot = PrimaryWeaponUsesTwoHands ? eInventorySlot.TwoHandWeapon : eInventorySlot.RightHandWeapon;
-                bool shieldBuild = !RequiresMeleeOffhand && !SluaghbinderUsesScythe && BestShieldLevel > 0;
-                var wants = AutonomousStarterGear.PlanSlots(slot => Inventory.GetItem(slot) != null, primarySlot,
-                    PreferredPrimaryWeaponType, RequiresMeleeOffhand ? PreferredOffhandWeaponType : 0, shieldBuild, savage);
-                result = AutonomousStarterGear.Give(this, wants);
+                result = PlanAndGiveStarterGearCore();
             }
             catch (Exception exception)
             {
@@ -2809,6 +2836,31 @@ namespace DOL.GS
             MarkAutonomousStateDirty();
             AutonomousBotEconomy.MarkInventoryChanged(this);
             return true;
+        }
+
+        /// <summary>The best plain merchant item of its realm for its level in each empty slot of its build (AutonomousStarterGear).</summary>
+        private AutonomousStarterGear.Result PlanAndGiveStarterGearCore()
+        {
+            bool savage = CharacterClass?.ID == (int)eCharacterClass.Savage;
+            eInventorySlot primarySlot = PrimaryWeaponUsesTwoHands ? eInventorySlot.TwoHandWeapon : eInventorySlot.RightHandWeapon;
+            bool shieldBuild = !RequiresMeleeOffhand && !SluaghbinderUsesScythe && BestShieldLevel > 0;
+            var wants = AutonomousStarterGear.PlanSlots(slot => Inventory.GetItem(slot) != null, primarySlot,
+                PreferredPrimaryWeaponType, RequiresMeleeOffhand ? PreferredOffhandWeaponType : 0, shieldBuild, savage);
+            return AutonomousStarterGear.Give(this, wants);
+        }
+
+        /// <summary>A buffbot's gear on arrival; a failure leaves it in what it has (it never fights).</summary>
+        private AutonomousStarterGear.Result PlanAndGiveStarterGear()
+        {
+            try
+            {
+                return PlanAndGiveStarterGearCore();
+            }
+            catch (Exception exception)
+            {
+                log.Error($"BUFFBOT_GEAR bot=\"{Name}\" failed; it arrives in what it has", exception);
+                return new AutonomousStarterGear.Result(false, [], "error");
+            }
         }
 
         private bool IsHealerClass()
@@ -5199,7 +5251,7 @@ namespace DOL.GS
         /// </summary>
         private int MeleeStandOff(GameObject target, int minDistance)
         {
-            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsEpicSpecialForce || IsPlayerLedGroup ||
+            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsInMemoryOnly || IsPlayerLedGroup ||
                 target == null || target != TargetObject || target is not GameNPC monster || monster is GameBot ||
                 minDistance != StickMinimumRange || ActiveWeaponSlot == eActiveWeaponSlot.Distance ||
                 DragonCombatGeometry.TargetReach(monster) > 0 || EpicEncounterTactics.For(monster) != null ||

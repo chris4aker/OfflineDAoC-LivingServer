@@ -270,7 +270,8 @@ namespace DOL.GS
 
         /// <summary>The guild name before the bot enters the world (no broadcast needed).</summary>
         public static string GuildNameFor(GameBot bot) =>
-            bot?.IsEpicSpecialForce == true ? AutonomousEpicSpecialForces.GuildName : ShownGuild(bot)?.Name ?? string.Empty;
+            bot?.IsEpicSpecialForce == true ? AutonomousEpicSpecialForces.GuildName :
+            bot?.IsNoLiferBuffBot == true ? NoLiferBuffBots.MainGuildName(bot) : ShownGuild(bot)?.Name ?? string.Empty;
 
         #region Guild chat
 

@@ -126,6 +126,9 @@ namespace DOL.GS
             {
                 if (_groupMembers.Count >= MaximumMemberCount || living.Group != null)
                     return false;
+                // A No Lifer's buffbot never joins any group or raid, its main's included (NoLiferBuffBots).
+                if (living is GameBot { IsNoLiferBuffBot: true })
+                    return false;
                 if (IsCompanionRaid && living != CompanionRaidOwner &&
                     (living is not GameBot companion || !companion.IsTemporaryGroupHelper || companion.IsAutonomousWorldBot || companion.Owner != CompanionRaidOwner))
                     return false;

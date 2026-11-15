@@ -17,6 +17,9 @@ from the always-on changes listed in [KNOWN-ISSUES.md](KNOWN-ISSUES.md).
 | `bot_voices_debates` | True | When voices are on, bots hold debates and long threads in /faction (section 4). |
 | `bot_voices_tells` | True | When voices and memory are on, a bot now and then starts a tell with you ([bot-voices/TALKING-UPDATE.md](bot-voices/TALKING-UPDATE.md)). |
 | `bot_voices_chat_rate` | 2.0 | How much bots talk unprompted, 0 (only answers) to 3 (1.0 before 1.1.2). |
+| `bot_nolifer_buffbots` | True (1.2) | Some No Lifers run a level-50 buffbot (section 2.3). Works whether personalities are on or off. |
+| `bot_nolifer_buffbot_percent` | 30 | The percent of No Lifers that have one. |
+| `bot_nolifer_buffbot_era_conc_range` | True | Buffbots' concentration buffs have no range (the 2003 rule; section 2.3). |
 
 To change them, use the launcher's **Living Server** tab (with the server stopped; it applies at the next start). The same switches are in a script, for those who prefer it: close the
 server, launcher and game, then run (Python 3):
@@ -95,6 +98,57 @@ Personality doesn't choose goals in two cases:
 - A bot given a new goal between passes (for example when its group breaks up) uses the older re-draw rule, and
   only when a Bot Goals setting is saved.
 - A bot left over once every open slot in its pass is filled gets the allocator's usual over-quota goal.
+
+### 2.3 No Lifer buffbots (Living Server 1.2)
+
+In 2003 "everybody has a buffbot": a second paid account of a Cleric, Shaman or Druid, parked AFK in the portal keep or a
+town, or following its main around. The research and sources are in [research/BUFFBOTS-2003.md](research/BUFFBOTS-2003.md).
+
+**Who has one.** 30% of the No Lifers (`bot_nolifer_buffbot_percent`). The choice is a fixed roll from the main's roster
+id, so the same mains keep theirs across restarts. Existing rosters get theirs at the next start, and new No Lifers too; nothing
+is written to the database. With about 4% No Lifers, that is roughly 1 bot in 80: about 11 per realm at 900 bots a realm.
+
+**The buffbot.**
+- **Class and build:** Albion Cleric, Enhancement 50. Midgard Shaman, Augmentation 50 (the Shaman, not the Healer, has
+  Midgard's spec stat buffs and acuity). Hibernia Druid, Nurture 50. The rest of the points go to the healing line.
+- **Level and gear:** level 50 and trained on arrival. It wears what the launcher's level-50 bots wear: the best plain
+  merchant item of its realm for its level in each slot. It has no coin and takes no loot.
+- **Identity:** its name, race and gender are fixed from its main. About one in three is named after the main
+  ("Thorgrimbuff"). It wears the main's guild tag.
+- **Lives in memory only, like the Epic Special Forces:** never saved, never in the launcher roster or the population
+  count, never in any group or raid. It logs in when its main is online and logs out with it. `/who`, `/send`, `/target`
+  and `/invite` find it.
+
+**What it does.**
+- **Follows** its main at about 450 units in the main's own realm's PvE land, and stays at least 900 away from the main's
+  fights.
+- **Parks** where 2003 players left theirs:
+  - the frontier: the nearest bind of its realm (the portal keep or a keep)
+  - a dungeon, a battleground or a raid: the main's own bind, or the capital
+- **Waits** where it is while its main rides a stable route or lies dead.
+- If its main is in another region or more than 12,000 units away, it **logs in again** next to it (a move, logged as
+  `BUFFBOT_RELOCATED`).
+- **Never fights.** Attacked, it runs to the bind. Killed, it releases and goes back. In the frontier it is a real target,
+  as parked buffbots were.
+- **Keeps its main buffed** with every single-target buff its class has. Concentration buffs come first: spec AF,
+  str/con, dex/qui, base AF, strength, constitution, dexterity. Then acuity for power users, and haste, damage add and
+  endurance regen for weapon users. Then damage shield and health regen. It recasts whatever is missing (expiry, the
+  main's death) whenever it is within 950 units. Group-only buffs (resists, procs) need a group, so it doesn't give them.
+- **Range:** with `bot_nolifer_buffbot_era_conc_range` on, its concentration buffs follow the 2003 rule and have no
+  range, so a parked buffbot keeps its main buffed. Mythic added the 5,000-unit limit with its Classic servers in July
+  2005. This server's own rule (5,000 units, and 1,500 for endurance regen) still applies to everyone else.
+- **Talks** almost not at all. A tell gets "afk buffbot" or "buffbot, msg <main>". An invite gets "sry buffbot, cant group".
+
+**Log lines** (the owner's PC log shows them):
+- `BUFFBOT_CREATED`, `BUFFBOT_GEAR`, `BUFFBOT_LOGOUT`
+- `BUFFBOT_FOLLOW`, `BUFFBOT_PARKED`, `BUFFBOT_WAIT`, `BUFFBOT_FLEE`, `BUFFBOT_RELOCATE` / `BUFFBOT_RELOCATED`
+- `BUFFBOT_BUFFED` (one per cast), `BUFFBOT_BUFFED_ALL` (the full set is up)
+- `BUFFBOT_DIED`, `BUFFBOT_INVITE_DECLINED`
+
+Launcher: the Living Server tab's **No Lifer buffbots** switch (`bot_nolifer_buffbots`). The percent and the range rule
+are server settings.
+
+Status: **tests only** (`UT_NoLiferBuffBots`). Nothing about buffbots has been seen in game yet.
 
 ## 3. Voices
 

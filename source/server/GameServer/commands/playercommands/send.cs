@@ -38,7 +38,11 @@ namespace DOL.GS.Commands
             {
                 // Bots invite tells ("pst me"); they answer with a /send of their own.
                 ChatUtil.SendSendMessage(client, "Social.SendMessage.Private.YouSendTo", message, bot.Name);
-                AutonomousBotChatCoordinator.OnPlayerTell(client.Player, bot, message);
+                // A buffbot is a parked second character: a short era answer, never a conversation (NoLiferBuffBots).
+                if (bot.IsNoLiferBuffBot)
+                    NoLiferBuffBots.AnswerTell(client.Player, bot);
+                else
+                    AutonomousBotChatCoordinator.OnPlayerTell(client.Player, bot, message);
                 return;
             }
 

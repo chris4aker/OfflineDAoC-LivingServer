@@ -218,6 +218,8 @@ public static partial class AutonomousBotGroupCoordinator
                 AutonomousRealmRaid.RecruitForcedParty(now);
             using (AiProfile.Scope(AiSystem.PulseEpicSpecialForces))
                 AutonomousEpicSpecialForces.Pulse(now);
+            using (AiProfile.Scope(AiSystem.PulseNoLiferBuffBots))
+                NoLiferBuffBots.Pulse(now);
             using (AiProfile.Scope(AiSystem.PulseRvrDefense))
                 AutonomousRvrEventLayer.PulseDefense(now);
             using (AiProfile.Scope(AiSystem.PulseWarbandSupport))
