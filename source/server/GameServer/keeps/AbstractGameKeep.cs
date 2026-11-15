@@ -184,6 +184,43 @@ namespace DOL.GS.Keeps
 		public Guild Guild { get; set; } = null;
 
 		/// <summary>
+		/// The level of a battleground keep (Thidranki Faste, Dun Abermenai, Caer Caledon, ...). Battleground keeps
+		/// can't be claimed (CheckForClaim: BaseLevel 50 only, as in DOL; the Herald's April 2003 realm war page lists claims
+		/// for every frontier keep and none for the battleground keeps), and a keep only rises above level 1 through a
+		/// guild's upgrades (Herald, New Frontiers keeps: "Keeps and Towers start out at level 1"), so a battleground keep
+		/// stays at level 1, the level every release world gives it. Without this, a capture reset it to
+		/// starting_keep_level (4, DOL's 2009 value for frontier keeps): Thidranki's guards went from 28 to 33 and its
+		/// lord from 33 to 38 the first time the keep changed hands.
+		/// </summary>
+		public const byte BattlegroundKeepLevel = 1;
+
+		/// <summary>The level an unclaimed keep falls back to: <see cref="BattlegroundKeepLevel"/> for a battleground
+		/// keep (base level below 50, not a portal keep), starting_keep_level otherwise.</summary>
+		public static byte UnclaimedLevelFor(int baseLevel, bool portalKeep, int startingKeepLevel) =>
+			!portalKeep && baseLevel < 50 ? BattlegroundKeepLevel : (byte)startingKeepLevel;
+
+		/// <summary>A battleground's own keep: base level below 50 (the battleground's level cap) and not a portal keep.</summary>
+		public bool IsBattlegroundKeep => DBKeep != null && DBKeep.BaseLevel < 50 && !IsPortalKeep;
+
+		/// <summary>The level this keep falls back to while no guild holds it.</summary>
+		public byte UnclaimedLevel =>
+			UnclaimedLevelFor(DBKeep?.BaseLevel ?? 50, DBKeep != null && IsPortalKeep, ServerProperties.Properties.STARTING_KEEP_LEVEL);
+
+		/// <summary>
+		/// On load, an unclaimed battleground keep above or below <see cref="BattlegroundKeepLevel"/> (a played world
+		/// whose battleground keep a capture raised to starting_keep_level) is put back to it. Returns the level it had,
+		/// or null when nothing changed. The database row is written at the keep's next save (a capture).
+		/// </summary>
+		public byte? RestoreBattlegroundKeepLevel()
+		{
+			if (Guild != null || !IsBattlegroundKeep || Level == BattlegroundKeepLevel)
+				return null;
+			byte was = Level;
+			Level = BattlegroundKeepLevel;
+			return was;
+		}
+
+		/// <summary>
 		/// Difficulty level of keep for each realm
 		/// the keep is more difficult the guild which have claimed gain more bonus
 		/// </summary>
@@ -532,10 +569,13 @@ namespace DOL.GS.Keeps
 					StartDeductionTimer();
 				}
 			}
+			byte? battlegroundLevelWas = RestoreBattlegroundKeepLevel();
+			if (battlegroundLevelWas != null)
+				log.Info($"BG_KEEP_LEVEL_RESTORED keep=\"{Name}\" id={KeepID} baseLevel={DBKeep.BaseLevel} realm={Realm} from={battlegroundLevelWas} to={Level} reason=unclaimable-battleground-keep");
 			if (Level < ServerProperties.Properties.MAX_KEEP_LEVEL && Guild != null)
 				StartChangeLevel((byte)ServerProperties.Properties.MAX_KEEP_LEVEL);
-			else if (Level <= ServerProperties.Properties.MAX_KEEP_LEVEL && Level > ServerProperties.Properties.STARTING_KEEP_LEVEL && Guild == null)
-				StartChangeLevel((byte)ServerProperties.Properties.STARTING_KEEP_LEVEL);
+			else if (Level <= ServerProperties.Properties.MAX_KEEP_LEVEL && Level > UnclaimedLevel && Guild == null)
+				StartChangeLevel(UnclaimedLevel);
 		}
 
 		/// <summary>
@@ -787,7 +827,7 @@ namespace DOL.GS.Keeps
 			Guild = null;
 			StopDeductionTimer();
 			StopChangeLevelTimer();
-			ChangeLevel((byte)ServerProperties.Properties.STARTING_KEEP_LEVEL);
+			ChangeLevel(UnclaimedLevel);
 
 			foreach (GameKeepGuard guard in Guards.Values)
 			{
@@ -1009,7 +1049,7 @@ namespace DOL.GS.Keeps
             if (Guild != null)
                 maxlevel = (byte)ServerProperties.Properties.MAX_KEEP_LEVEL;
             else
-                maxlevel = (byte)ServerProperties.Properties.STARTING_KEEP_LEVEL;
+                maxlevel = UnclaimedLevel;
 
 
             if (Level < maxlevel && Guild != null)
@@ -1064,7 +1104,7 @@ namespace DOL.GS.Keeps
 
 			PlayerMgr.BroadcastCapture(this);
 
-            Level = (byte)ServerProperties.Properties.STARTING_KEEP_LEVEL;
+            Level = UnclaimedLevel;
 
 			//if a guild holds the keep, we release it
 			if (Guild != null)
