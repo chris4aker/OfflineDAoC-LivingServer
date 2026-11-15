@@ -110,6 +110,13 @@ class CatalogFileTests(unittest.TestCase):
         self.assertNotIn("real players only", throw[0].get("affects") or "", "Xanxicar's throw picks bots as shipped")
         jail = [r for r in by_id["tuscaran-glacier/jailer"]["rules"] if r["kind"] == "teleport"]
         self.assertNotIn("real players only", jail[0].get("affects") or "", "Vifil's jail picks bots as shipped (wave 2)")
+        # The switch is asked with the body, whose class name need not be the brain's minus "Brain".
+        for eid, why in (("open-world/moranthemighty", "Moran's gust (MoranBrain, body MoranTheMighty)"),
+                         ("krondon/scurceolhyrde", "the orbs' throw (LyftMihtBrain1-4, bodies LyftMihtOne-Four)")):
+            moves = [r for r in by_id[eid]["rules"] if r["kind"] == "teleport"]
+            self.assertTrue(moves, eid)
+            for r in moves:
+                self.assertNotIn("real players only", r.get("affects") or "", why + " picks bots as shipped")
         olc = [r for r in by_id["galladoria/olcasgean"]["rules"] if r["kind"] == "teleport"]
         if "Olcasgean" not in shipped and olc:
             self.assertIn("real players only", olc[0].get("affects") or "", "elsewhere move picks stay player-only")
