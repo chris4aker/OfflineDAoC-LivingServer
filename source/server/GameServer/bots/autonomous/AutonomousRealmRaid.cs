@@ -18,6 +18,8 @@ namespace DOL.GS
             /// and on the way.
             /// </summary>
             public bool IsNeutral => RealmRaidNeutralEvents.IsNeutralRegion(Region);
+            /// <summary>An open-world big boss (RealmRaidOpenWorld): fought like a dragon, at its spawn instead of a lair.</summary>
+            public bool IsOpenWorld => RealmRaidOpenWorld.Is(Id);
             /// <summary>The dungeon walked through on the way in (Crystal Cave: Avalon City), or 0.</summary>
             public ushort Through => RaidDungeons.FirstOrDefault(d => d.Region == Region)?.Through ?? 0;
             /// <summary>The home region whose entrance a raid stages at when it goes in through another dungeon (neutral
@@ -315,9 +317,8 @@ namespace DOL.GS
                 if (!RealmRaidRecruitmentPolicy.ScheduledRaidDue(now, due, Raids.Values.Any(r => r.Definition.Realm == realm), online, minutes))
                     continue;
                 NextScheduled[realm] = now + RealmRaidRecruitmentPolicy.NextScheduleMilliseconds(minutes, Random.Shared.NextDouble());
-                Definition chosen = Definitions.Where(d => d.Realm == realm && Available(d.Id) &&
-                        MayStartAutomatic(d.Id, LastSuccessful.GetValueOrDefault(realm)))
-                    .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
+                // The open-world bosses take their share of the rolls (RealmRaidOpenWorld.Choose), the rest keep theirs.
+                Definition chosen = ChooseAutomatic(realm);
                 if (chosen == null)
                 {
                     Log.Info($"REALM_RAID_SCHEDULE_SKIPPED realm={GlobalConstants.RealmToName(realm)} online={online} reason=\"no encounter available (respawning or on cooldown)\"");
@@ -332,7 +333,11 @@ namespace DOL.GS
                              $"recruitCap={Raids[chosen.Id].RecruitCap} {SizeField(Raids[chosen.Id])} nextMinutes={minutes}");
                 }
                 else
+                {
                     Log.Warn($"REALM_RAID_SCHEDULE_FAILED event={chosen.Id} realm={GlobalConstants.RealmToName(realm)} online={online} reason=\"{reason}\"");
+                    // An open-world boss its hub can't reach doesn't take the realm's next slots too (RealmRaidOpenWorld).
+                    if (chosen.IsOpenWorld) Cooldowns[chosen.Id] = now + RealmRaidOpenWorld.FailedStartCooldownMilliseconds;
+                }
             }
         }
         /// <summary>
@@ -416,6 +421,16 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>The realm's automatic pick (under the raid lock): every raid it could open now but the one it last won, the
+        /// open-world bosses at their share (RealmRaidOpenWorld.Choose).</summary>
+        private static Definition ChooseAutomatic(eRealm realm)
+        {
+            string[] candidates = Definitions.Where(d => d.Realm == realm && Available(d.Id) &&
+                MayStartAutomatic(d.Id, LastSuccessful.GetValueOrDefault(realm))).Select(d => d.Id).ToArray();
+            string id = RealmRaidOpenWorld.Choose(candidates);
+            return id == null ? null : Definitions.First(d => d.Id == id && d.Realm == realm);
+        }
+
         private static string SizeField(Raid raid) => raid.Sizing is { } sizing ? $"size={sizing.Percent:0.#}% full={sizing.FullRequired}" : "size=100%";
 
         /// <summary>
@@ -438,7 +453,9 @@ namespace DOL.GS
             new("darkness-albion", "Darkness Falls", eRealm.Albion, 249, "Legion", 64),
             new("darkness-midgard", "Darkness Falls", eRealm.Midgard, 249, "Legion", 64),
             new("darkness-hibernia", "Darkness Falls", eRealm.Hibernia, 249, "Legion", 64),
-            ..RaidDungeons.Select(d => new Definition(d.Id, d.Name, d.Realm, d.Region, d.BossType, d.SuggestedBots))
+            ..RaidDungeons.Select(d => new Definition(d.Id, d.Name, d.Realm, d.Region, d.BossType, d.SuggestedBots)),
+            // Living Server 1.2: the open-world big bosses, each its realm's raid (RealmRaidOpenWorld).
+            ..RealmRaidOpenWorld.Raids.Select(r => new Definition(r.Id, r.Name, r.Realm, r.Region, r.BossType, r.SuggestedBots))
         ];
 
         public static void Pulse(long now)
@@ -506,7 +523,8 @@ namespace DOL.GS
                                 p.Departed = true;
                             }
                     if (!raid.Definition.IsDungeon && (!raid.Boss.IsAlive || raid.Boss.ObjectState != GameObject.eObjectState.Active))
-                    { End(raid, now, "The dragon encounter has ended; checking actual respawn before the next expedition."); continue; }
+                    { End(raid, now, (raid.Definition.IsOpenWorld ? "The boss encounter" : "The dragon encounter") +
+                        " has ended; checking actual respawn before the next expedition."); continue; }
                     if (raid.Started && raid.Definition.IsNeutral)
                         RealmRaidNeutralEvents.ApplyEncounterLevels(raid.Definition.Region, raid.Definition.Objectives);
                     raid.DungeonRoute?.ObserveCompletion();
@@ -664,9 +682,7 @@ namespace DOL.GS
                     // once per member or AI tick; keep ordinary PvE populated.
                     if (Random.Shared.NextDouble() >= RealmRaidRecruitmentPolicy.NewEventChance) return false;
                     if (OnlineLevelFifty(leader.Realm) < RealmRaidRecruitmentPolicy.MinimumScaledBots * 2) return false;
-                    var definition = Definitions.Where(d => d.Realm == leader.Realm && Available(d.Id) &&
-                            MayStartAutomatic(d.Id, LastSuccessful.GetValueOrDefault(leader.Realm)))
-                        .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
+                    var definition = ChooseAutomatic(leader.Realm);
                     if (definition == null || !Start(definition.Id, leader.Realm, out _)) return false;
                     raid = Raids[definition.Id];
                 }
@@ -800,7 +816,8 @@ namespace DOL.GS
                 raid.LeeroyRolled = AutonomousRaidLeeroy.On && AutonomousRaidLeeroy.RollForRaid(Random.Shared.NextDouble());
                 if (raid.DungeonRoute != null) raid.DungeonRoute.LeeroyRolled = raid.LeeroyRolled;
                 if (raid.LeeroyRolled) Log.Info($"RAID_LEEROY_ROLLED event={id}");
-                RealmEventRecords.Begin(id, definition.Name, definition.IsNeutral ? "Neutral raid" : definition.IsDungeon ? "Epic dungeon" : "Dragon",
+                RealmEventRecords.Begin(id, definition.Name, definition.IsNeutral ? "Neutral raid" : definition.IsDungeon ? "Epic dungeon" :
+                    definition.IsOpenWorld ? RealmRaidOpenWorld.Kind : "Dragon",
                     GlobalConstants.RealmToName(realm), (forced ? "Forced" : "Automatic") + " rally via " + raid.Hub.Name);
                 raid.ForcedParties.AddRange(recruits);
                 foreach (GameBot bot in recruits.SelectMany(p => p)) Reserve(bot, raid);
@@ -992,9 +1009,15 @@ namespace DOL.GS
         // dragged it. Requiring the 2,000-unit lair circle parked most of a raid
         // on "Waiting for dragon landing" while a few bots fought on (Cuuldurach
         // took 2 h 20 min on 2026-10-02).
-        private static bool DragonLanded(Raid raid) => raid.Definition.IsDungeon ||
+        // An open-world boss never flies off: it counts as landed wherever it walks (RealmRaidOpenWorld).
+        private static bool DragonLanded(Raid raid) => raid.Definition.IsDungeon || raid.Definition.IsOpenWorld ||
             RealmRaidStaging.DragonCountsAsLanded((raid.Boss.Flags & GameNPC.eFlags.FLYING) != 0,
                 raid.Boss.IsWithinRadius(DragonLairPlacement.Home(raid.Definition.Realm), 2000), raid.Boss.InCombat);
+
+        /// <summary>The point a non-dungeon raid stages around and draws its boss back to: a dragon's lair, an open-world
+        /// boss's spawn (RealmRaidOpenWorld.Home).</summary>
+        private static Point3D LairHome(Raid raid) => raid.Definition.IsOpenWorld ? RealmRaidOpenWorld.Home(raid.Boss)
+            : DragonLairPlacement.Home(raid.Definition.Realm);
 
         /// <summary>True when a raid in battle has stalled. Notes any progress first: a named or boss down, a wipe, or the
         /// named, boss or dragon it fights at a new low.</summary>
@@ -1112,7 +1135,7 @@ namespace DOL.GS
 
         private static bool AtStaging(Raid raid, GameBot bot)
         {
-            var home = raid.Definition.IsDungeon ? null : DragonLairPlacement.Home(raid.Definition.Realm);
+            var home = raid.Definition.IsDungeon ? null : LairHome(raid);
             return DragonRallyRoute.AtAssembly(new(bot.X,bot.Y,bot.Z), raid.StagingPosts.Values,
                 home == null ? null : new Vector3(home.X,home.Y,home.Z));
         }
@@ -1127,7 +1150,7 @@ namespace DOL.GS
             {
                 if (!Membership.TryGetValue(bot.Group,out var raid) || raid.Started && !Regrouping(raid) || raid.Definition.IsDungeon ||
                     !raid.HubDeparted || bot.CurrentRegionID != raid.Definition.Region) return false;
-                var point=DragonLairPlacement.Home(raid.Definition.Realm);
+                var point=LairHome(raid);
                 home=new(point.X,point.Y,point.Z);
                 return true;
             }
@@ -1451,7 +1474,7 @@ namespace DOL.GS
                 }
                 return false;
             }
-            Point3D home = DragonLairPlacement.Home(raid.Definition.Realm);
+            Point3D home = LairHome(raid);
             Region region = WorldMgr.GetRegion(raid.Definition.Region);
             if (RealmRaidStaging.TryDragonPost(nav, region?.GetZone(home.X, home.Y), new(home.X, home.Y, home.Z), slot,
                 raid.StagingPosts.Values.ToArray(), out staging))

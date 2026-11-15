@@ -134,9 +134,10 @@ namespace DOL.UnitTests
         public void OnlyGovannonHasTheRingAndTheTaunt()
         {
             Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.MeleeRing > 0));
-            // Living Server 1.2: Torst too (he jumps to a random raider after rooting his target).
+            // Living Server 1.2: Torst too (he jumps to a random raider after rooting his target), and the Green Knight (he drops
+            // his aggro for a healer every 40-60 s).
             Assert.That(EpicEncounterTactics.Catalog.Where(t => t.TanksTaunt).Select(t => t.Boss),
-                Is.EquivalentTo(new[] { "GrandSummonerGovannon", "Torst" }));
+                Is.EquivalentTo(new[] { "GrandSummonerGovannon", "Torst", "OFGreenKnight" }));
             foreach (var t in EpicEncounterTactics.Catalog)
                 if (t.Boss == "GrandSummonerGovannon")
                 {

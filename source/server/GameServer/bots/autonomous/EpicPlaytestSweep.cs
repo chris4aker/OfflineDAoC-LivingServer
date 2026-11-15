@@ -62,13 +62,19 @@ namespace DOL.GS
         public static string[] Order(IEnumerable<string> ids) =>
             ids.OrderBy(id => id.StartsWith("darkness-", StringComparison.Ordinal) ? 1 : 0).ToArray();
 
-        /// <summary>The ids a start names (pure): "all", or a comma list; unknown ids come back in <paramref name="unknown"/>.</summary>
+        /// <summary>The ids a start names (pure): "all", "openworld" (the open-world big bosses' raids, RealmRaidOpenWorld), or a
+        /// comma list; unknown ids come back in <paramref name="unknown"/>.</summary>
         public static string[] Parse(string word, IReadOnlyCollection<string> known, out string[] unknown)
         {
             if (string.IsNullOrWhiteSpace(word) || word.Equals("all", StringComparison.OrdinalIgnoreCase))
             {
                 unknown = [];
                 return Order(known);
+            }
+            if (word.Equals(RealmRaidOpenWorld.SweepWord, StringComparison.OrdinalIgnoreCase))
+            {
+                unknown = [];
+                return Order(known.Where(RealmRaidOpenWorld.Is));
             }
             string[] asked = word.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             unknown = asked.Where(a => !known.Contains(a)).ToArray();
