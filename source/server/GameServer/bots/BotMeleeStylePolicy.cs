@@ -115,7 +115,9 @@ namespace DOL.GS
             MatchesWeapon(style, bot.ActiveWeapon, bot.Inventory.GetItem(eInventorySlot.LeftHandWeapon), bot.ActiveWeaponSlot) &&
             StyleProcessor.CheckEnduranceCost(bot, Weapon(bot, style), style) &&
             bot.CheckStyleStun(style) &&
-            StyleProcessor.CanUseStyle(lastAttack, bot, style, Weapon(bot, style));
+            StyleProcessor.CanUseStyle(lastAttack, bot, style, Weapon(bot, style)) &&
+            // 1.2: no style whose proc lands a damage type an epic rule forbids on the target (Kvasir: Aurora Borealis' cold DD).
+            !EpicEncounterTactics.ForbidsStyle(bot, bot.TargetObject as GameLiving, style);
 
         public static bool MatchesWeapon(Style style, DbInventoryItem primary, DbInventoryItem left, eActiveWeaponSlot slot)
         {

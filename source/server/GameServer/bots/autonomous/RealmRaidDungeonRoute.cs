@@ -228,6 +228,8 @@ namespace DOL.GS
         private readonly Dictionary<string, int> _failedAttempts = new(StringComparer.Ordinal);
         // Everyone who stood in the current attempt (raiders arriving during the fight join it).
         private readonly HashSet<GameLiving> _engaged = new();
+        // Everyone in the attempt seen fallen during it (dead, released or gone), though rezzed or sent back in since.
+        private readonly HashSet<GameLiving> _fellInAttempt = new();
         private int _attemptLowestPercent = 100;
         private bool _regrouping;
         private long _regroupSince;
@@ -276,6 +278,25 @@ namespace DOL.GS
         /// was defeated with 141 of 152 alive. Raiders on their way back are still the raid.
         /// </summary>
         public static int AttemptRaidSize(int livingInside, int livingAnywhere) => Math.Max(livingInside, livingAnywhere);
+
+        /// <summary>
+        /// How many of an attempt's raiders fell in it (pure): those fallen now and those seen fallen during it. Tuscaran
+        /// Glacier, 2026-11-15 (owner's PC, build 1dc66b6, 100 Midgard raiders): 85 raiders died 104 times on Icelord Kvasir in
+        /// 18 minutes, but the return waves had sent the released ones back in by the time he reset (82% to 100%), so the
+        /// count at the end found almost nobody fallen and the attempt ended with no wipe and no line at all.
+        /// </summary>
+        public static int AttemptFallen<T>(IEnumerable<T> engaged, ICollection<T> fellDuring, Func<T, bool> fallenNow) =>
+            engaged?.Count(p => fellDuring?.Contains(p) == true || fallenNow(p)) ?? 0;
+
+        private bool FallenNow(GameLiving p) =>
+            !p.IsAlive || p.CurrentRegionID != _region || p is GameBot { IsReturningAfterRelease: true };
+
+        /// <summary>Remembers the attempt's raiders who are fallen this turn.</summary>
+        private void NoteFallen()
+        {
+            foreach (GameLiving p in _engaged)
+                if (FallenNow(p)) _fellInAttempt.Add(p);
+        }
 
         /// <summary>
         /// The encounter reset while the raid still stood: it healed back to 95% after being taken to
@@ -365,6 +386,7 @@ namespace DOL.GS
             _musterEngaged = true;
             _musterEngagedTick = now;
             _engaged.Clear();
+            _fellInAttempt.Clear();
             _engaged.UnionWith(raiders);
             _attemptRaidSize = AttemptRaidSize(_attemptParticipants?.Count(p => p.IsAlive && p.CurrentRegionID == _region) ?? 0,
                 _attemptParticipants?.Count(p => p.IsAlive) ?? 0);
@@ -385,10 +407,16 @@ namespace DOL.GS
             _musterEngaged = false;
             _skirmishHeld = false;
             int engaged = _engaged.Count;
-            int fallen = _engaged.Count(p => !p.IsAlive || p.CurrentRegionID != _region || p is GameBot { IsReturningAfterRelease: true });
+            int fallen = AttemptFallen(_engaged, _fellInAttempt, FallenNow);
             _engaged.Clear();
+            _fellInAttempt.Clear();
             if (!IsWipe(engaged, fallen, _target.HealthPercent, _attemptLowestPercent))
+            {
+                // Not a wipe: said so, with the counts (2026-11-15: Kvasir's attempt ended with no line at all).
+                log.Info($"REALM_EXPEDITION_ATTEMPT_ENDED region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
+                         $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" wipe=False");
                 return false;
+            }
             if (IsResetWithRaidStanding(engaged, fallen, _target.HealthPercent, _attemptLowestPercent) &&
                 _freeResets.GetValueOrDefault(_target.Name) < FreeEncounterResets)
             {
@@ -1061,6 +1089,7 @@ namespace DOL.GS
                         {
                             // Still too few: whoever it reaches fights it, the rest keep gathering at the muster.
                             _engaged.UnionWith(fighting);
+                            NoteFallen();
                             HoldForSkirmish(now);
                             return true;
                         }
@@ -1122,6 +1151,7 @@ namespace DOL.GS
                 }
                 else
                     _engaged.UnionWith(fighting);
+                NoteFallen();
                 _pulls.SawCombat();
                 _attemptLowestPercent = Math.Min(_attemptLowestPercent, _target.HealthPercent);
                 return false;
