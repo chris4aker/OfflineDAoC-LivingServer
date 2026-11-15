@@ -31,7 +31,7 @@ class MinimalWorldTests(unittest.TestCase):
         con = sqlite3.connect(out)
         self.assertEqual(dict(con.execute(f"SELECT Key,Value FROM {mtw.MARKER_TABLE}"))["mode"], "minimal")
         self.assertEqual(dict(con.execute("SELECT Name,PrivLevel FROM Account")),
-                         {"playtester": 1, "playtester2": 1, "playtestergm": 3})
+                         {"playtester": 1, "playtester2": 1, "playtester3": 1, "playtestergm": 3})
         # the start is inside one of the zones (the playtester places its position updates by the Zones table)
         x, y, region = con.execute("SELECT XPos,YPos,Region FROM StartupLocation").fetchone()
         zones = con.execute("SELECT ZoneID FROM Zones WHERE RegionID=? AND ?>=OffsetX*8192 AND ?<(OffsetX+Width)*8192 "
@@ -40,6 +40,23 @@ class MinimalWorldTests(unittest.TestCase):
         self.assertEqual(con.execute("SELECT Value FROM ServerProperty WHERE `Key`='time_between_account_creation'").fetchone(), ("0",))
         con.close()
         self.assertEqual(report["startup_locations"], 1)
+
+    def test_class_off_sets_the_editions_switch_and_on_leaves_the_servers_default(self):
+        on = self.dir / "on.db"
+        self.assertEqual(mtw.build_minimal(on)["enable_sluaghbinder"], "on (no row)")
+        off = self.dir / "off.db"
+        report = mtw.build_minimal(off, class_off=True)
+        self.assertEqual(report["enable_sluaghbinder"], "off")
+        con = sqlite3.connect(off)
+        self.assertEqual(con.execute("SELECT Category, Value FROM ServerProperty WHERE `Key`='enable_sluaghbinder'").fetchone(),
+                         ("classes", "False"))
+        self.assertEqual(dict(con.execute(f"SELECT Key,Value FROM {mtw.MARKER_TABLE}"))["classes"], "off")
+        con.close()
+        out = self.dir / "cli.db"
+        self.assertEqual(mtw.main(["minimal", "--out", str(out), "--class-off"]), 0)
+        con = sqlite3.connect(out)
+        self.assertEqual(mtw.class_switch(con), "off")
+        con.close()
 
     def test_the_passwords_are_plain_so_the_server_hashes_them_at_first_login(self):
         out = self.dir / "minimal.db"

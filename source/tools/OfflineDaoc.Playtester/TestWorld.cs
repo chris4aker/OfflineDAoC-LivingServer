@@ -290,6 +290,27 @@ internal sealed class TestWorld
         return cmd.ExecuteScalar() as string;
     }
 
+    /// <summary>classes / enable_sluaghbinder as the server reads it: on unless the world's row says False (no row: on).</summary>
+    public bool CustomClassEnabled => CustomClassSetting(Property("enable_sluaghbinder"));
+
+    internal static bool CustomClassSetting(string? value) => !bool.TryParse(value?.Trim(), out bool on) || on;
+
+    /// <summary>The account's characters in a realm, as saved (name and class id).</summary>
+    public IReadOnlyList<(string Name, int Class)> CharactersOf(string account, int realm)
+    {
+        using var con = Connect(Path);
+        var list = new List<(string, int)>();
+        if (!TableExists(con, "DOLCharacters"))
+            return list;
+        using var cmd = new SQLiteCommand("SELECT Name, Class FROM DOLCharacters WHERE lower(AccountName)=lower(@a) AND Realm=@r ORDER BY Name", con);
+        cmd.Parameters.AddWithValue("@a", account);
+        cmd.Parameters.AddWithValue("@r", realm);
+        using var r = cmd.ExecuteReader();
+        while (r.Read())
+            list.Add((r.GetString(0), r.GetInt32(1)));
+        return list;
+    }
+
     public int AccountPrivLevel(string account)
     {
         using var con = Connect(Path);

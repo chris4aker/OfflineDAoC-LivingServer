@@ -78,7 +78,9 @@ public static class ForkBuildInfo
                $" quest_xp_by_level={On(Properties.QUEST_XP_BY_LEVEL)}" +
                $" bot_personalities={On(Properties.BOT_PERSONALITIES_ENABLED)} bot_voices={On(Properties.BOT_VOICES_ENABLED)}" +
                (Properties.BOT_VOICES_ENABLED ? $" bot_debates={On(Properties.BOT_VOICES_DEBATES)}" : string.Empty) +
-               $" living={(livingParts.Length == 0 ? "off" : livingParts)} bot_schedule={AutonomousBotSchedule.CurrentMode.ToString().ToLowerInvariant()}";
+               $" living={(livingParts.Length == 0 ? "off" : livingParts)} bot_schedule={AutonomousBotSchedule.CurrentMode.ToString().ToLowerInvariant()}" +
+               // The edition (classes / enable_sluaghbinder): on in 0.37b, off in 0.37. A class-off check reads it here.
+               $" sluaghbinder={On(Properties.ENABLE_SLUAGHBINDER)}";
     }
 
     [GameServerStartedEvent]

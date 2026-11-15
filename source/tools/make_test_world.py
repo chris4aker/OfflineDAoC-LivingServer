@@ -5,6 +5,7 @@ Two kinds of test world, both written to a NEW file; the source is only ever rea
     python make_test_world.py from-release --world <clean release world .db> --out <new test world .db>
                                            [--bots-per-realm 10]
     python make_test_world.py minimal --out <new test world .db>
+    add --class-off to either for a world of the 0.37 edition (classes / enable_sluaghbinder False)
 
 from-release (the real test world, on the owner's PC)
     Copies a clean release world (for example the opendaoc.sqlite3.db of a fresh 0.37b install) through SQLite's
@@ -22,9 +23,13 @@ Fixtures in both:
     * the marker table offline_playtester_world. The playtester refuses to start a server on a database without it,
       so it can never run on a played world.
     * from-release only: each realm's first test bot is level 12 (--helper-level), the kill quest's and guild's group mate.
-    * three accounts, made at their first login: playtester and playtester2 (players) and playtestergm (GM, plvl 3).
+    * four accounts, made at their first login: playtester, playtester2 and playtester3 (players; playtester3 is the
+      class-switch scenario's, which needs an account with no character in another realm) and playtestergm (GM, plvl 3).
       Their password is their name; the server stores them hashed at the first login.
     * account creation without the waiting time between new accounts.
+    * with --class-off: classes / enable_sluaghbinder False, the switch of the 0.37 edition (no Sluaghbinder), so the
+      class-switch scenario checks the class-off rules. Without it the switch is left as it was (no row in a minimal
+      world: on, the server's default; a release world keeps its own edition's value).
 
 It never opens the source for writing, never writes over an existing file, and refuses an --out that is the source.
 """
@@ -40,7 +45,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 MARKER_TABLE = "offline_playtester_world"
 FORMAT = "1"
-ACCOUNTS = (("playtester", 1), ("playtester2", 1), ("playtestergm", 3))
+ACCOUNTS = (("playtester", 1), ("playtester2", 1), ("playtester3", 1), ("playtestergm", 3))
 
 # The server's own table layouts (SqliteObjectDatabase, as it creates them) for the tables the minimal world fills.
 # The server adds any column a later build needs (AlterTable) and creates every other table at its first start.
@@ -194,7 +199,27 @@ def add_fixtures(con: sqlite3.Connection, mode: str, source: str) -> dict:
     return marker
 
 
-def build_minimal(out: Path) -> dict:
+CLASS_SWITCH_DESCRIPTION = ("Allow the custom Hibernian Sluaghbinder class (player creation, autonomous bots and helpers). "
+                            "False leaves only the Classic + SI classes.")
+
+
+def set_class_off(con: sqlite3.Connection) -> None:
+    """classes / enable_sluaghbinder False: the 0.37 edition's switch (AGENTS.md, "Edition switch")."""
+    set_property(con, "enable_sluaghbinder", "False", "classes", CLASS_SWITCH_DESCRIPTION)
+    con.execute(f"INSERT OR REPLACE INTO {MARKER_TABLE} (Key,Value) VALUES ('classes','off')")
+
+
+def class_switch(con: sqlite3.Connection) -> str:
+    """The switch as the server reads it: on unless its row says False."""
+    if not con.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='ServerProperty'").fetchone():
+        return "on (no ServerProperty table)"
+    row = con.execute("SELECT Value FROM ServerProperty WHERE lower(`Key`)='enable_sluaghbinder'").fetchone()
+    if row is None:
+        return "on (no row)"
+    return "off" if str(row[0]).strip().lower() == "false" else "on"
+
+
+def build_minimal(out: Path, class_off: bool = False) -> dict:
     refuse_paths(out)
     con = sqlite3.connect(out)
     try:
@@ -209,6 +234,9 @@ def build_minimal(out: Path) -> dict:
         con.executemany("INSERT INTO StartupLocation (XPos,YPos,ZPos,Heading,Region,MinVersion,RealmID,RaceID,ClassID,ClientRegionID,"
                         "LastTimeRowUpdated) VALUES (?,?,?,?,?,?,?,?,?,?,?)", [s + (stamp,) for s in MINIMAL_STARTS])
         marker = add_fixtures(con, "minimal", "built from nothing (make_test_world.py minimal)")
+        if class_off:
+            set_class_off(con)
+            marker["classes"] = "off"
         con.commit()
         report = verify_test_world(con)
     finally:
@@ -266,7 +294,7 @@ def set_startup_ramp(con: sqlite3.Connection, minutes: int) -> bool:
     return con.execute("UPDATE ServerProperty SET Value=? WHERE lower(`Key`)='startup_ramp_minutes'", (str(minutes),)).rowcount > 0
 
 
-def build_from_release(world: Path, out: Path, bots_per_realm: int, helper_level: int = 12) -> dict:
+def build_from_release(world: Path, out: Path, bots_per_realm: int, helper_level: int = 12, class_off: bool = False) -> dict:
     refuse_paths(out, world)
     sys.path.insert(0, str(HERE))
     import build_release_037 as release  # the release builder's own cleaning and checks
@@ -283,6 +311,9 @@ def build_from_release(world: Path, out: Path, bots_per_realm: int, helper_level
         con = sqlite3.connect(out)
         try:
             marker = add_fixtures(con, "from-release", str(world))
+            if class_off:
+                set_class_off(con)
+                marker["classes"] = "off"
             bots = add_test_bots(con, bots_per_realm, helper_level) if bots_per_realm else []
             con.execute("UPDATE offline_population_settings SET Value=? WHERE Key='ActiveTarget'", (str(len(bots)),))
             con.execute("UPDATE offline_population_settings SET Value='1' WHERE Key='StartupRampMinutes'")
@@ -312,7 +343,7 @@ def verify_test_world(con: sqlite3.Connection) -> dict:
     starts = con.execute("SELECT COUNT(*) FROM StartupLocation").fetchone()[0]
     assert starts > 0, "no startup location"
     return {"quick_check": "ok", "accounts": accounts, "startup_locations": starts,
-            "regions": con.execute("SELECT COUNT(*) FROM Regions").fetchone()[0]}
+            "regions": con.execute("SELECT COUNT(*) FROM Regions").fetchone()[0], "enable_sluaghbinder": class_switch(con)}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -327,15 +358,18 @@ def main(argv: list[str] | None = None) -> int:
                      help="the level of each realm's first bot, the kill quest's group mate (default 12, 1 for none)")
     mini = sub.add_parser("minimal", help="a minimal world that needs no game files")
     mini.add_argument("--out", required=True, type=Path, help="the new test world file (must not exist)")
+    for p in (rel, mini):
+        p.add_argument("--class-off", action="store_true",
+                       help="classes / enable_sluaghbinder False, as in the 0.37 edition (the class-switch scenario's off case)")
     args = parser.parse_args(argv)
     if args.mode == "minimal":
-        report = build_minimal(args.out)
+        report = build_minimal(args.out, args.class_off)
     else:
         if not 0 <= args.bots_per_realm <= len(BOT_NAMES[1]):
             raise SystemExit(f"--bots-per-realm is 0 to {len(BOT_NAMES[1])}")
         if not 1 <= args.helper_level <= len(XP_FOR_LEVEL):
             raise SystemExit(f"--helper-level is 1 to {len(XP_FOR_LEVEL)}")
-        report = build_from_release(args.world, args.out, args.bots_per_realm, args.helper_level)
+        report = build_from_release(args.world, args.out, args.bots_per_realm, args.helper_level, args.class_off)
     print(json.dumps(report, indent=2, default=str))
     print(f"Test world written to {args.out}")
     return 0

@@ -23,6 +23,7 @@ jobs:
         run: |
           python3 tools/release/check_versions.py
           python3 -m unittest discover -s tools/release/tests -v
+          python3 -m unittest discover -s tools/installer/tests -v
 
   # The epic encounter catalog (docs/encounters) must match the boss scripts it was read from: a script change without
   # a regenerated catalog, or with a hand check now out of date, fails here (source/tools/epic_encounter_catalog.py).
@@ -57,6 +58,8 @@ jobs:
   server:
     runs-on: windows-latest
     timeout-minutes: 45
+    outputs:
+      artifact: ${{ steps.package.outputs.artifact }}
     steps:
       - uses: actions/checkout@v4
 
@@ -252,6 +255,26 @@ jobs:
           name: ${{ steps.package.outputs.artifact }}
           path: package/
           retention-days: 90
+
+  # The 1.2 gate's Install rows as tests (candidate-install.yml): this commit's package installed new the way a player gets
+  # it, the class-off (0.37) edition checked on it, and a 1.1.4 game updated to it through Setup with its saves kept.
+  # About 30-45 minutes of Windows runners with real downloads, so only for the candidate line (main, integration/1.2,
+  # release/*), for ci/* branches (pull requests that change these checks push one) and by hand.
+  candidate-install:
+    needs: server
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'integration/1.2' ||
+        startsWith(github.ref_name, 'release/') || startsWith(github.ref_name, 'ci/')))
+    concurrency:
+      group: candidate-install-${{ github.ref }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+      actions: read
+    uses: ./.github/workflows/candidate-install.yml
+    with:
+      package_artifact: ${{ needs.server.outputs.artifact }}
 
   launcher:
     runs-on: windows-latest

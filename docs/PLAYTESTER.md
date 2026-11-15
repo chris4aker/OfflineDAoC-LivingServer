@@ -78,18 +78,22 @@ Other options:
 `make_test_world.py minimal --out minimal.db` makes a world with one region (Albion: Camelot Hills and Salisbury
 Plains), a startup location and the test accounts. On its first start the server creates every other table. It has
 no NPCs, quests or gamebots, so the scenarios that need them are **skipped**, never passed. The workflow
-`.github/workflows/playtester.yml` builds the server, makes this world and runs `login-save-restart`, `chat-players`
-and `group-players` every night (and on demand).
+`.github/workflows/playtester.yml` builds the server, makes this world and runs `login-save-restart`, `chat-players`,
+`group-players` and `class-switch` every night (and on demand). It then makes a second one with `--class-off`
+(`classes / enable_sluaghbinder` False, the 0.37 edition) and runs `class-switch` and `login-save-restart` on it.
+`--class-off` works for `from-release` too. The installer's CI (`candidate-install`, [INSTALL-CHECKS-1.2.md](INSTALL-CHECKS-1.2.md))
+runs the same two scenarios against the installed server of a new 0.37 install, on a `from-release` copy of its world.
 
 ## The test accounts
 
-The test world has three accounts. Each password is the same as the account name, and the server stores it hashed at
+The test world has four accounts. Each password is the same as the account name, and the server stores it hashed at
 the first login:
 
 | Account | Level | Used by |
 |---|---|---|
 | `playtester` | player | most scenarios |
 | `playtester2` | player | the second player in the chat and group scenarios |
+| `playtester3` | player | `class-switch`. It needs an account with no character in another realm: a server that doesn't allow all realms holds an account to the realm of its characters. An older test world without it makes it at the first login (automatic account creation) |
 | `playtestergm` | GM (plvl 3) | the quest and guild scenarios: `/jump`, `/player level`, `/player class`, `/player money`, `/player jump group`, `/heal`, `/gc create` |
 
 ## The scenarios
@@ -97,6 +101,7 @@ the first login:
 | Id | Needs | What it checks |
 |---|---|---|
 | `login-save-restart` | `--server-dir` | A new character walks 300 units, and the server confirms where it is (`/gloc`). Then it `/quit`s and the save is checked in the database. The server stops (console `exit`) and starts again. The character must be listed with the same level and class and come back within 60 units of where it quit. |
+| `class-switch` | any world | Reads `classes / enable_sluaghbinder` from the world (no row: on, the server's default). A player creates a Hibernian Celt Naturalist, a classic class in every edition. On: the client's Sluaghbinder slot (class 62, the Hibernian Mauler slot) makes the Sluaghbinder novice, saved as Acolyte (16). Off: that slot, the Sluaghbinder (63) and the Acolyte (16) are each refused and nothing is saved, and the account has no Hibernian character of those classes. The report's `edition` line says which rules ran. |
 | `chat-players` | any world | Two players at the same start see each other. A `/say` from one is heard by the other, and a tell goes each way. |
 | `group-players` | any world | One player invites the other by name and the other accepts the dialog. Both get the group window with two members, a `/g` line is heard, and `/disband` ends the group. |
 | `tell-gamebot` | gamebots | Wait for gamebots of the realm to be online (the world database's `IsOnline`). Tell up to three of them "hey, how's it going?". Each must answer with a tell within `--reply-seconds` (default 45). |
