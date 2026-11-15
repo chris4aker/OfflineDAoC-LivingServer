@@ -58,7 +58,7 @@ namespace DOL.GS
         private static uint _guestHomePrivLevel;
         private static bool _running;
 
-        /// <summary>The order (pure): the definitions' own order, Darkness Falls last (it has no raid AI; owner 2026-11-13).</summary>
+        /// <summary>The order (pure): the definitions' own order, Darkness Falls last (owner 2026-11-13: it was the one raid without raid AI then; it keeps the last place).</summary>
         public static string[] Order(IEnumerable<string> ids) =>
             ids.OrderBy(id => id.StartsWith("darkness-", StringComparison.Ordinal) ? 1 : 0).ToArray();
 

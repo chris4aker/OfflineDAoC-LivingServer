@@ -73,11 +73,15 @@ class CatalogFileTests(unittest.TestCase):
             for eid in [p["id"]] + p.get("also", []):
                 self.assertIn(eid, ids)
 
-    def test_darkness_falls_is_marked_no_raid_ai(self):
-        df = [e for e in self.data["encounters"] if e.get("region") == 249]
+    def test_darkness_falls_has_raid_ai(self):
+        # Since 1.2 the Darkness Falls raid AI is in (EpicEncounterTactics.DarknessFalls / .Legion), so its bosses
+        # are on a dungeon route like any other raid dungeon's, and Legion has tactics of his own.
+        df = {e["id"]: e for e in self.data["encounters"] if e.get("region") == 249}
         self.assertTrue(df)
-        for e in df:
-            self.assertEqual(e["raidAi"], "no raid AI", e["id"])
+        for e in df.values():
+            self.assertTrue(e["raidAi"].startswith("generic dungeon route"), e["id"])
+        self.assertIn("tactics", df["darkness-falls/legion"]["raidAi"])
+        self.assertNotIn("no raid AI", {e["raidAi"] for e in self.data["encounters"]})
 
     def test_script_hashes_match_the_scripts(self):
         for rel, digest in self.data["scriptHashes"].items():
