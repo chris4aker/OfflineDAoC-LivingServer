@@ -11,7 +11,7 @@ namespace DOL.UnitTests
 {
     /// <summary>
     /// RvR and battleground kill quests count enemy-realm gamebots (1.2, 2026-11-15). Offline DAoC's enemy players are
-    /// autonomous gamebots; Pazz's battleground dailies and the Atlas realm quests counted only a GamePlayer victim,
+    /// autonomous gamebots; the battleground captains' quests and the Atlas realm quests counted only a GamePlayer victim,
     /// so none of them could be finished. RvrQuestTargets.IsEnemyPlayer is the one rule all 27 quests now read.
     /// </summary>
     [TestFixture, NonParallelizable]
@@ -147,7 +147,7 @@ namespace DOL.UnitTests
             Assert.That(RvrQuestTargets.IsEnemyPlayer(EnemyBot.Make(player, eRealm.Midgard, dying: false), player), Is.False);
         }
 
-        // One quest's Notify path: Pazz's "[Daily] Fen's New Friends" in Thidranki (ThidKillQuestAlb)
+        // One quest's Notify path: Captain Circa's "Thidranki Skirmishes" (ThidKillQuestAlb)
 
         private static int PlayersKilled(ThidKillQuestAlb quest) =>
             (int)typeof(ThidKillQuestAlb).GetField("PlayersKilled", Hidden).GetValue(quest);
@@ -193,7 +193,7 @@ namespace DOL.UnitTests
             Assert.Multiple(() =>
             {
                 Assert.That(PlayersKilled(quest), Is.EqualTo(10));
-                Assert.That(quest.Step, Is.EqualTo(2), "back to Pazz for the reward");
+                Assert.That(quest.Step, Is.EqualTo(2), "back to the captain for the reward");
             });
         }
 

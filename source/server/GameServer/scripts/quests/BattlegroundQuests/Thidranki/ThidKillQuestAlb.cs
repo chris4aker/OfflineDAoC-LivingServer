@@ -20,11 +20,11 @@ namespace DOL.GS.DailyQuest.Albion
 		/// </summary>
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
-		private const string questTitle = "[Daily] Fen's New Friends";
+		private const string questTitle = "Thidranki Skirmishes";
 		private const int minimumLevel = 20;
 		private const int maximumLevel = 24;
 
-		private static GameNPC PazzAlb = null; // Start NPC
+		private static GameNPC CaptainAlb = null; // Start NPC
 
 		private int PlayersKilled = 0;
 		private const int MAX_KILLED = 10;
@@ -66,42 +66,7 @@ namespace DOL.GS.DailyQuest.Albion
 
 			#region defineNPCs
 
-			GameNPC[] npcs = WorldMgr.GetNPCsByName("Pazz", eRealm.Albion);
-
-			if (npcs.Length > 0)
-				foreach (GameNPC npc in npcs)
-				{
-					if (DOL.GS.Quests.QuestNpcPlacement.IsAt(npc, 252, 37283, 51881))
-					{
-						PazzAlb = npc;
-						break;
-					}
-				}
-
-			if (PazzAlb == null)
-			{
-				if (log.IsWarnEnabled)
-					log.Warn("Could not find PazzAlb, creating it ...");
-				PazzAlb = new GameNPC();
-				PazzAlb.Model = 26;
-				PazzAlb.Name = "Pazz";
-				PazzAlb.GuildName = "Bone Collector";
-				PazzAlb.Realm = eRealm.Albion;
-				//Druim Ligen Location
-				PazzAlb.CurrentRegionID = 252;
-				PazzAlb.Size = 40;
-				PazzAlb.Level = 59;
-				PazzAlb.X = 37283;
-				PazzAlb.Y = 51881;
-				PazzAlb.Z = 3944;
-				PazzAlb.Heading = 4090;
-				PazzAlb.Flags |= GameNPC.eFlags.PEACE;
-				PazzAlb.AddToWorld();
-				if (SAVE_INTO_DATABASE)
-				{
-					PazzAlb.SaveIntoDatabase();
-				}
-			}
+			CaptainAlb = DOL.GS.Quests.QuestCaptains.Ensure(eRealm.Albion, 252); // Captain Circa, the Thidranki portal keep
 
 			#endregion
 
@@ -114,11 +79,11 @@ namespace DOL.GS.DailyQuest.Albion
 			GameEventMgr.AddHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.AddHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.AddHandler(PazzAlb, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.AddHandler(PazzAlb, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.AddHandler(CaptainAlb, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.AddHandler(CaptainAlb, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we bring to Dean the possibility to give this quest to players */
-			PazzAlb.AddQuestToGive(typeof (ThidKillQuestAlb));
+			/* Now we bring to the captain the possibility to give this quest to players */
+			CaptainAlb.AddQuestToGive(typeof (ThidKillQuestAlb));
 
 			if (log.IsInfoEnabled)
 				log.Info("Quest \"" + questTitle + "\" initialized");
@@ -128,27 +93,27 @@ namespace DOL.GS.DailyQuest.Albion
 		public static void ScriptUnloaded(DOLEvent e, object sender, EventArgs args)
 		{
 			//if not loaded, don't worry
-			if (PazzAlb == null)
+			if (CaptainAlb == null)
 				return;
 			// remove handlers
 			GameEventMgr.RemoveHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.RemoveHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.RemoveHandler(PazzAlb, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.RemoveHandler(PazzAlb, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.RemoveHandler(CaptainAlb, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.RemoveHandler(CaptainAlb, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we remove to Dean the possibility to give this quest to players */
-			PazzAlb.RemoveQuestToGive(typeof (ThidKillQuestAlb));
+			/* Now we remove to the captain the possibility to give this quest to players */
+			CaptainAlb.RemoveQuestToGive(typeof (ThidKillQuestAlb));
 		}
 
-		protected static void TalkToRey(DOLEvent e, object sender, EventArgs args)
+		protected static void TalkToCaptain(DOLEvent e, object sender, EventArgs args)
 		{
 			//We get the player from the event arguments and check if he qualifies		
 			GamePlayer player = ((SourceEventArgs) args).Source as GamePlayer;
 			if (player == null)
 				return;
 
-			if(PazzAlb.CanGiveQuest(typeof (ThidKillQuestAlb), player)  <= 0)
+			if(CaptainAlb.CanGiveQuest(typeof (ThidKillQuestAlb), player)  <= 0)
 				return;
 
 			//We also check if the player is already doing the quest
@@ -161,18 +126,18 @@ namespace DOL.GS.DailyQuest.Albion
 					switch (quest.Step)
 					{
 						case 1:
-							PazzAlb.SayTo(player, "You will find suitable players in the battlegrounds.");
+							CaptainAlb.SayTo(player, "The enemy is out on the fields of Thidranki. Bring down ten of them and come back to me.");
 							break;
 						case 2:
-							PazzAlb.SayTo(player, "Hello " + player.Name + ", did you [hit your quota]?");
+							CaptainAlb.SayTo(player, "Welcome back, " + player.Name + ". Have you come to [report]?");
 							break;
 					}
 				}
 				else
 				{
-					PazzAlb.SayTo(player, "Hello "+ player.Name +", I am Pazz. My master, Fen, has tasked me with collecting bones for a project he's working on. "+
-					                     "I'm way behind quota and could use some... subcontractors to [help me out]. \n\n"+
-					                     "\nCan you lend me a hand? A leg could probably work too.");
+					CaptainAlb.SayTo(player, "Well met, " + player.Name + ". I am Captain Circa, and I hold this keep for Albion. " +
+					                     "Midgard and Hibernia send their young fighters into Thidranki day after day, and every one we turn back is one fewer at our gates. " +
+					                     "Will you [take the field] for Albion?");
 				}
 			}
 				// The player whispered to the NPC
@@ -183,8 +148,8 @@ namespace DOL.GS.DailyQuest.Albion
 				{
 					switch (wArgs.Text)
 					{
-						case "help me out":
-							player.Out.SendQuestSubscribeCommand(PazzAlb, QuestMgr.GetIDForQuestType(typeof(ThidKillQuestAlb)), "Will you undertake " + questTitle + "?");
+						case "take the field":
+							player.Out.SendQuestSubscribeCommand(CaptainAlb, QuestMgr.GetIDForQuestType(typeof(ThidKillQuestAlb)), "Will you undertake " + questTitle + "?");
 							break;
 					}
 				}
@@ -192,10 +157,10 @@ namespace DOL.GS.DailyQuest.Albion
 				{
 					switch (wArgs.Text)
 					{
-						case "hit your quota":
+						case "report":
 							if (quest.Step == 2)
 							{
-								player.Out.SendMessage("Ugh, some of these are still dripping. Well done, he'll be pleased.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
+								player.Out.SendMessage("Well fought. Albion holds Thidranki a while longer. Come back on the morrow if you would serve again.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
 								quest.FinishQuest();
 							}
 							break;
@@ -261,7 +226,7 @@ namespace DOL.GS.DailyQuest.Albion
 
 		private static void CheckPlayerAcceptQuest(GamePlayer player, byte response)
 		{
-			if(PazzAlb.CanGiveQuest(typeof (ThidKillQuestAlb), player)  <= 0)
+			if(CaptainAlb.CanGiveQuest(typeof (ThidKillQuestAlb), player)  <= 0)
 				return;
 
 			if (player.IsDoingQuest(typeof (ThidKillQuestAlb)) != null)
@@ -269,15 +234,15 @@ namespace DOL.GS.DailyQuest.Albion
 
 			if (response == 0x00)
 			{
-				player.Out.SendMessage("Thank you for helping me.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
+				player.Out.SendMessage("Another time, then.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
 			}
 			else
 			{
 				//Check if we can add the quest!
-				if (!PazzAlb.GiveQuest(typeof (ThidKillQuestAlb), player, 1))
+				if (!CaptainAlb.GiveQuest(typeof (ThidKillQuestAlb), player, 1))
 					return;
 
-				PazzAlb.SayTo(player, "You will find suitable players in the frontiers or in battlegrounds.");
+				CaptainAlb.SayTo(player, "Go, then. The enemy is out on the fields of Thidranki.");
 
 			}
 		}
@@ -296,9 +261,9 @@ namespace DOL.GS.DailyQuest.Albion
 				switch (Step)
 				{
 					case 1:
-						return "You will find suitable players in Thidranki. \nPlayers Killed: ("+ PlayersKilled +" | "+ MAX_KILLED +")";
+						return "Bring down enemy fighters in Thidranki. \nEnemies Slain: ("+ PlayersKilled +" | "+ MAX_KILLED +")";
 					case 2:
-						return "Return to Pazz in the Thidranki Portal Keep for your Reward.";
+						return "Return to Captain Circa in the Thidranki portal keep for your reward.";
 				}
 				return base.Description;
 			}
@@ -320,12 +285,12 @@ namespace DOL.GS.DailyQuest.Albion
 			if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || !DOL.GS.Quests.RvrQuestTargets.IsEnemyPlayer(gArgs.Target, player) ||
 			    !(player.GetConLevel(gArgs.Target) > MIN_PLAYER_CON)) return;
 			PlayersKilled++;
-			player.Out.SendMessage("[Daily] Enemy Killed: (" + PlayersKilled + " | " + MAX_KILLED + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
+			player.Out.SendMessage("Enemy Slain: (" + PlayersKilled + " | " + MAX_KILLED + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 			player.Out.SendQuestUpdate(this);
 					
 			if (PlayersKilled >= MAX_KILLED)
 			{
-				// FinishQuest or go back to Dean
+				// FinishQuest or go back to the captain
 				Step = 2;
 			}
 		}

@@ -115,8 +115,23 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
   of the Church's own acolytes have turned to Arawn in secret, which the Church calls slander; the Arawn power says his
   worship is heresy and leaves the rest as cellar talk. The 2003 NPCs Heretic Elam and the Heretical Hermit, men of
   "some wrong faith", are unchanged. `UT_EraRumours` checks that no realm history names a Heretic, Bainshee or Vampiir.
-  Pazz, the Atlas freeshard's daily-quest giver in the Thidranki and Caledonia portal keeps, is world content and stays;
-  no bot line or lore names it.
+  Pazz, the Atlas freeshard's daily-quest giver in the Thidranki and Caledonia portal keeps, was left as world content
+  here; the captains entry below replaces it.
+- **Captains give the battleground and frontier quests** (tests only; owner 2026-11-15, "Rename to captains"). Pazz
+  and Rey, the Atlas freeshard's skeleton "Bone Collector" who gathered bones for his master Fen (brought in by OpenDAoC
+  in 2022), are gone. Each portal keep has a captain of its realm in the keep commander's outfit, standing where they
+  stood and giving the same quests with the same levels, goals and rewards: Thidranki Captain Circa (Albion), Captain
+  Cody (Hibernia) and Captain Astridr (Midgard), the names the Camelot Herald's battleground quest guide gives;
+  Caledonia Captain Aldwyn, Captain Fiachra and Captain Thorgrim; the frontier portal keeps Captain Edric (Castle
+  Sauvage), Captain Hallvard (Svasud Faste) and Captain Eithne (Druim Ligen). The Caledonia and frontier names are new,
+  in each realm's style. The quests read as a captain's orders ("Thidranki Skirmishes", "Seize the Keep in Thidranki",
+  "Enemies of the Realm", "Every Little Bit Helps", "Slay the Enemies", "For the Realm"), with no "[Daily]" or
+  "[Weekly]" tag; they still reset each day or week. A quest is saved under its class name, so a quest in progress
+  keeps its step and kill count; one waiting for its reward is handed in by whispering [report]. A world that saved a
+  Pazz or Rey (the scripts never did: their NPC was made by script) has that row renamed to the captain, and any second
+  one at the post removed, once; the next start changes nothing (`QuestCaptains`). The Herald's guide is from the 2004
+  battlegrounds (it lists Killaloe and gives bounty points), so the captains are the closest period source, not a 2003
+  one. `UT_QuestCaptains`.
 - **Rumours of a sunken land, and of what lies under the capitals** (tests only; owner 2026-11-15, "Yes agreed on lore"):
   Trials of Atlantis and Catacombs exist only as hearsay. Now and then the realm hears of it: an old family legend,
   a /faction argument, a rare remark at the harbours and in the capitals, an answer when a player asks ("what is
@@ -350,7 +365,8 @@ BG? Are those functioning correctly?").
   and a gamebot that leaves the world mid-fight (a stable ride, a port, a despawn) is not a kill.
 - **Caledonia's Midgard kill quest can be taken.** It asked for levels 20-24 (copied from Thidranki upstream) and looked
   for a giver named "Rey", so a second Pazz stood in Midgard's portal keep; it now asks for Caledonia's 30-35 like its
-  Albion and Hibernia twins (see the polish entry above) and shares the one Pazz.
+  Albion and Hibernia twins (see the polish entry above) and shares the one Pazz (since replaced by Caledonia's captains,
+  above).
 
 **Bots no longer follow the player into another realm** (tests only; owner's decision 2026-11-15: "No, bots should not
 follow a teleport into another realm."; owner's PC, build `1dc66b6`, 2026-11-15 ~01:46: a GM `/jump` to a Midgard raider in
