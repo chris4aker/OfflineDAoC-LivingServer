@@ -5122,11 +5122,19 @@ namespace DOL.AI.Brain
             corpse.GetNPCsInRadius(PlayerRezHostileRadius).Any(npc => npc != null && npc.IsAlive && npc is not GameBot &&
                 npc.Brain is IOldAggressiveBrain { AggroLevel: > 0 } && GameServer.ServerRules.IsAllowedToAttack(npc, bot, true));
 
-        private bool FreeToRezStrangers(GameBot bot) =>
-            !bot.IsOnStableMasterRoute && !bot.IsReturningAfterRelease && !BotSiegeRuntime.Assigned(bot) &&
-            !BotSiegeRuntime.HoldingPosition(bot) &&
-            bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK) == null &&
-            string.IsNullOrEmpty(bot.TempProperties.GetProperty<string>("RvrEventForce"));
+        // 1.2 play-check prep (2026-11-15): every RvR gamebot keeps its force id ("rvr-<id>") once it has run its RvR goal,
+        // and it is never cleared, so "has a force id" meant no bot that had ever done RvR (every bot in a battleground or
+        // the frontier) would rez a stranger. The schedule had the same mistake, fixed in 1.1.3; the id's event is asked.
+        private static bool FreeToRezStrangers(GameBot bot) =>
+            FreeToRezStrangers(bot.IsOnStableMasterRoute, bot.IsReturningAfterRelease, BotSiegeRuntime.Assigned(bot),
+                BotSiegeRuntime.HoldingPosition(bot), bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK) != null,
+                AutonomousBotSchedule.InRealmEvent(bot));
+
+        /// <summary>The rule, pure: a bot may rez a player outside its group unless it travels, runs back after a death, is at
+        /// a siege, carries a relic or is committed to a realm event (a force id alone is not one).</summary>
+        public static bool FreeToRezStrangers(bool onStableRoute, bool returningAfterRelease, bool atSiege, bool holdingSiegePosition,
+            bool carryingRelic, bool inRealmEvent) =>
+            !onStableRoute && !returningAfterRelease && !atSiege && !holdingSiegePosition && !carryingRelic && !inRealmEvent;
 
         private long _nextRezSkipReport;
 

@@ -212,7 +212,7 @@ details in [TALES.md](TALES.md).
 | A tale asked for in plain words | must | **Seen** on `1dc66b6` (23:21, in /faction) and test build 4. On 15fcc70 (history) |
 | The storyteller answers a question mid-tale |  | On `1dc66b6` the aside was addressed to the player but didn't answer the question. Seen on 15fcc70 and 5300a87 (history) |
 | A fireside tale in a resting group |  | Seen on 15fcc70 (history) |
-| A tale that starts by itself | must | Seen once on `1dc66b6` as a raid's tale: at 23:31 a bot asked for Aidon's tale before Hall of the Corrupt, with no `/lstest` and no request from the player. A tale that starts on its own away from a raid (about 25 minutes into a session) is not seen. Open until the owner says whether the raid's tale closes the row |
+| A tale that starts by itself | must | Seen once on `1dc66b6` as a raid's tale: at 23:31 a bot asked for Aidon's tale before Hall of the Corrupt, with no `/lstest` and no request from the player. A tale that starts on its own away from a raid (about 25 minutes into a session) is not seen. Open until the owner says whether the raid's tale closes the row. How to see it: [PLAYCHECK-BETA10.md](PLAYCHECK-BETA10.md), step 9 |
 | A rumour that is a raid really forming |  | Not seen (tests only) |
 | Boss yells, atmosphere lines and kill broadcasts on screen | must | **Seen** on `1dc66b6`: realm first-kill lines (22:52, 23:07, 04:57), the Aidon win line (00:44), an atmosphere line on arriving in Avalon Marsh (02:20) and a boss yell in Krondon (03:35). An aggro yell at a boss's death was fixed in #231 (tests only) |
 | Loremasters, books, the Herald chronicle and bestiary |  | Partly on `1dc66b6`: the `/lore` window (23:25) and a loremaster standing in Camelot's library (01:05, his dialog not opened). Books, the Herald chronicle and the bestiary: no record |
@@ -221,6 +221,8 @@ details in [TALES.md](TALES.md).
 
 Owner decision 11: the Beta 1.0 items that were never seen in game ([KNOWN-ISSUES.md](KNOWN-ISSUES.md), "Not yet seen
 in game"; [RELEASE-PLAN.md](RELEASE-PLAN.md), "Before the stage 7 merge") are seen first, not shipped marked.
+
+A two-hour script that covers every row below and "A tale that starts by itself": [PLAYCHECK-BETA10.md](PLAYCHECK-BETA10.md).
 
 | What | Must | Status |
 |---|---|---|
