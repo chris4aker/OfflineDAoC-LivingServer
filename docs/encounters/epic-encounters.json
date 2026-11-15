@@ -8,7 +8,7 @@
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Fester.cs": "43e981bf07934f0a8231a81c88448434770946d54cbb70518693ed7e1b10bab3",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/KingOfTheBarfogHills.cs": "95023c311861809f6b79ee8d3f992619fb3d40ad1eb2bc753c8ef16cf78a3027",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "fb2cadfac67cd0a6ffad0f9786e4c4ed368f21522af4fa9082e5489b68f0c775",
-  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs": "7e15d7495a65f5404665e4f3051de7435309bea94a895a922a652dd1ff0d03bf",
+  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs": "f90198175f3aee84e38b84ea239326f455cffa28d9e0cbedd300775bcd6d682c",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Mouth.cs": "ceb60c7908e5a89d8ab4c622bb46dc0d0b6ec4b0ff54076988d57f5a01bf9762",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/SisterBlythe.cs": "892e0fcf04c452655aa6f3ded924b2d2b0945ad6ecbdba24a8714cba41fc5d44",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Teazanodwc.cs": "62b5465cf6f2714c3b9205a6a83bbc3ceae677033beae06e47432f7acf03c6a9",
@@ -23,55 +23,55 @@
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/ValnirMordeth.cs": "8d54e7f51ce0d282a797d6b1c1d919fb1563794980759d2942a8757891a0aacd",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Vortanos.cs": "043ca32ac0443bb16ccadbd99ce2757fbfba911460bd6029dc3e14dbfbbe144d",
   "source/server/GameServer/scripts/namedmobs/Archilus.cs": "9a7b1f7df01cbf9c75612a458ee7147d813a5f071855e9cd509929dd96485834",
-  "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "09379e00a5a4c86e25bcd76434f40bbf16c3ea155a230656b4ef284234511eb1",
-  "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "9ff04bbae65b44517567d941c5a5c40efc9a9574a5d5ff3ddb332b87afbdb1fd",
+  "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "16664a7bc8cafd4c391d29184978018fb8d1608a98548cca404d0c1622060b24",
+  "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "6905b05e19d381bd9331a80ec58b52655fd09f34152dfa846e79a3fdfa31b230",
   "source/server/GameServer/scripts/namedmobs/AvalonCity/DuraekEmpowered.cs": "1b4a503df6d398e60ec25599b729006779555528528b05f6f7087e154e73fa27",
-  "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "28b464259e35602026380f6dbcdd54ced7ef89ca60d2e7fd7268ce7ff23fcb3b",
+  "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "3a609d5c57d7ad2f745bf08a2672a96e84d0fdd5c26981172acecec9d0d66880",
   "source/server/GameServer/scripts/namedmobs/AvalonCity/VeraeriusBrave.cs": "f92eb6d85f0d2b90cee7fb7e836af2faa4869cedb6a970cbab27b8d74295617d",
   "source/server/GameServer/scripts/namedmobs/AvalonCity/WenoiakEnlightened.cs": "01037d035afe6761834bbc92154732fc27f2d596680aa686e26e4abdc64b57b5",
   "source/server/GameServer/scripts/namedmobs/BrotherDon.cs": "8964e56930f3d641f924427da766faabeca87ea5d3fcb1cfb62d604e69bb18c7",
-  "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "57065639c7951fb77baa62c549ee14f5d3f6849a916e439dba44bb5b7d4395b5",
+  "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "e26f5c0185c3b4a76a298b30b6ef829582c3c858c2651638c7adb43877c1e994",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs": "d542dd1cbdb80e979f477a5c38320fc610694471341a665a08deae313b24f26d",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "7175f0f5859ceb0867147cee4a7be39e5b6c48b3906d95063b713dafdebd8613",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/FateChosen.cs": "b4037d917fcbfb2c84542097738575f0a806e08b6e0c816825f0831f8b454f42",
-  "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "2c91f10b27bcc75fc229de7600101ff52d67fdfa70a0b78e83c693890e196659",
-  "source/server/GameServer/scripts/namedmobs/CaerSidi/LichLordIlron.cs": "1b55fb71aa108c987dd029a3e25d45187575044bd6688a7dd02a4016f2f4b103",
-  "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs": "01e443b7d98085cd982e19cf197db42c0a7eabc8718686956aac95637f16d9d3",
+  "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "9d8538c48ea23180faaaee13e1d27fdb71bf56c081ccac9f14000cf62c3e6e22",
+  "source/server/GameServer/scripts/namedmobs/CaerSidi/LichLordIlron.cs": "6c54727907c92bac8d23f52554d9c743df39f53b9adefc201b064a1ca0eda5b5",
+  "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs": "1b113f11d3074012b88b803325a85a29da36a9c8e4c14125de2249183621cdd4",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/Silencer.cs": "e5060ec57836251496f991973dc069e54b13c0bc326e1637d99d183b3d373491",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/SkeletalSacristan.cs": "1952d864db5b1b094cb8ad3ab8552d16d49034b7a37c8805f74684699889a2de",
-  "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs": "b0b4cc8c6d55ffd5cf29023f221008eeea0e69a0fc007c6f39f49397dae4ce9c",
+  "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs": "7751273c193830f61b79ad5ce51c7a97dd3916d15fb412fa22b0cb803120c291",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs": "4b063ed9e280b2e8b90d00a2ced49cecc5efede138f783dcbd49cc891f94c759",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/WarlordDorinakka.cs": "a81529c15a2e59963c705bf0c11b374ff8ed7708a4f81846e02a7a9c9dae58e1",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "5265ec39624ceb7e570ecda41a168e7edf51cf58114b03a565fafa7f4ec3cd4c",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "0720d631dd0ad1341fae08190bc31c7783b14040d8d234b44ff7ce3c3b874766",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaelerdoth.cs": "5c40dbe73a2338b51b225428ac91efb12f9918e3bef32f25a61908367a4a90cc",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs": "b13ba341e71eaa6aabd5c6370b26b9c18582686ee007ce661a28eda0a5617e22",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "67f1a42567b5bfe6c1c7b940928a22e9b30698eb6c0e4ab621038c3a23f4008b",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "f96bc108d2e858edd2ffb64ffd984369aae2e6ab6b6f27cf7d25b6977097e26f",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "cd2cfb4f2cdd265bf3061f3a33af97ef034bae88712e1f0ed3a40396e2878691",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "25c0a15069026cb34413ec58471992669c09142b5a2f636783158390ce5915bc",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "f1812718677c0f73ed0ad8ed54d424d17bbbe086d2187e3688d160b835ff0420",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs": "fa9b3318a8cfa33957552bfde7a2659f6438cb4a3c53f4dbbf7b829f6d42db09",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "53d2bd1b0496e80129543cca4e017ac6e5504d5410e629011ce357e6e573cadc",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "ec7005401968848e5295ecddf0d94ed26c02da0068e3de07559036cb3d65c0f4",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrincessNahemah.cs": "e4979c4b62aaa342d40f11378aad1e1072120cec7bdef3c1e7d771e5b0dc4d63",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrincessNahemah.cs": "7f0e57867eb3598c4425f3770ca967915152f10422e3639c71fea64309be77a1",
   "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosBrain.cs": "321880a5267affac2a020ab02f741a95d7eb017665f616d701c3315fc3794f2f",
   "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosState.cs": "4a42f12e31066f93f00df4bc2e8cb8fef4ed363aec55e86f0749427a918c3333",
   "source/server/GameServer/scripts/namedmobs/Dodens/ArosTheSpiritmaster.cs": "3078cd56624f860ec122ea13b3faa87dffeb11f0d74908869fdea8390b3c873a",
-  "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs": "5cba5d5c60cf1a5d2a51edeb8269232cbb8d120a24ee58d57bbc4c69859512d3",
+  "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs": "0e3a01939bcbdfe102b815f3ddccd653f675cc96adfbf65687346c058ec307ec",
   "source/server/GameServer/scripts/namedmobs/Dodens/Gudlaugr.cs": "e5bca75835cdf49f1d95f376357350c62764ab1afdb5243f2eb93cceb1a1427e",
   "source/server/GameServer/scripts/namedmobs/Dodens/Hamar.cs": "a50b558a293e1c51b0373913b86500934369f92ef19d1df29207f97446fb4768",
   "source/server/GameServer/scripts/namedmobs/Dodens/JarlOrmarr.cs": "7942c09508ce302e150492d0bde339f8f810383c8835ed3f25af1d27569bc7fc",
   "source/server/GameServer/scripts/namedmobs/Dodens/MinstressofRunes.cs": "9e804680de657d7ee80bb749d15b61885210132b58e793635702132debaf858f",
-  "source/server/GameServer/scripts/namedmobs/Dodens/MistressOfRunes.cs": "1be2111905ff677a08f5dbae65440e5d324ab6e8398fb165741f131da1d06a66",
-  "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "9dc614ceda5750a5e1919ca934d50bd7dd599d5925a1d536a161d082827d3765",
+  "source/server/GameServer/scripts/namedmobs/Dodens/MistressOfRunes.cs": "da70fb4e729d8e9be5a3449afa067388902caee4b584aa87a348d5f4bc96e2f3",
+  "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "7b5ba981cd8e53b7200de82429e397f05178dde0c8dea2bb672b2ff5243a294a",
   "source/server/GameServer/scripts/namedmobs/Dodens/ThaneDyggve.cs": "517f5c24ba6f17771c2a4b88fc4901ad0ebf1c39d4f8ec23d65e1d4e8560d4d7",
-  "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "683689dc59f00edd64211975d533da9e6369b6f8fc1861606b395bd23cb5f850",
+  "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "0c124d89e2831fb1ce6b05b4826d1179a433407c169382797a4019c8e51adfc0",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonCombatGeometry.cs": "3908bdb98f00d2bf319c7e650eac46fed1472b7533a3ab977f31c527f7a59271",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonDiagnostics.cs": "b1a90e5c650db04f8973ce5015ff5a9175fdd6266a862c965fa39a1fabcb85b9",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterAdds.cs": "c1494caffb7ba37b042544eb45e3703bb35429fd543599ad05528ecb75f2f6cd",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonFlightLanding.cs": "c6dbfb4c0f5ec02c29d9e5a144d7e86d5a945dfbac7f78d8e297f03a3f6ebb8e",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonLairPlacement.cs": "574af55d780a64ce63e2f2de89b20044ce1c67cfeaa150e5125d230efcc23391",
-  "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "a23f27b81b62985fd12dba1abb1eb47202bbd5000b70a640534ce2a4c9564fd1",
-  "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "33c43eefe31a36d0d1f91af5ddc3c441f6ac491b52b62f7a3cccc94c8d9867da",
+  "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "808d6ed854b4cc407644f0fe53e6c2ab47b62bbc28cea94dc2476f153af6d2fa",
+  "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "d8939280fa45b5b6516ffd2a5914a8b35b49f2fac5eac704b29635794c1828cb",
   "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666",
   "source/server/GameServer/scripts/namedmobs/EncounterDisplacement.cs": "ebab87b045c8d05df4de0a23b7b05ae3d4678d8f2eda04153b47d799c2c0b111",
   "source/server/GameServer/scripts/namedmobs/EncounterFloodGuard.cs": "64a95af9f337614ccdfd78221efba27096c87725a2c3c8f3d204f9566412213d",
@@ -82,30 +82,30 @@
   "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "1fbd38230ec9304e89e162efd0bbd017d5c59891d56eaa23ce7842e746380394",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "cdc59166c4aeb7f3946a436feab3e597d0384fb27d87438c856db55dc77fb758",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
-  "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe",
-  "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "ddbafcd28c0d85ab9a71d42b179edd8a4d705e1c1b8daf8c0c37f235702d65a2",
+  "source/server/GameServer/scripts/namedmobs/Evern.cs": "003f3a20880edd6646c3ff9b78ba0c254a416b93035fc20e3c8224c387ff0a72",
+  "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "26e3525b5a272b5ede5503ebd9f7a4ccf128a07d4ee321fb359fe990f10c1c60",
   "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "147e40217973555da2bb68a1e23c4f843b08c5dbd72950246678153b23ffd458",
-  "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "311436168b56a011082fdb7896a2f1ce93ff2e48255a634cdb58bb814bd0e8a0",
+  "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "8bea60e8080d61f97845eccfd15eabf34a8279d8069d833da719751b6c40cf74",
   "source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs": "5d3b338eec35ec06bacef311189dc0066981669f761bf95d88deaf814d987712",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "9f7b96e78af9a1c70b23bd8e099c65f5b704906fec526087baea2d68f7878910",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "bdedecd9ae4702c6549ad12fc40a7ef5bfc8b39677fedacf3835c704a16e4e36",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs": "3d39abfd2a900d792a7f542914506fc4ff7a11790287e2a2547f082c5721ae0a",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "400d91fa752949ea0b928db0e9b9e1b6700f2d9a90cc57bb360e1ea64fb458cb",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "9ff08a7c901526d38022c232d0522076bcad19c33b713f65fa2a9ec189261e56",
   "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs": "96531836730ea2454b604c3f728ab63d265576412dc5263dc1b49d3f6a9099d6",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs": "fdd068e56e398088bb1b6e0007b5bc39fc5ee5cb8ad3b81c959fcf51ba6b42c2",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs": "f2ab131fba683b917c0d7a439de5a01e2adee5fdb4421107051f064f321426f9",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs": "803467b4edadf2428fd2ef50dba29d129204e09353cfd8e8536d9afa4a13e13a",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "6e8c9d0a8fd5b5a27046747f0e7ec0665d34926546865bea95978cc8d816ea89",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "e4a4c685603dcd217bf1f5d22ef0ec02cd6e0cc99fa43c1f49328ac70810bb04",
   "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "5c815a5f55796c3fa138ee39600954e1d7bd5bbd9edd83fcaf476c2049fdd2da",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "9d610a662e6d40d389558bc46f7d111775f6de4060424ed6bf224267cde8e52c",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "d3364e86a4983e519019db10e311a4b299c6d4a38d325dc0c3e1b18815254bf7",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs": "b378898bd7a8665b766bf4412fc6cf3b31bdb4fc7f76d0994cb1751edb863f0c",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "a520d4f6606866450020b02fc6decfc1c274b611fd57fced859cb7906cc08662",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs": "45fa716f718873dad46fe0aeee235f4e210e07eda0bec2c2de4971303dfb9669",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "f90f81de1ecc601123d4c42f610a7d2ca45dda7e6abad867dc4de13142b98566",
   "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "12c06112f7f057486c362e7b5faec6604e7739fb03319f9a9c68ad21ab2c9b07",
   "source/server/GameServer/scripts/namedmobs/Gnat.cs": "0cc35e556f8aff83f999e735bd6f9664d686fd701955c5884951198730c22f82",
-  "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "eb4a19af9943f41fb676d0fee677eb24025e6215becb5ebf5af8aa3c12a9e372",
+  "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "3eee5a36a26ec129b014ab22dbe4912ff8856fbf063db35c7fd253e283cdc5bf",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainAtwell.cs": "2660a077543835d7cdbac811627b37b7ab380474eb9bf81db7d63c065274f684",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainBardalph.cs": "1e6344c750ac65fbc54d13a04c41d884fc95af67e452582f6341344f77667b96",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainHeathyr.cs": "04866264482b4c82fc0ae6684bd2968cb0c20d584ba707d1e65de5bb540184c8",
-  "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LadyDarra.cs": "959ab906c88607fc0ba4e43bd5336e47b018907a91e5caedd00c559e254bbbf5",
+  "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LadyDarra.cs": "c0517ed3ed717e0a85ec0cf4a130672e457b77ef525fa0ab26cf105aa6edb769",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantElva.cs": "594f33f0f73a6b69051c35a9055a76e8ee650eb10470dfd1122c0aecca7efca4",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantMeade.cs": "34d7b479dc2cd9abb40bc12f631bfa35fbbb3f16439befa022b330cabc53ad38",
   "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantSaxe.cs": "3612d154819d943e53fe949fd3d18dfaad056d85e5d29d7e89f63abb1c836dfe",
@@ -147,24 +147,24 @@
   "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Mahattava.cs": "7c933eda3886469fb90badc23fab1118f675f719e2ee166da1793823e7c3db29",
   "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Skoll.cs": "96ff2701447217c01b437fbb61fb54387738853b50076f4efa894e34e15585ea",
   "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Stanga.cs": "c5280d44f68475ed0f22a134e7802b40d56340836892daeecd53002cca37d928",
-  "source/server/GameServer/scripts/namedmobs/Krondon/BeranSupplyMaster.cs": "9b02e8d452e417df93032c54b5e7b841e0997d099ecdbe5db4c912a8e7616eea",
+  "source/server/GameServer/scripts/namedmobs/Krondon/BeranSupplyMaster.cs": "3c23f76e7be02c8f71bcab9508e161858d780dc4dfbd3a11efedebe589fce988",
   "source/server/GameServer/scripts/namedmobs/Krondon/DebenSeGecynde.cs": "991feb86734ad0a6b32a009c1fc7c58342a4f689f091700f14ed934c0250f968",
   "source/server/GameServer/scripts/namedmobs/Krondon/DrihtenElreden.cs": "f24b92e1dabe64b333934384af8bc50ae639191a2c65eb6361a93500b1c5a07a",
-  "source/server/GameServer/scripts/namedmobs/Krondon/Fuladl.cs": "5c77e0755bcf96121b2fa459a5ba574b6b289795ab47a5d850adee33cf270c70",
-  "source/server/GameServer/scripts/namedmobs/Krondon/Fulafeallan.cs": "f5ba58840999e90587f405a2b1be64ade0457b090be3aebddc35311537ecf756",
-  "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "e064a5f8e93f2360c66c6ae74555da16cf04536b27b707c09e7a78baada04617",
+  "source/server/GameServer/scripts/namedmobs/Krondon/Fuladl.cs": "996670285fb242b87c926138c97aabe6c0c3bf61f66370c5f77b8148cbe71c65",
+  "source/server/GameServer/scripts/namedmobs/Krondon/Fulafeallan.cs": "7159381daf33630756a4137141d8efa963d9a2e3b0bca227565c340caee4145d",
+  "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "1bcc1066d4edf417baba449607563a289d9265a4e4598707d35b5479ec49414d",
   "source/server/GameServer/scripts/namedmobs/Krondon/LurfosHerald.cs": "87caa007651e218233567dfbb5641ec0d7fed25f6d08320006c2d3b69befd650",
   "source/server/GameServer/scripts/namedmobs/Krondon/MorgusUrgalorg .cs": "d8ec7f910be988b9193b1af519cc62b014f574658855e111380509cb76107865",
-  "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "1c2b8ef32670482a2447267a8a178634b8509ad599a56654b457d1d55b3e694c",
-  "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs": "2b82f3796af153cc314cd5a8cad896927b2518a77a524d45aa35e393effc53c9",
+  "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "c9352b6b931ea97d56ccdad5d41fcf0a46dccec5a93f56f28d555135ba4352ae",
+  "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs": "4476d361b8ff3ef17162599c979b3e1eb58ae7f5f30bafea2c76e6a50882c08a",
   "source/server/GameServer/scripts/namedmobs/Krondon/UlorAndJehrogSeBysen.cs": "0ac5434189658322d288521185e65e00b48cf3e067506695b1981fca31adf1fc",
   "source/server/GameServer/scripts/namedmobs/MaldaharTheGlimmerPrince.cs": "cb79af21ccefe4c643d37e945ae01ff30ad5e5f3c999dfa682a6d05413028996",
-  "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs": "b55ebdb4163258f61661656bd550e975173411aacc683b9fe25646a0136d7491",
+  "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs": "e753feb7e56d9cfab49f4966f332e5ecdbb16bdaa23579ec2540e07cc35e28ca",
   "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AvartackTheChampion.cs": "c7a546a688cb23eb4a554d2e8bd644774271cab73f97c1f2c3c0d6b024caa026",
-  "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs": "b9b1fb6ac72b95f0dc51ff62bce049212d48f17b68730715bd8e746fc40d0beb",
-  "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlueLady.cs": "346219674d0de534a7ea0603e761218fc128ecc9549ee02e209a6c4a00fcd88c",
+  "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs": "94362f8f5ff8b8fd674584578992dc0e8384057be7aaed36f08ea22b0e5fcf6b",
+  "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlueLady.cs": "05e346196028cafac6d3e70e20154e6cf887fa64280892bcfa8e3ebe5491ee72",
   "source/server/GameServer/scripts/namedmobs/MarfachCaverns/ChieftainCaimheul.cs": "3eebd1d0c1f025fe67097232c18088e47908ffa4b5e87ac086d1c0a64d79eb34",
-  "source/server/GameServer/scripts/namedmobs/MarfachCaverns/RedLady.cs": "98f04623b5c8f19a1e84059408c2d9b871e933a2d10cc724e5e47b3f3326ed9a",
+  "source/server/GameServer/scripts/namedmobs/MarfachCaverns/RedLady.cs": "923509a651ce76a60d80149a052731fb9b101c7206af932553d100debb8771fb",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Hugi.cs": "a7e9286fc8a4842e928f975ad9dd6964b5e10d90456f4675c2b1a95a020168c3",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Kelic.cs": "7f30815802a1c71234ebf3999437e95dd2090ce95c11ee8c9906ab2cfab75118",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Loken.cs": "5dc2bfdea94037d23d29eafa8d239758fb7325222985191b4c144e3580817b03",
@@ -187,36 +187,36 @@
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Vasrem.cs": "5a6d0d84e1cea4cb4ccaf5c14e582941a6780b5083e5ba5ca17294d5f7430556",
   "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "5989d82c04e6e18990d4a5463b394710ed1ec86101e68a4f0d1573be64b30f45",
   "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "d89b0e6d6adae7ee4a944ffcd0a31db5aad5c2152946ccd568d570d7095e386f",
-  "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "3d6872d043c4d51baaeb12e1372a7e6d21b1b0d8760322a8465d6f435c52b2b2",
+  "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "36aaff42d13dbf119938924e7bc843128bb12593523820ded249600899f64a94",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "71371583d6bed9cab527981da675b0a7d501642eb66f584d00692147801cd770",
-  "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "44fa7d6315c047a70b7095c2bd5c40c2e400d0251f751a56cd261e94868c6d4c",
+  "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "947da6f04a5606ad7264085b56f7ab36aa8f08dc26f4b4fc568b17ca3bd28757",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs": "a11dc500e720562928b31c3f1079bbac635db52cb9899978742fff9105c99d58",
   "source/server/GameServer/scripts/namedmobs/Trollheim/Dagar.cs": "9c54b8e58b90b96c8d0cc2e20a20b5a50eb5a2f1f156172b47e89e7c3cada7b8",
   "source/server/GameServer/scripts/namedmobs/Trollheim/FostraOrm.cs": "cb7e0a66cc479ba78f436d6db514b7f4d15f48dc6cb16b7244728e76b9ce134f",
-  "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "675a30a5962118f157aa1b003ef35b6d00acb6d9788afaad274f779a5407761d",
-  "source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs": "8d11894906325de83614eed8ce5bdf22f368f0ce2d4dd8bf50d6006b8eed813a",
-  "source/server/GameServer/scripts/namedmobs/Trollheim/Rotoddjur.cs": "9c7eb27994026aa4ed0168158089af2f5acc1abc71efd255079ccc00f7e0e24c",
-  "source/server/GameServer/scripts/namedmobs/TurSuil/AbomosSoultrapper.cs": "c41910c457057f8bb67f3ce8925a29a01d1367d02476e0a71ef5d63f242b576d",
-  "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs": "bd35c490f7ce0f6597679dd76bf6ca5243b9fc27025f816dba1d10664275146b",
-  "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs": "667bf9aa6176cfa63fd7f48a97255f08977135bd7f232c1020e49eab79509feb",
+  "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "59d1124495856975f312b2f2aa1973a0e4f437facc1e1a35e41e310c231bb363",
+  "source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs": "5594ee0a412234fd7d568bc89bc79ce0647d9a32822874e842eb44f47d5c7445",
+  "source/server/GameServer/scripts/namedmobs/Trollheim/Rotoddjur.cs": "61cf4819ecafa4c5f2b7fe9a3eca53f2c54dde2c84a63e7bfefc374a77cf830e",
+  "source/server/GameServer/scripts/namedmobs/TurSuil/AbomosSoultrapper.cs": "3ed5a60f36b449cc19e9ba7d0cdd8bae1503c3b58d595be8e7580b0de71157e3",
+  "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs": "4ce3825ddfa1ec64512f5ba2579c3b0f9b2259dccec53427a0b25d45e1c43669",
+  "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs": "4517aad3e6364b214eb44732f70a89e733abf9588d7f21ef3e627963d496b677",
   "source/server/GameServer/scripts/namedmobs/TurSuil/NorsobAndSargan.cs": "5766d2efe3a988e2f903d78369ea74c84b6c3d49353be25bd65d808e5fb328ac",
-  "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs": "906a572c53b279f424e39f79e057ea1ddd7c53ae56e836d7b347bb2a9eb33362",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilOtrygg.cs": "2b25c53806a59264da80fa2bc3fd0116213e688d2cb49e57989b263298c18b3f",
+  "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs": "118f9b1f00d5f3f99a0f4aebc658029d83ed0dd4b960b6af24d9a1b7f99a3ed7",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilOtrygg.cs": "344c1b3938c805b59179d70ca05e7887b2eca37c0d8bac49b0718263ac634e6b",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs": "c0fd21b6b0420b60bfec2e291807a2494cd8d9686dfbb7a72fde8258831e18c2",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "c9bad5dfb31d1e1c4e6d7077b3f516d5a8b5735d5c9dff17f87b89fa71a120fc",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "3c7724d289bf39019698a1ddcd88250c0dbfa600592149d5002aa71923701d09",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "89cb44433186fac2b53a99232b4347e8925e6fb36b6a942f4ad03367e0ac6886",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "607ac694df8f87df53ae4203d5f4064ad356ad27e49c7f651a6eee6dbaad6b34",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/FallingIce.cs": "c3dadde9c091ee2b698e8e18d2cb1be14a683c63e0c40ccbc2a921e7e7d71aa5",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "902b66c51eecf6e1743f713eae627d606f0ff2e553bf4a9621a0a8ca51faad94",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "9532c1d3c067b0a83df66f484e878a731eb468dafa2c229b31f0f82268417cc3",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Hord.cs": "f21c3e552ea4280627e1dbb87c762a4a5309d9cbec086d099d6231442327abc3",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs": "968acafc599e2fb740ec84a8df0f79f4c8c2831918dc434648eee93c572b42aa",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "28131ab46a78822da6ec37da3081f5affa4f259ca3106efb0aaf612dc55033e9",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "5b4998538d5f3ea491a9d937c1404735a346a20b0a0fd4ab1b4b647bd82a2b73",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "4d889113864409dfe983eab5c48fe7da4ece538a406d74d4e51a06e720fddd9e",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs": "1e9100f183e76277eb1570d1c2dd613a55855890e370dad5a490437edd0f2269",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "4584a056742bc3540ef18a34e14162d533f2cc06ebfc28cbb46c7b2d1efffb93",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "2559dca6bcac4b62c5ab5e8dcd9abeb3bb55444e59a1058c7b560d98bd8bf951",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "aa5202b0420814220d5c19afe1524414001ce9b6510347e55dbd334732c4acbe",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs": "047313701e409de109730137f1f89fb90f7596bd0247952ad7d929ce0b9ee055",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "10d55817536a858a70148ba2f2a5e1c5fe41d633697f74c2f0b0c6300347ec2b",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "6d12fadcc9bfd157b99a01e375341394f0d1b5a67d6ce5f852ffdfc250f06f61",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "62d7f5d49eaaa767969d8df330591f2a9e9fb014373f8087979b3e34e954fd8b",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs": "79b05c5cd0d0a976643381cb00c4f121d424a538bf470a481db3dad9f0b4e7ac",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "724944d493d223a602c0c681ea4a1f3be317b427e958be09c17d14657cc52d35",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "9d5019fcddceef72b67442a6f9bde3a2a388f979e0e14eb1546bcc0f00f19d0a",
   "source/server/GameServer/scripts/namedmobs/Yar.cs": "9e919f2a641bc86fe7652fe8af16cc736f5f86468873a9b31b7f0eeedb72a058"
  },
  "switches": [
@@ -1758,8 +1758,8 @@
    "brain": "MorganaBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
    "lines": [
-    12,
-    43
+    14,
+    45
    ],
    "dungeon": "Albion Named Mobs / Classic Zones",
    "region": null,
@@ -1782,7 +1782,7 @@
      "maxHealth": 7000,
      "level": null,
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 222
+     "line": 224
     },
     {
      "class": "Silcharde",
@@ -1795,7 +1795,7 @@
      "maxHealth": 7000,
      "level": null,
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 373
+     "line": 385
     },
     {
      "class": "DemonicMinion",
@@ -1808,7 +1808,7 @@
      "maxHealth": null,
      "level": "(byte)Util.Random(30, 33)",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 517
+     "line": 539
     }
    ],
    "rules": [
@@ -1816,8 +1816,8 @@
      "kind": "immune_while",
      "summary": "Takes no damage while it is drawn past its tether.",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 228,
-     "lineEnd": 244,
+     "line": 230,
+     "lineEnd": 246,
      "anchor": "{",
      "confidence": "read",
      "sourceClass": "Bechard",
@@ -1832,14 +1832,14 @@
      "tactic": "Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "immune_while@228"
+     "key": "immune_while@230"
     },
     {
      "kind": "adds",
      "summary": "Spawns Bechard: from SpawnBechard; count 1 spawn call in SpawnBechard",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 188,
-     "lineEnd": 188,
+     "line": 190,
+     "lineEnd": 190,
      "anchor": "Bechard npc = new Bechard();",
      "confidence": "inferred",
      "sourceClass": "MorganaBrain",
@@ -1853,14 +1853,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@188"
+     "key": "adds@190"
     },
     {
      "kind": "adds",
      "summary": "Spawns Silcharde: from SpawnSilcharde; count 1 spawn call in SpawnSilcharde",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 206,
-     "lineEnd": 206,
+     "line": 208,
+     "lineEnd": 208,
      "anchor": "Silcharde npc = new Silcharde();",
      "confidence": "inferred",
      "sourceClass": "MorganaBrain",
@@ -1874,14 +1874,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@206"
+     "key": "adds@208"
     },
     {
      "kind": "adds",
-     "summary": "Spawns demonic minion (DemonicMinion): when it dies (via SpawnDemonic); count 1 spawn call in SpawnDemonic",
+     "summary": "Spawns demonic minion (DemonicMinion): from SpawnDemonic; count 1 spawn call in SpawnDemonic",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 313,
-     "lineEnd": 313,
+     "line": 325,
+     "lineEnd": 325,
      "anchor": "DemonicMinion npc = new DemonicMinion();",
      "confidence": "inferred",
      "sourceClass": "Bechard",
@@ -1890,7 +1890,7 @@
      "addBase": "GameNPC",
      "addBrain": "DemonicMinionBrain",
      "count": 1,
-     "trigger": "when it dies (via SpawnDemonic)",
+     "trigger": "from SpawnDemonic",
      "addIsEpic": false,
      "from": "add",
      "alsoIn": [
@@ -1900,14 +1900,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@313"
+     "key": "adds@325"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 346,
-     "lineEnd": 351,
+     "line": 358,
+     "lineEnd": 363,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "BechardBrain",
@@ -1920,14 +1920,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@346"
+     "key": "reset@358"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: SilchardeBrain",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 360,
-     "lineEnd": 360,
+     "line": 372,
+     "lineEnd": 372,
      "anchor": "brain.AddToAggroList(target, 100);",
      "confidence": "inferred",
      "sourceClass": "BechardBrain",
@@ -1937,14 +1937,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@360"
+     "key": "linked_pack@372"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: BechardBrain",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 504,
-     "lineEnd": 504,
+     "line": 526,
+     "lineEnd": 526,
      "anchor": "brain.AddToAggroList(target, 100);",
      "confidence": "inferred",
      "sourceClass": "SilchardeBrain",
@@ -1954,7 +1954,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@504"
+     "key": "linked_pack@526"
     }
    ],
    "spells": [],
@@ -1963,7 +1963,7 @@
    "templateTetherRange": 2000,
    "raids": [],
    "raidAi": "no raid",
-   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. Living Server 1.2 (every big boss in, 2026-11-14): no raid and no tactic, on purpose. In 2001-2005 Morgana was a quest NPC who appears only for players on certain quests, not a fought raid boss (Allakhazam 2003-2004; Herald \"Discovery of the Dark Spire\"; the raid research found no period raid of her), and here she has no spawn in the world database. Nothing was invented for her.",
+   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. Living Server 1.2 (every big boss in, 2026-11-14): no raid and no tactic, on purpose. In 2001-2005 Morgana was a quest NPC who appears only for players on certain quests, not a fought raid boss (Allakhazam 2003-2004; Herald \"Discovery of the Dark Spire\"; the raid research found no period raid of her), and here she has no spawn in the world database. Nothing was invented for her. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Bechard's and Silcharde's demonic minions spawn on a random navmesh point within 150 of the old spot when the zone has a navmesh.",
    "verified": true
   },
   {
@@ -3732,6 +3732,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "requiredAdds": [
      "DraugynSphere"
@@ -4046,6 +4047,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "hazards": [
      "PitMonster"
@@ -4493,6 +4495,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "fightAtHomeRadius": 2700,
     "summary": "Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
@@ -4771,6 +4774,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "fightAtHomeRadius": 2700,
     "summary": "Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
@@ -5073,7 +5077,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "1.2 (wave 2): his swarm shield is on (AllowAddShield per encounter) and counts the swarm alive within 4,000 (SwarmAlive), not the static count; the raid kills the swarm first (catalog required adds).",
+   "notes": "1.2 (wave 2): his swarm shield is on (AllowAddShield per encounter) and counts the swarm alive within 4,000 (SwarmAlive), not the static count; the raid kills the swarm first (catalog required adds). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "requiredAdds": [
      "MorbusSwarm"
@@ -5331,7 +5335,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "1.2 (wave 2): the class and weapon puzzle is on (AllowFunusWeaponPuzzle); see aiTactics. 1.2 (wave 3): the archer classes switch to their listed weapon.",
+   "notes": "1.2 (wave 2): the class and weapon puzzle is on (AllowFunusWeaponPuzzle); see aiTactics. 1.2 (wave 3): the archer classes switch to their listed weapon. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "fightAtHomeRadius": 2700,
     "summary": "Class and weapon puzzle (1.2, with the original on): any hit from the wrong class or weapon (pets too) heals him to full. Wave 3: clerics fight him as they like; scouts, mercenaries, armsmen and infiltrators who own their listed weapon (longbow, short bow, crossbow: gamebots start with a training one of their class's own kind when they learn the line and earn better ones) draw it and fight with it only: BotBrain never falls back to melee on him (out of endurance they wait), the native close-range melee switch is skipped, and unless they hold him they step back to 700 when he is within 450. Everyone else drops him, calls its pet off and waits 1,400 away (kept inside the room while its door is barred), and never puts an area spell where he stands. No bot's pet attacks him, takes him from an order or defends its owner against him (EpicEncounterTactics.PetMustNotHit). A damage shield's sting from a bot he can't be hurt by neither heals nor hurts him (server property epic_funus_bot_shield_guard, on; real players keep the original). Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back. Not played: how many of a raid's mercenaries, armsmen and infiltrators own the weapon depends on their earned gear.",
@@ -5617,7 +5621,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two. 1.2 (wave 3): the room barrier (ApocInitializator.DontAllowLeaveRoom: anyone within 150 of the door 29,459,26,401 while a horseman or Apocalypse fights is moved to the middle 29,469,25,244) is on for players and bots (AllowDisplacement and AllowBotDisplacement for ApocInitializator). The raid's muster and every tactic stand-off for the room's encounters are kept within 800 of the middle, the route doesn't leave the room mid-fight, and a bot moved back stays inside (EpicEncounterTactics.HorsemenRoom); a repeated move is logged (EPIC_DISPLACEMENT_BOUNCED). The room's shape was never checked against the navmesh.",
+   "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two. 1.2 (wave 3): the room barrier (ApocInitializator.DontAllowLeaveRoom: anyone within 150 of the door 29,459,26,401 while a horseman or Apocalypse fights is moved to the middle 29,469,25,244) is on for players and bots (AllowDisplacement and AllowBotDisplacement for ApocInitializator). The raid's muster and every tactic stand-off for the room's encounters are kept within 800 of the middle, the route doesn't leave the room mid-fight, and a bot moved back stays inside (EpicEncounterTactics.HorsemenRoom); a repeated move is logged (EPIC_DISPLACEMENT_BOUNCED). The room's shape was never checked against the navmesh. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "summary": "Fly phases, Harbingers, Rain of Fire (1.2 big-boss plans, owner 2026-11-14; tests only): while he flies (at 99% and 50%, 30 s each, raining 650 heat on the 800 under him) every raider in the rain steps to a ring 1,050 from its centre, clear of the room's door (the barrier's keep-inside allows that ring then), healers too (held there); on the ground the party he fights holds him and everyone else kills the Harbingers of Fate first; casters, archers and healers stand at their party's spot 650 from the room's middle so a Rain of Fire (800 in 600 around one raider) catches one party. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): he flies and rains fire, Harbingers come after four deaths, two at a time, and die before him; he teleports raiders who run away. EpicEncounterTactics.CaerSidi.",
     "since": "1.2"
@@ -5959,7 +5963,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "1.2 upstream port (tests only): the initializer's check (spawn the eight copies, pick HostReal, start the respawn wait) runs on a game-loop ECSGameTimer every 10 s instead of a thread-pool System.Timers.Timer every 1 s, and stops when the initializer is gone; each Host's death decrements the copy count atomically (OpenDAoC-Core c0476c41b). No mechanic changed. 1.2 upstream port (tests only): the 52 WalkTo stages of HostBrain.HostPath (shared static flags path1..path51) are one scripted loop path per copy (Host.PatrolPoints, the same points from his spawn, OpenDAoC-Core cadc7b8c0's path part), walked by the brain's patrol state at 100, still only out of combat. Upstream's rewrite of the rest of the Host (no aggro while walking, no linked-monster speed and tether) was not taken: the mechanics are ours. The baf and ambush predictions read each copy's current loop point.",
+   "notes": "1.2 upstream port (tests only): the initializer's check (spawn the eight copies, pick HostReal, start the respawn wait) runs on a game-loop ECSGameTimer every 10 s instead of a thread-pool System.Timers.Timer every 1 s, and stops when the initializer is gone; each Host's death decrements the copy count atomically (OpenDAoC-Core c0476c41b). No mechanic changed. 1.2 upstream port (tests only): the 52 WalkTo stages of HostBrain.HostPath (shared static flags path1..path51) are one scripted loop path per copy (Host.PatrolPoints, the same points from his spawn, OpenDAoC-Core cadc7b8c0's path part), walked by the brain's patrol state at 100, still only out of combat. Upstream's rewrite of the rest of the Host (no aggro while walking, no linked-monster speed and tether) was not taken: the mechanics are ours. The baf and ambush predictions read each copy's current loop point. Each Host's death (the copy count, the real one killing the rest) runs in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), once per death; no mechanic changed.",
    "aiTactics": {
     "summary": "Only the copy with PackageID HostReal matters: its death kills the rest. The route first clears his 21 linked monsters (the archliches among them) while every Host is predicted to stay 900 away for 45 s, holds the Hosts while any of those live, then musters in ambush at a fixed point of his patrol and goes in when he is due to pass; every raider fights HostReal (EpicEncounterTactics.CaerSidi, sweep 2026-11-14; tests only).",
     "since": "1.2"
@@ -6111,6 +6115,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "summary": "His dark lights and lich's eyes within 1,000 on his floor are cleared before he is pulled; if his fight starts anyway, the party he is on holds him and the rest kill the adds, then his images (sweep 2026-11-14: a pull among live adds wiped at 6%, the pull after them won in 4.5 minutes; tests only).",
     "since": "1.2"
@@ -6125,8 +6130,8 @@
    "brain": "LordSanguisBrain",
    "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs",
    "lines": [
-    10,
-    161
+    12,
+    173
    ],
    "dungeon": "Caer Sidi",
    "region": 60,
@@ -6153,7 +6158,7 @@
      "maxHealth": 8000,
      "level": "70",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs",
-     "line": 352
+     "line": 364
     }
    ],
    "rules": [
@@ -6161,8 +6166,8 @@
      "kind": "adds",
      "summary": "Spawns Lich Lord Sanguis (LichLordSanguis): on a timer (6000 ms); count 1 spawn call in SpawnLich",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs",
-     "line": 97,
-     "lineEnd": 97,
+     "line": 99,
+     "lineEnd": 99,
      "anchor": "LichLordSanguis Add = new LichLordSanguis();",
      "confidence": "inferred",
      "sourceClass": "LordSanguis",
@@ -6176,14 +6181,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@97"
+     "key": "adds@99"
     },
     {
      "kind": "adds",
-     "summary": "Spawns blood mage (BloodMage): when it dies (via SpawnMages); count about 2-4 (loop to a random bound)",
+     "summary": "Spawns blood mage (BloodMage): from SpawnMages; count about 2-4 (loop to a random bound)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs",
-     "line": 111,
-     "lineEnd": 111,
+     "line": 123,
+     "lineEnd": 123,
      "anchor": "BloodMage Add = new BloodMage();",
      "confidence": "inferred",
      "sourceClass": "LordSanguis",
@@ -6192,20 +6197,20 @@
      "addBase": "GameNPC",
      "addBrain": "BloodMageBrain",
      "count": 4,
-     "trigger": "when it dies (via SpawnMages)",
+     "trigger": "from SpawnMages",
      "addIsEpic": false,
      "verified": true,
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@111"
+     "key": "adds@123"
     },
     {
      "kind": "adds",
      "summary": "Spawns blood mage (BloodMage): from Think when if (Util.Chance(10)); count 1 spawn call in SpawnMages",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs",
-     "line": 211,
-     "lineEnd": 211,
+     "line": 223,
+     "lineEnd": 223,
      "anchor": "BloodMage Add = new BloodMage();",
      "confidence": "inferred",
      "sourceClass": "LordSanguisBrain",
@@ -6219,14 +6224,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@211"
+     "key": "adds@223"
     },
     {
      "kind": "tether",
      "summary": "Tether range 3000 (blood mage (BloodMage)): drawn further from its spawn it walks home.",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs",
-     "line": 407,
-     "lineEnd": 407,
+     "line": 422,
+     "lineEnd": 422,
      "anchor": "TetherRange = 3000;",
      "confidence": "read",
      "sourceClass": "BloodMage",
@@ -6237,14 +6242,14 @@
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "tether@407"
+     "key": "tether@422"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs",
-     "line": 179,
-     "lineEnd": 197,
+     "line": 191,
+     "lineEnd": 209,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "LordSanguisBrain",
@@ -6254,7 +6259,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@179"
+     "key": "reset@191"
     }
    ],
    "spells": [],
@@ -6275,6 +6280,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there.",
    "aiTactics": {
     "rangedAdds": [
      "BloodMage"
@@ -6292,8 +6298,8 @@
    "brain": "LichLordSanguisBrain",
    "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs",
    "lines": [
-    225,
-    302
+    237,
+    314
    ],
    "dungeon": "Caer Sidi",
    "region": 60,
@@ -6315,8 +6321,8 @@
      "kind": "phase",
      "summary": "At 5% health: announces 'becomes almost untouchable in his last act of agony' and turns untargetable (CANTTARGET) until the fight resets.",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs",
-     "line": 335,
-     "lineEnd": 343,
+     "line": 347,
+     "lineEnd": 355,
      "anchor": "if (Body.HealthPercent <= 5)",
      "confidence": "inferred",
      "sourceClass": "LichLordSanguisBrain",
@@ -6325,14 +6331,14 @@
      "tactic": "Finish him with spells: the offensive casters keep casting at him (nukes, DoTs, area spells; EpicEncounterTactics.FinishedBySpells), melee and archers keep the adds off them.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "phase@335"
+     "key": "phase@347"
     },
     {
      "kind": "tether",
      "summary": "Tether range 2000: drawn further from its spawn it walks home.",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs",
-     "line": 283,
-     "lineEnd": 283,
+     "line": 295,
+     "lineEnd": 295,
      "anchor": "TetherRange = 2000;",
      "confidence": "read",
      "sourceClass": "LichLordSanguis",
@@ -6342,14 +6348,14 @@
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "tether@283"
+     "key": "tether@295"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs",
-     "line": 327,
-     "lineEnd": 334,
+     "line": 339,
+     "lineEnd": 346,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "LichLordSanguisBrain",
@@ -6359,7 +6365,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@327"
+     "key": "reset@339"
     }
    ],
    "spells": [],
@@ -6371,7 +6377,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "At 5% health he turns untargetable (CANTTARGET) until the fight resets; area spells and running damage over time still hit him. 1.2: bots never fight an untargetable NPC, so the raid would stall on his last 5%; now offensive casters keep him as their target and finish him with spells (EpicEncounterTactics.FinishedBySpells), and the dungeon route keeps him as a target. Untested in a run.",
+   "notes": "At 5% health he turns untargetable (CANTTARGET) until the fight resets; area spells and running damage over time still hit him. 1.2: bots never fight an untargetable NPC, so the raid would stall on his last 5%; now offensive casters keep him as their target and finish him with spells (EpicEncounterTactics.FinishedBySpells), and the dungeon route keeps him as a target. Untested in a run. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there.",
    "aiTactics": {
     "rangedAdds": [
      "BloodMage"
@@ -6845,7 +6851,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Mechanic change (owner 2026-10-14/15): while a reckoned soul lives he takes a quarter of the damage instead of none. Out of his room (SoulReckonerBrain.InRoom false) he takes none.",
+   "notes": "Mechanic change (owner 2026-10-14/15): while a reckoned soul lives he takes a quarter of the damage instead of none. Out of his room (SoulReckonerBrain.InRoom false) he takes none. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "requiredAdds": [
      "ReckonedSoul"
@@ -7311,7 +7317,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random raider within 2,500 every 20-40 s: real players, and bots since 1.2 (his AllowBotDisplacement is on; the pick asks the same switch as the move) and glares at another raider, bots included since 1.2 (never a necromancer).",
+   "notes": "Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random raider within 2,500 every 20-40 s: real players, and bots since 1.2 (his AllowBotDisplacement is on; the pick asks the same switch as the move) and glares at another raider, bots included since 1.2 (never a necromancer). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "2026-11-05: lost with support 199 (required 150, Special Forces joined), one named kill.",
    "aiTactics": {
     "blastThresholds": [
@@ -7634,7 +7640,7 @@
     }
    ],
    "raidAi": "dragon fight",
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full. 1.2 upstream port (tests only): SpawnHeading always returns the lair heading (OpenDAoC-Core b3b9a24f7's accessor fix), so the landing turn and a reset face the lair even when nothing set the heading. The rest of that commit (the flight ending at the spawn point, keeping FLYING until touchdown) was already done here by DragonFlightLanding; its FSM RETURN_TO_SPAWN call needs upstream's engine change and was not taken.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full. 1.2 upstream port (tests only): SpawnHeading always returns the lair heading (OpenDAoC-Core b3b9a24f7's accessor fix), so the landing turn and a reset face the lair even when nothing set the heading. The rest of that commit (the flight ending at the spawn point, keeping FLYING until touchdown) was already done here by DragonFlightLanding; its FSM RETURN_TO_SPAWN call needs upstream's engine change and was not taken. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "CuuldurachMessenger"
@@ -7759,7 +7765,7 @@
     }
    ],
    "raidAi": "no raid AI",
-   "notes": "1.2: a minion rises from each raider he kills, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'Beliathan.Minions'): no new minion while 64 are up, Darkness Falls' period raid.",
+   "notes": "1.2: a minion rises from each raider he kills, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'Beliathan.Minions'): no new minion while 64 are up, Darkness Falls' period raid. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "BeliathanMinion"
@@ -8086,6 +8092,7 @@
     }
    ],
    "raidAi": "no raid AI",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "summary": "DF raid wave (1.2, tests only): his two copies come with him and die with him (HighLordOro.Die). The party a copy fights holds it and everyone else kills Oro; the route takes the real Oro, never a copy (they share his name: Hibernia's raid of 2026-11-14 took a respawned copy for the objective twice). Casters and healers keep 650 from every Oro (each drains 5% mana a turn within 350). Period: 'all three Oros will come ... tanks each engage one', 'a PBAE powertap ... be sure your Healers are a bit away' (Allakhazam, 2006); 'two illusionary duplicates ... significantly weaker' (IGN board guide, 2003). (EpicEncounterTactics.DarknessFalls.cs, DF raid wave)",
     "since": "1.2"
@@ -8183,6 +8190,7 @@
     }
    ],
    "raidAi": "no raid AI",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "summary": "A copy of High Lord Oro (30,000 health, dies with him): its party holds it, the rest of the raid is sent to Oro (DF raid wave, 1.2, tests only; EpicEncounterTactics.DarknessFalls.cs, DF raid wave).",
     "since": "1.2"
@@ -8471,7 +8479,7 @@
     }
    ],
    "raidAi": "no raid AI",
-   "notes": "Level 83, 300,000 health. No Darkness Falls raid AI: listed for completeness. 1.2: companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics). 1.2 wave 3: his throw takes bots too (AllowBotDisplacement for Legion); the wounded step out of his reach; no bot bubbles near him. 1.2 (True 1.65 port): his soul blast lock-out (10 s after each blast) and his count of ended bladeturns belong to his brain and clear on a reset; before, the lock-out was shared and a reset or death during it stopped the blast for good until a restart. 1.2 Legion raid plan (EpicEncounterTactics.Legion.cs; tests only, not seen in game): his tank holds him on his lair (walks him back to his spawn when he is drawn more than 1,200 off it) and the raid's tanks taunt him back onto a tank (a tank under 35% hands him to one over 80%); the six raid healers nearest his target heal it first under 85%, whatever party it is in; casters, archers and healers stand 1,200 from him on the raid's side, spread across the corridor; a soul wave of more than four takes one melee party per four souls more (at most a third of the raid, never the tank's party); a thrown bot walks across Behemoth's hall on its north side to the zone point DF LEGION PURGATORY and is put where it puts players, recalled only when it can't (no path, no progress, over about 63 s, or within Behemoth's aggro range and 20). Period sources (Albion Encounters Guide, VN Boards, Feb 2003; Allakhazam comments 2003-2005; Herald, Apr 2002): aggro on the main tank because he heals by kills, kill the lesser monsters first, a ported group runs across Behemoth's chamber to the portal. The script differs from the period fight: it ends bladeturns and blasts after five (the guide used pulsing bladeturns), and a raider far from him does no damage (the period hearsay: he must be fought on his platform). Not played.",
+   "notes": "Level 83, 300,000 health. No Darkness Falls raid AI: listed for completeness. 1.2: companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics). 1.2 wave 3: his throw takes bots too (AllowBotDisplacement for Legion); the wounded step out of his reach; no bot bubbles near him. 1.2 (True 1.65 port): his soul blast lock-out (10 s after each blast) and his count of ended bladeturns belong to his brain and clear on a reset; before, the lock-out was shared and a reset or death during it stopped the blast for good until a restart. 1.2 Legion raid plan (EpicEncounterTactics.Legion.cs; tests only, not seen in game): his tank holds him on his lair (walks him back to his spawn when he is drawn more than 1,200 off it) and the raid's tanks taunt him back onto a tank (a tank under 35% hands him to one over 80%); the six raid healers nearest his target heal it first under 85%, whatever party it is in; casters, archers and healers stand 1,200 from him on the raid's side, spread across the corridor; a soul wave of more than four takes one melee party per four souls more (at most a third of the raid, never the tank's party); a thrown bot walks across Behemoth's hall on its north side to the zone point DF LEGION PURGATORY and is put where it puts players, recalled only when it can't (no path, no progress, over about 63 s, or within Behemoth's aggro range and 20). Period sources (Albion Encounters Guide, VN Boards, Feb 2003; Allakhazam comments 2003-2005; Herald, Apr 2002): aggro on the main tank because he heals by kills, kill the lesser monsters first, a ported group runs across Behemoth's chamber to the portal. The script differs from the period fight: it ends bladeturns and blasts after five (the guide used pulsing bladeturns), and a raider far from him does no damage (the period hearsay: he must be fought on his platform). Not played. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "LegionAdd"
@@ -8556,7 +8564,7 @@
     }
    ],
    "raidAi": "no raid AI",
-   "notes": "Level 99, 600,000 health, any hit kills (OnAttackEnemy). Reached only by Legion's throw into his hall (period: 'the only way to get to him is to be randomly teleported by the Legion mob', Grab Bag, Jan 2008). 1.2 Legion plan (tests only): no bot hits him or sends its pet (a dungeon rule's MustNotHit and NoPets), a bot that targets him stands 1,000 off, and a thrown bot's way down keeps out of his aggro range (recalled if it comes within it and 20).",
+   "notes": "Level 99, 600,000 health, any hit kills (OnAttackEnemy). Reached only by Legion's throw into his hall (period: 'the only way to get to him is to be randomly teleported by the Legion mob', Grab Bag, Jan 2008). 1.2 Legion plan (tests only): no bot hits him or sends its pet (a dungeon rule's MustNotHit and NoPets), a bot that targets him stands 1,000 off, and a thrown bot's way down keeps out of his aggro range (recalled if it comes within it and 20). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "verified": true
   },
   {
@@ -8965,6 +8973,7 @@
     }
    ],
    "raidAi": "no raid AI",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "NahemahMinion"
@@ -9074,7 +9083,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs",
    "lines": [
     11,
-    532
+    533
    ],
    "dungeon": "Dodens Gruva",
    "region": 246,
@@ -9092,8 +9101,8 @@
      "kind": "adds",
      "summary": "Spawns GameNPC: on a timer (via CastSummon); count 1 spawn call in SpawnGuardian",
      "file": "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs",
-     "line": 201,
-     "lineEnd": 201,
+     "line": 202,
+     "lineEnd": 202,
      "anchor": "GameNPC summonedGuard = new GameNPC();",
      "confidence": "inferred",
      "sourceClass": "GameEpicAros",
@@ -9106,14 +9115,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@201"
+     "key": "adds@202"
     },
     {
      "kind": "heal",
      "summary": "Heals: summonedGuardian.Health = summonedGuardian.MaxHealth;",
      "file": "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs",
-     "line": 209,
-     "lineEnd": 209,
+     "line": 210,
+     "lineEnd": 210,
      "anchor": "summonedGuardian.Health = summonedGuardian.MaxHealth;",
      "confidence": "inferred",
      "sourceClass": "GameEpicAros",
@@ -9122,7 +9131,7 @@
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "heal@209"
+     "key": "heal@210"
     }
    ],
    "spells": [],
@@ -9134,6 +9143,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "verified": true
   },
   {
@@ -9691,6 +9701,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "verified": true
   },
   {
@@ -9960,6 +9971,7 @@
    "templateTetherRange": 4500,
    "raids": [],
    "raidAi": "no raid",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "spreadRadius": 350,
     "rangedAdds": [
@@ -10552,6 +10564,7 @@
    "templateTetherRange": 4500,
    "raids": [],
    "raidAi": "no raid",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "blastThresholds": [
      80,
@@ -10708,7 +10721,7 @@
      "maxHealth": 30000,
      "level": "77",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs",
-     "line": 1248
+     "line": 1273
     },
     {
      "class": "CorpScaith",
@@ -10734,7 +10747,7 @@
      "maxHealth": 30000,
      "level": "77",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs",
-     "line": 889
+     "line": 904
     },
     {
      "class": "FuarScaith",
@@ -10747,7 +10760,7 @@
      "maxHealth": 30000,
      "level": "77",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs",
-     "line": 1428
+     "line": 1458
     },
     {
      "class": "FuinneamgScaith",
@@ -10760,7 +10773,7 @@
      "maxHealth": 30000,
      "level": "77",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs",
-     "line": 1068
+     "line": 1088
     },
     {
      "class": "RopadhScaith",
@@ -10773,7 +10786,7 @@
      "maxHealth": 30000,
      "level": "77",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs",
-     "line": 710
+     "line": 720
     },
     {
      "class": "ScorScaith",
@@ -10786,7 +10799,7 @@
      "maxHealth": 30000,
      "level": "77",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs",
-     "line": 1788
+     "line": 1828
     },
     {
      "class": "SpioradScaith",
@@ -10799,7 +10812,7 @@
      "maxHealth": 30000,
      "level": "77",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs",
-     "line": 536
+     "line": 541
     },
     {
      "class": "TaesScaith",
@@ -10812,7 +10825,7 @@
      "maxHealth": 30000,
      "level": "77",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs",
-     "line": 1608
+     "line": 1643
     }
    ],
    "rules": [
@@ -10882,8 +10895,8 @@
      "kind": "tether",
      "summary": "Tether range 3000 (Bru Scaith (BruScaith)): drawn further from its spawn it is immune (its TakeDamage) until it is back inside, and walks home.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs",
-     "line": 1316,
-     "lineEnd": 1316,
+     "line": 1346,
+     "lineEnd": 1346,
      "anchor": "TetherRange = 3000;",
      "confidence": "read",
      "sourceClass": "BruScaith",
@@ -10904,7 +10917,7 @@
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "tether@1316"
+     "key": "tether@1346"
     },
     {
      "kind": "reset",
@@ -10927,8 +10940,8 @@
      "kind": "aggro_wipe",
      "summary": "Each Scaith now and then drops its aggro and picks one random raider (real player or bot since 1.2) from its PlayersToAttack list.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs",
-     "line": 1372,
-     "lineEnd": 1372,
+     "line": 1402,
+     "lineEnd": 1402,
      "anchor": "AggroList.Clear();",
      "confidence": "inferred",
      "sourceClass": "BruScaithBrain",
@@ -10947,7 +10960,7 @@
      "tactic": "Tanks pick the Scaith back up; the raider it picked holds it or brings it back to the tank.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "aggro_wipe@1372"
+     "key": "aggro_wipe@1402"
     },
     {
      "kind": "offline_change",
@@ -11013,7 +11026,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "300,000 health. Summons nine Scaith guardians (one per damage type) the first time he fights. The original fight let each damage type hurt him only after the matching Scaith died (Aroon_slash ... Aroon_spirit flags remain); that check was removed for bots and the original code is not in this repository's history. 1.2 wave 2: the damage order is back (AllowAroonDamageOrder, EpicEncounterRestores.AroonAccepts).",
+   "notes": "300,000 health. Summons nine Scaith guardians (one per damage type) the first time he fights. The original fight let each damage type hurt him only after the matching Scaith died (Aroon_slash ... Aroon_spirit flags remain); that check was removed for bots and the original code is not in this repository's history. 1.2 wave 2: the damage order is back (AllowAroonDamageOrder, EpicEncounterRestores.AroonAccepts). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "requiredAdds": [
      "CorpScaith",
@@ -11334,6 +11347,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "since": "1.2",
     "summary": "Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within his 2,500 tether of his spawn; a raider farther out steps in. The waterfall top (wave 3, 1.2): below 30% he clears his aggro, walks up to 37,811,50,342 (about 1,100 above his spawn, no walked path) and heals an eighth of his health; casters, archers and healers go to their party's spot on the floor below (six spots the raid reached on 2026-11-06, each within 1,250 of the top and 2,500 of his spawn) and shoot him from there, melee wait at his spawn (EpicEncounterTactics.Galladoria). He heals there once a fight, rests 50-80 s and walks back down to his spawn (1.2 play test 2026-11-07: up there for good, healing at every fall to 30%, a bot raid wore him from 42% to 34% in ten minutes and could never finish him); the original endless heal is the owner setting epic_easmarach_endless_falls_heal (off). His push behind the falls (raiders within 1,000 of 37,653,52,843 are moved to 40,067,50,494) is on since wave 3, for bots too: while he lives the route never sends the raid to the last room (the bridge, the primals, Olcasgean), it fights him first; a bot pushed back stays where the push put it and a repeated push is logged (EPIC_DISPLACEMENT_BOUNCED). Container play test 2026-11-07: the close range and the falls stands played as written (all six stands on the navmesh, walked both ways); sight to the top is not checked by the mesh."
@@ -11519,7 +11533,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Eight bodies, the cluster and the seven copies it spawns (GSCAdds), share one 100,000-health pool (damage to any body sets the others' health) and die together: killing any body kills the cluster with the same killer and removes the copies. 1.2 (True 1.65 port): the cluster alone pays out, for the attackers of every body; before, a copy that had been hit paid out too and the cluster died by its own hand.",
+   "notes": "Eight bodies, the cluster and the seven copies it spawns (GSCAdds), share one 100,000-health pool (damage to any body sets the others' health) and die together: killing any body kills the cluster with the same killer and removes the copies. 1.2 (True 1.65 port): the cluster alone pays out, for the attackers of every body; before, a copy that had been hit paid out too and the cluster died by its own hand. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "GSCAdds"
@@ -11766,8 +11780,8 @@
    "brain": "OlcasarGeomancerBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
    "lines": [
-    11,
-    173
+    13,
+    175
    ],
    "dungeon": "Galladoria",
    "region": 191,
@@ -11790,7 +11804,7 @@
      "maxHealth": 10000,
      "level": "(byte) Util.Random(62, 66)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 481
+     "line": 483
     }
    ],
    "rules": [
@@ -11798,8 +11812,8 @@
      "kind": "reflect",
      "summary": "Has a damage shield / reflect spell: Geomancer Damage Shield (DamageShield, damage 20, target SELF)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 368,
-     "lineEnd": 368,
+     "line": 370,
+     "lineEnd": 370,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "OlcasarGeomancerBrain",
@@ -11808,14 +11822,14 @@
      "tactic": "Check who it punishes; switch damage type or attacker if it reflects.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "reflect@368"
+     "key": "reflect@370"
     },
     {
      "kind": "adds",
      "summary": "Spawns geomancer minion (OGAdds): on a timer (2000 ms); count 1 spawn call in Spawn",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 328,
-     "lineEnd": 328,
+     "line": 330,
+     "lineEnd": 330,
      "anchor": "OGAdds Add = new OGAdds();",
      "confidence": "inferred",
      "sourceClass": "OlcasarGeomancerBrain",
@@ -11829,14 +11843,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@328"
+     "key": "adds@330"
     },
     {
      "kind": "phase",
      "summary": "At 80% health (Think): starts timer CastAoeSnare",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 245,
-     "lineEnd": 249,
+     "line": 247,
+     "lineEnd": 251,
      "anchor": "if(CanCastAoeSnare == false &&  Body.HealthPercent <= 80)",
      "confidence": "inferred",
      "sourceClass": "OlcasarGeomancerBrain",
@@ -11846,14 +11860,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@245"
+     "key": "phase@247"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 199,
-     "lineEnd": 220,
+     "line": 201,
+     "lineEnd": 222,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "OlcasarGeomancerBrain",
@@ -11863,14 +11877,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@199"
+     "key": "reset@201"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 223,
-     "lineEnd": 223,
+     "line": 225,
+     "lineEnd": 225,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "OlcasarGeomancerBrain",
@@ -11880,14 +11894,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@223"
+     "key": "reset@225"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 595,
-     "lineEnd": 595,
+     "line": 633,
+     "lineEnd": 633,
      "anchor": "AddToAggroList(player, 200);",
      "confidence": "inferred",
      "sourceClass": "OGAddsBrain",
@@ -11897,14 +11911,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@595"
+     "key": "linked_pack@633"
     },
     {
      "kind": "heal",
      "summary": "Has a heal spell: Olcasar Tear (Heal, value 1, target SELF)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 454,
-     "lineEnd": 454,
+     "line": 456,
+     "lineEnd": 456,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "OlcasarGeomancerBrain",
@@ -11913,7 +11927,7 @@
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "heal@454"
+     "key": "heal@456"
     }
    ],
    "spells": [
@@ -11928,7 +11942,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 152,
+     "line": 154,
      "sourceClass": "OlcasarGeomancer"
     },
     {
@@ -11942,7 +11956,7 @@
      "value": null,
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 368,
+     "line": 370,
      "sourceClass": "OlcasarGeomancerBrain"
     },
     {
@@ -11956,7 +11970,7 @@
      "value": "99",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 396,
+     "line": 398,
      "sourceClass": "OlcasarGeomancerBrain"
     },
     {
@@ -11970,7 +11984,7 @@
      "value": "60",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 424,
+     "line": 426,
      "sourceClass": "OlcasarGeomancerBrain"
     },
     {
@@ -11984,7 +11998,7 @@
      "value": "1",
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 454,
+     "line": 456,
      "sourceClass": "OlcasarGeomancerBrain"
     },
     {
@@ -11998,7 +12012,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs",
-     "line": 614,
+     "line": 652,
      "sourceClass": "OGAddsBrain"
     }
    ],
@@ -12020,6 +12034,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. A slain minion rises again only while Olcasar lives (it rose forever after his death).",
    "aiTactics": {
     "summary": "A slain minion rises again at its killer's feet: the party a minion fights holds it, everyone else kills the Geomancer, whose death removes them (the period: \"just kept one group on his pets and he went down fast\"). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
     "since": "1.2"
@@ -13924,8 +13939,8 @@
    "brain": "SpindlerBroodmotherBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
    "lines": [
-    10,
-    150
+    12,
+    162
    ],
    "dungeon": "Galladoria",
    "region": 191,
@@ -13948,7 +13963,7 @@
      "maxHealth": 8000,
      "level": "(byte) Util.Random(56, 59)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 401
+     "line": 413
     },
     {
      "class": "SBDeadAdds",
@@ -13961,7 +13976,7 @@
      "maxHealth": 800,
      "level": "50",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 501
+     "line": 513
     }
    ],
    "rules": [
@@ -13969,8 +13984,8 @@
      "kind": "adds",
      "summary": "When she dies: about 20-25 underdeveloped spindlers (800 health, level 50) at her body.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 90,
-     "lineEnd": 90,
+     "line": 102,
+     "lineEnd": 102,
      "anchor": "SBDeadAdds Add = new SBDeadAdds();",
      "confidence": "inferred",
      "sourceClass": "SpindlerBroodmother",
@@ -13979,19 +13994,19 @@
      "addBase": "GameNPC",
      "addBrain": "SBDeadAddsBrain",
      "count": 25,
-     "trigger": "when it dies (via SpawnAfterDead)",
+     "trigger": "from SpawnAfterDead",
      "addIsEpic": false,
      "tactic": "In the raid AI (EpicEncounterTactics): death adds: the route clears them at her body, though she is dead, before moving on.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "adds@90"
+     "key": "adds@102"
     },
     {
      "kind": "adds",
      "summary": "Spawns Newly-born spindler (SBAdds): on a timer (10000 ms); count about 1-2 (loop to a random bound)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 230,
-     "lineEnd": 230,
+     "line": 242,
+     "lineEnd": 242,
      "anchor": "SBAdds Add = new SBAdds();",
      "confidence": "inferred",
      "sourceClass": "SpindlerBroodmotherBrain",
@@ -14005,14 +14020,14 @@
      "tactic": "In the raid AI (EpicEncounterTactics): focused ranged adds: every caster and archer takes the same newborn (the one with the least health left); a party's melee peel one off their own casters and healers; the rest stay on her.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "adds@230"
+     "key": "adds@242"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 169,
-     "lineEnd": 199,
+     "line": 181,
+     "lineEnd": 211,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "SpindlerBroodmotherBrain",
@@ -14022,14 +14037,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@169"
+     "key": "reset@181"
     },
     {
      "kind": "teleport",
      "summary": "Teleports TeleportTarget to a fixed spot (MoveTo Body.CurrentRegionID, 21115, 53483, 11286, 2100)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 357,
-     "lineEnd": 357,
+     "line": 369,
+     "lineEnd": 369,
      "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 21115, 53483, 11286, 2100, DisplacementK",
      "confidence": "inferred",
      "sourceClass": "SpindlerBroodmotherBrain",
@@ -14043,14 +14058,14 @@
      "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "teleport@357"
+     "key": "teleport@369"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 482,
-     "lineEnd": 482,
+     "line": 494,
+     "lineEnd": 494,
      "anchor": "AddToAggroList(player, 400);",
      "confidence": "inferred",
      "sourceClass": "SBAddsBrain",
@@ -14060,7 +14075,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@482"
+     "key": "linked_pack@494"
     }
    ],
    "spells": [
@@ -14075,7 +14090,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 373,
+     "line": 385,
      "sourceClass": "SpindlerBroodmotherBrain"
     }
    ],
@@ -14097,7 +14112,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "100,000 health, 40/70% resists. 1-2 Newly-born spindlers every 15-35 s in the fight; 20-25 underdeveloped spindlers burst out when she dies. A mesmerize (300 radius, 60 s) around a random raider within 1,500 of her every 20-30 s. 1.2 wave 2: her teleport (a raider within 2,500 to 21,115,53,483) is on for bots: they walk back.",
+   "notes": "100,000 health, 40/70% resists. 1-2 Newly-born spindlers every 15-35 s in the fight; 20-25 underdeveloped spindlers burst out when she dies. A mesmerize (300 radius, 60 s) around a random raider within 1,500 of her every 20-30 s. 1.2 wave 2: her teleport (a raider within 2,500 to 21,115,53,483) is on for bots: they walk back. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there.",
    "currentRaidAi": "2026-11-05 07:19 (owner's notes): the Hibernian epic raid wiped at her (46 fell, 146 living), Special Forces arrived; that log is on the owner's PC. 2026-11-06 (build 86eddd8): killed in 11.0 minutes with 96 mustered, no raider death credited to her; a newborn and an underdeveloped spindler were route targets after her death.",
    "aiTactics": {
     "rangedAdds": [
@@ -14177,6 +14192,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "summary": "No rule: at 60% he runs home once at full speed and comes back (the period's fled at about 5% and came back at about 75%; this script does not heal him); the raid fights him where he stands (the period: \"we zerged the Lairmaster with our 70-80 people\"). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
     "since": "1.2"
@@ -14306,7 +14322,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Xaga spawns Tine and Beatha (two 50,000-health fairies) and calls them in when she is attacked; each calls the others. Beatha's damage heals Xaga twice over again since 1.2 wave 2 (AllowBeathaHealsXaga).",
+   "notes": "Xaga spawns Tine and Beatha (two 50,000-health fairies) and calls them in when she is attacked; each calls the others. Beatha's damage heals Xaga twice over again since 1.2 wave 2 (AllowBeathaHealsXaga). 1.2 upstream port (tests only): Xaga's, Beatha's and Tine's death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a light's count drops once per death and Xaga's death still removes both lights; no mechanic changed. Upstream's Xaga cleanup (dfad601d2) was not taken: it puts the lights' fight-long circling on the patrol state, which stops in combat.",
    "currentRaidAi": "2026-11-05 (build 8d7baa3): the Hibernian epic raid wiped at Tine.",
    "aiTactics": {
     "requiredAdds": [
@@ -14462,7 +14478,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
-   "notes": "See Xaga. 1.2 wave 2: she circles the room while fought again (AllowFairyFlight) and the raid kills her before Xaga (Beatha first).",
+   "notes": "See Xaga. 1.2 wave 2: she circles the room while fought again (AllowFairyFlight) and the raid kills her before Xaga (Beatha first). 1.2 upstream port (tests only): Xaga's, Beatha's and Tine's death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a light's count drops once per death and Xaga's death still removes both lights; no mechanic changed. Upstream's Xaga cleanup (dfad601d2) was not taken: it puts the lights' fight-long circling on the patrol state, which stops in combat.",
    "verified": true
   },
   {
@@ -14572,7 +14588,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
-   "notes": "See Xaga. 1.2 wave 2: she circles the room while fought again (AllowFairyFlight) and the raid kills her before Xaga (Beatha first).",
+   "notes": "See Xaga. 1.2 wave 2: she circles the room while fought again (AllowFairyFlight) and the raid kills her before Xaga (Beatha first). 1.2 upstream port (tests only): Xaga's, Beatha's and Tine's death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a light's count drops once per death and Xaga's death still removes both lights; no mechanic changed. Upstream's Xaga cleanup (dfad601d2) was not taken: it puts the lights' fight-long circling on the patrol state, which stops in combat.",
    "verified": true
   },
   {
@@ -14883,7 +14899,7 @@
     }
    ],
    "raidAi": "dragon fight",
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full. 1.2 upstream port (tests only): SpawnHeading always returns the lair heading (OpenDAoC-Core b3b9a24f7's accessor fix), so the landing turn and a reset face the lair even when nothing set the heading. The rest of that commit (the flight ending at the spawn point, keeping FLYING until touchdown) was already done here by DragonFlightLanding; its FSM RETURN_TO_SPAWN call needs upstream's engine change and was not taken.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full. 1.2 upstream port (tests only): SpawnHeading always returns the lair heading (OpenDAoC-Core b3b9a24f7's accessor fix), so the landing turn and a reset face the lair even when nothing set the heading. The rest of that commit (the flight ending at the spawn point, keeping FLYING until touchdown) was already done here by DragonFlightLanding; its FSM RETURN_TO_SPAWN call needs upstream's engine change and was not taken. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "GjalpinulvaMessenger"
@@ -15201,7 +15217,7 @@
     }
    ],
    "raidAi": "dragon fight",
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full. 1.2 upstream port (tests only): SpawnHeading always returns the lair heading (OpenDAoC-Core b3b9a24f7's accessor fix), so the landing turn and a reset face the lair even when nothing set the heading. The rest of that commit (the flight ending at the spawn point, keeping FLYING until touchdown) was already done here by DragonFlightLanding; its FSM RETURN_TO_SPAWN call needs upstream's engine change and was not taken.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full. 1.2 upstream port (tests only): SpawnHeading always returns the lair heading (OpenDAoC-Core b3b9a24f7's accessor fix), so the landing turn and a reset face the lair even when nothing set the heading. The rest of that commit (the flight ending at the spawn point, keeping FLYING until touchdown) was already done here by DragonFlightLanding; its FSM RETURN_TO_SPAWN call needs upstream's engine change and was not taken. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "GolestandtMessenger"
@@ -15549,7 +15565,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Level 75, 40,000 health, 30/40% resists, tether 1,500 (immune past it). What stops damage: only the tether; his permanent Damage Shield (Heat, 100 per hit back on melee attackers, recast whenever it is not on him) does not reduce damage taken, so he is killable by design; no damage type bypasses anything and no dispel is needed (he recasts it at once). What kills raids: his four illusions (5,000 health each, spawned at fixed spots the first time he is attacked) each cast a 300 area hit in 350 around their target every brain turn, and he casts Aidon's Fire (500 Heat, radius 350) every 10-15 s. A new set of illusions comes 30-45 s after all four are dead, never while one lives. No player-only mechanic is needed to beat him, so no switch has to flip.",
+   "notes": "Level 75, 40,000 health, 30/40% resists, tether 1,500 (immune past it). What stops damage: only the tether; his permanent Damage Shield (Heat, 100 per hit back on melee attackers, recast whenever it is not on him) does not reduce damage taken, so he is killable by design; no damage type bypasses anything and no dispel is needed (he recasts it at once). What kills raids: his four illusions (5,000 health each, spawned at fixed spots the first time he is attacked) each cast a 300 area hit in 350 around their target every brain turn, and he casts Aidon's Fire (500 Heat, radius 350) every 10-15 s. A new set of illusions comes 30-45 s after all four are dead, never while one lives. No player-only mechanic is needed to beat him, so no switch has to flip. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "2026-11-05 (build 168f55d): at 22:21 about 40 raiders fell in ten seconds to the illusions' stacked area hits while clearing trash near him; at 22:38 the raid switched to him (\"it is fighting the raid\") without a muster; 31 raiders fought him, all fell, he never went below 99%, and that counted as the raid's first wipe with 56 living. The next muster was placed on the ramp his chase had reached (30927,35039,15365, 2,600 from his home) and gathered 0-2 of 75 in six minutes while the fallen walked back from Camelot Hills.",
    "aiTactics": {
     "requiredAdds": [
@@ -16138,6 +16154,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "verified": true
   },
   {
@@ -21530,6 +21547,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "hazards": [
      "BarrelExplosive"
@@ -21940,6 +21958,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "requiredAdds": [
      "FuladlAdd"
@@ -22059,6 +22078,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "requiredAdds": [
      "FulafeallanAdd"
@@ -22210,6 +22230,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "KrevolAdd"
@@ -22577,7 +22598,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Krondon's final: level 83, 40,000 health, 30/40% resists, tether 3,800; joins Orshom Brong's fight (see him).",
+   "notes": "Krondon's final: level 83, 40,000 health, 30/40% resists, tether 3,800; joins Orshom Brong's fight (see him). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "after": "Orshom",
     "hazards": [
@@ -22765,7 +22786,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Level 80, 30,000 health, 20% melee and 30% magic resists, tether 3,800. When his fight starts he lights Orshom's Fire (OrshomFire) at 31406,69599,15605, about 900 from his spawn: a GameEpicNPC that never moves or melees (MaxSpeedBase 0, empty StartAttack), takes damage only of type Cold, has 10,000 health and RespawnInterval -1, aggro range 2,500, and casts Fire Burn on its own spot every 3 s (500 Heat, radius 300). His reset removes it. Orylle throws a random real player within 2,500 into it every 15-20 s while it burns (GetPlayersInRadius: never a bot). At 50% Orshom pulls Orylle (level 83, 40,000 health) into the fight; Orylle pulls him too when she is attacked.",
+   "notes": "Level 80, 30,000 health, 20% melee and 30% magic resists, tether 3,800. When his fight starts he lights Orshom's Fire (OrshomFire) at 31406,69599,15605, about 900 from his spawn: a GameEpicNPC that never moves or melees (MaxSpeedBase 0, empty StartAttack), takes damage only of type Cold, has 10,000 health and RespawnInterval -1, aggro range 2,500, and casts Fire Burn on its own spot every 3 s (500 Heat, radius 300). His reset removes it. Orylle throws a random real player within 2,500 into it every 15-20 s while it burns (GetPlayersInRadius: never a bot). At 50% Orshom pulls Orylle (level 83, 40,000 health) into the fight; Orylle pulls him too when she is attacked. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "2026-11-05/06 overnight (owner's notes): the Albion Krondon raid lost at Orshom twice, lowest 59% then 28%, Special Forces joined. PC test 2026-11-09 (build b72716e, forced Krondon): the fire is an IGameEpicNpc in combat with raiders, so the route turned on it (REALM_EXPEDITION_EARLY_PULL target=\"Orshom's Fire\" decision=Commit at 04:12:33) and the raid's melee walked into its 300: AUTONOMOUS_BOT_DEATH killer=\"Orshom's Fire\" 100 times between 04:12 and 04:18, 97 of them with activity \"Fighting Orshom's Fire\"; it was skipped for no damage for five minutes. Now the route never takes it as a target or encounter, and raiders follow the hazard tactic. That PC raid ran a 1.1.3 build without 1.2's hazard and cold-caster rules; the 1.2 line has both lines' rules (merged 2026-11-10), not yet seen in a PC log.",
    "aiTactics": {
     "hazards": [
@@ -22988,7 +23009,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Immune while any of his four Lyft Miht orbs lives. The orbs (level 90, 15,000 health, 40% melee and 50% magic resists, AF 250) float 450-790 above the room floor at its four corners (51236,20849 / 51316,19228 / 52702,19214 / 52713,20841; floor about 16964), never attack (StartAttack is empty), have a 250 aggro range and RespawnInterval -1. Once dead they stay dead: his reset does not bring them back, only his own respawn (SpawnOrbs runs in AddToWorld). He gains 60 Strength while any orb lives.",
+   "notes": "Immune while any of his four Lyft Miht orbs lives. The orbs (level 90, 15,000 health, 40% melee and 50% magic resists, AF 250) float 450-790 above the room floor at its four corners (51236,20849 / 51316,19228 / 52702,19214 / 52713,20841; floor about 16964), never attack (StartAttack is empty), have a 250 aggro range and RespawnInterval -1. Once dead they stay dead: his reset does not bring them back, only his own respawn (SpawnOrbs runs in AddToWorld). He gains 60 Strength while any orb lives. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "The orbs are IGameEpicNpc, so the route treats them as named encounters, not as his adds (IsEncounterAdd excludes epic NPCs). They never fight, so HostileEncounter never turns to them, while Scurceol attacks the raid and pins it. Melee bots can't reach them (more than 400 up: AutonomousPveTargetPolicy.IsUnreachableFlyer); ranged can (under RangedFlyerReach 1,200). 2026-11-05: he was fought 3,219 units from his spawn, so the raid stood far from the orbs. 2026-11-06 (build 168f55d, night run): the tactic fired twice (REALM_EXPEDITION_TACTIC 01:49:29 and 02:16:58, fights=\"Lyft Miht\" alive=4), but the route then probed each orb through the ground-route gate (an approach within 256 of the target's height), which no orb passes; every orb was set aside a minute at a time and the raid went to Fuladl. No orb was attacked and he was never fought. Now a required add is never walked to: the route fights it from a floor spot the raid can reach within 1,400 of it with sight to the floor under it (RealmRaidDungeonRoute.TryRangedStand: under the orb, by Scurceol, or between), and sets the tactic aside only when no orb has one (REALM_EXPEDITION_TACTIC_ASIDE, with the reason per orb).",
    "aiTactics": {
     "requiredAdds": [
@@ -23339,7 +23360,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Spawned by Black Lady's AddToWorld at 30091,37620,15049 (48 units above her spawn floor, probably inside the tree). Level 68 (npc template 8823), 40,000 health. AggroLevel 0 with AggroRange 400: it never pulls itself; it fights whoever attacks it. Its Ancient Root (Body, 700 damage, radius 800, 60% snare 30 s) goes off on half of its melee hits.",
+   "notes": "Spawned by Black Lady's AddToWorld at 30091,37620,15049 (48 units above her spawn floor, probably inside the tree). Level 68 (npc template 8823), 40,000 health. AggroLevel 0 with AggroRange 400: it never pulls itself; it fights whoever attacks it. Its Ancient Root (Body, 700 damage, radius 800, 60% snare 30 s) goes off on half of its melee hits. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "2026-11-05 (build 168f55d): the dies-with tactic sent the raid to Black Lady (REALM_EXPEDITION_TACTIC 20:46:33); she died in 1.2 minutes and the Hibernian Marfach raid won with no wipe.",
    "aiTactics": {
     "diesWith": "BlackLady",
@@ -23592,7 +23613,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Level 65 (npc template 8817), 40,000 health. Spawns the Ancient Black Oak when she spawns; when she dies the Oak dies with her (Die kills every AncientBlackOakBrain NPC in the region). Casts Void Strike (Cold, 400, radius 350) every brain turn she has a target.",
+   "notes": "Level 65 (npc template 8817), 40,000 health. Spawns the Ancient Black Oak when she spawns; when she dies the Oak dies with her (Die kills every AncientBlackOakBrain NPC in the region). Casts Void Strike (Cold, 400, radius 350) every brain turn she has a target. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "2026-11-05: taken to 44%, drawn 1,618 from her spawn and leashed home at full health (AUTONOMOUS_TETHER_RESET); the raid then switched to the Oak and never came back to her.",
    "aiTactics": {
     "fightAtHomeRadius": 1100,
@@ -23738,6 +23759,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "verified": true
   },
   {
@@ -24019,6 +24041,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "verified": true
   },
   {
@@ -27208,6 +27231,7 @@
     }
    ],
    "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "EvernFairy"
@@ -28396,7 +28420,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to 75% (AllowGovannonFullHeal, off by default, server property epic_govannon_full_heal; on, the original: healed to full), strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come a second time: at once as he turns (he is at 75%, under the 80% mark), or when the demon falls to 80% with AllowGovannonFullHeal on. Each pair that both reach the altar brings a Shade, one at a time (1.2, True 1.65 port: before, the first Shade's death stopped every later Shade until a restart). A reset puts him back in his own form (template model, size and Strength) at once. Only his summoned Shade comes into the world: the database Shade that stood 137 from him is no longer loaded (1.2, True 1.65 port).",
+   "notes": "Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to 75% (AllowGovannonFullHeal, off by default, server property epic_govannon_full_heal; on, the original: healed to full), strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come a second time: at once as he turns (he is at 75%, under the 80% mark), or when the demon falls to 80% with AllowGovannonFullHeal on. Each pair that both reach the altar brings a Shade, one at a time (1.2, True 1.65 port: before, the first Shade's death stopped every later Shade until a restart). A reset puts him back in his own form (template model, size and Strength) at once. Only his summoned Shade comes into the world: the database Shade that stood 137 from him is no longer loaded (1.2, True 1.65 port). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known.",
    "aiTactics": {
     "spreadRadius": 300,
@@ -28812,6 +28836,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "ExplodeUndead",
@@ -29874,7 +29899,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Level 80, 100,000 health. Every 10% from 90% down to 10% he spawns a wave of about 12-18 'essence of fallen' (level 60-62, 2,500 health, aggro 1,500) at his feet: nine waves, roughly 110-160 adds in one fight. His Acidic cloud (Body DoT 150 for 60 s, radius 500) and Call of Void (Cold 1,100, radius 550) go on a random raider within 2,000 (real players and bots since 1.2, EncounterTargets). Spirits of the fallen are made from dead raiders, bots included (since 1.2). A bot raid larger than Trollheim's period raid (64) gets at most 64 live spirits.",
+   "notes": "Level 80, 100,000 health. Every 10% from 90% down to 10% he spawns a wave of about 12-18 'essence of fallen' (level 60-62, 2,500 health, aggro 1,500) at his feet: nine waves, roughly 110-160 adds in one fight. His Acidic cloud (Body DoT 150 for 60 s, radius 500) and Call of Void (Cold 1,100, radius 550) go on a random raider within 2,000 (real players and bots since 1.2, EncounterTargets). Spirits of the fallen are made from dead raiders, bots included (since 1.2). A bot raid larger than Trollheim's period raid (64) gets at most 64 live spirits. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "2026-11-05: lost twice at full size (support 80 and 132, Special Forces joined both times). The essence waves are script-spawned, not epic, so the route does put them first; the raid still died.",
    "aiTactics": {
     "requiredAdds": [
@@ -30060,6 +30085,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "verified": true
   },
   {
@@ -30171,6 +30197,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "verified": true
   },
   {
@@ -30318,6 +30345,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "verified": true
   },
   {
@@ -30463,6 +30491,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "summary": "Eye of Balor (each 10% he loses): it picks a raider within 2,500 and casts Balor's Eye Light (1,000 heat, 4 s, no interrupt, through walls) on it for 18 s. That raider, unless Balor fights it, runs out of the eye's 1,800 and waits; the healers heal it first (the script raises the pick). The period's two door guards and the throw (later reports) are not in this script. (EpicEncounterTactics.TurSuil, Living Server 1.2; tests only)",
     "since": "1.2"
@@ -30516,7 +30545,7 @@
     },
     {
      "kind": "adds",
-     "summary": "Spawns MasterOfPain: when it dies (via SpawnMasterOfPain); count 1 spawn call in SpawnMasterOfPain",
+     "summary": "Spawns MasterOfPain: from SpawnMasterOfPain; count 1 spawn call in SpawnMasterOfPain",
      "file": "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs",
      "line": 141,
      "lineEnd": 141,
@@ -30527,7 +30556,7 @@
      "add": "MasterOfPain",
      "addBase": "GameEpicBoss",
      "addBrain": "MasterOfPainBrain",
-     "trigger": "when it dies (via SpawnMasterOfPain)",
+     "trigger": "from SpawnMasterOfPain",
      "addIsEpic": true,
      "verified": true,
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
@@ -30601,6 +30630,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "verified": true
   },
   {
@@ -30690,6 +30720,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "verified": true
   },
   {
@@ -30892,8 +30923,8 @@
    "brain": "QueenQunilariaBrain",
    "file": "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs",
    "lines": [
-    10,
-    122
+    12,
+    134
    ],
    "dungeon": "Tur Suil",
    "region": 190,
@@ -30916,7 +30947,7 @@
      "maxHealth": 3000,
      "level": "(byte)Util.Random(58, 64)",
      "file": "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs",
-     "line": 212
+     "line": 224
     },
     {
      "class": "QunilariaAdd2",
@@ -30929,7 +30960,7 @@
      "maxHealth": 1200,
      "level": "(byte)Util.Random(52, 55)",
      "file": "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs",
-     "line": 271
+     "line": 283
     }
    ],
    "rules": [
@@ -30937,8 +30968,8 @@
      "kind": "immune_while",
      "summary": "Takes no damage while it is drawn past its tether.",
      "file": "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs",
-     "line": 46,
-     "lineEnd": 60,
+     "line": 48,
+     "lineEnd": 62,
      "anchor": "{",
      "confidence": "read",
      "sourceClass": "QueenQunilaria",
@@ -30949,14 +30980,14 @@
      "tactic": "Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "immune_while@46"
+     "key": "immune_while@48"
     },
     {
      "kind": "adds",
-     "summary": "Spawns Qunilaria's minion (QunilariaAdd2): when it dies (via SpawnAdds); count about 15-22 (loop to a random bound)",
+     "summary": "Spawns Qunilaria's minion (QunilariaAdd2): from SpawnAdds; count about 15-22 (loop to a random bound)",
      "file": "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs",
-     "line": 112,
-     "lineEnd": 112,
+     "line": 124,
+     "lineEnd": 124,
      "anchor": "QunilariaAdd2 Add1 = new QunilariaAdd2();",
      "confidence": "inferred",
      "sourceClass": "QueenQunilaria",
@@ -30965,20 +30996,20 @@
      "addBase": "GameNPC",
      "addBrain": "QunilariaAddBrain",
      "count": 22,
-     "trigger": "when it dies (via SpawnAdds)",
+     "trigger": "from SpawnAdds",
      "addIsEpic": false,
      "verified": true,
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@112"
+     "key": "adds@124"
     },
     {
      "kind": "adds",
      "summary": "Spawns Qunilaria's minion (QunilariaAdd): from OnAttackedByEnemy when if(Util.Chance(25)); count 3 (loop), at most 4 alive",
      "file": "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs",
-     "line": 141,
-     "lineEnd": 141,
+     "line": 153,
+     "lineEnd": 153,
      "anchor": "QunilariaAdd Add1 = new QunilariaAdd();",
      "confidence": "inferred",
      "sourceClass": "QueenQunilariaBrain",
@@ -30994,14 +31025,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@141"
+     "key": "adds@153"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health",
      "file": "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs",
-     "line": 164,
-     "lineEnd": 183,
+     "line": 176,
+     "lineEnd": 195,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "QueenQunilariaBrain",
@@ -31010,7 +31041,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@164"
+     "key": "reset@176"
     }
    ],
    "spells": [],
@@ -31032,6 +31063,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there.",
    "verified": true
   },
   {
@@ -31167,6 +31199,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "summary": "His eight pets (10,000 each) come back as fast as they die while he fights and die with him: everyone fights Otrygg, the route never sends the raid to a pet. The period fought him at the T junction, away from his spawn, where his pets stayed home (CARNE-TG); not played here (no junction point recorded). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
     "since": "1.2"
@@ -31590,6 +31623,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "after": "Guthlac",
     "rangedAdds": [
@@ -31782,7 +31816,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs",
-     "line": 876,
+     "line": 880,
      "sourceClass": "FrozenBomb"
     }
    ],
@@ -31804,6 +31838,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "FrozenBomb"
@@ -31948,6 +31983,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "summary": "Hjalmar's Ice Blast (450 cold to everyone within 440 of him, every 15 s): casters, archers and healers outside his target's party fight from beyond 540; melee take it and his berserker stance (Strength 850 for 10-20 s), healers on his target. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
     "since": "1.2"
@@ -32110,6 +32146,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "Morkimma"
@@ -32251,6 +32288,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "verified": true
   },
   {
@@ -32524,6 +32562,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "summary": "Shards first: while he is above 35% the raid kills his 2-3 shards (each party takes one), each one taking a quarter of his health; at 35% or less the shards no longer hurt him and the raid kills him (his death removes them). Close in: he takes damage only from within 200 of him and the shards only from within 400 of his spot, so every raider, casters too, fights from within 120-180 of him or 320 of his spot.",
     "since": "1.2"
@@ -32751,6 +32790,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "summary": "His six hrimthursa are cleared first (pulling one does not bring him), and nothing within 1,000 of him is pulled while he stands out of combat. In his fight his target's party fights as usual, casters and healers keep 750 from his target, melee stand behind him, and everyone near his target steps out of the 500 around it during his 3 s cold blast (EpicEncounterTactics.Tuscaran, sweep 2026-11-14; tests only).",
     "since": "1.2"
@@ -32942,6 +32982,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "requiredAdds": [
      "HakrAdd"
@@ -33027,7 +33068,7 @@
     },
     {
      "kind": "adds",
-     "summary": "Spawns Tunnels Announce (Tunnels): when it dies (via SpawnAnnouncer); count 1 spawn call in SpawnAnnouncer",
+     "summary": "Spawns Tunnels Announce (Tunnels): from SpawnAnnouncer; count 1 spawn call in SpawnAnnouncer",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs",
      "line": 118,
      "lineEnd": 118,
@@ -33038,7 +33079,7 @@
      "add": "Tunnels",
      "addBase": "GameNPC",
      "addBrain": "TunnelsBrain",
-     "trigger": "when it dies (via SpawnAnnouncer)",
+     "trigger": "from SpawnAnnouncer",
      "addIsEpic": false,
      "verified": true,
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
@@ -33183,6 +33224,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "summary": "Cold heal (AllowKvasirColdHeal, on since 1.2): no bot casts a cold spell at him (EpicEncounterTactics.ForbidsSpell; casters use their other lines). Scream: from 3 s before his primal scream is due until 4.5 s after his mesmerize (800 around his target, 2 s after the scream), everyone but his target's party stands 1,050 from his target; melee wait there, casters and healers keep casting.",
     "since": "1.2"
@@ -33223,7 +33265,7 @@
      "maxHealth": null,
      "level": "80",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs",
-     "line": 599
+     "line": 619
     },
     {
      "class": "HrimthursaSeer",
@@ -33242,7 +33284,7 @@
    "rules": [
     {
      "kind": "adds",
-     "summary": "Spawns hrimthursa seer (HrimthursaSeer): when it dies (via SpawnSeers); count 2 (loop)",
+     "summary": "Spawns hrimthursa seer (HrimthursaSeer): from SpawnSeers; count 2 (loop)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs",
      "line": 60,
      "lineEnd": 60,
@@ -33254,7 +33296,7 @@
      "addBase": "GameEpicNPC",
      "addBrain": "HrimthursaSeerBrain",
      "count": 2,
-     "trigger": "when it dies (via SpawnSeers)",
+     "trigger": "from SpawnSeers",
      "addIsEpic": true,
      "verified": true,
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
@@ -33287,8 +33329,8 @@
      "kind": "tether",
      "summary": "Tether range 3800 (hrimthursa seer (HrimthursaSeer)): drawn further from its spawn it walks home.",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs",
-     "line": 535,
-     "lineEnd": 535,
+     "line": 538,
+     "lineEnd": 538,
      "anchor": "TetherRange = 3800;",
      "confidence": "read",
      "sourceClass": "HrimthursaSeer",
@@ -33299,7 +33341,7 @@
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "tether@535"
+     "key": "tether@538"
     },
     {
      "kind": "reset",
@@ -33381,7 +33423,7 @@
      "value": null,
      "target": "AREA",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs",
-     "line": 665,
+     "line": 685,
      "sourceClass": "EffectMob"
     }
    ],
@@ -33402,6 +33444,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there.",
    "aiTactics": {
     "hazards": [
      "EffectMob"
@@ -33523,6 +33566,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there.",
    "aiTactics": {
     "after": "Steinvor",
     "hazards": [
@@ -34128,6 +34172,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "summary": "Killed first (see King Tuscar). Her drag to the throne (AllowDisplacement, bots too since 1.2) puts a raider in her frost circle, where it is mesmerized or rooted: a bot waits it out like a player (the recovery's walk does not count crowd control as a stall; at most 5 minutes) and walks back. Frost circle (AllowPositionPuzzle, on): no raider fights within 450 of 34128,56095; one that gets there steps out to 600.",
     "since": "1.2"
@@ -34454,6 +34499,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "after": "QueenKula",
     "summary": "Twin heal (AllowTuscarTwinHeal, on since 1.2): damage to one twin heals the other while it is hurt, so the raid kills Queen Kula first (the route musters for her) and only the King's own target fights him; the rest of his party turns on her too. Casters and healers on Kula keep clear of his hammers and Thor's Might (500 around his target). Nobody stands in Kula's frost circle.",
@@ -34820,6 +34866,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "spreadRadius": 400,
     "meleeBehind": true,
@@ -34999,6 +35046,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "summary": "Her gust throws a raider within 1,000 of her 500-700 up every 15-20 s: casters, archers and healers outside her target's party keep 1,100-1,350 from her (in spell range); a thrown raider walks back (EncounterDisplacementRecovery). With the flying patrol on, the griffon pull first (Griffons.cs). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
     "since": "1.2"

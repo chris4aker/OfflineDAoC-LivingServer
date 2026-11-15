@@ -59,7 +59,7 @@ namespace DOL.GS
                 }
             }
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             foreach (GameNPC copy in GetNPCsInRadius(10000))
             {
@@ -73,7 +73,7 @@ namespace DOL.GS
                     }
                 }
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public void Spawn()
         {
@@ -245,7 +245,7 @@ namespace DOL.GS
                 }
             }
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             foreach(GameNPC copy in GetNPCsInRadius(10000))
             {
@@ -271,7 +271,7 @@ namespace DOL.GS
                     }
                 }
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public override short Strength { get => base.Strength; set => base.Strength = 50; }
         public override short Quickness { get => base.Quickness; set => base.Quickness = 100; }

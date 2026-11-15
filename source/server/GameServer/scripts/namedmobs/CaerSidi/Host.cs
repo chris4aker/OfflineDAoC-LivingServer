@@ -252,7 +252,7 @@ namespace DOL.GS
             return 0.20;
         }
 
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             if (PackageID == "HostReal")
             {
@@ -275,7 +275,7 @@ namespace DOL.GS
             }
 
             Interlocked.Decrement(ref HostCount);
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
 
         public override void ReturnToSpawnPoint(short speed)

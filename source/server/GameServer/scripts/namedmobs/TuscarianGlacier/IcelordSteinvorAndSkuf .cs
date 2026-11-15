@@ -48,10 +48,10 @@ namespace DOL.GS
         {
             get { return 100000; }
         }
-        public override void Die(GameObject killer) //on kill generate orbs
+        public override void ProcessDeath(GameObject killer) //on kill generate orbs
         {
             SpawnSeers();
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public void SpawnSeers()
         {
@@ -487,6 +487,9 @@ namespace DOL.GS
 {
     public class HrimthursaSeer : GameEpicNPC
     {
+        private const int DESPAWN_DELAY = 180000; // Death-spawned adds despawn if they're left alone.
+        private const int DESPAWN_RETRY_INTERVAL = 30000;
+
         public HrimthursaSeer() : base()
         {
         }
@@ -546,8 +549,25 @@ namespace DOL.GS
             HrimthursaSeerBrain adds = new HrimthursaSeerBrain();
             SetOwnBrain(adds);
             LoadedFromScript = false;
+
+            if (PackageID == "SteinvorDeathAdds")
+                new ECSGameTimer(this, Despawn, DESPAWN_DELAY);
+
             base.AddToWorld();
             return true;
+        }
+
+        private int Despawn(ECSGameTimer timer)
+        {
+            if (!IsAlive)
+                return 0;
+
+            // Don't despawn mid fight.
+            if (InCombat || Brain is StandardMobBrain { HasAggro: true })
+                return DESPAWN_RETRY_INTERVAL;
+
+            RemoveFromWorld();
+            return 0;
         }
     }
 }

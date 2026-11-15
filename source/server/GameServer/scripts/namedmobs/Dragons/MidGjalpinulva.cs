@@ -121,7 +121,7 @@ namespace DOL.GS
 			}
 			return count;
 		}
-		public override void Die(GameObject killer)
+		public override void ProcessDeath(GameObject killer)
 		{
             if (Brain is MidGjalpinulvaBrain encounterBrain) encounterBrain.EncounterAdds.Reset();
 				// debug
@@ -149,7 +149,7 @@ namespace DOL.GS
 				}
 
 				AwardDragonKillPoint();
-				base.Die(killer);
+				base.ProcessDeath(killer);
 				foreach (String message in m_deathAnnounce)
 				{
 					BroadcastMessage(String.Format(message, Name));

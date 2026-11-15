@@ -399,7 +399,7 @@ namespace DOL.GS
         {
             get { return 100000; }
         }
-        public override void Die(GameObject killer) //on kill generate orbs
+        public override void ProcessDeath(GameObject killer) //on kill generate orbs
         {
             foreach (GameNPC npc in this.GetNPCsInRadius(5000))
             {
@@ -409,7 +409,7 @@ namespace DOL.GS
                         npc.Die(this);
                 }
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
 
         public override bool AddToWorld()
@@ -835,8 +835,12 @@ namespace DOL.GS
         public static int FrozenBombCount = 0;
         public override void Die(GameObject killer)
         {
-            FrozenBombCount = 0;
             base.Die(null);
+        }
+        public override void ProcessDeath(GameObject killer)
+        {
+            FrozenBombCount = 0;
+            base.ProcessDeath(killer);
         }
         public override int MaxHealth
         {

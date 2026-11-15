@@ -371,11 +371,11 @@ namespace DOL.GS
 
 		public static int TorturedSoulCount = 0;
 		public static int TorturedSoulKilled = 0;
-		public override void Die(GameObject killer)
+		public override void ProcessDeath(GameObject killer)
         {
 			--TorturedSoulCount;
 			++TorturedSoulKilled;
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
 		public override bool CanDropLoot => false;
         List<string> soul_names = new List<string>()
@@ -532,11 +532,11 @@ namespace DOL.GS
 		}
 
 		public static int ExplodeZombieCount = 0;
-		public override void Die(GameObject killer)
+		public override void ProcessDeath(GameObject killer)
 		{
 			--ExplodeZombieCount;
 			RandomTarget = null;
-			base.Die(killer);
+			base.ProcessDeath(killer);
 		}
         public override bool CanDropLoot => false;
         public static GameLiving randomtarget = null;
