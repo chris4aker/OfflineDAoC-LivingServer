@@ -127,7 +127,7 @@ public static class AutonomousBeggars
     private static readonly Regex Asking = new(
         @"\b(spare|gimme|give me|giv me|giveme|gimmie|hand me|toss me|throw me|lend me|loan me|send me|pay me|" +
         @"can i (have|get|borrow)|could i (have|get|borrow)|may i (have|get)|can you (give|spare|lend)|could you (give|spare|lend)|" +
-        @"(i|we) (really )?need|(got|have|has) (any|some)\b.*\b(for me|to spare|i can have)|any (spare|extra)|" +
+        @"(i|we) (really )?need( to borrow)?|(got|have|has) (any|some)\b.*\b(for me|to spare|i can have)|any (spare|extra)|" +
         @"donate|alms|handout|beg(ging)? (you|u|for)|plz.*\b(gold|coin|money)|please.*\b(gold|coin|money)( for me)?\?|share (the|ur|your))",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
     private static readonly Regex Offering = new(
@@ -135,15 +135,43 @@ public static class AutonomousBeggars
         @"(^|[.,!]\s*)have (some|this|it)\b|\b(you|u) can have\b|\bi('ll| will| can) (give|toss|spare|pay)\b",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-    /// <summary>True when a player's line asks for gold or items (and is not an offer). Pure.</summary>
+    // Shopping is not begging: "i need a new weapon, where do i buy one".
+    private static readonly Regex Shopping = new(
+        @"\b(where (do|can|could|should|would) (i|we|u|you) (buy|get|find)|where to (buy|get|find)|who sells|anyone sell(s|ing)?|wtb|" +
+        @"(which|what) (vendor|merchant|smith))\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    // Where the thing asked for ends: a clause break, or a word that starts what it is for or about ("i need to repair my
+    // armor", "can i get some help with this quest item", "i need 1 more for the group, anything works").
+    private static readonly Regex ObjectEnd = new(
+        @"[,.;:!?]|\b(to|with|for|from|in|on|at|about|so|and|but|or|because|cause|cuz|while|when|if|where|who|what|how|lol)\b",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    // "we need something to do tonight": something or anything to do is not a thing of value.
+    private static readonly Regex SomethingToDo = new(@"^\s*(some|any)(thing|one) to\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    /// <summary>
+    /// True when a player's line asks for gold or items (and is not an offer or a shopping question). The thing of value
+    /// has to be what is asked for: the words right after the asking phrase, up to the first clause break or a "to", "with"
+    /// or "for" ("i need to change my spec" and "i need to repair my armor" ask for nothing; "i need money" does). Pure.
+    /// </summary>
     public static bool AsksForCharity(string message)
     {
         if (string.IsNullOrWhiteSpace(message))
             return false;
         string text = message.Trim();
-        if (Offering.IsMatch(text))
+        if (Offering.IsMatch(text) || Shopping.IsMatch(text))
             return false;
-        return Asking.IsMatch(text) && Wealth.IsMatch(text);
+        foreach (Match ask in Asking.Matches(text))
+        {
+            // "got any gold for me", "plz gold": the thing is inside the asking phrase itself.
+            if (Wealth.IsMatch(ask.Value))
+                return true;
+            string after = text[(ask.Index + ask.Length)..];
+            if (SomethingToDo.IsMatch(after))
+                continue;
+            Match end = ObjectEnd.Match(after);
+            if (Wealth.IsMatch(end.Success ? after[..end.Index] : after))
+                return true;
+        }
+        return false;
     }
 
     /// <summary>A copper amount as players typed it: "3g 25s", "40c", "1p 2g". Pure.</summary>

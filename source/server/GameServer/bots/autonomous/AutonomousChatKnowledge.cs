@@ -272,7 +272,7 @@ public static class AutonomousChatKnowledge
         ["wts"] = "want to sell", ["wtb"] = "want to buy", ["wtt"] = "want to trade", ["pst"] = "please send tell",
         ["pc"] = "price check", ["con"] = "how tough a mob looks, by its color", ["add"] = "another mob joining the fight",
         ["adds"] = "more mobs joining the fight", ["ding"] = "level up", ["rez"] = "resurrect", ["aggro"] = "a mob that attacks on sight",
-        ["df"] = "darkness falls, the big dungeon", ["ml"] = "master level", ["ra"] = "realm ability", ["np"] = "no problem",
+        ["df"] = "darkness falls, the big dungeon", ["ml"] = "master level, from the atlantis rumours. nobody here has one", ["ra"] = "realm ability", ["np"] = "no problem",
         ["ty"] = "thank you", ["lol"] = "laughing out loud", ["imo"] = "in my opinion", ["mez"] = "mesmerize, it holds a mob still",
         ["stun"] = "they cant move or act for a bit", ["zerg"] = "a huge mob of players running together", ["gank"] = "killing someone who cant fight back",
     };

@@ -597036,8 +597036,8 @@
    "answers": [
     "joke"
    ],
-   "text": "i see what you did there",
-   "id": "dd64150af5b9"
+   "text": "heh, clever",
+   "id": "c841aba2fe3c"
   },
   {
    "kind": "reply",
@@ -601231,8 +601231,8 @@
    "intent": "laugh",
    "mood": "",
    "weight": 1.0,
-   "text": "ikr",
-   "id": "0965861f58d6"
+   "text": "hehe yeah",
+   "id": "ee7d5130a496"
   },
   {
    "kind": "reply",
@@ -624938,8 +624938,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "cool story {target}. lfg anyone?",
-   "id": "677651812da6"
+   "text": "nice speech {target}. lfg anyone?",
+   "id": "5d4ae58af302"
   },
   {
    "kind": "roleplay",
@@ -639889,8 +639889,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "{site} - since 2001 - over 9000000 happy customer - CHEAP GOLD",
-   "id": "1ad4b1675210"
+   "text": "{site} - since 2001 - 100000 happy customer - CHEAP GOLD",
+   "id": "fb84ded574ee"
   },
   {
    "kind": "spam",
@@ -679615,8 +679615,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "{player}, {keep} fell, if you want some rp tonight",
-   "id": "1f2c837f7746"
+   "text": "{player}, {keep} fell. good rp out there right now",
+   "id": "cd444219d32e"
   },
   {
    "kind": "tell",
@@ -679701,6 +679701,27 @@
    "invites": "ask",
    "text": "did you hear the raid killed {boss} in {raid}?",
    "id": "94d9b4e99efe"
+  },
+  {
+   "kind": "tell",
+   "topic": "news_tell",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "raid_won_recent",
+    "knows_player"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "ask",
+   "text": "did you hear the raid got {boss}?",
+   "id": "3b20b7881886"
   },
   {
    "kind": "tell",

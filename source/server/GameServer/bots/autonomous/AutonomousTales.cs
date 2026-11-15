@@ -246,11 +246,14 @@ public static class AutonomousTales
         "storytime just ended lol, later", "one at a time, we just had one",
     ];
 
-    /// <summary>The rumour after a tale when the realm's raid on that boss can really form.</summary>
+    /// <summary>
+    /// The rumour after a tale when the realm's raid on that boss can really form. The raid opens 6-12 minutes later, so the
+    /// lines say "soon", which is true at any hour (1.2: "tonight" at breakfast or 4 AM read wrong).
+    /// </summary>
     public static readonly string[] RaidRumours =
     [
-        "funny timing. heard some guilds are talking about a {boss} raid tonight", "someone is putting a raid together for {boss} i think",
-        "all this talk and i heard there is a {boss} run forming later", "heard a few groups want to try {boss} tonight",
+        "funny timing. heard some guilds are talking about a {boss} raid soon", "someone is putting a raid together for {boss} i think",
+        "all this talk and i heard there is a {boss} run forming soon", "heard a few groups want to try {boss} in a bit",
     ];
 
     #endregion

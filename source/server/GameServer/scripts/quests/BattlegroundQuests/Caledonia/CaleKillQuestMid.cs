@@ -20,10 +20,10 @@ namespace DOL.GS.DailyQuest.Hibernia
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
 		private const string questTitle = "[Daily] Fen's New Friends";
-		// Caledonia's bracket, as its Albion and Hibernia twins and the Midgard keep quest (upstream copied the
-		// Thidranki values here, so no Midgard player who could reach Caledonia could take it).
-		private const int minimumLevel = 34;
-		private const int maximumLevel = 39;
+		// Caledonia's bracket, 30-35 as BattlegroundBrackets (1.2: all six Caledonia dailies, which asked 34-39; upstream
+		// had copied the Thidranki values into this one, so no Midgard player who could reach Caledonia could take it).
+		private const int minimumLevel = 30;
+		private const int maximumLevel = 35;
 
 		private static GameNPC PazzMid = null; // Start NPC
 

@@ -87,6 +87,9 @@ says "today").
   `botcheck` replies may joke around the question in character ("lol no", "i wish, id level while asleep").
 - Later internet phrases: change my mind, fight me, vibes, love language, no thoughts, lifestyle, salty,
   the meta, i felt that, pog, based, no cap, sus, gg ez, main character, "o/" (do not add new ones).
+- Jokes and memes from after October 2003 (owner, 2026-11-15): "achievement unlocked", "over 9000", "cool story",
+  "i see what you did there", "ikr", "ftw", "the cake is a lie", the chicken punchline of the 2005 raid video. The builder
+  bans them.
 - Out-of-era content: Trials of Atlantis (Atlantis, artifacts, master levels, ML), New Frontiers (towers,
   Molvik, Leirvik, Proving Grounds, Lion's Den, Hills of Claret, Killaloe, Braemar, Wilton), Catacombs
   (champion levels, CL, catacombs classes), Mythic, real websites, EverQuest by name (the builder bans it),

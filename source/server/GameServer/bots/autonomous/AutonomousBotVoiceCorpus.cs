@@ -411,7 +411,8 @@ public sealed class AutonomousBotVoiceCorpus
             }
             Line line = pool[index].Line;
             pool.RemoveAt(index);
-            if (!TryFill(line.Text, SlotsForLine(line, request.Slots, request.NeedSlots), out string filled))
+            IReadOnlyDictionary<string, string> lineSlots = SlotsForLine(line, request.Slots, request.NeedSlots);
+            if (NamesTheBossTwice(line.Text, lineSlots) || !TryFill(line.Text, lineSlots, out string filled))
                 continue;
             // 1.1.3, after RC5: no item paired with a class that can't use it ("wtb a shield for a 30 cabalist").
             if (AutonomousChatGear.PairsUnusable(filled, speaker?.Level ?? 50))
@@ -530,6 +531,16 @@ public sealed class AutonomousBotVoiceCorpus
 
     /// <summary>Optional openers for {q}; empty half the time.</summary>
     public static readonly string[] Openers = ["", "", "", "hey", "so", "random question but", "quick question,", "ok so"];
+
+    /// <summary>
+    /// 1.2: a line that names both {boss} and {raid} when the raid is named after its boss (a dragon or an open-world raid):
+    /// "the raid killed Golestandt in Golestandt", "Coliath raid got Coliath". Such a line is skipped; the lines that name
+    /// one of them are left. Pure.
+    /// </summary>
+    public static bool NamesTheBossTwice(string template, IReadOnlyDictionary<string, string> slots) =>
+        template != null && slots != null && template.Contains("{raid}", StringComparison.Ordinal) &&
+        template.Contains("{boss}", StringComparison.Ordinal) && slots.TryGetValue("raid", out string raid) &&
+        slots.TryGetValue("boss", out string boss) && RealmEventBanter.NamedForBoss(raid, boss);
 
     /// <summary>Fills every {slot}; false if any slot has no value (a line is never sent half-filled).</summary>
     public static bool TryFill(string template, IReadOnlyDictionary<string, string> slots, out string filled)

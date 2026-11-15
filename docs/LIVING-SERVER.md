@@ -469,7 +469,7 @@ through the part's own code, lines and logging, in your realm and around you.
 | `/lstest deed <solo, group, streak, ganked, silly, fell>` | A bot near you tells /faction it saw you do that (your reputation counts don't change) |
 | `/lstest holiday <name, off>` | Bots treat today as that holiday until `off` or a restart |
 | `/lstest leeroy` | The next realm raid has a Leeroy (start one with `/lstest raid dragon`) |
-| `/lstest leeroy now` | A raid with a Leeroy that is gathering for its final boss charges at once |
+| `/lstest leeroy now` | A raid with a Leeroy that is gathering for its final boss charges at once (once, within 10 minutes) |
 | `/lstest raid [dragon] [alb, mid, hib]` | A realm's automatic raid (yours unless named) opens now, sized to its free level 50s and its record (at least 40 before sizing; raids from the launcher need 300) |
 
 ## Why a bot said that: /lswhy (every player)

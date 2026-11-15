@@ -35,10 +35,19 @@ public static class AutonomousRoleplayers
     #region Speech (pure, unit tested)
 
     // Whole words only, longest phrase first, in ONE pass (so "thank you" -> "my thanks" is not then read as "thanks").
+    // 1.2: the words that read two ways are read by their place (Swap): "you"/"u" is "thou" opening a clause and "thee"
+    // after a verb; "ya" is "aye" opening a clause and "thee" after one ("see ya"); "no" is "nay" only as an answer, not
+    // before a noun ("no gold"); "ur" is "thou art" before a word that follows "you're" ("ur welcome"), else "thy"; and
+    // "your" is "thine" before a vowel.
     private static readonly (string Word, string With)[] OldeWords =
     [
-        ("are you", "art thou"), ("r u", "art thou"), ("you are", "thou art"), ("u r", "thou art"), ("you're", "thou art"), ("youre", "thou art"),
-        ("do you", "dost thou"), ("have you", "hast thou"), ("you have", "thou hast"), ("will you", "wilt thou"), ("can you", "canst thou"),
+        ("are you", "art thou"), ("are u", "art thou"), ("r u", "art thou"), ("r you", "art thou"), ("you are", "thou art"), ("u r", "thou art"),
+        ("u are", "thou art"), ("you're", "thou art"), ("youre", "thou art"), ("your welcome", "thou art welcome"),
+        ("do you", "dost thou"), ("do u", "dost thou"), ("did you", "didst thou"), ("did u", "didst thou"), ("have you", "hast thou"),
+        ("have u", "hast thou"), ("you have", "thou hast"), ("u have", "thou hast"), ("will you", "wilt thou"), ("will u", "wilt thou"),
+        ("can you", "canst thou"), ("can u", "canst thou"), ("could you", "couldst thou"), ("could u", "couldst thou"),
+        ("would you", "wouldst thou"), ("would u", "wouldst thou"), ("you can", "thou canst"), ("u can", "thou canst"), ("no one", "none"),
+        ("no idea", "i know not"), ("no problem", "'tis no trouble"), ("no worries", "fret not"), ("no thanks", "nay, i thank thee"),
         ("thank you", "my thanks"), ("thanks", "my thanks"), ("thx", "my thanks"), ("ty", "my thanks"),
         ("your", "thy"), ("ur", "thy"), ("yours", "thine"), ("you", "thee"), ("u", "thee"),
         ("yes", "aye"), ("yeah", "aye"), ("yep", "aye"), ("yup", "aye"), ("ya", "aye"),
@@ -58,6 +67,59 @@ public static class AutonomousRoleplayers
         @"(?<![a-z'])(" + string.Join("|", OldeWords.Select(pair => pair.Word).OrderByDescending(word => word.Length).Select(Regex.Escape)) + @")(?![a-z'])",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+    // What follows "you're" more often than "your": "ur welcome", "ur right", "ur not".
+    private static readonly HashSet<string> YoureFollowers = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "welcome", "right", "wrong", "not", "so", "too", "very", "gonna", "going", "being", "sure", "late", "lucky", "dead", "crazy",
+        "mad", "funny", "kidding", "joking", "fine", "done", "up", "in", "out", "next", "here", "there", "a", "an", "the", "always",
+        "never", "still", "just", "really", "awesome", "good", "great", "nice", "kind", "brave", "insane", "nuts", "on",
+    };
+
+    private static string Swap(Match match, string text)
+    {
+        string word = match.Value.ToLowerInvariant();
+        bool opens = OpensClause(text, match.Index);
+        string next = NextWord(text, match.Index + match.Length);
+        switch (word)
+        {
+            case "you" or "u":
+                return opens ? "thou" : "thee";
+            case "ya":
+                return opens ? "aye" : "thee";
+            case "no":
+                return opens || next.Length == 0 ? "nay" : match.Value;
+            case "ur" when YoureFollowers.Contains(next):
+                return "thou art";
+            case "your" or "ur":
+                return next.Length > 0 && "aeiou".Contains(next[0]) ? "thine" : "thy";
+        }
+        return OldeMap.TryGetValue(match.Value, out string with) ? with : match.Value;
+    }
+
+    /// <summary>Whether a word at this index opens a clause: the line's start, or after . , ! ? ; : or a dash.</summary>
+    private static bool OpensClause(string text, int index)
+    {
+        for (int i = index - 1; i >= 0; i--)
+        {
+            if (text[i] == ' ')
+                continue;
+            return text[i] is '.' or ',' or '!' or '?' or ';' or ':' or '-' or '(';
+        }
+        return true;
+    }
+
+    /// <summary>The next word after this index (lower case), or empty when a mark or the line's end comes first.</summary>
+    private static string NextWord(string text, int index)
+    {
+        int start = index;
+        while (start < text.Length && text[start] == ' ')
+            start++;
+        int end = start;
+        while (end < text.Length && (char.IsLetter(text[end]) || text[end] == '\''))
+            end++;
+        return end > start && start > index ? text[start..end].ToLowerInvariant() : string.Empty;
+    }
+
     private static readonly string[] Flourishes = [", forsooth", ", m'lord", " *bows*", ", huzzah!", ", by my troth", ", verily", " *tips hat*"];
 
     /// <summary>Flourishes that read inside a question: a question keeps its "?" after one (RC10 on the owner's PC: "saw
@@ -69,7 +131,7 @@ public static class AutonomousRoleplayers
     {
         if (string.IsNullOrWhiteSpace(text))
             return text;
-        string result = Olde.Replace(text, match => OldeMap.TryGetValue(match.Value, out string with) ? with : match.Value);
+        string result = Olde.Replace(text, match => Swap(match, text));
         if (random.NextDouble() < 0.3 && result.Length < 110 && !result.EndsWith('*'))
         {
             int pick = random.Next(Flourishes.Length);
