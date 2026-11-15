@@ -2710,8 +2710,11 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "living_atmosphere_lines", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first.", true)]
 		public static bool LIVING_ATMOSPHERE_LINES;
 
-		[ServerProperty("bots", "epic_armor_counts_bots", "Gamebots (autonomous and companions) count as attackers when an epic boss's or epic NPC's armor drops with the number of players fighting it: -0.04 each, never below 0.4, the same as a real player. Bots stand in for players, so a 60-bot raid meets the armor 60 players would. Pets keep their own capped share. False is the stock rule: only real players count.", true)]
+		[ServerProperty("bots", "epic_armor_counts_bots", "Gamebots (autonomous and companions) count when an epic boss's or epic NPC's armor drops with the number of attackers, at epic_armor_bot_strength_percent of a player: by default each bot takes off half a player's step (0.02 instead of 0.04), and bots alone take off at most half of the full range (an epic boss from 1.6 to 1.0, never to the 0.4 floor). Real players and pets keep their own rule on top, down to 0.4. False is the stock rule: only players and pets count.", true)]
 		public static bool EPIC_ARMOR_COUNTS_BOTS = true;
+
+		[ServerProperty("bots", "epic_armor_bot_strength_percent", "When epic_armor_counts_bots is on: a gamebot's share of a real player's epic armor drop, in percent (0 to 100), which sets both its step (a player's is 0.04) and how much of the armor range bots alone can take off. 50 (the default): 0.02 a bot, an epic boss down to 1.0 at most from bots. 100 counts a bot as a player.", 50)]
+		public static int EPIC_ARMOR_BOT_STRENGTH_PERCENT = 50;
 
 
 
