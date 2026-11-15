@@ -97,6 +97,14 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 - **Bots no longer talk about Cathal Valley** (owner 2026-11-15, "Yeah leave it out"). The 45-49 battleground came
   after this era, so its seven chat lines are gone and the voice guides no longer list it. The world database still has
   the zone; no bot goal sends anyone there (`BattlegroundBrackets` stops at Caledonia).
+- **Heretics are cellar talk, not a class** (tests only; owner 2026-11-15, era rules applied conservatively, "unsure"
+  on the item). The Heretic is a Catacombs class (2004), but Albion's history stated its origin as fact: an acolyte
+  who renounces the Church for Arawn. The Living Present now tells it as a whisper of Camelot's cellar watch, that some
+  of the Church's own acolytes have turned to Arawn in secret, which the Church calls slander; the Arawn power says his
+  worship is heresy and leaves the rest as cellar talk. The 2003 NPCs Heretic Elam and the Heretical Hermit, men of
+  "some wrong faith", are unchanged. `UT_EraRumours` checks that no realm history names a Heretic, Bainshee or Vampiir.
+  Pazz, the Atlas freeshard's daily-quest giver in the Thidranki and Caledonia portal keeps, is world content and stays;
+  no bot line or lore names it.
 - **Rumours of a sunken land, and of what lies under the capitals** (tests only; owner 2026-11-15, "Yes agreed on lore"):
   Trials of Atlantis and Catacombs exist only as hearsay. Now and then the realm hears of it: an old family legend,
   a /faction argument, a rare remark at the harbours and in the capitals, an answer when a player asks ("what is
