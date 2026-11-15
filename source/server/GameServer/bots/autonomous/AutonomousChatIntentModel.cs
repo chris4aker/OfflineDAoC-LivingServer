@@ -188,7 +188,7 @@ public static partial class AutonomousChatIntentModel
 
     /// <summary>"happy halloween", "merry xmas", "god jul": a holiday wish.</summary>
     private static readonly System.Text.RegularExpressions.Regex HolidayWish = new(
-        @"\b((happy|merry|blessed)\s+(halloween|samhain|thanksgiving|turkey day|christmas|xmas|holidays|new year|easter|valentines?( day)?|st\.? ?patricks?( day)?|midsummer|yule|solstice)|god jul|nollaig shona)\b",
+        @"\b((happy|merry|blessed)\s+(halloween|samhain|thanksgiving|turkey day|christmas|xmas|holidays|new ?years?( day| eve)?|easter|valentines?( day)?|st\.? ?patricks?( day)?|midsummer|yule|solstice)|god jul|nollaig shona)\b",
         System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.CultureInvariant);
 
     public static eAutonomousChatIntent Predict(string text)

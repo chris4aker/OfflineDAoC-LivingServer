@@ -21,8 +21,8 @@ namespace DOL.GS.DailyQuest.Midgard
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
 		private const string questTitle = "[Daily] Frontier Conquerer";
-		private const int minimumLevel = 34;
-		private const int maximumLevel = 39;
+		private const int minimumLevel = 30;
+		private const int maximumLevel = 35;
 
 		// Capture Goal
 		private const int MAX_CAPTURED = 1;
@@ -298,7 +298,7 @@ namespace DOL.GS.DailyQuest.Midgard
 					case 1:
 						return "Go to the battlefield and conquer a keep. \nCaptured: Keep ("+ _isCaptured +" | "+MAX_CAPTURED+")";
 					case 2:
-						return "Return to Pazz in Thidranki Portal Keep for your Reward.";
+						return "Return to Pazz in the Caledonia Portal Keep for your Reward.";
 				}
 				return base.Description;
 			}

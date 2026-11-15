@@ -21,8 +21,8 @@ namespace DOL.GS.DailyQuest.Albion
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
 		private const string questTitle = "[Daily] Fen's New Friends";
-		private const int minimumLevel = 34;
-		private const int maximumLevel = 39;
+		private const int minimumLevel = 30;
+		private const int maximumLevel = 35;
 
 		private static GameNPC PazzAlb = null; // Start NPC
 

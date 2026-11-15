@@ -85,6 +85,48 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+**Era cuts and polish for the playful features** (tests only; owner's decisions 2026-11-15 07:10 after the Easter egg
+inventory: cut the jokes from after 2003, keep Leeroy; Trials of Atlantis and Catacombs "as rumors only from a lore
+perspective"; Caledonia's quests follow its bracket).
+
+- **Jokes from after October 2003 are gone.** Leeroy still charges and yells, but "at least he has chicken" is now "who
+  brought him. seriously, who brought him" and "he can buy the ale tonight"; the joker's "achievement unlocked: died to a
+  rabbit again" is "died to a rabbit again. third one this week"; the gold spammer's "over 9000000 happy customer" is
+  "100000"; "cool story {target}" is "nice speech {target}"; "i see what you did there" is "heh, clever"; the laugh
+  reply "ikr" is "hehe yeah"; a boss's after-kill "aoe ftw" is "aoe emptied the classroom". The corpus builder now bans
+  these phrases (`tools/bot-voices/build_corpus.py`).
+- **Trials of Atlantis and Catacombs are rumours only.** The chat lines already named neither (the builder bans them).
+  The realm histories' Atlantis entry, which the loremasters and the Herald read, said each realm "found the island
+  remnants of Atlantis" and that its ships sail there; it is now harbour talk of a dream that "nobody has sailed there
+  and come back to prove", and the three place notes say the same. "what does ml mean" is answered "master level, from
+  the atlantis rumours. nobody here has one".
+- **Caledonia's six dailies ask for levels 30-35**, Caledonia's bracket (`BattlegroundBrackets`), instead of 34-39, so every
+  level that can enter Caledonia can take them, and a 36-39, who can't enter it, is no longer offered them. The Midgard keep quest sent the player back
+  to "Thidranki Portal Keep"; it now says Caledonia. A test holds every Caledonia and Thidranki daily to its bracket.
+- **Beggars read what is asked for.** "i need to repair my armor", "i need to change my spec", "can i get some help with
+  this quest item", "we need something to do tonight", "i need a new weapon, where do i buy one" and "i need 1 more for
+  the group, anything works" no longer mark the player as a beggar for an hour: the thing of value has to follow the
+  asking words, before a "to", "with", "for" or a clause break, and a shopping question is not begging. "i need money",
+  "i need to borrow some gold" and the old requests still count.
+- **A raid named after its boss is not named twice.** Every dragon and open-world raid carries its boss's name, so bots
+  said "the raid killed Golestandt in Golestandt" and "Coliath raid got Coliath". A line that names both is now skipped
+  when the raid is named for its boss (`AutonomousBotVoiceCorpus.NamesTheBossTwice`), and a tell that names only the
+  boss was added. An open-world raid's wipe call no longer sends the raid to "the staging ring" for "the dragon".
+- **Holidays.** "happy new years" (and "new years eve", "newyear") is a New Year wish. `/lstest holiday` tells the GM a
+  wish the bots answer ("happy new year", "merry christmas"; none for April Fools, which has jokes only). When April
+  Fools falls on Easter weekend (Easter Monday 2024, Easter Sunday 2029), Easter is the holiday and April Fools' lines
+  are still said.
+- **Roleplayers read their words by place.** "see ya" is "see thee", "ur welcome" "thou art welcome", "can u" "canst
+  thou", "no one" "none", "you go first" "thou go first", "your armor" "thine armor"; "no" is "nay" only as an answer
+  ("i have no gold" stays).
+- **`/lstest leeroy now` lapses after 10 minutes** if no Leeroy raid is gathering, instead of waiting for good and firing
+  on a Leeroy raid hours later. It is still used once.
+- **`/lstest list` names every part**, now with tales, tale raids, beggars, bonds, atmosphere lines and cosmetics.
+- **"tonight" at any hour.** The rumour after a tale that a raid is forming says "soon" or "in a bit" (it opens 6-12
+  minutes later), and the "{keep} fell" tell says "good rp out there right now".
+- **The joker no longer owns a horse.** "my horse has better gear than me" is "the stablemaster's horse has better gear
+  than me", which agrees with the dunce scene: horses are rented stable routes.
+
 **Battleground and RvR kill quests count enemy gamebots** (tests only; owner's question 2026-11-15: "are there quests in the
 BG? Are those functioning correctly?").
 
@@ -97,8 +139,8 @@ BG? Are those functioning correctly?").
   companion's, an invited gamebot's, or a groupmate's in range). A bot's pet doesn't count, as a player's pet never did,
   and a gamebot that leaves the world mid-fight (a stable ride, a port, a despawn) is not a kill.
 - **Caledonia's Midgard kill quest can be taken.** It asked for levels 20-24 (copied from Thidranki upstream) and looked
-  for a giver named "Rey", so a second Pazz stood in Midgard's portal keep; it now asks for 34-39 like its Albion and
-  Hibernia twins and shares the one Pazz.
+  for a giver named "Rey", so a second Pazz stood in Midgard's portal keep; it now asks for Caledonia's 30-35 like its
+  Albion and Hibernia twins (see the polish entry above) and shares the one Pazz.
 
 **Bots no longer follow the player into another realm** (tests only; owner's decision 2026-11-15: "No, bots should not
 follow a teleport into another realm."; owner's PC, build `1dc66b6`, 2026-11-15 ~01:46: a GM `/jump` to a Midgard raider in

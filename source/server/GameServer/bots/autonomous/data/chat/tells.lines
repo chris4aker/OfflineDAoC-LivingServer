@@ -110,7 +110,7 @@ watch the adds around here, they hit hard at your level
 did you see we lost {keep}?
 @invites chat
 @needs keep_lost_recent,knows_player
-{player}, {keep} fell, if you want some rp tonight
+{player}, {keep} fell. good rp out there right now
 @invites ask
 @needs keep_won_recent,knows_player
 hey, we took {keep}! you see it?
@@ -122,6 +122,7 @@ psst, {relic} is gone, they got it
 @invites ask
 @needs raid_won_recent,knows_player
 did you hear the raid killed {boss} in {raid}?
+did you hear the raid got {boss}?
 @invites chat
 @needs raid_wiped_recent,knows_player
 raid wiped on {boss}, glad you werent there lol
