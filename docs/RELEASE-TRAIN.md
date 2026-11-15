@@ -62,6 +62,9 @@ next world update, inert until then. Separately, Living Server gets **its own ed
 (`chris4aker/OfflineDAoC-True165-LivingServ`): 1.1.4 is carried over now (`living-server/1.1.4`, features that clash with
 1.65 rules off by default), 1.2 after it ships. That edition is its own track and does not hold 1.2.
 
+Changed 2026-11-14 (owner, later that night): **the True 1.65 edition gets 1.2 only once 1.2 is fully released on the
+0.37 base.** Until then the edition stays at 1.1.4 (`living-server/1.1.4`); no 1.2 work is ported to it before that.
+
 ## Rules for every stop
 
 - A stop ships only after its in-game check on the owner's PC, reported separately from automated tests
@@ -184,8 +187,8 @@ each row counts only when seen on the owner's PC on the release-candidate line.
 
 | Part | Built | Seen on the owner's PC |
 |---|---|---|
-| Epic encounters: the bosses' own rules back on (15 of 18 settings on), throws and jails that take bots, add caps | Merged | Partly: raids fought with them since test build 2 |
-| Raid tactics (about 40 encounters new or reworked), the raid skill layer, the raid flow after a wipe | Merged; the sweep fixes of 2026-11-14 (#211-#214) are tests only | Dragons and the smaller dungeons won on earlier builds; **Caer Sidi, Tuscaran Glacier, Galladoria, Trollheim, Krondon and Summoner's Hall (Albion, Hibernia) not won by bots on the PC yet**; Grand Summoner Govannon never beaten by bots anywhere |
+| Epic encounters: the bosses' own rules back on (15 of 20 settings on), throws and jails that take bots, add caps | Merged | Partly: raids fought with them since test build 2 |
+| Raid tactics (about 40 encounters new or reworked), the raid skill layer, the raid flow after a wipe | Merged; the sweep fixes of 2026-11-14 (#211-#214) are tests only | Dragons and the smaller dungeons won on earlier builds; Midgard's Darkness Falls (Legion) won on `e3b8238`; Midgard's Summoner's Hall (Grand Summoner Govannon) won once on `3e64140` (run 2); **Caer Sidi, Tuscaran Glacier, Galladoria, Trollheim, Krondon and Summoner's Hall (Albion, Hibernia) not won by bots on the PC yet** |
 | A raid is a realm event: the boss's tale, then the call and the horn; one raid every four hours | Merged | Seen on test builds 3 and 4 |
 | The lore: 107 places, 578 bosses, 4 realm histories; loremasters, books, the Herald, the Bestiary, `/lore`, boss lines, atmosphere lines | Merged | Tales and boss lines seen on earlier 1.2 builds; loremasters, books, Herald and Bestiary have no played record |
 | Tales: the storyteller, asked-for tales, fireside tales | Merged | Seen on earlier builds; a tale that starts by itself not seen |
@@ -454,10 +457,10 @@ On 2026-11-14:
 | Stop | State |
 |---|---|
 | 1.1.4 | Released 2026-11-12 (the latest release) |
-| 1.2 | All of it merged on `integration/1.2`; test build `16b3054` on the owner's test copy; held until [PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md) is met |
+| 1.2 | All of it merged on `integration/1.2`; test build `1dc66b6` on the owner's test copy (installed 2026-11-14 21:16); held until [PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md) is met |
 | Linux | After 1.2 (PR #206) |
 | 2.0 | Planned: a living realm (was 1.3), bots as people, the complete realm |
-| True 1.65 edition | Separate track: 1.1.4 carried over on `living-server/1.1.4`, waiting for its PR into the edition's `main` |
+| True 1.65 edition | Separate track: 1.1.4 carried over on `living-server/1.1.4`, waiting for its PR into the edition's `main`; 1.2 is ported only after 1.2 is fully released on 0.37 (owner, 2026-11-14) |
 
 On 2026-11-07:
 

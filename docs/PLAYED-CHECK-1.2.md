@@ -16,6 +16,19 @@ opened itself, or one forced with `/epictest start <event> start`, which uses th
 The bar can be met by the smaller dungeons while the three big ones (Caer Sidi, Tuscaran Glacier, Galladoria) still
 lose. Their rows below are therefore kept and reported whatever the bar says.
 
+Settled 2026-11-14 (the owner asked for it to be fixed): **a win in one of the big three is not required to ship.**
+Each of the three must be run on the release candidate at the game's own raid size, and the release notes say how
+each went: won, or how far it got and what beat it. No boss is weakened to get a win. A raid that stalls (never
+reaches its final boss, or stops fighting, for a route or code reason rather than a lost fight) blocks the release
+like any *must* row, big three included.
+
+Sharpened 2026-11-15 (owner): a big-three loss is acceptable only when the boss's own mechanics beat a raid that
+played correctly. A loss traced to a bot, route or tactic bug (the raid healing the boss, a muster or pull the plan got
+wrong, a route that cannot reach the fight) blocks the release like a stall until it is fixed **and the raid is run
+again** on a candidate with the fix. On build `1dc66b6` (2026-11-15) all three big raids hit such bugs: Galladoria
+stalled behind Easmarach's falls (#230), our Spiritmasters' pets healed Kvasir in Tuscaran Glacier (#235), and Caer
+Sidi's plans at Dorinakka and the Crypt Lord were wrong (#236). Each is to be re-run on the final candidate.
+
 History is the owner's PC on build `3e64140` (runs 1 to 3, 2026-11-11 and 11-12), forced raids. Runs 1 and 2 went in
 below the game's size; run 3 at it.
 
