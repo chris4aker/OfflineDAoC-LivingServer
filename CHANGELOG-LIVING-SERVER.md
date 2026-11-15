@@ -563,6 +563,12 @@ is set to the raid's realm until the sweep ends, and the server keeps them with 
 are moved back; dead for 30 seconds, they are raised there. Every step is logged as `EPIC_SWEEP_*`. `status`, `skip` and
 `stop` follow it. Nothing runs unless a GM starts it.
 
+For a night that has to fit many raids (2026-11-15, [OVERNIGHT-SWEEP-1.2.md](docs/OVERNIGHT-SWEEP-1.2.md)): a comma list
+runs in the order given; `parallel` runs one lane per realm side by side, one raid at a time in each, bots only;
+`/epictest sweep add <list>` adds raids to a running sweep (a long list typed in parts); `cap=<minutes>|off` replaces
+the 4-hour cap; and a lane never sends its raid into Summoner's Hall or Darkness Falls while another realm's raid is
+inside (`EPIC_SWEEP_HELD`). `skip <event>` names the raid to end. Tests only: no parallel sweep has run on the owner's PC.
+
 **Lean server memory (a test option, off by default).** A new Options-tab switch starts the server with .NET's
 memory-saving garbage collection (4 heaps and "conserve memory", from the owner's friend Ryan's Linux setup). On a
 16-thread PC the server reached 7 GB after three hours of build 8, of which 1.9 GB was in use. The option changes

@@ -97,6 +97,11 @@ Sidi's plans at Dorinakka and the Crypt Lord were wrong (#236). Each is to be re
 - **Hibernia: not met.** Cuuldurach won on test build 5 and Marfach Caverns on builds 2, 4 and 5. A second dungeon has
   no win on the candidate line.
 
+**The night that should close it:** [OVERNIGHT-SWEEP-1.2.md](OVERNIGHT-SWEEP-1.2.md) gives the commands, in order (one
+lane per realm side by side: the bar first, then the big three's re-runs, the other re-runs and the open-world bosses),
+the time each raid is expected to take, the log lines for a win, a loss and a stall, and how to read the results the
+next morning. Its sweep options (`parallel`, `add`, `cap=`) are tests only until a PC log shows them.
+
 History is the owner's PC on build `3e64140` (runs 1 to 3, 2026-11-11 and 11-12), forced raids. Runs 1 and 2 went in
 below the game's size; run 3 at it. Results for test builds 2 to 7 come from the draft release notes (l.237-250),
 which give one build for the three losses on their l.246-247.
@@ -136,7 +141,9 @@ Gatekeeper Dommel, High Lord Baln); Golestandt's second attempts; Summoner Roesi
 
 Sixteen raids since 1.2 ([RAID-SIZES.md](RAID-SIZES.md), "The open-world big bosses"). Their rows count like the
 others (owner, 2026-11-14): the stall rule applies, and the release notes say how each went. `/epictest sweep start
-openworld` runs them alone.
+openworld` runs them alone. Not yet in the table: the PC log of `1dc66b6` has a win on the Wretch of Winter (crab) by a
+raid the game opened itself (`REALM_RAID_ENDED … outcome="Boss defeated"` at 2026-11-14 22:07, 20 minutes with its
+muster, no wipe); the overnight sweep runs it again ([OVERNIGHT-SWEEP-1.2.md](OVERNIGHT-SWEEP-1.2.md)).
 
 | Realm | Raid | On the candidate line |
 |---|---|---|
