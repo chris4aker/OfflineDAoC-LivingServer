@@ -10,7 +10,7 @@ describe work still on its own branch: keep them only if it is merged before the
 internal vocabulary. Polished on 2026-11-14 (evening) for the launch, covering everything merged into 1.2 through #224:
 the raid flow and boss tactics from the sweep, the Darkness Falls raid AI, Legion, the raid plans for every realm's big
 bosses and the open-world bosses, the route blockers and the period research. The upstream boss fixes and the epic
-armor rule (#225) are marked "[if it lands]". The encounter counts are from docs/encounters/EPIC-ENCOUNTERS.md on
+armor rule (#225) merged the same evening. The encounter counts are from docs/encounters/EPIC-ENCOUNTERS.md on
 integration/1.2 at #224. Owner's decision (2026-11-14): credit lightly, by project and username in the Credits section
 only, never per feature or per piece of code; the licence notices stay in THIRD_PARTY.md and the changelog. The
 repository description, the tagline, the posts and the pitch are in [RELEASE-1.2-COPY.md](RELEASE-1.2-COPY.md).
@@ -67,8 +67,8 @@ For years the hardest bosses ran softened so that bot raids could win. Not anymo
   can't, it recalls after 5 seconds: in a long run, 4 in 5 did.
 - **No add floods.** A bot raid can outnumber a 2003 raid. Bosses that spawn adds or heal per raider count at most a
   period-sized raid, so a big bot raid faces what a full raid of players did.
-- [if it lands: **No zerg fests.** An epic's armor now wears down under bot attackers too, at half a player's strength,
-  and bots alone can never take it below 100%. Numbers help. A zerg still doesn't win.]
+- **No zerg fests.** An epic's armor now wears down under bot attackers too, at half a player's strength,
+  and bots alone can never take it below 100%. Numbers help. A zerg still doesn't win.
 - **Your companions stay at the fight** when a boss throws you.
 
 ### A raid plan for every big boss
@@ -254,8 +254,8 @@ Your bot world has always been yours alone. Now a few friends can join it, from 
   is written to your world.
 - **New client (0.37c):** skills on the quickbar, Stealth in the Abilities list, and a SELL button at merchants,
   installed only over the released scripts; ROLLBACK.cmd puts them back.
-- [if it lands: **Upstream boss fixes:** each boss's death runs once, patrols follow the navmesh, the dragons face
-  their lairs, and bosses keep their own state. No boss was weakened.]
+- **Boss scripts, hardened:** each boss's death runs once, patrols follow the navmesh, the dragons face
+  their lairs, and bosses keep their own state. No boss was weakened.
 - **Setup retries a busy download server** (429, 500, 502, 503 or 504) after 30, 60, 120 and 240 seconds, keeping what
   it already has.
 - **The loading screen says LIVING SERVER**, on upgrades from 1.1, 1.1.1 and 1.1.2 too.
@@ -384,8 +384,8 @@ only".
 - **The new raid plans are tests only.** The Darkness Falls raid AI, Legion's plan, the plans for every realm's big
   bosses and the open-world bosses, the 16 open-world raids, the route fixes and the raid fixes after the sweep of
   14 November pass their automated tests but have not been seen on a real install. The open-world raids' hubs and
-  routes have not been walked on a real install either. [if it lands: The same goes for the epic armor rule and the
-  upstream boss fixes.] Behemoth is never fought, Morgana has no raid (she was never a raid boss), and Fomor City has no
+  routes have not been walked on a real install either. The same goes for the epic armor rule and the
+  boss script fixes. Behemoth is never fought, Morgana has no raid (she was never a raid boss), and Fomor City has no
   raid of its own.
 - **Parts of 1.2 have only been tested automatically.** The bot-led groups, the tales and several raids have been seen
   on a real install (see above). Not yet seen there: most of the new boss tactics in a raid with a player in it, RvR
