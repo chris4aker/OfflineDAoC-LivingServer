@@ -85,6 +85,18 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+**Bots no longer follow the player into another realm** (tests only; owner's decision 2026-11-15: "No, bots should not
+follow a teleport into another realm."; owner's PC, build `1dc66b6`, 2026-11-15 ~01:46: a GM `/jump` to a Midgard raider in
+Tuscaran Glacier carried all six Albion gamebots of a bot-led party into Midgard's Kvasir fight).
+
+- **A player's teleport, portal, jump or MoveTo into another realm's territory leaves every bot where it is.** That is
+  another realm's classic home zones, dungeons, capital, housing, Shrouded Isles and epic dungeons (`RealmTerritory`);
+  frontier zones, battlegrounds, Darkness Falls, the Old Frontiers dungeons and neutral zones are unchanged. It covers
+  gamebots in the player's group and in a bot-led party hosting the player, and /spawn companions (also the end of a
+  stable ride, the stuck watchdog's move to the player and a released gamebot's return to the player). A bot-led party
+  logs `BOT_LED_NO_FOLLOW reason=enemy_realm` once (`BOT_NO_FOLLOW` for other bots), is not disbanded, and its
+  "player far away / where u at" pacing takes over.
+
 **A bot-led party stuck in Caer Diogel** (tests only; owner's PC, build `1dc66b6`, 2026-11-15: party albion-f86e88-1370,
 on its way to griffins in Gwyddneau with the player hosted, stood in Caer Diogel from 00:55 to past 01:19 in phase
 "Traveling" with no travel line in the log, while two of its members were in Camelot at 01:05).

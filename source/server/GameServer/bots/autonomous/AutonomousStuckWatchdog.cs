@@ -590,6 +590,9 @@ public static class AutonomousStuckWatchdog
         if (bot.PlayerGroupLeader is not { IsAlive: true, ObjectState: GameObject.eObjectState.Active } leader ||
             leader.CurrentZone == null || bot.Group == null || bot.Group != leader.Group || leader.Realm != bot.Realm)
             return false;
+        // Owner 2026-11-15: never carried into another realm's territory (a GM /jump there); the capital recovery applies.
+        if (RealmTerritory.IsEnemyRealmTerritoryFor(bot, leader))
+            return false;
         ushort oldRegion = bot.CurrentRegionID;
         int oldX = bot.X, oldY = bot.Y, oldZ = bot.Z;
         string oldActivity = bot.PersistentRecord?.Activity ?? string.Empty;
