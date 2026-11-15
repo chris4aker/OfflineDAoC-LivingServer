@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using DOL.Database;
 using DOL.Events;
 using DOL.GS.Commands;
 using DOL.GS.PacketHandler;
@@ -20,6 +21,12 @@ namespace DOL.GS
     /// server keeps them with their party ("tag-along"): away from it for 20 seconds (thrown, jailed, left behind), they are
     /// moved back to its leader; dead for 30 seconds, they are raised there. Every such step is logged (EPIC_SWEEP_GUEST), so
     /// a result with a guest says what the server did for them. Test only: nothing here runs unless a GM starts it.
+    ///
+    /// What the sweep changes on its guest (the account's level, the character's realm) is saved before it is changed
+    /// (<see cref="EpicPlaytestSweepGuestRecord"/>), so a server stopped mid-sweep, even force-killed, can't strand the
+    /// account: the next start, or the account's next login, puts it back (2026-11-14: a sweep was running when the
+    /// launcher force-closed the server, and the owner's GM account came back a plain player). A graceful stop ends the
+    /// sweep first, so its own restore runs.
     /// </summary>
     public static class EpicPlaytestSweep
     {
@@ -56,6 +63,8 @@ namespace DOL.GS
         private static eRealm _guestHomeRealm;
         /// <summary>The guest's account level before the sweep (0: not lowered).</summary>
         private static uint _guestHomePrivLevel;
+        /// <summary>The guest's account and character, as its saved record names them.</summary>
+        private static string _guestAccount, _guestCharacterId, _guestName;
         private static bool _running;
 
         /// <summary>The order (pure): the definitions' own order, Darkness Falls last (owner 2026-11-13: it was the one raid without raid AI then; it keeps the last place).</summary>
@@ -186,24 +195,32 @@ namespace DOL.GS
                 string[] ids = Parse(word, AutonomousRealmRaid.Definitions.Select(d => d.Id).ToArray(), out string[] unknown);
                 if (unknown.Length > 0) return $"No raid {string.Join(", ", unknown)}; /epictest list shows them.";
                 if (ids.Length == 0) return "No raids to sweep.";
+                eRealm homeRealm = guest?.Realm ?? eRealm.None;
+                uint homePrivLevel = 0;
+                // A GM can't be attacked, takes no fall damage and is left out of every boss mechanic that picks players
+                // (AbstractServerRules.IsAllowedToAttack, CanTakeFallDamage, the scripts' PrivLevel == Player checks): the
+                // guest plays as a player for the sweep (2026-11-13: Manawatch stood in Golestandt's breath at full health).
+                // Their GM commands stay (CommandPrivLevel); the level comes back when the sweep ends. Saved first
+                // (BeginGuest): a sweep that never ends can't strand the account.
+                if (guest?.Client?.Account is { } account)
+                {
+                    if (!BeginGuest(GameServer.Database, account, guest.DBCharacter?.ObjectId, guest.Name, ref homeRealm, out homePrivLevel))
+                        return "The sweep did not start: what it changes on its guest (account level, realm) could not be saved first. " +
+                               "Try again, or start it without a guest.";
+                    if (guest.Realm != homeRealm) guest.Realm = homeRealm;
+                    if (homePrivLevel > 0 && guest.IsStealthed) guest.Stealth(false);
+                }
                 Queue.Clear();
                 Queue.AddRange(ids.Select(id => new Step { Id = id }));
                 Results.Clear();
                 _current = null;
                 _nextStartAt = GameLoop.GameLoopTime;
                 _guest = guest;
-                _guestHomeRealm = guest?.Realm ?? eRealm.None;
-                _guestHomePrivLevel = 0;
-                // A GM can't be attacked, takes no fall damage and is left out of every boss mechanic that picks players
-                // (AbstractServerRules.IsAllowedToAttack, CanTakeFallDamage, the scripts' PrivLevel == Player checks): the
-                // guest plays as a player for the sweep (2026-11-13: Manawatch stood in Golestandt's breath at full health).
-                // Their GM commands stay (CommandPrivLevel); the level comes back when the sweep ends.
-                if (guest?.Client?.Account is { PrivLevel: > (uint)ePrivLevel.Player } account)
-                {
-                    _guestHomePrivLevel = account.PrivLevel;
-                    account.PrivLevel = (uint)ePrivLevel.Player;
-                    if (guest.IsStealthed) guest.Stealth(false);
-                }
+                _guestHomeRealm = homeRealm;
+                _guestHomePrivLevel = homePrivLevel;
+                _guestAccount = guest?.Client?.Account?.Name;
+                _guestCharacterId = guest?.DBCharacter?.ObjectId;
+                _guestName = guest?.Name;
                 _running = true;
                 Log.Info($"EPIC_SWEEP_START raids={ids.Length} order={string.Join(",", ids)} guest=\"{guest?.Name}\" guestRealm={_guestHomeRealm} " +
                          $"guestLevel={guest?.Level} guestPlaysAsPlayer={_guestHomePrivLevel > 0} guestHomePrivLevel={_guestHomePrivLevel}");
@@ -512,11 +529,12 @@ namespace DOL.GS
             ClientService.Instance.Post(static g => g.Group?.RemoveMember(g), guest);
         }
 
-        private static void Finish(string why)
+        private static void Finish(string why, bool now = false)
         {
             GamePlayer guest;
             eRealm home;
             uint homePrivLevel;
+            string accountName, characterId, characterName;
             string[] results;
             lock (Sync)
             {
@@ -524,30 +542,180 @@ namespace DOL.GS
                 guest = _guest;
                 home = _guestHomeRealm;
                 homePrivLevel = _guestHomePrivLevel;
+                accountName = _guestAccount;
+                characterId = _guestCharacterId;
+                characterName = _guestName;
                 _guest = null;
                 _guestHomePrivLevel = 0;
+                _guestAccount = _guestCharacterId = _guestName = null;
                 _seatPendingFor = null;
                 results = Results.ToArray();
             }
-            // The account level comes back even if the guest logged off (the account object outlives the session).
-            if (homePrivLevel > 0 && guest?.Client?.Account is { } account && account.PrivLevel < homePrivLevel)
-                account.PrivLevel = homePrivLevel;
-            if (guest?.Client != null && guest.ObjectState == GameObject.eObjectState.Active)
+            IObjectDatabase database = GameServer.Database;
+            GamePlayer live = LiveGuest(guest, characterId, characterName);
+            if (accountName != null && live == null)
             {
-                ClientService.Instance.Post(static state =>
-                {
-                    (GamePlayer guest, eRealm home) = state;
-                    guest.Group?.RemoveMember(guest);
-                    if (!guest.IsAlive) Raise(guest);
-                    if (home != eRealm.None && guest.Realm != home)
-                    {
-                        guest.Realm = home;
-                        guest.Out.SendMessage($"Play test over: your realm is {GlobalConstants.RealmToName(home)} again.",
-                            eChatType.CT_System, eChatLoc.CL_SystemWindow);
-                    }
-                }, (guest, home));
+                // The guest logged off: its saved account and character are all there is, so they are put back there.
+                EpicPlaytestSweepGuestRecord.RestoreStored(database, false, "sweep_end_offline", accountName);
             }
-            Log.Info($"EPIC_SWEEP_END why=\"{why}\" results={results.Length} guest=\"{guest?.Name}\" guestRealm={home} guestPrivLevel={homePrivLevel} | {string.Join(" | ", results)}");
+            else if (live != null)
+            {
+                DbAccount account = live.Client?.Account;
+                // The account level comes back now, so the GM commands do too (saved: a stop right after can't lose it).
+                RaiseAccount(database, account, homePrivLevel);
+                if (now)
+                {
+                    // The server is stopping: the game loop runs nothing posted any more.
+                    if (home != eRealm.None && live.Realm != home) live.Realm = home;
+                    EndGuest(database, account, homePrivLevel, () => SaveCharacter(live));
+                }
+                else
+                {
+                    ClientService.Instance.Post(static state =>
+                    {
+                        (GamePlayer guest, eRealm home, uint homePrivLevel, DbAccount account) = state;
+                        guest.Group?.RemoveMember(guest);
+                        if (!guest.IsAlive) Raise(guest);
+                        if (home != eRealm.None && guest.Realm != home)
+                        {
+                            guest.Realm = home;
+                            guest.Out.SendMessage($"Play test over: your realm is {GlobalConstants.RealmToName(home)} again.",
+                                eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                        }
+                        EndGuest(GameServer.Database, account, homePrivLevel, () => SaveCharacter(guest));
+                    }, (live, home, homePrivLevel, account));
+                }
+            }
+            Log.Info($"EPIC_SWEEP_END why=\"{why}\" results={results.Length} guest=\"{characterName}\" guestRealm={home} guestPrivLevel={homePrivLevel} " +
+                     $"guestOnline={live != null} | {string.Join(" | ", results)}");
+        }
+
+        /// <summary>The guest's character as it is in the game now: the sweep's own object, or the same character logged in again.</summary>
+        private static GamePlayer LiveGuest(GamePlayer guest, string characterId, string characterName)
+        {
+            if (guest?.Client != null && guest.ObjectState == GameObject.eObjectState.Active) return guest;
+            if (string.IsNullOrEmpty(characterName)) return null;
+            GamePlayer again = ClientService.Instance.GetPlayerByExactName(characterName);
+            return again?.Client != null && again.ObjectState == GameObject.eObjectState.Active &&
+                   (characterId == null || again.DBCharacter?.ObjectId == characterId) ? again : null;
+        }
+
+        private static bool SaveCharacter(GamePlayer player)
+        {
+            try
+            {
+                player.SaveIntoDatabase();
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Log.Warn($"EPIC_SWEEP_GUEST could not save {player?.Name}; the record stays for the next start or login", exception);
+                return false;
+            }
+        }
+
+        private static void RaiseAccount(IObjectDatabase database, DbAccount account, uint homePrivLevel)
+        {
+            if (account == null) return;
+            uint raised = EpicPlaytestSweepGuestRecord.RaisedPrivLevel(account.PrivLevel, homePrivLevel);
+            if (raised == account.PrivLevel) return;
+            account.PrivLevel = raised;
+            try
+            {
+                database?.SaveObject(account);
+            }
+            catch (Exception exception)
+            {
+                Log.Warn($"EPIC_SWEEP_GUEST could not save account {account.Name}; the record stays for the next start or login", exception);
+            }
+        }
+
+        /// <summary>
+        /// The guest's start (the account object, not the player, so tests can run it): a record an earlier sweep left is
+        /// put back first, so this record holds the true home values (<paramref name="homeRealm"/> comes back as the
+        /// character's home realm); then the record is saved, and only then is a GM account lowered to Player.
+        /// <paramref name="homePrivLevel"/>: the level it was lowered from, 0 when it was not. False when the record could
+        /// not be saved: nothing was changed, and the sweep must not lower the account.
+        /// </summary>
+        public static bool BeginGuest(IObjectDatabase database, DbAccount account, string characterId, string characterName,
+            ref eRealm homeRealm, out uint homePrivLevel)
+        {
+            homePrivLevel = 0;
+            if (account == null) return true;
+            EpicPlaytestSweepGuestRecord.Entry stale = EpicPlaytestSweepGuestRecord.Read(database, account.Name);
+            if (stale != null)
+            {
+                if (stale.CharacterId != null && stale.CharacterId == characterId && stale.HomeRealm != eRealm.None)
+                    homeRealm = stale.HomeRealm;
+                EpicPlaytestSweepGuestRecord.RestoreStored(database, false, "sweep_start", live: account);
+            }
+            uint home = account.PrivLevel > (uint)ePrivLevel.Player ? account.PrivLevel : 0;
+            if (!EpicPlaytestSweepGuestRecord.Write(database, new EpicPlaytestSweepGuestRecord.Entry(account.Name, home, characterId, characterName, homeRealm)))
+                return false;
+            if (home > 0) account.PrivLevel = (uint)ePrivLevel.Player;
+            homePrivLevel = home;
+            return true;
+        }
+
+        /// <summary>
+        /// The guest's normal end: the account level back (raised only) and saved; the record is cleared once the
+        /// character is saved with its home realm (<paramref name="saveCharacter"/>), else it stays for the next start or
+        /// login. Returns whether the record was cleared.
+        /// </summary>
+        public static bool EndGuest(IObjectDatabase database, DbAccount account, uint homePrivLevel, Func<bool> saveCharacter)
+        {
+            if (account == null) return false;
+            RaiseAccount(database, account, homePrivLevel);
+            if (saveCharacter != null && !saveCharacter()) return false;
+            return EpicPlaytestSweepGuestRecord.Clear(database, account.Name, account);
+        }
+
+        /// <summary>
+        /// Server start, before the port opens: a sweep the last run never ended (the server stopped or was killed while
+        /// it ran) left its record, and nothing runs now, so its guest's account level and realm are put back.
+        /// </summary>
+        [GameServerStartedEvent]
+        public static void OnServerStarted(DOLEvent e, object sender, EventArgs args)
+        {
+            int restored = EpicPlaytestSweepGuestRecord.RestoreStored(GameServer.Database, Running, "server_start");
+            if (restored > 0)
+                Log.Info($"EPIC_SWEEP_GUEST_RESTORED at start: {restored} account(s) a sweep left changed were put back");
+        }
+
+        /// <summary>An account logging in (LoginRequestHandler) with a record while no sweep runs is put back first.</summary>
+        public static void RestoreAtLogin(DbAccount account)
+        {
+            if (account == null) return;
+            try
+            {
+                EpicPlaytestSweepGuestRecord.RestoreStored(GameServer.Database, Running, "login", live: account);
+            }
+            catch (Exception exception)
+            {
+                Log.Warn($"EPIC_SWEEP_GUEST_RECORD could not restore {account.Name} at login", exception);
+            }
+        }
+
+        /// <summary>
+        /// A graceful stop ends a running sweep, so its own restore runs (the game loop has stopped: done here, not
+        /// posted). The raid itself is not stopped: the server is going down.
+        /// </summary>
+        [GameServerStoppedEvent]
+        public static void OnServerStopped(DOLEvent e, object sender, EventArgs args)
+        {
+            lock (Sync)
+            {
+                if (!_running) return;
+                _running = false;
+            }
+            try
+            {
+                Finish("server stopping", now: true);
+            }
+            catch (Exception exception)
+            {
+                Log.Warn("EPIC_SWEEP_END could not finish the sweep at the stop; the record stays for the next start", exception);
+            }
         }
     }
 }

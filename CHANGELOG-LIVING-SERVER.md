@@ -115,6 +115,11 @@ lost, and Albion's Summoner's Hall never reached). They pass automated tests; no
   it again that fight; now at 20 or more.
 - **The sweep's guest** follows a living raider at the raid's front, never a dead or released one, and lands on that
   raider's floor (the GM fell into the void five times).
+- **A sweep that never ended no longer leaves its guest a plain player.** The server was stopped while a sweep ran with
+  a guest, and the GM account came back at player level ("No such command" for every GM command until Make Me a GM was
+  turned off and on). The sweep now saves the guest's GM level and realm before it changes them; the next server start
+  or login puts them back (`EPIC_SWEEP_GUEST_RESTORED` in the server log), and a normal stop ends the sweep first. Only a
+  level the account had before the sweep is restored, so no account gets GM it did not have. Tests only so far.
 
 **The play test's sweep (GM only).** `/epictest sweep start [all|event,event] [guest]` runs every raid once, one after
 another, on the server alone: the 21 raid targets in the game's order, Darkness Falls last. Each raid runs at its period
