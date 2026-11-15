@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -23,7 +24,85 @@ namespace DOL.GS
             {
                 Summary = "The raider the infected ghoul crawls toward walks away from it; casters kill it (ranged add).",
             },
+            // ---- 1.2 big-boss plans (owner 2026-11-14; tests only) ----
+            new("SummonersInsideTether", [nameof(SummonerRoesia), nameof(SummonerCunovinda), nameof(SummonerLossren),
+                nameof(GrandSummonerGovannon), nameof(TorturedSouls), nameof(ExplodeUndead)], SummonerInsideTether)
+            {
+                Summary = $"Every summoner takes no damage past her tether (1,300 from her spawn) and resets there: the raid " +
+                          $"fights within {SummonerInnerRadius} of her spawn (a raider further out walks in), so whoever she " +
+                          "chases keeps her inside it; the one she chases out leads her home (catalog fight at home, 1,000).",
+            },
+            new("SummonerLossrenGhoul", [nameof(SummonerLossren), nameof(TorturedSouls)], LossrenGhoulFirst)
+            {
+                Summary = "While the infected ghoul lives every caster and archer shoots it (it bursts for 1,000 in 500 where " +
+                          "it reaches); then they clear the tortured souls (catalog ranged adds, area spells on the clumps) " +
+                          "while the melee stay on Lossren.",
+            },
+            new(nameof(GrandSummonerGovannon), [nameof(GrandSummonerGovannon)], GovannonBehindInHisForm)
+            {
+                Summary = "In his own form (before the demon) the melee fight him from behind (he parries and evades); the " +
+                          "demon's ring and Shroud rules (catalog) take over at 50%.",
+            },
         ];
+
+        // ---- the summoners' tether (1.2, PC log e3b8238 2026-11-14) ------------------------------------------------------
+
+        /// <summary>The raid stands within this of a summoner's spawn while it fights her (her tether is 1,300, her melee reach
+        /// 350; a raider walking in goes to <see cref="SummonerInnerRadius"/> less <see cref="CloseInInset"/>).</summary>
+        public const int SummonerInnerRadius = 900;
+        /// <summary>A soul or a ghoul this close to a summoner is hers.</summary>
+        public const int SummonerAddReach = 3_000;
+
+        private static readonly string[] Summoners =
+            [nameof(SummonerRoesia), nameof(SummonerCunovinda), nameof(SummonerLossren), nameof(GrandSummonerGovannon)];
+
+        /// <summary>
+        /// The summoners' tether (PC log e3b8238, 2026-11-14, the Hibernia raid at Lossren 13:41-13:48): the muster stood
+        /// 1,388 from her spawn (a final muster stands 1,400 off; her tether is 1,300), so she ran out to the raiders who
+        /// opened on her from there, was 1,302-1,545 from her spawn within 10 s (AUTONOMOUS_TETHER_RESET 16 times), took
+        /// no damage out there and reset to full: 55 engaged, 55 fell, lowest 77%. Now a raider fighting a summoner or her
+        /// souls and ghoul that stands further than <see cref="SummonerInnerRadius"/> from her spawn walks in first (her
+        /// target is left to the catalog's fight-at-home rule, which leads her home). Govannon's walkers are fought where
+        /// they walk (they must die before his altar).
+        /// </summary>
+        private static Advice? SummonerInsideTether(RuleContext c)
+        {
+            GameNPC target = c.Target;
+            GameNPC summoner = IsSummoner(target) ? target
+                : (c.Live ?? []).Where(n => Present(n) && IsSummoner(n) && n.CurrentRegionID == target.CurrentRegionID &&
+                                            target.IsWithinRadius(n, SummonerAddReach))
+                    .OrderBy(n => n.GetDistanceTo(target)).FirstOrDefault();
+            if (summoner == null || summoner.TargetObject == c.Raider) return null;
+            Vector3 home = new(summoner.SpawnPoint.X, summoner.SpawnPoint.Y, summoner.SpawnPoint.Z);
+            return SummonerStepIn(c.At, home) is Vector3 inside
+                ? new(BotAction.Reposition, c.Target, inside,
+                    $"summoner-tether: \"{summoner.Name}\" takes no damage past her tether; fight within {SummonerInnerRadius} of her home")
+                : null;
+        }
+
+        private static bool IsSummoner(GameNPC npc) => Summoners.Any(s => IsOfType(npc, s));
+
+        /// <summary>Where a raider at <paramref name="raider"/> stands to fight a summoner whose home is <paramref name="home"/>
+        /// (pure): null within <see cref="SummonerInnerRadius"/>, else that far in less <see cref="CloseInInset"/>, on its side.</summary>
+        public static Vector3? SummonerStepIn(Vector3 raider, Vector3 home) => CloseIn(raider, home, SummonerInnerRadius);
+
+        /// <summary>While the infected ghoul lives, casters and archers shoot it (period, ToT Raids 2006: "casters clear the souls
+        /// easily. All melee attack Lossren"; the ghoul is the script's).</summary>
+        private static Advice? LossrenGhoulFirst(RuleContext c)
+        {
+            if (!c.CanShootFlyers) return null;
+            GameNPC target = c.Target;
+            GameLiving raider = c.Raider;
+            GameNPC ghoul = (c.Live ?? []).OfType<ExplodeUndead>().Where(n => Present(n) && n.CurrentRegionID == target.CurrentRegionID &&
+                                                                             target.IsWithinRadius(n, SummonerAddReach))
+                .OrderBy(n => raider.GetDistanceTo(n)).FirstOrDefault();
+            return ghoul == null ? null : new Advice(BotAction.Retarget, ghoul, null, "ranged-add: the infected ghoul first (it bursts for 1,000 in 500)");
+        }
+
+        /// <summary>Govannon in his own form: melee from behind (period: "He parries, so it's good to keep most attackers behind
+        /// him", VN 2003; Allakhazam 2002: "standing behind him is key"). In demon form (model 636) the catalog's ring rules play.</summary>
+        private static Advice? GovannonBehindInHisForm(RuleContext c) =>
+            c.Target.Model == 636 ? null : MeleeFromBehind(c, "govannon-behind");
 
         // ---- logs: who a spread boss fights, and where its area hit lands (owner 2026-11-08: "log his target first") ----
 

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Linq;
@@ -64,9 +65,9 @@ namespace DOL.UnitTests
         [Test]
         public void OnlyGovannonHasTheOrder()
         {
-            // Living Server 1.2: Torst too (his DD lands 400 around his target; melee behind him, clear of it).
+            // Living Server 1.2: Torst (his DD lands 400 around his target) and Lurfos the Herald's weapon strike (300 around his target).
             Assert.That(EpicEncounterTactics.Catalog.Where(t => t.MeleeBehind).Select(t => t.Boss),
-                Is.EquivalentTo(new[] { "GrandSummonerGovannon", "Torst" }));
+                Is.EquivalentTo(new[] { "GrandSummonerGovannon", "Torst", "LurfosHerald" }));
             // The healer hold was dropped after duo7 (15 healers died within 200 of him, kept there): no boss has it.
             Assert.That(EpicEncounterTactics.Catalog, Has.None.Matches<EpicEncounterTactics.Tactic>(t => t.HealersHoldInSpread));
             EpicEncounterTactics.Tactic gov = null;
@@ -134,10 +135,10 @@ namespace DOL.UnitTests
         public void OnlyGovannonHasTheRingAndTheTaunt()
         {
             Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.MeleeRing > 0));
-            // Living Server 1.2: Torst too (he jumps to a random raider after rooting his target), and the Green Knight (he drops
-            // his aggro for a healer every 40-60 s).
+            // Living Server 1.2: Torst (he jumps to a random raider after rooting his target), Lurfos's taunt-back, and the Green
+            // Knight (he drops his aggro for a healer every 40-60 s).
             Assert.That(EpicEncounterTactics.Catalog.Where(t => t.TanksTaunt).Select(t => t.Boss),
-                Is.EquivalentTo(new[] { "GrandSummonerGovannon", "Torst", "OFGreenKnight" }));
+                Is.EquivalentTo(new[] { "GrandSummonerGovannon", "Torst", "LurfosHerald", "OFGreenKnight" }));
             foreach (var t in EpicEncounterTactics.Catalog)
                 if (t.Boss == "GrandSummonerGovannon")
                 {

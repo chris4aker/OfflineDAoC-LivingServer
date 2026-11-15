@@ -19,6 +19,26 @@ namespace DOL.GS
             {
                 Summary = "Raiders with a cold spell put Orshom's Fire out from outside it (only cold damages it).",
             },
+            // ---- 1.2 big-boss plans (owner 2026-11-14; tests only). Catalog rows (hand notes): Fuladl's and Fulafeallan's
+            // parts as required adds, Beran's barrels as a ground hazard, Lurfos's weapon strike as a spread, Jehrog after
+            // Ulor, Scurceol's orbs one at a time.
+            new(nameof(DrihtenElreden), [nameof(DrihtenElreden)], DrihtenPlan)
+            {
+                Summary = "His students (DrihtenBaf, the thrawn ogre bocere he calls in one at a time every 15-30 s) within " +
+                          "2,500 die first; one that joins his fight is the casters', the melee stay on him, from behind (he " +
+                          "evades and parries).",
+                ClearFirstOf = DrihtenStudentClearsFirst,
+            },
+            new(nameof(DebenSeGecynde), [nameof(DebenSeGecynde)], DebenPlan)
+            {
+                Summary = "Every 45-70 s he calls 1-3 fighters and 1-3 mages: the party he fights holds him, the casters and " +
+                          "archers kill the mages first, the other melee the fighters first.",
+            },
+            new(nameof(BeranSupplyMaster), [nameof(BeranSupplyMaster)], BeranPlan)
+            {
+                Summary = "His barrels (8 s, 1,200 heat in 1,000) are a catalog ground hazard everyone leaves; the Onstal " +
+                          "Hyrde he yells for (2-4 every 35-65 s) are killed by everyone but the party he fights.",
+            },
         ];
 
         /// <summary>Monsters (by class name) that take damage only of these types; any other damage type does nothing.
@@ -65,5 +85,56 @@ namespace DOL.GS
                 return new(BotAction.Retarget, fire, null, $"cold-fire: only cold damages \"{fire.Name}\"; put it out");
             return new(BotAction.None, fire, null, "cold-fire: cold spells at the fire");
         }
+
+        // ---- 1.2 big-boss plans (period: Salaris' Guide to Albion Epic Encounters, VN Boards 2003; tests only) ---------
+
+        /// <summary>Drihten's students' PackageID (25 thrawn ogre bocere around him in the world database, 760-1,170 off).</summary>
+        public const string DrihtenStudents = "DrihtenBaf";
+        /// <summary>He calls students within this (DrihtenElredenBrain.BringHelp).</summary>
+        public const int DrihtenCallReach = 2_500;
+
+        private static GameNPC DrihtenStudentClearsFirst(GameNPC npc, IReadOnlyList<GameNPC> live)
+        {
+            if (npc == null || npc.PackageID != DrihtenStudents || npc is DrihtenElreden) return null;
+            GameNPC drihten = BossNear(npc, live, nameof(DrihtenElreden), AddSearchRadius);
+            return drihten != null && Flat(At(npc), new(drihten.SpawnPoint.X, drihten.SpawnPoint.Y, drihten.SpawnPoint.Z)) <= DrihtenCallReach
+                ? drihten : null;
+        }
+
+        /// <summary>
+        /// Drihten Elreden (period: "an ogre friar ... a significant number of styles. His students will stand by and watch,
+        /// for the most part ... be careful for potential adds", VN 2003). The script calls one student at a time onto his
+        /// target every 15-30 s: they die first (<see cref="DrihtenStudentClearsFirst"/>); one he brought in anyway is the
+        /// casters' and archers' while the melee stay on him, from behind (period, FreddysHouse 2003-03-27: high evade and
+        /// parry, his best styles follow them; flank him).
+        /// </summary>
+        private static Advice? DrihtenPlan(RuleContext c) =>
+            OthersTakeTheAdds(c, n => n.PackageID == DrihtenStudents, DrihtenCallReach, "drihten-students", rangedOnly: true) ??
+            MeleeFromBehind(c, "drihten-behind");
+
+        /// <summary>
+        /// Deben se Gecynde (period: "a military commander, who commands several ogre fighters and mages. The AI in this
+        /// encounter is excellent", VN 2003). The script calls 1-3 DebenFighter (3,000 health) and 1-3 DebenMage (2,000, a 300
+        /// heat or cold bolt every cast) beside him every 45-70 s. The party he fights holds him; casters and archers kill the
+        /// mages first, the other melee the fighters first.
+        /// </summary>
+        private static Advice? DebenPlan(RuleContext c)
+        {
+            bool ranged = c.CanShootFlyers;
+            return OthersTakeTheAdds(c, n => n is DebenMage or DebenFighter, 2_500, "deben-soldiers",
+                n => (n is DebenMage) == ranged ? 0 : 1, anyState: true);
+        }
+
+        /// <summary>The name of the guards Beran yells for (plain GameNPCs, BeranSupplyMasterBrain.CallForHelp).</summary>
+        public const string BeranGuards = "Onstal Hyrde";
+
+        /// <summary>
+        /// Beran the Supply Master (period: "ignites the barrels around the room, causing sections of the room to explode ...
+        /// Not very difficult overall", VN 2003). The barrels are a catalog ground hazard (BarrelExplosive, 1,000: every raider
+        /// leaves it in its 8 s, the party he fights too, and he follows); the Onstal Hyrde he yells for are killed by
+        /// everyone but the party he fights.
+        /// </summary>
+        private static Advice? BeranPlan(RuleContext c) =>
+            OthersTakeTheAdds(c, n => n.Name == BeranGuards, 2_500, "beran-guards", anyState: true);
     }
 }

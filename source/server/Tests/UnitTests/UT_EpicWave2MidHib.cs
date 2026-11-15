@@ -154,7 +154,7 @@ namespace DOL.UnitTests
             Assert.That(Row("BlackLady").SpreadRadius, Is.EqualTo(350));
             Assert.That(Row("BlackLady").FightAtHomeRadius, Is.EqualTo(1100), "fight at home kept");
             Assert.That(Row("GrandSummonerGovannon").RequiredAdds, Is.EqualTo(new[] { "ShadeOfAelfgar" }));
-            Assert.That(Row("SummonerLossren").RangedAdds, Is.EqualTo(new[] { "ExplodeUndead" }));
+            Assert.That(Row("SummonerLossren").RangedAdds, Is.EqualTo(new[] { "ExplodeUndead", "TorturedSouls" }));
             var encounters = T.AllDungeonRules.Select(r => r.Encounter).ToArray();
             Assert.That(encounters, Is.SupersetOf(new[] { "KingTuscar", "Kvasir", "Jailer", "Fornfrusenen", "Vagn", "SummonerLossren",
                 "Krackenschtein", "Avartack" }));
