@@ -27,6 +27,7 @@ namespace DOL.GS
         {
             using var aiProfile = AiProfile.Scope(AiSystem.ControllerBattleground); // AI_PROFILE: measures only
             _battlegroundRallyHold = null;
+            _battlegroundGatherStaging = null;
             BattlegroundBrackets.Bracket bracket = BattlegroundBrackets.ForLevel(bot.Level);
             if (bracket == null)
             {
@@ -69,11 +70,18 @@ namespace DOL.GS
 
             if (assault)
             {
+                // A siege crew works its job (rams and engines) while the realm gathers: the only damage any gate took on
+                // the owner's PC (build 3d67b6f, 07:48-07:53, targetHp 98 -> 92) was a ram's.
                 if (TryRunSiegeJob(bot)) return true;
-                // The realm assaults as one wave (AutonomousBattlegroundWave); a bot in a fight finishes it first.
-                if (!bot.InCombat && central != null &&
+                // The realm assaults as one wave (AutonomousBattlegroundWave). Decided first, in a fight or not: a bot whose
+                // combat timer still ran after a fight (InCombat lasts 10 s, and a hurt bot comes here to recover) skipped
+                // the gathering and went for the nearest keep guard up to 5,000 away on its own. On the owner's PC (build
+                // 3d67b6f, Thidranki 2026-11-15) 63 Midgard and Hibernian bots died to the keep's guards in 17 minutes,
+                // one at a time, while no wave ever went in.
+                if (central != null &&
                     AutonomousBattlegroundWave.ShouldGather(bot, bracket, central, out Vector3 staging, out string gathered))
                 {
+                    _battlegroundGatherStaging = staging;
                     if (Vector3.DistanceSquared(new(bot.X, bot.Y, bot.Z), staging) > 250 * 250)
                         IssuePath(bot, staging);
                     else
@@ -102,7 +110,14 @@ namespace DOL.GS
                     Vector3.DistanceSquared(new(bot.X, bot.Y, bot.Z), rally.Point) <=
                     AutonomousBattlegroundKeepRally.RallyRadius * AutonomousBattlegroundKeepRally.RallyRadius)
                     _battlegroundGatePassed = true;
-                GameLiving target = FindRvrTarget(bot) ?? FindReachableEnemyDoor(bot, central);
+                GameLiving target = FindRvrTarget(bot);
+                // While the gates stand the wave marches on the gate together and fights the guards that come at it,
+                // instead of each bot running at its own nearest guard (AutonomousBattlegroundWave.WaveTakesGuard).
+                if (target is GameKeepGuard guard && !AutonomousBattlegroundWave.WaveTakesGuard(
+                        central.Doors.Values.Any(door => door.IsAlive && door.IsAttackableDoor && door.State == eDoorState.Closed),
+                        guard is GuardLord, bot.GetDistanceTo(guard), FiringOnRealm(bot, guard)))
+                    target = null;
+                target ??= FindReachableEnemyDoor(bot, central);
                 if (target != null)
                 {
                     bot.StopMovingOnPath();
@@ -320,6 +335,47 @@ namespace DOL.GS
         public const int BattlegroundGateReached = 250;
         private int _battlegroundGateKeep;
         private bool _battlegroundGatePassed;
+        // Set while this bot gathers for its realm's wave (AutonomousBattlegroundWave): it fights only what comes at it.
+        private Vector3? _battlegroundGatherStaging;
+
+        /// <summary>This bot is gathering for its realm's battleground wave, at <paramref name="staging"/>.</summary>
+        private bool BattlegroundGatherHold(GameBot bot, out Vector3 staging)
+        {
+            staging = default;
+            return _battlegroundGatherStaging.HasValue && BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) &&
+                   AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground) &&
+                   AutonomousBattlegroundWave.IsGathering(bot.CurrentRegionID, bot.Realm, out staging);
+        }
+
+        /// <summary>Whether a gathering bot takes a fight with this target (AutonomousBattlegroundWave.GathererMayEngage).</summary>
+        private static bool GathererMayEngage(GameBot bot, GameLiving target, Vector3 staging) =>
+            AutonomousBattlegroundWave.GathererMayEngage(FiringOnRealm(bot, target),
+                Vector3.Distance(new(target.X, target.Y, target.Z), staging), bot.GetDistanceTo(target));
+
+        /// <summary>
+        /// A gatherer in a fight drops a target that is no longer coming at it and has left the staging point (a fleeing
+        /// enemy, or one it was pulled toward), and walks back instead of chasing it under the keep's walls.
+        /// </summary>
+        private bool DropBattlegroundGatherChase(BotBrain brain, GameBot bot)
+        {
+            if (bot.TargetObject is not GameLiving target || target is GameKeepDoor || !target.IsAlive ||
+                !BattlegroundGatherHold(bot, out Vector3 staging) || GathererMayEngage(bot, target, staging))
+                return false;
+            brain.RemoveFromAggroList(target);
+            bot.StopAttack();
+            bot.TargetObject = null;
+            if (bot.FollowTarget == target)
+            {
+                bot.StopFollowing();
+                bot.StopMovingOnPath();
+                bot.StopMoving();
+            }
+            if (!brain.HasAggro && brain.FSM.GetCurrentState()?.StateType == eFSMStateType.AGGRO)
+                brain.FSM.SetCurrentState(eFSMStateType.IDLE);
+            AutonomousBattlegroundWave.NoteHeldBack(bot.CurrentRegionID, bot.Realm, dropped: true);
+            return true;
+        }
+
         // Set while this bot holds at its realm's rally (AutonomousBattlegroundKeepRally): it fights what comes to the rally,
         // not the lord and not guards elsewhere on the walls.
         private Vector3? _battlegroundRallyHold;
