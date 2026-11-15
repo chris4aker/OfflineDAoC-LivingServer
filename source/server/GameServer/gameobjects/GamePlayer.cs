@@ -11892,8 +11892,8 @@ namespace DOL.GS
 
             if (recipe == null)
             {
-                if (log.IsWarnEnabled)
-                    log.Warn("[CRAFTING] Item " + itemID + " not found in recipe database!");
+                // RecipeDB logged why, once (2026-11-15); the player hears that the recipe is unavailable instead of nothing.
+                Out.SendMessage("That recipe cannot be made on this server.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return;
             }
 

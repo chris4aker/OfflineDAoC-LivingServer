@@ -69,7 +69,8 @@ namespace DOL.GS
 		/// <returns></returns>
 		public static AbstractCraftingSkill getSkillbyEnum(eCraftingSkill skill)
 		{
-			if (skill == eCraftingSkill.NoCrafting) return null;
+			// 2026-11-15: a value outside 1-15 (a bad CraftingSkillType, or a client packet) is no skill, not an IndexOutOfRangeException.
+			if ((int)skill < 1 || (int)skill > m_craftingskills.Length) return null;
 			return m_craftingskills[(int)skill - 1] as AbstractCraftingSkill;
 		}
 
