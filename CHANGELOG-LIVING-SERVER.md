@@ -85,6 +85,26 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+**A bot-led party stuck in Caer Diogel** (tests only; owner's PC, build `1dc66b6`, 2026-11-15: party albion-f86e88-1370,
+on its way to griffins in Gwyddneau with the player hosted, stood in Caer Diogel from 00:55 to past 01:19 in phase
+"Traveling" with no travel line in the log, while two of its members were in Camelot at 01:05).
+
+- **A PvE party's member far away no longer holds it for good.** The 45-second stall rule only let go of a member in the
+  leader's region that stood still; one in another region, or one walking without getting closer, held the leader in
+  "Waiting for group members" with no limit. After 10 minutes without coming 200 units closer (or back into the leader's
+  region) such a member no longer holds the party (`AUTONOMOUS_GROUP_MEMBER_LONG_HOLD` names it, where it is and what it
+  does): the leader goes on to the camp and the member keeps travelling there. Warbands and raid parties are unchanged.
+- **The fight is called in /group in a party that hosts the player.** A gamebot that leads never joins the player's group,
+  so its combat calls (and B4's leader pull call) never ran: from 01:36 to 01:43 the party fought orcs and a griffin with
+  the player and said nothing in /group. They run now, as in the player's group; a raid party's guest seat is unchanged.
+- **No pull calls in /say from a party on the road, in town or with the player.** "pulling" and "need pow" came in /say
+  from the party standing in Caer Diogel, and "griffin inc" beside its /group calls. A grouped bot says those only at its
+  camp or in a fight, and never in /say when the player is in its group. The /group "join" hellos ("hi all, healer here,
+  try not to die") are no longer posted in /lfg.
+- **The welcome fits where the player is.** "hey, we are out at Aldland, come find us" went to a player 1,186 units from
+  the leader in Caer Diogel. A player within 1,500 units gets "stick with me, we head to griffin" now, and the place named
+  is the town the leader stands in (Caer Diogel), not only its zone.
+
 **Raids after the sweep of 2026-11-14** (owner's PC, build `e3b8238`: Caer Sidi, Tuscaran Glacier and Galladoria all
 lost, and Albion's Summoner's Hall never reached). They pass automated tests; nobody has played them in game yet.
 

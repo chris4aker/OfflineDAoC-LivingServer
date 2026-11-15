@@ -319265,6 +319265,142 @@
   },
   {
    "kind": "group",
+   "topic": "lead_welcome_here",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "welcome! stick with me, we head to {camp}",
+   "id": "b14696f91365"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome_here",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "welcome, stay close, off to {camp}",
+   "family": "96866f84ae",
+   "id": "7a3c374f346c"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome_here",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "welcome, stick with me, off to {camp}",
+   "family": "96866f84ae",
+   "id": "cef1fe6a7975"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome_here",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "hey, stay close, off to {camp}",
+   "family": "96866f84ae",
+   "id": "35acf184b8c9"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome_here",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "hey, stick with me, off to {camp}",
+   "family": "96866f84ae",
+   "id": "bda9ac157fb2"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome_here",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "welcome aboard, follow me and we go",
+   "id": "d6c72e7b4411"
+  },
+  {
+   "kind": "group",
    "topic": "lead_wait",
    "who": [],
    "realm": "*",

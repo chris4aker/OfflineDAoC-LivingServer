@@ -79,6 +79,15 @@ public static class AutonomousChatFieldTalk
         /// <summary>How many were on the speaker when it died (0: unknown): with one, no line claims several.</summary>
         public int Attackers { get; init; }
 
+        /// <summary>The speaker is fighting now (a live bot): a party's pull calls fit then, at the camp or on the road.</summary>
+        public bool InCombat { get; init; }
+
+        /// <summary>
+        /// The speaker's group has the real player in it (the player's group, or a gamebot party hosting the player): its fight
+        /// is called in /group (AutonomousBotCombatCalls), not in /say.
+        /// </summary>
+        public bool InPlayerGroup { get; init; }
+
         /// <summary>The class of the enemy that killed the speaker, or null.</summary>
         public string KillerClass { get; init; }
 
@@ -1089,6 +1098,12 @@ public static class AutonomousChatFieldTalk
         }
         string monster = f.Monster;
         string monsters = monster == null ? null : AutonomousBotVoiceCorpus.Plural(monster);
+        // Owner's PC 2026-11-15 (build 1dc66b6): a party on its way to griffins in Gwyddneau stood in Caer Diogel and said
+        // "pulling" and "need pow" in /say. The pull calls are for a party at its camp or in a fight; on the road or in a
+        // town a grouped bot only says the small things. In a group with the real player the fight is called in /group
+        // (AutonomousBotCombatCalls; the same party at 01:39-01:42 said "pulling", "inc" and "griffin inc" in /say too).
+        if (f.InGroup && (f.InPlayerGroup || !f.AtCamp && !f.InCombat))
+            return new Said(Pick(random, "brb", "rdy", "1 sec"), "social", null);
         if (f.InGroup)
             return new Said(Pick(random,
                 "pulling", "inc", "oom", "sitting", "need pow", "brb", "rdy", "1 sec", "wait for heals",
@@ -2588,10 +2603,23 @@ public static class AutonomousChatFieldTalk
         bool seeksGroup = bot.Group == null && (AutonomousObjectiveAssignments.IsAwaitingGroupMatchmaking(bot) ||
                                                 AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR));
         string dungeon = inDungeon ? zone : recruit is { WhereIsDungeon: true } ? recruit.Where : AutonomousBotVoices.DungeonFor(bot.Realm, bot.Level, random);
+        // A bot standing in a town (Caer Diogel, 2026-11-15) is not at its camp, whatever its record says.
+        bool atCamp = flags.Contains("at_camp");
+        if (atCamp)
+        {
+            try
+            {
+                atCamp = !AutonomousBotGroupCoordinator.IsInTownArea(bot);
+            }
+            catch
+            {
+                // No world (tests): keep the record's answer.
+            }
+        }
         return new Facts(bot.DatabaseID, bot.Realm, bot.CharacterClass?.Name ?? bot.ClassName, bot.Level, zone,
             dungeon, flags.Contains("in_rvr"), inDungeon,
             flags.Contains("in_town") || flags.Contains("in_capital"), groupSize > 1, groupSize, flags.Contains("just_leveled"),
-            flags.Contains("just_died"), flags.Contains("bag_full"), flags.Contains("at_camp"), monster, item, quality, gear,
+            flags.Contains("just_died"), flags.Contains("bag_full"), atCamp, monster, item, quality, gear,
             AutonomousBotVoices.TravelingTo(bot), AutonomousBotVoices.Bubbles(bot) ?? 0, DateTime.Now.Hour, flags.Contains("is_healer"),
             World(bot.Realm))
         {
@@ -2603,6 +2631,8 @@ public static class AutonomousChatFieldTalk
             ItemUsable = usable,
             KilledBy = death?.Killer is "monster" or "guard" or "pet" or "bot" or "player" ? death.Killer : null,
             Attackers = death?.Attackers ?? 0,
+            InCombat = bot.InCombat,
+            InPlayerGroup = flags.Contains("in_player_group"),
             KillerClass = death?.KillerClass,
             WasAway = AutonomousChatEngagement.WasAway(bot.DatabaseID, GameLoop.GameLoopTime, flags.Contains("just_died") || bot.IsReturningAfterRelease),
             Dead = !bot.IsAlive,
