@@ -22,9 +22,29 @@ namespace DOL.GS.Tests
         public void ABotThatLeveledUpKeepsVisitingItsTrainer()
         {
             Assert.That(GameBot.ArrivesTrained(1, 1), Is.False, "a new level-1 bot");
-            Assert.That(GameBot.ArrivesTrained(49, 1), Is.False, "the launcher makes level 1 and level 50 only");
+            Assert.That(GameBot.ArrivesTrained(49, 1), Is.False, "saved, or not known to be the launcher's");
             Assert.That(GameBot.ArrivesTrained(50, 48), Is.False, "it trained on its way and owes two levels: its trainer's");
             Assert.That(GameBot.ArrivesTrained(50, 50), Is.False, "already trained");
+            Assert.That(GameBot.ArrivesTrained(22, 1, neverSaved: false), Is.False, "saved at 22: it leveled there by playing");
+        }
+
+        /// <summary>
+        /// "+ Lv.20" (Living Server 1.2; owner's PC, build 1dc66b6, 2026-11-15: every bot level 50, every battleground empty)
+        /// makes never-saved bots at levels 20-24 (any level above 1 qualifies); they arrive trained like "+ Lv.50" bots, not with every line at 1.
+        /// </summary>
+        [TestCase(15)]
+        [TestCase(22)]
+        [TestCase(35)]
+        public void ABotTheLauncherMadeForABattlegroundArrivesTrained(int level)
+        {
+            Assert.That(GameBot.ArrivesTrained(level, 1, neverSaved: true), Is.True);
+            Assert.That(GameBot.ArrivesTrained(level, level, neverSaved: true), Is.False, "already trained");
+        }
+
+        [Test]
+        public void ANewLevelOneBotIsNotTrainedOnArrival()
+        {
+            Assert.That(GameBot.ArrivesTrained(1, 1, neverSaved: true), Is.False, "the launcher's \"+ Lv.1\": nothing to train");
         }
     }
 }

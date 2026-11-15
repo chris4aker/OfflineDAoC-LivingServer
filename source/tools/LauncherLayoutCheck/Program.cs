@@ -35,7 +35,7 @@ internal static class Program
                     throw new Exception($"Button text does not fit at {width}: {button.Text} {button.Size}");
             }
             bitmap.Save(Path.Combine(AppContext.BaseDirectory, $"launcher-{width}.png"), ImageFormat.Png);
-            Console.WriteLine($"PASS {width}: all six generation buttons fit; rendered launcher-{width}.png");
+            Console.WriteLine($"PASS {width}: all nine generation buttons fit; rendered launcher-{width}.png");
         }
         using var rvrForm = (Form)Activator.CreateInstance(type, true)!;
         var hidden = BindingFlags.Instance | BindingFlags.NonPublic;
