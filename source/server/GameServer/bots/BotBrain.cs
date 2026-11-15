@@ -1928,8 +1928,7 @@ namespace DOL.AI.Brain
             // the listing. The world controller routes to a vendor after this
             // slot is occupied and returns here for upgrades only after clearing.
             AutonomousBotEconomy.ListingCandidate candidate = AutonomousBotEconomy.FindValuableListingCandidate(bot);
-            if (candidate != null &&
-                AutonomousBotEconomy.FindFreeListingSlot(AutonomousBotEconomy.GetOwnerId(bot.DatabaseID)) >= 0)
+            if (candidate != null && AutonomousBotEconomy.CanListNow(bot, candidate.Item))
             {
                 int listingPrice = AutonomousBotEconomy.RollListingPrice(candidate.Item);
 
@@ -1962,6 +1961,18 @@ namespace DOL.AI.Brain
                 SetExchangeStatus(bot, $"Asking the realm about {candidate.Item.Name}",
                     $"Will list the real item for {listingPrice} copper after the chatter");
                 bot.StopMoving();
+                return true;
+            }
+
+            // A seam (Crafting 2.0 WP0): registered Exchange steps (list crafted stock, hand over orders, buy a template
+            // piece) after the listing and before the purchase. None is registered by default.
+            if (DOL.GS.CraftingEconomy.BotServiceSeams.TryRunSteps(eWorldServiceKind.RealmExchange, bot, broker, now,
+                    out DOL.GS.CraftingEconomy.BotServiceResult exchangeStep))
+            {
+                SetExchangeStatus(bot, exchangeStep.Status, exchangeStep.Detail);
+                AutonomousStuckWatchdog.MarkProgress(bot, exchangeStep.Progress);
+                AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
+                _nextExchangeCheckTick = now + Math.Max(1_000, exchangeStep.CooldownMs);
                 return true;
             }
 
@@ -2112,6 +2123,18 @@ namespace DOL.AI.Brain
                 AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Money);
                 AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
                 _nextMerchantServiceTick = now + 30_000 + Random.Shared.Next(30_001);
+                return true;
+            }
+
+            // A seam (Crafting 2.0 WP0): registered merchant steps (repairs, potions, materials) after the selling and
+            // the upgrades, before the cosmetics. None is registered by default.
+            if (DOL.GS.CraftingEconomy.BotServiceSeams.TryRunSteps(eWorldServiceKind.Vendor, bot, merchant, now,
+                    out DOL.GS.CraftingEconomy.BotServiceResult merchantStep))
+            {
+                SetMerchantStatus(bot, merchantStep.Status, merchantStep.Detail);
+                AutonomousStuckWatchdog.MarkProgress(bot, merchantStep.Progress);
+                AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
+                _nextMerchantServiceTick = now + Math.Max(1_000, merchantStep.CooldownMs);
                 return true;
             }
 

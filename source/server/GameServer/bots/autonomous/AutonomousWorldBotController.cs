@@ -21,6 +21,13 @@ namespace DOL.GS
     /// </summary>
     public sealed partial class AutonomousWorldBotController
     {
+        /// <summary>
+        /// The executor seam of the task-break activities (Crafting 2.0 WP0, DOL.GS.CraftingEconomy.IBotBreakActivity). WP4
+        /// implements it in its own partial file with DividedRealms' craft trip (HandleCraftTrip): set
+        /// <paramref name="handled"/> when the activity used this turn. Unimplemented, every call compiles away.
+        /// </summary>
+        partial void RunBreakActivities(GameBot bot, ref bool handled);
+
         private const int CampCellSize = 4200;
         // Source-empty CapnBry zones are rebuilt from live NPCs.  Their live
         // clusters are intentionally smaller than the ordinary 4,200-unit
@@ -695,6 +702,12 @@ namespace DOL.GS
                             AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
                             return true;
                         }
+                        // A seam (Crafting 2.0 WP0): a registered break activity's executor (DividedRealms' craft trip,
+                        // WP4's partial file). With no implementation the compiler removes the call.
+                        bool breakActivityHandled = false;
+                        RunBreakActivities(bot, ref breakActivityHandled);
+                        if (breakActivityHandled)
+                            return true;
                         if (AutonomousObjectiveAssignments.WantsBetweenTaskInventory(bot) && TryRouteToNeededService(bot))
                             return true;
                         if (AutonomousObjectiveAssignments.WantsBetweenTaskDowntime(bot) && HandleTownIdle(brain, bot))

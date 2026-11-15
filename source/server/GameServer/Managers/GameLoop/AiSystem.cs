@@ -117,6 +117,14 @@ namespace DOL.GS
         LockRvrEvents,
         LockDatabaseWrite,
 
+        // Crafting 2.0 (docs/CRAFTING-2.0-BUILD-PLAN.md), appended so the earlier slots keep their numbers. Nothing
+        // measures these until the package that owns each is merged.
+        CraftSession,     // WP4: a crafter gamebot's station work
+        EconomyMarket,    // WP5: order board, price index, quartermaster
+        EconomyLedger,    // WP2: flow attribution and the hourly supply
+        EconomyUpkeep,    // WP7: wear, repairs, consumables, luxury, governor
+        CraftCommerce,    // WP8: the player's trade with crafter gamebots
+
         /// <summary>Not a system: the number of built-in systems. Names given to <see cref="AiProfile.Scope(string)"/>
         /// take the slots from here up to <see cref="AiProfile.MaxSystems"/>.</summary>
         BuiltInCount,
@@ -258,6 +266,11 @@ namespace DOL.GS
             AiSystem.LockRaid => "lock.raid",
             AiSystem.LockRvrEvents => "lock.rvr_events",
             AiSystem.LockDatabaseWrite => "lock.db_write",
+            AiSystem.CraftSession => "craft.session",
+            AiSystem.EconomyMarket => "economy.market",
+            AiSystem.EconomyLedger => "economy.ledger",
+            AiSystem.EconomyUpkeep => "economy.upkeep",
+            AiSystem.CraftCommerce => "craft.commerce",
             _ => throw new ArgumentOutOfRangeException(nameof(system), system, "Every built-in AI system needs a name."),
         };
     }

@@ -4,9 +4,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using DOL.Database;
 using DOL.Database.Attributes;
+using DOL.GS.CraftingEconomy;
 using DOL.Logging;
 
 namespace DOL.GS;
@@ -72,11 +74,22 @@ namespace DOL.GS;
 
     public static long GetMoney(long botId) => FindLiveOrStored(botId)?.MoneyCopper ?? 0;
 
-    public static bool TrySpend(long botId, long copper)
+    /// <summary>Takes coin from a gamebot's saved purse. The optional kind and the compiler-filled caller let the
+    /// economy ledger (Crafting 2.0 WP2) attribute the move without any call-site edit; no amount depends on them.</summary>
+    public static bool TrySpend(long botId, long copper, EconomyFlowKind kind = EconomyFlowKind.Unattributed,
+        [CallerFilePath] string callerFile = "", [CallerMemberName] string callerMember = "")
     {
         if (copper < 0)
             return false;
 
+        bool spent = TrySpendCore(botId, copper);
+        if (spent)
+            EconomyFlows.Record(botId, -copper, kind, callerFile, callerMember);
+        return spent;
+    }
+
+    private static bool TrySpendCore(long botId, long copper)
+    {
         lock (typeof(AutonomousBotEconomy))
         {
             bool isLive = AutonomousBotRegistry.TryGet(botId, out GameBot live) && live?.PersistentRecord != null;
@@ -98,11 +111,21 @@ namespace DOL.GS;
         }
     }
 
-    public static bool AddMoney(long botId, long copper)
+    /// <summary>Adds coin to a gamebot's saved purse (see <see cref="TrySpend"/> for the ledger parameters).</summary>
+    public static bool AddMoney(long botId, long copper, EconomyFlowKind kind = EconomyFlowKind.Unattributed,
+        [CallerFilePath] string callerFile = "", [CallerMemberName] string callerMember = "")
     {
         if (copper < 0)
             return false;
 
+        bool added = AddMoneyCore(botId, copper);
+        if (added)
+            EconomyFlows.Record(botId, copper, kind, callerFile, callerMember);
+        return added;
+    }
+
+    private static bool AddMoneyCore(long botId, long copper)
+    {
         lock (typeof(AutonomousBotEconomy))
         {
             bool isLive = AutonomousBotRegistry.TryGet(botId, out GameBot live) && live?.PersistentRecord != null;
@@ -192,7 +215,7 @@ namespace DOL.GS;
         // Stackable world goods are the server's practical crafting-material
         // signal. Only trained crafters buy them, and they remain real backpack
         // inventory until an actual recipe consumes them.
-        if (hasCraft && item.IsStackable && item.Count > 0)
+        if (item.IsStackable && item.Count > 0 && EconomySeams.IsMaterialFor(bot, item, hasCraft))
             return new PurchaseCandidate(item, 300 + Math.Min(150, item.Count * 3) + playerPreference, eInventorySlot.Invalid, false, isPlayerListing);
 
         return null;
@@ -219,7 +242,8 @@ namespace DOL.GS;
         public static bool TryGetEquipmentUpgrade(GameBot bot, DbInventoryItem item, out eInventorySlot equipSlot)
         {
             equipSlot = eInventorySlot.Invalid;
-            if (bot?.Inventory == null || !CanUseEquipment(bot, item))
+            // A seam (Crafting 2.0): an item a package holds back (a piece made for another bot's order) is never worn.
+            if (bot?.Inventory == null || !CanUseEquipment(bot, item) || EconomySeams.IsReserved(bot, item))
                 return false;
 
             equipSlot = ResolveEquipmentSlot(bot, item);
@@ -372,7 +396,9 @@ namespace DOL.GS;
             // Choose the single listing from the complete backpack before any
             // vendor sale changes that candidate pool. Once the listing slot is
             // occupied, finish clearing every disposable item before shopping.
-            if (HasListingSpace(bot) && FindValuableListingCandidate(bot) != null)
+            // The candidate search applies each item's own listing cap (EconomySeams.Listings; 3 for every item by
+            // default, so this is the old HasListingSpace check).
+            if (FindValuableListingCandidate(bot) != null)
                 return eWorldServiceKind.RealmExchange;
 
             if (FindVendorTrashCandidate(bot) != null)
@@ -392,7 +418,11 @@ namespace DOL.GS;
                 return eWorldServiceKind.RealmExchange;
 
             // In Darkness Falls, seals the bot has looted buy its realm's seal gear, or seal items to sell (owner 2026-10-30).
-            return !IsBackpackFull(bot) && HasSealPurchase(bot) ? eWorldServiceKind.SealMerchant : null;
+            if (!IsBackpackFull(bot) && HasSealPurchase(bot))
+                return eWorldServiceKind.SealMerchant;
+
+            // A seam (Crafting 2.0): a registered town-visit need (stock to sell, a gear gap, a repair); none by default.
+            return BotServiceSeams.NeededService(bot);
         }
 
         public const int NearlyFullFreeSlots = 6;
@@ -447,7 +477,8 @@ namespace DOL.GS;
 
             HashSet<DbInventoryItem> operationalLoadout = FindOperationalLoadoutItems(bot);
             foreach (DbInventoryItem item in backpack.Where(item =>
-                         !operationalLoadout.Contains(item) && !TryGetEquipmentUpgrade(bot, item, out _)))
+                         !operationalLoadout.Contains(item) && !TryGetEquipmentUpgrade(bot, item, out _) &&
+                         !EconomySeams.IsReserved(bot, item)))
             {
                 if (bot.Inventory.RemoveItem(item))
                     removed++;
@@ -561,16 +592,27 @@ namespace DOL.GS;
             (!IsBackpackFull(bot) && !AutonomousObjectiveAssignments.IsBetweenPveTasks(bot)))
             return null;
 
+            // Only what fits under its listing cap now (EconomySeams.Listings: 3 posts for every item by default).
+            string ownerId = GetOwnerId(bot.DatabaseID);
+            int used = CountListings(ownerId);
+            IExchangeListingPolicy listings = EconomySeams.Listings;
+            if (used >= listings.MaxListings(ownerId))
+                return null;
+
             HashSet<DbInventoryItem> operationalLoadout = FindOperationalLoadoutItems(bot);
             return bot.Inventory.AllItems
             .Where(item => item != null && item.IsTradable && !string.IsNullOrWhiteSpace(item.Name) &&
                            item.OwnerLot == 0 && item.SlotPosition >= (int)eInventorySlot.FirstBackpack &&
                            item.SlotPosition <= (int)eInventorySlot.LastBackpack &&
                            !operationalLoadout.Contains(item) &&
-                           !TryGetEquipmentUpgrade(bot, item, out _))
+                           !TryGetEquipmentUpgrade(bot, item, out _) &&
+                           used < listings.ListingCap(ownerId, item) &&
+                           !EconomySeams.IsReserved(bot, item) && !EconomySeams.BlocksListing(bot, item))
             .Select(item => new ListingCandidate(item, RecommendListingPrice(item)))
-            .Where(candidate => candidate.PriceCopper >= Math.Max(50, candidate.Item.Level * candidate.Item.Level * 4))
-            .OrderByDescending(candidate => candidate.PriceCopper)
+            .Where(candidate => WorthListing(bot, candidate.Item, candidate.PriceCopper))
+            // Stable: with every priority 0 (the default) the order is the old one, dearest first.
+            .OrderByDescending(candidate => EconomySeams.ListingPriority(bot, candidate.Item))
+            .ThenByDescending(candidate => candidate.PriceCopper)
             .FirstOrDefault();
         }
 
@@ -602,13 +644,21 @@ namespace DOL.GS;
                 return true;
             if (TryGetEquipmentUpgrade(bot, item, out _))
                 return true;
-            if (trainedCrafter && item.IsStackable && item.Count > 0)
+            if (item.IsStackable && item.Count > 0 && EconomySeams.IsMaterialFor(bot, item, trainedCrafter))
+                return true;
+            // Seams (Crafting 2.0): a held-back item or one a package keeps from vendors; none by default.
+            if (EconomySeams.IsReserved(bot, item) || EconomySeams.KeepFromVendor(bot, item))
                 return true;
             // If the bot's single listing slot is occupied, unwanted gear can
             // still be sold normally. Never vendor an equippable upgrade.
-            return canList && item.IsTradable &&
-                RecommendListingPrice(item) >= Math.Max(50, item.Level * item.Level * 4);
+            return canList && item.IsTradable && !EconomySeams.BlocksListing(bot, item) &&
+                WorthListing(bot, item, RecommendListingPrice(item));
         }
+
+        /// <summary>Worth a Realm Exchange post: dear enough for its level (today's rule), or an item a package says is
+        /// always worth posting (EconomySeams; DividedRealms: a crafter's own work).</summary>
+        public static bool WorthListing(GameBot bot, DbInventoryItem item, int priceCopper) =>
+            item != null && (priceCopper >= Math.Max(50, item.Level * item.Level * 4) || EconomySeams.AlwaysWorthListing(bot, item));
 
         /// <summary>
         /// Performs the same appraisal and range checks as a real merchant, removes the exact
@@ -905,7 +955,8 @@ namespace DOL.GS;
         deferred = false;
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.DatabaseID <= 0 ||
             item == null || !item.IsTradable || priceCopper <= 0 || item.OwnerLot != 0 || BotSiegeRuntime.IsSupply(item.Id_nb) ||
-            item.SlotPosition is < (int)eInventorySlot.FirstBackpack or > (int)eInventorySlot.LastBackpack)
+            item.SlotPosition is < (int)eInventorySlot.FirstBackpack or > (int)eInventorySlot.LastBackpack ||
+            EconomySeams.IsReserved(bot, item) || EconomySeams.BlocksListing(bot, item))
             return false;
 
         lock (RealmExchangeBroker.TransactionLock)
@@ -940,7 +991,7 @@ namespace DOL.GS;
             }
         }
 
-        int slot = FindFreeListingSlot(ownerId);
+        int slot = FindFreeListingSlot(ownerId, item);
         int originalSlot = item.SlotPosition;
         if (slot < 0 || !bot.Inventory.RemoveItemWithoutDbDeletion(item))
             return false;
@@ -961,6 +1012,7 @@ namespace DOL.GS;
         }
         MarketCache.AddItem(item);
         MarkInventoryChanged(bot);
+        EconomySeams.NotifyListed(bot, item);
         return true;
         }
     }
@@ -971,17 +1023,28 @@ namespace DOL.GS;
         stored.SlotPosition >= (int)eInventorySlot.FirstBackpack && stored.SlotPosition <= (int)eInventorySlot.LastBackpack &&
         item.ITemplate_Id == stored.ITemplate_Id && item.UTemplate_Id == stored.UTemplate_Id && item.Count == stored.Count;
 
-    public static int FindFreeListingSlot(string ownerId)
+    /// <summary>A free post under the owner's cap for this item (EconomySeams.Listings; 3 for every item by default).
+    /// <paramref name="listedItem"/> may be null: the cap of an unspecified item.</summary>
+    public static int FindFreeListingSlot(string ownerId, DbInventoryItem listedItem = null)
     {
         var used = MarketCache.SearchItems(new ItemQuery { Owner = ownerId })
             .Where(item => RealmExchangeBroker.IsExchangeOwnerLot(item.OwnerLot)).Select(item => item.SlotPosition).ToHashSet();
-        if (used.Count >= MaxBotRealmExchangeListings) return -1;
+        if (used.Count >= EconomySeams.Listings.ListingCap(ownerId, listedItem)) return -1;
         for (int slot = (int)eInventorySlot.Consignment_First; slot <= (int)eInventorySlot.Consignment_Last; slot++)
             if (!used.Contains(slot)) return slot;
         return -1;
     }
 
     private static bool HasListingSpace(GameBot bot) => FindFreeListingSlot(GetOwnerId(bot.DatabaseID)) >= 0;
+
+    /// <summary>The owner's posts on the Realm Exchange now (distinct posts, as <see cref="FindFreeListingSlot"/> counts them).</summary>
+    public static int CountListings(string ownerId) =>
+        MarketCache.SearchItems(new ItemQuery { Owner = ownerId })
+            .Where(item => RealmExchangeBroker.IsExchangeOwnerLot(item.OwnerLot)).Select(item => item.SlotPosition).Distinct().Count();
+
+    /// <summary>Whether this item can be posted now, under the cap that applies to it (DividedRealms' CanListNow).</summary>
+    public static bool CanListNow(GameBot bot, DbInventoryItem item) =>
+        bot != null && FindFreeListingSlot(GetOwnerId(bot.DatabaseID), item) >= 0;
 
     public static bool TryBuy(GameBot bot, DbInventoryItem item) => TryBuy(bot, item, out _);
 
@@ -1010,7 +1073,7 @@ namespace DOL.GS;
             int price = item.SellPrice;
             string sellerId = item.OwnerID;
             int sellerSlot = item.SlotPosition;
-            var payment = RealmExchangeBroker.PrepareSellerPayment(sellerId, price, bot.Realm);
+            var payment = RealmExchangeBroker.PrepareSellerPayment(sellerId, price, bot.Realm, GetOwnerId(bot.DatabaseID));
             if (payment == null) return false;
             long originalMoney = bot.PersistentRecord.MoneyCopper;
             bot.PersistentRecord.MoneyCopper -= price;
@@ -1033,7 +1096,7 @@ namespace DOL.GS;
             item.OwnerID = GetOwnerId(bot.DatabaseID);
             payment.Apply();
             var sale = new RealmExchangeSaleLedger.Sale((int)bot.Realm, item.Name, item.Count, price,
-                sellerId, payment.SellerName, GetOwnerId(bot.DatabaseID), bot.Name, DateTime.UtcNow);
+                sellerId, payment.SellerName, GetOwnerId(bot.DatabaseID), bot.Name, DateTime.UtcNow, payment.TaxCopper, item.IsCrafted);
             if (!RealmExchangeSaleLedger.CommitSale(GameServer.Database, sale, item, bot.PersistentRecord, payment.Row))
             {
                 payment.Restore();
