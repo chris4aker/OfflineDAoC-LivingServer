@@ -1736,6 +1736,39 @@ namespace DOL.GS
                 return Membership.TryGetValue(group, out var raid) && region != raid.Definition.Region && InRaidDungeon(raid, region);
         }
 
+        /// <summary>
+        /// Where a raid member that has not moved for 15 minutes inside its raid's dungeon (or the one its way in leads
+        /// through) is put back (AutonomousStuckWatchdog): where the living raider nearest the route's front stands, or the
+        /// front itself. Owner's PC, 2026-11-11 (build e90bf21, Krondon): 26 "no movement for fifteen minutes" recoveries came from
+        /// the entrance ogre ceorls' camp (x 31,200-31,720, y 34,750-35,560, z 15,130-15,310: the same spots 31533,35487 and
+        /// 31285,35307 again and again, route traces PartialPathFound nodes=0); each sent the raider to Camelot, it walked
+        /// back for 30 minutes and stood in the same spot again, so the orbs never had the raid. False when the bot is in no
+        /// started dungeon raid or not in its dungeon (then the capital, as before).
+        /// </summary>
+        public static bool TryRecoverInsideRaid(GameBot bot, out ushort region, out Vector3 point, out string near)
+        {
+            region = 0; point = default; near = null;
+            Group group = bot?.Group;
+            if (group == null) return false;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
+                if (!Membership.TryGetValue(group, out var raid) || !raid.Started || raid.DungeonRoute == null) return false;
+                RealmRaidDungeonRoute route = ActiveRoute(raid);
+                if (bot.CurrentRegionID != route.Region) return false;
+                Vector3 front = route.Front;
+                GameLiving[] others = raid.Support.Where(b => b != bot && b.IsAlive && b.CurrentRegionID == route.Region &&
+                    b.ObjectState == GameObject.eObjectState.Active).ToArray();
+                if (RealmRaidStuckRecovery.Choose(new Vector3(bot.X, bot.Y, bot.Z), front,
+                        others.Select(b => new Vector3(b.X, b.Y, b.Z)).ToArray(), out point, out int index))
+                {
+                    region = route.Region;
+                    near = index >= 0 ? others[index].Name : "the route's front";
+                    return true;
+                }
+                return false;
+            }
+        }
+
         // Late/released members skip muster attendance, not the connected exterior route.
         // Navigation is performed by their controller outside the expedition lock.
         public static bool TryIndependentApproach(GameBot bot, out Vector3 destination, out Vector3? via)

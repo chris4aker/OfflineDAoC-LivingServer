@@ -429,6 +429,25 @@ namespace DOL.GS
         /// </summary>
         public static bool ShouldSkipTarget(bool finalBoss, long sinceProgressMilliseconds) =>
             !finalBoss && sinceProgressMilliseconds >= TargetNoProgressMilliseconds;
+
+        /// <summary>
+        /// Owner's PC, 2026-11-11 (build e90bf21, Krondon): for 75 minutes only 2-11 raiders stood near Scurceol Hyrde's orbs,
+        /// none took damage, and every five minutes the route skipped the orb "no damage for five minutes" (near=11, 8, 6),
+        /// took the next one and moved the raid's stand, so the raid never gathered at any. An add of a boss whose adds die
+        /// in order (EpicEncounterTactics AddsInOrder) is the whole raid's target: the no-damage clock waits until a third of
+        /// the raiders inside (at least a party) stand near it (at most 20 minutes, TargetAbsencePauseLimitMilliseconds).
+        /// </summary>
+        public static bool RequiredAddMusterShort(int near, int inside) =>
+            near < Math.Max(MinimumRaidersAtTarget, (int)Math.Ceiling(inside / 3.0));
+
+        /// <summary>A stalled add of a boss whose adds die in order is not swapped for the next one: the boss's encounter is
+        /// set aside instead, and the raid comes back to the same add (pure).</summary>
+        public static bool RequiredAddStays(bool addOfOrderedBoss) => addOfOrderedBoss;
+
+        /// <summary>The living boss whose adds die in order and of which <paramref name="target"/> is one, or null.</summary>
+        private static GameNPC OrderedAddOwner(GameNPC target, IReadOnlyList<GameNPC> live) =>
+            EpicEncounterTactics.RequiredAddOwner(target, live) is { } owner && EpicEncounterTactics.For(owner)?.AddsInOrder == true
+                ? owner : null;
         /// <summary>
         /// The front plus up to <paramref name="max"/> party positions, skipping any within
         /// 150 units across and 64 up/down of one already kept (a party standing 96 units
@@ -1975,7 +1994,12 @@ namespace DOL.GS
                     .Select(p => (float)p.GetDistanceTo(_target)).DefaultIfEmpty(float.MaxValue).Min();
                 if (closest < _targetClosest - TargetApproachStepUnits) { _targetClosest = closest; _targetApproachTick = now; }
                 bool approaching = now - _targetApproachTick < TargetApproachStallMilliseconds;
-                if (near < MinimumRaidersAtTarget && (now - _targetStartTick < TargetAbsencePauseLimitMilliseconds || approaching))
+                // One of a boss's adds that die in order (Scurceol Hyrde's orbs): the whole raid commits to it, so the clock
+                // waits for a third of the raiders inside to stand near it, not only for a party (RequiredAddMusterShort).
+                GameNPC orderedOwner = OrderedAddOwner(_target, live);
+                int insideNow = orderedOwner == null ? 0 : participants.Count(p => p.IsAlive && p.CurrentRegionID == _region);
+                if ((near < MinimumRaidersAtTarget || orderedOwner != null && RequiredAddMusterShort(near, insideNow)) &&
+                    (now - _targetStartTick < TargetAbsencePauseLimitMilliseconds || approaching))
                     _targetProgressTick = Math.Max(_targetProgressTick, now - 1_000);
                 // A tethered boss outside its tether is immune while the raid leads it home: not a stall.
                 if (_target is GameNPC tethered && (AutonomousTetherReset.IsOutOfTether(tethered) || EpicEncounterTactics.OutsideHome(tethered)))
@@ -2035,6 +2059,17 @@ namespace DOL.GS
                 {
                     CallTarget(participants, now);
                     Hold = false; Status = $"Clearing {_target.Name} ({_target.HealthPercent}%)"; return;
+                }
+                // An add of a boss whose adds die in order is never swapped for the next one (each swap moved the raid's
+                // stand): the boss's whole fight is set aside, and the raid comes back to this same add (RequiredAddStays).
+                if (RequiredAddStays(orderedOwner != null))
+                {
+                    log.Warn($"REALM_EXPEDITION_TARGET_SKIPPED region={_region} target=\"{_target.Name}\" at={_target.X},{_target.Y},{_target.Z} " +
+                             $"health={_target.HealthPercent} front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} near={near} inside={insideNow} " +
+                             $"encounter=\"{orderedOwner.Name}\" reason=\"no damage for five minutes with the raid at it; its encounter is set " +
+                             $"aside and the raid comes back to this add, not the next one\"");
+                    SetTacticAside(orderedOwner, $"no damage to {_target.Name} for five minutes ({near} raiders near it)", now);
+                    return;
                 }
                 log.Warn($"REALM_EXPEDITION_TARGET_SKIPPED region={_region} target=\"{_target.Name}\" at={_target.X},{_target.Y},{_target.Z} " +
                          $"health={_target.HealthPercent} front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} near={near} reason=\"no damage for five minutes\"");

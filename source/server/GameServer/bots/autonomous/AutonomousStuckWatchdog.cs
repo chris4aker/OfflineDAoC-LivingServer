@@ -448,6 +448,8 @@ public static class AutonomousStuckWatchdog
     {
         if (moveLiveObject && TryRecoverToPlayerLeader(bot, now, reason, logMarker))
             return true;
+        if (moveLiveObject && logMarker == "AUTONOMOUS_STUCK_15M_RECOVERY" && TryRecoverInsideRaid(bot, now, reason))
+            return true;
         CapitalLocation capital = SafeCapitalFor(bot.Realm);
         if (capital.RegionId == 0)
             return false;
@@ -542,6 +544,47 @@ public static class AutonomousStuckWatchdog
     /// from the player's group without a word, and the schedule logged it off a few seconds later. Companion bots already
     /// rejoin their player this way (TryReturnTemporaryCompanionToLeader).
     /// </summary>
+    /// <summary>A raid member stuck inside its raid's dungeon joins the raid there instead of going to the capital and
+    /// walking back into the same spot (AutonomousRealmRaid.TryRecoverInsideRaid; Krondon, PC 2026-11-11).</summary>
+    private static bool TryRecoverInsideRaid(GameBot bot, DateTime now, string reason)
+    {
+        if (!bot.IsAlive || !AutonomousRealmRaid.TryRecoverInsideRaid(bot, out ushort region, out Vector3 spot, out string near))
+            return false;
+        ushort oldRegion = bot.CurrentRegionID;
+        int oldX = bot.X, oldY = bot.Y, oldZ = bot.Z;
+        string oldActivity = bot.PersistentRecord?.Activity ?? string.Empty;
+        // Onto the mesh when there is one; the raider's own spot or the route's front otherwise (both are floor).
+        Zone zone = WorldMgr.GetRegion(region)?.GetZone((int)spot.X, (int)spot.Y);
+        var nav = PathfindingProvider.Instance;
+        bool snapped = zone != null && nav.IsAvailable && nav.HasNavmesh(zone) && nav.TrySnapToMesh(zone, ref spot, 128f);
+        bot.StopAttack();
+        bot.StopFollowing();
+        bot.StopMovingOnPath();
+        bot.StopMoving();
+        bot.StopCurrentSpellcast();
+        if (bot.Brain is BotBrain brain)
+        {
+            brain.ClearAggroList();
+            brain.FSM.SetCurrentState(eFSMStateType.IDLE);
+        }
+        if (!bot.MoveTo(region, (int)Math.Round(spot.X), (int)Math.Round(spot.Y), (int)Math.Round(spot.Z), bot.Heading))
+            return false;
+        OfflineWorldBotRecord record = bot.PersistentRecord;
+        if (record != null)
+        {
+            record.RecoveryCount++;
+            record.LastMeaningfulProgressUtc = now.ToString("O");
+        }
+        Log.Warn($"AUTONOMOUS_RAID_STUCK_RECOVERY bot=\"{ForLog(bot.Name)}\" id={bot.DatabaseID} level={bot.Level} " +
+                 $"realm={GlobalConstants.RealmToName(bot.Realm)} class=\"{ForLog(bot.ClassName)}\" reason=\"{ForLog(reason)}\" " +
+                 $"activity=\"{ForLog(oldActivity)}\" from={oldRegion}:{oldX},{oldY},{oldZ} to={region}:{(int)spot.X},{(int)spot.Y},{(int)spot.Z} " +
+                 $"near=\"{ForLog(near)}\" snapped={snapped} instead=\"the capital\"");
+        MarkProgress(bot, eAutonomousProgressKind.Recovery, now);
+        bot.MarkAutonomousStateDirty();
+        AutonomousBotStatusPersistence.Queue(bot);
+        return true;
+    }
+
     private static bool TryRecoverToPlayerLeader(GameBot bot, DateTime now, string reason, string logMarker)
     {
         if (bot.PlayerGroupLeader is not { IsAlive: true, ObjectState: GameObject.eObjectState.Active } leader ||
